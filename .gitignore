@@ -1,0 +1,13 @@
+*~
+target/
+*.eml
+*.iml
+*.ipr
+*.iws
+.*.sw?
+.idea
+.classpath
+.project
+.settings
+.cache
+postgres
