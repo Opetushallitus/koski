@@ -12,7 +12,7 @@ class TodennetunOsaamisenRekisteri(db: DB)(implicit val executor: ExecutionConte
   def getTutkintosuoritukset: Future[Seq[Tutkintosuoritus]] = {
     val query = for {
       (ts, tsa) <- Tables.Tutkintosuoritus joinLeft Tables.Arviointi on (_.arviointiId === _.id);
-      (tos, tosa) <- Tables.Tutkinnonosasuoritus joinLeft Tables.Arviointi on (_.arviointiId === _.id) filter (_._1.tutkintosuoritusId === ts.id);
+      (tos, tosa) <- Tables.Tutkinnonosasuoritus joinLeft Tables.Arviointi on (_.arviointiId === _.id) if (tos.tutkintosuoritusId === ts.id);
       (ks, ksa) <- Tables.Kurssisuoritus joinLeft Tables.Arviointi on { (ks, ksa) => ks.arviointiId === ksa.id } filter (_._1.tutkinnonosasuoritusId === tos.id)
     } yield {
       (ts, tsa, tos, tosa, ks, ksa)
