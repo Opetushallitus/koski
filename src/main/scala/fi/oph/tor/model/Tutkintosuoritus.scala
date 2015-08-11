@@ -21,14 +21,11 @@ object Identified {
 
 // The Identified.id alias not used below, because it causes json4s-jackson serialization to hang
 
-case class Arviointi(id: Option[Int], asteikko: String, numero: Int, kuvaus: Option[String]) {
-
-}
+case class Arviointi(id: Option[Int], asteikko: String, numero: Int, kuvaus: Option[String])
 
 case class Tutkintosuoritus(id: Option[Int], organisaatioId: String, personOid: String, komoOid: String,
                             status: String, arviointi: Option[Arviointi],
-                            osasuoritukset: List[Tutkinnonosasuoritus]) extends Koulutusmoduulisuoritus {
-}
+                            osasuoritukset: List[Tutkinnonosasuoritus]) extends Koulutusmoduulisuoritus
 
 case class Tutkinnonosasuoritus(id: Option[Int], komoOid: String,
                                 status: String, arviointi: Option[Arviointi],
