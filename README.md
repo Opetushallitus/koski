@@ -49,9 +49,16 @@ Sitten vaikka
     
 ### Kantamigraatiot
 
-Migraatiot ovat hakemistossa `src/main/resources/db/migration`. Uusia migraatioita tehdessä tulee myös ajaa koodigeneraattori,
+Migraatiot ovat hakemistossa `src/main/resources/db/migration`. Migraation ajo paikalliseen kantaan tällä:
+ 
+    mvn compile flyway:migrate 
+
+Uusia migraatioita tehdessä tulee myös ajaa koodigeneraattori,
 joka generoi tauluja vastaavat luokat `src/main/scala/fi/oph/tor/db/Tables.scala` -tiedostoon. Koodigeneraattorin `fi.oph.tor.db.CodeGeneator`
-voit ajaa IDE:ssä.
+voit ajaa IDE:ssä. Koodigeneraattori ottaa yhteyden paikalliseen kantaan, jonka rakenteesta se generoi koodin. Koodigeneraattorin luomia
+luokkia käytetään vain tietokantaoperaatioihin, eikä siis käytetä järjestelmän sisäisenä tietomallina, saati sitten paljateta ulospäin.
+Koodigenerointi on käytössä siksi, että kannan skeema ja sovelluskoodi varmasti pysyvät synkassa. Jos esim. tauluun lisätään uusi pakollinen
+kenttä, seuraa siitä käännösvirhe, kunnes softa käsittelee tämän kentän.
     
 ## Maven-buildi
 
