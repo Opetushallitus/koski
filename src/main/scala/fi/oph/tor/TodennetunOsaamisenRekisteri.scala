@@ -2,35 +2,88 @@ package fi.oph.tor
 
 import fi.oph.tor.db.TorDatabase.DB
 import fi.oph.tor.db.{Futures, Tables}
-import fi.oph.tor.model.{Identified, Arviointi, Tutkintosuoritus}
+import fi.oph.tor.model.{Tutkinnonosasuoritus, Identified, Arviointi, Tutkintosuoritus, Kurssisuoritus}
+import fi.vm.sade.utils.slf4j.Logging
 import slick.driver.PostgresDriver.api._
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class TodennetunOsaamisenRekisteri(db: DB)(implicit val executor: ExecutionContext) extends Futures {
+class TodennetunOsaamisenRekisteri(db: DB)(implicit val executor: ExecutionContext) extends Futures with Logging {
   def getTutkintosuoritukset: Future[Seq[Tutkintosuoritus]] = {
     val query = for {
-      ts <- Tables.Tutkintosuoritus;
-      tsa <- Tables.Arviointi if ts.arviointiId === tsa.id
+      (ts, tsa) <- Tables.Tutkintosuoritus joinLeft Tables.Arviointi on (_.arviointiId === _.id);
+      (tos, tosa) <- Tables.Tutkinnonosasuoritus joinLeft Tables.Arviointi on (_.arviointiId === _.id) filter (_._1.tutkintosuoritusId === ts.id);
+      (ks, ksa) <- Tables.Kurssisuoritus joinLeft Tables.Arviointi on { (ks, ksa) => ks.arviointiId === ksa.id } filter (_._1.tutkinnonosasuoritusId === tos.id)
     } yield {
-      (ts, tsa)
+      (ts, tsa, tos, tosa, ks, ksa)
     }
-    val queryResultFuture: Future[Seq[(Tables.TutkintosuoritusRow, Tables.ArviointiRow)]] = db.run(query.result)
-    queryResultFuture.map { rows =>
-      rows.map {
-        case (ts: Tables.TutkintosuoritusRow, tsa: Tables.ArviointiRow) =>
-          val arviointi = Arviointi(Some(tsa.id), tsa.asteikko, tsa.numero.toInt, tsa.kuvaus)
-          Tutkintosuoritus(Some(ts.id), ts.organisaatioOid, ts.personOid, ts.komoOid, ts.status, Some(arviointi), List())
+    withErrorHandling(query) { rows: Seq[(Tables.TutkintosuoritusRow, Option[Tables.ArviointiRow], Tables.TutkinnonosasuoritusRow, Option[Tables.ArviointiRow], Tables.KurssisuoritusRow, Option[Tables.ArviointiRow])] =>
+      val groupedByTutkinto = rows.groupBy { case (ts, tsa, _, _, _, _) => (ts, tsa) }
+      groupedByTutkinto.map { case ((ts, tsa), tutkinnonOsat) =>
+          val groupedByTutkinnonosa = tutkinnonOsat.groupBy { case (_, _, tos, tosa, _, _) => (tos, tosa) }
+          val osasuoritukset = groupedByTutkinnonosa.map { case ((tos, tosa), kurssit) =>
+            val kurssisuoritukset = kurssit.map { case (_, _, _, _, ks, ksa) =>
+              Kurssisuoritus(Some(ks.id), ks.komoOid, ks.status, mapArviointi(ksa))
+            }
+            Tutkinnonosasuoritus(Some(tos.id), tos.komoOid, tos.status, mapArviointi(tosa), kurssisuoritukset.toList)
+          }
+          Tutkintosuoritus(Some(ts.id), ts.organisaatioOid, ts.personOid, ts.komoOid, ts.status, mapArviointi(tsa), osasuoritukset.toList)
       }.toList
     }
   }
-  def insertTutkintosuoritus(t: Tutkintosuoritus): Future[Identified.Id] = {
-    insertAndReturnUpdated(Tables.Tutkintosuoritus, Tables.TutkintosuoritusRow(0, t.organisaatioId, t.personOid, t.komoOid, t.status, t.arviointi.map(insertArviointi)))
-      .map(_.id)
+
+  def mapArviointi(arviointiOption: Option[Tables.ArviointiRow]): Option[Arviointi] = {
+    arviointiOption.map { row => Arviointi(Some(row.id), row.asteikko, row.numero.toInt, row.kuvaus) }
   }
 
-  private def insertArviointi(arviointi: Arviointi): Identified.Id = {
-    await(insertAndReturnUpdated(Tables.Arviointi, Tables.ArviointiRow(0, arviointi.asteikko, arviointi.numero, arviointi.kuvaus))).id
+  private def withErrorHandling[T, E, U, C[_]](query: Query[E, U, C])(block: C[U] => T): Future[T] = {
+    val f = db.run(query.result).map{ result =>
+      block(result)
+    }
+    f.onFailure {
+      case e: Exception =>
+        logger.error("Error running query " + query.result.statements.head, e)
+        throw e;
+    }
+    f
+  }
+
+  def insertTutkintosuoritus(t: Tutkintosuoritus): Future[Identified.Id] = {
+      for {
+        arviointiId <- maybeInsertArviointi(t.arviointi);
+        tutkintosuoritusId <- insertAndReturnUpdated(Tables.Tutkintosuoritus, Tables.TutkintosuoritusRow(0, t.organisaatioId, t.personOid, t.komoOid, t.status, arviointiId)).map(_.id);
+        osasuoritusIds <- Future.sequence(t.osasuoritukset.map { insertTutkinnonosasuoritus(_, tutkintosuoritusId)})
+      } yield {
+        tutkintosuoritusId
+      }
+  }
+
+  private def insertTutkinnonosasuoritus(t: Tutkinnonosasuoritus, tutkintosuoritusId: Identified.Id): Future[Identified.Id] = {
+    for {
+      arviointiId <- maybeInsertArviointi(t.arviointi)
+      osasuoritusId <- insertAndReturnUpdated(Tables.Tutkinnonosasuoritus, Tables.TutkinnonosasuoritusRow(0, tutkintosuoritusId, t.komoOid, t.status, arviointiId)).map(_.id)
+      kurssisuoritusIds <- Future.sequence(t.kurssisuoritukset.map { insertKurssisuoritus(_, osasuoritusId) })
+    } yield {
+      osasuoritusId
+    }
+  }
+
+  private def insertKurssisuoritus(k: Kurssisuoritus, tutkinnonosasuoritusId: Identified.Id): Future[Identified.Id] = {
+    for {
+      arviointiId <- maybeInsertArviointi(k.arviointi)
+      kurssisuoritusId <- insertAndReturnUpdated(Tables.Kurssisuoritus, Tables.KurssisuoritusRow(0, tutkinnonosasuoritusId, k.komoOid, k.status, arviointiId)).map(_.id)
+    } yield {
+      kurssisuoritusId
+    }
+  }
+
+  private def maybeInsertArviointi(arviointiOption: Option[Arviointi]): Future[Option[Identified.Id]] = arviointiOption match {
+    case Some(arviointi) => insertAndReturnUpdated(Tables.Arviointi, Tables.ArviointiRow(0, arviointi.asteikko, arviointi.numero, arviointi.kuvaus)).map{ row => Some(row.id) }
+    case None => Future(None)
+  }
+
+  private def insertArviointi(arviointi: Arviointi): Future[Identified.Id] = {
+    insertAndReturnUpdated(Tables.Arviointi, Tables.ArviointiRow(0, arviointi.asteikko, arviointi.numero, arviointi.kuvaus)).map(_.id)
   }
 
   private def insertAndReturnUpdated[T, TableType <: Table[T]](tableQuery: TableQuery[TableType], row: T): Future[T] = {
