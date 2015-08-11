@@ -6,6 +6,7 @@
 - Scala 2.11.4
 - Scalatra
 - Slick (http://slick.typesafe.com/doc/3.0.1/index.html) ja slick-codegen
+- Mvn-depsujen lataus Jitpackilla, jolloin voidaan viitata suoraan Github-repoihin, eikä tarvitse itse buildata jar-artifaktoja
 
 ## Lokaali tietokanta
 

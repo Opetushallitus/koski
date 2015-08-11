@@ -16,14 +16,14 @@
   <dependencies>
     <!-- OPH internal deps -->
     <dependency>
-      <groupId>fi.vm.sade</groupId>
-      <artifactId>scala-utils_2.11</artifactId>
-      <version>0.1.0-SNAPSHOT</version>
+      <groupId>com.github.Opetushallitus</groupId>
+      <artifactId>scala-utils</artifactId>
+      <version>a835325</version>
     </dependency>
     <dependency>
-      <groupId>fi.vm.sade</groupId>
-      <artifactId>scala-security_2.11</artifactId>
-      <version>0.1.0-SNAPSHOT</version>
+      <groupId>com.github.Opetushallitus</groupId>
+      <artifactId>scala-security</artifactId>
+      <version>677ad2c</version>
     </dependency>
     <!-- external deps -->
     <dependency>
@@ -199,33 +199,8 @@
   </build>
   <repositories>
     <repository>
-      <id>oph-sade-artifactory-snapshots</id>
-      <url>https://artifactory.oph.ware.fi/artifactory/oph-sade-snapshot-local</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-    <repository>
-      <id>oph-sade-artifactory-releases</id>
-      <url>https://artifactory.oph.ware.fi/artifactory/oph-sade-release-local</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
     </repository>
   </repositories>
-  <distributionManagement>
-    <repository>
-      <id>oph-sade-artifactory</id>
-      <name>oph-sade-artifactory-releases</name>
-      <url>https://artifactory.oph.ware.fi/artifactory/oph-sade-release-local</url>
-    </repository>
-    <snapshotRepository>
-      <id>oph-sade-artifactory</id>
-      <name>oph-sade-artifactory-snapshots</name>
-      <url>https://artifactory.oph.ware.fi/artifactory/oph-sade-snapshot-local</url>
-    </snapshotRepository>
-  </distributionManagement>
 </project>
