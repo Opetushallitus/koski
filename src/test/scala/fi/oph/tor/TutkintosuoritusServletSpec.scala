@@ -13,9 +13,8 @@ class TutkintosuoritusServletSpec extends ScalatraSuite with FunSuiteLike with T
   addServlet(tutkintosuoritusServlet, "/*")
 
   test("roundtrip") {
-    post("/", "{}".getBytes("UTF-8")) {
+    post("/", Json.write(tutkintosuoritus1), Map("Content-type" -> "application/json")) {
       status should equal (200)
-      tor.insertTutkintosuoritus(tutkintosuoritus1) // <- for now, until we can POST it
     }
 
     get("/") {
