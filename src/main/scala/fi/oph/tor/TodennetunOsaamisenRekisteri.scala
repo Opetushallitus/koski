@@ -17,18 +17,18 @@ class TodennetunOsaamisenRekisteri(db: DB)(implicit val executor: ExecutionConte
     } yield {
       (ts, tsa, tos, tosa, ks, ksa)
     }
-    withErrorHandling(query) { rows: Seq[(Tables.TutkintosuoritusRow, Option[Tables.ArviointiRow], Tables.TutkinnonosasuoritusRow, Option[Tables.ArviointiRow], Tables.KurssisuoritusRow, Option[Tables.ArviointiRow])] =>
+    runQuery(query) { rows: Seq[(Tables.TutkintosuoritusRow, Option[Tables.ArviointiRow], Tables.TutkinnonosasuoritusRow, Option[Tables.ArviointiRow], Tables.KurssisuoritusRow, Option[Tables.ArviointiRow])] =>
       val groupedByTutkinto = rows.groupBy { case (ts, tsa, _, _, _, _) => (ts, tsa) }
       groupedByTutkinto.map { case ((ts, tsa), tutkinnonOsat) =>
           val groupedByTutkinnonosa = tutkinnonOsat.groupBy { case (_, _, tos, tosa, _, _) => (tos, tosa) }
           val osasuoritukset = groupedByTutkinnonosa.map { case ((tos, tosa), kurssit) =>
             val kurssisuoritukset = kurssit.map { case (_, _, _, _, ks, ksa) =>
               Kurssisuoritus(Some(ks.id), ks.komoOid, ks.status, mapArviointi(ksa))
-            }
-            Tutkinnonosasuoritus(Some(tos.id), tos.komoOid, tos.status, mapArviointi(tosa), kurssisuoritukset.toList)
-          }
-          Tutkintosuoritus(Some(ts.id), ts.organisaatioOid, ts.personOid, ts.komoOid, ts.status, mapArviointi(tsa), osasuoritukset.toList)
-      }.toList
+            }.toList.sortBy(_.komoOid)
+            Tutkinnonosasuoritus(Some(tos.id), tos.komoOid, tos.status, mapArviointi(tosa), kurssisuoritukset)
+          }.toList.sortBy(_.komoOid)
+          Tutkintosuoritus(Some(ts.id), ts.organisaatioOid, ts.personOid, ts.komoOid, ts.status, mapArviointi(tsa), osasuoritukset)
+      }.toList.sortBy(_.komoOid)
     }
   }
 
@@ -36,7 +36,7 @@ class TodennetunOsaamisenRekisteri(db: DB)(implicit val executor: ExecutionConte
     arviointiOption.map { row => Arviointi(Some(row.id), row.asteikko, row.numero.toInt, row.kuvaus) }
   }
 
-  private def withErrorHandling[T, E, U, C[_]](query: Query[E, U, C])(block: C[U] => T): Future[T] = {
+  private def runQuery[T, E, U, C[_]](query: Query[E, U, C])(block: C[U] => T): Future[T] = {
     val f = db.run(query.result).map{ result =>
       block(result)
     }
