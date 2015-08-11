@@ -215,14 +215,6 @@
         <enabled>true</enabled>
       </releases>
     </repository>
-    <repository>
-      <id>ScalazBintrayRepo</id>
-      <name>Scalaz Bintray Repo</name>
-      <url>http://dl.bintray.com/scalaz/releases/</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
   </repositories>
   <distributionManagement>
     <repository>
