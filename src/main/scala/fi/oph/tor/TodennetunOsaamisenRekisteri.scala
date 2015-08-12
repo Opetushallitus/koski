@@ -5,14 +5,15 @@ import fi.oph.tor.db.{Futures, Tables}
 import fi.oph.tor.model._
 import fi.vm.sade.utils.slf4j.Logging
 import slick.driver.PostgresDriver.api._
+import slick.lifted
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class TodennetunOsaamisenRekisteri(db: DB)(implicit val executor: ExecutionContext) extends Futures with Logging {
   private type RowTuple = (Tables.SuoritusRow, Option[Tables.ArviointiRow])
 
-  def getSuoritukset: Future[Seq[Suoritus]] = {
-    val query = Tables.Suoritus joinLeft Tables.Arviointi on (_.arviointiId === _.id);
+  def getSuoritukset(filter: SuoritusFilter = KaikkiSuoritukset): Future[Seq[Suoritus]] = {
+    val query = filter.apply(Tables.Suoritus) joinLeft Tables.Arviointi on (_.arviointiId === _.id);
     runQuery(query) { (rows: Seq[RowTuple]) =>
       rowsToSuoritukset(rows.sortBy(_._1.komoOid), parentId = None) // <- None means root (no parent)
     }

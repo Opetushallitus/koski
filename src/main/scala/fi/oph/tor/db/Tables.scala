@@ -1,4 +1,7 @@
 package fi.oph.tor.db
+
+import slick.lifted
+
 // AUTO-GENERATED Slick data model
 /** Stand-alone Slick data model for immediate use */
 object Tables extends {
@@ -150,5 +153,5 @@ trait Tables {
     lazy val suoritusFk = foreignKey("suoritus_parent_id_fkey", parentId, Suoritus)(r => Rep.Some(r.id), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
   }
   /** Collection-like TableQuery object for table Suoritus */
-  lazy val Suoritus = new TableQuery(tag => new Suoritus(tag))
+  lazy val Suoritus: lifted.TableQuery[Suoritus] = new TableQuery(tag => new Suoritus(tag))
 }
