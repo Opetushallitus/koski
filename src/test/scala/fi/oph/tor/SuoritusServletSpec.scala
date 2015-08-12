@@ -1,11 +1,10 @@
 package fi.oph.tor
 
-import fi.oph.tor.fixture.SuoritusTestData
-import SuoritusTestData.tutkintosuoritus1
+import fi.oph.tor.fixture.SuoritusTestData.tutkintosuoritus1
 import fi.oph.tor.json.Json
 import fi.oph.tor.model.Identified.withoutId
-import fi.oph.tor.model.{Identified, Suoritus}
-import org.scalatest.{FreeSpec, FlatSpec, FunSuiteLike}
+import fi.oph.tor.model.Suoritus
+import org.scalatest.FreeSpec
 import org.scalatra.test.scalatest.ScalatraSuite
 
 class SuoritusServletSpec extends FreeSpec with ScalatraSuite with TorTest {
