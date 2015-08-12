@@ -7,7 +7,7 @@ import fi.oph.tor.model.{Identified, Suoritus}
 import org.scalatest.FunSuiteLike
 import org.scalatra.test.scalatest.ScalatraSuite
 
-class TutkintosuoritusServletSpec extends ScalatraSuite with FunSuiteLike with TorTest {
+class SuoritusServletSpec extends ScalatraSuite with FunSuiteLike with TorTest {
   lazy val tor: TodennetunOsaamisenRekisteri = initLocalRekisteri
   lazy val suoritusServlet = new SuoritusServlet(tor)
   addServlet(suoritusServlet, "/*")
