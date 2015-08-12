@@ -1,6 +1,7 @@
 package fi.oph.tor.fixture
 
 import java.text.SimpleDateFormat
+import fi.oph.tor.date.FinnishDateParser
 import fi.oph.tor.model.{Arviointi, Suoritus}
 
 object SuoritusTestData {
@@ -26,8 +27,13 @@ object SuoritusTestData {
       ))
     ))
 
+  val vainKomo111: Suoritus = Suoritus(None, kouluOrganisaatio, personOid, "tutkinto-1", "tutkinto", "kesken", None,
+    Some(Arviointi(None, "1-10", 7, Some("Ihan perus ok"))),
+    List(
+      Suoritus(None, kouluOrganisaatio, personOid, "tutkinnonosa-1.1", "tutkinnon_osa", "suoritettu", d("20.6.2014 12:00"), Some(Arviointi(None, "1-10", 9, Some("Well done"))), List(
+        Suoritus(None, kouluOrganisaatio, personOid, "kurssi-1.1.1", "kurssi", "suoritettu", d("20.6.2014 11:00"), Some(Arviointi(None, "1-10", 9, None)), List.empty)
+      ))
+    ))
 
-  def d(dateTime: String) = {
-    Some(new SimpleDateFormat("d.M.yyyy HH:mm").parse(dateTime))
-  }
+  def d(s: String) = Some(FinnishDateParser.parseDateTime(s))
 }

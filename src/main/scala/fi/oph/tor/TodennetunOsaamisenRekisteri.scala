@@ -47,13 +47,13 @@ class TodennetunOsaamisenRekisteri(db: DB)(implicit val executor: ExecutionConte
   }
 
   private def buildSuoritusQuerySql(filters: Iterable[SuoritusFilter]): String = {
-    def buildWhereClause(keys: Iterable[String], first: Boolean = true): String = keys.toList match {
+    def buildWhereClause(keys: Iterable[SuoritusFilter], first: Boolean = true): String = keys.toList match {
       case head::tail =>
         val prefix = if (first) " where " else " and "
-        prefix + head + "=?" + buildWhereClause(tail, false)
+        prefix + head.whereClauseFraction + buildWhereClause(tail, false)
       case _ => ""
     }
-    val whereClause = buildWhereClause(filters.map(_.key))
+    val whereClause = buildWhereClause(filters)
     if (filters.exists(_.recursive)) {
       // At least one filter requires including parent rows of matches -> find those recursively using Common Table Expressions
       """WITH RECURSIVE rekursiivinen AS (
@@ -63,7 +63,7 @@ class TodennetunOsaamisenRekisteri(db: DB)(implicit val executor: ExecutionConte
         select suoritus.* from suoritus, rekursiivinen
           where suoritus.id = rekursiivinen.parent_id
       )
-      select * from rekursiivinen
+      select distinct * from rekursiivinen
         left join arviointi on (rekursiivinen.arviointi_id = arviointi.id)
         """
     } else {

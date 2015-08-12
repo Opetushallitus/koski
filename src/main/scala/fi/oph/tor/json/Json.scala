@@ -10,6 +10,10 @@ object Json {
     Serialization.write(x);
   }
 
+  def writePretty(x: AnyRef): String = {
+    Serialization.writePretty(x);
+  }
+
   def read[A](json: String)(implicit mf : scala.reflect.Manifest[A]) : A = {
     Serialization.read(json)
   }

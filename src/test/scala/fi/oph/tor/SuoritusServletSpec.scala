@@ -1,6 +1,6 @@
 package fi.oph.tor
 
-import fi.oph.tor.fixture.SuoritusTestData.{tutkintosuoritus1, vainKomo112}
+import fi.oph.tor.fixture.SuoritusTestData.{tutkintosuoritus1, vainKomo112, vainKomo111}
 import fi.oph.tor.json.Json
 import fi.oph.tor.model.Identified.withoutId
 import fi.oph.tor.model.Suoritus
@@ -32,6 +32,12 @@ class SuoritusServletSpec extends FreeSpec with ScalatraSuite with TorTest {
     "GET /?komoOid=x -> koulutusmoduulin suoritukset parentteineen" in {
       verifySuoritukset("/?komoOid=kurssi-1.1.2", List(vainKomo112))
     }
+    "GET /?completedAfter=x -> suoritukset annetun päivämäärän jälkeen" in {
+      verifySuoritukset("/?completedAfter=1.6.2014", List(vainKomo111))
+      get("/?completedAfter=qwer") {
+        status should equal(400)
+      }
+    }
     "GET /?asdf=qwer -> bad request" in {
       get("/?asdf=qwer") {
         status should equal(400)
@@ -45,7 +51,7 @@ class SuoritusServletSpec extends FreeSpec with ScalatraSuite with TorTest {
       response.getContentType() should equal ("application/json;charset=utf-8")
       val suoritukset: List[Suoritus] = Json.read[List[Suoritus]](body)
       suoritukset.map(_.id) should not contain None
-      suoritukset.map(withoutId) should be (expectedSuoritukset.map(withoutId))
+      Json.writePretty(suoritukset.map(withoutId)) should be (Json.writePretty(expectedSuoritukset.map(withoutId)))
     }
   }
 }
