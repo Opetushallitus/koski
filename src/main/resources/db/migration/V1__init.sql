@@ -6,31 +6,14 @@ create table arviointi (
     primary key (id)
 );
 
-create table tutkintosuoritus (
+create table suoritus (
     id serial,
+    parent_id integer references suoritus(id) null,
     organisaatio_oid text not null,
     person_oid text not null,
     komo_oid text not null,
+    komo_tyyppi text not null,
     status text not null,
     arviointi_id integer references arviointi(id),
     primary key (id)
 );
-
-create table tutkinnonosasuoritus (
-    id serial,
-    tutkintosuoritus_id integer references tutkintosuoritus(id) not null,
-    komo_oid text not null,
-    status text not null,
-    arviointi_id integer references arviointi(id),
-    primary key (id)
-);
-
-create table kurssisuoritus (
-    id serial,
-    tutkinnonosasuoritus_id integer references tutkinnonosasuoritus(id) not null,
-    komo_oid text not null,
-    status text not null,
-    arviointi_id integer references arviointi(id),
-    primary key (id)
-);
-

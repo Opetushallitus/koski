@@ -7,7 +7,7 @@ import slick.driver.PostgresDriver.api._
 
 object DatabaseTestFixture extends Logging {
   def clear = {
-    DBIO.seq(Kurssisuoritus.delete, Tutkinnonosasuoritus.delete, Tutkintosuoritus.delete, Arviointi.delete)
+    DBIO.seq(Suoritus.delete, Arviointi.delete)
   }
 }
 

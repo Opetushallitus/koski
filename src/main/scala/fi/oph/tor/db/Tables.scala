@@ -1,7 +1,4 @@
 package fi.oph.tor.db
-
-import slick.lifted
-
 // AUTO-GENERATED Slick data model
 /** Stand-alone Slick data model for immediate use */
 object Tables extends {
@@ -17,7 +14,7 @@ trait Tables {
   import slick.jdbc.{GetResult => GR}
 
   /** DDL for all tables. Call .create to execute. */
-  lazy val schema = Arviointi.schema ++ Kurssisuoritus.schema ++ SchemaVersion.schema ++ Tutkinnonosasuoritus.schema ++ Tutkintosuoritus.schema
+  lazy val schema = Arviointi.schema ++ SchemaVersion.schema ++ Suoritus.schema
   @deprecated("Use .schema instead of .ddl", "3.0")
   def ddl = schema
 
@@ -48,44 +45,7 @@ trait Tables {
     val kuvaus: Rep[Option[String]] = column[Option[String]]("kuvaus", O.Default(None))
   }
   /** Collection-like TableQuery object for table Arviointi */
-  lazy val Arviointi: lifted.TableQuery[Arviointi] = new TableQuery(tag => new Arviointi(tag))
-
-  /** Entity class storing rows of table Kurssisuoritus
-   *  @param id Database column id SqlType(serial), AutoInc, PrimaryKey
-   *  @param tutkinnonosasuoritusId Database column tutkinnonosasuoritus_id SqlType(int4)
-   *  @param komoOid Database column komo_oid SqlType(text)
-   *  @param status Database column status SqlType(text)
-   *  @param arviointiId Database column arviointi_id SqlType(int4), Default(None) */
-  case class KurssisuoritusRow(id: Int, tutkinnonosasuoritusId: Int, komoOid: String, status: String, arviointiId: Option[Int] = None)
-  /** GetResult implicit for fetching KurssisuoritusRow objects using plain SQL queries */
-  implicit def GetResultKurssisuoritusRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[Int]]): GR[KurssisuoritusRow] = GR{
-    prs => import prs._
-    KurssisuoritusRow.tupled((<<[Int], <<[Int], <<[String], <<[String], <<?[Int]))
-  }
-  /** Table description of table kurssisuoritus. Objects of this class serve as prototypes for rows in queries. */
-  class Kurssisuoritus(_tableTag: Tag) extends Table[KurssisuoritusRow](_tableTag, Some("tor"), "kurssisuoritus") {
-    def * = (id, tutkinnonosasuoritusId, komoOid, status, arviointiId) <> (KurssisuoritusRow.tupled, KurssisuoritusRow.unapply)
-    /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(id), Rep.Some(tutkinnonosasuoritusId), Rep.Some(komoOid), Rep.Some(status), arviointiId).shaped.<>({r=>import r._; _1.map(_=> KurssisuoritusRow.tupled((_1.get, _2.get, _3.get, _4.get, _5)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
-
-    /** Database column id SqlType(serial), AutoInc, PrimaryKey */
-    val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
-    /** Database column tutkinnonosasuoritus_id SqlType(int4) */
-    val tutkinnonosasuoritusId: Rep[Int] = column[Int]("tutkinnonosasuoritus_id")
-    /** Database column komo_oid SqlType(text) */
-    val komoOid: Rep[String] = column[String]("komo_oid")
-    /** Database column status SqlType(text) */
-    val status: Rep[String] = column[String]("status")
-    /** Database column arviointi_id SqlType(int4), Default(None) */
-    val arviointiId: Rep[Option[Int]] = column[Option[Int]]("arviointi_id", O.Default(None))
-
-    /** Foreign key referencing Arviointi (database name kurssisuoritus_arviointi_id_fkey) */
-    lazy val arviointiFk = foreignKey("kurssisuoritus_arviointi_id_fkey", arviointiId, Arviointi)(r => Rep.Some(r.id), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
-    /** Foreign key referencing Tutkinnonosasuoritus (database name kurssisuoritus_tutkinnonosasuoritus_id_fkey) */
-    lazy val tutkinnonosasuoritusFk = foreignKey("kurssisuoritus_tutkinnonosasuoritus_id_fkey", tutkinnonosasuoritusId, Tutkinnonosasuoritus)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
-  }
-  /** Collection-like TableQuery object for table Kurssisuoritus */
-  lazy val Kurssisuoritus = new TableQuery(tag => new Kurssisuoritus(tag))
+  lazy val Arviointi = new TableQuery(tag => new Arviointi(tag))
 
   /** Entity class storing rows of table SchemaVersion
    *  @param versionRank Database column version_rank SqlType(int4)
@@ -146,78 +106,49 @@ trait Tables {
   /** Collection-like TableQuery object for table SchemaVersion */
   lazy val SchemaVersion = new TableQuery(tag => new SchemaVersion(tag))
 
-  /** Entity class storing rows of table Tutkinnonosasuoritus
+  /** Entity class storing rows of table Suoritus
    *  @param id Database column id SqlType(serial), AutoInc, PrimaryKey
-   *  @param tutkintosuoritusId Database column tutkintosuoritus_id SqlType(int4)
-   *  @param komoOid Database column komo_oid SqlType(text)
-   *  @param status Database column status SqlType(text)
-   *  @param arviointiId Database column arviointi_id SqlType(int4), Default(None) */
-  case class TutkinnonosasuoritusRow(id: Int, tutkintosuoritusId: Int, komoOid: String, status: String, arviointiId: Option[Int] = None)
-  /** GetResult implicit for fetching TutkinnonosasuoritusRow objects using plain SQL queries */
-  implicit def GetResultTutkinnonosasuoritusRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[Int]]): GR[TutkinnonosasuoritusRow] = GR{
-    prs => import prs._
-    TutkinnonosasuoritusRow.tupled((<<[Int], <<[Int], <<[String], <<[String], <<?[Int]))
-  }
-  /** Table description of table tutkinnonosasuoritus. Objects of this class serve as prototypes for rows in queries. */
-  class Tutkinnonosasuoritus(_tableTag: Tag) extends Table[TutkinnonosasuoritusRow](_tableTag, Some("tor"), "tutkinnonosasuoritus") {
-    def * = (id, tutkintosuoritusId, komoOid, status, arviointiId) <> (TutkinnonosasuoritusRow.tupled, TutkinnonosasuoritusRow.unapply)
-    /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(id), Rep.Some(tutkintosuoritusId), Rep.Some(komoOid), Rep.Some(status), arviointiId).shaped.<>({r=>import r._; _1.map(_=> TutkinnonosasuoritusRow.tupled((_1.get, _2.get, _3.get, _4.get, _5)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
-
-    /** Database column id SqlType(serial), AutoInc, PrimaryKey */
-    val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
-    /** Database column tutkintosuoritus_id SqlType(int4) */
-    val tutkintosuoritusId: Rep[Int] = column[Int]("tutkintosuoritus_id")
-    /** Database column komo_oid SqlType(text) */
-    val komoOid: Rep[String] = column[String]("komo_oid")
-    /** Database column status SqlType(text) */
-    val status: Rep[String] = column[String]("status")
-    /** Database column arviointi_id SqlType(int4), Default(None) */
-    val arviointiId: Rep[Option[Int]] = column[Option[Int]]("arviointi_id", O.Default(None))
-
-    /** Foreign key referencing Arviointi (database name tutkinnonosasuoritus_arviointi_id_fkey) */
-    lazy val arviointiFk = foreignKey("tutkinnonosasuoritus_arviointi_id_fkey", arviointiId, Arviointi)(r => Rep.Some(r.id), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
-    /** Foreign key referencing Tutkintosuoritus (database name tutkinnonosasuoritus_tutkintosuoritus_id_fkey) */
-    lazy val tutkintosuoritusFk = foreignKey("tutkinnonosasuoritus_tutkintosuoritus_id_fkey", tutkintosuoritusId, Tutkintosuoritus)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
-  }
-  /** Collection-like TableQuery object for table Tutkinnonosasuoritus */
-  lazy val Tutkinnonosasuoritus = new TableQuery(tag => new Tutkinnonosasuoritus(tag))
-
-  /** Entity class storing rows of table Tutkintosuoritus
-   *  @param id Database column id SqlType(serial), AutoInc, PrimaryKey
+   *  @param parentId Database column parent_id SqlType(int4), Default(None)
    *  @param organisaatioOid Database column organisaatio_oid SqlType(text)
    *  @param personOid Database column person_oid SqlType(text)
    *  @param komoOid Database column komo_oid SqlType(text)
+   *  @param komoTyyppi Database column komo_tyyppi SqlType(text)
    *  @param status Database column status SqlType(text)
    *  @param arviointiId Database column arviointi_id SqlType(int4), Default(None) */
-  case class TutkintosuoritusRow(id: Int, organisaatioOid: String, personOid: String, komoOid: String, status: String, arviointiId: Option[Int] = None)
-  /** GetResult implicit for fetching TutkintosuoritusRow objects using plain SQL queries */
-  implicit def GetResultTutkintosuoritusRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[Int]]): GR[TutkintosuoritusRow] = GR{
+  case class SuoritusRow(id: Int, parentId: Option[Int] = None, organisaatioOid: String, personOid: String, komoOid: String, komoTyyppi: String, status: String, arviointiId: Option[Int] = None)
+  /** GetResult implicit for fetching SuoritusRow objects using plain SQL queries */
+  implicit def GetResultSuoritusRow(implicit e0: GR[Int], e1: GR[Option[Int]], e2: GR[String]): GR[SuoritusRow] = GR{
     prs => import prs._
-    TutkintosuoritusRow.tupled((<<[Int], <<[String], <<[String], <<[String], <<[String], <<?[Int]))
+    SuoritusRow.tupled((<<[Int], <<?[Int], <<[String], <<[String], <<[String], <<[String], <<[String], <<?[Int]))
   }
-  /** Table description of table tutkintosuoritus. Objects of this class serve as prototypes for rows in queries. */
-  class Tutkintosuoritus(_tableTag: Tag) extends Table[TutkintosuoritusRow](_tableTag, Some("tor"), "tutkintosuoritus") {
-    def * = (id, organisaatioOid, personOid, komoOid, status, arviointiId) <> (TutkintosuoritusRow.tupled, TutkintosuoritusRow.unapply)
+  /** Table description of table suoritus. Objects of this class serve as prototypes for rows in queries. */
+  class Suoritus(_tableTag: Tag) extends Table[SuoritusRow](_tableTag, Some("tor"), "suoritus") {
+    def * = (id, parentId, organisaatioOid, personOid, komoOid, komoTyyppi, status, arviointiId) <> (SuoritusRow.tupled, SuoritusRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(id), Rep.Some(organisaatioOid), Rep.Some(personOid), Rep.Some(komoOid), Rep.Some(status), arviointiId).shaped.<>({r=>import r._; _1.map(_=> TutkintosuoritusRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(id), parentId, Rep.Some(organisaatioOid), Rep.Some(personOid), Rep.Some(komoOid), Rep.Some(komoTyyppi), Rep.Some(status), arviointiId).shaped.<>({r=>import r._; _1.map(_=> SuoritusRow.tupled((_1.get, _2, _3.get, _4.get, _5.get, _6.get, _7.get, _8)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column id SqlType(serial), AutoInc, PrimaryKey */
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
+    /** Database column parent_id SqlType(int4), Default(None) */
+    val parentId: Rep[Option[Int]] = column[Option[Int]]("parent_id", O.Default(None))
     /** Database column organisaatio_oid SqlType(text) */
     val organisaatioOid: Rep[String] = column[String]("organisaatio_oid")
     /** Database column person_oid SqlType(text) */
     val personOid: Rep[String] = column[String]("person_oid")
     /** Database column komo_oid SqlType(text) */
     val komoOid: Rep[String] = column[String]("komo_oid")
+    /** Database column komo_tyyppi SqlType(text) */
+    val komoTyyppi: Rep[String] = column[String]("komo_tyyppi")
     /** Database column status SqlType(text) */
     val status: Rep[String] = column[String]("status")
     /** Database column arviointi_id SqlType(int4), Default(None) */
     val arviointiId: Rep[Option[Int]] = column[Option[Int]]("arviointi_id", O.Default(None))
 
-    /** Foreign key referencing Arviointi (database name tutkintosuoritus_arviointi_id_fkey) */
-    lazy val arviointiFk = foreignKey("tutkintosuoritus_arviointi_id_fkey", arviointiId, Arviointi)(r => Rep.Some(r.id), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing Arviointi (database name suoritus_arviointi_id_fkey) */
+    lazy val arviointiFk = foreignKey("suoritus_arviointi_id_fkey", arviointiId, Arviointi)(r => Rep.Some(r.id), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    /** Foreign key referencing Suoritus (database name suoritus_parent_id_fkey) */
+    lazy val suoritusFk = foreignKey("suoritus_parent_id_fkey", parentId, Suoritus)(r => Rep.Some(r.id), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
   }
-  /** Collection-like TableQuery object for table Tutkintosuoritus */
-  lazy val Tutkintosuoritus = new TableQuery(tag => new Tutkintosuoritus(tag))
+  /** Collection-like TableQuery object for table Suoritus */
+  lazy val Suoritus = new TableQuery(tag => new Suoritus(tag))
 }

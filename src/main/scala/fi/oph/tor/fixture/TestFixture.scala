@@ -4,6 +4,6 @@ import fi.oph.tor.TodennetunOsaamisenRekisteri
 
 object TestFixture {
   def apply(rekisteri: TodennetunOsaamisenRekisteri): Unit = {
-    rekisteri.insertTutkintosuoritus(TutkintoSuoritusTestData.tutkintosuoritus1)
+    rekisteri.insertSuoritus(SuoritusTestData.tutkintosuoritus1)
   }
 }

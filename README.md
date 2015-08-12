@@ -85,4 +85,4 @@ Aja JettyLauncher-luokka.
 ### Avaa selaimessa
 
 Avaa selaimessa http://localhost:7021/tor/
-Tutkintosuoritus-testidatat näkyy http://localhost:7021/tor/tutkintosuoritus/
+Suoritus-testidatat näkyy http://localhost:7021/tor/suoritus/
