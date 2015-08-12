@@ -29,6 +29,11 @@ class SuoritusServletSpec extends FreeSpec with ScalatraSuite with TorTest {
       verifySuoritukset("/?organizationOid=org1", List(tutkintosuoritus1))
       verifySuoritukset("/?organizationOid=wrongOrg", List())
     }
+    "GET /?asdf=qwer -> bad request" in {
+      get("/?asdf=qwer") {
+        status should equal(400)
+      }
+    }
   }
 
   private def verifySuoritukset(path: String, expectedSuoritukset: List[Suoritus]) = {
