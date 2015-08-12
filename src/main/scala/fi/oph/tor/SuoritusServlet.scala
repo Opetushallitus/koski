@@ -2,24 +2,29 @@ package fi.oph.tor
 
 import fi.oph.tor.db.{Futures, GlobalExecutionContext}
 import fi.oph.tor.json.Json
-import fi.oph.tor.model.Suoritus
+import fi.oph.tor.model.Identified.Id
+import fi.oph.tor.model.{Identified, Suoritus}
 import fi.vm.sade.utils.slf4j.Logging
 import org.scalatra.ScalatraServlet
+import scala.collection.immutable.Iterable
 
 class SuoritusServlet(rekisteri: TodennetunOsaamisenRekisteri) extends ScalatraServlet with GlobalExecutionContext with Futures with Logging {
   get("/") {
     params.get("personOid")
     contentType = "application/json;charset=utf-8"
-    val filter: SuoritusFilter = params.toList.foldLeft(KaikkiSuoritukset.asInstanceOf[SuoritusFilter]) {
-      case (filter, ("personOid", personOid)) => filter.and(HenkilönSuoritukset(personOid))
-      case (filter, ("organizationOid", personOid)) => filter.and(OrganisaationSuoritukset(personOid))
-      case (filter, (key, _)) => throw new InvalidRequestException("Unexpected parameter: " + key)
+    val filters: Iterable[SuoritusFilter] = params.flatMap {
+      case ("personOid", personOid) => List(HenkilönSuoritukset(personOid))
+      case ("organizationOid", personOid) => List(OrganisaationSuoritukset(personOid))
+      case ("komoOid", personOid) => List(KoulutusModuulinSuoritukset(personOid))
+      case (key, _) => throw new InvalidRequestException("Unexpected parameter: " + key)
     }
-    Json.write(await(rekisteri.getSuoritukset(filter)).toList)
+    Json.write(await(rekisteri.getSuoritukset(filters)).toList)
   }
   post("/") {
     val suoritus = Json.read[Suoritus](request.body)
-    rekisteri.insertSuoritus(suoritus)
+    val id: Id = await(rekisteri.insertSuoritus(suoritus))
+    contentType = "application/json;charset=utf-8"
+    Json.write(IdResponse(id))
   }
 
   error {
@@ -30,5 +35,5 @@ class SuoritusServlet(rekisteri: TodennetunOsaamisenRekisteri) extends ScalatraS
       halt(status = 500, "Internal server error")
   }
 }
-
+case class IdResponse(id: Identified.Id)
 case class InvalidRequestException(msg: String) extends Exception(msg)

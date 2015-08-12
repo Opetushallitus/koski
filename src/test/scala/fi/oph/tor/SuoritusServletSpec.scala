@@ -1,6 +1,6 @@
 package fi.oph.tor
 
-import fi.oph.tor.fixture.SuoritusTestData.tutkintosuoritus1
+import fi.oph.tor.fixture.SuoritusTestData.{tutkintosuoritus1, vainKomo112}
 import fi.oph.tor.json.Json
 import fi.oph.tor.model.Identified.withoutId
 import fi.oph.tor.model.Suoritus
@@ -28,6 +28,9 @@ class SuoritusServletSpec extends FreeSpec with ScalatraSuite with TorTest {
     "GET /?organizationOid=x -> organisaation suoritukset" in {
       verifySuoritukset("/?organizationOid=org1", List(tutkintosuoritus1))
       verifySuoritukset("/?organizationOid=wrongOrg", List())
+    }
+    "GET /?komoOid=x -> koulutusmoduulin suoritukset parentteineen" in {
+      verifySuoritukset("/?komoOid=kurssi-1.1.2", List(vainKomo112))
     }
     "GET /?asdf=qwer -> bad request" in {
       get("/?asdf=qwer") {

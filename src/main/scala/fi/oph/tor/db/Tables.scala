@@ -1,7 +1,4 @@
 package fi.oph.tor.db
-
-import slick.lifted
-
 // AUTO-GENERATED Slick data model
 /** Stand-alone Slick data model for immediate use */
 object Tables extends {
@@ -117,18 +114,19 @@ trait Tables {
    *  @param komoOid Database column komo_oid SqlType(text)
    *  @param komoTyyppi Database column komo_tyyppi SqlType(text)
    *  @param status Database column status SqlType(text)
-   *  @param arviointiId Database column arviointi_id SqlType(int4), Default(None) */
-  case class SuoritusRow(id: Int, parentId: Option[Int] = None, organisaatioOid: String, personOid: String, komoOid: String, komoTyyppi: String, status: String, arviointiId: Option[Int] = None)
+   *  @param arviointiId Database column arviointi_id SqlType(int4), Default(None)
+   *  @param suorituspaiva Database column suorituspaiva SqlType(timestamptz), Default(None) */
+  case class SuoritusRow(id: Int, parentId: Option[Int] = None, organisaatioOid: String, personOid: String, komoOid: String, komoTyyppi: String, status: String, arviointiId: Option[Int] = None, suorituspaiva: Option[java.sql.Timestamp] = None)
   /** GetResult implicit for fetching SuoritusRow objects using plain SQL queries */
-  implicit def GetResultSuoritusRow(implicit e0: GR[Int], e1: GR[Option[Int]], e2: GR[String]): GR[SuoritusRow] = GR{
+  implicit def GetResultSuoritusRow(implicit e0: GR[Int], e1: GR[Option[Int]], e2: GR[String], e3: GR[Option[java.sql.Timestamp]]): GR[SuoritusRow] = GR{
     prs => import prs._
-    SuoritusRow.tupled((<<[Int], <<?[Int], <<[String], <<[String], <<[String], <<[String], <<[String], <<?[Int]))
+    SuoritusRow.tupled((<<[Int], <<?[Int], <<[String], <<[String], <<[String], <<[String], <<[String], <<?[Int], <<?[java.sql.Timestamp]))
   }
   /** Table description of table suoritus. Objects of this class serve as prototypes for rows in queries. */
   class Suoritus(_tableTag: Tag) extends Table[SuoritusRow](_tableTag, Some("tor"), "suoritus") {
-    def * = (id, parentId, organisaatioOid, personOid, komoOid, komoTyyppi, status, arviointiId) <> (SuoritusRow.tupled, SuoritusRow.unapply)
+    def * = (id, parentId, organisaatioOid, personOid, komoOid, komoTyyppi, status, arviointiId, suorituspaiva) <> (SuoritusRow.tupled, SuoritusRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(id), parentId, Rep.Some(organisaatioOid), Rep.Some(personOid), Rep.Some(komoOid), Rep.Some(komoTyyppi), Rep.Some(status), arviointiId).shaped.<>({r=>import r._; _1.map(_=> SuoritusRow.tupled((_1.get, _2, _3.get, _4.get, _5.get, _6.get, _7.get, _8)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(id), parentId, Rep.Some(organisaatioOid), Rep.Some(personOid), Rep.Some(komoOid), Rep.Some(komoTyyppi), Rep.Some(status), arviointiId, suorituspaiva).shaped.<>({r=>import r._; _1.map(_=> SuoritusRow.tupled((_1.get, _2, _3.get, _4.get, _5.get, _6.get, _7.get, _8, _9)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column id SqlType(serial), AutoInc, PrimaryKey */
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
@@ -146,6 +144,8 @@ trait Tables {
     val status: Rep[String] = column[String]("status")
     /** Database column arviointi_id SqlType(int4), Default(None) */
     val arviointiId: Rep[Option[Int]] = column[Option[Int]]("arviointi_id", O.Default(None))
+    /** Database column suorituspaiva SqlType(timestamptz), Default(None) */
+    val suorituspaiva: Rep[Option[java.sql.Timestamp]] = column[Option[java.sql.Timestamp]]("suorituspaiva", O.Default(None))
 
     /** Foreign key referencing Arviointi (database name suoritus_arviointi_id_fkey) */
     lazy val arviointiFk = foreignKey("suoritus_arviointi_id_fkey", arviointiId, Arviointi)(r => Rep.Some(r.id), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
@@ -153,5 +153,5 @@ trait Tables {
     lazy val suoritusFk = foreignKey("suoritus_parent_id_fkey", parentId, Suoritus)(r => Rep.Some(r.id), onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
   }
   /** Collection-like TableQuery object for table Suoritus */
-  lazy val Suoritus: lifted.TableQuery[Suoritus] = new TableQuery(tag => new Suoritus(tag))
+  lazy val Suoritus = new TableQuery(tag => new Suoritus(tag))
 }

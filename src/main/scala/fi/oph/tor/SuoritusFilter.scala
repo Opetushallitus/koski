@@ -1,28 +1,29 @@
 package fi.oph.tor
 
-import fi.oph.tor.db.Tables
-import slick.driver.PostgresDriver.api._
+import slick.jdbc.{PositionedParameters, SetParameter}
+import SetParameter._
 
 trait SuoritusFilter {
-  type SuoritusQuery = Query[Tables.Suoritus, Tables.SuoritusRow, Seq]
-
-  def apply(query: SuoritusQuery): SuoritusQuery
-
-  def and(filter: SuoritusFilter) = AndFilter(this, filter)
-}
-
-object KaikkiSuoritukset extends SuoritusFilter {
-  def apply(query: SuoritusQuery) = query
+  def key: String
+  def apply(positionedParams: PositionedParameters)
+  /**
+   *  Whether or not we should include parents of matching rows
+   */
+  def recursive: Boolean = false
 }
 
 case class HenkilönSuoritukset(personOid: String) extends SuoritusFilter {
-  def apply(query: SuoritusQuery) = query.filter(_.personOid === personOid)
+  def key = "person_oid"
+  def apply(p: PositionedParameters) = SetParameter[String].apply(personOid, p)
 }
 
 case class OrganisaationSuoritukset(organisaatioOid: String) extends SuoritusFilter {
-  def apply(query: SuoritusQuery) = query.filter(_.organisaatioOid === organisaatioOid)
+  def key = "organisaatio_oid"
+  def apply(p: PositionedParameters) = SetParameter[String].apply(organisaatioOid, p)
 }
 
-case class AndFilter(left: SuoritusFilter, right: SuoritusFilter) extends SuoritusFilter {
-  def apply(query: SuoritusQuery) = right(left(query))
+case class KoulutusModuulinSuoritukset(komoOid: String) extends SuoritusFilter {
+  def key = "komo_oid"
+  def apply(p: PositionedParameters) = SetParameter[String].apply(komoOid, p)
+  override def recursive = true
 }
