@@ -32,18 +32,6 @@ class TodennetunOsaamisenRekisteri(db: DB)(implicit val executor: ExecutionConte
     arviointiOption.map { row => Arviointi(Some(row.id), row.asteikko, row.numero.toInt, row.kuvaus) }
   }
 
-  private def runQuery[T, E, U, C[_]](query: Query[E, U, C])(block: C[U] => T): Future[T] = {
-    val f = db.run(query.result).map{ result =>
-      block(result)
-    }
-    f.onFailure {
-      case e: Exception =>
-        logger.error("Error running query " + query.result.statements.head, e)
-        throw e;
-    }
-    f
-  }
-
   def insertSuoritus(t: Suoritus, parentId: Option[Identified.Id] = None): Future[Identified.Id] = {
       for {
         arviointiId <- insertArviointi(t.arviointi);
@@ -61,5 +49,17 @@ class TodennetunOsaamisenRekisteri(db: DB)(implicit val executor: ExecutionConte
 
   private def insertAndReturnUpdated[T, TableType <: Table[T]](tableQuery: TableQuery[TableType], row: T): Future[T] = {
     db.run((tableQuery returning tableQuery) += row)
+  }
+
+  private def runQuery[ResultType, TableType, RowType, Seq[U]](query: Query[TableType, RowType, Seq])(block: Seq[RowType] => ResultType): Future[ResultType] = {
+    val f = db.run(query.result).map{ result =>
+      block(result)
+    }
+    f.onFailure {
+      case e: Exception =>
+        logger.error("Error running query " + query.result.statements.head, e)
+        throw e;
+    }
+    f
   }
 }
