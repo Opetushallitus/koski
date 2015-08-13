@@ -1,5 +1,6 @@
 package fi.oph.tor
 
+import java.sql.Timestamp
 import java.util.Date
 import slick.jdbc.{PositionedParameters, SetParameter}
 import SetParameter._
@@ -36,6 +37,6 @@ case class KoulutusModuulinSuoritukset(komoOid: String) extends StringEqualsFilt
 
 case class PäivämääränJälkeisetSuoritukset(päivämäärä: Date) extends SuoritusFilter {
   def whereClauseFraction = "suorituspaiva>?"
-  def apply(p: PositionedParameters) = SetParameter[java.sql.Date].apply(new java.sql.Date(päivämäärä.getTime), p)
+  def apply(p: PositionedParameters) = SetParameter[java.sql.Timestamp].apply(new Timestamp(päivämäärä.getTime), p)
   override def recursive = true
 }

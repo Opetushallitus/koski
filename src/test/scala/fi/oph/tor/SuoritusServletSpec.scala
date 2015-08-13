@@ -33,7 +33,12 @@ class SuoritusServletSpec extends FreeSpec with ScalatraSuite with TorTest {
       verifySuoritukset("/?komoOid=kurssi-1.1.2", List(vainKomo112))
     }
     "GET /?completedAfter=x -> suoritukset annetun päivämäärän jälkeen" in {
-      verifySuoritukset("/?completedAfter=1.6.2014", List(vainKomo111))
+      verifySuoritukset("/?completedAfter=2014-06-20", List(vainKomo111)) // Samana päivänä kirjatut suoritukset otetaan mukaan
+      verifySuoritukset("/?completedAfter=2014-06-20T07:00Z", List(vainKomo111))
+      verifySuoritukset("/?completedAfter=2014-06-20T10:00Z", List())
+      verifySuoritukset("/?completedAfter=2014-06-20T10:00%2B03:00", List(vainKomo111))
+      verifySuoritukset("/?completedAfter=2014-06-20T13:00%2B03:00", List())
+      verifySuoritukset("/?completedAfter=2014-06-21", List())
       get("/?completedAfter=qwer") {
         status should equal(400)
       }

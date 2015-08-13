@@ -1,6 +1,6 @@
 package fi.oph.tor
 
-import fi.oph.tor.date.FinnishDateParser
+import fi.oph.tor.date.ISO8601DateParser
 import fi.oph.tor.db.{Futures, GlobalExecutionContext}
 import fi.oph.tor.json.Json
 import fi.oph.tor.model.Identified.Id
@@ -17,7 +17,7 @@ class SuoritusServlet(rekisteri: TodennetunOsaamisenRekisteri) extends ScalatraS
       case ("personOid", personOid) => List(HenkilönSuoritukset(personOid))
       case ("organizationOid", personOid) => List(OrganisaationSuoritukset(personOid))
       case ("komoOid", personOid) => List(KoulutusModuulinSuoritukset(personOid))
-      case ("completedAfter", dateString) => List(PäivämääränJälkeisetSuoritukset(FinnishDateParser.parseDate(dateString)))
+      case ("completedAfter", dateString) => List(PäivämääränJälkeisetSuoritukset(ISO8601DateParser.parseDateTime(dateString)))
       case (key, _) => throw new InvalidRequestException("Unexpected parameter: " + key)
     }
     Json.write(await(rekisteri.getSuoritukset(filters)).toList)
