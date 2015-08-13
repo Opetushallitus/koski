@@ -15,8 +15,9 @@ class SuoritusServlet(rekisteri: TodennetunOsaamisenRekisteri) extends ScalatraS
     contentType = "application/json;charset=utf-8"
     val filters: Iterable[SuoritusFilter] = params.flatMap {
       case ("personOid", personOid) => List(HenkilönSuoritukset(personOid))
-      case ("organizationOid", personOid) => List(OrganisaationSuoritukset(personOid))
+      case ("organisaatioId", personOid) => List(OrganisaationSuoritukset(personOid))
       case ("komoOid", personOid) => List(KoulutusModuulinSuoritukset(personOid))
+      case ("status", status) => List(SuorituksetStatuksella(status))
       case ("completedAfter", dateString) => List(PäivämääränJälkeisetSuoritukset(ISO8601DateParser.parseDateTime(dateString)))
       case (key, _) => throw new InvalidRequestException("Unexpected parameter: " + key)
     }

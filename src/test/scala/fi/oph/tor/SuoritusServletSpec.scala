@@ -26,8 +26,8 @@ class SuoritusServletSpec extends FreeSpec with ScalatraSuite with TorTest {
       verifySuoritukset("/?personOid=wrongPerson", List())
     }
     "GET /?organizationOid=x -> organisaation suoritukset" in {
-      verifySuoritukset("/?organizationOid=org1", List(tutkintosuoritus1))
-      verifySuoritukset("/?organizationOid=wrongOrg", List())
+      verifySuoritukset("/?organisaatioId=org1", List(tutkintosuoritus1))
+      verifySuoritukset("/?organisaatioId=wrongOrg", List())
     }
     "GET /?komoOid=x -> koulutusmoduulin suoritukset parentteineen" in {
       verifySuoritukset("/?komoOid=kurssi-1.1.2", List(vainKomo112))

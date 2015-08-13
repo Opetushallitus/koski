@@ -14,24 +14,20 @@ trait SuoritusFilter {
   def recursive: Boolean = false
 }
 
-trait StringEqualsFilter extends SuoritusFilter {
-  def key: String
+abstract class StringEqualsFilter(key: String, value: String) extends SuoritusFilter {
   def whereClauseFraction = key + "=?"
+  def apply(p: PositionedParameters) = SetParameter[String].apply(value, p)
 }
 
-case class HenkilönSuoritukset(personOid: String) extends StringEqualsFilter {
-  def key = "person_oid"
-  def apply(p: PositionedParameters) = SetParameter[String].apply(personOid, p)
+case class HenkilönSuoritukset(personOid: String) extends StringEqualsFilter("person_oid", personOid)
+
+case class OrganisaationSuoritukset(organisaatioOid: String) extends StringEqualsFilter("organisaatio_oid", organisaatioOid)
+
+case class SuorituksetStatuksella(status: String) extends StringEqualsFilter("status", status) {
+  override def recursive = true
 }
 
-case class OrganisaationSuoritukset(organisaatioOid: String) extends StringEqualsFilter {
-  def key = "organisaatio_oid"
-  def apply(p: PositionedParameters) = SetParameter[String].apply(organisaatioOid, p)
-}
-
-case class KoulutusModuulinSuoritukset(komoOid: String) extends StringEqualsFilter {
-  def key = "komo_oid"
-  def apply(p: PositionedParameters) = SetParameter[String].apply(komoOid, p)
+case class KoulutusModuulinSuoritukset(komoOid: String) extends StringEqualsFilter("komo_oid", komoOid) {
   override def recursive = true
 }
 
