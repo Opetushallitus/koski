@@ -13,15 +13,16 @@ class SuoritusServlet(rekisteri: TodennetunOsaamisenRekisteri) extends ScalatraS
   get("/") {
     params.get("personOid")
     contentType = "application/json;charset=utf-8"
-    val filters: Iterable[SuoritusFilter] = params.flatMap {
-      case ("personOid", personOid) => List(HenkilönSuoritukset(personOid))
-      case ("organisaatioId", personOid) => List(OrganisaationSuoritukset(personOid))
-      case ("komoOid", personOid) => List(KoulutusModuulinSuoritukset(personOid))
-      case ("status", status) => List(SuorituksetStatuksella(status))
-      case ("completedAfter", dateString) => List(PäivämääränJälkeisetSuoritukset(ISO8601DateParser.parseDateTime(dateString)))
+    val query: SuoritusQuery = params.foldLeft(SuoritusQuery()) {
+      case (query, ("personOid", personOid)) => query.withFilter(HenkilönSuoritukset(personOid))
+      case (query, ("organisaatioId", personOid)) => query.withFilter(OrganisaationSuoritukset(personOid))
+      case (query, ("komoOid", personOid)) => query.withFilter(KoulutusModuulinSuoritukset(personOid))
+      case (query, ("status", status)) => query.withFilter(SuorituksetStatuksella(status))
+      case (query, ("completedAfter", dateString)) => query.withFilter(PäivämääränJälkeisetSuoritukset(ISO8601DateParser.parseDateTime(dateString)))
+      case (query, ("includeChildren", includeChildren)) => query.copy(includeChildren = includeChildren.toBoolean)
       case (key, _) => throw new InvalidRequestException("Unexpected parameter: " + key)
     }
-    Json.write(await(rekisteri.getSuoritukset(filters)).toList)
+    Json.write(await(rekisteri.getSuoritukset(query)).toList)
   }
   post("/") {
     val suoritus = Json.read[Suoritus](request.body)

@@ -17,8 +17,8 @@ import scala.concurrent.{ExecutionContext, Future}
 class TodennetunOsaamisenRekisteri(db: DB)(implicit val executor: ExecutionContext) extends Futures with Logging {
   private type RowTuple = (Tables.SuoritusRow, Option[Tables.ArviointiRow])
 
-  def getSuoritukset(filters: Iterable[SuoritusFilter] = List()): Future[Seq[Suoritus]] = {
-    runQuery(buildSuoritusQueryAction(filters)) { rows =>
+  def getSuoritukset(query: SuoritusQuery): Future[Seq[Suoritus]] = {
+    runQuery(buildSuoritusQueryAction(query)) { rows =>
       rowsToSuoritukset(rows.map {
         case (suoritusRow, arviointiRow) =>
           // actually arviointiRow should be Option[ArviointiRow] but that's not supported by slick, so we have to do this iffing here
@@ -30,15 +30,15 @@ class TodennetunOsaamisenRekisteri(db: DB)(implicit val executor: ExecutionConte
     }
   }
 
-  private def buildSuoritusQueryAction(filters: Iterable[SuoritusFilter]) = {
+  private def buildSuoritusQueryAction(query: SuoritusQuery) = {
     // SQL query is used because Slick query API doesn't support recursive query
-    val sql = buildSuoritusQuerySql(filters)
-    val setParams = buildSuoritusQueryParameterSetter(filters)
+    val sql = buildSuoritusQuerySql(query)
+    val setParams = buildSuoritusQueryParameterSetter(query.filters)
     SQLActionBuilder(List(sql), setParams)
       .as[(Tables.SuoritusRow, Tables.ArviointiRow)]
   }
 
-  private def buildSuoritusQueryParameterSetter(filters: Iterable[SuoritusFilter]): SetParameter[Unit] = {
+  private def buildSuoritusQueryParameterSetter(filters: Iterable[SuoritusQueryFilter]): SetParameter[Unit] = {
     new SetParameter[Unit] {
       override def apply(u : Unit, positionedParams: PositionedParameters) = {
         filters.foreach(_.apply(positionedParams))
@@ -46,25 +46,38 @@ class TodennetunOsaamisenRekisteri(db: DB)(implicit val executor: ExecutionConte
     }
   }
 
-  private def buildSuoritusQuerySql(filters: Iterable[SuoritusFilter]): String = {
-    def buildWhereClause(keys: Iterable[SuoritusFilter], first: Boolean = true): String = keys.toList match {
+  private def buildSuoritusQuerySql(query: SuoritusQuery): String = {
+    def buildWhereClause(keys: Iterable[SuoritusQueryFilter], first: Boolean = true): String = keys.toList match {
       case head::tail =>
         val prefix = if (first) " where " else " and "
         prefix + head.whereClauseFraction + buildWhereClause(tail, false)
       case _ => ""
     }
-    val whereClause = buildWhereClause(filters)
-    if (filters.exists(_.recursive)) {
-      // At least one filter requires including parent rows of matches -> find those recursively using Common Table Expressions
-      """WITH RECURSIVE rekursiivinen AS (
-      select * from suoritus""" + whereClause +
-        """
-      union all
-        select suoritus.* from suoritus, rekursiivinen
-          where suoritus.id = rekursiivinen.parent_id
+    val whereClause = buildWhereClause(query.filters)
+    val searchParentsRecursively: Boolean = query.filters.exists(_.searchParentsRecursively)
+    val searchChildrenRecursively = query.includeChildren
+
+    if (searchParentsRecursively || searchChildrenRecursively) {
+      // At least one filter requires including parent+children of matches -> find those recursively using Common Table Expressions
+      val childrenQuery = if (searchChildrenRecursively) Some("""select * from children_included""") else None
+      val parentsQuery = if (searchParentsRecursively) Some("""select * from parents_included""") else None
+      val unionQuery =  List(childrenQuery, parentsQuery).flatten.mkString(" union all ")
+      """
+      WITH RECURSIVE matching AS (
+        select * from suoritus""" + whereClause + """
+      ), parents_included AS (
+        select * from matching
+        union all
+          select suoritus.* from suoritus, parents_included
+            where suoritus.id = parents_included.parent_id
+      ), children_included AS (
+        select * from matching
+        union all
+          select suoritus.* from suoritus, children_included
+            where suoritus.parent_id = children_included.id
       )
-      select distinct * from rekursiivinen
-        left join arviointi on (rekursiivinen.arviointi_id = arviointi.id)
+      select distinct * from (""" + unionQuery + """) as suoritus
+        left join arviointi on (suoritus.arviointi_id = arviointi.id)
         """
     } else {
       """select * from suoritus left join arviointi on (suoritus.arviointi_id = arviointi.id)""" +

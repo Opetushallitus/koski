@@ -1,6 +1,6 @@
 package fi.oph.tor
 
-import fi.oph.tor.fixture.SuoritusTestData.{tutkintosuoritus1, vainKomo112, vainKomo111}
+import fi.oph.tor.fixture.SuoritusTestData._
 import fi.oph.tor.json.Json
 import fi.oph.tor.model.Identified.withoutId
 import fi.oph.tor.model.Suoritus
@@ -31,6 +31,8 @@ class SuoritusServletSpec extends FreeSpec with ScalatraSuite with TorTest {
     }
     "GET /?komoOid=x -> koulutusmoduulin suoritukset parentteineen" in {
       verifySuoritukset("/?komoOid=kurssi-1.1.2", List(vainKomo112))
+      verifySuoritukset("/?komoOid=tutkinnonosa-1.2", List(vainKomo12))
+      verifySuoritukset("/?komoOid=tutkinnonosa-1.2&includeChildren=true", List(vainKomo122))
     }
     "GET /?completedAfter=x -> suoritukset annetun päivämäärän jälkeen" in {
       verifySuoritukset("/?completedAfter=2014-06-20", List(vainKomo111)) // Samana päivänä kirjatut suoritukset otetaan mukaan

@@ -35,5 +35,21 @@ object SuoritusTestData {
       ))
     ))
 
+  val vainKomo12: Suoritus = Suoritus(None, kouluOrganisaatio, personOid, "tutkinto-1", "tutkinto", "kesken", None,
+    Some(Arviointi(None, "1-10", 7, Some("Ihan perus ok"))),
+    List(
+      Suoritus(None, kouluOrganisaatio, personOid, "tutkinnonosa-1.2", "tutkinnon_osa", "kesken", None, None, List(
+      ))
+    ))
+
+  val vainKomo122: Suoritus = Suoritus(None, kouluOrganisaatio, personOid, "tutkinto-1", "tutkinto", "kesken", None,
+    Some(Arviointi(None, "1-10", 7, Some("Ihan perus ok"))),
+    List(
+      Suoritus(None, kouluOrganisaatio, personOid, "tutkinnonosa-1.2", "tutkinnon_osa", "kesken", None, None, List(
+        Suoritus(None, kouluOrganisaatio, personOid, "kurssi-1.2.2", "kurssi", "kesken", None, None, List.empty)
+      ))
+    ))
+
+
   def d(s: String) = Some(ISO8601DateParser.parseDateTime(s))
 }
