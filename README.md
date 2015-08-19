@@ -1,5 +1,21 @@
 # Todennetun Osaamisen Rekisteri (TOR)
 
+Todennetun osaamisen rekisteri (TOR) tulee toimimaan kattavana opetustoimialan tietovarantona, joka tarjoaa
+tutkintoon johtavat suoritustiedot eri koulutusasteilta.
+
+## Käsitteet
+
+| käsite         | selite                                       | tunniste         | tallennuspaikka        |
+-------------------------------------------------------------------------------------------------------------
+| Oppija         | Opiskelija, oppilas.                         | henkilöOID       | Henkilöpalvelu         |
+| Organisaatio   | Oppilaitos, kunta, eri rooleissa             | organisaatioOid  | Organisaatiopalvelu    |
+| Koulutusmoduuli|                                              |                  | ePerusteet             |
+| Komoto         | Koulutusmoduulin toteutus (komo+aika+paikka) |                  | TOR                    |
+| Suoritus       | Oppijan suoritus, kohdistuu Komotoon         | suoritusID       | TOR                    |
+| Koodisto       | Kooditus objekteille, esim tutkintonimikkeet |                  | Koodistopalvelu        |
+| Koodi          | Yksittäisen objektin koodi koodistossa       |                  | Koodistopalvelu        |
+| Koodistoviite  | Viittaus koodistoon ja koodiin Suorituksesta |                  | TOR                    |
+
 ## Teknologiat
 
 - PostgreSQL
