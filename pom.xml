@@ -169,7 +169,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
-        <version>1.2.1</version>
+        <version>1.4.0</version>
         <executions>
           <execution>
             <goals>
@@ -178,7 +178,6 @@
           </execution>
         </executions>
         <configuration>
-          <mainClass>fi.oph.tor.jettylauncher.JettyLauncher</mainClass>
           <classpathScope>test</classpathScope>
         </configuration>
       </plugin>

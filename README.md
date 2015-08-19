@@ -67,11 +67,19 @@ Sitten vaikka
 
 Migraatiot ovat hakemistossa `src/main/resources/db/migration`. Migraation ajo paikalliseen kantaan tällä:
  
-    mvn compile flyway:migrate 
+    mvn clean compile flyway:migrate 
+
+Jos haluat tehdä migraatiot puhtaaseen kantaan, aja
+
+    mvn clean compile flyway:clean flyway:migrate 
 
 Uusia migraatioita tehdessä tulee myös ajaa koodigeneraattori,
 joka generoi tauluja vastaavat luokat `src/main/scala/fi/oph/tor/db/Tables.scala` -tiedostoon. Koodigeneraattorin `fi.oph.tor.db.CodeGeneator`
-voit ajaa IDE:ssä. Koodigeneraattori ottaa yhteyden paikalliseen kantaan, jonka rakenteesta se generoi koodin. Koodigeneraattorin luomia
+voit ajaa IDE:ssä tai komentoriviltä
+ 
+    mvn compile exec:java -Dexec.mainClass="fi.oph.tor.db.CodeGenerator"
+
+Koodigeneraattori ottaa yhteyden paikalliseen kantaan, jonka rakenteesta se generoi koodin. Koodigeneraattorin luomia
 luokkia käytetään vain tietokantaoperaatioihin, eikä siis käytetä järjestelmän sisäisenä tietomallina, saati sitten paljateta ulospäin.
 Koodigenerointi on käytössä siksi, että kannan skeema ja sovelluskoodi varmasti pysyvät synkassa. Jos esim. tauluun lisätään uusi pakollinen
 kenttä, seuraa siitä käännösvirhe, kunnes softa käsittelee tämän kentän.
@@ -96,7 +104,7 @@ Aja JettyLauncher-luokka.
 
 ### Käynnistä komentoriviltä
 
-`mvn exec:java`
+    mvn compile exec:java -Dexec.mainClass="fi.oph.tor.jettylauncher.JettyLauncher"
 
 ### Avaa selaimessa
 
