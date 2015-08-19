@@ -56,6 +56,7 @@ class TodennetunOsaamisenRekisteri(db: DB)(implicit val executor: ExecutionConte
     val whereClause = buildWhereClause(query.filters)
     val searchParentsRecursively: Boolean = query.filters.exists(_.searchParentsRecursively)
     val searchChildrenRecursively = query.includeChildren
+    def joinQuery = """ select * from suoritusquery left join arviointi on (suoritusquery.arviointi_id = arviointi.id)"""
 
     if (searchParentsRecursively || searchChildrenRecursively) {
       // At least one filter requires including parent+children of matches -> find those recursively using Common Table Expressions
@@ -75,13 +76,10 @@ class TodennetunOsaamisenRekisteri(db: DB)(implicit val executor: ExecutionConte
         union all
           select suoritus.* from suoritus, children_included
             where suoritus.parent_id = children_included.id
-      )
-      select distinct * from (""" + unionQuery + """) as suoritus
-        left join arviointi on (suoritus.arviointi_id = arviointi.id)
-        """
+      ), suoritusquery AS ( select distinct * from (""" + unionQuery + """) as unionquery)""" + joinQuery
     } else {
-      """select * from suoritus left join arviointi on (suoritus.arviointi_id = arviointi.id)""" +
-        whereClause
+      // No recursive search needed, rows from suoritus table are fetched directly
+      "WITH suoritusquery AS (select * from suoritus) " + joinQuery + whereClause
     }
   }
 
