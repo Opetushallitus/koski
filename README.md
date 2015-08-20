@@ -5,16 +5,20 @@ tutkintoon johtavat suoritustiedot eri koulutusasteilta.
 
 ## Käsitteet
 
+Keskeiset entiteetiut, ja järjestelmät, joihin nämä tallennetaan.
+
 | käsite         | selite                                       | tunniste         | tallennuspaikka        |
 |----------------|----------------------------------------------|------------------|------------------------|
-| Oppija         | Opiskelija, oppilas.                         | henkilöOID       | Henkilöpalvelu         |
+| Oppija         | Opiskelija, oppilas.                         | henkilöOid       | Henkilöpalvelu         |
 | Organisaatio   | Oppilaitos, kunta, eri rooleissa             | organisaatioOid  | Organisaatiopalvelu    |
-| Koulutusmoduuli|                                              |                  | ePerusteet             |
-| Komoto         | Koulutusmoduulin toteutus (komo+aika+paikka) |                  | TOR                    |
-| Suoritus       | Oppijan suoritus, kohdistuu Komotoon         | suoritusID       | TOR                    |
-| Koodisto       | Kooditus objekteille, esim tutkintonimikkeet |                  | Koodistopalvelu        |
-| Koodi          | Yksittäisen objektin koodi koodistossa       |                  | Koodistopalvelu        |
-| Koodistoviite  | Viittaus koodistoon ja koodiin Suorituksesta |                  | TOR                    |
+| Komo           | Koulutusmoduuli                              | ?                | ePerusteet             |
+| Komoto         | Koulutusmoduulin toteutus (komo+aika+paikka) | id (numeerinen)  | TOR                    |
+| Suoritus       | Oppijan suoritus (komoto, oppija, organisaatio, aika...) | id (numeerinen)  | TOR                    |
+| Koodisto       | Kooditus objekteille, esim tutkintonimikkeet | id (tekstiä)     | Koodistopalvelu        |
+| Koodi          | Yksittäisen objektin koodi koodistossa       | id (tekstiä)     | Koodistopalvelu        |
+| Koodistoviite  | Viittaus koodistoon ja koodiin Suorituksesta | id               | TOR                    |
+
+TOR-palvelun tietokantaskeema löytyy täältä: https://github.com/Opetushallitus/tor/blob/master/src/main/resources/db/migration/V1__init.sql
 
 ## Teknologiat
 
