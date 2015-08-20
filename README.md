@@ -35,7 +35,7 @@ Minimissään tarvitset
 - Postgres (osx: `brew install postgres`)
 - Tekstieditori (kehitystiimi käyttää IntelliJ IDEA 14)
 
-## Lokaali tietokanta
+## Paikallinen Postgres-tietokanta
 
 Kehityskäyttöön tarvitaan paikallinen Postgres-tietokanta. Alla sen pystytykseen ja käynnistykseen tarvittavat ohjeet.
 
