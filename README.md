@@ -1,7 +1,11 @@
 # Todennetun Osaamisen Rekisteri (TOR)
 
 Todennetun osaamisen rekisteri (TOR) tulee toimimaan kattavana opetustoimialan tietovarantona, joka tarjoaa
-tutkintoon johtavat suoritustiedot eri koulutusasteilta.
+tutkintoon johtavat suoritustiedot eri koulutusasteilta. Yleinen TOR-dokumentaatio kootaan CSC:n wikiin: https://confluence.csc.fi/display/OPHPALV/Todennetun+osaamisen+rekisteri
+
+Tässä git-repositoriossa on TOR-järjestelmän ohjelmakoodi, tietokannan rakennuslausekkeet ja tekninen dokumentaatio ohjelmistokehitystä varten.
+
+TOR rakennetaan avoimen lähdekoodin periaatteilla ja järjestelmästä on mahdollista käynnistää kehitysinstanssi omalla työasemalla alustariippumattomasti (ainakin Linux, OSX tuettu).
 
 ## Käsitteet
 
