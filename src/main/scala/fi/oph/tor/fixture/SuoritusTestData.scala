@@ -1,8 +1,7 @@
 package fi.oph.tor.fixture
 
-import java.text.SimpleDateFormat
 import fi.oph.tor.date.ISO8601DateParser
-import fi.oph.tor.model.{Komoto, Arviointi, Suoritus}
+import fi.oph.tor.model.{Arviointi, Komoto, Suoritus}
 
 object SuoritusTestData {
   private val kouluOrganisaatio: String = "org1"
