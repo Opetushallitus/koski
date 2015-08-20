@@ -6,7 +6,7 @@ tutkintoon johtavat suoritustiedot eri koulutusasteilta.
 ## Käsitteet
 
 | käsite         | selite                                       | tunniste         | tallennuspaikka        |
--------------------------------------------------------------------------------------------------------------
+|----------------|----------------------------------------------|------------------|------------------------|
 | Oppija         | Opiskelija, oppilas.                         | henkilöOID       | Henkilöpalvelu         |
 | Organisaatio   | Oppilaitos, kunta, eri rooleissa             | organisaatioOid  | Organisaatiopalvelu    |
 | Koulutusmoduuli|                                              |                  | ePerusteet             |
