@@ -68,13 +68,14 @@ Skeema luodaan flywayllä migraatioskripteillä, jotka ovat hakemistossa `src/ma
     
 ### SQL-yhteys paikalliseen kantaan
 
-Komentorivillä voit käyttää `psql`:
+Jos ja kun haluat tarkastella paikallisen kehityskannan tilaa SQL-työkalulla, se onnistuu esimerkiksi Postgren omalla komentorivityökalulla `psql`:
 
     psql -v schema=tor --dbname=tor tor
     
 Peruskomennot
 
     \dt    listaa taulut
+    \q     poistuu psql:stä
     
 Sitten vaikka
 
@@ -115,15 +116,13 @@ Aja kaikki testit
 
 `mvn package`
 
-### Käynnistä IDEAsta/Eclipsestä
+### TOR-sovelluksen ajaminen kehitystyöasemalla
 
-Aja JettyLauncher-luokka.
+Varmista, että Postgre on alustettu ja käynnistetty yllä olevien ohjeiden mukaisesti.
 
-### Käynnistä komentoriviltä
+Aja JettyLauncher-luokka IDEAsta/Eclipsestä, tai käynnistä TOR vaihtoehtoisesti komentoriviltä
 
     mvn compile exec:java -Dexec.mainClass="fi.oph.tor.jettylauncher.JettyLauncher"
-
-### Avaa selaimessa
 
 Avaa selaimessa http://localhost:7021/tor/
 Suoritus-testidatat näkyy http://localhost:7021/tor/suoritus/
