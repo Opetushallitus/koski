@@ -15,17 +15,17 @@ import slick.profile.SqlStreamingAction
 import scala.concurrent.{ExecutionContext, Future}
 
 class TodennetunOsaamisenRekisteri(db: DB)(implicit val executor: ExecutionContext) extends Futures with Logging {
-  private type RowTuple = (Tables.SuoritusRow, Option[Tables.ArviointiRow])
+  private type RowTuple = (Tables.SuoritusRow, Tables.KomotoRow, Option[Tables.ArviointiRow])
 
   def getSuoritukset(query: SuoritusQuery): Future[Seq[Suoritus]] = {
     runQuery(buildSuoritusQueryAction(query)) { rows =>
       rowsToSuoritukset(rows.map {
-        case (suoritusRow, arviointiRow) =>
+        case (suoritusRow, komotoRow, arviointiRow) =>
           // actually arviointiRow should be Option[ArviointiRow] but that's not supported by slick, so we have to do this iffing here
           if (arviointiRow.id > 0)
-            (suoritusRow, Some(arviointiRow))
+            (suoritusRow, komotoRow, Some(arviointiRow))
           else
-            (suoritusRow, None)
+            (suoritusRow, komotoRow, None)
       })
     }
   }
@@ -35,7 +35,7 @@ class TodennetunOsaamisenRekisteri(db: DB)(implicit val executor: ExecutionConte
     val sql = buildSuoritusQuerySql(query)
     val setParams = buildSuoritusQueryParameterSetter(query.filters)
     SQLActionBuilder(List(sql), setParams)
-      .as[(Tables.SuoritusRow, Tables.ArviointiRow)]
+      .as[(Tables.SuoritusRow, Tables.KomotoRow, Tables.ArviointiRow)]
   }
 
   private def buildSuoritusQueryParameterSetter(filters: Iterable[SuoritusQueryFilter]): SetParameter[Unit] = {
@@ -56,7 +56,7 @@ class TodennetunOsaamisenRekisteri(db: DB)(implicit val executor: ExecutionConte
     val whereClause = buildWhereClause(query.filters)
     val searchParentsRecursively: Boolean = query.filters.exists(_.searchParentsRecursively)
     val searchChildrenRecursively = query.includeChildren
-    def joinQuery = """ select * from suoritusquery left join arviointi on (suoritusquery.arviointi_id = arviointi.id)"""
+    def joinQuery = """ select * from suoritusquery join komoto on(suoritusquery.komoto_id = komoto.id) left join arviointi on (suoritusquery.id = arviointi.suoritus_id)"""
 
     if (searchParentsRecursively || searchChildrenRecursively) {
       // At least one filter requires including parent+children of matches -> find those recursively using Common Table Expressions
@@ -84,16 +84,18 @@ class TodennetunOsaamisenRekisteri(db: DB)(implicit val executor: ExecutionConte
   }
 
   private def rowsToSuoritukset(rows: Seq[RowTuple]): List[Suoritus] = {
-    rowsToSuoritukset(rows.sortBy(_._1.komoOid), parentId = None) // <- None means root (no parent)
+    rowsToSuoritukset(rows.sortBy(_._2.komoId), parentId = None) // <- None means root (no parent)
   }
 
   /** Transforms row structure into hierarchical structure of Suoritus objects */
   private def rowsToSuoritukset(rows: Seq[RowTuple], parentId: Option[Identified.Id]): List[Suoritus] = {
     for {
-      (suoritusRow, arviointiRow) <- rows.toList if suoritusRow.parentId == parentId
+      (suoritusRow, komotoRow, arviointiRow) <- rows.toList if suoritusRow.parentId == parentId
     } yield {
       val osasuoritukset = rowsToSuoritukset(rows, Some(suoritusRow.id))
-      Suoritus(Some(suoritusRow.id), suoritusRow.organisaatioOid, suoritusRow.personOid, suoritusRow.komoOid, suoritusRow.komoTyyppi, suoritusRow.status, suoritusRow.suorituspaiva, mapArviointi(arviointiRow), osasuoritukset)
+      val arviointi: Option[Arviointi] = mapArviointi(arviointiRow)
+      val komoto = Komoto(Some(komotoRow.id), komotoRow.nimi, komotoRow.kuvaus, komotoRow.komoId, komotoRow.komoTyyppi, komotoRow.koodistoId, komotoRow.koodistoKoodi, komotoRow.eperuste)
+      Suoritus(Some(suoritusRow.id), suoritusRow.suorituspaiva, suoritusRow.jarjestajaOrganisaatioId, suoritusRow.myontajaOrganisaatioId, suoritusRow.oppijaId, suoritusRow.status, suoritusRow.kuvaus, komoto, arviointi, osasuoritukset)
     }
   }
 
@@ -103,8 +105,9 @@ class TodennetunOsaamisenRekisteri(db: DB)(implicit val executor: ExecutionConte
 
   def insertSuoritus(t: Suoritus, parentId: Option[Identified.Id] = None): Future[Identified.Id] = {
       for {
-        arviointiId <- insertArviointi(t.arviointi);
-        suoritusId <- insertAndReturnUpdated(Tables.Suoritus, Tables.SuoritusRow(0, parentId, t.organisaatioId, t.personOid, t.komoOid, t.komoTyyppi, t.status, arviointiId, t.suoritusPäivä.map(toTimestamp))).map(_.id);
+        komotoId <- insertKomoto(t.komoto).map(_.id);
+        suoritusId <- insertAndReturnUpdated(Tables.Suoritus, Tables.SuoritusRow(0, parentId, t.suoritusPäivä.map(toTimestamp), t.järjestäjäOrganisaatioId, t.myöntäjäOrganisaatioId, t.oppijaId, t.status, Some(komotoId), t.kuvaus)).map(_.id);
+        arviointiId <- insertArviointi(suoritusId, t.arviointi);
         osasuoritusIds <- Future.sequence(t.osasuoritukset.map { insertSuoritus(_, Some(suoritusId))})
       } yield {
         suoritusId
@@ -113,10 +116,15 @@ class TodennetunOsaamisenRekisteri(db: DB)(implicit val executor: ExecutionConte
 
   private def toTimestamp(d: Date) = new Timestamp(d.getTime)
 
-  private def insertArviointi(arviointiOption: Option[Arviointi]): Future[Option[Identified.Id]] = arviointiOption match {
-    case Some(arviointi) => insertAndReturnUpdated(Tables.Arviointi, Tables.ArviointiRow(0, arviointi.asteikko, arviointi.numero, arviointi.kuvaus)).map{ row => Some(row.id) }
+  private def insertArviointi(suoritusId: Identified.Id, arviointiOption: Option[Arviointi]): Future[Option[Identified.Id]] = arviointiOption match {
+    case Some(arviointi) => insertAndReturnUpdated(Tables.Arviointi, Tables.ArviointiRow(0, arviointi.asteikko, arviointi.numero, arviointi.kuvaus, Some(suoritusId))).map{ row => Some(row.id) }
     case None => Future(None)
   }
+
+  def insertKomoto(komoto: Komoto): Future[Tables.KomotoRow] = {
+    insertAndReturnUpdated(Tables.Komoto, Tables.KomotoRow(0, komoto.nimi, komoto.kuvaus, komoto.komoId, komoto.komoTyyppi, komoto.koodistoId, komoto.koodistoKoodi, komoto.ePeruste))
+  }
+
 
   private def insertAndReturnUpdated[T, TableType <: Table[T]](tableQuery: TableQuery[TableType], row: T): Future[T] = {
     db.run((tableQuery returning tableQuery) += row)

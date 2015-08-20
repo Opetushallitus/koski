@@ -1,1 +1,0 @@
-alter table suoritus add suorituspaiva timestamp with time zone;

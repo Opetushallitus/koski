@@ -21,18 +21,13 @@ class SuoritusServletSpec extends FreeSpec with ScalatraSuite with TorTest {
     "GET / -> kaikki suoritukset" in {
       verifySuoritukset("/", List(tutkintosuoritus1))
     }
-    "GET /?personOid=x -> henkilön suoritukset" in {
-      verifySuoritukset("/?personOid=person1", List(tutkintosuoritus1))
-      verifySuoritukset("/?personOid=wrongPerson", List())
+    "GET /?oppijaId=x -> henkilön suoritukset" in {
+      verifySuoritukset("/?oppijaId=person1", List(tutkintosuoritus1))
+      verifySuoritukset("/?oppijaId=wrongPerson", List())
     }
-    "GET /?organizationOid=x -> organisaation suoritukset" in {
-      verifySuoritukset("/?organisaatioId=org1", List(tutkintosuoritus1))
-      verifySuoritukset("/?organisaatioId=wrongOrg", List())
-    }
-    "GET /?komoOid=x -> koulutusmoduulin suoritukset parentteineen" in {
-      verifySuoritukset("/?komoOid=kurssi-1.1.2", List(vainKomo112))
-      verifySuoritukset("/?komoOid=tutkinnonosa-1.2", List(vainKomo12))
-      verifySuoritukset("/?komoOid=tutkinnonosa-1.2&includeChildren=true", List(vainKomo122))
+    "GET /?jarjestajaOrganisaatioId=x -> organisaation suoritukset" in {
+      verifySuoritukset("/?jarjestajaOrganisaatioId=org1", List(tutkintosuoritus1))
+      verifySuoritukset("/?jarjestajaOrganisaatioId=wrongOrg", List())
     }
     "GET /?completedAfter=x -> suoritukset annetun päivämäärän jälkeen" in {
       verifySuoritukset("/?completedAfter=2014-06-20", List(vainKomo111)) // Samana päivänä kirjatut suoritukset otetaan mukaan

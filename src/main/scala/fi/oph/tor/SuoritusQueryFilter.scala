@@ -23,15 +23,13 @@ abstract class StringEqualsFilter(key: String, value: String) extends SuoritusQu
   def apply(p: PositionedParameters) = SetParameter[String].apply(value, p)
 }
 
-case class HenkilönSuoritukset(personOid: String) extends StringEqualsFilter("person_oid", personOid)
+case class HenkilönSuoritukset(personOid: String) extends StringEqualsFilter("oppija_id", personOid)
 
-case class OrganisaationSuoritukset(organisaatioOid: String) extends StringEqualsFilter("organisaatio_oid", organisaatioOid)
+case class OrganisaationMyöntämätSuoritukset(organisaatioOid: String) extends StringEqualsFilter("myontaja_organisaatio_id", organisaatioOid)
+
+case class OrganisaationJärjestämätSuoritukset(organisaatioOid: String) extends StringEqualsFilter("jarjestaja_organisaatio_id", organisaatioOid)
 
 case class SuorituksetStatuksella(status: String) extends StringEqualsFilter("status", status) {
-  override def searchParentsRecursively = true
-}
-
-case class KoulutusModuulinSuoritukset(komoOid: String) extends StringEqualsFilter("komo_oid", komoOid) {
   override def searchParentsRecursively = true
 }
 

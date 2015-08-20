@@ -14,9 +14,9 @@ class SuoritusServlet(rekisteri: TodennetunOsaamisenRekisteri) extends ScalatraS
     params.get("personOid")
     contentType = "application/json;charset=utf-8"
     val query: SuoritusQuery = params.foldLeft(SuoritusQuery()) {
-      case (query, ("personOid", personOid)) => query.withFilter(HenkilönSuoritukset(personOid))
-      case (query, ("organisaatioId", personOid)) => query.withFilter(OrganisaationSuoritukset(personOid))
-      case (query, ("komoOid", personOid)) => query.withFilter(KoulutusModuulinSuoritukset(personOid))
+      case (query, ("oppijaId", personOid)) => query.withFilter(HenkilönSuoritukset(personOid))
+      case (query, ("myontajaOrganisaatioId", personOid)) => query.withFilter(OrganisaationMyöntämätSuoritukset(personOid))
+      case (query, ("jarjestajaOrganisaatioId", personOid)) => query.withFilter(OrganisaationJärjestämätSuoritukset(personOid))
       case (query, ("status", status)) => query.withFilter(SuorituksetStatuksella(status))
       case (query, ("completedAfter", dateString)) => query.withFilter(PäivämääränJälkeisetSuoritukset(ISO8601DateParser.parseDateTime(dateString)))
       case (query, ("includeChildren", includeChildren)) => query.copy(includeChildren = includeChildren.toBoolean)
