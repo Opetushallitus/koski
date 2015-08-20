@@ -18,11 +18,12 @@ tutkintoon johtavat suoritustiedot eri koulutusasteilta.
 
 ## Teknologiat
 
-- PostgreSQL
-- Scala 2.11.4
-- Scalatra
-- Slick (http://slick.typesafe.com/doc/3.0.1/index.html) ja slick-codegen
-- Maven
+- PostgreSQL-tietokanta
+- Scala 2.11.4 ohjelmointikieli ja kääntäjä
+- Scalatra web framework
+- Slick (http://slick.typesafe.com/doc/3.0.1/index.html) relaatiokantakirjaso ja slick-codegen koodigeneraattori
+- Flyway migraatiotyökalu kannan skeeman rakentamiseen ja päivittämiseen kehityksessä ja tuotannossa
+- Maven build-työkalu kehityskäyttöön ja asennettavan paketin rakentamiseen
 - Mvn-depsujen lataus Jitpackilla, jolloin voidaan viitata suoraan Github-repoihin, eikä tarvitse itse buildata jar-artifaktoja
 
 ## Kehitystyökalut
