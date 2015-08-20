@@ -27,33 +27,13 @@ object SuoritusTestData {
       ))
     ))
 
-  val vainKomo112: Suoritus = Suoritus(None, None, kouluOrganisaatio, myöntäjäOrganisaatio, oppijaId, "kesken", None, tutkinto, Some(Arviointi(None, "1-10", 7, Some("Ihan perus ok"))),
-    List(
-      Suoritus(None, d("2014-06-20T09:00:00Z"), kouluOrganisaatio, myöntäjäOrganisaatio, oppijaId, "suoritettu", None, tutkinnonOsa1, Some(Arviointi(None, "1-10", 9, Some("Well done"))), List(
-        Suoritus(None, d("2014-03-01T10:00:00Z"), kouluOrganisaatio, myöntäjäOrganisaatio, oppijaId, "suoritettu", None, kurssi1_2, Some(Arviointi(None, "1-10", 8, None)), List.empty)
-      ))
-    ))
+  val vainKomo112: Suoritus = includeListedKomotos(tutkintosuoritus1, List(tutkinnonOsa1, kurssi1_2))
+  val vainKomo111: Suoritus = includeListedKomotos(tutkintosuoritus1, List(tutkinnonOsa1, kurssi1_1))
+  val vainKomo12: Suoritus = includeListedKomotos(tutkintosuoritus1, List(tutkinnonOsa2))
+  val vainKomo122: Suoritus = includeListedKomotos(tutkintosuoritus1, List(tutkinnonOsa2, kurssi2_2))
 
-  val vainKomo111: Suoritus = Suoritus(None, None, kouluOrganisaatio, myöntäjäOrganisaatio, oppijaId, "kesken", None, tutkinto, Some(Arviointi(None, "1-10", 7, Some("Ihan perus ok"))),
-    List(
-      Suoritus(None, d("2014-06-20T09:00:00Z"), kouluOrganisaatio, myöntäjäOrganisaatio, oppijaId, "suoritettu", None, tutkinnonOsa1, Some(Arviointi(None, "1-10", 9, Some("Well done"))), List(
-        Suoritus(None, d("2014-06-20T08:00:00Z"), kouluOrganisaatio, myöntäjäOrganisaatio, oppijaId, "suoritettu", None, kurssi1_1, Some(Arviointi(None, "1-10", 9, None)), List.empty)
-      ))
-    ))
-
-  val vainKomo12: Suoritus = Suoritus(None, None, kouluOrganisaatio, myöntäjäOrganisaatio, oppijaId, "kesken", None, tutkinto, Some(Arviointi(None, "1-10", 7, Some("Ihan perus ok"))),
-    List(
-      Suoritus(None, None, kouluOrganisaatio, myöntäjäOrganisaatio, oppijaId, "kesken", None, tutkinnonOsa2, None, List(
-      ))
-    ))
-
-  val vainKomo122: Suoritus = Suoritus(None, None, kouluOrganisaatio, myöntäjäOrganisaatio, oppijaId, "kesken", None, tutkinto, Some(Arviointi(None, "1-10", 7, Some("Ihan perus ok"))),
-    List(
-      Suoritus(None, None, kouluOrganisaatio, myöntäjäOrganisaatio, oppijaId, "kesken", None, tutkinnonOsa2, None, List(
-        Suoritus(None, None, kouluOrganisaatio, myöntäjäOrganisaatio, oppijaId, "kesken", None, kurssi2_2, None, List.empty)
-      ))
-    ))
-
-
-  def d(s: String) = Some(ISO8601DateParser.parseDateTime(s))
+  private def includeListedKomotos(s: Suoritus, komos: List[Komoto]): Suoritus = {
+    s.copy(osasuoritukset = s.osasuoritukset.filter(s => komos.contains(s.komoto)).map(s => includeListedKomotos(s, komos)))
+  }
+  private def d(s: String) = Some(ISO8601DateParser.parseDateTime(s))
 }
