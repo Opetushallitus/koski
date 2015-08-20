@@ -22,19 +22,35 @@ tutkintoon johtavat suoritustiedot eri koulutusasteilta.
 - Scala 2.11.4
 - Scalatra
 - Slick (http://slick.typesafe.com/doc/3.0.1/index.html) ja slick-codegen
+- Maven
 - Mvn-depsujen lataus Jitpackilla, jolloin voidaan viitata suoraan Github-repoihin, eikä tarvitse itse buildata jar-artifaktoja
+
+## Kehitystyökalut
+
+Minimissään tarvitset
+
+- Git
+- Maven 3.x
+- Postgres (osx: `brew install postgres`)
+- Tekstieditori (kehitystiimi käyttää IntelliJ IDEA 14)
 
 ## Lokaali tietokanta
 
+Kehityskäyttöön tarvitaan paikallinen Postgres-tietokanta. Alla sen pystytykseen ja käynnistykseen tarvittavat ohjeet.
+
 ### Kannan alustus
 
-Asenna ensin postgres ja flyway. Sitten
+Asenna ensin postgres, ja kloonaa tämä repositorio. Sitten tor-hakemistossa seuraavasti:
 
     initdb -d postgres
     
 ### Postgren käynnistys
 
+Käynnistä toria varten postgres-palvelin:
+
     postgres -D postgres
+
+Palvelin jää pyörimään konsoliin ja voit sammuttaa sen painamalla ctrl-c.
     
 ### Kannan ja käyttäjän luonti
 
