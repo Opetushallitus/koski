@@ -130,7 +130,12 @@ Varmista, että Postgre on alustettu ja käynnistetty yllä olevien ohjeiden muk
 
 Aja JettyLauncher-luokka IDEAsta/Eclipsestä, tai käynnistä TOR vaihtoehtoisesti komentoriviltä
 
-    mvn compile exec:java -Dexec.mainClass="fi.oph.tor.jettylauncher.JettyLauncher"
+    mvn test-compile exec:java -Dexec.mainClass="fi.oph.tor.jettylauncher.JettyLauncher"
 
-Avaa selaimessa http://localhost:7021/tor/
-Suoritus-testidatat näkyy http://localhost:7021/tor/suoritus/
+Avaa selaimessa 
+
+    http://localhost:7021/tor/
+
+Suoritus-testidatat näkyy 
+
+    http://localhost:7021/tor/suoritus/
