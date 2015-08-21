@@ -39,7 +39,7 @@ TOR-palvelun tietokantaskeema löytyy täältä: https://github.com/Opetushallit
 Minimissään tarvitset
 
 - Git
-- Maven 3.x
+- Maven 3 (osx: `brew install maven`)
 - Postgres (osx: `brew install postgres`)
 - Tekstieditori (kehitystiimi käyttää IntelliJ IDEA 14)
 
@@ -65,7 +65,7 @@ Palvelin jää pyörimään konsoliin ja voit sammuttaa sen painamalla ctrl-c.
 
 Kun postgre on käynnissä, pitää vielä luoda sinne tietokanta ja käyttäjä.
 
-    createdb -E UTF-8 tor
+    createdb -T template0 -E UTF-8 tor
     createuser -s tor -P  (salasanaksi tor)
     
 ### Skeeman luonti/migraatio
