@@ -17,7 +17,7 @@ Keskeiset entiteetiut, ja järjestelmät, joihin nämä tallennetaan.
 | Organisaatio   | Oppilaitos, kunta, eri rooleissa             | organisaatioOid  | Organisaatiopalvelu    |
 | Komo           | Koulutusmoduuli                              | ?                | ePerusteet             |
 | Komoto         | Kaikkiin opintosuorituksiin liittyvä         |                  |                        | 
-|                  koulutusmoduulin toteutus (komo+aika+paikka) | id (numeerinen)  | TOR                    |
+|                | koulutusmoduulin toteutus (komo+aika+paikka) | id (numeerinen)  | TOR                    |
 | Suoritus       | Oppijan suoritus (komoto, oppija, organisaatio, aika...) | id (numeerinen)  | TOR        |
 | Koodisto       | Kooditus objekteille, esim tutkintonimikkeet | id (tekstiä)     | Koodistopalvelu        |
 | Koodi          | Yksittäisen objektin koodi koodistossa       | id (tekstiä)     | Koodistopalvelu        |
