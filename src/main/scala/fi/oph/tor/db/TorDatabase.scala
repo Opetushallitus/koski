@@ -6,7 +6,7 @@ import slick.driver.PostgresDriver.api._
 object TorDatabase {
   type DB = PostgresDriver.backend.DatabaseDef
   
-  def forConfig(config: DatabaseConfig): DB = Database.forURL(config.url, config.user, config.password)
+  def forConfig(config: DatabaseConfig)(implicit executor: AsyncExecutor): DB = Database.forURL(config.url, config.user, config.password, executor = executor)
 }
 
 

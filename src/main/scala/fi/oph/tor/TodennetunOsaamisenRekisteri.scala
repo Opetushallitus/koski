@@ -7,10 +7,12 @@ import fi.oph.tor.db.TorDatabase.DB
 import fi.oph.tor.db.{Futures, Tables}
 import fi.oph.tor.model._
 import fi.vm.sade.utils.slf4j.Logging
-import slick.dbio.Effect.Read
+import slick.dbio
+import slick.dbio.Effect.{All, Write, Read}
+import slick.driver.PostgresDriver
 import slick.driver.PostgresDriver.api._
 import slick.jdbc.{PositionedParameters, SQLActionBuilder, SetParameter}
-import slick.profile.SqlStreamingAction
+import slick.profile.{FixedSqlAction, SqlStreamingAction}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -28,6 +30,21 @@ class TodennetunOsaamisenRekisteri(db: DB)(implicit val executor: ExecutionConte
             (suoritusRow, komotoRow, None)
       })
     }
+  }
+
+  def insertSuoritus(t: Suoritus, parentId: Option[Identified.Id] = None): Future[Identified.Id] = {
+    db.run(insertSuoritusAction(t, parentId))
+  }
+
+  def insertSuoritusAction(t: Suoritus, parentId: Option[Identified.Id] = None): dbio.DBIOAction[Identified.Id, NoStream, All] = {
+    (for {
+      komotoId <- insertKomoto(t.komoto).map(_.id);
+      suoritusId <- insertAndReturnUpdated(Tables.Suoritus, Tables.SuoritusRow(0, parentId, t.suoritusPäivä.map(toTimestamp), t.järjestäjäOrganisaatioId, t.myöntäjäOrganisaatioId, t.oppijaId, t.status, Some(komotoId), t.kuvaus)).map(_.id);
+      arviointiId <- insertArviointi(suoritusId, t.arviointi);
+      osasuoritusIds <- DBIO.sequence(t.osasuoritukset.map { insertSuoritusAction(_, Some(suoritusId))})
+    } yield {
+      suoritusId
+    }).transactionally
   }
 
   private def buildSuoritusQueryAction(query: SuoritusQuery) = {
@@ -103,34 +120,23 @@ class TodennetunOsaamisenRekisteri(db: DB)(implicit val executor: ExecutionConte
     arviointiOption.map { row => Arviointi(Some(row.id), row.asteikko, row.numero.toInt, row.kuvaus) }
   }
 
-  def insertSuoritus(t: Suoritus, parentId: Option[Identified.Id] = None): Future[Identified.Id] = {
-      for {
-        komotoId <- insertKomoto(t.komoto).map(_.id);
-        suoritusId <- insertAndReturnUpdated(Tables.Suoritus, Tables.SuoritusRow(0, parentId, t.suoritusPäivä.map(toTimestamp), t.järjestäjäOrganisaatioId, t.myöntäjäOrganisaatioId, t.oppijaId, t.status, Some(komotoId), t.kuvaus)).map(_.id);
-        arviointiId <- insertArviointi(suoritusId, t.arviointi);
-        osasuoritusIds <- Future.sequence(t.osasuoritukset.map { insertSuoritus(_, Some(suoritusId))})
-      } yield {
-        suoritusId
-      }
-  }
-
   private def toTimestamp(d: Date) = new Timestamp(d.getTime)
 
-  private def insertArviointi(suoritusId: Identified.Id, arviointiOption: Option[Arviointi]): Future[Option[Identified.Id]] = arviointiOption match {
+  private def insertArviointi(suoritusId: Identified.Id, arviointiOption: Option[Arviointi]): dbio.DBIOAction[Option[Int], NoStream, Write] = arviointiOption match {
     case Some(arviointi) => insertAndReturnUpdated(Tables.Arviointi, Tables.ArviointiRow(0, arviointi.asteikko, arviointi.numero, arviointi.kuvaus, Some(suoritusId))).map{ row => Some(row.id) }
-    case None => Future(None)
+    case None => DBIO.successful(None)
   }
 
-  def insertKomoto(komoto: Komoto): Future[Tables.KomotoRow] = {
+  private def insertKomoto(komoto: Komoto): dbio.DBIOAction[Tables.KomotoRow, NoStream, Write] = {
     insertAndReturnUpdated(Tables.Komoto, Tables.KomotoRow(0, komoto.nimi, komoto.kuvaus, komoto.komoId, komoto.komoTyyppi, komoto.koodistoId, komoto.koodistoKoodi, komoto.ePeruste))
   }
 
-
-  private def insertAndReturnUpdated[T, TableType <: Table[T]](tableQuery: TableQuery[TableType], row: T): Future[T] = {
-    db.run((tableQuery returning tableQuery) += row)
+  private def insertAndReturnUpdated[T, TableType <: Table[T]](tableQuery: TableQuery[TableType], row: T): FixedSqlAction[T, NoStream, Write] = {
+    val addAction: FixedSqlAction[T, NoStream, Write] = (tableQuery returning tableQuery) += row
+    addAction
   }
 
-  def runQuery[Seq[U], RowType, TableType, ResultType](queryAction: SqlStreamingAction[Seq[RowType], RowType, Read])(block: (Seq[RowType]) => ResultType): Future[ResultType] = {
+  private def runQuery[Seq[U], RowType, TableType, ResultType](queryAction: SqlStreamingAction[Seq[RowType], RowType, Read])(block: (Seq[RowType]) => ResultType): Future[ResultType] = {
     val f = db.run(queryAction).map { result =>
       block(result)
     }
