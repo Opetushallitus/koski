@@ -8,15 +8,15 @@ import fi.vm.sade.utils.slf4j.Logging
 import org.scalatra._
 
 class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionContext with Futures {
-  val database: DB = TorDatabase.forConfig(DatabaseConfig.localPostgresDatabase)
+  val database: DB = TorDatabase.forConfig(DatabaseConfig.localDatabase)
   val rekisteri = new TodennetunOsaamisenRekisteri(database)
 
   override def init(context: ServletContext) {
     context.mount(new HelloWorldServlet, "/")
     context.mount(new SuoritusServlet(rekisteri), "/suoritus")
 
-    await(database.run(DatabaseTestFixture.clear))
-    TestFixture.apply(rekisteri)
+    //await(database.run(DatabaseTestFixture.clear))
+    //TestFixture.apply(rekisteri)
   }
 
   override def destroy(context: ServletContext) = {

@@ -67,19 +67,26 @@ Palvelin jää pyörimään konsoliin ja voit sammuttaa sen painamalla ctrl-c.
 Kun postgre on käynnissä, pitää vielä luoda sinne tietokanta ja käyttäjä.
 
     createdb -T template0 -E UTF-8 tor
+    createdb -T template0 -E UTF-8 tortest
     createuser -s tor -P  (salasanaksi tor)
+    
+Tässä luotiin kaksi kantaa: `tor` jota käytetään kehityksessä ja `tortest` jota käytetään automaattisissa testeissä (kanta tyhjennetään testiajon alussa).
     
 ### Skeeman luonti/migraatio
 
 Skeema luodaan flywayllä migraatioskripteillä, jotka ovat hakemistossa `src/main/resources/db/migration`.
     
-    mvn compile flyway:migrate
+    mvn -Ptortest-database compile flyway:migrate
+    mvn -Ptor-database compile flyway:migrate
+    
+Tässä ajettiin migraatiot molemmille kannoille `tor` ja `tortest`.
     
 ### SQL-yhteys paikalliseen kantaan
 
 Jos ja kun haluat tarkastella paikallisen kehityskannan tilaa SQL-työkalulla, se onnistuu esimerkiksi Postgren omalla komentorivityökalulla `psql`:
 
-    psql -v schema=tor --dbname=tor tor
+    psql tor tor
+    psql tortest tor
     
 Peruskomennot
 
@@ -94,11 +101,11 @@ Sitten vaikka
 
 Migraatiot ovat hakemistossa `src/main/resources/db/migration`. Migraation ajo paikalliseen kantaan tällä:
  
-    mvn clean compile flyway:migrate 
+    mvn -Ptor-database clean compile flyway:migrate 
 
 Jos haluat tehdä migraatiot puhtaaseen kantaan, aja
 
-    mvn clean compile flyway:clean flyway:migrate 
+    mvn -Ptor-database clean compile flyway:clean flyway:migrate 
 
 Uusia migraatioita tehdessä tulee myös ajaa koodigeneraattori,
 joka generoi tauluja vastaavat luokat `src/main/scala/fi/oph/tor/db/Tables.scala` -tiedostoon. Koodigeneraattorin `fi.oph.tor.db.CodeGeneator`
