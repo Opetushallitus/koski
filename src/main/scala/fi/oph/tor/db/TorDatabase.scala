@@ -48,11 +48,6 @@ object TorDatabase extends Logging {
     val port = config.port
     s"createdb -p $port -T template0 -E UTF-8 $dbName" !;
   }
-  /*
-    createdb -T template0 -E UTF-8 tor
-    createdb -T template0 -E UTF-8 tortest
-    createuser -s tor -P  (salasanaksi tor)
-   */
 
   private def createUser(config: DatabaseConfig) = {
     val userName = config.user
