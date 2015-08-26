@@ -37,7 +37,7 @@ TOR-palvelun tietokantaskeema löytyy täältä: https://github.com/Opetushallit
 
 ## Kehitystyökalut
 
-Minimissään tarvitset
+Minimissään tarvitset nämä:
 
 - Git
 - Maven 3 (osx: `brew install maven`)
@@ -100,21 +100,15 @@ pysyvät synkassa. Jos esim. tauluun lisätään uusi pakollinen kenttä, seuraa
     
 ## Maven-buildi
 
-### Testit
-
-Huom! Testit vaativat yllä kuvatun PostgreSQL-setupin.
-
 Aja kaikki testit
 
 `mvn test`
 
-### War-paketointi
+Tee war-paketti
 
 `mvn package`
 
 ### TOR-sovelluksen ajaminen kehitystyöasemalla
-
-Varmista, että Postgre on alustettu ja käynnistetty yllä olevien ohjeiden mukaisesti.
 
 Aja JettyLauncher-luokka IDEAsta/Eclipsestä, tai käynnistä TOR vaihtoehtoisesti komentoriviltä
 

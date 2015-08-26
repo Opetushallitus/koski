@@ -188,48 +188,6 @@
       </plugin>
     </plugins>
   </build>
-  <profiles>
-    <profile>
-      <id>tor-database</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-maven-plugin</artifactId>
-            <version>3.2.1</version>
-            <configuration>
-              <user>tor</user>
-              <password>tor</password>
-              <url>jdbc:postgresql://localhost/tor</url>
-              <schemas>
-                <schema>tor</schema>
-              </schemas>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>tortest-database</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-maven-plugin</artifactId>
-            <version>3.2.1</version>
-            <configuration>
-              <user>tor</user>
-              <password>tor</password>
-              <url>jdbc:postgresql://localhost/tortest</url>
-              <schemas>
-                <schema>tor</schema>
-              </schemas>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
   <repositories>
     <repository>
       <id>jitpack.io</id>
