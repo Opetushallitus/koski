@@ -8,8 +8,8 @@ import fi.vm.sade.utils.slf4j.Logging
 import org.scalatra._
 
 class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionContext with Futures {
-  val database: DB = TorDatabase.init(DatabaseConfig.localDatabase)
-  val rekisteri = new TodennetunOsaamisenRekisteri(database)
+  val database: TorDatabase = TorDatabase.init(DatabaseConfig.localDatabase)
+  val rekisteri = new TodennetunOsaamisenRekisteri(database.db)
 
   override def init(context: ServletContext) {
     context.mount(new HelloWorldServlet, "/")

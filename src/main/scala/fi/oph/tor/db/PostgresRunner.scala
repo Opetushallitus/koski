@@ -28,14 +28,17 @@ class PostgresRunner(dataDirName: String, configFile: String, port: Integer) {
 
   def jdbcUrl: String = s"jdbc:postgresql://localhost:$port/$dataDirName"
 
-  def start = if (!serverProcess.isDefined) {
-    ensureDataDirExists
-    println("Starting server on port " + port)
-    serverProcess = Some(("postgres --config_file=" + configFile + " -D " + dataDirName + " -p " + port).run)
-    Thread.sleep(1000)
-    sys.addShutdownHook {
-      stop
+  def start = {
+    if (!serverProcess.isDefined) {
+      ensureDataDirExists
+      println("Starting server on port " + port)
+      serverProcess = Some(("postgres --config_file=" + configFile + " -D " + dataDirName + " -p " + port).run)
+      Thread.sleep(1000)
+      sys.addShutdownHook {
+        stop
+      }
     }
+    this
   }
 
   def stop() = {

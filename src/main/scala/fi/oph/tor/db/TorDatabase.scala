@@ -1,5 +1,6 @@
 package fi.oph.tor.db
 
+import fi.oph.tor.db.TorDatabase.DB
 import fi.vm.sade.utils.slf4j.Logging
 import fi.vm.sade.utils.tcp.PortChecker
 import org.flywaydb.core.Flyway
@@ -7,18 +8,23 @@ import slick.driver.PostgresDriver
 import slick.driver.PostgresDriver.api._
 import sys.process._
 
+case class TorDatabase(db: DB, serverProcess: Option[PostgresRunner]) {
+}
+
 object TorDatabase extends Logging {
   type DB = PostgresDriver.backend.DatabaseDef
 
 
-  def init(config: DatabaseConfig)(implicit executor: AsyncExecutor): DB = {
-    if (!isDbRunning(config)) {
-      startEmbedded(config)
+  def init(config: DatabaseConfig)(implicit executor: AsyncExecutor): TorDatabase = {
+    val serverProcess: Option[PostgresRunner] = if (!isDbRunning(config)) {
+      Some(startEmbedded(config))
+    } else {
+      None
     }
     createDatabase(config)
     createUser(config)
     migrateSchema(config)
-    Database.forURL(config.url, config.user, config.password, executor = executor)
+    TorDatabase(Database.forURL(config.url, config.user, config.password, executor = executor), serverProcess)
   }
 
   private def isDbRunning(config: DatabaseConfig) = {
@@ -33,7 +39,7 @@ object TorDatabase extends Logging {
     }
   }
 
-  private def startEmbedded(config: DatabaseConfig) = {
+  private def startEmbedded(config: DatabaseConfig): PostgresRunner = {
      new PostgresRunner("postgresql/data", "postgresql/postgresql.conf", config.port).start
   }
 
