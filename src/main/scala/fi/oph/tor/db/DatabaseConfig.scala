@@ -1,8 +1,11 @@
 package fi.oph.tor.db
 
-case class DatabaseConfig(url: String, user: String, password: String)
+case class DatabaseConfig(host: String, port: Int, databaseName: String, user: String, password: String) {
+  def url = "jdbc:postgresql://" + host + ":" + port + "/" + databaseName
+  def isRemote = host != "localhost"
+}
 
 object DatabaseConfig {
-  val localDatabase = DatabaseConfig("jdbc:postgresql://localhost/tor", "tor", "tor")
-  val localTestDatabase = DatabaseConfig("jdbc:postgresql://localhost/tortest", "tor", "tor")
+  val localDatabase = DatabaseConfig("localhost", 5432, "tor", "tor", "tor")
+  val localTestDatabase = DatabaseConfig("localhost", 5432, "tortest", "tor", "tor")
 }

@@ -11,3 +11,4 @@ target/
 .settings
 .cache
 postgres
+postgresql/data

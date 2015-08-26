@@ -44,42 +44,25 @@ Minimissään tarvitset
 - Postgres (osx: `brew install postgres`)
 - Tekstieditori (kehitystiimi käyttää IntelliJ IDEA 14)
 
-## Paikallinen Postgres-tietokanta
+## Paikallinen PostgreSQL-tietokanta
 
-Kehityskäyttöön tarvitaan paikallinen Postgres-tietokanta. Alla sen pystytykseen ja käynnistykseen tarvittavat ohjeet.
+Kehityskäyttöön tarvitaan paikallinen PostgreSQL-tietokanta. TOR-sovellus luo paikallisen kannan, skeeman ja käyttäjän
+automaattisesti ja käynnistää myös tarvittavan PostgreSQL-serveriprosessin.
 
-### Kannan alustus
+Paikallisen kannan konfiguraatio on tiedostossa `postgresql/postgresql.conf` ja tietokannan datahakemisto on `postgresql/data`.
 
-Asenna ensin postgres, ja kloonaa tämä repositorio. Sitten tor-hakemistossa seuraavasti:
+Jos haluat pitää Postgresin käynnissä erikseen, voit käynnistää sen komentoriviltä komennolla
 
-    initdb -d postgres
-    
-### Postgren käynnistys
+    postgres --config_file=postgresql/postgresql.conf -D postgresql/data
 
-Käynnistä toria varten postgres-palvelin:
+PostgreSQL jää pyörimään konsoliin ja voit sammuttaa sen painamalla ctrl-c.
 
-    postgres -D postgres
+Käynnistyessään Tor-sovellus huomaa, jos tietokanta on jo käynnissä, eikä siinä tapauksessa yritä käynnistää sitä.
 
-Palvelin jää pyörimään konsoliin ja voit sammuttaa sen painamalla ctrl-c.
-    
-### Kannan ja käyttäjän luonti
+Kehityksessä käytetään kahta kantaa: `tor` jota käytetään normaalisti ja `tortest` jota käytetään automaattisissa 
+testeissä (tämä kanta tyhjennetään aina testiajon alussa). Molemmat kannat sisältävät `tor` -skeeman, ja sijaitsevat
+fyysisesti samassa datahakemistossa.
 
-Kun postgre on käynnissä, pitää vielä luoda sinne tietokanta ja käyttäjä.
-
-    createdb -T template0 -E UTF-8 tor
-    createdb -T template0 -E UTF-8 tortest
-    createuser -s tor -P  (salasanaksi tor)
-    
-Tässä luotiin kaksi kantaa: `tor` jota käytetään kehityksessä ja `tortest` jota käytetään automaattisissa testeissä (kanta tyhjennetään testiajon alussa).
-    
-### Skeeman luonti/migraatio
-
-Skeema luodaan flywayllä migraatioskripteillä, jotka ovat hakemistossa `src/main/resources/db/migration`.
-    
-    mvn -Ptortest-database compile flyway:migrate
-    mvn -Ptor-database compile flyway:migrate
-    
-Tässä ajettiin migraatiot molemmille kannoille `tor` ja `tortest`.
     
 ### SQL-yhteys paikalliseen kantaan
 
@@ -99,24 +82,21 @@ Sitten vaikka
     
 ### Kantamigraatiot
 
-Migraatiot ovat hakemistossa `src/main/resources/db/migration`. Migraation ajo paikalliseen kantaan tällä:
- 
-    mvn -Ptor-database clean compile flyway:migrate 
+Skeema luodaan flywayllä migraatioskripteillä, jotka ovat hakemistossa `src/main/resources/db/migration`.
 
-Jos haluat tehdä migraatiot puhtaaseen kantaan, aja
+Tor-sovellus ajaa migraatiot automaattisesti käynnistyessään.
 
-    mvn -Ptor-database clean compile flyway:clean flyway:migrate 
-
-Uusia migraatioita tehdessä tulee myös ajaa koodigeneraattori,
-joka generoi tauluja vastaavat luokat `src/main/scala/fi/oph/tor/db/Tables.scala` -tiedostoon. Koodigeneraattorin `fi.oph.tor.db.CodeGeneator`
-voit ajaa IDE:ssä tai komentoriviltä
+Kannan rakennetta muuttavien migraatioiden yhteydessä tulee ajaa myös koodigeneraattori,
+joka generoi tauluja vastaavat luokat `src/main/scala/fi/oph/tor/db/Tables.scala` -tiedostoon. 
+Koodigeneraattorin `fi.oph.tor.db.CodeGenerator` voit ajaa IDE:ssä tai komentoriviltä
  
     mvn compile exec:java -Dexec.mainClass="fi.oph.tor.db.CodeGenerator"
 
-Koodigeneraattori ottaa yhteyden paikalliseen kantaan, jonka rakenteesta se generoi koodin. Koodigeneraattorin luomia
-luokkia käytetään vain tietokantaoperaatioihin, eikä siis käytetä järjestelmän sisäisenä tietomallina, saati sitten paljateta ulospäin.
-Koodigenerointi on käytössä siksi, että kannan skeema ja sovelluskoodi varmasti pysyvät synkassa. Jos esim. tauluun lisätään uusi pakollinen
-kenttä, seuraa siitä käännösvirhe, kunnes softa käsittelee tämän kentän.
+Koodigeneraattori ajaa migraatiot paikalliseen kantaan, jonka rakenteesta se sitten generoi koodin. 
+
+Koodigeneraattorin luomia luokkia käytetään vain tietokantaoperaatioihin, eikä siis käytetä järjestelmän sisäisenä tietomallina, 
+saati sitten paljateta ulospäin rajapinnoissa. Koodigenerointi on käytössä siksi, että kannan skeema ja sovelluskoodi varmasti 
+pysyvät synkassa. Jos esim. tauluun lisätään uusi pakollinen kenttä, seuraa siitä käännösvirhe, kunnes softa käsittelee tämän kentän.
     
 ## Maven-buildi
 
