@@ -11,7 +11,7 @@ object TorDatabase extends Logging {
   type DB = PostgresDriver.backend.DatabaseDef
 
 
-  def forConfig(config: DatabaseConfig)(implicit executor: AsyncExecutor): DB = {
+  def init(config: DatabaseConfig)(implicit executor: AsyncExecutor): DB = {
     if (!isDbRunning(config)) {
       startEmbedded(config)
     }

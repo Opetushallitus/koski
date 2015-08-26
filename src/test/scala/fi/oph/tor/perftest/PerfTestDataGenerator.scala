@@ -15,7 +15,7 @@ object PerfTestDataGenerator extends App with Logging with Futures with GlobalEx
   val tutkintorakennePerOppija = List(("tutkinto", 2), ("tutkinnon-osa", 5), ("kurssi", 4))
   private val suoritukset: Iterator[Suoritus] = TestDataGenerator.generoiSuorituksia(oppijoita = 1000000, organisaatioita = 100, tutkintorakennePerOppija)
   
-  val db = TorDatabase.forConfig(DatabaseConfig.localDatabase)
+  val db = TorDatabase.init(DatabaseConfig.localDatabase)
   val tor = new TodennetunOsaamisenRekisteri(db)
 
   logger.info("Starting performance test data insertion")

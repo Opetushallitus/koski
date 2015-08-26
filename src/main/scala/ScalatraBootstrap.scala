@@ -8,7 +8,7 @@ import fi.vm.sade.utils.slf4j.Logging
 import org.scalatra._
 
 class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionContext with Futures {
-  val database: DB = TorDatabase.forConfig(DatabaseConfig.localDatabase)
+  val database: DB = TorDatabase.init(DatabaseConfig.localDatabase)
   val rekisteri = new TodennetunOsaamisenRekisteri(database)
 
   override def init(context: ServletContext) {
