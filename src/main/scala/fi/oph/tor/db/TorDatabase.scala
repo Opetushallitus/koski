@@ -16,15 +16,20 @@ object TorDatabase extends Logging {
 
 
   def init(config: DatabaseConfig)(implicit executor: AsyncExecutor): TorDatabase = {
+    val serverProcess = startDatabaseServerIfNotRunning(config)
+    createDatabase(config)
+    createUser(config)
+    migrateSchema(config)
+    TorDatabase(Database.forURL(config.url, config.user, config.password, executor = executor), serverProcess)
+  }
+
+  private def startDatabaseServerIfNotRunning(config: DatabaseConfig): Option[PostgresRunner] = {
     val serverProcess: Option[PostgresRunner] = if (!isDbRunning(config)) {
       Some(startEmbedded(config))
     } else {
       None
     }
-    createDatabase(config)
-    createUser(config)
-    migrateSchema(config)
-    TorDatabase(Database.forURL(config.url, config.user, config.password, executor = executor), serverProcess)
+    serverProcess
   }
 
   private def isDbRunning(config: DatabaseConfig) = {
