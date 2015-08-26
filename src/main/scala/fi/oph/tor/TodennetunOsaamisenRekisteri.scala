@@ -96,7 +96,7 @@ class TodennetunOsaamisenRekisteri(db: DB)(implicit val executor: ExecutionConte
       ), suoritusquery AS ( select distinct * from (""" + unionQuery + """) as unionquery)""" + joinQuery
     } else {
       // No recursive search needed, rows from suoritus table are fetched directly
-      "WITH suoritusquery AS (select * from suoritus) " + joinQuery + whereClause
+      "WITH suoritusquery AS (select * from suoritus"+whereClause+")" + joinQuery
     }
   }
 
