@@ -39,3 +39,7 @@ create table koodistoviite(
     koodisto_koodi text,
     primary key (id)
 );
+
+create index oppija_id_index on suoritus (oppija_id);
+create index arviointi_suoritus_id_index on arviointi (suoritus_id);
+create index suoritus_parent_index on suoritus (parent_id);
