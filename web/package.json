@@ -9,7 +9,7 @@
   "dependencies": {
     "react": "~0.13",
     "axios": "~0.5",
-    "baconjs": "~0.7"
+    "baconjs": "~0.7.73"
   },
   "devDependencies": {
     "nodemon": "^1",
