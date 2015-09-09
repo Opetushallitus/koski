@@ -12,3 +12,5 @@ target/
 .cache
 postgres
 postgresql/data
+node_modules
+bundle.js

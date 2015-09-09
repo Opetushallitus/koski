@@ -169,6 +169,10 @@
         <version>2.6</version>
         <configuration>
           <packagingExcludes>WEB-INF/lib//javax.servlet-api-*.jar</packagingExcludes>
+          <webResources>
+            <resource><directory>web/dist</directory></resource>
+            <resource><directory>web/static</directory></resource>
+          </webResources>
         </configuration>
       </plugin>
       <plugin>

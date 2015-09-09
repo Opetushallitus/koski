@@ -40,6 +40,7 @@ TOR-palvelun tietokantaskeema löytyy täältä: https://github.com/Opetushallit
 Minimissään tarvitset nämä:
 
 - Git
+- GNU Make
 - Maven 3 (osx: `brew install maven`)
 - Postgres (osx: `brew install postgres`)
 - Tekstieditori (kehitystiimi käyttää IntelliJ IDEA 14)
@@ -53,7 +54,7 @@ Paikallisen kannan konfiguraatio on tiedostossa `postgresql/postgresql.conf` ja 
 
 Jos haluat pitää Postgresin käynnissä erikseen, voit käynnistää sen komentoriviltä komennolla
 
-    postgres --config_file=postgresql/postgresql.conf -D postgresql/data
+    make postgres
 
 PostgreSQL jää pyörimään konsoliin ja voit sammuttaa sen painamalla ctrl-c.
 
@@ -90,7 +91,7 @@ Kannan rakennetta muuttavien migraatioiden yhteydessä tulee ajaa myös koodigen
 joka generoi tauluja vastaavat luokat `src/main/scala/fi/oph/tor/db/Tables.scala` -tiedostoon. 
 Koodigeneraattorin `fi.oph.tor.db.CodeGenerator` voit ajaa IDE:ssä tai komentoriviltä
  
-    mvn compile exec:java -Dexec.mainClass="fi.oph.tor.db.CodeGenerator"
+    make codegen
 
 Koodigeneraattori ajaa migraatiot paikalliseen kantaan, jonka rakenteesta se sitten generoi koodin. 
 
@@ -98,26 +99,30 @@ Koodigeneraattorin luomia luokkia käytetään vain tietokantaoperaatioihin, eik
 saati sitten paljateta ulospäin rajapinnoissa. Koodigenerointi on käytössä siksi, että kannan skeema ja sovelluskoodi varmasti 
 pysyvät synkassa. Jos esim. tauluun lisätään uusi pakollinen kenttä, seuraa siitä käännösvirhe, kunnes softa käsittelee tämän kentän.
     
-## Maven-buildi
+## Buildi
+
+TOR:n buildiin kuuluu frontin buildaus npm:llä ja serverin buildaus Mavenilla. Tätä helpottamaan on otettu käyttöön `make`, jonka avulla
+eri taskit on helppo suorittaa. Ks `Makefile`-tiedosto.
+
+Buildaa koko systeemi
+
+    make build
 
 Aja kaikki testit
 
-`mvn test`
-
-Tee war-paketti
-
-`mvn package`
+    make test
 
 ### TOR-sovelluksen ajaminen kehitystyöasemalla
 
 Aja JettyLauncher-luokka IDEAsta/Eclipsestä, tai käynnistä TOR vaihtoehtoisesti komentoriviltä
 
-    mvn test-compile exec:java -Dexec.mainClass="fi.oph.tor.jettylauncher.JettyLauncher"
+    make build
+    make run
 
 Avaa selaimessa 
 
-    http://localhost:7021/tor/
+    http://localhost:7021/
 
 Suoritus-testidatat näkyy 
 
-    http://localhost:7021/tor/suoritus/
+    http://localhost:7021/suoritus/
