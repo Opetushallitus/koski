@@ -1,3 +1,14 @@
+help:
+	@echo ""
+	@echo "make build	- Build the whole application, ready for running or testing"
+	@echo "make front	- Build front end"
+	@echo "make server	- Build server side"
+	@echo "make codegen	- Generate database access code from local Postgres database"
+	@echo "make test	- Run unit tests"
+	@echo "make run	- Run previously built application in local environment"
+	@echo "make postgres	- Run local postgres server"
+	@echo "make watch	- Watch for changes in webapp files"
+
 build: front server
 	# Built the whole application, ready for running or testing
 front:
