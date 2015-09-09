@@ -1,7 +1,7 @@
 build: front server
 	# Built the whole application, ready for running or testing
 front:
-	cd web && npm install && npm run build
+	cd web && npm install
 	# front end build done
 server:
 	mvn install -DskipTests
@@ -15,3 +15,5 @@ run:
 	mvn exec:java -Dexec.mainClass=fi.oph.tor.jettylauncher.JettyLauncher
 postgres:
 	postgres --config_file=postgresql/postgresql.conf -D postgresql/data
+watch: 
+	cd web && npm run watch

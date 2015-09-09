@@ -7,28 +7,11 @@
   },
   "license": "EUPL-1.1",
   "devDependencies": {
-    "babel": "^5.6.14",
-    "babel-core": "^5.8.20",
-    "babel-loader": "^5.3.2",
-    "chai": "^3.0.0",
-    "css-loader": "^0.15.6",
-    "file-loader": "^0.8.4",
-    "jsdom": "3.1.2",
-    "less": "^2.5.1",
-    "less-loader": "^2.2.0",
-    "mocha": "^2.2.5",
-    "mocha-jsdom": "^0.5.0",
-    "mocha-junit-reporter": "^1.5.0",
-    "mocha-phantomjs": "3.5.6",
-    "phantomjs": "1.9.17",
-    "react-tools": "^0.13.2",
-    "style-loader": "^0.12.3",
-    "url-loader": "^0.5.6",
-    "json-loader": "^0.5.2",
-    "watch-spawn": "^1.0.5",
+    "nodemon": "^1.4",
     "webpack": "^1.10.5"
   },
   "scripts": {
-    "build": "webpack -p"
+    "postinstall": "webpack -p",
+    "watch": "nodemon --quiet --watch app -e jsx --exec 'npm install'"
   }
 }
