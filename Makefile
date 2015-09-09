@@ -9,7 +9,7 @@ server:
 codegen: 
 	# Generate database access code from local Postgres database
 	mvn compile exec:java -Dexec.mainClass=fi.oph.tor.db.CodeGenerator
-test: 
+test: build 
 	mvn test
 run:
 	mvn exec:java -Dexec.mainClass=fi.oph.tor.jettylauncher.JettyLauncher
@@ -17,3 +17,6 @@ postgres:
 	postgres --config_file=postgresql/postgresql.conf -D postgresql/data
 watch: 
 	cd web && npm run watch
+it: test
+happen:
+	# Pow pow!
