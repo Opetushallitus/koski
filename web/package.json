@@ -18,6 +18,6 @@
   },
   "scripts": {
     "postinstall": "webpack -p",
-    "watch": "nodemon --quiet --watch app -e jsx --exec 'npm install'"
+    "watch": "nodemon --quiet --watch app --watch package.json -e jsx --exec 'npm install'"
   }
 }
