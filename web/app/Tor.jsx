@@ -1,12 +1,17 @@
 import React from "react"
+import Bacon from "baconjs"
 
-var OppijaHaku = React.createClass({
+const events = new Bacon.Bus();
+
+const OppijaHaku = React.createClass({
     render: () =>
         <div className="oppija-haku">
             <label>Opiskelija</label>
-            <input></input>
+            <input onInput={(e) => events.push(e)}></input>
         </div>
 });
+
+events.log();
 
 React.render(
 <OppijaHaku />,
