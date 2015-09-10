@@ -22,6 +22,8 @@ codegen:
 	mvn compile exec:java -Dexec.mainClass=fi.oph.tor.db.CodeGenerator
 test: build 
 	mvn test
+fronttest:
+	cd web && npm run test
 run:
 	mvn exec:java -Dexec.mainClass=fi.oph.tor.jettylauncher.JettyLauncher
 postgres:
