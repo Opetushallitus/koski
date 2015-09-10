@@ -20,6 +20,7 @@
   },
   "scripts": {
     "postinstall": "webpack -p",
-    "watch": "nodemon --quiet --watch app --watch package.json -e jsx --exec 'npm install'"
+    "watch_": "nodemon --quiet --watch app --watch package.json -e jsx --exec 'npm install'",
+    "watch": "webpack -d --progress --colors --watch"
   }
 }
