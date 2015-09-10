@@ -6,10 +6,8 @@ import fi.oph.tor.json.Json
 import fi.oph.tor.model.Identified.Id
 import fi.oph.tor.model.{Identified, Suoritus}
 import fi.vm.sade.utils.slf4j.Logging
-import org.scalatra.ScalatraServlet
-import scala.collection.immutable.Iterable
 
-class SuoritusServlet(rekisteri: TodennetunOsaamisenRekisteri) extends ScalatraServlet with GlobalExecutionContext with Futures with Logging {
+class SuoritusServlet(rekisteri: TodennetunOsaamisenRekisteri) extends ErrorHandlingServlet with GlobalExecutionContext with Futures with Logging {
   get("/") {
     params.get("personOid")
     contentType = "application/json;charset=utf-8"
@@ -31,12 +29,5 @@ class SuoritusServlet(rekisteri: TodennetunOsaamisenRekisteri) extends ScalatraS
     Json.write(IdResponse(id))
   }
 
-  error {
-    case InvalidRequestException(msg) =>
-      halt(status = 400, msg)
-    case e: Throwable =>
-      logger.error("Error while processing request", e)
-      halt(status = 500, "Internal server error")
-  }
 }
 case class IdResponse(id: Identified.Id)
