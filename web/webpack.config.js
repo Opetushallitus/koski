@@ -12,6 +12,11 @@ module.exports = {
         test: /\.jsx?$/,
         loader: 'babel',
         include: [ __dirname + "/app" ]
-      }]
+      },
+      {
+        test: /\.less$/,
+        loader: "style!css!less"
+      }
+    ]
   }
 }

@@ -1,6 +1,7 @@
 import React from "react"
 import Bacon from "baconjs"
 import http from "axios"
+import style from "./style/main.less"
 
 const oppijatS = new Bacon.Bus();
 
@@ -28,7 +29,7 @@ const OppijaHakuBoksi = React.createClass({
 
 const OppijaHakutulokset = React.createClass({
     render() {
-        const oppijat = this.props.oppijat.map((oppija) => <li>{oppija.etunimet} {oppija.sukunimi} {oppija.hetu}</li>)
+        const oppijat = this.props.oppijat.map((oppija, i) => <li key={i}>{oppija.etunimet} {oppija.sukunimi} {oppija.hetu}</li>)
         return (
             <ul>
                 {oppijat}

@@ -14,6 +14,10 @@
     "babel": "^5",
     "babel-core": "^5",
     "babel-loader": "^5",
+    "less": "^2",
+    "less-loader": "^2",
+    "style-loader": "^0.12",
+    "css-loader": "^0.15",
     "mocha-phantomjs": "^3.6"
   },
   "scripts": {
