@@ -1,5 +1,6 @@
 import React from "react"
 import Bacon from "baconjs"
+import http from "axios"
 
 export const Login = (props) => (
     <form class="login">
@@ -9,5 +10,5 @@ export const Login = (props) => (
     </form>
 )
 
-export const userP = Bacon.constant({oid: 1234, name: 'Kalle Kayttaja'})
+export const userP = Bacon.fromPromise(http.get("/user")).toProperty()
 
