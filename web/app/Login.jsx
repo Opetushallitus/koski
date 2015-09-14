@@ -9,7 +9,6 @@ export const Login = React.createClass({
     const usernameIsValid = this.state.username && this.state.username.length > 0
     const passwordIsValid = this.state.password && this.state.password.length > 0
 
-    debugger
     return <form className="login">
       <h3>TOR LOGIN</h3>
       <input onInput={this.onInput} ref="username" placeholder="Tunnus"></input>
@@ -32,7 +31,7 @@ export const Login = React.createClass({
   },
 
   onInput() {
-    setState(this.formState())
+    this.setState(this.formState())
   }
 })
 
