@@ -14,6 +14,10 @@ case class TorDatabase(db: DB, serverProcess: Option[PostgresRunner]) {
 object TorDatabase extends Logging {
   type DB = PostgresDriver.backend.DatabaseDef
 
+  def remoteDatabase(config: DatabaseConfig)(implicit executor: AsyncExecutor): TorDatabase = {
+    migrateSchema(config)
+    TorDatabase(Database.forURL(config.url, config.user, config.password, executor = executor), None)
+  }
 
   def init(config: DatabaseConfig)(implicit executor: AsyncExecutor): TorDatabase = {
     val serverProcess = startDatabaseServerIfNotRunning(config)

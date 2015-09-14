@@ -16,7 +16,7 @@ Keskeiset entiteetiut, ja järjestelmät, joihin nämä tallennetaan.
 | Oppija         | Opiskelija, oppilas.                         | henkilöOid       | Henkilöpalvelu         |
 | Organisaatio   | Oppilaitos, kunta, eri rooleissa             | organisaatioOid  | Organisaatiopalvelu    |
 | Komo           | Koulutusmoduuli                              | ?                | ePerusteet             |
-| Komoto         | Kaikkiin opintosuorituksiin liittyvä         |                  |                        | 
+| Komoto         | Kaikkiin opintosuorituksiin liittyvä         |                  |                        |
 |                | koulutusmoduulin toteutus (komo+aika+paikka) | id (numeerinen)  | TOR                    |
 | Suoritus       | Oppijan suoritus (komoto, oppija, organisaatio, aika...) | id (numeerinen)  | TOR        |
 | Koodisto       | Kooditus objekteille, esim tutkintonimikkeet | id (tekstiä)     | Koodistopalvelu        |
@@ -60,27 +60,27 @@ PostgreSQL jää pyörimään konsoliin ja voit sammuttaa sen painamalla ctrl-c.
 
 Käynnistyessään Tor-sovellus huomaa, jos tietokanta on jo käynnissä, eikä siinä tapauksessa yritä käynnistää sitä.
 
-Kehityksessä käytetään kahta kantaa: `tor` jota käytetään normaalisti ja `tortest` jota käytetään automaattisissa 
+Kehityksessä käytetään kahta kantaa: `tor` jota käytetään normaalisti ja `tortest` jota käytetään automaattisissa
 testeissä (tämä kanta tyhjennetään aina testiajon alussa). Molemmat kannat sisältävät `tor` -skeeman, ja sijaitsevat
 fyysisesti samassa datahakemistossa.
 
-    
+
 ### SQL-yhteys paikalliseen kantaan
 
 Jos ja kun haluat tarkastella paikallisen kehityskannan tilaa SQL-työkalulla, se onnistuu esimerkiksi Postgren omalla komentorivityökalulla `psql`:
 
     psql tor tor
     psql tortest tor
-    
+
 Peruskomennot
 
     \dt    listaa taulut
     \q     poistuu psql:stä
-    
+
 Sitten vaikka
 
     select * from arviointi;
-    
+
 ### Kantamigraatiot
 
 Skeema luodaan flywayllä migraatioskripteillä, jotka ovat hakemistossa `src/main/resources/db/migration`.
@@ -88,17 +88,17 @@ Skeema luodaan flywayllä migraatioskripteillä, jotka ovat hakemistossa `src/ma
 Tor-sovellus ajaa migraatiot automaattisesti käynnistyessään.
 
 Kannan rakennetta muuttavien migraatioiden yhteydessä tulee ajaa myös koodigeneraattori,
-joka generoi tauluja vastaavat luokat `src/main/scala/fi/oph/tor/db/Tables.scala` -tiedostoon. 
+joka generoi tauluja vastaavat luokat `src/main/scala/fi/oph/tor/db/Tables.scala` -tiedostoon.
 Koodigeneraattorin `fi.oph.tor.db.CodeGenerator` voit ajaa IDE:ssä tai komentoriviltä
- 
+
     make codegen
 
-Koodigeneraattori ajaa migraatiot paikalliseen kantaan, jonka rakenteesta se sitten generoi koodin. 
+Koodigeneraattori ajaa migraatiot paikalliseen kantaan, jonka rakenteesta se sitten generoi koodin.
 
-Koodigeneraattorin luomia luokkia käytetään vain tietokantaoperaatioihin, eikä siis käytetä järjestelmän sisäisenä tietomallina, 
-saati sitten paljateta ulospäin rajapinnoissa. Koodigenerointi on käytössä siksi, että kannan skeema ja sovelluskoodi varmasti 
+Koodigeneraattorin luomia luokkia käytetään vain tietokantaoperaatioihin, eikä siis käytetä järjestelmän sisäisenä tietomallina,
+saati sitten paljateta ulospäin rajapinnoissa. Koodigenerointi on käytössä siksi, että kannan skeema ja sovelluskoodi varmasti
 pysyvät synkassa. Jos esim. tauluun lisätään uusi pakollinen kenttä, seuraa siitä käännösvirhe, kunnes softa käsittelee tämän kentän.
-    
+
 ## Buildi
 
 TOR:n buildiin kuuluu frontin buildaus npm:llä ja serverin buildaus Mavenilla. Tätä helpottamaan on otettu käyttöön `make`, jonka avulla
@@ -119,10 +119,28 @@ Aja JettyLauncher-luokka IDEAsta/Eclipsestä, tai käynnistä TOR vaihtoehtoises
     make build
     make run
 
-Avaa selaimessa 
+Avaa selaimessa
 
     http://localhost:7021/
 
-Suoritus-testidatat näkyy 
+Suoritus-testidatat näkyy
 
     http://localhost:7021/suoritus/
+
+## Asennus pilveen (CSC:n ePouta)
+
+Ennakko vaatimukset:
+
+1. Sinulla on tunnus CSC:n pouta ympäristöön
+2. Pudan ympäristö(muuttuja)määrittely: https://pouta.csc.fi/dashboard/project/access_and_security/api_access/openrc/ on ladattu ja käytössä (`source Project_2000079-openrc.sh`)
+4. Sinun julkinen ssh avain on lisättynä tänne: https://github.com/reaktor/oph-poutai-env/tree/master/roles/ssh.init/files/public_keys (ja koneiden konfiguraatio on päivitetty)
+5. GIT remote lisätty `git remote add tordev git@tor-app:tor.git` (make deploy päivittää aina palvelimen nykyisen IP:n)
+
+Tämän jälkeen voit pushata uuden version TOR:sta ajamalla,
+
+    make deploy
+
+jonka jälkeen sen pitäisi löytyä täältä: http://86.50.169.123/tordev/
+Lokien katsominen onnistuu komennolla:
+
+    make tail

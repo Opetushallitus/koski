@@ -8,6 +8,7 @@ object TorProfile {
   def fromString(profile: String) = profile match {
     case "default" => new Default()
     case "it" => new IntegrationTest()
+    case "cloud" => new Cloud()
   }
 }
 
@@ -25,4 +26,8 @@ class IntegrationTest extends TorProfile with Futures with GlobalExecutionContex
     await(database.db.run(DatabaseTestFixture.clear))
     database
   }
+}
+
+class Cloud extends TorProfile with GlobalExecutionContext {
+  lazy val database = TorDatabase.remoteDatabase(DatabaseConfig.cloudDatabase)
 }
