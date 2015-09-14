@@ -6,8 +6,9 @@
   "dependencies": {
     "react": "0.14.0-rc1",
     "react-dom": "0.14.0-rc1",
-    "axios": "~0.5",
-    "baconjs": "~0.7.73"
+    "fetch": "^0.3.6",
+    "baconjs": "~0.7.73",
+    "bluebird": "^2"
   },
   "devDependencies": {
     "nodemon": "^1",

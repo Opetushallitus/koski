@@ -1,9 +1,9 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import Bacon from "baconjs"
-import http from "axios"
 import style from "./style/main.less"
-
+import handleError from "./error-handler"
+import Http from "./http"
 import {Login, userP} from "./Login.jsx"
 
 const oppijatS = new Bacon.Bus();
@@ -34,13 +34,16 @@ const OppijaHakutulokset = ({oppijat}) => {
 
 const UserInfo = ({user}) => <div className="userInfo">{user.name}<a href="/logout">Logout</a></div>
 
-userP.flatMap((user) => {
+const uiP = userP.flatMap((user) => {
   if (user) {
     const oppijatP = oppijatS.throttle(200)
-      .flatMapLatest(q => Bacon.fromPromise(http.get(`/oppija?nimi=${q}`))).map(".data")
+      .flatMapLatest(q => Http.get(`/oppija?nimi=${q}`))
       .toProperty([])
     return oppijatP.map((oppijat) => <div><UserInfo user={user} /> <OppijaHaku oppijat={oppijat} /></div>)
   } else {
     return <Login />
   }
-}).onValue((component) => ReactDOM.render(component, document.getElementById('content')))
+})
+
+uiP.onValue((component) => ReactDOM.render(component, document.getElementById('content')))
+uiP.onError(handleError)

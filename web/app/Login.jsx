@@ -1,8 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import Bacon from "baconjs"
-import http from "axios"
-
+import Http from "./http"
 const loginE = new Bacon.Bus()
 
 export const Login = React.createClass({
@@ -38,11 +37,9 @@ export const Login = React.createClass({
 })
 
 const loginResultE = loginE
-  .flatMap((credentials) => Bacon.fromPromise(http.post("/login", credentials)))
+  .flatMap((credentials) => Http.post("/login", credentials))
 
-export const userP = Bacon.fromPromise(http.get("/user"))
-  .mapError(undefined)
+export const userP = Http.get("/user")
   .merge(loginResultE)
-  .map(".data")
   .toProperty()
 
