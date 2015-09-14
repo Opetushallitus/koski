@@ -1,46 +1,50 @@
 import React from "react"
+import ReactDOM from "react-dom"
 import Bacon from "baconjs"
 import http from "axios"
 import style from "./style/main.less"
 
+import {Login, userP} from "./Login.jsx"
+
 const oppijatS = new Bacon.Bus();
 
-const OppijaHaku = React.createClass({
-    render() {
-        return (
-            <div className="oppija-haku">
-                <OppijaHakuBoksi />
-                <OppijaHakutulokset oppijat={this.props.oppijat}/>
-            </div>
-        )
-    }
-})
+const OppijaHaku = ({oppijat}) =>
+    (
+        <div className="oppija-haku">
+            <OppijaHakuBoksi />
+            <OppijaHakutulokset oppijat={oppijat}/>
+        </div>
+    )
 
-const OppijaHakuBoksi = React.createClass({
-    render() {
-        return (
-            <div>
-                <label>Opiskelija</label>
-                <input onInput={(e) => oppijatS.push(e.target.value)}></input>
-            </div>
-        )
-    }
-})
+const OppijaHakuBoksi = () =>
+    (
+        <div>
+            <label>Opiskelija</label>
+            <input onInput={(e) => oppijatS.push(e.target.value)}></input>
+        </div>
+    )
 
-const OppijaHakutulokset = React.createClass({
-    render() {
-        const oppijat = this.props.oppijat.map((oppija, i) => <li key={i}>{oppija.etunimet} {oppija.sukunimi} {oppija.hetu}</li>)
+const OppijaHakutulokset = ({oppijat}) => {
+        const oppijatElems = oppijat.map((oppija, i) => <li key={i}>{oppija.etunimet} {oppija.sukunimi} {oppija.hetu}</li>)
         return (
             <ul>
-                {oppijat}
+                {oppijatElems}
             </ul>
         )
     }
-})
 
-const oppijatP = oppijatS.throttle(200)
-    .flatMapLatest(q => Bacon.fromPromise(http.get(`/oppija?nimi=${q}`))).map(".data")
-    .toProperty([])
+userP.flatMap((u) => {
+    if (u) {
+        const oppijatP = oppijatS.throttle(200)
+            .flatMapLatest(q => Bacon.fromPromise(http.get(`/oppija?nimi=${q}`))).map(".data")
+            .toProperty([])
+        return oppijatP.map((oppijat) => <OppijaHaku oppijat={oppijat} />)
+    } else {
+        return <Login />
+    }
+}).onValue((component) => ReactDOM.render(component, document.getElementById('content')))
 
-oppijatP.onValue((oppijat) => React.render(<OppijaHaku oppijat={oppijat} />, document.getElementById('content')))
+
+
+
 
