@@ -32,6 +32,10 @@ export const Login = React.createClass({
 
   onInput() {
     this.setState(this.formState())
+  },
+
+  componentDidMount() {
+    this.refs.username.focus()
   }
 })
 
