@@ -32,7 +32,7 @@ const OppijaHakutulokset = ({oppijat}) => {
   )
 }
 
-const UserInfo = ({user}) => <div className="userInfo">{user.name}</div>
+const UserInfo = ({user}) => <div className="userInfo">{user.name}<a href="/logout">Logout</a></div>
 
 userP.flatMap((user) => {
   if (user) {

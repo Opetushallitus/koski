@@ -22,10 +22,10 @@ export const Login = React.createClass({
 
 const loginResultE = loginE
   .flatMap((credentials) => Bacon.fromPromise(http.post("/login", credentials)))
-  .map(".data")
 
 export const userP = Bacon.fromPromise(http.get("/user"))
   .mapError(undefined)
   .merge(loginResultE)
+  .map(".data")
   .toProperty()
 
