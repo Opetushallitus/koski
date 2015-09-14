@@ -8,7 +8,7 @@ import fi.oph.tor.model.Suoritus
 import org.scalatest.{FreeSpec, Matchers}
 import org.scalatra.test.HttpComponentsClient
 
-class SuoritusServletSpec extends FreeSpec with HttpComponentsClient with Matchers with TorTest {
+class SuoritusServletSpec extends FreeSpec with HttpComponentsClient with Matchers {
   "Yksi tutkintosuoritus tallennetaan kantaan" - {
     SharedJetty.start
 
