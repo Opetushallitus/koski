@@ -129,12 +129,13 @@ Suoritus-testidatat näkyy
 
 ## Asennus pilveen (CSC:n ePouta)
 
-Ennakko vaatimukset:
+Ennakkovaatimukset:
 
-1. Sinulla on tunnus CSC:n pouta ympäristöön
-2. Pudan ympäristö(muuttuja)määrittely: https://pouta.csc.fi/dashboard/project/access_and_security/api_access/openrc/ on ladattu ja käytössä (`source Project_2000079-openrc.sh`)
-4. Sinun julkinen ssh avain on lisättynä tänne: https://github.com/reaktor/oph-poutai-env/tree/master/roles/ssh.init/files/public_keys (ja koneiden konfiguraatio on päivitetty)
-5. GIT remote lisätty `git remote add tordev git@tor-app:tor.git` (make deploy päivittää aina palvelimen nykyisen IP:n)
+1. Sinulla on tunnus CSC:n cPouta-ympäristöön
+2. Poudan ympäristö(muuttuja)määrittely: https://pouta.csc.fi/dashboard/project/access_and_security/api_access/openrc/ on ladattu ja käytössä (`source Project_2000079-openrc.sh`)
+3. Sinun julkinen ssh avain on lisättynä tänne: https://github.com/reaktor/oph-poutai-env/tree/master/roles/ssh.init/files/public_keys (ja koneiden konfiguraatio on päivitetty)
+4. GIT remote lisätty `git remote add tordev git@tor-app:tor.git` (make deploy päivittää aina palvelimen nykyisen IP:n)
+5. Käytössäsi on Ruby 2.0 tai uudempi
 
 Tämän jälkeen voit pushata uuden version TOR:sta ajamalla,
 
