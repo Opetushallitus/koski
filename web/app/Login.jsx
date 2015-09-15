@@ -13,10 +13,10 @@ export const userP = Http.get("/user").mapError()
 
 export const Login = React.createClass({
   render() {
-    const usernameIsValid = this.state.username && this.state.username.length > 0
-    const passwordIsValid = this.state.password && this.state.password.length > 0
+    const {username, password, inProgress} = this.state
 
-    const {inProgress} = this.state
+    const usernameIsValid = username && username.length > 0
+    const passwordIsValid = password && password.length > 0
 
     const buttonLabel = inProgress ? "Kirjaudutaan..." : "Kirjaudu Sisään"
     const buttonDisabled = !usernameIsValid || !passwordIsValid || inProgress
@@ -48,7 +48,7 @@ export const Login = React.createClass({
   },
 
   componentDidMount() {
-    loginResultE.onError((e) => this.setState({error: e, inProgress: false}))
+    loginResultE.onError((e) => {this.setState({error: e, inProgress: false}); this.refs.username.focus()})
     this.refs.username.focus()
   }
 })
