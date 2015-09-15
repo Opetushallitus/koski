@@ -1,6 +1,16 @@
+#content {
+  padding: 10px;
+  box-sizing: border-box;
+}
+
 .oppija-haku {
-  padding: 5px;
-  width: 400px;
+  clear: both;
+  width: 300px;
+  position: fixed;
+  border-right: 1px solid;
+  bottom: 0;
+  top: 0;
+  padding-top: 20px;
 
   label {
     display: block;
@@ -20,10 +30,50 @@
   }
 }
 
-.login {
-  &.error input{
-    border: 1px solid red;
+.error {
+  input {
+    border: 2px solid #ee4444;
+    &:focus {
+      border-color: #ee4444;
+    }
   }
+}
+
+input {
+  outline:none;
+  border: 2px #d5d5d5 solid;
+  padding: 0 1.6em 0 1em;
+  width: 190px;
+  height: 30px;
+  &:focus {
+    border-color: #0c65a5;
+  }
+}
+
+.oppija {
+  margin-left: 300px;
+  text-align: center;
+}
+
+.login {
+  margin-right: auto;
+  margin-left: auto;
+  width: 170px;
+
+  input {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  button {
+    margin-top: 5px;
+  }
+}
+
+.user-info {
+  margin-bottom: 20px;
+  margin-left: 300px;
+  text-align: right;
 }
 
 button:disabled { color: gray; }

@@ -18,7 +18,7 @@ export const Login = React.createClass({
     const usernameIsValid = username && username.length > 0
     const passwordIsValid = password && password.length > 0
 
-    const buttonLabel = inProgress ? "Kirjaudutaan..." : "Kirjaudu Sisään"
+    const buttonLabel = inProgress ? "Kirjaudutaan..." : "Kirjaudu sisään"
     const buttonDisabled = !usernameIsValid || !passwordIsValid || inProgress
 
     return <form className={this.state.error ? "login error": "login"}>
