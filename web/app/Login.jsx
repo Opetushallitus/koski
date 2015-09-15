@@ -42,7 +42,7 @@ export const Login = React.createClass({
 const loginResultE = loginE
   .flatMap((credentials) => Http.post("/login", credentials))
 
-export const userP = Http.get("/user")
+export const userP = Http.get("/user").mapError()
   .merge(loginResultE)
   .toProperty()
 

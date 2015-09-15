@@ -4,6 +4,7 @@ const parseResponse = (result) => {
   if (result.status < 300) {
     return Bacon.fromPromise(result.json())
   }
+  return new Bacon.Error("HTTP " + result.status)
 }
 
 export default {
