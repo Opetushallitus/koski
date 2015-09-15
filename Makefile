@@ -38,6 +38,6 @@ happen:
 #	# Pow pow!
 deploy:
 	git remote set-url tordev git@`cloud/pouta-nslookup $(TOR-SERVER)`:tor.git
-	GIT_SSH=cloud/ssh-wrapper.sh git push -f tordev
+	GIT_SSH=cloud/ssh-wrapper.sh git push -f tordev master
 tail:
 	@cloud/ssh-wrapper.sh -l cloud-user `cloud/pouta-nslookup $(TOR-SERVER)` 'tail -f /home/git/logs/*log'
