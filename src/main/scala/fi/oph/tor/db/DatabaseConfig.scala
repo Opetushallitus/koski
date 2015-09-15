@@ -8,4 +8,5 @@ case class DatabaseConfig(host: String, port: Int, databaseName: String, user: S
 object DatabaseConfig {
   val localDatabase = DatabaseConfig("localhost", 5432, "tor", "tor", "tor")
   val localTestDatabase = DatabaseConfig("localhost", 5432, "tortest", "tor", "tor")
+  val cloudDatabase = DatabaseConfig("tor-db", 5432, "tor", "oph", "oph")
 }
