@@ -23,7 +23,7 @@
     <dependency>
       <groupId>com.github.Opetushallitus</groupId>
       <artifactId>scala-security</artifactId>
-      <version>677ad2c</version>
+      <version>499d58900796945c60d5f3acca95d468ea6be913</version>
     </dependency>
     <!-- external deps -->
     <dependency>
