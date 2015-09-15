@@ -16,11 +16,16 @@ export const Login = React.createClass({
     const usernameIsValid = this.state.username && this.state.username.length > 0
     const passwordIsValid = this.state.password && this.state.password.length > 0
 
+    const {inProgress} = this.state
+
+    const buttonLabel = inProgress ? "Kirjaudutaan..." : "Kirjaudu Sisään"
+    const buttonDisabled = !usernameIsValid || !passwordIsValid || inProgress
+
     return <form className={this.state.error ? "login error": "login"}>
       <h3>TOR LOGIN</h3>
-      <input onInput={this.onInput} ref="username" placeholder="Tunnus"></input>
-      <input onInput={this.onInput} ref="password" placeholder="Salasana"></input>
-      <button onClick={this.doLogin} disabled={!usernameIsValid || !passwordIsValid}>Kirjaudu sisään</button>
+      <input onInput={this.onInput} ref="username" placeholder="Tunnus" disabled={inProgress}></input>
+      <input onInput={this.onInput} type="password" ref="password" placeholder="Salasana" disabled={inProgress}></input>
+      <button onClick={this.doLogin} disabled={buttonDisabled}>{buttonLabel}</button>
     </form>
   },
 
@@ -34,6 +39,7 @@ export const Login = React.createClass({
 
   doLogin(e) {
     e.preventDefault()
+    this.setState({inProgress: true})
     loginE.push(this.formState())
   },
 
@@ -42,7 +48,7 @@ export const Login = React.createClass({
   },
 
   componentDidMount() {
-    loginResultE.onError((e) => this.setState({error: e}))
+    loginResultE.onError((e) => this.setState({error: e, inProgress: false}))
     this.refs.username.focus()
   }
 })
