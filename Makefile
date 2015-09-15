@@ -9,8 +9,8 @@ help:
 	@echo "make run	- Run previously built application in local environment"
 	@echo "make postgres	- Run local postgres server"
 	@echo "make watch	- Watch for changes in webapp files"
-	@echo "make deploy - Deploy to CSC's ePouta cloud"
-	@echo "make tail - Tail the cloud logs"
+	@echo "make deploy 	- Deploy to CSC's ePouta cloud"
+	@echo "make tail	- Tail the cloud logs"
 
 build: front server
 	# Built the whole application, ready for running or testing
