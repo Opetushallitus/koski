@@ -4,7 +4,7 @@ import Bacon from "baconjs"
 import Http from "./http"
 
 const oppijatE = new Bacon.Bus();
-const oppijaE = new Bacon.Bus();
+const oppijaValintaE = new Bacon.Bus();
 
 const OppijaHakuBoksi = () =>
   (
@@ -17,7 +17,7 @@ const OppijaHakuBoksi = () =>
 const OppijaHakutulokset = ({oppijat}) => {
   const oppijatElems = oppijat.map((oppija, i) =>
     <li key={i}>
-      <a href="#" onClick={() => oppijaE.push(oppija)}>{oppija.etunimet} {oppija.sukunimi} {oppija.hetu}</a>
+      <a href="#" onClick={() => oppijaValintaE.push(oppija)}>{oppija.etunimet} {oppija.sukunimi} {oppija.hetu}</a>
     </li>
   )
   return (
@@ -40,6 +40,6 @@ export const oppijatP = oppijatE.throttle(200)
 
 export const oppijaP = Bacon.update(
   undefined,
-  [oppijaE], (p, n) => n,
+  [oppijaValintaE], (p, n) => n,
   [oppijatP.changes().filter((l) => l.length === 1).map(".0")], (p, n) => p ? p : n
 )
