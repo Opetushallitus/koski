@@ -13,34 +13,34 @@ class SuoritusServletSpec extends FreeSpec with HttpComponentsClient with Matche
     SharedJetty.start
 
     "POST /suoritus -> tallennus onnistuu" in {
-      post("/suoritus", Json.write(tutkintosuoritus1), Map("Content-type" -> "application/json")) {
+      post("suoritus", Json.write(tutkintosuoritus1), Map("Content-type" -> "application/json")) {
         status should equal (200)
       }
     }
     "GET /suoritus -> kaikki suoritukset" in {
-      verifySuoritukset("/suoritus", List(tutkintosuoritus1))
+      verifySuoritukset("suoritus", List(tutkintosuoritus1))
     }
     "GET /suoritus?oppijaId=x -> henkilön suoritukset" in {
-      verifySuoritukset("/suoritus?oppijaId=person1", List(tutkintosuoritus1))
-      verifySuoritukset("/suoritus?oppijaId=wrongPerson", List())
+      verifySuoritukset("suoritus?oppijaId=person1", List(tutkintosuoritus1))
+      verifySuoritukset("suoritus?oppijaId=wrongPerson", List())
     }
     "GET /suoritus?jarjestajaOrganisaatioId=x -> organisaation suoritukset" in {
-      verifySuoritukset("/suoritus?jarjestajaOrganisaatioId=org1", List(tutkintosuoritus1))
-      verifySuoritukset("/suoritus?jarjestajaOrganisaatioId=wrongOrg", List())
+      verifySuoritukset("suoritus?jarjestajaOrganisaatioId=org1", List(tutkintosuoritus1))
+      verifySuoritukset("suoritus?jarjestajaOrganisaatioId=wrongOrg", List())
     }
     "GET /suoritus?completedAfter=x -> suoritukset annetun päivämäärän jälkeen" in {
-      verifySuoritukset("/suoritus?completedAfter=2014-06-20", List(vainKomo111)) // Samana päivänä kirjatut suoritukset otetaan mukaan
-      verifySuoritukset("/suoritus?completedAfter=2014-06-20T07:00Z", List(vainKomo111))
-      verifySuoritukset("/suoritus?completedAfter=2014-06-20T10:00Z", List())
-      verifySuoritukset("/suoritus?completedAfter=2014-06-20T10:00%2B03:00", List(vainKomo111))
-      verifySuoritukset("/suoritus?completedAfter=2014-06-20T13:00%2B03:00", List())
-      verifySuoritukset("/suoritus?completedAfter=2014-06-21", List())
-      get("/suoritus?completedAfter=qwer") {
+      verifySuoritukset("suoritus?completedAfter=2014-06-20", List(vainKomo111)) // Samana päivänä kirjatut suoritukset otetaan mukaan
+      verifySuoritukset("suoritus?completedAfter=2014-06-20T07:00Z", List(vainKomo111))
+      verifySuoritukset("suoritus?completedAfter=2014-06-20T10:00Z", List())
+      verifySuoritukset("suoritus?completedAfter=2014-06-20T10:00%2B03:00", List(vainKomo111))
+      verifySuoritukset("suoritus?completedAfter=2014-06-20T13:00%2B03:00", List())
+      verifySuoritukset("suoritus?completedAfter=2014-06-21", List())
+      get("suoritus?completedAfter=qwer") {
         status should equal(400)
       }
     }
     "GET /suoritus?asdf=qwer -> bad request" in {
-      get("/suoritus?asdf=qwer") {
+      get("suoritus?asdf=qwer") {
         status should equal(400)
       }
     }
