@@ -4,13 +4,11 @@ import fi.oph.tor.json.Json
 import fi.oph.tor.{ErrorHandlingServlet, InvalidRequestException}
 import fi.vm.sade.utils.slf4j.Logging
 
-class OppijaServlet extends ErrorHandlingServlet with Logging {
+class OppijaServlet(oppijaRepository: OppijaRepository) extends ErrorHandlingServlet with Logging {
   get("/") {
     contentType = "application/json;charset=utf-8"
-    params.get("nimi") match {
-      case Some(nimi) if nimi.startsWith("eero") => Json.write(List(Oppija("esimerkki", "eero", "010101-123N")))
-      case Some(nimi) if nimi.startsWith("teija") => Json.write(List(Oppija("tekijä", "teija", "150995-914X")))
-      case Some(_) => Json.write(Nil)
+    params.get("query") match {
+      case Some(query) => Json.write(oppijaRepository.findOppijat(query))
       case _ => throw new InvalidRequestException("Missing query parameter")
     }
   }
