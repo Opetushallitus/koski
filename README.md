@@ -121,11 +121,15 @@ Aja JettyLauncher-luokka IDEAsta/Eclipsestä, tai käynnistä TOR vaihtoehtoises
 
 Avaa selaimessa
 
-    http://localhost:7021/
+    http://localhost:7021/tor
 
 Suoritus-testidatat näkyy
 
-    http://localhost:7021/suoritus/
+    http://localhost:7021/tor/suoritus/
+    
+Mocha-testit voit ajaa selaimessa osoitteessa
+
+    http://localhost:7021/tor/test/runner.html
 
 ## Asennus pilveen (CSC:n ePouta)
 
@@ -140,7 +144,7 @@ Tämän jälkeen voit pushata uuden version TOR:sta ajamalla,
 
     make deploy
 
-jonka jälkeen sen pitäisi löytyä täältä: http://86.50.169.123/tordev/
+jonka jälkeen sen pitäisi löytyä täältä: http://86.50.169.123/tor/
 Lokien katsominen onnistuu komennolla:
 
     make tail

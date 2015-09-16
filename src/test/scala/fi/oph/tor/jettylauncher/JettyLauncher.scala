@@ -3,7 +3,7 @@ package fi.oph.tor.jettylauncher
 import fi.oph.tor.config.{TorProfile, IntegrationTest}
 import fi.vm.sade.utils.tcp.PortChecker
 import org.eclipse.jetty.server.Server
-import org.eclipse.jetty.server.handler.{HandlerList, ResourceHandler}
+import org.eclipse.jetty.server.handler.{ContextHandler, HandlerList, ResourceHandler}
 import org.eclipse.jetty.webapp.WebAppContext
 
 object JettyLauncher extends App {
@@ -15,6 +15,7 @@ class JettyLauncher(val port: Int, profile: Option[String] = None) {
   lazy val server = new Server(port)
 
   val context = new WebAppContext()
+  context.setContextPath("/tor")
   context.setResourceBase("src/main/webapp")
   context.setDescriptor("src/main/webapp/WEB-INF/web.xml")
   profile.foreach(context.setAttribute("tor.profile", _))
@@ -30,7 +31,9 @@ class JettyLauncher(val port: Int, profile: Option[String] = None) {
   def staticResources(path: String) = {
     val staticResources = new ResourceHandler()
     staticResources.setResourceBase(path)
-    staticResources
+    val contextHandler = new ContextHandler("/tor")
+    contextHandler.setHandler(staticResources)
+    contextHandler
   }
 
   def start = {
@@ -47,7 +50,7 @@ class JettyLauncher(val port: Int, profile: Option[String] = None) {
     }
   }
 
-  def baseUrl = "http://localhost:" + port
+  def baseUrl = "http://localhost:" + port + "/tor"
 }
 
 object SharedJetty extends JettyLauncher(PortChecker.findFreeLocalPort, Some("it")) {

@@ -5,7 +5,7 @@ import org.scalatra.Cookie
 
 class LogoutServlet extends ErrorHandlingServlet {
   get("/") {
-    response.addCookie(Cookie("tor-auth", ""))
-    response.redirect("/")
+    cookies.delete("tor-auth")
+    response.redirect("/tor")
   }
 }
