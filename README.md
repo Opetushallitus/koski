@@ -106,11 +106,11 @@ eri taskit on helppo suorittaa. Ks `Makefile`-tiedosto.
 
 Buildaa koko systeemi
 
-    make build
+    make build    
+    
+Buildaa frontti, ja buildaa automaattisesti kun tiedostoja muokataan:
 
-Aja kaikki testit
-
-    make test
+    make watch
 
 ### TOR-sovelluksen ajaminen kehitystyöasemalla
 
@@ -126,10 +126,20 @@ Avaa selaimessa
 Suoritus-testidatat näkyy
 
     http://localhost:7021/tor/suoritus/
+            
+## Testit
+
+Buildaa ja aja kaikki testit
+
+    make test
     
-Mocha-testit voit ajaa selaimessa osoitteessa
+Kun applikaatio pyörii paikallisesti (ks. ohjeet yllä), voi Mocha-testit ajaa selaimessa osoitteessa
 
     http://localhost:7021/tor/test/runner.html
+
+Mocha-testit voi ajaa myös nopeasti komentoriviltä
+
+    make fronttest    
 
 ## Asennus pilveen (CSC:n ePouta)
 
