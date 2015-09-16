@@ -1,12 +1,15 @@
 package fi.oph.tor.config
 
+import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.tor.db._
+import fi.oph.tor.security.Authentication
+import fi.vm.sade.security.ldap.DirectoryClient
 
 object TorProfile {
-  lazy val fromSystemProperty = fromString(System.getProperty("tor.profile", "default"))
+  lazy val fromSystemProperty = fromString(System.getProperty("tor.profile", "local"))
 
   def fromString(profile: String) = profile match {
-    case "default" => new Default()
+    case "local" => new Local()
     case "it" => new IntegrationTest()
     case "cloud" => new Cloud()
   }
@@ -14,9 +17,11 @@ object TorProfile {
 
 trait TorProfile {
   def database: TorDatabase
+  lazy val directoryClient: DirectoryClient = Authentication.directoryClient(config)
+  lazy val config: Config = ConfigFactory.load
 }
 
-class Default extends TorProfile with GlobalExecutionContext {
+class Local extends TorProfile with GlobalExecutionContext {
   lazy val database = TorDatabase.init(DatabaseConfig.localDatabase)
 }
 

@@ -17,7 +17,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     context.mount(new SuoritusServlet(rekisteri), "/suoritus")
     context.mount(new OppijaServlet, "/oppija")
     context.mount(new UserServlet, "/user")
-    context.mount(new LoginServlet, "/login")
+    context.mount(new LoginServlet(profile.directoryClient), "/login")
     context.mount(new LogoutServlet, "/logout")
 
     //await(database.run(DatabaseTestFixture.clear))
