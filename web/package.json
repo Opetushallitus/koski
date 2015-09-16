@@ -25,6 +25,6 @@
   "scripts": {
     "postinstall": "webpack -p",
     "watch": "webpack -d --progress --colors --watch",
-    "test": "mocha-phantomjs http://localhost:7021/test/runner.html"
+    "test": "mocha-phantomjs http://localhost:7021/tor/test/runner.html"
   }
 }
