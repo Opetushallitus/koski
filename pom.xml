@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>fi.vm.sade</groupId>
   <artifactId>tor</artifactId>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
   <description>todennetun osaamisen rekisteri</description>
   <version>0.1.0-SNAPSHOT</version>
   <name>todennetun osaamisen rekisteri</name>
@@ -168,17 +168,6 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>2.6</version>
-        <configuration>
-          <packagingExcludes>WEB-INF/lib//javax.servlet-api-*.jar</packagingExcludes>
-          <webResources>
-            <resource><directory>web/dist</directory></resource>
-            <resource><directory>web/static</directory></resource>
-          </webResources>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>

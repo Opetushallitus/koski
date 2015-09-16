@@ -12,13 +12,15 @@ help:
 	@echo "make deploy 	- Deploy to CSC's ePouta cloud"
 	@echo "make tail	- Tail the cloud logs"
 
+clean:
+	mvn clean
 build: front server
 	# Built the whole application, ready for running or testing
 front:
 	cd web && npm install
 	# front end build done
 server:
-	mvn install -DskipTests
+	mvn compile test-compile
 	# server-side build done
 codegen:
 	# Generate database access code from local Postgres database
