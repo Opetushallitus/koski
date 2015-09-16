@@ -4,7 +4,7 @@ function TorPage() {
       return openPage("/", api.isVisible)()
     },
     isVisible: function() {
-      return S("#content").is(":visible")
+      return S("#content .oppija-haku").is(":visible")
     }
   }
   return api

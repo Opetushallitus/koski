@@ -6,7 +6,7 @@ import org.scalatra.Cookie
 
 class LoginServlet extends ErrorHandlingServlet {
   post("/") {
-    Thread.sleep(3000)
+    Thread.sleep(100)
     val login = Json.read[Login](request.body)
     if(login.username == "fail") {
       halt(401, reason = "Invalid password or username")
