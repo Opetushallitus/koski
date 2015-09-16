@@ -1,6 +1,5 @@
 package fi.oph.tor.jettylauncher
 
-import fi.oph.tor.config.{TorProfile, IntegrationTest}
 import fi.vm.sade.utils.tcp.PortChecker
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.server.handler.{ContextHandler, HandlerList, ResourceHandler}
@@ -22,16 +21,17 @@ class JettyLauncher(val port: Int, profile: Option[String] = None) {
 
   val all = new HandlerList
   all.setHandlers(List(
-    staticResources("./web/static"),
-    staticResources("./web/dist"),
+    staticResources("./web/static", "/tor"),
+    staticResources("./web/dist", "/tor"),
+    staticResources("./web/test", "/tor/test"),
     context).toArray)
 
   server.setHandler(all)
 
-  def staticResources(path: String) = {
+  def staticResources(path: String, contextPath: String) = {
     val staticResources = new ResourceHandler()
     staticResources.setResourceBase(path)
-    val contextHandler = new ContextHandler("/tor")
+    val contextHandler = new ContextHandler(contextPath)
     contextHandler.setHandler(staticResources)
     contextHandler
   }
