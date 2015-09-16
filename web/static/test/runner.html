@@ -7,14 +7,14 @@
 </head>
 <body>
 <div id="mocha"></div>
-<script src="//cdnjs.cloudflare.com/ajax/libs/mocha/2.2.4/mocha.min.js"></script>
+<script src="lib/mocha.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/chai/2.2.0/chai.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/q.js/1.4.1/q.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <script>
-    var testTimeoutPageLoad = 30000
-    var testTimeoutDefault = 10000
+    var testTimeoutPageLoad = 1000
+    var testTimeoutDefault = 500
     mocha.ui('bdd')
     mocha.reporter('html')
     mocha.timeout(testTimeoutPageLoad)
@@ -26,7 +26,10 @@
 <script src="spec/torSpec.js"></script>
 <script>
     if (window.mochaPhantomJS) {
-        mochaPhantomJS.run()
+        var runner = mochaPhantomJS.run()
+        runner.on("fail", function() {
+          takeScreenshot()
+        })
     } else {
         var runner = mocha.run()
         $(document).keyup(function(e) { 
