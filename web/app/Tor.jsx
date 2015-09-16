@@ -1,3 +1,4 @@
+import Polyfills from "./polyfills.js"
 import React from "react"
 import ReactDOM from "react-dom"
 import Bacon from "baconjs"

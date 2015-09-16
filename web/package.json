@@ -6,9 +6,9 @@
   "dependencies": {
     "react": "0.14.0-rc1",
     "react-dom": "0.14.0-rc1",
-    "fetch": "^0.3.6",
+    "whatwg-fetch": "^0.9",
     "baconjs": "~0.7.73",
-    "bluebird": "^2"
+    "es6-promise": "^3"
   },
   "devDependencies": {
     "nodemon": "^1",
