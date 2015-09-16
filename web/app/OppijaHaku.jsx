@@ -35,7 +35,7 @@ export const OppijaHaku = ({oppijat}) => (
 )
 
 export const oppijatP = oppijatE.throttle(200)
-  .flatMapLatest(q => Http.get(`/tor/oppija?query=${q}`))
+  .flatMapLatest(q => q.length >= 3 ? Http.get(`/tor/oppija?query=${q}`) : Bacon.once([]))
   .toProperty([])
 
 export const oppijaP = Bacon.update(
