@@ -31,8 +31,8 @@ function TorPage() {
     },
     selectOppija: function(oppija) {
       return function() {
-        S('.oppija-haku li a').toArray().find(function(a) { return $(a).text().indexOf(oppija) > -1 }).click()
-        return wait.until(function() { return api.getSelectedOppija === oppija })
+        triggerEvent(S(S('.oppija-haku li a').toArray().filter(function(a) { return $(a).text().indexOf(oppija) > -1 })[0]), 'click')
+        return wait.until(function() { return api.getSelectedOppija() === oppija })
       }
     }
   }
