@@ -1,6 +1,5 @@
 package fi.oph.tor.oppija
 
-import fi.oph.tor.json.Json
 import fi.oph.tor.json.Json._
 import fi.oph.tor.json.Json4sHttp4s.json4sOf
 import fi.vm.sade.utils.cas.{CasAbleClient, CasClient, CasParams}

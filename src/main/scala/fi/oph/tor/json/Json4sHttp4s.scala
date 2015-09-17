@@ -8,7 +8,7 @@ import org.json4s.jackson.Serialization._
 import scalaz.\/._
 
 object Json4sHttp4s extends Logging {
-  def parseJson4s[A] (json:String)(implicit formats: Formats, mf: Manifest[A]) = scala.util.Try(read[A](json)).map(right).recover {
+  private def parseJson4s[A] (json:String)(implicit formats: Formats, mf: Manifest[A]) = scala.util.Try(read[A](json)).map(right).recover {
     case t: Throwable =>
       logger.error(s"json decoding failed for ${json}", t)
       left(ParseFailure("json decoding failed", t.getMessage))
