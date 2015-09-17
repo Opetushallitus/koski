@@ -20,7 +20,7 @@ front:
 	cd web && npm install
 	# front end build done
 server:
-	mvn compile test-compile
+	mvn compile
 	# server-side build done
 codegen:
 	# Generate database access code from local Postgres database
