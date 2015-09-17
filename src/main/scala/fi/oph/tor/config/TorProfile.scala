@@ -2,7 +2,7 @@ package fi.oph.tor.config
 
 import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.tor.db._
-import fi.oph.tor.oppija.MockOppijaRepository
+import fi.oph.tor.oppija.{OppijaRepository, MockOppijaRepository}
 import fi.oph.tor.security.Authentication
 import fi.vm.sade.security.ldap.DirectoryClient
 
@@ -20,7 +20,7 @@ trait TorProfile {
   def database: TorDatabase
   lazy val directoryClient: DirectoryClient = Authentication.directoryClient(config)
   lazy val config: Config = ConfigFactory.load
-  lazy val oppijaRepository = new MockOppijaRepository
+  lazy val oppijaRepository = OppijaRepository(config)
 }
 
 class Local extends TorProfile with GlobalExecutionContext {

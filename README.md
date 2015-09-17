@@ -158,3 +158,10 @@ jonka jälkeen sen pitäisi löytyä täältä: http://86.50.169.123/tor/
 Lokien katsominen onnistuu komennolla:
 
     make tail
+
+## Henkilöpalvelu-integraatio
+
+TOR ei tallenna henkilötietoja omaan kantaansa, vaan hakee/tallentaa ne Opintopolun [henkilöpalveluun](https://github.com/Opetushallitus/henkilo).
+
+Henkilöpalvelun REST-rajapinnat edellyttävät CAS-tunnistautumista. Tunnistautumisen jälkeen voit kokeilla vaikkapa tällaista hakua: https://testi.virkailija.opintopolku.fi:443/authentication-service/resources/henkilo?q=180295-905X
+

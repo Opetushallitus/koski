@@ -18,7 +18,7 @@
     <dependency>
       <groupId>com.github.Opetushallitus</groupId>
       <artifactId>scala-utils</artifactId>
-      <version>a835325</version>
+      <version>61da9d6e70c71a5328fb6a7288473ce1e50067ab</version>
     </dependency>
     <dependency>
       <groupId>com.github.Opetushallitus</groupId>
@@ -76,6 +76,11 @@
       <groupId>com.typesafe</groupId>
       <artifactId>config</artifactId>
       <version>1.3.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.http4s</groupId>
+      <artifactId>http4s-blaze-client_2.11</artifactId>
+      <version>0.10.0</version>
     </dependency>
     <!-- test deps -->
     <dependency>
