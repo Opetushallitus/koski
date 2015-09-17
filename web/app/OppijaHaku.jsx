@@ -9,14 +9,15 @@ const oppijaValintaE = new Bacon.Bus();
 const OppijaHakuBoksi = () =>
   (
     <div>
-      <label>Opiskelija</label>
-      <input id="search-query" onInput={(e) => oppijatE.push(e.target.value)}></input>
+      <label>Opiskelija
+        <input id="search-query" className="stacked" onInput={(e) => oppijatE.push(e.target.value)}></input>
+      </label>
     </div>
   )
 
 const OppijaHakutulokset = ({oppijat}) => {
   const oppijatElems = oppijat.map((oppija, i) =>
-    <li key={i}>
+    <li key={i} className="selected">
       <a href="#" onClick={() => oppijaValintaE.push(oppija)}>{oppija.etunimet} {oppija.sukunimi} {oppija.hetu}</a>
     </li>
   )

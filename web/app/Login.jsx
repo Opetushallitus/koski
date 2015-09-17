@@ -23,10 +23,10 @@ export const Login = React.createClass({
 
     return <form className={this.state.error ? "login error": "login"}>
       <label>Tunnus
-        <input id="username" onInput={this.onInput} ref="username" disabled={inProgress}></input>
+        <input className="stacked" id="username" onInput={this.onInput} ref="username" disabled={inProgress}></input>
       </label>
       <label>Salasana
-        <input id="password" onInput={this.onInput} type="password" ref="password" disabled={inProgress}></input>
+        <input className="stacked" id="password" onInput={this.onInput} type="password" ref="password" disabled={inProgress}></input>
       </label>
       <button className="button blue" onClick={this.doLogin} disabled={buttonDisabled}>{buttonLabel}</button>
     </form>
