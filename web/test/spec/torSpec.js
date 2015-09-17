@@ -42,12 +42,21 @@ describe("TOR", function() {
       it("ensimmäinen tulos valitaan automaattisesti", function() {
         expect(page.getSelectedOppija()).to.equal(eero)
       })
+      describe("Kun haku tuottaa uudestaan yhden tuloksen", function() {
+        before(page.search("teija"))
+        it("tulosta ei valita automaattisesti", function() {
+          expect(page.getSelectedOppija()).to.equal(eero)
+        })
+      })
     })
     describe("Haun tyhjentäminen", function() {
       before(page.search("eero"))
       before(page.search(""))
       it("säilyttää oppijavalinnan", function() {
         expect(page.getSelectedOppija()).to.equal(eero)
+      })
+      it("tyhjentää hakutulos-listauksen", function() {
+        expect(page.getSearchResults().length).to.equal(0)
       })
     })
     describe("Hakutuloksen valinta", function() {

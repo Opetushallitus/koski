@@ -20,7 +20,7 @@ function TorPage() {
     search: function(query) {
       return function() {
         return pageApi.setInputValue("#search-query", query)()
-          .then(wait.until(function() { return api.getSearchResults().some(function(val) { return val.indexOf(query) > -1 } ) }))
+          .then(wait.until(function() { return "" === query ? api.getSearchResults().length === 0 : api.getSearchResults().some(function(val) { return val.indexOf(query) > -1 } ) }))
       }
     },
     getSearchResults: function() {
