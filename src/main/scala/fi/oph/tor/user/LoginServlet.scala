@@ -16,6 +16,14 @@ class LoginServlet(directoryClient: DirectoryClient) extends ErrorHandlingServle
       halt(401, reason = "Invalid password or username")
     }
     response.addCookie(Cookie("tor-auth", "balaillaan!"))
-    Json.write(User("12345", login.username))
+    directoryClient.findUser(login.username).map { ldapUser =>
+      User(ldapUser.oid, ldapUser.givenNames + " " + ldapUser.lastName)
+    } match {
+      case Some(user) =>
+        Json.write(user)
+      case _ =>
+        logger.error("User " + login.username + " not found from LDAP")
+        halt(401, reason = "User not found")
+    }
   }
 }

@@ -21,4 +21,3 @@ class AuthenticationServiceClient(username: String, password: String, opintoPolk
 
 case class AuthenticationServiceUserQueryResult(totalCount: Integer, results: List[AuthenticationServiceUser])
 case class AuthenticationServiceUser(sukunimi: String, etunimet: String, hetu: String)
-

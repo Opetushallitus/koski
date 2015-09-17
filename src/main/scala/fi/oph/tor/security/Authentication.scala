@@ -9,7 +9,7 @@ object Authentication {
     if (config.hasPath("ldap")) {
       new LdapClient(LdapConfig(config.getString("ldap.host"), config.getString("ldap.userdn"), config.getString("ldap.password")))
     } else {
-      new MockDirectoryClient(Map("kalle" -> LdapUser(List())))
+      new MockDirectoryClient(Map("kalle" -> LdapUser(List(), "käyttäjä", "kalle", "12345")))
     }
   }
 }
