@@ -10,7 +10,7 @@ const OppijaHakuBoksi = () =>
   (
     <div>
       <label>Opiskelija</label>
-      <input onInput={(e) => oppijatE.push(e.target.value)}></input>
+      <input id="search-query" onInput={(e) => oppijatE.push(e.target.value)}></input>
     </div>
   )
 

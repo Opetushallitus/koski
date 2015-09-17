@@ -4,13 +4,10 @@ function LoginPage() {
 
   var api = {
     openPage: function() {
-      return openPage("/tor/", function() { return S("#content").is(":visible")})()
-        .then(function() {
-          return testFrame().jQuery.get("/tor/logout")
-        })
-        .then(function() {
+      return Q($.ajax("/tor/logout")).then(function() {
           return openPage("/tor/", api.isVisible)()
-        })
+        }
+      )
     },
     login: function(username, password) {
       return function() {
