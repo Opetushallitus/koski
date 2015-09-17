@@ -1,15 +1,62 @@
+@color-blue: #4194BF;
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: #FAFAFA;
+}
+
+#topbar {
+  height: 121px;
+  background: #FFFFFF;
+  box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.10);
+
+  #logo {
+    display: inline-block;
+    background: #84BF41;
+    border-radius: 1px;
+    height: 49px;
+    width: 206px;
+    margin-top: 36px;
+    margin-left: 112px;
+    text-align: center;
+    position: relative;
+
+    font-family: OpenSans-Semibold;
+    font-size: 22px;
+    color: #FFFFFF;
+    line-height: 49px;
+    &:after {
+      content: "";
+      background: url("/tor/images/logo-arrow.svg");
+      height: 49px;
+      width: 27px;
+      position: absolute;
+      right: -32px;
+    }
+  }
+
+  h1 {
+    display: inline-block;
+    text-transform: uppercase;
+    font-size: 20px;
+    color: #1A1919;
+    line-height: 27px;
+    margin-left: 54px;
+    font-weight: normal;
+  }
+}
+
 #content {
   padding: 10px;
   box-sizing: border-box;
 }
 
 .oppija-haku {
-  clear: both;
   width: 300px;
   position: fixed;
   border-right: 1px solid;
   bottom: 0;
-  top: 0;
+  top: 121px;
   padding-top: 20px;
 
   label {
@@ -39,14 +86,18 @@
   }
 }
 
+label input {
+  margin-top: 5px;
+}
+
 input {
   outline:none;
-  border: 2px #d5d5d5 solid;
-  padding: 0 1.6em 0 1em;
-  width: 190px;
-  height: 30px;
+  border: 1px #999290 solid;
+  padding: 0 1.6em 0 0.7em;
+  width: 210px;
+  height: 40px;
   &:focus {
-    border-color: #0c65a5;
+    border-color: @color-blue;
   }
 }
 
@@ -59,14 +110,29 @@ input {
   margin-right: auto;
   margin-left: auto;
   width: 170px;
+  margin-top: 50px;
 
   input {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 18px;
   }
 
-  button {
-    margin-top: 5px;
+  .button {
+    margin-top: 10px;
+  }
+}
+
+.button {
+  width: 210px;
+  height: 40px;
+  line-height: 22px;
+  font-family: OpenSans;
+  font-size: 16px;
+  border: none;
+
+  &.blue {
+    background: @color-blue;
+    color: #FFFFFF;
   }
 }
 
@@ -75,6 +141,4 @@ input {
   margin-left: 300px;
   text-align: right;
 }
-
-button:disabled { color: gray; }
 

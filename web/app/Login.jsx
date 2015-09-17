@@ -22,10 +22,13 @@ export const Login = React.createClass({
     const buttonDisabled = !usernameIsValid || !passwordIsValid || inProgress
 
     return <form className={this.state.error ? "login error": "login"}>
-      <h3>TOR LOGIN</h3>
-      <input id="username" onInput={this.onInput} ref="username" placeholder="Tunnus" disabled={inProgress}></input>
-      <input id="password" onInput={this.onInput} type="password" ref="password" placeholder="Salasana" disabled={inProgress}></input>
-      <button onClick={this.doLogin} disabled={buttonDisabled}>{buttonLabel}</button>
+      <label>Tunnus
+        <input id="username" onInput={this.onInput} ref="username" disabled={inProgress}></input>
+      </label>
+      <label>Salasana
+        <input id="password" onInput={this.onInput} type="password" ref="password" disabled={inProgress}></input>
+      </label>
+      <button className="button blue" onClick={this.doLogin} disabled={buttonDisabled}>{buttonLabel}</button>
     </form>
   },
 
