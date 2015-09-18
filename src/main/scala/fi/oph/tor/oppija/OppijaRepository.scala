@@ -20,6 +20,8 @@ trait OppijaRepository {
 class MockOppijaRepository extends OppijaRepository {
   val oppijat = List(
     Oppija("esimerkki", "eero", "010101-123N"),
+    Oppija("eerola", "jouni", "170995-9457"),
+    Oppija("markkanen", "eero", "170995-9712"),
     Oppija("tekijä", "teija", "150995-914X")
   )
 

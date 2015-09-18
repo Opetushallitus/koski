@@ -18,7 +18,7 @@ body {
     height: 49px;
     width: 206px;
     margin-top: 36px;
-    margin-left: 112px;
+    margin-left: 102px;
     text-align: center;
 
     font-family: OpenSans-Semibold;
@@ -42,13 +42,9 @@ body {
     font-size: 20px;
     color: #1A1919;
     line-height: 27px;
-    margin-left: 54px;
+    margin-left: 67px;
     font-weight: normal;
   }
-}
-
-#content {
-  padding: 10px;
 }
 
 .oppija-haku {
@@ -60,12 +56,18 @@ body {
   padding-left: 100px;
   background: @color-white;
 
+  hr {
+    margin-right: 40px;
+    margin-top: 22px;
+  }
+
   ul {
     list-style: none;
     margin: 5px 0 0 0;
     padding: 0;
 
     li {
+      position: relative;
       height: 49px;
       a {
         padding-left: 9px;
@@ -78,23 +80,30 @@ body {
       a {
         color: @color-white;
       }
+      :after {
+        content: "";
+        display: block;
+        width: 0;
+        height: 0;
+        border-top: 12px solid transparent;
+        border-bottom: 12px solid transparent;
+        border-left: 12px solid @color-blue;
+        position: absolute;
+        top: 13px;
+        left: 376px;
+      }
     }
   }
 
   input {
     width: 340px;
   }
+}
 
-  label {
-    &:after {
-      content: "";
-      height: 1px;
-      width: 340px;
-      border-bottom: 1px solid #D9D9D9;
-      display: block;
-      margin-top: 22px;
-    }
-  }
+hr {
+  color: #D9D9D9;
+  border-style: solid;
+  border-top-width: 0;
 }
 
 .error {
@@ -132,8 +141,24 @@ input {
 }
 
 .oppija {
-  margin-left: 300px;
-  text-align: center;
+  margin-left: 480px;
+  margin-top: 58px;
+  padding-left: 64px;
+
+  h2 {
+    font-weight: normal;
+    font-size: 20px;
+  }
+
+  hr {
+    margin-top: 29px;
+    margin-right: 64px;
+  }
+
+  .hetu {
+    color: #918C8A;
+    font-size: 16px;
+  }
 }
 
 .login {
@@ -158,6 +183,9 @@ input {
   font-family: OpenSans;
   font-size: 16px;
   border: none;
+  display: inline-block;
+  text-align: center;
+  line-height: 40px;
 
   &.blue {
     background: @color-blue;
@@ -166,8 +194,14 @@ input {
 }
 
 .user-info {
-  margin-bottom: 20px;
-  margin-left: 300px;
-  text-align: right;
+  float: right;
+  padding-top: 40px;
+  padding-right: 109px;
+
+  a {
+    width: auto;
+    padding: 0 30px;
+    margin-left: 16px;
+  }
 }
 

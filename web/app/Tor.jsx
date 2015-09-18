@@ -13,7 +13,7 @@ const uiP = userP.flatMap((user) => {
   if (user) {
     return Bacon.combineAsArray(oppijatP, oppijaP).map(([oppijat, valittuOppija]) =>
         <div>
-          <UserInfo user={user} />
+          <TopBar user={user} />
           <OppijaHaku oppijat={oppijat} />
           <Oppija oppija={valittuOppija} />
         </div>
@@ -22,6 +22,14 @@ const uiP = userP.flatMap((user) => {
     return <Login />
   }
 })
+
+const TopBar = ({user}) => (
+  <div id="topbar">
+    <div id="logo">Opintopolku.fi</div>
+    <h1>Todennetun osaamisen rekisteri</h1>
+    <UserInfo user={user} />
+  </div>
+)
 
 uiP.onValue((component) => ReactDOM.render(component, document.getElementById('content')))
 uiP.onError(handleError)

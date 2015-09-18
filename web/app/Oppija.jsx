@@ -2,5 +2,8 @@ import React from "react"
 import ReactDOM from "react-dom"
 
 export const Oppija = ({oppija}) => oppija ?
-  <h2 className="oppija">{oppija.etunimet} {oppija.sukunimi} {oppija.hetu}</h2> :
-  <h2></h2>
+  <div className="oppija">
+    <h2>{oppija.sukunimi}, {oppija.etunimet} <span className="hetu">{oppija.hetu}</span></h2>
+    <hr></hr>
+  </div> :
+  <div></div>
