@@ -7,15 +7,19 @@ import R from "ramda"
 const oppijatE = new Bacon.Bus();
 const oppijaValintaE = new Bacon.Bus();
 
+const acceptableQuery = (q) => q.length >= 3
+
 export const oppijatP = oppijatE.throttle(200)
-  .flatMapLatest(q => q.length >= 3 ? Http.get(`/tor/oppija?query=${q}`) : Bacon.once([]))
-  .toProperty([])
+  .flatMapLatest(q => acceptableQuery(q) ? Http.get(`/tor/oppija?query=${q}`) : Bacon.once([]))
+  .toProperty([]).mapError([])
 
 export const oppijaP = Bacon.update(
   undefined,
   [oppijaValintaE], (p, n) => n,
   [oppijatP.changes().filter((l) => l.length === 1).map(".0")], (p, n) => p ? p : n
 )
+
+export const searchInProgressP = oppijatE.throttle(200).filter(acceptableQuery).awaiting(oppijatP)
 
 export const OppijaHakuBoksi = React.createClass({
   render() {
@@ -34,7 +38,7 @@ export const OppijaHakuBoksi = React.createClass({
   }
 })
 
-export const OppijaHakutulokset = ({oppijat, valittu}) => {
+export const OppijaHakutulokset = ({oppijat, valittu, searching}) => {
   const oppijatElems = oppijat.map((o, i) => {
     const className = valittu ? (R.equals(o, valittu) ? "selected" : "") : ""
     return (
@@ -44,8 +48,10 @@ export const OppijaHakutulokset = ({oppijat, valittu}) => {
     )}
   )
 
+  const className = searching ? "searching" : ""
+
   return (
-    <ul>
+    <ul className={className}>
       {oppijatElems}
     </ul>
   )

@@ -38,6 +38,34 @@
         left: 376px;
       }
     }
+
+    &.searching {
+      position: relative;
+      &:before {
+        display: block;
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: @color-lightgray;
+        z-index: 100;
+        opacity: 0.8;
+      }
+      &:after {
+        display: block;
+        background: url("/tor/images/loader.gif");
+        width: 100px;
+        height: 100px;
+        content: '';
+        position: absolute;
+        z-index: 200;
+        top: 27px;
+        left: 120px;
+        opacity: 0.5;
+      }
+    }
   }
 
   input {

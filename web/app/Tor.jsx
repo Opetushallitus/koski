@@ -5,17 +5,18 @@ import Bacon from "baconjs"
 import style from "./style/main.less"
 import handleError from "./error-handler"
 import {Login, userP} from "./Login.jsx"
-import {OppijaHakuBoksi, OppijaHakutulokset, oppijatP, oppijaP} from "./OppijaHaku.jsx"
+import {OppijaHakuBoksi, OppijaHakutulokset, oppijatP, oppijaP, searchInProgressP} from "./OppijaHaku.jsx"
 import {Oppija} from "./Oppija.jsx"
 import {TopBar} from "./TopBar.jsx"
 
 const stateP = Bacon.combineTemplate({
   user: userP,
   oppijat: oppijatP,
-  valittuOppija: oppijaP
+  valittuOppija: oppijaP,
+  searchInProgress: searchInProgressP
 })
 
-const domP = stateP.map(({user, oppijat, valittuOppija}) =>
+const domP = stateP.map(({user, oppijat, valittuOppija, searchInProgress}) =>
   <div>
     <TopBar user={user} />
     {
@@ -23,7 +24,7 @@ const domP = stateP.map(({user, oppijat, valittuOppija}) =>
         ? <div>
             <div className="oppija-haku">
               <OppijaHakuBoksi />
-              <OppijaHakutulokset oppijat={oppijat} valittu={valittuOppija}/>
+              <OppijaHakutulokset oppijat={oppijat} valittu={valittuOppija} searching={searchInProgress}/>
             </div>
             <Oppija oppija={valittuOppija} />
           </div>
