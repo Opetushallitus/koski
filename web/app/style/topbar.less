@@ -1,0 +1,49 @@
+#topbar {
+  background: @color-white;
+  box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.10);
+
+  #logo {
+    display: inline-block;
+    background: #84BF41;
+    border-radius: 1px;
+    height: 49px;
+    width: 206px;
+    margin-top: 36px;
+    text-align: center;
+
+    font-size: 22px;
+    font-weight: 600;
+    color: @color-white;
+    line-height: 49px;
+    &:after {
+      content: "";
+      background: url("/tor/images/logo-arrow.svg");
+      height: 49px;
+      width: 27px;
+      display: block;
+      margin-left: 212px;
+      margin-top: -49px;
+    }
+  }
+
+  h1 {
+    display: inline-block;
+    text-transform: uppercase;
+    font-size: 20px;
+    color: #1A1919;
+    line-height: 27px;
+    margin-left: 67px;
+    font-weight: normal;
+  }
+
+  .user-info {
+    float: right;
+    padding-top: 40px;
+
+    a {
+      width: auto;
+      padding: 0 30px;
+      margin-left: 16px;
+    }
+  }
+}

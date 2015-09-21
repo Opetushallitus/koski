@@ -6,4 +6,5 @@ export const Oppija = ({oppija}) => oppija ?
     <h2>{oppija.sukunimi}, {oppija.etunimet} <span className="hetu">{oppija.hetu}</span></h2>
     <hr></hr>
   </div> :
-  <div></div>
+  <div className="oppija">
+  </div>

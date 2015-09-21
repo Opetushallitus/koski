@@ -1,206 +1,48 @@
+@import "global";
+@import "topbar";
+@import "oppija";
+@import "oppija-haku";
+@import "login";
+
 @color-blue: #4194BF;
 @color-white: #FFFFFF;
+@color-lightgray: #FAFAFA;
+@color-darkgray: #F5F5F5;
+
+@page-border-width: ~"calc((100vw - 1200px) / 2)";
+@oppija-haku-width: ~"calc(380px + (100vw - 1200px) / 2)";
+@content-min-height: ~"calc(100vh - 121px)";
 
 body {
   font-family: 'Open Sans', sans-serif;
-  background-color: #FAFAFA;
+  background-color: @color-white;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 #topbar {
   height: 121px;
-  background: @color-white;
-  box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.10);
-
-  #logo {
-    display: inline-block;
-    background: #84BF41;
-    border-radius: 1px;
-    height: 49px;
-    width: 206px;
-    margin-top: 36px;
-    margin-left: 102px;
-    text-align: center;
-
-    font-family: OpenSans-Semibold;
-    font-size: 22px;
-    color: @color-white;
-    line-height: 49px;
-    &:after {
-      content: "";
-      background: url("/tor/images/logo-arrow.svg");
-      height: 49px;
-      width: 27px;
-      display: block;
-      margin-left: 212px;
-      margin-top: -49px;
-    }
-  }
-
-  h1 {
-    display: inline-block;
-    text-transform: uppercase;
-    font-size: 20px;
-    color: #1A1919;
-    line-height: 27px;
-    margin-left: 67px;
-    font-weight: normal;
-  }
+  margin: 0 auto;
+  padding-left: @page-border-width;
+  padding-right: @page-border-width;
 }
 
 .oppija-haku {
-  width: 380px;
-  position: fixed;
-  bottom: 0;
-  top: 123px;
-  padding-top: 20px;
-  padding-left: 100px;
-  background: @color-white;
-
-  hr {
-    margin-right: 40px;
-    margin-top: 22px;
-  }
-
-  ul {
-    list-style: none;
-    margin: 5px 0 0 0;
-    padding: 0;
-
-    li {
-      position: relative;
-      height: 49px;
-      a {
-        padding-left: 9px;
-        line-height: 49px;
-      }
-    }
-
-    li.selected {
-      background-color: @color-blue;
-      a {
-        color: @color-white;
-      }
-      :after {
-        content: "";
-        display: block;
-        width: 0;
-        height: 0;
-        border-top: 12px solid transparent;
-        border-bottom: 12px solid transparent;
-        border-left: 12px solid @color-blue;
-        position: absolute;
-        top: 13px;
-        left: 376px;
-      }
-    }
-  }
-
-  input {
-    width: 340px;
-  }
-}
-
-hr {
-  color: #D9D9D9;
-  border-style: solid;
-  border-top-width: 0;
-}
-
-.error {
-  input {
-    border: 1px solid #ee4444;
-    &:focus {
-      border-color: #ee4444;
-    }
-  }
-}
-
-label input {
-  margin-top: 5px;
-}
-
-a {
-  color: @color-blue;
-  font-size: 18px;
-  text-decoration: none;
-}
-
-input {
-  outline:none;
-  border: 1px #999290 solid;
-  padding: 0 1.6em 0 0.7em;
-  width: 210px;
-  height: 40px;
-  &:focus {
-    border-color: @color-blue;
-  }
-
-  &.stacked {
-    display: block;
-  }
+  position: absolute;
+  min-height: @content-min-height;
+  width: @oppija-haku-width;
+  margin-top: 2px;
+  padding-left:@page-border-width;
+  padding-top: 35px;
 }
 
 .oppija {
-  margin-left: 480px;
-  margin-top: 58px;
-  padding-left: 64px;
-
-  h2 {
-    font-weight: normal;
-    font-size: 20px;
-  }
-
-  hr {
-    margin-top: 29px;
-    margin-right: 64px;
-  }
-
-  .hetu {
-    color: #918C8A;
-    font-size: 16px;
-  }
+  min-height: @content-min-height;
+  margin-left: @oppija-haku-width;
+  margin-top: 2px;
+  padding-right: @page-border-width;
+  padding-top: 52px;
+  padding-left: 60px;
 }
-
-.login {
-  margin-right: auto;
-  margin-left: auto;
-  width: 170px;
-  margin-top: 50px;
-
-  input {
-    margin-bottom: 18px;
-  }
-
-  .button {
-    margin-top: 10px;
-  }
-}
-
-.button {
-  width: 210px;
-  height: 40px;
-  line-height: 22px;
-  font-size: 16px;
-  border: none;
-  display: inline-block;
-  text-align: center;
-  line-height: 40px;
-
-  &.blue {
-    background: @color-blue;
-    color: @color-white;
-  }
-}
-
-.user-info {
-  float: right;
-  padding-top: 40px;
-  padding-right: 109px;
-
-  a {
-    width: auto;
-    padding: 0 30px;
-    margin-left: 16px;
-  }
-}
-

@@ -27,11 +27,11 @@ const uiP = userP.flatMapLatest((user) => {
 })
 
 const TopBar = ({user}) => (
-  <div id="topbar">
+  <header id="topbar">
     <div id="logo">Opintopolku.fi</div>
     <h1>Todennetun osaamisen rekisteri</h1>
     <UserInfo user={user} />
-  </div>
+  </header>
 )
 
 uiP.onValue((component) => ReactDOM.render(component, document.getElementById('content')))

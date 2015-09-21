@@ -1,0 +1,47 @@
+.oppija-haku {
+  background-color: @color-lightgray;
+  background: @color-white;
+
+  hr {
+    margin-right: 40px;
+    margin-top: 22px;
+  }
+
+  ul {
+    list-style: none;
+    margin: 5px 0 0 0;
+    padding: 0;
+
+    li {
+      position: relative;
+      height: 49px;
+      a {
+        padding-left: 9px;
+        line-height: 49px;
+      }
+    }
+
+    li.selected {
+      background-color: @color-blue;
+      a {
+        color: @color-white;
+      }
+      :after {
+        content: "";
+        display: block;
+        width: 0;
+        height: 0;
+        border-top: 12px solid transparent;
+        border-bottom: 12px solid transparent;
+        border-left: 12px solid @color-blue;
+        position: absolute;
+        top: 13px;
+        left: 376px;
+      }
+    }
+  }
+
+  input {
+    width: 340px;
+  }
+}
