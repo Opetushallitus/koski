@@ -5,16 +5,19 @@ import Bacon from "baconjs"
 import style from "./style/main.less"
 import handleError from "./error-handler"
 import {Login, userP} from "./Login.jsx"
-import {OppijaHaku, oppijatP, oppijaP} from "./OppijaHaku.jsx"
+import {OppijaHakuBoksi, OppijaHakutulokset, oppijatP, oppijaP} from "./OppijaHaku.jsx"
 import {Oppija} from "./Oppija.jsx"
 import {UserInfo} from "./UserInfo.jsx"
 
-const uiP = userP.flatMap((user) => {
+const uiP = userP.flatMapLatest((user) => {
   if (user) {
     return Bacon.combineAsArray(oppijatP, oppijaP).map(([oppijat, valittuOppija]) =>
         <div>
           <TopBar user={user} />
-          <OppijaHaku oppijat={oppijat} />
+          <div className="oppija-haku">
+            <OppijaHakuBoksi />
+            <OppijaHakutulokset oppijat={oppijat} valittu={valittuOppija}/>
+          </div>
           <Oppija oppija={valittuOppija} />
         </div>
     )
