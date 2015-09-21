@@ -7,32 +7,31 @@ import handleError from "./error-handler"
 import {Login, userP} from "./Login.jsx"
 import {OppijaHakuBoksi, OppijaHakutulokset, oppijatP, oppijaP} from "./OppijaHaku.jsx"
 import {Oppija} from "./Oppija.jsx"
-import {UserInfo} from "./UserInfo.jsx"
+import {TopBar} from "./TopBar.jsx"
 
-const uiP = userP.flatMapLatest((user) => {
-  if (user) {
-    return Bacon.combineAsArray(oppijatP, oppijaP).map(([oppijat, valittuOppija]) =>
-        <div>
-          <TopBar user={user} />
-          <div className="oppija-haku">
-            <OppijaHakuBoksi />
-            <OppijaHakutulokset oppijat={oppijat} valittu={valittuOppija}/>
-          </div>
-          <Oppija oppija={valittuOppija} />
-        </div>
-    )
-  } else {
-    return <Login />
-  }
+const stateP = Bacon.combineTemplate({
+  user: userP,
+  oppijat: oppijatP,
+  valittuOppija: oppijaP
 })
 
-const TopBar = ({user}) => (
-  <header id="topbar">
-    <div id="logo">Opintopolku.fi</div>
-    <h1>Todennetun osaamisen rekisteri</h1>
-    <UserInfo user={user} />
-  </header>
+const domP = stateP.map(({user, oppijat, valittuOppija}) =>
+  <div>
+    <TopBar user={user} />
+    {
+      user
+        ? <div>
+            <div className="oppija-haku">
+              <OppijaHakuBoksi />
+              <OppijaHakutulokset oppijat={oppijat} valittu={valittuOppija}/>
+            </div>
+            <Oppija oppija={valittuOppija} />
+          </div>
+
+        : <Login />
+    }
+  </div>
 )
 
-uiP.onValue((component) => ReactDOM.render(component, document.getElementById('content')))
-uiP.onError(handleError)
+domP.onValue((component) => ReactDOM.render(component, document.getElementById('content')))
+domP.onError(handleError)
