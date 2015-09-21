@@ -2,6 +2,7 @@ import React from "react"
 import ReactDOM from "react-dom"
 import Bacon from "baconjs"
 import Http from "./http"
+import R from "ramda"
 
 const oppijatE = new Bacon.Bus();
 const oppijaValintaE = new Bacon.Bus();
@@ -35,7 +36,7 @@ export const OppijaHakuBoksi = React.createClass({
 
 export const OppijaHakutulokset = ({oppijat, valittu}) => {
   const oppijatElems = oppijat.map((o, i) => {
-    const className = valittu ? (o.hetu === valittu.hetu ? "selected" : "") : ""
+    const className = valittu ? (R.equals(o, valittu) ? "selected" : "") : ""
     return (
       <li key={i} className={className}>
         <a href="#" onClick={() => oppijaValintaE.push(o)}>{o.sukunimi}, {o.etunimet} {o.hetu}</a>

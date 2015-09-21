@@ -8,6 +8,7 @@
     "react-dom": "0.14.0-rc1",
     "whatwg-fetch": "^0.9",
     "baconjs": "~0.7.73",
+    "ramda": "^0.17",
     "es6-promise": "^3"
   },
   "devDependencies": {

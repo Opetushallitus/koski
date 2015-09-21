@@ -2,6 +2,8 @@ describe("TOR", function() {
   var page = TorPage()
   var login = LoginPage()
   var eero = 'esimerkki, eero 010101-123N'
+  var markkanen = 'markkanen, eero '
+  var eerola = 'eerola, jouni '
   var teija = 'tekijä, teija 150995-914X'
 
   describe("Login-sivu", function() {
@@ -59,14 +61,20 @@ describe("TOR", function() {
         expect(page.getSearchResults().length).to.equal(0)
       })
     })
-    describe("Hakutuloksen valinta", function() {
+    describe("Kun haku tuottaa useamman tuloksen", function() {
       before(page.search("eero"))
-      before(page.search("teija"))
-      before(page.selectOppija("teija"))
+
+      it("Hakutulokset näytetään", function() {
+        expect(page.getSearchResults()).to.deep.equal([eero, eerola, markkanen])
+      })
+
+
+      before(page.selectOppija("markkanen"))
 
       it("valitsee oppijan", function() {
-        expect(page.getSelectedOppija()).to.equal(teija)
+        expect(page.getSelectedOppija()).to.equal(markkanen)
       })
     })
+
   })
 })
