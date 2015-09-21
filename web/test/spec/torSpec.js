@@ -1,8 +1,8 @@
 describe("TOR", function() {
   var page = TorPage()
   var login = LoginPage()
-  var eero = 'eero esimerkki 010101-123N'
-  var teija = 'teija tekijä 150995-914X'
+  var eero = 'esimerkki, eero 010101-123N'
+  var teija = 'tekijä, teija 150995-914X'
 
   describe("Login-sivu", function() {
     before(login.openPage)
@@ -35,7 +35,7 @@ describe("TOR", function() {
       })
     })
     describe("Kun haku tuottaa yhden tuloksen", function() {
-      before(page.search("eero"))
+      before(page.search("esimerkki"))
       it("ensimmäinen tulos näytetään", function() {
         expect(page.getSearchResults()).to.deep.equal([eero])
       })
