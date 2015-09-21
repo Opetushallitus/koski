@@ -30,6 +30,7 @@ describe("TOR", function() {
     before(page.loginAndOpen)
     it("näytetään, kun käyttäjä on kirjautunut sisään", function() {
       expect(page.isVisible()).to.equal(true)
+      expect(page.isNoResultsLabelShown()).to.equal(false)
     })
     describe("Hakutulos-lista", function() {
       it("on aluksi tyhjä", function() {
@@ -37,42 +38,51 @@ describe("TOR", function() {
       })
     })
     describe("Kun haku tuottaa yhden tuloksen", function() {
-      before(page.search("esimerkki"))
+      before(page.search("esimerkki", 1))
       it("ensimmäinen tulos näytetään", function() {
         expect(page.getSearchResults()).to.deep.equal([eero])
+        expect(page.isNoResultsLabelShown()).to.equal(false)
       })
       it("ensimmäinen tulos valitaan automaattisesti", function() {
         expect(page.getSelectedOppija()).to.equal(eero)
       })
       describe("Kun haku tuottaa uudestaan yhden tuloksen", function() {
-        before(page.search("teija"))
+        before(page.search("teija", 1))
         it("tulosta ei valita automaattisesti", function() {
           expect(page.getSelectedOppija()).to.equal(eero)
         })
       })
     })
     describe("Haun tyhjentäminen", function() {
-      before(page.search("eero"))
-      before(page.search(""))
+      before(page.search("eero", 3))
+      before(page.search("", 0))
       it("säilyttää oppijavalinnan", function() {
         expect(page.getSelectedOppija()).to.equal(eero)
       })
       it("tyhjentää hakutulos-listauksen", function() {
         expect(page.getSearchResults().length).to.equal(0)
+        expect(page.isNoResultsLabelShown()).to.equal(false)
       })
     })
     describe("Kun haku tuottaa useamman tuloksen", function() {
-      before(page.search("eero"))
+      before(page.search("eero", 3))
 
       it("Hakutulokset näytetään", function() {
         expect(page.getSearchResults()).to.deep.equal([eero, eerola, markkanen])
       })
 
-
       before(page.selectOppija("markkanen"))
 
       it("valitsee oppijan", function() {
         expect(page.getSelectedOppija()).to.equal(markkanen)
+      })
+    })
+
+    describe("Kun haku ei tuota tuloksia", function() {
+      before(page.search("asdf", 0))
+
+      it("Näytetään kuvaava teksti", function() {
+        expect(page.isNoResultsLabelShown()).to.equal(true)
       })
     })
 

@@ -4,29 +4,29 @@ import Bacon from "baconjs"
 import Http from "./http"
 import R from "ramda"
 
-const oppijatE = new Bacon.Bus();
+const oppijaHakuE = new Bacon.Bus();
 const oppijaValintaE = new Bacon.Bus();
 
 const acceptableQuery = (q) => q.length >= 3
 
-export const oppijatP = oppijatE.throttle(200)
-  .flatMapLatest(q => acceptableQuery(q) ? Http.get(`/tor/oppija?query=${q}`) : Bacon.once([]))
-  .toProperty([]).mapError([])
+export const oppijatP = oppijaHakuE.throttle(200)
+  .flatMapLatest(q => (acceptableQuery(q) ? Http.get(`/tor/oppija?query=${q}`).mapError([]) : Bacon.once([])).map((oppijat) => ({ results: oppijat, query: q })))
+  .toProperty({ query: "", results: [] })
 
 export const oppijaP = Bacon.update(
   undefined,
   [oppijaValintaE], (p, n) => n,
-  [oppijatP.changes().filter((l) => l.length === 1).map(".0")], (p, n) => p ? p : n
+  [oppijatP.map(".results").changes().filter((l) => l.length === 1).map(".0")], (p, n) => p ? p : n
 )
 
-export const searchInProgressP = oppijatE.throttle(200).filter(acceptableQuery).awaiting(oppijatP)
+export const searchInProgressP = oppijaHakuE.throttle(200).filter(acceptableQuery).awaiting(oppijatP)
 
 export const OppijaHakuBoksi = React.createClass({
   render() {
     return (
       <div>
         <label>Opiskelija
-          <input id="search-query" className="stacked" ref="query" onInput={(e) => oppijatE.push(e.target.value)}></input>
+          <input id="search-query" className="stacked" ref="query" onInput={(e) => oppijaHakuE.push(e.target.value)}></input>
         </label>
         <hr></hr>
       </div>
@@ -39,7 +39,7 @@ export const OppijaHakuBoksi = React.createClass({
 })
 
 export const OppijaHakutulokset = ({oppijat, valittu, searching}) => {
-  const oppijatElems = oppijat.map((o, i) => {
+  const oppijatElems = oppijat.results.map((o, i) => {
     const className = valittu ? (R.equals(o, valittu) ? "selected" : "") : ""
     return (
       <li key={i} className={className}>
@@ -50,9 +50,9 @@ export const OppijaHakutulokset = ({oppijat, valittu, searching}) => {
 
   const className = searching ? "searching" : ""
 
-  return (
-    <ul className={className}>
-      {oppijatElems}
-    </ul>
-  )
+  return oppijat.results.length > 0
+    ? <ul className={className}> {oppijatElems} </ul>
+    : oppijat.query.length > 2
+      ? <span className="no-results">Ei hakutuloksia</span>
+      : <span></span>
 }
