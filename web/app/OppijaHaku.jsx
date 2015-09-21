@@ -21,7 +21,7 @@ export const oppijaP = Bacon.update(
 
 export const searchInProgressP = oppijaHakuE.throttle(200).filter(acceptableQuery).awaiting(oppijatP)
 
-export const OppijaHakuBoksi = React.createClass({
+const OppijaHakuBoksi = React.createClass({
   render() {
     return (
       <div>
@@ -38,7 +38,7 @@ export const OppijaHakuBoksi = React.createClass({
   }
 })
 
-export const OppijaHakutulokset = ({oppijat, valittu, searching}) => {
+const OppijaHakutulokset = ({oppijat, valittu}) => {
   const oppijatElems = oppijat.results.map((o, i) => {
     const className = valittu ? (R.equals(o, valittu) ? "selected" : "") : ""
     return (
@@ -48,11 +48,20 @@ export const OppijaHakutulokset = ({oppijat, valittu, searching}) => {
     )}
   )
 
-  const className = searching ? "searching" : ""
-
   return oppijat.results.length > 0
-    ? <ul className={className}> {oppijatElems} </ul>
+    ? <ul> {oppijatElems} </ul>
     : oppijat.query.length > 2
       ? <span className="no-results">Ei hakutuloksia</span>
       : <span></span>
+}
+
+export const OppijaHaku = ({oppijat, valittuOppija, searching}) => {
+  const className = searching ? "oppija-haku searching" : "oppija-haku"
+
+  return <div className={className}>
+    <OppijaHakuBoksi />
+    <div className="hakutulokset">
+      <OppijaHakutulokset oppijat={oppijat} valittu={valittuOppija}/>
+    </div>
+  </div>
 }

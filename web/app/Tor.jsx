@@ -5,7 +5,7 @@ import Bacon from "baconjs"
 import style from "./style/main.less"
 import handleError from "./error-handler"
 import {Login, userP} from "./Login.jsx"
-import {OppijaHakuBoksi, OppijaHakutulokset, oppijatP, oppijaP, searchInProgressP} from "./OppijaHaku.jsx"
+import {OppijaHaku, oppijatP, oppijaP, searchInProgressP} from "./OppijaHaku.jsx"
 import {Oppija} from "./Oppija.jsx"
 import {TopBar} from "./TopBar.jsx"
 
@@ -22,10 +22,7 @@ const domP = stateP.map(({user, oppijat, valittuOppija, searchInProgress}) =>
     {
       user
         ? <div>
-            <div className="oppija-haku">
-              <OppijaHakuBoksi />
-              <OppijaHakutulokset oppijat={oppijat} valittu={valittuOppija} searching={searchInProgress}/>
-            </div>
+            <OppijaHaku oppijat={oppijat} valittu={valittuOppija} searching={searchInProgress}/>
             <Oppija oppija={valittuOppija} />
           </div>
 
