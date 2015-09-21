@@ -16,15 +16,22 @@ export const oppijaP = Bacon.update(
   [oppijatP.changes().filter((l) => l.length === 1).map(".0")], (p, n) => p ? p : n
 )
 
-export const OppijaHakuBoksi = () =>
-  (
-    <div>
-      <label>Opiskelija
-        <input id="search-query" className="stacked" onInput={(e) => oppijatE.push(e.target.value)}></input>
-      </label>
-      <hr></hr>
-    </div>
-  )
+export const OppijaHakuBoksi = React.createClass({
+  render() {
+    return (
+      <div>
+        <label>Opiskelija
+          <input id="search-query" className="stacked" ref="query" onInput={(e) => oppijatE.push(e.target.value)}></input>
+        </label>
+        <hr></hr>
+      </div>
+    )
+  },
+
+  componentDidMount() {
+    this.refs.query.focus()
+  }
+})
 
 export const OppijaHakutulokset = ({oppijat, valittu}) => {
   const oppijatElems = oppijat.map((o, i) => {
