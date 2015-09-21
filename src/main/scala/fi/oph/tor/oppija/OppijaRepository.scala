@@ -26,7 +26,6 @@ class MockOppijaRepository extends OppijaRepository {
   )
 
   override def findOppijat(query: String) = {
-    Thread.sleep(1000)
     oppijat.filter(searchString(_).contains(query.toLowerCase))
   }
 
