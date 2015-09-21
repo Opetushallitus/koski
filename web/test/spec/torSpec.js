@@ -85,6 +85,29 @@ describe("TOR", function() {
         expect(page.isNoResultsLabelShown()).to.equal(true)
       })
     })
+  })
+  describe("Tietoturva", function() {
+    before(login.openPage)
 
+
+    describe("Oppijarajapinta", function() {
+      before(openPage("/tor/oppija?query=eero", authenticationErrorIsShown))
+
+      it("vaatii autentikaation", function () {
+        expect(authenticationErrorIsShown()).to.equal(true)
+      })
+    })
+
+    describe("Suoritusrajapinta", function() {
+      before(openPage("/tor/suoritus", authenticationErrorIsShown))
+
+      it("vaatii autentikaation", function () {
+        expect(authenticationErrorIsShown()).to.equal(true)
+      })
+    })
   })
 })
+
+function authenticationErrorIsShown() {
+  return S('body').text() === 'Not authenticated'
+}

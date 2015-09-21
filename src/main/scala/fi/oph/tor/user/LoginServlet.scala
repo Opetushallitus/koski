@@ -2,9 +2,7 @@ package fi.oph.tor.user
 
 import fi.oph.tor.ErrorHandlingServlet
 import fi.oph.tor.json.Json
-import fi.oph.tor.security.TorSessionCookie
-import fi.vm.sade.security.ldap.{DirectoryClient, LdapConfig, LdapClient}
-import org.scalatra.Cookie
+import fi.vm.sade.security.ldap.DirectoryClient
 
 class LoginServlet(directoryClient: DirectoryClient) extends ErrorHandlingServlet {
   post("/") {
