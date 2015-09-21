@@ -21,7 +21,7 @@ class LoginServlet(directoryClient: DirectoryClient) extends ErrorHandlingServle
       User(ldapUser.oid, ldapUser.givenNames + " " + ldapUser.lastName)
     } match {
       case Some(user) =>
-        response.addCookie(Cookie("tor-auth", TorSessionCookie.createSessionCookie(user)))
+        request.getSession(true).setAttribute("tor-user", user)
         Json.write(user)
       case _ =>
         logger.error("User " + login.username + " not found from LDAP")
