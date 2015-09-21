@@ -40,45 +40,42 @@
     }
 
     position: relative;
-    &:before {
-      display: block;
-      content: '';
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      background-color: @color-lightgray;
-      z-index: 100;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.1s;
-    }
-    &:after {
-      display: block;
-      background: url("/tor/images/loader.gif");
-      width: 100px;
-      height: 100px;
-      content: '';
-      position: absolute;
-      z-index: 200;
-      top: 27px;
-      left: 120px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.1s;
-    }
 
     &.searching {
       &:before {
+        display: block;
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: @color-lightgray;
+        z-index: 100;
         opacity: 0.8;
-        transition: opacity 0.5s;
+        transition: opacity 0.1s;
       }
       &:after {
+        display: block;
+        background: url("/tor/images/loader.gif");
+        width: 100px;
+        height: 100px;
+        content: '';
+        position: absolute;
+        z-index: 200;
+        top: 27px;
+        left: 120px;
         opacity: 0.5;
-        transition: opacity 0.5s;
+        transition: opacity 0.1s;
+        animation-name: fadein;
+        animation-duration: 1s;
       }
     }
+  }
+
+  @keyframes fadein {
+    0% { opacity: 0; }
+    100% { opacity: 1;}
   }
 
   input {
