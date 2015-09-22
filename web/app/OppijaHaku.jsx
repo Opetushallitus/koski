@@ -55,13 +55,13 @@ const OppijaHakutulokset = ({oppijat, valittu}) => {
       : <span></span>
 }
 
-export const OppijaHaku = ({oppijat, valittuOppija, searching}) => {
+export const OppijaHaku = ({oppijat, valittu, searching}) => {
   const className = searching ? "oppija-haku searching" : "oppija-haku"
 
   return <div className={className}>
     <OppijaHakuBoksi />
     <div className="hakutulokset">
-      <OppijaHakutulokset oppijat={oppijat} valittu={valittuOppija}/>
+      <OppijaHakutulokset oppijat={oppijat} valittu={valittu}/>
     </div>
   </div>
 }
