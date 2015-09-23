@@ -2,6 +2,15 @@ function TorPage() {
   var pageApi = Page(function() {return S("#content")});
 
   var api = {
+    login: function() {
+      return Q($.ajax({
+        type: "POST",
+        url: "/tor/user/login",
+        data: JSON.stringify({username: "kalle", password: "asdf"}),
+        contentType : 'application/json',
+        dataType: "json"
+      }))
+    },
     openPage: function() {
       return openPage("/tor/", api.isVisible)()
     },
@@ -9,13 +18,7 @@ function TorPage() {
       return S("#content .oppija-haku").is(":visible")
     },
     loginAndOpen: function() {
-      return Q($.ajax({
-        type: "POST",
-        url: "/tor/user/login",
-        data: JSON.stringify({username: "kalle", password: "asdf"}),
-        contentType : 'application/json',
-        dataType: "json"
-      })).then(api.openPage)
+      return api.login().then(api.openPage)
     },
     search: function(query, expectedResults) {
       return function() {
@@ -37,9 +40,15 @@ function TorPage() {
     selectOppija: function(oppija) {
       return function() {
         triggerEvent(S(S('.oppija-haku li a').toArray().filter(function(a) { return $(a).text().indexOf(oppija) > -1 })[0]), 'click')
-        return wait.until(function() {
-          return api.getSelectedOppija().indexOf(oppija) >= 0
-        })()
+        return api.waitUntilOppijaSelected(oppija)
+      }
+    },
+    waitUntilOppijaSelected: function(oppija) {
+      return wait.until(api.isOppijaSelected(oppija))()
+    },
+    isOppijaSelected: function(oppija) {
+      return function() {
+        return api.getSelectedOppija().indexOf(oppija) >= 0
       }
     }
   }

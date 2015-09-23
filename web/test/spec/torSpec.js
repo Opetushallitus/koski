@@ -86,6 +86,14 @@ describe("TOR", function() {
       })
     })
   })
+  describe("Navigointi suoraan oppijan sivulle", function() {
+    before(page.login)
+    before(openPage("/tor/oppija/1.2.246.562.24.00000000001", page.isOppijaSelected("eero")))
+
+    it("Oppijan tiedot näytetään", function() {
+      expect(page.getSelectedOppija()).to.equal(eero)
+    })
+  })
   describe("Tietoturva", function() {
     before(login.openPage)
 
