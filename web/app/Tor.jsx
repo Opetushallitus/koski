@@ -5,10 +5,9 @@ import Bacon from "baconjs"
 import style from "./style/main.less"
 import handleError from "./error-handler"
 import {Login, userP} from "./Login.jsx"
-import {OppijaHaku, oppijatP, searchInProgressP} from "./OppijaHaku.jsx"
+import {OppijaHaku, oppijaP, oppijatP, searchInProgressP} from "./OppijaHaku.jsx"
 import {Oppija} from "./Oppija.jsx"
 import {TopBar} from "./TopBar.jsx"
-import {oppijaP} from "./router.js"
 import Http from "./http"
 
 const stateP = Bacon.combineTemplate({

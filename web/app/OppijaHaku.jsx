@@ -3,7 +3,7 @@ import ReactDOM from "react-dom"
 import Bacon from "baconjs"
 import Http from "./http"
 import R from "ramda"
-import {navigate, oppijaP} from "./router.js"
+import {navigate, routeP} from "./router.js"
 
 const oppijaHakuE = new Bacon.Bus();
 
@@ -11,6 +11,10 @@ const acceptableQuery = (q) => q.length >= 3
 
 const pathForOppija = (oppija) => "/oppija/" + oppija.oid
 
+export const oppijaP = routeP.flatMap(route => {
+  var match = route.match(new RegExp("oppija/(.*)"))
+  return match ? Http.get(`/tor/api/oppija?query=${match[1]}`).mapError([]).map(".0") : Bacon.once(undefined)
+}).toProperty().log("oppija")
 
 export const oppijatP = oppijaHakuE.throttle(200)
   .flatMapLatest(q => (acceptableQuery(q) ? Http.get(`/tor/api/oppija?query=${q}`).mapError([]) : Bacon.once([])).map((oppijat) => ({ results: oppijat, query: q })))

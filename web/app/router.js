@@ -9,8 +9,3 @@ export const navigate = function (path) {
 }
 
 export const routeP = b.startWith(document.location.pathname)
-
-export const oppijaP = routeP.flatMap(route => {
-  var match = route.match(new RegExp("oppija/(.*)"))
-  return match ? Http.get(`/tor/api/oppija?query=${match[1]}`).mapError([]).map(".0") : Bacon.once(undefined)
-}).toProperty().log("oppija")
