@@ -42,8 +42,8 @@ const OppijaHakutulokset = ({oppijat, valittu}) => {
   const oppijatElems = oppijat.results.map((o, i) => {
     const className = valittu ? (R.equals(o, valittu) ? "selected" : "") : ""
     return (
-      <li key={i} className={className}>
-        <a href="#" onClick={() => oppijaValintaE.push(o)}>{o.sukunimi}, {o.etunimet} {o.hetu}</a>
+      <li key={i} className={className} onClick={() => oppijaValintaE.push(o)}>
+        <a href="#">{o.sukunimi}, {o.etunimet} {o.hetu}</a>
       </li>
     )}
   )
