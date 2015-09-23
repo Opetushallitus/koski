@@ -11,7 +11,6 @@
 
 @page-border-width: ~"calc((100vw - 1200px) / 2)";
 @oppija-haku-width: ~"calc(380px + (100vw - 1200px) / 2)";
-@content-min-height: ~"calc(100vh - 121px)";
 
 body {
   font-family: 'Open Sans', sans-serif;
@@ -29,20 +28,25 @@ body {
   padding-right: @page-border-width;
 }
 
-.oppija-haku {
-  position: absolute;
-  min-height: @content-min-height;
-  width: @oppija-haku-width;
+.main-content {
+  display: table;
+  height: 100%;
+  width: 100%;
   margin-top: 2px;
+}
+
+.oppija-haku {
+  display: table-cell;
+  width: @oppija-haku-width;
   padding-left:@page-border-width;
   padding-top: 35px;
+  vertical-align: top;
 }
 
 .oppija {
-  min-height: @content-min-height;
-  margin-left: @oppija-haku-width;
-  margin-top: 2px;
+  display: table-cell;
   padding-right: @page-border-width;
   padding-top: 52px;
   padding-left: 60px;
+  vertical-align: top;
 }

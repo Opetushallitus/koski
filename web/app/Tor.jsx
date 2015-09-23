@@ -21,7 +21,7 @@ const domP = stateP.map(({user, oppijat, valittuOppija, searchInProgress}) =>
     <TopBar user={user} />
     {
       user
-        ? <div>
+        ? <div className="main-content">
             <OppijaHaku oppijat={oppijat} valittu={valittuOppija} searching={searchInProgress}/>
             <Oppija oppija={valittuOppija} />
           </div>
