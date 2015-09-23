@@ -93,6 +93,10 @@ describe("TOR", function() {
     it("Oppijan tiedot näytetään", function() {
       expect(page.getSelectedOppija()).to.equal(eero)
     })
+
+    it("Hakutulos näytetään", function() {
+      expect(page.getSearchResults()).to.deep.equal([eero])
+    })
   })
   describe("Tietoturva", function() {
     before(login.openPage)
