@@ -10,6 +10,7 @@ import fi.vm.sade.utils.slf4j.Logging
 
 class SuoritusServlet(rekisteri: TodennetunOsaamisenRekisteri) extends ErrorHandlingServlet with GlobalExecutionContext with Futures with Logging with Authenticated {
   get("/") {
+    serveStaticResource()
     params.get("personOid")
     contentType = "application/json;charset=utf-8"
     val query: SuoritusQuery = params.foldLeft(SuoritusQuery()) {

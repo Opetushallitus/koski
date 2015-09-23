@@ -19,10 +19,10 @@ trait OppijaRepository {
 
 class MockOppijaRepository extends OppijaRepository {
   val oppijat = List(
-    Oppija("esimerkki", "eero", "010101-123N"),
-    Oppija("eerola", "jouni", ""),
-    Oppija("markkanen", "eero", ""),
-    Oppija("tekijä", "teija", "150995-914X")
+    Oppija("1.2.246.562.24.00000000001", "esimerkki", "eero", "010101-123N"),
+    Oppija("1.2.246.562.24.00000000002", "eerola", "jouni", ""),
+    Oppija("1.2.246.562.24.00000000003", "markkanen", "eero", ""),
+    Oppija("1.2.246.562.24.00000000004", "tekijä", "teija", "150995-914X")
   )
 
   override def findOppijat(query: String) = {

@@ -3,23 +3,27 @@ import ReactDOM from "react-dom"
 import Bacon from "baconjs"
 import Http from "./http"
 import R from "ramda"
+import {navigate, oppijaP} from "./router.js"
 
 const oppijaHakuE = new Bacon.Bus();
-const oppijaValintaE = new Bacon.Bus();
 
 const acceptableQuery = (q) => q.length >= 3
 
+const pathForOppija = (oppija) => "/oppija/" + oppija.oid
+
+
 export const oppijatP = oppijaHakuE.throttle(200)
-  .flatMapLatest(q => (acceptableQuery(q) ? Http.get(`/tor/oppija?query=${q}`).mapError([]) : Bacon.once([])).map((oppijat) => ({ results: oppijat, query: q })))
+  .flatMapLatest(q => (acceptableQuery(q) ? Http.get(`/tor/api/oppija?query=${q}`).mapError([]) : Bacon.once([])).map((oppijat) => ({ results: oppijat, query: q })))
   .toProperty({ query: "", results: [] })
 
-export const oppijaP = Bacon.update(
-  undefined,
-  [oppijaValintaE], (p, n) => n,
-  [oppijatP.map(".results").changes().filter((l) => l.length === 1).map(".0")], (p, n) => p ? p : n
-)
+oppijaP.sampledBy(oppijatP.map(".results").changes(), (oppija, oppijat) => ({ oppija: oppija, oppijat: oppijat }))
+  .filter(({oppija, oppijat}) => !oppija && oppijat.length == 1)
+  .map(".oppijat.0")
+  .map(pathForOppija)
+  .onValue(navigate)
 
 export const searchInProgressP = oppijaHakuE.throttle(200).filter(acceptableQuery).awaiting(oppijatP)
+
 
 const OppijaHakuBoksi = React.createClass({
   render() {
@@ -41,9 +45,10 @@ const OppijaHakuBoksi = React.createClass({
 const OppijaHakutulokset = ({oppijat, valittu}) => {
   const oppijatElems = oppijat.results.map((o, i) => {
     const className = valittu ? (R.equals(o, valittu) ? "selected" : "") : ""
+    const target = pathForOppija(o)
     return (
-      <li key={i} className={className} onClick={() => oppijaValintaE.push(o)}>
-        <a href="#">{o.sukunimi}, {o.etunimet} {o.hetu}</a>
+      <li key={i} className={className}>
+        <a href={target} onClick={(e) => { navigate(target); e.preventDefault(); }}>{o.sukunimi}, {o.etunimet} {o.hetu}</a>
       </li>
     )}
   )

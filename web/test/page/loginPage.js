@@ -4,7 +4,7 @@ function LoginPage() {
 
   var api = {
     openPage: function() {
-      return Q($.ajax("/tor/logout")).then(function() {
+      return Q($.ajax("/tor/user/logout")).then(function() {
           return openPage("/tor/", api.isVisible)()
         }
       )

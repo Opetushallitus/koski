@@ -5,7 +5,7 @@ import Http from "./http"
 const loginE = new Bacon.Bus()
 
 const loginResultE = loginE
-    .flatMap((credentials) => Http.post("/tor/login", credentials))
+    .flatMap((credentials) => Http.post("/tor/user/login", credentials))
 
 export const userP = Http.get("/tor/user").mapError()
     .merge(loginResultE)

@@ -11,7 +11,7 @@ function TorPage() {
     loginAndOpen: function() {
       return Q($.ajax({
         type: "POST",
-        url: "/tor/login",
+        url: "/tor/user/login",
         data: JSON.stringify({username: "kalle", password: "asdf"}),
         contentType : 'application/json',
         dataType: "json"
@@ -37,7 +37,9 @@ function TorPage() {
     selectOppija: function(oppija) {
       return function() {
         triggerEvent(S(S('.oppija-haku li a').toArray().filter(function(a) { return $(a).text().indexOf(oppija) > -1 })[0]), 'click')
-        return wait.until(function() { return api.getSelectedOppija() === oppija })
+        return wait.until(function() {
+          return api.getSelectedOppija().indexOf(oppija) >= 0
+        })()
       }
     }
   }

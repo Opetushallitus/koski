@@ -91,7 +91,7 @@ describe("TOR", function() {
 
 
     describe("Oppijarajapinta", function() {
-      before(openPage("/tor/oppija?query=eero", authenticationErrorIsShown))
+      before(openPage("/tor/api/oppija?query=eero", authenticationErrorIsShown))
 
       it("vaatii autentikaation", function () {
         expect(authenticationErrorIsShown()).to.equal(true)
@@ -99,7 +99,7 @@ describe("TOR", function() {
     })
 
     describe("Suoritusrajapinta", function() {
-      before(openPage("/tor/suoritus", authenticationErrorIsShown))
+      before(openPage("/tor/api/suoritus", authenticationErrorIsShown))
 
       it("vaatii autentikaation", function () {
         expect(authenticationErrorIsShown()).to.equal(true)

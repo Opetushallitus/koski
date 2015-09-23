@@ -15,9 +15,9 @@ class AuthenticationServiceClient(username: String, password: String, opintoPolk
   private val authenticationServiceClient = new CasAuthenticatingClient(casClient, CasParams("/authentication-service", username, password), blazeHttpClient)
   override def findOppijat(query: String): List[Oppija] = authenticationServiceClient
     .prepAs[AuthenticationServiceUserQueryResult](Request(uri = Uri.fromString(virkailijaUrl + "/authentication-service/resources/henkilo?q=" + query).toOption.get))(json4sOf[AuthenticationServiceUserQueryResult])
-    .run.results.map { result => Oppija(result.sukunimi, result.etunimet, result.hetu)}
+    .run.results.map { result => Oppija(result.oidHenkilo, result.sukunimi, result.etunimet, result.hetu)}
 
 }
 
 case class AuthenticationServiceUserQueryResult(totalCount: Integer, results: List[AuthenticationServiceUser])
-case class AuthenticationServiceUser(sukunimi: String, etunimet: String, hetu: String)
+case class AuthenticationServiceUser(oidHenkilo: String, sukunimi: String, etunimet: String, hetu: String)
