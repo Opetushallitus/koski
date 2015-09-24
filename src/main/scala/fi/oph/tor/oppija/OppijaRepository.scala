@@ -1,7 +1,6 @@
 package fi.oph.tor.oppija
 
 import com.typesafe.config.Config
-import org.http4s.Uri._
 
 object OppijaRepository {
   def apply(config: Config) = {
