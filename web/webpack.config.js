@@ -15,7 +15,7 @@ module.exports = {
       },
       {
         test: /\.less$/,
-        loader: "style!css!less"
+        loader: "style!css!autoprefixer-loader?browsers=last 2 version!less"
       }
     ]
   }
