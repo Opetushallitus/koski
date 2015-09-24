@@ -3,11 +3,7 @@
 @import "oppija";
 @import "oppija-haku";
 @import "login";
-
-@color-blue: #4194BF;
-@color-white: #FFFFFF;
-@color-lightgray: #FAFAFA;
-@color-darkgray: #F5F5F5;
+@import "colors";
 
 @page-border-width: ~"calc((100vw - 1200px) / 2)";
 @oppija-haku-width: ~"calc(380px + (100vw - 1200px) / 2)";
@@ -49,12 +45,4 @@ body {
   padding-top: 52px;
   padding-left: 60px;
   vertical-align: top;
-}
-
-.triangle(@size, @color, @direction) {
-  display: block;
-  width: 0;
-  height: 0;
-  border: @size solid transparent;
-  border-@{direction}: @size solid @color;
 }

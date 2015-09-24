@@ -1,3 +1,5 @@
+@import "mixins";
+
 .oppija-haku {
   background-color: @color-lightgray;
 
@@ -38,7 +40,7 @@
         }
         &:after {
           content: "";
-          .triangle(12px, @color-blue, left);
+          .Triangle(12px, @color-blue, left);
           position: absolute;
           bottom: 12px;
           right: -24px;

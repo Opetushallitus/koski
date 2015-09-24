@@ -1,3 +1,5 @@
+@import "mixins";
+
 #topbar {
   background: @color-white;
   box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.10);
@@ -18,7 +20,7 @@
     line-height: 49px;
     &:after {
       content: "";
-      .triangle(25px, @logo-color, left);
+      .Triangle(25px, @logo-color, left);
       margin-left: 212px;
       margin-top: -49px;
     }
