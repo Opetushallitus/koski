@@ -50,3 +50,11 @@ body {
   padding-left: 60px;
   vertical-align: top;
 }
+
+.triangle(@size, @color, @direction) {
+  display: block;
+  width: 0;
+  height: 0;
+  border: @size solid transparent;
+  border-@{direction}: @size solid @color;
+}

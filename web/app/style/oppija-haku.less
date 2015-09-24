@@ -35,15 +35,10 @@
         }
         &:after {
           content: "";
-          display: block;
-          width: 0;
-          height: 0;
-          border-top: 12px solid transparent;
-          border-bottom: 12px solid transparent;
-          border-left: 12px solid @color-blue;
+          .triangle(12px, @color-blue, left);
           position: absolute;
           bottom: 12px;
-          right: -12px;
+          right: -24px;
         }
       }
     }
