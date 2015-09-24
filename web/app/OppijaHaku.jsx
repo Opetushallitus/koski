@@ -30,7 +30,7 @@ oppijaP.sampledBy(oppijatP.map(".results").changes(), (oppija, oppijat) => ({ op
   .map(pathForOppija)
   .onValue(navigate)
 
-export const searchInProgressP = oppijaHakuE.filter(acceptableQuery).awaiting(oppijatP).throttle(1000)
+export const searchInProgressP = oppijaHakuE.filter(acceptableQuery).awaiting(oppijatP).throttle(200)
 
 
 const OppijaHakuBoksi = React.createClass({
