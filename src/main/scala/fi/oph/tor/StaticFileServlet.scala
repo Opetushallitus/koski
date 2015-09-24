@@ -27,7 +27,6 @@ trait StaticFileServlet extends ScalatraServlet {
       case true =>
         val staticFileContent = Source.fromFile(resourcePath).takeWhile(_ != -1).map(_.toByte).toArray
         contentType = StaticFileServlet.resolveContentType(resourcePath)
-        println(contentType)
         staticFileContent
       case false =>
         halt(404)
