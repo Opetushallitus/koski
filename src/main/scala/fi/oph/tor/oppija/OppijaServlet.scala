@@ -10,7 +10,7 @@ class OppijaServlet(oppijaRepository: OppijaRepository) extends ErrorHandlingSer
     contentType = "application/json;charset=utf-8"
     params.get("query") match {
       case Some(query) if (query.length >= 3) => Json.write(oppijaRepository.findOppijat(query))
-      case _ => throw new InvalidRequestException("query parameter lenght must be at least 3")
+      case _ => throw new InvalidRequestException("query parameter length must be at least 3")
     }
   }
 }
