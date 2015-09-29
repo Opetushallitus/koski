@@ -162,11 +162,3 @@ Lokien katsominen onnistuu komennolla:
 ## Henkilöpalvelu-integraatio
 
 TOR ei tallenna henkilötietoja omaan kantaansa, vaan hakee/tallentaa ne Opintopolun [henkilöpalveluun](https://github.com/Opetushallitus/henkilo).
-
-Henkilöpalvelun REST-rajapinnat edellyttävät CAS-tunnistautumista. Tunnistautumisen jälkeen voit kokeilla vaikkapa tällaista hakua: 
-
-    https://testi.virkailija.opintopolku.fi:443/authentication-service/resources/henkilo?q=180295-905X
-    
-Uuden henkilön luonti tapahtuu POSTaamalla https://testi.virkailija.opintopolku.fi:443/authentication-service/resources/henkilo -osoitteeseen, johon sisältö postataan JSON-muodossa. Esimerkiksi:
-
-    {"hetu":"290995-9249","henkiloTyyppi":"OPPIJA","sukunimi":"testi4","etunimet":"testijäbä","kutsumanimi":"testijäbä","asiointiKieli":{"kieliKoodi":"fi","kieliTyyppi":"suomi","id":"1"},"kayttajatiedot":{"username":"testi4"}}
