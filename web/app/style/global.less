@@ -29,10 +29,6 @@ a {
   text-decoration: none;
 }
 
-.button {
-  margin-top: 10px;
-}
-
 input {
   outline:none;
   border: 1px #999290 solid;
@@ -53,9 +49,14 @@ input {
   display: inline-block;
   text-align: center;
   line-height: 40px;
+  margin-top: 10px;
 
   &.blue {
     background: @color-blue;
     color: @color-white;
+  }
+
+  &:disabled {
+    background: @color-disabled-button;
   }
 }
