@@ -24,7 +24,7 @@ const domP = stateP.map(({user, oppijat, valittuOppija, searchInProgress}) =>
       user
         ? <div className="main-content">
             <OppijaHaku oppijat={oppijat} valittu={valittuOppija} searching={searchInProgress}/>
-            <Oppija oppija={valittuOppija} />
+            <Oppija oppijat={oppijat} oppija={valittuOppija} />
           </div>
 
         : <Login />

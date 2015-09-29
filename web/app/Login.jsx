@@ -21,12 +21,12 @@ export const Login = React.createClass({
     const buttonLabel = inProgress ? "Kirjaudutaan..." : "Kirjaudu sisään"
     const buttonDisabled = !usernameIsValid || !passwordIsValid || inProgress
 
-    return <form className={this.state.error ? "login error": "login"}>
+    return <form className={this.state.error ? "login error stacked": "login stacked"}>
       <label>Tunnus
-        <input className="stacked" id="username" onInput={this.onInput} ref="username" disabled={inProgress}></input>
+        <input id="username" onInput={this.onInput} ref="username" disabled={inProgress}></input>
       </label>
       <label>Salasana
-        <input className="stacked" id="password" onInput={this.onInput} type="password" ref="password" disabled={inProgress}></input>
+        <input id="password" onInput={this.onInput} type="password" ref="password" disabled={inProgress}></input>
       </label>
       <button className="button blue" onClick={this.doLogin} disabled={buttonDisabled}>{buttonLabel}</button>
     </form>

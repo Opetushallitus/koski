@@ -16,6 +16,11 @@ hr {
 
 label input {
   margin-top: 5px;
+  margin-bottom: 18px;
+}
+
+form.stacked label input {
+  display: block;
 }
 
 a {
@@ -24,18 +29,18 @@ a {
   text-decoration: none;
 }
 
+.button {
+  margin-top: 10px;
+}
+
 input {
   outline:none;
   border: 1px #999290 solid;
-  padding: 0 1.6em 0 0.7em;
+  padding: 0 0.7em;
   width: 210px;
   height: 40px;
   &:focus {
     border-color: @color-blue;
-  }
-
-  &.stacked {
-    display: block;
   }
 }
 
