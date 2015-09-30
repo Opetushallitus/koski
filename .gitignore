@@ -16,4 +16,4 @@ node_modules
 bundle.js
 npm-debug.log
 web/dist
-qa.conf
+src/main/resources/*.conf
