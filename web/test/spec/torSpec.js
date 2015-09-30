@@ -44,9 +44,9 @@ describe("TOR", function() {
         expect(page.getSearchResults()).to.deep.equal([eero])
         expect(page.isNoResultsLabelShown()).to.equal(false)
       })
-      it("ensimmäinen tulos valitaan automaattisesti", function() {
-        expect(page.getSelectedOppija()).to.equal(eero)
-      })
+
+      it("ensimmäinen tulos valitaan automaattisesti", wait.until(function() { return page.getSelectedOppija() == eero }))
+
       describe("Kun haku tuottaa uudestaan yhden tuloksen", function() {
         before(page.search("teija", 1))
         it("tulosta ei valita automaattisesti", function() {
