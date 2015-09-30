@@ -19,19 +19,19 @@ const CreateOppija = React.createClass({
     if(oppijat.query.length > 2 && oppijat.results.length === 0) {
       return (
         <form className="oppija stacked" onInput={this.onInput}>
-          <label className="first-name">
+          <label className="etunimet">
             Etunimet
             <input ref="etunimet"></input>
           </label>
-          <label className="calling-name">
+          <label className="kutsumanimi">
             Kutsumanimi
             <input ref="kutsumanimi"></input>
           </label>
-          <label>
+          <label className="sukunimi">
             Sukunimi
             <input ref="sukunimi"></input>
           </label>
-          <label className="ssn">
+          <label className="hetu">
             Henkilötunnus
             <input ref="hetu"></input>
           </label>

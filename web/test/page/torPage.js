@@ -13,9 +13,13 @@ function TorPage() {
     },
     search: function(query, expectedResults) {
       if (typeof expectedResults != "function") {
-        var expectedNumberOfResults = expectedResults
-        expectedResults = function() {
-          return api.getSearchResults().length == expectedNumberOfResults
+        if (expectedResults == 0) {
+          expectedResults = api.isNoResultsLabelShown
+        } else {
+          var expectedNumberOfResults = expectedResults
+          expectedResults = function() {
+            return api.getSearchResults().length == expectedNumberOfResults
+          }
         }
       }
       return function() {

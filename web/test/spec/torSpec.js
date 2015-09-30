@@ -85,6 +85,37 @@ describe("TOR", function() {
       it("Näytetään kuvaava teksti", function() {
         expect(page.isNoResultsLabelShown()).to.equal(true)
       })
+
+      it("Näytetään uuden oppijan lisäys", function() {
+        expect(AddOppijaPage().isVisible)
+      })
+    })
+  })
+  describe("Uuden oppijan lisääminen", function() {
+    var addOppija = AddOppijaPage()
+
+    before(authentication.login, page.openPage, page.search("asdf", 0))
+
+    describe("Aluksi", function() {
+      it("Lisää-nappi on disabloitu", function() {
+        expect(addOppija.isEnabled()).to.equal(false)
+      })
+    })
+
+    describe("Kun syötetään validit tiedot", function() {
+      before(addOppija.enterValidData)
+
+      it("Lisää-nappi on enabloitu", function() {
+        expect(addOppija.isEnabled()).to.equal(true)
+      })
+
+      describe("Kun painetaan Lisää-nappia", function() {
+        before(addOppija.submit)
+
+        it("Oppija lisätään", function() {
+          // TODO
+        })
+      })
     })
   })
   describe("Navigointi suoraan oppijan sivulle", function() {
