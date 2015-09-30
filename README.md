@@ -112,7 +112,7 @@ Buildaa frontti, ja buildaa automaattisesti kun tiedostoja muokataan:
 
     make watch
 
-### TOR-sovelluksen ajaminen kehitystyöasemalla
+## TOR-sovelluksen ajaminen kehitystyöasemalla
 
 Aja JettyLauncher-luokka IDEAsta/Eclipsestä, tai käynnistä TOR vaihtoehtoisesti komentoriviltä
 
@@ -126,6 +126,16 @@ Avaa selaimessa
 Suoritus-testidatat näkyy
 
     http://localhost:7021/tor/suoritus/
+    
+## Ajaminen paikallisesti käyttäen ulkoisia palveluja (esim henkilöpalvelu)
+
+Ilman parametrejä ajettaessa TOR käyttää mockattuja ulkoisia riippuvuuksia.
+
+Ottaaksesi käyttöön ulkoiset integraatiot, kuten henkilpalvelun, voit antaa TOR:lle käynnistysparametrinä käytettävän konfiguraatiotiedoston sijainnin. Esimerkiksi
+
+    -Dconfig.resource=qa.conf
+    
+Tällä asetuksella käytetään tiedostoa `src/main/resources/qa.conf`. Tämä tiedosto ei ole versionhallinnassa, koska se sisältää ei-julkista tietoa.
             
 ## Testit
 
@@ -139,7 +149,9 @@ Kun applikaatio pyörii paikallisesti (ks. ohjeet yllä), voi Mocha-testit ajaa 
 
 Mocha-testit voi ajaa myös nopeasti komentoriviltä
 
-    make fronttest    
+    make fronttest
+        
+
 
 ## Asennus pilveen (CSC:n ePouta)
 
