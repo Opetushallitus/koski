@@ -2,7 +2,10 @@ import Bacon from "baconjs"
 
 const parseResponse = (result) => {
   if (result.status < 300) {
-    return Bacon.fromPromise(result.json())
+    if(result.headers.get("content-type").toLowerCase().startsWith("application/json")) {
+      return Bacon.fromPromise(result.json())
+    }
+    return Bacon.fromPromise(result.text())
   }
   return new Bacon.Error({ message: "http error " + result.status, httpStatus: result.status })
 }

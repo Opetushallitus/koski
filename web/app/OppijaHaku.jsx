@@ -3,13 +3,11 @@ import ReactDOM from "react-dom"
 import Bacon from "baconjs"
 import Http from "./http"
 import R from "ramda"
-import {navigate, routeP} from "./router.js"
+import {navigate, navigateToOppija, routeP} from "./router.js"
 
 const oppijaHakuE = new Bacon.Bus();
 
 const acceptableQuery = (q) => q.length >= 3
-
-const pathForOppija = (oppija) => "/oppija/" + oppija.oid
 
 export const oppijaP = routeP.flatMap(route => {
   var match = route.match(new RegExp("oppija/(.*)"))
@@ -27,8 +25,7 @@ export const oppijatP = oppijaHakuE.throttle(200)
 oppijaP.sampledBy(oppijatP.map(".results").changes(), (oppija, oppijat) => ({ oppija: oppija, oppijat: oppijat }))
   .filter(({oppija, oppijat}) => !oppija && oppijat.length == 1)
   .map(".oppijat.0")
-  .map(pathForOppija)
-  .onValue(navigate)
+  .onValue(navigateToOppija)
 
 export const searchInProgressP = oppijaHakuE.filter(acceptableQuery).awaiting(oppijatP).throttle(200)
 
@@ -50,23 +47,29 @@ const OppijaHakuBoksi = React.createClass({
   }
 })
 
-const OppijaHakutulokset = ({oppijat, valittu}) => {
-  const oppijatElems = oppijat.results.map((o, i) => {
-    const className = valittu ? (R.equals(o, valittu) ? "selected" : "") : ""
-    const target = pathForOppija(o)
-    return (
-      <li key={i} className={className}>
-        <a href={target} onClick={(e) => { navigate(target); e.preventDefault(); }}>{o.sukunimi}, {o.etunimet} {o.hetu}</a>
-      </li>
-    )}
-  )
+const OppijaHakutulokset = React.createClass({
+  render() {
+    const {oppijat, valittu} = this.props
+    const oppijatElems = oppijat.results.map((o, i) => {
+        const className = valittu ? (R.equals(o, valittu) ? "selected" : "") : ""
+        return (
+          <li key={i} className={className}>
+            <a onClick={this.selectOppija.bind(this, o)}>{o.sukunimi}, {o.etunimet} {o.hetu}</a>
+          </li>
+        )}
+    )
 
-  return oppijat.results.length > 0
-    ? <ul> {oppijatElems} </ul>
-    : oppijat.query.length > 2
+    return oppijat.results.length > 0
+      ? <ul> {oppijatElems} </ul>
+      : oppijat.query.length > 2
       ? <span className="no-results">Ei hakutuloksia</span>
       : <span></span>
-}
+  },
+
+  selectOppija(oppija) {
+    navigateToOppija(oppija)
+  }
+})
 
 export const OppijaHaku = ({oppijat, valittu, searching}) => {
   const className = searching ? "oppija-haku searching" : "oppija-haku"

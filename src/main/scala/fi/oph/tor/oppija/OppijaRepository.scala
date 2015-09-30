@@ -21,7 +21,7 @@ trait OppijaRepository {
 }
 
 class MockOppijaRepository extends OppijaRepository {
-  private val defaultOppijat = List(
+  private def defaultOppijat = List(
     Oppija(generateId, "esimerkki", "eero", "010101-123N"),
     Oppija(generateId, "eerola", "jouni", ""),
     Oppija(generateId, "markkanen", "eero", ""),

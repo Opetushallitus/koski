@@ -1,6 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import Http from "./http"
+import {navigateToOppija} from "./router"
 
 export const Oppija = ({oppija, oppijat}) => oppija ?
   <div className="oppija">
@@ -62,6 +63,6 @@ const CreateOppija = React.createClass({
 
   submit(e) {
     e.preventDefault()
-    Http.post('/tor/api/oppija', this.formState())
+    Http.post('/tor/api/oppija', this.formState()).map(oid => ({oid: oid})).onValue(navigateToOppija);
   }
 })

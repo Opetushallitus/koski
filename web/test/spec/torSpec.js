@@ -118,10 +118,9 @@ describe("TOR", function() {
 
       describe("Kun painetaan Lisää-nappia", function() {
         before(addOppija.submit)
+        before(wait.until(function() { return page.getSelectedOppija() === "Oppija, Ossi Olavi 300994-9694"}))
 
-        it("Oppija lisätään", function() {
-          // TODO
-        })
+        it("lisätty oppija näytetään", function() {})
       })
     })
   })
