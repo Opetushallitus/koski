@@ -27,8 +27,7 @@ describe("TOR", function() {
   })
 
   describe("OppijaHaku", function() {
-    before(login.openPage)
-    before(page.loginAndOpen)
+    before(authentication.login, resetMocks, page.openPage)
     it("näytetään, kun käyttäjä on kirjautunut sisään", function() {
       expect(page.isVisible()).to.equal(true)
       expect(page.isNoResultsLabelShown()).to.equal(false)

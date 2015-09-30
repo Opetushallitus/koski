@@ -10,12 +10,16 @@ const oppijaHakuE = new Bacon.Bus();
 
 const acceptableQuery = (q) => q.length >= 3
 
-const firstOppija = oppijaP.toEventStream().take(1).filter(Bacon._.id)
-
-export const oppijatP = oppijaHakuE.throttle(200)
+const hakuTulosE = oppijaHakuE.throttle(200)
   .flatMapLatest(q => (acceptableQuery(q) ? Http.get(`/tor/api/oppija?query=${q}`) : Bacon.once([])).map((oppijat) => ({ results: oppijat, query: q })))
-  .merge(firstOppija.map((oppija) => ({ query: "", results: [ oppija ] })))
-  .toProperty({ query: "", results: [] })
+
+const oppijaE = oppijaP.toEventStream().filter(Bacon._.id)
+
+export const oppijatP = Bacon.update(
+  { query: "", results: [] },
+  hakuTulosE, ((current, hakutulos) => hakutulos),
+  oppijaE, ((current, valittu) => current.results.filter((oppija) => oppija.oid === valittu.oid).length ? current : { query: "", results: [valittu] })
+)
 
 oppijaP.sampledBy(oppijatP.map(".results").changes(), (oppija, oppijat) => ({ oppija: oppija, oppijat: oppijat }))
   .filter(({oppija, oppijat}) => !oppija && oppijat.length == 1)

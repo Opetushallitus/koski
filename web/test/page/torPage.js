@@ -36,6 +36,9 @@ function TorPage() {
     getSelectedOppija: function() {
       return S('.oppija').text()
     },
+    getSelectedSearchResult: function() {
+      return S('.hakutulokset .selected').text()
+    },
     selectOppija: function(oppija) {
       return function() {
         triggerEvent(S(S('.oppija-haku li a').toArray().filter(function(a) { return $(a).text().indexOf(oppija) > -1 })[0]), 'click')
@@ -47,7 +50,7 @@ function TorPage() {
     },
     isOppijaSelected: function(oppija) {
       return function() {
-        return api.getSelectedOppija().indexOf(oppija) >= 0
+        return api.getSelectedOppija().indexOf(oppija) >= 0 && api.getSelectedSearchResult().indexOf(oppija) >= 0
       }
     },
     logout: function() {
