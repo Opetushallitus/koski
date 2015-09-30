@@ -55,11 +55,13 @@ describe("TOR", function() {
       })
     })
     describe("Haun tyhjentäminen", function() {
-      before(page.search("eero", 3))
+      before(page.search("esimerkki", 1))
       before(page.search("", 0))
+
       it("säilyttää oppijavalinnan", function() {
         expect(page.getSelectedOppija()).to.equal(eero)
       })
+
       it("tyhjentää hakutulos-listauksen", function() {
         expect(page.getSearchResults().length).to.equal(0)
         expect(page.isNoResultsLabelShown()).to.equal(false)
@@ -80,7 +82,7 @@ describe("TOR", function() {
     })
 
     describe("Kun haku ei tuota tuloksia", function() {
-      before(page.search("asdf", 0))
+      before(page.search("asdf", page.isNoResultsLabelShown))
 
       it("Näytetään kuvaava teksti", function() {
         expect(page.isNoResultsLabelShown()).to.equal(true)
@@ -94,7 +96,7 @@ describe("TOR", function() {
   describe("Uuden oppijan lisääminen", function() {
     var addOppija = AddOppijaPage()
 
-    before(authentication.login, page.openPage, page.search("asdf", 0))
+    before(authentication.login, page.openPage, page.search("asdf", page.isNoResultsLabelShown))
 
     describe("Aluksi", function() {
       it("Lisää-nappi on disabloitu", function() {
