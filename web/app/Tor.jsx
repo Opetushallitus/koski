@@ -4,7 +4,7 @@ import ReactDOM from "react-dom"
 import Bacon from "baconjs"
 import style from "./style/main.less"
 import handleError from "./error-handler"
-import {Login, userP} from "./Login.jsx"
+import {Login, userP, logout} from "./Login.jsx"
 import {OppijaHaku, oppijaP, oppijatP, searchInProgressP} from "./OppijaHaku.jsx"
 import {Oppija} from "./Oppija.jsx"
 import {TopBar} from "./TopBar.jsx"
@@ -33,4 +33,10 @@ const domP = stateP.map(({user, oppijat, valittuOppija, searchInProgress}) =>
 )
 
 domP.onValue((component) => ReactDOM.render(component, document.getElementById('content')))
-domP.onError(handleError)
+domP.onError(function(e) {
+  if (e.httpStatus >= 400 && e.httpStatus < 500) {
+    logout()
+  } else {
+    handleError(e)
+  }
+})

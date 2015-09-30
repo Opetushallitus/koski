@@ -20,7 +20,7 @@ export const oppijaP = routeP.flatMap(route => {
 const firstOppija = oppijaP.toEventStream().take(1).filter(Bacon._.id)
 
 export const oppijatP = oppijaHakuE.throttle(200)
-  .flatMapLatest(q => (acceptableQuery(q) ? Http.get(`/tor/api/oppija?query=${q}`).mapError([]) : Bacon.once([])).map((oppijat) => ({ results: oppijat, query: q })))
+  .flatMapLatest(q => (acceptableQuery(q) ? Http.get(`/tor/api/oppija?query=${q}`) : Bacon.once([])).map((oppijat) => ({ results: oppijat, query: q })))
   .merge(firstOppija.map((oppija) => ({ query: "", results: [ oppija ] })))
   .toProperty({ query: "", results: [] })
 

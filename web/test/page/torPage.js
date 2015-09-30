@@ -2,15 +2,6 @@ function TorPage() {
   var pageApi = Page(function() {return S("#content")});
 
   var api = {
-    login: function() {
-      return Q($.ajax({
-        type: "POST",
-        url: "/tor/user/login",
-        data: JSON.stringify({username: "kalle", password: "asdf"}),
-        contentType : 'application/json',
-        dataType: "json"
-      }))
-    },
     openPage: function() {
       return openPage("/tor/", api.isVisible)()
     },
@@ -18,14 +9,18 @@ function TorPage() {
       return S("#content .oppija-haku").is(":visible")
     },
     loginAndOpen: function() {
-      return api.login().then(api.openPage)
+      return Authentication().login().then(api.openPage)
     },
     search: function(query, expectedResults) {
+      if (typeof expectedResults != "function") {
+        var expectedNumberOfResults = expectedResults
+        expectedResults = function() {
+          return api.getSearchResults().length == expectedNumberOfResults
+        }
+      }
       return function() {
         return pageApi.setInputValue("#search-query", query)()
-          .then(wait.until(function() {
-            return api.getSearchResults().length == expectedResults
-          }))
+          .then(wait.until(expectedResults))
       }
     },
     getSearchResults: function() {

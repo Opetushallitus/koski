@@ -1,6 +1,7 @@
 describe("TOR", function() {
   var page = TorPage()
   var login = LoginPage()
+  var authentication = Authentication()
   var eero = 'esimerkki, eero 010101-123N'
   var markkanen = 'markkanen, eero '
   var eerola = 'eerola, jouni '
@@ -87,7 +88,7 @@ describe("TOR", function() {
     })
   })
   describe("Navigointi suoraan oppijan sivulle", function() {
-    before(page.login)
+    before(authentication.login)
     before(openPage("/tor/oppija/1.2.246.562.24.00000000001", page.isOppijaSelected("eero")))
 
     it("Oppijan tiedot näytetään", function() {
@@ -115,6 +116,14 @@ describe("TOR", function() {
 
       it("vaatii autentikaation", function () {
         expect(authenticationErrorIsShown()).to.equal(true)
+      })
+    })
+
+    describe("Session vanhennuttua", function() {
+      before(authentication.login, page.openPage, authentication.logout, page.search("eero", login.isVisible))
+
+      it("Siirrytään kirjautumissivulle", function() {
+        expect(login.isVisible()).to.equal(true)
       })
     })
   })
