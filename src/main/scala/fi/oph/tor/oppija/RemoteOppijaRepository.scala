@@ -16,7 +16,7 @@ class RemoteOppijaRepository(username: String, password: String, opintoPolkuVirk
   private val casClient = new CasClient(virkailijaUrl, blazeHttpClient)
   private val authenticationServiceClient = new CasAuthenticatingClient(casClient, CasParams("/authentication-service", username, password), blazeHttpClient)
   override def findOppijat(query: String): List[Oppija] = authenticationServiceClient
-    .prepAs[AuthenticationServiceUserQueryResult](Request(uri = uriFromString(virkailijaUrl + "/authentication-service/resources/henkilo?q=" + query)))(json4sOf[AuthenticationServiceUserQueryResult])
+    .prepAs[AuthenticationServiceUserQueryResult](Request(uri = uriFromString(virkailijaUrl + "/authentication-service/resources/henkilo?no=true&q=" + query)))(json4sOf[AuthenticationServiceUserQueryResult])
     .run.results.map { result => Oppija(result.oidHenkilo, result.sukunimi, result.etunimet, result.hetu)}
 
   def uriFromString(url: String): Uri = {
