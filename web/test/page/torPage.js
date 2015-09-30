@@ -1,21 +1,12 @@
 function TorPage() {
   var pageApi = Page(function() {return S("#content")});
 
-  var api = {
-    openPage: function() {
-      return openPage("/tor/", api.isVisible)()
-    },
-    isVisible: function() {
-      return S("#content .oppija-haku").is(":visible")
-    },
-    loginAndOpen: function() {
-      return Authentication().login().then(api.openPage)
-    },
+  var OppijaHaku = {
     search: function(query, expectedResults) {
       if (typeof expectedResults != "function") {
         var expectedNumberOfResults = expectedResults
         expectedResults = function() {
-          return api.getSearchResults().length == expectedNumberOfResults
+          return OppijaHaku.getSearchResults().length == expectedNumberOfResults
         }
       }
       return function() {
@@ -33,9 +24,6 @@ function TorPage() {
     isNoResultsLabelShown: function() {
       return S('.oppija-haku .no-results').is(":visible")
     },
-    getSelectedOppija: function() {
-      return S('.oppija').text()
-    },
     getSelectedSearchResult: function() {
       return S('.hakutulokset .selected').text()
     },
@@ -44,13 +32,29 @@ function TorPage() {
         triggerEvent(S(S('.oppija-haku li a').toArray().filter(function(a) { return $(a).text().indexOf(oppija) > -1 })[0]), 'click')
         return api.waitUntilOppijaSelected(oppija)
       }
+    }
+  }
+
+  var api = {
+    openPage: function() {
+      return openPage("/tor/", api.isVisible)()
+    },
+    isVisible: function() {
+      return S("#content .oppija-haku").is(":visible")
+    },
+    loginAndOpen: function() {
+      return Authentication().login().then(api.openPage)
+    },
+    oppijaHaku: OppijaHaku,
+    getSelectedOppija: function() {
+      return S('.oppija').text()
     },
     waitUntilOppijaSelected: function(oppija) {
       return wait.until(api.isOppijaSelected(oppija))()
     },
     isOppijaSelected: function(oppija) {
       return function() {
-        return api.getSelectedOppija().indexOf(oppija) >= 0 && api.getSelectedSearchResult().indexOf(oppija) >= 0
+        return api.getSelectedOppija().indexOf(oppija) >= 0 && OppijaHaku.getSelectedSearchResult().indexOf(oppija) >= 0
       }
     },
     logout: function() {
@@ -58,5 +62,6 @@ function TorPage() {
       return wait.until(LoginPage().isVisible)()
     }
   }
+
   return api
 }

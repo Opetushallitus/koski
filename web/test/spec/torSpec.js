@@ -30,50 +30,50 @@ describe("TOR", function() {
     before(authentication.login, resetMocks, page.openPage)
     it("näytetään, kun käyttäjä on kirjautunut sisään", function() {
       expect(page.isVisible()).to.equal(true)
-      expect(page.isNoResultsLabelShown()).to.equal(false)
+      expect(page.oppijaHaku.isNoResultsLabelShown()).to.equal(false)
     })
     describe("Hakutulos-lista", function() {
       it("on aluksi tyhjä", function() {
-        expect(page.getSearchResults().length).to.equal(0)
+        expect(page.oppijaHaku.getSearchResults().length).to.equal(0)
       })
     })
     describe("Kun haku tuottaa yhden tuloksen", function() {
-      before(page.search("esimerkki", 1))
+      before(page.oppijaHaku.search("esimerkki", 1))
       it("ensimmäinen tulos näytetään", function() {
-        expect(page.getSearchResults()).to.deep.equal([eero])
-        expect(page.isNoResultsLabelShown()).to.equal(false)
+        expect(page.oppijaHaku.getSearchResults()).to.deep.equal([eero])
+        expect(page.oppijaHaku.isNoResultsLabelShown()).to.equal(false)
       })
 
       it("ensimmäinen tulos valitaan automaattisesti", wait.until(function() { return page.getSelectedOppija() == eero }))
 
       describe("Kun haku tuottaa uudestaan yhden tuloksen", function() {
-        before(page.search("teija", 1))
+        before(page.oppijaHaku.search("teija", 1))
         it("tulosta ei valita automaattisesti", function() {
           expect(page.getSelectedOppija()).to.equal(eero)
         })
       })
     })
     describe("Haun tyhjentäminen", function() {
-      before(page.search("esimerkki", 1))
-      before(page.search("", 0))
+      before(page.oppijaHaku.search("esimerkki", 1))
+      before(page.oppijaHaku.search("", 0))
 
       it("säilyttää oppijavalinnan", function() {
         expect(page.getSelectedOppija()).to.equal(eero)
       })
 
       it("tyhjentää hakutulos-listauksen", function() {
-        expect(page.getSearchResults().length).to.equal(0)
-        expect(page.isNoResultsLabelShown()).to.equal(false)
+        expect(page.oppijaHaku.getSearchResults().length).to.equal(0)
+        expect(page.oppijaHaku.isNoResultsLabelShown()).to.equal(false)
       })
     })
     describe("Kun haku tuottaa useamman tuloksen", function() {
-      before(page.search("eero", 3))
+      before(page.oppijaHaku.search("eero", 3))
 
       it("Hakutulokset näytetään", function() {
-        expect(page.getSearchResults()).to.deep.equal([eero, eerola, markkanen])
+        expect(page.oppijaHaku.getSearchResults()).to.deep.equal([eero, eerola, markkanen])
       })
 
-      before(page.selectOppija("markkanen"))
+      before(page.oppijaHaku.selectOppija("markkanen"))
 
       it("valitsee oppijan", function() {
         expect(page.getSelectedOppija()).to.equal(markkanen)
@@ -81,10 +81,10 @@ describe("TOR", function() {
     })
 
     describe("Kun haku ei tuota tuloksia", function() {
-      before(page.search("asdf", page.isNoResultsLabelShown))
+      before(page.oppijaHaku.search("asdf", page.oppijaHaku.isNoResultsLabelShown))
 
       it("Näytetään kuvaava teksti", function() {
-        expect(page.isNoResultsLabelShown()).to.equal(true)
+        expect(page.oppijaHaku.isNoResultsLabelShown()).to.equal(true)
       })
     })
   })
@@ -95,8 +95,8 @@ describe("TOR", function() {
       resetMocks,
       authentication.login,
       page.openPage,
-      page.search("asdf", page.isNoResultsLabelShown),
-      page.addNewOppija
+      page.oppijaHaku.search("asdf", page.oppijaHaku.isNoResultsLabelShown),
+      page.oppijaHaku.addNewOppija
     )
 
     describe("Aluksi", function() {
@@ -129,7 +129,7 @@ describe("TOR", function() {
     })
 
     it("Hakutulos näytetään", function() {
-      expect(page.getSearchResults()).to.deep.equal([eero])
+      expect(page.oppijaHaku.getSearchResults()).to.deep.equal([eero])
     })
   })
   describe("Tietoturva", function() {
@@ -169,7 +169,7 @@ describe("TOR", function() {
     })
 
     describe("Session vanhennuttua", function() {
-      before(authentication.login, page.openPage, authentication.logout, page.search("eero", login.isVisible))
+      before(authentication.login, page.openPage, authentication.logout, page.oppijaHaku.search("eero", login.isVisible))
 
       it("Siirrytään login-sivulle", function() {
         expect(login.isVisible()).to.equal(true)
