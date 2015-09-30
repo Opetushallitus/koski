@@ -87,10 +87,6 @@ describe("TOR", function() {
       it("Näytetään kuvaava teksti", function() {
         expect(page.isNoResultsLabelShown()).to.equal(true)
       })
-
-      it("Näytetään uuden oppijan lisäys", function() {
-        expect(AddOppijaPage().isVisible)
-      })
     })
   })
   describe("Uuden oppijan lisääminen", function() {
@@ -100,7 +96,8 @@ describe("TOR", function() {
       resetMocks,
       authentication.login,
       page.openPage,
-      page.search("asdf", page.isNoResultsLabelShown)
+      page.search("asdf", page.isNoResultsLabelShown),
+      page.addNewOppija
     )
 
     describe("Aluksi", function() {

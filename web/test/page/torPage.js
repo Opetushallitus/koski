@@ -26,6 +26,10 @@ function TorPage() {
     getSearchResults: function() {
       return S('.oppija-haku li a').toArray().map(function(a) { return $(a).text()})
     },
+    addNewOppija: function() {
+      triggerEvent(S('.oppija-haku .lisaa-oppija'), "click")
+      return wait.until(AddOppijaPage().isVisible)
+    },
     isNoResultsLabelShown: function() {
       return S('.oppija-haku .no-results').is(":visible")
     },

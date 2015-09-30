@@ -8,6 +8,7 @@ const navigate = function (path) {
   b.push(path)
 }
 
-export const routeP = b.startWith(document.location.pathname)
+export const routeP = b.toProperty(document.location.pathname)
 
 export const navigateToOppija = oppija => navigate(`/oppija/${oppija.oid}`)
+export const navigateToUusiOppija = () => navigate("/uusioppija")

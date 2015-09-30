@@ -3,17 +3,12 @@ import ReactDOM from "react-dom"
 import Bacon from "baconjs"
 import Http from "./http"
 import R from "ramda"
-import {navigate, navigateToOppija, routeP} from "./router.js"
+import {navigate, navigateToOppija, navigateToUusiOppija, routeP} from "./router.js"
+import {oppijaP} from "./Oppija.jsx"
 
 const oppijaHakuE = new Bacon.Bus();
 
 const acceptableQuery = (q) => q.length >= 3
-
-export const oppijaP = routeP.flatMap(route => {
-  var match = route.match(new RegExp("oppija/(.*)"))
-  return match ? Http.get(`/tor/api/oppija?query=${match[1]}`).mapError([]).map(".0") : Bacon.once(undefined)
-}).toProperty()
-
 
 const firstOppija = oppijaP.toEventStream().take(1).filter(Bacon._.id)
 
@@ -62,7 +57,7 @@ const OppijaHakutulokset = React.createClass({
     return oppijat.results.length > 0
       ? <ul> {oppijatElems} </ul>
       : oppijat.query.length > 2
-      ? <span className="no-results">Ei hakutuloksia</span>
+      ? <div className="no-results">Ei hakutuloksia<a className="lisaa-oppija" onClick={navigateToUusiOppija}>Lisää oppija</a></div>
       : <span></span>
   },
 

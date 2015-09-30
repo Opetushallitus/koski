@@ -19,6 +19,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     context.mount(new OppijaServlet(profile.oppijaRepository), "/api/oppija")
     context.mount(new UserServlet(profile.directoryClient), "/user")
     context.mount(new SingleFileServlet("web/static/index.html"), "/oppija")
+    context.mount(new SingleFileServlet("web/static/index.html"), "/uusioppija")
     context.mount(new FixtureServlet(profile), "/fixtures")
 
   }
