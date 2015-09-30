@@ -8,6 +8,7 @@ export JAVA_OPTS="\
 -Dtor.port=8080 \
 -Dlog4j.configuration=file://$DEPLOY_DIR/src/main/resources/log4j.cloud.properties \
 -Dlog4j.log.dir=$LOG_DIR \
+-Dlog4j.redis.password=$LOG4_REDIS_PASSWORD \
 -Dldap.host=ldap \
 -Dldap.password=$LDAP_PASSWORD \
 -Dldap.userdn=$LDAP_USERDN \

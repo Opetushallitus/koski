@@ -86,6 +86,17 @@
       <artifactId>jetty-webapp</artifactId>
       <version>9.3.2.v20150730</version>
     </dependency>
+    <dependency>
+      <groupId>com.ryantenney.log4j</groupId>
+      <artifactId>redis-appender</artifactId>
+      <version>1.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>net.logstash.log4j</groupId>
+      <artifactId>jsonevent-layout</artifactId>
+      <version>1.0</version>
+    </dependency>
+
     <!-- test deps -->
     <dependency>
       <groupId>junit</groupId>
