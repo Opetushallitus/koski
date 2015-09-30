@@ -11,7 +11,7 @@ const loginResultE = loginE
 
 export const userP = Http.get("/tor/user").mapError()
     .merge(loginResultE)
-    .merge(logoutE.map(undefined))
+    .merge(logoutE.flatMap(() => Http.get("/tor/user/logout").mapError().map()))
     .toProperty()
 
 export const logout = () => { logoutE.push() }

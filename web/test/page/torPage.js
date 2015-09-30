@@ -45,6 +45,10 @@ function TorPage() {
       return function() {
         return api.getSelectedOppija().indexOf(oppija) >= 0
       }
+    },
+    logout: function() {
+      triggerEvent(S("#logout"), 'click')
+      return wait.until(LoginPage().isVisible)()
     }
   }
   return api

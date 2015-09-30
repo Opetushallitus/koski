@@ -18,6 +18,7 @@ function LoginPage() {
     },
     isVisible: function() {
       return loginElement().is(":visible")
+
     },
     isLoginErrorVisible: function() {
       return loginElement().hasClass("error")

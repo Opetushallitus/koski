@@ -119,10 +119,26 @@ describe("TOR", function() {
       })
     })
 
+    describe("Kun klikataan logout-linkkiä", function() {
+      before(authentication.login, page.openPage, page.logout)
+
+      it("Siirrytään login-sivulle", function() {
+        expect(login.isVisible()).to.equal(true)
+      })
+
+      describe("Kun ladataan sivu uudelleen", function() {
+        before(openPage("/tor", login.isVisible))
+
+        it("Sessio on päättynyt ja login-sivu näytetään", function() {
+          expect(login.isVisible()).to.equal(true)
+        })
+      })
+    })
+
     describe("Session vanhennuttua", function() {
       before(authentication.login, page.openPage, authentication.logout, page.search("eero", login.isVisible))
 
-      it("Siirrytään kirjautumissivulle", function() {
+      it("Siirrytään login-sivulle", function() {
         expect(login.isVisible()).to.equal(true)
       })
     })
