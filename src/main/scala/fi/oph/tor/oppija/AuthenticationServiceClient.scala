@@ -17,6 +17,7 @@ class AuthenticationServiceClient(username: String, password: String, opintoPolk
     .prepAs[AuthenticationServiceUserQueryResult](Request(uri = Uri.fromString(virkailijaUrl + "/authentication-service/resources/henkilo?q=" + query).toOption.get))(json4sOf[AuthenticationServiceUserQueryResult])
     .run.results.map { result => Oppija(result.oidHenkilo, result.sukunimi, result.etunimet, result.hetu)}
 
+  override def create(oppija: CreateOppija): String = throw new UnsupportedOperationException
 }
 
 case class AuthenticationServiceUserQueryResult(totalCount: Integer, results: List[AuthenticationServiceUser])

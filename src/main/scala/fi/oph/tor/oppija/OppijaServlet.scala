@@ -13,4 +13,10 @@ class OppijaServlet(oppijaRepository: OppijaRepository) extends ErrorHandlingSer
       case _ => throw new InvalidRequestException("query parameter length must be at least 3")
     }
   }
+
+  post("/") {
+    contentType = "text/plain;charset=utf-8"
+    val oppija: CreateOppija = Json.read[CreateOppija](request.body)
+    oppijaRepository.create(oppija)
+  }
 }

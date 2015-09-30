@@ -1,5 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom"
+import Http from "./http"
 
 export const Oppija = ({oppija, oppijat}) => oppija ?
   <div className="oppija">
@@ -11,30 +12,30 @@ export const Oppija = ({oppija, oppijat}) => oppija ?
 const CreateOppija = React.createClass({
   render() {
     const {oppijat} = this.props
-    const {firstNames, surname, callingName, ssn} = this.state
+    const {etunimet, sukunimi, kutsumanimi, hetu} = this.state
 
-    const submitDisabled = !firstNames || !surname || !callingName || !ssn
+    const submitDisabled = !etunimet || !sukunimi || !kutsumanimi || !hetu
 
     if(oppijat.query.length > 2 && oppijat.results.length === 0) {
       return (
         <form className="oppija stacked" onInput={this.onInput}>
           <label className="first-name">
             Etunimet
-            <input ref="firstNames"></input>
+            <input ref="etunimet"></input>
           </label>
           <label className="calling-name">
             Kutsumanimi
-            <input ref="callingName"></input>
+            <input ref="kutsumanimi"></input>
           </label>
           <label>
             Sukunimi
-            <input ref="surname"></input>
+            <input ref="sukunimi"></input>
           </label>
           <label className="ssn">
             Henkilötunnus
-            <input ref="ssn"></input>
+            <input ref="hetu"></input>
           </label>
-          <button className="button blue" disabled={submitDisabled}>Lisää henkilö</button>
+          <button className="button blue" disabled={submitDisabled} onClick={this.submit}>Lisää henkilö</button>
         </form>
       )
     } else {
@@ -43,15 +44,15 @@ const CreateOppija = React.createClass({
   },
 
   getInitialState() {
-    return {firstNames: '', surname: '', callingName: '', ssn: ''}
+    return {etunimet: '', sukunimi: '', kutsumanimi: '', hetu: ''}
   },
 
   formState() {
     return {
-      firstNames: this.refs.firstNames.value,
-      surname: this.refs.surname.value,
-      callingName: this.refs.callingName.value,
-      ssn: this.refs.ssn.value
+      etunimet: this.refs.etunimet.value,
+      sukunimi: this.refs.sukunimi.value,
+      kutsumanimi: this.refs.kutsumanimi.value,
+      hetu: this.refs.hetu.value
     }
   },
 
@@ -59,9 +60,8 @@ const CreateOppija = React.createClass({
     this.setState(this.formState())
   },
 
-
-  onFormInput() {
-    console.log("form input!")
+  submit(e) {
+    e.preventDefault()
+    Http.post('/tor/api/oppija', this.formState())
   }
-
 })

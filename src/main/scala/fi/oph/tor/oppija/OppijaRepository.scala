@@ -13,22 +13,39 @@ object OppijaRepository {
 }
 
 trait OppijaRepository {
+  def create(oppija: CreateOppija): String
+
   def findOppijat(query: String): List[Oppija]
 }
 
 class MockOppijaRepository extends OppijaRepository {
-  val oppijat = List(
-    Oppija("1.2.246.562.24.00000000001", "esimerkki", "eero", "010101-123N"),
-    Oppija("1.2.246.562.24.00000000002", "eerola", "jouni", ""),
-    Oppija("1.2.246.562.24.00000000003", "markkanen", "eero", ""),
-    Oppija("1.2.246.562.24.00000000004", "tekijä", "teija", "150995-914X")
+  var idCounter = 0
+
+  var oppijat = List(
+    Oppija(generateId, "esimerkki", "eero", "010101-123N"),
+    Oppija(generateId, "eerola", "jouni", ""),
+    Oppija(generateId, "markkanen", "eero", ""),
+    Oppija(generateId, "tekijä", "teija", "150995-914X")
   )
 
   override def findOppijat(query: String) = {
     oppijat.filter(searchString(_).contains(query.toLowerCase))
   }
 
+  override def create(oppija: CreateOppija): String = {
+    val newOppija = Oppija(generateId, oppija.sukunimi, oppija.etunimet, oppija.hetu)
+    oppijat = oppijat :+ newOppija
+    newOppija.oid
+  }
+
   private def searchString(oppija: Oppija) = {
     oppija.toString.toLowerCase
   }
+
+  private def generateId(): String = {
+    idCounter = idCounter + 1
+    "1.2.246.562.24.0000000000" + idCounter
+  }
 }
+
+case class CreateOppija(etunimet: String, kutsumanimi: String, sukunimi: String, hetu: String)
