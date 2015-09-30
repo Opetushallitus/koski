@@ -8,7 +8,7 @@ import org.http4s._
 import org.http4s.client.blaze
 import org.http4s.client.blaze.BlazeClient
 
-class AuthenticationServiceClient(username: String, password: String, opintoPolkuVirkailijaUrl: Path) extends OppijaRepository {
+class RemoteOppijaRepository(username: String, password: String, opintoPolkuVirkailijaUrl: Path) extends OppijaRepository {
   private val blazeHttpClient: BlazeClient = blaze.defaultClient
   private val virkailijaUrl: Path = opintoPolkuVirkailijaUrl
   private val casClient = new CasClient(virkailijaUrl, blazeHttpClient)
