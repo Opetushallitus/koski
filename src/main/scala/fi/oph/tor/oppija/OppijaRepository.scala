@@ -5,7 +5,7 @@ import com.typesafe.config.Config
 object OppijaRepository {
   def apply(config: Config) = {
     if (config.hasPath("authentication-service")) {
-      new AuthenticationServiceClient(config.getString("authentication-service.username"), config.getString("authentication-service.password"), config.getString("opintopolku.virkailija.url"))
+      new RemoteOppijaRepository(config.getString("authentication-service.username"), config.getString("authentication-service.password"), config.getString("opintopolku.virkailija.url"))
     } else {
       new MockOppijaRepository
     }

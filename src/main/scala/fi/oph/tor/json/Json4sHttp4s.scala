@@ -2,6 +2,7 @@ package fi.oph.tor.json
 
 import fi.vm.sade.utils.slf4j.Logging
 import org.http4s._
+import org.http4s.headers.`Content-Type`
 import org.json4s.Formats
 import org.json4s.jackson.Serialization._
 
@@ -17,4 +18,7 @@ object Json4sHttp4s extends Logging {
   def json4sOf[A](implicit formats: Formats, mf: Manifest[A]): EntityDecoder[A] = EntityDecoder.decodeBy[A](MediaType.`application/json`){(msg) =>
     DecodeResult(EntityDecoder.decodeString(msg)(Charset.`UTF-8`).map(parseJson4s[A]))
   }
+
+  def json4sEncoderOf[A <: AnyRef](implicit formats: Formats, mf: Manifest[A]): EntityEncoder[A] = EntityEncoder.stringEncoder(Charset.`UTF-8`).contramap[A](item => write[A](item))
+    .withContentType(`Content-Type`(MediaType.`application/json`))
 }
