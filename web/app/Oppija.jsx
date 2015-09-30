@@ -17,22 +17,22 @@ const CreateOppija = React.createClass({
 
     if(oppijat.query.length > 2 && oppijat.results.length === 0) {
       return (
-        <form className="oppija stacked">
+        <form className="oppija stacked" onInput={this.onInput}>
           <label className="first-name">
             Etunimet
-            <input ref="firstNames" onInput={this.onInput}></input>
+            <input ref="firstNames"></input>
           </label>
           <label className="calling-name">
             Kutsumanimi
-            <input ref="callingName" onInput={this.onInput}></input>
+            <input ref="callingName"></input>
           </label>
           <label>
             Sukunimi
-            <input ref="surname" onInput={this.onInput}></input>
+            <input ref="surname"></input>
           </label>
           <label className="ssn">
             Henkilötunnus
-            <input ref="ssn" onInput={this.onInput}></input>
+            <input ref="ssn"></input>
           </label>
           <button className="button blue" disabled={submitDisabled}>Lisää henkilö</button>
         </form>
@@ -57,6 +57,11 @@ const CreateOppija = React.createClass({
 
   onInput() {
     this.setState(this.formState())
+  },
+
+
+  onFormInput() {
+    console.log("form input!")
   }
 
 })
