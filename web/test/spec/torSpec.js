@@ -96,7 +96,12 @@ describe("TOR", function() {
   describe("Uuden oppijan lisääminen", function() {
     var addOppija = AddOppijaPage()
 
-    before(authentication.login, page.openPage, page.search("asdf", page.isNoResultsLabelShown))
+    before(
+      resetMocks,
+      authentication.login,
+      page.openPage,
+      page.search("asdf", page.isNoResultsLabelShown)
+    )
 
     describe("Aluksi", function() {
       it("Lisää-nappi on disabloitu", function() {
@@ -180,4 +185,8 @@ describe("TOR", function() {
 
 function authenticationErrorIsShown() {
   return S('body').text() === 'Not authenticated'
+}
+
+function resetMocks() {
+  return Q($.ajax({ url: "/tor/fixtures/reset", method: "post"}))
 }

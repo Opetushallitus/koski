@@ -16,17 +16,21 @@ trait OppijaRepository {
   def create(oppija: CreateOppija): String
 
   def findOppijat(query: String): List[Oppija]
+
+  def resetMocks {}
 }
 
 class MockOppijaRepository extends OppijaRepository {
-  var idCounter = 0
-
-  var oppijat = List(
+  private val defaultOppijat = List(
     Oppija(generateId, "esimerkki", "eero", "010101-123N"),
     Oppija(generateId, "eerola", "jouni", ""),
     Oppija(generateId, "markkanen", "eero", ""),
     Oppija(generateId, "tekijä", "teija", "150995-914X")
   )
+
+  private var idCounter = 0
+
+  private var oppijat = defaultOppijat
 
   override def findOppijat(query: String) = {
     oppijat.filter(searchString(_).contains(query.toLowerCase))
@@ -45,6 +49,11 @@ class MockOppijaRepository extends OppijaRepository {
   private def generateId(): String = {
     idCounter = idCounter + 1
     "1.2.246.562.24.0000000000" + idCounter
+  }
+
+  override def resetMocks {
+    idCounter = 0
+    oppijat = defaultOppijat
   }
 }
 

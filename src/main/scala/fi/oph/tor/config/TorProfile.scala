@@ -21,6 +21,9 @@ trait TorProfile {
   lazy val directoryClient: DirectoryClient = Authentication.directoryClient(config)
   lazy val config: Config = ConfigFactory.load
   lazy val oppijaRepository = OppijaRepository(config)
+  def resetMocks = {
+    oppijaRepository.resetMocks
+  }
 }
 
 class Local extends TorProfile with GlobalExecutionContext {
