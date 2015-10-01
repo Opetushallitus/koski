@@ -17,6 +17,7 @@ class OppijaServlet(oppijaRepository: OppijaRepository) extends ErrorHandlingSer
   post("/") {
     contentType = "text/plain;charset=utf-8"
     val oppija: CreateOppija = Json.read[CreateOppija](request.body)
-    oppijaRepository.create(oppija)
+    val result: OppijaCreationResult = oppijaRepository.create(oppija)
+    halt(result.httpStatus, result.text)
   }
 }

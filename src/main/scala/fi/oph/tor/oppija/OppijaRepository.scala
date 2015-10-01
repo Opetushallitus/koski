@@ -13,7 +13,7 @@ object OppijaRepository {
 }
 
 trait OppijaRepository {
-  def create(oppija: CreateOppija): String
+  def create(oppija: CreateOppija): OppijaCreationResult
 
   def findOppijat(query: String): List[Oppija]
 
@@ -36,10 +36,14 @@ class MockOppijaRepository extends OppijaRepository {
     oppijat.filter(searchString(_).contains(query.toLowerCase))
   }
 
-  override def create(oppija: CreateOppija): String = {
-    val newOppija = Oppija(generateId, oppija.sukunimi, oppija.etunimet, oppija.hetu)
-    oppijat = oppijat :+ newOppija
-    newOppija.oid
+  override def create(oppija: CreateOppija): OppijaCreationResult = {
+    if (oppijat.find(o => o.hetu == oppija.hetu).isDefined) {
+      Failed(409, "conflict")
+    } else {
+      val newOppija = Oppija(generateId, oppija.sukunimi, oppija.etunimet, oppija.hetu)
+      oppijat = oppijat :+ newOppija
+      Created(newOppija.oid)
+    }
   }
 
   private def searchString(oppija: Oppija) = {
@@ -58,3 +62,13 @@ class MockOppijaRepository extends OppijaRepository {
 }
 
 case class CreateOppija(etunimet: String, kutsumanimi: String, sukunimi: String, hetu: String)
+
+sealed trait OppijaCreationResult {
+  def httpStatus: Int
+  def text: String
+}
+case class Created(oid: String) extends OppijaCreationResult {
+  def httpStatus = 200
+  def text = oid
+}
+case class Failed(val httpStatus: Int, val text: String) extends OppijaCreationResult

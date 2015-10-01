@@ -23,15 +23,19 @@ class RemoteOppijaRepository(username: String, password: String, opintoPolkuVirk
     Uri.fromString(url).toOption.get
   }
 
-  override def create(oppija: CreateOppija): String = {
+  override def create(oppija: CreateOppija): OppijaCreationResult = {
     val task: Task[Request] = Request(
       uri = uriFromString(virkailijaUrl + "/authentication-service/resources/henkilo"),
       method = Method.POST
     ).withBody(new AuthenticationServiceCreateUser(oppija))(json4sEncoderOf[AuthenticationServiceCreateUser])
 
     val response: Response = authenticationServiceClient(task).run
-    response.status.code match {
-      case 200 => response.as[String].run
+    val responseText: String = response.as[String].run
+
+    (response.status.code, responseText) match {
+      case (200, oid) => Created(oid)
+      case (400, "socialsecuritynr.already.exists") => Failed(409, "socialsecuritynr.already.exists")
+      case (400, text) => Failed(400, text)
       case _ => throw new RuntimeException(response.toString)
     }
   }
