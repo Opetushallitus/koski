@@ -200,6 +200,15 @@ describe("TOR", function() {
           expect(login.isVisible()).to.equal(true)
         })
       })
+
+      describe("Kun kirjaudutaan uudelleen sisään", function() {
+        // TODO: implement generic "wait for ajax" mechanism instead of milliseconds?
+        before(authentication.login, page.openPage, page.oppijaHaku.search("jouni", [eerola]), page.logout, login.login("kalle", "asdf"), wait.forMilliseconds(500))
+        it ("Käyttöliittymä on palautunut alkutilaan", function() {
+          expect(page.oppijaHaku.getSearchResults()).to.deep.equal([])
+          expect(page.getSelectedOppija()).to.equal("")
+        })
+      })
     })
 
     describe("Session vanhennuttua", function() {

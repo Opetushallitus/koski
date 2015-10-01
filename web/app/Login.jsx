@@ -3,18 +3,18 @@ import ReactDOM from "react-dom"
 import Bacon from "baconjs"
 import Http from "./http"
 
-const logoutE = new Bacon.Bus()
 const loginE = new Bacon.Bus()
 
 const loginResultE = loginE
     .flatMap((credentials) => Http.post("/tor/user/login", credentials))
 
 export const userP = Http.get("/tor/user").mapError()
-    .merge(loginResultE)
-    .merge(logoutE.flatMap(() => Http.get("/tor/user/logout").mapError().map()))
+    .merge(loginResultE.skipErrors())
     .toProperty()
 
-export const logout = () => { logoutE.push() }
+export const logout = () => {
+  document.location = "/tor/user/logout"
+}
 
 export const Login = React.createClass({
   render() {
