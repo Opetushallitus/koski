@@ -27,9 +27,10 @@ export const Oppija = ({oppija, uusiOppija}) => oppija ?
 
 const CreateOppija = React.createClass({
   render() {
-    const {etunimet, sukunimi, kutsumanimi, hetu} = this.state
+    const {etunimet, sukunimi, kutsumanimi, hetu, inProgress} = this.state
 
-    const submitDisabled = !etunimet || !sukunimi || !kutsumanimi || !hetu
+    const submitDisabled = !etunimet || !sukunimi || !kutsumanimi || !hetu || inProgress
+    const buttonText = !inProgress ? "Lisää henkilö" : "Lisätään..."
 
     return (
       <form className="oppija stacked" onInput={this.onInput}>
@@ -49,7 +50,7 @@ const CreateOppija = React.createClass({
           Henkilötunnus
           <input ref="hetu"></input>
         </label>
-        <button className="button blue" disabled={submitDisabled} onClick={this.submit}>Lisää henkilö</button>
+        <button className="button blue" disabled={submitDisabled} onClick={this.submit}>{buttonText}</button>
       </form>
     )
   },
@@ -73,6 +74,10 @@ const CreateOppija = React.createClass({
 
   submit(e) {
     e.preventDefault()
-    Http.post('/tor/api/oppija', this.formState()).map(oid => ({oid: oid})).onValue(navigateToOppija);
+    this.setState({inProgress: true})
+
+    const createOppijaS = Http.post('/tor/api/oppija', this.formState()).map(oid => ({oid: oid}));
+    createOppijaS.onValue(navigateToOppija)
+    createOppijaS.onError(() => this.setState({inProgress: false}))
   }
 })
