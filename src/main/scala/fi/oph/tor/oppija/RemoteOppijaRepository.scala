@@ -35,7 +35,6 @@ class RemoteOppijaRepository(username: String, password: String, opintoPolkuVirk
     (response.status.code, responseText) match {
       case (200, oid) => Created(oid)
       case (400, "socialsecuritynr.already.exists") => Failed(409, "socialsecuritynr.already.exists")
-      case (400, text) => Failed(400, text)
       case _ => throw new RuntimeException(response.toString)
     }
   }
