@@ -173,6 +173,22 @@ jonka jälkeen uusin versio pyörii testiympäristössä:
 Lokien katsominen onnistuu komennolla:
 
     make tail
+    
+## Testiympäristö
+
+Testiympäristön TOR löytyy täältä:
+
+    http://tordev.tor.oph.reaktor.fi/tor/
+    
+Ympäristöön kuuluvat Opintopolku-palvelun osat täällä:
+
+    https://srv2.va-dev.oph.fi/
+    
+Esimerkiksi henkilöpalvelu:
+
+
+    https://srv2.va-dev.oph.fi/authentication-service/swagger/index.html
+
 
 ## Henkilöpalvelu-integraatio
 
