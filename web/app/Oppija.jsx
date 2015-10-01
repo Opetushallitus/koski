@@ -30,9 +30,10 @@ const CreateOppija = React.createClass({
   render() {
     const {etunimet, sukunimi, kutsumanimi, hetu, inProgress} = this.state
 
-    const submitDisabled = !etunimet || !sukunimi || !kutsumanimi || !isValidHetu(hetu) || inProgress
+    const submitDisabled = !etunimet || !sukunimi || !kutsumanimi || !isValidHetu(hetu) || !this.isKutsumanimiOneOfEtunimet(kutsumanimi, etunimet) || inProgress
     const buttonText = !inProgress ? "Lisää henkilö" : "Lisätään..."
     const hetuClassName = !hetu ? "" : isValidHetu(hetu) ? "" : "error"
+    const kutsumanimiClassName = this.isKutsumanimiOneOfEtunimet(kutsumanimi, etunimet) ? "" : "error"
 
     return (
       <form className="oppija stacked" onInput={this.onInput}>
@@ -42,7 +43,7 @@ const CreateOppija = React.createClass({
         </label>
         <label className="kutsumanimi">
           Kutsumanimi
-          <input ref="kutsumanimi"></input>
+          <input ref="kutsumanimi" className={kutsumanimiClassName}></input>
         </label>
         <label className="sukunimi">
           Sukunimi
@@ -81,5 +82,9 @@ const CreateOppija = React.createClass({
     const createOppijaS = Http.post('/tor/api/oppija', this.formState()).map(oid => ({oid: oid}));
     createOppijaS.onValue(navigateToOppija)
     createOppijaS.onError(() => this.setState({inProgress: false}))
+  },
+
+  isKutsumanimiOneOfEtunimet(kutsumanimi, etunimet) {
+    return kutsumanimi && etunimet ? etunimet.split(" ").indexOf(kutsumanimi) > -1 || etunimet.split("-").indexOf(kutsumanimi) > -1: true
   }
 })
