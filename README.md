@@ -166,7 +166,10 @@ Tämän jälkeen voit pushata uuden version TOR:sta ajamalla,
 
     make deploy
 
-jonka jälkeen sen pitäisi löytyä täältä: http://86.50.169.123/tor/
+jonka jälkeen uusin versio pyörii testiympäristössä: 
+
+    http://tordev.tor.oph.reaktor.fi/tor/
+    
 Lokien katsominen onnistuu komennolla:
 
     make tail
