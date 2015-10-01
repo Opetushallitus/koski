@@ -29,7 +29,6 @@ export const Oppija = ({oppija, uusiOppija}) => oppija ?
 const CreateOppija = React.createClass({
   render() {
     const {etunimet, sukunimi, kutsumanimi, hetu, inProgress, hetuConflict} = this.state
-    console.log(hetuConflict)
     const submitDisabled = !etunimet || !sukunimi || !kutsumanimi || !isValidHetu(hetu) || !this.isKutsumanimiOneOfEtunimet(kutsumanimi, etunimet) || inProgress
     const buttonText = !inProgress ? "Lisää henkilö" : "Lisätään..."
     const hetuClassName = !hetu ? "hetu" : isValidHetu(hetu) ? (hetuConflict ? "hetu conflict": "hetu") : "hetu error"
