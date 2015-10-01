@@ -28,12 +28,12 @@ export const Oppija = ({oppija, uusiOppija}) => oppija ?
 
 const CreateOppija = React.createClass({
   render() {
-    const {etunimet, sukunimi, kutsumanimi, hetu, inProgress} = this.state
-
+    const {etunimet, sukunimi, kutsumanimi, hetu, inProgress, hetuConflict} = this.state
+    console.log(hetuConflict)
     const submitDisabled = !etunimet || !sukunimi || !kutsumanimi || !isValidHetu(hetu) || !this.isKutsumanimiOneOfEtunimet(kutsumanimi, etunimet) || inProgress
     const buttonText = !inProgress ? "Lisää henkilö" : "Lisätään..."
-    const hetuClassName = !hetu ? "" : isValidHetu(hetu) ? "" : "error"
-    const kutsumanimiClassName = this.isKutsumanimiOneOfEtunimet(kutsumanimi, etunimet) ? "" : "error"
+    const hetuClassName = !hetu ? "hetu" : isValidHetu(hetu) ? (hetuConflict ? "hetu conflict": "hetu") : "hetu error"
+    const kutsumanimiClassName = this.isKutsumanimiOneOfEtunimet(kutsumanimi, etunimet) ? "kutsumanimi" : "kutsumanimi error"
 
     return (
       <form className="oppija stacked" onInput={this.onInput}>
@@ -41,17 +41,17 @@ const CreateOppija = React.createClass({
           Etunimet
           <input ref="etunimet"></input>
         </label>
-        <label className="kutsumanimi">
+        <label className={kutsumanimiClassName}>
           Kutsumanimi
-          <input ref="kutsumanimi" className={kutsumanimiClassName}></input>
+          <input ref="kutsumanimi"></input>
         </label>
         <label className="sukunimi">
           Sukunimi
           <input ref="sukunimi"></input>
         </label>
-        <label className="hetu">
+        <label className={hetuClassName}>
           Henkilötunnus
-          <input ref="hetu" className={hetuClassName}></input>
+          <input ref="hetu"></input>
         </label>
         <button className="button blue" disabled={submitDisabled} onClick={this.submit}>{buttonText}</button>
       </form>
@@ -83,7 +83,11 @@ const CreateOppija = React.createClass({
     createOppijaS.onValue(navigateToOppija)
     createOppijaS.onError((e) => {
       this.setState({inProgress: false})
-      showError(e)
+      if (e.httpStatus == 409) {
+        this.setState({hetuConflict: true})
+      } else {
+        showError(e)
+      }
     })
   },
 

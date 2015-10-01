@@ -127,6 +127,10 @@ describe("TOR", function() {
         addOppija.enterValidData({ hetu: "010101-123N"}),
         addOppija.submit
       )
+
+      it("Näytetään virheilmoitus", function() {
+
+      })
     })
 
     describe("Kun sessio on vanhentunut", function() {
