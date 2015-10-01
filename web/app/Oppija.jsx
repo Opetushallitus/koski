@@ -67,7 +67,7 @@ const CreateOppija = React.createClass({
       etunimet: this.refs.etunimet.value,
       sukunimi: this.refs.sukunimi.value,
       kutsumanimi: this.refs.kutsumanimi.value,
-      hetu: this.refs.hetu.value
+      hetu: this.refs.hetu.value.toUpperCase()
     }
   },
 
