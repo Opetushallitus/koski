@@ -2,7 +2,7 @@ import React from "react"
 import ReactDOM from "react-dom"
 import Bacon from "baconjs"
 import Http from "./http"
-import {navigateToOppija, routeP} from "./router"
+import {navigateToOppija, routeP, showError} from "./router"
 import {isValidHetu} from "./hetu"
 
 export const oppijaP = routeP.flatMap(route => {
@@ -81,7 +81,10 @@ const CreateOppija = React.createClass({
 
     const createOppijaS = Http.post('/tor/api/oppija', this.formState()).map(oid => ({oid: oid}));
     createOppijaS.onValue(navigateToOppija)
-    createOppijaS.onError(() => this.setState({inProgress: false}))
+    createOppijaS.onError((e) => {
+      this.setState({inProgress: false})
+      showError(e)
+    })
   },
 
   isKutsumanimiOneOfEtunimet(kutsumanimi, etunimet) {

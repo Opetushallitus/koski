@@ -119,6 +119,15 @@ describe("TOR", function() {
         it("lisätty oppija näytetään", function() {})
       })
     })
+
+    describe("Kun sessio on vanhentunut", function() {
+      before( openPage("/tor/uusioppija"),
+              addOppija.enterValidData,
+              authentication.logout,
+              addOppija.submit)
+
+      it("Siirrytään login-sivulle", wait.until(login.isVisible))
+    })
   })
   describe("Navigointi suoraan oppijan sivulle", function() {
     before(authentication.login)

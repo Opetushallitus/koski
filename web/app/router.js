@@ -12,3 +12,4 @@ export const routeP = b.toProperty(document.location.pathname)
 
 export const navigateToOppija = oppija => navigate(`/oppija/${oppija.oid}`)
 export const navigateToUusiOppija = () => navigate("/uusioppija")
+export const showError = (error) => b.error(error)
