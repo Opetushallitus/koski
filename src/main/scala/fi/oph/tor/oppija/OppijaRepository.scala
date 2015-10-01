@@ -33,7 +33,7 @@ class MockOppijaRepository extends OppijaRepository {
   private var oppijat = defaultOppijat
 
   override def findOppijat(query: String) = {
-    oppijat.filter(searchString(_).contains(query.toLowerCase))
+    oppijat.filter(searchString(_).contains(query))
   }
 
   override def create(oppija: CreateOppija): OppijaCreationResult = {
@@ -47,7 +47,7 @@ class MockOppijaRepository extends OppijaRepository {
   }
 
   private def searchString(oppija: Oppija) = {
-    oppija.toString.toLowerCase
+    oppija.toString.toUpperCase
   }
 
   private def generateId(): String = {

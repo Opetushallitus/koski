@@ -34,7 +34,7 @@ const OppijaHakuBoksi = React.createClass({
     return (
       <div>
         <label>Opiskelija
-          <input id="search-query" className="stacked" ref="query" onInput={(e) => oppijaHakuE.push(e.target.value)}></input>
+          <input id="search-query" className="stacked" ref="query" onInput={(e) => oppijaHakuE.push(e.target.value.toUpperCase())}></input>
         </label>
         <hr></hr>
       </div>

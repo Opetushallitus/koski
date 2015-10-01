@@ -87,6 +87,18 @@ describe("TOR", function() {
         expect(page.oppijaHaku.isNoResultsLabelShown()).to.equal(true)
       })
     })
+
+    describe("Hakutavat", function() {
+      it ("Hetulla, case-insensitive", function() {
+        return page.oppijaHaku.search("010101-123n", [eero])()
+      })
+      it ("Nimen osalla, case-insensitive", function() {
+        return page.oppijaHaku.search("JoU", [eerola])()
+      })
+      it ("Oidilla", function() {
+        return page.oppijaHaku.search("1.2.246.562.24.00000000003", [markkanen])()
+      })
+    })
   })
   describe("Uuden oppijan lisääminen", function() {
     var addOppija = AddOppijaPage()

@@ -3,6 +3,12 @@ function TorPage() {
 
   var OppijaHaku = {
     search: function(query, expectedResults) {
+      if (expectedResults instanceof Array) {
+        var resultList = expectedResults
+        expectedResults = function() {
+          return _.eq(resultList, OppijaHaku.getSearchResults())
+        }
+      }
       if (typeof expectedResults != "function") {
         var expectedNumberOfResults = expectedResults
         expectedResults = function() {
