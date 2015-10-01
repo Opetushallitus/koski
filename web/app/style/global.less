@@ -5,12 +5,16 @@ hr {
   border-top-width: 0;
 }
 
+.ErrorMixin {
+  border: 1px solid #ee4444;
+  &:focus {
+    border-color: #ee4444;
+  }
+}
+
 .error {
   input {
-    border: 1px solid #ee4444;
-    &:focus {
-      border-color: #ee4444;
-    }
+    .ErrorMixin
   }
 }
 
@@ -38,6 +42,9 @@ input {
   height: 40px;
   &:focus {
     border-color: @color-blue;
+  }
+  &.error {
+    .ErrorMixin
   }
 }
 

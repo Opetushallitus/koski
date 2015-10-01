@@ -3,6 +3,7 @@ import ReactDOM from "react-dom"
 import Bacon from "baconjs"
 import Http from "./http"
 import {navigateToOppija, routeP} from "./router"
+import {isValidHetu} from "./hetu"
 
 export const oppijaP = routeP.flatMap(route => {
   var match = route.match(new RegExp("oppija/(.*)"))
@@ -29,8 +30,9 @@ const CreateOppija = React.createClass({
   render() {
     const {etunimet, sukunimi, kutsumanimi, hetu, inProgress} = this.state
 
-    const submitDisabled = !etunimet || !sukunimi || !kutsumanimi || !hetu || inProgress
+    const submitDisabled = !etunimet || !sukunimi || !kutsumanimi || !isValidHetu(hetu) || inProgress
     const buttonText = !inProgress ? "Lisää henkilö" : "Lisätään..."
+    const hetuClassName = !hetu ? "" : isValidHetu(hetu) ? "" : "error"
 
     return (
       <form className="oppija stacked" onInput={this.onInput}>
@@ -48,7 +50,7 @@ const CreateOppija = React.createClass({
         </label>
         <label className="hetu">
           Henkilötunnus
-          <input ref="hetu"></input>
+          <input ref="hetu" className={hetuClassName}></input>
         </label>
         <button className="button blue" disabled={submitDisabled} onClick={this.submit}>{buttonText}</button>
       </form>
