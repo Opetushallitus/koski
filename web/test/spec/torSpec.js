@@ -153,6 +153,33 @@ describe("TOR", function() {
 
       it("Siirrytään login-sivulle", wait.until(login.isVisible))
     })
+
+    describe("Kun hetu on virheellinen", function() {
+      before(
+        authentication.login,
+        openPage("/tor/uusioppija"),
+        addOppija.enterValidData({hetu: "123456-1234"})
+      )
+      it("Lisää-nappi on disabloitu", function() {
+        expect(addOppija.isEnabled()).to.equal(false)
+      })
+    })
+    describe("Kun hetu sisältää väärän tarkistusmerkin", function() {
+      before(
+        addOppija.enterValidData({hetu: "011095-953Z"})
+      )
+      it("Lisää-nappi on disabloitu", function() {
+        expect(addOppija.isEnabled()).to.equal(false)
+      })
+    })
+    describe("Kun hetu sisältää väärän päivämäärän, mutta on muuten validi", function() {
+      before(
+        addOppija.enterValidData({hetu: "300275-5557"})
+      )
+      it("Lisää-nappi on disabloitu", function() {
+        expect(addOppija.isEnabled()).to.equal(false)
+      })
+    })
   })
   describe("Navigointi suoraan oppijan sivulle", function() {
     before(authentication.login)
