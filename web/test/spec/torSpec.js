@@ -106,7 +106,7 @@ describe("TOR", function() {
     })
 
     describe("Kun syötetään validit tiedot", function() {
-      before(addOppija.enterValidData)
+      before(addOppija.enterValidData())
 
       it("Lisää-nappi on enabloitu", function() {
         expect(addOppija.isEnabled()).to.equal(true)
@@ -120,9 +120,18 @@ describe("TOR", function() {
       })
     })
 
+    describe("Kun syötetty hetu on jo olemassa", function() {
+      before(
+        resetMocks,
+        openPage("/tor/uusioppija"),
+        addOppija.enterValidData({ hetu: "010101-123N"}),
+        addOppija.submit
+      )
+    })
+
     describe("Kun sessio on vanhentunut", function() {
       before( openPage("/tor/uusioppija"),
-              addOppija.enterValidData,
+              addOppija.enterValidData(),
               authentication.logout,
               addOppija.submit)
 

@@ -9,11 +9,14 @@ function AddOppijaPage() {
     isEnabled: function() {
       return !button().is(":disabled")
     },
-    enterValidData: function() {
-      return pageApi.setInputValue(".etunimet input", "Ossi Olavi")()
-        .then(pageApi.setInputValue(".kutsumanimi input", "Ossi"))
-        .then(pageApi.setInputValue(".sukunimi input", "Oppija"))
-        .then(pageApi.setInputValue(".hetu input", "300994-9694"))
+    enterValidData: function(params) {
+      params = _.merge({ etunimet: "Ossi Olavi", kutsumanimi: "Ossi", sukunimi: "Oppija", hetu: "300994-9694"}, {}, params)
+      return function() {
+        return pageApi.setInputValue(".etunimet input", params.etunimet)()
+          .then(pageApi.setInputValue(".kutsumanimi input", params.kutsumanimi))
+          .then(pageApi.setInputValue(".sukunimi input", params.sukunimi))
+          .then(pageApi.setInputValue(".hetu input", params.hetu))
+      }
     },
     submit: function() {
       triggerEvent(button(), 'click')
