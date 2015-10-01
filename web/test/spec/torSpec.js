@@ -180,6 +180,22 @@ describe("TOR", function() {
         expect(addOppija.isEnabled()).to.equal(false)
       })
     })
+    describe("Kun kutsumanimi ei löydy etunimistä", function() {
+      before(
+        addOppija.enterValidData({kutsumanimi: "eiloydy"})
+      )
+      it("Lisää-nappi on disabloitu", function() {
+        expect(addOppija.isEnabled()).to.equal(false)
+      })
+    })
+    describe("Kun kutsumanimi löytyy väliviivallisesta nimestä", function() {
+      before(
+        addOppija.enterValidData({etunimet: "Juha-Pekka", kutsumanimi: "Pekka"})
+      )
+      it("Lisää-nappi on enabloitu", function() {
+        expect(addOppija.isEnabled()).to.equal(true)
+      })
+    })
   })
   describe("Navigointi suoraan oppijan sivulle", function() {
     before(authentication.login)
