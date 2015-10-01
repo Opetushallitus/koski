@@ -52,6 +52,9 @@ const CreateOppija = React.createClass({
         <label className={hetuClassName}>
           Henkilötunnus
           <input ref="hetu"></input>
+          {
+            hetuConflict ? <span className="error">Henkilötunnuksella löytyy jo henkilö</span> : <span></span>
+          }
         </label>
         <button className="button blue" disabled={submitDisabled} onClick={this.submit}>{buttonText}</button>
       </form>
