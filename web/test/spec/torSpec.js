@@ -129,7 +129,7 @@ describe("TOR", function() {
       )
 
       it("Näytetään virheilmoitus", function() {
-
+        return wait.until(addOppija.isErrorShown("hetu"))()
       })
     })
 

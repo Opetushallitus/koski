@@ -20,6 +20,12 @@ function AddOppijaPage() {
     },
     submit: function() {
       triggerEvent(button(), 'click')
+    },
+
+    isErrorShown: function(field) {
+      return function() {
+        return form().find("." + field).find(".error").is(":visible")
+      }
     }
   }
   return api

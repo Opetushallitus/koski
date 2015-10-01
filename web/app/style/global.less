@@ -5,47 +5,12 @@ hr {
   border-top-width: 0;
 }
 
-.ErrorMixin {
-  border: 1px solid #ee4444;
-  &:focus {
-    border-color: #ee4444;
-  }
-}
-
-.error {
-  input {
-    .ErrorMixin
-  }
-}
-
-label input {
-  margin-top: 5px;
-  margin-bottom: 18px;
-}
-
-form.stacked label input {
-  display: block;
-}
 
 a {
   color: @color-blue;
   font-size: 18px;
   text-decoration: none;
   cursor: pointer;
-}
-
-input {
-  outline:none;
-  border: 1px #999290 solid;
-  padding: 0 0.7em;
-  width: 210px;
-  height: 40px;
-  &:focus {
-    border-color: @color-blue;
-  }
-  &.error {
-    .ErrorMixin
-  }
 }
 
 .button {

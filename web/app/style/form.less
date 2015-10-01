@@ -1,0 +1,50 @@
+.ErrorMixin {
+  border: 1px solid @color-red;
+  &:focus {
+    border-color: @color-red;
+  }
+}
+
+.error {
+  input {
+    .ErrorMixin
+  }
+}
+
+input {
+  outline:none;
+  border: 1px #999290 solid;
+  padding: 0 0.7em;
+  width: 210px;
+  height: 40px;
+  &:focus {
+    border-color: @color-blue;
+  }
+  &.error {
+    .ErrorMixin
+  }
+}
+
+form.stacked {
+  label {
+    position: relative;
+    input {
+      display: block;
+    }
+
+    input {
+      margin-top: 5px;
+      margin-bottom: 18px;
+    }
+
+    .error {
+      color: @color-red;
+      position: absolute;
+      color: #ee4444;
+      position: absolute;
+      bottom: 10px;
+      left: 137px;
+    }
+  }
+}
+
