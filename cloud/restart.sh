@@ -12,7 +12,7 @@ export JAVA_OPTS="\
 -Dldap.host=ldap \
 -Dldap.password=$LDAP_PASSWORD \
 -Dldap.userdn=$LDAP_USERDN \
--Dopintopolku.virkailija.url=\"https://testi.virkailija.opintopolku.fi\" \
+-Dopintopolku.virkailija.url=\"https://virkailija.tordev.tor.oph.reaktor.fi\" \
 -Dauthentication-service.username=$AUTHENTICATION_SERVICE_USERNAME \
 -Dauthentication-service.password=$AUTHENTICATION_SERVICE_PASSWORD \
 "
