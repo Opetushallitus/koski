@@ -24,7 +24,7 @@ function AddOppijaPage() {
 
     isErrorShown: function(field) {
       return function() {
-        return form().find("." + field).find(".error").is(":visible")
+        return form().find(".error-messages ." + field).is(":visible")
       }
     }
   }

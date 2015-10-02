@@ -187,6 +187,9 @@ describe("TOR", function() {
       it("Lisää-nappi on disabloitu", function() {
         expect(addOppija.isEnabled()).to.equal(false)
       })
+      it("Näytetään virheilmoitus", function() {
+        expect(addOppija.isErrorShown("kutsumanimi")()).to.equal(true)
+      })
     })
     describe("Kun kutsumanimi löytyy väliviivallisesta nimestä", function() {
       before(

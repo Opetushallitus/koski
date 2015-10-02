@@ -29,10 +29,19 @@ export const Oppija = ({oppija, uusiOppija}) => oppija ?
 const CreateOppija = React.createClass({
   render() {
     const {etunimet, sukunimi, kutsumanimi, hetu, inProgress, hetuConflict} = this.state
-    const submitDisabled = !etunimet || !sukunimi || !kutsumanimi || !isValidHetu(hetu) || !this.isKutsumanimiOneOfEtunimet(kutsumanimi, etunimet) || inProgress
+    const validKutsumanimi = this.isKutsumanimiOneOfEtunimet(kutsumanimi, etunimet)
+    const submitDisabled = !etunimet || !sukunimi || !kutsumanimi || !isValidHetu(hetu) || !validKutsumanimi || inProgress
     const buttonText = !inProgress ? "Lisää henkilö" : "Lisätään..."
-    const hetuClassName = !hetu ? "hetu" : isValidHetu(hetu) ? (hetuConflict ? "hetu conflict": "hetu") : "hetu error"
-    const kutsumanimiClassName = this.isKutsumanimiOneOfEtunimet(kutsumanimi, etunimet) ? "kutsumanimi" : "kutsumanimi error"
+    const hetuClassName = !hetu ? "hetu" : isValidHetu(hetu) ? "hetu" : "hetu error"
+    const kutsumanimiClassName = validKutsumanimi ? "kutsumanimi" : "kutsumanimi error"
+
+    const errors = []
+    if(hetuConflict) {
+      errors.push(<li key="1" className="hetu">Henkilötunnuksella löytyy jo henkilö.</li>)
+    }
+    if(!validKutsumanimi) {
+      errors.push(<li key="2" className="kutsumanimi">Kutsumanimen on oltava yksi etunimistä.</li>)
+    }
 
     return (
       <form className="oppija stacked" onInput={this.onInput}>
@@ -51,11 +60,11 @@ const CreateOppija = React.createClass({
         <label className={hetuClassName}>
           Henkilötunnus
           <input ref="hetu"></input>
-          {
-            hetuConflict ? <span className="error">Henkilötunnuksella löytyy jo henkilö</span> : <span></span>
-          }
         </label>
         <button className="button blue" disabled={submitDisabled} onClick={this.submit}>{buttonText}</button>
+        <ul className="error-messages">
+          {errors}
+        </ul>
       </form>
     )
   },
