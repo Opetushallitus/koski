@@ -18,8 +18,14 @@ const stateP = Bacon.combineTemplate({
   searchInProgress: searchInProgressP
 })
 
-const domP = stateP.map(({user, oppijat, valittuOppija, uusiOppija, searchInProgress}) =>
+const errorP = stateP.changes().errors()
+  .mapError(e => e).filter(e => !requiresLogin(e)).map(true)
+  .merge(Bacon.fromEvent(document.body, "click").map(false))
+  .toProperty(false).log()
+
+const domP = stateP.combine(errorP, ({user, oppijat, valittuOppija, uusiOppija, searchInProgress}, isError) =>
   <div>
+    <Error isError={isError}/>
     <TopBar user={user} />
     {
       user
@@ -33,11 +39,19 @@ const domP = stateP.map(({user, oppijat, valittuOppija, uusiOppija, searchInProg
   </div>
 )
 
+const Error = ({isError}) => {
+  return isError ? <div id="error" className="error">Järjestelmässä tapahtui odottamaton virhe.<a>&#10005;</a></div> : <div id="error"></div>
+}
+
 domP.onValue((component) => ReactDOM.render(component, document.getElementById('content')))
 domP.onError(function(e) {
-  if (e.httpStatus >= 400 && e.httpStatus < 500) {
+  if (requiresLogin(e)) {
     logout()
   } else {
     handleError(e)
   }
 })
+
+function requiresLogin(e) {
+  return e.httpStatus >= 400 && e.httpStatus < 500;
+}

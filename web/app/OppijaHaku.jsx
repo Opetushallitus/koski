@@ -26,7 +26,7 @@ oppijaP.sampledBy(oppijatP.map(".results").changes(), (oppija, oppijat) => ({ op
   .map(".oppijat.0")
   .onValue(navigateToOppija)
 
-export const searchInProgressP = oppijaHakuE.filter(acceptableQuery).awaiting(oppijatP).throttle(200)
+export const searchInProgressP = oppijaHakuE.filter(acceptableQuery).awaiting(oppijatP.mapError()).throttle(200)
 
 
 const OppijaHakuBoksi = React.createClass({

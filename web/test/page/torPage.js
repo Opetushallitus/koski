@@ -66,6 +66,9 @@ function TorPage() {
     logout: function() {
       triggerEvent(S("#logout"), 'click')
       return wait.until(LoginPage().isVisible)()
+    },
+    isErrorShown: function() {
+      return S("#error.error").is(":visible")
     }
   }
 

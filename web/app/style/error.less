@@ -1,0 +1,21 @@
+#error {
+  height: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  background-color: #EB8B2D;
+  transition: height 0.5s ease-out;
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  color: @color-white;
+  line-height: 50px;
+  text-align: center;
+  &.error {
+    height: 50px;
+  }
+  a {
+    position: absolute;
+    right: @page-border-width;
+    color: white;
+  }
+}

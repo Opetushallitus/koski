@@ -212,6 +212,17 @@ describe("TOR", function() {
       expect(page.oppijaHaku.getSearchResults()).to.deep.equal([eero])
     })
   })
+
+  describe("Odottamattoman virheen sattuessa", function() {
+    before(
+      authentication.login,
+      resetMocks,
+      page.openPage,
+      page.oppijaHaku.search("error", page.isErrorShown))
+
+      it("näytetään virheilmoitus", function() {})
+  })
+
   describe("Tietoturva", function() {
     before(login.openPage)
 
