@@ -3,7 +3,9 @@ import javax.servlet.ServletContext
 import fi.oph.tor.config.TorProfile
 import fi.oph.tor.db._
 import fi.oph.tor.fixture.FixtureServlet
+import fi.oph.tor.koulutus.KoulutusServlet
 import fi.oph.tor.oppija.OppijaServlet
+import fi.oph.tor.oppilaitos.OppilaitosServlet
 import fi.oph.tor.user.UserServlet
 import fi.oph.tor.{SingleFileServlet, SuoritusServlet, TodennetunOsaamisenRekisteri}
 import fi.vm.sade.utils.slf4j.Logging
@@ -20,6 +22,8 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     context.mount(new UserServlet(profile.directoryClient), "/user")
     context.mount(new SingleFileServlet("web/static/index.html"), "/oppija")
     context.mount(new SingleFileServlet("web/static/index.html"), "/uusioppija")
+    context.mount(new OppilaitosServlet(profile.oppilaitosRepository), "/api/oppilaitos")
+    context.mount(new KoulutusServlet(profile.koulutusRepository), "/api/koulutus")
     context.mount(new FixtureServlet(profile), "/fixtures")
 
   }

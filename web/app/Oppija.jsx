@@ -4,6 +4,7 @@ import Bacon from "baconjs"
 import Http from "./http"
 import {navigateToOppija, routeP, showError} from "./router"
 import {isValidHetu} from "./hetu"
+import {Koulutus} from "./Koulutus.jsx"
 
 export const oppijaP = routeP.flatMap(route => {
   var match = route.match(new RegExp("oppija/(.*)"))
@@ -15,16 +16,15 @@ export const uusiOppijaP = routeP.map(route => {
   return !!match
 })
 
-export const Oppija = ({oppija, uusiOppija}) => oppija ?
+export const Oppija = ({oppija, koulutus}) => oppija.valittuOppija ?
   <div className="oppija">
-    <h2>{oppija.sukunimi}, {oppija.etunimet} <span className="hetu">{oppija.hetu}</span></h2>
+    <h2>{oppija.valittuOppija.sukunimi}, {oppija.valittuOppija.etunimet} <span className="hetu">{oppija.valittuOppija.hetu}</span></h2>
     <hr></hr>
   </div> : (
-    uusiOppija
-      ? <CreateOppija/>
+    oppija.uusiOppija
+      ? <CreateOppija koulutus={koulutus}/>
       : <div></div>
     )
-
 
 const CreateOppija = React.createClass({
   render() {
@@ -61,6 +61,7 @@ const CreateOppija = React.createClass({
           Henkilötunnus
           <input ref="hetu"></input>
         </label>
+        <Koulutus koulutus={this.props.koulutus}/>
         <button className="button blue" disabled={submitDisabled} onClick={this.submit}>{buttonText}</button>
         <ul className="error-messages">
           {errors}

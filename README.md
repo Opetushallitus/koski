@@ -193,3 +193,8 @@ Esimerkiksi henkilöpalvelu:
 ## Henkilöpalvelu-integraatio
 
 TOR ei tallenna henkilötietoja omaan kantaansa, vaan hakee/tallentaa ne Opintopolun [henkilöpalveluun](https://github.com/Opetushallitus/henkilo).
+
+## ePerusteet-integraatio
+
+https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet?nimi=Ty%C3%B6njoh
+https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059

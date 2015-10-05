@@ -17,7 +17,7 @@ clean:
 build: front server
 	# Built the whole application, ready for running or testing
 front:
-	cd web && npm install
+	cd web && npm install && npm install react-autocomplete
 	# front end build done
 server:
 	mvn compile
