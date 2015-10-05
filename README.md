@@ -196,5 +196,11 @@ TOR ei tallenna henkilötietoja omaan kantaansa, vaan hakee/tallentaa ne Opintop
 
 ## ePerusteet-integraatio
 
-https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet?nimi=Ty%C3%B6njoh
-https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059
+Swagger:
+
+    https://eperusteet.opintopolku.fi/eperusteet-service/
+    
+Pari testiurlia:
+    
+    https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet?nimi=Ty%C3%B6njoh
+    https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059
