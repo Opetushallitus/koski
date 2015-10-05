@@ -21,7 +21,7 @@ const stateP = Bacon.combineTemplate({
 const errorP = stateP.changes().errors()
   .mapError(e => e).filter(e => !requiresLogin(e)).map(true)
   .merge(Bacon.fromEvent(document.body, "click").map(false))
-  .toProperty(false).log()
+  .toProperty(false)
 
 const domP = stateP.combine(errorP, ({user, oppijat, valittuOppija, uusiOppija, searchInProgress}, isError) =>
   <div>
