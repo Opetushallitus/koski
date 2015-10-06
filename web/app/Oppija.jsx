@@ -28,9 +28,10 @@ export const Oppija = ({oppija, koulutus}) => oppija.valittuOppija ?
 
 const CreateOppija = React.createClass({
   render() {
+    const {oppilaitos, tutkinto} = this.props.koulutus
     const {etunimet, sukunimi, kutsumanimi, hetu, inProgress, hetuConflict} = this.state
     const validKutsumanimi = this.isKutsumanimiOneOfEtunimet(kutsumanimi, etunimet)
-    const submitDisabled = !etunimet || !sukunimi || !kutsumanimi || !isValidHetu(hetu) || !validKutsumanimi || inProgress
+    const submitDisabled = !etunimet || !sukunimi || !kutsumanimi || !isValidHetu(hetu) || !validKutsumanimi || inProgress || !oppilaitos || !tutkinto
     const buttonText = !inProgress ? "Lisää henkilö" : "Lisätään..."
     const hetuClassName = !hetu ? "hetu" : isValidHetu(hetu) ? "hetu" : "hetu error"
     const kutsumanimiClassName = validKutsumanimi ? "kutsumanimi" : "kutsumanimi error"
