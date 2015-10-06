@@ -35,6 +35,7 @@ const Tutkinto = React.createClass({
         : Bacon.once([])}
 
         selected={this.props.tutkinto}
+        disabled={!this.props.oppilaitos}
         />
     </label>
   }

@@ -5,7 +5,7 @@ import Bacon from "baconjs"
 export default React.createClass({
 
   render() {
-    let {selected} = this.props
+    let {selected, disabled} = this.props
     let {items, query, selectionIndex} = this.state
 
     let itemElems = items ? items.map((item, i) => {
@@ -14,10 +14,12 @@ export default React.createClass({
         )}
     ) : []
 
+    let results = items.length ? <ul className="results">{itemElems}</ul> : null
+
     return (
       <div ref="autocomplete" className="autocomplete">
-        <input className="autocomplete-input" onKeyDown={this.onKeyDown} onInput={this.handleInput} value={query ? query : selected ? selected.nimi : ''}></input>
-        <ul className="results">{itemElems}</ul>
+        <input className="autocomplete-input" onKeyDown={this.onKeyDown} onInput={this.handleInput} value={query ? query : selected ? selected.nimi : ''} disabled={disabled}></input>
+        {results}
       </div>
     )
   },
@@ -25,7 +27,7 @@ export default React.createClass({
   handleInput(e) {
     let query = e.target.value
     this.props.resultBus.push(undefined)
-    this.props.fetchItems(query).mapError([]).onValue((items) => this.setState({ items: items, query: query }))
+    this.props.fetchItems(query).mapError([]).onValue((items) => this.setState({ items: items, query: query, selectionIndex: 0 }))
   },
 
   handleSelect(selected) {
