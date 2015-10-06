@@ -4,35 +4,38 @@ import ReactAutocomplete from 'react-autocomplete'
 import Bacon from "baconjs"
 
 export default React.createClass({
+
   render() {
+    const {selected} = this.props
+    const {items, query} = this.state
+
+    const itemElems = items ? items.map((item, i) => {
+        return (
+          <li key={i} onClick={this.handleSelect.bind(this, item)}>{item.nimi}</li>
+        )}
+    ) : []
+
     return (
-      <div>
-        <ReactAutocomplete
-          ref="autocomplete"
-          items={(this.state || {}).items || []}
-          getItemValue={(item) => item.nimi}
-          onSelect={(value, item) => {
-            this.setState({ items: [  ] })
-            this.props.resultBus.push(item)
-          }}
-          onChange={(event, value) => {
-            this.setState({loading: true})
-            this.props.resultBus.push(undefined)
-            let result = this.props.fetchItems(value).mapError([])
-            result
-              .onValue((items) => this.setState({ items: items, loading: false }))
-          }}
-          renderItem={(item, isHighlighted) => (
-            <div
-              className={isHighlighted ? "highlight" : ""}
-              key={item.nimi}
-            >{item.nimi}</div>
-          )}
-          renderMenu={(items, value) => {
-            return items.length ? <div className="autocomplete-menu" children={items}/> : <div></div>
-          }}
-          />
+      <div ref="autocomplete" className="autocomplete">
+        <input className="autocomplete-input" onInput={this.handleInput} value={query ? query : selected ? selected.nimi : ''}></input>
+        <ul className="results">{itemElems}</ul>
       </div>
     )
+  },
+
+  handleInput(e) {
+    let query = e.target.value
+    this.props.resultBus.push(undefined)
+    this.props.fetchItems(query).mapError([]).onValue((items) => this.setState({ items: items, query: query }))
+  },
+
+  handleSelect(selected) {
+    this.setState({query: undefined, items: []})
+    this.props.resultBus.push(selected)
+  },
+
+  getInitialState() {
+    return {query: undefined, items: []}
   }
+
 })

@@ -1,5 +1,18 @@
 .autocomplete {
-  .highlight {
-    background: yellow;
+  width: 300px;
+  position: relative;
+  input {
+    width: 100%;
+  }
+  ul.results {
+    list-style: none;
+    margin: 0;
+    padding: 0 0.7em;
+    background-color: @color-white;
+    position: absolute;
+    top: 40px;
+    width: 100%;
+    z-index: 10;
+    box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.30);
   }
 }

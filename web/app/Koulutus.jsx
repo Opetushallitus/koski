@@ -10,33 +10,39 @@ const tutkintoE = new Bacon.Bus()
 
 const Oppilaitos = React.createClass({
   render() {
-    return <label className="oppilaitos">Oppilaitos<Autocomplete
-        resultBus={oppilaitosE}
+    return <label className="oppilaitos">Oppilaitos
+        <Autocomplete
+          resultBus={oppilaitosE}
 
-        fetchItems={(value) => (value.length >= 3)
+          fetchItems={(value) => (value.length >= 3)
         ? Http.get("/tor/api/oppilaitos?query=" + value)
-        : Bacon.once([])
-      }/>
-    </label>
+        : Bacon.once([])}
+
+          selected={this.props.oppilaitos}
+          />
+      </label>
   }
 })
 
 const Tutkinto = React.createClass({
   render() {
-    return <label className="tutkinto">Tutkinto<Autocomplete
-      resultBus={tutkintoE}
+    return <label className="tutkinto">Tutkinto
+      <Autocomplete
+        resultBus={tutkintoE}
 
-      fetchItems={(value) => (value.length >= 3)
+        fetchItems={(value) => (value.length >= 3)
         ? Http.get("/tor/api/koulutus/oppilaitos/" + this.props.oppilaitos.organisaatioId + "?query=" + value)
-        : Bacon.once([])
-      }/>
+        : Bacon.once([])}
+
+        selected={this.props.tutkinto}
+        />
     </label>
   }
 })
 
 export const Koulutus = ({koulutus}) => <div>
-  <Oppilaitos/>
-  <Tutkinto oppilaitos={koulutus.oppilaitos}/>
+  <Oppilaitos oppilaitos= {koulutus.oppilaitos}/>
+  <Tutkinto tutkinto={koulutus.tutkinto} oppilaitos={koulutus.oppilaitos}/>
 </div>
 
 export const koulutusP = Bacon.combineTemplate({
