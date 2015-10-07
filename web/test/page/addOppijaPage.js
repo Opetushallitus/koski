@@ -3,7 +3,7 @@ function AddOppijaPage() {
   function button() { return form().find("button") }
   function oppilaitos() { return form().find('.oppilaitos .selected') }
   function tutkinto() { return form().find('.tutkinto .selected') }
-  var pageApi = Page(form);
+  var pageApi = Page(form)
   var api = {
     isVisible: function() {
       return form().is(":visible")

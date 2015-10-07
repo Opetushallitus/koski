@@ -1,3 +1,3 @@
 export default (error) => {
-  console.log("ERROR", error)
+  console.log('ERROR', error)
 }

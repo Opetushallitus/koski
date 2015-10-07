@@ -1,19 +1,19 @@
-import React from "react"
-import ReactDOM from "react-dom"
-import Bacon from "baconjs"
-import Http from "./http"
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Bacon from 'baconjs'
+import Http from './http'
 
 const loginE = new Bacon.Bus()
 
 const loginResultE = loginE
-    .flatMap((credentials) => Http.post("/tor/user/login", credentials))
+    .flatMap((credentials) => Http.post('/tor/user/login', credentials))
 
-export const userP = Http.get("/tor/user").mapError()
+export const userP = Http.get('/tor/user').mapError()
     .merge(loginResultE.skipErrors())
     .toProperty()
 
 export const logout = () => {
-  document.location = "/tor/user/logout"
+  document.location = '/tor/user/logout'
 }
 
 export const Login = React.createClass({
@@ -23,17 +23,17 @@ export const Login = React.createClass({
     const usernameIsValid = username && username.length > 0
     const passwordIsValid = password && password.length > 0
 
-    const buttonLabel = inProgress ? "Kirjaudutaan..." : "Kirjaudu sisään"
+    const buttonLabel = inProgress ? 'Kirjaudutaan...' : 'Kirjaudu sisään'
     const buttonDisabled = !usernameIsValid || !passwordIsValid || inProgress
 
-    return <form onInput={this.onInput} className={this.state.error ? "login error": "login"}>
+    return <form onInput={this.onInput} className={this.state.error ? 'login error': 'login'}>
       <label>Tunnus
-        <input id="username" ref="username" disabled={inProgress}></input>
+        <input id='username' ref='username' disabled={inProgress}></input>
       </label>
       <label>Salasana
-        <input id="password" ref="password" type="password" disabled={inProgress}></input>
+        <input id='password' ref='password' type='password' disabled={inProgress}></input>
       </label>
-      <button className="button blue" onClick={this.doLogin} disabled={buttonDisabled}>{buttonLabel}</button>
+      <button className='button blue' onClick={this.doLogin} disabled={buttonDisabled}>{buttonLabel}</button>
     </form>
   },
 

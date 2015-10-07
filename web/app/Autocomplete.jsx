@@ -1,6 +1,6 @@
-import React from "react"
-import ReactDOM from "react-dom"
-import Bacon from "baconjs"
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Bacon from 'baconjs'
 
 export default React.createClass({
 
@@ -10,15 +10,15 @@ export default React.createClass({
 
     let itemElems = items ? items.map((item, i) => {
         return (
-          <li key={i} className={i === selectionIndex ? "selected" : null} onClick={this.handleSelect.bind(this, item)}>{item.nimi}</li>
+          <li key={i} className={i === selectionIndex ? 'selected' : null} onClick={this.handleSelect.bind(this, item)}>{item.nimi}</li>
         )}
     ) : []
 
-    let results = items.length ? <ul className="results">{itemElems}</ul> : null
+    let results = items.length ? <ul className='results'>{itemElems}</ul> : null
 
     return (
-      <div ref="autocomplete" className="autocomplete">
-        <input className="autocomplete-input" onKeyDown={this.onKeyDown} onInput={this.handleInput} value={query ? query : selected ? selected.nimi : ''} disabled={disabled}></input>
+      <div ref='autocomplete' className='autocomplete'>
+        <input className='autocomplete-input' onKeyDown={this.onKeyDown} onInput={this.handleInput} value={query ? query : selected ? selected.nimi : ''} disabled={disabled}></input>
         {results}
       </div>
     )

@@ -1,15 +1,15 @@
-import Polyfills from "./polyfills.js"
-import React from "react"
-import ReactDOM from "react-dom"
-import Bacon from "baconjs"
-import style from "./style/main.less"
-import handleError from "./error-handler"
-import {Login, userP, logout} from "./Login.jsx"
-import {OppijaHaku, oppijatP, searchInProgressP} from "./OppijaHaku.jsx"
-import {Oppija, oppijaP, uusiOppijaP} from "./Oppija.jsx"
-import {koulutusP} from "./Koulutus.jsx"
-import {TopBar} from "./TopBar.jsx"
-import Http from "./http"
+import Polyfills from './polyfills.js'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Bacon from 'baconjs'
+import style from './style/main.less'
+import handleError from './error-handler'
+import {Login, userP, logout} from './Login.jsx'
+import {OppijaHaku, oppijatP, searchInProgressP} from './OppijaHaku.jsx'
+import {Oppija, oppijaP, uusiOppijaP} from './Oppija.jsx'
+import {koulutusP} from './Koulutus.jsx'
+import {TopBar} from './TopBar.jsx'
+import Http from './http'
 
 const stateP = Bacon.combineTemplate({
   user: userP,
@@ -29,7 +29,7 @@ const domP = stateP.map(({user, oppijaHaku, oppija, koulutus, searchInProgress})
     <TopBar user={user} />
     {
       user
-        ? <div className="content-area">
+        ? <div className='content-area'>
             <OppijaHaku oppijat={oppijaHaku.oppijat} valittu={oppija.valittuOppija} searching={oppijaHaku.searchInProgress}/>
             <Oppija oppija={oppija} koulutus={koulutus} />
           </div>
