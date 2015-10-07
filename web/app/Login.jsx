@@ -26,7 +26,7 @@ export const Login = React.createClass({
     const buttonLabel = inProgress ? "Kirjaudutaan..." : "Kirjaudu sisään"
     const buttonDisabled = !usernameIsValid || !passwordIsValid || inProgress
 
-    return <form onInput={this.onInput} className={this.state.error ? "login error stacked": "login stacked"}>
+    return <form onInput={this.onInput} className={this.state.error ? "login error": "login"}>
       <label>Tunnus
         <input id="username" ref="username" disabled={inProgress}></input>
       </label>

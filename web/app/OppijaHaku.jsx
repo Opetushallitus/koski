@@ -34,7 +34,7 @@ const OppijaHakuBoksi = React.createClass({
     return (
       <div>
         <label>Opiskelija
-          <input id="search-query" className="stacked" ref="query" onInput={(e) => oppijaHakuE.push(e.target.value.toUpperCase())}></input>
+          <input id="search-query" ref="query" onInput={(e) => oppijaHakuE.push(e.target.value.toUpperCase())}></input>
         </label>
         <hr></hr>
       </div>
@@ -71,7 +71,7 @@ const OppijaHakutulokset = React.createClass({
 })
 
 export const OppijaHaku = ({oppijat, valittu, searching}) => {
-  const className = searching ? "oppija-haku searching" : "oppija-haku"
+  const className = searching ? "sidebar oppija-haku searching" : "sidebar oppija-haku"
 
   return <div className={className}>
     <OppijaHakuBoksi />

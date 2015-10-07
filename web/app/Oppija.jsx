@@ -17,7 +17,7 @@ export const uusiOppijaP = routeP.map(route => {
 })
 
 export const Oppija = ({oppija, koulutus}) => oppija.valittuOppija ?
-  <div className="oppija">
+  <div className="main-content oppija">
     <h2>{oppija.valittuOppija.sukunimi}, {oppija.valittuOppija.etunimet} <span className="hetu">{oppija.valittuOppija.hetu}</span></h2>
     <hr></hr>
   </div> : (
@@ -45,7 +45,7 @@ const CreateOppija = React.createClass({
     }
 
     return (
-      <form className="oppija stacked" onInput={this.onInput}>
+      <form className="main-content oppija uusi-oppija" onInput={this.onInput}>
         <label className="etunimet">
           Etunimet
           <input ref="etunimet"></input>
@@ -62,6 +62,7 @@ const CreateOppija = React.createClass({
           Henkilötunnus
           <input ref="hetu"></input>
         </label>
+        <hr/>
         <Koulutus koulutus={this.props.koulutus}/>
         <button className="button blue" disabled={submitDisabled} onClick={this.submit}>{buttonText}</button>
         <ul className="error-messages">

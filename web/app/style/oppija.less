@@ -16,10 +16,19 @@
 
   .hetu {
     font-size: 16px;
+  }
+}
+
+.uusi-oppija {
+
+  label {
+    display: block;
+  }
+
+  .hetu {
     input {
       width: 125px;
     }
-
   }
 
   .etunimet, .kutsumanimi {
@@ -39,11 +48,12 @@
     }
   }
 
-  label {
-    display: block;
+  hr {
+    margin: 40px 0 20px 0;
   }
 
-  .oppilaitos {
+  .oppilaitos, .tutkinto {
+    width: 600px;
     .autocomplete();
   }
 }

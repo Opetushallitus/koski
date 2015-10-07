@@ -1,10 +1,10 @@
 .autocomplete {
-  width: 300px;
   position: relative;
   input {
     width: 100%;
     &:disabled {
       background-color: @color-disabled;
+      border-color: @color-disabled;
     }
   }
   ul.results {
@@ -19,11 +19,14 @@
     box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.30);
 
     li {
-      padding: 0 0.7em;
+      padding: 4px 0.7em;
+      color: @color-blue;
       width: 100%;
       display: inline-block;
+      cursor: pointer;
       &.selected {
-        background-color: yellow;
+        background-color: @color-blue;
+        color: @color-white;
       }
     }
   }
