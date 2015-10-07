@@ -47,22 +47,22 @@ export default React.createClass({
   },
 
   keyHandlers: {
-    ArrowUp: function() {
+    ArrowUp() {
       let {selectionIndex} = this.state
       selectionIndex = selectionIndex === 0 ? 0 : selectionIndex - 1
       this.setState({selectionIndex: selectionIndex})
     },
-    ArrowDown: function() {
+    ArrowDown() {
       let {selectionIndex, items} = this.state
       selectionIndex = selectionIndex === items.length - 1 ? selectionIndex : selectionIndex + 1
       this.setState({selectionIndex: selectionIndex})
     },
-    Enter: function(e) {
+    Enter(e) {
       e.preventDefault()
       let {selectionIndex, items} = this.state
       this.handleSelect(items[selectionIndex])
     },
-    Escape: function() {
+    Escape() {
       this.setState({query: undefined, items: []})
     }
   }
