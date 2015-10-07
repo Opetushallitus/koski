@@ -115,6 +115,9 @@ describe("TOR", function() {
       it("Lisää-nappi on disabloitu", function() {
         expect(addOppija.isEnabled()).to.equal(false)
       })
+      it("Tutkinto-kenttä on disabloitu", function() {
+        expect(addOppija.tutkintoIsEnabled()).to.equal(false)
+      })
     })
 
     describe("Kun syötetään validit tiedot", function() {
@@ -197,6 +200,40 @@ describe("TOR", function() {
       )
       it("Lisää-nappi on enabloitu", function() {
         expect(addOppija.isEnabled()).to.equal(true)
+      })
+    })
+    describe("Kun oppilaitos on valittu", function() {
+      before(addOppija.enterValidData())
+      it("voidaan valita tutkinto", function(){
+        expect(addOppija.tutkintoIsEnabled()).to.equal(true)
+        expect(addOppija.isEnabled()).to.equal(true)
+      })
+      describe("Kun oppilaitos-valinta muutetaan", function() {
+        before(addOppija.selectOppilaitos("Omnia"))
+        it("tutkinto pitää valita uudestaan", function() {
+          expect(addOppija.isEnabled()).to.equal(false)
+        })
+        describe("Tutkinnon valinnan jälkeen", function() {
+          before(addOppija.selectTutkinto("auto"))
+          it("Lisää nappi on enabloitu", function() {
+            expect(addOppija.isEnabled()).to.equal(true)
+          })
+        })
+      })
+    })
+    describe("Kun oppilaitos on virheellinen", function() {
+      before(addOppija.enterValidData(), addOppija.enterOppilaitos("virheellinen"))
+      it("Lisää-nappi on disabloitu", function() {
+        expect(addOppija.isEnabled()).to.equal(false)
+      })
+      it("Tutkinnon valinta on estetty", function() {
+        expect(addOppija.tutkintoIsEnabled()).to.equal(false)
+      })
+    })
+    describe("Kun tutkinto on virheellinen", function() {
+      before(addOppija.enterValidData(), addOppija.enterTutkinto("virheellinen"))
+      it("Lisää-nappi on disabloitu", function() {
+        expect(addOppija.isEnabled()).to.equal(false)
       })
     })
   })
