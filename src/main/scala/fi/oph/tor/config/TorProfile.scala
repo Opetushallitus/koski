@@ -3,9 +3,10 @@ package fi.oph.tor.config
 import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.tor.db._
 import fi.oph.tor.koulutus.KoulutusRepository
-import fi.oph.tor.oppija.{OppijaRepository, MockOppijaRepository}
+import fi.oph.tor.oppija.OppijaRepository
 import fi.oph.tor.oppilaitos.OppilaitosRepository
 import fi.oph.tor.security.Authentication
+import fi.oph.tor.tutkinto.TutkintoRepository
 import fi.vm.sade.security.ldap.DirectoryClient
 
 object TorProfile {
@@ -25,6 +26,7 @@ trait TorProfile {
   lazy val oppijaRepository = OppijaRepository(config)
   lazy val koulutusRepository = KoulutusRepository(config)
   lazy val oppilaitosRepository = OppilaitosRepository(config)
+  lazy val tutkintoRepository = TutkintoRepository(config)
   def resetMocks = {
     oppijaRepository.resetMocks
   }

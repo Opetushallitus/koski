@@ -50,7 +50,7 @@ const OppijaHakutulokset = React.createClass({
   render() {
     const {oppijat, valittu} = this.props
     const oppijatElems = oppijat.results.map((o, i) => {
-        const className = valittu ? (R.equals(o, valittu) ? 'selected' : '') : ''
+        const className = valittu ? (o.oid === valittu.oid ? 'selected' : '') : ''
         return (
           <li key={i} className={className}>
             <a onClick={this.selectOppija.bind(this, o)}>{o.sukunimi}, {o.etunimet} {o.hetu}</a>

@@ -8,7 +8,7 @@ import {Koulutus} from './Koulutus.jsx'
 
 export const oppijaP = routeP.flatMap(route => {
   var match = route.match(new RegExp('oppija/(.*)'))
-  return match ? Http.get(`/tor/api/oppija?query=${match[1]}`).mapError([]).map('.0') : Bacon.once(undefined)
+  return match ? Http.get(`/tor/api/oppija/${match[1]}`).mapError(undefined) : Bacon.once(undefined)
 }).toProperty()
 
 export const uusiOppijaP = routeP.map(route => {
@@ -17,14 +17,35 @@ export const uusiOppijaP = routeP.map(route => {
 })
 
 export const Oppija = ({oppija, koulutus}) => oppija.valittuOppija ?
-  <div className='main-content oppija'>
-    <h2>{oppija.valittuOppija.sukunimi}, {oppija.valittuOppija.etunimet} <span className='hetu'>{oppija.valittuOppija.hetu}</span></h2>
-    <hr></hr>
-  </div> : (
+    <ExistingOppija oppija={oppija.valittuOppija}/> : (
     oppija.uusiOppija
       ? <CreateOppija koulutus={koulutus}/>
       : <div></div>
     )
+
+const ExistingOppija = React.createClass({
+  render() {
+    let {oppija} = this.props
+    return (
+      <div className='main-content oppija'>
+        <h2>{oppija.sukunimi}, {oppija.etunimet} <span className='hetu'>{oppija.hetu}</span></h2>
+        <hr></hr>
+        <Tutkinto tutkinto={oppija.tutkinnot.length ? oppija.tutkinnot[0] : undefined} />
+      </div>
+    )
+  }
+})
+
+const Tutkinto = React.createClass({
+  render() {
+    let {tutkinto} = this.props
+    return tutkinto ?
+      <div className="tutkinto">
+        <h4>Opinto-oikeudet</h4>
+        <span className="tutkinto-name">{tutkinto.nimi}</span> <span className="oppilaitos">{tutkinto.oppilaitos.nimi}</span>
+      </div> : null
+  }
+})
 
 const CreateOppija = React.createClass({
   render() {
@@ -83,6 +104,10 @@ const CreateOppija = React.createClass({
       kutsumanimi: this.refs.kutsumanimi.value,
       hetu: this.refs.hetu.value.toUpperCase()
     }
+  },
+
+  componentDidMount() {
+    this.refs.etunimet.focus()
   },
 
   onInput() {

@@ -53,7 +53,7 @@ function TorPage() {
     },
     oppijaHaku: OppijaHaku,
     getSelectedOppija: function() {
-      return S('.oppija').text()
+      return S('.oppija h2').text()
     },
     waitUntilOppijaSelected: function(oppija) {
       return wait.until(api.isOppijaSelected(oppija))()

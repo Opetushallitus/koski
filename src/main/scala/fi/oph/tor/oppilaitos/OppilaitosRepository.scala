@@ -1,10 +1,10 @@
 package fi.oph.tor.oppilaitos
 
 import com.typesafe.config.Config
-import fi.oph.tor.oppilaitos.Oppilaitos
 
 trait OppilaitosRepository {
   def findOppilaitokset(query: String): List[Oppilaitos]
+  def findById(id: String): Option[Oppilaitos]
 }
 
 object OppilaitosRepository {
@@ -18,4 +18,6 @@ class MockOppilaitosRepository extends OppilaitosRepository {
     Oppilaitos("3", "Omnia Helsinki")
   )
   override def findOppilaitokset(query: String) = oppilaitokset.filter(_.toString.toLowerCase.contains(query.toLowerCase))
+
+  override def findById(id: String): Option[Oppilaitos] = oppilaitokset.filter(_.organisaatioId == id).headOption
 }

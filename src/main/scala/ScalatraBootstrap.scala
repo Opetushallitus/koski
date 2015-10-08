@@ -18,7 +18,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     val rekisteri = new TodennetunOsaamisenRekisteri(database.db)
 
     context.mount(new SuoritusServlet(rekisteri), "/api/suoritus")
-    context.mount(new OppijaServlet(profile.oppijaRepository), "/api/oppija")
+    context.mount(new OppijaServlet(profile.oppijaRepository, profile.tutkintoRepository, profile.koulutusRepository, profile.oppilaitosRepository), "/api/oppija")
     context.mount(new UserServlet(profile.directoryClient), "/user")
     context.mount(new SingleFileServlet("web/static/index.html"), "/oppija")
     context.mount(new SingleFileServlet("web/static/index.html"), "/uusioppija")
