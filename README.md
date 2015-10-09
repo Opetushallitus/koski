@@ -201,3 +201,11 @@ Pari testiurlia:
     
     https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet?nimi=Ty%C3%B6njoh
     https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059
+    
+## Organisaatiopalvelu-integraatio
+
+[Organisaatiopalvelusta](https://github.com/Opetushallitus/organisaatio) haetaan käyttäjän organisaatiopuu, jonka perusteella päätellään, mitkä suoritukset voidaan näyttää.
+
+Esimerkkihaku:
+
+    https://testi.virkailija.opintopolku.fi:443/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&suunnitellut=true&lakkautetut=false&&&&&&oid=1.2.246.562.10.50822930082&
