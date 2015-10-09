@@ -5,10 +5,11 @@ import fi.oph.tor.db.{Futures, GlobalExecutionContext}
 import fi.oph.tor.json.Json
 import fi.oph.tor.model.Identified.Id
 import fi.oph.tor.model.{Identified, Suoritus}
-import fi.oph.tor.security.Authenticated
+import fi.oph.tor.security.RequiresAuthentication
+import fi.oph.tor.user.UserRepository
 import fi.vm.sade.utils.slf4j.Logging
 
-class SuoritusServlet(rekisteri: TodennetunOsaamisenRekisteri) extends ErrorHandlingServlet with GlobalExecutionContext with Futures with Logging with Authenticated {
+class SuoritusServlet(rekisteri: TodennetunOsaamisenRekisteri)(implicit val userRepository: UserRepository) extends ErrorHandlingServlet with GlobalExecutionContext with Futures with Logging with RequiresAuthentication {
   get("/") {
     serveStaticResource()
     params.get("personOid")

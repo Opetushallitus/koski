@@ -3,15 +3,16 @@ package fi.oph.tor.oppija
 import fi.oph.tor.json.Json
 import fi.oph.tor.tutkinto.{Tutkinto, TutkintoRepository}
 import fi.oph.tor.oppilaitos.{Oppilaitos, OppilaitosRepository}
-import fi.oph.tor.security.Authenticated
+import fi.oph.tor.security.RequiresAuthentication
 import fi.oph.tor.opintooikeus.{OpintoOikeusRepository, OpintoOikeus}
+import fi.oph.tor.user.UserRepository
 import fi.oph.tor.{ErrorHandlingServlet, InvalidRequestException}
 import fi.vm.sade.utils.slf4j.Logging
 
 class OppijaServlet(oppijaRepository: OppijaRepository,
                     opintoOikeusRepository: OpintoOikeusRepository,
                     tutkintoRepository: TutkintoRepository,
-                    oppilaitosRepository: OppilaitosRepository) extends ErrorHandlingServlet with Logging with Authenticated {
+                    oppilaitosRepository: OppilaitosRepository)(implicit val userRepository: UserRepository) extends ErrorHandlingServlet with Logging with RequiresAuthentication {
 
   get("/") {
     contentType = "application/json;charset=utf-8"

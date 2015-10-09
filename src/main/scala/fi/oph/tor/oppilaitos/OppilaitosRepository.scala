@@ -1,23 +1,17 @@
 package fi.oph.tor.oppilaitos
 
-import com.typesafe.config.Config
+import fi.oph.tor.organisaatio.Organisaatio
+import fi.oph.tor.user.UserContext
 
-trait OppilaitosRepository {
-  def findOppilaitokset(query: String): List[Oppilaitos]
-  def findById(id: String): Option[Oppilaitos]
-}
+class OppilaitosRepository {
+  def findOppilaitokset(query: String)(implicit context: UserContext): List[Oppilaitos] = {
+    context.organisaatioPuu
+      .findOrganisaatiot(org => org.organisaatiotyypit.contains("OPPILAITOS") && org.nimi.toLowerCase.contains(query.toLowerCase))
+      .map(toOppilaitos)
+  }
+  def findById(id: String)(implicit context: UserContext): Option[Oppilaitos] = {
+    context.organisaatioPuu.findById(id).map(toOppilaitos)
+  }
 
-object OppilaitosRepository {
-  def apply(config: Config) = new MockOppilaitosRepository
-}
-
-class MockOppilaitosRepository extends OppilaitosRepository {
-  private def oppilaitokset = List(
-    Oppilaitos("1", "Helsingin Ammattioppilaitos"),
-    Oppilaitos("2", "Metropolia Helsinki"),
-    Oppilaitos("3", "Omnia Helsinki")
-  )
-  override def findOppilaitokset(query: String) = oppilaitokset.filter(_.toString.toLowerCase.contains(query.toLowerCase))
-
-  override def findById(id: String): Option[Oppilaitos] = oppilaitokset.filter(_.organisaatioId == id).headOption
+  private def toOppilaitos(org: Organisaatio) = Oppilaitos(org.oid, org.nimi)
 }

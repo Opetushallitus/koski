@@ -6,7 +6,7 @@ import fi.oph.tor.security.CurrentUser
 import fi.vm.sade.security.ldap.DirectoryClient
 
 
-class UserServlet(directoryClient: DirectoryClient) extends ErrorHandlingServlet with CurrentUser {
+class UserServlet(directoryClient: DirectoryClient, userRepository: UserRepository) extends ErrorHandlingServlet with CurrentUser {
   get("/") {
     getAuthenticatedUser match {
       case Some(user) => Json.write(user)
@@ -25,6 +25,8 @@ class UserServlet(directoryClient: DirectoryClient) extends ErrorHandlingServlet
     }
 
     directoryClient.findUser(login.username).map { ldapUser =>
+      println(userRepository.getUserOrganisations(ldapUser.oid))
+
       User(ldapUser.oid, ldapUser.givenNames + " " + ldapUser.lastName)
     } match {
       case Some(user) =>

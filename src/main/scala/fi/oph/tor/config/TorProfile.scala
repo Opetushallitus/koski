@@ -7,6 +7,7 @@ import fi.oph.tor.oppija.OppijaRepository
 import fi.oph.tor.oppilaitos.OppilaitosRepository
 import fi.oph.tor.security.Authentication
 import fi.oph.tor.opintooikeus.OpintoOikeusRepository
+import fi.oph.tor.user.UserRepository
 import fi.vm.sade.security.ldap.DirectoryClient
 
 object TorProfile {
@@ -25,8 +26,9 @@ trait TorProfile {
   lazy val config: Config = ConfigFactory.load
   lazy val oppijaRepository = OppijaRepository(config)
   lazy val tutkintoRepository = TutkintoRepository(config)
-  lazy val oppilaitosRepository = OppilaitosRepository(config)
+  lazy val oppilaitosRepository = new OppilaitosRepository
   lazy val opintoOikeusRepository = OpintoOikeusRepository(config)
+  lazy val userRepository = UserRepository(config)
   def resetMocks = {
     oppijaRepository.resetMocks
     opintoOikeusRepository.resetMocks

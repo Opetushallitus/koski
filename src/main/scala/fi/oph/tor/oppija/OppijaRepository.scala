@@ -1,11 +1,12 @@
 package fi.oph.tor.oppija
 
 import com.typesafe.config.Config
+import fi.oph.tor.henkilö.HenkilöPalveluClient
 
 object OppijaRepository {
   def apply(config: Config) = {
     if (config.hasPath("authentication-service")) {
-      new RemoteOppijaRepository(config.getString("authentication-service.username"), config.getString("authentication-service.password"), config.getString("opintopolku.virkailija.url"))
+      new RemoteOppijaRepository(HenkilöPalveluClient(config))
     } else {
       new MockOppijaRepository
     }
