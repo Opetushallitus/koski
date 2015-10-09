@@ -7,6 +7,7 @@ import Http from './http'
 const oppilaitosE = new Bacon.Bus()
 const oppilaitosP = oppilaitosE.toProperty(undefined).skipDuplicates()
 const tutkintoE = new Bacon.Bus()
+const tutkintoP = tutkintoE.merge(oppilaitosP.changes().map(undefined)).toProperty(undefined).skipDuplicates()
 
 const Oppilaitos = React.createClass({
   render() {
@@ -48,5 +49,6 @@ export const Koulutus = ({koulutus}) => <div>
 
 export const koulutusP = Bacon.combineTemplate({
   oppilaitos: oppilaitosP,
-  tutkinto: tutkintoE.merge(oppilaitosP.changes().map(undefined)).toProperty(undefined).skipDuplicates()
+  tutkinto: tutkintoP,
+  valid: oppilaitosP.and(tutkintoP)
 }).doLog('koulutus')
