@@ -89,6 +89,15 @@ describe('TOR', function() {
       })
     })
 
+    describe('Kun haetaan henkilöllä, jolla ei ole opinto-oikeuksia', function() {
+      before(page.oppijaHaku.search('Presidentti', page.oppijaHaku.isNoResultsLabelShown))
+
+      it('Tuloksia ei näytetä', function() {
+        
+      })
+    })
+
+
     describe('Hakutavat', function() {
       it ('Hetulla, case-insensitive', function() {
         return page.oppijaHaku.search('010101-123n', [eero])()

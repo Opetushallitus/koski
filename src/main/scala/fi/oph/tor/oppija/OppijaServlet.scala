@@ -16,7 +16,10 @@ class OppijaServlet(oppijaRepository: OppijaRepository,
   get("/") {
     contentType = "application/json;charset=utf-8"
     params.get("query") match {
-      case Some(query) if (query.length >= 3) => Json.write(oppijaRepository.findOppijat(query))
+      case Some(query) if (query.length >= 3) =>
+        val oppijat: List[Oppija] = oppijaRepository.findOppijat(query)
+        val filtered = opintoOikeusRepository.filterOppijat(oppijat)
+        Json.write(filtered)
       case _ => throw new InvalidRequestException("query parameter length must be at least 3")
     }
   }
