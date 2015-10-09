@@ -100,6 +100,7 @@ describe('TOR', function() {
       })
     })
   })
+
   describe('Uuden oppijan lisääminen', function() {
     var addOppija = AddOppijaPage()
 
@@ -237,7 +238,10 @@ describe('TOR', function() {
       })
     })
   })
+
   describe('Navigointi suoraan oppijan sivulle', function() {
+    var opinnot = OpinnotPage()
+
     before(authentication.login)
     before(openPage('/tor/oppija/1.2.246.562.24.00000000001', page.isOppijaSelected('eero')))
 
@@ -245,10 +249,16 @@ describe('TOR', function() {
       expect(page.getSelectedOppija()).to.equal(eero)
     })
 
+    it('Oppijan tutkinto ja oppilaitos näytetään', function() {
+      expect(opinnot.getTutkinto()).to.equal('Autoalan työnjohdon erikoisammattitutkinto')
+      expect(opinnot.getOppilaitos()).to.equal('Helsingin Ammattioppilaitos')
+    })
+
     it('Hakutulos näytetään', function() {
       expect(page.oppijaHaku.getSearchResults()).to.deep.equal([eero])
     })
   })
+
   describe('Tietoturva', function() {
     before(login.openPage)
 

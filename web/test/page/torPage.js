@@ -1,5 +1,5 @@
 function TorPage() {
-  var pageApi = Page(function() {return S('#content')});
+  var pageApi = Page(function() {return S('#content')})
 
   var OppijaHaku = {
     search: function(query, expectedResults) {
