@@ -3,7 +3,7 @@ import javax.servlet.ServletContext
 import fi.oph.tor.config.TorProfile
 import fi.oph.tor.db._
 import fi.oph.tor.fixture.FixtureServlet
-import fi.oph.tor.koulutus.KoulutusServlet
+import fi.oph.tor.tutkinto.TutkintoServlet
 import fi.oph.tor.oppija.OppijaServlet
 import fi.oph.tor.oppilaitos.OppilaitosServlet
 import fi.oph.tor.user.UserServlet
@@ -18,12 +18,12 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     val rekisteri = new TodennetunOsaamisenRekisteri(database.db)
 
     context.mount(new SuoritusServlet(rekisteri), "/api/suoritus")
-    context.mount(new OppijaServlet(profile.oppijaRepository, profile.tutkintoRepository, profile.koulutusRepository, profile.oppilaitosRepository), "/api/oppija")
+    context.mount(new OppijaServlet(profile.oppijaRepository, profile.opintoOikeusRepository, profile.tutkintoRepository, profile.oppilaitosRepository), "/api/oppija")
     context.mount(new UserServlet(profile.directoryClient), "/user")
     context.mount(new SingleFileServlet("web/static/index.html"), "/oppija")
     context.mount(new SingleFileServlet("web/static/index.html"), "/uusioppija")
     context.mount(new OppilaitosServlet(profile.oppilaitosRepository), "/api/oppilaitos")
-    context.mount(new KoulutusServlet(profile.koulutusRepository), "/api/koulutus")
+    context.mount(new TutkintoServlet(profile.tutkintoRepository), "/api/tutkinto")
     context.mount(new FixtureServlet(profile), "/fixtures")
 
   }

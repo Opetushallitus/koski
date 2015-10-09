@@ -32,7 +32,7 @@ const Tutkinto = React.createClass({
         resultBus={tutkintoE}
 
         fetchItems={(value) => (value.length >= 3)
-        ? Http.get('/tor/api/koulutus/oppilaitos/' + this.props.oppilaitos.organisaatioId + '?query=' + value)
+        ? Http.get('/tor/api/tutkinto/oppilaitos/' + this.props.oppilaitos.organisaatioId + '?query=' + value)
         : Bacon.once([])}
 
         selected={this.props.tutkinto}
@@ -42,12 +42,12 @@ const Tutkinto = React.createClass({
   }
 })
 
-export const Koulutus = ({koulutus}) => <div>
-  <Oppilaitos oppilaitos= {koulutus.oppilaitos}/>
-  <Tutkinto tutkinto={koulutus.tutkinto} oppilaitos={koulutus.oppilaitos}/>
+export const OpintoOikeus = ({opintoOikeus}) => <div>
+  <Oppilaitos oppilaitos= {opintoOikeus.oppilaitos}/>
+  <Tutkinto tutkinto={opintoOikeus.tutkinto} oppilaitos={opintoOikeus.oppilaitos}/>
 </div>
 
-export const koulutusP = Bacon.combineTemplate({
+export const opintoOikeusP = Bacon.combineTemplate({
   oppilaitos: oppilaitosP,
   tutkinto: tutkintoP,
   valid: oppilaitosP.and(tutkintoP)

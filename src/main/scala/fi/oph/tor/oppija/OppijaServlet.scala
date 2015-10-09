@@ -1,16 +1,16 @@
 package fi.oph.tor.oppija
 
 import fi.oph.tor.json.Json
-import fi.oph.tor.koulutus.{Koulutus, KoulutusRepository}
+import fi.oph.tor.tutkinto.{Tutkinto, TutkintoRepository}
 import fi.oph.tor.oppilaitos.{Oppilaitos, OppilaitosRepository}
 import fi.oph.tor.security.Authenticated
-import fi.oph.tor.tutkinto.{Tutkinto, TutkintoRepository}
+import fi.oph.tor.opintooikeus.{OpintoOikeusRepository, OpintoOikeus}
 import fi.oph.tor.{ErrorHandlingServlet, InvalidRequestException}
 import fi.vm.sade.utils.slf4j.Logging
 
 class OppijaServlet(oppijaRepository: OppijaRepository,
+                    opintoOikeusRepository: OpintoOikeusRepository,
                     tutkintoRepository: TutkintoRepository,
-                    koulutusRepository: KoulutusRepository,
                     oppilaitosRepository: OppilaitosRepository) extends ErrorHandlingServlet with Logging with Authenticated {
 
   get("/") {
@@ -32,11 +32,11 @@ class OppijaServlet(oppijaRepository: OppijaRepository,
 
   post("/") {
     contentType = "text/plain;charset=utf-8"
-    val oppija: CreateOppijaAndKoulutus = Json.read[CreateOppijaAndKoulutus](request.body)
+    val oppija: CreateOppijaAndOpintoOikeus = Json.read[CreateOppijaAndOpintoOikeus](request.body)
     val result: OppijaCreationResult = oppijaRepository.create(oppija)
     result match {
       case Created(oid) =>
-        tutkintoRepository.create(Tutkinto(oppija.koulutus.tutkinto.ePeruste, oid, oppija.koulutus.oppilaitos.organisaatioId))
+        opintoOikeusRepository.create(OpintoOikeus(oppija.opintoOikeus.tutkinto.ePerusteDiaarinumero, oid, oppija.opintoOikeus.oppilaitos.organisaatioId))
         oid
       case Failed(status, text) =>
         halt(status, text)
@@ -58,12 +58,12 @@ class OppijaServlet(oppijaRepository: OppijaRepository,
 
   private def tutkinnotForOppija(oppija: Oppija) = {
     for {
-      tutkinto   <- tutkintoRepository.findBy(oppija)
-      koulutus   <- koulutusRepository.findById(tutkinto.peruste)
-      oppilaitos <- oppilaitosRepository.findById(tutkinto.oppilaitos)
+      opintoOikeus   <- opintoOikeusRepository.findBy(oppija)
+      tutkinto   <- tutkintoRepository.findById(opintoOikeus.ePerusteetDiaarinumero)
+      oppilaitos <- oppilaitosRepository.findById(opintoOikeus.oppilaitosOrganisaatio)
     } yield {
       Map(
-        "nimi" -> koulutus.nimi,
+        "nimi" -> tutkinto.nimi,
         "oppilaitos" -> Map(
           "nimi" -> oppilaitos.nimi
         )
@@ -72,9 +72,9 @@ class OppijaServlet(oppijaRepository: OppijaRepository,
   }
 }
 
-case class CreateOppijaAndKoulutus(
+case class CreateOppijaAndOpintoOikeus(
                   etunimet: String, kutsumanimi: String, sukunimi: String, hetu: String,
-                  koulutus: CreateKoulutus
+                  opintoOikeus: CreateOpintoOikeus
                  ) extends CreateOppija
 
-case class CreateKoulutus(oppilaitos: Oppilaitos, tutkinto: Koulutus)
+case class CreateOpintoOikeus(oppilaitos: Oppilaitos, tutkinto: Tutkinto)

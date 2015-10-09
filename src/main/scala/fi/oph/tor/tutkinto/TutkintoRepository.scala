@@ -1,22 +1,24 @@
 package fi.oph.tor.tutkinto
 
 import com.typesafe.config.Config
-import fi.oph.tor.oppija.Oppija
 
 trait TutkintoRepository {
-  def findBy(oppija: Oppija): List[Tutkinto]
-  def create(tutkinto: Tutkinto)
+  def findTutkinnot(oppilaitosId: String, query: String): List[Tutkinto]
+  def findById(id: String): Option[Tutkinto]
 }
 
 object TutkintoRepository {
-  def apply(config: Config) = new MockTutkinkoRepository
+  def apply(config: Config) = new MockTutkintoRepository
 }
 
-class MockTutkinkoRepository extends TutkintoRepository {
-  private def defaultTutkinnot = List(Tutkinto(oppija = "1.2.246.562.24.00000000001", peruste = "1013059", oppilaitos =  "1"))
-  private var tutkinnot = defaultTutkinnot
+class MockTutkintoRepository extends TutkintoRepository {
+  def tutkinnot = List(
+    Tutkinto("Autoalan työnjohdon erikoisammattitutkinto", ePerusteDiaarinumero =  "1013059", tutkintoKoodi =  "357305")
+  )
 
-  override def findBy(oppija: Oppija): List[Tutkinto] = tutkinnot.filter(_.oppija == oppija.oid)
+  override def findTutkinnot(oppilaitosId: String, query: String) = {
+    tutkinnot.filter(_.toString.toLowerCase.contains(query.toLowerCase))
+  }
 
-  override def create(tutkinto: Tutkinto) = tutkinnot = tutkinnot :+ tutkinto
+  override def findById(id: String) = tutkinnot.filter(_.ePerusteDiaarinumero == id).headOption
 }

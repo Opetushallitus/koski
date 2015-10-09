@@ -1,3 +1,3 @@
 package fi.oph.tor.tutkinto
 
-case class Tutkinto(peruste: String, oppija: String, oppilaitos: String)
+case class Tutkinto(nimi: String, ePerusteDiaarinumero: String, tutkintoKoodi: String)

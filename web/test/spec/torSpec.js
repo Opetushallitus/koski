@@ -27,7 +27,7 @@ describe('TOR', function() {
     })
   })
 
-  describe('OppijaHaku', function() {
+  describe('Oppijahaku', function() {
     before(authentication.login, resetMocks, page.openPage)
     it('näytetään, kun käyttäjä on kirjautunut sisään', function() {
       expect(page.isVisible()).to.equal(true)
@@ -125,8 +125,10 @@ describe('TOR', function() {
     describe('Kun syötetään validit tiedot', function() {
       before(addOppija.enterValidData())
 
-      it('Lisää-nappi on enabloitu', function() {
-        expect(addOppija.isEnabled()).to.equal(true)
+      describe("Käyttöliittymän tila", function() {
+        it('Lisää-nappi on enabloitu', function() {
+          expect(addOppija.isEnabled()).to.equal(true)
+        })
       })
 
       describe('Kun painetaan Lisää-nappia', function() {
@@ -135,7 +137,7 @@ describe('TOR', function() {
 
         it('lisätty oppija näytetään', function() {})
 
-        it('Lisätty tutkinto näytetään', function() {
+        it('Lisätty opintooikeus näytetään', function() {
           expect(opinnot.getTutkinto()).to.equal('Autoalan työnjohdon erikoisammattitutkinto')
           expect(opinnot.getOppilaitos()).to.equal('Helsingin Ammattioppilaitos')
         })

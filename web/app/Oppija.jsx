@@ -4,7 +4,7 @@ import Bacon from 'baconjs'
 import Http from './http'
 import {navigateToOppija, routeP, showError} from './router'
 import {isValidHetu} from './hetu'
-import {Koulutus} from './Koulutus.jsx'
+import {OpintoOikeus} from './OpintoOikeus.jsx'
 
 export const oppijaP = routeP.flatMap(route => {
   var match = route.match(new RegExp('oppija/(.*)'))
@@ -16,10 +16,10 @@ export const uusiOppijaP = routeP.map(route => {
   return !!match
 })
 
-export const Oppija = ({oppija, koulutus}) => oppija.valittuOppija ?
+export const Oppija = ({oppija, opintoOikeus}) => oppija.valittuOppija ?
     <ExistingOppija oppija={oppija.valittuOppija}/> : (
     oppija.uusiOppija
-      ? <CreateOppija koulutus={koulutus}/>
+      ? <CreateOppija opintoOikeus={opintoOikeus}/>
       : <div></div>
     )
 
@@ -30,29 +30,29 @@ const ExistingOppija = React.createClass({
       <div className='main-content oppija'>
         <h2>{oppija.sukunimi}, {oppija.etunimet} <span className='hetu'>{oppija.hetu}</span></h2>
         <hr></hr>
-        <Tutkinto tutkinto={oppija.tutkinnot.length ? oppija.tutkinnot[0] : undefined} />
+        <Opintooikeus opintooikeus={oppija.tutkinnot.length ? oppija.tutkinnot[0] : undefined} />
       </div>
     )
   }
 })
 
-const Tutkinto = React.createClass({
+const Opintooikeus = React.createClass({
   render() {
-    let {tutkinto} = this.props
-    return tutkinto ?
-      <div className="tutkinto">
+    let {opintooikeus} = this.props
+    return opintooikeus ?
+      <div className="opintooikeus">
         <h4>Opinto-oikeudet</h4>
-        <span className="tutkinto-name">{tutkinto.nimi}</span> <span className="oppilaitos">{tutkinto.oppilaitos.nimi}</span>
+        <span className="tutkinto">{opintooikeus.nimi}</span> <span className="oppilaitos">{opintooikeus.oppilaitos.nimi}</span>
       </div> : null
   }
 })
 
 const CreateOppija = React.createClass({
   render() {
-    const koulutus = this.props.koulutus
+    const opintoOikeus = this.props.opintoOikeus
     const {etunimet, sukunimi, kutsumanimi, hetu, inProgress, hetuConflict} = this.state
     const validKutsumanimi = this.isKutsumanimiOneOfEtunimet(kutsumanimi, etunimet)
-    const submitDisabled = !etunimet || !sukunimi || !kutsumanimi || !isValidHetu(hetu) || !validKutsumanimi || inProgress || !koulutus.valid
+    const submitDisabled = !etunimet || !sukunimi || !kutsumanimi || !isValidHetu(hetu) || !validKutsumanimi || inProgress || !opintoOikeus.valid
     const buttonText = !inProgress ? 'Lisää henkilö' : 'Lisätään...'
     const hetuClassName = !hetu ? 'hetu' : isValidHetu(hetu) ? 'hetu' : 'hetu error'
     const kutsumanimiClassName = validKutsumanimi ? 'kutsumanimi' : 'kutsumanimi error'
@@ -84,7 +84,7 @@ const CreateOppija = React.createClass({
           <input ref='hetu'></input>
         </label>
         <hr/>
-        <Koulutus koulutus={this.props.koulutus}/>
+        <OpintoOikeus opintoOikeus={this.props.opintoOikeus}/>
         <button className='button blue' disabled={submitDisabled} onClick={this.submit}>{buttonText}</button>
         <ul className='error-messages'>
           {errors}
@@ -103,7 +103,7 @@ const CreateOppija = React.createClass({
       sukunimi: this.refs.sukunimi.value,
       kutsumanimi: this.refs.kutsumanimi.value,
       hetu: this.refs.hetu.value.toUpperCase(),
-      koulutus: this.props.koulutus
+      opintoOikeus: this.props.opintoOikeus
     }
   },
 

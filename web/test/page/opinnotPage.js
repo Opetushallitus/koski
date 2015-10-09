@@ -4,10 +4,10 @@ function OpinnotPage() {
 
   var api = {
     getTutkinto() {
-      return S('.tutkinto .tutkinto-name').text()
+      return S('.opintooikeus .tutkinto').text()
     },
     getOppilaitos() {
-      return S('.tutkinto .oppilaitos').text()
+      return S('.opintooikeus .oppilaitos').text()
     }
   }
 
