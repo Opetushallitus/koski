@@ -19,9 +19,18 @@ trait OppijaRepository {
   def findById(id: String): Option[Oppija]
 
   def resetMocks {}
+
+  def findOrCreate(oppija: CreateOppija): OppijaCreationResult = {
+    create(oppija) match {
+      case Failed(409, _) =>
+        findOppijat(oppija.hetu) match {
+          case (o :: Nil) => Exists(o.oid)
+          case _ => Failed(500, "Oppijan lisääminen epäonnistui")
+        }
+      case result => result
+    }
+  }
 }
-
-
 
 trait CreateOppija {
   def etunimet: String
@@ -33,8 +42,13 @@ trait CreateOppija {
 sealed trait OppijaCreationResult {
   def httpStatus: Int
   def text: String
+  def ok = httpStatus == 200
 }
 case class Created(oid: String) extends OppijaCreationResult {
+  def httpStatus = 200
+  def text = oid
+}
+case class Exists(oid: String) extends OppijaCreationResult {
   def httpStatus = 200
   def text = oid
 }

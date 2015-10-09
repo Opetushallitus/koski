@@ -7,6 +7,7 @@ trait OpintoOikeusRepository {
   def filterOppijat(oppijat: List[Oppija]): List[Oppija]
   def findBy(oppija: Oppija): List[OpintoOikeus]
   def create(opintoOikeus: OpintoOikeus)
+  def resetMocks {}
 }
 
 object OpintoOikeusRepository {

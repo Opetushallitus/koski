@@ -89,14 +89,14 @@ describe('TOR', function() {
       })
     })
 
-    describe('Kun haetaan henkilöllä, jolla ei ole opinto-oikeuksia', function() {
+    describe('Kun haetaan olemassa olevaa henkilöä, jolla ei ole opinto-oikeuksia', function() {
       before(page.oppijaHaku.search('Presidentti', page.oppijaHaku.isNoResultsLabelShown))
 
       it('Tuloksia ei näytetä', function() {
-        
-      })
-    })
 
+      })
+
+    })
 
     describe('Hakutavat', function() {
       it ('Hetulla, case-insensitive', function() {
@@ -111,147 +111,151 @@ describe('TOR', function() {
     })
   })
 
-  describe('Uuden oppijan lisääminen', function() {
+  describe('Opinto-oikeuden lisääminen', function() {
     var addOppija = AddOppijaPage()
+    describe("Olemassa olevalle henkilölle", function() {
+      before(
+        resetMocks,
+        authentication.login,
+        page.openPage,
+        page.oppijaHaku.search('Tunkkila', page.oppijaHaku.isNoResultsLabelShown),
+        page.oppijaHaku.addNewOppija
+      )
+      before(addOppija.enterValidData({ etunimet: 'Tero Terde', kutsumanimi: 'Terde', sukunimi: 'Tunkkila', hetu: '091095-9833', oppilaitos: 'Helsingin', tutkinto: 'auto'}))
+      before(addOppija.submit)
+      before(wait.until(function() { return page.getSelectedOppija() === 'tunkkila, tero 091095-9833'}))
+      it('Onnistuu, näyttää henkilöpalvelussa olevat nimitiedot', function() {
 
-    before(
-      resetMocks,
-      authentication.login,
-      page.openPage,
-      page.oppijaHaku.search('asdf', page.oppijaHaku.isNoResultsLabelShown),
-      page.oppijaHaku.addNewOppija
-    )
-
-    describe('Aluksi', function() {
-      it('Lisää-nappi on disabloitu', function() {
-        expect(addOppija.isEnabled()).to.equal(false)
-      })
-      it('Tutkinto-kenttä on disabloitu', function() {
-        expect(addOppija.tutkintoIsEnabled()).to.equal(false)
       })
     })
 
-    describe('Kun syötetään validit tiedot', function() {
-      before(addOppija.enterValidData())
+    describe('Uudelle henkilölle', function() {
+      before(
+        resetMocks,
+        authentication.login,
+        page.openPage,
+        page.oppijaHaku.search('asdf', page.oppijaHaku.isNoResultsLabelShown),
+        page.oppijaHaku.addNewOppija
+      )
 
-      describe("Käyttöliittymän tila", function() {
+      describe('Aluksi', function() {
+        it('Lisää-nappi on disabloitu', function() {
+          expect(addOppija.isEnabled()).to.equal(false)
+        })
+        it('Tutkinto-kenttä on disabloitu', function() {
+          expect(addOppija.tutkintoIsEnabled()).to.equal(false)
+        })
+      })
+
+      describe('Kun syötetään validit tiedot', function() {
+        before(addOppija.enterValidData())
+
+        describe("Käyttöliittymän tila", function() {
+          it('Lisää-nappi on enabloitu', function() {
+            expect(addOppija.isEnabled()).to.equal(true)
+          })
+        })
+
+        describe('Kun painetaan Lisää-nappia', function() {
+          before(addOppija.submit)
+          before(wait.until(function() { return page.getSelectedOppija() === 'Oppija, Ossi Olavi 300994-9694'}))
+
+          it('lisätty oppija näytetään', function() {})
+
+          it('Lisätty opintooikeus näytetään', function() {
+            expect(opinnot.getTutkinto()).to.equal('Autoalan työnjohdon erikoisammattitutkinto')
+            expect(opinnot.getOppilaitos()).to.equal('Helsingin Ammattioppilaitos')
+          })
+        })
+      })
+
+      describe('Kun sessio on vanhentunut', function() {
+        before( openPage('/tor/uusioppija'),
+          addOppija.enterValidData(),
+          authentication.logout,
+          addOppija.submit)
+
+        it('Siirrytään login-sivulle', wait.until(login.isVisible))
+      })
+
+      describe('Kun hetu on virheellinen', function() {
+        before(
+          authentication.login,
+          openPage('/tor/uusioppija'),
+          addOppija.enterValidData({hetu: '123456-1234'})
+        )
+        it('Lisää-nappi on disabloitu', function() {
+          expect(addOppija.isEnabled()).to.equal(false)
+        })
+      })
+      describe('Kun hetu sisältää väärän tarkistusmerkin', function() {
+        before(
+          addOppija.enterValidData({hetu: '011095-953Z'})
+        )
+        it('Lisää-nappi on disabloitu', function() {
+          expect(addOppija.isEnabled()).to.equal(false)
+        })
+      })
+      describe('Kun hetu sisältää väärän päivämäärän, mutta on muuten validi', function() {
+        before(
+          addOppija.enterValidData({hetu: '300275-5557'})
+        )
+        it('Lisää-nappi on disabloitu', function() {
+          expect(addOppija.isEnabled()).to.equal(false)
+        })
+      })
+      describe('Kun kutsumanimi ei löydy etunimistä', function() {
+        before(
+          addOppija.enterValidData({kutsumanimi: 'eiloydy'})
+        )
+        it('Lisää-nappi on disabloitu', function() {
+          expect(addOppija.isEnabled()).to.equal(false)
+        })
+        it('Näytetään virheilmoitus', function() {
+          expect(addOppija.isErrorShown('kutsumanimi')()).to.equal(true)
+        })
+      })
+      describe('Kun kutsumanimi löytyy väliviivallisesta nimestä', function() {
+        before(
+          addOppija.enterValidData({etunimet: 'Juha-Pekka', kutsumanimi: 'Pekka'})
+        )
         it('Lisää-nappi on enabloitu', function() {
           expect(addOppija.isEnabled()).to.equal(true)
         })
       })
-
-      describe('Kun painetaan Lisää-nappia', function() {
-        before(addOppija.submit)
-        before(wait.until(function() { return page.getSelectedOppija() === 'Oppija, Ossi Olavi 300994-9694'}))
-
-        it('lisätty oppija näytetään', function() {})
-
-        it('Lisätty opintooikeus näytetään', function() {
-          expect(opinnot.getTutkinto()).to.equal('Autoalan työnjohdon erikoisammattitutkinto')
-          expect(opinnot.getOppilaitos()).to.equal('Helsingin Ammattioppilaitos')
+      describe('Kun oppilaitos on valittu', function() {
+        before(addOppija.enterValidData())
+        it('voidaan valita tutkinto', function(){
+          expect(addOppija.tutkintoIsEnabled()).to.equal(true)
+          expect(addOppija.isEnabled()).to.equal(true)
         })
-      })
-    })
-
-    describe('Kun syötetty hetu on jo olemassa', function() {
-      before(
-        resetMocks,
-        openPage('/tor/uusioppija'),
-        addOppija.enterValidData({ hetu: '010101-123N'}),
-        addOppija.submit
-      )
-
-      it('Näytetään virheilmoitus', function() {
-        return wait.until(addOppija.isErrorShown('hetu'))()
-      })
-    })
-
-    describe('Kun sessio on vanhentunut', function() {
-      before( openPage('/tor/uusioppija'),
-              addOppija.enterValidData(),
-              authentication.logout,
-              addOppija.submit)
-
-      it('Siirrytään login-sivulle', wait.until(login.isVisible))
-    })
-
-    describe('Kun hetu on virheellinen', function() {
-      before(
-        authentication.login,
-        openPage('/tor/uusioppija'),
-        addOppija.enterValidData({hetu: '123456-1234'})
-      )
-      it('Lisää-nappi on disabloitu', function() {
-        expect(addOppija.isEnabled()).to.equal(false)
-      })
-    })
-    describe('Kun hetu sisältää väärän tarkistusmerkin', function() {
-      before(
-        addOppija.enterValidData({hetu: '011095-953Z'})
-      )
-      it('Lisää-nappi on disabloitu', function() {
-        expect(addOppija.isEnabled()).to.equal(false)
-      })
-    })
-    describe('Kun hetu sisältää väärän päivämäärän, mutta on muuten validi', function() {
-      before(
-        addOppija.enterValidData({hetu: '300275-5557'})
-      )
-      it('Lisää-nappi on disabloitu', function() {
-        expect(addOppija.isEnabled()).to.equal(false)
-      })
-    })
-    describe('Kun kutsumanimi ei löydy etunimistä', function() {
-      before(
-        addOppija.enterValidData({kutsumanimi: 'eiloydy'})
-      )
-      it('Lisää-nappi on disabloitu', function() {
-        expect(addOppija.isEnabled()).to.equal(false)
-      })
-      it('Näytetään virheilmoitus', function() {
-        expect(addOppija.isErrorShown('kutsumanimi')()).to.equal(true)
-      })
-    })
-    describe('Kun kutsumanimi löytyy väliviivallisesta nimestä', function() {
-      before(
-        addOppija.enterValidData({etunimet: 'Juha-Pekka', kutsumanimi: 'Pekka'})
-      )
-      it('Lisää-nappi on enabloitu', function() {
-        expect(addOppija.isEnabled()).to.equal(true)
-      })
-    })
-    describe('Kun oppilaitos on valittu', function() {
-      before(addOppija.enterValidData())
-      it('voidaan valita tutkinto', function(){
-        expect(addOppija.tutkintoIsEnabled()).to.equal(true)
-        expect(addOppija.isEnabled()).to.equal(true)
-      })
-      describe('Kun oppilaitos-valinta muutetaan', function() {
-        before(addOppija.selectOppilaitos('Omnia'))
-        it('tutkinto pitää valita uudestaan', function() {
-          expect(addOppija.isEnabled()).to.equal(false)
-        })
-        describe('Tutkinnon valinnan jälkeen', function() {
-          before(addOppija.selectTutkinto('auto'))
-          it('Lisää nappi on enabloitu', function() {
-            expect(addOppija.isEnabled()).to.equal(true)
+        describe('Kun oppilaitos-valinta muutetaan', function() {
+          before(addOppija.selectOppilaitos('Omnia'))
+          it('tutkinto pitää valita uudestaan', function() {
+            expect(addOppija.isEnabled()).to.equal(false)
+          })
+          describe('Tutkinnon valinnan jälkeen', function() {
+            before(addOppija.selectTutkinto('auto'))
+            it('Lisää nappi on enabloitu', function() {
+              expect(addOppija.isEnabled()).to.equal(true)
+            })
           })
         })
       })
-    })
-    describe('Kun oppilaitos on virheellinen', function() {
-      before(addOppija.enterValidData(), addOppija.enterOppilaitos('virheellinen'))
-      it('Lisää-nappi on disabloitu', function() {
-        expect(addOppija.isEnabled()).to.equal(false)
+      describe('Kun oppilaitos on virheellinen', function() {
+        before(addOppija.enterValidData(), addOppija.enterOppilaitos('virheellinen'))
+        it('Lisää-nappi on disabloitu', function() {
+          expect(addOppija.isEnabled()).to.equal(false)
+        })
+        it('Tutkinnon valinta on estetty', function() {
+          expect(addOppija.tutkintoIsEnabled()).to.equal(false)
+        })
       })
-      it('Tutkinnon valinta on estetty', function() {
-        expect(addOppija.tutkintoIsEnabled()).to.equal(false)
-      })
-    })
-    describe('Kun tutkinto on virheellinen', function() {
-      before(addOppija.enterValidData(), addOppija.enterTutkinto('virheellinen'))
-      it('Lisää-nappi on disabloitu', function() {
-        expect(addOppija.isEnabled()).to.equal(false)
+      describe('Kun tutkinto on virheellinen', function() {
+        before(addOppija.enterValidData(), addOppija.enterTutkinto('virheellinen'))
+        it('Lisää-nappi on disabloitu', function() {
+          expect(addOppija.isEnabled()).to.equal(false)
+        })
       })
     })
   })

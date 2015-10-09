@@ -18,4 +18,8 @@ class MockOpintoOikeusRepository extends OpintoOikeusRepository {
   override def create(opintoOikeus: OpintoOikeus) = opintoOikeudet = opintoOikeudet :+ opintoOikeus
 
   override def filterOppijat(oppijat: List[Oppija]) = oppijat.filter(!findBy(_).isEmpty)
+
+  override def resetMocks: Unit = {
+    opintoOikeudet = defaultOpintoOikeudet
+  }
 }

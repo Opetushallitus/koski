@@ -36,13 +36,13 @@ class OppijaServlet(oppijaRepository: OppijaRepository,
   post("/") {
     contentType = "text/plain;charset=utf-8"
     val oppija: CreateOppijaAndOpintoOikeus = Json.read[CreateOppijaAndOpintoOikeus](request.body)
-    val result: OppijaCreationResult = oppijaRepository.create(oppija)
-    result match {
-      case Created(oid) =>
-        opintoOikeusRepository.create(OpintoOikeus(oppija.opintoOikeus.tutkinto.ePerusteDiaarinumero, oid, oppija.opintoOikeus.oppilaitos.organisaatioId))
-        oid
-      case Failed(status, text) =>
-        halt(status, text)
+    val result: OppijaCreationResult = oppijaRepository.findOrCreate(oppija)
+    if (result.ok) {
+      val oid = result.text
+      opintoOikeusRepository.create(OpintoOikeus(oppija.opintoOikeus.tutkinto.ePerusteDiaarinumero, oid, oppija.opintoOikeus.oppilaitos.organisaatioId))
+      oid
+    } else {
+      halt(result.httpStatus, result.text)
     }
   }
 

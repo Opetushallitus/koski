@@ -5,6 +5,7 @@ class MockOppijaRepository extends OppijaRepository {
   val eerola = Oppija(generateId, "eerola", "jouni", "")
   val markkanen = Oppija(generateId, "markkanen", "eero", "")
   val teija = Oppija(generateId, "tekijä", "teija", "150995-914X")
+  val tero = Oppija(generateId, "tunkkila", "tero", "091095-9833")
   val presidentti = Oppija(generateId, "Presidentti", "Tasavallan", "")
 
   private def defaultOppijat = List(
@@ -12,6 +13,7 @@ class MockOppijaRepository extends OppijaRepository {
     eerola,
     markkanen,
     teija,
+    tero,
     presidentti
   )
 
@@ -46,8 +48,8 @@ class MockOppijaRepository extends OppijaRepository {
   }
 
   override def resetMocks {
-    idCounter = 0
     oppijat = defaultOppijat
+    idCounter = defaultOppijat.length
   }
 
   override def findById(id: String): Option[Oppija] = oppijat.filter(_.oid == id).headOption

@@ -29,6 +29,7 @@ trait TorProfile {
   lazy val opintoOikeusRepository = OpintoOikeusRepository(config)
   def resetMocks = {
     oppijaRepository.resetMocks
+    opintoOikeusRepository.resetMocks
   }
 }
 

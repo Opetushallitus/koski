@@ -50,7 +50,7 @@ const Opintooikeus = React.createClass({
 const CreateOppija = React.createClass({
   render() {
     const opintoOikeus = this.props.opintoOikeus
-    const {etunimet, sukunimi, kutsumanimi, hetu, inProgress, hetuConflict} = this.state
+    const {etunimet, sukunimi, kutsumanimi, hetu, inProgress} = this.state
     const validKutsumanimi = this.isKutsumanimiOneOfEtunimet(kutsumanimi, etunimet)
     const submitDisabled = !etunimet || !sukunimi || !kutsumanimi || !isValidHetu(hetu) || !validKutsumanimi || inProgress || !opintoOikeus.valid
     const buttonText = !inProgress ? 'Lisää henkilö' : 'Lisätään...'
@@ -58,9 +58,7 @@ const CreateOppija = React.createClass({
     const kutsumanimiClassName = validKutsumanimi ? 'kutsumanimi' : 'kutsumanimi error'
 
     const errors = []
-    if(hetuConflict) {
-      errors.push(<li key='1' className='hetu'>Henkilötunnuksella löytyy jo henkilö.</li>)
-    }
+
     if(!validKutsumanimi) {
       errors.push(<li key='2' className='kutsumanimi'>Kutsumanimen on oltava yksi etunimistä.</li>)
     }
@@ -123,11 +121,7 @@ const CreateOppija = React.createClass({
     createOppijaS.onValue(navigateToOppija)
     createOppijaS.onError((e) => {
       this.setState({inProgress: false})
-      if (e.httpStatus == 409) {
-        this.setState({hetuConflict: true})
-      } else {
-        showError(e)
-      }
+      showError(e)
     })
   },
 
