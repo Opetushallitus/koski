@@ -1,0 +1,29 @@
+{
+  "ecmaFeatures": {
+    "arrowFunctions": true,
+    "blockBindings": true,
+    "classes": true,
+    "defaultParams": true,
+    "destructuring": true,
+    "forOf": true,
+    "generators": true,
+    "modules": true,
+    "spread": true,
+    "superInFunctions": true,
+    "templateStrings": true,
+    "jsx": true
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "rules": {
+    "curly": [2, "multi-line"],
+    "quotes": [1, "single", "avoid-escape"],
+    "semi": [2, "never"]
+  },
+  "plugins": [
+    "react"
+  ]
+}

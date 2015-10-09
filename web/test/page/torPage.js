@@ -1,5 +1,5 @@
 function TorPage() {
-  var pageApi = Page(function() {return S("#content")});
+  var pageApi = Page(function() {return S('#content')})
 
   var OppijaHaku = {
     search: function(query, expectedResults) {
@@ -9,14 +9,14 @@ function TorPage() {
           return _.eq(resultList, OppijaHaku.getSearchResults())
         }
       }
-      if (typeof expectedResults != "function") {
+      if (typeof expectedResults != 'function') {
         var expectedNumberOfResults = expectedResults
         expectedResults = function() {
           return OppijaHaku.getSearchResults().length == expectedNumberOfResults
         }
       }
       return function() {
-        return pageApi.setInputValue("#search-query", query)()
+        return pageApi.setInputValue('#search-query', query)()
           .then(wait.until(expectedResults))
       }
     },
@@ -24,11 +24,11 @@ function TorPage() {
       return S('.oppija-haku li a').toArray().map(function(a) { return $(a).text()})
     },
     addNewOppija: function() {
-      triggerEvent(S('.oppija-haku .lisaa-oppija'), "click")
+      triggerEvent(S('.oppija-haku .lisaa-oppija'), 'click')
       return wait.until(AddOppijaPage().isVisible)
     },
     isNoResultsLabelShown: function() {
-      return S('.oppija-haku .no-results').is(":visible")
+      return S('.oppija-haku .no-results').is(':visible')
     },
     getSelectedSearchResult: function() {
       return S('.hakutulokset .selected').text()
@@ -43,17 +43,17 @@ function TorPage() {
 
   var api = {
     openPage: function() {
-      return openPage("/tor/", api.isVisible)()
+      return openPage('/tor/', api.isVisible)()
     },
     isVisible: function() {
-      return S("#content .oppija-haku").is(":visible")
+      return S('#content .oppija-haku').is(':visible')
     },
     loginAndOpen: function() {
       return Authentication().login().then(api.openPage)
     },
     oppijaHaku: OppijaHaku,
     getSelectedOppija: function() {
-      return S('.oppija').text()
+      return S('.oppija h2').text()
     },
     waitUntilOppijaSelected: function(oppija) {
       return wait.until(api.isOppijaSelected(oppija))()
@@ -64,7 +64,7 @@ function TorPage() {
       }
     },
     logout: function() {
-      triggerEvent(S("#logout"), 'click')
+      triggerEvent(S('#logout'), 'click')
       return wait.until(LoginPage().isVisible)()
     },
     isErrorShown: function() {

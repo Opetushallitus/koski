@@ -16,6 +16,7 @@ trait OppijaRepository {
   def create(oppija: CreateOppija): OppijaCreationResult
 
   def findOppijat(query: String): List[Oppija]
+  def findById(id: String): Option[Oppija]
 
   def resetMocks {}
 }
@@ -62,9 +63,16 @@ class MockOppijaRepository extends OppijaRepository {
     idCounter = 0
     oppijat = defaultOppijat
   }
+
+  override def findById(id: String): Option[Oppija] = oppijat.filter(_.oid == id).headOption
 }
 
-case class CreateOppija(etunimet: String, kutsumanimi: String, sukunimi: String, hetu: String)
+trait CreateOppija {
+  def etunimet: String
+  def kutsumanimi: String
+  def sukunimi: String
+  def hetu: String
+}
 
 sealed trait OppijaCreationResult {
   def httpStatus: Int

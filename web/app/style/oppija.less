@@ -5,21 +5,48 @@
     font-weight: normal;
     font-size: 20px;
     .hetu {
-      color: #918C8A;
+      color: @color-darkgray-text;
     }
   }
 
   hr {
-    margin-top: 29px;
-    margin-right: 64px;
+    margin: 29px 64px 40px 0;
   }
 
   .hetu {
     font-size: 16px;
+  }
+
+  .opintooikeus {
+    h4 {
+      font-size: 16px;
+      text-transform: uppercase;
+      font-weight: normal;
+    }
+
+    .tutkinto {
+      font-size: 18px;
+    }
+
+    .oppilaitos {
+      font-size: 15px;
+      color: @color-darkgray-text;
+      display: inline-block;
+      margin-left: 6px;
+    }
+  }
+}
+
+.uusi-oppija {
+
+  label {
+    display: block;
+  }
+
+  .hetu {
     input {
       width: 125px;
     }
-
   }
 
   .etunimet, .kutsumanimi {
@@ -39,7 +66,12 @@
     }
   }
 
-  label {
-    display: block;
+  hr {
+    margin: 40px 0 20px 0;
+  }
+
+  .oppilaitos, .tutkinto {
+    width: 600px;
+    .autocomplete();
   }
 }

@@ -1,68 +1,92 @@
-import React from "react"
-import ReactDOM from "react-dom"
-import Bacon from "baconjs"
-import Http from "./http"
-import {navigateToOppija, routeP, showError} from "./router"
-import {isValidHetu} from "./hetu"
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Bacon from 'baconjs'
+import Http from './http'
+import {navigateToOppija, routeP, showError} from './router'
+import {isValidHetu} from './hetu'
+import {OpintoOikeus} from './OpintoOikeus.jsx'
 
 export const oppijaP = routeP.flatMap(route => {
-  var match = route.match(new RegExp("oppija/(.*)"))
-  return match ? Http.get(`/tor/api/oppija?query=${match[1]}`).mapError([]).map(".0") : Bacon.once(undefined)
+  var match = route.match(new RegExp('oppija/(.*)'))
+  return match ? Http.get(`/tor/api/oppija/${match[1]}`).mapError(undefined) : Bacon.once(undefined)
 }).toProperty()
 
 export const uusiOppijaP = routeP.map(route => {
-  var match = route.match(new RegExp("uusioppija"))
+  var match = route.match(new RegExp('uusioppija'))
   return !!match
 })
 
-export const Oppija = ({oppija, uusiOppija}) => oppija ?
-  <div className="oppija">
-    <h2>{oppija.sukunimi}, {oppija.etunimet} <span className="hetu">{oppija.hetu}</span></h2>
-    <hr></hr>
-  </div> : (
-    uusiOppija
-      ? <CreateOppija/>
+export const Oppija = ({oppija, opintoOikeus}) => oppija.valittuOppija ?
+    <ExistingOppija oppija={oppija.valittuOppija}/> : (
+    oppija.uusiOppija
+      ? <CreateOppija opintoOikeus={opintoOikeus}/>
       : <div></div>
     )
 
+const ExistingOppija = React.createClass({
+  render() {
+    let {oppija} = this.props
+    return (
+      <div className='main-content oppija'>
+        <h2>{oppija.sukunimi}, {oppija.etunimet} <span className='hetu'>{oppija.hetu}</span></h2>
+        <hr></hr>
+        <Opintooikeus opintooikeus={oppija.tutkinnot.length ? oppija.tutkinnot[0] : undefined} />
+      </div>
+    )
+  }
+})
+
+const Opintooikeus = React.createClass({
+  render() {
+    let {opintooikeus} = this.props
+    return opintooikeus ?
+      <div className="opintooikeus">
+        <h4>Opinto-oikeudet</h4>
+        <span className="tutkinto">{opintooikeus.nimi}</span> <span className="oppilaitos">{opintooikeus.oppilaitos.nimi}</span>
+      </div> : null
+  }
+})
 
 const CreateOppija = React.createClass({
   render() {
+    const opintoOikeus = this.props.opintoOikeus
     const {etunimet, sukunimi, kutsumanimi, hetu, inProgress, hetuConflict} = this.state
     const validKutsumanimi = this.isKutsumanimiOneOfEtunimet(kutsumanimi, etunimet)
-    const submitDisabled = !etunimet || !sukunimi || !kutsumanimi || !isValidHetu(hetu) || !validKutsumanimi || inProgress
-    const buttonText = !inProgress ? "Lisää henkilö" : "Lisätään..."
-    const hetuClassName = !hetu ? "hetu" : isValidHetu(hetu) ? "hetu" : "hetu error"
-    const kutsumanimiClassName = validKutsumanimi ? "kutsumanimi" : "kutsumanimi error"
+    const submitDisabled = !etunimet || !sukunimi || !kutsumanimi || !isValidHetu(hetu) || !validKutsumanimi || inProgress || !opintoOikeus.valid
+    const buttonText = !inProgress ? 'Lisää henkilö' : 'Lisätään...'
+    const hetuClassName = !hetu ? 'hetu' : isValidHetu(hetu) ? 'hetu' : 'hetu error'
+    const kutsumanimiClassName = validKutsumanimi ? 'kutsumanimi' : 'kutsumanimi error'
 
     const errors = []
     if(hetuConflict) {
-      errors.push(<li key="1" className="hetu">Henkilötunnuksella löytyy jo henkilö.</li>)
+      errors.push(<li key='1' className='hetu'>Henkilötunnuksella löytyy jo henkilö.</li>)
     }
     if(!validKutsumanimi) {
-      errors.push(<li key="2" className="kutsumanimi">Kutsumanimen on oltava yksi etunimistä.</li>)
+      errors.push(<li key='2' className='kutsumanimi'>Kutsumanimen on oltava yksi etunimistä.</li>)
     }
 
     return (
-      <form className="oppija stacked" onInput={this.onInput}>
-        <label className="etunimet">
+      <form className='main-content oppija uusi-oppija' onInput={this.onInput}>
+        <label className='etunimet'>
           Etunimet
-          <input ref="etunimet"></input>
+          <input ref='etunimet'></input>
         </label>
         <label className={kutsumanimiClassName}>
           Kutsumanimi
-          <input ref="kutsumanimi"></input>
+          <input ref='kutsumanimi'></input>
         </label>
-        <label className="sukunimi">
+        <label className='sukunimi'>
           Sukunimi
-          <input ref="sukunimi"></input>
+          <input ref='sukunimi'></input>
         </label>
         <label className={hetuClassName}>
           Henkilötunnus
-          <input ref="hetu"></input>
+          <input ref='hetu'></input>
         </label>
-        <button className="button blue" disabled={submitDisabled} onClick={this.submit}>{buttonText}</button>
-        <ul className="error-messages">
+        <hr/>
+        <OpintoOikeus opintoOikeus={this.props.opintoOikeus}/>
+        <button className='button blue' disabled={submitDisabled} onClick={this.submit}>{buttonText}</button>
+        <ul className='error-messages'>
           {errors}
         </ul>
       </form>
@@ -78,8 +102,13 @@ const CreateOppija = React.createClass({
       etunimet: this.refs.etunimet.value,
       sukunimi: this.refs.sukunimi.value,
       kutsumanimi: this.refs.kutsumanimi.value,
-      hetu: this.refs.hetu.value.toUpperCase()
+      hetu: this.refs.hetu.value.toUpperCase(),
+      opintoOikeus: this.props.opintoOikeus
     }
+  },
+
+  componentDidMount() {
+    this.refs.etunimet.focus()
   },
 
   onInput() {
@@ -90,7 +119,7 @@ const CreateOppija = React.createClass({
     e.preventDefault()
     this.setState({inProgress: true})
 
-    const createOppijaS = Http.post('/tor/api/oppija', this.formState()).map(oid => ({oid: oid}));
+    const createOppijaS = Http.post('/tor/api/oppija', this.formState()).map(oid => ({oid: oid}))
     createOppijaS.onValue(navigateToOppija)
     createOppijaS.onError((e) => {
       this.setState({inProgress: false})
@@ -103,6 +132,6 @@ const CreateOppija = React.createClass({
   },
 
   isKutsumanimiOneOfEtunimet(kutsumanimi, etunimet) {
-    return kutsumanimi && etunimet ? etunimet.split(" ").indexOf(kutsumanimi) > -1 || etunimet.split("-").indexOf(kutsumanimi) > -1: true
+    return kutsumanimi && etunimet ? etunimet.split(' ').indexOf(kutsumanimi) > -1 || etunimet.split('-').indexOf(kutsumanimi) > -1: true
   }
 })
