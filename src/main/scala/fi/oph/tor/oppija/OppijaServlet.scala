@@ -1,10 +1,10 @@
 package fi.oph.tor.oppija
 
 import fi.oph.tor.json.Json
-import fi.oph.tor.koulutus.KoulutusRepository
-import fi.oph.tor.oppilaitos.OppilaitosRepository
+import fi.oph.tor.koulutus.{Koulutus, KoulutusRepository}
+import fi.oph.tor.oppilaitos.{Oppilaitos, OppilaitosRepository}
 import fi.oph.tor.security.Authenticated
-import fi.oph.tor.tutkinto.TutkintoRepository
+import fi.oph.tor.tutkinto.{Tutkinto, TutkintoRepository}
 import fi.oph.tor.{ErrorHandlingServlet, InvalidRequestException}
 import fi.vm.sade.utils.slf4j.Logging
 
@@ -32,9 +32,15 @@ class OppijaServlet(oppijaRepository: OppijaRepository,
 
   post("/") {
     contentType = "text/plain;charset=utf-8"
-    val oppija: CreateOppija = Json.read[CreateOppija](request.body)
+    val oppija: CreateOppijaAndKoulutus = Json.read[CreateOppijaAndKoulutus](request.body)
     val result: OppijaCreationResult = oppijaRepository.create(oppija)
-    halt(result.httpStatus, result.text)
+    result match {
+      case Created(oid) =>
+        tutkintoRepository.create(Tutkinto(oppija.koulutus.tutkinto.ePeruste, oid, oppija.koulutus.oppilaitos.organisaatioId))
+        oid
+      case Failed(status, text) =>
+        halt(status, text)
+    }
   }
 
   private def userView(oid: String) = oppijaRepository.findById(oid) match {
@@ -65,3 +71,10 @@ class OppijaServlet(oppijaRepository: OppijaRepository,
     }
   }
 }
+
+case class CreateOppijaAndKoulutus(
+                  etunimet: String, kutsumanimi: String, sukunimi: String, hetu: String,
+                  koulutus: CreateKoulutus
+                 ) extends CreateOppija
+
+case class CreateKoulutus(oppilaitos: Oppilaitos, tutkinto: Koulutus)

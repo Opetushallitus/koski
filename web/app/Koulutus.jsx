@@ -51,4 +51,4 @@ export const koulutusP = Bacon.combineTemplate({
   oppilaitos: oppilaitosP,
   tutkinto: tutkintoP,
   valid: oppilaitosP.and(tutkintoP)
-}).doLog('koulutus')
+})

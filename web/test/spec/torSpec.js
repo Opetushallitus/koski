@@ -2,6 +2,7 @@ describe('TOR', function() {
   var page = TorPage()
   var login = LoginPage()
   var authentication = Authentication()
+  var opinnot = OpinnotPage()
   var eero = 'esimerkki, eero 010101-123N'
   var markkanen = 'markkanen, eero '
   var eerola = 'eerola, jouni '
@@ -133,6 +134,11 @@ describe('TOR', function() {
         before(wait.until(function() { return page.getSelectedOppija() === 'Oppija, Ossi Olavi 300994-9694'}))
 
         it('lisätty oppija näytetään', function() {})
+
+        it('Lisätty tutkinto näytetään', function() {
+          expect(opinnot.getTutkinto()).to.equal('Autoalan työnjohdon erikoisammattitutkinto')
+          expect(opinnot.getOppilaitos()).to.equal('Helsingin Ammattioppilaitos')
+        })
       })
     })
 
@@ -240,8 +246,6 @@ describe('TOR', function() {
   })
 
   describe('Navigointi suoraan oppijan sivulle', function() {
-    var opinnot = OpinnotPage()
-
     before(authentication.login)
     before(openPage('/tor/oppija/1.2.246.562.24.00000000001', page.isOppijaSelected('eero')))
 
