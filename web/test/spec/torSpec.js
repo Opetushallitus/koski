@@ -113,18 +113,18 @@ describe('TOR', function() {
 
   describe('Opinto-oikeuden lisääminen', function() {
     function prepareForNewOppija(username, searchString) {
-      before(
-        resetMocks,
-        authentication.login(username),
-        page.openPage,
-        page.oppijaHaku.search(searchString, page.oppijaHaku.isNoResultsLabelShown),
-        page.oppijaHaku.addNewOppija
-      )
+      return function() {
+        return resetMocks()
+          .then(authentication.login(username))
+          .then(page.openPage)
+          .then(page.oppijaHaku.search(searchString, page.oppijaHaku.isNoResultsLabelShown))
+          .then(page.oppijaHaku.addNewOppija)
+      }
     }
 
     var addOppija = AddOppijaPage()
     describe("Olemassa olevalle henkilölle", function() {
-      prepareForNewOppija('kalle', 'Tunkkila')
+      before(prepareForNewOppija('kalle', 'Tunkkila'))
       before(addOppija.enterValidData({ etunimet: 'Tero Terde', kutsumanimi: 'Terde', sukunimi: 'Tunkkila', hetu: '091095-9833', oppilaitos: 'Helsingin', tutkinto: 'auto'}))
       before(addOppija.submit)
       before(wait.until(function() { return page.getSelectedOppija() === 'tunkkila, tero 091095-9833'}))
@@ -134,7 +134,7 @@ describe('TOR', function() {
     })
 
     describe('Uudelle henkilölle', function() {
-      prepareForNewOppija('kalle', 'asdf')
+      before(prepareForNewOppija('kalle', 'asdf'))
 
       describe('Aluksi', function() {
         it('Lisää-nappi on disabloitu', function() {
@@ -240,13 +240,31 @@ describe('TOR', function() {
           })
         })
       })
-      describe('Kun oppilaitos on virheellinen', function() {
-        before(addOppija.enterValidData(), addOppija.enterOppilaitos('virheellinen'))
-        it('Lisää-nappi on disabloitu', function() {
-          expect(addOppija.isEnabled()).to.equal(false)
+      describe("Oppilaitosvalinta", function() {
+        describe('Näytetään vain käyttäjän organisaatiopuuhun kuuluvat oppilaitokset', function() {
+          it('1', function() {
+            return prepareForNewOppija('hiiri', 'Tunkkila')()
+              .then(addOppija.enterOppilaitos('Helsinki'))
+              .then(function() {
+                expect(addOppija.oppilaitokset()).to.deep.equal(["Omnia Helsinki"])
+              })
+          })
+          it('2', function() {
+            return prepareForNewOppija('kalle', 'Tunkkila')()
+              .then(addOppija.enterOppilaitos('Helsinki'))
+              .then(function() {
+                expect(addOppija.oppilaitokset()).to.deep.equal(["Metropolia Helsinki", "Omnia Helsinki"])
+              })
+          })
         })
-        it('Tutkinnon valinta on estetty', function() {
-          expect(addOppija.tutkintoIsEnabled()).to.equal(false)
+        describe('Kun oppilaitos on virheellinen', function() {
+          before(addOppija.enterValidData(), addOppija.enterOppilaitos('virheellinen'))
+          it('Lisää-nappi on disabloitu', function() {
+            expect(addOppija.isEnabled()).to.equal(false)
+          })
+          it('Tutkinnon valinta on estetty', function() {
+            expect(addOppija.tutkintoIsEnabled()).to.equal(false)
+          })
         })
       })
       describe('Kun tutkinto on virheellinen', function() {
@@ -254,12 +272,6 @@ describe('TOR', function() {
         it('Lisää-nappi on disabloitu', function() {
           expect(addOppija.isEnabled()).to.equal(false)
         })
-      })
-    })
-    describe("Oppilaitosvalinta", function() {
-      prepareForNewOppija('kalle', 'Tunkkila')
-      it('Näytetään vain käyttäjän organisaatiopuuhun kuuluvat oppilaitokset', function() {
-        addOppija
       })
     })
   })
@@ -327,8 +339,7 @@ describe('TOR', function() {
       })
 
       describe('Kun kirjaudutaan uudelleen sisään', function() {
-        // TODO: implement generic 'wait for ajax' mechanism instead of milliseconds?
-        before(authentication.login(), page.openPage, page.oppijaHaku.search('jouni', [eerola]), page.logout, login.login('kalle', 'asdf'), wait.forMilliseconds(500))
+        before(authentication.login(), page.openPage, page.oppijaHaku.search('jouni', [eerola]), page.logout, login.login('kalle', 'asdf'), wait.until(page.isNotLoading))
         it ('Käyttöliittymä on palautunut alkutilaan', function() {
           expect(page.oppijaHaku.getSearchResults()).to.deep.equal([])
           expect(page.getSelectedOppija()).to.equal('')

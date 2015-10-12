@@ -1,8 +1,8 @@
 function AddOppijaPage() {
   function form() { return S('form.oppija') }
   function button() { return form().find('button') }
-  function oppilaitos() { return form().find('.oppilaitos .selected') }
-  function tutkinto() { return form().find('.tutkinto .selected') }
+  function selectedOppilaitos() { return form().find('.oppilaitos .selected') }
+  function selectedTutkinto() { return form().find('.tutkinto .selected') }
   var pageApi = Page(form)
   var api = {
     isVisible: function() {
@@ -33,21 +33,24 @@ function AddOppijaPage() {
     },
     enterOppilaitos: function(name) {
       return function() {
-        return pageApi.setInputValue('.oppilaitos input', name)()
+        return pageApi.setInputValue('.oppilaitos input', name)().then(wait.until(TorPage().isNotLoading))
       }
     },
     selectOppilaitos: function(name) {
       return function() {
         return pageApi.setInputValue('.oppilaitos input', name)()
-          .then(wait.until(function() { return oppilaitos().is(':visible') }))
-          .then(function() {triggerEvent(oppilaitos(), 'click')})
+          .then(wait.until(function() { return selectedOppilaitos().is(':visible') }))
+          .then(function() {triggerEvent(selectedOppilaitos(), 'click')})
       }
+    },
+    oppilaitokset: function() {
+      return textsOf(form().find(".oppilaitos .results li"))
     },
     selectTutkinto: function(name) {
       return function() {
         return pageApi.setInputValue('.tutkinto input', name)()
-          .then(wait.until(function() { return tutkinto().is(':visible') }))
-          .then(function() {triggerEvent(tutkinto(), 'click')})
+          .then(wait.until(function() { return selectedTutkinto().is(':visible') }))
+          .then(function() {triggerEvent(selectedTutkinto(), 'click')})
       }
     },
     submit: function() {

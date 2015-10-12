@@ -100,6 +100,10 @@ function takeScreenshot() {
   }
 }
 
+function textsOf(elements) {
+  return Array.prototype.slice.apply(elements.get()).map(function(el) { return $(el).text() })
+}
+
 
 (function improveMocha() {
   var origBefore = before

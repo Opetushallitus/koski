@@ -48,6 +48,12 @@ function TorPage() {
     isVisible: function() {
       return S('#content .oppija-haku').is(':visible')
     },
+    isLoading: function() {
+      return S('body').hasClass('loading')
+    },
+    isNotLoading: function() {
+      return !api.isLoading()
+    },
     loginAndOpen: function() {
       return Authentication().login('kalle')().then(api.openPage)
     },
