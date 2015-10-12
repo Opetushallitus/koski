@@ -2,7 +2,7 @@ import Bacon from 'baconjs'
 
 const reqE = Bacon.Bus()
 const requestPending = reqE.scan(0, (a, b) => a + b).map(count => count > 0)
-requestPending.onValue(pending => document.body.className = pending ? "loading" : "")
+requestPending.onValue(pending => document.body.className = pending ? 'loading' : '')
 
 const parseResponse = (result) => {
   if (result.status < 300) {

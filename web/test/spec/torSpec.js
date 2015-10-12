@@ -339,7 +339,7 @@ describe('TOR', function() {
       })
 
       describe('Kun kirjaudutaan uudelleen sisään', function() {
-        before(authentication.login(), page.openPage, page.oppijaHaku.search('jouni', [eerola]), page.logout, login.login('kalle', 'asdf'), wait.until(page.isNotLoading))
+        before(authentication.login(), page.openPage, page.oppijaHaku.search('jouni', [eerola]), page.logout, login.login('kalle', 'asdf'), wait.until(page.isReady))
         it ('Käyttöliittymä on palautunut alkutilaan', function() {
           expect(page.oppijaHaku.getSearchResults()).to.deep.equal([])
           expect(page.getSelectedOppija()).to.equal('')

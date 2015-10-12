@@ -25,7 +25,7 @@ function TorPage() {
     },
     addNewOppija: function() {
       triggerEvent(S('.oppija-haku .lisaa-oppija'), 'click')
-      return wait.until(AddOppijaPage().isVisible)
+      return wait.until(AddOppijaPage().isVisible)()
     },
     isNoResultsLabelShown: function() {
       return S('.oppija-haku .no-results').is(':visible')
@@ -53,6 +53,9 @@ function TorPage() {
     },
     isNotLoading: function() {
       return !api.isLoading()
+    },
+    isReady: function() {
+      return api.isVisible() && !api.isLoading()
     },
     loginAndOpen: function() {
       return Authentication().login('kalle')().then(api.openPage)

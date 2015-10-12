@@ -1,6 +1,13 @@
 .oppija {
   background-color: @color-darkgray;
 
+  &.loading {
+    background: url('/tor/images/loader.gif') 52px 35px no-repeat;
+    opacity: 0.5;
+    animation-name: fadein;
+    animation-duration: 1s;
+  }
+
   h2 {
     font-weight: normal;
     font-size: 20px;

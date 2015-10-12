@@ -6,7 +6,7 @@ function AddOppijaPage() {
   var pageApi = Page(form)
   var api = {
     isVisible: function() {
-      return form().is(':visible')
+      return form().is(':visible') && !TorPage().isLoading()
     },
     isEnabled: function() {
       return !button().is(':disabled')
@@ -33,7 +33,7 @@ function AddOppijaPage() {
     },
     enterOppilaitos: function(name) {
       return function() {
-        return pageApi.setInputValue('.oppilaitos input', name)().then(wait.until(TorPage().isNotLoading))
+        return pageApi.setInputValue('.oppilaitos input', name)().then(wait.forMilliseconds(1)).then(wait.until(TorPage().isReady))
       }
     },
     selectOppilaitos: function(name) {

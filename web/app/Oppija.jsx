@@ -8,7 +8,7 @@ import {OpintoOikeus} from './OpintoOikeus.jsx'
 
 export const oppijaP = routeP.flatMap(route => {
   var match = route.match(new RegExp('oppija/(.*)'))
-  return match ? Http.get(`/tor/api/oppija/${match[1]}`).mapError(undefined) : Bacon.once(undefined)
+  return match ? Http.get(`/tor/api/oppija/${match[1]}`).mapError(undefined) : Bacon.later(0, undefined)
 }).toProperty()
 
 export const uusiOppijaP = routeP.map(route => {
@@ -16,12 +16,20 @@ export const uusiOppijaP = routeP.map(route => {
   return !!match
 })
 
-export const Oppija = ({oppija, opintoOikeus}) => oppija.valittuOppija ?
-    <ExistingOppija oppija={oppija.valittuOppija}/> : (
-    oppija.uusiOppija
-      ? <CreateOppija opintoOikeus={opintoOikeus}/>
-      : <div></div>
-    )
+export const loadingOppijaP = routeP.awaiting(oppijaP.mapError())
+
+export const Oppija = ({oppija, opintoOikeus}) =>
+  oppija.loading
+    ? <Loading/>
+    : (oppija.valittuOppija
+      ? <ExistingOppija oppija={oppija.valittuOppija}/>
+      : (
+      oppija.uusiOppija
+        ? <CreateOppija opintoOikeus={opintoOikeus}/>
+        : <div></div>
+      ))
+
+const Loading = () => <div className='main-content oppija loading'></div>
 
 const ExistingOppija = React.createClass({
   render() {

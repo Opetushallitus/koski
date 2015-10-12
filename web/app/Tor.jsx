@@ -6,7 +6,7 @@ import style from './style/main.less'
 import handleError from './error-handler'
 import {Login, userP, logout} from './Login.jsx'
 import {OppijaHaku, oppijatP, searchInProgressP} from './OppijaHaku.jsx'
-import {Oppija, oppijaP, uusiOppijaP} from './Oppija.jsx'
+import {Oppija, oppijaP, uusiOppijaP, loadingOppijaP} from './Oppija.jsx'
 import {opintoOikeusP} from './OpintoOikeus.jsx'
 import {TopBar} from './TopBar.jsx'
 import Http from './http'
@@ -18,8 +18,9 @@ const stateP = Bacon.combineTemplate({
     searchInProgress: searchInProgressP
   },
   oppija: {
+    loading: loadingOppijaP,
     valittuOppija: oppijaP,
-    uusiOppija: uusiOppijaP,
+    uusiOppija: uusiOppijaP
   },
   opintoOikeus: opintoOikeusP
 })
