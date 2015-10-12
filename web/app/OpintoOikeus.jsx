@@ -15,13 +15,14 @@ const Oppilaitos = React.createClass({
         <Autocomplete
           resultBus={oppilaitosE}
 
-          fetchItems={(value) => (value.length >= 3)
-        ? Http.get('/tor/api/oppilaitos?query=' + value)
-        : Bacon.once([])}
+          fetchItems={(value) => this.state.oppilaitokset.map(oppilaitokset => oppilaitokset.filter(oppilaitos => oppilaitos.nimi.toLowerCase().indexOf(value.toLowerCase()) >= 0))}
 
           selected={this.props.oppilaitos}
           />
       </label>
+  },
+  getInitialState() {
+    return { oppilaitokset: Http.get('/tor/api/oppilaitos').toProperty()}
   }
 })
 
