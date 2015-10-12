@@ -17,7 +17,9 @@ class RemoteUserRepository(henkilöPalveluClient: VirkailijaHttpClient, organisa
     .run
     .withFilter {!_.passivoitu}
     .flatMap {org => getKäyttöoikeudet(oid, org.organisaatioOid)}
-    .withFilter {o => o.ryhmaId == katselijaRole && o.tila == "MYONNETTY" && o.effective}
+    .withFilter {_.ryhmaId == katselijaRole}
+    .withFilter {o => o.tila == "MYONNETTY" || o.tila == "UUSITTU"}
+    .withFilter {_.effective}
     .flatMap {result => organisaatioRepository.getOrganisaatio(result.organisaatioOid)}
   )
 
