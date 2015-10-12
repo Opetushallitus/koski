@@ -1,7 +1,5 @@
 package fi.oph.tor.organisaatio
 
-import fi.oph.tor.oppilaitos.Oppilaitos
-
 case class OrganisaatioPuu(roots: List[Organisaatio]) {
   def findById(id: String): Option[Organisaatio] = findOrganisaatiot(_.oid == id).headOption
 

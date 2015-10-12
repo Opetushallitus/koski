@@ -15,7 +15,6 @@ class UserServlet(directoryClient: DirectoryClient, userRepository: UserReposito
   }
 
   post("/login") {
-    Thread.sleep(100)
     val login = Json.read[Login](request.body)
 
     val loginResult: Boolean = directoryClient.authenticate(login.username, login.password)
