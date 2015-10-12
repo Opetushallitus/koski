@@ -4,8 +4,8 @@
   "description": "Todennetun osaamisen rekisteri",
   "license": "EUPL-1.1",
   "dependencies": {
-    "react": "0.14.0-rc1",
-    "react-dom": "0.14.0-rc1",
+    "react": "~0.14.0",
+    "react-dom": "~0.14.0",
     "whatwg-fetch": "^0.9",
     "baconjs": "~0.7.73",
     "ramda": "^0.17",
