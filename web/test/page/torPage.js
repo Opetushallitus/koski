@@ -49,7 +49,7 @@ function TorPage() {
       return S('#content .oppija-haku').is(':visible')
     },
     loginAndOpen: function() {
-      return Authentication().login().then(api.openPage)
+      return Authentication().login('kalle')().then(api.openPage)
     },
     oppijaHaku: OppijaHaku,
     getSelectedOppija: function() {

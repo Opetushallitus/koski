@@ -28,7 +28,7 @@ describe('TOR', function() {
   })
 
   describe('Oppijahaku', function() {
-    before(authentication.login, resetMocks, page.openPage)
+    before(authentication.login(), resetMocks, page.openPage)
     it('näytetään, kun käyttäjä on kirjautunut sisään', function() {
       expect(page.isVisible()).to.equal(true)
       expect(page.oppijaHaku.isNoResultsLabelShown()).to.equal(false)
@@ -112,15 +112,19 @@ describe('TOR', function() {
   })
 
   describe('Opinto-oikeuden lisääminen', function() {
-    var addOppija = AddOppijaPage()
-    describe("Olemassa olevalle henkilölle", function() {
+    function prepareForNewOppija(username, searchString) {
       before(
         resetMocks,
-        authentication.login,
+        authentication.login(username),
         page.openPage,
-        page.oppijaHaku.search('Tunkkila', page.oppijaHaku.isNoResultsLabelShown),
+        page.oppijaHaku.search(searchString, page.oppijaHaku.isNoResultsLabelShown),
         page.oppijaHaku.addNewOppija
       )
+    }
+
+    var addOppija = AddOppijaPage()
+    describe("Olemassa olevalle henkilölle", function() {
+      prepareForNewOppija('kalle', 'Tunkkila')
       before(addOppija.enterValidData({ etunimet: 'Tero Terde', kutsumanimi: 'Terde', sukunimi: 'Tunkkila', hetu: '091095-9833', oppilaitos: 'Helsingin', tutkinto: 'auto'}))
       before(addOppija.submit)
       before(wait.until(function() { return page.getSelectedOppija() === 'tunkkila, tero 091095-9833'}))
@@ -130,13 +134,7 @@ describe('TOR', function() {
     })
 
     describe('Uudelle henkilölle', function() {
-      before(
-        resetMocks,
-        authentication.login,
-        page.openPage,
-        page.oppijaHaku.search('asdf', page.oppijaHaku.isNoResultsLabelShown),
-        page.oppijaHaku.addNewOppija
-      )
+      prepareForNewOppija('kalle', 'asdf')
 
       describe('Aluksi', function() {
         it('Lisää-nappi on disabloitu', function() {
@@ -180,7 +178,7 @@ describe('TOR', function() {
 
       describe('Kun hetu on virheellinen', function() {
         before(
-          authentication.login,
+          authentication.login(),
           openPage('/tor/uusioppija'),
           addOppija.enterValidData({hetu: '123456-1234'})
         )
@@ -258,10 +256,16 @@ describe('TOR', function() {
         })
       })
     })
+    describe("Oppilaitosvalinta", function() {
+      prepareForNewOppija('kalle', 'Tunkkila')
+      it('Näytetään vain käyttäjän organisaatiopuuhun kuuluvat oppilaitokset', function() {
+        addOppija
+      })
+    })
   })
 
   describe('Navigointi suoraan oppijan sivulle', function() {
-    before(authentication.login)
+    before(authentication.login())
     before(openPage('/tor/oppija/1.2.246.562.24.00000000001', page.isOppijaSelected('eero')))
 
     it('Oppijan tiedot näytetään', function() {
@@ -280,7 +284,7 @@ describe('TOR', function() {
 
   describe("Odottamattoman virheen sattuessa", function() {
     before(
-      authentication.login,
+      authentication.login(),
       resetMocks,
       page.openPage,
       page.oppijaHaku.search("error", page.isErrorShown))
@@ -308,7 +312,7 @@ describe('TOR', function() {
     })
 
     describe('Kun klikataan logout-linkkiä', function() {
-      before(authentication.login, page.openPage, page.logout)
+      before(authentication.login(), page.openPage, page.logout)
 
       it('Siirrytään login-sivulle', function() {
         expect(login.isVisible()).to.equal(true)
@@ -324,7 +328,7 @@ describe('TOR', function() {
 
       describe('Kun kirjaudutaan uudelleen sisään', function() {
         // TODO: implement generic 'wait for ajax' mechanism instead of milliseconds?
-        before(authentication.login, page.openPage, page.oppijaHaku.search('jouni', [eerola]), page.logout, login.login('kalle', 'asdf'), wait.forMilliseconds(500))
+        before(authentication.login(), page.openPage, page.oppijaHaku.search('jouni', [eerola]), page.logout, login.login('kalle', 'asdf'), wait.forMilliseconds(500))
         it ('Käyttöliittymä on palautunut alkutilaan', function() {
           expect(page.oppijaHaku.getSearchResults()).to.deep.equal([])
           expect(page.getSelectedOppija()).to.equal('')
@@ -333,7 +337,7 @@ describe('TOR', function() {
     })
 
     describe('Session vanhennuttua', function() {
-      before(authentication.login, page.openPage, authentication.logout, page.oppijaHaku.search('eero', login.isVisible))
+      before(authentication.login(), page.openPage, authentication.logout, page.oppijaHaku.search('eero', login.isVisible))
 
       it('Siirrytään login-sivulle', function() {
         expect(login.isVisible()).to.equal(true)
