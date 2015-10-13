@@ -95,7 +95,6 @@ describe('TOR', function() {
       it('Tuloksia ei näytetä', function() {
 
       })
-
     })
 
     describe('Hakutavat', function() {
@@ -110,6 +109,17 @@ describe('TOR', function() {
       })
     })
   })
+
+  describe("Käyttöoikeudet", function() {
+    describe('Oppijahaku', function() {
+      before(authentication.login("hiiri"), page.openPage, page.oppijaHaku.search('eero', [markkanen]))
+
+      it('Näytetään vain ne oppijat, joiden opinto-oikeuksiin liittyviin organisaatioihin on käyttöoikeudet', function() {
+
+      })
+    })
+  })
+
 
   describe('Opinto-oikeuden lisääminen', function() {
     function prepareForNewOppija(username, searchString) {

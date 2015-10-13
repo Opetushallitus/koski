@@ -7,6 +7,10 @@ trait RequiresAuthentication extends CurrentUser {
 
   implicit def userContext: UserContext = new UserContext {
     def organisaatioPuu = userRepository.getUserOrganisations(getAuthenticatedUser.get.oid)
+
+    override def hasReadAccess(organisaatioId: String) = {
+      organisaatioPuu.findById(organisaatioId).isDefined
+    }
   }
 
   before() {
