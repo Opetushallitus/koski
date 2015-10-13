@@ -11,7 +11,7 @@ class VirkailijaHttpClient(username: String, password: String, opintoPolkuVirkai
   private val virkailijaUrl: Path = opintoPolkuVirkailijaUrl
   private val casClient = new CasClient(virkailijaUrl, blazeHttpClient)
 
-  val httpClient = new CasAuthenticatingClient(casClient, CasParams(serviceUrl, username, password), blazeHttpClient)
+  val httpClient = Http(new CasAuthenticatingClient(casClient, CasParams(serviceUrl, username, password), blazeHttpClient))
 
   def uriFromString(url: String): Uri = {
     Uri.fromString(virkailijaUrl +  url).toOption.get

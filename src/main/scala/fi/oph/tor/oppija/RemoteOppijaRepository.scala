@@ -1,6 +1,6 @@
 package fi.oph.tor.oppija
 
-import fi.oph.tor.http.VirkailijaHttpClient
+import fi.oph.tor.http.{Http, VirkailijaHttpClient}
 import fi.oph.tor.json.Json._
 import fi.oph.tor.json.Json4sHttp4s._
 import org.http4s._
@@ -9,8 +9,8 @@ import scalaz.concurrent.Task
 
 class RemoteOppijaRepository(henkilöPalveluClient: VirkailijaHttpClient) extends OppijaRepository with EntityDecoderInstances {
   override def findOppijat(query: String): List[Oppija] = henkilöPalveluClient.httpClient
-    .prepAs[AuthenticationServiceUserQueryResult](Request(uri = henkilöPalveluClient.uriFromString("/authentication-service/resources/henkilo?no=true&q=" + query)))(json4sOf[AuthenticationServiceUserQueryResult])
-    .run.results.map { result => Oppija(result.oidHenkilo, result.sukunimi, result.etunimet, result.hetu)}
+    .apply(Task(Request(uri = henkilöPalveluClient.uriFromString("/authentication-service/resources/henkilo?no=true&q=" + query))))(Http.parseJson[AuthenticationServiceUserQueryResult])
+    .results.map { result => Oppija(result.oidHenkilo, result.sukunimi, result.etunimet, result.hetu)}
 
   override def findById(id: String): Option[Oppija] = findOppijat(id).headOption
 
@@ -20,13 +20,10 @@ class RemoteOppijaRepository(henkilöPalveluClient: VirkailijaHttpClient) extend
       method = Method.POST
     ).withBody(new AuthenticationServiceCreateUser(oppija))(json4sEncoderOf[AuthenticationServiceCreateUser])
 
-    val response: Response = henkilöPalveluClient.httpClient(task).run
-    val responseText: String = response.as[String].run
-
-    (response.status.code, responseText) match {
+   henkilöPalveluClient.httpClient(task) {
       case (200, oid) => Created(oid)
       case (400, "socialsecuritynr.already.exists") => Failed(409, "socialsecuritynr.already.exists")
-      case _ => throw new RuntimeException(response.toString)
+      case (status, text) => throw new RuntimeException(status + ": " + text)
     }
   }
 }
