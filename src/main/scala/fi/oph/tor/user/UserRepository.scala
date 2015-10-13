@@ -7,7 +7,7 @@ import fi.oph.tor.organisaatio.{OrganisaatioPuu, OrganisaatioRepository}
 object UserRepository {
   def apply(config: Config): UserRepository = {
     if (config.hasPath("authentication-service")) {
-      new RemoteUserRepository(HenkilöPalveluClient(config), new OrganisaatioRepository(config))
+      new CachingUserRepository(new RemoteUserRepository(HenkilöPalveluClient(config), new OrganisaatioRepository(config)))
     } else {
       new MockUserRepository
     }

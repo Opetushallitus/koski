@@ -18,7 +18,7 @@
     <dependency>
       <groupId>com.github.Opetushallitus</groupId>
       <artifactId>scala-utils</artifactId>
-      <version>658fdeaeb64da964d6163d02bfd5e2d0514d6ebf</version>
+      <version>f0294dc70876d730b7c0294544352a642ce8d20a</version>
     </dependency>
     <dependency>
       <groupId>com.github.Opetushallitus</groupId>
