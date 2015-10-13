@@ -8,7 +8,7 @@ import {OpintoOikeus} from './OpintoOikeus.jsx'
 
 export const oppijaP = routeP.flatMap(route => {
   var match = route.match(new RegExp('oppija/(.*)'))
-  return match ? Http.get(`/tor/api/oppija/${match[1]}`).mapError(undefined) : Bacon.later(0, undefined)
+  return match ? Bacon.once(undefined).concat(Http.get(`/tor/api/oppija/${match[1]}`).mapError(undefined)) : Bacon.later(0, undefined)
 }).toProperty()
 
 export const uusiOppijaP = routeP.map(route => {
