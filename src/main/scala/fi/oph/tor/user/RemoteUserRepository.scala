@@ -13,7 +13,7 @@ class RemoteUserRepository(henkilöPalveluClient: VirkailijaHttpClient, organisa
 
   def getUserOrganisations(oid: String): OrganisaatioPuu = OrganisaatioPuu(
     roots = henkilöPalveluClient.httpClient
-      .apply(Task(Request(uri = henkilöPalveluClient.virkailijaUriFromString(s"/authentication-service/resources/henkilo/${oid}/organisaatiohenkilo"))))(Http.parseJson[List[OrganisaatioHenkilö]])
+      .apply(Request(uri = henkilöPalveluClient.virkailijaUriFromString(s"/authentication-service/resources/henkilo/${oid}/organisaatiohenkilo")))(Http.parseJson[List[OrganisaatioHenkilö]])
       .withFilter {!_.passivoitu}
       .flatMap {org => getKäyttöoikeudet(oid, org.organisaatioOid)}
       .withFilter {_.ryhmaId == katselijaRole}

@@ -10,7 +10,7 @@ class OrganisaatioRepository(config: Config) {
 
   def getOrganisaatio(oid: String): Option[Organisaatio] = {
     virkailijaClient.httpClient
-      .apply(Task(Request(uri = virkailijaClient.virkailijaUriFromString("/organisaatio-service/rest/organisaatio/v2/hierarkia/hae/tyyppi?aktiiviset=true&lakkautetut=false&oid=" + oid))))(Http.parseJson[OrganisaatioHakuTulos])
+      .apply(Request(uri = virkailijaClient.virkailijaUriFromString("/organisaatio-service/rest/organisaatio/v2/hierarkia/hae/tyyppi?aktiiviset=true&lakkautetut=false&oid=" + oid)))(Http.parseJson[OrganisaatioHakuTulos])
       .organisaatiot.map(convertOrganisaatio)
       .headOption
   }

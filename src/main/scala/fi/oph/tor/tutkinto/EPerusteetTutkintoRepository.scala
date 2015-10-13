@@ -1,15 +1,25 @@
 package fi.oph.tor.tutkinto
 
-import org.http4s.client.blaze
-import org.http4s.client.blaze.BlazeClient
+import fi.oph.tor.http.Http
 
+class EPerusteetTutkintoRepository(ePerusteetRoot: String) extends TutkintoRepository {
+  private val http: Http = Http()
 
-class EPerusteetTutkintoRepository extends TutkintoRepository {
-  private val blazeHttpClient: BlazeClient = blaze.defaultClient
-
-  override def findTutkinnot(oppilaitosId: String, query: String) = {
-    throw new UnsupportedOperationException("TODO")
+  override def findTutkinnot(oppilaitosId: String, query: String): List[Tutkinto] = {
+    ePerusteetToTutkinnot(http(ePerusteetRoot + "/api/perusteet?nimi=" + query)(Http.parseJson[EPerusteet]))
   }
 
-  override def findById(id: String) = throw new UnsupportedOperationException("TODO")
+  override def findByEPerusteDiaarinumero(diaarinumero: String) = {
+    ePerusteetToTutkinnot(http(ePerusteetRoot + "/api/perusteet?diaarinumero=" + diaarinumero)(Http.parseJson[EPerusteet])).headOption
+  }
+
+  private def ePerusteetToTutkinnot(perusteet: EPerusteet) = {
+    perusteet.data.flatMap { peruste =>
+      peruste.koulutukset.map(koulutus => Tutkinto(koulutus.nimi("fi"), peruste.diaarinumero, koulutus.koulutuskoodiArvo))
+    }
+  }
 }
+
+case class EPerusteet(data: List[EPeruste])
+case class EPeruste(diaarinumero: String, koulutukset: List[EPerusteKoulutus])
+case class EPerusteKoulutus(nimi: Map[String, String], koulutuskoodiArvo: String)

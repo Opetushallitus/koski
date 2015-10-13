@@ -9,7 +9,7 @@ import scalaz.concurrent.Task
 
 class RemoteOppijaRepository(henkilöPalveluClient: VirkailijaHttpClient) extends OppijaRepository with EntityDecoderInstances {
   override def findOppijat(query: String): List[Oppija] = henkilöPalveluClient.httpClient
-    .apply(Task(Request(uri = henkilöPalveluClient.virkailijaUriFromString("/authentication-service/resources/henkilo?no=true&q=" + query))))(Http.parseJson[AuthenticationServiceUserQueryResult])
+    .apply(Request(uri = henkilöPalveluClient.virkailijaUriFromString("/authentication-service/resources/henkilo?no=true&q=" + query)))(Http.parseJson[AuthenticationServiceUserQueryResult])
     .results.map { result => Oppija(result.oidHenkilo, result.sukunimi, result.etunimet, result.hetu)}
 
   override def findById(id: String): Option[Oppija] = findOppijat(id).headOption

@@ -63,7 +63,7 @@ class OppijaServlet(oppijaRepository: OppijaRepository,
   private def tutkinnotForOppija(oppija: Oppija) = {
     for {
       opintoOikeus   <- opintoOikeusRepository.findBy(oppija)
-      tutkinto   <- tutkintoRepository.findById(opintoOikeus.ePerusteetDiaarinumero)
+      tutkinto   <- tutkintoRepository.findByEPerusteDiaarinumero(opintoOikeus.ePerusteetDiaarinumero)
       oppilaitos <- oppilaitosRepository.findById(opintoOikeus.oppilaitosOrganisaatio)
     } yield {
       Map(
