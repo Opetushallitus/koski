@@ -10,9 +10,12 @@ import scalaz.concurrent.Task
 class RemoteOppijaRepository(henkilöPalveluClient: VirkailijaHttpClient) extends OppijaRepository with EntityDecoderInstances {
   override def findOppijat(query: String): List[Oppija] = henkilöPalveluClient.httpClient
     .apply(Request(uri = henkilöPalveluClient.virkailijaUriFromString("/authentication-service/resources/henkilo?no=true&q=" + query)))(Http.parseJson[AuthenticationServiceUserQueryResult])
-    .results.map { result => Oppija(result.oidHenkilo, result.sukunimi, result.etunimet, result.hetu)}
+    .results.map(toOppija)
 
-  override def findById(id: String): Option[Oppija] = findOppijat(id).headOption
+  override def findById(id: String): Option[Oppija] = {
+    henkilöPalveluClient.httpClient(Request(uri = henkilöPalveluClient.virkailijaUriFromString("/authentication-service/resources/henkilo/" + id)))(Http.parseJsonOptional[AuthenticationServiceUser])
+      .map(toOppija)
+  }
 
   override def create(oppija: CreateOppija): OppijaCreationResult = {
     val task: Task[Request] = Request(
@@ -26,6 +29,8 @@ class RemoteOppijaRepository(henkilöPalveluClient: VirkailijaHttpClient) extend
       case (status, text) => throw new RuntimeException(status + ": " + text)
     }
   }
+
+  private def toOppija(user: AuthenticationServiceUser) = Oppija(user.oidHenkilo, user.sukunimi, user.etunimet, user.hetu)
 }
 
 case class AuthenticationServiceUserQueryResult(totalCount: Integer, results: List[AuthenticationServiceUser])
