@@ -6,7 +6,7 @@ import fi.oph.tor.tutkinto.TutkintoRepository
 import fi.oph.tor.oppija.OppijaRepository
 import fi.oph.tor.oppilaitos.OppilaitosRepository
 import fi.oph.tor.security.Authentication
-import fi.oph.tor.opintooikeus.OpintoOikeusRepository
+import fi.oph.tor.opintooikeus.{OpintoOikeusRepositoryWithFixtures, PostgresOpintoOikeusRepository, OpintoOikeusRepository}
 import fi.oph.tor.user.UserRepository
 import fi.vm.sade.security.ldap.DirectoryClient
 
@@ -27,26 +27,26 @@ trait TorProfile {
   lazy val oppijaRepository = OppijaRepository(config)
   lazy val tutkintoRepository = TutkintoRepository(config)
   lazy val oppilaitosRepository = new OppilaitosRepository
-  lazy val opintoOikeusRepository = OpintoOikeusRepository(config)
+  def opintoOikeusRepository: OpintoOikeusRepository
   lazy val userRepository = UserRepository(config)
   def resetMocks = {
-    oppijaRepository.resetMocks
-    opintoOikeusRepository.resetMocks
+    oppijaRepository.resetFixtures
+    opintoOikeusRepository.resetFixtures
   }
 }
 
 class Local extends TorProfile with GlobalExecutionContext {
   lazy val database = TorDatabase.init(DatabaseConfig.localDatabase)
+  lazy val opintoOikeusRepository = new OpintoOikeusRepositoryWithFixtures(database.db)
 }
 
 class IntegrationTest extends TorProfile with Futures with GlobalExecutionContext {
-  lazy val database = {
-    val database: TorDatabase = TorDatabase.init(DatabaseConfig.localTestDatabase)
-    await(database.db.run(DatabaseTestFixture.clear))
-    database
-  }
+  lazy val database = TorDatabase.init(DatabaseConfig.localTestDatabase)
+  lazy val opintoOikeusRepository = new OpintoOikeusRepositoryWithFixtures(database.db)
 }
 
 class Cloud extends TorProfile with GlobalExecutionContext {
   lazy val database = TorDatabase.remoteDatabase(DatabaseConfig.cloudDatabase)
+  override def resetMocks = throw new UnsupportedOperationException("Mock reset not supported")
+  lazy val opintoOikeusRepository = new PostgresOpintoOikeusRepository(database.db)
 }

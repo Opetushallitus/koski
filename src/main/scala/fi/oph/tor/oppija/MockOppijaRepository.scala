@@ -47,7 +47,7 @@ class MockOppijaRepository extends OppijaRepository {
     "1.2.246.562.24.0000000000" + idCounter
   }
 
-  override def resetMocks {
+  override def resetFixtures {
     oppijat = defaultOppijat
     idCounter = defaultOppijat.length
   }

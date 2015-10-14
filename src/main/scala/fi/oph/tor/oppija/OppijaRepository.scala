@@ -19,7 +19,7 @@ trait OppijaRepository {
   def findOppijat(query: String): List[Oppija]
   def findById(id: String): Option[Oppija]
 
-  def resetMocks {}
+  def resetFixtures {}
 
   def findOrCreate(oppija: CreateOppija): OppijaCreationResult = {
     create(oppija) match {

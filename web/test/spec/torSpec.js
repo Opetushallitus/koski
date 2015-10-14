@@ -327,14 +327,6 @@ describe('TOR', function() {
       })
     })
 
-    describe('Suoritusrajapinta', function() {
-      before(openPage('/tor/api/suoritus', authenticationErrorIsShown))
-
-      it('vaatii autentikaation', function () {
-        expect(authenticationErrorIsShown()).to.equal(true)
-      })
-    })
-
     describe('Kun klikataan logout-linkkiä', function() {
       before(authentication.login(), page.openPage, page.logout)
 
