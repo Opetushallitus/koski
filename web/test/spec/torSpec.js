@@ -285,6 +285,14 @@ describe('TOR', function() {
           expect(addOppija.isEnabled()).to.equal(false)
         })
       })
+      describe('Kun opinto-oikeutta yritetään lisätä oppilaitokseen, johon käyttäjällä ei ole pääsyä', function() {
+        it('palautetaan HTTP 403 virhe', function(done) {
+          addOppija.postInvalidOppija().catch(function(error) {
+            expect(error.status).to.equal(403)
+            done()
+          })
+        })
+      })
     })
   })
 

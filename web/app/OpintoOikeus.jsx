@@ -51,5 +51,5 @@ export const OpintoOikeus = ({opintoOikeus}) => <div>
 export const opintoOikeusP = Bacon.combineTemplate({
   oppilaitos: oppilaitosP,
   tutkinto: tutkintoP,
-  valid: !!(oppilaitosP.and(tutkintoP))
+  valid: oppilaitosP.and(tutkintoP).map(v => !!(v))
 })

@@ -44,7 +44,7 @@ function AddOppijaPage() {
       }
     },
     oppilaitokset: function() {
-      return textsOf(form().find(".oppilaitos .results li"))
+      return textsOf(form().find('.oppilaitos .results li'))
     },
     selectTutkinto: function(name) {
       return function() {
@@ -60,6 +60,36 @@ function AddOppijaPage() {
       return function() {
         return form().find('.error-messages .' + field).is(':visible')
       }
+    },
+    postInvalidOppija: function(organisaationId) {
+      return Q($.ajax({
+        type: 'POST',
+        url: 'http://localhost:7021/tor/api/oppija',
+        data: JSON.stringify(
+          {
+            'etunimet':'Testi',
+            'sukunimi':'Toivola',
+            'kutsumanimi':'Testi',
+            'hetu':'010101-123N',
+            'opintoOikeus':
+            {
+              'oppilaitos':
+              {
+                'organisaatioId':'eipaasya',
+                'nimi':'Helsingin Ammattioppilaitos'
+              },
+              'tutkinto':
+              {
+                'nimi':'Autoalan tyonjohdon erikoisammattitutkinto',
+                'ePerusteDiaarinumero':'1013059',
+                'tutkintoKoodi':'357305'
+              }
+            }
+          }
+        ),
+        contentType : 'application/json',
+        dataType: 'json'
+      }))
     }
   }
   return api
