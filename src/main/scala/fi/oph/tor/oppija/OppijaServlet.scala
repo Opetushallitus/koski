@@ -37,6 +37,9 @@ class OppijaServlet(oppijaRepository: OppijaRepository,
   post("/") {
     contentType = "text/plain;charset=utf-8"
     val oppija: CreateOppijaAndOpintoOikeus = Json.read[CreateOppijaAndOpintoOikeus](request.body)
+    if(!userContext.hasReadAccess(oppija.opintoOikeus.oppilaitos.organisaatioId)) {
+      halt(403, "Forbidden")
+    }
     val result: OppijaCreationResult = oppijaRepository.findOrCreate(oppija)
     if (result.ok) {
       val oid = result.text
