@@ -57,6 +57,16 @@
       <version>3.0.1</version>
     </dependency>
     <dependency>
+      <groupId>com.github.tminglei</groupId>
+      <artifactId>slick-pg_2.11</artifactId>
+      <version>0.10.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.tminglei</groupId>
+      <artifactId>slick-pg_json4s_2.11</artifactId>
+      <version>0.10.0</version>
+    </dependency>
+    <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
       <version>9.4-1201-jdbc41</version>
@@ -201,6 +211,10 @@
     </plugins>
   </build>
   <repositories>
+    <repository>
+      <id>central</id>
+      <url>http://repo1.maven.org/maven2</url>
+    </repository>
     <repository>
       <id>jitpack.io</id>
       <url>https://jitpack.io</url>

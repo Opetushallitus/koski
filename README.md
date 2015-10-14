@@ -27,7 +27,7 @@ TOR-palvelun tietokantaskeema löytyy täältä: https://github.com/Opetushallit
 - PostgreSQL-tietokanta
 - Scala 2.11.4 ohjelmointikieli ja kääntäjä
 - Scalatra web framework
-- Slick (http://slick.typesafe.com/doc/3.0.1/index.html) relaatiokantakirjaso ja slick-codegen koodigeneraattori
+- Slick (http://slick.typesafe.com/doc/3.0.1/index.html) relaatiokantakirjasto
 - Flyway migraatiotyökalu kannan skeeman rakentamiseen ja päivittämiseen kehityksessä ja tuotannossa
 - Maven build-työkalu kehityskäyttöön ja asennettavan paketin rakentamiseen
 - Mvn-depsujen lataus Jitpackilla, jolloin voidaan viitata suoraan Github-repoihin, eikä tarvitse itse buildata jar-artifaktoja
@@ -83,18 +83,6 @@ Sitten vaikka
 Skeema luodaan flywayllä migraatioskripteillä, jotka ovat hakemistossa `src/main/resources/db/migration`.
 
 Tor-sovellus ajaa migraatiot automaattisesti käynnistyessään.
-
-Kannan rakennetta muuttavien migraatioiden yhteydessä tulee ajaa myös koodigeneraattori,
-joka generoi tauluja vastaavat luokat `src/main/scala/fi/oph/tor/db/Tables.scala` -tiedostoon.
-Koodigeneraattorin `fi.oph.tor.db.CodeGenerator` voit ajaa IDE:ssä tai komentoriviltä
-
-    make codegen
-
-Koodigeneraattori ajaa migraatiot paikalliseen kantaan, jonka rakenteesta se sitten generoi koodin.
-
-Koodigeneraattorin luomia luokkia käytetään vain tietokantaoperaatioihin, eikä siis käytetä järjestelmän sisäisenä tietomallina,
-saati sitten paljateta ulospäin rajapinnoissa. Koodigenerointi on käytössä siksi, että kannan skeema ja sovelluskoodi varmasti
-pysyvät synkassa. Jos esim. tauluun lisätään uusi pakollinen kenttä, seuraa siitä käännösvirhe, kunnes softa käsittelee tämän kentän.
 
 ## Buildi
 

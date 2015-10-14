@@ -69,6 +69,9 @@ object TorDatabase extends Logging {
       flyway.setDataSource(config.url, config.user, config.password)
       flyway.setSchemas("tor")
       flyway.setValidateOnMigrate(false)
+      if (System.getProperty("tor.db.clean", "false").equals("true")) {
+        flyway.clean
+      }
       flyway.migrate
     } catch {
       case e: Exception => logger.warn("Migration failure", e)

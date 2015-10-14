@@ -1,11 +1,11 @@
 package fi.oph.tor.json
 
-import java.time.{Instant, ZoneId, LocalDateTime, LocalDate}
+import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
 
 import fi.vm.sade.utils.json4s.GenericJsonFormats
-import org.json4s.CustomSerializer
 import org.json4s.JsonAST.{JInt, JNull, JString}
 import org.json4s.jackson.Serialization
+import org.json4s.{CustomSerializer, Extraction, JValue}
 
 object Json {
   implicit val jsonFormats = GenericJsonFormats.genericFormats + new LocalDateSerializer
@@ -20,6 +20,14 @@ object Json {
 
   def read[A](json: String)(implicit mf : scala.reflect.Manifest[A]) : A = {
     Serialization.read(json)
+  }
+
+  def toJValue(x: AnyRef): JValue = {
+    Extraction.decompose(x)
+  }
+
+  def fromJValue[A](x: JValue)(implicit mf : scala.reflect.Manifest[A]): A = {
+    x.extract[A]
   }
 }
 
