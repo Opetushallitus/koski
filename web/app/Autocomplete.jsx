@@ -27,7 +27,8 @@ export default React.createClass({
   handleInput(e) {
     let query = e.target.value
     this.props.resultBus.push(undefined)
-    this.props.fetchItems(query).mapError([]).onValue((items) => this.setState({ items: items, query: query, selectionIndex: 0 }))
+    this.state.inputBus.push(query)
+    this.setState({query: query})
   },
 
   handleSelect(selected) {
@@ -42,8 +43,15 @@ export default React.createClass({
     }
   },
 
+  componentDidMount() {
+    this.state.inputBus
+      .throttle(200)
+      .flatMapLatest(query => this.props.fetchItems(query).mapError([]))
+      .onValue((items) => this.setState({ items: items, selectionIndex: 0 }))
+  },
+
   getInitialState() {
-    return {query: undefined, items: [], selectionIndex: 0}
+    return {query: undefined, items: [], selectionIndex: 0, inputBus: Bacon.Bus()}
   },
 
   keyHandlers: {

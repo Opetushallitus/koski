@@ -255,6 +255,7 @@ describe('TOR', function() {
           it('1', function() {
             return prepareForNewOppija('hiiri', 'Tunkkila')()
               .then(addOppija.enterOppilaitos('Helsinki'))
+              .then(wait.forMilliseconds(500))
               .then(function() {
                 expect(addOppija.oppilaitokset()).to.deep.equal(["Omnia Helsinki"])
               })
@@ -262,6 +263,7 @@ describe('TOR', function() {
           it('2', function() {
             return prepareForNewOppija('kalle', 'Tunkkila')()
               .then(addOppija.enterOppilaitos('Helsinki'))
+              .then(wait.forMilliseconds(500))
               .then(function() {
                 expect(addOppija.oppilaitokset()).to.deep.equal(["Metropolia Helsinki", "Omnia Helsinki"])
               })
