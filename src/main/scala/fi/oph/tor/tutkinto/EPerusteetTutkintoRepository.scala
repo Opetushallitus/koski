@@ -6,7 +6,7 @@ class EPerusteetTutkintoRepository(ePerusteetRoot: String) extends TutkintoRepos
   private val http: Http = Http()
 
   override def findTutkinnot(oppilaitosId: String, query: String): List[Tutkinto] = {
-    ePerusteetToTutkinnot(http(ePerusteetRoot + "/api/perusteet?nimi=" + query)(Http.parseJson[EPerusteet]))
+    ePerusteetToTutkinnot(http(ePerusteetRoot + "/api/perusteet?sivukoko=100&nimi=" + query)(Http.parseJson[EPerusteet]))
   }
 
   override def findByEPerusteDiaarinumero(diaarinumero: String) = {
