@@ -14,12 +14,12 @@ import Http from './http'
 const stateP = Bacon.combineTemplate({
   user: userP,
   oppijaHaku: {
-    oppijat: oppijatP.doLog("oppijat"),
+    oppijat: oppijatP,
     searchInProgress: searchInProgressP
   },
   oppija: {
     loading: loadingOppijaP,
-    valittuOppija: oppijaP.doLog("oppija"),
+    valittuOppija: oppijaP,
     uusiOppija: uusiOppijaP
   },
   opintoOikeus: opintoOikeusP
