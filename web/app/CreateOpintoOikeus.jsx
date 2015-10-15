@@ -9,8 +9,9 @@ const Oppilaitos = React.createClass({
     return <label className='oppilaitos'>Oppilaitos
         <Autocomplete
           resultBus={this.props.oppilaitosBus}
-          fetchItems={value =>
-            this.state.oppilaitokset.map(oppilaitokset => oppilaitokset.filter(oppilaitos => oppilaitos.nimi.toLowerCase().indexOf(value.toLowerCase()) >= 0))
+          fetchItems={value => (value.length >= 1)
+            ? this.state.oppilaitokset.map(oppilaitokset => oppilaitokset.filter(oppilaitos => oppilaitos.nimi.toLowerCase().indexOf(value.toLowerCase()) >= 0))
+            : Bacon.once([])
           }
           selected={this.state.selected}
         />
