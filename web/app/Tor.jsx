@@ -7,7 +7,6 @@ import handleError from './error-handler'
 import {Login, userP, logout} from './Login.jsx'
 import {OppijaHaku, oppijatP, searchInProgressP} from './OppijaHaku.jsx'
 import {Oppija, oppijaP, uusiOppijaP, loadingOppijaP} from './Oppija.jsx'
-import {opintoOikeusP} from './OpintoOikeus.jsx'
 import {TopBar} from './TopBar.jsx'
 import Http from './http'
 
@@ -21,8 +20,7 @@ const stateP = Bacon.combineTemplate({
     loading: loadingOppijaP,
     valittuOppija: oppijaP,
     uusiOppija: uusiOppijaP
-  },
-  opintoOikeus: opintoOikeusP
+  }
 })
 
 const errorP = stateP.changes().errors()
@@ -30,7 +28,7 @@ const errorP = stateP.changes().errors()
   .merge(Bacon.fromEvent(document.body, 'click').map(false))
   .toProperty(false)
 
-const domP = stateP.combine(errorP, ({user, oppijaHaku, oppija, opintoOikeus, searchInProgress}, isError) =>
+const domP = stateP.combine(errorP, ({user, oppijaHaku, oppija, searchInProgress}, isError) =>
   <div>
     <Error isError={isError}/>
     <TopBar user={user} />
@@ -38,7 +36,7 @@ const domP = stateP.combine(errorP, ({user, oppijaHaku, oppija, opintoOikeus, se
       user
         ? <div className='content-area'>
             <OppijaHaku oppijat={oppijaHaku.oppijat} valittu={oppija.valittuOppija} searching={oppijaHaku.searchInProgress}/>
-            <Oppija oppija={oppija} opintoOikeus={opintoOikeus} />
+            <Oppija oppija={oppija} />
           </div>
 
         : <Login />

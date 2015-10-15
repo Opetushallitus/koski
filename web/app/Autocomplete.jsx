@@ -5,7 +5,7 @@ import Bacon from 'baconjs'
 export default React.createClass({
 
   render() {
-    let {selected, disabled} = this.props
+    let {disabled, selected} = this.props
     let {items, query, selectionIndex} = this.state
 
     let itemElems = items ? items.map((item, i) => {
@@ -28,7 +28,7 @@ export default React.createClass({
     let query = e.target.value
     this.props.resultBus.push(undefined)
     this.state.inputBus.push(query)
-    this.setState({query: query})
+    this.setState({query: query, selected:undefined})
   },
 
   handleSelect(selected) {
@@ -51,7 +51,6 @@ export default React.createClass({
   },
 
   getInitialState() {
-    console.log("getInitialState")
     return {query: undefined, items: [], selectionIndex: 0, inputBus: Bacon.Bus()}
   },
 

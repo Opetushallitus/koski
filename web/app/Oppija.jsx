@@ -4,7 +4,7 @@ import Bacon from 'baconjs'
 import Http from './http'
 import {navigateToOppija, routeP, showError} from './router'
 import {isValidHetu} from './hetu'
-import {OpintoOikeus} from './OpintoOikeus.jsx'
+import {OpintoOikeus} from './CreateOpintoOikeus.jsx'
 
 export const oppijaP = routeP.flatMap(route => {
   var match = route.match(new RegExp('oppija/(.*)'))
@@ -18,14 +18,14 @@ export const uusiOppijaP = routeP.map(route => {
 
 export const loadingOppijaP = routeP.awaiting(oppijaP.mapError())
 
-export const Oppija = ({oppija, opintoOikeus}) =>
+export const Oppija = ({oppija}) =>
   oppija.loading
     ? <Loading/>
     : (oppija.valittuOppija
       ? <ExistingOppija oppija={oppija.valittuOppija}/>
       : (
       oppija.uusiOppija
-        ? <CreateOppija opintoOikeus={opintoOikeus}/>
+        ? <CreateOppija/>
         : <div></div>
       ))
 
@@ -58,7 +58,7 @@ const Opintooikeus = React.createClass({
 
 const CreateOppija = React.createClass({
   render() {
-    const opintoOikeus = this.props.opintoOikeus
+    const opintoOikeus = this.state.opintoOikeus
     const {etunimet, sukunimi, kutsumanimi, hetu, inProgress} = this.state
     const validKutsumanimi = this.isKutsumanimiOneOfEtunimet(kutsumanimi, etunimet)
     const submitDisabled = !etunimet || !sukunimi || !kutsumanimi || !isValidHetu(hetu) || !validKutsumanimi || inProgress || !opintoOikeus.valid
@@ -91,7 +91,7 @@ const CreateOppija = React.createClass({
           <input ref='hetu'></input>
         </label>
         <hr/>
-        <OpintoOikeus opintoOikeus={this.props.opintoOikeus}/>
+        <OpintoOikeus opintoOikeusBus={this.state.opintoOikeusBus}/>
         <button className='button blue' disabled={submitDisabled} onClick={this.submit}>{buttonText}</button>
         <ul className='error-messages'>
           {errors}
@@ -101,25 +101,25 @@ const CreateOppija = React.createClass({
   },
 
   getInitialState() {
-    return {etunimet: '', sukunimi: '', kutsumanimi: '', hetu: ''}
+    return {etunimet: '', sukunimi: '', kutsumanimi: '', hetu: '', opintoOikeus: {valid: false}, opintoOikeusBus: Bacon.Bus()}
   },
 
-  formState() {
+  oppijaFromDom() {
     return {
       etunimet: this.refs.etunimet.value,
       sukunimi: this.refs.sukunimi.value,
       kutsumanimi: this.refs.kutsumanimi.value,
       hetu: this.refs.hetu.value.toUpperCase(),
-      opintoOikeus: this.props.opintoOikeus
     }
   },
 
   componentDidMount() {
+    this.state.opintoOikeusBus.onValue(o => {this.setState({opintoOikeus: o})})
     this.refs.etunimet.focus()
   },
 
   onInput() {
-    this.setState(this.formState())
+    this.setState(this.oppijaFromDom())
   },
 
   submit(e) {
@@ -134,7 +134,8 @@ const CreateOppija = React.createClass({
   },
 
   toCreateOppija() {
-    const {etunimet, sukunimi, kutsumanimi, hetu, opintoOikeus: {tutkinto: {ePerusteDiaarinumero: peruste},oppilaitos: {organisaatioId: organisaatio}}} = this.formState()
+    const {etunimet, sukunimi, kutsumanimi, hetu} = this.oppijaFromDom()
+    const {tutkinto: {ePerusteDiaarinumero: peruste},oppilaitos: {organisaatioId: organisaatio}} = this.state.opintoOikeus
     return {
       etunimet: etunimet,
       sukunimi: sukunimi,
