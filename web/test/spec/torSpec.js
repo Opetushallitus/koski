@@ -135,12 +135,27 @@ describe('TOR', function() {
     }
 
     describe("Olemassa olevalle henkilölle", function() {
-      before(prepareForNewOppija('kalle', 'Tunkkila'))
-      before(addOppija.enterValidData({ etunimet: 'Tero Terde', kutsumanimi: 'Terde', sukunimi: 'Tunkkila', hetu: '091095-9833', oppilaitos: 'Helsingin', tutkinto: 'auto'}))
-      before(addOppija.submit)
-      before(wait.until(function() { return page.getSelectedOppija() === 'tunkkila, tero 091095-9833'}))
-      it('Onnistuu, näyttää henkilöpalvelussa olevat nimitiedot', function() {
 
+      describe("Kun lisätään uusi opinto-oikeus", function() {
+        before(prepareForNewOppija('kalle', 'Tunkkila'))
+        before(addOppija.enterValidData({ etunimet: 'Tero Terde', kutsumanimi: 'Terde', sukunimi: 'Tunkkila', hetu: '091095-9833', oppilaitos: 'Helsingin', tutkinto: 'auto'}))
+        before(addOppija.submit)
+        before(wait.until(function() { return page.getSelectedOppija() === 'tunkkila, tero 091095-9833'}))
+        it('Onnistuu, näyttää henkilöpalvelussa olevat nimitiedot', function() {
+
+        })
+      })
+
+      describe("Kun lisätään opinto-oikeus, joka henkilöllä on jo olemassa", function() {
+        before(prepareForNewOppija('kalle', 'asdf'))
+        before(addOppija.enterValidData({ etunimet: 'Eero Adolf', kutsumanimi: 'Eero', sukunimi: 'Esimerkki', hetu: '010101-123N', oppilaitos: 'Helsingin', tutkinto: 'auto'}))
+        before(addOppija.submit)
+        before(wait.until(function() { return page.getSelectedOppija() === eero}))
+
+        it("Näytetään olemassa oleva tutkinto", function() {
+          expect(opinnot.getTutkinto()).to.equal('Autoalan työnjohdon erikoisammattitutkinto')
+          expect(opinnot.getOppilaitos()).to.equal('Helsingin Ammattioppilaitos')
+        })
       })
     })
 
