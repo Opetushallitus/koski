@@ -52,15 +52,9 @@ class OppijaServlet(oppijaRepository: OppijaRepository,
     }
   }
 
-  private def userView(oid: String): Either[String, Map[String, io.Serializable]] = oppijaRepository.findById(oid) match {
+  private def userView(oid: String) = oppijaRepository.findById(oid) match {
     case Some(oppija) => Right(
-      Map(
-        "oid" -> oppija.oid,
-        "sukunimi" -> oppija.sukunimi,
-        "etunimet" -> oppija.etunimet,
-        "hetu" -> oppija.hetu,
-        "opintoOikeudet" -> opintoOikeudetForOppija(oppija)
-      )
+      TorOppijaView(oppija.oid, oppija.sukunimi, oppija.etunimet, oppija.hetu, opintoOikeudetForOppija(oppija))
     )
     case None => Left(s"Oppija with oid: $oid not found")
   }
@@ -71,15 +65,16 @@ class OppijaServlet(oppijaRepository: OppijaRepository,
       tutkinto   <- tutkintoRepository.findByEPerusteDiaarinumero(opintoOikeus.ePerusteetDiaarinumero)
       oppilaitos <- oppilaitosRepository.findById(opintoOikeus.oppilaitosOrganisaatio)
     } yield {
-      Map(
-        "nimi" -> tutkinto.nimi,
-        "oppilaitos" -> Map(
-          "nimi" -> oppilaitos.nimi
-        )
-      )
+      TorOpintoOikeusView(tutkinto.nimi, TorOppilaitosView(oppilaitos.nimi))
     }
   }
 }
+
+case class TorOppijaView(oid: String, sukunimi: String, etunimet: String, hetu: String, opintoOikeudet: List[TorOpintoOikeusView])
+
+case class TorOpintoOikeusView(nimi: String, oppilaitos: TorOppilaitosView)
+
+case class TorOppilaitosView(nimi: String)
 
 case class CreateOppijaAndOpintoOikeus(
                   etunimet: String, kutsumanimi: String, sukunimi: String, hetu: String,
