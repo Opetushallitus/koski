@@ -28,7 +28,7 @@ export default React.createClass({
     let query = e.target.value
     this.props.resultBus.push(undefined)
     this.state.inputBus.push(query)
-    this.setState({query: query, selected:undefined})
+    this.setState({query: query})
   },
 
   handleSelect(selected) {
