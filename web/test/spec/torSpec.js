@@ -3,6 +3,8 @@ describe('TOR', function() {
   var login = LoginPage()
   var authentication = Authentication()
   var opinnot = OpinnotPage()
+  var addOppija = AddOppijaPage()
+
   var eero = 'esimerkki, eero 010101-123N'
   var markkanen = 'markkanen, eero '
   var eerola = 'eerola, jouni '
@@ -132,7 +134,6 @@ describe('TOR', function() {
       }
     }
 
-    var addOppija = AddOppijaPage()
     describe("Olemassa olevalle henkilölle", function() {
       before(prepareForNewOppija('kalle', 'Tunkkila'))
       before(addOppija.enterValidData({ etunimet: 'Tero Terde', kutsumanimi: 'Terde', sukunimi: 'Tunkkila', hetu: '091095-9833', oppilaitos: 'Helsingin', tutkinto: 'auto'}))
@@ -285,14 +286,6 @@ describe('TOR', function() {
           expect(addOppija.isEnabled()).to.equal(false)
         })
       })
-      describe('Kun opinto-oikeutta yritetään lisätä oppilaitokseen, johon käyttäjällä ei ole pääsyä', function() {
-        it('palautetaan HTTP 403 virhe', function(done) {
-          addOppija.postInvalidOppija().catch(function(error) {
-            expect(error.status).to.equal(403)
-            done()
-          })
-        })
-      })
     })
   })
 
@@ -332,6 +325,18 @@ describe('TOR', function() {
 
       it('vaatii autentikaation', function () {
         expect(authenticationErrorIsShown()).to.equal(true)
+      })
+    })
+
+    describe("Tietojen validointi serverillä", function() {
+      describe('Kun opinto-oikeutta yritetään lisätä oppilaitokseen, johon käyttäjällä ei ole pääsyä', function() {
+        before(resetMocks, authentication.login("kalle"))
+        it('palautetaan HTTP 403 virhe', function(done) {
+          addOppija.postInvalidOppija().catch(function(error) {
+            expect(error.status).to.equal(403)
+            done()
+          })
+        })
       })
     })
 
