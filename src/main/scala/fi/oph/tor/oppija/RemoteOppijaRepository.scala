@@ -19,7 +19,7 @@ class RemoteOppijaRepository(henkilöPalveluClient: VirkailijaHttpClient) extend
       .map(toOppija)
   }
 
-  override def create(oppija: CreateOppija): CreationResult = {
+  override def create(oppija: CreateOppija) = {
     val task: Task[Request] = Request(
       uri = henkilöPalveluClient.virkailijaUriFromString("/authentication-service/resources/henkilo"),
       method = Method.POST

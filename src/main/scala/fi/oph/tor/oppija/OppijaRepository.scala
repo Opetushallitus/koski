@@ -14,14 +14,14 @@ object OppijaRepository {
 }
 
 trait OppijaRepository {
-  def create(oppija: CreateOppija): CreationResult
+  def create(oppija: CreateOppija): CreationResult[String]
 
   def findOppijat(query: String): List[Oppija]
   def findById(id: String): Option[Oppija]
 
   def resetFixtures {}
 
-  def findOrCreate(oppija: CreateOppija): CreationResult = {
+  def findOrCreate(oppija: CreateOppija): CreationResult[String] = {
     create(oppija) match {
       case Failed(409, _) =>
         findOppijat(oppija.hetu) match {

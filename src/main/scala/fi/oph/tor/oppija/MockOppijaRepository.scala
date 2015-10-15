@@ -28,7 +28,7 @@ class MockOppijaRepository extends OppijaRepository {
     oppijat.filter(searchString(_).contains(query))
   }
 
-  override def create(oppija: CreateOppija): CreationResult = {
+  override def create(oppija: CreateOppija): CreationResult[String] = {
     if (oppijat.find(o => o.hetu == oppija.hetu).isDefined) {
       Failed(409, "conflict")
     } else {
