@@ -25,7 +25,7 @@ const stateP = Bacon.combineTemplate({
   }
 })
 
-// Renderered DOM
+// Renderered Virtual DOM
 const domP = stateP.mapError({}).combine(errorP(stateP), ({user, oppijaHaku, oppija, searchInProgress}, error) =>
     <div>
       <Error isError={isRetryable(error)}/>
@@ -44,7 +44,8 @@ const domP = stateP.mapError({}).combine(errorP(stateP), ({user, oppijaHaku, opp
     </div>
 )
 
+// Render to DOM
 domP.onValue((component) => ReactDOM.render(component, document.getElementById('content')))
 
-// Log errors, logout if necessary
+// Handle errors
 domP.onError(handleError)
