@@ -1,18 +1,25 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { logout } from './Login.jsx'
+import { routeP } from './router'
 import Bacon from 'baconjs'
 
 const logError = (error) => {
   console.log('ERROR', error)
 }
 
-export const errorP = (stateP) => stateP.changes().errors()
-  .mapError(error => ({ httpStatus: error.httpStatus }))
-  .flatMap(e => Bacon.once(e).concat(isRetryable(e)
-      ? Bacon.fromEvent(document.body, 'click').map({}) // Retryable errors can be dismissed
-      : Bacon.never()
-  )).toProperty({})
+export const errorP = (stateP) => {
+  const stateErrorP = stateP.changes().errors()
+    .mapError(error => ({ httpStatus: error.httpStatus }))
+    .flatMap(e => Bacon.once(e).concat(isRetryable(e)
+        ? Bacon.fromEvent(document.body, 'click').map({}) // Retryable errors can be dismissed
+        : Bacon.never()
+    )).toProperty({})
+
+  return Bacon.combineWith(stateErrorP, routeP, (error, route) =>
+      error.httpStatus ? error : route
+  )
+}
 
 export const handleError = (error) => {
   if (requiresLogin(error)) {

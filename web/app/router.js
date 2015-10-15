@@ -9,7 +9,7 @@ const navigate = function (path) {
 }
 
 export const routeP = b.toProperty(document.location.pathname)
-  .flatMap(route => {
+  .map(route => {
     const match = route.match(new RegExp('/tor/oppija/(.*)'))
     const oppijaId = match ? match[1] : undefined
     if (oppijaId) {
@@ -19,9 +19,9 @@ export const routeP = b.toProperty(document.location.pathname)
     } else if (route === '/tor/') {
       return {}
     } else {
-      return new Bacon.Error({ httpStatus: 404, text: 'route not found: ' + route })
+      return { httpStatus: 404, text: 'route not found: ' + route }
     }
-  }).toProperty()
+  })
 
 export const navigateToOppija = oppija => navigate(`/tor/oppija/${oppija.oid}`)
 export const navigateToUusiOppija = () => navigate('/tor/uusioppija')

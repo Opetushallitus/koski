@@ -35,7 +35,7 @@ const ExistingOppija = React.createClass({
         <h2>{oppija.sukunimi}, {oppija.etunimet} <span className='hetu'>{oppija.hetu}</span></h2>
         <hr></hr>
         { oppija.opintoOikeudet.map( opintoOikeus =>
-          <Opintooikeus opintooikeus={ opintoOikeus } />
+          <Opintooikeus key= { opintoOikeus.nimi } opintooikeus={ opintoOikeus } />
         ) }
       </div>
     )

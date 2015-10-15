@@ -38,9 +38,6 @@ function TorPage() {
         triggerEvent(S(S('.oppija-haku li a').toArray().filter(function(a) { return $(a).text().indexOf(oppija) > -1 })[0]), 'click')
         return api.waitUntilOppijaSelected(oppija)
       }
-    },
-    is404: function() {
-      return S(".404").is(":visible")
     }
   }
 
@@ -81,6 +78,9 @@ function TorPage() {
     },
     isErrorShown: function() {
       return S("#error.error").is(":visible")
+    },
+    is404: function() {
+      return S(".404").is(":visible")
     }
   }
 
