@@ -3,7 +3,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Bacon from 'baconjs'
 import style from './style/main.less'
-import handleError from './error-handler'
+import {Error, NotFound, handleError, isRetryable, errorP} from './Error.jsx'
 import {Login, userP, logout} from './Login.jsx'
 import {OppijaHaku, oppijatP, searchInProgressP} from './OppijaHaku.jsx'
 import {Oppija, oppijaP, uusiOppijaP, loadingOppijaP} from './Oppija.jsx'
@@ -11,6 +11,7 @@ import {routeP} from './router.js'
 import {TopBar} from './TopBar.jsx'
 import Http from './http'
 
+// Application state to be rendered
 const stateP = Bacon.combineTemplate({
   user: userP,
   oppijaHaku: {
@@ -24,20 +25,10 @@ const stateP = Bacon.combineTemplate({
   }
 })
 
-const httpErrorP = stateP.changes().errors()
-  .mapError(e => ({ httpStatus: e.httpStatus, isRetryable: e.httpStatus >= 500}))
-  .flatMap(e => Bacon.once(e).concat(e.isRetryable
-      ? Bacon.fromEvent(document.body, 'click').map({})
-      : Bacon.never()
-  )).toProperty({})
-
-const errorP =  Bacon.combineWith(httpErrorP, routeP, (httpError, route) =>
-  httpError.httpStatus ? httpError : route
-)
-
-const domP = stateP.combine(errorP, ({user, oppijaHaku, oppija, searchInProgress}, error) =>
+// Renderered DOM
+const domP = stateP.combine(errorP(stateP), ({user, oppijaHaku, oppija, searchInProgress}, error) =>
     <div>
-      <Error isError={error.isRetryable}/>
+      <Error isError={isRetryable(error)}/>
       <TopBar user={user}/>
       {
         error.httpStatus == 404
@@ -53,21 +44,7 @@ const domP = stateP.combine(errorP, ({user, oppijaHaku, oppija, searchInProgress
     </div>
 )
 
-const Error = ({isError}) => {
-  return isError ? <div id="error" className="error">Järjestelmässä tapahtui odottamaton virhe.<a>&#10005;</a></div> : <div id="error"></div>
-}
-
-const NotFound = () => <div className="404">404 - Etsimääsi sivua ei löytynyt</div>
-
 domP.onValue((component) => ReactDOM.render(component, document.getElementById('content')))
-domP.onError(function(e) {
-  if (requiresLogin(e)) {
-    logout()
-  } else {
-    handleError(e)
-  }
-})
 
-function requiresLogin(e) {
-  return e.httpStatus != 404 && e.httpStatus >= 400 && e.httpStatus < 500
-}
+// Log errors, logout if necessary
+domP.onError(handleError)

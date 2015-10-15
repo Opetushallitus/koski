@@ -6,7 +6,7 @@ import {navigateToOppija, routeP, showError} from './router'
 import {isValidHetu} from './hetu'
 import {OpintoOikeus} from './CreateOpintoOikeus.jsx'
 
-export const oppijaP = routeP.map(".oppijaId").flatMap(oppijaId => {
+export const oppijaP = routeP.map('.oppijaId').flatMap(oppijaId => {
   return oppijaId ? Bacon.once(undefined).concat(Http.get(`/tor/api/oppija/${oppijaId}`)) : Bacon.once(undefined)
 }).toProperty()
 
