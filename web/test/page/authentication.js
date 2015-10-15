@@ -3,13 +3,7 @@ function Authentication() {
     login: function(username) {
       if (!username) username = 'kalle'
       return function() {
-        return Q($.ajax({
-          type: 'POST',
-          url: '/tor/user/login',
-          data: JSON.stringify({username: username, password: 'asdf'}),
-          contentType : 'application/json',
-          dataType: 'json'
-        }))
+        return postJson('/tor/user/login', {username: username, password: 'asdf'})
       }
     },
     logout: function() {

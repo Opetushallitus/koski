@@ -57,6 +57,16 @@ function getJson(url) {
   return Q($.ajax({url: url, dataType: "json" }))
 }
 
+function postJson(url, data) {
+  return Q($.ajax({
+    type: 'POST',
+    url: url,
+    data: JSON.stringify(data),
+    contentType : 'application/json',
+    dataType: 'json'
+  }))
+}
+
 function testFrame() {
   return $("#testframe").get(0).contentWindow
 }

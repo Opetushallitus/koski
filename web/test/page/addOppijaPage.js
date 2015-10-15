@@ -61,26 +61,21 @@ function AddOppijaPage() {
         return form().find('.error-messages .' + field).is(':visible')
       }
     },
-    postInvalidOppija: function(organisaationId) {
-      return Q($.ajax({
-        type: 'POST',
-        url: 'http://localhost:7021/tor/api/oppija',
-        data: JSON.stringify(
+    postInvalidOppija: function() {
+      return postJson(
+        'http://localhost:7021/tor/api/oppija',
+        {
+          'etunimet':'Testi',
+          'sukunimi':'Toivola',
+          'kutsumanimi':'Testi',
+          'hetu':'010101-123N',
+          'opintoOikeus':
           {
-            'etunimet':'Testi',
-            'sukunimi':'Toivola',
-            'kutsumanimi':'Testi',
-            'hetu':'010101-123N',
-            'opintoOikeus':
-            {
-              'organisaatioId':'eipaasya',
-              'ePerusteDiaarinumero':'1013059'
-            }
+            'organisaatioId':'eipaasya',
+            'ePerusteDiaarinumero':'1013059'
           }
-        ),
-        contentType : 'application/json',
-        dataType: 'json'
-      }))
+        }
+      )
     }
   }
   return api
