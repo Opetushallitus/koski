@@ -7,30 +7,45 @@ Tässä git-repositoriossa on TOR-järjestelmän ohjelmakoodi, tietokannan raken
 
 TOR on [EUPL](LICENSE.txt)-lisensoitu sovellus, josta on mahdollista käynnistää kehitysinstanssi omalla työasemalla, alla olevien kehitysohjeiden mukaisesti. TOR-sovellus on alustariippumaton, sillä se pyörii Java-virtuaalikoneella. Kehitysympäristö toimii sellaisenaan ainakin Linux ja OSX-käyttöjärjestelmissä.
 
+Huom! TOR-järjestelmän kehitys on vielä alkuvaiheessa ja kaikki tässä dokumentissa kuvattu voi vielä muuttua matkan varrella.
+
 ## Käsitteet
 
-Keskeiset entiteetiut, ja järjestelmät, joihin nämä tallennetaan.
+Keskeiset entiteetit, ja järjestelmät, joihin nämä tallennetaan.
 
 | käsite         | selite                                       | tunniste         | tallennuspaikka        |
 |----------------|----------------------------------------------|------------------|------------------------|
-| Oppija         | Opiskelija, oppilas.                         | henkilöOid       | Henkilöpalvelu         |
-| Organisaatio   | Oppilaitos, kunta, eri rooleissa             | organisaatioOid  | Organisaatiopalvelu    |
-| Suoritus       | Oppijan suoritus (tutkinto, oppija, oppilaitos, aika...) | id (numeerinen)  | TOR        |
 | Koodisto       | Kooditus objekteille, esim tutkintonimikkeet | id (tekstiä)     | Koodistopalvelu        |
 | Koodi          | Yksittäisen objektin koodi koodistossa       | id (tekstiä)     | Koodistopalvelu        |
-| Koodistoviite  | Viittaus koodistoon ja koodiin Suorituksesta | id               | TOR                    |
-
-TOR-palvelun tietokantaskeema löytyy täältä: https://github.com/Opetushallitus/tor/blob/master/src/main/resources/db/migration/V1__init.sql
+| Oppija         | Opiskelija, oppilas.                         | henkilöOid       | Henkilöpalvelu         |
+| Organisaatio   | Oppilaitos, kunta, eri rooleissa             | organisaatioOid  | Organisaatiopalvelu    |
+| Opinto-oikeus  | Oppijan suhde oppilaitokseen ja suoritettavaan tutkintoon (tutkinto, oppija, oppilaitos, voimassaoloaika, läsnäolotiedot...) | id (numeerinen)  | TOR        |
+| Peruste        | Tutkinnon tai tutkinnon osan peruste         | diaarinumero     | ePerusteet             |
+| Suoritus       | Oppijan suoritus (tutkinto, oppija, oppilaitos, aika...) | id (numeerinen)  | TOR        |
+| Tutkinto       | Tutkinnon kuvaus (tutkintotunnus, nimi...)   | tutkintotunnus   | Koodisto               |
 
 ## Teknologiat
 
-- PostgreSQL-tietokanta
-- Scala 2.11.4 ohjelmointikieli ja kääntäjä
-- Scalatra web framework
-- Slick (http://slick.typesafe.com/doc/3.0.1/index.html) relaatiokantakirjasto
-- Flyway migraatiotyökalu kannan skeeman rakentamiseen ja päivittämiseen kehityksessä ja tuotannossa
-- Maven build-työkalu kehityskäyttöön ja asennettavan paketin rakentamiseen
-- Mvn-depsujen lataus Jitpackilla, jolloin voidaan viitata suoraan Github-repoihin, eikä tarvitse itse buildata jar-artifaktoja
+Nämä ovat keskeiset TOR-järjestelmässä käytettävät teknologiat. Lista kuvaa järjestelmän nykytilaa ja muuttuu matkan varrella
+tarpeen mukaan.
+
+- PostgreSQL 9.4 -tietokanta
+- Palvelinteknologiat
+  - Scala 2.11.4 ohjelmointikieli ja kääntäjä
+  - Scalatra web framework
+  - Slick (http://slick.typesafe.com/doc/3.0.1/index.html) relaatiokantakirjasto
+  - Flyway migraatiotyökalu kannan skeeman rakentamiseen ja päivittämiseen kehityksessä ja tuotannossa
+  - Maven build-työkalu kehityskäyttöön ja asennettavan paketin rakentamiseen
+  - Mvn-riippuvuuksien lataus Jitpackilla, jolloin voidaan viitata suoraan Github-repoihin, eikä tarvitse itse buildata jar-artifaktoja
+  - Integraatiot Opintopolku-palveluihin, kuten organisaatio- ja henkilöpalveluun REST-rajpinnoilla, käyttäen http4s-clienttiä
+- Web-sovelluksen frontend-teknologiat
+  - NPM riippuvuuksien hakuun   
+  - Webpack frontend bundlen rakentamiseen
+  - React
+  - Bacon.js
+  - LESS
+  - Selainyhteensopivuus IE10-selaimesta moderneihin selaimiin
+- Koko järjestelmän buildaus Make-työkalulla, joka delegoi yksittäiset toiminnot eri työkaluille, kuten Maven ja NPM
 
 ## Kehitystyökalut
 
