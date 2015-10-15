@@ -73,17 +73,8 @@ function AddOppijaPage() {
             'hetu':'010101-123N',
             'opintoOikeus':
             {
-              'oppilaitos':
-              {
-                'organisaatioId':'eipaasya',
-                'nimi':'Helsingin Ammattioppilaitos'
-              },
-              'tutkinto':
-              {
-                'nimi':'Autoalan tyonjohdon erikoisammattitutkinto',
-                'ePerusteDiaarinumero':'1013059',
-                'tutkintoKoodi':'357305'
-              }
+              'organisaatioId':'eipaasya',
+              'ePerusteDiaarinumero':'1013059'
             }
           }
         ),

@@ -1,10 +1,10 @@
 package fi.oph.tor.oppija
 
 import fi.oph.tor.json.Json
-import fi.oph.tor.tutkinto.{Tutkinto, TutkintoRepository}
-import fi.oph.tor.oppilaitos.{Oppilaitos, OppilaitosRepository}
+import fi.oph.tor.opintooikeus.{OpintoOikeus, OpintoOikeusRepository}
+import fi.oph.tor.oppilaitos.OppilaitosRepository
 import fi.oph.tor.security.RequiresAuthentication
-import fi.oph.tor.opintooikeus.{OpintoOikeusRepository, OpintoOikeus}
+import fi.oph.tor.tutkinto.TutkintoRepository
 import fi.oph.tor.user.UserRepository
 import fi.oph.tor.{ErrorHandlingServlet, InvalidRequestException}
 import fi.vm.sade.utils.slf4j.Logging
@@ -37,13 +37,13 @@ class OppijaServlet(oppijaRepository: OppijaRepository,
   post("/") {
     contentType = "text/plain;charset=utf-8"
     val oppija: CreateOppijaAndOpintoOikeus = Json.read[CreateOppijaAndOpintoOikeus](request.body)
-    if(!userContext.hasReadAccess(oppija.opintoOikeus.oppilaitos.organisaatioId)) {
+    if(!userContext.hasReadAccess(oppija.opintoOikeus.organisaatioId)) {
       halt(403, "Forbidden")
     }
     val result: OppijaCreationResult = oppijaRepository.findOrCreate(oppija)
     if (result.ok) {
       val oid = result.text
-      opintoOikeusRepository.create(OpintoOikeus(oppija.opintoOikeus.tutkinto.ePerusteDiaarinumero, oid, oppija.opintoOikeus.oppilaitos.organisaatioId))
+      opintoOikeusRepository.create(OpintoOikeus(oppija.opintoOikeus.ePerusteDiaarinumero, oid, oppija.opintoOikeus.organisaatioId))
       oid
     } else {
       halt(result.httpStatus, result.text)
@@ -84,4 +84,4 @@ case class CreateOppijaAndOpintoOikeus(
                   opintoOikeus: CreateOpintoOikeus
                  ) extends CreateOppija
 
-case class CreateOpintoOikeus(oppilaitos: Oppilaitos, tutkinto: Tutkinto)
+case class CreateOpintoOikeus(ePerusteDiaarinumero: String, organisaatioId: String)

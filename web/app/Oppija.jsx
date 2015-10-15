@@ -124,13 +124,26 @@ const CreateOppija = React.createClass({
   submit(e) {
     e.preventDefault()
     this.setState({inProgress: true})
-
-    const createOppijaS = Http.post('/tor/api/oppija', this.formState()).map(oid => ({oid: oid}))
+    const createOppijaS = Http.post('/tor/api/oppija',  this.toCreateOppija()).map(oid => ({oid: oid}))
     createOppijaS.onValue(navigateToOppija)
     createOppijaS.onError((e) => {
       this.setState({inProgress: false})
       showError(e)
     })
+  },
+
+  toCreateOppija() {
+    const {etunimet, sukunimi, kutsumanimi, hetu, opintoOikeus: {tutkinto: {ePerusteDiaarinumero: peruste},oppilaitos: {organisaatioId: organisaatio}}} = this.formState()
+    return {
+      etunimet: etunimet,
+      sukunimi: sukunimi,
+      kutsumanimi: kutsumanimi,
+      hetu: hetu,
+      opintoOikeus: {
+        organisaatioId: organisaatio,
+        ePerusteDiaarinumero: peruste
+      }
+    }
   },
 
   isKutsumanimiOneOfEtunimet(kutsumanimi, etunimet) {
