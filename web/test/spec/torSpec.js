@@ -112,17 +112,6 @@ describe('TOR', function() {
     })
   })
 
-  describe("Käyttöoikeudet", function() {
-    describe('Oppijahaku', function() {
-      before(authentication.login("hiiri"), page.openPage, page.oppijaHaku.search('eero', [markkanen]))
-
-      it('Näytetään vain ne oppijat, joiden opinto-oikeuksiin liittyviin organisaatioihin on käyttöoikeudet', function() {
-
-      })
-    })
-  })
-
-
   describe('Opinto-oikeuden lisääminen', function() {
     function prepareForNewOppija(username, searchString) {
       return function() {
@@ -322,24 +311,38 @@ describe('TOR', function() {
     })
   })
 
-  describe("Odottamattoman virheen sattuessa", function() {
-    before(
-      authentication.login(),
-      resetMocks,
-      page.openPage,
-      page.oppijaHaku.search("error", page.isErrorShown))
+  describe("Virhetilanteet", function() {
+    describe("Odottamattoman virheen sattuessa", function() {
+      before(
+        authentication.login(),
+        resetMocks,
+        page.openPage,
+        page.oppijaHaku.search("error", page.isErrorShown))
 
       it("näytetään virheilmoitus", function() {})
+    })
+
+    describe("Kun sivua ei löydy", function() {
+      before(authentication.login(), openPage('/tor/asdf', page.is404))
+
+      it("näytetään 404-sivu", function() {})
+    })
   })
 
-  describe("Tietoturva", function() {
-    before(login.openPage)
+  describe("Käyttöoikeudet", function() {
+    describe('Oppijahaku', function() {
+      before(authentication.login("hiiri"), page.openPage, page.oppijaHaku.search('eero', [markkanen]))
 
-    describe('Oppijarajapinta', function() {
-      before(openPage('/tor/api/oppija?query=eero', authenticationErrorIsShown))
+      it('Näytetään vain ne oppijat, joiden opinto-oikeuksiin liittyviin organisaatioihin on käyttöoikeudet', function() {
 
-      it('vaatii autentikaation', function () {
-        expect(authenticationErrorIsShown()).to.equal(true)
+      })
+    })
+
+    describe('Navigointi oppijan sivulle', function() {
+      before(authentication.login("hiiri"), openPage('/tor/oppija/1.2.246.562.24.00000000002', page.is404))
+
+      it('Estetään jos oppijalla ei opinto-oikeutta, joihin käyttäjällä on katseluoikeudet', function() {
+
       })
     })
 
@@ -354,6 +357,19 @@ describe('TOR', function() {
         })
       })
     })
+  })
+
+  describe("Tietoturva", function() {
+    before(login.openPage)
+
+    describe('Oppijarajapinta', function() {
+      before(openPage('/tor/api/oppija?query=eero', authenticationErrorIsShown))
+
+      it('vaatii autentikaation', function () {
+        expect(authenticationErrorIsShown()).to.equal(true)
+      })
+    })
+
 
     describe('Kun klikataan logout-linkkiä', function() {
       before(authentication.login(), page.openPage, page.logout)

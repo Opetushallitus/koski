@@ -6,15 +6,11 @@ import {navigateToOppija, routeP, showError} from './router'
 import {isValidHetu} from './hetu'
 import {OpintoOikeus} from './CreateOpintoOikeus.jsx'
 
-export const oppijaP = routeP.flatMap(route => {
-  var match = route.match(new RegExp('oppija/(.*)'))
-  return match ? Bacon.once(undefined).concat(Http.get(`/tor/api/oppija/${match[1]}`).mapError(undefined)) : Bacon.once(undefined)
+export const oppijaP = routeP.map(".oppijaId").flatMap(oppijaId => {
+  return oppijaId ? Bacon.once(undefined).concat(Http.get(`/tor/api/oppija/${oppijaId}`)) : Bacon.once(undefined)
 }).toProperty()
 
-export const uusiOppijaP = routeP.map(route => {
-  var match = route.match(new RegExp('uusioppija'))
-  return !!match
-})
+export const uusiOppijaP = routeP.map(route => { return !!route.uusiOppija })
 
 export const loadingOppijaP = routeP.awaiting(oppijaP.mapError())
 

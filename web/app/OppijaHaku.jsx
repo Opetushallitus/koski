@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import Bacon from 'baconjs'
 import Http from './http'
 import R from 'ramda'
-import {navigate, navigateToOppija, navigateToUusiOppija, routeP} from './router.js'
+import {navigate, navigateToOppija, navigateToUusiOppija} from './router.js'
 import {oppijaP} from './Oppija.jsx'
 
 const oppijaHakuE = new Bacon.Bus()

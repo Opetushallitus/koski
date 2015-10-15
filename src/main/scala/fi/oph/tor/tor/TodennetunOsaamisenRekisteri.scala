@@ -32,12 +32,17 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     }
   }
 
-  // TODO: check access
-  def userView(oid: String)(implicit userContext: UserContext): Either[String, TorOppijaView] = oppijaRepository.findById(oid) match {
-    case Some(oppija) => Right(
-      TorOppijaView(oppija.oid, oppija.sukunimi, oppija.etunimet, oppija.hetu, opintoOikeudetForOppija(oppija))
-    )
-    case None => Left(s"Oppija with oid: $oid not found")
+  def userView(oid: String)(implicit userContext: UserContext): Either[HttpError, TorOppijaView] = oppijaRepository.findById(oid) match {
+    case Some(oppija) =>
+      opintoOikeudetForOppija(oppija) match {
+        case Nil => notFound(oid)
+        case opintoOikeudet => Right(TorOppijaView(oppija.oid, oppija.sukunimi, oppija.etunimet, oppija.hetu, opintoOikeudet))
+      }
+    case None => notFound(oid)
+  }
+
+  def notFound(oid: String): Left[HttpError, Nothing] = {
+    Left(HttpError(404, s"Oppija with oid: $oid not found"))
   }
 
   private def opintoOikeudetForOppija(oppija: Oppija)(implicit userContext: UserContext) = {

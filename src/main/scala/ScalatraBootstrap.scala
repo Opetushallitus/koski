@@ -25,7 +25,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     context.mount(new OppilaitosServlet(profile.oppilaitosRepository), "/api/oppilaitos")
     context.mount(new TutkintoServlet(profile.tutkintoRepository), "/api/tutkinto")
     context.mount(new FixtureServlet(profile), "/fixtures")
-
+    context.mount(new SingleFileServlet("web/static/index.html"), "/")
   }
 
   override def destroy(context: ServletContext) = {
