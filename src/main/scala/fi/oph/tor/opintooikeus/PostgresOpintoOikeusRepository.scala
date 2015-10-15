@@ -4,7 +4,7 @@ import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.db.TorDatabase.DB
 import fi.oph.tor.db._
 import fi.oph.tor.json.Json
-import fi.oph.tor.oppija.{Created, Oppija}
+import fi.oph.tor.oppija.Oppija
 import fi.oph.tor.user.UserContext
 import org.json4s._
 
@@ -31,7 +31,7 @@ class PostgresOpintoOikeusRepository(db: DB) extends OpintoOikeusRepository with
   }
 
   override def create(opintoOikeus: OpintoOikeus) = {
-    Created(await(db.run(OpintoOikeudet.returning(OpintoOikeudet.map(_.id)) += new OpintoOikeusRow(opintoOikeus))))
+    Right(await(db.run(OpintoOikeudet.returning(OpintoOikeudet.map(_.id)) += new OpintoOikeusRow(opintoOikeus))))
   }
 }
 

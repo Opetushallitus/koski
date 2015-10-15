@@ -1,6 +1,6 @@
 package fi.oph.tor.oppija
 
-import fi.oph.tor.http.{Http, VirkailijaHttpClient}
+import fi.oph.tor.http.{HttpError, Http, VirkailijaHttpClient}
 import fi.oph.tor.json.Json._
 import fi.oph.tor.json.Json4sHttp4s._
 import org.http4s._
@@ -26,8 +26,8 @@ class RemoteOppijaRepository(henkilöPalveluClient: VirkailijaHttpClient) extend
     ).withBody(new AuthenticationServiceCreateUser(oppija))(json4sEncoderOf[AuthenticationServiceCreateUser])
 
    henkilöPalveluClient.httpClient(task) {
-      case (200, oid) => Created(oid)
-      case (400, "socialsecuritynr.already.exists") => Failed(409, "socialsecuritynr.already.exists")
+      case (200, oid) => Right(oid)
+      case (400, "socialsecuritynr.already.exists") => Left(HttpError(409, "socialsecuritynr.already.exists"))
       case (status, text) => throw new RuntimeException(status + ": " + text)
     }
   }

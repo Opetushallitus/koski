@@ -1,5 +1,6 @@
 package fi.oph.tor.oppija
 
+import fi.oph.tor.http.HttpError
 import fi.oph.tor.json.Json
 import fi.oph.tor.security.RequiresAuthentication
 import fi.oph.tor.tor.{CreateOppijaAndOpintoOikeus, TodennetunOsaamisenRekisteri}
@@ -32,7 +33,9 @@ class OppijaServlet(rekisteri: TodennetunOsaamisenRekisteri)(implicit val userRe
     val oppija: CreateOppijaAndOpintoOikeus = Json.read[CreateOppijaAndOpintoOikeus](request.body)
 
     val result = rekisteri.findOrCreate(oppija)
-
-    halt(result.httpStatus, result.text)
+    result match {
+      case Left(HttpError(status, text)) => halt(status, text)
+      case Right(id) => id
+    }
   }
 }

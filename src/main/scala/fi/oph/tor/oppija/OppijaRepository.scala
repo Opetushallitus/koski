@@ -2,6 +2,7 @@ package fi.oph.tor.oppija
 
 import com.typesafe.config.Config
 import fi.oph.tor.henkilö.HenkilöPalveluClient
+import fi.oph.tor.http.HttpError
 
 object OppijaRepository {
   def apply(config: Config) = {
@@ -14,21 +15,19 @@ object OppijaRepository {
 }
 
 trait OppijaRepository {
-  def create(oppija: CreateOppija): CreationResult[String]
+  def create(oppija: CreateOppija): Either[HttpError, Oppija.Id]
 
   def findOppijat(query: String): List[Oppija]
   def findById(id: String): Option[Oppija]
 
   def resetFixtures {}
 
-  def findOrCreate(oppija: CreateOppija): CreationResult[String] = {
-    create(oppija) match {
-      case Failed(409, _) =>
+  def findOrCreate(oppija: CreateOppija): Either[HttpError, Oppija.Id] = {
+    create(oppija).left.flatMap { case HttpError(409, _) =>
         findOppijat(oppija.hetu) match {
-          case (o :: Nil) => Exists(o.oid)
-          case _ => Failed(500, "Oppijan lisääminen epäonnistui")
+          case (o :: Nil) => Right(o.oid)
+          case _ => Left(HttpError(500, "Oppijan lisääminen epäonnistui"))
         }
-      case result => result
     }
   }
 }

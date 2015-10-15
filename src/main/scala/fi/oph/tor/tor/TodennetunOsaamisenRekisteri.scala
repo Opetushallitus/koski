@@ -1,5 +1,6 @@
 package fi.oph.tor.tor
 
+import fi.oph.tor.http.HttpError
 import fi.oph.tor.opintooikeus.{OpintoOikeus, OpintoOikeusRepository}
 import fi.oph.tor.oppija._
 import fi.oph.tor.oppilaitos.OppilaitosRepository
@@ -17,14 +18,17 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     filtered
   }
 
-  def findOrCreate(oppija: CreateOppijaAndOpintoOikeus)(implicit userContext: UserContext): CreationResult[String] = {
+  def findOrCreate(oppija: CreateOppijaAndOpintoOikeus)(implicit userContext: UserContext): Either[HttpError, Oppija.Id] = {
     if(!userContext.hasReadAccess(oppija.opintoOikeus.organisaatioId)) {
-      Failed(403, "Forbidden")
-    }
-    val result: CreationResult[String] = oppijaRepository.findOrCreate(oppija)
-    result.flatMap { oid: String =>
-      opintoOikeusRepository.findOrCreate(OpintoOikeus(oppija.opintoOikeus.ePerusteDiaarinumero, oid, oppija.opintoOikeus.organisaatioId))
-        .map { id: Int => oid }
+      Left(HttpError(403, "Forbidden"))
+    } else {
+      val result = oppijaRepository.findOrCreate(oppija)
+      result.right.flatMap { oid: String =>
+        opintoOikeusRepository
+          .findOrCreate(OpintoOikeus(oppija.opintoOikeus.ePerusteDiaarinumero, oid, oppija.opintoOikeus.organisaatioId))
+          .right
+          .map { id: Int => oid }
+      }
     }
   }
 
