@@ -59,13 +59,13 @@ class OppijaServlet(oppijaRepository: OppijaRepository,
         "sukunimi" -> oppija.sukunimi,
         "etunimet" -> oppija.etunimet,
         "hetu" -> oppija.hetu,
-        "tutkinnot" -> tutkinnotForOppija(oppija)
+        "opintoOikeudet" -> opintoOikeudetForOppija(oppija)
       )
     )
     case None => Left(s"Oppija with oid: $oid not found")
   }
 
-  private def tutkinnotForOppija(oppija: Oppija) = {
+  private def opintoOikeudetForOppija(oppija: Oppija) = {
     for {
       opintoOikeus   <- opintoOikeusRepository.findByOppijaOid(oppija.oid)
       tutkinto   <- tutkintoRepository.findByEPerusteDiaarinumero(opintoOikeus.ePerusteetDiaarinumero)

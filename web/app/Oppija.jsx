@@ -38,7 +38,7 @@ const ExistingOppija = React.createClass({
       <div className='main-content oppija'>
         <h2>{oppija.sukunimi}, {oppija.etunimet} <span className='hetu'>{oppija.hetu}</span></h2>
         <hr></hr>
-        <Opintooikeus opintooikeus={oppija.tutkinnot.length ? oppija.tutkinnot[0] : undefined} />
+        <Opintooikeus opintooikeus={oppija.opintoOikeudet.length ? oppija.opintoOikeudet[0] : undefined} />
       </div>
     )
   }
