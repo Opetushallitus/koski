@@ -12,8 +12,8 @@ trait OpintoOikeusRepository {
   def findOrCreate(opintoOikeus: OpintoOikeus)(implicit userContext: UserContext): CreationResult = {
     val opintoOikeudet: List[OpintoOikeus] = findByOppijaOid(opintoOikeus.oppijaOid)
     opintoOikeudet.find(_ == opintoOikeus) match {
+      case Some(oikeus) => Exists(opintoOikeus.oppijaOid)
       case _ => create(opintoOikeus)
     }
   }
 }
-
