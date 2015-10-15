@@ -18,7 +18,7 @@ export default React.createClass({
 
     return (
       <div ref='autocomplete' className='autocomplete'>
-        <input className='autocomplete-input' onKeyDown={this.onKeyDown} onInput={this.handleInput} value={query ? query : selected ? selected.nimi : ''} disabled={disabled}></input>
+        <input className='autocomplete-input' onKeyDown={this.onKeyDown} onChange={this.handleInput} value={query ? query : (selected ? selected.nimi : '')} disabled={disabled}></input>
         {results}
       </div>
     )
@@ -51,6 +51,7 @@ export default React.createClass({
   },
 
   getInitialState() {
+    console.log("getInitialState")
     return {query: undefined, items: [], selectionIndex: 0, inputBus: Bacon.Bus()}
   },
 

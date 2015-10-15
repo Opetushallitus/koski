@@ -14,14 +14,14 @@ object OppijaRepository {
 }
 
 trait OppijaRepository {
-  def create(oppija: CreateOppija): OppijaCreationResult
+  def create(oppija: CreateOppija): CreationResult
 
   def findOppijat(query: String): List[Oppija]
   def findById(id: String): Option[Oppija]
 
   def resetFixtures {}
 
-  def findOrCreate(oppija: CreateOppija): OppijaCreationResult = {
+  def findOrCreate(oppija: CreateOppija): CreationResult = {
     create(oppija) match {
       case Failed(409, _) =>
         findOppijat(oppija.hetu) match {
@@ -39,18 +39,3 @@ trait CreateOppija {
   def sukunimi: String
   def hetu: String
 }
-
-sealed trait OppijaCreationResult {
-  def httpStatus: Int
-  def text: String
-  def ok = httpStatus == 200
-}
-case class Created(oid: String) extends OppijaCreationResult {
-  def httpStatus = 200
-  def text = oid
-}
-case class Exists(oid: String) extends OppijaCreationResult {
-  def httpStatus = 200
-  def text = oid
-}
-case class Failed(val httpStatus: Int, val text: String) extends OppijaCreationResult

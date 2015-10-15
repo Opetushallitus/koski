@@ -1,5 +1,7 @@
 package fi.oph.tor.oppija
 
+import java.io
+
 import fi.oph.tor.json.Json
 import fi.oph.tor.opintooikeus.{OpintoOikeus, OpintoOikeusRepository}
 import fi.oph.tor.oppilaitos.OppilaitosRepository
@@ -40,17 +42,17 @@ class OppijaServlet(oppijaRepository: OppijaRepository,
     if(!userContext.hasReadAccess(oppija.opintoOikeus.organisaatioId)) {
       halt(403, "Forbidden")
     }
-    val result: OppijaCreationResult = oppijaRepository.findOrCreate(oppija)
+    val result: CreationResult = oppijaRepository.findOrCreate(oppija)
     if (result.ok) {
       val oid = result.text
-      opintoOikeusRepository.create(OpintoOikeus(oppija.opintoOikeus.ePerusteDiaarinumero, oid, oppija.opintoOikeus.organisaatioId))
+      opintoOikeusRepository.findOrCreate(OpintoOikeus(oppija.opintoOikeus.ePerusteDiaarinumero, oid, oppija.opintoOikeus.organisaatioId))
       oid
     } else {
       halt(result.httpStatus, result.text)
     }
   }
 
-  private def userView(oid: String) = oppijaRepository.findById(oid) match {
+  private def userView(oid: String): Either[String, Map[String, io.Serializable]] = oppijaRepository.findById(oid) match {
     case Some(oppija) => Right(
       Map(
         "oid" -> oppija.oid,
@@ -65,7 +67,7 @@ class OppijaServlet(oppijaRepository: OppijaRepository,
 
   private def tutkinnotForOppija(oppija: Oppija) = {
     for {
-      opintoOikeus   <- opintoOikeusRepository.findBy(oppija)
+      opintoOikeus   <- opintoOikeusRepository.findByOppijaOid(oppija.oid)
       tutkinto   <- tutkintoRepository.findByEPerusteDiaarinumero(opintoOikeus.ePerusteetDiaarinumero)
       oppilaitos <- oppilaitosRepository.findById(opintoOikeus.oppilaitosOrganisaatio)
     } yield {

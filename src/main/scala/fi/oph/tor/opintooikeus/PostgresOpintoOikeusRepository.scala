@@ -4,7 +4,7 @@ import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.db.TorDatabase.DB
 import fi.oph.tor.db._
 import fi.oph.tor.json.Json
-import fi.oph.tor.oppija.Oppija
+import fi.oph.tor.oppija.{Created, Oppija}
 import fi.oph.tor.user.UserContext
 import org.json4s._
 
@@ -22,8 +22,8 @@ class PostgresOpintoOikeusRepository(db: DB) extends OpintoOikeusRepository with
     oppijat.filter { oppija => all.exists(opintoOikeus => opintoOikeus.oppijaOid == oppija.oid) }
   }
 
-  override def findBy(oppija: Oppija)(implicit userContext: UserContext) = {
-    findAll.filter(_.oppijaOid == oppija.oid).toList
+  override def findByOppijaOid(oid: String)(implicit userContext: UserContext) = {
+    findAll.filter(_.oppijaOid == oid).toList
   }
 
   private def findAll(implicit userContext: UserContext): Seq[OpintoOikeus] = {
@@ -31,7 +31,7 @@ class PostgresOpintoOikeusRepository(db: DB) extends OpintoOikeusRepository with
   }
 
   override def create(opintoOikeus: OpintoOikeus) = {
-    await(db.run(OpintoOikeudet += new OpintoOikeusRow(opintoOikeus)))
+    Created(await(db.run(OpintoOikeudet.returning(OpintoOikeudet.map(_.id)) += new OpintoOikeusRow(opintoOikeus))))
   }
 }
 
