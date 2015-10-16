@@ -10,9 +10,9 @@ trait PostgresDriverWithJsonSupport extends PostgresDriver with PgJson4sSupport 
   type DOCType = JValue
   override val jsonMethods = org.json4s.jackson.JsonMethods
 
-  override val api: API with JsonImplicits = new API with JsonImplicits {
-    implicit val strListTypeMapper: DriverJdbcType[List[String]] = new SimpleArrayJdbcType[String]("text").to(_.toList)
-    implicit val json4sJsonArrayTypeMapper: DriverJdbcType[List[JValue]] =
+  override val api = new API with JsonImplicits {
+    implicit val strListTypeMapper = new SimpleArrayJdbcType[String]("text").to(_.toList)
+    implicit val json4sJsonArrayTypeMapper =
       new AdvancedArrayJdbcType[JValue](pgjson,
         (s) => utils.SimpleArrayUtils.fromString[JValue](jsonMethods.parse(_))(s).orNull,
         (v) => utils.SimpleArrayUtils.mkString[JValue](j=>jsonMethods.compact(jsonMethods.render(j)))(v)
