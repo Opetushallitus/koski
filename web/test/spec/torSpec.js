@@ -347,14 +347,23 @@ describe('TOR', function() {
     })
 
     describe("Tietojen validointi serverillä", function() {
-      describe('Kun opinto-oikeutta yritetään lisätä oppilaitokseen, johon käyttäjällä ei ole pääsyä', function() {
-        before(resetMocks, authentication.login("kalle"))
-        it('palautetaan HTTP 403 virhe', function(done) {
-          addOppija.postInvalidOppija().catch(function(error) {
-            expect(error.status).to.equal(403)
+      before(resetMocks, authentication.login("kalle"), page.openPage)
+
+      function verifyResponseCode(data, code) {
+        return function(done) {
+          addOppija.postOppijaAjax(data).catch(function(error) {
+            expect(error.status).to.equal(code)
             done()
           })
-        })
+        }
+      }
+
+      describe('Valideilla tiedoilla', function() {
+        it('palautetaan HTTP 200', verifyResponseCode({}, 200))
+      })
+
+      describe('Kun opinto-oikeutta yritetään lisätä oppilaitokseen, johon käyttäjällä ei ole pääsyä', function() {
+        it('palautetaan HTTP 403 virhe', verifyResponseCode({ 'opintoOikeus': { 'organisaatioId':'eipaasya', 'ePerusteDiaarinumero':'1013059'}}, 403))
       })
     })
   })
