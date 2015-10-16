@@ -41,4 +41,4 @@ export const Error = ({isError}) => {
   return isError ? <div id="error" className="error">Järjestelmässä tapahtui odottamaton virhe.<a>&#10005;</a></div> : <div id="error"></div>
 }
 
-export const NotFound = () => <div className="404">404 - Etsimääsi sivua ei löytynyt</div>
+export const NotFound = () => <div className="not-found"><h1>404</h1><div className="error-message">Etsimääsi sivua ei löytynyt</div></div>
