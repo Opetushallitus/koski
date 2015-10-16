@@ -80,7 +80,7 @@ function TorPage() {
       return S("#error.error").is(":visible")
     },
     is404: function() {
-      return S(".404").is(":visible")
+      return S(".not-found").is(":visible")
     }
   }
 
