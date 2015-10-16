@@ -12,7 +12,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
                                    tutkintoRepository: TutkintoRepository,
                                    oppilaitosRepository: OppilaitosRepository) {
 
-  def findOppijat(query: String)(implicit userContext: UserContext): List[Oppija] = {
+  def findOppijat(query: String)(implicit userContext: UserContext): Seq[Oppija] = {
     val oppijat: List[Oppija] = oppijaRepository.findOppijat(query)
     val filtered = opintoOikeusRepository.filterOppijat(oppijat)
     filtered
@@ -57,7 +57,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
 }
 
 
-case class TorOppijaView(oid: String, sukunimi: String, etunimet: String, hetu: String, opintoOikeudet: List[TorOpintoOikeusView])
+case class TorOppijaView(oid: String, sukunimi: String, etunimet: String, hetu: String, opintoOikeudet: Seq[TorOpintoOikeusView])
 
 case class TorOpintoOikeusView(nimi: String, oppilaitos: TorOppilaitosView)
 

@@ -1,6 +1,8 @@
 package fi.oph.tor.opintooikeus
 
 import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.tor.db.PostgresDriverWithJsonSupport.jsonMethods._
+
 import fi.oph.tor.db.TorDatabase.DB
 import fi.oph.tor.db._
 import fi.oph.tor.json.Json
@@ -17,21 +19,29 @@ class PostgresOpintoOikeusRepository(db: DB) extends OpintoOikeusRepository with
   }
   protected val OpintoOikeudet = TableQuery[OpintoOikeusTable]
 
-  override def filterOppijat(oppijat: List[Oppija])(implicit userContext: UserContext) = {
+  override def filterOppijat(oppijat: Seq[Oppija])(implicit userContext: UserContext) = {
     val all = findAll
     oppijat.filter { oppija => all.exists(opintoOikeus => opintoOikeus.oppijaOid == oppija.oid) }
   }
 
-  override def findByOppijaOid(oid: String)(implicit userContext: UserContext) = {
-    findAll.filter(_.oppijaOid == oid).toList
-  }
-
-  private def findAll(implicit userContext: UserContext): Seq[OpintoOikeus] = {
-    await(db.run(OpintoOikeudet.result)).map(_.toOpintoOikeus).filter(opintoOikeus => userContext.hasReadAccess(opintoOikeus.oppilaitosOrganisaatio))
+  override def findByOppijaOid(oid: String)(implicit userContext: UserContext): Seq[OpintoOikeus] = {
+    await(
+      db.run(OpintoOikeudet.filter(_.data @> parse(s"""{"oppijaOid": "$oid"}""")).result)
+    ).map(_.toOpintoOikeus).filter(withAccess)
   }
 
   override def create(opintoOikeus: OpintoOikeus) = {
     Right(await(db.run(OpintoOikeudet.returning(OpintoOikeudet.map(_.id)) += new OpintoOikeusRow(opintoOikeus))))
+  }
+
+  private def findAll(implicit userContext: UserContext): Seq[OpintoOikeus] = {
+    await(
+      db.run(OpintoOikeudet.result)
+    ).map(_.toOpintoOikeus).filter(withAccess)
+  }
+
+  private def withAccess(oikeus: OpintoOikeus)(implicit userContext: UserContext) = {
+    userContext.hasReadAccess(oikeus.oppilaitosOrganisaatio)
   }
 }
 
