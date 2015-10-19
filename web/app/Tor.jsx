@@ -26,7 +26,7 @@ const stateP = Bacon.combineTemplate({
 })
 
 // Renderered Virtual DOM
-const domP = stateP.mapError({}).combine(errorP(stateP), ({user, oppijaHaku, oppija, searchInProgress}, error) =>
+const domP = stateP.combine(errorP(stateP), ({user, oppijaHaku, oppija, searchInProgress}, error) =>
     <div>
       <Error isError={isRetryable(error)}/>
       <TopBar user={user}/>
