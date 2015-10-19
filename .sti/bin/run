@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#source /etc/profile.d/maven.sh
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+cd ${HOME}/src
+j2render -e -y /etc/secrets/env-config.yml cloud/docker-start.sh.template start.sh
+chmod +x start.sh
+./start.sh

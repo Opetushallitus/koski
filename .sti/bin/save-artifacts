@@ -1,0 +1,3 @@
+#!/bin/bash
+
+tar -C ${HOME} -cf - .m2 .npm src/web/node_modules

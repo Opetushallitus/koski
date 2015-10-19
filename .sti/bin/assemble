@@ -1,0 +1,22 @@
+#!/bin/bash -x
+
+source /etc/profile.d/maven.sh
+locale-gen en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+# restore build artifacts
+if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
+    mv /tmp/artifacts/.[!.]* $HOME/
+fi
+
+rsync -a /tmp/src/ $HOME/src
+
+# Fix phantomjs redownload issue with this:
+export PATH=$PATH:$HOME/src/web/node_modules/.bin
+
+# build application artifacts
+(cd ${HOME}/src
+make build
+
+)
