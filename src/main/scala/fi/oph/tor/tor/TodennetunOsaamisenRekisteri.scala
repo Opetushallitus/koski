@@ -19,7 +19,10 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
   }
 
   def findOrCreate(oppija: CreateOppijaAndOpintoOikeus)(implicit userContext: UserContext): Either[HttpError, Oppija.Id] = {
-    if(!userContext.hasReadAccess(oppija.opintoOikeus.organisaatioId)) {
+    if(tutkintoRepository.findByEPerusteDiaarinumero(oppija.opintoOikeus.ePerusteDiaarinumero).isEmpty) {
+      Left(HttpError(400, "Invalid ePeruste: " + oppija.opintoOikeus.ePerusteDiaarinumero))
+    }
+    else if(!userContext.hasReadAccess(oppija.opintoOikeus.organisaatioId)) {
       Left(HttpError(403, "Forbidden"))
     } else {
       val result = oppijaRepository.findOrCreate(oppija)
