@@ -4,7 +4,7 @@ import Http from './http'
 const b = new Bacon.Bus()
 
 const navigate = function (path) {
-  history.pushState(null, null, '/tor' + path)
+  history.pushState(null, null, path)
   b.push(path)
 }
 
