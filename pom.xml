@@ -18,12 +18,12 @@
     <dependency>
       <groupId>com.github.Opetushallitus</groupId>
       <artifactId>scala-utils</artifactId>
-      <version>f0294dc70876d730b7c0294544352a642ce8d20a</version>
+      <version>3f64874</version>
     </dependency>
     <dependency>
       <groupId>com.github.Opetushallitus</groupId>
       <artifactId>scala-security</artifactId>
-      <version>890c6ab94aa6718e745ce9162548b70a0468ec92</version>
+      <version>0531d73</version>
     </dependency>
     <!-- external deps -->
     <dependency>
