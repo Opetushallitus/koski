@@ -123,9 +123,9 @@ describe('TOR', function() {
       }
     }
 
-    describe("Olemassa olevalle henkilölle", function() {
+    describe('Olemassa olevalle henkilölle', function() {
 
-      describe("Kun lisätään uusi opinto-oikeus", function() {
+      describe('Kun lisätään uusi opinto-oikeus', function() {
         before(prepareForNewOppija('kalle', 'Tunkkila'))
         before(addOppija.enterValidData({ etunimet: 'Tero Terde', kutsumanimi: 'Terde', sukunimi: 'Tunkkila', hetu: '091095-9833', oppilaitos: 'Helsingin', tutkinto: 'auto'}))
         before(addOppija.submit)
@@ -135,13 +135,13 @@ describe('TOR', function() {
         })
       })
 
-      describe("Kun lisätään opinto-oikeus, joka henkilöllä on jo olemassa", function() {
+      describe('Kun lisätään opinto-oikeus, joka henkilöllä on jo olemassa', function() {
         before(prepareForNewOppija('kalle', 'asdf'))
         before(addOppija.enterValidData({ etunimet: 'Eero Adolf', kutsumanimi: 'Eero', sukunimi: 'Esimerkki', hetu: '010101-123N', oppilaitos: 'Helsingin', tutkinto: 'auto'}))
         before(addOppija.submit)
         before(wait.until(function() { return page.getSelectedOppija() === eero}))
 
-        it("Näytetään olemassa oleva tutkinto", function() {
+        it('Näytetään olemassa oleva tutkinto', function() {
           expect(opinnot.getTutkinto()).to.equal('Autoalan työnjohdon erikoisammattitutkinto')
           expect(opinnot.getOppilaitos()).to.equal('Helsingin Ammattioppilaitos')
         })
@@ -163,7 +163,7 @@ describe('TOR', function() {
       describe('Kun syötetään validit tiedot', function() {
         before(addOppija.enterValidData())
 
-        describe("Käyttöliittymän tila", function() {
+        describe('Käyttöliittymän tila', function() {
           it('Lisää-nappi on enabloitu', function() {
             expect(addOppija.isEnabled()).to.equal(true)
           })
@@ -255,14 +255,14 @@ describe('TOR', function() {
           })
         })
       })
-      describe("Oppilaitosvalinta", function() {
+      describe('Oppilaitosvalinta', function() {
         describe('Näytetään vain käyttäjän organisaatiopuuhun kuuluvat oppilaitokset', function() {
           it('1', function() {
             return prepareForNewOppija('hiiri', 'Tunkkila')()
               .then(addOppija.enterOppilaitos('Helsinki'))
               .then(wait.forMilliseconds(500))
               .then(function() {
-                expect(addOppija.oppilaitokset()).to.deep.equal(["Omnia Helsinki"])
+                expect(addOppija.oppilaitokset()).to.deep.equal(['Omnia Helsinki'])
               })
           })
           it('2', function() {
@@ -270,7 +270,7 @@ describe('TOR', function() {
               .then(addOppija.enterOppilaitos('Helsinki'))
               .then(wait.forMilliseconds(500))
               .then(function() {
-                expect(addOppija.oppilaitokset()).to.deep.equal(["Metropolia Helsinki", "Omnia Helsinki"])
+                expect(addOppija.oppilaitokset()).to.deep.equal(['Metropolia Helsinki', 'Omnia Helsinki'])
               })
           })
         })
@@ -311,27 +311,27 @@ describe('TOR', function() {
     })
   })
 
-  describe("Virhetilanteet", function() {
-    describe("Odottamattoman virheen sattuessa", function() {
+  describe('Virhetilanteet', function() {
+    describe('Odottamattoman virheen sattuessa', function() {
       before(
         authentication.login(),
         resetMocks,
         page.openPage,
-        page.oppijaHaku.search("error", page.isErrorShown))
+        page.oppijaHaku.search('error', page.isErrorShown))
 
-      it("näytetään virheilmoitus", function() {})
+      it('näytetään virheilmoitus', function() {})
     })
 
-    describe("Kun sivua ei löydy", function() {
+    describe('Kun sivua ei löydy', function() {
       before(authentication.login(), openPage('/tor/asdf', page.is404))
 
-      it("näytetään 404-sivu", function() {})
+      it('näytetään 404-sivu', function() {})
     })
   })
 
-  describe("Käyttöoikeudet", function() {
+  describe('Käyttöoikeudet', function() {
     describe('Oppijahaku', function() {
-      before(authentication.login("hiiri"), page.openPage, page.oppijaHaku.search('eero', [markkanen]))
+      before(authentication.login('hiiri'), page.openPage, page.oppijaHaku.search('eero', [markkanen]))
 
       it('Näytetään vain ne oppijat, joiden opinto-oikeuksiin liittyviin organisaatioihin on käyttöoikeudet', function() {
 
@@ -339,15 +339,15 @@ describe('TOR', function() {
     })
 
     describe('Navigointi oppijan sivulle', function() {
-      before(authentication.login("hiiri"), openPage('/tor/oppija/1.2.246.562.24.00000000002', page.is404))
+      before(authentication.login('hiiri'), openPage('/tor/oppija/1.2.246.562.24.00000000002', page.is404))
 
       it('Estetään jos oppijalla ei opinto-oikeutta, joihin käyttäjällä on katseluoikeudet', function() {
 
       })
     })
 
-    describe("Tietojen validointi serverillä", function() {
-      before(resetMocks, authentication.login("kalle"), page.openPage)
+    describe('Tietojen validointi serverillä', function() {
+      before(resetMocks, authentication.login('kalle'), page.openPage)
 
       function verifyResponseCode(data, code) {
         return function(done) {
@@ -372,7 +372,7 @@ describe('TOR', function() {
     })
   })
 
-  describe("Tietoturva", function() {
+  describe('Tietoturva', function() {
     before(login.openPage)
 
     describe('Oppijarajapinta', function() {
