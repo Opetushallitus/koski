@@ -10,7 +10,7 @@ import org.http4s.{EntityDecoderInstances, Request}
 import scalaz.concurrent.Task
 
 class RemoteUserRepository(henkilöPalveluClient: VirkailijaHttpClient, organisaatioRepository: OrganisaatioRepository) extends UserRepository with EntityDecoderInstances {
-  val katselijaRole = 176260L
+  val katselijaRole = 4056292L
 
   def getUserOrganisations(oid: String): OrganisaatioPuu = Timer.timed("getUserOrganisations") {
     OrganisaatioPuu(
