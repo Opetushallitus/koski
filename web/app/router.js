@@ -1,5 +1,4 @@
 import Bacon from 'baconjs'
-import Http from './http'
 
 const b = new Bacon.Bus()
 

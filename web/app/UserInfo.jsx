@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import { logout } from './Login.jsx'
 
 export const UserInfo = ({user}) => user ?

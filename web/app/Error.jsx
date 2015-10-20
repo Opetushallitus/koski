@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import { logout } from './Login.jsx'
 import { routeP } from './router'
 import Bacon from 'baconjs'
@@ -30,11 +29,11 @@ export const handleError = (error) => {
 }
 
 export function requiresLogin(e) {
-  return e.httpStatus != 404 && e.httpStatus >= 400 && e.httpStatus < 500
+  return e.httpStatus !== 404 && e.httpStatus >= 400 && e.httpStatus < 500
 }
 
 export function isRetryable(e) {
-  return e.httpStatus == 500
+  return e.httpStatus === 500
 }
 
 export const Error = ({isError}) => {

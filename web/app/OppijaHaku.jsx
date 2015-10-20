@@ -1,9 +1,7 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import Bacon from 'baconjs'
 import Http from './http'
-import R from 'ramda'
-import {navigate, navigateToOppija, navigateToUusiOppija} from './router.js'
+import {navigateToOppija, navigateToUusiOppija} from './router.js'
 import {oppijaP} from './Oppija.jsx'
 
 const oppijaHakuE = new Bacon.Bus()
@@ -22,7 +20,7 @@ export const oppijatP = Bacon.update(
 )
 
 oppijaP.sampledBy(oppijatP.map('.results').changes(), (oppija, oppijat) => ({ oppija: oppija, oppijat: oppijat }))
-  .filter(({oppija, oppijat}) => !oppija && oppijat.length == 1)
+  .filter(({oppija, oppijat}) => !oppija && oppijat.length === 1)
   .map('.oppijat.0')
   .onValue(navigateToOppija)
 

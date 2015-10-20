@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import Bacon from 'baconjs'
 
 export default React.createClass({

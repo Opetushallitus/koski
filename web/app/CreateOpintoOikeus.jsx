@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import Autocomplete from './Autocomplete.jsx'
 import Bacon from 'baconjs'
 import Http from './http'

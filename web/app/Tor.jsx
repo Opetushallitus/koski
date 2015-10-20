@@ -1,15 +1,14 @@
-import Polyfills from './polyfills.js'
+import './polyfills.js'
+import './style/main.less'
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Bacon from 'baconjs'
-import style from './style/main.less'
 import {Error, NotFound, handleError, isRetryable, errorP} from './Error.jsx'
-import {Login, userP, logout} from './Login.jsx'
+import {Login, userP} from './Login.jsx'
 import {OppijaHaku, oppijatP, searchInProgressP} from './OppijaHaku.jsx'
 import {Oppija, oppijaP, uusiOppijaP, loadingOppijaP} from './Oppija.jsx'
-import {routeP} from './router.js'
 import {TopBar} from './TopBar.jsx'
-import Http from './http'
 
 // Application state to be rendered
 const stateP = Bacon.combineTemplate({
@@ -31,7 +30,7 @@ const domP = stateP.combine(errorP(stateP), ({user, oppijaHaku, oppija, searchIn
       <Error isError={isRetryable(error)}/>
       <TopBar user={user}/>
       {
-        error.httpStatus == 404
+        error.httpStatus === 404
           ? <NotFound/>
           : ( user
               ? <div className='content-area'>

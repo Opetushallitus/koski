@@ -33,8 +33,3 @@ const yearFromDigits = (digits, separator) => {
   }
   return completeYear
 }
-
-
-
-
-

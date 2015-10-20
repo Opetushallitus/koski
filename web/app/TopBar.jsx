@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import {UserInfo} from './UserInfo.jsx'
 
 export const TopBar = ({user}) => (

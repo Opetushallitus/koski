@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import Bacon from 'baconjs'
 import Http from './http'
 import {navigateToOppija, routeP, showError} from './router'
@@ -105,7 +104,7 @@ const CreateOppija = React.createClass({
       etunimet: this.refs.etunimet.value,
       sukunimi: this.refs.sukunimi.value,
       kutsumanimi: this.refs.kutsumanimi.value,
-      hetu: this.refs.hetu.value.toUpperCase(),
+      hetu: this.refs.hetu.value.toUpperCase()
     }
   },
 
@@ -123,9 +122,9 @@ const CreateOppija = React.createClass({
     this.setState({inProgress: true})
     const createOppijaS = Http.post('/tor/api/oppija',  this.toCreateOppija()).map(oid => ({oid: oid}))
     createOppijaS.onValue(navigateToOppija)
-    createOppijaS.onError((e) => {
+    createOppijaS.onError((error) => {
       this.setState({inProgress: false})
-      showError(e)
+      showError(error)
     })
   },
 
