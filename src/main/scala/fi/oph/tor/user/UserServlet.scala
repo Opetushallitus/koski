@@ -24,8 +24,6 @@ class UserServlet(directoryClient: DirectoryClient, userRepository: UserReposito
     }
 
     directoryClient.findUser(login.username).map { ldapUser =>
-      println(userRepository.getUserOrganisations(ldapUser.oid))
-
       User(ldapUser.oid, ldapUser.givenNames + " " + ldapUser.lastName)
     } match {
       case Some(user) =>
