@@ -25,15 +25,17 @@ export const Login = React.createClass({
     const buttonLabel = inProgress ? 'Kirjaudutaan...' : 'Kirjaudu sisään'
     const buttonDisabled = !usernameIsValid || !passwordIsValid || inProgress
 
-    return <form onInput={this.onInput} className={this.state.error ? 'login error': 'login'}>
-      <label>Tunnus
-        <input id='username' ref='username' disabled={inProgress}></input>
-      </label>
-      <label>Salasana
-        <input id='password' ref='password' type='password' disabled={inProgress}></input>
-      </label>
-      <button className='button blue' onClick={this.doLogin} disabled={buttonDisabled}>{buttonLabel}</button>
-    </form>
+    return (
+        <form onInput={this.onInput} className={this.state.error ? 'login error': 'login'}>
+          <label>Tunnus
+            <input id='username' ref='username' disabled={inProgress}></input>
+          </label>
+          <label>Salasana
+            <input id='password' ref='password' type='password' disabled={inProgress}></input>
+          </label>
+          <button className='button blue' onClick={this.doLogin} disabled={buttonDisabled}>{buttonLabel}</button>
+        </form>
+    )
   },
 
   formState() {

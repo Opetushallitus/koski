@@ -71,10 +71,12 @@ const OppijaHakutulokset = React.createClass({
 export const OppijaHaku = ({oppijat, valittu, searching}) => {
   const className = searching ? 'sidebar oppija-haku searching' : 'sidebar oppija-haku'
 
-  return <div className={className}>
-    <OppijaHakuBoksi />
-    <div className='hakutulokset'>
-      <OppijaHakutulokset oppijat={oppijat} valittu={valittu}/>
-    </div>
-  </div>
+  return (
+      <div className={className}>
+        <OppijaHakuBoksi />
+        <div className='hakutulokset'>
+          <OppijaHakutulokset oppijat={oppijat} valittu={valittu}/>
+        </div>
+      </div>
+  )
 }

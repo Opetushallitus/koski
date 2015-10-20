@@ -5,16 +5,18 @@ import Http from './http'
 
 const Oppilaitos = React.createClass({
   render() {
-    return <label className='oppilaitos'>Oppilaitos
-        <Autocomplete
-          resultBus={this.props.oppilaitosBus}
-          fetchItems={value => (value.length >= 1)
-            ? this.state.oppilaitokset.map(oppilaitokset => oppilaitokset.filter(oppilaitos => oppilaitos.nimi.toLowerCase().indexOf(value.toLowerCase()) >= 0))
-            : Bacon.once([])
-          }
-          selected={this.state.selected}
-        />
-      </label>
+    return (
+        <label className='oppilaitos'>Oppilaitos
+          <Autocomplete
+              resultBus={this.props.oppilaitosBus}
+              fetchItems={value => (value.length >= 1)
+                ? this.state.oppilaitokset.map(oppilaitokset => oppilaitokset.filter(oppilaitos => oppilaitos.nimi.toLowerCase().indexOf(value.toLowerCase()) >= 0))
+                : Bacon.once([])
+              }
+              selected={this.state.selected}
+              />
+        </label>
+    )
   },
 
   getInitialState() {
@@ -28,18 +30,18 @@ const Oppilaitos = React.createClass({
 
 const Tutkinto = React.createClass({
   render() {
-    return <label className='tutkinto'>Tutkinto
-      <Autocomplete
-        resultBus={this.props.tutkintoBus}
-
-        fetchItems={(value) => (value.length >= 3)
-        ? Http.get('/tor/api/tutkinto/oppilaitos/' + this.state.oppilaitos.organisaatioId + '?query=' + value)
-        : Bacon.once([])}
-
-        disabled={!this.state.oppilaitos}
-        selected={this.state.selected}
-      />
-    </label>
+    return (
+        <label className='tutkinto'>Tutkinto
+          <Autocomplete
+              resultBus={this.props.tutkintoBus}
+              fetchItems={(value) => (value.length >= 3)
+                ? Http.get('/tor/api/tutkinto/oppilaitos/' + this.state.oppilaitos.organisaatioId + '?query=' + value)
+                : Bacon.once([])}
+              disabled={!this.state.oppilaitos}
+              selected={this.state.selected}
+              />
+        </label>
+    )
   },
 
   getInitialState() {

@@ -6,7 +6,7 @@ export const isValidHetu = hetu => {
     return false
   }
 
-  const [_, day, month, year, separator, identifier, checkCharacter] = hetu.match(re)
+  const [, day, month, year, separator, identifier, checkCharacter] = hetu.match(re)
 
   if(checkCharacter !== checkChar[Math.round(((`${day}${month}${year}${identifier}` / 31) % 1) * 31)]) {
     return false
