@@ -70,7 +70,7 @@ function AddOppijaPage() {
         'opintoOikeus':
         {
           'organisaatioId':'1',
-          'ePerusteDiaarinumero':'1013059'
+          'ePerusteDiaarinumero':'39/011/2014'
         }
       }
 
