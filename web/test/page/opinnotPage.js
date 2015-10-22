@@ -8,6 +8,9 @@ function OpinnotPage() {
     },
     getOppilaitos() {
       return S('.opintooikeus .oppilaitos').text()
+    },
+    getTutkinnonOsat() {
+      return textsOf(S('.tutkinnon-osa'))
     }
   }
 

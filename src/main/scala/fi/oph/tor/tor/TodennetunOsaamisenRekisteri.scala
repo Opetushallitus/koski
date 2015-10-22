@@ -4,7 +4,7 @@ import fi.oph.tor.http.HttpError
 import fi.oph.tor.opintooikeus.{OpintoOikeus, OpintoOikeusRepository}
 import fi.oph.tor.oppija._
 import fi.oph.tor.oppilaitos.OppilaitosRepository
-import fi.oph.tor.tutkinto.TutkintoRepository
+import fi.oph.tor.tutkinto.{RakenneOsa, TutkintoRepository}
 import fi.oph.tor.user.UserContext
 
 class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
@@ -48,13 +48,13 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     Left(HttpError(404, s"Oppija with oid: $oid not found"))
   }
 
-  private def opintoOikeudetForOppija(oppija: Oppija)(implicit userContext: UserContext) = {
+  private def opintoOikeudetForOppija(oppija: Oppija)(implicit userContext: UserContext): Seq[TorOpintoOikeusView] = {
     for {
       opintoOikeus   <- opintoOikeusRepository.findByOppijaOid(oppija.oid)
       tutkinto   <- tutkintoRepository.findByEPerusteDiaarinumero(opintoOikeus.ePerusteetDiaarinumero)
       oppilaitos <- oppilaitosRepository.findById(opintoOikeus.oppilaitosOrganisaatio)
     } yield {
-      TorOpintoOikeusView(tutkinto.nimi, TorOppilaitosView(oppilaitos.nimi))
+      TorOpintoOikeusView(tutkinto.nimi, TorOppilaitosView(oppilaitos.nimi), tutkintoRepository.findPerusteRakenne(tutkinto.ePerusteDiaarinumero))
     }
   }
 }
@@ -62,7 +62,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
 
 case class TorOppijaView(oid: String, sukunimi: String, etunimet: String, hetu: String, opintoOikeudet: Seq[TorOpintoOikeusView])
 
-case class TorOpintoOikeusView(nimi: String, oppilaitos: TorOppilaitosView)
+case class TorOpintoOikeusView(nimi: String, oppilaitos: TorOppilaitosView, rakenne: Option[RakenneOsa])
 
 case class TorOppilaitosView(nimi: String)
 

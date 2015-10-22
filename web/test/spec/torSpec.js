@@ -133,6 +133,10 @@ describe('TOR', function() {
         it('Onnistuu, näyttää henkilöpalvelussa olevat nimitiedot', function() {
 
         })
+
+        it('Näytetään tutkinnon rakenne', function() {
+          expect(opinnot.getTutkinnonOsat()[0]).to.equal('Auton tai moottoripyörän huoltaminen')
+        })
       })
 
       describe('Kun lisätään opinto-oikeus, joka henkilöllä on jo olemassa', function() {
