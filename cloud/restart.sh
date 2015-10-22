@@ -15,6 +15,7 @@ export JAVA_OPTS="\
 -Dopintopolku.virkailija.url=\"https://virkailija.tordev.tor.oph.reaktor.fi\" \
 -Dauthentication-service.username=$AUTHENTICATION_SERVICE_USERNAME \
 -Dauthentication-service.password=$AUTHENTICATION_SERVICE_PASSWORD \
+-Deperusteet.url=\"https://eperusteet.opintopolku.fi/eperusteet-service\" \
 "
 
 pkill java
