@@ -142,7 +142,7 @@ describe('TOR', function() {
         before(wait.until(function() { return page.getSelectedOppija() === eero}))
 
         it('Näytetään olemassa oleva tutkinto', function() {
-          expect(opinnot.getTutkinto()).to.equal('Autoalan työnjohdon erikoisammattitutkinto')
+          expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
           expect(opinnot.getOppilaitos()).to.equal('Helsingin Ammattioppilaitos')
         })
       })
@@ -176,7 +176,7 @@ describe('TOR', function() {
           it('lisätty oppija näytetään', function() {})
 
           it('Lisätty opintooikeus näytetään', function() {
-            expect(opinnot.getTutkinto()).to.equal('Autoalan työnjohdon erikoisammattitutkinto')
+            expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
             expect(opinnot.getOppilaitos()).to.equal('Helsingin Ammattioppilaitos')
           })
         })
@@ -302,7 +302,7 @@ describe('TOR', function() {
     })
 
     it('Oppijan tutkinto ja oppilaitos näytetään', function() {
-      expect(opinnot.getTutkinto()).to.equal('Autoalan työnjohdon erikoisammattitutkinto')
+      expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
       expect(opinnot.getOppilaitos()).to.equal('Helsingin Ammattioppilaitos')
     })
 
