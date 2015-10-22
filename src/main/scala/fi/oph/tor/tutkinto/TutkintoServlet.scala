@@ -11,4 +11,10 @@ class TutkintoServlet(tutkintoRepository: TutkintoRepository) extends ErrorHandl
        case _ => throw new InvalidRequestException("query parameter length must be at least 3")
      }
    }
- }
+
+  get("/rakenne/:diaariNumero") {
+    contentType = "application/json;charset=utf-8"
+    Json.write(tutkintoRepository.findPerusteRakenne(params("diaariNumero")))
+  }
+
+}

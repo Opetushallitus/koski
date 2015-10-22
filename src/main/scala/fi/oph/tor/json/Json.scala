@@ -1,14 +1,14 @@
 package fi.oph.tor.json
 
 import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
-
+import fi.oph.tor.eperusteet.RakenneOsaSerializer
 import fi.vm.sade.utils.json4s.GenericJsonFormats
 import org.json4s.JsonAST.{JInt, JNull, JString}
 import org.json4s.jackson.Serialization
 import org.json4s.{CustomSerializer, Extraction, JValue}
 
 object Json {
-  implicit val jsonFormats = GenericJsonFormats.genericFormats + new LocalDateSerializer
+  implicit val jsonFormats = GenericJsonFormats.genericFormats + new LocalDateSerializer + new RakenneOsaSerializer
 
   def write(x: AnyRef): String = {
     Serialization.write(x);

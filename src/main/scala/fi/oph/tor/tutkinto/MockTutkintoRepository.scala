@@ -10,4 +10,6 @@ class MockTutkintoRepository extends TutkintoRepository {
   }
 
   override def findByEPerusteDiaarinumero(id: String) = tutkinnot.filter(_.ePerusteDiaarinumero == id).headOption
+
+  override def findPerusteRakenne(diaariNumero: String): Option[RakenneModuuli] = None
 }
