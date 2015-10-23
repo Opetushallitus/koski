@@ -310,6 +310,13 @@ describe('TOR', function() {
         expect(opinnot.getTutkinnonOsat()[0]).to.equal('Myynti ja tuotetuntemus')
       })
 
+      it('Muuttuneet tiedot tallennetaan', function() {
+        return page.oppijaHaku.search('ero', 4)()
+          .then(page.oppijaHaku.selectOppija('tunkkila'))
+          .then(function() {
+            expect(opinnot.getTutkinnonOsat()[0]).to.equal('Myynti ja tuotetuntemus')
+          })
+      })
     })
   })
 

@@ -51,3 +51,16 @@ const ExistingOppija = React.createClass({
     )
   }
 })
+
+oppijaP.sampledBy(opintoOikeusChange, (oppija, opintoOikeus) => ({
+  oid: oppija.oid,
+  opintoOikeudet: [opintoOikeus]
+})).onValue(oppijaUpdate => {
+  const createOppijaS = Http.post('/tor/api/oppija', oppijaUpdate)
+
+  createOppijaS.onValue(oid => console.log("SAVED", oid))
+
+  createOppijaS.onError((error) => {
+    console.log("ERROR", error)
+  })
+})

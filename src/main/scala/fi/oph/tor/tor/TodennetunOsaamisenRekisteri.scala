@@ -18,7 +18,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     filtered
   }
 
-  def findOrCreate(oppija: CreateOppija)(implicit userContext: UserContext): Either[HttpError, Oppija.Id] = {
+  def createOrUpdate(oppija: CreateOppija)(implicit userContext: UserContext): Either[HttpError, Oppija.Id] = {
     if (oppija.opintoOikeudet.length == 0) {
       Left(HttpError(400, "At least one OpintoOikeus required"))
     }
@@ -29,7 +29,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
           val result = oppijaRepository.findOrCreate(oppija)
           result.right.flatMap { oppijaOid: String =>
             val opintoOikeusCreationResults = oppija.opintoOikeudet.map { opintoOikeus =>
-              opintoOikeusRepository.findOrCreate(oppijaOid, opintoOikeus)
+              opintoOikeusRepository.createOrUpdate(oppijaOid, opintoOikeus)
             }
             opintoOikeusCreationResults.find(_.isLeft) match {
               case Some(Left(error)) => Left(error)
@@ -73,7 +73,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
       tutkinto   <- tutkintoRepository.findByEPerusteDiaarinumero(opintoOikeus.ePerusteetDiaarinumero)
       oppilaitos <- oppilaitosRepository.findById(opintoOikeus.oppilaitosOrganisaatio)
     } yield {
-      TorOpintoOikeusView(tutkinto.ePerusteetDiaarinumero, oppilaitos.organisaatioId, tutkinto.nimi, TorOppilaitosView(oppilaitos.nimi), tutkintoRepository.findPerusteRakenne(tutkinto.ePerusteetDiaarinumero))
+      TorOpintoOikeusView(tutkinto.ePerusteetDiaarinumero, oppilaitos.organisaatioId, tutkinto.nimi, TorOppilaitosView(oppilaitos.nimi), opintoOikeus.suoritustapa, opintoOikeus.osaamisala, tutkintoRepository.findPerusteRakenne(tutkinto.ePerusteetDiaarinumero))
     }
   }
 }
@@ -81,7 +81,8 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
 
 case class TorOppijaView(oid: String, sukunimi: String, etunimet: String, hetu: String, opintoOikeudet: Seq[TorOpintoOikeusView])
 
-case class TorOpintoOikeusView(ePerusteetDiaarinumero: String, oppilaitosOrganisaatio: String, nimi: String, oppilaitos: TorOppilaitosView, rakenne: Option[TutkintoRakenne])
+// TODO: tänne taitaa kertyä duplikaatiota
+case class TorOpintoOikeusView(ePerusteetDiaarinumero: String, oppilaitosOrganisaatio: String, nimi: String, oppilaitos: TorOppilaitosView, suoritustapa: Option[String], osaamisala: Option[String], rakenne: Option[TutkintoRakenne])
 
 case class TorOppilaitosView(nimi: String)
 

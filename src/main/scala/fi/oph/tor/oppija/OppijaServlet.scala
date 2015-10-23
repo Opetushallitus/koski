@@ -32,7 +32,7 @@ class OppijaServlet(rekisteri: TodennetunOsaamisenRekisteri)(implicit val userRe
     contentType = "text/plain;charset=utf-8"
     val oppija: CreateOppija = Json.read[CreateOppija](request.body)
 
-    val result = rekisteri.findOrCreate(oppija)
+    val result = rekisteri.createOrUpdate(oppija)
     result match {
       case Left(HttpError(status, text)) => halt(status, text)
       case Right(id) => id

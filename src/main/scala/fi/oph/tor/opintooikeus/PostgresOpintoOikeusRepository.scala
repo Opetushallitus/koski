@@ -5,6 +5,7 @@ import fi.oph.tor.db.PostgresDriverWithJsonSupport.jsonMethods._
 
 import fi.oph.tor.db.TorDatabase.DB
 import fi.oph.tor.db._
+import fi.oph.tor.http.HttpError
 import fi.oph.tor.json.Json
 import fi.oph.tor.oppija.Oppija
 import fi.oph.tor.user.UserContext
@@ -52,11 +53,24 @@ class PostgresOpintoOikeusRepository(db: DB) extends OpintoOikeusRepository with
   private def withAccess(oikeus: OpintoOikeusRow)(implicit userContext: UserContext) = {
     userContext.hasReadAccess(oikeus.toOpintoOikeus.oppilaitosOrganisaatio)
   }
+
+  override def find(identifier: OpintoOikeusIdentifier)(implicit userContext: UserContext) = {
+    findByOppijaOid(identifier.oppijaOid).find(OpintoOikeusIdentifier(identifier.oppijaOid, _) == identifier)
+  }
+
+  override def update(oppijaOid: String, opintoOikeus: OpintoOikeus) = {
+    // TODO: always overriding existing data can not be the eventual update strategy
+    val rowsUpdated: Int = await(db.run(OpintoOikeudet.filter(_.id === opintoOikeus.id.get).map(_.data).update(new OpintoOikeusRow(oppijaOid, opintoOikeus).data)))
+    rowsUpdated match {
+      case 1 => None
+      case x => Some(HttpError(500, "Unexpected number of updated rows: " + x))
+    }
+  }
 }
 
 case class OpintoOikeusRow(id: Int, oppijaOid: String, data: JValue) {
-  lazy val toOpintoOikeus = {
-    Json.fromJValue[OpintoOikeus](data)
+  lazy val toOpintoOikeus: OpintoOikeus = {
+    Json.fromJValue[OpintoOikeus](data).copy ( id = Some(id) )
   }
 
   def this(oppijaOid: String, opintoOikeus: OpintoOikeus) = {
