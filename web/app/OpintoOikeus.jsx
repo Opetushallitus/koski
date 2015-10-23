@@ -23,7 +23,7 @@ const RakenneOsa = React.createClass({
       ? <div className="rakenne-moduuli">
           <span className="name">{rakenneOsa.nimi}</span>
           <ul className="osat">
-            { rakenneOsa.osat.map(osa => <li><RakenneOsa rakenneOsa={osa} /></li>) }
+            { rakenneOsa.osat.map((osa, i) => <li key={i}><RakenneOsa rakenneOsa={osa} /></li>) }
           </ul>
         </div>
       : <div className="tutkinnon-osa">
