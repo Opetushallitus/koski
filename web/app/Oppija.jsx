@@ -14,8 +14,11 @@ export const oppijaP = selectOppijaE.flatMapLatest(oppija =>
   Bacon.once(oppija)
     .concat(opintoOikeusChange.map( changedOpintoOikeus => {
       let changedOppija = Ramda.clone(oppija)
-      let index = 0 // TODO: currently always editing the first opintooikeus, should identify with key fields
-      changedOppija.opintoOikeudet[index] = changedOpintoOikeus
+      changedOppija.opintoOikeudet = changedOppija.opintoOikeudet.map(opintoOikeus =>
+          opintoOikeus.id == changedOpintoOikeus.id
+            ? changedOpintoOikeus
+            : opintoOikeus
+      )
       return changedOppija
     }))
 ).toProperty()
@@ -56,6 +59,10 @@ oppijaP.sampledBy(opintoOikeusChange, (oppija, opintoOikeus) => ({
   oid: oppija.oid,
   opintoOikeudet: [opintoOikeus]
 })).onValue(oppijaUpdate => {
+
+  // TODO: handle errors
+
+
   const createOppijaS = Http.post('/tor/api/oppija', oppijaUpdate)
 
   createOppijaS.onValue(oid => console.log("SAVED", oid))
