@@ -128,7 +128,6 @@ describe('TOR', function() {
         .then(addOppija.enterValidData(oppijaData))
         .then(addOppija.submit)
         .then(wait.until(function() {
-          console.log("check", page.getSelectedOppija())
           return page.getSelectedOppija().indexOf(oppijaData.hetu) > 0
         }))
     }
@@ -153,18 +152,6 @@ describe('TOR', function() {
           expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
           expect(opinnot.getOppilaitos()).to.equal('Helsingin Ammattioppilaitos')
         })
-      })
-    })
-
-    describe('Tutkinnon rakenne', function() {
-      describe('Kun valitaan osaamisala ja suoritustapa', function() {
-        before(addNewOppija('kalle', 'Tunkkila', { hetu: '091095-9833'}))
-        before(opinnot.selectSuoritustapa("ops"), opinnot.selectOsaamisala("1527"))
-
-        it('Näytetään tutkinnon rakenne', function() {
-          expect(opinnot.getTutkinnonOsat()[0]).to.equal('Myynti ja tuotetuntemus')
-        })
-
       })
     })
 
@@ -310,6 +297,19 @@ describe('TOR', function() {
           expect(addOppija.isEnabled()).to.equal(false)
         })
       })
+    })
+  })
+
+
+  describe('Tutkinnon rakenne', function() {
+    describe('Kun valitaan osaamisala ja suoritustapa', function() {
+      before(addNewOppija('kalle', 'Tunkkila', { hetu: '091095-9833'}))
+      before(opinnot.selectSuoritustapa("ops"), opinnot.selectOsaamisala("1527"))
+
+      it('Näytetään tutkinnon rakenne', function() {
+        expect(opinnot.getTutkinnonOsat()[0]).to.equal('Myynti ja tuotetuntemus')
+      })
+
     })
   })
 

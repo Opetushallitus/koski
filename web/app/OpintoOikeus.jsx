@@ -3,7 +3,6 @@ import Bacon from 'baconjs'
 import R from 'ramda'
 
 export const opintoOikeusChange = Bacon.Bus()
-opintoOikeusChange.log("change")
 
 const changeOpintoOikeus = (opintoOikeus, change) => opintoOikeusChange.push(R.merge(opintoOikeus, change))
 
