@@ -1,5 +1,6 @@
 package fi.oph.tor.eperusteet
 
+import fi.oph.tor.tutkinto
 import fi.oph.tor.tutkinto._
 import org.json4s.JsonAST.JObject
 import org.json4s.reflect.TypeInfo
@@ -7,12 +8,16 @@ import org.json4s._
 
 object EPerusteetTutkintoRakenne {
   def convertRakenne(rakenne: EPerusteRakenne): TutkintoRakenne = {
-    TutkintoRakenne(rakenne.suoritustavat
-      .map(suoritustapa => (suoritustapa.suoritustapakoodi, convertRakenneOsa(rakenne.tutkinnonOsat, suoritustapa.rakenne, suoritustapa.tutkinnonOsaViitteet)))
-      .toMap, rakenne.osaamisalat.map(o => Osaamisala(o.nimi("fi"), o.arvo)))
+    val suoritustavat: List[tutkinto.Suoritustapa] = rakenne.suoritustavat.map { (suoritustapa: ESuoritustapa) =>
+      Suoritustapa(suoritustapa.suoritustapakoodi.capitalize /* TODO: i18n */, suoritustapa.suoritustapakoodi, convertRakenneOsa(rakenne.tutkinnonOsat, suoritustapa.rakenne, suoritustapa.tutkinnonOsaViitteet))
+    }
+
+    val osaamisalat: List[Osaamisala] = rakenne.osaamisalat.map(o => Osaamisala(o.nimi("fi"), o.arvo))
+
+    TutkintoRakenne(suoritustavat, osaamisalat)
   }
 
-  private def convertRakenneOsa(tutkinnonOsat: List[ETutkinnonOsa], rakenneOsa: ERakenneOsa, tutkinnonOsaViitteet: List[TutkinnonOsaViite]): RakenneOsa = {
+  private def convertRakenneOsa(tutkinnonOsat: List[ETutkinnonOsa], rakenneOsa: ERakenneOsa, tutkinnonOsaViitteet: List[ETutkinnonOsaViite]): RakenneOsa = {
     rakenneOsa match {
       case x: ERakenneModuuli => RakenneModuuli(
         x.nimi.getOrElse(Map.empty).getOrElse("fi", ""),
@@ -21,14 +26,15 @@ object EPerusteetTutkintoRakenne {
       )
       case x: ERakenneTutkinnonOsa => tutkinnonOsaViitteet.find(v => v.id.toString == x._tutkinnonOsaViite) match {
         case Some(tutkinnonOsaViite) => TutkinnonOsa(tutkinnonOsat.find(o => o.id.toString == tutkinnonOsaViite._tutkinnonOsa).get.nimi.getOrElse("fi", ""))
+        case None => throw new RuntimeException("Tutkinnonosaviitettä ei löydy: " + x._tutkinnonOsaViite)
       }
     }
   }
 }
 
-case class EPerusteRakenne(id: Long, nimi: Map[String, String], diaarinumero: String, suoritustavat: List[Suoritustapa], tutkinnonOsat: List[ETutkinnonOsa], osaamisalat: List[EOsaamisala])
-case class Suoritustapa(suoritustapakoodi: String, rakenne: ERakenneOsa, tutkinnonOsaViitteet: List[TutkinnonOsaViite])
-case class TutkinnonOsaViite(id: Long, _tutkinnonOsa: String)
+case class EPerusteRakenne(id: Long, nimi: Map[String, String], diaarinumero: String, suoritustavat: List[ESuoritustapa], tutkinnonOsat: List[ETutkinnonOsa], osaamisalat: List[EOsaamisala])
+case class ESuoritustapa(suoritustapakoodi: String, rakenne: ERakenneOsa, tutkinnonOsaViitteet: List[ETutkinnonOsaViite])
+case class ETutkinnonOsaViite(id: Long, _tutkinnonOsa: String)
 case class EOsaamisala(nimi: Map[String, String], arvo: String)
 case class EOsaamisalaViite(osaamisalakoodiArvo: String)
 case class ETutkinnonOsa(id: Long, nimi: Map[String, String], koodiArvo: String)

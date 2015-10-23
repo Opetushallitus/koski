@@ -8,7 +8,16 @@ export const OpintoOikeus = React.createClass({
         <h4>Opinto-oikeudet</h4>
         <span className="tutkinto">{opintoOikeus.nimi}</span> <span className="oppilaitos">{opintoOikeus.oppilaitos.nimi}</span>
         { opintoOikeus.rakenne
-          ?  <RakenneOsa rakenneOsa={opintoOikeus.rakenne.suoritustavat.naytto}/>
+          ?
+            <div>
+              <select className="suoritustapa">
+                {opintoOikeus.rakenne.suoritustavat.map(s => <option>{s.nimi}</option>)}
+              </select>
+              <select className="osaamisala">
+                {opintoOikeus.rakenne.osaamisalat.map(o => <option>{o.nimi}</option>)}
+              </select>
+              <RakenneOsa rakenneOsa={opintoOikeus.rakenne.suoritustavat.find(x => x.koodi == 'naytto').rakenne}/>
+            </div>
           : null
         }
       </div>
