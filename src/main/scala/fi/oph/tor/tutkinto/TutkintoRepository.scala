@@ -6,7 +6,7 @@ import fi.oph.tor.eperusteet.EPerusteetClient
 trait TutkintoRepository {
   def findTutkinnot(oppilaitosId: String, query: String): List[Tutkinto]
   def findByEPerusteDiaarinumero(diaariNumero: String): Option[Tutkinto]
-  def findPerusteRakenne(diaariNumero: String): Option[RakenneOsa]
+  def findPerusteRakenne(diaariNumero: String): Option[TutkintoRakenne]
 }
 
 object TutkintoRepository {

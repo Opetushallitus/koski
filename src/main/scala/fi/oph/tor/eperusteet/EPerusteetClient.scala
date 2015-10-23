@@ -20,10 +20,10 @@ class EPerusteetClient(ePerusteetRoot: String) extends TutkintoRepository {
     }
   }
 
-  override def findPerusteRakenne(diaariNumero: String): Option[RakenneOsa] = {
+  override def findPerusteRakenne(diaariNumero: String) = {
     http(ePerusteetRoot + s"/api/perusteet/diaari?diaarinumero=$diaariNumero")(Http.parseJsonOptional[EPerusteTunniste])
       .map(e => http(ePerusteetRoot + "/api/perusteet/" + e.id + "/kaikki")(Http.parseJson[EPerusteRakenne]))
-      .flatMap(EPerusteetTutkintoRakenne.convertRakenne)
+      .map(EPerusteetTutkintoRakenne.convertRakenne)
   }
 }
 

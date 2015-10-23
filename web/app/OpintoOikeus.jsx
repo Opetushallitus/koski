@@ -8,7 +8,7 @@ export const OpintoOikeus = React.createClass({
         <h4>Opinto-oikeudet</h4>
         <span className="tutkinto">{opintoOikeus.nimi}</span> <span className="oppilaitos">{opintoOikeus.oppilaitos.nimi}</span>
         { opintoOikeus.rakenne
-          ?  <RakenneOsa rakenneOsa={opintoOikeus.rakenne}/>
+          ?  <RakenneOsa rakenneOsa={opintoOikeus.rakenne.suoritustavat.naytto}/>
           : null
         }
       </div>

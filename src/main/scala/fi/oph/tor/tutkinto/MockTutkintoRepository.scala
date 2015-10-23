@@ -16,9 +16,9 @@ class MockTutkintoRepository extends TutkintoRepository {
 
   override def findByEPerusteDiaarinumero(id: String) = tutkinnot.filter(_.ePerusteDiaarinumero == id).headOption
 
-  override def findPerusteRakenne(diaariNumero: String): Option[RakenneOsa] = {
+  override def findPerusteRakenne(diaariNumero: String) = {
     val string = scala.io.Source.fromFile("src/main/resources/mockdata/eperusteet/612.json").mkString
     val rakenne = parse(string).extract[EPerusteRakenne]
-    EPerusteetTutkintoRakenne.convertRakenne(rakenne)
+    Some(EPerusteetTutkintoRakenne.convertRakenne(rakenne))
   }
 }

@@ -4,7 +4,7 @@ import fi.oph.tor.http.HttpError
 import fi.oph.tor.opintooikeus.{OpintoOikeus, OpintoOikeusRepository}
 import fi.oph.tor.oppija._
 import fi.oph.tor.oppilaitos.OppilaitosRepository
-import fi.oph.tor.tutkinto.{RakenneOsa, TutkintoRepository}
+import fi.oph.tor.tutkinto.{TutkintoRakenne, RakenneOsa, TutkintoRepository}
 import fi.oph.tor.user.UserContext
 
 class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
@@ -62,7 +62,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
 
 case class TorOppijaView(oid: String, sukunimi: String, etunimet: String, hetu: String, opintoOikeudet: Seq[TorOpintoOikeusView])
 
-case class TorOpintoOikeusView(nimi: String, oppilaitos: TorOppilaitosView, rakenne: Option[RakenneOsa])
+case class TorOpintoOikeusView(nimi: String, oppilaitos: TorOppilaitosView, rakenne: Option[TutkintoRakenne])
 
 case class TorOppilaitosView(nimi: String)
 
