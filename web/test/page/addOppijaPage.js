@@ -67,11 +67,11 @@ function AddOppijaPage() {
         'sukunimi':'Toivola',
         'kutsumanimi':'Testi',
         'hetu':'010101-123N',
-        'opintoOikeus':
-        {
-          'organisaatioId':'1',
-          'ePerusteDiaarinumero':'39/011/2014'
-        }
+        'opintoOikeudet':
+        [{
+          'oppilaitosOrganisaatio':'1',
+          'ePerusteetDiaarinumero':'39/011/2014'
+        }]
       }
 
       data = _.merge(defaults, {}, data)

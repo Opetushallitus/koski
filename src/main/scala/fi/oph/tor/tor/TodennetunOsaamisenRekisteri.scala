@@ -18,24 +18,43 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     filtered
   }
 
-  def findOrCreate(oppija: CreateOppijaAndOpintoOikeus)(implicit userContext: UserContext): Either[HttpError, Oppija.Id] = {
-    if(tutkintoRepository.findByEPerusteDiaarinumero(oppija.opintoOikeus.ePerusteDiaarinumero).isEmpty) {
-      Left(HttpError(400, "Invalid ePeruste: " + oppija.opintoOikeus.ePerusteDiaarinumero))
+  def findOrCreate(oppija: CreateOppija)(implicit userContext: UserContext): Either[HttpError, Oppija.Id] = {
+    if (oppija.opintoOikeudet.length == 0) {
+      Left(HttpError(400, "At least one OpintoOikeus required"))
     }
-    else if(!userContext.hasReadAccess(oppija.opintoOikeus.organisaatioId)) {
-      Left(HttpError(403, "Forbidden"))
-    } else {
-      val result = oppijaRepository.findOrCreate(oppija)
-      result.right.flatMap { oid: String =>
-        opintoOikeusRepository
-          .findOrCreate(OpintoOikeus(oppija.opintoOikeus.ePerusteDiaarinumero, oid, oppija.opintoOikeus.organisaatioId))
-          .right
-          .map { id: Int => oid }
+    else {
+      oppija.opintoOikeudet.flatMap(oikeus => validateOpintoOikeus(oikeus)).headOption match {
+        case Some(error) => Left(error)
+        case _ =>
+          val result = oppijaRepository.findOrCreate(oppija)
+          result.right.flatMap { oppijaOid: String =>
+            val opintoOikeusCreationResults = oppija.opintoOikeudet.map { opintoOikeus =>
+              opintoOikeusRepository.findOrCreate(oppijaOid, opintoOikeus)
+            }
+            opintoOikeusCreationResults.find(_.isLeft) match {
+              case Some(Left(error)) => Left(error)
+              case _ => Right(oppijaOid)
+            }
+          }
       }
     }
   }
 
-  def userView(oid: String)(implicit userContext: UserContext): Either[HttpError, TorOppijaView] = oppijaRepository.findById(oid) match {
+  def validateOpintoOikeus(opintoOikeus: OpintoOikeus)(implicit userContext: UserContext) = {
+    if(!userContext.hasReadAccess(opintoOikeus.oppilaitosOrganisaatio)) {
+      Left(HttpError(403, "Forbidden"))
+    }
+    if(tutkintoRepository.findByEPerusteDiaarinumero(opintoOikeus.ePerusteetDiaarinumero).isEmpty) {
+      Some(HttpError(400, "Invalid ePeruste: " + opintoOikeus.ePerusteetDiaarinumero))
+    }
+    else if(!userContext.hasReadAccess(opintoOikeus.oppilaitosOrganisaatio)) {
+      Some(HttpError(403, "Forbidden"))
+    } else {
+      None
+    }
+  }
+
+  def userView(oid: String)(implicit userContext: UserContext): Either[HttpError, TorOppijaView] = oppijaRepository.findByOid(oid) match {
     case Some(oppija) =>
       opintoOikeudetForOppija(oppija) match {
         case Nil => notFound(oid)
@@ -54,7 +73,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
       tutkinto   <- tutkintoRepository.findByEPerusteDiaarinumero(opintoOikeus.ePerusteetDiaarinumero)
       oppilaitos <- oppilaitosRepository.findById(opintoOikeus.oppilaitosOrganisaatio)
     } yield {
-      TorOpintoOikeusView(tutkinto.nimi, TorOppilaitosView(oppilaitos.nimi), tutkintoRepository.findPerusteRakenne(tutkinto.ePerusteDiaarinumero))
+      TorOpintoOikeusView(tutkinto.ePerusteetDiaarinumero, oppilaitos.organisaatioId, tutkinto.nimi, TorOppilaitosView(oppilaitos.nimi), tutkintoRepository.findPerusteRakenne(tutkinto.ePerusteetDiaarinumero))
     }
   }
 }
@@ -62,13 +81,8 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
 
 case class TorOppijaView(oid: String, sukunimi: String, etunimet: String, hetu: String, opintoOikeudet: Seq[TorOpintoOikeusView])
 
-case class TorOpintoOikeusView(nimi: String, oppilaitos: TorOppilaitosView, rakenne: Option[TutkintoRakenne])
+case class TorOpintoOikeusView(ePerusteetDiaarinumero: String, oppilaitosOrganisaatio: String, nimi: String, oppilaitos: TorOppilaitosView, rakenne: Option[TutkintoRakenne])
 
 case class TorOppilaitosView(nimi: String)
 
-case class CreateOppijaAndOpintoOikeus(
-                                        etunimet: String, kutsumanimi: String, sukunimi: String, hetu: String,
-                                        opintoOikeus: CreateOpintoOikeus
-                                        ) extends CreateOppija
-
-case class CreateOpintoOikeus(ePerusteDiaarinumero: String, organisaatioId: String)
+case class CreateOppija(oid: Option[String], hetu: Option[String], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], opintoOikeudet: List[OpintoOikeus])

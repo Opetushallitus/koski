@@ -1,6 +1,7 @@
 package fi.oph.tor.oppija
 
 import fi.oph.tor.http.HttpError
+import fi.oph.tor.tor.CreateOppija
 
 class MockOppijaRepository extends OppijaRepository {
   val eero = Oppija(generateId, "esimerkki", "eero", "010101-123N")
@@ -30,11 +31,11 @@ class MockOppijaRepository extends OppijaRepository {
     oppijat.filter(searchString(_).contains(query))
   }
 
-  override def create(oppija: CreateOppija): Either[HttpError, Oppija.Id] = {
-    if (oppijat.find(o => o.hetu == oppija.hetu).isDefined) {
+  override def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String): Either[HttpError, Oppija.Id] = {
+    if (oppijat.find { o => (o.hetu == hetu) } .isDefined) {
       Left(HttpError(409, "conflict"))
     } else {
-      val newOppija = Oppija(generateId, oppija.sukunimi, oppija.etunimet, oppija.hetu)
+      val newOppija = Oppija(generateId, sukunimi, etunimet, hetu)
       oppijat = oppijat :+ newOppija
       Right(newOppija.oid)
     }
@@ -54,5 +55,5 @@ class MockOppijaRepository extends OppijaRepository {
     idCounter = defaultOppijat.length
   }
 
-  override def findById(id: String): Option[Oppija] = oppijat.filter(_.oid == id).headOption
+  override def findByOid(id: String): Option[Oppija] = oppijat.filter(_.oid == id).headOption
 }

@@ -3,7 +3,7 @@ package fi.oph.tor.oppija
 import fi.oph.tor.http.HttpError
 import fi.oph.tor.json.Json
 import fi.oph.tor.security.RequiresAuthentication
-import fi.oph.tor.tor.{CreateOppijaAndOpintoOikeus, TodennetunOsaamisenRekisteri}
+import fi.oph.tor.tor.{CreateOppija, TodennetunOsaamisenRekisteri}
 import fi.oph.tor.user.UserRepository
 import fi.oph.tor.{ErrorHandlingServlet, InvalidRequestException}
 import fi.vm.sade.utils.slf4j.Logging
@@ -30,7 +30,7 @@ class OppijaServlet(rekisteri: TodennetunOsaamisenRekisteri)(implicit val userRe
 
   post("/") {
     contentType = "text/plain;charset=utf-8"
-    val oppija: CreateOppijaAndOpintoOikeus = Json.read[CreateOppijaAndOpintoOikeus](request.body)
+    val oppija: CreateOppija = Json.read[CreateOppija](request.body)
 
     val result = rekisteri.findOrCreate(oppija)
     result match {

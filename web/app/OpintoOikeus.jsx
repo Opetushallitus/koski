@@ -34,7 +34,7 @@ export const OpintoOikeus = React.createClass({
   }
 })
 
-const withEmptyValue = (xs) => [{ koodi: "", nimi: 'Valitse...'}].concat(xs)
+const withEmptyValue = (xs) => [{ koodi: '', nimi: 'Valitse...'}].concat(xs)
 
 const Rakenneosa = React.createClass({
   render() {
