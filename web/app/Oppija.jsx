@@ -3,11 +3,22 @@ import Bacon from 'baconjs'
 import Http from './http'
 import {routeP} from './router'
 import {CreateOppija} from './CreateOppija.jsx'
-import {OpintoOikeus} from './OpintoOikeus.jsx'
+import {OpintoOikeus, opintoOikeusChange} from './OpintoOikeus.jsx'
+import Ramda from 'ramda'
 
-export const oppijaP = routeP.map('.oppijaId').flatMap(oppijaId => {
+var selectOppijaE = routeP.map('.oppijaId').flatMap(oppijaId => {
   return oppijaId ? Bacon.once(undefined).concat(Http.get(`/tor/api/oppija/${oppijaId}`)) : Bacon.once(undefined)
-}).toProperty()
+})
+
+export const oppijaP = selectOppijaE.flatMapLatest(oppija =>
+  Bacon.once(oppija)
+    .concat(opintoOikeusChange.map( changedOpintoOikeus => {
+      let changedOppija = Ramda.clone(oppija)
+      let index = 0 // TODO: currently always editing the first opintooikeus, should identify with key fields
+      changedOppija.opintoOikeudet[index] = changedOpintoOikeus
+      return changedOppija
+    }))
+).toProperty()
 
 export const uusiOppijaP = routeP.map(route => { return !!route.uusiOppija })
 

@@ -1,4 +1,11 @@
 import React from 'react'
+import Bacon from 'baconjs'
+import R from 'ramda'
+
+export const opintoOikeusChange = Bacon.Bus()
+opintoOikeusChange.log("change")
+
+const changeOpintoOikeus = (opintoOikeus, change) => opintoOikeusChange.push(R.merge(opintoOikeus, change))
 
 export const OpintoOikeus = React.createClass({
   render() {
@@ -10,13 +17,16 @@ export const OpintoOikeus = React.createClass({
         { opintoOikeus.rakenne
           ?
             <div>
-              <select className="suoritustapa">
-                {opintoOikeus.rakenne.suoritustavat.map(s => <option>{s.nimi}</option>)}
+              <select className="suoritustapa" value={opintoOikeus.suoritustapa} onChange={(event) => changeOpintoOikeus(opintoOikeus, {'suoritustapa': event.target.value || undefined })}>
+                {withEmptyValue(opintoOikeus.rakenne.suoritustavat).map(s => <option key={s.koodi} value={s.koodi}>{s.nimi}</option>)}
               </select>
-              <select className="osaamisala">
-                {opintoOikeus.rakenne.osaamisalat.map(o => <option>{o.nimi}</option>)}
+              <select className="osaamisala" value={opintoOikeus.osaamisala} onChange={(event) => changeOpintoOikeus(opintoOikeus, {'osaamisala': event.target.value || undefined })}>
+                {withEmptyValue(opintoOikeus.rakenne.osaamisalat).map(o => <option key={o.koodi} value={o.koodi}>{o.nimi}</option>)}
               </select>
-              <RakenneOsa rakenneOsa={opintoOikeus.rakenne.suoritustavat.find(x => x.koodi == 'naytto').rakenne}/>
+              { opintoOikeus.suoritustapa
+                ? <Rakenneosa rakenneosa={opintoOikeus.rakenne.suoritustavat.find(x => x.koodi == opintoOikeus.suoritustapa).rakenne} osaamisala={opintoOikeus.osaamisala}/>
+                : null
+              }
             </div>
           : null
         }
@@ -25,18 +35,23 @@ export const OpintoOikeus = React.createClass({
   }
 })
 
-const RakenneOsa = React.createClass({
+const withEmptyValue = (xs) => [{ koodi: "", nimi: 'Valitse...'}].concat(xs)
+
+const Rakenneosa = React.createClass({
   render() {
-    let { rakenneOsa } = this.props
-    return rakenneOsa.osat
+    let { rakenneosa, osaamisala } = this.props
+    return rakenneosa.osat
       ? <div className="rakenne-moduuli">
-          <span className="name">{rakenneOsa.nimi}</span>
+          <span className="name">{rakenneosa.nimi}</span>
           <ul className="osat">
-            { rakenneOsa.osat.map((osa, i) => <li key={i}><RakenneOsa rakenneOsa={osa} /></li>) }
+            { rakenneosa.osat
+                .filter(osa => { return !osa.osaamisalaKoodi || osa.osaamisalaKoodi == osaamisala})
+                .map((osa, i) => <li key={i}><Rakenneosa rakenneosa={osa} osaamisala={osaamisala} /></li>)
+            }
           </ul>
         </div>
       : <div className="tutkinnon-osa">
-          <span className="name">{rakenneOsa.nimi}</span>
+          <span className="name">{rakenneosa.nimi}</span>
         </div>
   }
 })

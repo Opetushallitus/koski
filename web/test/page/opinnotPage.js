@@ -1,17 +1,26 @@
 function OpinnotPage() {
 
   function oppija() { return S('.oppija') }
+  function tutkinnonOsa() { return S('.tutkinnon-osa') }
+  function opintoOikeus() { return S('.opintooikeus')}
 
   var api = {
-    getTutkinto() {
+    getTutkinto: function() {
       return S('.opintooikeus .tutkinto').text()
     },
-    getOppilaitos() {
+    getOppilaitos: function() {
       return S('.opintooikeus .oppilaitos').text()
     },
-    getTutkinnonOsat() {
-      return textsOf(S('.tutkinnon-osa'))
+    getTutkinnonOsat: function() {
+      return textsOf(tutkinnonOsa())
+    },
+    selectSuoritustapa: function(suoritustapa) {
+      return Page(opintoOikeus).setInputValue(".suoritustapa", suoritustapa)
+    },
+    selectOsaamisala: function(osaamisala) {
+      return Page(opintoOikeus).setInputValue(".osaamisala", osaamisala)
     }
+
   }
 
   return api
