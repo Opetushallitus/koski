@@ -23,9 +23,6 @@ class PostgresOpintoOikeusRepository(db: DB) extends OpintoOikeusRepository with
 
   // Note: this is a naive implementation. All filtering should be moved to query-level instead of in-memory-level
 
-  private def findAllRows(implicit userContext: UserContext): Seq[OpintoOikeusRow] = {
-    await(db.run(OpintoOikeudet.result)).filter(withAccess)
-  }
 
   override def filterOppijat(oppijat: Seq[Oppija])(implicit userContext: UserContext) = {
     val all = findAllRows
@@ -33,9 +30,7 @@ class PostgresOpintoOikeusRepository(db: DB) extends OpintoOikeusRepository with
   }
 
   override def findByOppijaOid(oid: String)(implicit userContext: UserContext): Seq[OpintoOikeus] = {
-    await(
-      db.run(OpintoOikeudet.filter(_.oppijaOid === oid).result)
-    ).map(_.toOpintoOikeus).filter(withAccess)
+    find(OpintoOikeudet.filter(_.oppijaOid === oid))
   }
 
   override def create(oppijaOid: String, opintoOikeus: OpintoOikeus) = {
@@ -46,16 +41,13 @@ class PostgresOpintoOikeusRepository(db: DB) extends OpintoOikeusRepository with
     findAllRows.map(_.toOpintoOikeus)
   }
 
-  private def withAccess(oikeus: OpintoOikeus)(implicit userContext: UserContext) = {
-    userContext.hasReadAccess(oikeus.oppilaitosOrganisaatio)
-  }
-
-  private def withAccess(oikeus: OpintoOikeusRow)(implicit userContext: UserContext) = {
-    userContext.hasReadAccess(oikeus.toOpintoOikeus.oppilaitosOrganisaatio)
-  }
-
-  override def find(identifier: OpintoOikeusIdentifier)(implicit userContext: UserContext) = {
-    findByOppijaOid(identifier.oppijaOid).find(OpintoOikeusIdentifier(identifier.oppijaOid, _) == identifier)
+  override def find(identifier: OpintoOikeusIdentifier)(implicit userContext: UserContext) = identifier match{
+    case PrimaryKey(id) => find(OpintoOikeudet.filter(_.id === id)).headOption
+    case IdentifyingSetOfFields(oppijaOid, oppilaitosOrganisaatio, ePerusteetDiaarinumero) => {
+      findByOppijaOid(oppijaOid).find({
+        new IdentifyingSetOfFields(oppijaOid, _) == identifier
+      })
+    }
   }
 
   override def update(oppijaOid: String, opintoOikeus: OpintoOikeus) = {
@@ -65,6 +57,22 @@ class PostgresOpintoOikeusRepository(db: DB) extends OpintoOikeusRepository with
       case 1 => None
       case x => Some(HttpError(500, "Unexpected number of updated rows: " + x))
     }
+  }
+
+  private def findAllRows(implicit userContext: UserContext): Seq[OpintoOikeusRow] = {
+    findRows(OpintoOikeudet)
+  }
+
+  private def find(filter: Query[OpintoOikeusTable, OpintoOikeusRow, Seq])(implicit userContext: UserContext): Seq[OpintoOikeus] = {
+    findRows(filter).map(_.toOpintoOikeus)
+  }
+
+  private def findRows(filter: PostgresDriverWithJsonSupport.api.Query[OpintoOikeusTable, OpintoOikeusRow, Seq])(implicit userContext: UserContext): Seq[OpintoOikeusRow] = {
+    await(db.run(filter.result)).filter(withAccess)
+  }
+
+  private def withAccess(oikeus: OpintoOikeusRow)(implicit userContext: UserContext) = {
+    userContext.hasReadAccess(oikeus.toOpintoOikeus.oppilaitosOrganisaatio)
   }
 }
 

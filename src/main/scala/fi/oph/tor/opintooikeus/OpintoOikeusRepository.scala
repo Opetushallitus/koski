@@ -13,7 +13,7 @@ trait OpintoOikeusRepository {
   def update(oppijaOid: String, opintoOikeus: OpintoOikeus): Option[HttpError]
 
   def createOrUpdate(oppijaOid: String, opintoOikeus: OpintoOikeus)(implicit userContext: UserContext): Either[HttpError, OpintoOikeus.Id] = {
-    val opintoOikeudet: Option[OpintoOikeus] = find(OpintoOikeusIdentifier(oppijaOid, opintoOikeus)) // TODO: should prefer primary key (id field) if available
+    val opintoOikeudet: Option[OpintoOikeus] = find(OpintoOikeusIdentifier(oppijaOid, opintoOikeus))
     opintoOikeudet match {
       case Some(oikeus) => update(oppijaOid, opintoOikeus.copy(id = oikeus.id)) match {
         case Some(error) => Left(error)

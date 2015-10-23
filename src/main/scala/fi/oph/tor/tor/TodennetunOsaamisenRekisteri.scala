@@ -73,7 +73,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
       tutkinto   <- tutkintoRepository.findByEPerusteDiaarinumero(opintoOikeus.ePerusteetDiaarinumero)
       oppilaitos <- oppilaitosRepository.findById(opintoOikeus.oppilaitosOrganisaatio)
     } yield {
-      TorOpintoOikeusView(tutkinto.ePerusteetDiaarinumero, oppilaitos.organisaatioId, tutkinto.nimi, TorOppilaitosView(oppilaitos.nimi), opintoOikeus.suoritustapa, opintoOikeus.osaamisala, tutkintoRepository.findPerusteRakenne(tutkinto.ePerusteetDiaarinumero))
+      TorOpintoOikeusView(opintoOikeus.id, tutkinto.ePerusteetDiaarinumero, oppilaitos.organisaatioId, tutkinto.nimi, TorOppilaitosView(oppilaitos.nimi), opintoOikeus.suoritustapa, opintoOikeus.osaamisala, tutkintoRepository.findPerusteRakenne(tutkinto.ePerusteetDiaarinumero))
     }
   }
 }
@@ -82,7 +82,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
 case class TorOppijaView(oid: String, sukunimi: String, etunimet: String, hetu: String, opintoOikeudet: Seq[TorOpintoOikeusView])
 
 // TODO: tänne taitaa kertyä duplikaatiota
-case class TorOpintoOikeusView(ePerusteetDiaarinumero: String, oppilaitosOrganisaatio: String, nimi: String, oppilaitos: TorOppilaitosView, suoritustapa: Option[String], osaamisala: Option[String], rakenne: Option[TutkintoRakenne])
+case class TorOpintoOikeusView(id: Option[Int], ePerusteetDiaarinumero: String, oppilaitosOrganisaatio: String, nimi: String, oppilaitos: TorOppilaitosView, suoritustapa: Option[String], osaamisala: Option[String], rakenne: Option[TutkintoRakenne])
 
 case class TorOppilaitosView(nimi: String)
 
