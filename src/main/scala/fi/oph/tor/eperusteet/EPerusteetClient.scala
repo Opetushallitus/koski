@@ -16,7 +16,7 @@ class EPerusteetClient(ePerusteetRoot: String) extends TutkintoRepository {
 
   private def ePerusteetToTutkinnot(perusteet: EPerusteet) = {
     perusteet.data.flatMap { peruste =>
-      peruste.koulutukset.map(koulutus => Tutkinto(koulutus.nimi("fi"), peruste.diaarinumero, koulutus.koulutuskoodiArvo))
+      peruste.koulutukset.map(koulutus => Tutkinto(peruste.diaarinumero, koulutus.koulutuskoodiArvo, koulutus.nimi.get("fi")))
     }
   }
 

@@ -12,7 +12,7 @@ export const OpintoOikeus = React.createClass({
     return (
       <div className="opintooikeus">
         <h4>Opinto-oikeudet</h4>
-        <span className="tutkinto">{opintoOikeus.nimi}</span> <span className="oppilaitos">{opintoOikeus.oppilaitosOrganisaatio.nimi}</span>
+        <span className="tutkinto">{opintoOikeus.tutkinto.nimi}</span> <span className="oppilaitos">{opintoOikeus.oppilaitosOrganisaatio.nimi}</span>
         { opintoOikeus.rakenne
           ?
             <div className="tutkinto-rakenne">

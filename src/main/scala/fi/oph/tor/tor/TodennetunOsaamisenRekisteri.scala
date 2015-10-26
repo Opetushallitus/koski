@@ -44,8 +44,8 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     if(!userContext.hasReadAccess(opintoOikeus.oppilaitosOrganisaatio)) {
       Left(HttpError(403, "Forbidden"))
     }
-    if(tutkintoRepository.findByEPerusteDiaarinumero(opintoOikeus.ePerusteetDiaarinumero).isEmpty) {
-      Some(HttpError(400, "Invalid ePeruste: " + opintoOikeus.ePerusteetDiaarinumero))
+    if(tutkintoRepository.findByEPerusteDiaarinumero(opintoOikeus.tutkinto.ePerusteetDiaarinumero).isEmpty) {
+      Some(HttpError(400, "Invalid ePeruste: " + opintoOikeus.tutkinto.ePerusteetDiaarinumero))
     }
     else if(!userContext.hasReadAccess(opintoOikeus.oppilaitosOrganisaatio)) {
       Some(HttpError(403, "Forbidden"))
@@ -70,10 +70,10 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
   private def opintoOikeudetForOppija(oppija: Oppija)(implicit userContext: UserContext): Seq[TorOpintoOikeusView] = {
     for {
       opintoOikeus   <- opintoOikeusRepository.findByOppijaOid(oppija.oid)
-      tutkinto   <- tutkintoRepository.findByEPerusteDiaarinumero(opintoOikeus.ePerusteetDiaarinumero)
+      tutkinto   <- tutkintoRepository.findByEPerusteDiaarinumero(opintoOikeus.tutkinto.ePerusteetDiaarinumero)
       oppilaitos <- oppilaitosRepository.findById(opintoOikeus.oppilaitosOrganisaatio.oid)
     } yield {
-      TorOpintoOikeusView(tutkinto.ePerusteetDiaarinumero, oppilaitos, opintoOikeus.suoritustapa, opintoOikeus.osaamisala, opintoOikeus.id, tutkinto.nimi, tutkintoRepository.findPerusteRakenne(tutkinto.ePerusteetDiaarinumero))
+      TorOpintoOikeusView(tutkinto, oppilaitos, opintoOikeus.suoritustapa, opintoOikeus.osaamisala, opintoOikeus.id, tutkintoRepository.findPerusteRakenne(tutkinto.ePerusteetDiaarinumero))
     }
   }
 }

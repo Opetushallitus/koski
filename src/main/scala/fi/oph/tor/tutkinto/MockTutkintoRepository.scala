@@ -7,7 +7,7 @@ import Json._
 
 class MockTutkintoRepository extends TutkintoRepository {
   def tutkinnot = List(
-    Tutkinto("Autoalan perustutkinto", ePerusteetDiaarinumero =  "39/011/2014", tutkintoKoodi =  "351301")
+    Tutkinto("39/011/2014", "351301", Some("Autoalan perustutkinto"))
   )
 
   override def findTutkinnot(oppilaitosId: String, query: String) = {

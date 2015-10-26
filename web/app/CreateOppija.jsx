@@ -84,7 +84,7 @@ export const CreateOppija = React.createClass({
 
   toCreateOppija() {
     const {etunimet, sukunimi, kutsumanimi, hetu} = this.oppijaFromDom()
-    const {tutkinto: {ePerusteetDiaarinumero: peruste}, oppilaitos: oppilaitosOrganisaatio} = this.state.opintoOikeus
+    const {tutkinto: tutkinto, oppilaitos: oppilaitosOrganisaatio} = this.state.opintoOikeus
 
     return {
       etunimet: etunimet,
@@ -93,7 +93,7 @@ export const CreateOppija = React.createClass({
       hetu: hetu,
       opintoOikeudet: [{
         oppilaitosOrganisaatio: oppilaitosOrganisaatio,
-        ePerusteetDiaarinumero: peruste
+        tutkinto: tutkinto
       }]
     }
   },

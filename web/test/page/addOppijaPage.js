@@ -69,8 +69,8 @@ function AddOppijaPage() {
         'hetu':'010101-123N',
         'opintoOikeudet':
         [{
-          'oppilaitosOrganisaatio': { oid: '1' },
-          'ePerusteetDiaarinumero':'39/011/2014'
+          oppilaitosOrganisaatio: { oid: '1' },
+          tutkinto: {ePerusteetDiaarinumero:'39/011/2014', tutkintoKoodi: '351301'}
         }]
       }
 

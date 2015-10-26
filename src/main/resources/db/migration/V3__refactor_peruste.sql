@@ -1,0 +1,1 @@
+alter table opintooikeus drop constraint validate_peruste;

@@ -390,11 +390,11 @@ describe('TOR', function() {
       })
 
       describe('Kun opinto-oikeutta yritetään lisätä oppilaitokseen, johon käyttäjällä ei ole pääsyä', function() {
-        it('palautetaan HTTP 403 virhe', verifyResponseCode({ 'opintoOikeudet': [{ 'oppilaitosOrganisaatio':{oid: 'eipaasya'}, 'ePerusteetDiaarinumero':'39/011/2014'}]}, 403))
+        it('palautetaan HTTP 403 virhe', verifyResponseCode({ 'opintoOikeudet': [{ 'oppilaitosOrganisaatio':{oid: 'eipaasya'}, tutkinto: {'ePerusteetDiaarinumero':'39/011/2014', tutkintoKoodi: '351301'}}]}, 403))
       })
 
       describe('Kun yritetään lisätä opinto-oikeus virheelliseen perusteeseen', function() {
-        it('palautetaan HTTP 400 virhe', verifyResponseCode({ 'opintoOikeudet': [{ 'oppilaitosOrganisaatio':{oid: '1'}, 'ePerusteetDiaarinumero':'virheellinen'}]}, 400))
+        it('palautetaan HTTP 400 virhe', verifyResponseCode({ 'opintoOikeudet': [{ 'oppilaitosOrganisaatio':{oid: '1'}, tutkinto: {'ePerusteetDiaarinumero':'virheellinen', tutkintoKoodi: '351301'}}]}, 400))
       })
     })
   })
