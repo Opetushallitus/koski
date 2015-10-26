@@ -27,8 +27,6 @@ const stateP = Bacon.combineTemplate({
 // Stays at `true` for five seconds after latest saved change. Reset to `false` when another Oppija is selected.
 const savedP = updateResultE.flatMapLatest(() => Bacon.once(true).concat((stateP.changes().merge(Bacon.later(5000))).map(false))).toProperty(false).skipDuplicates()
 
-savedP.log("saved")
-
 // Renderered Virtual DOM
 const domP = Bacon.combineWith(stateP, errorP(Bacon.combineAsArray(stateP, savedP)), savedP, ({user, oppijaHaku, oppija, searchInProgress}, error, saved) =>
     <div>

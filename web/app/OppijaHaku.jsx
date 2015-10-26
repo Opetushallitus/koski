@@ -16,10 +16,10 @@ const oppijaE = oppijaP.toEventStream().filter(Bacon._.id)
 export const oppijatP = Bacon.update(
   { query: '', results: [] },
   hakuTulosE, ((current, hakutulos) => hakutulos),
-  oppijaE.map(".henkilo"), ((current, valittu) => current.results.filter((oppija) => oppija.oid === valittu.oid).length ? current : { query: '', results: [valittu] })
+  oppijaE.map('.henkilo'), ((current, valittu) => current.results.filter((oppija) => oppija.oid === valittu.oid).length ? current : { query: '', results: [valittu] })
 )
 
-oppijaP.map(".henkilo").sampledBy(oppijatP.map('.results').changes(), (oppija, oppijat) => ({ oppija: oppija, oppijat: oppijat }))
+oppijaP.map('.henkilo').sampledBy(oppijatP.map('.results').changes(), (oppija, oppijat) => ({ oppija: oppija, oppijat: oppijat }))
   .filter(({oppija, oppijat}) => !oppija && oppijat.length === 1)
   .map('.oppijat.0')
   .onValue(navigateToOppija)
