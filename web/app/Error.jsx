@@ -33,8 +33,8 @@ export function requiresLogin(e) {
 }
 
 const errorTexts = {
-  500: "Järjestelmässä tapahtui odottamaton virhe. Yritä myöhemmin uudelleen.",
-  503: "Palvelimeen ei saatu yhteyttä. Yritä myöhemmin uudelleen."
+  500: 'Järjestelmässä tapahtui odottamaton virhe. Yritä myöhemmin uudelleen.',
+  503: 'Palvelimeen ei saatu yhteyttä. Yritä myöhemmin uudelleen.'
 }
 
 export const Error = ({error}) => {
