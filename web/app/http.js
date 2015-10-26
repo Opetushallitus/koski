@@ -25,5 +25,5 @@ const http = (url, options) => {
 
 http.get = (url) => http(url, { credentials: 'include' })
 http.post = (url, entity) => http(url, { credentials: 'include', method: 'post', body: JSON.stringify(entity), headers: { 'Content-Type': 'application/json'} })
-
+window.http = http
 export default http

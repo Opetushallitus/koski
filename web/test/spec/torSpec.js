@@ -335,9 +335,7 @@ describe('TOR', function() {
         it('Muuttuneet tiedot tallennetaan', function() {
           expect(opinnot.getTutkinnonOsat()[0]).to.equal('Myynti ja tuotetuntemus')
         })
-
       })
-
     })
   })
 
