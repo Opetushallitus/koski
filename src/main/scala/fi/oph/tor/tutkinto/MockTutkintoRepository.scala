@@ -1,9 +1,9 @@
 package fi.oph.tor.tutkinto
 
-import fi.oph.tor.eperusteet.{EPerusteetTutkintoRakenne, EPerusteRakenne}
+import fi.oph.tor.arvosana.ArviointiasteikkoRepository
+import fi.oph.tor.eperusteet.{EPerusteRakenne, EPerusteetTutkintoRakenne}
 import fi.oph.tor.json.Json
-import org.json4s.jackson.JsonMethods._
-import Json._
+import fi.oph.tor.json.Json._
 
 class MockTutkintoRepository extends TutkintoRepository {
   def tutkinnot = List(
@@ -16,9 +16,8 @@ class MockTutkintoRepository extends TutkintoRepository {
 
   override def findByEPerusteDiaarinumero(id: String) = tutkinnot.filter(_.ePerusteetDiaarinumero == id).headOption
 
-  override def findPerusteRakenne(diaariNumero: String) = {
-    val string = scala.io.Source.fromFile("src/main/resources/mockdata/eperusteet/612.json").mkString
-    val rakenne = parse(string).extract[EPerusteRakenne]
+  override def findPerusteRakenne(diaariNumero: String)(implicit arviointiAsteikot: ArviointiasteikkoRepository) = {
+    val rakenne = Json.readFile("src/main/resources/mockdata/eperusteet/612.json").extract[EPerusteRakenne]
     Some(EPerusteetTutkintoRakenne.convertRakenne(rakenne))
   }
 }

@@ -1,6 +1,7 @@
 import javax.servlet.ServletContext
 
 import fi.oph.tor.SingleFileServlet
+import fi.oph.tor.arvosana.ArviointiasteikkoRepository
 import fi.oph.tor.config.TorProfile
 import fi.oph.tor.db._
 import fi.oph.tor.fixture.FixtureServlet
@@ -17,13 +18,13 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     val profile: TorProfile with GlobalExecutionContext = Option(context.getAttribute("tor.profile").asInstanceOf[String]).map(TorProfile.fromString(_)).getOrElse(TorProfile.fromSystemProperty)
     val database: TorDatabase = profile.database
     implicit val userRepository = UserRepository(profile.config)
-    val rekisteri = new TodennetunOsaamisenRekisteri(profile.oppijaRepository, profile.opintoOikeusRepository, profile.tutkintoRepository, profile.oppilaitosRepository)
+    val rekisteri = new TodennetunOsaamisenRekisteri(profile.oppijaRepository, profile.opintoOikeusRepository, profile.tutkintoRepository, profile.oppilaitosRepository, profile.arviointiAsteikot)
     context.mount(new OppijaServlet(rekisteri), "/api/oppija")
     context.mount(new UserServlet(profile.directoryClient, profile.userRepository), "/user")
     context.mount(new SingleFileServlet("web/static/index.html"), "/oppija")
     context.mount(new SingleFileServlet("web/static/index.html"), "/uusioppija")
     context.mount(new OppilaitosServlet(profile.oppilaitosRepository), "/api/oppilaitos")
-    context.mount(new TutkintoServlet(profile.tutkintoRepository), "/api/tutkinto")
+    context.mount(new TutkintoServlet(profile.tutkintoRepository, profile.arviointiAsteikot), "/api/tutkinto")
     context.mount(new FixtureServlet(profile), "/fixtures")
     context.mount(new SingleFileServlet("web/static/index.html"), "/")
   }

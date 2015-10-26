@@ -1,5 +1,6 @@
 package fi.oph.tor.tor
 
+import fi.oph.tor.arvosana.ArviointiasteikkoRepository
 import fi.oph.tor.http.HttpError
 import fi.oph.tor.opintooikeus._
 import fi.oph.tor.oppija._
@@ -10,7 +11,8 @@ import fi.oph.tor.user.UserContext
 class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
                                    opintoOikeusRepository: OpintoOikeusRepository,
                                    tutkintoRepository: TutkintoRepository,
-                                   oppilaitosRepository: OppilaitosRepository) {
+                                   oppilaitosRepository: OppilaitosRepository,
+                                   arviointiAsteikot: ArviointiasteikkoRepository) {
 
   def findOppijat(query: String)(implicit userContext: UserContext): Seq[Oppija] = {
     val oppijat: List[Oppija] = oppijaRepository.findOppijat(query)
@@ -70,7 +72,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
       tutkinto   <- tutkintoRepository.findByEPerusteDiaarinumero(opintoOikeus.tutkinto.ePerusteetDiaarinumero)
       oppilaitos <- oppilaitosRepository.findById(opintoOikeus.oppilaitosOrganisaatio.oid)
     } yield {
-      OpintoOikeus(tutkinto.copy(rakenne = tutkintoRepository.findPerusteRakenne(tutkinto.ePerusteetDiaarinumero)), oppilaitos, opintoOikeus.suoritustapa, opintoOikeus.osaamisala, opintoOikeus.id)
+      OpintoOikeus(tutkinto.copy(rakenne = tutkintoRepository.findPerusteRakenne(tutkinto.ePerusteetDiaarinumero)(arviointiAsteikot)), oppilaitos, opintoOikeus.suoritustapa, opintoOikeus.osaamisala, opintoOikeus.id)
     }
   }
 }

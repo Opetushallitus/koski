@@ -3,7 +3,9 @@ package fi.oph.tor.json
 import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
 import fi.oph.tor.eperusteet.RakenneOsaSerializer
 import fi.vm.sade.utils.json4s.GenericJsonFormats
+import org.json4s
 import org.json4s.JsonAST.{JInt, JNull, JString}
+import org.json4s.jackson.JsonMethods._
 import org.json4s.jackson.Serialization
 import org.json4s.{CustomSerializer, Extraction, JValue}
 
@@ -28,6 +30,11 @@ object Json {
 
   def fromJValue[A](x: JValue)(implicit mf : scala.reflect.Manifest[A]): A = {
     x.extract[A]
+  }
+
+
+  def readFile(filename: String): json4s.JValue = {
+    parse(scala.io.Source.fromFile(filename).mkString)
   }
 }
 

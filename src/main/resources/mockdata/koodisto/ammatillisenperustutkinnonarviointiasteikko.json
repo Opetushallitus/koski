@@ -1,0 +1,50 @@
+[
+  {
+    "koodiUri": "ammatillisenperustutkinnonarviointiasteikko_0",
+    "metadata": [
+      {
+        "nimi": "hylätty",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "0"
+  },
+  {
+    "koodiUri": "ammatillisenperustutkinnonarviointiasteikko_2",
+    "metadata": [
+      {
+        "nimi": "H2",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "2"
+  },
+  {
+    "koodiUri": "ammatillisenperustutkinnonarviointiasteikko_1",
+    "metadata": [
+      {
+        "nimi": "T1",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1"
+  },
+  {
+    "koodiUri": "ammatillisenperustutkinnonarviointiasteikko_3",
+    "metadata": [
+      {
+        "nimi": "K3",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "3"
+  }
+]

@@ -1,9 +1,10 @@
 package fi.oph.tor.tutkinto
 
+import fi.oph.tor.arvosana.ArviointiasteikkoRepository
 import fi.oph.tor.json.Json
 import fi.oph.tor.{ErrorHandlingServlet, InvalidRequestException}
 
-class TutkintoServlet(tutkintoRepository: TutkintoRepository) extends ErrorHandlingServlet {
+class TutkintoServlet(tutkintoRepository: TutkintoRepository, arviointiAsteikot: ArviointiasteikkoRepository) extends ErrorHandlingServlet {
    get("/oppilaitos/:oppilaitosId") {
      contentType = "application/json;charset=utf-8"
      (params.get("query"), params.get("oppilaitosId")) match {
@@ -14,7 +15,7 @@ class TutkintoServlet(tutkintoRepository: TutkintoRepository) extends ErrorHandl
 
   get("/rakenne/:diaariNumero") {
     contentType = "application/json;charset=utf-8"
-    Json.write(tutkintoRepository.findPerusteRakenne(params("diaariNumero")))
+    Json.write(tutkintoRepository.findPerusteRakenne(params("diaariNumero"))(arviointiAsteikot))
   }
 
 }

@@ -1,6 +1,7 @@
 package fi.oph.tor.config
 
 import com.typesafe.config.{Config, ConfigFactory}
+import fi.oph.tor.arvosana.ArviointiasteikkoRepository
 import fi.oph.tor.db._
 import fi.oph.tor.tutkinto.TutkintoRepository
 import fi.oph.tor.oppija.OppijaRepository
@@ -27,6 +28,7 @@ trait TorProfile {
   lazy val oppijaRepository = OppijaRepository(config)
   lazy val tutkintoRepository = TutkintoRepository(config)
   lazy val oppilaitosRepository = new OppilaitosRepository
+  lazy val arviointiAsteikot = ArviointiasteikkoRepository(config)
   def opintoOikeusRepository: OpintoOikeusRepository
   lazy val userRepository = UserRepository(config)
   def resetMocks = {

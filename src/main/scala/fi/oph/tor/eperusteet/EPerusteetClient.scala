@@ -1,5 +1,6 @@
 package fi.oph.tor.eperusteet
 
+import fi.oph.tor.arvosana.ArviointiasteikkoRepository
 import fi.oph.tor.http.Http
 import fi.oph.tor.tutkinto._
 
@@ -20,7 +21,7 @@ class EPerusteetClient(ePerusteetRoot: String) extends TutkintoRepository {
     }
   }
 
-  override def findPerusteRakenne(diaariNumero: String) = {
+  override def findPerusteRakenne(diaariNumero: String)(implicit arviointiAsteikot: ArviointiasteikkoRepository) = {
     http(ePerusteetRoot + s"/api/perusteet/diaari?diaarinumero=$diaariNumero")(Http.parseJsonOptional[EPerusteTunniste])
       .map(e => http(ePerusteetRoot + "/api/perusteet/" + e.id + "/kaikki")(Http.parseJson[EPerusteRakenne]))
       .map(EPerusteetTutkintoRakenne.convertRakenne)
