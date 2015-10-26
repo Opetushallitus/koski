@@ -4,7 +4,7 @@ import fi.oph.tor.http.HttpError
 import fi.oph.tor.opintooikeus._
 import fi.oph.tor.oppija._
 import fi.oph.tor.oppilaitos.OppilaitosRepository
-import fi.oph.tor.tutkinto.{TutkintoRakenne, RakenneOsa, TutkintoRepository}
+import fi.oph.tor.tutkinto.TutkintoRepository
 import fi.oph.tor.user.UserContext
 
 class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,

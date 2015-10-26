@@ -5,13 +5,42 @@
   }
 
   .name {
-    line-height: 39px;
+    line-height: 40px;
+    display: inline-block;
   }
 
   .tutkinnon-osa {
+    color: @color-darkgray-text;
+
     .name {
       padding-left: 14px;
     }
-    color: @color-darkgray-text;
+
+    &:hover {
+      background-color: white;
+      cursor: pointer;
+    }
+
+    &.selected {
+      background-color: white;
+      color: black;
+
+      button {
+        display: inline-block;
+        width: auto;
+        padding: 0 10px;
+        margin: 0;
+      }
+    }
+
+    button {
+      display: none;
+    }
+
+    .save {
+      float: right;
+      padding-left: 5px;
+      background-color: @color-darkgray;
+    }
   }
 }

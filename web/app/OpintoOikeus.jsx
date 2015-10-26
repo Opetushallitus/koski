@@ -27,7 +27,12 @@ export const OpintoOikeus = React.createClass({
                     </select>
                 </label>
               { opintoOikeus.suoritustapa
-                ? <Rakenneosa rakenneosa={opintoOikeus.tutkinto.rakenne.suoritustavat.find(x => x.koodi == opintoOikeus.suoritustapa).rakenne} osaamisala={opintoOikeus.osaamisala}/>
+                ? <Rakenneosa
+                    selectedTutkinnonOsa={this.state.selectedTutkinnonOsa}
+                    tutkinnonOsaBus={this.state.tutkinnonOsaBus}
+                    rakenneosa={opintoOikeus.tutkinto.rakenne.suoritustavat.find(x => x.koodi == opintoOikeus.suoritustapa).rakenne}
+                    osaamisala={opintoOikeus.osaamisala}
+                  />
                 : null
               }
             </div>
@@ -35,6 +40,16 @@ export const OpintoOikeus = React.createClass({
         }
       </div>
     )
+  },
+  getInitialState() {
+      return {
+        tutkinnonOsaBus: Bacon.Bus(),
+        selectedTutkinnonOsa: undefined
+      }
+  },
+  componentDidMount() {
+      this.state.tutkinnonOsaBus
+          .onValue(tutkinnonOsa => this.setState({selectedTutkinnonOsa: tutkinnonOsa}))
   }
 })
 
@@ -42,19 +57,36 @@ const withEmptyValue = (xs) => [{ koodi: '', nimi: 'Valitse...'}].concat(xs)
 
 const Rakenneosa = React.createClass({
   render() {
-    let { rakenneosa, osaamisala } = this.props
+    let { rakenneosa, osaamisala, selectedTutkinnonOsa, tutkinnonOsaBus } = this.props
     return rakenneosa.osat
       ? <div className="rakenne-moduuli">
           <span className="name">{rakenneosa.nimi}</span>
           <ul className="osat">
             { rakenneosa.osat
-                .filter(osa => { return !osa.osaamisalaKoodi || osa.osaamisalaKoodi == osaamisala})
-                .map((osa, i) => <li key={i}><Rakenneosa rakenneosa={osa} osaamisala={osaamisala} /></li>)
+              .filter(osa => { return !osa.osaamisalaKoodi || osa.osaamisalaKoodi == osaamisala})
+              .map((osa, i) => <li key={i}>
+                <Rakenneosa
+                  rakenneosa={osa}
+                  osaamisala={osaamisala}
+                  selectedTutkinnonOsa={selectedTutkinnonOsa}
+                  tutkinnonOsaBus={tutkinnonOsaBus}/>
+              </li>)
             }
           </ul>
         </div>
-      : <div className="tutkinnon-osa">
-          <span className="name">{rakenneosa.nimi}</span>
-        </div>
+      : <TutkinnonOsa key={rakenneosa.nimi} tutkinnonOsa={rakenneosa} selectedTutkinnonOsa={selectedTutkinnonOsa} tutkinnonOsaBus={tutkinnonOsaBus}/>
+  }
+})
+
+const TutkinnonOsa = React.createClass({
+  render() {
+    const {tutkinnonOsa, selectedTutkinnonOsa, tutkinnonOsaBus} = this.props
+    const className = selectedTutkinnonOsa && tutkinnonOsa.nimi === selectedTutkinnonOsa.nimi ? 'tutkinnon-osa selected' : 'tutkinnon-osa'
+    return (
+      <div className={className} onClick={() => tutkinnonOsaBus.push(tutkinnonOsa)}>
+        <span className="name">{tutkinnonOsa.nimi}</span>
+        <div className="save"><button className="button blue">Tallenna arvio</button></div>
+      </div>
+    )
   }
 })
