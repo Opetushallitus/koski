@@ -65,9 +65,9 @@ oppijaP.sampledBy(opintoOikeusChange, (oppija, opintoOikeus) => ({
 
   const createOppijaS = Http.post('/tor/api/oppija', oppijaUpdate)
 
-  createOppijaS.onValue(oid => console.log("SAVED", oid))
+  createOppijaS.onValue(oid => console.log('SAVED', oid))
 
   createOppijaS.onError((error) => {
-    console.log("ERROR", error)
+    console.log('ERROR', error)
   })
 })

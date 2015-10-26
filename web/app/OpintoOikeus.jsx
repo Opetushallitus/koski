@@ -15,13 +15,17 @@ export const OpintoOikeus = React.createClass({
         <span className="tutkinto">{opintoOikeus.nimi}</span> <span className="oppilaitos">{opintoOikeus.oppilaitos.nimi}</span>
         { opintoOikeus.rakenne
           ?
-            <div>
-              <select className="suoritustapa" value={opintoOikeus.suoritustapa} onChange={(event) => changeOpintoOikeus(opintoOikeus, {'suoritustapa': event.target.value || undefined })}>
-                {withEmptyValue(opintoOikeus.rakenne.suoritustavat).map(s => <option key={s.koodi} value={s.koodi}>{s.nimi}</option>)}
-              </select>
-              <select className="osaamisala" value={opintoOikeus.osaamisala} onChange={(event) => changeOpintoOikeus(opintoOikeus, {'osaamisala': event.target.value || undefined })}>
-                {withEmptyValue(opintoOikeus.rakenne.osaamisalat).map(o => <option key={o.koodi} value={o.koodi}>{o.nimi}</option>)}
-              </select>
+            <div className="tutkinto-rakenne">
+                <label>Suoritustapa
+                    <select className="suoritustapa" value={opintoOikeus.suoritustapa} onChange={(event) => changeOpintoOikeus(opintoOikeus, {'suoritustapa': event.target.value || undefined })}>
+                        {withEmptyValue(opintoOikeus.rakenne.suoritustavat).map(s => <option key={s.koodi} value={s.koodi}>{s.nimi}</option>)}
+                    </select>
+                </label>
+                <label>Osaamisala
+                    <select className="osaamisala" value={opintoOikeus.osaamisala} onChange={(event) => changeOpintoOikeus(opintoOikeus, {'osaamisala': event.target.value || undefined })}>
+                        {withEmptyValue(opintoOikeus.rakenne.osaamisalat).map(o => <option key={o.koodi} value={o.koodi}>{o.nimi}</option>)}
+                    </select>
+                </label>
               { opintoOikeus.suoritustapa
                 ? <Rakenneosa rakenneosa={opintoOikeus.rakenne.suoritustavat.find(x => x.koodi == opintoOikeus.suoritustapa).rakenne} osaamisala={opintoOikeus.osaamisala}/>
                 : null
