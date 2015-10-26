@@ -336,6 +336,18 @@ describe('TOR', function() {
           expect(opinnot.getTutkinnonOsat()[0]).to.equal('Myynti ja tuotetuntemus')
         })
       })
+
+      describe('Kun tallennus epäonnistuu', function() {
+        before(
+          mockHttp("/tor/api/oppija", { status: 500 }),
+          opinnot.selectOsaamisala("1622"),
+          wait.until(page.isErrorShown)
+        )
+
+        it('Näytetään virheilmoitus', function() {
+
+        })
+      })
     })
   })
 
@@ -363,7 +375,8 @@ describe('TOR', function() {
         authentication.login(),
         resetMocks,
         page.openPage,
-        page.oppijaHaku.search('error', page.isErrorShown))
+        mockHttp('/tor/api/oppija?query=BLAH', { status: 500 }),
+        page.oppijaHaku.search('blah', page.isErrorShown))
 
       it('näytetään virheilmoitus', function() {})
     })
@@ -470,4 +483,8 @@ function authenticationErrorIsShown() {
 
 function resetMocks() {
   return Q($.ajax({ url: '/tor/fixtures/reset', method: 'post'}))
+}
+
+function mockHttp(url, result) {
+  return function() { testFrame().http.mock(url, result) }
 }

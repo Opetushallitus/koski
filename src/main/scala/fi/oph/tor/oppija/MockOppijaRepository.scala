@@ -26,9 +26,6 @@ class MockOppijaRepository extends OppijaRepository {
   private var oppijat = defaultOppijat
 
   override def findOppijat(query: String) = {
-    if(query.toLowerCase.contains("error")) {
-      throw new RuntimeException("BOOM!")
-    }
     oppijat.filter(searchString(_).contains(query))
   }
 
