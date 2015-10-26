@@ -81,11 +81,19 @@ const Rakenneosa = React.createClass({
 const TutkinnonOsa = React.createClass({
   render() {
     const {tutkinnonOsa, selectedTutkinnonOsa, tutkinnonOsaBus} = this.props
-    const className = selectedTutkinnonOsa && tutkinnonOsa.nimi === selectedTutkinnonOsa.nimi ? 'tutkinnon-osa selected' : 'tutkinnon-osa'
+    const selected = selectedTutkinnonOsa && tutkinnonOsa.nimi === selectedTutkinnonOsa.nimi
+    const arvosanat = ['T1', 'H2', 'K3'].map((arvosana, i) => <li key={i}>{arvosana}</li>)
     return (
-      <div className={className} onClick={() => tutkinnonOsaBus.push(tutkinnonOsa)}>
+      <div className={ selected ? 'tutkinnon-osa selected' : 'tutkinnon-osa'} onClick={() => tutkinnonOsaBus.push(tutkinnonOsa)}>
         <span className="name">{tutkinnonOsa.nimi}</span>
-        <div className="save"><button className="button blue">Tallenna arvio</button></div>
+        { selected ?
+          <div className="arvostelu">
+            <ul className="arvosanat">
+              {arvosanat}
+            </ul>
+            <button className="button blue">Tallenna arvio</button>
+          </div> : null
+        }
       </div>
     )
   }
