@@ -1,18 +1,18 @@
 package fi.oph.tor.opintooikeus
 
-import fi.oph.tor.oppilaitos.{OppilaitosId, OppilaitosOrId, Oppilaitos}
+import fi.oph.tor.oppilaitos.{Oppilaitos}
 import fi.oph.tor.tutkinto.{Tutkinto, TutkintoRakenne}
 
 trait OpintoOikeus {
   def tutkinto: Tutkinto
-  def oppilaitosOrganisaatio: OppilaitosOrId
+  def oppilaitosOrganisaatio: Oppilaitos
   def suoritustapa: Option[String]
   def osaamisala: Option[String]
   def id: Option[Int]
 }
 
 case class OpintoOikeusData(
-  tutkinto: Tutkinto, oppilaitosOrganisaatio: OppilaitosId, suoritustapa: Option[String] = None, osaamisala: Option[String] = None, id: Option[Int] = None
+  tutkinto: Tutkinto, oppilaitosOrganisaatio: Oppilaitos, suoritustapa: Option[String] = None, osaamisala: Option[String] = None, id: Option[Int] = None
 ) extends OpintoOikeus
 
 case class TorOpintoOikeusView(

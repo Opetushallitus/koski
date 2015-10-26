@@ -1,6 +1,6 @@
 package fi.oph.tor.security
 
-import fi.oph.tor.oppilaitos.OppilaitosOrId
+import fi.oph.tor.oppilaitos.Oppilaitos
 import fi.oph.tor.organisaatio.OrganisaatioPuu
 import fi.oph.tor.user.{UserRepository, UserContext}
 
@@ -12,7 +12,7 @@ trait RequiresAuthentication extends CurrentUser {
       .map(u => userRepository.getUserOrganisations(u.oid))
       .getOrElse(OrganisaatioPuu(List.empty))
 
-    override def hasReadAccess(organisaatio: OppilaitosOrId) = {
+    override def hasReadAccess(organisaatio: Oppilaitos) = {
       organisaatioPuu.findById(organisaatio.oid).isDefined
     }
   }

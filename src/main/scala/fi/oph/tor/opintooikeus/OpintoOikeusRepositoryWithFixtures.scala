@@ -3,7 +3,7 @@ package fi.oph.tor.opintooikeus
 import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.db.TorDatabase._
 import fi.oph.tor.oppija.MockOppijaRepository
-import fi.oph.tor.oppilaitos.{OppilaitosId, Oppilaitos}
+import fi.oph.tor.oppilaitos.{Oppilaitos}
 import fi.oph.tor.tutkinto.Tutkinto
 import slick.dbio.DBIO
 
@@ -12,10 +12,10 @@ class OpintoOikeusRepositoryWithFixtures(db: DB) extends PostgresOpintoOikeusRep
   private val autoalanPerustutkinto: Tutkinto = Tutkinto("39/011/2014", "351301", Some("Autoalan perustutkinto"))
 
   private def defaultOpintoOikeudet = {
-    List((oppijat.eero.oid, OpintoOikeusData(autoalanPerustutkinto, OppilaitosId("1"))),
-         (oppijat.eerola.oid, OpintoOikeusData(autoalanPerustutkinto, OppilaitosId("1"))),
-         (oppijat.teija.oid, OpintoOikeusData(autoalanPerustutkinto, OppilaitosId("1"))),
-         (oppijat.markkanen.oid, OpintoOikeusData(autoalanPerustutkinto, OppilaitosId("3"))))
+    List((oppijat.eero.oid, OpintoOikeusData(autoalanPerustutkinto, Oppilaitos("1"))),
+         (oppijat.eerola.oid, OpintoOikeusData(autoalanPerustutkinto, Oppilaitos("1"))),
+         (oppijat.teija.oid, OpintoOikeusData(autoalanPerustutkinto, Oppilaitos("1"))),
+         (oppijat.markkanen.oid, OpintoOikeusData(autoalanPerustutkinto, Oppilaitos("3"))))
   }
 
   override def resetFixtures: Unit = {
