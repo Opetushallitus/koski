@@ -55,19 +55,7 @@ const ExistingOppija = React.createClass({
   }
 })
 
-oppijaP.sampledBy(opintoOikeusChange, (oppija, opintoOikeus) => ({
+export const updateResultE = oppijaP.sampledBy(opintoOikeusChange, (oppija, opintoOikeus) => ({
   henkilo: oppija.henkilo,
   opintoOikeudet: [opintoOikeus]
-})).onValue(oppijaUpdate => {
-
-  // TODO: handle errors
-
-
-  const createOppijaS = Http.post('/tor/api/oppija', oppijaUpdate)
-
-  createOppijaS.onValue(oid => console.log('SAVED', oid))
-
-  createOppijaS.onError((error) => {
-    console.log('ERROR', error)
-  })
-})
+})).flatMapLatest(oppijaUpdate => Http.post('/tor/api/oppija', oppijaUpdate))

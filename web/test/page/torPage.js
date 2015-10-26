@@ -81,6 +81,9 @@ function TorPage() {
     },
     is404: function() {
       return S(".not-found").is(":visible")
+    },
+    isSavedLabelShown: function() {
+      return S('.saved').is(':visible')
     }
   }
 

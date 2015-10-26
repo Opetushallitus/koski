@@ -7,7 +7,7 @@ import Bacon from 'baconjs'
 import {Error, NotFound, handleError, isRetryable, errorP} from './Error.jsx'
 import {Login, userP} from './Login.jsx'
 import {OppijaHaku, oppijatP, searchInProgressP} from './OppijaHaku.jsx'
-import {Oppija, oppijaP, uusiOppijaP, loadingOppijaP} from './Oppija.jsx'
+import {Oppija, oppijaP, uusiOppijaP, loadingOppijaP, updateResultE} from './Oppija.jsx'
 import {TopBar} from './TopBar.jsx'
 
 // Application state to be rendered
@@ -24,11 +24,16 @@ const stateP = Bacon.combineTemplate({
   }
 })
 
+// Stays at `true` for five seconds after latest saved change. Reset to `false` when another Oppija is selected.
+const savedP = updateResultE.flatMapLatest(() => Bacon.once(true).concat((stateP.changes().merge(Bacon.later(5000))).map(false))).toProperty(false).skipDuplicates()
+
+savedP.log("saved")
+
 // Renderered Virtual DOM
-const domP = stateP.combine(errorP(stateP), ({user, oppijaHaku, oppija, searchInProgress}, error) =>
+const domP = Bacon.combineWith(stateP, errorP(Bacon.combineAsArray(stateP, savedP)), savedP, ({user, oppijaHaku, oppija, searchInProgress}, error, saved) =>
     <div>
       <Error isError={isRetryable(error)}/>
-      <TopBar user={user}/>
+      <TopBar user={user} saved={saved} />
       {
         error.httpStatus === 404
           ? <NotFound/>

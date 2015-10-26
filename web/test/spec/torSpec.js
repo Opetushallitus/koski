@@ -309,14 +309,35 @@ describe('TOR', function() {
       it('Näytetään tutkinnon rakenne', function() {
         expect(opinnot.getTutkinnonOsat()[0]).to.equal('Myynti ja tuotetuntemus')
       })
+    })
+  })
 
-      it('Muuttuneet tiedot tallennetaan', function() {
-        return page.oppijaHaku.search('ero', 4)()
-          .then(page.oppijaHaku.selectOppija('tunkkila'))
-          .then(function() {
-            expect(opinnot.getTutkinnonOsat()[0]).to.equal('Myynti ja tuotetuntemus')
-          })
+  describe('Tutkinnon tietojen muuttaminen', function() {
+    describe('Kun valitaan osaamisala ja suoritustapa', function() {
+      before(addNewOppija('kalle', 'Tunkkila', { hetu: '091095-9833'}))
+      before(opinnot.selectSuoritustapa("ops"), opinnot.selectOsaamisala("1527"))
+
+      it('Aluksi ei näytetä \"Kaikki tiedot tallennettu\" -tekstiä', function() {
+        expect(page.isSavedLabelShown()).to.equal(false)
       })
+
+      describe('Muutosten näyttäminen', function() {
+        before(wait.until(page.isSavedLabelShown))
+        it('Näytetään "Kaikki tiedot tallennettu" -teksti', function() {
+          expect(page.isSavedLabelShown()).to.equal(true)
+        })
+      })
+
+      describe('Kun sivu ladataan uudelleen', function() {
+        before( page.oppijaHaku.search('ero', 4),
+                page.oppijaHaku.selectOppija('tunkkila'))
+
+        it('Muuttuneet tiedot tallennetaan', function() {
+          expect(opinnot.getTutkinnonOsat()[0]).to.equal('Myynti ja tuotetuntemus')
+        })
+
+      })
+
     })
   })
 
