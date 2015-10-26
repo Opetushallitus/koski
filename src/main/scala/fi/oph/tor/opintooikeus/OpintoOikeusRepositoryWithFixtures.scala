@@ -12,10 +12,10 @@ class OpintoOikeusRepositoryWithFixtures(db: DB) extends PostgresOpintoOikeusRep
   private val autoalanPerustutkinto: Tutkinto = Tutkinto("39/011/2014", "351301", Some("Autoalan perustutkinto"))
 
   private def defaultOpintoOikeudet = {
-    List((oppijat.eero.oid, OpintoOikeusData(autoalanPerustutkinto, Oppilaitos("1"))),
-         (oppijat.eerola.oid, OpintoOikeusData(autoalanPerustutkinto, Oppilaitos("1"))),
-         (oppijat.teija.oid, OpintoOikeusData(autoalanPerustutkinto, Oppilaitos("1"))),
-         (oppijat.markkanen.oid, OpintoOikeusData(autoalanPerustutkinto, Oppilaitos("3"))))
+    List((oppijat.eero.oid, OpintoOikeus(autoalanPerustutkinto, Oppilaitos("1"))),
+         (oppijat.eerola.oid, OpintoOikeus(autoalanPerustutkinto, Oppilaitos("1"))),
+         (oppijat.teija.oid, OpintoOikeus(autoalanPerustutkinto, Oppilaitos("1"))),
+         (oppijat.markkanen.oid, OpintoOikeus(autoalanPerustutkinto, Oppilaitos("3"))))
   }
 
   override def resetFixtures: Unit = {

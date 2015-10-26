@@ -67,15 +67,16 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     Left(HttpError(404, s"Oppija with oid: $oid not found"))
   }
 
-  private def opintoOikeudetForOppija(oppija: Oppija)(implicit userContext: UserContext): Seq[TorOpintoOikeusView] = {
+  private def opintoOikeudetForOppija(oppija: Oppija)(implicit userContext: UserContext): Seq[OpintoOikeus] = {
     for {
       opintoOikeus   <- opintoOikeusRepository.findByOppijaOid(oppija.oid)
       tutkinto   <- tutkintoRepository.findByEPerusteDiaarinumero(opintoOikeus.tutkinto.ePerusteetDiaarinumero)
       oppilaitos <- oppilaitosRepository.findById(opintoOikeus.oppilaitosOrganisaatio.oid)
     } yield {
-      TorOpintoOikeusView(tutkinto, oppilaitos, opintoOikeus.suoritustapa, opintoOikeus.osaamisala, opintoOikeus.id, tutkintoRepository.findPerusteRakenne(tutkinto.ePerusteetDiaarinumero))
+      OpintoOikeus(tutkinto.copy(rakenne = tutkintoRepository.findPerusteRakenne(tutkinto.ePerusteetDiaarinumero)), oppilaitos, opintoOikeus.suoritustapa, opintoOikeus.osaamisala, opintoOikeus.id)
     }
   }
 }
 
-case class CreateOppija(oid: Option[String], hetu: Option[String], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], opintoOikeudet: List[OpintoOikeusData])
+case class TorOppijaView(oid: String, sukunimi: String, etunimet: String, hetu: String, opintoOikeudet: Seq[OpintoOikeus])
+case class CreateOppija(oid: Option[String], hetu: Option[String], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], opintoOikeudet: List[OpintoOikeus])

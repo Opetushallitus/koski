@@ -13,21 +13,21 @@ export const OpintoOikeus = React.createClass({
       <div className="opintooikeus">
         <h4>Opinto-oikeudet</h4>
         <span className="tutkinto">{opintoOikeus.tutkinto.nimi}</span> <span className="oppilaitos">{opintoOikeus.oppilaitosOrganisaatio.nimi}</span>
-        { opintoOikeus.rakenne
+        { opintoOikeus.tutkinto.rakenne
           ?
             <div className="tutkinto-rakenne">
                 <label>Suoritustapa
                     <select className="suoritustapa" value={opintoOikeus.suoritustapa} onChange={(event) => changeOpintoOikeus(opintoOikeus, {'suoritustapa': event.target.value || undefined })}>
-                        {withEmptyValue(opintoOikeus.rakenne.suoritustavat).map(s => <option key={s.koodi} value={s.koodi}>{s.nimi}</option>)}
+                        {withEmptyValue(opintoOikeus.tutkinto.rakenne.suoritustavat).map(s => <option key={s.koodi} value={s.koodi}>{s.nimi}</option>)}
                     </select>
                 </label>
                 <label>Osaamisala
                     <select className="osaamisala" value={opintoOikeus.osaamisala} onChange={(event) => changeOpintoOikeus(opintoOikeus, {'osaamisala': event.target.value || undefined })}>
-                        {withEmptyValue(opintoOikeus.rakenne.osaamisalat).map(o => <option key={o.koodi} value={o.koodi}>{o.nimi}</option>)}
+                        {withEmptyValue(opintoOikeus.tutkinto.rakenne.osaamisalat).map(o => <option key={o.koodi} value={o.koodi}>{o.nimi}</option>)}
                     </select>
                 </label>
               { opintoOikeus.suoritustapa
-                ? <Rakenneosa rakenneosa={opintoOikeus.rakenne.suoritustavat.find(x => x.koodi == opintoOikeus.suoritustapa).rakenne} osaamisala={opintoOikeus.osaamisala}/>
+                ? <Rakenneosa rakenneosa={opintoOikeus.tutkinto.rakenne.suoritustavat.find(x => x.koodi == opintoOikeus.suoritustapa).rakenne} osaamisala={opintoOikeus.osaamisala}/>
                 : null
               }
             </div>

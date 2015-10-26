@@ -12,7 +12,7 @@ trait OpintoOikeusRepository {
   def resetFixtures {}
   def update(oppijaOid: String, opintoOikeus: OpintoOikeus): Option[HttpError]
 
-  def createOrUpdate(oppijaOid: String, opintoOikeus: OpintoOikeusData)(implicit userContext: UserContext): Either[HttpError, OpintoOikeus.Id] = {
+  def createOrUpdate(oppijaOid: String, opintoOikeus: OpintoOikeus)(implicit userContext: UserContext): Either[HttpError, OpintoOikeus.Id] = {
     val opintoOikeudet: Option[OpintoOikeus] = find(OpintoOikeusIdentifier(oppijaOid, opintoOikeus))
     opintoOikeudet match {
       case Some(oikeus) => update(oppijaOid, opintoOikeus.copy(id = oikeus.id)) match {
