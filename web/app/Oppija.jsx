@@ -56,7 +56,7 @@ const ExistingOppija = React.createClass({
 })
 
 oppijaP.sampledBy(opintoOikeusChange, (oppija, opintoOikeus) => ({
-  oid: oppija.henkilo.oid,
+  henkilo: oppija.henkilo,
   opintoOikeudet: [opintoOikeus]
 })).onValue(oppijaUpdate => {
 

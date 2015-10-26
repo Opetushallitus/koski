@@ -87,10 +87,12 @@ export const CreateOppija = React.createClass({
     const {tutkinto: tutkinto, oppilaitos: oppilaitosOrganisaatio} = this.state.opintoOikeus
 
     return {
-      etunimet: etunimet,
-      sukunimi: sukunimi,
-      kutsumanimi: kutsumanimi,
-      hetu: hetu,
+      henkilo: {
+        etunimet: etunimet,
+        sukunimi: sukunimi,
+        kutsumanimi: kutsumanimi,
+        hetu: hetu
+      },
       opintoOikeudet: [{
         oppilaitosOrganisaatio: oppilaitosOrganisaatio,
         tutkinto: tutkinto

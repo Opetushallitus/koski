@@ -18,7 +18,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     filtered
   }
 
-  def createOrUpdate(oppija: CreateOppija)(implicit userContext: UserContext): Either[HttpError, Oppija.Id] = {
+  def createOrUpdate(oppija: TorOppija)(implicit userContext: UserContext): Either[HttpError, Oppija.Id] = {
     if (oppija.opintoOikeudet.length == 0) {
       Left(HttpError(400, "At least one OpintoOikeus required"))
     }
@@ -54,11 +54,11 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     }
   }
 
-  def userView(oid: String)(implicit userContext: UserContext): Either[HttpError, TorOppijaView] = oppijaRepository.findByOid(oid) match {
+  def userView(oid: String)(implicit userContext: UserContext): Either[HttpError, TorOppija] = oppijaRepository.findByOid(oid) match {
     case Some(oppija) =>
       opintoOikeudetForOppija(oppija) match {
         case Nil => notFound(oid)
-        case opintoOikeudet => Right(TorOppijaView(oppija, opintoOikeudet))
+        case opintoOikeudet => Right(TorOppija(oppija, opintoOikeudet))
       }
     case None => notFound(oid)
   }
@@ -69,7 +69,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
 
   private def opintoOikeudetForOppija(oppija: Oppija)(implicit userContext: UserContext): Seq[OpintoOikeus] = {
     for {
-      opintoOikeus   <- opintoOikeusRepository.findByOppijaOid(oppija.oid)
+      opintoOikeus   <- opintoOikeusRepository.findByOppijaOid(oppija.oid.get)
       tutkinto   <- tutkintoRepository.findByEPerusteDiaarinumero(opintoOikeus.tutkinto.ePerusteetDiaarinumero)
       oppilaitos <- oppilaitosRepository.findById(opintoOikeus.oppilaitosOrganisaatio.oid)
     } yield {
@@ -78,5 +78,3 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
   }
 }
 
-case class TorOppijaView(henkilo: Oppija, opintoOikeudet: Seq[OpintoOikeus])
-case class CreateOppija(oid: Option[String], hetu: Option[String], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], opintoOikeudet: List[OpintoOikeus])

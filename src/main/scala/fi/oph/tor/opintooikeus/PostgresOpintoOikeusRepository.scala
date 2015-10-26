@@ -26,7 +26,7 @@ class PostgresOpintoOikeusRepository(db: DB) extends OpintoOikeusRepository with
 
   override def filterOppijat(oppijat: Seq[Oppija])(implicit userContext: UserContext) = {
     val all = findAllRows
-    oppijat.filter { oppija => all.exists(opintoOikeus => opintoOikeus.oppijaOid == oppija.oid)}
+    oppijat.filter { oppija => all.exists(opintoOikeus => opintoOikeus.oppijaOid == oppija.oid.get)}
   }
 
   override def findByOppijaOid(oid: String)(implicit userContext: UserContext): Seq[OpintoOikeus] = {

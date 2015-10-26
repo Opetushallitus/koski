@@ -1,9 +1,8 @@
 package fi.oph.tor.oppija
 
-import fi.oph.tor.http.{HttpError, Http, VirkailijaHttpClient}
+import fi.oph.tor.http.{Http, HttpError, VirkailijaHttpClient}
 import fi.oph.tor.json.Json._
 import fi.oph.tor.json.Json4sHttp4s._
-import fi.oph.tor.tor.CreateOppija
 import org.http4s._
 
 import scalaz.concurrent.Task
@@ -33,9 +32,9 @@ class RemoteOppijaRepository(henkilöPalveluClient: VirkailijaHttpClient) extend
       }
   }
 
-  private def toOppija(user: AuthenticationServiceUser) = Oppija(user.oidHenkilo, user.sukunimi, user.etunimet, user.hetu)
+  private def toOppija(user: AuthenticationServiceUser) = Oppija(user.oidHenkilo, user.hetu, user.etunimet, user.kutsumanimi, user.sukunimi)
 }
 
 case class AuthenticationServiceUserQueryResult(totalCount: Integer, results: List[AuthenticationServiceUser])
-case class AuthenticationServiceUser(oidHenkilo: String, sukunimi: String, etunimet: String, hetu: String)
+case class AuthenticationServiceUser(oidHenkilo: Option[String], sukunimi: Option[String], etunimet: Option[String], kutsumanimi: Option[String], hetu: Option[String])
 case class AuthenticationServiceCreateUser(hetu: String, henkiloTyyppi: String, sukunimi: String, etunimet: String, kutsumanimi: String)

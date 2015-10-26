@@ -63,10 +63,12 @@ function AddOppijaPage() {
     },
     postOppijaAjax: function(data) {
       var defaults = {
-        'etunimet':'Testi',
-        'sukunimi':'Toivola',
-        'kutsumanimi':'Testi',
-        'hetu':'010101-123N',
+        henkilo: {
+          'etunimet':'Testi',
+          'sukunimi':'Toivola',
+          'kutsumanimi':'Testi',
+          'hetu':'010101-123N'
+        },
         'opintoOikeudet':
         [{
           oppilaitosOrganisaatio: { oid: '1' },
