@@ -41,9 +41,6 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
   }
 
   def validateOpintoOikeus(opintoOikeus: OpintoOikeus)(implicit userContext: UserContext) = {
-    if(!userContext.hasReadAccess(opintoOikeus.oppilaitosOrganisaatio)) {
-      Left(HttpError(403, "Forbidden"))
-    }
     if(tutkintoRepository.findByEPerusteDiaarinumero(opintoOikeus.tutkinto.ePerusteetDiaarinumero).isEmpty) {
       Some(HttpError(400, "Invalid ePeruste: " + opintoOikeus.tutkinto.ePerusteetDiaarinumero))
     }
