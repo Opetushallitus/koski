@@ -8,7 +8,7 @@ object OpintoOikeusIdentifier {
 }
 
 case class IdentifyingSetOfFields(oppijaOid: String, oppilaitosOrganisaatio: String, ePerusteetDiaarinumero: String) extends OpintoOikeusIdentifier {
-  def this(oppijaOid: String, opintoOikeus: OpintoOikeus) = this(oppijaOid, opintoOikeus.oppilaitosOrganisaatio, opintoOikeus.ePerusteetDiaarinumero)
+  def this(oppijaOid: String, opintoOikeus: OpintoOikeus) = this(oppijaOid, opintoOikeus.oppilaitosOrganisaatio.oid, opintoOikeus.ePerusteetDiaarinumero)
 }
 case class PrimaryKey(id: Int) extends OpintoOikeusIdentifier
 
