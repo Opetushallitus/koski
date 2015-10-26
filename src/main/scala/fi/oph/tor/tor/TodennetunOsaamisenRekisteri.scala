@@ -58,7 +58,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     case Some(oppija) =>
       opintoOikeudetForOppija(oppija) match {
         case Nil => notFound(oid)
-        case opintoOikeudet => Right(TorOppijaView(oppija.oid, oppija.sukunimi, oppija.etunimet, oppija.hetu, opintoOikeudet))
+        case opintoOikeudet => Right(TorOppijaView(oppija, opintoOikeudet))
       }
     case None => notFound(oid)
   }
@@ -78,5 +78,5 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
   }
 }
 
-case class TorOppijaView(oid: String, sukunimi: String, etunimet: String, hetu: String, opintoOikeudet: Seq[OpintoOikeus])
+case class TorOppijaView(henkilo: Oppija, opintoOikeudet: Seq[OpintoOikeus])
 case class CreateOppija(oid: Option[String], hetu: Option[String], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], opintoOikeudet: List[OpintoOikeus])

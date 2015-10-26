@@ -42,12 +42,12 @@ const Loading = () => <div className='main-content oppija loading'></div>
 
 const ExistingOppija = React.createClass({
   render() {
-    let {oppija} = this.props
+    let {oppija: { henkilo: henkilo, opintoOikeudet: opintoOikeudet}} = this.props
     return (
       <div className='main-content oppija'>
-        <h2>{oppija.sukunimi}, {oppija.etunimet} <span className='hetu'>{oppija.hetu}</span></h2>
+        <h2>{henkilo.sukunimi}, {henkilo.etunimet} <span className='hetu'>{henkilo.hetu}</span></h2>
         <hr></hr>
-        { oppija.opintoOikeudet.map( opintoOikeus =>
+        { opintoOikeudet.map( opintoOikeus =>
           <OpintoOikeus key= { opintoOikeus.nimi } opintoOikeus={ opintoOikeus } />
         ) }
       </div>
@@ -56,7 +56,7 @@ const ExistingOppija = React.createClass({
 })
 
 oppijaP.sampledBy(opintoOikeusChange, (oppija, opintoOikeus) => ({
-  oid: oppija.oid,
+  oid: oppija.henkilo.oid,
   opintoOikeudet: [opintoOikeus]
 })).onValue(oppijaUpdate => {
 

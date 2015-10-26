@@ -16,10 +16,10 @@ const oppijaE = oppijaP.toEventStream().filter(Bacon._.id)
 export const oppijatP = Bacon.update(
   { query: '', results: [] },
   hakuTulosE, ((current, hakutulos) => hakutulos),
-  oppijaE, ((current, valittu) => current.results.filter((oppija) => oppija.oid === valittu.oid).length ? current : { query: '', results: [valittu] })
+  oppijaE.map(".henkilo"), ((current, valittu) => current.results.filter((oppija) => oppija.oid === valittu.oid).length ? current : { query: '', results: [valittu] })
 )
 
-oppijaP.sampledBy(oppijatP.map('.results').changes(), (oppija, oppijat) => ({ oppija: oppija, oppijat: oppijat }))
+oppijaP.map(".henkilo").sampledBy(oppijatP.map('.results').changes(), (oppija, oppijat) => ({ oppija: oppija, oppijat: oppijat }))
   .filter(({oppija, oppijat}) => !oppija && oppijat.length === 1)
   .map('.oppijat.0')
   .onValue(navigateToOppija)
@@ -48,7 +48,7 @@ const OppijaHakutulokset = React.createClass({
   render() {
     const {oppijat, valittu} = this.props
     const oppijatElems = oppijat.results.map((o, i) => {
-        const className = valittu ? (o.oid === valittu.oid ? 'selected' : '') : ''
+        const className = valittu ? (o.oid === valittu.henkilo.oid ? 'selected' : '') : ''
         return (
           <li key={i} className={className}>
             <a onClick={this.selectOppija.bind(this, o)}>{o.sukunimi}, {o.etunimet} {o.hetu}</a>
