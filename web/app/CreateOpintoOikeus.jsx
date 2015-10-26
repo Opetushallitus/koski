@@ -35,7 +35,7 @@ const Tutkinto = React.createClass({
           <Autocomplete
               resultBus={this.props.tutkintoBus}
               fetchItems={(value) => (value.length >= 3)
-                ? Http.get('/tor/api/tutkinto/oppilaitos/' + this.state.oppilaitos.organisaatioId + '?query=' + value)
+                ? Http.get('/tor/api/tutkinto/oppilaitos/' + this.state.oppilaitos.oid + '?query=' + value)
                 : Bacon.once([])}
               disabled={!this.state.oppilaitos}
               selected={this.state.selected}

@@ -18,5 +18,5 @@ class OppilaitosRepository {
     context.organisaatioPuu.findById(id).map(toOppilaitos)
   }
 
-  private def toOppilaitos(org: Organisaatio) = Oppilaitos(org.oid, org.nimi)
+  private def toOppilaitos(org: Organisaatio) = Oppilaitos(org.oid, Some(org.nimi))
 }

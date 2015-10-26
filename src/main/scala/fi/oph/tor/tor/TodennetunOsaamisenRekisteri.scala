@@ -73,7 +73,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
       tutkinto   <- tutkintoRepository.findByEPerusteDiaarinumero(opintoOikeus.ePerusteetDiaarinumero)
       oppilaitos <- oppilaitosRepository.findById(opintoOikeus.oppilaitosOrganisaatio)
     } yield {
-      TorOpintoOikeusView(opintoOikeus.id, tutkinto.ePerusteetDiaarinumero, oppilaitos.organisaatioId, tutkinto.nimi, TorOppilaitosView(oppilaitos.nimi), opintoOikeus.suoritustapa, opintoOikeus.osaamisala, tutkintoRepository.findPerusteRakenne(tutkinto.ePerusteetDiaarinumero))
+      TorOpintoOikeusView(tutkinto.ePerusteetDiaarinumero, oppilaitos.oid, opintoOikeus.suoritustapa, opintoOikeus.osaamisala, opintoOikeus.id, tutkinto.nimi, oppilaitos, tutkintoRepository.findPerusteRakenne(tutkinto.ePerusteetDiaarinumero))
     }
   }
 }
