@@ -370,16 +370,29 @@ describe('TOR', function() {
   })
 
   describe('Virhetilanteet', function() {
+    before(
+      authentication.login(),
+      resetMocks
+    )
+
     describe('Odottamattoman virheen sattuessa', function() {
       before(
-        authentication.login(),
-        resetMocks,
         page.openPage,
         mockHttp('/tor/api/oppija?query=BLAH', { status: 500 }),
         page.oppijaHaku.search('blah', page.isErrorShown))
 
       it('näytetään virheilmoitus', function() {})
     })
+
+    describe('Kun palvelimeen ei saada yhteyttä', function() {
+      before(
+        page.openPage,
+        mockHttp('/tor/api/oppija?query=BLAH', {}),
+        page.oppijaHaku.search('blah', page.isErrorShown))
+
+      it('näytetään virheilmoitus', function() {})
+    })
+
 
     describe('Kun sivua ei löydy', function() {
       before(authentication.login(), openPage('/tor/asdf', page.is404))

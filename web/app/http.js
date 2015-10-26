@@ -20,14 +20,14 @@ const mocks = {}
 const serveMock = url => {
   let mock = mocks[url]
   delete mock[url]
-  return Bacon.once(mock).toPromise()
+  return Bacon.once(mock.status ? mock : Bacon.Error("connection failed")).toPromise()
 }
 const doHttp = (url, options) => mocks[url] ? serveMock(url) : fetch(url, options)
 const http = (url, options) => {
   reqE.push(1)
   const promise = doHttp(url, options)
   promise.then(reqComplete, reqComplete)
-  return Bacon.fromPromise(promise).flatMap(parseResponse)
+  return Bacon.fromPromise(promise).mapError({status: 503}).flatMap(parseResponse)
 }
 
 http.get = (url) => http(url, { credentials: 'include' })

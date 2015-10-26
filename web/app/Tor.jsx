@@ -4,7 +4,7 @@ import './style/main.less'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Bacon from 'baconjs'
-import {Error, NotFound, handleError, isRetryable, errorP} from './Error.jsx'
+import {Error, NotFound, handleError, errorP} from './Error.jsx'
 import {Login, userP} from './Login.jsx'
 import {OppijaHaku, oppijatP, searchInProgressP} from './OppijaHaku.jsx'
 import {Oppija, oppijaP, uusiOppijaP, loadingOppijaP, updateResultE} from './Oppija.jsx'
@@ -30,7 +30,7 @@ const savedP = updateResultE.flatMapLatest(() => Bacon.once(true).concat((stateP
 // Renderered Virtual DOM
 const domP = Bacon.combineWith(stateP, errorP(Bacon.combineAsArray(stateP, savedP)), savedP, ({user, oppijaHaku, oppija, searchInProgress}, error, saved) =>
     <div>
-      <Error isError={isRetryable(error)}/>
+      <Error error={error}/>
       <TopBar user={user} saved={saved} />
       {
         error.httpStatus === 404
