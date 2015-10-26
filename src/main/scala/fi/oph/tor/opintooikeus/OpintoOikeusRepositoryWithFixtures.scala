@@ -9,10 +9,10 @@ class OpintoOikeusRepositoryWithFixtures(db: DB) extends PostgresOpintoOikeusRep
   private val oppijat = new MockOppijaRepository
 
   private def defaultOpintoOikeudet = List(
-    (oppijat.eero.oid, OpintoOikeus(ePerusteetDiaarinumero = "39/011/2014", oppilaitosOrganisaatio =  "1")),
-    (oppijat.eerola.oid, OpintoOikeus(ePerusteetDiaarinumero = "39/011/2014", oppilaitosOrganisaatio =  "1")),
-    (oppijat.teija.oid, OpintoOikeus(ePerusteetDiaarinumero = "39/011/2014", oppilaitosOrganisaatio =  "1")),
-    (oppijat.markkanen.oid, OpintoOikeus(ePerusteetDiaarinumero = "39/011/2014", oppilaitosOrganisaatio =  "3"))
+    (oppijat.eero.oid, OpintoOikeusData(ePerusteetDiaarinumero = "39/011/2014", oppilaitosOrganisaatio =  "1")),
+    (oppijat.eerola.oid, OpintoOikeusData(ePerusteetDiaarinumero = "39/011/2014", oppilaitosOrganisaatio =  "1")),
+    (oppijat.teija.oid, OpintoOikeusData(ePerusteetDiaarinumero = "39/011/2014", oppilaitosOrganisaatio =  "1")),
+    (oppijat.markkanen.oid, OpintoOikeusData(ePerusteetDiaarinumero = "39/011/2014", oppilaitosOrganisaatio =  "3"))
   )
 
   override def resetFixtures: Unit = {

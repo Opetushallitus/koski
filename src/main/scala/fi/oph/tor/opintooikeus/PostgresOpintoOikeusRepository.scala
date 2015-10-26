@@ -78,7 +78,7 @@ class PostgresOpintoOikeusRepository(db: DB) extends OpintoOikeusRepository with
 
 case class OpintoOikeusRow(id: Int, oppijaOid: String, data: JValue) {
   lazy val toOpintoOikeus: OpintoOikeus = {
-    Json.fromJValue[OpintoOikeus](data).copy ( id = Some(id) )
+    Json.fromJValue[OpintoOikeusData](data).copy ( id = Some(id) )
   }
 
   def this(oppijaOid: String, opintoOikeus: OpintoOikeus) = {

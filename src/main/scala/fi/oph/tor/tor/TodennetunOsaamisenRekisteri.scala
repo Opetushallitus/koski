@@ -1,7 +1,7 @@
 package fi.oph.tor.tor
 
 import fi.oph.tor.http.HttpError
-import fi.oph.tor.opintooikeus.{OpintoOikeus, OpintoOikeusRepository}
+import fi.oph.tor.opintooikeus._
 import fi.oph.tor.oppija._
 import fi.oph.tor.oppilaitos.OppilaitosRepository
 import fi.oph.tor.tutkinto.{TutkintoRakenne, RakenneOsa, TutkintoRepository}
@@ -78,12 +78,4 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
   }
 }
 
-
-case class TorOppijaView(oid: String, sukunimi: String, etunimet: String, hetu: String, opintoOikeudet: Seq[TorOpintoOikeusView])
-
-// TODO: tänne taitaa kertyä duplikaatiota
-case class TorOpintoOikeusView(id: Option[Int], ePerusteetDiaarinumero: String, oppilaitosOrganisaatio: String, nimi: String, oppilaitos: TorOppilaitosView, suoritustapa: Option[String], osaamisala: Option[String], rakenne: Option[TutkintoRakenne])
-
-case class TorOppilaitosView(nimi: String)
-
-case class CreateOppija(oid: Option[String], hetu: Option[String], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], opintoOikeudet: List[OpintoOikeus])
+case class CreateOppija(oid: Option[String], hetu: Option[String], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], opintoOikeudet: List[OpintoOikeusData])
