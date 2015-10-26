@@ -11,6 +11,7 @@ help:
 	@echo "make watch	- Watch for changes in webapp files"
 	@echo "make deploy 	- Deploy to CSC's ePouta cloud"
 	@echo "make tail	- Tail the cloud logs"
+	@echo "make ssh	- Ssh connection to cloud server"
 
 clean:
 	mvn clean
@@ -44,3 +45,5 @@ deploy:
 	GIT_SSH=cloud/ssh-wrapper.sh git push -f tordev master
 tail:
 	@cloud/ssh-wrapper.sh -l cloud-user `cloud/pouta-nslookup $(TOR-SERVER)` 'tail -f /home/git/logs/*log'
+ssh:
+	@cloud/ssh-wrapper.sh -l cloud-user `cloud/pouta-nslookup $(TOR-SERVER)`
