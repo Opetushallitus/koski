@@ -16,6 +16,7 @@ export JAVA_OPTS="\
 -Dauthentication-service.username=$AUTHENTICATION_SERVICE_USERNAME \
 -Dauthentication-service.password=$AUTHENTICATION_SERVICE_PASSWORD \
 -Deperusteet.url=\"https://eperusteet.opintopolku.fi/eperusteet-service\" \
+-Dkoodisto.url=\"https://testi.virkailija.opintopolku.fi/koodisto-service\" \
 "
 
 pkill java
