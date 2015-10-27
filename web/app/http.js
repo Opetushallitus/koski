@@ -20,7 +20,7 @@ const mocks = {}
 const serveMock = url => {
   let mock = mocks[url]
   delete mock[url]
-  return Bacon.once(mock.status ? mock : Bacon.Error("connection failed")).toPromise()
+  return Bacon.once(mock.status ? mock : Bacon.Error('connection failed')).toPromise()
 }
 const doHttp = (url, options) => mocks[url] ? serveMock(url) : fetch(url, options)
 const http = (url, options) => {

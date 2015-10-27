@@ -31,7 +31,7 @@ export const OpintoOikeus = React.createClass({
                     selectedTutkinnonOsa={this.state.selectedTutkinnonOsa}
                     tutkinnonOsaBus={this.state.tutkinnonOsaBus}
                     rakenneosa={opintoOikeus.tutkinto.rakenne.suoritustavat.find(x => x.koodi == opintoOikeus.suoritustapa).rakenne}
-                    osaamisala={opintoOikeus.osaamisala}
+                    opintoOikeus={opintoOikeus}
                   />
                 : null
               }
@@ -57,26 +57,26 @@ const withEmptyValue = (xs) => [{ koodi: '', nimi: 'Valitse...'}].concat(xs)
 
 const Rakenneosa = React.createClass({
   render() {
-    let { rakenneosa, osaamisala, selectedTutkinnonOsa, tutkinnonOsaBus } = this.props
+    let { rakenneosa, opintoOikeus, selectedTutkinnonOsa, tutkinnonOsaBus } = this.props
     return rakenneosa.osat
-      ? <RakenneModuuli osaamisala={osaamisala} rakenneosa={rakenneosa} selectedTutkinnonOsa={selectedTutkinnonOsa} tutkinnonOsaBus={tutkinnonOsaBus}/>
+      ? <RakenneModuuli key={rakenneosa.nimi} opintoOikeus={opintoOikeus} rakenneosa={rakenneosa} selectedTutkinnonOsa={selectedTutkinnonOsa} tutkinnonOsaBus={tutkinnonOsaBus}/>
       : <TutkinnonOsa key={rakenneosa.nimi} tutkinnonOsa={rakenneosa} selectedTutkinnonOsa={selectedTutkinnonOsa} tutkinnonOsaBus={tutkinnonOsaBus}/>
   }
 })
 
 const RakenneModuuli = React.createClass({
   render() {
-    const { rakenneosa, osaamisala, selectedTutkinnonOsa, tutkinnonOsaBus } = this.props
+    const { rakenneosa, opintoOikeus, selectedTutkinnonOsa, tutkinnonOsaBus } = this.props
     return (
       <div className="rakenne-moduuli">
         <span className="name">{rakenneosa.nimi}</span>
         <ul className="osat">
           { rakenneosa.osat
-            .filter(osa => { return !osa.osaamisalaKoodi || osa.osaamisalaKoodi == osaamisala})
+            .filter(osa => { return !osa.osaamisalaKoodi || osa.osaamisalaKoodi == opintoOikeus.osaamisala})
             .map((osa, i) => <li key={i}>
               <Rakenneosa
                 rakenneosa={osa}
-                osaamisala={osaamisala}
+                opintoOikeus={opintoOikeus}
                 selectedTutkinnonOsa={selectedTutkinnonOsa}
                 tutkinnonOsaBus={tutkinnonOsaBus}/>
             </li>)
