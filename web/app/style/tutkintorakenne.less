@@ -34,10 +34,7 @@
     background-color: @color-darkgray;
 
     button {
-      display: inline-block;
-      width: auto;
       padding: 0 10px;
-      margin: 0;
       outline: none;
     }
 
@@ -47,6 +44,7 @@
       display: inline-block;
       background-color: white;
       height: 100%;
+
       li {
         padding: 0 10px;
         line-height: 38px;
@@ -55,9 +53,11 @@
         border: 1px solid #E6DBD8;
         border-right-width: 0;
         position: relative;
+
         &:last-child {
           border-right-width: 1px;
         }
+
         &:hover, &.selected {
           &:before {
             display: block;
