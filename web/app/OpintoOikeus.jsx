@@ -60,7 +60,7 @@ const Rakenneosa = React.createClass({
     let { rakenneosa, opintoOikeus, selectedTutkinnonOsa, tutkinnonOsaBus } = this.props
     return rakenneosa.osat
       ? <RakenneModuuli key={rakenneosa.nimi} opintoOikeus={opintoOikeus} rakenneosa={rakenneosa} selectedTutkinnonOsa={selectedTutkinnonOsa} tutkinnonOsaBus={tutkinnonOsaBus}/>
-      : <TutkinnonOsa key={rakenneosa.nimi} tutkinnonOsa={rakenneosa} selectedTutkinnonOsa={selectedTutkinnonOsa} tutkinnonOsaBus={tutkinnonOsaBus}/>
+      : <TutkinnonOsa key={rakenneosa.nimi} opintoOikeus={opintoOikeus} tutkinnonOsa={rakenneosa} selectedTutkinnonOsa={selectedTutkinnonOsa} tutkinnonOsaBus={tutkinnonOsaBus}/>
   }
 })
 
@@ -89,13 +89,14 @@ const RakenneModuuli = React.createClass({
 
 const TutkinnonOsa = React.createClass({
   render() {
-    const {tutkinnonOsa, selectedTutkinnonOsa, tutkinnonOsaBus} = this.props
+    const {tutkinnonOsa, opintoOikeus, selectedTutkinnonOsa, tutkinnonOsaBus} = this.props
     const selected = selectedTutkinnonOsa && tutkinnonOsa.nimi === selectedTutkinnonOsa.nimi
-    const arvosanat = ['T1', 'H2', 'K3'].map((arvosana, i) => <li key={i}>{arvosana}</li>)
+    const arviointiAsteikko = R.find(asteikko => R.equals(asteikko.koodisto, tutkinnonOsa.arviointiAsteikko))(opintoOikeus.tutkinto.rakenne.arviointiAsteikot)
+    const arvosanat = arviointiAsteikko ? arviointiAsteikko.arvosanat.map((arvosana, i) => <li key={arvosana.id}>{arvosana.nimi}</li>) : undefined
     return (
       <div className={ selected ? 'tutkinnon-osa selected' : 'tutkinnon-osa'} onClick={() => tutkinnonOsaBus.push(tutkinnonOsa)}>
         <span className="name">{tutkinnonOsa.nimi}</span>
-        { selected ?
+        { selected && arvosanat ?
           <div className="arvostelu">
             <ul className="arvosanat">
               {arvosanat}
