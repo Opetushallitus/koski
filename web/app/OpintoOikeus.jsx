@@ -59,22 +59,31 @@ const Rakenneosa = React.createClass({
   render() {
     let { rakenneosa, osaamisala, selectedTutkinnonOsa, tutkinnonOsaBus } = this.props
     return rakenneosa.osat
-      ? <div className="rakenne-moduuli">
-          <span className="name">{rakenneosa.nimi}</span>
-          <ul className="osat">
-            { rakenneosa.osat
-              .filter(osa => { return !osa.osaamisalaKoodi || osa.osaamisalaKoodi == osaamisala})
-              .map((osa, i) => <li key={i}>
-                <Rakenneosa
-                  rakenneosa={osa}
-                  osaamisala={osaamisala}
-                  selectedTutkinnonOsa={selectedTutkinnonOsa}
-                  tutkinnonOsaBus={tutkinnonOsaBus}/>
-              </li>)
-            }
-          </ul>
-        </div>
+      ? <RakenneModuuli osaamisala={osaamisala} rakenneosa={rakenneosa} selectedTutkinnonOsa={selectedTutkinnonOsa} tutkinnonOsaBus={tutkinnonOsaBus}/>
       : <TutkinnonOsa key={rakenneosa.nimi} tutkinnonOsa={rakenneosa} selectedTutkinnonOsa={selectedTutkinnonOsa} tutkinnonOsaBus={tutkinnonOsaBus}/>
+  }
+})
+
+const RakenneModuuli = React.createClass({
+  render() {
+    const { rakenneosa, osaamisala, selectedTutkinnonOsa, tutkinnonOsaBus } = this.props
+    return (
+      <div className="rakenne-moduuli">
+        <span className="name">{rakenneosa.nimi}</span>
+        <ul className="osat">
+          { rakenneosa.osat
+            .filter(osa => { return !osa.osaamisalaKoodi || osa.osaamisalaKoodi == osaamisala})
+            .map((osa, i) => <li key={i}>
+              <Rakenneosa
+                rakenneosa={osa}
+                osaamisala={osaamisala}
+                selectedTutkinnonOsa={selectedTutkinnonOsa}
+                tutkinnonOsaBus={tutkinnonOsaBus}/>
+            </li>)
+          }
+        </ul>
+      </div>
+    )
   }
 })
 
