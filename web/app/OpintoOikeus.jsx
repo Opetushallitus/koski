@@ -6,6 +6,8 @@ export const opintoOikeusChange = Bacon.Bus()
 
 const changeOpintoOikeus = (opintoOikeus, change) => opintoOikeusChange.push(R.merge(opintoOikeus, change))
 
+const withEmptyValue = (xs) => [{ koodi: '', nimi: 'Valitse...'}].concat(xs)
+
 export const OpintoOikeus = React.createClass({
   render() {
     let {opintoOikeus} = this.props
@@ -52,8 +54,6 @@ export const OpintoOikeus = React.createClass({
           .onValue(tutkinnonOsa => this.setState({selectedTutkinnonOsa: tutkinnonOsa}))
   }
 })
-
-const withEmptyValue = (xs) => [{ koodi: '', nimi: 'Valitse...'}].concat(xs)
 
 const Rakenneosa = React.createClass({
   render() {
