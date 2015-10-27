@@ -38,6 +38,7 @@
       width: auto;
       padding: 0 10px;
       margin: 0;
+      outline: none;
     }
 
     .arvosanat {
@@ -57,7 +58,7 @@
         &:last-child {
           border-right-width: 1px;
         }
-        &:hover {
+        &:hover, &.selected {
           &:before {
             display: block;
             position: absolute;

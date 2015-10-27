@@ -92,19 +92,22 @@ const TutkinnonOsa = React.createClass({
     const {tutkinnonOsa, opintoOikeus, selectedTutkinnonOsa, tutkinnonOsaBus} = this.props
     const selected = selectedTutkinnonOsa && tutkinnonOsa.nimi === selectedTutkinnonOsa.nimi
     const arviointiAsteikko = R.find(asteikko => R.equals(asteikko.koodisto, tutkinnonOsa.arviointiAsteikko))(opintoOikeus.tutkinto.rakenne.arviointiAsteikot)
-    const arvosanat = arviointiAsteikko ? arviointiAsteikko.arvosanat.map((arvosana, i) => <li key={arvosana.id}>{arvosana.nimi}</li>) : undefined
+    const arvosanat = arviointiAsteikko ? arviointiAsteikko.arvosanat : undefined
     return (
       <div className={ selected ? 'tutkinnon-osa selected' : 'tutkinnon-osa'} onClick={() => tutkinnonOsaBus.push(tutkinnonOsa)}>
         <span className="name">{tutkinnonOsa.nimi}</span>
         { selected && arvosanat ?
           <div className="arvostelu">
-            <ul className="arvosanat">
-              {arvosanat}
-            </ul>
-            <button className="button blue">Tallenna arvio</button>
+            <ul className="arvosanat">{
+              arvosanat.map((arvosana) => <li className= { arvosana == this.state.valittuArvosana ? 'selected' : '' } key={arvosana.id} onClick={() => this.setState({ valittuArvosana: arvosana })}>{arvosana.nimi}</li>)
+            }</ul>
+            <button className="button blue" disabled={!this.state.valittuArvosana}>Tallenna arvio</button>
           </div> : null
         }
       </div>
     )
+  },
+  getInitialState() {
+    return {}
   }
 })
