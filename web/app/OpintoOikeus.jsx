@@ -93,15 +93,15 @@ const TutkinnonOsa = React.createClass({
     const selected = selectedTutkinnonOsa && tutkinnonOsa.nimi === selectedTutkinnonOsa.nimi
     const arviointiAsteikko = R.find(asteikko => R.equals(asteikko.koodisto, tutkinnonOsa.arviointiAsteikko))(opintoOikeus.tutkinto.rakenne.arviointiAsteikot)
     const arvosanat = arviointiAsteikko ? arviointiAsteikko.arvosanat : undefined
-    const addArvosana = (arvosana) => (opintoOikeus) => {
-      let suoritukset = opintoOikeus.suoritukset.concat({ koulutusModuuli: tutkinnonOsa.tunniste, arviointi: { asteikko: tutkinnonOsa.arviointiAsteikko, arvosana: arvosana }})
-      return R.merge(opintoOikeus, { suoritukset })
+    const addArvosana = (arvosana) => (oOikeus) => {
+      let suoritukset = oOikeus.suoritukset.concat({ koulutusModuuli: tutkinnonOsa.tunniste, arviointi: { asteikko: tutkinnonOsa.arviointiAsteikko, arvosana: arvosana }})
+      return R.merge(oOikeus, { suoritukset })
     }
     const saveArvosana = (arvosana) => {
       opintoOikeusChange.push([opintoOikeus.id, addArvosana(arvosana)])
       tutkinnonOsaBus.push(undefined) // <- deselect
     }
-    const suoritus = R.find(suoritus => R.equals(suoritus.koulutusModuuli, tutkinnonOsa.tunniste))(opintoOikeus.suoritukset)
+    const suoritus = R.find(osanSuoritus => R.equals(osanSuoritus.koulutusModuuli, tutkinnonOsa.tunniste))(opintoOikeus.suoritukset)
     const arviointi = suoritus && suoritus.arviointi
 
     return (
