@@ -17,7 +17,7 @@ class EPerusteetClient(ePerusteetRoot: String) extends TutkintoRepository {
 
   private def ePerusteetToTutkinnot(perusteet: EPerusteet) = {
     perusteet.data.flatMap { peruste =>
-      peruste.koulutukset.map(koulutus => Tutkinto(peruste.diaarinumero, koulutus.koulutuskoodiArvo, koulutus.nimi.get("fi")))
+      peruste.koulutukset.map(koulutus => Tutkinto(peruste.diaarinumero, koulutus.koulutuskoodiArvo, peruste.nimi.get("fi")))
     }
   }
 
@@ -29,7 +29,7 @@ class EPerusteetClient(ePerusteetRoot: String) extends TutkintoRepository {
 }
 
 case class EPerusteet(data: List[EPeruste])
-case class EPeruste(diaarinumero: String, koulutukset: List[EPerusteKoulutus])
+case class EPeruste(nimi: Map[String, String], diaarinumero: String, koulutukset: List[EPerusteKoulutus])
 case class EPerusteKoulutus(nimi: Map[String, String], koulutuskoodiArvo: String)
 
 case class EPerusteTunniste(id: String)
