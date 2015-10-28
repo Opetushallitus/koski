@@ -339,18 +339,6 @@ describe('TOR', function() {
           expect(opinnot.getTutkinnonOsat()[0]).to.equal('Myynti ja tuotetuntemus')
         })
       })
-
-      describe('Kun tallennus epäonnistuu', function() {
-        before(
-          mockHttp("/tor/api/oppija", { status: 500 }),
-          opinnot.selectOsaamisala("1622"),
-          wait.until(page.isErrorShown)
-        )
-
-        it('Näytetään virheilmoitus', function() {
-
-        })
-      })
     })
 
     describe('Kun annetaan arviointi tutkinnonosalle', function() {
@@ -375,6 +363,18 @@ describe('TOR', function() {
         it('Muuttuneet tiedot on tallennettu', function() {
           expect(tutkinnonOsa.getArvosana()).to.equal("H2")
         })
+      })
+    })
+
+    describe('Kun tallennus epäonnistuu', function() {
+      before(
+        mockHttp("/tor/api/oppija", { status: 500 }),
+        opinnot.selectOsaamisala("1622"),
+        wait.until(page.isErrorShown)
+      )
+
+      it('Näytetään virheilmoitus', function() {
+
       })
     })
   })
