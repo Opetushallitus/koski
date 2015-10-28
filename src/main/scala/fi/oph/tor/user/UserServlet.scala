@@ -8,6 +8,7 @@ import fi.vm.sade.security.ldap.DirectoryClient
 
 class UserServlet(directoryClient: DirectoryClient, userRepository: UserRepository) extends ErrorHandlingServlet with CurrentUser {
   get("/") {
+    contentType = "application/json;charset=utf-8"
     getAuthenticatedUser match {
       case Some(user) => Json.write(user)
       case None => halt(401)
@@ -15,6 +16,7 @@ class UserServlet(directoryClient: DirectoryClient, userRepository: UserReposito
   }
 
   post("/login") {
+    contentType = "application/json;charset=utf-8"
     val login = Json.read[Login](request.body)
 
     val loginResult: Boolean = directoryClient.authenticate(login.username, login.password)

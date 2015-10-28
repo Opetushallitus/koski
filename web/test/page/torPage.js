@@ -84,6 +84,9 @@ function TorPage() {
     },
     isSavedLabelShown: function() {
       return S('.saved').is(':visible')
+    },
+    getUserName() {
+      return S('.user-info .name').text()
     }
   }
 
