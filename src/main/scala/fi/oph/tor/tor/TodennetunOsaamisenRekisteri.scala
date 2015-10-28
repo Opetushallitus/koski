@@ -48,20 +48,23 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
       case None =>
         HttpStatus.badRequest("Invalid ePeruste: " + opintoOikeus.tutkinto.ePerusteetDiaarinumero)
       case Some(rakenne) =>
-        HttpStatus.ok.andThenIf(!userContext.hasReadAccess(opintoOikeus.oppilaitosOrganisaatio)) { HttpStatus.forbidden("Forbidden") }
-          .andThenIf(opintoOikeus.suoritustapa.filter(!Suoritustapa.apply(_).isDefined)) { suoritustapa => HttpStatus.badRequest("Invalid suoritustapa: " + suoritustapa)}
-          .andThenIf(opintoOikeus.osaamisala.filter(osaamisala => !TutkintoRakenne.findOsaamisala(rakenne, osaamisala).isDefined)) { osaamisala => HttpStatus.badRequest("Invalid osaamisala: " + osaamisala) }
-          .andThen(HttpStatus.fold(opintoOikeus.suoritukset.map(validateSuoritus(_, rakenne))))
+        HttpStatus.ifThen(!userContext.hasReadAccess(opintoOikeus.oppilaitosOrganisaatio)) { HttpStatus.forbidden("Forbidden") }
+          .ifOkThen{ HttpStatus
+              .each(opintoOikeus.suoritustapa.filter(!Suoritustapa.apply(_).isDefined)) { suoritustapa => HttpStatus.badRequest("Invalid suoritustapa: " + suoritustapa)}
+              .appendEach(opintoOikeus.osaamisala.filter(osaamisala => !TutkintoRakenne.findOsaamisala(rakenne, osaamisala).isDefined)) { osaamisala => HttpStatus.badRequest("Invalid osaamisala: " + osaamisala) }
+              .appendEach(opintoOikeus.suoritukset)(validateSuoritus(_, rakenne))
+          }
     }
   }
 
   def validateSuoritus(suoritus: Suoritus, rakenne: TutkintoRakenne): HttpStatus = {
     TutkintoRakenne.findTutkinnonOsa(rakenne, suoritus.koulutusModuuli) match {
-      case None => HttpStatus.badRequest("Tuntematon tutkinnon osa: " + suoritus.koulutusModuuli)
+      case None =>
+        HttpStatus.badRequest("Tuntematon tutkinnon osa: " + suoritus.koulutusModuuli)
       case Some(tutkinnonOsa) =>
-        HttpStatus.andThenIf(suoritus.arviointi) { arviointi =>
-          HttpStatus.ok
-            .andThenIf(arviointi.asteikko != tutkinnonOsa.arviointiAsteikko) { HttpStatus.badRequest("Perusteiden vastainen arviointiasteikko: " + arviointi.asteikko)}
+        HttpStatus.each(suoritus.arviointi) { arviointi =>
+          HttpStatus
+            .ifThen(arviointi.asteikko != tutkinnonOsa.arviointiAsteikko) { HttpStatus.badRequest("Perusteiden vastainen arviointiasteikko: " + arviointi.asteikko)}
             .ifOkThen {
               rakenne.arviointiAsteikot.find(_.koodisto == arviointi.asteikko) match {
                 case Some(asteikko) if (!asteikko.arvosanat.contains(arviointi.arvosana)) =>
