@@ -335,7 +335,7 @@ describe('TOR', function() {
         before( page.oppijaHaku.search('ero', 4),
                 page.oppijaHaku.selectOppija('tunkkila'))
 
-        it('Muuttuneet tiedot tallennetaan', function() {
+        it('Muuttuneet tiedot on tallennettu', function() {
           expect(opinnot.getTutkinnonOsat()[0]).to.equal('Myynti ja tuotetuntemus')
         })
       })
@@ -359,6 +359,22 @@ describe('TOR', function() {
       before(tutkinnonOsa.addArviointi("H2"))
       it('Uusi arviointi näytetään', function() {
         expect(tutkinnonOsa.getArvosana()).to.equal("H2")
+      })
+
+      describe('Kun arvosanaa klikataan', function() {
+        it('Muuttaminen ei ole mahdollista', function() {
+          tutkinnonOsa.click()
+          expect(tutkinnonOsa.saveButtonIsVisible()).to.equal(false)
+        })
+      })
+
+      describe('Kun sivu ladataan uudelleen', function() {
+        before( page.oppijaHaku.search('ero', 4),
+                page.oppijaHaku.selectOppija('tunkkila'))
+
+        it('Muuttuneet tiedot on tallennettu', function() {
+          expect(tutkinnonOsa.getArvosana()).to.equal("H2")
+        })
       })
     })
   })

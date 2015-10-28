@@ -102,20 +102,21 @@ const TutkinnonOsa = React.createClass({
       tutkinnonOsaBus.push(undefined) // <- deselect
     }
     const suoritus = R.find(suoritus => R.equals(suoritus.koulutusModuuli, tutkinnonOsa.tunniste))(opintoOikeus.suoritukset)
+    const arviointi = suoritus && suoritus.arviointi
 
     return (
       <div className={ selected ? 'tutkinnon-osa selected' : 'tutkinnon-osa'} onClick={() => {if (!selected) tutkinnonOsaBus.push(tutkinnonOsa)}}>
         <span className="name">{tutkinnonOsa.nimi}</span>
-        { selected && arvosanat
+        { selected && arvosanat && !arviointi
           ?
-            <div className="arviointi">
+            <div className="arviointi edit">
               <ul className="arvosanat">{
                 arvosanat.map((arvosana) => <li className= { arvosana == this.state.valittuArvosana ? 'selected' : '' } key={arvosana.id} onClick={() => this.setState({ valittuArvosana: arvosana })}>{arvosana.nimi}</li>)
               }</ul>
               <button className="button blue" disabled={!this.state.valittuArvosana} onClick={() => saveArvosana(this.state.valittuArvosana)}>Tallenna arvio</button>
             </div>
           : (
-            suoritus && suoritus.arviointi
+            arviointi
               ? <div className="arviointi"><span className="arvosana">{suoritus.arviointi.arvosana.nimi}</span></div>
               : null
           )

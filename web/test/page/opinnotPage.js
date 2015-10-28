@@ -33,16 +33,27 @@ function TutkinnonOsa(nimi) {
   function tutkinnonOsaElement() {
     return S(".tutkinnon-osa .name:contains(" + nimi + ")").parent()
   }
-  return {
+  function saveButton() {
+    return tutkinnonOsaElement().find("button:visible")
+  }
+  api = {
     addArviointi: function(arvosana) {
       return function() {
-        tutkinnonOsaElement().click()
+        api.click()
         tutkinnonOsaElement().find(".arvosanat li:contains("+arvosana+")").click()
-        tutkinnonOsaElement().find("button").click()
+        saveButton().click()
       }
     },
     getArvosana: function() {
       return tutkinnonOsaElement().find(".arvosana").text()
+    },
+    click: function() {
+      tutkinnonOsaElement().click()
+    },
+    saveButtonIsVisible: function() {
+      return saveButton().is(":visible")
     }
   }
+
+  return api
 }
