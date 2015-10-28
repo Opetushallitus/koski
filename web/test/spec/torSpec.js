@@ -342,7 +342,6 @@ describe('TOR', function() {
     })
 
     describe('Kun annetaan arviointi tutkinnonosalle', function() {
-      before(opinnot.selectSuoritustapa("ops"), opinnot.selectOsaamisala("1527"))
       var tutkinnonOsa = opinnot.getTutkinnonOsa("Markkinointi ja asiakaspalvelu")
       before(tutkinnonOsa.addArviointi("H2"))
       it('Uusi arviointi näytetään', function() {
