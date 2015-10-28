@@ -204,6 +204,7 @@ Pari testiurlia:
     
     https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet?nimi=Ty%C3%B6njoh
     https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059
+    https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059/kaikki
     
 ## Organisaatiopalvelu-integraatio
 

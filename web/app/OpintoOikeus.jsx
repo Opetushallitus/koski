@@ -4,8 +4,6 @@ import R from 'ramda'
 
 export const opintoOikeusChange = Bacon.Bus()
 
-const changeOpintoOikeus = (opintoOikeus, change) => opintoOikeusChange.push(R.merge(opintoOikeus, change))
-
 const withEmptyValue = (xs) => [{ koodi: '', nimi: 'Valitse...'}].concat(xs)
 
 export const OpintoOikeus = React.createClass({
@@ -19,12 +17,12 @@ export const OpintoOikeus = React.createClass({
           ?
             <div className="tutkinto-rakenne">
                 <label>Suoritustapa
-                    <select className="suoritustapa" value={opintoOikeus.suoritustapa} onChange={(event) => changeOpintoOikeus(opintoOikeus, {'suoritustapa': event.target.value || undefined })}>
+                    <select className="suoritustapa" value={opintoOikeus.suoritustapa} onChange={(event) => opintoOikeusChange.push([opintoOikeus.id, oo => R.merge(oo, {suoritustapa: event.target.value || undefined})] )}>
                         {withEmptyValue(opintoOikeus.tutkinto.rakenne.suoritustavat).map(s => <option key={s.koodi} value={s.koodi}>{s.nimi}</option>)}
                     </select>
                 </label>
                 <label>Osaamisala
-                    <select className="osaamisala" value={opintoOikeus.osaamisala} onChange={(event) => changeOpintoOikeus(opintoOikeus, {'osaamisala': event.target.value || undefined })}>
+                    <select className="osaamisala" value={opintoOikeus.osaamisala} onChange={(event) => opintoOikeusChange.push([opintoOikeus.id, oo => R.merge(oo, {osaamisala: event.target.value || undefined})] )}>
                         {withEmptyValue(opintoOikeus.tutkinto.rakenne.osaamisalat).map(o => <option key={o.koodi} value={o.koodi}>{o.nimi}</option>)}
                     </select>
                 </label>
@@ -51,7 +49,9 @@ export const OpintoOikeus = React.createClass({
   },
   componentDidMount() {
       this.state.tutkinnonOsaBus
-          .onValue(tutkinnonOsa => this.setState({selectedTutkinnonOsa: tutkinnonOsa}))
+          .onValue(tutkinnonOsa => {
+            this.setState({selectedTutkinnonOsa: tutkinnonOsa})
+          })
   }
 })
 
@@ -93,16 +93,32 @@ const TutkinnonOsa = React.createClass({
     const selected = selectedTutkinnonOsa && tutkinnonOsa.nimi === selectedTutkinnonOsa.nimi
     const arviointiAsteikko = R.find(asteikko => R.equals(asteikko.koodisto, tutkinnonOsa.arviointiAsteikko))(opintoOikeus.tutkinto.rakenne.arviointiAsteikot)
     const arvosanat = arviointiAsteikko ? arviointiAsteikko.arvosanat : undefined
+    const addArvosana = (arvosana) => (opintoOikeus) => {
+      let suoritukset = opintoOikeus.suoritukset.concat({ koulutusModuuli: tutkinnonOsa.tunniste, arviointi: { asteikko: tutkinnonOsa.arviointiAsteikko, arvosana: arvosana }})
+      return R.merge(opintoOikeus, { suoritukset })
+    }
+    const saveArvosana = (arvosana) => {
+      opintoOikeusChange.push([opintoOikeus.id, addArvosana(arvosana)])
+      tutkinnonOsaBus.push(undefined) // <- deselect
+    }
+    const suoritus = R.find(suoritus => R.equals(suoritus.koulutusModuuli, tutkinnonOsa.tunniste))(opintoOikeus.suoritukset)
+
     return (
-      <div className={ selected ? 'tutkinnon-osa selected' : 'tutkinnon-osa'} onClick={() => tutkinnonOsaBus.push(tutkinnonOsa)}>
+      <div className={ selected ? 'tutkinnon-osa selected' : 'tutkinnon-osa'} onClick={() => {if (!selected) tutkinnonOsaBus.push(tutkinnonOsa)}}>
         <span className="name">{tutkinnonOsa.nimi}</span>
-        { selected && arvosanat ?
-          <div className="arvostelu">
-            <ul className="arvosanat">{
-              arvosanat.map((arvosana) => <li className= { arvosana == this.state.valittuArvosana ? 'selected' : '' } key={arvosana.id} onClick={() => this.setState({ valittuArvosana: arvosana })}>{arvosana.nimi}</li>)
-            }</ul>
-            <button className="button blue" disabled={!this.state.valittuArvosana}>Tallenna arvio</button>
-          </div> : null
+        { selected && arvosanat
+          ?
+            <div className="arviointi">
+              <ul className="arvosanat">{
+                arvosanat.map((arvosana) => <li className= { arvosana == this.state.valittuArvosana ? 'selected' : '' } key={arvosana.id} onClick={() => this.setState({ valittuArvosana: arvosana })}>{arvosana.nimi}</li>)
+              }</ul>
+              <button className="button blue" disabled={!this.state.valittuArvosana} onClick={() => saveArvosana(this.state.valittuArvosana)}>Tallenna arvio</button>
+            </div>
+          : (
+            suoritus && suoritus.arviointi
+              ? <div className="arviointi"><span className="arvosana">{suoritus.arviointi.arvosana.nimi}</span></div>
+              : null
+          )
         }
       </div>
     )

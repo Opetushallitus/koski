@@ -27,7 +27,9 @@ object EPerusteetTutkintoRakenne {
         x.osaamisala.map(_.osaamisalakoodiArvo)
       )
       case x: ERakenneTutkinnonOsa => tutkinnonOsaViitteet.find(v => v.id.toString == x._tutkinnonOsaViite) match {
-        case Some(tutkinnonOsaViite) => TutkinnonOsa(tutkinnonOsat.find(o => o.id.toString == tutkinnonOsaViite._tutkinnonOsa).get.nimi.getOrElse("fi", ""), ArviointiasteikkoRepository.example)
+        case Some(tutkinnonOsaViite) =>
+          val eTutkinnonOsa: ETutkinnonOsa = tutkinnonOsat.find(o => o.id.toString == tutkinnonOsaViite._tutkinnonOsa).get
+          TutkinnonOsa(KoulutusModuuliTunniste.tutkinnonOsa(eTutkinnonOsa.koodiArvo), eTutkinnonOsa.nimi.getOrElse("fi", ""), ArviointiasteikkoRepository.example)
         case None => throw new RuntimeException("Tutkinnonosaviitettä ei löydy: " + x._tutkinnonOsaViite)
       }
     }

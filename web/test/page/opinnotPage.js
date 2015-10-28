@@ -14,6 +14,9 @@ function OpinnotPage() {
     getTutkinnonOsat: function() {
       return textsOf(tutkinnonOsa())
     },
+    getTutkinnonOsa: function(nimi) {
+      return TutkinnonOsa(nimi)
+    },
     selectSuoritustapa: function(suoritustapa) {
       return Page(opintoOikeus).setInputValue(".suoritustapa", suoritustapa)
     },
@@ -24,4 +27,22 @@ function OpinnotPage() {
   }
 
   return api
+}
+
+function TutkinnonOsa(nimi) {
+  function tutkinnonOsaElement() {
+    return S(".tutkinnon-osa .name:contains(" + nimi + ")").parent()
+  }
+  return {
+    addArviointi: function(arvosana) {
+      return function() {
+        tutkinnonOsaElement().click()
+        tutkinnonOsaElement().find(".arvosanat li:contains("+arvosana+")").click()
+        tutkinnonOsaElement().find("button").click()
+      }
+    },
+    getArvosana: function() {
+      return tutkinnonOsaElement().find(".arvosana").text()
+    }
+  }
 }

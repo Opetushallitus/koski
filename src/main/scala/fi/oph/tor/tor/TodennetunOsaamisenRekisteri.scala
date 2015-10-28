@@ -72,7 +72,10 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
       tutkinto   <- tutkintoRepository.findByEPerusteDiaarinumero(opintoOikeus.tutkinto.ePerusteetDiaarinumero)
       oppilaitos <- oppilaitosRepository.findById(opintoOikeus.oppilaitosOrganisaatio.oid)
     } yield {
-      OpintoOikeus(tutkinto.copy(rakenne = tutkintoRepository.findPerusteRakenne(tutkinto.ePerusteetDiaarinumero)(arviointiAsteikot)), oppilaitos, opintoOikeus.suoritustapa, opintoOikeus.osaamisala, opintoOikeus.id)
+      opintoOikeus.copy(
+        tutkinto = tutkinto.copy(rakenne = tutkintoRepository.findPerusteRakenne(tutkinto.ePerusteetDiaarinumero)(arviointiAsteikot)),
+        oppilaitosOrganisaatio = oppilaitos
+      )
     }
   }
 }

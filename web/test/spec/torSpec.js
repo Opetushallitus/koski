@@ -351,6 +351,14 @@ describe('TOR', function() {
 
         })
       })
+
+      describe('Kun annetaan arviointi tutkinnonosalle', function() {
+        var tutkinnonOsa = opinnot.getTutkinnonOsa("Auton tai moottoripyörän huoltaminen")
+        before(tutkinnonOsa.addArviointi("H2"))
+        it('Uusi arviointi näytetään', function() {
+          expect(tutkinnonOsa.getArvosana()).to.equal("H2")
+        })
+      })
     })
   })
 

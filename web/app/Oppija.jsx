@@ -10,18 +10,20 @@ var selectOppijaE = routeP.map('.oppijaId').flatMap(oppijaId => {
   return oppijaId ? Bacon.once(undefined).concat(Http.get(`/tor/api/oppija/${oppijaId}`)) : Bacon.once(undefined)
 })
 
-export const oppijaP = selectOppijaE.flatMapLatest(oppija =>
-  Bacon.once(oppija)
-    .concat(opintoOikeusChange.map( changedOpintoOikeus => {
-      let changedOppija = Ramda.clone(oppija)
-      changedOppija.opintoOikeudet = changedOppija.opintoOikeudet.map(opintoOikeus =>
-          opintoOikeus.id == changedOpintoOikeus.id
-            ? changedOpintoOikeus
-            : opintoOikeus
-      )
-      return changedOppija
-    }))
-).toProperty()
+export const oppijaP = Bacon.update(undefined,
+  selectOppijaE, (previous, oppija) => oppija,
+  opintoOikeusChange, (currentOppija, [opintoOikeusId, change]) => {
+    let changedOppija = Ramda.clone(currentOppija)
+    changedOppija.opintoOikeudet = changedOppija.opintoOikeudet.map(opintoOikeus =>
+        opintoOikeus.id == opintoOikeusId
+          ? change(opintoOikeus)
+          : opintoOikeus
+    )
+    return changedOppija
+  }
+)
+
+export const updateResultE = oppijaP.sampledBy(opintoOikeusChange).flatMapLatest(oppijaUpdate => Http.post('/tor/api/oppija', oppijaUpdate))
 
 export const uusiOppijaP = routeP.map(route => { return !!route.uusiOppija })
 
@@ -54,8 +56,3 @@ const ExistingOppija = React.createClass({
     )
   }
 })
-
-export const updateResultE = oppijaP.sampledBy(opintoOikeusChange, (oppija, opintoOikeus) => ({
-  henkilo: oppija.henkilo,
-  opintoOikeudet: [opintoOikeus]
-})).flatMapLatest(oppijaUpdate => Http.post('/tor/api/oppija', oppijaUpdate))

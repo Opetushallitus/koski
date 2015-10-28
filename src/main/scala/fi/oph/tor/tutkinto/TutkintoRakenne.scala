@@ -10,4 +10,10 @@ case class Osaamisala(nimi: String, koodi: String)
 
 sealed trait RakenneOsa
 case class RakenneModuuli(nimi: String, osat: List[RakenneOsa], osaamisalaKoodi: Option[String]) extends RakenneOsa
-case class TutkinnonOsa(nimi: String, arviointiAsteikko: KoodistoViittaus) extends RakenneOsa
+case class TutkinnonOsa(tunniste: KoulutusModuuliTunniste, nimi: String, arviointiAsteikko: KoodistoViittaus) extends RakenneOsa
+
+// Tunniste, jolla suoritukset linkitetään koulutusmoduuleihin. Tässä vaiheessa linkittyy aina tutkinnon osaan ePerusteissa
+object KoulutusModuuliTunniste {
+  def tutkinnonOsa(koodi: String) = KoulutusModuuliTunniste("tutkinnonosa", koodi)
+}
+case class KoulutusModuuliTunniste(tyyppi: String, koodi: String)
