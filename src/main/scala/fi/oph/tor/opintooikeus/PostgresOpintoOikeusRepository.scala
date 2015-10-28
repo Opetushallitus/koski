@@ -5,7 +5,7 @@ import fi.oph.tor.db.PostgresDriverWithJsonSupport.jsonMethods._
 
 import fi.oph.tor.db.TorDatabase.DB
 import fi.oph.tor.db._
-import fi.oph.tor.http.HttpError
+import fi.oph.tor.http.{HttpStatus, HttpStatus$}
 import fi.oph.tor.json.Json
 import fi.oph.tor.oppija.Oppija
 import fi.oph.tor.user.UserContext
@@ -54,8 +54,8 @@ class PostgresOpintoOikeusRepository(db: DB) extends OpintoOikeusRepository with
     // TODO: always overriding existing data can not be the eventual update strategy
     val rowsUpdated: Int = await(db.run(OpintoOikeudet.filter(_.id === opintoOikeus.id.get).map(_.data).update(new OpintoOikeusRow(oppijaOid, opintoOikeus).data)))
     rowsUpdated match {
-      case 1 => None
-      case x => Some(HttpError(500, "Unexpected number of updated rows: " + x))
+      case 1 => HttpStatus.ok
+      case x => HttpStatus.internalError("Unexpected number of updated rows: " + x)
     }
   }
 

@@ -1,9 +1,19 @@
 package fi.oph.tor
 
+import fi.oph.tor.http.HttpStatus
+import fi.oph.tor.json.Json
 import fi.vm.sade.utils.slf4j.Logging
 import org.scalatra.ScalatraServlet
 
 trait ErrorHandlingServlet extends ScalatraServlet with Logging {
+  def renderEither[T <: AnyRef](result: Either[HttpStatus, T]) = {
+    contentType = "application/json;charset=utf-8"
+    result match {
+      case Right(x) => Json.write(x)
+      case Left(HttpStatus(status, errors)) => halt(status, Json.write(errors))
+    }
+  }
+
   error {
     case InvalidRequestException(msg) =>
       halt(status = 400, msg)

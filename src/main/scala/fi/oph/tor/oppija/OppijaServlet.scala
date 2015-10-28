@@ -1,6 +1,6 @@
 package fi.oph.tor.oppija
 
-import fi.oph.tor.http.HttpError
+import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.json.Json
 import fi.oph.tor.security.RequiresAuthentication
 import fi.oph.tor.tor.{TodennetunOsaamisenRekisteri, TorOppija}
@@ -20,22 +20,13 @@ class OppijaServlet(rekisteri: TodennetunOsaamisenRekisteri)(implicit val userRe
   }
 
   get("/:oid") {
-    contentType = "application/json;charset=utf-8"
-
-    rekisteri.userView(params("oid")) match {
-      case Right(user) => Json.write(user)
-      case Left(msg) => halt(404, msg)
-    }
+    renderEither(rekisteri.userView(params("oid")))
   }
 
   post("/") {
-    contentType = "text/plain;charset=utf-8"
-    val oppija: TorOppija = Json.read[TorOppija](request.body)
-
-    val result = rekisteri.createOrUpdate(oppija)
-    result match {
-      case Left(HttpError(status, text)) => halt(status, text)
-      case Right(id) => id
+    getClass.synchronized{
+      val oppija: TorOppija = Json.read[TorOppija](request.body)
+      renderEither(rekisteri.createOrUpdate(oppija))
     }
   }
 }

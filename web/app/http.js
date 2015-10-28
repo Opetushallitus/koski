@@ -14,19 +14,23 @@ const parseResponse = (result) => {
   return new Bacon.Error({ message: 'http error ' + result.status, httpStatus: result.status })
 }
 
-const reqComplete = () => reqE.push(-1)
+const reqComplete = (url) => () => {
+  //console.log('complete', url)
+  reqE.push(-1)
+}
 
 const mocks = {}
 const serveMock = url => {
   let mock = mocks[url]
-  delete mock[url]
+  delete mocks[url]
   return Bacon.once(mock.status ? mock : Bacon.Error('connection failed')).toPromise()
 }
 const doHttp = (url, options) => mocks[url] ? serveMock(url) : fetch(url, options)
 const http = (url, options) => {
+  //console.log('begin', url)
   reqE.push(1)
   const promise = doHttp(url, options)
-  promise.then(reqComplete, reqComplete)
+  promise.then(reqComplete(url), reqComplete(url))
   return Bacon.fromPromise(promise).mapError({status: 503}).flatMap(parseResponse)
 }
 

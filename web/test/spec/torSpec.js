@@ -316,13 +316,13 @@ describe('TOR', function() {
   })
 
   describe('Tutkinnon tietojen muuttaminen', function() {
-    before(addNewOppija('kalle', 'Tunkkila', { hetu: '091095-9833'}))
-    before(opinnot.selectSuoritustapa("ops"), opinnot.selectOsaamisala("1527"))
+    before(resetMocks, page.openPage, addNewOppija('kalle', 'Tunkkila', { hetu: '091095-9833'}))
+    it('Aluksi ei näytetä \"Kaikki tiedot tallennettu\" -tekstiä', function() {
+      expect(page.isSavedLabelShown()).to.equal(false)
+    })
 
     describe('Kun valitaan osaamisala ja suoritustapa', function() {
-      it('Aluksi ei näytetä \"Kaikki tiedot tallennettu\" -tekstiä', function() {
-        expect(page.isSavedLabelShown()).to.equal(false)
-      })
+      before(opinnot.selectSuoritustapa("ops"), opinnot.selectOsaamisala("1527"))
 
       describe('Muutosten näyttäminen', function() {
         before(wait.until(page.isSavedLabelShown))
@@ -342,6 +342,7 @@ describe('TOR', function() {
     })
 
     describe('Kun annetaan arviointi tutkinnonosalle', function() {
+      before(opinnot.selectSuoritustapa("ops"), opinnot.selectOsaamisala("1527"))
       var tutkinnonOsa = opinnot.getTutkinnonOsa("Markkinointi ja asiakaspalvelu")
       before(tutkinnonOsa.addArviointi("H2"))
       it('Uusi arviointi näytetään', function() {
@@ -374,6 +375,18 @@ describe('TOR', function() {
 
       it('Näytetään virheilmoitus', function() {
 
+      })
+    })
+
+    describe('Tietojen validointi serverillä', function() {
+      describe('Osaamisala ja suoritustapa ok', function() {
+        it('palautetaan HTTP 200', verifyResponseCode(addOppija.postOpintoOikeusAjax({ suoritustapa: 'ops', osaamisala: 1527}), 200))
+      })
+      describe('Suoritustapa virheellinen', function() {
+        it('palautetaan HTTP 400', verifyResponseCode(addOppija.postOpintoOikeusAjax({ suoritustapa: 'virheellinen', osaamisala: 1527}), 400))
+      })
+      describe('Osaamisala virheellinen', function() {
+        it('palautetaan HTTP 400', verifyResponseCode(addOppija.postOpintoOikeusAjax({ suoritustapa: 'ops', osaamisala: 0}), 400))
       })
     })
   })
@@ -448,25 +461,16 @@ describe('TOR', function() {
     describe('Tietojen validointi serverillä', function() {
       before(resetMocks, authentication.login('kalle'), page.openPage)
 
-      function verifyResponseCode(data, code) {
-        return function(done) {
-          addOppija.postOppijaAjax(data).catch(function(error) {
-            expect(error.status).to.equal(code)
-            done()
-          })
-        }
-      }
-
       describe('Valideilla tiedoilla', function() {
-        it('palautetaan HTTP 200', verifyResponseCode({}, 200))
+        it('palautetaan HTTP 200', verifyResponseCode(addOppija.postOpintoOikeusAjax({}), 200))
       })
 
       describe('Kun opinto-oikeutta yritetään lisätä oppilaitokseen, johon käyttäjällä ei ole pääsyä', function() {
-        it('palautetaan HTTP 403 virhe', verifyResponseCode({ 'opintoOikeudet': [{ 'oppilaitosOrganisaatio':{oid: 'eipaasya'}, tutkinto: {'ePerusteetDiaarinumero':'39/011/2014', tutkintoKoodi: '351301'}}]}, 403))
+        it('palautetaan HTTP 403 virhe', verifyResponseCode(addOppija.postOpintoOikeusAjax({ 'oppilaitosOrganisaatio':{oid: 'eipaasya'}}), 403))
       })
 
       describe('Kun yritetään lisätä opinto-oikeus virheelliseen perusteeseen', function() {
-        it('palautetaan HTTP 400 virhe', verifyResponseCode({ 'opintoOikeudet': [{ 'oppilaitosOrganisaatio':{oid: '1'}, tutkinto: {'ePerusteetDiaarinumero':'virheellinen', tutkintoKoodi: '351301'}}]}, 400))
+        it('palautetaan HTTP 400 virhe', verifyResponseCode(addOppija.postOpintoOikeusAjax({ tutkinto: {'ePerusteetDiaarinumero':'virheellinen', tutkintoKoodi: '351301'}}), 400))
       })
     })
   })
@@ -515,16 +519,31 @@ describe('TOR', function() {
       })
     })
   })
+
+  function authenticationErrorIsShown() {
+    return S('body').text() === 'Not authenticated'
+  }
+
+  function resetMocks() {
+    return Q($.ajax({ url: '/tor/fixtures/reset', method: 'post'}))
+  }
+
+  function mockHttp(url, result) {
+    return function() { testFrame().http.mock(url, result) }
+  }
+
+  function verifyResponseCode(fn, code) {
+    if (code == 200) {
+      return function(done) {
+        fn().then(function() { done() })
+      }
+    } else {
+      return function(done) {
+        fn().catch(function(error) {
+          expect(error.status).to.equal(code)
+          done()
+        })
+      }
+    }
+  }
 })
-
-function authenticationErrorIsShown() {
-  return S('body').text() === 'Not authenticated'
-}
-
-function resetMocks() {
-  return Q($.ajax({ url: '/tor/fixtures/reset', method: 'post'}))
-}
-
-function mockHttp(url, result) {
-  return function() { testFrame().http.mock(url, result) }
-}

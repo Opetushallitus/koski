@@ -1,11 +1,11 @@
 package fi.oph.tor.tor
 
 import fi.oph.tor.arvosana.ArviointiasteikkoRepository
-import fi.oph.tor.http.HttpError
+import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.opintooikeus._
 import fi.oph.tor.oppija._
 import fi.oph.tor.oppilaitos.OppilaitosRepository
-import fi.oph.tor.tutkinto.TutkintoRepository
+import fi.oph.tor.tutkinto.{Suoritustapa, TutkintoRepository}
 import fi.oph.tor.user.UserContext
 
 class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
@@ -20,13 +20,13 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     filtered
   }
 
-  def createOrUpdate(oppija: TorOppija)(implicit userContext: UserContext): Either[HttpError, Oppija.Id] = {
+  def createOrUpdate(oppija: TorOppija)(implicit userContext: UserContext): Either[HttpStatus, Oppija.Id] = {
     if (oppija.opintoOikeudet.length == 0) {
-      Left(HttpError(400, "At least one OpintoOikeus required"))
+      Left(HttpStatus.badRequest("At least one OpintoOikeus required"))
     }
     else {
-      oppija.opintoOikeudet.flatMap(oikeus => validateOpintoOikeus(oikeus)).headOption match {
-        case Some(error) => Left(error)
+      HttpStatus.fold(oppija.opintoOikeudet.map(validateOpintoOikeus)) match {
+        case error if error.isError => Left(error)
         case _ =>
           val result = oppijaRepository.findOrCreate(oppija)
           result.right.flatMap { oppijaOid: String =>
@@ -42,28 +42,42 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     }
   }
 
-  def validateOpintoOikeus(opintoOikeus: OpintoOikeus)(implicit userContext: UserContext) = {
-    if(tutkintoRepository.findByEPerusteDiaarinumero(opintoOikeus.tutkinto.ePerusteetDiaarinumero).isEmpty) {
-      Some(HttpError(400, "Invalid ePeruste: " + opintoOikeus.tutkinto.ePerusteetDiaarinumero))
+  def validateOpintoOikeus(opintoOikeus: OpintoOikeus)(implicit userContext: UserContext): HttpStatus = {
+    var status = HttpStatus.ok
+    val rakenne = tutkintoRepository.findPerusteRakenne(opintoOikeus.tutkinto.ePerusteetDiaarinumero)(arviointiAsteikot)
+    if(rakenne.isEmpty) {
+      status ++= (HttpStatus.badRequest("Invalid ePeruste: " + opintoOikeus.tutkinto.ePerusteetDiaarinumero))
     }
-    else if(!userContext.hasReadAccess(opintoOikeus.oppilaitosOrganisaatio)) {
-      Some(HttpError(403, "Forbidden"))
-    } else {
-      None
+    if(!userContext.hasReadAccess(opintoOikeus.oppilaitosOrganisaatio)) {
+      status ++= HttpStatus.forbidden("Forbidden")
+    }
+    opintoOikeus.suoritustapa.filter(!Suoritustapa.apply(_).isDefined).foreach(suoritustapa =>
+      status ++= HttpStatus.badRequest("Invalid suoritustapa: " + suoritustapa)
+    )
+    opintoOikeus.osaamisala.filter(osaamisala => !rakenne.find(rakenne => rakenne.osaamisalat.map(_.koodi).contains(osaamisala)).isDefined).foreach(osaamisala =>
+      status ++= HttpStatus.badRequest("Invalid osaamisala: " + osaamisala)
+    )
+    status ++= HttpStatus.fold(opintoOikeus.suoritukset.map(validateSuoritus))
+    status
+  }
+
+  def validateSuoritus(suoritus: Suoritus): HttpStatus = {
+    HttpStatus.ok
+  }
+
+  def userView(oid: String)(implicit userContext: UserContext): Either[HttpStatus, TorOppija] = {
+    oppijaRepository.findByOid(oid) match {
+      case Some(oppija) =>
+        opintoOikeudetForOppija(oppija) match {
+          case Nil => notFound(oid)
+          case opintoOikeudet => Right(TorOppija(oppija, opintoOikeudet))
+        }
+      case None => notFound(oid)
     }
   }
 
-  def userView(oid: String)(implicit userContext: UserContext): Either[HttpError, TorOppija] = oppijaRepository.findByOid(oid) match {
-    case Some(oppija) =>
-      opintoOikeudetForOppija(oppija) match {
-        case Nil => notFound(oid)
-        case opintoOikeudet => Right(TorOppija(oppija, opintoOikeudet))
-      }
-    case None => notFound(oid)
-  }
-
-  def notFound(oid: String): Left[HttpError, Nothing] = {
-    Left(HttpError(404, s"Oppija with oid: $oid not found"))
+  def notFound(oid: String): Left[HttpStatus, Nothing] = {
+    Left(HttpStatus.notFound(s"Oppija with oid: $oid not found"))
   }
 
   private def opintoOikeudetForOppija(oppija: Oppija)(implicit userContext: UserContext): Seq[OpintoOikeus] = {

@@ -33,7 +33,7 @@ function AddOppijaPage() {
     },
     enterOppilaitos: function(name) {
       return function() {
-        return pageApi.setInputValue('.oppilaitos input', name)().then(wait.forMilliseconds(1)).then(wait.until(TorPage().isReady))
+        return pageApi.setInputValue('.oppilaitos input', name)().then(wait.forAjax())
       }
     },
     selectOppilaitos: function(name) {
@@ -61,26 +61,36 @@ function AddOppijaPage() {
         return form().find('.error-messages .' + field).is(':visible')
       }
     },
-    postOppijaAjax: function(data) {
-      var defaults = {
-        henkilo: {
-          'etunimet':'Testi',
-          'sukunimi':'Toivola',
-          'kutsumanimi':'Testi',
-          'hetu':'010101-123N'
-        },
-        'opintoOikeudet':
-        [{
-          oppilaitosOrganisaatio: { oid: '1' },
-          tutkinto: {ePerusteetDiaarinumero:'39/011/2014', tutkintoKoodi: '351301'}
-        }]
+    postOpintoOikeusAjax: function(opintoOikeus) {
+      return function() {
+        opintoOikeus = _.merge(defaultOpintoOikeus(), opintoOikeus)
+        data = makeOppija({}, [opintoOikeus])
+        return api.postOppijaAjax(data)()
       }
-
-      data = _.merge(defaults, {}, data)
-      return postJson(
-        'http://localhost:7021/tor/api/oppija', data
-      )
+    },
+    postOppijaAjax: function(oppija) {
+      return function() {
+        var defaults = makeOppija(defaultHenkilo(), [defaultOpintoOikeus()])
+        oppija = _.merge(defaults, {}, oppija)
+        return postJson(
+          'http://localhost:7021/tor/api/oppija', oppija
+        )
+      }
     }
   }
+  function defaultOpintoOikeus() { return {
+    oppilaitosOrganisaatio: { oid: '1' },
+    tutkinto: {ePerusteetDiaarinumero:'39/011/2014', tutkintoKoodi: '351301'}
+  }}
+  function defaultHenkilo() {return {
+    'etunimet':'Testi',
+    'sukunimi':'Toivola',
+    'kutsumanimi':'Testi',
+    'hetu':'010101-123N'
+  }}
+  function makeOppija(henkilo, opintoOikeudet) { return _.cloneDeep({
+    henkilo: henkilo || defaultHenkilo(),
+    opintoOikeudet: opintoOikeudet || [defaultOpintoOikeus()]
+  })}
   return api
 }

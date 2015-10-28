@@ -10,8 +10,8 @@ import org.json4s._
 
 object EPerusteetTutkintoRakenne {
   def convertRakenne(rakenne: EPerusteRakenne)(implicit arviointiAsteikot: ArviointiasteikkoRepository): TutkintoRakenne = {
-    val suoritustavat: List[tutkinto.Suoritustapa] = rakenne.suoritustavat.map { (suoritustapa: ESuoritustapa) =>
-      Suoritustapa(suoritustapa.suoritustapakoodi.capitalize /* TODO: i18n */, suoritustapa.suoritustapakoodi, convertRakenneOsa(rakenne.tutkinnonOsat, suoritustapa.rakenne, suoritustapa.tutkinnonOsaViitteet))
+    val suoritustavat: List[tutkinto.SuoritustapaJaRakenne] = rakenne.suoritustavat.map { (suoritustapa: ESuoritustapa) =>
+      SuoritustapaJaRakenne(Suoritustapa(suoritustapa.suoritustapakoodi).get, convertRakenneOsa(rakenne.tutkinnonOsat, suoritustapa.rakenne, suoritustapa.tutkinnonOsaViitteet))
     }
 
     val osaamisalat: List[Osaamisala] = rakenne.osaamisalat.map(o => Osaamisala(o.nimi("fi"), o.arvo))

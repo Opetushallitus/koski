@@ -18,10 +18,14 @@ function OpinnotPage() {
       return TutkinnonOsa(nimi)
     },
     selectSuoritustapa: function(suoritustapa) {
-      return Page(opintoOikeus).setInputValue(".suoritustapa", suoritustapa)
+      return function() {
+        return Page(opintoOikeus).setInputValue(".suoritustapa", suoritustapa)().then(wait.forAjax())
+      }
     },
     selectOsaamisala: function(osaamisala) {
-      return Page(opintoOikeus).setInputValue(".osaamisala", osaamisala)
+      return function() {
+        return Page(opintoOikeus).setInputValue(".osaamisala", osaamisala)().then(wait.forAjax())
+      }
     }
 
   }
@@ -42,6 +46,7 @@ function TutkinnonOsa(nimi) {
         api.click()
         tutkinnonOsaElement().find(".arvosanat li:contains("+arvosana+")").click()
         saveButton().click()
+        return wait.forAjax()
       }
     },
     getArvosana: function() {

@@ -1,6 +1,6 @@
 package fi.oph.tor.oppija
 
-import fi.oph.tor.http.HttpError
+import fi.oph.tor.http.HttpStatus
 
 class MockOppijaRepository extends OppijaRepository {
   val eero = oppija(generateId, "esimerkki", "eero", "010101-123N")
@@ -29,9 +29,9 @@ class MockOppijaRepository extends OppijaRepository {
     oppijat.filter(searchString(_).contains(query))
   }
 
-  override def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String): Either[HttpError, Oppija.Id] = {
+  override def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String): Either[HttpStatus, Oppija.Id] = {
     if (oppijat.find { o => (o.hetu == Some(hetu)) } .isDefined) {
-      Left(HttpError(409, "conflict"))
+      Left(HttpStatus.conflict("conflict"))
     } else {
       val newOppija = oppija(generateId, sukunimi, etunimet, hetu)
       oppijat = oppijat :+ newOppija

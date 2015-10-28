@@ -14,10 +14,12 @@ class MockTutkintoRepository extends TutkintoRepository {
     tutkinnot.filter(_.toString.toLowerCase.contains(query.toLowerCase))
   }
 
-  override def findByEPerusteDiaarinumero(id: String) = tutkinnot.filter(_.ePerusteetDiaarinumero == id).headOption
+  override def findByEPerusteDiaarinumero(diaariNumero: String) = tutkinnot.filter(_.ePerusteetDiaarinumero == diaariNumero).headOption
 
   override def findPerusteRakenne(diaariNumero: String)(implicit arviointiAsteikot: ArviointiasteikkoRepository) = {
-    val rakenne = Json.readFile("src/main/resources/mockdata/eperusteet/612.json").extract[EPerusteRakenne]
-    Some(EPerusteetTutkintoRakenne.convertRakenne(rakenne))
+    findByEPerusteDiaarinumero(diaariNumero).map{peruste =>
+      val rakenne = Json.readFile("src/main/resources/mockdata/eperusteet/612.json").extract[EPerusteRakenne]
+      EPerusteetTutkintoRakenne.convertRakenne(rakenne)
+    }
   }
 }

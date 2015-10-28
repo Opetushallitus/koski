@@ -18,7 +18,7 @@ export const OpintoOikeus = React.createClass({
             <div className="tutkinto-rakenne">
                 <label>Suoritustapa
                     <select className="suoritustapa" value={opintoOikeus.suoritustapa} onChange={(event) => opintoOikeusChange.push([opintoOikeus.id, oo => R.merge(oo, {suoritustapa: event.target.value || undefined})] )}>
-                        {withEmptyValue(opintoOikeus.tutkinto.rakenne.suoritustavat).map(s => <option key={s.koodi} value={s.koodi}>{s.nimi}</option>)}
+                        {withEmptyValue(opintoOikeus.tutkinto.rakenne.suoritustavat.map(s => s.suoritustapa)).map(s => <option key={s.koodi} value={s.koodi}>{s.nimi}</option>)}
                     </select>
                 </label>
                 <label>Osaamisala
@@ -30,7 +30,7 @@ export const OpintoOikeus = React.createClass({
                 ? <Rakenneosa
                     selectedTutkinnonOsa={this.state.selectedTutkinnonOsa}
                     tutkinnonOsaBus={this.state.tutkinnonOsaBus}
-                    rakenneosa={opintoOikeus.tutkinto.rakenne.suoritustavat.find(x => x.koodi == opintoOikeus.suoritustapa).rakenne}
+                    rakenneosa={opintoOikeus.tutkinto.rakenne.suoritustavat.find(x => x.suoritustapa.koodi == opintoOikeus.suoritustapa).rakenne}
                     opintoOikeus={opintoOikeus}
                   />
                 : null

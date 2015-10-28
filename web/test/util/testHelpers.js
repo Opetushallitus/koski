@@ -28,7 +28,7 @@ wait = {
           deferred.resolve()
         } else if (remaining === 0) {
           const errorStr = "timeout of " + maxWaitMs + "ms in wait.until for condition:\n" + condition
-          console.error(new Error(errorStr))
+          console.error(new Error(errorStr), condition)
           deferred.reject(errorStr)
         } else {
           setTimeout(function() {
@@ -50,6 +50,9 @@ wait = {
       }, ms)
       return deferred.promise
     }
+  },
+  forAjax: function() {
+    return wait.forMilliseconds(1)().then(wait.until(TorPage().isReady))
   }
 }
 
