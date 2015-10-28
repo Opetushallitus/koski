@@ -26,17 +26,26 @@ body {
 }
 
 #topbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 1;
   height: 121px;
-  margin: 0 auto;
   padding-left: @page-border-width;
   padding-right: @page-border-width;
+  min-width: 1200px;
+}
+
+.login {
+  margin-top: 171px;
 }
 
 .content-area {
   display: table;
-  height: 100%;
+  height: ~"calc(100% - 121px)";
   width: 100%;
-  margin-top: 2px;
+  margin-top: 121px;
 }
 
 .sidebar {
