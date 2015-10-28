@@ -105,7 +105,7 @@ const TutkinnonOsa = React.createClass({
     const arviointi = suoritus && suoritus.arviointi
 
     return (
-      <div className={ selected ? 'tutkinnon-osa selected' : 'tutkinnon-osa'} onClick={() => {if (!selected) tutkinnonOsaBus.push(tutkinnonOsa)}}>
+      <div className={ arviointi ? 'tutkinnon-osa suoritettu' : (selected ? 'tutkinnon-osa selected' : 'tutkinnon-osa')} onClick={() => {if (!selected) tutkinnonOsaBus.push(tutkinnonOsa)}}>
         <span className="name">{tutkinnonOsa.nimi}</span>
         { selected && arvosanat && !arviointi
           ?

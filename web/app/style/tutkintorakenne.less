@@ -12,12 +12,16 @@
   .tutkinnon-osa {
     color: @color-darkgray-text;
 
+    &.suoritettu {
+      color: black;
+    }
+
     .name {
       padding-left: 14px;
       max-width: 400px;
     }
 
-    &:hover {
+    &:hover:not(.suoritettu) {
       background-color: white;
       cursor: pointer;
     }
