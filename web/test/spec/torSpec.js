@@ -316,7 +316,7 @@ describe('TOR', function() {
   })
 
   describe('Tutkinnon tietojen muuttaminen', function() {
-    before(resetMocks, page.openPage, addNewOppija('kalle', 'Tunkkila', { hetu: '091095-9833'}))
+    before(authentication.login(), resetMocks, page.openPage, addNewOppija('kalle', 'Tunkkila', { hetu: '091095-9833'}))
     it('Aluksi ei näytetä \"Kaikki tiedot tallennettu\" -tekstiä', function() {
       expect(page.isSavedLabelShown()).to.equal(false)
     })
@@ -339,29 +339,58 @@ describe('TOR', function() {
           expect(opinnot.getTutkinnonOsat()[0]).to.equal('Myynti ja tuotetuntemus')
         })
       })
+
+      describe('Tietojen validointi serverillä', function() {
+        describe('Osaamisala ja suoritustapa ok', function() {
+          it('palautetaan HTTP 200', verifyResponseCode(addOppija.postOpintoOikeusAjax({ suoritustapa: 'ops', osaamisala: 1527}), 200))
+        })
+        describe('Suoritustapa virheellinen', function() {
+          it('palautetaan HTTP 400', verifyResponseCode(addOppija.postOpintoOikeusAjax({ suoritustapa: 'virheellinen', osaamisala: 1527}), 400))
+        })
+        describe('Osaamisala virheellinen', function() {
+          it('palautetaan HTTP 400', verifyResponseCode(addOppija.postOpintoOikeusAjax({ suoritustapa: 'ops', osaamisala: 0}), 400))
+        })
+      })
     })
 
     describe('Kun annetaan arviointi tutkinnonosalle', function() {
-      before(opinnot.selectSuoritustapa("ops"), opinnot.selectOsaamisala("1527"))
-      var tutkinnonOsa = opinnot.getTutkinnonOsa("Markkinointi ja asiakaspalvelu")
-      before(tutkinnonOsa.addArviointi("H2"))
-      it('Uusi arviointi näytetään', function() {
-        expect(tutkinnonOsa.getArvosana()).to.equal("H2")
-      })
+      describe('Arvion antaminen käyttöliittymän kautta', function() {
+        before(opinnot.selectSuoritustapa("ops"), opinnot.selectOsaamisala("1527"))
+        var tutkinnonOsa = opinnot.getTutkinnonOsa("Markkinointi ja asiakaspalvelu")
+        before(tutkinnonOsa.addArviointi("H2"))
+        it('Uusi arviointi näytetään', function() {
+          expect(tutkinnonOsa.getArvosana()).to.equal("H2")
+        })
 
-      describe('Kun arvosanaa klikataan', function() {
-        it('Muuttaminen ei ole mahdollista', function() {
-          tutkinnonOsa.click()
-          expect(tutkinnonOsa.saveButtonIsVisible()).to.equal(false)
+        describe('Kun arvosanaa klikataan', function() {
+          it('Muuttaminen ei ole mahdollista', function() {
+            tutkinnonOsa.click()
+            expect(tutkinnonOsa.saveButtonIsVisible()).to.equal(false)
+          })
+        })
+
+        describe('Kun sivu ladataan uudelleen', function() {
+          before( page.oppijaHaku.search('ero', 4),
+            page.oppijaHaku.selectOppija('tunkkila'))
+
+          it('Muuttuneet tiedot on tallennettu', function() {
+            expect(tutkinnonOsa.getArvosana()).to.equal("H2")
+          })
         })
       })
 
-      describe('Kun sivu ladataan uudelleen', function() {
-        before( page.oppijaHaku.search('ero', 4),
-                page.oppijaHaku.selectOppija('tunkkila'))
-
-        it('Muuttuneet tiedot on tallennettu', function() {
-          expect(tutkinnonOsa.getArvosana()).to.equal("H2")
+      describe('Tietojen validointi serverillä', function() {
+        describe('Koulutusmoduuli ja arviointi ok', function() {
+          it('palautetaan HTTP 200', verifyResponseCode(addOppija.postSuoritusAjax({}), 200))
+        })
+        describe('Koulutusmoduulia ei löydy', function() {
+          it('palautetaan HTTP 400', verifyResponseCode(addOppija.postSuoritusAjax({koulutusModuuli: {tyyppi: "tutkinnonåsa", koodi: "100023x"}}), 400))
+        })
+        describe('Arviointiasteikko ei ole perusteiden mukainen', function() {
+          it('palautetaan HTTP 400', verifyResponseCode(addOppija.postSuoritusAjax({arviointi: { asteikko: {koodistoUri: "???", versio: 1}}}), 400))
+        })
+        describe('Arvosana ei kuulu perusteiden mukaiseen arviointiasteikkoon', function() {
+          it('palautetaan HTTP 400', verifyResponseCode(addOppija.postSuoritusAjax({arviointi: { arvosana: {id: "ammatillisenperustutkinnonarviointiasteikko_?", nimi: "BOOM"} }}), 400))
         })
       })
     })
@@ -375,18 +404,6 @@ describe('TOR', function() {
 
       it('Näytetään virheilmoitus', function() {
 
-      })
-    })
-
-    describe('Tietojen validointi serverillä', function() {
-      describe('Osaamisala ja suoritustapa ok', function() {
-        it('palautetaan HTTP 200', verifyResponseCode(addOppija.postOpintoOikeusAjax({ suoritustapa: 'ops', osaamisala: 1527}), 200))
-      })
-      describe('Suoritustapa virheellinen', function() {
-        it('palautetaan HTTP 400', verifyResponseCode(addOppija.postOpintoOikeusAjax({ suoritustapa: 'virheellinen', osaamisala: 1527}), 400))
-      })
-      describe('Osaamisala virheellinen', function() {
-        it('palautetaan HTTP 400', verifyResponseCode(addOppija.postOpintoOikeusAjax({ suoritustapa: 'ops', osaamisala: 0}), 400))
       })
     })
   })

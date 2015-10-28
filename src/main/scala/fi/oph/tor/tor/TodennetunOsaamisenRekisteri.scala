@@ -2,10 +2,11 @@ package fi.oph.tor.tor
 
 import fi.oph.tor.arvosana.ArviointiasteikkoRepository
 import fi.oph.tor.http.HttpStatus
+import fi.oph.tor.json.Json
 import fi.oph.tor.opintooikeus._
 import fi.oph.tor.oppija._
 import fi.oph.tor.oppilaitos.OppilaitosRepository
-import fi.oph.tor.tutkinto.{Suoritustapa, TutkintoRepository}
+import fi.oph.tor.tutkinto.{TutkintoRakenne, Suoritustapa, TutkintoRepository}
 import fi.oph.tor.user.UserContext
 
 class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
@@ -45,24 +46,43 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
   def validateOpintoOikeus(opintoOikeus: OpintoOikeus)(implicit userContext: UserContext): HttpStatus = {
     var status = HttpStatus.ok
     val rakenne = tutkintoRepository.findPerusteRakenne(opintoOikeus.tutkinto.ePerusteetDiaarinumero)(arviointiAsteikot)
-    if(rakenne.isEmpty) {
-      status ++= (HttpStatus.badRequest("Invalid ePeruste: " + opintoOikeus.tutkinto.ePerusteetDiaarinumero))
+    rakenne match {
+      case None => status ++= (HttpStatus.badRequest("Invalid ePeruste: " + opintoOikeus.tutkinto.ePerusteetDiaarinumero))
+      case Some(rakenne) => {
+        if(!userContext.hasReadAccess(opintoOikeus.oppilaitosOrganisaatio)) {
+          status ++= HttpStatus.forbidden("Forbidden")
+        }
+        opintoOikeus.suoritustapa.filter(!Suoritustapa.apply(_).isDefined).foreach(suoritustapa =>
+          status ++= HttpStatus.badRequest("Invalid suoritustapa: " + suoritustapa)
+        )
+        opintoOikeus.osaamisala.filter(osaamisala => !TutkintoRakenne.findOsaamisala(rakenne, osaamisala).isDefined).foreach(osaamisala =>
+          status ++= HttpStatus.badRequest("Invalid osaamisala: " + osaamisala)
+        )
+        status ++= HttpStatus.fold(opintoOikeus.suoritukset.map(validateSuoritus(_, rakenne)))
+      }
     }
-    if(!userContext.hasReadAccess(opintoOikeus.oppilaitosOrganisaatio)) {
-      status ++= HttpStatus.forbidden("Forbidden")
-    }
-    opintoOikeus.suoritustapa.filter(!Suoritustapa.apply(_).isDefined).foreach(suoritustapa =>
-      status ++= HttpStatus.badRequest("Invalid suoritustapa: " + suoritustapa)
-    )
-    opintoOikeus.osaamisala.filter(osaamisala => !rakenne.find(rakenne => rakenne.osaamisalat.map(_.koodi).contains(osaamisala)).isDefined).foreach(osaamisala =>
-      status ++= HttpStatus.badRequest("Invalid osaamisala: " + osaamisala)
-    )
-    status ++= HttpStatus.fold(opintoOikeus.suoritukset.map(validateSuoritus))
     status
   }
 
-  def validateSuoritus(suoritus: Suoritus): HttpStatus = {
-    HttpStatus.ok
+  def validateSuoritus(suoritus: Suoritus, rakenne: TutkintoRakenne): HttpStatus = {
+    var status = HttpStatus.ok
+    TutkintoRakenne.findTutkinnonOsa(rakenne, suoritus.koulutusModuuli) match {
+      case None => status ++= HttpStatus.badRequest("Tuntematon tutkinnon osa: " + suoritus.koulutusModuuli)
+      case Some(tutkinnonOsa) =>
+        suoritus.arviointi.foreach { arviointi =>
+          if (arviointi.asteikko != tutkinnonOsa.arviointiAsteikko) {
+            status ++= HttpStatus.badRequest("Perusteiden vastainen arviointiasteikko: " + arviointi.asteikko)
+          } else {
+            rakenne.arviointiAsteikot.find(_.koodisto == arviointi.asteikko) match {
+              case Some(asteikko) => if (!asteikko.arvosanat.contains(arviointi.arvosana)) {
+                status ++= HttpStatus.badRequest("Arvosana " + Json.write(arviointi.arvosana) + " ei kuulu asteikkoon " + Json.write(asteikko))
+              }
+              case None => status ++= HttpStatus.internalError("Asteikkoa " + arviointi.asteikko + " ei löydy tutkintorakenteesta")
+            }
+          }
+        }
+    }
+    status
   }
 
   def userView(oid: String)(implicit userContext: UserContext): Either[HttpStatus, TorOppija] = {

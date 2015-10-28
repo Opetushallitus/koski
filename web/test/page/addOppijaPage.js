@@ -61,6 +61,14 @@ function AddOppijaPage() {
         return form().find('.error-messages .' + field).is(':visible')
       }
     },
+    postSuoritusAjax: function(suoritus) {
+      return function() {
+        suoritus = _.merge(defaultSuoritus(), suoritus)
+        opintoOikeus = _.merge(defaultOpintoOikeus(), { suoritukset: [suoritus] })
+        return api.postOpintoOikeusAjax(opintoOikeus)()
+      }
+    },
+
     postOpintoOikeusAjax: function(opintoOikeus) {
       return function() {
         opintoOikeus = _.merge(defaultOpintoOikeus(), opintoOikeus)
@@ -78,6 +86,13 @@ function AddOppijaPage() {
       }
     }
   }
+  function defaultSuoritus() { return {
+    koulutusModuuli: {tyyppi: "tutkinnonosa", koodi: "100023"},
+    arviointi: {
+      asteikko: {koodistoUri: "ammatillisenperustutkinnonarviointiasteikko", versio: 1},
+      arvosana: {id: "ammatillisenperustutkinnonarviointiasteikko_2", nimi: "H2"}
+    }
+  }}
   function defaultOpintoOikeus() { return {
     oppilaitosOrganisaatio: { oid: '1' },
     tutkinto: {ePerusteetDiaarinumero:'39/011/2014', tutkintoKoodi: '351301'}
