@@ -316,10 +316,10 @@ describe('TOR', function() {
   })
 
   describe('Tutkinnon tietojen muuttaminen', function() {
-    describe('Kun valitaan osaamisala ja suoritustapa', function() {
-      before(addNewOppija('kalle', 'Tunkkila', { hetu: '091095-9833'}))
-      before(opinnot.selectSuoritustapa("ops"), opinnot.selectOsaamisala("1527"))
+    before(addNewOppija('kalle', 'Tunkkila', { hetu: '091095-9833'}))
+    before(opinnot.selectSuoritustapa("ops"), opinnot.selectOsaamisala("1527"))
 
+    describe('Kun valitaan osaamisala ja suoritustapa', function() {
       it('Aluksi ei näytetä \"Kaikki tiedot tallennettu\" -tekstiä', function() {
         expect(page.isSavedLabelShown()).to.equal(false)
       })
@@ -340,14 +340,6 @@ describe('TOR', function() {
         })
       })
 
-      describe('Kun annetaan arviointi tutkinnonosalle', function() {
-        var tutkinnonOsa = opinnot.getTutkinnonOsa("Markkinointi ja asiakaspalvelu")
-        before(tutkinnonOsa.addArviointi("H2"))
-        it('Uusi arviointi näytetään', function() {
-          expect(tutkinnonOsa.getArvosana()).to.equal("H2")
-        })
-      })
-
       describe('Kun tallennus epäonnistuu', function() {
         before(
           mockHttp("/tor/api/oppija", { status: 500 }),
@@ -358,6 +350,15 @@ describe('TOR', function() {
         it('Näytetään virheilmoitus', function() {
 
         })
+      })
+    })
+
+    describe('Kun annetaan arviointi tutkinnonosalle', function() {
+      before(opinnot.selectSuoritustapa("ops"), opinnot.selectOsaamisala("1527"))
+      var tutkinnonOsa = opinnot.getTutkinnonOsa("Markkinointi ja asiakaspalvelu")
+      before(tutkinnonOsa.addArviointi("H2"))
+      it('Uusi arviointi näytetään', function() {
+        expect(tutkinnonOsa.getArvosana()).to.equal("H2")
       })
     })
   })
