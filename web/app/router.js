@@ -7,6 +7,10 @@ const navigate = function (path) {
   b.push(path)
 }
 
+window.onpopstate = function() {
+  b.push(document.location.pathname)
+}
+
 export const routeP = b.toProperty(document.location.pathname)
   .map(route => {
     const match = route.match(new RegExp('/tor/oppija/(.*)'))
