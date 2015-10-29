@@ -53,6 +53,11 @@
       <version>${slick.version}</version>
     </dependency>
     <dependency>
+      <groupId>com.typesafe.slick</groupId>
+      <artifactId>slick-hikaricp_2.11</artifactId>
+      <version>${slick.version}</version>
+    </dependency>
+    <dependency>
       <groupId>com.github.tminglei</groupId>
       <artifactId>slick-pg_2.11</artifactId>
       <version>0.10.0</version>

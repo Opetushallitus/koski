@@ -2,7 +2,7 @@ package fi.oph.tor.tutkinto
 
 import com.typesafe.config.Config
 import fi.oph.tor.arvosana.ArviointiasteikkoRepository
-import fi.oph.tor.eperusteet.EPerusteetClient
+import fi.oph.tor.tutkinto.EPerusteetTutkintoRepository
 
 trait TutkintoRepository {
   def findTutkinnot(oppilaitosId: String, query: String): List[Tutkinto]
@@ -13,7 +13,7 @@ trait TutkintoRepository {
 object TutkintoRepository {
   def apply(config: Config) = {
     if (config.hasPath("eperusteet")) {
-      new EPerusteetClient(config.getString("eperusteet.url"))
+      new EPerusteetTutkintoRepository(config.getString("eperusteet.url"))
     } else {
       new MockTutkintoRepository
     }
