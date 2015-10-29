@@ -79,10 +79,12 @@ describe('TOR', function() {
         expect(page.oppijaHaku.getSearchResults()).to.deep.equal([eero, eerola, markkanen])
       })
 
-      before(page.oppijaHaku.selectOppija('markkanen'))
+      describe('Kun klikataan oppijaa listalla', function() {
+        before(page.oppijaHaku.selectOppija('markkanen'))
 
-      it('valitsee oppijan', function() {
-        expect(page.getSelectedOppija()).to.equal(markkanen)
+        it('Oppija valitaan', function() {
+          expect(page.getSelectedOppija()).to.equal(markkanen)
+        })
       })
     })
 

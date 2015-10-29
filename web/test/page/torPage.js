@@ -35,8 +35,8 @@ function TorPage() {
     },
     selectOppija: function(oppija) {
       return function() {
-        triggerEvent(S(S('.oppija-haku li a').toArray().filter(function(a) { return $(a).text().indexOf(oppija) > -1 })[0]), 'click')
-        return api.waitUntilOppijaSelected(oppija)
+        triggerEvent(S('.oppija-haku li a:contains(' + oppija + ')'), 'click')
+        return wait.until(api.isOppijaLoading)().then(api.waitUntilOppijaSelected(oppija))
       }
     }
   }
@@ -65,12 +65,15 @@ function TorPage() {
       return S('.oppija h2').text()
     },
     waitUntilOppijaSelected: function(oppija) {
-      return wait.until(api.isOppijaSelected(oppija))()
+      return wait.until(api.isOppijaSelected(oppija))
     },
     isOppijaSelected: function(oppija) {
       return function() {
         return api.getSelectedOppija().indexOf(oppija) >= 0 && OppijaHaku.getSelectedSearchResult().indexOf(oppija) >= 0
       }
+    },
+    isOppijaLoading: function() {
+      return S('.oppija.loading').is(":visible")
     },
     logout: function() {
       triggerEvent(S('#logout'), 'click')
