@@ -28,7 +28,6 @@ class TutkintoRepository(eperusteet: EPerusteetRepository) {
 
 object EPerusteetTutkintoRakenneConverter {
   def convertRakenne(rakenne: EPerusteRakenne)(implicit arviointiasteikkoRepository: ArviointiasteikkoRepository): TutkintoRakenne = {
-    val koulutusKoodi = rakenne.koulutukset(0).koulutuskoodiArvo
     var arviointiasteikkoViittaukset: List[KoodistoViittaus] = Nil
 
     def convertRakenneOsa(rakenneOsa: ERakenneOsa, suoritustapa: ESuoritustapa): RakenneOsa = {
@@ -41,7 +40,7 @@ object EPerusteetTutkintoRakenneConverter {
         case x: ERakenneTutkinnonOsa => suoritustapa.tutkinnonOsaViitteet.find(v => v.id.toString == x._tutkinnonOsaViite) match {
           case Some(tutkinnonOsaViite) =>
             val eTutkinnonOsa: ETutkinnonOsa = rakenne.tutkinnonOsat.find(o => o.id.toString == tutkinnonOsaViite._tutkinnonOsa).get
-            val arviointiasteikkoViittaus: Option[KoodistoViittaus] = arviointiasteikkoRepository.getArviointiasteikkoViittaus(koulutusKoodi, suoritustapa.suoritustapakoodi)
+            val arviointiasteikkoViittaus: Option[KoodistoViittaus] = arviointiasteikkoRepository.getArviointiasteikkoViittaus(Koulutustyyppi.fromEPerusteetKoulutustyyppiAndSuoritustapa(rakenne.koulutustyyppi, Suoritustapa(suoritustapa)))
             arviointiasteikkoViittaukset ++= arviointiasteikkoViittaus.toList
             TutkinnonOsa(KoulutusModuuliTunniste.tutkinnonOsa(eTutkinnonOsa.koodiArvo), eTutkinnonOsa.nimi.getOrElse("fi", ""), arviointiasteikkoViittaus)
           case None => throw new RuntimeException("Tutkinnonosaviitettä ei löydy: " + x._tutkinnonOsaViite)
@@ -50,7 +49,7 @@ object EPerusteetTutkintoRakenneConverter {
     }
 
     val suoritustavat: List[tutkinto.SuoritustapaJaRakenne] = rakenne.suoritustavat.map { (suoritustapa: ESuoritustapa) =>
-      SuoritustapaJaRakenne(Suoritustapa(suoritustapa.suoritustapakoodi).get, convertRakenneOsa(suoritustapa.rakenne, suoritustapa))
+      SuoritustapaJaRakenne(Suoritustapa(suoritustapa), convertRakenneOsa(suoritustapa.rakenne, suoritustapa))
     }
 
     val osaamisalat: List[Osaamisala] = rakenne.osaamisalat.map(o => Osaamisala(o.nimi("fi"), o.arvo))

@@ -2,10 +2,11 @@ package fi.oph.tor.arvosana
 
 import com.typesafe.config.Config
 import fi.oph.tor.koodisto.{KoodistoPalvelu, KoodistoViittaus}
+import fi.oph.tor.tutkinto.Koulutustyyppi.Koulutustyyppi
 
 class ArviointiasteikkoRepository(koodistoPalvelu: KoodistoPalvelu) {
-  def getArviointiasteikkoViittaus(koulutusKoodi: String, suoritustapakoodi: String): Option[KoodistoViittaus] = {
-    Some(ArviointiasteikkoRepository.example)
+  def getArviointiasteikkoViittaus(koulutustyyppi: Koulutustyyppi): Option[KoodistoViittaus] = {
+    Some(KoodistoViittaus("ammatillisenperustutkinnonarviointiasteikko", 1))  // TODO: <- get rid of fixed data
   }
 
   def getArviointiasteikko(koodisto: KoodistoViittaus): Option[Arviointiasteikko] = {
@@ -17,6 +18,4 @@ object ArviointiasteikkoRepository {
   def apply(config: Config) = {
     new ArviointiasteikkoRepository(KoodistoPalvelu(config))
   }
-
-  val example = KoodistoViittaus("ammatillisenperustutkinnonarviointiasteikko", 1) // TODO: <- get rid of fixed data
 }

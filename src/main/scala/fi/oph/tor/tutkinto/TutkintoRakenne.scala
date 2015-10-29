@@ -1,6 +1,7 @@
 package fi.oph.tor.tutkinto
 
 import fi.oph.tor.arvosana.Arviointiasteikko
+import fi.oph.tor.eperusteet.ESuoritustapa
 import fi.oph.tor.koodisto.KoodistoViittaus
 
 case class TutkintoRakenne(suoritustavat: List[SuoritustapaJaRakenne], osaamisalat: List[Osaamisala], arviointiAsteikot: List[Arviointiasteikko]) {
@@ -22,11 +23,13 @@ object TutkintoRakenne {
 case class Suoritustapa(nimi: String, koodi: String)
 
 object Suoritustapa {
-  def apply(koodi: String): Option[Suoritustapa] = koodi match { // TODO: i18n
-    case "ops" => Some(Suoritustapa("OPS", koodi))
-    case "naytto" => Some(Suoritustapa("Näyttö", koodi))
-    case _ => None
-  }
+  val ops = Suoritustapa("OPS", "ops")
+  val naytto = Suoritustapa("Näyttö", "naytto")
+
+  val suoritustavat = List(ops, naytto)
+
+  def apply(koodi: String): Option[Suoritustapa] = suoritustavat.find(_.koodi == koodi)
+  def apply(suoritustapa: ESuoritustapa): Suoritustapa = apply(suoritustapa.suoritustapakoodi).getOrElse(throw new IllegalArgumentException("Suoritustapa " + suoritustapa))
 }
 
 case class SuoritustapaJaRakenne(suoritustapa: Suoritustapa, rakenne: RakenneOsa)
