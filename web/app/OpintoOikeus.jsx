@@ -6,6 +6,12 @@ export const opintoOikeusChange = Bacon.Bus()
 
 const withEmptyValue = (xs) => [{ koodi: '', nimi: 'Valitse...'}].concat(xs)
 
+const Dropdown = ({title, options, value, onChange}) => (options.length
+  ? <label>{title}<select className="suoritustapa" value={value} onChange={(event) => onChange(event.target.value)}>
+      {withEmptyValue(options).map(s => <option key={s.koodi} value={s.koodi}>{s.nimi}</option>)}
+    </select></label>
+  : <div></div>)
+
 export const OpintoOikeus = React.createClass({
   render() {
     let {opintoOikeus} = this.props
@@ -16,16 +22,18 @@ export const OpintoOikeus = React.createClass({
         { opintoOikeus.tutkinto.rakenne
           ?
             <div className="tutkinto-rakenne">
-                <label>Suoritustapa
-                    <select className="suoritustapa" value={opintoOikeus.suoritustapa} onChange={(event) => opintoOikeusChange.push([opintoOikeus.id, oo => R.merge(oo, {suoritustapa: event.target.value || undefined})] )}>
-                        {withEmptyValue(opintoOikeus.tutkinto.rakenne.suoritustavat.map(s => s.suoritustapa)).map(s => <option key={s.koodi} value={s.koodi}>{s.nimi}</option>)}
-                    </select>
-                </label>
-                <label>Osaamisala
-                    <select className="osaamisala" value={opintoOikeus.osaamisala} onChange={(event) => opintoOikeusChange.push([opintoOikeus.id, oo => R.merge(oo, {osaamisala: event.target.value || undefined})] )}>
-                        {withEmptyValue(opintoOikeus.tutkinto.rakenne.osaamisalat).map(o => <option key={o.koodi} value={o.koodi}>{o.nimi}</option>)}
-                    </select>
-                </label>
+              <Dropdown className="suoritustapa"
+                        title="Suoritustapa"
+                        options={opintoOikeus.tutkinto.rakenne.suoritustavat.map(s => s.suoritustapa)}
+                        value={opintoOikeus.suoritustapa}
+                        onChange={(value) => opintoOikeusChange.push([opintoOikeus.id, oo => R.merge(oo, {suoritustapa: value || undefined})] )}
+                />
+              <Dropdown className="osaamisala"
+                        title="Osaamisala"
+                        options={opintoOikeus.tutkinto.rakenne.osaamisalat}
+                        value={opintoOikeus.osaamisala}
+                        onChange={(value) => opintoOikeusChange.push([opintoOikeus.id, oo => R.merge(oo, {osaamisala: value || undefined})] )}
+                />
               { opintoOikeus.suoritustapa
                 ? <Rakenneosa
                     rakenneosa={opintoOikeus.tutkinto.rakenne.suoritustavat.find(x => x.suoritustapa.koodi == opintoOikeus.suoritustapa).rakenne}
