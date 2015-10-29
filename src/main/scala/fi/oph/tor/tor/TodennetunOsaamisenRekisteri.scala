@@ -64,7 +64,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
       case Some(tutkinnonOsa) =>
         HttpStatus.each(suoritus.arviointi) { arviointi =>
           HttpStatus
-            .ifThen(arviointi.asteikko != tutkinnonOsa.arviointiAsteikko) { HttpStatus.badRequest("Perusteiden vastainen arviointiasteikko: " + arviointi.asteikko)}
+            .ifThen(Some(arviointi.asteikko) != tutkinnonOsa.arviointiAsteikko) { HttpStatus.badRequest("Perusteiden vastainen arviointiasteikko: " + arviointi.asteikko)}
             .ifOkThen {
               rakenne.arviointiAsteikot.find(_.koodisto == arviointi.asteikko) match {
                 case Some(asteikko) if (!asteikko.arvosanat.contains(arviointi.arvosana)) =>

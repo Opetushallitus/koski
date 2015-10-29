@@ -1,7 +1,9 @@
 package fi.oph.tor.json
 
+import java.io.File
 import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
 import fi.oph.tor.eperusteet.RakenneOsaSerializer
+import fi.oph.tor.koodisto.KoodistoKoodi
 import fi.vm.sade.utils.json4s.GenericJsonFormats
 import org.json4s
 import org.json4s.JsonAST.{JInt, JNull, JString}
@@ -35,6 +37,14 @@ object Json {
 
   def readFile(filename: String): json4s.JValue = {
     parse(scala.io.Source.fromFile(filename).mkString)
+  }
+
+  def readFileIfExists(filename: String): Option[json4s.JValue] = {
+    if (new File(filename).exists()) {
+      Some(Json.readFile(filename))
+    } else {
+      None
+    }
   }
 }
 

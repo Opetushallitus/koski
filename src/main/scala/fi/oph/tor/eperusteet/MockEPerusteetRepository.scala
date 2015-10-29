@@ -14,8 +14,8 @@ class MockEPerusteetRepository extends EPerusteetRepository {
   }
 
   def findRakenne(diaariNumero: String): Option[EPerusteRakenne] = {
-    findPerusteetByDiaarinumero(diaariNumero).headOption.map { peruste =>
-      Json.readFile("src/main/resources/mockdata/eperusteet/" + peruste.id + ".json").extract[EPerusteRakenne]
+    findPerusteetByDiaarinumero(diaariNumero).headOption.flatMap { peruste =>
+      Json.readFileIfExists("src/main/resources/mockdata/eperusteet/" + peruste.id + ".json").map(_.extract[EPerusteRakenne])
     }
   }
 }
