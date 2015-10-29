@@ -1,0 +1,551 @@
+{
+  "id" : 1013059,
+  "nimi" : {
+    "fi" : "Autoalan työnjohdon erikoisammattitutkinto",
+    "sv" : "Specialyrkesexamen för arbetsledning inom bilbranschen",
+    "_id" : "1116965"
+  },
+  "koulutustyyppi" : "koulutustyyppi_12",
+  "koulutukset" : [ {
+    "nimi" : {
+      "fi" : "Autoalan työnjohdon erikoisammattitutkinto",
+      "sv" : "Specialyrkesexamen för arbetsledning inom bilbranschen",
+      "en" : "Supervisor Vehicle Tech., SQ",
+      "_id" : "1116963"
+    },
+    "koulutuskoodiArvo" : "357305",
+    "koulutuskoodiUri" : "koulutus_357305",
+    "koulutusalakoodi" : "koulutusalaoph2002_5",
+    "opintoalakoodi" : "opintoalaoph2002_509"
+  } ],
+  "kielet" : [ "fi" ],
+  "kuvaus" : {
+    "fi" : "<p>Tutkinnon suorittanut hallitsee joko auto- tai varaosamyyjän ammattitutkinnossa vaadittavan ammatillisen osaamisen tai vastaavat tiedot ja taidot, osaa käyttää työssään hyväksi uusinta teknologiaa monipuolisesti, ymmärtää työsuojelun, ergonomian ja ympäristönsuojelun vaikutuksen yrityksen toimintaan ja tuottavuuteen, tuntee yrityksessään käytössä olevan laatujärjestelmän ja osaa kehittää omaa ja yksikkönsä toimintaa sen mukaisesti, tuntee asiakassuuntaisen markkinoinnin sekä auto- ja varaosamyyjän markkinointiin liittyvät tehtävät, pystyy suunnittelemaan myyntikampanjoita, hankkimaan uusia asiakkaita ja tunnistamaan erikoisasiakasryhmien tarpeita, hallitsee myynnin suunnittelun ja raportoinnin tehtävät ja pystyy laatimaan tarvittavia asiakirjoja, pystyy itsenäisesti hoitamaan vaativia asiakas- ja viranomaistilanteita, selviytyy yhdellä vieraalla kielellä yleisimmistä asiakaspalvelun, myynnin ja neuvottelujen tilanteista, ymmärtää ihmisten johtamisen merkityksen organisaation kilpailutekijänä, edistää aktiivisesti yrityksen yhteistoiminnallisuutta, osaa suunnitella, toteuttaa ja arvioida perehdyttämis- ja työnopastustoimintaa, pystyy osallistumaan yksikkönsä henkilöstön kehityssuunnitelman laadintaan, tuntee työlainsäädännön periaatteita sekä alan työmarkkinakäytännön ja työehtosopimukset, osaa tulkita ja analysoida organisaationsa tasetta, tuloslaskelmaa ja talouden tunnuslukuja, tuntee eri rahoitusvaihtoehdot sekä ajoneuvojen ja/tai koneiden varusteluun liittyvän lainsäädännön, hallitsee valitsemansa osaamisalan tiedot ja taidot.</p>\n\n<p>Tutkinnon suorittaneet voivat työskennellä joko auto- tai työkonemyyntiin tai varaosa- ja tarvikepalveluun liittyvissä, alan erikoisosaamista vaativissa tehtävissä.</p>\n\n<p> </p>",
+    "_id" : "1116964"
+  },
+  "diaarinumero" : "40/011/2001",
+  "voimassaoloAlkaa" : 993934800000,
+  "siirtymaPaattyy" : null,
+  "voimassaoloLoppuu" : null,
+  "paatospvm" : null,
+  "muokattu" : 1433152317493,
+  "tila" : "valmis",
+  "tyyppi" : "normaali",
+  "korvattavatDiaarinumerot" : [ ],
+  "osaamisalat" : [ ],
+  "suoritustavat" : [ {
+    "suoritustapakoodi" : "naytto",
+    "rakenne" : {
+      "kuvaus" : {
+        "fi" : "<p>Autoalan työnjohdon erikoisammattitutkinto muodostuu neljästä kaikille yhteisestä osasta ja kolmesta valinnaisesta osasta, joista on suoritettava vähintään yksi.</p>",
+        "_id" : "1115440"
+      },
+      "vieras" : null,
+      "nimi" : null,
+      "rooli" : null,
+      "muodostumisSaanto" : null,
+      "osaamisala" : null,
+      "osat" : [ {
+        "kuvaus" : null,
+        "vieras" : null,
+        "nimi" : {
+          "fi" : "Tutkinnon pakolliset osat",
+          "_id" : "1017949"
+        },
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "laajuus" : null,
+          "koko" : {
+            "minimi" : 4,
+            "maksimi" : 4
+          }
+        },
+        "osaamisala" : null,
+        "osat" : [ {
+          "kuvaus" : null,
+          "vieras" : null,
+          "pakollinen" : true,
+          "erikoisuus" : null,
+          "_tutkinnonOsaViite" : "1014261"
+        }, {
+          "kuvaus" : null,
+          "vieras" : null,
+          "pakollinen" : true,
+          "erikoisuus" : null,
+          "_tutkinnonOsaViite" : "1014262"
+        }, {
+          "kuvaus" : null,
+          "vieras" : null,
+          "pakollinen" : true,
+          "erikoisuus" : null,
+          "_tutkinnonOsaViite" : "1014263"
+        }, {
+          "kuvaus" : null,
+          "vieras" : null,
+          "pakollinen" : true,
+          "erikoisuus" : null,
+          "_tutkinnonOsaViite" : "1014264"
+        } ],
+        "versioId" : null
+      }, {
+        "kuvaus" : null,
+        "vieras" : null,
+        "nimi" : {
+          "fi" : "Tutkinnon valinnaiset osat",
+          "_id" : "1018040"
+        },
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "laajuus" : null,
+          "koko" : {
+            "minimi" : 1,
+            "maksimi" : 3
+          }
+        },
+        "osaamisala" : null,
+        "osat" : [ {
+          "kuvaus" : null,
+          "vieras" : null,
+          "pakollinen" : false,
+          "erikoisuus" : null,
+          "_tutkinnonOsaViite" : "1014265"
+        }, {
+          "kuvaus" : null,
+          "vieras" : null,
+          "pakollinen" : false,
+          "erikoisuus" : null,
+          "_tutkinnonOsaViite" : "1014266"
+        }, {
+          "kuvaus" : null,
+          "vieras" : null,
+          "pakollinen" : false,
+          "erikoisuus" : null,
+          "_tutkinnonOsaViite" : "1014267"
+        } ],
+        "versioId" : null
+      }, {
+        "kuvaus" : null,
+        "vieras" : null,
+        "nimi" : {
+          "fi" : "Tutkinnon vapaasti valittava osa",
+          "_id" : "1018041"
+        },
+        "rooli" : "määritelty",
+        "muodostumisSaanto" : {
+          "laajuus" : null,
+          "koko" : {
+            "minimi" : 0,
+            "maksimi" : 1
+          }
+        },
+        "osaamisala" : null,
+        "osat" : [ {
+          "kuvaus" : null,
+          "vieras" : null,
+          "pakollinen" : false,
+          "erikoisuus" : null,
+          "_tutkinnonOsaViite" : "1014268"
+        } ],
+        "versioId" : null
+      } ],
+      "versioId" : null
+    },
+    "sisalto" : {
+      "id" : 1013311,
+      "lapset" : [ {
+        "id" : 1013312,
+        "perusteenOsa" : {
+          "id" : 1013282,
+          "luotu" : 1430670614415,
+          "muokattu" : 1433152317493,
+          "muokkaaja" : "1.2.246.562.24.86806948461",
+          "nimi" : {
+            "fi" : "Tutkinnon muodostuminen",
+            "_id" : "1013301"
+          },
+          "tila" : "valmis",
+          "tunniste" : "rakenne",
+          "teksti" : null,
+          "osaamisala" : null
+        },
+        "lapset" : [ ],
+        "_perusteenOsa" : "1013282"
+      }, {
+        "id" : 1013822,
+        "perusteenOsa" : {
+          "id" : 1013668,
+          "luotu" : 1430754013010,
+          "muokattu" : 1433152317493,
+          "muokkaaja" : "1.2.246.562.24.86806948461",
+          "nimi" : {
+            "fi" : "Näyttötutkintojen tehtävät ja tavoitteet",
+            "_id" : "1017588"
+          },
+          "tila" : "valmis",
+          "teksti" : null,
+          "osaamisala" : null
+        },
+        "lapset" : [ {
+          "id" : 1013823,
+          "perusteenOsa" : {
+            "id" : 1013669,
+            "luotu" : 1430754087969,
+            "muokattu" : 1433152317493,
+            "muokkaaja" : "1.2.246.562.24.86806948461",
+            "nimi" : {
+              "fi" : "Näyttötutkinnot",
+              "_id" : "1017589"
+            },
+            "tila" : "valmis",
+            "teksti" : {
+              "fi" : "<p>Näyttötutkinnot ovat ammattitaidon hankkimistavasta riippumattomia. Koulutuksessa, työelämässä ja harrastuksissa hankittua osaamista käsitellään yhtenä kokonaisuutena siten, että osaaminen voidaan hyödyntää tutkinnoissa vaaditun ammattitaidon näytöissä.</p>\n\n<p>Näyttötutkinnot ovat rakenteeltaan modulaarisia. Ne muodostuvat työelämästä ja sen kehitystarpeista johdetuista tehtäväkokonaisuuksista, joille on ominaista toiminnallisen ja tiedollisen perustan yhteisyys, ammattitaidon monipuolisuus sekä työprosessin ja sen tulosten yhdentyminen. Tutkinnon osa muodostaa ammattipätevyyden osa-alueen, joka voidaan erottaa luonnollisesta työprosessista itsenäiseksi ja arvioitavaksi kokonaisuudeksi. Näytöt järjestetään ja suoritetaan joustavasti osa kerrallaan. Koko tutkinnon sijasta tavoitteena voi olla myös tietyn tai tiettyjen tutkinnon osien suorittaminen. Ammattitaitovaatimusten kuvauksen perustana on pätevyystyypitys, jonka katsotaan parhaiten soveltuvan ammattialalle. Kuvauksessa keskitytään ammatin ydintoimintojen vaatimuksiin, toimintaprosessien hallintaan ja laaja-alaiseen ammattikäytäntöön. Vaatimukset kattavat myös työelämässä tarvittavan kielitaidon ja sosiaaliset valmiudet.</p>",
+              "_id" : "1017680"
+            },
+            "osaamisala" : null
+          },
+          "lapset" : [ ],
+          "_perusteenOsa" : "1013669"
+        }, {
+          "id" : 1013824,
+          "perusteenOsa" : {
+            "id" : 1017700,
+            "luotu" : 1430754150252,
+            "muokattu" : 1433152317493,
+            "muokkaaja" : "1.2.246.562.24.86806948461",
+            "nimi" : {
+              "fi" : "Näyttötutkintoihin valmistava koulutus",
+              "_id" : "1017681"
+            },
+            "tila" : "valmis",
+            "teksti" : {
+              "fi" : "<p>Näyttötutkintoihin osallistumiselle ei muodollisesti voida asettaa koulutukseen osallistumista koskevia ennakkoehtoja. Pääsääntöisesti tutkinnot suoritetaan kuitenkin erilaisen valmentavan koulutuksen yhteydessä. Valmistavan koulutuksen järjestäjän tulee vahvistaa opetussuunnitelma tutkintojen mukaisesti. Koulutus ja siihen sisältyvät näytöt on jäsennettävä tutkinnon osien mukaisesti. Koulutuksen järjestäjän velvollisuutena on järjestää näytöt osana valmistavaa koulutusta. Opiskelijan velvollisuutena on osallistua näyttöihin osana opintojaan.</p>\n\n<p>Ammatillisena peruskoulutuksena suoritettavaan tutkintoon sisältyvät yhteiset opinnot eivät ole pakollisia koulutuksessa, joka valmistaa näyttötutkintona suoritettavaan perustutkintoon. Niiden tavoitteet tulee ottaa kuitenkin soveltuvin osin huomioon opetussuunnitelmassa ja opetuksen järjestämisessä.</p>",
+              "_id" : "1017682"
+            },
+            "osaamisala" : null
+          },
+          "lapset" : [ ],
+          "_perusteenOsa" : "1017700"
+        }, {
+          "id" : 1013826,
+          "perusteenOsa" : {
+            "id" : 1017702,
+            "luotu" : 1430754375195,
+            "muokattu" : 1433152317493,
+            "muokkaaja" : "1.2.246.562.24.86806948461",
+            "nimi" : {
+              "fi" : "Ammattitaidon osoittamistapojen ja tutkintosuoritusten arvioinnin yleiset perusteet",
+              "_id" : "1017685"
+            },
+            "tila" : "valmis",
+            "teksti" : {
+              "fi" : "<p>Näyttöjen arviointi edellyttää järjestelmällistä aineiston keräämistä, päätöksentekoa ja dokumentointia tutkinnon suorittajan ammatillisista ja työtoimintavalmiuksista suhteessa tutkinnon perusteissa määriteltyihin ammattitaitovaatimuksiin ja arviointikriteereihin. Arvioinnin painopisteen tulee olla tekemisessä ja työssä oppimisessa. Taito tai osaaminen on arvioitava pääsääntöisesti suoraan vastaavasta työtoiminnasta.</p>\n\n<p>Näyttöympäristön tulee olla mahdollisimman realistinen ja autenttinen. Arvioinnissa tulee käyttää monipuolisesti erilaisia ensisijaisesti laadullisia arviointimenetelmiä kuten havainnointia, haastatteluja, kyselyjä, aikaisempia dokumentoituja näyttöjä sekä itse- ja ryhmäarviointia. Näytöt tulee järjestää tutkinnon osittain siten, että niissä voidaan arvioida ammatinhallinnan kannalta keskeisten tavoitteiden saavuttamista.</p>\n\n<p>Arvioinnin kohteilla ilmaistaan osaamisen alueet, joihin arvioinnissa kiinnitetään erityistä huomiota. Kohteet tulee kiinnittää ydintaitoihin, työn perustana olevan tiedon hallintaan, työmenetelmien, työvälineiden ja materiaalin hallintaan sekä työprosessien hallintaan. Sekä arvioinnin kohteet että kriteerit johdetaan vastaavan tutkinnon osan ammattitaitovaatimuksista. Arvioinnin kohteisiin perustuvat arviointikriteerit kuvaavat ja täsmentävät eritasoisia suorituksia. Kriteereillä ilmaistaan kynnykset, joiden avulla erotellaan eritasoiset suoritukset.</p>",
+              "_id" : "1017686"
+            },
+            "osaamisala" : null
+          },
+          "lapset" : [ ],
+          "_perusteenOsa" : "1017702"
+        } ],
+        "_perusteenOsa" : "1013668"
+      } ]
+    },
+    "tutkinnonOsaViitteet" : [ {
+      "id" : 1014265,
+      "jarjestys" : 5,
+      "_tutkinnonOsa" : "1017707"
+    }, {
+      "id" : 1014266,
+      "jarjestys" : 6,
+      "_tutkinnonOsa" : "1017708"
+    }, {
+      "id" : 1014267,
+      "jarjestys" : 7,
+      "_tutkinnonOsa" : "1017709"
+    }, {
+      "id" : 1014263,
+      "jarjestys" : 3,
+      "_tutkinnonOsa" : "1017705"
+    }, {
+      "id" : 1014264,
+      "jarjestys" : 4,
+      "_tutkinnonOsa" : "1017706"
+    }, {
+      "id" : 1014268,
+      "jarjestys" : 8,
+      "_tutkinnonOsa" : "1017990"
+    }, {
+      "id" : 1014261,
+      "jarjestys" : 1,
+      "_tutkinnonOsa" : "1017703"
+    }, {
+      "id" : 1014262,
+      "jarjestys" : 2,
+      "_tutkinnonOsa" : "1017704"
+    } ]
+  } ],
+  "tutkinnonOsat" : [ {
+    "id" : 1017703,
+    "luotu" : 1430754530712,
+    "muokattu" : 1433152317493,
+    "muokkaaja" : "1.2.246.562.24.86806948461",
+    "nimi" : {
+      "fi" : "Johtaminen ja henkilöstön kehittäminen",
+      "_id" : "1017687"
+    },
+    "tila" : "valmis",
+    "osanTyyppi" : "tutkinnonosa",
+    "arviointi" : {
+      "id" : 1014155,
+      "lisatiedot" : {
+        "fi" : "<p>Arvioinnissa on olennaista tutkinnon suorittajan kyky arvioida omaa tapaansa toimia.</p>\n\n<p>Arvioinnin kohteet:</p>\n\n<ul>\n\t<li>yrityksen johtamisperiaatteiden tuntemus</li>\n\t<li>oman organisaation toiminnan tavoitteiden tuntemus</li>\n\t<li>henkilökohtainen johtamistaito</li>\n\t<li>yhteistyö- ja viestintätaidot</li>\n\t<li>työlainsäädännön keskeisen sisällön tunteminen</li>\n\t<li>korjaamoalan työehtosopimusten ja paikallisten sopimusten tunteminen</li>\n\t<li>oman toiminnan arvioiminen ja kehittäminen</li>\n\t<li>perehdyttäminen ja työssäoppiminen</li>\n</ul>\n\n<p> </p>\n\n<p>Suoritus on hyväksytty, jos tutkittava:</p>\n\n<ul>\n\t<li>tuntee oman organisaationsa arvot ja toimintatavat ja osaa kytkeä ne oman yksikkönsä toiminnan kehittämiseen</li>\n\t<li>osaa analysoida vahvuuksiaan ja kehittymiskohteitaan ja laatia oman henkilökohtaisen kehittymisohjelman</li>\n\t<li>tuntee oman työnsä ja yksikkönsä avainalueet ja tavoitteet</li>\n\t<li>pystyy kannustavaan esimiestyöskentelyyn</li>\n\t<li>osaa työsuoritukseen liittyvien häiriöiden ongelmaratkaisun periaatteet</li>\n\t<li>tuntee korjaamossa käytettävät koneet ja laitteet sekä pystyy ohjaamaan alaisiaan niiden käyttämisessä</li>\n\t<li>osaa arvioida vastuualueensa henkilöiden ammatillisia ja yhteistyövalmiuksia sekä kannustaa yksilöitä kehittämään omaa osaamistaan</li>\n\t<li>osaa perehdyttämisen ja työssäoppimisen keskeisimmät tavoitteet ja vaiheet</li>\n\t<li>pystyy osallistumaan oman yksikkönsä henkilöstön kehityssuunnitelman laadintaan</li>\n\t<li>ymmärtää työsuojelun merkityksen yrityksen toiminnalle</li>\n\t<li>on selvillä autoalan tutkintojärjestelmästä ja koulutustarjonnasta</li>\n\t<li>tuntee työlainsäädännön periaatteet, korjaamoalan työehtosopimuksen ja mahdolliset paikalliset sopimukset siten, että osaa soveltaa työsopimus-, työaika- ja yhteistoimintalain pääkohtia.</li>\n</ul>\n\n<p> </p>\n\n<p>Suoritus on hylätty, mikäli tutkittava:</p>\n\n<ul>\n\t<li>ei kykene selviin tehtäväksiantoihin</li>\n\t<li>ei kykene tasapuoliseen ja alaisiaan oikeudenmukaisesti kohtelevaan johtamiseen ja kanssakäymiseen</li>\n\t<li>ei kykene määrittämään tavoitteita eikä etenemään suunnitelmallisesti tavoitetta kohti</li>\n\t<li>on omassa toiminnassaan piittaamaton työlainsäädännöstä tai ei tunne sitä</li>\n\t<li>vähättelee perehdyttämisen, opastamisen ja kehittämisen merkitystä</li>\n\t<li>ei selviydy yhteistyöstä eikä pysty luomaan vuorovaikutusta eri osapuolten kesken.</li>\n</ul>",
+        "_id" : "1017790"
+      },
+      "arvioinninKohdealueet" : [ ]
+    },
+    "ammattitaitovaatimukset" : {
+      "fi" : "<p>Tutkinnon suorittaja tuntee yleiset johtamistavat ja -periaatteet sekä ymmärtää ihmisten johtamisen merkityksen organisaation kilpailutekijänä. Hän osaa asettaa työryhmälleen tavoitteet ja pystyy ohjaamaan alaistensa työskentelyä. Hän pystyy analysoimaan osaamistaan ja laatimaan itselleen tavoite- ja kehittymissuunnitelman. Hän on kannustava työtovereitaan ja työyhteisöään kohtaan sekä hallitsee oman ajankäyttönsä. Tutkittava kykenee viestimään selkeästi niin esimiehenä kuin työtoverin tai alaisen ominaisuudessakin. Tutkinnon suorittaja on yhteistyökykyinen ja edistää organisaation yhteistoimintakokonaisuutta. Hän osaa muodostaa vaihtoehtoisia ratkaisuja erilaisissa kiireisissäkin työtilanteissa ja tekee harkittuja päätöksiä. Hän ottaa johtamistyössään huomioon tuote- ja henkilöstöriskit sekä tuntee korjaamotoimintaa koskevat ympäristömääräykset ja vastuunsa ympäristöturvallisuuden edistämisessä.</p>\n\n<p>Tutkinnon suorittaja tuntee työlainsäädännön ja korjaamoalan työehtosopimuksen keskeisen sisällön, työnantajaa ja työntekijää koskevat oikeudet ja velvoitteet sekä toimii niiden mukaisesti. Hän osaa tunnistaa vastuualueensa henkilöstön ammatilliset valmiudet ja kehittämistarpeet. Tutkinnon suorittaja tietää työsuojelun ja ergonomian merkityksen yrityksen toimintaan ja tuottavuuteen.</p>",
+      "_id" : "1017689"
+    },
+    "ammattitaidonOsoittamistavat" : {
+      "fi" : "<p>Ammattitaito, sen taustalla olevien tietojen ja periaatteiden hallinta sekä kyky soveltaa tietoja osoitetaan pääasiassa yrityksessä aidoissa työympäristöissä tavanomaisten työtehtävien yhteydessä. Näyttöä voidaan täydentää erillisten selvitysten, kirjallisten tuotosten ja tehtävien, haastattelujen ja keskustelujen sekä tutkittavan itsearvioinnin avulla.</p>\n\n<p>Näyttöjä suunniteltaessa ja toteutettaessa voidaan ottaa huomioon tutkittavan oman tai hänen valitsemansa organisaation toimialan erityispiirteet.</p>",
+      "_id" : "1017688"
+    },
+    "kuvaus" : null,
+    "opintoluokitus" : null,
+    "koodiUri" : "tutkinnonosat_104052",
+    "koodiArvo" : "104052",
+    "osaAlueet" : [ ],
+    "tyyppi" : "normaali"
+  }, {
+    "id" : 1017704,
+    "luotu" : 1430754733111,
+    "muokattu" : 1433152317493,
+    "muokkaaja" : "1.2.246.562.24.86806948461",
+    "nimi" : {
+      "fi" : "Asiakaspalvelu ja korjaamopalvelujen markkinointi",
+      "_id" : "1017791"
+    },
+    "tila" : "valmis",
+    "osanTyyppi" : "tutkinnonosa",
+    "arviointi" : {
+      "id" : 1014156,
+      "lisatiedot" : {
+        "fi" : "<p>Arvioinnissa on olennaista tutkinnon suorittajan kyky arvioida omaa tapaansa toimia.</p>\n\n<p>Arvioinnin kohteet:</p>\n\n<ul>\n\t<li>neuvottelu- ja viestintätaidot</li>\n\t<li>henkilökohtainen myynti- ja asiakaspalvelutaito</li>\n\t<li>tarjous-, sopimus-, reklamaatio-, takuu- ja vahinkoasiakirjojen laadinta</li>\n\t<li>yhteistyökyky ja oma-aloitteisuus</li>\n\t<li>yrityksen tuotteiden ja palveluiden tunteminen</li>\n\t<li>korjaamopalvelujen kaupankäynnin lainsäädännön sopimusehdot ja sopimuskäytäntö</li>\n</ul>\n\n<p> </p>\n\n<p>Suoritus on hyväksytty, jos tutkittava:</p>\n\n<ul>\n\t<li>tuntee asiakaslähtöisen korjaamomarkkinoinnin periaatteet</li>\n\t<li>tuntee organisaation tuoteryhmät ja tuotteet sekä osaa tarjota asiakkaalle korjaamo- ja varaosapalvelua asiantuntevasti</li>\n\t<li>osaa tulkita asiakastyytyväisyysselvityksiä ja hyödyntää asiakaspalautetta kehittämistyössä</li>\n\t<li>pystyy osallistumaan palvelujen markkinoinnin kehittämiseen välittämällä tietoa asiakkaiden toivomuksista ja tarpeiden muutoksista</li>\n\t<li>tuntee korjaamopalvelujen kaupankäynnin lainsäädännön sekä sopimusehdot ja sopimuskäytännön.</li>\n</ul>\n\n<p> </p>\n\n<p>Suoritus on hylätty, mikäli tutkittava:</p>\n\n<ul>\n\t<li>ei kykene esittelemään asiakkaille tuotteitaan eikä tunne tuotteidensa teknisiä ominaisuuksia ja toimintaa</li>\n\t<li>ei ymmärrä tuotteidensa hinnanmuodostuksen periaatteita eikä osaa nimetä keskeisiä myyntiargumentteja</li>\n\t<li>ei tunne korjaamopalvelujen ja tuotteiden kaupankäynnin lainsäädännön sopimusehtoja ja -käytäntöä</li>\n\t<li>ei tunnista keinoja, joilla voisi edistää korjaamo- ja varaosapalvelujen kysyntää.</li>\n</ul>",
+        "_id" : "1017794"
+      },
+      "arvioinninKohdealueet" : [ ]
+    },
+    "ammattitaitovaatimukset" : {
+      "fi" : "<p>Tutkinnon suorittaja tuntee korjaamopalvelujen yleiset markkinointitavat ja osaa soveltaa niitä käytännön työtilanteissa. Hän osaa korjaamossa tarvittavan henkilökohtaisen myynti- ja asiakaspalvelun. Hän osaa käyttää asiakaspalautetta toiminnan kehittämiseen. Hän pystyy arvioimaan asiakaspalvelutapaansa ja kehittämään sitä.</p>\n\n<p>Tutkinnon suorittaja ymmärtää palvelujen lisämyynnin merkityksen ja osaa sisällyttää sen joustavasti korjaamon työnmyyntiin. Hän ymmärtää tietojärjestelmien periaatteen ja osaa hyödyntää yrityksen tietojärjestelmää kohdennetussa markkinoinnissa. Asiakaspalvelussa ja kirjeenvaihdossa hän pystyy selkeään viestintään. Hänellä on äidinkielensä lisäksi riittävä vieraan kielen taito selviytyäkseen teknisestä informaatiosta ja työssään tarvittavasta viestinnästä. Hän tuntee korjaamopalvelujen kaupankäynnin lainsäädännön sekä sopimusehdot ja sopimuskäytännön.</p>",
+      "_id" : "1017793"
+    },
+    "ammattitaidonOsoittamistavat" : {
+      "fi" : "<p>Ammattitaito, sen taustalla olevien tietojen ja periaatteiden hallinta sekä kyky soveltaa tietoja osoitetaan pääasiassa yrityksessä aidoissa työympäristöissä tavanomaisten työtehtävien yhteydessä. Näyttöä voidaan täydentää erillisten selvitysten, kirjallisten tuotosten ja tehtävien, haastattelujen ja keskustelujen sekä tutkittavan itsearvioinnin avulla.</p>\n\n<p>Näyttöjä suunniteltaessa ja toteutettaessa voidaan ottaa huomioon tutkittavan oman tai hänen valitsemansa organisaation toimialan erityispiirteet.</p>",
+      "_id" : "1017792"
+    },
+    "kuvaus" : null,
+    "opintoluokitus" : null,
+    "koodiUri" : "tutkinnonosat_104053",
+    "koodiArvo" : "104053",
+    "osaAlueet" : [ ],
+    "tyyppi" : "normaali"
+  }, {
+    "id" : 1017705,
+    "luotu" : 1430754894051,
+    "muokattu" : 1433152317493,
+    "muokkaaja" : "1.2.246.562.24.86806948461",
+    "nimi" : {
+      "fi" : "Työnsuunnittelu ja organisointi",
+      "_id" : "1017795"
+    },
+    "tila" : "valmis",
+    "osanTyyppi" : "tutkinnonosa",
+    "arviointi" : {
+      "id" : 1014157,
+      "lisatiedot" : {
+        "fi" : "<p>Arvioinnin kohteet:</p>\n\n<ul>\n\t<li>työn suunnittelu ja siihen liittyvien atk-ohjelmien osaaminen</li>\n\t<li>oman yksikön työprosessien hallinta</li>\n\t<li>ajankäytön ja työn suunnittelun hallinta</li>\n\t<li>laatu- ja ympäristöasioiden hallitseminen</li>\n</ul>\n\n<p> </p>\n\n<p>Suoritus on hyväksytty, jos tutkittava:</p>\n\n<ul>\n\t<li>osaa korjaamon työn suunnittelun ja ohjauksen</li>\n\t<li>osaa laatia ja hinnoitella korjaussuunnitelmia</li>\n\t<li>tuntee korjaamon työsuojelu-, turvallisuus- ja ympäristömääräykset</li>\n\t<li>tuntee korjaamon palkkauksen ja palkanlaskennan perusteet</li>\n\t<li>hallitsee korjaamoraportoinnin.</li>\n</ul>\n\n<p> </p>\n\n<p>Suoritus on hylätty, mikäli tutkittava:</p>\n\n<ul>\n\t<li>ei osaa työn suunnitteluun liittyvää tietotekniikan käyttöä</li>\n\t<li>ei osaa kapasiteettisuunnittelua</li>\n\t<li>ei tunne alan turvallisuusmääräyksiä</li>\n\t<li>ei hallitse korjaamoraportointia.</li>\n</ul>",
+        "_id" : "1017798"
+      },
+      "arvioinninKohdealueet" : [ ]
+    },
+    "ammattitaitovaatimukset" : {
+      "fi" : "<p>Tutkinnon suorittaja osaa suunnitella ja ohjata toimintaa työpaikallaan tehokkaasti. Hän osaa käyttää suunnittelun apuna alakohtaisia tieto- ja ohjausjärjestelmiä ja hallitsee sähköisen viestinnän perusteet.</p>\n\n<p>Tutkittava osaa hyödyntää kulloinkin tarvittavat resurssit hyvän asiakaspalvelun takaamiseksi. Hän hallitsee oman yksikkönsä työprosessin rakenteen ja osaa kehittää yksikön toimintaa tuottavuuden parantamiseksi. Hän osaa muodostaa vaihtoehtoisia ratkaisuja muuttuvissa tilanteissa ja pystyy muuttamaan työn suunnittelua tarvittaessa.</p>\n\n<p>Tutkinnon suorittaja tuntee laatu- ja ympäristöasiat ja toimii niitä noudattaen. Hän tuntee korjaamon työsuojelu-, turvallisuus- ja ympäristömääräykset.</p>",
+      "_id" : "1017797"
+    },
+    "ammattitaidonOsoittamistavat" : {
+      "fi" : "<p>Ammattitaito, sen taustalla olevien tietojen ja periaatteiden hallinta sekä kyky soveltaa tietoja osoitetaan pääasiassa yrityksessä aidoissa työympäristöissä tavanomaisten työtehtävien yhteydessä. Näyttöä voidaan täydentää erillisten selvitysten, kirjallisten tuotosten ja tehtävien, haastattelujen ja keskustelujen sekä tutkittavan itsearvioinnin avulla. Näyttöjä suunniteltaessa ja toteutettaessa voidaan ottaa huomioon tutkittavan oman tai hänen valitsemansa organisaation toimialan erityispiirteet.</p>",
+      "_id" : "1017796"
+    },
+    "kuvaus" : null,
+    "opintoluokitus" : null,
+    "koodiUri" : "tutkinnonosat_104054",
+    "koodiArvo" : "104054",
+    "osaAlueet" : [ ],
+    "tyyppi" : "normaali"
+  }, {
+    "id" : 1017706,
+    "luotu" : 1430755099352,
+    "muokattu" : 1433152317493,
+    "muokkaaja" : "1.2.246.562.24.86806948461",
+    "nimi" : {
+      "fi" : "Taloudellinen toiminta",
+      "_id" : "1017799"
+    },
+    "tila" : "valmis",
+    "osanTyyppi" : "tutkinnonosa",
+    "arviointi" : {
+      "id" : 1014158,
+      "lisatiedot" : {
+        "fi" : "<p>Arvioinnin kohteet:</p>\n\n<ul>\n\t<li>toiminta-ajatuksen ja liikeidean periaatteiden tuntemus</li>\n\t<li>taloudellisen toiminnan periaatteiden tunteminen</li>\n\t<li>tuloslaskelman ja budjetin tuntemus</li>\n\t<li>budjetoinnin osaaminen</li>\n\t<li>palveluiden hinnoittelun osaaminen</li>\n</ul>\n\n<p> </p>\n\n<p>Suoritus on hyväksytty, jos tutkittava:</p>\n\n<ul>\n\t<li>ymmärtää liiketoiminnan ohjauksen peruskäsitteistön ja tuntee oman yrityksensä toiminta-ajatuksen ja liikeidean periaatteet</li>\n\t<li>ymmärtää korjaamon tuloslaskelman ja budjetin sekä osaa tulkita keskeiset tekijät</li>\n\t<li>pystyy arvioimaan korjaamotoimintojen kannattavuutta ja tekemään tarvittavat johtopäätökset</li>\n\t<li>tuntee korjaamon avainalueita ja tavoitteita siten, että osaa määrittää suoritustuloksia ja niiden mittareita</li>\n\t<li>pystyy osallistumaan hankintojen valmisteluun ja laatimaan investointiehdotuksia.</li>\n</ul>\n\n<p> </p>\n\n<p>Suoritus on hylätty, mikäli tutkittava:</p>\n\n<ul>\n\t<li>ei ymmärrä kannattavan korjaamotoiminnan avainalueita ja perusperiaatteita</li>\n\t<li>ei tunne korjaamopalvelujen kustannusrakennetta</li>\n\t<li>ei tunne korjaamon keskeisiä talouden suunnittelukäytäntöjä</li>\n\t<li>ei pysty osallistumaan hankintojen valmisteluun eikä laatimaan investointiehdotuksia.</li>\n</ul>",
+        "_id" : "1116960"
+      },
+      "arvioinninKohdealueet" : [ ]
+    },
+    "ammattitaitovaatimukset" : {
+      "fi" : "<p>Tutkinnon suorittaja tietää, mitkä osatekijät vaikuttavat korjaamon kannattavuuteen, miten kannattavuutta voidaan kehittää ja miten hän itse voi vaikuttaa siihen.</p>\n\n<p>Tutkinnon suorittaja osaa hinnoitella palvelut kannattavasti. Hän tuntee eri maksutavat ja niihin liittyvät turvallisuusriskit. Hän osaa työtehtävissä tarvittavat laskutoimitukset. Työ- ja laitesuunnittelussa sekä hankinnoissa hän pystyy perusteleman ratkaisuja yritystaloudellisesti. Tutkittava pystyy osallistumaan vastuualueensa osalta korjaamon budjetin laadintaan.</p>",
+      "_id" : "1017870"
+    },
+    "ammattitaidonOsoittamistavat" : {
+      "fi" : "<p>Ammattitaito, sen taustalla olevien tietojen ja periaatteiden hallinta sekä kyky soveltaa tietoja osoitetaan pääasiassa yrityksessä aidoissa työympäristöissä tavanomaisten työtehtävien yhteydessä. Näyttöä voidaan täydentää erillisten selvitysten, kirjallisten tuotosten ja tehtävien, haastattelujen ja keskustelujen sekä tutkittavan itsearvioinnin avulla. Näyttöjä suunniteltaessa ja toteutettaessa voidaan ottaa huomioon tutkittavan oman tai hänen valitsemansa organisaation toimialan erityispiirteet.</p>",
+      "_id" : "1017871"
+    },
+    "kuvaus" : null,
+    "opintoluokitus" : null,
+    "koodiUri" : "tutkinnonosat_104055",
+    "koodiArvo" : "104055",
+    "osaAlueet" : [ ],
+    "tyyppi" : "normaali"
+  }, {
+    "id" : 1017707,
+    "luotu" : 1430755579066,
+    "muokattu" : 1433152317493,
+    "muokkaaja" : "1.2.246.562.24.86806948461",
+    "nimi" : {
+      "fi" : "Työpaikkakoulutus",
+      "_id" : "1017873"
+    },
+    "tila" : "valmis",
+    "osanTyyppi" : "tutkinnonosa",
+    "arviointi" : {
+      "id" : 1014159,
+      "lisatiedot" : {
+        "fi" : "<p>Arvioinnin kohteet:</p>\n\n<ul>\n\t<li>koulutustarpeiden tunnistaminen</li>\n\t<li>vuorovaikutus ja suullinen sekä kirjallinen viestintä</li>\n\t<li>työpaikkakouluttajana toimiminen</li>\n\t<li>perehdyttämis- ja koulutussuunnitelman laatiminen</li>\n</ul>\n\n<p> </p>\n\n<p>Suoritus on hyväksytty, jos tutkittava:</p>\n\n<ul>\n\t<li>osaa arvioida yksilöiden ammatillisia ja työyhteisöllisiä valmiuksia ja kannustaa heitä kehittämään omaa toimintaa</li>\n\t<li>tuntee korjaamon prosessit ja tehtävät</li>\n\t<li>pystyy suunnittelemaan perehdyttämisohjelman</li>\n\t<li>pystyy toimimaan työpaikkakouluttajana</li>\n\t<li>tuntee autoalan koulutusmahdollisuudet ja osaa hyödyntää niitä omassa toiminnassaan.</li>\n</ul>\n\n<p> </p>\n\n<p>Suoritus on hylätty, mikäli tutkittava:</p>\n\n<ul>\n\t<li>ei osaa arvioida yksilöiden ammatillisia ja työyhteisöllisiä valmiuksia</li>\n\t<li>ei osaa kannustaa yksilöitä oman toimintansa ja itsensä kehittämisessä</li>\n\t<li>ei pysty toimimaan työpaikkakouluttajana</li>\n\t<li>ei pysty laatimaan perehdyttämisohjelmia.</li>\n</ul>",
+        "_id" : "1017876"
+      },
+      "arvioinninKohdealueet" : [ ]
+    },
+    "ammattitaitovaatimukset" : {
+      "fi" : "<p>Tutkinnon suorittaja tuntee organisaatiokoulutuksen yleiset periaatteet ja oman yksikön henkilöstön koulutus- ja kehittämissuunnitelmat. Hän tuntee korjaamon työprosessit siten, että kykenee tunnistamaan henkilöstön koulutus- ja kehittämistarpeet. Hän pystyy osallistumaan koulutussuunnitelmien kehittämiseen yhteistyössä muiden koulutuksesta vastaavien henkilöiden kanssa.</p>\n\n<p>Hän on suunnitelmallinen, tavoitteellinen ja yhteistyökykyinen sekä tulee toimeen erilaisissa työtehtävissä toimivien henkilöiden kanssa. Hän pystyy analysoimaan ja esittämään asiat sekä suullisesti että kirjallisesti.</p>\n\n<p>Tutkinnon suorittaja pystyy osallistumaan työntekijöiden kehittämiseen ja opastukseen yksilöinä, ryhmien jäseninä ja työyhteisökokonaisuutena. Hän kykenee laatimaan ja toimeenpanemaan työpaikalla henkilöstön perehdyttämis- ja kehittämisohjelman sekä toimimaan työpaikkakouluttajana. Hän pystyy ohjaamaan ja perehdyttämään alan opiskelijoita.</p>",
+      "_id" : "1017875"
+    },
+    "ammattitaidonOsoittamistavat" : {
+      "fi" : "<p>Ammattitaito, sen taustalla olevien tietojen ja periaatteiden hallinta sekä kyky soveltaa tietoja osoitetaan pääasiassa yrityksessä aidoissa työympäristöissä tavanomaisten työtehtävien yhteydessä. Näyttöä voidaan täydentää erillisten selvitysten, kirjallisten tuotosten ja tehtävien, haastattelujen ja keskustelujen sekä tutkittavan itsearvioinnin avulla.</p>\n\n<p>Näyttöjä suunniteltaessa ja toteutettaessa voidaan ottaa huomioon tutkittavan oman tai hänen valitsemansa organisaation toimialan erityispiirteet.</p>",
+      "_id" : "1017874"
+    },
+    "kuvaus" : null,
+    "opintoluokitus" : null,
+    "koodiUri" : "tutkinnonosat_104056",
+    "koodiArvo" : "104056",
+    "osaAlueet" : [ ],
+    "tyyppi" : "normaali"
+  }, {
+    "id" : 1017708,
+    "luotu" : 1430755806327,
+    "muokattu" : 1433152317493,
+    "muokkaaja" : "1.2.246.562.24.86806948461",
+    "nimi" : {
+      "fi" : "Projektiosaaminen",
+      "_id" : "1017877"
+    },
+    "tila" : "valmis",
+    "osanTyyppi" : "tutkinnonosa",
+    "arviointi" : {
+      "id" : 1017950,
+      "lisatiedot" : {
+        "fi" : "<p>Arvioinnin kohteet:</p>\n\n<ul>\n\t<li>projektin suunnittelu</li>\n\t<li>projektiraportointi</li>\n\t<li>projektin johtaminen</li>\n\t<li>projektikokoukset</li>\n</ul>\n\n<p> </p>\n\n<p>Suoritus on hyväksytty, jos tutkittava:</p>\n\n<ul>\n\t<li>tuntee yleisiä projektityöskentelytapoja ja -menetelmiä</li>\n\t<li>pystyy toimimaan pienimuotoisen projektin vetäjänä</li>\n\t<li>osaa laatia projektisuunnitelman</li>\n\t<li>osaa projektissa vaadittavan kirjallisen raportoinnin</li>\n\t<li>pystyy toimimaan projektin kokousten puheenjohtajana</li>\n\t<li>pystyy arvioimaan projektin tulosta ja omaa osuuttaan sen vetäjänä.</li>\n</ul>\n\n<p> </p>\n\n<p>Suoritus on hylätty, mikäli tutkittava:</p>\n\n<ul>\n\t<li>ei tunne yleisiä projektityötapoja</li>\n\t<li>ei osaa laatia projektisuunnitelmaa</li>\n\t<li>ei pysty raportoimaan kirjallisesti</li>\n\t<li>ei pysty itse arviomaan omaa panostaan projektissa.</li>\n</ul>",
+        "_id" : "1017940"
+      },
+      "arvioinninKohdealueet" : [ ]
+    },
+    "ammattitaitovaatimukset" : {
+      "fi" : "<p>Tutkinnon suorittaja osaa projektimuotoisen työskentelyn periaatteet. Hän kykenee johtamaan yli oman vastuualueensa ulottuvaa projektia. Hän pystyy laatimaan projektisuunnitelman, joka sisältää ainakin projektin tavoitteen, toiminnan kuvauksen, resurssitarpeet, aikataulut ja kustannusarvion. Suorittaja osaa projektin päättämisen ja kirjallisen raportoinnin. Hän osaa käyttää projektityössä käytössä olevia ongelmanratkaisutekniikoita. Hän pystyy toimimaan kokousten puheenjohtajana.</p>",
+      "_id" : "1017879"
+    },
+    "ammattitaidonOsoittamistavat" : {
+      "fi" : "<p>Ammattitaito, sen taustalla olevien tietojen ja periaatteiden hallinta sekä kyky soveltaa tietoja osoitetaan pääasiassa yrityksessä aidoissa työympäristöissä tavanomaisten työtehtävien yhteydessä. Näyttöä voidaan täydentää erillisten selvitysten, kirjallisten tuotosten ja tehtävien, haastattelujen ja keskustelujen sekä tutkittavan itsearvioinnin avulla.</p>\n\n<p>Näyttöjä suunniteltaessa ja toteutettaessa voidaan ottaa huomioon tutkittavan oman tai hänen valitsemansa organisaation toimialan erityispiirteet.</p>",
+      "_id" : "1017878"
+    },
+    "kuvaus" : null,
+    "opintoluokitus" : null,
+    "koodiUri" : "tutkinnonosat_104057",
+    "koodiArvo" : "104057",
+    "osaAlueet" : [ ],
+    "tyyppi" : "normaali"
+  }, {
+    "id" : 1017709,
+    "luotu" : 1430755974008,
+    "muokattu" : 1433152317493,
+    "muokkaaja" : "1.2.246.562.24.86806948461",
+    "nimi" : {
+      "fi" : "Tekniikan asiantuntemus",
+      "_id" : "1017941"
+    },
+    "tila" : "valmis",
+    "osanTyyppi" : "tutkinnonosa",
+    "arviointi" : {
+      "id" : 1017951,
+      "lisatiedot" : {
+        "fi" : "<p>Suoritus on hyväksytty, jos tutkittava:</p>\n\n<ul>\n\t<li>tuntee oman toimialan ajoneuvotekniikan kehityksen ja sen tuomat vaatimukset</li>\n\t<li>pystyy toimimaan valitsemansa osaamisalueen asiantuntijana yrityksessään</li>\n\t<li>tuntee tarvittavat koneet, laitteet ja järjestelmät sekä menetelmät</li>\n\t<li>pystyy toimimaan valitsemansa erikoistumisalueen opastajana ja kouluttajana.</li>\n</ul>\n\n<p> </p>\n\n<p>Suoritus on hylätty, mikäli tutkittava:</p>\n\n<ul>\n\t<li>ei tunne oman toimialan ajoneuvotekniikan kehitystä ja sen tuomia vaatimuksia</li>\n\t<li>ei pysty osoittamaan asiantuntijuuttaan</li>\n\t<li>ei tunne tarvittavia koneita, laitteita, järjestelmiä tai menetelmiä.</li>\n</ul>",
+        "_id" : "1117768"
+      },
+      "arvioinninKohdealueet" : [ ]
+    },
+    "ammattitaitovaatimukset" : {
+      "fi" : "<p>Tutkinnon suorittaja on perehtynyt oman toimialansa ajoneuvotekniikan kehitykseen ja tietää, mitä vaatimuksia kehittyvä tekniikka tuo korjaamohenkilöstölle ja -varusteille. Hän pystyy toimimaan yritystasoisena asiantuntijana valitsemallaan alueella, joka voi olla esim. ajoneuvoelektroniikka, turvajärjestelmät, koritekniikka, polttonestejärjestelmät, rakennemuutokset tai vastaava osaamiskokonaisuus. Hän seuraa valitsemansa alueen kehitystä ja toimii sen alueen opastajana ja asiantuntijana yrityksessä. Hän tietää eri järjestelmien huoltoon ja korjaukseen liittyvät vaarat ja ehkäisevät toimenpiteet vahinkojen välttämiseksi. Hän tiedostaa huollon merkityksen taloudellisuuteen vaikuttavana tekijänä ja autoliikenteen aiheuttamien ympäristöhaittojen vähentäjänä.</p>",
+      "_id" : "1017943"
+    },
+    "ammattitaidonOsoittamistavat" : {
+      "fi" : "<p>Ammattitaito, sen taustalla olevien tietojen ja periaatteiden hallinta sekä kyky soveltaa tietoja osoitetaan pääasiassa yrityksessä aidoissa työympäristöissä tavanomaisten työtehtävien yhteydessä. Näyttöä voidaan täydentää erillisten selvitysten, kirjallisten tuotosten ja tehtävien, haastattelujen ja keskustelujen sekä tutkittavan itsearvioinnin avulla.</p>\n\n<p>Näyttöjä suunniteltaessa ja toteutettaessa voidaan ottaa huomioon tutkittavan oman tai hänen valitsemansa organisaation toimialan erityispiirteet.</p>",
+      "_id" : "1017942"
+    },
+    "kuvaus" : null,
+    "opintoluokitus" : null,
+    "koodiUri" : "tutkinnonosat_104058",
+    "koodiArvo" : "104058",
+    "osaAlueet" : [ ],
+    "tyyppi" : "normaali"
+  }, {
+    "id" : 1017990,
+    "luotu" : 1430756139313,
+    "muokattu" : 1433152317493,
+    "muokkaaja" : "1.2.246.562.24.86806948461",
+    "nimi" : {
+      "fi" : "Yrittäjyys",
+      "_id" : "1017945"
+    },
+    "tila" : "valmis",
+    "osanTyyppi" : "tutkinnonosa",
+    "arviointi" : {
+      "id" : 1017952,
+      "lisatiedot" : {
+        "fi" : "<p>Arvioinnin kohteet:</p>\n\n<ul>\n\t<li>omien yrittäjävalmiuksien arviointi ja oman yrittäjyyttä tukevan kehittymisen suunnittelu</li>\n\t<li>yritystoiminnan käynnistämisessä tarvittavien perusvalmiuksien laaja tuntemus ja keskeisten asioiden hallinta</li>\n\t<li>asiantuntijapalvelujen käyttö ja tietolähteiden hyödyntäminen.</li>\n</ul>\n\n<p> </p>\n\n<p>Suoritus on hyväksytty, jos tutkinnon suorittaja täyttää seuraavat kriteerit: Tutkinnon suorittaja tietää, mitä yrittäjänä toimiminen edellyttää ja millaiset valmiudet tukevat yrittäjänä menestymistä. Hän pystyy erittelemään yrittäjänä toimimisen valmiuksiaan ja myös arvojaan sekä osaa näiden pohjalta punnita omaa yrittäjyyttään ja laatia itselleen kehittymissuunnitelman yrittäjänä. Hän kykenee tekemään yritystoimintaan liittyviä ratkaisuja omiin arvioihinsa luottaen ja osaa tuoda esille oman ammattitaitonsa ja arvostaa sitä. Tutkinnon suorittaja tuntee omaa toimialaansa ja aluettaan niin, että osaa tarkastella tulevaisuuden näkymiä, mahdollisuuksia ja markkinoita oman yritystoiminnan käynnistämisen kannalta.</p>\n\n<p>Tutkinnon suorittaja tietää, millaisia erilaisia yritystoiminnan aloitustapoja voi harkita. Hän tietää yleisimmät Suomessa käytetyt ratkaisut mm. yritystoiminnan muotojen, aloittamisoperaatioiden, vastuiden määrittämisen ja tarvittavien resurssien ja riskien osalta voidakseen keskustella asiantuntijoiden kanssa oman yrityksensä toiminnan vaihtoehdoista. Hän tietää, millaisia taloudellisia ja tuotannollisia sekä henkisiä voimavaroja yritystoiminnan toteuttaminen vaatii, ja osaa arvioida niiden tarpeen esimerkiksi oman yritystoiminnan aloittamisen näkökulmasta. Hän tuntee yritystoiminnan aloittamisen lakisääteiset toimet sekä muun yritystoiminnan keskeisen lainsäädännön ja tietää, mistä voi tarvittaessa saada asiantuntijapalveluja.</p>\n\n<p>Tutkinnon suorittaja osaa kehittää asiantuntijoiden avulla omalle yritykselleen markkinakelpoisen liikeidean ja ymmärtää, mikä on liikeidean merkitys yritystoiminnan työvälineenä, ja tietää, miten sitä käytetään toiminnan suunnittelun ja toteutuksen pohjana. Hän ottaa sitä kehittäessään huomioon markkinoiden kysyntä- ja kilpailutekijöitä sekä oman ideansa toimivuuden kannalta olennaisia erilaistamistekijöitä.</p>\n\n<p>Tutkinnon suorittaja ymmärtää asiakassuhteiden ja muiden yhteistyösuhteiden merkityksen olennaisena osana menestyvää yritystoimintaa. Hän tietää, mihin hänen mahdollisen yrityksensä asiakassuhteiden ja muiden yhteistyösuhteiden hoitamiseen liittyvät arvot ja liikeideassa määritellyt toimintatavat perustuvat. Hänellä on valmiudet rakentaa ja ylläpitää yrityksen jatkuvuuden kannalta merkittäviä asiakas-, toimittaja- ja muita verkostosuhteita. Tutkinnon suorittaja ymmärtää, mitä on kannattava toiminta, ja osaa vaikuttaa yrityksen kannattavuuteen. Hän osaa tulkita yrityksen tilinpäätöstä mm. pääomien, varallisuuden, maksukyvyn ja tuloksen suhteen. Hän ymmärtää kustannuslaskennan periaatteet ja tietää, mitkä markkinalähtöiset tekijät tulee ottaa myös huomioon, jotta hän osaa hinnoitella tuotteita järkevästi. Hän osaa laatia yritykselleen karkean tulo-menoarvion ja osaa hankkia tietoja ja asiantuntijapalveluja alan yritystoiminnan verotuskysymysten ratkaisemiseen.</p>",
+        "_id" : "1017948"
+      },
+      "arvioinninKohdealueet" : [ ]
+    },
+    "ammattitaitovaatimukset" : {
+      "fi" : "<p>Tutkinnon suorittaja tietää, mitä yrittäjänä toimiminen edellyttää. Hän osaa arvioida yrittäjyyttään ja mahdollista yritystoimintaansa sekä sitä, millä alueilla ja miten hän voi kehittää yrittäjävalmiuksiaan. Hänellä on oman alansa vankka ammattitaito. Hän ymmärtää alansa yritystoimintaa ja hänellä on oman yrityksen aloittamiseksi tarvittavat perustiedot. Hän osaa tarkastella alaa ja sen tarjoamia yritystoiminnan käynnistämisen ja kehittämisen mahdollisuuksia sekä riskejä.</p>\n\n<p>Tutkinnon suorittaja tietää eri yritysmuotojen eron ja tuntee yrityksen perustamisen hallintomenettelyt. Hän osaa kehittää yhdessä asiantuntijoiden kanssa markkinakelpoisen liikeidean ja tietää, miten sitä käytetään toiminnan suunnittelun ja toteutuksen pohjana. Hän tietää, millaisia taloudellisia, tuotannollisia ja henkisiä voimavaroja yritystoiminnan toteuttaminen vaatii, ja osaa arvioida niiden tarpeen esimerkiksi oman yritystoiminnan aloittamisen näkökulmasta. Tutkinnon suorittaja ymmärtää asiakassuhteiden ja muiden yhteistyösuhteiden merkityksen olennaisena osana menestyvää yritystoimintaa ja on tältä pohjalta valmis kehittämään näitä suhteita. Hän tuntee tuotteen hinnanmuodostuksen ja tietää keskeisimpiä talouden tunnuslukuja. Hän tuntee yritystoimintaan liittyvää keskeistä lainsäädäntöä. Hän osaa hankkia yrityksen perustamisessa ja toiminnan eri vaiheissa tarvitsemaansa tietoa ja asiantuntijapalvelua.</p>",
+      "_id" : "1017947"
+    },
+    "ammattitaidonOsoittamistavat" : {
+      "fi" : "<p>Näytössä arvioidaan:</p>\n\n<ul>\n\t<li>yksilön arvoja ja henkilökohtaisia yrittäjävalmiuksia</li>\n\t<li>yksilön yrittämisen taitoja ja tietoja.</li>\n</ul>\n\n<p>Näyttöjä laadittaessa ja näyttöympäristöä valittaessa on tärkeää pystyä mittaamaan luotettavasti molempia valmiuksia.</p>\n\n<p>Yksilöllisten tekijöiden arvioinnissa on tärkeää osallistujan kyky arvioida omia valmiuksiaan toimia yrittäjänä. Arviointi pohjautuu itsearviointiin, ryhmässä tapahtuvaan vertaisarviointiin ja asiantuntijakeskusteluihin. Työvälineinä voidaan käyttää mm. erilaisia keskusteluja ja analyysejä. Tutkittavaa ei voida arvioida sen suhteen, onko hän hyvä yrittäjä vai ei, vaan tavoitteena on muodostaa henkilön yrittäjäprofiili, jota tulkitsemalla tutkittava osaa tuottaa itsenäisesti tai yhdessä asiantuntijoiden kanssa oman yrittäjänä toimimista edistävän kehityssuunnitelmansa.</p>\n\n<p>Tämän kokonaisuuden arviointiin osallistuvilta edellytetään yrittäjyyden ja sen kehittämisen asiantuntemusta.</p>\n\n<p>Yrittämisen taidot ja tiedot arvioidaan aitona yrittäjyyteen liittyvänä toimintana. Keskeinen osa näyttöä on pitkäjänteinen yritystoiminnan käynnistämiseen liittyvä hanke, jossa tutkittava työstää yritysideansa liikeideaksi.</p>\n\n<p>Toimivan liikeidean rakentamisessa hänen tulee tarkastella monipuolisesti toimintaympäristöä erityisesti alalle aikovan yrittäjän näkökulmasta. Hänen tulee osata käydä keskusteluja mahdollisesta yrityksensä käynnistämisestä ja siihen liittyvistä kysymyksistä alan asiantuntijoiden kanssa. Tutkinnon suorittajan on osattava laatia myös liiketoiminnassa tarvittavat keskeiset suunnitelmat ja arvioida niiden toimivuutta. Hänen pitää pystyä tarkastelemaan myös todennäköisen yrityksensä resurssitarvetta. Näyttöä voidaan täydentää selvityksien, laskelmin ja muiden kirjallisten tuotosten sekä suullisten keskustelujen ja haastattelujen avulla.</p>",
+      "_id" : "1017946"
+    },
+    "kuvaus" : null,
+    "opintoluokitus" : null,
+    "koodiUri" : "tutkinnonosat_104059",
+    "koodiArvo" : "104059",
+    "osaAlueet" : [ ],
+    "tyyppi" : "normaali"
+  } ]
+}

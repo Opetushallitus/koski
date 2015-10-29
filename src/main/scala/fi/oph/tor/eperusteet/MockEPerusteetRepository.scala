@@ -5,7 +5,7 @@ import fi.oph.tor.json.Json._
 
 class MockEPerusteetRepository extends EPerusteetRepository {
   def findPerusteet(query: String): List[EPeruste] = {
-    Json.readFile("src/main/resources/mockdata/eperusteet/auto.json").extract[EPerusteet].data
+    Json.readFile("src/main/resources/mockdata/eperusteet/auto.json").extract[EPerusteet].data.filter(_.nimi("fi").toLowerCase.contains(query.toLowerCase))
   }
 
   def findPerusteetByDiaarinumero(diaarinumero: String): List[EPeruste] = {

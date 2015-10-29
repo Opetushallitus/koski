@@ -160,6 +160,15 @@ describe('TOR', function() {
       })
     })
 
+
+    describe('Erikoisammattitutkinto', function() {
+      before(addNewOppija('kalle', 'Tunkkila', { etunimet: 'Tero Terde', kutsumanimi: 'Terde', sukunimi: 'Tunkkila', hetu: '091095-9833', oppilaitos: 'Helsingin', tutkinto: 'erikois'}))
+
+      it('Onnistuu', function() {
+
+      })
+    })
+
     describe('Uudelle henkilölle', function() {
       before(prepareForNewOppija('kalle', 'asdf'))
 
