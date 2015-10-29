@@ -6,12 +6,24 @@ export const opintoOikeusChange = Bacon.Bus()
 
 const withEmptyValue = (xs) => [{ koodi: '', nimi: 'Valitse...'}].concat(xs)
 
-const Dropdown = ({title, options, value, onChange}) => (options.length
-  ? <label>{title}<select className="suoritustapa" value={value} onChange={(event) => onChange(event.target.value)}>
-      {withEmptyValue(options).map(s => <option key={s.koodi} value={s.koodi}>{s.nimi}</option>)}
-    </select></label>
-  : <div></div>)
-
+// Shows <select> if more than 1 option. If 1 option, automatically selects it and shows it. If zero options, hides the whole thing.
+const Dropdown = React.createClass({
+  render() {
+    let { title, options, value, onChange} = this.props
+    return options.length > 0
+        ? <label><span>{title}</span>{ options.length > 1
+            ? <select className="suoritustapa" value={value} onChange={(event) => onChange(event.target.value)}> {withEmptyValue(options).map(s => <option key={s.koodi} value={s.koodi}>{s.nimi}</option>)} </select>
+            : <div>{ options[0].nimi }</div>
+          }</label>
+        : <div></div>
+  },
+  componentDidMount() {
+    let { options, onChange, value} = this.props
+    if (options.length == 1 && value !== options[0].koodi) {
+      onChange(options[0].koodi)
+    }
+  }
+})
 export const OpintoOikeus = React.createClass({
   render() {
     let {opintoOikeus} = this.props
