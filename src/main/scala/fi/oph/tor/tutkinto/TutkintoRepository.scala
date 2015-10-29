@@ -13,8 +13,8 @@ class TutkintoRepository(eperusteet: EPerusteetRepository) {
     ePerusteetToTutkinnot(eperusteet.findPerusteetByDiaarinumero(diaarinumero)).headOption
   }
 
-  def ePerusteetToTutkinnot(perusteet: EPerusteet) = {
-    perusteet.data.flatMap { peruste =>
+  def ePerusteetToTutkinnot(perusteet: List[EPeruste]) = {
+    perusteet.flatMap { peruste =>
       peruste.koulutukset.map(koulutus => Tutkinto(peruste.diaarinumero, koulutus.koulutuskoodiArvo, peruste.nimi.get("fi")))
     }
   }

@@ -5,12 +5,12 @@ import fi.oph.tor.http.Http
 class RemoteEPerusteetRepository(ePerusteetRoot: String) extends EPerusteetRepository {
   private val http: Http = Http()
 
-  def findPerusteet(query: String): EPerusteet = {
-    http(ePerusteetRoot + "/api/perusteet?sivukoko=100&nimi=" + query)(Http.parseJson[EPerusteet])
+  def findPerusteet(query: String) = {
+    http(ePerusteetRoot + "/api/perusteet?sivukoko=100&nimi=" + query)(Http.parseJson[EPerusteet]).data
   }
 
-  def findPerusteetByDiaarinumero(diaarinumero: String): EPerusteet = {
-    http(ePerusteetRoot + "/api/perusteet?diaarinumero=" + diaarinumero)(Http.parseJson[EPerusteet])
+  def findPerusteetByDiaarinumero(diaarinumero: String) = {
+    http(ePerusteetRoot + "/api/perusteet?diaarinumero=" + diaarinumero)(Http.parseJson[EPerusteet]).data
   }
 
   def findRakenne(diaariNumero: String): Option[EPerusteRakenne] = {

@@ -3,9 +3,9 @@ package fi.oph.tor.eperusteet
 import com.typesafe.config.Config
 
 trait EPerusteetRepository {
-  def findPerusteet(query: String): EPerusteet
+  def findPerusteet(query: String): List[EPeruste]
 
-  def findPerusteetByDiaarinumero(diaarinumero: String): EPerusteet
+  def findPerusteetByDiaarinumero(diaarinumero: String): List[EPeruste]
 
   def findRakenne(diaariNumero: String): Option[EPerusteRakenne]
 }

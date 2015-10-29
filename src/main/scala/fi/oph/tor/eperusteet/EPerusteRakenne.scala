@@ -5,6 +5,7 @@ import org.json4s._
 import org.json4s.reflect.TypeInfo
 
 case class EPerusteRakenne(id: Long, nimi: Map[String, String], diaarinumero: String, suoritustavat: List[ESuoritustapa], tutkinnonOsat: List[ETutkinnonOsa], osaamisalat: List[EOsaamisala])
+
 case class ESuoritustapa(suoritustapakoodi: String, rakenne: ERakenneOsa, tutkinnonOsaViitteet: List[ETutkinnonOsaViite])
 case class ETutkinnonOsaViite(id: Long, _tutkinnonOsa: String)
 case class EOsaamisala(nimi: Map[String, String], arvo: String)
