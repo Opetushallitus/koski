@@ -1,7 +1,7 @@
 package fi.oph.tor.tutkinto
 
 import fi.oph.tor.arvosana.ArviointiasteikkoRepository
-import fi.oph.tor.eperusteet.{EPerusteetRepository, EPerusteet, RemoteEPerusteetRepository, EPerusteetTutkintoRakenne}
+import fi.oph.tor.eperusteet.{EPerusteet, EPerusteetRepository, EPerusteetTutkintoRakenne}
 
 class TutkintoRepository(eperusteet: EPerusteetRepository) {
   def findTutkinnot(oppilaitosId: String, query: String): List[Tutkinto] = {
