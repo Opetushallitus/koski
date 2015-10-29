@@ -7,10 +7,10 @@ import {OpintoOikeus, opintoOikeusChange} from './OpintoOikeus.jsx'
 import Ramda from 'ramda'
 
 var selectOppijaE = routeP.map('.oppijaId').flatMap(oppijaId => {
-  return oppijaId ? Bacon.once(undefined).concat(Http.get(`/tor/api/oppija/${oppijaId}`)) : Bacon.once(undefined)
+  return oppijaId ? Bacon.once({loading: true}).concat(Http.get(`/tor/api/oppija/${oppijaId}`)) : Bacon.once({ empty: true})
 })
 
-export const oppijaP = Bacon.update(undefined,
+export const oppijaP = Bacon.update({ loading: true },
   selectOppijaE, (previous, oppija) => oppija,
   opintoOikeusChange, (currentOppija, [opintoOikeusId, change]) => {
     let changedOppija = Ramda.clone(currentOppija)
@@ -27,12 +27,10 @@ export const updateResultE = oppijaP.sampledBy(opintoOikeusChange).flatMapLatest
 
 export const uusiOppijaP = routeP.map(route => { return !!route.uusiOppija })
 
-export const loadingOppijaP = routeP.awaiting(oppijaP.mapError())
-
 export const Oppija = ({oppija}) =>
-  oppija.loading
+  oppija.valittuOppija.loading
     ? <Loading/>
-    : (oppija.valittuOppija
+    : (!oppija.valittuOppija.empty
       ? <ExistingOppija oppija={oppija.valittuOppija}/>
       : (
       oppija.uusiOppija

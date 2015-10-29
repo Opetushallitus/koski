@@ -7,7 +7,7 @@ import Bacon from 'baconjs'
 import {Error, NotFound, handleError, errorP} from './Error.jsx'
 import {Login, userP} from './Login.jsx'
 import {OppijaHaku, oppijatP, searchInProgressP} from './OppijaHaku.jsx'
-import {Oppija, oppijaP, uusiOppijaP, loadingOppijaP, updateResultE} from './Oppija.jsx'
+import {Oppija, oppijaP, uusiOppijaP, updateResultE} from './Oppija.jsx'
 import {TopBar} from './TopBar.jsx'
 
 // Application state to be rendered
@@ -18,7 +18,6 @@ const stateP = Bacon.combineTemplate({
     searchInProgress: searchInProgressP
   },
   oppija: {
-    loading: loadingOppijaP,
     valittuOppija: oppijaP,
     uusiOppija: uusiOppijaP
   }

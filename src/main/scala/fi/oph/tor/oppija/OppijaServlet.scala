@@ -1,6 +1,5 @@
 package fi.oph.tor.oppija
 
-import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.json.Json
 import fi.oph.tor.security.RequiresAuthentication
 import fi.oph.tor.tor.{TodennetunOsaamisenRekisteri, TorOppija}
