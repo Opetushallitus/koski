@@ -1,21 +1,25 @@
 package fi.oph.tor.tutkinto
 
-import com.typesafe.config.Config
 import fi.oph.tor.arvosana.ArviointiasteikkoRepository
-import fi.oph.tor.tutkinto.EPerusteetTutkintoRepository
+import fi.oph.tor.eperusteet.{EPerusteetRepository, EPerusteet, RemoteEPerusteetRepository, EPerusteetTutkintoRakenne}
 
-trait TutkintoRepository {
-  def findTutkinnot(oppilaitosId: String, query: String): List[Tutkinto]
-  def findByEPerusteDiaarinumero(diaariNumero: String): Option[Tutkinto]
-  def findPerusteRakenne(diaariNumero: String)(implicit arviointiAsteikot: ArviointiasteikkoRepository): Option[TutkintoRakenne]
-}
+class TutkintoRepository(eperusteet: EPerusteetRepository) {
+  def findTutkinnot(oppilaitosId: String, query: String): List[Tutkinto] = {
+    ePerusteetToTutkinnot(eperusteet.findPerusteet(query))
+  }
 
-object TutkintoRepository {
-  def apply(config: Config) = {
-    if (config.hasPath("eperusteet")) {
-      new EPerusteetTutkintoRepository(config.getString("eperusteet.url"))
-    } else {
-      new MockTutkintoRepository
+  def findByEPerusteDiaarinumero(diaarinumero: String) = {
+    ePerusteetToTutkinnot(eperusteet.findPerusteetByDiaarinumero(diaarinumero)).headOption
+  }
+
+  def ePerusteetToTutkinnot(perusteet: EPerusteet) = {
+    perusteet.data.flatMap { peruste =>
+      peruste.koulutukset.map(koulutus => Tutkinto(peruste.diaarinumero, koulutus.koulutuskoodiArvo, peruste.nimi.get("fi")))
     }
-  }}
+  }
 
+  def findPerusteRakenne(diaariNumero: String)(implicit arviointiAsteikot: ArviointiasteikkoRepository) = {
+    eperusteet.findRakenne(diaariNumero)
+      .map(EPerusteetTutkintoRakenne.convertRakenne)
+  }
+}

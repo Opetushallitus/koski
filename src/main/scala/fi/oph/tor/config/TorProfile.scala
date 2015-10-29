@@ -3,6 +3,7 @@ package fi.oph.tor.config
 import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.tor.arvosana.ArviointiasteikkoRepository
 import fi.oph.tor.db._
+import fi.oph.tor.eperusteet.EPerusteetRepository
 import fi.oph.tor.tutkinto.TutkintoRepository
 import fi.oph.tor.oppija.OppijaRepository
 import fi.oph.tor.oppilaitos.OppilaitosRepository
@@ -26,7 +27,7 @@ trait TorProfile {
   lazy val directoryClient: DirectoryClient = Authentication.directoryClient(config)
   lazy val config: Config = ConfigFactory.load
   lazy val oppijaRepository = OppijaRepository(config)
-  lazy val tutkintoRepository = TutkintoRepository(config)
+  lazy val tutkintoRepository = new TutkintoRepository(EPerusteetRepository.apply(config))
   lazy val oppilaitosRepository = new OppilaitosRepository
   lazy val arviointiAsteikot = ArviointiasteikkoRepository(config)
   def opintoOikeusRepository: OpintoOikeusRepository

@@ -1,0 +1,349 @@
+{
+  "data" : [ {
+    "id" : 612,
+    "nimi" : {
+      "fi" : "Autoalan perustutkinto",
+      "sv" : "Grundexamen inom bilbranschen",
+      "_id" : "285308"
+    },
+    "koulutustyyppi" : "koulutustyyppi_1",
+    "koulutukset" : [ {
+      "nimi" : {
+        "fi" : "Autoalan perustutkinto",
+        "sv" : "Grundexamen inom bilbranschen",
+        "en" : "Vehicle Technology, VQ",
+        "_id" : "285307"
+      },
+      "koulutuskoodiArvo" : "351301",
+      "koulutuskoodiUri" : "koulutus_351301",
+      "koulutusalakoodi" : "koulutusalaoph2002_5",
+      "opintoalakoodi" : "opintoalaoph2002_509"
+    } ],
+    "kielet" : [ "sv", "fi" ],
+    "kuvaus" : {
+      "fi" : "Autoalan toimintaympäristö on kansainvälinen ja verkostoitunut. Alalla tarvitaan monenlaisia ja monipuolisia osaajia.\nAsiakaslähtöisyys ja palvelun laadun merkitys korostuu kaikissa tehtävissä. Edellytyksinä ovat alan monipuolinen osaaminen, teknisten taitojen soveltaminen sekä hyvät asiakaspalvelu- ja yhteistyötaidot. Haasteina ovat uuden tekniikan jatkuva seuraaminen ja soveltaminen sekä materiaalien uudelleenkäyttö.",
+      "sv" : "Arbetsmiljön i bilbranschen är internationell och organiserad i nätverk. Det behövs personer med mångsidiga kunskaper av olika typ. Kundinriktning och servicekvalitet är viktigt i alla arbetsuppgifter. Framgång förutsätter mångsidig kännedom om branschen, förmåga att tillämpa tekniska färdigheter samt goda kundbetjänings- och samarbetsfärdigheter. Utmaningar är den kontinuerliga tekniska utvecklingen inom branschen samt återvinning och återanvändning av material.",
+      "_id" : "735380"
+    },
+    "diaarinumero" : "39/011/2014",
+    "voimassaoloAlkaa" : 1438376400000,
+    "siirtymaPaattyy" : null,
+    "voimassaoloLoppuu" : null,
+    "paatospvm" : null,
+    "muokattu" : 1445855704209,
+    "tila" : "valmis",
+    "tyyppi" : "normaali",
+    "korvattavatDiaarinumerot" : [ "30/011/2009" ],
+    "osaamisalat" : [ {
+      "nimi" : {
+        "fi" : "Automyynnin osaamisala",
+        "sv" : "Kompetensområdet för bilförsäljning",
+        "_id" : "614936"
+      },
+      "arvo" : "1527",
+      "uri" : "osaamisala_1527"
+    }, {
+      "nimi" : {
+        "fi" : "Moottorikäyttöisten pienkoneiden korjauksen osaamisala",
+        "sv" : "Kompetensområde för reparation av motordrivna småmaskiner",
+        "_id" : "614939"
+      },
+      "arvo" : "1622",
+      "uri" : "osaamisala_1622"
+    }, {
+      "nimi" : {
+        "fi" : "Automaalauksen osaamisala",
+        "sv" : "Kompetensområdet för billackering",
+        "_id" : "614935"
+      },
+      "arvo" : "1526",
+      "uri" : "osaamisala_1526"
+    }, {
+      "nimi" : {
+        "fi" : "Varaosamyynnin osaamisala",
+        "sv" : "Kompetensområdet för reservdelsförsäljning",
+        "_id" : "614938"
+      },
+      "arvo" : "1529",
+      "uri" : "osaamisala_1529"
+    }, {
+      "nimi" : {
+        "fi" : "Autokorinkorjauksen osaamisala",
+        "sv" : "Kompetensområdet för bilplåtslagning",
+        "_id" : "614934"
+      },
+      "arvo" : "1525",
+      "uri" : "osaamisala_1525"
+    }, {
+      "nimi" : {
+        "fi" : "Autotekniikan osaamisala",
+        "sv" : "Kompetensområdet för bilteknik",
+        "_id" : "614937"
+      },
+      "arvo" : "1528",
+      "uri" : "osaamisala_1528"
+    } ],
+    "suoritustavat" : [ {
+      "suoritustapakoodi" : "ops",
+      "laajuusYksikko" : "OSAAMISPISTE"
+    }, {
+      "suoritustapakoodi" : "naytto",
+      "laajuusYksikko" : "OSAAMISPISTE"
+    } ]
+  }, {
+    "id" : 1013059,
+    "nimi" : {
+      "fi" : "Autoalan työnjohdon erikoisammattitutkinto",
+      "sv" : "Specialyrkesexamen för arbetsledning inom bilbranschen",
+      "_id" : "1116965"
+    },
+    "koulutustyyppi" : "koulutustyyppi_12",
+    "koulutukset" : [ {
+      "nimi" : {
+        "fi" : "Autoalan työnjohdon erikoisammattitutkinto",
+        "sv" : "Specialyrkesexamen för arbetsledning inom bilbranschen",
+        "en" : "Supervisor Vehicle Tech., SQ",
+        "_id" : "1116963"
+      },
+      "koulutuskoodiArvo" : "357305",
+      "koulutuskoodiUri" : "koulutus_357305",
+      "koulutusalakoodi" : "koulutusalaoph2002_5",
+      "opintoalakoodi" : "opintoalaoph2002_509"
+    } ],
+    "kielet" : [ "fi" ],
+    "kuvaus" : {
+      "fi" : "<p>Tutkinnon suorittanut hallitsee joko auto- tai varaosamyyjän ammattitutkinnossa vaadittavan ammatillisen osaamisen tai vastaavat tiedot ja taidot, osaa käyttää työssään hyväksi uusinta teknologiaa monipuolisesti, ymmärtää työsuojelun, ergonomian ja ympäristönsuojelun vaikutuksen yrityksen toimintaan ja tuottavuuteen, tuntee yrityksessään käytössä olevan laatujärjestelmän ja osaa kehittää omaa ja yksikkönsä toimintaa sen mukaisesti, tuntee asiakassuuntaisen markkinoinnin sekä auto- ja varaosamyyjän markkinointiin liittyvät tehtävät, pystyy suunnittelemaan myyntikampanjoita, hankkimaan uusia asiakkaita ja tunnistamaan erikoisasiakasryhmien tarpeita, hallitsee myynnin suunnittelun ja raportoinnin tehtävät ja pystyy laatimaan tarvittavia asiakirjoja, pystyy itsenäisesti hoitamaan vaativia asiakas- ja viranomaistilanteita, selviytyy yhdellä vieraalla kielellä yleisimmistä asiakaspalvelun, myynnin ja neuvottelujen tilanteista, ymmärtää ihmisten johtamisen merkityksen organisaation kilpailutekijänä, edistää aktiivisesti yrityksen yhteistoiminnallisuutta, osaa suunnitella, toteuttaa ja arvioida perehdyttämis- ja työnopastustoimintaa, pystyy osallistumaan yksikkönsä henkilöstön kehityssuunnitelman laadintaan, tuntee työlainsäädännön periaatteita sekä alan työmarkkinakäytännön ja työehtosopimukset, osaa tulkita ja analysoida organisaationsa tasetta, tuloslaskelmaa ja talouden tunnuslukuja, tuntee eri rahoitusvaihtoehdot sekä ajoneuvojen ja/tai koneiden varusteluun liittyvän lainsäädännön, hallitsee valitsemansa osaamisalan tiedot ja taidot.</p>\n\n<p>Tutkinnon suorittaneet voivat työskennellä joko auto- tai työkonemyyntiin tai varaosa- ja tarvikepalveluun liittyvissä, alan erikoisosaamista vaativissa tehtävissä.</p>\n\n<p> </p>",
+      "_id" : "1116964"
+    },
+    "diaarinumero" : "40/011/2001",
+    "voimassaoloAlkaa" : 993934800000,
+    "siirtymaPaattyy" : null,
+    "voimassaoloLoppuu" : null,
+    "paatospvm" : null,
+    "muokattu" : 1433152317493,
+    "tila" : "valmis",
+    "tyyppi" : "normaali",
+    "korvattavatDiaarinumerot" : [ ],
+    "osaamisalat" : [ ],
+    "suoritustavat" : [ {
+      "suoritustapakoodi" : "naytto",
+      "laajuusYksikko" : null
+    } ]
+  }, {
+    "id" : 845880,
+    "nimi" : {
+      "fi" : "Auto- ja kuljetusalan työnjohdon ammattitutkinto",
+      "sv" : "Yrkesexamen för arbetsledning inom bil- och transportbranschen",
+      "_id" : "1188251"
+    },
+    "koulutustyyppi" : "koulutustyyppi_11",
+    "koulutukset" : [ {
+      "nimi" : {
+        "fi" : "Auto- ja kuljetusalan työnjohdon ammattitutkinto",
+        "sv" : "Yrkesexamen för arbetsledning inom bil- och transportbranschen",
+        "_id" : "1188250"
+      },
+      "koulutuskoodiArvo" : "354315",
+      "koulutuskoodiUri" : "koulutus_354315",
+      "koulutusalakoodi" : "koulutusalaoph2002_5",
+      "opintoalakoodi" : "opintoalaoph2002_509"
+    } ],
+    "kielet" : [ "fi" ],
+    "kuvaus" : {
+      "fi" : "<p><em>Auto- ja kuljetusalan työnjohdon ammattitutkinnon, autoalan työnjohtajan osaamisalan</em>, suorittaneella on autoalan työnjohdollisessa tehtävässä edellytettävä ammattitaito. Tutkinnon suorittanut osaa toimia työnjohtajana itsenäisesti ottamalla huomioon työssään autoalaa säätelevät lait, asetukset ja määräykset. Työnjohtajana toimiessaan hän noudattaa hyvän esimiestyön ja johtamisen periaatteita. Hän osaa suunnitella ja organisoida oman vastuualueensa toimintaa ja resursseja laadukkaasti ja kustannustehokkaasti ja ottaa huomioon työturvallisuuden, riskienhallinnan ja inhimilliset tekijät. Tutkinnon suorittaneella on kokonaisnäkemys autoalasta ja sen mahdollisuuksista sekä omasta työnjohdollisesta roolistaan autoalan asiakaslähtöisten palvelujen toteuttajana.</p>\n\n<p>Tutkinnon suorittaja voi suunnata osaamistaan Autoalan työnjohtajana toimiminen ja Asiakaspalvelutoimintojen suunnittelu ja organisointi -tutkinnon osien lisäksi Ajoneuvokorjaamon toimintojen organisointiin tai Ajoneuvo- tai varaosamyynnin toimintojen organisointiin, Varasto- tai terminaalitoimintojen organisointiin tai omaan vastuualueeseen tai yritykseen keskeisesti kytkeytyvän Kehitystehtävän suunnitteluun. Tutkinnon suorittanut osaa toimia autoalalla työnjohdollisessa tehtävässä kehittäen omia esimiestaitojaan. Valintojensa mukaisesti hän osaa suunnitella ja organisoida asiakaspalvelutoimintoja, organisoida ajoneuvokorjaamon tai ajoneuvo- tai varaosamyyntiä tai suunnitella toimintaa kehittävän kehitystehtävän.</p>\n\n<p><em>Auto- ja kuljetusalan työnjohdon ammattitutkinnon, kuljetusalan työnjohtajan osaamisalan</em>, suorittaneella on kuljetusalan työnjohdollisissa tehtävissä edellytettävä ammattitaito. Tutkinnon suorittanut osaa toimia työnjohtajana itsenäisesti ottamalla huomioon työssään kuljetusalaa säätelevät lait, asetukset ja määräykset. Työnjohtajana toimiessaan hän noudattaa hyvän esimiestyön ja johtamisen periaatteita. Hän osaa suunnitella ja organisoida oman vastuualueensa kuljetustoimintoja ja resursseja laadukkaasti ja kustannustehokkaasti ja ottaa huomioon työturvallisuuden, riskienhallinnan ja inhimilliset tekijät. Tutkinnon suorittaneella on kokonaisnäkemys kuljetusalasta ja sen mahdollisuuksista sekä omasta työnjohdollisesta roolistaan kuljetusalan asiakaslähtöisten palvelujen toteuttajana.</p>\n\n<p>Tutkinnon suorittaja voi suunnata osaamistaan pakollisten tutkinnon osien Kuljetusalan työnjohtajana toimiminen ja Kuljetustoimintojen suunnittelu ja organisointi lisäksi Ajoneuvokorjaamon toimintojen organisointiin tai Varasto- tai terminaalitoimintojen organisointiin tai omaan vastuualueeseen tai yritykseen keskeisesti kytkeytyvän Kehitystehtävän suunnitteluun. Valintojensa mukaisesti tutkinnon suorittanut osaa toimia kuljetusalalla työnjohdollisessa tehtävässä kehittäen omia esimiestaitojaan ja oman vastuualueensa toimintoja. Hän osaa suunnitella ja organisoida kuljetustoimintoja sekä organisoida ajoneuvokorjaamo- tai varasto- tai terminaalitoimintoja tai suunnitella toimintaa kehittävän kehitystehtävän.</p>\n\n<p>Auto- ja kuljetusalan työnjohdon ammattitutkinnon, autoalan työnjohtajan osaamisalan, suorittanut voi toimia työntekijänä, toimihenkilönä, yrittäjänä tai itsenäisenä ammatinharjoittajana autoalan organisaatioissa ja yrityksissä. Tutkinnon suorittanut voi toimia työnjohtajana, hallityönjohtajana, myynnin työnjohtajana, varaosamyynnin työnjohtajana, tiiminvetäjänä, huoltoneuvojana tai autoalan asiantuntija-, suunnittelu- ja kehitystehtävissä.</p>\n\n<p>Auto- ja kuljetusalan työnjohdon ammattitutkinnon, kuljetusalan työnjohtajan osaamisalan, suorittanut voi toimia työntekijänä, toimihenkilönä, yrittäjänä tai itsenäisenä ammatinharjoittajana kuljetusalan organisaatioissa ja yrityksissä. Tutkinnon suorittanut voi toimia työnjohtajana, kuljetussuunnittelijana, liikenne-esimiehenä, ajojärjestelijänä, vuorovalvojana, tiiminvetäjänä tai kuljetusalan asiantuntija-, suunnittelu- ja kehitystehtävissä.</p>",
+      "_id" : "1190528"
+    },
+    "diaarinumero" : "30/011/2015",
+    "voimassaoloAlkaa" : 1438376400000,
+    "siirtymaPaattyy" : null,
+    "voimassaoloLoppuu" : null,
+    "paatospvm" : null,
+    "muokattu" : 1444297612212,
+    "tila" : "valmis",
+    "tyyppi" : "normaali",
+    "korvattavatDiaarinumerot" : [ ],
+    "osaamisalat" : [ {
+      "nimi" : {
+        "fi" : "Autoalan työnjohtaja",
+        "_id" : "1189333"
+      },
+      "arvo" : "3067",
+      "uri" : "osaamisala_3067"
+    }, {
+      "nimi" : {
+        "fi" : "Kuljetusalan työnjohtaja",
+        "_id" : "1189334"
+      },
+      "arvo" : "3068",
+      "uri" : "osaamisala_3068"
+    } ],
+    "suoritustavat" : [ {
+      "suoritustapakoodi" : "naytto",
+      "laajuusYksikko" : "OSAAMISPISTE"
+    } ]
+  }, {
+    "id" : 515490,
+    "nimi" : {
+      "fi" : "Automaatioasentajan ammattitutkinto",
+      "sv" : "Yrkesexamen för automationsmontör",
+      "_id" : "995247"
+    },
+    "koulutustyyppi" : "koulutustyyppi_11",
+    "koulutukset" : [ {
+      "nimi" : {
+        "fi" : "Automaatioasentajan ammattitutkinto",
+        "sv" : "Yrkesexamen för automationsmontör",
+        "en" : "Automation Assembler, FQ",
+        "_id" : "995246"
+      },
+      "koulutuskoodiArvo" : "354401",
+      "koulutuskoodiUri" : "koulutus_354401",
+      "koulutusalakoodi" : "koulutusalaoph2002_5",
+      "opintoalakoodi" : "opintoalaoph2002_503"
+    } ],
+    "kielet" : [ "fi" ],
+    "kuvaus" : {
+      "fi" : "<p>Tutkinnon suorittanut osaa valintojen mukaan tehdä prosessi- tai kappaletavara- tai rakennusautomaatioon liittyvät automaatioalan asennus-, käyttöönotto-, korjaus- ja huoltotyöt itsenäisesti ja työryhmän jäsenenä voimassaolevien määräysten ja ohjeiden mukaisesti sekä suunnitella oman työnsä. Hän hallitsee tehtäviin liittyvien materiaalien ja työvälineiden käytön ja käsittelyn sekä oikeat työmenetelmät ja ottaa toiminnassaan huomioon energiatehokkuuden ja kokonaistaloudellisuuden. Hän hallitsee vianetsinnän ja osaa hyödyntää vianetsintään sekä kunnossapitojärjestelmään liittyviä ohjelmia. Hän kykenee hyödyntämään tieto- ja viestintätekniikkaa tiedon hankinnassa sekä osaa käyttää yleisiä toimisto-ohjelmia ja työtehtävien edellyttämiä muita ohjelmia. Hän osaa tehdä käyttöönotot yhteistyössä käyttöhenkilökunnan kanssa ja antaa käytönopastuksen, sekä tehdä tarvittavat dokumentit. Hän hallitsee työnaikaisen työ- ja sähkötyöturvallisuuden ja osaa tarkastaa työnsä niin, että automaatioasennuksen lopputulos on toimiva, turvallinen ja tarkoituksenmukainen prosessin luotettavan toiminnan kannalta. Hän on suorittanut sähköturvallisuustutkinnon (ST3).</p>",
+      "_id" : "995245"
+    },
+    "diaarinumero" : "3/011/2013",
+    "voimassaoloAlkaa" : 1370034000000,
+    "siirtymaPaattyy" : null,
+    "voimassaoloLoppuu" : null,
+    "paatospvm" : null,
+    "muokattu" : 1439547687945,
+    "tila" : "valmis",
+    "tyyppi" : "normaali",
+    "korvattavatDiaarinumerot" : [ "45/011/2003" ],
+    "osaamisalat" : [ ],
+    "suoritustavat" : [ {
+      "suoritustapakoodi" : "naytto",
+      "laajuusYksikko" : null
+    } ]
+  }, {
+    "id" : 515491,
+    "nimi" : {
+      "fi" : "Automaatioyliasentajan erikoisammattitutkinto",
+      "sv" : "Specialyrkesexamen för automationsövermontör",
+      "_id" : "1152221"
+    },
+    "koulutustyyppi" : "koulutustyyppi_12",
+    "koulutukset" : [ {
+      "nimi" : {
+        "fi" : "Automaatioyliasentajan erikoisammattitutkinto",
+        "sv" : "Specialyrkesexamen för automationsövermontör",
+        "en" : "Automation Assembler, SQ",
+        "_id" : "1152220"
+      },
+      "koulutuskoodiArvo" : "357401",
+      "koulutuskoodiUri" : "koulutus_357401",
+      "koulutusalakoodi" : "koulutusalaoph2002_5",
+      "opintoalakoodi" : "opintoalaoph2002_503"
+    } ],
+    "kielet" : [ "fi" ],
+    "kuvaus" : {
+      "fi" : "<p>Tutkinnon suorittanut hallitsee automaatiojärjestelmän rakenteet, logiikkaohjelmoinnin, väylätekniikan, käyttöliittymät, sähkömoottorit ja moottorikäytöt, sähkön jakelujärjestelmät, sähkötekniikan ja mekaniikka-asennukset. Hän tekee sähkötyöt määräysten mukaisesti sekä huolehtii työskentelyn ja loppukäyttäjän turvallisuudesta. Hänellä on sähköturvallisuustutkinto (ST2). Hän hallitsee automaatiojärjestelmän käyttöönotot ja huoltotoiminnan mittauksineen ja dokumentointeineen tai työnjohdon (aikataulutus, henkilöresurssointi, riskit, kustannukset, tulosvastuu, laadunvarmistus, sopimusten teko, johtaminen, tuotannonohjaus). Hän osaa perehdyttää ja opastaa työhön. Lisäksi hän hallitsee yhden seuraavista alueista: kappaletavara-automaatio, prosessiautomaatio, rakennusautomaatio tai CNC -tekniikka.</p>\n\n<p>Tutkinnon suorittanut voi työskennellä automaatioasentajana valitsemansa erityisalan vaativissa tehtävissä.</p>",
+      "_id" : "1153418"
+    },
+    "diaarinumero" : "9/011/2008",
+    "voimassaoloAlkaa" : 1205791200000,
+    "siirtymaPaattyy" : null,
+    "voimassaoloLoppuu" : null,
+    "paatospvm" : null,
+    "muokattu" : 1439546836844,
+    "tila" : "valmis",
+    "tyyppi" : "normaali",
+    "korvattavatDiaarinumerot" : [ "34/011/1994" ],
+    "osaamisalat" : [ ],
+    "suoritustavat" : [ {
+      "suoritustapakoodi" : "naytto",
+      "laajuusYksikko" : null
+    } ]
+  }, {
+    "id" : 682587,
+    "nimi" : {
+      "fi" : "Puutavaran autokuljetuksen ammattitutkinto",
+      "sv" : "Yrkesexamen i biltransport av trävaror",
+      "_id" : "1304306"
+    },
+    "koulutustyyppi" : "koulutustyyppi_11",
+    "koulutukset" : [ {
+      "nimi" : {
+        "fi" : "Puutavaran autokuljetuksen ammattitutkinto",
+        "sv" : "Yrkesexamen i biltransport av trävaror",
+        "en" : "Timber Lorry Transport, FQ",
+        "_id" : "1304305"
+      },
+      "koulutuskoodiArvo" : "364307",
+      "koulutuskoodiUri" : "koulutus_364307",
+      "koulutusalakoodi" : "koulutusalaoph2002_5",
+      "opintoalakoodi" : "opintoalaoph2002_509"
+    } ],
+    "kielet" : [ "fi" ],
+    "kuvaus" : {
+      "fi" : "<p>Puutavaran autokuljetuksen ammattitutkinnon suorittanut tuntee puutavara-ajoneuvojen rakenteet, ominaisuudet ja käyttötarkoitukset sekä niiden hallinta- ja lisälaitteet, huolehtii ajoneuvon kunnosta, kunnostuksesta ja korjauksista sekä huomioi työturvallisuuden ja noudattaa ympäristö- ja laatuvaatimuksia työssään. Hän osaa tarkistaa ajoneuvoyhdistelmän ajokelpoisuuden ja kuljettaa puutavara-ajoneuvoa turvallisesti ja taloudellisesti, osaa kuormata puutavaraa nosturilla tehokkaasti, turvallisesti ja oikein sekä hallitsee asiakaspalvelun ja tietää hyvän yhteistyön merkityksen toiminnalle. Hän hallitsee puutavaran paikantamisjärjestelmiä sekä tunnistaa puutavaralajeja, osaa varastoida ja mitata puutavaraa sekä tehdä vastaanottotoiminnot. Tutkinnon suorittanut hallitsee työaikoihin, kuormaukseen, työturvallisuuteen ja terveyteen liittyvät lait, määräykset ja ohjeet, osaa tehdä työaikoihin liittyvän dokumentoinnin oikein, tuntee ajoneuvon tekniikan ja osaa hallita ajoneuvot ja tietää alan riskit ja vaatimukset. Hän on suorittanut kuljetusalan ammattipätevyyden kuorma- ja linja-autonkuljettajia koskevan lain ja asetuksen mukaisesti, tietää yrityksen perustamisen ja yrittäjyyden vaatimukset ja toimenpiteet ja saa liikenneluvan suoritettuaan yrittäjyyskurssin.</p>\n\n<p>Tutkinnon suorittajat voivat työskennellä puutavara-auton kuljettajina toisen palveluksessa tai itsenäisinä kuljetusalan yrittäjinä.</p>",
+      "_id" : "1304304"
+    },
+    "diaarinumero" : "27/011/2008",
+    "voimassaoloAlkaa" : 1222808400000,
+    "siirtymaPaattyy" : null,
+    "voimassaoloLoppuu" : null,
+    "paatospvm" : 1219611600000,
+    "muokattu" : 1441885653510,
+    "tila" : "valmis",
+    "tyyppi" : "normaali",
+    "korvattavatDiaarinumerot" : [ ],
+    "osaamisalat" : [ ],
+    "suoritustavat" : [ {
+      "suoritustapakoodi" : "naytto",
+      "laajuusYksikko" : null
+    } ]
+  }, {
+    "id" : 133952,
+    "nimi" : {
+      "fi" : "Sähkö- ja automaatiotekniikan perustutkinto",
+      "sv" : "Grundexamen inom el- och automationsteknik",
+      "_id" : "293211"
+    },
+    "koulutustyyppi" : "koulutustyyppi_1",
+    "koulutukset" : [ {
+      "nimi" : {
+        "fi" : "Sähkö- ja automaatiotekniikan perustutkinto",
+        "sv" : "Grundexamen inom el- och automationsteknik",
+        "en" : "Electrical and Autom. Eng., VQ",
+        "_id" : "293210"
+      },
+      "koulutuskoodiArvo" : "351407",
+      "koulutuskoodiUri" : "koulutus_351407",
+      "koulutusalakoodi" : "koulutusalaoph2002_5",
+      "opintoalakoodi" : "opintoalaoph2002_503"
+    } ],
+    "kielet" : [ "sv", "fi" ],
+    "kuvaus" : {
+      "fi" : "Sähköalan ammattilaisia tarvitaan sähkön tuottamisen, jakelun ja siirron, sähköistyksen sekä sähköasennusten, korjauksen ja huollon sekä automaation ja kunnossapidon ammattitehtävissä. Sähkö- ja automaatioalan ammattilainen asentaa ja huoltaa kiinteistöjen ja laitosten sähkö- ja automaatiojärjestelmiä tai sähköjakeluverkkoja.",
+      "sv" : "Yrkeskunniga inom elbranschen arbetar med produktion, distribuering och överföring av elektricitet, elektrifiering, elinstallationer, reparation och service samt inom automation och underhåll. De som arbetar inom el- och automationsbranschen installerar och underhåller el- och automationssystem eller eldistributionsnät i fastigheter och anläggningar.",
+      "_id" : "738948"
+    },
+    "diaarinumero" : "77/011/2014",
+    "voimassaoloAlkaa" : 1438376400000,
+    "siirtymaPaattyy" : null,
+    "voimassaoloLoppuu" : null,
+    "paatospvm" : null,
+    "muokattu" : 1445855704208,
+    "tila" : "valmis",
+    "tyyppi" : "normaali",
+    "korvattavatDiaarinumerot" : [ "23/011/2009" ],
+    "osaamisalat" : [ ],
+    "suoritustavat" : [ {
+      "suoritustapakoodi" : "naytto",
+      "laajuusYksikko" : "OSAAMISPISTE"
+    }, {
+      "suoritustapakoodi" : "ops",
+      "laajuusYksikko" : "OSAAMISPISTE"
+    } ]
+  } ],
+  "sivuja" : 1,
+  "kokonaismäärä" : 7,
+  "sivukoko" : 25,
+  "sivu" : 0
+}

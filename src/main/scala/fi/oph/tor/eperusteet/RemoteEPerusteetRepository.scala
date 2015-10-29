@@ -2,7 +2,7 @@ package fi.oph.tor.eperusteet
 
 import fi.oph.tor.http.Http
 
-class EPerusteetClient(ePerusteetRoot: String) {
+class RemoteEPerusteetRepository(ePerusteetRoot: String) extends EPerusteetRepository {
   private val http: Http = Http()
 
   def findPerusteet(query: String): EPerusteet = {
@@ -14,6 +14,7 @@ class EPerusteetClient(ePerusteetRoot: String) {
   }
 
   def findRakenne(diaariNumero: String): Option[EPerusteRakenne] = {
-    http(ePerusteetRoot + s"/api/perusteet/diaari?diaarinumero=$diaariNumero")(Http.parseJsonOptional[EPerusteTunniste]).map(e => http(ePerusteetRoot + "/api/perusteet/" + e.id + "/kaikki")(Http.parseJson[EPerusteRakenne]))
+    http(ePerusteetRoot + s"/api/perusteet/diaari?diaarinumero=$diaariNumero")(Http.parseJsonOptional[EPerusteTunniste])
+      .map(e => http(ePerusteetRoot + "/api/perusteet/" + e.id + "/kaikki")(Http.parseJson[EPerusteRakenne]))
   }
 }
