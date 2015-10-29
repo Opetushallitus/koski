@@ -12,6 +12,7 @@
   </organization>
   <properties>
       <scala.version>2.11.4</scala.version>
+      <slick.version>3.1.0</slick.version>
   </properties>
   <dependencies>
     <!-- OPH internal deps -->
@@ -49,12 +50,7 @@
     <dependency>
       <groupId>com.typesafe.slick</groupId>
       <artifactId>slick_2.11</artifactId>
-      <version>3.0.1</version>
-    </dependency>
-    <dependency>
-      <groupId>com.typesafe.slick</groupId>
-      <artifactId>slick-codegen_2.11</artifactId>
-      <version>3.0.1</version>
+      <version>${slick.version}</version>
     </dependency>
     <dependency>
       <groupId>com.github.tminglei</groupId>

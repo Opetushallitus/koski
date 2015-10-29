@@ -5,7 +5,7 @@ import fi.oph.tor.db.PostgresDriverWithJsonSupport.jsonMethods._
 
 import fi.oph.tor.db.TorDatabase.DB
 import fi.oph.tor.db._
-import fi.oph.tor.http.{HttpStatus, HttpStatus$}
+import fi.oph.tor.http.{HttpStatus}
 import fi.oph.tor.json.Json
 import fi.oph.tor.oppija.Oppija
 import fi.oph.tor.user.UserContext
@@ -14,7 +14,7 @@ import org.json4s._
 class PostgresOpintoOikeusRepository(db: DB) extends OpintoOikeusRepository with Futures with GlobalExecutionContext {
   protected class OpintoOikeusTable(tag: Tag) extends Table[OpintoOikeusRow](tag, "opintooikeus") {
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
-    val oppijaOid: Rep[String] = column[String]("oppija_oid", O.NotNull)
+    val oppijaOid: Rep[String] = column[String]("oppija_oid")
     def data = column[JValue]("data")
 
     def * = (id, oppijaOid, data) <> (OpintoOikeusRow.tupled, OpintoOikeusRow.unapply)
