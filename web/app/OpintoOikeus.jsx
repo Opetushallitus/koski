@@ -28,8 +28,6 @@ export const OpintoOikeus = React.createClass({
                 </label>
               { opintoOikeus.suoritustapa
                 ? <Rakenneosa
-                    selectedTutkinnonOsa={this.state.selectedTutkinnonOsa}
-                    tutkinnonOsaBus={this.state.tutkinnonOsaBus}
                     rakenneosa={opintoOikeus.tutkinto.rakenne.suoritustavat.find(x => x.suoritustapa.koodi == opintoOikeus.suoritustapa).rakenne}
                     opintoOikeus={opintoOikeus}
                   />
@@ -40,33 +38,21 @@ export const OpintoOikeus = React.createClass({
         }
       </div>
     )
-  },
-  getInitialState() {
-      return {
-        tutkinnonOsaBus: Bacon.Bus(),
-        selectedTutkinnonOsa: undefined
-      }
-  },
-  componentDidMount() {
-      this.state.tutkinnonOsaBus
-          .onValue(tutkinnonOsa => {
-            this.setState({selectedTutkinnonOsa: tutkinnonOsa})
-          })
   }
 })
 
 const Rakenneosa = React.createClass({
   render() {
-    let { rakenneosa, opintoOikeus, selectedTutkinnonOsa, tutkinnonOsaBus } = this.props
+    let { rakenneosa, opintoOikeus } = this.props
     return rakenneosa.osat
-      ? <RakenneModuuli key={rakenneosa.nimi} opintoOikeus={opintoOikeus} rakenneosa={rakenneosa} selectedTutkinnonOsa={selectedTutkinnonOsa} tutkinnonOsaBus={tutkinnonOsaBus}/>
-      : <TutkinnonOsa key={rakenneosa.nimi} opintoOikeus={opintoOikeus} tutkinnonOsa={rakenneosa} selectedTutkinnonOsa={selectedTutkinnonOsa} tutkinnonOsaBus={tutkinnonOsaBus}/>
+      ? <RakenneModuuli key={rakenneosa.nimi} opintoOikeus={opintoOikeus} rakenneosa={rakenneosa} />
+      : <TutkinnonOsa key={rakenneosa.nimi} opintoOikeus={opintoOikeus} tutkinnonOsa={rakenneosa} />
   }
 })
 
 const RakenneModuuli = React.createClass({
   render() {
-    const { rakenneosa, opintoOikeus, selectedTutkinnonOsa, tutkinnonOsaBus } = this.props
+    const { rakenneosa, opintoOikeus } = this.props
     return (
       <div className="rakenne-moduuli">
         <span className="name">{rakenneosa.nimi}</span>
@@ -77,8 +63,7 @@ const RakenneModuuli = React.createClass({
               <Rakenneosa
                 rakenneosa={osa}
                 opintoOikeus={opintoOikeus}
-                selectedTutkinnonOsa={selectedTutkinnonOsa}
-                tutkinnonOsaBus={tutkinnonOsaBus}/>
+              />
             </li>)
           }
         </ul>
@@ -89,25 +74,26 @@ const RakenneModuuli = React.createClass({
 
 const TutkinnonOsa = React.createClass({
   render() {
-    const {tutkinnonOsa, opintoOikeus, selectedTutkinnonOsa, tutkinnonOsaBus} = this.props
-    const selected = selectedTutkinnonOsa && tutkinnonOsa.nimi === selectedTutkinnonOsa.nimi
+    const {tutkinnonOsa, opintoOikeus} = this.props
     const arviointiAsteikko = R.find(asteikko => R.equals(asteikko.koodisto, tutkinnonOsa.arviointiAsteikko))(opintoOikeus.tutkinto.rakenne.arviointiAsteikot)
     const arvosanat = arviointiAsteikko ? arviointiAsteikko.arvosanat : undefined
+
     const addArvosana = (arvosana) => (oOikeus) => {
       let suoritukset = oOikeus.suoritukset.concat({ koulutusModuuli: tutkinnonOsa.tunniste, arviointi: { asteikko: tutkinnonOsa.arviointiAsteikko, arvosana: arvosana }})
       return R.merge(oOikeus, { suoritukset })
     }
+
     const saveArvosana = (arvosana) => {
       opintoOikeusChange.push([opintoOikeus.id, addArvosana(arvosana)])
-      tutkinnonOsaBus.push(undefined) // <- deselect
     }
+
     const suoritus = R.find(osanSuoritus => R.equals(osanSuoritus.koulutusModuuli, tutkinnonOsa.tunniste))(opintoOikeus.suoritukset)
     const arviointi = suoritus && suoritus.arviointi
 
     return (
-      <div className={ arviointi ? 'tutkinnon-osa suoritettu' : (selected ? 'tutkinnon-osa selected' : 'tutkinnon-osa')} onClick={() => {if (!selected) tutkinnonOsaBus.push(tutkinnonOsa)}}>
+      <div className={ arviointi ? 'tutkinnon-osa suoritettu' : 'tutkinnon-osa'}>
         <span className="name">{tutkinnonOsa.nimi}</span>
-        { selected && arvosanat && !arviointi
+        { arvosanat && !arviointi
           ?
             <div className="arviointi edit">
               <ul className="arvosanat">{

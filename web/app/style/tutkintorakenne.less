@@ -22,13 +22,12 @@
     }
 
     &:hover:not(.suoritettu) {
+      color: black;
       background-color: white;
       cursor: pointer;
-    }
-
-    &.selected {
-      background-color: white;
-      color: black;
+      .arviointi.edit {
+        display: block;
+      }
     }
   }
 
@@ -38,6 +37,7 @@
 
     &.edit {
       background-color: @color-darkgray;
+      display: none;
     }
 
     button {

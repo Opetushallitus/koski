@@ -12,7 +12,7 @@ function OpinnotPage() {
       return S('.opintooikeus .oppilaitos').text()
     },
     getTutkinnonOsat: function() {
-      return textsOf(tutkinnonOsa())
+      return textsOf(tutkinnonOsa().find('.name'))
     },
     getTutkinnonOsa: function(nimi) {
       return TutkinnonOsa(nimi)
@@ -38,12 +38,11 @@ function TutkinnonOsa(nimi) {
     return S(".tutkinnon-osa .name:contains(" + nimi + ")").parent()
   }
   function saveButton() {
-    return tutkinnonOsaElement().find("button:visible")
+    return tutkinnonOsaElement().find("button")
   }
   api = {
     addArviointi: function(arvosana) {
       return function() {
-        api.click()
         tutkinnonOsaElement().find(".arvosanat li:contains("+arvosana+")").click()
         saveButton().click()
         return wait.forAjax()
@@ -51,12 +50,6 @@ function TutkinnonOsa(nimi) {
     },
     getArvosana: function() {
       return tutkinnonOsaElement().find(".arvosana").text()
-    },
-    click: function() {
-      tutkinnonOsaElement().click()
-    },
-    saveButtonIsVisible: function() {
-      return saveButton().is(":visible")
     }
   }
 
