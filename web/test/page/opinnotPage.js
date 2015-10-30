@@ -22,12 +22,17 @@ function OpinnotPage() {
         return Page(opintoOikeus).setInputValue(".suoritustapa", suoritustapa)().then(wait.forAjax())
       }
     },
+    isSuoritustapaSelectable: function() {
+      return S(".suoritustapa").is(":visible")
+    },
     selectOsaamisala: function(osaamisala) {
       return function() {
         return Page(opintoOikeus).setInputValue(".osaamisala", osaamisala)().then(wait.forAjax())
       }
+    },
+    isOsaamisalaSelectable: function() {
+      return S(".osaamisala").is(":visible")
     }
-
   }
 
   return api

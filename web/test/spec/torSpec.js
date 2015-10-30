@@ -160,15 +160,6 @@ describe('TOR', function() {
       })
     })
 
-
-    describe('Erikoisammattitutkinto', function() {
-      before(addNewOppija('kalle', 'Tunkkila', { etunimet: 'Tero Terde', kutsumanimi: 'Terde', sukunimi: 'Tunkkila', hetu: '091095-9833', oppilaitos: 'Helsingin', tutkinto: 'erikois'}))
-
-      it('Onnistuu', function() {
-
-      })
-    })
-
     describe('Uudelle henkilölle', function() {
       before(prepareForNewOppija('kalle', 'asdf'))
 
@@ -316,12 +307,31 @@ describe('TOR', function() {
 
 
   describe('Tutkinnon rakenne', function() {
-    describe('Kun valitaan osaamisala ja suoritustapa', function() {
-      before(addNewOppija('kalle', 'Tunkkila', { hetu: '091095-9833'}))
-      before(opinnot.selectSuoritustapa("ops"), opinnot.selectOsaamisala("1527"))
+    describe("Ammatillinen perustutkinto", function() {
+      it('Osaamisala- ja suoritustapavalinnat näytetään', function() {
+        expect(opinnot.isSuoritustapaSelectable()).to.equal(true)
+        expect(opinnot.isOsaamisalaSelectable()).to.equal(true)
+      })
+      describe('Kun valitaan osaamisala ja suoritustapa', function() {
+        before(addNewOppija('kalle', 'Tunkkila', { hetu: '091095-9833'}))
+        before(opinnot.selectSuoritustapa("ops"), opinnot.selectOsaamisala("1527"))
+
+        it('Näytetään tutkinnon rakenne', function() {
+          expect(opinnot.getTutkinnonOsat()[0]).to.equal('Myynti ja tuotetuntemus')
+        })
+      })
+    })
+
+    describe('Erikoisammattitutkinto', function() {
+      before(addNewOppija('kalle', 'Tunkkila', { etunimet: 'Tero Terde', kutsumanimi: 'Terde', sukunimi: 'Tunkkila', hetu: '091095-9833', oppilaitos: 'Helsingin', tutkinto: 'erikois'}))
+
+      it('Ei näytetä osaamisala- ja suoritustapavalintoja (koska mitään valittavaa ei ole)', function() {
+        expect(opinnot.isSuoritustapaSelectable()).to.equal(false)
+        expect(opinnot.isOsaamisalaSelectable()).to.equal(false)
+      })
 
       it('Näytetään tutkinnon rakenne', function() {
-        expect(opinnot.getTutkinnonOsat()[0]).to.equal('Myynti ja tuotetuntemus')
+        expect(opinnot.getTutkinnonOsat()[0]).to.equal('Johtaminen ja henkilöstön kehittäminen')
       })
     })
   })
