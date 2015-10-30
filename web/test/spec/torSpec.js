@@ -308,12 +308,12 @@ describe('TOR', function() {
 
   describe('Tutkinnon rakenne', function() {
     describe("Ammatillinen perustutkinto", function() {
+      before(addNewOppija('kalle', 'Tunkkila', { hetu: '091095-9833'}))
       it('Osaamisala- ja suoritustapavalinnat näytetään', function() {
         expect(opinnot.isSuoritustapaSelectable()).to.equal(true)
         expect(opinnot.isOsaamisalaSelectable()).to.equal(true)
       })
       describe('Kun valitaan osaamisala ja suoritustapa', function() {
-        before(addNewOppija('kalle', 'Tunkkila', { hetu: '091095-9833'}))
         before(opinnot.selectSuoritustapa("ops"), opinnot.selectOsaamisala("1527"))
 
         it('Näytetään tutkinnon rakenne', function() {
