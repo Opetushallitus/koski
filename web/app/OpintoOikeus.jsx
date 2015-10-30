@@ -4,12 +4,11 @@ import R from 'ramda'
 
 export const opintoOikeusChange = Bacon.Bus()
 
-const withEmptyValue = (xs) => [{ koodi: '', nimi: 'Valitse...'}].concat(xs)
-
 // Shows <select> if more than 1 option. If 1 option, automatically selects it and shows it. If zero options, hides the whole thing.
 const Dropdown = React.createClass({
   render() {
     let { title, options, value, onChange, className} = this.props
+    let withEmptyValue = (xs) => [{ koodi: '', nimi: 'Valitse...'}].concat(xs)
     let optionElems = opts => withEmptyValue(opts).map(s => <option key={s.koodi} value={s.koodi}>{s.nimi}</option>)
 
     return options.length > 0
