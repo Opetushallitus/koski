@@ -27,7 +27,8 @@ function OpinnotPage() {
     },
     selectOsaamisala: function(osaamisala) {
       return function() {
-        return Page(opintoOikeus).setInputValue(".osaamisala", osaamisala)().then(wait.forAjax())
+        return Page(opintoOikeus).setInputValue(".osaamisala", osaamisala)()
+          .then(wait.forAjax)
       }
     },
     isOsaamisalaSelectable: function() {
