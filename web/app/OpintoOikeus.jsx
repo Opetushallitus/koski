@@ -19,7 +19,7 @@ const Dropdown = React.createClass({
               onChange={(event) => onChange(event.target.value)}>
                 {optionElems(options)}
             </select>
-          }</label>
+          </label>
         : <div></div>
   },
   componentDidMount() {
