@@ -6,9 +6,8 @@ import fi.oph.tor.json.Json
 import fi.oph.tor.opintooikeus._
 import fi.oph.tor.oppija._
 import fi.oph.tor.oppilaitos.OppilaitosRepository
-import fi.oph.tor.tutkinto.{TutkintoRakenne, Suoritustapa, TutkintoRepository}
+import fi.oph.tor.tutkinto.{Suoritustapa, TutkintoRakenne, TutkintoRepository}
 import fi.oph.tor.user.UserContext
-import fi.oph.tor.util.TimedProxy
 
 class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
                                    opintoOikeusRepository: OpintoOikeusRepository,
@@ -30,14 +29,17 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
       HttpStatus.fold(oppija.opintoOikeudet.map(validateOpintoOikeus)) match {
         case error if error.isError => Left(error)
         case _ =>
-          val result = oppijaRepository.findOrCreate(oppija)
-          result.right.flatMap { oppijaOid: String =>
+          val oppijaOid: Either[HttpStatus, PossiblyUnverifiedOppijaOid] = oppija.henkilo.oid match {
+            case Some(oid) => Right(UnverifiedOppijaOid(oid, oppijaRepository))
+            case None => oppijaRepository.findOrCreate(oppija).right.map(VerifiedOppijaOid(_))
+          }
+          oppijaOid.right.flatMap { oppijaOid: PossiblyUnverifiedOppijaOid =>
             val opintoOikeusCreationResults = oppija.opintoOikeudet.map { opintoOikeus =>
               opintoOikeusRepository.createOrUpdate(oppijaOid, opintoOikeus)
             }
             opintoOikeusCreationResults.find(_.isLeft) match {
               case Some(Left(error)) => Left(error)
-              case _ => Right(oppijaOid)
+              case _ => Right(oppijaOid.oppijaOid)
             }
           }
       }
