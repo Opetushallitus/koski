@@ -9,10 +9,15 @@ const withEmptyValue = (xs) => [{ koodi: '', nimi: 'Valitse...'}].concat(xs)
 // Shows <select> if more than 1 option. If 1 option, automatically selects it and shows it. If zero options, hides the whole thing.
 const Dropdown = React.createClass({
   render() {
-    let { title, options, value, onChange} = this.props
+    let { title, options, value, onChange, className} = this.props
     return options.length > 0
-        ? <label><span>{title}</span>{ options.length > 1
-            ? <select className="suoritustapa" value={value} onChange={(event) => onChange(event.target.value)}> {withEmptyValue(options).map(s => <option key={s.koodi} value={s.koodi}>{s.nimi}</option>)} </select>
+        ? <label>{title} { options.length > 1
+            ? <select
+                className={className}
+                value={value}
+                onChange={(event) => onChange(event.target.value)}>
+                  {withEmptyValue(options).map(s => <option key={s.koodi} value={s.koodi}>{s.nimi}</option>)}
+              </select>
             : <div>{ options[0].nimi }</div>
           }</label>
         : <div></div>
