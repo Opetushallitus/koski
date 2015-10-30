@@ -1,8 +1,10 @@
 import Bacon from 'baconjs'
 
-const reqE = Bacon.Bus()
-const requestPending = reqE.scan(0, (a, b) => a + b).map(count => count > 0)
-requestPending.onValue(pending => document.body.className = pending ? 'loading' : '')
+var reqCount = 0
+const modifyReqCount = delta => {
+  reqCount += delta
+  document.body.className = (reqCount > 0) ? 'loading' : ''
+}
 
 const parseResponse = (result) => {
   if (result.status < 300) {
@@ -16,7 +18,7 @@ const parseResponse = (result) => {
 
 const reqComplete = (url) => () => {
   //console.log('complete', url)
-  reqE.push(-1)
+  modifyReqCount(-1)
 }
 
 const mocks = {}
@@ -28,7 +30,7 @@ const serveMock = url => {
 const doHttp = (url, options) => mocks[url] ? serveMock(url) : fetch(url, options)
 const http = (url, options) => {
   //console.log('begin', url)
-  reqE.push(1)
+  modifyReqCount(1)
   const promise = doHttp(url, options)
   promise.then(reqComplete(url), reqComplete(url))
   return Bacon.fromPromise(promise).mapError({status: 503}).flatMap(parseResponse)
