@@ -10,13 +10,15 @@ const withEmptyValue = (xs) => [{ koodi: '', nimi: 'Valitse...'}].concat(xs)
 const Dropdown = React.createClass({
   render() {
     let { title, options, value, onChange, className} = this.props
+    let optionElems = opts => withEmptyValue(opts).map(s => <option key={s.koodi} value={s.koodi}>{s.nimi}</option>)
+
     return options.length > 0
         ? <label>{title} { options.length > 1
             ? <select
                 className={className}
                 value={value}
                 onChange={(event) => onChange(event.target.value)}>
-                  {withEmptyValue(options).map(s => <option key={s.koodi} value={s.koodi}>{s.nimi}</option>)}
+                  {optionElems(options)}
               </select>
             : <div>{ options[0].nimi }</div>
           }</label>
@@ -29,6 +31,7 @@ const Dropdown = React.createClass({
     }
   }
 })
+
 export const OpintoOikeus = React.createClass({
   render() {
     let {opintoOikeus} = this.props
