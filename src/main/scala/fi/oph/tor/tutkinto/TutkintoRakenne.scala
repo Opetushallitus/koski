@@ -8,7 +8,9 @@ case class TutkintoRakenne(suoritustavat: List[SuoritustapaJaRakenne], osaamisal
 }
 
 object TutkintoRakenne {
-  def findTutkinnonOsa(rakenne: TutkintoRakenne, koulutusModuuliTunniste: KoulutusModuuliTunniste): Option[TutkinnonOsa] = rakenne.suoritustavat.flatMap(suoritustapa => findTutkinnonOsa(suoritustapa.rakenne, koulutusModuuliTunniste)).headOption
+  def findTutkinnonOsa(rakenne: TutkintoRakenne, suoritustapa: Suoritustapa, koulutusModuuliTunniste: KoulutusModuuliTunniste): Option[TutkinnonOsa] = {
+    rakenne.suoritustavat.find(_.suoritustapa == suoritustapa).flatMap(suoritustapa => findTutkinnonOsa(suoritustapa.rakenne, koulutusModuuliTunniste)).headOption
+  }
 
   def findTutkinnonOsa(rakenne: RakenneOsa, koulutusModuuliTunniste: KoulutusModuuliTunniste): Option[TutkinnonOsa] = rakenne match {
     case t:TutkinnonOsa if t.tunniste == koulutusModuuliTunniste => Some(t)
@@ -16,8 +18,6 @@ object TutkintoRakenne {
     case _ => None
   }
   def findOsaamisala(rakenne: TutkintoRakenne, osaamisAlaKoodi: String) = rakenne.osaamisalat.find(_.koodi == osaamisAlaKoodi)
-
-
 }
 
 case class Suoritustapa(nimi: String, koodi: String)
