@@ -53,10 +53,10 @@ export const OpintoOikeus = React.createClass({
                         onChange={(value) => opintoOikeusChange.push([opintoOikeus.id, oo => R.merge(oo, {osaamisala: value || undefined})] )}
                 />
               { opintoOikeus.suoritustapa
-                ? <Rakenneosa
-                    rakenneosa={opintoOikeus.tutkinto.rakenne.suoritustavat.find(x => x.suoritustapa.koodi == opintoOikeus.suoritustapa).rakenne}
+                ? opintoOikeus.tutkinto.rakenne.suoritustavat.find(x => x.suoritustapa.koodi == opintoOikeus.suoritustapa).rakenne.osat.map(rakenneOsa => <Rakenneosa
+                    rakenneosa={rakenneOsa}
                     opintoOikeus={opintoOikeus}
-                  />
+                  />)
                 : null
               }
             </div>
