@@ -8,13 +8,13 @@ import fi.oph.tor.oppija._
 import fi.oph.tor.oppilaitos.OppilaitosRepository
 import fi.oph.tor.tutkinto.{TutkintoRakenne, Suoritustapa, TutkintoRepository}
 import fi.oph.tor.user.UserContext
-import fi.oph.tor.util.Timed
+import fi.oph.tor.util.TimedProxy
 
 class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
                                    opintoOikeusRepository: OpintoOikeusRepository,
                                    tutkintoRepository: TutkintoRepository,
                                    oppilaitosRepository: OppilaitosRepository,
-                                   arviointiAsteikot: ArviointiasteikkoRepository) extends Timed {
+                                   arviointiAsteikot: ArviointiasteikkoRepository) {
 
   def findOppijat(query: String)(implicit userContext: UserContext): Seq[Oppija] = {
     val oppijat: List[Oppija] = oppijaRepository.findOppijat(query)
