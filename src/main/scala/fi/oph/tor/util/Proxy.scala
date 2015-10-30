@@ -1,7 +1,9 @@
 package fi.oph.tor.util
 
 import java.lang.reflect.{InvocationHandler, Method}
+
 import fi.oph.tor.json.Json
+
 import scala.reflect.ClassTag
 
 case class Invocation(val method: Method, val args: List[AnyRef], val target: AnyRef) {
@@ -19,12 +21,6 @@ object Proxy {
       Array(tag.runtimeClass.asInstanceOf[Class[T]]),
       Proxy(target, handler)).asInstanceOf[T]
   }
-
-  private def createComponent[T](intf: Class[T], proxy: Proxy): T =
-    java.lang.reflect.Proxy.newProxyInstance(
-      proxy.target.getClass.getClassLoader,
-      Array(intf),
-      proxy).asInstanceOf[T]
 }
 
 case class Proxy(target: AnyRef, handler: Proxy.ProxyHandler) extends InvocationHandler {
