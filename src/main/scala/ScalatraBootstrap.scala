@@ -1,7 +1,6 @@
 import javax.servlet.ServletContext
 
 import fi.oph.tor.SingleFileServlet
-import fi.oph.tor.arvosana.ArviointiasteikkoRepository
 import fi.oph.tor.config.TorProfile
 import fi.oph.tor.db._
 import fi.oph.tor.fixture.FixtureServlet

@@ -4,14 +4,13 @@ import fi.oph.tor.arvosana.ArviointiasteikkoRepository
 import fi.oph.tor.eperusteet._
 import fi.oph.tor.koodisto.KoodistoViittaus
 import fi.oph.tor.tutkinto
-import fi.oph.tor.util.Timed
 
-class TutkintoRepository(eperusteet: EPerusteetRepository) extends Timed {
-  def findTutkinnot(oppilaitosId: String, query: String): List[Tutkinto] = timed("findTutkinnot") {
+class TutkintoRepository(eperusteet: EPerusteetRepository) {
+  def findTutkinnot(oppilaitosId: String, query: String): List[Tutkinto] = {
     ePerusteetToTutkinnot(eperusteet.findPerusteet(query))
   }
 
-  def findByEPerusteDiaarinumero(diaarinumero: String) = timed("findByEPerusteDiaarinumero") {
+  def findByEPerusteDiaarinumero(diaarinumero: String) = {
     ePerusteetToTutkinnot(eperusteet.findPerusteetByDiaarinumero(diaarinumero)).headOption
   }
 
@@ -21,7 +20,7 @@ class TutkintoRepository(eperusteet: EPerusteetRepository) extends Timed {
     }
   }
 
-  def findPerusteRakenne(diaariNumero: String)(implicit arviointiAsteikot: ArviointiasteikkoRepository) = timed("findPerusteRakenne") {
+  def findPerusteRakenne(diaariNumero: String)(implicit arviointiAsteikot: ArviointiasteikkoRepository) = {
     eperusteet.findRakenne(diaariNumero)
       .map(EPerusteetTutkintoRakenneConverter.convertRakenne)
   }

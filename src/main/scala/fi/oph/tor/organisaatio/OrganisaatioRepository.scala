@@ -3,9 +3,12 @@ package fi.oph.tor.organisaatio
 import com.typesafe.config.Config
 import fi.oph.tor.http.{Http, VirkailijaHttpClient}
 import org.http4s.Request
-import scalaz.concurrent.Task
 
-class OrganisaatioRepository(config: Config) {
+trait OrganisaatioRepository {
+  def getOrganisaatio(oid: String): Option[Organisaatio]
+}
+
+class RemoteOrganisaatioRepository(config: Config) extends OrganisaatioRepository{
   val virkailijaClient = new VirkailijaHttpClient(config.getString("authentication-service.username"), config.getString("authentication-service.password"), config.getString("opintopolku.virkailija.url"), "/organisaatio-service")
 
   def getOrganisaatio(oid: String): Option[Organisaatio] = {

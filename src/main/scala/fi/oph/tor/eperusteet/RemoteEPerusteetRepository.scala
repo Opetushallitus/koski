@@ -1,10 +1,8 @@
 package fi.oph.tor.eperusteet
 
 import fi.oph.tor.http.Http
-import fi.oph.tor.util.Timed
-import fi.vm.sade.utils.Timer
 
-class RemoteEPerusteetRepository(ePerusteetRoot: String) extends EPerusteetRepository with Timed {
+class RemoteEPerusteetRepository(ePerusteetRoot: String) extends EPerusteetRepository {
   private val http: Http = Http()
 
   def findPerusteet(query: String) = {
@@ -15,7 +13,7 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String) extends EPerusteetRepos
     http(ePerusteetRoot + "/api/perusteet?diaarinumero=" + diaarinumero)(Http.parseJson[EPerusteet]).data
   }
 
-  def findRakenne(diaariNumero: String): Option[EPerusteRakenne] = timed("findRakenne") {
+  def findRakenne(diaariNumero: String): Option[EPerusteRakenne] = {
     http(ePerusteetRoot + s"/api/perusteet/diaari?diaarinumero=$diaariNumero")(Http.parseJsonOptional[EPerusteTunniste])
       .map(e => http(ePerusteetRoot + "/api/perusteet/" + e.id + "/kaikki")(Http.parseJson[EPerusteRakenne]))
   }
