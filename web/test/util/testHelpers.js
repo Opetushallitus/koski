@@ -129,3 +129,8 @@ function textsOf(elements) {
     })
   }
 })()
+
+function debug(x) {
+  console.log(x)
+  return x
+}
