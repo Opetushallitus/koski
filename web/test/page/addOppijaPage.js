@@ -64,7 +64,7 @@ function AddOppijaPage() {
     postSuoritusAjax: function(suoritus) {
       return function() {
         suoritus = _.merge(defaultSuoritus(), suoritus)
-        opintoOikeus = _.merge(defaultOpintoOikeus(), { suoritukset: [suoritus] })
+        opintoOikeus = _.merge(defaultOpintoOikeus(), { suoritukset: [suoritus], suoritustapa: "ops" })
         return api.postOpintoOikeusAjax(opintoOikeus)()
       }
     },

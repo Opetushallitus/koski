@@ -1,0 +1,418 @@
+[
+  {
+    "koodiUri": "liitetyypitamm_1",
+    "resourceUri": "https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/liitetyypitamm_1",
+    "version": 19,
+    "versio": 1,
+    "koodisto": {
+      "koodistoUri": "liitetyypitamm",
+      "organisaatioOid": "1.2.246.562.10.00000000001",
+      "koodistoVersios": [
+        1
+      ]
+    },
+    "koodiArvo": "1",
+    "paivitysPvm": 1427461981413,
+    "voimassaAlkuPvm": "2013-05-13",
+    "voimassaLoppuPvm": null,
+    "tila": "LUONNOS",
+    "metadata": [
+      {
+        "nimi": "Tilläggsblankett för idrottare",
+        "kuvaus": "Tilläggsblankett för idrottare",
+        "lyhytNimi": "Tilläggsblankett för idrottare",
+        "kayttoohje": "",
+        "kasite": "",
+        "sisaltaaMerkityksen": "",
+        "eiSisallaMerkitysta": "",
+        "huomioitavaKoodi": "",
+        "sisaltaaKoodiston": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Urheilijan lisätietolomake",
+        "kuvaus": "Urheilijan lisätietolomake",
+        "lyhytNimi": "Urheilijan lisätietolomake",
+        "kayttoohje": "",
+        "kasite": "",
+        "sisaltaaMerkityksen": "",
+        "eiSisallaMerkitysta": "",
+        "huomioitavaKoodi": "",
+        "sisaltaaKoodiston": "",
+        "kieli": "FI"
+      }
+    ]
+  },
+  {
+    "koodiUri": "koulutuslaji_a",
+    "resourceUri": "https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/koulutuslaji_a",
+    "version": 12,
+    "versio": 1,
+    "koodisto": {
+      "koodistoUri": "koulutuslaji",
+      "organisaatioOid": "1.2.246.562.10.00000000001",
+      "koodistoVersios": [
+        1
+      ]
+    },
+    "koodiArvo": "A",
+    "paivitysPvm": 1427461981414,
+    "voimassaAlkuPvm": "2013-10-28",
+    "voimassaLoppuPvm": null,
+    "tila": "LUONNOS",
+    "metadata": [
+      {
+        "nimi": "Vuxenutbildning",
+        "kuvaus": "Vuxenutbildning",
+        "lyhytNimi": "V",
+        "kayttoohje": null,
+        "kasite": null,
+        "sisaltaaMerkityksen": null,
+        "eiSisallaMerkitysta": null,
+        "huomioitavaKoodi": null,
+        "sisaltaaKoodiston": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Aikuiskoulutus",
+        "kuvaus": "Aikuiskoulutus",
+        "lyhytNimi": "A",
+        "kayttoohje": null,
+        "kasite": null,
+        "sisaltaaMerkityksen": null,
+        "eiSisallaMerkitysta": null,
+        "huomioitavaKoodi": null,
+        "sisaltaaKoodiston": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Adult education and training",
+        "kuvaus": "Adult education and training",
+        "lyhytNimi": "Adult education and training",
+        "kayttoohje": null,
+        "kasite": null,
+        "sisaltaaMerkityksen": null,
+        "eiSisallaMerkitysta": null,
+        "huomioitavaKoodi": null,
+        "sisaltaaKoodiston": null,
+        "kieli": "EN"
+      }
+    ]
+  },
+  {
+    "koodiUri": "arviointiasteikot_h",
+    "resourceUri": "https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/arviointiasteikot_h",
+    "version": 1,
+    "versio": 1,
+    "koodisto": {
+      "koodistoUri": "arviointiasteikot",
+      "organisaatioOid": "1.2.246.562.10.00000000001",
+      "koodistoVersios": [
+        1
+      ]
+    },
+    "koodiArvo": "H",
+    "paivitysPvm": 1446124569502,
+    "voimassaAlkuPvm": "2015-10-29",
+    "voimassaLoppuPvm": null,
+    "tila": "LUONNOS",
+    "metadata": [
+      {
+        "nimi": "Hyväksytty",
+        "kuvaus": "",
+        "lyhytNimi": "H",
+        "kayttoohje": "",
+        "kasite": "",
+        "sisaltaaMerkityksen": "",
+        "eiSisallaMerkitysta": "",
+        "huomioitavaKoodi": "",
+        "sisaltaaKoodiston": "",
+        "kieli": "FI"
+      }
+    ]
+  },
+  {
+    "koodiUri": "valintakokeentyyppi_1",
+    "resourceUri": "https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/valintakokeentyyppi_1",
+    "version": 20,
+    "versio": 1,
+    "koodisto": {
+      "koodistoUri": "valintakokeentyyppi",
+      "organisaatioOid": "1.2.246.562.10.00000000001",
+      "koodistoVersios": [
+        1
+      ]
+    },
+    "koodiArvo": "1",
+    "paivitysPvm": 1427461981413,
+    "voimassaAlkuPvm": "2013-01-02",
+    "voimassaLoppuPvm": null,
+    "tila": "LUONNOS",
+    "metadata": [
+      {
+        "nimi": "Inträdes- eller lämplighetsprov",
+        "kuvaus": "Inträdes- eller lämplighetsprov",
+        "lyhytNimi": "Inträdes- eller lämplighetsprov",
+        "kayttoohje": "",
+        "kasite": "",
+        "sisaltaaMerkityksen": "",
+        "eiSisallaMerkitysta": "",
+        "huomioitavaKoodi": "",
+        "sisaltaaKoodiston": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Pääsy- ja soveltuvuuskoe",
+        "kuvaus": "Pääsy- ja soveltuvuuskoe",
+        "lyhytNimi": "Pääsy- ja soveltuvuuskoe",
+        "kayttoohje": "",
+        "kasite": "",
+        "sisaltaaMerkityksen": "",
+        "eiSisallaMerkitysta": "",
+        "huomioitavaKoodi": "",
+        "sisaltaaKoodiston": "",
+        "kieli": "FI"
+      }
+    ]
+  },
+  {
+    "koodiUri": "arviointiasteikot_0",
+    "resourceUri": "https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/arviointiasteikot_0",
+    "version": 1,
+    "versio": 1,
+    "koodisto": {
+      "koodistoUri": "arviointiasteikot",
+      "organisaatioOid": "1.2.246.562.10.00000000001",
+      "koodistoVersios": [
+        1
+      ]
+    },
+    "koodiArvo": "0",
+    "paivitysPvm": 1446124531664,
+    "voimassaAlkuPvm": "2015-10-29",
+    "voimassaLoppuPvm": null,
+    "tila": "LUONNOS",
+    "metadata": [
+      {
+        "nimi": "Hylätty",
+        "kuvaus": "",
+        "lyhytNimi": "0",
+        "kayttoohje": "",
+        "kasite": "",
+        "sisaltaaMerkityksen": "",
+        "eiSisallaMerkitysta": "",
+        "huomioitavaKoodi": "",
+        "sisaltaaKoodiston": "",
+        "kieli": "FI"
+      }
+    ]
+  },
+  {
+    "koodiUri": "ammattijaerikoisammattitutkintojenarviointiasteikko_hyvaksytty",
+    "resourceUri": "https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/ammattijaerikoisammattitutkintojenarviointiasteikko_hyvaksytty",
+    "version": 1,
+    "versio": 1,
+    "koodisto": {
+      "koodistoUri": "ammattijaerikoisammattitutkintojenarviointiasteikko",
+      "organisaatioOid": "1.2.246.562.10.00000000001",
+      "koodistoVersios": [
+        1
+      ]
+    },
+    "koodiArvo": "Hyväksytty",
+    "paivitysPvm": 1446199069011,
+    "voimassaAlkuPvm": "2015-10-01",
+    "voimassaLoppuPvm": "2018-09-02",
+    "tila": "LUONNOS",
+    "metadata": [
+      {
+        "nimi": "Hyväksytty",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kayttoohje": "",
+        "kasite": "",
+        "sisaltaaMerkityksen": "",
+        "eiSisallaMerkitysta": "",
+        "huomioitavaKoodi": "",
+        "sisaltaaKoodiston": "",
+        "kieli": "FI"
+      }
+    ]
+  },
+  {
+    "koodiUri": "liitetyypitamm_4",
+    "resourceUri": "https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/liitetyypitamm_4",
+    "version": 20,
+    "versio": 1,
+    "koodisto": {
+      "koodistoUri": "liitetyypitamm",
+      "organisaatioOid": "1.2.246.562.10.00000000001",
+      "koodistoVersios": [
+        1
+      ]
+    },
+    "koodiArvo": "4",
+    "paivitysPvm": 1427461981413,
+    "voimassaAlkuPvm": "2013-11-11",
+    "voimassaLoppuPvm": null,
+    "tila": "LUONNOS",
+    "metadata": [
+      {
+        "nimi": "Lausunnot",
+        "kuvaus": "Lausunnot",
+        "lyhytNimi": "Lausunnot",
+        "kayttoohje": "",
+        "kasite": "",
+        "sisaltaaMerkityksen": "",
+        "eiSisallaMerkitysta": "",
+        "huomioitavaKoodi": "",
+        "sisaltaaKoodiston": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Utlåtanden",
+        "kuvaus": "Utlåtanden",
+        "lyhytNimi": "Utlåtanden",
+        "kayttoohje": "",
+        "kasite": "",
+        "sisaltaaMerkityksen": "",
+        "eiSisallaMerkitysta": "",
+        "huomioitavaKoodi": "",
+        "sisaltaaKoodiston": "",
+        "kieli": "SV"
+      }
+    ]
+  },
+  {
+    "koodiUri": "valintakokeentyyppi_5",
+    "resourceUri": "https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/valintakokeentyyppi_5",
+    "version": 17,
+    "versio": 1,
+    "koodisto": {
+      "koodistoUri": "valintakokeentyyppi",
+      "organisaatioOid": "1.2.246.562.10.00000000001",
+      "koodistoVersios": [
+        1
+      ]
+    },
+    "koodiArvo": "5",
+    "paivitysPvm": 1427461981414,
+    "voimassaAlkuPvm": "2013-10-28",
+    "voimassaLoppuPvm": null,
+    "tila": "LUONNOS",
+    "metadata": [
+      {
+        "nimi": "Tilläggspoäng",
+        "kuvaus": "Tilläggspoäng",
+        "lyhytNimi": "Tilläggspoäng",
+        "kayttoohje": "",
+        "kasite": "",
+        "sisaltaaMerkityksen": "",
+        "eiSisallaMerkitysta": "",
+        "huomioitavaKoodi": "",
+        "sisaltaaKoodiston": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Lisäpiste",
+        "kuvaus": "Lisäpiste",
+        "lyhytNimi": "Lisäpiste",
+        "kayttoohje": "",
+        "kasite": "",
+        "sisaltaaMerkityksen": "",
+        "eiSisallaMerkitysta": "",
+        "huomioitavaKoodi": "",
+        "sisaltaaKoodiston": "",
+        "kieli": "FI"
+      }
+    ]
+  },
+  {
+    "koodiUri": "liitetyypitamm_2",
+    "resourceUri": "https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/liitetyypitamm_2",
+    "version": 18,
+    "versio": 1,
+    "koodisto": {
+      "koodistoUri": "liitetyypitamm",
+      "organisaatioOid": "1.2.246.562.10.00000000001",
+      "koodistoVersios": [
+        1
+      ]
+    },
+    "koodiArvo": "2",
+    "paivitysPvm": 1427461981413,
+    "voimassaAlkuPvm": "2013-05-13",
+    "voimassaLoppuPvm": null,
+    "tila": "LUONNOS",
+    "metadata": [
+      {
+        "nimi": "Valintakokeen ennakkotehtävä",
+        "kuvaus": "Valintakokeen ennakkotehtävä",
+        "lyhytNimi": "Valintakokeen ennakkotehtävä",
+        "kayttoohje": "",
+        "kasite": "",
+        "sisaltaaMerkityksen": "",
+        "eiSisallaMerkitysta": "",
+        "huomioitavaKoodi": "",
+        "sisaltaaKoodiston": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Urvalsprovets förhandsuppgift",
+        "kuvaus": "Urvalsprovets förhandsuppgift",
+        "lyhytNimi": "Urvalsprovets förhandsuppgift",
+        "kayttoohje": "",
+        "kasite": "",
+        "sisaltaaMerkityksen": "",
+        "eiSisallaMerkitysta": "",
+        "huomioitavaKoodi": "",
+        "sisaltaaKoodiston": "",
+        "kieli": "SV"
+      }
+    ]
+  },
+  {
+    "koodiUri": "valintakokeentyyppi_2",
+    "resourceUri": "https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/valintakokeentyyppi_2",
+    "version": 19,
+    "versio": 1,
+    "koodisto": {
+      "koodistoUri": "valintakokeentyyppi",
+      "organisaatioOid": "1.2.246.562.10.00000000001",
+      "koodistoVersios": [
+        1
+      ]
+    },
+    "koodiArvo": "2",
+    "paivitysPvm": 1427461981415,
+    "voimassaAlkuPvm": "2013-11-20",
+    "voimassaLoppuPvm": null,
+    "tila": "LUONNOS",
+    "metadata": [
+      {
+        "nimi": "Tilläggsprestation",
+        "kuvaus": "Tilläggsprestation",
+        "lyhytNimi": "Tilläggsprestation",
+        "kayttoohje": "",
+        "kasite": "",
+        "sisaltaaMerkityksen": "",
+        "eiSisallaMerkitysta": "",
+        "huomioitavaKoodi": "",
+        "sisaltaaKoodiston": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Lisänäyttö",
+        "kuvaus": "Lisänäyttö",
+        "lyhytNimi": "Lisänäyttö",
+        "kayttoohje": "",
+        "kasite": "",
+        "sisaltaaMerkityksen": "",
+        "eiSisallaMerkitysta": "",
+        "huomioitavaKoodi": "",
+        "sisaltaaKoodiston": "",
+        "kieli": "FI"
+      }
+    ]
+  }
+]

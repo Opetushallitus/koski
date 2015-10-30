@@ -1,0 +1,26 @@
+[
+  {
+    "koodiUri": "ammattijaerikoisammattitutkintojenarviointiasteikko_hyvaksytty",
+    "metadata": [
+      {
+        "nimi": "Hyväksytty",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "Hyväksytty"
+  },
+  {
+    "koodiUri": "ammattijaerikoisammattitutkintojenarviointiasteikko_hylatty",
+    "metadata": [
+      {
+        "nimi": "Hylätty",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "Hylätty"
+  }
+]
