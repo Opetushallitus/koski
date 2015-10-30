@@ -4,6 +4,7 @@ import com.typesafe.config.Config
 
 trait KoodistoPalvelu {
   def getKoodisto(koodisto: KoodistoViittaus): Option[List[KoodistoKoodi]]
+  def getAlakoodit(koodiarvo: String): List[Alakoodi]
 }
 
 object KoodistoPalvelu {

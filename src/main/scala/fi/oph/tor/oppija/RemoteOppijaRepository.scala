@@ -3,23 +3,25 @@ package fi.oph.tor.oppija
 import fi.oph.tor.http.{Http, HttpStatus, VirkailijaHttpClient}
 import fi.oph.tor.json.Json._
 import fi.oph.tor.json.Json4sHttp4s._
+import fi.oph.tor.util.Timed
+import fi.vm.sade.utils.Timer
 import org.http4s._
 
 import scalaz.concurrent.Task
 
-class RemoteOppijaRepository(henkilöPalveluClient: VirkailijaHttpClient) extends OppijaRepository with EntityDecoderInstances {
-  override def findOppijat(query: String): List[Oppija] = {
+class RemoteOppijaRepository(henkilöPalveluClient: VirkailijaHttpClient) extends OppijaRepository with EntityDecoderInstances with Timed {
+  override def findOppijat(query: String): List[Oppija] = timed("findOppijat") {
     henkilöPalveluClient.httpClient
       .apply(Request(uri = henkilöPalveluClient.virkailijaUriFromString("/authentication-service/resources/henkilo?no=true&count=0&q=" + query)))(Http.parseJson[AuthenticationServiceUserQueryResult])
       .results.map(toOppija)
   }
 
-  override def findByOid(id: String): Option[Oppija] = {
+  override def findByOid(id: String): Option[Oppija] = timed("findByOid") {
     henkilöPalveluClient.httpClient(Request(uri = henkilöPalveluClient.virkailijaUriFromString("/authentication-service/resources/henkilo/" + id)))(Http.parseJsonOptional[AuthenticationServiceUser])
       .map(toOppija)
   }
 
-  override def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String) = {
+  override def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String) = timed("create"){
       val task: Task[Request] = Request(
         uri = henkilöPalveluClient.virkailijaUriFromString("/authentication-service/resources/henkilo"),
         method = Method.POST

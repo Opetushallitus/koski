@@ -4,15 +4,16 @@ import java.time.{LocalDate, ZoneId}
 
 import fi.oph.tor.http.{Http, VirkailijaHttpClient}
 import fi.oph.tor.organisaatio.{OrganisaatioPuu, OrganisaatioRepository}
+import fi.oph.tor.util.Timed
 import fi.vm.sade.utils.Timer
 import org.http4s.{EntityDecoderInstances, Request}
 
 import scalaz.concurrent.Task
 
-class RemoteUserRepository(henkilöPalveluClient: VirkailijaHttpClient, organisaatioRepository: OrganisaatioRepository) extends UserRepository with EntityDecoderInstances {
+class RemoteUserRepository(henkilöPalveluClient: VirkailijaHttpClient, organisaatioRepository: OrganisaatioRepository) extends UserRepository with EntityDecoderInstances with Timed {
   val katselijaRole = 4056292L
 
-  def getUserOrganisations(oid: String): OrganisaatioPuu = Timer.timed("getUserOrganisations") {
+  def getUserOrganisations(oid: String): OrganisaatioPuu = timed("getUserOrganisations") {
     OrganisaatioPuu(
       roots = henkilöPalveluClient.httpClient
         .apply(Request(uri = henkilöPalveluClient.virkailijaUriFromString(s"/authentication-service/resources/henkilo/${oid}/organisaatiohenkilo")))(Http.parseJson[List[OrganisaatioHenkilö]])

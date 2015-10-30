@@ -4,7 +4,10 @@ import fi.oph.tor.json.Json._
 
 class MockKoodistoPalvelu extends KoodistoPalvelu {
   override def getKoodisto(koodisto: KoodistoViittaus) = {
-    val filename = "src/main/resources/mockdata/koodisto/" + koodisto.koodistoUri + ".json"
-    Json.readFileIfExists(filename).map(_.extract[List[KoodistoKoodi]])
+    Json.readFileIfExists("src/main/resources/mockdata/koodisto/" + koodisto.koodistoUri + ".json").map(_.extract[List[KoodistoKoodi]])
+  }
+
+  override def getAlakoodit(koodiarvo: String) = {
+    Json.readFile("src/main/resources/mockdata/koodisto/alakoodit/" + koodiarvo + ".json").extract[List[Alakoodi]]
   }
 }
