@@ -11,15 +11,14 @@ const Dropdown = React.createClass({
     let withEmptyValue = (xs) => [{ koodi: '', nimi: 'Valitse...'}].concat(xs)
     let optionElems = opts => withEmptyValue(opts).map(s => <option key={s.koodi} value={s.koodi}>{s.nimi}</option>)
 
-    return options.length > 0
-        ? <label>{title} { options.length > 1
-            ? <select
-                className={className}
-                value={value}
-                onChange={(event) => onChange(event.target.value)}>
-                  {optionElems(options)}
-              </select>
-            : <div>{ options[0].nimi }</div>
+    return options.length > 1
+        ? <label>{title}
+            <select
+              className={className}
+              value={value}
+              onChange={(event) => onChange(event.target.value)}>
+                {optionElems(options)}
+            </select>
           }</label>
         : <div></div>
   },
