@@ -8,7 +8,7 @@ class ArviointiasteikkoRepository(koodistoPalvelu: KoodistoPalvelu) {
   def getArviointiasteikkoViittaus(koulutustyyppi: Koulutustyyppi): Option[KoodistoViittaus] = {
     koodistoPalvelu.getAlakoodit("koulutustyyppi_" + koulutustyyppi).map(_.koodisto)
       .map(_.latestVersion)
-      .find(koodistoPalvelu.getKoodisto(_).find(_.metadata.flatMap(_.kasite).contains("arviointiasteikko")).isDefined)
+      .find(koodistoPalvelu.getKoodisto(_).find(_.metadata.flatMap(_.kasite).contains("arvosana")).isDefined)
   }
 
   def getArviointiasteikko(koodisto: KoodistoViittaus): Option[Arviointiasteikko] = {
