@@ -3,6 +3,7 @@ package fi.oph.tor.oppija
 import fi.oph.tor.http.{Http, HttpStatus, VirkailijaHttpClient}
 import fi.oph.tor.json.Json._
 import fi.oph.tor.json.Json4sHttp4s._
+import fi.vm.sade.utils.memoize.TTLOptionalMemoize
 import org.http4s._
 
 import scalaz.concurrent.Task
@@ -13,10 +14,11 @@ class RemoteOppijaRepository(henkilöPalveluClient: VirkailijaHttpClient) extend
       .results.map(toOppija)
   }
 
-  override def findByOid(id: String): Option[Oppija] = {
-    henkilöPalveluClient.httpClient(henkilöPalveluClient.virkailijaUriFromString("/authentication-service/resources/henkilo/" + id))(Http.parseJsonOptional[AuthenticationServiceUser])
-      .map(toOppija)
-  }
+  private val oppijaByOidMemo = TTLOptionalMemoize.memoize[String, Oppija]({id =>
+      henkilöPalveluClient.httpClient(henkilöPalveluClient.virkailijaUriFromString("/authentication-service/resources/henkilo/" + id))(Http.parseJsonOptional[AuthenticationServiceUser]).map(toOppija)
+  }, "oppijaByOid", 60000, 1000)
+
+  override def findByOid(id: String): Option[Oppija] = oppijaByOidMemo(id)
 
   override def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String) = {
       val task: Task[Request] = Request(
