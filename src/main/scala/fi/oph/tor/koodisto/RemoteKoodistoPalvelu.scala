@@ -3,8 +3,8 @@ import fi.oph.tor.http.Http
 
 class RemoteKoodistoPalvelu(koodistoRoot: String) extends KoodistoPalvelu {
   val http = Http()
-  override def getKoodisto(koodisto: KoodistoViittaus) = {
-    http.apply(koodistoRoot + "/rest/codeelement/codes/" + koodisto.koodistoUri + "/" + koodisto.versio + noCache)(Http.parseJsonOptional[List[KoodistoKoodi]])
+  override def getKoodistoKoodit(koodisto: KoodistoViittaus) = {
+    http.apply(koodistoRoot + "/rest/codeelement/codes/" + koodisto + noCache)(Http.parseJsonOptional[List[KoodistoKoodi]])
   }
 
   override def getAlakoodit(koodiarvo: String) = {
@@ -12,4 +12,8 @@ class RemoteKoodistoPalvelu(koodistoRoot: String) extends KoodistoPalvelu {
   }
 
   private def noCache = "?noCache=" + System.currentTimeMillis()
+
+  override def getKoodisto(koodisto: KoodistoViittaus) = {
+    http.apply(koodistoRoot + "/rest/codes/" + koodisto + noCache)(Http.parseJsonOptional[Koodisto])
+  }
 }

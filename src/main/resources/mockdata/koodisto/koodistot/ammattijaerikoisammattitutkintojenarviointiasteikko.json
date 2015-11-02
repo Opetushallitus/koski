@@ -1,0 +1,68 @@
+{
+  "koodistoUri": "ammattijaerikoisammattitutkintojenarviointiasteikko",
+  "resourceUri": "https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codes/ammattijaerikoisammattitutkintojenarviointiasteikko",
+  "omistaja": "Thor sotapäällikkö",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "codesGroupUri": "http://tor",
+  "version": 3,
+  "versio": 1,
+  "paivitysPvm": 1446455434303,
+  "voimassaAlkuPvm": "2015-10-05",
+  "voimassaLoppuPvm": "2017-05-07",
+  "tila": "LUONNOS",
+  "metadata": [
+    {
+      "kieli": "SV",
+      "nimi": "Samma på svenska",
+      "kuvaus": "Test",
+      "kayttoohje": "",
+      "kasite": "arviointiasteikko",
+      "kohdealue": "",
+      "sitovuustaso": "",
+      "kohdealueenOsaAlue": "",
+      "toimintaymparisto": "",
+      "tarkentaaKoodistoa": "",
+      "huomioitavaKoodisto": "",
+      "koodistonLahde": ""
+    },
+    {
+      "kieli": "EN",
+      "nimi": "Samma på engelska",
+      "kuvaus": "Testi",
+      "kayttoohje": "",
+      "kasite": "arviointiasteikko",
+      "kohdealue": "",
+      "sitovuustaso": "",
+      "kohdealueenOsaAlue": "",
+      "toimintaymparisto": "",
+      "tarkentaaKoodistoa": "",
+      "huomioitavaKoodisto": "",
+      "koodistonLahde": ""
+    },
+    {
+      "kieli": "FI",
+      "nimi": "Ammatti- ja erikoisammattitutkintojen arviointiasteikko",
+      "kuvaus": "Testi",
+      "kayttoohje": "",
+      "kasite": "arviointiasteikko",
+      "kohdealue": "",
+      "sitovuustaso": "",
+      "kohdealueenOsaAlue": "",
+      "toimintaymparisto": "",
+      "tarkentaaKoodistoa": "",
+      "huomioitavaKoodisto": "",
+      "koodistonLahde": ""
+    }
+  ],
+  "codesVersions": [],
+  "withinCodes": [
+    {
+      "codesUri": "koulutustyyppi",
+      "codesVersion": 2,
+      "passive": false
+    }
+  ],
+  "includesCodes": [],
+  "levelsWithCodes": []
+}

@@ -6,12 +6,13 @@ import fi.oph.tor.tutkinto.Koulutustyyppi.Koulutustyyppi
 
 class ArviointiasteikkoRepository(koodistoPalvelu: KoodistoPalvelu) {
   def getArviointiasteikkoViittaus(koulutustyyppi: Koulutustyyppi): Option[KoodistoViittaus] = {
-    // TODO: parempi arviointiasteikkokoodiston tunnistus
-    koodistoPalvelu.getAlakoodit("koulutustyyppi_" + koulutustyyppi).map(_.koodisto).find(_.koodistoUri.contains("asteikko")).map(_.latestVersion)
+    koodistoPalvelu.getAlakoodit("koulutustyyppi_" + koulutustyyppi).map(_.koodisto)
+      .map(_.latestVersion)
+      .find(koodistoPalvelu.getKoodisto(_).find(_.metadata.flatMap(_.kasite).contains("arviointiasteikko")).isDefined)
   }
 
   def getArviointiasteikko(koodisto: KoodistoViittaus): Option[Arviointiasteikko] = {
-    koodistoPalvelu.getKoodisto(koodisto).map(koodit => Arviointiasteikko(koodisto, koodit.map(koodi => Arvosana(koodi.koodiUri, koodi.metadata.flatMap(_.nimi).headOption.getOrElse(koodi.koodiUri))).sortBy(_.id)))
+    koodistoPalvelu.getKoodistoKoodit(koodisto).map(koodit => Arviointiasteikko(koodisto, koodit.map(koodi => Arvosana(koodi.koodiUri, koodi.metadata.flatMap(_.nimi).headOption.getOrElse(koodi.koodiUri))).sortBy(_.id)))
   }
 }
 

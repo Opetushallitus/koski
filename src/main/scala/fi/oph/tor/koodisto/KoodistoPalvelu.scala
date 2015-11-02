@@ -4,7 +4,8 @@ import com.typesafe.config.Config
 import fi.oph.tor.util.{CachingProxy, TimedProxy}
 
 trait KoodistoPalvelu {
-  def getKoodisto(koodisto: KoodistoViittaus): Option[List[KoodistoKoodi]]
+  def getKoodistoKoodit(koodisto: KoodistoViittaus): Option[List[KoodistoKoodi]]
+  def getKoodisto(koodisto: KoodistoViittaus): Option[Koodisto]
   def getAlakoodit(koodiarvo: String): List[Alakoodi]
 }
 
