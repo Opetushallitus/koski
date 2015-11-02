@@ -22,9 +22,11 @@ object TorDatabaseFixtures extends Futures with GlobalExecutionContext {
 
   def resetFixtures(database: TorDatabase): Unit = {
     if (database.config.isRemote) throw new IllegalStateException("Trying to reset fixtures in remote database")
-    await(database.db.run(DBIO.seq(
-      OpintoOikeudet.delete,
-      OpintoOikeudet ++= defaultOpintoOikeudet.map{case (oid, oikeus) => new OpintoOikeusRow(oid, oikeus)}
+
+    val deleteOpintoOikeudet = oppijat.defaultOppijat.map{oppija => OpintoOikeudet.filter(_.oppijaOid === oppija.oid).delete}
+
+    await(database.db.run(DBIO.sequence(
+      deleteOpintoOikeudet ++ List(OpintoOikeudet ++= defaultOpintoOikeudet.map{case (oid, oikeus) => new OpintoOikeusRow(oid, oikeus)})
     )))
   }
 }

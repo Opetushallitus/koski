@@ -12,7 +12,7 @@ class MockOppijaRepository extends OppijaRepository {
 
   private def oppija(id : String, suku: String, etu: String, hetu: String) = Oppija(Some(id), Some(hetu), Some(etu), Some(etu), Some(suku))
 
-  private def defaultOppijat = List(
+  def defaultOppijat = List(
     eero,
     eerola,
     markkanen,
