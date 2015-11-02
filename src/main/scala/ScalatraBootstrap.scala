@@ -1,9 +1,9 @@
 import javax.servlet.ServletContext
 
 import fi.oph.tor.SingleFileServlet
-import fi.oph.tor.config.TorProfile
+import fi.oph.tor.config.TorApplication
 import fi.oph.tor.db._
-import fi.oph.tor.fixture.FixtureServlet
+import fi.oph.tor.fixture.{Fixtures, FixtureServlet}
 import fi.oph.tor.oppija.OppijaServlet
 import fi.oph.tor.oppilaitos.OppilaitosServlet
 import fi.oph.tor.tor.TodennetunOsaamisenRekisteri
@@ -14,18 +14,20 @@ import org.scalatra._
 
 class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionContext with Futures {
   override def init(context: ServletContext) {
-    val profile: TorProfile with GlobalExecutionContext = Option(context.getAttribute("tor.profile").asInstanceOf[String]).map(TorProfile.fromString(_)).getOrElse(TorProfile.fromSystemProperty)
-    val database: TorDatabase = profile.database
-    implicit val userRepository = UserRepository(profile.config)
-    val rekisteri = new TodennetunOsaamisenRekisteri(profile.oppijaRepository, profile.opintoOikeusRepository, profile.tutkintoRepository, profile.oppilaitosRepository, profile.arviointiAsteikot)
+    val configOverrides: Map[String, String] = Option(context.getAttribute("tor.overrides").asInstanceOf[Map[String, String]]).getOrElse(Map.empty)
+    val application = TorApplication(configOverrides)
+    implicit val userRepository = UserRepository(application.config)
+    val rekisteri = new TodennetunOsaamisenRekisteri(application.oppijaRepository, application.opintoOikeusRepository, application.tutkintoRepository, application.oppilaitosRepository, application.arviointiAsteikot)
     context.mount(new OppijaServlet(rekisteri), "/api/oppija")
-    context.mount(new UserServlet(profile.directoryClient, profile.userRepository), "/user")
+    context.mount(new UserServlet(application.directoryClient, application.userRepository), "/user")
     context.mount(new SingleFileServlet("web/static/index.html"), "/oppija")
     context.mount(new SingleFileServlet("web/static/index.html"), "/uusioppija")
-    context.mount(new OppilaitosServlet(profile.oppilaitosRepository), "/api/oppilaitos")
-    context.mount(new TutkintoServlet(profile.tutkintoRepository, profile.arviointiAsteikot), "/api/tutkinto")
-    context.mount(new FixtureServlet(profile), "/fixtures")
+    context.mount(new OppilaitosServlet(application.oppilaitosRepository), "/api/oppilaitos")
+    context.mount(new TutkintoServlet(application.tutkintoRepository, application.arviointiAsteikot), "/api/tutkinto")
     context.mount(new SingleFileServlet("web/static/index.html"), "/")
+    if (Fixtures.shouldUseFixtures(application.config)) {
+      context.mount(new FixtureServlet(application), "/fixtures")
+    }
   }
 
   override def destroy(context: ServletContext) = {

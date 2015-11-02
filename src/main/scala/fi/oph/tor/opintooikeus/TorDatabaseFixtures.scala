@@ -1,13 +1,15 @@
 package fi.oph.tor.opintooikeus
 
-import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.tor.db.TorDatabase._
+import fi.oph.tor.db._
 import fi.oph.tor.oppija.MockOppijaRepository
-import fi.oph.tor.oppilaitos.{Oppilaitos}
+import fi.oph.tor.oppilaitos.Oppilaitos
 import fi.oph.tor.tutkinto.Tutkinto
 import slick.dbio.DBIO
+import Tables._
+import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
+import TorDatabase._
 
-class OpintoOikeusRepositoryWithFixtures(db: DB) extends PostgresOpintoOikeusRepository(db) {
+object TorDatabaseFixtures extends Futures with GlobalExecutionContext {
   private val oppijat = new MockOppijaRepository
   private val autoalanPerustutkinto: Tutkinto = Tutkinto("39/011/2014", "351301", Some("Autoalan perustutkinto"))
 
@@ -18,8 +20,9 @@ class OpintoOikeusRepositoryWithFixtures(db: DB) extends PostgresOpintoOikeusRep
          (oppijat.markkanen.oid.get, OpintoOikeus(autoalanPerustutkinto, Oppilaitos("3"))))
   }
 
-  override def resetFixtures: Unit = {
-    await(db.run(DBIO.seq(
+  def resetFixtures(database: TorDatabase): Unit = {
+    if (database.config.isRemote) throw new IllegalStateException("Trying to reset fixtures in remote database")
+    await(database.db.run(DBIO.seq(
       OpintoOikeudet.delete,
       OpintoOikeudet ++= defaultOpintoOikeudet.map{case (oid, oikeus) => new OpintoOikeusRow(oid, oikeus)}
     )))

@@ -1,10 +1,10 @@
 package fi.oph.tor.fixture
 
 import fi.oph.tor.ErrorHandlingServlet
-import fi.oph.tor.config.TorProfile
+import fi.oph.tor.config.TorApplication
 
-class FixtureServlet(profile: TorProfile) extends ErrorHandlingServlet {
+class FixtureServlet(application: TorApplication) extends ErrorHandlingServlet {
   post("/reset") {
-    profile.resetMocks
+    application.resetFixtures
   }
 }

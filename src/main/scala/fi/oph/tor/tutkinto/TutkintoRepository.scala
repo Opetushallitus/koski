@@ -4,6 +4,8 @@ import fi.oph.tor.arvosana.ArviointiasteikkoRepository
 import fi.oph.tor.eperusteet._
 import fi.oph.tor.koodisto.KoodistoViittaus
 import fi.oph.tor.tutkinto
+import fi.oph.tor.tutkinto.Koulutustyyppi.Koulutustyyppi
+import fi.vm.sade.utils.slf4j.Logging
 
 class TutkintoRepository(eperusteet: EPerusteetRepository) {
   def findTutkinnot(oppilaitosId: String, query: String): List[Tutkinto] = {
@@ -26,12 +28,13 @@ class TutkintoRepository(eperusteet: EPerusteetRepository) {
   }
 }
 
-object EPerusteetTutkintoRakenneConverter {
+object EPerusteetTutkintoRakenneConverter extends Logging {
   def convertRakenne(rakenne: EPerusteRakenne)(implicit arviointiasteikkoRepository: ArviointiasteikkoRepository): TutkintoRakenne = {
     var arviointiasteikkoViittaukset: Set[KoodistoViittaus] = Set.empty
 
     val suoritustavat: List[tutkinto.SuoritustapaJaRakenne] = rakenne.suoritustavat.map { (suoritustapa: ESuoritustapa) =>
-      val arviointiasteikkoViittaus: Option[KoodistoViittaus] = arviointiasteikkoRepository.getArviointiasteikkoViittaus(Koulutustyyppi.fromEPerusteetKoulutustyyppiAndSuoritustapa(rakenne.koulutustyyppi, Suoritustapa(suoritustapa)))
+      val koulutustyyppi: Koulutustyyppi = Koulutustyyppi.fromEPerusteetKoulutustyyppiAndSuoritustapa(rakenne.koulutustyyppi, Suoritustapa(suoritustapa))
+      val arviointiasteikkoViittaus: Option[KoodistoViittaus] = arviointiasteikkoRepository.getArviointiasteikkoViittaus(koulutustyyppi)
 
       def convertRakenneOsa(rakenneOsa: ERakenneOsa, suoritustapa: ESuoritustapa): RakenneOsa = {
         rakenneOsa match {
@@ -44,6 +47,9 @@ object EPerusteetTutkintoRakenneConverter {
             case Some(tutkinnonOsaViite) =>
               val eTutkinnonOsa: ETutkinnonOsa = rakenne.tutkinnonOsat.find(o => o.id.toString == tutkinnonOsaViite._tutkinnonOsa).get
               arviointiasteikkoViittaukset ++= arviointiasteikkoViittaus.toList
+              if (arviointiasteikkoViittaus.isEmpty) {
+                logger.warn("Arviointiasteikko not found for Koulutustyyppi " + koulutustyyppi)
+              }
               TutkinnonOsa(KoulutusModuuliTunniste.tutkinnonOsa(eTutkinnonOsa.koodiArvo), eTutkinnonOsa.nimi.getOrElse("fi", ""), arviointiasteikkoViittaus)
             case None => throw new RuntimeException("Tutkinnonosaviitettä ei löydy: " + x._tutkinnonOsaViite)
           }

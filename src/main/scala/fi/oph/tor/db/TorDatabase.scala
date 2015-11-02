@@ -1,42 +1,52 @@
 package fi.oph.tor.db
 
+import com.typesafe.config.Config
 import fi.oph.tor.db.TorDatabase.DB
 import fi.vm.sade.utils.slf4j.Logging
 import fi.vm.sade.utils.tcp.PortChecker
 import org.flywaydb.core.Flyway
 import slick.driver.PostgresDriver
 import slick.driver.PostgresDriver.api._
-import sys.process._
+import scala.sys.process._
 
-case class TorDatabase(db: DB, serverProcess: Option[PostgresRunner]) {
-}
-
-object TorDatabase extends Logging {
+object TorDatabase {
   type DB = PostgresDriver.backend.DatabaseDef
 
-  def remoteDatabase(config: DatabaseConfig)(implicit executor: AsyncExecutor): TorDatabase = {
-    migrateSchema(config)
-    TorDatabase(Database.forURL(config.url, config.user, config.password, executor = executor), None)
+  implicit class TorDatabaseConfig(c: Config) {
+    val config = c.getConfig("db")
+    val host: String = config.getString("host")
+    val port: Int = config.getInt("port")
+    val password: String = config.getString("password")
+    val dbName: String = config.getString("name")
+    val user: String = config.getString("user")
+    val url: String = config.getString("url")
+    def isLocal = host == "localhost"
+    def isRemote = !isLocal
+    def toSlickDatabase = Database.forConfig("", config)
   }
+}
 
-  def init(config: DatabaseConfig)(implicit executor: AsyncExecutor): TorDatabase = {
-    val serverProcess = startDatabaseServerIfNotRunning(config)
-    createDatabase(config)
-    createUser(config)
-    migrateSchema(config)
-    TorDatabase(Database.forURL(config.url, config.user, config.password, executor = executor), serverProcess)
+class TorDatabase(val config: Config) extends Logging {
+  import TorDatabase._
+
+  val serverProcess = startLocalDatabaseServerIfNotRunning
+  val db: DB = config.toSlickDatabase
+
+  if (!config.isRemote) {
+    createDatabase
+    createUser
   }
+  migrateSchema
 
-  private def startDatabaseServerIfNotRunning(config: DatabaseConfig): Option[PostgresRunner] = {
-    val serverProcess: Option[PostgresRunner] = if (!isDbRunning(config)) {
-      Some(startEmbedded(config))
+  private def startLocalDatabaseServerIfNotRunning: Option[PostgresRunner] = {
+    if (!isDbRunning) {
+      Some(startEmbedded)
     } else {
       None
     }
-    serverProcess
   }
 
-  private def isDbRunning(config: DatabaseConfig) = {
+  private def isDbRunning = {
     if (config.isRemote) {
       logger.info("Using remote PostgreSql database at " + config.host + ":" + config.port)
       true
@@ -48,22 +58,22 @@ object TorDatabase extends Logging {
     }
   }
 
-  private def startEmbedded(config: DatabaseConfig): PostgresRunner = {
-     new PostgresRunner("postgresql/data", "postgresql/postgresql.conf", config.port).start
+  private def startEmbedded: PostgresRunner = {
+    new PostgresRunner("postgresql/data", "postgresql/postgresql.conf", config.port).start
   }
 
-  private def createDatabase(config: DatabaseConfig) = {
-    val dbName = config.databaseName
+  private def createDatabase = {
+    val dbName = config.dbName
     val port = config.port
     s"createdb -p $port -T template0 -E UTF-8 $dbName" !;
   }
 
-  private def createUser(config: DatabaseConfig) = {
-    val userName = config.user
-    s"createuser -s $userName -w"!
+  private def createUser = {
+    val user = config.user
+    s"createuser -s $user -w"!
   }
 
-  private def migrateSchema(config: DatabaseConfig) = {
+  private def migrateSchema = {
     try {
       val flyway = new Flyway
       flyway.setDataSource(config.url, config.user, config.password)
@@ -78,7 +88,6 @@ object TorDatabase extends Logging {
     }
   }
 }
-
 
 
 

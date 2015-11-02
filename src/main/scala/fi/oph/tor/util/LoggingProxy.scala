@@ -4,12 +4,14 @@ import org.slf4j.LoggerFactory
 import scala.reflect.ClassTag
 
 object LoggingProxy {
-  def logged[T <: AnyRef](target: T)(implicit tag: ClassTag[T]): T = {
+  def apply[T <: AnyRef](target: T)(implicit tag: ClassTag[T]): T = {
     val logger = LoggerFactory.getLogger(target.getClass)
 
     Proxy.createProxy[T](target, { case (invocation, defaultHandler) =>
       logger.info(invocation.toString)
-      defaultHandler(invocation)
+      val result: AnyRef = defaultHandler(invocation)
+      logger.info("==> " + result)
+      result
     })
   }
 }

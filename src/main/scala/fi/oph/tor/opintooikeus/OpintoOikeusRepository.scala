@@ -9,7 +9,6 @@ trait OpintoOikeusRepository {
   def findByOppijaOid(oid: String)(implicit userContext: UserContext): Seq[OpintoOikeus]
   def find(identifier: OpintoOikeusIdentifier)(implicit userContext: UserContext): Option[OpintoOikeus]
   def create(oppijaOid: String, opintoOikeus: OpintoOikeus): Either[HttpStatus, OpintoOikeus.Id]
-  def resetFixtures {}
   def update(oppijaOid: String, opintoOikeus: OpintoOikeus): HttpStatus
 
   def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opintoOikeus: OpintoOikeus)(implicit userContext: UserContext): Either[HttpStatus, OpintoOikeus.Id] = {

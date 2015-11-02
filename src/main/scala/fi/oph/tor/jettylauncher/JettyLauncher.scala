@@ -10,14 +10,14 @@ object JettyLauncher extends App {
   new JettyLauncher(globalPort).start.join
 }
 
-class JettyLauncher(val port: Int, profile: Option[String] = None) {
+class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) {
   lazy val server = new Server(port)
 
   val context = new WebAppContext()
   context.setContextPath("/tor")
   context.setResourceBase("src/main/webapp")
   context.setDescriptor("src/main/webapp/WEB-INF/web.xml")
-  profile.foreach(context.setAttribute("tor.profile", _))
+  context.setAttribute("tor.overrides", overrides)
 
   val all = new HandlerList
   all.setHandlers(List(
@@ -53,5 +53,5 @@ class JettyLauncher(val port: Int, profile: Option[String] = None) {
   def baseUrl = "http://localhost:" + port + "/tor"
 }
 
-object SharedJetty extends JettyLauncher(PortChecker.findFreeLocalPort, Some("it")) {
+object SharedJetty extends JettyLauncher(PortChecker.findFreeLocalPort, Map("db.name" -> "tortest", "fixtures.use" -> "true")) {
 }
