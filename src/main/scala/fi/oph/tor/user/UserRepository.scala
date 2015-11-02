@@ -8,7 +8,7 @@ import fi.oph.tor.util.{CachingProxy, TimedProxy}
 object UserRepository {
   def apply(config: Config): UserRepository = {
     if (config.hasPath("authentication-service")) {
-      CachingProxy(TimedProxy[UserRepository](new RemoteUserRepository(HenkilöPalveluClient(config), TimedProxy[OrganisaatioRepository](new RemoteOrganisaatioRepository(config)))))
+      CachingProxy(config, TimedProxy[UserRepository](new RemoteUserRepository(HenkilöPalveluClient(config), TimedProxy[OrganisaatioRepository](new RemoteOrganisaatioRepository(config)))))
     } else {
       new MockUserRepository
     }

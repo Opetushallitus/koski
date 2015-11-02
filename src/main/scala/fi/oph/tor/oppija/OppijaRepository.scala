@@ -4,14 +4,15 @@ import com.typesafe.config.Config
 import fi.oph.tor.henkilö.HenkilöPalveluClient
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.tor.TorOppija
+import fi.oph.tor.util.{CachingProxy, TimedProxy}
 
 object OppijaRepository {
-  def apply(config: Config) = {
-    if (config.hasPath("authentication-service")) {
+  def apply(config: Config): OppijaRepository = {
+    CachingProxy(config, TimedProxy(if (config.hasPath("authentication-service")) {
       new RemoteOppijaRepository(HenkilöPalveluClient(config))
     } else {
       new MockOppijaRepository
-    }
+    }))
   }
 }
 

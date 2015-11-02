@@ -13,7 +13,7 @@ trait EPerusteetRepository {
 
 object EPerusteetRepository {
   def apply(config: Config) = {
-    CachingProxy(TimedProxy(if (config.hasPath("eperusteet")) {
+    CachingProxy(config, TimedProxy(if (config.hasPath("eperusteet")) {
       new RemoteEPerusteetRepository(config.getString("eperusteet.url"))
     } else {
       new MockEPerusteetRepository

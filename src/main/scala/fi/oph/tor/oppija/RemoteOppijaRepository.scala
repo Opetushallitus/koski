@@ -14,11 +14,7 @@ class RemoteOppijaRepository(henkilöPalveluClient: VirkailijaHttpClient) extend
       .results.map(toOppija)
   }
 
-  private val oppijaByOidMemo = TTLOptionalMemoize.memoize[String, Oppija]({id =>
-      henkilöPalveluClient.httpClient(henkilöPalveluClient.virkailijaUriFromString("/authentication-service/resources/henkilo/" + id))(Http.parseJsonOptional[AuthenticationServiceUser]).map(toOppija)
-  }, "oppijaByOid", 60000, 1000)
-
-  override def findByOid(id: String): Option[Oppija] = oppijaByOidMemo(id)
+  override def findByOid(id: String): Option[Oppija] = henkilöPalveluClient.httpClient(henkilöPalveluClient.virkailijaUriFromString("/authentication-service/resources/henkilo/" + id))(Http.parseJsonOptional[AuthenticationServiceUser]).map(toOppija)
 
   override def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String) = {
       val task: Task[Request] = Request(

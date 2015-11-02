@@ -12,7 +12,7 @@ trait KoodistoPalvelu {
 object KoodistoPalvelu {
   def apply(config: Config) = {
     // TODO: duplication
-    CachingProxy(TimedProxy(if (config.hasPath("koodisto.url")) {
+    CachingProxy(config, TimedProxy(if (config.hasPath("koodisto.url")) {
       new RemoteKoodistoPalvelu(config.getString("koodisto.url"))
     }
     else if (config.hasPath("opintopolku.virkailija.url")) {

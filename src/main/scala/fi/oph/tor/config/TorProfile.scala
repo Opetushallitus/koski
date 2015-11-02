@@ -27,7 +27,7 @@ trait TorProfile {
   def database: TorDatabase
   lazy val directoryClient: DirectoryClient = Authentication.directoryClient(config)
   lazy val config: Config = ConfigFactory.load
-  lazy val oppijaRepository = TimedProxy(OppijaRepository(config))
+  lazy val oppijaRepository = OppijaRepository(config)
   lazy val tutkintoRepository = new TutkintoRepository(EPerusteetRepository.apply(config))
   lazy val oppilaitosRepository = new OppilaitosRepository
   lazy val arviointiAsteikot = ArviointiasteikkoRepository(config)
