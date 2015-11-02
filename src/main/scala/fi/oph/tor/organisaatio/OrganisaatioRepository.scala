@@ -2,7 +2,6 @@ package fi.oph.tor.organisaatio
 
 import com.typesafe.config.Config
 import fi.oph.tor.http.{Http, VirkailijaHttpClient}
-import org.http4s.Request
 
 trait OrganisaatioRepository {
   def getOrganisaatio(oid: String): Option[Organisaatio]
@@ -12,8 +11,7 @@ class RemoteOrganisaatioRepository(config: Config) extends OrganisaatioRepositor
   val virkailijaClient = new VirkailijaHttpClient(config.getString("authentication-service.username"), config.getString("authentication-service.password"), config.getString("opintopolku.virkailija.url"), "/organisaatio-service")
 
   def getOrganisaatio(oid: String): Option[Organisaatio] = {
-    virkailijaClient.httpClient
-      .apply(Request(uri = virkailijaClient.virkailijaUriFromString("/organisaatio-service/rest/organisaatio/v2/hierarkia/hae/tyyppi?aktiiviset=true&lakkautetut=false&oid=" + oid)))(Http.parseJson[OrganisaatioHakuTulos])
+    virkailijaClient.httpClient(virkailijaClient.virkailijaUriFromString("/organisaatio-service/rest/organisaatio/v2/hierarkia/hae/tyyppi?aktiiviset=true&lakkautetut=false&oid=" + oid))(Http.parseJson[OrganisaatioHakuTulos])
       .organisaatiot.map(convertOrganisaatio)
       .headOption
   }

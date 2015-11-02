@@ -4,17 +4,14 @@ import java.time.{LocalDate, ZoneId}
 
 import fi.oph.tor.http.{Http, VirkailijaHttpClient}
 import fi.oph.tor.organisaatio.{OrganisaatioPuu, OrganisaatioRepository}
-import org.http4s.{EntityDecoderInstances, Request}
-
-import scalaz.concurrent.Task
+import org.http4s.EntityDecoderInstances
 
 class RemoteUserRepository(henkilöPalveluClient: VirkailijaHttpClient, organisaatioRepository: OrganisaatioRepository) extends UserRepository with EntityDecoderInstances {
   val katselijaRole = 4056292L
 
   def getUserOrganisations(oid: String): OrganisaatioPuu = {
     OrganisaatioPuu(
-      roots = henkilöPalveluClient.httpClient
-        .apply(Request(uri = henkilöPalveluClient.virkailijaUriFromString(s"/authentication-service/resources/henkilo/${oid}/organisaatiohenkilo")))(Http.parseJson[List[OrganisaatioHenkilö]])
+      roots = henkilöPalveluClient.httpClient(henkilöPalveluClient.virkailijaUriFromString(s"/authentication-service/resources/henkilo/${oid}/organisaatiohenkilo"))(Http.parseJson[List[OrganisaatioHenkilö]])
         .withFilter {!_.passivoitu}
         .flatMap {org => getKäyttöoikeudet(oid, org.organisaatioOid)}
         .withFilter {_.ryhmaId == katselijaRole}
@@ -25,9 +22,7 @@ class RemoteUserRepository(henkilöPalveluClient: VirkailijaHttpClient, organisa
   }
 
   private def getKäyttöoikeudet(oid: String, ooid: String): List[Käyttöoikeus] = {
-    val request = Request(uri = henkilöPalveluClient.virkailijaUriFromString(s"/authentication-service/resources/kayttooikeusryhma/henkilo/${oid}?ooid=${ooid}"))
-
-    henkilöPalveluClient.httpClient(Task(request))(Http.parseJson[List[Käyttöoikeus]])
+    henkilöPalveluClient.httpClient(henkilöPalveluClient.virkailijaUriFromString(s"/authentication-service/resources/kayttooikeusryhma/henkilo/${oid}?ooid=${ooid}"))(Http.parseJson[List[Käyttöoikeus]])
   }
 }
 
