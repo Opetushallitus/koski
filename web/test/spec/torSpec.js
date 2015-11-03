@@ -303,6 +303,26 @@ describe('TOR', function() {
         })
       })
     })
+
+    describe('Tietojen validointi serverillä', function() {
+      before(resetMocks, authentication.login('kalle'), page.openPage)
+
+      describe('Valideilla tiedoilla', function() {
+        it('palautetaan HTTP 200', verifyResponseCode(addOppija.postOpintoOikeusAjax({}), 200))
+      })
+
+      describe('Kun opinto-oikeutta yritetään lisätä oppilaitokseen, johon käyttäjällä ei ole pääsyä', function() {
+        it('palautetaan HTTP 403 virhe', verifyResponseCode(addOppija.postOpintoOikeusAjax({ oppilaitosOrganisaatio:{oid: 'eipaasya'}}), 403))
+      })
+
+      describe('Kun yritetään lisätä opinto-oikeus virheelliseen perusteeseen', function() {
+        it('palautetaan HTTP 400 virhe', verifyResponseCode(addOppija.postOpintoOikeusAjax({ tutkinto: {ePerusteetDiaarinumero:'virheellinen', tutkintoKoodi: '351301'}}), 400))
+      })
+
+      describe('Kun yritetään lisätä opinto-oikeus ilman perustetta', function() {
+        it('palautetaan HTTP 400 virhe', verifyResponseCode(addOppija.postOpintoOikeusAjax({ tutkinto: {ePerusteetDiaarinumero: null, tutkintoKoodi: '351301'}}), 400))
+      })
+    })
   })
 
 
@@ -488,22 +508,6 @@ describe('TOR', function() {
 
       it('Estetään jos oppijalla ei opinto-oikeutta, joihin käyttäjällä on katseluoikeudet', function() {
 
-      })
-    })
-
-    describe('Tietojen validointi serverillä', function() {
-      before(resetMocks, authentication.login('kalle'), page.openPage)
-
-      describe('Valideilla tiedoilla', function() {
-        it('palautetaan HTTP 200', verifyResponseCode(addOppija.postOpintoOikeusAjax({}), 200))
-      })
-
-      describe('Kun opinto-oikeutta yritetään lisätä oppilaitokseen, johon käyttäjällä ei ole pääsyä', function() {
-        it('palautetaan HTTP 403 virhe', verifyResponseCode(addOppija.postOpintoOikeusAjax({ 'oppilaitosOrganisaatio':{oid: 'eipaasya'}}), 403))
-      })
-
-      describe('Kun yritetään lisätä opinto-oikeus virheelliseen perusteeseen', function() {
-        it('palautetaan HTTP 400 virhe', verifyResponseCode(addOppija.postOpintoOikeusAjax({ tutkinto: {'ePerusteetDiaarinumero':'virheellinen', tutkintoKoodi: '351301'}}), 400))
       })
     })
   })
