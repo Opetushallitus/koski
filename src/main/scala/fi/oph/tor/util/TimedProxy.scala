@@ -13,7 +13,7 @@ object TimedProxy {
     })
   }
 
-  private def timed[R](blockname: => String = "", thresholdMs: Int = 10, logger: Logger)(block: => R): R = {
+  private def timed[R](blockname: => String = "", thresholdMs: Int, logger: Logger)(block: => R): R = {
     val t0 = System.nanoTime()
     val result = block
     val t1 = System.nanoTime()
