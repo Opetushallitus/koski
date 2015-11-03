@@ -2,7 +2,7 @@
 
 Nykyisen toteutuksen mukainen esimerkki oppijasta, jolla on yksi opinto-oikeus.
 
-´´´json
+```json
 {
   "henkilo": {
     "oid": "1.2.246.562.24.64226782669",
@@ -49,7 +49,7 @@ Nykyisen toteutuksen mukainen esimerkki oppijasta, jolla on yksi opinto-oikeus.
 
 Esimerkki, johon lisätty enemmän tietoja. Tätä ei ole vielä toteutettu.
 
-´´´json
+```json
 {
   "henkilo": {
     "oid": "1.2.246.562.24.64226782669",
@@ -67,13 +67,19 @@ Esimerkki, johon lisätty enemmän tietoja. Tätä ei ole vielä toteutettu.
         "suorituskunta": {
           "nimi": "Helsinki",
           "kuntakoodi": "TODO"
+        },
+        "tutkintoNimike": "TODO",
+        "osaamisala": {
+          "koodi": "TODO",
+          "nimi": "TODO"
         }
       },
+      "opintojenRahoitus": "TODO",
       "alkamispäivä": "TODO",
       "arvioituPäättymispäivä": "TODO",
       "päättymispäivä": "TODO",
       "hojksTehty": false,
-      "tavoite": "kokotutkintoTODO"",
+      "tavoite": "kokotutkintoTODO",
       "läsnäolotiedot": "TODO",
       "oppilaitos": {
         "oid": "1.2.246.562.10.52251087186",
@@ -87,6 +93,10 @@ Esimerkki, johon lisätty enemmän tietoja. Tätä ei ole vielä toteutettu.
         "oid": "1.2.246.562.10.52251087186",
         "nimi": "Kallion toimipiste"
       },
+      "työnantaja": {
+        "nimi": "TODO",
+        "Y-tunnus": "TODO"
+      },
       "suoritukset": [
         {
           "koulutusModuuli": {
@@ -94,12 +104,15 @@ Esimerkki, johon lisätty enemmän tietoja. Tätä ei ole vielä toteutettu.
             "koodi": "TODO"
           },
           "suorituskieli": "fi",
-          "suoritustapa": "nayttoTODO"
+          "suoritustapa": "nayttoTODO",
+          "todennettuSuoritusPäivä": "TODO"
         },
         {
           "koulutusModuuli": {
             "tyyppi": "tutkinnonosa",
-            "koodi": "104632"
+            "koodi": "104632",
+            "nimi" : "TODO",
+            "kuvaus": "TODO"
           },
           "arviointi": {
             "asteikko": {
@@ -111,7 +124,27 @@ Esimerkki, johon lisätty enemmän tietoja. Tätä ei ole vielä toteutettu.
               "nimi": "Hylätty"
             }
           },
-          "suorituskieli": "fi"
+          "suorituskieli": "fi",
+          "alkamisPäivä": "TODO",
+          "suoritusPäivä": "TODO",
+          "todennettuSuoritusPäivä": "TODO",
+          "suorituksenTila": "TODO",
+          "suoritustapa": {
+            "koodi": "naytto/hyvaksiluku/opsTODO",
+            "hyväksiluku": {
+              "selite": "TODO",
+            },
+            "näyttö": {
+              "kuvaus": "TODO",
+              "suorituspaikka": "",
+              "arvioitsijat": ["TODO"],
+              "arviointiKeskusteluunOsallistuneet": ["TODO"],
+              "arvioinnistaPäättäneet": ["TODO"],
+              "arvosananKorottaminen": "TODO"
+            }
+          },
+          "pakollinen": "true/false TODO",
+          "kielivalinnat": "TODO",
         }
       ],
       "id": 582
