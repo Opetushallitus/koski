@@ -205,7 +205,11 @@ TOR ei tallenna henkilötietoja omaan kantaansa, vaan hakee/tallentaa ne Opintop
 Kun TORissa haetaan henkilön tietoja esimerkiksi sukunimellä, haetaan lista mahdollisista henkilöistä ensin henkilöpalvelusta, jonka jälkeen se [suodatetaan](src/main/scala/fi/oph/tor/opintooikeus/OpintoOikeusRepository.scala#L8)
 TORissa olevien opinto-oikeuksien perusteella.
 
-Käyttäjä voi nähdä vain ne opinto-oikeudet, jotka liittyvät oppilaitokseen, johon hänellä on käyttöoikeus. Henkilön organisaatioliitokset ja käyttöoikedet haetaan henkilöpalvelusta ja organisaatiopalvelusta.
+Käyttäjä voi nähdä vain ne opinto-oikeudet, jotka liittyvät oppilaitokseen, johon hänellä on käyttöoikeus. Henkilön organisaatioliitokset ja käyttöoikeudet haetaan [henkilöpalvelusta](https://github.com/Opetushallitus/henkilo) ja [organisaatiopalvelusta](https://github.com/Opetushallitus/organisaatio). [toteutus](src/main/scala/fi/oph/tor/user/RemoteUserRepository.scala)
+
+Esimerkkihaku: haetaan organisaatiopuurakenne.
+
+    https://testi.virkailija.opintopolku.fi:443/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&suunnitellut=true&lakkautetut=false&&&&&&oid=1.2.246.562.10.50822930082&
 
 ### ePerusteet
 
@@ -224,15 +228,6 @@ Pari testiurlia:
     https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059
     https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059/kaikki
     
-### Organisaatiopalvelu
-
-[Organisaatiopalvelusta](https://github.com/Opetushallitus/organisaatio) haetaan käyttäjän organisaatiopuu, jonka perusteella päätellään, mitkä suoritukset voidaan näyttää.
-
-Esimerkkihaku:
-
-    https://testi.virkailija.opintopolku.fi:443/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&suunnitellut=true&lakkautetut=false&&&&&&oid=1.2.246.562.10.50822930082&
-
-
 ### Koodistopalvelu
 
 TOR käyttää [Koodistopalvelua](https://github.com/Opetushallitus/koodisto) tutkintoihin liittyvien [Arviointiasteikkojen](src/main/scala/fi/oph/tor/arvosana/Arviointiasteikko.scala) hakemiseen.
