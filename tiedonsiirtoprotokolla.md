@@ -1,6 +1,6 @@
 ## Esimerkki
 
-Esimerkki oppijasta, jolla on yksi opinto-oikeus.
+Nykyisen toteutuksen mukainen esimerkki oppijasta, jolla on yksi opinto-oikeus.
 
 ´´´json
 {
@@ -46,6 +46,80 @@ Esimerkki oppijasta, jolla on yksi opinto-oikeus.
   ]
 }
 ```
+
+Esimerkki, johon lisätty enemmän tietoja. Tätä ei ole vielä toteutettu.
+
+´´´json
+{
+  "henkilo": {
+    "oid": "1.2.246.562.24.64226782669",
+    "hetu": "271095-9975",
+    "etunimet": "thor",
+    "kutsumanimi": "thor",
+    "sukunimi": "kypärä"
+  },
+  "opintoOikeudet": [
+    {
+      "tutkinto": {
+        "ePerusteetDiaarinumero": "8/011/2013",
+        "tutkintoKoodi": "367304",
+        "nimi": "Puunkorjuun erikoisammattitutkinto",
+        "suorituskunta": {
+          "nimi": "Helsinki",
+          "kuntakoodi": "TODO"
+        }
+      },
+      "alkamispäivä": "TODO",
+      "arvioituPäättymispäivä": "TODO",
+      "päättymispäivä": "TODO",
+      "hojksTehty": false,
+      "tavoite": "kokotutkintoTODO"",
+      "läsnäolotiedot": "TODO",
+      "oppilaitos": {
+        "oid": "1.2.246.562.10.52251087186",
+        "nimi": "Stadin ammattiopisto"
+      },
+      "koulutustoimija": {
+        "oid": "1.2.246.562.10.52251087186",
+        "nimi": "Helsingin kaupunki"
+      },
+      "toimipiste": {
+        "oid": "1.2.246.562.10.52251087186",
+        "nimi": "Kallion toimipiste"
+      },
+      "suoritukset": [
+        {
+          "koulutusModuuli": {
+            "tyyppi": "tutkinto",
+            "koodi": "TODO"
+          },
+          "suorituskieli": "fi",
+          "suoritustapa": "nayttoTODO"
+        },
+        {
+          "koulutusModuuli": {
+            "tyyppi": "tutkinnonosa",
+            "koodi": "104632"
+          },
+          "arviointi": {
+            "asteikko": {
+              "koodistoUri": "ammattijaerikoisammattitutkintojenarviointiasteikko",
+              "versio": 1
+            },
+            "arvosana": {
+              "id": "ammattijaerikoisammattitutkintojenarviointiasteikko_hylatty",
+              "nimi": "Hylätty"
+            }
+          },
+          "suorituskieli": "fi"
+        }
+      ],
+      "id": 582
+    }
+  ]
+}
+```
+
 
 ## Kenttäkuvaukset
 
