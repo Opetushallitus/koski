@@ -99,7 +99,7 @@ Skeema luodaan flywayllä migraatioskripteillä, jotka ovat hakemistossa `src/ma
 
 Tor-sovellus ajaa migraatiot automaattisesti käynnistyessään.
 
-## Buildi
+## Buildi ja ajaminen
 
 TOR:n buildiin kuuluu frontin buildaus npm:llä ja serverin buildaus Mavenilla. Tätä helpottamaan on otettu käyttöön `make`, jonka avulla
 eri taskit on helppo suorittaa. Ks `Makefile`-tiedosto.
@@ -112,7 +112,7 @@ Buildaa frontti, ja buildaa automaattisesti kun tiedostoja muokataan:
 
     make watch
 
-## TOR-sovelluksen ajaminen kehitystyöasemalla
+### TOR-sovelluksen ajaminen kehitystyöasemalla
 
 Aja JettyLauncher-luokka IDEAsta/Eclipsestä, tai käynnistä TOR vaihtoehtoisesti komentoriviltä
 
@@ -127,7 +127,7 @@ Suoritus-testidatat näkyy
 
     http://localhost:7021/tor/suoritus/
     
-## Ajaminen paikallisesti käyttäen ulkoisia palveluja (esim henkilöpalvelu)
+### Ajaminen paikallisesti käyttäen ulkoisia palveluja (esim henkilöpalvelu)
 
 Ilman parametrejä ajettaessa TOR käyttää mockattuja ulkoisia riippuvuuksia.
 
@@ -137,7 +137,7 @@ Ottaaksesi käyttöön ulkoiset integraatiot, kuten henkilpalvelun, voit antaa T
     
 Tällä asetuksella käytetään tiedostoa `src/main/resources/qa.conf`. Tämä tiedosto ei ole versionhallinnassa, koska se sisältää ei-julkista tietoa.
             
-## Testit
+### Testit
 
 Buildaa ja aja kaikki testit
 
@@ -186,17 +186,35 @@ Ympäristöön kuuluvat Opintopolku-palvelun osat täällä:
     
 Esimerkiksi henkilöpalvelu:
 
-
     https://srv2.va-dev.oph.fi/authentication-service/swagger/index.html
 
+Testiympäristö käyttää tuotannon ePerusteet-palvelua
 
-## Henkilöpalvelu-integraatio
+    https://eperusteet.opintopolku.fi/
+    
+Koodistopalvelua käytetään toistaiseksi Opintopolun QA-ympäristöstä
+    
+    https://testi.virkailija.opintopolku.fi/koodisto-ui/html/index.html#/etusivu
 
-TOR ei tallenna henkilötietoja omaan kantaansa, vaan hakee/tallentaa ne Opintopolun [henkilöpalveluun](https://github.com/Opetushallitus/henkilo).
+## Toteutus ja integraatiot
 
-## ePerusteet-integraatio
+### Henkilötiedot
 
-Swagger:
+TOR ei tallenna henkilötietoja omaan kantaansa, vaan hakee/tallentaa ne Opintopolun [henkilöpalveluun](https://github.com/Opetushallitus/henkilo). [toteutus](src/main/scala/fi/oph/tor/oppija/OppijaRepository.scala)
+
+Kun TORissa haetaan henkilön tietoja esimerkiksi sukunimellä, haetaan lista mahdollisista henkilöistä ensin henkilöpalvelusta, jonka jälkeen se [suodatetaan](src/main/scala/fi/oph/tor/opintooikeus/OpintoOikeusRepository.scala#L8)
+TORissa olevien opinto-oikeuksien perusteella.
+
+Käyttäjä voi nähdä vain ne opinto-oikeudet, jotka liittyvät oppilaitokseen, johon hänellä on käyttöoikeus. Henkilön organisaatioliitokset ja käyttöoikedet haetaan henkilöpalvelusta ja organisaatiopalvelusta.
+
+### ePerusteet
+
+Tällä hetkellä TORiin voi tallentaa vain [ePerusteista](https://eperusteet.opintopolku.fi/) löytyvien tutkintojen tietoja. Opinto-oikeutta lisättäessa lista mahdollisista tutkinnoista haetaan
+ePerusteista ja [Opinto-oikeuden](src/main/scala/fi/oph/tor/opintooikeus/OpintoOikeus.scala) sisältämään [tutkinto](src/main/scala/fi/oph/tor/tutkinto/Tutkinto.scala)-osioon tallennetaan tieto ePerusteet-linkityksestä.
+
+EPerusteista haetaan myös tutkinnon hierarkkinen [rakenne](src/main/scala/fi/oph/tor/tutkinto/TutkintoRakenne.scala), joka kuvaa, mistä tutkinnon osista tutkinto koostuu. [toteutus](https://github.com/Opetushallitus/tor/blob/master/src/main/scala/fi/oph/tor/eperusteet/RemoteEPerusteetRepository.scala)
+
+EPerusteiden Swagger-dokumentaatio:
 
     https://eperusteet.opintopolku.fi/eperusteet-service/
     
@@ -206,10 +224,24 @@ Pari testiurlia:
     https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059
     https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059/kaikki
     
-## Organisaatiopalvelu-integraatio
+### Organisaatiopalvelu
 
 [Organisaatiopalvelusta](https://github.com/Opetushallitus/organisaatio) haetaan käyttäjän organisaatiopuu, jonka perusteella päätellään, mitkä suoritukset voidaan näyttää.
 
 Esimerkkihaku:
 
     https://testi.virkailija.opintopolku.fi:443/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&suunnitellut=true&lakkautetut=false&&&&&&oid=1.2.246.562.10.50822930082&
+
+
+### Koodistopalvelu
+
+TOR käyttää [Koodistopalvelua](https://github.com/Opetushallitus/koodisto) tutkintoihin liittyvien [Arviointiasteikkojen](src/main/scala/fi/oph/tor/arvosana/Arviointiasteikko.scala) hakemiseen.
+
+Arviointiasteikko haetaan tutkintoon liittyvän [Koulutustyypin](src/main/scala/fi/oph/tor/tutkinto/Koulutustyyppi.scala) perusteella. 
+EPerusteista saatavan koulutustyypin perusteella haetaan koodistopalvelusta arviointiasteikko, joka on itse asiassa koodisto, jossa kukin koodi on yksittäinen arvosana.
+[toteutus](src/main/scala/fi/oph/tor/arvosana/ArviointiasteikkoRepository.scala).
+
+Pari testiurlia Koodistopalveluun:
+
+    https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codes/ammattijaerikoisammattitutkintojenarviointiasteikko/1
+    https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/codes/ammattijaerikoisammattitutkintojenarviointiasteikko/1
