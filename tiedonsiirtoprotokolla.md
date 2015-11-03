@@ -60,27 +60,10 @@ Esimerkki, johon lisätty enemmän tietoja. Tätä ei ole vielä toteutettu.
   },
   "opintoOikeudet": [
     {
-      "tutkinto": {
-        "ePerusteetDiaarinumero": "8/011/2013",
-        "tutkintoKoodi": "367304",
-        "nimi": "Puunkorjuun erikoisammattitutkinto",
-        "suorituskunta": {
-          "nimi": "Helsinki",
-          "kuntakoodi": "TODO"
-        },
-        "tutkintoNimike": "TODO",
-        "osaamisala": {
-          "koodi": "TODO",
-          "nimi": "TODO"
-        }
-      },
-      "opintojenRahoitus": "TODO",
+      "id": 582,
       "alkamispäivä": "TODO",
       "arvioituPäättymispäivä": "TODO",
       "päättymispäivä": "TODO",
-      "hojksTehty": false,
-      "tavoite": "kokotutkintoTODO",
-      "läsnäolotiedot": "TODO",
       "oppilaitos": {
         "oid": "1.2.246.562.10.52251087186",
         "nimi": "Stadin ammattiopisto"
@@ -93,61 +76,77 @@ Esimerkki, johon lisätty enemmän tietoja. Tätä ei ole vielä toteutettu.
         "oid": "1.2.246.562.10.52251087186",
         "nimi": "Kallion toimipiste"
       },
-      "työnantaja": {
-        "nimi": "TODO",
-        "Y-tunnus": "TODO"
-      },
-      "suoritukset": [
-        {
-          "koulutusModuuli": {
-            "tyyppi": "tutkinto",
-            "koodi": "TODO"
-          },
-          "suorituskieli": "fi",
-          "suoritustapa": "nayttoTODO",
-          "todennettuSuoritusPäivä": "TODO"
+      "suoritus": {
+        "koulutusModuuli": {
+          "tyyppi": "tutkinto",
+          "ePerusteetDiaarinumero": "8/011/2013",
+          "tutkintoKoodi": "367304",
+          "nimi": "Puunkorjuun erikoisammattitutkinto",
         },
-        {
-          "koulutusModuuli": {
-            "tyyppi": "tutkinnonosa",
-            "koodi": "104632",
-            "nimi" : "TODO",
-            "kuvaus": "TODO"
-          },
-          "arviointi": {
-            "asteikko": {
-              "koodistoUri": "ammattijaerikoisammattitutkintojenarviointiasteikko",
-              "versio": 1
+        "suorituskunta": {
+          "nimi": "Helsinki",
+          "kuntakoodi": "TODO"
+        },
+        "tutkintoNimike": "TODO",
+        "osaamisala": {
+          "koodi": "TODO",
+          "nimi": "TODO"
+        },
+        "suorituskieli": "fi",
+        "suoritustapa": "nayttoTODO",
+        "todennettuSuoritusPäivä": "TODO",
+        "osasuoritukset": [
+          {
+            "koulutusModuuli": {
+              "tyyppi": "tutkinnonosa",
+              "koodi": "104632",
+              "nimi" : "TODO",
+              "kuvaus": "TODO"
             },
-            "arvosana": {
-              "id": "ammattijaerikoisammattitutkintojenarviointiasteikko_hylatty",
-              "nimi": "Hylätty"
-            }
-          },
-          "suorituskieli": "fi",
-          "alkamisPäivä": "TODO",
-          "suoritusPäivä": "TODO",
-          "todennettuSuoritusPäivä": "TODO",
-          "suorituksenTila": "TODO",
-          "suoritustapa": {
-            "koodi": "naytto/hyvaksiluku/opsTODO",
-            "hyväksiluku": {
-              "selite": "TODO",
+            "arviointi": {
+              "asteikko": {
+                "koodistoUri": "ammattijaerikoisammattitutkintojenarviointiasteikko",
+                "versio": 1
+              },
+              "arvosana": {
+                "id": "ammattijaerikoisammattitutkintojenarviointiasteikko_hylatty",
+                "nimi": "Hylätty"
+              }
             },
-            "näyttö": {
-              "kuvaus": "TODO",
-              "suorituspaikka": "",
-              "arvioitsijat": ["TODO"],
-              "arviointiKeskusteluunOsallistuneet": ["TODO"],
-              "arvioinnistaPäättäneet": ["TODO"],
-              "arvosananKorottaminen": "TODO"
-            }
-          },
-          "pakollinen": "true/false TODO",
-          "kielivalinnat": "TODO",
-        }
-      ],
-      "id": 582
+            "suorituskieli": "fi",
+            "alkamisPäivä": "TODO",
+            "suoritusPäivä": "TODO",
+            "todennettuSuoritusPäivä": "TODO",
+            "suorituksenTila": "TODO",
+            "suoritustapa": {
+              "koodi": "naytto/hyvaksiluku/opsTODO",
+              "hyväksiluku": {
+                "selite": "TODO",
+              },
+              "näyttö": {
+                "kuvaus": "TODO",
+                "suorituspaikka": "",
+                "arvioitsijat": ["TODO"],
+                "arviointiKeskusteluunOsallistuneet": ["TODO"],
+                "arvioinnistaPäättäneet": ["TODO"],
+                "arvosananKorottaminen": "TODO"
+              },
+              "oppisopimus": {
+                "työnantaja": {
+                  "nimi": "TODO",
+                  "Y-tunnus": "TODO"
+                }
+              }
+            },
+            "pakollinen": "true/false TODO",
+            "kielivalinnat": "TODO",
+          }
+        ]
+      },
+      "hojksTehty": false,
+      "tavoite": "kokotutkintoTODO",
+      "läsnäolotiedot": "TODO",
+      "opintojenRahoitus": "TODO"
     }
   ]
 }
