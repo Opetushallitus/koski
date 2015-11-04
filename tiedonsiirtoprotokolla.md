@@ -126,9 +126,18 @@ Esimerkki, johon lisätty enemmän tietoja. Tätä ei ole vielä toteutettu.
             "todennettuSuoritusPäivä": "TODO",
             "suorituksenTila": "TODO",
             "suoritustapa": {
-              "koodi": "naytto/hyvaksiluku/opsTODO",
+              "tunniste": {
+                "koodiarvo": "hyvaksiluku"
+              },
               "hyväksiluku": {
-                "selite": "TODO",
+                "osaaminen": {
+                    "tyyppi": "tutkinnonosa",
+                    "tunniste": {
+                      "koodiarvo": "143194",
+                      "nimi" : "Sähkö- ja automaatiotekniikan perusosaaminen"
+                    },
+                    "selite": "Mauri on hyvä jätkä!"
+                },
               },
               "näyttö": {
                 "kuvaus": "TODO",
@@ -164,6 +173,9 @@ Esimerkki, johon lisätty enemmän tietoja. Tätä ei ole vielä toteutettu.
 - Koulutuskunta: saadaan toimipisteestä, eikös?
 - Onko toimipisteille saatavissa oidit?
 - Miten ilmaistaan tilanne, jossa oppilaan tavoite on suorittaa vain tutkinnon osa?
+- Onko suorituspäivä sama kuin Arvioinnin päivä?
+- Onko Koulutusmoduulitoteutus hyvä nimi asialle jota suoritetaan
+- Arvosanan korotusprosessi
 
 ## Kenttäkuvaukset
 

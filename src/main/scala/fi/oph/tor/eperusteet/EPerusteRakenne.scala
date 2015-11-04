@@ -17,10 +17,10 @@ case class ERakenneModuuli(nimi: Option[Map[String, String]], osat: List[ERakenn
 case class ERakenneTutkinnonOsa(_tutkinnonOsaViite: String) extends ERakenneOsa
 
 class RakenneOsaSerializer extends Serializer[ERakenneOsa] {
-  private val PieceClass = classOf[ERakenneOsa]
+  private val RakenneOsaClass = classOf[ERakenneOsa]
 
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), ERakenneOsa] = {
-    case (TypeInfo(PieceClass, _), json) => json match {
+    case (TypeInfo(RakenneOsaClass, _), json) => json match {
       case moduuli: JObject if moduuli.values.contains("osat") => moduuli.extract[ERakenneModuuli]
       case osa: JObject => osa.extract[ERakenneTutkinnonOsa]
     }

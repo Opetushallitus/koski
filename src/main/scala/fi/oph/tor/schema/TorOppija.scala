@@ -2,7 +2,7 @@ package fi.oph.tor.schema
 
 import java.util.Date
 
-case class TorOppija(henkilo: Henkilö, opintoOikeudet: Seq[OpintoOikeus])
+case class TorOppija(henkilö: Henkilö, opintoOikeudet: Seq[OpintoOikeus])
 
 case class Henkilö(
   oid: Option[String],
@@ -11,7 +11,10 @@ case class Henkilö(
   kutsumanimi: Option[String],
   sukunimi: Option[String]
 )
-object Henkilö { type Id = String }
+object Henkilö {
+  type Id = String
+  def withOid(oid: String) = Henkilö(Some(oid), None, None, None, None)
+}
 
 case class OpintoOikeus(
   id: Option[Int],
@@ -44,8 +47,8 @@ trait Koulutusmoduulitoteutus
   case class Koulutustoteutus(
     koulutuskoodi: KoodistoKoodiViite,            // Koodisto: koulutus
     perusteenDiaarinumero: Option[String],
-    tutkintonimike: KoodistoKoodiViite,           // Koodisto: tutkintonimikkeet // TODO: mihin kuuluu?
-    osaamisala: KoodistoKoodiViite                // Koodisto: osaamisala
+    tutkintonimike: Option[KoodistoKoodiViite] = None,           // Koodisto: tutkintonimikkeet // TODO: mihin kuuluu?
+    osaamisala: Option[KoodistoKoodiViite] = None                // Koodisto: osaamisala
   ) extends Koulutusmoduulitoteutus
 
   case class Tutkinnonosatoteutus(
@@ -67,9 +70,9 @@ case class Vahvistus(
 
 case class Suoritustapa(
   tunniste: KoodistoKoodiViite,                   // Koodisto: TODO
-  hyväksiluku: Option[Hyväksiluku],
-  näyttö: Option[Näyttö],
-  oppisopimus: Option[Oppisopimus]
+  hyväksiluku: Option[Hyväksiluku] = None,
+  näyttö: Option[Näyttö] = None,
+  oppisopimus: Option[Oppisopimus] = None
 )
 
 case class Hyväksiluku(

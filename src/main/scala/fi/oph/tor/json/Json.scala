@@ -4,6 +4,7 @@ import java.io.File
 import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
 import fi.oph.tor.eperusteet.RakenneOsaSerializer
 import fi.oph.tor.koodisto.KoodistoKoodi
+import fi.oph.tor.schema.KoulutusmoduulitoteutusSerializer
 import fi.vm.sade.utils.json4s.GenericJsonFormats
 import org.json4s
 import org.json4s.JsonAST.{JInt, JNull, JString}
@@ -12,7 +13,7 @@ import org.json4s.jackson.Serialization
 import org.json4s.{CustomSerializer, Extraction, JValue}
 
 object Json {
-  implicit val jsonFormats = GenericJsonFormats.genericFormats + new LocalDateSerializer + new RakenneOsaSerializer
+  implicit val jsonFormats = GenericJsonFormats.genericFormats + new LocalDateSerializer + new RakenneOsaSerializer + new KoulutusmoduulitoteutusSerializer
 
   def write(x: AnyRef): String = {
     Serialization.write(x);
