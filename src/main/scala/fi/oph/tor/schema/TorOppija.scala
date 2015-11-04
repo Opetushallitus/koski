@@ -1,5 +1,6 @@
 package fi.oph.tor.schema
 
+import java.time.LocalDate
 import java.util.Date
 
 case class TorOppija(henkilö: Henkilö, opintoOikeudet: Seq[OpintoOikeus])
@@ -18,8 +19,8 @@ object Henkilö {
 
 case class OpintoOikeus(
   id: Option[Int],
-  alkamispäivä: Option[Date],
-  arvioituPäättymispäivä: Option[Date],
+  alkamispäivä: Option[LocalDate],
+  arvioituPäättymispäivä: Option[LocalDate],
   päättymispäivä: Option[Date],
   koulutustoimija: Organisaatio,
   oppilaitos: Organisaatio,
