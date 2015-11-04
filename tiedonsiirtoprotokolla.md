@@ -79,42 +79,46 @@ Esimerkki, johon lisätty enemmän tietoja. Tätä ei ole vielä toteutettu.
       "suoritus": {
         "koulutusModuuli": {
           "tyyppi": "tutkinto",
-          "ePerusteetDiaarinumero": "39/011/2014",
-          "tutkintoKoodi": "351301",
-          "nimi": "Autoalan perustutkinto",
-        },
-        "suorituskunta": {
-          "nimi": "Helsinki",
-          "kuntakoodi": "091"
+          "tunniste": {
+            "koodiarvo": "351301",
+            "nimi": "Autoalan perustutkinto"
+          },
+          "ePerusteetDiaarinumero": "39/011/2014"          
         },
         "tutkintoNimike": {
           "koodi": 10024,
           "nimi": "Autokorinkorjaaja"
         },
         "osaamisala": {
-          "koodi": "TODO",
-          "nimi": "TODO"
+          "koodi": "1525",
+          "nimi": "Autokorinkorjauksen osaamisala"
         },
         "suorituskieli": "fi",
-        "suoritustapa": "nayttoTODO",
+        "suoritustapa": {
+          "tunniste": {
+            "koodiarvo": "naytto",
+            "nimi": "Näyttö"
+          }
+        },
         "todennettuSuoritusPäivä": "TODO",
         "osasuoritukset": [
           {
             "koulutusModuuli": {
               "tyyppi": "tutkinnonosa",
-              "koodi": "104632",
-              "nimi" : "TODO",
+              "tunniste": {
+                "koodiarvo": "100017",
+                "nimi" : "Auton korjaaminen"
+              },
               "kuvaus": "TODO"
             },
             "arviointi": {
-              "asteikko": {
-                "koodistoUri": "ammattijaerikoisammattitutkintojenarviointiasteikko",
-                "versio": 1
-              },
               "arvosana": {
-                "id": "ammattijaerikoisammattitutkintojenarviointiasteikko_hylatty",
-                "nimi": "Hylätty"
-              }
+                "koodistoUri": "ammatillisenperustutkinnonarviointiasteikko",
+                "koodistoVersio": 1,
+                "koodiarvo": "1",
+                "nimi": "T1"                
+              },
+              "arvosananKorottaminen": false
             },
             "suorituskieli": "fi",
             "alkamisPäivä": "TODO",
@@ -131,8 +135,7 @@ Esimerkki, johon lisätty enemmän tietoja. Tätä ei ole vielä toteutettu.
                 "suorituspaikka": "",
                 "arvioitsijat": ["TODO"],
                 "arviointiKeskusteluunOsallistuneet": ["TODO"],
-                "arvioinnistaPäättäneet": ["TODO"],
-                "arvosananKorottaminen": "TODO"
+                "arvioinnistaPäättäneet": ["TODO"]
               },
               "oppisopimus": {
                 "työnantaja": {
@@ -141,12 +144,13 @@ Esimerkki, johon lisätty enemmän tietoja. Tätä ei ole vielä toteutettu.
                 }
               }
             },
-            "pakollinen": "true/false TODO",
-            "kielivalinnat": "TODO",
+            "pakollinen": "true/false TODO"
           }
         ]
       },
-      "hojksTehty": false,
+      "hojks": {
+        "hojksTehty": false        
+      },
       "tavoite": "kokotutkintoTODO",
       "läsnäolotiedot": "TODO",
       "opintojenRahoitus": "TODO"
@@ -158,6 +162,8 @@ Esimerkki, johon lisätty enemmän tietoja. Tätä ei ole vielä toteutettu.
 ## TODO
 
 - Koulutuskunta: saadaan toimipisteestä, eikös?
+- Onko toimipisteille saatavissa oidit?
+- Miten ilmaistaan tilanne, jossa oppilaan tavoite on suorittaa vain tutkinnon osa?
 
 ## Kenttäkuvaukset
 
