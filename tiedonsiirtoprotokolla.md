@@ -61,16 +61,16 @@ Esimerkki, johon lisätty enemmän tietoja. Tätä ei ole vielä toteutettu.
   "opintoOikeudet": [
     {
       "id": 582,
-      "alkamispäivä": "TODO",
-      "arvioituPäättymispäivä": "TODO",
-      "päättymispäivä": "TODO",
-      "oppilaitos": {
-        "oid": "1.2.246.562.10.52251087186",
-        "nimi": "Stadin ammattiopisto"
-      },
+      "alkamispäivä": "2015-09-01",
+      "arvioituPäättymispäivä": "2018-05-30",
+      "päättymispäivä": "2018-05-30",
       "koulutustoimija": {
         "oid": "1.2.246.562.10.52251087186",
         "nimi": "Helsingin kaupunki"
+      },
+      "oppilaitos": {
+        "oid": "1.2.246.562.10.52251087186",
+        "nimi": "Stadin ammattiopisto"
       },
       "toimipiste": {
         "oid": "1.2.246.562.10.52251087186",
@@ -79,15 +79,18 @@ Esimerkki, johon lisätty enemmän tietoja. Tätä ei ole vielä toteutettu.
       "suoritus": {
         "koulutusModuuli": {
           "tyyppi": "tutkinto",
-          "ePerusteetDiaarinumero": "8/011/2013",
-          "tutkintoKoodi": "367304",
-          "nimi": "Puunkorjuun erikoisammattitutkinto",
+          "ePerusteetDiaarinumero": "39/011/2014",
+          "tutkintoKoodi": "351301",
+          "nimi": "Autoalan perustutkinto",
         },
         "suorituskunta": {
           "nimi": "Helsinki",
-          "kuntakoodi": "TODO"
+          "kuntakoodi": "091"
         },
-        "tutkintoNimike": "TODO",
+        "tutkintoNimike": {
+          "koodi": 10024,
+          "nimi": "Autokorinkorjaaja"
+        },
         "osaamisala": {
           "koodi": "TODO",
           "nimi": "TODO"
@@ -152,6 +155,9 @@ Esimerkki, johon lisätty enemmän tietoja. Tätä ei ole vielä toteutettu.
 }
 ```
 
+## TODO
+
+- Koulutuskunta: saadaan toimipisteestä, eikös?
 
 ## Kenttäkuvaukset
 
