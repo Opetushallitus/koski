@@ -87,7 +87,7 @@
                     },
                     "tila" : {
                       "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-                      "description" : "Läsnäolotila (läsnä, poissa...). Koodisto 'lasnaolotila'"
+                      "description" : "Läsnäolotila (läsnä, poissa...)\n(Koodisto: lasnaolotila)"
                     }
                   },
                   "id" : "#fi_oph_tor_schema_Läsnäolojakso",
@@ -100,7 +100,7 @@
           },
           "opintojenRahoitus" : {
             "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-            "description" : "Opintojen rahoitus. Koodisto 'opintojenrahoitus'"
+            "description" : "Opintojen rahoitus\n(Koodisto: opintojenrahoitus)"
           },
           "oppilaitos" : {
             "$ref" : "#fi_oph_tor_schema_Organisaatio",
@@ -161,6 +161,22 @@
                     "pakollinen" : {
                       "type" : "boolean",
                       "description" : "Onko pakollinen osa tutkinnossa"
+                    }
+                  },
+                  "id" : "#fi_oph_tor_schema_TutkinnonosatoteutusPaikallinen",
+                  "required" : [ "kuvaus", "paikallinenKoodi", "pakollinen" ]
+                }, {
+                  "type" : "object",
+                  "properties" : {
+                    "kuvaus" : {
+                      "type" : "string"
+                    },
+                    "paikallinenKoodi" : {
+                      "$ref" : "#fi_oph_tor_schema_Paikallinenkoodi"
+                    },
+                    "pakollinen" : {
+                      "type" : "boolean",
+                      "description" : "Onko pakollinen osa tutkinnossa"
                     },
                     "tutkinnonosakoodi" : {
                       "type" : "object",
@@ -180,7 +196,7 @@
                       },
                       "id" : "#fi_oph_tor_schema_KoodistoKoodiViite",
                       "required" : [ "koodiarvo", "koodistoUri", "koodistoVersio" ],
-                      "description" : "Tutkinnon osan kansallinen koodi. Koodisto 'tutkinnonosat'"
+                      "description" : "Tutkinnon osan kansallinen koodi\n(Koodisto: tutkinnonosat)"
                     }
                   },
                   "id" : "#fi_oph_tor_schema_TutkinnonosatoteutusOps",
@@ -190,11 +206,11 @@
                   "properties" : {
                     "koulutuskoodi" : {
                       "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-                      "description" : "Tutkinnon 6-numeroinen tutkintokoodi. Koodisto 'koulutus'"
+                      "description" : "Tutkinnon 6-numeroinen tutkintokoodi\n(Koodisto: koulutus)"
                     },
                     "osaamisala" : {
                       "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-                      "description" : "Osaamisala. Koodisto 'osaamisala'"
+                      "description" : "Osaamisala\n(Koodisto: osaamisala)"
                     },
                     "perusteenDiaarinumero" : {
                       "type" : "string",
@@ -202,27 +218,11 @@
                     },
                     "tutkintonimike" : {
                       "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-                      "description" : "Tutkintonimike. Koodisto 'tutkintonimikkeet'"
+                      "description" : "Tutkintonimike\n(Koodisto: tutkintonimikkeet)"
                     }
                   },
                   "id" : "#fi_oph_tor_schema_Koulutustoteutus",
                   "required" : [ "koulutuskoodi" ]
-                }, {
-                  "type" : "object",
-                  "properties" : {
-                    "kuvaus" : {
-                      "type" : "string"
-                    },
-                    "paikallinenKoodi" : {
-                      "$ref" : "#fi_oph_tor_schema_Paikallinenkoodi"
-                    },
-                    "pakollinen" : {
-                      "type" : "boolean",
-                      "description" : "Onko pakollinen osa tutkinnossa"
-                    }
-                  },
-                  "id" : "#fi_oph_tor_schema_TutkinnonosatoteutusPaikallinen",
-                  "required" : [ "kuvaus", "paikallinenKoodi", "pakollinen" ]
                 } ],
                 "description" : "Koulutusmoduulin tunniste. Joko tutkinto tai tutkinnon osa"
               },
@@ -234,7 +234,7 @@
               },
               "suorituskieli" : {
                 "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-                "description" : "Opintojen suorituskieli. Koodisto 'kieli'"
+                "description" : "Opintojen suorituskieli\n(Koodisto: kieli)"
               },
               "suoritustapa" : {
                 "type" : "object",
@@ -244,11 +244,11 @@
                     "properties" : {
                       "osaaminen" : {
                         "oneOf" : [ {
+                          "$ref" : "#fi_oph_tor_schema_TutkinnonosatoteutusPaikallinen"
+                        }, {
                           "$ref" : "#fi_oph_tor_schema_TutkinnonosatoteutusOps"
                         }, {
                           "$ref" : "#fi_oph_tor_schema_Koulutustoteutus"
-                        }, {
-                          "$ref" : "#fi_oph_tor_schema_TutkinnonosatoteutusPaikallinen"
                         } ]
                       }
                     },
@@ -290,7 +290,7 @@
                   },
                   "tunniste" : {
                     "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-                    "description" : "Tutkinnon tai tutkinnon osan suoritustapa. Koodisto 'suoritustapa'"
+                    "description" : "Tutkinnon tai tutkinnon osan suoritustapa\n(Koodisto: suoritustapa)"
                   }
                 },
                 "id" : "#fi_oph_tor_schema_Suoritustapa",
@@ -298,7 +298,7 @@
               },
               "tila" : {
                 "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-                "description" : "Suorituksen tila. Koodisto 'suorituksentila'"
+                "description" : "Suorituksen tila\n(Koodisto: suorituksentila)"
               },
               "vahvistus" : {
                 "type" : "object",
@@ -317,7 +317,7 @@
           },
           "tavoite" : {
             "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-            "description" : "Opintojen tavoit tutkinto / tutkinnon osa. Koodisto 'opintojentavoite'"
+            "description" : "Opintojen tavoit tutkinto / tutkinnon osa\n(Koodisto: opintojentavoite)"
           },
           "toimipiste" : {
             "$ref" : "#fi_oph_tor_schema_Organisaatio",

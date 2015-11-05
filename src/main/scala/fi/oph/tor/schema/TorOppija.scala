@@ -1,22 +1,23 @@
 package fi.oph.tor.schema
 
 import java.time.LocalDate
+import fi.oph.tor.schema.generic.DescriptionAnnotation
 import scala.annotation.meta._
 
 case class TorOppija(
   henkilö: Henkilö,
-  @Description("Lista henkilön opinto-oikeuksista. Sisältää vain ne opinto-oikeudet, joihin käyttäjällä on oikeudet. Esimerkiksi ammatilliselle toimijalle ei välttämättä näy henkilön lukio-opintojen tietoja.")
+  @DescriptionAnnotation("Lista henkilön opinto-oikeuksista. Sisältää vain ne opinto-oikeudet, joihin käyttäjällä on oikeudet. Esimerkiksi ammatilliselle toimijalle ei välttämättä näy henkilön lukio-opintojen tietoja.")
   opintoOikeudet: Seq[OpintoOikeus]
 )
 
-@Description("Henkilötiedot. Syötettäessä vaaditaan joko `oid` tai kaikki muut kentät, jolloin järjestelmään voidaan tarvittaessa luoda uusi henkilö.")
+@DescriptionAnnotation("Henkilötiedot. Syötettäessä vaaditaan joko `oid` tai kaikki muut kentät, jolloin järjestelmään voidaan tarvittaessa luoda uusi henkilö.")
 case class Henkilö(
-  @Description("Yksilöivä tunniste Opintopolku-palvelussa")
+  @DescriptionAnnotation("Yksilöivä tunniste Opintopolku-palvelussa")
   oid: Option[String],
-  @Description("Suomalainen henkilötunnus")
+  @DescriptionAnnotation("Suomalainen henkilötunnus")
   hetu: Option[String],
   etunimet: Option[String],
-  @Description("Kutsumanimi, oltava yksi etunimistä. Esimerkiksi etunimille \"Juha-Matti Petteri\" kelpaavat joko \"Juha-Matti\", \"Juha\", \"Matti\" tai \"Petteri\".")
+  @DescriptionAnnotation("Kutsumanimi, oltava yksi etunimistä. Esimerkiksi etunimille \"Juha-Matti Petteri\" kelpaavat joko \"Juha-Matti\", \"Juha\", \"Matti\" tai \"Petteri\".")
   kutsumanimi: Option[String],
   sukunimi: Option[String]
 )
@@ -28,34 +29,38 @@ object Henkilö {
 // TODO: käytettyjen koodistojen formaali annotointi
 
 case class OpintoOikeus(
-  @Description("Opinto-oikeuden uniikki tunniste. Tietoja syötettäessä kenttä ei ole pakollinen. Tietoja päivitettäessä TOR tunnistaa opinto-oikeuden joko tämän id:n tai muiden kenttien (oppijaOid, organisaatio, diaarinumero) perusteella.")
+  @DescriptionAnnotation("Opinto-oikeuden uniikki tunniste. Tietoja syötettäessä kenttä ei ole pakollinen. Tietoja päivitettäessä TOR tunnistaa opinto-oikeuden joko tämän id:n tai muiden kenttien (oppijaOid, organisaatio, diaarinumero) perusteella.")
   id: Option[Int],
   alkamispäivä: Option[LocalDate],
   arvioituPäättymispäivä: Option[LocalDate],
   päättymispäivä: Option[LocalDate],
-  @Description("Opinnot tarjoava koulutustoimija")
+  @DescriptionAnnotation("Opinnot tarjoava koulutustoimija")
   koulutustoimija: Organisaatio,
-  @Description("Oppilaitos, jossa opinnot on suoritettu")
+  @DescriptionAnnotation("Oppilaitos, jossa opinnot on suoritettu")
   oppilaitos: Organisaatio,
-  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
+  @DescriptionAnnotation("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
   toimipiste: Option[Organisaatio],
-  @Description("Opinto-oikeuteen liittyvän (tutkinto-)suorituksen tiedot.")
+  @DescriptionAnnotation("Opinto-oikeuteen liittyvän (tutkinto-)suorituksen tiedot.")
   suoritus: Suoritus,
   hojks: Option[Hojks],
-  @Description("Opintojen tavoit tutkinto / tutkinnon osa. Koodisto 'opintojentavoite'")
+  @DescriptionAnnotation("Opintojen tavoit tutkinto / tutkinnon osa")
+  @KoodistoAnnotation("opintojentavoite")
   tavoite: Option[KoodistoKoodiViite],
   läsnäolotiedot: Option[Läsnäolotiedot],
-  @Description("Opintojen rahoitus. Koodisto 'opintojenrahoitus'")
+  @DescriptionAnnotation("Opintojen rahoitus")
+  @KoodistoAnnotation("opintojenrahoitus")
   opintojenRahoitus: Option[KoodistoKoodiViite]
 )
 
 case class Suoritus(
-  @Description("Koulutusmoduulin tunniste. Joko tutkinto tai tutkinnon osa")
+  @DescriptionAnnotation("Koulutusmoduulin tunniste. Joko tutkinto tai tutkinnon osa")
   koulutusmoduuli: Koulutusmoduulitoteutus,
-  @Description("Opintojen suorituskieli. Koodisto 'kieli'")
+  @DescriptionAnnotation("Opintojen suorituskieli")
+  @KoodistoAnnotation("kieli")
   suorituskieli: Option[KoodistoKoodiViite],
   suoritustapa: Suoritustapa,
-  @Description("Suorituksen tila. Koodisto 'suorituksentila'")
+  @DescriptionAnnotation("Suorituksen tila")
+  @KoodistoAnnotation("suorituksentila")
   tila: Option[KoodistoKoodiViite],
   alkamispäivä: Option[LocalDate],
   arviointi: Option[Arviointi],
@@ -65,20 +70,24 @@ case class Suoritus(
 
 trait Koulutusmoduulitoteutus
   case class Koulutustoteutus(
-    @Description("Tutkinnon 6-numeroinen tutkintokoodi. Koodisto 'koulutus'")
+    @DescriptionAnnotation("Tutkinnon 6-numeroinen tutkintokoodi")
+    @KoodistoAnnotation("koulutus")
     koulutuskoodi: KoodistoKoodiViite,
-    @Description("Tutkinnon perusteen diaarinumero (pakollinen). Ks. ePerusteet-palvelu.")
+    @DescriptionAnnotation("Tutkinnon perusteen diaarinumero (pakollinen). Ks. ePerusteet-palvelu.")
     perusteenDiaarinumero: Option[String],
-    @Description("Tutkintonimike. Koodisto 'tutkintonimikkeet'")
+    @DescriptionAnnotation("Tutkintonimike")
+    @KoodistoAnnotation("tutkintonimikkeet")
     tutkintonimike: Option[KoodistoKoodiViite] = None,
-    @Description("Osaamisala. Koodisto 'osaamisala'")
+    @DescriptionAnnotation("Osaamisala")
+    @KoodistoAnnotation("osaamisala")
     osaamisala: Option[KoodistoKoodiViite] = None
   ) extends Koulutusmoduulitoteutus
 
   case class TutkinnonosatoteutusOps(
-    @Description("Tutkinnon osan kansallinen koodi. Koodisto 'tutkinnonosat'")
+    @DescriptionAnnotation("Tutkinnon osan kansallinen koodi")
+    @KoodistoAnnotation("tutkinnonosat")
     tutkinnonosakoodi: KoodistoKoodiViite,
-    @Description("Onko pakollinen osa tutkinnossa")
+    @DescriptionAnnotation("Onko pakollinen osa tutkinnossa")
     pakollinen: Boolean,
     paikallinenKoodi: Option[Paikallinenkoodi] = None,
     kuvaus: Option[String] = None
@@ -87,12 +96,12 @@ trait Koulutusmoduulitoteutus
   case class TutkinnonosatoteutusPaikallinen(
     paikallinenKoodi: Paikallinenkoodi,
     kuvaus: String,
-    @Description("Onko pakollinen osa tutkinnossa")
+    @DescriptionAnnotation("Onko pakollinen osa tutkinnossa")
     pakollinen: Boolean
   ) extends Koulutusmoduulitoteutus
 
 case class Arviointi(
-  @Description("Arvosana. Kullekin arviointiasteikolle löytyy oma koodistonsa.")
+  @DescriptionAnnotation("Arvosana. Kullekin arviointiasteikolle löytyy oma koodistonsa.")
   arvosana: KoodistoKoodiViite,
   päivä: Option[LocalDate],
   arvosananKorottaminen: Option[Boolean]
@@ -103,7 +112,8 @@ case class Vahvistus(
 )
 
 case class Suoritustapa(
-  @Description("Tutkinnon tai tutkinnon osan suoritustapa. Koodisto 'suoritustapa'")
+  @DescriptionAnnotation("Tutkinnon tai tutkinnon osan suoritustapa")
+  @KoodistoAnnotation("suoritustapa")
   tunniste: KoodistoKoodiViite,
   hyväksiluku: Option[Hyväksiluku] = None,
   näyttö: Option[Näyttö] = None,
@@ -135,7 +145,8 @@ case class Läsnäolotiedot(
 case class Läsnäolojakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
-  @Description("Läsnäolotila (läsnä, poissa...). Koodisto 'lasnaolotila'")
+  @DescriptionAnnotation("Läsnäolotila (läsnä, poissa...)")
+  @KoodistoAnnotation("lasnaolotila")
   tila: KoodistoKoodiViite
 )
 
@@ -148,8 +159,8 @@ case class Hojks(hojksTehty: Boolean)
 case class Paikallinenkoodi(koodiarvo: String, nimi: String, koodistoUri: String)
 
 case class Organisaatio(
-  @Description("Organisaation tunniste Opintopolku-palvelussa")
+  @DescriptionAnnotation("Organisaation tunniste Opintopolku-palvelussa")
   oid: String,
-  @Description("Organisaation (kielistetty) nimi. Tiedon syötössä tämän kentän arvo jätetään huomioimatta; arvo haetaan Organisaatiopalvelusta.")
+  @DescriptionAnnotation("Organisaation (kielistetty) nimi. Tiedon syötössä tämän kentän arvo jätetään huomioimatta; arvo haetaan Organisaatiopalvelusta.")
   nimi: Option[String] = None
 )

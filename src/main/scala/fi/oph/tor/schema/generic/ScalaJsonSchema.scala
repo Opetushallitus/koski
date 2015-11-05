@@ -1,10 +1,8 @@
-package fi.oph.tor.schema
+package fi.oph.tor.schema.generic
 
 import org.json4s.JsonAST._
 import org.reflections.Reflections
 
-import scala.annotation.{ClassfileAnnotation, StaticAnnotation}
-import scala.reflect.api.JavaUniverse
 import scala.reflect.runtime.{universe => ru}
 
 sealed trait SchemaType {
@@ -25,7 +23,7 @@ case class Property(key: String, tyep: SchemaType, metadata: List[Metadata])
 trait Metadata
 trait MetadataSupport {
   val extractMetadata: PartialFunction[(String, List[String]), List[Metadata]]
-  val formatMetadata: PartialFunction[Metadata, List[(String, JValue)]]
+  def appendMetadata(obj: JObject, metadata: Metadata): JObject
 }
 
 class ScalaJsonSchema(metadatasSupported: MetadataSupport*) {
@@ -42,7 +40,11 @@ class ScalaJsonSchema(metadatasSupported: MetadataSupport*) {
 
   def metadataForSymbol(symbol: ru.Symbol): List[Metadata] = {
     symbol.annotations.flatMap { annotation =>
-      metadatasSupported.flatMap(_.extractMetadata(annotation.tree.tpe.toString, annotation.tree.children.tail.map(_.toString.replaceAll("\"$|^\"", "").replace("\\\"", "\"").replace("\\'", "'"))))
+      metadatasSupported.flatMap { metadataSupport =>
+        val f: PartialFunction[(String, List[String]), List[Metadata]] = metadataSupport.extractMetadata orElse { case _ => Nil }
+
+        f(annotation.tree.tpe.toString, annotation.tree.children.tail.map(_.toString.replaceAll("\"$|^\"", "").replace("\\\"", "\"").replace("\\'", "'")))
+      }
     }
   }
 
@@ -111,8 +113,9 @@ class ScalaJsonSchema(metadatasSupported: MetadataSupport*) {
 
   def appendMetadata(obj: JObject, metadata: List[Metadata]): JObject = {
     metadata.foldLeft(obj) { case (obj: JObject, metadata) =>
-      val metadataFields = metadatasSupported.toList.flatMap(_.formatMetadata(metadata))
-      obj.merge(JObject(metadataFields))
+      metadatasSupported.foldLeft(obj) { case (obj, metadataSupport) =>
+        metadataSupport.appendMetadata(obj, metadata)
+      }
     }
   }
 
