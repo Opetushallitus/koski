@@ -27,16 +27,16 @@ case class OpintoOikeus(
   toimipiste: Option[Organisaatio],
   suoritus: Suoritus,
   hojks: Option[Hojks],
-  tavoite: Option[KoodistoKoodiViite],           // Koodisto: TODO
+  tavoite: Option[KoodistoKoodiViite],           // Koodisto: opintojentavoite
   läsnäolotiedot: Option[Läsnäolotiedot],
-  opintojenRahoitus: Option[KoodistoKoodiViite]  // Koodisto: TODO
+  opintojenRahoitus: Option[KoodistoKoodiViite]  // Koodisto: opintojenrahoitus
 )
 
 case class Suoritus(
   koulutusmoduuli: Koulutusmoduulitoteutus,
   suorituskieli: Option[KoodistoKoodiViite],     // Koodisto: kieli
   suoritustapa: Suoritustapa,
-  tila: Option[KoodistoKoodiViite],              // Koodisto: TODO
+  tila: Option[KoodistoKoodiViite],              // Koodisto: suorituksentila
   alkamispäivä: Option[LocalDate],
   arviointi: Option[Arviointi],
   vahvistus: Option[Vahvistus],
@@ -70,7 +70,7 @@ case class Vahvistus(
 )
 
 case class Suoritustapa(
-  tunniste: KoodistoKoodiViite,                   // Koodisto: TODO
+  tunniste: KoodistoKoodiViite,                   // Koodisto: suoritustapa
   hyväksiluku: Option[Hyväksiluku] = None,
   näyttö: Option[Näyttö] = None,
   oppisopimus: Option[Oppisopimus] = None
@@ -101,7 +101,7 @@ case class Läsnäolotiedot(
 case class Läsnäolojakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
-  tila: KoodistoKoodiViite                   // Koodisto: TODO
+  tila: KoodistoKoodiViite                   // Koodisto: lasnaolotila
 )
 
 case class Kunta(koodi: String, nimi: Option[String])
