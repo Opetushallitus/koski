@@ -135,7 +135,8 @@ case class Läsnäolotiedot(
 case class Läsnäolojakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
-  tila: KoodistoKoodiViite                   // Koodisto: lasnaolotila
+  @Description("Läsnäolotila (läsnä, poissa...). Koodisto 'lasnaolotila'")
+  tila: KoodistoKoodiViite
 )
 
 case class Kunta(koodi: String, nimi: Option[String])
