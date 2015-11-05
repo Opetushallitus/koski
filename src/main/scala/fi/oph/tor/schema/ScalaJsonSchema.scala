@@ -88,9 +88,11 @@ object ScalaJsonSchema {
   def findImplementations(tpe: ru.Type, previousTypes: collection.mutable.Set[String]): List[SchemaType] = {
     import collection.JavaConverters._
     import reflect.runtime.currentMirror
-    val reflections = new Reflections("fi.oph.tor.schema")
-    val clazz: JavaUniverse#ClassSymbol = tpe.typeSymbol.asClass
-    val implementationClasses = reflections.getSubTypesOf(Class.forName(clazz.fullName)).asScala
+
+    val javaClass: Class[_] = Class.forName(tpe.typeSymbol.asClass.fullName)
+    val reflections = new Reflections(javaClass.getPackage.getName)
+
+    val implementationClasses = reflections.getSubTypesOf(javaClass).asScala
 
     implementationClasses.toList.map { klass =>
       createSchema(currentMirror.classSymbol(klass).toType, previousTypes)

@@ -169,6 +169,21 @@
                             },
                             "pakollinen" : {
                               "type" : "boolean"
+                            }
+                          },
+                          "id" : "#fi_oph_tor_schema_TutkinnonosatoteutusPaikallinen",
+                          "required" : [ "kuvaus", "paikallinenKoodi", "pakollinen" ]
+                        }, {
+                          "type" : "object",
+                          "properties" : {
+                            "kuvaus" : {
+                              "type" : "string"
+                            },
+                            "paikallinenKoodi" : {
+                              "$ref" : "#fi_oph_tor_schema_Paikallinenkoodi"
+                            },
+                            "pakollinen" : {
+                              "type" : "boolean"
                             },
                             "tutkinnonosakoodi" : {
                               "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite"
@@ -194,21 +209,6 @@
                           },
                           "id" : "#fi_oph_tor_schema_Koulutustoteutus",
                           "required" : [ "koulutuskoodi" ]
-                        }, {
-                          "type" : "object",
-                          "properties" : {
-                            "kuvaus" : {
-                              "type" : "string"
-                            },
-                            "paikallinenKoodi" : {
-                              "$ref" : "#fi_oph_tor_schema_Paikallinenkoodi"
-                            },
-                            "pakollinen" : {
-                              "type" : "boolean"
-                            }
-                          },
-                          "id" : "#fi_oph_tor_schema_TutkinnonosatoteutusPaikallinen",
-                          "required" : [ "kuvaus", "paikallinenKoodi", "pakollinen" ]
                         } ]
                       }
                     },
@@ -257,11 +257,11 @@
               },
               "koulutusmoduuli" : {
                 "oneOf" : [ {
+                  "$ref" : "#fi_oph_tor_schema_TutkinnonosatoteutusPaikallinen"
+                }, {
                   "$ref" : "#fi_oph_tor_schema_TutkinnonosatoteutusOps"
                 }, {
                   "$ref" : "#fi_oph_tor_schema_Koulutustoteutus"
-                }, {
-                  "$ref" : "#fi_oph_tor_schema_TutkinnonosatoteutusPaikallinen"
                 } ]
               },
               "osasuoritukset" : {
