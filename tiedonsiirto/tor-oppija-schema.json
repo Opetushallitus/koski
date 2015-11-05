@@ -1,0 +1,240 @@
+{
+  "type" : "object",
+  "properties" : {
+    "henkilö" : {
+      "type" : "object",
+      "properties" : {
+        "sukunimi" : {
+          "type" : "string"
+        },
+        "oid" : {
+          "type" : "string"
+        },
+        "kutsumanimi" : {
+          "type" : "string"
+        },
+        "hetu" : {
+          "type" : "string"
+        },
+        "etunimet" : {
+          "type" : "string"
+        }
+      },
+      "id" : "#fi_oph_tor_schema_Henkilö"
+    },
+    "opintoOikeudet" : {
+      "type" : "array",
+      "items" : {
+        "type" : "object",
+        "properties" : {
+          "alkamispäivä" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "läsnäolotiedot" : {
+            "type" : "object",
+            "properties" : {
+              "läsnäolojaksot" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "object",
+                  "properties" : {
+                    "alku" : {
+                      "type" : "string",
+                      "format" : "date"
+                    },
+                    "loppu" : {
+                      "type" : "string",
+                      "format" : "date"
+                    },
+                    "tila" : {
+                      "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite"
+                    }
+                  },
+                  "id" : "#fi_oph_tor_schema_Läsnäolojakso",
+                  "required" : [ "alku", "tila" ]
+                }
+              }
+            },
+            "id" : "#fi_oph_tor_schema_Läsnäolotiedot",
+            "required" : [ "läsnäolojaksot" ]
+          },
+          "koulutustoimija" : {
+            "$ref" : "#fi_oph_tor_schema_Organisaatio"
+          },
+          "tavoite" : {
+            "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite"
+          },
+          "päättymispäivä" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "id" : {
+            "type" : "number"
+          },
+          "opintojenRahoitus" : {
+            "type" : "object",
+            "properties" : {
+              "koodiarvo" : {
+                "type" : "string"
+              },
+              "koodistoUri" : {
+                "type" : "string"
+              },
+              "koodistoVersio" : {
+                "type" : "number"
+              },
+              "nimi" : {
+                "type" : "string"
+              }
+            },
+            "id" : "#fi_oph_tor_schema_KoodistoKoodiViite",
+            "required" : [ "koodiarvo", "koodistoUri", "koodistoVersio" ]
+          },
+          "arvioituPäättymispäivä" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "toimipiste" : {
+            "type" : "object",
+            "properties" : {
+              "nimi" : {
+                "type" : "string"
+              },
+              "oid" : {
+                "type" : "string"
+              }
+            },
+            "id" : "#fi_oph_tor_schema_Organisaatio",
+            "required" : [ "oid" ]
+          },
+          "suoritus" : {
+            "type" : "object",
+            "properties" : {
+              "arviointi" : {
+                "type" : "object",
+                "properties" : {
+                  "arvosana" : {
+                    "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite"
+                  },
+                  "arvosananKorottaminen" : {
+                    "type" : "boolean"
+                  },
+                  "päivä" : {
+                    "type" : "string",
+                    "format" : "date"
+                  }
+                },
+                "id" : "#fi_oph_tor_schema_Arviointi",
+                "required" : [ "arvosana" ]
+              },
+              "tila" : {
+                "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite"
+              },
+              "alkamispäivä" : {
+                "type" : "string",
+                "format" : "date"
+              },
+              "suorituskieli" : {
+                "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite"
+              },
+              "suoritustapa" : {
+                "type" : "object",
+                "properties" : {
+                  "hyväksiluku" : {
+                    "type" : "object",
+                    "properties" : {
+                      "osaaminen" : {
+                        "type" : "object",
+                        "properties" : { },
+                        "id" : "#fi_oph_tor_schema_Koulutusmoduulitoteutus"
+                      }
+                    },
+                    "id" : "#fi_oph_tor_schema_Hyväksiluku",
+                    "required" : [ "osaaminen" ]
+                  },
+                  "näyttö" : {
+                    "type" : "object",
+                    "properties" : {
+                      "kuvaus" : {
+                        "type" : "string"
+                      },
+                      "suorituspaikka" : {
+                        "type" : "string"
+                      }
+                    },
+                    "id" : "#fi_oph_tor_schema_Näyttö",
+                    "required" : [ "kuvaus", "suorituspaikka" ]
+                  },
+                  "oppisopimus" : {
+                    "type" : "object",
+                    "properties" : {
+                      "työnantaja" : {
+                        "type" : "object",
+                        "properties" : {
+                          "nimi" : {
+                            "type" : "string"
+                          },
+                          "yTunnus" : {
+                            "type" : "string"
+                          }
+                        },
+                        "id" : "#fi_oph_tor_schema_Yritys",
+                        "required" : [ "nimi", "yTunnus" ]
+                      }
+                    },
+                    "id" : "#fi_oph_tor_schema_Oppisopimus",
+                    "required" : [ "työnantaja" ]
+                  },
+                  "tunniste" : {
+                    "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite"
+                  }
+                },
+                "id" : "#fi_oph_tor_schema_Suoritustapa",
+                "required" : [ "tunniste" ]
+              },
+              "koulutusmoduuli" : {
+                "$ref" : "#fi_oph_tor_schema_Koulutusmoduulitoteutus"
+              },
+              "osasuoritukset" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#fi_oph_tor_schema_Suoritus"
+                }
+              },
+              "vahvistus" : {
+                "type" : "object",
+                "properties" : {
+                  "päivä" : {
+                    "type" : "string",
+                    "format" : "date"
+                  }
+                },
+                "id" : "#fi_oph_tor_schema_Vahvistus"
+              }
+            },
+            "id" : "#fi_oph_tor_schema_Suoritus",
+            "required" : [ "suoritustapa", "koulutusmoduuli" ]
+          },
+          "oppilaitos" : {
+            "$ref" : "#fi_oph_tor_schema_Organisaatio"
+          },
+          "hojks" : {
+            "type" : "object",
+            "properties" : {
+              "hojksTehty" : {
+                "type" : "boolean"
+              }
+            },
+            "id" : "#fi_oph_tor_schema_Hojks",
+            "required" : [ "hojksTehty" ]
+          }
+        },
+        "id" : "#fi_oph_tor_schema_OpintoOikeus",
+        "required" : [ "koulutustoimija", "suoritus", "oppilaitos" ]
+      }
+    }
+  },
+  "id" : "#fi_oph_tor_schema_TorOppija",
+  "required" : [ "henkilö", "opintoOikeudet" ]
+}

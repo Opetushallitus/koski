@@ -1,4 +1,24 @@
-## Esimerkki
+# Suunniteltu toteutus
+
+Esimerkki, johon lisätty lähes kaikki kaavaillut tietokentät: [example.json](example.json)
+
+JSON Schema: [tor-oppija-schema.json](tor-oppija-schema.json)
+
+Schema ja esimerkit generoidaan `GenerateSchemaAndExamples` -luokalla.
+
+JSON Schema validaattori netissä: http://www.jsonschemavalidator.net/. Voit kokeilla laittaa sinne meidän scheman ja esimerkin.
+
+TODO:
+
+- Koulutuskunta: saadaan toimipisteestä, eikös?
+- Onko toimipisteille saatavissa oidit?
+- Miten ilmaistaan tilanne, jossa oppilaan tavoite on suorittaa vain tutkinnon osa?
+- Onko suorituspäivä sama kuin Arvioinnin päivä?
+- Onko Koulutusmoduulitoteutus hyvä nimi asialle jota suoritetaan
+- Arvosanan korotusprosessi
+
+
+# Nykyinen toteutus
 
 Nykyisen toteutuksen mukainen esimerkki oppijasta, jolla on yksi opinto-oikeus.
 
@@ -46,136 +66,6 @@ Nykyisen toteutuksen mukainen esimerkki oppijasta, jolla on yksi opinto-oikeus.
   ]
 }
 ```
-
-Esimerkki, johon lisätty enemmän tietoja. Tätä ei ole vielä toteutettu.
-
-```json
-{
-  "henkilo": {
-    "oid": "1.2.246.562.24.64226782669",
-    "hetu": "271095-9975",
-    "etunimet": "thor",
-    "kutsumanimi": "thor",
-    "sukunimi": "kypärä"
-  },
-  "opintoOikeudet": [
-    {
-      "id": 582,
-      "alkamispäivä": "2015-09-01",
-      "arvioituPäättymispäivä": "2018-05-30",
-      "päättymispäivä": "2018-05-30",
-      "koulutustoimija": {
-        "oid": "1.2.246.562.10.52251087186",
-        "nimi": "Helsingin kaupunki"
-      },
-      "oppilaitos": {
-        "oid": "1.2.246.562.10.52251087186",
-        "nimi": "Stadin ammattiopisto"
-      },
-      "toimipiste": {
-        "oid": "1.2.246.562.10.52251087186",
-        "nimi": "Kallion toimipiste"
-      },
-      "suoritus": {
-        "koulutusModuuli": {
-          "tyyppi": "tutkinto",
-          "tunniste": {
-            "koodiarvo": "351301",
-            "nimi": "Autoalan perustutkinto"
-          },
-          "ePerusteetDiaarinumero": "39/011/2014"          
-        },
-        "tutkintoNimike": {
-          "koodi": 10024,
-          "nimi": "Autokorinkorjaaja"
-        },
-        "osaamisala": {
-          "koodi": "1525",
-          "nimi": "Autokorinkorjauksen osaamisala"
-        },
-        "suorituskieli": "fi",
-        "suoritustapa": {
-          "tunniste": {
-            "koodiarvo": "naytto",
-            "nimi": "Näyttö"
-          }
-        },
-        "todennettuSuoritusPäivä": "TODO",
-        "osasuoritukset": [
-          {
-            "koulutusModuuli": {
-              "tyyppi": "tutkinnonosa",
-              "tunniste": {
-                "koodiarvo": "100017",
-                "nimi" : "Auton korjaaminen"
-              },
-              "kuvaus": "TODO"
-            },
-            "arviointi": {
-              "arvosana": {
-                "koodistoUri": "ammatillisenperustutkinnonarviointiasteikko",
-                "koodistoVersio": 1,
-                "koodiarvo": "1",
-                "nimi": "T1"                
-              },
-              "arvosananKorottaminen": false
-            },
-            "suorituskieli": "fi",
-            "alkamisPäivä": "TODO",
-            "suoritusPäivä": "TODO",
-            "todennettuSuoritusPäivä": "TODO",
-            "suorituksenTila": "TODO",
-            "suoritustapa": {
-              "tunniste": {
-                "koodiarvo": "hyvaksiluku"
-              },
-              "hyväksiluku": {
-                "osaaminen": {
-                    "tyyppi": "tutkinnonosa",
-                    "tunniste": {
-                      "koodiarvo": "143194",
-                      "nimi" : "Sähkö- ja automaatiotekniikan perusosaaminen"
-                    },
-                    "selite": "Mauri on hyvä jätkä!"
-                },
-              },
-              "näyttö": {
-                "kuvaus": "TODO",
-                "suorituspaikka": "",
-                "arvioitsijat": ["TODO"],
-                "arviointiKeskusteluunOsallistuneet": ["TODO"],
-                "arvioinnistaPäättäneet": ["TODO"]
-              },
-              "oppisopimus": {
-                "työnantaja": {
-                  "nimi": "TODO",
-                  "Y-tunnus": "TODO"
-                }
-              }
-            },
-            "pakollinen": "true/false TODO"
-          }
-        ]
-      },
-      "hojks": {
-        "hojksTehty": false        
-      },
-      "tavoite": "kokotutkintoTODO",
-      "läsnäolotiedot": "TODO",
-      "opintojenRahoitus": "TODO"
-    }
-  ]
-}
-```
-
-## TODO
-
-- Koulutuskunta: saadaan toimipisteestä, eikös?
-- Onko toimipisteille saatavissa oidit?
-- Miten ilmaistaan tilanne, jossa oppilaan tavoite on suorittaa vain tutkinnon osa?
-- Onko suorituspäivä sama kuin Arvioinnin päivä?
-- Onko Koulutusmoduulitoteutus hyvä nimi asialle jota suoritetaan
-- Arvosanan korotusprosessi
 
 ## Kenttäkuvaukset
 

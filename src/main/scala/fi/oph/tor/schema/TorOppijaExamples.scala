@@ -2,13 +2,8 @@ package fi.oph.tor.schema
 
 import java.time.LocalDate.{of => date}
 
-import fi.oph.tor.json.Json
-import org.json4s.JsonAST.JObject
-import org.json4s._
-import org.json4s.reflect.TypeInfo
-
-object SchemaTest extends App {
-  val oppija = TorOppija(
+object TorOppijaExamples {
+  val full = TorOppija(
     Henkilö.withOid("1.2.246.562.24.00000000001"),
     List(
       OpintoOikeus(
@@ -151,29 +146,10 @@ object SchemaTest extends App {
         ),
         hojks = None,
         Some(KoodistoKoodiViite("tutkinto", Some("Tutkinto"), "tavoite", 1)),
-        Some(Läsnäolotiedot(List(
-          Läsnäolojakso(date(2012, 9, 1), Some(date(2013, 5, 31)), KoodistoKoodiViite("lasna", Some("Läsnä"), "lasnaolo", 1)),
-          Läsnäolojakso(date(2013, 9, 1), Some(date(2014, 5, 31)), KoodistoKoodiViite("poissa", Some("Poissa"), "lasnaolo", 1)),
-          Läsnäolojakso(date(2014, 9, 1), Some(date(2015, 5, 31)), KoodistoKoodiViite("lasna", Some("Läsnä"), "lasnaolo", 1)),
-          Läsnäolojakso(date(2015, 9, 1), None, KoodistoKoodiViite("lasna", Some("Läsnä"), "lasnaolo", 1))
-        ))),
+        None,
         Some(KoodistoKoodiViite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", 1))
       )
     )
   )
-  println(Json.writePretty(oppija))
-}
 
-class KoulutusmoduulitoteutusSerializer extends Serializer[Koulutusmoduulitoteutus] {
-  private val TheClass = classOf[Koulutusmoduulitoteutus]
-
-  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Koulutusmoduulitoteutus] = {
-    case (TypeInfo(TheClass, _), json) => json match {
-      case moduuli: JObject if moduuli.values.contains("koulutuskoodi") => moduuli.extract[Koulutustoteutus]
-      case moduuli: JObject if moduuli.values.contains("tutkinnonosakoodi") => moduuli.extract[Tutkinnonosatoteutus]
-      case moduuli: JObject => throw new RuntimeException("Unknown Koulutusmoduulitoteutus" + json)
-    }
-  }
-
-  def serialize(implicit format: Formats): PartialFunction[Any, JValue] = PartialFunction.empty
 }

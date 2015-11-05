@@ -1,6 +1,8 @@
 package fi.oph.tor.json
 
 import java.io.File
+import java.nio.charset.StandardCharsets
+import java.nio.file.{Paths, Files}
 import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
 import fi.oph.tor.eperusteet.RakenneOsaSerializer
 import fi.oph.tor.koodisto.KoodistoKoodi
@@ -46,6 +48,13 @@ object Json {
     } else {
       None
     }
+  }
+
+  def writeFile(filename: String, json: AnyRef) = {
+    import java.nio.file.{Paths, Files}
+    import java.nio.charset.StandardCharsets
+
+    Files.write(Paths.get(filename), writePretty(json).getBytes(StandardCharsets.UTF_8))
   }
 }
 
