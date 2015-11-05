@@ -43,8 +43,8 @@ case class Suoritus(
   osasuoritukset: Option[List[Suoritus]]
 )
 
+@Implementations(List(classOf[Koulutustoteutus], classOf[Tutkinnonosatoteutus]))
 trait Koulutusmoduulitoteutus
-
   case class Koulutustoteutus(
     koulutuskoodi: KoodistoKoodiViite,            // Koodisto: koulutus
     perusteenDiaarinumero: Option[String],

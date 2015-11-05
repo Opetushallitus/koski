@@ -1,6 +1,10 @@
 package fi.oph.tor.schema
 
 import org.json4s.JsonAST._
+import org.reflections.Reflections
+
+import scala.annotation.StaticAnnotation
+import scala.reflect.api.JavaUniverse
 import scala.reflect.runtime.{universe => ru}
 
 sealed trait SchemaType
@@ -12,6 +16,9 @@ case class BooleanType() extends SchemaType
 case class NumberType() extends SchemaType
 case class ClassType(fullClassName: String, properties: Map[String, SchemaType]) extends SchemaType
 case class ClassTypeRef(fullClassName: String) extends SchemaType
+case class OneOf(types: List[SchemaType]) extends SchemaType
+
+case class Implementations(is: List[Class[_]]) extends StaticAnnotation
 
 object ScalaJsonSchema {
   private lazy val schemaTypeForScala = Map(
@@ -36,8 +43,6 @@ object ScalaJsonSchema {
           val term = member.asTerm
           if ((term.isVal || term.isVar)) {
             val termType = createSchema(term.typeSignature, previousTypes)
-
-            //val description = term.annotations.find(isDescriptionAnnotation).flatMap(descriptionAnnotationJson)
             val termName: String = term.name.decoded.trim
             Some(termName -> termType)
           } else {
@@ -69,11 +74,28 @@ object ScalaJsonSchema {
     } else {
       schemaTypeForScala.getOrElse(typeName, {
         if (tpe.typeSymbol.isClass) {
-          createClassSchema(tpe, previousTypes)
+          if (tpe.typeSymbol.isAbstract) {
+            OneOf(findImplementations(tpe, previousTypes))
+          } else {
+            createClassSchema(tpe, previousTypes)
+          }
         } else {
           throw new RuntimeException("What is this type: " + tpe)
         }
       })
+    }
+  }
+
+
+  def findImplementations(tpe: ru.Type, previousTypes: collection.mutable.Set[String]): List[SchemaType] = {
+    import collection.JavaConverters._
+    import reflect.runtime.currentMirror
+    val reflections = new Reflections("fi.oph.tor.schema")
+    val clazz: JavaUniverse#ClassSymbol = tpe.typeSymbol.asClass
+    val implementationClasses = reflections.getSubTypesOf(Class.forName(clazz.fullName)).asScala
+
+    implementationClasses.toList.map { klass =>
+      createSchema(currentMirror.classSymbol(klass).toType, previousTypes)
     }
   }
 
@@ -100,6 +122,7 @@ object ScalaJsonSchema {
     case OptionalType(x) => toJsonSchema(x)
     case ClassTypeRef(fullClassName: String) => JObject(("$ref") -> toUri(fullClassName))
     case ClassType(fullClassName, properties) => JObject(List(("type" -> JString("object")),("properties" -> toJsonProperties(properties)), ("id" -> toUri(fullClassName))) ++ toRequiredProperties(properties).toList)
+    case OneOf(types) => JObject(("oneOf" -> JArray(types.map(toJsonSchema(_)))))
   }
 
   def toUri(fullClassName: String) = JString("#" + fullClassName.replace(".", "_"))
