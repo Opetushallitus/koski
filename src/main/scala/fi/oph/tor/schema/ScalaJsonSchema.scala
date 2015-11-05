@@ -18,8 +18,6 @@ case class ClassType(fullClassName: String, properties: Map[String, SchemaType])
 case class ClassTypeRef(fullClassName: String) extends SchemaType
 case class OneOf(types: List[SchemaType]) extends SchemaType
 
-case class Implementations(is: List[Class[_]]) extends StaticAnnotation
-
 object ScalaJsonSchema {
   private lazy val schemaTypeForScala = Map(
     "org.joda.time.DateTime" -> DateType(),
