@@ -40,7 +40,7 @@ object ScalaJsonSchema {
     symbol.annotations.find { annotation =>
       annotation.tree.tpe.toString == classOf[Description].getName
     }.map { annotation =>
-      annotation.tree.children.tail.mkString(" ").replace("\"", "")
+      annotation.tree.children.tail.mkString(" ").replaceAll("\"$|^\"", "").replace("\\\"", "\"")
     }
   }
 
