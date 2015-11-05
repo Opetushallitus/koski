@@ -21,7 +21,7 @@ case class OpintoOikeus(
   id: Option[Int],
   alkamispäivä: Option[LocalDate],
   arvioituPäättymispäivä: Option[LocalDate],
-  päättymispäivä: Option[Date],
+  päättymispäivä: Option[LocalDate],
   koulutustoimija: Organisaatio,
   oppilaitos: Organisaatio,
   toimipiste: Option[Organisaatio],
@@ -36,8 +36,8 @@ case class Suoritus(
   koulutusmoduuli: Koulutusmoduulitoteutus,
   suorituskieli: Option[KoodistoKoodiViite],     // Koodisto: kieli
   suoritustapa: Suoritustapa,
-  tila: KoodistoKoodiViite,                      // Koodisto: TODO
-  alkamispäivä: Option[Date],
+  tila: Option[KoodistoKoodiViite],              // Koodisto: TODO
+  alkamispäivä: Option[LocalDate],
   arviointi: Option[Arviointi],
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[Suoritus]]
@@ -61,12 +61,12 @@ trait Koulutusmoduulitoteutus
 
 case class Arviointi(
   arvosana: KoodistoKoodiViite,                   // Koodisto kertoo asteikon, koodi arvosanan
-  päivä: Option[Date],
-  arvosananKorottaminen: Boolean
+  päivä: Option[LocalDate],
+  arvosananKorottaminen: Option[Boolean]
 )
 
 case class Vahvistus(
-  päivä: Option[Date]
+  päivä: Option[LocalDate]
 )
 
 case class Suoritustapa(
@@ -99,8 +99,8 @@ case class Läsnäolotiedot(
 )
 
 case class Läsnäolojakso(
-  alku: Date,
-  loppu: Option[Date],
+  alku: LocalDate,
+  loppu: Option[LocalDate],
   tila: KoodistoKoodiViite                   // Koodisto: TODO
 )
 
