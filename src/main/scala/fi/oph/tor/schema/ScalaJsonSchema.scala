@@ -3,20 +3,26 @@ package fi.oph.tor.schema
 import org.json4s.JsonAST._
 import org.reflections.Reflections
 
-import scala.annotation.StaticAnnotation
+import scala.annotation.{ClassfileAnnotation, StaticAnnotation}
 import scala.reflect.api.JavaUniverse
 import scala.reflect.runtime.{universe => ru}
 
-sealed trait SchemaType
+sealed trait SchemaType {
+  def description: Option[String] = None
+}
+
 case class OptionalType(x: SchemaType) extends SchemaType
 case class ListType(x: SchemaType) extends SchemaType
 case class DateType() extends SchemaType
 case class StringType() extends SchemaType
 case class BooleanType() extends SchemaType
 case class NumberType() extends SchemaType
-case class ClassType(fullClassName: String, properties: Map[String, SchemaType]) extends SchemaType
+case class ClassType(fullClassName: String, properties: List[Property], override val description: Option[String]) extends SchemaType
 case class ClassTypeRef(fullClassName: String) extends SchemaType
 case class OneOf(types: List[SchemaType]) extends SchemaType
+case class Property(key: String, tyep: SchemaType, description: Option[String])
+
+case class Description(text: String) extends StaticAnnotation
 
 object ScalaJsonSchema {
   private lazy val schemaTypeForScala = Map(
@@ -30,28 +36,30 @@ object ScalaJsonSchema {
     "scala.Double" -> NumberType()
   )
 
+  def descriptionForSymbol(symbol: ru.Symbol): Option[String] = {
+    symbol.annotations.find { annotation =>
+      annotation.tree.tpe.toString == classOf[Description].getName
+    }.map { annotation =>
+      annotation.tree.children.tail.mkString(" ").replace("\"", "")
+    }
+  }
+
   private def createClassSchema(tpe: ru.Type, previousTypes: collection.mutable.Set[String]): SchemaType = {
     val className: String = tpe.typeSymbol.fullName
     if (previousTypes.contains(className)) {
       ClassTypeRef(className)
     } else {
       previousTypes.add(className)
-      val propertiesList: List[(String, SchemaType)] = tpe.members.flatMap { member =>
-        if (member.isTerm) {
-          val term = member.asTerm
-          if ((term.isVal || term.isVar)) {
-            val termType = createSchema(term.typeSignature, previousTypes)
-            val termName: String = term.name.decoded.trim
-            Some(termName -> termType)
-          } else {
-            None
-          }
-        } else {
-          None
-        }
-      }.toList.sortBy(_._1)
 
-      ClassType(className, propertiesList.toMap)
+      val params = tpe.typeSymbol.asClass.primaryConstructor.typeSignature.paramLists.head
+      val propertiesList: List[Property] = params.map{ paramSymbol =>
+        val term = paramSymbol.asTerm
+        val termType = createSchema(term.typeSignature, previousTypes)
+        val termName: String = term.name.decoded.trim
+        Property(termName, termType, descriptionForSymbol(term))
+      }.toList.sortBy(_.key)
+
+      ClassType(className, propertiesList, descriptionForSymbol(tpe.typeSymbol))
     }
   }
 
@@ -99,19 +107,27 @@ object ScalaJsonSchema {
     }
   }
 
-  private def toJsonProperties(properties: Map[String, SchemaType]): JValue = {
+  private def toJsonProperties(properties: List[Property]): JValue = {
+    def appendDescription(obj: JObject, desc: Option[String]) = desc match {
+      case Some(description) => obj.merge(JObject(("description" -> JString(description))))
+      case _ => obj
+    }
+
     JObject(properties
-      .mapValues { tyep => toJsonSchema(tyep)}
-      .toList
+      .map { property =>
+        (property.key, appendDescription(toJsonSchema(property.tyep).asInstanceOf[JObject], property.description))
+      }
     )
   }
-  private def toRequiredProperties(properties: Map[String, SchemaType]): Option[(String, JValue)] = {
-    val requiredProperties: List[(String, SchemaType)] = properties.toList.filter(!_._2.isInstanceOf[OptionalType])
+  private def toRequiredProperties(properties: List[Property]): Option[(String, JValue)] = {
+    val requiredProperties = properties.toList.filter(!_.tyep.isInstanceOf[OptionalType])
     requiredProperties match {
       case Nil => None
-      case _ => Some("required", JArray(requiredProperties.map{case (key, tyep) => JString(key)}))
+      case _ => Some("required", JArray(requiredProperties.map{property => JString(property.key)}))
     }
   }
+
+  def descriptionJson(description: Option[String]): Option[(String, JValue)] = description.map(("description" -> JString(_)))
 
   def toJsonSchema(t: SchemaType): JValue = t match {
     case DateType() => JObject(("type" -> JString("string")), ("format" -> JString("date")))
@@ -121,7 +137,7 @@ object ScalaJsonSchema {
     case ListType(x) => JObject(("type") -> JString("array"), (("items" -> toJsonSchema(x))))
     case OptionalType(x) => toJsonSchema(x)
     case ClassTypeRef(fullClassName: String) => JObject(("$ref") -> toUri(fullClassName))
-    case ClassType(fullClassName, properties) => JObject(List(("type" -> JString("object")),("properties" -> toJsonProperties(properties)), ("id" -> toUri(fullClassName))) ++ toRequiredProperties(properties).toList)
+    case ClassType(fullClassName, properties, description) => JObject(List(("type" -> JString("object")), ("properties" -> toJsonProperties(properties)), ("id" -> toUri(fullClassName))) ++ descriptionJson(description).toList ++ toRequiredProperties(properties).toList)
     case OneOf(types) => JObject(("oneOf" -> JArray(types.map(toJsonSchema(_)))))
   }
 
