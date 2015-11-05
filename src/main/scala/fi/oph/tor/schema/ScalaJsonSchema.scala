@@ -8,7 +8,7 @@ import scala.reflect.api.JavaUniverse
 import scala.reflect.runtime.{universe => ru}
 
 sealed trait SchemaType {
-  def description: Option[String] = None
+  def metadata: List[Metadata] = Nil
 }
 
 case class OptionalType(x: SchemaType) extends SchemaType
@@ -17,14 +17,18 @@ case class DateType() extends SchemaType
 case class StringType() extends SchemaType
 case class BooleanType() extends SchemaType
 case class NumberType() extends SchemaType
-case class ClassType(fullClassName: String, properties: List[Property], override val description: Option[String]) extends SchemaType
+case class ClassType(fullClassName: String, properties: List[Property], override val metadata: List[Metadata]) extends SchemaType
 case class ClassTypeRef(fullClassName: String) extends SchemaType
 case class OneOf(types: List[SchemaType]) extends SchemaType
-case class Property(key: String, tyep: SchemaType, description: Option[String])
+case class Property(key: String, tyep: SchemaType, metadata: List[Metadata])
 
-case class Description(text: String) extends StaticAnnotation
+trait Metadata
+trait MetadataSupport {
+  val extractMetadata: PartialFunction[(String, List[String]), List[Metadata]]
+  val formatMetadata: PartialFunction[Metadata, List[(String, JValue)]]
+}
 
-object ScalaJsonSchema {
+class ScalaJsonSchema(metadatasSupported: MetadataSupport*) {
   private lazy val schemaTypeForScala = Map(
     "org.joda.time.DateTime" -> DateType(),
     "java.util.Date" -> DateType(),
@@ -36,11 +40,9 @@ object ScalaJsonSchema {
     "scala.Double" -> NumberType()
   )
 
-  def descriptionForSymbol(symbol: ru.Symbol): Option[String] = {
-    symbol.annotations.find { annotation =>
-      annotation.tree.tpe.toString == classOf[Description].getName
-    }.map { annotation =>
-      annotation.tree.children.tail.mkString(" ").replaceAll("\"$|^\"", "").replace("\\\"", "\"")
+  def metadataForSymbol(symbol: ru.Symbol): List[Metadata] = {
+    symbol.annotations.flatMap { annotation =>
+      metadatasSupported.flatMap(_.extractMetadata(annotation.tree.tpe.toString, annotation.tree.children.tail.map(_.toString.replaceAll("\"$|^\"", "").replace("\\\"", "\"").replace("\\'", "'"))))
     }
   }
 
@@ -56,10 +58,10 @@ object ScalaJsonSchema {
         val term = paramSymbol.asTerm
         val termType = createSchema(term.typeSignature, previousTypes)
         val termName: String = term.name.decoded.trim
-        Property(termName, termType, descriptionForSymbol(term))
+        Property(termName, termType, metadataForSymbol(term))
       }.toList.sortBy(_.key)
 
-      ClassType(className, propertiesList, descriptionForSymbol(tpe.typeSymbol))
+      ClassType(className, propertiesList, metadataForSymbol(tpe.typeSymbol))
     }
   }
 
@@ -107,15 +109,17 @@ object ScalaJsonSchema {
     }
   }
 
-  private def toJsonProperties(properties: List[Property]): JValue = {
-    def appendDescription(obj: JObject, desc: Option[String]) = desc match {
-      case Some(description) => obj.merge(JObject(("description" -> JString(description))))
-      case _ => obj
+  def appendMetadata(obj: JObject, metadata: List[Metadata]): JObject = {
+    metadata.foldLeft(obj) { case (obj: JObject, metadata) =>
+      val metadataFields = metadatasSupported.toList.flatMap(_.formatMetadata(metadata))
+      obj.merge(JObject(metadataFields))
     }
+  }
 
+  private def toJsonProperties(properties: List[Property]): JValue = {
     JObject(properties
       .map { property =>
-        (property.key, appendDescription(toJsonSchema(property.tyep).asInstanceOf[JObject], property.description))
+        (property.key, appendMetadata(toJsonSchema(property.tyep).asInstanceOf[JObject], property.metadata))
       }
     )
   }
@@ -137,7 +141,7 @@ object ScalaJsonSchema {
     case ListType(x) => JObject(("type") -> JString("array"), (("items" -> toJsonSchema(x))))
     case OptionalType(x) => toJsonSchema(x)
     case ClassTypeRef(fullClassName: String) => JObject(("$ref") -> toUri(fullClassName))
-    case ClassType(fullClassName, properties, description) => JObject(List(("type" -> JString("object")), ("properties" -> toJsonProperties(properties)), ("id" -> toUri(fullClassName))) ++ descriptionJson(description).toList ++ toRequiredProperties(properties).toList)
+    case ClassType(fullClassName, properties, metadata) => appendMetadata(JObject(List(("type" -> JString("object")), ("properties" -> toJsonProperties(properties)), ("id" -> toUri(fullClassName))) ++ toRequiredProperties(properties).toList), metadata)
     case OneOf(types) => JObject(("oneOf" -> JArray(types.map(toJsonSchema(_)))))
   }
 
