@@ -96,13 +96,13 @@
         }
       }, {
         "koulutusmoduuli" : {
-          "tutkinnonosakoodi" : {
-            "koodiarvo" : "100018",
+          "paikallinenKoodi" : {
+            "koodiarvo" : "123456789",
             "nimi" : "Pintavauriotyöt",
-            "koodistoUri" : "tutkinnonosat",
-            "koodistoVersio" : 1
+            "koodistoUri" : "kallion_oma_koodisto"
           },
-          "pakollinen" : true
+          "kuvaus" : "Opetellaan korjaamaan pinnallisia vaurioita",
+          "pakollinen" : false
         },
         "suoritustapa" : {
           "tunniste" : {

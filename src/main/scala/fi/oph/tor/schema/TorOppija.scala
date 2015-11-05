@@ -51,11 +51,17 @@ trait Koulutusmoduulitoteutus
     osaamisala: Option[KoodistoKoodiViite] = None                // Koodisto: osaamisala
   ) extends Koulutusmoduulitoteutus
 
-  case class Tutkinnonosatoteutus(
-    tutkinnonosakoodi: Option[KoodistoKoodiViite],// Koodisto: tutkinnonosat
-    paikallinenKoodi: Option[Paikallinenkoodi],
-    kuvaus: Option[String],
-    pakollinen: Option[Boolean]
+  case class TutkinnonosatoteutusOps(
+    tutkinnonosakoodi: KoodistoKoodiViite,        // Koodisto: tutkinnonosat
+    pakollinen: Boolean,
+    paikallinenKoodi: Option[Paikallinenkoodi] = None,
+    kuvaus: Option[String] = None
+  ) extends Koulutusmoduulitoteutus
+
+  case class TutkinnonosatoteutusPaikallinen(
+    paikallinenKoodi: Paikallinenkoodi,
+    kuvaus: String,
+    pakollinen: Boolean
   ) extends Koulutusmoduulitoteutus
 
 case class Arviointi(

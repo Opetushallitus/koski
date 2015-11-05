@@ -148,24 +148,6 @@
                         "oneOf" : [ {
                           "type" : "object",
                           "properties" : {
-                            "koulutuskoodi" : {
-                              "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite"
-                            },
-                            "osaamisala" : {
-                              "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite"
-                            },
-                            "perusteenDiaarinumero" : {
-                              "type" : "string"
-                            },
-                            "tutkintonimike" : {
-                              "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite"
-                            }
-                          },
-                          "id" : "#fi_oph_tor_schema_Koulutustoteutus",
-                          "required" : [ "koulutuskoodi" ]
-                        }, {
-                          "type" : "object",
-                          "properties" : {
                             "kuvaus" : {
                               "type" : "string"
                             },
@@ -192,7 +174,41 @@
                               "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite"
                             }
                           },
-                          "id" : "#fi_oph_tor_schema_Tutkinnonosatoteutus"
+                          "id" : "#fi_oph_tor_schema_TutkinnonosatoteutusOps",
+                          "required" : [ "pakollinen", "tutkinnonosakoodi" ]
+                        }, {
+                          "type" : "object",
+                          "properties" : {
+                            "koulutuskoodi" : {
+                              "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite"
+                            },
+                            "osaamisala" : {
+                              "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite"
+                            },
+                            "perusteenDiaarinumero" : {
+                              "type" : "string"
+                            },
+                            "tutkintonimike" : {
+                              "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite"
+                            }
+                          },
+                          "id" : "#fi_oph_tor_schema_Koulutustoteutus",
+                          "required" : [ "koulutuskoodi" ]
+                        }, {
+                          "type" : "object",
+                          "properties" : {
+                            "kuvaus" : {
+                              "type" : "string"
+                            },
+                            "paikallinenKoodi" : {
+                              "$ref" : "#fi_oph_tor_schema_Paikallinenkoodi"
+                            },
+                            "pakollinen" : {
+                              "type" : "boolean"
+                            }
+                          },
+                          "id" : "#fi_oph_tor_schema_TutkinnonosatoteutusPaikallinen",
+                          "required" : [ "kuvaus", "paikallinenKoodi", "pakollinen" ]
                         } ]
                       }
                     },
@@ -241,9 +257,11 @@
               },
               "koulutusmoduuli" : {
                 "oneOf" : [ {
+                  "$ref" : "#fi_oph_tor_schema_TutkinnonosatoteutusOps"
+                }, {
                   "$ref" : "#fi_oph_tor_schema_Koulutustoteutus"
                 }, {
-                  "$ref" : "#fi_oph_tor_schema_Tutkinnonosatoteutus"
+                  "$ref" : "#fi_oph_tor_schema_TutkinnonosatoteutusPaikallinen"
                 } ]
               },
               "osasuoritukset" : {

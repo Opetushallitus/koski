@@ -29,11 +29,9 @@ object TorOppijaExamples {
           Some(Vahvistus(Some(date(2016, 1, 9)))),
           Some(List(
             Suoritus(
-              Tutkinnonosatoteutus(
-                Some(KoodistoKoodiViite("100016", Some("Huolto- ja korjaustyöt"), "tutkinnonosat", 1)),
-                paikallinenKoodi = None,
-                None,
-                Some(true)
+              TutkinnonosatoteutusOps(
+                KoodistoKoodiViite("100016", Some("Huolto- ja korjaustyöt"), "tutkinnonosat", 1),
+                true
               ),
               suorituskieli = None,
               Suoritustapa(KoodistoKoodiViite("naytto", Some("Näyttö"), "suoritustapa", 1)), //Optional??
@@ -48,11 +46,10 @@ object TorOppijaExamples {
               osasuoritukset = None
             ),
             Suoritus(
-              Tutkinnonosatoteutus(
-                Some(KoodistoKoodiViite("100018", Some("Pintavauriotyöt"), "tutkinnonosat", 1)),
-                paikallinenKoodi = None,
-                None,
-                Some(true)
+              TutkinnonosatoteutusPaikallinen(
+                Paikallinenkoodi("123456789", "Pintavauriotyöt", "kallion_oma_koodisto"),
+                "Opetellaan korjaamaan pinnallisia vaurioita",
+                false
               ),
               suorituskieli = None,
               Suoritustapa(KoodistoKoodiViite("naytto", Some("Näyttö"), "suoritustapa", 1)), //Optional??
@@ -67,11 +64,9 @@ object TorOppijaExamples {
               osasuoritukset = None
             ),
             Suoritus(
-              Tutkinnonosatoteutus(
-                Some(KoodistoKoodiViite("100019", Some("Mittaus- ja korivauriotyöt"), "tutkinnonosat", 1)),
-                paikallinenKoodi = None,
-                None,
-                Some(true)
+              TutkinnonosatoteutusOps(
+                KoodistoKoodiViite("100019", Some("Mittaus- ja korivauriotyöt"), "tutkinnonosat", 1),
+                true
               ),
               suorituskieli = None,
               Suoritustapa(KoodistoKoodiViite("naytto", Some("Näyttö"), "suoritustapa", 1)), //Optional??
@@ -86,11 +81,9 @@ object TorOppijaExamples {
               osasuoritukset = None
             ),
             Suoritus(
-              Tutkinnonosatoteutus(
-                Some(KoodistoKoodiViite("100034", Some("Maalauksen esikäsittelytyöt"), "tutkinnonosat", 1)),
-                paikallinenKoodi = None,
-                None,
-                Some(true)
+              TutkinnonosatoteutusOps(
+                KoodistoKoodiViite("100034", Some("Maalauksen esikäsittelytyöt"), "tutkinnonosat", 1),
+                true
               ),
               suorituskieli = None,
               Suoritustapa(KoodistoKoodiViite("naytto", Some("Näyttö"), "suoritustapa", 1)), //Optional??
@@ -105,11 +98,9 @@ object TorOppijaExamples {
               osasuoritukset = None
             ),
             Suoritus(
-              Tutkinnonosatoteutus(
-                Some(KoodistoKoodiViite("100037", Some("Auton lisävarustetyöt"), "tutkinnonosat", 1)),
-                paikallinenKoodi = None,
-                None,
-                Some(true)
+              TutkinnonosatoteutusOps(
+                KoodistoKoodiViite("100037", Some("Auton lisävarustetyöt"), "tutkinnonosat", 1),
+                true
               ),
               suorituskieli = None,
               Suoritustapa(KoodistoKoodiViite("naytto", Some("Näyttö"), "suoritustapa", 1)), //Optional??
@@ -124,11 +115,9 @@ object TorOppijaExamples {
               osasuoritukset = None
             ),
             Suoritus(
-              Tutkinnonosatoteutus(
-                Some(KoodistoKoodiViite("101050", Some("Yritystoiminnan suunnittelu"), "tutkinnonosat", 1)),
-                paikallinenKoodi = None,
-                None,
-                Some(true)
+              TutkinnonosatoteutusOps(
+                KoodistoKoodiViite("101050", Some("Yritystoiminnan suunnittelu"), "tutkinnonosat", 1),
+                true
               ),
               suorituskieli = None,
               Suoritustapa(KoodistoKoodiViite("naytto", Some("Näyttö"), "suoritustapa", 1)), //Optional??
