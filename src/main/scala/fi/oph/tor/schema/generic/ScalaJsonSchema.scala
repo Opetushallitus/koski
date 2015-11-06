@@ -38,7 +38,7 @@ case class Property(key: String, tyep: SchemaType, metadata: List[Metadata])
 trait Metadata
 trait MetadataSupport {
   val extractMetadata: PartialFunction[(String, List[String]), List[Metadata]]
-  def appendMetadata(obj: JObject, metadata: Metadata): JObject
+  def appendMetadataToJsonSchema(obj: JObject, metadata: Metadata): JObject
 }
 
 class ScalaJsonSchema(metadatasSupported: MetadataSupport*) {
@@ -134,7 +134,7 @@ class ScalaJsonSchema(metadatasSupported: MetadataSupport*) {
   def appendMetadata(obj: JObject, metadata: List[Metadata]): JObject = {
     metadata.foldLeft(obj) { case (obj: JObject, metadata) =>
       metadatasSupported.foldLeft(obj) { case (obj, metadataSupport) =>
-        metadataSupport.appendMetadata(obj, metadata)
+        metadataSupport.appendMetadataToJsonSchema(obj, metadata)
       }
     }
   }

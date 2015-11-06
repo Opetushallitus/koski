@@ -10,7 +10,7 @@ object DescriptionAnnotation extends MetadataSupport {
       List(DescriptionAnnotation(params.mkString(" ")))
   }
 
-  override def appendMetadata(obj: JObject, metadata: Metadata) = metadata match {
+  override def appendMetadataToJsonSchema(obj: JObject, metadata: Metadata) = metadata match {
     case DescriptionAnnotation(desc) => obj.merge(JObject("description" -> JString(desc)))
     case _ => obj
   }

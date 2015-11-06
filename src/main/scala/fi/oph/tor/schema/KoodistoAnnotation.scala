@@ -14,7 +14,7 @@ object KoodistoAnnotation extends MetadataSupport {
       List(KoodistoAnnotation(params.mkString(" ")))
   }
 
-  override def appendMetadata(obj: JObject, metadata: Metadata) = metadata match {
+  override def appendMetadataToJsonSchema(obj: JObject, metadata: Metadata) = metadata match {
     case KoodistoAnnotation(koodistoUri) =>
       val description = obj.\("description") match {
         case JString(s) => s

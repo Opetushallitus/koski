@@ -26,8 +26,6 @@ object Henkilö {
   def withOid(oid: String) = Henkilö(Some(oid), None, None, None, None)
 }
 
-// TODO: käytettyjen koodistojen formaali annotointi
-
 case class OpintoOikeus(
   @DescriptionAnnotation("Opinto-oikeuden uniikki tunniste. Tietoja syötettäessä kenttä ei ole pakollinen. Tietoja päivitettäessä TOR tunnistaa opinto-oikeuden joko tämän id:n tai muiden kenttien (oppijaOid, organisaatio, diaarinumero) perusteella.")
   id: Option[Int],
