@@ -14,7 +14,8 @@ object Json2Html extends App {
         <meta charset="UTF-8"></meta>
         <style>
           ul {{list-style-type: none; margin: 0; padding-left: 20px}}
-          div {{display: inline}}
+          div, li {{display: inline}}
+          li.spacer::after {{display: block; content: ''}}
         </style>
       </head>
       <body>
@@ -23,7 +24,7 @@ object Json2Html extends App {
     </html>
   )
 
-  def name(f: String) = <span class="name">"{f}" :</span>
+  def name(f: String) = <span class="name">"{f}"</span>
   def intersperse[T](l: List[T], spacer: T) = l.zipWithIndex.flatMap {
     case (x, index) => if(index == 0) {List(x)} else {List(spacer, x)}
   }
@@ -31,20 +32,19 @@ object Json2Html extends App {
   def buildHtml(json: JValue): Elem = {
     json match {
       case JObject(fields) => {
-        val l = fields.length
         <div>
           {" { "}
           <ul>{
             intersperse(fields.map {
-              case (f, JObject(s))  => <li>{name(f)} { buildHtml(JObject(s)) }</li>
-              case (f, JString(s))  => <li>{name(f)} "{s}"</li>
-              case (f, JDouble(s))  => <li>{name(f)} {s}</li>
-              case (f, JDecimal(s)) => <li>{name(f)} {s}</li>
-              case (f, JInt(s))     => <li>{name(f)} {s}</li>
-              case (f, JBool(s))    => <li>{name(f)} {s}</li>
-              case (f, JArray(a))   => <li>{name(f)} [{intersperse(a.map(buildHtml), ",")}]</li>
+              case (f, JObject(s))  => <li>{name(f)} : { buildHtml(JObject(s)) }</li>
+              case (f, JString(s))  => <li>{name(f)} : <span class="value">{s}</span></li>
+              case (f, JDouble(s))  => <li>{name(f)} : <span class="value">{s}</span></li>
+              case (f, JDecimal(s)) => <li>{name(f)} : <span class="value">{s}</span></li>
+              case (f, JInt(s))     => <li>{name(f)} : <span class="value">{s}</span></li>
+              case (f, JBool(s))    => <li>{name(f)} : <span class="value">{s}</span></li>
+              case (f, JArray(a))   => <li>{name(f)} : [{intersperse(a.map(buildHtml), ",")}]</li>
               case _                => <span></span>
-            }, <li>,</li>)
+            }, <li class="spacer">,</li>)
           }</ul>
           {" } "}
         </div>
