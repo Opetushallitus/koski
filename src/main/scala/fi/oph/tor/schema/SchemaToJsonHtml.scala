@@ -28,20 +28,21 @@ object SchemaToJsonHtml {
       {metadataHtml(tyep.metadata)}
       <ul>
         {
-        val propertiesWithValue: List[(Property, AnyRef)] = tyep.properties.flatMap { property: Property =>
-          val value = tyep.getPropertyValue(property, obj)
-          value match {
-            case None => None
-            case x => Some((property, x))
+          val propertiesWithValue: List[(Int, Property, AnyRef)] = tyep.properties.zipWithIndex.flatMap { case (property: Property, index: Int) =>
+            val value = tyep.getPropertyValue(property, obj)
+            value match {
+              case None => None
+              case x => Some((index, property, x))
+            }
           }
-        }
-        intersperse(propertiesWithValue.map { case (property, value) =>
-          <li>
-            <span class="key">{property.key}</span>:
-            <span class="value">{buildHtml(value, property.tyep, schema)}</span>
-            {metadataHtml(property.metadata)}
-          </li>
-        }, <li class="spacer">,</li>)
+          propertiesWithValue.map { case (i, property, value) =>
+            <li class="property">
+              <span class="key">{property.key}</span>:
+              <span class="value">{buildHtml(value, property.tyep, schema)}</span>
+              {metadataHtml(property.metadata)}
+              {if (i < propertiesWithValue.length - 1) { "," } else { "" } }
+            </li>
+          }
         }
       </ul>
       {" } "}

@@ -139,6 +139,44 @@
                 "oneOf" : [ {
                   "type" : "object",
                   "properties" : {
+                    "koulutuskoodi" : {
+                      "type" : "object",
+                      "properties" : {
+                        "koodiarvo" : {
+                          "type" : "string"
+                        },
+                        "koodistoUri" : {
+                          "type" : "string"
+                        },
+                        "koodistoVersio" : {
+                          "type" : "number"
+                        },
+                        "nimi" : {
+                          "type" : "string"
+                        }
+                      },
+                      "id" : "#fi_oph_tor_schema_KoodistoKoodiViite",
+                      "required" : [ "koodiarvo", "koodistoUri", "koodistoVersio" ],
+                      "description" : "Tutkinnon 6-numeroinen tutkintokoodi\n(Koodisto: koulutus)"
+                    },
+                    "osaamisala" : {
+                      "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
+                      "description" : "Osaamisala\n(Koodisto: osaamisala)"
+                    },
+                    "perusteenDiaarinumero" : {
+                      "type" : "string",
+                      "description" : "Tutkinnon perusteen diaarinumero (pakollinen). Ks. ePerusteet-palvelu."
+                    },
+                    "tutkintonimike" : {
+                      "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
+                      "description" : "Tutkintonimike\n(Koodisto: tutkintonimikkeet)"
+                    }
+                  },
+                  "id" : "#fi_oph_tor_schema_Koulutustoteutus",
+                  "required" : [ "koulutuskoodi" ]
+                }, {
+                  "type" : "object",
+                  "properties" : {
                     "kuvaus" : {
                       "type" : "string"
                     },
@@ -163,50 +201,12 @@
                       "description" : "Onko pakollinen osa tutkinnossa"
                     },
                     "tutkinnonosakoodi" : {
-                      "type" : "object",
-                      "properties" : {
-                        "koodiarvo" : {
-                          "type" : "string"
-                        },
-                        "koodistoUri" : {
-                          "type" : "string"
-                        },
-                        "koodistoVersio" : {
-                          "type" : "number"
-                        },
-                        "nimi" : {
-                          "type" : "string"
-                        }
-                      },
-                      "id" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-                      "required" : [ "koodiarvo", "koodistoUri", "koodistoVersio" ],
+                      "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
                       "description" : "Tutkinnon osan kansallinen koodi\n(Koodisto: tutkinnonosat)"
                     }
                   },
                   "id" : "#fi_oph_tor_schema_TutkinnonosatoteutusOps",
                   "required" : [ "pakollinen", "tutkinnonosakoodi" ]
-                }, {
-                  "type" : "object",
-                  "properties" : {
-                    "koulutuskoodi" : {
-                      "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-                      "description" : "Tutkinnon 6-numeroinen tutkintokoodi\n(Koodisto: koulutus)"
-                    },
-                    "osaamisala" : {
-                      "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-                      "description" : "Osaamisala\n(Koodisto: osaamisala)"
-                    },
-                    "perusteenDiaarinumero" : {
-                      "type" : "string",
-                      "description" : "Tutkinnon perusteen diaarinumero (pakollinen). Ks. ePerusteet-palvelu."
-                    },
-                    "tutkintonimike" : {
-                      "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-                      "description" : "Tutkintonimike\n(Koodisto: tutkintonimikkeet)"
-                    }
-                  },
-                  "id" : "#fi_oph_tor_schema_Koulutustoteutus",
-                  "required" : [ "koulutuskoodi" ]
                 }, {
                   "type" : "object",
                   "properties" : {
@@ -244,9 +244,9 @@
                     "properties" : {
                       "osaaminen" : {
                         "oneOf" : [ {
-                          "$ref" : "#fi_oph_tor_schema_TutkinnonosatoteutusOps"
-                        }, {
                           "$ref" : "#fi_oph_tor_schema_Koulutustoteutus"
+                        }, {
+                          "$ref" : "#fi_oph_tor_schema_TutkinnonosatoteutusOps"
                         }, {
                           "$ref" : "#fi_oph_tor_schema_TutkinnonosatoteutusPaikallinen"
                         } ]
