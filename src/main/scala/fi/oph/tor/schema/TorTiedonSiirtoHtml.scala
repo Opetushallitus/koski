@@ -1,7 +1,9 @@
 package fi.oph.tor.schema
 import com.tristanhunt.knockoff.DefaultDiscounter._
 object TorTiedonSiirtoHtml {
-  def markdown = """
+  def markdown =
+
+"""
 
 # TOR-tiedonsiirtoprotokolla
 
@@ -11,12 +13,9 @@ JSON Schema: [tor-oppija-schema.json](/tor/documentation/tor-oppija-schema.json)
 
 JSON Schema validaattori netissä: [jsonschemavalidator.net](http://www.jsonschemavalidator.net/). Voit kokeilla laittaa sinne meidän scheman ja esimerkin.
 
-## Esimerkkidata annotoituna <small><a href="/tor/documentation/example.json">lataa JSON</a></small>
-
-Esimerkki, johon lisätty lähes kaikki kaavaillut tietokentät.
+## Esimerkkidata annotoituna
 
 """
-
 
   def html = {
     <html>
@@ -74,7 +73,14 @@ Esimerkki, johon lisätty lähes kaikki kaavaillut tietokentät.
       </head>
       <body>
         {toXHTML( knockoff(markdown) )}
-        {SchemaToJsonHtml.buildHtml(TorOppijaExamples.full, TorSchema.schemaType, TorSchema.schema)}
+        {
+          TorOppijaExamples.examples.map { example =>
+            <div>
+              <h3>{example.description} <small><a href={"/tor/documentation/" + example.name + ".json"}>lataa JSON</a></small></h3>
+              { SchemaToJsonHtml.buildHtml(example.oppija, TorSchema.schemaType, TorSchema.schema) }
+            </div>
+          }
+        }
       </body>
     </html>
   }
