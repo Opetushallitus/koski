@@ -1,5 +1,7 @@
 package fi.oph.tor.schema
 import com.tristanhunt.knockoff.DefaultDiscounter._
+import fi.oph.tor.schema.generic.Property
+
 object TorTiedonSiirtoHtml {
   def markdown =
 
@@ -30,39 +32,23 @@ JSON Schema validaattori netissä: [jsonschemavalidator.net](http://www.jsonsche
           small {{
             font-size: 10px;
           }}
-          .object ul {{list-style-type: none; margin: 0; padding-left: 20px; }}
-          .object div, .object li {{display: inline}}
-          .object li.spacer::after {{display: block; content: ''}}
-          .object {{
+          .json {{
             font-family: monospace;
             font-size: 12px;
           }}
-          .object .property {{
-            position: relative;
-            display: block;
-          }}
-          .object .metadata {{
+          .metadata {{
             font-family: arial;
           }}
-          .object .metadata {{
-            display: block;
-            position: absolute;
-            width: calc(100vw - 600px);
-            top: 0;
-            right: 0;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-          }}
-          .object .metadata .koodisto {{
-            margin-right: 7px;
-            float: left;
-          }}
           .object,.array {{ color: rgb(51, 51, 51); }}
-          .object .key {{ color: red; }}
-          .object .value {{ color: green; }}
-
-
+          .json .key {{ color: rgb(165, 116, 28); }}
+          .json .value {{ color: green; }}
+          .json tr:hover {{ background: #ffffbb; }}
+          table.json {{ border-collapse: collapse; }}
+          .koodisto {{ margin-left: 10px; }}
+          a, a:visited {{
+            text-decoration: none;
+            color: teal;
+          }}
         </style>
       </head>
       <body>
@@ -71,11 +57,12 @@ JSON Schema validaattori netissä: [jsonschemavalidator.net](http://www.jsonsche
           TorOppijaExamples.examples.map { example =>
             <div>
               <h3>{example.description} <small><a href={"/tor/documentation/examples/" + example.name + ".json"}>lataa JSON</a></small></h3>
-              { SchemaToJsonHtml.buildHtml(example.oppija, TorSchema.schemaType, TorSchema.schema) }
+              <table class="json">
+                {SchemaToJsonHtml.buildHtml(Property("", TorSchema.schemaType, Nil), TorOppijaExamples.full, TorSchema.schema, 0)}
+              </table>
             </div>
           }
         }
       </body>
     </html>
-  }
 }

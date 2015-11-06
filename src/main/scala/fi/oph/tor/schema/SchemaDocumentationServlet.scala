@@ -1,9 +1,9 @@
 package fi.oph.tor.schema
 
+import fi.oph.tor.ErrorHandlingServlet
 import fi.oph.tor.json.Json
-import org.scalatra.ScalatraServlet
 
-class SchemaDocumentationServlet extends ScalatraServlet {
+class SchemaDocumentationServlet extends ErrorHandlingServlet {
   get("/") {
     TorTiedonSiirtoHtml.html
   }
