@@ -7,17 +7,32 @@ import scala.reflect.runtime.{universe => ru}
 
 sealed trait SchemaType {
   def metadata: List[Metadata] = Nil
+  def fieldSchema(fieldName: String): Option[SchemaType] = None
 }
 
-case class OptionalType(x: SchemaType) extends SchemaType
-case class ListType(x: SchemaType) extends SchemaType
+case class OptionalType(itemType: SchemaType) extends SchemaType
+case class ListType(itemType: SchemaType) extends SchemaType
 case class DateType() extends SchemaType
 case class StringType() extends SchemaType
 case class BooleanType() extends SchemaType
 case class NumberType() extends SchemaType
-case class ClassType(fullClassName: String, properties: List[Property], override val metadata: List[Metadata]) extends SchemaType
-case class ClassTypeRef(fullClassName: String) extends SchemaType
-case class OneOf(types: List[SchemaType]) extends SchemaType
+case class ClassType(fullClassName: String, properties: List[Property], override val metadata: List[Metadata]) extends SchemaType with TypeWithClassName {
+  def getPropertyValue(property: Property, target: AnyRef): AnyRef = {
+    target.getClass.getMethod(property.key).invoke(target)
+  }
+}
+case class ClassTypeRef(fullClassName: String) extends SchemaType with TypeWithClassName
+case class OneOf(types: List[TypeWithClassName]) extends SchemaType {
+  def matchType(obj: AnyRef): SchemaType = {
+    types.find { classType =>
+      classType.fullClassName == obj.getClass.getName
+    }.get
+  }
+}
+trait TypeWithClassName extends SchemaType {
+  def fullClassName: String
+}
+
 case class Property(key: String, tyep: SchemaType, metadata: List[Metadata])
 
 trait Metadata
@@ -96,8 +111,13 @@ class ScalaJsonSchema(metadatasSupported: MetadataSupport*) {
     }
   }
 
+  def createSchema(className: String): SchemaType = {
+    createSchema(reflect.runtime.currentMirror.classSymbol(Class.forName(className)).toType)
+  }
 
-  def findImplementations(tpe: ru.Type, previousTypes: collection.mutable.Set[String]): List[SchemaType] = {
+  def createSchemaForObject(obj: AnyRef): SchemaType = createSchema(obj.getClass.getName)
+
+  def findImplementations(tpe: ru.Type, previousTypes: collection.mutable.Set[String]): List[TypeWithClassName] = {
     import collection.JavaConverters._
     import reflect.runtime.currentMirror
 
@@ -107,7 +127,7 @@ class ScalaJsonSchema(metadatasSupported: MetadataSupport*) {
     val implementationClasses = reflections.getSubTypesOf(javaClass).asScala
 
     implementationClasses.toList.map { klass =>
-      createSchema(currentMirror.classSymbol(klass).toType, previousTypes)
+      createSchema(currentMirror.classSymbol(klass).toType, previousTypes).asInstanceOf[TypeWithClassName]
     }
   }
 

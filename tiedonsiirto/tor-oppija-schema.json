@@ -161,22 +161,6 @@
                     "pakollinen" : {
                       "type" : "boolean",
                       "description" : "Onko pakollinen osa tutkinnossa"
-                    }
-                  },
-                  "id" : "#fi_oph_tor_schema_TutkinnonosatoteutusPaikallinen",
-                  "required" : [ "kuvaus", "paikallinenKoodi", "pakollinen" ]
-                }, {
-                  "type" : "object",
-                  "properties" : {
-                    "kuvaus" : {
-                      "type" : "string"
-                    },
-                    "paikallinenKoodi" : {
-                      "$ref" : "#fi_oph_tor_schema_Paikallinenkoodi"
-                    },
-                    "pakollinen" : {
-                      "type" : "boolean",
-                      "description" : "Onko pakollinen osa tutkinnossa"
                     },
                     "tutkinnonosakoodi" : {
                       "type" : "object",
@@ -223,6 +207,22 @@
                   },
                   "id" : "#fi_oph_tor_schema_Koulutustoteutus",
                   "required" : [ "koulutuskoodi" ]
+                }, {
+                  "type" : "object",
+                  "properties" : {
+                    "kuvaus" : {
+                      "type" : "string"
+                    },
+                    "paikallinenKoodi" : {
+                      "$ref" : "#fi_oph_tor_schema_Paikallinenkoodi"
+                    },
+                    "pakollinen" : {
+                      "type" : "boolean",
+                      "description" : "Onko pakollinen osa tutkinnossa"
+                    }
+                  },
+                  "id" : "#fi_oph_tor_schema_TutkinnonosatoteutusPaikallinen",
+                  "required" : [ "kuvaus", "paikallinenKoodi", "pakollinen" ]
                 } ],
                 "description" : "Koulutusmoduulin tunniste. Joko tutkinto tai tutkinnon osa"
               },
@@ -244,11 +244,11 @@
                     "properties" : {
                       "osaaminen" : {
                         "oneOf" : [ {
-                          "$ref" : "#fi_oph_tor_schema_TutkinnonosatoteutusPaikallinen"
-                        }, {
                           "$ref" : "#fi_oph_tor_schema_TutkinnonosatoteutusOps"
                         }, {
                           "$ref" : "#fi_oph_tor_schema_Koulutustoteutus"
+                        }, {
+                          "$ref" : "#fi_oph_tor_schema_TutkinnonosatoteutusPaikallinen"
                         } ]
                       }
                     },
