@@ -76,7 +76,7 @@ JSON Schema validaattori netissä: [jsonschemavalidator.net](http://www.jsonsche
         {
           TorOppijaExamples.examples.map { example =>
             <div>
-              <h3>{example.description} <small><a href={"/tor/documentation/" + example.name + ".json"}>lataa JSON</a></small></h3>
+              <h3>{example.description} <small><a href={"/tor/documentation/examples/" + example.name + ".json"}>lataa JSON</a></small></h3>
               { SchemaToJsonHtml.buildHtml(example.oppija, TorSchema.schemaType, TorSchema.schema) }
             </div>
           }

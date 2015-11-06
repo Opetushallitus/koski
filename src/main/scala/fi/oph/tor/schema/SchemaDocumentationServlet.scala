@@ -13,7 +13,7 @@ class SchemaDocumentationServlet extends ScalatraServlet {
     TorSchema.schemaJsonString
   }
 
-  get("/:name.json") {
+  get("/examples/:name.json") {
     contentType = "application/json"
 
     TorOppijaExamples.examples.find(_.name == params("name")) match {
