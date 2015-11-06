@@ -76,7 +76,7 @@ class ScalaJsonSchema(metadatasSupported: MetadataSupport*) {
         val termType = createSchema(term.typeSignature, previousTypes)
         val termName: String = term.name.decoded.trim
         Property(termName, termType, metadataForSymbol(term))
-      }.toList.sortBy(_.key)
+      }.toList
 
       ClassType(className, propertiesList, metadataForSymbol(tpe.typeSymbol))
     }

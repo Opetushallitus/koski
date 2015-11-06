@@ -4,20 +4,20 @@
     "henkilö" : {
       "type" : "object",
       "properties" : {
-        "etunimet" : {
-          "type" : "string"
+        "oid" : {
+          "type" : "string",
+          "description" : "Yksilöivä tunniste Opintopolku-palvelussa"
         },
         "hetu" : {
           "type" : "string",
           "description" : "Suomalainen henkilötunnus"
         },
+        "etunimet" : {
+          "type" : "string"
+        },
         "kutsumanimi" : {
           "type" : "string",
           "description" : "Kutsumanimi, oltava yksi etunimistä. Esimerkiksi etunimille \"Juha-Matti Petteri\" kelpaavat joko \"Juha-Matti\", \"Juha\", \"Matti\" tai \"Petteri\"."
-        },
-        "oid" : {
-          "type" : "string",
-          "description" : "Yksilöivä tunniste Opintopolku-palvelussa"
         },
         "sukunimi" : {
           "type" : "string"
@@ -31,6 +31,10 @@
       "items" : {
         "type" : "object",
         "properties" : {
+          "id" : {
+            "type" : "number",
+            "description" : "Opinto-oikeuden uniikki tunniste. Tietoja syötettäessä kenttä ei ole pakollinen. Tietoja päivitettäessä TOR tunnistaa opinto-oikeuden joko tämän id:n tai muiden kenttien (oppijaOid, organisaatio, diaarinumero) perusteella."
+          },
           "alkamispäivä" : {
             "type" : "string",
             "format" : "date"
@@ -39,102 +43,37 @@
             "type" : "string",
             "format" : "date"
           },
-          "hojks" : {
-            "type" : "object",
-            "properties" : {
-              "hojksTehty" : {
-                "type" : "boolean"
-              }
-            },
-            "id" : "#fi_oph_tor_schema_Hojks",
-            "required" : [ "hojksTehty" ]
-          },
-          "id" : {
-            "type" : "number",
-            "description" : "Opinto-oikeuden uniikki tunniste. Tietoja syötettäessä kenttä ei ole pakollinen. Tietoja päivitettäessä TOR tunnistaa opinto-oikeuden joko tämän id:n tai muiden kenttien (oppijaOid, organisaatio, diaarinumero) perusteella."
+          "päättymispäivä" : {
+            "type" : "string",
+            "format" : "date"
           },
           "koulutustoimija" : {
             "type" : "object",
             "properties" : {
-              "nimi" : {
-                "type" : "string",
-                "description" : "Organisaation (kielistetty) nimi. Tiedon syötössä tämän kentän arvo jätetään huomioimatta; arvo haetaan Organisaatiopalvelusta."
-              },
               "oid" : {
                 "type" : "string",
                 "description" : "Organisaation tunniste Opintopolku-palvelussa"
+              },
+              "nimi" : {
+                "type" : "string",
+                "description" : "Organisaation (kielistetty) nimi. Tiedon syötössä tämän kentän arvo jätetään huomioimatta; arvo haetaan Organisaatiopalvelusta."
               }
             },
             "id" : "#fi_oph_tor_schema_Organisaatio",
             "required" : [ "oid" ],
             "description" : "Opinnot tarjoava koulutustoimija"
           },
-          "läsnäolotiedot" : {
-            "type" : "object",
-            "properties" : {
-              "läsnäolojaksot" : {
-                "type" : "array",
-                "items" : {
-                  "type" : "object",
-                  "properties" : {
-                    "alku" : {
-                      "type" : "string",
-                      "format" : "date"
-                    },
-                    "loppu" : {
-                      "type" : "string",
-                      "format" : "date"
-                    },
-                    "tila" : {
-                      "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-                      "description" : "Läsnäolotila (läsnä, poissa...)\n(Koodisto: lasnaolotila)"
-                    }
-                  },
-                  "id" : "#fi_oph_tor_schema_Läsnäolojakso",
-                  "required" : [ "alku", "tila" ]
-                }
-              }
-            },
-            "id" : "#fi_oph_tor_schema_Läsnäolotiedot",
-            "required" : [ "läsnäolojaksot" ]
-          },
-          "opintojenRahoitus" : {
-            "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-            "description" : "Opintojen rahoitus\n(Koodisto: opintojenrahoitus)"
-          },
           "oppilaitos" : {
             "$ref" : "#fi_oph_tor_schema_Organisaatio",
             "description" : "Oppilaitos, jossa opinnot on suoritettu"
           },
-          "päättymispäivä" : {
-            "type" : "string",
-            "format" : "date"
+          "toimipiste" : {
+            "$ref" : "#fi_oph_tor_schema_Organisaatio",
+            "description" : "Oppilaitoksen toimipiste, jossa opinnot on suoritettu"
           },
           "suoritus" : {
             "type" : "object",
             "properties" : {
-              "alkamispäivä" : {
-                "type" : "string",
-                "format" : "date"
-              },
-              "arviointi" : {
-                "type" : "object",
-                "properties" : {
-                  "arvosana" : {
-                    "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-                    "description" : "Arvosana. Kullekin arviointiasteikolle löytyy oma koodistonsa."
-                  },
-                  "arvosananKorottaminen" : {
-                    "type" : "boolean"
-                  },
-                  "päivä" : {
-                    "type" : "string",
-                    "format" : "date"
-                  }
-                },
-                "id" : "#fi_oph_tor_schema_Arviointi",
-                "required" : [ "arvosana" ]
-              },
               "koulutusmoduuli" : {
                 "oneOf" : [ {
                   "type" : "object",
@@ -145,23 +84,19 @@
                         "koodiarvo" : {
                           "type" : "string"
                         },
+                        "nimi" : {
+                          "type" : "string"
+                        },
                         "koodistoUri" : {
                           "type" : "string"
                         },
                         "koodistoVersio" : {
                           "type" : "number"
-                        },
-                        "nimi" : {
-                          "type" : "string"
                         }
                       },
                       "id" : "#fi_oph_tor_schema_KoodistoKoodiViite",
                       "required" : [ "koodiarvo", "koodistoUri", "koodistoVersio" ],
                       "description" : "Tutkinnon 6-numeroinen tutkintokoodi\n(Koodisto: koulutus)"
-                    },
-                    "osaamisala" : {
-                      "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-                      "description" : "Osaamisala\n(Koodisto: osaamisala)"
                     },
                     "perusteenDiaarinumero" : {
                       "type" : "string",
@@ -170,6 +105,10 @@
                     "tutkintonimike" : {
                       "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
                       "description" : "Tutkintonimike\n(Koodisto: tutkintonimikkeet)"
+                    },
+                    "osaamisala" : {
+                      "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
+                      "description" : "Osaamisala\n(Koodisto: osaamisala)"
                     }
                   },
                   "id" : "#fi_oph_tor_schema_Koulutustoteutus",
@@ -177,8 +116,13 @@
                 }, {
                   "type" : "object",
                   "properties" : {
-                    "kuvaus" : {
-                      "type" : "string"
+                    "tutkinnonosakoodi" : {
+                      "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
+                      "description" : "Tutkinnon osan kansallinen koodi\n(Koodisto: tutkinnonosat)"
+                    },
+                    "pakollinen" : {
+                      "type" : "boolean",
+                      "description" : "Onko pakollinen osa tutkinnossa"
                     },
                     "paikallinenKoodi" : {
                       "type" : "object",
@@ -186,35 +130,30 @@
                         "koodiarvo" : {
                           "type" : "string"
                         },
-                        "koodistoUri" : {
+                        "nimi" : {
                           "type" : "string"
                         },
-                        "nimi" : {
+                        "koodistoUri" : {
                           "type" : "string"
                         }
                       },
                       "id" : "#fi_oph_tor_schema_Paikallinenkoodi",
-                      "required" : [ "koodiarvo", "koodistoUri", "nimi" ]
+                      "required" : [ "koodiarvo", "nimi", "koodistoUri" ]
                     },
-                    "pakollinen" : {
-                      "type" : "boolean",
-                      "description" : "Onko pakollinen osa tutkinnossa"
-                    },
-                    "tutkinnonosakoodi" : {
-                      "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-                      "description" : "Tutkinnon osan kansallinen koodi\n(Koodisto: tutkinnonosat)"
+                    "kuvaus" : {
+                      "type" : "string"
                     }
                   },
                   "id" : "#fi_oph_tor_schema_TutkinnonosatoteutusOps",
-                  "required" : [ "pakollinen", "tutkinnonosakoodi" ]
+                  "required" : [ "tutkinnonosakoodi", "pakollinen" ]
                 }, {
                   "type" : "object",
                   "properties" : {
-                    "kuvaus" : {
-                      "type" : "string"
-                    },
                     "paikallinenKoodi" : {
                       "$ref" : "#fi_oph_tor_schema_Paikallinenkoodi"
+                    },
+                    "kuvaus" : {
+                      "type" : "string"
                     },
                     "pakollinen" : {
                       "type" : "boolean",
@@ -222,15 +161,9 @@
                     }
                   },
                   "id" : "#fi_oph_tor_schema_TutkinnonosatoteutusPaikallinen",
-                  "required" : [ "kuvaus", "paikallinenKoodi", "pakollinen" ]
+                  "required" : [ "paikallinenKoodi", "kuvaus", "pakollinen" ]
                 } ],
                 "description" : "Koulutusmoduulin tunniste. Joko tutkinto tai tutkinnon osa"
-              },
-              "osasuoritukset" : {
-                "type" : "array",
-                "items" : {
-                  "$ref" : "#fi_oph_tor_schema_Suoritus"
-                }
               },
               "suorituskieli" : {
                 "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
@@ -239,6 +172,10 @@
               "suoritustapa" : {
                 "type" : "object",
                 "properties" : {
+                  "tunniste" : {
+                    "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
+                    "description" : "Tutkinnon tai tutkinnon osan suoritustapa\n(Koodisto: suoritustapa)"
+                  },
                   "hyväksiluku" : {
                     "type" : "object",
                     "properties" : {
@@ -287,10 +224,6 @@
                     },
                     "id" : "#fi_oph_tor_schema_Oppisopimus",
                     "required" : [ "työnantaja" ]
-                  },
-                  "tunniste" : {
-                    "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-                    "description" : "Tutkinnon tai tutkinnon osan suoritustapa\n(Koodisto: suoritustapa)"
                   }
                 },
                 "id" : "#fi_oph_tor_schema_Suoritustapa",
@@ -299,6 +232,28 @@
               "tila" : {
                 "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
                 "description" : "Suorituksen tila\n(Koodisto: suorituksentila)"
+              },
+              "alkamispäivä" : {
+                "type" : "string",
+                "format" : "date"
+              },
+              "arviointi" : {
+                "type" : "object",
+                "properties" : {
+                  "arvosana" : {
+                    "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
+                    "description" : "Arvosana. Kullekin arviointiasteikolle löytyy oma koodistonsa."
+                  },
+                  "päivä" : {
+                    "type" : "string",
+                    "format" : "date"
+                  },
+                  "arvosananKorottaminen" : {
+                    "type" : "boolean"
+                  }
+                },
+                "id" : "#fi_oph_tor_schema_Arviointi",
+                "required" : [ "arvosana" ]
               },
               "vahvistus" : {
                 "type" : "object",
@@ -309,19 +264,64 @@
                   }
                 },
                 "id" : "#fi_oph_tor_schema_Vahvistus"
+              },
+              "osasuoritukset" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#fi_oph_tor_schema_Suoritus"
+                }
               }
             },
             "id" : "#fi_oph_tor_schema_Suoritus",
             "required" : [ "koulutusmoduuli", "suoritustapa" ],
             "description" : "Opinto-oikeuteen liittyvän (tutkinto-)suorituksen tiedot."
           },
+          "hojks" : {
+            "type" : "object",
+            "properties" : {
+              "hojksTehty" : {
+                "type" : "boolean"
+              }
+            },
+            "id" : "#fi_oph_tor_schema_Hojks",
+            "required" : [ "hojksTehty" ]
+          },
           "tavoite" : {
             "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
             "description" : "Opintojen tavoit tutkinto / tutkinnon osa\n(Koodisto: opintojentavoite)"
           },
-          "toimipiste" : {
-            "$ref" : "#fi_oph_tor_schema_Organisaatio",
-            "description" : "Oppilaitoksen toimipiste, jossa opinnot on suoritettu"
+          "läsnäolotiedot" : {
+            "type" : "object",
+            "properties" : {
+              "läsnäolojaksot" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "object",
+                  "properties" : {
+                    "alku" : {
+                      "type" : "string",
+                      "format" : "date"
+                    },
+                    "loppu" : {
+                      "type" : "string",
+                      "format" : "date"
+                    },
+                    "tila" : {
+                      "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
+                      "description" : "Läsnäolotila (läsnä, poissa...)\n(Koodisto: lasnaolotila)"
+                    }
+                  },
+                  "id" : "#fi_oph_tor_schema_Läsnäolojakso",
+                  "required" : [ "alku", "tila" ]
+                }
+              }
+            },
+            "id" : "#fi_oph_tor_schema_Läsnäolotiedot",
+            "required" : [ "läsnäolojaksot" ]
+          },
+          "opintojenRahoitus" : {
+            "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
+            "description" : "Opintojen rahoitus\n(Koodisto: opintojenrahoitus)"
           }
         },
         "id" : "#fi_oph_tor_schema_OpintoOikeus",
