@@ -14,4 +14,3 @@ object GenerateSchemaAndExamples extends App {
 
   println("Written to files in tiedonsiirto/")
 }
-
