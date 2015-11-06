@@ -21,6 +21,8 @@ object GenerateSchemaAndExamples extends App {
           ul {{list-style-type: none; margin: 0; padding-left: 20px}}
           div, li {{display: inline}}
           li.spacer::after {{display: block; content: ''}}
+          .description {{ background: #ffffaa }}
+          .koodisto {{ background: #aaffff }}
         </style>
       </head>
       <body>

@@ -6,7 +6,7 @@ import fi.oph.tor.schema.generic._
 import scala.xml.Elem
 
 object SchemaToJsonHtml {
-  def buildHtml(obj: Any, tyep: SchemaType, schema: ScalaJsonSchema): Elem = (obj, tyep) match {
+  def buildHtml(obj: Any, tyep: SchemaType, schema: ScalaJsonSchema): AnyRef = (obj, tyep) match {
     case (o: AnyRef, t:ClassType) => buildHtmlForObject(o, t, schema)
     case (xs: Iterable[_], t:ListType) => <span>[{intersperse(xs.map{ value => buildHtml(value, t.itemType, schema) }.toList, ",")}]</span>
     case (x: Number, t:NumberType) => buildValueHtml(x)
@@ -18,18 +18,14 @@ object SchemaToJsonHtml {
     case (x: AnyRef, t:ClassTypeRef) => buildHtml(x, schema.createSchema(t.fullClassName), schema)
   }
 
-  private def name(f: String) = <span class="name">"{f}"</span>
   private def intersperse[T](l: List[T], spacer: T) = l.zipWithIndex.flatMap {
     case (x, index) => if(index == 0) {List(x)} else {List(spacer, x)}
   }
 
   private def buildHtmlForObject(obj: AnyRef, tyep: ClassType, schema: ScalaJsonSchema): Elem = {
-    <div>
+    <div class="object">
       {" { "}
-      {tyep.metadata.flatMap {
-        case DescriptionAnnotation(desc) => Some(<span class="description">{desc}</span>)
-        case _ => None
-      }}
+      {metadataHtml(tyep.metadata)}
       <ul>
         {
         val propertiesWithValue: List[(Property, AnyRef)] = tyep.properties.flatMap { property: Property =>
@@ -39,10 +35,11 @@ object SchemaToJsonHtml {
             case x => Some((property, x))
           }
         }
-
         intersperse(propertiesWithValue.map { case (property, value) =>
           <li>
-            {name(property.key)} : {buildHtml(value, property.tyep, schema)}
+            <span class="key">{property.key}</span>:
+            <span class="value">{buildHtml(value, property.tyep, schema)}</span>
+            {metadataHtml(property.metadata)}
           </li>
         }, <li class="spacer">,</li>)
         }
@@ -51,10 +48,18 @@ object SchemaToJsonHtml {
     </div>
   }
 
+  private def metadataHtml(metadatas: List[Metadata]) = {
+    metadatas.flatMap {
+      case DescriptionAnnotation(desc) => Some(<span class="description">{desc}</span>)
+      case KoodistoAnnotation(koodistoNimi) =>Some(<a href={"https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/codes/"+koodistoNimi+"/1"} class="koodisto">Koodisto: {koodistoNimi}</a>)
+      case _ => None
+    }
+  }
+
   private def buildValueHtml(value: AnyRef) = buildValueHtmlString(Json.write(value))
 
   private def buildValueHtmlString(value: String) = {
-    <span class="value">{value}</span>
+    {value}
   }
 
 }
