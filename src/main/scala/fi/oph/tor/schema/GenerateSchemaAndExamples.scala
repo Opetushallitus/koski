@@ -9,7 +9,7 @@ import scala.reflect.runtime.universe
 object GenerateSchemaAndExamples extends App {
   Json.writeFile("tiedonsiirto/example.json", TorOppijaExamples.full)
   Json.writeFile("tiedonsiirto/tor-oppija-schema.json", TorSchema.schemaJson)
-  Files.write(Paths.get("tiedonsiirto/example.html"), TorTiedonSiirtoHtml.generateHtml.toString.getBytes(StandardCharsets.UTF_8))
+  Files.write(Paths.get("tiedonsiirto/example.html"), TorTiedonSiirtoHtml.html.toString.getBytes(StandardCharsets.UTF_8))
 
   println("Written to files in tiedonsiirto/")
 

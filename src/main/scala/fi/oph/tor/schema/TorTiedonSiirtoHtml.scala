@@ -1,7 +1,7 @@
 package fi.oph.tor.schema
 
 object TorTiedonSiirtoHtml {
-  def generateHtml = {
+  lazy val html = {
     <html>
       <head>
         <meta charset="UTF-8"></meta>
