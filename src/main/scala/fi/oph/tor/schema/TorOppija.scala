@@ -136,16 +136,19 @@ object Suoritustapa {
   def apply(tunniste: KoodistoKoodiViite) = SuoritustapaSimple(tunniste)
 }
 
+@Description("Suoritustapa ilman lisätietoja")
 case class SuoritustapaSimple(
   @Description("Tutkinnon tai tutkinnon osan suoritustapa")
   @KoodistoUri("suoritustapa")
   tunniste: KoodistoKoodiViite
 ) extends Suoritustapa
 
+@Description("Suoritustapana hyväksyluku")
 case class SuoritustapaHyväksiluku(
   @Description("Tutkinnon tai tutkinnon osan suoritustapa")
   @KoodistoUri("suoritustapa")
   tunniste: KoodistoKoodiViite,
+  @Description("Aiemman, korvaavan suorituksen kuvaus")
   osaaminen: Koulutusmoduulitoteutus
 ) extends Suoritustapa
 
@@ -157,11 +160,14 @@ case class SuoritustapaNaytto(
   oppisopimus: Option[Oppisopimus] = None
 ) extends Suoritustapa
 
+
+@Description("Näytön kuvaus")
 case class Näyttö(
   kuvaus: String,
   suorituspaikka: String
 )
 
+@Description("Oppisopimuksen tiedot")
 case class Oppisopimus(
   työnantaja: Yritys
 )

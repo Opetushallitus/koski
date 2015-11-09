@@ -164,8 +164,38 @@ object TorOppijaExamples {
     )
   )
 
+  val oppisopimus = TorOppija(
+    Henkilö("010101-123N", "matti pekka", "matti", "virtanen"),
+    List(
+      OpintoOikeus(
+        None,
+        Some(date(2016, 9, 1)),
+        Some(date(2020, 5, 1)),
+        None,
+        Organisaatio("1.2.246.562.10.346830761110", Some("HELSINGIN KAUPUNKI")),
+        Organisaatio("1.2.246.562.10.52251087186", Some("Stadin ammattiopisto")),
+        None,
+        Suoritus(Koulutustoteutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", 4), Some("39/011/2014"), None, None),
+          None,
+          Some(SuoritustapaNaytto(KoodistoKoodiViite("oppisopimus", Some("Oppisopimus"), "suoritustapa", 1), Some(Näyttö("Toimi automekaanikkona kolarikorjauspuolella kaksi vuotta", "Autokorjaamo Oy, Riihimäki")), Some(Oppisopimus(Yritys("Autokorjaamo Oy", "1234567-8"))))),
+          None,
+          None,
+          None,
+          None,
+          None
+        ),
+        hojks = None,
+        None,
+        None,
+        None
+      )
+    )
+  )
+
+
   val examples = List(
     Example("uusi", "Uusi oppija lisätään suorittamaan Autoalan perustutkintoa", uusiOppijaEiSuorituksia),
+    Example("oppisopimus", "Uusi oppija, suorittaa oppisopimuksella", oppisopimus),
     Example("full", "Esimerkki, johon lisätty lähes kaikki kaavaillut tietokentät.", full)
   )
 
