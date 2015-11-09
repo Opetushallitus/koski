@@ -3,6 +3,8 @@ package fi.oph.tor.schema
 import java.time.LocalDate.{of => date}
 
 object TorOppijaExamples {
+  private val näyttö = Näyttö("Toimi automekaanikkona kolarikorjauspuolella kaksi vuotta", "Autokorjaamo Oy, Riihimäki")
+
   private val tutkinnonOsat = List(
     Suoritus(
       TutkinnonosatoteutusOps(
@@ -121,7 +123,7 @@ object TorOppijaExamples {
         Some(Organisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))),
         Suoritus(Koulutustoteutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", 4), Some("39/011/2014"), Some(KoodistoKoodiViite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", 2)), Some(KoodistoKoodiViite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", 3))),
           Some(KoodistoKoodiViite("FI", Some("suomi"), "kieli", 1)),
-          Some(Suoritustapa(KoodistoKoodiViite("naytto", Some("Näyttö"), "suoritustapa", 1))),
+          Some(SuoritustapaNaytto(KoodistoKoodiViite("naytto", Some("Näyttö"), "suoritustapa", 1), Some(näyttö))),
           Some(KoodistoKoodiViite("VALMIS", Some("Valmis"), "suorituksentila", 1)),
           alkamispäivä = None,
           arviointi = None,
@@ -177,7 +179,7 @@ object TorOppijaExamples {
         None,
         Suoritus(Koulutustoteutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", 4), Some("39/011/2014"), None, None),
           None,
-          Some(SuoritustapaNaytto(KoodistoKoodiViite("oppisopimus", Some("Oppisopimus"), "suoritustapa", 1), Some(Näyttö("Toimi automekaanikkona kolarikorjauspuolella kaksi vuotta", "Autokorjaamo Oy, Riihimäki")), Some(Oppisopimus(Yritys("Autokorjaamo Oy", "1234567-8"))))),
+          Some(SuoritustapaOppisopimus(KoodistoKoodiViite("oppisopimus", Some("Oppisopimus"), "suoritustapa", 1), Some(näyttö), Some(Oppisopimus(Yritys("Autokorjaamo Oy", "1234567-8"))))),
           None,
           None,
           None,
@@ -196,7 +198,7 @@ object TorOppijaExamples {
   val examples = List(
     Example("uusi", "Uusi oppija lisätään suorittamaan Autoalan perustutkintoa", uusiOppijaEiSuorituksia),
     Example("oppisopimus", "Uusi oppija, suorittaa oppisopimuksella", oppisopimus),
-    Example("full", "Esimerkki, johon lisätty lähes kaikki kaavaillut tietokentät.", full)
+    Example("full", "Isompi esimerkki. Suorittaa perustutkintoa näyttönä. Tähän lisätty lähes kaikki kaavaillut tietokentät.", full)
   )
 
 }

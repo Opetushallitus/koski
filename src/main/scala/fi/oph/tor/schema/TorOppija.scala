@@ -75,6 +75,7 @@ case class Suoritus(
   @Description("Opintojen suorituskieli")
   @KoodistoUri("kieli")
   suorituskieli: Option[KoodistoKoodiViite],
+  @Description("Tutkinnon tai tutkinnon osan suoritustapa")
   suoritustapa: Option[Suoritustapa],
   @Description("Suorituksen tila")
   @KoodistoUri("suorituksentila")
@@ -138,14 +139,12 @@ object Suoritustapa {
 
 @Description("Suoritustapa ilman lisätietoja")
 case class SuoritustapaSimple(
-  @Description("Tutkinnon tai tutkinnon osan suoritustapa")
   @KoodistoUri("suoritustapa")
   tunniste: KoodistoKoodiViite
 ) extends Suoritustapa
 
 @Description("Suoritustapana hyväksyluku")
 case class SuoritustapaHyväksiluku(
-  @Description("Tutkinnon tai tutkinnon osan suoritustapa")
   @KoodistoUri("suoritustapa")
   tunniste: KoodistoKoodiViite,
   @Description("Aiemman, korvaavan suorituksen kuvaus")
@@ -153,7 +152,12 @@ case class SuoritustapaHyväksiluku(
 ) extends Suoritustapa
 
 case class SuoritustapaNaytto(
-  @Description("Tutkinnon tai tutkinnon osan suoritustapa")
+  @KoodistoUri("suoritustapa")
+  tunniste: KoodistoKoodiViite,
+  näyttö: Option[Näyttö] = None
+) extends Suoritustapa
+
+case class SuoritustapaOppisopimus(
   @KoodistoUri("suoritustapa")
   tunniste: KoodistoKoodiViite,
   näyttö: Option[Näyttö] = None,
