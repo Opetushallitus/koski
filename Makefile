@@ -41,9 +41,10 @@ happen:
 #	# Pow pow!
 deploy:
 	-@git remote remove tordev &> /dev/null
-	git remote add tordev git@`cloud/pouta-nslookup $(TOR-SERVER)`:tor.git
+	#git remote add tordev git@`cloud/pouta-nslookup $(TOR-SERVER)`:tor.git
+	git remote add tordev git@192.168.2.16:tor.git
 	GIT_SSH=cloud/ssh-wrapper.sh git push -f tordev master
 tail:
-	@cloud/ssh-wrapper.sh -l cloud-user `cloud/pouta-nslookup $(TOR-SERVER)` 'tail -f /home/git/logs/*log'
+	@cloud/ssh-wrapper.sh -l cloud-user 192.168.2.16 'tail -f /home/git/logs/*log'
 ssh:
-	@cloud/ssh-wrapper.sh -l cloud-user `cloud/pouta-nslookup $(TOR-SERVER)`
+	@cloud/ssh-wrapper.sh -l cloud-user 192.168.2.16
