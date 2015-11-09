@@ -122,6 +122,7 @@ case class Arviointi(
   @Description("Arvosana. Kullekin arviointiasteikolle löytyy oma koodistonsa.")
   arvosana: KoodistoKoodiViite,
   päivä: Option[LocalDate],
+  @Description("Onko kyseessä arvosanan korotus")
   arvosananKorottaminen: Option[Boolean]
 )
 

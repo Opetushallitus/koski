@@ -12,5 +12,5 @@ object TorSchema {
   val schemaType: SchemaType = schema.createSchema(rootType)
   val schemaJson = schema.toJsonSchema(schemaType)
   val schemaJsonString = Json.write(schemaJson)
-  val exampleJsonString = Json.write(TorOppijaExamples.full)
+  val exampleJsonString = Json.write(TorOppijaExamples.perustutkintoNäyttönä)
 }
