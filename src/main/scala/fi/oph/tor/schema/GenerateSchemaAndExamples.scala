@@ -1,9 +1,9 @@
 package fi.oph.tor.schema
 
 import java.nio.charset.StandardCharsets
-import java.nio.file.{Paths, Files}
+import java.nio.file.{Files, Paths}
+
 import fi.oph.tor.json.Json
-import fi.oph.tor.schema.generic.{ClassType, SchemaType, ScalaJsonSchema, DescriptionAnnotation}
 
 object GenerateSchemaAndExamples extends App {
   Json.writeFile("tiedonsiirto/example.json", TorOppijaExamples.full)

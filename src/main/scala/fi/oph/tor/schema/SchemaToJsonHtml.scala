@@ -2,7 +2,8 @@ package fi.oph.tor.schema
 
 import fi.oph.tor.json.Json
 import fi.oph.tor.schema.generic._
-import fi.oph.tor.schema.generic.ReadOnly
+import fi.oph.tor.schema.generic.annotation.ReadOnly
+
 import scala.xml.Elem
 
 object SchemaToJsonHtml {
@@ -53,9 +54,9 @@ object SchemaToJsonHtml {
     <span class="metadata">
       {
       metadatas.flatMap {
-        case DescriptionAnnotation(desc) => Some(<span class="description">{desc}</span>)
+        case Description(desc) => Some(<span class="description">{desc}</span>)
         case ReadOnly(desc) => Some(<span class="readonly">{desc}</span>)
-        case KoodistoAnnotation(koodistoNimi) =>Some(<a href={"https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/codes/"+koodistoNimi+"/1"} class="koodisto">Koodisto: {koodistoNimi}</a>)
+        case KoodistoUri(koodistoNimi) =>Some(<a href={"https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/codes/"+koodistoNimi+"/1"} class="koodisto">Koodisto: {koodistoNimi}</a>)
         case _ => None
       }
       }
