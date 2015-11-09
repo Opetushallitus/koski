@@ -1,7 +1,6 @@
 package fi.oph.tor.schema
 
 import java.time.LocalDate
-
 import fi.oph.tor.schema.generic.annotation.{Description, ReadOnly}
 
 case class TorOppija(
@@ -129,18 +128,34 @@ case class Vahvistus(
   päivä: Option[LocalDate]
 )
 
-case class Suoritustapa(
+sealed trait Suoritustapa {
+  def tunniste: KoodistoKoodiViite
+}
+
+object Suoritustapa {
+  def apply(tunniste: KoodistoKoodiViite) = SuoritustapaSimple(tunniste)
+}
+
+case class SuoritustapaSimple(
+  @Description("Tutkinnon tai tutkinnon osan suoritustapa")
+  @KoodistoUri("suoritustapa")
+  tunniste: KoodistoKoodiViite
+) extends Suoritustapa
+
+case class SuoritustapaHyväksiluku(
   @Description("Tutkinnon tai tutkinnon osan suoritustapa")
   @KoodistoUri("suoritustapa")
   tunniste: KoodistoKoodiViite,
-  hyväksiluku: Option[Hyväksiluku] = None,
+  osaaminen: Koulutusmoduulitoteutus
+) extends Suoritustapa
+
+case class SuoritustapaNaytto(
+  @Description("Tutkinnon tai tutkinnon osan suoritustapa")
+  @KoodistoUri("suoritustapa")
+  tunniste: KoodistoKoodiViite,
   näyttö: Option[Näyttö] = None,
   oppisopimus: Option[Oppisopimus] = None
-)
-
-case class Hyväksiluku(
-  osaaminen: Koulutusmoduulitoteutus
-)
+) extends Suoritustapa
 
 case class Näyttö(
   kuvaus: String,
