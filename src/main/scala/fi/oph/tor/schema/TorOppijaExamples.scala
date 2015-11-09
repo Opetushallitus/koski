@@ -1,7 +1,6 @@
 package fi.oph.tor.schema
 
 import java.time.LocalDate.{of => date}
-import fi.oph.tor.schema.Läsnäolojakso
 
 object TorOppijaExamples {
   private val näyttö = Näyttö("Toimi automekaanikkona kolarikorjauspuolella kaksi vuotta", "Autokorjaamo Oy, Riihimäki")
@@ -124,7 +123,7 @@ object TorOppijaExamples {
         Some(Organisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))),
         Suoritus(Koulutustoteutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", 4), Some("39/011/2014"), Some(KoodistoKoodiViite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", 2)), Some(KoodistoKoodiViite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", 3))),
           Some(KoodistoKoodiViite("FI", Some("suomi"), "kieli", 1)),
-          Some(SuoritustapaNaytto(KoodistoKoodiViite("naytto", Some("Näyttö"), "suoritustapa", 1), Some(näyttö))),
+          Some(SuoritustapaNäytöllä(KoodistoKoodiViite("naytto", Some("Näyttö"), "suoritustapa", 1), näyttö)),
           Some(KoodistoKoodiViite("VALMIS", Some("Valmis"), "suorituksentila", 1)),
           alkamispäivä = None,
           arviointi = None,
@@ -180,7 +179,7 @@ object TorOppijaExamples {
         None,
         Suoritus(Koulutustoteutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", 4), Some("39/011/2014"), None, None),
           None,
-          Some(SuoritustapaOppisopimus(KoodistoKoodiViite("oppisopimus", Some("Oppisopimus"), "suoritustapa", 1), Some(näyttö), Some(Oppisopimus(Yritys("Autokorjaamo Oy", "1234567-8"))))),
+          Some(SuoritustapaOppisopimuksella(KoodistoKoodiViite("oppisopimus", Some("Oppisopimus"), "suoritustapa", 1), Some(näyttö), Oppisopimus(Yritys("Autokorjaamo Oy", "1234567-8")))),
           None,
           None,
           None,

@@ -3,7 +3,7 @@ package fi.oph.tor.schema.generic
 import org.json4s.JsonAST
 import org.json4s.JsonAST._
 import org.reflections.Reflections
-
+import scala.RuntimeException
 import scala.reflect.runtime.{universe => ru}
 
 sealed trait SchemaType {
@@ -97,11 +97,7 @@ class ScalaJsonSchema(metadatasSupported: MetadataSupport*) {
     if (typeName == "scala.Option") {
       // Option[T] becomes the schema of T with required set to false
       OptionalType(createSchema(tpe.asInstanceOf[ru.TypeRefApi].args.head, previousTypes))
-    } else if (tpe.baseClasses.exists(s => s.fullName == "scala.collection.Traversable" ||
-      s.fullName == "scala.Array" ||
-      s.fullName == "scala.Seq" ||
-      s.fullName == "scala.List" ||
-      s.fullName == "scala.Vector")) {
+    } else if (isListType(tpe)) {
       // (Traversable)[T] becomes a schema with items set to the schema of T
       ListType(createSchema(tpe.asInstanceOf[ru.TypeRefApi].args.head, previousTypes))
     } else {
@@ -117,6 +113,14 @@ class ScalaJsonSchema(metadatasSupported: MetadataSupport*) {
         }
       })
     }
+  }
+
+  private def isListType(tpe: ru.Type): Boolean = {
+    tpe.baseClasses.exists(s => s.fullName == "scala.collection.Traversable" ||
+      s.fullName == "scala.Array" ||
+      s.fullName == "scala.Seq" ||
+      s.fullName == "scala.List" ||
+      s.fullName == "scala.Vector")
   }
 
   def createSchema(className: String): SchemaType = {
