@@ -11,19 +11,39 @@ case class TorOppija(
 )
 
 @Description("Henkilötiedot. Syötettäessä vaaditaan joko `oid` tai kaikki muut kentät, jolloin järjestelmään voidaan tarvittaessa luoda uusi henkilö.")
-case class Henkilö(
+sealed trait Henkilö {}
+
+case class HenkilöFull(
   @Description("Yksilöivä tunniste Opintopolku-palvelussa")
-  oid: Option[String],
+  oid: String,
   @Description("Suomalainen henkilötunnus")
-  hetu: Option[String],
-  etunimet: Option[String],
+  hetu: String,
+  etunimet:String,
   @Description("Kutsumanimi, oltava yksi etunimistä. Esimerkiksi etunimille \"Juha-Matti Petteri\" kelpaavat joko \"Juha-Matti\", \"Juha\", \"Matti\" tai \"Petteri\".")
-  kutsumanimi: Option[String],
-  sukunimi: Option[String]
-)
+  kutsumanimi: String,
+  sukunimi: String
+) extends Henkilö
+
+@Description("Henkilö, jonka oid ei ole tiedossa. Tietoja syötettäessä luodaan mahdollisesti uusi henkilö Henkilöpalveluun.")
+case class HenkilöNew(
+  @Description("Suomalainen henkilötunnus")
+  hetu: String,
+  etunimet:String,
+  @Description("Kutsumanimi, oltava yksi etunimistä. Esimerkiksi etunimille \"Juha-Matti Petteri\" kelpaavat joko \"Juha-Matti\", \"Juha\", \"Matti\" tai \"Petteri\".")
+  kutsumanimi: String,
+  sukunimi: String
+) extends Henkilö
+
+@Description("Henkilö, jonka oid on tiedossa.")
+case class HenkilöOid(
+  @Description("Yksilöivä tunniste Opintopolku-palvelussa")
+  oid: String
+) extends Henkilö
+
 object Henkilö {
   type Id = String
-  def withOid(oid: String) = Henkilö(Some(oid), None, None, None, None)
+  def withOid(oid: String) = HenkilöOid(oid)
+  def apply(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String) = HenkilöNew(hetu, etunimet, kutsumanimi, sukunimi)
 }
 
 case class OpintoOikeus(

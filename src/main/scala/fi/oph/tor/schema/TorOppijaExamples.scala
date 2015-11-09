@@ -137,7 +137,7 @@ object TorOppijaExamples {
   )
 
   val uusiOppijaEiSuorituksia = TorOppija(
-    Henkilö(None, Some("010101-123N"), Some("matti pekka"), Some("matti"), Some("virtanen")),
+    Henkilö("010101-123N", "matti pekka", "matti", "virtanen"),
     List(
       OpintoOikeus(
         None,
