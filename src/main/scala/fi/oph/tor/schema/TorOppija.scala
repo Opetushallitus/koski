@@ -152,12 +152,14 @@ case class SuoritustapaHyväksiluku(
   osaaminen: Koulutusmoduulitoteutus
 ) extends Suoritustapa
 
+@Description("Suoritustapana näyttö")
 case class SuoritustapaNaytto(
   @KoodistoUri("suoritustapa")
   tunniste: KoodistoKoodiViite,
   näyttö: Option[Näyttö] = None
 ) extends Suoritustapa
 
+@Description("Suoritustapana oppisopimus")
 case class SuoritustapaOppisopimus(
   @KoodistoUri("suoritustapa")
   tunniste: KoodistoKoodiViite,

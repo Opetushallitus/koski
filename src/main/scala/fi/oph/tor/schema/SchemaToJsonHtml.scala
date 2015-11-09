@@ -47,7 +47,7 @@ object SchemaToJsonHtml {
       }
 
     }
-    List(tr(<span>{keyHtml(property.key)}{{</span>, property.metadata, indentation)) ++ propertyElems ++ List(tr(<span>{"}"}</span>, Nil, indentation))
+    List(tr(<span>{keyHtml(property.key)}{{</span>, property.metadata ++ property.tyep.metadata, indentation)) ++ propertyElems ++ List(tr(<span>{"}"}</span>, Nil, indentation))
   }
 
   private def buildHtmlForArray(property: Property, xs: Iterable[_], schema: ScalaJsonSchema, indentation: Int): List[Elem] = {
