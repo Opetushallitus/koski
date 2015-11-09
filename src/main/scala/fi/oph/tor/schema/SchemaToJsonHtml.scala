@@ -9,21 +9,17 @@ import scala.xml.Elem
 object SchemaToJsonHtml {
 
 
-  def buildHtml(property: Property, obj: Any, schema: ScalaJsonSchema, indentation: Int): List[Elem] = (obj, property.tyep) match {
-    case (o: AnyRef, t:ClassType) => buildHtmlForObject(property, o, schema, indentation)
-    case (xs: Iterable[_], t:ListType) => buildHtmlForArray(property, xs, schema, indentation)
-    case (x: Number, t:NumberType) => buildValueHtml(property, x, indentation)
-    case (x: Boolean, t:BooleanType) => buildValueHtmlString(property, x.toString, indentation)
-    case (x: AnyRef, t:DateType) => buildValueHtml(property, x, indentation)
-    case (x: String, t:StringType) => buildValueHtml(property, x, indentation)
-    case (x: Option[_], t:OptionalType) => buildHtml(property.copy(tyep = t.itemType), x.get, schema, indentation)
-    case (x: AnyRef, t:OneOf) => buildHtml(property.copy(tyep = t.matchType(x)), x, schema, indentation)
-    case (x: AnyRef, t:ClassTypeRef) => buildHtml(property.copy(tyep = schema.createSchema(t.fullClassName)), x , schema, indentation)
+  def buildHtml(property: Property, obj: Any, schema: ScalaJsonSchema, context: NodeContext): List[Elem] = (obj, property.tyep) match {
+    case (o: AnyRef, t:ClassType) => buildHtmlForObject(property, o, schema, context)
+    case (xs: Iterable[_], t:ListType) => buildHtmlForArray(property, xs, schema, context)
+    case (x: Number, t:NumberType) => buildValueHtml(property, x, context)
+    case (x: Boolean, t:BooleanType) => buildValueHtmlString(property, x.toString, context)
+    case (x: AnyRef, t:DateType) => buildValueHtml(property, x, context)
+    case (x: String, t:StringType) => buildValueHtml(property, x, context)
+    case (x: Option[_], t:OptionalType) => buildHtml(property.copy(tyep = t.itemType), x.get, schema, context)
+    case (x: AnyRef, t:OneOf) => buildHtml(property.copy(tyep = t.matchType(x)), x, schema, context)
+    case (x: AnyRef, t:ClassTypeRef) => buildHtml(property.copy(tyep = schema.createSchema(t.fullClassName)), x , schema, context)
     case _ => throw new RuntimeException
-  }
-
-  private def intersperse[T](l: List[T], spacer: T) = l.zipWithIndex.flatMap {
-    case (x, index) => if(index == 0) {List(x)} else {List(spacer, x)}
   }
 
   private def keyHtml(key: String) = key match {
@@ -31,7 +27,7 @@ object SchemaToJsonHtml {
     case key         => <span class="key">{key}: </span>
   }
 
-  private def buildHtmlForObject(property: Property, obj: AnyRef, schema: ScalaJsonSchema, indentation: Int): List[Elem] = {
+  private def buildHtmlForObject(property: Property, obj: AnyRef, schema: ScalaJsonSchema, context: NodeContext): List[Elem] = {
     val propertyElems: List[Elem] = {
       val classType: ClassType = property.tyep.asInstanceOf[ClassType]
       val propertiesWithValue: List[(Int, Property, AnyRef)] = classType.properties.zipWithIndex.flatMap { case (property: Property, index: Int) =>
@@ -43,19 +39,19 @@ object SchemaToJsonHtml {
       }
 
       propertiesWithValue.flatMap { case (i, property, value) =>
-        buildHtml(property, value, schema, indentation + 1)
+        buildHtml(property, value, schema, context.child)
       }
 
     }
-    List(tr(<span>{keyHtml(property.key)}{{</span>, property.metadata ++ property.tyep.metadata, indentation)) ++ propertyElems ++ List(tr(<span>{"}"}</span>, Nil, indentation))
+    List(tr(<span><span class="collapsible"></span>{keyHtml(property.key)}{{</span>, property.metadata ++ property.tyep.metadata, context)) ++ propertyElems ++ List(tr(<span>{"}"}</span>, Nil, context))
   }
 
-  private def buildHtmlForArray(property: Property, xs: Iterable[_], schema: ScalaJsonSchema, indentation: Int): List[Elem] = {
+  private def buildHtmlForArray(property: Property, xs: Iterable[_], schema: ScalaJsonSchema, context: NodeContext): List[Elem] = {
     val propertyElems: List[Elem] = xs.flatMap { item =>
-        buildHtml(Property("", property.tyep.asInstanceOf[ListType].itemType, Nil), item, schema, indentation + 1)
+        buildHtml(Property("", property.tyep.asInstanceOf[ListType].itemType, Nil), item, schema, context.child)
       }.toList
 
-    List(tr(<span>{keyHtml(property.key)}[</span>, property.metadata, indentation)) ++ propertyElems ++ List(tr(<span>{"]"}</span>, Nil, indentation))
+    List(tr(<span><span class="collapsible"></span>{keyHtml(property.key)}[</span>, property.metadata, context)) ++ propertyElems ++ List(tr(<span>{"]"}</span>, Nil, context))
   }
 
 
@@ -73,14 +69,37 @@ object SchemaToJsonHtml {
     </span>
   }
 
-  private def buildValueHtml(property: Property, value: AnyRef, indentation: Int) = buildValueHtmlString(property, Json.write(value), indentation)
+  private def buildValueHtml(property: Property, value: AnyRef, context: NodeContext) = buildValueHtmlString(property, Json.write(value), context)
 
-  private def buildValueHtmlString(property: Property, value: String, indentation: Int) = {
-    List(tr(<span>{keyHtml(property.key)} <span class="value">{value}</span></span>, property.metadata, indentation))
+  private def buildValueHtmlString(property: Property, value: String, context: NodeContext) = {
+    List(tr(<span>{keyHtml(property.key)} <span class="value">{value}</span></span>, property.metadata, context))
   }
 
-  private def tr(content:Elem, metadata:List[Metadata], indentation: Int) = {
-    <tr><td>{0.to(indentation).map(i => <span class="indent">&nbsp;&nbsp;&nbsp;</span>)}{content}</td><td class="metadata">{metadataHtml(metadata)}</td></tr>
+  private def tr(content:Elem, metadata:List[Metadata], context: NodeContext) = {
+    <tr class={"json-row " + context.path}><td>{0.to(context.depth).map(i => <span class="indent">&nbsp;&nbsp;&nbsp;</span>)}{content}</td><td class="metadata">{metadataHtml(metadata)}</td></tr>
   }
-
 }
+
+case class NodeContext(id: String, parent: Option[NodeContext]) {
+  var idCounter = 0
+
+  def depth: Int = parent match {
+      case Some(p) => p.depth + 1
+      case None => 0
+  }
+
+  def child = {
+    NodeContext(id + "-" + generateId(), Some(this))
+  }
+
+  def path:String = parent match {
+    case Some(p) => p.path + " node-" + id
+    case None => "node-" + id
+  }
+
+  private def generateId() = {
+    idCounter = idCounter + 1
+    idCounter
+  }
+}
+

@@ -37,3 +37,17 @@ a, a:visited {
     text-decoration: none;
     color: teal;
 }
+
+.collapsed {
+    display: none;
+}
+
+.collapsed-parent .collapsible:before {
+    content: '+';
+}
+
+.collapsible:before {
+    display: inline;
+    content: '-';
+    margin-right: 5px;
+}

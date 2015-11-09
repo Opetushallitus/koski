@@ -35,11 +35,12 @@ JSON Schema validaattori netissä: [jsonschemavalidator.net](http://www.jsonsche
           <div>
             <h3>{example.description} <small><a href={"/tor/documentation/examples/" + example.name + ".json"}>lataa JSON</a></small></h3>
             <table class="json">
-              {SchemaToJsonHtml.buildHtml(Property("", TorSchema.schemaType, Nil), example.oppija, TorSchema.schema, 0)}
+              {SchemaToJsonHtml.buildHtml(Property("", TorSchema.schemaType, Nil), example.oppija, TorSchema.schema, NodeContext("0", None))}
             </table>
           </div>
         }
         }
+        <script src="js/documentation.js"></script>
       </body>
     </html>
   }
