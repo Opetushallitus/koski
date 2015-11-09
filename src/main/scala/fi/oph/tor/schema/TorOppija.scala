@@ -56,7 +56,7 @@ case class Suoritus(
   @DescriptionAnnotation("Opintojen suorituskieli")
   @KoodistoAnnotation("kieli")
   suorituskieli: Option[KoodistoKoodiViite],
-  suoritustapa: Suoritustapa,
+  suoritustapa: Option[Suoritustapa],
   @DescriptionAnnotation("Suorituksen tila")
   @KoodistoAnnotation("suorituksentila")
   tila: Option[KoodistoKoodiViite],
@@ -150,11 +150,29 @@ case class Läsnäolojakso(
 
 case class Kunta(koodi: String, nimi: Option[String])
 
-case class KoodistoKoodiViite(koodiarvo: String, nimi: Option[String], koodistoUri: String, koodistoVersio: Int)
+case class KoodistoKoodiViite(
+  @DescriptionAnnotation("Koodin tunniste koodistossa")
+  koodiarvo: String,
+  @DescriptionAnnotation("Koodin selväkielinen, kielistetty nimi. Tiedon syötössä jätetään huomiotta.")
+  nimi: Option[String],
+  @DescriptionAnnotation("Käytetyn koodiston tunniste")
+  koodistoUri: String,
+  @DescriptionAnnotation("Käytetyn koodiston versio")
+  koodistoVersio: Int
+)
 
+@DescriptionAnnotation("Henkilökohtainen opetuksen järjestämistä koskeva suunnitelma, https://fi.wikipedia.org/wiki/HOJKS")
 case class Hojks(hojksTehty: Boolean)
 
-case class Paikallinenkoodi(koodiarvo: String, nimi: String, koodistoUri: String)
+@DescriptionAnnotation("Paikallinen, koulutustoimijan oma kooditus koulutukselle. Käytetään kansallisen koodiston puuttuessa.")
+case class Paikallinenkoodi(
+  @DescriptionAnnotation("Koodin tunniste koodistossa")
+  koodiarvo: String,
+  @DescriptionAnnotation("Koodin selväkielinen nimi.")
+  nimi: String,
+  @DescriptionAnnotation("Koodiston tunniste")
+  koodistoUri: String
+)
 
 case class Organisaatio(
   @DescriptionAnnotation("Organisaation tunniste Opintopolku-palvelussa")
