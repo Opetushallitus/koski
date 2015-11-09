@@ -2,7 +2,7 @@ package fi.oph.tor.schema
 
 import fi.oph.tor.json.Json
 import fi.oph.tor.schema.generic._
-
+import fi.oph.tor.schema.generic.ReadOnly
 import scala.xml.Elem
 
 object SchemaToJsonHtml {
@@ -50,11 +50,16 @@ object SchemaToJsonHtml {
   }
 
   private def metadataHtml(metadatas: List[Metadata]) = {
-    metadatas.flatMap {
-      case DescriptionAnnotation(desc) => Some(<span class="description">{desc}</span>)
-      case KoodistoAnnotation(koodistoNimi) =>Some(<a href={"https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/codes/"+koodistoNimi+"/1"} class="koodisto">Koodisto: {koodistoNimi}</a>)
-      case _ => None
-    }
+    <span class="metadata">
+      {
+      metadatas.flatMap {
+        case DescriptionAnnotation(desc) => Some(<span class="description">{desc}</span>)
+        case ReadOnly(desc) => Some(<span class="readonly">{desc}</span>)
+        case KoodistoAnnotation(koodistoNimi) =>Some(<a href={"https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/codes/"+koodistoNimi+"/1"} class="koodisto">Koodisto: {koodistoNimi}</a>)
+        case _ => None
+      }
+      }
+    </span>
   }
 
   private def buildValueHtml(value: AnyRef) = buildValueHtmlString(Json.write(value))

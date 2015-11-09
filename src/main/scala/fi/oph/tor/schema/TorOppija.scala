@@ -1,8 +1,10 @@
 package fi.oph.tor.schema
 
 import java.time.LocalDate
+
 import fi.oph.tor.schema.generic.DescriptionAnnotation
-import scala.annotation.meta._
+import fi.oph.tor.schema.generic.fi.oph.tor.schema.generic.ReadOnly
+
 
 case class TorOppija(
   henkilö: Henkilö,
@@ -153,7 +155,8 @@ case class Kunta(koodi: String, nimi: Option[String])
 case class KoodistoKoodiViite(
   @DescriptionAnnotation("Koodin tunniste koodistossa")
   koodiarvo: String,
-  @DescriptionAnnotation("Koodin selväkielinen, kielistetty nimi. Tiedon syötössä jätetään huomiotta.")
+  @DescriptionAnnotation("Koodin selväkielinen, kielistetty nimi.")
+  @ReadOnly("Tiedon syötössä kuvausta ei tarvita; kuvaus haetaan Koodistopalvelusta")
   nimi: Option[String],
   @DescriptionAnnotation("Käytetyn koodiston tunniste")
   koodistoUri: String,
@@ -177,6 +180,7 @@ case class Paikallinenkoodi(
 case class Organisaatio(
   @DescriptionAnnotation("Organisaation tunniste Opintopolku-palvelussa")
   oid: String,
-  @DescriptionAnnotation("Organisaation (kielistetty) nimi. Tiedon syötössä tämän kentän arvo jätetään huomioimatta; arvo haetaan Organisaatiopalvelusta.")
+  @DescriptionAnnotation("Organisaation (kielistetty) nimi.")
+  @ReadOnly("Tiedon syötössä nimeä ei tarvita; kuvaus haetaan Organisaatiopalvelusta")
   nimi: Option[String] = None
 )

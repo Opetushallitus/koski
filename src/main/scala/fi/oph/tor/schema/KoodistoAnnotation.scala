@@ -1,6 +1,7 @@
 package fi.oph.tor.schema
 
 import fi.oph.tor.schema.generic.{MetadataSupport, Metadata}
+import org.json4s.JsonAST
 import org.json4s.JsonAST.{JNothing, JObject, JString}
 
 import scala.annotation.StaticAnnotation
@@ -16,12 +17,8 @@ object KoodistoAnnotation extends MetadataSupport {
 
   override def appendMetadataToJsonSchema(obj: JObject, metadata: Metadata) = metadata match {
     case KoodistoAnnotation(koodistoUri) =>
-      val description = obj.\("description") match {
-        case JString(s) => s
-        case JNothing => ""
-      }
       // TODO: tänne hyperlinkki koodistoon
-      obj.merge(JObject("description" -> JString(description + "\n(Koodisto: " + koodistoUri + ")")))
+      appendToDescription(obj, "\n(Koodisto: " + koodistoUri + ")")
     case _ => obj
   }
 }

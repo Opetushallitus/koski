@@ -41,10 +41,10 @@ JSON Schema validaattori netissä: [jsonschemavalidator.net](http://www.jsonsche
             position: relative;
             display: block;
           }}
-          .object .description, .object koodisto {{
+          .object .metadata {{
             font-family: arial;
           }}
-          .object .description {{
+          .object .metadata {{
             display: block;
             position: absolute;
             width: calc(100vw - 600px);
@@ -54,15 +54,9 @@ JSON Schema validaattori netissä: [jsonschemavalidator.net](http://www.jsonsche
             white-space: nowrap;
             text-overflow: ellipsis;
           }}
-          .object .koodisto {{
-            display: block;
-            position: absolute;
-            width: 200px;
-            top: 0;
-            right: calc(100vw - 600px);
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
+          .object .metadata .koodisto {{
+            margin-right: 7px;
+            float: left;
           }}
           .object,.array {{ color: rgb(51, 51, 51); }}
           .object .key {{ color: red; }}
