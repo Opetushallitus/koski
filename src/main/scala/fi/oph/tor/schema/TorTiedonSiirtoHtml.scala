@@ -25,29 +25,43 @@ JSON Schema validaattori netissä: [jsonschemavalidator.net](http://www.jsonsche
         <meta charset="UTF-8"></meta>
         <style>
           body {{
-          font-family: Helvetica, Arial, sans-serif;
-          color: rgb(51, 51, 51);
-          font-size: 15px;
+            font-family: Helvetica, Arial, sans-serif;
+            color: rgb(51, 51, 51);
+            font-size: 15px;
           }}
           small {{
-          font-size: 10px;
+            font-size: 10px;
           }}
           .json {{
-          font-family: monospace;
-          font-size: 12px;
+            font-family: monospace;
+            font-size: 12px;
+            line-height: 18px;
           }}
           .metadata {{
-          font-family: arial;
+            font-family: arial;
           }}
-          .object,.array {{ color: rgb(51, 51, 51); }}
-          .json .key {{ color: rgb(165, 116, 28); }}
-          .json .value {{ color: green; }}
-          .json tr:hover {{ background: #ffffbb; }}
-          table.json {{ border-collapse: collapse; }}
-          .koodisto {{ margin-left: 10px; }}
+          .object,.array {{
+            color: rgb(51, 51, 51);
+          }}
+          .json .key {{
+            color: rgb(165, 116, 28);
+          }}
+          .json .value {{
+            color: green;
+          }}
+          .json tr:hover {{
+            background: #ffffbb;
+          }}
+          table.json {{
+            border-collapse: collapse;
+            width: 100%;
+          }}
+          .koodisto {{
+            margin-left: 10px;
+          }}
           a, a:visited {{
-          text-decoration: none;
-          color: teal;
+            text-decoration: none;
+            color: teal;
           }}
         </style>
       </head>
