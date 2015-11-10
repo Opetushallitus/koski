@@ -107,7 +107,7 @@ eri taskit on helppo suorittaa. Ks `Makefile`-tiedosto.
 Buildaa koko systeemi
 
     make build    
-    
+
 Buildaa frontti, ja buildaa automaattisesti kun tiedostoja muokataan:
 
     make watch
@@ -126,7 +126,7 @@ Avaa selaimessa
 Suoritus-testidatat näkyy
 
     http://localhost:7021/tor/suoritus/
-    
+
 ### Ajaminen paikallisesti käyttäen ulkoisia palveluja (esim henkilöpalvelu)
 
 Ilman parametrejä ajettaessa TOR käyttää mockattuja ulkoisia riippuvuuksia.
@@ -134,15 +134,15 @@ Ilman parametrejä ajettaessa TOR käyttää mockattuja ulkoisia riippuvuuksia.
 Ottaaksesi käyttöön ulkoiset integraatiot, kuten henkilpalvelun, voit antaa TOR:lle käynnistysparametrinä käytettävän konfiguraatiotiedoston sijainnin. Esimerkiksi
 
     -Dconfig.resource=qa.conf
-    
+
 Tällä asetuksella käytetään tiedostoa `src/main/resources/qa.conf`. Tämä tiedosto ei ole versionhallinnassa, koska se sisältää ei-julkista tietoa.
-            
+
 ### Testit
 
 Buildaa ja aja kaikki testit
 
     make test
-    
+
 Kun applikaatio pyörii paikallisesti (ks. ohjeet yllä), voi Mocha-testit ajaa selaimessa osoitteessa
 
     http://localhost:7021/tor/test/runner.html
@@ -150,7 +150,7 @@ Kun applikaatio pyörii paikallisesti (ks. ohjeet yllä), voi Mocha-testit ajaa 
 Mocha-testit voi ajaa myös nopeasti komentoriviltä
 
     make fronttest
-        
+
 
 
 ## Asennus pilveen (CSC:n ePouta)
@@ -160,30 +160,32 @@ Ennakkovaatimukset:
 1. Sinulla on tunnus CSC:n cPouta-ympäristöön
 2. Poudan ympäristö(muuttuja)määrittely: https://pouta.csc.fi/dashboard/project/access_and_security/api_access/openrc/ on ladattu ja käytössä (`source Project_2000079-openrc.sh`)
 3. Sinun julkinen ssh avain on lisättynä tänne: https://github.com/reaktor/oph-poutai-env/tree/master/roles/ssh.init/files/public_keys (ja koneiden konfiguraatio on päivitetty)
-4. Käytössäsi on Ruby 2.0 tai uudempi
+4. Käytössäsi Homebrew:n openssl ja ruby, koska OSX:n mukana tuleva OpenSSL 0.9.8zg ei toimi Poudan kanssa:
+  * `brew install openssl`
+  * `brew install ruby`
 
 Tämän jälkeen voit pushata uuden version TOR:sta ajamalla,
 
     make deploy
 
-jonka jälkeen uusin versio pyörii testiympäristössä: 
+jonka jälkeen uusin versio pyörii testiympäristössä:
 
     http://tordev.tor.oph.reaktor.fi/tor/
-    
+
 Lokien katsominen onnistuu komennolla:
 
     make tail
-    
+
 ## Testiympäristö
 
 Testiympäristön TOR löytyy täältä:
 
     http://tordev.tor.oph.reaktor.fi/tor/
-    
+
 Ympäristöön kuuluvat Opintopolku-palvelun osat täällä:
 
     https://srv2.va-dev.oph.fi/
-    
+
 Esimerkiksi henkilöpalvelu:
 
     https://srv2.va-dev.oph.fi/authentication-service/swagger/index.html
@@ -191,9 +193,9 @@ Esimerkiksi henkilöpalvelu:
 Testiympäristö käyttää tuotannon ePerusteet-palvelua
 
     https://eperusteet.opintopolku.fi/
-    
+
 Koodistopalvelua käytetään toistaiseksi Opintopolun QA-ympäristöstä
-    
+
     https://testi.virkailija.opintopolku.fi/koodisto-ui/html/index.html#/etusivu
 
 ## Toteutus ja integraatiot
@@ -221,18 +223,18 @@ EPerusteista haetaan myös tutkinnon hierarkkinen [rakenne](src/main/scala/fi/op
 EPerusteiden Swagger-dokumentaatio:
 
     https://eperusteet.opintopolku.fi/eperusteet-service/
-    
+
 Pari testiurlia:
-    
+
     https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet?nimi=Ty%C3%B6njoh
     https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059
     https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/1013059/kaikki
-    
+
 ### Koodistopalvelu
 
 TOR käyttää [Koodistopalvelua](https://github.com/Opetushallitus/koodisto) tutkintoihin liittyvien [Arviointiasteikkojen](src/main/scala/fi/oph/tor/arvosana/Arviointiasteikko.scala) hakemiseen.
 
-Arviointiasteikko haetaan tutkintoon liittyvän [Koulutustyypin](src/main/scala/fi/oph/tor/tutkinto/Koulutustyyppi.scala) perusteella. 
+Arviointiasteikko haetaan tutkintoon liittyvän [Koulutustyypin](src/main/scala/fi/oph/tor/tutkinto/Koulutustyyppi.scala) perusteella.
 EPerusteista saatavan koulutustyypin perusteella haetaan koodistopalvelusta arviointiasteikko, joka on itse asiassa koodisto, jossa kukin koodi on yksittäinen arvosana.
 [toteutus](src/main/scala/fi/oph/tor/arvosana/ArviointiasteikkoRepository.scala).
 

@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 
 # intentionally only using std-lib classes.
 require 'net/https'
