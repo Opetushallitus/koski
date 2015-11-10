@@ -1,180 +1,127 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>JSON Schema Viewer 0.3.3</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <style>
-            html, #jsv-tree {
-                height: 100%;
-            }
-            body {
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                right: 0;
-                left: 0;
-                font-family: sans-serif;
-            }
-            #loading {
-                background-color: #fff;
-                font-weight: 900;
-                height: 100%;
-                left: 0;
-                padding-top: 5em;
-                position: absolute;
-                text-align: center;
-                top: 0;
-                width: 100%;
-                z-index: 1000;
-            }
-            #main-body {
-                margin: 15px;
-                border: 2px #F1C15B solid;
-                border-radius: 14px;
-                height: 90%;
-                position: relative;
-            }
-            a {
-                color: #058ADC;
-                display: block;
-                text-decoration: none;
-                padding: 2px;
-                font-weight: 900;
-                font-size: 16px;
-            }
-            a:hover {
-                color: #DC9705;
-            }
-            a, #legend {
-                font-family: monospace;
-            }
-            #legend-container {
-                background-color: #FFEECB;
-                padding: 3px 0;
-                border-radius: 14px;
-                opacity: 0.9;
-                font-size: 0.9em;
-                position: absolute;
-                right: 20px;
-                top: 15px;
-                width: 200px;
-                text-align: center;
-            }
-            #legend-container hr {
-                border: 0;
-                height: 2px;
-                background-color: #F1C15B;
-            }
-            #legend-container h3 {
-                margin: .5em 0;
-            }
-            #zoom-controls {
-                left: 10px;
-                position: absolute;
-                top: 15px;
-            }
 
-            .node {
-                cursor: pointer;
-            }
-            .overlay {
-                background-color: inherit;
-            }
-            .node circle, #legend circle {
-                fill: #fff;
-                stroke: steelblue;
-                stroke-width: 1.5px;
-            }
-            .node circle.collapsed, #legend circle.collapsed {
-                fill: lightsteelblue;
-            }
-            .node .abstract, #legend .abstract {
-                font-style: italic;
-            }
-            .node.label {
-                cursor: default;
-            }
-            .node.label circle, .node.label circle:hover {
-                stroke: #ccc;
-                stroke-width: 1.5px;
-            }
-            .node text {
-                font-family: sans-serif;
-                font-size: 14px;
-            }
-            .node text:hover {
-                text-decoration: underline;
-            }
-            .node.label text:hover {
-                text-decoration: none;
-            }
-            .node.focus, #legend .focus {
-                font-weight: bold;
-            }
-            .node.focus circle, #legend .focus circle {
-                stroke: #0ecc43;
-                stroke-width: 2px;
-            }
-            .node circle:hover, .focus circle:hover {
-                stroke-width: 3px;
-            }
-            .link {
-                fill: none;
-                stroke: #ccc;
-                stroke-width: 1.5px;
-            }
-            .deprecated {
-                color: orange;
-            }
-            .deprecated text {
-                fill: orange;
-            }
-        </style>
-    </head>
-    <body>
-        <div id="loading">
+<head>
+  <meta charset="utf-8">
+  <title>JSON Schema Viewer 0.3.4</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.4.5/jquery.mobile.min.css" />
+  <link rel="stylesheet" href="styles/json-schema-viewer.min.css" />
+
+</head>
+
+<body>
+  <div id="loading">
+    <div id="preload">
+      <img src="images/loader.gif" alt="Loading..." />
+      <br /> Loading...
+    </div>
+  </div>
+  <div class="ui-responsive-panel" data-role="page" id="viewer-page" data-title="JSON Schema Viewer">
+    <div data-role="header" class="md-navbar">
+      <div data-role="controlgroup" data-type="horizontal" class="ui-btn-left">
+        <a class="ui-btn ui-corner-all ui-icon-bars ui-btn-icon-notext" href="#info-panel" title="Toggle Info">Menu</a>
+      </div>
+      <h1 id="viewer-title">JSON Schema Viewer
+        <span class="schema-version"></span>
+      </h1>
+    </div>
+    <div role="main" class="ui-content" id="main-body">
+      <div id="zoom-controls">
+        <a id="zoom_in" href="#" class="ui-btn ui-icon-plus ui-btn-icon-notext ui-corner-all" title="Zoom In">Zoom-in</a>
+        <a id="zoom_out" href="#" class="ui-btn ui-icon-minus ui-btn-icon-notext ui-corner-all" title="Zoom Out">Zoom-out</a>
+        <div id="tree-controls">
+          <a id="reset-tree" href="#" class="ui-btn ui-icon-refresh ui-btn-icon-notext ui-corner-all" title="Reset">Reset</a>
         </div>
-        <div id="main-body">
-            <div id="zoom-controls">
-                <a id="zoom_in" href="#"  title="Zoom In">Zoom-in</a>
-                <a id="zoom_out" href="#" title="Zoom Out">Zoom-out</a>
-                <div id="tree-controls">
-                    <a id="reset-tree" href="#" title="Reset">Reset</a>
-                </div>
-            </div>
-            <div id="legend-container">
-                <div id="legend">
-                    <h3 class="ui-mini">Legend</h3>
-                    <hr />
-                    <div id="legend-items">
-                    </div>
-                </div>
-            </div>
+      </div>
+      <div id="legend-container">
+        <div id="legend" data-role="collapsible" data-collapsed="false">
+          <h3 class="ui-mini">Legend</h3>
+          <div id="legend-items"></div>
         </div>
+        <input type="text" data-type="search" placeholder="Search..." id="search-input">
+        <ul id="search-result" data-role="listview" data-filter="true" data-filter-reveal="true" data-input="#search-input" data-inset="true"></ul>
+      </div>
+    </div>
+    <div data-role="footer">
+      <div id="schema-path" class="ui-content">
+      </div>
+    </div>
+    <div data-display="push" data-role="panel" id="info-panel" data-swipe-close=false>
+      <div data-role="header" data-theme="b" class="ui-mini">
+        <h1 id="info-title">Info</h1>
+      </div>
+      <div data-role="tabs" id="info-tabs">
+        <div data-role="navbar" id="info-tabs-navbar">
+          <ul>
+            <li>
+              <a data-ajax="false" href="#info-tab-def">Definition</a>
 
-        <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <script type='text/javascript' src="json-schema-viewer.min.js"></script>
-        <script type='text/javascript'>
-          (function($) {
+            </li>
+            <li>
+              <a data-ajax="false" href="#info-tab-example">Example</a>
 
-            var loc = window.location
-            var schema = document.location.hash.substring(1)
-            if (!schema) alert("specify schema location in location.hash")
+            </li>
+            <li>
+              <a data-ajax="false" href="#info-tab-schema">Schema</a>
 
-            JSV.init({
-              schema : schema,
-              plain : true, //don't use JQM
-              viewerHeight : $('#main-body').height(), //set initial dimensions of SVG
-              viewerWidth : $('#main-body').width()
-            }, function() {
-              $('#jsv-tree').css('width', '100%');
-              //set diagram width to 100%, this DOES NOT resize the svg container
-              //it will not adjust to window resize, needs a listener to support that
-              JSV.resetViewer();
-              $('#loading').fadeOut('slow');
-            });
-          })(jQuery);
-        </script>
-    </body>
+            </li>
+          </ul>
+        </div>
+        <div class="ui-body-d ui-content info-tab" id="info-tab-def">
+          <h4>Type:</h4>
+          <p id="info-type">
+            Select a node to view the type.
+          </p>
+          <hr />
+          <h4>Definition:</h4>
+          <p id="info-definition">
+            Select a node to view the definition.
+          </p>
+          <hr />
+          <h4>Translation:</h4>
+          <p id="info-translation">
+            Select a node to view the translation.
+          </p>
+        </div>
+        <div class="ui-body-d ui-content info-tab" id="info-tab-example">
+          <p>
+            Select a node to view the example.
+          </p>
+        </div>
+        <div class="ui-body-d ui-content info-tab" id="info-tab-schema">
+          <p>
+            Select a node to view the JSON schema.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="popup-error" data-history="false" data-theme="a" data-overlay-theme="b">
+    <div data-role="header" data-theme="a">
+      <h1>Error!</h1>
+    </div>
+    <p class="ui-content error-message">
+      If you see this, something went wrong.
+    </p>
+  </div>
+
+  <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.4.5/jquery.mobile.min.js"></script>
+  <script type='text/javascript' src="json-schema-viewer.min.js"></script>
+  <script type='text/javascript'>
+      (function($) {
+          $('body').one('pagecontainershow', function(event, ui) {
+              var schema = '/tor/documentation/' + document.location.hash.substring(1)
+              JSV.init({
+                  schema: schema
+              }, function() {
+                  JSV.setVersion(tv4.getSchema(JSV.treeData.schema).version);
+                  JSV.resetViewer();
+              });
+          });
+      })(jQuery);
+  </script>
+</body>
 </html>

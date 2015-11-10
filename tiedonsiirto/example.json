@@ -53,10 +53,14 @@
           "nimi" : "Näyttö",
           "koodistoUri" : "suoritustapa",
           "koodistoVersio" : 1
+        },
+        "näyttö" : {
+          "kuvaus" : "Toimi automekaanikkona kolarikorjauspuolella kaksi vuotta",
+          "suorituspaikka" : "Autokorjaamo Oy, Riihimäki"
         }
       },
       "tila" : {
-        "koodiarvo" : "valmis",
+        "koodiarvo" : "VALMIS",
         "nimi" : "Valmis",
         "koodistoUri" : "suorituksentila",
         "koodistoVersio" : 1
