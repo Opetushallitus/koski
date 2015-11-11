@@ -57,16 +57,15 @@ object SchemaToJsonHtml {
 
 
   private def metadataHtml(metadatas: List[Metadata]) = {
-    <span class="metadata">
-      {
+    {
       metadatas.flatMap {
         case Description(desc) => Some(<span class="description">{desc}</span>)
         case ReadOnly(desc) => Some(<span class="readonly">{desc}</span>)
-        case KoodistoUri(koodistoNimi) =>Some(<a href={"https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/codes/"+koodistoNimi+"/1"} class="koodisto">Koodisto: {koodistoNimi}</a>)
+        case KoodistoUri(koodistoNimi) =>Some(<span class="koodisto">Koodisto: <a href={"https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/codes/"+koodistoNimi+"/1"}>{koodistoNimi}</a></span>)
+        case (o @ OksaUri(tunnus, käsite)) => Some(<span class="oksa">Oksa: {o.asLink}</span>)
         case _ => None
       }
-      }
-    </span>
+    }
   }
 
   private def buildValueHtml(property: Property, value: AnyRef, context: NodeContext) = buildValueHtmlString(property, Json.write(value), context)

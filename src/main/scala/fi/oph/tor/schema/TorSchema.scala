@@ -8,7 +8,7 @@ import scala.reflect.runtime.universe
 
 object TorSchema {
   val rootType = universe.typeOf[TorOppija]
-  lazy val schema = new ScalaJsonSchema(Description, KoodistoUri, ReadOnly)
+  lazy val schema = new ScalaJsonSchema(Description, KoodistoUri, ReadOnly, OksaUri)
   lazy val schemaType: SchemaType = schema.createSchema(rootType)
   lazy val schemaJson = schema.toJsonSchema(schemaType)
   lazy val schemaJsonString = Json.write(schemaJson)

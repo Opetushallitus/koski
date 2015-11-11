@@ -30,7 +30,7 @@ table.json {
     border-collapse: collapse;
     width: 100%;
 }
-.metadata > span, .metadata a {
+.metadata > span {
     margin-left: 10px;
 }
 a, a:visited {
