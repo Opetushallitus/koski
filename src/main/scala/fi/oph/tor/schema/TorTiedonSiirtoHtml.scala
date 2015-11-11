@@ -14,9 +14,7 @@ Tässä kuvataan TOR-järjestelmän tiedonsiirrossa käytettävä JSON-formaatti
 JSON Schema:
 
 - [tor-oppija-schema.json](/tor/documentation/tor-oppija-schema.json)
-- [visualisointi](/tor/json-schema-viewer#tor-oppija-schema.json)
-
-JSON Schema validaattori netissä: [jsonschemavalidator.net](http://www.jsonschemavalidator.net/). Voit kokeilla laittaa sinne meidän scheman ja esimerkin.
+- [visualisointi ja validointi](/tor/json-schema-viewer#tor-oppija-schema.json)
 
 ## Esimerkkidata annotoituna
 
