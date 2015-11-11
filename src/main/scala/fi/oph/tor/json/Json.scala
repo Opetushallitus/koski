@@ -13,7 +13,8 @@ import org.json4s.jackson.Serialization
 import org.json4s.{CustomSerializer, Extraction, JValue}
 
 object Json {
-  implicit val jsonFormats = GenericJsonFormats.genericFormats + new LocalDateSerializer + new RakenneOsaSerializer + new KoulutusmoduulitoteutusSerializer + new SchemaBasedTraitSerializer(TorSchema.schema)
+  // Find out why SchemaBasedTraitSerializer breaks current serialization
+  implicit val jsonFormats = GenericJsonFormats.genericFormats + new LocalDateSerializer + new RakenneOsaSerializer + new KoulutusmoduulitoteutusSerializer// + new SchemaBasedTraitSerializer(TorSchema.schema)
 
   def write(x: AnyRef): String = {
     Serialization.write(x);
