@@ -30,12 +30,18 @@ table.json {
     border-collapse: collapse;
     width: 100%;
 }
-.metadata > span {
-    margin-left: 10px;
+.metadata > span:after {
+    display: inline;
+    content: ". ";
 }
 a, a:visited {
     text-decoration: none;
     color: teal;
+}
+
+span.indent:after {
+    display: inline-block;
+    content: "\a0\a0";
 }
 
 .collapsed {

@@ -6,11 +6,11 @@ import fi.oph.tor.schema.generic.annotation.{Description, ReadOnly}
 
 case class TorOppija(
   henkilö: Henkilö,
-  @Description("Lista henkilön opinto-oikeuksista. Sisältää vain ne opinto-oikeudet, joihin käyttäjällä on oikeudet. Esimerkiksi ammatilliselle toimijalle ei välttämättä näy henkilön lukio-opintojen tietoja.")
+  @Description("Lista henkilön opinto-oikeuksista. Sisältää vain ne opinto-oikeudet, joihin käyttäjällä on oikeudet. Esimerkiksi ammatilliselle toimijalle ei välttämättä näy henkilön lukio-opintojen tietoja")
   opintoOikeudet: Seq[OpintoOikeus]
 )
 
-@Description("Henkilötiedot. Syötettäessä vaaditaan joko `oid` tai kaikki muut kentät, jolloin järjestelmään voidaan tarvittaessa luoda uusi henkilö.")
+@Description("Henkilötiedot. Syötettäessä vaaditaan joko `oid` tai kaikki muut kentät, jolloin järjestelmään voidaan tarvittaessa luoda uusi henkilö")
 sealed trait Henkilö {}
 
 case class HenkilöFull(
@@ -19,22 +19,22 @@ case class HenkilöFull(
   @Description("Suomalainen henkilötunnus")
   hetu: String,
   etunimet:String,
-  @Description("Kutsumanimi, oltava yksi etunimistä. Esimerkiksi etunimille \"Juha-Matti Petteri\" kelpaavat joko \"Juha-Matti\", \"Juha\", \"Matti\" tai \"Petteri\".")
+  @Description("Kutsumanimi, oltava yksi etunimistä. Esimerkiksi etunimille \"Juha-Matti Petteri\" kelpaavat joko \"Juha-Matti\", \"Juha\", \"Matti\" tai \"Petteri\"")
   kutsumanimi: String,
   sukunimi: String
 ) extends Henkilö
 
-@Description("Henkilö, jonka oid ei ole tiedossa. Tietoja syötettäessä luodaan mahdollisesti uusi henkilö Henkilöpalveluun.")
+@Description("Henkilö, jonka oid ei ole tiedossa. Tietoja syötettäessä luodaan mahdollisesti uusi henkilö Henkilöpalveluun")
 case class HenkilöNew(
   @Description("Suomalainen henkilötunnus")
   hetu: String,
   etunimet:String,
-  @Description("Kutsumanimi, oltava yksi etunimistä. Esimerkiksi etunimille \"Juha-Matti Petteri\" kelpaavat joko \"Juha-Matti\", \"Juha\", \"Matti\" tai \"Petteri\".")
+  @Description("Kutsumanimi, oltava yksi etunimistä. Esimerkiksi etunimille \"Juha-Matti Petteri\" kelpaavat joko \"Juha-Matti\", \"Juha\", \"Matti\" tai \"Petteri\"")
   kutsumanimi: String,
   sukunimi: String
 ) extends Henkilö
 
-@Description("Henkilö, jonka oid on tiedossa.")
+@Description("Henkilö, jonka oid on tiedossa")
 case class HenkilöOid(
   @Description("Yksilöivä tunniste Opintopolku-palvelussa")
   oid: String
@@ -47,7 +47,7 @@ object Henkilö {
 }
 
 case class OpintoOikeus(
-  @Description("Opinto-oikeuden uniikki tunniste. Tietoja syötettäessä kenttä ei ole pakollinen. Tietoja päivitettäessä TOR tunnistaa opinto-oikeuden joko tämän id:n tai muiden kenttien (oppijaOid, organisaatio, diaarinumero) perusteella.")
+  @Description("Opinto-oikeuden uniikki tunniste. Tietoja syötettäessä kenttä ei ole pakollinen. Tietoja päivitettäessä TOR tunnistaa opinto-oikeuden joko tämän id:n tai muiden kenttien (oppijaOid, organisaatio, diaarinumero) perusteella")
   id: Option[Int],
   alkamispäivä: Option[LocalDate],
   arvioituPäättymispäivä: Option[LocalDate],
@@ -58,7 +58,7 @@ case class OpintoOikeus(
   oppilaitos: Organisaatio,
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
   toimipiste: Option[Organisaatio],
-  @Description("Opinto-oikeuteen liittyvän (tutkinto-)suorituksen tiedot.")
+  @Description("Opinto-oikeuteen liittyvän (tutkinto-)suorituksen tiedot")
   suoritus: Suoritus,
   hojks: Option[Hojks],
   @Description("Opintojen tavoit tutkinto / tutkinnon osa")
@@ -92,7 +92,7 @@ trait Koulutusmoduulitoteutus
     @Description("Tutkinnon 6-numeroinen tutkintokoodi")
     @KoodistoUri("koulutus")
     koulutuskoodi: KoodistoKoodiViite,
-    @Description("Tutkinnon perusteen diaarinumero (pakollinen). Ks. ePerusteet-palvelu.")
+    @Description("Tutkinnon perusteen diaarinumero (pakollinen). Ks. ePerusteet-palvelu")
     perusteenDiaarinumero: Option[String],
     @Description("Tutkintonimike")
     @KoodistoUri("tutkintonimikkeet")
@@ -121,7 +121,7 @@ trait Koulutusmoduulitoteutus
   ) extends Koulutusmoduulitoteutus
 
 case class Arviointi(
-  @Description("Arvosana. Kullekin arviointiasteikolle löytyy oma koodistonsa.")
+  @Description("Arvosana. Kullekin arviointiasteikolle löytyy oma koodistonsa")
   arvosana: KoodistoKoodiViite,
   päivä: Option[LocalDate],
   @Description("Onko kyseessä arvosanan korotus")
@@ -203,7 +203,7 @@ case class Kunta(koodi: String, nimi: Option[String])
 case class KoodistoKoodiViite(
   @Description("Koodin tunniste koodistossa")
   koodiarvo: String,
-  @Description("Koodin selväkielinen, kielistetty nimi.")
+  @Description("Koodin selväkielinen, kielistetty nimi")
   @ReadOnly("Tiedon syötössä kuvausta ei tarvita; kuvaus haetaan Koodistopalvelusta")
   nimi: Option[String],
   @Description("Käytetyn koodiston tunniste")
@@ -215,11 +215,11 @@ case class KoodistoKoodiViite(
 @Description("Henkilökohtainen opetuksen järjestämistä koskeva suunnitelma, https://fi.wikipedia.org/wiki/HOJKS")
 case class Hojks(hojksTehty: Boolean)
 
-@Description("Paikallinen, koulutustoimijan oma kooditus koulutukselle. Käytetään kansallisen koodiston puuttuessa.")
+@Description("Paikallinen, koulutustoimijan oma kooditus koulutukselle. Käytetään kansallisen koodiston puuttuessa")
 case class Paikallinenkoodi(
   @Description("Koodin tunniste koodistossa")
   koodiarvo: String,
-  @Description("Koodin selväkielinen nimi.")
+  @Description("Koodin selväkielinen nimi")
   nimi: String,
   @Description("Koodiston tunniste")
   koodistoUri: String
@@ -228,7 +228,7 @@ case class Paikallinenkoodi(
 case class Organisaatio(
   @Description("Organisaation tunniste Opintopolku-palvelussa")
   oid: String,
-  @Description("Organisaation (kielistetty) nimi.")
+  @Description("Organisaation (kielistetty) nimi")
   @ReadOnly("Tiedon syötössä nimeä ei tarvita; kuvaus haetaan Organisaatiopalvelusta")
   nimi: Option[String] = None
 )

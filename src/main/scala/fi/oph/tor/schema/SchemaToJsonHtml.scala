@@ -75,7 +75,7 @@ object SchemaToJsonHtml {
   }
 
   private def tr(content:Elem, metadata:List[Metadata], context: NodeContext) = {
-    <tr class={"json-row " + context.path}><td>{0.to(context.depth).map(i => <span class="indent">&nbsp;&nbsp;&nbsp;</span>)}{content}</td><td class="metadata">{metadataHtml(metadata)}</td></tr>
+    <tr class={"json-row " + context.path}><td>{0.to(context.depth).map(i => <span class="indent"></span>)}{content}</td><td class="metadata">{metadataHtml(metadata)}</td></tr>
   }
 }
 
