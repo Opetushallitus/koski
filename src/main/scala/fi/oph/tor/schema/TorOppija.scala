@@ -15,9 +15,11 @@ sealed trait Henkilö {}
 
 case class HenkilöFull(
   @Description("Yksilöivä tunniste Opintopolku-palvelussa")
+  @OksaUri("tmpOKSAID760", "oppijanumero")
   oid: String,
   @Description("Suomalainen henkilötunnus")
   hetu: String,
+  @Description("Henkilön kaikki etunimet. Esimerkiksi Sanna Katariina")
   etunimet:String,
   @Description("Kutsumanimi, oltava yksi etunimistä. Esimerkiksi etunimille \"Juha-Matti Petteri\" kelpaavat joko \"Juha-Matti\", \"Juha\", \"Matti\" tai \"Petteri\"")
   kutsumanimi: String,
@@ -28,6 +30,7 @@ case class HenkilöFull(
 case class HenkilöNew(
   @Description("Suomalainen henkilötunnus")
   hetu: String,
+  @Description("Henkilön kaikki etunimet. Esimerkiksi Sanna Katariina")
   etunimet:String,
   @Description("Kutsumanimi, oltava yksi etunimistä. Esimerkiksi etunimille \"Juha-Matti Petteri\" kelpaavat joko \"Juha-Matti\", \"Juha\", \"Matti\" tai \"Petteri\"")
   kutsumanimi: String,
@@ -37,6 +40,7 @@ case class HenkilöNew(
 @Description("Henkilö, jonka oid on tiedossa")
 case class HenkilöOid(
   @Description("Yksilöivä tunniste Opintopolku-palvelussa")
+  @OksaUri("tmpOKSAID760", "oppijanumero")
   oid: String
 ) extends Henkilö
 
@@ -49,19 +53,23 @@ object Henkilö {
 case class OpintoOikeus(
   @Description("Opinto-oikeuden uniikki tunniste. Tietoja syötettäessä kenttä ei ole pakollinen. Tietoja päivitettäessä TOR tunnistaa opinto-oikeuden joko tämän id:n tai muiden kenttien (oppijaOid, organisaatio, diaarinumero) perusteella")
   id: Option[Int],
+  @Description("Opiskelijan opinto-oikeuden alkamisaika joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
   alkamispäivä: Option[LocalDate],
+  @Description("Opiskelijan opinto-oikeuden arvioitu päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
   arvioituPäättymispäivä: Option[LocalDate],
+  @Description("Opiskelijan opinto-oikeuden päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
   päättymispäivä: Option[LocalDate],
   @Description("Opinnot tarjoava koulutustoimija")
   koulutustoimija: Organisaatio,
   @Description("Oppilaitos, jossa opinnot on suoritettu")
   oppilaitos: Organisaatio,
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
+  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: Option[Organisaatio],
   @Description("Opinto-oikeuteen liittyvän (tutkinto-)suorituksen tiedot")
   suoritus: Suoritus,
   hojks: Option[Hojks],
-  @Description("Opintojen tavoit tutkinto / tutkinnon osa")
+  @Description("Opiskelijan suorituksen tavoite-tieto kertoo sen, suorittaako opiskelija tutkintotavoitteista koulutusta (koko tutkintoa) vai tutkinnon osa tavoitteista koulutusta (tutkinnon osaa)")
   @KoodistoUri("opintojentavoite")
   tavoite: Option[KoodistoKoodiViite],
   läsnäolotiedot: Option[Läsnäolotiedot],
@@ -75,8 +83,11 @@ case class Suoritus(
   koulutusmoduuli: Koulutusmoduulitoteutus,
   @Description("Opintojen suorituskieli")
   @KoodistoUri("kieli")
+  @OksaUri("tmpOKSAID309", "opintosuorituksen kieli")
   suorituskieli: Option[KoodistoKoodiViite],
   @Description("Tutkinnon tai tutkinnon osan suoritustapa")
+  @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
+  @OksaUri("tmpOKSAID142", "koulutusmuoto")
   suoritustapa: Option[Suoritustapa],
   @Description("Suorituksen tila")
   @KoodistoUri("suorituksentila")
@@ -91,11 +102,13 @@ trait Koulutusmoduulitoteutus
   case class Koulutustoteutus(
     @Description("Tutkinnon 6-numeroinen tutkintokoodi")
     @KoodistoUri("koulutus")
-    koulutuskoodi: KoodistoKoodiViite,
+    @OksaUri("tmpOKSAID560", "tutkinto")
+    tutkintokoodi: KoodistoKoodiViite,
     @Description("Tutkinnon perusteen diaarinumero (pakollinen). Ks. ePerusteet-palvelu")
     perusteenDiaarinumero: Option[String],
-    @Description("Tutkintonimike")
+    @Description("Tieto siitä mihin tutkintonimikkeeseen oppijan tutkinto liittyy")
     @KoodistoUri("tutkintonimikkeet")
+    @OksaUri("tmpOKSAID588", "tutkintonimike")
     tutkintonimike: Option[KoodistoKoodiViite] = None,
     @Description("Osaamisala")
     @KoodistoUri("osaamisala")
@@ -129,6 +142,7 @@ case class Arviointi(
 )
 
 case class Vahvistus(
+  @Description("Tutkinnon tai tutkinnonosan vahvistettu suorituspäivämäärä, eli päivämäärä jolloin suoritus on hyväksyttyä todennettua osaamista.")
   päivä: Option[LocalDate]
 )
 
@@ -213,6 +227,7 @@ case class KoodistoKoodiViite(
 )
 
 @Description("Henkilökohtainen opetuksen järjestämistä koskeva suunnitelma, https://fi.wikipedia.org/wiki/HOJKS")
+@OksaUri("tmpOKSAID228", "erityisopiskelija")
 case class Hojks(hojksTehty: Boolean)
 
 @Description("Paikallinen, koulutustoimijan oma kooditus koulutukselle. Käytetään kansallisen koodiston puuttuessa")
