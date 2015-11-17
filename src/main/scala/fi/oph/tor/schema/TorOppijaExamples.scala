@@ -20,11 +20,12 @@ object TorOppijaExamples {
       None,
       tila = None,
       alkamispäivä = None,
-      Some(Arviointi(
+      Some(List(Arviointi(
         arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "ammattijaerikoisammattitutkintojenarviointiasteikko", 1),
         Some(date(2012, 10, 20)),
-        arvosananKorottaminen = None
-      )),
+        arvosananKorottaminen = None,
+        arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
+      ))),
       Some(Vahvistus(Some(date(2013, 1, 31)))),
       osasuoritukset = None
     ),
@@ -43,11 +44,12 @@ object TorOppijaExamples {
       None,
       tila = None,
       alkamispäivä = None,
-      Some(Arviointi(
+      Some(List(Arviointi(
         arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "ammattijaerikoisammattitutkintojenarviointiasteikko", 1),
         Some(date(2013, 3, 20)),
-        arvosananKorottaminen = None
-      )),
+        arvosananKorottaminen = None,
+        arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
+      ))),
       Some(Vahvistus(Some(date(2013, 5, 31)))),
       osasuoritukset = None
     ),
@@ -65,11 +67,12 @@ object TorOppijaExamples {
       None,
       tila = None,
       alkamispäivä = None,
-      Some(Arviointi(
+      Some(List(Arviointi(
         arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "ammattijaerikoisammattitutkintojenarviointiasteikko", 1),
         Some(date(2013, 4, 1)),
-        arvosananKorottaminen = None
-      )),
+        arvosananKorottaminen = None,
+        arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
+      ))),
       Some(Vahvistus(Some(date(2013, 5, 31)))),
       osasuoritukset = None
     ),
@@ -87,11 +90,12 @@ object TorOppijaExamples {
       None,
       tila = None,
       alkamispäivä = None,
-      Some(Arviointi(
+      Some(List(Arviointi(
         arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "ammattijaerikoisammattitutkintojenarviointiasteikko", 1),
         Some(date(2014, 10, 20)),
-        arvosananKorottaminen = None
-      )),
+        arvosananKorottaminen = None,
+        arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
+      ))),
       Some(Vahvistus(Some(date(2014, 11, 8)))),
       osasuoritukset = None
     ),
@@ -109,11 +113,12 @@ object TorOppijaExamples {
       None,
       tila = None,
       alkamispäivä = None,
-      Some(Arviointi(
+      Some(List(Arviointi(
         arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "ammattijaerikoisammattitutkintojenarviointiasteikko", 1),
         Some(date(2015, 4, 1)),
-        arvosananKorottaminen = None
-      )),
+        arvosananKorottaminen = None,
+        arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
+      ))),
       Some(Vahvistus(Some(date(2015, 5, 1)))),
       osasuoritukset = None
     ),
@@ -131,11 +136,12 @@ object TorOppijaExamples {
       None,
       tila = None,
       alkamispäivä = None,
-      Some(Arviointi(
+      Some(List(Arviointi(
         arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "ammattijaerikoisammattitutkintojenarviointiasteikko", 1),
         Some(date(2016, 2, 1)),
-        arvosananKorottaminen = None
-      )),
+        arvosananKorottaminen = None,
+        arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
+      ))),
       Some(Vahvistus(Some(date(2016, 5, 1)))),
       osasuoritukset = None
     )
@@ -151,7 +157,7 @@ object TorOppijaExamples {
         Organisaatio("1.2.246.562.10.346830761110", Some("HELSINGIN KAUPUNKI")),
         Organisaatio("1.2.246.562.10.52251087186", Some("Stadin ammattiopisto")),
         Some(Organisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))),
-        Suoritus(Koulutustoteutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", 4), Some("39/011/2014"), Some(KoodistoKoodiViite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", 2)), Some(KoodistoKoodiViite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", 3))),
+        Suoritus(Koulutustoteutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", 4), Some("39/011/2014"), Some(List(KoodistoKoodiViite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", 2))), Some(List(KoodistoKoodiViite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", 3)))),
           Some(KoodistoKoodiViite("FI", Some("suomi"), "kieli", 1)),
           None,
           None,
@@ -247,7 +253,7 @@ object TorOppijaExamples {
         Organisaatio("1.2.246.562.10.52251087186", Some("Stadin ammattiopisto")),
         Some(Organisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))),
         Suoritus(
-          Koulutustoteutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", 4), Some("39/011/2014"), Some(KoodistoKoodiViite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", 2)), Some(KoodistoKoodiViite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", 3))),
+          Koulutustoteutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", 4), Some("39/011/2014"), Some(List(KoodistoKoodiViite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", 2))), Some(List(KoodistoKoodiViite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", 3)))),
           Some(KoodistoKoodiViite("FI", Some("suomi"), "kieli", 1)),
           Some(
             OppilaitosmuotoinenOpetussuunnitelmaperusteinenKoulutus(
@@ -276,11 +282,22 @@ object TorOppijaExamples {
               None,
               tila = None,
               alkamispäivä = None,
-              Some(Arviointi(
-                arvosana = KoodistoKoodiViite("3", Some("K3"), "ammatillisenperustutkinnonarviointiasteikko", 1),
-                Some(date(2014, 10, 20)),
-                arvosananKorottaminen = Some(true)
-              )),
+              Some(
+                List(
+                  Arviointi(
+                    arvosana = KoodistoKoodiViite("2", Some("H2"), "ammatillisenperustutkinnonarviointiasteikko", 1),
+                    Some(date(2014, 5, 20)),
+                    arvosananKorottaminen = None,
+                    None
+                  ),
+                  Arviointi(
+                    arvosana = KoodistoKoodiViite("3", Some("K3"), "ammatillisenperustutkinnonarviointiasteikko", 1),
+                    Some(date(2014, 10, 20)),
+                    arvosananKorottaminen = Some(true),
+                    None
+                  )
+                )
+              ),
               Some(Vahvistus(Some(date(2014, 11, 8)))),
               osasuoritukset = None
             )

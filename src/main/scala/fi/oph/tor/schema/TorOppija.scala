@@ -94,7 +94,7 @@ case class Suoritus(
   @KoodistoUri("suorituksentila")
   tila: Option[KoodistoKoodiViite],
   alkamispäivä: Option[LocalDate],
-  arviointi: Option[Arviointi],
+  arviointi: Option[List[Arviointi]],
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[Suoritus]]
 )
@@ -110,11 +110,11 @@ trait Koulutusmoduulitoteutus
     @Description("Tieto siitä mihin tutkintonimikkeeseen oppijan tutkinto liittyy")
     @KoodistoUri("tutkintonimikkeet")
     @OksaUri("tmpOKSAID588", "tutkintonimike")
-    tutkintonimike: Option[KoodistoKoodiViite] = None,
+    tutkintonimike: Option[List[KoodistoKoodiViite]] = None,
     @Description("Osaamisala")
     @KoodistoUri("osaamisala")
     @OksaUri(tunnus = "tmpOKSAID299", käsite = "osaamisala")
-    osaamisala: Option[KoodistoKoodiViite] = None
+    osaamisala: Option[List[KoodistoKoodiViite]] = None
   ) extends Koulutusmoduulitoteutus
 
   case class TutkinnonosatoteutusOps(
@@ -134,13 +134,18 @@ trait Koulutusmoduulitoteutus
     pakollinen: Boolean
   ) extends Koulutusmoduulitoteutus
 
-// TODO, lista arvioinneista, arvioitsijat?
 case class Arviointi(
   @Description("Arvosana. Kullekin arviointiasteikolle löytyy oma koodistonsa")
   arvosana: KoodistoKoodiViite,
   päivä: Option[LocalDate],
   @Description("Onko kyseessä arvosanan korotus")
-  arvosananKorottaminen: Option[Boolean]
+  arvosananKorottaminen: Option[Boolean],
+  @Description("Tutkinnon osan suorituksen arvioinnista päättäneen henkilön nimi")
+  arvioitsijat: Option[List[Arvioitsija]]
+)
+
+case class Arvioitsija(
+  nimi: String
 )
 
 case class Vahvistus(
@@ -187,7 +192,10 @@ case class OppisopimusmuotoinenNäyttötutkintoonValmistavaKoulutus(
 
 case class HyväksiLuku (
   @Description("Aiemman, korvaavan suorituksen kuvaus")
-  osaaminen: Koulutusmoduulitoteutus
+  osaaminen: Koulutusmoduulitoteutus,
+  @Description("Osaamisen tunnustamisen kautta saatavan tutkinnon osan suorituksen selite")
+  @OksaUri("tmpOKSAID629", "osaamisen tunnustaminen")
+  selite: Option[String]
 )
 
 @Description("Näytön kuvaus")
