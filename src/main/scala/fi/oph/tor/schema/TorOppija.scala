@@ -7,7 +7,7 @@ import fi.oph.tor.schema.generic.annotation.{Description, ReadOnly}
 case class TorOppija(
   henkilö: Henkilö,
   @Description("Lista henkilön opinto-oikeuksista. Sisältää vain ne opinto-oikeudet, joihin käyttäjällä on oikeudet. Esimerkiksi ammatilliselle toimijalle ei välttämättä näy henkilön lukio-opintojen tietoja")
-  opintoOikeudet: Seq[OpintoOikeus]
+  opintoOikeudet: Seq[OpiskeluOikeus]
 )
 
 @Description("Henkilötiedot. Syötettäessä vaaditaan joko `oid` tai kaikki muut kentät, jolloin järjestelmään voidaan tarvittaessa luoda uusi henkilö")
@@ -50,7 +50,7 @@ object Henkilö {
   def apply(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String) = HenkilöNew(hetu, etunimet, kutsumanimi, sukunimi)
 }
 
-case class OpintoOikeus(
+case class OpiskeluOikeus(
   @Description("Opinto-oikeuden uniikki tunniste. Tietoja syötettäessä kenttä ei ole pakollinen. Tietoja päivitettäessä TOR tunnistaa opinto-oikeuden joko tämän id:n tai muiden kenttien (oppijaOid, organisaatio, diaarinumero) perusteella")
   id: Option[Int],
   @Description("Opiskelijan opinto-oikeuden alkamisaika joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
@@ -88,7 +88,8 @@ case class Suoritus(
   @Description("Tutkinnon tai tutkinnon osan suoritustapa")
   @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
   @OksaUri("tmpOKSAID142", "koulutusmuoto")
-  suoritustapa: Option[Suoritustapa],
+  koulutusMuoto: Option[KoulutusMuoto],
+  hyväksiluku: Option[HyväksiLuku],
   @Description("Suorituksen tila")
   @KoodistoUri("suorituksentila")
   tila: Option[KoodistoKoodiViite],
@@ -133,6 +134,7 @@ trait Koulutusmoduulitoteutus
     pakollinen: Boolean
   ) extends Koulutusmoduulitoteutus
 
+// TODO, lista arvioinneista, arvioitsijat?
 case class Arviointi(
   @Description("Arvosana. Kullekin arviointiasteikolle löytyy oma koodistonsa")
   arvosana: KoodistoKoodiViite,
@@ -146,43 +148,47 @@ case class Vahvistus(
   päivä: Option[LocalDate]
 )
 
-sealed trait Suoritustapa {
-  def tunniste: KoodistoKoodiViite
+sealed trait KoulutusMuoto {
+  def järjestämismuoto: KoodistoKoodiViite
+  def suoritustapa: KoodistoKoodiViite
 }
 
-object Suoritustapa {
-  def apply(tunniste: KoodistoKoodiViite) = SuoritustapaSimple(tunniste)
-}
-
-@Description("Suoritustapa ilman lisätietoja")
-case class SuoritustapaSimple(
+case class OppilaitosmuotoinenOpetussuunnitelmaperusteinenKoulutus(
+  @KoodistoUri("järjestämismuoto")
+  järjestämismuoto: KoodistoKoodiViite,
   @KoodistoUri("suoritustapa")
-  tunniste: KoodistoKoodiViite
-) extends Suoritustapa
+  suoritustapa: KoodistoKoodiViite
+) extends KoulutusMuoto
 
-@Description("Suoritustapana hyväksyluku")
-case class SuoritustapaHyväksiluku(
+case class OppilaitosmuotoinenNäyttötutkintoonValmistavaKoulutus(
+  @KoodistoUri("järjestämismuoto")
+  järjestämismuoto: KoodistoKoodiViite,
   @KoodistoUri("suoritustapa")
-  tunniste: KoodistoKoodiViite,
+  suoritustapa: KoodistoKoodiViite,
+  näyttö: Näyttö
+) extends KoulutusMuoto
+
+case class OppisopimusmuotoinenOpetussuunnitelmaperusteinenKoulutus(
+  @KoodistoUri("järjestämismuoto")
+  järjestämismuoto: KoodistoKoodiViite,
+  @KoodistoUri("suoritustapa")
+  suoritustapa: KoodistoKoodiViite,
+  oppisopimus: Oppisopimus
+) extends KoulutusMuoto
+
+case class OppisopimusmuotoinenNäyttötutkintoonValmistavaKoulutus(
+  @KoodistoUri("järjestämismuoto")
+  järjestämismuoto: KoodistoKoodiViite,
+  @KoodistoUri("suoritustapa")
+  suoritustapa: KoodistoKoodiViite,
+  näyttö: Näyttö,
+  oppisopimus: Oppisopimus
+) extends KoulutusMuoto
+
+case class HyväksiLuku (
   @Description("Aiemman, korvaavan suorituksen kuvaus")
   osaaminen: Koulutusmoduulitoteutus
-) extends Suoritustapa
-
-@Description("Suoritustapana näyttö")
-case class SuoritustapaNäytöllä(
-  @KoodistoUri("suoritustapa")
-  tunniste: KoodistoKoodiViite,
-  näyttö: Näyttö
-) extends Suoritustapa
-
-@Description("Suoritustapana oppisopimus")
-case class SuoritustapaOppisopimuksella(
-  @KoodistoUri("suoritustapa")
-  tunniste: KoodistoKoodiViite,
-  näyttö: Option[Näyttö] = None,
-  oppisopimus: Oppisopimus
-) extends Suoritustapa
-
+)
 
 @Description("Näytön kuvaus")
 case class Näyttö(
