@@ -12,7 +12,7 @@ object TorOppijaExamples {
         true
       ),
       suorituskieli = None,
-      Some(OppilaitosmuotoinenNäyttötutkintoonValmistavaKoulutus(
+      Some(KoulutusmuotoNäytöllä(
         KoodistoKoodiViite("oppilaitos", Some("Oppilaitos-muotoinen"), "järjestämismuoto", 1),
         KoodistoKoodiViite("näyttö", Some("Näyttö"), "suoritustapa", 1),
         Näyttö("Huolto- ja korjaustöitä", "Autokorjaamo Oy, Riihimäki")
@@ -36,7 +36,7 @@ object TorOppijaExamples {
         false
       ),
       suorituskieli = None,
-      Some(OppilaitosmuotoinenNäyttötutkintoonValmistavaKoulutus(
+      Some(KoulutusmuotoNäytöllä(
         KoodistoKoodiViite("oppilaitos", Some("Oppilaitos-muotoinen"), "järjestämismuoto", 1),
         KoodistoKoodiViite("näyttö", Some("Näyttö"), "suoritustapa", 1),
         Näyttö("Pintavaurioiden korjausta", "Autokorjaamo Oy, Riihimäki")
@@ -59,7 +59,7 @@ object TorOppijaExamples {
         true
       ),
       suorituskieli = None,
-      Some(OppilaitosmuotoinenNäyttötutkintoonValmistavaKoulutus(
+      Some(KoulutusmuotoNäytöllä(
         KoodistoKoodiViite("oppilaitos", Some("Oppilaitos-muotoinen"), "järjestämismuoto", 1),
         KoodistoKoodiViite("näyttö", Some("Näyttö"), "suoritustapa", 1),
         Näyttö("Mittaus- ja korivauriotöitä", "Autokorjaamo Oy, Riihimäki")
@@ -82,7 +82,7 @@ object TorOppijaExamples {
         true
       ),
       suorituskieli = None,
-      Some(OppilaitosmuotoinenNäyttötutkintoonValmistavaKoulutus(
+      Some(KoulutusmuotoNäytöllä(
         KoodistoKoodiViite("oppilaitos", Some("Oppilaitos-muotoinen"), "järjestämismuoto", 1),
         KoodistoKoodiViite("näyttö", Some("Näyttö"), "suoritustapa", 1),
         Näyttö("Maalauksen esikäsittelytöitä", "Autokorjaamo Oy, Riihimäki")
@@ -105,7 +105,7 @@ object TorOppijaExamples {
         true
       ),
       suorituskieli = None,
-      Some(OppilaitosmuotoinenNäyttötutkintoonValmistavaKoulutus(
+      Some(KoulutusmuotoNäytöllä(
         KoodistoKoodiViite("oppilaitos", Some("Oppilaitos-muotoinen"), "järjestämismuoto", 1),
         KoodistoKoodiViite("näyttö", Some("Näyttö"), "suoritustapa", 1),
         Näyttö("Auton lisävarustetöitä", "Autokorjaamo Oy, Riihimäki")
@@ -128,7 +128,7 @@ object TorOppijaExamples {
         true
       ),
       suorituskieli = None,
-      Some(OppilaitosmuotoinenNäyttötutkintoonValmistavaKoulutus(
+      Some(KoulutusmuotoNäytöllä(
         KoodistoKoodiViite("oppilaitos", Some("Oppilaitos-muotoinen"), "järjestämismuoto", 1),
         KoodistoKoodiViite("näyttö", Some("Näyttö"), "suoritustapa", 1),
         Näyttö("Yritystoiminnan suunnittelua", "Autokorjaamo Oy, Riihimäki")
@@ -220,7 +220,7 @@ object TorOppijaExamples {
           Koulutustoteutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", 4), Some("39/011/2014"), None, None),
           None,
           Some(
-            OppisopimusmuotoinenOpetussuunnitelmaperusteinenKoulutus(
+            KoulutusmuotoOppisopimuksella(
               KoodistoKoodiViite("oppisopimus", Some("Oppisopimus"), "järjestämismuoto", 1),
               KoodistoKoodiViite("ops", Some("Ops"), "suoritustapa", 1),
               Oppisopimus(Yritys("Autokorjaamo Oy", "1234567-8"))
@@ -256,7 +256,7 @@ object TorOppijaExamples {
           Koulutustoteutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", 4), Some("39/011/2014"), Some(List(KoodistoKoodiViite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", 2))), Some(List(KoodistoKoodiViite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", 3)))),
           Some(KoodistoKoodiViite("FI", Some("suomi"), "kieli", 1)),
           Some(
-            OppilaitosmuotoinenOpetussuunnitelmaperusteinenKoulutus(
+            KoulutusmuotoSimple(
               KoodistoKoodiViite("oppilaitosmuotoinen", Some("Oppilaitosmuotoinen"), "järjestämismuoto", 1),
               KoodistoKoodiViite("ops", Some("Ops"), "suoritustapa", 1)
             )
@@ -274,7 +274,7 @@ object TorOppijaExamples {
               ),
               suorituskieli = None,
               Some(
-                OppilaitosmuotoinenOpetussuunnitelmaperusteinenKoulutus(
+                KoulutusmuotoSimple(
                   KoodistoKoodiViite("oppilaitosmuotoinen", Some("Oppilaitosmuotoinen"), "järjestämismuoto", 1),
                   KoodistoKoodiViite("ops", Some("Ops"), "suoritustapa", 1)
                 )

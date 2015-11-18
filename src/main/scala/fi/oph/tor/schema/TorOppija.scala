@@ -88,8 +88,8 @@ case class Suoritus(
   @Description("Tutkinnon tai tutkinnon osan suoritustapa")
   @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
   @OksaUri("tmpOKSAID142", "koulutusmuoto")
-  koulutusMuoto: Option[KoulutusMuoto],
-  hyväksiluku: Option[HyväksiLuku],
+  koulutusmuoto: Option[Koulutusmuoto],
+  hyväksiluku: Option[Hyväksiluku],
   @Description("Suorituksen tila")
   @KoodistoUri("suorituksentila")
   tila: Option[KoodistoKoodiViite],
@@ -153,44 +153,48 @@ case class Vahvistus(
   päivä: Option[LocalDate]
 )
 
-sealed trait KoulutusMuoto {
+sealed trait Koulutusmuoto {
   def järjestämismuoto: KoodistoKoodiViite
   def suoritustapa: KoodistoKoodiViite
 }
 
-case class OppilaitosmuotoinenOpetussuunnitelmaperusteinenKoulutus(
+@Description("Koulutusmuoto ilman lisätietoja")
+case class KoulutusmuotoSimple(
   @KoodistoUri("järjestämismuoto")
   järjestämismuoto: KoodistoKoodiViite,
   @KoodistoUri("suoritustapa")
   suoritustapa: KoodistoKoodiViite
-) extends KoulutusMuoto
+) extends Koulutusmuoto
 
-case class OppilaitosmuotoinenNäyttötutkintoonValmistavaKoulutus(
+@Description("Koulutusmuoto näytöllä")
+case class KoulutusmuotoNäytöllä(
   @KoodistoUri("järjestämismuoto")
   järjestämismuoto: KoodistoKoodiViite,
   @KoodistoUri("suoritustapa")
   suoritustapa: KoodistoKoodiViite,
   näyttö: Näyttö
-) extends KoulutusMuoto
+) extends Koulutusmuoto
 
-case class OppisopimusmuotoinenOpetussuunnitelmaperusteinenKoulutus(
+@Description("Koulutusmuoto oppisopimuksella")
+case class KoulutusmuotoOppisopimuksella(
   @KoodistoUri("järjestämismuoto")
   järjestämismuoto: KoodistoKoodiViite,
   @KoodistoUri("suoritustapa")
   suoritustapa: KoodistoKoodiViite,
   oppisopimus: Oppisopimus
-) extends KoulutusMuoto
+) extends Koulutusmuoto
 
-case class OppisopimusmuotoinenNäyttötutkintoonValmistavaKoulutus(
+@Description("Koulutusmuoto näytöllä ja oppisopimuksella")
+case class KoulutusmuotoNäytölläJaOppisopimuksella(
   @KoodistoUri("järjestämismuoto")
   järjestämismuoto: KoodistoKoodiViite,
   @KoodistoUri("suoritustapa")
   suoritustapa: KoodistoKoodiViite,
   näyttö: Näyttö,
   oppisopimus: Oppisopimus
-) extends KoulutusMuoto
+) extends Koulutusmuoto
 
-case class HyväksiLuku (
+case class Hyväksiluku(
   @Description("Aiemman, korvaavan suorituksen kuvaus")
   osaaminen: Koulutusmoduulitoteutus,
   @Description("Osaamisen tunnustamisen kautta saatavan tutkinnon osan suorituksen selite")
