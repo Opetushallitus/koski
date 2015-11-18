@@ -30,12 +30,14 @@ class TorDatabase(val config: Config) extends Logging {
   import TorDatabase._
 
   val serverProcess = startLocalDatabaseServerIfNotRunning
-  val db: DB = config.toSlickDatabase
 
   if (!config.isRemote) {
     createDatabase
     createUser
   }
+
+  val db: DB = config.toSlickDatabase
+
   migrateSchema
 
   private def startLocalDatabaseServerIfNotRunning: Option[PostgresRunner] = {
