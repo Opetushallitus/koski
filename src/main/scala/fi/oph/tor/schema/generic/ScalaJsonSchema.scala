@@ -32,6 +32,9 @@ case class OneOf(types: List[TypeWithClassName]) extends SchemaType {
 }
 trait TypeWithClassName extends SchemaType {
   def fullClassName: String
+  def simpleName: String = {
+    fullClassName.split("\\.").toList.last.toLowerCase
+  }
 }
 
 case class Property(key: String, tyep: SchemaType, metadata: List[Metadata])
@@ -175,8 +178,8 @@ class ScalaJsonSchema(metadatasSupported: MetadataSupport*) {
     case NumberType() => JObject(("type") -> JString("number"))
     case ListType(x) => JObject(("type") -> JString("array"), (("items" -> toJsonSchema(x))))
     case OptionalType(x) => toJsonSchema(x)
-    case ClassTypeRef(fullClassName: String) => JObject(("$ref") -> toUri(fullClassName))
-    case ClassType(fullClassName, properties, metadata) => appendMetadata(JObject(List(("type" -> JString("object")), ("properties" -> toJsonProperties(properties)), ("id" -> toUri(fullClassName)), ("additionalProperties" -> JBool(false))) ++ toRequiredProperties(properties).toList), metadata)
+    case t: ClassTypeRef => JObject(("$ref") -> toUri(t.simpleName))
+    case t: ClassType => appendMetadata(JObject(List(("type" -> JString("object")), ("properties" -> toJsonProperties(t.properties)), ("id" -> toUri(t.simpleName)), ("additionalProperties" -> JBool(false))) ++ toRequiredProperties(t.properties).toList), t.metadata)
     case OneOf(types) => JObject(("oneOf" -> JArray(types.map(toJsonSchema(_)))))
   }
 
