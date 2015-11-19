@@ -85,10 +85,6 @@ case class Suoritus(
   @KoodistoUri("kieli")
   @OksaUri("tmpOKSAID309", "opintosuorituksen kieli")
   suorituskieli: Option[KoodistoKoodiViite],
-  @Description("Tutkinnon tai tutkinnon osan suoritustapa")
-  @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
-  @OksaUri("tmpOKSAID142", "koulutusmuoto")
-  koulutusmuoto: Option[Koulutusmuoto],
   hyväksiluku: Option[Hyväksiluku],
   @Description("Suorituksen tila")
   @KoodistoUri("suorituksentila")
@@ -114,7 +110,13 @@ trait Koulutusmoduulitoteutus
     @Description("Osaamisala")
     @KoodistoUri("osaamisala")
     @OksaUri(tunnus = "tmpOKSAID299", käsite = "osaamisala")
-    osaamisala: Option[List[KoodistoKoodiViite]] = None
+    osaamisala: Option[List[KoodistoKoodiViite]] = None,
+    @Description("Tutkinnon tai tutkinnon osan suoritustapa")
+    @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
+    suoritustapa: Option[Suoritustapa],
+    @Description("Koulutuksen järjestämismuoto")
+    @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
+    järjestämismuoto: Option[Järjestämismuoto]
   ) extends Koulutusmoduulitoteutus
 
   case class TutkinnonosatoteutusOps(
@@ -124,14 +126,20 @@ trait Koulutusmoduulitoteutus
     @Description("Onko pakollinen osa tutkinnossa")
     pakollinen: Boolean,
     paikallinenKoodi: Option[Paikallinenkoodi] = None,
-    kuvaus: Option[String] = None
+    kuvaus: Option[String] = None,
+    @Description("Tutkinnon tai tutkinnon osan suoritustapa")
+    @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
+    suoritustapa: Option[Suoritustapa]
   ) extends Koulutusmoduulitoteutus
 
   case class TutkinnonosatoteutusPaikallinen(
     paikallinenKoodi: Paikallinenkoodi,
     kuvaus: String,
     @Description("Onko pakollinen osa tutkinnossa")
-    pakollinen: Boolean
+    pakollinen: Boolean,
+    @Description("Tutkinnon tai tutkinnon osan suoritustapa")
+    @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
+    suoritustapa: Option[Suoritustapa]
   ) extends Koulutusmoduulitoteutus
 
 case class Arviointi(
@@ -153,46 +161,38 @@ case class Vahvistus(
   päivä: Option[LocalDate]
 )
 
-sealed trait Koulutusmuoto {
-  def järjestämismuoto: KoodistoKoodiViite
-  def suoritustapa: KoodistoKoodiViite
+trait Suoritustapa {
+  def tunniste: KoodistoKoodiViite
 }
 
-@Description("Koulutusmuoto ilman lisätietoja")
-case class KoulutusmuotoSimple(
-  @KoodistoUri("järjestämismuoto")
-  järjestämismuoto: KoodistoKoodiViite,
+@Description("Suoritustapa ilman lisätietoja")
+case class DefaultSuoritustapa(
   @KoodistoUri("suoritustapa")
-  suoritustapa: KoodistoKoodiViite
-) extends Koulutusmuoto
+  tunniste: KoodistoKoodiViite
+) extends Suoritustapa
 
-@Description("Koulutusmuoto näytöllä")
-case class KoulutusmuotoNäytöllä(
-  @KoodistoUri("järjestämismuoto")
-  järjestämismuoto: KoodistoKoodiViite,
+@Description("Suoritustapa näyttötietojen kanssa")
+case class SuoritustapaNäytöllä(
   @KoodistoUri("suoritustapa")
-  suoritustapa: KoodistoKoodiViite,
+  tunniste: KoodistoKoodiViite,
   näyttö: Näyttö
-) extends Koulutusmuoto
+) extends Suoritustapa
 
-@Description("Koulutusmuoto oppisopimuksella")
-case class KoulutusmuotoOppisopimuksella(
-  @KoodistoUri("järjestämismuoto")
-  järjestämismuoto: KoodistoKoodiViite,
-  @KoodistoUri("suoritustapa")
-  suoritustapa: KoodistoKoodiViite,
-  oppisopimus: Oppisopimus
-) extends Koulutusmuoto
+trait Järjestämismuoto {
+  def tunniste: KoodistoKoodiViite
+}
 
-@Description("Koulutusmuoto näytöllä ja oppisopimuksella")
-case class KoulutusmuotoNäytölläJaOppisopimuksella(
+@Description("Järjestämismuoto ilman lisätietoja")
+case class DefaultJärjestämismuoto(
   @KoodistoUri("järjestämismuoto")
-  järjestämismuoto: KoodistoKoodiViite,
-  @KoodistoUri("suoritustapa")
-  suoritustapa: KoodistoKoodiViite,
-  näyttö: Näyttö,
+  tunniste: KoodistoKoodiViite
+) extends Järjestämismuoto
+
+case class JärjestämismuotoOppisopimuksella(
+  @KoodistoUri("järjestämismuoto")
+  tunniste: KoodistoKoodiViite,
   oppisopimus: Oppisopimus
-) extends Koulutusmuoto
+) extends Järjestämismuoto
 
 case class Hyväksiluku(
   @Description("Aiemman, korvaavan suorituksen kuvaus")
