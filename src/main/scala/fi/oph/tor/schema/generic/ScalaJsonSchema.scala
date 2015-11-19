@@ -176,7 +176,7 @@ class ScalaJsonSchema(metadatasSupported: MetadataSupport*) {
     case ListType(x) => JObject(("type") -> JString("array"), (("items" -> toJsonSchema(x))))
     case OptionalType(x) => toJsonSchema(x)
     case ClassTypeRef(fullClassName: String) => JObject(("$ref") -> toUri(fullClassName))
-    case ClassType(fullClassName, properties, metadata) => appendMetadata(JObject(List(("type" -> JString("object")), ("properties" -> toJsonProperties(properties)), ("id" -> toUri(fullClassName))) ++ toRequiredProperties(properties).toList), metadata)
+    case ClassType(fullClassName, properties, metadata) => appendMetadata(JObject(List(("type" -> JString("object")), ("properties" -> toJsonProperties(properties)), ("id" -> toUri(fullClassName)), ("additionalProperties" -> JBool(false))) ++ toRequiredProperties(properties).toList), metadata)
     case OneOf(types) => JObject(("oneOf" -> JArray(types.map(toJsonSchema(_)))))
   }
 

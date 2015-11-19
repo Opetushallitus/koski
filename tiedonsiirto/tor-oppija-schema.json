@@ -22,6 +22,7 @@
           }
         },
         "id" : "#fi_oph_tor_schema_HenkilöNew",
+        "additionalProperties" : false,
         "required" : [ "hetu", "etunimet", "kutsumanimi", "sukunimi" ],
         "description" : "Henkilö, jonka oid ei ole tiedossa. Tietoja syötettäessä luodaan mahdollisesti uusi henkilö Henkilöpalveluun"
       }, {
@@ -48,6 +49,7 @@
           }
         },
         "id" : "#fi_oph_tor_schema_HenkilöFull",
+        "additionalProperties" : false,
         "required" : [ "oid", "hetu", "etunimet", "kutsumanimi", "sukunimi" ]
       }, {
         "type" : "object",
@@ -58,6 +60,7 @@
           }
         },
         "id" : "#fi_oph_tor_schema_HenkilöOid",
+        "additionalProperties" : false,
         "required" : [ "oid" ],
         "description" : "Henkilö, jonka oid on tiedossa"
       } ]
@@ -99,6 +102,7 @@
               }
             },
             "id" : "#fi_oph_tor_schema_Organisaatio",
+            "additionalProperties" : false,
             "required" : [ "oid" ],
             "description" : "Opinnot tarjoava koulutustoimija"
           },
@@ -134,6 +138,7 @@
                         }
                       },
                       "id" : "#fi_oph_tor_schema_Paikallinenkoodi",
+                      "additionalProperties" : false,
                       "required" : [ "koodiarvo", "nimi", "koodistoUri" ],
                       "description" : "Paikallinen, koulutustoimijan oma kooditus koulutukselle. Käytetään kansallisen koodiston puuttuessa"
                     },
@@ -169,6 +174,7 @@
                               }
                             },
                             "id" : "#fi_oph_tor_schema_KoodistoKoodiViite",
+                            "additionalProperties" : false,
                             "required" : [ "koodiarvo", "koodistoUri", "koodistoVersio" ],
                             "description" : "\n(Koodisto: suoritustapa)"
                           },
@@ -183,11 +189,13 @@
                               }
                             },
                             "id" : "#fi_oph_tor_schema_Näyttö",
+                            "additionalProperties" : false,
                             "required" : [ "kuvaus", "suorituspaikka" ],
                             "description" : "Näytön kuvaus"
                           }
                         },
                         "id" : "#fi_oph_tor_schema_SuoritustapaNäytöllä",
+                        "additionalProperties" : false,
                         "required" : [ "tunniste", "näyttö" ],
                         "description" : "Suoritustapa näyttötietojen kanssa"
                       }, {
@@ -199,6 +207,7 @@
                           }
                         },
                         "id" : "#fi_oph_tor_schema_DefaultSuoritustapa",
+                        "additionalProperties" : false,
                         "required" : [ "tunniste" ],
                         "description" : "Suoritustapa ilman lisätietoja"
                       } ],
@@ -240,6 +249,7 @@
                               }
                             },
                             "id" : "#fi_oph_tor_schema_TutkinnonosatoteutusOps",
+                            "additionalProperties" : false,
                             "required" : [ "tutkinnonosakoodi", "pakollinen" ]
                           }, {
                             "type" : "object",
@@ -296,15 +306,18 @@
                                             }
                                           },
                                           "id" : "#fi_oph_tor_schema_Yritys",
+                                          "additionalProperties" : false,
                                           "required" : [ "nimi", "yTunnus" ]
                                         }
                                       },
                                       "id" : "#fi_oph_tor_schema_Oppisopimus",
+                                      "additionalProperties" : false,
                                       "required" : [ "työnantaja" ],
                                       "description" : "Oppisopimuksen tiedot"
                                     }
                                   },
                                   "id" : "#fi_oph_tor_schema_JärjestämismuotoOppisopimuksella",
+                                  "additionalProperties" : false,
                                   "required" : [ "tunniste", "oppisopimus" ]
                                 }, {
                                   "type" : "object",
@@ -315,6 +328,7 @@
                                     }
                                   },
                                   "id" : "#fi_oph_tor_schema_DefaultJärjestämismuoto",
+                                  "additionalProperties" : false,
                                   "required" : [ "tunniste" ],
                                   "description" : "Järjestämismuoto ilman lisätietoja"
                                 } ],
@@ -322,6 +336,7 @@
                               }
                             },
                             "id" : "#fi_oph_tor_schema_Koulutustoteutus",
+                            "additionalProperties" : false,
                             "required" : [ "tutkintokoodi" ]
                           } ],
                           "description" : "Aiemman, korvaavan suorituksen kuvaus"
@@ -332,10 +347,12 @@
                         }
                       },
                       "id" : "#fi_oph_tor_schema_Hyväksiluku",
+                      "additionalProperties" : false,
                       "required" : [ "osaaminen" ]
                     }
                   },
                   "id" : "#fi_oph_tor_schema_TutkinnonosatoteutusPaikallinen",
+                  "additionalProperties" : false,
                   "required" : [ "paikallinenKoodi", "kuvaus", "pakollinen" ]
                 }, {
                   "$ref" : "#fi_oph_tor_schema_TutkinnonosatoteutusOps"
@@ -383,12 +400,14 @@
                           }
                         },
                         "id" : "#fi_oph_tor_schema_Arvioitsija",
+                        "additionalProperties" : false,
                         "required" : [ "nimi" ]
                       },
                       "description" : "Tutkinnon osan suorituksen arvioinnista päättäneen henkilön nimi"
                     }
                   },
                   "id" : "#fi_oph_tor_schema_Arviointi",
+                  "additionalProperties" : false,
                   "required" : [ "arvosana" ]
                 }
               },
@@ -401,7 +420,8 @@
                     "description" : "Tutkinnon tai tutkinnonosan vahvistettu suorituspäivämäärä, eli päivämäärä jolloin suoritus on hyväksyttyä todennettua osaamista."
                   }
                 },
-                "id" : "#fi_oph_tor_schema_Vahvistus"
+                "id" : "#fi_oph_tor_schema_Vahvistus",
+                "additionalProperties" : false
               },
               "osasuoritukset" : {
                 "type" : "array",
@@ -411,6 +431,7 @@
               }
             },
             "id" : "#fi_oph_tor_schema_Suoritus",
+            "additionalProperties" : false,
             "required" : [ "koulutusmoduuli" ],
             "description" : "Opinto-oikeuteen liittyvän (tutkinto-)suorituksen tiedot"
           },
@@ -422,6 +443,7 @@
               }
             },
             "id" : "#fi_oph_tor_schema_Hojks",
+            "additionalProperties" : false,
             "required" : [ "hojksTehty" ],
             "description" : "Henkilökohtainen opetuksen järjestämistä koskeva suunnitelma, https://fi.wikipedia.org/wiki/HOJKS\n(Oksa: <a href=\"https://confluence.csc.fi/display/oppija/Opetus+ja+koulutussanasto+-+OKSA#Opetusjakoulutussanasto-OKSA-tmpOKSAID228\">erityisopiskelija</a>)"
           },
@@ -451,11 +473,13 @@
                     }
                   },
                   "id" : "#fi_oph_tor_schema_Läsnäolojakso",
+                  "additionalProperties" : false,
                   "required" : [ "alku", "tila" ]
                 }
               }
             },
             "id" : "#fi_oph_tor_schema_Läsnäolotiedot",
+            "additionalProperties" : false,
             "required" : [ "läsnäolojaksot" ]
           },
           "opintojenRahoitus" : {
@@ -464,11 +488,13 @@
           }
         },
         "id" : "#fi_oph_tor_schema_OpiskeluOikeus",
+        "additionalProperties" : false,
         "required" : [ "koulutustoimija", "oppilaitos", "suoritus" ]
       },
       "description" : "Lista henkilön opinto-oikeuksista. Sisältää vain ne opinto-oikeudet, joihin käyttäjällä on oikeudet. Esimerkiksi ammatilliselle toimijalle ei välttämättä näy henkilön lukio-opintojen tietoja"
     }
   },
   "id" : "#fi_oph_tor_schema_TorOppija",
+  "additionalProperties" : false,
   "required" : [ "henkilö", "opintoOikeudet" ]
 }
