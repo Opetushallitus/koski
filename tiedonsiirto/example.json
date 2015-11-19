@@ -21,24 +21,40 @@
     },
     "suoritus" : {
       "koulutusmoduuli" : {
-        "koulutuskoodi" : {
+        "tutkintokoodi" : {
           "koodiarvo" : "351301",
           "nimi" : "Autoalan perustutkinto",
           "koodistoUri" : "koulutus",
           "koodistoVersio" : 4
         },
         "perusteenDiaarinumero" : "39/011/2014",
-        "tutkintonimike" : {
+        "tutkintonimike" : [ {
           "koodiarvo" : "10024",
           "nimi" : "Autokorinkorjaaja",
           "koodistoUri" : "tutkintonimikkeet",
           "koodistoVersio" : 2
-        },
-        "osaamisala" : {
+        } ],
+        "osaamisala" : [ {
           "koodiarvo" : "1525",
           "nimi" : "Autokorinkorjauksen osaamisala",
           "koodistoUri" : "osaamisala",
           "koodistoVersio" : 3
+        } ],
+        "suoritustapa" : {
+          "tunniste" : {
+            "koodiarvo" : "naytto",
+            "nimi" : "Näyttö",
+            "koodistoUri" : "suoritustavat",
+            "koodistoVersio" : 1
+          }
+        },
+        "järjestämismuoto" : {
+          "tunniste" : {
+            "koodiarvo" : "10",
+            "nimi" : "Oppilaitosmuotoinen",
+            "koodistoUri" : "jarjestamismuoto",
+            "koodistoVersio" : 1
+          }
         }
       },
       "suorituskieli" : {
@@ -46,18 +62,6 @@
         "nimi" : "suomi",
         "koodistoUri" : "kieli",
         "koodistoVersio" : 1
-      },
-      "suoritustapa" : {
-        "tunniste" : {
-          "koodiarvo" : "naytto",
-          "nimi" : "Näyttö",
-          "koodistoUri" : "suoritustapa",
-          "koodistoVersio" : 1
-        },
-        "näyttö" : {
-          "kuvaus" : "Toimi automekaanikkona kolarikorjauspuolella kaksi vuotta",
-          "suorituspaikka" : "Autokorjaamo Oy, Riihimäki"
-        }
       },
       "tila" : {
         "koodiarvo" : "VALMIS",
@@ -76,25 +80,36 @@
             "koodistoUri" : "tutkinnonosat",
             "koodistoVersio" : 1
           },
-          "pakollinen" : true
-        },
-        "suoritustapa" : {
-          "tunniste" : {
-            "koodiarvo" : "naytto",
-            "nimi" : "Näyttö",
-            "koodistoUri" : "suoritustapa",
-            "koodistoVersio" : 1
+          "pakollinen" : true,
+          "suoritustapa" : {
+            "tunniste" : {
+              "koodiarvo" : "naytto",
+              "nimi" : "Näyttö",
+              "koodistoUri" : "suoritustavat",
+              "koodistoVersio" : 1
+            },
+            "näyttö" : {
+              "kuvaus" : "Huolto- ja korjaustyöt",
+              "suorituspaikka" : "Autokorjaamo Oy, Riihimäki"
+            }
           }
         },
-        "arviointi" : {
+        "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "Hyväksytty",
             "nimi" : "Hyväksytty",
             "koodistoUri" : "ammattijaerikoisammattitutkintojenarviointiasteikko",
             "koodistoVersio" : 1
           },
-          "päivä" : "2012-10-20"
-        },
+          "päivä" : "2012-10-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ]
+        } ],
         "vahvistus" : {
           "päivä" : "2013-01-31"
         }
@@ -106,25 +121,36 @@
             "koodistoUri" : "kallion_oma_koodisto"
           },
           "kuvaus" : "Opetellaan korjaamaan pinnallisia vaurioita",
-          "pakollinen" : false
-        },
-        "suoritustapa" : {
-          "tunniste" : {
-            "koodiarvo" : "naytto",
-            "nimi" : "Näyttö",
-            "koodistoUri" : "suoritustapa",
-            "koodistoVersio" : 1
+          "pakollinen" : false,
+          "suoritustapa" : {
+            "tunniste" : {
+              "koodiarvo" : "naytto",
+              "nimi" : "Näyttö",
+              "koodistoUri" : "suoritustavat",
+              "koodistoVersio" : 1
+            },
+            "näyttö" : {
+              "kuvaus" : "Pintavaurioiden korjausta",
+              "suorituspaikka" : "Autokorjaamo Oy, Riihimäki"
+            }
           }
         },
-        "arviointi" : {
+        "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "Hyväksytty",
             "nimi" : "Hyväksytty",
             "koodistoUri" : "ammattijaerikoisammattitutkintojenarviointiasteikko",
             "koodistoVersio" : 1
           },
-          "päivä" : "2013-03-20"
-        },
+          "päivä" : "2013-03-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ]
+        } ],
         "vahvistus" : {
           "päivä" : "2013-05-31"
         }
@@ -136,25 +162,36 @@
             "koodistoUri" : "tutkinnonosat",
             "koodistoVersio" : 1
           },
-          "pakollinen" : true
-        },
-        "suoritustapa" : {
-          "tunniste" : {
-            "koodiarvo" : "naytto",
-            "nimi" : "Näyttö",
-            "koodistoUri" : "suoritustapa",
-            "koodistoVersio" : 1
+          "pakollinen" : true,
+          "suoritustapa" : {
+            "tunniste" : {
+              "koodiarvo" : "naytto",
+              "nimi" : "Näyttö",
+              "koodistoUri" : "suoritustavat",
+              "koodistoVersio" : 1
+            },
+            "näyttö" : {
+              "kuvaus" : "Mittaus- ja korivauriotöitä",
+              "suorituspaikka" : "Autokorjaamo Oy, Riihimäki"
+            }
           }
         },
-        "arviointi" : {
+        "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "Hyväksytty",
             "nimi" : "Hyväksytty",
             "koodistoUri" : "ammattijaerikoisammattitutkintojenarviointiasteikko",
             "koodistoVersio" : 1
           },
-          "päivä" : "2013-04-01"
-        },
+          "päivä" : "2013-04-01",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ]
+        } ],
         "vahvistus" : {
           "päivä" : "2013-05-31"
         }
@@ -166,25 +203,36 @@
             "koodistoUri" : "tutkinnonosat",
             "koodistoVersio" : 1
           },
-          "pakollinen" : true
-        },
-        "suoritustapa" : {
-          "tunniste" : {
-            "koodiarvo" : "naytto",
-            "nimi" : "Näyttö",
-            "koodistoUri" : "suoritustapa",
-            "koodistoVersio" : 1
+          "pakollinen" : true,
+          "suoritustapa" : {
+            "tunniste" : {
+              "koodiarvo" : "naytto",
+              "nimi" : "Näyttö",
+              "koodistoUri" : "suoritustavat",
+              "koodistoVersio" : 1
+            },
+            "näyttö" : {
+              "kuvaus" : "Maalauksen esikäsittelytöitä",
+              "suorituspaikka" : "Autokorjaamo Oy, Riihimäki"
+            }
           }
         },
-        "arviointi" : {
+        "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "Hyväksytty",
             "nimi" : "Hyväksytty",
             "koodistoUri" : "ammattijaerikoisammattitutkintojenarviointiasteikko",
             "koodistoVersio" : 1
           },
-          "päivä" : "2014-10-20"
-        },
+          "päivä" : "2014-10-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ]
+        } ],
         "vahvistus" : {
           "päivä" : "2014-11-08"
         }
@@ -196,25 +244,36 @@
             "koodistoUri" : "tutkinnonosat",
             "koodistoVersio" : 1
           },
-          "pakollinen" : true
-        },
-        "suoritustapa" : {
-          "tunniste" : {
-            "koodiarvo" : "naytto",
-            "nimi" : "Näyttö",
-            "koodistoUri" : "suoritustapa",
-            "koodistoVersio" : 1
+          "pakollinen" : true,
+          "suoritustapa" : {
+            "tunniste" : {
+              "koodiarvo" : "naytto",
+              "nimi" : "Näyttö",
+              "koodistoUri" : "suoritustavat",
+              "koodistoVersio" : 1
+            },
+            "näyttö" : {
+              "kuvaus" : "Auton lisävarustetöitä",
+              "suorituspaikka" : "Autokorjaamo Oy, Riihimäki"
+            }
           }
         },
-        "arviointi" : {
+        "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "Hyväksytty",
             "nimi" : "Hyväksytty",
             "koodistoUri" : "ammattijaerikoisammattitutkintojenarviointiasteikko",
             "koodistoVersio" : 1
           },
-          "päivä" : "2015-04-01"
-        },
+          "päivä" : "2015-04-01",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ]
+        } ],
         "vahvistus" : {
           "päivä" : "2015-05-01"
         }
@@ -226,25 +285,36 @@
             "koodistoUri" : "tutkinnonosat",
             "koodistoVersio" : 1
           },
-          "pakollinen" : true
-        },
-        "suoritustapa" : {
-          "tunniste" : {
-            "koodiarvo" : "naytto",
-            "nimi" : "Näyttö",
-            "koodistoUri" : "suoritustapa",
-            "koodistoVersio" : 1
+          "pakollinen" : true,
+          "suoritustapa" : {
+            "tunniste" : {
+              "koodiarvo" : "naytto",
+              "nimi" : "Näyttö",
+              "koodistoUri" : "suoritustavat",
+              "koodistoVersio" : 1
+            },
+            "näyttö" : {
+              "kuvaus" : "Yritystoiminnan suunnittelua",
+              "suorituspaikka" : "Autokorjaamo Oy, Riihimäki"
+            }
           }
         },
-        "arviointi" : {
+        "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "Hyväksytty",
             "nimi" : "Hyväksytty",
             "koodistoUri" : "ammattijaerikoisammattitutkintojenarviointiasteikko",
             "koodistoVersio" : 1
           },
-          "päivä" : "2016-02-01"
-        },
+          "päivä" : "2016-02-01",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ]
+        } ],
         "vahvistus" : {
           "päivä" : "2016-05-01"
         }

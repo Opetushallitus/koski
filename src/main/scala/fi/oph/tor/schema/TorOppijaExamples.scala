@@ -17,7 +17,6 @@ object TorOppijaExamples {
         suoritustapa = Some(SuoritustapaNäytöllä(suoritustapaNäyttö, Näyttö("Huolto- ja korjaustyöt", "Autokorjaamo Oy, Riihimäki")))
       ),
       suorituskieli = None,
-      None,
       tila = None,
       alkamispäivä = None,
       Some(List(Arviointi(
@@ -37,7 +36,6 @@ object TorOppijaExamples {
         suoritustapa = Some(SuoritustapaNäytöllä(suoritustapaNäyttö, Näyttö("Pintavaurioiden korjausta", "Autokorjaamo Oy, Riihimäki")))
       ),
       suorituskieli = None,
-      None,
       tila = None,
       alkamispäivä = None,
       Some(List(Arviointi(
@@ -56,7 +54,6 @@ object TorOppijaExamples {
         suoritustapa = Some(SuoritustapaNäytöllä(suoritustapaNäyttö, Näyttö("Mittaus- ja korivauriotöitä", "Autokorjaamo Oy, Riihimäki")))
       ),
       suorituskieli = None,
-      None,
       tila = None,
       alkamispäivä = None,
       Some(List(Arviointi(
@@ -76,7 +73,6 @@ object TorOppijaExamples {
       ),
       suorituskieli = None,
       None,
-      tila = None,
       alkamispäivä = None,
       Some(List(Arviointi(
         arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "ammattijaerikoisammattitutkintojenarviointiasteikko", 1),
@@ -94,7 +90,6 @@ object TorOppijaExamples {
         suoritustapa = Some(SuoritustapaNäytöllä(suoritustapaNäyttö, Näyttö("Auton lisävarustetöitä", "Autokorjaamo Oy, Riihimäki")))
       ),
       suorituskieli = None,
-      None,
       tila = None,
       alkamispäivä = None,
       Some(List(Arviointi(
@@ -113,7 +108,6 @@ object TorOppijaExamples {
         suoritustapa = Some(SuoritustapaNäytöllä(suoritustapaNäyttö, Näyttö("Yritystoiminnan suunnittelua", "Autokorjaamo Oy, Riihimäki")))
       ),
       suorituskieli = None,
-      None,
       tila = None,
       alkamispäivä = None,
       Some(List(Arviointi(
@@ -147,7 +141,6 @@ object TorOppijaExamples {
             järjestämismuoto = Some(DefaultJärjestämismuoto(järjestämismuotoOppilaitos))
           ),
           suorituskieli = Some(KoodistoKoodiViite("FI", Some("suomi"), "kieli", 1)),
-          None,
           Some(KoodistoKoodiViite("VALMIS", Some("Valmis"), "suorituksentila", 1)),
           alkamispäivä = None,
           arviointi = None,
@@ -175,7 +168,6 @@ object TorOppijaExamples {
         None,
         Suoritus(
           Koulutustoteutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", 4), Some("39/011/2014"), None, None, None, None),
-          None,
           None,
           None,
           Some(date(2015, 9, 1)),
@@ -212,7 +204,6 @@ object TorOppijaExamples {
           None,
           None,
           None,
-          None,
           None
         ),
         hojks = None,
@@ -222,7 +213,6 @@ object TorOppijaExamples {
       )
     )
   )
-
 
   val perustutkintoOps = TorOppija(
     Henkilö.withOid("1.2.246.562.24.00000000001"),
@@ -249,7 +239,6 @@ object TorOppijaExamples {
           None,
           None,
           None,
-          None,
           Some(List(
             Suoritus(
               TutkinnonosatoteutusOps(
@@ -258,7 +247,6 @@ object TorOppijaExamples {
                 suoritustapa = Some(DefaultSuoritustapa(suoritustapaOps))
               ),
               suorituskieli = None,
-              None,
               tila = None,
               alkamispäivä = None,
               Some(

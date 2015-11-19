@@ -5,20 +5,43 @@
       "oneOf" : [ {
         "type" : "object",
         "properties" : {
+          "hetu" : {
+            "type" : "string",
+            "description" : "Suomalainen henkilötunnus"
+          },
+          "etunimet" : {
+            "type" : "string",
+            "description" : "Henkilön kaikki etunimet. Esimerkiksi Sanna Katariina"
+          },
+          "kutsumanimi" : {
+            "type" : "string",
+            "description" : "Kutsumanimi, oltava yksi etunimistä. Esimerkiksi etunimille \"Juha-Matti Petteri\" kelpaavat joko \"Juha-Matti\", \"Juha\", \"Matti\" tai \"Petteri\""
+          },
+          "sukunimi" : {
+            "type" : "string"
+          }
+        },
+        "id" : "#fi_oph_tor_schema_HenkilöNew",
+        "required" : [ "hetu", "etunimet", "kutsumanimi", "sukunimi" ],
+        "description" : "Henkilö, jonka oid ei ole tiedossa. Tietoja syötettäessä luodaan mahdollisesti uusi henkilö Henkilöpalveluun"
+      }, {
+        "type" : "object",
+        "properties" : {
           "oid" : {
             "type" : "string",
-            "description" : "Yksilöivä tunniste Opintopolku-palvelussa"
+            "description" : "Yksilöivä tunniste Opintopolku-palvelussa\n(Oksa: <a href=\"https://confluence.csc.fi/display/oppija/Opetus+ja+koulutussanasto+-+OKSA#Opetusjakoulutussanasto-OKSA-tmpOKSAID760\">oppijanumero</a>)"
           },
           "hetu" : {
             "type" : "string",
             "description" : "Suomalainen henkilötunnus"
           },
           "etunimet" : {
-            "type" : "string"
+            "type" : "string",
+            "description" : "Henkilön kaikki etunimet. Esimerkiksi Sanna Katariina"
           },
           "kutsumanimi" : {
             "type" : "string",
-            "description" : "Kutsumanimi, oltava yksi etunimistä. Esimerkiksi etunimille \"Juha-Matti Petteri\" kelpaavat joko \"Juha-Matti\", \"Juha\", \"Matti\" tai \"Petteri\"."
+            "description" : "Kutsumanimi, oltava yksi etunimistä. Esimerkiksi etunimille \"Juha-Matti Petteri\" kelpaavat joko \"Juha-Matti\", \"Juha\", \"Matti\" tai \"Petteri\""
           },
           "sukunimi" : {
             "type" : "string"
@@ -31,33 +54,12 @@
         "properties" : {
           "oid" : {
             "type" : "string",
-            "description" : "Yksilöivä tunniste Opintopolku-palvelussa"
+            "description" : "Yksilöivä tunniste Opintopolku-palvelussa\n(Oksa: <a href=\"https://confluence.csc.fi/display/oppija/Opetus+ja+koulutussanasto+-+OKSA#Opetusjakoulutussanasto-OKSA-tmpOKSAID760\">oppijanumero</a>)"
           }
         },
         "id" : "#fi_oph_tor_schema_HenkilöOid",
         "required" : [ "oid" ],
-        "description" : "Henkilö, jonka oid on tiedossa."
-      }, {
-        "type" : "object",
-        "properties" : {
-          "hetu" : {
-            "type" : "string",
-            "description" : "Suomalainen henkilötunnus"
-          },
-          "etunimet" : {
-            "type" : "string"
-          },
-          "kutsumanimi" : {
-            "type" : "string",
-            "description" : "Kutsumanimi, oltava yksi etunimistä. Esimerkiksi etunimille \"Juha-Matti Petteri\" kelpaavat joko \"Juha-Matti\", \"Juha\", \"Matti\" tai \"Petteri\"."
-          },
-          "sukunimi" : {
-            "type" : "string"
-          }
-        },
-        "id" : "#fi_oph_tor_schema_HenkilöNew",
-        "required" : [ "hetu", "etunimet", "kutsumanimi", "sukunimi" ],
-        "description" : "Henkilö, jonka oid ei ole tiedossa. Tietoja syötettäessä luodaan mahdollisesti uusi henkilö Henkilöpalveluun."
+        "description" : "Henkilö, jonka oid on tiedossa"
       } ]
     },
     "opintoOikeudet" : {
@@ -67,19 +69,22 @@
         "properties" : {
           "id" : {
             "type" : "number",
-            "description" : "Opinto-oikeuden uniikki tunniste. Tietoja syötettäessä kenttä ei ole pakollinen. Tietoja päivitettäessä TOR tunnistaa opinto-oikeuden joko tämän id:n tai muiden kenttien (oppijaOid, organisaatio, diaarinumero) perusteella."
+            "description" : "Opinto-oikeuden uniikki tunniste. Tietoja syötettäessä kenttä ei ole pakollinen. Tietoja päivitettäessä TOR tunnistaa opinto-oikeuden joko tämän id:n tai muiden kenttien (oppijaOid, organisaatio, diaarinumero) perusteella"
           },
           "alkamispäivä" : {
             "type" : "string",
-            "format" : "date"
+            "format" : "date",
+            "description" : "Opiskelijan opinto-oikeuden alkamisaika joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD"
           },
           "arvioituPäättymispäivä" : {
             "type" : "string",
-            "format" : "date"
+            "format" : "date",
+            "description" : "Opiskelijan opinto-oikeuden arvioitu päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD"
           },
           "päättymispäivä" : {
             "type" : "string",
-            "format" : "date"
+            "format" : "date",
+            "description" : "Opiskelijan opinto-oikeuden päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD"
           },
           "koulutustoimija" : {
             "type" : "object",
@@ -90,7 +95,7 @@
               },
               "nimi" : {
                 "type" : "string",
-                "description" : "Organisaation (kielistetty) nimi.\nTiedon syötössä nimeä ei tarvita; kuvaus haetaan Organisaatiopalvelusta"
+                "description" : "Organisaation (kielistetty) nimi\nTiedon syötössä nimeä ei tarvita; kuvaus haetaan Organisaatiopalvelusta"
               }
             },
             "id" : "#fi_oph_tor_schema_Organisaatio",
@@ -103,7 +108,7 @@
           },
           "toimipiste" : {
             "$ref" : "#fi_oph_tor_schema_Organisaatio",
-            "description" : "Oppilaitoksen toimipiste, jossa opinnot on suoritettu"
+            "description" : "Oppilaitoksen toimipiste, jossa opinnot on suoritettu\n(Oksa: <a href=\"https://confluence.csc.fi/display/oppija/Opetus+ja+koulutussanasto+-+OKSA#Opetusjakoulutussanasto-OKSA-tmpOKSAID148\">koulutusorganisaation toimipiste</a>)"
           },
           "suoritus" : {
             "type" : "object",
@@ -112,34 +117,6 @@
                 "oneOf" : [ {
                   "type" : "object",
                   "properties" : {
-                    "tutkinnonosakoodi" : {
-                      "type" : "object",
-                      "properties" : {
-                        "koodiarvo" : {
-                          "type" : "string",
-                          "description" : "Koodin tunniste koodistossa"
-                        },
-                        "nimi" : {
-                          "type" : "string",
-                          "description" : "Koodin selväkielinen, kielistetty nimi.\nTiedon syötössä kuvausta ei tarvita; kuvaus haetaan Koodistopalvelusta"
-                        },
-                        "koodistoUri" : {
-                          "type" : "string",
-                          "description" : "Käytetyn koodiston tunniste"
-                        },
-                        "koodistoVersio" : {
-                          "type" : "number",
-                          "description" : "Käytetyn koodiston versio"
-                        }
-                      },
-                      "id" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-                      "required" : [ "koodiarvo", "koodistoUri", "koodistoVersio" ],
-                      "description" : "Tutkinnon osan kansallinen koodi\n(Koodisto: tutkinnonosat)"
-                    },
-                    "pakollinen" : {
-                      "type" : "boolean",
-                      "description" : "Onko pakollinen osa tutkinnossa"
-                    },
                     "paikallinenKoodi" : {
                       "type" : "object",
                       "properties" : {
@@ -149,7 +126,7 @@
                         },
                         "nimi" : {
                           "type" : "string",
-                          "description" : "Koodin selväkielinen nimi."
+                          "description" : "Koodin selväkielinen nimi"
                         },
                         "koodistoUri" : {
                           "type" : "string",
@@ -158,19 +135,7 @@
                       },
                       "id" : "#fi_oph_tor_schema_Paikallinenkoodi",
                       "required" : [ "koodiarvo", "nimi", "koodistoUri" ],
-                      "description" : "Paikallinen, koulutustoimijan oma kooditus koulutukselle. Käytetään kansallisen koodiston puuttuessa."
-                    },
-                    "kuvaus" : {
-                      "type" : "string"
-                    }
-                  },
-                  "id" : "#fi_oph_tor_schema_TutkinnonosatoteutusOps",
-                  "required" : [ "tutkinnonosakoodi", "pakollinen" ]
-                }, {
-                  "type" : "object",
-                  "properties" : {
-                    "paikallinenKoodi" : {
-                      "$ref" : "#fi_oph_tor_schema_Paikallinenkoodi"
+                      "description" : "Paikallinen, koulutustoimijan oma kooditus koulutukselle. Käytetään kansallisen koodiston puuttuessa"
                     },
                     "kuvaus" : {
                       "type" : "string"
@@ -178,134 +143,210 @@
                     "pakollinen" : {
                       "type" : "boolean",
                       "description" : "Onko pakollinen osa tutkinnossa"
+                    },
+                    "suoritustapa" : {
+                      "oneOf" : [ {
+                        "type" : "object",
+                        "properties" : {
+                          "tunniste" : {
+                            "type" : "object",
+                            "properties" : {
+                              "koodiarvo" : {
+                                "type" : "string",
+                                "description" : "Koodin tunniste koodistossa"
+                              },
+                              "nimi" : {
+                                "type" : "string",
+                                "description" : "Koodin selväkielinen, kielistetty nimi\nTiedon syötössä kuvausta ei tarvita; kuvaus haetaan Koodistopalvelusta"
+                              },
+                              "koodistoUri" : {
+                                "type" : "string",
+                                "description" : "Käytetyn koodiston tunniste"
+                              },
+                              "koodistoVersio" : {
+                                "type" : "number",
+                                "description" : "Käytetyn koodiston versio"
+                              }
+                            },
+                            "id" : "#fi_oph_tor_schema_KoodistoKoodiViite",
+                            "required" : [ "koodiarvo", "koodistoUri", "koodistoVersio" ],
+                            "description" : "\n(Koodisto: suoritustapa)"
+                          },
+                          "näyttö" : {
+                            "type" : "object",
+                            "properties" : {
+                              "kuvaus" : {
+                                "type" : "string"
+                              },
+                              "suorituspaikka" : {
+                                "type" : "string"
+                              }
+                            },
+                            "id" : "#fi_oph_tor_schema_Näyttö",
+                            "required" : [ "kuvaus", "suorituspaikka" ],
+                            "description" : "Näytön kuvaus"
+                          }
+                        },
+                        "id" : "#fi_oph_tor_schema_SuoritustapaNäytöllä",
+                        "required" : [ "tunniste", "näyttö" ],
+                        "description" : "Suoritustapa näyttötietojen kanssa"
+                      }, {
+                        "type" : "object",
+                        "properties" : {
+                          "tunniste" : {
+                            "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
+                            "description" : "\n(Koodisto: suoritustapa)"
+                          }
+                        },
+                        "id" : "#fi_oph_tor_schema_DefaultSuoritustapa",
+                        "required" : [ "tunniste" ],
+                        "description" : "Suoritustapa ilman lisätietoja"
+                      } ],
+                      "description" : "Tutkinnon tai tutkinnon osan suoritustapa\n(Oksa: <a href=\"https://confluence.csc.fi/display/oppija/Opetus+ja+koulutussanasto+-+OKSA#Opetusjakoulutussanasto-OKSA-tmpOKSAID141\">ammatillisen koulutuksen järjestämistapa</a>)"
+                    },
+                    "hyväksiluku" : {
+                      "type" : "object",
+                      "properties" : {
+                        "osaaminen" : {
+                          "oneOf" : [ {
+                            "$ref" : "#fi_oph_tor_schema_TutkinnonosatoteutusPaikallinen"
+                          }, {
+                            "type" : "object",
+                            "properties" : {
+                              "tutkinnonosakoodi" : {
+                                "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
+                                "description" : "Tutkinnon osan kansallinen koodi\n(Koodisto: tutkinnonosat)"
+                              },
+                              "pakollinen" : {
+                                "type" : "boolean",
+                                "description" : "Onko pakollinen osa tutkinnossa"
+                              },
+                              "paikallinenKoodi" : {
+                                "$ref" : "#fi_oph_tor_schema_Paikallinenkoodi"
+                              },
+                              "kuvaus" : {
+                                "type" : "string"
+                              },
+                              "suoritustapa" : {
+                                "oneOf" : [ {
+                                  "$ref" : "#fi_oph_tor_schema_SuoritustapaNäytöllä"
+                                }, {
+                                  "$ref" : "#fi_oph_tor_schema_DefaultSuoritustapa"
+                                } ],
+                                "description" : "Tutkinnon tai tutkinnon osan suoritustapa\n(Oksa: <a href=\"https://confluence.csc.fi/display/oppija/Opetus+ja+koulutussanasto+-+OKSA#Opetusjakoulutussanasto-OKSA-tmpOKSAID141\">ammatillisen koulutuksen järjestämistapa</a>)"
+                              },
+                              "hyväksiluku" : {
+                                "$ref" : "#fi_oph_tor_schema_Hyväksiluku"
+                              }
+                            },
+                            "id" : "#fi_oph_tor_schema_TutkinnonosatoteutusOps",
+                            "required" : [ "tutkinnonosakoodi", "pakollinen" ]
+                          }, {
+                            "type" : "object",
+                            "properties" : {
+                              "tutkintokoodi" : {
+                                "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
+                                "description" : "Tutkinnon 6-numeroinen tutkintokoodi\n(Koodisto: koulutus)\n(Oksa: <a href=\"https://confluence.csc.fi/display/oppija/Opetus+ja+koulutussanasto+-+OKSA#Opetusjakoulutussanasto-OKSA-tmpOKSAID560\">tutkinto</a>)"
+                              },
+                              "perusteenDiaarinumero" : {
+                                "type" : "string",
+                                "description" : "Tutkinnon perusteen diaarinumero (pakollinen). Ks. ePerusteet-palvelu"
+                              },
+                              "tutkintonimike" : {
+                                "type" : "array",
+                                "items" : {
+                                  "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite"
+                                },
+                                "description" : "Tieto siitä mihin tutkintonimikkeeseen oppijan tutkinto liittyy\n(Koodisto: tutkintonimikkeet)\n(Oksa: <a href=\"https://confluence.csc.fi/display/oppija/Opetus+ja+koulutussanasto+-+OKSA#Opetusjakoulutussanasto-OKSA-tmpOKSAID588\">tutkintonimike</a>)"
+                              },
+                              "osaamisala" : {
+                                "type" : "array",
+                                "items" : {
+                                  "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite"
+                                },
+                                "description" : "Osaamisala\n(Koodisto: osaamisala)\n(Oksa: <a href=\"https://confluence.csc.fi/display/oppija/Opetus+ja+koulutussanasto+-+OKSA#Opetusjakoulutussanasto-OKSA-tmpOKSAID299\">osaamisala</a>)"
+                              },
+                              "suoritustapa" : {
+                                "oneOf" : [ {
+                                  "$ref" : "#fi_oph_tor_schema_SuoritustapaNäytöllä"
+                                }, {
+                                  "$ref" : "#fi_oph_tor_schema_DefaultSuoritustapa"
+                                } ],
+                                "description" : "Tutkinnon tai tutkinnon osan suoritustapa\n(Oksa: <a href=\"https://confluence.csc.fi/display/oppija/Opetus+ja+koulutussanasto+-+OKSA#Opetusjakoulutussanasto-OKSA-tmpOKSAID141\">ammatillisen koulutuksen järjestämistapa</a>)"
+                              },
+                              "järjestämismuoto" : {
+                                "oneOf" : [ {
+                                  "type" : "object",
+                                  "properties" : {
+                                    "tunniste" : {
+                                      "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
+                                      "description" : "\n(Koodisto: järjestämismuoto)"
+                                    },
+                                    "oppisopimus" : {
+                                      "type" : "object",
+                                      "properties" : {
+                                        "työnantaja" : {
+                                          "type" : "object",
+                                          "properties" : {
+                                            "nimi" : {
+                                              "type" : "string"
+                                            },
+                                            "yTunnus" : {
+                                              "type" : "string"
+                                            }
+                                          },
+                                          "id" : "#fi_oph_tor_schema_Yritys",
+                                          "required" : [ "nimi", "yTunnus" ]
+                                        }
+                                      },
+                                      "id" : "#fi_oph_tor_schema_Oppisopimus",
+                                      "required" : [ "työnantaja" ],
+                                      "description" : "Oppisopimuksen tiedot"
+                                    }
+                                  },
+                                  "id" : "#fi_oph_tor_schema_JärjestämismuotoOppisopimuksella",
+                                  "required" : [ "tunniste", "oppisopimus" ]
+                                }, {
+                                  "type" : "object",
+                                  "properties" : {
+                                    "tunniste" : {
+                                      "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
+                                      "description" : "\n(Koodisto: järjestämismuoto)"
+                                    }
+                                  },
+                                  "id" : "#fi_oph_tor_schema_DefaultJärjestämismuoto",
+                                  "required" : [ "tunniste" ],
+                                  "description" : "Järjestämismuoto ilman lisätietoja"
+                                } ],
+                                "description" : "Koulutuksen järjestämismuoto\n(Oksa: <a href=\"https://confluence.csc.fi/display/oppija/Opetus+ja+koulutussanasto+-+OKSA#Opetusjakoulutussanasto-OKSA-tmpOKSAID140\">koulutuksen järjestämismuoto</a>)"
+                              }
+                            },
+                            "id" : "#fi_oph_tor_schema_Koulutustoteutus",
+                            "required" : [ "tutkintokoodi" ]
+                          } ],
+                          "description" : "Aiemman, korvaavan suorituksen kuvaus"
+                        },
+                        "selite" : {
+                          "type" : "string",
+                          "description" : "Osaamisen tunnustamisen kautta saatavan tutkinnon osan suorituksen selite\n(Oksa: <a href=\"https://confluence.csc.fi/display/oppija/Opetus+ja+koulutussanasto+-+OKSA#Opetusjakoulutussanasto-OKSA-tmpOKSAID629\">osaamisen tunnustaminen</a>)"
+                        }
+                      },
+                      "id" : "#fi_oph_tor_schema_Hyväksiluku",
+                      "required" : [ "osaaminen" ]
                     }
                   },
                   "id" : "#fi_oph_tor_schema_TutkinnonosatoteutusPaikallinen",
                   "required" : [ "paikallinenKoodi", "kuvaus", "pakollinen" ]
                 }, {
-                  "type" : "object",
-                  "properties" : {
-                    "koulutuskoodi" : {
-                      "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-                      "description" : "Tutkinnon 6-numeroinen tutkintokoodi\n(Koodisto: koulutus)"
-                    },
-                    "perusteenDiaarinumero" : {
-                      "type" : "string",
-                      "description" : "Tutkinnon perusteen diaarinumero (pakollinen). Ks. ePerusteet-palvelu."
-                    },
-                    "tutkintonimike" : {
-                      "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-                      "description" : "Tutkintonimike\n(Koodisto: tutkintonimikkeet)"
-                    },
-                    "osaamisala" : {
-                      "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-                      "description" : "Osaamisala\n(Koodisto: osaamisala)"
-                    }
-                  },
-                  "id" : "#fi_oph_tor_schema_Koulutustoteutus",
-                  "required" : [ "koulutuskoodi" ]
+                  "$ref" : "#fi_oph_tor_schema_TutkinnonosatoteutusOps"
+                }, {
+                  "$ref" : "#fi_oph_tor_schema_Koulutustoteutus"
                 } ],
                 "description" : "Koulutusmoduulin tunniste. Joko tutkinto tai tutkinnon osa"
               },
               "suorituskieli" : {
                 "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-                "description" : "Opintojen suorituskieli\n(Koodisto: kieli)"
-              },
-              "suoritustapa" : {
-                "oneOf" : [ {
-                  "type" : "object",
-                  "properties" : {
-                    "tunniste" : {
-                      "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-                      "description" : "\n(Koodisto: suoritustapa)"
-                    }
-                  },
-                  "id" : "#fi_oph_tor_schema_SuoritustapaSimple",
-                  "required" : [ "tunniste" ],
-                  "description" : "Suoritustapa ilman lisätietoja"
-                }, {
-                  "type" : "object",
-                  "properties" : {
-                    "tunniste" : {
-                      "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-                      "description" : "\n(Koodisto: suoritustapa)"
-                    },
-                    "osaaminen" : {
-                      "oneOf" : [ {
-                        "$ref" : "#fi_oph_tor_schema_TutkinnonosatoteutusOps"
-                      }, {
-                        "$ref" : "#fi_oph_tor_schema_TutkinnonosatoteutusPaikallinen"
-                      }, {
-                        "$ref" : "#fi_oph_tor_schema_Koulutustoteutus"
-                      } ],
-                      "description" : "Aiemman, korvaavan suorituksen kuvaus"
-                    }
-                  },
-                  "id" : "#fi_oph_tor_schema_SuoritustapaHyväksiluku",
-                  "required" : [ "tunniste", "osaaminen" ],
-                  "description" : "Suoritustapana hyväksyluku"
-                }, {
-                  "type" : "object",
-                  "properties" : {
-                    "tunniste" : {
-                      "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-                      "description" : "\n(Koodisto: suoritustapa)"
-                    },
-                    "näyttö" : {
-                      "type" : "object",
-                      "properties" : {
-                        "kuvaus" : {
-                          "type" : "string"
-                        },
-                        "suorituspaikka" : {
-                          "type" : "string"
-                        }
-                      },
-                      "id" : "#fi_oph_tor_schema_Näyttö",
-                      "required" : [ "kuvaus", "suorituspaikka" ],
-                      "description" : "Näytön kuvaus"
-                    },
-                    "oppisopimus" : {
-                      "type" : "object",
-                      "properties" : {
-                        "työnantaja" : {
-                          "type" : "object",
-                          "properties" : {
-                            "nimi" : {
-                              "type" : "string"
-                            },
-                            "yTunnus" : {
-                              "type" : "string"
-                            }
-                          },
-                          "id" : "#fi_oph_tor_schema_Yritys",
-                          "required" : [ "nimi", "yTunnus" ]
-                        }
-                      },
-                      "id" : "#fi_oph_tor_schema_Oppisopimus",
-                      "required" : [ "työnantaja" ],
-                      "description" : "Oppisopimuksen tiedot"
-                    }
-                  },
-                  "id" : "#fi_oph_tor_schema_SuoritustapaOppisopimuksella",
-                  "required" : [ "tunniste", "oppisopimus" ],
-                  "description" : "Suoritustapana oppisopimus"
-                }, {
-                  "type" : "object",
-                  "properties" : {
-                    "tunniste" : {
-                      "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-                      "description" : "\n(Koodisto: suoritustapa)"
-                    },
-                    "näyttö" : {
-                      "$ref" : "#fi_oph_tor_schema_Näyttö"
-                    }
-                  },
-                  "id" : "#fi_oph_tor_schema_SuoritustapaNäytöllä",
-                  "required" : [ "tunniste", "näyttö" ],
-                  "description" : "Suoritustapana näyttö"
-                } ],
-                "description" : "Tutkinnon tai tutkinnon osan suoritustapa"
+                "description" : "Opintojen suorituskieli\n(Koodisto: kieli)\n(Oksa: <a href=\"https://confluence.csc.fi/display/oppija/Opetus+ja+koulutussanasto+-+OKSA#Opetusjakoulutussanasto-OKSA-tmpOKSAID309\">opintosuorituksen kieli</a>)"
               },
               "tila" : {
                 "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
@@ -316,30 +357,48 @@
                 "format" : "date"
               },
               "arviointi" : {
-                "type" : "object",
-                "properties" : {
-                  "arvosana" : {
-                    "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-                    "description" : "Arvosana. Kullekin arviointiasteikolle löytyy oma koodistonsa."
+                "type" : "array",
+                "items" : {
+                  "type" : "object",
+                  "properties" : {
+                    "arvosana" : {
+                      "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
+                      "description" : "Arvosana. Kullekin arviointiasteikolle löytyy oma koodistonsa"
+                    },
+                    "päivä" : {
+                      "type" : "string",
+                      "format" : "date"
+                    },
+                    "arvosananKorottaminen" : {
+                      "type" : "boolean",
+                      "description" : "Onko kyseessä arvosanan korotus"
+                    },
+                    "arvioitsijat" : {
+                      "type" : "array",
+                      "items" : {
+                        "type" : "object",
+                        "properties" : {
+                          "nimi" : {
+                            "type" : "string"
+                          }
+                        },
+                        "id" : "#fi_oph_tor_schema_Arvioitsija",
+                        "required" : [ "nimi" ]
+                      },
+                      "description" : "Tutkinnon osan suorituksen arvioinnista päättäneen henkilön nimi"
+                    }
                   },
-                  "päivä" : {
-                    "type" : "string",
-                    "format" : "date"
-                  },
-                  "arvosananKorottaminen" : {
-                    "type" : "boolean",
-                    "description" : "Onko kyseessä arvosanan korotus"
-                  }
-                },
-                "id" : "#fi_oph_tor_schema_Arviointi",
-                "required" : [ "arvosana" ]
+                  "id" : "#fi_oph_tor_schema_Arviointi",
+                  "required" : [ "arvosana" ]
+                }
               },
               "vahvistus" : {
                 "type" : "object",
                 "properties" : {
                   "päivä" : {
                     "type" : "string",
-                    "format" : "date"
+                    "format" : "date",
+                    "description" : "Tutkinnon tai tutkinnonosan vahvistettu suorituspäivämäärä, eli päivämäärä jolloin suoritus on hyväksyttyä todennettua osaamista."
                   }
                 },
                 "id" : "#fi_oph_tor_schema_Vahvistus"
@@ -353,7 +412,7 @@
             },
             "id" : "#fi_oph_tor_schema_Suoritus",
             "required" : [ "koulutusmoduuli" ],
-            "description" : "Opinto-oikeuteen liittyvän (tutkinto-)suorituksen tiedot."
+            "description" : "Opinto-oikeuteen liittyvän (tutkinto-)suorituksen tiedot"
           },
           "hojks" : {
             "type" : "object",
@@ -364,11 +423,11 @@
             },
             "id" : "#fi_oph_tor_schema_Hojks",
             "required" : [ "hojksTehty" ],
-            "description" : "Henkilökohtainen opetuksen järjestämistä koskeva suunnitelma, https://fi.wikipedia.org/wiki/HOJKS"
+            "description" : "Henkilökohtainen opetuksen järjestämistä koskeva suunnitelma, https://fi.wikipedia.org/wiki/HOJKS\n(Oksa: <a href=\"https://confluence.csc.fi/display/oppija/Opetus+ja+koulutussanasto+-+OKSA#Opetusjakoulutussanasto-OKSA-tmpOKSAID228\">erityisopiskelija</a>)"
           },
           "tavoite" : {
             "$ref" : "#fi_oph_tor_schema_KoodistoKoodiViite",
-            "description" : "Opintojen tavoit tutkinto / tutkinnon osa\n(Koodisto: opintojentavoite)"
+            "description" : "Opiskelijan suorituksen tavoite-tieto kertoo sen, suorittaako opiskelija tutkintotavoitteista koulutusta (koko tutkintoa) vai tutkinnon osa tavoitteista koulutusta (tutkinnon osaa)\n(Koodisto: opintojentavoite)"
           },
           "läsnäolotiedot" : {
             "type" : "object",
@@ -404,10 +463,10 @@
             "description" : "Opintojen rahoitus\n(Koodisto: opintojenrahoitus)"
           }
         },
-        "id" : "#fi_oph_tor_schema_OpintoOikeus",
+        "id" : "#fi_oph_tor_schema_OpiskeluOikeus",
         "required" : [ "koulutustoimija", "oppilaitos", "suoritus" ]
       },
-      "description" : "Lista henkilön opinto-oikeuksista. Sisältää vain ne opinto-oikeudet, joihin käyttäjällä on oikeudet. Esimerkiksi ammatilliselle toimijalle ei välttämättä näy henkilön lukio-opintojen tietoja."
+      "description" : "Lista henkilön opinto-oikeuksista. Sisältää vain ne opinto-oikeudet, joihin käyttäjällä on oikeudet. Esimerkiksi ammatilliselle toimijalle ei välttämättä näy henkilön lukio-opintojen tietoja"
     }
   },
   "id" : "#fi_oph_tor_schema_TorOppija",

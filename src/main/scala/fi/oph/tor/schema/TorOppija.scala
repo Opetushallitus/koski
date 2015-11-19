@@ -85,7 +85,6 @@ case class Suoritus(
   @KoodistoUri("kieli")
   @OksaUri("tmpOKSAID309", "opintosuorituksen kieli")
   suorituskieli: Option[KoodistoKoodiViite],
-  hyväksiluku: Option[Hyväksiluku],
   @Description("Suorituksen tila")
   @KoodistoUri("suorituksentila")
   tila: Option[KoodistoKoodiViite],
@@ -129,7 +128,8 @@ trait Koulutusmoduulitoteutus
     kuvaus: Option[String] = None,
     @Description("Tutkinnon tai tutkinnon osan suoritustapa")
     @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
-    suoritustapa: Option[Suoritustapa]
+    suoritustapa: Option[Suoritustapa],
+    hyväksiluku: Option[Hyväksiluku] = None
   ) extends Koulutusmoduulitoteutus
 
   case class TutkinnonosatoteutusPaikallinen(
@@ -139,7 +139,8 @@ trait Koulutusmoduulitoteutus
     pakollinen: Boolean,
     @Description("Tutkinnon tai tutkinnon osan suoritustapa")
     @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
-    suoritustapa: Option[Suoritustapa]
+    suoritustapa: Option[Suoritustapa],
+    hyväksiluku: Option[Hyväksiluku] = None
   ) extends Koulutusmoduulitoteutus
 
 case class Arviointi(
