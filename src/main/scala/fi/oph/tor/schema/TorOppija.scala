@@ -13,7 +13,7 @@ case class TorOppija(
 @Description("Henkilötiedot. Syötettäessä vaaditaan joko `oid` tai kaikki muut kentät, jolloin järjestelmään voidaan tarvittaessa luoda uusi henkilö")
 sealed trait Henkilö {}
 
-case class HenkilöFull(
+case class FullHenkilö(
   @Description("Yksilöivä tunniste Opintopolku-palvelussa")
   @OksaUri("tmpOKSAID760", "oppijanumero")
   oid: String,
@@ -27,7 +27,7 @@ case class HenkilöFull(
 ) extends Henkilö
 
 @Description("Henkilö, jonka oid ei ole tiedossa. Tietoja syötettäessä luodaan mahdollisesti uusi henkilö Henkilöpalveluun")
-case class HenkilöNew(
+case class NewHenkilö(
   @Description("Suomalainen henkilötunnus")
   hetu: String,
   @Description("Henkilön kaikki etunimet. Esimerkiksi Sanna Katariina")
@@ -38,7 +38,7 @@ case class HenkilöNew(
 ) extends Henkilö
 
 @Description("Henkilö, jonka oid on tiedossa")
-case class HenkilöOid(
+case class OidHenkilö(
   @Description("Yksilöivä tunniste Opintopolku-palvelussa")
   @OksaUri("tmpOKSAID760", "oppijanumero")
   oid: String
@@ -46,8 +46,8 @@ case class HenkilöOid(
 
 object Henkilö {
   type Id = String
-  def withOid(oid: String) = HenkilöOid(oid)
-  def apply(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String) = HenkilöNew(hetu, etunimet, kutsumanimi, sukunimi)
+  def withOid(oid: String) = OidHenkilö(oid)
+  def apply(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String) = NewHenkilö(hetu, etunimet, kutsumanimi, sukunimi)
 }
 
 case class OpiskeluOikeus(
@@ -118,7 +118,7 @@ trait Koulutusmoduulitoteutus
     järjestämismuoto: Option[Järjestämismuoto]
   ) extends Koulutusmoduulitoteutus
 
-  case class TutkinnonosatoteutusOps(
+  case class OpsTutkinnonosatoteutus(
     @Description("Tutkinnon osan kansallinen koodi")
     @KoodistoUri("tutkinnonosat")
     tutkinnonosakoodi: KoodistoKoodiViite,
@@ -132,7 +132,7 @@ trait Koulutusmoduulitoteutus
     hyväksiluku: Option[Hyväksiluku] = None
   ) extends Koulutusmoduulitoteutus
 
-  case class TutkinnonosatoteutusPaikallinen(
+  case class PaikallinenTutkinnonosatoteutus(
     paikallinenKoodi: Paikallinenkoodi,
     kuvaus: String,
     @Description("Onko pakollinen osa tutkinnossa")
@@ -173,7 +173,7 @@ case class DefaultSuoritustapa(
 ) extends Suoritustapa
 
 @Description("Suoritustapa näyttötietojen kanssa")
-case class SuoritustapaNäytöllä(
+case class NäytöllinenSuoritustapa(
   @KoodistoUri("suoritustapa")
   tunniste: KoodistoKoodiViite,
   näyttö: Näyttö
@@ -189,7 +189,7 @@ case class DefaultJärjestämismuoto(
   tunniste: KoodistoKoodiViite
 ) extends Järjestämismuoto
 
-case class JärjestämismuotoOppisopimuksella(
+case class OppisopimuksellinenJärjestämismuoto(
   @KoodistoUri("järjestämismuoto")
   tunniste: KoodistoKoodiViite,
   oppisopimus: Oppisopimus
