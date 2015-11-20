@@ -8,7 +8,7 @@ class SchemaBasedTraitSerializer(schema: ScalaJsonSchema) extends Serializer[Any
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), AnyRef] = {
     case (TypeInfo(t, _), json) if (t.isInterface && !t.getTypeName.startsWith("java") && !t.getTypeName.startsWith("scala")) => { // <- todo: recognize trait type correctly
       val fullName: String = t.getTypeName
-      val schemaType: OneOf = schema.createSchema(fullName).asInstanceOf[OneOf]
+      val schemaType: OneOf = schema.createSchemaType(fullName).asInstanceOf[OneOf]
       val empty: List[(Class[_], AnyRef)] = Nil
       val found = schemaType.types.foldLeft(empty) {
         case (found, alternative) =>

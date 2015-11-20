@@ -2,14 +2,15 @@ package fi.oph.tor.schema
 
 import fi.oph.tor.json.Json
 import fi.oph.tor.schema.generic._
-import fi.oph.tor.schema.generic.annotation.{Description, ReadOnly}
-
+import fi.oph.tor.schema.generic.annotation.{ReadOnly, Description}
 import scala.xml.Elem
 
 object SchemaToJsonHtml {
+  def buildHtml(schema: ScalaJsonSchema, schemaType: SchemaType, exampleData: AnyRef): List[Elem] = {
+    SchemaToJsonHtml.buildHtml(Property("", schemaType, Nil), exampleData, schema, NodeContext("0", None))
+  }
 
-
-  def buildHtml(property: Property, obj: Any, schema: ScalaJsonSchema, context: NodeContext): List[Elem] = (obj, property.tyep) match {
+  private def buildHtml(property: Property, obj: Any, schema: ScalaJsonSchema, context: NodeContext): List[Elem] = (obj, property.tyep) match {
     case (o: AnyRef, t:ClassType) => buildHtmlForObject(property, o, schema, context)
     case (xs: Iterable[_], t:ListType) => buildHtmlForArray(property, xs, schema, context)
     case (x: Number, t:NumberType) => buildValueHtml(property, x, context)
@@ -18,7 +19,7 @@ object SchemaToJsonHtml {
     case (x: String, t:StringType) => buildValueHtml(property, x, context)
     case (x: Option[_], t:OptionalType) => buildHtml(property.copy(tyep = t.itemType), x.get, schema, context)
     case (x: AnyRef, t:OneOf) => buildHtml(property.copy(tyep = t.matchType(x)), x, schema, context)
-    case (x: AnyRef, t:ClassTypeRef) => buildHtml(property.copy(tyep = schema.createSchema(t.fullClassName)), x , schema, context)
+    case (x: AnyRef, t:ClassTypeRef) => buildHtml(property.copy(tyep = schema.createSchemaType(t.fullClassName)), x , schema, context)
     case _ => throw new RuntimeException
   }
 
