@@ -5,8 +5,14 @@ import org.json4s.JsonAST.{JNothing, JString, JObject}
 
 trait Metadata
 
+trait ObjectWithMetadata[T <: ObjectWithMetadata[T]] {
+  def metadata: List[Metadata]
+  def replaceMetadata(newMetadata: List[Metadata]): ObjectWithMetadata[T]
+  def appendMetadata(newMetadata: List[Metadata]): ObjectWithMetadata[T] = replaceMetadata(metadata ++ newMetadata)
+}
+
 trait MetadataSupport {
-  val extractMetadata: PartialFunction[(String, List[String]), List[Metadata]]
+  val applyAnnotations: PartialFunction[(String, List[String], ObjectWithMetadata[_], ScalaJsonSchema), ObjectWithMetadata[_]]
   def appendMetadataToJsonSchema(obj: JObject, metadata: Metadata): JObject
   def appendToDescription(obj: JObject, koodisto: String): JsonAST.JObject = {
     val description = obj.\("description") match {

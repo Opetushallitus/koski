@@ -9,11 +9,11 @@ class ScalaJsonSchema(val metadatasSupported: MetadataSupport*) {
     def childState = copy(root = false)
   }
 
-  def createSchemaType(className: String): SchemaType = {
-    createSchemaType(reflect.runtime.currentMirror.classSymbol(Class.forName(className)).toType, ScanState())
+  def createSchemaType(className: String): ClassType = {
+    createClassSchema(reflect.runtime.currentMirror.classSymbol(Class.forName(className)).toType, ScanState()).asInstanceOf[ClassType]
   }
 
-  def createSchemaType(obj: AnyRef): SchemaType = createSchemaType(obj.getClass.getName)
+  def createSchemaType(obj: AnyRef): ClassType = createSchemaType(obj.getClass.getName)
 
   private def createSchemaType(tpe: ru.Type, state: ScanState): SchemaType = {
     val typeName = tpe.typeSymbol.fullName
@@ -50,10 +50,9 @@ class ScalaJsonSchema(val metadatasSupported: MetadataSupport*) {
     "scala.Double" -> NumberType()
   )
 
-  private def createClassSchema(tpe: ru.Type, state: ScanState): SchemaType = {
+  private def createClassSchema(tpe: ru.Type, state: ScanState) = {
     val className: String = tpe.typeSymbol.fullName
-    val metadata: List[Metadata] = metadataFromAnnotations(tpe.typeSymbol)
-    val ref: ClassTypeRef = ClassTypeRef(className, metadata)
+    def ref: ClassTypeRef = applyAnnotations(tpe.typeSymbol, ClassTypeRef(className, Nil))
     if (!state.foundTypes.contains(className)) {
       state.foundTypes.add(className)
 
@@ -62,13 +61,13 @@ class ScalaJsonSchema(val metadatasSupported: MetadataSupport*) {
         val term = paramSymbol.asTerm
         val termType = createSchemaType(term.typeSignature, state.childState)
         val termName: String = term.name.decoded.trim
-        Property(termName, termType, metadataFromAnnotations(term))
+        applyAnnotations(term, Property(termName, termType, Nil))
       }.toList
 
       if (state.root) {
-        ClassType(className, properties, metadata, state.createdTypes.toList.sortBy(_.simpleName))
+        applyAnnotations(tpe.typeSymbol, ClassType(className, properties, Nil, state.createdTypes.toList.sortBy(_.simpleName)))
       } else {
-        state.createdTypes.add(ClassType(className, properties, metadata))
+        state.createdTypes.add(applyAnnotations(tpe.typeSymbol, ClassType(className, properties, Nil)))
         ref
       }
     } else {
@@ -76,13 +75,15 @@ class ScalaJsonSchema(val metadatasSupported: MetadataSupport*) {
     }
   }
 
-  private def metadataFromAnnotations(symbol: ru.Symbol): List[Metadata] = {
-    symbol.annotations.flatMap { annotation =>
-      metadatasSupported.flatMap { metadataSupport =>
-        val f: PartialFunction[(String, List[String]), List[Metadata]] = metadataSupport.extractMetadata orElse { case _ => Nil }
+  private def applyAnnotations[T <: ObjectWithMetadata[T]](symbol: ru.Symbol, x: T): T = {
+    symbol.annotations.flatMap(annotation => metadatasSupported.map((annotation, _))).foldLeft(x) { case (current, (annotation, metadataSupport)) =>
+      val f: PartialFunction[(String, List[String], ObjectWithMetadata[_], ScalaJsonSchema), ObjectWithMetadata[_]] = metadataSupport.applyAnnotations orElse { case (_, _, obj, _) => obj }
 
-        f(annotation.tree.tpe.toString, annotation.tree.children.tail.map(_.toString.replaceAll("\"$|^\"", "").replace("\\\"", "\"").replace("\\'", "'")))
-      }
+      val annotationParams: List[String] = annotation.tree.children.tail.map(_.toString.replaceAll("\"$|^\"", "").replace("\\\"", "\"").replace("\\'", "'"))
+      val annotationType: String = annotation.tree.tpe.toString
+
+      val result: T = f(annotationType, annotationParams, current, this).asInstanceOf[T]
+      result
     }
   }
 

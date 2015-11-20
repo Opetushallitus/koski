@@ -1,14 +1,16 @@
 package fi.oph.tor.schema.generic
 
+import fi.vm.sade.utils.json4s.GenericJsonFormats
+import org.json4s.Extraction
 import org.json4s.JsonAST._
 
 import scala.reflect.runtime.{universe => ru}
 object SchemaToJson {
   def toJsonSchema(t: SchemaType)(implicit s: ScalaJsonSchema): JValue = t match {
-    case DateType() => JObject(("type" -> JString("string")), ("format" -> JString("date")))
-    case StringType() => JObject(("type" -> JString("string")))
-    case BooleanType() => JObject(("type") -> JString("boolean"))
-    case NumberType() => JObject(("type") -> JString("number"))
+    case DateType(enumValues) => JObject(List("type" -> JString("string"), "format" -> JString("date")) ++ toEnumValueProperty(enumValues))
+    case StringType(enumValues) => simpleObjectToJson("string", enumValues)
+    case BooleanType(enumValues) => simpleObjectToJson("boolean", enumValues)
+    case NumberType(enumValues) => simpleObjectToJson("number", enumValues)
     case ListType(x) => JObject(("type") -> JString("array"), (("items" -> toJsonSchema(x))))
     case OptionalType(x) => toJsonSchema(x)
     case t: ClassTypeRef => appendMetadata(
@@ -30,6 +32,16 @@ object SchemaToJson {
     )
     case OneOf(types) => JObject(("oneOf" -> JArray(types.map(toJsonSchema(_)))))
   }
+
+  def simpleObjectToJson(tyep: String, enumValues: Option[List[Any]]) = {
+    JObject(List("type" -> JString(tyep)) ++ toEnumValueProperty(enumValues))
+  }
+
+  def toEnumValueProperty(enumValues: Option[List[Any]]): Option[(String, JValue)] = {
+    implicit val formats = GenericJsonFormats.genericFormats
+    enumValues.map(enumValues => ("enum", Extraction.decompose(enumValues)))
+  }
+
   private def toJsonProperties(properties: List[Property])(implicit s: ScalaJsonSchema): JValue = {
     JObject(properties
       .map { property =>

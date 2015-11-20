@@ -1,6 +1,6 @@
 package fi.oph.tor.schema
 
-import fi.oph.tor.schema.generic.{Metadata, MetadataSupport}
+import fi.oph.tor.schema.generic._
 import org.json4s.JsonAST._
 
 import scala.annotation.StaticAnnotation
@@ -9,25 +9,21 @@ case class KoodistoUri(koodistoUri: String) extends StaticAnnotation with Metada
 }
 
 object KoodistoUri extends MetadataSupport {
-  override val extractMetadata: PartialFunction[(String, List[String]), List[Metadata]] = {
-    case (annotationClass, params) if (annotationClass == classOf[KoodistoUri].getName) =>
-      List(KoodistoUri(params.mkString(" ")))
+  override val applyAnnotations: PartialFunction[(String, List[String], ObjectWithMetadata[_], ScalaJsonSchema), ObjectWithMetadata[_]] = {
+    case (annotationClass, params, property: Property, schema) if (annotationClass == classOf[KoodistoUri].getName) =>
+      val koodistoUri = KoodistoUri(params.mkString(" "))
+      val koodistoViiteType: ClassType = schema.createSchemaType(classOf[KoodistoKoodiViite].getName)
+      val modifiedInnerType: SchemaType = koodistoViiteType.copy(properties = koodistoViiteType.properties.map{
+        case p if p.key == "koodistoUri" => p.copy(tyep = StringType(enumValues = Some(List(koodistoUri.koodistoUri))))
+        case p => p
+      })
+      val finalInnerType = property.tyep.mapTo(modifiedInnerType)
+      property.copy(tyep = finalInnerType).appendMetadata(List(koodistoUri))
   }
 
   override def appendMetadataToJsonSchema(obj: JObject, metadata: Metadata) = metadata match {
     case KoodistoUri(koodistoUri) =>
-      val replacedObj = JObject(
-        "type" -> JString("object"),
-        "properties" -> JObject(
-          "koodistoUri" -> JObject("type" -> JString("string"), "description" -> JString("Käytetyn koodiston tunniste"), "enum" -> JArray(List(JString(koodistoUri)))),
-          "koodiarvo" -> JObject("type" -> JString("string"), "description" -> JString("Koodin tunniste koodistossa")),
-          "nimi" -> JObject("type" -> JString("string"), "description" -> JString("Koodin selväkielinen, kielistetty nimi Tiedon syötössä kuvausta ei tarvita; kuvaus haetaan Koodistopalvelusta")),
-          "koodistoVersio" -> JObject("type" -> JString("string"), "description" -> JString("Käytetyn koodiston versio. Jos versiota ei määritellä, käytetään uusinta versiota"))
-        ),
-        "additionalProperties" -> JBool(false),
-        "required" -> JArray(List(JString("koodiarvo"), JString("koodistoUri")))
-      )
-      appendToDescription(replacedObj, "\n(Koodisto: " + koodistoUri + ")")
+      appendToDescription(obj, "\n(Koodisto: " + koodistoUri + ")")
     case _ => obj
   }
 }
