@@ -1,8 +1,6 @@
 package fi.oph.tor.schema
 
 import fi.oph.tor.schema.generic.{Metadata, MetadataSupport}
-import org.http4s.dsl.->
-import org.json4s.JsonAST
 import org.json4s.JsonAST._
 
 import scala.annotation.StaticAnnotation
