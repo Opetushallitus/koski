@@ -17,12 +17,12 @@ case class DateType() extends SchemaType
 case class StringType() extends SchemaType
 case class BooleanType() extends SchemaType
 case class NumberType() extends SchemaType
-case class ClassType(fullClassName: String, properties: List[Property], override val metadata: List[Metadata]) extends SchemaType with TypeWithClassName {
+case class ClassType(fullClassName: String, properties: List[Property], override val metadata: List[Metadata], definitions: List[ClassType] = Nil) extends SchemaType with TypeWithClassName {
   def getPropertyValue(property: Property, target: AnyRef): AnyRef = {
     target.getClass.getMethod(property.key).invoke(target)
   }
 }
-case class ClassTypeRef(fullClassName: String) extends SchemaType with TypeWithClassName
+case class ClassTypeRef(fullClassName: String, override val metadata: List[Metadata]) extends SchemaType with TypeWithClassName
 case class OneOf(types: List[TypeWithClassName]) extends SchemaType {
   def matchType(obj: AnyRef): SchemaType = {
     types.find { classType =>
@@ -53,6 +53,10 @@ trait MetadataSupport {
 }
 
 class ScalaJsonSchema(metadatasSupported: MetadataSupport*) {
+  case class ScanState(root: Boolean = true, foundTypes: collection.mutable.Set[String] = collection.mutable.Set.empty, createdTypes: collection.mutable.Set[ClassType] = collection.mutable.Set.empty) {
+    def childState = copy(root = false)
+  }
+
   private lazy val schemaTypeForScala = Map(
     "org.joda.time.DateTime" -> DateType(),
     "java.util.Date" -> DateType(),
@@ -74,42 +78,49 @@ class ScalaJsonSchema(metadatasSupported: MetadataSupport*) {
     }
   }
 
-  private def createClassSchema(tpe: ru.Type, previousTypes: collection.mutable.Set[String]): SchemaType = {
+  private def createClassSchema(tpe: ru.Type, state: ScanState): SchemaType = {
     val className: String = tpe.typeSymbol.fullName
-    if (previousTypes.contains(className)) {
-      ClassTypeRef(className)
-    } else {
-      previousTypes.add(className)
+    val metadata: List[Metadata] = metadataForSymbol(tpe.typeSymbol)
+    val ref: ClassTypeRef = ClassTypeRef(className, metadata)
+    if (!state.foundTypes.contains(className)) {
+      state.foundTypes.add(className)
 
       val params = tpe.typeSymbol.asClass.primaryConstructor.typeSignature.paramLists.head
       val propertiesList: List[Property] = params.map{ paramSymbol =>
         val term = paramSymbol.asTerm
-        val termType = createSchema(term.typeSignature, previousTypes)
+        val termType = createSchema(term.typeSignature, state.childState)
         val termName: String = term.name.decoded.trim
         Property(termName, termType, metadataForSymbol(term))
       }.toList
 
-      ClassType(className, propertiesList, metadataForSymbol(tpe.typeSymbol))
+      if (state.root) {
+        ClassType(className, propertiesList, metadata, state.createdTypes.toList.sortBy(_.simpleName))
+      } else {
+        state.createdTypes.add(ClassType(className, propertiesList, metadata))
+        ref
+      }
+    } else {
+      ref
     }
   }
 
 
-  def createSchema(tpe: ru.Type, previousTypes: collection.mutable.Set[String] = collection.mutable.Set.empty): SchemaType = {
+  def createSchema(tpe: ru.Type, state: ScanState = ScanState()): SchemaType = {
     val typeName = tpe.typeSymbol.fullName
 
     if (typeName == "scala.Option") {
       // Option[T] becomes the schema of T with required set to false
-      OptionalType(createSchema(tpe.asInstanceOf[ru.TypeRefApi].args.head, previousTypes))
+      OptionalType(createSchema(tpe.asInstanceOf[ru.TypeRefApi].args.head, state))
     } else if (isListType(tpe)) {
       // (Traversable)[T] becomes a schema with items set to the schema of T
-      ListType(createSchema(tpe.asInstanceOf[ru.TypeRefApi].args.head, previousTypes))
+      ListType(createSchema(tpe.asInstanceOf[ru.TypeRefApi].args.head, state))
     } else {
       schemaTypeForScala.getOrElse(typeName, {
         if (tpe.typeSymbol.isClass) {
           if (tpe.typeSymbol.isAbstract) {
-            OneOf(findImplementations(tpe, previousTypes))
+            OneOf(findImplementations(tpe, state))
           } else {
-            createClassSchema(tpe, previousTypes)
+            createClassSchema(tpe, state)
           }
         } else {
           throw new RuntimeException("What is this type: " + tpe)
@@ -132,7 +143,7 @@ class ScalaJsonSchema(metadatasSupported: MetadataSupport*) {
 
   def createSchemaForObject(obj: AnyRef): SchemaType = createSchema(obj.getClass.getName)
 
-  def findImplementations(tpe: ru.Type, previousTypes: collection.mutable.Set[String]): List[TypeWithClassName] = {
+  def findImplementations(tpe: ru.Type, state: ScanState): List[TypeWithClassName] = {
     import collection.JavaConverters._
     import reflect.runtime.currentMirror
 
@@ -142,7 +153,7 @@ class ScalaJsonSchema(metadatasSupported: MetadataSupport*) {
     val implementationClasses = reflections.getSubTypesOf(javaClass).asScala
 
     implementationClasses.toList.map { klass =>
-      createSchema(currentMirror.classSymbol(klass).toType, previousTypes).asInstanceOf[TypeWithClassName]
+      createSchema(currentMirror.classSymbol(klass).toType, state).asInstanceOf[TypeWithClassName]
     }
   }
 
@@ -171,6 +182,12 @@ class ScalaJsonSchema(metadatasSupported: MetadataSupport*) {
 
   def descriptionJson(description: Option[String]): Option[(String, JValue)] = description.map(("description" -> JString(_)))
 
+  def toDefinitionProperty(definitions: List[ClassType]): Option[(String, JValue)] = definitions match {
+    case Nil => None
+    case xs =>
+      Some("definitions", JObject(definitions.map(definition => (definition.simpleName, toJsonSchema(definition)))))
+  }
+
   def toJsonSchema(t: SchemaType): JValue = t match {
     case DateType() => JObject(("type" -> JString("string")), ("format" -> JString("date")))
     case StringType() => JObject(("type" -> JString("string")))
@@ -178,10 +195,22 @@ class ScalaJsonSchema(metadatasSupported: MetadataSupport*) {
     case NumberType() => JObject(("type") -> JString("number"))
     case ListType(x) => JObject(("type") -> JString("array"), (("items" -> toJsonSchema(x))))
     case OptionalType(x) => toJsonSchema(x)
-    case t: ClassTypeRef => JObject(("$ref") -> toUri(t.simpleName))
-    case t: ClassType => appendMetadata(JObject(List(("type" -> JString("object")), ("properties" -> toJsonProperties(t.properties)), ("id" -> toUri(t.simpleName)), ("additionalProperties" -> JBool(false))) ++ toRequiredProperties(t.properties).toList), t.metadata)
+    case t: ClassTypeRef => appendMetadata(
+      JObject(
+        ("$ref" -> JString("#/definitions/" + t.simpleName))
+      ),
+      t.metadata
+    )
+    case t: ClassType => appendMetadata(
+      JObject(List(
+        ("type" -> JString("object")),
+        ("properties" -> toJsonProperties(t.properties)),
+        ("id" -> JString("#" + t.simpleName)),
+        ("additionalProperties" -> JBool(false))
+        ) ++ toRequiredProperties(t.properties).toList ++ toDefinitionProperty(t.definitions).toList
+      ),
+      t.metadata
+    )
     case OneOf(types) => JObject(("oneOf" -> JArray(types.map(toJsonSchema(_)))))
   }
-
-  def toUri(fullClassName: String) = JString("#" + fullClassName.replace(".", "_"))
 }
