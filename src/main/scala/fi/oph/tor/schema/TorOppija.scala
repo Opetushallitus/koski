@@ -244,8 +244,8 @@ case class KoodistoKoodiViite(
   nimi: Option[String],
   @Description("Käytetyn koodiston tunniste")
   koodistoUri: String,
-  @Description("Käytetyn koodiston versio")
-  koodistoVersio: Int
+  @Description("Käytetyn koodiston versio. Jos versiota ei määritellä, käytetään uusinta versiota")
+  koodistoVersio: Option[Int]
 )
 
 @Description("Henkilökohtainen opetuksen järjestämistä koskeva suunnitelma, https://fi.wikipedia.org/wiki/HOJKS")
