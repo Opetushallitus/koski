@@ -188,12 +188,12 @@ trait Järjestämismuoto {
 
 @Description("Järjestämismuoto ilman lisätietoja")
 case class DefaultJärjestämismuoto(
-  @KoodistoUri("järjestämismuoto")
+  @KoodistoUri("jarjestamismuoto")
   tunniste: KoodistoKoodiViite
 ) extends Järjestämismuoto
 
 case class OppisopimuksellinenJärjestämismuoto(
-  @KoodistoUri("järjestämismuoto")
+  @KoodistoUri("jarjestamismuoto")
   tunniste: KoodistoKoodiViite,
   oppisopimus: Oppisopimus
 ) extends Järjestämismuoto

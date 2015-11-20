@@ -1,7 +1,9 @@
 package fi.oph.tor.schema
 
 import fi.oph.tor.schema.generic.{Metadata, MetadataSupport}
-import org.json4s.JsonAST.JObject
+import org.http4s.dsl.->
+import org.json4s.JsonAST
+import org.json4s.JsonAST._
 
 import scala.annotation.StaticAnnotation
 
@@ -16,8 +18,18 @@ object KoodistoUri extends MetadataSupport {
 
   override def appendMetadataToJsonSchema(obj: JObject, metadata: Metadata) = metadata match {
     case KoodistoUri(koodistoUri) =>
-      // TODO: tänne hyperlinkki koodistoon
-      appendToDescription(obj, "\n(Koodisto: " + koodistoUri + ")")
+      val replacedObj = JObject(
+        "type" -> JString("object"),
+        "properties" -> JObject(
+          "koodistoUri" -> JObject("type" -> JString("string"), "description" -> JString("Käytetyn koodiston tunniste"), "enum" -> JArray(List(JString(koodistoUri)))),
+          "koodiarvo" -> JObject("type" -> JString("string"), "description" -> JString("Koodin tunniste koodistossa")),
+          "nimi" -> JObject("type" -> JString("string"), "description" -> JString("Koodin selväkielinen, kielistetty nimi Tiedon syötössä kuvausta ei tarvita; kuvaus haetaan Koodistopalvelusta")),
+          "koodistoVersio" -> JObject("type" -> JString("string"), "description" -> JString("Käytetyn koodiston versio. Jos versiota ei määritellä, käytetään uusinta versiota"))
+        ),
+        "additionalProperties" -> JBool(false),
+        "required" -> JArray(List(JString("koodiarvo"), JString("koodistoUri")))
+      )
+      appendToDescription(replacedObj, "\n(Koodisto: " + koodistoUri + ")")
     case _ => obj
   }
 }
