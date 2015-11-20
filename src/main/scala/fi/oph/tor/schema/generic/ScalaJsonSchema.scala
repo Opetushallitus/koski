@@ -4,7 +4,7 @@ import org.reflections.Reflections
 
 import scala.reflect.runtime.{universe => ru}
 
-class ScalaJsonSchema(val metadatasSupported: MetadataSupport*) {
+class ScalaJsonSchema(val annotationsSupported: List[AnnotationSupport]) {
   case class ScanState(root: Boolean = true, foundTypes: collection.mutable.Set[String] = collection.mutable.Set.empty, createdTypes: collection.mutable.Set[ClassType] = collection.mutable.Set.empty) {
     def childState = copy(root = false)
   }
@@ -76,7 +76,7 @@ class ScalaJsonSchema(val metadatasSupported: MetadataSupport*) {
   }
 
   private def applyAnnotations[T <: ObjectWithMetadata[T]](symbol: ru.Symbol, x: T): T = {
-    symbol.annotations.flatMap(annotation => metadatasSupported.map((annotation, _))).foldLeft(x) { case (current, (annotation, metadataSupport)) =>
+    symbol.annotations.flatMap(annotation => annotationsSupported.map((annotation, _))).foldLeft(x) { case (current, (annotation, metadataSupport)) =>
       val f: PartialFunction[(String, List[String], ObjectWithMetadata[_], ScalaJsonSchema), ObjectWithMetadata[_]] = metadataSupport.applyAnnotations orElse { case (_, _, obj, _) => obj }
 
       val annotationParams: List[String] = annotation.tree.children.tail.map(_.toString.replaceAll("\"$|^\"", "").replace("\\\"", "\"").replace("\\'", "'"))

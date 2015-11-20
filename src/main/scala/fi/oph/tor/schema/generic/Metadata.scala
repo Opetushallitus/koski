@@ -11,8 +11,15 @@ trait ObjectWithMetadata[T <: ObjectWithMetadata[T]] {
   def appendMetadata(newMetadata: List[Metadata]): ObjectWithMetadata[T] = replaceMetadata(metadata ++ newMetadata)
 }
 
-trait MetadataSupport {
+trait MetadataSupport extends AnnotationSupport with JsonMetadataSupport {
+
+}
+
+trait AnnotationSupport {
   val applyAnnotations: PartialFunction[(String, List[String], ObjectWithMetadata[_], ScalaJsonSchema), ObjectWithMetadata[_]]
+}
+
+trait JsonMetadataSupport {
   def appendMetadataToJsonSchema(obj: JObject, metadata: Metadata): JObject
   def appendToDescription(obj: JObject, koodisto: String): JsonAST.JObject = {
     val description = obj.\("description") match {

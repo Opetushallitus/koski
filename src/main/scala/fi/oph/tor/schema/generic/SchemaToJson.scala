@@ -4,9 +4,8 @@ import fi.vm.sade.utils.json4s.GenericJsonFormats
 import org.json4s.Extraction
 import org.json4s.JsonAST._
 
-import scala.reflect.runtime.{universe => ru}
 object SchemaToJson {
-  def toJsonSchema(t: SchemaType)(implicit s: ScalaJsonSchema): JValue = t match {
+  def toJsonSchema(t: SchemaType)(implicit ms: List[JsonMetadataSupport]): JValue = t match {
     case DateType(enumValues) => JObject(List("type" -> JString("string"), "format" -> JString("date")) ++ toEnumValueProperty(enumValues))
     case StringType(enumValues) => simpleObjectToJson("string", enumValues)
     case BooleanType(enumValues) => simpleObjectToJson("boolean", enumValues)
@@ -42,7 +41,7 @@ object SchemaToJson {
     enumValues.map(enumValues => ("enum", Extraction.decompose(enumValues)))
   }
 
-  private def toJsonProperties(properties: List[Property])(implicit s: ScalaJsonSchema): JValue = {
+  private def toJsonProperties(properties: List[Property])(implicit ms: List[JsonMetadataSupport]): JValue = {
     JObject(properties
       .map { property =>
       val propertyMetadata: JObject = appendMetadata(toJsonSchema(property.tyep).asInstanceOf[JObject], property.metadata)
@@ -58,15 +57,15 @@ object SchemaToJson {
     }
   }
 
-  private def toDefinitionProperty(definitions: List[ClassType])(implicit s: ScalaJsonSchema): Option[(String, JValue)] = definitions match {
+  private def toDefinitionProperty(definitions: List[ClassType])(implicit ms: List[JsonMetadataSupport]): Option[(String, JValue)] = definitions match {
     case Nil => None
     case xs =>
       Some("definitions", JObject(definitions.map(definition => (definition.simpleName, toJsonSchema(definition)))))
   }
 
-  private def appendMetadata(obj: JObject, metadata: List[Metadata])(implicit s: ScalaJsonSchema): JObject = {
+  private def appendMetadata(obj: JObject, metadata: List[Metadata])(implicit ms: List[JsonMetadataSupport]): JObject = {
     metadata.foldLeft(obj) { case (obj: JObject, metadata) =>
-      s.metadatasSupported.foldLeft(obj) { case (obj, metadataSupport) =>
+      ms.foldLeft(obj) { case (obj, metadataSupport) =>
         metadataSupport.appendMetadataToJsonSchema(obj, metadata)
       }
     }
