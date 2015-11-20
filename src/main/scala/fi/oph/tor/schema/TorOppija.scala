@@ -98,7 +98,8 @@ case class Suoritus(
 )
 
 trait Koulutusmoduulitoteutus
-  case class Koulutustoteutus(
+  @Description("Tutkintoon johtava koulutus")
+  case class TutkintoKoulutustoteutus(
     @Description("Tutkinnon 6-numeroinen tutkintokoodi")
     @KoodistoUri("koulutus")
     @OksaUri("tmpOKSAID560", "tutkinto")
@@ -121,6 +122,7 @@ trait Koulutusmoduulitoteutus
     järjestämismuoto: Option[Järjestämismuoto]
   ) extends Koulutusmoduulitoteutus
 
+  @Description("Opetussunnitelmaan kuuluva tutkinnon osa")
   case class OpsTutkinnonosatoteutus(
     @Description("Tutkinnon osan kansallinen koodi")
     @KoodistoUri("tutkinnonosat")
@@ -131,10 +133,11 @@ trait Koulutusmoduulitoteutus
     kuvaus: Option[String] = None,
     @Description("Tutkinnon tai tutkinnon osan suoritustapa")
     @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
-    suoritustapa: Option[Suoritustapa],
+    suoritustapa: Option[Suoritustapa] = None,
     hyväksiluku: Option[Hyväksiluku] = None
   ) extends Koulutusmoduulitoteutus
 
+  @Description("Paikallinen tutkinnon osa")
   case class PaikallinenTutkinnonosatoteutus(
     paikallinenKoodi: Paikallinenkoodi,
     kuvaus: String,
