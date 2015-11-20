@@ -8,9 +8,10 @@ object TorOppijaExamples {
   private val suoritustapaOps = KoodistoKoodiViite("ops", Some("Opetussuunnitelmaperusteinen"), "suoritustavat", 1)
   private val järjestämismuotoOppisopimus = KoodistoKoodiViite("20", Some("Oppisopimusmuotoinen"), "jarjestamismuoto", 1)
   private val järjestämismuotoOppilaitos: KoodistoKoodiViite = KoodistoKoodiViite("10", Some("Oppilaitosmuotoinen"), "jarjestamismuoto", 1)
-
+  private val toimipiste: Organisaatio = Organisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))
   private val tutkinnonOsat = List(
     Suoritus(
+      Some("suoritus-12345-1"),
       OpsTutkinnonosatoteutus(
         KoodistoKoodiViite("100016", Some("Huolto- ja korjaustyöt"), "tutkinnonosat", 1),
         true,
@@ -19,6 +20,7 @@ object TorOppijaExamples {
       suorituskieli = None,
       tila = None,
       alkamispäivä = None,
+      toimipiste,
       Some(List(Arviointi(
         arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "ammattijaerikoisammattitutkintojenarviointiasteikko", 1),
         Some(date(2012, 10, 20)),
@@ -29,6 +31,7 @@ object TorOppijaExamples {
       osasuoritukset = None
     ),
     Suoritus(
+      Some("suoritus-12345-2"),
       PaikallinenTutkinnonosatoteutus(
         Paikallinenkoodi("123456789", "Pintavauriotyöt", "kallion_oma_koodisto"),
         "Opetellaan korjaamaan pinnallisia vaurioita",
@@ -38,6 +41,7 @@ object TorOppijaExamples {
       suorituskieli = None,
       tila = None,
       alkamispäivä = None,
+      toimipiste,
       Some(List(Arviointi(
         arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "ammattijaerikoisammattitutkintojenarviointiasteikko", 1),
         Some(date(2013, 3, 20)),
@@ -48,6 +52,7 @@ object TorOppijaExamples {
       osasuoritukset = None
     ),
     Suoritus(
+      Some("suoritus-12345-3"),
       OpsTutkinnonosatoteutus(
         KoodistoKoodiViite("100019", Some("Mittaus- ja korivauriotyöt"), "tutkinnonosat", 1),
         true,
@@ -56,6 +61,7 @@ object TorOppijaExamples {
       suorituskieli = None,
       tila = None,
       alkamispäivä = None,
+      toimipiste,
       Some(List(Arviointi(
         arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "ammattijaerikoisammattitutkintojenarviointiasteikko", 1),
         Some(date(2013, 4, 1)),
@@ -66,6 +72,7 @@ object TorOppijaExamples {
       osasuoritukset = None
     ),
     Suoritus(
+      Some("suoritus-12345-4"),
       OpsTutkinnonosatoteutus(
         KoodistoKoodiViite("100034", Some("Maalauksen esikäsittelytyöt"), "tutkinnonosat", 1),
         true,
@@ -74,6 +81,7 @@ object TorOppijaExamples {
       suorituskieli = None,
       None,
       alkamispäivä = None,
+      toimipiste,
       Some(List(Arviointi(
         arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "ammattijaerikoisammattitutkintojenarviointiasteikko", 1),
         Some(date(2014, 10, 20)),
@@ -84,6 +92,7 @@ object TorOppijaExamples {
       osasuoritukset = None
     ),
     Suoritus(
+      Some("suoritus-12345-5"),
       OpsTutkinnonosatoteutus(
         KoodistoKoodiViite("100037", Some("Auton lisävarustetyöt"), "tutkinnonosat", 1),
         true,
@@ -92,6 +101,7 @@ object TorOppijaExamples {
       suorituskieli = None,
       tila = None,
       alkamispäivä = None,
+      toimipiste,
       Some(List(Arviointi(
         arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "ammattijaerikoisammattitutkintojenarviointiasteikko", 1),
         Some(date(2015, 4, 1)),
@@ -102,6 +112,7 @@ object TorOppijaExamples {
       osasuoritukset = None
     ),
     Suoritus(
+      Some("suoritus-12345-6"),
       OpsTutkinnonosatoteutus(
         KoodistoKoodiViite("101050", Some("Yritystoiminnan suunnittelu"), "tutkinnonosat", 1),
         true,
@@ -110,6 +121,7 @@ object TorOppijaExamples {
       suorituskieli = None,
       tila = None,
       alkamispäivä = None,
+      toimipiste,
       Some(List(Arviointi(
         arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "ammattijaerikoisammattitutkintojenarviointiasteikko", 1),
         Some(date(2016, 2, 1)),
@@ -126,13 +138,13 @@ object TorOppijaExamples {
     List(
       OpiskeluOikeus(
         Some(983498343),
+        Some("847823465"),
         Some(date(2012, 9, 1)),
         Some(date(2015, 5, 31)),
         Some(date(2016, 1, 9)),
-        Organisaatio("1.2.246.562.10.346830761110", Some("HELSINGIN KAUPUNKI")),
         Organisaatio("1.2.246.562.10.52251087186", Some("Stadin ammattiopisto")),
-        Some(Organisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))),
         Suoritus(
+          Some("suoritus-12345"),
           Koulutustoteutus(
             KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", 4),
             Some("39/011/2014"), Some(List(KoodistoKoodiViite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", 2))),
@@ -143,6 +155,7 @@ object TorOppijaExamples {
           suorituskieli = Some(KoodistoKoodiViite("FI", Some("suomi"), "kieli", 1)),
           Some(KoodistoKoodiViite("VALMIS", Some("Valmis"), "suorituksentila", 1)),
           alkamispäivä = None,
+          toimipiste,
           arviointi = None,
           Some(Vahvistus(Some(date(2016, 1, 9)))),
           Some(tutkinnonOsat)
@@ -160,17 +173,18 @@ object TorOppijaExamples {
     List(
       OpiskeluOikeus(
         None,
+        Some("847823465"),
         Some(date(2016, 9, 1)),
         Some(date(2020, 5, 1)),
         None,
-        Organisaatio("1.2.246.562.10.346830761110", Some("HELSINGIN KAUPUNKI")),
         Organisaatio("1.2.246.562.10.52251087186", Some("Stadin ammattiopisto")),
-        None,
         Suoritus(
+          Some("suoritus-12345"),
           Koulutustoteutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", 4), Some("39/011/2014"), None, None, None, None),
           None,
           None,
           Some(date(2015, 9, 1)),
+          toimipiste,
           None,
           None,
           None
@@ -188,13 +202,13 @@ object TorOppijaExamples {
     List(
       OpiskeluOikeus(
         None,
+        Some("847823465"),
         Some(date(2016, 9, 1)),
         Some(date(2020, 5, 1)),
         None,
-        Organisaatio("1.2.246.562.10.346830761110", Some("HELSINGIN KAUPUNKI")),
         Organisaatio("1.2.246.562.10.52251087186", Some("Stadin ammattiopisto")),
-        None,
         Suoritus(
+          Some("suoritus-12345"),
           Koulutustoteutus(
             KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", 4),
             Some("39/011/2014"), None, None, Some(DefaultSuoritustapa(suoritustapaNäyttö)),
@@ -202,6 +216,7 @@ object TorOppijaExamples {
           None,
           None,
           None,
+          toimipiste,
           None,
           None,
           None
@@ -219,13 +234,13 @@ object TorOppijaExamples {
     List(
       OpiskeluOikeus(
         Some(983498343),
+        Some("847823465"),
         Some(date(2012, 9, 1)),
         Some(date(2015, 5, 31)),
         Some(date(2016, 1, 9)),
-        Organisaatio("1.2.246.562.10.346830761110", Some("HELSINGIN KAUPUNKI")),
         Organisaatio("1.2.246.562.10.52251087186", Some("Stadin ammattiopisto")),
-        Some(Organisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))),
         Suoritus(
+          Some("suoritus-12345"),
           Koulutustoteutus(
             KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", 4),
             Some("39/011/2014"),
@@ -237,10 +252,12 @@ object TorOppijaExamples {
           Some(KoodistoKoodiViite("FI", Some("suomi"), "kieli", 1)),
           None,
           None,
+          toimipiste,
           None,
           None,
           Some(List(
             Suoritus(
+              Some("suoritus-12345-1"),
               OpsTutkinnonosatoteutus(
                 KoodistoKoodiViite("100034", Some("Maalauksen esikäsittelytyöt"), "tutkinnonosat", 1),
                 true,
@@ -249,6 +266,7 @@ object TorOppijaExamples {
               suorituskieli = None,
               tila = None,
               alkamispäivä = None,
+              toimipiste,
               Some(
                 List(
                   Arviointi(

@@ -53,19 +53,16 @@ object Henkilö {
 case class OpiskeluOikeus(
   @Description("Opinto-oikeuden uniikki tunniste. Tietoja syötettäessä kenttä ei ole pakollinen. Tietoja päivitettäessä TOR tunnistaa opinto-oikeuden joko tämän id:n tai muiden kenttien (oppijaOid, organisaatio, diaarinumero) perusteella")
   id: Option[Int],
+  @Description("Paikallinen tunniste opiskeluoikeudelle. Tiedonsiirroissa tarpeellinen, jotta voidaan varmistaa päivitysten osuminen oikeaan opiskeluoikeuteen.")
+  paikallinenId: Option[String],
   @Description("Opiskelijan opinto-oikeuden alkamisaika joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
   alkamispäivä: Option[LocalDate],
   @Description("Opiskelijan opinto-oikeuden arvioitu päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
   arvioituPäättymispäivä: Option[LocalDate],
   @Description("Opiskelijan opinto-oikeuden päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
   päättymispäivä: Option[LocalDate],
-  @Description("Opinnot tarjoava koulutustoimija")
-  koulutustoimija: Organisaatio,
   @Description("Oppilaitos, jossa opinnot on suoritettu")
   oppilaitos: Organisaatio,
-  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
-  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
-  toimipiste: Option[Organisaatio],
   @Description("Opinto-oikeuteen liittyvän (tutkinto-)suorituksen tiedot")
   suoritus: Suoritus,
   hojks: Option[Hojks],
@@ -79,6 +76,8 @@ case class OpiskeluOikeus(
 )
 
 case class Suoritus(
+  @Description("Paikallinen tunniste suoritukselle. Tiedonsiirroissa tarpeellinen, jotta voidaan varmistaa päivitysten osuminen oikeaan suoritukseen.")
+  paikallinenId: Option[String],
   @Description("Koulutusmoduulin tunniste. Joko tutkinto tai tutkinnon osa")
   koulutusmoduuli: Koulutusmoduulitoteutus,
   @Description("Opintojen suorituskieli")
@@ -89,6 +88,9 @@ case class Suoritus(
   @KoodistoUri("suorituksentila")
   tila: Option[KoodistoKoodiViite],
   alkamispäivä: Option[LocalDate],
+  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
+  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
+  toimipiste: Organisaatio,
   arviointi: Option[List[Arviointi]],
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[Suoritus]]
