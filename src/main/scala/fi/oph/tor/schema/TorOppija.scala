@@ -13,6 +13,7 @@ case class TorOppija(
 @Description("Henkilötiedot. Syötettäessä vaaditaan joko `oid` tai kaikki muut kentät, jolloin järjestelmään voidaan tarvittaessa luoda uusi henkilö")
 sealed trait Henkilö {}
 
+@Description("Täydet henkilötiedot. Tietoja haettaessa TOR:sta saadaan aina täydet henkilötiedot.")
 case class FullHenkilö(
   @Description("Yksilöivä tunniste Opintopolku-palvelussa")
   @OksaUri("tmpOKSAID760", "oppijanumero")
@@ -37,7 +38,7 @@ case class NewHenkilö(
   sukunimi: String
 ) extends Henkilö
 
-@Description("Henkilö, jonka oid on tiedossa")
+@Description("Henkilö, jonka oid on tiedossa. Tietoja syötettäessä henkilö haetaan henkilöpalvelusta.")
 case class OidHenkilö(
   @Description("Yksilöivä tunniste Opintopolku-palvelussa")
   @OksaUri("tmpOKSAID760", "oppijanumero")
