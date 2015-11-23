@@ -96,17 +96,29 @@ class ScalaJsonSchema(val annotationsSupported: List[AnnotationSupport]) {
   }
 
   private def findImplementations(tpe: ru.Type, state: ScanState): List[TypeWithClassName] = {
-    import collection.JavaConverters._
+    val implementationClasses = TraitImplementationFinder.findTraitImplementations(tpe)
+
     import reflect.runtime.currentMirror
-
-    val javaClass: Class[_] = Class.forName(tpe.typeSymbol.asClass.fullName)
-    val reflections = new Reflections(javaClass.getPackage.getName)
-
-    val implementationClasses = reflections.getSubTypesOf(javaClass).asScala
-
     implementationClasses.toList.map { klass =>
       createSchemaType(currentMirror.classSymbol(klass).toType, state).asInstanceOf[TypeWithClassName]
     }
   }
 }
 
+object TraitImplementationFinder {
+  import collection.JavaConverters._
+  val cache: collection.mutable.Map[String, Set[Class[_]]] = collection.mutable.Map.empty
+
+  def findTraitImplementations(tpe: ru.Type): Set[Class[_]] = {
+    val className: String = tpe.typeSymbol.asClass.fullName
+
+
+    cache.getOrElseUpdate(className, {
+      val javaClass: Class[_] = Class.forName(className)
+      val reflections = new Reflections(javaClass.getPackage.getName)
+
+      val implementationClasses = reflections.getSubTypesOf(javaClass).asScala.toSet.asInstanceOf[Set[Class[_]]]
+      implementationClasses
+    })
+  }
+}
