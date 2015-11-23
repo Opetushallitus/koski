@@ -22,4 +22,4 @@ export JAVA_OPTS="\
 "
 
 pkill java
-make build && { nohup make run &>> $LOG_DIR/tor.stdout.log & }
+make clean build && { nohup make run &>> $LOG_DIR/tor.stdout.log & }
