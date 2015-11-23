@@ -6,8 +6,8 @@ import fi.oph.tor.schema.generic.annotation.{Description, ReadOnly}
 
 case class TorOppija(
   henkilö: Henkilö,
-  @Description("Lista henkilön opinto-oikeuksista. Sisältää vain ne opinto-oikeudet, joihin käyttäjällä on oikeudet. Esimerkiksi ammatilliselle toimijalle ei välttämättä näy henkilön lukio-opintojen tietoja")
-  opintoOikeudet: Seq[OpiskeluOikeus]
+  @Description("Lista henkilön opiskeluoikeuksista. Sisältää vain ne opiskeluoikeudet, joihin käyttäjällä on oikeudet. Esimerkiksi ammatilliselle toimijalle ei välttämättä näy henkilön lukio-opintojen tietoja")
+  opiskeluOikeudet: Seq[OpiskeluOikeus]
 )
 
 @Description("Henkilötiedot. Syötettäessä vaaditaan joko `oid` tai kaikki muut kentät, jolloin järjestelmään voidaan tarvittaessa luoda uusi henkilö")
@@ -52,19 +52,19 @@ object Henkilö {
 }
 
 case class OpiskeluOikeus(
-  @Description("Opinto-oikeuden uniikki tunniste. Tietoja syötettäessä kenttä ei ole pakollinen. Tietoja päivitettäessä TOR tunnistaa opinto-oikeuden joko tämän id:n tai muiden kenttien (oppijaOid, organisaatio, diaarinumero) perusteella")
+  @Description("Opiskeluoikeuden uniikki tunniste. Tietoja syötettäessä kenttä ei ole pakollinen. Tietoja päivitettäessä TOR tunnistaa opiskeluoikeuden joko tämän id:n tai muiden kenttien (oppijaOid, organisaatio, diaarinumero) perusteella")
   id: Option[Int],
   @Description("Paikallinen tunniste opiskeluoikeudelle. Tiedonsiirroissa tarpeellinen, jotta voidaan varmistaa päivitysten osuminen oikeaan opiskeluoikeuteen.")
   paikallinenId: Option[String],
-  @Description("Opiskelijan opinto-oikeuden alkamisaika joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
+  @Description("Opiskelijan opiskeluoikeuden alkamisaika joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
   alkamispäivä: Option[LocalDate],
-  @Description("Opiskelijan opinto-oikeuden arvioitu päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
+  @Description("Opiskelijan opiskeluoikeuden arvioitu päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
   arvioituPäättymispäivä: Option[LocalDate],
-  @Description("Opiskelijan opinto-oikeuden päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
+  @Description("Opiskelijan opiskeluoikeuden päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
   päättymispäivä: Option[LocalDate],
   @Description("Oppilaitos, jossa opinnot on suoritettu")
   oppilaitos: Organisaatio,
-  @Description("Opinto-oikeuteen liittyvän (tutkinto-)suorituksen tiedot")
+  @Description("Opiskeluoikeuteen liittyvän (tutkinto-)suorituksen tiedot")
   suoritus: Suoritus,
   hojks: Option[Hojks],
   @Description("Opiskelijan suorituksen tavoite-tieto kertoo sen, suorittaako opiskelija tutkintotavoitteista koulutusta (koko tutkintoa) vai tutkinnon osa tavoitteista koulutusta (tutkinnon osaa)")
@@ -80,7 +80,7 @@ case class Suoritus(
   @Description("Paikallinen tunniste suoritukselle. Tiedonsiirroissa tarpeellinen, jotta voidaan varmistaa päivitysten osuminen oikeaan suoritukseen.")
   paikallinenId: Option[String],
   @Description("Koulutusmoduulin tunniste. Joko tutkinto tai tutkinnon osa")
-  koulutusmoduuli: Koulutusmoduulitoteutus,
+  koulutusmoduulitoteutus: Koulutusmoduulitoteutus,
   @Description("Opintojen suorituskieli")
   @KoodistoUri("kieli")
   @OksaUri("tmpOKSAID309", "opintosuorituksen kieli")
@@ -97,15 +97,37 @@ case class Suoritus(
   osasuoritukset: Option[List[Suoritus]]
 )
 
-trait Koulutusmoduulitoteutus
-  @Description("Tutkintoon johtava koulutus")
-  case class TutkintoKoulutustoteutus(
+trait Koulutusmoduuli
+  case class TutkintoKoulutus(
     @Description("Tutkinnon 6-numeroinen tutkintokoodi")
     @KoodistoUri("koulutus")
     @OksaUri("tmpOKSAID560", "tutkinto")
     tutkintokoodi: KoodistoKoodiViite,
     @Description("Tutkinnon perusteen diaarinumero (pakollinen). Ks. ePerusteet-palvelu")
-    perusteenDiaarinumero: Option[String],
+    perusteenDiaarinumero: Option[String]
+  ) extends Koulutusmoduuli
+
+  case class OpsTutkinnonosa(
+    @Description("Tutkinnon osan kansallinen koodi")
+    @KoodistoUri("tutkinnonosat")
+    tutkinnonosakoodi: KoodistoKoodiViite,
+    @Description("Onko pakollinen osa tutkinnossa")
+    pakollinen: Boolean,
+    paikallinenKoodi: Option[Paikallinenkoodi] = None,
+    kuvaus: Option[String] = None
+  ) extends Koulutusmoduuli
+
+  case class PaikallinenTutkinnonosa(
+    paikallinenKoodi: Paikallinenkoodi,
+    kuvaus: String,
+    @Description("Onko pakollinen osa tutkinnossa")
+    pakollinen: Boolean
+  ) extends Koulutusmoduuli
+
+trait Koulutusmoduulitoteutus
+  @Description("Tutkintoon johtava koulutus")
+  case class TutkintoKoulutustoteutus(
+    koulutusmoduuli: TutkintoKoulutus,
     @Description("Tieto siitä mihin tutkintonimikkeeseen oppijan tutkinto liittyy")
     @KoodistoUri("tutkintonimikkeet")
     @OksaUri("tmpOKSAID588", "tutkintonimike")
@@ -124,13 +146,7 @@ trait Koulutusmoduulitoteutus
 
   @Description("Opetussunnitelmaan kuuluva tutkinnon osa")
   case class OpsTutkinnonosatoteutus(
-    @Description("Tutkinnon osan kansallinen koodi")
-    @KoodistoUri("tutkinnonosat")
-    tutkinnonosakoodi: KoodistoKoodiViite,
-    @Description("Onko pakollinen osa tutkinnossa")
-    pakollinen: Boolean,
-    paikallinenKoodi: Option[Paikallinenkoodi] = None,
-    kuvaus: Option[String] = None,
+    koulutusmoduuli: OpsTutkinnonosa,
     @Description("Tutkinnon tai tutkinnon osan suoritustapa")
     @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
     suoritustapa: Option[Suoritustapa] = None,
@@ -139,10 +155,7 @@ trait Koulutusmoduulitoteutus
 
   @Description("Paikallinen tutkinnon osa")
   case class PaikallinenTutkinnonosatoteutus(
-    paikallinenKoodi: Paikallinenkoodi,
-    kuvaus: String,
-    @Description("Onko pakollinen osa tutkinnossa")
-    pakollinen: Boolean,
+    koulutusmoduuli: PaikallinenTutkinnonosa,
     @Description("Tutkinnon tai tutkinnon osan suoritustapa")
     @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
     suoritustapa: Option[Suoritustapa],
@@ -203,7 +216,7 @@ case class OppisopimuksellinenJärjestämismuoto(
 
 case class Hyväksiluku(
   @Description("Aiemman, korvaavan suorituksen kuvaus")
-  osaaminen: Koulutusmoduulitoteutus,
+  osaaminen: Koulutusmoduuli,
   @Description("Osaamisen tunnustamisen kautta saatavan tutkinnon osan suorituksen selite")
   @OksaUri("tmpOKSAID629", "osaamisen tunnustaminen")
   selite: Option[String]
