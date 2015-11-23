@@ -300,7 +300,7 @@ object TorOppijaExamples {
             )
           ))
         ),
-        hojks = Some(Hojks(hojksTehty = true)),
+        hojks = Some(Hojks(hojksTehty = true, opetusryhmä = Some(KoodistoKoodiViite("1", Some("Yleinen opetusryhmä"), "opetusryhmä", None)))),
         Some(KoodistoKoodiViite("tutkinto", Some("Tutkinto"), "tavoite", None)),
         Some(Läsnäolotiedot(List(
           Läsnäolojakso(date(2012, 9, 1), Some(date(2012, 12, 31)), KoodistoKoodiViite("lasna", Some("Läsnä"), "lasnaolotila", Some(1))),

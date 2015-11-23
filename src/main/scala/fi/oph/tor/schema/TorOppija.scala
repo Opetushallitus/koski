@@ -98,6 +98,7 @@ case class Suoritus(
 )
 
 trait Koulutusmoduuli
+  @Description("Tutkintoon johtava koulutus")
   case class TutkintoKoulutus(
     @Description("Tutkinnon 6-numeroinen tutkintokoodi")
     @KoodistoUri("koulutus")
@@ -107,6 +108,7 @@ trait Koulutusmoduuli
     perusteenDiaarinumero: Option[String]
   ) extends Koulutusmoduuli
 
+  @Description("Opetussuunnitelmaan kuuluva tutkinnon osa")
   case class OpsTutkinnonosa(
     @Description("Tutkinnon osan kansallinen koodi")
     @KoodistoUri("tutkinnonosat")
@@ -117,6 +119,7 @@ trait Koulutusmoduuli
     kuvaus: Option[String] = None
   ) extends Koulutusmoduuli
 
+  @Description("Paikallinen tutkinnon osa")
   case class PaikallinenTutkinnonosa(
     paikallinenKoodi: Paikallinenkoodi,
     kuvaus: String,
@@ -144,7 +147,7 @@ trait Koulutusmoduulitoteutus
     järjestämismuoto: Option[Järjestämismuoto]
   ) extends Koulutusmoduulitoteutus
 
-  @Description("Opetussunnitelmaan kuuluva tutkinnon osa")
+  @Description("Opetussuunnitelmaan kuuluva tutkinnon osa")
   case class OpsTutkinnonosatoteutus(
     koulutusmoduuli: OpsTutkinnonosa,
     @Description("Tutkinnon tai tutkinnon osan suoritustapa")
@@ -194,6 +197,7 @@ case class DefaultSuoritustapa(
 @Description("Suoritustapa näyttötietojen kanssa")
 case class NäytöllinenSuoritustapa(
   @KoodistoUri("suoritustapa")
+  //@KoodistoArvo("naytto")
   tunniste: KoodistoKoodiViite,
   näyttö: Näyttö
 ) extends Suoritustapa
@@ -266,7 +270,11 @@ case class KoodistoKoodiViite(
 
 @Description("Henkilökohtainen opetuksen järjestämistä koskeva suunnitelma, https://fi.wikipedia.org/wiki/HOJKS")
 @OksaUri("tmpOKSAID228", "erityisopiskelija")
-case class Hojks(hojksTehty: Boolean)
+case class Hojks(
+  hojksTehty: Boolean,
+  @KoodistoUri("opetusryhma")
+  opetusryhmä: Option[KoodistoKoodiViite]
+)
 
 @Description("Paikallinen, koulutustoimijan oma kooditus koulutukselle. Käytetään kansallisen koodiston puuttuessa")
 case class Paikallinenkoodi(
