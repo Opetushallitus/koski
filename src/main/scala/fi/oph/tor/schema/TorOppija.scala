@@ -94,6 +94,7 @@ case class Suoritus(
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: Organisaatio,
+  @Description("Arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota.")
   arviointi: Option[List[Arviointi]],
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[Suoritus]]
@@ -173,6 +174,7 @@ trait Koulutusmoduulitoteutus
 case class Arviointi(
   @Description("Arvosana. Kullekin arviointiasteikolle löytyy oma koodistonsa")
   arvosana: KoodistoKoodiViite,
+  @Description("Päivämäärä, jolloin arviointi on annettu")
   päivä: Option[LocalDate],
   @Description("Tutkinnon osan suorituksen arvioinnista päättäneen henkilön nimi")
   arvioitsijat: Option[List[Arvioitsija]] = None
@@ -202,6 +204,7 @@ case class NäytöllinenSuoritustapa(
   @KoodistoUri("suoritustapa")
   @KoodistoKoodiarvo("naytto")
   tunniste: KoodistoKoodiViite,
+  @Description("Suoritukseen liittyvän näytön tiedot")
   näyttö: Näyttö
 ) extends Suoritustapa
 
@@ -232,6 +235,7 @@ case class Hyväksiluku(
 
 @Description("Näytön kuvaus")
 case class Näyttö(
+  @Description("Vapaamuotoinen kuvaus suoritetusta näytöstä")
   kuvaus: String,
   suorituspaikka: String
 )
