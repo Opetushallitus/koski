@@ -72,6 +72,7 @@ case class OpiskeluOikeus(
   @Description("Opiskelijan suorituksen tavoite-tieto kertoo sen, suorittaako opiskelija tutkintotavoitteista koulutusta (koko tutkintoa) vai tutkinnon osa tavoitteista koulutusta (tutkinnon osaa)")
   @KoodistoUri("opintojentavoite")
   tavoite: Option[KoodistoKoodiViite],
+  opiskeluoikeudenTila: Option[OpiskeluoikeudenTila],
   läsnäolotiedot: Option[Läsnäolotiedot],
   @Description("Opintojen rahoitus")
   @KoodistoUri("opintojenrahoitus")
@@ -259,6 +260,18 @@ case class Läsnäolojakso(
   loppu: Option[LocalDate],
   @Description("Läsnäolotila (läsnä, poissa...)")
   @KoodistoUri("lasnaolotila")
+  tila: KoodistoKoodiViite
+)
+
+case class OpiskeluoikeudenTila(
+  opiskeluoikeusjaksot: List[Opiskeluoikeusjakso]
+)
+
+case class Opiskeluoikeusjakso(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  @Description("Opiskeluoikeuden tila (aktiivinen, päättynyt...)")
+  @KoodistoUri("opiskeluoikeudentila")
   tila: KoodistoKoodiViite
 )
 

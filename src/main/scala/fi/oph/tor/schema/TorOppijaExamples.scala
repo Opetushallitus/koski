@@ -1,15 +1,18 @@
 package fi.oph.tor.schema
 
-import java.time.LocalDate.{of => date}
+import java.time.LocalDate.{of => date, _}
 
 object TorOppijaExamples {
   private val näyttö = Näyttö("Toimi automekaanikkona kolarikorjauspuolella kaksi vuotta", "Autokorjaamo Oy, Riihimäki")
   private val suoritustapaNäyttö = KoodistoKoodiViite("naytto", Some("Näyttö"), "suoritustapa", Some(1))
-  private val suoritustapaOps = KoodistoKoodiViite("ops", Some("Opetussuunnitelmaperusteinen"), "suoritustavat", Some(1))
+  private val suoritustapaOps = KoodistoKoodiViite("ops", Some("Opetussuunnitelmaperusteinen"), "suoritustapa", Some(1))
   private val järjestämismuotoOppisopimus = KoodistoKoodiViite("20", Some("Oppisopimusmuotoinen"), "jarjestamismuoto", Some(1))
   private val järjestämismuotoOppilaitos = KoodistoKoodiViite("10", Some("Oppilaitosmuotoinen"), "jarjestamismuoto", Some(1))
   private val toimipiste: Organisaatio = Organisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))
   private val opintojenLaajuusYksikkö = KoodistoKoodiViite("6", Some("osaamispistettä"), "opintojenlaajuusyksikko", Some(1))
+  private val opiskeluoikeusAktiivinen = KoodistoKoodiViite("aktiivinen", Some("Aktiivinen"), "opiskeluoikeudentila", Some(1))
+  private val opiskeluoikeusPäättynyt = KoodistoKoodiViite("paattynyt", Some("Päättynyt"), "opiskeluoikeudentila", Some(1))
+  private val opiskeluoikeusKeskeyttänyt = KoodistoKoodiViite("keskeyttanyt", Some("Keskeyttänyt"), "opiskeluoikeudentila", Some(1))
   private val tutkinnonOsat = List(
     Suoritus(
       Some("suoritus-12345-1"),
@@ -177,6 +180,12 @@ object TorOppijaExamples {
         ),
         hojks = None,
         Some(KoodistoKoodiViite("tutkinto", Some("Tutkinto"), "opintojentavoite", None)),
+        Some(OpiskeluoikeudenTila(
+          List(
+            Opiskeluoikeusjakso(date(2012, 9, 1), Some(date(2016, 1, 9)), opiskeluoikeusAktiivinen),
+            Opiskeluoikeusjakso(date(2016, 1, 9), None, opiskeluoikeusPäättynyt)
+          )
+        )),
         None,
         Some(KoodistoKoodiViite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None))
       )
@@ -206,6 +215,11 @@ object TorOppijaExamples {
         ),
         hojks = None,
         None,
+        Some(OpiskeluoikeudenTila(
+          List(
+            Opiskeluoikeusjakso(date(2016, 9, 1), None, opiskeluoikeusAktiivinen)
+          )
+        )),
         None,
         None
       )
@@ -238,6 +252,11 @@ object TorOppijaExamples {
         ),
         hojks = None,
         None,
+        Some(OpiskeluoikeudenTila(
+          List(
+            Opiskeluoikeusjakso(date(2016, 9, 1), None, opiskeluoikeusAktiivinen)
+          )
+        )),
         None,
         None
       )
@@ -269,6 +288,7 @@ object TorOppijaExamples {
           toimipiste,
           None,
           None,
+
           Some(List(
             Suoritus(
               Some("suoritus-12345-1"),
@@ -297,8 +317,15 @@ object TorOppijaExamples {
             )
           ))
         ),
-        hojks = Some(Hojks(hojksTehty = true, opetusryhmä = Some(KoodistoKoodiViite("1", Some("Yleinen opetusryhmä"), "opetusryhmä", None)))),
+        hojks = Some(Hojks(hojksTehty = true, opetusryhmä = Some(KoodistoKoodiViite("1", Some("Yleinen opetusryhmä"), "opetusryhma", None)))),
         Some(KoodistoKoodiViite("tutkinto", Some("Tutkinto"), "opintojentavoite", None)),
+        Some(OpiskeluoikeudenTila(
+          List(
+            Opiskeluoikeusjakso(date(2012, 9, 1), Some(date(2012, 12, 31)), opiskeluoikeusAktiivinen),
+            Opiskeluoikeusjakso(date(2013, 1, 1), Some(date(2013, 12, 31)), opiskeluoikeusKeskeyttänyt),
+            Opiskeluoikeusjakso(date(2014, 1, 1), None, opiskeluoikeusAktiivinen)
+          )
+        )),
         Some(Läsnäolotiedot(List(
           Läsnäolojakso(date(2012, 9, 1), Some(date(2012, 12, 31)), KoodistoKoodiViite("lasna", Some("Läsnä"), "lasnaolotila", Some(1))),
           Läsnäolojakso(date(2013, 1, 1), Some(date(2013, 12, 31)), KoodistoKoodiViite("poissa", Some("Poissa"), "lasnaolotila", Some(1))),
