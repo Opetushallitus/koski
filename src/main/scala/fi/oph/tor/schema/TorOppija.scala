@@ -174,10 +174,8 @@ case class Arviointi(
   @Description("Arvosana. Kullekin arviointiasteikolle löytyy oma koodistonsa")
   arvosana: KoodistoKoodiViite,
   päivä: Option[LocalDate],
-  @Description("Onko kyseessä arvosanan korotus")
-  arvosananKorottaminen: Option[Boolean],
   @Description("Tutkinnon osan suorituksen arvioinnista päättäneen henkilön nimi")
-  arvioitsijat: Option[List[Arvioitsija]]
+  arvioitsijat: Option[List[Arvioitsija]] = None
 )
 
 case class Arvioitsija(
