@@ -62,9 +62,8 @@ object SchemaToJsonHtml {
       metadatas.flatMap {
         case Description(desc) => Some(<span class="description">{desc}</span>)
         case ReadOnly(desc) => Some(<span class="readonly">{desc}</span>)
-          // TODO: koodiston versio nyt fiksattu ykköseksi. Mites näytettäis viimeisin?
-        case KoodistoUri(koodistoNimi) =>Some(<span class="koodisto">Koodisto: <a href={"https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/codes/"+koodistoNimi+"/1"}>{koodistoNimi}</a></span>)
-        case (o @ OksaUri(tunnus, käsite)) => Some(<span class="oksa">Oksa: {o.asLink}</span>)
+        case k: KoodistoUri =>Some(<span class="koodisto">Koodisto: {k.asLink}</span>)
+        case o: OksaUri => Some(<span class="oksa">Oksa: {o.asLink}</span>)
         case _ => None
       }
     }

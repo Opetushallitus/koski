@@ -1,6 +1,5 @@
 package fi.oph.tor.arvosana
 
-import com.typesafe.config.Config
 import fi.oph.tor.koodisto.{KoodistoPalvelu, KoodistoViittaus}
 import fi.oph.tor.tutkinto.Koulutustyyppi.Koulutustyyppi
 
@@ -17,7 +16,7 @@ class ArviointiasteikkoRepository(koodistoPalvelu: KoodistoPalvelu) {
 }
 
 object ArviointiasteikkoRepository {
-  def apply(config: Config) = {
-    new ArviointiasteikkoRepository(KoodistoPalvelu(config))
+  def apply(koodistoPalvelu: KoodistoPalvelu) = {
+    new ArviointiasteikkoRepository(koodistoPalvelu)
   }
 }

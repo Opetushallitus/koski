@@ -2,8 +2,9 @@ package fi.oph.tor.schema
 
 import fi.oph.tor.ErrorHandlingServlet
 import fi.oph.tor.json.Json
+import fi.oph.tor.koodisto.{KoodistoPalvelu, KoodistoViittaus}
 
-class SchemaDocumentationServlet extends ErrorHandlingServlet {
+class SchemaDocumentationServlet(koodistoPalvelu: KoodistoPalvelu) extends ErrorHandlingServlet {
   get("/") {
     TorTiedonSiirtoHtml.html
   }
@@ -20,5 +21,10 @@ class SchemaDocumentationServlet extends ErrorHandlingServlet {
       case Some(example) => Json.write(example.oppija)
       case None => halt(404)
     }
+  }
+
+  get("/koodisto/:name/latest") {
+    contentType = "application/json"
+    Json.writePretty(koodistoPalvelu.getKoodistoKoodit(KoodistoViittaus(params("name"), koodistoPalvelu.getLatestVersion(params("name")))))
   }
 }

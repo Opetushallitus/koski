@@ -7,7 +7,7 @@ import org.json4s.JObject
 import scala.annotation.StaticAnnotation
 
 case class OksaUri(tunnus: String, käsite: String) extends StaticAnnotation with Metadata {
-  def asLink = <a href={baseUrl + tunnus}>{käsite}</a>
+  def asLink = <a href={baseUrl + tunnus} target="_blank">{käsite}</a>
 }
 
 object OksaUri extends MetadataSupport {
@@ -19,8 +19,8 @@ object OksaUri extends MetadataSupport {
       schemaType.appendMetadata(List(OksaUri(tunnus, käsite)))
   }
   override def appendMetadataToJsonSchema(obj: JObject, metadata: Metadata) = metadata match {
-    case (o @ OksaUri(tunnus, käsite)) =>
-      appendToDescription(obj, "\n(Oksa: " + o.asLink + ")")
+    case o: OksaUri =>
+      appendToDescription(obj, "(Oksa: " + o.asLink + ")")
     case _ => obj
   }
 }

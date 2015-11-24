@@ -14,4 +14,6 @@ class MockKoodistoPalvelu extends KoodistoPalvelu {
   override def getKoodisto(koodisto: KoodistoViittaus) = {
     Json.readFileIfExists("src/main/resources/mockdata/koodisto/koodistot/" + koodisto.koodistoUri + ".json").map(_.extract[Koodisto])
   }
+
+  override def getLatestVersion(koodisto: String): Int = 1
 }

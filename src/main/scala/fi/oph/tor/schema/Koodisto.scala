@@ -6,6 +6,7 @@ import org.json4s.JsonAST._
 import scala.annotation.StaticAnnotation
 
 case class KoodistoUri(koodistoUri: String) extends StaticAnnotation with Metadata {
+  def asLink = <a href={"/tor/documentation/koodisto/" + koodistoUri + "/latest"} target="_blank">{koodistoUri}</a>
 }
 
 object KoodistoUri extends MetadataSupport {
@@ -22,8 +23,8 @@ object KoodistoUri extends MetadataSupport {
   }
 
   override def appendMetadataToJsonSchema(obj: JObject, metadata: Metadata) = metadata match {
-    case KoodistoUri(koodistoUri) =>
-      appendToDescription(obj, "\n(Koodisto: " + koodistoUri + ")")
+    case k: KoodistoUri =>
+      appendToDescription(obj, "(Koodisto: " + k.asLink + ")")
     case _ => obj
   }
 }

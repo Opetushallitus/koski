@@ -16,4 +16,12 @@ class RemoteKoodistoPalvelu(koodistoRoot: String) extends KoodistoPalvelu {
   override def getKoodisto(koodisto: KoodistoViittaus) = {
     http(koodistoRoot + "/rest/codes/" + koodisto + noCache)(Http.parseJsonOptional[Koodisto])
   }
+
+  override def getLatestVersion(koodisto: String): Int = {
+    http(koodistoRoot + "/rest/codes/" + koodisto + noCache)(Http.parseJson[KoodistoWithLatestVersion]).latestKoodistoVersio.versio
+  }
 }
+
+case class KoodistoWithLatestVersion(latestKoodistoVersio: LatestVersion)
+case class LatestVersion(versio: Int)
+
