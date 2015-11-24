@@ -1,6 +1,5 @@
 package fi.oph.tor.schema
 import com.tristanhunt.knockoff.DefaultDiscounter._
-import fi.oph.tor.schema.generic.{ScalaJsonSchema, SchemaType, Property}
 
 object TorTiedonSiirtoHtml {
   def markdown =
@@ -33,7 +32,7 @@ JSON Schema:
           <div>
             <h3>{example.description} <small><a href={"/tor/documentation/examples/" + example.name + ".json"}>lataa JSON</a></small></h3>
             <table class="json">
-              {SchemaToJsonHtml.buildHtml(TorSchema.schema, TorSchema.schemaType, example.oppija)}
+              {SchemaToJsonHtml.buildHtml(TorSchema.schema, example.oppija)}
             </table>
           </div>
         }

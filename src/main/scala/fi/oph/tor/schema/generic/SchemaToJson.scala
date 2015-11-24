@@ -5,20 +5,20 @@ import org.json4s.Extraction
 import org.json4s.JsonAST._
 
 object SchemaToJson {
-  def toJsonSchema(t: SchemaType)(implicit ms: List[JsonMetadataSupport]): JValue = t match {
-    case DateType(enumValues) => JObject(List("type" -> JString("string"), "format" -> JString("date")) ++ toEnumValueProperty(enumValues))
-    case StringType(enumValues) => simpleObjectToJson("string", enumValues)
-    case BooleanType(enumValues) => simpleObjectToJson("boolean", enumValues)
-    case NumberType(enumValues) => simpleObjectToJson("number", enumValues)
-    case ListType(x) => JObject(("type") -> JString("array"), (("items" -> toJsonSchema(x))))
-    case OptionalType(x) => toJsonSchema(x)
-    case t: ClassTypeRef => appendMetadata(
+  def toJsonSchema(t: Schema)(implicit ms: List[JsonMetadataSupport]): JValue = t match {
+    case DateSchema(enumValues) => JObject(List("type" -> JString("string"), "format" -> JString("date")) ++ toEnumValueProperty(enumValues))
+    case StringSchema(enumValues) => simpleObjectToJson("string", enumValues)
+    case BooleanSchema(enumValues) => simpleObjectToJson("boolean", enumValues)
+    case NumberSchema(enumValues) => simpleObjectToJson("number", enumValues)
+    case ListSchema(x) => JObject(("type") -> JString("array"), (("items" -> toJsonSchema(x))))
+    case OptionalSchema(x) => toJsonSchema(x)
+    case t: ClassRefSchema => appendMetadata(
       JObject(
         ("$ref" -> JString("#/definitions/" + t.simpleName))
       ),
       t.metadata
     )
-    case t: ClassType => appendMetadata(
+    case t: ClassSchema => appendMetadata(
       JObject(List(
         ("type" -> JString("object")),
         ("properties" -> toJsonProperties(t.properties)),
@@ -29,7 +29,7 @@ object SchemaToJson {
       ),
       t.metadata
     )
-    case OneOf(types) => JObject(("oneOf" -> JArray(types.map(toJsonSchema(_)))))
+    case OneOfSchema(alternatives, _) => JObject(("oneOf" -> JArray(alternatives.map(toJsonSchema(_)))))
   }
 
   def simpleObjectToJson(tyep: String, enumValues: Option[List[Any]]) = {
@@ -50,14 +50,17 @@ object SchemaToJson {
     )
   }
   private def toRequiredProperties(properties: List[Property]): Option[(String, JValue)] = {
-    val requiredProperties = properties.toList.filter(!_.tyep.isInstanceOf[OptionalType])
+    val requiredProperties = properties.toList.filter(!_.tyep.isInstanceOf[OptionalSchema])
     requiredProperties match {
       case Nil => None
       case _ => Some("required", JArray(requiredProperties.map{property => JString(property.key)}))
     }
   }
 
-  private def toDefinitionProperty(definitions: List[ClassType])(implicit ms: List[JsonMetadataSupport]): Option[(String, JValue)] = definitions match {
+  private def toDefinitionProperty(definitions: List[SchemaWithClassName])(implicit ms: List[JsonMetadataSupport]): Option[(String, JValue)] = definitions.flatMap {
+    case x: ClassSchema => List(x)
+    case _ => Nil
+  } match {
     case Nil => None
     case xs =>
       Some("definitions", JObject(definitions.map(definition => (definition.simpleName, toJsonSchema(definition)))))

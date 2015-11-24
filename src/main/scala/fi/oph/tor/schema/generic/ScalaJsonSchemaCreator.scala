@@ -4,31 +4,29 @@ import org.reflections.Reflections
 
 import scala.reflect.runtime.{universe => ru}
 
-class ScalaJsonSchema(val annotationsSupported: List[AnnotationSupport]) {
-  case class ScanState(root: Boolean = true, foundTypes: collection.mutable.Set[String] = collection.mutable.Set.empty, createdTypes: collection.mutable.Set[ClassType] = collection.mutable.Set.empty) {
+class ScalaJsonSchemaCreator(annotationsSupported: List[AnnotationSupport]) {
+  def createSchema(className: String): ClassSchema = {
+    createClassSchema(reflect.runtime.currentMirror.classSymbol(Class.forName(className)).toType, ScanState()).asInstanceOf[ClassSchema]
+  }
+
+  case class ScanState(root: Boolean = true, foundTypes: collection.mutable.Set[String] = collection.mutable.Set.empty, createdTypes: collection.mutable.Set[SchemaWithClassName] = collection.mutable.Set.empty) {
     def childState = copy(root = false)
   }
 
-  def createSchemaType(className: String): ClassType = {
-    createClassSchema(reflect.runtime.currentMirror.classSymbol(Class.forName(className)).toType, ScanState()).asInstanceOf[ClassType]
-  }
-
-  def createSchemaType(obj: AnyRef): ClassType = createSchemaType(obj.getClass.getName)
-
-  private def createSchemaType(tpe: ru.Type, state: ScanState): SchemaType = {
+  private def createSchema(tpe: ru.Type, state: ScanState): Schema = {
     val typeName = tpe.typeSymbol.fullName
 
     if (typeName == "scala.Option") {
       // Option[T] becomes the schema of T with required set to false
-      OptionalType(createSchemaType(tpe.asInstanceOf[ru.TypeRefApi].args.head, state))
+      OptionalSchema(createSchema(tpe.asInstanceOf[ru.TypeRefApi].args.head, state))
     } else if (isListType(tpe)) {
       // (Traversable)[T] becomes a schema with items set to the schema of T
-      ListType(createSchemaType(tpe.asInstanceOf[ru.TypeRefApi].args.head, state))
+      ListSchema(createSchema(tpe.asInstanceOf[ru.TypeRefApi].args.head, state))
     } else {
       schemaTypeForScala.getOrElse(typeName, {
         if (tpe.typeSymbol.isClass) {
           if (tpe.typeSymbol.isAbstract) {
-            OneOf(findImplementations(tpe, state))
+            addToState(OneOfSchema(findImplementations(tpe, state), typeName), state)
           } else {
             createClassSchema(tpe, state)
           }
@@ -40,35 +38,41 @@ class ScalaJsonSchema(val annotationsSupported: List[AnnotationSupport]) {
   }
 
   private lazy val schemaTypeForScala = Map(
-    "org.joda.time.DateTime" -> DateType(),
-    "java.util.Date" -> DateType(),
-    "java.time.LocalDate" -> DateType(),
-    "java.lang.String" -> StringType(),
-    "scala.Boolean" -> BooleanType(),
-    "scala.Int" -> NumberType(),
-    "scala.Long" -> NumberType(),
-    "scala.Double" -> NumberType(),
-    "scala.Float" -> NumberType()
+    "org.joda.time.DateTime" -> DateSchema(),
+    "java.util.Date" -> DateSchema(),
+    "java.time.LocalDate" -> DateSchema(),
+    "java.lang.String" -> StringSchema(),
+    "scala.Boolean" -> BooleanSchema(),
+    "scala.Int" -> NumberSchema(),
+    "scala.Long" -> NumberSchema(),
+    "scala.Double" -> NumberSchema(),
+    "scala.Float" -> NumberSchema()
   )
+
+  def addToState(tyep: SchemaWithClassName, state: ScanState) = {
+    state.createdTypes.add(tyep)
+    tyep
+  }
 
   private def createClassSchema(tpe: ru.Type, state: ScanState) = {
     val className: String = tpe.typeSymbol.fullName
-    def ref: ClassTypeRef = applyAnnotations(tpe.typeSymbol, ClassTypeRef(className, Nil))
+    def ref: ClassRefSchema = applyAnnotations(tpe.typeSymbol, ClassRefSchema(className, Nil))
     if (!state.foundTypes.contains(className)) {
       state.foundTypes.add(className)
 
-      val params = tpe.typeSymbol.asClass.primaryConstructor.typeSignature.paramLists.head
+      val params: List[ru.Symbol] = tpe.typeSymbol.asClass.primaryConstructor.typeSignature.paramLists.headOption.getOrElse(Nil)
       val properties: List[Property] = params.map{ paramSymbol =>
         val term = paramSymbol.asTerm
-        val termType = createSchemaType(term.typeSignature, state.childState)
+        val termType = createSchema(term.typeSignature, state.childState)
         val termName: String = term.name.decoded.trim
         applyAnnotations(term, Property(termName, termType, Nil))
       }.toList
 
       if (state.root) {
-        applyAnnotations(tpe.typeSymbol, ClassType(className, properties, Nil, state.createdTypes.toList.sortBy(_.simpleName)))
+        val classTypeDefinitions = state.createdTypes.toList
+        applyAnnotations(tpe.typeSymbol, ClassSchema(className, properties, Nil, classTypeDefinitions.sortBy(_.simpleName)))
       } else {
-        state.createdTypes.add(applyAnnotations(tpe.typeSymbol, ClassType(className, properties, Nil)))
+        addToState(applyAnnotations(tpe.typeSymbol, ClassSchema(className, properties, Nil)), state)
         ref
       }
     } else {
@@ -78,7 +82,7 @@ class ScalaJsonSchema(val annotationsSupported: List[AnnotationSupport]) {
 
   private def applyAnnotations[T <: ObjectWithMetadata[T]](symbol: ru.Symbol, x: T): T = {
     symbol.annotations.flatMap(annotation => annotationsSupported.map((annotation, _))).foldLeft(x) { case (current, (annotation, metadataSupport)) =>
-      val f: PartialFunction[(String, List[String], ObjectWithMetadata[_], ScalaJsonSchema), ObjectWithMetadata[_]] = metadataSupport.applyAnnotations orElse { case (_, _, obj, _) => obj }
+      val f: PartialFunction[(String, List[String], ObjectWithMetadata[_], ScalaJsonSchemaCreator), ObjectWithMetadata[_]] = metadataSupport.applyAnnotations orElse { case (_, _, obj, _) => obj }
 
       val annotationParams: List[String] = annotation.tree.children.tail.map(_.toString.replaceAll("\"$|^\"", "").replace("\\\"", "\"").replace("\\'", "'"))
       val annotationType: String = annotation.tree.tpe.toString
@@ -96,12 +100,12 @@ class ScalaJsonSchema(val annotationsSupported: List[AnnotationSupport]) {
       s.fullName == "scala.Vector")
   }
 
-  private def findImplementations(tpe: ru.Type, state: ScanState): List[TypeWithClassName] = {
+  private def findImplementations(tpe: ru.Type, state: ScanState): List[SchemaWithClassName] = {
     val implementationClasses = TraitImplementationFinder.findTraitImplementations(tpe)
 
     import reflect.runtime.currentMirror
     implementationClasses.toList.map { klass =>
-      createSchemaType(currentMirror.classSymbol(klass).toType, state).asInstanceOf[TypeWithClassName]
+      createSchema(currentMirror.classSymbol(klass).toType, state).asInstanceOf[SchemaWithClassName]
     }
   }
 }

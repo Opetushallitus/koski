@@ -6,33 +6,40 @@ import fi.oph.tor.schema.generic.annotation.{ReadOnly, Description}
 import scala.xml.Elem
 
 object SchemaToJsonHtml {
-  def buildHtml(schema: ScalaJsonSchema, schemaType: SchemaType, exampleData: AnyRef): List[Elem] = {
-    SchemaToJsonHtml.buildHtml(Property("", schemaType, Nil), exampleData, schema, NodeContext("0", None))
+  def buildHtml(schema: ClassSchema, exampleData: AnyRef): List[Elem] = {
+    SchemaToJsonHtml.buildHtml(Property("", schema, Nil), exampleData, schema, NodeContext("0", None))
   }
 
-  private def buildHtml(property: Property, obj: Any, schema: ScalaJsonSchema, context: NodeContext): List[Elem] = (obj, property.tyep) match {
-    case (o: AnyRef, t:ClassType) => buildHtmlForObject(property, o, schema, context)
-    case (xs: Iterable[_], t:ListType) => buildHtmlForArray(property, xs, schema, context)
-    case (x: Number, t:NumberType) => buildValueHtml(property, x, context)
-    case (x: Boolean, t:BooleanType) => buildValueHtmlString(property, x.toString, context)
-    case (x: AnyRef, t:DateType) => buildValueHtml(property, x, context)
-    case (x: String, t:StringType) => buildValueHtml(property, x, context)
-    case (x: Option[_], t:OptionalType) => buildHtml(property.copy(tyep = t.itemType), x.get, schema, context)
-    case (x: AnyRef, t:OneOf) => buildHtml(property.copy(tyep = t.matchType(x)), x, schema, context)
-    case (x: AnyRef, t:ClassTypeRef) => buildHtml(property.copy(tyep = schema.createSchemaType(t.fullClassName)), x , schema, context)
+  private def buildHtml(property: Property, obj: Any, schema: ClassSchema, context: NodeContext): List[Elem] = (obj, property.tyep) match {
+    case (o: AnyRef, t:ClassSchema) => buildHtmlForObject(property, o, schema, context)
+    case (xs: Iterable[_], t:ListSchema) => buildHtmlForArray(property, xs, schema, context)
+    case (x: Number, t:NumberSchema) => buildValueHtml(property, x, context)
+    case (x: Boolean, t:BooleanSchema) => buildValueHtmlString(property, x.toString, context)
+    case (x: AnyRef, t:DateSchema) => buildValueHtml(property, x, context)
+    case (x: String, t:StringSchema) => buildValueHtml(property, x, context)
+    case (x: Option[_], t:OptionalSchema) => buildHtml(property.copy(tyep = t.itemSchema), x.get, schema, context)
+    case (x: AnyRef, t:OneOfSchema) => buildHtml(property.copy(tyep = findOneOfSchema(t, x)), x, schema, context)
+    case (x: AnyRef, t:ClassRefSchema) => buildHtml(property.copy(tyep = schema.getSchema(t.fullClassName).get), x , schema, context)
     case _ => throw new RuntimeException
   }
+
+  private def findOneOfSchema(t: OneOfSchema, obj: AnyRef): Schema = {
+    t.alternatives.find { classType =>
+      classType.fullClassName == obj.getClass.getName
+    }.get
+  }
+
 
   private def keyHtml(key: String) = key match {
     case ""          => ""
     case key         => <span class="key">{key}: </span>
   }
 
-  private def buildHtmlForObject(property: Property, obj: AnyRef, schema: ScalaJsonSchema, context: NodeContext): List[Elem] = {
+  private def buildHtmlForObject(property: Property, obj: AnyRef, schema: ClassSchema, context: NodeContext): List[Elem] = {
     val propertyElems: List[Elem] = {
-      val classType: ClassType = property.tyep.asInstanceOf[ClassType]
-      val propertiesWithValue: List[(Int, Property, AnyRef)] = classType.properties.zipWithIndex.flatMap { case (property: Property, index: Int) =>
-        val value = classType.getPropertyValue(property, obj)
+      val classSchema: ClassSchema = property.tyep.asInstanceOf[ClassSchema]
+      val propertiesWithValue: List[(Int, Property, AnyRef)] = classSchema.properties.zipWithIndex.flatMap { case (property: Property, index: Int) =>
+        val value = classSchema.getPropertyValue(property, obj)
         value match {
           case None => None
           case x => Some((index, property, x))
@@ -47,9 +54,9 @@ object SchemaToJsonHtml {
     List(tr(<span><span class="collapsible"></span>{keyHtml(property.key)}{{</span>, property.metadata ++ property.tyep.metadata, context)) ++ propertyElems ++ List(tr(<span>{"}"}</span>, Nil, context))
   }
 
-  private def buildHtmlForArray(property: Property, xs: Iterable[_], schema: ScalaJsonSchema, context: NodeContext): List[Elem] = {
+  private def buildHtmlForArray(property: Property, xs: Iterable[_], schema: ClassSchema, context: NodeContext): List[Elem] = {
     val propertyElems: List[Elem] = xs.flatMap { item =>
-        buildHtml(Property("", property.tyep.asInstanceOf[ListType].itemType, Nil), item, schema, context.child)
+        buildHtml(Property("", property.tyep.asInstanceOf[ListSchema].itemSchema, Nil), item, schema, context.child)
       }.toList
 
     List(tr(<span><span class="collapsible"></span>{keyHtml(property.key)}[</span>, property.metadata, context)) ++ propertyElems ++ List(tr(<span>{"]"}</span>, Nil, context))
