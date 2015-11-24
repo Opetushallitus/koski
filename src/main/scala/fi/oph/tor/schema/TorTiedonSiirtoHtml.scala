@@ -34,6 +34,8 @@ Tietokentät, joissa validit arvot on lueteltavissa, on kooditettu käyttäen hy
 
 ## Esimerkkidata annotoituna
 
+Alla jotain esimerkkejä valideista viesteistä.
+
 """
 
   def html = {
