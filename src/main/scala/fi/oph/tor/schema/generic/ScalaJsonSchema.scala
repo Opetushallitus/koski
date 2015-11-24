@@ -47,7 +47,8 @@ class ScalaJsonSchema(val annotationsSupported: List[AnnotationSupport]) {
     "scala.Boolean" -> BooleanType(),
     "scala.Int" -> NumberType(),
     "scala.Long" -> NumberType(),
-    "scala.Double" -> NumberType()
+    "scala.Double" -> NumberType(),
+    "scala.Float" -> NumberType()
   )
 
   private def createClassSchema(tpe: ru.Type, state: ScanState) = {

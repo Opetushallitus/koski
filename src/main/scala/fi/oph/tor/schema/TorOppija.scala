@@ -115,6 +115,7 @@ trait Koulutusmoduuli
     tutkinnonosakoodi: KoodistoKoodiViite,
     @Description("Onko pakollinen osa tutkinnossa")
     pakollinen: Boolean,
+    laajuus: Laajuus,
     paikallinenKoodi: Option[Paikallinenkoodi] = None,
     kuvaus: Option[String] = None
   ) extends Koulutusmoduuli
@@ -122,9 +123,11 @@ trait Koulutusmoduuli
   @Description("Paikallinen tutkinnon osa")
   case class PaikallinenTutkinnonosa(
     paikallinenKoodi: Paikallinenkoodi,
+    nimi: String,
     kuvaus: String,
     @Description("Onko pakollinen osa tutkinnossa")
-    pakollinen: Boolean
+    pakollinen: Boolean,
+    laajuus: Laajuus
   ) extends Koulutusmoduuli
 
 trait Koulutusmoduulitoteutus
@@ -293,4 +296,13 @@ case class Organisaatio(
   @Description("Organisaation (kielistetty) nimi")
   @ReadOnly("Tiedon syötössä nimeä ei tarvita; kuvaus haetaan Organisaatiopalvelusta")
   nimi: Option[String] = None
+)
+
+@Description("Tutkinnon tai tutkinnon osan laajuus. Koostuu opintojen laajuuden arvosta ja yksiköstä")
+case class Laajuus(
+  @Description("Opintojen laajuuden arvo")
+  arvo: Float,
+  @Description("Opintojen laajuuden yksikkö")
+  @KoodistoUri("opintojenlaajuusyksikko")
+  yksikkö: KoodistoKoodiViite
 )
