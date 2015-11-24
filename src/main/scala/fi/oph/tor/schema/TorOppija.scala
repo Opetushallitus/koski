@@ -197,7 +197,7 @@ case class DefaultSuoritustapa(
 @Description("Suoritustapa näyttötietojen kanssa")
 case class NäytöllinenSuoritustapa(
   @KoodistoUri("suoritustapa")
-  //@KoodistoArvo("naytto")
+  @KoodistoKoodiarvo("naytto")
   tunniste: KoodistoKoodiViite,
   näyttö: Näyttö
 ) extends Suoritustapa
@@ -214,6 +214,7 @@ case class DefaultJärjestämismuoto(
 
 case class OppisopimuksellinenJärjestämismuoto(
   @KoodistoUri("jarjestamismuoto")
+  @KoodistoKoodiarvo("20")
   tunniste: KoodistoKoodiViite,
   oppisopimus: Oppisopimus
 ) extends Järjestämismuoto
