@@ -4,7 +4,7 @@ import org.reflections.Reflections
 
 import scala.reflect.runtime.{universe => ru}
 
-class ScalaJsonSchemaCreator(annotationsSupported: List[AnnotationSupport]) {
+case class SchemaFactory(annotationsSupported: List[AnnotationSupport]) {
   def createSchema(className: String): ClassSchema = {
     createClassSchema(reflect.runtime.currentMirror.classSymbol(Class.forName(className)).toType, ScanState()).asInstanceOf[ClassSchema]
   }
@@ -82,7 +82,7 @@ class ScalaJsonSchemaCreator(annotationsSupported: List[AnnotationSupport]) {
 
   private def applyAnnotations[T <: ObjectWithMetadata[T]](symbol: ru.Symbol, x: T): T = {
     symbol.annotations.flatMap(annotation => annotationsSupported.map((annotation, _))).foldLeft(x) { case (current, (annotation, metadataSupport)) =>
-      val f: PartialFunction[(String, List[String], ObjectWithMetadata[_], ScalaJsonSchemaCreator), ObjectWithMetadata[_]] = metadataSupport.applyAnnotations orElse { case (_, _, obj, _) => obj }
+      val f: PartialFunction[(String, List[String], ObjectWithMetadata[_], SchemaFactory), ObjectWithMetadata[_]] = metadataSupport.applyAnnotations orElse { case (_, _, obj, _) => obj }
 
       val annotationParams: List[String] = annotation.tree.children.tail.map(_.toString.replaceAll("\"$|^\"", "").replace("\\\"", "\"").replace("\\'", "'"))
       val annotationType: String = annotation.tree.tpe.toString

@@ -10,7 +10,7 @@ case class KoodistoUri(koodistoUri: String) extends StaticAnnotation with Metada
 }
 
 object KoodistoUri extends MetadataSupport {
-  override val applyAnnotations: PartialFunction[(String, List[String], ObjectWithMetadata[_], ScalaJsonSchemaCreator), ObjectWithMetadata[_]] = {
+  override val applyAnnotations: PartialFunction[(String, List[String], ObjectWithMetadata[_], SchemaFactory), ObjectWithMetadata[_]] = {
     case (annotationClass, params, property: Property, schema) if (annotationClass == classOf[KoodistoUri].getName) =>
       val koodistoUri = KoodistoUri(params.mkString(" "))
       val koodistoViiteSchema: ClassSchema = schema.createSchema(classOf[KoodistoKoodiViite].getName)

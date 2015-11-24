@@ -16,7 +16,7 @@ trait MetadataSupport extends AnnotationSupport with JsonMetadataSupport {
 }
 
 trait AnnotationSupport {
-  val applyAnnotations: PartialFunction[(String, List[String], ObjectWithMetadata[_], ScalaJsonSchemaCreator), ObjectWithMetadata[_]]
+  val applyAnnotations: PartialFunction[(String, List[String], ObjectWithMetadata[_], SchemaFactory), ObjectWithMetadata[_]]
 }
 
 trait JsonMetadataSupport {
