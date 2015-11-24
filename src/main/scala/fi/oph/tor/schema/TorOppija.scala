@@ -15,7 +15,7 @@ sealed trait Henkilö {}
 
 @Description("Täydet henkilötiedot. Tietoja haettaessa TOR:sta saadaan aina täydet henkilötiedot.")
 case class FullHenkilö(
-  @Description("Yksilöivä tunniste Opintopolku-palvelussa")
+  @Description("Yksilöivä tunniste (oppijanumero) Opintopolku-palvelussa")
   @OksaUri("tmpOKSAID760", "oppijanumero")
   oid: String,
   @Description("Suomalainen henkilötunnus")
@@ -24,10 +24,11 @@ case class FullHenkilö(
   etunimet:String,
   @Description("Kutsumanimi, oltava yksi etunimistä. Esimerkiksi etunimille \"Juha-Matti Petteri\" kelpaavat joko \"Juha-Matti\", \"Juha\", \"Matti\" tai \"Petteri\"")
   kutsumanimi: String,
+  @Description("Henkilön sukunimi. Henkilön sukunimen etuliite tulee osana sukunimeä")
   sukunimi: String
 ) extends Henkilö
 
-@Description("Henkilö, jonka oid ei ole tiedossa. Tietoja syötettäessä luodaan mahdollisesti uusi henkilö Henkilöpalveluun")
+@Description("Henkilö, jonka oppijanumero ei ole tiedossa. Tietoja syötettäessä luodaan mahdollisesti uusi henkilö Henkilöpalveluun, jolloin henkilölle muodostuu oppijanumero")
 case class NewHenkilö(
   @Description("Suomalainen henkilötunnus")
   hetu: String,
@@ -35,12 +36,13 @@ case class NewHenkilö(
   etunimet:String,
   @Description("Kutsumanimi, oltava yksi etunimistä. Esimerkiksi etunimille \"Juha-Matti Petteri\" kelpaavat joko \"Juha-Matti\", \"Juha\", \"Matti\" tai \"Petteri\"")
   kutsumanimi: String,
+  @Description("Henkilön sukunimi. Henkilön sukunimen etuliite tulee osana sukunimeä")
   sukunimi: String
 ) extends Henkilö
 
 @Description("Henkilö, jonka oid on tiedossa. Tietoja syötettäessä henkilö haetaan henkilöpalvelusta.")
 case class OidHenkilö(
-  @Description("Yksilöivä tunniste Opintopolku-palvelussa")
+  @Description("Yksilöivä tunniste (oppijanumero) Opintopolku-palvelussa")
   @OksaUri("tmpOKSAID760", "oppijanumero")
   oid: String
 ) extends Henkilö
