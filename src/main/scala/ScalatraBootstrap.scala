@@ -6,7 +6,7 @@ import fi.oph.tor.db._
 import fi.oph.tor.fixture.{Fixtures, FixtureServlet}
 import fi.oph.tor.oppija.OppijaServlet
 import fi.oph.tor.oppilaitos.OppilaitosServlet
-import fi.oph.tor.schema.SchemaDocumentationServlet
+import fi.oph.tor.schema.{SchemaTestServlet, SchemaDocumentationServlet}
 import fi.oph.tor.tor.TodennetunOsaamisenRekisteri
 import fi.oph.tor.tutkinto.TutkintoServlet
 import fi.oph.tor.user.{UserRepository, UserServlet}
@@ -27,6 +27,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     context.mount(new TutkintoServlet(application.tutkintoRepository, application.arviointiAsteikot), "/api/tutkinto")
     context.mount(new SingleFileServlet("web/static/index.html"), "/")
     context.mount(new SchemaDocumentationServlet(application.koodistoPalvelu), "/documentation")
+    context.mount(new SchemaTestServlet, "/schematest")
     if (Fixtures.shouldUseFixtures(application.config)) {
       context.mount(new FixtureServlet(application), "/fixtures")
     }
