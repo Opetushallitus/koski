@@ -10,12 +10,11 @@ import fi.oph.tor.ErrorHandlingServlet
 
 import scala.collection.JavaConversions._
 
-class SchemaTestServlet extends ErrorHandlingServlet {
-
+trait SchemaTestServlet extends ErrorHandlingServlet {
   private val schema = JsonSchemaFactory.byDefault.getJsonSchema(JsonLoader.fromString(TorSchema.schemaJsonString))
   private val mapper = new ObjectMapper().enable(INDENT_OUTPUT)
 
-  put("/dev/null") {
+  put("/") {
     val report = schema.validate(JsonLoader.fromString(request.body))
 
     if(!report.isSuccess) {
