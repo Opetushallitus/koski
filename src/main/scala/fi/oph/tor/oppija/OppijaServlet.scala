@@ -6,9 +6,10 @@ import fi.oph.tor.security.RequiresAuthentication
 import fi.oph.tor.tor.{TodennetunOsaamisenRekisteri, TorOppija}
 import fi.oph.tor.user.UserRepository
 import fi.oph.tor.{ErrorHandlingServlet, InvalidRequestException}
+import fi.vm.sade.security.ldap.DirectoryClient
 import fi.vm.sade.utils.slf4j.Logging
 
-class OppijaServlet(rekisteri: TodennetunOsaamisenRekisteri)(implicit val userRepository: UserRepository) extends ErrorHandlingServlet with SchemaTestServlet with Logging with RequiresAuthentication {
+class OppijaServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: UserRepository, val directoryClient: DirectoryClient) extends ErrorHandlingServlet with SchemaTestServlet with Logging with RequiresAuthentication {
 
   get("/") {
     contentType = "application/json;charset=utf-8"
