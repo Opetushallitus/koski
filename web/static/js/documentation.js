@@ -45,7 +45,9 @@ forEach(document.querySelectorAll('.api-tester'), function(elem) {
       .then(function(response) {
         var resultElem = elem.querySelector(".result");
         response.text().then(function(text, err) {
-          if (text) {
+          if (response.status == 401) {
+            resultElem.innerHTML = response.status + " " + response.statusText + ' <a href="/tor" target="_new">Login</a>'
+          } else if (text) {
             resultElem.innerHTML = response.status + " " + response.statusText + "<pre>" + text + "</pre>"
           } else {
             resultElem.innerHTML = response.status + " " + response.statusText
