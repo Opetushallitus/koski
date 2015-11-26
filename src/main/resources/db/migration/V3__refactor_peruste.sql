@@ -1,1 +1,1 @@
-alter table opiskeluoikeus drop constraint validate_peruste;
+alter table opintooikeus drop constraint validate_peruste;

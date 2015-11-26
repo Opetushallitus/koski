@@ -1,4 +1,4 @@
-create table opiskeluoikeus (
+create table opintooikeus (
     id serial,
     data jsonb,
     primary key (id),
@@ -10,4 +10,4 @@ create table opiskeluoikeus (
         CHECK (length(data->>'oppilaitosOrganisaatio') > 0  AND (data->>'oppilaitosOrganisaatio') IS NOT NULL )
 );
 
-CREATE UNIQUE INDEX opinto_oikeus_unique_idx ON opiskeluoikeus((data->>'oppijaOid'), (data->>'ePerusteetDiaarinumero'), (data->>'oppilaitosOrganisaatio'));
+CREATE UNIQUE INDEX opinto_oikeus_unique_idx ON opintooikeus((data->>'oppijaOid'), (data->>'ePerusteetDiaarinumero'), (data->>'oppilaitosOrganisaatio'));
