@@ -22,45 +22,6 @@ Muutama perusasia tullee kuitenkin säilymään:
 - Järjestelmä tarjoaa REST-tyyppisen tiedonsiirtorajapinnan, jossa dataformaattina on JSON
 - Samaa tiedonsiirtoprotokollaa ja dataformaattia pyritään soveltuvilta osin käyttämään sekä käyttöliittymille, jotka näyttävät tietoa loppukäyttäjille, että järjestelmien väliseen kommunikaatioon
 
-## REST-rajapinnat
-
-### PUT /tor/api/oppija
-
-Lisää/päivittää oppijan ja opiskeluoikeuksia.
-
-Käytetään alla tarkemmin kuvattua JSON-dataformaattia, jossa on seuraava rakenne:
-
-```json
-{
-  "henkilö" : {
-    "hetu" : "010101-123N",
-    "etunimet" : "matti pekka",
-    "kutsumanimi" : "matti",
-    "sukunimi" : "virtanen"
-  },
-  "opiskeluoikeudet" : [ {
-    "paikallinenId" : "847823465",
-    "alkamispäivä" : "2016-09-01",
-    ...
-  }]
-}
-```
-
-Edellyttää HTTP Basic Authentication -tunnistautumisen, eli käytännössä `Authorization`-headerin HTTP-pyyntöön.
-
-Kokeile rajapintaa curlilla:
-
-     curl -v -H 'Content-Type: application/json' --user username:password -X PUT  -d '{"henkilö": {"oid":"123"}, "opiskeluoikeudet": []}' http://tordev.tor.oph.reaktor.fi/tor/api/oppija
-
-Muista korvata username ja password oikealla käyttäjätunnuksella ja salasanalla.
-
-Rajapinta palauttaa
-
-- 401 UNAUTHORIZED jos käyttäjä ei ole tunnistautunut
-- 403 FORBIDDEN jos käyttäjällä ei ole tarvittavia oikeuksia tiedon päivittämiseen
-- 400 BAD REQUEST jos syöte ei ole validi
-- 200 OK jos lisäys/päivitys onnistuu
-
 ## JSON-dataformaatti
 
 Käytettävästä JSON-formaatista on laadittu työversio, jonka toivotaan vastaavan ammatillisen koulutuksen tarpeisiin.
