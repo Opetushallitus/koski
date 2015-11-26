@@ -67,3 +67,7 @@ span.indent:after {
     min-width: 500px;
     background: #dddddd;
 }
+
+.api-tester .examples {
+    margin-bottom: 10px;
+}

@@ -6,9 +6,9 @@ import org.scalatest.{FreeSpec, Matchers}
 class SerializationSpec extends FreeSpec with Matchers {
   "Serialization / deserialization" - {
     TorOppijaExamples.examples.foreach { example =>
-      val jsonString = Json.write(example.oppija)
+      val jsonString = Json.write(example.data)
       val oppija = Json.read[TorOppija](jsonString)
-      oppija should(equal(example.oppija))
+      oppija should(equal(example.data))
     }
   }
 }

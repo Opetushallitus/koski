@@ -35,6 +35,10 @@ forEach(document.querySelectorAll('.json-row .collapsible'), function(node) {
 )
 
 forEach(document.querySelectorAll('.api-tester'), function(elem) {
+  elem.querySelector(".examples select").addEventListener("change", function(a,b,c) {
+    var data = event.target.options[event.target.selectedIndex].dataset.exampledata
+    elem.querySelector("textarea").value=data
+  })
   elem.querySelector(".try").addEventListener('click', function() {
     var data = elem.querySelector("textarea").value;
     fetch(document.location.protocol + "//" + document.location.host + elem.dataset.path, { credentials: 'include', method: elem.dataset.method, body: data, headers: { 'Content-Type': 'application/json'} })

@@ -344,4 +344,4 @@ object TorOppijaExamples {
 
 }
 
-case class Example(name: String, description: String, oppija: TorOppija)
+case class Example(name: String, description: String, data: TorOppija)

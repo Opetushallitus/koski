@@ -103,7 +103,12 @@ Scalaa osaaville ehkä nopein tapa tutkia tietomallia on kuitenkin sen lähdekoo
               </ul>
               <p>Kokeile heti!</p>
               <div class="api-tester" data-method={operation.method} data-path={operation.path}>
-                <textarea cols="80" rows="50">{Json.writePretty(operation.examples(0))}</textarea>
+                <div class="examples"><label>Esimerkkejä<select>
+                  {operation.examples.map { example =>
+                    <option data-exampledata={Json.writePretty(example.data)}>{example.name}</option>
+                  }}
+                </select></label></div>
+                <textarea cols="80" rows="50">{Json.writePretty(operation.examples(0).data)}</textarea>
                 <div class="buttons">
                   <button class="try">Kokeile</button>
                 </div>
@@ -121,7 +126,7 @@ Scalaa osaaville ehkä nopein tapa tutkia tietomallia on kuitenkin sen lähdekoo
           <div>
             <h3>{example.description} <small><a href={"/tor/documentation/examples/" + example.name + ".json"}>lataa JSON</a></small></h3>
             <table class="json">
-              {SchemaToJsonHtml.buildHtml(TorSchema.schema, example.oppija)}
+              {SchemaToJsonHtml.buildHtml(TorSchema.schema, example.data)}
             </table>
           </div>
         }
@@ -137,7 +142,7 @@ object TorApiOperations {
    ApiOperation(
      "PUT", "/tor/api/oppija",
      <div>Lisää/päivittää oppijan ja opiskeluoikeuksia.</div>,
-     TorOppijaExamples.examples.map(_.oppija), TorSchema.schema,
+     TorOppijaExamples.examples, TorSchema.schema,
      List(
        (401,"UNAUTHORIZED jos käyttäjä ei ole tunnistautunut"),
        (403,"FORBIDDEN jos käyttäjällä ei ole tarvittavia oikeuksia tiedon päivittämiseen"),
@@ -148,4 +153,4 @@ object TorApiOperations {
  )
 }
 
-case class ApiOperation(method: String, path: String, doc: Elem, examples: List[AnyRef], schema: Schema, statusCodes: List[(Int, String)])
+case class ApiOperation(method: String, path: String, doc: Elem, examples: List[Example], schema: Schema, statusCodes: List[(Int, String)])

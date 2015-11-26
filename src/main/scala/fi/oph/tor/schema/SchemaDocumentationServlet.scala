@@ -18,7 +18,7 @@ class SchemaDocumentationServlet(koodistoPalvelu: KoodistoPalvelu) extends Error
     contentType = "application/json"
 
     TorOppijaExamples.examples.find(_.name == params("name")) match {
-      case Some(example) => Json.writePretty(example.oppija)
+      case Some(example) => Json.writePretty(example.data)
       case None => halt(404)
     }
   }

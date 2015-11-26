@@ -15,7 +15,7 @@ class TorOppijaExamplesValidationSpec extends FreeSpec with Matchers {
 
   "Validation" - {
     TorOppijaExamples.examples.foreach { example =>
-      val json = JsonLoader.fromString(Json.write(example.oppija))
+      val json = JsonLoader.fromString(Json.write(example.data))
       val report = validator.validate(schema, json)
       assert(report.isSuccess, "Example \"" + example.name + "\" failed to validate: \n\n" + report.filter(m => m.getLogLevel.toString == "error").mkString("\n"))
     }
