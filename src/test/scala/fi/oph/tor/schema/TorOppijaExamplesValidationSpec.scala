@@ -8,7 +8,7 @@ import org.scalatest.{FreeSpec, Matchers}
 
 import scala.collection.JavaConversions._
 
-class ValidationSpec extends FreeSpec with Matchers {
+class TorOppijaExamplesValidationSpec extends FreeSpec with Matchers {
 
   private val validator: JsonValidator = JsonSchemaFactory.byDefault.getValidator
   private val schema: JsonNode =  JsonLoader.fromString(TorSchema.schemaJsonString)

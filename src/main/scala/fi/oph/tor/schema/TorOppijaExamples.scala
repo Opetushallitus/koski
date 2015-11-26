@@ -13,6 +13,7 @@ object TorOppijaExamples {
   private val opiskeluoikeusAktiivinen = KoodistoKoodiViite("aktiivinen", Some("Aktiivinen"), "opiskeluoikeudentila", Some(1))
   private val opiskeluoikeusPäättynyt = KoodistoKoodiViite("paattynyt", Some("Päättynyt"), "opiskeluoikeudentila", Some(1))
   private val opiskeluoikeusKeskeyttänyt = KoodistoKoodiViite("keskeyttanyt", Some("Keskeyttänyt"), "opiskeluoikeudentila", Some(1))
+  private val lähdeWinnova = KoodistoKoodiViite("winnova", Some("Winnova"), "lahdejarjestelma", Some(1))
   private val tutkinnonOsat = List(
     Suoritus(
       Some("suoritus-12345-1"),
@@ -154,7 +155,7 @@ object TorOppijaExamples {
     List(
       OpiskeluOikeus(
         Some(983498343),
-        Some(LähdejärjestelmäId("847823465", "winnova")),
+        Some(LähdejärjestelmäId("847823465", lähdeWinnova)),
         Some(date(2012, 9, 1)),
         Some(date(2015, 5, 31)),
         Some(date(2016, 1, 9)),
@@ -197,7 +198,7 @@ object TorOppijaExamples {
     List(
       OpiskeluOikeus(
         None,
-        Some(LähdejärjestelmäId("847823465", "winnova")),
+        Some(LähdejärjestelmäId("847823465", lähdeWinnova)),
         Some(date(2016, 9, 1)),
         Some(date(2020, 5, 1)),
         None,
@@ -231,7 +232,7 @@ object TorOppijaExamples {
     List(
       OpiskeluOikeus(
         None,
-        Some(LähdejärjestelmäId("847823465", "winnova")),
+        Some(LähdejärjestelmäId("847823465", lähdeWinnova)),
         Some(date(2016, 9, 1)),
         Some(date(2020, 5, 1)),
         None,
@@ -268,7 +269,7 @@ object TorOppijaExamples {
     List(
       OpiskeluOikeus(
         Some(983498343),
-        Some(LähdejärjestelmäId("847823465", "winnova")),
+        Some(LähdejärjestelmäId("847823465", lähdeWinnova)),
         Some(date(2012, 9, 1)),
         Some(date(2015, 5, 31)),
         Some(date(2016, 1, 9)),

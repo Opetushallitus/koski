@@ -328,5 +328,6 @@ case class LähdejärjestelmäId(
   @Description("Paikallinen tunniste lähdejärjestelmässä")
   id: String,
   @Description("Lähdejärjestelmän yksilöivä tunniste")
-  lähdejärjestelmä: String
+  @KoodistoUri("lahdejarjestelma")
+  lähdejärjestelmä: KoodistoKoodiViite
 )
