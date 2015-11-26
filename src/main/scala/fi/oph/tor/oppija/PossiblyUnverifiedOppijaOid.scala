@@ -1,14 +1,16 @@
 package fi.oph.tor.oppija
 
+import fi.oph.tor.schema.Henkilö
+
 trait PossiblyUnverifiedOppijaOid {
-  def oppijaOid: Oppija.Id
-  def verifiedOid: Option[Oppija.Id]
+  def oppijaOid: Henkilö.Id
+  def verifiedOid: Option[Henkilö.Id]
 }
 
-case class VerifiedOppijaOid(val oppijaOid: Oppija.Id) extends PossiblyUnverifiedOppijaOid {
+case class VerifiedOppijaOid(val oppijaOid: Henkilö.Id) extends PossiblyUnverifiedOppijaOid {
   override def verifiedOid = Some(oppijaOid)
 }
 
-case class UnverifiedOppijaOid(val oppijaOid: Oppija.Id, oppijaRepository: OppijaRepository) extends PossiblyUnverifiedOppijaOid {
+case class UnverifiedOppijaOid(val oppijaOid: Henkilö.Id, oppijaRepository: OppijaRepository) extends PossiblyUnverifiedOppijaOid {
   override def verifiedOid = oppijaRepository.findByOid(oppijaOid).map(oppija => oppijaOid)
 }

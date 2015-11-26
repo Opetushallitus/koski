@@ -216,11 +216,7 @@ object TorOppijaExamples {
         ),
         hojks = None,
         None,
-        Some(OpiskeluoikeudenTila(
-          List(
-            Opiskeluoikeusjakso(date(2016, 9, 1), None, opiskeluoikeusAktiivinen)
-          )
-        )),
+        None,
         None,
         None
       )

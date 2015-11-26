@@ -1,10 +1,10 @@
 package fi.oph.tor.user
 
-import fi.oph.tor.oppilaitos.Oppilaitos
 import fi.oph.tor.organisaatio.OrganisaatioPuu
+import fi.oph.tor.schema.Organisaatio
 
 trait UserContext {
-  def hasReadAccess(Oppilaitos: Oppilaitos): Boolean
+  def hasReadAccess(oppilaitos: Organisaatio): Boolean
 
   def organisaatioPuu: OrganisaatioPuu
 }

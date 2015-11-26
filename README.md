@@ -184,7 +184,7 @@ Testiympäristön TOR löytyy täältä:
 
 Ympäristöön kuuluvat Opintopolku-palvelun osat täällä:
 
-    https://srv2.va-dev.oph.fi/
+   https://virkailija.tordev.tor.oph.reaktor.fi/
 
 Esimerkiksi henkilöpalvelu:
 
@@ -204,7 +204,7 @@ Koodistopalvelua käytetään toistaiseksi Opintopolun QA-ympäristöstä
 
 TOR ei tallenna henkilötietoja omaan kantaansa, vaan hakee/tallentaa ne Opintopolun [henkilöpalveluun](https://github.com/Opetushallitus/henkilo). [toteutus](src/main/scala/fi/oph/tor/oppija/OppijaRepository.scala)
 
-Kun TORissa haetaan henkilön tietoja esimerkiksi sukunimellä, haetaan lista mahdollisista henkilöistä ensin henkilöpalvelusta, jonka jälkeen se [suodatetaan](src/main/scala/fi/oph/tor/opintooikeus/OpintoOikeusRepository.scala#L8)
+Kun TORissa haetaan henkilön tietoja esimerkiksi sukunimellä, haetaan lista mahdollisista henkilöistä ensin henkilöpalvelusta, jonka jälkeen se [suodatetaan](src/main/scala/fi/oph/tor/opiskeluoikeus/OpiskeluOikeusRepository.scala#L8)
 TORissa olevien opinto-oikeuksien perusteella.
 
 Käyttäjä voi nähdä vain ne opinto-oikeudet, jotka liittyvät oppilaitokseen, johon hänellä on käyttöoikeus. Henkilön organisaatioliitokset ja käyttöoikeudet haetaan [henkilöpalvelusta](https://github.com/Opetushallitus/henkilo) ja [organisaatiopalvelusta](https://github.com/Opetushallitus/organisaatio). [toteutus](src/main/scala/fi/oph/tor/user/RemoteUserRepository.scala)
@@ -216,7 +216,7 @@ Esimerkkihaku: haetaan organisaatiopuurakenne.
 ### ePerusteet
 
 Tällä hetkellä TORiin voi tallentaa vain [ePerusteista](https://eperusteet.opintopolku.fi/) löytyvien tutkintojen tietoja. Opinto-oikeutta lisättäessa lista mahdollisista tutkinnoista haetaan
-ePerusteista ja [Opinto-oikeuden](src/main/scala/fi/oph/tor/opintooikeus/OpintoOikeus.scala) sisältämään [tutkinto](src/main/scala/fi/oph/tor/tutkinto/Tutkinto.scala)-osioon tallennetaan tieto ePerusteet-linkityksestä.
+ePerusteista ja [Opinto-oikeuden](src/main/scala/fi/oph/tor/opiskeluoikeus/OpiskeluOikeus.scala) sisältämään [tutkinto](src/main/scala/fi/oph/tor/tutkinto/Tutkinto.scala)-osioon tallennetaan tieto ePerusteet-linkityksestä.
 
 EPerusteista haetaan myös tutkinnon hierarkkinen [rakenne](src/main/scala/fi/oph/tor/tutkinto/TutkintoRakenne.scala), joka kuvaa, mistä tutkinnon osista tutkinto koostuu. [toteutus](https://github.com/Opetushallitus/tor/blob/master/src/main/scala/fi/oph/tor/eperusteet/RemoteEPerusteetRepository.scala)
 

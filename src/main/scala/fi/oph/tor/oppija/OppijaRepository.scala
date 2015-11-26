@@ -3,7 +3,7 @@ package fi.oph.tor.oppija
 import com.typesafe.config.Config
 import fi.oph.tor.henkilö.HenkilöPalveluClient
 import fi.oph.tor.http.HttpStatus
-import fi.oph.tor.tor.TorOppija
+import fi.oph.tor.schema._
 import fi.oph.tor.util.{CachingProxy, TimedProxy}
 
 object OppijaRepository {
@@ -17,31 +17,29 @@ object OppijaRepository {
 }
 
 trait OppijaRepository {
-  def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String): Either[HttpStatus, Oppija.Id]
+  def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String): Either[HttpStatus, Henkilö.Id]
 
-  def findOppijat(query: String): List[Oppija]
-  def findByOid(id: String): Option[Oppija]
+  def findOppijat(query: String): List[FullHenkilö]
+  def findByOid(id: String): Option[FullHenkilö]
 
   def resetFixtures {}
 
-  def findOrCreate(oppija: TorOppija): Either[HttpStatus, Oppija.Id] = {
-    def oidFrom(oppijat: List[Oppija]): Either[HttpStatus, Oppija.Id] = {
+  def findOrCreate(oppija: TorOppija): Either[HttpStatus, Henkilö.Id] = {
+    def oidFrom(oppijat: List[FullHenkilö]): Either[HttpStatus, Henkilö.Id] = {
       oppijat match {
-        case List(oppija) => Right(oppija.oid.get)
+        case List(oppija) => Right(oppija.oid)
         case _ => Left(HttpStatus.internalError("Oppijan lisääminen epäonnistui: ei voitu lisätä, muttei myöskään löytynyt."))
       }
     }
-    oppija match {
-      case TorOppija(Oppija(None, Some(hetu), Some(etunimet), Some(kutsumanimi), Some(sukunimi)), _) =>
+    oppija.henkilö match {
+      case NewHenkilö(hetu, etunimet, kutsumanimi, sukunimi) =>
         create(hetu, etunimet, kutsumanimi, sukunimi).left.flatMap { case HttpStatus(409, _) =>
           oidFrom(findOppijat(hetu))
         }
-      case TorOppija(Oppija(Some(oid), _, _, _, _), _) =>
+      case OidHenkilö(oid) =>
         oidFrom(findByOid(oid).toList)
-      case TorOppija(Oppija(_, Some(hetu), _, _, _), _) =>
-        oidFrom(findOppijat(hetu))
       case _ =>
-        Left(HttpStatus.badRequest("Either identifier (hetu, oid) or all user info (hetu + names) needed"))
+        Left(HttpStatus.badRequest("Either identifier (oid) or all user info (hetu + names) needed"))
     }
   }
 }

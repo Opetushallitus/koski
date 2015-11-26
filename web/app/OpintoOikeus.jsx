@@ -2,7 +2,7 @@ import React from 'react'
 import Bacon from 'baconjs'
 import R from 'ramda'
 
-export const opintoOikeusChange = Bacon.Bus()
+export const opiskeluOikeusChange = Bacon.Bus()
 
 // Shows <select> if more than 1 option. If 1 option, automatically selects it and shows it. If zero options, hides the whole thing.
 const Dropdown = React.createClass({
@@ -30,32 +30,32 @@ const Dropdown = React.createClass({
   }
 })
 
-export const OpintoOikeus = React.createClass({
+export const OpiskeluOikeus = React.createClass({
   render() {
-    let {opintoOikeus} = this.props
+    let {opiskeluOikeus} = this.props
     return (
-      <div className="opintooikeus">
+      <div className="opiskeluoikeus">
         <h4>Opinto-oikeudet</h4>
-        <span className="tutkinto">{opintoOikeus.tutkinto.nimi}</span> <span className="oppilaitos">{opintoOikeus.oppilaitosOrganisaatio.nimi}</span>
-        { opintoOikeus.tutkinto.rakenne
+        <span className="tutkinto">{opiskeluOikeus.tutkinto.nimi}</span> <span className="oppilaitos">{opiskeluOikeus.oppilaitosOrganisaatio.nimi}</span>
+        { opiskeluOikeus.tutkinto.rakenne
           ?
             <div className="tutkinto-rakenne">
               <Dropdown className="suoritustapa"
                         title="Suoritustapa"
-                        options={opintoOikeus.tutkinto.rakenne.suoritustavat.map(s => s.suoritustapa)}
-                        value={opintoOikeus.suoritustapa}
-                        onChange={(value) => opintoOikeusChange.push([opintoOikeus.id, oo => R.merge(oo, {suoritustapa: value || undefined})] )}
+                        options={opiskeluOikeus.tutkinto.rakenne.suoritustavat.map(s => s.suoritustapa)}
+                        value={opiskeluOikeus.suoritustapa}
+                        onChange={(value) => opiskeluOikeusChange.push([opiskeluOikeus.id, oo => R.merge(oo, {suoritustapa: value || undefined})] )}
                 />
               <Dropdown className="osaamisala"
                         title="Osaamisala"
-                        options={opintoOikeus.tutkinto.rakenne.osaamisalat}
-                        value={opintoOikeus.osaamisala}
-                        onChange={(value) => opintoOikeusChange.push([opintoOikeus.id, oo => R.merge(oo, {osaamisala: value || undefined})] )}
+                        options={opiskeluOikeus.tutkinto.rakenne.osaamisalat}
+                        value={opiskeluOikeus.osaamisala}
+                        onChange={(value) => opiskeluOikeusChange.push([opiskeluOikeus.id, oo => R.merge(oo, {osaamisala: value || undefined})] )}
                 />
-              { opintoOikeus.suoritustapa
-                ? opintoOikeus.tutkinto.rakenne.suoritustavat.find(x => x.suoritustapa.koodi == opintoOikeus.suoritustapa).rakenne.osat.map(rakenneOsa => <Rakenneosa
+              { opiskeluOikeus.suoritustapa
+                ? opiskeluOikeus.tutkinto.rakenne.suoritustavat.find(x => x.suoritustapa.koodi == opiskeluOikeus.suoritustapa).rakenne.osat.map(rakenneOsa => <Rakenneosa
                     rakenneosa={rakenneOsa}
-                    opintoOikeus={opintoOikeus}
+                    opiskeluOikeus={opiskeluOikeus}
                   />)
                 : null
               }
@@ -69,26 +69,26 @@ export const OpintoOikeus = React.createClass({
 
 const Rakenneosa = React.createClass({
   render() {
-    let { rakenneosa, opintoOikeus } = this.props
+    let { rakenneosa, opiskeluOikeus } = this.props
     return rakenneosa.osat
-      ? <RakenneModuuli key={rakenneosa.nimi} opintoOikeus={opintoOikeus} rakenneosa={rakenneosa} />
-      : <TutkinnonOsa key={rakenneosa.nimi} opintoOikeus={opintoOikeus} tutkinnonOsa={rakenneosa} />
+      ? <RakenneModuuli key={rakenneosa.nimi} opiskeluOikeus={opiskeluOikeus} rakenneosa={rakenneosa} />
+      : <TutkinnonOsa key={rakenneosa.nimi} opiskeluOikeus={opiskeluOikeus} tutkinnonOsa={rakenneosa} />
   }
 })
 
 const RakenneModuuli = React.createClass({
   render() {
-    const { rakenneosa, opintoOikeus } = this.props
+    const { rakenneosa, opiskeluOikeus } = this.props
     return (
       <div className="rakenne-moduuli">
         <span className="name">{rakenneosa.nimi}</span>
         <ul className="osat">
           { rakenneosa.osat
-            .filter(osa => { return !osa.osaamisalaKoodi || osa.osaamisalaKoodi == opintoOikeus.osaamisala})
+            .filter(osa => { return !osa.osaamisalaKoodi || osa.osaamisalaKoodi == opiskeluOikeus.osaamisala})
             .map((osa, i) => <li key={i}>
               <Rakenneosa
                 rakenneosa={osa}
-                opintoOikeus={opintoOikeus}
+                opiskeluOikeus={opiskeluOikeus}
               />
             </li>)
           }
@@ -100,8 +100,8 @@ const RakenneModuuli = React.createClass({
 
 const TutkinnonOsa = React.createClass({
   render() {
-    const {tutkinnonOsa, opintoOikeus} = this.props
-    const arviointiAsteikko = R.find(asteikko => R.equals(asteikko.koodisto, tutkinnonOsa.arviointiAsteikko))(opintoOikeus.tutkinto.rakenne.arviointiAsteikot)
+    const {tutkinnonOsa, opiskeluOikeus} = this.props
+    const arviointiAsteikko = R.find(asteikko => R.equals(asteikko.koodisto, tutkinnonOsa.arviointiAsteikko))(opiskeluOikeus.tutkinto.rakenne.arviointiAsteikot)
     const arvosanat = arviointiAsteikko ? arviointiAsteikko.arvosanat : undefined
 
     const addArvosana = (arvosana) => (oOikeus) => {
@@ -110,10 +110,10 @@ const TutkinnonOsa = React.createClass({
     }
 
     const saveArvosana = (arvosana) => {
-      opintoOikeusChange.push([opintoOikeus.id, addArvosana(arvosana)])
+      opiskeluOikeusChange.push([opiskeluOikeus.id, addArvosana(arvosana)])
     }
 
-    const suoritus = R.find(osanSuoritus => R.equals(osanSuoritus.koulutusModuuli, tutkinnonOsa.tunniste))(opintoOikeus.suoritukset)
+    const suoritus = R.find(osanSuoritus => R.equals(osanSuoritus.koulutusModuuli, tutkinnonOsa.tunniste))(opiskeluOikeus.suoritukset)
     const arviointi = suoritus && suoritus.arviointi
 
     return (

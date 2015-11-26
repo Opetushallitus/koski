@@ -187,7 +187,7 @@ describe('TOR', function() {
 
           it('lisätty oppija näytetään', function() {})
 
-          it('Lisätty opintooikeus näytetään', function() {
+          it('Lisätty opiskeluoikeus näytetään', function() {
             expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
             expect(opinnot.getOppilaitos()).to.equal('Helsingin Ammattioppilaitos')
           })
@@ -308,19 +308,19 @@ describe('TOR', function() {
       before(resetMocks, authentication.login('kalle'), page.openPage)
 
       describe('Valideilla tiedoilla', function() {
-        it('palautetaan HTTP 200', verifyResponseCode(addOppija.postOpintoOikeusAjax({}), 200))
+        it('palautetaan HTTP 200', verifyResponseCode(addOppija.postOpiskeluOikeusAjax({}), 200))
       })
 
       describe('Kun opinto-oikeutta yritetään lisätä oppilaitokseen, johon käyttäjällä ei ole pääsyä', function() {
-        it('palautetaan HTTP 403 virhe', verifyResponseCode(addOppija.postOpintoOikeusAjax({ oppilaitosOrganisaatio:{oid: 'eipaasya'}}), 403))
+        it('palautetaan HTTP 403 virhe', verifyResponseCode(addOppija.postOpiskeluOikeusAjax({ oppilaitosOrganisaatio:{oid: 'eipaasya'}}), 403))
       })
 
       describe('Kun yritetään lisätä opinto-oikeus virheelliseen perusteeseen', function() {
-        it('palautetaan HTTP 400 virhe', verifyResponseCode(addOppija.postOpintoOikeusAjax({ tutkinto: {ePerusteetDiaarinumero:'virheellinen', tutkintoKoodi: '351301'}}), 400))
+        it('palautetaan HTTP 400 virhe', verifyResponseCode(addOppija.postOpiskeluOikeusAjax({ tutkinto: {ePerusteetDiaarinumero:'virheellinen', tutkintoKoodi: '351301'}}), 400))
       })
 
       describe('Kun yritetään lisätä opinto-oikeus ilman perustetta', function() {
-        it('palautetaan HTTP 400 virhe', verifyResponseCode(addOppija.postOpintoOikeusAjax({ tutkinto: {ePerusteetDiaarinumero: null, tutkintoKoodi: '351301'}}), 400))
+        it('palautetaan HTTP 400 virhe', verifyResponseCode(addOppija.postOpiskeluOikeusAjax({ tutkinto: {ePerusteetDiaarinumero: null, tutkintoKoodi: '351301'}}), 400))
       })
     })
   })
@@ -383,13 +383,13 @@ describe('TOR', function() {
 
       describe('Tietojen validointi serverillä', function() {
         describe('Osaamisala ja suoritustapa ok', function() {
-          it('palautetaan HTTP 200', verifyResponseCode(addOppija.postOpintoOikeusAjax({ suoritustapa: 'ops', osaamisala: 1527}), 200))
+          it('palautetaan HTTP 200', verifyResponseCode(addOppija.postOpiskeluOikeusAjax({ suoritustapa: 'ops', osaamisala: 1527}), 200))
         })
         describe('Suoritustapa virheellinen', function() {
-          it('palautetaan HTTP 400', verifyResponseCode(addOppija.postOpintoOikeusAjax({ suoritustapa: 'virheellinen', osaamisala: 1527}), 400))
+          it('palautetaan HTTP 400', verifyResponseCode(addOppija.postOpiskeluOikeusAjax({ suoritustapa: 'virheellinen', osaamisala: 1527}), 400))
         })
         describe('Osaamisala virheellinen', function() {
-          it('palautetaan HTTP 400', verifyResponseCode(addOppija.postOpintoOikeusAjax({ suoritustapa: 'ops', osaamisala: 0}), 400))
+          it('palautetaan HTTP 400', verifyResponseCode(addOppija.postOpiskeluOikeusAjax({ suoritustapa: 'ops', osaamisala: 0}), 400))
         })
       })
     })

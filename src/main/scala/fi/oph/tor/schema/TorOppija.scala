@@ -26,7 +26,7 @@ case class FullHenkilö(
   kutsumanimi: String,
   @Description("Henkilön sukunimi. Henkilön sukunimen etuliite tulee osana sukunimeä")
   sukunimi: String
-) extends Henkilö
+) extends HenkilöWithOid
 
 @Description("Henkilö, jonka oppijanumero ei ole tiedossa. Tietoja syötettäessä luodaan mahdollisesti uusi henkilö Henkilöpalveluun, jolloin henkilölle muodostuu oppijanumero")
 case class NewHenkilö(
@@ -45,7 +45,11 @@ case class OidHenkilö(
   @Description("Yksilöivä tunniste (oppijanumero) Opintopolku-palvelussa")
   @OksaUri("tmpOKSAID760", "oppijanumero")
   oid: String
-) extends Henkilö
+) extends HenkilöWithOid
+
+trait HenkilöWithOid extends Henkilö {
+  def oid: String
+}
 
 object Henkilö {
   type Id = String
@@ -78,6 +82,10 @@ case class OpiskeluOikeus(
   @KoodistoUri("opintojenrahoitus")
   opintojenRahoitus: Option[KoodistoKoodiViite]
 )
+
+object OpiskeluOikeus {
+  type Id = Int
+}
 
 case class Suoritus(
   @Description("Paikallinen tunniste suoritukselle. Tiedonsiirroissa tarpeellinen, jotta voidaan varmistaa päivitysten osuminen oikeaan suoritukseen")

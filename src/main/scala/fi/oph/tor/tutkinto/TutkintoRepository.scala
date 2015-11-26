@@ -8,7 +8,7 @@ import fi.oph.tor.tutkinto.Koulutustyyppi.Koulutustyyppi
 import fi.vm.sade.utils.slf4j.Logging
 
 class TutkintoRepository(eperusteet: EPerusteetRepository) {
-  def findTutkinnot(oppilaitosId: String, query: String): List[Tutkinto] = {
+  def findTutkinnot(oppilaitosId: String, query: String): List[TutkintoPeruste] = {
     ePerusteetToTutkinnot(eperusteet.findPerusteet(query))
   }
 
@@ -18,7 +18,7 @@ class TutkintoRepository(eperusteet: EPerusteetRepository) {
 
   private def ePerusteetToTutkinnot(perusteet: List[EPeruste]) = {
     perusteet.flatMap { peruste =>
-      peruste.koulutukset.map(koulutus => Tutkinto(peruste.diaarinumero, koulutus.koulutuskoodiArvo, peruste.nimi.get("fi")))
+      peruste.koulutukset.map(koulutus => TutkintoPeruste(peruste.diaarinumero, koulutus.koulutuskoodiArvo, peruste.nimi.get("fi")))
     }
   }
 

@@ -18,7 +18,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     val configOverrides: Map[String, String] = Option(context.getAttribute("tor.overrides").asInstanceOf[Map[String, String]]).getOrElse(Map.empty)
     val application = TorApplication(configOverrides)
     implicit val userRepository = UserRepository(application.config)
-    val rekisteri = new TodennetunOsaamisenRekisteri(application.oppijaRepository, application.opintoOikeusRepository, application.tutkintoRepository, application.oppilaitosRepository, application.arviointiAsteikot)
+    val rekisteri = new TodennetunOsaamisenRekisteri(application.oppijaRepository, application.opiskeluOikeusRepository, application.tutkintoRepository, application.oppilaitosRepository, application.arviointiAsteikot)
     context.mount(new OppijaServlet(rekisteri, userRepository, application.directoryClient), "/api/oppija")
     context.mount(new UserServlet(application.directoryClient, application.userRepository), "/user")
     context.mount(new SingleFileServlet("web/static/index.html"), "/oppija")

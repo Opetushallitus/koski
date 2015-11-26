@@ -1,6 +1,7 @@
 package fi.oph.tor.oppija
 
 import fi.oph.tor.http.HttpStatus
+import fi.oph.tor.schema.{Henkilö, FullHenkilö}
 
 class MockOppijaRepository extends OppijaRepository {
   val eero = oppija(generateId, "esimerkki", "eero", "010101-123N")
@@ -10,7 +11,7 @@ class MockOppijaRepository extends OppijaRepository {
   val tero = oppija(generateId, "tunkkila", "tero", "091095-9833")
   val presidentti = oppija(generateId, "Presidentti", "Tasavallan", "")
 
-  private def oppija(id : String, suku: String, etu: String, hetu: String) = Oppija(Some(id), Some(hetu), Some(etu), Some(etu), Some(suku))
+  private def oppija(id : String, suku: String, etu: String, hetu: String) = FullHenkilö(id, hetu, etu, etu, suku)
 
   def defaultOppijat = List(
     eero,
@@ -29,17 +30,17 @@ class MockOppijaRepository extends OppijaRepository {
     oppijat.filter(searchString(_).contains(query))
   }
 
-  override def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String): Either[HttpStatus, Oppija.Id] = {
+  override def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String): Either[HttpStatus, Henkilö.Id] = {
     if (oppijat.find { o => (o.hetu == Some(hetu)) } .isDefined) {
       Left(HttpStatus.conflict("conflict"))
     } else {
       val newOppija = oppija(generateId, sukunimi, etunimet, hetu)
       oppijat = oppijat :+ newOppija
-      Right(newOppija.oid.get)
+      Right(newOppija.oid)
     }
   }
 
-  private def searchString(oppija: Oppija) = {
+  private def searchString(oppija: FullHenkilö) = {
     oppija.toString.toUpperCase
   }
 
@@ -53,5 +54,5 @@ class MockOppijaRepository extends OppijaRepository {
     idCounter = defaultOppijat.length
   }
 
-  override def findByOid(id: String): Option[Oppija] = oppijat.filter(_.oid.get == id).headOption
+  override def findByOid(id: String): Option[FullHenkilö] = oppijat.filter(_.oid == id).headOption
 }

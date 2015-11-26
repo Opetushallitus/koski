@@ -1,9 +1,9 @@
 package fi.oph.tor.security
 
 import fi.oph.tor.ErrorHandlingServlet
-import fi.oph.tor.oppilaitos.Oppilaitos
 import fi.oph.tor.organisaatio.OrganisaatioPuu
-import fi.oph.tor.user.{UserRepository, UserContext}
+import fi.oph.tor.schema.Organisaatio
+import fi.oph.tor.user.{UserContext, UserRepository}
 
 trait RequiresAuthentication extends ErrorHandlingServlet with AuthenticationSupport {
   def userRepository: UserRepository
@@ -13,7 +13,7 @@ trait RequiresAuthentication extends ErrorHandlingServlet with AuthenticationSup
       .map(u => userRepository.getUserOrganisations(u.oid))
       .getOrElse(OrganisaatioPuu(List.empty))
 
-    override def hasReadAccess(organisaatio: Oppilaitos) = {
+    override def hasReadAccess(organisaatio: Organisaatio) = {
       organisaatioPuu.findById(organisaatio.oid).isDefined
     }
   }

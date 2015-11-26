@@ -3,7 +3,7 @@ import Bacon from 'baconjs'
 import Http from './http'
 import {routeP} from './router'
 import {CreateOppija} from './CreateOppija.jsx'
-import {OpintoOikeus, opintoOikeusChange} from './OpintoOikeus.jsx'
+import {OpiskeluOikeus, opiskeluOikeusChange} from './OpiskeluOikeus.jsx'
 import Ramda from 'ramda'
 
 var selectOppijaE = routeP.map('.oppijaId').flatMap(oppijaId => {
@@ -12,18 +12,18 @@ var selectOppijaE = routeP.map('.oppijaId').flatMap(oppijaId => {
 
 export const oppijaP = Bacon.update({ loading: true },
   selectOppijaE, (previous, oppija) => oppija,
-  opintoOikeusChange, (currentOppija, [opintoOikeusId, change]) => {
+  opiskeluOikeusChange, (currentOppija, [opiskeluOikeusId, change]) => {
     let changedOppija = Ramda.clone(currentOppija)
-    changedOppija.opintoOikeudet = changedOppija.opintoOikeudet.map(opintoOikeus =>
-        opintoOikeus.id == opintoOikeusId
-          ? change(opintoOikeus)
-          : opintoOikeus
+    changedOppija.opiskeluoikeudet = changedOppija.opiskeluoikeudet.map(opiskeluOikeus =>
+        opiskeluOikeus.id == opiskeluOikeusId
+          ? change(opiskeluOikeus)
+          : opiskeluOikeus
     )
     return changedOppija
   }
 )
 
-export const updateResultE = oppijaP.sampledBy(opintoOikeusChange).flatMapLatest(oppijaUpdate => Http.post('/tor/api/oppija', oppijaUpdate))
+export const updateResultE = oppijaP.sampledBy(opiskeluOikeusChange).flatMapLatest(oppijaUpdate => Http.post('/tor/api/oppija', oppijaUpdate))
 
 export const uusiOppijaP = routeP.map(route => { return !!route.uusiOppija })
 
@@ -42,13 +42,13 @@ const Loading = () => <div className='main-content oppija loading'></div>
 
 const ExistingOppija = React.createClass({
   render() {
-    let {oppija: { henkilo: henkilo, opintoOikeudet: opintoOikeudet}} = this.props
+    let {oppija: { henkilo: henkilo, opiskeluoikeudet: opiskeluoikeudet}} = this.props
     return (
       <div className='main-content oppija'>
         <h2>{henkilo.sukunimi}, {henkilo.etunimet} <span className='hetu'>{henkilo.hetu}</span></h2>
         <hr></hr>
-        { opintoOikeudet.map( opintoOikeus =>
-          <OpintoOikeus key={opintoOikeus.id} opintoOikeus={ opintoOikeus } />
+        { opiskeluoikeudet.map( opiskeluOikeus =>
+          <OpiskeluOikeus key={opiskeluOikeus.id} opiskeluOikeus={ opiskeluOikeus } />
         ) }
       </div>
     )

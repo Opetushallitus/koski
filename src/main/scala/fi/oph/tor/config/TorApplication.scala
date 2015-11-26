@@ -7,7 +7,7 @@ import fi.oph.tor.db._
 import fi.oph.tor.eperusteet.EPerusteetRepository
 import fi.oph.tor.fixture.Fixtures
 import fi.oph.tor.koodisto.KoodistoPalvelu
-import fi.oph.tor.opintooikeus.{OpintoOikeusRepository, PostgresOpintoOikeusRepository, TorDatabaseFixtures}
+import fi.oph.tor.opiskeluoikeus.{OpiskeluOikeusRepository, PostgresOpiskeluOikeusRepository, TorDatabaseFixtures}
 import fi.oph.tor.oppija.OppijaRepository
 import fi.oph.tor.oppilaitos.OppilaitosRepository
 import fi.oph.tor.security.Authentication
@@ -34,7 +34,7 @@ class TorApplication(val config: Config) {
   lazy val arviointiAsteikot = ArviointiasteikkoRepository(koodistoPalvelu)
   lazy val userRepository = UserRepository(config)
   lazy val database = new TorDatabase(config)
-  lazy val opintoOikeusRepository = TimedProxy[OpintoOikeusRepository](new PostgresOpintoOikeusRepository(database.db))
+  lazy val opiskeluOikeusRepository = TimedProxy[OpiskeluOikeusRepository](new PostgresOpiskeluOikeusRepository(database.db))
 
 
   def resetFixtures = if(Fixtures.shouldUseFixtures(config)) {

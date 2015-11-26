@@ -64,21 +64,21 @@ function AddOppijaPage() {
     postSuoritusAjax: function(suoritus) {
       return function() {
         suoritus = _.merge(defaultSuoritus(), suoritus)
-        opintoOikeus = _.merge(defaultOpintoOikeus(), { suoritukset: [suoritus], suoritustapa: "ops" })
-        return api.postOpintoOikeusAjax(opintoOikeus)()
+        opiskeluOikeus = _.merge(defaultOpiskeluOikeus(), { suoritukset: [suoritus], suoritustapa: "ops" })
+        return api.postOpiskeluOikeusAjax(opiskeluOikeus)()
       }
     },
 
-    postOpintoOikeusAjax: function(opintoOikeus) {
+    postOpiskeluOikeusAjax: function(opiskeluOikeus) {
       return function() {
-        opintoOikeus = _.merge(defaultOpintoOikeus(), opintoOikeus)
-        data = makeOppija({}, [opintoOikeus])
+        opiskeluOikeus = _.merge(defaultOpiskeluOikeus(), opiskeluOikeus)
+        data = makeOppija({}, [opiskeluOikeus])
         return api.postOppijaAjax(data)()
       }
     },
     postOppijaAjax: function(oppija) {
       return function() {
-        var defaults = makeOppija(defaultHenkilo(), [defaultOpintoOikeus()])
+        var defaults = makeOppija(defaultHenkilo(), [defaultOpiskeluOikeus()])
         oppija = _.merge(defaults, {}, oppija)
         return postJson(
           'http://localhost:7021/tor/api/oppija', oppija
@@ -93,7 +93,7 @@ function AddOppijaPage() {
       arvosana: {id: "ammatillisenperustutkinnonarviointiasteikko_2", nimi: "H2"}
     }
   }}
-  function defaultOpintoOikeus() { return {
+  function defaultOpiskeluOikeus() { return {
     oppilaitosOrganisaatio: { oid: '1' },
     tutkinto: {ePerusteetDiaarinumero:'39/011/2014', tutkintoKoodi: '351301'}
   }}
@@ -103,9 +103,9 @@ function AddOppijaPage() {
     'kutsumanimi':'Testi',
     'hetu':'010101-123N'
   }}
-  function makeOppija(henkilo, opintoOikeudet) { return _.cloneDeep({
+  function makeOppija(henkilo, opiskeluoikeudet) { return _.cloneDeep({
     henkilo: henkilo || defaultHenkilo(),
-    opintoOikeudet: opintoOikeudet || [defaultOpintoOikeus()]
+    opiskeluoikeudet: opiskeluoikeudet || [defaultOpiskeluOikeus()]
   })}
   return api
 }

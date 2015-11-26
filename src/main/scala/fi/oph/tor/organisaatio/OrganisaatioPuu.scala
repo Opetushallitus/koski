@@ -1,13 +1,14 @@
 package fi.oph.tor.organisaatio
 
-case class OrganisaatioPuu(roots: List[Organisaatio]) {
-  def findById(id: String): Option[Organisaatio] = findOrganisaatiot(_.oid == id).headOption
+// TODO: eliminoi tämä pois
+case class OrganisaatioPuu(roots: List[OrganisaatioHierarkia]) {
+  def findById(id: String): Option[OrganisaatioHierarkia] = findOrganisaatiot(_.oid == id).headOption
 
-  def findOrganisaatiot(f: (Organisaatio => Boolean)): List[Organisaatio] = {
+  def findOrganisaatiot(f: (OrganisaatioHierarkia => Boolean)): List[OrganisaatioHierarkia] = {
     flatten(roots).filter(f)
   }
 
-  def flatten(orgs: List[Organisaatio]): List[Organisaatio] = {
+  def flatten(orgs: List[OrganisaatioHierarkia]): List[OrganisaatioHierarkia] = {
     orgs.flatMap { org =>
       org :: flatten(org.children)
     }

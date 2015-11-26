@@ -1,9 +1,9 @@
 package fi.oph.tor.oppija
 
 import fi.oph.tor.json.Json
-import fi.oph.tor.schema.SchemaTestServlet
+import fi.oph.tor.schema.{TorOppija, SchemaTestServlet}
 import fi.oph.tor.security.RequiresAuthentication
-import fi.oph.tor.tor.{TodennetunOsaamisenRekisteri, TorOppija}
+import fi.oph.tor.tor.{TodennetunOsaamisenRekisteri}
 import fi.oph.tor.user.UserRepository
 import fi.oph.tor.{ErrorHandlingServlet, InvalidRequestException}
 import fi.vm.sade.security.ldap.DirectoryClient
