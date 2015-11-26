@@ -57,3 +57,13 @@ span.indent:after {
     content: '-';
     margin-right: 5px;
 }
+.api-tester {
+    margin-left: 20px;
+}
+.api-tester div {
+    margin-top: 10px;
+}
+.api-tester .result {
+    min-width: 500px;
+    background: #dddddd;
+}

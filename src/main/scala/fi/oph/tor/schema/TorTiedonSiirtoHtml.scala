@@ -1,5 +1,8 @@
 package fi.oph.tor.schema
 import com.tristanhunt.knockoff.DefaultDiscounter._
+import fi.oph.tor.json.Json
+import fi.oph.tor.schema.generic.Schema
+import scala.xml.Elem
 
 object TorTiedonSiirtoHtml {
   def markdown ="""
@@ -75,10 +78,6 @@ Tietokentät, joissa validit arvot on lueteltavissa, on kooditettu käyttäen hy
 
 Scalaa osaaville ehkä nopein tapa tutkia tietomallia on kuitenkin sen lähdekoodi. Githubista löytyy sekä [scheman](https://github.com/Opetushallitus/tor/blob/master/src/main/scala/fi/oph/tor/schema/TorOppija.scala), että [esimerkkien](https://github.com/Opetushallitus/tor/blob/master/src/main/scala/fi/oph/tor/schema/TorOppijaExamples.scala) lähdekoodit.
 
-## Esimerkkidata annotoituna
-
-Toinen hyvä tapa tutustua tiedonsiirtoprotokollaan on tutkia esimerkkiviestejä. Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esimerkissa on varsinaisen JSON-sisällön lisäksi schemaan pohjautuva annotointi ja linkitykset koodistoon ja OKSA-sanastoon.
-
 """
 
   def html = {
@@ -89,7 +88,35 @@ Toinen hyvä tapa tutustua tiedonsiirtoprotokollaan on tutkia esimerkkiviestejä
       </head>
       <body>
         {toXHTML( knockoff(markdown) )}
+        <h2>REST-rajapinnat</h2>
+        Kaikki rajapinnat vaativat HTTP Basic Authentication -tunnistautumisen, eli käytännössä `Authorization`-headerin HTTP-pyyntöön.
+        <div>
         {
+          TorApiOperations.operations.map { operation =>
+            <div>
+              <h3>{operation.method} {operation.path}</h3>
+              {operation.doc}
+              <ul class="status-codes">
+                {operation.statusCodes.map { case (status, text) =>
+                  <li>{status} {text}</li>
+                }}
+              </ul>
+              <p>Kokeile heti!</p>
+              <div class="api-tester" data-method={operation.method} data-path={operation.path}>
+                <textarea cols="80" rows="50">{Json.writePretty(operation.examples(0))}</textarea>
+                <div class="buttons">
+                  <button class="try">Kokeile</button>
+                </div>
+                <div class="result"></div>
+              </div>
+            </div>
+          }
+        }
+        </div>
+        <div>
+          <h2>Esimerkkidata annotoituna</h2>
+          <p>Toinen hyvä tapa tutustua tiedonsiirtoprotokollaan on tutkia esimerkkiviestejä. Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esimerkissa on varsinaisen JSON-sisällön lisäksi schemaan pohjautuva annotointi ja linkitykset koodistoon ja OKSA-sanastoon.</p>
+        </div>{
         TorOppijaExamples.examples.map { example =>
           <div>
             <h3>{example.description} <small><a href={"/tor/documentation/examples/" + example.name + ".json"}>lataa JSON</a></small></h3>
@@ -104,3 +131,21 @@ Toinen hyvä tapa tutustua tiedonsiirtoprotokollaan on tutkia esimerkkiviestejä
     </html>
   }
 }
+
+object TorApiOperations {
+ val operations = List(
+   ApiOperation(
+     "PUT", "/tor/api/oppija",
+     <div>Lisää/päivittää oppijan ja opiskeluoikeuksia.</div>,
+     TorOppijaExamples.examples.map(_.oppija), TorSchema.schema,
+     List(
+       (401,"UNAUTHORIZED jos käyttäjä ei ole tunnistautunut"),
+       (403,"FORBIDDEN jos käyttäjällä ei ole tarvittavia oikeuksia tiedon päivittämiseen"),
+       (400,"BAD REQUEST jos syöte ei ole validi"),
+       (200,"OK jos lisäys/päivitys onnistuu")
+     )
+   )
+ )
+}
+
+case class ApiOperation(method: String, path: String, doc: Elem, examples: List[AnyRef], schema: Schema, statusCodes: List[(Int, String)])

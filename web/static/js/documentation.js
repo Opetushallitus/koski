@@ -34,4 +34,20 @@ forEach(document.querySelectorAll('.json-row .collapsible'), function(node) {
   }
 )
 
+forEach(document.querySelectorAll('.api-tester'), function(elem) {
+  elem.querySelector(".try").addEventListener('click', function() {
+    var data = elem.querySelector("textarea").value;
+    fetch(document.location.protocol + "//" + document.location.host + elem.dataset.path, { credentials: 'include', method: elem.dataset.method, body: data, headers: { 'Content-Type': 'application/json'} })
+      .then(function(response) {
+        var resultElem = elem.querySelector(".result");
+        response.text().then(function(text, err) {
+          if (text) {
+            resultElem.innerHTML = response.status + " " + response.statusText + "<pre>" + text + "</pre>"
+          } else {
+            resultElem.innerHTML = response.status + " " + response.statusText
+          }
+        })
+      })
+  })
+})
 
