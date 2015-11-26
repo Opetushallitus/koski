@@ -56,8 +56,8 @@ object Henkilö {
 case class OpiskeluOikeus(
   @Description("Opiskeluoikeuden uniikki tunniste. Tietoja syötettäessä kenttä ei ole pakollinen. Tietoja päivitettäessä TOR tunnistaa opiskeluoikeuden joko tämän id:n tai muiden kenttien (oppijaOid, organisaatio, diaarinumero) perusteella")
   id: Option[Int],
-  @Description("Paikallinen tunniste opiskeluoikeudelle. Tiedonsiirroissa tarpeellinen, jotta voidaan varmistaa päivitysten osuminen oikeaan opiskeluoikeuteen.")
-  paikallinenId: Option[String],
+  @Description("Lähdejärjestelmän tunniste opiskeluoikeudelle. Tiedonsiirroissa tarpeellinen, jotta voidaan varmistaa päivitysten osuminen oikeaan opiskeluoikeuteen")
+  lähdejärjestelmänId: Option[LähdejärjestelmäId],
   @Description("Opiskelijan opiskeluoikeuden alkamisaika joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
   alkamispäivä: Option[LocalDate],
   @Description("Opiskelijan opiskeluoikeuden arvioitu päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
@@ -80,7 +80,7 @@ case class OpiskeluOikeus(
 )
 
 case class Suoritus(
-  @Description("Paikallinen tunniste suoritukselle. Tiedonsiirroissa tarpeellinen, jotta voidaan varmistaa päivitysten osuminen oikeaan suoritukseen.")
+  @Description("Paikallinen tunniste suoritukselle. Tiedonsiirroissa tarpeellinen, jotta voidaan varmistaa päivitysten osuminen oikeaan suoritukseen")
   paikallinenId: Option[String],
   @Description("Koulutusmoduulin tunniste. Joko tutkinto tai tutkinnon osa")
   koulutusmoduulitoteutus: Koulutusmoduulitoteutus,
@@ -95,7 +95,7 @@ case class Suoritus(
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: Organisaatio,
-  @Description("Arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota.")
+  @Description("Arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota")
   arviointi: Option[List[Arviointi]],
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[Suoritus]]
@@ -186,7 +186,7 @@ case class Arvioitsija(
 )
 
 case class Vahvistus(
-  @Description("Tutkinnon tai tutkinnonosan vahvistettu suorituspäivämäärä, eli päivämäärä jolloin suoritus on hyväksyttyä todennettua osaamista.")
+  @Description("Tutkinnon tai tutkinnonosan vahvistettu suorituspäivämäärä, eli päivämäärä jolloin suoritus on hyväksyttyä todennettua osaamista")
   päivä: Option[LocalDate]
 )
 
@@ -322,4 +322,11 @@ case class Laajuus(
   @Description("Opintojen laajuuden yksikkö")
   @KoodistoUri("opintojenlaajuusyksikko")
   yksikkö: KoodistoKoodiViite
+)
+
+case class LähdejärjestelmäId(
+  @Description("Paikallinen tunniste lähdejärjestelmässä")
+  id: String,
+  @Description("Lähdejärjestelmän yksilöivä tunniste")
+  lähdejärjestelmä: String
 )

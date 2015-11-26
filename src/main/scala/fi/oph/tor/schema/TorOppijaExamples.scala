@@ -154,7 +154,7 @@ object TorOppijaExamples {
     List(
       OpiskeluOikeus(
         Some(983498343),
-        Some("847823465"),
+        Some(LähdejärjestelmäId("847823465", "winnova")),
         Some(date(2012, 9, 1)),
         Some(date(2015, 5, 31)),
         Some(date(2016, 1, 9)),
@@ -197,7 +197,7 @@ object TorOppijaExamples {
     List(
       OpiskeluOikeus(
         None,
-        Some("847823465"),
+        Some(LähdejärjestelmäId("847823465", "winnova")),
         Some(date(2016, 9, 1)),
         Some(date(2020, 5, 1)),
         None,
@@ -231,7 +231,7 @@ object TorOppijaExamples {
     List(
       OpiskeluOikeus(
         None,
-        Some("847823465"),
+        Some(LähdejärjestelmäId("847823465", "winnova")),
         Some(date(2016, 9, 1)),
         Some(date(2020, 5, 1)),
         None,
@@ -268,7 +268,7 @@ object TorOppijaExamples {
     List(
       OpiskeluOikeus(
         Some(983498343),
-        Some("847823465"),
+        Some(LähdejärjestelmäId("847823465", "winnova")),
         Some(date(2012, 9, 1)),
         Some(date(2015, 5, 31)),
         Some(date(2016, 1, 9)),
