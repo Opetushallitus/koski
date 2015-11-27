@@ -3,12 +3,13 @@ package fi.oph.tor.tutkinto
 import fi.oph.tor.arvosana.Arviointiasteikko
 import fi.oph.tor.eperusteet.ESuoritustapa
 import fi.oph.tor.koodisto.KoodistoViittaus
+import fi.oph.tor.schema.KoodistoKoodiViite
 
 case class TutkintoRakenne(suoritustavat: List[SuoritustapaJaRakenne], osaamisalat: List[Osaamisala], arviointiAsteikot: List[Arviointiasteikko]) {
 }
 
 object TutkintoRakenne {
-  def findTutkinnonOsa(rakenne: TutkintoRakenne, suoritustapa: Suoritustapa, koulutusModuuliTunniste: KoulutusModuuliTunniste): Option[TutkinnonOsa] = {
+  def findTutkinnonOsa(rakenne: TutkintoRakenne, suoritustapa: KoodistoKoodiViite, koulutusModuuliTunniste: KoulutusModuuliTunniste): Option[TutkinnonOsa] = {
     rakenne.suoritustavat.find(_.suoritustapa == suoritustapa).flatMap(suoritustapa => findTutkinnonOsa(suoritustapa.rakenne, koulutusModuuliTunniste)).headOption
   }
 
@@ -20,20 +21,7 @@ object TutkintoRakenne {
   def findOsaamisala(rakenne: TutkintoRakenne, osaamisAlaKoodi: String) = rakenne.osaamisalat.find(_.koodi == osaamisAlaKoodi)
 }
 
-case class Suoritustapa(nimi: String, koodi: String)
-
-object Suoritustapa {
-  val ops = Suoritustapa("OPS", "ops")
-  val naytto = Suoritustapa("Näyttö", "naytto")
-
-  val suoritustavat = List(ops, naytto)
-
-  def apply(koodi: String): Option[Suoritustapa] = suoritustavat.find(_.koodi == koodi)
-  def apply(suoritustapa: ESuoritustapa): Suoritustapa = apply(suoritustapa.suoritustapakoodi).getOrElse(throw new IllegalArgumentException("Suoritustapa " + suoritustapa))
-}
-
-case class SuoritustapaJaRakenne(suoritustapa: Suoritustapa, rakenne: RakenneOsa)
-
+case class SuoritustapaJaRakenne(suoritustapa: KoodistoKoodiViite, rakenne: RakenneOsa)
 
 case class Osaamisala(nimi: String, koodi: String)
 

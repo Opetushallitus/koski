@@ -19,16 +19,17 @@ import fi.vm.sade.security.ldap.DirectoryClient
 object TorApplication {
   def apply: TorApplication = apply(Map.empty)
 
-  def apply(overrides: Map[String, String]): TorApplication = {
-    val config = overrides.toList.foldLeft(ConfigFactory.load)({ case (config, (key, value)) => config.withValue(key, fromAnyRef(value)) })
-    new TorApplication(config)
+  def apply(overrides: Map[String, String] = Map.empty): TorApplication = {
+    new TorApplication(config(overrides))
   }
+
+  def config(overrides: Map[String, String] = Map.empty) = overrides.toList.foldLeft(ConfigFactory.load)({ case (config, (key, value)) => config.withValue(key, fromAnyRef(value)) })
 }
 
 class TorApplication(val config: Config) {
   lazy val directoryClient: DirectoryClient = Authentication.directoryClient(config)
   lazy val oppijaRepository = OppijaRepository(config)
-  lazy val tutkintoRepository = new TutkintoRepository(EPerusteetRepository.apply(config))
+  lazy val tutkintoRepository = new TutkintoRepository(EPerusteetRepository.apply(config), arviointiAsteikot, koodistoPalvelu)
   lazy val oppilaitosRepository = new OppilaitosRepository
   lazy val koodistoPalvelu = KoodistoPalvelu(config)
   lazy val arviointiAsteikot = ArviointiasteikkoRepository(koodistoPalvelu)

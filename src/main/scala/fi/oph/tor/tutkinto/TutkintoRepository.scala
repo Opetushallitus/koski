@@ -2,12 +2,13 @@ package fi.oph.tor.tutkinto
 
 import fi.oph.tor.arvosana.ArviointiasteikkoRepository
 import fi.oph.tor.eperusteet._
-import fi.oph.tor.koodisto.KoodistoViittaus
+import fi.oph.tor.koodisto.{KoodistoPalvelu, KoodistoViittaus}
+import fi.oph.tor.schema.KoodistoKoodiViite
 import fi.oph.tor.tutkinto
 import fi.oph.tor.tutkinto.Koulutustyyppi.Koulutustyyppi
 import fi.vm.sade.utils.slf4j.Logging
 
-class TutkintoRepository(eperusteet: EPerusteetRepository) {
+class TutkintoRepository(eperusteet: EPerusteetRepository, arviointiAsteikot: ArviointiasteikkoRepository, koodistoPalvelu: KoodistoPalvelu) {
   def findTutkinnot(oppilaitosId: String, query: String): List[TutkintoPeruste] = {
     ePerusteetToTutkinnot(eperusteet.findPerusteet(query))
   }
@@ -16,24 +17,24 @@ class TutkintoRepository(eperusteet: EPerusteetRepository) {
     ePerusteetToTutkinnot(eperusteet.findPerusteetByDiaarinumero(diaarinumero)).headOption
   }
 
+  def findPerusteRakenne(diaariNumero: String) = {
+    eperusteet.findRakenne(diaariNumero)
+      .map(rakenne => EPerusteetTutkintoRakenneConverter.convertRakenne(rakenne)(arviointiAsteikot, koodistoPalvelu))
+  }
+
   private def ePerusteetToTutkinnot(perusteet: List[EPeruste]) = {
     perusteet.flatMap { peruste =>
       peruste.koulutukset.map(koulutus => TutkintoPeruste(peruste.diaarinumero, koulutus.koulutuskoodiArvo, peruste.nimi.get("fi")))
     }
   }
-
-  def findPerusteRakenne(diaariNumero: String)(implicit arviointiAsteikot: ArviointiasteikkoRepository) = {
-    eperusteet.findRakenne(diaariNumero)
-      .map(EPerusteetTutkintoRakenneConverter.convertRakenne)
-  }
 }
 
 object EPerusteetTutkintoRakenneConverter extends Logging {
-  def convertRakenne(rakenne: EPerusteRakenne)(implicit arviointiasteikkoRepository: ArviointiasteikkoRepository): TutkintoRakenne = {
+  def convertRakenne(rakenne: EPerusteRakenne)(implicit arviointiasteikkoRepository: ArviointiasteikkoRepository, koodistoPalvelu: KoodistoPalvelu): TutkintoRakenne = {
     var arviointiasteikkoViittaukset: Set[KoodistoViittaus] = Set.empty
 
-    val suoritustavat: List[tutkinto.SuoritustapaJaRakenne] = rakenne.suoritustavat.map { (suoritustapa: ESuoritustapa) =>
-      val koulutustyyppi: Koulutustyyppi = Koulutustyyppi.fromEPerusteetKoulutustyyppiAndSuoritustapa(rakenne.koulutustyyppi, Suoritustapa(suoritustapa))
+    val suoritustavat: List[tutkinto.SuoritustapaJaRakenne] = rakenne.suoritustavat.flatMap { (suoritustapa: ESuoritustapa) =>
+      val koulutustyyppi: Koulutustyyppi = Koulutustyyppi.fromEPerusteetKoulutustyyppiAndSuoritustapa(rakenne.koulutustyyppi, suoritustapa.suoritustapakoodi)
       val arviointiasteikkoViittaus: Option[KoodistoViittaus] = arviointiasteikkoRepository.getArviointiasteikkoViittaus(koulutustyyppi)
 
       def convertRakenneOsa(rakenneOsa: ERakenneOsa, suoritustapa: ESuoritustapa): RakenneOsa = {
@@ -57,7 +58,8 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
       }
 
 
-      SuoritustapaJaRakenne(Suoritustapa(suoritustapa), convertRakenneOsa(suoritustapa.rakenne, suoritustapa))
+      val suoritustapaKoodistoViite: Option[KoodistoKoodiViite] = KoodistoPalvelu.getKoodistoKoodiViite(koodistoPalvelu, "suoritustapa", suoritustapa.suoritustapakoodi)
+      suoritustapaKoodistoViite.map(SuoritustapaJaRakenne(_, convertRakenneOsa(suoritustapa.rakenne, suoritustapa)))
     }
 
     val osaamisalat: List[Osaamisala] = rakenne.osaamisalat.map(o => Osaamisala(o.nimi("fi"), o.arvo))

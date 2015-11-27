@@ -2,18 +2,20 @@ package fi.oph.tor.tor
 
 import fi.oph.tor.arvosana.ArviointiasteikkoRepository
 import fi.oph.tor.http.HttpStatus
+import fi.oph.tor.koodisto.KoodistoPalvelu
 import fi.oph.tor.opiskeluoikeus._
 import fi.oph.tor.oppija._
 import fi.oph.tor.oppilaitos.OppilaitosRepository
 import fi.oph.tor.schema._
-import fi.oph.tor.tutkinto.TutkintoRepository
+import fi.oph.tor.tutkinto.{TutkintoRakenne, TutkintoRepository}
 import fi.oph.tor.user.UserContext
 
 class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
                                    opiskeluOikeusRepository: OpiskeluOikeusRepository,
                                    tutkintoRepository: TutkintoRepository,
                                    oppilaitosRepository: OppilaitosRepository,
-                                   arviointiAsteikot: ArviointiasteikkoRepository) {
+                                   arviointiAsteikot: ArviointiasteikkoRepository,
+                                   koodistoPalvelu: KoodistoPalvelu) {
 
   def findOppijat(query: String)(implicit userContext: UserContext): Seq[FullHenkilö] = {
     val oppijat: List[FullHenkilö] = oppijaRepository.findOppijat(query)
@@ -48,22 +50,32 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     }
   }
 
-  /*
-
   def validateOpiskeluOikeus(opiskeluOikeus: OpiskeluOikeus)(implicit userContext: UserContext): HttpStatus = {
-    tutkintoRepository.findPerusteRakenne(opiskeluOikeus.tutkinto.ePerusteetDiaarinumero)(arviointiAsteikot) match {
-      case None =>
-        HttpStatus.badRequest("Invalid ePeruste: " + opiskeluOikeus.tutkinto.ePerusteetDiaarinumero)
-      case Some(rakenne) =>
-        HttpStatus.ifThen(!userContext.hasReadAccess(opiskeluOikeus.oppilaitosOrganisaatio)) { HttpStatus.forbidden("Forbidden") }
-          .ifOkThen{ HttpStatus
-              .each(opiskeluOikeus.suoritustapa.filter(!Suoritustapa.apply(_).isDefined)) { suoritustapa => HttpStatus.badRequest("Invalid suoritustapa: " + suoritustapa)}
-              .appendEach(opiskeluOikeus.osaamisala.filter(osaamisala => !TutkintoRakenne.findOsaamisala(rakenne, osaamisala).isDefined)) { osaamisala => HttpStatus.badRequest("Invalid osaamisala: " + osaamisala) }
-              .appendEach(opiskeluOikeus.suoritukset)(validateSuoritus(_, opiskeluOikeus.suoritustapa.flatMap(Suoritustapa.apply), rakenne))
-          }
-    }
+    HttpStatus.ifThen(!userContext.hasReadAccess(opiskeluOikeus.oppilaitos)) { HttpStatus.forbidden("Forbidden") }
+      .ifOkThen {
+        validateSuoritus(opiskeluOikeus.suoritus)
+      }
   }
 
+  def validateSuoritus(suoritus: Suoritus): HttpStatus = suoritus.koulutusmoduulitoteutus match {
+    case t: TutkintoKoulutustoteutus =>
+      t.koulutusmoduuli.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_)) match {
+        case None =>
+          HttpStatus.badRequest(t.koulutusmoduuli.perusteenDiaarinumero.map(d => "Tutkinnon peruste puuttuu tai on virheellinen: " + d).getOrElse("Tutkinnon peruste puuttuu"))
+        case Some(rakenne) =>
+          HttpStatus.each(t.suoritustapa.filter(suoritustapa => !validateKoodistoKoodiViite(suoritustapa.tunniste))) { suoritustapa: Suoritustapa => HttpStatus.badRequest("Invalid suoritustapa: " + suoritustapa.tunniste.koodiarvo) }
+            .appendEach(t.osaamisala.toList.flatten.filter(osaamisala => !TutkintoRakenne.findOsaamisala(rakenne, osaamisala.koodiarvo).isDefined)) { osaamisala: KoodistoKoodiViite => HttpStatus.badRequest("Invalid osaamisala: " + osaamisala.koodiarvo) }
+            .appendEach(suoritus.osasuoritukset.toList.flatten)(validateSuoritus(_))
+      }
+    case _ => HttpStatus.ok
+  }
+
+  private def validateKoodistoKoodiViite(viittaus: KoodistoKoodiViite) = {
+    true
+  }
+
+
+/*
   def validateSuoritus(suoritus: Suoritus, suoritusTapa: Option[Suoritustapa], rakenne: TutkintoRakenne): HttpStatus = {
     suoritusTapa match {
       case None => HttpStatus.badRequest("Suoritustapa puuttuu")
@@ -90,7 +102,6 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
       }
     }
   }
-
   */
 
   def userView(oid: String)(implicit userContext: UserContext): Either[HttpStatus, TorOppija] = {
