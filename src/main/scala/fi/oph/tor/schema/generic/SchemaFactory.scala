@@ -122,7 +122,7 @@ object TraitImplementationFinder {
       val javaClass: Class[_] = Class.forName(className)
       val reflections = new Reflections(javaClass.getPackage.getName)
 
-      val implementationClasses = reflections.getSubTypesOf(javaClass).asScala.toSet.asInstanceOf[Set[Class[_]]]
+      val implementationClasses = reflections.getSubTypesOf(javaClass).asScala.toSet.asInstanceOf[Set[Class[_]]].filter(!_.isInterface)
       implementationClasses
     })
   }

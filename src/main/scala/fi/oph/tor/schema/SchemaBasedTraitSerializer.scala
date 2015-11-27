@@ -20,11 +20,16 @@ class SchemaBasedTraitSerializer(schema: ClassSchema) extends Serializer[AnyRef]
                 case e: Exception => Nil
               })
           }
-          found.sortBy{
-            _._1.getConstructors.toList(0).getParameterTypes.length // choose longest constructor if multiple matches
-          }.reverse.map(_._2).headOption match {
-            case Some(matching) => matching
-            case None => throw new RuntimeException("No matching implementation of " + t.getSimpleName + " found for data " + json)
+          try {
+            found.sortBy {
+              _._1.getConstructors.toList(0).getParameterTypes.length // choose longest constructor if multiple matches
+            }.reverse.map(_._2).headOption match {
+              case Some(matching) => matching
+              case None => throw new RuntimeException("No matching implementation of " + t.getSimpleName + " found for data " + json)
+            }
+          } catch {
+            case e: Exception =>
+              throw e
           }
       }
     }
