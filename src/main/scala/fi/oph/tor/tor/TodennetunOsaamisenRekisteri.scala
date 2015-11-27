@@ -68,8 +68,8 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     case _ => HttpStatus.ok
   }
 
-  private def validateKoodistoKoodiViite(viittaus: KoodistoKoodiViite) = {
-    true
+  private def validateKoodistoKoodiViite(viite: KoodistoKoodiViite) = {
+    KoodistoPalvelu.validate(koodistoPalvelu, viite).isDefined
   }
 
 

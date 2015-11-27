@@ -1,0 +1,46 @@
+[
+  {
+    "koodiUri": "suoritustapa_naytto",
+    "metadata": [
+      {
+        "nimi": "Näyttö",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Näyttö",
+        "lyhytNimi": null,
+        "kieli": "EN"
+      },
+      {
+        "nimi": "Näyttö",
+        "lyhytNimi": null,
+        "kieli": "SV"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "naytto"
+  },
+  {
+    "koodiUri": "suoritustapa_ops",
+    "metadata": [
+      {
+        "nimi": "Opetussuunnitelman mukainen",
+        "lyhytNimi": "ops",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Opetussuunnitelman mukainen",
+        "lyhytNimi": "ops",
+        "kieli": "EN"
+      },
+      {
+        "nimi": "Opetussuunnitelman mukainen",
+        "lyhytNimi": "ops",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "ops"
+  }
+]

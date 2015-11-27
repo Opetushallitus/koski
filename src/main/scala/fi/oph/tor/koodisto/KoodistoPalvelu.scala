@@ -24,6 +24,10 @@ object KoodistoPalvelu extends Logging {
     }))
   }
 
+  def validate(palvelu: KoodistoPalvelu, viite: KoodistoKoodiViite):Option[KoodistoKoodiViite] = {
+    getKoodistoKoodiViite(palvelu, viite.koodistoUri, viite.koodiarvo, viite.koodistoVersio)
+  }
+
   def getKoodistoKoodiViite(palvelu: KoodistoPalvelu, koodistoUri: String, koodiarvo: String, koodistoVersio: Option[Int] = None): Option[KoodistoKoodiViite] = {
     val versio = koodistoVersio.getOrElse(palvelu.getLatestVersion(koodistoUri))
     val viite = palvelu.getKoodistoKoodit(KoodistoViittaus(koodistoUri, versio)).flatMap { koodit =>
