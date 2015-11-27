@@ -9,7 +9,7 @@ trait KoodistoPalvelu {
   def getKoodistoKoodit(koodisto: KoodistoViittaus): Option[List[KoodistoKoodi]]
   def getKoodisto(koodisto: KoodistoViittaus): Option[Koodisto]
   def getAlakoodit(koodiarvo: String): List[Alakoodi]
-  def getLatestVersion(koodisto: String): Int
+  def getLatestVersion(koodisto: String): Int // TODO: should be option?
 }
 
 object KoodistoPalvelu extends Logging {
@@ -28,10 +28,16 @@ object KoodistoPalvelu extends Logging {
     getKoodistoKoodiViite(palvelu, viite.koodistoUri, viite.koodiarvo, viite.koodistoVersio)
   }
 
+  def koodisto(palvelu: KoodistoPalvelu, viite: KoodistoKoodiViite): Option[KoodistoViittaus] = {
+    Some(KoodistoViittaus(viite.koodistoUri, viite.koodistoVersio.getOrElse(palvelu.getLatestVersion(viite.koodistoUri))))
+  }
+
   def getKoodistoKoodiViite(palvelu: KoodistoPalvelu, koodistoUri: String, koodiarvo: String, koodistoVersio: Option[Int] = None): Option[KoodistoKoodiViite] = {
     val versio = koodistoVersio.getOrElse(palvelu.getLatestVersion(koodistoUri))
     val viite = palvelu.getKoodistoKoodit(KoodistoViittaus(koodistoUri, versio)).flatMap { koodit =>
-      koodit.find(_.koodiArvo == koodiarvo).map { koodi => KoodistoKoodiViite(koodi.koodiArvo, koodi.nimi("fi"), koodistoUri, Some(versio))}
+      koodit.find(_.koodiArvo == koodiarvo).map {
+        koodi => KoodistoKoodiViite(koodi.koodiArvo, koodi.nimi("fi"), koodistoUri, Some(versio))
+      }
     }
     if (!viite.isDefined) {
       logger.warn("Koodia " + koodiarvo + " ei löydy koodistosta " + koodistoUri)

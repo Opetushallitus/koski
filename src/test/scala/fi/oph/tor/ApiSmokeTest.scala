@@ -22,6 +22,7 @@ class ApiSmokeTest extends FreeSpec with Matchers with HttpComponentsClient {
         val body = Json.write(example.data).getBytes("utf-8")
         post("api/oppija", body = body, headers = (authHeaders + ("Content-type" -> "application/json"))) {
           verifyResponseStatus()
+          println(example.name + ": OK")
         }
       }
     }

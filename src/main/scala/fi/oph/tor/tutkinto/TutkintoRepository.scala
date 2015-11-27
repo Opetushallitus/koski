@@ -17,7 +17,7 @@ class TutkintoRepository(eperusteet: EPerusteetRepository, arviointiAsteikot: Ar
     ePerusteetToTutkinnot(eperusteet.findPerusteetByDiaarinumero(diaarinumero)).headOption
   }
 
-  def findPerusteRakenne(diaariNumero: String) = {
+  def findPerusteRakenne(diaariNumero: String): Option[TutkintoRakenne] = {
     eperusteet.findRakenne(diaariNumero)
       .map(rakenne => EPerusteetTutkintoRakenneConverter.convertRakenne(rakenne)(arviointiAsteikot, koodistoPalvelu))
   }
@@ -51,7 +51,11 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
               if (arviointiasteikkoViittaus.isEmpty) {
                 logger.warn("Arviointiasteikko not found for Koulutustyyppi " + koulutustyyppi)
               }
-              TutkinnonOsa(KoulutusModuuliTunniste.tutkinnonOsa(eTutkinnonOsa.koodiArvo), eTutkinnonOsa.nimi.getOrElse("fi", ""), arviointiasteikkoViittaus)
+              KoodistoPalvelu.getKoodistoKoodiViite(koodistoPalvelu, "tutkinnonosat", eTutkinnonOsa.koodiArvo, None) match {
+                case Some(tutkinnonosaKoodi) => TutkinnonOsa(tutkinnonosaKoodi, eTutkinnonOsa.nimi.getOrElse("fi", ""), arviointiasteikkoViittaus)
+                case None => throw new RuntimeException("Tutkinnon osaa ei löydy koodistosta: " + eTutkinnonOsa.koodiArvo)
+              }
+
             case None => throw new RuntimeException("Tutkinnonosaviitettä ei löydy: " + x._tutkinnonOsaViite)
           }
         }

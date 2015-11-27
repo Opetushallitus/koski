@@ -5,7 +5,7 @@ import java.time.LocalDate.{of => date, _}
 object TorOppijaExamples {
   private val näyttö = Näyttö("Toimi automekaanikkona kolarikorjauspuolella kaksi vuotta", "Autokorjaamo Oy, Riihimäki")
   private val suoritustapaNäyttö = KoodistoKoodiViite("naytto", Some("Näyttö"), "suoritustapa", Some(1))
-  private val suoritustapaOps = KoodistoKoodiViite("ops", Some("Opetussuunnitelmaperusteinen"), "suoritustapa", Some(1))
+  private val suoritustapaOps = KoodistoKoodiViite("ops", Some("Opetussuunnitelman mukainen"), "suoritustapa", Some(1))
   private val järjestämismuotoOppisopimus = KoodistoKoodiViite("20", Some("Oppisopimusmuotoinen"), "jarjestamismuoto", Some(1))
   private val järjestämismuotoOppilaitos = KoodistoKoodiViite("10", Some("Oppilaitosmuotoinen"), "jarjestamismuoto", Some(1))
   private val toimipiste: Organisaatio = Organisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))
@@ -290,7 +290,7 @@ object TorOppijaExamples {
             Suoritus(
               Some("suoritus-12345-1"),
               OpsTutkinnonosatoteutus(
-                OpsTutkinnonosa(KoodistoKoodiViite("100034", Some("Maalauksen esikäsittelytyöt"), "tutkinnonosat", None), true, Laajuus(15, opintojenLaajuusYksikkö)),
+                OpsTutkinnonosa(KoodistoKoodiViite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Laajuus(11, opintojenLaajuusYksikkö)),
                 suoritustapa = Some(DefaultSuoritustapa(suoritustapaOps))
               ),
               suorituskieli = None,

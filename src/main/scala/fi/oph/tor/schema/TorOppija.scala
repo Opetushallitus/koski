@@ -1,6 +1,7 @@
 package fi.oph.tor.schema
 
 import java.time.LocalDate
+import fi.oph.tor.koodisto.KoodistoViittaus
 import fi.oph.tor.schema.generic.annotation.{Description, ReadOnly}
 
 
@@ -295,7 +296,17 @@ case class KoodistoKoodiViite(
   koodistoUri: String,
   @Description("Käytetyn koodiston versio. Jos versiota ei määritellä, käytetään uusinta versiota")
   koodistoVersio: Option[Int]
-)
+) {
+  override def toString = koodistoUri + "/" + koodiarvo
+
+  // TODO: overridden because incomplete instances are passed around. Should replace with a type-based approach
+
+  override def hashCode() = toString.hashCode
+  override def equals(obj: scala.Any) = obj match {
+    case x:KoodistoKoodiViite => x.toString == toString
+    case _ => false
+  }
+}
 
 @Description("Henkilökohtainen opetuksen järjestämistä koskeva suunnitelma, https://fi.wikipedia.org/wiki/HOJKS")
 @OksaUri("tmpOKSAID228", "erityisopiskelija")
