@@ -17,3 +17,4 @@ bundle.js
 npm-debug.log
 web/dist
 src/main/resources/*.conf
+src/test/scala/fi/oph/tor/ServiceTester.scala
