@@ -1,6 +1,7 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import R from 'ramda'
+import Http from './http'
 
 export const opiskeluOikeusChange = Bacon.Bus()
 
@@ -33,29 +34,51 @@ const Dropdown = React.createClass({
 export const OpiskeluOikeus = React.createClass({
   render() {
     let {opiskeluOikeus} = this.props
+    let {rakenne} = this.state
     return (
       <div className="opiskeluoikeus">
         <h4>Opinto-oikeudet</h4>
-        <span className="tutkinto">{opiskeluOikeus.tutkinto.nimi}</span> <span className="oppilaitos">{opiskeluOikeus.oppilaitosOrganisaatio.nimi}</span>
-        { opiskeluOikeus.tutkinto.rakenne
+        <span className="tutkinto">{opiskeluOikeus.suoritus.koulutusmoduulitoteutus.koulutusmoduuli.tutkintokoodi.nimi}</span> <span className="oppilaitos">{opiskeluOikeus.oppilaitos.nimi}</span>
+        { rakenne
           ?
             <div className="tutkinto-rakenne">
               <Dropdown className="suoritustapa"
                         title="Suoritustapa"
-                        options={opiskeluOikeus.tutkinto.rakenne.suoritustavat.map(s => s.suoritustapa)}
-                        value={opiskeluOikeus.suoritustapa}
-                        onChange={(value) => opiskeluOikeusChange.push([opiskeluOikeus.id, oo => R.merge(oo, {suoritustapa: value || undefined})] )}
+                        options={rakenne.suoritustavat.map(s => s.suoritustapa)}
+                        value={opiskeluOikeus.suoritus.suoritustapa ? opiskeluOikeus.suoritus.suoritustapa.koodiarvo : ''}
+                        onChange={(value) => opiskeluOikeusChange.push([opiskeluOikeus.id, oo => R.merge(oo, value ? {
+                          suoritus: {
+                            koulutusmoduulitoteutus: {
+                              suoritustapa: {
+                                tunniste: {
+                                  koodiarvo: value,
+                                  koodistoUri: 'suoritustapa'
+                                }
+                              }
+                            }
+                          }
+                        } : {})] )}
                 />
               <Dropdown className="osaamisala"
                         title="Osaamisala"
-                        options={opiskeluOikeus.tutkinto.rakenne.osaamisalat}
-                        value={opiskeluOikeus.osaamisala}
-                        onChange={(value) => opiskeluOikeusChange.push([opiskeluOikeus.id, oo => R.merge(oo, {osaamisala: value || undefined})] )}
+                        options={rakenne.osaamisalat}
+                        value={opiskeluOikeus.suoritus.osaamisala ? opiskeluOikeus.suoritus.osaamisala.koodiarvo : ''}
+                        onChange={(value) => opiskeluOikeusChange.push([opiskeluOikeus.id, oo => R.merge(oo, value ? {
+                          suoritus: {
+                            koulutusmoduulitoteutus: {
+                              osaamisala: {
+                                koodiarvo: value,
+                                koodistoUri: 'osaamisala'
+                              }
+                            }
+                          }
+                        } : {})] )}
                 />
-              { opiskeluOikeus.suoritustapa
-                ? opiskeluOikeus.tutkinto.rakenne.suoritustavat.find(x => x.suoritustapa.koodi == opiskeluOikeus.suoritustapa).rakenne.osat.map(rakenneOsa => <Rakenneosa
+              { opiskeluOikeus.suoritus.suoritustapa
+                ? rakenne.suoritustavat.find(x => x.suoritustapa.koodi == opiskeluOikeus.suoritus.suoritustapa.koodiarvo).rakenne.osat.map(rakenneOsa => <Rakenneosa
                     rakenneosa={rakenneOsa}
                     opiskeluOikeus={opiskeluOikeus}
+                    rakenne={rakenne}
                   />)
                 : null
               }
@@ -64,15 +87,25 @@ export const OpiskeluOikeus = React.createClass({
         }
       </div>
     )
+  },
+  componentDidMount() {
+    let {opiskeluOikeus} = this.props
+    let diaarinumero = opiskeluOikeus.suoritus.koulutusmoduulitoteutus.koulutusmoduuli.perusteenDiaarinumero
+    Http.get('/tor/api/tutkinto/rakenne/' + encodeURIComponent(diaarinumero)).log().onValue(rakenne =>
+      this.setState({rakenne: rakenne})
+    )
+  },
+  getInitialState() {
+    return {}
   }
 })
 
 const Rakenneosa = React.createClass({
   render() {
-    let { rakenneosa, opiskeluOikeus } = this.props
+    let { rakenneosa, opiskeluOikeus, rakenne } = this.props
     return rakenneosa.osat
       ? <RakenneModuuli key={rakenneosa.nimi} opiskeluOikeus={opiskeluOikeus} rakenneosa={rakenneosa} />
-      : <TutkinnonOsa key={rakenneosa.nimi} opiskeluOikeus={opiskeluOikeus} tutkinnonOsa={rakenneosa} />
+      : <TutkinnonOsa key={rakenneosa.nimi} opiskeluOikeus={opiskeluOikeus} tutkinnonOsa={rakenneosa} rakenne={rakenne}/>
   }
 })
 
@@ -100,8 +133,8 @@ const RakenneModuuli = React.createClass({
 
 const TutkinnonOsa = React.createClass({
   render() {
-    const {tutkinnonOsa, opiskeluOikeus} = this.props
-    const arviointiAsteikko = R.find(asteikko => R.equals(asteikko.koodisto, tutkinnonOsa.arviointiAsteikko))(opiskeluOikeus.tutkinto.rakenne.arviointiAsteikot)
+    const {tutkinnonOsa, opiskeluOikeus, rakenne} = this.props
+    const arviointiAsteikko = R.find(asteikko => R.equals(asteikko.koodisto, tutkinnonOsa.arviointiAsteikko))(rakenne.arviointiAsteikot)
     const arvosanat = arviointiAsteikko ? arviointiAsteikko.arvosanat : undefined
 
     const addArvosana = (arvosana) => (oOikeus) => {

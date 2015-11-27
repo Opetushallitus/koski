@@ -87,15 +87,41 @@ export const CreateOppija = React.createClass({
     const {tutkinto: tutkinto, oppilaitos: oppilaitosOrganisaatio} = this.state.opiskeluOikeus
 
     return {
-      henkilo: {
+      henkilö: {
         etunimet: etunimet,
         sukunimi: sukunimi,
         kutsumanimi: kutsumanimi,
         hetu: hetu
       },
       opiskeluoikeudet: [{
-        oppilaitosOrganisaatio: oppilaitosOrganisaatio,
-        tutkinto: tutkinto
+        //TODO Hardcoded
+        lähdejärjestelmänId : {
+          id : "1",
+          lähdejärjestelmä : {
+            koodiarvo : "tor",
+            nimi : "Tor",
+            koodistoUri : "lahdejarjestelma",
+            koodistoVersio : 1
+          }
+        },
+        oppilaitos: oppilaitosOrganisaatio,
+        suoritus: {
+          koulutusmoduulitoteutus: {
+            koulutusmoduuli: {
+              tutkintokoodi: {
+                koodiarvo: tutkinto.tutkintoKoodi,
+                nimi: tutkinto.nimi,
+                koodistoUri: 'koulutus'
+              },
+              perusteenDiaarinumero: tutkinto.ePerusteetDiaarinumero
+            }
+          },
+          //TODO Hardcoded
+          toimipiste : {
+            oid : "1.2.246.562.10.42456023292",
+            nimi : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        }
       }]
     }
   },

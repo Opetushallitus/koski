@@ -42,7 +42,7 @@ const Loading = () => <div className='main-content oppija loading'></div>
 
 const ExistingOppija = React.createClass({
   render() {
-    let {oppija: { henkilo: henkilo, opiskeluoikeudet: opiskeluoikeudet}} = this.props
+    let {oppija: { henkilö: henkilo, opiskeluoikeudet: opiskeluoikeudet}} = this.props
     return (
       <div className='main-content oppija'>
         <h2>{henkilo.sukunimi}, {henkilo.etunimet} <span className='hetu'>{henkilo.hetu}</span></h2>

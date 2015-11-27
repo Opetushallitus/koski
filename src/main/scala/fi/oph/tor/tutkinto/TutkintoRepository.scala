@@ -13,7 +13,7 @@ class TutkintoRepository(eperusteet: EPerusteetRepository, arviointiAsteikot: Ar
     ePerusteetToTutkinnot(eperusteet.findPerusteet(query))
   }
 
-  def findByEPerusteDiaarinumero(diaarinumero: String) = {
+  def findByEPerusteDiaarinumero(diaarinumero: String): Option[TutkintoPeruste] = {
     ePerusteetToTutkinnot(eperusteet.findPerusteetByDiaarinumero(diaarinumero)).headOption
   }
 
