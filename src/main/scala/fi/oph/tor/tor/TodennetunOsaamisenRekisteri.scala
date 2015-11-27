@@ -28,11 +28,9 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
       Left(HttpStatus.badRequest("At least one OpiskeluOikeus required"))
     }
     else {
-      HttpStatus.fold(oppija.opiskeluoikeudet.map(x => HttpStatus.ok)) match {
+      HttpStatus.fold(oppija.opiskeluoikeudet.map(validateOpiskeluOikeus)) match {
         case error if error.isError => Left(error)
         case _ =>
-
-
           val oppijaOid: Either[HttpStatus, PossiblyUnverifiedOppijaOid] = oppija.henkilö match {
             case h:NewHenkilö => oppijaRepository.findOrCreate(oppija).right.map(VerifiedOppijaOid(_))
             case h:HenkilöWithOid => Right(UnverifiedOppijaOid(h.oid, oppijaRepository))
@@ -51,7 +49,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
   }
 
   def validateOpiskeluOikeus(opiskeluOikeus: OpiskeluOikeus)(implicit userContext: UserContext): HttpStatus = {
-    HttpStatus.ifThen(!userContext.hasReadAccess(opiskeluOikeus.oppilaitos)) { HttpStatus.forbidden("Forbidden") }
+    HttpStatus.ifThen(!userContext.hasReadAccess(opiskeluOikeus.oppilaitos)) { HttpStatus.forbidden("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid) }
       .ifOkThen {
         validateSuoritus(opiskeluOikeus.suoritus)
       }

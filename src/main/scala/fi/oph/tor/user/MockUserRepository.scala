@@ -7,7 +7,8 @@ class MockUserRepository extends UserRepository {
     "12345" -> OrganisaatioPuu(List(
       OrganisaatioHierarkia("1", "Helsingin Ammattioppilaitos", List("OPPILAITOS"), Nil),
       OrganisaatioHierarkia("2", "Metropolia Helsinki", List("OPPILAITOS"), Nil),
-      OrganisaatioHierarkia("3", "Omnia Helsinki", List("OPPILAITOS"), Nil)
+      OrganisaatioHierarkia("3", "Omnia Helsinki", List("OPPILAITOS"), Nil),
+      OrganisaatioHierarkia("1.2.246.562.10.52251087186", "Stadin Ammattiopisto", List("OPPILAITOS"), Nil)
     )),
     "11111" -> OrganisaatioPuu(List(
       OrganisaatioHierarkia("3", "Omnia Helsinki", List("OPPILAITOS"), Nil)
