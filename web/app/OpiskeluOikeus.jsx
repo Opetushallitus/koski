@@ -9,8 +9,8 @@ export const opiskeluOikeusChange = Bacon.Bus()
 const Dropdown = React.createClass({
   render() {
     let { title, options, value, onChange, className} = this.props
-    let withEmptyValue = (xs) => [{ koodi: '', nimi: 'Valitse...'}].concat(xs)
-    let optionElems = opts => withEmptyValue(opts).map(s => <option key={s.koodi} value={s.koodi}>{s.nimi}</option>)
+    let withEmptyValue = (xs) => [{ koodiarvo: '', nimi: 'Valitse...'}].concat(xs)
+    let optionElems = opts => withEmptyValue(opts).map(s => <option key={s.koodiarvo} value={s.koodiarvo}>{s.nimi ? s.nimi : s.koodiarvo}</option>)
 
     return options.length > 1
         ? <label>{title}
@@ -42,40 +42,40 @@ export const OpiskeluOikeus = React.createClass({
         { rakenne
           ?
             <div className="tutkinto-rakenne">
+
+
               <Dropdown className="suoritustapa"
                         title="Suoritustapa"
                         options={rakenne.suoritustavat.map(s => s.suoritustapa)}
-                        value={opiskeluOikeus.suoritus.suoritustapa ? opiskeluOikeus.suoritus.suoritustapa.koodiarvo : ''}
-                        onChange={(value) => opiskeluOikeusChange.push([opiskeluOikeus.id, oo => R.merge(oo, value ? {
-                          suoritus: {
-                            koulutusmoduulitoteutus: {
-                              suoritustapa: {
-                                tunniste: {
-                                  koodiarvo: value,
-                                  koodistoUri: 'suoritustapa'
-                                }
+                        value={opiskeluOikeus.suoritus.koulutusmoduulitoteutus.suoritustapa ? opiskeluOikeus.suoritus.koulutusmoduulitoteutus.suoritustapa.tunniste.koodiarvo : ''}
+                        onChange={(value) => opiskeluOikeusChange.push([opiskeluOikeus.id,
+                          oo => {
+                            oo.suoritus.koulutusmoduulitoteutus.suoritustapa = value ? {
+                              tunniste: {
+                                koodiarvo: value,
+                                koodistoUri: 'suoritustapa'
                               }
-                            }
+                            } : undefined
+                            return oo
                           }
-                        } : {})] )}
-                />
+                        ])}
+              />
               <Dropdown className="osaamisala"
                         title="Osaamisala"
                         options={rakenne.osaamisalat}
-                        value={opiskeluOikeus.suoritus.osaamisala ? opiskeluOikeus.suoritus.osaamisala.koodiarvo : ''}
-                        onChange={(value) => opiskeluOikeusChange.push([opiskeluOikeus.id, oo => R.merge(oo, value ? {
-                          suoritus: {
-                            koulutusmoduulitoteutus: {
-                              osaamisala: {
+                        value={opiskeluOikeus.suoritus.koulutusmoduulitoteutus.osaamisala ? opiskeluOikeus.suoritus.koulutusmoduulitoteutus.osaamisala.koodiarvo : ''}
+                        onChange={(value) => opiskeluOikeusChange.push([opiskeluOikeus.id,
+                          oo => {
+                            oo.suoritus.koulutusmoduulitoteutus.osaamisala = value ? {
                                 koodiarvo: value,
                                 koodistoUri: 'osaamisala'
-                              }
-                            }
+                            } : undefined
+                            return oo
                           }
-                        } : {})] )}
+                        ])}
                 />
-              { opiskeluOikeus.suoritus.suoritustapa
-                ? rakenne.suoritustavat.find(x => x.suoritustapa.koodi == opiskeluOikeus.suoritus.suoritustapa.koodiarvo).rakenne.osat.map(rakenneOsa => <Rakenneosa
+              { opiskeluOikeus.suoritus.koulutusmoduulitoteutus.suoritustapa
+                ? rakenne.suoritustavat.find(x => x.suoritustapa.koodiarvo == opiskeluOikeus.suoritus.koulutusmoduulitoteutus.suoritustapa.tunniste.koodiarvo).rakenne.osat.map(rakenneOsa => <Rakenneosa
                     rakenneosa={rakenneOsa}
                     opiskeluOikeus={opiskeluOikeus}
                     rakenne={rakenne}
