@@ -420,7 +420,7 @@ describe('TOR', function() {
 
         describe('Kun sivu ladataan uudelleen', function() {
           before( page.oppijaHaku.search('ero', 4),
-            page.oppijaHaku.selectOppija('tunkkila'))
+            page.oppijaHaku.selectOppija('tunkkila'), opinnot.waitUntilTutkintoVisible())
 
           it('Muuttuneet tiedot on tallennettu', function() {
             expect(tutkinnonOsa.getArvosana()).to.equal("H2")

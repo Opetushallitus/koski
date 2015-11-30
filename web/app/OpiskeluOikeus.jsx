@@ -113,15 +113,44 @@ const TutkinnonOsa = React.createClass({
     const arvosanat = arviointiAsteikko ? arviointiAsteikko.arvosanat : undefined
 
     const addArvosana = (arvosana) => (oOikeus) => {
-      let suoritukset = oOikeus.suoritukset.concat({ koulutusModuuli: tutkinnonOsa.tunniste, arviointi: { asteikko: tutkinnonOsa.arviointiAsteikko, arvosana: arvosana }})
-      return R.merge(oOikeus, { suoritukset })
+      let suoritukset = (oOikeus.suoritus.osasuoritukset ? oOikeus.suoritus.osasuoritukset : []).concat(
+        {
+          koulutusmoduulitoteutus: {
+            koulutusmoduuli: {
+              tunniste: tutkinnonOsa.tunniste,
+              // TODO, hardcoded
+              pakollinen: true,
+              // TODO, hardcoded
+              laajuus: {
+                "arvo" : 11.0,
+                "yksikkö" : {
+                  "koodiarvo" : "6",
+                  "koodistoUri" : "opintojenlaajuusyksikko",
+                }
+              }
+            }
+          },
+          arviointi: [
+            {
+              arvosana: {
+                koodiarvo: arvosana.koodiarvo,
+                koodistoUri: tutkinnonOsa.arviointiAsteikko.koodistoUri
+              }
+            }
+          ],
+          // TODO, is this really required?
+          toimipiste: oOikeus.suoritus.toimipiste
+        }
+      )
+      oOikeus.suoritus.osasuoritukset = suoritukset
+      return oOikeus
     }
 
     const saveArvosana = (arvosana) => {
       opiskeluOikeusChange.push([opiskeluOikeus.id, addArvosana(arvosana)])
     }
 
-    const suoritus = R.find(osanSuoritus => R.equals(osanSuoritus.koulutusModuuli, tutkinnonOsa.tunniste))(opiskeluOikeus.suoritus.osasuoritukset ? opiskeluOikeus.suoritus.osasuoritukset : [])
+    const suoritus = R.find(osanSuoritus => R.equals(osanSuoritus.koulutusmoduulitoteutus.koulutusmoduuli.tunniste, tutkinnonOsa.tunniste))(opiskeluOikeus.suoritus.osasuoritukset ? opiskeluOikeus.suoritus.osasuoritukset : [])
     const arviointi = suoritus && suoritus.arviointi
 
     return (
@@ -137,7 +166,7 @@ const TutkinnonOsa = React.createClass({
             </div>
           : (
             arviointi
-              ? <div className="arviointi"><span className="arvosana">{suoritus.arviointi.arvosana.nimi}</span></div>
+              ? <div className="arviointi"><span className="arvosana">{arvosanat.find(arvosana => arvosana.koodiarvo == suoritus.arviointi[arviointi.length - 1].arvosana.koodiarvo).nimi}</span></div>
               : null
           )
         }
