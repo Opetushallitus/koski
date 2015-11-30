@@ -42,10 +42,10 @@ const Loading = () => <div className='main-content oppija loading'></div>
 
 const ExistingOppija = React.createClass({
   render() {
-    let {oppija: { henkilö: henkilo, opiskeluoikeudet: opiskeluoikeudet}} = this.props
+    let {oppija: { henkilö: henkilö, opiskeluoikeudet: opiskeluoikeudet}} = this.props
     return (
       <div className='main-content oppija'>
-        <h2>{henkilo.sukunimi}, {henkilo.etunimet} <span className='hetu'>{henkilo.hetu}</span></h2>
+        <h2>{henkilö.sukunimi}, {henkilö.etunimet} <span className='hetu'>{henkilö.hetu}</span></h2>
         <hr></hr>
         { opiskeluoikeudet.map( opiskeluOikeus =>
           <OpiskeluOikeus key={opiskeluOikeus.id} opiskeluOikeus={ opiskeluOikeus } />

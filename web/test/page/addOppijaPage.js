@@ -103,8 +103,8 @@ function AddOppijaPage() {
     'kutsumanimi':'Testi',
     'hetu':'010101-123N'
   }}
-  function makeOppija(henkilo, opiskeluoikeudet) { return _.cloneDeep({
-    henkilo: henkilo || defaultHenkilo(),
+  function makeOppija(henkilö, opiskeluoikeudet) { return _.cloneDeep({
+    henkilö: henkilö || defaultHenkilo(),
     opiskeluoikeudet: opiskeluoikeudet || [defaultOpiskeluOikeus()]
   })}
   return api
