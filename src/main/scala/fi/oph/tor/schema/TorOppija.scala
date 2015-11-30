@@ -110,13 +110,15 @@ case class Suoritus(
   osasuoritukset: Option[List[Suoritus]]
 )
 
-trait Koulutusmoduuli
+trait Koulutusmoduuli {
+  def tunniste: KoodiViite
+}
   @Description("Tutkintoon johtava koulutus")
   case class TutkintoKoulutus(
     @Description("Tutkinnon 6-numeroinen tutkintokoodi")
     @KoodistoUri("koulutus")
     @OksaUri("tmpOKSAID560", "tutkinto")
-    tutkintokoodi: KoodistoKoodiViite,
+    tunniste: KoodistoKoodiViite,
     @Description("Tutkinnon perusteen diaarinumero (pakollinen). Ks. ePerusteet-palvelu")
     perusteenDiaarinumero: Option[String]
   ) extends Koulutusmoduuli
@@ -125,7 +127,7 @@ trait Koulutusmoduuli
   case class OpsTutkinnonosa(
     @Description("Tutkinnon osan kansallinen koodi")
     @KoodistoUri("tutkinnonosat")
-    tutkinnonosakoodi: KoodistoKoodiViite,
+    tunniste: KoodistoKoodiViite,
     @Description("Onko pakollinen osa tutkinnossa")
     pakollinen: Boolean,
     laajuus: Laajuus,
@@ -135,7 +137,7 @@ trait Koulutusmoduuli
 
   @Description("Paikallinen tutkinnon osa")
   case class PaikallinenTutkinnonosa(
-    paikallinenKoodi: Paikallinenkoodi,
+    tunniste: Paikallinenkoodi,
     nimi: String,
     kuvaus: String,
     @Description("Onko pakollinen osa tutkinnossa")
@@ -143,7 +145,9 @@ trait Koulutusmoduuli
     laajuus: Laajuus
   ) extends Koulutusmoduuli
 
-trait Koulutusmoduulitoteutus
+trait Koulutusmoduulitoteutus {
+  def koulutusmoduuli: Koulutusmoduuli
+}
   @Description("Tutkintoon johtava koulutus")
   case class TutkintoKoulutustoteutus(
     koulutusmoduuli: TutkintoKoulutus,
@@ -286,6 +290,11 @@ case class Opiskeluoikeusjakso(
 
 case class Kunta(koodi: String, nimi: Option[String])
 
+trait KoodiViite {
+  def koodiarvo: String
+  def koodistoUri: String
+}
+
 case class KoodistoKoodiViite(
   @Description("Koodin tunniste koodistossa")
   koodiarvo: String,
@@ -296,7 +305,7 @@ case class KoodistoKoodiViite(
   koodistoUri: String,
   @Description("Käytetyn koodiston versio. Jos versiota ei määritellä, käytetään uusinta versiota")
   koodistoVersio: Option[Int]
-) {
+) extends KoodiViite {
   override def toString = koodistoUri + "/" + koodiarvo
 
   // TODO: overridden because incomplete instances are passed around. Should replace with a type-based approach
@@ -324,7 +333,7 @@ case class Paikallinenkoodi(
   nimi: String,
   @Description("Koodiston tunniste")
   koodistoUri: String
-)
+) extends KoodiViite
 
 case class Organisaatio(
   @Description("Organisaation tunniste Opintopolku-palvelussa")

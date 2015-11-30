@@ -94,21 +94,11 @@ export const CreateOppija = React.createClass({
         hetu: hetu
       },
       opiskeluoikeudet: [{
-        //TODO Hardcoded
-        lähdejärjestelmänId : {
-          id : "1",
-          lähdejärjestelmä : {
-            koodiarvo : "tor",
-            nimi : "Tor",
-            koodistoUri : "lahdejarjestelma",
-            koodistoVersio : 1
-          }
-        },
         oppilaitos: oppilaitosOrganisaatio,
         suoritus: {
           koulutusmoduulitoteutus: {
             koulutusmoduuli: {
-              tutkintokoodi: {
+              tunniste: {
                 koodiarvo: tutkinto.tutkintoKoodi,
                 nimi: tutkinto.nimi,
                 koodistoUri: 'koulutus'

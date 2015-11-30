@@ -30,7 +30,7 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
 
   override def find(identifier: OpiskeluOikeusIdentifier)(implicit userContext: UserContext) = identifier match{
     case PrimaryKey(id) => find(OpiskeluOikeudet.filter(_.id === id)).headOption
-    case IdentifyingSetOfFields(oppijaOid, oppilaitosOrganisaatio, ePerusteetDiaarinumero) => {
+    case IdentifyingSetOfFields(oppijaOid, _, _, _) => {
       findByOppijaOid(oppijaOid).find({
         new IdentifyingSetOfFields(oppijaOid, _) == identifier
       })

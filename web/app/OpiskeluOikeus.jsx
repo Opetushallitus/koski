@@ -38,7 +38,7 @@ export const OpiskeluOikeus = React.createClass({
     return (
       <div className="opiskeluoikeus">
         <h4>Opinto-oikeudet</h4>
-        <span className="tutkinto">{opiskeluOikeus.suoritus.koulutusmoduulitoteutus.koulutusmoduuli.tutkintokoodi.nimi}</span> <span className="oppilaitos">{opiskeluOikeus.oppilaitos.nimi}</span>
+        <span className="tutkinto">{opiskeluOikeus.suoritus.koulutusmoduulitoteutus.koulutusmoduuli.tunniste.nimi}</span> <span className="oppilaitos">{opiskeluOikeus.oppilaitos.nimi}</span>
         { rakenne
           ?
             <div className="tutkinto-rakenne">

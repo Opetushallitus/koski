@@ -68,13 +68,13 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
       }
     case (t: OpsTutkinnonosatoteutus, Some(rakenne))  =>
       t.suoritustapa match {
-        case None => HttpStatus.badRequest("Suoritustapa puuttuu tutkinnon osalta " + t.koulutusmoduuli.tutkinnonosakoodi)
+        case None => HttpStatus.badRequest("Suoritustapa puuttuu tutkinnon osalta " + t.koulutusmoduuli.tunniste)
         case Some(suoritusTapa) =>
           KoodistoPalvelu.validate(koodistoPalvelu, suoritusTapa.tunniste) match {
             case Some(suoritustapaKoodi) =>
-              TutkintoRakenne.findTutkinnonOsa(rakenne, suoritusTapa.tunniste, t.koulutusmoduuli.tutkinnonosakoodi) match {
+              TutkintoRakenne.findTutkinnonOsa(rakenne, suoritusTapa.tunniste, t.koulutusmoduuli.tunniste) match {
                 case None =>
-                  HttpStatus.badRequest("Tutkinnon osa ei löydy perusterakenteesta: " + t.koulutusmoduuli.tutkinnonosakoodi)
+                  HttpStatus.badRequest("Tutkinnon osa ei löydy perusterakenteesta: " + t.koulutusmoduuli.tunniste)
                 case Some(tutkinnonOsa) =>
                   HttpStatus.each(suoritus.arviointi.toList.flatten) { arviointi =>
                     val arviointiAsteikko: Option[KoodistoViittaus] = KoodistoPalvelu.koodisto(koodistoPalvelu, arviointi.arvosana)
