@@ -312,15 +312,33 @@ describe('TOR', function() {
       })
 
       describe('Kun opinto-oikeutta yritetään lisätä oppilaitokseen, johon käyttäjällä ei ole pääsyä', function() {
-        it('palautetaan HTTP 403 virhe', verifyResponseCode(addOppija.postOpiskeluOikeusAjax({ oppilaitosOrganisaatio:{oid: 'eipaasya'}}), 403))
+        it('palautetaan HTTP 403 virhe', verifyResponseCode(addOppija.postOpiskeluOikeusAjax(
+          { oppilaitos:{oid: 'eipaasya'}}
+        ), 403, "Ei oikeuksia organisatioon eipaasya"))
       })
 
       describe('Kun yritetään lisätä opinto-oikeus virheelliseen perusteeseen', function() {
-        it('palautetaan HTTP 400 virhe', verifyResponseCode(addOppija.postOpiskeluOikeusAjax({ tutkinto: {ePerusteetDiaarinumero:'virheellinen', tutkintoKoodi: '351301'}}), 400))
+        it('palautetaan HTTP 400 virhe', verifyResponseCode(addOppija.postOpiskeluOikeusAjax({
+          suoritus: {
+            koulutusmoduulitoteutus: {
+              koulutusmoduuli: {
+                perusteenDiaarinumero: '39/xxx/2014'
+              }
+            }
+          }
+        }), 400, "Tutkinnon peruste puuttuu tai on virheellinen: 39/xxx/2014"))
       })
 
       describe('Kun yritetään lisätä opinto-oikeus ilman perustetta', function() {
-        it('palautetaan HTTP 400 virhe', verifyResponseCode(addOppija.postOpiskeluOikeusAjax({ tutkinto: {ePerusteetDiaarinumero: null, tutkintoKoodi: '351301'}}), 400))
+        it('palautetaan HTTP 400 virhe', verifyResponseCode(addOppija.postOpiskeluOikeusAjax({
+          suoritus: {
+            koulutusmoduulitoteutus: {
+              koulutusmoduuli: {
+                perusteenDiaarinumero: null
+              }
+            }
+          }
+        }), 400, "Tutkinnon peruste puuttuu"))
       })
     })
   })
@@ -569,16 +587,16 @@ describe('TOR', function() {
     return function() { testFrame().http.mock(url, result) }
   }
 
-  function verifyResponseCode(fn, code) {
+  function verifyResponseCode(fn, code, text) {
     if (code == 200) {
-      return function(done) {
-        fn().then(function() { done() })
-      }
+      return fn
     } else {
-      return function(done) {
-        fn().catch(function(error) {
+      return function() {
+        return fn().catch(function(error) {
           expect(error.status).to.equal(code)
-          done()
+          if (text) {
+            expect(JSON.parse(error.responseText)[0]).to.equal(text)
+          }
         })
       }
     }

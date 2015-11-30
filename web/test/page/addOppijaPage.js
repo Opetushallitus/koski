@@ -87,15 +87,30 @@ function AddOppijaPage() {
     }
   }
   function defaultSuoritus() { return {
-    koulutusModuuli: {tyyppi: "tutkinnonosa", koodi: "100023"},
+    koulutusmoduuli: {tyyppi: "tutkinnonosa", koodi: "100023"},
     arviointi: {
       asteikko: {koodistoUri: "ammatillisenperustutkinnonarviointiasteikko", versio: 1},
       arvosana: {id: "ammatillisenperustutkinnonarviointiasteikko_2", nimi: "H2"}
     }
   }}
   function defaultOpiskeluOikeus() { return {
-    oppilaitosOrganisaatio: { oid: '1' },
-    tutkinto: {ePerusteetDiaarinumero:'39/011/2014', tutkintoKoodi: '351301'}
+    oppilaitos: { oid: '1' },
+    suoritus: {
+      koulutusmoduulitoteutus: {
+        koulutusmoduuli: {
+          tunniste: {
+            "koodiarvo": "351301",
+            "nimi": "Autoalan perustutkinto",
+            "koodistoUri": "koulutus"
+          },
+          perusteenDiaarinumero: '39/011/2014'
+        }
+      },
+      "toimipiste": {
+        "oid": "1.2.246.562.10.42456023292",
+        "nimi": "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+      }
+    },
   }}
   function defaultHenkilo() {return {
     'etunimet':'Testi',
