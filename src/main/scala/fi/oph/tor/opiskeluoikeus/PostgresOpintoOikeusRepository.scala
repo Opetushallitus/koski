@@ -5,6 +5,7 @@ import fi.oph.tor.db.Tables._
 import fi.oph.tor.db.TorDatabase.DB
 import fi.oph.tor.db._
 import fi.oph.tor.http.HttpStatus
+import fi.oph.tor.oppija.PossiblyUnverifiedOppijaOid
 import fi.oph.tor.schema.{FullHenkilö, OpiskeluOikeus}
 import fi.oph.tor.user.UserContext
 
@@ -24,8 +25,19 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
     Right(await(db.run(OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += new OpiskeluOikeusRow(oppijaOid, opiskeluOikeus))))
   }
 
-  private def findAll(implicit userContext: UserContext): Seq[OpiskeluOikeus] = {
-    findAllRows.map(_.toOpiskeluOikeus)
+  override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: OpiskeluOikeus)(implicit userContext: UserContext): Either[HttpStatus, OpiskeluOikeus.Id] = {
+    val opiskeluoikeudet: Option[OpiskeluOikeus] = find(OpiskeluOikeusIdentifier(oppijaOid.oppijaOid, opiskeluOikeus))
+    opiskeluoikeudet match {
+      case Some(oikeus) => update(oppijaOid.oppijaOid, opiskeluOikeus.copy(id = oikeus.id)) match {
+        case error if error.isError => Left(error)
+        case _ => Right(oikeus.id.get)
+      }
+      case _ =>
+        oppijaOid.verifiedOid match {
+          case Some(oid) => create(oid, opiskeluOikeus)
+          case None => Left(HttpStatus.notFound("Oppija " + oppijaOid.oppijaOid + " not found"))
+        }
+    }
   }
 
   override def find(identifier: OpiskeluOikeusIdentifier)(implicit userContext: UserContext) = identifier match{
@@ -44,6 +56,10 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
       case 1 => HttpStatus.ok
       case x => HttpStatus.internalError("Unexpected number of updated rows: " + x)
     }
+  }
+
+  private def findAll(implicit userContext: UserContext): Seq[OpiskeluOikeus] = {
+    findAllRows.map(_.toOpiskeluOikeus)
   }
 
   private def findAllRows(implicit userContext: UserContext): Seq[OpiskeluOikeusRow] = {
