@@ -96,6 +96,6 @@ class UserPasswordStrategy(protected val app: ScalatraBase, val directoryClient:
    * What should happen if the user is currently not authenticated
    */
   override def unauthenticated()(implicit request: HttpServletRequest, response: HttpServletResponse) {
-    app.halt(401)
+    app.halt(401, "Not authenticated")
   }
 }
