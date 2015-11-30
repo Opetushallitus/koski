@@ -31,7 +31,7 @@ class MockOppijaRepository extends OppijaRepository {
   }
 
   override def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String): Either[HttpStatus, Henkilö.Id] = {
-    if (oppijat.find { o => (o.hetu == Some(hetu)) } .isDefined) {
+    if (oppijat.find { o => (o.hetu == hetu) } .isDefined) {
       Left(HttpStatus.conflict("conflict"))
     } else {
       val newOppija = oppija(generateId, sukunimi, etunimet, hetu)
