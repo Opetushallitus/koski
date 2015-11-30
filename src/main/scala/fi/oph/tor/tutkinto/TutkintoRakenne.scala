@@ -17,12 +17,12 @@ object TutkintoRakenne {
     case t:RakenneModuuli => t.osat.flatMap(findTutkinnonOsa(_, koulutusModuuliTunniste)).headOption
     case _ => None
   }
-  def findOsaamisala(rakenne: TutkintoRakenne, osaamisAlaKoodi: String) = rakenne.osaamisalat.find(_.koodi == osaamisAlaKoodi)
+  def findOsaamisala(rakenne: TutkintoRakenne, osaamisAlaKoodi: String) = rakenne.osaamisalat.find(_.koodiarvo == osaamisAlaKoodi)
 }
 
 case class SuoritustapaJaRakenne(suoritustapa: KoodistoKoodiViite, rakenne: RakenneOsa)
 
-case class Osaamisala(nimi: String, koodi: String)
+case class Osaamisala(nimi: String, koodiarvo: String)
 
 sealed trait RakenneOsa
 

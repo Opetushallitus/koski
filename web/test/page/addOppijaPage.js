@@ -56,6 +56,14 @@ function AddOppijaPage() {
     submit: function() {
       triggerEvent(button(), 'click')
     },
+    submitAndExpectSuccess: function(oppija) {
+      return function() {
+        api.submit()
+        return wait.until(function() {
+          return TorPage().getSelectedOppija().indexOf(oppija) >= 0 && (OpinnotPage().getTutkinto() == "Autoalan perustutkinto")
+        })()
+      }
+    },
     isErrorShown: function(field) {
       return function() {
         return form().find('.error-messages .' + field).is(':visible')

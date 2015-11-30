@@ -2,90 +2,61 @@ import React from 'react'
 import Bacon from 'baconjs'
 import R from 'ramda'
 import Http from './http'
+import Dropdown from './Dropdown.jsx'
 
 export const opiskeluOikeusChange = Bacon.Bus()
-
-// Shows <select> if more than 1 option. If 1 option, automatically selects it and shows it. If zero options, hides the whole thing.
-const Dropdown = React.createClass({
-  render() {
-    let { title, options, value, onChange, className} = this.props
-    let withEmptyValue = (xs) => [{ koodiarvo: '', nimi: 'Valitse...'}].concat(xs)
-    let optionElems = opts => withEmptyValue(opts).map(s => <option key={s.koodiarvo} value={s.koodiarvo}>{s.nimi ? s.nimi : s.koodiarvo}</option>)
-
-    return options.length > 1
-        ? <label>{title}
-            <select
-              className={className}
-              value={value}
-              onChange={(event) => onChange(event.target.value)}>
-                {optionElems(options)}
-            </select>
-          </label>
-        : <div></div>
-  },
-  componentDidMount() {
-    let { options, onChange, value} = this.props
-    if (options.length == 1 && value !== options[0].koodi) {
-      onChange(options[0].koodi)
-    }
-  }
-})
 
 export const OpiskeluOikeus = React.createClass({
   render() {
     let {opiskeluOikeus} = this.props
     let {rakenne} = this.state
     return (
-      <div className="opiskeluoikeus">
-        <h4>Opinto-oikeudet</h4>
-        <span className="tutkinto">{opiskeluOikeus.suoritus.koulutusmoduulitoteutus.koulutusmoduuli.tunniste.nimi}</span> <span className="oppilaitos">{opiskeluOikeus.oppilaitos.nimi}</span>
-        { rakenne
-          ?
-            <div className="tutkinto-rakenne">
-
-
-              <Dropdown className="suoritustapa"
-                        title="Suoritustapa"
-                        options={rakenne.suoritustavat.map(s => s.suoritustapa)}
-                        value={opiskeluOikeus.suoritus.koulutusmoduulitoteutus.suoritustapa ? opiskeluOikeus.suoritus.koulutusmoduulitoteutus.suoritustapa.tunniste.koodiarvo : ''}
-                        onChange={(value) => opiskeluOikeusChange.push([opiskeluOikeus.id,
-                          oo => {
-                            oo.suoritus.koulutusmoduulitoteutus.suoritustapa = value ? {
-                              tunniste: {
-                                koodiarvo: value,
-                                koodistoUri: 'suoritustapa'
-                              }
-                            } : undefined
-                            return oo
-                          }
-                        ])}
-              />
-              <Dropdown className="osaamisala"
-                        title="Osaamisala"
-                        options={rakenne.osaamisalat}
-                        value={opiskeluOikeus.suoritus.koulutusmoduulitoteutus.osaamisala ? opiskeluOikeus.suoritus.koulutusmoduulitoteutus.osaamisala.koodiarvo : ''}
-                        onChange={(value) => opiskeluOikeusChange.push([opiskeluOikeus.id,
-                          oo => {
-                            oo.suoritus.koulutusmoduulitoteutus.osaamisala = value ? {
-                                koodiarvo: value,
-                                koodistoUri: 'osaamisala'
-                            } : undefined
-                            return oo
-                          }
-                        ])}
+        rakenne
+          ? <div className="opiskeluoikeus">
+              <h4>Opinto-oikeudet</h4>
+              <span className="tutkinto">{opiskeluOikeus.suoritus.koulutusmoduulitoteutus.koulutusmoduuli.tunniste.nimi}</span> <span className="oppilaitos">{opiskeluOikeus.oppilaitos.nimi}</span>
+              <div className="tutkinto-rakenne">
+                <Dropdown className="suoritustapa"
+                          title="Suoritustapa"
+                          options={rakenne.suoritustavat.map(s => s.suoritustapa)}
+                          value={opiskeluOikeus.suoritus.koulutusmoduulitoteutus.suoritustapa ? opiskeluOikeus.suoritus.koulutusmoduulitoteutus.suoritustapa.tunniste.koodiarvo : ''}
+                          onChange={(value) => opiskeluOikeusChange.push([opiskeluOikeus.id,
+                            oo => {
+                              oo.suoritus.koulutusmoduulitoteutus.suoritustapa = value ? {
+                                tunniste: {
+                                  koodiarvo: value,
+                                  koodistoUri: 'suoritustapa'
+                                }
+                              } : undefined
+                              return oo
+                            }
+                          ])}
                 />
-              { opiskeluOikeus.suoritus.koulutusmoduulitoteutus.suoritustapa
-                ? rakenne.suoritustavat.find(x => x.suoritustapa.koodiarvo == opiskeluOikeus.suoritus.koulutusmoduulitoteutus.suoritustapa.tunniste.koodiarvo).rakenne.osat.map(rakenneOsa => <Rakenneosa
-                    rakenneosa={rakenneOsa}
-                    opiskeluOikeus={opiskeluOikeus}
-                    rakenne={rakenne}
-                  />)
-                : null
-              }
+                <Dropdown className="osaamisala"
+                          title="Osaamisala"
+                          options={rakenne.osaamisalat}
+                          value={opiskeluOikeus.suoritus.koulutusmoduulitoteutus.osaamisala ? opiskeluOikeus.suoritus.koulutusmoduulitoteutus.osaamisala.koodiarvo : ''}
+                          onChange={(value) => opiskeluOikeusChange.push([opiskeluOikeus.id,
+                            oo => {
+                              oo.suoritus.koulutusmoduulitoteutus.osaamisala = value ? {
+                                  koodiarvo: value,
+                                  koodistoUri: 'osaamisala'
+                              } : undefined
+                              return oo
+                            }
+                          ])}
+                  />
+                { opiskeluOikeus.suoritus.koulutusmoduulitoteutus.suoritustapa
+                  ? rakenne.suoritustavat.find(x => x.suoritustapa.koodiarvo == opiskeluOikeus.suoritus.koulutusmoduulitoteutus.suoritustapa.tunniste.koodiarvo).rakenne.osat.map(rakenneOsa => <Rakenneosa
+                      rakenneosa={rakenneOsa}
+                      opiskeluOikeus={opiskeluOikeus}
+                      rakenne={rakenne}
+                    />)
+                  : null
+                }
+              </div>
             </div>
           : null
-        }
-      </div>
     )
   },
   componentDidMount() {

@@ -131,10 +131,7 @@ describe('TOR', function() {
     return function() {
       return prepareForNewOppija(username, searchString)()
         .then(addOppija.enterValidData(oppijaData))
-        .then(addOppija.submit)
-        .then(wait.until(function() {
-          return page.getSelectedOppija().indexOf(oppijaData.hetu) > 0
-        }))
+        .then(addOppija.submitAndExpectSuccess(oppijaData.hetu))
     }
   }
 
@@ -182,8 +179,7 @@ describe('TOR', function() {
         })
 
         describe('Kun painetaan Lisää-nappia', function() {
-          before(addOppija.submit)
-          before(wait.until(function() { return page.getSelectedOppija() === 'Oppija, Ossi Olavi 300994-9694'}))
+          before(addOppija.submitAndExpectSuccess('Oppija, Ossi Olavi 300994-9694'))
 
           it('lisätty oppija näytetään', function() {})
 
@@ -347,6 +343,7 @@ describe('TOR', function() {
   describe('Tutkinnon rakenne', function() {
     describe("Ammatillinen perustutkinto", function() {
       before(addNewOppija('kalle', 'Tunkkila', { hetu: '091095-9833'}))
+
       it('Osaamisala- ja suoritustapavalinnat näytetään', function() {
         expect(opinnot.isSuoritustapaSelectable()).to.equal(true)
         expect(opinnot.isOsaamisalaSelectable()).to.equal(true)
