@@ -37,7 +37,6 @@ class TorApplication(val config: Config) {
   lazy val database = new TorDatabase(config)
   lazy val opiskeluOikeusRepository = TimedProxy[OpiskeluOikeusRepository](new PostgresOpiskeluOikeusRepository(database.db))
 
-
   def resetFixtures = if(Fixtures.shouldUseFixtures(config)) {
     oppijaRepository.resetFixtures
     TorDatabaseFixtures.resetFixtures(database)

@@ -1,13 +1,13 @@
 package fi.oph.tor.koodisto
 
 import java.time.LocalDate
-import fi.oph.tor.config.TorApplication
 
-object KoodistoCreator extends App {
-  val mock = new MockKoodistoPalvelu
-  val app = TorApplication()
-  private val kp: KoodistoPalvelu = KoodistoPalvelu.withoutCache(app.config)
-  val koodistot = List (
+import com.typesafe.config.Config
+
+object KoodistoCreator {
+  private val mock = new MockKoodistoPalvelu
+
+  private val koodistot = List (
     "ammatillisenperustutkinnonarviointiasteikko",
     "ammattijaerikoisammattitutkintojenarviointiasteikko",
     "suoritustapa",
@@ -19,9 +19,12 @@ object KoodistoCreator extends App {
     "lahdejarjestelma"
   )
 
-  koodistot.foreach(createKoodistoFromMockData)
+  def createKoodistot(config: Config): Unit = {
+    val kp: KoodistoPalvelu = KoodistoPalvelu.withoutCache(config)
+    koodistot.foreach(koodisto => createKoodistoFromMockData(koodisto, kp))
+  }
 
-  def createKoodistoFromMockData(koodistoUri: String): Unit = {
+  def createKoodistoFromMockData(koodistoUri: String, kp: KoodistoPalvelu): Unit = {
     val versio: Int = kp.getLatestVersion(koodistoUri) match {
       case Some(version) => version
       case None =>
@@ -29,7 +32,7 @@ object KoodistoCreator extends App {
           case None => throw new IllegalStateException("Mock not found: " + koodistoUri)
           case Some(koodisto) =>
             kp.createKoodisto(koodisto)
-            kp.getLatestVersion(koodistoUri).get
+            koodisto.versio
         }
     }
     val koodistoViittaus: KoodistoViittaus = KoodistoViittaus(koodistoUri, versio)

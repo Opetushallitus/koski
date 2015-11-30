@@ -4,6 +4,7 @@ import fi.oph.tor.SingleFileServlet
 import fi.oph.tor.config.TorApplication
 import fi.oph.tor.db._
 import fi.oph.tor.fixture.{FixtureServlet, Fixtures}
+import fi.oph.tor.koodisto.KoodistoCreator
 import fi.oph.tor.oppija.OppijaServlet
 import fi.oph.tor.oppilaitos.OppilaitosServlet
 import fi.oph.tor.schema.SchemaDocumentationServlet
@@ -17,6 +18,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
   override def init(context: ServletContext) {
     val configOverrides: Map[String, String] = Option(context.getAttribute("tor.overrides").asInstanceOf[Map[String, String]]).getOrElse(Map.empty)
     val application = TorApplication(configOverrides)
+    KoodistoCreator.createKoodistot(application.config)
     implicit val userRepository = UserRepository(application.config)
     val rekisteri = new TodennetunOsaamisenRekisteri(application.oppijaRepository, application.opiskeluOikeusRepository, application.tutkintoRepository, application.oppilaitosRepository, application.arviointiAsteikot, application.koodistoPalvelu)
     context.mount(new OppijaServlet(rekisteri, userRepository, application.directoryClient), "/api/oppija")
