@@ -35,13 +35,13 @@ export const OpiskeluOikeus = React.createClass({
                 <Dropdown className="osaamisala"
                           title="Osaamisala"
                           options={rakenne.osaamisalat}
-                          value={opiskeluOikeus.suoritus.koulutusmoduulitoteutus.osaamisala ? opiskeluOikeus.suoritus.koulutusmoduulitoteutus.osaamisala.koodiarvo : ''}
+                          value={opiskeluOikeus.suoritus.koulutusmoduulitoteutus.osaamisala ? opiskeluOikeus.suoritus.koulutusmoduulitoteutus.osaamisala[0].koodiarvo : ''}
                           onChange={(value) => opiskeluOikeusChange.push([opiskeluOikeus.id,
                             oo => {
-                              oo.suoritus.koulutusmoduulitoteutus.osaamisala = value ? {
+                              oo.suoritus.koulutusmoduulitoteutus.osaamisala = value ? [{
                                   koodiarvo: value,
                                   koodistoUri: 'osaamisala'
-                              } : undefined
+                              }] : undefined
                               return oo
                             }
                           ])}
@@ -89,7 +89,7 @@ const RakenneModuuli = React.createClass({
         <ul className="osat">
           { rakenneosa.osat
             .filter(osa => {
-              let osaamisala = opiskeluOikeus.suoritus.koulutusmoduulitoteutus.osaamisala ? opiskeluOikeus.suoritus.koulutusmoduulitoteutus.osaamisala.koodiarvo : undefined
+              let osaamisala = opiskeluOikeus.suoritus.koulutusmoduulitoteutus.osaamisala ? opiskeluOikeus.suoritus.koulutusmoduulitoteutus.osaamisala[0].koodiarvo : undefined
               return !osa.osaamisalaKoodi || osa.osaamisalaKoodi == osaamisala
             })
             .map((osa, i) => <li key={i}>

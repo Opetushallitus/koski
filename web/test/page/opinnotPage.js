@@ -33,6 +33,9 @@ function OpinnotPage() {
     },
     isOsaamisalaSelectable: function() {
       return S(".osaamisala").is(":visible")
+    },
+    waitUntilTutkintoVisible: function() {
+      return wait.until(function() {return S('.opiskeluoikeus .tutkinto').is(':visible')})
     }
   }
 
