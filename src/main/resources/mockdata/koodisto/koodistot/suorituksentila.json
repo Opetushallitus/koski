@@ -1,0 +1,12 @@
+{
+  "koodistoUri" : "suorituksentila",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Suorituksen tila",
+    "kuvaus" : ""
+  } ],
+  "codesGroupUri" : "http://henkilokoodistot",
+  "voimassaAlkuPvm" : "2014-11-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}

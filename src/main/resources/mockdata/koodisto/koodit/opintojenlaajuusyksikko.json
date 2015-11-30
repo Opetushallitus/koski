@@ -1,0 +1,120 @@
+[ {
+  "koodiUri" : "opintojenlaajuusyksikko_7",
+  "koodiArvo" : "7",
+  "metadata" : [ {
+    "nimi" : "år",
+    "lyhytNimi" : "år",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "years",
+    "lyhytNimi" : "years",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "vuotta",
+    "lyhytNimi" : "vuotta",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "opintojenlaajuusyksikko_2",
+  "koodiArvo" : "2",
+  "metadata" : [ {
+    "nimi" : "studiepoäng",
+    "lyhytNimi" : "sp",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "ECTS credits",
+    "lyhytNimi" : "ECTS cr",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "opintopistettä",
+    "lyhytNimi" : "op",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "opintojenlaajuusyksikko_5",
+  "koodiArvo" : "5",
+  "metadata" : [ {
+    "nimi" : "hours",
+    "lyhytNimi" : "hours",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "tuntia",
+    "lyhytNimi" : "tuntia",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "timmar",
+    "lyhytNimi" : "timmar",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "opintojenlaajuusyksikko_4",
+  "koodiArvo" : "4",
+  "metadata" : [ {
+    "nimi" : "course units",
+    "lyhytNimi" : "courses",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "kurser",
+    "lyhytNimi" : "kurser",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "kurssia",
+    "lyhytNimi" : "kurssia",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "opintojenlaajuusyksikko_3",
+  "koodiArvo" : "3",
+  "metadata" : [ {
+    "nimi" : "weekly lessons per year",
+    "lyhytNimi" : "weekly lessons per year",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "årsveckotimmar",
+    "lyhytNimi" : "årsveckotimmar",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "vuosiviikkotuntia",
+    "lyhytNimi" : "vuosiviikkotuntia",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "opintojenlaajuusyksikko_1",
+  "koodiArvo" : "1",
+  "metadata" : [ {
+    "nimi" : "opintoviikkoa",
+    "lyhytNimi" : "ov",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "study weeks",
+    "lyhytNimi" : "study weeks",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "studieveckor",
+    "lyhytNimi" : "sv",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "opintojenlaajuusyksikko_6",
+  "koodiArvo" : "6",
+  "metadata" : [ {
+    "nimi" : "competence points",
+    "lyhytNimi" : "competence points",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "osaamispistettä",
+    "lyhytNimi" : "osp",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "kompetenspoäng",
+    "lyhytNimi" : "kp",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+} ]

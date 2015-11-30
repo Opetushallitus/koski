@@ -1,26 +1,17 @@
-[
-  {
-    "koodiUri": "opetusryhma_1",
-    "metadata": [
-      {
-        "nimi": "Yleinen opetusryhmä",
-        "lyhytNimi": null,
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1,
-    "koodiArvo": "1"
-  },
-  {
-    "koodiUri": "opetusryhma_2",
-    "metadata": [
-      {
-        "nimi": "Eritysopetusryhmä",
-        "lyhytNimi": null,
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1,
-    "koodiArvo": "2"
-  }
-]
+[ {
+  "koodiUri" : "opetusryhma_2",
+  "koodiArvo" : "2",
+  "metadata" : [ {
+    "nimi" : "Eritysopetusryhmä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "opetusryhma_1",
+  "koodiArvo" : "1",
+  "metadata" : [ {
+    "nimi" : "Yleinen opetusryhmä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+} ]

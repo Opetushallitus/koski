@@ -1,0 +1,20 @@
+{
+  "koodistoUri" : "opintojenlaajuusyksikko",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "SV",
+    "nimi" : "opintojen laajuusyksikko",
+    "kuvaus" : "opintojen laajuusyksikko"
+  }, {
+    "kieli" : "EN",
+    "nimi" : "opintojen laajuusyksikko",
+    "kuvaus" : "opintojen laajuusyksikko"
+  }, {
+    "kieli" : "FI",
+    "nimi" : "opintojen laajuusyksikko",
+    "kuvaus" : "opintojen laajuusyksikko"
+  } ],
+  "codesGroupUri" : "http://koulutuskoodistot",
+  "voimassaAlkuPvm" : "2013-01-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}

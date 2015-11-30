@@ -1,0 +1,23 @@
+{
+  "koodistoUri" : "kieli",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "SV",
+    "nimi" : "kieli",
+    "kuvaus" : "kieli",
+    "kasite" : ""
+  }, {
+    "kieli" : "EN",
+    "nimi" : "kieli",
+    "kuvaus" : "kieli",
+    "kasite" : ""
+  }, {
+    "kieli" : "FI",
+    "nimi" : "kieli",
+    "kuvaus" : "Luokitus perustuu ISO 639-1 -standardiin (Codes for the representation of names of languages, Part 1: Alpha-2 code, 15.7.2002). Standardi koostuu kielten nimistä ja niille annetuista kaksikirjaimisista koodeista. Se korvaa vuonna 1988 ilmestyneen ISO 639 -standardin.\n\nISO 639-1 -standardia ylläpitää Infoterm (International Information Centre for Terminology).\nTunnusjärjestelmään kuuluvat kielten kaksikirjaimiset tunnukset kirjoitetaan pienaakkosin. Tunnukset muodostetaan kunkin kielen omakielisen nimen pohjalta. Poikkeuksena ovat japanin, suomen ja unkarin kielet, joiden tunnukset on muodostettu näiden maiden toivomuksen mukaisesti englanninkielisen nimen pohjalta.",
+    "kasite" : ""
+  } ],
+  "codesGroupUri" : "http://henkilokoodistot",
+  "voimassaAlkuPvm" : "2013-01-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}

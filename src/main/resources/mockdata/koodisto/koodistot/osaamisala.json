@@ -1,0 +1,18 @@
+{
+  "koodistoUri" : "osaamisala",
+  "versio" : 3,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "osaamisala",
+    "kuvaus" : "osaamisala",
+    "kasite" : ""
+  }, {
+    "kieli" : "SV",
+    "nimi" : "kompetensområde",
+    "kuvaus" : "kompetensområde",
+    "kasite" : ""
+  } ],
+  "codesGroupUri" : "http://koulutuskoodistot",
+  "voimassaAlkuPvm" : "2015-09-30",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}

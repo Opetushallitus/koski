@@ -1,0 +1,40 @@
+[ {
+  "koodiUri" : "suorituksentila_valmis",
+  "koodiArvo" : "VALMIS",
+  "metadata" : [ {
+    "nimi" : "Suoritus valmis",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Prestationen slutförd",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "suorituksentila_keskeytynyt",
+  "koodiArvo" : "KESKEYTYNYT",
+  "metadata" : [ {
+    "nimi" : "Suoritus keskeytynyt",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Prestationen avbruten",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "suorituksentila_kesken",
+  "koodiArvo" : "KESKEN",
+  "metadata" : [ {
+    "nimi" : "Suoritus kesken",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Prestationen icke slutförd",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+} ]

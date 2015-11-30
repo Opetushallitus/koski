@@ -25,7 +25,7 @@ object KoodistoPalvelu extends Logging {
     } else if (config.hasPath("opintopolku.virkailija.url")) {
       new RemoteKoodistoPalvelu(config.getString("authentication-service.username"), config.getString("authentication-service.password"), config.getString("opintopolku.virkailija.url"))
     } else {
-      new MockKoodistoPalvelu
+      MockKoodistoPalvelu
     }
   }
 

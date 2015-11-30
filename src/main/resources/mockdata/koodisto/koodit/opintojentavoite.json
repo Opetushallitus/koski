@@ -1,26 +1,18 @@
-[
-  {
-    "koodiUri": "opintojentavoite_tutkinto",
-    "metadata": [
-      {
-        "nimi": "Tutkinto",
-        "lyhytNimi": null,
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1,
-    "koodiArvo": "tutkinto"
-  },
-  {
-    "koodiUri": "opintojentavoite_tutkinnonosa",
-    "metadata": [
-      {
-        "nimi": "Tutkinnon osa",
-        "lyhytNimi": null,
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1,
-    "koodiArvo": "tutkinnonosa"
-  }
-]
+[ {
+  "koodiUri" : "opintojentavoite_tutkinto",
+  "koodiArvo" : "tutkinto",
+  "metadata" : [ {
+    "nimi" : "Tutkinto",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "opintojentavoite_tutkinnonosa",
+  "koodiArvo" : "tutkinnonosa",
+  "metadata" : [ {
+    "nimi" : "Tutkinnon osa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+} ]

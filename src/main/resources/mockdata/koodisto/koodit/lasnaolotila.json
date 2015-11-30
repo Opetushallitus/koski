@@ -1,26 +1,17 @@
-[
-  {
-    "koodiUri": "lasnaolotila_lasna",
-    "metadata": [
-      {
-        "nimi": "Läsnä",
-        "lyhytNimi": null,
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1,
-    "koodiArvo": "lasna"
-  },
-  {
-    "koodiUri": "lasnaolotila_poissa",
-    "metadata": [
-      {
-        "nimi": "Poissa",
-        "lyhytNimi": null,
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1,
-    "koodiArvo": "poissa"
-  }
-]
+[ {
+  "koodiUri" : "lasnaolotila_poissa",
+  "koodiArvo" : "poissa",
+  "metadata" : [ {
+    "nimi" : "Poissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lasnaolotila_lasna",
+  "koodiArvo" : "lasna",
+  "metadata" : [ {
+    "nimi" : "Läsnä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+} ]

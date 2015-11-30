@@ -1,0 +1,23 @@
+{
+  "koodistoUri" : "tutkintonimikkeet",
+  "versio" : 2,
+  "metadata" : [ {
+    "kieli" : "EN",
+    "nimi" : "tutkintonimikkeet",
+    "kuvaus" : "tutkintonimikkeet",
+    "kasite" : ""
+  }, {
+    "kieli" : "SV",
+    "nimi" : "tutkintonimikkeet",
+    "kuvaus" : "tutkintonimikkeet",
+    "kasite" : ""
+  }, {
+    "kieli" : "FI",
+    "nimi" : "tutkintonimikkeet",
+    "kuvaus" : "tutkintonimikkeet",
+    "kasite" : ""
+  } ],
+  "codesGroupUri" : "http://koulutuskoodistot",
+  "voimassaAlkuPvm" : "2015-10-05",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}

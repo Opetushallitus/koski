@@ -1,34 +1,12 @@
 {
-  "koodistoUri": "lasnaolotila",
-  "resourceUri": "https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codes/lasnaolotila",
-  "omistaja": null,
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "codesGroupUri": "http://tor",
-  "version": 1,
-  "versio": 1,
-  "paivitysPvm": 1448275604299,
-  "voimassaAlkuPvm": "2015-11-01",
-  "voimassaLoppuPvm": "2018-08-01",
-  "tila": "LUONNOS",
-  "metadata": [
-    {
-      "kieli": "EN",
-      "nimi": "lasnaolotila",
-      "kuvaus": "Läsnäolotila",
-      "kayttoohje": null,
-      "kasite": null,
-      "kohdealue": null,
-      "sitovuustaso": null,
-      "kohdealueenOsaAlue": null,
-      "toimintaymparisto": null,
-      "tarkentaaKoodistoa": null,
-      "huomioitavaKoodisto": null,
-      "koodistonLahde": null
-    }
-  ],
-  "codesVersions": [],
-  "withinCodes": [],
-  "includesCodes": [],
-  "levelsWithCodes": []
+  "koodistoUri" : "lasnaolotila",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "EN",
+    "nimi" : "lasnaolotila",
+    "kuvaus" : "Läsnäolotila"
+  } ],
+  "codesGroupUri" : "http://tor",
+  "voimassaAlkuPvm" : "2015-11-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
 }

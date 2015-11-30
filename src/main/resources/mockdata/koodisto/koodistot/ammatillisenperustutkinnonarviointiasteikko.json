@@ -1,68 +1,23 @@
 {
-  "koodistoUri": "ammatillisenperustutkinnonarviointiasteikko",
-  "resourceUri": "https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codes/ammatillisenperustutkinnonarviointiasteikko",
-  "omistaja": null,
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "lukittu": null,
-  "codesGroupUri": "http://tor",
-  "version": 7,
-  "versio": 1,
-  "paivitysPvm": 1446455364396,
-  "voimassaAlkuPvm": "2015-10-01",
-  "voimassaLoppuPvm": null,
-  "tila": "LUONNOS",
-  "metadata": [
-    {
-      "kieli": "SV",
-      "nimi": "Ammatillisen perustutkinnon arviointiasteikko",
-      "kuvaus": "Koulutusten suorituksiin liittyvien arvosanojen asteikot",
-      "kayttoohje": "",
-      "kasite": "arviointiasteikko",
-      "kohdealue": "",
-      "sitovuustaso": "",
-      "kohdealueenOsaAlue": "",
-      "toimintaymparisto": "",
-      "tarkentaaKoodistoa": "",
-      "huomioitavaKoodisto": "",
-      "koodistonLahde": ""
-    },
-    {
-      "kieli": "EN",
-      "nimi": "Ammatillisen perustutkinnon arviointiasteikko",
-      "kuvaus": "Koulutusten suorituksiin liittyvien arvosanojen asteikot",
-      "kayttoohje": "",
-      "kasite": "arvosana",
-      "kohdealue": "",
-      "sitovuustaso": "",
-      "kohdealueenOsaAlue": "",
-      "toimintaymparisto": "",
-      "tarkentaaKoodistoa": "",
-      "huomioitavaKoodisto": "",
-      "koodistonLahde": ""
-    },
-    {
-      "kieli": "FI",
-      "nimi": "Ammatillisen perustutkinnon arviointiasteikko",
-      "kuvaus": "Koulutusten suorituksiin liittyvien arvosanojen asteikot",
-      "kayttoohje": "",
-      "kasite": "arviointiasteikko",
-      "kohdealue": "",
-      "sitovuustaso": "",
-      "kohdealueenOsaAlue": "",
-      "toimintaymparisto": "",
-      "tarkentaaKoodistoa": "",
-      "huomioitavaKoodisto": "",
-      "koodistonLahde": ""
-    }
-  ],
-  "codesVersions": [],
-  "withinCodes": [
-    {
-      "codesUri": "koulutustyyppi",
-      "codesVersion": 2,
-      "passive": false
-    }
-  ],
-  "includesCodes": [],
-  "levelsWithCodes": []
+  "koodistoUri" : "ammatillisenperustutkinnonarviointiasteikko",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Ammatillisen perustutkinnon arviointiasteikko",
+    "kuvaus" : "Koulutusten suorituksiin liittyvien arvosanojen asteikot",
+    "kasite" : "arviointiasteikko"
+  }, {
+    "kieli" : "EN",
+    "nimi" : "Ammatillisen perustutkinnon arviointiasteikko",
+    "kuvaus" : "Koulutusten suorituksiin liittyvien arvosanojen asteikot",
+    "kasite" : "arvosana"
+  }, {
+    "kieli" : "SV",
+    "nimi" : "Ammatillisen perustutkinnon arviointiasteikko",
+    "kuvaus" : "Koulutusten suorituksiin liittyvien arvosanojen asteikot",
+    "kasite" : "arviointiasteikko"
+  } ],
+  "codesGroupUri" : "http://tor",
+  "voimassaAlkuPvm" : "2015-10-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
 }
