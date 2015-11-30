@@ -20,8 +20,8 @@ export default React.createClass({
   },
   componentDidMount() {
     let { options, onChange, value} = this.props
-    if (options.length == 1 && value !== options[0].koodi) {
-      onChange(options[0].koodi)
+    if (options.length == 1 && value !== options[0].koodiarvo) {
+      onChange(options[0].koodiarvo)
     }
   }
 })
