@@ -1,0 +1,38 @@
+[
+  {
+    "koodiUri": "opiskeluoikeudentila_aktiivinen",
+    "metadata": [
+      {
+        "nimi": "Aktiivinen",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "aktiivinen"
+  },
+  {
+    "koodiUri": "opiskeluoikeudentila_paattynyt",
+    "metadata": [
+      {
+        "nimi": "Päättynyt",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "paattynyt"
+  },
+  {
+    "koodiUri": "opiskeluoikeudentila_keskeyttanyt",
+    "metadata": [
+      {
+        "nimi": "Keskeyttänyt",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "keskeyttanyt"
+  }
+]

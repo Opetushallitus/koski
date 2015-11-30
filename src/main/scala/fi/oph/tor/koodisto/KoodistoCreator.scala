@@ -7,9 +7,19 @@ object KoodistoCreator extends App {
   val mock = new MockKoodistoPalvelu
   val app = TorApplication()
   private val kp: KoodistoPalvelu = KoodistoPalvelu.withoutCache(app.config)
-  createKoodistoFromMockData("ammatillisenperustutkinnonarviointiasteikko")
-  createKoodistoFromMockData("ammattijaerikoisammattitutkintojenarviointiasteikko")
-  createKoodistoFromMockData("suoritustapa")
+  val koodistot = List (
+    "ammatillisenperustutkinnonarviointiasteikko",
+    "ammattijaerikoisammattitutkintojenarviointiasteikko",
+    "suoritustapa",
+    "opintojentavoite",
+    "opintojenrahoitus",
+    "lasnaolotila",
+    "opiskeluoikeudentila",
+    "opetusryhma",
+    "lahdejarjestelma"
+  )
+
+  koodistot.foreach(createKoodistoFromMockData)
 
   def createKoodistoFromMockData(koodistoUri: String): Unit = {
     val versio: Int = kp.getLatestVersion(koodistoUri) match {

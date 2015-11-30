@@ -1,0 +1,14 @@
+[
+  {
+    "koodiUri": "lahdejarjestelma_winnova",
+    "metadata": [
+      {
+        "nimi": "Winnova oppilashallintojärjestelmä",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "winnova"
+  }
+]

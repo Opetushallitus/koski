@@ -1,0 +1,26 @@
+[
+  {
+    "koodiUri": "opetusryhma_1",
+    "metadata": [
+      {
+        "nimi": "Yleinen opetusryhmä",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1"
+  },
+  {
+    "koodiUri": "opetusryhma_2",
+    "metadata": [
+      {
+        "nimi": "Eritysopetusryhmä",
+        "lyhytNimi": null,
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "2"
+  }
+]
