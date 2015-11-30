@@ -19,6 +19,12 @@ object Http {
     case (status, text) => throw new RuntimeException(status + ": " + text)
   }
 
+  /** Parses as JSON, returns None on any error */
+  def parseJsonIgnoreError[T](status: Int, text: String)(implicit mf : scala.reflect.Manifest[T]): Option[T] = (status, text) match {
+    case (200, text) => Some(Json.read[T](text))
+    case (_, _) => None
+  }
+
   def uriFromString(url: String): Uri = {
     Uri.fromString(url).toOption.get
   }

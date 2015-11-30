@@ -26,11 +26,12 @@ class SchemaDocumentationServlet(koodistoPalvelu: KoodistoPalvelu) extends Error
   get("/koodisto/:name/:version") {
     contentType = "application/json"
     val koodistoUri: String = params("name")
-    val version = params("version") match {
+    val versio = params("version") match {
       case "latest" =>
         koodistoPalvelu.getLatestVersion(koodistoUri)
-      case x => x.toInt
+      case x =>
+        Some(x.toInt)
     }
-    Json.writePretty(koodistoPalvelu.getKoodistoKoodit(KoodistoViittaus(koodistoUri, version)))
+    Json.writePretty(versio.flatMap { versio => koodistoPalvelu.getKoodistoKoodit(KoodistoViittaus(koodistoUri, versio))})
   }
 }

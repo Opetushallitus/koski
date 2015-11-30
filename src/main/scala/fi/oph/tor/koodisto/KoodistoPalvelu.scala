@@ -6,22 +6,27 @@ import fi.oph.tor.util.{CachingProxy, TimedProxy}
 import fi.vm.sade.utils.slf4j.Logging
 
 trait KoodistoPalvelu {
+  def createKoodi(koodistoUri: String, koodi: KoodistoKoodi)
+  def createKoodisto(koodisto: Koodisto)
   def getKoodistoKoodit(koodisto: KoodistoViittaus): Option[List[KoodistoKoodi]]
   def getKoodisto(koodisto: KoodistoViittaus): Option[Koodisto]
   def getAlakoodit(koodiarvo: String): List[Alakoodi]
-  def getLatestVersion(koodisto: String): Int // TODO: should be option?
+  def getLatestVersion(koodisto: String): Option[Int]
 }
 
 object KoodistoPalvelu extends Logging {
   def apply(config: Config) = {
-    CachingProxy(config, TimedProxy(if (config.hasPath("koodisto.url")) {
-      new RemoteKoodistoPalvelu(config.getString("koodisto.url"))
-    }
-    else if (config.hasPath("opintopolku.virkailija.url")) {
-      new RemoteKoodistoPalvelu(config.getString("opintopolku.virkailija.url") + "/koodisto-service")
+    CachingProxy(config, TimedProxy(withoutCache(config)))
+  }
+
+  def withoutCache(config: Config): KoodistoPalvelu = {
+    if (config.hasPath("koodisto.virkailija.url")) {
+      new RemoteKoodistoPalvelu(config.getString("authentication-service.username"), config.getString("authentication-service.password"), config.getString("koodisto.virkailija.url"))
+    } else if (config.hasPath("opintopolku.virkailija.url")) {
+      new RemoteKoodistoPalvelu(config.getString("authentication-service.username"), config.getString("authentication-service.password"), config.getString("opintopolku.virkailija.url"))
     } else {
       new MockKoodistoPalvelu
-    }))
+    }
   }
 
   def validate(palvelu: KoodistoPalvelu, viite: KoodistoKoodiViite):Option[KoodistoKoodiViite] = {
@@ -29,16 +34,20 @@ object KoodistoPalvelu extends Logging {
   }
 
   def koodisto(palvelu: KoodistoPalvelu, viite: KoodistoKoodiViite): Option[KoodistoViittaus] = {
-    Some(KoodistoViittaus(viite.koodistoUri, viite.koodistoVersio.getOrElse(palvelu.getLatestVersion(viite.koodistoUri))))
+    viite.koodistoVersio.orElse(palvelu.getLatestVersion(viite.koodistoUri)).map { versio =>
+      KoodistoViittaus(viite.koodistoUri, versio)
+    }
   }
 
   def getKoodistoKoodiViite(palvelu: KoodistoPalvelu, koodistoUri: String, koodiarvo: String, koodistoVersio: Option[Int] = None): Option[KoodistoKoodiViite] = {
-    val versio = koodistoVersio.getOrElse(palvelu.getLatestVersion(koodistoUri))
-    val viite = palvelu.getKoodistoKoodit(KoodistoViittaus(koodistoUri, versio)).flatMap { koodit =>
+    val versio = koodistoVersio.orElse(palvelu.getLatestVersion(koodistoUri))
+
+    val viite = versio.flatMap { versio => palvelu.getKoodistoKoodit(KoodistoViittaus(koodistoUri, versio)).flatMap { koodit =>
       koodit.find(_.koodiArvo == koodiarvo).map {
         koodi => KoodistoKoodiViite(koodi.koodiArvo, koodi.nimi("fi"), koodistoUri, Some(versio))
       }
-    }
+    }}
+
     if (!viite.isDefined) {
       logger.warn("Koodia " + koodiarvo + " ei löydy koodistosta " + koodistoUri)
     }
