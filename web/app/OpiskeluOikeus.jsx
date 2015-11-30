@@ -75,24 +75,28 @@ const Rakenneosa = React.createClass({
   render() {
     let { rakenneosa, opiskeluOikeus, rakenne } = this.props
     return rakenneosa.osat
-      ? <RakenneModuuli key={rakenneosa.nimi} opiskeluOikeus={opiskeluOikeus} rakenneosa={rakenneosa} />
+      ? <RakenneModuuli key={rakenneosa.nimi} opiskeluOikeus={opiskeluOikeus} rakenneosa={rakenneosa} rakenne={rakenne}/>
       : <TutkinnonOsa key={rakenneosa.nimi} opiskeluOikeus={opiskeluOikeus} tutkinnonOsa={rakenneosa} rakenne={rakenne}/>
   }
 })
 
 const RakenneModuuli = React.createClass({
   render() {
-    const { rakenneosa, opiskeluOikeus } = this.props
+    let { rakenneosa, opiskeluOikeus, rakenne } = this.props
     return (
       <div className="rakenne-moduuli">
         <span className="name">{rakenneosa.nimi}</span>
         <ul className="osat">
           { rakenneosa.osat
-            .filter(osa => { return !osa.osaamisalaKoodi || osa.osaamisalaKoodi == opiskeluOikeus.osaamisala})
+            .filter(osa => {
+              let osaamisala = opiskeluOikeus.suoritus.koulutusmoduulitoteutus.osaamisala ? opiskeluOikeus.suoritus.koulutusmoduulitoteutus.osaamisala.koodiarvo : undefined
+              return !osa.osaamisalaKoodi || osa.osaamisalaKoodi == osaamisala
+            })
             .map((osa, i) => <li key={i}>
               <Rakenneosa
                 rakenneosa={osa}
                 opiskeluOikeus={opiskeluOikeus}
+                rakenne={rakenne}
               />
             </li>)
           }
@@ -117,7 +121,7 @@ const TutkinnonOsa = React.createClass({
       opiskeluOikeusChange.push([opiskeluOikeus.id, addArvosana(arvosana)])
     }
 
-    const suoritus = R.find(osanSuoritus => R.equals(osanSuoritus.koulutusModuuli, tutkinnonOsa.tunniste))(opiskeluOikeus.suoritukset)
+    const suoritus = R.find(osanSuoritus => R.equals(osanSuoritus.koulutusModuuli, tutkinnonOsa.tunniste))(opiskeluOikeus.suoritus.osasuoritukset ? opiskeluOikeus.suoritus.osasuoritukset : [])
     const arviointi = suoritus && suoritus.arviointi
 
     return (
