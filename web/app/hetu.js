@@ -16,7 +16,7 @@ export const isValidHetu = hetu => {
 
 const isValidDate = (day, month, yearDigits, separator) => {
   const birthDate = new Date(yearFromDigits(yearDigits, separator), month - 1, day)
-  return birthDate && (birthDate.getDate() === parseInt(day) && birthDate.getMonth() + 1 === parseInt(month))
+  return birthDate && (birthDate.getDate() === parseInt(day, 10) && birthDate.getMonth() + 1 === parseInt(month, 10))
 }
 
 const yearFromDigits = (digits, separator) => {
