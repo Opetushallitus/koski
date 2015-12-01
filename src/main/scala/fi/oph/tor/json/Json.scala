@@ -15,9 +15,7 @@ import org.json4s.{CustomSerializer, Extraction, JValue}
 object Json {
   // Find out why SchemaBasedTraitSerializer breaks current serialization
   implicit val jsonFormats = GenericJsonFormats.genericFormats + new LocalDateSerializer +
-    new RakenneOsaSerializer + new KoulutusmoduulitoteutusSerializer +
-    new SchemaBasedTraitSerializer(TorSchema.schemaFactory.createSchema(classOf[Henkilö].getName)) +
-    new SchemaBasedTraitSerializer(TorSchema.schemaFactory.createSchema(classOf[Suoritustapa].getName))
+    new RakenneOsaSerializer ++ Deserializers.deserializers
 
   def write(x: AnyRef): String = {
     Serialization.write(x);
