@@ -184,11 +184,11 @@ Testiympäristön TOR löytyy täältä:
 
 Ympäristöön kuuluvat Opintopolku-palvelun osat täällä:
 
-   https://virkailija.tordev.tor.oph.reaktor.fi/
+    https://virkailija.tordev.tor.oph.reaktor.fi/
 
 Esimerkiksi henkilöpalvelu:
 
-    https://srv2.va-dev.oph.fi/authentication-service/swagger/index.html
+    https://virkailija.tordev.tor.oph.reaktor.fi/authentication-service/swagger/index.html
 
 Testiympäristö käyttää tuotannon ePerusteet-palvelua
 
