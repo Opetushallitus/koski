@@ -21,7 +21,7 @@ object TorOppijaExamples {
         OpsTutkinnonosa(
           KoodistoKoodiViite("100016", Some("Huolto- ja korjaustyöt"), "tutkinnonosat", Some(1)),
           true,
-          laajuus = Laajuus(30, opintojenLaajuusYksikkö)
+          laajuus = None
         ),
         suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, Näyttö("Huolto- ja korjaustyöt", "Autokorjaamo Oy, Riihimäki")))
       ),
@@ -44,7 +44,7 @@ object TorOppijaExamples {
           Paikallinenkoodi("123456789", "Pintavauriotyöt", "kallion_oma_koodisto"),
           "Pintavauriotyöt",
           "Opetellaan korjaamaan pinnallisia vaurioita",
-          false, Laajuus(15, opintojenLaajuusYksikkö)),
+          false, None),
         suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, Näyttö("Pintavaurioiden korjausta", "Autokorjaamo Oy, Riihimäki")))
       ),
       suorituskieli = None,
@@ -65,7 +65,7 @@ object TorOppijaExamples {
         OpsTutkinnonosa(
           KoodistoKoodiViite("100019", Some("Mittaus- ja korivauriotyöt"), "tutkinnonosat", Some(1)),
           true,
-          Laajuus(30, opintojenLaajuusYksikkö)
+          None
         ),
         suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, Näyttö("Mittaus- ja korivauriotöitä", "Autokorjaamo Oy, Riihimäki")))
       ),
@@ -87,7 +87,7 @@ object TorOppijaExamples {
         OpsTutkinnonosa(
           KoodistoKoodiViite("100034", Some("Maalauksen esikäsittelytyöt"), "tutkinnonosat", Some(1)),
           true,
-          Laajuus(15, opintojenLaajuusYksikkö)
+          None
         ),
         suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, Näyttö("Maalauksen esikäsittelytöitä", "Autokorjaamo Oy, Riihimäki")))
       ),
@@ -109,7 +109,7 @@ object TorOppijaExamples {
         OpsTutkinnonosa(
           KoodistoKoodiViite("100037", Some("Auton lisävarustetyöt"), "tutkinnonosat", Some(1)),
           true,
-          Laajuus(15, opintojenLaajuusYksikkö)
+          None
         ),
         suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, Näyttö("Auton lisävarustetöitä", "Autokorjaamo Oy, Riihimäki")))
       ),
@@ -131,10 +131,10 @@ object TorOppijaExamples {
         OpsTutkinnonosa(
           KoodistoKoodiViite("101050", Some("Yritystoiminnan suunnittelu"), "tutkinnonosat", Some(1)),
           true,
-          Laajuus(15, opintojenLaajuusYksikkö)
+          None
         ),
         suoritustapa = Some(DefaultSuoritustapa(suoritustapaNäyttö)), // TODO: mikä suoritustapa tunnustetulle osaamiselle?
-        hyväksiluku = Some(Hyväksiluku(OpsTutkinnonosa(KoodistoKoodiViite("100238", Some("Asennushitsaus"), "tutkinnonosat", Some(1)), true, Laajuus(15, opintojenLaajuusYksikkö)), Some("Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta")))
+        hyväksiluku = Some(Hyväksiluku(OpsTutkinnonosa(KoodistoKoodiViite("100238", Some("Asennushitsaus"), "tutkinnonosat", Some(1)), true, None), Some("Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta")))
       ),
       suorituskieli = None,
       tila = None,
@@ -290,7 +290,7 @@ object TorOppijaExamples {
             Suoritus(
               Some("suoritus-12345-1"),
               OpsTutkinnonosatoteutus(
-                OpsTutkinnonosa(KoodistoKoodiViite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Laajuus(11, opintojenLaajuusYksikkö)),
+                OpsTutkinnonosa(KoodistoKoodiViite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Some(Laajuus(11, opintojenLaajuusYksikkö))),
                 suoritustapa = Some(DefaultSuoritustapa(suoritustapaOps))
               ),
               suorituskieli = None,

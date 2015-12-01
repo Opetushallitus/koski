@@ -20,11 +20,11 @@ object TutkintoRakenne {
   def findOsaamisala(rakenne: TutkintoRakenne, osaamisAlaKoodi: String) = rakenne.osaamisalat.find(_.koodiarvo == osaamisAlaKoodi)
 }
 
-case class SuoritustapaJaRakenne(suoritustapa: KoodistoKoodiViite, rakenne: RakenneOsa)
+case class SuoritustapaJaRakenne(suoritustapa: KoodistoKoodiViite, rakenne: RakenneOsa, laajuusYksikkö: Option[KoodistoKoodiViite])
 
 case class Osaamisala(nimi: String, koodiarvo: String)
 
 sealed trait RakenneOsa
 
 case class RakenneModuuli(nimi: String, osat: List[RakenneOsa], osaamisalaKoodi: Option[String]) extends RakenneOsa
-case class TutkinnonOsa(tunniste: KoodistoKoodiViite, nimi: String, arviointiAsteikko: Option[KoodistoViittaus]) extends RakenneOsa
+case class TutkinnonOsa(tunniste: KoodistoKoodiViite, nimi: String, arviointiAsteikko: Option[KoodistoViittaus], laajuus: Option[Float], pakollinen: Boolean) extends RakenneOsa

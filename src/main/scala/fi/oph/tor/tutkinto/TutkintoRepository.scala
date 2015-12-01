@@ -37,6 +37,15 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
       val koulutustyyppi: Koulutustyyppi = Koulutustyyppi.fromEPerusteetKoulutustyyppiAndSuoritustapa(rakenne.koulutustyyppi, suoritustapa.suoritustapakoodi)
       val arviointiasteikkoViittaus: Option[KoodistoViittaus] = arviointiasteikkoRepository.getArviointiasteikkoViittaus(koulutustyyppi)
 
+      val laajuusYksikkö: Option[KoodistoKoodiViite] = suoritustapa.laajuusYksikko match {
+        case "OSAAMISPISTE" => KoodistoPalvelu.getKoodistoKoodiViite(koodistoPalvelu, "opintojenlaajuusyksikko", "6", None)
+        case _ => None
+      }
+
+      if(!laajuusYksikkö.isDefined) {
+        logger.warn("Opintojenlaajuusyksikkö not found for laajuusYksikko " + suoritustapa.laajuusYksikko)
+      }
+
       def convertRakenneOsa(rakenneOsa: ERakenneOsa, suoritustapa: ESuoritustapa): RakenneOsa = {
         rakenneOsa match {
           case x: ERakenneModuuli => RakenneModuuli(
@@ -51,8 +60,11 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
               if (arviointiasteikkoViittaus.isEmpty) {
                 logger.warn("Arviointiasteikko not found for Koulutustyyppi " + koulutustyyppi)
               }
+
+              val laajuus = laajuusYksikkö.flatMap(yksikkö => tutkinnonOsaViite.laajuus.map(laajuus => laajuus))
+
               KoodistoPalvelu.getKoodistoKoodiViite(koodistoPalvelu, "tutkinnonosat", eTutkinnonOsa.koodiArvo, None) match {
-                case Some(tutkinnonosaKoodi) => TutkinnonOsa(tutkinnonosaKoodi, eTutkinnonOsa.nimi.getOrElse("fi", ""), arviointiasteikkoViittaus)
+                case Some(tutkinnonosaKoodi) => TutkinnonOsa(tutkinnonosaKoodi, eTutkinnonOsa.nimi.getOrElse("fi", ""), arviointiasteikkoViittaus, tutkinnonOsaViite.laajuus, x.pakollinen)
                 case None => throw new RuntimeException("Tutkinnon osaa ei löydy koodistosta: " + eTutkinnonOsa.koodiArvo)
               }
 
@@ -63,7 +75,7 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
 
 
       val suoritustapaKoodistoViite: Option[KoodistoKoodiViite] = KoodistoPalvelu.getKoodistoKoodiViite(koodistoPalvelu, "suoritustapa", suoritustapa.suoritustapakoodi)
-      suoritustapaKoodistoViite.map(SuoritustapaJaRakenne(_, convertRakenneOsa(suoritustapa.rakenne, suoritustapa)))
+      suoritustapaKoodistoViite.map(SuoritustapaJaRakenne(_, convertRakenneOsa(suoritustapa.rakenne, suoritustapa), laajuusYksikkö))
     }
 
     val osaamisalat: List[Osaamisala] = rakenne.osaamisalat.map(o => Osaamisala(o.nimi("fi"), o.arvo))

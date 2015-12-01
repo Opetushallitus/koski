@@ -130,7 +130,7 @@ trait Koulutusmoduuli {
     tunniste: KoodistoKoodiViite,
     @Description("Onko pakollinen osa tutkinnossa")
     pakollinen: Boolean,
-    laajuus: Laajuus,
+    laajuus: Option[Laajuus],
     paikallinenKoodi: Option[Paikallinenkoodi] = None,
     kuvaus: Option[String] = None
   ) extends Koulutusmoduuli
@@ -142,7 +142,7 @@ trait Koulutusmoduuli {
     kuvaus: String,
     @Description("Onko pakollinen osa tutkinnossa")
     pakollinen: Boolean,
-    laajuus: Laajuus
+    laajuus: Option[Laajuus]
   ) extends Koulutusmoduuli
 
 trait Koulutusmoduulitoteutus {

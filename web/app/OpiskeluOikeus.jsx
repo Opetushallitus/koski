@@ -111,23 +111,22 @@ const TutkinnonOsa = React.createClass({
     const {tutkinnonOsa, opiskeluOikeus, rakenne} = this.props
     const arviointiAsteikko = R.find(asteikko => R.equals(asteikko.koodisto, tutkinnonOsa.arviointiAsteikko))(rakenne.arviointiAsteikot)
     const arvosanat = arviointiAsteikko ? arviointiAsteikko.arvosanat : undefined
+    const laajuudenYksikkö = R.find(tapa => {
+      return tapa.suoritustapa.koodiarvo == opiskeluOikeus.suoritus.koulutusmoduulitoteutus.suoritustapa.tunniste.koodiarvo
+    })(rakenne.suoritustavat).laajuusYksikkö
 
     const addArvosana = (arvosana) => (oOikeus) => {
+      debugger
       let suoritukset = (oOikeus.suoritus.osasuoritukset ? oOikeus.suoritus.osasuoritukset : []).concat(
         {
           koulutusmoduulitoteutus: {
             koulutusmoduuli: {
               tunniste: tutkinnonOsa.tunniste,
-              // TODO, hardcoded
-              pakollinen: true,
-              // TODO, hardcoded
-              laajuus: {
-                "arvo" : 11.0,
-                "yksikkö" : {
-                  "koodiarvo" : "6",
-                  "koodistoUri" : "opintojenlaajuusyksikko",
-                }
-              }
+              pakollinen: tutkinnonOsa.pakollinen,
+              laajuus: tutkinnonOsa.laajuus ? {
+                "arvo" : tutkinnonOsa.laajuus,
+                "yksikkö" : laajuudenYksikkö
+              } : null
             }
           },
           arviointi: [
@@ -138,7 +137,6 @@ const TutkinnonOsa = React.createClass({
               }
             }
           ],
-          // TODO, is this really required?
           toimipiste: oOikeus.suoritus.toimipiste
         }
       )
