@@ -52,7 +52,7 @@ function TutkinnonOsa(nimi) {
   api = {
     addArviointi: function(arvosana) {
       return function() {
-        tutkinnonOsaElement().find(".arvosanat li:contains("+arvosana+")").click()
+        triggerEvent(tutkinnonOsaElement().find(".arvosanat li:contains(" + arvosana + ")"), "click")
         saveButton().click()
         return wait.forAjax()
       }
