@@ -14,6 +14,7 @@ object TorOppijaExamples {
   private val opiskeluoikeusPäättynyt = KoodistoKoodiViite("paattynyt", Some("Päättynyt"), "opiskeluoikeudentila", Some(1))
   private val opiskeluoikeusKeskeyttänyt = KoodistoKoodiViite("keskeyttanyt", Some("Keskeyttänyt"), "opiskeluoikeudentila", Some(1))
   private val lähdeWinnova = KoodistoKoodiViite("winnova", Some("Winnova"), "lahdejarjestelma", Some(1))
+  val hyväksiluku = Hyväksiluku(OpsTutkinnonosa(KoodistoKoodiViite("100238", Some("Asennushitsaus"), "tutkinnonosat", Some(1)), true, None), Some("Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"))
   private val tutkinnonOsat = List(
     Suoritus(
       Some("suoritus-12345-1"),
@@ -134,7 +135,7 @@ object TorOppijaExamples {
           None
         ),
         suoritustapa = Some(DefaultSuoritustapa(suoritustapaNäyttö)), // TODO: mikä suoritustapa tunnustetulle osaamiselle?
-        hyväksiluku = Some(Hyväksiluku(OpsTutkinnonosa(KoodistoKoodiViite("100238", Some("Asennushitsaus"), "tutkinnonosat", Some(1)), true, None), Some("Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta")))
+        hyväksiluku = Some(hyväksiluku)
       ),
       suorituskieli = None,
       tila = None,
@@ -208,7 +209,7 @@ object TorOppijaExamples {
           TutkintoKoulutustoteutus(TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")), None, None, None, None),
           None,
           None,
-          Some(date(2015, 9, 1)),
+          Some(date(2016, 9, 1)),
           toimipiste,
           None,
           None,

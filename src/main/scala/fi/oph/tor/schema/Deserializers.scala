@@ -3,7 +3,7 @@ package fi.oph.tor.schema
 import org.json4s._
 
 object Deserializers {
-  val deserializers = List(KoulutusmoduulitoteutusDeserializer, HenkilöDeserialializer, SuoritustapaDeserializer, JärjestämismuotoDeserializer)
+  val deserializers = List(KoulutusmoduulitoteutusDeserializer, KoulutusmoduuliDeserializer, HenkilöDeserialializer, SuoritustapaDeserializer, JärjestämismuotoDeserializer)
 }
 
 trait Deserializer[T] extends Serializer[T] {
@@ -19,6 +19,19 @@ object KoulutusmoduulitoteutusDeserializer extends Deserializer[Koulutusmoduulit
         case moduuli: JObject if moduuli \ "koulutusmoduuli" \ "tunniste" \ "koodistoUri" == JString("koulutus") => moduuli.extract[TutkintoKoulutustoteutus]
         case moduuli: JObject if moduuli \ "koulutusmoduuli" \ "tunniste" \ "koodistoUri" == JString("tutkinnonosat") => moduuli.extract[OpsTutkinnonosatoteutus]
         case moduuli: JObject => moduuli.extract[PaikallinenTutkinnonosatoteutus]
+      }
+  }
+}
+
+object KoulutusmoduuliDeserializer extends Deserializer[Koulutusmoduuli] {
+  private val TheClass = classOf[Koulutusmoduuli]
+
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Koulutusmoduuli] = {
+    case (TypeInfo(TheClass, _), json) =>
+      json match {
+        case moduuli: JObject if moduuli \ "tunniste" \ "koodistoUri" == JString("koulutus") => moduuli.extract[TutkintoKoulutus]
+        case moduuli: JObject if moduuli \ "tunniste" \ "koodistoUri" == JString("tutkinnonosat") => moduuli.extract[OpsTutkinnonosa]
+        case moduuli: JObject => moduuli.extract[PaikallinenTutkinnonosa]
       }
   }
 }

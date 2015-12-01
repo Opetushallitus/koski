@@ -1,6 +1,5 @@
 package fi.oph.tor
 
-import java.lang.reflect.Method
 import fi.oph.tor.util.Invocation
 import org.scalatest.{FreeSpec, Matchers}
 
