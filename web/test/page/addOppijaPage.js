@@ -70,12 +70,25 @@ function AddOppijaPage() {
         return form().find('.error-messages .' + field).is(':visible')
       }
     },
-    putTutkinnonOsaSuoritusAjax: function(suoritus) {
+    putTutkinnonOsaSuoritusAjax: function(tutkinnonOsaSuoritus) {
       return function() {
-        suoritus = _.merge(defaultSuoritus(), suoritus)
-        var opiskeluOikeus = defaultOpiskeluOikeus();
+        tutkinnonOsaSuoritus = _.merge(defaultTutkinnonOsaSuoritus(), tutkinnonOsaSuoritus)
+        var opiskeluOikeus = _.merge(defaultOpiskeluOikeus(), {
+          "suoritus": {
+            koulutusmoduulitoteutus: {
+              suoritustapa: {
+                "tunniste" : {
+                  "koodiarvo" : "naytto",
+                  "nimi" : "Näyttö",
+                  "koodistoUri" : "suoritustapa",
+                  "koodistoVersio" : 1
+                }
+              }
+            }
+          }
+        })
         opiskeluOikeus.suoritus.osasuoritukset = [
-          suoritus
+          tutkinnonOsaSuoritus
         ]
         return api.putOpiskeluOikeusAjax(opiskeluOikeus)()
       }
@@ -99,7 +112,7 @@ function AddOppijaPage() {
     }
   }
 
-  function defaultSuoritus() {
+  function defaultTutkinnonOsaSuoritus() {
     return {
       "koulutusmoduulitoteutus": {
         "koulutusmoduuli": {
@@ -108,7 +121,8 @@ function AddOppijaPage() {
           "laajuus": {"arvo": 11, "yksikkö": {"koodiarvo": "6", "koodistoUri": "opintojenlaajuusyksikko"}}
         }
       },
-      toimipiste: {oid: "1.2.246.562.10.42456023292", nimi: "Stadin ammattiopisto, Lehtikuusentien toimipaikka"}
+      toimipiste: {oid: "1.2.246.562.10.42456023292", nimi: "Stadin ammattiopisto, Lehtikuusentien toimipaikka"},
+      arviointi: [{arvosana: {koodiarvo: "2", koodistoUri: "ammatillisenperustutkinnonarviointiasteikko"}}]
     }
   }
 

@@ -334,7 +334,7 @@ describe('TOR', function() {
               }
             }
           }
-        }), 400, "Tutkinnon peruste puuttuu"))
+        }), 400, "perusteenDiaarinumero"))
       })
     })
   })
@@ -451,13 +451,21 @@ describe('TOR', function() {
                 "tunniste": {"koodiarvo": "9923123", "nimi": "Väärää tietoa", "koodistoUri": "tutkinnonosat", "koodistoVersio": 1}
               }
             }
-          }), 400, "wat wat"))
+          }), 400, "Tutkinnon osa ei löydy perusterakenteesta: tutkinnonosat/9923123"))
         })
-        describe('Arviointiasteikko ei ole perusteiden mukainen', function() {
-          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putTutkinnonOsaSuoritusAjax({arviointi: { asteikko: {koodistoUri: "???", versio: 1}}}), 400, "?"))
+        describe('Arviointiasteikko on tuntematon', function() {
+          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putTutkinnonOsaSuoritusAjax(
+            {
+              arviointi: [{arvosana: {koodiarvo: "2", koodistoUri: "vääräasteikko"}}]
+            }
+          ), 400, "Arvosanaa vääräasteikko/2 ei löydy koodistosta"))
         })
         describe('Arvosana ei kuulu perusteiden mukaiseen arviointiasteikkoon', function() {
-          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putTutkinnonOsaSuoritusAjax({arviointi: { arvosana: {id: "ammatillisenperustutkinnonarviointiasteikko_?", nimi: "BOOM"} }}), 400, "?"))
+          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putTutkinnonOsaSuoritusAjax(
+            {
+              arviointi: [{arvosana: {koodiarvo: "x", koodistoUri: "ammatillisenperustutkinnonarviointiasteikko"}}]
+            }
+          ), 400, "Arvosanaa ammatillisenperustutkinnonarviointiasteikko/x ei löydy koodistosta"))
         })
       })
     })
@@ -610,7 +618,13 @@ describe('TOR', function() {
         return fn().then(function() { throw { status: 200} }).catch(function(error) {
           expect(error.status).to.equal(code)
           if (text) {
-            expect(JSON.parse(error.responseText)[0]).to.equal(text)
+            var errorObject = JSON.parse(error.responseText);
+            if (errorObject.errors) {
+              // Json schema validation error
+              expect(error.responseText).to.contain(text)
+            } else {
+              expect(errorObject[0]).to.equal(text)
+            }
           }
         })
       }

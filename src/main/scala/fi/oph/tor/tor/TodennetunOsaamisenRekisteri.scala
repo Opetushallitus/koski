@@ -56,48 +56,38 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
   def validateOpiskeluOikeus(opiskeluOikeus: OpiskeluOikeus)(implicit userContext: UserContext): HttpStatus = {
     HttpStatus.ifThen(!userContext.hasReadAccess(opiskeluOikeus.oppilaitos)) { HttpStatus.forbidden("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid) }
       .ifOkThen {
-        validateSuoritus(opiskeluOikeus.suoritus, None)
+        validateSuoritus(opiskeluOikeus.suoritus, None, None)
       }
   }
 
-  def validateSuoritus(suoritus: Suoritus, rakenne: Option[TutkintoRakenne]): HttpStatus = (suoritus.koulutusmoduulitoteutus, rakenne) match {
-    case (t: TutkintoKoulutustoteutus, _) =>
+  def validateSuoritus(suoritus: Suoritus, rakenne: Option[TutkintoRakenne], suoritustapa: Option[Suoritustapa]): HttpStatus = (suoritus.koulutusmoduulitoteutus, rakenne, suoritustapa) match {
+    case (t: TutkintoKoulutustoteutus, _, _) =>
       t.koulutusmoduuli.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_)) match {
         case None =>
           HttpStatus.badRequest(t.koulutusmoduuli.perusteenDiaarinumero.map(d => "Tutkinnon peruste puuttuu tai on virheellinen: " + d).getOrElse("Tutkinnon peruste puuttuu"))
         case Some(rakenne) =>
           HttpStatus.each(t.suoritustapa.filter(suoritustapa => !validateKoodistoKoodiViite(suoritustapa.tunniste))) { suoritustapa: Suoritustapa => HttpStatus.badRequest("Invalid suoritustapa: " + suoritustapa.tunniste.koodiarvo) }
             .appendEach(t.osaamisala.toList.flatten.filter(osaamisala => !TutkintoRakenne.findOsaamisala(rakenne, osaamisala.koodiarvo).isDefined)) { osaamisala: KoodistoKoodiViite => HttpStatus.badRequest("Invalid osaamisala: " + osaamisala.koodiarvo) }
-            .appendEach(suoritus.osasuoritukset.toList.flatten)(validateSuoritus(_, Some(rakenne)))
+            .appendEach(suoritus.osasuoritukset.toList.flatten)(validateSuoritus(_, Some(rakenne), t.suoritustapa))
       }
-    case (t: OpsTutkinnonosatoteutus, Some(rakenne))  =>
-      t.suoritustapa match {
-        case None => HttpStatus.badRequest("Suoritustapa puuttuu tutkinnon osalta " + t.koulutusmoduuli.tunniste)
-        case Some(suoritusTapa) =>
-          KoodistoPalvelu.validate(koodistoPalvelu, suoritusTapa.tunniste) match {
-            case Some(suoritustapaKoodi) =>
-              TutkintoRakenne.findTutkinnonOsa(rakenne, suoritusTapa.tunniste, t.koulutusmoduuli.tunniste) match {
-                case None =>
-                  HttpStatus.badRequest("Tutkinnon osa ei löydy perusterakenteesta: " + t.koulutusmoduuli.tunniste)
-                case Some(tutkinnonOsa) =>
-                  HttpStatus.each(suoritus.arviointi.toList.flatten) { arviointi =>
-                    val arviointiAsteikko: Option[KoodistoViittaus] = KoodistoPalvelu.koodisto(koodistoPalvelu, arviointi.arvosana)
-                    HttpStatus
-                      .ifThen(arviointiAsteikko != tutkinnonOsa.arviointiAsteikko) {
-                      HttpStatus.badRequest("Perusteiden vastainen arviointiasteikko: " + arviointi.arvosana)
-                    }
-                      .ifOkThen {
-                      KoodistoPalvelu.validate(koodistoPalvelu, arviointi.arvosana) match {
-                        case None => HttpStatus.badRequest("Arvosanaa " + arviointi.arvosana + " ei löydy koodistosta")
-                        case _ => HttpStatus.ok
-                      }
-                    }
-                  }
+    case (t: OpsTutkinnonosatoteutus, Some(rakenne), None)  =>
+      HttpStatus.badRequest("Tutkinnolta puuttuu suoritustapa. Tutkinnon osasuorituksia ei hyväksytä.")
+    case (t: OpsTutkinnonosatoteutus, Some(rakenne), Some(suoritustapa))  =>
+      KoodistoPalvelu.validate(koodistoPalvelu, suoritustapa.tunniste) match {
+        case Some(suoritustapaKoodi) =>
+          TutkintoRakenne.findTutkinnonOsa(rakenne, suoritustapa.tunniste, t.koulutusmoduuli.tunniste) match {
+            case None =>
+              HttpStatus.badRequest("Tutkinnon osa ei löydy perusterakenteesta: " + t.koulutusmoduuli.tunniste)
+            case Some(tutkinnonOsa) =>
+              HttpStatus.each(suoritus.arviointi.toList.flatten) { arviointi =>
+                KoodistoPalvelu.validate(koodistoPalvelu, arviointi.arvosana) match {
+                  case None => HttpStatus.badRequest("Arvosanaa " + arviointi.arvosana + " ei löydy koodistosta")
+                  case _ => HttpStatus.ok
+                }
               }
-            case None => HttpStatus.badRequest("Suoritustapaa " + suoritusTapa.tunniste + " ei löydy koodistosta")
           }
+        case None => HttpStatus.badRequest("Suoritustapaa " + suoritustapa.tunniste + " ei löydy koodistosta")
       }
-
     case _ =>
       HttpStatus.ok
   }

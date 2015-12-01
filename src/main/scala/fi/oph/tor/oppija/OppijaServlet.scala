@@ -23,24 +23,23 @@ class OppijaServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository:
   private val mapper = new ObjectMapper().enable(INDENT_OUTPUT)
 
   put("/") {
+    jsonSchemaValidate
+
     val oppija: TorOppija = Json.read[TorOppija](request.body)
-    val validationResult = rekisteri.validate(oppija)
 
-    if (!validationResult.isOk) {
-      renderEither(Left(validationResult))
-    } else {
-      val schemaValidationReport = schema.validate(JsonLoader.fromString(request.body))
+    getClass.synchronized{
+      renderEither(rekisteri.createOrUpdate(oppija))
+    }
+  }
 
-      if(!schemaValidationReport.isSuccess) {
-        val errorNodes: ArrayNode = mapper.createArrayNode()
-        schemaValidationReport.filter(message => message.getLogLevel == ERROR).map(_.asJson).foreach(errorNodes.add)
+  def jsonSchemaValidate: Unit = {
+    val schemaValidationReport = schema.validate(JsonLoader.fromString(request.body))
 
-        halt(400, mapper.writeValueAsString(mapper.createObjectNode().set("errors", errorNodes)))
-      }
+    if (!schemaValidationReport.isSuccess) {
+      val errorNodes: ArrayNode = mapper.createArrayNode()
+      schemaValidationReport.filter(message => message.getLogLevel == ERROR).map(_.asJson).foreach(errorNodes.add)
 
-      getClass.synchronized{
-        renderEither(rekisteri.createOrUpdate(oppija))
-      }
+      halt(400, mapper.writeValueAsString(mapper.createObjectNode().set("errors", errorNodes)))
     }
   }
 
