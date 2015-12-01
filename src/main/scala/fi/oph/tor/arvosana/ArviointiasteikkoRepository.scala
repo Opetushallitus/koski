@@ -6,9 +6,11 @@ import fi.oph.tor.tutkinto.Koulutustyyppi.Koulutustyyppi
 
 class ArviointiasteikkoRepository(koodistoPalvelu: KoodistoPalvelu) {
   def getArviointiasteikkoViittaus(koulutustyyppi: Koulutustyyppi): Option[KoodistoViittaus] = {
-    koodistoPalvelu.getAlakoodit("koulutustyyppi_" + koulutustyyppi).map(_.koodisto)
-      .map(_.latestVersion)
-      .find(koodistoPalvelu.getKoodisto(_).find(_.metadata.flatMap(_.kasite).contains("arvosana")).isDefined)
+    val koodistoUri = koulutustyyppi match {
+      case 1 => "ammatillisenperustutkinnonarviointiasteikko"
+      case _ => "ammattijaerikoisammattitutkintojenarviointiasteikko"
+    }
+    koodistoPalvelu.getLatestVersion(koodistoUri).map(versio => KoodistoViittaus(koodistoUri, versio))
   }
 
   def getArviointiasteikko(koodisto: KoodistoViittaus): Option[Arviointiasteikko] = {
