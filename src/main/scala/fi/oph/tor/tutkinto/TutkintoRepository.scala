@@ -37,14 +37,13 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
       val koulutustyyppi: Koulutustyyppi = Koulutustyyppi.fromEPerusteetKoulutustyyppiAndSuoritustapa(rakenne.koulutustyyppi, suoritustapa.suoritustapakoodi)
       val arviointiasteikkoViittaus: Option[KoodistoViittaus] = arviointiasteikkoRepository.getArviointiasteikkoViittaus(koulutustyyppi)
 
-      val laajuusYksikkö: Option[KoodistoKoodiViite] = suoritustapa.laajuusYksikko match {
+      val laajuusYksikkö: Option[KoodistoKoodiViite] = suoritustapa.laajuusYksikko.flatMap(_ match {
         case "OSAAMISPISTE" => KoodistoPalvelu.getKoodistoKoodiViite(koodistoPalvelu, "opintojenlaajuusyksikko", "6", None)
-        case _ => None
-      }
-
-      if(!laajuusYksikkö.isDefined) {
-        logger.warn("Opintojenlaajuusyksikkö not found for laajuusYksikko " + suoritustapa.laajuusYksikko)
-      }
+        case x => {
+          logger.warn("Opintojenlaajuusyksikkö not found for laajuusYksikko " + x)
+          None
+        }
+      })
 
       def convertRakenneOsa(rakenneOsa: ERakenneOsa, suoritustapa: ESuoritustapa): RakenneOsa = {
         rakenneOsa match {
