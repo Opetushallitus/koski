@@ -486,7 +486,8 @@ describe('TOR', function() {
   describe('Navigointi suoraan oppijan sivulle', function() {
     before(
       authentication.login(),
-      openPage('/tor/oppija/1.2.246.562.24.00000000001', page.isOppijaSelected('eero'))
+      openPage('/tor/oppija/1.2.246.562.24.00000000001', page.isOppijaSelected('eero')),
+      opinnot.waitUntilTutkintoVisible()
     )
 
     it('Oppijan tiedot näytetään', function() {
