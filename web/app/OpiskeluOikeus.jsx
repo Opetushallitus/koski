@@ -116,7 +116,6 @@ const TutkinnonOsa = React.createClass({
     })(rakenne.suoritustavat).laajuusYksikkö
 
     const addArvosana = (arvosana) => (oOikeus) => {
-      debugger
       let suoritukset = (oOikeus.suoritus.osasuoritukset ? oOikeus.suoritus.osasuoritukset : []).concat(
         {
           koulutusmoduulitoteutus: {
