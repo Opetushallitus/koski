@@ -17,7 +17,7 @@ case class StringSchema(enumValues: Option[List[Any]] = None) extends Schema
 case class BooleanSchema(enumValues: Option[List[Any]] = None) extends Schema
 case class NumberSchema(enumValues: Option[List[Any]] = None) extends Schema
 case class ClassSchema(fullClassName: String, properties: List[Property], override val metadata: List[Metadata], definitions: List[SchemaWithClassName] = Nil) extends Schema with SchemaWithClassName with ObjectWithMetadata[ClassSchema] {
-  def getSchema(className: String): Option[SchemaWithClassName] = {
+  override def getSchema(className: String): Option[SchemaWithClassName] = {
     if (className == this.fullClassName) {
       Some(this)
     } else {
@@ -39,6 +39,11 @@ trait SchemaWithClassName extends Schema {
   def fullClassName: String
   def simpleName: String = {
     fullClassName.split("\\.").toList.last.toLowerCase
+  }
+  def getSchema(className: String): Option[SchemaWithClassName] = if (className == fullClassName) {
+    Some(this)
+  } else {
+    None
   }
 }
 

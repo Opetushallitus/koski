@@ -1,10 +1,10 @@
 package fi.oph.tor.schema
 
-import fi.oph.tor.schema.generic.{ClassSchema, OneOfSchema}
+import fi.oph.tor.schema.generic.{SchemaWithClassName, ClassSchema, OneOfSchema}
 import org.json4s._
 import org.json4s.reflect.TypeInfo
 
-class SchemaBasedTraitSerializer(schema: ClassSchema) extends Serializer[AnyRef] {
+class SchemaBasedTraitSerializer(schema: SchemaWithClassName) extends Serializer[AnyRef] {
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), AnyRef] = {
     case (TypeInfo(t, _), json) if (t.isInterface && schema.getSchema(t.getTypeName).isDefined) => { // <- todo: recognize trait type correctly
       val fullName: String = t.getTypeName

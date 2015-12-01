@@ -5,8 +5,8 @@ import org.reflections.Reflections
 import scala.reflect.runtime.{universe => ru}
 
 case class SchemaFactory(annotationsSupported: List[AnnotationSupport]) {
-  def createSchema(className: String): ClassSchema = {
-    createClassSchema(reflect.runtime.currentMirror.classSymbol(Class.forName(className)).toType, ScanState()).asInstanceOf[ClassSchema]
+  def createSchema(className: String): SchemaWithClassName = {
+    createSchema(reflect.runtime.currentMirror.classSymbol(Class.forName(className)).toType, ScanState()).asInstanceOf[SchemaWithClassName]
   }
 
   case class ScanState(root: Boolean = true, foundTypes: collection.mutable.Set[String] = collection.mutable.Set.empty, createdTypes: collection.mutable.Set[SchemaWithClassName] = collection.mutable.Set.empty) {

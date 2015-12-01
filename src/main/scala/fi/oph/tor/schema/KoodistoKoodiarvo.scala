@@ -15,7 +15,7 @@ object KoodistoKoodiarvo extends MetadataSupport {
   override val applyAnnotations: PartialFunction[(String, List[String], ObjectWithMetadata[_], SchemaFactory), ObjectWithMetadata[_]] = {
     case (annotationClass, params, property: Property, schema) if (annotationClass == classOf[KoodistoKoodiarvo].getName) =>
       val koodiarvo = KoodistoKoodiarvo(params.mkString(" "))
-      val koodistoViiteSchema: ClassSchema = schema.createSchema(classOf[KoodistoKoodiViite].getName)
+      val koodistoViiteSchema: ClassSchema = schema.createSchema(classOf[KoodistoKoodiViite].getName).asInstanceOf[ClassSchema]
       val modifiedInnerSchema: Schema = koodistoViiteSchema.copy(properties = koodistoViiteSchema.properties.map{
         case p if p.key == "koodiarvo" => p.copy(tyep = StringSchema(enumValues = Some(List(koodiarvo.arvo))))
         case p => p
