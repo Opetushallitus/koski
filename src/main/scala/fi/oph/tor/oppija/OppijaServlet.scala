@@ -32,17 +32,6 @@ class OppijaServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository:
     }
   }
 
-  def jsonSchemaValidate: Unit = {
-    val schemaValidationReport = schema.validate(JsonLoader.fromString(request.body))
-
-    if (!schemaValidationReport.isSuccess) {
-      val errorNodes: ArrayNode = mapper.createArrayNode()
-      schemaValidationReport.filter(message => message.getLogLevel == ERROR).map(_.asJson).foreach(errorNodes.add)
-
-      halt(400, mapper.writeValueAsString(mapper.createObjectNode().set("errors", errorNodes)))
-    }
-  }
-
   get("/") {
     contentType = "application/json;charset=utf-8"
     params.get("query") match {
@@ -54,5 +43,16 @@ class OppijaServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository:
 
   get("/:oid") {
     renderEither(rekisteri.userView(params("oid")))
+  }
+
+  private def jsonSchemaValidate: Unit = this.synchronized {
+    val schemaValidationReport = schema.validate(JsonLoader.fromString(request.body))
+
+    if (!schemaValidationReport.isSuccess) {
+      val errorNodes: ArrayNode = mapper.createArrayNode()
+      schemaValidationReport.filter(message => message.getLogLevel == ERROR).map(_.asJson).foreach(errorNodes.add)
+
+      halt(400, mapper.writeValueAsString(mapper.createObjectNode().set("errors", errorNodes)))
+    }
   }
 }
