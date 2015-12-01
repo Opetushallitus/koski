@@ -62,7 +62,17 @@ function getJson(url) {
 
 function postJson(url, data) {
   return Q($.ajax({
-    type: 'POST',
+    type: 'post',
+    url: url,
+    data: JSON.stringify(data),
+    contentType : 'application/json',
+    dataType: 'json'
+  }))
+}
+
+function putJson(url, data) {
+  return Q($.ajax({
+    type: 'put',
     url: url,
     data: JSON.stringify(data),
     contentType : 'application/json',

@@ -304,17 +304,17 @@ describe('TOR', function() {
       before(resetMocks, authentication.login('kalle'), page.openPage)
 
       describe('Valideilla tiedoilla', function() {
-        it('palautetaan HTTP 200', verifyResponseCode(addOppija.postOpiskeluOikeusAjax({}), 200))
+        it('palautetaan HTTP 200', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({}), 200))
       })
 
       describe('Kun opinto-oikeutta yritetään lisätä oppilaitokseen, johon käyttäjällä ei ole pääsyä', function() {
-        it('palautetaan HTTP 403 virhe', verifyResponseCode(addOppija.postOpiskeluOikeusAjax(
+        it('palautetaan HTTP 403 virhe', verifyResponseCode(addOppija.putOpiskeluOikeusAjax(
           { oppilaitos:{oid: 'eipaasya'}}
         ), 403, "Ei oikeuksia organisatioon eipaasya"))
       })
 
       describe('Kun yritetään lisätä opinto-oikeus virheelliseen perusteeseen', function() {
-        it('palautetaan HTTP 400 virhe', verifyResponseCode(addOppija.postOpiskeluOikeusAjax({
+        it('palautetaan HTTP 400 virhe', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
           suoritus: {
             koulutusmoduulitoteutus: {
               koulutusmoduuli: {
@@ -326,7 +326,7 @@ describe('TOR', function() {
       })
 
       describe('Kun yritetään lisätä opinto-oikeus ilman perustetta', function() {
-        it('palautetaan HTTP 400 virhe', verifyResponseCode(addOppija.postOpiskeluOikeusAjax({
+        it('palautetaan HTTP 400 virhe', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
           suoritus: {
             koulutusmoduulitoteutus: {
               koulutusmoduuli: {
@@ -396,15 +396,27 @@ describe('TOR', function() {
         })
       })
 
+
       describe('Tietojen validointi serverillä', function() {
         describe('Osaamisala ja suoritustapa ok', function() {
-          it('palautetaan HTTP 200', verifyResponseCode(addOppija.postOpiskeluOikeusAjax({ suoritustapa: 'ops', osaamisala: 1527}), 200))
+          it('palautetaan HTTP 200', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({"suoritus": {"koulutusmoduulitoteutus": {
+              "suoritustapa": {"tunniste": {"koodiarvo": "ops", "koodistoUri": "suoritustapa"}},
+              "osaamisala": [{"koodiarvo": "1527", "koodistoUri": "osaamisala"}]
+            }}}
+          ), 200))
         })
         describe('Suoritustapa virheellinen', function() {
-          it('palautetaan HTTP 400', verifyResponseCode(addOppija.postOpiskeluOikeusAjax({ suoritustapa: 'virheellinen', osaamisala: 1527}), 400))
+          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({"suoritus": {"koulutusmoduulitoteutus": {
+              "suoritustapa": {"tunniste": {"koodiarvo": "blahblahtest", "koodistoUri": "suoritustapa"}},
+              "osaamisala": [{"koodiarvo": "1527", "koodistoUri": "osaamisala"}]
+            }}}
+          ), 400, "Invalid suoritustapa: blahblahtest"))
         })
         describe('Osaamisala virheellinen', function() {
-          it('palautetaan HTTP 400', verifyResponseCode(addOppija.postOpiskeluOikeusAjax({ suoritustapa: 'ops', osaamisala: 0}), 400))
+          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({"suoritus": {"koulutusmoduulitoteutus": {
+            "suoritustapa": {"tunniste": {"koodiarvo": "ops", "koodistoUri": "suoritustapa"}},
+            "osaamisala": [{"koodiarvo": "0", "koodistoUri": "osaamisala"}]
+          }}}), 400, "Invalid osaamisala: 0"))
         })
       })
     })
@@ -430,16 +442,22 @@ describe('TOR', function() {
 
       describe('Tietojen validointi serverillä', function() {
         describe('Koulutusmoduuli ja arviointi ok', function() {
-          it('palautetaan HTTP 200', verifyResponseCode(addOppija.postSuoritusAjax({}), 200))
+          it('palautetaan HTTP 200', verifyResponseCode(addOppija.putTutkinnonOsaSuoritusAjax({}), 200))
         })
         describe('Koulutusmoduulia ei löydy', function() {
-          it('palautetaan HTTP 400', verifyResponseCode(addOppija.postSuoritusAjax({koulutusModuuli: {tyyppi: "tutkinnonåsa", koodi: "100023x"}}), 400))
+          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putTutkinnonOsaSuoritusAjax({
+            "koulutusmoduulitoteutus": {
+              "koulutusmoduuli": {
+                "tunniste": {"koodiarvo": "9923123", "nimi": "Väärää tietoa", "koodistoUri": "tutkinnonosat", "koodistoVersio": 1}
+              }
+            }
+          }), 400, "wat wat"))
         })
         describe('Arviointiasteikko ei ole perusteiden mukainen', function() {
-          it('palautetaan HTTP 400', verifyResponseCode(addOppija.postSuoritusAjax({arviointi: { asteikko: {koodistoUri: "???", versio: 1}}}), 400))
+          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putTutkinnonOsaSuoritusAjax({arviointi: { asteikko: {koodistoUri: "???", versio: 1}}}), 400, "?"))
         })
         describe('Arvosana ei kuulu perusteiden mukaiseen arviointiasteikkoon', function() {
-          it('palautetaan HTTP 400', verifyResponseCode(addOppija.postSuoritusAjax({arviointi: { arvosana: {id: "ammatillisenperustutkinnonarviointiasteikko_?", nimi: "BOOM"} }}), 400))
+          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putTutkinnonOsaSuoritusAjax({arviointi: { arvosana: {id: "ammatillisenperustutkinnonarviointiasteikko_?", nimi: "BOOM"} }}), 400, "?"))
         })
       })
     })
@@ -589,7 +607,7 @@ describe('TOR', function() {
       return fn
     } else {
       return function() {
-        return fn().catch(function(error) {
+        return fn().then(function() { throw { status: 200} }).catch(function(error) {
           expect(error.status).to.equal(code)
           if (text) {
             expect(JSON.parse(error.responseText)[0]).to.equal(text)

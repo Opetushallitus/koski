@@ -38,6 +38,7 @@ const http = (url, options) => {
 
 http.get = (url) => http(url, { credentials: 'include' })
 http.post = (url, entity) => http(url, { credentials: 'include', method: 'post', body: JSON.stringify(entity), headers: { 'Content-Type': 'application/json'} })
+http.put = (url, entity) => http(url, { credentials: 'include', method: 'put', body: JSON.stringify(entity), headers: { 'Content-Type': 'application/json'} })
 http.mock = (url, result) => mocks[url] = result
 window.http = http
 export default http

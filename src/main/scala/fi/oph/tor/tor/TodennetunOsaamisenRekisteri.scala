@@ -25,27 +25,31 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
   }
 
   def createOrUpdate(oppija: TorOppija)(implicit userContext: UserContext): Either[HttpStatus, Henkilö.Id] = {
+    validate(oppija) match {
+      case status if (status.isOk) =>
+        val oppijaOid: Either[HttpStatus, PossiblyUnverifiedOppijaOid] = oppija.henkilö match {
+          case h:NewHenkilö => oppijaRepository.findOrCreate(oppija).right.map(VerifiedOppijaOid(_))
+          case h:HenkilöWithOid => Right(UnverifiedOppijaOid(h.oid, oppijaRepository))
+        }
+        oppijaOid.right.flatMap { oppijaOid: PossiblyUnverifiedOppijaOid =>
+          val opiskeluOikeusCreationResults = oppija.opiskeluoikeudet.map { opiskeluOikeus =>
+            opiskeluOikeusRepository.createOrUpdate(oppijaOid, opiskeluOikeus)
+          }
+          opiskeluOikeusCreationResults.find(_.isLeft) match {
+            case Some(Left(error)) => Left(error)
+            case _ => Right(oppijaOid.oppijaOid)
+          }
+        }
+      case notOk => Left(notOk)
+    }
+  }
+
+  def validate(oppija: TorOppija)(implicit userContext: UserContext): HttpStatus = {
     if (oppija.opiskeluoikeudet.length == 0) {
-      Left(HttpStatus.badRequest("At least one OpiskeluOikeus required"))
+      HttpStatus.badRequest("At least one OpiskeluOikeus required")
     }
     else {
-      HttpStatus.fold(oppija.opiskeluoikeudet.map(validateOpiskeluOikeus)) match {
-        case error if error.isError => Left(error)
-        case _ =>
-          val oppijaOid: Either[HttpStatus, PossiblyUnverifiedOppijaOid] = oppija.henkilö match {
-            case h:NewHenkilö => oppijaRepository.findOrCreate(oppija).right.map(VerifiedOppijaOid(_))
-            case h:HenkilöWithOid => Right(UnverifiedOppijaOid(h.oid, oppijaRepository))
-          }
-          oppijaOid.right.flatMap { oppijaOid: PossiblyUnverifiedOppijaOid =>
-            val opiskeluOikeusCreationResults = oppija.opiskeluoikeudet.map { opiskeluOikeus =>
-              opiskeluOikeusRepository.createOrUpdate(oppijaOid, opiskeluOikeus)
-            }
-            opiskeluOikeusCreationResults.find(_.isLeft) match {
-              case Some(Left(error)) => Left(error)
-              case _ => Right(oppijaOid.oppijaOid)
-            }
-          }
-      }
+      HttpStatus.fold(oppija.opiskeluoikeudet.map(validateOpiskeluOikeus))
     }
   }
 
@@ -57,7 +61,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
   }
 
   def validateSuoritus(suoritus: Suoritus, rakenne: Option[TutkintoRakenne]): HttpStatus = (suoritus.koulutusmoduulitoteutus, rakenne) match {
-    case (t: TutkintoKoulutustoteutus, None) =>
+    case (t: TutkintoKoulutustoteutus, _) =>
       t.koulutusmoduuli.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_)) match {
         case None =>
           HttpStatus.badRequest(t.koulutusmoduuli.perusteenDiaarinumero.map(d => "Tutkinnon peruste puuttuu tai on virheellinen: " + d).getOrElse("Tutkinnon peruste puuttuu"))
@@ -94,7 +98,8 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
           }
       }
 
-    case _ => HttpStatus.ok
+    case _ =>
+      HttpStatus.ok
   }
 
   private def validateKoodistoKoodiViite(viite: KoodistoKoodiViite) = {

@@ -70,38 +70,48 @@ function AddOppijaPage() {
         return form().find('.error-messages .' + field).is(':visible')
       }
     },
-    postSuoritusAjax: function(suoritus) {
+    putTutkinnonOsaSuoritusAjax: function(suoritus) {
       return function() {
         suoritus = _.merge(defaultSuoritus(), suoritus)
-        opiskeluOikeus = _.merge(defaultOpiskeluOikeus(), { suoritukset: [suoritus], suoritustapa: "ops" })
-        return api.postOpiskeluOikeusAjax(opiskeluOikeus)()
+        var opiskeluOikeus = defaultOpiskeluOikeus();
+        opiskeluOikeus.suoritus.osasuoritukset = [
+          suoritus
+        ]
+        return api.putOpiskeluOikeusAjax(opiskeluOikeus)()
       }
     },
 
-    postOpiskeluOikeusAjax: function(opiskeluOikeus) {
+    putOpiskeluOikeusAjax: function(opiskeluOikeus) {
       return function() {
         opiskeluOikeus = _.merge(defaultOpiskeluOikeus(), opiskeluOikeus)
         data = makeOppija({}, [opiskeluOikeus])
-        return api.postOppijaAjax(data)()
+        return api.putOppijaAjax(data)()
       }
     },
-    postOppijaAjax: function(oppija) {
+    putOppijaAjax: function(oppija) {
       return function() {
         var defaults = makeOppija(defaultHenkilo(), [defaultOpiskeluOikeus()])
         oppija = _.merge(defaults, {}, oppija)
-        return postJson(
+        return putJson(
           'http://localhost:7021/tor/api/oppija', oppija
         )
       }
     }
   }
-  function defaultSuoritus() { return {
-    koulutusmoduuli: {tyyppi: "tutkinnonosa", koodi: "100023"},
-    arviointi: {
-      asteikko: {koodistoUri: "ammatillisenperustutkinnonarviointiasteikko", versio: 1},
-      arvosana: {id: "ammatillisenperustutkinnonarviointiasteikko_2", nimi: "H2"}
+
+  function defaultSuoritus() {
+    return {
+      "koulutusmoduulitoteutus": {
+        "koulutusmoduuli": {
+          "tunniste": {"koodiarvo": "100023", "nimi": "Markkinointi ja asiakaspalvelu", "koodistoUri": "tutkinnonosat", "koodistoVersio": 1},
+          "pakollinen": true,
+          "laajuus": {"arvo": 11, "yksikkö": {"koodiarvo": "6", "koodistoUri": "opintojenlaajuusyksikko"}}
+        }
+      },
+      toimipiste: {oid: "1.2.246.562.10.42456023292", nimi: "Stadin ammattiopisto, Lehtikuusentien toimipaikka"}
     }
-  }}
+  }
+
   function defaultOpiskeluOikeus() { return {
     oppilaitos: { oid: '1' },
     suoritus: {

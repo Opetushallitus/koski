@@ -23,7 +23,7 @@ export const oppijaP = Bacon.update({ loading: true },
   }
 )
 
-export const updateResultE = oppijaP.sampledBy(opiskeluOikeusChange).flatMapLatest(oppijaUpdate => Http.post('/tor/api/oppija', oppijaUpdate))
+export const updateResultE = oppijaP.sampledBy(opiskeluOikeusChange).flatMapLatest(oppijaUpdate => Http.put('/tor/api/oppija', oppijaUpdate))
 
 export const uusiOppijaP = routeP.map(route => { return !!route.uusiOppija })
 
