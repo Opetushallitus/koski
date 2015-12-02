@@ -48,15 +48,11 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
       HttpStatus.badRequest("At least one OpiskeluOikeus required")
     }
     else {
-      HttpStatus.fold(oppija.opiskeluoikeudet.map(validateOpiskeluOikeus))
-    }
-  }
-
-  private def validateOpiskeluOikeus(opiskeluOikeus: OpiskeluOikeus)(implicit userContext: UserContext): HttpStatus = {
-    HttpStatus.ifThen(!userContext.hasReadAccess(opiskeluOikeus.oppilaitos)) { HttpStatus.forbidden("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid) }
-      .ifOkThen {
-        TutkintoRakenneValidator(tutkintoRepository).validateTutkintoRakenne(opiskeluOikeus)
+      HttpStatus.each(oppija.opiskeluoikeudet) { opiskeluOikeus =>
+        HttpStatus.validate(userContext.hasReadAccess(opiskeluOikeus.oppilaitos)) { HttpStatus.forbidden("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid) }
+          .then { TutkintoRakenneValidator(tutkintoRepository).validateTutkintoRakenne(opiskeluOikeus)}
       }
+    }
   }
 
   def userView(oid: String)(implicit userContext: UserContext): Either[HttpStatus, TorOppija] = {

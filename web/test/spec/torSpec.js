@@ -322,7 +322,7 @@ describe('TOR', function() {
               }
             }
           }
-        }), 400, "Tutkinnon peruste puuttuu tai on virheellinen: 39/xxx/2014"))
+        }), 400, "Tutkinnon peruste on virheellinen: 39/xxx/2014"))
       })
 
       describe('Kun yritetään lisätä opinto-oikeus ilman perustetta', function() {

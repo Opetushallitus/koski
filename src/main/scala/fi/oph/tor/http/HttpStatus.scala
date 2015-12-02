@@ -6,12 +6,8 @@ case class HttpStatus(statusCode: Int, errors: List[String]) {
   def isOk = statusCode < 300
   def isError = !isOk
 
-  /** Combine two statii: concatenate errors list, pick highest status code */
-  def append(status: => HttpStatus) = HttpStatus.append(this, status)
-  /** Map each object to a status, fold statii */
-  def appendEach[T](xs: => Iterable[T])(block: T => HttpStatus) = this.append(HttpStatus.each(xs)(block))
   /** Pick given status if this one is ok. Otherwise stick with this one */
-  def ifOkThen(status: => HttpStatus) = if (isOk) { status } else { this }
+  def then(status: => HttpStatus) = if (isOk) { status } else { this }
 }
 
 object HttpStatus {
@@ -26,8 +22,8 @@ object HttpStatus {
 
   // Combinators
 
-  /** If predicate is true, yield given status, otherwise 200/ok */
-  def ifThen(predicate: => Boolean)(status: => HttpStatus) = if (predicate) { status } else { ok }
+  /** If predicate is true, yield 200/ok, else run given block */
+  def validate(predicate: => Boolean)(status: => HttpStatus) = if (predicate) { ok } else { status }
   /** Map each object to a status, fold statii */
   def each[T](xs: Iterable[T])(block: T => HttpStatus) = fold(xs.map(block))
   /** Combine two statii: concatenate errors list, pick highest status code */
