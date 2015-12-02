@@ -21,7 +21,7 @@ object KoodistoResolvingExtractor {
       case (TypeInfo(TheClass, _), json) =>
         val viite = json.extract[KoodistoKoodiViite](Json.jsonFormats, Manifest.classType(TheClass))
         ContextualExtractor.getContext[KoodistoPalvelu] match {
-          case Some(koodistoPalvelu) => KoodistoPalvelu.validate(koodistoPalvelu, viite) match {
+          case Some(koodistoPalvelu) => koodistoPalvelu.validate(viite) match {
             case Some(viite) => viite
             case None =>
               ContextualExtractor.extractionError(HttpStatus.badRequest("Koodia " + viite + " ei löydy koodistosta"))

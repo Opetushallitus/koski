@@ -2,7 +2,7 @@ package fi.oph.tor.schema
 
 import fi.oph.tor.ErrorHandlingServlet
 import fi.oph.tor.json.Json
-import fi.oph.tor.koodisto.{KoodistoPalvelu, KoodistoViittaus}
+import fi.oph.tor.koodisto.{KoodistoPalvelu, KoodistoViite}
 
 class SchemaDocumentationServlet(koodistoPalvelu: KoodistoPalvelu) extends ErrorHandlingServlet {
   get("/") {
@@ -30,8 +30,8 @@ class SchemaDocumentationServlet(koodistoPalvelu: KoodistoPalvelu) extends Error
       case "latest" =>
         koodistoPalvelu.getLatestVersion(koodistoUri)
       case x =>
-        Some(x.toInt)
+        Some(KoodistoViite(koodistoUri, x.toInt))
     }
-    Json.writePretty(versio.flatMap { versio => koodistoPalvelu.getKoodistoKoodit(KoodistoViittaus(koodistoUri, versio))})
+    Json.writePretty(versio.flatMap(koodistoPalvelu.getKoodistoKoodit))
   }
 }

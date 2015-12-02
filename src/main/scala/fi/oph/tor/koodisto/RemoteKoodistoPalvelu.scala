@@ -10,17 +10,17 @@ class RemoteKoodistoPalvelu(username: String, password: String, virkailijaUrl: S
   val virkalijaClient = new VirkailijaHttpClient(username, password, virkailijaUrl, "/koodisto-service")
   val http = virkalijaClient.httpClient
 
-  def getKoodistoKoodit(koodisto: KoodistoViittaus): Option[List[KoodistoKoodi]] = {
+  def getKoodistoKoodit(koodisto: KoodistoViite): Option[List[KoodistoKoodi]] = {
     http(virkalijaClient.virkailijaUriFromString("/koodisto-service/rest/codeelement/codes/" + koodisto + noCache))(Http.parseJsonOptional[List[KoodistoKoodi]])
   }
 
-  def getKoodisto(koodisto: KoodistoViittaus): Option[Koodisto] = {
+  def getKoodisto(koodisto: KoodistoViite): Option[Koodisto] = {
     http(virkalijaClient.virkailijaUriFromString("/koodisto-service/rest/codes/" + koodisto + noCache))(Http.parseJsonOptional[Koodisto])
   }
 
-  def getLatestVersion(koodisto: String): Option[Int] = {
+  def getLatestVersion(koodisto: String): Option[KoodistoViite] = {
     val latestKoodisto: Option[KoodistoWithLatestVersion] = http(virkalijaClient.virkailijaUriFromString("/koodisto-service/rest/codes/" + koodisto + noCache))(Http.parseJsonIgnoreError[KoodistoWithLatestVersion])
-    latestKoodisto.flatMap { latest => Option(latest.latestKoodistoVersio).map(_.versio) }
+    latestKoodisto.flatMap { latest => Option(latest.latestKoodistoVersio).map(v => KoodistoViite(koodisto, v.versio)) }
   }
 
   private def noCache = "?noCache=" + System.currentTimeMillis()

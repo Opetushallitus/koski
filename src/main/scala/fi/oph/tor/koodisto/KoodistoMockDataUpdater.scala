@@ -18,11 +18,11 @@ object KoodistoMockDataUpdater extends App {
       case Some(versio) =>
         Json.writeFile(
           MockKoodistoPalvelu.koodistoFileName(koodistoUri),
-          kp.getKoodisto(KoodistoViittaus(koodistoUri, versio))
+          kp.getKoodisto(versio)
         )
         Json.writeFile(
           MockKoodistoPalvelu.koodistoKooditFileName(koodistoUri),
-          kp.getKoodistoKoodit(KoodistoViittaus(koodistoUri, versio))
+          kp.getKoodistoKoodit(versio)
         )
       case None => throw new IllegalStateException("Koodisto not found from koodisto-service: " + koodistoUri)
     }

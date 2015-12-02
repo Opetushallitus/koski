@@ -1,7 +1,7 @@
 package fi.oph.tor.tutkinto
 
 import fi.oph.tor.arvosana.Arviointiasteikko
-import fi.oph.tor.koodisto.KoodistoViittaus
+import fi.oph.tor.koodisto.KoodistoViite
 import fi.oph.tor.schema.KoodistoKoodiViite
 
 case class TutkintoRakenne(suoritustavat: List[SuoritustapaJaRakenne], osaamisalat: List[Osaamisala], arviointiAsteikot: List[Arviointiasteikko])
@@ -26,4 +26,4 @@ case class Osaamisala(nimi: String, koodiarvo: String)
 sealed trait RakenneOsa
 
 case class RakenneModuuli(nimi: String, osat: List[RakenneOsa], osaamisalaKoodi: Option[String]) extends RakenneOsa
-case class TutkinnonOsa(tunniste: KoodistoKoodiViite, nimi: String, arviointiAsteikko: Option[KoodistoViittaus], laajuus: Option[Float], pakollinen: Boolean) extends RakenneOsa
+case class TutkinnonOsa(tunniste: KoodistoKoodiViite, nimi: String, arviointiAsteikko: Option[KoodistoViite], laajuus: Option[Float], pakollinen: Boolean) extends RakenneOsa

@@ -1,7 +1,7 @@
 package fi.oph.tor.schema
 
 import java.time.LocalDate
-import fi.oph.tor.koodisto.KoodistoViittaus
+import fi.oph.tor.koodisto.KoodistoViite
 import fi.oph.tor.schema.generic.annotation.{Description, ReadOnly}
 
 
@@ -315,6 +315,7 @@ case class KoodistoKoodiViite(
     case x:KoodistoKoodiViite => x.toString == toString
     case _ => false
   }
+  def koodistoViite = koodistoVersio.map(KoodistoViite(koodistoUri, _))
 }
 
 @Description("Henkilökohtainen opetuksen järjestämistä koskeva suunnitelma, https://fi.wikipedia.org/wiki/HOJKS")

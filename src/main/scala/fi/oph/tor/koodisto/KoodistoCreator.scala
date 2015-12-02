@@ -11,19 +11,16 @@ object KoodistoCreator {
   }
 
   private def createKoodistoFromMockData(koodistoUri: String, kp: KoodistoPalvelu): Unit = {
-    val versio: Int = kp.getLatestVersion(koodistoUri) match {
-      case Some(version) => version
-      case None =>
-        MockKoodistoPalvelu.getKoodisto(koodistoUri) match {
-          case None => throw new IllegalStateException("Mock not found: " + koodistoUri)
-          case Some(koodisto) =>
-            kp.createKoodisto(koodisto)
-            koodisto.versio
-        }
+    val koodistoViite: KoodistoViite = kp.getLatestVersion(koodistoUri).getOrElse {
+      MockKoodistoPalvelu.getKoodisto(koodistoUri) match {
+        case None => throw new IllegalStateException("Mock not found: " + koodistoUri)
+        case Some(koodisto) =>
+          kp.createKoodisto(koodisto)
+          koodisto.koodistoViite
+      }
     }
-    val koodistoViittaus: KoodistoViittaus = KoodistoViittaus(koodistoUri, versio)
-    val koodit = kp.getKoodistoKoodit(koodistoViittaus).toList.flatten
-    val luotavatKoodit = MockKoodistoPalvelu.getKoodistoKoodit(koodistoViittaus).toList.flatten.filter { koodi: KoodistoKoodi => !koodit.find(_.koodiArvo == koodi.koodiArvo).isDefined }
+    val koodit = kp.getKoodistoKoodit(koodistoViite).toList.flatten
+    val luotavatKoodit = MockKoodistoPalvelu.getKoodistoKoodit(koodistoViite).toList.flatten.filter { koodi: KoodistoKoodi => !koodit.find(_.koodiArvo == koodi.koodiArvo).isDefined }
     luotavatKoodit.foreach { koodi =>
       kp.createKoodi(koodistoUri, koodi.copy(voimassaAlkuPvm = Some(LocalDate.now)))
     }

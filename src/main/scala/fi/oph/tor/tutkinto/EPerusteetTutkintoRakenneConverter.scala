@@ -1,7 +1,7 @@
 package fi.oph.tor.tutkinto
 import fi.oph.tor.arvosana.ArviointiasteikkoRepository
 import fi.oph.tor.eperusteet._
-import fi.oph.tor.koodisto.{KoodistoPalvelu, KoodistoViittaus}
+import fi.oph.tor.koodisto.{KoodistoPalvelu, KoodistoViite}
 import fi.oph.tor.schema.KoodistoKoodiViite
 import fi.oph.tor.tutkinto
 import fi.oph.tor.tutkinto.Koulutustyyppi.Koulutustyyppi
@@ -9,14 +9,14 @@ import fi.vm.sade.utils.slf4j.Logging
 
 object EPerusteetTutkintoRakenneConverter extends Logging {
   def convertRakenne(rakenne: EPerusteRakenne)(implicit arviointiasteikkoRepository: ArviointiasteikkoRepository, koodistoPalvelu: KoodistoPalvelu): TutkintoRakenne = {
-    var arviointiasteikkoViittaukset: Set[KoodistoViittaus] = Set.empty
+    var arviointiasteikkoViittaukset: Set[KoodistoViite] = Set.empty
 
     val suoritustavat: List[tutkinto.SuoritustapaJaRakenne] = rakenne.suoritustavat.flatMap { (suoritustapa: ESuoritustapa) =>
       val koulutustyyppi: Koulutustyyppi = convertKoulutusTyyppi(rakenne.koulutustyyppi, suoritustapa.suoritustapakoodi)
-      val arviointiasteikkoViittaus: Option[KoodistoViittaus] = arviointiasteikkoRepository.getArviointiasteikkoViittaus(koulutustyyppi)
+      val arviointiasteikkoViittaus: Option[KoodistoViite] = arviointiasteikkoRepository.getArviointiasteikkoViittaus(koulutustyyppi)
 
       val laajuusYksikkö: Option[KoodistoKoodiViite] = suoritustapa.laajuusYksikko.flatMap(_ match {
-        case "OSAAMISPISTE" => KoodistoPalvelu.getKoodistoKoodiViite(koodistoPalvelu, "opintojenlaajuusyksikko", "6", None)
+        case "OSAAMISPISTE" => koodistoPalvelu.validate(KoodistoKoodiViite("6", None, "opintojenlaajuusyksikko", None))
         case x => {
           logger.warn("Opintojenlaajuusyksikkö not found for laajuusYksikko " + x)
           None
@@ -40,7 +40,7 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
 
               val laajuus = laajuusYksikkö.flatMap(yksikkö => tutkinnonOsaViite.laajuus.map(laajuus => laajuus))
 
-              KoodistoPalvelu.getKoodistoKoodiViite(koodistoPalvelu, "tutkinnonosat", eTutkinnonOsa.koodiArvo, None) match {
+              koodistoPalvelu.validate(KoodistoKoodiViite(eTutkinnonOsa.koodiArvo, None, "tutkinnonosat", None)) match {
                 case Some(tutkinnonosaKoodi) => TutkinnonOsa(tutkinnonosaKoodi, eTutkinnonOsa.nimi.getOrElse("fi", ""), arviointiasteikkoViittaus, tutkinnonOsaViite.laajuus, x.pakollinen)
                 case None => throw new RuntimeException("Tutkinnon osaa ei löydy koodistosta: " + eTutkinnonOsa.koodiArvo)
               }
@@ -51,7 +51,7 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
       }
 
 
-      val suoritustapaKoodistoViite: Option[KoodistoKoodiViite] = KoodistoPalvelu.getKoodistoKoodiViite(koodistoPalvelu, "suoritustapa", suoritustapa.suoritustapakoodi)
+      val suoritustapaKoodistoViite: Option[KoodistoKoodiViite] = koodistoPalvelu.validate(KoodistoKoodiViite(suoritustapa.suoritustapakoodi, None, "suoritustapa", None))
       suoritustapaKoodistoViite.map(SuoritustapaJaRakenne(_, convertRakenneOsa(suoritustapa.rakenne, suoritustapa), laajuusYksikkö))
     }
 

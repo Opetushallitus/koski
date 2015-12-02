@@ -23,11 +23,11 @@ object MockKoodistoPalvelu extends KoodistoPalvelu {
     "tutkinnonosat"
   )
 
-  def getKoodistoKoodit(koodisto: KoodistoViittaus): Option[List[KoodistoKoodi]] = {
+  def getKoodistoKoodit(koodisto: KoodistoViite): Option[List[KoodistoKoodi]] = {
     Json.readFileIfExists(koodistoKooditFileName(koodisto.koodistoUri)).map(_.extract[List[KoodistoKoodi]])
   }
 
-  def getKoodisto(koodisto: KoodistoViittaus): Option[Koodisto] = {
+  def getKoodisto(koodisto: KoodistoViite): Option[Koodisto] = {
     getKoodisto(koodisto.koodistoUri)
   }
 
@@ -35,7 +35,7 @@ object MockKoodistoPalvelu extends KoodistoPalvelu {
     Json.readFileIfExists(koodistoFileName(koodistoUri)).map(_.extract[Koodisto])
   }
 
-  def getLatestVersion(koodistoUri: String): Option[Int] = getKoodisto(koodistoUri).map { _.versio }
+  def getLatestVersion(koodistoUri: String): Option[KoodistoViite] = getKoodisto(koodistoUri).map { _.koodistoViite }
 
   def createKoodisto(koodisto: Koodisto) = throw new UnsupportedOperationException
   def createKoodi(koodistoUri: String, koodi: KoodistoKoodi) = throw new UnsupportedOperationException
