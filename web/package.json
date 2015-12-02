@@ -9,6 +9,7 @@
     "whatwg-fetch": "^0.9",
     "baconjs": "~0.7.77",
     "ramda": "^0.17",
+    "lodash": "^3.10",
     "es6-promise": "^3"
   },
   "devDependencies": {

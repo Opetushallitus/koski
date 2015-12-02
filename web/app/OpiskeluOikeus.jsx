@@ -1,6 +1,7 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import R from 'ramda'
+import _ from 'lodash'
 import Http from './http'
 import Dropdown from './Dropdown.jsx'
 
@@ -123,8 +124,8 @@ const TutkinnonOsa = React.createClass({
               tunniste: tutkinnonOsa.tunniste,
               pakollinen: tutkinnonOsa.pakollinen,
               laajuus: tutkinnonOsa.laajuus ? {
-                "arvo" : tutkinnonOsa.laajuus,
-                "yksikkö" : laajuudenYksikkö
+                arvo : tutkinnonOsa.laajuus,
+                yksikkö : laajuudenYksikkö
               } : null
             }
           },
@@ -136,8 +137,11 @@ const TutkinnonOsa = React.createClass({
           toimipiste: oOikeus.suoritus.toimipiste
         }
       )
-      oOikeus.suoritus.osasuoritukset = suoritukset
-      return oOikeus
+      return _.merge({}, oOikeus, {
+        suoritus: {
+          osasuoritukset: suoritukset
+        }
+      })
     }
 
     const saveArvosana = (arvosana) => {
