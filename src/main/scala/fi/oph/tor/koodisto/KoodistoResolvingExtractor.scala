@@ -11,9 +11,7 @@ object KoodistoResolvingExtractor {
    *  Extracts object from json value, and validates/resolves all KoodistoKoodiViite objects on the way.
    */
   def extract[T](json: JValue)(implicit mf: Manifest[T], koodistoPalvelu: KoodistoPalvelu): Either[HttpStatus, T] = {
-    ContextualExtractor.extract[T, KoodistoPalvelu, HttpStatus](json, koodistoPalvelu)(mf, Json.jsonFormats + KoodistoResolvingDeserializer).left.map { statii =>
-      HttpStatus.fold(statii)
-    }
+    ContextualExtractor.extract[T, KoodistoPalvelu, HttpStatus](json, koodistoPalvelu)(mf, Json.jsonFormats + KoodistoResolvingDeserializer).left.map(HttpStatus.fold)
   }
 
   private object KoodistoResolvingDeserializer extends Deserializer[KoodistoKoodiViite] {
