@@ -1,9 +1,10 @@
 package fi.oph.tor.json
 
+import fi.oph.tor.http.HttpStatus
 import org.json4s.{Formats, JValue, MappingException}
 
 object ContextualExtractor {
-  case class ExtractionState(val context: Any, var errors: List[Any])
+  case class ExtractionState(val context: Any, var status: HttpStatus)
 
   private val tl = new ThreadLocal[ExtractionState]
 
@@ -13,26 +14,26 @@ object ContextualExtractor {
    *  The context object is provided as a parameter to this method and is available during extraction
    *  by calling the getContext method. Type parameter C is used for extraction context.
    *
-   *  Additionally adds support for "extraction errors" (type of which is defined by the type parameter E). During
-   *  extraction, the custom (de)serializers may call the `extractionError` method.
+   *  Additionally adds support for "extraction errors".
+   *  During extraction, the custom (de)serializers may call the `extractionError` method.
    *
    *  This method returns either a successfully extracted object fo type T or a list of errors that were reported
    *  during extraction.
    */
-  def extract[T, C, E](json: JValue, context: C)(implicit mf: Manifest[T], formats: Formats): Either[List[E], T] = {
-    val state: ExtractionState = new ExtractionState(context, Nil)
+  def extract[T, C](json: JValue, context: C)(implicit mf: Manifest[T], formats: Formats): Either[HttpStatus, T] = {
+    val state: ExtractionState = new ExtractionState(context, HttpStatus.ok)
     tl.set(state)
 
     try {
       val extracted: T = json.extract[T]
-      state.errors match {
-        case Nil => Right(extracted)
-        case errors => Left(errors.asInstanceOf[List[E]])
+      state.status.isOk match {
+        case true => Right(extracted)
+        case false => Left(state.status)
       }
     } catch {
       case e: MappingException =>
         findResolvingException(e) match {
-          case Some(ex) => Left(List(ex.validationError.asInstanceOf[E]))
+          case Some(ex) => Left(ex.validationError)
           case _ => throw e
         }
     } finally {
@@ -45,9 +46,9 @@ object ContextualExtractor {
   /**
    * Reports extraction error
    */
-  def extractionError[E](error: E) = {
+  def extractionError(error: HttpStatus) = {
     threadLocalState.foreach { state =>
-      state.errors = state.errors ++ List(error)
+      state.status = HttpStatus.append(state.status, error)
     }
     throw new ExtractionException(error)
   }
@@ -62,5 +63,5 @@ object ContextualExtractor {
     Option(tl.get)
   }
 
-  private class ExtractionException(val validationError: Any) extends RuntimeException
+  private class ExtractionException(val validationError: HttpStatus) extends RuntimeException
 }
