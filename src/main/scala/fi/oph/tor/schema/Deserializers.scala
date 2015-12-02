@@ -1,5 +1,6 @@
 package fi.oph.tor.schema
 
+import fi.vm.sade.utils.json4s.GenericJsonFormats
 import org.json4s._
 
 object Deserializers {

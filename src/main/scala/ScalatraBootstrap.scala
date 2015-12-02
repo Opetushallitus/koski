@@ -23,7 +23,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     }
     implicit val userRepository = UserRepository(application.config)
     val rekisteri = new TodennetunOsaamisenRekisteri(application.oppijaRepository, application.opiskeluOikeusRepository, application.tutkintoRepository, application.oppilaitosRepository, application.arviointiAsteikot, application.koodistoPalvelu)
-    context.mount(new OppijaServlet(rekisteri, userRepository, application.directoryClient), "/api/oppija")
+    context.mount(new OppijaServlet(rekisteri, userRepository, application.directoryClient, application.koodistoPalvelu), "/api/oppija")
     context.mount(new UserServlet(application.directoryClient, application.userRepository), "/user")
     context.mount(new SingleFileServlet("web/static/index.html"), "/oppija")
     context.mount(new SingleFileServlet("web/static/index.html"), "/uusioppija")

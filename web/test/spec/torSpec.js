@@ -410,13 +410,13 @@ describe('TOR', function() {
               "suoritustapa": {"tunniste": {"koodiarvo": "blahblahtest", "koodistoUri": "suoritustapa"}},
               "osaamisala": [{"koodiarvo": "1527", "koodistoUri": "osaamisala"}]
             }}}
-          ), 400, "Invalid suoritustapa: blahblahtest"))
+          ), 400, "Koodia suoritustapa/blahblahtest ei löydy koodistosta"))
         })
         describe('Osaamisala virheellinen', function() {
           it('palautetaan HTTP 400', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({"suoritus": {"koulutusmoduulitoteutus": {
             "suoritustapa": {"tunniste": {"koodiarvo": "ops", "koodistoUri": "suoritustapa"}},
             "osaamisala": [{"koodiarvo": "0", "koodistoUri": "osaamisala"}]
-          }}}), 400, "Invalid osaamisala: 0"))
+          }}}), 400, "Koodia osaamisala/0 ei löydy koodistosta"))
         })
       })
     })
@@ -451,21 +451,21 @@ describe('TOR', function() {
                 "tunniste": {"koodiarvo": "9923123", "nimi": "Väärää tietoa", "koodistoUri": "tutkinnonosat", "koodistoVersio": 1}
               }
             }
-          }), 400, "Tutkinnon osa ei löydy perusterakenteesta: tutkinnonosat/9923123"))
+          }), 400, "Koodia tutkinnonosat/9923123 ei löydy koodistosta"))
         })
         describe('Arviointiasteikko on tuntematon', function() {
           it('palautetaan HTTP 400', verifyResponseCode(addOppija.putTutkinnonOsaSuoritusAjax(
             {
               arviointi: [{arvosana: {koodiarvo: "2", koodistoUri: "vääräasteikko"}}]
             }
-          ), 400, "Arvosanaa vääräasteikko/2 ei löydy koodistosta"))
+          ), 400, "Koodia vääräasteikko/2 ei löydy koodistosta"))
         })
         describe('Arvosana ei kuulu perusteiden mukaiseen arviointiasteikkoon', function() {
           it('palautetaan HTTP 400', verifyResponseCode(addOppija.putTutkinnonOsaSuoritusAjax(
             {
               arviointi: [{arvosana: {koodiarvo: "x", koodistoUri: "ammatillisenperustutkinnonarviointiasteikko"}}]
             }
-          ), 400, "Arvosanaa ammatillisenperustutkinnonarviointiasteikko/x ei löydy koodistosta"))
+          ), 400, "Koodia ammatillisenperustutkinnonarviointiasteikko/x ei löydy koodistosta"))
         })
       })
     })
