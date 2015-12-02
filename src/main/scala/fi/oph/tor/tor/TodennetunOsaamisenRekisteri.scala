@@ -7,7 +7,7 @@ import fi.oph.tor.opiskeluoikeus._
 import fi.oph.tor.oppija._
 import fi.oph.tor.oppilaitos.OppilaitosRepository
 import fi.oph.tor.schema._
-import fi.oph.tor.tutkinto.{TutkintoRakenneValidator, TutkintoRakenne, TutkintoRepository}
+import fi.oph.tor.tutkinto.{TutkintoRakenneValidator, TutkintoRepository}
 import fi.oph.tor.user.UserContext
 
 class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
@@ -27,7 +27,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     validate(oppija) match {
       case status if (status.isOk) =>
         val oppijaOid: Either[HttpStatus, PossiblyUnverifiedOppijaOid] = oppija.henkilö match {
-          case h:NewHenkilö => oppijaRepository.findOrCreate(oppija).right.map(VerifiedOppijaOid(_))
+          case h:NewHenkilö => oppijaRepository.findOrCreate(oppija.henkilö).right.map(VerifiedOppijaOid(_))
           case h:HenkilöWithOid => Right(UnverifiedOppijaOid(h.oid, oppijaRepository))
         }
         oppijaOid.right.flatMap { oppijaOid: PossiblyUnverifiedOppijaOid =>
@@ -43,7 +43,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     }
   }
 
-  def validate(oppija: TorOppija)(implicit userContext: UserContext): HttpStatus = {
+  private def validate(oppija: TorOppija)(implicit userContext: UserContext): HttpStatus = {
     if (oppija.opiskeluoikeudet.length == 0) {
       HttpStatus.badRequest("At least one OpiskeluOikeus required")
     }
@@ -55,7 +55,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     }
   }
 
-  def userView(oid: String)(implicit userContext: UserContext): Either[HttpStatus, TorOppija] = {
+  def findTorOppija(oid: String)(implicit userContext: UserContext): Either[HttpStatus, TorOppija] = {
     oppijaRepository.findByOid(oid) match {
       case Some(oppija) =>
         opiskeluoikeudetForOppija(oppija) match {
@@ -66,7 +66,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     }
   }
 
-  def notFound(oid: String): Left[HttpStatus, Nothing] = {
+  private def notFound(oid: String): Left[HttpStatus, Nothing] = {
     Left(HttpStatus.notFound(s"Oppija with oid: $oid not found"))
   }
 

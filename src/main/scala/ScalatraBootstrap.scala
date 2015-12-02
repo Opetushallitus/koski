@@ -5,10 +5,9 @@ import fi.oph.tor.config.TorApplication
 import fi.oph.tor.db._
 import fi.oph.tor.fixture.{FixtureServlet, Fixtures}
 import fi.oph.tor.koodisto.KoodistoCreator
-import fi.oph.tor.oppija.OppijaServlet
 import fi.oph.tor.oppilaitos.OppilaitosServlet
 import fi.oph.tor.schema.SchemaDocumentationServlet
-import fi.oph.tor.tor.TodennetunOsaamisenRekisteri
+import fi.oph.tor.tor.{TorServlet, TodennetunOsaamisenRekisteri}
 import fi.oph.tor.tutkinto.TutkintoServlet
 import fi.oph.tor.user.{UserRepository, UserServlet}
 import fi.vm.sade.utils.slf4j.Logging
@@ -23,7 +22,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     }
     implicit val userRepository = UserRepository(application.config)
     val rekisteri = new TodennetunOsaamisenRekisteri(application.oppijaRepository, application.opiskeluOikeusRepository, application.tutkintoRepository, application.oppilaitosRepository, application.arviointiAsteikot, application.koodistoPalvelu)
-    context.mount(new OppijaServlet(rekisteri, userRepository, application.directoryClient, application.koodistoPalvelu), "/api/oppija")
+    context.mount(new TorServlet(rekisteri, userRepository, application.directoryClient, application.koodistoPalvelu), "/api/oppija")
     context.mount(new UserServlet(application.directoryClient, application.userRepository), "/user")
     context.mount(new SingleFileServlet("web/static/index.html"), "/oppija")
     context.mount(new SingleFileServlet("web/static/index.html"), "/uusioppija")

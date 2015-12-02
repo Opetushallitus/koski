@@ -24,14 +24,14 @@ trait OppijaRepository {
 
   def resetFixtures {}
 
-  def findOrCreate(oppija: TorOppija): Either[HttpStatus, Henkilö.Id] = {
+  def findOrCreate(henkilö: Henkilö): Either[HttpStatus, Henkilö.Id] = {
     def oidFrom(oppijat: List[FullHenkilö]): Either[HttpStatus, Henkilö.Id] = {
       oppijat match {
         case List(oppija) => Right(oppija.oid)
         case _ => Left(HttpStatus.internalError("Oppijan lisääminen epäonnistui: ei voitu lisätä, muttei myöskään löytynyt."))
       }
     }
-    oppija.henkilö match {
+    henkilö match {
       case NewHenkilö(hetu, etunimet, kutsumanimi, sukunimi) =>
         create(hetu, etunimet, kutsumanimi, sukunimi).left.flatMap { case HttpStatus(409, _) =>
           oidFrom(findOppijat(hetu))

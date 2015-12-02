@@ -1,4 +1,4 @@
-package fi.oph.tor.oppija
+package fi.oph.tor.tor
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT
@@ -7,19 +7,19 @@ import com.github.fge.jackson.JsonLoader
 import com.github.fge.jsonschema.core.report.LogLevel.ERROR
 import com.github.fge.jsonschema.main.JsonSchemaFactory
 import fi.oph.tor.http.HttpStatus
-import fi.oph.tor.koodisto.{KoodistoResolvingExtractor, KoodistoPalvelu}
-import fi.oph.tor.{ErrorHandlingServlet, InvalidRequestException}
 import fi.oph.tor.json.Json
+import fi.oph.tor.koodisto.{KoodistoPalvelu, KoodistoResolvingExtractor}
 import fi.oph.tor.schema.{TorOppija, TorSchema}
 import fi.oph.tor.security.RequiresAuthentication
-import fi.oph.tor.tor.TodennetunOsaamisenRekisteri
 import fi.oph.tor.user.UserRepository
+import fi.oph.tor.{ErrorHandlingServlet, InvalidRequestException}
 import fi.vm.sade.security.ldap.DirectoryClient
 import fi.vm.sade.utils.slf4j.Logging
 import org.json4s.JValue
+
 import scala.collection.JavaConversions._
 
-class OppijaServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: UserRepository, val directoryClient: DirectoryClient, val koodistoPalvelu: KoodistoPalvelu) extends ErrorHandlingServlet with Logging with RequiresAuthentication {
+class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: UserRepository, val directoryClient: DirectoryClient, val koodistoPalvelu: KoodistoPalvelu) extends ErrorHandlingServlet with Logging with RequiresAuthentication {
 
   private val schema = JsonSchemaFactory.byDefault.getJsonSchema(JsonLoader.fromString(TorSchema.schemaJsonString))
   private val mapper = new ObjectMapper().enable(INDENT_OUTPUT)
@@ -47,7 +47,7 @@ class OppijaServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository:
   }
 
   get("/:oid") {
-    renderEither(rekisteri.userView(params("oid")))
+    renderEither(rekisteri.findTorOppija(params("oid")))
   }
 
   private def jsonSchemaValidate: Unit = this.synchronized {
