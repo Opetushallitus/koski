@@ -7,7 +7,7 @@ import fi.oph.tor.opiskeluoikeus._
 import fi.oph.tor.oppija._
 import fi.oph.tor.oppilaitos.OppilaitosRepository
 import fi.oph.tor.schema._
-import fi.oph.tor.tutkinto.{TutkintoRakenne, TutkintoRepository}
+import fi.oph.tor.tutkinto.{TutkintoRakenneValidator, TutkintoRakenne, TutkintoRepository}
 import fi.oph.tor.user.UserContext
 
 class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
@@ -52,33 +52,11 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     }
   }
 
-  def validateOpiskeluOikeus(opiskeluOikeus: OpiskeluOikeus)(implicit userContext: UserContext): HttpStatus = {
+  private def validateOpiskeluOikeus(opiskeluOikeus: OpiskeluOikeus)(implicit userContext: UserContext): HttpStatus = {
     HttpStatus.ifThen(!userContext.hasReadAccess(opiskeluOikeus.oppilaitos)) { HttpStatus.forbidden("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid) }
       .ifOkThen {
-        validateSuoritus(opiskeluOikeus.suoritus, None, None)
+        TutkintoRakenneValidator(tutkintoRepository).validateTutkintoRakenne(opiskeluOikeus)
       }
-  }
-
-  def validateSuoritus(suoritus: Suoritus, rakenne: Option[TutkintoRakenne], suoritustapa: Option[Suoritustapa]): HttpStatus = (suoritus.koulutusmoduulitoteutus, rakenne, suoritustapa) match {
-    case (t: TutkintoKoulutustoteutus, _, _) =>
-      t.koulutusmoduuli.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_)) match {
-        case None =>
-          HttpStatus.badRequest(t.koulutusmoduuli.perusteenDiaarinumero.map(d => "Tutkinnon peruste puuttuu tai on virheellinen: " + d).getOrElse("Tutkinnon peruste puuttuu"))
-        case Some(rakenne) =>
-          HttpStatus.each(t.osaamisala.toList.flatten.filter(osaamisala => !TutkintoRakenne.findOsaamisala(rakenne, osaamisala.koodiarvo).isDefined)) { osaamisala: KoodistoKoodiViite => HttpStatus.badRequest("Invalid osaamisala: " + osaamisala.koodiarvo) }
-            .appendEach(suoritus.osasuoritukset.toList.flatten)(validateSuoritus(_, Some(rakenne), t.suoritustapa))
-      }
-    case (t: OpsTutkinnonosatoteutus, Some(rakenne), None)  =>
-      HttpStatus.badRequest("Tutkinnolta puuttuu suoritustapa. Tutkinnon osasuorituksia ei hyväksytä.")
-    case (t: OpsTutkinnonosatoteutus, Some(rakenne), Some(suoritustapa))  =>
-      TutkintoRakenne.findTutkinnonOsa(rakenne, suoritustapa.tunniste, t.koulutusmoduuli.tunniste) match {
-        case None =>
-          HttpStatus.badRequest("Tutkinnon osa ei löydy perusterakenteesta: " + t.koulutusmoduuli.tunniste)
-        case Some(tutkinnonOsa) =>
-          HttpStatus.ok
-      }
-    case _ =>
-      HttpStatus.ok
   }
 
   def userView(oid: String)(implicit userContext: UserContext): Either[HttpStatus, TorOppija] = {
