@@ -14,10 +14,6 @@ class RemoteKoodistoPalvelu(username: String, password: String, virkailijaUrl: S
     http(virkalijaClient.virkailijaUriFromString("/koodisto-service/rest/codeelement/codes/" + koodisto + noCache))(Http.parseJsonOptional[List[KoodistoKoodi]])
   }
 
-  def getAlakoodit(koodiarvo: String): List[Alakoodi] = {
-    http(virkalijaClient.virkailijaUriFromString("/koodisto-service/rest/json/relaatio/sisaltyy-alakoodit/" + koodiarvo + noCache))(Http.parseJson[List[Alakoodi]])
-  }
-
   def getKoodisto(koodisto: KoodistoViittaus): Option[Koodisto] = {
     http(virkalijaClient.virkailijaUriFromString("/koodisto-service/rest/codes/" + koodisto + noCache))(Http.parseJsonOptional[Koodisto])
   }

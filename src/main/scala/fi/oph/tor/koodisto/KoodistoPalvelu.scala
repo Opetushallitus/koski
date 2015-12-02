@@ -10,7 +10,6 @@ trait KoodistoPalvelu {
   def createKoodisto(koodisto: Koodisto)
   def getKoodistoKoodit(koodisto: KoodistoViittaus): Option[List[KoodistoKoodi]]
   def getKoodisto(koodisto: KoodistoViittaus): Option[Koodisto]
-  def getAlakoodit(koodiarvo: String): List[Alakoodi]
   def getLatestVersion(koodisto: String): Option[Int]
 }
 

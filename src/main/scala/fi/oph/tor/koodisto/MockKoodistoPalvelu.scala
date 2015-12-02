@@ -27,10 +27,6 @@ object MockKoodistoPalvelu extends KoodistoPalvelu {
     Json.readFileIfExists(koodistoKooditFileName(koodisto.koodistoUri)).map(_.extract[List[KoodistoKoodi]])
   }
 
-  def getAlakoodit(koodiarvo: String): List[Alakoodi] = {
-    Json.readFile("src/main/resources/mockdata/koodisto/alakoodit/" + koodiarvo + ".json").extract[List[Alakoodi]]
-  }
-
   def getKoodisto(koodisto: KoodistoViittaus): Option[Koodisto] = {
     getKoodisto(koodisto.koodistoUri)
   }
