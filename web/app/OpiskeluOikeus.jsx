@@ -130,10 +130,7 @@ const TutkinnonOsa = React.createClass({
           },
           arviointi: [
             {
-              arvosana: {
-                koodiarvo: arvosana.koodiarvo,
-                koodistoUri: tutkinnonOsa.arviointiAsteikko.koodistoUri
-              }
+              arvosana: arvosana
             }
           ],
           toimipiste: oOikeus.suoritus.toimipiste
@@ -163,7 +160,7 @@ const TutkinnonOsa = React.createClass({
             </div>
           : (
             arviointi
-              ? <div className="arviointi"><span className="arvosana">{arvosanat.find(arvosana => arvosana.koodiarvo == suoritus.arviointi[arviointi.length - 1].arvosana.koodiarvo).nimi}</span></div>
+              ? <div className="arviointi"><span className="arvosana">{arviointi[arviointi.length - 1].arvosana.nimi}</span></div>
               : null
           )
         }
