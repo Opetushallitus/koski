@@ -2,8 +2,7 @@ package fi.oph.tor.tor
 
 import fi.oph.tor.arvosana.ArviointiasteikkoRepository
 import fi.oph.tor.http.HttpStatus
-import fi.oph.tor.json.Json
-import fi.oph.tor.koodisto.{KoodistoViittaus, KoodistoPalvelu}
+import fi.oph.tor.koodisto.KoodistoPalvelu
 import fi.oph.tor.opiskeluoikeus._
 import fi.oph.tor.oppija._
 import fi.oph.tor.oppilaitos.OppilaitosRepository
