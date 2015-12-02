@@ -7,9 +7,9 @@ import com.github.fge.jackson.JsonLoader
 import com.github.fge.jsonschema.core.report.LogLevel.ERROR
 import com.github.fge.jsonschema.main.JsonSchemaFactory
 import fi.oph.tor.http.HttpStatus
-import fi.oph.tor.koodisto.KoodistoPalvelu
+import fi.oph.tor.koodisto.{KoodistoResolvingExtractor, KoodistoPalvelu}
 import fi.oph.tor.{ErrorHandlingServlet, InvalidRequestException}
-import fi.oph.tor.json.{KoodistoResolvingExtractor, Json}
+import fi.oph.tor.json.Json
 import fi.oph.tor.schema.{TorOppija, TorSchema}
 import fi.oph.tor.security.RequiresAuthentication
 import fi.oph.tor.tor.TodennetunOsaamisenRekisteri
