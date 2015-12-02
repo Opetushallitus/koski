@@ -9,11 +9,11 @@ object KoodistoMockDataUpdater extends App {
 
 
   def updateMockDataFromKoodistoPalvelu(config: Config): Unit = {
-    val kp: KoodistoPalvelu = KoodistoPalvelu.withoutCache(config)
+    val kp = LowLevelKoodistoPalvelu.withoutCache(config)
     MockKoodistoPalvelu.koodistot.foreach(koodisto => updateMockDataForKoodisto(koodisto, kp))
   }
 
-  private def updateMockDataForKoodisto(koodistoUri: String, kp: KoodistoPalvelu): Unit = {
+  private def updateMockDataForKoodisto(koodistoUri: String, kp: LowLevelKoodistoPalvelu): Unit = {
     kp.getLatestVersion(koodistoUri) match {
       case Some(versio) =>
         Json.writeFile(

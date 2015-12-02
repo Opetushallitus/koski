@@ -1,7 +1,6 @@
 package fi.oph.tor.arvosana
 
 import fi.oph.tor.koodisto.{KoodistoPalvelu, KoodistoViite}
-import fi.oph.tor.schema.KoodistoKoodiViite
 import fi.oph.tor.tutkinto.Koulutustyyppi.Koulutustyyppi
 
 class ArviointiasteikkoRepository(koodistoPalvelu: KoodistoPalvelu) {
@@ -14,7 +13,7 @@ class ArviointiasteikkoRepository(koodistoPalvelu: KoodistoPalvelu) {
   }
 
   def getArviointiasteikko(koodisto: KoodistoViite): Option[Arviointiasteikko] = {
-    koodistoPalvelu.getKoodistoKoodit(koodisto).map(koodit => Arviointiasteikko(koodisto, koodit.map(koodi => KoodistoKoodiViite(koodi.koodiArvo, koodi.metadata.flatMap(_.nimi).headOption, koodisto.koodistoUri, Some(koodisto.versio))).sortBy(_.koodiarvo)))
+    koodistoPalvelu.getKoodistoKoodiViitteet(koodisto).map(koodit => Arviointiasteikko(koodisto, koodit.sortBy(_.koodiarvo)))
   }
 }
 

@@ -6,7 +6,7 @@ import org.http4s.{Method, Request}
 
 import scalaz.concurrent.Task
 
-class RemoteKoodistoPalvelu(username: String, password: String, virkailijaUrl: String) extends KoodistoPalvelu with Logging {
+class RemoteKoodistoPalvelu(username: String, password: String, virkailijaUrl: String) extends LowLevelKoodistoPalvelu with Logging {
   val virkalijaClient = new VirkailijaHttpClient(username, password, virkailijaUrl, "/koodisto-service")
   val http = virkalijaClient.httpClient
 

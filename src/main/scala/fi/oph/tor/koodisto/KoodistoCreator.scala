@@ -6,11 +6,11 @@ import com.typesafe.config.Config
 
 object KoodistoCreator {
   def createKoodistotFromMockData(config: Config): Unit = {
-    val kp: KoodistoPalvelu = KoodistoPalvelu.withoutCache(config)
+    val kp = LowLevelKoodistoPalvelu.withoutCache(config)
     MockKoodistoPalvelu.koodistot.foreach(koodisto => createKoodistoFromMockData(koodisto, kp))
   }
 
-  private def createKoodistoFromMockData(koodistoUri: String, kp: KoodistoPalvelu): Unit = {
+  private def createKoodistoFromMockData(koodistoUri: String, kp: LowLevelKoodistoPalvelu): Unit = {
     val koodistoViite: KoodistoViite = kp.getLatestVersion(koodistoUri).getOrElse {
       MockKoodistoPalvelu.getKoodisto(koodistoUri) match {
         case None => throw new IllegalStateException("Mock not found: " + koodistoUri)
