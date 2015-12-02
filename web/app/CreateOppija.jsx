@@ -103,7 +103,7 @@ export const CreateOppija = React.createClass({
                 nimi: tutkinto.nimi,
                 koodistoUri: 'koulutus'
               },
-              perusteenDiaarinumero: tutkinto.ePerusteetDiaarinumero
+              perusteenDiaarinumero: tutkinto.diaarinumero
             }
           },
           //TODO Hardcoded
