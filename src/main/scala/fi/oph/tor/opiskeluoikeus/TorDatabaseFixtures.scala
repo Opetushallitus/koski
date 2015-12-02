@@ -23,7 +23,7 @@ object TorDatabaseFixtures extends Futures with GlobalExecutionContext {
       oppilaitos,
       Suoritus(
         None,
-        TutkintoKoulutustoteutus(TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")), None, None, None, None),
+        TutkintoKoulutustoteutus(TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", Some(4)), Some("39/011/2014")), None, None, None, None),
         None,
         None,
         None,

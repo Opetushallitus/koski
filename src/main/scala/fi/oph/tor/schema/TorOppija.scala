@@ -307,14 +307,6 @@ case class KoodistoKoodiViite(
   koodistoVersio: Option[Int]
 ) extends KoodiViite {
   override def toString = koodistoUri + "/" + koodiarvo
-
-  // TODO: overridden because incomplete instances are passed around. Should replace with a type-based approach
-
-  override def hashCode() = toString.hashCode
-  override def equals(obj: scala.Any) = obj match {
-    case x:KoodistoKoodiViite => x.toString == toString
-    case _ => false
-  }
   def koodistoViite = koodistoVersio.map(KoodistoViite(koodistoUri, _))
 }
 
