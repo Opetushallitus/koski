@@ -116,7 +116,6 @@ Scalaa osaaville ehkä nopein tapa tutkia tietomallia on kuitenkin sen lähdekoo
           </div>
         }
         }
-        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
         <script src="js/documentation.js"></script>
       </body>
     </html>
@@ -126,14 +125,24 @@ Scalaa osaaville ehkä nopein tapa tutkia tietomallia on kuitenkin sen lähdekoo
 object TorApiOperations {
  val operations = List(
    ApiOperation(
-      "GET", "/tor/api/oppija",
-      <div>Etsii oppijoita annetulla hakusanalla. Hakusana voi olla hetu, oppija-oid tai nimen osa.</div>,
+      "GET", "/tor/api/oppija?query={query}",
+      <div>Etsii oppijoita annetulla hakusanalla. Hakusana voi olla hetu, oppija-oid tai nimen osa. Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</div>,
       Nil,
       List(Parameter("query", "Hakusana, joka voi olla hetu, oppija-oid tai nimen osa.", "eero")),
       List(
-        (200, "OK, jos haku onnistuu. Myös silloin kun ei löydy yhtään tulosta"),
+        (200, "OK, jos haku onnistuu. Myös silloin kun ei löydy yhtään tulosta."),
         (400, "BAD REQUEST jos hakusana puuttuu")
       )
+   ),
+   ApiOperation(
+     "GET", "/tor/api/oppija/{oid}",
+     <div>Hakee oppijan tiedot ja opiskeluoikeudet suorituksineen.</div>,
+     Nil,
+     List(Parameter("oid", "Oppijan tunniste", "1.2.246.562.24.00000000001")),
+     List(
+       (200, "OK, jos haku onnistuu."),
+       (404, "NOT FOUND jos oppijaa ei löydy tai käyttäjällä ei ole oikeuksia oppijan tietojen katseluun.")
+     )
    ),
    ApiOperation(
      "PUT", "/tor/api/oppija",
