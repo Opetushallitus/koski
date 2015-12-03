@@ -23,13 +23,13 @@ export const OpiskeluOikeus = React.createClass({
                           value={opiskeluOikeus.suoritus.koulutusmoduulitoteutus.suoritustapa ? opiskeluOikeus.suoritus.koulutusmoduulitoteutus.suoritustapa.tunniste.koodiarvo : ''}
                           onChange={(value) => opiskeluOikeusChange.push([opiskeluOikeus.id,
                             oo => {
-                              oo.suoritus.koulutusmoduulitoteutus.suoritustapa = value ? {
+                              let suoritustapa = value ? {
                                 tunniste: {
                                   koodiarvo: value,
                                   koodistoUri: 'suoritustapa'
                                 }
                               } : undefined
-                              return oo
+                              return Immutable.fromJS(oo).mergeDeep({suoritus: {koulutusmoduulitoteutus: {suoritustapa: suoritustapa}}}).toJS()
                             }
                           ])}
                 />
@@ -39,11 +39,11 @@ export const OpiskeluOikeus = React.createClass({
                           value={opiskeluOikeus.suoritus.koulutusmoduulitoteutus.osaamisala ? opiskeluOikeus.suoritus.koulutusmoduulitoteutus.osaamisala[0].koodiarvo : ''}
                           onChange={(value) => opiskeluOikeusChange.push([opiskeluOikeus.id,
                             oo => {
-                              oo.suoritus.koulutusmoduulitoteutus.osaamisala = value ? [{
+                              let osaamisala = value ? [{
                                   koodiarvo: value,
                                   koodistoUri: 'osaamisala'
                               }] : undefined
-                              return oo
+                              return Immutable.fromJS(oo).mergeDeep({suoritus: {koulutusmoduulitoteutus: {osaamisala: osaamisala}}}).toJS()
                             }
                           ])}
                   />
