@@ -11,7 +11,8 @@ help:
 	@echo "make watch	- Watch for changes in webapp files"
 	@echo "make deploy 	- Deploy to CSC's ePouta cloud"
 	@echo "make tail	- Tail the cloud logs"
-	@echo "make ssh	- Ssh connection to cloud server"
+	@echo "make ssh	- Ssh connection to tor cloud server"
+	@echo "make TOR-SERVER=tordev-authentication-app ssh	- Ssh connection to authentication app server in test env"
 
 clean:
 	mvn clean
