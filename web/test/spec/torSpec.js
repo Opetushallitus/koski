@@ -513,7 +513,7 @@ describe('TOR', function() {
     describe('Odottamattoman virheen sattuessa', function() {
       before(
         page.openPage,
-        mockHttp('/tor/api/oppija?query=BLAH', { status: 500 }),
+        mockHttp('/tor/api/oppija?query=blah', { status: 500 }),
         page.oppijaHaku.search('blah', page.isErrorShown))
 
       it('näytetään virheilmoitus', function() {})
@@ -522,7 +522,7 @@ describe('TOR', function() {
     describe('Kun palvelimeen ei saada yhteyttä', function() {
       before(
         page.openPage,
-        mockHttp('/tor/api/oppija?query=BLAH', {}),
+        mockHttp('/tor/api/oppija?query=blah', {}),
         page.oppijaHaku.search('blah', page.isErrorShown))
 
       it('näytetään virheilmoitus', function() {})
