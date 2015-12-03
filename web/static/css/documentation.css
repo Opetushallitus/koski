@@ -71,3 +71,16 @@ span.indent:after {
 .api-tester .examples {
     margin-bottom: 10px;
 }
+
+.api-tester .parameters table, .api-tester .parameters th, .api-tester .parameters td {
+    border: 1px solid #cccccc;
+    border-collapse: collapse;
+}
+
+.api-tester .parameters td {
+    padding: 10px;
+}
+
+.api-tester .parameters th {
+    background-color: #ccffcc;
+}

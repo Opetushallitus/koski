@@ -64,12 +64,36 @@ Scalaa osaaville ehkä nopein tapa tutkia tietomallia on kuitenkin sen lähdekoo
               </ul>
               <p>Kokeile heti!</p>
               <div class="api-tester" data-method={operation.method} data-path={operation.path}>
-                <div class="examples"><label>Esimerkkejä<select>
-                  {operation.examples.map { example =>
-                    <option data-exampledata={Json.writePretty(example.data)}>{example.name}</option>
-                  }}
-                </select></label></div>
-                <textarea cols="80" rows="50">{Json.writePretty(operation.examples(0).data)}</textarea>
+                {
+                  if (operation.examples.length > 0) {
+                    <div class="postdata">
+                      <h4>Syötedata</h4>
+                      <div class="examples"><label>Esimerkkejä<select>
+                        {operation.examples.map { example =>
+                          <option data-exampledata={Json.writePretty(example.data)}>{example.name}</option>
+                        }}
+                      </select></label></div>
+                      <textarea cols="80" rows="50">{Json.writePretty(operation.examples(0).data)}</textarea>
+                    </div>
+                  } else if (operation.parameters.length > 0) {
+                    <div class="parameters">
+                      <h4>Parametrit</h4>
+                      <table>
+                        <thead>
+                            <tr><th>Nimi</th><th>Merkitys</th><th>Arvo</th></tr>
+                        </thead>
+                        <tbody>
+                          { operation.parameters.map { parameter =>
+                            <tr><td>{parameter.name}</td><td>{parameter.description}</td><td><input name={parameter.name} value={parameter.example}></input></td></tr>
+                          }}
+                        </tbody>
+                      </table>
+                    </div>
+                  } else {
+                    <div></div>
+                  }
+                }
+
                 <div class="buttons">
                   <button class="try">Kokeile</button>
                 </div>
@@ -92,6 +116,7 @@ Scalaa osaaville ehkä nopein tapa tutkia tietomallia on kuitenkin sen lähdekoo
           </div>
         }
         }
+        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
         <script src="js/documentation.js"></script>
       </body>
     </html>
@@ -101,17 +126,29 @@ Scalaa osaaville ehkä nopein tapa tutkia tietomallia on kuitenkin sen lähdekoo
 object TorApiOperations {
  val operations = List(
    ApiOperation(
+      "GET", "/tor/api/oppija",
+      <div>Etsii oppijoita annetulla hakusanalla. Hakusana voi olla hetu, oppija-oid tai nimen osa.</div>,
+      Nil,
+      List(Parameter("query", "Hakusana, joka voi olla hetu, oppija-oid tai nimen osa.", "eero")),
+      List(
+        (200, "OK, jos haku onnistuu. Myös silloin kun ei löydy yhtään tulosta"),
+        (400, "BAD REQUEST jos hakusana puuttuu")
+      )
+   ),
+   ApiOperation(
      "PUT", "/tor/api/oppija",
      <div>Lisää/päivittää oppijan ja opiskeluoikeuksia.</div>,
-     TorOppijaExamples.examples, TorSchema.schema,
+     TorOppijaExamples.examples,
+     Nil,
      List(
+       (200,"OK jos lisäys/päivitys onnistuu"),
        (401,"UNAUTHORIZED jos käyttäjä ei ole tunnistautunut"),
        (403,"FORBIDDEN jos käyttäjällä ei ole tarvittavia oikeuksia tiedon päivittämiseen"),
-       (400,"BAD REQUEST jos syöte ei ole validi"),
-       (200,"OK jos lisäys/päivitys onnistuu")
+       (400,"BAD REQUEST jos syöte ei ole validi")
      )
    )
  )
 }
 
-case class ApiOperation(method: String, path: String, doc: Elem, examples: List[Example], schema: Schema, statusCodes: List[(Int, String)])
+case class ApiOperation(method: String, path: String, doc: Elem, examples: List[Example], parameters: List[Parameter], statusCodes: List[(Int, String)])
+case class Parameter(name: String, description: String, example: String)

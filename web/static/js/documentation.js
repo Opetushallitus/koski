@@ -34,13 +34,29 @@ forEach(document.querySelectorAll('.json-row .collapsible'), function(node) {
 forEach(document.querySelectorAll('.json-row:first-child'), toggleCollapse)
 
 forEach(document.querySelectorAll('.api-tester'), function(elem) {
-  elem.querySelector(".examples select").addEventListener("change", function(a,b,c) {
-    var data = event.target.options[event.target.selectedIndex].dataset.exampledata
-    elem.querySelector("textarea").value=data
-  })
+  var exampleSelector = elem.querySelector(".examples select")
+  if (exampleSelector) {
+    exampleSelector.addEventListener("change", function(a,b,c) {
+      var data = event.target.options[event.target.selectedIndex].dataset.exampledata
+      elem.querySelector("textarea").value=data
+    })
+  }
+
   elem.querySelector(".try").addEventListener('click', function() {
-    var data = elem.querySelector("textarea").value;
-    fetch(document.location.protocol + "//" + document.location.host + elem.dataset.path, { credentials: 'include', method: elem.dataset.method, body: data, headers: { 'Content-Type': 'application/json'} })
+
+    var options = {credentials: 'include', method: elem.dataset.method, headers: {'Content-Type': 'application/json'}};
+
+    var dataElem = elem.querySelector("textarea");
+    if (dataElem) {
+      options.body = dataElem.value
+    }
+
+    var parameters = $.param(Array.prototype.slice.call(elem.querySelectorAll(".parameters input"),0).map(function(input) {
+      return { name: input.name, value: input.value }
+    }))
+    var query = parameters ? "?"+parameters : ""
+
+    fetch(document.location.protocol + "//" + document.location.host + elem.dataset.path + query, options)
       .then(function(response) {
         var resultElem = elem.querySelector(".result");
         response.text().then(function(text, err) {
