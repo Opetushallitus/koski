@@ -1,7 +1,7 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import R from 'ramda'
-import _ from 'lodash'
+import Immutable from 'immutable'
 import Http from './http'
 import Dropdown from './Dropdown.jsx'
 
@@ -117,7 +117,10 @@ const TutkinnonOsa = React.createClass({
     })(rakenne.suoritustavat).laajuusYksikkö
 
     const addArvosana = (arvosana) => (oOikeus) => {
-      let suoritukset = (oOikeus.suoritus.osasuoritukset ? oOikeus.suoritus.osasuoritukset : []).concat(
+
+      let oo = oOikeus.suoritus.osasuoritukset ? Immutable.fromJS(oOikeus) : Immutable.fromJS(oOikeus).mergeDeep({suoritus: {osasuoritukset: []}})
+
+      return oo.updateIn(['suoritus', 'osasuoritukset'], x => x.push(
         {
           koulutusmoduulitoteutus: {
             koulutusmoduuli: {
@@ -136,12 +139,8 @@ const TutkinnonOsa = React.createClass({
           ],
           toimipiste: oOikeus.suoritus.toimipiste
         }
-      )
-      return _.merge({}, oOikeus, {
-        suoritus: {
-          osasuoritukset: suoritukset
-        }
-      })
+      )).toJS()
+
     }
 
     const saveArvosana = (arvosana) => {
