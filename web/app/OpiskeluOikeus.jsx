@@ -1,7 +1,6 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import R from 'ramda'
-import Immutable from 'immutable'
 import Http from './http'
 import Dropdown from './Dropdown.jsx'
 
@@ -29,7 +28,7 @@ export const OpiskeluOikeus = React.createClass({
                                   koodistoUri: 'suoritustapa'
                                 }
                               } : undefined
-                              return Immutable.fromJS(oo).mergeDeep({suoritus: {koulutusmoduulitoteutus: {suoritustapa: suoritustapa}}}).toJS()
+                              return oo.mergeDeep({suoritus: {koulutusmoduulitoteutus: {suoritustapa: suoritustapa}}})
                             }
                           ])}
                 />
@@ -43,7 +42,7 @@ export const OpiskeluOikeus = React.createClass({
                                   koodiarvo: value,
                                   koodistoUri: 'osaamisala'
                               }] : undefined
-                              return Immutable.fromJS(oo).mergeDeep({suoritus: {koulutusmoduulitoteutus: {osaamisala: osaamisala}}}).toJS()
+                              return oo.mergeDeep({suoritus: {koulutusmoduulitoteutus: {osaamisala: osaamisala}}})
                             }
                           ])}
                   />
@@ -117,8 +116,7 @@ const TutkinnonOsa = React.createClass({
     })(rakenne.suoritustavat).laajuusYksikkö
 
     const addArvosana = (arvosana) => (oOikeus) => {
-
-      let oo = oOikeus.suoritus.osasuoritukset ? Immutable.fromJS(oOikeus) : Immutable.fromJS(oOikeus).mergeDeep({suoritus: {osasuoritukset: []}})
+      let oo = oOikeus.hasIn['suoritus','osasuoritukset'] ? oOikeus : oOikeus.mergeDeep({suoritus: {osasuoritukset: []}})
 
       return oo.updateIn(['suoritus', 'osasuoritukset'], x => x.push(
         {
@@ -137,10 +135,9 @@ const TutkinnonOsa = React.createClass({
               arvosana: arvosana
             }
           ],
-          toimipiste: oOikeus.suoritus.toimipiste
+          toimipiste: oo.getIn(['suoritus','toimipiste'])
         }
-      )).toJS()
-
+      ))
     }
 
     const saveArvosana = (arvosana) => {

@@ -4,7 +4,7 @@ import Http from './http'
 import {routeP} from './router'
 import {CreateOppija} from './CreateOppija.jsx'
 import {OpiskeluOikeus, opiskeluOikeusChange} from './OpiskeluOikeus.jsx'
-import Ramda from 'ramda'
+import Immutable from 'immutable'
 
 var selectOppijaE = routeP.map('.oppijaId').flatMap(oppijaId => {
   return oppijaId ? Bacon.once({loading: true}).concat(Http.get(`/tor/api/oppija/${oppijaId}`)) : Bacon.once({ empty: true})
@@ -13,13 +13,13 @@ var selectOppijaE = routeP.map('.oppijaId').flatMap(oppijaId => {
 export const oppijaP = Bacon.update({ loading: true },
   selectOppijaE, (previous, oppija) => oppija,
   opiskeluOikeusChange, (currentOppija, [opiskeluOikeusId, change]) => {
-    let changedOppija = Ramda.clone(currentOppija)
-    changedOppija.opiskeluoikeudet = changedOppija.opiskeluoikeudet.map(opiskeluOikeus =>
-        opiskeluOikeus.id == opiskeluOikeusId
-          ? change(opiskeluOikeus)
-          : opiskeluOikeus
-    )
-    return changedOppija
+    let current = Immutable.fromJS(currentOppija)
+
+    return current.set('opiskeluoikeudet', current.get('opiskeluoikeudet').map(opiskeluOikeus => {
+      return opiskeluOikeus.get('id') == opiskeluOikeusId
+        ? change(opiskeluOikeus)
+        : opiskeluOikeus}
+    )).toJS()
   }
 )
 
