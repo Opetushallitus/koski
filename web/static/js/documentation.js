@@ -42,8 +42,10 @@ forEach(document.querySelectorAll('.api-tester'), function(elem) {
     })
   }
 
-  elem.querySelector(".try").addEventListener('click', function() {
+  var button = elem.querySelector(".try")
+  button.addEventListener('click', function() {
     elem.className = "api-tester loading"
+    button.disabled = true
     var options = {credentials: 'include', method: elem.dataset.method, headers: {'Content-Type': 'application/json'}};
 
     var dataElem = elem.querySelector("textarea");
@@ -61,6 +63,7 @@ forEach(document.querySelectorAll('.api-tester'), function(elem) {
       .then(function(response) {
         var resultElem = elem.querySelector(".result");
         elem.className = "api-tester"
+        button.disabled = false
         response.text().then(function(text, err) {
           if (response.status == 401) {
             resultElem.innerHTML = response.status + " " + response.statusText + ' <a href="/tor" target="_new">Login</a>'
