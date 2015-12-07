@@ -152,6 +152,9 @@ Mocha-testit voi ajaa myös nopeasti komentoriviltä
 
     make fronttest
 
+## CI-palvelin
+
+TOR:n CI-palvelin palvelee osoitteessa http://86.50.170.109:8080/
 
 ## Testiympäristö (CSC:n ePouta-pilvessä)
 
