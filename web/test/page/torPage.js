@@ -28,7 +28,7 @@ function TorPage() {
       return wait.until(AddOppijaPage().isVisible)()
     },
     isNoResultsLabelShown: function() {
-      return S('.oppija-haku .no-results').is(':visible')
+      return isElementVisible(S('.oppija-haku .no-results'))
     },
     getSelectedSearchResult: function() {
       return S('.hakutulokset .selected').text()
@@ -46,7 +46,7 @@ function TorPage() {
       return openPage('/tor/', api.isVisible)()
     },
     isVisible: function() {
-      return S('#content .oppija-haku').is(':visible')
+      return isElementVisible(S('#content .oppija-haku'))
     },
     isLoading: function() {
       return S('body').hasClass('loading')
@@ -73,20 +73,20 @@ function TorPage() {
       }
     },
     isOppijaLoading: function() {
-      return S('.oppija.loading').is(":visible")
+      return isElementVisible(S('.oppija.loading'))
     },
     logout: function() {
       triggerEvent(S('#logout'), 'click')
       return wait.until(LoginPage().isVisible)()
     },
     isErrorShown: function() {
-      return S("#error.error").is(":visible")
+      return isElementVisible(S("#error.error"))
     },
     is404: function() {
-      return S(".not-found").is(":visible")
+      return isElementVisible(S(".not-found"))
     },
     isSavedLabelShown: function() {
-      return S('.saved').is(':visible')
+      return isElementVisible(S('.saved'))
     },
     getUserName: function() {
       return S('.user-info .name').text()

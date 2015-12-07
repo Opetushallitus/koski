@@ -127,6 +127,37 @@ function textsOf(elements) {
   return Array.prototype.slice.apply(elements.get()).map(function(el) { return $(el).text() })
 }
 
+function isElementVisible(el) {
+  if (el.get) el = el.get(0)  // <- extract HTML element from jQuery object
+  if (!el) return false; // <- `undefined` -> invisible
+
+  if(window.mochaPhantomJS) {
+    // For some reason, the "actually visible" logic below fails in phantom, so we fallback to less strict check.
+    return $(el).is(":visible")
+  }
+
+  // Check for actual visibility. Returns false if the element is not scrolled into view, or is obscured by
+  // another element with higher z-index.
+  
+  var doc      = testFrame().document
+  var rect     = el.getBoundingClientRect()
+  var vWidth   = window.innerWidth || doc.documentElement.clientWidth
+  var vHeight  = window.innerHeight || doc.documentElement.clientHeight
+  var efp      = function (x, y) { return doc.elementFromPoint(x, y) };
+
+  // Return false if it's not in the viewport
+  if (rect.right < 0 || rect.bottom < 0 || rect.left > vWidth || rect.top > vHeight) {
+    return false;
+  }
+
+  // Return true if any of its four corners are visible
+  return (
+    el.contains(efp(rect.left,  rect.top))
+    ||  el.contains(efp(rect.right, rect.top))
+    ||  el.contains(efp(rect.right, rect.bottom))
+    ||  el.contains(efp(rect.left,  rect.bottom))
+  );
+}
 
 (function improveMocha() {
   var origBefore = before

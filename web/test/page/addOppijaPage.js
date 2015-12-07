@@ -6,7 +6,7 @@ function AddOppijaPage() {
   var pageApi = Page(form)
   var api = {
     isVisible: function() {
-      return form().is(':visible') && !TorPage().isLoading()
+      return isElementVisible(form()) && !TorPage().isLoading()
     },
     isEnabled: function() {
       return !button().is(':disabled')
@@ -39,7 +39,7 @@ function AddOppijaPage() {
     selectOppilaitos: function(name) {
       return function() {
         return pageApi.setInputValue('.oppilaitos input', name)()
-          .then(wait.until(function() { return selectedOppilaitos().is(':visible') }))
+          .then(wait.until(function() { return isElementVisible(selectedOppilaitos()) }))
           .then(function() {triggerEvent(selectedOppilaitos(), 'click')})
       }
     },
@@ -49,7 +49,7 @@ function AddOppijaPage() {
     selectTutkinto: function(name) {
       return function() {
         return pageApi.setInputValue('.tutkinto input', name)()
-          .then(wait.until(function() { return selectedTutkinto().is(':visible') }))
+          .then(wait.until(function() { return isElementVisible(selectedTutkinto()) }))
           .then(function() {triggerEvent(selectedTutkinto(), 'click')})
       }
     },
@@ -67,7 +67,7 @@ function AddOppijaPage() {
     },
     isErrorShown: function(field) {
       return function() {
-        return form().find('.error-messages .' + field).is(':visible')
+        return isElementVisible(form().find('.error-messages .' + field))
       }
     },
     putTutkinnonOsaSuoritusAjax: function(tutkinnonOsaSuoritus) {

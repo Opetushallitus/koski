@@ -23,7 +23,7 @@ function OpinnotPage() {
       }
     },
     isSuoritustapaSelectable: function() {
-      return S(".suoritustapa").is(":visible")
+      return isElementVisible(S(".suoritustapa"))
     },
     selectOsaamisala: function(osaamisala) {
       return function() {
@@ -32,10 +32,10 @@ function OpinnotPage() {
       }
     },
     isOsaamisalaSelectable: function() {
-      return S(".osaamisala").is(":visible")
+      return isElementVisible(S(".osaamisala"))
     },
     waitUntilTutkintoVisible: function() {
-      return wait.until(function() {return S('.opiskeluoikeus .tutkinto').is(':visible')})
+      return wait.until(function() {return isElementVisible(S('.opiskeluoikeus .tutkinto'))})
     }
   }
 
