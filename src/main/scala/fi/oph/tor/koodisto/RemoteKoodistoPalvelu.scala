@@ -30,6 +30,10 @@ class RemoteKoodistoPalvelu(username: String, password: String, virkailijaUrl: S
   def createKoodi(koodistoUri: String, koodi: KoodistoKoodi) = {
     http.post(virkalijaClient.virkailijaUriFromString("/koodisto-service/rest/codeelement/" + koodistoUri), koodi)
   }
+
+  def createKoodistoRyhmä(ryhmä: KoodistoRyhmä) = {
+    http.post(virkalijaClient.virkailijaUriFromString("/koodisto-service/rest/codesgroup"), ryhmä)
+  }
 }
 
 case class KoodistoWithLatestVersion(latestKoodistoVersio: LatestVersion)

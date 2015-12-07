@@ -7,6 +7,8 @@ import com.typesafe.config.Config
 object KoodistoCreator {
   def createKoodistotFromMockData(config: Config): Unit = {
     val kp = LowLevelKoodistoPalvelu.withoutCache(config)
+    // Koodistoryhmille ei ole GETtiä, jolla voisi tsekata, onko TOR-ryhmä olemassa.
+    //kp.createKoodistoRyhmä(new KoodistoRyhmä(("TOR")))
     MockKoodistoPalvelu.koodistot.foreach(koodisto => createKoodistoFromMockData(koodisto, kp))
   }
 

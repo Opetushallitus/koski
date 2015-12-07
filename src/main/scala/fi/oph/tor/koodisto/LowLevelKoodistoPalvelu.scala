@@ -22,6 +22,7 @@ object LowLevelKoodistoPalvelu {
 trait LowLevelKoodistoPalvelu {
   def createKoodi(koodistoUri: String, koodi: KoodistoKoodi)
   def createKoodisto(koodisto: Koodisto)
+  def createKoodistoRyhmä(ryhmä: KoodistoRyhmä)
   def getKoodistoKoodit(koodisto: KoodistoViite): Option[List[KoodistoKoodi]]
   def getKoodisto(koodisto: KoodistoViite): Option[Koodisto]
   def getLatestVersion(koodistoUri: String): Option[KoodistoViite]
