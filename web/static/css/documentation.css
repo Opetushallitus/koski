@@ -84,3 +84,7 @@ span.indent:after {
 .api-tester .parameters th {
     background-color: #ccffcc;
 }
+
+.api-tester.loading .buttons {
+    background: url('/tor/images/loader-small.gif') 60px 0 no-repeat;
+}

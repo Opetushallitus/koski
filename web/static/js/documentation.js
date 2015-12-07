@@ -43,7 +43,7 @@ forEach(document.querySelectorAll('.api-tester'), function(elem) {
   }
 
   elem.querySelector(".try").addEventListener('click', function() {
-
+    elem.className = "api-tester loading"
     var options = {credentials: 'include', method: elem.dataset.method, headers: {'Content-Type': 'application/json'}};
 
     var dataElem = elem.querySelector("textarea");
@@ -60,6 +60,7 @@ forEach(document.querySelectorAll('.api-tester'), function(elem) {
     fetch(document.location.protocol + "//" + document.location.host + path, options)
       .then(function(response) {
         var resultElem = elem.querySelector(".result");
+        elem.className = "api-tester"
         response.text().then(function(text, err) {
           if (response.status == 401) {
             resultElem.innerHTML = response.status + " " + response.statusText + ' <a href="/tor" target="_new">Login</a>'
