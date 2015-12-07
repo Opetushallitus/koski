@@ -20,8 +20,15 @@ describe('TOR', function() {
       before(wait.until(login.isLoginErrorVisible))
       it('näytetään virheilmoitus', function() {})
     })
+    describe('Väärällä salasanalla', function() {
+      before(login.openPage)
+      before(login.login('kalle', 'fail'))
+      before(wait.until(login.isLoginErrorVisible))
+      it('näytetään virheilmoitus', function() {})
+    })
     describe('Onnistuneen loginin jälkeen', function() {
-      before(login.login('kalle', 'asdf'))
+      before(login.openPage)
+      before(login.login('kalle', 'kalle'))
       before(wait.until(page.isVisible))
       it('siirrytään TOR-etusivulle', function() {
         expect(page.isVisible()).to.equal(true)
@@ -147,7 +154,7 @@ describe('TOR', function() {
       })
 
       describe('Kun lisätään opinto-oikeus, joka henkilöllä on jo olemassa', function() {
-        before(addNewOppija('kalle', 'asdf', { etunimet: 'Eero Adolf', kutsumanimi: 'Eero', sukunimi: 'Esimerkki', hetu: '010101-123N', oppilaitos: 'Helsingin', tutkinto: 'auto'}))
+        before(addNewOppija('kalle', 'kalle', { etunimet: 'Eero Adolf', kutsumanimi: 'Eero', sukunimi: 'Esimerkki', hetu: '010101-123N', oppilaitos: 'Helsingin', tutkinto: 'auto'}))
 
         it('Näytetään olemassa oleva tutkinto', function() {
           expect(page.getSelectedOppija()).to.equal(eero)
@@ -158,7 +165,7 @@ describe('TOR', function() {
     })
 
     describe('Uudelle henkilölle', function() {
-      before(prepareForNewOppija('kalle', 'asdf'))
+      before(prepareForNewOppija('kalle', 'kalle'))
 
       describe('Aluksi', function() {
         it('Lisää-nappi on disabloitu', function() {
@@ -582,7 +589,7 @@ describe('TOR', function() {
       })
 
       describe('Kun kirjaudutaan uudelleen sisään', function() {
-        before(authentication.login(), page.openPage, page.oppijaHaku.search('jouni', [eerola]), page.logout, login.login('kalle', 'asdf'), wait.until(page.isReady))
+        before(authentication.login(), page.openPage, page.oppijaHaku.search('jouni', [eerola]), page.logout, login.login('kalle', 'kalle'), wait.until(page.isReady))
         it ('Käyttöliittymä on palautunut alkutilaan', function() {
           expect(page.oppijaHaku.getSearchResults()).to.deep.equal([])
           expect(page.getSelectedOppija()).to.equal('')

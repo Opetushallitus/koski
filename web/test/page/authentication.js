@@ -3,7 +3,7 @@ function Authentication() {
     login: function(username) {
       if (!username) username = 'kalle'
       return function() {
-        return postJson('/tor/user/login', {username: username, password: 'asdf'})
+        return postJson('/tor/user/login', {username: username, password: username})
       }
     },
     logout: function() {

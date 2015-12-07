@@ -35,7 +35,7 @@ class ApiSmokeTest extends FreeSpec with Matchers with HttpComponentsClient {
   }
 
   def authHeaders: Map[String, String] = {
-    val auth: String = "Basic " + Base64.encode("kalle:asdf".getBytes("UTF8"))
+    val auth: String = "Basic " + Base64.encode("kalle:kalle".getBytes("UTF8"))
     Map("Authorization" -> auth)
   }
 
