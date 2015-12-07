@@ -51,10 +51,11 @@ tarpeen mukaan.
 
 Minimissään tarvitset nämä:
 
-- Git
-- GNU Make
+- Git (osx, linux sisältää tämän, komentorivillä `git`)
+- GNU Make (osx, linux sisältää tämän, komentorivillä `make`)
 - Maven 3 (osx: `brew install maven`)
 - Postgres (osx: `brew install postgres`)
+- Node.js ja NPM (osx: `brew install node`)
 - Tekstieditori (kehitystiimi käyttää IntelliJ IDEA 14)
 
 ## Paikallinen PostgreSQL-tietokanta
@@ -95,20 +96,20 @@ Sitten vaikka
 
 ### Kantamigraatiot
 
-Skeema luodaan flywayllä migraatioskripteillä, jotka ovat hakemistossa `src/main/resources/db/migration`.
+Tietokannan rakenne luodaan ja päivitetään Flywayllä migraatioskripteillä, jotka ovat hakemistossa `src/main/resources/db/migration`.
 
 Tor-sovellus ajaa migraatiot automaattisesti käynnistyessään.
 
 ## Buildi ja ajaminen
 
-TOR:n buildiin kuuluu frontin buildaus npm:llä ja serverin buildaus Mavenilla. Tätä helpottamaan on otettu käyttöön `make`, jonka avulla
+TOR:n buildiin kuuluu frontin buildaus (npm / webpack) ja serverin buildaus Mavenilla. Tätä helpottamaan on otettu käyttöön `make`, jonka avulla
 eri taskit on helppo suorittaa. Ks `Makefile`-tiedosto.
 
 Buildaa koko systeemi
 
     make build    
 
-Buildaa frontti, ja buildaa automaattisesti kun tiedostoja muokataan:
+Buildaa frontti, ja päivitä automaattisesti kun tiedostoja muokataan:
 
     make watch
 
@@ -152,31 +153,9 @@ Mocha-testit voi ajaa myös nopeasti komentoriviltä
     make fronttest
 
 
+## Testiympäristö (CSC:n ePouta-pilvessä)
 
-## Asennus pilveen (CSC:n ePouta)
-
-Ennakkovaatimukset:
-
-1. Sinulla on tunnus CSC:n cPouta-ympäristöön
-2. Poudan ympäristö(muuttuja)määrittely: https://pouta.csc.fi/dashboard/project/access_and_security/api_access/openrc/ on ladattu ja käytössä (`source Project_2000079-openrc.sh`)
-3. Sinun julkinen ssh avain on lisättynä tänne: https://github.com/reaktor/oph-poutai-env/tree/master/roles/ssh.init/files/public_keys (ja koneiden konfiguraatio on päivitetty)
-4. Käytössäsi Homebrew:n openssl ja ruby, koska OSX:n mukana tuleva OpenSSL 0.9.8zg ei toimi Poudan kanssa:
-  * `brew install openssl`
-  * `brew install ruby`
-
-Tämän jälkeen voit pushata uuden version TOR:sta ajamalla,
-
-    make deploy
-
-jonka jälkeen uusin versio pyörii testiympäristössä:
-
-    http://tordev.tor.oph.reaktor.fi/tor/
-
-Lokien katsominen onnistuu komennolla:
-
-    make tail
-
-## Testiympäristö
+### URLit
 
 Testiympäristön TOR löytyy täältä:
 
@@ -198,7 +177,49 @@ Koodistopalvelua käytetään toistaiseksi Opintopolun QA-ympäristöstä
 
     https://testi.virkailija.opintopolku.fi/koodisto-ui/html/index.html#/etusivu
 
+### Sovelluksen asennus pilveen (CSC:n ePouta)
+
+Ennakkovaatimukset:
+
+1. Sinulla on tunnus CSC:n cPouta-ympäristöön
+2. Poudan ympäristö(muuttuja)määrittely: https://pouta.csc.fi/dashboard/project/access_and_security/api_access/openrc/ on ladattu ja käytössä (`source Project_2000079-openrc.sh`)
+3. Sinun julkinen ssh avain on lisättynä tänne: https://github.com/reaktor/oph-poutai-env/tree/master/roles/ssh.init/files/public_keys (ja koneiden konfiguraatio on päivitetty)
+4. Käytössäsi Homebrew:n openssl ja ruby, koska OSX:n mukana tuleva OpenSSL 0.9.8zg ei toimi Poudan kanssa:
+  * `brew install openssl`
+  * `brew install ruby`
+
+Tämän jälkeen voit pushata uuden version TOR:sta ajamalla,
+
+    make deploy
+
+Lokien katsominen onnistuu komennolla:
+
+    make tail
+    
+Serverille pääsee myös ssh:lla kätevästi:
+
+    make ssh
+    less /home/git/logs/tor.log
+
 ## Toteutus ja integraatiot
+
+### Konfigurointi
+
+Sovellus käyttää konfigurointiin [Typesafe Config](https://github.com/typesafehub/config) -kirjastoa, 
+jonka avulla tarvittavat asetukset haetaan tiedostoista ja/tai komentoriviltä.
+
+Sovelluksen oletusasetukset ovat tiedostossa [src/main/resources/reference.conf]. 
+Kun sovellus käynnistetään ilman ulkoisia parametrejä, käynnistyy se näillä asetuksilla 
+ja toimii "kehitysmoodissa", eli käynnistää paikallisen tietokannan, 
+eikä ota yhteyttä ulkoisiin järjestelmiin.
+
+Tuotantokäytössä ja testiympäristössä käytetään asetuksia, joilla TOR saadaan ottamaan yhteys ulkoisiin
+järjestelmiin. Pilviympäristössä käytetään tällä hetkellä [cloud/restart.sh] -skriptiä, jolla annetaan
+tarvittavat asetukset.
+
+Kehityskäytössä voit käyttää erilaisia asetuksia tekemällä asetustiedostoja, kuten vaikkapa [src/main/resources/tordev.conf]
+(ei versionhallinnassa, koska sisältää luottamuksellista tietoa) ja antaa käytettävän tiedoston nimi käynnistysparametrina, 
+esim. `-Dconfig.resource=tordev.conf`. Valmiita asetustiedostoja voi pyytää kehitystiimiltä.
 
 ### Henkilötiedot
 
@@ -232,11 +253,11 @@ Pari testiurlia:
 
 ### Koodistopalvelu
 
-TOR käyttää [Koodistopalvelua](https://github.com/Opetushallitus/koodisto) tutkintoihin liittyvien [Arviointiasteikkojen](src/main/scala/fi/oph/tor/arvosana/Arviointiasteikko.scala) hakemiseen.
+TOR käyttää [Koodistopalvelua](https://github.com/Opetushallitus/koodisto) mm. tutkintoihin liittyvien arviointiasteikkojen hakemiseen.
 
-Arviointiasteikko haetaan tutkintoon liittyvän [Koulutustyypin](src/main/scala/fi/oph/tor/tutkinto/Koulutustyyppi.scala) perusteella.
-EPerusteista saatavan koulutustyypin perusteella haetaan koodistopalvelusta arviointiasteikko, joka on itse asiassa koodisto, jossa kukin koodi on yksittäinen arvosana.
-[toteutus](src/main/scala/fi/oph/tor/arvosana/ArviointiasteikkoRepository.scala).
+Koodistopalvelun Swagger-dokumentaatio:
+
+    https://virkailija.opintopolku.fi/koodisto-service/swagger/index.html
 
 Pari testiurlia Koodistopalveluun:
 
@@ -244,3 +265,7 @@ Pari testiurlia Koodistopalveluun:
     https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/codes/ammattijaerikoisammattitutkintojenarviointiasteikko/1
     
 TOR osaa tarvittaessa luoda käytettävät koodistot ja koodistopalveluun. Käynnistä parametrillä `-Dkoodisto.create=true`. 
+
+### LDAP
+
+TORin käyttäjäautentikaatio on toteutettu Opintopolku-järjestelmän LDAPia vasten. LDAP-palvelimen osoite ja tunnukset konfiguroidaan `ldap.host`, `ldap.userdn` ja `ldap.password` -asetuksilla.
