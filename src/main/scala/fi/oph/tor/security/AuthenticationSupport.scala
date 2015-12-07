@@ -49,15 +49,16 @@ trait TorAuthenticationStrategy extends Logging {
 
     if(!loginResult) {
       None
-    }
-    directoryClient.findUser(username).map { ldapUser =>
-      User(ldapUser.oid, ldapUser.givenNames + " " + ldapUser.lastName)
-    } match {
-      case Some(user) =>
-        Some(user)
-      case _ =>
-        logger.error("User " + username + " not found from LDAP")
-        None
+    } else {
+      directoryClient.findUser(username).map { ldapUser =>
+        User(ldapUser.oid, ldapUser.givenNames + " " + ldapUser.lastName)
+      } match {
+        case Some(user) =>
+          Some(user)
+        case _ =>
+          logger.error("User " + username + " not found from LDAP")
+          None
+      }
     }
   }
 }
