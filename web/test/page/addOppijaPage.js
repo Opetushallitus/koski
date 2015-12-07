@@ -106,7 +106,7 @@ function AddOppijaPage() {
         var defaults = makeOppija(defaultHenkilo(), [defaultOpiskeluOikeus()])
         oppija = _.merge(defaults, {}, oppija)
         return putJson(
-          'http://localhost:7021/tor/api/oppija', oppija
+          '/tor/api/oppija', oppija
         )
       }
     }
