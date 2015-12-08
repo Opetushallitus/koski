@@ -154,7 +154,7 @@ Mocha-testit voi ajaa myös nopeasti komentoriviltä
 
 ## CI-palvelin
 
-TOR:n CI-palvelin palvelee osoitteessa http://86.50.170.109:8080/
+TOR:n Jenkins CI-palvelin palvelee osoitteessa http://86.50.170.109:8080/
 
 ## Testiympäristö (CSC:n ePouta-pilvessä)
 
