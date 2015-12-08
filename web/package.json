@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "description": "Todennetun osaamisen rekisteri",
   "license": "EUPL-1.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Opetushallitus/tor.git"
+  },
   "dependencies": {
     "react": "~0.14.0",
     "react-dom": "~0.14.0",
@@ -25,7 +29,8 @@
     "less-loader": "^2",
     "mocha-phantomjs": "^3.6",
     "nodemon": "^1",
-    "phantomjs": "^1.9.19",
+    "phantomjs": "1.9.7-15",
+    "reporter-file": "^1.0.0",
     "style-loader": "^0.12",
     "webpack": "^1"
   },
