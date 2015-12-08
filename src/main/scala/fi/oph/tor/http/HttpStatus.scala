@@ -14,7 +14,7 @@ object HttpStatus {
   // Known HTTP statii
 
   val ok = HttpStatus(200, Nil)
-  def internalError(text: String) = HttpStatus(500, List(text))
+  def internalError(text: String = "Internal server error") = HttpStatus(500, List(text))
   def conflict(text: String) = HttpStatus(409, List(text))
   def badRequest(text: String) = HttpStatus(400, List(text))
   def forbidden(text: String) = HttpStatus(403, List(text))

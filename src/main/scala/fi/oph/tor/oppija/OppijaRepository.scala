@@ -5,6 +5,7 @@ import fi.oph.tor.henkilö.HenkilöPalveluClient
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.schema._
 import fi.oph.tor.util.{CachingProxy, TimedProxy}
+import fi.vm.sade.utils.slf4j.Logging
 
 object OppijaRepository {
   def apply(config: Config): OppijaRepository = {
@@ -16,7 +17,7 @@ object OppijaRepository {
   }
 }
 
-trait OppijaRepository {
+trait OppijaRepository extends Logging {
   def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String): Either[HttpStatus, Henkilö.Id]
 
   def findOppijat(query: String): List[FullHenkilö]
@@ -28,7 +29,9 @@ trait OppijaRepository {
     def oidFrom(oppijat: List[FullHenkilö]): Either[HttpStatus, Henkilö.Id] = {
       oppijat match {
         case List(oppija) => Right(oppija.oid)
-        case _ => Left(HttpStatus.internalError("Oppijan lisääminen epäonnistui: ei voitu lisätä, muttei myöskään löytynyt."))
+        case _ =>
+          logger.error("Oppijan lisääminen epäonnistui: ei voitu lisätä, muttei myöskään löytynyt.")
+          Left(HttpStatus.internalError())
       }
     }
     henkilö match {

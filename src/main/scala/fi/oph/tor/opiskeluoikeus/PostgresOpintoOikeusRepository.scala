@@ -8,8 +8,9 @@ import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.oppija.PossiblyUnverifiedOppijaOid
 import fi.oph.tor.schema.{FullHenkilö, OpiskeluOikeus}
 import fi.oph.tor.user.UserContext
+import fi.vm.sade.utils.slf4j.Logging
 
-class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository with Futures with GlobalExecutionContext {
+class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository with Futures with GlobalExecutionContext with Logging {
   // Note: this is a naive implementation. All filtering should be moved to query-level instead of in-memory-level
 
   override def filterOppijat(oppijat: Seq[FullHenkilö])(implicit userContext: UserContext) = {
@@ -54,7 +55,9 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
     val rowsUpdated: Int = await(db.run(OpiskeluOikeudet.filter(_.id === opiskeluOikeus.id.get).map(_.data).update(new OpiskeluOikeusRow(oppijaOid, opiskeluOikeus).data)))
     rowsUpdated match {
       case 1 => HttpStatus.ok
-      case x => HttpStatus.internalError("Unexpected number of updated rows: " + x)
+      case x =>
+        logger.error("Unexpected number of updated rows: " + x)
+        HttpStatus.internalError()
     }
   }
 
