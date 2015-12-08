@@ -108,8 +108,8 @@ export const CreateOppija = React.createClass({
           },
           //TODO Hardcoded
           toimipiste : {
-            oid : "1.2.246.562.10.42456023292",
-            nimi : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+            oid : '1.2.246.562.10.42456023292',
+            nimi : 'Stadin ammattiopisto, Lehtikuusentien toimipaikka'
           }
         }
       }]

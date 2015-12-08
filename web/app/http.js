@@ -16,8 +16,7 @@ const parseResponse = (result) => {
   return new Bacon.Error({ message: 'http error ' + result.status, httpStatus: result.status })
 }
 
-const reqComplete = (url) => () => {
-  //console.log('complete', url)
+const reqComplete = () => {
   modifyReqCount(-1)
 }
 
@@ -29,10 +28,9 @@ const serveMock = url => {
 }
 const doHttp = (url, options) => mocks[url] ? serveMock(url) : fetch(url, options)
 const http = (url, options) => {
-  //console.log('begin', url)
   modifyReqCount(1)
   const promise = doHttp(url, options)
-  promise.then(reqComplete(url), reqComplete(url))
+  promise.then(reqComplete, reqComplete)
   return Bacon.fromPromise(promise).mapError({status: 503}).flatMap(parseResponse)
 }
 

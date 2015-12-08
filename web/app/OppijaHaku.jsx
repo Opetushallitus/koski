@@ -16,7 +16,7 @@ const oppijaE = oppijaP.toEventStream().filter(Bacon._.id)
 export const oppijatP = Bacon.update(
   { query: '', results: [] },
   hakuTulosE, ((current, hakutulos) => hakutulos),
-  oppijaE.filter(".henkilö").map('.henkilö'), ((current, valittu) => current.results.filter((oppija) => oppija.oid === valittu.oid).length ? current : { query: '', results: [valittu] })
+  oppijaE.filter('.henkilö').map('.henkilö'), ((current, valittu) => current.results.filter((oppija) => oppija.oid === valittu.oid).length ? current : { query: '', results: [valittu] })
 )
 
 oppijaP.map('.henkilö').sampledBy(oppijatP.map('.results').changes(), (oppija, oppijat) => ({ oppija: oppija, oppijat: oppijat }))
