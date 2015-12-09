@@ -35,6 +35,8 @@ run:
 	mvn exec:java $(JAVA_OPTS) -Dexec.mainClass=fi.oph.tor.jettylauncher.JettyLauncher
 postgres:
 	postgres --config_file=postgresql/postgresql.conf -D postgresql/data
+postgres-clean:
+	rm postgresql/data/postmaster.pid 2> /dev/null||true
 watch:
 	cd web && npm run watch
 it: test
