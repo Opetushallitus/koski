@@ -18,7 +18,10 @@ trait ErrorHandlingServlet extends ScalatraServlet with Logging {
     case InvalidRequestException(msg) =>
       halt(status = 400, msg)
     case e: Throwable =>
-      logger.error("Error while processing request", e)
+      // TODO: maskaa hetut
+      val query: String = if (request.getQueryString.isEmpty) { "" } else { "?" + request.getQueryString }
+      val requestDescription: String = request.getMethod + " " + request.getServletPath + query + " " + request.body
+      logger.error("Error while processing request " + requestDescription, e)
       halt(status = 500, "Internal server error")
   }
 }
