@@ -42,7 +42,7 @@ trait OppijaRepository extends Logging {
       case OidHenkilö(oid) =>
         oidFrom(findByOid(oid).toList)
       case _ =>
-        Left(HttpStatus.badRequest("Either identifier (oid) or all user info (hetu + names) needed"))
+        Left(HttpStatus.badRequest("Joko oid tai (hetu, etunimet, sukunimi, kutsumanimi) tarvitaan henkilön hakuun/luontiin"))
     }
   }
 }
