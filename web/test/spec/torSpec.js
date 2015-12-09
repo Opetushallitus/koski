@@ -198,7 +198,7 @@ describe('TOR', function() {
       })
 
       describe('Kun sessio on vanhentunut', function() {
-        before( openPage('/tor/uusioppija'),
+        before( openPage('/tor/uusioppija', function() {return addOppija.isVisible()}),
           addOppija.enterValidData(),
           authentication.logout,
           addOppija.submit)
