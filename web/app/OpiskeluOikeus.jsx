@@ -51,6 +51,7 @@ export const OpiskeluOikeus = React.createClass({
                       rakenneosa={rakenneOsa}
                       opiskeluOikeus={opiskeluOikeus}
                       rakenne={rakenne}
+                      key={rakenneOsa.nimi}
                     />)
                   : null
                 }
@@ -157,7 +158,7 @@ const TutkinnonOsa = React.createClass({
           ?
             <div className="arviointi edit">
               <ul className="arvosanat">{
-                arvosanat.map((arvosana) => <li className= { arvosana == this.state.valittuArvosana ? 'selected' : '' } key={arvosana.id} onClick={() => this.setState({ valittuArvosana: arvosana })}>{arvosana.nimi}</li>)
+                arvosanat.map((arvosana) => <li className= { arvosana == this.state.valittuArvosana ? 'selected' : '' } key={arvosana.koodiarvo} onClick={() => this.setState({ valittuArvosana: arvosana })}>{arvosana.nimi}</li>)
               }</ul>
               <button className="button blue" disabled={!this.state.valittuArvosana} onClick={() => saveArvosana(this.state.valittuArvosana)}>Tallenna arvio</button>
             </div>
