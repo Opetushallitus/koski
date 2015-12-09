@@ -3,6 +3,7 @@ package fi.oph.tor
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.json.Json
 import fi.vm.sade.utils.slf4j.Logging
+import org.apache.commons.lang.StringUtils
 import org.scalatra.ScalatraServlet
 
 trait ErrorHandlingServlet extends ScalatraServlet with Logging {
@@ -19,7 +20,7 @@ trait ErrorHandlingServlet extends ScalatraServlet with Logging {
       halt(status = 400, msg)
     case e: Throwable =>
       // TODO: maskaa hetut
-      val query: String = if (request.getQueryString.isEmpty) { "" } else { "?" + request.getQueryString }
+      val query: String = if (request.getQueryString == null) { "" } else { "?" + request.getQueryString }
       val requestDescription: String = request.getMethod + " " + request.getServletPath + query + " " + request.body
       logger.error("Error while processing request " + requestDescription, e)
       halt(status = 500, "Internal server error")
