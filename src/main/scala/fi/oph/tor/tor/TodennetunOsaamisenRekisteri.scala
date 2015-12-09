@@ -6,16 +6,18 @@ import fi.oph.tor.koodisto.KoodistoPalvelu
 import fi.oph.tor.opiskeluoikeus._
 import fi.oph.tor.oppija._
 import fi.oph.tor.oppilaitos.OppilaitosRepository
+import fi.oph.tor.schema.OpiskeluOikeus.Id
 import fi.oph.tor.schema._
 import fi.oph.tor.tutkinto.{TutkintoRakenneValidator, TutkintoRepository}
 import fi.oph.tor.user.UserContext
+import fi.vm.sade.utils.slf4j.Logging
 
 class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
                                    opiskeluOikeusRepository: OpiskeluOikeusRepository,
                                    tutkintoRepository: TutkintoRepository,
                                    oppilaitosRepository: OppilaitosRepository,
                                    arviointiAsteikot: ArviointiasteikkoRepository,
-                                   koodistoPalvelu: KoodistoPalvelu) {
+                                   koodistoPalvelu: KoodistoPalvelu) extends Logging {
 
   def findOppijat(query: String)(implicit userContext: UserContext): Seq[FullHenkilö] = {
     val oppijat: List[FullHenkilö] = oppijaRepository.findOppijat(query)
@@ -31,8 +33,13 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
           case h:HenkilöWithOid => Right(UnverifiedOppijaOid(h.oid, oppijaRepository))
         }
         oppijaOid.right.flatMap { oppijaOid: PossiblyUnverifiedOppijaOid =>
-          val opiskeluOikeusCreationResults = oppija.opiskeluoikeudet.map { opiskeluOikeus =>
-            opiskeluOikeusRepository.createOrUpdate(oppijaOid, opiskeluOikeus)
+          val opiskeluOikeusCreationResults: Seq[Either[HttpStatus, Id]] = oppija.opiskeluoikeudet.map { opiskeluOikeus =>
+            val result = opiskeluOikeusRepository.createOrUpdate(oppijaOid, opiskeluOikeus)
+            result match {
+              case Right(id) => logger.info("Luotu/päivitetty opiskeluoikeus " + id + " oppijalle " + oppijaOid + " tutkintoon " + opiskeluOikeus.suoritus.koulutusmoduulitoteutus.koulutusmoduuli.tunniste + " oppilaitoksessa " + opiskeluOikeus.oppilaitos.oid)
+              case _ =>
+            }
+            result
           }
           opiskeluOikeusCreationResults.find(_.isLeft) match {
             case Some(Left(error)) => Left(error)

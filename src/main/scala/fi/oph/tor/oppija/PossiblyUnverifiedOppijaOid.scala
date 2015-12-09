@@ -5,6 +5,8 @@ import fi.oph.tor.schema.Henkilö
 trait PossiblyUnverifiedOppijaOid {
   def oppijaOid: Henkilö.Id
   def verifiedOid: Option[Henkilö.Id]
+
+  override def toString = oppijaOid
 }
 
 case class VerifiedOppijaOid(val oppijaOid: Henkilö.Id) extends PossiblyUnverifiedOppijaOid {
