@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode
 import com.github.fge.jackson.JsonLoader
 import com.github.fge.jsonschema.core.report.LogLevel.ERROR
 import com.github.fge.jsonschema.main.JsonSchemaFactory
+import fi.oph.tor.henkilö.HenkilöOid
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.json.Json
 import fi.oph.tor.koodisto.{KoodistoPalvelu, KoodistoResolvingExtractor}
@@ -47,7 +48,9 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
   }
 
   get("/:oid") {
-    renderEither(rekisteri.findTorOppija(params("oid")))
+    renderEither(HenkilöOid.validateHenkilöOid(params("oid")).right.flatMap { oid =>
+      rekisteri.findTorOppija(oid)
+    })
   }
 
   private def jsonSchemaValidate: Unit = this.synchronized {

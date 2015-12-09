@@ -12,8 +12,15 @@ class ApiSmokeTest extends FreeSpec with Matchers with HttpComponentsClient {
   "/api/oppija/" - {
     SharedJetty.start
     "GET" - {
-      get("api/oppija/" + new MockOppijaRepository().eero.oid, headers = authHeaders) {
-        verifyResponseStatus()
+      "with valid oid" - {
+        get("api/oppija/" + new MockOppijaRepository().eero.oid, headers = authHeaders) {
+          verifyResponseStatus()
+        }
+      }
+      "with invalid oid" - {
+        get("api/oppija/blerg", headers = authHeaders) {
+          verifyResponseStatus(400)
+        }
       }
     }
 
