@@ -62,8 +62,11 @@ export const OpiskeluOikeus = React.createClass({
   componentDidMount() {
     let {opiskeluOikeus} = this.props
     let diaarinumero = opiskeluOikeus.suoritus.koulutusmoduulitoteutus.koulutusmoduuli.perusteenDiaarinumero
-    Http.get('/tor/api/tutkinto/rakenne/' + encodeURIComponent(diaarinumero)).onValue(rakenne =>
-      this.setState({rakenne: rakenne})
+    Http.get('/tor/api/tutkinto/rakenne/' + encodeURIComponent(diaarinumero)).onValue(rakenne => {
+        if (this.isMounted()) {
+          this.setState({rakenne: rakenne})
+        }
+      }
     )
   },
   getInitialState() {
