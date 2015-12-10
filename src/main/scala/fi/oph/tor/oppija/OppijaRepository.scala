@@ -17,6 +17,7 @@ object OppijaRepository {
   }
 }
 
+// TODO: cache invalidation
 trait OppijaRepository extends Logging {
   def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String): Either[HttpStatus, Henkilö.Id]
 
