@@ -26,6 +26,7 @@ class RemoteOppijaRepository(henkilöPalveluClient: VirkailijaHttpClient) extend
       henkilöPalveluClient.httpClient(task) {
         case (200, oid) => Right(oid)
         case (400, "socialsecuritynr.already.exists") => Left(HttpStatus.conflict("socialsecuritynr.already.exists"))
+        case (400, error) => Left(HttpStatus.badRequest(error))
         case (status, text) => throw new RuntimeException(status + ": " + text)
       }
   }
