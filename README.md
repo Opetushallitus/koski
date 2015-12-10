@@ -56,7 +56,7 @@ Minimissään tarvitset nämä:
 - Maven 3 (osx: `brew install maven`)
 - Postgres (osx: `brew install postgres`)
 - Node.js ja NPM (osx: `brew install node`)
-- Tekstieditori (kehitystiimi käyttää IntelliJ IDEA 14)
+- Tekstieditori (kehitystiimi käyttää IntelliJ IDEA 14/15)
 
 ## Paikallinen PostgreSQL-tietokanta
 
