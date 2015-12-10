@@ -33,7 +33,7 @@ object Caches {
       config.getConfig("cache")
     }
     new Caches {
-      val classSpecificCache = TTLCache[String, CacheEntry](cacheConfig.getInt("duration"), cacheConfig.getInt("maxSize"))
+      val classSpecificCache = TTLCache[String, CacheEntry](cacheConfig.getInt("durationSeconds"), cacheConfig.getInt("maxSize"))
       override def getCache(invocation: Invocation) = {
         def actuallyCache(fetch: => AnyRef): AnyRef = {
           val cacheKey = invocation.method.toString + invocation.args.mkString(",")
