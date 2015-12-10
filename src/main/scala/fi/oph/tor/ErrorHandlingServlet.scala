@@ -3,7 +3,6 @@ package fi.oph.tor
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.json.Json
 import fi.vm.sade.utils.slf4j.Logging
-import org.apache.commons.lang.StringUtils
 import org.scalatra.ScalatraServlet
 
 trait ErrorHandlingServlet extends ScalatraServlet with Logging {

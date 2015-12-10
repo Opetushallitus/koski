@@ -1,12 +1,10 @@
 package fi.oph.tor.http
 
 import fi.oph.tor.json.Json
-import org.http4s.Method.PermitsBody
-import org.http4s.Method.Semantics.Default
-import org.http4s.{Method, Uri, Response, Request}
-import org.http4s.client.Client
+import org.http4s.client.{Client, blaze}
+import org.http4s.{Method, Request, Response, Uri}
+
 import scalaz.concurrent.Task
-import org.http4s.client.blaze
 
 object Http {
   def parseJson[T](status: Int, text: String)(implicit mf : scala.reflect.Manifest[T]): T = (status, text) match {
