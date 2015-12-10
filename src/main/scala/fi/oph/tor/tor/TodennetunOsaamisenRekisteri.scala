@@ -33,10 +33,15 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
           case h:HenkilöWithOid => Right(UnverifiedOppijaOid(h.oid, oppijaRepository))
         }
         oppijaOid.right.flatMap { oppijaOid: PossiblyUnverifiedOppijaOid =>
-          val opiskeluOikeusCreationResults: Seq[Either[HttpStatus, Id]] = oppija.opiskeluoikeudet.map { opiskeluOikeus =>
+          val opiskeluOikeusCreationResults: Seq[Either[HttpStatus, CreateOrUpdateResult]] = oppija.opiskeluoikeudet.map { opiskeluOikeus =>
             val result = opiskeluOikeusRepository.createOrUpdate(oppijaOid, opiskeluOikeus)
             result match {
-              case Right(id) => logger.info("Luotu/päivitetty opiskeluoikeus " + id + " oppijalle " + oppijaOid + " tutkintoon " + opiskeluOikeus.suoritus.koulutusmoduulitoteutus.koulutusmoduuli.tunniste + " oppilaitoksessa " + opiskeluOikeus.oppilaitos.oid)
+              case Right(result) =>
+                val (verb, id) = result match {
+                  case Updated(id) => ("Päivitetty", id)
+                  case Created(id) => ("Luotu", id)
+                }
+                logger.info(verb + " opiskeluoikeus " + id + " oppijalle " + oppijaOid + " tutkintoon " + opiskeluOikeus.suoritus.koulutusmoduulitoteutus.koulutusmoduuli.tunniste + " oppilaitoksessa " + opiskeluOikeus.oppilaitos.oid)
               case _ =>
             }
             result
@@ -88,4 +93,3 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     }
   }
 }
-

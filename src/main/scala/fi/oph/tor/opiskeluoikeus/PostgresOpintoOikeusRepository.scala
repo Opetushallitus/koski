@@ -22,20 +22,20 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
     find(OpiskeluOikeudet.filter(_.oppijaOid === oid))
   }
 
-  override def create(oppijaOid: String, opiskeluOikeus: OpiskeluOikeus) = {
+  override def create(oppijaOid: String, opiskeluOikeus: OpiskeluOikeus): Either[HttpStatus, OpiskeluOikeus.Id] = {
     Right(await(db.run(OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += new OpiskeluOikeusRow(oppijaOid, opiskeluOikeus))))
   }
 
-  override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: OpiskeluOikeus)(implicit userContext: UserContext): Either[HttpStatus, OpiskeluOikeus.Id] = {
+  override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: OpiskeluOikeus)(implicit userContext: UserContext): Either[HttpStatus, CreateOrUpdateResult] = {
     val opiskeluoikeudet: Option[OpiskeluOikeus] = find(OpiskeluOikeusIdentifier(oppijaOid.oppijaOid, opiskeluOikeus))
     opiskeluoikeudet match {
       case Some(oikeus) => update(oppijaOid.oppijaOid, opiskeluOikeus.copy(id = oikeus.id)) match {
         case error if error.isError => Left(error)
-        case _ => Right(oikeus.id.get)
+        case _ => Right(Updated(oikeus.id.get))
       }
       case _ =>
         oppijaOid.verifiedOid match {
-          case Some(oid) => create(oid, opiskeluOikeus)
+          case Some(oid) => create(oid, opiskeluOikeus).right.map(Created(_))
           case None => Left(HttpStatus.notFound("Oppija " + oppijaOid.oppijaOid + " not found"))
         }
     }
