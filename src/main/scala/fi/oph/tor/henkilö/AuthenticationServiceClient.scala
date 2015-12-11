@@ -6,8 +6,9 @@ import com.typesafe.config.Config
 import fi.oph.tor.http.{Http, HttpStatus, VirkailijaHttpClient}
 import fi.oph.tor.json.Json._
 import fi.oph.tor.json.Json4sHttp4s._
-import org.http4s.{EntityDecoderInstances, Method, Request}
-
+import org.http4s._
+import org.http4s.headers.`Content-Type`
+import org.json4s.jackson.Serialization._
 import scalaz.concurrent.Task
 
 class AuthenticationServiceClient(virkailija: VirkailijaHttpClient) extends EntityDecoderInstances {
@@ -18,13 +19,14 @@ class AuthenticationServiceClient(virkailija: VirkailijaHttpClient) extends Enti
   def lisääOrganisaatio(henkilöOid: String, organisaatioOid: String, nimike: String) = {
     virkailija.httpClient.put(virkailija.virkailijaUriFromString("/authentication-service/resources/henkilo/" + henkilöOid + "/organisaatiohenkilo"), List(
       LisääOrganisaatio(organisaatioOid, nimike)
-    ))
+    ))(json4sEncoderOf[List[LisääOrganisaatio]])
   }
   def lisääKäyttöoikeusRyhmä(henkilöOid: String, organisaatioOid: String, ryhmä: Int): Unit = {
-    virkailija.httpClient.put(virkailija.virkailijaUriFromString("/authentication-service/resources/henkilo/" + henkilöOid + "/organisaatiohenkilo/" + organisaatioOid + "/kayttooikeusryhmat"), List(LisääKäyttöoikeusryhmä(ryhmä)))
+    virkailija.httpClient.put(virkailija.virkailijaUriFromString("/authentication-service/resources/henkilo/" + henkilöOid + "/organisaatiohenkilo/" + organisaatioOid + "/kayttooikeusryhmat"), List(LisääKäyttöoikeusryhmä(ryhmä)))(json4sEncoderOf[List[LisääKäyttöoikeusryhmä]])
   }
   def asetaSalasana(henkilöOid: String, salasana: String) = {
-    virkailija.httpClient.post(virkailija.virkailijaUriFromString("/authentication-service/resources/salasana/" + henkilöOid), salasana)
+    virkailija.httpClient.post (virkailija.virkailijaUriFromString("/authentication-service/resources/salasana/" + henkilöOid), salasana)(EntityEncoder.stringEncoder(Charset.`UTF-8`)
+      .withContentType(`Content-Type`(MediaType.`application/json`))) // <- yes, the API expects media type application/json, but consumes inputs as text/plain
   }
   def create(createUserInfo: CreateUser): Either[HttpStatus, String] = {
     val task: Task[Request] = Request(
@@ -38,6 +40,9 @@ class AuthenticationServiceClient(virkailija: VirkailijaHttpClient) extends Enti
       case (400, error) => Left(HttpStatus.badRequest(error))
       case (status, text) => throw new RuntimeException(status + ": " + text)
     }
+  }
+  def syncLdap(henkilöOid: String) = {
+    virkailija.httpClient(virkailija.virkailijaUriFromString("/authentication-service/resources/ldap/" + henkilöOid))(Http.expectSuccess)
   }
 }
 

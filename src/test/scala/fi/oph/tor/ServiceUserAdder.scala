@@ -25,15 +25,15 @@ object ServiceUserAdder extends App {
           }
       }
 
-      println("User oid: " + oid)
+      println("Username " + username + ", oid: " + oid)
 
       authService.lisääOrganisaatio(oid, organisaatioOid, "oppilashallintojärjestelmä")
 
       authService.lisääKäyttöoikeusRyhmä(oid, organisaatioOid, RemoteUserRepository.käyttöoikeusryhmä)
 
       authService.asetaSalasana(oid, password)
-
-
+      authService.syncLdap(oid)
+      println("Set password " + password + ", requested LDAP sync")
 
       val koodiarvo = username
       val koodisto = kp.getLatestVersion("lahdejarjestelma").get

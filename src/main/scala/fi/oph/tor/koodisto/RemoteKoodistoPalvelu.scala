@@ -3,10 +3,12 @@ package fi.oph.tor.koodisto
 import fi.oph.tor.http.{Http, VirkailijaHttpClient}
 import fi.oph.tor.json.Json
 import fi.vm.sade.utils.slf4j.Logging
-
+import fi.oph.tor.json.Json._
+import fi.oph.tor.json.Json4sHttp4s._
 class RemoteKoodistoPalvelu(username: String, password: String, virkailijaUrl: String) extends LowLevelKoodistoPalvelu with Logging {
   val virkalijaClient = new VirkailijaHttpClient(username, password, virkailijaUrl, "/koodisto-service")
-  val http = virkalijaClient.httpClient
+  val secureHttp = virkalijaClient.httpClient
+  val http = Http()
 
   def getKoodistoKoodit(koodisto: KoodistoViite): Option[List[KoodistoKoodi]] = {
     http(virkalijaClient.virkailijaUriFromString("/koodisto-service/rest/codeelement/codes/" + koodisto + noCache)) {
@@ -29,16 +31,16 @@ class RemoteKoodistoPalvelu(username: String, password: String, virkailijaUrl: S
   private def noCache = "?noCache=" + System.currentTimeMillis()
 
   def createKoodisto(koodisto: Koodisto): Unit = {
-    http.post(virkalijaClient.virkailijaUriFromString("/koodisto-service/rest/codes"), koodisto)
+    secureHttp.post(virkalijaClient.virkailijaUriFromString("/koodisto-service/rest/codes"), koodisto)(json4sEncoderOf[Koodisto])
   }
 
 
   def createKoodi(koodistoUri: String, koodi: KoodistoKoodi) = {
-    http.post(virkalijaClient.virkailijaUriFromString("/koodisto-service/rest/codeelement/" + koodistoUri), koodi)
+    secureHttp.post(virkalijaClient.virkailijaUriFromString("/koodisto-service/rest/codeelement/" + koodistoUri), koodi)(json4sEncoderOf[KoodistoKoodi])
   }
 
   def createKoodistoRyhmä(ryhmä: KoodistoRyhmä) = {
-    http.post(virkalijaClient.virkailijaUriFromString("/koodisto-service/rest/codesgroup"), ryhmä)
+    secureHttp.post(virkalijaClient.virkailijaUriFromString("/koodisto-service/rest/codesgroup"), ryhmä)(json4sEncoderOf[KoodistoRyhmä])
   }
 }
 

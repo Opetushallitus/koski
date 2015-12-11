@@ -2,11 +2,16 @@ package fi.oph.tor.http
 
 import fi.oph.tor.json.Json
 import org.http4s.client.{Client, blaze}
-import org.http4s.{Method, Request, Response, Uri}
+import org.http4s._
 
 import scalaz.concurrent.Task
 
 object Http {
+  def expectSuccess(status: Int, text: String): Unit = (status, text) match {
+    case (status, text) if status < 300 && status >= 200 =>
+    case (status, text) => throw new RuntimeException(status + ": " + text)
+  }
+
   def parseJson[T](status: Int, text: String)(implicit mf : scala.reflect.Manifest[T]): T = (status, text) match {
     case (200, text) => Json.read[T](text)
     case (status, text) => throw new RuntimeException(status + ": " + text)
@@ -47,18 +52,16 @@ case class Http(client: Client = blaze.defaultClient) {
     apply(Task(Request(uri = Http.uriFromString(uri))))(decode)
   }
 
-  def post[T <: AnyRef](path: Uri, entity: T)(implicit mf: Manifest[T]): Unit = {
+  def post[T <: AnyRef](path: Uri, entity: T)(implicit encode: EntityEncoder[T]): Unit = {
     apply(path, Method.POST, entity)
   }
 
-  def put[T <: AnyRef](path: Uri, entity: T)(implicit mf: Manifest[T]): Unit = {
+  def put[T <: AnyRef](path: Uri, entity: T)(implicit encode: EntityEncoder[T]): Unit = {
     apply(path, Method.PUT, entity)
   }
 
-  def apply[T <: AnyRef](path: Uri, method: Method, entity: T)(implicit mf: Manifest[T]): Unit = {
-    import fi.oph.tor.json.Json._
-    import fi.oph.tor.json.Json4sHttp4s._
-    val task: Task[Request] = Request(uri = path, method = method).withBody(entity)(json4sEncoderOf[T])
+  def apply[T <: AnyRef](path: Uri, method: Method, entity: T)(implicit encode: EntityEncoder[T]): Unit = {
+    val task: Task[Request] = Request(uri = path, method = method).withBody(entity)
 
     apply(task) {
       case (status, text) if (status >= 300) => throw new scala.RuntimeException(status + ": " + text)
