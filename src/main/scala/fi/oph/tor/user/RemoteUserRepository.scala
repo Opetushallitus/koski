@@ -1,35 +1,21 @@
 package fi.oph.tor.user
 
-import java.time.{LocalDate, ZoneId}
-
-import fi.oph.tor.http.{Http, VirkailijaHttpClient}
+import fi.oph.tor.henkilö.AuthenticationServiceClient
 import fi.oph.tor.organisaatio.{OrganisaatioPuu, OrganisaatioRepository}
 import org.http4s.EntityDecoderInstances
 
-class RemoteUserRepository(henkilöPalveluClient: VirkailijaHttpClient, organisaatioRepository: OrganisaatioRepository) extends UserRepository with EntityDecoderInstances {
+class RemoteUserRepository(henkilöPalveluClient: AuthenticationServiceClient, organisaatioRepository: OrganisaatioRepository) extends UserRepository with EntityDecoderInstances {
   val katselijaRole = 4056292L
 
   def getUserOrganisations(oid: String): OrganisaatioPuu = {
     OrganisaatioPuu(
-      roots = henkilöPalveluClient.httpClient(henkilöPalveluClient.virkailijaUriFromString(s"/authentication-service/resources/henkilo/${oid}/organisaatiohenkilo"))(Http.parseJson[List[OrganisaatioHenkilö]])
+      roots = henkilöPalveluClient.organisaatiot(oid)
         .withFilter {!_.passivoitu}
-        .flatMap {org => getKäyttöoikeudet(oid, org.organisaatioOid)}
+        .flatMap {org => henkilöPalveluClient.käyttöoikeusryhmät(oid, org.organisaatioOid)}
         .withFilter {_.ryhmaId == katselijaRole}
         .withFilter {o => o.tila == "MYONNETTY" || o.tila == "UUSITTU"}
         .withFilter {_.effective}
         .flatMap {result => organisaatioRepository.getOrganisaatio(result.organisaatioOid)}
     )
-  }
-
-  private def getKäyttöoikeudet(oid: String, ooid: String): List[Käyttöoikeus] = {
-    henkilöPalveluClient.httpClient(henkilöPalveluClient.virkailijaUriFromString(s"/authentication-service/resources/kayttooikeusryhma/henkilo/${oid}?ooid=${ooid}"))(Http.parseJson[List[Käyttöoikeus]])
-  }
-}
-
-case class OrganisaatioHenkilö(organisaatioOid: String, passivoitu: Boolean)
-case class Käyttöoikeus(ryhmaId: Long, organisaatioOid: String, tila: String, alkuPvm: LocalDate, voimassaPvm: LocalDate) {
-  def effective = {
-      val now: LocalDate = LocalDate.now(ZoneId.of("UTC"))
-      !now.isBefore(alkuPvm) && !now.isAfter(voimassaPvm)
   }
 }
