@@ -1,14 +1,19 @@
 package fi.oph.tor
 
+import java.time.LocalDate
 import fi.oph.tor.config.TorApplication
 import fi.oph.tor.henkilö.{AuthenticationServiceClient, CreateUser, UserQueryResult}
 import fi.oph.tor.http.HttpStatus
+import fi.oph.tor.koodisto.{KoodistoKoodiMetadata, KoodistoKoodi, MockKoodistoPalvelu}
 import fi.oph.tor.user.RemoteUserRepository
 
 object ServiceUserAdder extends App {
   args match {
     case Array(username, organisaatioOid, password) =>
-      val authService = AuthenticationServiceClient(TorApplication().config)
+      val app: TorApplication = TorApplication()
+      val authService = AuthenticationServiceClient(app.config)
+      val kp = app.lowLevelKoodistoPalvelu
+
       val oid = authService.create(CreateUser.palvelu(username)) match {
         case Right(oid) =>
           println("User created")
@@ -27,6 +32,16 @@ object ServiceUserAdder extends App {
       authService.lisääKäyttöoikeusRyhmä(oid, organisaatioOid, RemoteUserRepository.käyttöoikeusryhmä)
 
       authService.asetaSalasana(oid, password)
+
+
+
+      val koodiarvo = username
+      val koodisto = kp.getLatestVersion("lahdejarjestelma").get
+
+      if (!kp.getKoodistoKoodit(koodisto).toList.flatten.find(_.koodiArvo == koodiarvo).isDefined) {
+        kp.createKoodi("lahdejarjestelma", KoodistoKoodi("lahdejarjestelma_" + koodiarvo, koodiarvo, List(KoodistoKoodiMetadata(Some(koodiarvo), None, Some("FI"))), 1, Some(LocalDate.now)))
+        println("Luotu lähdejärjestelmäkoodi " + koodiarvo)
+      }
 
       println("OK")
     case _ =>
