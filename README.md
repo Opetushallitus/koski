@@ -236,6 +236,10 @@ Käyttäjä voi nähdä vain ne opinto-oikeudet, jotka liittyvät oppilaitokseen
 Esimerkkihaku: haetaan organisaatiopuurakenne.
 
     https://testi.virkailija.opintopolku.fi:443/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&suunnitellut=true&lakkautetut=false&&&&&&oid=1.2.246.562.10.50822930082&
+    
+Henkilöpalvelun swagger:
+
+    https://virkailija.tordev.tor.oph.reaktor.fi/authentication-service/swagger/index.html
 
 ### ePerusteet
 
