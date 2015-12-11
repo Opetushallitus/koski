@@ -4,6 +4,7 @@
 # Also all the "run_environment" variables in the ansible group_vars are exported by the hook script.
 
 export JAVA_OPTS="\
+–XX:+HeapDumpOnOutOfMemoryError
 -Dtor.port=8080 \
 -Dlog4j.configuration=file://$DEPLOY_DIR/src/main/resources/log4j.cloud.properties \
 -Dlog4j.log.dir=$LOG_DIR \
