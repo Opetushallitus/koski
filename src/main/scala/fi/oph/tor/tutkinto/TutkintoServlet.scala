@@ -14,7 +14,7 @@ class TutkintoServlet(tutkintoRepository: TutkintoRepository) extends ErrorHandl
 
   get("/rakenne/:diaariNumero") {
     contentType = "application/json;charset=utf-8"
-    Json.write(tutkintoRepository.findPerusteRakenne(params("diaariNumero")))
+    renderOption(tutkintoRepository.findPerusteRakenne(params("diaariNumero")))
   }
 
 }

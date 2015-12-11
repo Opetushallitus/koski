@@ -43,7 +43,8 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
     params.get("query") match {
       case Some(query) if (query.length >= 3) =>
         Json.write(rekisteri.findOppijat(query.toUpperCase))
-      case _ => throw new InvalidRequestException("query parameter length must be at least 3")
+      case _ =>
+        throw new InvalidRequestException("query parameter length must be at least 3")
     }
   }
 

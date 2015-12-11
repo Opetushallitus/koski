@@ -2,7 +2,7 @@ package fi.oph.tor.schema
 
 import fi.oph.tor.ErrorHandlingServlet
 import fi.oph.tor.json.Json
-import fi.oph.tor.koodisto.{KoodistoViite, LowLevelKoodistoPalvelu}
+import fi.oph.tor.koodisto.{KoodistoKoodi, KoodistoViite, LowLevelKoodistoPalvelu}
 
 class SchemaDocumentationServlet(koodistoPalvelu: LowLevelKoodistoPalvelu) extends ErrorHandlingServlet {
   get("/") {
@@ -17,10 +17,7 @@ class SchemaDocumentationServlet(koodistoPalvelu: LowLevelKoodistoPalvelu) exten
   get("/examples/:name.json") {
     contentType = "application/json"
 
-    TorOppijaExamples.examples.find(_.name == params("name")) match {
-      case Some(example) => Json.writePretty(example.data)
-      case None => halt(404)
-    }
+    renderOption(TorOppijaExamples.examples.find(_.name == params("name")).map(_.data), pretty = true)
   }
 
   get("/koodisto/:name/:version") {
@@ -32,6 +29,7 @@ class SchemaDocumentationServlet(koodistoPalvelu: LowLevelKoodistoPalvelu) exten
       case x =>
         Some(KoodistoViite(koodistoUri, x.toInt))
     }
-    Json.writePretty(versio.flatMap(koodistoPalvelu.getKoodistoKoodit))
+    val result: Option[List[KoodistoKoodi]] = versio.flatMap(koodistoPalvelu.getKoodistoKoodit)
+    renderOption(result, pretty = true)
   }
 }

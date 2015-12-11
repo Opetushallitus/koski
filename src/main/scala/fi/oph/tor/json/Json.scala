@@ -17,8 +17,12 @@ object Json {
   implicit val jsonFormats = GenericJsonFormats.genericFormats + new LocalDateSerializer +
     new RakenneOsaSerializer ++ Deserializers.deserializers
 
-  def write(x: AnyRef): String = {
-    Serialization.write(x);
+  def write(x: AnyRef, pretty: Boolean = false): String = {
+    if (pretty) {
+      writePretty(x)
+    } else {
+      Serialization.write(x);
+    }
   }
 
   def writePretty(x: AnyRef): String = {
