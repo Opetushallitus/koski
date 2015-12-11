@@ -131,7 +131,7 @@ const TutkinnonOsa = React.createClass({
               laajuus: tutkinnonOsa.laajuus ? {
                 arvo : tutkinnonOsa.laajuus,
                 yksikkö : laajuudenYksikkö
-              } : null
+              } : undefined
             }
           },
           arviointi: [

@@ -430,22 +430,34 @@ describe('TOR', function() {
 
     describe('Kun annetaan arviointi tutkinnonosalle', function() {
       describe('Arvion antaminen käyttöliittymän kautta', function() {
-        before(opinnot.selectSuoritustapa("ops"), opinnot.selectOsaamisala("1527"))
-        var tutkinnonOsa = opinnot.getTutkinnonOsa("Markkinointi ja asiakaspalvelu")
-        before(tutkinnonOsa.addArviointi("H2"))
-        it('Uusi arviointi näytetään', function() {
-          expect(tutkinnonOsa.getArvosana()).to.equal("H2")
-        })
-
-        describe('Kun sivu ladataan uudelleen', function() {
-          before( page.oppijaHaku.search('ero', 4),
-            page.oppijaHaku.selectOppija('tunkkila'), opinnot.waitUntilTutkintoVisible())
-
-          it('Muuttuneet tiedot on tallennettu', function() {
+        describe('OPS-muotoinen, asteikko T1-K3', function() {
+          before(opinnot.selectSuoritustapa("ops"), opinnot.selectOsaamisala("1527"))
+          var tutkinnonOsa = opinnot.getTutkinnonOsa("Markkinointi ja asiakaspalvelu")
+          before(tutkinnonOsa.addArviointi("H2"))
+          it('Uusi arviointi näytetään', function() {
             expect(tutkinnonOsa.getArvosana()).to.equal("H2")
+          })
+
+          describe('Kun sivu ladataan uudelleen', function() {
+            before( page.oppijaHaku.search('ero', 4),
+              page.oppijaHaku.selectOppija('tunkkila'), opinnot.waitUntilTutkintoVisible())
+
+            it('Muuttuneet tiedot on tallennettu', function() {
+              expect(tutkinnonOsa.getArvosana()).to.equal("H2")
+            })
+          })
+        })
+        describe('Näyttömuotoinen, asteikko HYVÄKSYTTY/HYLÄTTY', function() {
+          before(opinnot.selectSuoritustapa("naytto"), opinnot.selectOsaamisala("1527"))
+          var tutkinnonOsa = opinnot.getTutkinnonOsa("Myynti ja tuotetuntemus")
+          before(tutkinnonOsa.addArviointi("Hylätty"))
+          it('Uusi arviointi näytetään', function() {
+            expect(tutkinnonOsa.getArvosana()).to.equal("Hylätty")
           })
         })
       })
+
+
 
       describe('Tietojen validointi serverillä', function() {
         describe('Koulutusmoduuli ja arviointi ok', function() {
