@@ -29,7 +29,7 @@ export const handleError = (error) => {
 }
 
 export function requiresLogin(e) {
-  return e.httpStatus !== 404 && e.httpStatus >= 400 && e.httpStatus < 500
+  return e.httpStatus !== 404 && e.httpStatus > 400 && e.httpStatus < 500
 }
 
 const errorTexts = {
