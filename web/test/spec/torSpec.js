@@ -343,6 +343,24 @@ describe('TOR', function() {
           }
         }), 400, "perusteenDiaarinumero"))
       })
+
+      describe('Hetun ollessa', function() {
+        describe('muodoltaan virheellinen', function() {
+          it('palautetaan HTTP 400 virhe', verifyResponseCode(addOppija.putOppijaAjax({henkilö: {hetu: '010101-123123'}}), 400, 'Virheellinen muoto hetulla: 010101-123123'))
+        })
+        describe('muodoltaan oikea, mutta väärä tarkistusmerkki', function() {
+          it('palautetaan HTTP 400 virhe', verifyResponseCode(addOppija.putOppijaAjax({henkilö: {hetu: '010101-123P'}}), 400, 'Virheellinen tarkistusmerkki hetussa: 010101-123P'))
+        })
+        describe('päivämäärältään tulevaisuudessa', function() {
+          it('palautetaan HTTP 400 virhe', verifyResponseCode(addOppija.putOppijaAjax({henkilö: {hetu: '141299A903C'}}), 400, 'Syntymäpäivä hetussa: 141299A903C on tulevaisuudessa'))
+        })
+        describe('päivämäärältään virheellinen', function() {
+          it('palautetaan HTTP 400 virhe', verifyResponseCode(addOppija.putOppijaAjax({henkilö: {hetu: '300215-123T'}}), 400, 'Virheellinen syntymäpäivä hetulla: 300215-123T'))
+        })
+        describe('validi', function() {
+          it('palautetaan HTTP 200', verifyResponseCode(addOppija.putOppijaAjax({henkilö: {hetu: '010101-123N'}}), 200))
+        })
+      })
     })
   })
 

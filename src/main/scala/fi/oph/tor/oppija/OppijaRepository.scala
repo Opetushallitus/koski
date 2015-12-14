@@ -1,7 +1,7 @@
 package fi.oph.tor.oppija
 
 import com.typesafe.config.Config
-import fi.oph.tor.henkilö.AuthenticationServiceClient
+import fi.oph.tor.henkilö.{Hetu, AuthenticationServiceClient}
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.schema._
 import fi.oph.tor.util.{CachingProxy, TimedProxy}
@@ -37,8 +37,10 @@ trait OppijaRepository extends Logging {
     }
     henkilö match {
       case NewHenkilö(hetu, etunimet, kutsumanimi, sukunimi) =>
-        create(hetu, etunimet, kutsumanimi, sukunimi).left.flatMap { case HttpStatus(409, _) =>
-          oidFrom(findOppijat(hetu))
+        Hetu.validate(hetu).right.flatMap { hetu =>
+          create(hetu, etunimet, kutsumanimi, sukunimi).left.flatMap { case HttpStatus(409, _) =>
+            oidFrom(findOppijat(hetu))
+          }
         }
       case OidHenkilö(oid) =>
         oidFrom(findByOid(oid).toList)

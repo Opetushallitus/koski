@@ -45,13 +45,6 @@ object Hetu {
       if (checkChar == hetu.last) Right(hetu) else Left(badRequest("Virheellinen tarkistusmerkki hetussa: " + hetu))
     }
 
-    for {
-      hetu <- validFormat(hetu).right
-      hetu <- validDate(hetu).right
-      hetu <- validCheckChar(hetu).right
-    } yield {
-      hetu
-    }
+    validFormat(hetu).right.flatMap(validDate(_).right.flatMap(validCheckChar))
   }
 }
-
