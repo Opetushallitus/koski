@@ -7,7 +7,7 @@ import org.json4s.JsonAST._
 object SchemaToJson {
   def toJsonSchema(t: Schema)(implicit ms: List[JsonMetadataSupport]): JValue = t match {
     case DateSchema(enumValues) => JObject(List("type" -> JString("string"), "format" -> JString("date")) ++ toEnumValueProperty(enumValues))
-    case StringSchema(enumValues) => simpleObjectToJson("string", enumValues)
+    case StringSchema(enumValues) => withMinLength(simpleObjectToJson("string", enumValues), Some(1))
     case BooleanSchema(enumValues) => simpleObjectToJson("boolean", enumValues)
     case NumberSchema(enumValues) => simpleObjectToJson("number", enumValues)
     case ListSchema(x) => JObject(("type") -> JString("array"), (("items" -> toJsonSchema(x))))
@@ -32,8 +32,12 @@ object SchemaToJson {
     case OneOfSchema(alternatives, _) => JObject(("oneOf" -> JArray(alternatives.map(toJsonSchema(_)))))
   }
 
-  def simpleObjectToJson(tyep: String, enumValues: Option[List[Any]]) = {
+  def simpleObjectToJson(tyep: String, enumValues: Option[List[Any]]): JObject = {
     JObject(List("type" -> JString(tyep)) ++ toEnumValueProperty(enumValues))
+  }
+
+  def withMinLength(obj: JObject, minLength: Option[Int]) = {
+    obj.merge(JObject(minLength.toList.map { len => ("minLength" -> JInt(len)) }))
   }
 
   def toEnumValueProperty(enumValues: Option[List[Any]]): Option[(String, JValue)] = {

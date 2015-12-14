@@ -320,6 +320,14 @@ describe('TOR', function() {
         ), 403, "Ei oikeuksia organisatioon eipaasya"))
       })
 
+      describe('Nimenä tyhjä merkkijono', function() {
+        it('palautetaan HTTP 400 virhe', verifyResponseCode(addOppija.putOppijaAjax({
+          henkilö: {
+            'sukunimi':''
+          }
+        }), 400))
+      })
+
       describe('Kun yritetään lisätä opinto-oikeus virheelliseen perusteeseen', function() {
         it('palautetaan HTTP 400 virhe', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
           suoritus: {
