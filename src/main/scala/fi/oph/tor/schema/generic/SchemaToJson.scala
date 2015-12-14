@@ -32,26 +32,28 @@ object SchemaToJson {
     case OneOfSchema(alternatives, _) => JObject(("oneOf" -> JArray(alternatives.map(toJsonSchema(_)))))
   }
 
-  def simpleObjectToJson(tyep: String, enumValues: Option[List[Any]]): JObject = {
-    JObject(List("type" -> JString(tyep)) ++ toEnumValueProperty(enumValues))
+  private def simpleObjectToJson(tyep: String, enumValues: Option[List[Any]]): JObject = {
+    addOptionalField(JObject(List("type" -> JString(tyep))), toEnumValueProperty(enumValues))
   }
 
-  def withMinLength(obj: JObject, minLength: Option[Int]) = {
-    obj.merge(JObject(minLength.toList.map { len => ("minLength" -> JInt(len)) }))
+  private def withMinLength(obj: JObject, minLength: Option[Int]) = {
+    addOptionalField(obj, minLength.map { len => ("minLength" -> JInt(len)) })
   }
 
-  def toEnumValueProperty(enumValues: Option[List[Any]]): Option[(String, JValue)] = {
+  private def addOptionalField(obj: JObject, field: Option[(String, JValue)]) = field match {
+    case Some((name, value)) => obj.merge(JObject(List((name, value))))
+    case _ => obj
+  }
+
+  private def toEnumValueProperty(enumValues: Option[List[Any]]): Option[(String, JValue)] = {
     implicit val formats = GenericJsonFormats.genericFormats
     enumValues.map(enumValues => ("enum", Extraction.decompose(enumValues)))
   }
 
   private def toJsonProperties(properties: List[Property])(implicit ms: List[JsonMetadataSupport]): JValue = {
-    JObject(properties
-      .map { property =>
-      val propertyMetadata: JObject = appendMetadata(toJsonSchema(property.tyep).asInstanceOf[JObject], property.metadata)
-      (property.key, propertyMetadata)
-    }
-    )
+    JObject(properties.map { property =>
+        (property.key, appendMetadata(toJsonSchema(property.tyep).asInstanceOf[JObject], property.metadata))
+    })
   }
   private def toRequiredProperties(properties: List[Property]): Option[(String, JValue)] = {
     val requiredProperties = properties.toList.filter(!_.tyep.isInstanceOf[OptionalSchema])
