@@ -2,7 +2,7 @@ package fi.oph.tor
 
 import java.time.LocalDate
 import fi.oph.tor.config.TorApplication
-import fi.oph.tor.henkilö.{AuthenticationServiceClient, CreateUser, UserQueryResult}
+import fi.oph.tor.henkilo.{AuthenticationServiceClient, CreateUser, UserQueryResult}
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.koodisto.{KoodistoKoodiMetadata, KoodistoKoodi, MockKoodistoPalvelu}
 import fi.oph.tor.user.RemoteUserRepository

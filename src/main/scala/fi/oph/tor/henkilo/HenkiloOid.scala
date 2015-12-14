@@ -1,8 +1,8 @@
-package fi.oph.tor.henkilö
+package fi.oph.tor.henkilo
 
 import fi.oph.tor.http.HttpStatus
 
-object HenkilöOid {
+object HenkiloOid {
   def isValidHenkilöOid(oid: String) = {
     """1\.2\.246\.562\.24\.\d{11}""".r.findFirstIn(oid).isDefined
   }

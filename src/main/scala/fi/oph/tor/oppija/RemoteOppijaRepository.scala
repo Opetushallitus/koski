@@ -1,6 +1,6 @@
 package fi.oph.tor.oppija
 
-import fi.oph.tor.henkilö.{AuthenticationServiceClient, CreateUser, User}
+import fi.oph.tor.henkilo.{AuthenticationServiceClient, CreateUser, User}
 import fi.oph.tor.schema.FullHenkilö
 
 class RemoteOppijaRepository(henkilöPalveluClient: AuthenticationServiceClient) extends OppijaRepository {

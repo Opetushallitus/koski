@@ -1,6 +1,6 @@
 package fi.oph.tor.user
 
-import fi.oph.tor.henkilö.AuthenticationServiceClient
+import fi.oph.tor.henkilo.AuthenticationServiceClient
 import fi.oph.tor.organisaatio.{OrganisaatioPuu, OrganisaatioRepository}
 import org.http4s.EntityDecoderInstances
 

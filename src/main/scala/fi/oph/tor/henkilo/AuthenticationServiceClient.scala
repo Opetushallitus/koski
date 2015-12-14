@@ -1,4 +1,4 @@
-package fi.oph.tor.henkilö
+package fi.oph.tor.henkilo
 
 import java.time.{LocalDate, ZoneId}
 

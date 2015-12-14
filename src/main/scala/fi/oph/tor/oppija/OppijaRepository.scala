@@ -1,7 +1,7 @@
 package fi.oph.tor.oppija
 
 import com.typesafe.config.Config
-import fi.oph.tor.henkilö.{Hetu, AuthenticationServiceClient}
+import fi.oph.tor.henkilo.{Hetu, AuthenticationServiceClient}
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.schema._
 import fi.oph.tor.util.{CachingProxy, TimedProxy}

@@ -1,7 +1,7 @@
 package fi.oph.tor.user
 
 import com.typesafe.config.Config
-import fi.oph.tor.henkilö.{AuthenticationServiceClient}
+import fi.oph.tor.henkilo.{AuthenticationServiceClient}
 import fi.oph.tor.organisaatio.{OrganisaatioPuu, OrganisaatioRepository, RemoteOrganisaatioRepository}
 import fi.oph.tor.util.{CachingProxy, TimedProxy}
 
