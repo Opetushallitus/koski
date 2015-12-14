@@ -26,16 +26,16 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
   private val mapper = new ObjectMapper().enable(INDENT_OUTPUT)
 
   put("/") {
-    jsonSchemaValidate
-
-    val parsedJson: JValue = org.json4s.jackson.JsonMethods.parse(request.body)
-    implicit val koodistoPalvelu = this.koodistoPalvelu
-    val extractionResult: Either[HttpStatus, TorOppija] = KoodistoResolvingExtractor.extract[TorOppija](parsedJson)
-    renderEither(extractionResult.right.flatMap { oppija =>
-      getClass.synchronized{
-        rekisteri.createOrUpdate(oppija)
-      }
-    })
+    withJsonBody { parsedJson =>
+      jsonSchemaValidate // TODO: this actually causes a double parse
+      implicit val koodistoPalvelu = this.koodistoPalvelu
+      val extractionResult: Either[HttpStatus, TorOppija] = KoodistoResolvingExtractor.extract[TorOppija](parsedJson)
+      renderEither(extractionResult.right.flatMap { oppija =>
+        getClass.synchronized{
+          rekisteri.createOrUpdate(oppija)
+        }
+      })
+    }
   }
 
   get("/") {

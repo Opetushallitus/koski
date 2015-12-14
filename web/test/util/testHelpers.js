@@ -61,21 +61,23 @@ function getJson(url) {
 }
 
 function postJson(url, data) {
-  return Q($.ajax({
-    type: 'post',
-    url: url,
-    data: JSON.stringify(data),
-    contentType : 'application/json',
-    dataType: 'json'
-  }))
+  return sendJson(url, data, 'post')
 }
 
 function putJson(url, data) {
+  return sendJson(url, data, 'put')
+}
+
+function sendJson(url, data, method) {
+  return sendAjax(url, 'application/json', JSON.stringify(data), method)
+}
+
+function sendAjax(url, contentType, data, method) {
   return Q($.ajax({
-    type: 'put',
+    type: method,
     url: url,
-    data: JSON.stringify(data),
-    contentType : 'application/json',
+    data: data,
+    contentType : contentType,
     dataType: 'json'
   }))
 }

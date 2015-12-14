@@ -328,6 +328,20 @@ describe('TOR', function() {
         }), 400))
       })
 
+      describe('Nimenä tyhjä merkkijono', function() {
+        it('palautetaan HTTP 400 virhe', verifyResponseCode(addOppija.putOppijaAjax({
+          henkilö: {
+            'sukunimi':''
+          }
+        }), 400))
+      })
+
+      describe('Epäkelpo JSON-dokumentti', function() {
+        it('palautetaan HTTP 400 virhe', verifyResponseCode(function() {
+          return sendAjax('/tor/api/oppija', 'application/json', 'not json', 'put')
+        }, 400, "Invalid JSON"))
+      })
+
       describe('Kun yritetään lisätä opinto-oikeus virheelliseen perusteeseen', function() {
         it('palautetaan HTTP 400 virhe', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
           suoritus: {
@@ -368,6 +382,16 @@ describe('TOR', function() {
         describe('validi', function() {
           it('palautetaan HTTP 200', verifyResponseCode(addOppija.putOppijaAjax({henkilö: {hetu: '010101-123N'}}), 200))
         })
+      })
+    })
+
+    describe('Virhetilanteet', function() {
+      describe('Kun tallennus epäonnistuu', function() {
+        before( openPage('/tor/uusioppija', function() {return addOppija.isVisible()}),
+          addOppija.enterValidData({sukunimi: "error"}),
+          addOppija.submit)
+
+        it('Näytetään virheilmoitus', wait.until(page.isErrorShown))
       })
     })
   })
@@ -515,15 +539,17 @@ describe('TOR', function() {
       })
     })
 
-    describe('Kun tallennus epäonnistuu', function() {
-      before(
-        mockHttp("/tor/api/oppija", { status: 500 }),
-        opinnot.selectOsaamisala("1622"),
-        wait.until(page.isErrorShown)
-      )
+    describe('Virhetilanteet', function() {
+      describe('Kun tallennus epäonnistuu', function() {
+        before(
+          mockHttp("/tor/api/oppija", { status: 500 }),
+          opinnot.selectOsaamisala("1622"),
+          wait.until(page.isErrorShown)
+        )
 
-      it('Näytetään virheilmoitus', function() {
+        it('Näytetään virheilmoitus', function() {
 
+        })
       })
     })
   })
@@ -558,8 +584,7 @@ describe('TOR', function() {
     describe('Odottamattoman virheen sattuessa', function() {
       before(
         page.openPage,
-        mockHttp('/tor/api/oppija?query=blah', { status: 500 }),
-        page.oppijaHaku.search('blah', page.isErrorShown))
+        page.oppijaHaku.search('error', page.isErrorShown))
 
       it('näytetään virheilmoitus', function() {})
     })

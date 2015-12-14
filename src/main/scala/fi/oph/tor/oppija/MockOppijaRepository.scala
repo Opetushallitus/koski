@@ -27,11 +27,16 @@ class MockOppijaRepository extends OppijaRepository {
   private var oppijat = defaultOppijat
 
   override def findOppijat(query: String) = {
+    if (query.toLowerCase.contains("error")) {
+      throw new RuntimeException("Testing error handling")
+    }
     oppijat.filter(searchString(_).contains(query))
   }
 
   override def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String): Either[HttpStatus, Henkilö.Id] = {
-    if (oppijat.find { o => (o.hetu == hetu) } .isDefined) {
+    if (sukunimi == "error") {
+      throw new RuntimeException("Testing error handling")
+    } else if (oppijat.find { o => (o.hetu == hetu) } .isDefined) {
       Left(HttpStatus.conflict("conflict"))
     } else {
       val newOppija = oppija(generateId, sukunimi, etunimet, hetu)
