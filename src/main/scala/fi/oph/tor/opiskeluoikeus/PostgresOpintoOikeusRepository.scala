@@ -22,11 +22,16 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
     }
 
     //println(query.result.statements.head)
+    println(oppijat.length)
 
-    val oikeudet: Set[String] = findRows(query).map(_.oppijaOid).toSet
+
+    val fullQuery: Query[Rep[String], String, Seq] = queryWithAccessCheck(query).map(_.oppijaOid)
+
+    val oikeudet: Set[String] = runQuery(fullQuery).toSet
 
     oppijat.filter { oppija => oikeudet.contains(oppija.oid)}
   }
+
 
   override def findByOppijaOid(oid: String)(implicit userContext: UserContext): Seq[OpiskeluOikeus] = {
     find(OpiskeluOikeudet.filter(_.oppijaOid === oid))
@@ -71,19 +76,22 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
     }
   }
 
-  private def find(filter: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq])(implicit userContext: UserContext): Seq[OpiskeluOikeus] = {
-    findRows(filter).map(_.toOpiskeluOikeus)
+  private def find(query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq])(implicit userContext: UserContext): Seq[OpiskeluOikeus] = {
+    runQuery(queryWithAccessCheck(query)).map(_.toOpiskeluOikeus)
   }
 
-  private def findRows(query: PostgresDriverWithJsonSupport.api.Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq])(implicit userContext: UserContext): Seq[OpiskeluOikeusRow] = {
+  def runQuery[E, U](fullQuery: PostgresDriverWithJsonSupport.api.Query[E, U, Seq]): Seq[U] = {
+    await(db.run(fullQuery.result))
+  }
+
+  def queryWithAccessCheck(query: PostgresDriverWithJsonSupport.api.Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq])(implicit userContext: UserContext): Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = {
     val oids = userContext.organisaatioPuu.flatten().map(_.oid)
     val queryWithAccessCheck = for (
       oo <- query
-      if oo.data.#>>(List("oppilaitos", "oid")) inSetBind oids
-    ) yield {
+      if oo.data.#>>(List("oppilaitos", "oid")) inSetBind oids)
+    yield {
       oo
     }
-    //println(queryWithAccessCheck.result.statements.head)
-    await(db.run(queryWithAccessCheck.result))
+    queryWithAccessCheck
   }
 }
