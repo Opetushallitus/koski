@@ -14,7 +14,18 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
   // Note: this is a naive implementation. All filtering should be moved to query-level instead of in-memory-level
 
   override def filterOppijat(oppijat: Seq[FullHenkilö])(implicit userContext: UserContext) = {
-    oppijat.filter { oppija => !findByOppijaOid(oppija.oid).isEmpty}
+    val query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = for {
+      oo <- OpiskeluOikeudet
+      if oo.oppijaOid inSetBind oppijat.map(_.oid)
+    } yield {
+      oo
+    }
+
+    //println(query.result.statements.head)
+
+    val oikeudet: Set[String] = findRows(query).map(_.oppijaOid).toSet
+
+    oppijat.filter { oppija => oikeudet.contains(oppija.oid)}
   }
 
   override def findByOppijaOid(oid: String)(implicit userContext: UserContext): Seq[OpiskeluOikeus] = {
