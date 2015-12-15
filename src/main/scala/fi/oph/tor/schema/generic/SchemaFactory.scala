@@ -113,14 +113,14 @@ case class SchemaFactory(annotationsSupported: List[AnnotationSupport]) {
 object TraitImplementationFinder {
   import collection.JavaConverters._
   val cache: collection.mutable.Map[String, Set[Class[_]]] = collection.mutable.Map.empty
+  val reflectionsCache: collection.mutable.Map[String, Reflections] = collection.mutable.Map.empty
 
-  def findTraitImplementations(tpe: ru.Type): Set[Class[_]] = {
+  def findTraitImplementations(tpe: ru.Type): Set[Class[_]] = this.synchronized {
     val className: String = tpe.typeSymbol.asClass.fullName
-
 
     cache.getOrElseUpdate(className, {
       val javaClass: Class[_] = Class.forName(className)
-      val reflections = new Reflections(javaClass.getPackage.getName)
+      val reflections = reflectionsCache.getOrElseUpdate(javaClass.getPackage.getName, new Reflections(javaClass.getPackage.getName))
 
       val implementationClasses = reflections.getSubTypesOf(javaClass).asScala.toSet.asInstanceOf[Set[Class[_]]].filter(!_.isInterface)
       implementationClasses
