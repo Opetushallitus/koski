@@ -32,7 +32,7 @@ const OppijaHakuBoksi = React.createClass({
     return (
       <div>
         <label>Opiskelija
-          <input id='search-query' ref='query' onInput={(e) => oppijaHakuE.push(e.target.value)}></input>
+          <input id='search-query' ref='query' placeholder='henkilötunnus, nimi tai oppijanumero' onInput={(e) => oppijaHakuE.push(e.target.value)}></input>
         </label>
         <hr></hr>
       </div>
