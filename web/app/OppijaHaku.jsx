@@ -8,7 +8,7 @@ const oppijaHakuE = new Bacon.Bus()
 
 const acceptableQuery = (q) => q.length >= 3
 
-const hakuTulosE = oppijaHakuE.throttle(200)
+const hakuTulosE = oppijaHakuE.debounce(500)
   .flatMapLatest(q => (acceptableQuery(q) ? Http.get(`/tor/api/oppija?query=${q}`) : Bacon.once([])).map((oppijat) => ({ results: oppijat, query: q })))
 
 const oppijaE = oppijaP.toEventStream().filter(Bacon._.id)
