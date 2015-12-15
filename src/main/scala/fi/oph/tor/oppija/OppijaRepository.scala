@@ -26,6 +26,8 @@ class OppijaRepositoryCachingStrategy extends CachingStrategyBase(durationSecond
           case Some(_) => true
           case _ => false
         }
+      case "findOppijat" =>
+        invokeAndStore(invocation)
       case _ => invocation.invoke
     }
   }
