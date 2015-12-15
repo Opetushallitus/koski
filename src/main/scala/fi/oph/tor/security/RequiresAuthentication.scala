@@ -9,7 +9,7 @@ trait RequiresAuthentication extends ErrorHandlingServlet with AuthenticationSup
   def userRepository: UserRepository
 
   implicit def userContext: UserContext = new UserContext {
-    def organisaatioPuu = userOption
+    def organisaatioPuu: OrganisaatioPuu = userOption
       .map(u => userRepository.getUserOrganisations(u.oid))
       .getOrElse(OrganisaatioPuu(List.empty))
 

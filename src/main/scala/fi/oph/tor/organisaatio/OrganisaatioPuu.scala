@@ -8,7 +8,7 @@ case class OrganisaatioPuu(roots: List[OrganisaatioHierarkia]) {
     flatten(roots).filter(f)
   }
 
-  def flatten(orgs: List[OrganisaatioHierarkia]): List[OrganisaatioHierarkia] = {
+  def flatten(orgs: List[OrganisaatioHierarkia] = roots): List[OrganisaatioHierarkia] = {
     orgs.flatMap { org =>
       org :: flatten(org.children)
     }

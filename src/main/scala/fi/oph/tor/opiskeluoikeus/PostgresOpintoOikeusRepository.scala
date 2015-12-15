@@ -75,12 +75,15 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
     findRows(filter).map(_.toOpiskeluOikeus)
   }
 
-  private def findRows(filter: PostgresDriverWithJsonSupport.api.Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq])(implicit userContext: UserContext): Seq[OpiskeluOikeusRow] = {
-    await(db.run(filter.result)).filter(withAccess)
-  }
-
-  // TODO: move to DB
-  private def withAccess(oikeus: OpiskeluOikeusRow)(implicit userContext: UserContext) = {
-    userContext.hasReadAccess(oikeus.toOpiskeluOikeus.oppilaitos)
+  private def findRows(query: PostgresDriverWithJsonSupport.api.Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq])(implicit userContext: UserContext): Seq[OpiskeluOikeusRow] = {
+    val oids = userContext.organisaatioPuu.flatten().map(_.oid)
+    val queryWithAccessCheck = for (
+      oo <- query
+      if oo.data.#>>(List("oppilaitos", "oid")) inSetBind oids
+    ) yield {
+      oo
+    }
+    //println(queryWithAccessCheck.result.statements.head)
+    await(db.run(queryWithAccessCheck.result))
   }
 }
