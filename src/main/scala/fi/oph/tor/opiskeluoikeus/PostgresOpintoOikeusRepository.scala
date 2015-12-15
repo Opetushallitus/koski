@@ -79,6 +79,7 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
     await(db.run(filter.result)).filter(withAccess)
   }
 
+  // TODO: move to DB
   private def withAccess(oikeus: OpiskeluOikeusRow)(implicit userContext: UserContext) = {
     userContext.hasReadAccess(oikeus.toOpiskeluOikeus.oppilaitos)
   }
