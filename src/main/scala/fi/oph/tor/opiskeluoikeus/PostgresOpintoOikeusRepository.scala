@@ -22,8 +22,6 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
     }
 
     //println(query.result.statements.head)
-    println(oppijat.length)
-
 
     val fullQuery: Query[Rep[String], String, Seq] = queryWithAccessCheck(query).map(_.oppijaOid)
 
