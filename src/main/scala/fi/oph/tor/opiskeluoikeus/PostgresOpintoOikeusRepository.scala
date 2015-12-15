@@ -14,8 +14,7 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
   // Note: this is a naive implementation. All filtering should be moved to query-level instead of in-memory-level
 
   override def filterOppijat(oppijat: Seq[FullHenkilö])(implicit userContext: UserContext) = {
-    val all = findAllRows
-    oppijat.filter { oppija => all.exists(opiskeluOikeus => opiskeluOikeus.oppijaOid == oppija.oid)}
+    oppijat.filter { oppija => !findByOppijaOid(oppija.oid).isEmpty}
   }
 
   override def findByOppijaOid(oid: String)(implicit userContext: UserContext): Seq[OpiskeluOikeus] = {
@@ -59,14 +58,6 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
         logger.error("Unexpected number of updated rows: " + x)
         HttpStatus.internalError()
     }
-  }
-
-  private def findAll(implicit userContext: UserContext): Seq[OpiskeluOikeus] = {
-    findAllRows.map(_.toOpiskeluOikeus)
-  }
-
-  private def findAllRows(implicit userContext: UserContext): Seq[OpiskeluOikeusRow] = {
-    findRows(OpiskeluOikeudet)
   }
 
   private def find(filter: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq])(implicit userContext: UserContext): Seq[OpiskeluOikeus] = {
