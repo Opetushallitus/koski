@@ -23,8 +23,7 @@ case class Invocation(val method: Method, val args: List[AnyRef], val target: An
 }
 
 object Proxy {
-  type InvocationHandler = (Invocation => AnyRef)
-  type ProxyHandler = (Invocation, InvocationHandler) => AnyRef
+  type ProxyHandler = Invocation => AnyRef
 
   def createProxy[T <: AnyRef](target: T, handler: ProxyHandler)(implicit tag: ClassTag[T]) = {
     java.lang.reflect.Proxy.newProxyInstance(
@@ -37,7 +36,6 @@ object Proxy {
 case class Proxy(target: AnyRef, handler: Proxy.ProxyHandler) extends InvocationHandler {
   def invoke(proxy: AnyRef, m: Method, args: Array[AnyRef]): AnyRef = {
     val argList: List[AnyRef] = if (args == null) { Nil } else { args.toList }
-    def defaultHandler(invocation: Invocation) = invocation.invoke
-    handler(Invocation(m, argList, target), defaultHandler)
+    handler(Invocation(m, argList, target))
   }
 }

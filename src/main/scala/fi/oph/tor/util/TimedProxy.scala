@@ -8,8 +8,8 @@ object TimedProxy {
   def apply[S <: AnyRef](service: S, thresholdMs: Int = 50)(implicit tag: ClassTag[S]) = {
     val logger = LoggerFactory.getLogger(service.getClass)
 
-    Proxy.createProxy[S](service, { case (invocation, defaultHandler) =>
-      timed(invocation.toString, thresholdMs, logger){defaultHandler(invocation)}
+    Proxy.createProxy[S](service, { invocation =>
+      timed(invocation.toString, thresholdMs, logger) {invocation.invoke}
     })
   }
 

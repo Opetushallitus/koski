@@ -1,7 +1,8 @@
 package fi.oph.tor.eperusteet
 
 import com.typesafe.config.Config
-import fi.oph.tor.util.{CachingProxy, TimedProxy}
+import fi.oph.tor.cache.{CachingProxy, TorCache}
+import fi.oph.tor.util.TimedProxy
 
 trait EPerusteetRepository {
   def findPerusteet(query: String): List[EPeruste]
@@ -12,8 +13,9 @@ trait EPerusteetRepository {
 }
 
 object EPerusteetRepository {
+
   def apply(config: Config) = {
-    CachingProxy(config, TimedProxy(if (config.hasPath("eperusteet")) {
+    CachingProxy(TorCache.cacheStrategy, TimedProxy(if (config.hasPath("eperusteet")) {
       new RemoteEPerusteetRepository(config.getString("eperusteet.url"))
     } else {
       new MockEPerusteetRepository

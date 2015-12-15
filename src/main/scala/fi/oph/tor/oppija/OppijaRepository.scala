@@ -1,15 +1,16 @@
 package fi.oph.tor.oppija
 
 import com.typesafe.config.Config
+import fi.oph.tor.cache.{CachingStrategyBase, CachingProxy}
 import fi.oph.tor.henkilo.{Hetu, AuthenticationServiceClient}
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.schema._
-import fi.oph.tor.util.{CachingProxy, TimedProxy}
+import fi.oph.tor.util.{Invocation, TimedProxy}
 import fi.vm.sade.utils.slf4j.Logging
 
 object OppijaRepository {
   def apply(config: Config): OppijaRepository = {
-    CachingProxy(config, TimedProxy(if (config.hasPath("authentication-service")) {
+    CachingProxy(new OppijaRepositoryCachingStrategy, TimedProxy(if (config.hasPath("authentication-service")) {
       new RemoteOppijaRepository(AuthenticationServiceClient(config))
     } else {
       new MockOppijaRepository
@@ -17,7 +18,19 @@ object OppijaRepository {
   }
 }
 
-// TODO: cache invalidation
+class OppijaRepositoryCachingStrategy extends CachingStrategyBase(durationSeconds = 60, maxSize = 1000) {
+  def apply(invocation: Invocation): AnyRef = {
+    invocation.method.getName match {
+      case "findByOid" =>
+        invokeAndPossiblyStore(invocation) {
+          case Some(_) => true
+          case _ => false
+        }
+      case _ => invocation.invoke
+    }
+  }
+}
+
 trait OppijaRepository extends Logging {
   def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String): Either[HttpStatus, Henkilö.Id]
 
