@@ -184,12 +184,11 @@ object TorOppijaExamples {
         Some(KoodistoKoodiViite("tutkinto", Some("Tutkinto"), "opintojentavoite", None)),
         Some(OpiskeluoikeudenTila(
           List(
-            Opiskeluoikeusjakso(date(2012, 9, 1), Some(date(2016, 1, 9)), opiskeluoikeusAktiivinen),
-            Opiskeluoikeusjakso(date(2016, 1, 9), None, opiskeluoikeusPäättynyt)
+            Opiskeluoikeusjakso(date(2012, 9, 1), Some(date(2016, 1, 9)), opiskeluoikeusAktiivinen, Some(KoodistoKoodiViite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None))),
+            Opiskeluoikeusjakso(date(2016, 1, 9), None, opiskeluoikeusPäättynyt, Some(KoodistoKoodiViite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
           )
         )),
-        None,
-        Some(KoodistoKoodiViite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None))
+        None
       )
     )
   )
@@ -216,7 +215,6 @@ object TorOppijaExamples {
           None
         ),
         hojks = None,
-        None,
         None,
         None,
         None
@@ -252,10 +250,9 @@ object TorOppijaExamples {
         None,
         Some(OpiskeluoikeudenTila(
           List(
-            Opiskeluoikeusjakso(date(2016, 9, 1), None, opiskeluoikeusAktiivinen)
+            Opiskeluoikeusjakso(date(2016, 9, 1), None, opiskeluoikeusAktiivinen, Some(KoodistoKoodiViite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
           )
         )),
-        None,
         None
       )
     )
@@ -319,17 +316,16 @@ object TorOppijaExamples {
         Some(KoodistoKoodiViite("tutkinto", Some("Tutkinto"), "opintojentavoite", None)),
         Some(OpiskeluoikeudenTila(
           List(
-            Opiskeluoikeusjakso(date(2012, 9, 1), Some(date(2012, 12, 31)), opiskeluoikeusAktiivinen),
-            Opiskeluoikeusjakso(date(2013, 1, 1), Some(date(2013, 12, 31)), opiskeluoikeusKeskeyttänyt),
-            Opiskeluoikeusjakso(date(2014, 1, 1), None, opiskeluoikeusAktiivinen)
+            Opiskeluoikeusjakso(date(2012, 9, 1), Some(date(2012, 12, 31)), opiskeluoikeusAktiivinen, Some(KoodistoKoodiViite("1", Some("Valtionosuusrahoitteinen koulutus"), "opintojenrahoitus", None))),
+            Opiskeluoikeusjakso(date(2013, 1, 1), Some(date(2013, 12, 31)), opiskeluoikeusKeskeyttänyt, Some(KoodistoKoodiViite("1", Some("Valtionosuusrahoitteinen koulutus"), "opintojenrahoitus", None))),
+            Opiskeluoikeusjakso(date(2014, 1, 1), None, opiskeluoikeusAktiivinen, Some(KoodistoKoodiViite("1", Some("Valtionosuusrahoitteinen koulutus"), "opintojenrahoitus", None)))
           )
         )),
         Some(Läsnäolotiedot(List(
           Läsnäolojakso(date(2012, 9, 1), Some(date(2012, 12, 31)), KoodistoKoodiViite("lasna", Some("Läsnä"), "lasnaolotila", Some(1))),
           Läsnäolojakso(date(2013, 1, 1), Some(date(2013, 12, 31)), KoodistoKoodiViite("poissa", Some("Poissa"), "lasnaolotila", Some(1))),
           Läsnäolojakso(date(2014, 1, 1), None, KoodistoKoodiViite("lasna", Some("Läsnä"), "lasnaolotila", Some(1)))
-        ))),
-        Some(KoodistoKoodiViite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", Some(1)))
+        )))
   )))
 
   val examples = List(

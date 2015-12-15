@@ -1,6 +1,5 @@
 package fi.oph.tor.opiskeluoikeus
 
-import java.time.LocalDate._
 import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.db.Tables._
 import fi.oph.tor.db.TorDatabase._
@@ -33,7 +32,6 @@ object TorDatabaseFixtures extends Futures with GlobalExecutionContext {
         None
       ),
       hojks = None,
-      None,
       None,
       None,
       None

@@ -78,10 +78,7 @@ case class OpiskeluOikeus(
   @KoodistoUri("opintojentavoite")
   tavoite: Option[KoodistoKoodiViite],
   opiskeluoikeudenTila: Option[OpiskeluoikeudenTila],
-  läsnäolotiedot: Option[Läsnäolotiedot],
-  @Description("Opintojen rahoitus")
-  @KoodistoUri("opintojenrahoitus")
-  opintojenRahoitus: Option[KoodistoKoodiViite]
+  läsnäolotiedot: Option[Läsnäolotiedot]
 )
 
 object OpiskeluOikeus {
@@ -285,7 +282,10 @@ case class Opiskeluoikeusjakso(
   loppu: Option[LocalDate],
   @Description("Opiskeluoikeuden tila (aktiivinen, päättynyt...)")
   @KoodistoUri("opiskeluoikeudentila")
-  tila: KoodistoKoodiViite
+  tila: KoodistoKoodiViite,
+  @Description("Opintojen rahoitus")
+  @KoodistoUri("opintojenrahoitus")
+  opintojenRahoitus: Option[KoodistoKoodiViite]
 )
 
 case class Kunta(koodi: String, nimi: Option[String])
