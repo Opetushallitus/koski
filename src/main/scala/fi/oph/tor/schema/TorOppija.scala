@@ -350,7 +350,7 @@ case class Laajuus(
 )
 
 case class LähdejärjestelmäId(
-  @Description("Paikallinen tunniste lähdejärjestelmässä")
+  @Description("Paikallinen uniikki tunniste lähdejärjestelmässä")
   id: String,
   @Description("Lähdejärjestelmän yksilöivä tunniste")
   @KoodistoUri("lahdejarjestelma")
