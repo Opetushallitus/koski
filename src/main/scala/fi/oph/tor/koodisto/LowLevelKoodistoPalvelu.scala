@@ -21,6 +21,7 @@ object LowLevelKoodistoPalvelu {
 }
 
 trait LowLevelKoodistoPalvelu {
+  def removeKoodistoRyhmä(toInt: Int)
   def createKoodi(koodistoUri: String, koodi: KoodistoKoodi)
   def createKoodisto(koodisto: Koodisto)
   def createKoodistoRyhmä(ryhmä: KoodistoRyhmä)

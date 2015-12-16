@@ -8,8 +8,6 @@ import fi.vm.sade.utils.slf4j.Logging
 object KoodistoCreator extends Logging {
   def createKoodistotFromMockData(config: Config): Unit = {
     val kp = LowLevelKoodistoPalvelu.withoutCache(config)
-    // Koodistoryhmille ei ole GETtiä, jolla voisi tsekata, onko TOR-ryhmä olemassa.
-    //kp.createKoodistoRyhmä(new KoodistoRyhmä(("TOR")))
     MockKoodistoPalvelu.koodistot.foreach(koodisto => createKoodistoFromMockData(koodisto, kp))
   }
 

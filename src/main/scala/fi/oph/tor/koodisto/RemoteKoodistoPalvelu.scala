@@ -31,7 +31,14 @@ class RemoteKoodistoPalvelu(username: String, password: String, virkailijaUrl: S
   private def noCache = "?noCache=" + System.currentTimeMillis()
 
   def createKoodisto(koodisto: Koodisto): Unit = {
-    secureHttp.post(virkalijaClient.virkailijaUriFromString("/koodisto-service/rest/codes"), koodisto)(json4sEncoderOf[Koodisto])
+    try {
+      secureHttp.post(virkalijaClient.virkailijaUriFromString("/koodisto-service/rest/codes"), koodisto)(json4sEncoderOf[Koodisto])
+    } catch {
+      case HttpStatusException(500, "error.codesgroup.not.found", _) =>
+        createKoodistoRyhmä(new KoodistoRyhmä(koodisto.codesGroupUri.replaceAll("http://", "")))
+        createKoodisto(koodisto)
+    }
+
   }
 
 
@@ -41,6 +48,14 @@ class RemoteKoodistoPalvelu(username: String, password: String, virkailijaUrl: S
 
   def createKoodistoRyhmä(ryhmä: KoodistoRyhmä) = {
     secureHttp.post(virkalijaClient.virkailijaUriFromString("/koodisto-service/rest/codesgroup"), ryhmä)(json4sEncoderOf[KoodistoRyhmä])
+  }
+
+  def removeKoodistoRyhmä(ryhmä: Int) = {
+    try {
+      secureHttp.post(virkalijaClient.virkailijaUriFromString("/koodisto-service/rest/codesgroup/delete/" + ryhmä), Map("id" -> ryhmä.toString))(json4sEncoderOf[Map[String, String]])
+    } catch {
+      case HttpStatusException(500, "error.codesgroup.not.found", _) => // ignore
+    }
   }
 }
 
