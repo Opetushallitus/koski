@@ -12,7 +12,6 @@ import fi.vm.sade.utils.slf4j.Logging
 
 class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository with Futures with GlobalExecutionContext with Logging {
   // Note: this is a naive implementation. All filtering should be moved to query-level instead of in-memory-level
-
   override def filterOppijat(oppijat: Seq[FullHenkilö])(implicit userContext: UserContext) = {
     val query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = for {
       oo <- OpiskeluOikeudet
@@ -39,6 +38,7 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
     Right(await(db.run(OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += new OpiskeluOikeusRow(oppijaOid, opiskeluOikeus))))
   }
 
+  // TODO: createOrUpdate should be transactional
   override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: OpiskeluOikeus)(implicit userContext: UserContext): Either[HttpStatus, CreateOrUpdateResult] = {
     val opiskeluoikeudet: Option[OpiskeluOikeus] = find(OpiskeluOikeusIdentifier(oppijaOid.oppijaOid, opiskeluOikeus))
     opiskeluoikeudet match {
