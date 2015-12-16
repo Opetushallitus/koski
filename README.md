@@ -53,6 +53,7 @@ Minimissään tarvitset nämä:
 
 - Git (osx, linux sisältää tämän, komentorivillä `git`)
 - GNU Make (osx, linux sisältää tämän, komentorivillä `make`)
+- Java 8
 - Maven 3 (osx: `brew install maven`)
 - Postgres (osx: `brew install postgres`)
 - Node.js ja NPM (osx: `brew install node`)
