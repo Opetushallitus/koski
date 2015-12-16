@@ -106,11 +106,7 @@ export const CreateOppija = React.createClass({
               perusteenDiaarinumero: tutkinto.diaarinumero
             }
           },
-          //TODO Hardcoded
-          toimipiste : {
-            oid : '1.2.246.562.10.42456023292',
-            nimi : 'Stadin ammattiopisto, Lehtikuusentien toimipaikka'
-          }
+          toimipiste : oppilaitosOrganisaatio
         }
       }]
     }
