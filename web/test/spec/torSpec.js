@@ -470,6 +470,12 @@ describe('TOR', function() {
             }}}
           ), 400, "Koodia suoritustapa/blahblahtest ei löydy koodistosta"))
         })
+        describe('Osaamisala ei löydy tutkintorakenteesta', function() {
+          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({"suoritus": {"koulutusmoduulitoteutus": {
+            "suoritustapa": {"tunniste": {"koodiarvo": "ops", "koodistoUri": "suoritustapa"}},
+            "osaamisala": [{"koodiarvo": "3053", "koodistoUri": "osaamisala"}]
+          }}}), 400, "Osaamisala 3053 ei löydy tutkintorakenteesta perusteelle 39/011/2014"))
+        })
         describe('Osaamisala virheellinen', function() {
           it('palautetaan HTTP 400', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({"suoritus": {"koulutusmoduulitoteutus": {
             "suoritustapa": {"tunniste": {"koodiarvo": "ops", "koodistoUri": "suoritustapa"}},

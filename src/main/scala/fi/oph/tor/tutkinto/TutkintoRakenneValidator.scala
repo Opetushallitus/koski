@@ -13,7 +13,8 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
         case None =>
           HttpStatus.badRequest(t.koulutusmoduuli.perusteenDiaarinumero.map(d => "Tutkinnon peruste on virheellinen: " + d).getOrElse("Tutkinnon peruste puuttuu"))
         case Some(rakenne) =>
-          HttpStatus.each(t.osaamisala.toList.flatten.filter(osaamisala => !TutkintoRakenne.findOsaamisala(rakenne, osaamisala.koodiarvo).isDefined)) { osaamisala: KoodistoKoodiViite => HttpStatus.badRequest("Invalid osaamisala: " + osaamisala.koodiarvo) }
+          HttpStatus.each(t.osaamisala.toList.flatten.filter(osaamisala => !TutkintoRakenne.findOsaamisala(rakenne, osaamisala.koodiarvo).isDefined))
+              { osaamisala: KoodistoKoodiViite => HttpStatus.badRequest("Osaamisala " + osaamisala.koodiarvo + " ei löydy tutkintorakenteesta perusteelle " + rakenne.diaarinumero) }
             .then(HttpStatus.each(suoritus.osasuoritukset.toList.flatten)(validateSuoritus(_, Some(rakenne), t.suoritustapa)))
       }
     case (t: OpsTutkinnonosatoteutus, Some(rakenne), None)  =>
