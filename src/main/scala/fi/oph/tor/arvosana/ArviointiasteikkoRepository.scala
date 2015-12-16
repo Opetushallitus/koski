@@ -6,8 +6,8 @@ import fi.oph.tor.tutkinto.Koulutustyyppi.Koulutustyyppi
 class ArviointiasteikkoRepository(koodistoPalvelu: KoodistoPalvelu) {
   def getArviointiasteikkoViittaus(koulutustyyppi: Koulutustyyppi): Option[KoodistoViite] = {
     val koodistoUri = koulutustyyppi match {
-      case 1 => "ammatillisenperustutkinnonarviointiasteikko"
-      case _ => "ammattijaerikoisammattitutkintojenarviointiasteikko"
+      case 1 => "arviointiasteikkoammatillinent1k3"
+      case _ => "arviointiasteikkoammatillinenhyvaksyttyhylatty"
     }
     koodistoPalvelu.getLatestVersion(koodistoUri)
   }

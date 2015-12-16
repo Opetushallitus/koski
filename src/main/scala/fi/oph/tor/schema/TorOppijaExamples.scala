@@ -31,7 +31,7 @@ object TorOppijaExamples {
       alkamispäivä = None,
       toimipiste,
       Some(List(Arviointi(
-        arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "ammattijaerikoisammattitutkintojenarviointiasteikko", Some(1)),
+        arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
         Some(date(2012, 10, 20)),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
@@ -53,7 +53,7 @@ object TorOppijaExamples {
       alkamispäivä = None,
       toimipiste,
       Some(List(Arviointi(
-        arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "ammattijaerikoisammattitutkintojenarviointiasteikko", Some(1)),
+        arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
         Some(date(2013, 3, 20)),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
@@ -75,7 +75,7 @@ object TorOppijaExamples {
       alkamispäivä = None,
       toimipiste,
       Some(List(Arviointi(
-        arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "ammattijaerikoisammattitutkintojenarviointiasteikko", Some(1)),
+        arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
         Some(date(2013, 4, 1)),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
@@ -97,7 +97,7 @@ object TorOppijaExamples {
       alkamispäivä = None,
       toimipiste,
       Some(List(Arviointi(
-        arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "ammattijaerikoisammattitutkintojenarviointiasteikko", Some(1)),
+        arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
         Some(date(2014, 10, 20)),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
@@ -119,7 +119,7 @@ object TorOppijaExamples {
       alkamispäivä = None,
       toimipiste,
       Some(List(Arviointi(
-        arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "ammattijaerikoisammattitutkintojenarviointiasteikko", Some(1)),
+        arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
         Some(date(2015, 4, 1)),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
@@ -142,7 +142,7 @@ object TorOppijaExamples {
       alkamispäivä = None,
       toimipiste,
       Some(List(Arviointi(
-        arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "ammattijaerikoisammattitutkintojenarviointiasteikko", Some(1)),
+        arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
         Some(date(2016, 2, 1)),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
@@ -298,11 +298,11 @@ object TorOppijaExamples {
               Some(
                 List(
                   Arviointi(
-                    arvosana = KoodistoKoodiViite("2", Some("H2"), "ammatillisenperustutkinnonarviointiasteikko", None),
+                    arvosana = KoodistoKoodiViite("2", Some("H2"), "arviointiasteikkoammatillinent1k3", None),
                     Some(date(2014, 5, 20))
                   ),
                   Arviointi(
-                    arvosana = KoodistoKoodiViite("3", Some("K3"), "ammatillisenperustutkinnonarviointiasteikko", None),
+                    arvosana = KoodistoKoodiViite("3", Some("K3"), "arviointiasteikkoammatillinent1k3", None),
                     Some(date(2014, 10, 20))
                   )
                 )

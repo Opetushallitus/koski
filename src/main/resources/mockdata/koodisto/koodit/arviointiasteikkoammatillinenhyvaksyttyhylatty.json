@@ -1,5 +1,5 @@
 [ {
-  "koodiUri" : "ammattijaerikoisammattitutkintojenarviointiasteikko_hyvaksytty",
+  "koodiUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty_hyvaksytty",
   "koodiArvo" : "Hyväksytty",
   "metadata" : [ {
     "nimi" : "Hyväksytty",
@@ -8,7 +8,7 @@
   } ],
   "versio" : 1
 }, {
-  "koodiUri" : "ammattijaerikoisammattitutkintojenarviointiasteikko_hylatty",
+  "koodiUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty_hylatty",
   "koodiArvo" : "Hylätty",
   "metadata" : [ {
     "nimi" : "Hylätty",

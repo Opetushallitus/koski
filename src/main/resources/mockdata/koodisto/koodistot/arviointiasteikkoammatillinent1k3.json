@@ -1,0 +1,20 @@
+{
+  "koodistoUri" : "arviointiasteikkoammatillinent1k3",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Arviointiasteikko ammatillinen T1-K3",
+    "kasite" : "arviointiasteikko"
+  }, {
+    "kieli" : "EN",
+    "nimi" : "Arviointiasteikko ammatillinen T1-K3",
+    "kasite" : "arvosana"
+  }, {
+    "kieli" : "SV",
+    "nimi" : "Arviointiasteikko ammatillinen T1-K3",
+    "kasite" : "arviointiasteikko"
+  } ],
+  "codesGroupUri" : "http://tor",
+  "voimassaAlkuPvm" : "2015-10-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}

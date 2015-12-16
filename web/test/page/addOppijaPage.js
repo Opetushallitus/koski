@@ -122,7 +122,7 @@ function AddOppijaPage() {
         }
       },
       toimipiste: {oid: "1.2.246.562.10.42456023292", nimi: "Stadin ammattiopisto, Lehtikuusentien toimipaikka"},
-      arviointi: [{arvosana: {koodiarvo: "2", koodistoUri: "ammatillisenperustutkinnonarviointiasteikko"}}]
+      arviointi: [{arvosana: {koodiarvo: "2", koodistoUri: "arviointiasteikkoammatillinent1k3"}}]
     }
   }
 

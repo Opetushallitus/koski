@@ -1,5 +1,5 @@
 [ {
-  "koodiUri" : "ammatillisenperustutkinnonarviointiasteikko_0",
+  "koodiUri" : "arviointiasteikkoammatillinent1k3_0",
   "koodiArvo" : "0",
   "metadata" : [ {
     "nimi" : "H",
@@ -8,16 +8,7 @@
   } ],
   "versio" : 1
 }, {
-  "koodiUri" : "ammatillisenperustutkinnonarviointiasteikko_2",
-  "koodiArvo" : "2",
-  "metadata" : [ {
-    "nimi" : "H2",
-    "lyhytNimi" : "",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisenperustutkinnonarviointiasteikko_1",
+  "koodiUri" : "arviointiasteikkoammatillinent1k3_1",
   "koodiArvo" : "1",
   "metadata" : [ {
     "nimi" : "T1",
@@ -26,7 +17,16 @@
   } ],
   "versio" : 1
 }, {
-  "koodiUri" : "ammatillisenperustutkinnonarviointiasteikko_3",
+  "koodiUri" : "arviointiasteikkoammatillinent1k3_2",
+  "koodiArvo" : "2",
+  "metadata" : [ {
+    "nimi" : "H2",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "arviointiasteikkoammatillinent1k3_3",
   "koodiArvo" : "3",
   "metadata" : [ {
     "nimi" : "K3",

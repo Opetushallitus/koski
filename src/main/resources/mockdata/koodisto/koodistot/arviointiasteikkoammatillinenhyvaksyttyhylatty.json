@@ -1,20 +1,17 @@
 {
-  "koodistoUri" : "ammattijaerikoisammattitutkintojenarviointiasteikko",
+  "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
   "versio" : 1,
   "metadata" : [ {
     "kieli" : "EN",
-    "nimi" : "Samma på engelska",
-    "kuvaus" : "Testi",
+    "nimi" : "Arviointiasteikko ammatillinen Hyväksytty/Hylätty",
     "kasite" : "arviointiasteikko"
   }, {
     "kieli" : "SV",
-    "nimi" : "Samma på svenska",
-    "kuvaus" : "Test",
+    "nimi" : "Arviointiasteikko ammatillinen Hyväksytty/Hylätty",
     "kasite" : "arvosana"
   }, {
     "kieli" : "FI",
-    "nimi" : "Ammatti- ja erikoisammattitutkintojen arviointiasteikko",
-    "kuvaus" : "Testi",
+    "nimi" : "Arviointiasteikko ammatillinen Hyväksytty/Hylätty",
     "kasite" : "arviointiasteikko"
   } ],
   "codesGroupUri" : "http://tor",

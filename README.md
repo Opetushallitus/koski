@@ -268,8 +268,8 @@ Koodistopalvelun Swagger-dokumentaatio:
 
 Pari testiurlia Koodistopalveluun:
 
-    https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codes/ammattijaerikoisammattitutkintojenarviointiasteikko/1
-    https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/codes/ammattijaerikoisammattitutkintojenarviointiasteikko/1
+    https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codes/arviointiasteikkoammatillinenhyvaksyttyhylatty/1
+    https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/codes/arviointiasteikkoammatillinenhyvaksyttyhylatty/1
     
 TOR osaa tarvittaessa luoda käytettävät koodistot ja koodistopalveluun. Käynnistä parametrillä `-Dkoodisto.create=true`. 
 

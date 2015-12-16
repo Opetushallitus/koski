@@ -532,9 +532,9 @@ describe('TOR', function() {
         describe('Arvosana ei kuulu perusteiden mukaiseen arviointiasteikkoon', function() {
           it('palautetaan HTTP 400', verifyResponseCode(addOppija.putTutkinnonOsaSuoritusAjax(
             {
-              arviointi: [{arvosana: {koodiarvo: "x", koodistoUri: "ammatillisenperustutkinnonarviointiasteikko"}}]
+              arviointi: [{arvosana: {koodiarvo: "x", koodistoUri: "arviointiasteikkoammatillinent1k3"}}]
             }
-          ), 400, "Koodia ammatillisenperustutkinnonarviointiasteikko/x ei löydy koodistosta"))
+          ), 400, "Koodia arviointiasteikkoammatillinent1k3/x ei löydy koodistosta"))
         })
       })
     })

@@ -4,8 +4,8 @@ import fi.oph.tor.json.Json._
 
 object MockKoodistoPalvelu extends LowLevelKoodistoPalvelu {
   val koodistot = List (
-    "ammatillisenperustutkinnonarviointiasteikko",
-    "ammattijaerikoisammattitutkintojenarviointiasteikko",
+    "arviointiasteikkoammatillinent1k3",
+    "arviointiasteikkoammatillinenhyvaksyttyhylatty",
     "jarjestamismuoto",
     "koulutus",
     "kieli",
