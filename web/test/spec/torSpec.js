@@ -210,6 +210,7 @@ describe('TOR', function() {
         before(
           authentication.login(),
           openPage('/tor/uusioppija'),
+          wait.until(function() {return addOppija.isVisible()}),
           addOppija.enterValidData({hetu: '123456-1234'})
         )
         it('Lisää-nappi on disabloitu', function() {
