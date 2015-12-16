@@ -39,6 +39,11 @@ Tietokentät, joissa validit arvot on lueteltavissa, on kooditettu käyttäen hy
 
 Scalaa osaaville ehkä nopein tapa tutkia tietomallia on kuitenkin sen lähdekoodi. Githubista löytyy sekä [scheman](https://github.com/Opetushallitus/tor/blob/master/src/main/scala/fi/oph/tor/schema/TorOppija.scala), että [esimerkkien](https://github.com/Opetushallitus/tor/blob/master/src/main/scala/fi/oph/tor/schema/TorOppijaExamples.scala) lähdekoodit.
 
+## REST-rajapinnat
+
+Kaikki rajapinnat vaativat HTTP Basic Authentication -tunnistautumisen, eli käytännössä `Authorization`-headerin HTTP-pyyntöön.
+
+
 """
 
   def html = {
@@ -49,20 +54,19 @@ Scalaa osaaville ehkä nopein tapa tutkia tietomallia on kuitenkin sen lähdekoo
       </head>
       <body>
         {toXHTML( knockoff(markdown) )}
-        <h2>REST-rajapinnat</h2>
-        Kaikki rajapinnat vaativat HTTP Basic Authentication -tunnistautumisen, eli käytännössä `Authorization`-headerin HTTP-pyyntöön.
         <div>
         {
           TorApiOperations.operations.map { operation =>
             <div>
               <h3>{operation.method} {operation.path}</h3>
               {operation.doc}
+              <h4>Paluukoodit</h4>
               <ul class="status-codes">
                 {operation.statusCodes.map { case (status, text) =>
                   <li>{status} {text}</li>
                 }}
               </ul>
-              <p>Kokeile heti!</p>
+              <h4>Kokeile heti</h4>
               <div class="api-tester" data-method={operation.method} data-path={operation.path}>
                 {
                   if (operation.examples.length > 0) {
@@ -146,7 +150,14 @@ object TorApiOperations {
    ),
    ApiOperation(
      "PUT", "/tor/api/oppija",
-     <div>Lisää/päivittää oppijan ja opiskeluoikeuksia.</div>,
+     <div>
+       <p>Lisää/päivittää oppijan ja opiskeluoikeuksia. Palauttaa henkilön <em>oid</em>-arvon, eli henkilön yksilöivän tunnisteen TOR ja Opintopolku-järjestelmissä.</p>
+       <p>
+         Tallennettava henkilö tunnistetaan joko henkilötunnuksen tai <em>oid</em>in perusteella. Tietojen päivittäminen on huomattavasti
+         tehokkaampaa käytettäessä oidia, joten sen käyttöä suositellaan vahvasti. Jos lähdejärjestelmässä ei alun perin ole oideja, on ne mahdollista
+         kerätä tätä rajapintaa kutsuttaessa; rajapinta palauttaa aina oppijan oidin.
+       </p>
+     </div>,
      TorOppijaExamples.examples,
      Nil,
      List(
