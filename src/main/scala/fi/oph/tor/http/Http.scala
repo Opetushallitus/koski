@@ -38,46 +38,46 @@ object Http {
 case class Http(root: String, client: Client = blaze.defaultClient) {
   def uriFromString(relativePath: String) = Http.uriFromString(root + relativePath)
 
-  def apply[ResultType](task: Task[Request], request: Request)(decode: (Int, String, Request) => ResultType): ResultType = {
+  def apply[ResultType](task: Task[Request], request: Request)(decode: (Int, String, Request) => ResultType): Task[ResultType] = {
     runHttp(client(task), request)(decode)
   }
 
-  def apply[ResultType](request: Request)(decode: (Int, String, Request) => ResultType): ResultType = {
+  def apply[ResultType](request: Request)(decode: (Int, String, Request) => ResultType): Task[ResultType] = {
     runHttp(client(Task(request)), request)(decode)
   }
 
-  def apply[ResultType](uri: Uri)(decode: (Int, String, Request) => ResultType): ResultType = {
+  def apply[ResultType](uri: Uri)(decode: (Int, String, Request) => ResultType): Task[ResultType] = {
     apply(Request(uri = uri))(decode)
   }
 
-  def apply[ResultType](uri: String)(decode: (Int, String, Request) => ResultType): ResultType = {
+  def apply[ResultType](uri: String)(decode: (Int, String, Request) => ResultType): Task[ResultType] = {
     apply(Request(uri = Http.uriFromString(root + uri)))(decode)
   }
 
   def post[T <: AnyRef](path: String, entity: T)(implicit encode: EntityEncoder[T]): Unit = {
-    apply(uriFromString(path), Method.POST, entity)
+    send(uriFromString(path), Method.POST, entity)
   }
 
   def put[T <: AnyRef](path: String, entity: T)(implicit encode: EntityEncoder[T]): Unit = {
-    apply(uriFromString(path), Method.PUT, entity)
+    send(uriFromString(path), Method.PUT, entity)
   }
 
-  def apply[T <: AnyRef](path: Uri, method: Method, entity: T)(implicit encode: EntityEncoder[T]): Unit = {
+  def send[T <: AnyRef](path: Uri, method: Method, entity: T)(implicit encode: EntityEncoder[T]): Unit = {
     val request: Request = Request(uri = path, method = method)
     val task: Task[Request] = request.withBody(entity)
 
     apply(task, request) {
       case (status, text, uri) if (status >= 300) => throw new HttpStatusException(status, text, request)
       case _ =>
-    }
+    }.run
   }
 
-  private def runHttp[ResultType](task: Task[Response], request: Request)(block: (Int, String, Request) => ResultType): ResultType = {
+  private def runHttp[ResultType](task: Task[Response], request: Request)(block: (Int, String, Request) => ResultType): Task[ResultType] = {
     (for {
       response <- task
       text <- response.as[String]
     } yield {
         block(response.status.code, text, request)
-      }).run
+      })
   }
 }

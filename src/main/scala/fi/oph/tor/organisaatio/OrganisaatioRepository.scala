@@ -12,6 +12,7 @@ class RemoteOrganisaatioRepository(config: Config) extends OrganisaatioRepositor
 
   def getOrganisaatio(oid: String): Option[OrganisaatioHierarkia] = {
     virkailijaClient.httpClient("/organisaatio-service/rest/organisaatio/v2/hierarkia/hae/tyyppi?aktiiviset=true&lakkautetut=false&oid=" + oid)(Http.parseJson[OrganisaatioHakuTulos])
+      .run
       .organisaatiot.map(convertOrganisaatio)
       .headOption
   }

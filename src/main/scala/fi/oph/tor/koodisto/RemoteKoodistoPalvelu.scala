@@ -16,15 +16,15 @@ class RemoteKoodistoPalvelu(username: String, password: String, virkailijaUrl: S
       case (500, "error.codes.not.found", _) => None // If codes are not found, the service actually returns 500 with this error text.
       case (200, text, _) => Some(Json.read[List[KoodistoKoodi]](text))
       case (status, text, uri) => throw new HttpStatusException(status, text, uri)
-    }
+    }.run
   }
 
   def getKoodisto(koodisto: KoodistoViite): Option[Koodisto] = {
-    http("/koodisto-service/rest/codes/" + koodisto + noCache)(Http.parseJsonOptional[Koodisto])
+    http("/koodisto-service/rest/codes/" + koodisto + noCache)(Http.parseJsonOptional[Koodisto]).run
   }
 
   def getLatestVersion(koodisto: String): Option[KoodistoViite] = {
-    val latestKoodisto: Option[KoodistoWithLatestVersion] = http("/koodisto-service/rest/codes/" + koodisto + noCache)(Http.parseJsonIgnoreError[KoodistoWithLatestVersion])
+    val latestKoodisto: Option[KoodistoWithLatestVersion] = http("/koodisto-service/rest/codes/" + koodisto + noCache)(Http.parseJsonIgnoreError[KoodistoWithLatestVersion]).run
     latestKoodisto.flatMap { latest => Option(latest.latestKoodistoVersio).map(v => KoodistoViite(koodisto, v.versio)) }
   }
 

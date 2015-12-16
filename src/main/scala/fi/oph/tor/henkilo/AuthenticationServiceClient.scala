@@ -12,10 +12,10 @@ import org.http4s.headers.`Content-Type`
 import scalaz.concurrent.Task
 
 class AuthenticationServiceClient(virkailija: VirkailijaHttpClient) extends EntityDecoderInstances {
-  def search(query: String): UserQueryResult = virkailija.httpClient("/authentication-service/resources/henkilo?no=true&count=0&q=" + query)(Http.parseJson[UserQueryResult])
-  def findByOid(id: String): Option[User] = virkailija.httpClient("/authentication-service/resources/henkilo/" + id)(Http.parseJsonOptional[User])
-  def organisaatiot(oid: String): List[OrganisaatioHenkilö] = virkailija.httpClient(s"/authentication-service/resources/henkilo/${oid}/organisaatiohenkilo")(Http.parseJson[List[OrganisaatioHenkilö]])
-  def käyttöoikeusryhmät(henkilöOid: String, organisaatioOid: String): List[Käyttöoikeusryhmä] = virkailija.httpClient(s"/authentication-service/resources/kayttooikeusryhma/henkilo/${henkilöOid}?ooid=${organisaatioOid}")(Http.parseJson[List[Käyttöoikeusryhmä]])
+  def search(query: String): UserQueryResult = virkailija.httpClient("/authentication-service/resources/henkilo?no=true&count=0&q=" + query)(Http.parseJson[UserQueryResult]).run
+  def findByOid(id: String): Option[User] = virkailija.httpClient("/authentication-service/resources/henkilo/" + id)(Http.parseJsonOptional[User]).run
+  def organisaatiot(oid: String): List[OrganisaatioHenkilö] = virkailija.httpClient(s"/authentication-service/resources/henkilo/${oid}/organisaatiohenkilo")(Http.parseJson[List[OrganisaatioHenkilö]]).run
+  def käyttöoikeusryhmät(henkilöOid: String, organisaatioOid: String): List[Käyttöoikeusryhmä] = virkailija.httpClient(s"/authentication-service/resources/kayttooikeusryhma/henkilo/${henkilöOid}?ooid=${organisaatioOid}")(Http.parseJson[List[Käyttöoikeusryhmä]]).run
   def lisääOrganisaatio(henkilöOid: String, organisaatioOid: String, nimike: String) = {
     virkailija.httpClient.put("/authentication-service/resources/henkilo/" + henkilöOid + "/organisaatiohenkilo", List(
       LisääOrganisaatio(organisaatioOid, nimike)
@@ -37,7 +37,7 @@ class AuthenticationServiceClient(virkailija: VirkailijaHttpClient) extends Enti
       case (400, "socialsecuritynr.already.exists", _) => Left(HttpStatus.conflict("socialsecuritynr.already.exists"))
       case (400, error, _) => Left(HttpStatus.badRequest(error))
       case (status, text, uri) => throw new HttpStatusException(status, text, uri)
-    }
+    }.run
   }
   def syncLdap(henkilöOid: String) = {
     virkailija.httpClient("/authentication-service/resources/ldap/" + henkilöOid)(Http.expectSuccess)
