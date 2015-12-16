@@ -3,7 +3,7 @@ package fi.oph.tor.henkilo
 import java.time.{LocalDate, ZoneId}
 
 import com.typesafe.config.Config
-import fi.oph.tor.http.{Http, HttpStatus, VirkailijaHttpClient}
+import fi.oph.tor.http.{HttpStatusException, Http, HttpStatus, VirkailijaHttpClient}
 import fi.oph.tor.json.Json._
 import fi.oph.tor.json.Json4sHttp4s._
 import org.http4s._
@@ -29,16 +29,14 @@ class AuthenticationServiceClient(virkailija: VirkailijaHttpClient) extends Enti
       .withContentType(`Content-Type`(MediaType.`application/json`))) // <- yes, the API expects media type application/json, but consumes inputs as text/plain
   }
   def create(createUserInfo: CreateUser): Either[HttpStatus, String] = {
-    val task: Task[Request] = Request(
-      uri = virkailija.virkailijaUriFromString("/authentication-service/resources/henkilo"),
-      method = Method.POST
-    ).withBody(createUserInfo)(json4sEncoderOf[CreateUser])
+    val request: Request = Request(uri = virkailija.virkailijaUriFromString("/authentication-service/resources/henkilo"), method = Method.POST)
+    val task: Task[Request] = request.withBody(createUserInfo)(json4sEncoderOf[CreateUser])
 
-    virkailija.httpClient(task) {
-      case (200, oid) => Right(oid)
-      case (400, "socialsecuritynr.already.exists") => Left(HttpStatus.conflict("socialsecuritynr.already.exists"))
-      case (400, error) => Left(HttpStatus.badRequest(error))
-      case (status, text) => throw new RuntimeException(status + ": " + text)
+    virkailija.httpClient(task, request) {
+      case (200, oid, _) => Right(oid)
+      case (400, "socialsecuritynr.already.exists", _) => Left(HttpStatus.conflict("socialsecuritynr.already.exists"))
+      case (400, error, _) => Left(HttpStatus.badRequest(error))
+      case (status, text, uri) => throw new HttpStatusException(status, text, uri)
     }
   }
   def syncLdap(henkilöOid: String) = {

@@ -1,6 +1,6 @@
 package fi.oph.tor.koodisto
 
-import fi.oph.tor.http.{Http, VirkailijaHttpClient}
+import fi.oph.tor.http.{HttpStatusException, Http, VirkailijaHttpClient}
 import fi.oph.tor.json.Json
 import fi.vm.sade.utils.slf4j.Logging
 import fi.oph.tor.json.Json._
@@ -12,10 +12,10 @@ class RemoteKoodistoPalvelu(username: String, password: String, virkailijaUrl: S
 
   def getKoodistoKoodit(koodisto: KoodistoViite): Option[List[KoodistoKoodi]] = {
     http(virkalijaClient.virkailijaUriFromString("/koodisto-service/rest/codeelement/codes/" + koodisto + noCache)) {
-      case (404, _) => None
-      case (500, "error.codes.not.found") => None // If codes are not found, the service actually returns 500 with this error text.
-      case (200, text) => Some(Json.read[List[KoodistoKoodi]](text))
-      case (status, text) => throw new RuntimeException(status + ": " + text)
+      case (404, _, _) => None
+      case (500, "error.codes.not.found", _) => None // If codes are not found, the service actually returns 500 with this error text.
+      case (200, text, _) => Some(Json.read[List[KoodistoKoodi]](text))
+      case (status, text, uri) => throw new HttpStatusException(status, text, uri)
     }
   }
 
