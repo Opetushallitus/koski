@@ -38,9 +38,7 @@ class RemoteKoodistoPalvelu(username: String, password: String, virkailijaUrl: S
         createKoodistoRyhmä(new KoodistoRyhmä(koodisto.codesGroupUri.replaceAll("http://", "")))
         createKoodisto(koodisto)
     }
-
   }
-
 
   def createKoodi(koodistoUri: String, koodi: KoodistoKoodi) = {
     secureHttp.post(virkalijaClient.virkailijaUriFromString("/koodisto-service/rest/codeelement/" + koodistoUri), koodi)(json4sEncoderOf[KoodistoKoodi])
