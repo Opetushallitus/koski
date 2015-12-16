@@ -72,12 +72,12 @@ case class Http(root: String, client: Client = blaze.defaultClient) {
     }.run
   }
 
-  private def runHttp[ResultType](task: Task[Response], request: Request)(block: (Int, String, Request) => ResultType): Task[ResultType] = {
+  private def runHttp[ResultType](task: Task[Response], request: Request)(decoder: (Int, String, Request) => ResultType): Task[ResultType] = {
     (for {
       response <- task
       text <- response.as[String]
     } yield {
-        block(response.status.code, text, request)
+        decoder(response.status.code, text, request)
       })
   }
 }
