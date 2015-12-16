@@ -2,21 +2,26 @@ package fi.oph.tor.schema.generic
 
 sealed trait Schema {
   def metadata: List[Metadata] = Nil
-  def fieldSchema(fieldName: String): Option[Schema] = None
-  def mapItems(f: Schema => Schema): Schema = f(this)
+  def mapItems(f: ElementSchema => ElementSchema): Schema
 }
 
 case class OptionalSchema(itemSchema: Schema) extends Schema {
-  override def mapItems(f: Schema => Schema) = OptionalSchema(itemSchema.mapItems(f))
+  def mapItems(f: ElementSchema => ElementSchema) = OptionalSchema(itemSchema.mapItems(f))
 }
 case class ListSchema(itemSchema: Schema) extends Schema {
-  override def mapItems(f: Schema => Schema) = ListSchema(itemSchema.mapItems(f))
+  def mapItems(f: ElementSchema => ElementSchema) = ListSchema(itemSchema.mapItems(f))
 }
-case class DateSchema(enumValues: Option[List[Any]] = None) extends Schema
-case class StringSchema(enumValues: Option[List[Any]] = None) extends Schema
-case class BooleanSchema(enumValues: Option[List[Any]] = None) extends Schema
-case class NumberSchema(enumValues: Option[List[Any]] = None) extends Schema
-case class ClassSchema(fullClassName: String, properties: List[Property], override val metadata: List[Metadata], definitions: List[SchemaWithClassName] = Nil) extends Schema with SchemaWithClassName with ObjectWithMetadata[ClassSchema] {
+
+// Marker trait for schemas of actual elements (not optional/list wrappers)
+trait ElementSchema extends Schema {
+  def mapItems(f: ElementSchema => ElementSchema): Schema = f(this)
+}
+
+case class DateSchema(enumValues: Option[List[Any]] = None) extends ElementSchema
+case class StringSchema(enumValues: Option[List[Any]] = None) extends ElementSchema
+case class BooleanSchema(enumValues: Option[List[Any]] = None) extends ElementSchema
+case class NumberSchema(enumValues: Option[List[Any]] = None) extends ElementSchema
+case class ClassSchema(fullClassName: String, properties: List[Property], override val metadata: List[Metadata], definitions: List[SchemaWithClassName] = Nil) extends ElementSchema with SchemaWithClassName with ObjectWithMetadata[ClassSchema] {
   override def getSchema(className: String): Option[SchemaWithClassName] = {
     if (className == this.fullClassName) {
       Some(this)
@@ -30,11 +35,12 @@ case class ClassSchema(fullClassName: String, properties: List[Property], overri
   }
   def replaceMetadata(metadata: List[Metadata]) = copy(metadata = metadata)
 }
-case class ClassRefSchema(fullClassName: String, override val metadata: List[Metadata]) extends Schema with SchemaWithClassName with ObjectWithMetadata[ClassRefSchema] {
+case class ClassRefSchema(fullClassName: String, override val metadata: List[Metadata]) extends ElementSchema with SchemaWithClassName with ObjectWithMetadata[ClassRefSchema] {
   def replaceMetadata(metadata: List[Metadata]) = copy(metadata = metadata)
 }
-case class OneOfSchema(alternatives: List[SchemaWithClassName], fullClassName: String) extends SchemaWithClassName {
+case class OneOfSchema(alternatives: List[SchemaWithClassName], fullClassName: String) extends ElementSchema with SchemaWithClassName {
 }
+
 trait SchemaWithClassName extends Schema {
   def fullClassName: String
   def simpleName: String = {
