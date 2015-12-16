@@ -42,10 +42,18 @@ trait ErrorHandlingServlet extends ScalatraServlet with Logging {
   }
 
   def renderInternalError(e: Throwable): Nothing = {
+    logger.error("Error while processing request " + describeRequest, e)
+    renderStatus(HttpStatus.internalError())
+  }
+
+  def describeRequest: String = {
     val query: String = if (request.getQueryString == null) {""} else {"?" + request.getQueryString}
     val requestDescription: String = request.getMethod + " " + request.getServletPath + query + " " + maskRequestBody
-    logger.error("Error while processing request " + requestDescription, e)
-    renderStatus(HttpStatus.internalError())
+    requestDescription
+  }
+
+  def renderStatus(status: HttpStatus) = {
+    halt(status = status.statusCode, body = Json.write(status.errors))
   }
 
   private def maskRequestBody = {
@@ -64,9 +72,5 @@ trait ErrorHandlingServlet extends ScalatraServlet with Logging {
         }
       case (body, _) => body
     }
-  }
-
-  def renderStatus(status: HttpStatus) = {
-    halt(status = status.statusCode, body = Json.write(status.errors))
   }
 }

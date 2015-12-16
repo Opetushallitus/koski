@@ -10,7 +10,7 @@ import fi.oph.tor.henkilo.HenkiloOid
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.json.Json
 import fi.oph.tor.koodisto.{KoodistoPalvelu, KoodistoResolvingExtractor}
-import fi.oph.tor.schema.{TorOppija, TorSchema}
+import fi.oph.tor.schema.{Henkilö, TorOppija, TorSchema}
 import fi.oph.tor.security.RequiresAuthentication
 import fi.oph.tor.user.UserRepository
 import fi.oph.tor.{ErrorHandlingServlet, InvalidRequestException}
@@ -30,11 +30,17 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
       jsonSchemaValidate // TODO: this actually causes a double parse
       implicit val koodistoPalvelu = this.koodistoPalvelu
       val extractionResult: Either[HttpStatus, TorOppija] = KoodistoResolvingExtractor.extract[TorOppija](parsedJson)
-      renderEither(extractionResult.right.flatMap { oppija =>
-        getClass.synchronized{
+      val result: Either[HttpStatus, Henkilö.Id] = extractionResult.right.flatMap { oppija =>
+        getClass.synchronized {
+          // TODO: why synchronized?
           rekisteri.createOrUpdate(oppija)
         }
-      })
+      }
+      result.left.foreach { case HttpStatus(code, errors) =>
+        logger.warn("Opinto-oikeuden päivitys estetty: " + code + " " + errors + " for request " + describeRequest)
+      }
+
+      renderEither(result)
     }
   }
 
