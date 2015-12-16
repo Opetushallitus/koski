@@ -262,6 +262,7 @@ case class Yritys(
 )
 
 case class Läsnäolotiedot(
+  @Description("Läsnä- ja poissaolojaksot päivämääräväleinä.")
   läsnäolojaksot: List[Läsnäolojakso]
 )
 
@@ -274,13 +275,14 @@ case class Läsnäolojakso(
 )
 
 case class OpiskeluoikeudenTila(
+  @Description("Opiskeluoikeuden tilahistoria (aktiivinen, keskeyttänyt, päättynyt...) jaksoittain. Sisältää myös tiedon opintojen rahoituksesta jaksoittain.")
   opiskeluoikeusjaksot: List[Opiskeluoikeusjakso]
 )
 
 case class Opiskeluoikeusjakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
-  @Description("Opiskeluoikeuden tila (aktiivinen, päättynyt...)")
+  @Description("Opiskeluoikeuden tila (aktiivinen, keskeyttänyt, päättynyt...)")
   @KoodistoUri("opiskeluoikeudentila")
   tila: KoodistoKoodiViite,
   @Description("Opintojen rahoitus")
