@@ -31,8 +31,6 @@ forEach(document.querySelectorAll('.json-row .collapsible'), function(node) {
     node.addEventListener('click', clickHandler, false)
 })
 
-forEach(document.querySelectorAll('.json-row:first-child'), toggleCollapse)
-
 forEach(document.querySelectorAll('.api-tester'), function(elem) {
   var exampleSelector = elem.querySelector(".examples select")
   if (exampleSelector) {
