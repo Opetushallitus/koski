@@ -3,33 +3,33 @@ package fi.oph.tor.henkilo
 import java.time.{LocalDate, ZoneId}
 
 import com.typesafe.config.Config
-import fi.oph.tor.http.{HttpStatusException, Http, HttpStatus, VirkailijaHttpClient}
+import fi.oph.tor.http.{Http, HttpStatus, HttpStatusException, VirkailijaHttpClient}
 import fi.oph.tor.json.Json._
 import fi.oph.tor.json.Json4sHttp4s._
 import org.http4s._
 import org.http4s.headers.`Content-Type`
-import org.json4s.jackson.Serialization._
+
 import scalaz.concurrent.Task
 
 class AuthenticationServiceClient(virkailija: VirkailijaHttpClient) extends EntityDecoderInstances {
-  def search(query: String): UserQueryResult = virkailija.httpClient(virkailija.virkailijaUriFromString("/authentication-service/resources/henkilo?no=true&count=0&q=" + query))(Http.parseJson[UserQueryResult])
-  def findByOid(id: String): Option[User] = virkailija.httpClient(virkailija.virkailijaUriFromString("/authentication-service/resources/henkilo/" + id))(Http.parseJsonOptional[User])
-  def organisaatiot(oid: String): List[OrganisaatioHenkilö] = virkailija.httpClient(virkailija.virkailijaUriFromString(s"/authentication-service/resources/henkilo/${oid}/organisaatiohenkilo"))(Http.parseJson[List[OrganisaatioHenkilö]])
-  def käyttöoikeusryhmät(henkilöOid: String, organisaatioOid: String): List[Käyttöoikeusryhmä] = virkailija.httpClient(virkailija.virkailijaUriFromString(s"/authentication-service/resources/kayttooikeusryhma/henkilo/${henkilöOid}?ooid=${organisaatioOid}"))(Http.parseJson[List[Käyttöoikeusryhmä]])
+  def search(query: String): UserQueryResult = virkailija.httpClient("/authentication-service/resources/henkilo?no=true&count=0&q=" + query)(Http.parseJson[UserQueryResult])
+  def findByOid(id: String): Option[User] = virkailija.httpClient("/authentication-service/resources/henkilo/" + id)(Http.parseJsonOptional[User])
+  def organisaatiot(oid: String): List[OrganisaatioHenkilö] = virkailija.httpClient(s"/authentication-service/resources/henkilo/${oid}/organisaatiohenkilo")(Http.parseJson[List[OrganisaatioHenkilö]])
+  def käyttöoikeusryhmät(henkilöOid: String, organisaatioOid: String): List[Käyttöoikeusryhmä] = virkailija.httpClient(s"/authentication-service/resources/kayttooikeusryhma/henkilo/${henkilöOid}?ooid=${organisaatioOid}")(Http.parseJson[List[Käyttöoikeusryhmä]])
   def lisääOrganisaatio(henkilöOid: String, organisaatioOid: String, nimike: String) = {
-    virkailija.httpClient.put(virkailija.virkailijaUriFromString("/authentication-service/resources/henkilo/" + henkilöOid + "/organisaatiohenkilo"), List(
+    virkailija.httpClient.put("/authentication-service/resources/henkilo/" + henkilöOid + "/organisaatiohenkilo", List(
       LisääOrganisaatio(organisaatioOid, nimike)
     ))(json4sEncoderOf[List[LisääOrganisaatio]])
   }
   def lisääKäyttöoikeusRyhmä(henkilöOid: String, organisaatioOid: String, ryhmä: Int): Unit = {
-    virkailija.httpClient.put(virkailija.virkailijaUriFromString("/authentication-service/resources/henkilo/" + henkilöOid + "/organisaatiohenkilo/" + organisaatioOid + "/kayttooikeusryhmat"), List(LisääKäyttöoikeusryhmä(ryhmä)))(json4sEncoderOf[List[LisääKäyttöoikeusryhmä]])
+    virkailija.httpClient.put("/authentication-service/resources/henkilo/" + henkilöOid + "/organisaatiohenkilo/" + organisaatioOid + "/kayttooikeusryhmat", List(LisääKäyttöoikeusryhmä(ryhmä)))(json4sEncoderOf[List[LisääKäyttöoikeusryhmä]])
   }
   def asetaSalasana(henkilöOid: String, salasana: String) = {
-    virkailija.httpClient.post (virkailija.virkailijaUriFromString("/authentication-service/resources/salasana/" + henkilöOid), salasana)(EntityEncoder.stringEncoder(Charset.`UTF-8`)
+    virkailija.httpClient.post ("/authentication-service/resources/salasana/" + henkilöOid, salasana)(EntityEncoder.stringEncoder(Charset.`UTF-8`)
       .withContentType(`Content-Type`(MediaType.`application/json`))) // <- yes, the API expects media type application/json, but consumes inputs as text/plain
   }
   def create(createUserInfo: CreateUser): Either[HttpStatus, String] = {
-    val request: Request = Request(uri = virkailija.virkailijaUriFromString("/authentication-service/resources/henkilo"), method = Method.POST)
+    val request: Request = Request(uri = virkailija.httpClient.uriFromString("/authentication-service/resources/henkilo"), method = Method.POST)
     val task: Task[Request] = request.withBody(createUserInfo)(json4sEncoderOf[CreateUser])
 
     virkailija.httpClient(task, request) {
@@ -40,7 +40,7 @@ class AuthenticationServiceClient(virkailija: VirkailijaHttpClient) extends Enti
     }
   }
   def syncLdap(henkilöOid: String) = {
-    virkailija.httpClient(virkailija.virkailijaUriFromString("/authentication-service/resources/ldap/" + henkilöOid))(Http.expectSuccess)
+    virkailija.httpClient("/authentication-service/resources/ldap/" + henkilöOid)(Http.expectSuccess)
   }
 }
 

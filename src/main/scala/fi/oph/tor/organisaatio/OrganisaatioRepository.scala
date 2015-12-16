@@ -11,7 +11,7 @@ class RemoteOrganisaatioRepository(config: Config) extends OrganisaatioRepositor
   val virkailijaClient = new VirkailijaHttpClient(config.getString("authentication-service.username"), config.getString("authentication-service.password"), config.getString("opintopolku.virkailija.url"), "/organisaatio-service")
 
   def getOrganisaatio(oid: String): Option[OrganisaatioHierarkia] = {
-    virkailijaClient.httpClient(virkailijaClient.virkailijaUriFromString("/organisaatio-service/rest/organisaatio/v2/hierarkia/hae/tyyppi?aktiiviset=true&lakkautetut=false&oid=" + oid))(Http.parseJson[OrganisaatioHakuTulos])
+    virkailijaClient.httpClient("/organisaatio-service/rest/organisaatio/v2/hierarkia/hae/tyyppi?aktiiviset=true&lakkautetut=false&oid=" + oid)(Http.parseJson[OrganisaatioHakuTulos])
       .organisaatiot.map(convertOrganisaatio)
       .headOption
   }

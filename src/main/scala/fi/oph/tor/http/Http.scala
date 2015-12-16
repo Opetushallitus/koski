@@ -35,7 +35,9 @@ object Http {
   }
 }
 
-case class Http(client: Client = blaze.defaultClient) {
+case class Http(root: String, client: Client = blaze.defaultClient) {
+  def uriFromString(relativePath: String) = Http.uriFromString(root + relativePath)
+
   def apply[ResultType](task: Task[Request], request: Request)(decode: (Int, String, Request) => ResultType): ResultType = {
     runHttp(client(task), request)(decode)
   }
@@ -49,15 +51,15 @@ case class Http(client: Client = blaze.defaultClient) {
   }
 
   def apply[ResultType](uri: String)(decode: (Int, String, Request) => ResultType): ResultType = {
-    apply(Request(uri = Http.uriFromString(uri)))(decode)
+    apply(Request(uri = Http.uriFromString(root + uri)))(decode)
   }
 
-  def post[T <: AnyRef](path: Uri, entity: T)(implicit encode: EntityEncoder[T]): Unit = {
-    apply(path, Method.POST, entity)
+  def post[T <: AnyRef](path: String, entity: T)(implicit encode: EntityEncoder[T]): Unit = {
+    apply(uriFromString(path), Method.POST, entity)
   }
 
-  def put[T <: AnyRef](path: Uri, entity: T)(implicit encode: EntityEncoder[T]): Unit = {
-    apply(path, Method.PUT, entity)
+  def put[T <: AnyRef](path: String, entity: T)(implicit encode: EntityEncoder[T]): Unit = {
+    apply(uriFromString(path), Method.PUT, entity)
   }
 
   def apply[T <: AnyRef](path: Uri, method: Method, entity: T)(implicit encode: EntityEncoder[T]): Unit = {

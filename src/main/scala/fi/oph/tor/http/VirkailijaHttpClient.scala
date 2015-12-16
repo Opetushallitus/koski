@@ -1,7 +1,6 @@
 package fi.oph.tor.http
 
 import fi.vm.sade.utils.cas.{CasAuthenticatingClient, CasClient, CasParams}
-import org.http4s.Uri
 import org.http4s.Uri._
 import org.http4s.client.blaze
 import org.http4s.client.blaze.BlazeClient
@@ -11,9 +10,5 @@ class VirkailijaHttpClient(username: String, password: String, opintoPolkuVirkai
   private val virkailijaUrl: Path = opintoPolkuVirkailijaUrl
   private val casClient = new CasClient(virkailijaUrl, blazeHttpClient)
 
-  val httpClient = Http(new CasAuthenticatingClient(casClient, CasParams(serviceUrl, username, password), blazeHttpClient))
-
-  def virkailijaUriFromString(url: String): Uri = {
-    Http.uriFromString(virkailijaUrl +  url)
-  }
+  val httpClient = Http(opintoPolkuVirkailijaUrl, new CasAuthenticatingClient(casClient, CasParams(serviceUrl, username, password), blazeHttpClient))
 }
