@@ -507,13 +507,20 @@ describe('TOR', function() {
         })
       })
 
-
-
       describe('Tietojen validointi serverillä', function() {
-        describe('Koulutusmoduuli ja arviointi ok', function() {
+        describe('Tutkinnon osa ja arviointi ok', function() {
           it('palautetaan HTTP 200', verifyResponseCode(addOppija.putTutkinnonOsaSuoritusAjax({}), 200))
         })
-        describe('Koulutusmoduulia ei löydy', function() {
+        describe('Tutkinnon osa ei kuulu tutkintorakenteeseen', function() {
+          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putTutkinnonOsaSuoritusAjax({
+            "koulutusmoduulitoteutus": {
+              "koulutusmoduuli": {
+                "tunniste": {"koodiarvo": "103135", "nimi": "Kaapelitelevisio- ja antennijärjestelmät", "koodistoUri": "tutkinnonosat", "koodistoVersio": 1}
+              }
+            }
+          }), 400, "Tutkinnon osa tutkinnonosat/103135 ei löydy tutkintorakenteesta perusteelle 39/011/2014 - suoritustapa naytto"))
+        })
+        describe('Tutkinnon osaa ei ei löydy koodistosta', function() {
           it('palautetaan HTTP 400', verifyResponseCode(addOppija.putTutkinnonOsaSuoritusAjax({
             "koulutusmoduulitoteutus": {
               "koulutusmoduuli": {

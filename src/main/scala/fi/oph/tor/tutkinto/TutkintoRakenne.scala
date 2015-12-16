@@ -4,7 +4,7 @@ import fi.oph.tor.arvosana.Arviointiasteikko
 import fi.oph.tor.koodisto.KoodistoViite
 import fi.oph.tor.schema.KoodistoKoodiViite
 
-case class TutkintoRakenne(suoritustavat: List[SuoritustapaJaRakenne], osaamisalat: List[Osaamisala], arviointiAsteikot: List[Arviointiasteikko])
+case class TutkintoRakenne(diaarinumero: String, suoritustavat: List[SuoritustapaJaRakenne], osaamisalat: List[Osaamisala], arviointiAsteikot: List[Arviointiasteikko])
 
 object TutkintoRakenne {
   def findTutkinnonOsa(rakenne: TutkintoRakenne, suoritustapa: KoodistoKoodiViite, koulutusModuuliTunniste: KoodistoKoodiViite): Option[TutkinnonOsa] = {

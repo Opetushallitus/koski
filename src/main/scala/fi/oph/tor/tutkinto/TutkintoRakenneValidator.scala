@@ -21,7 +21,8 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
     case (t: OpsTutkinnonosatoteutus, Some(rakenne), Some(suoritustapa))  =>
       TutkintoRakenne.findTutkinnonOsa(rakenne, suoritustapa.tunniste, t.koulutusmoduuli.tunniste) match {
         case None =>
-          HttpStatus.badRequest("Tutkinnon osa ei löydy perusterakenteesta: " + t.koulutusmoduuli.tunniste)
+          // TODO: loggaa perusteen diaari ja suoritustapa
+          HttpStatus.badRequest("Tutkinnon osa " + t.koulutusmoduuli.tunniste + " ei löydy tutkintorakenteesta perusteelle " + rakenne.diaarinumero + " - suoritustapa " + suoritustapa.tunniste.koodiarvo)
         case Some(tutkinnonOsa) =>
           HttpStatus.ok
       }
