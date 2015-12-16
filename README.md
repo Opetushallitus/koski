@@ -264,7 +264,7 @@ TOR käyttää [Koodistopalvelua](https://github.com/Opetushallitus/koodisto) mm
 
 Koodistopalvelun Swagger-dokumentaatio:
 
-    https://virkailija.opintopolku.fi/koodisto-service/swagger/index.html
+    https://testi.virkailija.opintopolku.fi/koodisto-service/swagger/index.html
 
 Pari testiurlia Koodistopalveluun:
 
