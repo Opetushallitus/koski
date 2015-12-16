@@ -15,6 +15,7 @@ object TorOppijaExamples {
   private val opiskeluoikeusKeskeyttänyt = KoodistoKoodiViite("keskeyttanyt", Some("Keskeyttänyt"), "opiskeluoikeudentila", Some(1))
   private val lähdeWinnova = KoodistoKoodiViite("winnova", Some("Winnova"), "lahdejarjestelma", Some(1))
   val hyväksiluku = Hyväksiluku(OpsTutkinnonosa(KoodistoKoodiViite("100238", Some("Asennushitsaus"), "tutkinnonosat", Some(1)), true, None), Some("Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"))
+  private val paikallisenOsanSuoritus = Suoritus(Some("suoritus-12345-2"), PaikallinenTutkinnonosatoteutus(PaikallinenTutkinnonosa(Paikallinenkoodi("123456789", "Pintavauriotyöt", "kallion_oma_koodisto"), "Opetellaan korjaamaan pinnallisia vaurioita", false, None), suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, Näyttö("Pintavaurioiden korjausta", "Autokorjaamo Oy, Riihimäki")))), suorituskieli = None, tila = None, alkamispäivä = None, toimipiste, Some(List(Arviointi(arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)), Some(date(2013, 3, 20)), arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))))), Some(Vahvistus(Some(date(2013, 5, 31)))), osasuoritukset = None)
   private val tutkinnonOsat = List(
     Suoritus(
       Some("suoritus-12345-1"),
@@ -38,28 +39,7 @@ object TorOppijaExamples {
       Some(Vahvistus(Some(date(2013, 1, 31)))),
       osasuoritukset = None
     ),
-    Suoritus(
-      Some("suoritus-12345-2"),
-      PaikallinenTutkinnonosatoteutus(
-        PaikallinenTutkinnonosa(
-          Paikallinenkoodi("123456789", "Pintavauriotyöt", "kallion_oma_koodisto"),
-          "Pintavauriotyöt",
-          "Opetellaan korjaamaan pinnallisia vaurioita",
-          false, None),
-        suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, Näyttö("Pintavaurioiden korjausta", "Autokorjaamo Oy, Riihimäki")))
-      ),
-      suorituskieli = None,
-      tila = None,
-      alkamispäivä = None,
-      toimipiste,
-      Some(List(Arviointi(
-        arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
-        Some(date(2013, 3, 20)),
-        arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
-      ))),
-      Some(Vahvistus(Some(date(2013, 5, 31)))),
-      osasuoritukset = None
-    ),
+    paikallisenOsanSuoritus,
     Suoritus(
       Some("suoritus-12345-3"),
       OpsTutkinnonosatoteutus(
@@ -258,6 +238,38 @@ object TorOppijaExamples {
     )
   )
 
+  val paikallisellaTutkinnonOsalla = TorOppija(
+    Henkilö("010101-123N", "matti pekka", "matti", "virtanen"),
+    List(
+      OpiskeluOikeus(
+        None,
+        Some(LähdejärjestelmäId("847823465", lähdeWinnova)),
+        Some(date(2016, 9, 1)),
+        Some(date(2020, 5, 1)),
+        None,
+        Organisaatio("1.2.246.562.10.52251087186", Some("Stadin ammattiopisto")),
+        Suoritus(
+          Some("suoritus-12345"),
+          TutkintoKoulutustoteutus(TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")), None, None, None, None),
+          None,
+          None,
+          Some(date(2016, 9, 1)),
+          toimipiste,
+          None,
+          None,
+          Some(List(
+            paikallisenOsanSuoritus
+          ))
+        ),
+        hojks = None,
+        None,
+        None,
+        None
+      )
+    )
+  )
+  ;
+
   val perustutkintoOps = TorOppija(
     Henkilö.withOid("1.2.246.562.24.00000000001"),
     List(
@@ -331,6 +343,7 @@ object TorOppijaExamples {
   val examples = List(
     Example("uusi", "Uusi oppija lisätään suorittamaan Autoalan perustutkintoa", uusiOppijaEiSuorituksia),
     Example("oppisopimus", "Uusi oppija, suorittaa oppisopimuksella", oppisopimus),
+    Example("paikallinen", "Oppija on suorittanut paikallisen tutkinnon osan", paikallisellaTutkinnonOsalla),
     Example("full", "Isompi esimerkki. Suorittaa perustutkintoa näyttönä. Tähän lisätty lähes kaikki kaavaillut tietokentät.", perustutkintoNäyttönä),
     Example("ops", "Perustutkinto ops:n mukaan, läsnäolotiedoilla, hojks", perustutkintoOps)
   )

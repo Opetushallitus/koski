@@ -135,7 +135,6 @@ trait Koulutusmoduuli {
   @Description("Paikallinen tutkinnon osa")
   case class PaikallinenTutkinnonosa(
     tunniste: Paikallinenkoodi,
-    nimi: String,
     kuvaus: String,
     @Description("Onko pakollinen osa tutkinnossa")
     pakollinen: Boolean,
