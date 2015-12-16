@@ -52,11 +52,11 @@ object SchemaToJson {
 
   private def toJsonProperties(properties: List[Property])(implicit ms: List[JsonMetadataSupport]): JValue = {
     JObject(properties.map { property =>
-        (property.key, appendMetadata(toJsonSchema(property.tyep).asInstanceOf[JObject], property.metadata))
+        (property.key, appendMetadata(toJsonSchema(property.schema).asInstanceOf[JObject], property.metadata))
     })
   }
   private def toRequiredProperties(properties: List[Property]): Option[(String, JValue)] = {
-    val requiredProperties = properties.toList.filter(!_.tyep.isInstanceOf[OptionalSchema])
+    val requiredProperties = properties.toList.filter(!_.schema.isInstanceOf[OptionalSchema])
     requiredProperties match {
       case Nil => None
       case _ => Some("required", JArray(requiredProperties.map{property => JString(property.key)}))

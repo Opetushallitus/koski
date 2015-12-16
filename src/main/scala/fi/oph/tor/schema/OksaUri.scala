@@ -19,8 +19,7 @@ object OksaUri extends MetadataSupport {
       schema.appendMetadata(List(OksaUri(tunnus, käsite)))
   }
   override def appendMetadataToJsonSchema(obj: JObject, metadata: Metadata) = metadata match {
-    case o: OksaUri =>
-      appendToDescription(obj, "(Oksa: " + o.asLink + ")")
+    case o: OksaUri => appendToDescription(obj, "(Oksa: " + o.asLink + ")")
     case _ => obj
   }
 }

@@ -1,7 +1,7 @@
 package fi.oph.tor.schema.generic.annotation
 
-import fi.oph.tor.schema.generic.{SchemaFactory, Metadata, MetadataSupport, ObjectWithMetadata}
-import org.json4s.JsonAST.{JObject, JString}
+import fi.oph.tor.schema.generic.{Metadata, MetadataSupport, ObjectWithMetadata, SchemaFactory}
+import org.json4s.JsonAST.JObject
 
 import scala.annotation.StaticAnnotation
 
@@ -12,7 +12,7 @@ object Description extends MetadataSupport {
   }
 
   override def appendMetadataToJsonSchema(obj: JObject, metadata: Metadata) = metadata match {
-    case Description(desc) => obj.merge(JObject("description" -> JString(desc)))
+    case Description(desc) => appendToDescription(obj, desc)
     case _ => obj
   }
 }

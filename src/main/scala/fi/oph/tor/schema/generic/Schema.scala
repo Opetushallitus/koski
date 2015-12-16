@@ -3,14 +3,14 @@ package fi.oph.tor.schema.generic
 sealed trait Schema {
   def metadata: List[Metadata] = Nil
   def fieldSchema(fieldName: String): Option[Schema] = None
-  def mapTo(containedSchema: Schema) = containedSchema
+  def mapItems(f: Schema => Schema): Schema = f(this)
 }
 
 case class OptionalSchema(itemSchema: Schema) extends Schema {
-  override def mapTo(containedSchema: Schema) = OptionalSchema(itemSchema.mapTo(containedSchema))
+  override def mapItems(f: Schema => Schema) = OptionalSchema(itemSchema.mapItems(f))
 }
 case class ListSchema(itemSchema: Schema) extends Schema {
-  override def mapTo(containedSchema: Schema) = ListSchema(itemSchema.mapTo(containedSchema))
+  override def mapItems(f: Schema => Schema) = ListSchema(itemSchema.mapItems(f))
 }
 case class DateSchema(enumValues: Option[List[Any]] = None) extends Schema
 case class StringSchema(enumValues: Option[List[Any]] = None) extends Schema
@@ -47,6 +47,6 @@ trait SchemaWithClassName extends Schema {
   }
 }
 
-case class Property(key: String, tyep: Schema, metadata: List[Metadata]) extends ObjectWithMetadata[Property] {
+case class Property(key: String, schema: Schema, metadata: List[Metadata]) extends ObjectWithMetadata[Property] {
   def replaceMetadata(metadata: List[Metadata]) = copy(metadata = metadata)
 }

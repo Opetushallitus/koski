@@ -184,6 +184,8 @@ trait Koulutusmoduulitoteutus {
 
 case class Arviointi(
   @Description("Arvosana. Kullekin arviointiasteikolle löytyy oma koodistonsa")
+  @KoodistoUri("arviointiasteikkoammatillinenhyvaksyttyhylatty")
+  @KoodistoUri("arviointiasteikkoammatillinent1k3")
   arvosana: KoodistoKoodiViite,
   @Description("Päivämäärä, jolloin arviointi on annettu")
   päivä: Option[LocalDate],

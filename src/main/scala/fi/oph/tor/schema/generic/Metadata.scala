@@ -21,11 +21,21 @@ trait AnnotationSupport {
 
 trait JsonMetadataSupport {
   def appendMetadataToJsonSchema(obj: JObject, metadata: Metadata): JObject
-  def appendToDescription(obj: JObject, koodisto: String): JsonAST.JObject = {
+  def appendToDescription(obj: JObject, newDescription: String): JsonAST.JObject = {
     val description = obj.\("description") match {
-      case JString(s) => s
-      case JNothing => ""
+      case JString(s) => s + "\n" + newDescription
+      case JNothing => newDescription
     }
-    obj.merge(JObject("description" -> JString(description + koodisto)))
+    obj.merge(JObject("description" -> JString(description)))
+  }
+
+  def addEnumValue(value: String, p: Property): Property = {
+    val newSchema = p.schema match {
+      case StringSchema(enumValues) =>
+        StringSchema(Some(enumValues.toList.flatten ++ List(value)))
+      case x => throw new RuntimeException("Unexpected schema: " + x)
+
+    }
+    p.copy(schema = newSchema)
   }
 }

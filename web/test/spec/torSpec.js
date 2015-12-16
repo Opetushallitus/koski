@@ -504,6 +504,16 @@ describe('TOR', function() {
           it('Uusi arviointi näytetään', function() {
             expect(tutkinnonOsa.getArvosana()).to.equal("Hylätty")
           })
+
+          describe('Kun sivu ladataan uudelleen', function() {
+            before( page.oppijaHaku.search('ero', 4),
+              page.oppijaHaku.selectOppija('tunkkila'), opinnot.waitUntilTutkintoVisible())
+
+            it('Muuttuneet tiedot on tallennettu', function() {
+              expect(tutkinnonOsa.getArvosana()).to.equal("Hylätty")
+            })
+          })
+
         })
       })
 
@@ -534,7 +544,7 @@ describe('TOR', function() {
             {
               arviointi: [{arvosana: {koodiarvo: "2", koodistoUri: "vääräasteikko"}}]
             }
-          ), 400, "Koodia vääräasteikko/2 ei löydy koodistosta"))
+          ), 400, "not found in enum"))
         })
         describe('Arvosana ei kuulu perusteiden mukaiseen arviointiasteikkoon', function() {
           it('palautetaan HTTP 400', verifyResponseCode(addOppija.putTutkinnonOsaSuoritusAjax(

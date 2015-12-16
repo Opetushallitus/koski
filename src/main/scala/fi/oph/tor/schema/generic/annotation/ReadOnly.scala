@@ -12,8 +12,7 @@ object ReadOnly extends MetadataSupport {
   }
 
   override def appendMetadataToJsonSchema(obj: JObject, metadata: Metadata) = metadata match {
-    case ReadOnly(desc) =>
-      appendToDescription(obj, "\n" + desc)
+    case ReadOnly(desc) => appendToDescription(obj, desc)
     case _ => obj
   }
 }
