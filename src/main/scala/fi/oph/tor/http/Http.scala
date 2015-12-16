@@ -64,7 +64,7 @@ case class Http(client: Client = blaze.defaultClient) {
     val task: Task[Request] = Request(uri = path, method = method).withBody(entity)
 
     apply(task) {
-      case (status, text) if (status >= 300) => throw new scala.RuntimeException(status + ": " + text)
+      case (status, text) if (status >= 300) => throw new scala.RuntimeException(status + ": " + text + " FROM " + path)
       case _ =>
     }
   }
