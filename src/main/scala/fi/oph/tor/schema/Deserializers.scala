@@ -76,3 +76,16 @@ object JärjestämismuotoDeserializer extends Deserializer[Järjestämismuoto] {
       }
   }
 }
+
+object OrganisaatioDeserializer extends Deserializer[Organisaatio] {
+  val organisaatioClasses = List(classOf[Organisaatio], classOf[OidOrganisaatio], classOf[Tutkintotoimikunta], classOf[Yritys])
+
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Organisaatio] = {
+    case (TypeInfo(c, _), json) if organisaatioClasses.contains(c) =>
+      json match {
+        case organisaatio: JObject if organisaatio.values.contains("tutkintotoimikunnanNumero") => organisaatio.extract[Tutkintotoimikunta]
+        case organisaatio: JObject if organisaatio.values.contains("oid") => organisaatio.extract[OidOrganisaatio]
+        case organisaatio: JObject => organisaatio.extract[Yritys]
+      }
+  }
+}

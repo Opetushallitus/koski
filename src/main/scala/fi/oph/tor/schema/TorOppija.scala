@@ -70,7 +70,7 @@ case class OpiskeluOikeus(
   @Description("Opiskelijan opiskeluoikeuden päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
   päättymispäivä: Option[LocalDate],
   @Description("Oppilaitos, jossa opinnot on suoritettu")
-  oppilaitos: Organisaatio,
+  oppilaitos: OidOrganisaatio,
   @Description("Opiskeluoikeuteen liittyvän (tutkinto-)suorituksen tiedot")
   suoritus: Suoritus,
   hojks: Option[Hojks],
@@ -100,7 +100,7 @@ case class Suoritus(
   alkamispäivä: Option[LocalDate],
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
-  toimipiste: Organisaatio,
+  toimipiste: OidOrganisaatio,
   @Description("Arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota")
   arviointi: Option[List[Arviointi]],
   vahvistus: Option[Vahvistus],
@@ -198,7 +198,15 @@ case class Arvioitsija(
 
 case class Vahvistus(
   @Description("Tutkinnon tai tutkinnonosan vahvistettu suorituspäivämäärä, eli päivämäärä jolloin suoritus on hyväksyttyä todennettua osaamista")
-  päivä: Option[LocalDate]
+  päivä: Option[LocalDate],
+  myöntäjäOrganisaatio: Option[Organisaatio],
+  myöntäjäHenkilöt: Option[List[OrganisaatioHenkilö]]
+)
+
+case class OrganisaatioHenkilö(
+  nimi: String,
+  titteli: String,
+  organisaatio: OidOrganisaatio
 )
 
 trait Suoritustapa {
@@ -255,11 +263,6 @@ case class Näyttö(
 @Description("Oppisopimuksen tiedot")
 case class Oppisopimus(
   työnantaja: Yritys
-)
-
-case class Yritys(
-  nimi: String,
-  yTunnus: String
 )
 
 case class Läsnäolotiedot(
@@ -331,14 +334,6 @@ case class Paikallinenkoodi(
   koodistoUri: String
 ) extends KoodiViite
 
-case class Organisaatio(
-  @Description("Organisaation tunniste Opintopolku-palvelussa")
-  oid: String,
-  @Description("Organisaation (kielistetty) nimi")
-  @ReadOnly("Tiedon syötössä nimeä ei tarvita; kuvaus haetaan Organisaatiopalvelusta")
-  nimi: Option[String] = None
-)
-
 @Description("Tutkinnon tai tutkinnon osan laajuus. Koostuu opintojen laajuuden arvosta ja yksiköstä")
 case class Laajuus(
   @Description("Opintojen laajuuden arvo")
@@ -355,3 +350,22 @@ case class LähdejärjestelmäId(
   @KoodistoUri("lahdejarjestelma")
   lähdejärjestelmä: KoodistoKoodiViite
 )
+
+sealed trait Organisaatio
+  case class OidOrganisaatio(
+    @Description("Organisaation tunniste Opintopolku-palvelussa")
+    oid: String,
+    @Description("Organisaation (kielistetty) nimi")
+    @ReadOnly("Tiedon syötössä nimeä ei tarvita; kuvaus haetaan Organisaatiopalvelusta")
+    nimi: Option[String] = None
+  ) extends Organisaatio
+
+  case class Yritys(
+    nimi: String,
+    yTunnus: String
+  ) extends Organisaatio
+
+  case class Tutkintotoimikunta(
+    nimi: String,
+    tutkintotoimikunnanNumero: String
+  ) extends Organisaatio

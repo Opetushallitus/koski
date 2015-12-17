@@ -1,6 +1,6 @@
 package fi.oph.tor.organisaatio
 
-import fi.oph.tor.schema.Organisaatio
+import fi.oph.tor.schema.OidOrganisaatio
 
 object InMemoryOrganisaatioRepository {
   val empty = new InMemoryOrganisaatioRepository(Nil)
@@ -19,7 +19,7 @@ class InMemoryOrganisaatioRepository(roots: List[OrganisaatioHierarkia]) extends
     orgs.values.filter(f)
   }
 
-  def hasReadAccess(organisaatio: Organisaatio) = {
+  def hasReadAccess(organisaatio: OidOrganisaatio) = {
     getOrganisaatio(organisaatio.oid).isDefined
   }
 

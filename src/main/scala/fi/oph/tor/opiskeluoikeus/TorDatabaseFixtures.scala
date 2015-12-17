@@ -12,7 +12,7 @@ object TorDatabaseFixtures extends Futures with GlobalExecutionContext {
   private val oppijat = new MockOppijaRepository
 
   def opiskeluOikeus(oppilaitosId: String) = {
-    val oppilaitos: Organisaatio = Organisaatio(oppilaitosId, None)
+    val oppilaitos: OidOrganisaatio = OidOrganisaatio(oppilaitosId, None)
     OpiskeluOikeus(
       None,
       None,

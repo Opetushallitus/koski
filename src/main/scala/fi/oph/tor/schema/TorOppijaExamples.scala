@@ -8,14 +8,16 @@ object TorOppijaExamples {
   private val suoritustapaOps = KoodistoKoodiViite("ops", Some("Opetussuunnitelman mukainen"), "suoritustapa", Some(1))
   private val järjestämismuotoOppisopimus = KoodistoKoodiViite("20", Some("Oppisopimusmuotoinen"), "jarjestamismuoto", Some(1))
   private val järjestämismuotoOppilaitos = KoodistoKoodiViite("10", Some("Oppilaitosmuotoinen"), "jarjestamismuoto", Some(1))
-  private val toimipiste: Organisaatio = Organisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))
+  private val stadinAmmattiopisto: OidOrganisaatio = OidOrganisaatio("1.2.246.562.10.52251087186", Some("Stadin ammattiopisto"))
+  private val toimipiste: OidOrganisaatio = OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))
+  private val tutkintotoimikunta: OidOrganisaatio = OidOrganisaatio("1.2.246.562.10.37144658251", Some("Autokorjaamoalan tutkintotoimikunta 8406"))
   private val opintojenLaajuusYksikkö = KoodistoKoodiViite("6", Some("osaamispistettä"), "opintojenlaajuusyksikko", Some(1))
   private val opiskeluoikeusAktiivinen = KoodistoKoodiViite("aktiivinen", Some("Aktiivinen"), "opiskeluoikeudentila", Some(1))
   private val opiskeluoikeusPäättynyt = KoodistoKoodiViite("paattynyt", Some("Päättynyt"), "opiskeluoikeudentila", Some(1))
   private val opiskeluoikeusKeskeyttänyt = KoodistoKoodiViite("keskeyttanyt", Some("Keskeyttänyt"), "opiskeluoikeudentila", Some(1))
   private val lähdeWinnova = KoodistoKoodiViite("winnova", Some("Winnova"), "lahdejarjestelma", Some(1))
   val hyväksiluku = Hyväksiluku(OpsTutkinnonosa(KoodistoKoodiViite("100238", Some("Asennushitsaus"), "tutkinnonosat", Some(1)), true, None), Some("Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"))
-  private val paikallisenOsanSuoritus = Suoritus(Some("suoritus-12345-2"), PaikallinenTutkinnonosatoteutus(PaikallinenTutkinnonosa(Paikallinenkoodi("123456789", "Pintavauriotyöt", "kallion_oma_koodisto"), "Opetellaan korjaamaan pinnallisia vaurioita", false, None), suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, Näyttö("Pintavaurioiden korjausta", "Autokorjaamo Oy, Riihimäki")))), suorituskieli = None, tila = None, alkamispäivä = None, toimipiste, Some(List(Arviointi(arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)), Some(date(2013, 3, 20)), arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))))), Some(Vahvistus(Some(date(2013, 5, 31)))), osasuoritukset = None)
+  private val paikallisenOsanSuoritus = Suoritus(Some("suoritus-12345-2"), PaikallinenTutkinnonosatoteutus(PaikallinenTutkinnonosa(Paikallinenkoodi("123456789", "Pintavauriotyöt", "kallion_oma_koodisto"), "Opetellaan korjaamaan pinnallisia vaurioita", false, None), suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, Näyttö("Pintavaurioiden korjausta", "Autokorjaamo Oy, Riihimäki")))), suorituskieli = None, tila = None, alkamispäivä = None, toimipiste, Some(List(Arviointi(arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)), Some(date(2013, 3, 20)), arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))))), Some(Vahvistus(Some(date(2013, 5, 31)), Some(stadinAmmattiopisto), None)), osasuoritukset = None)
   private val tutkinnonOsat = List(
     Suoritus(
       Some("suoritus-12345-1"),
@@ -36,7 +38,7 @@ object TorOppijaExamples {
         Some(date(2012, 10, 20)),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
-      Some(Vahvistus(Some(date(2013, 1, 31)))),
+      Some(Vahvistus(Some(date(2013, 1, 31)), Some(stadinAmmattiopisto), None)),
       osasuoritukset = None
     ),
     paikallisenOsanSuoritus,
@@ -59,7 +61,7 @@ object TorOppijaExamples {
         Some(date(2013, 4, 1)),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
-      Some(Vahvistus(Some(date(2013, 5, 31)))),
+      Some(Vahvistus(Some(date(2013, 5, 31)), Some(stadinAmmattiopisto), None)),
       osasuoritukset = None
     ),
     Suoritus(
@@ -81,7 +83,7 @@ object TorOppijaExamples {
         Some(date(2014, 10, 20)),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
-      Some(Vahvistus(Some(date(2014, 11, 8)))),
+      Some(Vahvistus(Some(date(2014, 11, 8)), Some(stadinAmmattiopisto), None)),
       osasuoritukset = None
     ),
     Suoritus(
@@ -103,7 +105,7 @@ object TorOppijaExamples {
         Some(date(2015, 4, 1)),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
-      Some(Vahvistus(Some(date(2015, 5, 1)))),
+      Some(Vahvistus(Some(date(2015, 5, 1)), Some(stadinAmmattiopisto), None)),
       osasuoritukset = None
     ),
     Suoritus(
@@ -126,7 +128,7 @@ object TorOppijaExamples {
         Some(date(2016, 2, 1)),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
-      Some(Vahvistus(Some(date(2016, 5, 1)))),
+      Some(Vahvistus(Some(date(2016, 5, 1)), Some(stadinAmmattiopisto), None)),
       osasuoritukset = None
     )
   )
@@ -140,7 +142,7 @@ object TorOppijaExamples {
         Some(date(2012, 9, 1)),
         Some(date(2015, 5, 31)),
         Some(date(2016, 1, 9)),
-        Organisaatio("1.2.246.562.10.52251087186", Some("Stadin ammattiopisto")),
+        stadinAmmattiopisto,
         Suoritus(
           Some("suoritus-12345"),
           TutkintoKoulutustoteutus(
@@ -157,7 +159,9 @@ object TorOppijaExamples {
           alkamispäivä = None,
           toimipiste,
           arviointi = None,
-          Some(Vahvistus(Some(date(2016, 1, 9)))),
+          Some(Vahvistus(Some(date(2016, 1, 9)), Some(stadinAmmattiopisto), Some(List(
+            OrganisaatioHenkilö("Jack Bauer", "puheenjohtaja", tutkintotoimikunta),
+            OrganisaatioHenkilö("Keijo Perttilä", "rehtori", stadinAmmattiopisto))))),
           Some(tutkinnonOsat)
         ),
         hojks = None,
@@ -182,7 +186,7 @@ object TorOppijaExamples {
         Some(date(2016, 9, 1)),
         Some(date(2020, 5, 1)),
         None,
-        Organisaatio("1.2.246.562.10.52251087186", Some("Stadin ammattiopisto")),
+        stadinAmmattiopisto,
         Suoritus(
           Some("suoritus-12345"),
           TutkintoKoulutustoteutus(TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")), None, None, None, None),
@@ -211,7 +215,7 @@ object TorOppijaExamples {
         Some(date(2016, 9, 1)),
         Some(date(2020, 5, 1)),
         None,
-        Organisaatio("1.2.246.562.10.52251087186", Some("Stadin ammattiopisto")),
+        stadinAmmattiopisto,
         Suoritus(
           Some("suoritus-12345"),
           TutkintoKoulutustoteutus(
@@ -247,7 +251,7 @@ object TorOppijaExamples {
         Some(date(2016, 9, 1)),
         Some(date(2020, 5, 1)),
         None,
-        Organisaatio("1.2.246.562.10.52251087186", Some("Stadin ammattiopisto")),
+        stadinAmmattiopisto,
         Suoritus(
           Some("suoritus-12345"),
           TutkintoKoulutustoteutus(TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")), None, None, None, None),
@@ -279,7 +283,7 @@ object TorOppijaExamples {
         Some(date(2012, 9, 1)),
         Some(date(2015, 5, 31)),
         Some(date(2016, 1, 9)),
-        Organisaatio("1.2.246.562.10.52251087186", Some("Stadin ammattiopisto")),
+        stadinAmmattiopisto,
         Suoritus(
           Some("suoritus-12345"),
           TutkintoKoulutustoteutus(
@@ -319,7 +323,7 @@ object TorOppijaExamples {
                   )
                 )
               ),
-              Some(Vahvistus(Some(date(2014, 11, 8)))),
+              Some(Vahvistus(Some(date(2014, 11, 8)), Some(stadinAmmattiopisto), None)),
               osasuoritukset = None
             )
           ))
