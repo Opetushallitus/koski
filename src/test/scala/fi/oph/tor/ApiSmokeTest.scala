@@ -12,12 +12,12 @@ class ApiSmokeTest extends FreeSpec with Matchers with HttpComponentsClient {
   "/api/oppija/" - {
     SharedJetty.start
     "GET" - {
-      "with valid oid" - {
+      "with valid oid" in {
         get("api/oppija/" + new MockOppijaRepository().eero.oid, headers = authHeaders) {
           verifyResponseStatus()
         }
       }
-      "with invalid oid" - {
+      "with invalid oid" in {
         get("api/oppija/blerg", headers = authHeaders) {
           verifyResponseStatus(400)
         }
@@ -25,7 +25,7 @@ class ApiSmokeTest extends FreeSpec with Matchers with HttpComponentsClient {
     }
 
     TorOppijaExamples.examples.foreach { example =>
-      "POST " + example.name - {
+      "POST " + example.name in {
         val body = Json.write(example.data).getBytes("utf-8")
         put("api/oppija", body = body, headers = (authHeaders + ("Content-type" -> "application/json"))) {
           verifyResponseStatus()

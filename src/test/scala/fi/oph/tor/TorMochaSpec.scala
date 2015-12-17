@@ -5,7 +5,7 @@ import org.scalatest.{Matchers, FreeSpec}
 import scala.sys.process._
 
 class TorMochaSpec extends FreeSpec with Matchers {
-  "Mocha-testit" - {
+  "Mocha tests" in {
     SharedJetty.start
     log("running mocha-phantom")
     val command = Seq("scripts/mocha-phantom-test.sh", SharedJetty.baseUrl + "/test/runner.html")
