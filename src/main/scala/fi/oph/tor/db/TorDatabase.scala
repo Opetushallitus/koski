@@ -1,12 +1,12 @@
 package fi.oph.tor.db
 
 import com.typesafe.config.Config
-import fi.oph.tor.db.TorDatabase.DB
 import fi.vm.sade.utils.slf4j.Logging
 import fi.vm.sade.utils.tcp.PortChecker
 import org.flywaydb.core.Flyway
 import slick.driver.PostgresDriver
 import slick.driver.PostgresDriver.api._
+
 import scala.sys.process._
 
 object TorDatabase {
