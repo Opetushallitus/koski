@@ -15,10 +15,10 @@ trait EPerusteetRepository {
 object EPerusteetRepository {
 
   def apply(config: Config) = {
-    CachingProxy(TorCache.cacheStrategy, TimedProxy(if (config.hasPath("eperusteet")) {
+    TimedProxy(if (config.hasPath("eperusteet")) {
       new RemoteEPerusteetRepository(config.getString("eperusteet.url"))
     } else {
       new MockEPerusteetRepository
-    }))
+    })
   }
 }

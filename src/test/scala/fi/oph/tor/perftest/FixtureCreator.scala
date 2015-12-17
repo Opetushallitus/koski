@@ -19,12 +19,12 @@ object FixtureCreator extends App with HttpComponentsClient {
   val oikeudet = Json.readFile("src/test/resources/opiskeluoikeudet.txt").extract[List[OpiskeluOikeus]]
   var hetut = new mutable.Stack[String]
   val pool: ExecutorService = Executors.newFixedThreadPool(10)
-  val amount = 100000
+  val amount = 1000
 
   val t0 = System.currentTimeMillis()
 
   1 to amount foreach { x =>
-    val oikeus: OpiskeluOikeus = oikeudet(randomInt(oikeudet.length))
+    val oikeus: OpiskeluOikeus = oikeudet(x % oikeudet.length)
     val nimi = "Tor-Perf-" + x
     val oppija: TorOppija = TorOppija(Henkilö(nextHetu, nimi, nimi, nimi), List(oikeus))
     val body = Json.write(oppija).getBytes("utf-8")
@@ -45,7 +45,10 @@ object FixtureCreator extends App with HttpComponentsClient {
 
   pool.shutdown()
   pool.awaitTermination(48, TimeUnit.HOURS)
-  println("Created " + amount + " opinto-oikeus in " + (System.currentTimeMillis() - t0) + "ms")
+  private val elapsed: Long = System.currentTimeMillis() - t0
+  println("Created " + amount + " opinto-oikeus in " + elapsed + "ms")
+  println("Ops/sec " + (amount * 1000 / elapsed))
+
 
   def nextHetu = {
     hetut.synchronized {

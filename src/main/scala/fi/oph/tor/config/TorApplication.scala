@@ -3,6 +3,7 @@ package fi.oph.tor.config
 import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.tor.arvosana.ArviointiasteikkoRepository
+import fi.oph.tor.cache.{CacheAll, CachingProxy}
 import fi.oph.tor.db._
 import fi.oph.tor.eperusteet.EPerusteetRepository
 import fi.oph.tor.fixture.Fixtures
@@ -29,7 +30,7 @@ object TorApplication {
 class TorApplication(val config: Config) {
   lazy val directoryClient: DirectoryClient = Authentication.directoryClient(config)
   lazy val oppijaRepository = OppijaRepository(config)
-  lazy val tutkintoRepository = new TutkintoRepository(EPerusteetRepository.apply(config), arviointiAsteikot, koodistoPalvelu)
+  lazy val tutkintoRepository = CachingProxy(CacheAll(3600, 100), TutkintoRepository(EPerusteetRepository.apply(config), arviointiAsteikot, koodistoPalvelu))
   lazy val oppilaitosRepository = new OppilaitosRepository
   lazy val lowLevelKoodistoPalvelu = LowLevelKoodistoPalvelu.apply(config)
   lazy val koodistoPalvelu = new KoodistoPalvelu(lowLevelKoodistoPalvelu)
