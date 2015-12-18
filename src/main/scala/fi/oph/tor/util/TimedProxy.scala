@@ -5,7 +5,7 @@ import org.slf4j.{Logger, LoggerFactory}
 import scala.reflect.ClassTag
 
 object TimedProxy {
-  def apply[S <: AnyRef](service: S, thresholdMs: Int = 50)(implicit tag: ClassTag[S]) = {
+  def apply[S <: AnyRef](service: S, thresholdMs: Int = 5)(implicit tag: ClassTag[S]) = {
     val logger = LoggerFactory.getLogger(service.getClass)
 
     Proxy.createProxy[S](service, { invocation =>
