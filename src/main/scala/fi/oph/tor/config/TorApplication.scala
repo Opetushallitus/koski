@@ -29,7 +29,6 @@ object TorApplication {
 
 class TorApplication(val config: Config) {
   lazy val directoryClient: DirectoryClient = Authentication.directoryClient(config)
-  lazy val oppijaRepository = OppijaRepository(config)
   lazy val tutkintoRepository = CachingProxy(CacheAll(3600, 100), TutkintoRepository(EPerusteetRepository.apply(config), arviointiAsteikot, koodistoPalvelu))
   lazy val oppilaitosRepository = new OppilaitosRepository
   lazy val lowLevelKoodistoPalvelu = LowLevelKoodistoPalvelu.apply(config)
@@ -37,6 +36,7 @@ class TorApplication(val config: Config) {
   lazy val arviointiAsteikot = ArviointiasteikkoRepository(koodistoPalvelu)
   lazy val userRepository = UserRepository(config)
   lazy val database = new TorDatabase(config)
+  lazy val oppijaRepository = OppijaRepository(config, database)
   lazy val opiskeluOikeusRepository = TimedProxy[OpiskeluOikeusRepository](new PostgresOpiskeluOikeusRepository(database.db))
 
   def resetFixtures = if(Fixtures.shouldUseFixtures(config)) {

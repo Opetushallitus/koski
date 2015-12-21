@@ -12,14 +12,13 @@ import org.scalatra.test.HttpComponentsClient
 import scala.collection.mutable
 import scala.util.Random.{nextInt => randomInt}
 
-object FixtureCreator extends App with HttpComponentsClient {
-
+object FixtureCreator extends App with TestApp {
   // echo "[" > dumpi.txt; grep INSERT opiskeluoikeus.pg | sed -E "s/INSERT INTO opiskeluoikeus \(id, data, oppija_oid\) VALUES \([0-9]+, '//g" | rev | cut -c 34- | rev | sed 's/$/,/' | sed -E '$s/,$//' >> dumpi.txt; echo "]" >> dumpi.txt
 
   val oikeudet = Json.readFile("src/test/resources/opiskeluoikeudet.txt").extract[List[OpiskeluOikeus]]
   var hetut = new mutable.Stack[String]
   val pool: ExecutorService = Executors.newFixedThreadPool(10)
-  val amount = 1000
+  val amount = 1000000
 
   val t0 = System.currentTimeMillis()
 
@@ -59,10 +58,4 @@ object FixtureCreator extends App with HttpComponentsClient {
     }
   }
 
-  def authHeaders = {
-    val auth: String = "Basic " + Base64.encode("kalle:kalle".getBytes("UTF8"))
-    Map("Authorization" -> auth)
-  }
-
-  override def baseUrl = "http://localhost:7021/tor"
 }

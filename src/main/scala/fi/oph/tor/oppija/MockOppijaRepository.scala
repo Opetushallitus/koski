@@ -1,14 +1,17 @@
 package fi.oph.tor.oppija
 
+import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.tor.db.TorDatabase.DB
+import fi.oph.tor.db.{Futures, GlobalExecutionContext, PostgresDriverWithJsonSupport}
 import fi.oph.tor.http.HttpStatus
-import fi.oph.tor.schema.{Henkilö, FullHenkilö}
+import fi.oph.tor.schema.{FullHenkilö, Henkilö}
 
-class MockOppijaRepository extends OppijaRepository {
+class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with Futures with GlobalExecutionContext {
   val eero = oppija(generateId, "esimerkki", "eero", "010101-123N")
   val eerola = oppija(generateId, "eerola", "jouni", "")
   val markkanen = oppija(generateId, "markkanen", "eero", "")
   val teija = oppija(generateId, "tekijä", "teija", "150995-914X")
-  val tero = oppija(generateId, "tunkkila", "tero", "091095-9833")
+  val tero = oppija(generateId, "tunkkila-fagerlund", "tero petteri gustaf", "091095-9833")
   val presidentti = oppija(generateId, "Presidentti", "Tasavallan", "")
 
   private def oppija(id : String, suku: String, etu: String, hetu: String) = FullHenkilö(id, hetu, etu, etu, suku)
@@ -59,5 +62,15 @@ class MockOppijaRepository extends OppijaRepository {
     idCounter = defaultOppijat.length
   }
 
-  override def findByOid(id: String): Option[FullHenkilö] = oppijat.filter(_.oid == id).headOption
+  def findFromDb(oid: String): Option[FullHenkilö] = {
+    Some(FullHenkilö(oid, oid, oid, oid, oid))
+  }
+
+  def runQuery[E, U](fullQuery: PostgresDriverWithJsonSupport.api.Query[E, U, Seq]): Seq[U] = {
+    db.toSeq.flatMap { db => await(db.run(fullQuery.result)) }
+  }
+
+  override def findByOid(id: String): Option[FullHenkilö] = {
+    oppijat.filter {_.oid == id}.headOption.orElse(findFromDb(id))
+  }
 }
