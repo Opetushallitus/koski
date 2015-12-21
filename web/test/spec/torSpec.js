@@ -149,7 +149,7 @@ describe('TOR', function() {
         before(addNewOppija('kalle', 'Tunkkila', { etunimet: 'Tero Terde', kutsumanimi: 'Terde', sukunimi: 'Tunkkila', hetu: '091095-9833', oppilaitos: 'Helsingin', tutkinto: 'auto'}))
 
         it('Onnistuu, näyttää henkilöpalvelussa olevat nimitiedot', function() {
-          expect(page.getSelectedOppija()).to.equal('tunkkila, tero 091095-9833')
+          expect(page.getSelectedOppija()).to.equal('tunkkila-fagerlund, tero petteri gustaf 091095-9833')
         })
       })
 
