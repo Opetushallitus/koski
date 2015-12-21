@@ -1,13 +1,11 @@
 package fi.oph.tor.perftest
 
-import java.util.concurrent.{TimeUnit, ExecutorService, Executors}
+import java.util.concurrent.{ExecutorService, Executors, TimeUnit}
 
-import com.unboundid.util.Base64
 import fi.oph.tor.http.Http
 import fi.oph.tor.json.Json
-import fi.oph.tor.json.Json._
+import fi.oph.tor.perftest.PerfTestData.opiskeluoikeudet
 import fi.oph.tor.schema.{Henkilö, OpiskeluOikeus, TorOppija}
-import org.scalatra.test.HttpComponentsClient
 
 import scala.collection.mutable
 import scala.util.Random.{nextInt => randomInt}
@@ -15,7 +13,6 @@ import scala.util.Random.{nextInt => randomInt}
 object FixtureCreator extends App with TestApp {
   // echo "[" > dumpi.txt; grep INSERT opiskeluoikeus.pg | sed -E "s/INSERT INTO opiskeluoikeus \(id, data, oppija_oid\) VALUES \([0-9]+, '//g" | rev | cut -c 34- | rev | sed 's/$/,/' | sed -E '$s/,$//' >> dumpi.txt; echo "]" >> dumpi.txt
 
-  val oikeudet = Json.readFile("src/test/resources/opiskeluoikeudet.txt").extract[List[OpiskeluOikeus]]
   var hetut = new mutable.Stack[String]
   val pool: ExecutorService = Executors.newFixedThreadPool(10)
   val amount = 1000000
@@ -23,7 +20,7 @@ object FixtureCreator extends App with TestApp {
   val t0 = System.currentTimeMillis()
 
   1 to amount foreach { x =>
-    val oikeus: OpiskeluOikeus = oikeudet(x % oikeudet.length)
+    val oikeus: OpiskeluOikeus = opiskeluoikeudet(x % opiskeluoikeudet.length)
     val nimi = "Tor-Perf-" + x
     val oppija: TorOppija = TorOppija(Henkilö(nextHetu, nimi, nimi, nimi), List(oikeus))
     val body = Json.write(oppija).getBytes("utf-8")
