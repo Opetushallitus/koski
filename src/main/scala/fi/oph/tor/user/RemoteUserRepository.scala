@@ -1,16 +1,16 @@
 package fi.oph.tor.user
 
 import fi.oph.tor.henkilo.AuthenticationServiceClient
-import fi.oph.tor.organisaatio.{OrganisaatioPuu, OrganisaatioRepository}
+import fi.oph.tor.organisaatio.{UserOrganisations, OrganisaatioRepository}
 import org.http4s.EntityDecoderInstances
 
 object RemoteUserRepository {
   val käyttöoikeusryhmä = 4056292
 }
 class RemoteUserRepository(henkilöPalveluClient: AuthenticationServiceClient, organisaatioRepository: OrganisaatioRepository) extends UserRepository with EntityDecoderInstances {
-  def getUserOrganisations(oid: String): OrganisaatioPuu = {
-    OrganisaatioPuu(
-      roots = henkilöPalveluClient.organisaatiot(oid)
+  def getUserOrganisations(oid: String): UserOrganisations = {
+    UserOrganisations(
+      henkilöPalveluClient.organisaatiot(oid)
         .withFilter {!_.passivoitu}
         .flatMap {org => henkilöPalveluClient.käyttöoikeusryhmät(oid, org.organisaatioOid)}
         .withFilter {_.ryhmaId == RemoteUserRepository.käyttöoikeusryhmä}

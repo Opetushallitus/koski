@@ -33,8 +33,8 @@ object PerfTester extends App with TestApp with GlobalExecutionContext with Futu
   }
 
   def oid(index: Int) = {
-    "1.2.246.562.24.0000000000" + (index + 1)
-    //PersonOids.personOids(index)
+    //"1.2.246.562.24.0000000000" + (index + 1)
+    PersonOids.personOids(index)
   }
 
   def fetchSuoritukset(oppijaId: String): Unit = {

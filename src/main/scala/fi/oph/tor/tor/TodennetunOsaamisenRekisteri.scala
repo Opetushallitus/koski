@@ -60,7 +60,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     }
     else {
       HttpStatus.each(oppija.opiskeluoikeudet) { opiskeluOikeus =>
-        HttpStatus.validate(userContext.hasReadAccess(opiskeluOikeus.oppilaitos)) { HttpStatus.forbidden("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid) }
+        HttpStatus.validate(userContext.userOrganisations.hasReadAccess(opiskeluOikeus.oppilaitos)) { HttpStatus.forbidden("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid) }
           .then { TutkintoRakenneValidator(tutkintoRepository).validateTutkintoRakenne(opiskeluOikeus)}
       }
     }

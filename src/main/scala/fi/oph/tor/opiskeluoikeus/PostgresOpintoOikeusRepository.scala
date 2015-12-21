@@ -83,7 +83,7 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
   }
 
   def queryWithAccessCheck(query: PostgresDriverWithJsonSupport.api.Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq])(implicit userContext: UserContext): Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = {
-    val oids = userContext.organisaatioPuu.flatten().map(_.oid)
+    val oids = userContext.userOrganisations.oids
     val queryWithAccessCheck = for (
       oo <- query
       if oo.data.#>>(List("oppilaitos", "oid")) inSetBind oids)
