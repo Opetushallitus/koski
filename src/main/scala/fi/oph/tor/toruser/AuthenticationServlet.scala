@@ -1,16 +1,14 @@
-package fi.oph.tor.user
+package fi.oph.tor.toruser
 
 import fi.oph.tor.ErrorHandlingServlet
 import fi.oph.tor.json.Json
-import fi.oph.tor.security.AuthenticationSupport
 import fi.vm.sade.security.ldap.DirectoryClient
 
-
-class UserServlet(val directoryClient: DirectoryClient, userRepository: UserRepository) extends ErrorHandlingServlet with AuthenticationSupport {
+class AuthenticationServlet(val directoryClient: DirectoryClient) extends ErrorHandlingServlet with AuthenticationSupport {
   get("/") {
     contentType = "application/json;charset=utf-8"
     userOption match {
-      case Some(user) => Json.write(user)
+      case Some(user: AuthenticationUser) => Json.write(user)
       case None => halt(401)
     }
   }

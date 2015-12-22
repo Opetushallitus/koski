@@ -1,11 +1,11 @@
-package fi.oph.tor.security
+package fi.oph.tor.toruser
 
 import com.typesafe.config.Config
 import fi.oph.tor.cache.{CacheAll, CachingProxy}
 import fi.vm.sade.security.ldap.{DirectoryClient, LdapClient, LdapConfig, LdapUser}
 import fi.vm.sade.security.mock.MockDirectoryClient
 
-object Authentication {
+object DirectoryClientFactory {
   def directoryClient(config: Config): DirectoryClient = {
     val cacheStrategy = CacheAll(durationSeconds = 60, maxSize = 100)
 

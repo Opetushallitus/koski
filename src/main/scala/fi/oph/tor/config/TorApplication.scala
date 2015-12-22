@@ -11,9 +11,9 @@ import fi.oph.tor.koodisto.{LowLevelKoodistoPalvelu, KoodistoPalvelu}
 import fi.oph.tor.opiskeluoikeus.{OpiskeluOikeusRepository, PostgresOpiskeluOikeusRepository, TorDatabaseFixtures}
 import fi.oph.tor.oppija.OppijaRepository
 import fi.oph.tor.oppilaitos.OppilaitosRepository
-import fi.oph.tor.security.Authentication
+import fi.oph.tor.organisaatio.OrganisaatioRepository
 import fi.oph.tor.tutkinto.TutkintoRepository
-import fi.oph.tor.user.UserRepository
+import fi.oph.tor.toruser.{DirectoryClientFactory, UserOrganisationsRepository}
 import fi.oph.tor.util.TimedProxy
 import fi.vm.sade.security.ldap.DirectoryClient
 
@@ -28,13 +28,14 @@ object TorApplication {
 }
 
 class TorApplication(val config: Config) {
-  lazy val directoryClient: DirectoryClient = Authentication.directoryClient(config)
+  lazy val organisaatioRepository: OrganisaatioRepository = OrganisaatioRepository(config)
+  lazy val directoryClient: DirectoryClient = DirectoryClientFactory.directoryClient(config)
   lazy val tutkintoRepository = CachingProxy(CacheAll(3600, 100), TutkintoRepository(EPerusteetRepository.apply(config), arviointiAsteikot, koodistoPalvelu))
   lazy val oppilaitosRepository = new OppilaitosRepository
   lazy val lowLevelKoodistoPalvelu = LowLevelKoodistoPalvelu.apply(config)
   lazy val koodistoPalvelu = new KoodistoPalvelu(lowLevelKoodistoPalvelu)
   lazy val arviointiAsteikot = ArviointiasteikkoRepository(koodistoPalvelu)
-  lazy val userRepository = UserRepository(config)
+  lazy val userRepository = UserOrganisationsRepository(config, organisaatioRepository)
   lazy val database = new TorDatabase(config)
   lazy val oppijaRepository = OppijaRepository(config, database)
   lazy val opiskeluOikeusRepository = TimedProxy[OpiskeluOikeusRepository](new PostgresOpiskeluOikeusRepository(database.db))

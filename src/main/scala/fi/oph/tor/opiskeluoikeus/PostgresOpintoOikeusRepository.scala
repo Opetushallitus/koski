@@ -7,12 +7,12 @@ import fi.oph.tor.db._
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.oppija.PossiblyUnverifiedOppijaOid
 import fi.oph.tor.schema.{FullHenkilö, OpiskeluOikeus}
-import fi.oph.tor.user.UserContext
+import fi.oph.tor.toruser.TorUser
 import fi.vm.sade.utils.slf4j.Logging
 
 class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository with Futures with GlobalExecutionContext with Logging {
   // Note: this is a naive implementation. All filtering should be moved to query-level instead of in-memory-level
-  override def filterOppijat(oppijat: Seq[FullHenkilö])(implicit userContext: UserContext) = {
+  override def filterOppijat(oppijat: Seq[FullHenkilö])(implicit userContext: TorUser) = {
     val query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = for {
       oo <- OpiskeluOikeudet
       if oo.oppijaOid inSetBind oppijat.map(_.oid)
@@ -30,7 +30,7 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
   }
 
 
-  override def findByOppijaOid(oid: String)(implicit userContext: UserContext): Seq[OpiskeluOikeus] = {
+  override def findByOppijaOid(oid: String)(implicit userContext: TorUser): Seq[OpiskeluOikeus] = {
     find(OpiskeluOikeudet.filter(_.oppijaOid === oid))
   }
 
@@ -39,7 +39,7 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
   }
 
   // TODO: createOrUpdate should be transactional
-  override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: OpiskeluOikeus)(implicit userContext: UserContext): Either[HttpStatus, CreateOrUpdateResult] = {
+  override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: OpiskeluOikeus)(implicit userContext: TorUser): Either[HttpStatus, CreateOrUpdateResult] = {
     val opiskeluoikeudet: Option[OpiskeluOikeus] = find(OpiskeluOikeusIdentifier(oppijaOid.oppijaOid, opiskeluOikeus))
     opiskeluoikeudet match {
       case Some(oikeus) => update(oppijaOid.oppijaOid, opiskeluOikeus.copy(id = oikeus.id)) match {
@@ -54,7 +54,7 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
     }
   }
 
-  override def find(identifier: OpiskeluOikeusIdentifier)(implicit userContext: UserContext) = identifier match{
+  override def find(identifier: OpiskeluOikeusIdentifier)(implicit userContext: TorUser) = identifier match{
     case PrimaryKey(id) => find(OpiskeluOikeudet.filter(_.id === id)).headOption
     case IdentifyingSetOfFields(oppijaOid, _, _, _) => {
       findByOppijaOid(oppijaOid).find({
@@ -74,7 +74,7 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
     }
   }
 
-  private def find(query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq])(implicit userContext: UserContext): Seq[OpiskeluOikeus] = {
+  private def find(query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq])(implicit userContext: TorUser): Seq[OpiskeluOikeus] = {
     runQuery(queryWithAccessCheck(query)).map(_.toOpiskeluOikeus)
   }
 
@@ -82,7 +82,7 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
     await(db.run(fullQuery.result))
   }
 
-  def queryWithAccessCheck(query: PostgresDriverWithJsonSupport.api.Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq])(implicit userContext: UserContext): Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = {
+  def queryWithAccessCheck(query: PostgresDriverWithJsonSupport.api.Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq])(implicit userContext: TorUser): Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = {
     val oids = userContext.userOrganisations.oids
     val queryWithAccessCheck = for (
       oo <- query

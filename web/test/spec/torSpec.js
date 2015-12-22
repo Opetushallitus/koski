@@ -317,8 +317,14 @@ describe('TOR', function() {
 
       describe('Kun opinto-oikeutta yritetään lisätä oppilaitokseen, johon käyttäjällä ei ole pääsyä', function() {
         it('palautetaan HTTP 403 virhe', verifyResponseCode(addOppija.putOpiskeluOikeusAjax(
-          { oppilaitos:{oid: 'eipaasya'}}
-        ), 403, "Ei oikeuksia organisatioon eipaasya"))
+          { oppilaitos:{oid: '1.2.246.562.10.346830761110'}}
+        ), 403, "Ei oikeuksia organisatioon 1.2.246.562.10.346830761110"))
+      })
+
+      describe('Kun opinto-oikeutta yritetään lisätä oppilaitokseen, jota ei löydy organisaatiopalvelusta', function() {
+        it('palautetaan HTTP 400 virhe', verifyResponseCode(addOppija.putOpiskeluOikeusAjax(
+          { oppilaitos:{oid: 'tuuba'}}
+        ), 400, "Organisaatiota tuuba ei löydy organisaatiopalvelusta"))
       })
 
       describe('Nimenä tyhjä merkkijono', function() {

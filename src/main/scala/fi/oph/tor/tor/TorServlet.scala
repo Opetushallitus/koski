@@ -9,18 +9,17 @@ import com.github.fge.jsonschema.main.JsonSchemaFactory
 import fi.oph.tor.henkilo.HenkiloOid
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.json.Json
-import fi.oph.tor.koodisto.{KoodistoPalvelu, KoodistoResolvingExtractor}
+import fi.oph.tor.koodisto.KoodistoPalvelu
+import fi.oph.tor.organisaatio.OrganisaatioRepository
 import fi.oph.tor.schema.{Henkilö, TorOppija, TorSchema}
-import fi.oph.tor.security.RequiresAuthentication
-import fi.oph.tor.user.UserRepository
+import fi.oph.tor.toruser.{RequiresAuthentication, UserOrganisationsRepository}
 import fi.oph.tor.{ErrorHandlingServlet, InvalidRequestException}
 import fi.vm.sade.security.ldap.DirectoryClient
 import fi.vm.sade.utils.slf4j.Logging
-import org.json4s.JValue
 
 import scala.collection.JavaConversions._
 
-class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: UserRepository, val directoryClient: DirectoryClient, val koodistoPalvelu: KoodistoPalvelu) extends ErrorHandlingServlet with Logging with RequiresAuthentication {
+class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: UserOrganisationsRepository, val directoryClient: DirectoryClient, val koodistoPalvelu: KoodistoPalvelu, val organisaatioRepository: OrganisaatioRepository) extends ErrorHandlingServlet with Logging with RequiresAuthentication {
 
   private val schema = JsonSchemaFactory.byDefault.getJsonSchema(JsonLoader.fromString(TorSchema.schemaJsonString))
   private val mapper = new ObjectMapper().enable(INDENT_OUTPUT)
@@ -29,7 +28,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
     withJsonBody { parsedJson =>
       jsonSchemaValidate // TODO: this actually causes a double parse
       implicit val koodistoPalvelu = this.koodistoPalvelu
-      val extractionResult: Either[HttpStatus, TorOppija] = KoodistoResolvingExtractor.extract[TorOppija](parsedJson)
+      val extractionResult: Either[HttpStatus, TorOppija] = ValidatingAndResolvingExtractor.extract[TorOppija](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository))
       val result: Either[HttpStatus, Henkilö.Id] = extractionResult.right.flatMap (rekisteri.createOrUpdate _)
       result.left.foreach { case HttpStatus(code, errors) =>
         logger.warn("Opinto-oikeuden päivitys estetty: " + code + " " + errors + " for request " + describeRequest)

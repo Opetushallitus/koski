@@ -1,10 +1,22 @@
 package fi.oph.tor.organisaatio
 
 import com.typesafe.config.Config
+import fi.oph.tor.cache.{TorCache, CachingProxy}
 import fi.oph.tor.http.{Http, VirkailijaHttpClient}
+import fi.oph.tor.util.TimedProxy
 
 trait OrganisaatioRepository {
   def getOrganisaatio(oid: String): Option[OrganisaatioHierarkia]
+}
+
+object OrganisaatioRepository {
+  def apply(config: Config) = {
+    TimedProxy(CachingProxy[OrganisaatioRepository](TorCache.cacheStrategy, if (config.hasPath("opintopolku.virkailija.url")) {
+      new RemoteOrganisaatioRepository(config)
+    } else {
+      new MockOrganisaatioRepository
+    }))
+  }
 }
 
 class RemoteOrganisaatioRepository(config: Config) extends OrganisaatioRepository{
@@ -24,3 +36,4 @@ class RemoteOrganisaatioRepository(config: Config) extends OrganisaatioRepositor
 
 case class OrganisaatioHakuTulos(organisaatiot: List[OrganisaatioPalveluOrganisaatio])
 case class OrganisaatioPalveluOrganisaatio(oid: String, nimi: Map[String, String], organisaatiotyypit: List[String], children: List[OrganisaatioPalveluOrganisaatio])
+

@@ -8,7 +8,7 @@ import fi.oph.tor.oppija._
 import fi.oph.tor.oppilaitos.OppilaitosRepository
 import fi.oph.tor.schema._
 import fi.oph.tor.tutkinto.{TutkintoRakenneValidator, TutkintoRepository}
-import fi.oph.tor.user.UserContext
+import fi.oph.tor.toruser.TorUser
 import fi.vm.sade.utils.slf4j.Logging
 
 class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
@@ -18,13 +18,13 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
                                    arviointiAsteikot: ArviointiasteikkoRepository,
                                    koodistoPalvelu: KoodistoPalvelu) extends Logging {
 
-  def findOppijat(query: String)(implicit userContext: UserContext): Seq[FullHenkilö] = {
+  def findOppijat(query: String)(implicit userContext: TorUser): Seq[FullHenkilö] = {
     val oppijat: List[FullHenkilö] = oppijaRepository.findOppijat(query)
     val filtered = opiskeluOikeusRepository.filterOppijat(oppijat)
     filtered
   }
 
-  def createOrUpdate(oppija: TorOppija)(implicit userContext: UserContext): Either[HttpStatus, Henkilö.Id] = {
+  def createOrUpdate(oppija: TorOppija)(implicit userContext: TorUser): Either[HttpStatus, Henkilö.Id] = {
     validate(oppija) match {
       case status if (status.isOk) =>
         val oppijaOid: Either[HttpStatus, PossiblyUnverifiedOppijaOid] = oppija.henkilö match {
@@ -54,7 +54,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     }
   }
 
-  private def validate(oppija: TorOppija)(implicit userContext: UserContext): HttpStatus = {
+  private def validate(oppija: TorOppija)(implicit userContext: TorUser): HttpStatus = {
     if (oppija.opiskeluoikeudet.length == 0) {
       HttpStatus.badRequest("At least one OpiskeluOikeus required")
     }
@@ -66,7 +66,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     }
   }
 
-  def findTorOppija(oid: String)(implicit userContext: UserContext): Either[HttpStatus, TorOppija] = {
+  def findTorOppija(oid: String)(implicit userContext: TorUser): Either[HttpStatus, TorOppija] = {
     oppijaRepository.findByOid(oid) match {
       case Some(oppija) =>
         opiskeluoikeudetForOppija(oppija) match {
@@ -81,7 +81,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     Left(HttpStatus.notFound(s"Oppija with oid: $oid not found"))
   }
 
-  private def opiskeluoikeudetForOppija(oppija: FullHenkilö)(implicit userContext: UserContext): Seq[OpiskeluOikeus] = {
+  private def opiskeluoikeudetForOppija(oppija: FullHenkilö)(implicit userContext: TorUser): Seq[OpiskeluOikeus] = {
     for {
       opiskeluOikeus   <- opiskeluOikeusRepository.findByOppijaOid(oppija.oid)
       oppilaitos <- oppilaitosRepository.findById(opiskeluOikeus.oppilaitos.oid)

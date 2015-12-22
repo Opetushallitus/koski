@@ -1,9 +1,8 @@
-package fi.oph.tor.security
+package fi.oph.tor.toruser
 
 import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 
 import fi.oph.tor.json.Json
-import fi.oph.tor.user.{Login, User}
 import fi.vm.sade.security.ldap.DirectoryClient
 import fi.vm.sade.utils.slf4j.Logging
 import org.scalatra.ScalatraBase
@@ -11,13 +10,13 @@ import org.scalatra.auth.strategy.{BasicAuthStrategy, BasicAuthSupport}
 import org.scalatra.auth.{ScentryConfig, ScentrySupport}
 import org.scalatra.servlet.RichRequest
 
-trait AuthenticationSupport extends ScentrySupport[User] with BasicAuthSupport[User] { self: ScalatraBase =>
+trait AuthenticationSupport extends ScentrySupport[AuthenticationUser] with BasicAuthSupport[AuthenticationUser] { self: ScalatraBase =>
   val realm = "Todennetun Osaamisen Rekisteri"
 
   def directoryClient: DirectoryClient
 
-  protected def fromSession = { case user: String => Json.read[User](user)  }
-  protected def toSession   = { case user: User => Json.write(user) }
+  protected def fromSession = { case user: String => Json.read[AuthenticationUser](user)  }
+  protected def toSession   = { case user: AuthenticationUser => Json.write(user) }
 
   protected val scentryConfig = (new ScentryConfig {}).asInstanceOf[ScentryConfiguration]
 
@@ -34,10 +33,10 @@ trait AuthenticationSupport extends ScentrySupport[User] with BasicAuthSupport[U
   }
 }
 
-class TorBasicAuthStrategy(protected override val app: ScalatraBase, realm: String, val directoryClient: DirectoryClient) extends BasicAuthStrategy[User](app, realm) with TorAuthenticationStrategy with Logging {
-  override protected def getUserId(user: User)(implicit request: HttpServletRequest, response: HttpServletResponse): String = user.oid
+class TorBasicAuthStrategy(protected override val app: ScalatraBase, realm: String, val directoryClient: DirectoryClient) extends BasicAuthStrategy[AuthenticationUser](app, realm) with TorAuthenticationStrategy with Logging {
+  override protected def getUserId(user: AuthenticationUser)(implicit request: HttpServletRequest, response: HttpServletResponse): String = user.oid
 
-  override protected def validate(username: String, password: String)(implicit request: HttpServletRequest, response: HttpServletResponse): Option[User] = {
+  override protected def validate(username: String, password: String)(implicit request: HttpServletRequest, response: HttpServletResponse): Option[AuthenticationUser] = {
     tryLogin(username, password)
   }
 }
@@ -51,7 +50,7 @@ trait TorAuthenticationStrategy extends Logging {
       None
     } else {
       directoryClient.findUser(username).map { ldapUser =>
-        User(ldapUser.oid, ldapUser.givenNames + " " + ldapUser.lastName)
+        AuthenticationUser(ldapUser.oid, ldapUser.givenNames + " " + ldapUser.lastName)
       } match {
         case Some(user) =>
           Some(user)
@@ -68,7 +67,7 @@ import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 import org.scalatra.ScalatraBase
 import org.scalatra.auth.ScentryStrategy
 
-class UserPasswordStrategy(protected val app: ScalatraBase, val directoryClient: DirectoryClient)(implicit request: HttpServletRequest, response: HttpServletResponse) extends ScentryStrategy[User] with TorAuthenticationStrategy with Logging {
+class UserPasswordStrategy(protected val app: ScalatraBase, val directoryClient: DirectoryClient)(implicit request: HttpServletRequest, response: HttpServletResponse) extends ScentryStrategy[AuthenticationUser] with TorAuthenticationStrategy with Logging {
   override def name: String = "UserPassword"
 
   private def loginRequestInBody = {
@@ -86,7 +85,7 @@ class UserPasswordStrategy(protected val app: ScalatraBase, val directoryClient:
     loginRequestInBody.isDefined
   }
 
-  def authenticate()(implicit request: HttpServletRequest, response: HttpServletResponse): Option[User] = {
+  def authenticate()(implicit request: HttpServletRequest, response: HttpServletResponse): Option[AuthenticationUser] = {
     loginRequestInBody match {
       case Some(Login(username, password)) => tryLogin(username, password)
       case _ => None
