@@ -53,7 +53,7 @@ trait HenkilöWithOid extends Henkilö {
 }
 
 object Henkilö {
-  type Id = String
+  type Oid = String
   def withOid(oid: String) = OidHenkilö(oid)
   def apply(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String) = NewHenkilö(hetu, etunimet, kutsumanimi, sukunimi)
 }

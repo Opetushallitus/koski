@@ -35,15 +35,15 @@ class OppijaRepositoryCachingStrategy extends CachingStrategyBase(durationSecond
 }
 
 trait OppijaRepository extends Logging {
-  def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String): Either[HttpStatus, Henkilö.Id]
+  def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String): Either[HttpStatus, Henkilö.Oid]
 
   def findOppijat(query: String): List[FullHenkilö]
   def findByOid(id: String): Option[FullHenkilö]
 
   def resetFixtures {}
 
-  def findOrCreate(henkilö: Henkilö): Either[HttpStatus, Henkilö.Id] = {
-    def oidFrom(oppijat: List[FullHenkilö]): Either[HttpStatus, Henkilö.Id] = {
+  def findOrCreate(henkilö: Henkilö): Either[HttpStatus, Henkilö.Oid] = {
+    def oidFrom(oppijat: List[FullHenkilö]): Either[HttpStatus, Henkilö.Oid] = {
       oppijat match {
         case List(oppija) => Right(oppija.oid)
         case _ =>

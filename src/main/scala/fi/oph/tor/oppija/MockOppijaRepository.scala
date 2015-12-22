@@ -36,7 +36,7 @@ class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with 
     oppijat.filter(searchString(_).contains(query))
   }
 
-  override def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String): Either[HttpStatus, Henkilö.Id] = {
+  override def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String): Either[HttpStatus, Henkilö.Oid] = {
     if (sukunimi == "error") {
       throw new RuntimeException("Testing error handling")
     } else if (oppijat.find { o => (o.hetu == hetu) } .isDefined) {

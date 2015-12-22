@@ -622,7 +622,7 @@ describe('TOR', function() {
     describe('Kun palvelimeen ei saada yhteyttä', function() {
       before(
         page.openPage,
-        mockHttp('/tor/api/oppija?query=blah', {}),
+        mockHttp('/tor/api/oppija/search?query=blah', {}),
         page.oppijaHaku.search('blah', page.isErrorShown))
 
       it('näytetään virheilmoitus', function() {})

@@ -6,10 +6,13 @@ import fi.oph.tor.koodisto.KoodistoPalvelu
 import fi.oph.tor.opiskeluoikeus._
 import fi.oph.tor.oppija._
 import fi.oph.tor.oppilaitos.OppilaitosRepository
+import fi.oph.tor.schema.Henkilö.Oid
 import fi.oph.tor.schema._
 import fi.oph.tor.tutkinto.{TutkintoRakenneValidator, TutkintoRepository}
 import fi.oph.tor.toruser.TorUser
 import fi.vm.sade.utils.slf4j.Logging
+
+import scala.collection.immutable
 
 class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
                                    opiskeluOikeusRepository: OpiskeluOikeusRepository,
@@ -17,13 +20,27 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
                                    arviointiAsteikot: ArviointiasteikkoRepository,
                                    koodistoPalvelu: KoodistoPalvelu) extends Logging {
 
+
+  def findOppijat(filters: List[QueryFilter])(implicit userContext: TorUser): Iterable[TorOppija] = {
+    val opiskeluoikeudet: Iterable[(Henkilö.Oid, OpiskeluOikeus)] = opiskeluOikeusRepository.query(filters)
+    opiskeluoikeudet.groupBy(_._1).flatMap {
+      case (oid, oikeudet) => oppijaRepository.findByOid(oid) match {
+        case Some(oppija) => Some(TorOppija(oppija, oikeudet.map(_._2).toList))
+        case None =>
+          logger.warn("Oppija with oid: " + oid + " not found")
+          None
+      }
+    }
+  }
+
+
   def findOppijat(query: String)(implicit userContext: TorUser): Seq[FullHenkilö] = {
     val oppijat: List[FullHenkilö] = oppijaRepository.findOppijat(query)
     val filtered = opiskeluOikeusRepository.filterOppijat(oppijat)
     filtered
   }
 
-  def createOrUpdate(oppija: TorOppija)(implicit userContext: TorUser): Either[HttpStatus, Henkilö.Id] = {
+  def createOrUpdate(oppija: TorOppija)(implicit userContext: TorUser): Either[HttpStatus, Henkilö.Oid] = {
     validate(oppija) match {
       case status if (status.isOk) =>
         val oppijaOid: Either[HttpStatus, PossiblyUnverifiedOppijaOid] = oppija.henkilö match {

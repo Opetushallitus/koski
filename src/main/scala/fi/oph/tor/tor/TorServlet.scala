@@ -1,5 +1,7 @@
 package fi.oph.tor.tor
 
+import java.time.LocalDate
+
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT
 import com.fasterxml.jackson.databind.node.ArrayNode
@@ -29,7 +31,8 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
       jsonSchemaValidate // TODO: this actually causes a double parse
       implicit val koodistoPalvelu = this.koodistoPalvelu
       val extractionResult: Either[HttpStatus, TorOppija] = ValidatingAndResolvingExtractor.extract[TorOppija](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository))
-      val result: Either[HttpStatus, Henkilö.Id] = extractionResult.right.flatMap (rekisteri.createOrUpdate _)
+      val result: Either[HttpStatus, Henkilö.Oid] = extractionResult.right.flatMap (rekisteri.createOrUpdate _)
+
       result.left.foreach { case HttpStatus(code, errors) =>
         logger.warn("Opinto-oikeuden päivitys estetty: " + code + " " + errors + " for request " + describeRequest)
       }
@@ -39,18 +42,30 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
 
   get("/") {
     contentType = "application/json;charset=utf-8"
-    params.get("query") match {
-      case Some(query) if (query.length >= 3) =>
-        Json.write(rekisteri.findOppijat(query.toUpperCase))
-      case _ =>
-        throw new InvalidRequestException("query parameter length must be at least 3")
+
+    val filters = params.toList.map {
+      case ("valmistunutViimeistaan", päivä) => ValmistunutViimeistään(LocalDate.parse(päivä))
+      case ("valmistunutAikaisintaan", päivä) => ValmistunutAikaisintaan(LocalDate.parse(päivä))
+      case (param,_) => throw InvalidRequestException("Unknown query parameter: " + param)
     }
+
+    Json.write(rekisteri.findOppijat(filters))
   }
 
   get("/:oid") {
     renderEither(HenkiloOid.validateHenkilöOid(params("oid")).right.flatMap { oid =>
       rekisteri.findTorOppija(oid)
     })
+  }
+
+  get("/search") {
+    contentType = "application/json;charset=utf-8"
+    params.get("query") match {
+      case Some(query) if (query.length >= 3) =>
+        Json.write(rekisteri.findOppijat(query.toUpperCase))
+      case _ =>
+        throw new InvalidRequestException("query parameter length must be at least 3")
+    }
   }
 
   private def jsonSchemaValidate: Unit = this.synchronized {
@@ -64,3 +79,8 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
     }
   }
 }
+
+trait QueryFilter
+
+case class ValmistunutAikaisintaan(päivä: LocalDate) extends QueryFilter
+case class ValmistunutViimeistään(päivä: LocalDate) extends QueryFilter

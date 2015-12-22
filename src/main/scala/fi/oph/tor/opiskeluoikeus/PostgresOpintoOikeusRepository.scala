@@ -6,8 +6,10 @@ import fi.oph.tor.db.TorDatabase.DB
 import fi.oph.tor.db._
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.oppija.PossiblyUnverifiedOppijaOid
+import fi.oph.tor.schema.Henkilö._
 import fi.oph.tor.schema.{FullHenkilö, OpiskeluOikeus}
 import fi.oph.tor.toruser.TorUser
+import fi.oph.tor.tor.{ValmistunutViimeistään, ValmistunutAikaisintaan, QueryFilter}
 import fi.vm.sade.utils.slf4j.Logging
 
 class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository with Futures with GlobalExecutionContext with Logging {
@@ -71,6 +73,17 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
       case x =>
         logger.error("Unexpected number of updated rows: " + x)
         HttpStatus.internalError()
+    }
+  }
+
+  override def query(filters: List[QueryFilter])(implicit userContext: TorUser): Iterable[(Oid, OpiskeluOikeus)] = {
+    val query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = queryWithAccessCheck(filters.foldLeft(OpiskeluOikeudet.asInstanceOf[Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq]]) {
+      case (query, ValmistunutAikaisintaan(päivä)) => query.filter(_.data.#>>(List("päättymispäivä")) >= päivä.toString)
+      case (query, ValmistunutViimeistään(päivä)) => query.filter(_.data.#>>(List("päättymispäivä")) <= päivä.toString)
+    })
+
+    runQuery(query).map { row =>
+      (row.oppijaOid, row.toOpiskeluOikeus)
     }
   }
 
