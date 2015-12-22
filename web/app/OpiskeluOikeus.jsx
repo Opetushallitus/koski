@@ -20,6 +20,7 @@ export const OpiskeluOikeus = React.createClass({
                           title="Suoritustapa"
                           options={rakenne.suoritustavat.map(s => s.suoritustapa)}
                           value={opiskeluOikeus.suoritus.koulutusmoduulitoteutus.suoritustapa ? opiskeluOikeus.suoritus.koulutusmoduulitoteutus.suoritustapa.tunniste.koodiarvo : ''}
+                          autoselect={true}
                           onChange={(value) => opiskeluOikeusChange.push([opiskeluOikeus.id,
                             oo => {
                               let suoritustapa = value ? {
