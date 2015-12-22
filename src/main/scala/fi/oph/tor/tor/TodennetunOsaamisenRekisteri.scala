@@ -14,7 +14,6 @@ import fi.vm.sade.utils.slf4j.Logging
 class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
                                    opiskeluOikeusRepository: OpiskeluOikeusRepository,
                                    tutkintoRepository: TutkintoRepository,
-                                   oppilaitosRepository: OppilaitosRepository,
                                    arviointiAsteikot: ArviointiasteikkoRepository,
                                    koodistoPalvelu: KoodistoPalvelu) extends Logging {
 
@@ -69,7 +68,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
   def findTorOppija(oid: String)(implicit userContext: TorUser): Either[HttpStatus, TorOppija] = {
     oppijaRepository.findByOid(oid) match {
       case Some(oppija) =>
-        opiskeluoikeudetForOppija(oppija) match {
+        opiskeluOikeusRepository.findByOppijaOid(oppija.oid) match {
           case Nil => notFound(oid)
           case opiskeluoikeudet => Right(TorOppija(oppija, opiskeluoikeudet))
         }
@@ -79,16 +78,5 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
 
   private def notFound(oid: String): Left[HttpStatus, Nothing] = {
     Left(HttpStatus.notFound(s"Oppija with oid: $oid not found"))
-  }
-
-  private def opiskeluoikeudetForOppija(oppija: FullHenkilö)(implicit userContext: TorUser): Seq[OpiskeluOikeus] = {
-    for {
-      opiskeluOikeus   <- opiskeluOikeusRepository.findByOppijaOid(oppija.oid)
-      oppilaitos <- oppilaitosRepository.findById(opiskeluOikeus.oppilaitos.oid)
-    } yield {
-      opiskeluOikeus.copy(
-        oppilaitos = oppilaitos
-      )
-    }
   }
 }

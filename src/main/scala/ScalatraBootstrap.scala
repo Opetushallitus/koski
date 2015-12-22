@@ -21,7 +21,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       KoodistoCreator.createKoodistotFromMockData(application.config)
     }
     implicit val userRepository = UserOrganisationsRepository(application.config, application.organisaatioRepository)
-    val rekisteri = new TodennetunOsaamisenRekisteri(application.oppijaRepository, application.opiskeluOikeusRepository, application.tutkintoRepository, application.oppilaitosRepository, application.arviointiAsteikot, application.koodistoPalvelu)
+    val rekisteri = new TodennetunOsaamisenRekisteri(application.oppijaRepository, application.opiskeluOikeusRepository, application.tutkintoRepository, application.arviointiAsteikot, application.koodistoPalvelu)
     context.mount(new TorServlet(rekisteri, userRepository, application.directoryClient, application.koodistoPalvelu, application.organisaatioRepository), "/api/oppija")
     context.mount(new AuthenticationServlet(application.directoryClient), "/user")
     context.mount(new SingleFileServlet("web/static/index.html"), "/oppija")
