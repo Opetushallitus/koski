@@ -13,7 +13,7 @@ import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.json.Json
 import fi.oph.tor.koodisto.KoodistoPalvelu
 import fi.oph.tor.organisaatio.OrganisaatioRepository
-import fi.oph.tor.schema.{Henkilö, TorOppija, TorSchema}
+import fi.oph.tor.schema.{FullHenkilö, Henkilö, TorOppija, TorSchema}
 import fi.oph.tor.toruser.{RequiresAuthentication, UserOrganisationsRepository}
 import fi.oph.tor.{ErrorHandlingServlet, InvalidRequestException}
 import fi.vm.sade.security.ldap.DirectoryClient
@@ -42,6 +42,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
 
   get("/") {
     contentType = "application/json;charset=utf-8"
+    logger.info("Haetaan opiskeluoikeuksia: " + request.getQueryString)
 
     val filters = params.toList.map {
       case ("valmistunutViimeistaan", päivä) => ValmistunutViimeistään(LocalDate.parse(päivä))
@@ -49,7 +50,9 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
       case (param,_) => throw InvalidRequestException("Unknown query parameter: " + param)
     }
 
-    Json.write(rekisteri.findOppijat(filters))
+    val oppijat = rekisteri.findOppijat(filters).toList
+    logger.info("Löytyi " + oppijat.length + " oppijaa: " + request.getQueryString)
+    Json.write(oppijat)
   }
 
   get("/:oid") {

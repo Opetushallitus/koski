@@ -5,14 +5,10 @@ import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.koodisto.KoodistoPalvelu
 import fi.oph.tor.opiskeluoikeus._
 import fi.oph.tor.oppija._
-import fi.oph.tor.oppilaitos.OppilaitosRepository
-import fi.oph.tor.schema.Henkilö.Oid
 import fi.oph.tor.schema._
-import fi.oph.tor.tutkinto.{TutkintoRakenneValidator, TutkintoRepository}
 import fi.oph.tor.toruser.TorUser
+import fi.oph.tor.tutkinto.{TutkintoRakenneValidator, TutkintoRepository}
 import fi.vm.sade.utils.slf4j.Logging
-
-import scala.collection.immutable
 
 class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
                                    opiskeluOikeusRepository: OpiskeluOikeusRepository,
