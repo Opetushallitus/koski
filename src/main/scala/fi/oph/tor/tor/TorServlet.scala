@@ -1,6 +1,7 @@
 package fi.oph.tor.tor
 
 import java.time.LocalDate
+import java.time.format.DateTimeParseException
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT
@@ -13,7 +14,7 @@ import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.json.Json
 import fi.oph.tor.koodisto.KoodistoPalvelu
 import fi.oph.tor.organisaatio.OrganisaatioRepository
-import fi.oph.tor.schema.{FullHenkilö, Henkilö, TorOppija, TorSchema}
+import fi.oph.tor.schema.{Henkilö, TorOppija, TorSchema}
 import fi.oph.tor.toruser.{RequiresAuthentication, UserOrganisationsRepository}
 import fi.oph.tor.{ErrorHandlingServlet, InvalidRequestException}
 import fi.vm.sade.security.ldap.DirectoryClient
@@ -41,18 +42,19 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
   }
 
   get("/") {
-    contentType = "application/json;charset=utf-8"
     logger.info("Haetaan opiskeluoikeuksia: " + request.getQueryString)
 
-    val filters = params.toList.map {
-      case ("valmistunutViimeistaan", päivä) => ValmistunutViimeistään(LocalDate.parse(päivä))
-      case ("valmistunutAikaisintaan", päivä) => ValmistunutAikaisintaan(LocalDate.parse(päivä))
-      case (param,_) => throw InvalidRequestException("Unknown query parameter: " + param)
+    val queryFilters: List[Either[HttpStatus, QueryFilter]] = params.toList.map {
+      case (p, v) if p == "valmistunutAikaisintaan" => dateParam((p, v)).right.map(ValmistunutAikaisintaan(_))
+      case (p, v) if p == "valmistunutViimeistaan" => dateParam((p, v)).right.map(ValmistunutViimeistään(_))
+      case (p, _) => Left(HttpStatus.badRequest("Unsupported query parameter: " + p))
     }
 
-    val oppijat = rekisteri.findOppijat(filters).toList
-    logger.info("Löytyi " + oppijat.length + " oppijaa: " + request.getQueryString)
-    Json.write(oppijat)
+    renderEither((queryFilters.partition(_.isLeft) match {
+      case (Nil, queries) => Right(queries.map(_.right.get))
+      case (errors, _) => Left(HttpStatus.fold(errors.map(_.left.get)))
+    }).right.map(rekisteri.findOppijat(_)))
+
   }
 
   get("/:oid") {
@@ -79,6 +81,14 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
       schemaValidationReport.filter(message => message.getLogLevel == ERROR).map(_.asJson).foreach(errorNodes.add)
 
       halt(400, mapper.writeValueAsString(mapper.createObjectNode().set("errors", errorNodes)))
+    }
+  }
+
+  def dateParam(q: (String, String)): Either[HttpStatus, LocalDate] = q match {
+    case (p, v) => try {
+      Right(LocalDate.parse(v))
+    } catch {
+      case e: DateTimeParseException => Left(HttpStatus.badRequest("Invalid date parameter: " + p + "=" + v))
     }
   }
 }
