@@ -47,6 +47,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
     val queryFilters: List[Either[HttpStatus, QueryFilter]] = params.toList.map {
       case (p, v) if p == "valmistunutAikaisintaan" => dateParam((p, v)).right.map(ValmistunutAikaisintaan(_))
       case (p, v) if p == "valmistunutViimeistaan" => dateParam((p, v)).right.map(ValmistunutViimeistään(_))
+      case ("tutkinnonTila", v) => Right(TutkinnonTila(v))
       case (p, _) => Left(HttpStatus.badRequest("Unsupported query parameter: " + p))
     }
 
@@ -97,3 +98,4 @@ trait QueryFilter
 
 case class ValmistunutAikaisintaan(päivä: LocalDate) extends QueryFilter
 case class ValmistunutViimeistään(päivä: LocalDate) extends QueryFilter
+case class TutkinnonTila(tila: String) extends QueryFilter

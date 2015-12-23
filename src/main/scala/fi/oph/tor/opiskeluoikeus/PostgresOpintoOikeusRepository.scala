@@ -9,7 +9,7 @@ import fi.oph.tor.oppija.PossiblyUnverifiedOppijaOid
 import fi.oph.tor.schema.Henkilö._
 import fi.oph.tor.schema.{FullHenkilö, OpiskeluOikeus}
 import fi.oph.tor.toruser.TorUser
-import fi.oph.tor.tor.{ValmistunutViimeistään, ValmistunutAikaisintaan, QueryFilter}
+import fi.oph.tor.tor.{TutkinnonTila, ValmistunutViimeistään, ValmistunutAikaisintaan, QueryFilter}
 import fi.vm.sade.utils.slf4j.Logging
 
 class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository with Futures with GlobalExecutionContext with Logging {
@@ -80,6 +80,7 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
     val query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = queryWithAccessCheck(filters.foldLeft(OpiskeluOikeudet.asInstanceOf[Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq]]) {
       case (query, ValmistunutAikaisintaan(päivä)) => query.filter(_.data.#>>(List("päättymispäivä")) >= päivä.toString)
       case (query, ValmistunutViimeistään(päivä)) => query.filter(_.data.#>>(List("päättymispäivä")) <= päivä.toString)
+      case (query, TutkinnonTila(tila)) => query.filter(_.data.#>>(List("suoritus", "tila", "koodiarvo")) === tila)
     })
 
     runQuery(query).map { row =>
