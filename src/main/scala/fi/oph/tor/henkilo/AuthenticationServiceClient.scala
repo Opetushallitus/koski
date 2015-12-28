@@ -14,6 +14,7 @@ import scalaz.concurrent.Task
 class AuthenticationServiceClient(virkailija: VirkailijaHttpClient) extends EntityDecoderInstances {
   def search(query: String): UserQueryResult = virkailija.httpClient("/authentication-service/resources/henkilo?no=true&count=0&q=" + query)(Http.parseJson[UserQueryResult]).run
   def findByOid(id: String): Option[User] = virkailija.httpClient("/authentication-service/resources/henkilo/" + id)(Http.parseJsonOptional[User]).run
+  def findByOids(oids: List[String]): List[User] = virkailija.httpClient.post("/authentication-service/resources/henkilo/henkilotByHenkiloOidList", oids)(json4sEncoderOf[List[String]], Http.parseJson[List[User]])
   def organisaatiot(oid: String): List[OrganisaatioHenkilö] = virkailija.httpClient(s"/authentication-service/resources/henkilo/${oid}/organisaatiohenkilo")(Http.parseJson[List[OrganisaatioHenkilö]]).run
   def käyttöoikeusryhmät(henkilöOid: String, organisaatioOid: String): List[Käyttöoikeusryhmä] = virkailija.httpClient(s"/authentication-service/resources/kayttooikeusryhma/henkilo/${henkilöOid}?ooid=${organisaatioOid}")(Http.parseJson[List[Käyttöoikeusryhmä]]).run
   def lisääOrganisaatio(henkilöOid: String, organisaatioOid: String, nimike: String) = {
@@ -26,7 +27,7 @@ class AuthenticationServiceClient(virkailija: VirkailijaHttpClient) extends Enti
   }
   def asetaSalasana(henkilöOid: String, salasana: String) = {
     virkailija.httpClient.post ("/authentication-service/resources/salasana/" + henkilöOid, salasana)(EntityEncoder.stringEncoder(Charset.`UTF-8`)
-      .withContentType(`Content-Type`(MediaType.`application/json`))) // <- yes, the API expects media type application/json, but consumes inputs as text/plain
+      .withContentType(`Content-Type`(MediaType.`application/json`)), Http.unitDecoder) // <- yes, the API expects media type application/json, but consumes inputs as text/plain
   }
   def create(createUserInfo: CreateUser): Either[HttpStatus, String] = {
     val request: Request = Request(uri = virkailija.httpClient.uriFromString("/authentication-service/resources/henkilo"), method = Method.POST)

@@ -32,7 +32,7 @@ class RemoteKoodistoPalvelu(username: String, password: String, virkailijaUrl: S
 
   def createKoodisto(koodisto: Koodisto): Unit = {
     try {
-      secureHttp.post("/koodisto-service/rest/codes", koodisto)(json4sEncoderOf[Koodisto])
+      secureHttp.post("/koodisto-service/rest/codes", koodisto)(json4sEncoderOf[Koodisto], Http.unitDecoder)
     } catch {
       case HttpStatusException(500, "error.codesgroup.not.found", _) =>
         createKoodistoRyhmä(new KoodistoRyhmä(koodisto.codesGroupUri.replaceAll("http://", "")))
@@ -41,16 +41,16 @@ class RemoteKoodistoPalvelu(username: String, password: String, virkailijaUrl: S
   }
 
   def createKoodi(koodistoUri: String, koodi: KoodistoKoodi) = {
-    secureHttp.post("/koodisto-service/rest/codeelement/" + koodistoUri, koodi)(json4sEncoderOf[KoodistoKoodi])
+    secureHttp.post("/koodisto-service/rest/codeelement/" + koodistoUri, koodi)(json4sEncoderOf[KoodistoKoodi], Http.unitDecoder)
   }
 
   def createKoodistoRyhmä(ryhmä: KoodistoRyhmä) = {
-    secureHttp.post("/koodisto-service/rest/codesgroup", ryhmä)(json4sEncoderOf[KoodistoRyhmä])
+    secureHttp.post("/koodisto-service/rest/codesgroup", ryhmä)(json4sEncoderOf[KoodistoRyhmä], Http.unitDecoder)
   }
 
   def removeKoodistoRyhmä(ryhmä: Int) = {
     try {
-      secureHttp.post("/koodisto-service/rest/codesgroup/delete/" + ryhmä, Map("id" -> ryhmä.toString))(json4sEncoderOf[Map[String, String]])
+      secureHttp.post("/koodisto-service/rest/codesgroup/delete/" + ryhmä, Map("id" -> ryhmä.toString))(json4sEncoderOf[Map[String, String]], Http.unitDecoder)
     } catch {
       case HttpStatusException(500, "error.codesgroup.not.found", _) => // ignore
     }
