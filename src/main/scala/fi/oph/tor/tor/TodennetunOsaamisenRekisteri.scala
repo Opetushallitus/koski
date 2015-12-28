@@ -5,10 +5,12 @@ import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.koodisto.KoodistoPalvelu
 import fi.oph.tor.opiskeluoikeus._
 import fi.oph.tor.oppija._
+import fi.oph.tor.schema.Henkilö.Oid
 import fi.oph.tor.schema._
 import fi.oph.tor.toruser.TorUser
 import fi.oph.tor.tutkinto.{TutkintoRakenneValidator, TutkintoRepository}
 import fi.vm.sade.utils.slf4j.Logging
+import rx.lang.scala.Observable
 
 class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
                                    opiskeluOikeusRepository: OpiskeluOikeusRepository,
@@ -17,14 +19,16 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
                                    koodistoPalvelu: KoodistoPalvelu) extends Logging {
 
 
-  def findOppijat(filters: List[QueryFilter])(implicit userContext: TorUser): Iterable[TorOppija] = {
-    val opiskeluoikeudet: Iterable[(Henkilö.Oid, OpiskeluOikeus)] = opiskeluOikeusRepository.query(filters)
-    opiskeluoikeudet.groupBy(_._1).flatMap {
+  def findOppijat(filters: List[QueryFilter])(implicit userContext: TorUser): Observable[TorOppija] = {
+    val opiskeluoikeudet: Observable[(Oid, List[OpiskeluOikeus])] = opiskeluOikeusRepository.query(filters)
+
+    opiskeluoikeudet.flatMap {
       case (oid, oikeudet) => oppijaRepository.findByOid(oid) match {
-        case Some(oppija) => Some(TorOppija(oppija, oikeudet.map(_._2).toList))
+        case Some(oppija) =>
+          Observable.just(TorOppija(oppija, oikeudet))
         case None =>
           logger.warn("Oppija with oid: " + oid + " not found")
-          None
+          Observable.empty
       }
     }
   }

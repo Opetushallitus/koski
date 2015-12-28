@@ -9,9 +9,10 @@ import com.fasterxml.jackson.databind.node.ArrayNode
 import com.github.fge.jackson.JsonLoader
 import com.github.fge.jsonschema.core.report.LogLevel.ERROR
 import com.github.fge.jsonschema.main.JsonSchemaFactory
+import fi.oph.tor.db.GlobalExecutionContext
 import fi.oph.tor.henkilo.HenkiloOid
 import fi.oph.tor.http.HttpStatus
-import fi.oph.tor.json.Json
+import fi.oph.tor.json.{Json, JsonStreamWriter}
 import fi.oph.tor.koodisto.KoodistoPalvelu
 import fi.oph.tor.organisaatio.OrganisaatioRepository
 import fi.oph.tor.schema.{Henkilö, TorOppija, TorSchema}
@@ -19,10 +20,12 @@ import fi.oph.tor.toruser.{RequiresAuthentication, UserOrganisationsRepository}
 import fi.oph.tor.{ErrorHandlingServlet, InvalidRequestException}
 import fi.vm.sade.security.ldap.DirectoryClient
 import fi.vm.sade.utils.slf4j.Logging
+import org.scalatra.FutureSupport
 
 import scala.collection.JavaConversions._
+import scala.concurrent.duration.Duration
 
-class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: UserOrganisationsRepository, val directoryClient: DirectoryClient, val koodistoPalvelu: KoodistoPalvelu, val organisaatioRepository: OrganisaatioRepository) extends ErrorHandlingServlet with Logging with RequiresAuthentication {
+class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: UserOrganisationsRepository, val directoryClient: DirectoryClient, val koodistoPalvelu: KoodistoPalvelu, val organisaatioRepository: OrganisaatioRepository) extends ErrorHandlingServlet with Logging with RequiresAuthentication with GlobalExecutionContext with FutureSupport {
 
   private val schema = JsonSchemaFactory.byDefault.getJsonSchema(JsonLoader.fromString(TorSchema.schemaJsonString))
   private val mapper = new ObjectMapper().enable(INDENT_OUTPUT)
@@ -41,6 +44,8 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
     }
   }
 
+
+
   get("/") {
     logger.info("Haetaan opiskeluoikeuksia: " + request.getQueryString)
 
@@ -51,12 +56,16 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
       case (p, _) => Left(HttpStatus.badRequest("Unsupported query parameter: " + p))
     }
 
-    renderEither((queryFilters.partition(_.isLeft) match {
-      case (Nil, queries) => Right(queries.map(_.right.get))
-      case (errors, _) => Left(HttpStatus.fold(errors.map(_.left.get)))
-    }).right.map(rekisteri.findOppijat(_)))
-
+    queryFilters.partition(_.isLeft) match {
+      case (Nil, queries) =>
+        val filters = queries.map(_.right.get)
+        val oppijat = rekisteri.findOppijat(filters)
+        JsonStreamWriter.writeJsonStream(oppijat)(this, Json.jsonFormats)
+      case (errors, _) =>
+        renderStatus(HttpStatus.fold(errors.map(_.left.get)))
+    }
   }
+
 
   get("/:oid") {
     renderEither(HenkiloOid.validateHenkilöOid(params("oid")).right.flatMap { oid =>
@@ -73,6 +82,8 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
         throw new InvalidRequestException("query parameter length must be at least 3")
     }
   }
+
+  override protected def asyncTimeout = Duration.Inf
 
   private def jsonSchemaValidate: Unit = this.synchronized {
     val schemaValidationReport = schema.validate(JsonLoader.fromString(request.body))
