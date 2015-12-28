@@ -20,10 +20,10 @@ class AuthenticationServiceClient(virkailija: VirkailijaHttpClient) extends Enti
   def lisääOrganisaatio(henkilöOid: String, organisaatioOid: String, nimike: String) = {
     virkailija.httpClient.put("/authentication-service/resources/henkilo/" + henkilöOid + "/organisaatiohenkilo", List(
       LisääOrganisaatio(organisaatioOid, nimike)
-    ))(json4sEncoderOf[List[LisääOrganisaatio]])
+    ))(json4sEncoderOf[List[LisääOrganisaatio]], Http.unitDecoder)
   }
   def lisääKäyttöoikeusRyhmä(henkilöOid: String, organisaatioOid: String, ryhmä: Int): Unit = {
-    virkailija.httpClient.put("/authentication-service/resources/henkilo/" + henkilöOid + "/organisaatiohenkilo/" + organisaatioOid + "/kayttooikeusryhmat", List(LisääKäyttöoikeusryhmä(ryhmä)))(json4sEncoderOf[List[LisääKäyttöoikeusryhmä]])
+    virkailija.httpClient.put("/authentication-service/resources/henkilo/" + henkilöOid + "/organisaatiohenkilo/" + organisaatioOid + "/kayttooikeusryhmat", List(LisääKäyttöoikeusryhmä(ryhmä)))(json4sEncoderOf[List[LisääKäyttöoikeusryhmä]], Http.unitDecoder)
   }
   def asetaSalasana(henkilöOid: String, salasana: String) = {
     virkailija.httpClient.post ("/authentication-service/resources/salasana/" + henkilöOid, salasana)(EntityEncoder.stringEncoder(Charset.`UTF-8`)

@@ -63,21 +63,18 @@ case class Http(root: String, client: Client = blaze.defaultClient) {
   }
 
   def post[I <: AnyRef, O <: Any](path: String, entity: I)(implicit encode: EntityEncoder[I], decode: Decode[O]): O = {
-    val request: Request = Request(uri = uriFromString(path), method = Method.POST)
-    val task: Task[Request] = request.withBody(entity)
-
-    apply(task, request)(decode).run
+    send(uriFromString(path), Method.POST, entity)
   }
 
-  def put[T <: AnyRef](path: String, entity: T)(implicit encode: EntityEncoder[T]): Unit = {
+  def put[I <: AnyRef, O <: Any](path: String, entity: I)(implicit encode: EntityEncoder[I], decode: Decode[O]): O = {
     send(uriFromString(path), Method.PUT, entity)
   }
 
-  def send[T <: AnyRef](path: Uri, method: Method, entity: T)(implicit encode: EntityEncoder[T]): Unit = {
+  def send[I <: AnyRef, O <: Any](path: Uri, method: Method, entity: I)(implicit encode: EntityEncoder[I], decode: Decode[O]): O = {
     val request: Request = Request(uri = path, method = method)
     val task: Task[Request] = request.withBody(entity)
 
-    apply(task, request) (Http.unitDecoder).run
+    apply(task, request)(decode).run
   }
 
   private def runHttp[ResultType](task: Task[Response], request: Request)(decoder: (Int, String, Request) => ResultType): Task[ResultType] = {
