@@ -20,12 +20,13 @@ import fi.oph.tor.toruser.{RequiresAuthentication, UserOrganisationsRepository}
 import fi.oph.tor.{ErrorHandlingServlet, InvalidRequestException}
 import fi.vm.sade.security.ldap.DirectoryClient
 import fi.vm.sade.utils.slf4j.Logging
-import org.scalatra.FutureSupport
+import org.scalatra.{GZipSupport, FutureSupport}
 
 import scala.collection.JavaConversions._
 import scala.concurrent.duration.Duration
 
-class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: UserOrganisationsRepository, val directoryClient: DirectoryClient, val koodistoPalvelu: KoodistoPalvelu, val organisaatioRepository: OrganisaatioRepository) extends ErrorHandlingServlet with Logging with RequiresAuthentication with GlobalExecutionContext with FutureSupport {
+class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: UserOrganisationsRepository, val directoryClient: DirectoryClient, val koodistoPalvelu: KoodistoPalvelu, val organisaatioRepository: OrganisaatioRepository)
+  extends ErrorHandlingServlet with Logging with RequiresAuthentication with GlobalExecutionContext with FutureSupport with GZipSupport {
 
   private val schema = JsonSchemaFactory.byDefault.getJsonSchema(JsonLoader.fromString(TorSchema.schemaJsonString))
   private val mapper = new ObjectMapper().enable(INDENT_OUTPUT)
