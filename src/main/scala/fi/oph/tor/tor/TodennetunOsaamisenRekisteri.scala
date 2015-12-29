@@ -20,19 +20,17 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
 
 
   def findOppijat(filters: List[QueryFilter])(implicit userContext: TorUser): Observable[TorOppija] = {
-    val opiskeluoikeudet: Observable[(Oid, List[OpiskeluOikeus])] = opiskeluOikeusRepository.query(filters)
 
-    opiskeluoikeudet.flatMap {
-      case (oid, oikeudet) => oppijaRepository.findByOid(oid) match {
-        case Some(oppija) =>
-          Observable.just(TorOppija(oppija, oikeudet))
-        case None =>
-          logger.warn("Oppija with oid: " + oid + " not found")
-          Observable.empty
-      }
+    opiskeluOikeusRepository.query(filters).tumblingBuffer(100).flatMap {
+      oikeudet =>
+        val henkilötAndOpiskeluoikeudet = oppijaRepository.findByOids(oikeudet.map(_._1).toList).zip(oikeudet).map {
+          case (h, (oid, oo)) =>
+            assert(h.oid == oid)
+            TorOppija(h, oo)
+        }
+        Observable.from(henkilötAndOpiskeluoikeudet)
     }
   }
-
 
   def findOppijat(query: String)(implicit userContext: TorUser): Seq[FullHenkilö] = {
     val oppijat: List[FullHenkilö] = oppijaRepository.findOppijat(query)

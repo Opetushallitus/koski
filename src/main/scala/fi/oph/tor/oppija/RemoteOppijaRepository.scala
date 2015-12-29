@@ -12,5 +12,8 @@ class RemoteOppijaRepository(henkilöPalveluClient: AuthenticationServiceClient)
 
   override def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String) = henkilöPalveluClient.create(CreateUser.oppija(hetu, sukunimi, etunimet, kutsumanimi))
 
+  override def findByOids(oids: List[String]): List[FullHenkilö] = henkilöPalveluClient.findByOids(oids).map(toOppija)
+
   private def toOppija(user: User) = FullHenkilö(user.oidHenkilo, user.hetu, user.etunimet, user.kutsumanimi, user.sukunimi)
+
 }

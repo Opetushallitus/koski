@@ -39,6 +39,7 @@ trait OppijaRepository extends Logging {
 
   def findOppijat(query: String): List[FullHenkilö]
   def findByOid(id: String): Option[FullHenkilö]
+  def findByOids(oids: List[String]): List[FullHenkilö]
 
   def resetFixtures {}
 

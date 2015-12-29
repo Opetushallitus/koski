@@ -73,4 +73,7 @@ class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with 
   override def findByOid(id: String): Option[FullHenkilö] = {
     oppijat.filter {_.oid == id}.headOption.orElse(findFromDb(id))
   }
+
+  override def findByOids(oids: List[String]): List[FullHenkilö] = oids.map(oid => findByOid(oid).get)
+
 }
