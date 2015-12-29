@@ -351,7 +351,9 @@ case class LähdejärjestelmäId(
   lähdejärjestelmä: KoodistoKoodiViite
 )
 
+@Description("Organisaatio. Voi olla Opintopolun organisaatiosta löytyvä oid:illinen organisaatio, y-tunnuksellinen yritys tai tutkintotoimikunta.")
 sealed trait Organisaatio
+  @Description("Opintopolun organisaatiopalvelusta löytyvä organisaatio. Esimerkiksi koulutustoimijat, oppilaitokset ja toimipisteet ovat tällaisia organisaatioita.")
   case class OidOrganisaatio(
     @Description("Organisaation tunniste Opintopolku-palvelussa")
     oid: String,
@@ -360,11 +362,13 @@ sealed trait Organisaatio
     nimi: Option[String] = None
   ) extends Organisaatio
 
+  @Description("Yritys, jolla on y-tunnus")
   case class Yritys(
     nimi: String,
     yTunnus: String
   ) extends Organisaatio
 
+  @Description("Tutkintotoimikunta")
   case class Tutkintotoimikunta(
     nimi: String,
     tutkintotoimikunnanNumero: String
