@@ -10,5 +10,5 @@ object TorSchema {
   lazy val schema = schemaFactory.createSchema(classOf[TorOppija].getName).asInstanceOf[ClassSchema]
   lazy val schemaJson = SchemaToJson.toJsonSchema(schema)(metadataTypes)
   lazy val schemaJsonString = Json.write(schemaJson)
-  lazy val exampleJsonString = Json.write(TorOppijaExamples.perustutkintoNäyttönä)
+  lazy val exampleJsonString = Json.write(TorOppijaExamples.full)
 }

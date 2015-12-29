@@ -133,7 +133,7 @@ object TorOppijaExamples {
     )
   )
 
-  val perustutkintoNäyttönä = TorOppija(
+  val full = TorOppija(
     Henkilö.withOid("1.2.246.562.24.00000000001"),
     List(
       OpiskeluOikeus(
@@ -177,7 +177,7 @@ object TorOppijaExamples {
     )
   )
 
-  val uusiOppijaEiSuorituksia = TorOppija(
+  val uusi = TorOppija(
     Henkilö("010101-123N", "matti pekka", "matti", "virtanen"),
     List(
       OpiskeluOikeus(
@@ -242,7 +242,7 @@ object TorOppijaExamples {
     )
   )
 
-  val paikallisellaTutkinnonOsalla = TorOppija(
+  val paikallinen = TorOppija(
     Henkilö("010101-123N", "matti pekka", "matti", "virtanen"),
     List(
       OpiskeluOikeus(
@@ -274,7 +274,7 @@ object TorOppijaExamples {
   )
   ;
 
-  val perustutkintoOps = TorOppija(
+  val ops = TorOppija(
     Henkilö.withOid("1.2.246.562.24.00000000001"),
     List(
       OpiskeluOikeus(
@@ -345,11 +345,11 @@ object TorOppijaExamples {
   )))
 
   val examples = List(
-    Example("uusi", "Uusi oppija lisätään suorittamaan Autoalan perustutkintoa", uusiOppijaEiSuorituksia),
+    Example("uusi", "Uusi oppija lisätään suorittamaan Autoalan perustutkintoa", uusi),
     Example("oppisopimus", "Uusi oppija, suorittaa oppisopimuksella", oppisopimus),
-    Example("paikallinen", "Oppija on suorittanut paikallisen tutkinnon osan", paikallisellaTutkinnonOsalla),
-    Example("full", "Isompi esimerkki. Suorittaa perustutkintoa näyttönä. Tähän lisätty lähes kaikki kaavaillut tietokentät.", perustutkintoNäyttönä),
-    Example("ops", "Perustutkinto ops:n mukaan, läsnäolotiedoilla, hojks", perustutkintoOps)
+    Example("paikallinen", "Oppija on suorittanut paikallisen tutkinnon osan", paikallinen),
+    Example("full", "Isompi esimerkki. Suorittaa perustutkintoa näyttönä. Tähän lisätty lähes kaikki kaavaillut tietokentät.", full),
+    Example("ops", "Perustutkinto ops:n mukaan, läsnäolotiedoilla, hojks", ops)
   )
 
 }
