@@ -4,7 +4,7 @@ import fi.vm.sade.utils.json4s.GenericJsonFormats
 import org.json4s._
 
 object Deserializers {
-  val deserializers = List(KoulutusmoduulitoteutusDeserializer, KoulutusmoduuliDeserializer, HenkilöDeserialializer, SuoritustapaDeserializer, JärjestämismuotoDeserializer)
+  val deserializers = List(KoulutusmoduulitoteutusDeserializer, KoulutusmoduuliDeserializer, HenkilöDeserialializer, SuoritustapaDeserializer, JärjestämismuotoDeserializer, OrganisaatioDeserializer)
 }
 
 trait Deserializer[T] extends Serializer[T] {
@@ -78,10 +78,10 @@ object JärjestämismuotoDeserializer extends Deserializer[Järjestämismuoto] {
 }
 
 object OrganisaatioDeserializer extends Deserializer[Organisaatio] {
-  val organisaatioClasses = List(classOf[Organisaatio], classOf[OidOrganisaatio], classOf[Tutkintotoimikunta], classOf[Yritys])
+  val OrganisaatioClass = classOf[Organisaatio]
 
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Organisaatio] = {
-    case (TypeInfo(c, _), json) if organisaatioClasses.contains(c) =>
+    case (TypeInfo(OrganisaatioClass, _), json) =>
       json match {
         case organisaatio: JObject if organisaatio.values.contains("tutkintotoimikunnanNumero") => organisaatio.extract[Tutkintotoimikunta]
         case organisaatio: JObject if organisaatio.values.contains("oid") => organisaatio.extract[OidOrganisaatio]

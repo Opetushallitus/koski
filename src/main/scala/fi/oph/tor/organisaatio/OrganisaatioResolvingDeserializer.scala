@@ -2,17 +2,17 @@ package fi.oph.tor.organisaatio
 
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.json.{ContextualExtractor, Json}
-import fi.oph.tor.schema.{OidOrganisaatio, OrganisaatioDeserializer, Deserializer, Organisaatio}
+import fi.oph.tor.schema._
 import fi.vm.sade.utils.slf4j.Logging
 import org.json4s._
 import org.json4s.reflect.TypeInfo
 
 object OrganisaatioResolvingDeserializer extends Deserializer[Organisaatio] with Logging {
-  private val TheClass = classOf[Organisaatio]
+  val organisaatioClasses = List(classOf[Organisaatio], classOf[OidOrganisaatio], classOf[Tutkintotoimikunta], classOf[Yritys])
 
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Organisaatio] = {
-    case (t, json) if OrganisaatioDeserializer.deserialize(Json.jsonFormats).isDefinedAt((t, json)) =>
-      OrganisaatioDeserializer.deserialize(Json.jsonFormats)((t, json)) match {
+    case (TypeInfo(c, _), json) if organisaatioClasses.contains(c) =>
+      OrganisaatioDeserializer.deserialize(Json.jsonFormats)((TypeInfo(classOf[Organisaatio], None), json)) match {
         case OidOrganisaatio(oid, _) =>
           ContextualExtractor.getContext[{def organisaatioRepository: OrganisaatioRepository}] match {
             case Some(context) => context.organisaatioRepository.getOrganisaatio(oid) match {
