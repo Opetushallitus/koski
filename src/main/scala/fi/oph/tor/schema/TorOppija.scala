@@ -206,7 +206,7 @@ case class Vahvistus(
 case class OrganisaatioHenkilö(
   nimi: String,
   titteli: String,
-  organisaatio: OidOrganisaatio
+  organisaatio: Organisaatio
 )
 
 trait Suoritustapa {
@@ -371,5 +371,5 @@ sealed trait Organisaatio
   @Description("Tutkintotoimikunta")
   case class Tutkintotoimikunta(
     nimi: String,
-    tutkintotoimikunnanNumero: String
+    tutkintotoimikunnanNumero: Int
   ) extends Organisaatio

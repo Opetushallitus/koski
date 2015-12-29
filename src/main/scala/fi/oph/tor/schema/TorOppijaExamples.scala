@@ -10,7 +10,7 @@ object TorOppijaExamples {
   private val järjestämismuotoOppilaitos = KoodistoKoodiViite("10", Some("Oppilaitosmuotoinen"), "jarjestamismuoto", Some(1))
   private val stadinAmmattiopisto: OidOrganisaatio = OidOrganisaatio("1.2.246.562.10.52251087186", Some("Stadin ammattiopisto"))
   private val toimipiste: OidOrganisaatio = OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))
-  private val tutkintotoimikunta: OidOrganisaatio = OidOrganisaatio("1.2.246.562.10.37144658251", Some("Autokorjaamoalan tutkintotoimikunta 8406"))
+  private val tutkintotoimikunta: Organisaatio = Tutkintotoimikunta("Autokorjaamoalan tutkintotoimikunta", 8406)
   private val opintojenLaajuusYksikkö = KoodistoKoodiViite("6", Some("osaamispistettä"), "opintojenlaajuusyksikko", Some(1))
   private val opiskeluoikeusAktiivinen = KoodistoKoodiViite("aktiivinen", Some("Aktiivinen"), "opiskeluoikeudentila", Some(1))
   private val opiskeluoikeusPäättynyt = KoodistoKoodiViite("paattynyt", Some("Päättynyt"), "opiskeluoikeudentila", Some(1))
