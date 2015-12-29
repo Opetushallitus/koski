@@ -48,7 +48,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
 
 
   get("/") {
-    logger.info("Haetaan opiskeluoikeuksia: " + request.getQueryString)
+    logger.info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
 
     val queryFilters: List[Either[HttpStatus, QueryFilter]] = params.toList.map {
       case (p, v) if p == "valmistunutAikaisintaan" => dateParam((p, v)).right.map(ValmistunutAikaisintaan(_))
