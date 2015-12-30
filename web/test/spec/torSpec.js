@@ -455,6 +455,92 @@ describe('TOR', function() {
           }), 400, "suoritus.arviointi.päivä (2016-05-31) oltava sama tai aiempi kuin suoritus.vahvistus.päivä(2016-05-30)"))
         })
       })
+
+      describe('Opiskeluoikeusjaksot', function() {
+        describe('Päivämäärät kunnossa', function() {
+          it('palautetaan HTTP 200', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
+            opiskeluoikeudenTila: {opiskeluoikeusjaksot: [
+              { alku: "2015-08-01", loppu: "2015-12-31", tila: {koodiarvo: "aktiivinen", koodistoUri: "opiskeluoikeudentila"}},
+              { alku: "2016-01-01", loppu: "2016-05-31", tila: {koodiarvo: "keskeyttanyt", koodistoUri: "opiskeluoikeudentila"}},
+              { alku: "2016-06-01", tila: {koodiarvo: "paattynyt", koodistoUri: "opiskeluoikeudentila"}}
+            ]}
+          }), 200))
+        })
+        describe('alku > loppu', function() {
+          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
+            opiskeluoikeudenTila: {opiskeluoikeusjaksot: [
+              { alku: "2016-08-01", loppu: "2015-12-31", tila: {koodiarvo: "aktiivinen", koodistoUri: "opiskeluoikeudentila"}}
+            ]}
+          }), 400, "opiskeluoikeudenTila.opiskeluoikeusjaksot.alku (2016-08-01) oltava sama tai aiempi kuin opiskeluoikeudenTila.opiskeluoikeusjaksot.loppu(2015-12-31)"))
+        })
+        describe('ei-viimeiseltä jaksolta puuttuu loppupäivä', function() {
+          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
+            opiskeluoikeudenTila: {opiskeluoikeusjaksot: [
+              { alku: "2015-08-01", tila: {koodiarvo: "aktiivinen", koodistoUri: "opiskeluoikeudentila"}},
+              { alku: "2016-01-01", loppu: "2016-05-31", tila: {koodiarvo: "keskeyttanyt", koodistoUri: "opiskeluoikeudentila"}}
+            ]}
+          }), 400, "opiskeluoikeudenTila.opiskeluoikeusjaksot: ei-viimeiseltä jaksolta puuttuu loppupäivä"))
+        })
+        describe('jaksot ovat päällekkäiset', function() {
+          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
+            opiskeluoikeudenTila: {opiskeluoikeusjaksot: [
+              { alku: "2015-08-01", loppu: "2016-01-01", tila: {koodiarvo: "aktiivinen", koodistoUri: "opiskeluoikeudentila"}},
+              { alku: "2016-01-01", loppu: "2016-05-31", tila: {koodiarvo: "keskeyttanyt", koodistoUri: "opiskeluoikeudentila"}}
+            ]}
+          }), 400, "opiskeluoikeudenTila.opiskeluoikeusjaksot: jaksot eivät muodosta jatkumoa"))
+        })
+        describe('jaksojen väliin jää tyhjää', function() {
+          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
+            opiskeluoikeudenTila: {opiskeluoikeusjaksot: [
+              { alku: "2015-08-01", loppu: "2015-10-01", tila: {koodiarvo: "aktiivinen", koodistoUri: "opiskeluoikeudentila"}},
+              { alku: "2016-01-01", loppu: "2016-05-31", tila: {koodiarvo: "keskeyttanyt", koodistoUri: "opiskeluoikeudentila"}}
+            ]}
+          }), 400, "opiskeluoikeudenTila.opiskeluoikeusjaksot: jaksot eivät muodosta jatkumoa"))
+        })
+      })
+
+      describe('Läsnäolojaksot', function() {
+        describe('Päivämäärät kunnossa', function() {
+          it('palautetaan HTTP 200', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
+            läsnäolotiedot: {läsnäolojaksot: [
+              { alku: "2015-08-01", loppu: "2015-12-31", tila: {koodiarvo: "lasna", koodistoUri: "lasnaolotila"}},
+              { alku: "2016-01-01", loppu: "2016-05-31", tila: {koodiarvo: "poissa", koodistoUri: "lasnaolotila"}},
+              { alku: "2016-06-01", tila: {koodiarvo: "lasna", koodistoUri: "lasnaolotila"}}
+            ]}
+          }), 200))
+        })
+        describe('alku > loppu', function() {
+          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
+            läsnäolotiedot: {läsnäolojaksot: [
+              { alku: "2016-08-01", loppu: "2015-12-31", tila: {koodiarvo: "lasna", koodistoUri: "lasnaolotila"}}
+            ]}
+          }), 400, "läsnäolotiedot.läsnäolojaksot.alku (2016-08-01) oltava sama tai aiempi kuin läsnäolotiedot.läsnäolojaksot.loppu(2015-12-31)"))
+        })
+        describe('ei-viimeiseltä jaksolta puuttuu loppupäivä', function() {
+          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
+            läsnäolotiedot: {läsnäolojaksot: [
+              { alku: "2015-08-01", tila: {koodiarvo: "lasna", koodistoUri: "lasnaolotila"}},
+              { alku: "2016-01-01", loppu: "2016-05-31", tila: {koodiarvo: "poissa", koodistoUri: "lasnaolotila"}}
+            ]}
+          }), 400, "läsnäolotiedot.läsnäolojaksot: ei-viimeiseltä jaksolta puuttuu loppupäivä"))
+        })
+        describe('jaksot ovat päällekkäiset', function() {
+          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
+            läsnäolotiedot: {läsnäolojaksot: [
+              { alku: "2015-08-01", loppu: "2016-01-01", tila: {koodiarvo: "lasna", koodistoUri: "lasnaolotila"}},
+              { alku: "2016-01-01", loppu: "2016-05-31", tila: {koodiarvo: "poissa", koodistoUri: "lasnaolotila"}}
+            ]}
+          }), 400, "läsnäolotiedot.läsnäolojaksot: jaksot eivät muodosta jatkumoa"))
+        })
+        describe('jaksojen väliin jää tyhjää', function() {
+          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
+            läsnäolotiedot: {läsnäolojaksot: [
+              { alku: "2015-08-01", loppu: "2015-10-01", tila: {koodiarvo: "lasna", koodistoUri: "lasnaolotila"}},
+              { alku: "2016-01-01", loppu: "2016-05-31", tila: {koodiarvo: "poissa", koodistoUri: "lasnaolotila"}}
+            ]}
+          }), 400, "läsnäolotiedot.läsnäolojaksot: jaksot eivät muodosta jatkumoa"))
+        })
+      })
     })
 
     describe('Virhetilanteet', function() {
