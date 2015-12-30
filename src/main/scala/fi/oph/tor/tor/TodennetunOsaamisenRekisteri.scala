@@ -1,12 +1,10 @@
 package fi.oph.tor.tor
 
-import java.time.LocalDate
 import fi.oph.tor.arvosana.ArviointiasteikkoRepository
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.koodisto.KoodistoPalvelu
 import fi.oph.tor.opiskeluoikeus._
 import fi.oph.tor.oppija._
-import fi.oph.tor.schema.Henkilö.Oid
 import fi.oph.tor.schema._
 import fi.oph.tor.tor.DateValidation.validateDateOrder
 import fi.oph.tor.toruser.TorUser
