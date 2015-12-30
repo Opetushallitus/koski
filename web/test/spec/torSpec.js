@@ -410,15 +410,49 @@ describe('TOR', function() {
           }), 400, "Virheellinen päivämäärä: 2015-01-32"))
         })
         describe('Väärä päivämääräjärjestys', function() {
-          it('opiskeluOikeus.alkamispäivä > opiskeluOikeus.päättymispäivä', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
+          it('alkamispäivä > päättymispäivä', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
             alkamispäivä: "2015-08-01",
             päättymispäivä: "2014-05-31",
-          }), 400, "opiskeluOikeus.alkamispäivä (2015-08-01) oltava sama tai aiempi kuin opiskeluOikeus.päättymispäivä(2014-05-31)"))
+          }), 400, "alkamispäivä (2015-08-01) oltava sama tai aiempi kuin päättymispäivä(2014-05-31)"))
 
-          it('opiskeluOikeus.alkamispäivä > opiskeluOikeus.arvioituPäättymispäivä', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
+          it('alkamispäivä > arvioituPäättymispäivä', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
             alkamispäivä: "2015-08-01",
             arvioituPäättymispäivä: "2014-05-31",
-          }), 400, "opiskeluOikeus.alkamispäivä (2015-08-01) oltava sama tai aiempi kuin opiskeluOikeus.arvioituPäättymispäivä(2014-05-31)"))
+          }), 400, "alkamispäivä (2015-08-01) oltava sama tai aiempi kuin arvioituPäättymispäivä(2014-05-31)"))
+        })
+      })
+
+      describe('Suorituksen päivämäärät', function() {
+        describe('Päivämäärät kunnossa', function() {
+          it('palautetaan HTTP 200', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
+            suoritus: {
+              alkamispäivä: "2015-08-01",
+              arviointi: [{päivä: "2016-05-31", arvosana: {koodiarvo: "2", koodistoUri: "arviointiasteikkoammatillinent1k3"}}],
+              vahvistus: {
+                päivä: "2016-05-31"
+              }
+            }
+          }), 200))
+        })
+
+        describe('alkamispäivä > arviointi.päivä', function() {
+          it('palautetaan HTTP 200', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
+            suoritus: {
+              alkamispäivä: "2017-08-01",
+              arviointi: [{päivä: "2016-05-31", arvosana: {koodiarvo: "2", koodistoUri: "arviointiasteikkoammatillinent1k3"}}]
+            }
+          }), 400, "suoritus.alkamispäivä (2017-08-01) oltava sama tai aiempi kuin suoritus.arviointi.päivä(2016-05-31)"))
+        })
+
+        describe('arviointi.päivä > vahvistus.päivä', function() {
+          it('palautetaan HTTP 200', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
+            suoritus: {
+              arviointi: [{päivä: "2016-05-31", arvosana: {koodiarvo: "2", koodistoUri: "arviointiasteikkoammatillinent1k3"}}],
+              vahvistus: {
+                päivä: "2016-05-30"
+              }
+            }
+          }), 400, "suoritus.arviointi.päivä (2016-05-31) oltava sama tai aiempi kuin suoritus.vahvistus.päivä(2016-05-30)"))
         })
       })
     })

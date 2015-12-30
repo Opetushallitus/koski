@@ -8,6 +8,7 @@ import fi.oph.tor.opiskeluoikeus._
 import fi.oph.tor.oppija._
 import fi.oph.tor.schema.Henkilö.Oid
 import fi.oph.tor.schema._
+import fi.oph.tor.tor.DateValidation.validateDateOrder
 import fi.oph.tor.toruser.TorUser
 import fi.oph.tor.tutkinto.{TutkintoRakenneValidator, TutkintoRepository}
 import fi.vm.sade.utils.slf4j.Logging
@@ -74,21 +75,22 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
       HttpStatus.badRequest("At least one OpiskeluOikeus required")
     }
     else {
-      HttpStatus.each(oppija.opiskeluoikeudet) {validate _}
+      HttpStatus.each(oppija.opiskeluoikeudet) {validateOpiskeluOikeus _}
     }
   }
-
-  private def validateDateOrder(firstName: String, first: Iterable[LocalDate], secondName: String, second: Iterable[LocalDate]): HttpStatus = {
-    HttpStatus.fold(for (left <- first; right <- second) yield {
-      HttpStatus.validate(left.compareTo(right) <= 0)(HttpStatus.badRequest(firstName + " (" + left + ") oltava sama tai aiempi kuin " + secondName + "(" + right + ")"))
-    })
+  
+  private def validateOpiskeluOikeus(opiskeluOikeus: OpiskeluOikeus)(implicit userContext: TorUser): HttpStatus = {
+    HttpStatus.validate(userContext.userOrganisations.hasReadAccess(opiskeluOikeus.oppilaitos)) { HttpStatus.forbidden("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid) }
+      .then { validateDateOrder(("alkamispäivä", opiskeluOikeus.alkamispäivä), ("päättymispäivä", opiskeluOikeus.päättymispäivä)) }
+      .then { validateDateOrder(("alkamispäivä", opiskeluOikeus.alkamispäivä), ("arvioituPäättymispäivä", opiskeluOikeus.arvioituPäättymispäivä)) }
+      .then { validateSuoritus(opiskeluOikeus.suoritus) }
+      .then { TutkintoRakenneValidator(tutkintoRepository).validateTutkintoRakenne(opiskeluOikeus)}
   }
 
-  private def validate(opiskeluOikeus: OpiskeluOikeus)(implicit userContext: TorUser): HttpStatus = {
-    HttpStatus.validate(userContext.userOrganisations.hasReadAccess(opiskeluOikeus.oppilaitos)) { HttpStatus.forbidden("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid) }
-      .then { validateDateOrder("opiskeluOikeus.alkamispäivä", opiskeluOikeus.alkamispäivä, "opiskeluOikeus.päättymispäivä", opiskeluOikeus.päättymispäivä) }
-      .then { validateDateOrder("opiskeluOikeus.alkamispäivä", opiskeluOikeus.alkamispäivä, "opiskeluOikeus.arvioituPäättymispäivä", opiskeluOikeus.arvioituPäättymispäivä) }
-      .then { TutkintoRakenneValidator(tutkintoRepository).validateTutkintoRakenne(opiskeluOikeus)}
+  def validateSuoritus(suoritus: Suoritus): HttpStatus = {
+    val arviointipäivä = ("suoritus.arviointi.päivä", suoritus.arviointi.toList.flatten.flatMap(_.päivä))
+    validateDateOrder(("suoritus.alkamispäivä", suoritus.alkamispäivä), arviointipäivä)
+      .then { validateDateOrder(arviointipäivä, ("suoritus.vahvistus.päivä", suoritus.vahvistus.flatMap(_.päivä))) }
   }
 
   def findTorOppija(oid: String)(implicit userContext: TorUser): Either[HttpStatus, TorOppija] = {
