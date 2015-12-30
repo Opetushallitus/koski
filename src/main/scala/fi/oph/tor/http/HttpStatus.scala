@@ -1,7 +1,5 @@
 package fi.oph.tor.http
 
-import scala.collection.GenTraversableOnce
-
 case class HttpStatus(statusCode: Int, errors: List[String]) {
   def isOk = statusCode < 300
   def isError = !isOk
@@ -24,12 +22,14 @@ object HttpStatus {
 
   /** If predicate is true, yield 200/ok, else run given block */
   def validate(predicate: => Boolean)(status: => HttpStatus) = if (predicate) { ok } else { status }
-  /** Map each object to a status, fold statii */
-  def each[T](xs: Iterable[T])(block: T => HttpStatus) = fold(xs.map(block))
   /** Combine two statii: concatenate errors list, pick highest status code */
   def append(a: HttpStatus, b: HttpStatus) = {
     HttpStatus(Math.max(a.statusCode, b.statusCode), a.errors ++ b.errors)
   }
   /** Append all given statii into one, concatenating error list, picking highest status code */
-  def fold(statii: Iterable[HttpStatus]) = statii.fold(ok)(append)
+  def fold(statii: Iterable[HttpStatus]): HttpStatus = statii.fold(ok)(append)
+
+  /** Append all given statii into one, concatenating error list, picking highest status code */
+  def fold(statii: HttpStatus*): HttpStatus = fold(statii.toList)
+
 }

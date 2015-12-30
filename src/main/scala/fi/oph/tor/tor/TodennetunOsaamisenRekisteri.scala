@@ -75,22 +75,26 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
       HttpStatus.badRequest("At least one OpiskeluOikeus required")
     }
     else {
-      HttpStatus.each(oppija.opiskeluoikeudet) {validateOpiskeluOikeus _}
+      HttpStatus.fold(oppija.opiskeluoikeudet.map(validateOpiskeluOikeus))
     }
   }
   
   private def validateOpiskeluOikeus(opiskeluOikeus: OpiskeluOikeus)(implicit userContext: TorUser): HttpStatus = {
     HttpStatus.validate(userContext.userOrganisations.hasReadAccess(opiskeluOikeus.oppilaitos)) { HttpStatus.forbidden("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid) }
-      .then { validateDateOrder(("alkamispäivä", opiskeluOikeus.alkamispäivä), ("päättymispäivä", opiskeluOikeus.päättymispäivä)) }
-      .then { validateDateOrder(("alkamispäivä", opiskeluOikeus.alkamispäivä), ("arvioituPäättymispäivä", opiskeluOikeus.arvioituPäättymispäivä)) }
-      .then { validateSuoritus(opiskeluOikeus.suoritus) }
+      .then { HttpStatus.fold(
+        validateDateOrder(("alkamispäivä", opiskeluOikeus.alkamispäivä), ("päättymispäivä", opiskeluOikeus.päättymispäivä)),
+        validateDateOrder(("alkamispäivä", opiskeluOikeus.alkamispäivä), ("arvioituPäättymispäivä", opiskeluOikeus.arvioituPäättymispäivä)),
+        validateSuoritus(opiskeluOikeus.suoritus)
+      )}
       .then { TutkintoRakenneValidator(tutkintoRepository).validateTutkintoRakenne(opiskeluOikeus)}
   }
 
   def validateSuoritus(suoritus: Suoritus): HttpStatus = {
     val arviointipäivä = ("suoritus.arviointi.päivä", suoritus.arviointi.toList.flatten.flatMap(_.päivä))
-    validateDateOrder(("suoritus.alkamispäivä", suoritus.alkamispäivä), arviointipäivä)
-      .then { validateDateOrder(arviointipäivä, ("suoritus.vahvistus.päivä", suoritus.vahvistus.flatMap(_.päivä))) }
+    HttpStatus.fold(
+      validateDateOrder(("suoritus.alkamispäivä", suoritus.alkamispäivä), arviointipäivä),
+      validateDateOrder(arviointipäivä, ("suoritus.vahvistus.päivä", suoritus.vahvistus.flatMap(_.päivä)))
+    )
   }
 
   def findTorOppija(oid: String)(implicit userContext: TorUser): Either[HttpStatus, TorOppija] = {
