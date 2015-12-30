@@ -58,8 +58,8 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
     }
   }
 
-  override def find(identifier: OpiskeluOikeusIdentifier)(implicit userContext: TorUser) = identifier match{
-    case PrimaryKey(id) => find(OpiskeluOikeudet.filter(_.id === id)).headOption
+  override def find(identifier: OpiskeluOikeusIdentifier)(implicit userContext: TorUser): Option[OpiskeluOikeus] = identifier match{
+    case PrimaryKey(id) => find(OpiskeluOikeudet.filter(_.id === id)).headOption // Should this fail if not found?
     case IdentifyingSetOfFields(oppijaOid, _, _, _) => {
       findByOppijaOid(oppijaOid).find({
         new IdentifyingSetOfFields(oppijaOid, _) == identifier
