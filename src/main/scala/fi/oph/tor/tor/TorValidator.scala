@@ -8,6 +8,7 @@ import fi.oph.tor.tor.DateValidation._
 import fi.oph.tor.toruser.TorUser
 import fi.oph.tor.tutkinto.{TutkintoRakenneValidator, TutkintoRepository}
 import org.json4s.JValue
+import org.json4s.jackson.JsonMethods._
 
 class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: KoodistoPalvelu, val organisaatioRepository: OrganisaatioRepository) {
   def validate(oppija: TorOppija)(implicit userContext: TorUser): HttpStatus = {
@@ -20,12 +21,16 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
   }
 
   def extractAndValidate(parsedJson: JValue)(implicit userContext: TorUser): Either[HttpStatus, TorOppija] = {
-    val extractionResult: Either[HttpStatus, TorOppija] = ValidatingAndResolvingExtractor.extract[TorOppija](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository))
-    extractionResult.right.flatMap { oppija =>
-      validate(oppija) match {
-        case status if status.isOk => Right(oppija)
-        case status => Left(status)
-      }
+    TorJsonSchemaValidator.jsonSchemaValidate(parsedJson) match {
+      case status if status.isOk =>
+        val extractionResult: Either[HttpStatus, TorOppija] = ValidatingAndResolvingExtractor.extract[TorOppija](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository))
+        extractionResult.right.flatMap { oppija =>
+          validate(oppija) match {
+            case status if status.isOk => Right(oppija)
+            case status => Left(status)
+          }
+        }
+      case status => Left(status)
     }
   }
 

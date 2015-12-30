@@ -6,12 +6,22 @@ import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
 import fi.oph.tor.eperusteet.RakenneOsaSerializer
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.schema._
-import fi.vm.sade.utils.json4s.GenericJsonFormats
 import org.json4s
 import org.json4s.JsonAST.{JInt, JNull, JString}
+import org.json4s.ext.JodaTimeSerializers
 import org.json4s.jackson.JsonMethods._
 import org.json4s.jackson.Serialization
-import org.json4s.{CustomSerializer, Extraction, JValue}
+import org.json4s._
+
+object GenericJsonFormats {
+  val genericFormats: Formats =  new DefaultFormats {
+    override def dateFormatter = {
+      val format = super.dateFormatter
+      format.setTimeZone(DefaultFormats.UTC)
+      format
+    }
+  } ++ JodaTimeSerializers.all
+}
 
 object Json {
   // Find out why SchemaBasedTraitSerializer breaks current serialization

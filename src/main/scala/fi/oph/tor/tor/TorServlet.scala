@@ -13,7 +13,7 @@ import fi.oph.tor.{ErrorHandlingServlet, InvalidRequestException}
 import fi.vm.sade.security.ldap.DirectoryClient
 import fi.vm.sade.utils.slf4j.Logging
 import org.scalatra.{FutureSupport, GZipSupport}
-
+import rx.lang.scala.Observable
 import scala.concurrent.duration.Duration
 
 class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: UserOrganisationsRepository, val directoryClient: DirectoryClient, val validator: TorValidator)
@@ -21,17 +21,13 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
 
   put("/") {
     withJsonBody { parsedJson =>
-      JsonSchemaValidator.jsonSchemaValidate(request.body) match {
-        case Some(error) => halt(400, error)
-        case None =>
-          val validationResult: Either[HttpStatus, TorOppija] = validator.extractAndValidate(parsedJson)
-          val result: Either[HttpStatus, Henkilö.Oid] = validationResult.right.flatMap (rekisteri.createOrUpdate _)
+      val validationResult: Either[HttpStatus, TorOppija] = validator.extractAndValidate(parsedJson)
+      val result: Either[HttpStatus, Henkilö.Oid] = validationResult.right.flatMap (rekisteri.createOrUpdate _)
 
-          result.left.foreach { case HttpStatus(code, errors) =>
-            logger.warn("Opinto-oikeuden päivitys estetty: " + code + " " + errors + " for request " + describeRequest)
-          }
-          renderEither(result)
+      result.left.foreach { case HttpStatus(code, errors) =>
+        logger.warn("Opinto-oikeuden päivitys estetty: " + code + " " + errors + " for request " + describeRequest)
       }
+      renderEither(result)
     }
   }
 
@@ -48,7 +44,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
     queryFilters.partition(_.isLeft) match {
       case (Nil, queries) =>
         val filters = queries.map(_.right.get)
-        val oppijat = rekisteri.findOppijat(filters)
+        val oppijat: Observable[TorOppija] = rekisteri.findOppijat(filters)
         JsonStreamWriter.writeJsonStream(oppijat)(this, Json.jsonFormats)
       case (errors, _) =>
         renderStatus(HttpStatus.fold(errors.map(_.left.get)))

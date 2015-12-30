@@ -1,6 +1,8 @@
 package fi.oph.tor.http
 
-case class HttpStatus(statusCode: Int, errors: List[String]) {
+import org.json4s.JValue
+
+case class HttpStatus(statusCode: Int, errors: List[AnyRef]) {
   def isOk = statusCode < 300
   def isError = !isOk
 
@@ -15,6 +17,7 @@ object HttpStatus {
   def internalError(text: String = "Internal server error") = HttpStatus(500, List(text))
   def conflict(text: String) = HttpStatus(409, List(text))
   def badRequest(text: String) = HttpStatus(400, List(text))
+  def badRequest(errors: List[JValue]) = HttpStatus(400, errors)
   def forbidden(text: String) = HttpStatus(403, List(text))
   def notFound(text: String) = HttpStatus(404, List(text))
 

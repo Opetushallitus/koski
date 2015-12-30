@@ -1,6 +1,6 @@
 package fi.oph.tor.schema.generic
 
-import fi.vm.sade.utils.json4s.GenericJsonFormats
+import fi.oph.tor.json.GenericJsonFormats
 import org.json4s.Extraction
 import org.json4s.JsonAST._
 

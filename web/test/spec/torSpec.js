@@ -871,8 +871,8 @@ describe('TOR', function() {
           expect(error.status).to.equal(code)
           if (text) {
             var errorObject = JSON.parse(error.responseText);
-            if (errorObject.errors) {
-              // Json schema validation error
+            if (typeof errorObject[0] == "object") {
+              // Json schema validation error -> just find a substring
               expect(error.responseText).to.contain(text)
             } else {
               expect(errorObject[0]).to.equal(text)
