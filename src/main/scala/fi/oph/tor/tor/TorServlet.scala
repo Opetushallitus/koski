@@ -3,49 +3,37 @@ package fi.oph.tor.tor
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT
-import com.fasterxml.jackson.databind.node.ArrayNode
-import com.github.fge.jackson.JsonLoader
-import com.github.fge.jsonschema.core.report.LogLevel.ERROR
-import com.github.fge.jsonschema.main.JsonSchemaFactory
 import fi.oph.tor.db.GlobalExecutionContext
 import fi.oph.tor.henkilo.HenkiloOid
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.json.{Json, JsonStreamWriter}
-import fi.oph.tor.koodisto.KoodistoPalvelu
-import fi.oph.tor.organisaatio.OrganisaatioRepository
-import fi.oph.tor.schema.{Henkilö, TorOppija, TorSchema}
+import fi.oph.tor.schema.{Henkilö, TorOppija}
 import fi.oph.tor.toruser.{RequiresAuthentication, UserOrganisationsRepository}
 import fi.oph.tor.{ErrorHandlingServlet, InvalidRequestException}
 import fi.vm.sade.security.ldap.DirectoryClient
 import fi.vm.sade.utils.slf4j.Logging
-import org.scalatra.{GZipSupport, FutureSupport}
+import org.scalatra.{FutureSupport, GZipSupport}
 
-import scala.collection.JavaConversions._
 import scala.concurrent.duration.Duration
 
-class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: UserOrganisationsRepository, val directoryClient: DirectoryClient, val koodistoPalvelu: KoodistoPalvelu, val organisaatioRepository: OrganisaatioRepository)
+class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: UserOrganisationsRepository, val directoryClient: DirectoryClient, val validator: TorValidator)
   extends ErrorHandlingServlet with Logging with RequiresAuthentication with GlobalExecutionContext with FutureSupport with GZipSupport {
-
-  private val schema = JsonSchemaFactory.byDefault.getJsonSchema(JsonLoader.fromString(TorSchema.schemaJsonString))
-  private val mapper = new ObjectMapper().enable(INDENT_OUTPUT)
 
   put("/") {
     withJsonBody { parsedJson =>
-      jsonSchemaValidate // TODO: this actually causes a double parse
-      implicit val koodistoPalvelu = this.koodistoPalvelu
-      val extractionResult: Either[HttpStatus, TorOppija] = ValidatingAndResolvingExtractor.extract[TorOppija](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository))
-      val result: Either[HttpStatus, Henkilö.Oid] = extractionResult.right.flatMap (rekisteri.createOrUpdate _)
+      JsonSchemaValidator.jsonSchemaValidate(request.body) match {
+        case Some(error) => halt(400, error)
+        case None =>
+          val validationResult: Either[HttpStatus, TorOppija] = validator.extractAndValidate(parsedJson)
+          val result: Either[HttpStatus, Henkilö.Oid] = validationResult.right.flatMap (rekisteri.createOrUpdate _)
 
-      result.left.foreach { case HttpStatus(code, errors) =>
-        logger.warn("Opinto-oikeuden päivitys estetty: " + code + " " + errors + " for request " + describeRequest)
+          result.left.foreach { case HttpStatus(code, errors) =>
+            logger.warn("Opinto-oikeuden päivitys estetty: " + code + " " + errors + " for request " + describeRequest)
+          }
+          renderEither(result)
       }
-      renderEither(result)
     }
   }
-
-
 
   get("/") {
     logger.info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
@@ -85,17 +73,6 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
   }
 
   override protected def asyncTimeout = Duration.Inf
-
-  private def jsonSchemaValidate: Unit = this.synchronized {
-    val schemaValidationReport = schema.validate(JsonLoader.fromString(request.body))
-
-    if (!schemaValidationReport.isSuccess) {
-      val errorNodes: ArrayNode = mapper.createArrayNode()
-      schemaValidationReport.filter(message => message.getLogLevel == ERROR).map(_.asJson).foreach(errorNodes.add)
-
-      halt(400, mapper.writeValueAsString(mapper.createObjectNode().set("errors", errorNodes)))
-    }
-  }
 
   def dateParam(q: (String, String)): Either[HttpStatus, LocalDate] = q match {
     case (p, v) => try {

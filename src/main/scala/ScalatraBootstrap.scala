@@ -7,9 +7,9 @@ import fi.oph.tor.fixture.{FixtureServlet, Fixtures}
 import fi.oph.tor.koodisto.KoodistoCreator
 import fi.oph.tor.oppilaitos.OppilaitosServlet
 import fi.oph.tor.schema.SchemaDocumentationServlet
-import fi.oph.tor.tor.{TorServlet, TodennetunOsaamisenRekisteri}
-import fi.oph.tor.tutkinto.TutkintoServlet
+import fi.oph.tor.tor.{TodennetunOsaamisenRekisteri, TorServlet, TorValidator}
 import fi.oph.tor.toruser.{AuthenticationServlet, UserOrganisationsRepository}
+import fi.oph.tor.tutkinto.TutkintoServlet
 import fi.vm.sade.utils.slf4j.Logging
 import org.scalatra._
 
@@ -21,8 +21,9 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       KoodistoCreator.createKoodistotFromMockData(application.config)
     }
     implicit val userRepository = UserOrganisationsRepository(application.config, application.organisaatioRepository)
-    val rekisteri = new TodennetunOsaamisenRekisteri(application.oppijaRepository, application.opiskeluOikeusRepository, application.tutkintoRepository, application.arviointiAsteikot, application.koodistoPalvelu)
-    context.mount(new TorServlet(rekisteri, userRepository, application.directoryClient, application.koodistoPalvelu, application.organisaatioRepository), "/api/oppija")
+    val validator: TorValidator = new TorValidator(application.tutkintoRepository, application.koodistoPalvelu, application.organisaatioRepository)
+    val rekisteri = new TodennetunOsaamisenRekisteri(application.oppijaRepository, application.opiskeluOikeusRepository)
+    context.mount(new TorServlet(rekisteri, userRepository, application.directoryClient, validator), "/api/oppija")
     context.mount(new AuthenticationServlet(application.directoryClient), "/user")
     context.mount(new OppilaitosServlet(application.oppilaitosRepository, application.userRepository, application.directoryClient), "/api/oppilaitos")
     context.mount(new TutkintoServlet(application.tutkintoRepository), "/api/tutkinto")
