@@ -53,6 +53,14 @@ object ContextualExtractor {
     throw new ExtractionException(error)
   }
 
+  def tryExtract[T](block: => T)(status: => HttpStatus) = {
+    try {
+      block
+    } catch {
+      case e: Exception => extractionError(status)
+    }
+  }
+
   private def findResolvingException(e: MappingException): Option[ExtractionException] = e.cause match {
     case x:ExtractionException => Some(x)
     case x:MappingException if x != e => findResolvingException(x)

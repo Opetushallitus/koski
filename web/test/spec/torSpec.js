@@ -390,6 +390,37 @@ describe('TOR', function() {
           it('palautetaan HTTP 200', verifyResponseCode(addOppija.putOppijaAjax({henkilö: {hetu: '010101-123N'}}), 200))
         })
       })
+
+      describe('Opiskeluoikeuden päivämäärät', function() {
+        describe('Päivämäärät kunnossa', function() {
+          it('palautetaan HTTP 200', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
+            alkamispäivä: "2015-08-01",
+            päättymispäivä: "2016-05-31",
+            arvioituPäättymispäivä: "2018-05-31"
+          }), 200))
+        })
+        describe('Päivämääräformaatti virheellinen', function() {
+          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
+            alkamispäivä: "2015.01-12"
+          }), 400, "Virheellinen päivämäärä: 2015.01-12"))
+        })
+        describe('Päivämäärä virheellinen', function() {
+          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
+            alkamispäivä: "2015-01-32"
+          }), 400, "Virheellinen päivämäärä: 2015-01-32"))
+        })
+        describe('Väärä päivämääräjärjestys', function() {
+          it('opiskeluOikeus.alkamispäivä > opiskeluOikeus.päättymispäivä', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
+            alkamispäivä: "2015-08-01",
+            päättymispäivä: "2014-05-31",
+          }), 400, "opiskeluOikeus.alkamispäivä (2015-08-01) oltava sama tai aiempi kuin opiskeluOikeus.päättymispäivä(2014-05-31)"))
+
+          it('opiskeluOikeus.alkamispäivä > opiskeluOikeus.arvioituPäättymispäivä', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
+            alkamispäivä: "2015-08-01",
+            arvioituPäättymispäivä: "2014-05-31",
+          }), 400, "opiskeluOikeus.alkamispäivä (2015-08-01) oltava sama tai aiempi kuin opiskeluOikeus.arvioituPäättymispäivä(2014-05-31)"))
+        })
+      })
     })
 
     describe('Virhetilanteet', function() {

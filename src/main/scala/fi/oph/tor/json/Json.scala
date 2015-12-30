@@ -4,6 +4,7 @@ import java.io.File
 import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
 
 import fi.oph.tor.eperusteet.RakenneOsaSerializer
+import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.schema._
 import fi.vm.sade.utils.json4s.GenericJsonFormats
 import org.json4s
@@ -64,8 +65,8 @@ object Json {
 
 class LocalDateSerializer extends CustomSerializer[LocalDate](format => (
   {
-    case JString(s) => LocalDate.parse(s)
-    case JInt(i) => LocalDateTime.ofInstant(Instant.ofEpochMilli(i.longValue()), ZoneId.of("UTC")).toLocalDate()
+    case JString(s) => ContextualExtractor.tryExtract(LocalDate.parse(s))(HttpStatus.badRequest("Virheellinen päivämäärä: " + s))
+    case JInt(i) => ContextualExtractor.tryExtract(LocalDateTime.ofInstant(Instant.ofEpochMilli(i.longValue()), ZoneId.of("UTC")).toLocalDate())(HttpStatus.badRequest("Virheellinen päivämäärä: " + i))
     case JNull => null
   },
   {

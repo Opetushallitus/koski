@@ -1,5 +1,6 @@
 package fi.oph.tor.tor
 
+import java.time.LocalDate
 import fi.oph.tor.arvosana.ArviointiasteikkoRepository
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.koodisto.KoodistoPalvelu
@@ -73,11 +74,21 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
       HttpStatus.badRequest("At least one OpiskeluOikeus required")
     }
     else {
-      HttpStatus.each(oppija.opiskeluoikeudet) { opiskeluOikeus =>
-        HttpStatus.validate(userContext.userOrganisations.hasReadAccess(opiskeluOikeus.oppilaitos)) { HttpStatus.forbidden("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid) }
-          .then { TutkintoRakenneValidator(tutkintoRepository).validateTutkintoRakenne(opiskeluOikeus)}
-      }
+      HttpStatus.each(oppija.opiskeluoikeudet) {validate _}
     }
+  }
+
+  private def validateDateOrder(firstName: String, first: Iterable[LocalDate], secondName: String, second: Iterable[LocalDate]): HttpStatus = {
+    HttpStatus.fold(for (left <- first; right <- second) yield {
+      HttpStatus.validate(left.compareTo(right) <= 0)(HttpStatus.badRequest(firstName + " (" + left + ") oltava sama tai aiempi kuin " + secondName + "(" + right + ")"))
+    })
+  }
+
+  private def validate(opiskeluOikeus: OpiskeluOikeus)(implicit userContext: TorUser): HttpStatus = {
+    HttpStatus.validate(userContext.userOrganisations.hasReadAccess(opiskeluOikeus.oppilaitos)) { HttpStatus.forbidden("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid) }
+      .then { validateDateOrder("opiskeluOikeus.alkamispäivä", opiskeluOikeus.alkamispäivä, "opiskeluOikeus.päättymispäivä", opiskeluOikeus.päättymispäivä) }
+      .then { validateDateOrder("opiskeluOikeus.alkamispäivä", opiskeluOikeus.alkamispäivä, "opiskeluOikeus.arvioituPäättymispäivä", opiskeluOikeus.arvioituPäättymispäivä) }
+      .then { TutkintoRakenneValidator(tutkintoRepository).validateTutkintoRakenne(opiskeluOikeus)}
   }
 
   def findTorOppija(oid: String)(implicit userContext: TorUser): Either[HttpStatus, TorOppija] = {
