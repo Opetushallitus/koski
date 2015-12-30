@@ -17,7 +17,8 @@ class TorSimulation extends Simulation {
 
   setUp(
     findOppija.inject(constantUsersPerSec(1) during(1 minute) randomized),
-    updateOppija.inject(constantUsersPerSec(1) during(1 minute) randomized)
+    updateOppija.inject(constantUsersPerSec(1) during(1 minute) randomized),
+    queryOppijat.inject(constantUsersPerSec(0.1) during(1 minute) randomized)
   ).protocols(httpConf)
 }
 
@@ -36,6 +37,12 @@ object Scenarios {
     http("update")
       .put("/api/oppija")
       .body(RawFileBody("oppija.json")).asJSON
+      .basicAuth(username, password)
+  )
+
+  val queryOppijat = scenario("Query oppijat").exec(
+    http("query oppijat")
+      .get("/api/oppija?valmistunutAikaisintaan=2016-01-09&valmistunutViimeistaan=2016-01-09")
       .basicAuth(username, password)
   )
 
