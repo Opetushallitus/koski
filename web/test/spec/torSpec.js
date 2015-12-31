@@ -40,7 +40,7 @@ describe('TOR', function() {
   })
 
   describe('Oppijahaku', function() {
-    before(authentication.login(), resetMocks, page.openPage)
+    before(authentication.login(), resetFixtures, page.openPage)
     it('näytetään, kun käyttäjä on kirjautunut sisään', function() {
       expect(page.isVisible()).to.equal(true)
       expect(page.oppijaHaku.isNoResultsLabelShown()).to.equal(false)
@@ -126,7 +126,7 @@ describe('TOR', function() {
 
   function prepareForNewOppija(username, searchString) {
     return function() {
-      return resetMocks()
+      return resetFixtures()
         .then(authentication.login(username))
         .then(page.openPage)
         .then(page.oppijaHaku.search(searchString, page.oppijaHaku.isNoResultsLabelShown))
@@ -309,7 +309,7 @@ describe('TOR', function() {
     })
 
     describe('Tietojen validointi serverillä', function() {
-      before(resetMocks, authentication.login('kalle'), page.openPage)
+      before(resetFixtures, authentication.login('kalle'), page.openPage)
 
       describe('Valideilla tiedoilla', function() {
         it('palautetaan HTTP 200', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({}), 200))
@@ -587,7 +587,7 @@ describe('TOR', function() {
   })
 
   describe('Tutkinnon tietojen muuttaminen', function() {
-    before(authentication.login(), resetMocks, page.openPage, addNewOppija('kalle', 'Tunkkila', { hetu: '091095-9833'}))
+    before(authentication.login(), resetFixtures, page.openPage, addNewOppija('kalle', 'Tunkkila', { hetu: '091095-9833'}))
     it('Aluksi ei näytetä \"Kaikki tiedot tallennettu\" -tekstiä', function() {
       expect(page.isSavedLabelShown()).to.equal(false)
     })
@@ -737,6 +737,7 @@ describe('TOR', function() {
 
   describe('Navigointi suoraan oppijan sivulle', function() {
     before(
+      resetFixtures,
       authentication.login(),
       openPage('/tor/oppija/1.2.246.562.24.00000000001', page.isOppijaSelected('eero')),
       opinnot.waitUntilTutkintoVisible()
@@ -759,7 +760,7 @@ describe('TOR', function() {
   describe('Virhetilanteet', function() {
     before(
       authentication.login(),
-      resetMocks
+      resetFixtures
     )
 
     describe('Odottamattoman virheen sattuessa', function() {
@@ -854,7 +855,7 @@ describe('TOR', function() {
     return S('body').text() === 'Not authenticated'
   }
 
-  function resetMocks() {
+  function resetFixtures() {
     return Q($.ajax({ url: '/tor/fixtures/reset', method: 'post'}))
   }
 
