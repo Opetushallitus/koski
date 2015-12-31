@@ -17,7 +17,7 @@ class OppilaitosRepository {
   }
 
   def findById(id: String)(implicit context: TorUser): Option[OidOrganisaatio] = {
-    context.userOrganisations.getOrganisaatio(id).map(toOppilaitos)
+    context.userOrganisations.getOrganisaatioHierarkia(id).map(toOppilaitos)
   }
 
   private def toOppilaitos(org: OrganisaatioHierarkia) = OidOrganisaatio(org.oid, Some(org.nimi))

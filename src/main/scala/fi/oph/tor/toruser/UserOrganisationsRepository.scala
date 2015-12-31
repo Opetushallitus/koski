@@ -36,7 +36,7 @@ class RemoteUserOrganisationsRepository(henkilöPalveluClient: AuthenticationSer
         .withFilter {_.ryhmaId == RemoteUserOrganisationsRepository.käyttöoikeusryhmä}
         .withFilter {o => o.tila == "MYONNETTY" || o.tila == "UUSITTU"}
         .withFilter {_.effective}
-        .flatMap {result => organisaatioRepository.getOrganisaatio(result.organisaatioOid)}
+        .flatMap {result => organisaatioRepository.getOrganisaatioHierarkia(result.organisaatioOid)}
     )
   }
 }

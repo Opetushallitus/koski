@@ -16,7 +16,7 @@ object OrganisaatioResolvingDeserializer extends Deserializer[Organisaatio] with
         case OidOrganisaatio(oid, _) =>
           ContextualExtractor.getContext[{def organisaatioRepository: OrganisaatioRepository}] match {
             case Some(context) => context.organisaatioRepository.getOrganisaatio(oid) match {
-              case Some(org) => OidOrganisaatio(org.oid, Some(org.nimi))
+              case Some(org) => org
               case None => ContextualExtractor.extractionError(HttpStatus.badRequest("Organisaatiota " + oid + " ei löydy organisaatiopalvelusta"))
             }
           }

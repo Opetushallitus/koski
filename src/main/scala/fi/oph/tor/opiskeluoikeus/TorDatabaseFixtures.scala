@@ -5,6 +5,7 @@ import fi.oph.tor.db.Tables._
 import fi.oph.tor.db.TorDatabase._
 import fi.oph.tor.db._
 import fi.oph.tor.oppija.MockOppijaRepository
+import fi.oph.tor.organisaatio.MockOrganisaatioRepository
 import fi.oph.tor.schema._
 import slick.dbio.DBIO
 
@@ -12,7 +13,8 @@ object TorDatabaseFixtures extends Futures with GlobalExecutionContext {
   private val oppijat = new MockOppijaRepository
 
   def opiskeluOikeus(oppilaitosId: String) = {
-    val oppilaitos: OidOrganisaatio = OidOrganisaatio(oppilaitosId, None)
+    val oppilaitos: OidOrganisaatio = MockOrganisaatioRepository.getOrganisaatio(oppilaitosId).get
+
     OpiskeluOikeus(
       None,
       None,
