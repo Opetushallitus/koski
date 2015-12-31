@@ -8,7 +8,6 @@ import fi.oph.tor.tor.DateValidation._
 import fi.oph.tor.toruser.TorUser
 import fi.oph.tor.tutkinto.{TutkintoRakenneValidator, TutkintoRepository}
 import org.json4s.JValue
-import org.json4s.jackson.JsonMethods._
 
 class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: KoodistoPalvelu, val organisaatioRepository: OrganisaatioRepository) {
   def validate(oppija: TorOppija)(implicit userContext: TorUser): HttpStatus = {
