@@ -44,8 +44,9 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
 
   // TODO: createOrUpdate should be transactional
   override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: OpiskeluOikeus)(implicit userContext: TorUser): Either[HttpStatus, CreateOrUpdateResult] = {
-    val opiskeluoikeudet: Option[OpiskeluOikeus] = find(OpiskeluOikeusIdentifier(oppijaOid.oppijaOid, opiskeluOikeus))
-    opiskeluoikeudet match {
+    val opiskeluoikeudet: Either[HttpStatus, Option[OpiskeluOikeus]] = find(OpiskeluOikeusIdentifier(oppijaOid.oppijaOid, opiskeluOikeus))
+
+    opiskeluoikeudet.right.flatMap {
       case Some(oikeus) => update(oppijaOid.oppijaOid, opiskeluOikeus.copy(id = oikeus.id)) match {
         case error if error.isError => Left(error)
         case _ => Right(Updated(oikeus.id.get))
@@ -58,12 +59,15 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
     }
   }
 
-  override def find(identifier: OpiskeluOikeusIdentifier)(implicit userContext: TorUser): Option[OpiskeluOikeus] = identifier match{
-    case PrimaryKey(id) => find(OpiskeluOikeudet.filter(_.id === id)).headOption // Should this fail if not found?
+  override def find(identifier: OpiskeluOikeusIdentifier)(implicit userContext: TorUser): Either[HttpStatus, Option[OpiskeluOikeus]] = identifier match{
+    case PrimaryKey(id) => find(OpiskeluOikeudet.filter(_.id === id)).headOption match {
+      case Some(oikeus) => Right(Some(oikeus))
+      case None => Left(HttpStatus.notFound("Opiskeluoikeus not found for id: " + id))
+    }
     case IdentifyingSetOfFields(oppijaOid, _, _, _) => {
-      findByOppijaOid(oppijaOid).find({
+      Right(findByOppijaOid(oppijaOid).find({
         new IdentifyingSetOfFields(oppijaOid, _) == identifier
-      })
+      }))
     }
   }
 
