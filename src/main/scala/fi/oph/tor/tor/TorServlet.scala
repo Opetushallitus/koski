@@ -79,8 +79,8 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
     logger.info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
 
     val queryFilters: List[Either[HttpStatus, QueryFilter]] = params.toList.map {
-      case (p, v) if p == "valmistunutAikaisintaan" => dateParam((p, v)).right.map(ValmistunutAikaisintaan(_))
-      case (p, v) if p == "valmistunutViimeistaan" => dateParam((p, v)).right.map(ValmistunutViimeistään(_))
+      case (p, v) if p == "opiskeluoikeusPäättynytAikaisintaan" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytAikaisintaan(_))
+      case (p, v) if p == "opiskeluoikeusPäättynytViimeistään" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytViimeistään(_))
       case ("tutkinnonTila", v) => Right(TutkinnonTila(v))
       case (p, _) => Left(HttpStatus.badRequest("Unsupported query parameter: " + p))
     }
@@ -114,7 +114,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
 
 trait QueryFilter
 
-case class ValmistunutAikaisintaan(päivä: LocalDate) extends QueryFilter
-case class ValmistunutViimeistään(päivä: LocalDate) extends QueryFilter
+case class OpiskeluoikeusPäättynytAikaisintaan(päivä: LocalDate) extends QueryFilter
+case class OpiskeluoikeusPäättynytViimeistään(päivä: LocalDate) extends QueryFilter
 case class TutkinnonTila(tila: String) extends QueryFilter
 case class ValidationResult(oid: Henkilö.Oid, errors: List[AnyRef])

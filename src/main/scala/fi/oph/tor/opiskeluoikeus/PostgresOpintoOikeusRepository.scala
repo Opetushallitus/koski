@@ -8,7 +8,7 @@ import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.oppija.PossiblyUnverifiedOppijaOid
 import fi.oph.tor.schema.Henkilö._
 import fi.oph.tor.schema.{FullHenkilö, OpiskeluOikeus}
-import fi.oph.tor.tor.{QueryFilter, TutkinnonTila, ValmistunutAikaisintaan, ValmistunutViimeistään}
+import fi.oph.tor.tor.{OpiskeluoikeusPäättynytAikaisintaan, OpiskeluoikeusPäättynytViimeistään, QueryFilter, TutkinnonTila}
 import fi.oph.tor.toruser.TorUser
 import fi.vm.sade.utils.slf4j.Logging
 import rx.lang.scala.Observable
@@ -86,8 +86,8 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
     import StreamExtensions._
 
     val query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = queryWithAccessCheck(filters.foldLeft(OpiskeluOikeudet.asInstanceOf[Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq]]) {
-      case (query, ValmistunutAikaisintaan(päivä)) => query.filter(_.data.#>>(List("päättymispäivä")) >= päivä.toString)
-      case (query, ValmistunutViimeistään(päivä)) => query.filter(_.data.#>>(List("päättymispäivä")) <= päivä.toString)
+      case (query, OpiskeluoikeusPäättynytAikaisintaan(päivä)) => query.filter(_.data.#>>(List("päättymispäivä")) >= päivä.toString)
+      case (query, OpiskeluoikeusPäättynytViimeistään(päivä)) => query.filter(_.data.#>>(List("päättymispäivä")) <= päivä.toString)
       case (query, TutkinnonTila(tila)) => query.filter(_.data.#>>(List("suoritus", "tila", "koodiarvo")) === tila)
     }).sortBy(_.oppijaOid)
 

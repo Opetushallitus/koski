@@ -129,7 +129,7 @@ Kaikki rajapinnat vaativat HTTP Basic Authentication -tunnistautumisen, eli käy
 object TorApiOperations {
  val operations = List(
    ApiOperation(
-      "GET", "/tor/api/oppija?query={query}",
+      "GET", "/tor/api/oppija/search?query={query}",
       <div>Etsii oppijoita annetulla hakusanalla. Hakusana voi olla hetu, oppija-oid tai nimen osa. Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</div>,
       Nil,
       List(Parameter("query", "Hakusana, joka voi olla hetu, oppija-oid tai nimen osa.", "eero")),
@@ -137,6 +137,21 @@ object TorApiOperations {
         (200, "OK, jos haku onnistuu. Myös silloin kun ei löydy yhtään tulosta."),
         (400, "BAD REQUEST jos hakusana puuttuu")
       )
+   ),
+   ApiOperation(
+    "GET", "/tor/api/oppija?opiskeluoikeusPäättynytAikaisintaan={opiskeluoikeusPäättynytAikaisintaan}&opiskeluoikeusPäättynytViimeistään={opiskeluoikeusPäättynytViimeistään}&tutkinnonTila={tutkinnonTila}",
+     <div>Etsii oppijoita annetuilla parametreilla. Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</div>,
+     Nil,
+     List(
+       Parameter("opiskeluoikeusPäättynytAikaisintaan","Päivämäärä jonka jälkeen opiskeluoikeus on päättynyt","2016-01-01"),
+       Parameter("opiskeluoikeusPäättynytViimeistään","Päivämäärä jota ennen opiskeluoikeus on päättynyt","2016-12-31"),
+       Parameter("tutkinnonTila","Opiskeluoikeuden juurisuorituksen tila: VALMIS, KESKEN, KESKEYTYNYT","VALMIS")
+     ),
+     List(
+       (200, "OK jos haku onnistuu"),
+       (400, "BAD REQUEST jos hakuparametria ei tueta, tai hakuparametri on virheellinen."),
+       (401, "UNAUTHORIZED jos käyttäjä ei ole tunnistautunut")
+     )
    ),
    ApiOperation(
      "GET", "/tor/api/oppija/{oid}",
