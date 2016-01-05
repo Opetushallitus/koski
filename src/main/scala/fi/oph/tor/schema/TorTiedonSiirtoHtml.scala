@@ -129,7 +129,7 @@ Kaikki rajapinnat vaativat HTTP Basic Authentication -tunnistautumisen, eli käy
 object TorApiOperations {
  val operations = List(
    ApiOperation(
-      "GET", "/tor/api/oppija/search?query={query}",
+      "GET", "/tor/api/oppija/search",
       <div>Etsii oppijoita annetulla hakusanalla. Hakusana voi olla hetu, oppija-oid tai nimen osa. Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</div>,
       Nil,
       List(Parameter("query", "Hakusana, joka voi olla hetu, oppija-oid tai nimen osa.", "eero")),
@@ -139,7 +139,7 @@ object TorApiOperations {
       )
    ),
    ApiOperation(
-    "GET", "/tor/api/oppija?opiskeluoikeusPäättynytAikaisintaan={opiskeluoikeusPäättynytAikaisintaan}&opiskeluoikeusPäättynytViimeistään={opiskeluoikeusPäättynytViimeistään}&tutkinnonTila={tutkinnonTila}",
+    "GET", "/tor/api/oppija",
      <div>Etsii oppijoita annetuilla parametreilla. Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</div>,
      Nil,
      List(

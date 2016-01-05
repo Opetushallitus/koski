@@ -58,14 +58,22 @@ span.indent:after {
     margin-right: 5px;
 }
 .api-tester {
-    margin-left: 20px;
+    margin: 0 20px;
 }
+
 .api-tester div {
     margin-top: 10px;
 }
+
+.api-tester pre {
+    max-height: 400px;
+    overflow-y: auto;
+    background: #dddddd;
+    font-size: 12px;
+}
+
 .api-tester .result {
     min-width: 500px;
-    background: #dddddd;
 }
 
 .api-tester .examples {

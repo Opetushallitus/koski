@@ -57,7 +57,11 @@ forEach(document.querySelectorAll('.api-tester'), function(elem) {
       path = path.replace('{' + input.name + '}', encodeURIComponent(input.value))
     })
 
-    fetch(document.location.protocol + "//" + document.location.host + path, options)
+    var queryParameters = Array.prototype.slice.call(elem.querySelectorAll(".parameters input"), 0).reduce(function(query, input) {
+      return input.value ? query + (query ? '&' : '?') + encodeURIComponent(input.name) + '=' + encodeURIComponent(input.value) : ''
+    },'')
+
+    fetch(document.location.protocol + "//" + document.location.host + path + queryParameters, options)
       .then(function(response) {
         var resultElem = elem.querySelector(".result");
         elem.className = "api-tester"
@@ -66,7 +70,7 @@ forEach(document.querySelectorAll('.api-tester'), function(elem) {
           if (response.status == 401) {
             resultElem.innerHTML = response.status + " " + response.statusText + ' <a href="/tor" target="_new">Login</a>'
           } else if (text) {
-            resultElem.innerHTML = response.status + " " + response.statusText + "<pre>" + text + "</pre>"
+            resultElem.innerHTML = response.status + " " + response.statusText + "<pre>" + JSON.stringify(JSON.parse(text), null, 2) + "</pre>"
           } else {
             resultElem.innerHTML = response.status + " " + response.statusText
           }
