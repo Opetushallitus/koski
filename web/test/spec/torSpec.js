@@ -359,7 +359,7 @@ describe('TOR', function() {
 
         it('palautetaan kaikki oppijat', function() {
           return getJson('/tor/api/oppija').then(function (resp) {
-            expect(resp.length).to.be.least(2)
+            expect(resp.length).to.be.at.least(2)
           })
         })
       })
