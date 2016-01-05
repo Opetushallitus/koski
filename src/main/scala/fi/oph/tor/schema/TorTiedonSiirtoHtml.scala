@@ -135,7 +135,8 @@ object TorApiOperations {
       List(Parameter("query", "Hakusana, joka voi olla hetu, oppija-oid tai nimen osa.", "eero")),
       List(
         (200, "OK, jos haku onnistuu. Myös silloin kun ei löydy yhtään tulosta."),
-        (400, "BAD REQUEST jos hakusana puuttuu")
+        (400, "BAD REQUEST jos hakusana puuttuu"),
+        (401,"UNAUTHORIZED jos käyttäjä ei ole tunnistautunut")
       )
    ),
    ApiOperation(
@@ -154,12 +155,39 @@ object TorApiOperations {
      )
    ),
    ApiOperation(
+     "GET", "/tor/api/oppija/validoi",
+     <div>Etsii oppijoita annetuilla parametreilla ja validoi hakutulokset. Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</div>,
+     Nil,
+     List(
+       Parameter("opiskeluoikeusPäättynytAikaisintaan","Päivämäärä jonka jälkeen opiskeluoikeus on päättynyt","2016-01-01"),
+       Parameter("opiskeluoikeusPäättynytViimeistään","Päivämäärä jota ennen opiskeluoikeus on päättynyt","2016-12-31"),
+       Parameter("tutkinnonTila","Opiskeluoikeuden juurisuorituksen tila: VALMIS, KESKEN, KESKEYTYNYT","VALMIS")
+     ),
+     List(
+       (200, "OK jos haku onnistuu. Mahdolliset validointivirheet palautuu json-vastauksessa."),
+       (400, "BAD REQUEST jos hakuparametria ei tueta, tai hakuparametri on virheellinen."),
+       (401, "UNAUTHORIZED jos käyttäjä ei ole tunnistautunut")
+     )
+   ),
+   ApiOperation(
      "GET", "/tor/api/oppija/{oid}",
      <div>Hakee oppijan tiedot ja opiskeluoikeudet suorituksineen.</div>,
      Nil,
      List(Parameter("oid", "Oppijan tunniste", "1.2.246.562.24.00000000001")),
      List(
        (200, "OK, jos haku onnistuu."),
+       (401,"UNAUTHORIZED jos käyttäjä ei ole tunnistautunut"),
+       (404, "NOT FOUND jos oppijaa ei löydy tai käyttäjällä ei ole oikeuksia oppijan tietojen katseluun.")
+     )
+   ),
+   ApiOperation(
+     "GET", "/tor/api/oppija/validate/{oid}",
+     <div>Validoi oppijan kantaan tallennetun datan oikeellisuuden</div>,
+     Nil,
+     Nil,
+     List(
+       (200, "OK, jos haku onnistuu. Mahdolliset validointivirheet palautuu json-vastauksessa."),
+       (401,"UNAUTHORIZED jos käyttäjä ei ole tunnistautunut"),
        (404, "NOT FOUND jos oppijaa ei löydy tai käyttäjällä ei ole oikeuksia oppijan tietojen katseluun.")
      )
    ),
