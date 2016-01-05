@@ -94,13 +94,15 @@ function AddOppijaPage() {
       }
     },
 
-    putOpiskeluOikeusAjax: function(opiskeluOikeus) {
+    putOpiskeluOikeusAjax: function(opiskeluOikeus, henkilo) {
       return function() {
+        var henkilö = henkilo || {}
         opiskeluOikeus = _.merge(defaultOpiskeluOikeus(), opiskeluOikeus)
-        data = makeOppija({}, [opiskeluOikeus])
+        data = makeOppija(henkilö, [opiskeluOikeus])
         return api.putOppijaAjax(data)()
       }
     },
+
     putOppijaAjax: function(oppija) {
       return function() {
         var defaults = makeOppija(defaultHenkilo(), [defaultOpiskeluOikeus()])
