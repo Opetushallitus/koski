@@ -1,0 +1,23 @@
+package fi.oph.tor
+
+import com.unboundid.util.Base64
+import fi.oph.tor.jettylauncher.SharedJetty
+import org.scalatest.Assertions
+import org.scalatra.test.HttpComponentsClient
+
+trait HttpSpecification extends HttpComponentsClient with Assertions {
+  val authHeaders: Map[String, String] = {
+    val auth: String = "Basic " + Base64.encode("kalle:kalle".getBytes("UTF8"))
+    Map("Authorization" -> auth)
+  }
+
+  val jsonContent = Map(("Content-type" -> "application/json"))
+
+  def verifyResponseStatus(status: Int = 200): Unit = {
+    if (response.status != status) {
+      fail("Expected status " + status + ", got " + response.status + ", " + response.body)
+    }
+  }
+
+  override def baseUrl = SharedJetty.baseUrl
+}
