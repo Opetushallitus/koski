@@ -14,7 +14,6 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
 
 
   def findOppijat(filters: List[QueryFilter])(implicit userContext: TorUser): Observable[TorOppija] = {
-
     opiskeluOikeusRepository.query(filters).tumblingBuffer(100).flatMap {
       oikeudet =>
         val henkilötAndOpiskeluoikeudet = oppijaRepository.findByOids(oikeudet.map(_._1).toList).zip(oikeudet).map {
@@ -37,6 +36,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
       case h:NewHenkilö => oppijaRepository.findOrCreate(oppija.henkilö).right.map(VerifiedOppijaOid(_))
       case h:HenkilöWithOid => Right(UnverifiedOppijaOid(h.oid, oppijaRepository))
     }
+
     oppijaOid.right.flatMap { oppijaOid: PossiblyUnverifiedOppijaOid =>
       val opiskeluOikeusCreationResults: Seq[Either[HttpStatus, CreateOrUpdateResult]] = oppija.opiskeluoikeudet.map { opiskeluOikeus =>
         val result = opiskeluOikeusRepository.createOrUpdate(oppijaOid, opiskeluOikeus)

@@ -7,8 +7,15 @@ import fi.oph.tor.schema.OidOrganisaatio
 import fi.oph.tor.util.TimedProxy
 
 trait OrganisaatioRepository {
-  def getOrganisaatioHierarkia(oid: String): Option[OrganisaatioHierarkia]
-  def getOrganisaatio(oid: String): Option[OidOrganisaatio] = getOrganisaatioHierarkia(oid).map(org => OidOrganisaatio(oid, Some(org.nimi)))
+  /**
+   * Organisation hierarchy containing children of requested org. Parents are not included.
+   */
+  def getOrganisaatioHierarkia(oid: String): Option[OrganisaatioHierarkia] =  getOrganisaatioHierarkiaIncludingParents(oid).flatMap(_.find(oid))
+  /**
+   * Organisation hierarchy containing parents and children of requested org.
+   */
+  def getOrganisaatioHierarkiaIncludingParents(oid: String): Option[OrganisaatioHierarkia]
+  def getOrganisaatio(oid: String): Option[OidOrganisaatio] = getOrganisaatioHierarkia(oid).map(_.toOrganisaatio)
 }
 
 object OrganisaatioRepository {
@@ -24,7 +31,7 @@ object OrganisaatioRepository {
 class RemoteOrganisaatioRepository(config: Config) extends OrganisaatioRepository{
   val virkailijaClient = new VirkailijaHttpClient(config.getString("authentication-service.username"), config.getString("authentication-service.password"), config.getString("opintopolku.virkailija.url"), "/organisaatio-service")
 
-  def getOrganisaatioHierarkia(oid: String): Option[OrganisaatioHierarkia] = {
+  def getOrganisaatioHierarkiaIncludingParents(oid: String): Option[OrganisaatioHierarkia] = {
     virkailijaClient.httpClient("/organisaatio-service/rest/organisaatio/v2/hierarkia/hae/tyyppi?aktiiviset=true&lakkautetut=false&oid=" + oid)(Http.parseJson[OrganisaatioHakuTulos])
       .run
       .organisaatiot.map(convertOrganisaatio)

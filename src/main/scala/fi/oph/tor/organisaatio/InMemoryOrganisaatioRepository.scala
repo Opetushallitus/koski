@@ -13,7 +13,7 @@ object InMemoryOrganisaatioRepository {
 class InMemoryOrganisaatioRepository(roots: List[OrganisaatioHierarkia]) extends OrganisaatioRepository {
   private val orgs: Map[String, OrganisaatioHierarkia] = InMemoryOrganisaatioRepository.flatten(roots).map(org => (org.oid, org)).toMap
 
-  def getOrganisaatioHierarkia(id: String): Option[OrganisaatioHierarkia] = orgs.get(id)
+  def getOrganisaatioHierarkiaIncludingParents(id: String): Option[OrganisaatioHierarkia] = orgs.get(id)
 
   def findOrganisaatiot(f: (OrganisaatioHierarkia => Boolean)): Iterable[OrganisaatioHierarkia] = {
     orgs.values.filter(f)
