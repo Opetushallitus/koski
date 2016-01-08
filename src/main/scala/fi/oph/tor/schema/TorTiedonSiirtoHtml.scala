@@ -120,6 +120,9 @@ Kaikki rajapinnat vaativat HTTP Basic Authentication -tunnistautumisen, eli käy
           </div>
         }
         }
+        <script src="js/lib/promise.js"></script>
+        <script src="js/lib/fetch.js"></script>
+        <script src="js/lib/dataset.js"></script>
         <script src="js/documentation.js"></script>
       </body>
     </html>
