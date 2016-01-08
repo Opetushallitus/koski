@@ -24,6 +24,7 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) {
     staticResources("./web/static", "/tor"),
     staticResources("./web/dist", "/tor"),
     staticResources("./web/test", "/tor/test"),
+    staticResources("./web/node_modules/codemirror", "/tor/codemirror"),
     context).toArray)
 
   server.setHandler(all)

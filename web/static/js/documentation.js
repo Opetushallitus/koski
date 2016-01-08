@@ -34,9 +34,11 @@ forEach(document.querySelectorAll('.json-row .collapsible'), function(node) {
 forEach(document.querySelectorAll('.api-tester'), function(elem) {
   var exampleSelector = elem.querySelector(".examples select")
   if (exampleSelector) {
+    var editorElem = elem.querySelector("textarea");
+    CodeMirror.fromTextArea(editorElem, { mode: { name: "javascript", json: true}, theme: "custom" })
     exampleSelector.addEventListener("change", function(a,b,c) {
       var data = event.target.options[event.target.selectedIndex].dataset.exampledata
-      elem.querySelector("textarea").value=data
+      editorElem.value=data
     })
   }
 
@@ -70,7 +72,9 @@ forEach(document.querySelectorAll('.api-tester'), function(elem) {
           if (response.status == 401) {
             resultElem.innerHTML = response.status + " " + response.statusText + ' <a href="/tor" target="_new">Login</a>'
           } else if (text) {
-            resultElem.innerHTML = response.status + " " + response.statusText + "<pre>" + JSON.stringify(JSON.parse(text), null, 2) + "</pre>"
+            resultElem.innerHTML = response.status + " " + response.statusText + "<pre><code>" + JSON.stringify(JSON.parse(text), null, 2) + "</code></pre>"
+            var codeBlock = resultElem.querySelector("code");
+            hljs.highlightBlock(codeBlock)
           } else {
             resultElem.innerHTML = response.status + " " + response.statusText
           }

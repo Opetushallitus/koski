@@ -30,6 +30,7 @@
     "mocha-phantomjs": "^3.6",
     "nodemon": "^1",
     "phantomjs": "1.9.7-15",
+    "codemirror": "~4.7",
     "reporter-file": "^1.0.0",
     "style-loader": "^0.12",
     "webpack": "^1"

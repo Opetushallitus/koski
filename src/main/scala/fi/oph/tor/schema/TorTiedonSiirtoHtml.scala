@@ -51,6 +51,11 @@ Kaikki rajapinnat vaativat HTTP Basic Authentication -tunnistautumisen, eli käy
       <head>
         <meta charset="UTF-8"></meta>
         <link rel="stylesheet" type="text/css" href="css/documentation.css"></link>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/default.min.css"/>
+        <link rel="stylesheet" type="text/css" href="/tor/codemirror/lib/codemirror.css"/>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+        <script src="/tor/codemirror/lib/codemirror.js"></script>
+        <script src="/tor/codemirror/mode/javascript/javascript.js"></script>
       </head>
       <body>
         {toXHTML( knockoff(markdown) )}

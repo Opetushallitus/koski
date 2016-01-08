@@ -17,10 +17,10 @@ small {
 .object,.array {
     color: rgb(51, 51, 51);
 }
-.json .key {
+.json .key, .api-tester .CodeMirror .cm-string.cm-property, .api-tester .hljs-attr {
     color: rgb(165, 116, 28);
 }
-.json .value {
+.json .value, .api-tester .CodeMirror .cm-string, .api-tester .hljs-string {
     color: green;
 }
 .json tr:hover {
@@ -61,7 +61,7 @@ span.indent:after {
     margin: 0 20px;
 }
 
-.api-tester div {
+.api-tester .buttons, .api-tester .result {
     margin-top: 10px;
 }
 
@@ -78,6 +78,11 @@ span.indent:after {
 
 .api-tester .examples {
     margin-bottom: 10px;
+}
+
+.api-tester .CodeMirror {
+    border: 1px solid black;
+    font-size: 12px;
 }
 
 .api-tester .parameters table, .api-tester .parameters th, .api-tester .parameters td {
