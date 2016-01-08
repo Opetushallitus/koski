@@ -42,7 +42,7 @@ object Scenarios {
 
   val queryOppijat = scenario("Query oppijat").exec(
     http("query oppijat")
-      .get("/api/oppija?valmistunutAikaisintaan=2016-01-09&valmistunutViimeistaan=2016-01-09")
+      .get("/api/oppija?opiskeluoikeusPäättynytAikaisintaan=2016-01-10&opiskeluoikeusPäättynytViimeistään=2016-01-10")
       .basicAuth(username, password)
   )
 
