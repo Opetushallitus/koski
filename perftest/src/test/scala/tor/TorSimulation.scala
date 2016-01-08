@@ -16,7 +16,7 @@ class TorSimulation extends Simulation {
   val headers = Map("Content-Type" -> "application/json")
 
   setUp(
-    findOppija.inject(atOnceUsers(1), nothingFor(60 seconds), constantUsersPerSec(1) during(1 minute) randomized),
+    findOppija.inject(atOnceUsers(1), nothingFor(60 seconds), constantUsersPerSec(100) during(1 minute) randomized),
     updateOppija.inject(nothingFor(5 seconds), atOnceUsers(1), nothingFor(60 seconds), constantUsersPerSec(1) during(1 minute) randomized),
     queryOppijat.inject(nothingFor(10 seconds), atOnceUsers(1), nothingFor(60 seconds), constantUsersPerSec(0.1) during(1 minute) randomized)
   ).protocols(httpConf)
