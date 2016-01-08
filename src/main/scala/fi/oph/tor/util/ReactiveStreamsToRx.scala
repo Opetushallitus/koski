@@ -1,9 +1,9 @@
-package fi.oph.tor.db
+package fi.oph.tor.util
 
 import rx.RxReactiveStreams
 import rx.lang.scala.JavaConversions.toScalaObservable
 import slick.backend.DatabasePublisher
 
-object StreamExtensions {
+object ReactiveStreamsToRx {
   implicit def publisherToObservable[T](publisher: DatabasePublisher[T]): rx.lang.scala.Observable[T] = RxReactiveStreams.toObservable(publisher)
 }
