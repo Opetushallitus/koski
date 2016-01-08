@@ -412,11 +412,8 @@ describe('TOR', function() {
               expect(tutkinnonOsa.getArvosana()).to.equal("Hylätty")
             })
           })
-
         })
       })
-
-
     })
 
     describe('Virhetilanteet', function() {
@@ -560,26 +557,5 @@ describe('TOR', function() {
 
   function mockHttp(url, result) {
     return function() { testFrame().http.mock(url, result) }
-  }
-
-  function verifyResponseCode(fn, code, text) {
-    if (code == 200) {
-      return fn
-    } else {
-      return function() {
-        return fn().then(function() { throw { status: 200} }).catch(function(error) {
-          expect(error.status).to.equal(code)
-          if (text) {
-            var errorObject = JSON.parse(error.responseText);
-            if (typeof errorObject[0] == "object") {
-              // Json schema validation error -> just find a substring
-              expect(error.responseText).to.contain(text)
-            } else {
-              expect(errorObject[0]).to.equal(text)
-            }
-          }
-        })
-      }
-    }
   }
 })
