@@ -70,6 +70,14 @@ object Json {
 
     Files.write(Paths.get(filename), writePretty(json).getBytes(StandardCharsets.UTF_8))
   }
+
+  def maskSensitiveInformation(parsedJson: JValue): JValue = {
+    val maskedJson = parsedJson.mapField {
+      case ("hetu", JString(_)) => ("hetu", JString("******-****"))
+      case x => x
+    }
+    maskedJson
+  }
 }
 
 object LocalDateSerializer extends CustomSerializer[LocalDate](format => (

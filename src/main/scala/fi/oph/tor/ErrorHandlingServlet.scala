@@ -2,8 +2,8 @@ package fi.oph.tor
 
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.json.Json
+import fi.oph.tor.json.Json.maskSensitiveInformation
 import fi.vm.sade.utils.slf4j.Logging
-import org.json4s.JsonAST.JString
 import org.json4s._
 import org.scalatra.ScalatraServlet
 
@@ -62,10 +62,7 @@ trait ErrorHandlingServlet extends ScalatraServlet with Logging {
       case (body, Some(contentType)) if (contentType.contains("application/json")) =>
         try {
           val parsedJson: JValue = org.json4s.jackson.JsonMethods.parse(request.body)
-          val maskedJson = parsedJson.mapField {
-            case ("hetu", JString(_)) => ("hetu", JString("******-****"))
-            case x => x
-          }
+          val maskedJson: JValue = maskSensitiveInformation(parsedJson)
           Json.write(maskedJson)
         } catch {
           case e: Exception => body

@@ -1,6 +1,7 @@
 package fi.oph.tor.tor
 
 import fi.oph.tor.http.HttpStatus
+import fi.oph.tor.json.Json
 import fi.oph.tor.opiskeluoikeus._
 import fi.oph.tor.oppija._
 import fi.oph.tor.schema._
@@ -45,7 +46,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
               case Updated(id) => ("Päivitetty", id)
               case Created(id) => ("Luotu", id)
             }
-            logger.info(verb + " opiskeluoikeus " + id + " oppijalle " + oppijaOid + " tutkintoon " + opiskeluOikeus.suoritus.koulutusmoduulitoteutus.koulutusmoduuli.tunniste + " oppilaitoksessa " + opiskeluOikeus.oppilaitos.oid)
+            logger.info(verb + " opiskeluoikeus " + id + " oppijalle " + oppijaOid + " tutkintoon " + opiskeluOikeus.suoritus.koulutusmoduulitoteutus.koulutusmoduuli.tunniste + " oppilaitoksessa " + opiskeluOikeus.oppilaitos.oid + ": " + Json.writePretty(opiskeluOikeus))
           case _ =>
         }
         result
