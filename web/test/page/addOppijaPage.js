@@ -33,7 +33,7 @@ function AddOppijaPage() {
     },
     enterOppilaitos: function(name) {
       return function() {
-        return pageApi.setInputValue('.oppilaitos input', name)().then(wait.forAjax())
+        return pageApi.setInputValue('.oppilaitos input', name)().then(wait.forAjax)
       }
     },
     selectOppilaitos: function(name) {

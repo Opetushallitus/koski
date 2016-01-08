@@ -824,6 +824,9 @@ Promise.prototype.toString = function () {
 };
 
 Promise.prototype.then = function (fulfilled, rejected, progressed) {
+    // Local patch: Only functions allowed in Promise.prototype.then
+    if (typeof fulfilled != "function") throw new Error("Only functions allowed in Promise.prototype.then")
+
     var self = this;
     var deferred = defer();
     var done = false;   // ensure the untrusted promise makes at most a
