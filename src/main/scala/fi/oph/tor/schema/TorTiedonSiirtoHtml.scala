@@ -187,7 +187,7 @@ object TorApiOperations {
      "GET", "/tor/api/oppija/validate/{oid}",
      <div>Validoi oppijan kantaan tallennetun datan oikeellisuuden</div>,
      Nil,
-     Nil,
+     List(Parameter("oid", "Oppijan tunniste", "1.2.246.562.24.00000000001")),
      List(
        (200, "OK, jos haku onnistuu. Mahdolliset validointivirheet palautuu json-vastauksessa."),
        (401,"UNAUTHORIZED jos käyttäjä ei ole tunnistautunut"),
