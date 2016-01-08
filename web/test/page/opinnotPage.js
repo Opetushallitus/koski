@@ -19,7 +19,7 @@ function OpinnotPage() {
     },
     selectSuoritustapa: function(suoritustapa) {
       return function() {
-        return Page(opiskeluOikeus).setInputValue(".suoritustapa", suoritustapa)().then(wait.forAjax())
+        return Page(opiskeluOikeus).setInputValue(".suoritustapa", suoritustapa)().then(wait.forAjax)
       }
     },
     isSuoritustapaSelectable: function() {
@@ -27,8 +27,7 @@ function OpinnotPage() {
     },
     selectOsaamisala: function(osaamisala) {
       return function() {
-        return Page(opiskeluOikeus).setInputValue(".osaamisala", osaamisala)()
-          .then(wait.forAjax)
+        return Page(opiskeluOikeus).setInputValue(".osaamisala", osaamisala)().then(wait.forAjax)
       }
     },
     isOsaamisalaSelectable: function() {

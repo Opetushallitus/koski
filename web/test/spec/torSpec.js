@@ -375,9 +375,6 @@ describe('TOR', function() {
           expect(opinnot.getTutkinnonOsat()[0]).to.equal('Myynti ja tuotetuntemus')
         })
       })
-
-
-
     })
 
     describe('Kun annetaan arviointi tutkinnonosalle', function() {
