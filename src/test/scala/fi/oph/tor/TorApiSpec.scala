@@ -1,8 +1,10 @@
 package fi.oph.tor
 
+import java.time.LocalDate
 import fi.oph.tor.jettylauncher.SharedJetty
 import fi.oph.tor.json.Json
 import fi.oph.tor.json.Json.toJValue
+import fi.oph.tor.schema.TorOppija
 import org.json4s.JValue
 import org.scalatest.{FunSpec, Matchers}
 
@@ -70,8 +72,8 @@ class TorApiSpec extends FunSpec with Matchers with HttpSpecification {
   }
 
 
-  def putOpiskeluOikeusAjax[A](opiskeluOikeus: Map[String, Any])(f: => A) = {
-    putOppijaAjax(makeOppija(defaultHenkilö, List(defaultOpiskeluOikeus.merge(Json.toJValue(opiskeluOikeus)))))(f)
+  def putOpiskeluOikeusAjax[A](opiskeluOikeus: Map[String, Any], henkilö: JValue = defaultHenkilö)(f: => A) = {
+    putOppijaAjax(makeOppija(henkilö, List(defaultOpiskeluOikeus.merge(Json.toJValue(opiskeluOikeus)))))(f)
   }
 
   def putOppijaAjax[A](oppija: Map[String, AnyRef])(f: => A): Unit = putOppijaAjax(toJValue(oppija))(f)
@@ -340,6 +342,67 @@ class TorApiSpec extends FunSpec with Matchers with HttpSpecification {
         it("palautetaan HTTP 400") (putTutkinnonOsaSuoritusAjax(Map(
           "arviointi" -> List(Map("arvosana" -> Map("koodiarvo" -> "x", "koodistoUri" -> "arviointiasteikkoammatillinent1k3")))
         ))(verifyResponseCode(400, "Koodia arviointiasteikkoammatillinent1k3/x ei löydy koodistosta")))
+      }
+    }
+
+    describe("Kyselyrajapinta") {
+      describe("Kun haku osuu") {
+        it("palautetaan hakutulokset") {
+          putOpiskeluOikeusAjax(Map("päättymispäivä"-> "2016-01-09")) {
+            putOpiskeluOikeusAjax(Map("päättymispäivä"-> "2013-01-09"), toJValue(Map(
+              "etunimet"->"Teija",
+              "sukunimi"->"Tekijä",
+              "kutsumanimi"->"Teija",
+              "hetu"->"150995-914X"
+            ))) {
+              authGet ("api/oppija?opiskeluoikeusPäättynytViimeistään=2016-12-31&opiskeluoikeusPäättynytAikaisintaan=2016-01-01") {
+                verifyResponseCode(200)
+                val oppijat: List[TorOppija] = Json.read[List[TorOppija]](response.body)
+                oppijat.length should equal(1)
+                oppijat(0).opiskeluoikeudet(0).päättymispäivä should equal(Some(LocalDate.parse("2016-01-09")))
+              }
+            }
+          }
+        }
+      }
+
+      describe("Kun haku ei osu") {
+        it("palautetaan tyhjä lista") {
+          putOpiskeluOikeusAjax(Map("päättymispäivä"-> "2016-01-09")) {
+            authGet ("api/oppija?opiskeluoikeusPäättynytViimeistään=2014-12-31&opiskeluoikeusPäättynytAikaisintaan=2014-01-01") {
+              verifyResponseCode(200)
+              val oppijat: List[TorOppija] = Json.read[List[TorOppija]](response.body)
+              oppijat.length should equal(0)
+            }
+          }
+        }
+      }
+
+      describe("Kun haetaan ei tuetulla parametrilla") {
+        it("palautetaan HTTP 400") {
+          authGet("api/oppija?eiTuettu=kyllä") {
+            verifyResponseCode(400, "Unsupported query parameter: eiTuettu")
+          }
+        }
+      }
+
+      describe("Kun haetaan ilman parametreja") {
+        it("palautetaan kaikki oppijat") {
+          putOpiskeluOikeusAjax(Map("päättymispäivä"-> "2016-01-09")) {
+            putOpiskeluOikeusAjax(Map("päättymispäivä"-> "2013-01-09"), toJValue(Map(
+              "etunimet"->"Teija",
+              "sukunimi"->"Tekijä",
+              "kutsumanimi"->"Teija",
+              "hetu"->"150995-914X"
+            ))) {
+              authGet ("api/oppija") {
+                verifyResponseCode(200)
+                val oppijat: List[TorOppija] = Json.read[List[TorOppija]](response.body)
+                oppijat.length should be >= 2
+              }
+            }
+          }
+        }
       }
     }
   }

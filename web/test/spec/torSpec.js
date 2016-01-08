@@ -308,64 +308,6 @@ describe('TOR', function() {
       })
     })
 
-    describe('Kyselyrajapinta', function() {
-      before(resetFixtures, authentication.login('kalle'), page.openPage)
-
-      describe('Kun haku osuu', function () {
-        before(
-          addOppija.putOpiskeluOikeusAjax({päättymispäivä: "2016-01-09"}),
-          addOppija.putOpiskeluOikeusAjax({päättymispäivä: "2013-01-09"}, {
-            etunimet:'Teija',
-            sukunimi:'Tekijä',
-            kutsumanimi:'Teija',
-            hetu:'150995-914X'
-          })
-        )
-
-        it('palautetaan hakutulokset', function () {
-          return getJson('/tor/api/oppija?opiskeluoikeusPäättynytViimeistään=2016-12-31&opiskeluoikeusPäättynytAikaisintaan=2016-01-01').then(function (resp) {
-            expect(resp.length).to.equal(1)
-            expect(resp[0].opiskeluoikeudet[0].päättymispäivä).to.equal("2016-01-09")
-          })
-        })
-      })
-
-      describe('Kun haku ei osu', function () {
-        before(addOppija.putOpiskeluOikeusAjax({päättymispäivä: "2016-01-09"}))
-
-        it('palautetaan tyhjä lista', function () {
-          return getJson('/tor/api/oppija?opiskeluoikeusPäättynytViimeistään=2014-12-31&opiskeluoikeusPäättynytAikaisintaan=2014-01-01').then(function (resp) {
-            expect(resp.length).to.equal(0)
-          })
-        })
-      })
-
-      describe('Kun haetaan ei tuetulla parametrilla', function() {
-        it('palautetaan HTTP 400', verifyResponseCode(function() {
-          return getJson('/tor/api/oppija?eiTuettu=kyllä')
-        }, 400, "Unsupported query parameter: eiTuettu"))
-      })
-
-      describe('Kun haetaan ilman parametreja', function() {
-        before(
-          addOppija.putOpiskeluOikeusAjax({päättymispäivä: "2016-01-09"}),
-          addOppija.putOpiskeluOikeusAjax({päättymispäivä: "2013-01-09"}, {
-            etunimet:'Teija',
-            sukunimi:'Tekijä',
-            kutsumanimi:'Teija',
-            hetu:'150995-914X'
-          })
-        )
-
-        it('palautetaan kaikki oppijat', function() {
-          return getJson('/tor/api/oppija').then(function (resp) {
-            expect(resp.length).to.be.at.least(2)
-          })
-        })
-      })
-
-    })
-
     describe('Virhetilanteet', function() {
       describe('Kun tallennus epäonnistuu', function() {
         before( openPage('/tor/uusioppija', function() {return addOppija.isVisible()}),

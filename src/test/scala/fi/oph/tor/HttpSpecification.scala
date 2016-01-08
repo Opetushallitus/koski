@@ -19,5 +19,9 @@ trait HttpSpecification extends HttpComponentsClient with Assertions {
     }
   }
 
+  def authGet[A](uri: String)(f: => A) = {
+    get(uri, headers = authHeaders)(f)
+  }
+
   override def baseUrl = SharedJetty.baseUrl
 }
