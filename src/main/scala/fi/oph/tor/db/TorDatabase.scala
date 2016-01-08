@@ -1,6 +1,7 @@
 package fi.oph.tor.db
 
 import com.typesafe.config.Config
+import com.typesafe.config.ConfigValueFactory._
 import fi.vm.sade.utils.slf4j.Logging
 import fi.vm.sade.utils.tcp.PortChecker
 import org.flywaydb.core.Flyway
@@ -13,11 +14,13 @@ object TorDatabase {
   type DB = PostgresDriver.backend.DatabaseDef
 
   implicit class TorDatabaseConfig(c: Config) {
-    val config = c.getConfig("db")
-    val host: String = config.getString("host")
-    val port: Int = config.getInt("port")
+    val host: String = c.getString("db.host")
+    val port: Int = c.getInt("db.port")
+    val dbName: String = c.getString("db.name")
+
+    val config = c.getConfig("db").withValue("url", fromAnyRef("jdbc:postgresql://"+host+":"+port+"/"+dbName))
+
     val password: String = config.getString("password")
-    val dbName: String = config.getString("name")
     val user: String = config.getString("user")
     val url: String = config.getString("url")
     def isLocal = host == "localhost"
