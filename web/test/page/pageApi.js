@@ -16,7 +16,7 @@ function Page(mainElement) {
         var isRadio = input.attr("type") === "radio"
         var visibleElement = isRadio ? api.getRadioLabel(selector) : input
         return wait.until(visibleElement.isVisible)()
-          .then(input.setValue(value))
+          .then(function() {input.setValue(value)})
       }
     },
     button: function(el) {
