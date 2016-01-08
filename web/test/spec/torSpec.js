@@ -366,96 +366,6 @@ describe('TOR', function() {
 
     })
 
-    describe('Tietojen validointi serverillä', function() {
-      before(resetFixtures, authentication.login('kalle'), page.openPage)
-
-      describe('Opiskeluoikeusjaksot', function() {
-        describe('Päivämäärät kunnossa', function() {
-          it('palautetaan HTTP 200', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
-            opiskeluoikeudenTila: {opiskeluoikeusjaksot: [
-              { alku: "2015-08-01", loppu: "2015-12-31", tila: {koodiarvo: "aktiivinen", koodistoUri: "opiskeluoikeudentila"}},
-              { alku: "2016-01-01", loppu: "2016-05-31", tila: {koodiarvo: "keskeyttanyt", koodistoUri: "opiskeluoikeudentila"}},
-              { alku: "2016-06-01", tila: {koodiarvo: "paattynyt", koodistoUri: "opiskeluoikeudentila"}}
-            ]}
-          }), 200))
-        })
-        describe('alku > loppu', function() {
-          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
-            opiskeluoikeudenTila: {opiskeluoikeusjaksot: [
-              { alku: "2016-08-01", loppu: "2015-12-31", tila: {koodiarvo: "aktiivinen", koodistoUri: "opiskeluoikeudentila"}}
-            ]}
-          }), 400, "opiskeluoikeudenTila.opiskeluoikeusjaksot.alku (2016-08-01) oltava sama tai aiempi kuin opiskeluoikeudenTila.opiskeluoikeusjaksot.loppu(2015-12-31)"))
-        })
-        describe('ei-viimeiseltä jaksolta puuttuu loppupäivä', function() {
-          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
-            opiskeluoikeudenTila: {opiskeluoikeusjaksot: [
-              { alku: "2015-08-01", tila: {koodiarvo: "aktiivinen", koodistoUri: "opiskeluoikeudentila"}},
-              { alku: "2016-01-01", loppu: "2016-05-31", tila: {koodiarvo: "keskeyttanyt", koodistoUri: "opiskeluoikeudentila"}}
-            ]}
-          }), 400, "opiskeluoikeudenTila.opiskeluoikeusjaksot: ei-viimeiseltä jaksolta puuttuu loppupäivä"))
-        })
-        describe('jaksot ovat päällekkäiset', function() {
-          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
-            opiskeluoikeudenTila: {opiskeluoikeusjaksot: [
-              { alku: "2015-08-01", loppu: "2016-01-01", tila: {koodiarvo: "aktiivinen", koodistoUri: "opiskeluoikeudentila"}},
-              { alku: "2016-01-01", loppu: "2016-05-31", tila: {koodiarvo: "keskeyttanyt", koodistoUri: "opiskeluoikeudentila"}}
-            ]}
-          }), 400, "opiskeluoikeudenTila.opiskeluoikeusjaksot: jaksot eivät muodosta jatkumoa"))
-        })
-        describe('jaksojen väliin jää tyhjää', function() {
-          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
-            opiskeluoikeudenTila: {opiskeluoikeusjaksot: [
-              { alku: "2015-08-01", loppu: "2015-10-01", tila: {koodiarvo: "aktiivinen", koodistoUri: "opiskeluoikeudentila"}},
-              { alku: "2016-01-01", loppu: "2016-05-31", tila: {koodiarvo: "keskeyttanyt", koodistoUri: "opiskeluoikeudentila"}}
-            ]}
-          }), 400, "opiskeluoikeudenTila.opiskeluoikeusjaksot: jaksot eivät muodosta jatkumoa"))
-        })
-      })
-
-      describe('Läsnäolojaksot', function() {
-        describe('Päivämäärät kunnossa', function() {
-          it('palautetaan HTTP 200', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
-            läsnäolotiedot: {läsnäolojaksot: [
-              { alku: "2015-08-01", loppu: "2015-12-31", tila: {koodiarvo: "lasna", koodistoUri: "lasnaolotila"}},
-              { alku: "2016-01-01", loppu: "2016-05-31", tila: {koodiarvo: "poissa", koodistoUri: "lasnaolotila"}},
-              { alku: "2016-06-01", tila: {koodiarvo: "lasna", koodistoUri: "lasnaolotila"}}
-            ]}
-          }), 200))
-        })
-        describe('alku > loppu', function() {
-          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
-            läsnäolotiedot: {läsnäolojaksot: [
-              { alku: "2016-08-01", loppu: "2015-12-31", tila: {koodiarvo: "lasna", koodistoUri: "lasnaolotila"}}
-            ]}
-          }), 400, "läsnäolotiedot.läsnäolojaksot.alku (2016-08-01) oltava sama tai aiempi kuin läsnäolotiedot.läsnäolojaksot.loppu(2015-12-31)"))
-        })
-        describe('ei-viimeiseltä jaksolta puuttuu loppupäivä', function() {
-          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
-            läsnäolotiedot: {läsnäolojaksot: [
-              { alku: "2015-08-01", tila: {koodiarvo: "lasna", koodistoUri: "lasnaolotila"}},
-              { alku: "2016-01-01", loppu: "2016-05-31", tila: {koodiarvo: "poissa", koodistoUri: "lasnaolotila"}}
-            ]}
-          }), 400, "läsnäolotiedot.läsnäolojaksot: ei-viimeiseltä jaksolta puuttuu loppupäivä"))
-        })
-        describe('jaksot ovat päällekkäiset', function() {
-          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
-            läsnäolotiedot: {läsnäolojaksot: [
-              { alku: "2015-08-01", loppu: "2016-01-01", tila: {koodiarvo: "lasna", koodistoUri: "lasnaolotila"}},
-              { alku: "2016-01-01", loppu: "2016-05-31", tila: {koodiarvo: "poissa", koodistoUri: "lasnaolotila"}}
-            ]}
-          }), 400, "läsnäolotiedot.läsnäolojaksot: jaksot eivät muodosta jatkumoa"))
-        })
-        describe('jaksojen väliin jää tyhjää', function() {
-          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({
-            läsnäolotiedot: {läsnäolojaksot: [
-              { alku: "2015-08-01", loppu: "2015-10-01", tila: {koodiarvo: "lasna", koodistoUri: "lasnaolotila"}},
-              { alku: "2016-01-01", loppu: "2016-05-31", tila: {koodiarvo: "poissa", koodistoUri: "lasnaolotila"}}
-            ]}
-          }), 400, "läsnäolotiedot.läsnäolojaksot: jaksot eivät muodosta jatkumoa"))
-        })
-      })
-    })
-
     describe('Virhetilanteet', function() {
       describe('Kun tallennus epäonnistuu', function() {
         before( openPage('/tor/uusioppija', function() {return addOppija.isVisible()}),
@@ -525,34 +435,7 @@ describe('TOR', function() {
       })
 
 
-      describe('Tietojen validointi serverillä', function() {
-        describe('Osaamisala ja suoritustapa ok', function() {
-          it('palautetaan HTTP 200', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({"suoritus": {"koulutusmoduulitoteutus": {
-              "suoritustapa": {"tunniste": {"koodiarvo": "ops", "koodistoUri": "suoritustapa"}},
-              "osaamisala": [{"koodiarvo": "1527", "koodistoUri": "osaamisala"}]
-            }}}
-          ), 200))
-        })
-        describe('Suoritustapa virheellinen', function() {
-          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({"suoritus": {"koulutusmoduulitoteutus": {
-              "suoritustapa": {"tunniste": {"koodiarvo": "blahblahtest", "koodistoUri": "suoritustapa"}},
-              "osaamisala": [{"koodiarvo": "1527", "koodistoUri": "osaamisala"}]
-            }}}
-          ), 400, "Koodia suoritustapa/blahblahtest ei löydy koodistosta"))
-        })
-        describe('Osaamisala ei löydy tutkintorakenteesta', function() {
-          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({"suoritus": {"koulutusmoduulitoteutus": {
-            "suoritustapa": {"tunniste": {"koodiarvo": "ops", "koodistoUri": "suoritustapa"}},
-            "osaamisala": [{"koodiarvo": "3053", "koodistoUri": "osaamisala"}]
-          }}}), 400, "Osaamisala 3053 ei löydy tutkintorakenteesta perusteelle 39/011/2014"))
-        })
-        describe('Osaamisala virheellinen', function() {
-          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putOpiskeluOikeusAjax({"suoritus": {"koulutusmoduulitoteutus": {
-            "suoritustapa": {"tunniste": {"koodiarvo": "ops", "koodistoUri": "suoritustapa"}},
-            "osaamisala": [{"koodiarvo": "0", "koodistoUri": "osaamisala"}]
-          }}}), 400, "Koodia osaamisala/0 ei löydy koodistosta"))
-        })
-      })
+
     })
 
     describe('Kun annetaan arviointi tutkinnonosalle', function() {
@@ -594,43 +477,7 @@ describe('TOR', function() {
         })
       })
 
-      describe('Tietojen validointi serverillä', function() {
-        describe('Tutkinnon osa ja arviointi ok', function() {
-          it('palautetaan HTTP 200', verifyResponseCode(addOppija.putTutkinnonOsaSuoritusAjax({}), 200))
-        })
-        describe('Tutkinnon osa ei kuulu tutkintorakenteeseen', function() {
-          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putTutkinnonOsaSuoritusAjax({
-            "koulutusmoduulitoteutus": {
-              "koulutusmoduuli": {
-                "tunniste": {"koodiarvo": "103135", "nimi": "Kaapelitelevisio- ja antennijärjestelmät", "koodistoUri": "tutkinnonosat", "koodistoVersio": 1}
-              }
-            }
-          }), 400, "Tutkinnon osa tutkinnonosat/103135 ei löydy tutkintorakenteesta perusteelle 39/011/2014 - suoritustapa naytto"))
-        })
-        describe('Tutkinnon osaa ei ei löydy koodistosta', function() {
-          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putTutkinnonOsaSuoritusAjax({
-            "koulutusmoduulitoteutus": {
-              "koulutusmoduuli": {
-                "tunniste": {"koodiarvo": "9923123", "nimi": "Väärää tietoa", "koodistoUri": "tutkinnonosat", "koodistoVersio": 1}
-              }
-            }
-          }), 400, "Koodia tutkinnonosat/9923123 ei löydy koodistosta"))
-        })
-        describe('Arviointiasteikko on tuntematon', function() {
-          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putTutkinnonOsaSuoritusAjax(
-            {
-              arviointi: [{arvosana: {koodiarvo: "2", koodistoUri: "vääräasteikko"}}]
-            }
-          ), 400, "not found in enum"))
-        })
-        describe('Arvosana ei kuulu perusteiden mukaiseen arviointiasteikkoon', function() {
-          it('palautetaan HTTP 400', verifyResponseCode(addOppija.putTutkinnonOsaSuoritusAjax(
-            {
-              arviointi: [{arvosana: {koodiarvo: "x", koodistoUri: "arviointiasteikkoammatillinent1k3"}}]
-            }
-          ), 400, "Koodia arviointiasteikkoammatillinent1k3/x ei löydy koodistosta"))
-        })
-      })
+
     })
 
     describe('Virhetilanteet', function() {
