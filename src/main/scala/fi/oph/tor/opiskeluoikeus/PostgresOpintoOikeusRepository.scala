@@ -12,7 +12,6 @@ import fi.oph.tor.tor.{OpiskeluoikeusP채채ttynytAikaisintaan, OpiskeluoikeusP채�
 import fi.oph.tor.toruser.TorUser
 import fi.vm.sade.utils.slf4j.Logging
 import rx.lang.scala.Observable
-import slick.backend.DatabasePublisher
 
 class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository with Futures with GlobalExecutionContext with Logging {
   // Note: this is a naive implementation. All filtering should be moved to query-level instead of in-memory-level
@@ -93,11 +92,9 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
 
     // Note: it won't actually stream unless you use both `transactionally` and `fetchSize`. It'll collect all the data into memory.
 
-    val databasePublisher: DatabasePublisher[(String, OpiskeluOikeus)] = db.stream(query.result.transactionally.withStatementParameters(fetchSize = 1000)).mapResult { row =>
+    val observable: Observable[(String, OpiskeluOikeus)] = db.stream(query.result.transactionally.withStatementParameters(fetchSize = 1000)).mapResult { row =>
       (row.oppijaOid, row.toOpiskeluOikeus) // TODO: ehk채 siirr채 t채m채kin k채sittely Rx-puolelle
-    }
-
-    val observable: Observable[(String, OpiskeluOikeus)] = databasePublisher.toObservable.publish.refCount
+    }.publish.refCount
 
     val buffered: Observable[List[(String, OpiskeluOikeus)]] = observable.tumblingBuffer(observable.map(_._1).distinctUntilChanged.drop(1)).map(_.toList)
 
