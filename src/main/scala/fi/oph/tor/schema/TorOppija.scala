@@ -59,9 +59,9 @@ object Henkilö {
 }
 
 case class OpiskeluOikeus(
-  @Description("Opiskeluoikeuden uniikki tunniste. Tietoja syötettäessä kenttä ei ole pakollinen. Tietoja päivitettäessä TOR tunnistaa opiskeluoikeuden joko tämän id:n tai muiden kenttien (oppijaOid, organisaatio, diaarinumero) perusteella")
+  @Description("Opiskeluoikeuden uniikki tunniste, joka generoidaan TOR-järjestelmässä. Tietoja syötettäessä kenttä ei ole pakollinen. Tietoja päivitettäessä TOR tunnistaa opiskeluoikeuden joko tämän id:n tai muiden kenttien (oppijaOid, organisaatio, diaarinumero) perusteella")
   id: Option[Int],
-  @Description("Lähdejärjestelmän tunniste opiskeluoikeudelle. Tiedonsiirroissa tarpeellinen, jotta voidaan varmistaa päivitysten osuminen oikeaan opiskeluoikeuteen")
+  @Description("Lähdejärjestelmän tunniste ja opiskeluoikeuden tunniste lähdejärjestelmässä. Käytetään silloin, kun opiskeluoikeus on tuotu TOR:iin tiedonsiirrolla ulkoisesta järjestelmästä, eli käytännössä oppilashallintojärjestelmästä.")
   lähdejärjestelmänId: Option[LähdejärjestelmäId],
   @Description("Opiskelijan opiskeluoikeuden alkamisaika joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
   alkamispäivä: Option[LocalDate],
@@ -349,9 +349,9 @@ case class Laajuus(
 )
 
 case class LähdejärjestelmäId(
-  @Description("Paikallinen uniikki tunniste lähdejärjestelmässä")
+  @Description("Opiskeluoikeuden paikallinen uniikki tunniste lähdejärjestelmässä. Tiedonsiirroissa tarpeellinen, jotta voidaan varmistaa päivitysten osuminen oikeaan opiskeluoikeuteen.")
   id: String,
-  @Description("Lähdejärjestelmän yksilöivä tunniste")
+  @Description("Lähdejärjestelmän yksilöivä tunniste. Tällä tunnistetaan järjestelmä, josta tiedot on tuotu TOR:iin. Kullakin erillisellä tietojärjestelmäinstanssilla tulisi olla oma tunniste. Jos siis oppilaitoksella on oma tietojärjestelmäinstanssi, tulee myös tällä instanssilla olla uniikki tunniste.")
   @KoodistoUri("lahdejarjestelma")
   lähdejärjestelmä: KoodistoKoodiViite
 )
