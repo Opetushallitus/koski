@@ -120,9 +120,9 @@ Kaikki rajapinnat vaativat HTTP Basic Authentication -tunnistautumisen, eli käy
           </div>
         }
         }
-        <script src="js/lib/promise.js"></script>
-        <script src="js/lib/fetch.js"></script>
-        <script src="js/lib/dataset.js"></script>
+        <script src="js/polyfills/promise.js"></script>
+        <script src="js/polyfills/fetch.js"></script>
+        <script src="js/polyfills/dataset.js"></script>
         <script src="js/documentation.js"></script>
       </body>
     </html>
@@ -158,7 +158,7 @@ object TorApiOperations {
      )
    ),
    ApiOperation(
-     "GET", "/tor/api/oppija/validoi",
+     "GET", "/tor/api/oppija/validate",
      <div>Etsii oppijoita annetuilla parametreilla ja validoi hakutulokset. Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</div>,
      Nil,
      List(
