@@ -25,8 +25,7 @@ object GenericJsonFormats {
 
 object Json {
   // Find out why SchemaBasedTraitSerializer breaks current serialization
-  implicit val jsonFormats = GenericJsonFormats.genericFormats + new LocalDateSerializer +
-    new RakenneOsaSerializer ++ Deserializers.deserializers
+  implicit val jsonFormats = GenericJsonFormats.genericFormats + LocalDateSerializer + RakenneOsaSerializer ++ Deserializers.deserializers
 
   def write(x: AnyRef, pretty: Boolean = false): String = {
     if (pretty) {
@@ -73,7 +72,7 @@ object Json {
   }
 }
 
-class LocalDateSerializer extends CustomSerializer[LocalDate](format => (
+object LocalDateSerializer extends CustomSerializer[LocalDate](format => (
   {
     case JString(s) => ContextualExtractor.tryExtract(LocalDate.parse(s))(HttpStatus.badRequest("Virheellinen päivämäärä: " + s))
     case JInt(i) => ContextualExtractor.tryExtract(LocalDateTime.ofInstant(Instant.ofEpochMilli(i.longValue()), ZoneId.of("UTC")).toLocalDate())(HttpStatus.badRequest("Virheellinen päivämäärä: " + i))

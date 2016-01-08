@@ -16,7 +16,7 @@ sealed trait ERakenneOsa
 case class ERakenneModuuli(nimi: Option[Map[String, String]], osat: List[ERakenneOsa], osaamisala: Option[EOsaamisalaViite]) extends ERakenneOsa
 case class ERakenneTutkinnonOsa(_tutkinnonOsaViite: String, pakollinen: Boolean) extends ERakenneOsa
 
-class RakenneOsaSerializer extends Serializer[ERakenneOsa] {
+object RakenneOsaSerializer extends Serializer[ERakenneOsa] {
   private val RakenneOsaClass = classOf[ERakenneOsa]
 
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), ERakenneOsa] = {
