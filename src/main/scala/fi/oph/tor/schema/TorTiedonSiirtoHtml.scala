@@ -135,10 +135,15 @@ Kaikki rajapinnat vaativat HTTP Basic Authentication -tunnistautumisen, eli käy
 }
 
 object TorApiOperations {
+ private val hakuParametrit = List(
+   Parameter("opiskeluoikeusPäättynytAikaisintaan","Päivämäärä jonka jälkeen opiskeluoikeus on päättynyt","2016-01-01"),
+   Parameter("opiskeluoikeusPäättynytViimeistään","Päivämäärä jota ennen opiskeluoikeus on päättynyt","2016-12-31"),
+   Parameter("tutkinnonTila","Opiskeluoikeuden juurisuorituksen tila: VALMIS, KESKEN, KESKEYTYNYT","VALMIS")
+ )
  val operations = List(
    ApiOperation(
       "GET", "/tor/api/oppija/search",
-      <div>Etsii oppijoita annetulla hakusanalla. Hakusana voi olla hetu, oppija-oid tai nimen osa. Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</div>,
+      <div>Etsii oppijoita annetulla hakusanalla. Hakutuloksissa vain oppijoiden perustiedot. Hakusana voi olla hetu, oppija-oid tai nimen osa. Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</div>,
       Nil,
       List(Parameter("query", "Hakusana, joka voi olla hetu, oppija-oid tai nimen osa.", "eero")),
       List(
@@ -149,13 +154,9 @@ object TorApiOperations {
    ),
    ApiOperation(
     "GET", "/tor/api/oppija",
-     <div>Etsii oppijoita annetuilla parametreilla. Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</div>,
+     <div>Palauttaa oppijoiden tiedot annetuilla parametreilla. Sisältää oppijoiden henkilötiedot, opiskeluoikeudet suorituksineen. Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</div>,
      Nil,
-     List(
-       Parameter("opiskeluoikeusPäättynytAikaisintaan","Päivämäärä jonka jälkeen opiskeluoikeus on päättynyt","2016-01-01"),
-       Parameter("opiskeluoikeusPäättynytViimeistään","Päivämäärä jota ennen opiskeluoikeus on päättynyt","2016-12-31"),
-       Parameter("tutkinnonTila","Opiskeluoikeuden juurisuorituksen tila: VALMIS, KESKEN, KESKEYTYNYT","VALMIS")
-     ),
+     hakuParametrit,
      List(
        (200, "OK jos haku onnistuu"),
        (400, "BAD REQUEST jos hakuparametria ei tueta, tai hakuparametri on virheellinen."),
@@ -164,13 +165,9 @@ object TorApiOperations {
    ),
    ApiOperation(
      "GET", "/tor/api/oppija/validate",
-     <div>Etsii oppijoita annetuilla parametreilla ja validoi hakutulokset. Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</div>,
+     <div>Etsii oppijat annetuilla parametreilla ja validoi hakutulokset. Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</div>,
      Nil,
-     List(
-       Parameter("opiskeluoikeusPäättynytAikaisintaan","Päivämäärä jonka jälkeen opiskeluoikeus on päättynyt","2016-01-01"),
-       Parameter("opiskeluoikeusPäättynytViimeistään","Päivämäärä jota ennen opiskeluoikeus on päättynyt","2016-12-31"),
-       Parameter("tutkinnonTila","Opiskeluoikeuden juurisuorituksen tila: VALMIS, KESKEN, KESKEYTYNYT","VALMIS")
-     ),
+     hakuParametrit,
      List(
        (200, "OK jos haku onnistuu. Mahdolliset validointivirheet palautuu json-vastauksessa."),
        (400, "BAD REQUEST jos hakuparametria ei tueta, tai hakuparametri on virheellinen."),
@@ -184,7 +181,7 @@ object TorApiOperations {
      List(Parameter("oid", "Oppijan tunniste", "1.2.246.562.24.00000000001")),
      List(
        (200, "OK, jos haku onnistuu."),
-       (401,"UNAUTHORIZED jos käyttäjä ei ole tunnistautunut"),
+       (401, "UNAUTHORIZED jos käyttäjä ei ole tunnistautunut"),
        (404, "NOT FOUND jos oppijaa ei löydy tai käyttäjällä ei ole oikeuksia oppijan tietojen katseluun.")
      )
    ),
@@ -195,7 +192,7 @@ object TorApiOperations {
      List(Parameter("oid", "Oppijan tunniste", "1.2.246.562.24.00000000001")),
      List(
        (200, "OK, jos haku onnistuu. Mahdolliset validointivirheet palautuu json-vastauksessa."),
-       (401,"UNAUTHORIZED jos käyttäjä ei ole tunnistautunut"),
+       (401, "UNAUTHORIZED jos käyttäjä ei ole tunnistautunut"),
        (404, "NOT FOUND jos oppijaa ei löydy tai käyttäjällä ei ole oikeuksia oppijan tietojen katseluun.")
      )
    ),
