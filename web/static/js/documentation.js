@@ -41,6 +41,7 @@ forEach(document.querySelectorAll('.api-tester'), function(elem) {
     exampleSelector.addEventListener("change", function(a,b,c) {
       var data = event.target.options[event.target.selectedIndex].dataset.exampledata
       editorElem.value=data
+      codeMirror.setValue(data)
     })
   }
   var button = elem.querySelector(".try")
