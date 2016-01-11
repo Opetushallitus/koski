@@ -33,24 +33,24 @@ forEach(document.querySelectorAll('.json-row .collapsible'), function(node) {
 
 forEach(document.querySelectorAll('.api-tester'), function(elem) {
   var exampleSelector = elem.querySelector(".examples select")
+  var codeMirror
+
   if (exampleSelector) {
     var editorElem = elem.querySelector("textarea");
-    CodeMirror.fromTextArea(editorElem, { mode: { name: "javascript", json: true}, theme: "custom" })
+    codeMirror = CodeMirror.fromTextArea(editorElem, { mode: { name: "javascript", json: true}, theme: "custom" })
     exampleSelector.addEventListener("change", function(a,b,c) {
       var data = event.target.options[event.target.selectedIndex].dataset.exampledata
       editorElem.value=data
     })
   }
-
   var button = elem.querySelector(".try")
   button.addEventListener('click', function() {
     elem.className = "api-tester loading"
     button.disabled = true
     var options = {credentials: 'include', method: elem.dataset.method, headers: {'Content-Type': 'application/json'}};
 
-    var dataElem = elem.querySelector("textarea");
-    if (dataElem) {
-      options.body = dataElem.value
+    if (codeMirror) {
+      options.body = codeMirror.getValue()
     }
 
     var path = elem.dataset.path
