@@ -12,7 +12,7 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends Futures with GlobalEx
 
   // TODO: Add permission checks
   def findByOpiskeluoikeusId(id: Int)(implicit userContext: TorUser): Option[Seq[OpiskeluOikeusHistoryRow]] = {
-    Some(await(db.run(OpiskeluOikeusHistoria.filter(_.opiskeluoikeusId === id).result)))
+    Some(await(db.run(OpiskeluOikeusHistoria.filter(_.opiskeluoikeusId === id).sortBy(_.id.asc).result)))
   }
 
   def create(opiskeluoikeusId: Int, kayttäjäOid: String, muutos: JValue) = {
