@@ -1,10 +1,18 @@
 package fi.oph.tor.opiskeluoikeus
 
+import java.sql.Timestamp
+
+import com.fasterxml.jackson.databind.{ObjectMapper, JsonNode}
+import com.fasterxml.jackson.databind.node.JsonNodeFactory
+import com.github.fge.jackson.jsonpointer.JsonPointer
+import com.github.fge.jsonpatch.{AddOperation, JsonPatch}
+import com.github.fge.jsonpatch.diff.JsonDiff
 import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.db.Tables._
 import fi.oph.tor.db.TorDatabase.DB
 import fi.oph.tor.db._
 import fi.oph.tor.http.HttpStatus
+import fi.oph.tor.json.Json
 import fi.oph.tor.oppija.PossiblyUnverifiedOppijaOid
 import fi.oph.tor.schema.Henkilö._
 import fi.oph.tor.schema.{FullHenkilö, OpiskeluOikeus}
@@ -12,6 +20,8 @@ import fi.oph.tor.tor.{OpiskeluoikeusPäättynytAikaisintaan, OpiskeluoikeusPä�
 import fi.oph.tor.toruser.TorUser
 import fi.oph.tor.util.ReactiveStreamsToRx
 import fi.vm.sade.utils.slf4j.Logging
+import org.json4s.JValue
+import org.json4s.jackson.JsonMethods
 import rx.lang.scala.Observable
 
 class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository with Futures with GlobalExecutionContext with Logging {
@@ -38,16 +48,12 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
     find(OpiskeluOikeudet.filter(_.oppijaOid === oid))
   }
 
-  override def create(oppijaOid: String, opiskeluOikeus: OpiskeluOikeus): Either[HttpStatus, OpiskeluOikeus.Id] = {
-    Right(await(db.run(OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += new OpiskeluOikeusRow(oppijaOid, opiskeluOikeus))))
-  }
-
   // TODO: createOrUpdate should be transactional
   override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: OpiskeluOikeus)(implicit userContext: TorUser): Either[HttpStatus, CreateOrUpdateResult] = {
     val opiskeluoikeudet: Either[HttpStatus, Option[OpiskeluOikeus]] = find(OpiskeluOikeusIdentifier(oppijaOid.oppijaOid, opiskeluOikeus))
 
     opiskeluoikeudet.right.flatMap {
-      case Some(oikeus) => update(oppijaOid.oppijaOid, opiskeluOikeus.copy(id = oikeus.id)) match {
+      case Some(oikeus) => update(oppijaOid.oppijaOid, oikeus, opiskeluOikeus.copy(id = oikeus.id)) match {
         case error if error.isError => Left(error)
         case _ => Right(Updated(oikeus.id.get))
       }
@@ -59,6 +65,36 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
     }
   }
 
+  private def create(oppijaOid: String, opiskeluOikeus: OpiskeluOikeus)(implicit userContext: TorUser): Either[HttpStatus, OpiskeluOikeus.Id] = {
+    val opiskeluoikeusId = await(db.run(OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += new OpiskeluOikeusRow(oppijaOid, opiskeluOikeus)))
+    val diff = Json.toJValue(List(Map("op" -> "add", "path" -> "", "value" -> opiskeluOikeus)))
+
+    createDiff(opiskeluoikeusId, userContext.user.oid, diff)
+    Right(opiskeluoikeusId)
+  }
+
+  private def update(oppijaOid: String, vanhaOpiskeluoikeus: OpiskeluOikeus, uusiOpiskeluoikeus: OpiskeluOikeus)(implicit userContext: TorUser) = {
+    // TODO: always overriding existing data can not be the eventual update strategy
+    val rowsUpdated: Int = await(db.run(OpiskeluOikeudet.filter(_.id === uusiOpiskeluoikeus.id.get).map(_.data).update(new OpiskeluOikeusRow(oppijaOid, uusiOpiskeluoikeus).data)))
+
+    val diff: JValue = JsonMethods.fromJsonNode(JsonDiff.asJson(JsonMethods.asJsonNode(Json.toJValue(vanhaOpiskeluoikeus)), JsonMethods.asJsonNode(Json.toJValue(uusiOpiskeluoikeus))))
+
+    createDiff(vanhaOpiskeluoikeus.id.get, userContext.user.oid, diff)
+
+    rowsUpdated match {
+      case 1 => HttpStatus.ok
+      case x =>
+        logger.error("Unexpected number of updated rows: " + x)
+        HttpStatus.internalError()
+    }
+  }
+
+  private def createDiff(opiskeluoikeusId: Int, kayttäjäOid: String, muutos: JValue) = {
+    await(db.run(OpiskeluOikeusHistoria.map {row =>
+      (row.opiskeluoikeusId, row.kayttajaOid, row.muutos )} += (opiskeluoikeusId, kayttäjäOid, muutos)
+    ))
+  }
+
   override def find(identifier: OpiskeluOikeusIdentifier)(implicit userContext: TorUser): Either[HttpStatus, Option[OpiskeluOikeus]] = identifier match{
     case PrimaryKey(id) => find(OpiskeluOikeudet.filter(_.id === id)).headOption match {
       case Some(oikeus) => Right(Some(oikeus))
@@ -68,17 +104,6 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
       Right(findByOppijaOid(oppijaOid).find({
         new IdentifyingSetOfFields(oppijaOid, _) == identifier
       }))
-    }
-  }
-
-  override def update(oppijaOid: String, opiskeluOikeus: OpiskeluOikeus) = {
-    // TODO: always overriding existing data can not be the eventual update strategy
-    val rowsUpdated: Int = await(db.run(OpiskeluOikeudet.filter(_.id === opiskeluOikeus.id.get).map(_.data).update(new OpiskeluOikeusRow(oppijaOid, opiskeluOikeus).data)))
-    rowsUpdated match {
-      case 1 => HttpStatus.ok
-      case x =>
-        logger.error("Unexpected number of updated rows: " + x)
-        HttpStatus.internalError()
     }
   }
 
