@@ -21,9 +21,12 @@ trait ErrorHandlingServlet extends ScalatraServlet with Logging {
 
   }
 
-  def renderOption[T <: AnyRef](result: Option[T], pretty: Boolean = false) = result match {
-    case Some(x) => Json.write(x, pretty)
-    case _ => renderStatus(HttpStatus.notFound("Not found"))
+  def renderOption[T <: AnyRef](result: Option[T], pretty: Boolean = false) = {
+    contentType = "application/json;charset=utf-8"
+    result match {
+      case Some(x) => Json.write(x, pretty)
+      case _ => renderStatus(HttpStatus.notFound("Not found"))
+    }
   }
 
   def renderEither[T <: AnyRef](result: Either[HttpStatus, T], pretty: Boolean = false) = {

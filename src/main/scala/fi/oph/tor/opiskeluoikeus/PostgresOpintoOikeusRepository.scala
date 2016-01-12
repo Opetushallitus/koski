@@ -11,6 +11,7 @@ import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.db.Tables._
 import fi.oph.tor.db.TorDatabase.DB
 import fi.oph.tor.db._
+import fi.oph.tor.history.OpiskeluoikeusHistoryRepository
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.json.Json
 import fi.oph.tor.oppija.PossiblyUnverifiedOppijaOid
@@ -24,7 +25,7 @@ import org.json4s.JValue
 import org.json4s.jackson.JsonMethods
 import rx.lang.scala.Observable
 
-class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository with Futures with GlobalExecutionContext with Logging {
+class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: OpiskeluoikeusHistoryRepository) extends OpiskeluOikeusRepository with Futures with GlobalExecutionContext with Logging {
   // Note: this is a naive implementation. All filtering should be moved to query-level instead of in-memory-level
   override def filterOppijat(oppijat: Seq[FullHenkilö])(implicit userContext: TorUser) = {
     val query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = for {
@@ -69,7 +70,8 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
     val opiskeluoikeusId = await(db.run(OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += new OpiskeluOikeusRow(oppijaOid, opiskeluOikeus)))
     val diff = Json.toJValue(List(Map("op" -> "add", "path" -> "", "value" -> opiskeluOikeus)))
 
-    createDiff(opiskeluoikeusId, userContext.user.oid, diff)
+    historyRepository.create(opiskeluoikeusId, userContext.user.oid, diff)
+
     Right(opiskeluoikeusId)
   }
 
@@ -79,7 +81,7 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
 
     val diff: JValue = JsonMethods.fromJsonNode(JsonDiff.asJson(JsonMethods.asJsonNode(Json.toJValue(vanhaOpiskeluoikeus)), JsonMethods.asJsonNode(Json.toJValue(uusiOpiskeluoikeus))))
 
-    createDiff(vanhaOpiskeluoikeus.id.get, userContext.user.oid, diff)
+    historyRepository.create(vanhaOpiskeluoikeus.id.get, userContext.user.oid, diff)
 
     rowsUpdated match {
       case 1 => HttpStatus.ok
@@ -87,12 +89,6 @@ class PostgresOpiskeluOikeusRepository(db: DB) extends OpiskeluOikeusRepository 
         logger.error("Unexpected number of updated rows: " + x)
         HttpStatus.internalError()
     }
-  }
-
-  private def createDiff(opiskeluoikeusId: Int, kayttäjäOid: String, muutos: JValue) = {
-    await(db.run(OpiskeluOikeusHistoria.map {row =>
-      (row.opiskeluoikeusId, row.kayttajaOid, row.muutos )} += (opiskeluoikeusId, kayttäjäOid, muutos)
-    ))
   }
 
   override def find(identifier: OpiskeluOikeusIdentifier)(implicit userContext: TorUser): Either[HttpStatus, Option[OpiskeluOikeus]] = identifier match{

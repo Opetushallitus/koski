@@ -4,6 +4,7 @@ import fi.oph.tor.SingleFileServlet
 import fi.oph.tor.config.TorApplication
 import fi.oph.tor.db._
 import fi.oph.tor.fixture.{FixtureServlet, Fixtures}
+import fi.oph.tor.history.TorHistoryServlet
 import fi.oph.tor.koodisto.KoodistoCreator
 import fi.oph.tor.oppilaitos.OppilaitosServlet
 import fi.oph.tor.schema.SchemaDocumentationServlet
@@ -24,6 +25,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     val validator: TorValidator = new TorValidator(application.tutkintoRepository, application.koodistoPalvelu, application.organisaatioRepository)
     val rekisteri = new TodennetunOsaamisenRekisteri(application.oppijaRepository, application.opiskeluOikeusRepository)
     context.mount(new TorServlet(rekisteri, userRepository, application.directoryClient, validator), "/api/oppija")
+    context.mount(new TorHistoryServlet(userRepository, application.directoryClient, application.historyRepository), "/api/opiskeluoikeus/historia")
     context.mount(new AuthenticationServlet(application.directoryClient), "/user")
     context.mount(new OppilaitosServlet(application.oppilaitosRepository, application.userRepository, application.directoryClient), "/api/oppilaitos")
     context.mount(new TutkintoServlet(application.tutkintoRepository), "/api/tutkinto")
