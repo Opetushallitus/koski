@@ -7,19 +7,18 @@ import fi.oph.tor.db.{Futures, GlobalExecutionContext, OpiskeluOikeusHistoryRow}
 import fi.oph.tor.toruser.TorUser
 import fi.vm.sade.utils.slf4j.Logging
 import org.json4s._
+import slick.dbio.DBIOAction
+import slick.dbio.Effect.Write
 
 case class OpiskeluoikeusHistoryRepository(db: DB) extends Futures with GlobalExecutionContext with Logging {
-
   // TODO: Add permission checks
   def findByOpiskeluoikeusId(id: Int)(implicit userContext: TorUser): Option[Seq[OpiskeluOikeusHistoryRow]] = {
     Some(await(db.run(OpiskeluOikeusHistoria.filter(_.opiskeluoikeusId === id).sortBy(_.id.asc).result)))
   }
 
-  def create(opiskeluoikeusId: Int, kayttäjäOid: String, muutos: JValue) = {
-    await(db.run(OpiskeluOikeusHistoria.map {row =>
+  def createAction(opiskeluoikeusId: Int, kayttäjäOid: String, muutos: JValue): DBIOAction[Int, NoStream, Write] = {
+    OpiskeluOikeusHistoria.map {row =>
       (row.opiskeluoikeusId, row.kayttajaOid, row.muutos )} += (opiskeluoikeusId, kayttäjäOid, muutos)
-    ))
   }
-
 }
 
