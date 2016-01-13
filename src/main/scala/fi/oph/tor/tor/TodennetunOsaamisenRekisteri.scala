@@ -12,8 +12,7 @@ import rx.lang.scala.Observable
 class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
                                    opiskeluOikeusRepository: OpiskeluOikeusRepository) extends Logging {
 
-
-  def findOppijat(filters: List[QueryFilter])(implicit userContext: TorUser): Observable[TorOppija] = {
+  def findOppijat(filters: List[QueryFilter])(implicit user: TorUser): Observable[TorOppija] = {
     opiskeluOikeusRepository.query(filters).tumblingBuffer(100).flatMap {
       oikeudet =>
         val henkilötAndOpiskeluoikeudet = oppijaRepository.findByOids(oikeudet.map(_._1).toList).zip(oikeudet).map {
@@ -25,13 +24,13 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     }
   }
 
-  def findOppijat(query: String)(implicit userContext: TorUser): Seq[FullHenkilö] = {
+  def findOppijat(query: String)(implicit user: TorUser): Seq[FullHenkilö] = {
     val oppijat: List[FullHenkilö] = oppijaRepository.findOppijat(query)
     val filtered = opiskeluOikeusRepository.filterOppijat(oppijat)
     filtered
   }
 
-  def createOrUpdate(oppija: TorOppija)(implicit userContext: TorUser): Either[HttpStatus, Henkilö.Oid] = {
+  def createOrUpdate(oppija: TorOppija)(implicit user: TorUser): Either[HttpStatus, Henkilö.Oid] = {
     val oppijaOid: Either[HttpStatus, PossiblyUnverifiedOppijaOid] = oppija.henkilö match {
       case h:NewHenkilö => oppijaRepository.findOrCreate(oppija.henkilö).right.map(VerifiedOppijaOid(_))
       case h:HenkilöWithOid => Right(UnverifiedOppijaOid(h.oid, oppijaRepository))
@@ -58,7 +57,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     }
   }
 
-  def findTorOppija(oid: String)(implicit userContext: TorUser): Either[HttpStatus, TorOppija] = {
+  def findTorOppija(oid: String)(implicit user: TorUser): Either[HttpStatus, TorOppija] = {
     oppijaRepository.findByOid(oid) match {
       case Some(oppija) =>
         opiskeluOikeusRepository.findByOppijaOid(oppija.oid) match {

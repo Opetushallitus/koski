@@ -22,7 +22,7 @@ import slick.dbio.Effect.{Read, Write}
 
 class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: OpiskeluoikeusHistoryRepository) extends OpiskeluOikeusRepository with Futures with GlobalExecutionContext with Logging {
   // Note: this is a naive implementation. All filtering should be moved to query-level instead of in-memory-level
-  override def filterOppijat(oppijat: Seq[FullHenkilö])(implicit userContext: TorUser) = {
+  override def filterOppijat(oppijat: Seq[FullHenkilö])(implicit user: TorUser) = {
     val query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = for {
       oo <- OpiskeluOikeudet
       if oo.oppijaOid inSetBind oppijat.map(_.oid)
@@ -40,15 +40,15 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
   }
 
 
-  override def findByOppijaOid(oid: String)(implicit userContext: TorUser): Seq[OpiskeluOikeus] = {
+  override def findByOppijaOid(oid: String)(implicit user: TorUser): Seq[OpiskeluOikeus] = {
     await(db.run(findByOppijaOidAction(oid)))
   }
 
-  override def find(identifier: OpiskeluOikeusIdentifier)(implicit userContext: TorUser): Either[HttpStatus, Option[OpiskeluOikeus]] = {
+  override def find(identifier: OpiskeluOikeusIdentifier)(implicit user: TorUser): Either[HttpStatus, Option[OpiskeluOikeus]] = {
     await(db.run(findByIdentifierAction(identifier)))
   }
 
-  override def query(filters: List[QueryFilter])(implicit userContext: TorUser): Observable[(Oid, List[OpiskeluOikeus])] = {
+  override def query(filters: List[QueryFilter])(implicit user: TorUser): Observable[(Oid, List[OpiskeluOikeus])] = {
     import ReactiveStreamsToRx._
 
     val query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = queryWithAccessCheck(filters.foldLeft(OpiskeluOikeudet.asInstanceOf[Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq]]) {
@@ -73,19 +73,19 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     }
   }
 
-  override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: OpiskeluOikeus)(implicit userContext: TorUser): Either[HttpStatus, CreateOrUpdateResult] = {
-    if (!userContext.userOrganisations.hasReadAccess(opiskeluOikeus.oppilaitos)) {
+  override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: OpiskeluOikeus)(implicit user: TorUser): Either[HttpStatus, CreateOrUpdateResult] = {
+    if (!user.userOrganisations.hasReadAccess(opiskeluOikeus.oppilaitos)) {
       Left(HttpStatus.forbidden("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid))
     } else {
       await(db.run(createOrUpdateAction(oppijaOid, opiskeluOikeus)))
     }
   }
 
-  private def findByOppijaOidAction(oid: String)(implicit userContext: TorUser): dbio.DBIOAction[Seq[OpiskeluOikeus], NoStream, Read] = {
+  private def findByOppijaOidAction(oid: String)(implicit user: TorUser): dbio.DBIOAction[Seq[OpiskeluOikeus], NoStream, Read] = {
     findAction(OpiskeluOikeudet.filter(_.oppijaOid === oid))
   }
 
-  private def findByIdentifierAction(identifier: OpiskeluOikeusIdentifier)(implicit userContext: TorUser): dbio.DBIOAction[Either[HttpStatus, Option[OpiskeluOikeus]], NoStream, Read] = identifier match{
+  private def findByIdentifierAction(identifier: OpiskeluOikeusIdentifier)(implicit user: TorUser): dbio.DBIOAction[Either[HttpStatus, Option[OpiskeluOikeus]], NoStream, Read] = identifier match{
     case PrimaryKey(id) => {
       findAction(OpiskeluOikeudet.filter(_.id === id)).map { rows =>
         rows.headOption match {
@@ -103,11 +103,11 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     }
   }
 
-  private def findAction(query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq])(implicit userContext: TorUser): dbio.DBIOAction[Seq[OpiskeluOikeus], NoStream, Read] = {
+  private def findAction(query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq])(implicit user: TorUser): dbio.DBIOAction[Seq[OpiskeluOikeus], NoStream, Read] = {
     queryWithAccessCheck(query).result.map(rows => rows.map(_.toOpiskeluOikeus))
   }
 
-  private def createOrUpdateAction(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: OpiskeluOikeus)(implicit userContext: TorUser) = {
+  private def createOrUpdateAction(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: OpiskeluOikeus)(implicit user: TorUser) = {
     findByIdentifierAction(OpiskeluOikeusIdentifier(oppijaOid.oppijaOid, opiskeluOikeus)).flatMap { opiskeluOikeudet: Either[HttpStatus, Option[OpiskeluOikeus]] =>
       opiskeluOikeudet match {
         case Right(Some(vanhaOpiskeluOikeus)) =>
@@ -125,22 +125,22 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     }
   }
 
-  private def createAction(oppijaOid: String, opiskeluOikeus: OpiskeluOikeus)(implicit userContext: TorUser): dbio.DBIOAction[Either[HttpStatus, Int], NoStream, Write] = {
+  private def createAction(oppijaOid: String, opiskeluOikeus: OpiskeluOikeus)(implicit user: TorUser): dbio.DBIOAction[Either[HttpStatus, Int], NoStream, Write] = {
     for {
       opiskeluoikeusId <- OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += new OpiskeluOikeusRow(oppijaOid, opiskeluOikeus)
       diff = Json.toJValue(List(Map("op" -> "add", "path" -> "", "value" -> opiskeluOikeus)))
-      _ <- historyRepository.createAction(opiskeluoikeusId, userContext.user.oid, diff)
+      _ <- historyRepository.createAction(opiskeluoikeusId, user.oid, diff)
     } yield {
       Right(opiskeluoikeusId)
     }
   }
 
-  private def updateAction(oppijaOid: String, vanhaOpiskeluoikeus: OpiskeluOikeus, uusiOpiskeluoikeus: OpiskeluOikeus)(implicit userContext: TorUser): dbio.DBIOAction[HttpStatus, NoStream, Write] = {
+  private def updateAction(oppijaOid: String, vanhaOpiskeluoikeus: OpiskeluOikeus, uusiOpiskeluoikeus: OpiskeluOikeus)(implicit user: TorUser): dbio.DBIOAction[HttpStatus, NoStream, Write] = {
     // TODO: always overriding existing data can not be the eventual update strategy
     for {
       rowsUpdated <- OpiskeluOikeudet.filter(_.id === uusiOpiskeluoikeus.id.get).map(_.data).update(new OpiskeluOikeusRow(oppijaOid, uusiOpiskeluoikeus).data)
       diff = JsonMethods.fromJsonNode(JsonDiff.asJson(JsonMethods.asJsonNode(Json.toJValue(vanhaOpiskeluoikeus)), JsonMethods.asJsonNode(Json.toJValue(uusiOpiskeluoikeus))))
-      _ <- historyRepository.createAction(vanhaOpiskeluoikeus.id.get, userContext.user.oid, diff)
+      _ <- historyRepository.createAction(vanhaOpiskeluoikeus.id.get, user.oid, diff)
     } yield {
       rowsUpdated match {
         case 1 => HttpStatus.ok
@@ -151,8 +151,8 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     }
   }
 
-  private def queryWithAccessCheck(query: PostgresDriverWithJsonSupport.api.Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq])(implicit userContext: TorUser): Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = {
-    val oids = userContext.userOrganisations.oids
+  private def queryWithAccessCheck(query: PostgresDriverWithJsonSupport.api.Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq])(implicit user: TorUser): Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = {
+    val oids = user.userOrganisations.oids
     val queryWithAccessCheck = for (
       oo <- query
       if oo.data.#>>(List("oppilaitos", "oid")) inSetBind oids)

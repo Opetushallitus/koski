@@ -12,7 +12,7 @@ import slick.dbio.Effect.Write
 
 case class OpiskeluoikeusHistoryRepository(db: DB) extends Futures with GlobalExecutionContext with Logging {
   // TODO: Add permission checks
-  def findByOpiskeluoikeusId(id: Int)(implicit userContext: TorUser): Option[Seq[OpiskeluOikeusHistoryRow]] = {
+  def findByOpiskeluoikeusId(id: Int)(implicit user: TorUser): Option[Seq[OpiskeluOikeusHistoryRow]] = {
     Some(await(db.run(OpiskeluOikeusHistoria.filter(_.opiskeluoikeusId === id).sortBy(_.id.asc).result)))
   }
 

@@ -11,11 +11,11 @@ import fi.oph.tor.tutkinto.{TutkintoRakenneValidator, TutkintoRepository}
 import org.json4s.JValue
 
 class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: KoodistoPalvelu, val organisaatioRepository: OrganisaatioRepository) {
-  def validateAsJson(oppija: TorOppija)(implicit userContext: TorUser): Either[HttpStatus, TorOppija] = {
+  def validateAsJson(oppija: TorOppija)(implicit user: TorUser): Either[HttpStatus, TorOppija] = {
     extractAndValidate(Json.toJValue(oppija))
   }
 
-  def extractAndValidate(parsedJson: JValue)(implicit userContext: TorUser): Either[HttpStatus, TorOppija] = {
+  def extractAndValidate(parsedJson: JValue)(implicit user: TorUser): Either[HttpStatus, TorOppija] = {
     TorJsonSchemaValidator.jsonSchemaValidate(parsedJson) match {
       case status if status.isOk =>
         val extractionResult: Either[HttpStatus, TorOppija] = ValidatingAndResolvingExtractor.extract[TorOppija](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository))
@@ -29,7 +29,7 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
     }
   }
 
-  private def validateOpiskeluoikeudet(opiskeluoikeudet: Seq[OpiskeluOikeus])(implicit userContext: TorUser): HttpStatus = {
+  private def validateOpiskeluoikeudet(opiskeluoikeudet: Seq[OpiskeluOikeus])(implicit user: TorUser): HttpStatus = {
     if (opiskeluoikeudet.length == 0) {
       HttpStatus.badRequest("At least one OpiskeluOikeus required")
     }
@@ -38,8 +38,8 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
     }
   }
 
-  private def validateOpiskeluOikeus(opiskeluOikeus: OpiskeluOikeus)(implicit userContext: TorUser): HttpStatus = {
-    HttpStatus.validate(userContext.userOrganisations.hasReadAccess(opiskeluOikeus.oppilaitos)) { HttpStatus.forbidden("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid) }
+  private def validateOpiskeluOikeus(opiskeluOikeus: OpiskeluOikeus)(implicit user: TorUser): HttpStatus = {
+    HttpStatus.validate(user.userOrganisations.hasReadAccess(opiskeluOikeus.oppilaitos)) { HttpStatus.forbidden("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid) }
       .then { HttpStatus.fold(
       validateDateOrder(("alkamispäivä", opiskeluOikeus.alkamispäivä), ("päättymispäivä", opiskeluOikeus.päättymispäivä)),
       validateDateOrder(("alkamispäivä", opiskeluOikeus.alkamispäivä), ("arvioituPäättymispäivä", opiskeluOikeus.arvioituPäättymispäivä)),
