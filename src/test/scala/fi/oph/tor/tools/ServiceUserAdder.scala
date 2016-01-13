@@ -1,10 +1,11 @@
-package fi.oph.tor
+package fi.oph.tor.tools
 
 import java.time.LocalDate
+
 import fi.oph.tor.config.TorApplication
 import fi.oph.tor.henkilo.{AuthenticationServiceClient, CreateUser, UserQueryResult}
 import fi.oph.tor.http.HttpStatus
-import fi.oph.tor.koodisto.{KoodistoKoodiMetadata, KoodistoKoodi, MockKoodistoPalvelu}
+import fi.oph.tor.koodisto.{KoodistoKoodi, KoodistoKoodiMetadata}
 import fi.oph.tor.toruser.RemoteUserOrganisationsRepository
 
 object ServiceUserAdder extends App {

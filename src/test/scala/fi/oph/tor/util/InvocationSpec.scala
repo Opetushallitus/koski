@@ -1,6 +1,5 @@
-package fi.oph.tor
+package fi.oph.tor.util
 
-import fi.oph.tor.util.Invocation
 import org.scalatest.{FreeSpec, Matchers}
 
 class InvocationSpec extends FreeSpec with Matchers {

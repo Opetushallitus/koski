@@ -1,4 +1,4 @@
-package fi.oph.tor
+package fi.oph.tor.api
 
 import com.unboundid.util.Base64
 import fi.oph.tor.jettylauncher.SharedJetty

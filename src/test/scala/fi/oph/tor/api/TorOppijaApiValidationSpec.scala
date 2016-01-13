@@ -1,6 +1,7 @@
-package fi.oph.tor
+package fi.oph.tor.api
 
 import java.time.LocalDate
+import fi.oph.tor.api.HttpSpecification
 import fi.oph.tor.db.OpiskeluOikeusHistoryRow
 import fi.oph.tor.jettylauncher.SharedJetty
 import fi.oph.tor.json.Json

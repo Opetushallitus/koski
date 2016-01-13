@@ -1,7 +1,8 @@
-package fi.oph.tor
+package fi.oph.tor.mocha
 
 import fi.oph.tor.jettylauncher.SharedJetty
-import org.scalatest.{Matchers, FreeSpec}
+import org.scalatest.{FreeSpec, Matchers}
+
 import scala.sys.process._
 
 class TorMochaSpec extends FreeSpec with Matchers {
