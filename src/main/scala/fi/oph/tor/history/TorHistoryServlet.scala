@@ -20,23 +20,16 @@ class TorHistoryServlet(val userRepository: UserOrganisationsRepository, val dir
   }
 
   get("/:id/:version") {
-    val id = params.getAs[Int]("id") match {
-      case Some(id) if id > 0 => id
-      case _ => throw new InvalidRequestException("Invalid opiskeluoikeus id : " + params("id"))
-    }
-
-    val version = params.getAs[Int]("version") match {
-      case Some(version) if version > 0 => version
-      case _ => throw new InvalidRequestException("Invalid opiskeluoikeus version: " + params("version"))
-    }
+    val id = getIntegerParam("id")
+    val version = getIntegerParam("version")
 
     renderEither {
-      historyRepository.findByOpiskeluoikeusId(id) match {
+      historyRepository.findByOpiskeluoikeusId(id, version) match {
         case Some(diffs) =>
           if (diffs.length < version) {
             Left(HttpStatus.notFound("Version: " + version + " not found for opiskeluoikeus: " + id))
           } else {
-            val oikeusVersion = diffs.take(version).foldLeft(JsonNodeFactory.instance.objectNode(): JsonNode) { (current, diff) =>
+            val oikeusVersion = diffs.foldLeft(JsonNodeFactory.instance.objectNode(): JsonNode) { (current, diff) =>
               val patch = JsonPatch.fromJson(asJsonNode(diff.muutos))
               patch.apply(current)
             }
@@ -44,6 +37,13 @@ class TorHistoryServlet(val userRepository: UserOrganisationsRepository, val dir
           }
         case None => Left(HttpStatus.notFound("Opiskeluoikeus not found with id: " + id))
       }
+    }
+  }
+
+  private def getIntegerParam(name: String): Int = {
+    params.getAs[Int](name) match {
+      case Some(id) if id > 0 => id
+      case _ => throw new InvalidRequestException("Invalid " + name + " : " + params(name))
     }
   }
 }

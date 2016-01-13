@@ -12,8 +12,8 @@ import slick.dbio.Effect.Write
 
 case class OpiskeluoikeusHistoryRepository(db: DB) extends Futures with GlobalExecutionContext with Logging {
   // TODO: Add permission checks
-  def findByOpiskeluoikeusId(id: Int)(implicit user: TorUser): Option[Seq[OpiskeluOikeusHistoryRow]] = {
-    Some(await(db.run(OpiskeluOikeusHistoria.filter(_.opiskeluoikeusId === id).sortBy(_.id.asc).result)))
+  def findByOpiskeluoikeusId(id: Int, maxVersion: Int = Int.MaxValue)(implicit user: TorUser): Option[Seq[OpiskeluOikeusHistoryRow]] = {
+    Some(await(db.run(OpiskeluOikeusHistoria.filter(_.opiskeluoikeusId === id).sortBy(_.id.asc).take(maxVersion).result)))
   }
 
   def createAction(opiskeluoikeusId: Int, kayttäjäOid: String, muutos: JValue): DBIOAction[Int, NoStream, Write] = {
