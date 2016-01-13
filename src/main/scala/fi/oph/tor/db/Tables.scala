@@ -11,33 +11,34 @@ object Tables {
   class OpiskeluOikeusTable(tag: Tag) extends Table[OpiskeluOikeusRow](tag, "opiskeluoikeus") {
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
     val oppijaOid: Rep[String] = column[String]("oppija_oid")
+    val versionumero = column[Int]("versionumero")
     def data = column[JValue]("data")
 
-    def * = (id, oppijaOid, data) <> (OpiskeluOikeusRow.tupled, OpiskeluOikeusRow.unapply)
+    def * = (id, oppijaOid, versionumero, data) <> (OpiskeluOikeusRow.tupled, OpiskeluOikeusRow.unapply)
   }
 
   class OpiskeluOikeusHistoryTable(tag: Tag) extends Table[OpiskeluOikeusHistoryRow] (tag, "opiskeluoikeushistoria") {
-    val id = column[Int]("id", O.AutoInc, O.PrimaryKey)
     val opiskeluoikeusId = column[Int]("opiskeluoikeus_id")
+    val versionumero = column[Int]("versionumero")
     val aikaleima = column[Timestamp]("aikaleima")
     val kayttajaOid = column[String]("kayttaja_oid")
     val muutos = column[JValue]("muutos")
 
-    def * = (id, opiskeluoikeusId, aikaleima, kayttajaOid, muutos) <> (OpiskeluOikeusHistoryRow.tupled, OpiskeluOikeusHistoryRow.unapply)
+    def * = (opiskeluoikeusId, versionumero, aikaleima, kayttajaOid, muutos) <> (OpiskeluOikeusHistoryRow.tupled, OpiskeluOikeusHistoryRow.unapply)
   }
 
   val OpiskeluOikeudet = TableQuery[OpiskeluOikeusTable]
   val OpiskeluOikeusHistoria = TableQuery[OpiskeluOikeusHistoryTable]
 }
 
-case class OpiskeluOikeusRow(id: Int, oppijaOid: String, data: JValue) {
+case class OpiskeluOikeusRow(id: Int, oppijaOid: String, versionumero: Int, data: JValue) {
   lazy val toOpiskeluOikeus: OpiskeluOikeus = {
     Json.fromJValue[OpiskeluOikeus](data).copy ( id = Some(id) )
   }
 
-  def this(oppijaOid: String, opiskeluOikeus: OpiskeluOikeus) = {
-    this(0, oppijaOid, Json.toJValue(opiskeluOikeus))
+  def this(oppijaOid: String, opiskeluOikeus: OpiskeluOikeus, versionumero: Int) = {
+    this(0, oppijaOid, versionumero, Json.toJValue(opiskeluOikeus))
   }
 }
 
-case class OpiskeluOikeusHistoryRow(id: Int, opiskeluoikeusId: Int, aikaleima: Timestamp, kayttajaOid: String, muutos: JValue)
+case class OpiskeluOikeusHistoryRow(opiskeluoikeusId: Int, versionumero: Int, aikaleima: Timestamp, kayttajaOid: String, muutos: JValue)

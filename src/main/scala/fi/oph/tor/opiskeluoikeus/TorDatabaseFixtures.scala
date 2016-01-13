@@ -54,7 +54,7 @@ object TorDatabaseFixtures extends Futures with GlobalExecutionContext {
     val deleteOpiskeluOikeudet = oppijat.defaultOppijat.map{oppija => OpiskeluOikeudet.filter(_.oppijaOid === oppija.oid).delete}
 
     await(database.db.run(DBIO.sequence(
-      deleteOpiskeluOikeudet ++ List(OpiskeluOikeudet ++= defaultOpiskeluOikeudet.map{case (oid, oikeus) => new OpiskeluOikeusRow(oid, oikeus)})
+      deleteOpiskeluOikeudet ++ List(OpiskeluOikeudet ++= defaultOpiskeluOikeudet.map{case (oid, oikeus) => new OpiskeluOikeusRow(oid, oikeus, 1)})
     )))
   }
 }

@@ -15,6 +15,7 @@ import fi.oph.tor.tor.{OpiskeluoikeusPäättynytAikaisintaan, OpiskeluoikeusPä�
 import fi.oph.tor.toruser.TorUser
 import fi.oph.tor.util.ReactiveStreamsToRx
 import fi.vm.sade.utils.slf4j.Logging
+import org.json4s.JValue
 import org.json4s.jackson.JsonMethods
 import rx.lang.scala.Observable
 import slick.dbio
@@ -41,11 +42,11 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
 
 
   override def findByOppijaOid(oid: String)(implicit user: TorUser): Seq[OpiskeluOikeus] = {
-    await(db.run(findByOppijaOidAction(oid)))
+    await(db.run(findByOppijaOidAction(oid).map(rows => rows.map(_.toOpiskeluOikeus))))
   }
 
   override def find(identifier: OpiskeluOikeusIdentifier)(implicit user: TorUser): Either[HttpStatus, Option[OpiskeluOikeus]] = {
-    await(db.run(findByIdentifierAction(identifier)))
+    await(db.run(findByIdentifierAction(identifier).map(result => result.right.map(_.map(_.toOpiskeluOikeus)))))
   }
 
   override def query(filters: List[QueryFilter])(implicit user: TorUser): Observable[(Oid, List[OpiskeluOikeus])] = {
@@ -81,11 +82,11 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     }
   }
 
-  private def findByOppijaOidAction(oid: String)(implicit user: TorUser): dbio.DBIOAction[Seq[OpiskeluOikeus], NoStream, Read] = {
+  private def findByOppijaOidAction(oid: String)(implicit user: TorUser): dbio.DBIOAction[Seq[OpiskeluOikeusRow], NoStream, Read] = {
     findAction(OpiskeluOikeudet.filter(_.oppijaOid === oid))
   }
 
-  private def findByIdentifierAction(identifier: OpiskeluOikeusIdentifier)(implicit user: TorUser): dbio.DBIOAction[Either[HttpStatus, Option[OpiskeluOikeus]], NoStream, Read] = identifier match{
+  private def findByIdentifierAction(identifier: OpiskeluOikeusIdentifier)(implicit user: TorUser): dbio.DBIOAction[Either[HttpStatus, Option[OpiskeluOikeusRow]], NoStream, Read] = identifier match{
     case PrimaryKey(id) => {
       findAction(OpiskeluOikeudet.filter(_.id === id)).map { rows =>
         rows.headOption match {
@@ -98,22 +99,22 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     case IdentifyingSetOfFields(oppijaOid, _, _, _) => {
       findByOppijaOidAction(oppijaOid)
         .map(rows => Right(rows.find({ row =>
-        new IdentifyingSetOfFields(oppijaOid, row) == identifier
+        new IdentifyingSetOfFields(oppijaOid, row.toOpiskeluOikeus) == identifier
       })))
     }
   }
 
-  private def findAction(query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq])(implicit user: TorUser): dbio.DBIOAction[Seq[OpiskeluOikeus], NoStream, Read] = {
-    queryWithAccessCheck(query).result.map(rows => rows.map(_.toOpiskeluOikeus))
+  private def findAction(query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq])(implicit user: TorUser): dbio.DBIOAction[Seq[OpiskeluOikeusRow], NoStream, Read] = {
+    queryWithAccessCheck(query).result
   }
 
   private def createOrUpdateAction(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: OpiskeluOikeus)(implicit user: TorUser) = {
-    findByIdentifierAction(OpiskeluOikeusIdentifier(oppijaOid.oppijaOid, opiskeluOikeus)).flatMap { opiskeluOikeudet: Either[HttpStatus, Option[OpiskeluOikeus]] =>
-      opiskeluOikeudet match {
+    findByIdentifierAction(OpiskeluOikeusIdentifier(oppijaOid.oppijaOid, opiskeluOikeus)).flatMap { rows: Either[HttpStatus, Option[OpiskeluOikeusRow]] =>
+      rows match {
         case Right(Some(vanhaOpiskeluOikeus)) =>
-          updateAction(oppijaOid.oppijaOid, vanhaOpiskeluOikeus, opiskeluOikeus.copy(id = vanhaOpiskeluOikeus.id)).map {
+          updateAction(vanhaOpiskeluOikeus.id, vanhaOpiskeluOikeus.versionumero + 1, vanhaOpiskeluOikeus.data, Json.toJValue(opiskeluOikeus)).map {
             case error if error.isError => Left(error)
-            case _ => Right(Updated(vanhaOpiskeluOikeus.id.get))
+            case _ => Right(Updated(vanhaOpiskeluOikeus.id))
           }
         case Right(None) =>
           oppijaOid.verifiedOid match {
@@ -126,21 +127,22 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
   }
 
   private def createAction(oppijaOid: String, opiskeluOikeus: OpiskeluOikeus)(implicit user: TorUser): dbio.DBIOAction[Either[HttpStatus, Int], NoStream, Write] = {
+    val versionumero = 1
     for {
-      opiskeluoikeusId <- OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += new OpiskeluOikeusRow(oppijaOid, opiskeluOikeus)
+      opiskeluoikeusId <- OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += new OpiskeluOikeusRow(oppijaOid, opiskeluOikeus, versionumero)
       diff = Json.toJValue(List(Map("op" -> "add", "path" -> "", "value" -> opiskeluOikeus)))
-      _ <- historyRepository.createAction(opiskeluoikeusId, user.oid, diff)
+      _ <- historyRepository.createAction(opiskeluoikeusId, versionumero, user.oid, diff)
     } yield {
       Right(opiskeluoikeusId)
     }
   }
 
-  private def updateAction(oppijaOid: String, vanhaOpiskeluoikeus: OpiskeluOikeus, uusiOpiskeluoikeus: OpiskeluOikeus)(implicit user: TorUser): dbio.DBIOAction[HttpStatus, NoStream, Write] = {
+  private def updateAction(id: Int, versionumero: Int, vanhaData: JValue, uusiData: JValue)(implicit user: TorUser): dbio.DBIOAction[HttpStatus, NoStream, Write] = {
     // TODO: always overriding existing data can not be the eventual update strategy
     for {
-      rowsUpdated <- OpiskeluOikeudet.filter(_.id === uusiOpiskeluoikeus.id.get).map(_.data).update(new OpiskeluOikeusRow(oppijaOid, uusiOpiskeluoikeus).data)
-      diff = JsonMethods.fromJsonNode(JsonDiff.asJson(JsonMethods.asJsonNode(Json.toJValue(vanhaOpiskeluoikeus)), JsonMethods.asJsonNode(Json.toJValue(uusiOpiskeluoikeus))))
-      _ <- historyRepository.createAction(vanhaOpiskeluoikeus.id.get, user.oid, diff)
+      rowsUpdated <- OpiskeluOikeudet.filter(_.id === id).map(row => (row.data, row.versionumero)).update((uusiData, versionumero))
+      diff = JsonMethods.fromJsonNode(JsonDiff.asJson(JsonMethods.asJsonNode(vanhaData), JsonMethods.asJsonNode(uusiData)))
+      _ <- historyRepository.createAction(id, versionumero, user.oid, diff)
     } yield {
       rowsUpdated match {
         case 1 => HttpStatus.ok
