@@ -6,6 +6,8 @@ import org.scalatest.Assertions
 import org.scalatra.test.HttpComponentsClient
 
 trait HttpSpecification extends HttpComponentsClient with Assertions {
+  SharedJetty.start
+
   val authHeaders: Map[String, String] = {
     val auth: String = "Basic " + Base64.encode("kalle:kalle".getBytes("UTF8"))
     Map("Authorization" -> auth)

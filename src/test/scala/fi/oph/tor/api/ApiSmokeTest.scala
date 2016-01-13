@@ -1,6 +1,5 @@
 package fi.oph.tor.api
 
-import fi.oph.tor.api.HttpSpecification
 import fi.oph.tor.jettylauncher.SharedJetty
 import fi.oph.tor.json.Json
 import fi.oph.tor.oppija.MockOppijaRepository

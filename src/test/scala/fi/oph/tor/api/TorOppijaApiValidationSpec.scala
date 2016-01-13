@@ -1,34 +1,19 @@
 package fi.oph.tor.api
 
 import java.time.LocalDate
-import fi.oph.tor.api.HttpSpecification
+
 import fi.oph.tor.db.OpiskeluOikeusHistoryRow
-import fi.oph.tor.jettylauncher.SharedJetty
 import fi.oph.tor.json.Json
 import fi.oph.tor.json.Json.toJValue
 import fi.oph.tor.schema.TorOppija
-import org.json4s.JValue
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.FunSpec
 
-class TorOppijaApiValidationSpec extends FunSpec with Matchers with HttpSpecification {
-  SharedJetty.start
-
+class TorOppijaApiValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
   describe("Opiskeluoikeuden lisääminen") {
     describe("Valideilla tiedoilla") {
       it("palautetaan HTTP 200") {
-        resetFixtures {
-          putOpiskeluOikeusAjax(Map()) {
-            verifyResponseCode(200)
-            val oppijaOid = Json.read[String](body)
-            authGet("api/oppija/" + oppijaOid) {
-              verifyResponseCode(200)
-              val opiskeluoikeusId = Json.read[TorOppija](body).opiskeluoikeudet(0).id.get
-              authGet("api/opiskeluoikeus/historia/" + opiskeluoikeusId) {
-                val historia = Json.read[List[OpiskeluOikeusHistoryRow]](body)
-                historia.map(_.versionumero) should equal(List(1,2)) // First one was inserted in fixtures already
-              }
-            }
-          }
+        putOpiskeluOikeusAjax(Map()) {
+          verifyResponseCode(200)
         }
       }
     }
@@ -337,88 +322,5 @@ class TorOppijaApiValidationSpec extends FunSpec with Matchers with HttpSpecific
         }
       }
     }
-  }
-
-  override def baseUrl = SharedJetty.baseUrl
-  val oppijaPath = "/api/oppija"
-
-  val defaultHenkilö = toJValue(Map(
-    "etunimet" -> "Testi",
-    "sukunimi" -> "Toivola",
-    "kutsumanimi" -> "Testi",
-    "hetu" -> "010101-123N"
-  ))
-
-  def makeOppija(henkilö: JValue = defaultHenkilö, opiskeluOikeudet: List[JValue] = List(defaultOpiskeluOikeus)) = toJValue(Map(
-    "henkilö" -> henkilö,
-    "opiskeluoikeudet" -> opiskeluOikeudet
-  ))
-
-  val defaultOpiskeluOikeus: JValue = toJValue(Map(
-    "oppilaitos" ->  Map("oid" ->  "1"),
-    "suoritus" ->  Map(
-      "koulutusmoduulitoteutus" ->  Map(
-        "koulutusmoduuli" ->  Map(
-          "tunniste" ->  Map(
-            "koodiarvo" ->  "351301",
-            "nimi" ->  "Autoalan perustutkinto",
-            "koodistoUri" ->  "koulutus"),
-          "perusteenDiaarinumero" ->  "39/011/2014")),
-      "toimipiste" ->  Map(
-        "oid" ->  "1.2.246.562.10.42456023292",
-        "nimi" ->  "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
-      )
-    )))
-
-  val defaultTutkinnonOsaSuoritus = toJValue(Map(
-    "koulutusmoduulitoteutus" ->  Map(
-      "koulutusmoduuli" ->  Map(
-        "tunniste" ->  Map("koodiarvo" -> "100023", "nimi" -> "Markkinointi ja asiakaspalvelu", "koodistoUri" -> "tutkinnonosat", "koodistoVersio" -> 1),
-        "pakollinen" -> true,
-        "laajuus" ->  Map("arvo" -> 11, "yksikkö" -> Map("koodiarvo" -> "6", "koodistoUri" -> "opintojenlaajuusyksikko"))
-      )
-    ),
-    "toimipiste" ->  Map("oid" -> "1.2.246.562.10.42456023292", "nimi" -> "Stadin ammattiopisto, Lehtikuusentien toimipaikka"),
-    "arviointi" -> List(Map("arvosana" -> Map("koodiarvo" -> "2", "koodistoUri" -> "arviointiasteikkoammatillinent1k3")))
-  ))
-
-  def putTutkinnonOsaSuoritusAjax[A](tutkinnonOsaSuoritus: Map[String, Any])(f: => A) = {
-    val opiskeluOikeus = defaultOpiskeluOikeus.merge(toJValue(Map(
-      "suoritus" -> Map(
-        "koulutusmoduulitoteutus" -> Map(
-          "suoritustapa" -> Map(
-            "tunniste"  -> Map(
-              "koodiarvo"  -> "naytto",
-              "nimi"  -> "Näyttö",
-              "koodistoUri" -> "suoritustapa",
-              "koodistoVersio" -> 1
-            )
-          )
-        ),
-        "osasuoritukset" -> List(defaultTutkinnonOsaSuoritus.merge(toJValue(tutkinnonOsaSuoritus)))
-      )
-    )))
-
-  }
-
-
-  def putOpiskeluOikeusAjax[A](opiskeluOikeus: Map[String, Any], henkilö: JValue = defaultHenkilö)(f: => A) = {
-    putOppijaAjax(makeOppija(henkilö, List(defaultOpiskeluOikeus.merge(Json.toJValue(opiskeluOikeus)))))(f)
-  }
-
-  def putOppijaAjax[A](oppija: Map[String, AnyRef])(f: => A): Unit = putOppijaAjax(toJValue(oppija))(f)
-
-  def putOppijaAjax[A](oppija: JValue)(f: => A): Unit = {
-    val jsonString = Json.write(makeOppija().merge(oppija), true)
-    put("api/oppija", body = jsonString, headers = authHeaders ++ jsonContent)(f)
-  }
-
-  def sendAjax[A](path: String, contentType: String, content: String, method: String)(f: => A): Unit = {
-    submit(method, path, body = content.getBytes("UTF-8"), headers = authHeaders ++ jsonContent) (f)
-  }
-
-  def verifyResponseCode(expectedStatus: Int, expectedText: String = "") = {
-    body should include(expectedText)
-    verifyResponseStatus(expectedStatus)
   }
 }
