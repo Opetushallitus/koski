@@ -6,9 +6,7 @@ trait RequiresAuthentication extends ErrorHandlingServlet with AuthenticationSup
   def userRepository: UserOrganisationsRepository
 
   implicit def torUser: TorUser = {
-    val user = TorUser(userOption.get.oid, userRepository.getUserOrganisations(userOption.get.oid))
-    println(user)
-    user
+    TorUser(userOption.get.oid, userRepository.getUserOrganisations(userOption.get.oid))
   }
 
   before() {

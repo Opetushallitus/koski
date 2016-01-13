@@ -6,44 +6,56 @@ import fi.oph.tor.db.{Futures, GlobalExecutionContext, PostgresDriverWithJsonSup
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.schema.{FullHenkilö, Henkilö}
 
+object MockOppijat {
+  private val oppijat = new MockOppijat
+
+  val eero = oppijat.oppija("esimerkki", "eero", "010101-123N")
+  val eerola = oppijat.oppija("eerola", "jouni", "")
+  val markkanen = oppijat.oppija("markkanen", "eero", "")
+  val teija = oppijat.oppija("tekijä", "teija", "150995-914X")
+  val tyhjä = oppijat.oppija("tyhjä", "tyhjä", "130196-961Y")
+  val tero = oppijat.oppija("tunkkila-fagerlund", "tero petteri gustaf", "091095-9833")
+  val presidentti = oppijat.oppija("Presidentti", "Tasavallan", "")
+
+  def defaultOppijat = oppijat.getOppijat
+}
+
+class MockOppijat(oppijat: List[FullHenkilö] = Nil) {
+  private var _oppijat: List[FullHenkilö] = Nil
+  private val idCounter = 0
+
+  def oppija(suku: String, etu: String, hetu: String): FullHenkilö = {
+    val oppija = FullHenkilö(generateId(), hetu, etu, etu, suku)
+    _oppijat = oppija :: _oppijat
+    oppija
+  }
+
+  def getOppijat = _oppijat
+
+  private def generateId(): String = {
+    "1.2.246.562.24.0000000000" + (idCounter + 1)
+  }
+}
+
 class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with Futures with GlobalExecutionContext {
-  val eero = oppija(generateId, "esimerkki", "eero", "010101-123N")
-  val eerola = oppija(generateId, "eerola", "jouni", "")
-  val markkanen = oppija(generateId, "markkanen", "eero", "")
-  val teija = oppija(generateId, "tekijä", "teija", "150995-914X")
-  val tero = oppija(generateId, "tunkkila-fagerlund", "tero petteri gustaf", "091095-9833")
-  val presidentti = oppija(generateId, "Presidentti", "Tasavallan", "")
-
-  private def oppija(id : String, suku: String, etu: String, hetu: String): FullHenkilö = FullHenkilö(id, hetu, etu, etu, suku)
-
-  def defaultOppijat = List(
-    eero,
-    eerola,
-    markkanen,
-    teija,
-    tero,
-    presidentti
-  )
-
   private var idCounter = 0
 
-  private var oppijat = defaultOppijat
+  private var oppijat = new MockOppijat(MockOppijat.defaultOppijat)
 
   override def findOppijat(query: String) = {
     if (query.toLowerCase.contains("error")) {
       throw new RuntimeException("Testing error handling")
     }
-    oppijat.filter(searchString(_).contains(query))
+    oppijat.getOppijat.filter(searchString(_).contains(query))
   }
 
   override def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String): Either[HttpStatus, Henkilö.Oid] = {
     if (sukunimi == "error") {
       throw new RuntimeException("Testing error handling")
-    } else if (oppijat.find { o => (o.hetu == hetu) } .isDefined) {
+    } else if (oppijat.getOppijat.find { o => (o.hetu == hetu) } .isDefined) {
       Left(HttpStatus.conflict("conflict"))
     } else {
-      val newOppija = oppija(generateId, sukunimi, etunimet, hetu)
-      oppijat = oppijat :+ newOppija
+      val newOppija = oppijat.oppija(sukunimi, etunimet, hetu)
       Right(newOppija.oid)
     }
   }
@@ -52,14 +64,9 @@ class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with 
     oppija.toString.toUpperCase
   }
 
-  private def generateId(): String = {
-    idCounter = idCounter + 1
-    "1.2.246.562.24.0000000000" + idCounter
-  }
 
   override def resetFixtures {
-    oppijat = defaultOppijat
-    idCounter = defaultOppijat.length
+    oppijat = new MockOppijat(MockOppijat.defaultOppijat)
   }
 
   def findFromDb(oid: String): Option[FullHenkilö] = {
@@ -71,7 +78,7 @@ class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with 
   }
 
   override def findByOid(id: String): Option[FullHenkilö] = {
-    oppijat.filter {_.oid == id}.headOption.orElse(findFromDb(id))
+    oppijat.getOppijat.filter {_.oid == id}.headOption.orElse(findFromDb(id))
   }
 
   override def findByOids(oids: List[String]): List[FullHenkilö] = oids.map(oid => findByOid(oid).get)

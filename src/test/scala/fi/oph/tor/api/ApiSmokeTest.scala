@@ -2,7 +2,7 @@ package fi.oph.tor.api
 
 import fi.oph.tor.jettylauncher.SharedJetty
 import fi.oph.tor.json.Json
-import fi.oph.tor.oppija.MockOppijaRepository
+import fi.oph.tor.oppija.MockOppijat
 import fi.oph.tor.schema.TorOppijaExamples
 import org.scalatest.{FreeSpec, Matchers}
 
@@ -11,7 +11,7 @@ class ApiSmokeTest extends FreeSpec with Matchers with HttpSpecification {
     SharedJetty.start
     "GET" - {
       "with valid oid" in {
-        get("api/oppija/" + new MockOppijaRepository().eero.oid, headers = authHeaders) {
+        get("api/oppija/" + MockOppijat.eero.oid, headers = authHeaders) {
           verifyResponseStatus()
         }
       }

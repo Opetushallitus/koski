@@ -2,7 +2,6 @@ package fi.oph.tor.api
 
 import java.time.LocalDate
 
-import fi.oph.tor.db.OpiskeluOikeusHistoryRow
 import fi.oph.tor.json.Json
 import fi.oph.tor.json.Json.toJValue
 import fi.oph.tor.schema.TorOppija
