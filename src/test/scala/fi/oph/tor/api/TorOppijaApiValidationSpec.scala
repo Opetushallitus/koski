@@ -11,25 +11,25 @@ class TorOppijaApiValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
   describe("Opiskeluoikeuden lisääminen") {
     describe("Valideilla tiedoilla") {
       it("palautetaan HTTP 200") {
-        putOpiskeluOikeusAjax(Map()) {
+        putOpiskeluOikeus(Map()) {
           verifyResponseCode(200)
         }
       }
     }
 
     describe("Kun opinto-oikeutta yritetään lisätä oppilaitokseen, johon käyttäjällä ei ole pääsyä") {
-      it("palautetaan HTTP 403 virhe" ) { putOpiskeluOikeusAjax(Map(
+      it("palautetaan HTTP 403 virhe" ) { putOpiskeluOikeus(Map(
           "oppilaitos" -> Map("oid" -> "1.2.246.562.10.346830761110"))
         )(verifyResponseCode(403, "Ei oikeuksia organisatioon 1.2.246.562.10.346830761110"))
       }}
 
     describe("Kun opinto-oikeutta yritetään lisätä oppilaitokseen, jota ei löydy organisaatiopalvelusta") {
-      it("palautetaan HTTP 400 virhe" ) (putOpiskeluOikeusAjax(Map("oppilaitos" -> Map("oid" -> "tuuba")))
+      it("palautetaan HTTP 400 virhe" ) (putOpiskeluOikeus(Map("oppilaitos" -> Map("oid" -> "tuuba")))
         (verifyResponseCode(400, "Organisaatiota tuuba ei löydy organisaatiopalvelusta")))
     }
 
     describe("Nimenä tyhjä merkkijono") {
-      it("palautetaan HTTP 400 virhe" ) (putOppijaAjax(Map(
+      it("palautetaan HTTP 400 virhe" ) (putOppija(Map(
         "henkilö" -> Map("sukunimi" -> "")
       )) (verifyResponseCode(400)))
     }
@@ -41,7 +41,7 @@ class TorOppijaApiValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
 
     describe("Kun yritetään lisätä opinto-oikeus virheelliseen perusteeseen") {
       it("palautetaan HTTP 400 virhe" ) {
-        putOpiskeluOikeusAjax(Map(
+        putOpiskeluOikeus(Map(
           "suoritus" -> Map("koulutusmoduulitoteutus" -> Map("koulutusmoduuli" -> Map("perusteenDiaarinumero" -> "39/xxx/2014")))
         )) (verifyResponseCode(400, "Tutkinnon peruste on virheellinen: 39/xxx/2014"))
       }
@@ -49,7 +49,7 @@ class TorOppijaApiValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
 
     describe("Kun yritetään lisätä opinto-oikeus ilman perustetta") {
       it("palautetaan HTTP 400 virhe" ) {
-        putOpiskeluOikeusAjax(Map(
+        putOpiskeluOikeus(Map(
           "suoritus" -> Map("koulutusmoduulitoteutus" -> Map("koulutusmoduuli" -> Map("perusteenDiaarinumero"-> "")))
         )) (verifyResponseCode(400, "perusteenDiaarinumero"))
       }
@@ -57,52 +57,52 @@ class TorOppijaApiValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
 
     describe("Hetun ollessa") {
       describe("muodoltaan virheellinen") {
-        it("palautetaan HTTP 400 virhe" ) (putOppijaAjax(Map("henkilö" -> Map("hetu" -> "010101-123123")))
+        it("palautetaan HTTP 400 virhe" ) (putOppija(Map("henkilö" -> Map("hetu" -> "010101-123123")))
           (verifyResponseCode(400, "Virheellinen muoto hetulla: 010101-123123")))
       }
       describe("muodoltaan oikea, mutta väärä tarkistusmerkki") {
-        it("palautetaan HTTP 400 virhe" ) (putOppijaAjax(Map("henkilö" -> Map("hetu" -> "010101-123P")))
+        it("palautetaan HTTP 400 virhe" ) (putOppija(Map("henkilö" -> Map("hetu" -> "010101-123P")))
           (verifyResponseCode(400, "Virheellinen tarkistusmerkki hetussa: 010101-123P")))
       }
       describe("päivämäärältään tulevaisuudessa") {
-        it("palautetaan HTTP 400 virhe" ) (putOppijaAjax(Map("henkilö" -> Map("hetu" -> "141299A903C")))
+        it("palautetaan HTTP 400 virhe" ) (putOppija(Map("henkilö" -> Map("hetu" -> "141299A903C")))
           (verifyResponseCode(400, "Syntymäpäivä hetussa: 141299A903C on tulevaisuudessa")))
       }
       describe("päivämäärältään virheellinen") {
-        it("palautetaan HTTP 400 virhe" ) (putOppijaAjax(Map("henkilö" -> Map("hetu" -> "300215-123T")))
+        it("palautetaan HTTP 400 virhe" ) (putOppija(Map("henkilö" -> Map("hetu" -> "300215-123T")))
           (verifyResponseCode(400, "Virheellinen syntymäpäivä hetulla: 300215-123T")))
       }
       describe("validi") {
-        it("palautetaan HTTP 200" ) (putOppijaAjax(Map("henkilö" -> Map("hetu" -> "010101-123N")))
+        it("palautetaan HTTP 200" ) (putOppija(Map("henkilö" -> Map("hetu" -> "010101-123N")))
           (verifyResponseCode(200)))
       }
     }
 
     describe("Opiskeluoikeuden päivämäärät") {
       describe("Päivämäärät kunnossa") {
-        it("palautetaan HTTP 200" ) (putOpiskeluOikeusAjax(Map(
+        it("palautetaan HTTP 200" ) (putOpiskeluOikeus(Map(
           "alkamispäivä" -> "2015-08-01",
           "päättymispäivä" -> "2016-05-31",
           "arvioituPäättymispäivä" -> "2018-05-31"
         ))(verifyResponseCode(200)))
       }
       describe("Päivämääräformaatti virheellinen") {
-        it("palautetaan HTTP 400" ) (putOpiskeluOikeusAjax(Map(
+        it("palautetaan HTTP 400" ) (putOpiskeluOikeus(Map(
           "alkamispäivä" -> "2015.01-12"
         ))(verifyResponseCode(400, "Virheellinen päivämäärä: 2015.01-12")))
       }
       describe("Päivämäärä virheellinen") {
-        it("palautetaan HTTP 400" ) (putOpiskeluOikeusAjax(Map(
+        it("palautetaan HTTP 400" ) (putOpiskeluOikeus(Map(
           "alkamispäivä" -> "2015-01-32"
         ))(verifyResponseCode(400, "Virheellinen päivämäärä: 2015-01-32")))
       }
       describe("Väärä päivämääräjärjestys") {
-        it("alkamispäivä > päättymispäivä" ) (putOpiskeluOikeusAjax(Map(
+        it("alkamispäivä > päättymispäivä" ) (putOpiskeluOikeus(Map(
           "alkamispäivä" -> "2015-08-01",
           "päättymispäivä" -> "2014-05-31"
         ))(verifyResponseCode(400, "alkamispäivä (2015-08-01) oltava sama tai aiempi kuin päättymispäivä(2014-05-31)")))
 
-        it("alkamispäivä > arvioituPäättymispäivä" ) (putOpiskeluOikeusAjax(Map(
+        it("alkamispäivä > arvioituPäättymispäivä" ) (putOpiskeluOikeus(Map(
           "alkamispäivä" -> "2015-08-01",
           "arvioituPäättymispäivä" -> "2014-05-31"
         ))(verifyResponseCode(400, "alkamispäivä (2015-08-01) oltava sama tai aiempi kuin arvioituPäättymispäivä(2014-05-31)")))
@@ -111,7 +111,7 @@ class TorOppijaApiValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
 
     describe("Suorituksen päivämäärät") {
       describe("Päivämäärät kunnossa") {
-        it("palautetaan HTTP 200" ) (putOpiskeluOikeusAjax(Map("suoritus" -> Map(
+        it("palautetaan HTTP 200" ) (putOpiskeluOikeus(Map("suoritus" -> Map(
           "alkamispäivä" -> "2015-08-01",
           "arviointi" -> List(Map(
             "päivä" -> "2016-05-31",
@@ -121,7 +121,7 @@ class TorOppijaApiValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
       }
 
       describe("alkamispäivä > arviointi.päivä") {
-        it("palautetaan HTTP 200" ) (putOpiskeluOikeusAjax(Map("suoritus" -> Map(
+        it("palautetaan HTTP 200" ) (putOpiskeluOikeus(Map("suoritus" -> Map(
           "alkamispäivä" -> "2017-08-01",
           "arviointi" -> List(Map(
             "päivä" -> "2016-05-31",
@@ -131,7 +131,7 @@ class TorOppijaApiValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
       }
 
       describe("arviointi.päivä > vahvistus.päivä") {
-        it("palautetaan HTTP 200" ) (putOpiskeluOikeusAjax(Map("suoritus" -> Map(
+        it("palautetaan HTTP 200" ) (putOpiskeluOikeus(Map("suoritus" -> Map(
           "arviointi" -> List(Map(
             "päivä" -> "2016-05-31",
             "arvosana" -> Map("koodiarvo" -> "2", "koodistoUri" -> "arviointiasteikkoammatillinent1k3"))
@@ -143,30 +143,30 @@ class TorOppijaApiValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
 
     describe("opiskeluoikeusjaksot"){
       describe("Päivämäärät kunnossa") {
-        it("palautetaan HTTP 200") (putOpiskeluOikeusAjax(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
+        it("palautetaan HTTP 200") (putOpiskeluOikeus(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
           Map( "alku" -> "2015-08-01", "loppu" -> "2015-12-31", "tila" -> Map("koodiarvo" -> "aktiivinen", "koodistoUri" -> "opiskeluoikeudentila")),
           Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "keskeyttanyt", "koodistoUri" -> "opiskeluoikeudentila")),
           Map( "alku" -> "2016-06-01", "tila" -> Map("koodiarvo" -> "paattynyt", "koodistoUri" -> "opiskeluoikeudentila"))
         )))) (verifyResponseCode(200)))
       }
       describe("alku > loppu") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeusAjax(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
+        it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
           Map( "alku" -> "2016-08-01", "loppu" -> "2015-12-31", "tila" -> Map("koodiarvo" -> "aktiivinen", "koodistoUri" -> "opiskeluoikeudentila"))
         )))) (verifyResponseCode(400, "opiskeluoikeudenTila.opiskeluoikeusjaksot.alku (2016-08-01) oltava sama tai aiempi kuin opiskeluoikeudenTila.opiskeluoikeusjaksot.loppu(2015-12-31)")))
       }
       describe("ei-viimeiseltä jaksolta puuttuu loppupäivä") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeusAjax(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
+        it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
           Map("alku" -> "2015-08-01", "tila" -> Map("koodiarvo" -> "aktiivinen", "koodistoUri" -> "opiskeluoikeudentila")),
           Map("alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "keskeyttanyt", "koodistoUri" -> "opiskeluoikeudentila"))
         )))) (verifyResponseCode(400, "opiskeluoikeudenTila.opiskeluoikeusjaksot: ei-viimeiseltä jaksolta puuttuu loppupäivä"))) }
       describe("jaksot ovat päällekkäiset") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeusAjax(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
+        it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
           Map( "alku" -> "2015-08-01", "loppu" -> "2016-01-01", "tila" -> Map("koodiarvo" -> "aktiivinen", "koodistoUri" -> "opiskeluoikeudentila")),
           Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "keskeyttanyt", "koodistoUri" -> "opiskeluoikeudentila"))
         ))))(verifyResponseCode(400, "opiskeluoikeudenTila.opiskeluoikeusjaksot: jaksot eivät muodosta jatkumoa")))
       }
       describe("jaksojen väliin jää tyhjää") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeusAjax(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
+        it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
           Map( "alku" -> "2015-08-01", "loppu" -> "2015-10-01", "tila" -> Map("koodiarvo" -> "aktiivinen", "koodistoUri" -> "opiskeluoikeudentila")),
           Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "keskeyttanyt", "koodistoUri" -> "opiskeluoikeudentila"))
         ))))(verifyResponseCode(400, "opiskeluoikeudenTila.opiskeluoikeusjaksot: jaksot eivät muodosta jatkumoa")))
@@ -175,31 +175,31 @@ class TorOppijaApiValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
 
     describe("Läsnäolojaksot") {
       describe("Päivämäärät kunnossa") {
-        it("palautetaan HTTP 200") (putOpiskeluOikeusAjax(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
+        it("palautetaan HTTP 200") (putOpiskeluOikeus(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
             Map( "alku" -> "2015-08-01", "loppu" -> "2015-12-31", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila")),
             Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "poissa", "koodistoUri" -> "lasnaolotila")),
             Map( "alku" -> "2016-06-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila"))
         ))))(verifyResponseCode(200)))
       }
       describe("alku > loppu") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeusAjax(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
+        it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
           Map( "alku" -> "2016-08-01", "loppu" -> "2015-12-31", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila"))
         ))))(verifyResponseCode(400, "läsnäolotiedot.läsnäolojaksot.alku (2016-08-01) oltava sama tai aiempi kuin läsnäolotiedot.läsnäolojaksot.loppu(2015-12-31)")))
       }
       describe("ei-viimeiseltä jaksolta puuttuu loppupäivä") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeusAjax(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
+        it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
           Map( "alku" -> "2015-08-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila")),
           Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "poissa", "koodistoUri" -> "lasnaolotila"))
         ))))(verifyResponseCode(400, "läsnäolotiedot.läsnäolojaksot: ei-viimeiseltä jaksolta puuttuu loppupäivä")))
       }
       describe("jaksot ovat päällekkäiset") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeusAjax(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
+        it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
           Map( "alku" -> "2015-08-01", "loppu" -> "2016-01-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila")),
           Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "poissa", "koodistoUri" -> "lasnaolotila"))
         ))))(verifyResponseCode(400, "läsnäolotiedot.läsnäolojaksot: jaksot eivät muodosta jatkumoa")))
       }
       describe("jaksojen väliin jää tyhjää") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeusAjax(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
+        it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
           Map( "alku" -> "2015-08-01", "loppu" -> "2015-10-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila")),
           Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "poissa", "koodistoUri" -> "lasnaolotila"))
         ))))(verifyResponseCode(400, "läsnäolotiedot.läsnäolojaksot: jaksot eivät muodosta jatkumoa")))
@@ -209,25 +209,25 @@ class TorOppijaApiValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
 
     describe("Tutkinnon tietojen muuttaminen") {
       describe("Osaamisala ja suoritustapa ok") {
-        it("palautetaan HTTP 200") (putOpiskeluOikeusAjax(Map("suoritus" -> Map("koulutusmoduulitoteutus" -> Map(
+        it("palautetaan HTTP 200") (putOpiskeluOikeus(Map("suoritus" -> Map("koulutusmoduulitoteutus" -> Map(
           "suoritustapa" -> Map("tunniste" -> Map("koodiarvo" -> "ops", "koodistoUri" -> "suoritustapa")),
           "osaamisala" -> List(Map("koodiarvo" -> "1527", "koodistoUri" -> "osaamisala"))
         ))))(verifyResponseCode(200)))
       }
       describe("Suoritustapa virheellinen") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeusAjax(Map("suoritus" -> Map("koulutusmoduulitoteutus" -> Map(
+        it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("suoritus" -> Map("koulutusmoduulitoteutus" -> Map(
           "suoritustapa" -> Map("tunniste" -> Map("koodiarvo" -> "blahblahtest", "koodistoUri" -> "suoritustapa")),
           "osaamisala" -> List(Map("koodiarvo" -> "1527", "koodistoUri" -> "osaamisala"))
         ))))(verifyResponseCode(400, "Koodia suoritustapa/blahblahtest ei löydy koodistosta")))
       }
       describe("Osaamisala ei löydy tutkintorakenteesta") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeusAjax(Map("suoritus" -> Map("koulutusmoduulitoteutus" -> Map(
+        it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("suoritus" -> Map("koulutusmoduulitoteutus" -> Map(
           "suoritustapa" -> Map("tunniste" -> Map("koodiarvo" -> "ops", "koodistoUri" -> "suoritustapa")),
           "osaamisala" -> List(Map("koodiarvo" -> "3053", "koodistoUri" -> "osaamisala"))
         )))) (verifyResponseCode(400, "Osaamisala 3053 ei löydy tutkintorakenteesta perusteelle 39/011/2014")))
       }
       describe("Osaamisala virheellinen") {
-        it("palautetaan HTTP 400")(putOpiskeluOikeusAjax(Map("suoritus" -> Map("koulutusmoduulitoteutus" -> Map(
+        it("palautetaan HTTP 400")(putOpiskeluOikeus(Map("suoritus" -> Map("koulutusmoduulitoteutus" -> Map(
           "suoritustapa" -> Map("tunniste" -> Map("koodiarvo" -> "ops", "koodistoUri" -> "suoritustapa")),
           "osaamisala" -> List(Map("koodiarvo" -> "0", "koodistoUri" -> "osaamisala"))
         ))))(verifyResponseCode(400, "Koodia osaamisala/0 ei löydy koodistosta")))
@@ -264,8 +264,8 @@ class TorOppijaApiValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
     describe("Kyselyrajapinta") {
       describe("Kun haku osuu") {
         it("palautetaan hakutulokset") {
-          putOpiskeluOikeusAjax(Map("päättymispäivä"-> "2016-01-09")) {
-            putOpiskeluOikeusAjax(Map("päättymispäivä"-> "2013-01-09"), toJValue(Map(
+          putOpiskeluOikeus(Map("päättymispäivä"-> "2016-01-09")) {
+            putOpiskeluOikeus(Map("päättymispäivä"-> "2013-01-09"), toJValue(Map(
               "etunimet"->"Teija",
               "sukunimi"->"Tekijä",
               "kutsumanimi"->"Teija",
@@ -284,7 +284,7 @@ class TorOppijaApiValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
 
       describe("Kun haku ei osu") {
         it("palautetaan tyhjä lista") {
-          putOpiskeluOikeusAjax(Map("päättymispäivä"-> "2016-01-09")) {
+          putOpiskeluOikeus(Map("päättymispäivä"-> "2016-01-09")) {
             authGet ("api/oppija?opiskeluoikeusPäättynytViimeistään=2014-12-31&opiskeluoikeusPäättynytAikaisintaan=2014-01-01") {
               verifyResponseCode(200)
               val oppijat: List[TorOppija] = Json.read[List[TorOppija]](response.body)
@@ -304,8 +304,8 @@ class TorOppijaApiValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
 
       describe("Kun haetaan ilman parametreja") {
         it("palautetaan kaikki oppijat") {
-          putOpiskeluOikeusAjax(Map("päättymispäivä"-> "2016-01-09")) {
-            putOpiskeluOikeusAjax(Map("päättymispäivä"-> "2013-01-09"), toJValue(Map(
+          putOpiskeluOikeus(Map("päättymispäivä"-> "2016-01-09")) {
+            putOpiskeluOikeus(Map("päättymispäivä"-> "2013-01-09"), toJValue(Map(
               "etunimet"->"Teija",
               "sukunimi"->"Tekijä",
               "kutsumanimi"->"Teija",

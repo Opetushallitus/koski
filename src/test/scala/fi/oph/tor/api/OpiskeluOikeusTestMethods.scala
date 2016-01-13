@@ -68,16 +68,16 @@ trait OpiskeluOikeusTestMethods extends HttpSpecification with Matchers {
   }
 
 
-  def putOpiskeluOikeusAjax[A](opiskeluOikeus: Map[String, Any], henkilö: JValue = defaultHenkilö)(f: => A) = {
-    putOppijaAjax(makeOppija(henkilö, List(defaultOpiskeluOikeus.merge(Json.toJValue(opiskeluOikeus)))))(f)
+  def putOpiskeluOikeus[A](opiskeluOikeus: Map[String, Any], henkilö: JValue = defaultHenkilö)(f: => A) = {
+    putOppija(makeOppija(henkilö, List(defaultOpiskeluOikeus.merge(Json.toJValue(opiskeluOikeus)))))(f)
   }
 
-  def putOppijaAjax[A](oppija: Map[String, AnyRef])(f: => A): Unit = {
+  def putOppija[A](oppija: Map[String, AnyRef])(f: => A): Unit = {
     val json: JValue = makeOppija().merge(toJValue(oppija))
-    putOppijaAjax(json)(f)
+    putOppija(json)(f)
   }
 
-  def putOppijaAjax[A](oppija: JValue)(f: => A): Unit = {
+  def putOppija[A](oppija: JValue)(f: => A): A = {
     val jsonString = Json.write(oppija, true)
     put("api/oppija", body = jsonString, headers = authHeaders ++ jsonContent)(f)
   }
