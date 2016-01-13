@@ -29,17 +29,17 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
         verifyHistory(opiskeluOikeus, List(1, 2))
       }
     }
+  }
 
-    def createOrUpdate(opiskeluOikeus: OpiskeluOikeus) = {
-      putOppija(Json.toJValue(TorOppija(MockOppijat.tyhjä, List(opiskeluOikeus)))) {}
-    }
 
-    def createOpiskeluOikeus = resetFixtures {
-      val opiskeluOikeus = OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.omnomnia.oid, koulutusKoodi = 351161)
-      createOrUpdate(opiskeluOikeus)
+  def createOrUpdate(opiskeluOikeus: OpiskeluOikeus) {
+    putOppija(Json.toJValue(TorOppija(MockOppijat.tyhjä, List(opiskeluOikeus)))) {}
+  }
 
-      opiskeluOikeus.copy(id = Some(lastOpiskeluOikeus(MockOppijat.tyhjä.oid)))
-    }
+  def createOpiskeluOikeus = resetFixtures {
+    val opiskeluOikeus = OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.omnomnia.oid, koulutusKoodi = 351161)
+    createOrUpdate(opiskeluOikeus)
+    opiskeluOikeus.copy(id = Some(lastOpiskeluOikeus(MockOppijat.tyhjä.oid)))
   }
 
   def lastOpiskeluOikeus(oppijaOid: String): Int = {
