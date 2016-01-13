@@ -4,15 +4,36 @@ import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.db.Tables._
 import fi.oph.tor.db.TorDatabase._
 import fi.oph.tor.db._
-import fi.oph.tor.oppija.MockOppijaRepository
+import fi.oph.tor.oppija.{MockOppijaRepository, VerifiedOppijaOid}
 import fi.oph.tor.organisaatio.MockOrganisaatioRepository
 import fi.oph.tor.schema._
+import fi.oph.tor.toruser.MockUsers
+import fi.vm.sade.utils.Timer
 import slick.dbio.DBIO
 
-object TorDatabaseFixtures extends Futures with GlobalExecutionContext {
-  private val oppijat = new MockOppijaRepository
+class TorDatabaseFixtureCreator(database: TorDatabase, repository: OpiskeluOikeusRepository) extends Futures with GlobalExecutionContext {
+  val oppijat = new MockOppijaRepository
 
-  def opiskeluOikeus(oppilaitosId: String) = {
+  def resetFixtures: Unit = Timer.timed("resetFixtures", 10) {
+    if (database.config.isRemote) throw new IllegalStateException("Trying to reset fixtures in remote database")
+
+    val deleteOpiskeluOikeudet = oppijat.defaultOppijat.map{oppija => OpiskeluOikeudet.filter(_.oppijaOid === oppija.oid).delete}
+
+    await(database.db.run(DBIO.sequence(deleteOpiskeluOikeudet)))
+
+    defaultOpiskeluOikeudet.foreach { case (oid, oikeus) =>
+      repository.createOrUpdate(VerifiedOppijaOid(oid), oikeus)(MockUsers.kalle.asTorUser)
+    }
+  }
+
+
+  private def defaultOpiskeluOikeudet = {
+    List((oppijat.eero.oid, opiskeluOikeus("1")),
+      (oppijat.eerola.oid, opiskeluOikeus("1")),
+      (oppijat.teija.oid, opiskeluOikeus("1")),
+      (oppijat.markkanen.oid, opiskeluOikeus("3")))
+  }
+  private def opiskeluOikeus(oppilaitosId: String) = {
     val oppilaitos: OidOrganisaatio = MockOrganisaatioRepository.getOrganisaatio(oppilaitosId).get
 
     OpiskeluOikeus(
@@ -41,20 +62,4 @@ object TorDatabaseFixtures extends Futures with GlobalExecutionContext {
 
   }
 
-  private def defaultOpiskeluOikeudet = {
-    List((oppijat.eero.oid, opiskeluOikeus("1")),
-         (oppijat.eerola.oid, opiskeluOikeus("1")),
-         (oppijat.teija.oid, opiskeluOikeus("1")),
-         (oppijat.markkanen.oid, opiskeluOikeus("3")))
-  }
-
-  def resetFixtures(database: TorDatabase): Unit = {
-    if (database.config.isRemote) throw new IllegalStateException("Trying to reset fixtures in remote database")
-
-    val deleteOpiskeluOikeudet = oppijat.defaultOppijat.map{oppija => OpiskeluOikeudet.filter(_.oppijaOid === oppija.oid).delete}
-
-    await(database.db.run(DBIO.sequence(
-      deleteOpiskeluOikeudet ++ List(OpiskeluOikeudet ++= defaultOpiskeluOikeudet.map{case (oid, oikeus) => new OpiskeluOikeusRow(oid, oikeus, 1)})
-    )))
-  }
 }

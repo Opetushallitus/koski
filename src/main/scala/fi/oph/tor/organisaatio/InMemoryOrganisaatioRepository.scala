@@ -10,7 +10,7 @@ object InMemoryOrganisaatioRepository {
   }
 }
 
-class InMemoryOrganisaatioRepository(roots: List[OrganisaatioHierarkia]) extends OrganisaatioRepository {
+case class InMemoryOrganisaatioRepository(roots: List[OrganisaatioHierarkia]) extends OrganisaatioRepository {
   private val orgs: Map[String, OrganisaatioHierarkia] = InMemoryOrganisaatioRepository.flatten(roots).map(org => (org.oid, org)).toMap
 
   def getOrganisaatioHierarkiaIncludingParents(id: String): Option[OrganisaatioHierarkia] = orgs.get(id)

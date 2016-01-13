@@ -11,7 +11,7 @@ object UserOrganisationsRepository {
     CachingProxy(TorCache.cacheStrategy, TimedProxy[UserOrganisationsRepository](if (config.hasPath("authentication-service")) {
       new RemoteUserOrganisationsRepository(AuthenticationServiceClient(config), organisaatioRepository)
     } else {
-      new MockUserOrganisationsRepository
+      MockUsers
     }))
   }
 }

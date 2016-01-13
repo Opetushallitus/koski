@@ -14,7 +14,7 @@ class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with 
   val tero = oppija(generateId, "tunkkila-fagerlund", "tero petteri gustaf", "091095-9833")
   val presidentti = oppija(generateId, "Presidentti", "Tasavallan", "")
 
-  private def oppija(id : String, suku: String, etu: String, hetu: String) = FullHenkilö(id, hetu, etu, etu, suku)
+  private def oppija(id : String, suku: String, etu: String, hetu: String): FullHenkilö = FullHenkilö(id, hetu, etu, etu, suku)
 
   def defaultOppijat = List(
     eero,
