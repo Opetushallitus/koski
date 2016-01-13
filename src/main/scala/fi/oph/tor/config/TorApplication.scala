@@ -8,13 +8,13 @@ import fi.oph.tor.db._
 import fi.oph.tor.eperusteet.EPerusteetRepository
 import fi.oph.tor.fixture.Fixtures
 import fi.oph.tor.history.OpiskeluoikeusHistoryRepository
-import fi.oph.tor.koodisto.{LowLevelKoodistoPalvelu, KoodistoPalvelu}
-import fi.oph.tor.opiskeluoikeus.{TorDatabaseFixtureCreator, OpiskeluOikeusRepository, PostgresOpiskeluOikeusRepository, TorDatabaseFixtures}
+import fi.oph.tor.koodisto.{KoodistoPalvelu, LowLevelKoodistoPalvelu}
+import fi.oph.tor.opiskeluoikeus.{OpiskeluOikeusRepository, PostgresOpiskeluOikeusRepository, TorDatabaseFixtureCreator}
 import fi.oph.tor.oppija.OppijaRepository
 import fi.oph.tor.oppilaitos.OppilaitosRepository
 import fi.oph.tor.organisaatio.OrganisaatioRepository
-import fi.oph.tor.tutkinto.TutkintoRepository
 import fi.oph.tor.toruser.{DirectoryClientFactory, UserOrganisationsRepository}
+import fi.oph.tor.tutkinto.TutkintoRepository
 import fi.oph.tor.util.TimedProxy
 import fi.vm.sade.security.ldap.DirectoryClient
 

@@ -23,5 +23,12 @@ trait HttpSpecification extends HttpComponentsClient with Assertions {
     get(uri, headers = authHeaders)(f)
   }
 
+  def resetFixtures[A](f: => A) = {
+    post("fixtures/reset") {
+      verifyResponseStatus(200)
+      f
+    }
+  }
+
   override def baseUrl = SharedJetty.baseUrl
 }
