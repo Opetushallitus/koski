@@ -123,7 +123,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
           }
         case Left(err) => DBIO.successful(Left(err))
       }
-    }
+    }.transactionally
   }
 
   private def createAction(oppijaOid: String, opiskeluOikeus: OpiskeluOikeus)(implicit user: TorUser): dbio.DBIOAction[Either[HttpStatus, Int], NoStream, Write] = {
