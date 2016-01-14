@@ -68,7 +68,9 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
     authGet("api/opiskeluoikeus/historia/" + opiskeluOikeus.id.get) {
       verifyResponseCode(200)
       val historia = Json.read[List[OpiskeluOikeusHistoryRow]](body)
-      historia.map(_.versionumero) should equal(versions) // First one was inserted in fixtures already
+      historia.map(_.versionumero) should equal(versions)
+
+      markup("Viimeisin versiohistorian versio on sama kuin tallennettu opiskeluoikeus")
 
       val latestVersion = authGet("api/opiskeluoikeus/historia/" + opiskeluOikeus.id.get + "/" + historia.last.versionumero) { Json.read[OpiskeluOikeus](body) }
       latestVersion should equal(opiskeluOikeus)
