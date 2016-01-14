@@ -1,5 +1,7 @@
 package fi.oph.tor.opiskeluoikeus
 
+import java.sql.SQLException
+
 import com.github.fge.jsonpatch.diff.JsonDiff
 import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.db.Tables._
@@ -20,6 +22,7 @@ import org.json4s.jackson.JsonMethods
 import rx.lang.scala.Observable
 import slick.dbio
 import slick.dbio.Effect.{Read, Write}
+import slick.jdbc.TransactionIsolation
 
 class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: OpiskeluoikeusHistoryRepository) extends OpiskeluOikeusRepository with Futures with GlobalExecutionContext with Logging {
   // Note: this is a naive implementation. All filtering should be moved to query-level instead of in-memory-level
@@ -76,7 +79,11 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     if (!user.userOrganisations.hasReadAccess(opiskeluOikeus.oppilaitos)) {
       Left(HttpStatus.forbidden("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid))
     } else {
-      await(db.run(createOrUpdateAction(oppijaOid, opiskeluOikeus)))
+      try {
+        await(db.run(createOrUpdateAction(oppijaOid, opiskeluOikeus)))
+      } catch {
+        case e:SQLException if e.getSQLState == "40001" => Left(HttpStatus.conflict("Oppijan " + oppijaOid + " opiskeluoikeuden muutos epäonnistui samanaikaisten muutoksien vuoksi."))
+      }
     }
   }
 
@@ -121,7 +128,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
           }
         case Left(err) => DBIO.successful(Left(err))
       }
-    }.transactionally
+    }.transactionally.withTransactionIsolation(TransactionIsolation.Serializable)
   }
 
   private def createAction(oppijaOid: String, opiskeluOikeus: OpiskeluOikeus)(implicit user: TorUser): dbio.DBIOAction[Either[HttpStatus, Int], NoStream, Write] = {
