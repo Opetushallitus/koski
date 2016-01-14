@@ -24,12 +24,31 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
     describe("Päivitettäessä") {
       it("Luodaan uusi versiorivi") {
         val opiskeluOikeus = createOpiskeluOikeus
-
         val modified: OpiskeluOikeus = createOrUpdate(opiskeluOikeus.copy(päättymispäivä = Some(LocalDate.now)))
-
         verifyHistory(modified, List(1, 2))
       }
+
+      describe("Kun syötteessä annetaan versionumero") {
+        describe("Versionumero sama kuin viimeisin") {
+          it("Päivitys hyväksytään") {
+            val opiskeluOikeus = createOpiskeluOikeus
+            val modified: OpiskeluOikeus = createOrUpdate(opiskeluOikeus.copy(päättymispäivä = Some(LocalDate.now), versionumero = Some(1)))
+            verifyHistory(modified, List(1, 2))
+          }
+        }
+
+        describe("Versionumero ei täsmää") {
+          it("Päivitys hylätään") {
+            val opiskeluOikeus = createOpiskeluOikeus
+            val modified: OpiskeluOikeus = createOrUpdate(opiskeluOikeus.copy(päättymispäivä = Some(LocalDate.now), versionumero = Some(3)), {
+              verifyResponseCode(409)
+            })
+            verifyHistory(modified, List(1))
+          }
+        }
+      }
     }
+
     describe("Käyttöoikeudet") {
       describe("Kun haetaan historiaa opiskeluoikeudelle, johon käyttäjällä ei oikeuksia") {
         it("Palautetaan 404") {
@@ -44,10 +63,8 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
 
   private val oppija: FullHenkilö = MockOppijat.tyhjä
 
-  def createOrUpdate(opiskeluOikeus: OpiskeluOikeus) = {
-    putOppija(Json.toJValue(TorOppija(oppija, List(opiskeluOikeus)))) {
-      verifyResponseCode(200)
-    }
+  def createOrUpdate(opiskeluOikeus: OpiskeluOikeus, check: => Unit = { verifyResponseCode(200) }) = {
+    putOppija(Json.toJValue(TorOppija(oppija, List(opiskeluOikeus))))(check)
     lastOpiskeluOikeus(oppija.oid)
   }
 

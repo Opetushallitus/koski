@@ -144,19 +144,22 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
   }
 
   private def updateAction(id: Int, versionumero: Int, vanhaData: JValue, uusiOlio: OpiskeluOikeus)(implicit user: TorUser): dbio.DBIOAction[HttpStatus, NoStream, Write] = {
-    // TODO: always overriding existing data can not be the eventual update strategy
-    val uusiData = Json.toJValue(uusiOlio.copy(id = None, versionumero = None))
-    for {
-      rowsUpdated <- OpiskeluOikeudetWithAccessCheck.filter(_.id === id).map(row => (row.data, row.versionumero)).update((uusiData, versionumero))
-      diff = JsonMethods.fromJsonNode(JsonDiff.asJson(JsonMethods.asJsonNode(vanhaData), JsonMethods.asJsonNode(uusiData)))
-      _ <- historyRepository.createAction(id, versionumero, user.oid, diff)
-    } yield {
-      rowsUpdated match {
-        case 1 => HttpStatus.ok
-        case x =>
-          logger.error("Unexpected number of updated rows: " + x)
-          HttpStatus.internalError()
-      }
+    (uusiOlio.versionumero, versionumero) match {
+      case (Some(pyydetty), seuraava) if (pyydetty != seuraava - 1) => DBIO.successful(HttpStatus.conflict("Annettu versionumero " + pyydetty + " <> " + (seuraava - 1)))
+      case _ =>
+        val uusiData = Json.toJValue(uusiOlio.copy(id = None, versionumero = None))
+        for {
+          rowsUpdated <- OpiskeluOikeudetWithAccessCheck.filter(_.id === id).map(row => (row.data, row.versionumero)).update((uusiData, versionumero))
+          diff = JsonMethods.fromJsonNode(JsonDiff.asJson(JsonMethods.asJsonNode(vanhaData), JsonMethods.asJsonNode(uusiData)))
+          _ <- historyRepository.createAction(id, versionumero, user.oid, diff)
+        } yield {
+          rowsUpdated match {
+            case 1 => HttpStatus.ok
+            case x =>
+              logger.error("Unexpected number of updated rows: " + x)
+              HttpStatus.internalError()
+          }
+        }
     }
   }
 }
