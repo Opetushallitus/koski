@@ -5,6 +5,7 @@ import java.time.format.DateTimeParseException
 
 import fi.oph.tor.db.GlobalExecutionContext
 import fi.oph.tor.henkilo.HenkiloOid
+import fi.oph.tor.history.OpiskeluoikeusHistoryRepository
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.json.{Json, JsonStreamWriter}
 import fi.oph.tor.schema.Henkilö.Oid
@@ -18,7 +19,7 @@ import rx.lang.scala.Observable
 import scala.concurrent.Future
 import scala.concurrent.duration.Duration
 
-class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: UserOrganisationsRepository, val directoryClient: DirectoryClient, val validator: TorValidator)
+class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: UserOrganisationsRepository, val directoryClient: DirectoryClient, val validator: TorValidator, val historyRepository: OpiskeluoikeusHistoryRepository)
   extends ErrorHandlingServlet with Logging with RequiresAuthentication with GlobalExecutionContext with FutureSupport with GZipSupport {
 
   put("/") {
@@ -51,7 +52,11 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
   }
 
   get("/validate/:oid") {
-    renderEither(findByOid.right.map(validateOppija))
+    renderEither(
+      findByOid
+        .right.flatMap(validateHistory)
+        .right.map(validateOppija)
+    )
   }
 
   def validateOppija(oppija: TorOppija): ValidationResult = {
@@ -62,6 +67,21 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
         ValidationResult(oppijaOid, Nil)
       case Left(status) =>
         ValidationResult(oppijaOid, status.errors)
+    }
+  }
+
+  def validateHistory(oppija: TorOppija): Either[HttpStatus, TorOppija] = {
+    HttpStatus.fold(oppija.opiskeluoikeudet.map { oikeus =>
+      historyRepository.findVersion(oikeus.id.get, oikeus.versionumero.get) match {
+        case Right(latestVersion) =>
+          HttpStatus.validate(latestVersion == oikeus) {
+            HttpStatus.internalError("Opinto-oikeuden " + oikeus.id + " versiohistoria epäkonsistentti")
+          }
+        case Left(error) => error
+      }
+    }) match {
+      case HttpStatus.ok => Right(oppija)
+      case status => Left(status)
     }
   }
 
