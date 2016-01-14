@@ -26,6 +26,9 @@ object Scenarios {
             .basicAuth(username, password).check(status.in(200, 409))
         )
 
+  val validateOppija = scenario("Validate oppija").exec(
+    http("validate oppija").get("/api/oppija/validate/1.2.246.562.24.00000000001")
+    .basicAuth(username, password))
 
 
   val queryOppijat = scenario("Query oppijat").exec(
