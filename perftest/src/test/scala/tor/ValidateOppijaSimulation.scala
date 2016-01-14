@@ -9,7 +9,7 @@ import scala.concurrent.duration._
 class ValidateOppijaSimulation extends TorSimulation {
   setUp(
     validateOppija.inject(atOnceUsers(1))
-  ).protocols(httpConf)
+  )
 }
 
 
