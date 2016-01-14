@@ -46,6 +46,7 @@ object OpiskeluOikeusTestData {
       None,
       None,
       None,
+      None,
       oppilaitos,
       Suoritus(
         None,

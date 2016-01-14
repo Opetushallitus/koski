@@ -7,7 +7,7 @@ import fi.oph.tor.json.Json
 import fi.oph.tor.opiskeluoikeus.OpiskeluOikeusTestData
 import fi.oph.tor.oppija.MockOppijat
 import fi.oph.tor.organisaatio.MockOrganisaatiot
-import fi.oph.tor.schema.{OpiskeluOikeus, TorOppija}
+import fi.oph.tor.schema.{FullHenkilö, OpiskeluOikeus, TorOppija}
 import fi.oph.tor.toruser.MockUsers
 import org.scalatest.FunSpec
 
@@ -25,8 +25,7 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
       it("Luodaan uusi versiorivi") {
         val opiskeluOikeus = createOpiskeluOikeus
 
-        val modified: OpiskeluOikeus = opiskeluOikeus.copy(päättymispäivä = Some(LocalDate.now))
-        createOrUpdate(modified)
+        val modified: OpiskeluOikeus = createOrUpdate(opiskeluOikeus.copy(päättymispäivä = Some(LocalDate.now)))
 
         verifyHistory(modified, List(1, 2))
       }
@@ -43,24 +42,26 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
     }
   }
 
+  private val oppija: FullHenkilö = MockOppijat.tyhjä
 
-  def createOrUpdate(opiskeluOikeus: OpiskeluOikeus) {
-    putOppija(Json.toJValue(TorOppija(MockOppijat.tyhjä, List(opiskeluOikeus)))) {
+  def createOrUpdate(opiskeluOikeus: OpiskeluOikeus) = {
+    putOppija(Json.toJValue(TorOppija(oppija, List(opiskeluOikeus)))) {
       verifyResponseCode(200)
     }
+    lastOpiskeluOikeus(oppija.oid)
   }
 
   def createOpiskeluOikeus = {
     resetFixtures
     val opiskeluOikeus = OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.helsinginAmmattiOpisto.oid, koulutusKoodi = 351161)
     createOrUpdate(opiskeluOikeus)
-    opiskeluOikeus.copy(id = Some(lastOpiskeluOikeus(MockOppijat.tyhjä.oid)))
+    lastOpiskeluOikeus(oppija.oid)
   }
 
-  def lastOpiskeluOikeus(oppijaOid: String): Int = {
+  def lastOpiskeluOikeus(oppijaOid: String) = {
     authGet("api/oppija/" + oppijaOid) {
       verifyResponseCode(200)
-      Json.read[TorOppija](body).opiskeluoikeudet.last.id.get
+      Json.read[TorOppija](body).opiskeluoikeudet.last
     }
   }
 

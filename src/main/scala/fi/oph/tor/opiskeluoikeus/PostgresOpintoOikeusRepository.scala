@@ -117,7 +117,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     findByIdentifierAction(OpiskeluOikeusIdentifier(oppijaOid.oppijaOid, opiskeluOikeus)).flatMap { rows: Either[HttpStatus, Option[OpiskeluOikeusRow]] =>
       rows match {
         case Right(Some(vanhaOpiskeluOikeus)) =>
-          updateAction(vanhaOpiskeluOikeus.id, vanhaOpiskeluOikeus.versionumero + 1, vanhaOpiskeluOikeus.data, Json.toJValue(opiskeluOikeus.copy(id = Some(vanhaOpiskeluOikeus.id)))).map {
+          updateAction(vanhaOpiskeluOikeus.id, vanhaOpiskeluOikeus.versionumero + 1, vanhaOpiskeluOikeus.data, opiskeluOikeus).map {
             case error if error.isError => Left(error)
             case _ => Right(Updated(vanhaOpiskeluOikeus.id))
           }
@@ -133,17 +133,19 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
 
   private def createAction(oppijaOid: String, opiskeluOikeus: OpiskeluOikeus)(implicit user: TorUser): dbio.DBIOAction[Either[HttpStatus, Int], NoStream, Write] = {
     val versionumero = 1
+    val tallennettavaOpiskeluOikeus = opiskeluOikeus.copy(id = None, versionumero = None)
     for {
-      opiskeluoikeusId <- OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += new OpiskeluOikeusRow(oppijaOid, opiskeluOikeus, versionumero)
-      diff = Json.toJValue(List(Map("op" -> "add", "path" -> "", "value" -> opiskeluOikeus.copy(id = Some(opiskeluoikeusId)))))
+      opiskeluoikeusId <- OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += new OpiskeluOikeusRow(oppijaOid, tallennettavaOpiskeluOikeus, versionumero)
+      diff = Json.toJValue(List(Map("op" -> "add", "path" -> "", "value" -> tallennettavaOpiskeluOikeus)))
       _ <- historyRepository.createAction(opiskeluoikeusId, versionumero, user.oid, diff)
     } yield {
       Right(opiskeluoikeusId)
     }
   }
 
-  private def updateAction(id: Int, versionumero: Int, vanhaData: JValue, uusiData: JValue)(implicit user: TorUser): dbio.DBIOAction[HttpStatus, NoStream, Write] = {
+  private def updateAction(id: Int, versionumero: Int, vanhaData: JValue, uusiOlio: OpiskeluOikeus)(implicit user: TorUser): dbio.DBIOAction[HttpStatus, NoStream, Write] = {
     // TODO: always overriding existing data can not be the eventual update strategy
+    val uusiData = Json.toJValue(uusiOlio.copy(id = None, versionumero = None))
     for {
       rowsUpdated <- OpiskeluOikeudetWithAccessCheck.filter(_.id === id).map(row => (row.data, row.versionumero)).update((uusiData, versionumero))
       diff = JsonMethods.fromJsonNode(JsonDiff.asJson(JsonMethods.asJsonNode(vanhaData), JsonMethods.asJsonNode(uusiData)))

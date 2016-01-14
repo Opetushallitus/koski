@@ -47,7 +47,7 @@ object Tables {
 
 case class OpiskeluOikeusRow(id: Int, oppijaOid: String, versionumero: Int, data: JValue) {
   lazy val toOpiskeluOikeus: OpiskeluOikeus = {
-    Json.fromJValue[OpiskeluOikeus](data).copy ( id = Some(id) )
+    Json.fromJValue[OpiskeluOikeus](data).copy ( id = Some(id), versionumero = Some(versionumero) )
   }
 
   def this(oppijaOid: String, opiskeluOikeus: OpiskeluOikeus, versionumero: Int) = {

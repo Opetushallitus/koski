@@ -138,6 +138,7 @@ object TorOppijaExamples {
     List(
       OpiskeluOikeus(
         None,
+        None,
         Some(LähdejärjestelmäId("847823465", lähdeWinnova)),
         Some(date(2012, 9, 1)),
         Some(date(2015, 5, 31)),
@@ -182,6 +183,7 @@ object TorOppijaExamples {
     List(
       OpiskeluOikeus(
         None,
+        None,
         Some(LähdejärjestelmäId("847823465", lähdeWinnova)),
         Some(date(2016, 9, 1)),
         Some(date(2020, 5, 1)),
@@ -210,6 +212,7 @@ object TorOppijaExamples {
     Henkilö("010101-123N", "matti pekka", "matti", "virtanen"),
     List(
       OpiskeluOikeus(
+        None,
         None,
         Some(LähdejärjestelmäId("847823465", lähdeWinnova)),
         Some(date(2016, 9, 1)),
@@ -247,6 +250,7 @@ object TorOppijaExamples {
     List(
       OpiskeluOikeus(
         None,
+        None,
         Some(LähdejärjestelmäId("847823465", lähdeWinnova)),
         Some(date(2016, 9, 1)),
         Some(date(2020, 5, 1)),
@@ -278,6 +282,7 @@ object TorOppijaExamples {
     Henkilö.withOid("1.2.246.562.24.00000000001"),
     List(
       OpiskeluOikeus(
+        None,
         None,
         Some(LähdejärjestelmäId("847823465", lähdeWinnova)),
         Some(date(2012, 9, 1)),

@@ -23,21 +23,7 @@ class TorHistoryServlet(val userRepository: UserOrganisationsRepository, val dir
     val id = getIntegerParam("id")
     val version = getIntegerParam("version")
 
-    renderEither {
-      historyRepository.findByOpiskeluoikeusId(id, version) match {
-        case Some(diffs) =>
-          if (diffs.length < version) {
-            Left(HttpStatus.notFound("Version: " + version + " not found for opiskeluoikeus: " + id))
-          } else {
-            val oikeusVersion = diffs.foldLeft(JsonNodeFactory.instance.objectNode(): JsonNode) { (current, diff) =>
-              val patch = JsonPatch.fromJson(asJsonNode(diff.muutos))
-              patch.apply(current)
-            }
-            Right(fromJsonNode(oikeusVersion))
-          }
-        case None => Left(HttpStatus.notFound("Opiskeluoikeus not found with id: " + id))
-      }
-    }
+    renderEither(historyRepository.findVersion(id, version))
   }
 
   private def getIntegerParam(name: String): Int = {
