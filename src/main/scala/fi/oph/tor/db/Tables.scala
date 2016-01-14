@@ -5,6 +5,7 @@ import java.sql.Timestamp
 import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.json.Json
 import fi.oph.tor.schema.OpiskeluOikeus
+import fi.oph.tor.toruser.TorUser
 import org.json4s._
 
 object Tables {
@@ -27,8 +28,21 @@ object Tables {
     def * = (opiskeluoikeusId, versionumero, aikaleima, kayttajaOid, muutos) <> (OpiskeluOikeusHistoryRow.tupled, OpiskeluOikeusHistoryRow.unapply)
   }
 
+  // OpiskeluOikeudet-taulu. Käytä kyselyissä aina OpiskeluOikeudetWithAccessCheck, niin tulee myös käyttöoikeudet tarkistettua samalla.
   val OpiskeluOikeudet = TableQuery[OpiskeluOikeusTable]
+
   val OpiskeluOikeusHistoria = TableQuery[OpiskeluOikeusHistoryTable]
+
+  def OpiskeluOikeudetWithAccessCheck(implicit user: TorUser): Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = {
+    val oids = user.userOrganisations.oids
+    for {
+      oo <- OpiskeluOikeudet
+      if oo.data.#>>(List("oppilaitos", "oid")) inSetBind oids
+    }
+    yield {
+      oo
+    }
+  }
 }
 
 case class OpiskeluOikeusRow(id: Int, oppijaOid: String, versionumero: Int, data: JValue) {
