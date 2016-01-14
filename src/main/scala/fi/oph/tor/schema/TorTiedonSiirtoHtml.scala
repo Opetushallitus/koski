@@ -165,7 +165,7 @@ object TorApiOperations {
    ),
    ApiOperation(
      "GET", "/tor/api/oppija/validate",
-     <div>Etsii oppijat annetuilla parametreilla ja validoi hakutulokset. Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</div>,
+     <div>Etsii oppijat annetuilla parametreilla ja validoi hakutulokset. Validointi suoritetaan tämän hetkisen JSON-scheman ja muiden validointisääntöjen mukaan. Lisäksi validoidaan opinto-oikeuksien versiohistorioiden eheys. Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</div>,
      Nil,
      hakuParametrit,
      List(
