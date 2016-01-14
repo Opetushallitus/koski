@@ -27,7 +27,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
   def findOppijat(query: String)(implicit user: TorUser): Seq[FullHenkilö] = {
     val oppijat: List[FullHenkilö] = oppijaRepository.findOppijat(query)
     val filtered = opiskeluOikeusRepository.filterOppijat(oppijat)
-    filtered
+    filtered.sortBy(oppija => (oppija.sukunimi, oppija.etunimet))
   }
 
   def createOrUpdate(oppija: TorOppija)(implicit user: TorUser): Either[HttpStatus, Henkilö.Oid] = {

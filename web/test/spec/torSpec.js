@@ -83,7 +83,7 @@ describe('TOR', function() {
       before(page.oppijaHaku.search('eero', 3))
 
       it('Hakutulokset näytetään', function() {
-        expect(page.oppijaHaku.getSearchResults()).to.deep.equal([eero, eerola, markkanen])
+        expect(page.oppijaHaku.getSearchResults()).to.deep.equal([eerola, eero, markkanen])
       })
 
       describe('Kun klikataan oppijaa listalla', function() {
