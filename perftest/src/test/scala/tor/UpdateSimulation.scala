@@ -7,8 +7,10 @@ import scala.concurrent.duration._
 
 class UpdateSimulation extends TorSimulation {
   setUp(
-    updateOppija.inject(nothingFor(5 seconds), atOnceUsers(1), nothingFor(30 seconds), constantUsersPerSec(10) during(1 minute) randomized)
-  ).protocols(httpConf)
+    updateOppija.inject(nothingFor(5 seconds), atOnceUsers(1), nothingFor(3 seconds), constantUsersPerSec(10) during(10 seconds) randomized)
+  ).protocols(httpConf).assertions(
+      global.successfulRequests.percent.is(100)
+    )
 }
 
 

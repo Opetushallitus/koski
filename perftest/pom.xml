@@ -38,6 +38,9 @@
                         <goals>
                             <goal>execute</goal>
                         </goals>
+                        <configuration>
+                            <failOnError>true</failOnError>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
