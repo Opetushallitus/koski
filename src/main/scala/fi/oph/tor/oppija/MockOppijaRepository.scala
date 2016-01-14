@@ -20,26 +20,24 @@ object MockOppijat {
   def defaultOppijat = oppijat.getOppijat
 }
 
-class MockOppijat(oppijat: List[FullHenkilö] = Nil) {
-  private var _oppijat: List[FullHenkilö] = Nil
-  private val idCounter = 0
+class MockOppijat(private var oppijat: List[FullHenkilö] = Nil) {
+  private var idCounter = oppijat.length
 
   def oppija(suku: String, etu: String, hetu: String): FullHenkilö = {
     val oppija = FullHenkilö(generateId(), hetu, etu, etu, suku)
-    _oppijat = oppija :: _oppijat
+    oppijat = oppija :: oppijat
     oppija
   }
 
-  def getOppijat = _oppijat
+  def getOppijat = oppijat
 
   private def generateId(): String = {
-    "1.2.246.562.24.0000000000" + (idCounter + 1)
+    idCounter = idCounter + 1
+    "1.2.246.562.24.0000000000" + idCounter
   }
 }
 
 class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with Futures with GlobalExecutionContext {
-  private var idCounter = 0
-
   private var oppijat = new MockOppijat(MockOppijat.defaultOppijat)
 
   override def findOppijat(query: String) = {
