@@ -1,6 +1,7 @@
 package tor
 
 import io.gatling.core.Predef._
+import io.gatling.core.structure.PopulatedScenarioBuilder
 import io.gatling.http.Predef._
 
 trait TorSimulation extends Simulation {
@@ -10,4 +11,9 @@ trait TorSimulation extends Simulation {
 
   val headers = Map("Content-Type" -> "application/json")
 
+  override def setUp(scenarios: List[PopulatedScenarioBuilder]) = {
+    super.setUp(scenarios).protocols(httpConf).assertions(
+      global.successfulRequests.percent.is(100)
+    )
+  }
 }
