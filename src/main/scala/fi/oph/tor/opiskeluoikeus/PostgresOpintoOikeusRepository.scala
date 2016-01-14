@@ -112,7 +112,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     findByIdentifierAction(OpiskeluOikeusIdentifier(oppijaOid.oppijaOid, opiskeluOikeus)).flatMap { rows: Either[HttpStatus, Option[OpiskeluOikeusRow]] =>
       rows match {
         case Right(Some(vanhaOpiskeluOikeus)) =>
-          updateAction(vanhaOpiskeluOikeus.id, vanhaOpiskeluOikeus.versionumero + 1, vanhaOpiskeluOikeus.data, Json.toJValue(opiskeluOikeus)).map {
+          updateAction(vanhaOpiskeluOikeus.id, vanhaOpiskeluOikeus.versionumero + 1, vanhaOpiskeluOikeus.data, Json.toJValue(opiskeluOikeus.copy(id = Some(vanhaOpiskeluOikeus.id)))).map {
             case error if error.isError => Left(error)
             case _ => Right(Updated(vanhaOpiskeluOikeus.id))
           }
@@ -130,7 +130,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     val versionumero = 1
     for {
       opiskeluoikeusId <- OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += new OpiskeluOikeusRow(oppijaOid, opiskeluOikeus, versionumero)
-      diff = Json.toJValue(List(Map("op" -> "add", "path" -> "", "value" -> opiskeluOikeus)))
+      diff = Json.toJValue(List(Map("op" -> "add", "path" -> "", "value" -> opiskeluOikeus.copy(id = Some(opiskeluoikeusId)))))
       _ <- historyRepository.createAction(opiskeluoikeusId, versionumero, user.oid, diff)
     } yield {
       Right(opiskeluoikeusId)
