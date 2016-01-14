@@ -24,9 +24,10 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
       it("Luodaan uusi versiorivi") {
         val opiskeluOikeus = createOpiskeluOikeus
 
-        createOrUpdate(opiskeluOikeus.copy(päättymispäivä = Some(LocalDate.now)))
+        val modified: OpiskeluOikeus = opiskeluOikeus.copy(päättymispäivä = Some(LocalDate.now))
+        createOrUpdate(modified)
 
-        verifyHistory(opiskeluOikeus, List(1, 2))
+        verifyHistory(modified, List(1, 2))
       }
     }
   }
@@ -53,6 +54,9 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
     authGet("api/opiskeluoikeus/historia/" + opiskeluOikeus.id.get) {
       val historia = Json.read[List[OpiskeluOikeusHistoryRow]](body)
       historia.map(_.versionumero) should equal(versions) // First one was inserted in fixtures already
+
+      val latestVersion = authGet("api/opiskeluoikeus/historia/" + opiskeluOikeus.id.get + "/" + historia.last.versionumero) { Json.read[OpiskeluOikeus](body) }
+      latestVersion should equal(opiskeluOikeus)
     }
   }
 }
