@@ -23,7 +23,7 @@ object Scenarios {
           http("update")
             .put("/api/oppija")
             .body(OppijaWithOpiskeluoikeusWithIncrementingStartdate).asJSON
-            .basicAuth(username, password)
+            .basicAuth(username, password).check(status.in(200, 409))
         )
 
 
