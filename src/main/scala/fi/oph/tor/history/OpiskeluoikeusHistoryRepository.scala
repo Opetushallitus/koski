@@ -18,7 +18,10 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends Futures with GlobalEx
       .map(_._2)
       .sortBy(_.versionumero.asc)
 
-    Some(await(db.run(query.result)))
+    await(db.run(query.result)) match {
+      case Nil => None
+      case rows => Some(rows)
+    }
   }
 
   def createAction(opiskeluoikeusId: Int, versionumero: Int, kayttäjäOid: String, muutos: JValue): DBIOAction[Int, NoStream, Write] = {

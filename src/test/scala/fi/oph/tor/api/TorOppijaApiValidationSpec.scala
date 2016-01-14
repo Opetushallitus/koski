@@ -35,7 +35,7 @@ class TorOppijaApiValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
     }
 
     describe("Epäkelpo JSON-dokumentti") {
-      it("palautetaan HTTP 400 virhe" ) (sendAjax("api/oppija", "application/json", "not json", "put")
+      it("palautetaan HTTP 400 virhe" ) (request("api/oppija", "application/json", "not json", "put")
         (verifyResponseCode(400, "Invalid JSON")))
     }
 
@@ -236,26 +236,26 @@ class TorOppijaApiValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
 
     describe("Arvioinnin antaminen tutkinnon osalle") {
       describe("Tutkinnon osa ja arviointi ok") {
-        it("palautetaan HTTP 200") (putTutkinnonOsaSuoritusAjax(Map()) (verifyResponseCode(200)))
+        it("palautetaan HTTP 200") (putTutkinnonOsaSuoritus(Map()) (verifyResponseCode(200)))
       }
 
       describe("Tutkinnon osa ei kuulu tutkintorakenteeseen") {
-        it("palautetaan HTTP 400") (putTutkinnonOsaSuoritusAjax(Map("koulutusmoduulitoteutus" -> Map("koulutusmoduuli" -> Map(
+        it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(Map("koulutusmoduulitoteutus" -> Map("koulutusmoduuli" -> Map(
           "tunniste" -> Map("koodiarvo" -> "103135", "nimi" -> "Kaapelitelevisio- ja antennijärjestelmät", "koodistoUri" -> "tutkinnonosat", "koodistoVersio" -> 1)
         ))))(verifyResponseCode(400, "Tutkinnon osa tutkinnonosat/103135 ei löydy tutkintorakenteesta perusteelle 39/011/2014 - suoritustapa naytto"))) }
 
       describe("Tutkinnon osaa ei ei löydy koodistosta") {
-        it("palautetaan HTTP 400") (putTutkinnonOsaSuoritusAjax(Map("koulutusmoduulitoteutus" -> Map("koulutusmoduuli" -> Map(
+        it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(Map("koulutusmoduulitoteutus" -> Map("koulutusmoduuli" -> Map(
             "tunniste" -> Map("koodiarvo" -> "9923123", "nimi" -> "Väärää tietoa", "koodistoUri" -> "tutkinnonosat", "koodistoVersio" -> 1)
         )))) (verifyResponseCode(400, "Koodia tutkinnonosat/9923123 ei löydy koodistosta"))) }
 
       describe("Arviointiasteikko on tuntematon") {
-        it("palautetaan HTTP 400") (putTutkinnonOsaSuoritusAjax(Map(
+        it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(Map(
           "arviointi" -> List(Map("arvosana" -> Map("koodiarvo" -> "2", "koodistoUri" -> "vääräasteikko")))
         ))(verifyResponseCode(400, "not found in enum")))
       }
       describe("Arvosana ei kuulu perusteiden mukaiseen arviointiasteikkoon") {
-        it("palautetaan HTTP 400") (putTutkinnonOsaSuoritusAjax(Map(
+        it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(Map(
           "arviointi" -> List(Map("arvosana" -> Map("koodiarvo" -> "x", "koodistoUri" -> "arviointiasteikkoammatillinent1k3")))
         ))(verifyResponseCode(400, "Koodia arviointiasteikkoammatillinent1k3/x ei löydy koodistosta")))
       }
