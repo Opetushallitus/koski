@@ -59,7 +59,19 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
     )
   }
 
-  def validateOppija(oppija: TorOppija): ValidationResult = {
+  get("/search") {
+    contentType = "application/json;charset=utf-8"
+    params.get("query") match {
+      case Some(query) if (query.length >= 3) =>
+        Json.write(rekisteri.findOppijat(query.toUpperCase))
+      case _ =>
+        throw new InvalidRequestException("query parameter length must be at least 3")
+    }
+  }
+
+  override protected def asyncTimeout = Duration.Inf
+
+  private def validateOppija(oppija: TorOppija): ValidationResult = {
     val oppijaOid: Oid = oppija.henkilö.asInstanceOf[HenkilöWithOid].oid
     val validationResult = validator.validateAsJson(oppija)
     validationResult match {
@@ -70,7 +82,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
     }
   }
 
-  def validateHistory(oppija: TorOppija): Either[HttpStatus, TorOppija] = {
+  private def validateHistory(oppija: TorOppija): Either[HttpStatus, TorOppija] = {
     HttpStatus.fold(oppija.opiskeluoikeudet.map { oikeus =>
       historyRepository.findVersion(oikeus.id.get, oikeus.versionumero.get) match {
         case Right(latestVersion) =>
@@ -82,16 +94,6 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
     }) match {
       case HttpStatus.ok => Right(oppija)
       case status => Left(status)
-    }
-  }
-
-  get("/search") {
-    contentType = "application/json;charset=utf-8"
-    params.get("query") match {
-      case Some(query) if (query.length >= 3) =>
-        Json.write(rekisteri.findOppijat(query.toUpperCase))
-      case _ =>
-        throw new InvalidRequestException("query parameter length must be at least 3")
     }
   }
 
@@ -121,9 +123,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
     }
   }
 
-  override protected def asyncTimeout = Duration.Inf
-
-  def dateParam(q: (String, String)): Either[HttpStatus, LocalDate] = q match {
+  private def dateParam(q: (String, String)): Either[HttpStatus, LocalDate] = q match {
     case (p, v) => try {
       Right(LocalDate.parse(v))
     } catch {
