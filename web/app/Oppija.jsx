@@ -16,9 +16,9 @@ export const oppijaP = Bacon.update({ loading: true },
     let current = Immutable.fromJS(currentOppija)
 
     return current.set('opiskeluoikeudet', current.get('opiskeluoikeudet').map(opiskeluOikeus => {
-      return opiskeluOikeus.get('id') == opiskeluOikeusId
+      return (opiskeluOikeus.get('id') == opiskeluOikeusId
         ? change(opiskeluOikeus)
-        : opiskeluOikeus}
+        : opiskeluOikeus).remove('versionumero')}
     )).toJS()
   }
 )
