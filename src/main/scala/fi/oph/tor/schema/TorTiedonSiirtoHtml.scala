@@ -1,7 +1,7 @@
 package fi.oph.tor.schema
 import com.tristanhunt.knockoff.DefaultDiscounter._
 import fi.oph.tor.json.Json
-import fi.oph.tor.schema.generic.Schema
+
 import scala.xml.Elem
 
 object TorTiedonSiirtoHtml {
@@ -74,7 +74,7 @@ Kaikki rajapinnat vaativat HTTP Basic Authentication -tunnistautumisen, eli käy
               <h4>Kokeile heti</h4>
               <div class="api-tester" data-method={operation.method} data-path={operation.path}>
                 {
-                  if (operation.examples.length > 0) {
+                  if (operation.examples.nonEmpty) {
                     <div class="postdata">
                       <h4>Syötedata</h4>
                       <div class="examples"><label>Esimerkkejä<select>
@@ -84,7 +84,7 @@ Kaikki rajapinnat vaativat HTTP Basic Authentication -tunnistautumisen, eli käy
                       </select></label></div>
                       <textarea cols="80" rows="50">{Json.writePretty(operation.examples(0).data)}</textarea>
                     </div>
-                  } else if (operation.parameters.length > 0) {
+                  } else if (operation.parameters.nonEmpty) {
                     <div class="parameters">
                       <h4>Parametrit</h4>
                       <table>
@@ -93,7 +93,15 @@ Kaikki rajapinnat vaativat HTTP Basic Authentication -tunnistautumisen, eli käy
                         </thead>
                         <tbody>
                           { operation.parameters.map { parameter =>
-                            <tr><td>{parameter.name}</td><td>{parameter.description}</td><td><input name={parameter.name} value={parameter.example}></input></td></tr>
+                            <tr>
+                              <td>{parameter.name}</td><td>{parameter.description}</td>
+                              <td>
+                                <input name={parameter.name} value={parameter.example} class={parameter match {
+                                  case p: QueryParameter => "query-param"
+                                  case p: PathParameter => "path-param"
+                                }}></input>
+                              </td>
+                            </tr>
                           }}
                         </tbody>
                       </table>
@@ -136,20 +144,20 @@ Kaikki rajapinnat vaativat HTTP Basic Authentication -tunnistautumisen, eli käy
 
 object TorApiOperations {
  private val hakuParametrit = List(
-   Parameter("opiskeluoikeusPäättynytAikaisintaan","Päivämäärä jonka jälkeen opiskeluoikeus on päättynyt","2016-01-01"),
-   Parameter("opiskeluoikeusPäättynytViimeistään","Päivämäärä jota ennen opiskeluoikeus on päättynyt","2016-12-31"),
-   Parameter("tutkinnonTila","Opiskeluoikeuden juurisuorituksen tila: VALMIS, KESKEN, KESKEYTYNYT","VALMIS")
+   QueryParameter("opiskeluoikeusPäättynytAikaisintaan","Päivämäärä jonka jälkeen opiskeluoikeus on päättynyt","2016-01-01"),
+   QueryParameter("opiskeluoikeusPäättynytViimeistään","Päivämäärä jota ennen opiskeluoikeus on päättynyt","2016-12-31"),
+   QueryParameter("tutkinnonTila","Opiskeluoikeuden juurisuorituksen tila: VALMIS, KESKEN, KESKEYTYNYT","VALMIS")
  )
  val operations = List(
    ApiOperation(
       "GET", "/tor/api/oppija/search",
       <div>Etsii oppijoita annetulla hakusanalla. Hakutuloksissa vain oppijoiden perustiedot. Hakusana voi olla hetu, oppija-oid tai nimen osa. Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</div>,
       Nil,
-      List(Parameter("query", "Hakusana, joka voi olla hetu, oppija-oid tai nimen osa.", "eero")),
+      List(QueryParameter("query", "Hakusana, joka voi olla hetu, oppija-oid tai nimen osa.", "eero")),
       List(
         (200, "OK, jos haku onnistuu. Myös silloin kun ei löydy yhtään tulosta."),
-        (400, "BAD REQUEST jos hakusana puuttuu"),
-        (401,"UNAUTHORIZED jos käyttäjä ei ole tunnistautunut")
+        (400, "BAD REQUEST, jos hakusana puuttuu"),
+        (401,"UNAUTHORIZED, jos käyttäjä ei ole tunnistautunut")
       )
    ),
    ApiOperation(
@@ -158,9 +166,9 @@ object TorApiOperations {
      Nil,
      hakuParametrit,
      List(
-       (200, "OK jos haku onnistuu"),
-       (400, "BAD REQUEST jos hakuparametria ei tueta, tai hakuparametri on virheellinen."),
-       (401, "UNAUTHORIZED jos käyttäjä ei ole tunnistautunut")
+       (200, "OK, jos haku onnistuu"),
+       (400, "BAD REQUEST, jos hakuparametria ei tueta, tai hakuparametri on virheellinen."),
+       (401, "UNAUTHORIZED, jos käyttäjä ei ole tunnistautunut")
      )
    ),
    ApiOperation(
@@ -169,31 +177,56 @@ object TorApiOperations {
      Nil,
      hakuParametrit,
      List(
-       (200, "OK jos haku onnistuu. Mahdolliset validointivirheet palautuu json-vastauksessa."),
-       (400, "BAD REQUEST jos hakuparametria ei tueta, tai hakuparametri on virheellinen."),
-       (401, "UNAUTHORIZED jos käyttäjä ei ole tunnistautunut")
+       (200, "OK, jos haku onnistuu. Mahdolliset validointivirheet palautuu json-vastauksessa."),
+       (400, "BAD REQUEST, jos hakuparametria ei tueta, tai hakuparametri on virheellinen."),
+       (401, "UNAUTHORIZED, jos käyttäjä ei ole tunnistautunut")
      )
    ),
    ApiOperation(
      "GET", "/tor/api/oppija/{oid}",
      <div>Hakee oppijan tiedot ja opiskeluoikeudet suorituksineen.</div>,
      Nil,
-     List(Parameter("oid", "Oppijan tunniste", "1.2.246.562.24.00000000001")),
+     List(PathParameter("oid", "Oppijan tunniste", "1.2.246.562.24.00000000001")),
      List(
        (200, "OK, jos haku onnistuu."),
-       (401, "UNAUTHORIZED jos käyttäjä ei ole tunnistautunut"),
-       (404, "NOT FOUND jos oppijaa ei löydy tai käyttäjällä ei ole oikeuksia oppijan tietojen katseluun.")
+       (401, "UNAUTHORIZED, jos käyttäjä ei ole tunnistautunut"),
+       (404, "NOT FOUND, jos oppijaa ei löydy tai käyttäjällä ei ole oikeuksia oppijan tietojen katseluun.")
      )
    ),
    ApiOperation(
      "GET", "/tor/api/oppija/validate/{oid}",
      <div>Validoi oppijan kantaan tallennetun datan oikeellisuuden</div>,
      Nil,
-     List(Parameter("oid", "Oppijan tunniste", "1.2.246.562.24.00000000001")),
+     List(PathParameter("oid", "Oppijan tunniste", "1.2.246.562.24.00000000001")),
      List(
        (200, "OK, jos haku onnistuu. Mahdolliset validointivirheet palautuu json-vastauksessa."),
-       (401, "UNAUTHORIZED jos käyttäjä ei ole tunnistautunut"),
-       (404, "NOT FOUND jos oppijaa ei löydy tai käyttäjällä ei ole oikeuksia oppijan tietojen katseluun.")
+       (401, "UNAUTHORIZED, jos käyttäjä ei ole tunnistautunut"),
+       (404, "NOT FOUND, jos oppijaa ei löydy tai käyttäjällä ei ole oikeuksia oppijan tietojen katseluun.")
+     )
+   ),
+   ApiOperation(
+     "GET", "/tor/api/opiskeluoikeus/historia/{opiskeluoikeus_id}",
+     <div>Listaa tiettyyn opiskeluoikeuteen kohdistuneet muutokset</div>,
+     Nil,
+     List(PathParameter("opiskeluoikeus_id", "Opiskeluoikeuden tunniste", "354")),
+     List(
+       (200, "OK, jos haku onnistuu."),
+       (401, "UNAUTHORIZED, jos käyttäjä ei ole tunnistautunut."),
+       (404, "NOT FOUND, opiskeluoikeutta ei löydy.")
+     )
+   ),
+   ApiOperation(
+     "GET", "/tor/api/opiskeluoikeus/historia/{opiskeluoikeus_id}/{versionumero}",
+     <div>Palauttaa opiskeluoikeuden tiedot tietyssä versiossa</div>,
+     Nil,
+     List(
+       PathParameter("opiskeluoikeus_id", "Opiskeluoikeuden tunniste", "354"),
+       PathParameter("versionumero", "Opiskeluoikeuden versio", "2")
+     ),
+     List(
+       (200, "OK, jos haku onnistuu."),
+       (401, "UNAUTHORIZED, jos käyttäjä ei ole tunnistautunut."),
+       (404, "NOT FOUND, opiskeluoikeutta ei löydy tai versiota ei löydy")
      )
    ),
    ApiOperation(
@@ -210,13 +243,21 @@ object TorApiOperations {
      Nil,
      List(
        (200,"OK jos lisäys/päivitys onnistuu"),
-       (401,"UNAUTHORIZED jos käyttäjä ei ole tunnistautunut"),
-       (403,"FORBIDDEN jos käyttäjällä ei ole tarvittavia oikeuksia tiedon päivittämiseen"),
-       (400,"BAD REQUEST jos syöte ei ole validi")
+       (401,"UNAUTHORIZED, jos käyttäjä ei ole tunnistautunut"),
+       (403,"FORBIDDEN, jos käyttäjällä ei ole tarvittavia oikeuksia tiedon päivittämiseen"),
+       (400,"BAD REQUEST, jos syöte ei ole validi")
      )
    )
  )
 }
 
 case class ApiOperation(method: String, path: String, doc: Elem, examples: List[Example], parameters: List[Parameter], statusCodes: List[(Int, String)])
-case class Parameter(name: String, description: String, example: String)
+
+sealed trait Parameter {
+  def name: String
+  def description: String
+  def example: String
+}
+
+case class PathParameter(name: String, description: String, example: String) extends Parameter
+case class QueryParameter(name: String, description: String, example: String) extends Parameter

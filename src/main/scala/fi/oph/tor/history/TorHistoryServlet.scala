@@ -1,9 +1,5 @@
 package fi.oph.tor.history
 
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.node.JsonNodeFactory
-import com.github.fge.jsonpatch.JsonPatch
-import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.toruser.{RequiresAuthentication, UserOrganisationsRepository}
 import fi.oph.tor.{ErrorHandlingServlet, InvalidRequestException}
 import fi.vm.sade.security.ldap.DirectoryClient

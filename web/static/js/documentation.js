@@ -56,11 +56,11 @@ forEach(document.querySelectorAll('.api-tester'), function(elem) {
 
     var path = elem.dataset.path
 
-    Array.prototype.slice.call(elem.querySelectorAll(".parameters input"),0).forEach(function(input) {
+    Array.prototype.slice.call(elem.querySelectorAll(".parameters input.path-param"),0).forEach(function(input) {
       path = path.replace('{' + input.name + '}', encodeURIComponent(input.value))
     })
 
-    var queryParameters = Array.prototype.slice.call(elem.querySelectorAll(".parameters input"), 0).reduce(function(query, input) {
+    var queryParameters = Array.prototype.slice.call(elem.querySelectorAll(".parameters input.query-param"), 0).reduce(function(query, input) {
       return input.value ? query + (query ? '&' : '?') + encodeURIComponent(input.name) + '=' + encodeURIComponent(input.value) : ''
     },'')
 
