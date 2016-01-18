@@ -45,7 +45,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
               case Updated(id) => ("Päivitetty", id)
               case Created(id) => ("Luotu", id)
             }
-            logger.info(verb + " opiskeluoikeus " + id + " oppijalle " + oppijaOid + " tutkintoon " + opiskeluOikeus.suoritus.koulutusmoduulitoteutus.koulutusmoduuli.tunniste + " oppilaitoksessa " + opiskeluOikeus.oppilaitos.oid + ": " + Json.writePretty(opiskeluOikeus))
+            logger.info(verb + " opiskeluoikeus " + id + " oppijalle " + oppijaOid + " tutkintoon " + opiskeluOikeus.suoritus.koulutusmoduulitoteutus.koulutusmoduuli.tunniste + " oppilaitoksessa " + opiskeluOikeus.oppilaitos.oid + ": " + Json.write(opiskeluOikeus))
           case _ =>
         }
         result
