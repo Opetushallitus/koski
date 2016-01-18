@@ -1,4 +1,4 @@
-package fi.oph.tor.util
+package fi.oph.tor.log
 
 object Debug {
   def debug[A](x: A): A = {

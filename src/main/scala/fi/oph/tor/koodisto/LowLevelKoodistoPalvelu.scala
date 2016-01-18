@@ -2,7 +2,7 @@ package fi.oph.tor.koodisto
 
 import com.typesafe.config.Config
 import fi.oph.tor.cache.{CachingProxy, TorCache}
-import fi.oph.tor.util.TimedProxy
+import fi.oph.tor.log.TimedProxy
 
 object LowLevelKoodistoPalvelu {
   def apply(config: Config) = {
@@ -20,6 +20,7 @@ object LowLevelKoodistoPalvelu {
   }
 }
 
+// TODO: naming
 trait LowLevelKoodistoPalvelu {
   def removeKoodistoRyhmä(toInt: Int)
   def createKoodi(koodistoUri: String, koodi: KoodistoKoodi)

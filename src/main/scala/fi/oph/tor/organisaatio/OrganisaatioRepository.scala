@@ -3,8 +3,8 @@ package fi.oph.tor.organisaatio
 import com.typesafe.config.Config
 import fi.oph.tor.cache.{TorCache, CachingProxy}
 import fi.oph.tor.http.{Http, VirkailijaHttpClient}
+import fi.oph.tor.log.TimedProxy
 import fi.oph.tor.schema.OidOrganisaatio
-import fi.oph.tor.util.TimedProxy
 
 trait OrganisaatioRepository {
   /**

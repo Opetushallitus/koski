@@ -1,6 +1,8 @@
-package fi.oph.tor.util
+package fi.oph.tor.log
 
+import fi.oph.tor.util.Proxy
 import org.slf4j.LoggerFactory
+
 import scala.reflect.ClassTag
 
 object LoggingProxy {

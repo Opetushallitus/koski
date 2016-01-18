@@ -5,8 +5,9 @@ import fi.oph.tor.cache.{CachingStrategyBase, CachingProxy}
 import fi.oph.tor.db.TorDatabase
 import fi.oph.tor.henkilo.{Hetu, AuthenticationServiceClient}
 import fi.oph.tor.http.HttpStatus
+import fi.oph.tor.log.TimedProxy
 import fi.oph.tor.schema._
-import fi.oph.tor.util.{Invocation, TimedProxy}
+import fi.oph.tor.util.Invocation
 import fi.vm.sade.utils.slf4j.Logging
 
 object OppijaRepository {

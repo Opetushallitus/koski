@@ -1,8 +1,7 @@
 package fi.oph.tor.eperusteet
 
 import com.typesafe.config.Config
-import fi.oph.tor.cache.{CachingProxy, TorCache}
-import fi.oph.tor.util.TimedProxy
+import fi.oph.tor.log.TimedProxy
 
 trait EPerusteetRepository {
   def findPerusteet(query: String): List[EPeruste]

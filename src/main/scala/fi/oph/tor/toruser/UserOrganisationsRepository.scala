@@ -3,8 +3,8 @@ package fi.oph.tor.toruser
 import com.typesafe.config.Config
 import fi.oph.tor.cache.{CachingProxy, TorCache}
 import fi.oph.tor.henkilo.AuthenticationServiceClient
+import fi.oph.tor.log.TimedProxy
 import fi.oph.tor.organisaatio.{InMemoryOrganisaatioRepository, OrganisaatioRepository}
-import fi.oph.tor.util.TimedProxy
 
 object UserOrganisationsRepository {
   def apply(config: Config, organisaatioRepository: OrganisaatioRepository): UserOrganisationsRepository = {
