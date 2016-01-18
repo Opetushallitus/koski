@@ -22,24 +22,28 @@ object NoCache extends CachingStrategy {
 }
 
 abstract class CachingStrategyBase(durationSeconds: Int, maxSize: Int) extends CachingStrategy with Logging {
+  /**
+   *  Marker exception that's used for preventing caching values that we don't want to cache.
+   */
+  case class DoNotStoreException(val value: AnyRef) extends RuntimeException("Don't store this value!")
+
   def apply(invocation: Invocation): AnyRef
 
   protected def invokeAndStore(invocation: Invocation) = invokeAndPossiblyStore(invocation)(_ => true)
 
-  protected def invokeAndPossiblyStore(invocation: Invocation)(storeValuePredicate: AnyRef => Boolean) = {
+  // TODO: test simultaneous updates
+  protected def invokeAndPossiblyStore(invocation: Invocation)(storeValuePredicate: AnyRef => Boolean) = this.synchronized {
     val key: String = cacheKey(invocation)
-    cache.get(key) match {
-      case None =>
-        //logger.debug("Cache miss: " + key)
+    try {
+      cache.getOrElseUpdate(key, { () =>
         val value = invocation.invoke
-        if (storeValuePredicate(value)) {
-          //logger.debug("Storing: " + key + "=" + value)
-          cache.put(key, value)
+        if (!storeValuePredicate(value)) {
+          throw new DoNotStoreException(value)
         }
         value
-      case Some(value) =>
-        //logger.debug("Cache hit: " + key + "=" + value)
-        value
+      })
+    } catch {
+      case DoNotStoreException(value) => value
     }
   }
 
