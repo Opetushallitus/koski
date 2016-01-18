@@ -4,6 +4,7 @@ import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.db.TorDatabase.DB
 import fi.oph.tor.db.{Futures, GlobalExecutionContext, PostgresDriverWithJsonSupport}
 import fi.oph.tor.http.HttpStatus
+import fi.oph.tor.log.Loggable
 import fi.oph.tor.schema.{FullHenkilö, Henkilö}
 
 object MockOppijat {
@@ -49,7 +50,7 @@ class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with 
 
   override def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String): Either[HttpStatus, Henkilö.Oid] = {
     if (sukunimi == "error") {
-      throw new RuntimeException("Testing error handling")
+      throw new TestingException("Testing error handling")
     } else if (oppijat.getOppijat.find { o => (o.hetu == hetu) } .isDefined) {
       Left(HttpStatus.conflict("conflict"))
     } else {
@@ -81,4 +82,8 @@ class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with 
 
   override def findByOids(oids: List[String]): List[FullHenkilö] = oids.map(oid => findByOid(oid).get)
 
+}
+
+class TestingException(text: String) extends RuntimeException(text) with Loggable {
+  override def toString = text
 }
