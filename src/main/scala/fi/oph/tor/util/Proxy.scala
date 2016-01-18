@@ -1,25 +1,12 @@
 package fi.oph.tor.util
 
 import java.lang.reflect.{InvocationHandler, Method}
-
+import fi.oph.tor.log.Loggable
 import scala.reflect.ClassTag
 
 case class Invocation(val method: Method, val args: List[AnyRef], val target: AnyRef) {
   def invoke: AnyRef = method.invoke(target, args:_*)
-  override def toString: String = method.getName + "(" + args.map(describeArg).mkString(", ") +")"
-  private def describeArg(arg: AnyRef) = {
-    try {
-      arg match {
-        case null => "null"
-        case s: String => "\""+ s + "\""
-        case s: java.lang.Boolean => s.toString
-        case n: Number => n.toString
-        case x => "_"
-      }
-    } catch {
-      case e:Exception => "error" // <- catch all exceptions to make absolutely sure this won't break the software
-    }
-  }
+  override def toString: String = method.getName + "(" + args.map(Loggable.describe).mkString(", ") +")"
 }
 
 object Proxy {

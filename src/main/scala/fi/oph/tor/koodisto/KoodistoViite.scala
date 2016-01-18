@@ -1,6 +1,8 @@
 package fi.oph.tor.koodisto
 
-case class KoodistoViite(koodistoUri: String, versio: Int) {
+import fi.oph.tor.log.Loggable
+
+case class KoodistoViite(koodistoUri: String, versio: Int) extends Loggable {
   override def toString = koodistoUri + "/" + versio
 }
 

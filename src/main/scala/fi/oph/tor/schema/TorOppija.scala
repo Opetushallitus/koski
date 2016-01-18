@@ -81,7 +81,14 @@ case class OpiskeluOikeus(
   tavoite: Option[KoodistoKoodiViite],
   opiskeluoikeudenTila: Option[OpiskeluoikeudenTila],
   läsnäolotiedot: Option[Läsnäolotiedot]
-)
+
+
+)  {
+  override def toString = id match {
+    case None => "uusi opiskeluoikeus"
+    case Some(id) => "opiskeluoikeus " + id
+  }
+}
 
 object OpiskeluOikeus {
   type Id = Int

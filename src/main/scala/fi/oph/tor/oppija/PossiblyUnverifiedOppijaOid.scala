@@ -1,8 +1,9 @@
 package fi.oph.tor.oppija
 
+import fi.oph.tor.log.Loggable
 import fi.oph.tor.schema.Henkilö
 
-trait PossiblyUnverifiedOppijaOid {
+trait PossiblyUnverifiedOppijaOid extends Loggable {
   def oppijaOid: Henkilö.Oid
   def verifiedOid: Option[Henkilö.Oid]
 
