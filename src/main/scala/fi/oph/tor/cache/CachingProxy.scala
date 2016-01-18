@@ -17,8 +17,17 @@ object CachingProxy {
 trait CachingStrategy extends Function1[Invocation, AnyRef] {
 }
 
+object CachingStrategy {
+  def noCache = NoCache
+  def cacheAll(durationSeconds: Int, maxSize: Int) = CacheAll(durationSeconds, maxSize)
+}
+
 object NoCache extends CachingStrategy {
   override def apply(invocation: Invocation) = invocation.invoke
+}
+
+case class CacheAll(durationSeconds: Int, maxSize: Int) extends CachingStrategyBase(durationSeconds, maxSize) {
+  def apply(invocation: Invocation): AnyRef = invokeAndStore(invocation)
 }
 
 abstract class CachingStrategyBase(durationSeconds: Int, maxSize: Int) extends CachingStrategy with Logging {
@@ -31,7 +40,6 @@ abstract class CachingStrategyBase(durationSeconds: Int, maxSize: Int) extends C
 
   protected def invokeAndStore(invocation: Invocation) = invokeAndPossiblyStore(invocation)(_ => true)
 
-  // TODO: test simultaneous updates
   protected def invokeAndPossiblyStore(invocation: Invocation)(storeValuePredicate: AnyRef => Boolean) = this.synchronized {
     val key: String = cacheKey(invocation)
     try {
@@ -49,8 +57,4 @@ abstract class CachingStrategyBase(durationSeconds: Int, maxSize: Int) extends C
 
   private val cache = TTLCache[String, AnyRef](durationSeconds, maxSize)
   private def cacheKey(invocation: Invocation) = invocation.method.toString + invocation.args.mkString(",")
-}
-
-case class CacheAll(durationSeconds: Int, maxSize: Int) extends CachingStrategyBase(durationSeconds, maxSize) {
-  def apply(invocation: Invocation): AnyRef = invokeAndStore(invocation)
 }

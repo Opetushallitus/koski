@@ -1,5 +1,5 @@
 package fi.oph.tor.cache
 
 object TorCache {
-  def cacheStrategy = new CacheAll(3600, 100)
+  def cacheStrategy = CachingStrategy.cacheAll(3600, 100)
 }
