@@ -310,7 +310,9 @@ describe('TOR', function() {
 
     describe('Virhetilanteet', function() {
       describe('Kun tallennus epäonnistuu', function() {
-        before( openPage('/tor/uusioppija', function() {return addOppija.isVisible()}),
+        before(
+          authentication.login(),
+          openPage('/tor/uusioppija', function() {return addOppija.isVisible()}),
           addOppija.enterValidData({sukunimi: "error"}),
           addOppija.submit)
 
