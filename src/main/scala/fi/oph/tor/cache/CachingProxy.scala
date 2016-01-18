@@ -1,7 +1,9 @@
 package fi.oph.tor.cache
 
+import java.util.concurrent.{Callable, TimeUnit}
+
+import com.google.common.cache.{Cache, CacheBuilder}
 import fi.oph.tor.util.{Invocation, Proxy}
-import fi.vm.sade.utils.memoize.TTLCache
 import fi.vm.sade.utils.slf4j.Logging
 
 import scala.reflect.ClassTag
@@ -43,18 +45,26 @@ abstract class CachingStrategyBase(durationSeconds: Int, maxSize: Int) extends C
   protected def invokeAndPossiblyStore(invocation: Invocation)(storeValuePredicate: AnyRef => Boolean) = this.synchronized {
     val key: String = cacheKey(invocation)
     try {
-      cache.getOrElseUpdate(key, { () =>
-        val value = invocation.invoke
-        if (!storeValuePredicate(value)) {
-          throw new DoNotStoreException(value)
+      cache.get(key, new Callable[AnyRef] {
+        def call() = {
+          val value = invocation.invoke
+          if (!storeValuePredicate(value)) {
+            throw new DoNotStoreException(value)
+          }
+          value
         }
-        value
       })
     } catch {
       case DoNotStoreException(value) => value
     }
   }
 
-  private val cache = TTLCache[String, AnyRef](durationSeconds, maxSize)
+  private val cache: Cache[String, AnyRef] = CacheBuilder
+    .newBuilder()
+    .recordStats()
+    .expireAfterWrite(durationSeconds, TimeUnit.SECONDS)
+    .maximumSize(maxSize)
+    .build().asInstanceOf[Cache[String, AnyRef]]
+
   private def cacheKey(invocation: Invocation) = invocation.method.toString + invocation.args.mkString(",")
 }
