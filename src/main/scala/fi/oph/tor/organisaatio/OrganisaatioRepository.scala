@@ -20,7 +20,7 @@ trait OrganisaatioRepository {
 
 object OrganisaatioRepository {
   def apply(config: Config) = {
-    TimedProxy(CachingProxy[OrganisaatioRepository](TorCache.cacheStrategy, if (config.hasPath("opintopolku.virkailija.url")) {
+    CachingProxy[OrganisaatioRepository](TorCache.cacheStrategy, TimedProxy(if (config.hasPath("opintopolku.virkailija.url")) {
       new RemoteOrganisaatioRepository(config)
     } else {
       MockOrganisaatioRepository
