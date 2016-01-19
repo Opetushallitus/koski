@@ -82,6 +82,9 @@ function TorPage() {
     isErrorShown: function() {
       return isElementVisible(S("#error.error"))
     },
+    getErrorMessage: function() {
+      return S("#error.error span").text()
+    },
     is404: function() {
       return isElementVisible(S(".not-found"))
     },

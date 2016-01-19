@@ -419,17 +419,22 @@ describe('TOR', function() {
     })
 
     describe('Virhetilanteet', function() {
-      describe('Kun tallennus epäonnistuu', function() {
-        before(
-          mockHttp("/tor/api/oppija", { status: 500 }),
-          opinnot.selectOsaamisala("1622"),
-          wait.until(page.isErrorShown)
-        )
+      verifyErrorMessage('Kun tallennus epäonnistuu', 500, 'Järjestelmässä tapahtui odottamaton virhe. Yritä myöhemmin uudelleen.')
+      verifyErrorMessage('Kun toinen käyttäjä on tehnyt muutoksen', 409, 'Muutoksia ei voida tallentaa, koska toinen käyttäjä on muuttanut tietoja sivun latauksen jälkeen.')
 
-        it('Näytetään virheilmoitus', function() {
+      function verifyErrorMessage(desc, statusCode, message) {
+        describe(desc, function() {
+          before(
+            mockHttp("/tor/api/oppija", { status: statusCode }),
+            opinnot.selectOsaamisala("1622"),
+            wait.until(page.isErrorShown)
+          )
 
+          it('Näytetään virheilmoitus', function() {
+            expect(page.getErrorMessage()).to.equal(message)
+          })
         })
-      })
+      }
     })
   })
 
