@@ -15,5 +15,5 @@ case class VerifiedOppijaOid(val oppijaOid: Henkilö.Oid) extends PossiblyUnveri
 }
 
 case class UnverifiedOppijaOid(val oppijaOid: Henkilö.Oid, oppijaRepository: OppijaRepository) extends PossiblyUnverifiedOppijaOid {
-  override def verifiedOid = oppijaRepository.findByOid(oppijaOid).map(oppija => oppijaOid)
+  override lazy val verifiedOid = oppijaRepository.findByOid(oppijaOid).map(oppija => oppijaOid)
 }
