@@ -34,7 +34,7 @@ export function requiresLogin(e) {
 
 const errorTexts = {
   400: 'Järjestelmässä tapahtui odottamaton virhe. Yritä myöhemmin uudelleen.',
-  409: 'Muutoksia ei voida tallentaa, koska toinen käyttäjä on muuttanut tietoja sivun latauksen jälkeen.',
+  409: 'Muutoksia ei voida tallentaa, koska toinen käyttäjä on muuttanut tietoja sivun latauksen jälkeen. Lataa sivu uudelleen.',
   500: 'Järjestelmässä tapahtui odottamaton virhe. Yritä myöhemmin uudelleen.',
   503: 'Palvelimeen ei saatu yhteyttä. Yritä myöhemmin uudelleen.'
 }

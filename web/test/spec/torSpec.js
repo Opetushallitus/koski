@@ -420,7 +420,7 @@ describe('TOR', function() {
 
     describe('Virhetilanteet', function() {
       verifyErrorMessage('Kun tallennus epäonnistuu', 500, 'Järjestelmässä tapahtui odottamaton virhe. Yritä myöhemmin uudelleen.')
-      verifyErrorMessage('Kun toinen käyttäjä on tehnyt muutoksen', 409, 'Muutoksia ei voida tallentaa, koska toinen käyttäjä on muuttanut tietoja sivun latauksen jälkeen.')
+      verifyErrorMessage('Kun toinen käyttäjä on tehnyt muutoksen', 409, 'Muutoksia ei voida tallentaa, koska toinen käyttäjä on muuttanut tietoja sivun latauksen jälkeen. Lataa sivu uudelleen.')
 
       function verifyErrorMessage(desc, statusCode, message) {
         describe(desc, function() {
