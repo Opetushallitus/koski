@@ -7,7 +7,7 @@ import Bacon from 'baconjs'
 import {Error, NotFound, handleError, errorP} from './Error.jsx'
 import {Login, userP} from './Login.jsx'
 import {OppijaHaku, oppijatP, searchInProgressP} from './OppijaHaku.jsx'
-import {Oppija, oppijaP, uusiOppijaP, updateResultE} from './Oppija.jsx'
+import {Oppija, oppijaP, uusiOppijaP, selectOppijaE, updateResultE} from './Oppija.jsx'
 import {TopBar} from './TopBar.jsx'
 
 // Application state to be rendered
@@ -24,7 +24,7 @@ const stateP = Bacon.combineTemplate({
 })
 
 // Stays at `true` for five seconds after latest saved change. Reset to `false` when another Oppija is selected.
-const savedP = updateResultE.flatMapLatest(() => Bacon.once(true).concat((stateP.changes().merge(Bacon.later(5000))).map(false))).toProperty(false).skipDuplicates()
+const savedP = updateResultE.flatMapLatest(() => Bacon.once(true).concat((selectOppijaE.merge(Bacon.later(5000))).map(false))).toProperty(false).skipDuplicates()
 
 // Renderered Virtual DOM
 const domP = Bacon.combineWith(stateP, errorP(Bacon.combineAsArray(stateP, savedP)), savedP, ({user, oppijaHaku, oppija, searchInProgress}, error, saved) =>

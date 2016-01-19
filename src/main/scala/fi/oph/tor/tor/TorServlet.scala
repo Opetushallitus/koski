@@ -25,7 +25,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
   put("/") {
     withJsonBody { parsedJson =>
       val validationResult: Either[HttpStatus, TorOppija] = validator.extractAndValidate(parsedJson)
-      val result: Either[HttpStatus, Henkilö.Oid] = validationResult.right.flatMap (rekisteri.createOrUpdate _)
+      val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = validationResult.right.flatMap (rekisteri.createOrUpdate _)
 
       result.left.foreach { case HttpStatus(code, errors) =>
         logger.warn("Opinto-oikeuden päivitys estetty: " + code + " " + errors + " for request " + describeRequest)

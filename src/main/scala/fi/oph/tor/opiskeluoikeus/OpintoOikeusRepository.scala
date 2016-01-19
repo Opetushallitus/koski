@@ -19,7 +19,8 @@ trait OpiskeluOikeusRepository {
 
 sealed trait CreateOrUpdateResult {
   def oid: OpiskeluOikeus.Id
+  def versionumero: Int
 }
 
-case class Created(oid: OpiskeluOikeus.Id) extends CreateOrUpdateResult
-case class Updated(oid: OpiskeluOikeus.Id) extends CreateOrUpdateResult
+case class Created(oid: OpiskeluOikeus.Id, versionumero: OpiskeluOikeus.Versionumero) extends CreateOrUpdateResult
+case class Updated(oid: OpiskeluOikeus.Id, versionumero: OpiskeluOikeus.Versionumero) extends CreateOrUpdateResult

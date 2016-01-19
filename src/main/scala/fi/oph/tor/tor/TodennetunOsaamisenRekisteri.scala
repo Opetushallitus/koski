@@ -30,7 +30,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     filtered.sortBy(oppija => (oppija.sukunimi, oppija.etunimet))
   }
 
-  def createOrUpdate(oppija: TorOppija)(implicit user: TorUser): Either[HttpStatus, Henkilö.Oid] = {
+  def createOrUpdate(oppija: TorOppija)(implicit user: TorUser): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
     val oppijaOid: Either[HttpStatus, PossiblyUnverifiedOppijaOid] = oppija.henkilö match {
       case h:NewHenkilö => oppijaRepository.findOrCreate(oppija.henkilö).right.map(VerifiedOppijaOid(_))
       case h:HenkilöWithOid => Right(UnverifiedOppijaOid(h.oid, oppijaRepository))
@@ -42,17 +42,20 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
         result match {
           case Right(result) =>
             val (verb, id) = result match {
-              case Updated(id) => ("Päivitetty", id)
-              case Created(id) => ("Luotu", id)
+              case Updated(id, v) => ("Päivitetty ", id + " (versio " + v + ")")
+              case Created(id, v) => ("Luotu", id)
             }
             logger.info(verb + " opiskeluoikeus " + id + " oppijalle " + oppijaOid + " tutkintoon " + opiskeluOikeus.suoritus.koulutusmoduulitoteutus.koulutusmoduuli.tunniste + " oppilaitoksessa " + opiskeluOikeus.oppilaitos.oid + ": " + Json.write(opiskeluOikeus))
           case _ =>
         }
         result
       }
+
       opiskeluOikeusCreationResults.find(_.isLeft) match {
         case Some(Left(error)) => Left(error)
-        case _ => Right(oppijaOid.oppijaOid)
+        case _ => Right(HenkilönOpiskeluoikeusVersiot(OidHenkilö(oppijaOid.oppijaOid), opiskeluOikeusCreationResults.toList.map {
+          case Right(result:CreateOrUpdateResult) => OpiskeluoikeusVersio(result.oid, result.versionumero)
+        }))
       }
     }
   }
@@ -72,3 +75,6 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     Left(HttpStatus.notFound(s"Oppija with oid: $oid not found"))
   }
 }
+
+case class HenkilönOpiskeluoikeusVersiot(henkilö: OidHenkilö, opiskeluoikeudet: List[OpiskeluoikeusVersio])
+case class OpiskeluoikeusVersio(id: OpiskeluOikeus.Id, versionumero: Int)

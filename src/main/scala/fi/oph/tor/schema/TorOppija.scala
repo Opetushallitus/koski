@@ -2,6 +2,7 @@ package fi.oph.tor.schema
 
 import java.time.LocalDate
 import fi.oph.tor.koodisto.KoodistoViite
+import fi.oph.tor.log.Loggable
 import fi.oph.tor.schema.generic.annotation.{Description, ReadOnly}
 
 
@@ -81,9 +82,7 @@ case class OpiskeluOikeus(
   tavoite: Option[KoodistoKoodiViite],
   opiskeluoikeudenTila: Option[OpiskeluoikeudenTila],
   läsnäolotiedot: Option[Läsnäolotiedot]
-
-
-)  {
+) extends Loggable {
   override def toString = id match {
     case None => "uusi opiskeluoikeus"
     case Some(id) => "opiskeluoikeus " + id
@@ -92,6 +91,8 @@ case class OpiskeluOikeus(
 
 object OpiskeluOikeus {
   type Id = Int
+  type Versionumero = Int
+  val VERSIO_1 = 1
 }
 
 case class Suoritus(

@@ -29,11 +29,12 @@ export const handleError = (error) => {
 }
 
 export function requiresLogin(e) {
-  return e.httpStatus !== 404 && e.httpStatus > 400 && e.httpStatus < 500
+  return e.httpStatus == 401 || e.httpStatus == 403
 }
 
 const errorTexts = {
   400: 'Järjestelmässä tapahtui odottamaton virhe. Yritä myöhemmin uudelleen.',
+  409: 'Muutoksia ei voida tallentaa, koska toinen käyttäjä on muuttanut tietoja sivun latauksen jälkeen.',
   500: 'Järjestelmässä tapahtui odottamaton virhe. Yritä myöhemmin uudelleen.',
   503: 'Palvelimeen ei saatu yhteyttä. Yritä myöhemmin uudelleen.'
 }

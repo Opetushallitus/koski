@@ -117,13 +117,14 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     findByIdentifierAction(OpiskeluOikeusIdentifier(oppijaOid.oppijaOid, opiskeluOikeus)).flatMap { rows: Either[HttpStatus, Option[OpiskeluOikeusRow]] =>
       rows match {
         case Right(Some(vanhaOpiskeluOikeus)) =>
-          updateAction(vanhaOpiskeluOikeus.id, vanhaOpiskeluOikeus.versionumero + 1, vanhaOpiskeluOikeus.data, opiskeluOikeus).map {
+          val versionumero: Int = vanhaOpiskeluOikeus.versionumero + 1
+          updateAction(vanhaOpiskeluOikeus.id, versionumero, vanhaOpiskeluOikeus.data, opiskeluOikeus).map {
             case error if error.isError => Left(error)
-            case _ => Right(Updated(vanhaOpiskeluOikeus.id))
+            case _ => Right(Updated(vanhaOpiskeluOikeus.id, versionumero))
           }
         case Right(None) =>
           oppijaOid.verifiedOid match {
-            case Some(oid) => createAction(oid, opiskeluOikeus).map(result => result.right.map(Created(_)))
+            case Some(oid) => createAction(oid, opiskeluOikeus).map(result => result.right.map(Created(_, OpiskeluOikeus.VERSIO_1)))
             case None => DBIO.successful(Left(HttpStatus.notFound("Oppija " + oppijaOid.oppijaOid + " not found")))
           }
         case Left(err) => DBIO.successful(Left(err))
@@ -132,7 +133,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
   }
 
   private def createAction(oppijaOid: String, opiskeluOikeus: OpiskeluOikeus)(implicit user: TorUser): dbio.DBIOAction[Either[HttpStatus, Int], NoStream, Write] = {
-    val versionumero = 1
+    val versionumero = OpiskeluOikeus.VERSIO_1
     val tallennettavaOpiskeluOikeus = opiskeluOikeus.copy(id = None, versionumero = None)
     for {
       opiskeluoikeusId <- OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += new OpiskeluOikeusRow(oppijaOid, tallennettavaOpiskeluOikeus, versionumero)

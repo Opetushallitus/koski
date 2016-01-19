@@ -6,24 +6,30 @@ import {CreateOppija} from './CreateOppija.jsx'
 import {OpiskeluOikeus, opiskeluOikeusChange} from './OpiskeluOikeus.jsx'
 import Immutable from 'immutable'
 
-var selectOppijaE = routeP.map('.oppijaId').flatMap(oppijaId => {
+export const selectOppijaE = routeP.map('.oppijaId').flatMap(oppijaId => {
   return oppijaId ? Bacon.once({loading: true}).concat(Http.get(`/tor/api/oppija/${oppijaId}`)) : Bacon.once({ empty: true})
 })
 
-export const oppijaP = Bacon.update({ loading: true },
-  selectOppijaE, (previous, oppija) => oppija,
-  opiskeluOikeusChange, (currentOppija, [opiskeluOikeusId, change]) => {
-    let current = Immutable.fromJS(currentOppija)
+export const updateResultE = Bacon.Bus()
 
-    return current.set('opiskeluoikeudet', current.get('opiskeluoikeudet').map(opiskeluOikeus => {
+const applyChange = (oppija, opiskeluOikeusId, change) => {
+  let current = Immutable.fromJS(oppija)
+  return current.set('opiskeluoikeudet', current.get('opiskeluoikeudet').map(opiskeluOikeus => {
       return (opiskeluOikeus.get('id') == opiskeluOikeusId
         ? change(opiskeluOikeus)
-        : opiskeluOikeus).remove('versionumero')}
-    )).toJS()
-  }
+        : opiskeluOikeus)}
+  )).toJS()
+}
+
+export const oppijaP = Bacon.update({ loading: true },
+  selectOppijaE, (previous, oppija) => oppija,
+  updateResultE.map(".opiskeluoikeudet").flatMap(Bacon.fromArray), (currentOppija, {id, versionumero}) => {
+    return applyChange(currentOppija, id, (opiskeluoikeus) => opiskeluoikeus.set('versionumero', versionumero))
+  },
+  opiskeluOikeusChange, (currentOppija, [opiskeluOikeusId, change]) => applyChange(currentOppija, opiskeluOikeusId, change)
 )
 
-export const updateResultE = oppijaP.sampledBy(opiskeluOikeusChange).flatMapLatest(oppijaUpdate => Http.put('/tor/api/oppija', oppijaUpdate))
+updateResultE.plug(oppijaP.sampledBy(opiskeluOikeusChange).flatMapLatest(oppijaUpdate => Http.put('/tor/api/oppija', oppijaUpdate)))
 
 export const uusiOppijaP = routeP.map(route => { return !!route.uusiOppija })
 
