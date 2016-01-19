@@ -84,7 +84,7 @@ case class OpiskeluOikeus(
   läsnäolotiedot: Option[Läsnäolotiedot]
 ) extends Loggable {
   override def toString = id match {
-    case None => "uusi opiskeluoikeus"
+    case None => "opiskeluoikeus"
     case Some(id) => "opiskeluoikeus " + id
   }
 }
