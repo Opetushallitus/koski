@@ -17,7 +17,7 @@ import fi.oph.tor.tor.{OpiskeluoikeusPäättynytAikaisintaan, OpiskeluoikeusPä�
 import fi.oph.tor.toruser.TorUser
 import fi.oph.tor.util.ReactiveStreamsToRx
 import fi.vm.sade.utils.slf4j.Logging
-import org.json4s.JValue
+import org.json4s.{JArray, JValue}
 import org.json4s.jackson.JsonMethods
 import rx.lang.scala.Observable
 import slick.dbio
@@ -117,11 +117,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     findByIdentifierAction(OpiskeluOikeusIdentifier(oppijaOid.oppijaOid, opiskeluOikeus)).flatMap { rows: Either[HttpStatus, Option[OpiskeluOikeusRow]] =>
       rows match {
         case Right(Some(vanhaOpiskeluOikeus)) =>
-          val versionumero: Int = vanhaOpiskeluOikeus.versionumero + 1
-          updateAction(vanhaOpiskeluOikeus.id, versionumero, vanhaOpiskeluOikeus.data, opiskeluOikeus).map {
-            case error if error.isError => Left(error)
-            case _ => Right(Updated(vanhaOpiskeluOikeus.id, versionumero))
-          }
+          updateAction(vanhaOpiskeluOikeus, opiskeluOikeus)
         case Right(None) =>
           oppijaOid.verifiedOid match {
             case Some(oid) => createAction(oid, opiskeluOikeus).map(result => result.right.map(Created(_, OpiskeluOikeus.VERSIO_1)))
@@ -144,22 +140,29 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     }
   }
 
-  private def updateAction(id: Int, versionumero: Int, vanhaData: JValue, uusiOlio: OpiskeluOikeus)(implicit user: TorUser): dbio.DBIOAction[HttpStatus, NoStream, Write] = {
-    (uusiOlio.versionumero, versionumero) match {
-      case (Some(pyydetty), seuraava) if (pyydetty != seuraava - 1) => DBIO.successful(HttpStatus.conflict("Annettu versionumero " + pyydetty + " <> " + (seuraava - 1)))
+  private def updateAction(oldRow: OpiskeluOikeusRow, uusiOlio: OpiskeluOikeus)(implicit user: TorUser): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Write] = {
+    val (id, versionumero) = (oldRow.id, oldRow.versionumero)
+
+    uusiOlio.versionumero match {
+      case Some(requestedVersionumero) if (requestedVersionumero != versionumero) => DBIO.successful(Left(HttpStatus.conflict("Annettu versionumero " + requestedVersionumero + " <> " + versionumero)))
       case _ =>
         val uusiData = Json.toJValue(uusiOlio.copy(id = None, versionumero = None))
-        for {
-          rowsUpdated <- OpiskeluOikeudetWithAccessCheck.filter(_.id === id).map(row => (row.data, row.versionumero)).update((uusiData, versionumero))
-          diff = JsonMethods.fromJsonNode(JsonDiff.asJson(JsonMethods.asJsonNode(vanhaData), JsonMethods.asJsonNode(uusiData)))
-          _ <- historyRepository.createAction(id, versionumero, user.oid, diff)
-        } yield {
-          rowsUpdated match {
-            case 1 => HttpStatus.ok
-            case x =>
-              logger.error("Unexpected number of updated rows: " + x)
-              HttpStatus.internalError()
-          }
+        val diff = JsonMethods.fromJsonNode(JsonDiff.asJson(JsonMethods.asJsonNode(oldRow.data), JsonMethods.asJsonNode(uusiData))).asInstanceOf[JArray]
+        diff.values.length match {
+          case 0 =>
+            DBIO.successful(Right(NotChanged(id, versionumero)))
+          case more =>
+            val nextVersionumero = versionumero + 1
+            for {
+              rowsUpdated <- OpiskeluOikeudetWithAccessCheck.filter(_.id === id).map(row => (row.data, row.versionumero)).update((uusiData, nextVersionumero))
+              _ <- historyRepository.createAction(id, nextVersionumero, user.oid, diff)
+            } yield {
+              rowsUpdated match {
+                case 1 => Right(Updated(id, nextVersionumero))
+                case x =>
+                  throw new RuntimeException("Unexpected number of updated rows: " + x) // throw exception to cause rollback!
+              }
+            }
         }
     }
   }

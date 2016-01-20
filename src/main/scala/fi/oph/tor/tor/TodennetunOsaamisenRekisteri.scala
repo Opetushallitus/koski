@@ -41,11 +41,12 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
         val result = opiskeluOikeusRepository.createOrUpdate(oppijaOid, opiskeluOikeus)
         result match {
           case Right(result) =>
-            val (verb, id) = result match {
-              case Updated(id, v) => ("Päivitetty ", id + " (versio " + v + ")")
-              case Created(id, v) => ("Luotu", id)
+            val (verb, content) = result match {
+              case _:Updated => ("Päivitetty", Json.write(opiskeluOikeus))
+              case _:Created => ("Luotu", Json.write(opiskeluOikeus))
+              case _:NotChanged => ("Päivitetty", "ei muutoksia")
             }
-            logger.info(verb + " opiskeluoikeus " + id + " oppijalle " + oppijaOid + " tutkintoon " + opiskeluOikeus.suoritus.koulutusmoduulitoteutus.koulutusmoduuli.tunniste + " oppilaitoksessa " + opiskeluOikeus.oppilaitos.oid + ": " + Json.write(opiskeluOikeus))
+            logger.info(verb + " opiskeluoikeus " + result.oid + " (versio " + result.versionumero + ")" + " oppijalle " + oppijaOid + " tutkintoon " + opiskeluOikeus.suoritus.koulutusmoduulitoteutus.koulutusmoduuli.tunniste + " oppilaitoksessa " + opiskeluOikeus.oppilaitos.oid + ": " + content)
           case _ =>
         }
         result

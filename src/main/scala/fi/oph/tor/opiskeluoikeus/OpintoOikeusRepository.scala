@@ -24,3 +24,4 @@ sealed trait CreateOrUpdateResult {
 
 case class Created(oid: OpiskeluOikeus.Id, versionumero: OpiskeluOikeus.Versionumero) extends CreateOrUpdateResult
 case class Updated(oid: OpiskeluOikeus.Id, versionumero: OpiskeluOikeus.Versionumero) extends CreateOrUpdateResult
+case class NotChanged(oid: OpiskeluOikeus.Id, versionumero: OpiskeluOikeus.Versionumero) extends CreateOrUpdateResult

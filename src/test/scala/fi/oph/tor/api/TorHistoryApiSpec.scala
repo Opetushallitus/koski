@@ -28,6 +28,14 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
         verifyHistory(modified, List(1, 2))
       }
 
+      describe("Jos mikään ei ole muuttunut") {
+        it("Ei luoda uutta versioriviä") {
+          val opiskeluOikeus = createOpiskeluOikeus
+          val modified: OpiskeluOikeus = createOrUpdate(opiskeluOikeus)
+          verifyHistory(modified, List(1))
+        }
+      }
+
       describe("Kun syötteessä annetaan versionumero") {
         describe("Versionumero sama kuin viimeisin") {
           it("Päivitys hyväksytään") {
