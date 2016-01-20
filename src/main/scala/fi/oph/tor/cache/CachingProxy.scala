@@ -28,7 +28,7 @@ object NoCache extends CachingStrategy {
   override def apply(invocation: Invocation) = invocation.invoke
 }
 
-case class CacheAll(durationSeconds: Int, maxSize: Int) extends CachingStrategyBase(durationSeconds, maxSize) {
+case class CacheAll(val durationSeconds: Int, val maxSize: Int) extends CachingStrategyBase(durationSeconds, maxSize) {
   def apply(invocation: Invocation): AnyRef = invokeAndStore(invocation)
 }
 

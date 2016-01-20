@@ -1,12 +1,11 @@
 package fi.oph.tor.koodisto
 
 import com.typesafe.config.Config
-import fi.oph.tor.cache.{CachingProxy, TorCache}
 import fi.oph.tor.log.TimedProxy
 
 object KoodistoPalvelu {
   def apply(config: Config) = {
-    CachingProxy(TorCache.cacheStrategy, TimedProxy(withoutCache(config)))
+    KoodistoCacheWarmer(TimedProxy(withoutCache(config)))
   }
 
   def withoutCache(config: Config): KoodistoPalvelu = {
