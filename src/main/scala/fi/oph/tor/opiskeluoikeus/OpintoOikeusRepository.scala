@@ -6,6 +6,7 @@ import fi.oph.tor.schema.Henkilö.Oid
 import fi.oph.tor.schema.{FullHenkilö, OpiskeluOikeus}
 import fi.oph.tor.tor.QueryFilter
 import fi.oph.tor.toruser.TorUser
+import org.json4s.JValue
 import rx.lang.scala.Observable
 
 trait OpiskeluOikeusRepository {
@@ -20,8 +21,9 @@ trait OpiskeluOikeusRepository {
 sealed trait CreateOrUpdateResult {
   def id: OpiskeluOikeus.Id
   def versionumero: Int
+  def diff: JValue
 }
 
-case class Created(id: OpiskeluOikeus.Id, versionumero: OpiskeluOikeus.Versionumero) extends CreateOrUpdateResult
-case class Updated(id: OpiskeluOikeus.Id, versionumero: OpiskeluOikeus.Versionumero) extends CreateOrUpdateResult
-case class NotChanged(id: OpiskeluOikeus.Id, versionumero: OpiskeluOikeus.Versionumero) extends CreateOrUpdateResult
+case class Created(id: OpiskeluOikeus.Id, versionumero: OpiskeluOikeus.Versionumero, diff: JValue) extends CreateOrUpdateResult
+case class Updated(id: OpiskeluOikeus.Id, versionumero: OpiskeluOikeus.Versionumero, diff: JValue) extends CreateOrUpdateResult
+case class NotChanged(id: OpiskeluOikeus.Id, versionumero: OpiskeluOikeus.Versionumero, diff: JValue) extends CreateOrUpdateResult

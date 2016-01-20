@@ -21,7 +21,7 @@ import org.json4s.{JArray, JValue}
 import org.json4s.jackson.JsonMethods
 import rx.lang.scala.Observable
 import slick.dbio
-import slick.dbio.Effect.{Read, Write}
+import slick.dbio.Effect.{Transactional, Read, Write}
 import slick.jdbc.TransactionIsolation
 
 class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: OpiskeluoikeusHistoryRepository) extends OpiskeluOikeusRepository with Futures with GlobalExecutionContext with Logging {
@@ -113,14 +113,14 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     query.result
   }
 
-  private def createOrUpdateAction(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: OpiskeluOikeus)(implicit user: TorUser) = {
+  private def createOrUpdateAction(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: OpiskeluOikeus)(implicit user: TorUser): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
     findByIdentifierAction(OpiskeluOikeusIdentifier(oppijaOid.oppijaOid, opiskeluOikeus)).flatMap { rows: Either[HttpStatus, Option[OpiskeluOikeusRow]] =>
       rows match {
         case Right(Some(vanhaOpiskeluOikeus)) =>
           updateAction(vanhaOpiskeluOikeus, opiskeluOikeus)
         case Right(None) =>
           oppijaOid.verifiedOid match {
-            case Some(oid) => createAction(oid, opiskeluOikeus).map(result => result.right.map(Created(_, OpiskeluOikeus.VERSIO_1)))
+            case Some(oid) => createAction(oid, opiskeluOikeus)
             case None => DBIO.successful(Left(HttpStatus.notFound("Oppija " + oppijaOid.oppijaOid + " not found")))
           }
         case Left(err) => DBIO.successful(Left(err))
@@ -128,7 +128,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     }.transactionally.withTransactionIsolation(TransactionIsolation.Serializable)
   }
 
-  private def createAction(oppijaOid: String, opiskeluOikeus: OpiskeluOikeus)(implicit user: TorUser): dbio.DBIOAction[Either[HttpStatus, Int], NoStream, Write] = {
+  private def createAction(oppijaOid: String, opiskeluOikeus: OpiskeluOikeus)(implicit user: TorUser): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Write] = {
     val versionumero = OpiskeluOikeus.VERSIO_1
     val tallennettavaOpiskeluOikeus = opiskeluOikeus.copy(id = None, versionumero = None)
     for {
@@ -136,7 +136,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
       diff = Json.toJValue(List(Map("op" -> "add", "path" -> "", "value" -> tallennettavaOpiskeluOikeus)))
       _ <- historyRepository.createAction(opiskeluoikeusId, versionumero, user.oid, diff)
     } yield {
-      Right(opiskeluoikeusId)
+      Right(Created(opiskeluoikeusId, versionumero, diff))
     }
   }
 
@@ -150,7 +150,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
         val diff = JsonMethods.fromJsonNode(JsonDiff.asJson(JsonMethods.asJsonNode(oldRow.data), JsonMethods.asJsonNode(uusiData))).asInstanceOf[JArray]
         diff.values.length match {
           case 0 =>
-            DBIO.successful(Right(NotChanged(id, versionumero)))
+            DBIO.successful(Right(NotChanged(id, versionumero, diff)))
           case more =>
             val nextVersionumero = versionumero + 1
             for {
@@ -158,7 +158,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
               _ <- historyRepository.createAction(id, nextVersionumero, user.oid, diff)
             } yield {
               rowsUpdated match {
-                case 1 => Right(Updated(id, nextVersionumero))
+                case 1 => Right(Updated(id, nextVersionumero, diff))
                 case x =>
                   throw new RuntimeException("Unexpected number of updated rows: " + x) // throw exception to cause rollback!
               }

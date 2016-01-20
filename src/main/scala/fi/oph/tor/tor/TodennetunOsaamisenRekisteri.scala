@@ -42,7 +42,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
         result match {
           case Right(result) =>
             val (verb, content) = result match {
-              case _:Updated => ("Päivitetty", Json.write(opiskeluOikeus))
+              case _:Updated => ("Päivitetty", Json.write(result.diff))
               case _:Created => ("Luotu", Json.write(opiskeluOikeus))
               case _:NotChanged => ("Päivitetty", "ei muutoksia")
             }
