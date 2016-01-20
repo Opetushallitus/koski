@@ -126,6 +126,12 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
         case Left(err) => DBIO.successful(Left(err))
       }
     }.transactionally.withTransactionIsolation(TransactionIsolation.Serializable)
+    /*
+    1. transactionally = if any part fails, rollback everything. For example, if new version cannot be written to history table, insert/update must be rolled back.
+    2. withTransactionIsolation(Serializable) = another concurrent transaction must not be allowed for the same row. otherwise, version history would be messed up.
+
+    This mechanism is tested with Gatling simulation "UpdateSimulation" which causes concurrent updates to the same row.
+    */
   }
 
   private def createAction(oppijaOid: String, opiskeluOikeus: OpiskeluOikeus)(implicit user: TorUser): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Write] = {
