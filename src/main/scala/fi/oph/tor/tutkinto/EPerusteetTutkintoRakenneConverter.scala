@@ -1,14 +1,14 @@
 package fi.oph.tor.tutkinto
 import fi.oph.tor.arvosana.ArviointiasteikkoRepository
 import fi.oph.tor.eperusteet._
-import fi.oph.tor.koodisto.{KoodistoPalvelu, KoodistoViite}
+import fi.oph.tor.koodisto.{KoodistoViitePalvelu, KoodistoViite}
 import fi.oph.tor.schema.KoodistoKoodiViite
 import fi.oph.tor.tutkinto
 import fi.oph.tor.tutkinto.Koulutustyyppi.Koulutustyyppi
 import fi.vm.sade.utils.slf4j.Logging
 
 object EPerusteetTutkintoRakenneConverter extends Logging {
-  def convertRakenne(rakenne: EPerusteRakenne)(implicit arviointiasteikkoRepository: ArviointiasteikkoRepository, koodistoPalvelu: KoodistoPalvelu): TutkintoRakenne = {
+  def convertRakenne(rakenne: EPerusteRakenne)(implicit arviointiasteikkoRepository: ArviointiasteikkoRepository, koodistoPalvelu: KoodistoViitePalvelu): TutkintoRakenne = {
     var arviointiasteikkoViittaukset: Set[KoodistoViite] = Set.empty
 
     val suoritustavat: List[tutkinto.SuoritustapaJaRakenne] = rakenne.suoritustavat.flatMap { (suoritustapa: ESuoritustapa) =>

@@ -13,7 +13,7 @@ object ServiceUserAdder extends App {
     case Array(username, organisaatioOid, password) =>
       val app: TorApplication = TorApplication()
       val authService = AuthenticationServiceClient(app.config)
-      val kp = app.lowLevelKoodistoPalvelu
+      val kp = app.koodistoPalvelu
 
       val oid = authService.create(CreateUser.palvelu(username)) match {
         case Right(oid) =>

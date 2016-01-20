@@ -2,7 +2,7 @@ package fi.oph.tor.koodisto
 import fi.oph.tor.json.Json
 import fi.oph.tor.json.Json._
 
-object MockKoodistoPalvelu extends LowLevelKoodistoPalvelu {
+object MockKoodistoPalvelu extends KoodistoPalvelu {
   val koodistot = List (
     "arviointiasteikkoammatillinent1k3",
     "arviointiasteikkoammatillinenhyvaksyttyhylatty",

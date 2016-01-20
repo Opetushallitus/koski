@@ -2,7 +2,7 @@ package fi.oph.tor.tor
 
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.json.{ContextualExtractor, Json}
-import fi.oph.tor.koodisto.{KoodistoResolvingDeserializer, KoodistoPalvelu}
+import fi.oph.tor.koodisto.{KoodistoResolvingDeserializer, KoodistoViitePalvelu}
 import fi.oph.tor.organisaatio.{OrganisaatioResolvingDeserializer, OrganisaatioRepository}
 import org.json4s._
 
@@ -15,7 +15,7 @@ object ValidatingAndResolvingExtractor {
   }
 }
 
-case class ValidationAndResolvingContext(koodistoPalvelu: KoodistoPalvelu, organisaatioRepository: OrganisaatioRepository)
+case class ValidationAndResolvingContext(koodistoPalvelu: KoodistoViitePalvelu, organisaatioRepository: OrganisaatioRepository)
 
 
 

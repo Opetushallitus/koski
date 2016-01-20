@@ -22,7 +22,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       KoodistoCreator.createKoodistotFromMockData(application.config)
     }
     implicit val userRepository = UserOrganisationsRepository(application.config, application.organisaatioRepository)
-    val validator: TorValidator = new TorValidator(application.tutkintoRepository, application.koodistoPalvelu, application.organisaatioRepository)
+    val validator: TorValidator = new TorValidator(application.tutkintoRepository, application.koodistoViitePalvelu, application.organisaatioRepository)
     val rekisteri = new TodennetunOsaamisenRekisteri(application.oppijaRepository, application.opiskeluOikeusRepository)
     context.mount(new TorServlet(rekisteri, userRepository, application.directoryClient, validator, application.historyRepository), "/api/oppija")
     context.mount(new TorHistoryServlet(userRepository, application.directoryClient, application.historyRepository), "/api/opiskeluoikeus/historia")
@@ -30,7 +30,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     context.mount(new OppilaitosServlet(application.oppilaitosRepository, application.userRepository, application.directoryClient), "/api/oppilaitos")
     context.mount(new TutkintoServlet(application.tutkintoRepository), "/api/tutkinto")
     context.mount(new SingleFileServlet("web/static/index.html"), "/")
-    context.mount(new SchemaDocumentationServlet(application.lowLevelKoodistoPalvelu), "/documentation")
+    context.mount(new SchemaDocumentationServlet(application.koodistoPalvelu), "/documentation")
 
     if (Fixtures.shouldUseFixtures(application.config)) {
       context.mount(new FixtureServlet(application), "/fixtures")

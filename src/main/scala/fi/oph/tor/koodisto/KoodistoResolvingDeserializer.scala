@@ -12,7 +12,7 @@ object KoodistoResolvingDeserializer extends Deserializer[KoodistoKoodiViite] wi
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), KoodistoKoodiViite] = {
     case (TypeInfo(TheClass, _), json) =>
       val viite = json.extract[KoodistoKoodiViite](Json.jsonFormats, Manifest.classType(TheClass))
-      ContextualExtractor.getContext[{def koodistoPalvelu: KoodistoPalvelu}] match {
+      ContextualExtractor.getContext[{def koodistoPalvelu: KoodistoViitePalvelu}] match {
         case Some(context) =>
           val validated: Option[KoodistoKoodiViite] = try {
             context.koodistoPalvelu.validate(viite)

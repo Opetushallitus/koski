@@ -9,7 +9,7 @@ import fi.oph.tor.db._
 import fi.oph.tor.eperusteet.EPerusteetRepository
 import fi.oph.tor.fixture.Fixtures
 import fi.oph.tor.history.OpiskeluoikeusHistoryRepository
-import fi.oph.tor.koodisto.{KoodistoPalvelu, LowLevelKoodistoPalvelu}
+import fi.oph.tor.koodisto.{KoodistoPalvelu, KoodistoViitePalvelu, KoodistoPalvelu$}
 import fi.oph.tor.log.TimedProxy
 import fi.oph.tor.opiskeluoikeus.{OpiskeluOikeusRepository, PostgresOpiskeluOikeusRepository, TorDatabaseFixtureCreator}
 import fi.oph.tor.oppija.OppijaRepository
@@ -32,11 +32,11 @@ object TorApplication {
 class TorApplication(val config: Config) {
   lazy val organisaatioRepository: OrganisaatioRepository = OrganisaatioRepository(config)
   lazy val directoryClient: DirectoryClient = DirectoryClientFactory.directoryClient(config)
-  lazy val tutkintoRepository = CachingProxy(cacheAll(3600, 100), TutkintoRepository(EPerusteetRepository.apply(config), arviointiAsteikot, koodistoPalvelu))
+  lazy val tutkintoRepository = CachingProxy(cacheAll(3600, 100), TutkintoRepository(EPerusteetRepository.apply(config), arviointiAsteikot, koodistoViitePalvelu))
   lazy val oppilaitosRepository = new OppilaitosRepository
-  lazy val lowLevelKoodistoPalvelu = LowLevelKoodistoPalvelu.apply(config)
-  lazy val koodistoPalvelu = new KoodistoPalvelu(lowLevelKoodistoPalvelu)
-  lazy val arviointiAsteikot = ArviointiasteikkoRepository(koodistoPalvelu)
+  lazy val koodistoPalvelu = KoodistoPalvelu.apply(config)
+  lazy val koodistoViitePalvelu = new KoodistoViitePalvelu(koodistoPalvelu)
+  lazy val arviointiAsteikot = ArviointiasteikkoRepository(koodistoViitePalvelu)
   lazy val userRepository = UserOrganisationsRepository(config, organisaatioRepository)
   lazy val database = new TorDatabase(config)
   lazy val oppijaRepository = OppijaRepository(config, database)

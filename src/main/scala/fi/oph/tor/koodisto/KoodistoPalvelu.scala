@@ -1,24 +1,31 @@
 package fi.oph.tor.koodisto
 
-import fi.oph.tor.schema.KoodistoKoodiViite
-import fi.vm.sade.utils.slf4j.Logging
+import com.typesafe.config.Config
+import fi.oph.tor.cache.{CachingProxy, TorCache}
+import fi.oph.tor.log.TimedProxy
 
-case class KoodistoPalvelu(lowLevelKoodistoPalvelu: LowLevelKoodistoPalvelu) extends Logging {
-  def getKoodistoKoodiViitteet(koodisto: KoodistoViite): Option[List[KoodistoKoodiViite]] = {
-    lowLevelKoodistoPalvelu.getKoodistoKoodit(koodisto).map { _.map { koodi => KoodistoKoodiViite(koodi.koodiArvo, koodi.nimi("fi"), koodisto.koodistoUri, Some(koodisto.versio))} }
+object KoodistoPalvelu {
+  def apply(config: Config) = {
+    CachingProxy(TorCache.cacheStrategy, TimedProxy(withoutCache(config)))
   }
-  def getLatestVersion(koodistoUri: String): Option[KoodistoViite] = lowLevelKoodistoPalvelu.getLatestVersion(koodistoUri)
 
-  def getKoodistoKoodiViite(koodistoUri: String, koodiArvo: String): Option[KoodistoKoodiViite] = getLatestVersion(koodistoUri).flatMap(koodisto => getKoodistoKoodiViitteet(koodisto).toList.flatten.find(_.koodiarvo == koodiArvo))
-
-  def validate(input: KoodistoKoodiViite):Option[KoodistoKoodiViite] = {
-    val koodistoViite = input.koodistoViite.orElse(getLatestVersion(input.koodistoUri))
-
-    val viite = koodistoViite.flatMap(getKoodistoKoodiViitteet).toList.flatten.find(_.koodiarvo == input.koodiarvo)
-
-    if (!viite.isDefined) {
-      logger.warn("Koodia " + input.koodiarvo + " ei löydy koodistosta " + input.koodistoUri)
+  def withoutCache(config: Config): KoodistoPalvelu = {
+    if (config.hasPath("koodisto.virkailija.url")) {
+      new RemoteKoodistoPalvelu(config.getString("authentication-service.username"), config.getString("authentication-service.password"), config.getString("koodisto.virkailija.url"))
+    } else if (config.hasPath("opintopolku.virkailija.url")) {
+      new RemoteKoodistoPalvelu(config.getString("authentication-service.username"), config.getString("authentication-service.password"), config.getString("opintopolku.virkailija.url"))
+    } else {
+      MockKoodistoPalvelu
     }
-    viite
   }
+}
+
+trait KoodistoPalvelu {
+  def removeKoodistoRyhmä(toInt: Int)
+  def createKoodi(koodistoUri: String, koodi: KoodistoKoodi)
+  def createKoodisto(koodisto: Koodisto)
+  def createKoodistoRyhmä(ryhmä: KoodistoRyhmä)
+  def getKoodistoKoodit(koodisto: KoodistoViite): Option[List[KoodistoKoodi]]
+  def getKoodisto(koodisto: KoodistoViite): Option[Koodisto]
+  def getLatestVersion(koodistoUri: String): Option[KoodistoViite]
 }

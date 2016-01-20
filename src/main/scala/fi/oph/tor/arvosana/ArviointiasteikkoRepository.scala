@@ -1,9 +1,9 @@
 package fi.oph.tor.arvosana
 
-import fi.oph.tor.koodisto.{KoodistoPalvelu, KoodistoViite}
+import fi.oph.tor.koodisto.{KoodistoViitePalvelu, KoodistoViite}
 import fi.oph.tor.tutkinto.Koulutustyyppi.Koulutustyyppi
 
-class ArviointiasteikkoRepository(koodistoPalvelu: KoodistoPalvelu) {
+class ArviointiasteikkoRepository(koodistoPalvelu: KoodistoViitePalvelu) {
   def getArviointiasteikkoViittaus(koulutustyyppi: Koulutustyyppi): Option[KoodistoViite] = {
     val koodistoUri = koulutustyyppi match {
       case 1 => "arviointiasteikkoammatillinent1k3"
@@ -18,7 +18,7 @@ class ArviointiasteikkoRepository(koodistoPalvelu: KoodistoPalvelu) {
 }
 
 object ArviointiasteikkoRepository {
-  def apply(koodistoPalvelu: KoodistoPalvelu) = {
+  def apply(koodistoPalvelu: KoodistoViitePalvelu) = {
     new ArviointiasteikkoRepository(koodistoPalvelu)
   }
 }

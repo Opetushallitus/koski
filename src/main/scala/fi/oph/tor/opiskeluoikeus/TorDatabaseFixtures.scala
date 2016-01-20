@@ -4,7 +4,7 @@ import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.db.Tables._
 import fi.oph.tor.db.TorDatabase._
 import fi.oph.tor.db._
-import fi.oph.tor.koodisto.{KoodistoPalvelu, MockKoodistoPalvelu}
+import fi.oph.tor.koodisto.{KoodistoViitePalvelu, MockKoodistoPalvelu}
 import fi.oph.tor.opiskeluoikeus.OpiskeluOikeusTestData.opiskeluOikeus
 import fi.oph.tor.oppija.{MockOppijat, VerifiedOppijaOid}
 import fi.oph.tor.organisaatio.MockOrganisaatioRepository
@@ -38,7 +38,7 @@ class TorDatabaseFixtureCreator(database: TorDatabase, repository: OpiskeluOikeu
 object OpiskeluOikeusTestData {
   def opiskeluOikeus(oppilaitosId: String, koulutusKoodi: Int = 351301) = {
     val oppilaitos: OidOrganisaatio = MockOrganisaatioRepository.getOrganisaatio(oppilaitosId).get
-    val koulutusKoodiViite = KoodistoPalvelu(MockKoodistoPalvelu).getKoodistoKoodiViite("koulutus", koulutusKoodi.toString).get
+    val koulutusKoodiViite = KoodistoViitePalvelu(MockKoodistoPalvelu).getKoodistoKoodiViite("koulutus", koulutusKoodi.toString).get
 
     OpiskeluOikeus(
       None,

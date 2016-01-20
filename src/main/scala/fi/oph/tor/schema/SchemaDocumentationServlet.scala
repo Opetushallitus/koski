@@ -1,10 +1,9 @@
 package fi.oph.tor.schema
 
 import fi.oph.tor.ErrorHandlingServlet
-import fi.oph.tor.json.Json
-import fi.oph.tor.koodisto.{KoodistoKoodi, KoodistoViite, LowLevelKoodistoPalvelu}
+import fi.oph.tor.koodisto.{KoodistoKoodi, KoodistoPalvelu, KoodistoViite}
 
-class SchemaDocumentationServlet(koodistoPalvelu: LowLevelKoodistoPalvelu) extends ErrorHandlingServlet {
+class SchemaDocumentationServlet(koodistoPalvelu: KoodistoPalvelu) extends ErrorHandlingServlet {
   get("/") {
     TorTiedonSiirtoHtml.html
   }

@@ -2,7 +2,7 @@ package fi.oph.tor.tutkinto
 
 import fi.oph.tor.arvosana.ArviointiasteikkoRepository
 import fi.oph.tor.eperusteet._
-import fi.oph.tor.koodisto.KoodistoPalvelu
+import fi.oph.tor.koodisto.KoodistoViitePalvelu
 
 trait TutkintoRepository {
   def findTutkinnot(oppilaitosId: String, query: String): List[TutkintoPeruste]
@@ -13,10 +13,10 @@ trait TutkintoRepository {
 }
 
 object TutkintoRepository {
-  def apply(eperusteet: EPerusteetRepository, arviointiAsteikot: ArviointiasteikkoRepository, koodistoPalvelu: KoodistoPalvelu): TutkintoRepository = new TutkintoRepositoryImpl(eperusteet, arviointiAsteikot, koodistoPalvelu)
+  def apply(eperusteet: EPerusteetRepository, arviointiAsteikot: ArviointiasteikkoRepository, koodistoPalvelu: KoodistoViitePalvelu): TutkintoRepository = new TutkintoRepositoryImpl(eperusteet, arviointiAsteikot, koodistoPalvelu)
 }
 
-class TutkintoRepositoryImpl(eperusteet: EPerusteetRepository, arviointiAsteikot: ArviointiasteikkoRepository, koodistoPalvelu: KoodistoPalvelu) extends TutkintoRepository{
+class TutkintoRepositoryImpl(eperusteet: EPerusteetRepository, arviointiAsteikot: ArviointiasteikkoRepository, koodistoPalvelu: KoodistoViitePalvelu) extends TutkintoRepository{
   def findTutkinnot(oppilaitosId: String, query: String): List[TutkintoPeruste] = {
     ePerusteetToTutkinnot(eperusteet.findPerusteet(query))
   }

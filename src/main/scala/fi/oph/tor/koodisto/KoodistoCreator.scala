@@ -7,11 +7,11 @@ import fi.vm.sade.utils.slf4j.Logging
 
 object KoodistoCreator extends Logging {
   def createKoodistotFromMockData(config: Config): Unit = {
-    val kp = LowLevelKoodistoPalvelu.withoutCache(config)
+    val kp = KoodistoPalvelu.withoutCache(config)
     MockKoodistoPalvelu.koodistot.foreach(koodisto => createKoodistoFromMockData(koodisto, kp))
   }
 
-  private def createKoodistoFromMockData(koodistoUri: String, kp: LowLevelKoodistoPalvelu): Unit = {
+  private def createKoodistoFromMockData(koodistoUri: String, kp: KoodistoPalvelu): Unit = {
     val koodistoViite: KoodistoViite = kp.getLatestVersion(koodistoUri).getOrElse {
       MockKoodistoPalvelu.getKoodisto(koodistoUri) match {
         case None => throw new IllegalStateException("Mock not found: " + koodistoUri)

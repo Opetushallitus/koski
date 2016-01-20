@@ -2,7 +2,7 @@ package fi.oph.tor.tor
 
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.json.Json
-import fi.oph.tor.koodisto.KoodistoPalvelu
+import fi.oph.tor.koodisto.KoodistoViitePalvelu
 import fi.oph.tor.organisaatio.OrganisaatioRepository
 import fi.oph.tor.schema.{OpiskeluOikeus, Suoritus, TorOppija}
 import fi.oph.tor.tor.DateValidation._
@@ -10,7 +10,7 @@ import fi.oph.tor.toruser.TorUser
 import fi.oph.tor.tutkinto.{TutkintoRakenneValidator, TutkintoRepository}
 import org.json4s.JValue
 
-class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: KoodistoPalvelu, val organisaatioRepository: OrganisaatioRepository) {
+class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: KoodistoViitePalvelu, val organisaatioRepository: OrganisaatioRepository) {
   def validateAsJson(oppija: TorOppija)(implicit user: TorUser): Either[HttpStatus, TorOppija] = {
     extractAndValidate(Json.toJValue(oppija))
   }

@@ -5,7 +5,7 @@ import fi.oph.tor.json.Json
 import fi.vm.sade.utils.slf4j.Logging
 import fi.oph.tor.json.Json._
 import fi.oph.tor.json.Json4sHttp4s._
-class RemoteKoodistoPalvelu(username: String, password: String, virkailijaUrl: String) extends LowLevelKoodistoPalvelu with Logging {
+class RemoteKoodistoPalvelu(username: String, password: String, virkailijaUrl: String) extends KoodistoPalvelu with Logging {
   val virkalijaClient = new VirkailijaHttpClient(username, password, virkailijaUrl, "/koodisto-service")
   val secureHttp = virkalijaClient.httpClient
   val http = Http(virkailijaUrl)
