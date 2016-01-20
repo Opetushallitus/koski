@@ -6,6 +6,7 @@ import com.ning.http.client.RequestBuilder
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.request.Body
+import io.gatling.http.request.builder.HttpRequestBuilder
 
 object Scenarios {
   val username = sys.env("TOR_USER")
@@ -17,14 +18,10 @@ object Scenarios {
       .basicAuth(username, password)
   )
 
-  val updateOppija = scenario("Update oppija")
-        .feed(jsonFile("src/test/resources/bodies/oppija.json").circular)
-        .exec(
-          http("update")
-            .put("/api/oppija")
-            .body(OppijaWithOpiskeluoikeusWithIncrementingStartdate).asJSON
-            .basicAuth(username, password).check(status.in(200, 409))
-        )
+  val updateHttp: HttpRequestBuilder = http("update").put("/api/oppija").body(OppijaWithOpiskeluoikeusWithIncrementingStartdate).asJSON.basicAuth(username, password).check(status.in(200, 409))
+
+  val updateOppija = scenario("Update oppija").feed(jsonFile("src/test/resources/bodies/oppija.json").circular).exec(updateHttp)
+  val prepareForUpdateOppija = scenario("Prepare for update oppija").feed(jsonFile("src/test/resources/bodies/oppija.json").circular).exec(updateHttp.silent)
 
   val validateOppija = scenario("Validate oppija").exec(
     http("validate oppija").get("/api/oppija/validate/1.2.246.562.24.00000000001")
