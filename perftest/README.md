@@ -33,3 +33,4 @@ Suorituskykytestin ajaminen omaa lokaalia ympäristöä vasten normaalilla kuorm
     
     TOR_USER=<käyttäjä> TOR_PASS=<salasana> TOR_BASE_URL=http://localhost:7021/tor mvn gatling:execute -Dgatling.simulationClass=tor.NormalSimulation
 
+Wed Jan 20 16:33:23 EET 2016
