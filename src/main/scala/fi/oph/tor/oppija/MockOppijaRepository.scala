@@ -43,7 +43,7 @@ class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with 
 
   override def findOppijat(query: String) = {
     if (query.toLowerCase.contains("error")) {
-      throw new RuntimeException("Testing error handling")
+      throw new TestingException("Testing error handling")
     }
     oppijat.getOppijat.filter(searchString(_).contains(query))
   }
