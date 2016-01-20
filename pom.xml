@@ -85,6 +85,11 @@
       <version>${slick.version}</version>
     </dependency>
     <dependency>
+      <groupId>com.zaxxer</groupId>
+      <artifactId>HikariCP-java6</artifactId>
+      <version>2.3.12</version>
+    </dependency>
+    <dependency>
       <groupId>com.github.tminglei</groupId>
       <artifactId>slick-pg</artifactId>
       <version>5b44ff804f36f4d8d8164682f17cac00626edbd0</version>
