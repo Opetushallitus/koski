@@ -7,15 +7,16 @@ import fi.vm.sade.utils.slf4j.Logging
 
 object KoodistoCacheWarmer extends Logging {
   def apply(koodistoPalvelu: KoodistoPalvelu) = {
-    implicit def runnable(f: () => Unit): Runnable = new Runnable { def run() = f() }
 
     val cacheStrategy: CacheAll = TorCache.cacheStrategy
     val cached = CachingProxy(cacheStrategy, koodistoPalvelu)
 
-      new ScheduledThreadPoolExecutor(1).scheduleAtFixedRate({ () =>
-        Timer.timed("Warming up koodisto caches") {
-          MockKoodistoPalvelu.koodistot.foreach { koodisto =>
-            cached.getLatestVersion(koodisto).foreach(cached.getKoodistoKoodit(_))
+      new ScheduledThreadPoolExecutor(1).scheduleAtFixedRate(new Runnable {
+        def run(): Unit = {
+          Timer.timed("Warming up koodisto caches") {
+            MockKoodistoPalvelu.koodistot.foreach { koodisto =>
+              cached.getLatestVersion(koodisto).foreach(cached.getKoodistoKoodit(_))
+            }
           }
         }
       }, 0, cacheStrategy.durationSeconds, TimeUnit.SECONDS)
