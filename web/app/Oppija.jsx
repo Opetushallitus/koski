@@ -23,7 +23,7 @@ const applyChange = (oppija, opiskeluOikeusId, change) => {
 
 export const oppijaP = Bacon.update({ loading: true },
   selectOppijaE, (previous, oppija) => oppija,
-  updateResultE.map(".opiskeluoikeudet").flatMap(Bacon.fromArray), (currentOppija, {id, versionumero}) => {
+  updateResultE.map('.opiskeluoikeudet').flatMap(Bacon.fromArray), (currentOppija, {id, versionumero}) => {
     return applyChange(currentOppija, id, (opiskeluoikeus) => opiskeluoikeus.set('versionumero', versionumero))
   },
   opiskeluOikeusChange, (currentOppija, [opiskeluOikeusId, change]) => applyChange(currentOppija, opiskeluOikeusId, change)
