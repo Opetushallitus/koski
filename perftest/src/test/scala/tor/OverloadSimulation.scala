@@ -7,6 +7,7 @@ import scala.concurrent.duration._
 
 class OverloadSimulation extends TorSimulation {
   setUp(
-    findOppija.inject(atOnceUsers(1), nothingFor(10 seconds), constantUsersPerSec(100) during(1 minute) randomized)
+    prepareForFind.inject(atOnceUsers(1)),
+    findOppija.inject(nothingFor(60 seconds), constantUsersPerSec(100) during(1 minute) randomized)
   )
 }

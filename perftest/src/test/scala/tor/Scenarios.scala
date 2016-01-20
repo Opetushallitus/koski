@@ -8,31 +8,40 @@ import io.gatling.http.Predef._
 import io.gatling.http.request.Body
 import io.gatling.http.request.builder.HttpRequestBuilder
 
-object Scenarios {
+trait TorScenario {
   val username = sys.env("TOR_USER")
   val password = sys.env("TOR_PASS")
+}
 
-  val findOppija = scenario("Find oppija").exec(
-    http("find by oid")
-      .get("/api/oppija/1.2.246.562.24.00000000001")
-      .basicAuth(username, password)
-  )
+object Scenarios extends UpdateOppijaScenario with FindOppijaScenario with ValidateOppijaScenario with QueryOppijatScenario {
+}
 
-  val updateHttp: HttpRequestBuilder = http("update").put("/api/oppija").body(OppijaWithOpiskeluoikeusWithIncrementingStartdate).asJSON.basicAuth(username, password).check(status.in(200, 409))
+trait FindOppijaScenario extends TorScenario {
+  private val findHttp: HttpRequestBuilder = http("find by oid").get("/api/oppija/1.2.246.562.24.00000000001").basicAuth(username, password)
+
+  val findOppija = scenario("Find oppija").exec(findHttp)
+  val prepareForFind = scenario("Prepare for find").exec(findHttp.silent)
+}
+
+trait ValidateOppijaScenario extends TorScenario {
+  private val validateHttp =  http("validate oppija").get("/api/oppija/validate/1.2.246.562.24.00000000001").basicAuth(username, password)
+
+  val validateOppija = scenario("Validate oppija").exec(validateHttp)
+}
+
+trait QueryOppijatScenario extends TorScenario {
+  private val queryHttp = http("query oppijat").get("/api/oppija?opiskeluoikeusPäättynytAikaisintaan=2016-01-10&opiskeluoikeusPäättynytViimeistään=2016-01-10").basicAuth(username, password)
+
+  val queryOppijat = scenario("Query oppijat").exec(queryHttp)
+  val prepareForQuery = scenario("Prepare for query").exec(queryHttp.silent)
+}
+
+
+trait UpdateOppijaScenario extends TorScenario {
+  private val updateHttp: HttpRequestBuilder = http("update").put("/api/oppija").body(OppijaWithOpiskeluoikeusWithIncrementingStartdate).asJSON.basicAuth(username, password).check(status.in(200, 409))
 
   val updateOppija = scenario("Update oppija").feed(jsonFile("src/test/resources/bodies/oppija.json").circular).exec(updateHttp)
-  val prepareForUpdateOppija = scenario("Prepare for update oppija").feed(jsonFile("src/test/resources/bodies/oppija.json").circular).exec(updateHttp.silent)
-
-  val validateOppija = scenario("Validate oppija").exec(
-    http("validate oppija").get("/api/oppija/validate/1.2.246.562.24.00000000001")
-    .basicAuth(username, password))
-
-
-  val queryOppijat = scenario("Query oppijat").exec(
-    http("query oppijat")
-      .get("/api/oppija?opiskeluoikeusPäättynytAikaisintaan=2016-01-10&opiskeluoikeusPäättynytViimeistään=2016-01-10")
-      .basicAuth(username, password)
-  )
+  val prepareForUpdateOppija = scenario("Prepare for update").feed(jsonFile("src/test/resources/bodies/oppija.json").circular).exec(updateHttp.silent)
 }
 
 object OppijaWithOpiskeluoikeusWithIncrementingStartdate extends Body {
