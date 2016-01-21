@@ -13,7 +13,7 @@ trait TorScenario {
   val password = sys.env("TOR_PASS")
 }
 
-object Scenarios extends UpdateOppijaScenario with FindOppijaScenario with ValidateOppijaScenario with QueryOppijatScenario {
+object Scenarios extends UpdateOppijaScenario with FindOppijaScenario with QueryOppijatScenario {
 }
 
 trait FindOppijaScenario extends TorScenario {
@@ -21,12 +21,6 @@ trait FindOppijaScenario extends TorScenario {
 
   val findOppija = scenario("Find oppija").exec(findHttp)
   val prepareForFind = scenario("Prepare for find").exec(findHttp.silent)
-}
-
-trait ValidateOppijaScenario extends TorScenario {
-  private val validateHttp =  http("validate oppija").get("/api/oppija/validate/1.2.246.562.24.00000000001").basicAuth(username, password)
-
-  val validateOppija = scenario("Validate oppija").exec(validateHttp)
 }
 
 trait QueryOppijatScenario extends TorScenario {
