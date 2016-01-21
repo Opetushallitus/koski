@@ -62,15 +62,17 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     // Note: it won't actually stream unless you use both `transactionally` and `fetchSize`. It'll collect all the data into memory.
     val rows: Observable[OpiskeluOikeusRow] = db.stream(query.result.transactionally.withStatementParameters(fetchSize = 1000)).publish.refCount
 
-    val groupedByPerson: Observable[Seq[OpiskeluOikeusRow]] = rows
+    val groupedByPerson: Observable[List[OpiskeluOikeusRow]] = rows
       .tumblingBuffer(rows.map(_.oppijaOid).distinctUntilChanged.drop(1))
+      .map(_.toList)
 
     groupedByPerson.flatMap {
       case oikeudet@(firstRow :: _) =>
         val oppijaOid = firstRow.oppijaOid
         assert(oikeudet.map(_.oppijaOid).toSet == Set(oppijaOid), "Usean ja/tai väärien henkilöiden tietoja henkilöllä " + oppijaOid + ": " + oikeudet)
         Observable.just((oppijaOid, oikeudet.map(_.toOpiskeluOikeus).toList))
-      case _ => Observable.empty
+      case _ =>
+        Observable.empty
     }
   }
 
