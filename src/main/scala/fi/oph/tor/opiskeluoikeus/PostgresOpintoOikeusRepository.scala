@@ -60,17 +60,16 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     }.sortBy(_.oppijaOid)
 
     // Note: it won't actually stream unless you use both `transactionally` and `fetchSize`. It'll collect all the data into memory.
+    val rows: Observable[OpiskeluOikeusRow] = db.stream(query.result.transactionally.withStatementParameters(fetchSize = 1000)).publish.refCount
 
-    val observable: Observable[(String, OpiskeluOikeus)] = db.stream(query.result.transactionally.withStatementParameters(fetchSize = 1000)).mapResult { row =>
-      (row.oppijaOid, row.toOpiskeluOikeus) // TODO: ehkä siirrä tämäkin käsittely Rx-puolelle
-    }.publish.refCount
+    val groupedByPerson: Observable[Seq[OpiskeluOikeusRow]] = rows
+      .tumblingBuffer(rows.map(_.oppijaOid).distinctUntilChanged.drop(1))
 
-    val buffered: Observable[List[(String, OpiskeluOikeus)]] = observable.tumblingBuffer(observable.map(_._1).distinctUntilChanged.drop(1)).map(_.toList)
-
-    buffered.flatMap {
-      case oikeudet@((personOid, opiskeluOikeus) :: _) =>
-        assert(oikeudet.map(_._1).toSet == Set(personOid), "Usean ja/tai väärien henkilöiden tietoja henkilöllä " + personOid + ": " + oikeudet)
-        Observable.just((personOid, oikeudet.map(_._2)))
+    groupedByPerson.flatMap {
+      case oikeudet@(firstRow :: _) =>
+        val oppijaOid = firstRow.oppijaOid
+        assert(oikeudet.map(_.oppijaOid).toSet == Set(oppijaOid), "Usean ja/tai väärien henkilöiden tietoja henkilöllä " + oppijaOid + ": " + oikeudet)
+        Observable.just((oppijaOid, oikeudet.map(_.toOpiskeluOikeus).toList))
       case _ => Observable.empty
     }
   }
