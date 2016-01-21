@@ -49,7 +49,7 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
           it("Päivitys hylätään") {
             val opiskeluOikeus = createOpiskeluOikeus
             val modified: OpiskeluOikeus = createOrUpdate(opiskeluOikeus.copy(päättymispäivä = Some(LocalDate.now), versionumero = Some(3)), {
-              verifyResponseCode(409)
+              verifyResponseStatus(409)
             })
             verifyHistory(modified, List(1))
           }
@@ -62,8 +62,16 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
         it("Palautetaan 404") {
           val opiskeluOikeus = createOpiskeluOikeus
           authGet("api/opiskeluoikeus/historia/" + opiskeluOikeus.id.get, MockUsers.hiiri) {
-            verifyResponseCode(404)
+            verifyResponseStatus(404)
           }
+        }
+      }
+    }
+
+    describe("Virheellinen id") {
+      it("Palautetaan HTTP 400") {
+        authGet("api/opiskeluoikeus/historia/asdf") {
+          verifyResponseStatus(400, "Invalid id : asdf")
         }
       }
     }
@@ -71,7 +79,7 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
 
   private val oppija: FullHenkilö = MockOppijat.tyhjä
 
-  def createOrUpdate(opiskeluOikeus: OpiskeluOikeus, check: => Unit = { verifyResponseCode(200) }) = {
+  def createOrUpdate(opiskeluOikeus: OpiskeluOikeus, check: => Unit = { verifyResponseStatus(200) }) = {
     putOppija(Json.toJValue(TorOppija(oppija, List(opiskeluOikeus))))(check)
     lastOpiskeluOikeus(oppija.oid)
   }
@@ -85,21 +93,21 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
 
   def lastOpiskeluOikeus(oppijaOid: String) = {
     authGet("api/oppija/" + oppijaOid) {
-      verifyResponseCode(200)
+      verifyResponseStatus(200)
       Json.read[TorOppija](body).opiskeluoikeudet.last
     }
   }
 
   def verifyHistory(opiskeluOikeus: OpiskeluOikeus, versions: List[Int]): Unit = {
     authGet("api/opiskeluoikeus/historia/" + opiskeluOikeus.id.get) {
-      verifyResponseCode(200)
+      verifyResponseStatus(200)
       val historia = Json.read[List[OpiskeluOikeusHistoryRow]](body)
       historia.map(_.versionumero) should equal(versions)
 
       markup("Validoidaan versiohistoria eheys")
 
       authGet("api/oppija/validate/" + oppija.oid) {
-        verifyResponseCode(200)
+        verifyResponseStatus(200)
       }
     }
   }

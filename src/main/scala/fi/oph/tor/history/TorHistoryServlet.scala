@@ -11,7 +11,7 @@ class TorHistoryServlet(val userRepository: UserOrganisationsRepository, val dir
 
   get("/:id") {
     renderOption {
-      historyRepository.findByOpiskeluoikeusId(params("id").toInt)
+      historyRepository.findByOpiskeluoikeusId(getIntegerParam("id"))
     }
   }
 

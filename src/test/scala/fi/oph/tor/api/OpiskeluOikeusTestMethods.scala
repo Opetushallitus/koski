@@ -90,9 +90,4 @@ trait OpiskeluOikeusTestMethods extends HttpSpecification with Matchers {
   def request[A](path: String, contentType: String, content: String, method: String)(f: => A): Unit = {
     submit(method, path, body = content.getBytes("UTF-8"), headers = authHeaders() ++ jsonContent) (f)
   }
-
-  def verifyResponseCode(expectedStatus: Int, expectedText: String = "") = {
-    verifyResponseStatus(expectedStatus)
-    body should include(expectedText)
-  }
 }

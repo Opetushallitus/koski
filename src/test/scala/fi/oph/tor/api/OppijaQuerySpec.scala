@@ -19,7 +19,7 @@ class OppijaQuerySpec extends FunSpec with OpiskeluOikeusTestMethods with Matche
             "hetu"->"150995-914X"
           ))) {
             authGet ("api/oppija?opiskeluoikeusPäättynytViimeistään=2016-12-31&opiskeluoikeusPäättynytAikaisintaan=2016-01-01") {
-              verifyResponseCode(200)
+              verifyResponseStatus(200)
               val oppijat: List[TorOppija] = Json.read[List[TorOppija]](response.body)
               oppijat.length should equal(1)
               oppijat(0).opiskeluoikeudet(0).päättymispäivä should equal(Some(LocalDate.parse("2016-01-09")))
@@ -33,7 +33,7 @@ class OppijaQuerySpec extends FunSpec with OpiskeluOikeusTestMethods with Matche
       it("palautetaan tyhjä lista") {
         putOpiskeluOikeus(Map("päättymispäivä"-> "2016-01-09")) {
           authGet ("api/oppija?opiskeluoikeusPäättynytViimeistään=2014-12-31&opiskeluoikeusPäättynytAikaisintaan=2014-01-01") {
-            verifyResponseCode(200)
+            verifyResponseStatus(200)
             val oppijat: List[TorOppija] = Json.read[List[TorOppija]](response.body)
             oppijat.length should equal(0)
           }
@@ -44,7 +44,7 @@ class OppijaQuerySpec extends FunSpec with OpiskeluOikeusTestMethods with Matche
     describe("Kun haetaan ei tuetulla parametrilla") {
       it("palautetaan HTTP 400") {
         authGet("api/oppija?eiTuettu=kyllä") {
-          verifyResponseCode(400, "Unsupported query parameter: eiTuettu")
+          verifyResponseStatus(400, "Unsupported query parameter: eiTuettu")
         }
       }
     }
@@ -59,7 +59,7 @@ class OppijaQuerySpec extends FunSpec with OpiskeluOikeusTestMethods with Matche
             "hetu"->"150995-914X"
           ))) {
             authGet ("api/oppija") {
-              verifyResponseCode(200)
+              verifyResponseStatus(200)
               val oppijat: List[TorOppija] = Json.read[List[TorOppija]](response.body)
               oppijat.length should be >= 2
             }

@@ -4,10 +4,10 @@ import com.unboundid.util.Base64
 import fi.oph.tor.jettylauncher.SharedJetty
 import fi.oph.tor.toruser.MockUsers
 import fi.oph.tor.toruser.MockUsers.MockUser
-import org.scalatest.Assertions
+import org.scalatest.{Matchers, Assertions}
 import org.scalatra.test.HttpComponentsClient
 
-trait HttpSpecification extends HttpComponentsClient with Assertions {
+trait HttpSpecification extends HttpComponentsClient with Assertions with Matchers {
   SharedJetty.start
 
   def authHeaders(user: MockUser = MockUsers.kalle): Map[String, String] = {
@@ -17,10 +17,11 @@ trait HttpSpecification extends HttpComponentsClient with Assertions {
 
   val jsonContent = Map(("Content-type" -> "application/json"))
 
-  def verifyResponseStatus(status: Int = 200): Unit = {
-    if (response.status != status) {
-      fail("Expected status " + status + ", got " + response.status + ", " + response.body)
+  def verifyResponseStatus(expectedStatus: Int = 200, expectedText: String = "") = {
+    if (response.status != expectedStatus) {
+      fail("Expected status " + expectedStatus + ", got " + response.status + ", " + response.body)
     }
+    body should include(expectedText)
   }
 
   def authGet[A](uri: String, user: MockUser = MockUsers.kalle)(f: => A) = {
