@@ -5,8 +5,8 @@ import java.util.Properties
 import fi.oph.tor.util.Files
 import org.scalatra.ScalatraServlet
 
-class SingleFileServlet(val content: Content, matchedPaths: Seq[String], statusCode: Int = 200) extends StaticFileServlet {
-  matchedPaths.foreach { path =>
+class SingleFileServlet(val content: Content, matchedPaths: Seq[(String, Int)]) extends StaticFileServlet {
+  matchedPaths.foreach { case (path, statusCode) =>
     get(path) {
       status = statusCode
       serveContent(content)
