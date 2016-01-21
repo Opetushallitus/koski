@@ -16,7 +16,7 @@ function AddOppijaPage() {
     },
     enterValidData: function(params) {
       var self = this
-      params = _.merge({ etunimet: 'Ossi Olavi', kutsumanimi: 'Ossi', sukunimi: 'Oppija', hetu: '300994-9694', oppilaitos: 'Helsingin', tutkinto: 'auto'}, {}, params)
+      params = _.merge({ etunimet: 'Ossi Olavi', kutsumanimi: 'Ossi', sukunimi: 'Oppija', hetu: '300994-9694', oppilaitos: 'Helsingin', tutkinto: 'Autoalan perust'}, {}, params)
       return function() {
         return pageApi.setInputValue('.etunimet input', params.etunimet)()
           .then(pageApi.setInputValue('.kutsumanimi input', params.kutsumanimi))
@@ -56,12 +56,12 @@ function AddOppijaPage() {
     submit: function() {
       triggerEvent(button(), 'click')
     },
-    submitAndExpectSuccess: function(oppija) {
+    submitAndExpectSuccess: function(oppija, tutkinto) {
+      tutkinto = tutkinto || "Autoalan perustutkinto"
       return function() {
         api.submit()
         return wait.until(function() {
-          // TODO, fix tutkinto check
-          return TorPage().getSelectedOppija().indexOf(oppija) >= 0 && (OpinnotPage().getTutkinto().indexOf("Autoalan") >= 0)
+          return TorPage().getSelectedOppija().indexOf(oppija) >= 0 && (OpinnotPage().getTutkinto().indexOf(tutkinto) >= 0)
         })()
       }
     },

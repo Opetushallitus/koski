@@ -138,7 +138,7 @@ describe('TOR', function() {
     return function() {
       return prepareForNewOppija(username, searchString)()
         .then(addOppija.enterValidData(oppijaData))
-        .then(addOppija.submitAndExpectSuccess(oppijaData.hetu))
+        .then(addOppija.submitAndExpectSuccess(oppijaData.hetu, oppijaData.tutkinto))
     }
   }
 
@@ -146,7 +146,7 @@ describe('TOR', function() {
     describe('Olemassa olevalle henkilölle', function() {
 
       describe('Kun lisätään uusi opinto-oikeus', function() {
-        before(addNewOppija('kalle', 'Tunkkila', { etunimet: 'Tero Terde', kutsumanimi: 'Terde', sukunimi: 'Tunkkila', hetu: '091095-9833', oppilaitos: 'Helsingin', tutkinto: 'auto'}))
+        before(addNewOppija('kalle', 'Tunkkila', { etunimet: 'Tero Terde', kutsumanimi: 'Terde', sukunimi: 'Tunkkila', hetu: '091095-9833', oppilaitos: 'Helsingin', tutkinto: 'Autoalan'}))
 
         it('Onnistuu, näyttää henkilöpalvelussa olevat nimitiedot', function() {
           expect(page.getSelectedOppija()).to.equal('tunkkila-fagerlund, tero petteri gustaf 091095-9833')
@@ -154,7 +154,7 @@ describe('TOR', function() {
       })
 
       describe('Kun lisätään opinto-oikeus, joka henkilöllä on jo olemassa', function() {
-        before(addNewOppija('kalle', 'kalle', { etunimet: 'Eero Adolf', kutsumanimi: 'Eero', sukunimi: 'Esimerkki', hetu: '010101-123N', oppilaitos: 'Helsingin', tutkinto: 'auto'}))
+        before(addNewOppija('kalle', 'kalle', { etunimet: 'Eero Adolf', kutsumanimi: 'Eero', sukunimi: 'Esimerkki', hetu: '010101-123N', oppilaitos: 'Helsingin', tutkinto: 'Autoalan'}))
 
         it('Näytetään olemassa oleva tutkinto', function() {
           expect(page.getSelectedOppija()).to.equal(eero)
@@ -186,7 +186,7 @@ describe('TOR', function() {
         })
 
         describe('Kun painetaan Lisää-nappia', function() {
-          before(addOppija.submitAndExpectSuccess('Oppija, Ossi Olavi 300994-9694'))
+          before(addOppija.submitAndExpectSuccess('Oppija, Ossi Olavi 300994-9694', 'Autoalan perustutkinto'))
 
           it('lisätty oppija näytetään', function() {})
 
