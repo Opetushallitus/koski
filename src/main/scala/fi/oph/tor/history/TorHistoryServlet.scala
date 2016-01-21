@@ -1,13 +1,13 @@
 package fi.oph.tor.history
 
+import fi.oph.tor.servlet.{NoCache, InvalidRequestException, ErrorHandlingServlet}
 import fi.oph.tor.toruser.{RequiresAuthentication, UserOrganisationsRepository}
-import fi.oph.tor.{ErrorHandlingServlet, InvalidRequestException}
 import fi.vm.sade.security.ldap.DirectoryClient
 import fi.vm.sade.utils.slf4j.Logging
 import org.json4s.jackson.JsonMethods
 
 class TorHistoryServlet(val userRepository: UserOrganisationsRepository, val directoryClient: DirectoryClient, val historyRepository: OpiskeluoikeusHistoryRepository)
-  extends ErrorHandlingServlet with Logging with RequiresAuthentication with JsonMethods {
+  extends ErrorHandlingServlet with Logging with RequiresAuthentication with JsonMethods with NoCache {
 
   get("/:id") {
     renderOption {

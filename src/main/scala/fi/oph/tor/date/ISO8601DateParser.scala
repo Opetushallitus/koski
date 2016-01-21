@@ -1,8 +1,7 @@
 package fi.oph.tor.date
 
 import java.util.Date
-
-import fi.oph.tor.InvalidRequestException
+import fi.oph.tor.servlet.InvalidRequestException
 import org.joda.time.DateTime
 
 object ISO8601DateParser {

@@ -1,4 +1,4 @@
-package fi.oph.tor
+package fi.oph.tor.servlet
 
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.json.Json

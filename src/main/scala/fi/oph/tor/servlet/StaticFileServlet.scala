@@ -1,4 +1,4 @@
-package fi.oph.tor
+package fi.oph.tor.servlet
 
 import java.util.Properties
 

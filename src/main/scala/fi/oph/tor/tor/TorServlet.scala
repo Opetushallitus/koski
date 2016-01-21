@@ -10,8 +10,8 @@ import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.json.{Json, JsonStreamWriter}
 import fi.oph.tor.schema.Henkilö.Oid
 import fi.oph.tor.schema.{HenkilöWithOid, FullHenkilö, Henkilö, TorOppija}
+import fi.oph.tor.servlet.{InvalidRequestException, ErrorHandlingServlet, NoCache, CacheControlSupport}
 import fi.oph.tor.toruser.{RequiresAuthentication, UserOrganisationsRepository}
-import fi.oph.tor.{ErrorHandlingServlet, InvalidRequestException}
 import fi.vm.sade.security.ldap.DirectoryClient
 import fi.vm.sade.utils.slf4j.Logging
 import org.scalatra.{FutureSupport, GZipSupport}
@@ -20,7 +20,7 @@ import scala.concurrent.Future
 import scala.concurrent.duration.Duration
 
 class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: UserOrganisationsRepository, val directoryClient: DirectoryClient, val validator: TorValidator, val historyRepository: OpiskeluoikeusHistoryRepository)
-  extends ErrorHandlingServlet with Logging with RequiresAuthentication with GlobalExecutionContext with FutureSupport with GZipSupport {
+  extends ErrorHandlingServlet with Logging with RequiresAuthentication with GlobalExecutionContext with FutureSupport with GZipSupport with NoCache {
 
   put("/") {
     withJsonBody { parsedJson =>

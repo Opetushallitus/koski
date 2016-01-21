@@ -1,6 +1,7 @@
-package fi.oph.tor
+package fi.oph.tor.servlet
 
 import java.net.URL
+
 import org.scalatra.ScalatraServlet
 
 class StaticResourceServlet(path: String) extends ScalatraServlet {

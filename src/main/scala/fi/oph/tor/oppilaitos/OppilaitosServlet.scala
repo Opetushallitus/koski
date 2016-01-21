@@ -1,7 +1,7 @@
 package fi.oph.tor.oppilaitos
 
-import fi.oph.tor.ErrorHandlingServlet
 import fi.oph.tor.json.Json
+import fi.oph.tor.servlet.ErrorHandlingServlet
 import fi.oph.tor.toruser.{RequiresAuthentication, UserOrganisationsRepository}
 import fi.vm.sade.security.ldap.DirectoryClient
 

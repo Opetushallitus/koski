@@ -1,7 +1,7 @@
 package fi.oph.tor.schema
 
-import fi.oph.tor.ErrorHandlingServlet
 import fi.oph.tor.koodisto.{KoodistoKoodi, KoodistoPalvelu, KoodistoViite}
+import fi.oph.tor.servlet.ErrorHandlingServlet
 
 class SchemaDocumentationServlet(koodistoPalvelu: KoodistoPalvelu) extends ErrorHandlingServlet {
   get("/") {

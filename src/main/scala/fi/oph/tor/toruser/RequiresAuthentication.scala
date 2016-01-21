@@ -1,6 +1,6 @@
 package fi.oph.tor.toruser
 
-import fi.oph.tor.ErrorHandlingServlet
+import fi.oph.tor.servlet.ErrorHandlingServlet
 
 trait RequiresAuthentication extends ErrorHandlingServlet with AuthenticationSupport {
   def userRepository: UserOrganisationsRepository

@@ -1,7 +1,7 @@
 package fi.oph.tor.tutkinto
 
 import fi.oph.tor.json.Json
-import fi.oph.tor.{ErrorHandlingServlet, InvalidRequestException}
+import fi.oph.tor.servlet.{InvalidRequestException, ErrorHandlingServlet}
 
 class TutkintoServlet(tutkintoRepository: TutkintoRepository) extends ErrorHandlingServlet {
    get("/oppilaitos/:oppilaitosId") {

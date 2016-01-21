@@ -1,7 +1,7 @@
 package fi.oph.tor.toruser
 
-import fi.oph.tor.ErrorHandlingServlet
 import fi.oph.tor.json.Json
+import fi.oph.tor.servlet.ErrorHandlingServlet
 import fi.vm.sade.security.ldap.DirectoryClient
 
 class AuthenticationServlet(val directoryClient: DirectoryClient) extends ErrorHandlingServlet with AuthenticationSupport {
