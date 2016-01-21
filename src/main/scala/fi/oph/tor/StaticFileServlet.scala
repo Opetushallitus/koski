@@ -1,44 +1,46 @@
 package fi.oph.tor
 
-import java.io.File
 import java.util.Properties
 
+import fi.oph.tor.util.Files
 import org.scalatra.ScalatraServlet
-import scala.io.Source
 
-class SingleFileServlet(val resourcePath: String) extends StaticFileServlet {
-
+class SingleFileServlet(val resourcePath: String, matchedPaths: Seq[String], statusCode: Int = 200) extends StaticFileServlet {
+  matchedPaths.foreach { path =>
+    get(path) {
+      status = 404
+      serveStaticFileIfExists(resourcePath)
+    }
+  }
 }
 
-class MultiFileServlet extends StaticFileServlet {
-  def resourcePath =
-    splatPath.isEmpty match {
-      case true  => request.getServletPath
-      case false => request.getServletPath + "/" + splatPath
-    }
-
-  private def splatPath = multiParams("splat").head
-
+class DirectoryServlet extends StaticFileServlet {
+  get("/*") {
+    val splatPath = multiParams("splat").head
+    val resourcePath =
+      splatPath.isEmpty match {
+        case true  => request.getServletPath
+        case false => request.getServletPath + "/" + splatPath
+      }
+    serveStaticFileIfExists(resourcePath)
+  }
 }
 
 trait StaticFileServlet extends ScalatraServlet {
-  get("/*") {
-    new File(resourcePath).exists() match {
-      case true =>
-        val staticFileContent = Source.fromFile(resourcePath).takeWhile(_ != -1).map(_.toByte).toArray
-        contentType = StaticFileServlet.resolveContentType(resourcePath)
-        staticFileContent
-      case false =>
-        halt(404)
-    }
+  def serveStaticFileIfExists(resourcePath: String) = Files.asByteArray(resourcePath) match {
+    case Some(bytes) =>
+      contentType = StaticFileServlet.resolveContentType(resourcePath)
+      bytes
+    case None =>
+      halt(404)
   }
-
-  def resourcePath: String
 }
 
 object StaticFileServlet {
   private val properties: Properties = new Properties()
   properties.load(classOf[StaticFileServlet].getResourceAsStream("/mime.properties"))
+
+
 
   def resolveContentType(resourcePath: String) = {
     val extension = properties.get(suffix(resourcePath))

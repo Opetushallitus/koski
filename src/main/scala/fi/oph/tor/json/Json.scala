@@ -6,6 +6,7 @@ import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
 import fi.oph.tor.eperusteet.RakenneOsaSerializer
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.schema._
+import fi.oph.tor.util.Files
 import org.json4s
 import org.json4s.JsonAST.{JInt, JNull, JString}
 import org.json4s.ext.JodaTimeSerializers
@@ -53,16 +54,10 @@ object Json {
 
 
   def readFile(filename: String): json4s.JValue = {
-    parse(scala.io.Source.fromFile(filename).mkString)
+    readFileIfExists(filename).get
   }
 
-  def readFileIfExists(filename: String): Option[json4s.JValue] = {
-    if (new File(filename).exists()) {
-      Some(Json.readFile(filename))
-    } else {
-      None
-    }
-  }
+  def readFileIfExists(filename: String): Option[json4s.JValue] = Files.asString(filename).map(parse(_))
 
   def writeFile(filename: String, json: AnyRef) = {
     import java.nio.charset.StandardCharsets
