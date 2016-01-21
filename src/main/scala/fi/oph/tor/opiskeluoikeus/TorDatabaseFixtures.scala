@@ -4,16 +4,15 @@ import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.db.Tables._
 import fi.oph.tor.db.TorDatabase._
 import fi.oph.tor.db._
-import fi.oph.tor.koodisto.{KoodistoViitePalvelu, MockKoodistoPalvelu}
-import fi.oph.tor.opiskeluoikeus.OpiskeluOikeusTestData.opiskeluOikeus
+import fi.oph.tor.koodisto.KoodistoViitePalvelu
 import fi.oph.tor.oppija.{MockOppijat, VerifiedOppijaOid}
-import fi.oph.tor.organisaatio.MockOrganisaatioRepository
+import fi.oph.tor.organisaatio.OrganisaatioRepository
 import fi.oph.tor.schema._
 import fi.oph.tor.toruser.MockUsers
 import fi.vm.sade.utils.Timer
 import slick.dbio.DBIO
 
-class TorDatabaseFixtureCreator(database: TorDatabase, repository: OpiskeluOikeusRepository) extends Futures with GlobalExecutionContext {
+class TorDatabaseFixtureCreator(database: TorDatabase, repository: OpiskeluOikeusRepository, opiskeluOikeusTestData: OpiskeluOikeusTestData) extends Futures with GlobalExecutionContext {
   def resetFixtures: Unit = Timer.timed("resetFixtures", 10) {
     if (database.config.isRemote) throw new IllegalStateException("Trying to reset fixtures in remote database")
     implicit val user = MockUsers.kalle.asTorUser
@@ -28,17 +27,17 @@ class TorDatabaseFixtureCreator(database: TorDatabase, repository: OpiskeluOikeu
   }
 
   private def defaultOpiskeluOikeudet = {
-    List((MockOppijat.eero.oid, opiskeluOikeus("1")),
-      (MockOppijat.eerola.oid, opiskeluOikeus("1")),
-      (MockOppijat.teija.oid, opiskeluOikeus("1")),
-      (MockOppijat.markkanen.oid, opiskeluOikeus("3")))
+    List((MockOppijat.eero.oid, opiskeluOikeusTestData.opiskeluOikeus("1")),
+      (MockOppijat.eerola.oid, opiskeluOikeusTestData.opiskeluOikeus("1")),
+      (MockOppijat.teija.oid, opiskeluOikeusTestData.opiskeluOikeus("1")),
+      (MockOppijat.markkanen.oid, opiskeluOikeusTestData.opiskeluOikeus("3")))
   }
 }
 
-object OpiskeluOikeusTestData {
+class OpiskeluOikeusTestData(organisaatioRepository: OrganisaatioRepository, koodistoViitePalvelu: KoodistoViitePalvelu) {
   def opiskeluOikeus(oppilaitosId: String, koulutusKoodi: Int = 351301) = {
-    val oppilaitos: OidOrganisaatio = MockOrganisaatioRepository.getOrganisaatio(oppilaitosId).get
-    val koulutusKoodiViite = KoodistoViitePalvelu(MockKoodistoPalvelu).getKoodistoKoodiViite("koulutus", koulutusKoodi.toString).get
+    val oppilaitos: OidOrganisaatio = organisaatioRepository.getOrganisaatio(oppilaitosId).get
+    val koulutusKoodiViite = koodistoViitePalvelu.getKoodistoKoodiViite("koulutus", koulutusKoodi.toString).get
 
     OpiskeluOikeus(
       None,

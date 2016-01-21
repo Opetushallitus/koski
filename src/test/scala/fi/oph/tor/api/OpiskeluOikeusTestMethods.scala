@@ -2,10 +2,15 @@ package fi.oph.tor.api
 
 import fi.oph.tor.json.Json
 import fi.oph.tor.json.Json._
+import fi.oph.tor.koodisto.{KoodistoViitePalvelu, MockKoodistoPalvelu}
+import fi.oph.tor.opiskeluoikeus.OpiskeluOikeusTestData
+import fi.oph.tor.organisaatio.MockOrganisaatioRepository
 import org.json4s._
 import org.scalatest.Matchers
 
 trait OpiskeluOikeusTestMethods extends HttpSpecification with Matchers {
+
+  val opiskeluoikeusTestdata = new OpiskeluOikeusTestData(MockOrganisaatioRepository, KoodistoViitePalvelu(MockKoodistoPalvelu))
   val oppijaPath = "/api/oppija"
 
   val defaultHenkilö = toJValue(Map(

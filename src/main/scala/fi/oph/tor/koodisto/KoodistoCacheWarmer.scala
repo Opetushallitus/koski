@@ -10,17 +10,9 @@ object KoodistoCacheWarmer extends Logging {
 
     val cacheStrategy: CacheAll = TorCache.cacheStrategy
     val cached = CachingProxy(cacheStrategy, koodistoPalvelu)
-
-      new ScheduledThreadPoolExecutor(1).scheduleAtFixedRate(new Runnable {
-        def run(): Unit = {
-          Timer.timed("Warming up koodisto caches") {
-            MockKoodistoPalvelu.koodistot.foreach { koodisto =>
-              cached.getLatestVersion(koodisto).foreach(cached.getKoodistoKoodit(_))
-            }
-          }
-        }
-      }, 0, cacheStrategy.durationSeconds, TimeUnit.SECONDS)
-
+    MockKoodistoPalvelu.koodistot.foreach { koodisto =>
+      cached.getLatestVersion(koodisto).foreach(cached.getKoodistoKoodit(_))
+    }
     cached
   }
 }

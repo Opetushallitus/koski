@@ -11,7 +11,7 @@ import fi.oph.tor.fixture.Fixtures
 import fi.oph.tor.history.OpiskeluoikeusHistoryRepository
 import fi.oph.tor.koodisto.{KoodistoCacheWarmer, KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.tor.log.TimedProxy
-import fi.oph.tor.opiskeluoikeus.{OpiskeluOikeusRepository, PostgresOpiskeluOikeusRepository, TorDatabaseFixtureCreator}
+import fi.oph.tor.opiskeluoikeus.{OpiskeluOikeusTestData, OpiskeluOikeusRepository, PostgresOpiskeluOikeusRepository, TorDatabaseFixtureCreator}
 import fi.oph.tor.oppija.OppijaRepository
 import fi.oph.tor.oppilaitos.OppilaitosRepository
 import fi.oph.tor.organisaatio.OrganisaatioRepository
@@ -45,6 +45,6 @@ class TorApplication(val config: Config) {
 
   def resetFixtures = if(Fixtures.shouldUseFixtures(config)) {
     oppijaRepository.resetFixtures
-    new TorDatabaseFixtureCreator(database, opiskeluOikeusRepository).resetFixtures
+    new TorDatabaseFixtureCreator(database, opiskeluOikeusRepository, new OpiskeluOikeusTestData(organisaatioRepository, koodistoViitePalvelu)).resetFixtures
   }
 }

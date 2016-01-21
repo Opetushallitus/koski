@@ -78,7 +78,7 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
 
   def createOpiskeluOikeus = {
     resetFixtures
-    val opiskeluOikeus = OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.helsinginAmmattiOpisto.oid, koulutusKoodi = 351161)
+    val opiskeluOikeus = opiskeluoikeusTestdata.opiskeluOikeus(MockOrganisaatiot.helsinginAmmattiOpisto.oid, koulutusKoodi = 351161)
     createOrUpdate(opiskeluOikeus)
     lastOpiskeluOikeus(oppija.oid)
   }

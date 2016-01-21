@@ -20,20 +20,16 @@ object OppijaRepository {
   }
 }
 
-class OppijaRepositoryCachingStrategy extends CachingStrategyBase(durationSeconds = 60, maxSize = 1000) {
-  def apply(invocation: Invocation): AnyRef = {
-    invocation.method.getName match {
-      case "findByOid" =>
-        invokeAndPossiblyStore(invocation) {
-          case Some(_) => true
-          case _ => false
-        }
-      case "findOppijat" =>
-        invokeAndStore(invocation)
-      case _ => invocation.invoke
+class OppijaRepositoryCachingStrategy extends CachingStrategyBase(durationSeconds = 60, maxSize = 1000, {
+  case (invocation, value) => invocation.method.getName match {
+    case "findByOid" => value match {
+      case Some(_) => true
+      case _ => false
     }
+    case "findOppijat" => true
+    case _ => false
   }
-}
+})
 
 trait OppijaRepository extends Logging {
   def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String): Either[HttpStatus, Henkilö.Oid]
