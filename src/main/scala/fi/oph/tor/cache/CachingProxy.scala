@@ -1,11 +1,11 @@
 package fi.oph.tor.cache
 
 import java.util.concurrent.Executors.newFixedThreadPool
-import java.util.concurrent.{Callable, Executors, TimeUnit}
+import java.util.concurrent.{Callable, TimeUnit}
 
 import com.google.common.cache.{CacheBuilder, CacheLoader, LoadingCache}
 import com.google.common.util.concurrent.MoreExecutors.listeningDecorator
-import com.google.common.util.concurrent.{MoreExecutors, JdkFutureAdapters, ListenableFuture, UncheckedExecutionException}
+import com.google.common.util.concurrent.{ListenableFuture, UncheckedExecutionException}
 import fi.oph.tor.cache.CachingProxy.executorService
 import fi.oph.tor.util.{Invocation, Proxy}
 import fi.vm.sade.utils.slf4j.Logging
