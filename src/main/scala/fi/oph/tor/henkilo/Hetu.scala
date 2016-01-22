@@ -1,5 +1,6 @@
 package fi.oph.tor.henkilo
 
+import java.time.LocalDate.{now, of => date}
 import java.time.{DateTimeException, LocalDate}
 
 import fi.oph.tor.http.HttpStatus.badRequest
@@ -29,8 +30,8 @@ object Hetu {
       }
       try {
         century.flatMap { century =>
-          val birthday: LocalDate = LocalDate.of(century + hetu.slice(4, 6).toInt, hetu.slice(2, 4).toInt, hetu.slice(0, 2).toInt)
-          if (birthday.isBefore(LocalDate.now)) Some(hetu) else None
+          val birthday: LocalDate = date(century + hetu.slice(4, 6).toInt, hetu.slice(2, 4).toInt, hetu.slice(0, 2).toInt)
+          if (birthday.isBefore(now)) Some(hetu) else None
         } match {
           case Some(_) => Right(hetu)
           case None => Left(badRequest("Syntymäpäivä hetussa: " + hetu + " on tulevaisuudessa"))

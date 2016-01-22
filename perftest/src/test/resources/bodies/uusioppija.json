@@ -1,0 +1,40 @@
+[{"content":
+{
+  "opiskeluoikeudet" : [ {
+    "lähdejärjestelmänId" : {
+      "id" : "847823465",
+      "lähdejärjestelmä" : {
+        "koodiarvo" : "winnova",
+        "nimi" : "Winnova",
+        "koodistoUri" : "lahdejarjestelma",
+        "koodistoVersio" : 1
+      }
+    },
+    "alkamispäivä" : "2016-09-01",
+    "arvioituPäättymispäivä" : "2020-05-01",
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.52251087186",
+      "nimi" : "Stadin ammattiopisto"
+    },
+    "suoritus" : {
+      "paikallinenId" : "suoritus-12345",
+      "koulutusmoduulitoteutus" : {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "351301",
+            "nimi" : "Autoalan perustutkinto",
+            "koodistoUri" : "koulutus"
+          },
+          "perusteenDiaarinumero" : "39/011/2014"
+        }
+      },
+      "alkamispäivä" : "2016-09-01",
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.42456023292",
+        "nimi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+      }
+    }
+  } ]
+}
+}]
+
