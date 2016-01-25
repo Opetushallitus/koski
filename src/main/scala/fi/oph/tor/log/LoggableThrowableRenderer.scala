@@ -11,6 +11,7 @@ class LoggableThrowableRenderer extends ThrowableRenderer {
   override def doRender(t: Throwable): Array[String] = ExceptionUtils.getRootCause(t) match {
     case t: Loggable => omitStackTrace(t)
     case t: java.util.concurrent.TimeoutException => omitStackTrace(t)
+    case t: java.sql.SQLTimeoutException => omitStackTrace(t)
     case _ => renderer.doRender(t)
   }
 
