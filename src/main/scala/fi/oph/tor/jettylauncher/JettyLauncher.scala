@@ -12,11 +12,10 @@ object JettyLauncher extends App {
 }
 
 class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) {
-  lazy val requestLog = new Slf4jRequestLog()
-  server.setRequestLog(requestLog);
-
   lazy val threadPool = new QueuedThreadPool(20, 10);
   lazy val server = new Server(threadPool)
+  lazy val requestLog = new Slf4jRequestLog()
+  server.setRequestLog(requestLog);
   lazy val connector: ServerConnector = new ServerConnector(server)
   connector.setPort(port)
   server.addConnector(connector)
