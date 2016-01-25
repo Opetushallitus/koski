@@ -9,6 +9,9 @@ import org.scalatra.ScalatraServlet
 
 trait ErrorHandlingServlet extends ScalatraServlet with Logging {
   def withJsonBody(block: JValue => Any) = {
+    if (request.getContentType != "application/json") {
+      halt(415, "Only application/json content type allowed")
+    }
     val json = try {
       Some(org.json4s.jackson.JsonMethods.parse(request.body))
     } catch {

@@ -39,6 +39,15 @@ class TorOppijaApiValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
         (verifyResponseStatus(400, "Invalid JSON")))
     }
 
+    describe("Väärä Content-Type") {
+      it("palautetaan HTTP 415") {
+
+        put("api/oppija", body = Json.write(makeOppija(defaultHenkilö, List(defaultOpiskeluOikeus))), headers = authHeaders() ++ Map(("Content-type" -> "text/plain"))) {
+          verifyResponseStatus(415, "Only application/json content type allowed")
+        }
+      }
+    }
+
     describe("Kun yritetään lisätä opinto-oikeus virheelliseen perusteeseen") {
       it("palautetaan HTTP 400 virhe" ) {
         putOpiskeluOikeus(Map(
