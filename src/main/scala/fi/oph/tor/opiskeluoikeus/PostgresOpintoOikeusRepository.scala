@@ -77,14 +77,21 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
   }
 
   override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: OpiskeluOikeus)(implicit user: TorUser): Either[HttpStatus, CreateOrUpdateResult] = {
-    if (!user.userOrganisations.hasReadAccess(opiskeluOikeus.oppilaitos)) {
-      Left(HttpStatus.forbidden("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid))
-    } else {
+    def tryCreateOrUpdate: Either[HttpStatus, CreateOrUpdateResult] = {
       try {
         await(db.run(createOrUpdateAction(oppijaOid, opiskeluOikeus)))
       } catch {
-        case e:SQLException if e.getSQLState == "40001" => Left(HttpStatus.conflict("Oppijan " + oppijaOid + " opiskeluoikeuden muutos epäonnistui samanaikaisten muutoksien vuoksi."))
+        case e:SQLException if e.getSQLState == "40001" =>
+          logger.warn("Oppijan " + oppijaOid + " opiskeluoikeuden lisäys/muutos epäonnistui samanaikaisten muutoksien vuoksi. Yritetään uudelleen.")
+          tryCreateOrUpdate
+          //Left(HttpStatus.conflict("Oppijan " + oppijaOid + " opiskeluoikeuden muutos epäonnistui samanaikaisten muutoksien vuoksi."))
       }
+    }
+
+    if (!user.userOrganisations.hasReadAccess(opiskeluOikeus.oppilaitos)) {
+      Left(HttpStatus.forbidden("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid))
+    } else {
+      tryCreateOrUpdate
     }
   }
 
