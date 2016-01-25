@@ -9,7 +9,8 @@ object MockOrganisaatiot {
     helsinginAmmattiOpisto,
     OrganisaatioHierarkia("2", "Metropolia Helsinki", List("OPPILAITOS"), Nil),
     omnomnia,
-    OrganisaatioHierarkia("1.2.246.562.10.52251087186", "Stadin Ammattiopisto", List("OPPILAITOS"), Nil)
+    OrganisaatioHierarkia("1.2.246.562.10.52251087186", "Stadin Ammattiopisto", List("OPPILAITOS"), Nil),
+    OrganisaatioHierarkia("1.2.246.562.10.37144658251", "Winnova", List("OPPILAITOS"), Nil)
   )
 
   val organisaatiot = oppilaitokset ++ List(OrganisaatioHierarkia("1.2.246.562.10.346830761110", "Helsingin kaupunki", List("KOULUTUSTOIMIJA"), Nil))
