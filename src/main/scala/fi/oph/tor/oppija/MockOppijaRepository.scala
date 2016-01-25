@@ -32,7 +32,7 @@ class MockOppijat(private var oppijat: List[FullHenkilö] = Nil) {
 
   def getOppijat = oppijat
 
-  private def generateId(): String = {
+  private def generateId(): String = this.synchronized {
     idCounter = idCounter + 1
     "1.2.246.562.24.0000000000" + idCounter
   }
