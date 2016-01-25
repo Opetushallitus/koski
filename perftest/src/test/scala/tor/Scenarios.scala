@@ -36,7 +36,7 @@ trait QueryOppijatScenario extends TorScenario {
 }
 
 trait InsertOrUpdateScenario extends TorScenario {
-  def insertOrUpdate(name: String, body: Body) = http(name).put("/api/oppija").body(body).asJSON.basicAuth(username, password).check(status.in(200, 409))
+  def insertOrUpdate(name: String, body: Body) = http(name).put("/api/oppija").body(body).asJSON.basicAuth(username, password).check(status.in(200))
 }
 
 trait UpdateOppijaScenario extends InsertOrUpdateScenario {
