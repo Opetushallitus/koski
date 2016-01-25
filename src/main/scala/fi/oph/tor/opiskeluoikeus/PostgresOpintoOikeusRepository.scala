@@ -21,10 +21,11 @@ import org.json4s.{JArray, JValue}
 import org.json4s.jackson.JsonMethods
 import rx.lang.scala.Observable
 import slick.dbio
+import slick.dbio.{NoStream, Effect}
 import slick.dbio.Effect.{Transactional, Read, Write}
 import slick.jdbc.TransactionIsolation
 
-class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: OpiskeluoikeusHistoryRepository) extends OpiskeluOikeusRepository with Futures with GlobalExecutionContext with Logging {
+class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: OpiskeluoikeusHistoryRepository) extends OpiskeluOikeusRepository with Futures with GlobalExecutionContext with Logging with SerializableTransactions {
   // Note: this is a naive implementation. All filtering should be moved to query-level instead of in-memory-level
   override def filterOppijat(oppijat: Seq[FullHenkilö])(implicit user: TorUser) = {
     val query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = for {
@@ -76,22 +77,12 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     }
   }
 
-  override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: OpiskeluOikeus)(implicit user: TorUser): Either[HttpStatus, CreateOrUpdateResult] = {
-    def tryCreateOrUpdate: Either[HttpStatus, CreateOrUpdateResult] = {
-      try {
-        await(db.run(createOrUpdateAction(oppijaOid, opiskeluOikeus)))
-      } catch {
-        case e:SQLException if e.getSQLState == "40001" =>
-          logger.warn("Oppijan " + oppijaOid + " opiskeluoikeuden lisäys/muutos epäonnistui samanaikaisten muutoksien vuoksi. Yritetään uudelleen.")
-          tryCreateOrUpdate
-          //Left(HttpStatus.conflict("Oppijan " + oppijaOid + " opiskeluoikeuden muutos epäonnistui samanaikaisten muutoksien vuoksi."))
-      }
-    }
 
+  override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: OpiskeluOikeus)(implicit user: TorUser): Either[HttpStatus, CreateOrUpdateResult] = {
     if (!user.userOrganisations.hasReadAccess(opiskeluOikeus.oppilaitos)) {
       Left(HttpStatus.forbidden("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid))
     } else {
-      tryCreateOrUpdate
+      doInIsolatedTransaction(db, createOrUpdateAction(oppijaOid, opiskeluOikeus), "Oppijan " + oppijaOid + " opiskeluoikeuden lisäys/muutos")
     }
   }
 
@@ -133,13 +124,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
           }
         case Left(err) => DBIO.successful(Left(err))
       }
-    }.transactionally.withTransactionIsolation(TransactionIsolation.Serializable)
-    /*
-    1. transactionally = if any part fails, rollback everything. For example, if new version cannot be written to history table, insert/update must be rolled back.
-    2. withTransactionIsolation(Serializable) = another concurrent transaction must not be allowed for the same row. otherwise, version history would be messed up.
-
-    This mechanism is tested with Gatling simulation "UpdateSimulation" which causes concurrent updates to the same row.
-    */
+    }
   }
 
   private def createAction(oppijaOid: String, opiskeluOikeus: OpiskeluOikeus)(implicit user: TorUser): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Write] = {
