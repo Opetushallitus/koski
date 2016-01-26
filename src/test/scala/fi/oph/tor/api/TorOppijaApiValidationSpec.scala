@@ -1,10 +1,7 @@
 package fi.oph.tor.api
 
-import java.time.LocalDate
-
 import fi.oph.tor.json.Json
-import fi.oph.tor.json.Json.toJValue
-import fi.oph.tor.schema.TorOppija
+import fi.oph.tor.toruser.MockUsers
 import org.scalatest.FunSpec
 
 class TorOppijaApiValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
@@ -19,12 +16,19 @@ class TorOppijaApiValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
 
     describe("Kun opinto-oikeutta yritetään lisätä oppilaitokseen, johon käyttäjällä ei ole pääsyä") {
       it("palautetaan HTTP 403 virhe" ) { putOpiskeluOikeus(Map(
-          "oppilaitos" -> Map("oid" -> "1.2.246.562.10.346830761110"))
-        )(verifyResponseStatus(403, "Ei oikeuksia organisatioon 1.2.246.562.10.346830761110"))
+          "oppilaitos" -> Map("oid" -> "1.2.246.562.10.37144658251")), headers = authHeaders(MockUsers.hiiri) ++ jsonContent
+        )(verifyResponseStatus(403, "Ei oikeuksia organisatioon 1.2.246.562.10.37144658251"))
+      }}
+
+    describe("Kun opinto-oikeutta yritetään lisätä oppilaitokseen, joka ei ole oppilaitos") {
+      it("palautetaan HTTP 400 virhe" ) { putOpiskeluOikeus(Map(
+        "oppilaitos" -> Map("oid" -> "1.2.246.562.10.346830761110"))
+      )(verifyResponseStatus(400, "Organisaatio 1.2.246.562.10.346830761110 ei ole Oppilaitos"))
       }}
 
     describe("Kun opinto-oikeutta yritetään lisätä oppilaitokseen, jota ei löydy organisaatiopalvelusta") {
-      it("palautetaan HTTP 400 virhe" ) (putOpiskeluOikeus(Map("oppilaitos" -> Map("oid" -> "tuuba")))
+      it("palautetaan HTTP 400 virhe" ) (putOpiskeluOikeus(Map(
+        "oppilaitos" -> Map("oid" -> "tuuba")))
         (verifyResponseStatus(400, "Organisaatiota tuuba ei löydy organisaatiopalvelusta")))
     }
 

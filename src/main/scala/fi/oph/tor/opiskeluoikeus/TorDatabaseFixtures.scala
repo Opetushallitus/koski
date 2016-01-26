@@ -36,7 +36,7 @@ class TorDatabaseFixtureCreator(database: TorDatabase, repository: OpiskeluOikeu
 
 class OpiskeluOikeusTestData(organisaatioRepository: OrganisaatioRepository, koodistoViitePalvelu: KoodistoViitePalvelu) {
   def opiskeluOikeus(oppilaitosId: String, koulutusKoodi: Int = 351301) = {
-    val oppilaitos: OidOrganisaatio = organisaatioRepository.getOrganisaatio(oppilaitosId).get
+    val oppilaitos: Oppilaitos = organisaatioRepository.getOrganisaatio(oppilaitosId).get.asInstanceOf[Oppilaitos]
     val koulutusKoodiViite = koodistoViitePalvelu.getKoodistoKoodiViite("koulutus", koulutusKoodi.toString).get
 
     OpiskeluOikeus(

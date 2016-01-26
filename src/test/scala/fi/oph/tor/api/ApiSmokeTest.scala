@@ -21,15 +21,5 @@ class ApiSmokeTest extends FreeSpec with Matchers with HttpSpecification {
         }
       }
     }
-
-    TorOppijaExamples.examples.foreach { example =>
-      "POST " + example.name in {
-        val body = Json.write(example.data).getBytes("utf-8")
-        put("api/oppija", body = body, headers = authHeaders() ++ jsonContent) {
-          verifyResponseStatus()
-          println(example.name + ": OK")
-        }
-      }
-    }
   }
 }

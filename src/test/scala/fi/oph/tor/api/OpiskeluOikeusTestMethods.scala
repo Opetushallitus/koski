@@ -73,8 +73,8 @@ trait OpiskeluOikeusTestMethods extends HttpSpecification with Matchers {
   }
 
 
-  def putOpiskeluOikeus[A](opiskeluOikeus: Map[String, Any], henkilö: JValue = defaultHenkilö)(f: => A) = {
-    putOppija(makeOppija(henkilö, List(defaultOpiskeluOikeus.merge(Json.toJValue(opiskeluOikeus)))))(f)
+  def putOpiskeluOikeus[A](opiskeluOikeus: Map[String, Any], henkilö: JValue = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A) = {
+    putOppija(makeOppija(henkilö, List(defaultOpiskeluOikeus.merge(Json.toJValue(opiskeluOikeus)))), headers)(f)
   }
 
   def putOppija[A](oppija: Map[String, AnyRef])(f: => A): Unit = {
@@ -82,9 +82,9 @@ trait OpiskeluOikeusTestMethods extends HttpSpecification with Matchers {
     putOppija(json)(f)
   }
 
-  def putOppija[A](oppija: JValue)(f: => A): A = {
+  def putOppija[A](oppija: JValue, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
     val jsonString = Json.write(oppija, true)
-    put("api/oppija", body = jsonString, headers = authHeaders() ++ jsonContent)(f)
+    put("api/oppija", body = jsonString, headers = headers)(f)
   }
 
   def request[A](path: String, contentType: String, content: String, method: String)(f: => A): Unit = {

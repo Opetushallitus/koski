@@ -8,16 +8,18 @@ import org.json4s._
 import org.json4s.reflect.TypeInfo
 
 object OrganisaatioResolvingDeserializer extends Deserializer[Organisaatio] with Logging {
-  val organisaatioClasses = List(classOf[Organisaatio], classOf[OidOrganisaatio], classOf[Tutkintotoimikunta], classOf[Yritys])
+  val OppilaitosClass = classOf[Oppilaitos]
+  val organisaatioClasses = List(classOf[Organisaatio], classOf[OrganisaatioWithOid], classOf[Oppilaitos], classOf[OidOrganisaatio], classOf[Tutkintotoimikunta], classOf[Yritys])
 
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Organisaatio] = {
     case (TypeInfo(c, _), json) if organisaatioClasses.contains(c) =>
       OrganisaatioDeserializer.deserialize(Json.jsonFormats)((TypeInfo(classOf[Organisaatio], None), json)) match {
-        case OidOrganisaatio(oid, _) =>
+        case o: OrganisaatioWithOid =>
           ContextualExtractor.getContext[{def organisaatioRepository: OrganisaatioRepository}] match {
-            case Some(context) => context.organisaatioRepository.getOrganisaatio(oid) match {
-              case Some(org) => org
-              case None => ContextualExtractor.extractionError(HttpStatus.badRequest("Organisaatiota " + oid + " ei löydy organisaatiopalvelusta"))
+            case Some(context) => context.organisaatioRepository.getOrganisaatio(o.oid) match {
+              case Some(org) if (c.isInstance(org)) => org
+              case Some(org) => ContextualExtractor.extractionError(HttpStatus.badRequest("Organisaatio " + o.oid + " ei ole " + c.getSimpleName))
+              case None => ContextualExtractor.extractionError(HttpStatus.badRequest("Organisaatiota " + o.oid + " ei löydy organisaatiopalvelusta"))
             }
           }
         case org => org

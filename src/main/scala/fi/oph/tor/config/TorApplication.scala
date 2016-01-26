@@ -30,7 +30,7 @@ object TorApplication {
 }
 
 class TorApplication(val config: Config) {
-  lazy val organisaatioRepository: OrganisaatioRepository = OrganisaatioRepository(config)
+  lazy val organisaatioRepository: OrganisaatioRepository = OrganisaatioRepository(config, koodistoViitePalvelu)
   lazy val directoryClient: DirectoryClient = DirectoryClientFactory.directoryClient(config)
   lazy val tutkintoRepository = CachingProxy(cacheAllRefresh(3600, 100), TutkintoRepository(EPerusteetRepository.apply(config), arviointiAsteikot, koodistoViitePalvelu))
   lazy val oppilaitosRepository = new OppilaitosRepository

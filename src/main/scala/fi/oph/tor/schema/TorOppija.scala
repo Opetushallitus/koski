@@ -73,7 +73,7 @@ case class OpiskeluOikeus(
   @Description("Opiskelijan opiskeluoikeuden päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
   päättymispäivä: Option[LocalDate],
   @Description("Oppilaitos, jossa opinnot on suoritettu")
-  oppilaitos: OidOrganisaatio,
+  oppilaitos: Oppilaitos,
   @Description("Opiskeluoikeuteen liittyvän (tutkinto-)suorituksen tiedot")
   suoritus: Suoritus,
   hojks: Option[Hojks],
@@ -110,7 +110,7 @@ case class Suoritus(
   alkamispäivä: Option[LocalDate],
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
-  toimipiste: OidOrganisaatio,
+  toimipiste: OrganisaatioWithOid,
   @Description("Arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota")
   arviointi: Option[List[Arviointi]],
   vahvistus: Option[Vahvistus],
@@ -375,7 +375,20 @@ sealed trait Organisaatio
     @Description("Organisaation (kielistetty) nimi")
     @ReadOnly("Tiedon syötössä nimeä ei tarvita; kuvaus haetaan Organisaatiopalvelusta")
     nimi: Option[String] = None
-  ) extends Organisaatio
+  ) extends OrganisaatioWithOid
+
+  @Description("Opintopolun organisaatiopalvelusta löytyvä oppilaitos-tyyppinen organisaatio.")
+  case class Oppilaitos(
+     @Description("Organisaation tunniste Opintopolku-palvelussa")
+     oid: String,
+     @Description("5-numeroinen oppilaitosnumero, esimerkiksi 00001")
+     @ReadOnly("Tiedon syötössä oppilaitosnumeroa ei tarvita; numero haetaan Organisaatiopalvelusta")
+     @KoodistoUri("oppilaitosnumero")
+     oppilaitosnumero: Option[KoodistoKoodiViite] = None,
+     @Description("Organisaation (kielistetty) nimi")
+     @ReadOnly("Tiedon syötössä nimeä ei tarvita; kuvaus haetaan Organisaatiopalvelusta")
+     nimi: Option[String] = None
+  ) extends OrganisaatioWithOid
 
   @Description("Yritys, jolla on y-tunnus")
   case class Yritys(
@@ -388,3 +401,11 @@ sealed trait Organisaatio
     nimi: String,
     tutkintotoimikunnanNumero: Int
   ) extends Organisaatio
+
+trait OrganisaatioWithOid extends Organisaatio {
+  @Description("Organisaation tunniste Opintopolku-palvelussa")
+  def oid: String
+  @Description("Organisaation (kielistetty) nimi")
+  @ReadOnly("Tiedon syötössä nimeä ei tarvita; kuvaus haetaan Organisaatiopalvelusta")
+  def nimi: Option[String]
+}

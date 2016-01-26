@@ -10,7 +10,9 @@ import org.scalatra.test.HttpComponentsClient
 trait HttpSpecification extends HttpComponentsClient with Assertions with Matchers {
   SharedJetty.start
 
-  def authHeaders(user: MockUser = MockUsers.kalle): Map[String, String] = {
+  type Headers = Map[String, String]
+
+  def authHeaders(user: MockUser = MockUsers.kalle): Headers = {
     val auth: String = "Basic " + Base64.encode((user.username + ":" + user.username).getBytes("UTF8"))
     Map("Authorization" -> auth)
   }

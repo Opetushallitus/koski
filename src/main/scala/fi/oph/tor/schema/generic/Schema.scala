@@ -38,7 +38,7 @@ case class ClassSchema(fullClassName: String, properties: List[Property], overri
 case class ClassRefSchema(fullClassName: String, override val metadata: List[Metadata]) extends ElementSchema with SchemaWithClassName with ObjectWithMetadata[ClassRefSchema] {
   def replaceMetadata(metadata: List[Metadata]) = copy(metadata = metadata)
 }
-case class OneOfSchema(alternatives: List[SchemaWithClassName], fullClassName: String) extends ElementSchema with SchemaWithClassName {
+case class AnyOfSchema(alternatives: List[SchemaWithClassName], fullClassName: String) extends ElementSchema with SchemaWithClassName {
 }
 
 trait SchemaWithClassName extends Schema {

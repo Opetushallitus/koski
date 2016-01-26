@@ -26,7 +26,7 @@ case class SchemaFactory(annotationsSupported: List[AnnotationSupport]) {
       schemaTypeForScala.getOrElse(typeName, {
         if (tpe.typeSymbol.isClass) {
           if (tpe.typeSymbol.isAbstract) {
-            addToState(OneOfSchema(findImplementations(tpe, state), typeName), state)
+            addToState(AnyOfSchema(findImplementations(tpe, state), typeName), state)
           } else {
             createClassSchema(tpe, state)
           }
