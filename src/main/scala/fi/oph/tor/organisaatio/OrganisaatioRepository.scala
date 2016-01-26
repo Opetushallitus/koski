@@ -33,7 +33,7 @@ class RemoteOrganisaatioRepository(config: Config, koodisto: KoodistoViitePalvel
   val virkailijaClient = new VirkailijaHttpClient(config.getString("authentication-service.username"), config.getString("authentication-service.password"), config.getString("opintopolku.virkailija.url"), "/organisaatio-service")
 
   def getOrganisaatioHierarkiaIncludingParents(oid: String): Option[OrganisaatioHierarkia] = {
-    virkailijaClient.httpClient("/organisaatio-service/rest/organisaatio/v2/hierarkia/hae/tyyppi?aktiiviset=true&lakkautetut=false&oid=" + oid)(Http.parseJson[OrganisaatioHakuTulos])
+    virkailijaClient.httpClient("/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=false&oid=" + oid)(Http.parseJson[OrganisaatioHakuTulos])
       .run
       .organisaatiot.map(convertOrganisaatio)
       .headOption
