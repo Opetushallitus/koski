@@ -7,7 +7,7 @@ import fi.oph.tor.json.Json._
 import fi.oph.tor.schema.TorOppija
 import org.scalatest.{FunSpec, Matchers}
 
-class OppijaQuerySpec extends FunSpec with OpiskeluOikeusTestMethods with Matchers {
+class TorOppijaQuerySpec extends FunSpec with OpiskeluOikeusTestMethods with Matchers {
   describe("Kyselyrajapinta") {
     describe("Kun haku osuu") {
       it("palautetaan hakutulokset") {

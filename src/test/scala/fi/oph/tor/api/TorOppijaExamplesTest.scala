@@ -1,12 +1,10 @@
 package fi.oph.tor.api
 
-import fi.oph.tor.jettylauncher.SharedJetty
 import fi.oph.tor.json.Json
-import fi.oph.tor.oppija.MockOppijat
 import fi.oph.tor.schema.TorOppijaExamples
 import org.scalatest.{FreeSpec, Matchers}
 
-class ApiExamplesTest extends FreeSpec with Matchers with HttpSpecification {
+class TorOppijaExamplesTest extends FreeSpec with Matchers with HttpSpecification {
   "API examples" - {
     TorOppijaExamples.examples.foreach { example =>
       "POST " + example.name in {

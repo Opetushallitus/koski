@@ -15,6 +15,7 @@ import fi.oph.tor.opiskeluoikeus.{OpiskeluOikeusRepository, OpiskeluOikeusTestDa
 import fi.oph.tor.oppija.OppijaRepository
 import fi.oph.tor.oppilaitos.OppilaitosRepository
 import fi.oph.tor.organisaatio.OrganisaatioRepository
+import fi.oph.tor.tor.{TorValidator, ValidationAndResolvingContext}
 import fi.oph.tor.toruser.{DirectoryClientFactory, UserOrganisationsRepository}
 import fi.oph.tor.tutkinto.TutkintoRepository
 import fi.vm.sade.security.ldap.DirectoryClient
@@ -42,9 +43,10 @@ class TorApplication(val config: Config) {
   lazy val oppijaRepository = OppijaRepository(config, database)
   lazy val historyRepository = OpiskeluoikeusHistoryRepository(database.db)
   lazy val opiskeluOikeusRepository = TimedProxy[OpiskeluOikeusRepository](new PostgresOpiskeluOikeusRepository(database.db, historyRepository))
+  lazy val validator: TorValidator = new TorValidator(tutkintoRepository, koodistoViitePalvelu, organisaatioRepository)
 
   def resetFixtures = if(Fixtures.shouldUseFixtures(config)) {
     oppijaRepository.resetFixtures
-    new TorDatabaseFixtureCreator(database, opiskeluOikeusRepository, new OpiskeluOikeusTestData(organisaatioRepository, koodistoViitePalvelu)).resetFixtures
+    new TorDatabaseFixtureCreator(database, opiskeluOikeusRepository, validator).resetFixtures
   }
 }

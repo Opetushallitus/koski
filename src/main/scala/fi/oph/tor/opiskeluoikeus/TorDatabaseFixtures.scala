@@ -1,18 +1,18 @@
 package fi.oph.tor.opiskeluoikeus
 
-import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.db.Tables._
 import fi.oph.tor.db.TorDatabase._
 import fi.oph.tor.db._
-import fi.oph.tor.koodisto.KoodistoViitePalvelu
 import fi.oph.tor.oppija.{MockOppijat, VerifiedOppijaOid}
-import fi.oph.tor.organisaatio.{MockOrganisaatiot, OrganisaatioRepository}
+import fi.oph.tor.organisaatio.MockOrganisaatiot
 import fi.oph.tor.schema._
+import fi.oph.tor.tor.TorValidator
 import fi.oph.tor.toruser.MockUsers
 import fi.vm.sade.utils.Timer
 import slick.dbio.DBIO
+import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 
-class TorDatabaseFixtureCreator(database: TorDatabase, repository: OpiskeluOikeusRepository, opiskeluOikeusTestData: OpiskeluOikeusTestData) extends Futures with GlobalExecutionContext {
+class TorDatabaseFixtureCreator(database: TorDatabase, repository: OpiskeluOikeusRepository, validator: TorValidator) extends Futures with GlobalExecutionContext {
   def resetFixtures: Unit = Timer.timed("resetFixtures", 10) {
     if (database.config.isRemote) throw new IllegalStateException("Trying to reset fixtures in remote database")
     implicit val user = MockUsers.kalle.asTorUser
@@ -22,22 +22,24 @@ class TorDatabaseFixtureCreator(database: TorDatabase, repository: OpiskeluOikeu
     await(database.db.run(DBIO.sequence(deleteOpiskeluOikeudet)))
 
     defaultOpiskeluOikeudet.foreach { case (oid, oikeus) =>
-      repository.createOrUpdate(VerifiedOppijaOid(oid), oikeus)
+      validator.validateAsJson(TorOppija(OidHenkilö(oid), List(oikeus))) match {
+        case Right(oppija) => repository.createOrUpdate(VerifiedOppijaOid(oid), oppija.opiskeluoikeudet(0))
+      }
     }
   }
 
   private def defaultOpiskeluOikeudet = {
-    List((MockOppijat.eero.oid, opiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto)),
-      (MockOppijat.eerola.oid, opiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto)),
-      (MockOppijat.teija.oid, opiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto)),
-      (MockOppijat.markkanen.oid, opiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.omnomnia)))
+    List((MockOppijat.eero.oid, OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto)),
+      (MockOppijat.eerola.oid, OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto)),
+      (MockOppijat.teija.oid, OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto)),
+      (MockOppijat.markkanen.oid, OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.omnomnia)))
   }
 }
 
-class OpiskeluOikeusTestData(organisaatioRepository: OrganisaatioRepository, koodistoViitePalvelu: KoodistoViitePalvelu) {
-  def opiskeluOikeus(oppilaitosId: String, koulutusKoodi: Int = 351301) = {
-    val oppilaitos: Oppilaitos = organisaatioRepository.getOrganisaatio(oppilaitosId).get.asInstanceOf[Oppilaitos]
-    val koulutusKoodiViite = koodistoViitePalvelu.getKoodistoKoodiViite("koulutus", koulutusKoodi.toString).get
+object OpiskeluOikeusTestData {
+  def opiskeluOikeus(oppilaitosId: String, koulutusKoodi: Int = 351301): OpiskeluOikeus = {
+    val oppilaitos: Oppilaitos = Oppilaitos(oppilaitosId, None, None)
+    val koulutusKoodiViite = KoodistoKoodiViite(koulutusKoodi.toString, None, "koulutus", None)
 
     OpiskeluOikeus(
       None,

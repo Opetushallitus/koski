@@ -3,14 +3,13 @@ package fi.oph.tor.api
 import fi.oph.tor.json.Json
 import fi.oph.tor.json.Json._
 import fi.oph.tor.koodisto.{KoodistoViitePalvelu, MockKoodistoPalvelu}
-import fi.oph.tor.opiskeluoikeus.OpiskeluOikeusTestData
-import fi.oph.tor.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
+import fi.oph.tor.organisaatio.MockOrganisaatiot
+import fi.oph.tor.schema.{FullHenkilö, OpiskeluOikeus, TorOppija}
 import org.json4s._
 import org.scalatest.Matchers
 
 trait OpiskeluOikeusTestMethods extends HttpSpecification with Matchers {
   val koodisto: KoodistoViitePalvelu = KoodistoViitePalvelu(MockKoodistoPalvelu)
-  val opiskeluoikeusTestdata = new OpiskeluOikeusTestData(new MockOrganisaatioRepository(koodisto), koodisto)
   val oppijaPath = "/api/oppija"
 
   val defaultHenkilö = toJValue(Map(
@@ -89,5 +88,23 @@ trait OpiskeluOikeusTestMethods extends HttpSpecification with Matchers {
 
   def request[A](path: String, contentType: String, content: String, method: String)(f: => A): Unit = {
     submit(method, path, body = content.getBytes("UTF-8"), headers = authHeaders() ++ jsonContent) (f)
+  }
+
+  def createOrUpdate(oppija: FullHenkilö, opiskeluOikeus: OpiskeluOikeus, check: => Unit = { verifyResponseStatus(200) }) = {
+    putOppija(Json.toJValue(TorOppija(oppija, List(opiskeluOikeus))))(check)
+    lastOpiskeluOikeus(oppija.oid)
+  }
+
+  def createOpiskeluOikeus(oppija: FullHenkilö, opiskeluOikeus: OpiskeluOikeus) = {
+    resetFixtures
+    createOrUpdate(oppija, opiskeluOikeus)
+    lastOpiskeluOikeus(oppija.oid)
+  }
+
+  def lastOpiskeluOikeus(oppijaOid: String) = {
+    authGet("api/oppija/" + oppijaOid) {
+      verifyResponseStatus(200)
+      Json.read[TorOppija](body).opiskeluoikeudet.last
+    }
   }
 }

@@ -4,7 +4,7 @@ import fi.oph.tor.json.Json
 import fi.oph.tor.toruser.MockUsers
 import org.scalatest.FunSpec
 
-class TorOppijaApiValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
+class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
   describe("Opiskeluoikeuden lisääminen") {
     describe("Valideilla tiedoilla") {
       it("palautetaan HTTP 200") {
