@@ -1,8 +1,8 @@
 package fi.oph.tor.cache
 
+import java.util.concurrent.Callable
 import java.util.concurrent.Executors.newFixedThreadPool
 import java.util.concurrent.TimeUnit.SECONDS
-import java.util.concurrent.{Callable, TimeUnit}
 
 import com.google.common.cache.{CacheBuilder, CacheLoader, LoadingCache}
 import com.google.common.util.concurrent.MoreExecutors.listeningDecorator
@@ -36,15 +36,8 @@ object NoCache extends CachingStrategy {
   override def apply(invocation: Invocation) = invocation.invoke
 }
 
-case class CacheAllRefresh(durationSeconds: Int, maxSize: Int) extends CachingStrategyBase(new BaseCacheDetails(durationSeconds, maxSize) {
-  override def refreshing: Boolean = true
-  override def storeValuePredicate: (Invocation, AnyRef) => Boolean = (invocation, value) => true
-})
-
-case class CacheAllNoRefresh(durationSeconds: Int, maxSize: Int) extends CachingStrategyBase(new BaseCacheDetails(durationSeconds, maxSize) {
-  override def storeValuePredicate = (invocation, value) => true
-  override def refreshing = false
-})
+case class CacheAllRefresh(durationSeconds: Int, maxSize: Int) extends CachingStrategyBase(CacheAllCacheDetails(durationSeconds, maxSize, true))
+case class CacheAllNoRefresh(durationSeconds: Int, maxSize: Int) extends CachingStrategyBase(CacheAllCacheDetails(durationSeconds, maxSize, false))
 
 abstract class CachingStrategyBase(cacheDetails: CacheDetails) extends CachingStrategy with Logging {
   /**
@@ -102,3 +95,7 @@ trait CacheDetails {
 }
 
 abstract case class BaseCacheDetails(durationSeconds: Int, maxSize: Int) extends CacheDetails
+
+case class CacheAllCacheDetails(durationSeconds: Int, maxSize: Int, refreshing: Boolean) extends CacheDetails {
+  override def storeValuePredicate: (Invocation, AnyRef) => Boolean = (invocation, value) => true
+}
