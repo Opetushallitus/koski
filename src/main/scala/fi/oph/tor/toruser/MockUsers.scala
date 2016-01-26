@@ -1,6 +1,7 @@
 package fi.oph.tor.toruser
 
-import fi.oph.tor.organisaatio.{MockOrganisaatiot, OrganisaatioHierarkia, InMemoryOrganisaatioRepository}
+import fi.oph.tor.koodisto.{KoodistoViitePalvelu, MockKoodistoPalvelu}
+import fi.oph.tor.organisaatio.{InMemoryOrganisaatioRepository, MockOrganisaatioRepository, MockOrganisaatiot, OrganisaatioHierarkia}
 import fi.vm.sade.security.ldap.{DirectoryClient, LdapUser}
 
 object MockUsers extends UserOrganisationsRepository with DirectoryClient {
@@ -11,8 +12,10 @@ object MockUsers extends UserOrganisationsRepository with DirectoryClient {
     def username = ldapUser.givenNames
   }
 
-  val kalle = MockUser(LdapUser(List(), "käyttäjä", "kalle", "12345"), MockOrganisaatiot.oppilaitokset)
-  val hiiri = MockUser(LdapUser(List(), "käyttäjä", "hiiri", "11111"), List(MockOrganisaatiot.omnomnia))
+  val mockOrganisaatioRepository = new MockOrganisaatioRepository(KoodistoViitePalvelu(MockKoodistoPalvelu))
+
+  val kalle = MockUser(LdapUser(List(), "käyttäjä", "kalle", "12345"), MockOrganisaatiot.oppilaitokset.flatMap(mockOrganisaatioRepository.getOrganisaatioHierarkia(_)))
+  val hiiri = MockUser(LdapUser(List(), "käyttäjä", "hiiri", "11111"), List(MockOrganisaatiot.omnomnia).flatMap(mockOrganisaatioRepository.getOrganisaatioHierarkia(_)))
 
   val users = List(kalle, hiiri)
 

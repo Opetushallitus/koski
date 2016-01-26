@@ -27,10 +27,10 @@ class TorDatabaseFixtureCreator(database: TorDatabase, repository: OpiskeluOikeu
   }
 
   private def defaultOpiskeluOikeudet = {
-    List((MockOppijat.eero.oid, opiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto.oid)),
-      (MockOppijat.eerola.oid, opiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto.oid)),
-      (MockOppijat.teija.oid, opiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto.oid)),
-      (MockOppijat.markkanen.oid, opiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.omnomnia.oid)))
+    List((MockOppijat.eero.oid, opiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto)),
+      (MockOppijat.eerola.oid, opiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto)),
+      (MockOppijat.teija.oid, opiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto)),
+      (MockOppijat.markkanen.oid, opiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.omnomnia)))
   }
 }
 

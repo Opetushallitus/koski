@@ -16,8 +16,8 @@ class TorOppijaApiValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
 
     describe("Kun opinto-oikeutta yritetään lisätä oppilaitokseen, johon käyttäjällä ei ole pääsyä") {
       it("palautetaan HTTP 403 virhe" ) { putOpiskeluOikeus(Map(
-          "oppilaitos" -> Map("oid" -> "1.2.246.562.10.37144658251")), headers = authHeaders(MockUsers.hiiri) ++ jsonContent
-        )(verifyResponseStatus(403, "Ei oikeuksia organisatioon 1.2.246.562.10.37144658251"))
+          "oppilaitos" -> Map("oid" -> "1.2.246.562.10.93135224694")), headers = authHeaders(MockUsers.hiiri) ++ jsonContent
+        )(verifyResponseStatus(403, "Ei oikeuksia organisatioon 1.2.246.562.10.93135224694"))
       }}
 
     describe("Kun opinto-oikeutta yritetään lisätä oppilaitokseen, joka ei ole oppilaitos") {

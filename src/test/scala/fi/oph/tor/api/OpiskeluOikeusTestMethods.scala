@@ -4,13 +4,13 @@ import fi.oph.tor.json.Json
 import fi.oph.tor.json.Json._
 import fi.oph.tor.koodisto.{KoodistoViitePalvelu, MockKoodistoPalvelu}
 import fi.oph.tor.opiskeluoikeus.OpiskeluOikeusTestData
-import fi.oph.tor.organisaatio.{MockOrganisaatiot, MockOrganisaatioRepository}
+import fi.oph.tor.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
 import org.json4s._
 import org.scalatest.Matchers
 
 trait OpiskeluOikeusTestMethods extends HttpSpecification with Matchers {
-
-  val opiskeluoikeusTestdata = new OpiskeluOikeusTestData(MockOrganisaatioRepository, KoodistoViitePalvelu(MockKoodistoPalvelu))
+  val koodisto: KoodistoViitePalvelu = KoodistoViitePalvelu(MockKoodistoPalvelu)
+  val opiskeluoikeusTestdata = new OpiskeluOikeusTestData(new MockOrganisaatioRepository(koodisto), koodisto)
   val oppijaPath = "/api/oppija"
 
   val defaultHenkilö = toJValue(Map(
@@ -26,7 +26,7 @@ trait OpiskeluOikeusTestMethods extends HttpSpecification with Matchers {
   ))
 
   val defaultOpiskeluOikeus: JValue = toJValue(Map(
-    "oppilaitos" ->  Map("oid" ->  MockOrganisaatiot.stadinAmmattiopisto.oid),
+    "oppilaitos" ->  Map("oid" ->  MockOrganisaatiot.stadinAmmattiopisto),
     "suoritus" ->  Map(
       "koulutusmoduulitoteutus" ->  Map(
         "koulutusmoduuli" ->  Map(

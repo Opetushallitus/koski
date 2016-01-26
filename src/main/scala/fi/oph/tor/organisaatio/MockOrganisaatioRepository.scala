@@ -1,21 +1,36 @@
 package fi.oph.tor.organisaatio
 
-import fi.oph.tor.schema.KoodistoKoodiViite
+import fi.oph.tor.json.Json
+import fi.oph.tor.koodisto.KoodistoViitePalvelu
+import fi.oph.tor.organisaatio.MockOrganisaatioRepository.filename
 
+// Testeissä käytetyt organisaatio-oidit
 object MockOrganisaatiot {
-  val omnomnia = OrganisaatioHierarkia("1.2.246.562.10.51720121923", Some(KoodistoKoodiViite("10054", None, "oppilaitosnumero", None)), "Omnian ammattiopisto", List("OPPILAITOS"), Nil)
-  val stadinAmmattiopisto = OrganisaatioHierarkia("1.2.246.562.10.52251087186", Some(KoodistoKoodiViite("10105", None, "oppilaitosnumero", None)), "Stadin ammattiopisto", List("OPPILAITOS"), List(
-    OrganisaatioHierarkia("1.2.246.562.10.42456023292", None, "Stadin ammattiopisto, Lehtikuusentien toimipaikka", List("TOIMIPISTE"), Nil)))
-  val winnova = OrganisaatioHierarkia("1.2.246.562.10.37144658251", Some(KoodistoKoodiViite("10095", None, "oppilaitosnumero", None)), "Winnova", List("OPPILAITOS"), Nil)
+  val omnomnia = "1.2.246.562.10.51720121923"
+  val stadinAmmattiopisto = "1.2.246.562.10.52251087186"
+  val winnova = "1.2.246.562.10.93135224694"
+  val helsinginKaupunki = "1.2.246.562.10.346830761110"
+  val lehtikuusentienToimipiste = "1.2.246.562.10.42456023292"
 
-  val oppilaitokset = List(
+  val oppilaitokset: List[String] = List(
     stadinAmmattiopisto,
     omnomnia,
     winnova
   )
 
-  val organisaatiot = oppilaitokset ++ List(OrganisaatioHierarkia("1.2.246.562.10.346830761110", None, "Helsingin kaupunki", List("KOULUTUSTOIMIJA"), Nil))
+  val organisaatiot: List[String] = oppilaitokset ++ List(helsinginKaupunki, lehtikuusentienToimipiste)
 }
 
-object MockOrganisaatioRepository extends InMemoryOrganisaatioRepository(MockOrganisaatiot.organisaatiot) {
+class MockOrganisaatioRepository(koodisto: KoodistoViitePalvelu) extends JsonOrganisaatioRepository(koodisto) {
+  override def fetch(oid: String) = {
+    Json.readFileIfExists(filename(oid))
+      .map(json => Json.fromJValue[OrganisaatioHakuTulos](json))
+      .getOrElse(OrganisaatioHakuTulos(Nil))
+  }
+}
+
+object MockOrganisaatioRepository {
+  def filename(oid: String): String = {
+    "src/main/resources/mockdata/organisaatio/hierarkia/" + oid + ".json"
+  }
 }

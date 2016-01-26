@@ -1,0 +1,53 @@
+{
+  "organisaatiot" : [ {
+    "oid" : "1.2.246.562.10.82246911869",
+    "nimi" : {
+      "fi" : "Länsirannikon Koulutus Oy"
+    },
+    "organisaatiotyypit" : [ "KOULUTUSTOIMIJA" ],
+    "children" : [ {
+      "oid" : "1.2.246.562.10.93135224694",
+      "nimi" : {
+        "fi" : "WinNova"
+      },
+      "oppilaitosKoodi" : "10095",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ {
+        "oid" : "1.2.246.562.10.49344459547",
+        "nimi" : {
+          "fi" : "WinNova,  Pori"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.27838422122",
+        "nimi" : {
+          "fi" : "WinNova, Ulvila"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.685934967610",
+        "nimi" : {
+          "fi" : "WinNova,  Rauma"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.37917254387",
+        "nimi" : {
+          "fi" : "WinNova,  Laitila"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.56700555198",
+        "nimi" : {
+          "fi" : "WinNova,  TTS Rajamäki"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      } ]
+    } ]
+  } ]
+}

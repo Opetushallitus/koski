@@ -1,0 +1,1455 @@
+{
+  "organisaatiot" : [ {
+    "oid" : "1.2.246.562.10.346830761110",
+    "nimi" : {
+      "fi" : "HELSINGIN KAUPUNKI",
+      "sv" : "Helsingfors stad"
+    },
+    "organisaatiotyypit" : [ "KOULUTUSTOIMIJA" ],
+    "children" : [ {
+      "oid" : "1.2.246.562.10.88831567503",
+      "nimi" : {
+        "sv" : "Åshöjdens grundskola"
+      },
+      "oppilaitosKoodi" : "03108",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.94248350061",
+      "nimi" : {
+        "fi" : "Etu-Töölön lukio"
+      },
+      "oppilaitosKoodi" : "00845",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ {
+        "oid" : "1.2.246.562.10.79836180327",
+        "nimi" : {
+          "fi" : "Etu-Töölön lukio"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      } ]
+    }, {
+      "oid" : "1.2.246.562.10.20600034795",
+      "nimi" : {
+        "fi" : "Puistolanraitin ala-aste"
+      },
+      "oppilaitosKoodi" : "03036",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.16790925842",
+      "nimi" : {
+        "fi" : "Sibelius-lukio"
+      },
+      "oppilaitosKoodi" : "00089",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ {
+        "oid" : "1.2.246.562.10.23082783798",
+        "nimi" : {
+          "fi" : "Sibelius-lukio"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      } ]
+    }, {
+      "oid" : "1.2.246.562.10.92462901817",
+      "nimi" : {
+        "sv" : "Brändö lågstadieskola"
+      },
+      "oppilaitosKoodi" : "03059",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.23825235619",
+      "nimi" : {
+        "fi" : "Sophie Mannerheimin koulu"
+      },
+      "oppilaitosKoodi" : "03279",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.15514292604",
+      "nimi" : {
+        "fi" : "Yhtenäiskoulu"
+      },
+      "oppilaitosKoodi" : "03056",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.70430747819",
+      "nimi" : {
+        "fi" : "Santahaminan ala-aste"
+      },
+      "oppilaitosKoodi" : "03041",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.87276332597",
+      "nimi" : {
+        "fi" : "Munkkivuoren ala-aste"
+      },
+      "oppilaitosKoodi" : "03025",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.54336251563",
+      "nimi" : {
+        "fi" : "Helsingin luonnontiedelukio"
+      },
+      "oppilaitosKoodi" : "00081",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ {
+        "oid" : "1.2.246.562.10.27645807358",
+        "nimi" : {
+          "fi" : "Helsingin luonnontiedelukio",
+          "en" : "Helsinki Upper Secondary School of Natural Sciences"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      } ]
+    }, {
+      "oid" : "1.2.246.562.10.83119092639",
+      "nimi" : {
+        "fi" : "Haagan peruskoulu"
+      },
+      "oppilaitosKoodi" : "03004",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.710376781010",
+      "nimi" : {
+        "fi" : "Herttoniemen ala-aste"
+      },
+      "oppilaitosKoodi" : "03005",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.219284319610",
+      "nimi" : {
+        "fi" : "Heteniityn ala-aste"
+      },
+      "oppilaitosKoodi" : "03006",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.37062767191",
+      "nimi" : {
+        "fi" : "Katajanokan ala-aste"
+      },
+      "oppilaitosKoodi" : "03013",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.62813571973",
+      "nimi" : {
+        "fi" : "Meilahden ala-asteen koulu"
+      },
+      "oppilaitosKoodi" : "03021",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.66815744538",
+      "nimi" : {
+        "fi" : "Mellunmäen ala-aste"
+      },
+      "oppilaitosKoodi" : "03022",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.12770878911",
+      "nimi" : {
+        "fi" : "Metsolan ala-asteen koulu"
+      },
+      "oppilaitosKoodi" : "03023",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.408291119510",
+      "nimi" : {
+        "fi" : "Myllypuron ala-aste"
+      },
+      "oppilaitosKoodi" : "03027",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.62858797335",
+      "nimi" : {
+        "fi" : "Ressun lukio"
+      },
+      "oppilaitosKoodi" : "00082",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ {
+        "oid" : "1.2.246.562.10.311476331310",
+        "nimi" : {
+          "fi" : "Ressun lukio"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      } ]
+    }, {
+      "oid" : "1.2.246.562.10.95281215665",
+      "nimi" : {
+        "sv" : "Kottby lågstadieskola"
+      },
+      "oppilaitosKoodi" : "03064",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.35278868829",
+      "nimi" : {
+        "fi" : "Itäkeskuksen peruskoulu"
+      },
+      "oppilaitosKoodi" : "03039",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.65675757283",
+      "nimi" : {
+        "fi" : "Koskelan ala-aste"
+      },
+      "oppilaitosKoodi" : "03480",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.97620158317",
+      "nimi" : {
+        "fi" : "Helsingin kaupungin suomenkielinen työväenopisto"
+      },
+      "oppilaitosKoodi" : "02022",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.60856325513",
+      "nimi" : {
+        "fi" : "Kaisaniemen ala-aste"
+      },
+      "oppilaitosKoodi" : "03010",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.32812335316",
+      "nimi" : {
+        "fi" : "Mäkelänrinteen lukio"
+      },
+      "oppilaitosKoodi" : "00518",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ {
+        "oid" : "1.2.246.562.10.49976027711",
+        "nimi" : {
+          "fi" : "Mäkelänrinteen urheilulukio"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.23254228275",
+        "nimi" : {
+          "fi" : "Mäkelänrinteen lukio"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      } ]
+    }, {
+      "oid" : "1.2.246.562.10.89323843238",
+      "nimi" : {
+        "fi" : "Aleksis Kiven peruskoulu"
+      },
+      "oppilaitosKoodi" : "03002",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.65421348528",
+      "nimi" : {
+        "fi" : "Konalan ala-aste"
+      },
+      "oppilaitosKoodi" : "03014",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.69408568777",
+      "nimi" : {
+        "fi" : "Kallion lukio"
+      },
+      "oppilaitosKoodi" : "00255",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ {
+        "oid" : "1.2.246.562.10.591352080610",
+        "nimi" : {
+          "fi" : "Kallion lukio"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      } ]
+    }, {
+      "oid" : "1.2.246.562.10.85144460053",
+      "nimi" : {
+        "fi" : "Eläintarhan ala-aste"
+      },
+      "oppilaitosKoodi" : "03003",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.16138820036",
+      "nimi" : {
+        "fi" : "Maunulan ala-aste"
+      },
+      "oppilaitosKoodi" : "03020",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.129137462810",
+      "nimi" : {
+        "sv" : "Zacharias Topeliusskolan"
+      },
+      "oppilaitosKoodi" : "03340",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.37673948057",
+      "nimi" : {
+        "fi" : "Alppilan lukio"
+      },
+      "oppilaitosKoodi" : "00004",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ {
+        "oid" : "1.2.246.562.10.71323338948",
+        "nimi" : {
+          "fi" : "Alppilan lukio"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.28213894281",
+        "nimi" : {
+          "fi" : "Yhtenäiskoulun lukio, Yhtenäiskoulun lukio. Syksyllä 2015 Alppilan lukio ja Yhtenäiskoulun lukio yhdistyvät uudeksi lukioksi. Lukiotoiminta jatkuu Alppilan rakennuksessa"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      } ]
+    }, {
+      "oid" : "1.2.246.562.10.17856506963",
+      "nimi" : {
+        "sv" : "Tölö gymnasium"
+      },
+      "oppilaitosKoodi" : "00607",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ {
+        "oid" : "1.2.246.562.10.17885237424",
+        "nimi" : {
+          "sv" : "Tölö gymnasium, Tölö gymnasium"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      } ]
+    }, {
+      "oid" : "1.2.246.562.10.37359025816",
+      "nimi" : {
+        "sv" : "Grundskolan Norsen"
+      },
+      "oppilaitosKoodi" : "03105",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.73465750062",
+      "nimi" : {
+        "sv" : "Minervaskolan"
+      },
+      "oppilaitosKoodi" : "03069",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.89021672053",
+      "nimi" : {
+        "fi" : "Tehtaankadun ala-aste"
+      },
+      "oppilaitosKoodi" : "03048",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.48844897271",
+      "nimi" : {
+        "fi" : "Tahvonlahden ala-aste"
+      },
+      "oppilaitosKoodi" : "03045",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.68420499896",
+      "nimi" : {
+        "fi" : "Pohjois-Haagan ala-aste"
+      },
+      "oppilaitosKoodi" : "03049",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.56871178416",
+      "nimi" : {
+        "sv" : "Helsingfors stads svenska arbetarinstitut"
+      },
+      "oppilaitosKoodi" : "02046",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.52491748258",
+      "nimi" : {
+        "sv" : "Kronohagens lågstadieskola"
+      },
+      "oppilaitosKoodi" : "03065",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.19603059668",
+      "nimi" : {
+        "fi" : "Roihuvuoren ala-aste"
+      },
+      "oppilaitosKoodi" : "03040",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.20954004378",
+      "nimi" : {
+        "fi" : "Oulunkylän ala-aste"
+      },
+      "oppilaitosKoodi" : "03030",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.49419584708",
+      "nimi" : {
+        "fi" : "Naulakallion koulu"
+      },
+      "oppilaitosKoodi" : "03114",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.62908623192",
+      "nimi" : {
+        "fi" : "Ruoholahden ala-asteen koulu"
+      },
+      "oppilaitosKoodi" : "03662",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.88173977104",
+      "nimi" : {
+        "sv" : "Nordsjö lågstadieskola"
+      },
+      "oppilaitosKoodi" : "03674",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.43760068775",
+      "nimi" : {
+        "fi" : "Solakallion koulu"
+      },
+      "oppilaitosKoodi" : "03417",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.68522121315",
+      "nimi" : {
+        "fi" : "Maatullin ala-aste"
+      },
+      "oppilaitosKoodi" : "03295",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.80384983401",
+      "nimi" : {
+        "sv" : "Gymnasiet Lärkan"
+      },
+      "oppilaitosKoodi" : "00561",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ {
+        "oid" : "1.2.246.562.10.91645084392",
+        "nimi" : {
+          "sv" : "Gymnasiet Lärkan"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      } ]
+    }, {
+      "oid" : "1.2.246.562.10.61660033822",
+      "nimi" : {
+        "fi" : "Pihlajiston ala-aste"
+      },
+      "oppilaitosKoodi" : "03252",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.81017043621",
+      "nimi" : {
+        "fi" : "Helsingin aikuislukio"
+      },
+      "oppilaitosKoodi" : "00551",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ {
+        "oid" : "1.2.246.562.10.85381205757",
+        "nimi" : {
+          "fi" : "Helsingin aikuislukio, Keskustan toimipiste"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.20796784682",
+        "nimi" : {
+          "fi" : "Helsingin aikuislukio, Mäkelänrinteen toimipiste"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.51036135864",
+        "nimi" : {
+          "fi" : "Helsingin aikuislukio, Itä-Helsingin toimipiste"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      } ]
+    }, {
+      "oid" : "1.2.246.562.10.52251087186",
+      "nimi" : {
+        "fi" : "Stadin ammattiopisto"
+      },
+      "oppilaitosKoodi" : "10105",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ {
+        "oid" : "1.2.246.562.10.16538823663",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Sturenkadun toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.656909794910",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Prinsessantien toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.20485193278",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Vilppulantien toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.20866993056",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Kullervonkadun toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.84652193081",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto,  Latokartanontien toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.45854578546",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Myllypuron toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.55355715099",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Ilkantien toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.87383596399",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Onnentien toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.78321186062",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Savonkadun toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.56139411567",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Abraham Wetterin tien toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.879177258610",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Muotoilijankadun toimipaikka",
+          "en" : "Helsinki City College, Muotoilijankatu"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.93115250668",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Meritalon toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.60465978314",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Holkkitien toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.2013081415065445951365",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Elimäenkadun toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.2013081414535993849122",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Hitsaajankadun toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.42456023292",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto,  Lehtikuusentien toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      } ]
+    }, {
+      "oid" : "1.2.246.562.10.32673029982",
+      "nimi" : {
+        "fi" : "Torpparinmäen peruskoulu"
+      },
+      "oppilaitosKoodi" : "03705",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.99771916055",
+      "nimi" : {
+        "fi" : "Jakomäen peruskoulu"
+      },
+      "oppilaitosKoodi" : "03083",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.21458335409",
+      "nimi" : {
+        "fi" : "Pukinmäen peruskoulu"
+      },
+      "oppilaitosKoodi" : "03094",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.77789989744",
+      "nimi" : {
+        "fi" : "Kruununhaan yläaste"
+      },
+      "oppilaitosKoodi" : "03085",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.49352385402",
+      "nimi" : {
+        "fi" : "Länsi-Pasilan ala-aste"
+      },
+      "oppilaitosKoodi" : "03537",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.360908074910",
+      "nimi" : {
+        "fi" : "Kotinummen ala-aste"
+      },
+      "oppilaitosKoodi" : "03576",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.73073702364",
+      "nimi" : {
+        "fi" : "Töyrynummen ala-aste"
+      },
+      "oppilaitosKoodi" : "03578",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.66316783837",
+      "nimi" : {
+        "fi" : "Hietakummun ala-aste"
+      },
+      "oppilaitosKoodi" : "03605",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.75107619381",
+      "nimi" : {
+        "fi" : "Brahenpuiston koulu"
+      },
+      "oppilaitosKoodi" : "03710",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.13167387094",
+      "nimi" : {
+        "fi" : "Ylä-Malmin peruskoulu"
+      },
+      "oppilaitosKoodi" : "03103",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.89448991896",
+      "nimi" : {
+        "fi" : "Aurinkolahden peruskoulu"
+      },
+      "oppilaitosKoodi" : "03724",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.29053585914",
+      "nimi" : {
+        "fi" : "Sakarinmäen peruskoulu"
+      },
+      "oppilaitosKoodi" : "03763",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.44366527529",
+      "nimi" : {
+        "fi" : "Soinisen koulu"
+      },
+      "oppilaitosKoodi" : "03663",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.18031194469",
+      "nimi" : {
+        "sv" : "Brändö gymnasium"
+      },
+      "oppilaitosKoodi" : "00026",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.13644497953",
+      "nimi" : {
+        "fi" : "Pihkapuiston ala-aste"
+      },
+      "oppilaitosKoodi" : "03533",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.45227362626",
+      "nimi" : {
+        "fi" : "Tapanilan ala-aste"
+      },
+      "oppilaitosKoodi" : "03047",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.40146766007",
+      "nimi" : {
+        "sv" : "Staffansby lågstadieskola"
+      },
+      "oppilaitosKoodi" : "03068",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.90486344519",
+      "nimi" : {
+        "fi" : "Vartiokylän ala-aste"
+      },
+      "oppilaitosKoodi" : "03053",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.26008728672",
+      "nimi" : {
+        "fi" : "Vuosaaren ala-aste"
+      },
+      "oppilaitosKoodi" : "03055",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.70411521654",
+      "nimi" : {
+        "fi" : "Helsingin medialukio"
+      },
+      "oppilaitosKoodi" : "00648",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ {
+        "oid" : "1.2.246.562.10.62814364758",
+        "nimi" : {
+          "fi" : "Helsingin medialukio"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      } ]
+    }, {
+      "oid" : "1.2.246.562.10.753880051110",
+      "nimi" : {
+        "fi" : "Stadin aikuisopisto"
+      },
+      "oppilaitosKoodi" : "10106",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ {
+        "oid" : "1.2.246.562.10.92205866418",
+        "nimi" : {
+          "fi" : "Stadin aikuisopisto, Vilppulantien toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.46042225733",
+        "nimi" : {
+          "fi" : "Stadin aikuisopisto, Lehtikuusentien toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.47210582814",
+        "nimi" : {
+          "fi" : "Stadin aikuisopisto, Savonkadun toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.92658366894",
+        "nimi" : {
+          "fi" : "Stadin aikuisopisto, Pälkäneentien toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.89968360316",
+        "nimi" : {
+          "fi" : "Stadin aikuisopisto, Teollisuuskadun toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.567713888010",
+        "nimi" : {
+          "fi" : "Stadin aikuisopisto, Prinsessantien toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.86068546281",
+        "nimi" : {
+          "fi" : "Stadin aikuisopisto, Abraham Wetterin tien toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.81388460388",
+        "nimi" : {
+          "fi" : "Stadin aikuisopisto, Holkkitien toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.55669932745",
+        "nimi" : {
+          "fi" : "Stadin aikuisopisto, Koskelantien toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.89741166881",
+        "nimi" : {
+          "fi" : "Stadin aikuisopisto, Ilkantien toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.56351011434",
+        "nimi" : {
+          "fi" : "Stadin aikuisopisto, Kontulantien toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.86289775339",
+        "nimi" : {
+          "fi" : "Stadin aikuisopisto,  Latokartanontien toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.51247488297",
+        "nimi" : {
+          "fi" : "Stadin aikuisopisto, Meritalon toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.97745285282",
+        "nimi" : {
+          "fi" : "Stadin aikuisopisto, Hattulantien toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.27025473426",
+        "nimi" : {
+          "fi" : "Stadin aikuisopisto, Kullervonkadun toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.56014180583",
+        "nimi" : {
+          "fi" : "Stadin aikuisopisto, Myllypuron toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.264271235710",
+        "nimi" : {
+          "fi" : "Stadin aikuisopisto, Muotoilijankadun toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.61651962369",
+        "nimi" : {
+          "fi" : "Stadin aikuisopisto, Onnentien toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.920068084610",
+        "nimi" : {
+          "fi" : "Stadin aikuisopisto, Sturenkadun toimipaikka"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      } ]
+    }, {
+      "oid" : "1.2.246.562.10.26702362075",
+      "nimi" : {
+        "fi" : "Strömbergin ala-aste"
+      },
+      "oppilaitosKoodi" : "03716",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.66348550857",
+      "nimi" : {
+        "fi" : "Lauttasaaren ala-aste"
+      },
+      "oppilaitosKoodi" : "03026",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.88592529245",
+      "nimi" : {
+        "fi" : "Stadin oppisopimuskeskus"
+      },
+      "organisaatiotyypit" : [ "OPPISOPIMUSTOIMIPISTE" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.31158935853",
+      "nimi" : {
+        "fi" : "Kannelmäen peruskoulu"
+      },
+      "oppilaitosKoodi" : "03080",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.40992539946",
+      "nimi" : {
+        "fi" : "Pakilan yläaste"
+      },
+      "oppilaitosKoodi" : "03091",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.36149126496",
+      "nimi" : {
+        "fi" : "Poikkilaakson ala-asteen koulu"
+      },
+      "oppilaitosKoodi" : "03723",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.88337368331",
+      "nimi" : {
+        "fi" : "Helsingin kuvataidelukio"
+      },
+      "oppilaitosKoodi" : "00088",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ {
+        "oid" : "1.2.246.562.10.83935554432",
+        "nimi" : {
+          "fi" : "Helsingin kuvataidelukio"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      } ]
+    }, {
+      "oid" : "1.2.246.562.10.40541842577",
+      "nimi" : {
+        "fi" : "Helsingin kielilukio"
+      },
+      "oppilaitosKoodi" : "00670",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ {
+        "oid" : "1.2.246.562.10.35721630248",
+        "nimi" : {
+          "fi" : "Helsingin kielilukio"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      } ]
+    }, {
+      "oid" : "1.2.246.562.10.59904379811",
+      "nimi" : {
+        "fi" : "Vallilan ala-aste"
+      },
+      "oppilaitosKoodi" : "03051",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.65226026287",
+      "nimi" : {
+        "fi" : "Töölön ala-aste"
+      },
+      "oppilaitosKoodi" : "03050",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.13014742863",
+      "nimi" : {
+        "sv" : "Degerö lågstadieskola"
+      },
+      "oppilaitosKoodi" : "03607",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.87389198752",
+      "nimi" : {
+        "fi" : "Puistolan peruskoulu"
+      },
+      "oppilaitosKoodi" : "03577",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.523103998210",
+      "nimi" : {
+        "fi" : "Pikku-Huopalahden ala-aste"
+      },
+      "oppilaitosKoodi" : "03672",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.11591392557",
+      "nimi" : {
+        "fi" : "Meri-Rastilan ala-aste"
+      },
+      "oppilaitosKoodi" : "03630",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.77572658811",
+      "nimi" : {
+        "sv" : "Östersundom skola"
+      },
+      "oppilaitosKoodi" : "05676",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.52119158062",
+      "nimi" : {
+        "fi" : "Malminkartanon ala-aste"
+      },
+      "oppilaitosKoodi" : "03289",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.25392648983",
+      "nimi" : {
+        "fi" : "Vuosaaren lukio"
+      },
+      "oppilaitosKoodi" : "00915",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ {
+        "oid" : "1.2.246.562.10.25119380902",
+        "nimi" : {
+          "fi" : "Vuosaaren lukio"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      } ]
+    }, {
+      "oid" : "1.2.246.562.10.89869611601",
+      "nimi" : {
+        "fi" : "Keinutien ala-aste"
+      },
+      "oppilaitosKoodi" : "03251",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.72293621743",
+      "nimi" : {
+        "fi" : "Mustakiven ala-asteen koulu"
+      },
+      "oppilaitosKoodi" : "03668",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.566982754610",
+      "nimi" : {
+        "fi" : "Laajasalon peruskoulu"
+      },
+      "oppilaitosKoodi" : "03086",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.17803861685",
+      "nimi" : {
+        "fi" : "Suutarilan yläasteen koulu"
+      },
+      "oppilaitosKoodi" : "03087",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.49453945559",
+      "nimi" : {
+        "fi" : "Meilahden yläaste"
+      },
+      "oppilaitosKoodi" : "03088",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.92862711873",
+      "nimi" : {
+        "fi" : "Pihlajamäen ala-asteen koulu"
+      },
+      "oppilaitosKoodi" : "03033",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.64353470871",
+      "nimi" : {
+        "fi" : "Kulosaaren ala-aste"
+      },
+      "oppilaitosKoodi" : "03016",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.31767322691",
+      "nimi" : {
+        "fi" : "Kallion ala-aste"
+      },
+      "oppilaitosKoodi" : "03011",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.10794322841",
+      "nimi" : {
+        "fi" : "Pelimannin ala-aste"
+      },
+      "oppilaitosKoodi" : "03296",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.35761823505",
+      "nimi" : {
+        "fi" : "Myllypuron yläaste"
+      },
+      "oppilaitosKoodi" : "03089",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.83796475149",
+      "nimi" : {
+        "fi" : "Hiidenkiven peruskoulu"
+      },
+      "oppilaitosKoodi" : "03092",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.65693669254",
+      "nimi" : {
+        "fi" : "Ressun peruskoulu"
+      },
+      "oppilaitosKoodi" : "03096",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.43456854587",
+      "nimi" : {
+        "fi" : "Tehtaanpuiston yläaste"
+      },
+      "oppilaitosKoodi" : "03098",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.36665171769",
+      "nimi" : {
+        "fi" : "Vartiokylän yläaste"
+      },
+      "oppilaitosKoodi" : "03099",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.86476219893",
+      "nimi" : {
+        "fi" : "Vesalan yläaste"
+      },
+      "oppilaitosKoodi" : "03100",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.92749513369",
+      "nimi" : {
+        "fi" : "Vuosaaren peruskoulu"
+      },
+      "oppilaitosKoodi" : "03101",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.58258511441",
+      "nimi" : {
+        "fi" : "Karviaistien koulu"
+      },
+      "oppilaitosKoodi" : "03111",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.10989813968",
+      "nimi" : {
+        "fi" : "Toivolan koulu"
+      },
+      "oppilaitosKoodi" : "03112",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.23920811728",
+      "nimi" : {
+        "fi" : "Alppilan yläaste"
+      },
+      "oppilaitosKoodi" : "03079",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.30060246391",
+      "nimi" : {
+        "sv" : "Cygnaeus lågstadieskola"
+      },
+      "oppilaitosKoodi" : "03060",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.69372657218",
+      "nimi" : {
+        "fi" : "Puotilan ala-aste"
+      },
+      "oppilaitosKoodi" : "03038",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.83108300639",
+      "nimi" : {
+        "sv" : "Drumsö lågstadieskola"
+      },
+      "oppilaitosKoodi" : "03061",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.56587159379",
+      "nimi" : {
+        "fi" : "Pakilan ala-aste"
+      },
+      "oppilaitosKoodi" : "03032",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.39857975856",
+      "nimi" : {
+        "fi" : "Kontulan ala-aste"
+      },
+      "oppilaitosKoodi" : "03015",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.21612797031",
+      "nimi" : {
+        "fi" : "Outamon koulu"
+      },
+      "oppilaitosKoodi" : "03115",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.543428151210",
+      "nimi" : {
+        "fi" : "Arabian peruskoulu"
+      },
+      "oppilaitosKoodi" : "03743",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.55307037873",
+      "nimi" : {
+        "fi" : "Latokartanon peruskoulu"
+      },
+      "oppilaitosKoodi" : "03769",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.76382414894",
+      "nimi" : {
+        "fi" : "Käpylän peruskoulu"
+      },
+      "oppilaitosKoodi" : "03082",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.28739438803",
+      "nimi" : {
+        "sv" : "Hoplaxskolan"
+      },
+      "oppilaitosKoodi" : "03106",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.58978542221",
+      "nimi" : {
+        "sv" : "Månsas lågstadieskola"
+      },
+      "oppilaitosKoodi" : "03071",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.643666469710",
+      "nimi" : {
+        "fi" : "Laakavuoren ala-aste"
+      },
+      "oppilaitosKoodi" : "03579",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.55241970601",
+      "nimi" : {
+        "fi" : "Hertsikan ala-aste"
+      },
+      "oppilaitosKoodi" : "03664",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.91097209935",
+      "nimi" : {
+        "fi" : "Porolahden peruskoulu"
+      },
+      "oppilaitosKoodi" : "03035",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.72765269674",
+      "nimi" : {
+        "fi" : "Vesalan ala-aste"
+      },
+      "oppilaitosKoodi" : "03054",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.78026202594",
+      "nimi" : {
+        "fi" : "Snellmanin ala-aste"
+      },
+      "oppilaitosKoodi" : "03043",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.33062759635",
+      "nimi" : {
+        "fi" : "Suomenlinnan ala-asteen koulu"
+      },
+      "oppilaitosKoodi" : "03044",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.91809625618",
+      "nimi" : {
+        "fi" : "Kallahden peruskoulu"
+      },
+      "oppilaitosKoodi" : "03614",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.24059620476",
+      "nimi" : {
+        "fi" : "Suutarilan ala-aste"
+      },
+      "oppilaitosKoodi" : "03311",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.43872746664",
+      "nimi" : {
+        "fi" : "Paloheinän ala-aste"
+      },
+      "oppilaitosKoodi" : "03419",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.14163341135",
+      "nimi" : {
+        "fi" : "Siltamäen ala-aste"
+      },
+      "oppilaitosKoodi" : "03479",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.88150041346",
+      "nimi" : {
+        "sv" : "Botby grundskola"
+      },
+      "oppilaitosKoodi" : "03104",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.18293478162",
+      "nimi" : {
+        "fi" : "Munkkiniemen ala-asteen koulu"
+      },
+      "oppilaitosKoodi" : "03024",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.95136889433",
+      "nimi" : {
+        "fi" : "Pitäjänmäen peruskoulu"
+      },
+      "oppilaitosKoodi" : "03034",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.30839124705",
+      "nimi" : {
+        "fi" : "Taivallahden peruskoulu"
+      },
+      "oppilaitosKoodi" : "03046",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    }, {
+      "oid" : "1.2.246.562.10.71194935012",
+      "nimi" : {
+        "fi" : "Lemmilän koulu"
+      },
+      "oppilaitosKoodi" : "03113",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ ]
+    } ]
+  } ]
+}

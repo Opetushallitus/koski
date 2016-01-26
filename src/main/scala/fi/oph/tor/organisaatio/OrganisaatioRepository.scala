@@ -24,27 +24,36 @@ object OrganisaatioRepository {
     CachingProxy[OrganisaatioRepository](TorCache.cacheStrategy, TimedProxy(if (config.hasPath("opintopolku.virkailija.url")) {
       new RemoteOrganisaatioRepository(config, koodisto)
     } else {
-      MockOrganisaatioRepository
+      new MockOrganisaatioRepository(koodisto)
     }))
   }
 }
 
-class RemoteOrganisaatioRepository(config: Config, koodisto: KoodistoViitePalvelu) extends OrganisaatioRepository{
-  val virkailijaClient = new VirkailijaHttpClient(config.getString("authentication-service.username"), config.getString("authentication-service.password"), config.getString("opintopolku.virkailija.url"), "/organisaatio-service")
-
+abstract class JsonOrganisaatioRepository(koodisto: KoodistoViitePalvelu) extends OrganisaatioRepository {
   def getOrganisaatioHierarkiaIncludingParents(oid: String): Option[OrganisaatioHierarkia] = {
-    virkailijaClient.httpClient("/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=false&oid=" + oid)(Http.parseJson[OrganisaatioHakuTulos])
-      .run
-      .organisaatiot.map(convertOrganisaatio)
+   fetch(oid).organisaatiot.map(convertOrganisaatio)
       .headOption
   }
 
   private def convertOrganisaatio(org: OrganisaatioPalveluOrganisaatio): OrganisaatioHierarkia = {
     val oppilaitosnumero = org.oppilaitosKoodi.flatMap(oppilaitosnumero => koodisto.getKoodistoKoodiViite("oppilaitosnumero", oppilaitosnumero))
-    OrganisaatioHierarkia(org.oid, oppilaitosnumero, org.nimi("fi"), org.organisaatiotyypit, org.children.map(convertOrganisaatio))
+    val nimi: String = org.nimi.getOrElse("fi", org.oid)
+    OrganisaatioHierarkia(org.oid, oppilaitosnumero, nimi, org.organisaatiotyypit, org.children.map(convertOrganisaatio))
+  }
+
+  def fetch(oid: String): OrganisaatioHakuTulos
+}
+
+class RemoteOrganisaatioRepository(config: Config, koodisto: KoodistoViitePalvelu) extends JsonOrganisaatioRepository(koodisto) {
+  val virkailijaClient = new VirkailijaHttpClient(config.getString("authentication-service.username"), config.getString("authentication-service.password"), config.getString("opintopolku.virkailija.url"), "/organisaatio-service")
+
+  def fetch(oid: String): OrganisaatioHakuTulos = {
+    virkailijaClient.httpClient("/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=false&oid=" + oid)(Http.parseJson[OrganisaatioHakuTulos]).run
   }
 }
 
 case class OrganisaatioHakuTulos(organisaatiot: List[OrganisaatioPalveluOrganisaatio])
-case class OrganisaatioPalveluOrganisaatio(oid: String, nimi: Map[String, String], oppilaitosKoodi: Option[String], organisaatiotyypit: List[String], children: List[OrganisaatioPalveluOrganisaatio])
+case class OrganisaatioPalveluOrganisaatio(oid: String, nimi: Map[String, String], oppilaitosKoodi: Option[String], organisaatiotyypit: List[String], children: List[OrganisaatioPalveluOrganisaatio]) {
+
+}
 
