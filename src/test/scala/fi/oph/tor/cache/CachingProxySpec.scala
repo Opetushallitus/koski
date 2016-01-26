@@ -32,7 +32,7 @@ class CachingProxySpec extends FreeSpec with Matchers {
     }
   }
 
-  def makeCache(service: TestService) = CachingProxy[TestService](CachingStrategy.cacheAll(10, 1), service)
+  def makeCache(service: TestService) = CachingProxy[TestService](CachingStrategy.cacheAllRefresh(10, 1), service)
 
 }
 

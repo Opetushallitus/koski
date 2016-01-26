@@ -4,14 +4,14 @@ import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.tor.arvosana.ArviointiasteikkoRepository
 import fi.oph.tor.cache.CachingProxy
-import fi.oph.tor.cache.CachingStrategy.cacheAll
+import fi.oph.tor.cache.CachingStrategy.cacheAllRefresh
 import fi.oph.tor.db._
 import fi.oph.tor.eperusteet.EPerusteetRepository
 import fi.oph.tor.fixture.Fixtures
 import fi.oph.tor.history.OpiskeluoikeusHistoryRepository
-import fi.oph.tor.koodisto.{KoodistoCacheWarmer, KoodistoPalvelu, KoodistoViitePalvelu}
+import fi.oph.tor.koodisto.{KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.tor.log.TimedProxy
-import fi.oph.tor.opiskeluoikeus.{OpiskeluOikeusTestData, OpiskeluOikeusRepository, PostgresOpiskeluOikeusRepository, TorDatabaseFixtureCreator}
+import fi.oph.tor.opiskeluoikeus.{OpiskeluOikeusRepository, OpiskeluOikeusTestData, PostgresOpiskeluOikeusRepository, TorDatabaseFixtureCreator}
 import fi.oph.tor.oppija.OppijaRepository
 import fi.oph.tor.oppilaitos.OppilaitosRepository
 import fi.oph.tor.organisaatio.OrganisaatioRepository
@@ -32,7 +32,7 @@ object TorApplication {
 class TorApplication(val config: Config) {
   lazy val organisaatioRepository: OrganisaatioRepository = OrganisaatioRepository(config)
   lazy val directoryClient: DirectoryClient = DirectoryClientFactory.directoryClient(config)
-  lazy val tutkintoRepository = CachingProxy(cacheAll(3600, 100), TutkintoRepository(EPerusteetRepository.apply(config), arviointiAsteikot, koodistoViitePalvelu))
+  lazy val tutkintoRepository = CachingProxy(cacheAllRefresh(3600, 100), TutkintoRepository(EPerusteetRepository.apply(config), arviointiAsteikot, koodistoViitePalvelu))
   lazy val oppilaitosRepository = new OppilaitosRepository
   lazy val koodistoPalvelu = KoodistoPalvelu.apply(config)
   lazy val koodistoViitePalvelu = new KoodistoViitePalvelu(koodistoPalvelu)

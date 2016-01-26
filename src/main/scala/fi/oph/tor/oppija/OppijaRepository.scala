@@ -1,7 +1,7 @@
 package fi.oph.tor.oppija
 
 import com.typesafe.config.Config
-import fi.oph.tor.cache.{CachingStrategyBase, CachingProxy}
+import fi.oph.tor.cache.{BaseCacheDetails, CachingStrategyBase, CachingProxy}
 import fi.oph.tor.db.TorDatabase
 import fi.oph.tor.henkilo.{Hetu, AuthenticationServiceClient}
 import fi.oph.tor.http.HttpStatus
@@ -20,16 +20,18 @@ object OppijaRepository {
   }
 }
 
-class OppijaRepositoryCachingStrategy extends CachingStrategyBase(durationSeconds = 60, maxSize = 1000, {
-  case (invocation, value) => invocation.method.getName match {
-    case "findByOid" => value match {
-      case Some(_) => true
+class OppijaRepositoryCachingStrategy extends CachingStrategyBase(new BaseCacheDetails(60, 100) {
+  override def refreshing: Boolean = true
+  override def storeValuePredicate: (Invocation, AnyRef) => Boolean = {
+    case (invocation, value) => invocation.method.getName match {
+      case "findByOid" => value match {
+        case Some(_) => true
+        case _ => false
+      }
+      case "findOppijat" => true
       case _ => false
     }
-    case "findOppijat" => true
-    case _ => false
-  }
-})
+  }})
 
 trait OppijaRepository extends Logging {
   def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String): Either[HttpStatus, Henkilö.Oid]

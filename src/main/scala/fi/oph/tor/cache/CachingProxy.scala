@@ -1,6 +1,7 @@
 package fi.oph.tor.cache
 
 import java.util.concurrent.Executors.newFixedThreadPool
+import java.util.concurrent.TimeUnit.SECONDS
 import java.util.concurrent.{Callable, TimeUnit}
 
 import com.google.common.cache.{CacheBuilder, CacheLoader, LoadingCache}
@@ -27,21 +28,29 @@ trait CachingStrategy extends Function1[Invocation, AnyRef] {
 
 object CachingStrategy {
   def noCache = NoCache
-  def cacheAll(durationSeconds: Int, maxSize: Int) = CacheAll(durationSeconds, maxSize)
+  def cacheAllRefresh(durationSeconds: Int, maxSize: Int) = CacheAllRefresh(durationSeconds, maxSize)
+  def cacheAllNoRefresh(durationSeconds: Int, maxSize: Int) = CacheAllNoRefresh(durationSeconds, maxSize)
 }
 
 object NoCache extends CachingStrategy {
   override def apply(invocation: Invocation) = invocation.invoke
 }
 
-case class CacheAll(val durationSeconds: Int, val maxSize: Int) extends CachingStrategyBase(durationSeconds, maxSize, (invocation, value) => true) {
-}
+case class CacheAllRefresh(durationSeconds: Int, maxSize: Int) extends CachingStrategyBase(new BaseCacheDetails(durationSeconds, maxSize) {
+  override def refreshing: Boolean = true
+  override def storeValuePredicate: (Invocation, AnyRef) => Boolean = (invocation, value) => true
+})
 
-abstract class CachingStrategyBase(durationSeconds: Int, maxSize: Int, storeValuePredicate: (Invocation, AnyRef) => Boolean) extends CachingStrategy with Logging {
+case class CacheAllNoRefresh(durationSeconds: Int, maxSize: Int) extends CachingStrategyBase(new BaseCacheDetails(durationSeconds, maxSize) {
+  override def storeValuePredicate = (invocation, value) => true
+  override def refreshing = false
+})
+
+abstract class CachingStrategyBase(cacheDetails: CacheDetails) extends CachingStrategy with Logging {
   /**
    *  Marker exception that's used for preventing caching values that we don't want to cache.
    */
-  case class DoNotStoreException(val value: AnyRef) extends RuntimeException("Don't store this value!")
+  case class DoNotStoreException(value: AnyRef) extends RuntimeException("Don't store this value!")
 
   def apply(invocation: Invocation): AnyRef = {
     try {
@@ -56,7 +65,7 @@ abstract class CachingStrategyBase(durationSeconds: Int, maxSize: Int, storeValu
     val cacheLoader: CacheLoader[Invocation, AnyRef] = new CacheLoader[Invocation, AnyRef] {
       override def load(invocation:  Invocation): AnyRef = {
         val value = invocation.invoke
-        if (!storeValuePredicate(invocation, value)) {
+        if (!cacheDetails.storeValuePredicate(invocation, value)) {
           throw new DoNotStoreException(value)
         }
         value
@@ -70,13 +79,26 @@ abstract class CachingStrategyBase(durationSeconds: Int, maxSize: Int, storeValu
       }
     }
 
-    CacheBuilder
+    val cacheBuilder = CacheBuilder
       .newBuilder()
       .recordStats()
-      .refreshAfterWrite(durationSeconds, TimeUnit.SECONDS)
-      .maximumSize(maxSize)
-      .build(cacheLoader)
+      .maximumSize(cacheDetails.maxSize)
+
+    (if(cacheDetails.refreshing) {
+      cacheBuilder.refreshAfterWrite(cacheDetails.durationSeconds, SECONDS)
+    } else {
+      cacheBuilder.expireAfterWrite(cacheDetails.durationSeconds, SECONDS)
+    }).build(cacheLoader)
   }
 
   private def cacheKey(invocation: Invocation) = invocation.method.toString + invocation.args.mkString(",")
 }
+
+trait CacheDetails {
+  def durationSeconds: Int
+  def maxSize: Int
+  def storeValuePredicate: (Invocation, AnyRef) => Boolean
+  def refreshing: Boolean
+}
+
+abstract case class BaseCacheDetails(durationSeconds: Int, maxSize: Int) extends CacheDetails
