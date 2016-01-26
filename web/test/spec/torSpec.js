@@ -146,7 +146,7 @@ describe('TOR', function() {
     describe('Olemassa olevalle henkilölle', function() {
 
       describe('Kun lisätään uusi opinto-oikeus', function() {
-        before(addNewOppija('kalle', 'Tunkkila', { etunimet: 'Tero Terde', kutsumanimi: 'Terde', sukunimi: 'Tunkkila', hetu: '091095-9833', oppilaitos: 'Helsingin', tutkinto: 'Autoalan'}))
+        before(addNewOppija('kalle', 'Tunkkila', { etunimet: 'Tero Terde', kutsumanimi: 'Terde', sukunimi: 'Tunkkila', hetu: '091095-9833', oppilaitos: 'Stadin', tutkinto: 'Autoalan'}))
 
         it('Onnistuu, näyttää henkilöpalvelussa olevat nimitiedot', function() {
           expect(page.getSelectedOppija()).to.equal('tunkkila-fagerlund, tero petteri gustaf 091095-9833')
@@ -154,12 +154,12 @@ describe('TOR', function() {
       })
 
       describe('Kun lisätään opinto-oikeus, joka henkilöllä on jo olemassa', function() {
-        before(addNewOppija('kalle', 'kalle', { etunimet: 'Eero Adolf', kutsumanimi: 'Eero', sukunimi: 'Esimerkki', hetu: '010101-123N', oppilaitos: 'Helsingin', tutkinto: 'Autoalan'}))
+        before(addNewOppija('kalle', 'kalle', { etunimet: 'Eero Adolf', kutsumanimi: 'Eero', sukunimi: 'Esimerkki', hetu: '010101-123N', oppilaitos: 'Stadin', tutkinto: 'Autoalan'}))
 
         it('Näytetään olemassa oleva tutkinto', function() {
           expect(page.getSelectedOppija()).to.equal(eero)
           expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
-          expect(opinnot.getOppilaitos()).to.equal('Helsingin Ammattioppilaitos')
+          expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
         })
       })
     })
@@ -192,7 +192,7 @@ describe('TOR', function() {
 
           it('Lisätty opiskeluoikeus näytetään', function() {
             expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
-            expect(opinnot.getOppilaitos()).to.equal('Helsingin Ammattioppilaitos')
+            expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
           })
         })
       })
@@ -275,18 +275,18 @@ describe('TOR', function() {
         describe('Näytetään vain käyttäjän organisaatiopuuhun kuuluvat oppilaitokset', function() {
           it('1', function() {
             return prepareForNewOppija('hiiri', 'Tunkkila')()
-              .then(addOppija.enterOppilaitos('Helsinki'))
+              .then(addOppija.enterOppilaitos('ammatti'))
               .then(wait.forMilliseconds(500))
               .then(function() {
-                expect(addOppija.oppilaitokset()).to.deep.equal(['Omnia Helsinki'])
+                expect(addOppija.oppilaitokset()).to.deep.equal(['Omnian ammattiopisto'])
               })
           })
           it('2', function() {
             return prepareForNewOppija('kalle', 'Tunkkila')()
-              .then(addOppija.enterOppilaitos('Helsinki'))
+              .then(addOppija.enterOppilaitos('ammatti'))
               .then(wait.forMilliseconds(500))
               .then(function() {
-                expect(addOppija.oppilaitokset()).to.deep.equal(['Metropolia Helsinki', 'Omnia Helsinki'])
+                expect(addOppija.oppilaitokset()).to.deep.equal(['Stadin ammattiopisto', 'Omnian ammattiopisto'])
               })
           })
         })
@@ -340,7 +340,7 @@ describe('TOR', function() {
     })
 
     describe('Erikoisammattitutkinto', function() {
-      before(addNewOppija('kalle', 'Tunkkila', { etunimet: 'Tero Terde', kutsumanimi: 'Terde', sukunimi: 'Tunkkila', hetu: '091095-9833', oppilaitos: 'Helsingin', tutkinto: 'erikois'}))
+      before(addNewOppija('kalle', 'Tunkkila', { etunimet: 'Tero Terde', kutsumanimi: 'Terde', sukunimi: 'Tunkkila', hetu: '091095-9833', oppilaitos: 'Stadin', tutkinto: 'erikois'}))
 
       it('Ei näytetä osaamisala- ja suoritustapavalintoja (koska mitään valittavaa ei ole)', function() {
         expect(opinnot.isSuoritustapaSelectable()).to.equal(false)
@@ -452,7 +452,7 @@ describe('TOR', function() {
 
     it('Oppijan tutkinto ja oppilaitos näytetään', function() {
       expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
-      expect(opinnot.getOppilaitos()).to.equal('Helsingin Ammattioppilaitos')
+      expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
     })
 
     it('Hakutulos näytetään', function() {

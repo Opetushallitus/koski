@@ -4,7 +4,7 @@ import fi.oph.tor.json.Json
 import fi.oph.tor.json.Json._
 import fi.oph.tor.koodisto.{KoodistoViitePalvelu, MockKoodistoPalvelu}
 import fi.oph.tor.opiskeluoikeus.OpiskeluOikeusTestData
-import fi.oph.tor.organisaatio.MockOrganisaatioRepository
+import fi.oph.tor.organisaatio.{MockOrganisaatiot, MockOrganisaatioRepository}
 import org.json4s._
 import org.scalatest.Matchers
 
@@ -26,7 +26,7 @@ trait OpiskeluOikeusTestMethods extends HttpSpecification with Matchers {
   ))
 
   val defaultOpiskeluOikeus: JValue = toJValue(Map(
-    "oppilaitos" ->  Map("oid" ->  "1"),
+    "oppilaitos" ->  Map("oid" ->  MockOrganisaatiot.stadinAmmattiopisto.oid),
     "suoritus" ->  Map(
       "koulutusmoduulitoteutus" ->  Map(
         "koulutusmoduuli" ->  Map(

@@ -6,7 +6,7 @@ import fi.oph.tor.db.TorDatabase._
 import fi.oph.tor.db._
 import fi.oph.tor.koodisto.KoodistoViitePalvelu
 import fi.oph.tor.oppija.{MockOppijat, VerifiedOppijaOid}
-import fi.oph.tor.organisaatio.OrganisaatioRepository
+import fi.oph.tor.organisaatio.{MockOrganisaatiot, OrganisaatioRepository}
 import fi.oph.tor.schema._
 import fi.oph.tor.toruser.MockUsers
 import fi.vm.sade.utils.Timer
@@ -27,10 +27,10 @@ class TorDatabaseFixtureCreator(database: TorDatabase, repository: OpiskeluOikeu
   }
 
   private def defaultOpiskeluOikeudet = {
-    List((MockOppijat.eero.oid, opiskeluOikeusTestData.opiskeluOikeus("1")),
-      (MockOppijat.eerola.oid, opiskeluOikeusTestData.opiskeluOikeus("1")),
-      (MockOppijat.teija.oid, opiskeluOikeusTestData.opiskeluOikeus("1")),
-      (MockOppijat.markkanen.oid, opiskeluOikeusTestData.opiskeluOikeus("3")))
+    List((MockOppijat.eero.oid, opiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto.oid)),
+      (MockOppijat.eerola.oid, opiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto.oid)),
+      (MockOppijat.teija.oid, opiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto.oid)),
+      (MockOppijat.markkanen.oid, opiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.omnomnia.oid)))
   }
 }
 
