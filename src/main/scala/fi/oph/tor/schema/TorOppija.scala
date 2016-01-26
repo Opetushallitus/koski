@@ -28,7 +28,11 @@ case class FullHenkilö(
   kutsumanimi: String,
   @Description("Henkilön sukunimi. Henkilön sukunimen etuliite tulee osana sukunimeä")
   sukunimi: String,
+  @Description("Opiskelijan äidinkieli")
+  @KoodistoUri("kieli")
   äidinkieli: Option[KoodistoKoodiViite],
+  @Description("Opiskelijan kansalaisuudet")
+  @KoodistoUri("maatjavaltiot2")
   kansalaisuus: Option[List[KoodistoKoodiViite]]
 ) extends HenkilöWithOid
 
