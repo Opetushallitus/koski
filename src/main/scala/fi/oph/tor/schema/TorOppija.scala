@@ -28,7 +28,8 @@ case class FullHenkilö(
   kutsumanimi: String,
   @Description("Henkilön sukunimi. Henkilön sukunimen etuliite tulee osana sukunimeä")
   sukunimi: String,
-  äidinkieli: Option[KoodistoKoodiViite]
+  äidinkieli: Option[KoodistoKoodiViite],
+  kansalaisuus: Option[List[KoodistoKoodiViite]]
 ) extends HenkilöWithOid
 
 @Description("Henkilö, jonka oppijanumero ei ole tiedossa. Tietoja syötettäessä luodaan mahdollisesti uusi henkilö Henkilöpalveluun, jolloin henkilölle muodostuu oppijanumero")

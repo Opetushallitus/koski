@@ -1,6 +1,6 @@
 package fi.oph.tor.oppija
 
-import fi.oph.tor.henkilo.{Äidinkieli, AuthenticationServiceClient, CreateUser, User}
+import fi.oph.tor.henkilo._
 import fi.oph.tor.koodisto.KoodistoViitePalvelu
 import fi.oph.tor.schema.FullHenkilö
 
@@ -15,10 +15,15 @@ class RemoteOppijaRepository(henkilöPalveluClient: AuthenticationServiceClient,
 
   override def findByOids(oids: List[String]): List[FullHenkilö] = henkilöPalveluClient.findByOids(oids).map(toOppija)
 
-  private def toOppija(user: User) = FullHenkilö(user.oidHenkilo, user.hetu, user.etunimet, user.kutsumanimi, user.sukunimi, convertÄidinkieli(user.aidinkieli))
+  private def toOppija(user: User) = FullHenkilö(user.oidHenkilo, user.hetu, user.etunimet, user.kutsumanimi, user.sukunimi, convertÄidinkieli(user.aidinkieli), convertKansalaisuus(user.kansalaisuus))
 
-  private def convertÄidinkieli(äidinkieli: Option[Äidinkieli]) = {
-    äidinkieli.flatMap(äidinkieli => koodisto.getKoodistoKoodiViite("kieli", äidinkieli.kieliKoodi.toUpperCase))
+  private def convertÄidinkieli(äidinkieli: Option[Äidinkieli]) = äidinkieli.flatMap(äidinkieli => koodisto.getKoodistoKoodiViite("kieli", äidinkieli.kieliKoodi.toUpperCase))
+
+  private def convertKansalaisuus(kansalaisuus: List[Kansalaisuus]) = {
+    kansalaisuus.map(k => koodisto.getKoodistoKoodiViite("maatjavaltiot2", k.kansalaisuusKoodi)).flatten match {
+      case Nil => None
+      case xs  => Some(xs)
+    }
   }
 
 }

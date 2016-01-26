@@ -27,7 +27,7 @@ class MockOppijat(private var oppijat: List[FullHenkilö] = Nil) {
 
   def oppija(suku: String, etu: String, hetu: String): FullHenkilö = {
 
-    val oppija = FullHenkilö(generateId(), hetu, etu, etu, suku, äidinkieli)
+    val oppija = FullHenkilö(generateId(), hetu, etu, etu, suku, äidinkieli, None)
     oppijat = oppija :: oppijat
     oppija
   }
@@ -71,7 +71,7 @@ class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with 
   }
 
   def findFromDb(oid: String): Option[FullHenkilö] = {
-    Some(FullHenkilö(oid, oid, oid, oid, oid, oppijat.äidinkieli))
+    Some(FullHenkilö(oid, oid, oid, oid, oid, oppijat.äidinkieli, None))
   }
 
   def runQuery[E, U](fullQuery: PostgresDriverWithJsonSupport.api.Query[E, U, Seq]): Seq[U] = {
