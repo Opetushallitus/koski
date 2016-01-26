@@ -94,7 +94,7 @@ trait CacheDetails {
   def refreshing: Boolean
 }
 
-abstract case class BaseCacheDetails(durationSeconds: Int, maxSize: Int) extends CacheDetails
+abstract case class BaseCacheDetails(durationSeconds: Int, maxSize: Int, refreshing: Boolean) extends CacheDetails
 
 case class CacheAllCacheDetails(durationSeconds: Int, maxSize: Int, refreshing: Boolean) extends CacheDetails {
   override def storeValuePredicate: (Invocation, AnyRef) => Boolean = (invocation, value) => true

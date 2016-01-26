@@ -20,8 +20,7 @@ object OppijaRepository {
   }
 }
 
-class OppijaRepositoryCachingStrategy extends CachingStrategyBase(new BaseCacheDetails(60, 100) {
-  override def refreshing: Boolean = true
+class OppijaRepositoryCachingStrategy extends CachingStrategyBase(new BaseCacheDetails(durationSeconds = 60, maxSize = 100, refreshing = true) {
   override def storeValuePredicate: (Invocation, AnyRef) => Boolean = {
     case (invocation, value) => invocation.method.getName match {
       case "findByOid" => value match {
