@@ -1,6 +1,6 @@
 package fi.oph.tor.json
 
-import fi.vm.sade.utils.slf4j.Logging
+import fi.oph.tor.log.Logging
 import org.http4s._
 import org.http4s.headers.`Content-Type`
 import org.json4s.Formats

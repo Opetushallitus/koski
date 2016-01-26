@@ -3,7 +3,7 @@ package fi.oph.tor.koodisto
 import java.time.LocalDate
 
 import com.typesafe.config.Config
-import fi.vm.sade.utils.slf4j.Logging
+import fi.oph.tor.log.Logging
 
 object KoodistoCreator extends Logging {
   def createKoodistotFromMockData(config: Config): Unit = {

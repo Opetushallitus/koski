@@ -1,6 +1,6 @@
 package fi.oph.tor.opiskeluoikeus
 
-import fi.vm.sade.utils.slf4j.Logging
+import fi.oph.tor.log.Logging
 import rx.lang.scala.Observable
 
 object StreamCounter extends Logging {

@@ -4,7 +4,7 @@ import java.sql.SQLException
 
 import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.db.TorDatabase._
-import fi.vm.sade.utils.slf4j.Logging
+import fi.oph.tor.log.Logging
 import slick.dbio
 import slick.dbio.{Effect, NoStream}
 import slick.jdbc.TransactionIsolation

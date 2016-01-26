@@ -1,9 +1,7 @@
 package fi.oph.tor.koodisto
 
-import java.util.concurrent.{TimeUnit, ScheduledThreadPoolExecutor}
-import fi.oph.tor.cache.{CacheAllRefresh, TorCache, CachingProxy}
-import fi.vm.sade.utils.Timer
-import fi.vm.sade.utils.slf4j.Logging
+import fi.oph.tor.cache.{CacheAllRefresh, CachingProxy, TorCache}
+import fi.oph.tor.log.Logging
 
 object KoodistoCacheWarmer extends Logging {
   def apply(koodistoPalvelu: KoodistoPalvelu) = {

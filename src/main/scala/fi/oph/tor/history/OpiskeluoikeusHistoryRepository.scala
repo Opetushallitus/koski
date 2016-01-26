@@ -11,7 +11,7 @@ import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.json.Json
 import fi.oph.tor.schema.OpiskeluOikeus
 import fi.oph.tor.toruser.TorUser
-import fi.vm.sade.utils.slf4j.Logging
+import fi.oph.tor.log.Logging
 import org.json4s._
 import org.json4s.jackson.JsonMethods
 import slick.dbio.DBIOAction

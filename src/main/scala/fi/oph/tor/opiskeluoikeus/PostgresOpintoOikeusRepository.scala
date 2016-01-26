@@ -16,7 +16,7 @@ import fi.oph.tor.schema.{FullHenkilö, OpiskeluOikeus}
 import fi.oph.tor.tor.{OpiskeluoikeusPäättynytAikaisintaan, OpiskeluoikeusPäättynytViimeistään, QueryFilter, TutkinnonTila}
 import fi.oph.tor.toruser.TorUser
 import fi.oph.tor.util.ReactiveStreamsToRx
-import fi.vm.sade.utils.slf4j.Logging
+import fi.oph.tor.log.Logging
 import org.json4s.{JArray, JValue}
 import org.json4s.jackson.JsonMethods
 import rx.lang.scala.Observable

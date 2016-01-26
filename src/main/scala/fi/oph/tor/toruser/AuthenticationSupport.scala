@@ -4,7 +4,7 @@ import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 
 import fi.oph.tor.json.Json
 import fi.vm.sade.security.ldap.DirectoryClient
-import fi.vm.sade.utils.slf4j.Logging
+import fi.oph.tor.log.Logging
 import org.scalatra.ScalatraBase
 import org.scalatra.auth.strategy.{BasicAuthStrategy, BasicAuthSupport}
 import org.scalatra.auth.{ScentryConfig, ScentrySupport}

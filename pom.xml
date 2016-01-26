@@ -19,9 +19,9 @@
   <dependencies>
     <!-- OPH internal deps -->
     <dependency>
-      <groupId>com.github.Opetushallitus</groupId>
-      <artifactId>scala-utils</artifactId>
-      <version>3f64874</version>
+      <groupId>com.github.Opetushallitus.scala-utils</groupId>
+      <artifactId>scala-cas_2.11</artifactId>
+      <version>0a040dd995bf0dc858799f36c9046561fd19e763</version>
     </dependency>
     <dependency>
       <groupId>com.github.Opetushallitus</groupId>

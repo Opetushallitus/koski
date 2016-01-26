@@ -9,7 +9,7 @@ import com.google.common.util.concurrent.MoreExecutors.listeningDecorator
 import com.google.common.util.concurrent.{ListenableFuture, UncheckedExecutionException}
 import fi.oph.tor.cache.CachingProxy.executorService
 import fi.oph.tor.util.{Invocation, Proxy}
-import fi.vm.sade.utils.slf4j.Logging
+import fi.oph.tor.log.Logging
 
 import scala.reflect.ClassTag
 

@@ -3,7 +3,7 @@ package fi.oph.tor.history
 import fi.oph.tor.servlet.{NoCache, InvalidRequestException, ErrorHandlingServlet}
 import fi.oph.tor.toruser.{RequiresAuthentication, UserOrganisationsRepository}
 import fi.vm.sade.security.ldap.DirectoryClient
-import fi.vm.sade.utils.slf4j.Logging
+import fi.oph.tor.log.Logging
 import org.json4s.jackson.JsonMethods
 
 class TorHistoryServlet(val userRepository: UserOrganisationsRepository, val directoryClient: DirectoryClient, val historyRepository: OpiskeluoikeusHistoryRepository)

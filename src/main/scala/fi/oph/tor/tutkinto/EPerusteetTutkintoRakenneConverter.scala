@@ -5,7 +5,7 @@ import fi.oph.tor.koodisto.{KoodistoViitePalvelu, KoodistoViite}
 import fi.oph.tor.schema.KoodistoKoodiViite
 import fi.oph.tor.tutkinto
 import fi.oph.tor.tutkinto.Koulutustyyppi.Koulutustyyppi
-import fi.vm.sade.utils.slf4j.Logging
+import fi.oph.tor.log.Logging
 
 object EPerusteetTutkintoRakenneConverter extends Logging {
   def convertRakenne(rakenne: EPerusteRakenne)(implicit arviointiasteikkoRepository: ArviointiasteikkoRepository, koodistoPalvelu: KoodistoViitePalvelu): TutkintoRakenne = {

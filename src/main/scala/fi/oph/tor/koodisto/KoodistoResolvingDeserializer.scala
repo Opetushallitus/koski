@@ -3,7 +3,7 @@ package fi.oph.tor.koodisto
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.json.{ContextualExtractor, Json}
 import fi.oph.tor.schema.{KoodistoKoodiViite, Deserializer}
-import fi.vm.sade.utils.slf4j.Logging
+import fi.oph.tor.log.Logging
 import org.json4s.{JValue, TypeInfo, Formats}
 
 object KoodistoResolvingDeserializer extends Deserializer[KoodistoKoodiViite] with Logging {

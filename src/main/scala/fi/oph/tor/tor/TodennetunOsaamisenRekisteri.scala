@@ -6,7 +6,7 @@ import fi.oph.tor.opiskeluoikeus._
 import fi.oph.tor.oppija._
 import fi.oph.tor.schema._
 import fi.oph.tor.toruser.TorUser
-import fi.vm.sade.utils.slf4j.Logging
+import fi.oph.tor.log.Logging
 import rx.lang.scala.Observable
 
 class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,

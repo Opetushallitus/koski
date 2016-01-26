@@ -1,7 +1,7 @@
 package fi.oph.tor.perftest
 
 import fi.oph.tor.db.{Futures, GlobalExecutionContext}
-import fi.vm.sade.utils.Timer
+import fi.oph.tor.util.Timer
 import scala.collection.immutable.IndexedSeq
 import scala.concurrent.Future
 import scala.concurrent.duration._

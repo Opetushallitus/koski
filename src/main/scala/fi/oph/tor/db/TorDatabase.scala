@@ -2,8 +2,8 @@ package fi.oph.tor.db
 
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigValueFactory._
-import fi.vm.sade.utils.slf4j.Logging
-import fi.vm.sade.utils.tcp.PortChecker
+import fi.oph.tor.log.Logging
+import fi.oph.tor.util.PortChecker
 import org.flywaydb.core.Flyway
 import slick.driver.PostgresDriver
 import slick.driver.PostgresDriver.api._

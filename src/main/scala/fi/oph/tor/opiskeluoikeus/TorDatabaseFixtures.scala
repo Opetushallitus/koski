@@ -8,7 +8,7 @@ import fi.oph.tor.organisaatio.MockOrganisaatiot
 import fi.oph.tor.schema._
 import fi.oph.tor.tor.TorValidator
 import fi.oph.tor.toruser.MockUsers
-import fi.vm.sade.utils.Timer
+import fi.oph.tor.util.Timer
 import slick.dbio.DBIO
 import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 

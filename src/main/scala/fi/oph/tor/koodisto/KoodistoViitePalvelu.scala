@@ -1,7 +1,7 @@
 package fi.oph.tor.koodisto
 
 import fi.oph.tor.schema.KoodistoKoodiViite
-import fi.vm.sade.utils.slf4j.Logging
+import fi.oph.tor.log.Logging
 
 case class KoodistoViitePalvelu(koodistoPalvelu: KoodistoPalvelu) extends Logging {
   def getKoodistoKoodiViitteet(koodisto: KoodistoViite): Option[List[KoodistoKoodiViite]] = {

@@ -11,7 +11,7 @@ import fi.oph.tor.servlet.{StaticFileServlet, SingleFileServlet}
 import fi.oph.tor.tor.{TodennetunOsaamisenRekisteri, TorServlet, TorValidator}
 import fi.oph.tor.toruser.{AuthenticationServlet, UserOrganisationsRepository}
 import fi.oph.tor.tutkinto.TutkintoServlet
-import fi.vm.sade.utils.slf4j.Logging
+import fi.oph.tor.log.Logging
 import org.scalatra._
 
 class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionContext with Futures {

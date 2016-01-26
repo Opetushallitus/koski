@@ -1,8 +1,8 @@
 package fi.oph.tor.jettylauncher
 
-import fi.vm.sade.utils.tcp.PortChecker
-import org.eclipse.jetty.server.{Slf4jRequestLog, ServerConnector, Server}
+import fi.oph.tor.util.PortChecker
 import org.eclipse.jetty.server.handler.{ContextHandler, HandlerList, ResourceHandler}
+import org.eclipse.jetty.server.{Server, ServerConnector, Slf4jRequestLog}
 import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.eclipse.jetty.webapp.WebAppContext
 

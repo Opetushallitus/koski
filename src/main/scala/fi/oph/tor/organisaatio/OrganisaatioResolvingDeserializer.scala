@@ -3,7 +3,7 @@ package fi.oph.tor.organisaatio
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.json.{ContextualExtractor, Json}
 import fi.oph.tor.schema._
-import fi.vm.sade.utils.slf4j.Logging
+import fi.oph.tor.log.Logging
 import org.json4s._
 import org.json4s.reflect.TypeInfo
 

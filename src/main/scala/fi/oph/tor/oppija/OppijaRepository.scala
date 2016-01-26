@@ -8,7 +8,7 @@ import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.log.TimedProxy
 import fi.oph.tor.schema._
 import fi.oph.tor.util.Invocation
-import fi.vm.sade.utils.slf4j.Logging
+import fi.oph.tor.log.Logging
 
 object OppijaRepository {
   def apply(config: Config, database: TorDatabase): OppijaRepository = {

@@ -13,7 +13,7 @@ import fi.oph.tor.schema.{HenkilöWithOid, FullHenkilö, Henkilö, TorOppija}
 import fi.oph.tor.servlet.{InvalidRequestException, ErrorHandlingServlet, NoCache, CacheControlSupport}
 import fi.oph.tor.toruser.{RequiresAuthentication, UserOrganisationsRepository}
 import fi.vm.sade.security.ldap.DirectoryClient
-import fi.vm.sade.utils.slf4j.Logging
+import fi.oph.tor.log.Logging
 import org.scalatra.{FutureSupport, GZipSupport}
 import rx.lang.scala.Observable
 import scala.concurrent.Future

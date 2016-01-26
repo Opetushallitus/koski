@@ -1,7 +1,7 @@
 package fi.oph.tor.json
 
 import java.io.PrintWriter
-import fi.vm.sade.utils.slf4j.Logging
+import fi.oph.tor.log.Logging
 import org.json4s.Formats
 import org.scalatra.ScalatraContext
 import rx.lang.scala.{Subscription, Observable}

@@ -2,7 +2,7 @@ package fi.oph.tor.koodisto
 
 import fi.oph.tor.http.{HttpStatusException, Http, VirkailijaHttpClient}
 import fi.oph.tor.json.Json
-import fi.vm.sade.utils.slf4j.Logging
+import fi.oph.tor.log.Logging
 import fi.oph.tor.json.Json._
 import fi.oph.tor.json.Json4sHttp4s._
 class RemoteKoodistoPalvelu(username: String, password: String, virkailijaUrl: String) extends KoodistoPalvelu with Logging {
