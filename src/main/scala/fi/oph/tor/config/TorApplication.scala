@@ -40,7 +40,7 @@ class TorApplication(val config: Config) {
   lazy val arviointiAsteikot = ArviointiasteikkoRepository(koodistoViitePalvelu)
   lazy val userRepository = UserOrganisationsRepository(config, organisaatioRepository)
   lazy val database = new TorDatabase(config)
-  lazy val oppijaRepository = OppijaRepository(config, database)
+  lazy val oppijaRepository = OppijaRepository(config, database, koodistoViitePalvelu)
   lazy val historyRepository = OpiskeluoikeusHistoryRepository(database.db)
   lazy val opiskeluOikeusRepository = TimedProxy[OpiskeluOikeusRepository](new PostgresOpiskeluOikeusRepository(database.db, historyRepository))
   lazy val validator: TorValidator = new TorValidator(tutkintoRepository, koodistoViitePalvelu, organisaatioRepository)

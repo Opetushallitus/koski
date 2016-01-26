@@ -5,15 +5,16 @@ import fi.oph.tor.cache.{BaseCacheDetails, CachingStrategyBase, CachingProxy}
 import fi.oph.tor.db.TorDatabase
 import fi.oph.tor.henkilo.{Hetu, AuthenticationServiceClient}
 import fi.oph.tor.http.HttpStatus
+import fi.oph.tor.koodisto.KoodistoViitePalvelu
 import fi.oph.tor.log.TimedProxy
 import fi.oph.tor.schema._
 import fi.oph.tor.util.Invocation
 import fi.oph.tor.log.Logging
 
 object OppijaRepository {
-  def apply(config: Config, database: TorDatabase): OppijaRepository = {
+  def apply(config: Config, database: TorDatabase, koodistoViitePalvelu: KoodistoViitePalvelu): OppijaRepository = {
     CachingProxy(new OppijaRepositoryCachingStrategy, TimedProxy(if (config.hasPath("authentication-service")) {
-      new RemoteOppijaRepository(AuthenticationServiceClient(config))
+      new RemoteOppijaRepository(AuthenticationServiceClient(config), koodistoViitePalvelu)
     } else {
       new MockOppijaRepository(Some(database.db))
     }))

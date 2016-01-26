@@ -5,7 +5,7 @@ import fi.oph.tor.db.TorDatabase.DB
 import fi.oph.tor.db.{Futures, GlobalExecutionContext, PostgresDriverWithJsonSupport}
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.log.Loggable
-import fi.oph.tor.schema.{FullHenkilö, Henkilö}
+import fi.oph.tor.schema.{KoodistoKoodiViite, FullHenkilö, Henkilö}
 
 object MockOppijat {
   private val oppijat = new MockOppijat
@@ -23,9 +23,11 @@ object MockOppijat {
 
 class MockOppijat(private var oppijat: List[FullHenkilö] = Nil) {
   private var idCounter = oppijat.length
+  val äidinkieli: Some[KoodistoKoodiViite] = Some(KoodistoKoodiViite("FI", None, "kieli", None))
 
   def oppija(suku: String, etu: String, hetu: String): FullHenkilö = {
-    val oppija = FullHenkilö(generateId(), hetu, etu, etu, suku)
+
+    val oppija = FullHenkilö(generateId(), hetu, etu, etu, suku, äidinkieli)
     oppijat = oppija :: oppijat
     oppija
   }
@@ -69,7 +71,7 @@ class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with 
   }
 
   def findFromDb(oid: String): Option[FullHenkilö] = {
-    Some(FullHenkilö(oid, oid, oid, oid, oid))
+    Some(FullHenkilö(oid, oid, oid, oid, oid, oppijat.äidinkieli))
   }
 
   def runQuery[E, U](fullQuery: PostgresDriverWithJsonSupport.api.Query[E, U, Seq]): Seq[U] = {

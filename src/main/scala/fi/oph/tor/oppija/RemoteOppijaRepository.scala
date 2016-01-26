@@ -1,9 +1,10 @@
 package fi.oph.tor.oppija
 
-import fi.oph.tor.henkilo.{AuthenticationServiceClient, CreateUser, User}
+import fi.oph.tor.henkilo.{Äidinkieli, AuthenticationServiceClient, CreateUser, User}
+import fi.oph.tor.koodisto.KoodistoViitePalvelu
 import fi.oph.tor.schema.FullHenkilö
 
-class RemoteOppijaRepository(henkilöPalveluClient: AuthenticationServiceClient) extends OppijaRepository {
+class RemoteOppijaRepository(henkilöPalveluClient: AuthenticationServiceClient, koodisto: KoodistoViitePalvelu) extends OppijaRepository {
   override def findOppijat(query: String): List[FullHenkilö] = {
     henkilöPalveluClient.search(query).results.map(toOppija)
   }
@@ -14,6 +15,10 @@ class RemoteOppijaRepository(henkilöPalveluClient: AuthenticationServiceClient)
 
   override def findByOids(oids: List[String]): List[FullHenkilö] = henkilöPalveluClient.findByOids(oids).map(toOppija)
 
-  private def toOppija(user: User) = FullHenkilö(user.oidHenkilo, user.hetu, user.etunimet, user.kutsumanimi, user.sukunimi)
+  private def toOppija(user: User) = FullHenkilö(user.oidHenkilo, user.hetu, user.etunimet, user.kutsumanimi, user.sukunimi, convertÄidinkieli(user.aidinkieli))
+
+  private def convertÄidinkieli(äidinkieli: Option[Äidinkieli]) = {
+    äidinkieli.flatMap(äidinkieli => koodisto.getKoodistoKoodiViite("kieli", äidinkieli.kieliKoodi.toUpperCase))
+  }
 
 }
