@@ -19,11 +19,10 @@ class RemoteOppijaRepository(henkilöPalveluClient: AuthenticationServiceClient,
 
   private def convertÄidinkieli(äidinkieli: Option[Äidinkieli]) = äidinkieli.flatMap(äidinkieli => koodisto.getKoodistoKoodiViite("kieli", äidinkieli.kieliKoodi.toUpperCase))
 
-  private def convertKansalaisuus(kansalaisuus: List[Kansalaisuus]) = {
-    kansalaisuus.map(k => koodisto.getKoodistoKoodiViite("maatjavaltiot2", k.kansalaisuusKoodi)).flatten match {
+  private def convertKansalaisuus(kansalaisuus: Option[List[Kansalaisuus]]) = {
+    kansalaisuus.flatMap(_.map(k => koodisto.getKoodistoKoodiViite("maatjavaltiot2", k.kansalaisuusKoodi)).flatten match {
       case Nil => None
-      case xs  => Some(xs)
-    }
+      case xs => Some(xs)
+    })
   }
-
 }
