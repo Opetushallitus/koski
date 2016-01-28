@@ -277,4 +277,3 @@ TOR osaa tarvittaessa luoda käytettävät koodistot ja koodistopalveluun. Käyn
 ### LDAP
 
 TORin käyttäjäautentikaatio on toteutettu Opintopolku-järjestelmän LDAPia vasten. LDAP-palvelimen osoite ja tunnukset konfiguroidaan `ldap.host`, `ldap.userdn` ja `ldap.password` -asetuksilla.
-Thu Jan 28 17:14:40 EET 2016
