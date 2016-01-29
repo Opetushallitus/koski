@@ -10,7 +10,7 @@ import fi.oph.tor.toruser.RemoteUserOrganisationsRepository
 
 object ServiceUserAdder extends App {
   args match {
-    case Array(username, organisaatioOid, password) =>
+    case Array(username, organisaatioOid, password, lahdejarjestelma) =>
       val app: TorApplication = TorApplication()
       val authService = AuthenticationServiceClient(app.config)
       val kp = app.koodistoPalvelu
@@ -36,7 +36,7 @@ object ServiceUserAdder extends App {
       authService.syncLdap(oid)
       println("Set password " + password + ", requested LDAP sync")
 
-      val koodiarvo = username
+      val koodiarvo = lahdejarjestelma
       val koodisto = kp.getLatestVersion("lahdejarjestelma").get
 
       if (!kp.getKoodistoKoodit(koodisto).toList.flatten.find(_.koodiArvo == koodiarvo).isDefined) {
@@ -46,6 +46,6 @@ object ServiceUserAdder extends App {
 
       println("OK")
     case _ =>
-      println("Usage: ServiceUserAdder <username> <organisaatio> <salasana>")
+      println("Usage: ServiceUserAdder <username> <organisaatio> <salasana> <lahdejärjestelmä>")
   }
 }
