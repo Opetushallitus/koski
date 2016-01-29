@@ -10,7 +10,7 @@ import fi.oph.tor.eperusteet.EPerusteetRepository
 import fi.oph.tor.fixture.Fixtures
 import fi.oph.tor.history.OpiskeluoikeusHistoryRepository
 import fi.oph.tor.koodisto.{KoodistoPalvelu, KoodistoViitePalvelu}
-import fi.oph.tor.log.TimedProxy
+import fi.oph.tor.log.{Logging, TimedProxy}
 import fi.oph.tor.opiskeluoikeus.{OpiskeluOikeusRepository, OpiskeluOikeusTestData, PostgresOpiskeluOikeusRepository, TorDatabaseFixtureCreator}
 import fi.oph.tor.oppija.OppijaRepository
 import fi.oph.tor.oppilaitos.OppilaitosRepository
@@ -30,7 +30,7 @@ object TorApplication {
   def config(overrides: Map[String, String] = Map.empty) = overrides.toList.foldLeft(ConfigFactory.load)({ case (config, (key, value)) => config.withValue(key, fromAnyRef(value)) })
 }
 
-class TorApplication(val config: Config) {
+class TorApplication(val config: Config) extends Logging {
   lazy val organisaatioRepository: OrganisaatioRepository = OrganisaatioRepository(config, koodistoViitePalvelu)
   lazy val directoryClient: DirectoryClient = DirectoryClientFactory.directoryClient(config)
   lazy val tutkintoRepository = CachingProxy(cacheAllRefresh(3600, 100), TutkintoRepository(EPerusteetRepository.apply(config), arviointiAsteikot, koodistoViitePalvelu))
@@ -46,7 +46,8 @@ class TorApplication(val config: Config) {
   lazy val validator: TorValidator = new TorValidator(tutkintoRepository, koodistoViitePalvelu, organisaatioRepository)
 
   def resetFixtures = if(Fixtures.shouldUseFixtures(config)) {
+    new TorDatabaseFixtureCreator(database, opiskeluOikeusRepository, oppijaRepository, validator).resetFixtures
     oppijaRepository.resetFixtures
-    new TorDatabaseFixtureCreator(database, opiskeluOikeusRepository, validator).resetFixtures
+    logger.info("Reset application fixtures")
   }
 }
