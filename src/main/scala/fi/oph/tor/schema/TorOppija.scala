@@ -1,6 +1,7 @@
 package fi.oph.tor.schema
 
 import java.time.LocalDate
+import fi.oph.tor.arvosana.Arvosana
 import fi.oph.tor.koodisto.KoodistoViite
 import fi.oph.tor.log.Loggable
 import fi.oph.tor.schema.generic.annotation.{Description, ReadOnly}
@@ -273,7 +274,22 @@ case class Hyväksiluku(
 case class Näyttö(
   @Description("Vapaamuotoinen kuvaus suoritetusta näytöstä")
   kuvaus: String,
-  suorituspaikka: String
+  suorituspaikka: String,
+  arviointi: Option[NäytönArviointi]
+)
+
+case class NäytönArviointi (
+  arviointiKohteet: List[NäytönArviointikohde]
+)
+
+case class NäytönArviointikohde(
+  @Description("Arviointikohteen tunniste")
+  @KoodistoUri("naytonarviointikohde")
+  tunniste: KoodistoKoodiViite,
+  @Description("Arvosana. Kullekin arviointiasteikolle löytyy oma koodistonsa")
+  @KoodistoUri("arviointiasteikkoammatillinenhyvaksyttyhylatty")
+  @KoodistoUri("arviointiasteikkoammatillinent1k3")
+  arvosana: KoodistoKoodiViite
 )
 
 @Description("Oppisopimuksen tiedot")
@@ -335,6 +351,10 @@ case class KoodistoKoodiViite(
 ) extends KoodiViite {
   override def toString = koodistoUri + "/" + koodiarvo
   def koodistoViite = koodistoVersio.map(KoodistoViite(koodistoUri, _))
+}
+
+object KoodistoKoodiViite {
+  def apply(koodiarvo: String, koodistoUri: String): KoodistoKoodiViite = KoodistoKoodiViite(koodiarvo, None, koodistoUri, None)
 }
 
 @Description("Henkilökohtainen opetuksen järjestämistä koskeva suunnitelma, https://fi.wikipedia.org/wiki/HOJKS")

@@ -3,7 +3,11 @@ package fi.oph.tor.schema
 import java.time.LocalDate.{of => date, _}
 
 object TorOppijaExamples {
-  private val näyttö = Näyttö("Toimi automekaanikkona kolarikorjauspuolella kaksi vuotta", "Autokorjaamo Oy, Riihimäki")
+  private val h2: KoodistoKoodiViite = KoodistoKoodiViite("2", Some("H2"), "arviointiasteikkoammatillinent1k3", None)
+  private val k3: KoodistoKoodiViite = KoodistoKoodiViite("3", Some("K3"), "arviointiasteikkoammatillinent1k3", None)
+  private val näytönArviointi = NäytönArviointi(List(NäytönArviointikohde(KoodistoKoodiViite("1", Some("Työprosessin hallinta"), "naytonarviointikohde", None), k3), NäytönArviointikohde(KoodistoKoodiViite("2", Some("Työmenetelmien, -välineiden ja materiaalin hallinta"), "naytonarviointikohde", None), h2), NäytönArviointikohde(KoodistoKoodiViite("3", Some("Työn perustana olevan tiedon hallinta"), "naytonarviointikohde", None), h2), NäytönArviointikohde(KoodistoKoodiViite("4", Some("Elinikäisen oppimisen avaintaidot"), "naytonarviointikohde", None), k3)))
+
+  private def näyttö(kuvaus: String, paikka: String, arviointi: Option[NäytönArviointi] = None) = Näyttö(kuvaus, paikka, arviointi)
   private val suoritustapaNäyttö = KoodistoKoodiViite("naytto", Some("Näyttö"), "suoritustapa", Some(1))
   private val suoritustapaOps = KoodistoKoodiViite("ops", Some("Opetussuunnitelman mukainen"), "suoritustapa", Some(1))
   private val järjestämismuotoOppisopimus = KoodistoKoodiViite("20", Some("Oppisopimusmuotoinen"), "jarjestamismuoto", Some(1))
@@ -17,7 +21,7 @@ object TorOppijaExamples {
   private val opiskeluoikeusKeskeyttänyt = KoodistoKoodiViite("keskeyttanyt", Some("Keskeyttänyt"), "opiskeluoikeudentila", Some(1))
   private val lähdeWinnova = KoodistoKoodiViite("winnova", Some("Winnova"), "lahdejarjestelma", Some(1))
   val hyväksiluku = Hyväksiluku(OpsTutkinnonosa(KoodistoKoodiViite("100238", Some("Asennushitsaus"), "tutkinnonosat", Some(1)), true, None), Some("Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"))
-  private val paikallisenOsanSuoritus = Suoritus(Some("suoritus-12345-2"), PaikallinenTutkinnonosatoteutus(PaikallinenTutkinnonosa(Paikallinenkoodi("123456789", "Pintavauriotyöt", "kallion_oma_koodisto"), "Opetellaan korjaamaan pinnallisia vaurioita", false, None), suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, Näyttö("Pintavaurioiden korjausta", "Autokorjaamo Oy, Riihimäki")))), suorituskieli = None, tila = None, alkamispäivä = None, toimipiste, Some(List(Arviointi(arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)), Some(date(2013, 3, 20)), arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))))), Some(Vahvistus(Some(date(2013, 5, 31)), Some(stadinAmmattiopisto), None)), osasuoritukset = None)
+  private val paikallisenOsanSuoritus = Suoritus(Some("suoritus-12345-2"), PaikallinenTutkinnonosatoteutus(PaikallinenTutkinnonosa(Paikallinenkoodi("123456789", "Pintavauriotyöt", "kallion_oma_koodisto"), "Opetellaan korjaamaan pinnallisia vaurioita", false, None), suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, näyttö("Pintavaurioiden korjausta", "Autokorjaamo Oy, Riihimäki")))), suorituskieli = None, tila = None, alkamispäivä = None, toimipiste, Some(List(Arviointi(arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)), Some(date(2013, 3, 20)), arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))))), Some(Vahvistus(Some(date(2013, 5, 31)), Some(stadinAmmattiopisto), None)), osasuoritukset = None)
   private val tutkinnonOsat = List(
     Suoritus(
       Some("suoritus-12345-1"),
@@ -27,7 +31,7 @@ object TorOppijaExamples {
           true,
           laajuus = None
         ),
-        suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, Näyttö("Huolto- ja korjaustyöt", "Autokorjaamo Oy, Riihimäki")))
+        suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, näyttö("Huolto- ja korjaustyöt", "Autokorjaamo Oy, Riihimäki", Some(näytönArviointi))))
       ),
       suorituskieli = None,
       tila = None,
@@ -50,7 +54,7 @@ object TorOppijaExamples {
           true,
           None
         ),
-        suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, Näyttö("Mittaus- ja korivauriotöitä", "Autokorjaamo Oy, Riihimäki")))
+        suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, näyttö("Mittaus- ja korivauriotöitä", "Autokorjaamo Oy, Riihimäki")))
       ),
       suorituskieli = None,
       tila = None,
@@ -72,7 +76,7 @@ object TorOppijaExamples {
           true,
           None
         ),
-        suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, Näyttö("Maalauksen esikäsittelytöitä", "Autokorjaamo Oy, Riihimäki")))
+        suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, näyttö("Maalauksen esikäsittelytöitä", "Autokorjaamo Oy, Riihimäki")))
       ),
       suorituskieli = None,
       None,
@@ -94,7 +98,7 @@ object TorOppijaExamples {
           true,
           None
         ),
-        suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, Näyttö("Auton lisävarustetöitä", "Autokorjaamo Oy, Riihimäki")))
+        suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, näyttö("Auton lisävarustetöitä", "Autokorjaamo Oy, Riihimäki")))
       ),
       suorituskieli = None,
       tila = None,
@@ -276,7 +280,6 @@ object TorOppijaExamples {
       )
     )
   )
-  ;
 
   val ops = TorOppija(
     Henkilö.withOid("1.2.246.562.24.00000000001"),
@@ -319,11 +322,11 @@ object TorOppijaExamples {
               Some(
                 List(
                   Arviointi(
-                    arvosana = KoodistoKoodiViite("2", Some("H2"), "arviointiasteikkoammatillinent1k3", None),
+                    arvosana = h2,
                     Some(date(2014, 5, 20))
                   ),
                   Arviointi(
-                    arvosana = KoodistoKoodiViite("3", Some("K3"), "arviointiasteikkoammatillinent1k3", None),
+                    arvosana = k3,
                     Some(date(2014, 10, 20))
                   )
                 )
