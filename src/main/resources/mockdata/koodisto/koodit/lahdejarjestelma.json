@@ -6,4 +6,12 @@
     "kieli" : "FI"
   } ],
   "versio" : 1
+}, {
+  "koodiUri" : "lahdejarjestelma_primus",
+  "koodiArvo" : "primus",
+  "metadata" : [ {
+    "nimi" : "primus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
 } ]
