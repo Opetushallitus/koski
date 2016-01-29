@@ -28,7 +28,6 @@ class OppijaRepositoryCachingStrategy extends CachingStrategyBase(new BaseCacheD
         case Some(_) => true
         case _ => false
       }
-      case "findOppijat" => true
       case _ => false
     }
   }})
