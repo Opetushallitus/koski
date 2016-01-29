@@ -1,13 +1,9 @@
 package fi.oph.tor.koodisto
 
-import fi.oph.tor.http.{HttpStatusException, Http, VirkailijaHttpClient}
+import fi.oph.tor.http.{Http, HttpStatusException}
 import fi.oph.tor.json.Json
 import fi.oph.tor.log.Logging
-import fi.oph.tor.json.Json._
-import fi.oph.tor.json.Json4sHttp4s._
-class RemoteKoodistoPalvelu(username: String, password: String, virkailijaUrl: String) extends KoodistoPalvelu with Logging {
-  val virkalijaClient = new VirkailijaHttpClient(username, password, virkailijaUrl, "/koodisto-service")
-  val secureHttp = virkalijaClient.httpClient
+class RemoteKoodistoPalvelu(virkailijaUrl: String) extends KoodistoPalvelu with Logging {
   val http = Http(virkailijaUrl)
 
   def getKoodistoKoodit(koodisto: KoodistoViite): Option[List[KoodistoKoodi]] = {
@@ -29,32 +25,6 @@ class RemoteKoodistoPalvelu(username: String, password: String, virkailijaUrl: S
   }
 
   private def noCache = "?noCache=" + System.currentTimeMillis()
-
-  def createKoodisto(koodisto: Koodisto): Unit = {
-    try {
-      secureHttp.post("/koodisto-service/rest/codes", koodisto)(json4sEncoderOf[Koodisto], Http.unitDecoder)
-    } catch {
-      case HttpStatusException(500, "error.codesgroup.not.found", _) =>
-        createKoodistoRyhmä(new KoodistoRyhmä(koodisto.codesGroupUri.replaceAll("http://", "")))
-        createKoodisto(koodisto)
-    }
-  }
-
-  def createKoodi(koodistoUri: String, koodi: KoodistoKoodi) = {
-    secureHttp.post("/koodisto-service/rest/codeelement/" + koodistoUri, koodi)(json4sEncoderOf[KoodistoKoodi], Http.unitDecoder)
-  }
-
-  def createKoodistoRyhmä(ryhmä: KoodistoRyhmä) = {
-    secureHttp.post("/koodisto-service/rest/codesgroup", ryhmä)(json4sEncoderOf[KoodistoRyhmä], Http.unitDecoder)
-  }
-
-  def removeKoodistoRyhmä(ryhmä: Int) = {
-    try {
-      secureHttp.post("/koodisto-service/rest/codesgroup/delete/" + ryhmä, Map("id" -> ryhmä.toString))(json4sEncoderOf[Map[String, String]], Http.unitDecoder)
-    } catch {
-      case HttpStatusException(500, "error.codesgroup.not.found", _) => // ignore
-    }
-  }
 }
 
 case class KoodistoWithLatestVersion(latestKoodistoVersio: LatestVersion)

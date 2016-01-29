@@ -41,11 +41,6 @@ object MockKoodistoPalvelu extends KoodistoPalvelu {
 
   def getLatestVersion(koodistoUri: String): Option[KoodistoViite] = getKoodisto(koodistoUri).map { _.koodistoViite }
 
-  def createKoodisto(koodisto: Koodisto) = throw new UnsupportedOperationException
-  def createKoodi(koodistoUri: String, koodi: KoodistoKoodi) = throw new UnsupportedOperationException
-  def createKoodistoRyhmä(ryhmä: KoodistoRyhmä) = throw new UnsupportedOperationException
-  def removeKoodistoRyhmä(toInt: Int) = throw new UnsupportedOperationException
-
   def koodistoKooditFileName(koodistoUri: String): String = {
     "src/main/resources/mockdata/koodisto/koodit/" + koodistoUri + ".json"
   }
@@ -53,5 +48,4 @@ object MockKoodistoPalvelu extends KoodistoPalvelu {
   def koodistoFileName(koodistoUri: String): String = {
     "src/main/resources/mockdata/koodisto/koodistot/" + koodistoUri + ".json"
   }
-
 }

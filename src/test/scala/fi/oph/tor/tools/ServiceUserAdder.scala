@@ -5,7 +5,7 @@ import java.time.LocalDate
 import fi.oph.tor.config.TorApplication
 import fi.oph.tor.henkilo.{AuthenticationServiceClient, CreateUser, UserQueryResult}
 import fi.oph.tor.http.HttpStatus
-import fi.oph.tor.koodisto.{KoodistoKoodi, KoodistoKoodiMetadata}
+import fi.oph.tor.koodisto.{KoodistoMuokkausPalvelu, KoodistoKoodi, KoodistoKoodiMetadata}
 import fi.oph.tor.toruser.RemoteUserOrganisationsRepository
 
 object ServiceUserAdder extends App {
@@ -14,6 +14,7 @@ object ServiceUserAdder extends App {
       val app: TorApplication = TorApplication()
       val authService = AuthenticationServiceClient(app.config)
       val kp = app.koodistoPalvelu
+      val kmp = KoodistoMuokkausPalvelu(app.config)
 
       val oid = authService.create(CreateUser.palvelu(username)) match {
         case Right(oid) =>
@@ -40,7 +41,7 @@ object ServiceUserAdder extends App {
       val koodisto = kp.getLatestVersion("lahdejarjestelma").get
 
       if (!kp.getKoodistoKoodit(koodisto).toList.flatten.find(_.koodiArvo == koodiarvo).isDefined) {
-        kp.createKoodi("lahdejarjestelma", KoodistoKoodi("lahdejarjestelma_" + koodiarvo, koodiarvo, List(KoodistoKoodiMetadata(Some(koodiarvo), None, Some("FI"))), 1, Some(LocalDate.now)))
+        kmp.createKoodi("lahdejarjestelma", KoodistoKoodi("lahdejarjestelma_" + koodiarvo, koodiarvo, List(KoodistoKoodiMetadata(Some(koodiarvo), None, Some("FI"))), 1, Some(LocalDate.now)))
         println("Luotu lähdejärjestelmäkoodi " + koodiarvo)
       }
 
