@@ -1,0 +1,12 @@
+{
+  "koodistoUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Ammatillisen näytön arviointikeskusteluun osallistuneet",
+    "kuvaus" : "Näytön arviointikeskusteluun osallistuneet tahot, 1-numeroisella koodiarvolla"
+  } ],
+  "codesGroupUri" : "http://tor",
+  "voimassaAlkuPvm" : "2015-11-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}

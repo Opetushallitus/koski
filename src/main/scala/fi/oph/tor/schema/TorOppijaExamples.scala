@@ -5,7 +5,14 @@ import java.time.LocalDate.{of => date, _}
 object TorOppijaExamples {
   private val h2: KoodistoKoodiViite = KoodistoKoodiViite("2", Some("H2"), "arviointiasteikkoammatillinent1k3", None)
   private val k3: KoodistoKoodiViite = KoodistoKoodiViite("3", Some("K3"), "arviointiasteikkoammatillinent1k3", None)
-  private val näytönArviointi = NäytönArviointi(List(NäytönArviointikohde(KoodistoKoodiViite("1", Some("Työprosessin hallinta"), "ammatillisennaytonarviointikohde", None), k3), NäytönArviointikohde(KoodistoKoodiViite("2", Some("Työmenetelmien, -välineiden ja materiaalin hallinta"), "ammatillisennaytonarviointikohde", None), h2), NäytönArviointikohde(KoodistoKoodiViite("3", Some("Työn perustana olevan tiedon hallinta"), "ammatillisennaytonarviointikohde", None), h2), NäytönArviointikohde(KoodistoKoodiViite("4", Some("Elinikäisen oppimisen avaintaidot"), "ammatillisennaytonarviointikohde", None), k3)))
+  private val näytönArviointi = NäytönArviointi(List(
+    NäytönArviointikohde(KoodistoKoodiViite("1", Some("Työprosessin hallinta"), "ammatillisennaytonarviointikohde", None), k3),
+    NäytönArviointikohde(KoodistoKoodiViite("2", Some("Työmenetelmien, -välineiden ja materiaalin hallinta"), "ammatillisennaytonarviointikohde", None), h2),
+    NäytönArviointikohde(KoodistoKoodiViite("3", Some("Työn perustana olevan tiedon hallinta"), "ammatillisennaytonarviointikohde", None), h2),
+    NäytönArviointikohde(KoodistoKoodiViite("4", Some("Elinikäisen oppimisen avaintaidot"), "ammatillisennaytonarviointikohde", None), k3)),
+    KoodistoKoodiViite("1", Some("Opettaja"), "ammatillisennaytonarvioinnistapaattaneet", None),
+    KoodistoKoodiViite("1", Some("Opiskelija ja opettaja"), "ammatillisennaytonarviointikeskusteluunosallistuneet", None)
+  )
 
   private def näyttö(kuvaus: String, paikka: String, arviointi: Option[NäytönArviointi] = None) = Näyttö(kuvaus, paikka, arviointi)
   private val suoritustapaNäyttö = KoodistoKoodiViite("naytto", Some("Näyttö"), "suoritustapa", Some(1))

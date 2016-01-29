@@ -279,7 +279,13 @@ case class Näyttö(
 )
 
 case class NäytönArviointi (
-  arviointiKohteet: List[NäytönArviointikohde]
+  arviointiKohteet: List[NäytönArviointikohde],
+  @KoodistoUri("ammatillisennaytonarvioinnistapaattaneet")
+  @Description("Arvioinnista päättäneet tahot, ilmaistuna 1-numeroisella koodilla")
+  arvioinnistaPäättäneet: KoodistoKoodiViite,
+  @KoodistoUri("ammatillisennaytonarviointikeskusteluunosallistuneet")
+  @Description("Arviointikeskusteluun osallistuneet tahot, ilmaistuna 1-numeroisella koodilla")
+  arviointikeskusteluunOsallistuneet: KoodistoKoodiViite
 )
 
 case class NäytönArviointikohde(
