@@ -1,6 +1,6 @@
 [
   {
-    "koodiUri" : "naytonarviointikohde_1",
+    "koodiUri" : "ammatillisennaytonarviointikohde_1",
     "koodiArvo" : "1",
     "metadata" : [ {
       "nimi" : "Työprosessin hallinta",
@@ -9,7 +9,7 @@
     "versio" : 1
   },
   {
-    "koodiUri" : "naytonarviointikohde_2",
+    "koodiUri" : "ammatillisennaytonarviointikohde_2",
     "koodiArvo" : "2",
     "metadata" : [ {
       "nimi" : "Työmenetelmien, -välineiden ja materiaalin hallinta",
@@ -18,7 +18,7 @@
     "versio" : 1
   },
   {
-    "koodiUri" : "naytonarviointikohde_3",
+    "koodiUri" : "ammatillisennaytonarviointikohde_3",
     "koodiArvo" : "3",
     "metadata" : [ {
       "nimi" : "Työn perustana olevan tiedon hallinta",
@@ -27,7 +27,7 @@
     "versio" : 1
   },
   {
-    "koodiUri" : "naytonarviointikohde_4",
+    "koodiUri" : "ammatillisennaytonarviointikohde_4",
     "koodiArvo" : "4",
     "metadata" : [ {
       "nimi" : "Elinikäisen oppimisen avaintaidot",

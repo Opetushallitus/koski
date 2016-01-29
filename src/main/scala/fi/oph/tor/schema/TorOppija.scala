@@ -284,7 +284,7 @@ case class NäytönArviointi (
 
 case class NäytönArviointikohde(
   @Description("Arviointikohteen tunniste")
-  @KoodistoUri("naytonarviointikohde")
+  @KoodistoUri("ammatillisennaytonarviointikohde")
   tunniste: KoodistoKoodiViite,
   @Description("Arvosana. Kullekin arviointiasteikolle löytyy oma koodistonsa")
   @KoodistoUri("arviointiasteikkoammatillinenhyvaksyttyhylatty")

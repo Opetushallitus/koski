@@ -1,9 +1,9 @@
 {
-  "koodistoUri" : "naytonarviointikohde",
+  "koodistoUri" : "ammatillisennaytonarviointikohde",
   "versio" : 1,
   "metadata" : [ {
     "kieli" : "FI",
-    "nimi" : "Näytön arviointikohde",
+    "nimi" : "Ammatillisen näytön arviointikohde",
     "kuvaus" : "Näytön arviointikohde ammatillisissa tutkinnoissa"
   } ],
   "codesGroupUri" : "http://tor",
