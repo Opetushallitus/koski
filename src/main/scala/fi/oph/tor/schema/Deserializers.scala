@@ -83,7 +83,6 @@ object OrganisaatioDeserializer extends Deserializer[Organisaatio] {
 
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Organisaatio] = {
     case (TypeInfo(c, _), json) if (classes.contains(c)) =>
-      println(json)
       json match {
         case organisaatio: JObject if organisaatio.values.contains("oppilaitosnumero") => organisaatio.extract[Oppilaitos]
         case organisaatio: JObject if organisaatio.values.contains("tutkintotoimikunnanNumero") => organisaatio.extract[Tutkintotoimikunta]
