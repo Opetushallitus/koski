@@ -6,7 +6,7 @@ import java.time.format.DateTimeParseException
 import fi.oph.tor.db.GlobalExecutionContext
 import fi.oph.tor.henkilo.HenkiloOid
 import fi.oph.tor.history.OpiskeluoikeusHistoryRepository
-import fi.oph.tor.http.HttpStatus
+import fi.oph.tor.http.{TorErrorCode, HttpStatus}
 import fi.oph.tor.json.{Json, JsonStreamWriter}
 import fi.oph.tor.schema.Henkilö.Oid
 import fi.oph.tor.schema.{HenkilöWithOid, FullHenkilö, Henkilö, TorOppija}
@@ -65,7 +65,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
       case Some(query) if (query.length >= 3) =>
         Json.write(rekisteri.findOppijat(query.toUpperCase))
       case _ =>
-        throw new InvalidRequestException("query parameter length must be at least 3")
+        throw new InvalidRequestException(TorErrorCode.Validation.QueryParam.tooShort, "query parameter length must be at least 3")
     }
   }
 
@@ -104,7 +104,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
       case (p, v) if p == "opiskeluoikeusPäättynytAikaisintaan" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytAikaisintaan(_))
       case (p, v) if p == "opiskeluoikeusPäättynytViimeistään" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytViimeistään(_))
       case ("tutkinnonTila", v) => Right(TutkinnonTila(v))
-      case (p, _) => Left(HttpStatus.badRequest("Unsupported query parameter: " + p))
+      case (p, _) => Left(HttpStatus.badRequest(TorErrorCode.Validation.QueryParam.unknown, "Unsupported query parameter: " + p))
     }
 
     queryFilters.partition(_.isLeft) match {
@@ -127,7 +127,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
     case (p, v) => try {
       Right(LocalDate.parse(v))
     } catch {
-      case e: DateTimeParseException => Left(HttpStatus.badRequest("Invalid date parameter: " + p + "=" + v))
+      case e: DateTimeParseException => Left(HttpStatus.badRequest(TorErrorCode.InvalidFormat.pvm, "Invalid date parameter: " + p + "=" + v))
     }
   }
 }

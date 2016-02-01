@@ -1,8 +1,9 @@
 package fi.oph.tor.http
 
+import fi.oph.tor.http.TorErrorCode.TorErrorCode
 import org.json4s.JValue
 
-case class HttpStatus(statusCode: Int, errors: List[AnyRef]) {
+case class HttpStatus(statusCode: Int, errors: List[ErrorDetail]) {
   def isOk = statusCode < 300
   def isError = !isOk
 
@@ -14,12 +15,13 @@ object HttpStatus {
   // Known HTTP statii
 
   val ok = HttpStatus(200, Nil)
-  def internalError(text: String = "Internal server error") = HttpStatus(500, List(text))
-  def conflict(text: String) = HttpStatus(409, List(text))
-  def badRequest(text: String) = HttpStatus(400, List(text))
-  def badRequest(errors: List[JValue]) = HttpStatus(400, errors)
-  def forbidden(text: String) = HttpStatus(403, List(text))
-  def notFound(text: String) = HttpStatus(404, List(text))
+  def internalError(text: String = "Internal server error") = HttpStatus(500, List(ErrorDetail(TorErrorCode.internalError, text)))
+  def conflict(errorCode: TorErrorCode, text: String) = HttpStatus(409, List(ErrorDetail(errorCode, text)))
+  def badRequest(errorCode: TorErrorCode, text: AnyRef): HttpStatus = badRequest(ErrorDetail(errorCode, text))
+  def badRequest(error: ErrorDetail): HttpStatus = badRequest(List(error))
+  def badRequest(errors: List[ErrorDetail]): HttpStatus = HttpStatus(400, errors)
+  def forbidden(errorCode: TorErrorCode, text: String) = HttpStatus(403, List(ErrorDetail(errorCode, text)))
+  def notFound(text: String) = HttpStatus(404, List(ErrorDetail(TorErrorCode.notFound, text)))
 
   // Combinators
 

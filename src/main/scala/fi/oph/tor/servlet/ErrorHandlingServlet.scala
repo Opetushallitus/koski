@@ -1,6 +1,6 @@
 package fi.oph.tor.servlet
 
-import fi.oph.tor.http.HttpStatus
+import fi.oph.tor.http.{TorErrorCode, HttpStatus}
 import fi.oph.tor.json.Json
 import fi.oph.tor.json.Json.maskSensitiveInformation
 import fi.oph.tor.log.Logging
@@ -19,7 +19,7 @@ trait ErrorHandlingServlet extends ScalatraServlet with Logging {
     }
     json match {
       case Some(json) => block(json)
-      case None => renderStatus(HttpStatus.badRequest("Invalid JSON"))
+      case None => renderStatus(HttpStatus.badRequest(TorErrorCode.InvalidFormat.json, "Invalid JSON"))
     }
 
   }
@@ -42,7 +42,7 @@ trait ErrorHandlingServlet extends ScalatraServlet with Logging {
 
   error {
     case InvalidRequestException(msg) =>
-      renderStatus(HttpStatus.badRequest(msg))
+      renderStatus(HttpStatus.badRequest(msg.torErrorCode, msg.message))
     case e: Throwable =>
       renderInternalError(e)
   }

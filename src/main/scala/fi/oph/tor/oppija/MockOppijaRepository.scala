@@ -3,7 +3,7 @@ package fi.oph.tor.oppija
 import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.db.TorDatabase.DB
 import fi.oph.tor.db.{Futures, GlobalExecutionContext, PostgresDriverWithJsonSupport}
-import fi.oph.tor.http.HttpStatus
+import fi.oph.tor.http.{TorErrorCode, HttpStatus}
 import fi.oph.tor.log.Loggable
 import fi.oph.tor.schema.{KoodistoKoodiViite, FullHenkilö, Henkilö}
 
@@ -54,7 +54,7 @@ class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with 
     if (sukunimi == "error") {
       throw new TestingException("Testing error handling")
     } else if (oppijat.getOppijat.find { o => (o.hetu == hetu) } .isDefined) {
-      Left(HttpStatus.conflict("conflict"))
+      Left(HttpStatus.conflict(TorErrorCode.Conflict.hetuExists, "conflict"))
     } else {
       val newOppija = oppijat.oppija(sukunimi, etunimet, hetu)
       Right(newOppija.oid)

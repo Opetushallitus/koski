@@ -3,7 +3,7 @@ package fi.oph.tor.henkilo
 import java.time.{LocalDate, ZoneId}
 
 import com.typesafe.config.Config
-import fi.oph.tor.http.{Http, HttpStatus, HttpStatusException, VirkailijaHttpClient}
+import fi.oph.tor.http._
 import fi.oph.tor.json.Json._
 import fi.oph.tor.json.Json4sHttp4s._
 import org.http4s._
@@ -35,8 +35,8 @@ class AuthenticationServiceClient(virkailija: VirkailijaHttpClient) extends Enti
 
     virkailija.httpClient(task, request) {
       case (200, oid, _) => Right(oid)
-      case (400, "socialsecuritynr.already.exists", _) => Left(HttpStatus.conflict("socialsecuritynr.already.exists"))
-      case (400, error, _) => Left(HttpStatus.badRequest(error))
+      case (400, "socialsecuritynr.already.exists", _) => Left(HttpStatus.conflict(TorErrorCode.Conflict.hetuExists, "Henkilötunnus on jo olemassa"))
+      case (400, error, _) => Left(HttpStatus.badRequest(TorErrorCode.Validation.henkilötiedot, error))
       case (status, text, uri) => throw new HttpStatusException(status, text, uri)
     }.run
   }

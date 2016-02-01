@@ -1,7 +1,7 @@
 package fi.oph.tor.tor
 
 import java.time.LocalDate
-import fi.oph.tor.http.HttpStatus
+import fi.oph.tor.http.{TorErrorCode, HttpStatus}
 import fi.oph.tor.schema.Jakso
 
 object DateValidation {
@@ -9,7 +9,7 @@ object DateValidation {
 
   def validateDateOrder(first: NamedDates, second: NamedDates): HttpStatus = {
     HttpStatus.fold(for (left <- first._2; right <- second._2) yield {
-      HttpStatus.validate(left.compareTo(right) <= 0)(HttpStatus.badRequest(first._1 + " (" + left + ") oltava sama tai aiempi kuin " + second._1 + "(" + right + ")"))
+      HttpStatus.validate(left.compareTo(right) <= 0)(HttpStatus.badRequest(TorErrorCode.Validation.date, first._1 + " (" + left + ") oltava sama tai aiempi kuin " + second._1 + "(" + right + ")"))
     })
   }
 
@@ -20,8 +20,8 @@ object DateValidation {
           case (left, right) => (left.loppu, right.alku)
         }
         HttpStatus.fold(pairs.map {
-          case (None, _) => HttpStatus.badRequest(name + ": ei-viimeiseltä jaksolta puuttuu loppupäivä")
-          case (Some(edellisenLoppu), seuraavanAlku) if (!areConsecutiveDates(edellisenLoppu, seuraavanAlku)) => HttpStatus.badRequest(name + ": jaksot eivät muodosta jatkumoa")
+          case (None, _) => HttpStatus.badRequest(TorErrorCode.Validation.date, name + ": ei-viimeiseltä jaksolta puuttuu loppupäivä")
+          case (Some(edellisenLoppu), seuraavanAlku) if (!areConsecutiveDates(edellisenLoppu, seuraavanAlku)) => HttpStatus.badRequest(TorErrorCode.Validation.date, name + ": jaksot eivät muodosta jatkumoa")
           case _ => HttpStatus.ok
         })
       }

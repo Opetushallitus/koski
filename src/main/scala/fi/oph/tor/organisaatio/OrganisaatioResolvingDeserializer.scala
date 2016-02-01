@@ -1,6 +1,7 @@
 package fi.oph.tor.organisaatio
 
 import fi.oph.tor.http.HttpStatus
+import fi.oph.tor.http.TorErrorCode.Validation
 import fi.oph.tor.json.{ContextualExtractor, Json}
 import fi.oph.tor.schema._
 import fi.oph.tor.log.Logging
@@ -18,8 +19,8 @@ object OrganisaatioResolvingDeserializer extends Deserializer[Organisaatio] with
           ContextualExtractor.getContext[{def organisaatioRepository: OrganisaatioRepository}] match {
             case Some(context) => context.organisaatioRepository.getOrganisaatio(o.oid) match {
               case Some(org) if (c.isInstance(org)) => org
-              case Some(org) => ContextualExtractor.extractionError(HttpStatus.badRequest("Organisaatio " + o.oid + " ei ole " + c.getSimpleName))
-              case None => ContextualExtractor.extractionError(HttpStatus.badRequest("Organisaatiota " + o.oid + " ei löydy organisaatiopalvelusta"))
+              case Some(org) => ContextualExtractor.extractionError(HttpStatus.badRequest(Validation.organisaatioVääränTyyppinen, "Organisaatio " + o.oid + " ei ole " + c.getSimpleName))
+              case None => ContextualExtractor.extractionError(HttpStatus.badRequest(Validation.organisaatioTuntematon, "Organisaatiota " + o.oid + " ei löydy organisaatiopalvelusta"))
             }
           }
         case org => org

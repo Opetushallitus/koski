@@ -1,5 +1,6 @@
 package fi.oph.tor.history
 
+import fi.oph.tor.http.TorErrorCode
 import fi.oph.tor.servlet.{NoCache, InvalidRequestException, ErrorHandlingServlet}
 import fi.oph.tor.toruser.{RequiresAuthentication, UserOrganisationsRepository}
 import fi.vm.sade.security.ldap.DirectoryClient
@@ -25,7 +26,7 @@ class TorHistoryServlet(val userRepository: UserOrganisationsRepository, val dir
   private def getIntegerParam(name: String): Int = {
     params.getAs[Int](name) match {
       case Some(id) if id > 0 => id
-      case _ => throw new InvalidRequestException("Invalid " + name + " : " + params(name))
+      case _ => throw new InvalidRequestException(TorErrorCode.InvalidFormat.number, "Invalid " + name + " : " + params(name))
     }
   }
 }

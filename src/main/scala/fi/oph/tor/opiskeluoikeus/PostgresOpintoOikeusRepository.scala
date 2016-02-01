@@ -8,7 +8,7 @@ import fi.oph.tor.db.Tables._
 import fi.oph.tor.db.TorDatabase.DB
 import fi.oph.tor.db._
 import fi.oph.tor.history.OpiskeluoikeusHistoryRepository
-import fi.oph.tor.http.HttpStatus
+import fi.oph.tor.http.{TorErrorCode, HttpStatus}
 import fi.oph.tor.json.Json
 import fi.oph.tor.oppija.PossiblyUnverifiedOppijaOid
 import fi.oph.tor.schema.Henkilö._
@@ -80,7 +80,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
 
   override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: OpiskeluOikeus)(implicit user: TorUser): Either[HttpStatus, CreateOrUpdateResult] = {
     if (!user.userOrganisations.hasReadAccess(opiskeluOikeus.oppilaitos)) {
-      Left(HttpStatus.forbidden("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid))
+      Left(HttpStatus.forbidden(TorErrorCode.Forbidden.organisaatio, "Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid))
     } else {
       doInIsolatedTransaction(db, createOrUpdateAction(oppijaOid, opiskeluOikeus), "Oppijan " + oppijaOid + " opiskeluoikeuden lisäys/muutos")
     }
@@ -143,7 +143,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     val (id, versionumero) = (oldRow.id, oldRow.versionumero)
 
     uusiOlio.versionumero match {
-      case Some(requestedVersionumero) if (requestedVersionumero != versionumero) => DBIO.successful(Left(HttpStatus.conflict("Annettu versionumero " + requestedVersionumero + " <> " + versionumero)))
+      case Some(requestedVersionumero) if (requestedVersionumero != versionumero) => DBIO.successful(Left(HttpStatus.conflict(TorErrorCode.Conflict.versionumero, "Annettu versionumero " + requestedVersionumero + " <> " + versionumero)))
       case _ =>
         val uusiData = Json.toJValue(uusiOlio.copy(id = None, versionumero = None))
         val diff = JsonMethods.fromJsonNode(JsonDiff.asJson(JsonMethods.asJsonNode(oldRow.data), JsonMethods.asJsonNode(uusiData))).asInstanceOf[JArray]

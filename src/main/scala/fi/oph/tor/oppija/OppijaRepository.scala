@@ -4,7 +4,7 @@ import com.typesafe.config.Config
 import fi.oph.tor.cache.{BaseCacheDetails, CachingStrategyBase, CachingProxy}
 import fi.oph.tor.db.TorDatabase
 import fi.oph.tor.henkilo.{Hetu, AuthenticationServiceClient}
-import fi.oph.tor.http.HttpStatus
+import fi.oph.tor.http.{TorErrorCode, HttpStatus}
 import fi.oph.tor.koodisto.KoodistoViitePalvelu
 import fi.oph.tor.log.TimedProxy
 import fi.oph.tor.schema._
@@ -60,7 +60,7 @@ trait OppijaRepository extends Logging {
       case OidHenkilö(oid) =>
         oidFrom(findByOid(oid).toList)
       case _ =>
-        Left(HttpStatus.badRequest("Joko oid tai (hetu, etunimet, sukunimi, kutsumanimi) tarvitaan henkilön hakuun/luontiin"))
+        Left(HttpStatus.badRequest(TorErrorCode.Validation.henkilötietojaPuuttuu, "Joko oid tai (hetu, etunimet, sukunimi, kutsumanimi) tarvitaan henkilön hakuun/luontiin"))
     }
   }
 }
