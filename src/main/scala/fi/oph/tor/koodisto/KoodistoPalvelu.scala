@@ -10,9 +10,9 @@ object KoodistoPalvelu {
 
   def withoutCache(config: Config): KoodistoPalvelu = {
     if (config.hasPath("koodisto.virkailija.url")) {
-      new RemoteKoodistoPalvelu(config.getString("authentication-service.username"))
+      new RemoteKoodistoPalvelu(config.getString("koodisto.virkailija.url"))
     } else if (config.hasPath("opintopolku.virkailija.url")) {
-      new RemoteKoodistoPalvelu(config.getString("authentication-service.username"))
+      new RemoteKoodistoPalvelu(config.getString("opintopolku.virkailija.url"))
     } else {
       MockKoodistoPalvelu
     }
