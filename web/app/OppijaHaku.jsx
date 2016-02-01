@@ -59,8 +59,8 @@ const OppijaHakutulokset = React.createClass({
     return oppijat.results.length > 0
       ? <ul> {oppijatElems} </ul>
       : oppijat.query.length > 2
-      ? <div className='no-results'>Ei hakutuloksia<a className='lisaa-oppija' onClick={navigateToUusiOppija}>Lisää oppija</a></div>
-      : <span></span>
+        ? <div className='no-results'>Ei hakutuloksia<a className='lisaa-oppija' onClick={navigateToUusiOppija}>Lisää oppija</a></div>
+        : <div><a className='lisaa-oppija' onClick={navigateToUusiOppija}>Lisää oppija</a></div>
   },
 
   selectOppija(oppija) {
