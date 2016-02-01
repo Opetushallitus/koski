@@ -1,6 +1,6 @@
 package fi.oph.tor.henkilo
 
-import fi.oph.tor.http.{TorErrorCode, HttpStatus}
+import fi.oph.tor.http.{TorErrorCategory, HttpStatus}
 
 object HenkiloOid {
   def isValidHenkilöOid(oid: String) = {
@@ -11,7 +11,7 @@ object HenkiloOid {
     if (isValidHenkilöOid(oid)) {
       Right(oid)
     } else {
-      Left(HttpStatus.badRequest(TorErrorCode.Validation.henkilöOid, "Invalid henkilö oid: " + oid))
+      Left(HttpStatus(TorErrorCategory.badRequest.validation.henkilötiedot.virheellinenOid, "Virheellinen oid: " + oid))
     }
   }
 }

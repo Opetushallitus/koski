@@ -3,8 +3,8 @@ package fi.oph.tor.henkilo
 import java.time.LocalDate.{now, of => date}
 import java.time.{DateTimeException, LocalDate}
 
-import fi.oph.tor.http.HttpStatus.badRequest
-import fi.oph.tor.http.TorErrorCode
+import fi.oph.tor.http.{HttpStatus, TorErrorCategory}
+
 import scala.util.matching.Regex
 
 object Hetu {
@@ -17,7 +17,7 @@ object Hetu {
     def validFormat(hetu: String) = {
       hetuRegex.findFirstIn(hetu) match {
         case Some(_) => Right(hetu)
-        case None => Left(badRequest(TorErrorCode.Validation.hetu, "Virheellinen muoto hetulla: " + hetu))
+        case None => Left(HttpStatus(TorErrorCategory.badRequest.validation.henkilötiedot.hetu, "Virheellinen muoto hetulla: " + hetu))
       }
     }
 
@@ -34,16 +34,16 @@ object Hetu {
           if (birthday.isBefore(now)) Some(hetu) else None
         } match {
           case Some(_) => Right(hetu)
-          case None => Left(badRequest(TorErrorCode.Validation.hetu, "Syntymäpäivä hetussa: " + hetu + " on tulevaisuudessa"))
+          case None => Left(HttpStatus(TorErrorCategory.badRequest.validation.henkilötiedot.hetu, "Syntymäpäivä hetussa: " + hetu + " on tulevaisuudessa"))
         }
       } catch {
-        case ex: DateTimeException => Left(badRequest(TorErrorCode.Validation.hetu, "Virheellinen syntymäpäivä hetulla: " + hetu))
+        case ex: DateTimeException => Left(HttpStatus(TorErrorCategory.badRequest.validation.henkilötiedot.hetu, "Virheellinen syntymäpäivä hetulla: " + hetu))
       }
     }
 
     def validCheckChar(hetu: String) = {
       val checkChar = checkChars(Math.round(((hetu.slice(0,6) + hetu.slice(7,10)).toInt / 31.0 % 1) * 31).toInt)
-      if (checkChar == hetu.last) Right(hetu) else Left(badRequest(TorErrorCode.Validation.hetu, "Virheellinen tarkistusmerkki hetussa: " + hetu))
+      if (checkChar == hetu.last) Right(hetu) else Left(HttpStatus(TorErrorCategory.badRequest.validation.henkilötiedot.hetu, "Virheellinen tarkistusmerkki hetussa: " + hetu))
     }
 
     validFormat(hetu).right.flatMap(validDate(_).right.flatMap(validCheckChar))

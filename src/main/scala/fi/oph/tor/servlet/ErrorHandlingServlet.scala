@@ -1,6 +1,6 @@
 package fi.oph.tor.servlet
 
-import fi.oph.tor.http.{TorErrorCode, HttpStatus}
+import fi.oph.tor.http.{TorErrorCategory, HttpStatus}
 import fi.oph.tor.json.Json
 import fi.oph.tor.json.Json.maskSensitiveInformation
 import fi.oph.tor.log.Logging
@@ -19,7 +19,7 @@ trait ErrorHandlingServlet extends ScalatraServlet with Logging {
     }
     json match {
       case Some(json) => block(json)
-      case None => renderStatus(HttpStatus.badRequest(TorErrorCode.InvalidFormat.json, "Invalid JSON"))
+      case None => renderStatus(HttpStatus(TorErrorCategory.badRequest.format.json, "Invalid JSON"))
     }
 
   }
@@ -28,7 +28,7 @@ trait ErrorHandlingServlet extends ScalatraServlet with Logging {
     contentType = "application/json;charset=utf-8"
     result match {
       case Some(x) => Json.write(x, pretty)
-      case _ => renderStatus(HttpStatus.notFound("Not found"))
+      case _ => renderStatus(HttpStatus(TorErrorCategory.notFound, "Not found"))
     }
   }
 
@@ -41,15 +41,15 @@ trait ErrorHandlingServlet extends ScalatraServlet with Logging {
   }
 
   error {
-    case InvalidRequestException(msg) =>
-      renderStatus(HttpStatus.badRequest(msg.torErrorCode, msg.message))
+    case InvalidRequestException(detail) =>
+      renderStatus(detail)
     case e: Throwable =>
       renderInternalError(e)
   }
 
   def renderInternalError(e: Throwable): Nothing = {
     logger.error("Error while processing request " + describeRequest, e)
-    renderStatus(HttpStatus.internalError())
+    renderStatus(HttpStatus(TorErrorCategory.internalError))
   }
 
   def describeRequest: String = {
@@ -59,7 +59,7 @@ trait ErrorHandlingServlet extends ScalatraServlet with Logging {
   }
 
   def renderStatus(status: HttpStatus) = {
-    halt(status = status.statusCode, body = Json.write(status.errors))
+    halt(status = status.statusCode, body = Json.write(status.errors.map(detail => Map("key" -> detail.category.key, "message" -> detail.message))))
   }
 
   private def maskRequestBody = {

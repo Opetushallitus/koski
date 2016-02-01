@@ -1,6 +1,6 @@
 package fi.oph.tor.tor
 
-import fi.oph.tor.http.HttpStatus
+import fi.oph.tor.http.{TorErrorCategory, HttpStatus}
 import fi.oph.tor.json.Json
 import fi.oph.tor.opiskeluoikeus._
 import fi.oph.tor.oppija._
@@ -73,7 +73,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
   }
 
   private def notFound(oid: String): Left[HttpStatus, Nothing] = {
-    Left(HttpStatus.notFound(s"Oppija with oid: $oid not found"))
+    Left(HttpStatus(TorErrorCategory.notFound, s"Oppija with oid: $oid not found"))
   }
 }
 

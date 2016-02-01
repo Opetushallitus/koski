@@ -1,6 +1,6 @@
 package fi.oph.tor.koodisto
 
-import fi.oph.tor.http.{TorErrorCode, HttpStatus}
+import fi.oph.tor.http.{TorErrorCategory, HttpStatus}
 import fi.oph.tor.json.{ContextualExtractor, Json}
 import fi.oph.tor.schema.{KoodistoKoodiViite, Deserializer}
 import fi.oph.tor.log.Logging
@@ -19,12 +19,12 @@ object KoodistoResolvingDeserializer extends Deserializer[KoodistoKoodiViite] wi
           } catch {
             case e: Exception =>
               logger.error("Error from koodisto-service", e)
-              ContextualExtractor.extractionError(HttpStatus.internalError())
+              ContextualExtractor.extractionError(HttpStatus(TorErrorCategory.internalError))
           }
           validated match {
             case Some(viite) => viite
             case None =>
-              ContextualExtractor.extractionError(HttpStatus.badRequest(TorErrorCode.Validation.Koodisto.notFound, "Koodia " + viite + " ei löydy koodistosta"))
+              ContextualExtractor.extractionError(HttpStatus(TorErrorCategory.badRequest.validation.koodisto.tuntematonKoodi, "Koodia " + viite + " ei löydy koodistosta"))
           }
         case _ => throw new RuntimeException("KoodistoResolvingDeserializer used without valid thread-local context")
       }

@@ -1,6 +1,6 @@
 package fi.oph.tor.tutkinto
 
-import fi.oph.tor.http.TorErrorCode
+import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.json.Json
 import fi.oph.tor.servlet.{InvalidRequestException, ErrorHandlingServlet}
 
@@ -9,7 +9,7 @@ class TutkintoServlet(tutkintoRepository: TutkintoRepository) extends ErrorHandl
      contentType = "application/json;charset=utf-8"
      (params.get("query"), params.get("oppilaitosId")) match {
        case (Some(query), Some(oppilaitosId)) if (query.length >= 3) => Json.write(tutkintoRepository.findTutkinnot(oppilaitosId, query))
-       case _ => throw new InvalidRequestException(TorErrorCode.Validation.QueryParam.tooShort, "query parameter length must be at least 3")
+       case _ => throw new InvalidRequestException(TorErrorCategory.badRequest.validation.queryParam.tooShort, "query parameter length must be at least 3")
      }
    }
 

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT
 import com.github.fge.jackson.JsonLoader
 import com.github.fge.jsonschema.core.report.LogLevel.ERROR
 import com.github.fge.jsonschema.main.JsonSchemaFactory
-import fi.oph.tor.http.{ErrorDetail, TorErrorCode, HttpStatus}
+import fi.oph.tor.http.{HttpStatus, TorErrorCategory}
 import fi.oph.tor.schema.TorSchema
 import org.json4s.JValue
 import org.json4s.jackson.JsonMethods._
@@ -25,7 +25,7 @@ object TorJsonSchemaValidator {
         .map(fromJsonNode)
         .toList
 
-      HttpStatus.badRequest(errors.map(error => ErrorDetail(TorErrorCode.Validation.jsonSchema, error)))
+      HttpStatus.fold(errors.map((error: JValue) => TorErrorCategory.badRequest.validation.jsonSchema.apply(error)))
     } else {
       HttpStatus.ok
     }
