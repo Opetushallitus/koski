@@ -1,7 +1,5 @@
 package fi.oph.tor.http
 
-import fi.oph.tor.http.TorErrorCategory.badRequest.validation._
-
 // TODO: organize/review error codes
 // TODO: unit test to ensure consistency of naming and structure
 
