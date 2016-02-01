@@ -5,7 +5,7 @@ import fi.oph.tor.log.TimedProxy
 
 object KoodistoPalvelu {
   def apply(config: Config) = {
-    KoodistoCacheWarmer(TimedProxy(withoutCache(config)))
+    TimedProxy(withoutCache(config))
   }
 
   def withoutCache(config: Config): KoodistoPalvelu = {
