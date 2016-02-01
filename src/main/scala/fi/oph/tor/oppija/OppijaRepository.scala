@@ -47,7 +47,7 @@ trait OppijaRepository extends Logging {
         case List(oppija) => Right(oppija.oid)
         case _ =>
           logger.error("Oppijan lisääminen epäonnistui: ei voitu lisätä, muttei myöskään löytynyt.")
-          Left(HttpStatus(TorErrorCategory.internalError))
+          Left(TorErrorCategory.internalError())
       }
     }
     henkilö match {
@@ -60,7 +60,7 @@ trait OppijaRepository extends Logging {
       case OidHenkilö(oid) =>
         oidFrom(findByOid(oid).toList)
       case _ =>
-        Left(HttpStatus(TorErrorCategory.badRequest.validation.henkilötiedot.puuttelliset, "Joko oid tai (hetu, etunimet, sukunimi, kutsumanimi) tarvitaan henkilön hakuun/luontiin"))
+        Left(TorErrorCategory.badRequest.validation.henkilötiedot.puuttelliset("Joko oid tai (hetu, etunimet, sukunimi, kutsumanimi) tarvitaan henkilön hakuun/luontiin"))
     }
   }
 }

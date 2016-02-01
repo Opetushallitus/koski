@@ -11,7 +11,7 @@ object HenkiloOid {
     if (isValidHenkilöOid(oid)) {
       Right(oid)
     } else {
-      Left(HttpStatus(TorErrorCategory.badRequest.validation.henkilötiedot.virheellinenOid, "Virheellinen oid: " + oid))
+      Left(TorErrorCategory.badRequest.validation.henkilötiedot.virheellinenOid("Virheellinen oid: " + oid))
     }
   }
 }

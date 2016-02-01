@@ -80,7 +80,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
 
   override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: OpiskeluOikeus)(implicit user: TorUser): Either[HttpStatus, CreateOrUpdateResult] = {
     if (!user.userOrganisations.hasReadAccess(opiskeluOikeus.oppilaitos)) {
-      Left(HttpStatus(TorErrorCategory.forbidden.organisaatio, "Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid))
+      Left(TorErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid))
     } else {
       doInIsolatedTransaction(db, createOrUpdateAction(oppijaOid, opiskeluOikeus), "Oppijan " + oppijaOid + " opiskeluoikeuden lisäys/muutos")
     }
@@ -95,7 +95,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
       findAction(OpiskeluOikeudetWithAccessCheck.filter(_.id === id)).map { rows =>
         rows.headOption match {
           case Some(oikeus) => Right(Some(oikeus))
-          case None => Left(HttpStatus(TorErrorCategory.notFound, "Opiskeluoikeus not found for id: " + id))
+          case None => Left(TorErrorCategory.notFound("Opiskeluoikeus not found for id: " + id))
         }
       }
     }
@@ -120,7 +120,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
         case Right(None) =>
           oppijaOid.verifiedOid match {
             case Some(oid) => createAction(oid, opiskeluOikeus)
-            case None => DBIO.successful(Left(HttpStatus(TorErrorCategory.notFound, "Oppija " + oppijaOid.oppijaOid + " not found")))
+            case None => DBIO.successful(Left(TorErrorCategory.notFound("Oppija " + oppijaOid.oppijaOid + " not found")))
           }
         case Left(err) => DBIO.successful(Left(err))
       }
@@ -143,7 +143,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     val (id, versionumero) = (oldRow.id, oldRow.versionumero)
 
     uusiOlio.versionumero match {
-      case Some(requestedVersionumero) if (requestedVersionumero != versionumero) => DBIO.successful(Left(HttpStatus(TorErrorCategory.conflict.versionumero, "Annettu versionumero " + requestedVersionumero + " <> " + versionumero)))
+      case Some(requestedVersionumero) if (requestedVersionumero != versionumero) => DBIO.successful(Left(TorErrorCategory.conflict.versionumero("Annettu versionumero " + requestedVersionumero + " <> " + versionumero)))
       case _ =>
         val uusiData = Json.toJValue(uusiOlio.copy(id = None, versionumero = None))
         val diff = JsonMethods.fromJsonNode(JsonDiff.asJson(JsonMethods.asJsonNode(oldRow.data), JsonMethods.asJsonNode(uusiData))).asInstanceOf[JArray]

@@ -54,7 +54,7 @@ class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with 
     if (sukunimi == "error") {
       throw new TestingException("Testing error handling")
     } else if (oppijat.getOppijat.find { o => (o.hetu == hetu) } .isDefined) {
-      Left(HttpStatus(TorErrorCategory.conflict.hetu, "conflict"))
+      Left(TorErrorCategory.conflict.hetu("conflict"))
     } else {
       val newOppija = oppijat.oppija(sukunimi, etunimet, hetu)
       Right(newOppija.oid)

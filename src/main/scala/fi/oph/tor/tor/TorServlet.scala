@@ -87,7 +87,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
       historyRepository.findVersion(oikeus.id.get, oikeus.versionumero.get) match {
         case Right(latestVersion) =>
           HttpStatus.validate(latestVersion == oikeus) {
-            HttpStatus(TorErrorCategory.internalError, "Opinto-oikeuden " + oikeus.id + " versiohistoria epäkonsistentti")
+            TorErrorCategory.internalError("Opinto-oikeuden " + oikeus.id + " versiohistoria epäkonsistentti")
           }
         case Left(error) => error
       }
@@ -104,7 +104,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
       case (p, v) if p == "opiskeluoikeusPäättynytAikaisintaan" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytAikaisintaan(_))
       case (p, v) if p == "opiskeluoikeusPäättynytViimeistään" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytViimeistään(_))
       case ("tutkinnonTila", v) => Right(TutkinnonTila(v))
-      case (p, _) => Left(HttpStatus(TorErrorCategory.badRequest.validation.queryParam.unknown, "Unsupported query parameter: " + p))
+      case (p, _) => Left(TorErrorCategory.badRequest.validation.queryParam.unknown("Unsupported query parameter: " + p))
     }
 
     queryFilters.partition(_.isLeft) match {
@@ -127,7 +127,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
     case (p, v) => try {
       Right(LocalDate.parse(v))
     } catch {
-      case e: DateTimeParseException => Left(HttpStatus(TorErrorCategory.badRequest.format.pvm, "Invalid date parameter: " + p + "=" + v))
+      case e: DateTimeParseException => Left(TorErrorCategory.badRequest.format.pvm("Invalid date parameter: " + p + "=" + v))
     }
   }
 }

@@ -73,7 +73,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
   }
 
   private def notFound(oid: String): Left[HttpStatus, Nothing] = {
-    Left(HttpStatus(TorErrorCategory.notFound, s"Oppija with oid: $oid not found"))
+    Left(TorErrorCategory.notFound(s"Oppija with oid: $oid not found"))
   }
 }
 

@@ -35,8 +35,8 @@ class AuthenticationServiceClient(virkailija: VirkailijaHttpClient) extends Enti
 
     virkailija.httpClient(task, request) {
       case (200, oid, _) => Right(oid)
-      case (400, "socialsecuritynr.already.exists", _) => Left(HttpStatus(TorErrorCategory.conflict.hetu, "Henkilötunnus on jo olemassa"))
-      case (400, error, _) => Left(HttpStatus(TorErrorCategory.badRequest.validation.henkilötiedot, error))
+      case (400, "socialsecuritynr.already.exists", _) => Left(TorErrorCategory.conflict.hetu("Henkilötunnus on jo olemassa"))
+      case (400, error, _) => Left(TorErrorCategory.badRequest.validation.henkilötiedot(error))
       case (status, text, uri) => throw new HttpStatusException(status, text, uri)
     }.run
   }

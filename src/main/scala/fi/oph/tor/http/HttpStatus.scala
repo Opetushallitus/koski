@@ -8,13 +8,12 @@ case class HttpStatus(statusCode: Int, errors: List[ErrorDetail]) {
   def then(status: => HttpStatus) = if (isOk) { status } else { this }
 }
 
+case class ErrorDetail(category: ErrorCategory, message: AnyRef) {
+  override def toString = category.key + " (" + message + ")"
+}
+
 object HttpStatus {
-  // Known HTTP statii
-
   val ok = HttpStatus(200, Nil)
-
-  def apply(category: ErrorCategory, message: String): HttpStatus = HttpStatus(category.statusCode, List(ErrorDetail(category, message)))
-  def apply(category: CategoryWithDefaultText): HttpStatus = apply(category, category.message)
 
   // Combinators
 
@@ -41,8 +40,4 @@ case class ErrorCategory(val key: String, val statusCode: Int) {
 class CategoryWithDefaultText(key: String, status: Int, val message: String) extends ErrorCategory(key, status) {
   def this(parent: ErrorCategory, key: String, message: String) = this(parent.key + "." + key, parent.statusCode, message)
   def apply(): HttpStatus = apply(message)
-}
-
-case class ErrorDetail(category: ErrorCategory, message: AnyRef) {
-  override def toString = category.key + " (" + message + ")"
 }

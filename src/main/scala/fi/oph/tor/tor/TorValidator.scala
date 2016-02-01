@@ -31,7 +31,7 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
 
   private def validateOpiskeluoikeudet(opiskeluoikeudet: Seq[OpiskeluOikeus])(implicit user: TorUser): HttpStatus = {
     if (opiskeluoikeudet.length == 0) {
-      HttpStatus(TorErrorCategory.badRequest.validation.zeroLength, "At least one OpiskeluOikeus required")
+      TorErrorCategory.badRequest.validation.zeroLength("At least one OpiskeluOikeus required")
     }
     else {
       HttpStatus.fold(opiskeluoikeudet.map(validateOpiskeluOikeus))
@@ -39,7 +39,7 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
   }
 
   private def validateOpiskeluOikeus(opiskeluOikeus: OpiskeluOikeus)(implicit user: TorUser): HttpStatus = {
-    HttpStatus.validate(user.userOrganisations.hasReadAccess(opiskeluOikeus.oppilaitos)) { HttpStatus(TorErrorCategory.forbidden.organisaatio, "Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid) }
+    HttpStatus.validate(user.userOrganisations.hasReadAccess(opiskeluOikeus.oppilaitos)) { TorErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid) }
       .then { HttpStatus.fold(
       validateDateOrder(("alkamispäivä", opiskeluOikeus.alkamispäivä), ("päättymispäivä", opiskeluOikeus.päättymispäivä)),
       validateDateOrder(("alkamispäivä", opiskeluOikeus.alkamispäivä), ("arvioituPäättymispäivä", opiskeluOikeus.arvioituPäättymispäivä)),

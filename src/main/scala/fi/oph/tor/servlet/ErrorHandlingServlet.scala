@@ -19,7 +19,7 @@ trait ErrorHandlingServlet extends ScalatraServlet with Logging {
     }
     json match {
       case Some(json) => block(json)
-      case None => renderStatus(HttpStatus(TorErrorCategory.badRequest.format.json, "Invalid JSON"))
+      case None => renderStatus(TorErrorCategory.badRequest.format.json("Invalid JSON"))
     }
 
   }
@@ -28,7 +28,7 @@ trait ErrorHandlingServlet extends ScalatraServlet with Logging {
     contentType = "application/json;charset=utf-8"
     result match {
       case Some(x) => Json.write(x, pretty)
-      case _ => renderStatus(HttpStatus(TorErrorCategory.notFound, "Not found"))
+      case _ => renderStatus(TorErrorCategory.notFound("Not found"))
     }
   }
 
@@ -49,7 +49,7 @@ trait ErrorHandlingServlet extends ScalatraServlet with Logging {
 
   def renderInternalError(e: Throwable): Nothing = {
     logger.error("Error while processing request " + describeRequest, e)
-    renderStatus(HttpStatus(TorErrorCategory.internalError))
+    renderStatus(TorErrorCategory.internalError())
   }
 
   def describeRequest: String = {

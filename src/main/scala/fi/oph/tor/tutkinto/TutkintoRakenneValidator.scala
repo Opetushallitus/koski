@@ -17,15 +17,15 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
           }
         case Some(rakenne) =>
           val tuntemattomatOsaamisalat: List[KoodistoKoodiViite] = t.osaamisala.toList.flatten.filter(osaamisala => !TutkintoRakenne.findOsaamisala(rakenne, osaamisala.koodiarvo).isDefined)
-          HttpStatus.fold(tuntemattomatOsaamisalat.map { osaamisala: KoodistoKoodiViite => HttpStatus(TorErrorCategory.badRequest.validation.rakenne.tuntematonOsaamisala, "Osaamisala " + osaamisala.koodiarvo + " ei löydy tutkintorakenteesta perusteelle " + rakenne.diaarinumero) })
+          HttpStatus.fold(tuntemattomatOsaamisalat.map { osaamisala: KoodistoKoodiViite => TorErrorCategory.badRequest.validation.rakenne.tuntematonOsaamisala("Osaamisala " + osaamisala.koodiarvo + " ei löydy tutkintorakenteesta perusteelle " + rakenne.diaarinumero) })
             .then(HttpStatus.fold(suoritus.osasuoritukset.toList.flatten.map{validateSuoritus(_, Some(rakenne), t.suoritustapa)}))
       }
     case (t: OpsTutkinnonosatoteutus, Some(rakenne), None)  =>
-      HttpStatus(TorErrorCategory.badRequest.validation.rakenne.suoritustapaPuuttuu, "Tutkinnolta puuttuu suoritustapa. Tutkinnon osasuorituksia ei hyväksytä.")
+      TorErrorCategory.badRequest.validation.rakenne.suoritustapaPuuttuu("Tutkinnolta puuttuu suoritustapa. Tutkinnon osasuorituksia ei hyväksytä.")
     case (t: OpsTutkinnonosatoteutus, Some(rakenne), Some(suoritustapa))  =>
       TutkintoRakenne.findTutkinnonOsa(rakenne, suoritustapa.tunniste, t.koulutusmoduuli.tunniste) match {
         case None =>
-          HttpStatus(TorErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa, "Tutkinnon osa " + t.koulutusmoduuli.tunniste + " ei löydy tutkintorakenteesta perusteelle " + rakenne.diaarinumero + " - suoritustapa " + suoritustapa.tunniste.koodiarvo)
+          TorErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa("Tutkinnon osa " + t.koulutusmoduuli.tunniste + " ei löydy tutkintorakenteesta perusteelle " + rakenne.diaarinumero + " - suoritustapa " + suoritustapa.tunniste.koodiarvo)
         case Some(tutkinnonOsa) =>
           HttpStatus.ok
       }
