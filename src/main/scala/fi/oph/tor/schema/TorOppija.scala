@@ -279,6 +279,7 @@ case class Näyttö(
 )
 
 case class NäytönArviointi (
+  @Description("Näytön eri arviointikohteiden (Työprosessin hallinta jne) arvosanat.")
   arviointiKohteet: List[NäytönArviointikohde],
   @KoodistoUri("ammatillisennaytonarvioinnistapaattaneet")
   @Description("Arvioinnista päättäneet tahot, ilmaistuna 1-numeroisella koodilla")
