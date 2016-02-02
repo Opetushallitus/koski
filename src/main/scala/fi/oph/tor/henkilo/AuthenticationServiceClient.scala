@@ -6,6 +6,7 @@ import com.typesafe.config.Config
 import fi.oph.tor.http._
 import fi.oph.tor.json.Json._
 import fi.oph.tor.json.Json4sHttp4s._
+import org.http4s.Uri.Path
 import org.http4s._
 import org.http4s.headers.`Content-Type`
 
@@ -47,7 +48,8 @@ class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances {
 
 object AuthenticationServiceClient {
   def apply(config: Config) = {
-    val http = VirkailijaHttpClient(config.getString("authentication-service.username"), config.getString("authentication-service.password"), config.getString("opintopolku.virkailija.url"), "/authentication-service", config.getBoolean("authentication-service.useCas"))
+    val virkalijaUrl: Path = if (config.hasPath("authentication-service.virkailija.url")) { config.getString("authentication-service.virkailija.url") } else { config.getString("opintopolku.virkailija.url") }
+    val http = VirkailijaHttpClient(config.getString("authentication-service.username"), config.getString("authentication-service.password"), virkalijaUrl, "/authentication-service", config.getBoolean("authentication-service.useCas"))
     new AuthenticationServiceClient(http)
   }
 }
