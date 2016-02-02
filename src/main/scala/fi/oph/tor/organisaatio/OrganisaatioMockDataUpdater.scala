@@ -10,12 +10,12 @@ object OrganisaatioMockDataUpdater extends App {
 
   def updateMockDataFromOrganisaatioPalvelu(config: Config): Unit = {
     val koodisto = KoodistoViitePalvelu(KoodistoPalvelu.apply(config))
-    val organisaatioPalvelu = new RemoteOrganisaatioRepository(config, koodisto)
+    val organisaatioPalvelu = OrganisaatioRepository.withoutCache(config, koodisto)
 
     MockOrganisaatiot.organisaatiot.foreach(oid => updateMockDataForOrganisaatio(oid, organisaatioPalvelu))
   }
 
-  def updateMockDataForOrganisaatio(oid: String, organisaatioPalvelu: RemoteOrganisaatioRepository): Unit = {
+  def updateMockDataForOrganisaatio(oid: String, organisaatioPalvelu: JsonOrganisaatioRepository): Unit = {
     val tulos = organisaatioPalvelu.fetch(oid)
     Json.writeFile(MockOrganisaatioRepository.filename(oid), tulos)
   }

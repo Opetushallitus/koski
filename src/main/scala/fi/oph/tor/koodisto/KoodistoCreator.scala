@@ -3,7 +3,6 @@ package fi.oph.tor.koodisto
 import java.time.LocalDate
 
 import com.typesafe.config.Config
-import fi.oph.tor.http.{Http, HttpStatusException, VirkailijaHttpClient}
 import fi.oph.tor.log.Logging
 
 object KoodistoCreator extends Logging {

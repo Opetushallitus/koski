@@ -1,10 +1,10 @@
 package fi.oph.tor.api
 
-import com.unboundid.util.Base64
+import fi.oph.tor.http.BasicAuthentication
 import fi.oph.tor.jettylauncher.SharedJetty
 import fi.oph.tor.toruser.MockUsers
 import fi.oph.tor.toruser.MockUsers.MockUser
-import org.scalatest.{Matchers, Assertions}
+import org.scalatest.{Assertions, Matchers}
 import org.scalatra.test.HttpComponentsClient
 
 trait HttpSpecification extends HttpComponentsClient with Assertions with Matchers {
@@ -13,8 +13,7 @@ trait HttpSpecification extends HttpComponentsClient with Assertions with Matche
   type Headers = Map[String, String]
 
   def authHeaders(user: MockUser = MockUsers.kalle): Headers = {
-    val auth: String = "Basic " + Base64.encode((user.username + ":" + user.username).getBytes("UTF8"))
-    Map("Authorization" -> auth)
+    Map(BasicAuthentication.basicAuthHeader(user.username, user.username))
   }
 
   val jsonContent = Map(("Content-type" -> "application/json"))

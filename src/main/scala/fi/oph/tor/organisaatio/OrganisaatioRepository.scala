@@ -21,11 +21,16 @@ trait OrganisaatioRepository {
 
 object OrganisaatioRepository {
   def apply(config: Config, koodisto: KoodistoViitePalvelu) = {
-    CachingProxy[OrganisaatioRepository](TorCache.cacheStrategy, TimedProxy(if (config.hasPath("opintopolku.virkailija.url")) {
-      new RemoteOrganisaatioRepository(config, koodisto)
+    CachingProxy[OrganisaatioRepository](TorCache.cacheStrategy, TimedProxy(withoutCache(config, koodisto).asInstanceOf[OrganisaatioRepository]))
+  }
+
+  def withoutCache(config: Config, koodisto: KoodistoViitePalvelu): JsonOrganisaatioRepository = {
+    if (config.hasPath("opintopolku.virkailija.url")) {
+      val http = VirkailijaHttpClient(config.getString("authentication-service.username"), config.getString("authentication-service.password"), config.getString("opintopolku.virkailija.url"), "/organisaatio-service")
+      new RemoteOrganisaatioRepository(http, koodisto)
     } else {
       new MockOrganisaatioRepository(koodisto)
-    }))
+    }
   }
 }
 
@@ -44,11 +49,9 @@ abstract class JsonOrganisaatioRepository(koodisto: KoodistoViitePalvelu) extend
   def fetch(oid: String): OrganisaatioHakuTulos
 }
 
-class RemoteOrganisaatioRepository(config: Config, koodisto: KoodistoViitePalvelu) extends JsonOrganisaatioRepository(koodisto) {
-  val virkailijaClient = new VirkailijaHttpClient(config.getString("authentication-service.username"), config.getString("authentication-service.password"), config.getString("opintopolku.virkailija.url"), "/organisaatio-service")
-
+class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu) extends JsonOrganisaatioRepository(koodisto) {
   def fetch(oid: String): OrganisaatioHakuTulos = {
-    virkailijaClient.httpClient("/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=false&oid=" + oid)(Http.parseJson[OrganisaatioHakuTulos]).run
+    http("/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=false&oid=" + oid)(Http.parseJson[OrganisaatioHakuTulos]).run
   }
 }
 

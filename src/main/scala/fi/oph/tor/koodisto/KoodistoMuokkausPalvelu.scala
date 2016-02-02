@@ -16,8 +16,7 @@ class KoodistoMuokkausPalvelu(username: String, password: String, virkailijaUrl:
   import fi.oph.tor.json.Json._
   import fi.oph.tor.json.Json4sHttp4s._
 
-  val virkalijaClient = new VirkailijaHttpClient(username, password, virkailijaUrl, "/koodisto-service")
-  val secureHttp = virkalijaClient.httpClient
+  val secureHttp = VirkailijaHttpClient(username, password, virkailijaUrl, "/koodisto-service")
 
   def createKoodisto(koodisto: Koodisto): Unit = {
     try {
