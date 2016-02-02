@@ -33,19 +33,25 @@ tietoja tarvitsevien viramomaisten järjestelmiin ja loppukäyttäjiä, kuten op
 Formaattia on tarkoitus laajentaa soveltumaan myös muiden koulutustyyppien tarpeisiin, mutta näitä tarpeita ei ole vielä riittävällä tasolla kartoitettu,
 jotta konkreettista dataformaattia voitaisiin suunnitella. Yksi formaatin suunnittelukriteereistä on toki ollut sovellettavuus muihinkin koulutustyyppeihin.
 
-Käytettävä JSON-dataformaatti on kuvattu [JSON-schemalla](http://json-schema.org/), jota vasten siirretyt tiedot voidaan myös automaattisesti validoida. Voit ladata TOR:ssa käytetyn scheman täältä: [tor-oppija-schema.json](/tor/documentation/tor-oppija-schema.json).
+### JSON Schema
 
-Tutustuminen käytettyyn dataformaattiin onnistunee parhaiten tutustumalla schemaan [visualisointityökalun](/tor/json-schema-viewer#tor-oppija-schema.json) avulla. Tällä työkalulla voi myös validoida JSON-viestejä schemaa vasten.
-Klikkaamalla kenttiä saat näkyviin niiden tarkemmat kuvaukset.
+Käytettävä JSON-dataformaatti on kuvattu [JSON-schemalla](http://json-schema.org/), jota vasten siirretyt tiedot voidaan myös automaattisesti validoida.
+
+- Tarkastele schemaa  [visualisointityökalun](/tor/json-schema-viewer#tor-oppija-schema.json) avulla. Tällä työkalulla voi myös validoida JSON-viestejä schemaa vasten. Klikkaamalla kenttiä saat näkyviin niiden tarkemmat kuvaukset.
+- Lataa schema tiedostona: [tor-oppija-schema.json](/tor/documentation/tor-oppija-schema.json).
+
 
 Tietokentät, joissa validit arvot on lueteltavissa, on kooditettu käyttäen hyväksi Opintopolku-järjestelmään kuuluvaa [Koodistopalvelua](https://github.com/Opetushallitus/koodisto). Esimerkki tällaisesta kentästä on tutkintoon johtavan koulutuksen [koulutuskoodi](/tor/documentation/koodisto/koulutus/latest).
 
-Scalaa osaaville ehkä nopein tapa tutkia tietomallia on kuitenkin sen lähdekoodi. Githubista löytyy sekä [scheman](https://github.com/Opetushallitus/tor/blob/master/src/main/scala/fi/oph/tor/schema/TorOppija.scala), että [esimerkkien](https://github.com/Opetushallitus/tor/blob/master/src/main/scala/fi/oph/tor/schema/TorOppijaExamples.scala) lähdekoodit.
+Scalaa osaaville ehkä nopein tapa tutkia tietomallia on kuitenkin sen lähdekoodi. Githubista löytyy sekä [scheman](https://github.com/Opetushallitus/tor/blob/master/src/main/scala/fi/oph/tor/schema/TorOppija.scala), että [esimerkkien](https://github.com/Opetushallitus/tor/blob/master/src/main/scala/fi/oph/tor/documentation/TorOppijaExamples.scala) lähdekoodit.
 
 ## REST-rajapinnat
 
 Kaikki rajapinnat vaativat HTTP Basic Authentication -tunnistautumisen, eli käytännössä `Authorization`-headerin HTTP-pyyntöön.
 
+Rajapinnat on lueteltu ja kuvattu alla. Voit myös testata rajapintojen toimintaa tällä sivulla, kunhan käyt ensin [kirjautumassa sisään](/tor) järjestelmään. Saat tarvittavat tunnukset TOR-kehitystiimiltä pyydettäessä.
+
+Rajapintojen käyttämät virhekoodit on myös kuvattu alla. Virhetapauksissa rajapinnat käyttävät alla kuvattuja HTTP-statuskoodeja ja sisällyttävät tarkemmat virhekoodit ja selitteineen JSON-tyyppiseen paluuviestiin. Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
 
 """
 
@@ -65,22 +71,26 @@ Kaikki rajapinnat vaativat HTTP Basic Authentication -tunnistautumisen, eli käy
         <div>
         {
           TorApiOperations.operations.map { operation =>
-            <div>
-              <h3>{operation.method} {operation.path}</h3>
+            <div class="api-operation">
+              <h3><a class="toggle-details"></a>{operation.method} {operation.path}</h3>
               {operation.doc}
+              <div class="api-details">
               <h4>Paluukoodit</h4>
-              <table class="status-codes">
-                <thead>
-                  <tr><th>HTTP status</th><th>Virhekoodi</th><th>Tilanne</th></tr>
-                </thead>
-                <tbody>
-                  {operation.statusCodes.flatMap(_.flatten).map { errorCategory =>
-                  <tr>
-                    <td>{errorCategory.statusCode}</td><td>{if (errorCategory.statusCode != 200) { errorCategory.key} else {""} }</td><td>{errorCategory.message}</td>
-                  </tr>
-                }}
-                </tbody>
-              </table>
+              <div class="status-codes">
+                <table>
+                  <thead>
+                    <tr><th>HTTP-status</th><th>Virhekoodi</th><th>Tilanne</th></tr>
+                  </thead>
+                  <tbody>
+                    {operation.statusCodes.flatMap(_.flatten).map { errorCategory =>
+                    <tr>
+                      <td>{errorCategory.statusCode}</td><td>{if (errorCategory.statusCode != 200) { errorCategory.key} else {""} }</td><td>{errorCategory.message}</td>
+                    </tr>
+                  }}
+                  </tbody>
+                </table>
+              </div>
+
               <h4>Kokeile heti</h4>
               <div class="api-tester" data-method={operation.method} data-path={operation.path}>
                 {
@@ -125,6 +135,7 @@ Kaikki rajapinnat vaativat HTTP Basic Authentication -tunnistautumisen, eli käy
                   <button class="try">Kokeile</button>
                 </div>
                 <div class="result"></div>
+              </div>
               </div>
             </div>
           }

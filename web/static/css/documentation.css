@@ -50,14 +50,16 @@ span.indent:after {
 
 .collapsed-parent .collapsible:before {
     content: '+';
+    cursor: pointer;
 }
 
 .collapsible:before {
     display: inline;
     content: '-';
+    cursor: pointer;
     margin-right: 5px;
 }
-.api-tester {
+.api-tester, .status-codes {
     margin: 0 20px;
 }
 
@@ -85,19 +87,54 @@ span.indent:after {
     font-size: 12px;
 }
 
-.api-tester .parameters table, .api-tester .parameters th, .api-tester .parameters td {
+table, th, td {
     border: 1px solid #cccccc;
     border-collapse: collapse;
+    text-align: left;
 }
 
-.api-tester .parameters td {
-    padding: 10px;
+th, td {
 }
 
-.api-tester .parameters th {
+td {
+    padding: 2px 10px;
+}
+
+th {
     background-color: #ccffcc;
+    padding: 9px 10px;
 }
 
 .api-tester.loading .buttons {
     background: url('/tor/images/loader-small.gif') 60px 0 no-repeat;
+}
+
+.api-operation:not(.expanded) .api-details > * {
+    display: none;
+}
+
+.api-operation .api-details > * {
+}
+
+.api-operation div {
+    margin-left: 10px;
+}
+
+.toggle-details {
+    color: transparent;
+    background: url('/tor/images/plusminusbuttons.png') 0 0 no-repeat;
+    background-size: 20px;
+    display: inline-block;
+    height: 18px;
+    width: 20px;
+    margin-right: 10px;
+    line-height: 6px;
+}
+
+.api-operation.expanded .toggle-details {
+    background-position: 0 -18px;
+}
+
+a {
+    cursor: pointer;
 }

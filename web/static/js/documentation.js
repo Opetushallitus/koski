@@ -31,6 +31,17 @@ forEach(document.querySelectorAll('.json-row .collapsible'), function(node) {
     node.addEventListener('click', clickHandler, false)
 })
 
+forEach(document.querySelectorAll('.api-operation'), function(operationElem) {
+  var toggleLink = operationElem.querySelector(".toggle-details")
+  toggleLink.addEventListener("click", function() {
+    if (operationElem.className.indexOf("expanded") >= 0) {
+      operationElem.className = "api-operation"
+    } else {
+      operationElem.className = "api-operation expanded"
+    }
+  })
+})
+
 forEach(document.querySelectorAll('.api-tester'), function(elem) {
   var exampleSelector = elem.querySelector(".examples select")
   var codeMirror
