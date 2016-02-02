@@ -6,27 +6,25 @@ private object ErrorCategory {
 
 import ErrorCategory._
 
-case class ErrorCategory(val key: String, val statusCode: Int) {
-  def this(parent: ErrorCategory, key: String) = {
-    this(makeKey(parent.key, key), parent.statusCode)
-    parent.addSubcategory(key, this)
-  }
-  def subcategory(subkey: String) = new ErrorCategory(this, subkey)
-  def subcategory(subkey: String, message: String) = new CategoryWithDefaultText(this, subkey, message)
-  def apply(message: AnyRef): HttpStatus = HttpStatus(statusCode, List(ErrorDetail(this, message)))
-
-  private var children_ : List[(String, ErrorCategory)] = Nil
-  def children: List[(String, ErrorCategory)] = children_
-  protected[http] def addSubcategory[T <: ErrorCategory](key: String, subcategory: T) = {
-    children_ = children_ ++ List((key, subcategory))
-    subcategory
-  }
-}
-
-class CategoryWithDefaultText(key: String, status: Int, val message: String) extends ErrorCategory(key, status) {
+case class ErrorCategory(val key: String, val statusCode: Int, val message: String) {
   def this(parent: ErrorCategory, key: String, message: String) = {
     this(makeKey(parent.key, key), parent.statusCode, message)
     parent.addSubcategory(key, this)
   }
+  def subcategory(subkey: String, message: String) = new ErrorCategory(this, subkey, message)
+
+  def apply(message: AnyRef): HttpStatus = HttpStatus(statusCode, List(ErrorDetail(this, message)))
   def apply(): HttpStatus = apply(message)
+
+  def children: List[(String, ErrorCategory)] = children_
+  def flatten: List[ErrorCategory] = children match {
+    case Nil => List(this)
+    case nonEmpty => children.flatMap(_._2.flatten)
+  }
+
+  private var children_ : List[(String, ErrorCategory)] = Nil
+  protected[http] def addSubcategory[T <: ErrorCategory](key: String, subcategory: T) = {
+    children_ = children_ ++ List((key, subcategory))
+    subcategory
+  }
 }

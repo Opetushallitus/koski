@@ -35,7 +35,7 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends Futures with GlobalEx
     findByOpiskeluoikeusId(id, version) match {
       case Some(diffs) =>
         if (diffs.length < version) {
-          Left(TorErrorCategory.notFound("Version: " + version + " not found for opiskeluoikeus: " + id))
+          Left(TorErrorCategory.notFound.notFoundOrNoPermission("Version: " + version + " not found for opiskeluoikeus: " + id))
         } else {
           val oikeusVersion = diffs.foldLeft(JsonNodeFactory.instance.objectNode(): JsonNode) { (current, diff) =>
             val patch = JsonPatch.fromJson(asJsonNode(diff.muutos))
@@ -43,7 +43,7 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends Futures with GlobalEx
           }
           Right(Json.fromJValue[OpiskeluOikeus](fromJsonNode(oikeusVersion)).copy(id = Some(id), versionumero = Some(version)))
         }
-      case None => Left(TorErrorCategory.notFound("Opiskeluoikeus not found with id: " + id))
+      case None => Left(TorErrorCategory.notFound.notFoundOrNoPermission("Opiskeluoikeus not found with id: " + id))
     }
   }
 

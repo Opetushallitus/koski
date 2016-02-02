@@ -1,8 +1,10 @@
-package fi.oph.tor.schema
+package fi.oph.tor.documentation
 
 import fi.oph.tor.json.Json
 import fi.oph.tor.schema.generic._
-import fi.oph.tor.schema.generic.annotation.{ReadOnly, Description}
+import fi.oph.tor.schema.generic.annotation.{Description, ReadOnly}
+import fi.oph.tor.schema.{KoodistoUri, OksaUri}
+
 import scala.xml.Elem
 
 object SchemaToJsonHtml {

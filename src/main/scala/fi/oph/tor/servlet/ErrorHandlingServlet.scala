@@ -1,6 +1,6 @@
 package fi.oph.tor.servlet
 
-import fi.oph.tor.http.{TorErrorCategory, HttpStatus}
+import fi.oph.tor.http.{ErrorCategory, TorErrorCategory, HttpStatus}
 import fi.oph.tor.json.Json
 import fi.oph.tor.json.Json.maskSensitiveInformation
 import fi.oph.tor.log.Logging
@@ -24,7 +24,7 @@ trait ErrorHandlingServlet extends ScalatraServlet with Logging {
 
   }
 
-  def renderOption[T <: AnyRef](result: Option[T], pretty: Boolean = false) = {
+  def renderOption[T <: AnyRef](errorCategory: ErrorCategory)(result: Option[T], pretty: Boolean = false) = {
     contentType = "application/json;charset=utf-8"
     result match {
       case Some(x) => Json.write(x, pretty)

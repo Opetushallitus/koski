@@ -2,11 +2,11 @@ import javax.servlet.ServletContext
 
 import fi.oph.tor.config.TorApplication
 import fi.oph.tor.db._
+import fi.oph.tor.documentation.SchemaDocumentationServlet
 import fi.oph.tor.fixture.{FixtureServlet, Fixtures}
 import fi.oph.tor.history.TorHistoryServlet
 import fi.oph.tor.koodisto.KoodistoCreator
 import fi.oph.tor.oppilaitos.OppilaitosServlet
-import fi.oph.tor.schema.SchemaDocumentationServlet
 import fi.oph.tor.servlet.{StaticFileServlet, SingleFileServlet}
 import fi.oph.tor.tor.{TodennetunOsaamisenRekisteri, TorServlet, TorValidator}
 import fi.oph.tor.toruser.{AuthenticationServlet, UserOrganisationsRepository}

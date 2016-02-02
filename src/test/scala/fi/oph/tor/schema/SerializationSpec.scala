@@ -1,5 +1,6 @@
 package fi.oph.tor.schema
 
+import fi.oph.tor.documentation.TorOppijaExamples
 import fi.oph.tor.json.Json
 import org.scalatest.{FunSpec, FreeSpec, Matchers}
 

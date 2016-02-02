@@ -1,6 +1,9 @@
-package fi.oph.tor.schema
+package fi.oph.tor.documentation
+
 import com.tristanhunt.knockoff.DefaultDiscounter._
+import fi.oph.tor.http.ErrorCategory
 import fi.oph.tor.json.Json
+import fi.oph.tor.schema.TorSchema
 
 import scala.xml.Elem
 
@@ -66,11 +69,18 @@ Kaikki rajapinnat vaativat HTTP Basic Authentication -tunnistautumisen, eli käy
               <h3>{operation.method} {operation.path}</h3>
               {operation.doc}
               <h4>Paluukoodit</h4>
-              <ul class="status-codes">
-                {operation.statusCodes.map { case (status, text) =>
-                  <li>{status} {text}</li>
+              <table class="status-codes">
+                <thead>
+                  <tr><th>HTTP status</th><th>Virhekoodi</th><th>Tilanne</th></tr>
+                </thead>
+                <tbody>
+                  {operation.statusCodes.flatMap(_.flatten).map { errorCategory =>
+                  <tr>
+                    <td>{errorCategory.statusCode}</td><td>{if (errorCategory.statusCode != 200) { errorCategory.key} else {""} }</td><td>{errorCategory.message}</td>
+                  </tr>
                 }}
-              </ul>
+                </tbody>
+              </table>
               <h4>Kokeile heti</h4>
               <div class="api-tester" data-method={operation.method} data-path={operation.path}>
                 {
@@ -144,7 +154,7 @@ Kaikki rajapinnat vaativat HTTP Basic Authentication -tunnistautumisen, eli käy
 
 
 
-case class ApiOperation(method: String, path: String, doc: Elem, examples: List[Example], parameters: List[Parameter], statusCodes: List[(Int, String)])
+case class ApiOperation(method: String, path: String, doc: Elem, examples: List[Example], parameters: List[Parameter], statusCodes: List[ErrorCategory])
 
 sealed trait Parameter {
   def name: String

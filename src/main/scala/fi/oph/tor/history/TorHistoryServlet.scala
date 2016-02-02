@@ -11,7 +11,7 @@ class TorHistoryServlet(val userRepository: UserOrganisationsRepository, val dir
   extends ErrorHandlingServlet with Logging with RequiresAuthentication with JsonMethods with NoCache {
 
   get("/:id") {
-    renderOption {
+    renderOption(TorErrorCategory.notFound.notFoundOrNoPermission) {
       historyRepository.findByOpiskeluoikeusId(getIntegerParam("id"))
     }
   }

@@ -1,7 +1,7 @@
 package fi.oph.tor.api
 
+import fi.oph.tor.documentation.TorOppijaExamples
 import fi.oph.tor.json.Json
-import fi.oph.tor.schema.TorOppijaExamples
 import org.scalatest.{FreeSpec, Matchers}
 
 class TorOppijaExamplesTest extends FreeSpec with Matchers with HttpSpecification {

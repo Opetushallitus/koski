@@ -95,7 +95,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
       findAction(OpiskeluOikeudetWithAccessCheck.filter(_.id === id)).map { rows =>
         rows.headOption match {
           case Some(oikeus) => Right(Some(oikeus))
-          case None => Left(TorErrorCategory.notFound("Opiskeluoikeus not found for id: " + id))
+          case None => Left(TorErrorCategory.notFound.notFoundOrNoPermission("Opiskeluoikeus not found for id: " + id))
         }
       }
     }
@@ -120,7 +120,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
         case Right(None) =>
           oppijaOid.verifiedOid match {
             case Some(oid) => createAction(oid, opiskeluOikeus)
-            case None => DBIO.successful(Left(TorErrorCategory.notFound("Oppija " + oppijaOid.oppijaOid + " not found")))
+            case None => DBIO.successful(Left(TorErrorCategory.notFound.notFoundOrNoPermission("Oppija " + oppijaOid.oppijaOid + " not found")))
           }
         case Left(err) => DBIO.successful(Left(err))
       }

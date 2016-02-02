@@ -1,4 +1,6 @@
-package fi.oph.tor.schema
+package fi.oph.tor.documentation
+
+import fi.oph.tor.http.TorErrorCategory
 
 object TorApiOperations {
  private val hakuParametrit = List(
@@ -6,6 +8,7 @@ object TorApiOperations {
    QueryParameter("opiskeluoikeusPäättynytViimeistään","Päivämäärä jota ennen opiskeluoikeus on päättynyt","2016-12-31"),
    QueryParameter("tutkinnonTila","Opiskeluoikeuden juurisuorituksen tila: VALMIS, KESKEN, KESKEYTYNYT","VALMIS")
  )
+
  val operations = List(
    ApiOperation(
       "GET", "/tor/api/oppija/search",
@@ -13,9 +16,9 @@ object TorApiOperations {
       Nil,
       List(QueryParameter("query", "Hakusana, joka voi olla hetu, oppija-oid tai nimen osa.", "eero")),
       List(
-        (200, "OK, jos haku onnistuu. Myös silloin kun ei löydy yhtään tulosta."),
-        (400, "BAD REQUEST, jos hakusana puuttuu"),
-        (401,"UNAUTHORIZED, jos käyttäjä ei ole tunnistautunut")
+        TorErrorCategory.ok.maybeEmptyList,
+        TorErrorCategory.badRequest.queryParam.searchTermTooShort,
+        TorErrorCategory.unauthorized
       )
    ),
    ApiOperation(
@@ -24,9 +27,10 @@ object TorApiOperations {
      Nil,
      hakuParametrit,
      List(
-       (200, "OK, jos haku onnistuu"),
-       (400, "BAD REQUEST, jos hakuparametria ei tueta, tai hakuparametri on virheellinen."),
-       (401, "UNAUTHORIZED, jos käyttäjä ei ole tunnistautunut")
+       TorErrorCategory.ok.maybeEmptyList,
+       TorErrorCategory.badRequest.format.pvm,
+       TorErrorCategory.badRequest.queryParam.unknown,
+       TorErrorCategory.unauthorized
      )
    ),
    ApiOperation(
@@ -35,9 +39,10 @@ object TorApiOperations {
      Nil,
      hakuParametrit,
      List(
-       (200, "OK, jos haku onnistuu. Mahdolliset validointivirheet palautuu json-vastauksessa."),
-       (400, "BAD REQUEST, jos hakuparametria ei tueta, tai hakuparametri on virheellinen."),
-       (401, "UNAUTHORIZED, jos käyttäjä ei ole tunnistautunut")
+       TorErrorCategory.ok.maybeValidationErrorsInContent,
+       TorErrorCategory.badRequest.format.pvm,
+       TorErrorCategory.badRequest.queryParam.unknown,
+       TorErrorCategory.unauthorized // TODO: virhekoodit aina vamat kuin ylemmässä halu-apissa, refactor
      )
    ),
    ApiOperation(
@@ -46,9 +51,9 @@ object TorApiOperations {
      Nil,
      List(PathParameter("oid", "Oppijan tunniste", "1.2.246.562.24.00000000001")),
      List(
-       (200, "OK, jos haku onnistuu."),
-       (401, "UNAUTHORIZED, jos käyttäjä ei ole tunnistautunut"),
-       (404, "NOT FOUND, jos oppijaa ei löydy tai käyttäjällä ei ole oikeuksia oppijan tietojen katseluun.")
+       TorErrorCategory.ok.searchOk,
+       TorErrorCategory.unauthorized,
+       TorErrorCategory.notFound.notFoundOrNoPermission
      )
    ),
    ApiOperation(
@@ -57,9 +62,9 @@ object TorApiOperations {
      Nil,
      List(PathParameter("oid", "Oppijan tunniste", "1.2.246.562.24.00000000001")),
      List(
-       (200, "OK, jos haku onnistuu. Mahdolliset validointivirheet palautuu json-vastauksessa."),
-       (401, "UNAUTHORIZED, jos käyttäjä ei ole tunnistautunut"),
-       (404, "NOT FOUND, jos oppijaa ei löydy tai käyttäjällä ei ole oikeuksia oppijan tietojen katseluun.")
+       TorErrorCategory.ok.maybeValidationErrorsInContent,
+       TorErrorCategory.unauthorized,
+       TorErrorCategory.notFound.notFoundOrNoPermission
      )
    ),
    ApiOperation(
@@ -68,9 +73,9 @@ object TorApiOperations {
      Nil,
      List(PathParameter("opiskeluoikeus_id", "Opiskeluoikeuden tunniste", "354")),
      List(
-       (200, "OK, jos haku onnistuu."),
-       (401, "UNAUTHORIZED, jos käyttäjä ei ole tunnistautunut."),
-       (404, "NOT FOUND, opiskeluoikeutta ei löydy.")
+       TorErrorCategory.ok.searchOk,
+       TorErrorCategory.unauthorized,
+       TorErrorCategory.notFound.notFoundOrNoPermission
      )
    ),
    ApiOperation(
@@ -82,9 +87,9 @@ object TorApiOperations {
        PathParameter("versionumero", "Opiskeluoikeuden versio", "2")
      ),
      List(
-       (200, "OK, jos haku onnistuu."),
-       (401, "UNAUTHORIZED, jos käyttäjä ei ole tunnistautunut."),
-       (404, "NOT FOUND, opiskeluoikeutta ei löydy tai versiota ei löydy")
+       TorErrorCategory.ok.searchOk,
+       TorErrorCategory.unauthorized,
+       TorErrorCategory.notFound.notFoundOrNoPermission
      )
    ),
    ApiOperation(
@@ -100,10 +105,12 @@ object TorApiOperations {
      TorOppijaExamples.examples,
      Nil,
      List(
-       (200,"OK jos lisäys/päivitys onnistuu"),
-       (401,"UNAUTHORIZED, jos käyttäjä ei ole tunnistautunut"),
-       (403,"FORBIDDEN, jos käyttäjällä ei ole tarvittavia oikeuksia tiedon päivittämiseen"),
-       (400,"BAD REQUEST, jos syöte ei ole validi")
+       TorErrorCategory.ok.createdOrUpdated,
+       TorErrorCategory.unauthorized,
+       TorErrorCategory.forbidden.organisaatio,
+       TorErrorCategory.badRequest.format,
+       TorErrorCategory.badRequest.validation,
+       TorErrorCategory.conflict.versionumero
      )
    )
  )

@@ -9,7 +9,7 @@ object DateValidation {
 
   def validateDateOrder(first: NamedDates, second: NamedDates): HttpStatus = {
     HttpStatus.fold(for (left <- first._2; right <- second._2) yield {
-      HttpStatus.validate(left.compareTo(right) <= 0)(TorErrorCategory.badRequest.validation.date(first._1 + " (" + left + ") oltava sama tai aiempi kuin " + second._1 + "(" + right + ")"))
+      HttpStatus.validate(left.compareTo(right) <= 0)(TorErrorCategory.badRequest.validation.date.loppuEnnenAlkua(first._1 + " (" + left + ") oltava sama tai aiempi kuin " + second._1 + "(" + right + ")"))
     })
   }
 
@@ -20,8 +20,8 @@ object DateValidation {
           case (left, right) => (left.loppu, right.alku)
         }
         HttpStatus.fold(pairs.map {
-          case (None, _) => TorErrorCategory.badRequest.validation.date(name + ": ei-viimeiseltä jaksolta puuttuu loppupäivä")
-          case (Some(edellisenLoppu), seuraavanAlku) if (!areConsecutiveDates(edellisenLoppu, seuraavanAlku)) => TorErrorCategory.badRequest.validation.date(name + ": jaksot eivät muodosta jatkumoa")
+          case (None, _) => TorErrorCategory.badRequest.validation.date.jaksonLoppupäiväPuuttuu(name + ": ei-viimeiseltä jaksolta puuttuu loppupäivä")
+          case (Some(edellisenLoppu), seuraavanAlku) if (!areConsecutiveDates(edellisenLoppu, seuraavanAlku)) => TorErrorCategory.badRequest.validation.date.jaksotEivätMuodostaJatkumoa(name + ": jaksot eivät muodosta jatkumoa")
           case _ => HttpStatus.ok
         })
       }

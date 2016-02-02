@@ -3,6 +3,7 @@ package fi.oph.tor.schema
 import com.fasterxml.jackson.databind.JsonNode
 import com.github.fge.jackson.JsonLoader
 import com.github.fge.jsonschema.main.{JsonSchemaFactory, JsonValidator}
+import fi.oph.tor.documentation.TorOppijaExamples
 import fi.oph.tor.json.Json
 import org.scalatest.{FreeSpec, Matchers}
 

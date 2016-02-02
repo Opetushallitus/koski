@@ -56,7 +56,7 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
       it("palautetaan HTTP 400 virhe" ) {
         putOpiskeluOikeus(Map(
           "suoritus" -> Map("koulutusmoduulitoteutus" -> Map("koulutusmoduuli" -> Map("perusteenDiaarinumero" -> "39/xxx/2014")))
-        )) (verifyResponseStatus(400, "Tutkinnon peruste on virheellinen: 39/xxx/2014"))
+        )) (verifyResponseStatus(400, "Tutkinnon perustetta ei löydy diaarinumerolla 39/xxx/2014"))
       }
     }
 

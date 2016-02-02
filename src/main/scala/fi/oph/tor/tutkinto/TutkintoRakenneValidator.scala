@@ -12,7 +12,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
       t.koulutusmoduuli.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_)) match {
         case None =>
           t.koulutusmoduuli.perusteenDiaarinumero match {
-            case Some(d) => TorErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Tutkinnon peruste on virheellinen: " + d)
+            case Some(d) => TorErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Tutkinnon perustetta ei löydy diaarinumerolla " + d)
             case None => TorErrorCategory.badRequest.validation.rakenne.diaariPuuttuu()
           }
         case Some(rakenne) =>
@@ -21,7 +21,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
             .then(HttpStatus.fold(suoritus.osasuoritukset.toList.flatten.map{validateSuoritus(_, Some(rakenne), t.suoritustapa)}))
       }
     case (t: OpsTutkinnonosatoteutus, Some(rakenne), None)  =>
-      TorErrorCategory.badRequest.validation.rakenne.suoritustapaPuuttuu("Tutkinnolta puuttuu suoritustapa. Tutkinnon osasuorituksia ei hyväksytä.")
+      TorErrorCategory.badRequest.validation.rakenne.suoritustapaPuuttuu()
     case (t: OpsTutkinnonosatoteutus, Some(rakenne), Some(suoritustapa))  =>
       TutkintoRakenne.findTutkinnonOsa(rakenne, suoritustapa.tunniste, t.koulutusmoduuli.tunniste) match {
         case None =>

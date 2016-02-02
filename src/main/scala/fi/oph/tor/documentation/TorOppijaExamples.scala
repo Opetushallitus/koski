@@ -1,6 +1,8 @@
-package fi.oph.tor.schema
+package fi.oph.tor.documentation
 
-import java.time.LocalDate.{of => date, _}
+import java.time.LocalDate.{of => date}
+
+import fi.oph.tor.schema._
 
 object TorOppijaExamples {
   private val h2: KoodistoKoodiViite = KoodistoKoodiViite("2", Some("H2"), "arviointiasteikkoammatillinent1k3", None)

@@ -1,6 +1,8 @@
-package fi.oph.tor.schema
+package fi.oph.tor.documentation
 
+import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.koodisto.{KoodistoKoodi, KoodistoPalvelu, KoodistoViite}
+import fi.oph.tor.schema.TorSchema
 import fi.oph.tor.servlet.ErrorHandlingServlet
 
 class SchemaDocumentationServlet(koodistoPalvelu: KoodistoPalvelu) extends ErrorHandlingServlet {
@@ -16,7 +18,7 @@ class SchemaDocumentationServlet(koodistoPalvelu: KoodistoPalvelu) extends Error
   get("/examples/:name.json") {
     contentType = "application/json"
 
-    renderOption(TorOppijaExamples.examples.find(_.name == params("name")).map(_.data), pretty = true)
+    renderOption(TorErrorCategory.notFound)(TorOppijaExamples.examples.find(_.name == params("name")).map(_.data), pretty = true)
   }
 
   get("/koodisto/:name/:version") {
@@ -29,6 +31,6 @@ class SchemaDocumentationServlet(koodistoPalvelu: KoodistoPalvelu) extends Error
         Some(KoodistoViite(koodistoUri, x.toInt))
     }
     val result: Option[List[KoodistoKoodi]] = versio.flatMap(koodistoPalvelu.getKoodistoKoodit)
-    renderOption(result, pretty = true)
+    renderOption(TorErrorCategory.notFound.koodistoaEiLöydy)(result, pretty = true)
   }
 }

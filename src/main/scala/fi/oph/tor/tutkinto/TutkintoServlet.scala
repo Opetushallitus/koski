@@ -9,13 +9,12 @@ class TutkintoServlet(tutkintoRepository: TutkintoRepository) extends ErrorHandl
      contentType = "application/json;charset=utf-8"
      (params.get("query"), params.get("oppilaitosId")) match {
        case (Some(query), Some(oppilaitosId)) if (query.length >= 3) => Json.write(tutkintoRepository.findTutkinnot(oppilaitosId, query))
-       case _ => throw new InvalidRequestException(TorErrorCategory.badRequest.validation.queryParam.tooShort, "query parameter length must be at least 3")
+       case _ => throw new InvalidRequestException(TorErrorCategory.badRequest.queryParam.searchTermTooShort)
      }
    }
 
   get("/rakenne/:diaariNumero") {
     contentType = "application/json;charset=utf-8"
-    renderOption(tutkintoRepository.findPerusteRakenne(params("diaariNumero")))
+    renderOption(TorErrorCategory.notFound.diaarinumeroaEiLöydy)(tutkintoRepository.findPerusteRakenne(params("diaariNumero")))
   }
-
 }

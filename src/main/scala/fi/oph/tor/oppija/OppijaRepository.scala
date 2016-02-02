@@ -60,7 +60,7 @@ trait OppijaRepository extends Logging {
       case OidHenkilö(oid) =>
         oidFrom(findByOid(oid).toList)
       case _ =>
-        Left(TorErrorCategory.badRequest.validation.henkilötiedot.puuttelliset("Joko oid tai (hetu, etunimet, sukunimi, kutsumanimi) tarvitaan henkilön hakuun/luontiin"))
+        Left(TorErrorCategory.badRequest.validation.henkilötiedot.puuttelliset())
     }
   }
 }

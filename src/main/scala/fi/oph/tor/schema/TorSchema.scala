@@ -1,5 +1,6 @@
 package fi.oph.tor.schema
 
+import fi.oph.tor.documentation.TorOppijaExamples
 import fi.oph.tor.json.Json
 import fi.oph.tor.schema.generic.annotation.{Description, ReadOnly}
 import fi.oph.tor.schema.generic._

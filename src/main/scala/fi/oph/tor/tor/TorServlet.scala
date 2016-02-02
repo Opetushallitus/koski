@@ -65,7 +65,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
       case Some(query) if (query.length >= 3) =>
         Json.write(rekisteri.findOppijat(query.toUpperCase))
       case _ =>
-        throw new InvalidRequestException(TorErrorCategory.badRequest.validation.queryParam.tooShort, "query parameter length must be at least 3")
+        throw new InvalidRequestException(TorErrorCategory.badRequest.queryParam.searchTermTooShort)
     }
   }
 
@@ -104,7 +104,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
       case (p, v) if p == "opiskeluoikeusPäättynytAikaisintaan" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytAikaisintaan(_))
       case (p, v) if p == "opiskeluoikeusPäättynytViimeistään" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytViimeistään(_))
       case ("tutkinnonTila", v) => Right(TutkinnonTila(v))
-      case (p, _) => Left(TorErrorCategory.badRequest.validation.queryParam.unknown("Unsupported query parameter: " + p))
+      case (p, _) => Left(TorErrorCategory.badRequest.queryParam.unknown("Unsupported query parameter: " + p))
     }
 
     queryFilters.partition(_.isLeft) match {
