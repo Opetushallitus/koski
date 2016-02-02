@@ -8,7 +8,7 @@ import fi.oph.tor.organisaatio.{InMemoryOrganisaatioRepository, OrganisaatioRepo
 
 object UserOrganisationsRepository {
   def apply(config: Config, organisaatioRepository: OrganisaatioRepository): UserOrganisationsRepository = {
-    CachingProxy(TorCache.cacheStrategy, TimedProxy[UserOrganisationsRepository](if (config.hasPath("authentication-service")) {
+    CachingProxy(TorCache.cacheStrategy, TimedProxy[UserOrganisationsRepository](if (config.hasPath("authentication-service.username")) {
       new RemoteUserOrganisationsRepository(AuthenticationServiceClient(config), organisaatioRepository)
     } else {
       MockUsers
