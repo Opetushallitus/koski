@@ -9,7 +9,7 @@ import fi.oph.tor.organisaatio.{InMemoryOrganisaatioRepository, OrganisaatioRepo
 object UserOrganisationsRepository {
   def apply(config: Config, organisaatioRepository: OrganisaatioRepository): UserOrganisationsRepository = {
     CachingProxy(TorCache.cacheStrategy, TimedProxy[UserOrganisationsRepository](if (config.hasPath("authentication-service.username")) {
-      new RemoteUserOrganisationsRepository(AuthenticationServiceClient(config), organisaatioRepository)
+      new RemoteUserOrganisationsRepository(AuthenticationServiceClient(config), organisaatioRepository, KäyttöoikeusRyhmät(config))
     } else {
       MockUsers
     }))
@@ -24,19 +24,17 @@ import fi.oph.tor.henkilo.AuthenticationServiceClient
 import fi.oph.tor.organisaatio.OrganisaatioRepository
 import org.http4s.EntityDecoderInstances
 
-object RemoteUserOrganisationsRepository {
-  val käyttöoikeusryhmä = 4056292
-}
-class RemoteUserOrganisationsRepository(henkilöPalveluClient: AuthenticationServiceClient, organisaatioRepository: OrganisaatioRepository) extends UserOrganisationsRepository with EntityDecoderInstances {
+class RemoteUserOrganisationsRepository(henkilöPalveluClient: AuthenticationServiceClient, organisaatioRepository: OrganisaatioRepository, käyttöoikeusRyhmät: KäyttöoikeusRyhmät) extends UserOrganisationsRepository with EntityDecoderInstances {
   def getUserOrganisations(oid: String): InMemoryOrganisaatioRepository = {
     new InMemoryOrganisaatioRepository(
       henkilöPalveluClient.organisaatiot(oid)
         .withFilter {!_.passivoitu}
         .flatMap {org => henkilöPalveluClient.käyttöoikeusryhmät(oid, org.organisaatioOid)}
-        .withFilter {_.ryhmaId == RemoteUserOrganisationsRepository.käyttöoikeusryhmä}
+        .withFilter {_.ryhmaId == käyttöoikeusRyhmät.readWrite}
         .withFilter {o => o.tila == "MYONNETTY" || o.tila == "UUSITTU"}
         .withFilter {_.effective}
         .flatMap {result => organisaatioRepository.getOrganisaatioHierarkia(result.organisaatioOid)}
     )
   }
 }
+

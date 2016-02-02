@@ -6,7 +6,7 @@ import fi.oph.tor.config.TorApplication
 import fi.oph.tor.henkilo.{AuthenticationServiceClient, CreateUser, UserQueryResult}
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.koodisto.{KoodistoMuokkausPalvelu, KoodistoKoodi, KoodistoKoodiMetadata}
-import fi.oph.tor.toruser.RemoteUserOrganisationsRepository
+import fi.oph.tor.toruser.{KäyttöoikeusRyhmät, RemoteUserOrganisationsRepository}
 
 object ServiceUserAdder extends App {
   args match {
@@ -31,7 +31,7 @@ object ServiceUserAdder extends App {
 
       authService.lisääOrganisaatio(oid, organisaatioOid, "oppilashallintojärjestelmä")
 
-      authService.lisääKäyttöoikeusRyhmä(oid, organisaatioOid, RemoteUserOrganisationsRepository.käyttöoikeusryhmä)
+      authService.lisääKäyttöoikeusRyhmä(oid, organisaatioOid, KäyttöoikeusRyhmät(app.config).readWrite)
 
       authService.asetaSalasana(oid, password)
       authService.syncLdap(oid)

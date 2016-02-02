@@ -6,16 +6,17 @@ import java.time.format.DateTimeParseException
 import fi.oph.tor.db.GlobalExecutionContext
 import fi.oph.tor.henkilo.HenkiloOid
 import fi.oph.tor.history.OpiskeluoikeusHistoryRepository
-import fi.oph.tor.http.{TorErrorCategory, HttpStatus}
+import fi.oph.tor.http.{HttpStatus, TorErrorCategory}
 import fi.oph.tor.json.{Json, JsonStreamWriter}
+import fi.oph.tor.log.Logging
 import fi.oph.tor.schema.Henkilö.Oid
-import fi.oph.tor.schema.{HenkilöWithOid, FullHenkilö, Henkilö, TorOppija}
-import fi.oph.tor.servlet.{InvalidRequestException, ErrorHandlingServlet, NoCache, CacheControlSupport}
+import fi.oph.tor.schema.{Henkilö, HenkilöWithOid, TorOppija}
+import fi.oph.tor.servlet.{ErrorHandlingServlet, InvalidRequestException, NoCache}
 import fi.oph.tor.toruser.{RequiresAuthentication, UserOrganisationsRepository}
 import fi.vm.sade.security.ldap.DirectoryClient
-import fi.oph.tor.log.Logging
 import org.scalatra.{FutureSupport, GZipSupport}
 import rx.lang.scala.Observable
+
 import scala.concurrent.Future
 import scala.concurrent.duration.Duration
 
