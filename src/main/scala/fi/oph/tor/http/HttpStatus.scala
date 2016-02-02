@@ -29,15 +29,3 @@ object HttpStatus {
   /** Append all given statii into one, concatenating error list, picking highest status code */
   def fold(statii: HttpStatus*): HttpStatus = fold(statii.toList)
 }
-
-case class ErrorCategory(val key: String, val statusCode: Int) {
-  def this(parent: ErrorCategory, key: String) = this(parent.key + "." + key, parent.statusCode)
-  def subcategory(subkey: String) = new ErrorCategory(this, subkey)
-  def subcategory(subkey: String, message: String) = new CategoryWithDefaultText(this, subkey, message)
-  def apply(message: AnyRef): HttpStatus = HttpStatus(statusCode, List(ErrorDetail(this, message)))
-}
-
-class CategoryWithDefaultText(key: String, status: Int, val message: String) extends ErrorCategory(key, status) {
-  def this(parent: ErrorCategory, key: String, message: String) = this(parent.key + "." + key, parent.statusCode, message)
-  def apply(): HttpStatus = apply(message)
-}
