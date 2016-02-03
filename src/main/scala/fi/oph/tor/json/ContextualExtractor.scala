@@ -71,5 +71,5 @@ object ContextualExtractor {
     Option(tl.get)
   }
 
-  private class ExtractionException(val validationError: HttpStatus) extends RuntimeException
+  class ExtractionException(val validationError: HttpStatus) extends RuntimeException(validationError.toString)
 }
