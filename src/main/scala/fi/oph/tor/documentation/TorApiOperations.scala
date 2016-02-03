@@ -42,7 +42,7 @@ object TorApiOperations {
        TorErrorCategory.ok.maybeValidationErrorsInContent,
        TorErrorCategory.badRequest.format.pvm,
        TorErrorCategory.badRequest.queryParam.unknown,
-       TorErrorCategory.unauthorized // TODO: virhekoodit aina vamat kuin ylemmässä halu-apissa, refactor
+       TorErrorCategory.unauthorized // TODO: virhekoodit aina samat kuin ylemmässä halu-apissa, refactor
      )
    ),
    ApiOperation(
