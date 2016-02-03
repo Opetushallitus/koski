@@ -3,11 +3,12 @@ package fi.oph.tor.api
 import fi.oph.tor.json.Json._
 import fi.oph.tor.organisaatio.MockOrganisaatiot
 import fi.oph.tor.schema._
+import org.json4s.JValue
 
 trait OpiskeluOikeusData {
   val defaultHenkilö = NewHenkilö("010101-123N", "Testi", "Testi", "Toivola")
 
-  def makeOppija(henkilö: Henkilö = defaultHenkilö, opiskeluOikeudet: List[AnyRef] = List(opiskeluoikeus())) = toJValue(Map(
+  def makeOppija(henkilö: Henkilö = defaultHenkilö, opiskeluOikeudet: List[AnyRef] = List(opiskeluoikeus())): JValue = toJValue(Map(
     "henkilö" -> henkilö,
     "opiskeluoikeudet" -> opiskeluOikeudet
   ))

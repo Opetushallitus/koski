@@ -20,6 +20,7 @@ sealed trait Henkilö {}
 case class FullHenkilö(
   @Description("Yksilöivä tunniste (oppijanumero) Opintopolku-palvelussa")
   @OksaUri("tmpOKSAID760", "oppijanumero")
+  @RegularExpression("""1\.2\.246\.562\.24\.\d{11}""")
   oid: String,
   @Description("Suomalainen henkilötunnus")
   hetu: String,
@@ -53,6 +54,7 @@ case class NewHenkilö(
 case class OidHenkilö(
   @Description("Yksilöivä tunniste (oppijanumero) Opintopolku-palvelussa")
   @OksaUri("tmpOKSAID760", "oppijanumero")
+  @RegularExpression("""1\.2\.246\.562\.24\.\d{11}""")
   oid: String
 ) extends HenkilöWithOid
 
@@ -405,6 +407,7 @@ sealed trait Organisaatio
   @Description("Opintopolun organisaatiopalvelusta löytyvä organisaatio. Esimerkiksi koulutustoimijat, oppilaitokset ja toimipisteet ovat tällaisia organisaatioita.")
   case class OidOrganisaatio(
     @Description("Organisaation tunniste Opintopolku-palvelussa")
+    @RegularExpression("""1\.2\.246\.562\.10\.\d{11}""")
     oid: String,
     @Description("Organisaation (kielistetty) nimi")
     @ReadOnly("Tiedon syötössä nimeä ei tarvita; kuvaus haetaan Organisaatiopalvelusta")
@@ -414,6 +417,7 @@ sealed trait Organisaatio
   @Description("Opintopolun organisaatiopalvelusta löytyvä oppilaitos-tyyppinen organisaatio.")
   case class Oppilaitos(
      @Description("Organisaation tunniste Opintopolku-palvelussa")
+     @RegularExpression("""1\.2\.246\.562\.10\.\d{11}""")
      oid: String,
      @Description("5-numeroinen oppilaitosnumero, esimerkiksi 00001")
      @ReadOnly("Tiedon syötössä oppilaitosnumeroa ei tarvita; numero haetaan Organisaatiopalvelusta")

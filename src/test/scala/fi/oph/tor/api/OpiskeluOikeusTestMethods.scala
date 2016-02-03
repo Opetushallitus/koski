@@ -36,9 +36,8 @@ trait OpiskeluOikeusTestMethods extends HttpSpecification with Matchers with Opi
     putOppija(makeOppija(henkilö, List(Json.toJValue(opiskeluoikeus()).merge(opiskeluOikeus))), headers)(f)
   }
 
-  def putOppija[A](oppija: Map[String, AnyRef])(f: => A): Unit = {
-    val json: JValue = makeOppija().merge(toJValue(oppija))
-    putOppija(json)(f)
+  def putOppija[A](henkilö: Henkilö)(f: => A): Unit = {
+    putOppija(Json.toJValue(Json.fromJValue[TorOppija](makeOppija()).copy(henkilö = henkilö)))(f)
   }
 
   def putOppija[A](oppija: JValue, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {

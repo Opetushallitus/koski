@@ -1,6 +1,7 @@
 package fi.oph.tor.api
 
 import fi.oph.tor.json.Json
+import fi.oph.tor.oppija.MockOppijat
 import fi.oph.tor.schema._
 import fi.oph.tor.toruser.MockUsers
 import org.json4s.JsonAST.JObject
@@ -14,30 +15,6 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
           verifyResponseStatus(200)
         }
       }
-    }
-
-    describe("Kun opinto-oikeutta yritetään lisätä oppilaitokseen, johon käyttäjällä ei ole pääsyä") {
-      it("palautetaan HTTP 403 virhe" ) { putOpiskeluOikeus(Map(
-          "oppilaitos" -> Map("oid" -> "1.2.246.562.10.93135224694")), headers = authHeaders(MockUsers.hiiri) ++ jsonContent
-        )(verifyResponseStatus(403, "Ei oikeuksia organisatioon 1.2.246.562.10.93135224694"))
-      }}
-
-    describe("Kun opinto-oikeutta yritetään lisätä oppilaitokseen, joka ei ole oppilaitos") {
-      it("palautetaan HTTP 400 virhe" ) { putOpiskeluOikeus(Map(
-        "oppilaitos" -> Map("oid" -> "1.2.246.562.10.346830761110"))
-      )(verifyResponseStatus(400, "Organisaatio 1.2.246.562.10.346830761110 ei ole Oppilaitos"))
-      }}
-
-    describe("Kun opinto-oikeutta yritetään lisätä oppilaitokseen, jota ei löydy organisaatiopalvelusta") {
-      it("palautetaan HTTP 400 virhe" ) (putOpiskeluOikeus(Map(
-        "oppilaitos" -> Map("oid" -> "tuuba")))
-        (verifyResponseStatus(400, "Organisaatiota tuuba ei löydy organisaatiopalvelusta")))
-    }
-
-    describe("Nimenä tyhjä merkkijono") {
-      it("palautetaan HTTP 400 virhe" ) (putOppija(Map(
-        "henkilö" -> Map("sukunimi" -> "")
-      )) (verifyResponseStatus(400)))
     }
 
     describe("Epäkelpo JSON-dokumentti") {
@@ -54,42 +31,99 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
       }
     }
 
-    describe("Kun yritetään lisätä opinto-oikeus virheelliseen perusteeseen") {
-      it("palautetaan HTTP 400 virhe" ) {
-        putOpiskeluOikeus(Map(
-          "suoritus" -> Map("koulutusmoduulitoteutus" -> Map("koulutusmoduuli" -> Map("perusteenDiaarinumero" -> "39/xxx/2014")))
-        )) (verifyResponseStatus(400, "Tutkinnon perustetta ei löydy diaarinumerolla 39/xxx/2014"))
+    describe("Henkilötiedot") {
+      describe("Nimenä tyhjä merkkijono") {
+        it("palautetaan HTTP 400 virhe" ) (putOppija(defaultHenkilö.copy(sukunimi = "")) (verifyResponseStatus(400)))
+      }
+
+
+      describe("Hetun ollessa") {
+        describe("muodoltaan virheellinen") {
+          it("palautetaan HTTP 400 virhe" ) (putOppija(defaultHenkilö.copy(hetu = "010101-123123"))
+            (verifyResponseStatus(400, "Virheellinen muoto hetulla: 010101-123123")))
+        }
+        describe("muodoltaan oikea, mutta väärä tarkistusmerkki") {
+          it("palautetaan HTTP 400 virhe" ) (putOppija(defaultHenkilö.copy(hetu = "010101-123P"))
+            (verifyResponseStatus(400, "Virheellinen tarkistusmerkki hetussa: 010101-123P")))
+        }
+        describe("päivämäärältään tulevaisuudessa") {
+          it("palautetaan HTTP 400 virhe" ) (putOppija(defaultHenkilö.copy(hetu = "141299A903C"))
+            (verifyResponseStatus(400, "Syntymäpäivä hetussa: 141299A903C on tulevaisuudessa")))
+        }
+        describe("päivämäärältään virheellinen") {
+          it("palautetaan HTTP 400 virhe" ) (putOppija(defaultHenkilö.copy(hetu = "300215-123T"))
+            (verifyResponseStatus(400, "Virheellinen syntymäpäivä hetulla: 300215-123T")))
+        }
+        describe("validi") {
+          it("palautetaan HTTP 200" ) (putOppija(defaultHenkilö.copy(hetu = "010101-123N"))
+            (verifyResponseStatus(200)))
+        }
+      }
+
+      describe("Käytettäessä oppijan oidia") {
+        describe("Oid ok") {
+          it("palautetaan HTTP 200" ) (putOppija(OidHenkilö(MockOppijat.eero.oid)) (verifyResponseStatus(200)))
+        }
+
+        describe("Oid virheellinen") {
+          it("palautetaan HTTP 400" ) (putOppija(OidHenkilö("123.123.123")) (verifyResponseStatus(400, "ECMA 262 regex")))
+        }
+      }
+
+      describe("Käytettäessä oppijan kaikkia tietoja") {
+        describe("Oid ok") {
+          it("palautetaan HTTP 200" ) (putOppija(FullHenkilö(MockOppijat.eero.oid, "010101-123N", "Testi", "Testi", "Toivola", None, None)) (verifyResponseStatus(200)))
+        }
+
+        describe("Oid virheellinen") {
+          it("palautetaan HTTP 400" ) (putOppija(FullHenkilö("123.123.123", "010101-123N", "Testi", "Testi", "Toivola", None, None)) (verifyResponseStatus(400, "ECMA 262 regex")))
+        }
       }
     }
 
-    describe("Kun yritetään lisätä opinto-oikeus ilman perustetta") {
-      it("palautetaan HTTP 400 virhe" ) {
-        putOpiskeluOikeus(Map(
-          "suoritus" -> Map("koulutusmoduulitoteutus" -> Map("koulutusmoduuli" -> Map("perusteenDiaarinumero"-> "")))
-        )) (verifyResponseStatus(400, "perusteenDiaarinumero"))
+    describe("Oppilaitos") {
+      def oppilaitoksella(oid: String) = Json.toJValue(opiskeluoikeus().copy(oppilaitos = Oppilaitos(oid)))
+
+      describe("Kun opinto-oikeutta yritetään lisätä oppilaitokseen, johon käyttäjällä ei ole pääsyä") {
+        it("palautetaan HTTP 403 virhe" ) { putOpiskeluOikeus(oppilaitoksella("1.2.246.562.10.93135224694"), headers = authHeaders(MockUsers.hiiri) ++ jsonContent) (
+          verifyResponseStatus(403, "Ei oikeuksia organisatioon 1.2.246.562.10.93135224694"))
+        }
+      }
+
+      describe("Kun opinto-oikeutta yritetään lisätä oppilaitokseen, joka ei ole oppilaitos") {
+        it("palautetaan HTTP 400 virhe" ) { putOpiskeluOikeus(oppilaitoksella("1.2.246.562.10.346830761110")) (
+          verifyResponseStatus(400, "Organisaatio 1.2.246.562.10.346830761110 ei ole Oppilaitos"))
+        }
+      }
+
+      describe("Kun opinto-oikeutta yritetään lisätä oppilaitokseen, jota ei löydy organisaatiopalvelusta") {
+        it("palautetaan HTTP 400 virhe" ) { putOpiskeluOikeus(oppilaitoksella("1.2.246.562.10.146810761111")) (
+          verifyResponseStatus(400, "Organisaatiota 1.2.246.562.10.146810761111 ei löydy organisaatiopalvelusta"))
+        }
+      }
+
+      describe("Kun oppilaitoksen oid on virheellistä muotoa") {
+        it("palautetaan HTTP 400 virhe" ) { putOpiskeluOikeus(oppilaitoksella("asdf")) (
+          verifyResponseStatus(400, "ECMA 262 regex"))
+        }
       }
     }
 
-    describe("Hetun ollessa") {
-      describe("muodoltaan virheellinen") {
-        it("palautetaan HTTP 400 virhe" ) (putOppija(Map("henkilö" -> Map("hetu" -> "010101-123123")))
-          (verifyResponseStatus(400, "Virheellinen muoto hetulla: 010101-123123")))
+    describe("Perusteet") {
+      describe("Kun yritetään lisätä opinto-oikeus virheelliseen perusteeseen") {
+        it("palautetaan HTTP 400 virhe" ) {
+          putOpiskeluOikeus(Map(
+            "suoritus" -> Map("koulutusmoduulitoteutus" -> Map("koulutusmoduuli" -> Map("perusteenDiaarinumero" -> "39/xxx/2014")))
+          )) (verifyResponseStatus(400, "Tutkinnon perustetta ei löydy diaarinumerolla 39/xxx/2014"))
+        }
       }
-      describe("muodoltaan oikea, mutta väärä tarkistusmerkki") {
-        it("palautetaan HTTP 400 virhe" ) (putOppija(Map("henkilö" -> Map("hetu" -> "010101-123P")))
-          (verifyResponseStatus(400, "Virheellinen tarkistusmerkki hetussa: 010101-123P")))
-      }
-      describe("päivämäärältään tulevaisuudessa") {
-        it("palautetaan HTTP 400 virhe" ) (putOppija(Map("henkilö" -> Map("hetu" -> "141299A903C")))
-          (verifyResponseStatus(400, "Syntymäpäivä hetussa: 141299A903C on tulevaisuudessa")))
-      }
-      describe("päivämäärältään virheellinen") {
-        it("palautetaan HTTP 400 virhe" ) (putOppija(Map("henkilö" -> Map("hetu" -> "300215-123T")))
-          (verifyResponseStatus(400, "Virheellinen syntymäpäivä hetulla: 300215-123T")))
-      }
-      describe("validi") {
-        it("palautetaan HTTP 200" ) (putOppija(Map("henkilö" -> Map("hetu" -> "010101-123N")))
-          (verifyResponseStatus(200)))
+
+      describe("Kun yritetään lisätä opinto-oikeus ilman perustetta") {
+        it("palautetaan HTTP 400 virhe" ) {
+          putOpiskeluOikeus(Map(
+            "suoritus" -> Map("koulutusmoduulitoteutus" -> Map("koulutusmoduuli" -> Map("perusteenDiaarinumero"-> "")))
+          )) (verifyResponseStatus(400, "perusteenDiaarinumero"))
+        }
       }
     }
 
