@@ -28,7 +28,7 @@ trait ErrorHandlingServlet extends ScalatraServlet with Logging {
     contentType = "application/json;charset=utf-8"
     result match {
       case Some(x) => Json.write(x, pretty)
-      case _ => renderStatus(TorErrorCategory.notFound("Not found"))
+      case _ => renderStatus(errorCategory())
     }
   }
 
