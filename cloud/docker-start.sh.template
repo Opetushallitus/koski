@@ -13,8 +13,8 @@ export JAVA_OPTS="\
 -Dldap.password={{ldap_manager_password}} \
 -Dldap.userdn={{ldap_manager_userdn}}\
 -Dopintopolku.virkailija.url=\"https://{{host_virkailija}}\" \
--Dauthentication-service.username={{authentication_app_username_to_tor}} \
--Dauthentication-service.password={{authentication_app_password_to_tor}} \
+-Dopintopolku.virkailija.username={{authentication_app_username_to_tor}} \
+-Dopintopolku.virkailija.password={{authentication_app_password_to_tor}} \
 "
 
 source /etc/profile.d/maven.sh

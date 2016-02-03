@@ -15,8 +15,8 @@ export JAVA_OPTS="\
 -Dldap.password=$LDAP_PASSWORD \
 -Dldap.userdn=$LDAP_USERDN \
 -Dopintopolku.virkailija.url=\"https://virkailija.tordev.tor.oph.reaktor.fi\" \
--Dauthentication-service.username=$AUTHENTICATION_SERVICE_USERNAME \
--Dauthentication-service.password=$AUTHENTICATION_SERVICE_PASSWORD \
+-Dopintopolku.virkailija.username=$AUTHENTICATION_SERVICE_USERNAME \
+-Dopintopolku.virkailija.password=$AUTHENTICATION_SERVICE_PASSWORD \
 -Deperusteet.url=\"https://eperusteet.opintopolku.fi/eperusteet-service\" \
 -Dkoodisto.virkailija.url=\"https://testi.virkailija.opintopolku.fi\" \
 "

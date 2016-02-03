@@ -15,9 +15,10 @@ object MockUsers extends UserOrganisationsRepository with DirectoryClient {
   val mockOrganisaatioRepository = new MockOrganisaatioRepository(KoodistoViitePalvelu(MockKoodistoPalvelu))
 
   val kalle = MockUser(LdapUser(List(), "käyttäjä", "kalle", "12345"), MockOrganisaatiot.oppilaitokset.flatMap(mockOrganisaatioRepository.getOrganisaatioHierarkia(_)))
+  val localthor = MockUser(LdapUser(List(), "käyttäjä", "localthor", "1.2.246.562.24.91698845204"), MockOrganisaatiot.oppilaitokset.flatMap(mockOrganisaatioRepository.getOrganisaatioHierarkia(_)))
   val hiiri = MockUser(LdapUser(List(), "käyttäjä", "hiiri", "11111"), List(MockOrganisaatiot.omnomnia).flatMap(mockOrganisaatioRepository.getOrganisaatioHierarkia(_)))
 
-  val users = List(kalle, hiiri)
+  val users = List(kalle, hiiri, localthor)
 
   // UserOrganisationsRepository methods
   def getUserOrganisations(oid: String): InMemoryOrganisaatioRepository = users.map(user => (user.oid, user.organisaatioRepository)).toMap.getOrElse(oid, InMemoryOrganisaatioRepository.empty)

@@ -26,7 +26,7 @@ object OrganisaatioRepository {
 
   def withoutCache(config: Config, koodisto: KoodistoViitePalvelu): JsonOrganisaatioRepository = {
     if (config.hasPath("opintopolku.virkailija.url")) {
-      val http = VirkailijaHttpClient(config.getString("authentication-service.username"), config.getString("authentication-service.password"), config.getString("opintopolku.virkailija.url"), "/organisaatio-service")
+      val http = VirkailijaHttpClient(config.getString("opintopolku.virkailija.username"), config.getString("opintopolku.virkailija.password"), config.getString("opintopolku.virkailija.url"), "/organisaatio-service")
       new RemoteOrganisaatioRepository(http, koodisto)
     } else {
       new MockOrganisaatioRepository(koodisto)

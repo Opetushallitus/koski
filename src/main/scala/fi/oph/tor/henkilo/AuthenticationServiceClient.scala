@@ -49,7 +49,10 @@ class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances {
 object AuthenticationServiceClient {
   def apply(config: Config) = {
     val virkalijaUrl: Path = if (config.hasPath("authentication-service.virkailija.url")) { config.getString("authentication-service.virkailija.url") } else { config.getString("opintopolku.virkailija.url") }
-    val http = VirkailijaHttpClient(config.getString("authentication-service.username"), config.getString("authentication-service.password"), virkalijaUrl, "/authentication-service", config.getBoolean("authentication-service.useCas"))
+    val username =  if (config.hasPath("authentication-service.username")) { config.getString("authentication-service.username") } else { config.getString("opintopolku.virkailija.username") }
+    val password =  if (config.hasPath("authentication-service.password")) { config.getString("authentication-service.password") } else { config.getString("opintopolku.virkailija.password") }
+
+    val http = VirkailijaHttpClient(username, password, virkalijaUrl, "/authentication-service", config.getBoolean("authentication-service.useCas"))
     new AuthenticationServiceClient(http)
   }
 }
