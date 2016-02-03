@@ -13,7 +13,7 @@ object MinValue extends MetadataSupport {
 
   override def appendMetadataToJsonSchema(obj: JObject, metadata: Metadata) = metadata match {
     case MinValue(value) =>
-      obj.merge(JObject("minimum" -> JDouble(value)))
+      appendToDescription(obj.merge(JObject("minimum" -> JDouble(value))), "(Minimiarvo: " + value+")")
     case _ => obj
   }
 }
