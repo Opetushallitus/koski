@@ -116,7 +116,7 @@ th {
 .api-operation .api-details > * {
 }
 
-.api-operation div {
+.api-operation > div {
     margin-left: 10px;
 }
 

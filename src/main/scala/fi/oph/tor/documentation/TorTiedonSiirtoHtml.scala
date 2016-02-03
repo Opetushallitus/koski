@@ -79,7 +79,7 @@ Rajapintojen käyttämät virhekoodit on myös kuvattu alla. Virhetapauksissa ra
               <div class="status-codes">
                 <table>
                   <thead>
-                    <tr><th>HTTP-status</th><th>Virhekoodi</th><th>Tilanne</th></tr>
+                    <tr><th>HTTP-status</th><th>Virhekoodi <small>(JSON-vastauksen sisällä)</small></th><th>Tilanne</th></tr>
                   </thead>
                   <tbody>
                     {operation.statusCodes.flatMap(_.flatten).map { errorCategory =>
