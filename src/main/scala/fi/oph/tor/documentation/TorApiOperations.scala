@@ -110,7 +110,8 @@ object TorApiOperations {
        TorErrorCategory.forbidden.organisaatio,
        TorErrorCategory.badRequest.format,
        TorErrorCategory.badRequest.validation,
-       TorErrorCategory.conflict.versionumero
+       TorErrorCategory.conflict.versionumero,
+       TorErrorCategory.unsupportedMediaType.jsonOnly
      )
    )
  )

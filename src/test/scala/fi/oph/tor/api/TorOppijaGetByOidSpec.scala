@@ -10,7 +10,7 @@ class TorOppijaGetByOidSpec extends FreeSpec with Matchers with HttpSpecificatio
     "GET" - {
       "with valid oid" in {
         get("api/oppija/" + MockOppijat.eero.oid, headers = authHeaders()) {
-          verifyResponseStatus()
+          verifyResponseStatus(200)
         }
       }
       "with invalid oid" in {

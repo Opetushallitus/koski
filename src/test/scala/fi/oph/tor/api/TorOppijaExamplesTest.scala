@@ -10,7 +10,7 @@ class TorOppijaExamplesTest extends FreeSpec with Matchers with HttpSpecificatio
       "POST " + example.name in {
         val body = Json.write(example.data).getBytes("utf-8")
         put("api/oppija", body = body, headers = authHeaders() ++ jsonContent) {
-          verifyResponseStatus()
+          verifyResponseStatus(200)
           println(example.name + ": OK")
         }
       }

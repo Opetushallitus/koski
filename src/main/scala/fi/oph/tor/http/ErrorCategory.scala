@@ -13,7 +13,7 @@ case class ErrorCategory(val key: String, val statusCode: Int, val message: Stri
   }
   def subcategory(subkey: String, message: String) = new ErrorCategory(this, subkey, message)
 
-  def apply(message: AnyRef): HttpStatus = HttpStatus(statusCode, List(ErrorDetail(this, message)))
+  def apply(message: AnyRef): HttpStatus = HttpStatus(statusCode, List(ErrorDetail(key, message)))
   def apply(): HttpStatus = apply(message)
 
   def children: List[(String, ErrorCategory)] = children_

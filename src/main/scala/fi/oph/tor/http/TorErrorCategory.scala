@@ -3,7 +3,7 @@ package fi.oph.tor.http
 // TODO: organize/review error codes
 
 object TorErrorCategory {
-  val children = List(ok, badRequest, unauthorized, forbidden, notFound, conflict, internalError)
+  val children = List(ok, badRequest, unauthorized, forbidden, notFound, conflict, unsupportedMediaType, internalError)
 
   object ok extends ErrorCategory("ok", 200, "Ok") {
     val createdOrUpdated = subcategory("createdOrUpdated", "Päivitys/lisäys onnistui.")
@@ -58,7 +58,6 @@ object TorErrorCategory {
       class Rakenne extends ErrorCategory(Validation.this, "rakenne", "Tutkinnon rakenteeseen liittyvä validointivirhe") {
         val tuntematonTutkinnonOsa = subcategory("tuntematonTutkinnonOsa", "Annettua tutkinnon osaa ei löydy rakenteesta.")
         val suoritustapaPuuttuu = subcategory("suoritustapaPuuttuu", "Tutkinnolta puuttuu suoritustapa. Tutkinnon osasuorituksia ei hyväksytä.")
-        val diaariPuuttuu = subcategory("diaariPuuttuu", "Tutkinnon diaarinumero puuttuu.")
         val tuntematonDiaari = subcategory("tuntematonDiaari", "Tutkinnon perustetta ei löydy diaarinumerolla.")
         val tuntematonOsaamisala = subcategory("tuntematonOsaamisala", "Annettua osaamisalaa ei löydy tutkinnon rakenteesta.")
       }
@@ -83,6 +82,10 @@ object TorErrorCategory {
   object conflict extends ErrorCategory("conflict", 409, "Ristiriitainen päivitys")  {
     val versionumero = subcategory("versionumero", "Yritetty päivittää vanhan version päälle; annettu versionumero on erisuuri kuin viimeisin rekisteristä löytyvä.")
     val hetu = subcategory("hetu", "Henkilö on jo lisätty annetulla hetulla.") // Tätä ei pitäisi koskaan näkyä ulospäin
+  }
+
+  object unsupportedMediaType extends ErrorCategory("unsupportedMediaType", 415, "Unsupported media type") {
+    val jsonOnly = subcategory("jsonOnly", "Wrong content type: only application/json content type allowed")
   }
 
   object internalError extends ErrorCategory("internalError", 500, "Internal server error")

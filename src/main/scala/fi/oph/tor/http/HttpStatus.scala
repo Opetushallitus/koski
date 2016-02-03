@@ -8,8 +8,8 @@ case class HttpStatus(statusCode: Int, errors: List[ErrorDetail]) {
   def then(status: => HttpStatus) = if (isOk) { status } else { this }
 }
 
-case class ErrorDetail(category: ErrorCategory, message: AnyRef) {
-  override def toString = category.key + " (" + message + ")"
+case class ErrorDetail(key: String, message: AnyRef) {
+  override def toString = key + " (" + message + ")"
 }
 
 object HttpStatus {

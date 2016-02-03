@@ -13,7 +13,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
         case None =>
           t.koulutusmoduuli.perusteenDiaarinumero match {
             case Some(d) => TorErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Tutkinnon perustetta ei löydy diaarinumerolla " + d)
-            case None => TorErrorCategory.badRequest.validation.rakenne.diaariPuuttuu()
+            case None => TorErrorCategory.ok()
           }
         case Some(rakenne) =>
           val tuntemattomatOsaamisalat: List[KoodistoKoodiViite] = t.osaamisala.toList.flatten.filter(osaamisala => !TutkintoRakenne.findOsaamisala(rakenne, osaamisala.koodiarvo).isDefined)

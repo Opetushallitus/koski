@@ -1,7 +1,7 @@
 package fi.oph.tor.api
 
 import java.time.LocalDate
-
+import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.json.Json
 import fi.oph.tor.schema.{NewHenkilö, TorOppija}
 import org.scalatest.{FunSpec, Matchers}
@@ -40,7 +40,7 @@ class TorOppijaQuerySpec extends FunSpec with OpiskeluOikeusTestMethods with Mat
     describe("Kun haetaan ei tuetulla parametrilla") {
       it("palautetaan HTTP 400") {
         authGet("api/oppija?eiTuettu=kyllä") {
-          verifyResponseStatus(400, "Unsupported query parameter: eiTuettu")
+          verifyResponseStatus(400, TorErrorCategory.badRequest.queryParam.unknown("Unsupported query parameter: eiTuettu"))
         }
       }
     }

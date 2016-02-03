@@ -10,18 +10,18 @@ import org.scalatra.ScalatraServlet
 trait ErrorHandlingServlet extends ScalatraServlet with Logging {
   def withJsonBody(block: JValue => Any) = {
     if (request.getContentType != "application/json") {
-      halt(415, "Only application/json content type allowed")
+      renderStatus(TorErrorCategory.unsupportedMediaType.jsonOnly())
+    } else {
+      val json = try {
+        Some(org.json4s.jackson.JsonMethods.parse(request.body))
+      } catch {
+        case e: Exception => None
+      }
+      json match {
+        case Some(json) => block(json)
+        case None => renderStatus(TorErrorCategory.badRequest.format.json("Invalid JSON"))
+      }
     }
-    val json = try {
-      Some(org.json4s.jackson.JsonMethods.parse(request.body))
-    } catch {
-      case e: Exception => None
-    }
-    json match {
-      case Some(json) => block(json)
-      case None => renderStatus(TorErrorCategory.badRequest.format.json("Invalid JSON"))
-    }
-
   }
 
   def renderOption[T <: AnyRef](errorCategory: ErrorCategory)(result: Option[T], pretty: Boolean = false) = {
@@ -59,7 +59,7 @@ trait ErrorHandlingServlet extends ScalatraServlet with Logging {
   }
 
   def renderStatus(status: HttpStatus) = {
-    halt(status = status.statusCode, body = Json.write(status.errors.map(detail => Map("key" -> detail.category.key, "message" -> detail.message))))
+    halt(status = status.statusCode, body = Json.write(status.errors))
   }
 
   private def maskRequestBody = {

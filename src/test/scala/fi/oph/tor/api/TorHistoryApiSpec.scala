@@ -3,6 +3,7 @@ package fi.oph.tor.api
 import java.time.LocalDate
 
 import fi.oph.tor.db.OpiskeluOikeusHistoryRow
+import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.jettylauncher.SharedJetty
 import fi.oph.tor.json.Json
 import fi.oph.tor.opiskeluoikeus.OpiskeluOikeusTestData
@@ -74,7 +75,7 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
     describe("Virheellinen id") {
       it("Palautetaan HTTP 400") {
         authGet("api/opiskeluoikeus/historia/asdf") {
-          verifyResponseStatus(400, "Invalid id : asdf")
+          verifyResponseStatus(400, TorErrorCategory.badRequest.format.number("Invalid id : asdf"))
         }
       }
     }

@@ -512,15 +512,6 @@ describe('TOR', function() {
   describe('Tietoturva', function() {
     before(login.openPage)
 
-    describe('Oppijarajapinta', function() {
-      before(openPage('/tor/api/oppija?query=eero', authenticationErrorIsShown))
-
-      it('vaatii autentikaation', function () {
-        expect(authenticationErrorIsShown()).to.equal(true)
-      })
-    })
-
-
     describe('Kun klikataan logout-linkkiä', function() {
       before(authentication.login(), page.openPage, page.logout)
 
@@ -553,10 +544,6 @@ describe('TOR', function() {
       })
     })
   })
-
-  function authenticationErrorIsShown() {
-    return S('body').text() === 'Not authenticated'
-  }
 
   function resetFixtures() {
     return Q($.ajax({ url: '/tor/fixtures/reset', method: 'post'}))
