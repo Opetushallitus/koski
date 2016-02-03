@@ -174,10 +174,10 @@ trait Koulutusmoduulitoteutus {
     osaamisala: Option[List[KoodistoKoodiViite]] = None,
     @Description("Tutkinnon tai tutkinnon osan suoritustapa")
     @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
-    suoritustapa: Option[Suoritustapa],
+    suoritustapa: Option[Suoritustapa] = None,
     @Description("Koulutuksen järjestämismuoto")
     @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
-    järjestämismuoto: Option[Järjestämismuoto]
+    järjestämismuoto: Option[Järjestämismuoto] = None
   ) extends Koulutusmoduulitoteutus
 
   @Description("Opetussuunnitelmaan kuuluva tutkinnon osa")

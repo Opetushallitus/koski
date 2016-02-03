@@ -1,5 +1,6 @@
 package fi.oph.tor.schema.generic
 
+import org.apache.commons.lang.StringEscapeUtils
 import org.reflections.Reflections
 
 import scala.reflect.runtime.{universe => ru}
@@ -84,7 +85,7 @@ case class SchemaFactory(annotationsSupported: List[AnnotationSupport]) {
     symbol.annotations.flatMap(annotation => annotationsSupported.map((annotation, _))).foldLeft(x) { case (current, (annotation, metadataSupport)) =>
       val f: PartialFunction[(String, List[String], ObjectWithMetadata[_], SchemaFactory), ObjectWithMetadata[_]] = metadataSupport.applyAnnotations orElse { case (_, _, obj, _) => obj }
 
-      val annotationParams: List[String] = annotation.tree.children.tail.map(_.toString.replaceAll("\"$|^\"", "").replace("\\\"", "\"").replace("\\'", "'"))
+      val annotationParams: List[String] = annotation.tree.children.tail.map(str => StringEscapeUtils.unescapeJava(str.toString.replaceAll("\"$|^\"", "")))
       val annotationType: String = annotation.tree.tpe.toString
 
       val result: T = f(annotationType, annotationParams, current, this).asInstanceOf[T]

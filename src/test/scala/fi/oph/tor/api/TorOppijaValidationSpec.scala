@@ -48,7 +48,7 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
     describe("Väärä Content-Type") {
       it("palautetaan HTTP 415") {
 
-        put("api/oppija", body = Json.write(makeOppija(defaultHenkilö, List(defaultOpiskeluOikeus))), headers = authHeaders() ++ Map(("Content-type" -> "text/plain"))) {
+        put("api/oppija", body = Json.write(makeOppija(defaultHenkilö, List(opiskeluoikeus()))), headers = authHeaders() ++ Map(("Content-type" -> "text/plain"))) {
           verifyResponseStatus(415, "Only application/json content type allowed")
         }
       }
@@ -246,6 +246,26 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
           "suoritustapa" -> Map("tunniste" -> Map("koodiarvo" -> "ops", "koodistoUri" -> "suoritustapa")),
           "osaamisala" -> List(Map("koodiarvo" -> "0", "koodistoUri" -> "osaamisala"))
         ))))(verifyResponseStatus(400, "Koodia osaamisala/0 ei löydy koodistosta")))
+      }
+
+      describe("Oppisopimus") {
+        def toteutusOppisopimuksella(yTunnus: String): TutkintoKoulutustoteutus = {
+          tutkintototeutus.copy(järjestämismuoto = Some(OppisopimuksellinenJärjestämismuoto(KoodistoKoodiViite("20", "jarjestamismuoto"), Oppisopimus(Yritys("Reaktor", yTunnus)))))
+        }
+
+        describe("Kun ok") {
+          it("palautetaan HTTP 200") (
+            putOpiskeluOikeus(opiskeluoikeus(toteutusOppisopimuksella("1629284-5")))
+              (verifyResponseStatus(200))
+          )
+        }
+
+        describe("Virheellinen y-tunnus") {
+          it("palautetaan HTTP 400") (
+            putOpiskeluOikeus(opiskeluoikeus(toteutusOppisopimuksella("1629284x5")))
+              (verifyResponseStatus(400, "ECMA 262 regex"))
+          )
+        }
       }
     }
 

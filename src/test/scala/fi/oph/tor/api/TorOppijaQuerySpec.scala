@@ -3,23 +3,17 @@ package fi.oph.tor.api
 import java.time.LocalDate
 
 import fi.oph.tor.json.Json
-import fi.oph.tor.json.Json._
-import fi.oph.tor.schema.TorOppija
-import org.json4s.JValue
+import fi.oph.tor.schema.{NewHenkilö, TorOppija}
 import org.scalatest.{FunSpec, Matchers}
 
 class TorOppijaQuerySpec extends FunSpec with OpiskeluOikeusTestMethods with Matchers {
+  val teija = NewHenkilö("150995-914X", "Teija", "Teija", "Tekijä")
 
   describe("Kyselyrajapinta") {
     describe("Kun haku osuu") {
       it("palautetaan hakutulokset") {
         putOpiskeluOikeus(Map("päättymispäivä"-> "2016-01-09")) {
-          putOpiskeluOikeus(Map("päättymispäivä"-> "2013-01-09"), toJValue(Map(
-            "etunimet"->"Teija",
-            "sukunimi"->"Tekijä",
-            "kutsumanimi"->"Teija",
-            "hetu"->"150995-914X"
-          ))) {
+          putOpiskeluOikeus(Map("päättymispäivä"-> "2013-01-09"), teija) {
             authGet ("api/oppija?opiskeluoikeusPäättynytViimeistään=2016-12-31&opiskeluoikeusPäättynytAikaisintaan=2016-01-01") {
               verifyResponseStatus(200)
               val oppijat: List[TorOppija] = Json.read[List[TorOppija]](response.body)
@@ -54,12 +48,7 @@ class TorOppijaQuerySpec extends FunSpec with OpiskeluOikeusTestMethods with Mat
     describe("Kun haetaan ilman parametreja") {
       it("palautetaan kaikki oppijat") {
         putOpiskeluOikeus(Map("päättymispäivä"-> "2016-01-09")) {
-          putOpiskeluOikeus(Map("päättymispäivä"-> "2013-01-09"), toJValue(Map(
-            "etunimet"->"Teija",
-            "sukunimi"->"Tekijä",
-            "kutsumanimi"->"Teija",
-            "hetu"->"150995-914X"
-          ))) {
+          putOpiskeluOikeus(Map("päättymispäivä"-> "2013-01-09"), teija) {
             authGet ("api/oppija") {
               verifyResponseStatus(200)
               val oppijat: List[TorOppija] = Json.read[List[TorOppija]](response.body)

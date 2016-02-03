@@ -3,7 +3,7 @@ package fi.oph.tor.api
 import fi.oph.tor.json.Json
 import fi.oph.tor.json.Json._
 import fi.oph.tor.koodisto.{KoodistoViitePalvelu, MockKoodistoPalvelu}
-import fi.oph.tor.schema.{FullHenkilö, OpiskeluOikeus, Suoritus, TorOppija}
+import fi.oph.tor.schema._
 import org.json4s._
 import org.scalatest.Matchers
 
@@ -11,10 +11,10 @@ trait OpiskeluOikeusTestMethods extends HttpSpecification with Matchers with Opi
   val koodisto: KoodistoViitePalvelu = KoodistoViitePalvelu(MockKoodistoPalvelu)
   val oppijaPath = "/api/oppija"
 
-  implicit def m2j(map: Map[String, Any]): JValue = Json.toJValue(map)
+  implicit def any2j(o: AnyRef): JValue = Json.toJValue(o)
 
   def putTutkinnonOsaSuoritus[A](tutkinnonOsaSuoritus: Suoritus)(f: => A) = {
-    val opiskeluOikeus = defaultOpiskeluOikeus.merge(toJValue(Map(
+    val opiskeluOikeus = Json.toJValue(opiskeluoikeus()).merge(toJValue(Map(
       "suoritus" -> Map(
         "koulutusmoduulitoteutus" -> Map(
           "suoritustapa" -> Map(
@@ -32,8 +32,8 @@ trait OpiskeluOikeusTestMethods extends HttpSpecification with Matchers with Opi
     putOpiskeluOikeus(opiskeluOikeus)(f)
   }
 
-  def putOpiskeluOikeus[A](opiskeluOikeus: JValue, henkilö: JValue = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
-    putOppija(makeOppija(henkilö, List(defaultOpiskeluOikeus.merge(opiskeluOikeus))), headers)(f)
+  def putOpiskeluOikeus[A](opiskeluOikeus: JValue, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
+    putOppija(makeOppija(henkilö, List(Json.toJValue(opiskeluoikeus()).merge(opiskeluOikeus))), headers)(f)
   }
 
   def putOppija[A](oppija: Map[String, AnyRef])(f: => A): Unit = {
