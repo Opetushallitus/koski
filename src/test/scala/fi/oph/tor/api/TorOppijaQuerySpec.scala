@@ -5,9 +5,11 @@ import java.time.LocalDate
 import fi.oph.tor.json.Json
 import fi.oph.tor.json.Json._
 import fi.oph.tor.schema.TorOppija
+import org.json4s.JValue
 import org.scalatest.{FunSpec, Matchers}
 
 class TorOppijaQuerySpec extends FunSpec with OpiskeluOikeusTestMethods with Matchers {
+
   describe("Kyselyrajapinta") {
     describe("Kun haku osuu") {
       it("palautetaan hakutulokset") {

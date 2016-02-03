@@ -3,56 +3,17 @@ package fi.oph.tor.api
 import fi.oph.tor.json.Json
 import fi.oph.tor.json.Json._
 import fi.oph.tor.koodisto.{KoodistoViitePalvelu, MockKoodistoPalvelu}
-import fi.oph.tor.organisaatio.MockOrganisaatiot
-import fi.oph.tor.schema.{FullHenkilö, OpiskeluOikeus, TorOppija}
+import fi.oph.tor.schema.{FullHenkilö, OpiskeluOikeus, Suoritus, TorOppija}
 import org.json4s._
 import org.scalatest.Matchers
 
-trait OpiskeluOikeusTestMethods extends HttpSpecification with Matchers {
+trait OpiskeluOikeusTestMethods extends HttpSpecification with Matchers with OpiskeluOikeusData {
   val koodisto: KoodistoViitePalvelu = KoodistoViitePalvelu(MockKoodistoPalvelu)
   val oppijaPath = "/api/oppija"
 
-  val defaultHenkilö = toJValue(Map(
-    "etunimet" -> "Testi",
-    "sukunimi" -> "Toivola",
-    "kutsumanimi" -> "Testi",
-    "hetu" -> "010101-123N"
-  ))
+  implicit def m2j(map: Map[String, Any]): JValue = Json.toJValue(map)
 
-  def makeOppija(henkilö: JValue = defaultHenkilö, opiskeluOikeudet: List[JValue] = List(defaultOpiskeluOikeus)) = toJValue(Map(
-    "henkilö" -> henkilö,
-    "opiskeluoikeudet" -> opiskeluOikeudet
-  ))
-
-  val defaultOpiskeluOikeus: JValue = toJValue(Map(
-    "oppilaitos" ->  Map("oid" ->  MockOrganisaatiot.stadinAmmattiopisto),
-    "suoritus" ->  Map(
-      "koulutusmoduulitoteutus" ->  Map(
-        "koulutusmoduuli" ->  Map(
-          "tunniste" ->  Map(
-            "koodiarvo" ->  "351301",
-            "nimi" ->  "Autoalan perustutkinto",
-            "koodistoUri" ->  "koulutus"),
-          "perusteenDiaarinumero" ->  "39/011/2014")),
-      "toimipiste" ->  Map(
-        "oid" ->  "1.2.246.562.10.42456023292",
-        "nimi" ->  "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
-      )
-    )))
-
-  val defaultTutkinnonOsaSuoritus = toJValue(Map(
-    "koulutusmoduulitoteutus" ->  Map(
-      "koulutusmoduuli" ->  Map(
-        "tunniste" ->  Map("koodiarvo" -> "100023", "nimi" -> "Markkinointi ja asiakaspalvelu", "koodistoUri" -> "tutkinnonosat", "koodistoVersio" -> 1),
-        "pakollinen" -> true,
-        "laajuus" ->  Map("arvo" -> 11, "yksikkö" -> Map("koodiarvo" -> "6", "koodistoUri" -> "opintojenlaajuusyksikko"))
-      )
-    ),
-    "toimipiste" ->  Map("oid" -> "1.2.246.562.10.42456023292", "nimi" -> "Stadin ammattiopisto, Lehtikuusentien toimipaikka"),
-    "arviointi" -> List(Map("arvosana" -> Map("koodiarvo" -> "2", "koodistoUri" -> "arviointiasteikkoammatillinent1k3")))
-  ))
-
-  def putTutkinnonOsaSuoritus[A](tutkinnonOsaSuoritus: Map[String, Any])(f: => A) = {
+  def putTutkinnonOsaSuoritus[A](tutkinnonOsaSuoritus: Suoritus)(f: => A) = {
     val opiskeluOikeus = defaultOpiskeluOikeus.merge(toJValue(Map(
       "suoritus" -> Map(
         "koulutusmoduulitoteutus" -> Map(
@@ -65,15 +26,14 @@ trait OpiskeluOikeusTestMethods extends HttpSpecification with Matchers {
             )
           )
         ),
-        "osasuoritukset" -> List(defaultTutkinnonOsaSuoritus.merge(toJValue(tutkinnonOsaSuoritus)))
+        "osasuoritukset" -> List(Json.toJValue(tutkinnonOsaSuoritus))
       )
     )))
-
+    putOpiskeluOikeus(opiskeluOikeus)(f)
   }
 
-
-  def putOpiskeluOikeus[A](opiskeluOikeus: Map[String, Any], henkilö: JValue = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A) = {
-    putOppija(makeOppija(henkilö, List(defaultOpiskeluOikeus.merge(Json.toJValue(opiskeluOikeus)))), headers)(f)
+  def putOpiskeluOikeus[A](opiskeluOikeus: JValue, henkilö: JValue = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
+    putOppija(makeOppija(henkilö, List(defaultOpiskeluOikeus.merge(opiskeluOikeus))), headers)(f)
   }
 
   def putOppija[A](oppija: Map[String, AnyRef])(f: => A): Unit = {
