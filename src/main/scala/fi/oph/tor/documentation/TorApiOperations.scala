@@ -53,6 +53,7 @@ object TorApiOperations {
      List(
        TorErrorCategory.ok.searchOk,
        TorErrorCategory.unauthorized,
+       TorErrorCategory.badRequest.queryParam.virheellinenOid,
        TorErrorCategory.notFound.notFoundOrNoPermission
      )
    ),
@@ -64,6 +65,7 @@ object TorApiOperations {
      List(
        TorErrorCategory.ok.maybeValidationErrorsInContent,
        TorErrorCategory.unauthorized,
+       TorErrorCategory.badRequest.queryParam.virheellinenOid,
        TorErrorCategory.notFound.notFoundOrNoPermission
      )
    ),

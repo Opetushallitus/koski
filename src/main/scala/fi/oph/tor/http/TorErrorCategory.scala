@@ -23,6 +23,7 @@ object TorErrorCategory {
     class QueryParam extends ErrorCategory(badRequest, "queryParam", "Epäkelpo kyselyparametri") {
       val unknown = subcategory("unknown", "Annettua kyselyparametria ei tueta.")
       val searchTermTooShort = subcategory("searchTermTooShort", "Hakusanan pituus alle 3 merkkiä.")
+      val virheellinenOid = subcategory("virheellinenOid", "Henkilö-oidin muoto on virheellinen. Esimerkki oikeasta muodosta: 1.2.246.562.24.00000000001.")
     }
     val queryParam = new QueryParam
 
@@ -37,9 +38,8 @@ object TorErrorCategory {
       val organisaatio = new Organisaatio
 
       class Henkilötiedot extends ErrorCategory(Validation.this, "henkilötiedot", "Epäkelvot henkilötiedot") {
-        val puuttelliset = subcategory("puutteelliset", "Henkilötiedot puutteelliset. Joko oid tai (hetu, etunimet, sukunimi, kutsumanimi) tarvitaan henkilön hakuun/luontiin.")
+        val virheelliset = subcategory("puutteelliset", "Henkilötiedot virheelliset henkilöpalvelun tekemien tarkistusten perusteella.")
         val hetu = subcategory("hetu", "Henkilötunnus on virheellinen.")
-        val virheellinenOid = subcategory("virheellinenOid", "Henkilö-oidin muoto on virheellinen. Esimerkki oikeasta muodosta: 1.2.246.562.24.00000000001.")
       }
       val henkilötiedot = new Henkilötiedot
 
@@ -57,13 +57,12 @@ object TorErrorCategory {
 
       class Rakenne extends ErrorCategory(Validation.this, "rakenne", "Tutkinnon rakenteeseen liittyvä validointivirhe") {
         val tuntematonTutkinnonOsa = subcategory("tuntematonTutkinnonOsa", "Annettua tutkinnon osaa ei löydy rakenteesta.")
-        val suoritustapaPuuttuu = subcategory("suoritustapaPuuttuu", "Tutkinnolta puuttuu suoritustapa. Tutkinnon osasuorituksia ei hyväksytä.")
+        val suoritustapaPuuttuu = subcategory("suoritustapaPuuttuu", "Tutkinnolta puuttuu suoritustapa. Tutkinnon osasuorituksia ei hyväksytä.") // TODO: testikeissi puuttuu
         val tuntematonDiaari = subcategory("tuntematonDiaari", "Tutkinnon perustetta ei löydy diaarinumerolla.")
         val tuntematonOsaamisala = subcategory("tuntematonOsaamisala", "Annettua osaamisalaa ei löydy tutkinnon rakenteesta.")
       }
       val rakenne = new Rakenne
     }
-
     val validation = new Validation
   }
 
@@ -74,14 +73,14 @@ object TorErrorCategory {
   }
 
   object notFound extends ErrorCategory("notFound", 404, "Not found") {
-    val notFoundOrNoPermission = subcategory("notFoundOrNoPermission", "Haettua tietoa ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun.")
+    val notFoundOrNoPermission = subcategory("notFoundOrNoPermission", "Haettua tietoa ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun.") // TODO: testikeissi puuttuu
     val koodistoaEiLöydy = subcategory("koodistoaEiLöydy", "Pyydettyä koodistoa ei löydy.")
     val diaarinumeroaEiLöydy = subcategory("diaarinumeroaEiLöydy", "Tutkinnon rakennetta ei löydy annetulla diaarinumerolla.")
   }
 
   object conflict extends ErrorCategory("conflict", 409, "Ristiriitainen päivitys")  {
-    val versionumero = subcategory("versionumero", "Yritetty päivittää vanhan version päälle; annettu versionumero on erisuuri kuin viimeisin rekisteristä löytyvä.")
-    val hetu = subcategory("hetu", "Henkilö on jo lisätty annetulla hetulla.") // Tätä ei pitäisi koskaan näkyä ulospäin
+    val versionumero = subcategory("versionumero", "Yritetty päivittää vanhan version päälle; annettu versionumero on erisuuri kuin viimeisin rekisteristä löytyvä.") // TODO: testikeissi puuttuu
+    val hetu = subcategory("hetu", "Henkilö on jo lisätty annetulla hetulla.") // TODO: Tätä ei pitäisi koskaan näkyä ulospäin
   }
 
   object unsupportedMediaType extends ErrorCategory("unsupportedMediaType", 415, "Unsupported media type") {

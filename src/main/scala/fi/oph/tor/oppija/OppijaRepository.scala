@@ -41,7 +41,7 @@ trait OppijaRepository extends Logging {
 
   def resetFixtures {}
 
-  def findOrCreate(henkilö: Henkilö): Either[HttpStatus, Henkilö.Oid] = {
+  def findOrCreate(henkilö: NewHenkilö): Either[HttpStatus, Henkilö.Oid] =  {
     def oidFrom(oppijat: List[FullHenkilö]): Either[HttpStatus, Henkilö.Oid] = {
       oppijat match {
         case List(oppija) => Right(oppija.oid)
@@ -50,17 +50,11 @@ trait OppijaRepository extends Logging {
           Left(TorErrorCategory.internalError())
       }
     }
-    henkilö match {
-      case NewHenkilö(hetu, etunimet, kutsumanimi, sukunimi) =>
-        Hetu.validate(hetu).right.flatMap { hetu =>
-          create(hetu, etunimet, kutsumanimi, sukunimi).left.flatMap { case HttpStatus(409, _) =>
-            oidFrom(findOppijat(hetu))
-          }
-        }
-      case OidHenkilö(oid) =>
-        oidFrom(findByOid(oid).toList)
-      case _ =>
-        Left(TorErrorCategory.badRequest.validation.henkilötiedot.puuttelliset())
+    val NewHenkilö(hetu, etunimet, kutsumanimi, sukunimi) = henkilö
+    Hetu.validate(hetu).right.flatMap { hetu =>
+      create(hetu, etunimet, kutsumanimi, sukunimi).left.flatMap { case HttpStatus(409, _) =>
+        oidFrom(findOppijat(hetu))
+      }
     }
   }
 }

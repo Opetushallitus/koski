@@ -32,7 +32,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
 
   def createOrUpdate(oppija: TorOppija)(implicit user: TorUser): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
     val oppijaOid: Either[HttpStatus, PossiblyUnverifiedOppijaOid] = oppija.henkilö match {
-      case h:NewHenkilö => oppijaRepository.findOrCreate(oppija.henkilö).right.map(VerifiedOppijaOid(_))
+      case h:NewHenkilö => oppijaRepository.findOrCreate(h).right.map(VerifiedOppijaOid(_))
       case h:HenkilöWithOid => Right(UnverifiedOppijaOid(h.oid, oppijaRepository))
     }
 

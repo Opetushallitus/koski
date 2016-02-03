@@ -37,7 +37,7 @@ class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances {
     http(task, request) {
       case (200, oid, _) => Right(oid)
       case (400, "socialsecuritynr.already.exists", _) => Left(TorErrorCategory.conflict.hetu("Henkilötunnus on jo olemassa"))
-      case (400, error, _) => Left(TorErrorCategory.badRequest.validation.henkilötiedot(error))
+      case (400, error, _) => Left(TorErrorCategory.badRequest.validation.henkilötiedot.virheelliset(error))
       case (status, text, uri) => throw new HttpStatusException(status, text, uri)
     }.run
   }

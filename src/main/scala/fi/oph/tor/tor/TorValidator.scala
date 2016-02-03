@@ -31,7 +31,7 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
 
   private def validateOpiskeluoikeudet(opiskeluoikeudet: Seq[OpiskeluOikeus])(implicit user: TorUser): HttpStatus = {
     if (opiskeluoikeudet.length == 0) {
-      TorErrorCategory.badRequest.validation.tyhjäOpiskeluoikeusLista("At least one OpiskeluOikeus required")
+      TorErrorCategory.badRequest.validation.tyhjäOpiskeluoikeusLista()
     }
     else {
       HttpStatus.fold(opiskeluoikeudet.map(validateOpiskeluOikeus))

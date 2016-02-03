@@ -42,50 +42,60 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
 
     describe("Henkilötiedot") {
       describe("Nimenä tyhjä merkkijono") {
-        it("palautetaan HTTP 400 virhe" ) (putOppija(defaultHenkilö.copy(sukunimi = "")) (verifyResponseStatus(400)))
+        it("palautetaan HTTP 400 virhe" ) (putHenkilö(defaultHenkilö.copy(sukunimi = "")) (verifyResponseStatus(400)))
       }
 
 
       describe("Hetun ollessa") {
         describe("muodoltaan virheellinen") {
-          it("palautetaan HTTP 400 virhe" ) (putOppija(defaultHenkilö.copy(hetu = "010101-123123"))
+          it("palautetaan HTTP 400 virhe" ) (putHenkilö(defaultHenkilö.copy(hetu = "010101-123123"))
             (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.henkilötiedot.hetu("Virheellinen muoto hetulla: 010101-123123"))))
         }
         describe("muodoltaan oikea, mutta väärä tarkistusmerkki") {
-          it("palautetaan HTTP 400 virhe" ) (putOppija(defaultHenkilö.copy(hetu = "010101-123P"))
+          it("palautetaan HTTP 400 virhe" ) (putHenkilö(defaultHenkilö.copy(hetu = "010101-123P"))
             (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.henkilötiedot.hetu("Virheellinen tarkistusmerkki hetussa: 010101-123P"))))
         }
         describe("päivämäärältään tulevaisuudessa") {
-          it("palautetaan HTTP 400 virhe" ) (putOppija(defaultHenkilö.copy(hetu = "141299A903C"))
+          it("palautetaan HTTP 400 virhe" ) (putHenkilö(defaultHenkilö.copy(hetu = "141299A903C"))
             (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.henkilötiedot.hetu("Syntymäpäivä hetussa: 141299A903C on tulevaisuudessa"))))
         }
         describe("päivämäärältään virheellinen") {
-          it("palautetaan HTTP 400 virhe" ) (putOppija(defaultHenkilö.copy(hetu = "300215-123T"))
+          it("palautetaan HTTP 400 virhe" ) (putHenkilö(defaultHenkilö.copy(hetu = "300215-123T"))
             (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.henkilötiedot.hetu("Virheellinen syntymäpäivä hetulla: 300215-123T"))))
         }
         describe("validi") {
-          it("palautetaan HTTP 200" ) (putOppija(defaultHenkilö.copy(hetu = "010101-123N"))
+          it("palautetaan HTTP 200" ) (putHenkilö(defaultHenkilö.copy(hetu = "010101-123N"))
             (verifyResponseStatus(200)))
         }
       }
 
       describe("Käytettäessä oppijan oidia") {
         describe("Oid ok") {
-          it("palautetaan HTTP 200" ) (putOppija(OidHenkilö(MockOppijat.eero.oid)) (verifyResponseStatus(200)))
+          it("palautetaan HTTP 200" ) (putHenkilö(OidHenkilö(MockOppijat.eero.oid)) (verifyResponseStatus(200)))
         }
 
         describe("Oid virheellinen") {
-          it("palautetaan HTTP 400" ) (putOppija(OidHenkilö("123.123.123")) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema("ECMA 262 regex"))))
+          it("palautetaan HTTP 400" ) (putHenkilö(OidHenkilö("123.123.123")) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema("ECMA 262 regex"))))
         }
       }
 
       describe("Käytettäessä oppijan kaikkia tietoja") {
         describe("Oid ok") {
-          it("palautetaan HTTP 200" ) (putOppija(FullHenkilö(MockOppijat.eero.oid, "010101-123N", "Testi", "Testi", "Toivola", None, None)) (verifyResponseStatus(200)))
+          it("palautetaan HTTP 200" ) (putHenkilö(FullHenkilö(MockOppijat.eero.oid, "010101-123N", "Testi", "Testi", "Toivola", None, None)) (verifyResponseStatus(200)))
         }
 
         describe("Oid virheellinen") {
-          it("palautetaan HTTP 400" ) (putOppija(FullHenkilö("123.123.123", "010101-123N", "Testi", "Testi", "Toivola", None, None)) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema("ECMA 262 regex"))))
+          it("palautetaan HTTP 400" ) (putHenkilö(FullHenkilö("123.123.123", "010101-123N", "Testi", "Testi", "Toivola", None, None)) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema("ECMA 262 regex"))))
+        }
+      }
+    }
+
+    describe("Opiskeluoikeudet") {
+      describe("Jos lähetetään 0 opiskeluoikeutta") {
+        it("palautetaan HTTP 400") {
+          putOppija(TorOppija(defaultHenkilö, List())) {
+            verifyResponseStatus(400, TorErrorCategory.badRequest.validation.tyhjäOpiskeluoikeusLista("Annettiin tyhjä lista opiskeluoikeuksia."))
+          }
         }
       }
     }
