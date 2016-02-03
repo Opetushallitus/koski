@@ -4,7 +4,7 @@ import java.time.LocalDate
 import fi.oph.tor.arvosana.Arvosana
 import fi.oph.tor.koodisto.KoodistoViite
 import fi.oph.tor.log.Loggable
-import fi.oph.tor.schema.generic.annotation.{Description, ReadOnly}
+import fi.oph.tor.schema.generic.annotation.{RegularExpression, MinValue, Description, ReadOnly}
 
 
 case class TorOppija(
@@ -194,7 +194,7 @@ trait Koulutusmoduulitoteutus {
     koulutusmoduuli: PaikallinenTutkinnonosa,
     @Description("Tutkinnon tai tutkinnon osan suoritustapa")
     @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
-    suoritustapa: Option[Suoritustapa],
+    suoritustapa: Option[Suoritustapa] = None,
     hyväksiluku: Option[Hyväksiluku] = None
   ) extends Koulutusmoduulitoteutus
 
@@ -385,6 +385,7 @@ case class Paikallinenkoodi(
 @Description("Tutkinnon tai tutkinnon osan laajuus. Koostuu opintojen laajuuden arvosta ja yksiköstä")
 case class Laajuus(
   @Description("Opintojen laajuuden arvo")
+  @MinValue(0)
   arvo: Float,
   @Description("Opintojen laajuuden yksikkö")
   @KoodistoUri("opintojenlaajuusyksikko")
@@ -426,12 +427,14 @@ sealed trait Organisaatio
   @Description("Yritys, jolla on y-tunnus")
   case class Yritys(
     nimi: String,
+    @RegularExpression("\\d{7}-\\d")
     yTunnus: String
   ) extends Organisaatio
 
   @Description("Tutkintotoimikunta")
   case class Tutkintotoimikunta(
     nimi: String,
+    @MinValue(1)
     tutkintotoimikunnanNumero: Int
   ) extends Organisaatio
 

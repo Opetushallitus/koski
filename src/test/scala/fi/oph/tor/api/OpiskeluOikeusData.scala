@@ -1,6 +1,5 @@
 package fi.oph.tor.api
 
-import fi.oph.tor.json.Json
 import fi.oph.tor.json.Json._
 import fi.oph.tor.organisaatio.MockOrganisaatiot
 import fi.oph.tor.schema._
@@ -34,12 +33,14 @@ trait OpiskeluOikeusData {
         "nimi" ->  "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
       )
     )))
-  private val defaultTutkinnonOsa: OpsTutkinnonosa = OpsTutkinnonosa(KoodistoKoodiViite("100023", "tutkinnonosat"), true, Some(Laajuus(11, KoodistoKoodiViite("6", "opintojenlaajuusyksikko"))), None, None)
+  val laajuus = Laajuus(11, KoodistoKoodiViite("6", "opintojenlaajuusyksikko"))
 
-  val defaultTutkinnonOsaToteutus: OpsTutkinnonosatoteutus = OpsTutkinnonosatoteutus(defaultTutkinnonOsa, None, None)
+  val tutkinnonOsa: OpsTutkinnonosa = OpsTutkinnonosa(KoodistoKoodiViite("100023", "tutkinnonosat"), true, Some(laajuus), None, None)
 
-  val defaultTutkinnonOsaSuoritus = Suoritus(
-    None, defaultTutkinnonOsaToteutus, None, None, None,
+  val tutkinnonOsaToteutus: OpsTutkinnonosatoteutus = OpsTutkinnonosatoteutus(tutkinnonOsa, None, None)
+
+  val tutkinnonOsaSuoritus = Suoritus(
+    None, tutkinnonOsaToteutus, None, None, None,
     OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka")),
     Some(List(Arviointi(KoodistoKoodiViite("2", "arviointiasteikkoammatillinent1k3"), None))), None, None)
 }
