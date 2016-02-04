@@ -201,7 +201,7 @@ object TorOppijaExamples {
         Some(date(2016, 9, 1)),
         Some(date(2020, 5, 1)),
         None,
-        stadinAmmattiopisto,
+        Oppilaitos("1.2.246.562.10.52251087186"),
         Suoritus(
           Some("suoritus-12345"),
           TutkintoKoulutustoteutus(TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")), None, None, None, None),
