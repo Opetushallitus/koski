@@ -54,7 +54,7 @@ object TorApiOperations {
        TorErrorCategory.ok.searchOk,
        TorErrorCategory.unauthorized,
        TorErrorCategory.badRequest.queryParam.virheellinenOid,
-       TorErrorCategory.notFound.notFoundOrNoPermission
+       TorErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia
      )
    ),
    ApiOperation(
@@ -66,7 +66,7 @@ object TorApiOperations {
        TorErrorCategory.ok.maybeValidationErrorsInContent,
        TorErrorCategory.unauthorized,
        TorErrorCategory.badRequest.queryParam.virheellinenOid,
-       TorErrorCategory.notFound.notFoundOrNoPermission
+       TorErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia
      )
    ),
    ApiOperation(
@@ -77,7 +77,7 @@ object TorApiOperations {
      List(
        TorErrorCategory.ok.searchOk,
        TorErrorCategory.unauthorized,
-       TorErrorCategory.notFound.notFoundOrNoPermission
+       TorErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia
      )
    ),
    ApiOperation(
@@ -91,7 +91,8 @@ object TorApiOperations {
      List(
        TorErrorCategory.ok.searchOk,
        TorErrorCategory.unauthorized,
-       TorErrorCategory.notFound.notFoundOrNoPermission
+       TorErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia,
+       TorErrorCategory.notFound.versiotaEiLöydy
      )
    ),
    ApiOperation(
@@ -112,6 +113,8 @@ object TorApiOperations {
        TorErrorCategory.forbidden.organisaatio,
        TorErrorCategory.badRequest.format,
        TorErrorCategory.badRequest.validation,
+       TorErrorCategory.notFound.oppijaaEiLöydy,
+       TorErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia,
        TorErrorCategory.conflict.versionumero,
        TorErrorCategory.unsupportedMediaType.jsonOnly
      )

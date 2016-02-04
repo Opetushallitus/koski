@@ -13,7 +13,6 @@ trait OpiskeluOikeusRepository {
   def query(filters: List[QueryFilter])(implicit user: TorUser): Observable[(Oid, List[OpiskeluOikeus])]
   def filterOppijat(oppijat: Seq[FullHenkilö])(implicit user: TorUser): Seq[FullHenkilö]
   def findByOppijaOid(oid: String)(implicit user: TorUser): Seq[OpiskeluOikeus]
-  def find(identifier: OpiskeluOikeusIdentifier)(implicit user: TorUser): Either[HttpStatus, Option[OpiskeluOikeus]]
   def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: OpiskeluOikeus)(implicit user: TorUser): Either[HttpStatus, CreateOrUpdateResult]
 }
 

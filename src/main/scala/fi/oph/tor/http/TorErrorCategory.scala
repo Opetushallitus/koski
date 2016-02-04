@@ -1,7 +1,5 @@
 package fi.oph.tor.http
 
-// TODO: organize/review error codes
-
 object TorErrorCategory {
   val children = List(ok, badRequest, unauthorized, forbidden, notFound, conflict, unsupportedMediaType, internalError)
 
@@ -73,13 +71,16 @@ object TorErrorCategory {
   }
 
   object notFound extends ErrorCategory("notFound", 404, "Not found") {
-    val notFoundOrNoPermission = subcategory("notFoundOrNoPermission", "Haettua tietoa ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun.") // TODO: testikeissi puuttuu
+    val oppijaaEiLöydyTaiEiOikeuksia = subcategory("oppijaaEiLöydyTaiEiOikeuksia", "Oppijaa ei löydy annetulla oidilla tai käyttäjällä ei ole oikeuksia tietojen katseluun.")
+    val oppijaaEiLöydy = subcategory("oppijaaEiLöydy", "Oppijaa ei löydy annetulla oidilla.")
+    val opiskeluoikeuttaEiLöydyTaiEiOikeuksia = subcategory("opiskeluoikeuttaEiLöydyTaiEiOikeuksia", "Opiskeluoikeutta ei löydy annetulla id:llä tai käyttäjällä ei ole siihen oikeuksia")
+    val versiotaEiLöydy = subcategory("versiotaEiLöydy", "Haettua versiota ei löydy")
     val koodistoaEiLöydy = subcategory("koodistoaEiLöydy", "Pyydettyä koodistoa ei löydy.")
     val diaarinumeroaEiLöydy = subcategory("diaarinumeroaEiLöydy", "Tutkinnon rakennetta ei löydy annetulla diaarinumerolla.")
   }
 
   object conflict extends ErrorCategory("conflict", 409, "Ristiriitainen päivitys")  {
-    val versionumero = subcategory("versionumero", "Yritetty päivittää vanhan version päälle; annettu versionumero on erisuuri kuin viimeisin rekisteristä löytyvä.") // TODO: testikeissi puuttuu
+    val versionumero = subcategory("versionumero", "Yritetty päivittää vanhan version päälle; annettu versionumero on erisuuri kuin viimeisin rekisteristä löytyvä.")
     val hetu = subcategory("hetu", "Henkilö on jo lisätty annetulla hetulla.") // TODO: Tätä ei pitäisi koskaan näkyä ulospäin
   }
 

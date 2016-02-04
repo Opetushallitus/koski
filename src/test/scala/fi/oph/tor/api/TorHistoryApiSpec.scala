@@ -53,7 +53,7 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
           it("Päivitys hylätään") {
             val opiskeluOikeus = createOpiskeluOikeus(oppija, uusiOpiskeluOikeus)
             val modified: OpiskeluOikeus = createOrUpdate(oppija, opiskeluOikeus.copy(päättymispäivä = Some(LocalDate.now), versionumero = Some(3)), {
-              verifyResponseStatus(409)
+              verifyResponseStatus(409, TorErrorCategory.conflict.versionumero("Annettu versionumero 3 <> 1"))
             })
             verifyHistory(oppija, modified, List(1))
           }
@@ -66,7 +66,7 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
         it("Palautetaan 404") {
           val opiskeluOikeus = createOpiskeluOikeus(oppija, uusiOpiskeluOikeus)
           authGet("api/opiskeluoikeus/historia/" + opiskeluOikeus.id.get, MockUsers.hiiri) {
-            verifyResponseStatus(404)
+            verifyResponseStatus(404, TorErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
           }
         }
       }
@@ -76,6 +76,33 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
       it("Palautetaan HTTP 400") {
         authGet("api/opiskeluoikeus/historia/asdf") {
           verifyResponseStatus(400, TorErrorCategory.badRequest.format.number("Invalid id : asdf"))
+        }
+      }
+    }
+
+    describe("Tuntematon id") {
+      it("Palautetaan HTTP 400") {
+        authGet("api/opiskeluoikeus/historia/123456789") {
+          verifyResponseStatus(404, TorErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta ei löydy annetulla id:llä tai käyttäjällä ei ole siihen oikeuksia"))
+        }
+      }
+    }
+
+    describe("Yksittäisen version hakeminen") {
+      it("Onnistuu") {
+        val opiskeluOikeus = createOpiskeluOikeus(oppija, uusiOpiskeluOikeus)
+        authGet("api/opiskeluoikeus/historia/" + opiskeluOikeus.id.get + "/1") {
+          verifyResponseStatus(200)
+          val versio = Json.read[OpiskeluOikeus](body);
+          versio should equal(opiskeluOikeus)
+        }
+      }
+      describe("Tuntematon versionumero") {
+        it("Palautetaan 404") {
+          val opiskeluOikeus = createOpiskeluOikeus(oppija, uusiOpiskeluOikeus)
+          authGet("api/opiskeluoikeus/historia/" + opiskeluOikeus.id.get + "/2") {
+            verifyResponseStatus(404, TorErrorCategory.notFound.versiotaEiLöydy("Versiota 2 ei löydy opiskeluoikeuden \\d+ historiasta.".r))
+          }
         }
       }
     }
@@ -90,6 +117,7 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
       markup("Validoidaan versiohistoria eheys")
 
       authGet("api/oppija/validate/" + oppija.oid) {
+        // Validates version history integrity by applying all history patches on top of first version and comparing to stored final value.
         verifyResponseStatus(200)
       }
     }

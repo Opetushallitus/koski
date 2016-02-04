@@ -1,6 +1,7 @@
 package fi.oph.tor.history
 
-import fi.oph.tor.http.TorErrorCategory
+import fi.oph.tor.http.{HttpStatus, TorErrorCategory}
+import fi.oph.tor.schema.OpiskeluOikeus
 import fi.oph.tor.servlet.{NoCache, InvalidRequestException, ErrorHandlingServlet}
 import fi.oph.tor.toruser.{RequiresAuthentication, UserOrganisationsRepository}
 import fi.vm.sade.security.ldap.DirectoryClient
@@ -11,7 +12,7 @@ class TorHistoryServlet(val userRepository: UserOrganisationsRepository, val dir
   extends ErrorHandlingServlet with Logging with RequiresAuthentication with JsonMethods with NoCache {
 
   get("/:id") {
-    renderOption(TorErrorCategory.notFound.notFoundOrNoPermission) {
+    renderOption(TorErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia) {
       historyRepository.findByOpiskeluoikeusId(getIntegerParam("id"))
     }
   }
@@ -20,7 +21,9 @@ class TorHistoryServlet(val userRepository: UserOrganisationsRepository, val dir
     val id = getIntegerParam("id")
     val version = getIntegerParam("version")
 
-    renderEither(historyRepository.findVersion(id, version))
+    val result: Either[HttpStatus, OpiskeluOikeus] = historyRepository.findVersion(id, version)
+
+    renderEither(result)
   }
 
   private def getIntegerParam(name: String): Int = {

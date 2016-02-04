@@ -1,32 +1,28 @@
 package fi.oph.tor.opiskeluoikeus
 
-import java.sql.SQLException
-
 import com.github.fge.jsonpatch.diff.JsonDiff
 import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.db.Tables._
 import fi.oph.tor.db.TorDatabase.DB
 import fi.oph.tor.db._
 import fi.oph.tor.history.OpiskeluoikeusHistoryRepository
-import fi.oph.tor.http.{TorErrorCategory, HttpStatus}
+import fi.oph.tor.http.{HttpStatus, TorErrorCategory}
 import fi.oph.tor.json.Json
+import fi.oph.tor.log.Logging
 import fi.oph.tor.oppija.PossiblyUnverifiedOppijaOid
 import fi.oph.tor.schema.Henkilö._
 import fi.oph.tor.schema.{FullHenkilö, OpiskeluOikeus}
 import fi.oph.tor.tor.{OpiskeluoikeusPäättynytAikaisintaan, OpiskeluoikeusPäättynytViimeistään, QueryFilter, TutkinnonTila}
 import fi.oph.tor.toruser.TorUser
 import fi.oph.tor.util.ReactiveStreamsToRx
-import fi.oph.tor.log.Logging
-import org.json4s.{JArray, JValue}
+import org.json4s.JArray
 import org.json4s.jackson.JsonMethods
 import rx.lang.scala.Observable
 import slick.dbio
-import slick.dbio.{NoStream, Effect}
-import slick.dbio.Effect.{Transactional, Read, Write}
-import slick.jdbc.TransactionIsolation
+import slick.dbio.Effect.{Read, Transactional, Write}
+import slick.dbio.NoStream
 
 class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: OpiskeluoikeusHistoryRepository) extends OpiskeluOikeusRepository with Futures with GlobalExecutionContext with Logging with SerializableTransactions {
-  // Note: this is a naive implementation. All filtering should be moved to query-level instead of in-memory-level
   override def filterOppijat(oppijat: Seq[FullHenkilö])(implicit user: TorUser) = {
     val query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = for {
       oo <- OpiskeluOikeudetWithAccessCheck
@@ -45,10 +41,6 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
 
   override def findByOppijaOid(oid: String)(implicit user: TorUser): Seq[OpiskeluOikeus] = {
     await(db.run(findByOppijaOidAction(oid).map(rows => rows.map(_.toOpiskeluOikeus))))
-  }
-
-  override def find(identifier: OpiskeluOikeusIdentifier)(implicit user: TorUser): Either[HttpStatus, Option[OpiskeluOikeus]] = {
-    await(db.run(findByIdentifierAction(identifier).map(result => result.right.map(_.map(_.toOpiskeluOikeus)))))
   }
 
   override def query(filters: List[QueryFilter])(implicit user: TorUser): Observable[(Oid, List[OpiskeluOikeus])] = {
@@ -95,7 +87,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
       findAction(OpiskeluOikeudetWithAccessCheck.filter(_.id === id)).map { rows =>
         rows.headOption match {
           case Some(oikeus) => Right(Some(oikeus))
-          case None => Left(TorErrorCategory.notFound.notFoundOrNoPermission("Opiskeluoikeus not found for id: " + id))
+          case None => Left(TorErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta " + id + " ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
         }
       }
     }
@@ -120,7 +112,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
         case Right(None) =>
           oppijaOid.verifiedOid match {
             case Some(oid) => createAction(oid, opiskeluOikeus)
-            case None => DBIO.successful(Left(TorErrorCategory.notFound.notFoundOrNoPermission("Oppija " + oppijaOid.oppijaOid + " not found")))
+            case None => DBIO.successful(Left(TorErrorCategory.notFound.oppijaaEiLöydy("Oppijaa " + oppijaOid.oppijaOid + " ei löydy.")))
           }
         case Left(err) => DBIO.successful(Left(err))
       }

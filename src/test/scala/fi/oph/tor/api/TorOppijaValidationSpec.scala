@@ -75,7 +75,11 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
         }
 
         describe("Oid virheellinen") {
-          it("palautetaan HTTP 400" ) (putHenkilö(OidHenkilö("123.123.123")) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema("ECMA 262 regex"))))
+          it("palautetaan HTTP 400" ) (putHenkilö(OidHenkilö("123.123.123")) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema(".*ECMA 262 regex.*".r))))
+        }
+
+        describe("Oppijaa ei löydy oidilla") {
+          it("palautetaan HTTP 404" ) (putHenkilö(OidHenkilö("1.2.246.562.24.19999999999")) (verifyResponseStatus(404, TorErrorCategory.notFound.oppijaaEiLöydy("Oppijaa 1.2.246.562.24.19999999999 ei löydy."))))
         }
       }
 
@@ -85,7 +89,7 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
         }
 
         describe("Oid virheellinen") {
-          it("palautetaan HTTP 400" ) (putHenkilö(FullHenkilö("123.123.123", "010101-123N", "Testi", "Testi", "Toivola", None, None)) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema("ECMA 262 regex"))))
+          it("palautetaan HTTP 400" ) (putHenkilö(FullHenkilö("123.123.123", "010101-123N", "Testi", "Testi", "Toivola", None, None)) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema(".*ECMA 262 regex.*".r))))
         }
       }
     }
@@ -95,6 +99,22 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
         it("palautetaan HTTP 400") {
           putOppija(TorOppija(defaultHenkilö, List())) {
             verifyResponseStatus(400, TorErrorCategory.badRequest.validation.tyhjäOpiskeluoikeusLista("Annettiin tyhjä lista opiskeluoikeuksia."))
+          }
+        }
+      }
+
+      describe("Päivitettäessä opiskeluoikeus käyttäen sen id:tä") {
+        it("Id ok") {
+          val opiskeluoikeus = lastOpiskeluOikeus(MockOppijat.eero.oid)
+          putOppija(TorOppija(MockOppijat.eero, List(opiskeluoikeus))) {
+            verifyResponseStatus(200)
+          }
+        }
+
+        it("Tuntematon id") {
+          val opiskeluoikeus = lastOpiskeluOikeus(MockOppijat.eero.oid)
+          putOppija(TorOppija(MockOppijat.eero, List(opiskeluoikeus.copy(id = Some(0))))) {
+            verifyResponseStatus(404, TorErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta 0 ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
           }
         }
       }
@@ -123,7 +143,7 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
 
       describe("Kun oppilaitoksen oid on virheellistä muotoa") {
         it("palautetaan HTTP 400 virhe" ) { putOpiskeluOikeus(oppilaitoksella("asdf")) (
-          verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema("ECMA 262 regex")))
+          verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema(".*ECMA 262 regex.*".r)))
         }
       }
     }
@@ -141,7 +161,7 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
         it("palautetaan HTTP 400 virhe" ) {
           putOpiskeluOikeus(Map(
             "suoritus" -> Map("koulutusmoduulitoteutus" -> Map("koulutusmoduuli" -> Map("perusteenDiaarinumero"-> "")))
-          )) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema("perusteenDiaarinumero")))
+          )) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema(".*perusteenDiaarinumero.*".r)))
         }
       }
 
@@ -195,7 +215,7 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
 
           describe("Arviointiasteikko on tuntematon") {
             it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(arviointi = Some(List(Arviointi(KoodistoKoodiViite("2", "vääräasteikko"), None)))), tutkinnonSuoritustapaNäyttönä)
-              (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema("not found in enum"))))
+              (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema(".*not found in enum.*".r))))
           }
 
           describe("Arvosana ei kuulu perusteiden mukaiseen arviointiasteikkoon") {
@@ -214,7 +234,7 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
 
           describe("Laajuus negatiivinen") {
             it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = PaikallinenTutkinnonosatoteutus(paikallinenTutkinnonOsa.copy(laajuus = Some(laajuus.copy(arvo = -1))))), tutkinnonSuoritustapaNäyttönä) (
-              verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema("numeric instance is lower than the required minimum")))
+              verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema(".*numeric instance is lower than the required minimum.*".r)))
             )
           }
         }
@@ -242,7 +262,7 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
       describe("Virheellinen y-tunnus") {
         it("palautetaan HTTP 400") (
           putOpiskeluOikeus(opiskeluoikeus(toteutusOppisopimuksella("1629284x5")))
-            (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema("ECMA 262 regex")))
+            (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema(".*ECMA 262 regex.*".r)))
         )
       }
     }

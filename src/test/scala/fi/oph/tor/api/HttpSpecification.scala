@@ -9,6 +9,7 @@ import fi.oph.tor.toruser.MockUsers.MockUser
 import org.json4s.JsonAST.JValue
 import org.scalatest.{Assertions, Matchers}
 import org.scalatra.test.HttpComponentsClient
+import scala.util.matching.Regex
 
 trait HttpSpecification extends HttpComponentsClient with Assertions with Matchers {
   SharedJetty.start
@@ -28,14 +29,13 @@ trait HttpSpecification extends HttpComponentsClient with Assertions with Matche
     }
     if (details.length > 0) {
       val errors: List[ErrorDetail] = Json.read[List[ErrorDetail]](body)
-      if (!errors(0).message.isInstanceOf[String]) {
-        // Json schema error -> just check for substring
-        errors.zip(dets) foreach { case (errorDetail, expectedErrorDetail) =>
-          errorDetail.key should equal(expectedErrorDetail.key)
-          errorDetail.message.toString should include(expectedErrorDetail.message.toString)
+      errors.length should equal(dets.length)
+      errors.zip(dets) foreach { case (errorDetail, expectedErrorDetail) =>
+        errorDetail.key should equal(expectedErrorDetail.key)
+        expectedErrorDetail.message match {
+          case s: String => errorDetail.message.toString should equal(s)
+          case r: Regex => errorDetail.message.toString should fullyMatch regex(r)
         }
-      } else {
-        errors should equal(dets)
       }
     }
   }

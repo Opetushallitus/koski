@@ -165,7 +165,8 @@ Rajapintojen käyttämät virhekoodit on myös kuvattu alla. Virhetapauksissa ra
 
 
 
-case class ApiOperation(method: String, path: String, doc: Elem, examples: List[Example], parameters: List[Parameter], statusCodes: List[ErrorCategory])
+case class
+ApiOperation(method: String, path: String, doc: Elem, examples: List[Example], parameters: List[Parameter], statusCodes: List[ErrorCategory])
 
 sealed trait Parameter {
   def name: String

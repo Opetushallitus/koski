@@ -2,7 +2,7 @@ package fi.oph.tor.oppija
 
 import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.db.TorDatabase.DB
-import fi.oph.tor.db.{Futures, GlobalExecutionContext, PostgresDriverWithJsonSupport}
+import fi.oph.tor.db.{Tables, Futures, GlobalExecutionContext, PostgresDriverWithJsonSupport}
 import fi.oph.tor.http.{TorErrorCategory, HttpStatus}
 import fi.oph.tor.log.Loggable
 import fi.oph.tor.schema.{KoodistoKoodiViite, FullHenkilö, Henkilö}
@@ -71,7 +71,10 @@ class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with 
   }
 
   def findFromDb(oid: String): Option[FullHenkilö] = {
-    Some(FullHenkilö(oid, oid, oid, oid, oid, oppijat.äidinkieli, None))
+    import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
+    runQuery(Tables.OpiskeluOikeudet.filter(_.oppijaOid === oid)).headOption.map { oppijaRow =>
+      FullHenkilö(oid, oid, oid, oid, oid, oppijat.äidinkieli, None)
+    }
   }
 
   def runQuery[E, U](fullQuery: PostgresDriverWithJsonSupport.api.Query[E, U, Seq]): Seq[U] = {
