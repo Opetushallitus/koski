@@ -173,31 +173,33 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
       }
 
       describe("Tutkinnon osat ja arvionnit") {
+        val tutkinnonSuoritustapaNäyttönä = Some(DefaultSuoritustapa(KoodistoKoodiViite("naytto", "suoritustapa")))
+
         describe("OPS-perusteinen tutkinnonosa") {
           describe("Tutkinnon osa ja arviointi ok") {
-            it("palautetaan HTTP 200") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus) (verifyResponseStatus(200)))
+            it("palautetaan HTTP 200") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus, tutkinnonSuoritustapaNäyttönä) (verifyResponseStatus(200)))
           }
 
           describe("Tutkinnon osa ei kuulu tutkintorakenteeseen") {
             val tutkinnonosatoteutus: OpsTutkinnonosatoteutus = OpsTutkinnonosatoteutus(OpsTutkinnonosa(KoodistoKoodiViite("103135", "tutkinnonosat"), true, Some(Laajuus(11, KoodistoKoodiViite("6", "opintojenlaajuusyksikko"))), None, None), None, None)
-            it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus))(
+            it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus), tutkinnonSuoritustapaNäyttönä)(
               verifyResponseStatus(400, TorErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa("Tutkinnon osa tutkinnonosat/103135 ei löydy tutkintorakenteesta perusteelle 39/011/2014 - suoritustapa naytto"))))
           }
 
           describe("Tutkinnon osaa ei ei löydy koodistosta") {
             it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(
               koulutusmoduulitoteutus = tutkinnonOsaToteutus.copy(
-                koulutusmoduuli = OpsTutkinnonosa(KoodistoKoodiViite("9923123", "tutkinnonosat"), true, None, None, None))))
+                koulutusmoduuli = OpsTutkinnonosa(KoodistoKoodiViite("9923123", "tutkinnonosat"), true, None, None, None))), tutkinnonSuoritustapaNäyttönä)
               (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia tutkinnonosat/9923123 ei löydy koodistosta"))))
           }
 
           describe("Arviointiasteikko on tuntematon") {
-            it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(arviointi = Some(List(Arviointi(KoodistoKoodiViite("2", "vääräasteikko"), None)))))
+            it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(arviointi = Some(List(Arviointi(KoodistoKoodiViite("2", "vääräasteikko"), None)))), tutkinnonSuoritustapaNäyttönä)
               (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema("not found in enum"))))
           }
 
           describe("Arvosana ei kuulu perusteiden mukaiseen arviointiasteikkoon") {
-            it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(arviointi = Some(List(Arviointi(KoodistoKoodiViite("x", "arviointiasteikkoammatillinent1k3"), None)))))
+            it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(arviointi = Some(List(Arviointi(KoodistoKoodiViite("x", "arviointiasteikkoammatillinent1k3"), None)))), tutkinnonSuoritustapaNäyttönä)
               (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia arviointiasteikkoammatillinent1k3/x ei löydy koodistosta"))))
           }
         }
@@ -207,14 +209,20 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
             Paikallinenkoodi("1", "paikallinen osa", "paikallinenkoodisto"), "Paikallinen tutkinnon osa", false, Some(laajuus)
           )
           describe("Tutkinnon osa ja arviointi ok") {
-            it("palautetaan HTTP 200") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = PaikallinenTutkinnonosatoteutus(paikallinenTutkinnonOsa))) (verifyResponseStatus(200)))
+            it("palautetaan HTTP 200") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = PaikallinenTutkinnonosatoteutus(paikallinenTutkinnonOsa)), tutkinnonSuoritustapaNäyttönä) (verifyResponseStatus(200)))
           }
 
           describe("Laajuus negatiivinen") {
-            it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = PaikallinenTutkinnonosatoteutus(paikallinenTutkinnonOsa.copy(laajuus = Some(laajuus.copy(arvo = -1)))))) (
+            it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = PaikallinenTutkinnonosatoteutus(paikallinenTutkinnonOsa.copy(laajuus = Some(laajuus.copy(arvo = -1))))), tutkinnonSuoritustapaNäyttönä) (
               verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema("numeric instance is lower than the required minimum")))
             )
           }
+        }
+
+        describe("Suoritustapa puuttuu") {
+          it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus, None) {
+            verifyResponseStatus(400, TorErrorCategory.badRequest.validation.rakenne.suoritustapaPuuttuu("Tutkinnolta puuttuu suoritustapa. Tutkinnon osasuorituksia ei hyväksytä."))
+          })
         }
       }
     }

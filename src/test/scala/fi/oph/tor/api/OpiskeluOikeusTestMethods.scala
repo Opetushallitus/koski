@@ -1,7 +1,6 @@
 package fi.oph.tor.api
 
 import fi.oph.tor.json.Json
-import fi.oph.tor.json.Json._
 import fi.oph.tor.koodisto.{KoodistoViitePalvelu, MockKoodistoPalvelu}
 import fi.oph.tor.schema._
 import org.json4s._
@@ -13,23 +12,14 @@ trait OpiskeluOikeusTestMethods extends HttpSpecification with Matchers with Opi
 
   implicit def any2j(o: AnyRef): JValue = Json.toJValue(o)
 
-  def putTutkinnonOsaSuoritus[A](tutkinnonOsaSuoritus: Suoritus)(f: => A) = {
-    val opiskeluOikeus = Json.toJValue(opiskeluoikeus()).merge(toJValue(Map(
-      "suoritus" -> Map(
-        "koulutusmoduulitoteutus" -> Map(
-          "suoritustapa" -> Map(
-            "tunniste"  -> Map(
-              "koodiarvo"  -> "naytto",
-              "nimi"  -> "Näyttö",
-              "koodistoUri" -> "suoritustapa",
-              "koodistoVersio" -> 1
-            )
-          )
-        ),
-        "osasuoritukset" -> List(Json.toJValue(tutkinnonOsaSuoritus))
-      )
-    )))
-    putOpiskeluOikeus(opiskeluOikeus)(f)
+  def putTutkinnonOsaSuoritus[A](tutkinnonOsaSuoritus: Suoritus, tutkinnonSuoritustapa: Option[Suoritustapa])(f: => A) = {
+
+    val oo = opiskeluoikeus().copy(suoritus = tutkintoSuoritus(
+      tutkintototeutus.copy(
+        suoritustapa = tutkinnonSuoritustapa)
+    ).copy(osasuoritukset = Some(List(tutkinnonOsaSuoritus))))
+
+    putOpiskeluOikeus(oo)(f)
   }
 
   def putOpiskeluOikeus[A](opiskeluOikeus: JValue, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {

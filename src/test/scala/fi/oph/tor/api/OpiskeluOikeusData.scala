@@ -15,11 +15,11 @@ trait OpiskeluOikeusData {
 
   val tutkintototeutus: TutkintoKoulutustoteutus = TutkintoKoulutustoteutus(TutkintoKoulutus(KoodistoKoodiViite("351301", "koulutus"), Some("39/011/2014")))
 
+  def tutkintoSuoritus(toteutus: TutkintoKoulutustoteutus = tutkintototeutus): Suoritus = Suoritus(None, toteutus, None, None, None, toimipiste = OidOrganisaatio(MockOrganisaatiot.lehtikuusentienToimipiste), None, None, None)
+
   def opiskeluoikeus(toteutus: TutkintoKoulutustoteutus = tutkintototeutus) = OpiskeluOikeus(None, None, None, None, None, None,
     oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto),
-    suoritus = Suoritus(
-      None, toteutus, None, None, None, toimipiste = OidOrganisaatio(MockOrganisaatiot.lehtikuusentienToimipiste), None, None, None
-    ), None, None, None, None
+    suoritus = tutkintoSuoritus(toteutus), None, None, None, None
   )
 
   val laajuus = Laajuus(11, KoodistoKoodiViite("6", "opintojenlaajuusyksikko"))
