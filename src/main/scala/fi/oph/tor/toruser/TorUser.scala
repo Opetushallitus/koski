@@ -1,9 +1,11 @@
 package fi.oph.tor.toruser
 
-import fi.oph.tor.log.Loggable
+import fi.oph.tor.log.{Loggable, Logging}
 import fi.oph.tor.schema.OrganisaatioWithOid
+import rx.lang.scala.Observable
 
-case class TorUser(oid: String, organisationOids: Set[String]) extends Loggable {
+case class TorUser(oid: String, organisationOidsObservable: Observable[Set[String]]) extends Loggable with Logging {
   override def toString = "käyttäjä " + oid
+  lazy val organisationOids: Set[String] = organisationOidsObservable.toBlocking.first
   def hasReadAccess(organisaatio: OrganisaatioWithOid) = organisationOids.contains(organisaatio.oid)
 }
