@@ -3,18 +3,17 @@ package fi.oph.tor.toruser
 import com.typesafe.config.Config
 import fi.oph.tor.cache.{CachingProxy, TorCache}
 import fi.oph.tor.henkilo.AuthenticationServiceClient
-import fi.oph.tor.log.TimedProxy
 import fi.oph.tor.organisaatio.OrganisaatioRepository
 import fi.oph.tor.util.Timing
 import rx.lang.scala.Observable
 
 object UserOrganisationsRepository {
   def apply(config: Config, organisaatioRepository: OrganisaatioRepository): UserOrganisationsRepository = {
-    CachingProxy(TorCache.cacheStrategy, TimedProxy[UserOrganisationsRepository](if (config.hasPath("opintopolku.virkailija.username")) {
+    CachingProxy(TorCache.cacheStrategy, if (config.hasPath("opintopolku.virkailija.username")) {
       new RemoteUserOrganisationsRepository(AuthenticationServiceClient(config), organisaatioRepository, KäyttöoikeusRyhmät(config))
     } else {
       MockUsers
-    }))
+    })
   }
 }
 
