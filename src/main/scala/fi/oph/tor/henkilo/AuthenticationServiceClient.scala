@@ -6,20 +6,21 @@ import com.typesafe.config.Config
 import fi.oph.tor.http._
 import fi.oph.tor.json.Json._
 import fi.oph.tor.json.Json4sHttp4s._
-import fi.oph.tor.util.ScalazTaskToObservable
+import fi.oph.tor.util.ScalazTaskToObservable._
+import fi.oph.tor.util.Timing
 import org.http4s.Uri.Path
 import org.http4s._
 import org.http4s.headers.`Content-Type`
 import rx.lang.scala.Observable
+
 import scalaz.concurrent.Task
 
-class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances {
+class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances with Timing {
   def search(query: String): UserQueryResult = http("/authentication-service/resources/henkilo?no=true&count=0&q=" + query)(Http.parseJson[UserQueryResult]).run
   def findByOid(id: String): Option[User] = http("/authentication-service/resources/henkilo/" + id)(Http.parseJsonOptional[User]).run
   def findByOids(oids: List[String]): List[User] = http.post("/authentication-service/resources/henkilo/henkilotByHenkiloOidList", oids)(json4sEncoderOf[List[String]], Http.parseJson[List[User]])
   def käyttäjänOrganisaatiot(oid: String, käyttöoikeusRyhmä: Int): Observable[List[String]] = {
-    val task: Task[List[String]] = http(s"/authentication-service/resources/henkilo/${oid}/flatorgs/${käyttöoikeusRyhmä}")(Http.parseJson[List[String]])
-    ScalazTaskToObservable.taskToObservable(task)
+    http(s"/authentication-service/resources/henkilo/${oid}/flatorgs/${käyttöoikeusRyhmä}")(Http.parseJson[List[String]])
   }
   def käyttöoikeusryhmät(henkilöOid: String, organisaatioOid: String): List[Käyttöoikeusryhmä] = http(s"/authentication-service/resources/kayttooikeusryhma/henkilo/${henkilöOid}?ooid=${organisaatioOid}")(Http.parseJson[List[Käyttöoikeusryhmä]]).run
   def lisääOrganisaatio(henkilöOid: String, organisaatioOid: String, nimike: String) = {

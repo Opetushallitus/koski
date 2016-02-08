@@ -5,7 +5,7 @@ import fi.oph.tor.cache.{CachingProxy, TorCache}
 import fi.oph.tor.henkilo.AuthenticationServiceClient
 import fi.oph.tor.log.TimedProxy
 import fi.oph.tor.organisaatio.OrganisaatioRepository
-import fi.oph.tor.util.Timer
+import fi.oph.tor.util.Timing
 import rx.lang.scala.Observable
 
 object UserOrganisationsRepository {
@@ -26,15 +26,15 @@ import fi.oph.tor.henkilo.AuthenticationServiceClient
 import fi.oph.tor.organisaatio.OrganisaatioRepository
 import org.http4s.EntityDecoderInstances
 
-class RemoteUserOrganisationsRepository(henkilöPalveluClient: AuthenticationServiceClient, organisaatioRepository: OrganisaatioRepository, käyttöoikeusRyhmät: KäyttöoikeusRyhmät) extends UserOrganisationsRepository with EntityDecoderInstances {
+class RemoteUserOrganisationsRepository(henkilöPalveluClient: AuthenticationServiceClient, organisaatioRepository: OrganisaatioRepository, käyttöoikeusRyhmät: KäyttöoikeusRyhmät) extends UserOrganisationsRepository with EntityDecoderInstances with Timing {
   def getUserOrganisations(oid: String): Observable[Set[String]] = {
-    Timer.timed("käyttäjänOrganisaatiot", 0)(henkilöPalveluClient.käyttäjänOrganisaatiot(oid, käyttöoikeusRyhmät.readWrite))
+    timedObservable("käyttäjänOrganisaatiot")(henkilöPalveluClient.käyttäjänOrganisaatiot(oid, käyttöoikeusRyhmät.readWrite)
       .map { oids =>
         oids.toSet
           .flatMap { organisaatioOid: String =>
           organisaatioRepository.getChildOids(organisaatioOid).toSet.flatten ++ Set(organisaatioOid)
         }
-      }
+      })
   }
 }
 

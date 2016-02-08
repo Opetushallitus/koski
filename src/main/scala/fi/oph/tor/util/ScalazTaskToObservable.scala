@@ -12,14 +12,10 @@ object ScalazTaskToObservable extends Logging {
     val subject = ReplaySubject[A](1)
     import scalaz.{-\/, \/-}
     val p: Promise[A] = Promise()
-    logger.info("Fetching")
-    val started = System.currentTimeMillis
     x.runAsync {
       case -\/(ex) =>
         subject.onError(ex)
       case \/-(r) =>
-        val elapsed = System.currentTimeMillis - started
-        logger.info("Took " + elapsed + " ms")
         subject.onNext(r)
     }
     subject

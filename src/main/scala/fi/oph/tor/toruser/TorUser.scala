@@ -8,4 +8,5 @@ case class TorUser(oid: String, organisationOidsObservable: Observable[Set[Strin
   override def toString = "käyttäjä " + oid
   lazy val organisationOids: Set[String] = organisationOidsObservable.toBlocking.first
   def hasReadAccess(organisaatio: OrganisaatioWithOid) = organisationOids.contains(organisaatio.oid)
+  organisationOidsObservable.foreach(org => {}) // <- force evaluation to ensure parallel operation
 }
