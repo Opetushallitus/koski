@@ -16,7 +16,7 @@ class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances {
   def search(query: String): UserQueryResult = http("/authentication-service/resources/henkilo?no=true&count=0&q=" + query)(Http.parseJson[UserQueryResult]).run
   def findByOid(id: String): Option[User] = http("/authentication-service/resources/henkilo/" + id)(Http.parseJsonOptional[User]).run
   def findByOids(oids: List[String]): List[User] = http.post("/authentication-service/resources/henkilo/henkilotByHenkiloOidList", oids)(json4sEncoderOf[List[String]], Http.parseJson[List[User]])
-  def organisaatiot(oid: String, käyttöoikeusRyhmä: Int): List[String] = http(s"/authentication-service/resources/henkilo/${oid}/flatorgs/${käyttöoikeusRyhmä}")(Http.parseJson[List[String]]).run
+  def käyttäjänOrganisaatiot(oid: String, käyttöoikeusRyhmä: Int): List[String] = http(s"/authentication-service/resources/henkilo/${oid}/flatorgs/${käyttöoikeusRyhmä}")(Http.parseJson[List[String]]).run
   def käyttöoikeusryhmät(henkilöOid: String, organisaatioOid: String): List[Käyttöoikeusryhmä] = http(s"/authentication-service/resources/kayttooikeusryhma/henkilo/${henkilöOid}?ooid=${organisaatioOid}")(Http.parseJson[List[Käyttöoikeusryhmä]]).run
   def lisääOrganisaatio(henkilöOid: String, organisaatioOid: String, nimike: String) = {
     http.put("/authentication-service/resources/henkilo/" + henkilöOid + "/organisaatiohenkilo", List(

@@ -71,7 +71,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
 
 
   override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: OpiskeluOikeus)(implicit user: TorUser): Either[HttpStatus, CreateOrUpdateResult] = {
-    if (!user.userOrganisations.hasReadAccess(opiskeluOikeus.oppilaitos)) {
+    if (!user.hasReadAccess(opiskeluOikeus.oppilaitos)) {
       Left(TorErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid))
     } else {
       doInIsolatedTransaction(db, createOrUpdateAction(oppijaOid, opiskeluOikeus), "Oppijan " + oppijaOid + " opiskeluoikeuden lisäys/muutos")

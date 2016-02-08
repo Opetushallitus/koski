@@ -17,6 +17,12 @@ trait OrganisaatioRepository {
    */
   def getOrganisaatioHierarkiaIncludingParents(oid: String): Option[OrganisaatioHierarkia]
   def getOrganisaatio(oid: String): Option[OrganisaatioWithOid] = getOrganisaatioHierarkia(oid).map(_.toOrganisaatio)
+  def getChildOids(oid: String): Option[Set[String]] = getOrganisaatioHierarkia(oid).map { hierarkia =>
+    def flatten(orgs: List[OrganisaatioHierarkia]): List[OrganisaatioHierarkia] = {
+      orgs.flatMap { org => org :: flatten(org.children) }
+    }
+    flatten(List(hierarkia)).map(_.oid).toSet
+  }
 }
 
 object OrganisaatioRepository {
@@ -52,6 +58,11 @@ abstract class JsonOrganisaatioRepository(koodisto: KoodistoViitePalvelu) extend
 class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu) extends JsonOrganisaatioRepository(koodisto) {
   def fetch(oid: String): OrganisaatioHakuTulos = {
     http("/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=false&oid=" + oid)(Http.parseJson[OrganisaatioHakuTulos]).run
+  }
+
+  override def getChildOids(oid: String) = {
+    val result: Option[Set[String]] = http("/organisaatio-service/rest/organisaatio/v2/"+oid+"/childoids")(Http.parseJsonOptional[Set[String]]).run
+    result
   }
 }
 

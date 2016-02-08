@@ -34,7 +34,7 @@ class TorApplication(val config: Config) extends Logging {
   lazy val organisaatioRepository: OrganisaatioRepository = OrganisaatioRepository(config, koodistoViitePalvelu)
   lazy val directoryClient: DirectoryClient = DirectoryClientFactory.directoryClient(config)
   lazy val tutkintoRepository = CachingProxy(cacheAllRefresh(3600, 100), TutkintoRepository(EPerusteetRepository.apply(config), arviointiAsteikot, koodistoViitePalvelu))
-  lazy val oppilaitosRepository = new OppilaitosRepository
+  lazy val oppilaitosRepository = new OppilaitosRepository(organisaatioRepository)
   lazy val koodistoPalvelu = KoodistoPalvelu.apply(config)
   lazy val koodistoViitePalvelu = new KoodistoViitePalvelu(koodistoPalvelu)
   lazy val arviointiAsteikot = ArviointiasteikkoRepository(koodistoViitePalvelu)
