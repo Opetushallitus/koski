@@ -33,9 +33,9 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
 
     //println(query.result.statements.head)
 
-    val oikeudet: Set[String] = await(db.run(query.map(_.oppijaOid).result)).toSet
+    val oppijatJoillaOpiskeluoikeuksia: Set[String] = await(db.run(query.map(_.oppijaOid).result)).toSet
 
-    oppijat.filter { oppija => oikeudet.contains(oppija.oid)}
+    oppijat.filter { oppija => oppijatJoillaOpiskeluoikeuksia.contains(oppija.oid)}
   }
 
 
