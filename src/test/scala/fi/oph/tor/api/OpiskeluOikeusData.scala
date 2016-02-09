@@ -13,7 +13,9 @@ trait OpiskeluOikeusData {
     "opiskeluoikeudet" -> opiskeluOikeudet
   ))
 
-  val tutkintototeutus: TutkintoKoulutustoteutus = TutkintoKoulutustoteutus(TutkintoKoulutus(KoodistoKoodiViite("351301", "koulutus"), Some("39/011/2014")))
+  val autoalanPerustutkinto: TutkintoKoulutus = TutkintoKoulutus(KoodistoKoodiViite("351301", "koulutus"), Some("39/011/2014"))
+
+  val tutkintototeutus: TutkintoKoulutustoteutus = TutkintoKoulutustoteutus(autoalanPerustutkinto)
 
   def tutkintoSuoritus(toteutus: TutkintoKoulutustoteutus = tutkintototeutus): Suoritus = Suoritus(None, toteutus, None, None, None, toimipiste = OidOrganisaatio(MockOrganisaatiot.lehtikuusentienToimipiste), None, None, None)
 

@@ -200,10 +200,50 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
             it("palautetaan HTTP 200") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus, tutkinnonSuoritustapaNäyttönä) (verifyResponseStatus(200)))
           }
 
+          val johtaminenJaHenkilöstönKehittäminen: OpsTutkinnonosa = OpsTutkinnonosa(KoodistoKoodiViite("104052", "tutkinnonosat"), true, None, None, None)
+
           describe("Tutkinnon osa ei kuulu tutkintorakenteeseen") {
-            val tutkinnonosatoteutus: OpsTutkinnonosatoteutus = OpsTutkinnonosatoteutus(OpsTutkinnonosa(KoodistoKoodiViite("103135", "tutkinnonosat"), true, Some(Laajuus(11, KoodistoKoodiViite("6", "opintojenlaajuusyksikko"))), None, None), None, None)
+            val tutkinnonosatoteutus: OpsTutkinnonosatoteutus = OpsTutkinnonosatoteutus(johtaminenJaHenkilöstönKehittäminen, None, None)
             it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus), tutkinnonSuoritustapaNäyttönä)(
-              verifyResponseStatus(400, TorErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa("Tutkinnon osa tutkinnonosat/103135 ei löydy tutkintorakenteesta perusteelle 39/011/2014 - suoritustapa naytto"))))
+              verifyResponseStatus(400, TorErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa("Tutkinnon osa tutkinnonosat/104052 ei löydy tutkintorakenteesta perusteelle 39/011/2014 - suoritustapa naytto"))))
+          }
+
+          describe("Tutkinnon osa toisesta tutkinnosta") {
+            val autoalanTyönjohdonErikoisammattitutkinto: TutkintoKoulutus = TutkintoKoulutus(KoodistoKoodiViite("357305", "koulutus"), Some("40/011/2001"))
+
+            def tutkinnonosatoteutus(tutkinto: TutkintoKoulutus, tutkinnonOsa: OpsTutkinnonosa): OpsTutkinnonosatoteutus = OpsTutkinnonosatoteutus(
+              tutkinnonOsa,
+              None, None, Some(tutkinto)
+            )
+
+            describe("Kun tutkinto löytyy ja osa kuuluu sen rakenteeseen") {
+              it("palautetaan HTTP 200") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus(autoalanTyönjohdonErikoisammattitutkinto, johtaminenJaHenkilöstönKehittäminen)), tutkinnonSuoritustapaNäyttönä)(
+                verifyResponseStatus(200)))
+            }
+
+            describe("Kun tutkintoa ei löydy") {
+              it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus(TutkintoKoulutus(KoodistoKoodiViite("123456", "koulutus"), Some("40/011/2001")), johtaminenJaHenkilöstönKehittäminen)), tutkinnonSuoritustapaNäyttönä)(
+                verifyResponseStatus(400, TorErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia koulutus/123456 ei löydy koodistosta"))))
+            }
+
+            describe("Kun osa ei kuulu annetun tutkinnon rakenteeseen") {
+              it("palautetaan HTTP 200 (ei validoida rakennetta tässä)") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus(autoalanPerustutkinto, johtaminenJaHenkilöstönKehittäminen)), tutkinnonSuoritustapaNäyttönä)(
+                verifyResponseStatus(200)))
+            }
+
+            describe("Kun tutkinnolla ei ole diaarinumeroa") {
+              it("palautetaan HTTP 200 (diaarinumeroa ei vaadita)") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus(
+                autoalanTyönjohdonErikoisammattitutkinto.copy(perusteenDiaarinumero = None),
+                johtaminenJaHenkilöstönKehittäminen)), tutkinnonSuoritustapaNäyttönä)(
+                verifyResponseStatus(200)))
+            }
+
+            describe("Kun tutkinnon diaarinumero on virheellinen") {
+              it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus(
+                autoalanTyönjohdonErikoisammattitutkinto.copy(perusteenDiaarinumero = Some("Boom boom kah")),
+                johtaminenJaHenkilöstönKehittäminen)), tutkinnonSuoritustapaNäyttönä)(
+                  verifyResponseStatus(400)))
+            }
           }
 
           describe("Tutkinnon osaa ei ei löydy koodistosta") {

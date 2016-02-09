@@ -188,7 +188,9 @@ trait Koulutusmoduulitoteutus {
     @Description("Tutkinnon tai tutkinnon osan suoritustapa")
     @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
     suoritustapa: Option[Suoritustapa] = None,
-    hyväksiluku: Option[Hyväksiluku] = None
+    hyväksiluku: Option[Hyväksiluku] = None,
+    @Description("Tutkinto, jonka rakenteeseen tutkinnon osa liittyy. Käytetään vain tapauksissa, joissa tutkinnon osa on poimittu toisesta tutkinnosta.")
+    tutkinto: Option[TutkintoKoulutus] = None
   ) extends Koulutusmoduulitoteutus
 
   @Description("Paikallinen tutkinnon osa")

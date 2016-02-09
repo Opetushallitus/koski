@@ -4,32 +4,80 @@ import fi.oph.tor.http.{HttpStatus, TorErrorCategory}
 import fi.oph.tor.schema._
 
 case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
-  def validateTutkintoRakenne(opiskeluOikeus: OpiskeluOikeus) = {
-    validateSuoritus(opiskeluOikeus.suoritus, None, None)
-  }
-  private def validateSuoritus(suoritus: Suoritus, rakenne: Option[TutkintoRakenne], suoritustapa: Option[Suoritustapa]): HttpStatus = (suoritus.koulutusmoduulitoteutus, rakenne, suoritustapa) match {
-    case (t: TutkintoKoulutustoteutus, _, _) =>
-      t.koulutusmoduuli.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_)) match {
-        case None =>
-          t.koulutusmoduuli.perusteenDiaarinumero match {
-            case Some(d) => TorErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Tutkinnon perustetta ei löydy diaarinumerolla " + d)
-            case None => TorErrorCategory.ok()
-          }
-        case Some(rakenne) =>
-          val tuntemattomatOsaamisalat: List[KoodistoKoodiViite] = t.osaamisala.toList.flatten.filter(osaamisala => !TutkintoRakenne.findOsaamisala(rakenne, osaamisala.koodiarvo).isDefined)
-          HttpStatus.fold(tuntemattomatOsaamisalat.map { osaamisala: KoodistoKoodiViite => TorErrorCategory.badRequest.validation.rakenne.tuntematonOsaamisala("Osaamisala " + osaamisala.koodiarvo + " ei löydy tutkintorakenteesta perusteelle " + rakenne.diaarinumero) })
-            .then(HttpStatus.fold(suoritus.osasuoritukset.toList.flatten.map{validateSuoritus(_, Some(rakenne), t.suoritustapa)}))
+  def validateTutkintoRakenne(suoritus: Suoritus) = suoritus.koulutusmoduulitoteutus match {
+    case (tutkintoToteutus: TutkintoKoulutustoteutus) =>
+      getRakenne(tutkintoToteutus.koulutusmoduuli) match {
+        case Left(status) => status
+        case Right(rakenne) =>
+          validateOsaamisala(tutkintoToteutus.osaamisala.toList.flatten, rakenne).then(HttpStatus.fold(suoritus.osasuoritukset.toList.flatten.map(_.koulutusmoduulitoteutus).map {
+            case osa: OpsTutkinnonosatoteutus =>  validateTutkinnonOsa(osa, Some(rakenne), tutkintoToteutus.suoritustapa)
+            case osa => HttpStatus.ok // vain OpsTutkinnonosatoteutukset validoidaan, muut sellaisenaan läpi, koska niiden rakennetta ei tunneta
+          }))
       }
+    case _ =>
+      // Jos juurisuorituksena on jokin muu kuin tutkintosuoritus, ei rakennetta voida validoida
+      HttpStatus.ok
+  }
+
+  private def getRakenne(tutkinto: TutkintoKoulutus): Either[HttpStatus, TutkintoRakenne] = {
+    tutkinto.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_)) match {
+      case None =>
+        tutkinto.perusteenDiaarinumero match {
+          case Some(d) => Left(TorErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Tutkinnon perustetta ei löydy diaarinumerolla " + d))
+          case None => Left(TorErrorCategory.ok()) // Ei diaarinumeroa -> ei validointia
+        }
+      case Some(rakenne) =>
+        Right(rakenne)
+    }
+  }
+
+
+  private def validateOsaamisala(osaamisala: List[KoodistoKoodiViite], rakenne: TutkintoRakenne): HttpStatus = {
+    val tuntemattomatOsaamisalat: List[KoodistoKoodiViite] = osaamisala.filter(osaamisala => !findOsaamisala(rakenne, osaamisala.koodiarvo).isDefined)
+
+    HttpStatus.fold(tuntemattomatOsaamisalat.map {
+      osaamisala: KoodistoKoodiViite => TorErrorCategory.badRequest.validation.rakenne.tuntematonOsaamisala("Osaamisala " + osaamisala.koodiarvo + " ei löydy tutkintorakenteesta perusteelle " + rakenne.diaarinumero)
+    })
+  }
+
+  private def validateTutkinnonOsa(tutkinnonOsaToteutus: OpsTutkinnonosatoteutus, rakenne: Option[TutkintoRakenne], suoritustapa: Option[Suoritustapa]): HttpStatus = (tutkinnonOsaToteutus, rakenne, suoritustapa) match {
     case (t: OpsTutkinnonosatoteutus, Some(rakenne), None)  =>
       TorErrorCategory.badRequest.validation.rakenne.suoritustapaPuuttuu()
     case (t: OpsTutkinnonosatoteutus, Some(rakenne), Some(suoritustapa))  =>
-      TutkintoRakenne.findTutkinnonOsa(rakenne, suoritustapa.tunniste, t.koulutusmoduuli.tunniste) match {
+      t.tutkinto match {
+        case Some(tutkinto) =>
+          // Tutkinnon osa toisesta tutkinnosta.
+          getRakenne(tutkinto) match {
+            case Right(rakenne) =>
+              // Ei validoida rakenteeseen kuuluvuutta.
+              HttpStatus.ok
+            case Left(status) =>
+              status
+          }
         case None =>
-          TorErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa("Tutkinnon osa " + t.koulutusmoduuli.tunniste + " ei löydy tutkintorakenteesta perusteelle " + rakenne.diaarinumero + " - suoritustapa " + suoritustapa.tunniste.koodiarvo)
-        case Some(tutkinnonOsa) =>
-          HttpStatus.ok
+          // Validoidaan tutkintorakenteen mukaisesti
+          validoiTutkinnonOsaRakenteessa(t.koulutusmoduuli, rakenne, suoritustapa)
       }
-    case _ =>
-      HttpStatus.ok
   }
+
+  private def validoiTutkinnonOsaRakenteessa(tutkinnonOsa: OpsTutkinnonosa, rakenne: TutkintoRakenne, suoritustapa: Suoritustapa): HttpStatus = {
+    findTutkinnonOsa(rakenne, suoritustapa.tunniste, tutkinnonOsa.tunniste) match {
+      case None =>
+        TorErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa("Tutkinnon osa " + tutkinnonOsa.tunniste + " ei löydy tutkintorakenteesta perusteelle " + rakenne.diaarinumero + " - suoritustapa " + suoritustapa.tunniste.koodiarvo)
+      case Some(tutkinnonOsa) =>
+        HttpStatus.ok
+    }
+  }
+
+  private def findTutkinnonOsa(rakenne: TutkintoRakenne, suoritustapa: KoodistoKoodiViite, koulutusModuuliTunniste: KoodistoKoodiViite): Option[TutkinnonOsa] = {
+    rakenne.suoritustavat.find(_.suoritustapa == suoritustapa).flatMap(suoritustapa => findTutkinnonOsa(suoritustapa.rakenne, koulutusModuuliTunniste)).headOption
+  }
+
+  private def findTutkinnonOsa(rakenne: RakenneOsa, koulutusModuuliTunniste: KoodistoKoodiViite): Option[TutkinnonOsa] = rakenne match {
+    case t:TutkinnonOsa if t.tunniste == koulutusModuuliTunniste => Some(t)
+    case t:RakenneModuuli => t.osat.flatMap(findTutkinnonOsa(_, koulutusModuuliTunniste)).headOption
+    case _ => None
+  }
+
+  private def findOsaamisala(rakenne: TutkintoRakenne, osaamisAlaKoodi: String) = rakenne.osaamisalat.find(_.koodiarvo == osaamisAlaKoodi)
 }

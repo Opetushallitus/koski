@@ -47,7 +47,7 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
       DateValidation.validateJaksot("läsnäolotiedot.läsnäolojaksot", opiskeluOikeus.läsnäolotiedot.toList.flatMap(_.läsnäolojaksot)),
       validateSuoritus(opiskeluOikeus.suoritus)
     )}
-      .then { TutkintoRakenneValidator(tutkintoRepository).validateTutkintoRakenne(opiskeluOikeus)}
+      .then { TutkintoRakenneValidator(tutkintoRepository).validateTutkintoRakenne(opiskeluOikeus.suoritus)}
   }
 
   def validateSuoritus(suoritus: Suoritus): HttpStatus = {

@@ -13,7 +13,6 @@ trait OpiskeluOikeusTestMethods extends HttpSpecification with Matchers with Opi
   implicit def any2j(o: AnyRef): JValue = Json.toJValue(o)
 
   def putTutkinnonOsaSuoritus[A](tutkinnonOsaSuoritus: Suoritus, tutkinnonSuoritustapa: Option[Suoritustapa])(f: => A) = {
-
     val oo = opiskeluoikeus().copy(suoritus = tutkintoSuoritus(
       tutkintototeutus.copy(
         suoritustapa = tutkinnonSuoritustapa)
