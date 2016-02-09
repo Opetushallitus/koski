@@ -22,7 +22,8 @@ object SchemaToJsonHtml {
     case (x: Option[_], t:OptionalSchema) => buildHtml(property.copy(schema = t.itemSchema), x.get, schema, context)
     case (x: AnyRef, t:AnyOfSchema) => buildHtml(property.copy(schema = findOneOfSchema(t, x)), x, schema, context)
     case (x: AnyRef, t:ClassRefSchema) => buildHtml(property.copy(schema = schema.getSchema(t.fullClassName).get), x , schema, context)
-    case _ => throw new RuntimeException
+    case _ =>
+      throw new RuntimeException("Unexpected input: " + obj + ", " + property.schema)
   }
 
   private def findOneOfSchema(t: AnyOfSchema, obj: AnyRef): Schema = {
