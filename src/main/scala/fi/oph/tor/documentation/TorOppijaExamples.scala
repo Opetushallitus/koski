@@ -91,6 +91,11 @@ object TorOppijaExamples {
   ))
 
   lazy val tutkinnonOsaToisestaTutkinnosta = oppija(opiskeluOikeus = opiskeluoikeus(
+    tutkinto = TutkintoKoulutustoteutus(
+      TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
+      None, None, Some(DefaultSuoritustapa(suoritustapaNäyttö)),
+      None),
+
     tutkinnonOsat = Some(List(
       Suoritus(
         Some("suoritus-12345-1"),
