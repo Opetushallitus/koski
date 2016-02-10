@@ -68,8 +68,6 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
       TorErrorCategory.badRequest.validation.tila.vahvistusVäärässäTilassa()
     } else if (!hasVahvistus && tilaValmis) {
       TorErrorCategory.badRequest.validation.tila.vahvistusPuuttuu()
-    } else if (!hasArviointi && hasVahvistus) {
-      TorErrorCategory.badRequest.validation.tila.vahvistusIlmanArviointia()
     } else {
       HttpStatus.ok
     }

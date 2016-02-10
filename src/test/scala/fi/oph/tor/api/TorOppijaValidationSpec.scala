@@ -439,8 +439,8 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
         ))
       }
       describe("Vahvistus annettu, mutta arviointi puuttuu") {
-        it("palautetaan HTTP 400") (put(suoritus.copy(tila = tilaValmis, arviointi = None, vahvistus = vahvistus)) (
-          verifyResponseStatus(400, TorErrorCategory.badRequest.validation.tila.vahvistusIlmanArviointia("Suorituksella on vahvistus, vaikka sillä ei ole arviointia"))
+        it("palautetaan HTTP 200") (put(suoritus.copy(tila = tilaValmis, arviointi = None, vahvistus = vahvistus)) (
+          verifyResponseStatus(200)
         ))
       }
 
