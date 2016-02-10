@@ -64,6 +64,7 @@ object TorErrorCategory {
       class Tila extends ErrorCategory(Validation.this, "tila", "Suorituksen tilaan liittyvä validointivirhe") {
         val vahvistusVäärässäTilassa = subcategory("vahvistusVäärässäTilassa", "Suorituksella on vahvistus, vaikka sen tila ei ole VALMIS")
         val vahvistusPuuttuu = subcategory("vahvistusPuuttuu", "Suoritukselta puuttuu vahvistus, vaikka sen tila on VALMIS")
+        val keskeneräinenOsasuoritus = subcategory("keskeneräinenOsasuoritus", "Suorituksen tila on VALMIS, vaikka sisältää osasuorituksen tilassa KESKEN")
       }
       val tila = new Tila
     }

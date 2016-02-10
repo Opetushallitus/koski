@@ -195,7 +195,6 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
       }
 
       describe("Tutkinnon osat ja arvionnit") {
-        val tutkinnonSuoritustapaNäyttönä = Some(DefaultSuoritustapa(KoodistoKoodiViite("naytto", "suoritustapa")))
         val johtaminenJaHenkilöstönKehittäminen: OpsTutkinnonosa = OpsTutkinnonosa(KoodistoKoodiViite("104052", "tutkinnonosat"), true, None, None, None)
 
         describe("OPS-perusteinen tutkinnonosa") {
@@ -278,6 +277,11 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
 
         describe("Suorituksen tila") {
           testSuorituksenTila(tutkinnonOsaSuoritus, { suoritus => { f => putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(f)} })
+
+          describe("Kun tutkinto on VALMIS-tilassa ja sillä on osa, joka on KESKEN-tilassa") {
+            it("palautetaan HTTP 400") (putOpiskeluOikeus(opiskeluoikeus().copy(suoritus = tutkintoSuoritus(toteutus = tutkintototeutus.copy(suoritustapa = tutkinnonSuoritustapaNäyttönä)).copy(tila = tilaValmis, vahvistus = vahvistus, osasuoritukset = Some(List(tutkinnonOsaSuoritus))))) (
+              verifyResponseStatus(400, TorErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Suorituksen tila on VALMIS, vaikka sisältää osasuorituksen tilassa KESKEN"))))
+          }
         }
       }
     }
@@ -406,7 +410,6 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
   }
 
   def testSuorituksenTila(suoritus: Suoritus, put: (Suoritus => ((=> Unit) => Unit))): Unit = {
-    val vahvistus: Some[Vahvistus] = Some(Vahvistus(Some(LocalDate.parse("2016-08-08"))))
     def testKesken(tila: KoodistoKoodiViite): Unit = {
       describe("Arviointi puuttuu") {
         it("palautetaan HTTP 200") (put(suoritus.copy(tila = tila, arviointi = None, vahvistus = None)) (

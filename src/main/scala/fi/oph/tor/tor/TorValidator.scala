@@ -68,6 +68,8 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
       TorErrorCategory.badRequest.validation.tila.vahvistusVäärässäTilassa()
     } else if (!hasVahvistus && tilaValmis) {
       TorErrorCategory.badRequest.validation.tila.vahvistusPuuttuu()
+    } else if (tilaValmis && suoritus.osasuoritukset.toList.flatten.find(_.tila.koodiarvo == "KESKEN").isDefined) {
+      TorErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus()
     } else {
       HttpStatus.ok
     }
