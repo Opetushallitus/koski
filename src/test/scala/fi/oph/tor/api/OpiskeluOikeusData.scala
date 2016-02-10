@@ -1,5 +1,6 @@
 package fi.oph.tor.api
 
+import java.time.LocalDate
 import fi.oph.tor.json.Json._
 import fi.oph.tor.organisaatio.MockOrganisaatiot
 import fi.oph.tor.schema._
@@ -17,7 +18,7 @@ trait OpiskeluOikeusData {
 
   val tutkintototeutus: TutkintoKoulutustoteutus = TutkintoKoulutustoteutus(autoalanPerustutkinto)
 
-  def tutkintoSuoritus(toteutus: TutkintoKoulutustoteutus = tutkintototeutus): Suoritus = Suoritus(None, toteutus, None, None, None, toimipiste = OidOrganisaatio(MockOrganisaatiot.lehtikuusentienToimipiste), None, None, None)
+  def tutkintoSuoritus(toteutus: TutkintoKoulutustoteutus = tutkintototeutus, tila: Option[KoodistoKoodiViite] = None): Suoritus = Suoritus(None, toteutus, None, None, None, toimipiste = OidOrganisaatio(MockOrganisaatiot.lehtikuusentienToimipiste), None, None, None)
 
   def opiskeluoikeus(toteutus: TutkintoKoulutustoteutus = tutkintototeutus) = OpiskeluOikeus(None, None, None, None, None, None,
     oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto),
@@ -30,8 +31,14 @@ trait OpiskeluOikeusData {
 
   val tutkinnonOsaToteutus: OpsTutkinnonosatoteutus = OpsTutkinnonosatoteutus(tutkinnonOsa, None, None)
 
+  def arviointiHyvä(päivä: Option[LocalDate] = None): Some[List[Arviointi]] = Some(List(Arviointi(KoodistoKoodiViite("2", "arviointiasteikkoammatillinent1k3"), päivä)))
+
+  val tilaValmis: Some[KoodistoKoodiViite] = Some(KoodistoKoodiViite("VALMIS", "suorituksentila"))
+  val tilaKesken: Some[KoodistoKoodiViite] = Some(KoodistoKoodiViite("KESKEN", "suorituksentila"))
+  val tilaKeskytynyt: Some[KoodistoKoodiViite] = Some(KoodistoKoodiViite("KESKEYTYNYT", "suorituksentila"))
+
   val tutkinnonOsaSuoritus = Suoritus(
-    None, tutkinnonOsaToteutus, None, None, None,
+    None, tutkinnonOsaToteutus, None, tilaKesken, None,
     OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka")),
-    Some(List(Arviointi(KoodistoKoodiViite("2", "arviointiasteikkoammatillinent1k3"), None))), None, None)
+    arviointiHyvä(), None, None)
 }

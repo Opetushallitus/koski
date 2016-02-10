@@ -60,6 +60,13 @@ object TorErrorCategory {
         val tuntematonOsaamisala = subcategory("tuntematonOsaamisala", "Annettua osaamisalaa ei löydy tutkinnon rakenteesta.")
       }
       val rakenne = new Rakenne
+
+      class Tila extends ErrorCategory(Validation.this, "tila", "Suorituksen tilaan liittyvä validointivirhe") {
+        val vahvistusVäärässäTilassa = subcategory("vahvistusVäärässäTilassa", "Suorituksella on vahvistus, vaikka sen tila ei ole VALMIS")
+        val vahvistusIlmanArviointia = subcategory("vahvistusIlmanArviointia", "Suorituksella on vahvistus, vaikka sillä ei ole arviointia")
+        val vahvistusPuuttuu = subcategory("vahvistusPuuttuu", "Suoritukselta puuttuu vahvistus, vaikka sen tila on VALMIS")
+      }
+      val tila = new Tila
     }
     val validation = new Validation
   }

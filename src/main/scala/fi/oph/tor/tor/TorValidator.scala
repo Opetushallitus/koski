@@ -53,8 +53,25 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
   def validateSuoritus(suoritus: Suoritus): HttpStatus = {
     val arviointipäivä = ("suoritus.arviointi.päivä", suoritus.arviointi.toList.flatten.flatMap(_.päivä))
     HttpStatus.fold(
-      validateDateOrder(("suoritus.alkamispäivä", suoritus.alkamispäivä), arviointipäivä),
-      validateDateOrder(arviointipäivä, ("suoritus.vahvistus.päivä", suoritus.vahvistus.flatMap(_.päivä)))
+      validateDateOrder(("suoritus.alkamispäivä", suoritus.alkamispäivä), arviointipäivä)
+        :: validateDateOrder(arviointipäivä, ("suoritus.vahvistus.päivä", suoritus.vahvistus.flatMap(_.päivä)))
+        :: validateStatus(suoritus)
+        :: suoritus.osasuoritukset.toList.flatten.map(validateSuoritus(_))
     )
+  }
+
+  private def validateStatus(suoritus: Suoritus): HttpStatus = {
+    val hasArviointi: Boolean = !suoritus.arviointi.toList.flatten.isEmpty
+    val hasVahvistus: Boolean = suoritus.vahvistus.isDefined
+    val tilaValmis: Boolean = suoritus.tila.map(_.koodiarvo) == Some("VALMIS")
+    if (hasVahvistus && !tilaValmis) {
+      TorErrorCategory.badRequest.validation.tila.vahvistusVäärässäTilassa()
+    } else if (!hasVahvistus && tilaValmis) {
+      TorErrorCategory.badRequest.validation.tila.vahvistusPuuttuu()
+    } else if (!hasArviointi && hasVahvistus) {
+      TorErrorCategory.badRequest.validation.tila.vahvistusIlmanArviointia()
+    } else {
+      HttpStatus.ok
+    }
   }
 }

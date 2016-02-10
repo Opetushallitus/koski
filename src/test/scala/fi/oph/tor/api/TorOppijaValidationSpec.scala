@@ -1,10 +1,12 @@
 package fi.oph.tor.api
 
+import java.time.LocalDate
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.json.Json
 import fi.oph.tor.oppija.MockOppijat
 import fi.oph.tor.schema._
 import fi.oph.tor.toruser.MockUsers
+import org.json4s.JValue
 import org.json4s.JsonAST.JObject
 import org.scalatest.FunSpec
 
@@ -194,13 +196,12 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
 
       describe("Tutkinnon osat ja arvionnit") {
         val tutkinnonSuoritustapaNäyttönä = Some(DefaultSuoritustapa(KoodistoKoodiViite("naytto", "suoritustapa")))
+        val johtaminenJaHenkilöstönKehittäminen: OpsTutkinnonosa = OpsTutkinnonosa(KoodistoKoodiViite("104052", "tutkinnonosat"), true, None, None, None)
 
         describe("OPS-perusteinen tutkinnonosa") {
           describe("Tutkinnon osa ja arviointi ok") {
             it("palautetaan HTTP 200") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus, tutkinnonSuoritustapaNäyttönä) (verifyResponseStatus(200)))
           }
-
-          val johtaminenJaHenkilöstönKehittäminen: OpsTutkinnonosa = OpsTutkinnonosa(KoodistoKoodiViite("104052", "tutkinnonosat"), true, None, None, None)
 
           describe("Tutkinnon osa ei kuulu tutkintorakenteeseen") {
             val tutkinnonosatoteutus: OpsTutkinnonosatoteutus = OpsTutkinnonosatoteutus(johtaminenJaHenkilöstönKehittäminen, None, None)
@@ -208,59 +209,11 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
               verifyResponseStatus(400, TorErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa("Tutkinnon osa tutkinnonosat/104052 ei löydy tutkintorakenteesta perusteelle 39/011/2014 - suoritustapa naytto"))))
           }
 
-          describe("Tutkinnon osa toisesta tutkinnosta") {
-            val autoalanTyönjohdonErikoisammattitutkinto: TutkintoKoulutus = TutkintoKoulutus(KoodistoKoodiViite("357305", "koulutus"), Some("40/011/2001"))
-
-            def tutkinnonosatoteutus(tutkinto: TutkintoKoulutus, tutkinnonOsa: OpsTutkinnonosa): OpsTutkinnonosatoteutus = OpsTutkinnonosatoteutus(
-              tutkinnonOsa,
-              None, None, Some(tutkinto)
-            )
-
-            describe("Kun tutkinto löytyy ja osa kuuluu sen rakenteeseen") {
-              it("palautetaan HTTP 200") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus(autoalanTyönjohdonErikoisammattitutkinto, johtaminenJaHenkilöstönKehittäminen)), tutkinnonSuoritustapaNäyttönä)(
-                verifyResponseStatus(200)))
-            }
-
-            describe("Kun tutkintoa ei löydy") {
-              it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus(TutkintoKoulutus(KoodistoKoodiViite("123456", "koulutus"), Some("40/011/2001")), johtaminenJaHenkilöstönKehittäminen)), tutkinnonSuoritustapaNäyttönä)(
-                verifyResponseStatus(400, TorErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia koulutus/123456 ei löydy koodistosta"))))
-            }
-
-            describe("Kun osa ei kuulu annetun tutkinnon rakenteeseen") {
-              it("palautetaan HTTP 200 (ei validoida rakennetta tässä)") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus(autoalanPerustutkinto, johtaminenJaHenkilöstönKehittäminen)), tutkinnonSuoritustapaNäyttönä)(
-                verifyResponseStatus(200)))
-            }
-
-            describe("Kun tutkinnolla ei ole diaarinumeroa") {
-              it("palautetaan HTTP 200 (diaarinumeroa ei vaadita)") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus(
-                autoalanTyönjohdonErikoisammattitutkinto.copy(perusteenDiaarinumero = None),
-                johtaminenJaHenkilöstönKehittäminen)), tutkinnonSuoritustapaNäyttönä)(
-                verifyResponseStatus(200)))
-            }
-
-            describe("Kun tutkinnon diaarinumero on virheellinen") {
-              it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus(
-                autoalanTyönjohdonErikoisammattitutkinto.copy(perusteenDiaarinumero = Some("Boom boom kah")),
-                johtaminenJaHenkilöstönKehittäminen)), tutkinnonSuoritustapaNäyttönä)(
-                  verifyResponseStatus(400)))
-            }
-          }
-
           describe("Tutkinnon osaa ei ei löydy koodistosta") {
             it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(
               koulutusmoduulitoteutus = tutkinnonOsaToteutus.copy(
                 koulutusmoduuli = OpsTutkinnonosa(KoodistoKoodiViite("9923123", "tutkinnonosat"), true, None, None, None))), tutkinnonSuoritustapaNäyttönä)
               (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia tutkinnonosat/9923123 ei löydy koodistosta"))))
-          }
-
-          describe("Arviointiasteikko on tuntematon") {
-            it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(arviointi = Some(List(Arviointi(KoodistoKoodiViite("2", "vääräasteikko"), None)))), tutkinnonSuoritustapaNäyttönä)
-              (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema(".*not found in enum.*".r))))
-          }
-
-          describe("Arvosana ei kuulu perusteiden mukaiseen arviointiasteikkoon") {
-            it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(arviointi = Some(List(Arviointi(KoodistoKoodiViite("x", "arviointiasteikkoammatillinent1k3"), None)))), tutkinnonSuoritustapaNäyttönä)
-              (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia arviointiasteikkoammatillinent1k3/x ei löydy koodistosta"))))
           }
         }
 
@@ -279,12 +232,60 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
           }
         }
 
+        describe("Tutkinnon osa toisesta tutkinnosta") {
+          val autoalanTyönjohdonErikoisammattitutkinto: TutkintoKoulutus = TutkintoKoulutus(KoodistoKoodiViite("357305", "koulutus"), Some("40/011/2001"))
+
+          def tutkinnonosatoteutus(tutkinto: TutkintoKoulutus, tutkinnonOsa: OpsTutkinnonosa): OpsTutkinnonosatoteutus = OpsTutkinnonosatoteutus(
+            tutkinnonOsa,
+            None, None, Some(tutkinto)
+          )
+
+          describe("Kun tutkinto löytyy ja osa kuuluu sen rakenteeseen") {
+            it("palautetaan HTTP 200") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus(autoalanTyönjohdonErikoisammattitutkinto, johtaminenJaHenkilöstönKehittäminen)), tutkinnonSuoritustapaNäyttönä)(
+              verifyResponseStatus(200)))
+          }
+
+          describe("Kun tutkintoa ei löydy") {
+            it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus(TutkintoKoulutus(KoodistoKoodiViite("123456", "koulutus"), Some("40/011/2001")), johtaminenJaHenkilöstönKehittäminen)), tutkinnonSuoritustapaNäyttönä)(
+              verifyResponseStatus(400, TorErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia koulutus/123456 ei löydy koodistosta"))))
+          }
+
+          describe("Kun osa ei kuulu annetun tutkinnon rakenteeseen") {
+            it("palautetaan HTTP 200 (ei validoida rakennetta tässä)") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus(autoalanPerustutkinto, johtaminenJaHenkilöstönKehittäminen)), tutkinnonSuoritustapaNäyttönä)(
+              verifyResponseStatus(200)))
+          }
+
+          describe("Kun tutkinnolla ei ole diaarinumeroa") {
+            it("palautetaan HTTP 200 (diaarinumeroa ei vaadita)") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus(
+              autoalanTyönjohdonErikoisammattitutkinto.copy(perusteenDiaarinumero = None),
+              johtaminenJaHenkilöstönKehittäminen)), tutkinnonSuoritustapaNäyttönä)(
+                verifyResponseStatus(200)))
+          }
+
+          describe("Kun tutkinnon diaarinumero on virheellinen") {
+            it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus(
+              autoalanTyönjohdonErikoisammattitutkinto.copy(perusteenDiaarinumero = Some("Boom boom kah")),
+              johtaminenJaHenkilöstönKehittäminen)), tutkinnonSuoritustapaNäyttönä)(
+                verifyResponseStatus(400)))
+          }
+        }
+
         describe("Suoritustapa puuttuu") {
           it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus, None) {
             verifyResponseStatus(400, TorErrorCategory.badRequest.validation.rakenne.suoritustapaPuuttuu("Tutkinnolta puuttuu suoritustapa. Tutkinnon osasuorituksia ei hyväksytä."))
           })
         }
+
+        describe("Suorituksen tila") {
+          testSuorituksenTila(tutkinnonOsaSuoritus, { suoritus => { f => putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(f)} })
+        }
       }
+    }
+
+    describe("Tutkinnon tila ja arviointi") {
+      testSuorituksenTila(tutkintoSuoritus(), { suoritus => { f => {
+        putOpiskeluOikeus(opiskeluoikeus().copy(suoritus = suoritus))(f)
+      }}})
     }
 
     describe("Oppisopimus") {
@@ -307,135 +308,178 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
       }
     }
 
-    describe("Päivämäärät") {
-      describe("Opiskeluoikeuden päivämäärät") {
-        describe("Päivämäärät kunnossa") {
-          it("palautetaan HTTP 200" ) (putOpiskeluOikeus(Map(
-            "alkamispäivä" -> "2015-08-01",
-            "päättymispäivä" -> "2016-05-31",
-            "arvioituPäättymispäivä" -> "2018-05-31"
-          ))(verifyResponseStatus(200)))
-        }
-        describe("Päivämääräformaatti virheellinen") {
-          it("palautetaan HTTP 400" ) (putOpiskeluOikeus(Map(
-            "alkamispäivä" -> "2015.01-12"
-          ))(verifyResponseStatus(400, TorErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: 2015.01-12"))))
-        }
-        describe("Päivämäärä virheellinen") {
-          it("palautetaan HTTP 400" ) (putOpiskeluOikeus(Map(
-            "alkamispäivä" -> "2015-01-32"
-          ))(verifyResponseStatus(400, TorErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: 2015-01-32"))))
-        }
-        describe("Väärä päivämääräjärjestys") {
-          it("alkamispäivä > päättymispäivä" ) (putOpiskeluOikeus(Map(
-            "alkamispäivä" -> "2015-08-01",
-            "päättymispäivä" -> "2014-05-31"
-          ))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.loppuEnnenAlkua("alkamispäivä (2015-08-01) oltava sama tai aiempi kuin päättymispäivä(2014-05-31)"))))
-
-          it("alkamispäivä > arvioituPäättymispäivä" ) (putOpiskeluOikeus(Map(
-            "alkamispäivä" -> "2015-08-01",
-            "arvioituPäättymispäivä" -> "2014-05-31"
-          ))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.loppuEnnenAlkua("alkamispäivä (2015-08-01) oltava sama tai aiempi kuin arvioituPäättymispäivä(2014-05-31)"))))
-        }
+    describe("Opiskeluoikeuden päivämäärät") {
+      describe("Päivämäärät kunnossa") {
+        it("palautetaan HTTP 200" ) (putOpiskeluOikeus(Map(
+          "alkamispäivä" -> "2015-08-01",
+          "päättymispäivä" -> "2016-05-31",
+          "arvioituPäättymispäivä" -> "2018-05-31"
+        ))(verifyResponseStatus(200)))
       }
-
-      describe("Suorituksen päivämäärät") {
-        describe("Päivämäärät kunnossa") {
-          it("palautetaan HTTP 200" ) (putOpiskeluOikeus(Map("suoritus" -> Map(
-            "alkamispäivä" -> "2015-08-01",
-            "arviointi" -> List(Map(
-              "päivä" -> "2016-05-31",
-              "arvosana" -> Map("koodiarvo" -> "2", "koodistoUri" -> "arviointiasteikkoammatillinent1k3"))),
-            "vahvistus" -> Map("päivä" -> "2016-05-31")
-          )))(verifyResponseStatus(200)))
-        }
-
-        describe("alkamispäivä > arviointi.päivä") {
-          it("palautetaan HTTP 200" ) (putOpiskeluOikeus(Map("suoritus" -> Map(
-            "alkamispäivä" -> "2017-08-01",
-            "arviointi" -> List(Map(
-              "päivä" -> "2016-05-31",
-              "arvosana" -> Map("koodiarvo" -> "2", "koodistoUri" -> "arviointiasteikkoammatillinent1k3"))
-            )
-          )))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.loppuEnnenAlkua("suoritus.alkamispäivä (2017-08-01) oltava sama tai aiempi kuin suoritus.arviointi.päivä(2016-05-31)"))))
-        }
-
-        describe("arviointi.päivä > vahvistus.päivä") {
-          it("palautetaan HTTP 200" ) (putOpiskeluOikeus(Map("suoritus" -> Map(
-            "arviointi" -> List(Map(
-              "päivä" -> "2016-05-31",
-              "arvosana" -> Map("koodiarvo" -> "2", "koodistoUri" -> "arviointiasteikkoammatillinent1k3"))
-            ),
-            "vahvistus" -> Map("päivä" -> "2016-05-30")
-          )))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.loppuEnnenAlkua("suoritus.arviointi.päivä (2016-05-31) oltava sama tai aiempi kuin suoritus.vahvistus.päivä(2016-05-30)"))))
-        }
+      describe("Päivämääräformaatti virheellinen") {
+        it("palautetaan HTTP 400" ) (putOpiskeluOikeus(Map(
+          "alkamispäivä" -> "2015.01-12"
+        ))(verifyResponseStatus(400, TorErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: 2015.01-12"))))
       }
-
-      describe("opiskeluoikeusjaksot"){
-        describe("Päivämäärät kunnossa") {
-          it("palautetaan HTTP 200") (putOpiskeluOikeus(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
-            Map( "alku" -> "2015-08-01", "loppu" -> "2015-12-31", "tila" -> Map("koodiarvo" -> "aktiivinen", "koodistoUri" -> "opiskeluoikeudentila")),
-            Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "keskeyttanyt", "koodistoUri" -> "opiskeluoikeudentila")),
-            Map( "alku" -> "2016-06-01", "tila" -> Map("koodiarvo" -> "paattynyt", "koodistoUri" -> "opiskeluoikeudentila"))
-          )))) (verifyResponseStatus(200)))
-        }
-        describe("alku > loppu") {
-          it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
-            Map( "alku" -> "2016-08-01", "loppu" -> "2015-12-31", "tila" -> Map("koodiarvo" -> "aktiivinen", "koodistoUri" -> "opiskeluoikeudentila"))
-          )))) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.loppuEnnenAlkua("opiskeluoikeudenTila.opiskeluoikeusjaksot.alku (2016-08-01) oltava sama tai aiempi kuin opiskeluoikeudenTila.opiskeluoikeusjaksot.loppu(2015-12-31)"))))
-        }
-        describe("ei-viimeiseltä jaksolta puuttuu loppupäivä") {
-          it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
-            Map("alku" -> "2015-08-01", "tila" -> Map("koodiarvo" -> "aktiivinen", "koodistoUri" -> "opiskeluoikeudentila")),
-            Map("alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "keskeyttanyt", "koodistoUri" -> "opiskeluoikeudentila"))
-          )))) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.jaksonLoppupäiväPuuttuu("opiskeluoikeudenTila.opiskeluoikeusjaksot: ei-viimeiseltä jaksolta puuttuu loppupäivä")))) }
-        describe("jaksot ovat päällekkäiset") {
-          it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
-            Map( "alku" -> "2015-08-01", "loppu" -> "2016-01-01", "tila" -> Map("koodiarvo" -> "aktiivinen", "koodistoUri" -> "opiskeluoikeudentila")),
-            Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "keskeyttanyt", "koodistoUri" -> "opiskeluoikeudentila"))
-          ))))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.jaksotEivätMuodostaJatkumoa("opiskeluoikeudenTila.opiskeluoikeusjaksot: jaksot eivät muodosta jatkumoa"))))
-        }
-        describe("jaksojen väliin jää tyhjää") {
-          it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
-            Map( "alku" -> "2015-08-01", "loppu" -> "2015-10-01", "tila" -> Map("koodiarvo" -> "aktiivinen", "koodistoUri" -> "opiskeluoikeudentila")),
-            Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "keskeyttanyt", "koodistoUri" -> "opiskeluoikeudentila"))
-          ))))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.jaksotEivätMuodostaJatkumoa("opiskeluoikeudenTila.opiskeluoikeusjaksot: jaksot eivät muodosta jatkumoa"))))
-        }
+      describe("Päivämäärä virheellinen") {
+        it("palautetaan HTTP 400" ) (putOpiskeluOikeus(Map(
+          "alkamispäivä" -> "2015-01-32"
+        ))(verifyResponseStatus(400, TorErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: 2015-01-32"))))
       }
+      describe("Väärä päivämääräjärjestys") {
+        it("alkamispäivä > päättymispäivä" ) (putOpiskeluOikeus(Map(
+          "alkamispäivä" -> "2015-08-01",
+          "päättymispäivä" -> "2014-05-31"
+        ))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.loppuEnnenAlkua("alkamispäivä (2015-08-01) oltava sama tai aiempi kuin päättymispäivä(2014-05-31)"))))
 
-      describe("Läsnäolojaksot") {
-        describe("Päivämäärät kunnossa") {
-          it("palautetaan HTTP 200") (putOpiskeluOikeus(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
-            Map( "alku" -> "2015-08-01", "loppu" -> "2015-12-31", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila")),
-            Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "poissa", "koodistoUri" -> "lasnaolotila")),
-            Map( "alku" -> "2016-06-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila"))
-          ))))(verifyResponseStatus(200)))
-        }
-        describe("alku > loppu") {
-          it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
-            Map( "alku" -> "2016-08-01", "loppu" -> "2015-12-31", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila"))
-          ))))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.loppuEnnenAlkua("läsnäolotiedot.läsnäolojaksot.alku (2016-08-01) oltava sama tai aiempi kuin läsnäolotiedot.läsnäolojaksot.loppu(2015-12-31)"))))
-        }
-        describe("ei-viimeiseltä jaksolta puuttuu loppupäivä") {
-          it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
-            Map( "alku" -> "2015-08-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila")),
-            Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "poissa", "koodistoUri" -> "lasnaolotila"))
-          ))))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.jaksonLoppupäiväPuuttuu("läsnäolotiedot.läsnäolojaksot: ei-viimeiseltä jaksolta puuttuu loppupäivä"))))
-        }
-        describe("jaksot ovat päällekkäiset") {
-          it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
-            Map( "alku" -> "2015-08-01", "loppu" -> "2016-01-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila")),
-            Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "poissa", "koodistoUri" -> "lasnaolotila"))
-          ))))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.jaksotEivätMuodostaJatkumoa("läsnäolotiedot.läsnäolojaksot: jaksot eivät muodosta jatkumoa"))))
-        }
-        describe("jaksojen väliin jää tyhjää") {
-          it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
-            Map( "alku" -> "2015-08-01", "loppu" -> "2015-10-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila")),
-            Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "poissa", "koodistoUri" -> "lasnaolotila"))
-          ))))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.jaksotEivätMuodostaJatkumoa("läsnäolotiedot.läsnäolojaksot: jaksot eivät muodosta jatkumoa"))))
-        }
+        it("alkamispäivä > arvioituPäättymispäivä" ) (putOpiskeluOikeus(Map(
+          "alkamispäivä" -> "2015-08-01",
+          "arvioituPäättymispäivä" -> "2014-05-31"
+        ))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.loppuEnnenAlkua("alkamispäivä (2015-08-01) oltava sama tai aiempi kuin arvioituPäättymispäivä(2014-05-31)"))))
       }
     }
 
+    describe("Opiskeluoikeusjaksot"){
+      describe("Päivämäärät kunnossa") {
+        it("palautetaan HTTP 200") (putOpiskeluOikeus(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
+          Map( "alku" -> "2015-08-01", "loppu" -> "2015-12-31", "tila" -> Map("koodiarvo" -> "aktiivinen", "koodistoUri" -> "opiskeluoikeudentila")),
+          Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "keskeyttanyt", "koodistoUri" -> "opiskeluoikeudentila")),
+          Map( "alku" -> "2016-06-01", "tila" -> Map("koodiarvo" -> "paattynyt", "koodistoUri" -> "opiskeluoikeudentila"))
+        )))) (verifyResponseStatus(200)))
+      }
+      describe("alku > loppu") {
+        it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
+          Map( "alku" -> "2016-08-01", "loppu" -> "2015-12-31", "tila" -> Map("koodiarvo" -> "aktiivinen", "koodistoUri" -> "opiskeluoikeudentila"))
+        )))) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.loppuEnnenAlkua("opiskeluoikeudenTila.opiskeluoikeusjaksot.alku (2016-08-01) oltava sama tai aiempi kuin opiskeluoikeudenTila.opiskeluoikeusjaksot.loppu(2015-12-31)"))))
+      }
+      describe("ei-viimeiseltä jaksolta puuttuu loppupäivä") {
+        it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
+          Map("alku" -> "2015-08-01", "tila" -> Map("koodiarvo" -> "aktiivinen", "koodistoUri" -> "opiskeluoikeudentila")),
+          Map("alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "keskeyttanyt", "koodistoUri" -> "opiskeluoikeudentila"))
+        )))) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.jaksonLoppupäiväPuuttuu("opiskeluoikeudenTila.opiskeluoikeusjaksot: ei-viimeiseltä jaksolta puuttuu loppupäivä")))) }
+      describe("jaksot ovat päällekkäiset") {
+        it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
+          Map( "alku" -> "2015-08-01", "loppu" -> "2016-01-01", "tila" -> Map("koodiarvo" -> "aktiivinen", "koodistoUri" -> "opiskeluoikeudentila")),
+          Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "keskeyttanyt", "koodistoUri" -> "opiskeluoikeudentila"))
+        ))))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.jaksotEivätMuodostaJatkumoa("opiskeluoikeudenTila.opiskeluoikeusjaksot: jaksot eivät muodosta jatkumoa"))))
+      }
+      describe("jaksojen väliin jää tyhjää") {
+        it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
+          Map( "alku" -> "2015-08-01", "loppu" -> "2015-10-01", "tila" -> Map("koodiarvo" -> "aktiivinen", "koodistoUri" -> "opiskeluoikeudentila")),
+          Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "keskeyttanyt", "koodistoUri" -> "opiskeluoikeudentila"))
+        ))))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.jaksotEivätMuodostaJatkumoa("opiskeluoikeudenTila.opiskeluoikeusjaksot: jaksot eivät muodosta jatkumoa"))))
+      }
+    }
+
+    describe("Läsnäolojaksot") {
+      describe("Päivämäärät kunnossa") {
+        it("palautetaan HTTP 200") (putOpiskeluOikeus(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
+          Map( "alku" -> "2015-08-01", "loppu" -> "2015-12-31", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila")),
+          Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "poissa", "koodistoUri" -> "lasnaolotila")),
+          Map( "alku" -> "2016-06-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila"))
+        ))))(verifyResponseStatus(200)))
+      }
+      describe("alku > loppu") {
+        it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
+          Map( "alku" -> "2016-08-01", "loppu" -> "2015-12-31", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila"))
+        ))))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.loppuEnnenAlkua("läsnäolotiedot.läsnäolojaksot.alku (2016-08-01) oltava sama tai aiempi kuin läsnäolotiedot.läsnäolojaksot.loppu(2015-12-31)"))))
+      }
+      describe("ei-viimeiseltä jaksolta puuttuu loppupäivä") {
+        it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
+          Map( "alku" -> "2015-08-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila")),
+          Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "poissa", "koodistoUri" -> "lasnaolotila"))
+        ))))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.jaksonLoppupäiväPuuttuu("läsnäolotiedot.läsnäolojaksot: ei-viimeiseltä jaksolta puuttuu loppupäivä"))))
+      }
+      describe("jaksot ovat päällekkäiset") {
+        it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
+          Map( "alku" -> "2015-08-01", "loppu" -> "2016-01-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila")),
+          Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "poissa", "koodistoUri" -> "lasnaolotila"))
+        ))))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.jaksotEivätMuodostaJatkumoa("läsnäolotiedot.läsnäolojaksot: jaksot eivät muodosta jatkumoa"))))
+      }
+      describe("jaksojen väliin jää tyhjää") {
+        it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
+          Map( "alku" -> "2015-08-01", "loppu" -> "2015-10-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila")),
+          Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "poissa", "koodistoUri" -> "lasnaolotila"))
+        ))))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.jaksotEivätMuodostaJatkumoa("läsnäolotiedot.läsnäolojaksot: jaksot eivät muodosta jatkumoa"))))
+      }
+    }
+  }
+
+  def testSuorituksenTila(suoritus: Suoritus, put: (Suoritus => ((=> Unit) => Unit))): Unit = {
+    val vahvistus: Some[Vahvistus] = Some(Vahvistus(Some(LocalDate.parse("2016-08-08"))))
+    def testKesken(tila: Some[KoodistoKoodiViite]): Unit = {
+      describe("Arviointi puuttuu") {
+        it("palautetaan HTTP 200") (put(suoritus.copy(tila = tila, arviointi = None, vahvistus = None)) (
+          verifyResponseStatus(200)
+        ))
+      }
+      describe("Arviointi annettu") {
+        it("palautetaan HTTP 200") (put(suoritus.copy(tila = tila, arviointi = arviointiHyvä(), vahvistus = None)) (
+          verifyResponseStatus(200)
+        ))
+      }
+      describe("Vahvistus annettu") {
+        it("palautetaan HTTP 400") (put(suoritus.copy(tila = tila, arviointi = arviointiHyvä(), vahvistus = vahvistus)) (
+          verifyResponseStatus(400, TorErrorCategory.badRequest.validation.tila.vahvistusVäärässäTilassa("Suorituksella on vahvistus, vaikka sen tila ei ole VALMIS"))
+        ))
+      }
+    }
+    describe("Kun suorituksen tila on KESKEN") {
+      testKesken(tilaKesken)
+    }
+
+    describe("Kun suorituksen tila on KESKEYTYNYT") {
+      testKesken(tilaKesken)
+    }
+
+    describe("Kun suorituksen tila on VALMIS") {
+      describe("Suorituksella arviointi ja vahvistus") {
+        it("palautetaan HTTP 200") (put(suoritus.copy(tila = tilaValmis, arviointi = arviointiHyvä(), vahvistus = vahvistus)) (
+          verifyResponseStatus(200)
+        ))
+      }
+      describe("Vahvistus annettu, mutta arviointi puuttuu") {
+        it("palautetaan HTTP 400") (put(suoritus.copy(tila = tilaValmis, arviointi = None, vahvistus = vahvistus)) (
+          verifyResponseStatus(400, TorErrorCategory.badRequest.validation.tila.vahvistusIlmanArviointia("Suorituksella on vahvistus, vaikka sillä ei ole arviointia"))
+        ))
+      }
+
+      describe("Vahvistus puuttuu") {
+        it("palautetaan HTTP 400") (put(suoritus.copy(tila = tilaValmis, arviointi = arviointiHyvä(), vahvistus = None)) (
+          verifyResponseStatus(400, TorErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta puuttuu vahvistus, vaikka sen tila on VALMIS"))
+        ))
+      }
+    }
+
+    describe("Arviointi") {
+      describe("Arviointiasteikko on tuntematon") {
+        it("palautetaan HTTP 400") (put(suoritus.copy(arviointi = Some(List(Arviointi(KoodistoKoodiViite("2", "vääräasteikko"), None)))))
+          (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema(".*not found in enum.*".r))))
+      }
+
+      describe("Arvosana ei kuulu perusteiden mukaiseen arviointiasteikkoon") {
+        it("palautetaan HTTP 400") (put(suoritus.copy(arviointi = Some(List(Arviointi(KoodistoKoodiViite("x", "arviointiasteikkoammatillinent1k3"), None)))))
+          (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia arviointiasteikkoammatillinent1k3/x ei löydy koodistosta"))))
+      }
+    }
+
+    describe("Suorituksen päivämäärät") {
+      def päivämäärillä(alkamispäivä: String, arviointipäivä: String, vahvistuspäivä: String) = suoritus.copy(alkamispäivä = Some(LocalDate.parse(alkamispäivä)), tila = tilaValmis, arviointi = arviointiHyvä(Some(LocalDate.parse(arviointipäivä))), vahvistus = Some(Vahvistus(Some(LocalDate.parse(vahvistuspäivä)))))
+
+      describe("Päivämäärät kunnossa") {
+        it("palautetaan HTTP 200" ) (put(päivämäärillä("2015-08-01", "2016-05-30", "2016-05-31"))(
+          verifyResponseStatus(200)))
+      }
+
+      describe("alkamispäivä > arviointi.päivä") {
+        it("palautetaan HTTP 200" ) (put(päivämäärillä("2017-08-01", "2016-05-31", "2016-05-31"))(
+          verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.loppuEnnenAlkua("suoritus.alkamispäivä (2017-08-01) oltava sama tai aiempi kuin suoritus.arviointi.päivä(2016-05-31)"))))
+      }
+
+      describe("arviointi.päivä > vahvistus.päivä") {
+        it("palautetaan HTTP 200" ) (put(päivämäärillä("2015-08-01", "2016-05-31", "2016-05-30"))(
+          verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.loppuEnnenAlkua("suoritus.arviointi.päivä (2016-05-31) oltava sama tai aiempi kuin suoritus.vahvistus.päivä(2016-05-30)"))))
+      }
+    }
   }
 }
