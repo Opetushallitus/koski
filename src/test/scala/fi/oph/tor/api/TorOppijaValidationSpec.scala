@@ -265,7 +265,7 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
             it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus(
               autoalanTyönjohdonErikoisammattitutkinto.copy(perusteenDiaarinumero = Some("Boom boom kah")),
               johtaminenJaHenkilöstönKehittäminen)), tutkinnonSuoritustapaNäyttönä)(
-                verifyResponseStatus(400)))
+                verifyResponseStatus(400, TorErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Tutkinnon perustetta ei löydy diaarinumerolla Boom boom kah"))))
           }
         }
 
