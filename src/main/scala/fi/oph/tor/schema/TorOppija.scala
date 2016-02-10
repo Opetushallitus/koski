@@ -113,7 +113,7 @@ case class Suoritus(
   @KoodistoUri("kieli")
   @OksaUri("tmpOKSAID309", "opintosuorituksen kieli")
   suorituskieli: Option[KoodistoKoodiViite],
-  @Description("Suorituksen tila")
+  @Description("Suorituksen tila (KESKEN, VALMIS, KESKEYTYNYT)")
   @KoodistoUri("suorituksentila")
   tila: KoodistoKoodiViite,
   alkamispäivä: Option[LocalDate],
@@ -122,6 +122,7 @@ case class Suoritus(
   toimipiste: OrganisaatioWithOid,
   @Description("Arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota")
   arviointi: Option[List[Arviointi]],
+  @Description("Suorituksen virallinen vahvistus (päivämäärä, henkilöt). Vaaditaan silloin, kun suorituksen tila on VALMIS.")
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[Suoritus]]
 )
