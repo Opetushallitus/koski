@@ -4,7 +4,8 @@ import java.sql.Timestamp
 
 import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.json.Json
-import fi.oph.tor.schema.OpiskeluOikeus
+import fi.oph.tor.koodisto.Koodisto
+import fi.oph.tor.schema.{KoodistoKoodiViite, OpiskeluOikeus}
 import fi.oph.tor.toruser.TorUser
 import org.json4s._
 
@@ -47,7 +48,21 @@ object Tables {
 
 case class OpiskeluOikeusRow(id: Int, oppijaOid: String, versionumero: Int, data: JValue) {
   lazy val toOpiskeluOikeus: OpiskeluOikeus = {
-    Json.fromJValue[OpiskeluOikeus](data).copy ( id = Some(id), versionumero = Some(versionumero) )
+    def addDefaultTila(suoritus: JObject): JObject = {
+      // Migrating data on the fly: if tila is missing, add default value. This migration should later be performed on db level or removed
+      (if (!suoritus.values.contains("tila")) {
+        suoritus.merge(JObject("tila" -> Json.toJValue(KoodistoKoodiViite("KESKEN", Some("Suoritus kesken"), "suorituksentila", Some(1))) ))
+      } else {
+        suoritus
+      }).transformField {
+        case JField("osasuoritukset", value: JArray) =>
+          JField("osasuoritukset", JArray(value.arr.map(_.asInstanceOf[JObject]).map(addDefaultTila(_))))
+      }.asInstanceOf[JObject]
+    }
+    val migratedData = data.transformField {
+      case JField("suoritus", suoritus: JObject) => JField("suoritus", addDefaultTila(suoritus))
+    }
+    Json.fromJValue[OpiskeluOikeus](migratedData).copy ( id = Some(id), versionumero = Some(versionumero) )
   }
 
   def this(oppijaOid: String, opiskeluOikeus: OpiskeluOikeus, versionumero: Int) = {

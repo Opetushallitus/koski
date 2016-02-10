@@ -30,7 +30,9 @@ object TorOppijaExampleData {
   lazy val opiskeluoikeusKeskeyttänyt = KoodistoKoodiViite("keskeyttanyt", Some("Keskeyttänyt"), "opiskeluoikeudentila", Some(1))
   lazy val lähdeWinnova = KoodistoKoodiViite("winnova", Some("Winnova"), "lahdejarjestelma", Some(1))
   lazy val hyväksiluku = Hyväksiluku(OpsTutkinnonosa(KoodistoKoodiViite("100238", Some("Asennushitsaus"), "tutkinnonosat", Some(1)), true, None), Some("Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"))
-  lazy val paikallisenOsanSuoritus = Suoritus(Some("suoritus-12345-2"), PaikallinenTutkinnonosatoteutus(PaikallinenTutkinnonosa(Paikallinenkoodi("123456789", "Pintavauriotyöt", "kallion_oma_koodisto"), "Opetellaan korjaamaan pinnallisia vaurioita", false, None), suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, näyttö("Pintavaurioiden korjausta", "Autokorjaamo Oy, Riihimäki")))), suorituskieli = None, tila = None, alkamispäivä = None, toimipiste, Some(List(Arviointi(arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)), Some(date(2013, 3, 20)), arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))))), Some(Vahvistus(Some(date(2013, 5, 31)), Some(stadinAmmattiopisto), None)), osasuoritukset = None)
+  lazy val tilaKesken = KoodistoKoodiViite("KESKEN", "suorituksentila")
+  lazy val tilaValmis = KoodistoKoodiViite("VALMIS", "suorituksentila")
+  lazy val paikallisenOsanSuoritus = Suoritus(Some("suoritus-12345-2"), PaikallinenTutkinnonosatoteutus(PaikallinenTutkinnonosa(Paikallinenkoodi("123456789", "Pintavauriotyöt", "kallion_oma_koodisto"), "Opetellaan korjaamaan pinnallisia vaurioita", false, None), suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, näyttö("Pintavaurioiden korjausta", "Autokorjaamo Oy, Riihimäki")))), suorituskieli = None, tila = tilaKesken, alkamispäivä = None, toimipiste, Some(List(Arviointi(arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)), Some(date(2013, 3, 20)), arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))))), Some(Vahvistus(Some(date(2013, 5, 31)), Some(stadinAmmattiopisto), None)), osasuoritukset = None)
 
   def opiskeluoikeus(oppilaitos: Oppilaitos = Oppilaitos("1.2.246.562.10.52251087186"),
                      tutkinto: TutkintoKoulutustoteutus = TutkintoKoulutustoteutus(TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")), None, None, None, None),
@@ -47,7 +49,7 @@ object TorOppijaExampleData {
         Some("suoritus-12345"),
         tutkinto,
         None,
-        None,
+        tilaKesken,
         Some(date(2016, 9, 1)),
         toimipiste,
         None,
@@ -104,7 +106,7 @@ object TorOppijaExamples {
           tutkinto = Some(TutkintoKoulutus(KoodistoKoodiViite("357305", "koulutus"), Some("40/011/2001")))
         ),
         suorituskieli = None,
-        tila = None, // TODO: tila kuntoon
+        tila = tilaValmis,
         alkamispäivä = None,
         toimipiste,
         Some(
@@ -142,7 +144,7 @@ object TorOppijaExamples {
             Some(DefaultJärjestämismuoto(järjestämismuotoOppilaitos))
           ),
           Some(KoodistoKoodiViite("FI", Some("suomi"), "kieli", None)),
-          None,
+          tilaKesken,
           None,
           toimipiste,
           None,
@@ -156,7 +158,7 @@ object TorOppijaExamples {
                 suoritustapa = Some(DefaultSuoritustapa(suoritustapaOps))
               ),
               suorituskieli = None,
-              tila = None,
+              tila = tilaValmis,
               alkamispäivä = None,
               toimipiste,
               Some(
@@ -229,7 +231,7 @@ object FullExample {
             järjestämismuoto = Some(DefaultJärjestämismuoto(järjestämismuotoOppilaitos))
           ),
           suorituskieli = Some(KoodistoKoodiViite("FI", Some("suomi"), "kieli", None)),
-          Some(KoodistoKoodiViite("VALMIS", Some("Valmis"), "suorituksentila", None)),
+          tilaValmis,
           alkamispäivä = None,
           toimipiste,
           arviointi = None,
@@ -263,7 +265,7 @@ object FullExample {
         suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, näyttö("Huolto- ja korjaustyöt", "Autokorjaamo Oy, Riihimäki", Some(näytönArviointi))))
       ),
       suorituskieli = None,
-      tila = None,
+      tila = tilaValmis,
       alkamispäivä = None,
       toimipiste,
       Some(List(Arviointi(
@@ -286,7 +288,7 @@ object FullExample {
         suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, näyttö("Mittaus- ja korivauriotöitä", "Autokorjaamo Oy, Riihimäki")))
       ),
       suorituskieli = None,
-      tila = None,
+      tila = tilaValmis,
       alkamispäivä = None,
       toimipiste,
       Some(List(Arviointi(
@@ -308,7 +310,7 @@ object FullExample {
         suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, näyttö("Maalauksen esikäsittelytöitä", "Autokorjaamo Oy, Riihimäki")))
       ),
       suorituskieli = None,
-      None,
+      tilaValmis,
       alkamispäivä = None,
       toimipiste,
       Some(List(Arviointi(
@@ -330,7 +332,7 @@ object FullExample {
         suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, näyttö("Auton lisävarustetöitä", "Autokorjaamo Oy, Riihimäki")))
       ),
       suorituskieli = None,
-      tila = None,
+      tila = tilaValmis,
       alkamispäivä = None,
       toimipiste,
       Some(List(Arviointi(
@@ -353,7 +355,7 @@ object FullExample {
         hyväksiluku = Some(hyväksiluku)
       ),
       suorituskieli = None,
-      tila = None,
+      tila = tilaValmis,
       alkamispäivä = None,
       toimipiste,
       Some(List(Arviointi(

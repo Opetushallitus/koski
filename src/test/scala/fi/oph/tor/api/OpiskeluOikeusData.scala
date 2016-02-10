@@ -18,11 +18,12 @@ trait OpiskeluOikeusData {
 
   val tutkintototeutus: TutkintoKoulutustoteutus = TutkintoKoulutustoteutus(autoalanPerustutkinto)
 
-  def tutkintoSuoritus(toteutus: TutkintoKoulutustoteutus = tutkintototeutus, tila: Option[KoodistoKoodiViite] = None): Suoritus = Suoritus(None, toteutus, None, None, None, toimipiste = OidOrganisaatio(MockOrganisaatiot.lehtikuusentienToimipiste), None, None, None)
+  def tutkintoSuoritus(toteutus: TutkintoKoulutustoteutus = tutkintototeutus): Suoritus = Suoritus(None, toteutus, None, tilaKesken, None, toimipiste = OidOrganisaatio(MockOrganisaatiot.lehtikuusentienToimipiste), None, None, None)
 
   def opiskeluoikeus(toteutus: TutkintoKoulutustoteutus = tutkintototeutus) = OpiskeluOikeus(None, None, None, None, None, None,
     oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto),
-    suoritus = tutkintoSuoritus(toteutus), None, None, None, None
+    suoritus = tutkintoSuoritus(toteutus),
+    None, None, None, None
   )
 
   val laajuus = Laajuus(11, KoodistoKoodiViite("6", "opintojenlaajuusyksikko"))
@@ -33,9 +34,9 @@ trait OpiskeluOikeusData {
 
   def arviointiHyvä(päivä: Option[LocalDate] = None): Some[List[Arviointi]] = Some(List(Arviointi(KoodistoKoodiViite("2", "arviointiasteikkoammatillinent1k3"), päivä)))
 
-  val tilaValmis: Some[KoodistoKoodiViite] = Some(KoodistoKoodiViite("VALMIS", "suorituksentila"))
-  val tilaKesken: Some[KoodistoKoodiViite] = Some(KoodistoKoodiViite("KESKEN", "suorituksentila"))
-  val tilaKeskytynyt: Some[KoodistoKoodiViite] = Some(KoodistoKoodiViite("KESKEYTYNYT", "suorituksentila"))
+  val tilaValmis: KoodistoKoodiViite = KoodistoKoodiViite("VALMIS", "suorituksentila")
+  val tilaKesken: KoodistoKoodiViite = KoodistoKoodiViite("KESKEN", "suorituksentila")
+  val tilaKeskytynyt: KoodistoKoodiViite = KoodistoKoodiViite("KESKEYTYNYT", "suorituksentila")
 
   val tutkinnonOsaSuoritus = Suoritus(
     None, tutkinnonOsaToteutus, None, tilaKesken, None,

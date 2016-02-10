@@ -63,7 +63,7 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
   private def validateStatus(suoritus: Suoritus): HttpStatus = {
     val hasArviointi: Boolean = !suoritus.arviointi.toList.flatten.isEmpty
     val hasVahvistus: Boolean = suoritus.vahvistus.isDefined
-    val tilaValmis: Boolean = suoritus.tila.map(_.koodiarvo) == Some("VALMIS")
+    val tilaValmis: Boolean = suoritus.tila.koodiarvo == "VALMIS"
     if (hasVahvistus && !tilaValmis) {
       TorErrorCategory.badRequest.validation.tila.vahvistusVäärässäTilassa()
     } else if (!hasVahvistus && tilaValmis) {

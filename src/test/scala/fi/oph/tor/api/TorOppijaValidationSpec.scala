@@ -1,12 +1,12 @@
 package fi.oph.tor.api
 
 import java.time.LocalDate
+
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.json.Json
 import fi.oph.tor.oppija.MockOppijat
 import fi.oph.tor.schema._
 import fi.oph.tor.toruser.MockUsers
-import org.json4s.JValue
 import org.json4s.JsonAST.JObject
 import org.scalatest.FunSpec
 
@@ -407,7 +407,7 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
 
   def testSuorituksenTila(suoritus: Suoritus, put: (Suoritus => ((=> Unit) => Unit))): Unit = {
     val vahvistus: Some[Vahvistus] = Some(Vahvistus(Some(LocalDate.parse("2016-08-08"))))
-    def testKesken(tila: Some[KoodistoKoodiViite]): Unit = {
+    def testKesken(tila: KoodistoKoodiViite): Unit = {
       describe("Arviointi puuttuu") {
         it("palautetaan HTTP 200") (put(suoritus.copy(tila = tila, arviointi = None, vahvistus = None)) (
           verifyResponseStatus(200)

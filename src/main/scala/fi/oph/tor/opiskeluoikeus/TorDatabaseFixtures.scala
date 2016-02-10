@@ -54,7 +54,7 @@ object OpiskeluOikeusTestData {
         None,
         TutkintoKoulutustoteutus(TutkintoKoulutus(koulutusKoodiViite, Some("39/011/2014")), None, None, None, None),
         None,
-        None,
+        KoodistoKoodiViite("KESKEN", "suorituksentila"),
         None,
         oppilaitos,
         None,

@@ -115,7 +115,7 @@ case class Suoritus(
   suorituskieli: Option[KoodistoKoodiViite],
   @Description("Suorituksen tila")
   @KoodistoUri("suorituksentila")
-  tila: Option[KoodistoKoodiViite],
+  tila: KoodistoKoodiViite,
   alkamispäivä: Option[LocalDate],
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
