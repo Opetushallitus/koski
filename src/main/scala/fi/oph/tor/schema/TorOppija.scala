@@ -125,7 +125,9 @@ case class Suoritus(
   @Description("Suorituksen virallinen vahvistus (päivämäärä, henkilöt). Vaaditaan silloin, kun suorituksen tila on VALMIS.")
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[Suoritus]]
-)
+) {
+  def kaikkiOsasuoritukset: List[Suoritus] = osasuoritukset.toList.flatten ++ osasuoritukset.toList.flatten.flatMap(_.kaikkiOsasuoritukset)
+}
 
 trait Koulutusmoduuli {
   def tunniste: KoodiViite

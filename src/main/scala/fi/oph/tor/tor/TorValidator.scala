@@ -4,7 +4,7 @@ import fi.oph.tor.http.{TorErrorCategory, HttpStatus}
 import fi.oph.tor.json.Json
 import fi.oph.tor.koodisto.KoodistoViitePalvelu
 import fi.oph.tor.organisaatio.OrganisaatioRepository
-import fi.oph.tor.schema.{OpiskeluOikeus, Suoritus, TorOppija}
+import fi.oph.tor.schema.{KoodiViite, OpiskeluOikeus, Suoritus, TorOppija}
 import fi.oph.tor.tor.DateValidation._
 import fi.oph.tor.toruser.TorUser
 import fi.oph.tor.tutkinto.{TutkintoRakenneValidator, TutkintoRepository}
@@ -64,14 +64,20 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
     val hasArviointi: Boolean = !suoritus.arviointi.toList.flatten.isEmpty
     val hasVahvistus: Boolean = suoritus.vahvistus.isDefined
     val tilaValmis: Boolean = suoritus.tila.koodiarvo == "VALMIS"
+    def suorituksenTunniste(suoritus: Suoritus): KoodiViite = {
+      suoritus.koulutusmoduulitoteutus.koulutusmoduuli.tunniste
+    }
     if (hasVahvistus && !tilaValmis) {
-      TorErrorCategory.badRequest.validation.tila.vahvistusVäärässäTilassa()
+      TorErrorCategory.badRequest.validation.tila.vahvistusVäärässäTilassa("Suorituksella " + suorituksenTunniste(suoritus) + " on vahvistus, vaikka suorituksen tila on " + suoritus.tila.koodiarvo)
     } else if (!hasVahvistus && tilaValmis) {
-      TorErrorCategory.badRequest.validation.tila.vahvistusPuuttuu()
-    } else if (tilaValmis && suoritus.osasuoritukset.toList.flatten.find(_.tila.koodiarvo == "KESKEN").isDefined) {
-      TorErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus()
+      TorErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta " + suorituksenTunniste(suoritus) + " puuttuu vahvistus, vaikka suorituksen tila on " + suoritus.tila.koodiarvo)
     } else {
-      HttpStatus.ok
+      (tilaValmis, suoritus.kaikkiOsasuoritukset.find(_.tila.koodiarvo == "KESKEN")) match {
+        case (true, Some(keskeneräinenOsasuoritus)) =>
+          TorErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Suorituksella " + suorituksenTunniste(suoritus) + " on keskeneräinen osasuoritus " + suorituksenTunniste(keskeneräinenOsasuoritus) + " vaikka suorituksen tila on " + suoritus.tila.koodiarvo)
+        case _ =>
+          HttpStatus.ok
+      }
     }
   }
 }

@@ -276,18 +276,18 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
         }
 
         describe("Suorituksen tila") {
-          testSuorituksenTila(tutkinnonOsaSuoritus, { suoritus => { f => putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(f)} })
+          testSuorituksenTila(tutkinnonOsaSuoritus, "tutkinnonosat/100023", { suoritus => { f => putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(f)} })
 
           describe("Kun tutkinto on VALMIS-tilassa ja sillä on osa, joka on KESKEN-tilassa") {
             it("palautetaan HTTP 400") (putOpiskeluOikeus(opiskeluoikeus().copy(suoritus = tutkintoSuoritus(toteutus = tutkintototeutus.copy(suoritustapa = tutkinnonSuoritustapaNäyttönä)).copy(tila = tilaValmis, vahvistus = vahvistus, osasuoritukset = Some(List(tutkinnonOsaSuoritus))))) (
-              verifyResponseStatus(400, TorErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Suorituksen tila on VALMIS, vaikka sisältää osasuorituksen tilassa KESKEN"))))
+              verifyResponseStatus(400, TorErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Suorituksella koulutus/351301 on keskeneräinen osasuoritus tutkinnonosat/100023 vaikka suorituksen tila on VALMIS"))))
           }
         }
       }
     }
 
     describe("Tutkinnon tila ja arviointi") {
-      testSuorituksenTila(tutkintoSuoritus(), { suoritus => { f => {
+      testSuorituksenTila(tutkintoSuoritus(), "koulutus/351301", { suoritus => { f => {
         putOpiskeluOikeus(opiskeluoikeus().copy(suoritus = suoritus))(f)
       }}})
     }
@@ -409,7 +409,7 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
     }
   }
 
-  def testSuorituksenTila(suoritus: Suoritus, put: (Suoritus => ((=> Unit) => Unit))): Unit = {
+  def testSuorituksenTila(suoritus: Suoritus, desc: String, put: (Suoritus => ((=> Unit) => Unit))): Unit = {
     def testKesken(tila: KoodistoKoodiViite): Unit = {
       describe("Arviointi puuttuu") {
         it("palautetaan HTTP 200") (put(suoritus.copy(tila = tila, arviointi = None, vahvistus = None)) (
@@ -423,7 +423,7 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
       }
       describe("Vahvistus annettu") {
         it("palautetaan HTTP 400") (put(suoritus.copy(tila = tila, arviointi = arviointiHyvä(), vahvistus = vahvistus)) (
-          verifyResponseStatus(400, TorErrorCategory.badRequest.validation.tila.vahvistusVäärässäTilassa("Suorituksella on vahvistus, vaikka sen tila ei ole VALMIS"))
+          verifyResponseStatus(400, TorErrorCategory.badRequest.validation.tila.vahvistusVäärässäTilassa("Suorituksella " + desc + " on vahvistus, vaikka suorituksen tila on " + tila.koodiarvo))
         ))
       }
     }
@@ -449,7 +449,7 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
 
       describe("Vahvistus puuttuu") {
         it("palautetaan HTTP 400") (put(suoritus.copy(tila = tilaValmis, arviointi = arviointiHyvä(), vahvistus = None)) (
-          verifyResponseStatus(400, TorErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta puuttuu vahvistus, vaikka sen tila on VALMIS"))
+          verifyResponseStatus(400, TorErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta " + desc + " puuttuu vahvistus, vaikka suorituksen tila on VALMIS"))
         ))
       }
     }
