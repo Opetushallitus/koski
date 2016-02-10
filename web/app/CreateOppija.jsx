@@ -106,7 +106,8 @@ export const CreateOppija = React.createClass({
               perusteenDiaarinumero: tutkinto.diaarinumero
             }
           },
-          toimipiste : oppilaitosOrganisaatio
+          toimipiste : oppilaitosOrganisaatio,
+          tila: { "koodistoUri": "suorituksentila", "koodiarvo": "KESKEN"}
         }
       }]
     }

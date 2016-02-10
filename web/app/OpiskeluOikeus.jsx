@@ -134,6 +134,7 @@ const TutkinnonOsa = React.createClass({
               } : undefined
             }
           },
+          tila: { koodistoUri: 'suorituksentila', koodiarvo: 'KESKEN' },
           arviointi: [
             {
               arvosana: arvosana
