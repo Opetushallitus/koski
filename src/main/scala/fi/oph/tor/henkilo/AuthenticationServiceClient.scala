@@ -22,7 +22,6 @@ class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances wit
   def käyttäjänOrganisaatiot(oid: String, käyttöoikeusRyhmä: Int): Observable[List[String]] = {
     http(s"/authentication-service/resources/henkilo/${oid}/flatorgs/${käyttöoikeusRyhmä}")(Http.parseJson[List[String]])
   }
-  def käyttöoikeusryhmät(henkilöOid: String, organisaatioOid: String): List[Käyttöoikeusryhmä] = http(s"/authentication-service/resources/kayttooikeusryhma/henkilo/${henkilöOid}?ooid=${organisaatioOid}")(Http.parseJson[List[Käyttöoikeusryhmä]]).run
   def lisääOrganisaatio(henkilöOid: String, organisaatioOid: String, nimike: String) = {
     http.put("/authentication-service/resources/henkilo/" + henkilöOid + "/organisaatiohenkilo", List(
       LisääOrganisaatio(organisaatioOid, nimike)
