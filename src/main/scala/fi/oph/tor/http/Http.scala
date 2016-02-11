@@ -31,6 +31,15 @@ object Http {
     case (_, _) => None
   }
 
+  def toString(status: Int, text: String, request: Request) = (status, text) match {
+    case (200, text) => text
+    case (status, text) => throw new HttpStatusException(status, text, request)
+  }
+
+  def statusCode(status: Int, text: String, request: Request) = (status, text) match {
+    case (code, _) => code
+  }
+
   val unitDecoder: Decode[Unit] =  {
     case (status, text, request) if (status >= 300) => throw new HttpStatusException(status, text, request)
     case _ =>
@@ -43,7 +52,7 @@ object Http {
   type Decode[ResultType] = (Int, String, Request) => ResultType
 }
 
-case class Http(root: String, client: Client = blaze.defaultClient) {
+case class Http(root: String, client: Client = blaze.PooledHttp1Client()) {
   def uriFromString(relativePath: String) = Http.uriFromString(root + relativePath)
 
   def apply[ResultType](task: Task[Request], request: Request)(decode: Decode[ResultType]): Task[ResultType] = {
@@ -58,7 +67,7 @@ case class Http(root: String, client: Client = blaze.defaultClient) {
     apply(Request(uri = uri))(decode)
   }
 
-  def apply[ResultType](uri: String)(decode: Decode[ResultType]): Task[ResultType] = {
+  def apply[ResultType](uri: String = "")(decode: Decode[ResultType]): Task[ResultType] = {
     apply(Request(uri = Http.uriFromString(root + uri)))(decode)
   }
 
