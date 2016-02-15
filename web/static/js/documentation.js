@@ -76,22 +76,30 @@ forEach(document.querySelectorAll('.api-tester'), function(elem) {
       options.body = codeMirror.getValue()
     }
 
+    function showResponse(response) {
+      var resultElem = elem.querySelector(".result");
+      elem.className = "api-tester"
+      button.disabled = false
+      resultElem.innerHTML = response
+      var codeBlock = resultElem.querySelector("code");
+      if (codeBlock)
+        hljs.highlightBlock(codeBlock)
+    }
+
     fetch(apiUrl(), options)
       .then(function(response) {
-        var resultElem = elem.querySelector(".result");
-        elem.className = "api-tester"
-        button.disabled = false
-        response.text().then(function(text, err) {
+        return response.text().then(function(text, err) {
           if (response.status == 401) {
-            resultElem.innerHTML = response.status + " " + response.statusText + ' <a href="/tor" target="_new">Login</a>'
+            showResponse(response.status + " " + response.statusText + ' <a href="/tor" target="_new">Login</a>')
           } else if (text) {
-            resultElem.innerHTML = response.status + " " + response.statusText + "<pre><code>" + JSON.stringify(JSON.parse(text), null, 2) + "</code></pre>"
-            var codeBlock = resultElem.querySelector("code");
-            hljs.highlightBlock(codeBlock)
+            showResponse(response.status + " " + response.statusText + "<pre><code>" + JSON.stringify(JSON.parse(text), null, 2) + "</code></pre>")
           } else {
-            resultElem.innerHTML = response.status + " " + response.statusText
+            showResponse(response.status + " " + response.statusText)
           }
         })
+      })
+      .catch(function(error) {
+        showResponse(error)
       })
   })
   var newWindowButton = elem.querySelector(".try-newwindow")
