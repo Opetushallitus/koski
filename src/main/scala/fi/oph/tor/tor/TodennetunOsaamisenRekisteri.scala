@@ -4,6 +4,7 @@ import fi.oph.tor.http.{TorErrorCategory, HttpStatus}
 import fi.oph.tor.json.Json
 import fi.oph.tor.opiskeluoikeus._
 import fi.oph.tor.oppija._
+import fi.oph.tor.schema.Henkilö.Oid
 import fi.oph.tor.schema._
 import fi.oph.tor.toruser.TorUser
 import fi.oph.tor.log.Logging
@@ -13,14 +14,23 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
                                    opiskeluOikeusRepository: OpiskeluOikeusRepository) extends Logging {
 
   def findOppijat(filters: List[QueryFilter])(implicit user: TorUser): Observable[TorOppija] = {
-    opiskeluOikeusRepository.query(filters).tumblingBuffer(100).flatMap {
-      oikeudet =>
-        val henkilötAndOpiskeluoikeudet = oppijaRepository.findByOids(oikeudet.map(_._1).toList).zip(oikeudet).map {
-          case (h, (oid, oo)) =>
-            assert(h.oid == oid)
-            TorOppija(h, oo)
+    val oikeudetPerOppijaOid: Observable[(Oid, List[OpiskeluOikeus])] = opiskeluOikeusRepository.query(filters)
+    oikeudetPerOppijaOid.tumblingBuffer(100).flatMap {
+      oppijatJaOidit: Seq[(Oid, List[OpiskeluOikeus])] =>
+        val oids: List[String] = oppijatJaOidit.map(_._1).toList
+
+        val henkilöt: Map[String, FullHenkilö] = oppijaRepository.findByOids(oids).map(henkilö => (henkilö.oid, henkilö)).toMap
+
+        val torOppijat: Iterable[TorOppija] = oppijatJaOidit.flatMap { case (oid, opiskeluOikeudet) =>
+          henkilöt.get(oid) match {
+            case Some(henkilö) =>
+              Some(TorOppija(henkilö, opiskeluOikeudet))
+            case None =>
+              logger.warn("Oppijaa " + oid + " ei löydy henkilöpalvelusta")
+              None
+          }
         }
-        Observable.from(henkilötAndOpiskeluoikeudet)
+        Observable.from(torOppijat)
     }
   }
 
