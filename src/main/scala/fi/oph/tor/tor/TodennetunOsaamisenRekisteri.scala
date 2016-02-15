@@ -15,7 +15,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
 
   def findOppijat(filters: List[QueryFilter])(implicit user: TorUser): Observable[TorOppija] = {
     val oikeudetPerOppijaOid: Observable[(Oid, List[OpiskeluOikeus])] = opiskeluOikeusRepository.query(filters)
-    oikeudetPerOppijaOid.tumblingBuffer(100).flatMap {
+    oikeudetPerOppijaOid.tumblingBuffer(500).flatMap {
       oppijatJaOidit: Seq[(Oid, List[OpiskeluOikeus])] =>
         val oids: List[String] = oppijatJaOidit.map(_._1).toList
 
