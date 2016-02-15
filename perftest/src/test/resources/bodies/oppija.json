@@ -59,15 +59,14 @@
               }
             }
           },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
           "suorituskieli": {
             "koodiarvo": "FI",
             "nimi": "suomi",
             "koodistoUri": "kieli"
-          },
-          "tila": {
-            "koodiarvo": "VALMIS",
-            "nimi": "Valmis",
-            "koodistoUri": "suorituksentila"
           },
           "toimipiste": {
             "oid": "1.2.246.562.10.42456023292",
@@ -80,13 +79,6 @@
               "nimi": "Stadin ammattiopisto"
             },
             "myöntäjäHenkilöt": [{
-              "nimi": "Jack Bauer",
-              "titteli": "puheenjohtaja",
-              "organisaatio": {
-                "oid": "1.2.246.562.10.37144658251",
-                "nimi": "Autokorjaamoalan tutkintotoimikunta 8406"
-              }
-            }, {
               "nimi": "Keijo Perttilä",
               "titteli": "rehtori",
               "organisaatio": {
@@ -119,6 +111,10 @@
                   "suorituspaikka": "Autokorjaamo Oy, Riihimäki"
                 }
               }
+            },
+            "tila" : {
+              "koodiarvo" : "VALMIS",
+              "koodistoUri" : "suorituksentila"
             },
             "toimipiste": {
               "oid": "1.2.246.562.10.42456023292",
@@ -172,6 +168,10 @@
                 }
               }
             },
+            "tila" : {
+              "koodiarvo" : "VALMIS",
+              "koodistoUri" : "suorituksentila"
+            },
             "toimipiste": {
               "oid": "1.2.246.562.10.42456023292",
               "nimi": "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
@@ -223,6 +223,10 @@
                   "suorituspaikka": "Autokorjaamo Oy, Riihimäki"
                 }
               }
+            },
+            "tila" : {
+              "koodiarvo" : "VALMIS",
+              "koodistoUri" : "suorituksentila"
             },
             "toimipiste": {
               "oid": "1.2.246.562.10.42456023292",
@@ -276,6 +280,10 @@
                 }
               }
             },
+            "tila" : {
+              "koodiarvo" : "VALMIS",
+              "koodistoUri" : "suorituksentila"
+            },
             "toimipiste": {
               "oid": "1.2.246.562.10.42456023292",
               "nimi": "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
@@ -327,6 +335,10 @@
                   "suorituspaikka": "Autokorjaamo Oy, Riihimäki"
                 }
               }
+            },
+            "tila" : {
+              "koodiarvo" : "VALMIS",
+              "koodistoUri" : "suorituksentila"
             },
             "toimipiste": {
               "oid": "1.2.246.562.10.42456023292",
@@ -387,6 +399,10 @@
                 },
                 "selite": "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
               }
+            },
+            "tila" : {
+              "koodiarvo" : "VALMIS",
+              "koodistoUri" : "suorituksentila"
             },
             "toimipiste": {
               "oid": "1.2.246.562.10.42456023292",

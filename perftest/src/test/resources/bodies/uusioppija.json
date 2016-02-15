@@ -28,6 +28,10 @@
           "perusteenDiaarinumero" : "39/011/2014"
         }
       },
+      "tila" : {
+        "koodiarvo" : "KESKEN",
+        "koodistoUri" : "suorituksentila"
+      },
       "alkamispäivä" : "2016-09-01",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.42456023292",
