@@ -4,8 +4,10 @@ import java.time.{LocalDate, ZoneId}
 
 import com.typesafe.config.Config
 import fi.oph.tor.http._
+import fi.oph.tor.json.Json
 import fi.oph.tor.json.Json._
 import fi.oph.tor.json.Json4sHttp4s._
+import fi.oph.tor.schema.NewHenkilö
 import fi.oph.tor.util.ScalazTaskToObservable._
 import fi.oph.tor.util.Timing
 import org.http4s.Uri.Path
@@ -36,6 +38,16 @@ class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances wit
   def asetaSalasana(henkilöOid: String, salasana: String) = {
     http.post ("/authentication-service/resources/salasana/" + henkilöOid, salasana)(EntityEncoder.stringEncoder(Charset.`UTF-8`)
       .withContentType(`Content-Type`(MediaType.`application/json`)), Http.unitDecoder) // <- yes, the API expects media type application/json, but consumes inputs as text/plain
+  }
+  def findOrCreate(createUserInfo: CreateUser) = {
+    val request: Request = Request(uri = http.uriFromString("/authentication-service/resources/henkilo/torHenkilo"), method = Method.POST)
+    val task: Task[Request] = request.withBody(createUserInfo)(json4sEncoderOf[CreateUser])
+
+    http(task, request) {
+      case (200, data, _) => Right(Json.read[User](data))
+      case (400, error, _) => Left(TorErrorCategory.badRequest.validation.henkilötiedot.virheelliset(error))
+      case (status, text, uri) => throw new HttpStatusException(status, text, uri)
+    }.run
   }
   def create(createUserInfo: CreateUser): Either[HttpStatus, String] = {
     val request: Request = Request(uri = http.uriFromString("/authentication-service/resources/henkilo"), method = Method.POST)
