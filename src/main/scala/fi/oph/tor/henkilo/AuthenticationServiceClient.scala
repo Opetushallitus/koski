@@ -7,7 +7,6 @@ import fi.oph.tor.http._
 import fi.oph.tor.json.Json
 import fi.oph.tor.json.Json._
 import fi.oph.tor.json.Json4sHttp4s._
-import fi.oph.tor.schema.NewHenkilö
 import fi.oph.tor.util.ScalazTaskToObservable._
 import fi.oph.tor.util.Timing
 import org.http4s.Uri.Path
