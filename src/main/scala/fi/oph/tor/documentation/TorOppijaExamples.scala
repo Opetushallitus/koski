@@ -34,9 +34,11 @@ object TorOppijaExampleData {
   lazy val tilaKesken = KoodistoKoodiViite("KESKEN", "suorituksentila")
   lazy val tilaValmis = KoodistoKoodiViite("VALMIS", "suorituksentila")
   lazy val arviointiHyväksytty: Some[List[Arviointi]] = Some(List(Arviointi(arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)), Some(date(2013, 3, 20)), arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen"))))))
-  lazy val paikallisenOsanSuoritus = Suoritus(Some("suoritus-12345-2"), PaikallinenTutkinnonosatoteutus(
-    PaikallinenTutkinnonosa(Paikallinenkoodi("123456789", "Pintavauriotyöt", "kallion_oma_koodisto"), "Opetellaan korjaamaan pinnallisia vaurioita", false, None),
-    suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, näyttö("Pintavaurioiden korjausta", "Autokorjaamo Oy, Riihimäki")))),
+  lazy val paikallisenOsanSuoritus = Suoritus(Some("suoritus-12345-2"),
+    PaikallinenTutkinnonosatoteutus(
+      PaikallinenTutkinnonosa(Paikallinenkoodi("123456789", "Pintavauriotyöt", "kallion_oma_koodisto"), "Opetellaan korjaamaan pinnallisia vaurioita", false, None),
+      näyttö = Some(näyttö("Pintavaurioiden korjausta", "Autokorjaamo Oy, Riihimäki"))
+    ),
     suorituskieli = None,
     tila = tilaValmis,
     alkamispäivä = None,
@@ -99,7 +101,7 @@ object TorOppijaExamples {
       oppilaitos = stadinAmmattiopisto,
       tutkinto = TutkintoKoulutustoteutus(
         TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
-        None, None, Some(DefaultSuoritustapa(suoritustapaNäyttö)),
+        None, None, Some(Suoritustapa(suoritustapaNäyttö)),
         Some(OppisopimuksellinenJärjestämismuoto(järjestämismuotoOppisopimus, Oppisopimus(Yritys("Autokorjaamo Oy", "1234567-8")))))
     ).copy(opiskeluoikeudenTila = Some(OpiskeluoikeudenTila(List(
       Opiskeluoikeusjakso(date(2016, 9, 1), None, opiskeluoikeusAktiivinen, Some(KoodistoKoodiViite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
@@ -113,7 +115,7 @@ object TorOppijaExamples {
   lazy val tutkinnonOsaToisestaTutkinnosta = oppija(opiskeluOikeus = opiskeluoikeus(
     tutkinto = TutkintoKoulutustoteutus(
       TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
-      None, None, Some(DefaultSuoritustapa(suoritustapaNäyttö)),
+      None, None, Some(Suoritustapa(suoritustapaNäyttö)),
       None),
 
     tutkinnonOsat = Some(List(
@@ -151,7 +153,7 @@ object TorOppijaExamples {
             TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
             Some(List(KoodistoKoodiViite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
             Some(List(KoodistoKoodiViite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
-            Some(DefaultSuoritustapa(suoritustapaOps)),
+            Some(Suoritustapa(suoritustapaOps)),
             Some(DefaultJärjestämismuoto(järjestämismuotoOppilaitos))
           ),
           Some(KoodistoKoodiViite("FI", Some("suomi"), "kieli", None)),
@@ -165,8 +167,7 @@ object TorOppijaExamples {
             Suoritus(
               Some("suoritus-12345-1"),
               OpsTutkinnonosatoteutus(
-                OpsTutkinnonosa(KoodistoKoodiViite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Some(Laajuus(11, opintojenLaajuusYksikkö))),
-                suoritustapa = Some(DefaultSuoritustapa(suoritustapaOps))
+                OpsTutkinnonosa(KoodistoKoodiViite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Some(Laajuus(11, opintojenLaajuusYksikkö)))
               ),
               suorituskieli = None,
               tila = tilaValmis,
@@ -238,7 +239,7 @@ object FullExample {
               Some("39/011/2014")
             ), Some(List(KoodistoKoodiViite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
             Some(List(KoodistoKoodiViite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
-            suoritustapa = Some(DefaultSuoritustapa(suoritustapaNäyttö)),
+            suoritustapa = Some(Suoritustapa(suoritustapaNäyttö)),
             järjestämismuoto = Some(DefaultJärjestämismuoto(järjestämismuotoOppilaitos))
           ),
           suorituskieli = Some(KoodistoKoodiViite("FI", Some("suomi"), "kieli", None)),
@@ -273,7 +274,7 @@ object FullExample {
           true,
           laajuus = None
         ),
-        suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, näyttö("Huolto- ja korjaustyöt", "Autokorjaamo Oy, Riihimäki", Some(näytönArviointi))))
+        näyttö = Some(näyttö("Huolto- ja korjaustyöt", "Autokorjaamo Oy, Riihimäki", Some(näytönArviointi)))
       ),
       suorituskieli = None,
       tila = tilaValmis,
@@ -296,7 +297,7 @@ object FullExample {
           true,
           None
         ),
-        suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, näyttö("Mittaus- ja korivauriotöitä", "Autokorjaamo Oy, Riihimäki")))
+        näyttö = Some(näyttö("Mittaus- ja korivauriotöitä", "Autokorjaamo Oy, Riihimäki"))
       ),
       suorituskieli = None,
       tila = tilaValmis,
@@ -318,7 +319,7 @@ object FullExample {
           true,
           None
         ),
-        suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, näyttö("Maalauksen esikäsittelytöitä", "Autokorjaamo Oy, Riihimäki")))
+        näyttö = Some(näyttö("Maalauksen esikäsittelytöitä", "Autokorjaamo Oy, Riihimäki"))
       ),
       suorituskieli = None,
       tilaValmis,
@@ -340,7 +341,7 @@ object FullExample {
           true,
           None
         ),
-        suoritustapa = Some(NäytöllinenSuoritustapa(suoritustapaNäyttö, näyttö("Auton lisävarustetöitä", "Autokorjaamo Oy, Riihimäki")))
+        näyttö = Some(näyttö("Auton lisävarustetöitä", "Autokorjaamo Oy, Riihimäki"))
       ),
       suorituskieli = None,
       tila = tilaValmis,
@@ -362,7 +363,6 @@ object FullExample {
           true,
           None
         ),
-        suoritustapa = Some(DefaultSuoritustapa(suoritustapaNäyttö)), // TODO: mikä suoritustapa tunnustetulle osaamiselle?
         hyväksiluku = Some(hyväksiluku)
       ),
       suorituskieli = None,

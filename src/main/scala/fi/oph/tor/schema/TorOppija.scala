@@ -188,10 +188,9 @@ trait Koulutusmoduulitoteutus {
   @Description("Opetussuunnitelmaan kuuluva tutkinnon osa")
   case class OpsTutkinnonosatoteutus(
     koulutusmoduuli: OpsTutkinnonosa,
-    @Description("Tutkinnon tai tutkinnon osan suoritustapa")
-    @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
-    suoritustapa: Option[Suoritustapa] = None,
     hyväksiluku: Option[Hyväksiluku] = None,
+    @Description("Suoritukseen liittyvän näytön tiedot")
+    näyttö: Option[Näyttö] = None,
     @Description("Tutkinto, jonka rakenteeseen tutkinnon osa liittyy. Käytetään vain tapauksissa, joissa tutkinnon osa on poimittu toisesta tutkinnosta.")
     tutkinto: Option[TutkintoKoulutus] = None
   ) extends Koulutusmoduulitoteutus
@@ -199,10 +198,9 @@ trait Koulutusmoduulitoteutus {
   @Description("Paikallinen tutkinnon osa")
   case class PaikallinenTutkinnonosatoteutus(
     koulutusmoduuli: PaikallinenTutkinnonosa,
-    @Description("Tutkinnon tai tutkinnon osan suoritustapa")
-    @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
-    suoritustapa: Option[Suoritustapa] = None,
-    hyväksiluku: Option[Hyväksiluku] = None
+    hyväksiluku: Option[Hyväksiluku] = None,
+    @Description("Suoritukseen liittyvän näytön tiedot")
+    näyttö: Option[Näyttö] = None
   ) extends Koulutusmoduulitoteutus
 
 case class Arviointi(
@@ -233,24 +231,10 @@ case class OrganisaatioHenkilö(
   organisaatio: Organisaatio
 )
 
-trait Suoritustapa {
-  def tunniste: KoodistoKoodiViite
-}
-
-@Description("Suoritustapa ilman lisätietoja")
-case class DefaultSuoritustapa(
+case class Suoritustapa(
   @KoodistoUri("suoritustapa")
   tunniste: KoodistoKoodiViite
-) extends Suoritustapa
-
-@Description("Suoritustapa näyttötietojen kanssa")
-case class NäytöllinenSuoritustapa(
-  @KoodistoUri("suoritustapa")
-  @KoodistoKoodiarvo("naytto")
-  tunniste: KoodistoKoodiViite,
-  @Description("Suoritukseen liittyvän näytön tiedot")
-  näyttö: Näyttö
-) extends Suoritustapa
+)
 
 trait Järjestämismuoto {
   def tunniste: KoodistoKoodiViite

@@ -3,7 +3,7 @@ package fi.oph.tor.schema
 import org.json4s._
 
 object Deserializers {
-  val deserializers = List(KoulutusmoduulitoteutusDeserializer, KoulutusmoduuliDeserializer, HenkilöDeserialializer, SuoritustapaDeserializer, JärjestämismuotoDeserializer, OrganisaatioDeserializer)
+  val deserializers = List(KoulutusmoduulitoteutusDeserializer, KoulutusmoduuliDeserializer, HenkilöDeserialializer, JärjestämismuotoDeserializer, OrganisaatioDeserializer)
 }
 
 trait Deserializer[T] extends Serializer[T] {
@@ -50,18 +50,6 @@ object HenkilöDeserialializer extends Deserializer[Henkilö] {
 
   private def hasOid(henkilö: JObject): Boolean = henkilö.values.contains("oid")
   private def hasHetu(henkilö: JObject): Boolean = henkilö.values.contains("hetu")
-}
-
-object SuoritustapaDeserializer extends Deserializer[Suoritustapa] {
-  private val TheClass = classOf[Suoritustapa]
-
-  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Suoritustapa] = {
-    case (TypeInfo(TheClass, _), json) =>
-      json match {
-        case suoritustapa: JObject if suoritustapa.values.contains("näyttö") => suoritustapa.extract[NäytöllinenSuoritustapa]
-        case suoritustapa => suoritustapa.extract[DefaultSuoritustapa]
-      }
-  }
 }
 
 object JärjestämismuotoDeserializer extends Deserializer[Järjestämismuoto] {
