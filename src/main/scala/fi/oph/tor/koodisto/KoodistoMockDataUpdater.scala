@@ -20,9 +20,12 @@ object KoodistoMockDataUpdater extends App {
           MockKoodistoPalvelu.koodistoFileName(koodistoUri),
           kp.getKoodisto(versio)
         )
+        val koodit: List[KoodistoKoodi] = kp.getKoodistoKoodit(versio).toList.flatten.map { koodi =>
+          koodi.copy(metadata = kp.getKoodiMetadata(koodi))
+        }
         Json.writeFile(
           MockKoodistoPalvelu.koodistoKooditFileName(koodistoUri),
-          kp.getKoodistoKoodit(versio)
+          koodit
         )
       case None => throw new IllegalStateException("Koodisto not found from koodisto-service: " + koodistoUri)
     }

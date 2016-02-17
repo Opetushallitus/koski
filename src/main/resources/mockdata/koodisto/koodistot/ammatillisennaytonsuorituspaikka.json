@@ -1,0 +1,11 @@
+{
+  "koodistoUri" : "ammatillisennaytonsuorituspaikka",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Ammatillisen näytön suorituspaikka"
+  } ],
+  "codesGroupUri" : "http://tor",
+  "voimassaAlkuPvm" : "2016-02-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}

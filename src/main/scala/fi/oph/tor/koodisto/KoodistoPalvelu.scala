@@ -22,6 +22,7 @@ object KoodistoPalvelu {
 
 trait KoodistoPalvelu {
   def getKoodistoKoodit(koodisto: KoodistoViite): Option[List[KoodistoKoodi]]
+  def getKoodiMetadata(koodi: KoodistoKoodi): List[KoodistoKoodiMetadata]
   def getKoodisto(koodisto: KoodistoViite): Option[Koodisto]
   def getLatestVersion(koodistoUri: String): Option[KoodistoViite]
 }

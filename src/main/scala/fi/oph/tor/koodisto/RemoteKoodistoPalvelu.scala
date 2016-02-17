@@ -3,6 +3,7 @@ package fi.oph.tor.koodisto
 import fi.oph.tor.http.{Http, HttpStatusException}
 import fi.oph.tor.json.Json
 import fi.oph.tor.log.Logging
+
 class RemoteKoodistoPalvelu(virkailijaUrl: String) extends KoodistoPalvelu with Logging {
   val http = Http(virkailijaUrl)
 
@@ -25,8 +26,17 @@ class RemoteKoodistoPalvelu(virkailijaUrl: String) extends KoodistoPalvelu with 
   }
 
   private def noCache = "?noCache=" + System.currentTimeMillis()
+
+  override def getKoodiMetadata(koodi: KoodistoKoodi) = {
+    if (koodi.koodiUri.startsWith("ammatillisentutkinnonosanlisatieto")) { // Vain tästä koodistosta haetaan kuvaukset (muista ei tarvita tässä vaiheessa)
+      http("/koodisto-service/rest/codeelement/"+koodi.koodiUri+"/"+koodi.versio + noCache)(Http.parseJson[KoodiLisätiedot]).run.metadata
+    } else {
+      koodi.metadata
+    }
+  }
 }
 
 case class KoodistoWithLatestVersion(latestKoodistoVersio: LatestVersion)
 case class LatestVersion(versio: Int)
+case class KoodiLisätiedot(metadata: List[KoodistoKoodiMetadata])
 

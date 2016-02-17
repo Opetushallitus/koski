@@ -1,0 +1,25 @@
+[ {
+  "koodiUri" : "ammatillisennaytonsuorituspaikka_1",
+  "koodiArvo" : "1",
+  "metadata" : [ {
+    "nimi" : "työpaikka",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisennaytonsuorituspaikka_2",
+  "koodiArvo" : "2",
+  "metadata" : [ {
+    "nimi" : "oppilaitos",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisennaytonsuorituspaikka_3",
+  "koodiArvo" : "3",
+  "metadata" : [ {
+    "nimi" : "työpaikka ja oppilaitos",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+} ]

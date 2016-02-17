@@ -41,7 +41,7 @@ object ServiceUserAdder extends App {
       val koodisto = kp.getLatestVersion("lahdejarjestelma").get
 
       if (!kp.getKoodistoKoodit(koodisto).toList.flatten.find(_.koodiArvo == koodiarvo).isDefined) {
-        kmp.createKoodi("lahdejarjestelma", KoodistoKoodi("lahdejarjestelma_" + koodiarvo, koodiarvo, List(KoodistoKoodiMetadata(Some(koodiarvo), None, Some("FI"))), 1, Some(LocalDate.now)))
+        kmp.createKoodi("lahdejarjestelma", KoodistoKoodi("lahdejarjestelma_" + koodiarvo, koodiarvo, List(KoodistoKoodiMetadata(Some(koodiarvo), None, None, Some("FI"))), 1, Some(LocalDate.now)))
         println("Luotu lähdejärjestelmäkoodi " + koodiarvo)
       }
 
