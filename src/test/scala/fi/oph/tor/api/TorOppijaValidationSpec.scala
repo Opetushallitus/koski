@@ -236,7 +236,7 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
 
           def tutkinnonosatoteutus(tutkinto: TutkintoKoulutus, tutkinnonOsa: OpsTutkinnonosa): OpsTutkinnonosatoteutus = OpsTutkinnonosatoteutus(
             tutkinnonOsa,
-            None, None, Some(tutkinto)
+            None, None, None, Some(tutkinto)
           )
 
           describe("Kun tutkinto löytyy ja osa kuuluu sen rakenteeseen") {

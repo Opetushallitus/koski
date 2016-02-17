@@ -121,10 +121,10 @@ case class Suoritus(
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
   @Description("Arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota")
-  arviointi: Option[List[Arviointi]],
+  arviointi: Option[List[Arviointi]] = None,
   @Description("Suorituksen virallinen vahvistus (päivämäärä, henkilöt). Vaaditaan silloin, kun suorituksen tila on VALMIS.")
-  vahvistus: Option[Vahvistus],
-  osasuoritukset: Option[List[Suoritus]]
+  vahvistus: Option[Vahvistus] = None,
+  osasuoritukset: Option[List[Suoritus]] = None
 ) {
   def kaikkiOsasuoritukset: List[Suoritus] = osasuoritukset.toList.flatten ++ osasuoritukset.toList.flatten.flatMap(_.kaikkiOsasuoritukset)
 }
@@ -191,6 +191,7 @@ trait Koulutusmoduulitoteutus {
     hyväksiluku: Option[Hyväksiluku] = None,
     @Description("Suoritukseen liittyvän näytön tiedot")
     näyttö: Option[Näyttö] = None,
+    lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
     @Description("Tutkinto, jonka rakenteeseen tutkinnon osa liittyy. Käytetään vain tapauksissa, joissa tutkinnon osa on poimittu toisesta tutkinnosta.")
     tutkinto: Option[TutkintoKoulutus] = None
   ) extends Koulutusmoduulitoteutus
@@ -200,9 +201,17 @@ trait Koulutusmoduulitoteutus {
     koulutusmoduuli: PaikallinenTutkinnonosa,
     hyväksiluku: Option[Hyväksiluku] = None,
     @Description("Suoritukseen liittyvän näytön tiedot")
-    näyttö: Option[Näyttö] = None
+    näyttö: Option[Näyttö] = None,
+    lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None
   ) extends Koulutusmoduulitoteutus
 
+case class AmmatillisenTutkinnonOsanLisätieto(
+  @Description("Lisätiedon tyyppi kooditettuna")
+  @KoodistoUri("ammatillisentutkinnonosanlisatieto")
+  tunniste: KoodistoKoodiViite,
+  @Description("Lisätiedon kuvaus siinä muodossa, kuin se näytetään todistuksella")
+  kuvaus: String
+)
 case class Arviointi(
   @Description("Arvosana. Kullekin arviointiasteikolle löytyy oma koodistonsa")
   @KoodistoUri("arviointiasteikkoammatillinenhyvaksyttyhylatty")

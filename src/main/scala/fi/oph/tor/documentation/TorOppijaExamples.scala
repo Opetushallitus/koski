@@ -112,6 +112,25 @@ object TorOppijaExamples {
     tutkinnonOsat = Some(List(paikallisenOsanSuoritus))
   ))
 
+  lazy val mukautettu = oppija(opiskeluOikeus = opiskeluoikeus(
+    tutkinnonOsat = Some(List(
+      Suoritus(
+        Some("suoritus-12345-1"),
+        OpsTutkinnonosatoteutus(
+          OpsTutkinnonosa(KoodistoKoodiViite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Some(Laajuus(11, opintojenLaajuusYksikkö))),
+          lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(KoodistoKoodiViite("mukautettu", "ammatillisentutkinnonosanlisatieto"), "Tutkinnon osan ammattitaitovaatimuksia ja osaamisen arviointi on mukautettu (ja/tai niistä on poikettu) ammatillisesta peruskoulutuksesta annetun lain\n(630/1998, muutos 246/2015) 19 a (ja/tai 21) §:n perusteella")))
+        ),
+        suorituskieli = None,
+        tila = tilaValmis,
+        alkamispäivä = None,
+        toimipiste,
+        arviointiKiitettävä,
+        Some(Vahvistus(Some(date(2014, 11, 8)), Some(stadinAmmattiopisto), None))
+      )
+    ))
+
+  ))
+
   lazy val tutkinnonOsaToisestaTutkinnosta = oppija(opiskeluOikeus = opiskeluoikeus(
     tutkinto = TutkintoKoulutustoteutus(
       TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
@@ -210,6 +229,7 @@ object TorOppijaExamples {
     Example("uusi", "Uusi oppija lisätään suorittamaan Autoalan perustutkintoa", uusi),
     Example("oppisopimus", "Uusi oppija, suorittaa oppisopimuksella", oppisopimus),
     Example("paikallinen", "Oppija on suorittanut paikallisen tutkinnon osan", paikallinen),
+    Example("mukautettu", "Tutkinnon osan arviointia on mukautettu", mukautettu),
     Example("osatoisestatutkinnosta", "Oppija on suorittanut toiseen tutkintoon liittyvän tutkinnon osan", tutkinnonOsaToisestaTutkinnosta),
     Example("full", "Isompi esimerkki. Suorittaa perustutkintoa näyttönä. Tähän lisätty lähes kaikki kaavaillut tietokentät.", FullExample.full),
     Example("ops", "Perustutkinto ops:n mukaan, läsnäolotiedoilla, hojks", ops)
