@@ -5,6 +5,7 @@ import java.time.LocalDate.{of => date}
 import fi.oph.tor.schema._
 
 object TorOppijaExampleData {
+  lazy val autoalanPerustutkinto: TutkintoKoulutustoteutus = TutkintoKoulutustoteutus(TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")), None, None, None, None)
   lazy val h2: KoodistoKoodiViite = KoodistoKoodiViite("2", Some("H2"), "arviointiasteikkoammatillinent1k3", None)
   lazy val k3: KoodistoKoodiViite = KoodistoKoodiViite("3", Some("K3"), "arviointiasteikkoammatillinent1k3", None)
   lazy val näytönArviointi = NäytönArviointi(List(
@@ -18,8 +19,8 @@ object TorOppijaExampleData {
 
   def näyttö(kuvaus: String, paikka: String, arviointi: Option[NäytönArviointi] = None) = Näyttö(kuvaus, NäytönSuorituspaikka(KoodistoKoodiViite("1", Some("työpaikka"), "ammatillisennaytonsuorituspaikka", Some(1)), paikka), arviointi)
 
-  lazy val suoritustapaNäyttö = KoodistoKoodiViite("naytto", Some("Näyttö"), "suoritustapa", Some(1))
-  lazy val suoritustapaOps = KoodistoKoodiViite("ops", Some("Opetussuunnitelman mukainen"), "suoritustapa", Some(1))
+  lazy val suoritustapaNäyttö = Suoritustapa(KoodistoKoodiViite("naytto", Some("Näyttö"), "suoritustapa", Some(1)))
+  lazy val suoritustapaOps = Suoritustapa(KoodistoKoodiViite("ops", Some("Opetussuunnitelman mukainen"), "suoritustapa", Some(1)))
   lazy val järjestämismuotoOppisopimus = KoodistoKoodiViite("20", Some("Oppisopimusmuotoinen"), "jarjestamismuoto", Some(1))
   lazy val järjestämismuotoOppilaitos = KoodistoKoodiViite("10", Some("Oppilaitosmuotoinen"), "jarjestamismuoto", Some(1))
   lazy val stadinAmmattiopisto: Oppilaitos = Oppilaitos("1.2.246.562.10.52251087186", Some(KoodistoKoodiViite("10105", None, "oppilaitosnumero", None)), Some("Stadin ammattiopisto"))
@@ -55,7 +56,7 @@ object TorOppijaExampleData {
   )
 
   def opiskeluoikeus(oppilaitos: Oppilaitos = Oppilaitos("1.2.246.562.10.52251087186"),
-                     tutkinto: TutkintoKoulutustoteutus = TutkintoKoulutustoteutus(TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")), None, None, None, None),
+                     tutkinto: TutkintoKoulutustoteutus = autoalanPerustutkinto,
                      tutkinnonOsat: Option[List[Suoritus]] = None) = {
     OpiskeluOikeus(
       None,
@@ -101,7 +102,7 @@ object TorOppijaExamples {
       oppilaitos = stadinAmmattiopisto,
       tutkinto = TutkintoKoulutustoteutus(
         TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
-        None, None, Some(Suoritustapa(suoritustapaNäyttö)),
+        None, None, Some(suoritustapaNäyttö),
         Some(OppisopimuksellinenJärjestämismuoto(järjestämismuotoOppisopimus, Oppisopimus(Yritys("Autokorjaamo Oy", "1234567-8")))))
     ).copy(opiskeluoikeudenTila = Some(OpiskeluoikeudenTila(List(
       Opiskeluoikeusjakso(date(2016, 9, 1), None, opiskeluoikeusAktiivinen, Some(KoodistoKoodiViite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
@@ -109,10 +110,12 @@ object TorOppijaExamples {
   )
 
   lazy val paikallinen = oppija(opiskeluOikeus = opiskeluoikeus(
+    tutkinto = autoalanPerustutkinto.copy(suoritustapa = Some(suoritustapaNäyttö)),
     tutkinnonOsat = Some(List(paikallisenOsanSuoritus))
   ))
 
   lazy val mukautettu = oppija(opiskeluOikeus = opiskeluoikeus(
+    tutkinto = autoalanPerustutkinto.copy(suoritustapa = Some(suoritustapaOps)),
     tutkinnonOsat = Some(List(
       Suoritus(
         Some("suoritus-12345-1"),
@@ -134,7 +137,7 @@ object TorOppijaExamples {
   lazy val tutkinnonOsaToisestaTutkinnosta = oppija(opiskeluOikeus = opiskeluoikeus(
     tutkinto = TutkintoKoulutustoteutus(
       TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
-      None, None, Some(Suoritustapa(suoritustapaNäyttö)),
+      None, None, Some(suoritustapaNäyttö),
       None),
 
     tutkinnonOsat = Some(List(
@@ -172,7 +175,7 @@ object TorOppijaExamples {
             TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
             Some(List(KoodistoKoodiViite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
             Some(List(KoodistoKoodiViite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
-            Some(Suoritustapa(suoritustapaOps)),
+            Some(suoritustapaOps),
             Some(DefaultJärjestämismuoto(järjestämismuotoOppilaitos))
           ),
           Some(KoodistoKoodiViite("FI", Some("suomi"), "kieli", None)),
@@ -259,7 +262,7 @@ object FullExample {
               Some("39/011/2014")
             ), Some(List(KoodistoKoodiViite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
             Some(List(KoodistoKoodiViite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
-            suoritustapa = Some(Suoritustapa(suoritustapaNäyttö)),
+            suoritustapa = Some(suoritustapaNäyttö),
             järjestämismuoto = Some(DefaultJärjestämismuoto(järjestämismuotoOppilaitos))
           ),
           suorituskieli = Some(KoodistoKoodiViite("FI", Some("suomi"), "kieli", None)),
