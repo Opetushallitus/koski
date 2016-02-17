@@ -281,8 +281,17 @@ case class Hyväksiluku(
 case class Näyttö(
   @Description("Vapaamuotoinen kuvaus suoritetusta näytöstä")
   kuvaus: String,
-  suorituspaikka: String,
+  suorituspaikka: NäytönSuorituspaikka,
   arviointi: Option[NäytönArviointi]
+)
+
+@Description("Ammatillisen näytön suorituspaikka")
+case class NäytönSuorituspaikka(
+  @Description("Suorituspaikan tyyppi 1-numeroisella koodilla")
+  @KoodistoUri("ammatillisennaytonsuorituspaikka")
+  tunniste: KoodistoKoodiViite,
+  @Description("Vapaamuotoinen suorituspaikan kuvaus")
+  kuvaus: String
 )
 
 case class NäytönArviointi (
