@@ -194,7 +194,7 @@ trait Koulutusmoduulitoteutus {
     lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
     @Description("Tutkinto, jonka rakenteeseen tutkinnon osa liittyy. Käytetään vain tapauksissa, joissa tutkinnon osa on poimittu toisesta tutkinnosta.")
     tutkinto: Option[TutkintoKoulutus] = None
-  ) extends Koulutusmoduulitoteutus
+  ) extends AmmatillinenTutkinnonosaToteutus
 
   @Description("Paikallinen tutkinnon osa")
   case class PaikallinenTutkinnonosatoteutus(
@@ -203,7 +203,13 @@ trait Koulutusmoduulitoteutus {
     @Description("Suoritukseen liittyvän näytön tiedot")
     näyttö: Option[Näyttö] = None,
     lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None
-  ) extends Koulutusmoduulitoteutus
+  ) extends AmmatillinenTutkinnonosaToteutus
+
+trait AmmatillinenTutkinnonosaToteutus extends Koulutusmoduulitoteutus {
+  def hyväksiluku: Option[Hyväksiluku]
+  def näyttö: Option[Näyttö]
+  def lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]
+}
 
 case class AmmatillisenTutkinnonOsanLisätieto(
   @Description("Lisätiedon tyyppi kooditettuna")

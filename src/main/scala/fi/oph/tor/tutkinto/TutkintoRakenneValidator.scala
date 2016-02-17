@@ -10,8 +10,12 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
         case Left(status) => status
         case Right(rakenne) =>
           validateOsaamisala(tutkintoToteutus.osaamisala.toList.flatten, rakenne).then(HttpStatus.fold(suoritus.osasuoritukset.toList.flatten.map(_.koulutusmoduulitoteutus).map {
-            case osa: OpsTutkinnonosatoteutus =>  validateTutkinnonOsa(osa, Some(rakenne), tutkintoToteutus.suoritustapa)
-            case osa => HttpStatus.ok // vain OpsTutkinnonosatoteutukset validoidaan, muut sellaisenaan läpi, koska niiden rakennetta ei tunneta
+            case osa: AmmatillinenTutkinnonosaToteutus if !tutkintoToteutus.suoritustapa.isDefined =>
+              TorErrorCategory.badRequest.validation.rakenne.suoritustapaPuuttuu()
+            case osa: OpsTutkinnonosatoteutus =>
+              validateTutkinnonOsa(osa, Some(rakenne), tutkintoToteutus.suoritustapa)
+            case osa =>
+              HttpStatus.ok // vain OpsTutkinnonosatoteutukset validoidaan, muut sellaisenaan läpi, koska niiden rakennetta ei tunneta
           }))
       }
     case _ =>
@@ -41,8 +45,6 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
   }
 
   private def validateTutkinnonOsa(tutkinnonOsaToteutus: OpsTutkinnonosatoteutus, rakenne: Option[TutkintoRakenne], suoritustapa: Option[Suoritustapa]): HttpStatus = (tutkinnonOsaToteutus, rakenne, suoritustapa) match {
-    case (t: OpsTutkinnonosatoteutus, Some(rakenne), None)  =>
-      TorErrorCategory.badRequest.validation.rakenne.suoritustapaPuuttuu()
     case (t: OpsTutkinnonosatoteutus, Some(rakenne), Some(suoritustapa))  =>
       t.tutkinto match {
         case Some(tutkinto) =>
