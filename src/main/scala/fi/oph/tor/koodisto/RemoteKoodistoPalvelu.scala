@@ -11,7 +11,13 @@ class RemoteKoodistoPalvelu(virkailijaUrl: String) extends KoodistoPalvelu with 
     http("/koodisto-service/rest/codeelement/codes/" + koodisto + noCache) {
       case (404, _, _) => None
       case (500, "error.codes.not.found", _) => None // If codes are not found, the service actually returns 500 with this error text.
-      case (200, text, _) => Some(Json.read[List[KoodistoKoodi]](text))
+      case (200, text, _) =>
+        val koodit: List[KoodistoKoodi] = Json.read[List[KoodistoKoodi]](text)
+        Some(koodisto.koodistoUri match {
+          case "ammatillisentutkinnonosanlisatieto" => // Vain tästä koodistosta haetaan kuvaukset (muista ei tarvita tässä vaiheessa)
+            koodit.map(koodi => koodi.copy(metadata = getKoodiMetadata(koodi)))
+          case _ => koodit
+        })
       case (status, text, uri) => throw new HttpStatusException(status, text, uri)
     }.run
   }
@@ -27,12 +33,8 @@ class RemoteKoodistoPalvelu(virkailijaUrl: String) extends KoodistoPalvelu with 
 
   private def noCache = "?noCache=" + System.currentTimeMillis()
 
-  override def getKoodiMetadata(koodi: KoodistoKoodi) = {
-    if (koodi.koodiUri.startsWith("ammatillisentutkinnonosanlisatieto")) { // Vain tästä koodistosta haetaan kuvaukset (muista ei tarvita tässä vaiheessa)
-      http("/koodisto-service/rest/codeelement/"+koodi.koodiUri+"/"+koodi.versio + noCache)(Http.parseJson[KoodiLisätiedot]).run.metadata
-    } else {
-      koodi.metadata
-    }
+  private def getKoodiMetadata(koodi: KoodistoKoodi) = {
+    http("/koodisto-service/rest/codeelement/"+koodi.koodiUri+"/"+koodi.versio + noCache)(Http.parseJson[KoodiLisätiedot]).run.metadata
   }
 }
 

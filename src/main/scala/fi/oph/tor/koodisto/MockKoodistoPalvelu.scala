@@ -50,6 +50,4 @@ object MockKoodistoPalvelu extends KoodistoPalvelu {
   def koodistoFileName(koodistoUri: String): String = {
     "src/main/resources/mockdata/koodisto/koodistot/" + koodistoUri + ".json"
   }
-
-  override def getKoodiMetadata(koodi: KoodistoKoodi) = koodi.metadata
 }

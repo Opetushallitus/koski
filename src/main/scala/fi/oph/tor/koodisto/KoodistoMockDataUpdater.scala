@@ -20,9 +20,7 @@ object KoodistoMockDataUpdater extends App {
           MockKoodistoPalvelu.koodistoFileName(koodistoUri),
           kp.getKoodisto(versio)
         )
-        val koodit: List[KoodistoKoodi] = kp.getKoodistoKoodit(versio).toList.flatten.map { koodi =>
-          koodi.copy(metadata = kp.getKoodiMetadata(koodi))
-        }
+        val koodit: List[KoodistoKoodi] = kp.getKoodistoKoodit(versio).toList.flatten
         Json.writeFile(
           MockKoodistoPalvelu.koodistoKooditFileName(koodistoUri),
           koodit
