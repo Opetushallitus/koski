@@ -15,7 +15,6 @@ object Http extends Logging {
   }
 
   def parseJson[T](status: Int, text: String, request: Request)(implicit mf : scala.reflect.Manifest[T]): T = {
-    logger.info("Enter parseJson")
     (status, text) match {
       case (200, text) => Json.read[T](text)
       case (status, text) => throw new HttpStatusException(status, text, request)
