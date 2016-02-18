@@ -2,20 +2,24 @@ package fi.oph.tor.http
 
 import fi.oph.tor.http.Http.Decode
 import fi.oph.tor.json.Json
+import fi.oph.tor.log.Logging
 import org.http4s._
 import org.http4s.client.{Client, blaze}
 
 import scalaz.concurrent.Task
 
-object Http {
+object Http extends Logging {
   def expectSuccess(status: Int, text: String, request: Request): Unit = (status, text) match {
     case (status, text) if status < 300 && status >= 200 =>
     case (status, text) => throw new HttpStatusException(status, text, request)
   }
 
-  def parseJson[T](status: Int, text: String, request: Request)(implicit mf : scala.reflect.Manifest[T]): T = (status, text) match {
-    case (200, text) => Json.read[T](text)
-    case (status, text) => throw new HttpStatusException(status, text, request)
+  def parseJson[T](status: Int, text: String, request: Request)(implicit mf : scala.reflect.Manifest[T]): T = {
+    logger.info("Enter parseJson")
+    (status, text) match {
+      case (200, text) => Json.read[T](text)
+      case (status, text) => throw new HttpStatusException(status, text, request)
+    }
   }
 
   /** Parses as JSON, returns None on 404 result */
@@ -52,7 +56,7 @@ object Http {
   type Decode[ResultType] = (Int, String, Request) => ResultType
 }
 
-case class Http(root: String, client: Client = blaze.PooledHttp1Client()) {
+case class Http(root: String, client: Client = blaze.PooledHttp1Client()) extends Logging {
   def uriFromString(relativePath: String) = Http.uriFromString(root + relativePath)
 
   def apply[ResultType](task: Task[Request], request: Request)(decode: Decode[ResultType]): Task[ResultType] = {
@@ -87,11 +91,13 @@ case class Http(root: String, client: Client = blaze.PooledHttp1Client()) {
   }
 
   private def runHttp[ResultType](task: Task[Response], request: Request)(decoder: (Int, String, Request) => ResultType): Task[ResultType] = {
-    (for {
-      response <- task
-      text <- response.as[String]
-    } yield {
+    logger.info("runHttp: " + request.uri)
+    task.flatMap { response =>
+      logger.info("Got response for " + request.uri)
+      response.as[String].map { text =>
+        logger.info("Got response body for " + request.uri)
         decoder(response.status.code, text, request)
-      })
+      }
+    }
   }
 }
