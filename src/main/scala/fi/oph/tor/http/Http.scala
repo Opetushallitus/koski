@@ -91,11 +91,11 @@ case class Http(root: String, client: Client = blaze.PooledHttp1Client()) extend
   }
 
   private def runHttp[ResultType](task: Task[Response], request: Request)(decoder: (Int, String, Request) => ResultType): Task[ResultType] = {
-    logger.info("runHttp: " + request.uri)
+    logger.info("runHttp start: " + request.uri)
     task.flatMap { response =>
-      logger.info("Got response for " + request.uri)
+      logger.info("runHttp response for " + request.uri)
       response.as[String].map { text =>
-        logger.info("Got response body for " + request.uri)
+        logger.info("runHttp  body for " + request.uri)
         decoder(response.status.code, text, request)
       }
     }
