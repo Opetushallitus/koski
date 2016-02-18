@@ -2,13 +2,14 @@ package fi.oph.tor.http
 
 import fi.oph.tor.http.Http.Decode
 import fi.oph.tor.json.Json
-import fi.oph.tor.log.Logging
 import org.http4s._
 import org.http4s.client.{Client, blaze}
-
+import fi.oph.tor.log.Logging
 import scalaz.concurrent.Task
 
 object Http extends Logging {
+  def newClient = blaze.PooledHttp1Client()
+
   def expectSuccess(status: Int, text: String, request: Request): Unit = (status, text) match {
     case (status, text) if status < 300 && status >= 200 =>
     case (status, text) => throw new HttpStatusException(status, text, request)
@@ -55,7 +56,7 @@ object Http extends Logging {
   type Decode[ResultType] = (Int, String, Request) => ResultType
 }
 
-case class Http(root: String, client: Client = blaze.PooledHttp1Client()) extends Logging {
+case class Http(root: String, client: Client = Http.newClient) extends Logging {
   def uriFromString(relativePath: String) = Http.uriFromString(root + relativePath)
 
   def apply[ResultType](request: Request)(decode: Decode[ResultType]): Task[ResultType] = {
