@@ -40,9 +40,7 @@ class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances wit
   }
   def findOrCreate(createUserInfo: CreateUser) = {
     val request: Request = Request(uri = http.uriFromString("/authentication-service/resources/henkilo/torHenkilo"), method = Method.POST)
-    val task: Task[Request] = request.withBody(createUserInfo)(json4sEncoderOf[CreateUser])
-
-    http(task, request) {
+    http(request.withBody(createUserInfo)(json4sEncoderOf[CreateUser])) {
       case (200, data, _) => Right(Json.read[User](data))
       case (400, error, _) => Left(TorErrorCategory.badRequest.validation.henkilötiedot.virheelliset(error))
       case (status, text, uri) => throw new HttpStatusException(status, text, uri)
@@ -50,9 +48,7 @@ class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances wit
   }
   def create(createUserInfo: CreateUser): Either[HttpStatus, String] = {
     val request: Request = Request(uri = http.uriFromString("/authentication-service/resources/henkilo"), method = Method.POST)
-    val task: Task[Request] = request.withBody(createUserInfo)(json4sEncoderOf[CreateUser])
-
-    http(task, request) {
+    http(request.withBody(createUserInfo)(json4sEncoderOf[CreateUser])) {
       case (200, oid, _) => Right(oid)
       case (400, "socialsecuritynr.already.exists", _) => Left(TorErrorCategory.conflict.hetu("Henkilötunnus on jo olemassa"))
       case (400, error, _) => Left(TorErrorCategory.badRequest.validation.henkilötiedot.virheelliset(error))

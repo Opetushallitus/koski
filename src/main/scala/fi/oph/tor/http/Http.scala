@@ -59,12 +59,12 @@ object Http extends Logging {
 case class Http(root: String, client: Client = blaze.PooledHttp1Client()) extends Logging {
   def uriFromString(relativePath: String) = Http.uriFromString(root + relativePath)
 
-  def apply[ResultType](task: Task[Request], request: Request)(decode: Decode[ResultType]): Task[ResultType] = {
-    runHttp(client(task), request)(decode)
+  def apply[ResultType](request: Request)(decode: Decode[ResultType]): Task[ResultType] = {
+    runRequest(request)(decode)
   }
 
-  def apply[ResultType](request: Request)(decode: Decode[ResultType]): Task[ResultType] = {
-    runHttp(client(Task(request)), request)(decode)
+  def apply[ResultType](requestTask: Task[Request])(decode: Decode[ResultType]): Task[ResultType] = {
+    requestTask.flatMap(request => runRequest(request)(decode))
   }
 
   def apply[ResultType](uri: Uri)(decode: Decode[ResultType]): Task[ResultType] = {
@@ -85,17 +85,13 @@ case class Http(root: String, client: Client = blaze.PooledHttp1Client()) extend
 
   def send[I <: AnyRef, O <: Any](path: Uri, method: Method, entity: I)(implicit encode: EntityEncoder[I], decode: Decode[O]): O = {
     val request: Request = Request(uri = path, method = method)
-    val task: Task[Request] = request.withBody(entity)
-
-    apply(task, request)(decode).run
+    val requestTask: Task[Request] = request.withBody(entity)
+    apply(requestTask)(decode).run
   }
 
-  private def runHttp[ResultType](task: Task[Response], request: Request)(decoder: (Int, String, Request) => ResultType): Task[ResultType] = {
-    logger.info("runHttp start: " + request.uri)
-    task.flatMap { response =>
-      logger.info("runHttp response for " + request.uri)
+  private def runRequest[ResultType](request: Request)(decoder: (Int, String, Request) => ResultType): Task[ResultType] = {
+    client.fetch(request) { response =>
       response.as[String].map { text =>
-        logger.info("runHttp  body for " + request.uri)
         decoder(response.status.code, text, request)
       }
     }
