@@ -62,6 +62,13 @@ trait ErrorHandlingServlet extends ScalatraServlet with Logging {
     halt(status = status.statusCode, body = Json.write(status.errors))
   }
 
+  def getIntegerParam(name: String): Int = {
+    params.getAs[Int](name) match {
+      case Some(id) if id > 0 => id
+      case _ => throw new InvalidRequestException(TorErrorCategory.badRequest.format.number, "Invalid " + name + " : " + params(name))
+    }
+  }
+
   private def maskRequestBody = {
     (request.body, request.contentType) match {
       case ("", _) => ""

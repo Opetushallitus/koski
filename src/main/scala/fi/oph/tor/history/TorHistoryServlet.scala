@@ -25,11 +25,4 @@ class TorHistoryServlet(val userRepository: UserOrganisationsRepository, val dir
 
     renderEither(result)
   }
-
-  private def getIntegerParam(name: String): Int = {
-    params.getAs[Int](name) match {
-      case Some(id) if id > 0 => id
-      case _ => throw new InvalidRequestException(TorErrorCategory.badRequest.format.number, "Invalid " + name + " : " + params(name))
-    }
-  }
 }
