@@ -18,9 +18,9 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
 
   def extractAndValidateBatch(parsedJson: JArray)(implicit user: TorUser): List[Either[HttpStatus, TorOppija]] = {
     timed("extractAndValidateBatch") {
-      parsedJson.arr.map { row =>
+      parsedJson.arr.par.map { row =>
         extractAndValidate(row.asInstanceOf[JValue])
-      }
+      }.toList
     }
   }
 
