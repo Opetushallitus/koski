@@ -113,11 +113,11 @@ object UusiOppijaBatchBody extends HenkilöGenerator {
 
     session.set("content", List())
 
-    val shits = (1 to 10).map { num =>
+    val oppijat = (1 to 10).map { num =>
       addHenkilö(session)
     }
 
-    req.setBody(new ObjectMapper().writeValueAsBytes(seqAsJavaList(shits)))
+    req.setBody(new ObjectMapper().writeValueAsBytes(seqAsJavaList(oppijat)))
   }
 }
 
