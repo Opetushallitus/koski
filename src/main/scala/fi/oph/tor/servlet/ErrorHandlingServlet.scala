@@ -4,18 +4,21 @@ import fi.oph.tor.http.{ErrorCategory, TorErrorCategory, HttpStatus}
 import fi.oph.tor.json.Json
 import fi.oph.tor.json.Json.maskSensitiveInformation
 import fi.oph.tor.log.Logging
+import fi.oph.tor.util.Timing
 import org.json4s._
 import org.scalatra.ScalatraServlet
 
-trait ErrorHandlingServlet extends ScalatraServlet with Logging {
+trait ErrorHandlingServlet extends ScalatraServlet with Logging with Timing {
   def withJsonBody(block: JValue => Any) = {
     if (request.getContentType != "application/json") {
       renderStatus(TorErrorCategory.unsupportedMediaType.jsonOnly())
     } else {
-      val json = try {
-        Some(org.json4s.jackson.JsonMethods.parse(request.body))
-      } catch {
-        case e: Exception => None
+      val json = timed("json parsing") {
+        try {
+          Some(org.json4s.jackson.JsonMethods.parse(request.body))
+        } catch {
+          case e: Exception => None
+        }
       }
       json match {
         case Some(json) => block(json)
