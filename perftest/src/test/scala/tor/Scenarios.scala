@@ -108,12 +108,13 @@ object UusiOppijaBody extends HenkilöGenerator {
 
 object UusiOppijaBatchBody extends HenkilöGenerator {
   import collection.JavaConversions._
+  val batchSize = sys.env.getOrElse("BATCH_SIZE", "10").toInt
   override def setBody(req: RequestBuilder, session: Session) = {
     val content = session("content").as[Map]
 
     session.set("content", List())
 
-    val oppijat = (1 to 10).map { num =>
+    val oppijat = (1 to batchSize).map { num =>
       addHenkilö(session)
     }
 
