@@ -3,7 +3,7 @@ package tor
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter.{ofPattern => dateFormat}
 import java.time.temporal.ChronoUnit._
-
+import java.util.LinkedHashMap
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ning.http.client.RequestBuilder
 import io.gatling.core.Predef._
@@ -36,7 +36,7 @@ trait QueryOppijatScenario extends TorScenario {
 }
 
 trait InsertOrUpdateScenario extends TorScenario {
-  def insertOrUpdate(name: String, body: Body) = http(name).put("/api/oppija").body(body).asJSON.basicAuth(username, password).check(status.in(200))
+  def insertOrUpdate(name: String, body: Body, path: String = "/api/oppija") = http(name).put(path).body(body).asJSON.basicAuth(username, password).check(status.in(200))
 }
 
 trait UpdateOppijaScenario extends InsertOrUpdateScenario {
@@ -52,14 +52,17 @@ trait InsertOppijaScenario extends InsertOrUpdateScenario {
 
   val prepareForInsertOppija = scenario("Prepare for insert").feed(uusiOppijaJson).exec(insertHttp.silent)
   val insertOppija = scenario("Insert oppija").feed(uusiOppijaJson).exec(insertHttp)
+
+
+  val batchInsertOppija = scenario("Batch insert oppija").feed(uusiOppijaJson).exec(insertOrUpdate("batchInsert", UusiOppijaBatchBody, "/api/oppija/batch"))
 }
 
-trait JsonBody extends Body {
+trait CrappyJavaTypes {
   type Map = java.util.LinkedHashMap[Any, Any]
   type Array = java.util.List[Any]
 }
 
-object OppijaWithOpiskeluoikeusWithIncrementingStartdate extends JsonBody {
+object OppijaWithOpiskeluoikeusWithIncrementingStartdate extends Body with CrappyJavaTypes {
   var dateCounter = LocalDate.parse("2012-09-01")
 
   private def nextDate = this.synchronized {
@@ -75,22 +78,46 @@ object OppijaWithOpiskeluoikeusWithIncrementingStartdate extends JsonBody {
   }
 }
 
-object UusiOppijaBody extends JsonBody {
-
-  override def setBody(req: RequestBuilder, session: Session) = {
+abstract class HenkilöGenerator extends Body with CrappyJavaTypes {
+  val mapper: ObjectMapper = new ObjectMapper()
+  def newHenkilö = {
     val hetu = Hetu.generate(LocalDate.now, LocalDate.now.minusYears(50))
 
-    val oppija = new Map {{
+    new Map {{
       put("etunimet", "tor-perf-"+hetu)
       put("kutsumanimi", "tor-perf-"+hetu)
       put("sukunimi", "tor-perf-"+hetu)
       put("hetu", hetu)
     }}
+  }
 
-    val content = session("content").as[Map]
-    content.put("henkilö", oppija)
+  def addHenkilö(session: Session) = {
+    val content = session("content").as[Map].clone.asInstanceOf[Map]
+    content.put("henkilö", newHenkilö)
+    content
+  }
+}
+
+object UusiOppijaBody extends HenkilöGenerator {
+  override def setBody(req: RequestBuilder, session: Session) = {
+    val content = addHenkilö(session)
 
     req.setBody(new ObjectMapper().writeValueAsBytes(content))
+  }
+}
+
+object UusiOppijaBatchBody extends HenkilöGenerator {
+  import collection.JavaConversions._
+  override def setBody(req: RequestBuilder, session: Session) = {
+    val content = session("content").as[Map]
+
+    session.set("content", List())
+
+    val shits = (1 to 2).map { num =>
+      addHenkilö(session)
+    }
+
+    req.setBody(new ObjectMapper().writeValueAsBytes(seqAsJavaList(shits)))
   }
 }
 
