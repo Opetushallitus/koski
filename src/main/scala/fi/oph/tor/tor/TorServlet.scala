@@ -16,6 +16,7 @@ import fi.oph.tor.toruser.{RequiresAuthentication, UserOrganisationsRepository}
 import fi.oph.tor.util.Timing
 import fi.vm.sade.security.ldap.DirectoryClient
 import org.json4s.JValue
+import org.json4s.JsonAST.JArray
 import org.scalatra.{FutureSupport, GZipSupport}
 import rx.lang.scala.Observable
 
@@ -29,12 +30,34 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
     timed("PUT /oppija", thresholdMs = 10) {
       withJsonBody { parsedJson =>
         val validationResult: Either[HttpStatus, TorOppija] = validator.extractAndValidate(parsedJson)
-        val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = validationResult.right.flatMap (rekisteri.createOrUpdate _)
-
-        result.left.foreach { case HttpStatus(code, errors) =>
-          logger.warn("Opinto-oikeuden päivitys estetty: " + code + " " + errors + " for request " + describeRequest)
-        }
+        val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = putSingle(validationResult)
         renderEither(result)
+      }
+    }
+  }
+
+  def putSingle(validationResult: Either[HttpStatus, TorOppija]): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
+    val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = validationResult.right.flatMap(rekisteri.createOrUpdate _)
+
+    result.left.foreach { case HttpStatus(code, errors) =>
+      logger.warn("Opinto-oikeuden päivitys estetty: " + code + " " + errors + " for request " + describeRequest)
+    }
+    result
+  }
+
+  put("/batch") {
+    timed("PUT /oppija/batch", thresholdMs = 10) {
+      withJsonBody { parsedJson =>
+
+        val validationResults: List[Either[HttpStatus, TorOppija]] = validator.extractAndValidateBatch(parsedJson.asInstanceOf[JArray])
+        val batchResults: List[Either[HttpStatus, HenkilönOpiskeluoikeusVersiot]] = validationResults.map(putSingle _)
+
+        response.setStatus(batchResults.map {
+          case Left(status) => status.statusCode
+          case _ => 200
+        }.max)
+
+        Json.write(batchResults)
       }
     }
   }

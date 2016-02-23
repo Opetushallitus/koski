@@ -9,11 +9,19 @@ import fi.oph.tor.tor.DateValidation._
 import fi.oph.tor.toruser.TorUser
 import fi.oph.tor.tutkinto.{TutkintoRakenneValidator, TutkintoRepository}
 import fi.oph.tor.util.Timing
-import org.json4s.JValue
+import org.json4s.{JArray, JValue}
 
 class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: KoodistoViitePalvelu, val organisaatioRepository: OrganisaatioRepository) extends Timing {
   def validateAsJson(oppija: TorOppija)(implicit user: TorUser): Either[HttpStatus, TorOppija] = {
     extractAndValidate(Json.toJValue(oppija))
+  }
+
+  def extractAndValidateBatch(parsedJson: JArray)(implicit user: TorUser): List[Either[HttpStatus, TorOppija]] = {
+    timed("extractAndValidateBatch") {
+      parsedJson.arr.map { row =>
+        extractAndValidate(row.asInstanceOf[JValue])
+      }
+    }
   }
 
   def extractAndValidate(parsedJson: JValue)(implicit user: TorUser): Either[HttpStatus, TorOppija] = {
