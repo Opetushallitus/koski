@@ -113,7 +113,7 @@ object UusiOppijaBatchBody extends HenkilöGenerator {
 
     session.set("content", List())
 
-    val shits = (1 to 2).map { num =>
+    val shits = (1 to 10).map { num =>
       addHenkilö(session)
     }
 
