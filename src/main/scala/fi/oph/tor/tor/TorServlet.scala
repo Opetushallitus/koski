@@ -13,6 +13,7 @@ import fi.oph.tor.schema.Henkilö.Oid
 import fi.oph.tor.schema.{Henkilö, HenkilöWithOid, TorOppija}
 import fi.oph.tor.servlet.{ErrorHandlingServlet, InvalidRequestException, NoCache}
 import fi.oph.tor.toruser.{RequiresAuthentication, UserOrganisationsRepository}
+import fi.oph.tor.util.Timing
 import fi.vm.sade.security.ldap.DirectoryClient
 import org.json4s.JValue
 import org.scalatra.{FutureSupport, GZipSupport}
@@ -22,17 +23,19 @@ import scala.concurrent.Future
 import scala.concurrent.duration.Duration
 
 class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: UserOrganisationsRepository, val directoryClient: DirectoryClient, val validator: TorValidator, val historyRepository: OpiskeluoikeusHistoryRepository)
-  extends ErrorHandlingServlet with Logging with RequiresAuthentication with GlobalExecutionContext with FutureSupport with GZipSupport with NoCache {
+  extends ErrorHandlingServlet with Logging with RequiresAuthentication with GlobalExecutionContext with FutureSupport with GZipSupport with NoCache with Timing {
 
   put("/") {
-    withJsonBody { parsedJson =>
-      val validationResult: Either[HttpStatus, TorOppija] = validator.extractAndValidate(parsedJson)
-      val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = validationResult.right.flatMap (rekisteri.createOrUpdate _)
+    timed("PUT /oppija", thresholdMs = 10) {
+      withJsonBody { parsedJson =>
+        val validationResult: Either[HttpStatus, TorOppija] = validator.extractAndValidate(parsedJson)
+        val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = validationResult.right.flatMap (rekisteri.createOrUpdate _)
 
-      result.left.foreach { case HttpStatus(code, errors) =>
-        logger.warn("Opinto-oikeuden päivitys estetty: " + code + " " + errors + " for request " + describeRequest)
+        result.left.foreach { case HttpStatus(code, errors) =>
+          logger.warn("Opinto-oikeuden päivitys estetty: " + code + " " + errors + " for request " + describeRequest)
+        }
+        renderEither(result)
       }
-      renderEither(result)
     }
   }
 
