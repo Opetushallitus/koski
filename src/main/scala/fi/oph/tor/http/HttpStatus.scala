@@ -1,5 +1,7 @@
 package fi.oph.tor.http
 
+import fi.oph.tor.json.Json
+
 case class HttpStatus(statusCode: Int, errors: List[ErrorDetail]) {
   def isOk = statusCode < 300
   def isError = !isOk
@@ -9,7 +11,7 @@ case class HttpStatus(statusCode: Int, errors: List[ErrorDetail]) {
 }
 
 case class ErrorDetail(key: String, message: AnyRef) {
-  override def toString = key + " (" + message + ")"
+  override def toString = key + " (" + Json.write(message) + ")"
 }
 
 object HttpStatus {
