@@ -228,13 +228,15 @@ object TorOppijaExamples {
         )))
   )))
 
+  lazy val full = FullExample.full
+
   lazy val examples = List(
     Example("uusi", "Uusi oppija lisätään suorittamaan Autoalan perustutkintoa", uusi),
     Example("oppisopimus", "Uusi oppija, suorittaa oppisopimuksella", oppisopimus),
     Example("paikallinen", "Oppija on suorittanut paikallisen tutkinnon osan", paikallinen),
     Example("mukautettu", "Tutkinnon osan arviointia on mukautettu", mukautettu),
     Example("osatoisestatutkinnosta", "Oppija on suorittanut toiseen tutkintoon liittyvän tutkinnon osan", tutkinnonOsaToisestaTutkinnosta),
-    Example("full", "Isompi esimerkki. Suorittaa perustutkintoa näyttönä. Tähän lisätty lähes kaikki kaavaillut tietokentät.", FullExample.full),
+    Example("full", "Isompi esimerkki. Suorittaa perustutkintoa näyttönä. Tähän lisätty lähes kaikki kaavaillut tietokentät.", full),
     Example("ops", "Perustutkinto ops:n mukaan, läsnäolotiedoilla, hojks", ops)
   )
 
