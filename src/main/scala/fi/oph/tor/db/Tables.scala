@@ -48,6 +48,16 @@ object Tables {
 
 case class OpiskeluOikeusRow(id: Int, oppijaOid: String, versionumero: Int, data: JValue) {
   lazy val toOpiskeluOikeus: OpiskeluOikeus = {
+    OpiskeluOikeusStoredDataDeserializer.read(data, id, versionumero)
+  }
+
+  def this(oppijaOid: String, opiskeluOikeus: OpiskeluOikeus, versionumero: Int) = {
+    this(0, oppijaOid, versionumero, Json.toJValue(opiskeluOikeus))
+  }
+}
+
+object OpiskeluOikeusStoredDataDeserializer {
+  def read(data: JValue, id: Int, versionumero: Int): OpiskeluOikeus = {
     def addDefaultTila(suoritus: JObject): JObject = {
       // Migrating data on the fly: if tila is missing, add default value. This migration should later be performed on db level or removed
       (if (!suoritus.values.contains("tila")) {
@@ -63,10 +73,6 @@ case class OpiskeluOikeusRow(id: Int, oppijaOid: String, versionumero: Int, data
       case JField("suoritus", suoritus: JObject) => JField("suoritus", addDefaultTila(suoritus))
     }
     Json.fromJValue[OpiskeluOikeus](migratedData).copy ( id = Some(id), versionumero = Some(versionumero) )
-  }
-
-  def this(oppijaOid: String, opiskeluOikeus: OpiskeluOikeus, versionumero: Int) = {
-    this(0, oppijaOid, versionumero, Json.toJValue(opiskeluOikeus))
   }
 }
 

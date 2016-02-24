@@ -6,7 +6,7 @@ import com.github.fge.jsonpatch.JsonPatch
 import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.db.Tables._
 import fi.oph.tor.db.TorDatabase._
-import fi.oph.tor.db.{Futures, GlobalExecutionContext, OpiskeluOikeusHistoryRow}
+import fi.oph.tor.db.{OpiskeluOikeusStoredDataDeserializer, Futures, GlobalExecutionContext, OpiskeluOikeusHistoryRow}
 import fi.oph.tor.http.{TorErrorCategory, HttpStatus}
 import fi.oph.tor.json.Json
 import fi.oph.tor.schema.OpiskeluOikeus
@@ -41,7 +41,8 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends Futures with GlobalEx
             val patch = JsonPatch.fromJson(asJsonNode(diff.muutos))
             patch.apply(current)
           }
-          Right(Json.fromJValue[OpiskeluOikeus](fromJsonNode(oikeusVersion)).copy(id = Some(id), versionumero = Some(version)))
+
+          Right(OpiskeluOikeusStoredDataDeserializer.read(fromJsonNode(oikeusVersion), id, version))
         }
       case None => Left(TorErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta " + id + " ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
     }
