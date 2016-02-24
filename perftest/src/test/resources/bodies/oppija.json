@@ -98,18 +98,6 @@
                   "koodistoVersio": 1
                 },
                 "pakollinen": true
-              },
-              "suoritustapa": {
-                "tunniste": {
-                  "koodiarvo": "naytto",
-                  "nimi": "Näyttö",
-                  "koodistoUri": "suoritustapa",
-                  "koodistoVersio": 1
-                },
-                "näyttö": {
-                  "kuvaus": "Huolto- ja korjaustyöt",
-                  "suorituspaikka": "Autokorjaamo Oy, Riihimäki"
-                }
               }
             },
             "tila" : {
@@ -154,18 +142,6 @@
                 },
                 "kuvaus": "Opetellaan korjaamaan pinnallisia vaurioita",
                 "pakollinen": false
-              },
-              "suoritustapa": {
-                "tunniste": {
-                  "koodiarvo": "naytto",
-                  "nimi": "Näyttö",
-                  "koodistoUri": "suoritustapa",
-                  "koodistoVersio": 1
-                },
-                "näyttö": {
-                  "kuvaus": "Pintavaurioiden korjausta",
-                  "suorituspaikka": "Autokorjaamo Oy, Riihimäki"
-                }
               }
             },
             "tila" : {
@@ -210,18 +186,6 @@
                   "koodistoVersio": 1
                 },
                 "pakollinen": true
-              },
-              "suoritustapa": {
-                "tunniste": {
-                  "koodiarvo": "naytto",
-                  "nimi": "Näyttö",
-                  "koodistoUri": "suoritustapa",
-                  "koodistoVersio": 1
-                },
-                "näyttö": {
-                  "kuvaus": "Mittaus- ja korivauriotöitä",
-                  "suorituspaikka": "Autokorjaamo Oy, Riihimäki"
-                }
               }
             },
             "tila" : {
@@ -266,18 +230,6 @@
                   "koodistoVersio": 1
                 },
                 "pakollinen": true
-              },
-              "suoritustapa": {
-                "tunniste": {
-                  "koodiarvo": "naytto",
-                  "nimi": "Näyttö",
-                  "koodistoUri": "suoritustapa",
-                  "koodistoVersio": 1
-                },
-                "näyttö": {
-                  "kuvaus": "Maalauksen esikäsittelytöitä",
-                  "suorituspaikka": "Autokorjaamo Oy, Riihimäki"
-                }
               }
             },
             "tila" : {
@@ -322,18 +274,6 @@
                   "koodistoVersio": 1
                 },
                 "pakollinen": true
-              },
-              "suoritustapa": {
-                "tunniste": {
-                  "koodiarvo": "naytto",
-                  "nimi": "Näyttö",
-                  "koodistoUri": "suoritustapa",
-                  "koodistoVersio": 1
-                },
-                "näyttö": {
-                  "kuvaus": "Auton lisävarustetöitä",
-                  "suorituspaikka": "Autokorjaamo Oy, Riihimäki"
-                }
               }
             },
             "tila" : {
@@ -378,14 +318,6 @@
                   "koodistoVersio": 1
                 },
                 "pakollinen": true
-              },
-              "suoritustapa": {
-                "tunniste": {
-                  "koodiarvo": "naytto",
-                  "nimi": "Näyttö",
-                  "koodistoUri": "suoritustapa",
-                  "koodistoVersio": 1
-                }
               },
               "hyväksiluku": {
                 "osaaminen": {
