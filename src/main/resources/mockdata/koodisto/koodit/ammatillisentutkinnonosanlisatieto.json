@@ -1,4 +1,19 @@
 [ {
+  "koodiUri" : "ammatillisentutkinnonosanlisatieto_poikkeusarvioinnissa",
+  "koodiArvo" : "poikkeusarvioinnissa",
+  "metadata" : [ {
+    "nimi" : "Poikkeus arvioinnissa",
+    "kuvaus" : "Oppijan tutkinnon osan suorituksen tavassa on poikkeava arviointi. Tutkinnon osan osa-alueen, toinen kotimainen kieli, osaamistavoitteiden osalta on poikettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 21 §:n perusteella. Opiskelija on suorittanut toisen kotimaisen kielen osa-alueen tilalla xx osp äidinkielen osaamistavoitteita ja/tai xx osp vieraan kielen osaamistavoitteita ammatillisen perustutkinnon muodostumisesta annetun valtioneuvoston asetuksen (801/2014) 3 §:n perusteella.",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Poikkeus arvioinnissa",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Poikkeus arvioinnissa",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "ammatillisentutkinnonosanlisatieto_mukautettu",
   "koodiArvo" : "mukautettu",
   "metadata" : [ {
