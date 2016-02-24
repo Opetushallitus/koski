@@ -21,9 +21,9 @@ class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances wit
 
 
   def findByOid(id: String): Option[User] = findByOids(List(id)).headOption
-  def findByOids(oids: List[String]): List[User] = http.post("/authentication-service/resources/henkilo/torHenkilotByHenkiloOidList", oids)(json4sEncoderOf[List[String]], Http.parseJson[List[User]])
+  def findByOids(oids: List[String]): List[User] = http.post("/authentication-service/resources/s2s/tor/henkilotByHenkiloOidList", oids)(json4sEncoderOf[List[String]], Http.parseJson[List[User]])
   def käyttäjänOrganisaatiot(oid: String, käyttöoikeusRyhmä: Int): Observable[List[String]] = {
-    http(s"/authentication-service/resources/henkilo/${oid}/flatorgs/${käyttöoikeusRyhmä}")(Http.parseJson[List[String]])
+    http(s"/authentication-service/resources/s2s/flatorgs/${oid}/${käyttöoikeusRyhmä}")(Http.parseJson[List[String]])
   }
 
   def lisääOrganisaatio(henkilöOid: String, organisaatioOid: String, nimike: String) = {
@@ -39,7 +39,7 @@ class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances wit
       .withContentType(`Content-Type`(MediaType.`application/json`)), Http.unitDecoder) // <- yes, the API expects media type application/json, but consumes inputs as text/plain
   }
   def findOrCreate(createUserInfo: CreateUser) = {
-    val request: Request = Request(uri = http.uriFromString("/authentication-service/resources/henkilo/torHenkilo"), method = Method.POST)
+    val request: Request = Request(uri = http.uriFromString("/authentication-service/resources/s2s/tor/henkilo"), method = Method.POST)
     http(request.withBody(createUserInfo)(json4sEncoderOf[CreateUser])) {
       case (200, data, _) => Right(Json.read[User](data))
       case (400, error, _) => Left(TorErrorCategory.badRequest.validation.henkilötiedot.virheelliset(error))
