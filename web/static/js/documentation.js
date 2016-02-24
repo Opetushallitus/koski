@@ -45,6 +45,11 @@ forEach(document.querySelectorAll('.api-operation'), function(operationElem) {
 forEach(document.querySelectorAll('.api-tester'), function(elem) {
   var exampleSelector = elem.querySelector(".examples select")
   var codeMirror
+  var path = elem.dataset.path
+  var queryParameters = a(elem.querySelectorAll(".parameters input.query-param")).reduce(function(query, input) {
+    return input.value ? query + (query ? '&' : '?') + encodeURIComponent(input.name) + '=' + encodeURIComponent(input.value) : ''
+  },'')
+  var apiUrl = document.location.protocol + "//" + document.location.host + path + queryParameters
 
   if (exampleSelector) {
     var editorElem = elem.querySelector("textarea");
@@ -65,17 +70,11 @@ forEach(document.querySelectorAll('.api-tester'), function(elem) {
       options.body = codeMirror.getValue()
     }
 
-    var path = elem.dataset.path
-
-    Array.prototype.slice.call(elem.querySelectorAll(".parameters input.path-param"),0).forEach(function(input) {
+    a(elem.querySelectorAll(".parameters input.path-param")).forEach(function(input) {
       path = path.replace('{' + input.name + '}', encodeURIComponent(input.value))
     })
 
-    var queryParameters = Array.prototype.slice.call(elem.querySelectorAll(".parameters input.query-param"), 0).reduce(function(query, input) {
-      return input.value ? query + (query ? '&' : '?') + encodeURIComponent(input.name) + '=' + encodeURIComponent(input.value) : ''
-    },'')
-
-    fetch(document.location.protocol + "//" + document.location.host + path + queryParameters, options)
+    fetch(apiUrl, options)
       .then(function(response) {
         var resultElem = elem.querySelector(".result");
         elem.className = "api-tester"
@@ -93,5 +92,16 @@ forEach(document.querySelectorAll('.api-tester'), function(elem) {
         })
       })
   })
+  var newWindowButton = elem.querySelector(".try-newwindow")
+  if (elem.dataset.method == 'GET') {
+    newWindowButton.href = apiUrl
+    newWindowButton.target = "_new"
+  } else {
+    newWindowButton.className = 'hidden'
+  }
+
+  function a(elems) {
+    return Array.prototype.slice.call(elems, 0)
+  }
 })
 

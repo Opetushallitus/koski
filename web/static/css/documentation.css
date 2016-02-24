@@ -106,7 +106,7 @@ th {
 }
 
 .api-tester.loading .buttons {
-    background: url('/tor/images/loader-small.gif') 60px 0 no-repeat;
+    background: url('/tor/images/loader-small.gif') 70px 0 no-repeat;
 }
 
 .api-operation:not(.expanded) .api-details > * {
@@ -137,4 +137,16 @@ th {
 
 a {
     cursor: pointer;
+}
+
+.api-tester .try-newwindow {
+    font-size: 0.6em;
+}
+
+.api-tester.loading .try-newwindow {
+    display: none;
+}
+
+.hidden {
+    display: none;
 }

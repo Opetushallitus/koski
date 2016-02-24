@@ -133,6 +133,7 @@ Rajapintojen käyttämät virhekoodit on myös kuvattu alla. Virhetapauksissa ra
 
                 <div class="buttons">
                   <button class="try">Kokeile</button>
+                  <a class="try-newwindow">uuteen ikkunaan</a>
                 </div>
                 <div class="result"></div>
               </div>
