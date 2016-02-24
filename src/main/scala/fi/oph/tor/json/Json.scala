@@ -1,17 +1,18 @@
 package fi.oph.tor.json
 
 import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
-
+import com.github.fge.jsonpatch.diff.JsonDiff
 import fi.oph.tor.eperusteet.RakenneOsaSerializer
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.schema._
 import fi.oph.tor.util.Files
 import org.json4s
 import org.json4s.JsonAST.{JInt, JNull, JString}
+import org.json4s.JsonMethods
 import org.json4s._
 import org.json4s.ext.JodaTimeSerializers
 import org.json4s.jackson.JsonMethods._
-import org.json4s.jackson.Serialization
+import org.json4s.jackson.{JsonMethods, Serialization}
 
 object GenericJsonFormats {
   val genericFormats: Formats =  new DefaultFormats {
@@ -51,7 +52,6 @@ object Json {
     x.extract[A]
   }
 
-
   def readFile(filename: String): json4s.JValue = {
     readFileIfExists(filename).get
   }
@@ -71,6 +71,14 @@ object Json {
       case x => x
     }
     maskedJson
+  }
+
+  def jsonDiff(oldValue: JValue, newValue: JValue): JArray = {
+    JsonMethods.fromJsonNode(JsonDiff.asJson(JsonMethods.asJsonNode(oldValue), JsonMethods.asJsonNode(newValue))).asInstanceOf[JArray]
+  }
+
+  def jsonDiff(oldValue: AnyRef, newValue: AnyRef): JArray = {
+    jsonDiff(toJValue(oldValue), toJValue(newValue))
   }
 }
 

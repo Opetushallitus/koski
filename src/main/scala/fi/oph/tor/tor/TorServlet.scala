@@ -14,6 +14,7 @@ import fi.oph.tor.schema.{Henkilö, HenkilöWithOid, TorOppija}
 import fi.oph.tor.servlet.{ErrorHandlingServlet, InvalidRequestException, NoCache}
 import fi.oph.tor.toruser.{RequiresAuthentication, UserOrganisationsRepository}
 import fi.vm.sade.security.ldap.DirectoryClient
+import org.json4s.JValue
 import org.scalatra.{FutureSupport, GZipSupport}
 import rx.lang.scala.Observable
 
@@ -88,7 +89,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
       historyRepository.findVersion(oikeus.id.get, oikeus.versionumero.get) match {
         case Right(latestVersion) =>
           HttpStatus.validate(latestVersion == oikeus) {
-            TorErrorCategory.internalError("Opinto-oikeuden " + oikeus.id + " versiohistoria epäkonsistentti")
+            TorErrorCategory.internalError(Json.toJValue(HistoryInconsistency(oikeus + " versiohistoria epäkonsistentti", Json.jsonDiff(oikeus, latestVersion))))
           }
         case Left(error) => error
       }
@@ -139,3 +140,4 @@ case class OpiskeluoikeusPäättynytAikaisintaan(päivä: LocalDate) extends Que
 case class OpiskeluoikeusPäättynytViimeistään(päivä: LocalDate) extends QueryFilter
 case class TutkinnonTila(tila: String) extends QueryFilter
 case class ValidationResult(oid: Henkilö.Oid, errors: List[AnyRef])
+case class HistoryInconsistency(message: String, diff: JValue)

@@ -15,8 +15,8 @@ import fi.oph.tor.schema.{FullHenkilö, OpiskeluOikeus}
 import fi.oph.tor.tor.{OpiskeluoikeusPäättynytAikaisintaan, OpiskeluoikeusPäättynytViimeistään, QueryFilter, TutkinnonTila}
 import fi.oph.tor.toruser.TorUser
 import fi.oph.tor.util.ReactiveStreamsToRx
-import org.json4s.JArray
 import org.json4s.jackson.JsonMethods
+import org.json4s.{JArray, JValue}
 import rx.lang.scala.Observable
 import slick.dbio
 import slick.dbio.Effect.{Read, Transactional, Write}
@@ -138,7 +138,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
       case Some(requestedVersionumero) if (requestedVersionumero != versionumero) => DBIO.successful(Left(TorErrorCategory.conflict.versionumero("Annettu versionumero " + requestedVersionumero + " <> " + versionumero)))
       case _ =>
         val uusiData = Json.toJValue(uusiOlio.copy(id = None, versionumero = None))
-        val diff = JsonMethods.fromJsonNode(JsonDiff.asJson(JsonMethods.asJsonNode(oldRow.data), JsonMethods.asJsonNode(uusiData))).asInstanceOf[JArray]
+        val diff: JArray = Json.jsonDiff(oldRow.data, uusiData)
         diff.values.length match {
           case 0 =>
             DBIO.successful(Right(NotChanged(id, versionumero, diff)))
