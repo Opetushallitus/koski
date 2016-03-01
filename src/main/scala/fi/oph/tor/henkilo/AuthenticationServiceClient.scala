@@ -4,20 +4,28 @@ import java.time.{LocalDate, ZoneId}
 
 import com.typesafe.config.Config
 import fi.oph.tor.http._
+import fi.oph.tor.json.Json
 import fi.oph.tor.json.Json._
 import fi.oph.tor.json.Json4sHttp4s._
+import fi.oph.tor.util.ScalazTaskToObservable._
+import fi.oph.tor.util.Timing
 import org.http4s.Uri.Path
 import org.http4s._
 import org.http4s.headers.`Content-Type`
+import rx.lang.scala.Observable
 
 import scalaz.concurrent.Task
 
-class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances {
+class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances with Timing {
   def search(query: String): UserQueryResult = http("/authentication-service/resources/henkilo?no=true&count=0&q=" + query)(Http.parseJson[UserQueryResult]).run
-  def findByOid(id: String): Option[User] = http("/authentication-service/resources/henkilo/" + id)(Http.parseJsonOptional[User]).run
-  def findByOids(oids: List[String]): List[User] = http.post("/authentication-service/resources/henkilo/henkilotByHenkiloOidList", oids)(json4sEncoderOf[List[String]], Http.parseJson[List[User]])
-  def organisaatiot(oid: String): List[OrganisaatioHenkilö] = http(s"/authentication-service/resources/henkilo/${oid}/organisaatiohenkilo")(Http.parseJson[List[OrganisaatioHenkilö]]).run
-  def käyttöoikeusryhmät(henkilöOid: String, organisaatioOid: String): List[Käyttöoikeusryhmä] = http(s"/authentication-service/resources/kayttooikeusryhma/henkilo/${henkilöOid}?ooid=${organisaatioOid}")(Http.parseJson[List[Käyttöoikeusryhmä]]).run
+
+
+  def findByOid(id: String): Option[User] = findByOids(List(id)).headOption
+  def findByOids(oids: List[String]): List[User] = http.post("/authentication-service/resources/s2s/tor/henkilotByHenkiloOidList", oids)(json4sEncoderOf[List[String]], Http.parseJson[List[User]])
+  def käyttäjänOrganisaatiot(oid: String, käyttöoikeusRyhmä: Int): Observable[List[String]] = {
+    http(s"/authentication-service/resources/s2s/flatorgs/${oid}/${käyttöoikeusRyhmä}")(Http.parseJson[List[String]])
+  }
+
   def lisääOrganisaatio(henkilöOid: String, organisaatioOid: String, nimike: String) = {
     http.put("/authentication-service/resources/henkilo/" + henkilöOid + "/organisaatiohenkilo", List(
       LisääOrganisaatio(organisaatioOid, nimike)
@@ -30,11 +38,17 @@ class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances {
     http.post ("/authentication-service/resources/salasana/" + henkilöOid, salasana)(EntityEncoder.stringEncoder(Charset.`UTF-8`)
       .withContentType(`Content-Type`(MediaType.`application/json`)), Http.unitDecoder) // <- yes, the API expects media type application/json, but consumes inputs as text/plain
   }
+  def findOrCreate(createUserInfo: CreateUser) = {
+    val request: Request = Request(uri = http.uriFromString("/authentication-service/resources/s2s/tor/henkilo"), method = Method.POST)
+    http(request.withBody(createUserInfo)(json4sEncoderOf[CreateUser])) {
+      case (200, data, _) => Right(Json.read[User](data))
+      case (400, error, _) => Left(TorErrorCategory.badRequest.validation.henkilötiedot.virheelliset(error))
+      case (status, text, uri) => throw new HttpStatusException(status, text, uri)
+    }.run
+  }
   def create(createUserInfo: CreateUser): Either[HttpStatus, String] = {
     val request: Request = Request(uri = http.uriFromString("/authentication-service/resources/henkilo"), method = Method.POST)
-    val task: Task[Request] = request.withBody(createUserInfo)(json4sEncoderOf[CreateUser])
-
-    http(task, request) {
+    http(request.withBody(createUserInfo)(json4sEncoderOf[CreateUser])) {
       case (200, oid, _) => Right(oid)
       case (400, "socialsecuritynr.already.exists", _) => Left(TorErrorCategory.conflict.hetu("Henkilötunnus on jo olemassa"))
       case (400, error, _) => Left(TorErrorCategory.badRequest.validation.henkilötiedot.virheelliset(error))

@@ -11,12 +11,18 @@ trait OrganisaatioRepository {
   /**
    * Organisation hierarchy containing children of requested org. Parents are not included.
    */
-  def getOrganisaatioHierarkia(oid: String): Option[OrganisaatioHierarkia] =  getOrganisaatioHierarkiaIncludingParents(oid).flatMap(_.find(oid))
+  def getOrganisaatioHierarkia(oid: String): Option[OrganisaatioHierarkia] = getOrganisaatioHierarkiaIncludingParents(oid).flatMap(_.find(oid))
   /**
    * Organisation hierarchy containing parents and children of requested org.
    */
   def getOrganisaatioHierarkiaIncludingParents(oid: String): Option[OrganisaatioHierarkia]
   def getOrganisaatio(oid: String): Option[OrganisaatioWithOid] = getOrganisaatioHierarkia(oid).map(_.toOrganisaatio)
+  def getChildOids(oid: String): Option[Set[String]] = getOrganisaatioHierarkia(oid).map { hierarkia =>
+    def flatten(orgs: List[OrganisaatioHierarkia]): List[OrganisaatioHierarkia] = {
+      orgs.flatMap { org => org :: flatten(org.children) }
+    }
+    flatten(List(hierarkia)).map(_.oid).toSet
+  }
 }
 
 object OrganisaatioRepository {
@@ -56,7 +62,5 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu) e
 }
 
 case class OrganisaatioHakuTulos(organisaatiot: List[OrganisaatioPalveluOrganisaatio])
-case class OrganisaatioPalveluOrganisaatio(oid: String, nimi: Map[String, String], oppilaitosKoodi: Option[String], organisaatiotyypit: List[String], children: List[OrganisaatioPalveluOrganisaatio]) {
-
-}
+case class OrganisaatioPalveluOrganisaatio(oid: String, nimi: Map[String, String], oppilaitosKoodi: Option[String], organisaatiotyypit: List[String], children: List[OrganisaatioPalveluOrganisaatio])
 

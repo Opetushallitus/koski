@@ -35,7 +35,7 @@ object Tables {
   val OpiskeluOikeusHistoria = TableQuery[OpiskeluOikeusHistoryTable]
 
   def OpiskeluOikeudetWithAccessCheck(implicit user: TorUser): Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = {
-    val oids = user.userOrganisations.oids
+    val oids = user.organisationOids.toList
     for {
       oo <- OpiskeluOikeudet
       if oo.data.#>>(List("oppilaitos", "oid")) inSetBind oids

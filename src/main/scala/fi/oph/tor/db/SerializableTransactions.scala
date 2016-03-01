@@ -18,16 +18,18 @@ trait SerializableTransactions extends Logging with Futures with GlobalExecution
 
     This mechanism is tested with Gatling simulation "UpdateSimulation" which causes concurrent updates to the same row.
     */
-    def tryDo: Result = {
+    def tryDo(iteration: Int): Result = {
       try {
         await(db.run(withTransactionIsolation))
       } catch {
         case e:SQLException if e.getSQLState == "40001" =>
           // PostgreSQL throws this when optimistic locking fails. Retry is the thing to do here.
-          logger.warn(description + " epäonnistui samanaikaisten muutoksien vuoksi. Yritetään uudelleen.")
-          tryDo
+          val waitTime = iteration * iteration // quadratic backoff time
+          logger.warn(description + " epäonnistui samanaikaisten muutoksien vuoksi. Yritetään uudelleen " + waitTime + " millisekunnin päästä.")
+          Thread.sleep(waitTime)
+          tryDo(iteration + 1)
       }
     }
-    tryDo
+    tryDo(1)
   }
 }

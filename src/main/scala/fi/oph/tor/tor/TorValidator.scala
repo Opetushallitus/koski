@@ -8,24 +8,35 @@ import fi.oph.tor.schema.{KoodiViite, OpiskeluOikeus, Suoritus, TorOppija}
 import fi.oph.tor.tor.DateValidation._
 import fi.oph.tor.toruser.TorUser
 import fi.oph.tor.tutkinto.{TutkintoRakenneValidator, TutkintoRepository}
-import org.json4s.JValue
+import fi.oph.tor.util.Timing
+import org.json4s.{JArray, JValue}
 
-class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: KoodistoViitePalvelu, val organisaatioRepository: OrganisaatioRepository) {
+class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: KoodistoViitePalvelu, val organisaatioRepository: OrganisaatioRepository) extends Timing {
   def validateAsJson(oppija: TorOppija)(implicit user: TorUser): Either[HttpStatus, TorOppija] = {
     extractAndValidate(Json.toJValue(oppija))
   }
 
+  def extractAndValidateBatch(parsedJson: JArray)(implicit user: TorUser): List[Either[HttpStatus, TorOppija]] = {
+    timed("extractAndValidateBatch") {
+      parsedJson.arr.par.map { row =>
+        extractAndValidate(row.asInstanceOf[JValue])
+      }.toList
+    }
+  }
+
   def extractAndValidate(parsedJson: JValue)(implicit user: TorUser): Either[HttpStatus, TorOppija] = {
-    TorJsonSchemaValidator.jsonSchemaValidate(parsedJson) match {
-      case status if status.isOk =>
-        val extractionResult: Either[HttpStatus, TorOppija] = ValidatingAndResolvingExtractor.extract[TorOppija](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository))
-        extractionResult.right.flatMap { oppija =>
-          validateOpiskeluoikeudet(oppija.opiskeluoikeudet) match {
-            case status if status.isOk => Right(oppija)
-            case status => Left(status)
+    timed("extractAndValidate") {
+      TorJsonSchemaValidator.jsonSchemaValidate(parsedJson) match {
+        case status if status.isOk =>
+          val extractionResult: Either[HttpStatus, TorOppija] = ValidatingAndResolvingExtractor.extract[TorOppija](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository))
+          extractionResult.right.flatMap { oppija =>
+            validateOpiskeluoikeudet(oppija.opiskeluoikeudet) match {
+              case status if status.isOk => Right(oppija)
+              case status => Left(status)
+            }
           }
-        }
-      case status => Left(status)
+        case status => Left(status)
+      }
     }
   }
 
@@ -39,7 +50,7 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
   }
 
   private def validateOpiskeluOikeus(opiskeluOikeus: OpiskeluOikeus)(implicit user: TorUser): HttpStatus = {
-    HttpStatus.validate(user.userOrganisations.hasReadAccess(opiskeluOikeus.oppilaitos)) { TorErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid) }
+    HttpStatus.validate(user.hasReadAccess(opiskeluOikeus.oppilaitos)) { TorErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid) }
       .then { HttpStatus.fold(
       validateDateOrder(("alkamispäivä", opiskeluOikeus.alkamispäivä), ("päättymispäivä", opiskeluOikeus.päättymispäivä)),
       validateDateOrder(("alkamispäivä", opiskeluOikeus.alkamispäivä), ("arvioituPäättymispäivä", opiskeluOikeus.arvioituPäättymispäivä)),

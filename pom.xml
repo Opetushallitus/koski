@@ -21,8 +21,16 @@
     <dependency>
       <groupId>com.github.Opetushallitus.scala-utils</groupId>
       <artifactId>scala-cas_2.11</artifactId>
-      <version>6ddea19a5d562fe0a3c6532934dfbf4bd8b7023b</version>
+      <version>a24390fbc92984b9be5559b102d7a702a285ee69</version>
     </dependency>
+    <!-- for local development -->
+    <!--
+    <dependency>
+      <groupId>fi.vm.sade</groupId>
+      <artifactId>scala-cas_2.11</artifactId>
+      <version>10</version>
+    </dependency>
+    -->
     <dependency>
       <groupId>com.github.Opetushallitus</groupId>
       <artifactId>scala-security</artifactId>
@@ -132,7 +140,7 @@
     <dependency>
       <groupId>org.http4s</groupId>
       <artifactId>http4s-blaze-client_2.11</artifactId>
-      <version>0.10.0</version>
+      <version>0.12.1</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>

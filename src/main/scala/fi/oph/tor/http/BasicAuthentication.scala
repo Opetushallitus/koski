@@ -1,7 +1,7 @@
 package fi.oph.tor.http
 
 import com.unboundid.util.Base64
-import org.http4s.{Header, Request}
+import org.http4s.{Service, Header, Request}
 import org.http4s.client.Client
 
 object BasicAuthentication {
@@ -11,8 +11,15 @@ object BasicAuthentication {
   }
 }
 
-class ClientWithBasicAuthentication(wrappedClient: Client, username: String, password: String) extends Client {
-  val (name, value) = BasicAuthentication.basicAuthHeader(username, password)
-  override def shutdown() = wrappedClient.shutdown
-  override def prepare(req: Request) = wrappedClient.prepare(req.copy(headers = req.headers ++ List(Header(name, value))))
+object ClientWithBasicAuthentication {
+  def apply(wrappedClient: Client, username: String, password: String): Client = {
+    val (name, value) = BasicAuthentication.basicAuthHeader(username, password)
+
+    def open(req: Request) = wrappedClient.open(req.copy(headers = req.headers ++ List(Header(name, value))))
+
+    Client(
+      open = Service.lift(open _),
+      shutdown = wrappedClient.shutdown
+    )
+  }
 }

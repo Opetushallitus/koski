@@ -27,8 +27,8 @@ class SchemaDocumentationServlet(koodistoPalvelu: KoodistoPalvelu) extends Error
     val versio = params("version") match {
       case "latest" =>
         koodistoPalvelu.getLatestVersion(koodistoUri)
-      case x =>
-        Some(KoodistoViite(koodistoUri, x.toInt))
+      case _ =>
+        Some(KoodistoViite(koodistoUri, getIntegerParam("version")))
     }
     val result: Option[List[KoodistoKoodi]] = versio.flatMap(koodistoPalvelu.getKoodistoKoodit)
     renderOption(TorErrorCategory.notFound.koodistoaEiLöydy)(result, pretty = true)

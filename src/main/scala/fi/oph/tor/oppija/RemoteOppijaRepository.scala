@@ -1,12 +1,17 @@
 package fi.oph.tor.oppija
 
 import fi.oph.tor.henkilo._
+import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.koodisto.KoodistoViitePalvelu
-import fi.oph.tor.schema.FullHenkilö
+import fi.oph.tor.schema.{FullHenkilö, Henkilö, NewHenkilö}
 
 class RemoteOppijaRepository(henkilöPalveluClient: AuthenticationServiceClient, koodisto: KoodistoViitePalvelu) extends OppijaRepository {
   override def findOppijat(query: String): List[FullHenkilö] = {
     henkilöPalveluClient.search(query).results.map(toOppija)
+  }
+
+  override def findOrCreate(henkilö: NewHenkilö): Either[HttpStatus, Henkilö.Oid] =  {
+    henkilöPalveluClient.findOrCreate(CreateUser.oppija(henkilö.hetu, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi)).right.map(_.oidHenkilo)
   }
 
   override def findByOid(oid: String): Option[FullHenkilö] = henkilöPalveluClient.findByOid(oid).map(toOppija)

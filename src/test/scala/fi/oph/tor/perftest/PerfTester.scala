@@ -1,15 +1,16 @@
 package fi.oph.tor.perftest
 
 import fi.oph.tor.db.{Futures, GlobalExecutionContext}
-import fi.oph.tor.util.Timer
+import fi.oph.tor.util.Timing
+
 import scala.collection.immutable.IndexedSeq
 import scala.concurrent.Future
 import scala.concurrent.duration._
 
-object PerfTester extends App with TestApp with GlobalExecutionContext with Futures {
+object PerfTester extends App with TestApp with GlobalExecutionContext with Futures with Timing {
   val blockSize = 100
   val blockCount = 1
-  Timer.timed("Haettu " + (blockSize * blockCount) + " suoritusta") {
+  timed("Haettu " + (blockSize * blockCount) + " suoritusta") {
 
     val futures: IndexedSeq[Future[Int]] = for (i <- 0 to blockCount-1) yield {
       fetch(i * blockSize, blockSize).map(_ => blockSize)
