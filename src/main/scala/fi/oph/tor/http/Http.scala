@@ -9,7 +9,7 @@ import concurrent.duration._
 import scalaz.concurrent.Task
 
 object Http extends Logging {
-  def newClient = blaze.PooledHttp1Client()
+  def newClient = blaze.PooledHttp1Client(maxTotalConnections = 40)
 
   def expectSuccess(status: Int, text: String, request: Request): Unit = (status, text) match {
     case (status, text) if status < 300 && status >= 200 =>
