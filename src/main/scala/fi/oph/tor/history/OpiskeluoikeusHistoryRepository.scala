@@ -6,18 +6,17 @@ import com.github.fge.jsonpatch.JsonPatch
 import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.db.Tables._
 import fi.oph.tor.db.TorDatabase._
-import fi.oph.tor.db.{OpiskeluOikeusStoredDataDeserializer, Futures, GlobalExecutionContext, OpiskeluOikeusHistoryRow}
-import fi.oph.tor.http.{TorErrorCategory, HttpStatus}
-import fi.oph.tor.json.Json
+import fi.oph.tor.db.{Futures, OpiskeluOikeusHistoryRow, OpiskeluOikeusStoredDataDeserializer}
+import fi.oph.tor.http.{HttpStatus, TorErrorCategory}
+import fi.oph.tor.log.Logging
 import fi.oph.tor.schema.OpiskeluOikeus
 import fi.oph.tor.toruser.TorUser
-import fi.oph.tor.log.Logging
 import org.json4s._
 import org.json4s.jackson.JsonMethods
 import slick.dbio.DBIOAction
 import slick.dbio.Effect.Write
 
-case class OpiskeluoikeusHistoryRepository(db: DB) extends Futures with GlobalExecutionContext with Logging with JsonMethods {
+case class OpiskeluoikeusHistoryRepository(db: DB) extends Futures with Logging with JsonMethods {
   def findByOpiskeluoikeusId(id: Int, maxVersion: Int = Int.MaxValue)(implicit user: TorUser): Option[Seq[OpiskeluOikeusHistoryRow]] = {
     val query = OpiskeluOikeudetWithAccessCheck.filter(_.id === id)
       .join(OpiskeluOikeusHistoria.filter(_.versionumero <= maxVersion))

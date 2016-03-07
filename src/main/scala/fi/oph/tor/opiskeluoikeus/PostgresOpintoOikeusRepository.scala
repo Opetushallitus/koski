@@ -1,6 +1,5 @@
 package fi.oph.tor.opiskeluoikeus
 
-import com.github.fge.jsonpatch.diff.JsonDiff
 import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.db.Tables._
 import fi.oph.tor.db.TorDatabase.DB
@@ -15,14 +14,13 @@ import fi.oph.tor.schema.{FullHenkilö, OpiskeluOikeus}
 import fi.oph.tor.tor.{OpiskeluoikeusPäättynytAikaisintaan, OpiskeluoikeusPäättynytViimeistään, QueryFilter, TutkinnonTila}
 import fi.oph.tor.toruser.TorUser
 import fi.oph.tor.util.ReactiveStreamsToRx
-import org.json4s.jackson.JsonMethods
-import org.json4s.{JArray, JValue}
+import org.json4s.JArray
 import rx.lang.scala.Observable
 import slick.dbio
 import slick.dbio.Effect.{Read, Transactional, Write}
 import slick.dbio.NoStream
 
-class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: OpiskeluoikeusHistoryRepository) extends OpiskeluOikeusRepository with Futures with GlobalExecutionContext with Logging with SerializableTransactions {
+class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: OpiskeluoikeusHistoryRepository) extends OpiskeluOikeusRepository with GlobalExecutionContext with Futures with Logging with SerializableTransactions {
   override def filterOppijat(oppijat: Seq[FullHenkilö])(implicit user: TorUser) = {
     val query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = for {
       oo <- OpiskeluOikeudetWithAccessCheck

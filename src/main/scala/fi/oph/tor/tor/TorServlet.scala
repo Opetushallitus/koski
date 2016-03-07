@@ -13,13 +13,14 @@ import fi.oph.tor.schema.Henkilö.Oid
 import fi.oph.tor.schema.{Henkilö, HenkilöWithOid, TorOppija}
 import fi.oph.tor.servlet.{ErrorHandlingServlet, InvalidRequestException, NoCache}
 import fi.oph.tor.toruser.{TorUser, RequiresAuthentication, UserOrganisationsRepository}
-import fi.oph.tor.util.Timing
+import fi.oph.tor.util.{Pools, Timing}
 import fi.vm.sade.security.ldap.DirectoryClient
 import org.json4s.JValue
 import org.json4s.JsonAST.JArray
 import org.scalatra.{FutureSupport, GZipSupport}
 import rx.lang.scala.Observable
-
+import scala.collection.parallel.ForkJoinTaskSupport
+import scala.collection.parallel.immutable.ParSeq
 import scala.concurrent.Future
 import scala.concurrent.duration.Duration
 

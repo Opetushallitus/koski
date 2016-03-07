@@ -12,7 +12,7 @@ import fi.oph.tor.toruser.MockUsers
 import fi.oph.tor.util.Timing
 import slick.dbio.DBIO
 
-class TorDatabaseFixtureCreator(database: TorDatabase, repository: OpiskeluOikeusRepository, oppijaRepository: OppijaRepository, validator: TorValidator) extends Futures with GlobalExecutionContext with Timing {
+class TorDatabaseFixtureCreator(database: TorDatabase, repository: OpiskeluOikeusRepository, oppijaRepository: OppijaRepository, validator: TorValidator) extends Futures with Timing {
   def resetFixtures: Unit = timed("resetFixtures", 10) {
     if (database.config.isRemote) throw new IllegalStateException("Trying to reset fixtures in remote database")
     implicit val user = MockUsers.kalle.asTorUser

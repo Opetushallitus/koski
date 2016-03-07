@@ -12,10 +12,12 @@ import fi.oph.tor.tor.{TodennetunOsaamisenRekisteri, TorServlet, TorValidator}
 import fi.oph.tor.toruser.{AuthenticationServlet, UserOrganisationsRepository}
 import fi.oph.tor.tutkinto.TutkintoServlet
 import fi.oph.tor.log.Logging
+import fi.oph.tor.util.Pools
 import org.scalatra._
 
 class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionContext with Futures {
   override def init(context: ServletContext) {
+    Pools.init
     val configOverrides: Map[String, String] = Option(context.getAttribute("tor.overrides").asInstanceOf[Map[String, String]]).getOrElse(Map.empty)
     val application = TorApplication(configOverrides)
     if (application.config.getBoolean("koodisto.create")) {

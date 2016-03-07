@@ -1,20 +1,19 @@
 package fi.oph.tor.cache
 
 import java.util.concurrent.Callable
-import java.util.concurrent.Executors.newFixedThreadPool
 import java.util.concurrent.TimeUnit.SECONDS
 
 import com.google.common.cache.{CacheBuilder, CacheLoader, LoadingCache}
 import com.google.common.util.concurrent.MoreExecutors.listeningDecorator
 import com.google.common.util.concurrent.{ListenableFuture, UncheckedExecutionException}
 import fi.oph.tor.cache.CachingProxy.executorService
-import fi.oph.tor.util.{Invocation, Proxy}
 import fi.oph.tor.log.Logging
+import fi.oph.tor.util.{Invocation, Pools, Proxy}
 
 import scala.reflect.ClassTag
 
 object CachingProxy {
-  val executorService = listeningDecorator(newFixedThreadPool(10))
+  val executorService = listeningDecorator(Pools.globalPool)
 
   def apply[S <: AnyRef](strategy: CachingStrategy, service: S)(implicit tag: ClassTag[S]) = {
     Proxy.createProxy[S](service, { invocation =>

@@ -1,6 +1,6 @@
 package fi.oph.tor.jettylauncher
 
-import fi.oph.tor.util.PortChecker
+import fi.oph.tor.util.{Pools, PortChecker}
 import org.eclipse.jetty.server.handler.{ContextHandler, HandlerList, ResourceHandler}
 import org.eclipse.jetty.server.{Server, ServerConnector, Slf4jRequestLog}
 import org.eclipse.jetty.util.thread.QueuedThreadPool
@@ -12,7 +12,7 @@ object JettyLauncher extends App {
 }
 
 class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) {
-  lazy val threadPool = new QueuedThreadPool(20, 10);
+  lazy val threadPool = new QueuedThreadPool(Pools.jettyThreads, 10);
   lazy val server = new Server(threadPool)
   lazy val requestLog = new Slf4jRequestLog()
   server.setRequestLog(requestLog);

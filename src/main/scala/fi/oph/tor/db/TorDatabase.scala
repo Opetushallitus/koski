@@ -3,7 +3,7 @@ package fi.oph.tor.db
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigValueFactory._
 import fi.oph.tor.log.Logging
-import fi.oph.tor.util.PortChecker
+import fi.oph.tor.util.{Pools, PortChecker}
 import org.flywaydb.core.Flyway
 import slick.driver.PostgresDriver
 import slick.driver.PostgresDriver.api._
@@ -18,7 +18,9 @@ object TorDatabase {
     val port: Int = c.getInt("db.port")
     val dbName: String = c.getString("db.name")
 
-    val config = c.getConfig("db").withValue("url", fromAnyRef("jdbc:postgresql://"+host+":"+port+"/"+dbName))
+    val config = c.getConfig("db")
+      .withValue("url", fromAnyRef("jdbc:postgresql://"+host+":"+port+"/"+dbName))
+      .withValue("numThreads", fromAnyRef(Pools.dbThreads))
 
     val password: String = config.getString("password")
     val user: String = config.getString("user")

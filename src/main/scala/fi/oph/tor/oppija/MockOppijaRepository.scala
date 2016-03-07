@@ -40,7 +40,7 @@ class MockOppijat(private var oppijat: List[FullHenkilö] = Nil) {
   }
 }
 
-class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with Futures with GlobalExecutionContext {
+class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with Futures {
   private var oppijat = new MockOppijat(MockOppijat.defaultOppijat)
 
   override def findOppijat(query: String) = {
