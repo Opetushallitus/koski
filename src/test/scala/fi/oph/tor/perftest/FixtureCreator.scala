@@ -3,6 +3,7 @@ package fi.oph.tor.perftest
 import java.util.concurrent.{ExecutorService, Executors, TimeUnit}
 
 import fi.oph.tor.http.Http
+import fi.oph.tor.http.Http.runTask
 import fi.oph.tor.json.Json
 import fi.oph.tor.perftest.PerfTestData.opiskeluoikeudet
 import fi.oph.tor.schema.{Henkilö, OpiskeluOikeus, TorOppija}
@@ -49,7 +50,7 @@ object FixtureCreator extends App with TestApp {
   def nextHetu = {
     hetut.synchronized {
       if(hetut.isEmpty) {
-        hetut.pushAll(Http("http://www.telepartikkeli.net/tunnusgeneraattori/api")("/generoi/hetu/1000")(Http.parseJson[List[String]]).run)
+        hetut.pushAll(runTask(Http("http://www.telepartikkeli.net/tunnusgeneraattori/api")("/generoi/hetu/1000")(Http.parseJson[List[String]])))
       }
       hetut.pop()
     }

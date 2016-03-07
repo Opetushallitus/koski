@@ -3,6 +3,7 @@ package fi.oph.tor.henkilo
 import java.time.{LocalDate, ZoneId}
 
 import com.typesafe.config.Config
+import fi.oph.tor.http.Http.runTask
 import fi.oph.tor.http._
 import fi.oph.tor.json.Json
 import fi.oph.tor.json.Json._
@@ -17,7 +18,7 @@ import rx.lang.scala.Observable
 import scalaz.concurrent.Task
 
 class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances with Timing {
-  def search(query: String): UserQueryResult = http("/authentication-service/resources/henkilo?no=true&count=0&q=" + query)(Http.parseJson[UserQueryResult]).run
+  def search(query: String): UserQueryResult = runTask(http("/authentication-service/resources/henkilo?no=true&count=0&q=" + query)(Http.parseJson[UserQueryResult]))
 
 
   def findByOid(id: String): Option[User] = findByOids(List(id)).headOption
@@ -40,20 +41,20 @@ class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances wit
   }
   def findOrCreate(createUserInfo: CreateUser) = {
     val request: Request = Request(uri = http.uriFromString("/authentication-service/resources/s2s/tor/henkilo"), method = Method.POST)
-    http(request.withBody(createUserInfo)(json4sEncoderOf[CreateUser])) {
+    runTask(http(request.withBody(createUserInfo)(json4sEncoderOf[CreateUser])) {
       case (200, data, _) => Right(Json.read[User](data))
       case (400, error, _) => Left(TorErrorCategory.badRequest.validation.henkilötiedot.virheelliset(error))
       case (status, text, uri) => throw new HttpStatusException(status, text, uri)
-    }.run
+    }) // TODO: use runFor instead (all occurrences)
   }
   def create(createUserInfo: CreateUser): Either[HttpStatus, String] = {
     val request: Request = Request(uri = http.uriFromString("/authentication-service/resources/henkilo"), method = Method.POST)
-    http(request.withBody(createUserInfo)(json4sEncoderOf[CreateUser])) {
+    runTask(http(request.withBody(createUserInfo)(json4sEncoderOf[CreateUser])) {
       case (200, oid, _) => Right(oid)
       case (400, "socialsecuritynr.already.exists", _) => Left(TorErrorCategory.conflict.hetu("Henkilötunnus on jo olemassa"))
       case (400, error, _) => Left(TorErrorCategory.badRequest.validation.henkilötiedot.virheelliset(error))
       case (status, text, uri) => throw new HttpStatusException(status, text, uri)
-    }.run
+    })
   }
   def syncLdap(henkilöOid: String) = {
     http("/authentication-service/resources/ldap/" + henkilöOid)(Http.expectSuccess)

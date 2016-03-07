@@ -1,10 +1,11 @@
 package fi.oph.tor.http
 
-import fi.oph.tor.http.Http.Decode
+import fi.oph.tor.http.Http.{runTask, Decode}
 import fi.oph.tor.json.Json
 import org.http4s._
 import org.http4s.client.{Client, blaze}
 import fi.oph.tor.log.Logging
+import concurrent.duration._
 import scalaz.concurrent.Task
 
 object Http extends Logging {
@@ -53,6 +54,11 @@ object Http extends Logging {
     Uri.fromString(uri).toOption.get
   }
 
+  // Http task runner: runs at most 2 minutes. We must avoid using the timeout-less run method, that may block forever.
+  def runTask[A](task: Task[A]): A = {
+    task.runFor(2 minutes)
+  }
+
   type Decode[ResultType] = (Int, String, Request) => ResultType
 }
 
@@ -60,11 +66,11 @@ case class Http(root: String, client: Client = Http.newClient) extends Logging {
   def uriFromString(relativePath: String) = Http.uriFromString(root + relativePath)
 
   def apply[ResultType](request: Request)(decode: Decode[ResultType]): Task[ResultType] = {
-    runRequest(request)(decode)
+    processRequest(request)(decode)
   }
 
   def apply[ResultType](requestTask: Task[Request])(decode: Decode[ResultType]): Task[ResultType] = {
-    requestTask.flatMap(request => runRequest(request)(decode))
+    requestTask.flatMap(request => processRequest(request)(decode))
   }
 
   def apply[ResultType](uri: Uri)(decode: Decode[ResultType]): Task[ResultType] = {
@@ -86,12 +92,12 @@ case class Http(root: String, client: Client = Http.newClient) extends Logging {
   def send[I <: AnyRef, O <: Any](path: Uri, method: Method, entity: I)(implicit encode: EntityEncoder[I], decode: Decode[O]): O = {
     val request: Request = Request(uri = path, method = method)
     val requestTask: Task[Request] = request.withBody(entity)
-    apply(requestTask)(decode).run
+    runTask(apply(requestTask)(decode))
   }
 
-  private def runRequest[ResultType](request: Request)(decoder: (Int, String, Request) => ResultType): Task[ResultType] = {
+  private def processRequest[ResultType](request: Request)(decoder: (Int, String, Request) => ResultType): Task[ResultType] = {
     client.fetch(request) { response =>
-      response.as[String].map { text =>
+      response.as[String].map { text => // TODO: don't convert to string here
         decoder(response.status.code, text, request)
       }
     }

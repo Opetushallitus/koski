@@ -2,6 +2,7 @@ package fi.oph.tor.organisaatio
 
 import com.typesafe.config.Config
 import fi.oph.tor.cache.{CachingProxy, TorCache}
+import fi.oph.tor.http.Http.runTask
 import fi.oph.tor.http.{Http, VirkailijaHttpClient}
 import fi.oph.tor.koodisto.KoodistoViitePalvelu
 import fi.oph.tor.log.TimedProxy
@@ -57,7 +58,7 @@ abstract class JsonOrganisaatioRepository(koodisto: KoodistoViitePalvelu) extend
 
 class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu) extends JsonOrganisaatioRepository(koodisto) {
   def fetch(oid: String): OrganisaatioHakuTulos = {
-    http("/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=false&oid=" + oid)(Http.parseJson[OrganisaatioHakuTulos]).run
+    runTask(http("/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=false&oid=" + oid)(Http.parseJson[OrganisaatioHakuTulos]))
   }
 }
 
