@@ -14,7 +14,6 @@ postgres
 postgresql/data
 node_modules
 bundle.js
-npm-debug.log
 web/dist
 src/main/resources/*.conf
 src/test/scala/fi/oph/tor/ServiceTester.scala
@@ -22,5 +21,4 @@ src/test/resources/opiskeluoikeudet.txt
 /ignore
 PersonOids.scala
 scripts/forcedeploy.sh
-access.log
-tor.log
+*.log

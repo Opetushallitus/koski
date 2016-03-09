@@ -42,6 +42,11 @@
       <artifactId>scala-security</artifactId>
       <version>6d879ec81a518418f429cee7338585b168983b64</version>
     </dependency>
+    <dependency>
+      <groupId>fi.vm.sade</groupId>
+      <artifactId>auditlogger</artifactId>
+      <version>5.0.0-SNAPSHOT</version>
+    </dependency>
     <!-- external deps -->
     <dependency>
       <groupId>org.scala-lang</groupId>
