@@ -1,6 +1,13 @@
 package fi.oph.tor.log
 
+/**
+ *  Marker trait for Loggable objects: the expectation is that the toString method returns a loggable string
+ */
 trait Loggable {
+  /**
+   * Returns a log-safe string
+   */
+  def toString: String
 }
 
 object Loggable {
