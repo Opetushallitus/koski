@@ -17,26 +17,32 @@ import org.scalatra._
 
 class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionContext with Futures {
   override def init(context: ServletContext) {
-    Pools.init
-    val configOverrides: Map[String, String] = Option(context.getAttribute("tor.overrides").asInstanceOf[Map[String, String]]).getOrElse(Map.empty)
-    val application = TorApplication(configOverrides)
-    if (application.config.getBoolean("koodisto.create")) {
-      KoodistoCreator.createKoodistotFromMockData(application.config)
-    }
-    implicit val userRepository = UserOrganisationsRepository(application.config, application.organisaatioRepository)
+    try {
+      Pools.init
+      val configOverrides: Map[String, String] = Option(context.getAttribute("tor.overrides").asInstanceOf[Map[String, String]]).getOrElse(Map.empty)
+      val application = TorApplication(configOverrides)
+      if (application.config.getBoolean("koodisto.create")) {
+        KoodistoCreator.createKoodistotFromMockData(application.config)
+      }
+      implicit val userRepository = UserOrganisationsRepository(application.config, application.organisaatioRepository)
 
-    val rekisteri = new TodennetunOsaamisenRekisteri(application.oppijaRepository, application.opiskeluOikeusRepository)
-    context.mount(new TorServlet(rekisteri, userRepository, application.directoryClient, application.validator, application.historyRepository), "/api/oppija")
-    context.mount(new TorHistoryServlet(userRepository, application.directoryClient, application.historyRepository), "/api/opiskeluoikeus/historia")
-    context.mount(new AuthenticationServlet(application.directoryClient), "/user")
-    context.mount(new OppilaitosServlet(application.oppilaitosRepository, application.userRepository, application.directoryClient), "/api/oppilaitos")
-    context.mount(new TutkintoServlet(application.tutkintoRepository), "/api/tutkinto")
-    context.mount(new SchemaDocumentationServlet(application.koodistoPalvelu), "/documentation")
-    val indexHtml = StaticFileServlet.contentOf("web/static/index.html").get
-    context.mount(new SingleFileServlet(indexHtml, List(("/*", 404), ("/uusioppija", 200), ("/oppija/:oid", 200))), "/")
+      val rekisteri = new TodennetunOsaamisenRekisteri(application.oppijaRepository, application.opiskeluOikeusRepository)
+      context.mount(new TorServlet(rekisteri, userRepository, application.directoryClient, application.validator, application.historyRepository), "/api/oppija")
+      context.mount(new TorHistoryServlet(userRepository, application.directoryClient, application.historyRepository), "/api/opiskeluoikeus/historia")
+      context.mount(new AuthenticationServlet(application.directoryClient), "/user")
+      context.mount(new OppilaitosServlet(application.oppilaitosRepository, application.userRepository, application.directoryClient), "/api/oppilaitos")
+      context.mount(new TutkintoServlet(application.tutkintoRepository), "/api/tutkinto")
+      context.mount(new SchemaDocumentationServlet(application.koodistoPalvelu), "/documentation")
+      val indexHtml = StaticFileServlet.contentOf("web/static/index.html").get
+      context.mount(new SingleFileServlet(indexHtml, List(("/*", 404), ("/uusioppija", 200), ("/oppija/:oid", 200))), "/")
 
-    if (Fixtures.shouldUseFixtures(application.config)) {
-      context.mount(new FixtureServlet(application), "/fixtures")
+      if (Fixtures.shouldUseFixtures(application.config)) {
+        context.mount(new FixtureServlet(application), "/fixtures")
+      }
+    } catch {
+      case e: Throwable =>
+        logger.error("Error in server startup", e)
+        System.exit(1)
     }
   }
 
