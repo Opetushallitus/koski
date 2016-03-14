@@ -2,14 +2,16 @@ package fi.oph.tor.log
 
 import java.lang.reflect.{InvocationTargetException, UndeclaredThrowableException}
 import java.util.concurrent.ExecutionException
-import fi.oph.tor.http.HttpStatusException
-import org.scalatest.{Matchers, FreeSpec}
+
+import fi.oph.tor.http.{Http, HttpStatusException}
+import org.http4s.Request
+import org.scalatest.{FreeSpec, Matchers}
 
 class ExceptionLoggingSpec extends FreeSpec with Matchers {
   val renderer: LoggableThrowableRenderer = new LoggableThrowableRenderer()
 
   "Loggable exceptions" - {
-    val httpException = new HttpStatusException(500, "Server error", "GET", "/test")
+    val httpException = new HttpStatusException(500, "Server error", Request(uri = Http.uriFromString("/test")))
     val exceptionText = "fi.oph.tor.http.HttpStatusException: 500: Server error when requesting GET /test"
 
     "Stack traces are hidden" in {

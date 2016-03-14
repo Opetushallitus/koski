@@ -22,7 +22,7 @@ class KoodistoMuokkausPalvelu(username: String, password: String, virkailijaUrl:
     try {
       secureHttp.post("/koodisto-service/rest/codes", koodisto)(json4sEncoderOf[Koodisto], Http.unitDecoder)
     } catch {
-      case HttpStatusException(500, "error.codesgroup.not.found", _, _) =>
+      case HttpStatusException(500, "error.codesgroup.not.found", _) =>
         createKoodistoRyhmä(new KoodistoRyhmä(koodisto.codesGroupUri.replaceAll("http://", "")))
         createKoodisto(koodisto)
     }
@@ -40,7 +40,7 @@ class KoodistoMuokkausPalvelu(username: String, password: String, virkailijaUrl:
     try {
       secureHttp.post("/koodisto-service/rest/codesgroup/delete/" + ryhmä, Map("id" -> ryhmä.toString))(json4sEncoderOf[Map[String, String]], Http.unitDecoder)
     } catch {
-      case HttpStatusException(500, "error.codesgroup.not.found", _, _) => // ignore
+      case HttpStatusException(500, "error.codesgroup.not.found", _) => // ignore
     }
   }
 }
