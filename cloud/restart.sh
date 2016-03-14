@@ -18,7 +18,6 @@ export JAVA_OPTS="\
 -Dopintopolku.virkailija.username=$AUTHENTICATION_SERVICE_USERNAME \
 -Dopintopolku.virkailija.password=$AUTHENTICATION_SERVICE_PASSWORD \
 -Deperusteet.url=\"https://eperusteet.opintopolku.fi/eperusteet-service\" \
--Dkoodisto.virkailija.url=\"https://testi.virkailija.opintopolku.fi\" \
 "
 
 pkill java

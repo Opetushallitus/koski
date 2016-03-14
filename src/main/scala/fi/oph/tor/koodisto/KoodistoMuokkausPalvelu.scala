@@ -8,7 +8,7 @@ import fi.oph.tor.log.Logging
 
 object KoodistoMuokkausPalvelu {
   def apply(config: Config) = {
-    new KoodistoMuokkausPalvelu(config.getString("opintopolku.virkailija.username"), config.getString("opintopolku.virkailija.password"), config.getString("koodisto.virkailija.url"))
+    new KoodistoMuokkausPalvelu(config.getString("opintopolku.virkailija.username"), config.getString("opintopolku.virkailija.password"), config.getString("opintopolku.virkailija.url"))
   }
 }
 
