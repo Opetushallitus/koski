@@ -8,7 +8,7 @@ import fi.oph.tor.util.Timing
 import rx.lang.scala.Observable
 
 object UserOrganisationsRepository {
-  def apply(config: Config, organisaatioRepository: OrganisaatioRepository): UserOrganisationsRepository = {
+  def apply(config: Config, organisaatioRepository: OrganisaatioRepository) = {
     CachingProxy(TorCache.cacheStrategy, if (config.hasPath("opintopolku.virkailija.username")) {
       new RemoteUserOrganisationsRepository(AuthenticationServiceClient(config), organisaatioRepository, KäyttöoikeusRyhmät(config))
     } else {

@@ -1,5 +1,5 @@
 import javax.servlet.ServletContext
-
+import fi.oph.tor.cache.CacheServlet
 import fi.oph.tor.config.TorApplication
 import fi.oph.tor.db._
 import fi.oph.tor.documentation.SchemaDocumentationServlet
@@ -35,7 +35,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       context.mount(new SchemaDocumentationServlet(application.koodistoPalvelu), "/documentation")
       val indexHtml = StaticFileServlet.contentOf("web/static/index.html").get
       context.mount(new SingleFileServlet(indexHtml, List(("/*", 404), ("/uusioppija", 200), ("/oppija/:oid", 200))), "/")
-
+      context.mount(new CacheServlet(userRepository, application.directoryClient, application), "/cache")
       if (Fixtures.shouldUseFixtures(application.config)) {
         context.mount(new FixtureServlet(application), "/fixtures")
       }

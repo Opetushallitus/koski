@@ -8,21 +8,28 @@ import com.google.common.util.concurrent.MoreExecutors.listeningDecorator
 import com.google.common.util.concurrent.{ListenableFuture, UncheckedExecutionException}
 import fi.oph.tor.cache.CachingProxy.executorService
 import fi.oph.tor.log.Logging
+import fi.oph.tor.util.Proxy.ProxyHandler
 import fi.oph.tor.util.{Invocation, Pools, Proxy}
 
 import scala.reflect.ClassTag
 
+trait Cached {
+  def invalidateCache(): Unit
+}
+
 object CachingProxy {
   val executorService = listeningDecorator(Pools.globalPool)
 
-  def apply[S <: AnyRef](strategy: CachingStrategy, service: S)(implicit tag: ClassTag[S]) = {
-    Proxy.createProxy[S](service, { invocation =>
-      strategy.apply(invocation)
-    })
+  def apply[S <: AnyRef](strategy: CachingStrategy, service: S)(implicit tag: ClassTag[S]): S with Cached = {
+    val interfaces: Map[Class[_], (AnyRef, ProxyHandler)] = Map(
+      tag.runtimeClass.asInstanceOf[Class[S]] -> (service, { invocation => strategy.apply(invocation)}),
+      classOf[Cached] -> (strategy, { invocation => invocation.invoke })
+    )
+    Proxy.createMultiProxy(interfaces).asInstanceOf[S with Cached]
   }
 }
 
-trait CachingStrategy extends Function1[Invocation, AnyRef] {
+trait CachingStrategy extends Function1[Invocation, AnyRef] with Cached {
 }
 
 object CachingStrategy {
@@ -33,6 +40,8 @@ object CachingStrategy {
 
 object NoCache extends CachingStrategy {
   override def apply(invocation: Invocation) = invocation.invoke
+
+  override def invalidateCache() = {}
 }
 
 case class CacheAllRefresh(durationSeconds: Int, maxSize: Int) extends CachingStrategyBase(CacheAllCacheDetails(durationSeconds, maxSize, true))
@@ -51,6 +60,10 @@ abstract class CachingStrategyBase(cacheDetails: CacheDetails) extends CachingSt
       case e: UncheckedExecutionException if e.getCause.isInstanceOf[DoNotStoreException] => e.getCause.asInstanceOf[DoNotStoreException].value
       case DoNotStoreException(value) => value
     }
+  }
+
+  override def invalidateCache() = {
+    cache.invalidateAll
   }
 
   private val cache: LoadingCache[Invocation, AnyRef] = {

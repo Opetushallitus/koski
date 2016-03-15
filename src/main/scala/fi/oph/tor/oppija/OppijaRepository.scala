@@ -12,7 +12,7 @@ import fi.oph.tor.util.Invocation
 import fi.oph.tor.log.Logging
 
 object OppijaRepository {
-  def apply(config: Config, database: TorDatabase, koodistoViitePalvelu: KoodistoViitePalvelu): OppijaRepository = {
+  def apply(config: Config, database: TorDatabase, koodistoViitePalvelu: KoodistoViitePalvelu) = {
     CachingProxy(new OppijaRepositoryCachingStrategy, TimedProxy(if (config.hasPath("opintopolku.virkailija.username")) {
       new RemoteOppijaRepository(AuthenticationServiceClient(config), koodistoViitePalvelu)
     } else {
