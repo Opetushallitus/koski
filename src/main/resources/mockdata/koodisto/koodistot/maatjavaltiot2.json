@@ -1,0 +1,23 @@
+{
+  "koodistoUri" : "maatjavaltiot2",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Valtiot ja maat 2",
+    "kuvaus" : "Valtiot ja maat -luokitusta käytetään mm. väestötilastoissa henkilöiden kansallisuuden luokittamiseen.\nValtioiden ja maiden tunnukset perustuvat kansainväliseen ISO 3166 -standardiin (International Standard ISO 3166-1. Codes for the representation of names of countries and their subdivisions. Fifth edition. 1997.). Tunnusjärjestelmä sisältää yhteensä 243 alueyksikköä. Itsenäisten valtioiden lisäksi siihen kuuluu epäitsenäisiä maita, jotka ovat standardin mukaan siirtomaita tai muita geopoliittisesti merkittäviä alueita.\n \nSuomen standardisoimisliitto vahvistaa vastaavan kansallisen standardin SFS-ISO 3166 (Standardi SFS-ISO 3166. Maiden nimien tunnukset. Suomen standardisoimisliitto, 1998.). Tunnusjärjestelmään kuuluvat valtioiden ja maiden kolminumeroiset, kaksikirjaimiset sekä kolmikirjaimiset tunnukset.\n \nTilastojärjestelmissä suositellaan käytettäväksi ensisijaisesti kolminumeroista tunnusta, joka on YK:n tilastotoimiston antama. Kaksikirjaiminen tunnus on tarkoitettu yleiskäyttöön. Kolmikirjaimista tunnusta voidaan käyttää, kun halutaan helpottaa alueen tunnistamista ja lisätä havainnollisuutta. Kirjaintunnukset perustuvat lähinnä valtioiden ja maiden englanninkielisiin nimiin.\n \nValtioiden ja maiden nimistä käytetään ns. lyhyttä muotoa (vrt. Suomi, Suomen tasavalta). Suomenkieliset nimet perustuvat SFS-ISO 3166 -standardiin sekä Kotimaisten kielten tutkimuskeskuksen ohjeisiin. Ruotsinkieliset nimet perustuvat Kotimaisten kielten tutkimuskeskuksen ohjeisiin ja englanninkieliset ISO 3166-standardiin sekä Kotimaisten kielten tutkimuskeskuksen ohjeisiin.",
+    "kasite" : ""
+  }, {
+    "kieli" : "SV",
+    "nimi" : "maat ja valtiot 2",
+    "kuvaus" : "maat ja valtiot 2",
+    "kasite" : ""
+  }, {
+    "kieli" : "EN",
+    "nimi" : "maat ja valtiot 2",
+    "kuvaus" : "maat ja valtiot 2",
+    "kasite" : ""
+  } ],
+  "codesGroupUri" : "http://alueet",
+  "voimassaAlkuPvm" : "2013-01-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}

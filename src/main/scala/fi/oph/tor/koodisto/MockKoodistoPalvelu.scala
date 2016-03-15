@@ -26,7 +26,8 @@ object MockKoodistoPalvelu extends KoodistoPalvelu {
     "suorituksentila",
     "suoritustapa",
     "tutkintonimikkeet",
-    "tutkinnonosat"
+    "tutkinnonosat",
+    "maatjavaltiot2"
   )
 
   def getKoodistoKoodit(koodisto: KoodistoViite): Option[List[KoodistoKoodi]] = {

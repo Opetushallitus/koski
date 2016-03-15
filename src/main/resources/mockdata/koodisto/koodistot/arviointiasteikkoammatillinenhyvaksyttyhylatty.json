@@ -2,7 +2,7 @@
   "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
   "versio" : 1,
   "metadata" : [ {
-    "kieli" : "EN",
+    "kieli" : "FI",
     "nimi" : "Arviointiasteikko ammatillinen Hyväksytty/Hylätty",
     "kasite" : "arviointiasteikko"
   }, {
@@ -10,7 +10,7 @@
     "nimi" : "Arviointiasteikko ammatillinen Hyväksytty/Hylätty",
     "kasite" : "arvosana"
   }, {
-    "kieli" : "FI",
+    "kieli" : "EN",
     "nimi" : "Arviointiasteikko ammatillinen Hyväksytty/Hylätty",
     "kasite" : "arviointiasteikko"
   } ],

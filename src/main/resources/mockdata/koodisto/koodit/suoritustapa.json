@@ -3,13 +3,13 @@
   "koodiArvo" : "naytto",
   "metadata" : [ {
     "nimi" : "Näyttö",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Näyttö",
     "kieli" : "FI"
   }, {
     "nimi" : "Näyttö",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Näyttö",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -18,11 +18,11 @@
   "metadata" : [ {
     "nimi" : "Opetussuunnitelman mukainen",
     "lyhytNimi" : "ops",
-    "kieli" : "SV"
+    "kieli" : "EN"
   }, {
     "nimi" : "Opetussuunnitelman mukainen",
     "lyhytNimi" : "ops",
-    "kieli" : "EN"
+    "kieli" : "SV"
   }, {
     "nimi" : "Opetussuunnitelman mukainen",
     "lyhytNimi" : "ops",

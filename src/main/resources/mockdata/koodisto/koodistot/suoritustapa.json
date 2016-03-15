@@ -2,7 +2,7 @@
   "koodistoUri" : "suoritustapa",
   "versio" : 1,
   "metadata" : [ {
-    "kieli" : "FI",
+    "kieli" : "SV",
     "nimi" : "suoritustapa",
     "kuvaus" : "Tutkinnon tai tutkinnon osan suoritustapa"
   }, {
@@ -10,7 +10,7 @@
     "nimi" : "suoritustapa",
     "kuvaus" : "Tutkinnon tai tutkinnon osan suoritustapa"
   }, {
-    "kieli" : "SV",
+    "kieli" : "FI",
     "nimi" : "suoritustapa",
     "kuvaus" : "Tutkinnon tai tutkinnon osan suoritustapa"
   } ],

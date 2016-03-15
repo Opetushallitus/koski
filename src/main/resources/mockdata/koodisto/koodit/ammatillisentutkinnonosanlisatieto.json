@@ -1,24 +1,24 @@
 [ {
-  "koodiUri" : "ammatillisentutkinnonosanlisatieto_poikkeusarvioinnissa",
-  "koodiArvo" : "poikkeusarvioinnissa",
-  "metadata" : [ {
-    "nimi" : "Poikkeus arvioinnissa",
-    "kuvaus" : "Oppijan tutkinnon osan suorituksen tavassa on poikkeava arviointi. Tutkinnon osan osa-alueen, toinen kotimainen kieli, osaamistavoitteiden osalta on poikettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 21 §:n perusteella. Opiskelija on suorittanut toisen kotimaisen kielen osa-alueen tilalla xx osp äidinkielen osaamistavoitteita ja/tai xx osp vieraan kielen osaamistavoitteita ammatillisen perustutkinnon muodostumisesta annetun valtioneuvoston asetuksen (801/2014) 3 §:n perusteella.",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Poikkeus arvioinnissa",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "Poikkeus arvioinnissa",
-    "kieli" : "EN"
-  } ],
-  "versio" : 1
-}, {
   "koodiUri" : "ammatillisentutkinnonosanlisatieto_mukautettu",
   "koodiArvo" : "mukautettu",
   "metadata" : [ {
     "nimi" : "Arvioinnin mukauttaminen",
     "kuvaus" : "Mukauttaminen tarkoittaa ammattitaitovaatimusten ja osaamistavoitteiden sopeuttamista opiskelijan oppimisedellytysten mukaisiksi (tasolle). Koulutuksen järjestäjä laatii tutkinnon osalle tai osille opiskelijan henkilökohtaisiin tavoitteisiin pohjautuvat mukautetut ammattitaitovaatimukset tai osaamistavoitteet ja osaamisen arviointi (L 630/1998, muutos 246/2015, 19 a §). Mukautetut ammattitaitovaatimukset tai osaamistavoitteet ja arviointikriteerit laaditaan aina alle T1-tason. Opiskelijan osaaminen arvioidaan näiden mukautettujen ammattitaitovaatimusten ja osaamistavoitteiden arviointikriteerien mukaisesti, jolloin tutkintotodistukseen tulee mukautusmerkintä kyseisen tutkinnon osan kohdalle (M). .Erityisopetuksessa voidaan kuitenkin poiketa tutkinnon perusteista mukauttamalla ammattitaitovaatimuksia ja osaamistavoitteita sekä osaamisen arviointia siinä määrin, kuin se on opiskelijan henkilökohtaiset tavoitteet ja valmiudet huomioon ottaen välttämätöntä. (L 630/1998, 20 §, muutos 246/2015, 19 a §, A 811/1998, 8 §). Tutkinnon osan arvosanasta päättävät opetuksesta vastaava opettaja/opettajat siten, että kokonaisuus arvioidaan ja arvosana annetaan harkinnan mukaan ottaen huomioon mukautuksen laajuus ja niin, että se suhteutetaan tutkinnon osan muihin osa-alueisiin.",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisentutkinnonosanlisatieto_poikkeusarvioinnissa",
+  "koodiArvo" : "poikkeusarvioinnissa",
+  "metadata" : [ {
+    "nimi" : "Poikkeus arvioinnissa",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Poikkeus arvioinnissa",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Poikkeus arvioinnissa",
+    "kuvaus" : "Oppijan tutkinnon osan suorituksen tavassa on poikkeava arviointi. Tutkinnon osan osa-alueen, toinen kotimainen kieli, osaamistavoitteiden osalta on poikettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 21 §:n perusteella. Opiskelija on suorittanut toisen kotimaisen kielen osa-alueen tilalla xx osp äidinkielen osaamistavoitteita ja/tai xx osp vieraan kielen osaamistavoitteita ammatillisen perustutkinnon muodostumisesta annetun valtioneuvoston asetuksen (801/2014) 3 §:n perusteella.",
     "kieli" : "FI"
   } ],
   "versio" : 1

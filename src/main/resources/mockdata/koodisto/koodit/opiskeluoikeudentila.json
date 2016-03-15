@@ -1,4 +1,12 @@
 [ {
+  "koodiUri" : "opiskeluoikeudentila_keskeyttanyt",
+  "koodiArvo" : "keskeyttanyt",
+  "metadata" : [ {
+    "nimi" : "Keskeyttänyt",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "opiskeluoikeudentila_paattynyt",
   "koodiArvo" : "paattynyt",
   "metadata" : [ {
@@ -11,14 +19,6 @@
   "koodiArvo" : "aktiivinen",
   "metadata" : [ {
     "nimi" : "Aktiivinen",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "opiskeluoikeudentila_keskeyttanyt",
-  "koodiArvo" : "keskeyttanyt",
-  "metadata" : [ {
-    "nimi" : "Keskeyttänyt",
     "kieli" : "FI"
   } ],
   "versio" : 1

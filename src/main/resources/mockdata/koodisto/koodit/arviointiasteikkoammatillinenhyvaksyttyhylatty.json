@@ -1,17 +1,17 @@
 [ {
-  "koodiUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty_hyvaksytty",
-  "koodiArvo" : "Hyväksytty",
+  "koodiUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty_hylatty",
+  "koodiArvo" : "Hylätty",
   "metadata" : [ {
-    "nimi" : "Hyväksytty",
+    "nimi" : "Hylätty",
     "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
-  "koodiUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty_hylatty",
-  "koodiArvo" : "Hylätty",
+  "koodiUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty_hyvaksytty",
+  "koodiArvo" : "Hyväksytty",
   "metadata" : [ {
-    "nimi" : "Hylätty",
+    "nimi" : "Hyväksytty",
     "lyhytNimi" : "",
     "kieli" : "FI"
   } ],

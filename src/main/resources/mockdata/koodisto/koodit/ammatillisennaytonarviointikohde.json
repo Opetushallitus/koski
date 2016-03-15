@@ -1,38 +1,33 @@
-[
-  {
-    "koodiUri" : "ammatillisennaytonarviointikohde_1",
-    "koodiArvo" : "1",
-    "metadata" : [ {
-      "nimi" : "Työprosessin hallinta",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1
-  },
-  {
-    "koodiUri" : "ammatillisennaytonarviointikohde_2",
-    "koodiArvo" : "2",
-    "metadata" : [ {
-      "nimi" : "Työmenetelmien, -välineiden ja materiaalin hallinta",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1
-  },
-  {
-    "koodiUri" : "ammatillisennaytonarviointikohde_3",
-    "koodiArvo" : "3",
-    "metadata" : [ {
-      "nimi" : "Työn perustana olevan tiedon hallinta",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1
-  },
-  {
-    "koodiUri" : "ammatillisennaytonarviointikohde_4",
-    "koodiArvo" : "4",
-    "metadata" : [ {
-      "nimi" : "Elinikäisen oppimisen avaintaidot",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1
-  }
-]
+[ {
+  "koodiUri" : "ammatillisennaytonarviointikohde_2",
+  "koodiArvo" : "2",
+  "metadata" : [ {
+    "nimi" : "Työmenetelmien, -välineiden ja materiaalin hallinta",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisennaytonarviointikohde_1",
+  "koodiArvo" : "1",
+  "metadata" : [ {
+    "nimi" : "Työprosessin hallinta",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisennaytonarviointikohde_4",
+  "koodiArvo" : "4",
+  "metadata" : [ {
+    "nimi" : "Elinikäisen oppimisen avaintaidot",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisennaytonarviointikohde_3",
+  "koodiArvo" : "3",
+  "metadata" : [ {
+    "nimi" : "Työn perustana olevan tiedon hallinta",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+} ]

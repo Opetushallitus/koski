@@ -2,7 +2,7 @@
   "koodistoUri" : "arviointiasteikkoammatillinent1k3",
   "versio" : 1,
   "metadata" : [ {
-    "kieli" : "FI",
+    "kieli" : "SV",
     "nimi" : "Arviointiasteikko ammatillinen T1-K3",
     "kasite" : "arviointiasteikko"
   }, {
@@ -10,7 +10,7 @@
     "nimi" : "Arviointiasteikko ammatillinen T1-K3",
     "kasite" : "arvosana"
   }, {
-    "kieli" : "SV",
+    "kieli" : "FI",
     "nimi" : "Arviointiasteikko ammatillinen T1-K3",
     "kasite" : "arviointiasteikko"
   } ],

@@ -138,6 +138,15 @@
   } ],
   "versio" : 2
 }, {
+  "koodiUri" : "tutkintonimikkeet_20005",
+  "koodiArvo" : "20005",
+  "metadata" : [ {
+    "nimi" : "Metsäpalveluyrittäjä",
+    "lyhytNimi" : "Metsäpalveluyrittäjä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "tutkintonimikkeet_10089",
   "koodiArvo" : "10089",
   "metadata" : [ {
@@ -176,6 +185,15 @@
     "kieli" : "SV"
   } ],
   "versio" : 2
+}, {
+  "koodiUri" : "tutkintonimikkeet_20004",
+  "koodiArvo" : "20004",
+  "metadata" : [ {
+    "nimi" : "Metsätalousyrittäjä",
+    "lyhytNimi" : "Metsätalousyrittäjä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
 }, {
   "koodiUri" : "tutkintonimikkeet_10120",
   "koodiArvo" : "10120",
@@ -979,15 +997,6 @@
   } ],
   "versio" : 2
 }, {
-  "koodiUri" : "tutkintonimikkeet_01001",
-  "koodiArvo" : "01001",
-  "metadata" : [ {
-    "nimi" : "Välinehuoltaja",
-    "lyhytNimi" : "Välinehuoltaja (kokeilu)",
-    "kieli" : "FI"
-  } ],
-  "versio" : 2
-}, {
   "koodiUri" : "tutkintonimikkeet_10022",
   "koodiArvo" : "10022",
   "metadata" : [ {
@@ -998,6 +1007,15 @@
     "nimi" : "Plåtslagare-svetsare",
     "lyhytNimi" : "Plåtslagare-svetsare",
     "kieli" : "SV"
+  } ],
+  "versio" : 2
+}, {
+  "koodiUri" : "tutkintonimikkeet_01001",
+  "koodiArvo" : "01001",
+  "metadata" : [ {
+    "nimi" : "Välinehuoltaja",
+    "lyhytNimi" : "Välinehuoltaja (kokeilu)",
+    "kieli" : "FI"
   } ],
   "versio" : 2
 }, {
@@ -1339,19 +1357,6 @@
   } ],
   "versio" : 2
 }, {
-  "koodiUri" : "tutkintonimikkeet_10123",
-  "koodiArvo" : "10123",
-  "metadata" : [ {
-    "nimi" : "Sirkusartisti",
-    "lyhytNimi" : "Sirkusartisti",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Cirkusartist",
-    "lyhytNimi" : "Cirkusartist",
-    "kieli" : "SV"
-  } ],
-  "versio" : 2
-}, {
   "koodiUri" : "tutkintonimikkeet_10020",
   "koodiArvo" : "10020",
   "metadata" : [ {
@@ -1362,6 +1367,19 @@
     "nimi" : "Koneenasentaja",
     "lyhytNimi" : "Koneenasentaja",
     "kieli" : "FI"
+  } ],
+  "versio" : 2
+}, {
+  "koodiUri" : "tutkintonimikkeet_10123",
+  "koodiArvo" : "10123",
+  "metadata" : [ {
+    "nimi" : "Sirkusartisti",
+    "lyhytNimi" : "Sirkusartisti",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Cirkusartist",
+    "lyhytNimi" : "Cirkusartist",
+    "kieli" : "SV"
   } ],
   "versio" : 2
 }, {

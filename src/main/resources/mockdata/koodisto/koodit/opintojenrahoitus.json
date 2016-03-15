@@ -1,16 +1,8 @@
 [ {
-  "koodiUri" : "opintojenrahoitus_7",
-  "koodiArvo" : "7",
+  "koodiUri" : "opintojenrahoitus_1",
+  "koodiArvo" : "1",
   "metadata" : [ {
-    "nimi" : "Nuorten aikuisten osaamisohjelma",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "opintojenrahoitus_2",
-  "koodiArvo" : "2",
-  "metadata" : [ {
-    "nimi" : "Työvoimapoliittinen aikuiskoulutus (kansallinen rahoitus)",
+    "nimi" : "Valtionosuusrahoitteinen koulutus",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -23,10 +15,18 @@
   } ],
   "versio" : 1
 }, {
-  "koodiUri" : "opintojenrahoitus_1",
-  "koodiArvo" : "1",
+  "koodiUri" : "opintojenrahoitus_3",
+  "koodiArvo" : "3",
   "metadata" : [ {
-    "nimi" : "Valtionosuusrahoitteinen koulutus",
+    "nimi" : "Työvoimapoliittinen aikuiskoulutus (ESR-rahoitteinen)",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "opintojenrahoitus_2",
+  "koodiArvo" : "2",
+  "metadata" : [ {
+    "nimi" : "Työvoimapoliittinen aikuiskoulutus (kansallinen rahoitus)",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -39,10 +39,10 @@
   } ],
   "versio" : 1
 }, {
-  "koodiUri" : "opintojenrahoitus_3",
-  "koodiArvo" : "3",
+  "koodiUri" : "opintojenrahoitus_7",
+  "koodiArvo" : "7",
   "metadata" : [ {
-    "nimi" : "Työvoimapoliittinen aikuiskoulutus (ESR-rahoitteinen)",
+    "nimi" : "Nuorten aikuisten osaamisohjelma",
     "kieli" : "FI"
   } ],
   "versio" : 1

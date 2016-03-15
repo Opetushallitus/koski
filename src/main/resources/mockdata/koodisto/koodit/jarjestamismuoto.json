@@ -1,15 +1,4 @@
 [ {
-  "koodiUri" : "jarjestamismuoto_10",
-  "koodiArvo" : "10",
-  "metadata" : [ {
-    "nimi" : "Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Att ordna utbildningen som när-, distansundervisning eller på en arbetsplats",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1
-}, {
   "koodiUri" : "jarjestamismuoto_20",
   "koodiArvo" : "20",
   "metadata" : [ {
@@ -17,6 +6,17 @@
     "kieli" : "SV"
   }, {
     "nimi" : "Koulutuksen järjestäminen oppisopimuskoulutuksena",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "jarjestamismuoto_10",
+  "koodiArvo" : "10",
+  "metadata" : [ {
+    "nimi" : "Att ordna utbildningen som när-, distansundervisning eller på en arbetsplats",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Koulutuksen järjestäminen lähiopetuksena, etäopetuksena tai työpaikalla",
     "kieli" : "FI"
   } ],
   "versio" : 1

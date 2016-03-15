@@ -2,14 +2,14 @@
   "koodistoUri" : "osaamisala",
   "versio" : 3,
   "metadata" : [ {
-    "kieli" : "FI",
-    "nimi" : "osaamisala",
-    "kuvaus" : "osaamisala",
-    "kasite" : ""
-  }, {
     "kieli" : "SV",
     "nimi" : "kompetensområde",
     "kuvaus" : "kompetensområde",
+    "kasite" : ""
+  }, {
+    "kieli" : "FI",
+    "nimi" : "osaamisala",
+    "kuvaus" : "osaamisala",
     "kasite" : ""
   } ],
   "codesGroupUri" : "http://koulutuskoodistot",
