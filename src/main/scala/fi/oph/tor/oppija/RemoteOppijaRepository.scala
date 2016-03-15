@@ -22,10 +22,10 @@ class RemoteOppijaRepository(henkilöPalveluClient: AuthenticationServiceClient,
 
   private def toOppija(user: User) = FullHenkilö(user.oidHenkilo, user.hetu, user.etunimet, user.kutsumanimi, user.sukunimi, convertÄidinkieli(user.aidinkieli), convertKansalaisuus(user.kansalaisuus))
 
-  private def convertÄidinkieli(äidinkieli: Option[Äidinkieli]) = äidinkieli.flatMap(äidinkieli => koodisto.getKoodistoKoodiViite("kieli", äidinkieli.kieliKoodi.toUpperCase))
+  private def convertÄidinkieli(äidinkieli: Option[String]) = äidinkieli.flatMap(äidinkieli => koodisto.getKoodistoKoodiViite("kieli", äidinkieli.toUpperCase))
 
-  private def convertKansalaisuus(kansalaisuus: Option[List[Kansalaisuus]]) = {
-    kansalaisuus.flatMap(_.map(k => koodisto.getKoodistoKoodiViite("maatjavaltiot2", k.kansalaisuusKoodi)).flatten match {
+  private def convertKansalaisuus(kansalaisuus: Option[List[String]]) = {
+    kansalaisuus.flatMap(_.flatMap(kansalaisuus => koodisto.getKoodistoKoodiViite("maatjavaltiot2", kansalaisuus)) match {
       case Nil => None
       case xs => Some(xs)
     })

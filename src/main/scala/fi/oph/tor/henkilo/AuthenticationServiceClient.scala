@@ -74,7 +74,7 @@ object AuthenticationServiceClient {
 
 
 case class UserQueryResult(totalCount: Integer, results: List[User])
-case class User(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: String, aidinkieli: Option[Äidinkieli], kansalaisuus: Option[List[Kansalaisuus]])
+case class User(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: String, aidinkieli: Option[String], kansalaisuus: Option[List[String]])
 
 
 case class CreateUser(hetu: Option[String], sukunimi: String, etunimet: String, kutsumanimi: String, henkiloTyyppi: String, kayttajatiedot: Option[Käyttajatiedot])
@@ -96,6 +96,3 @@ case class Käyttöoikeusryhmä(ryhmaId: Long, organisaatioOid: String, tila: St
 case class LisääKäyttöoikeusryhmä(ryhmaId: Int, alkuPvm: String = "2015-12-04T11:08:13.042Z", voimassaPvm: String = "2024-12-02T01:00:00.000Z", selected: Boolean = true)
 
 case class LisääOrganisaatio(organisaatioOid: String, tehtavanimike: String, passivoitu: Boolean = false, newOne: Boolean = true)
-
-case class Äidinkieli(kieliKoodi: String)
-case class Kansalaisuus(kansalaisuusKoodi: String)
