@@ -18,7 +18,7 @@ class AuditLog(logger: Logger) {
   private class TorLogMessageBuilder(msg: AuditLogMessage) extends SimpleLogMessageBuilder[TorLogMessageBuilder] {
     def build = new AbstractLogMessage(mapping) {
       safePut(CommonLogMessageFields.OPERAATIO, msg.operation.toString)
-      safePut(TorMessageField.CLIENT_IP.toString, msg.user.clientIp)
+      safePut(TorMessageField.clientIp.toString, msg.user.clientIp)
     }
   }
 }
@@ -33,5 +33,5 @@ object TorOperation extends Enumeration {
 
 object TorMessageField extends Enumeration {
   type TorMessageField = Value
-  val CLIENT_IP = Value
+  val clientIp = Value
 }

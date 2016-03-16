@@ -13,7 +13,7 @@ class AuditLogSpec extends FreeSpec with Assertions with Matchers {
 
   "AuditLog" - {
     "Logs in JSON format" in {
-      verifyLogMessage(AuditLogMessage(TorOperation.OPISKELUOIKEUS_LISAYS, MockUsers.hiiri.asTorUser), """\{"timestamp":".*","serviceName":"koski","applicationType":"backend","CLIENT_IP":"192.168.0.10","operaatio":"OPISKELUOIKEUS_LISAYS"}""".r)
+      verifyLogMessage(AuditLogMessage(TorOperation.OPISKELUOIKEUS_LISAYS, MockUsers.hiiri.asTorUser), """\{"timestamp":".*","serviceName":"koski","applicationType":"backend","clientIp":"192.168.0.10","operaatio":"OPISKELUOIKEUS_LISAYS"}""".r)
     }
   }
 
