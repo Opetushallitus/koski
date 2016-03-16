@@ -2,12 +2,13 @@ package fi.oph.tor.tor
 
 import fi.oph.tor.http.{TorErrorCategory, HttpStatus}
 import fi.oph.tor.json.Json
+import fi.oph.tor.log.TorOperation.{OPISKELUOIKEUS_LISAYS, OPISKELUOIKEUS_MUUTOS}
 import fi.oph.tor.opiskeluoikeus._
 import fi.oph.tor.oppija._
 import fi.oph.tor.schema.Henkilö.Oid
 import fi.oph.tor.schema._
 import fi.oph.tor.toruser.TorUser
-import fi.oph.tor.log.Logging
+import fi.oph.tor.log._
 import fi.oph.tor.util.Timing
 import rx.lang.scala.Observable
 
@@ -42,6 +43,28 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
   }
 
   def createOrUpdate(oppija: TorOppija)(implicit user: TorUser): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
+
+    def applicationLog(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: OpiskeluOikeus, result: CreateOrUpdateResult): Unit = {
+      val (verb, content) = result match {
+        case _: Updated => ("Päivitetty", Json.write(result.diff))
+        case _: Created => ("Luotu", Json.write(opiskeluOikeus))
+        case _: NotChanged => ("Päivitetty", "ei muutoksia")
+      }
+      logger.info(verb + " opiskeluoikeus " + result.id + " (versio " + result.versionumero + ")" + " oppijalle " + oppijaOid + " tutkintoon " + opiskeluOikeus.suoritus.koulutusmoduulitoteutus.koulutusmoduuli.tunniste + " oppilaitoksessa " + opiskeluOikeus.oppilaitos.oid + ": " + content)
+    }
+
+    def accessLog(oppijaOid: PossiblyUnverifiedOppijaOid, result: CreateOrUpdateResult): Unit = {
+      (result match {
+        case _: Updated => Some(OPISKELUOIKEUS_MUUTOS)
+        case _: Created => Some(OPISKELUOIKEUS_LISAYS)
+        case _ => None
+      }).foreach { operaatio =>
+        AuditLog.log(AuditLogMessage(operaatio, user,
+          Map(TorMessageField.oppijaHenkiloOid -> oppijaOid.oppijaOid, TorMessageField.opiskeluOikeusId -> result.id.toString, TorMessageField.opiskeluOikeusVersio -> result.versionumero.toString))
+        )
+      }
+    }
+
     timed("createOrUpdate") {
       val oppijaOid: Either[HttpStatus, PossiblyUnverifiedOppijaOid] = oppija.henkilö match {
         case h:NewHenkilö => oppijaRepository.findOrCreate(h).right.map(VerifiedOppijaOid(_))
@@ -53,12 +76,8 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
           val result = opiskeluOikeusRepository.createOrUpdate(oppijaOid, opiskeluOikeus)
           result match {
             case Right(result) =>
-              val (verb, content) = result match {
-                case _:Updated => ("Päivitetty", Json.write(result.diff))
-                case _:Created => ("Luotu", Json.write(opiskeluOikeus))
-                case _:NotChanged => ("Päivitetty", "ei muutoksia")
-              }
-              logger.info(verb + " opiskeluoikeus " + result.id + " (versio " + result.versionumero + ")" + " oppijalle " + oppijaOid + " tutkintoon " + opiskeluOikeus.suoritus.koulutusmoduulitoteutus.koulutusmoduuli.tunniste + " oppilaitoksessa " + opiskeluOikeus.oppilaitos.oid + ": " + content)
+              applicationLog(oppijaOid, opiskeluOikeus, result)
+              accessLog(oppijaOid, result)
             case _ =>
           }
           result
