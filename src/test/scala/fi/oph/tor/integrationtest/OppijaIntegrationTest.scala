@@ -1,15 +1,16 @@
 package fi.oph.tor.integrationtest
 
 import fi.oph.tor.http.{BasicAuthentication, HttpSpecification}
-import fi.oph.tor.oppija.MockOppijat
 import org.scalatest.{FreeSpec, Matchers, Tag}
 
 
 object TorDevEnvironment extends Tag("tordev")
 
 class OppijaIntegrationTest extends FreeSpec with Matchers with TordevHttpSpecification {
+  val testOid = "1.2.246.562.24.51633620848"
+
   "Oppijan henkilötiedot" taggedAs(TorDevEnvironment) in {
-    get("api/oppija/" + MockOppijat.eero.oid, headers = authHeaders) {
+    get("api/oppija/" + testOid, headers = authHeaders) {
       verifyResponseStatus(200)
     }
   }
