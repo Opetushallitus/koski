@@ -6,7 +6,7 @@ import fi.oph.tor.json.Json
 import fi.oph.tor.schema.FullHenkilö
 import org.scalatest.{FreeSpec, Matchers}
 
-class TorOppijaSearchSpec extends FreeSpec with Matchers with HttpSpecification {
+class TorOppijaSearchSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification {
   "/api/oppija/search" - {
     SharedJetty.start
     "Returns results" in {

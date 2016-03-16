@@ -4,7 +4,7 @@ import fi.oph.tor.documentation.TorOppijaExamples
 import fi.oph.tor.json.Json
 import org.scalatest.{FreeSpec, Matchers}
 
-class TorOppijaExamplesTest extends FreeSpec with Matchers with HttpSpecification {
+class TorOppijaExamplesTest extends FreeSpec with Matchers with LocalJettyHttpSpecification {
   "API examples" - {
     TorOppijaExamples.examples.foreach { example =>
       "POST " + example.name in {

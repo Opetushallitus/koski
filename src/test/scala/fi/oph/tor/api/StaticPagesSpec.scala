@@ -3,7 +3,7 @@ package fi.oph.tor.api
 import fi.oph.tor.util.Files
 import org.scalatest.{FreeSpec, Matchers}
 
-class StaticPagesSpec extends FreeSpec with HttpSpecification with Matchers {
+class StaticPagesSpec extends FreeSpec with LocalJettyHttpSpecification with Matchers {
   val indexHtml = Files.asString("web/static/index.html").get
 
   "Single page app" - {

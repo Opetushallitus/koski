@@ -6,7 +6,7 @@ import fi.oph.tor.schema._
 import org.json4s._
 import org.scalatest.Matchers
 
-trait OpiskeluOikeusTestMethods extends HttpSpecification with Matchers with OpiskeluOikeusData {
+trait OpiskeluOikeusTestMethods extends LocalJettyHttpSpecification with Matchers with OpiskeluOikeusData {
   val koodisto: KoodistoViitePalvelu = KoodistoViitePalvelu(MockKoodistoPalvelu)
   val oppijaPath = "/api/oppija"
 
