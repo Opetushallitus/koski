@@ -20,8 +20,8 @@ trait TordevHttpSpecification extends HttpSpecification {
 
   override def baseUrl = "http://tordev.tor.oph.reaktor.fi/tor"
 
-  val username = requiredEnv("integrationtest_username")
-  val password = requiredEnv("integrationtest_password")
+  lazy val username = requiredEnv("integrationtest_username")
+  lazy val password = requiredEnv("integrationtest_password")
 
   def authHeaders = Map(BasicAuthentication.basicAuthHeader(username, password))
 }
