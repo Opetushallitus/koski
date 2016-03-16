@@ -8,7 +8,7 @@ import fi.oph.tor.henkilo.HenkiloOid
 import fi.oph.tor.history.OpiskeluoikeusHistoryRepository
 import fi.oph.tor.http.{HttpStatus, TorErrorCategory}
 import fi.oph.tor.json.{Json, JsonStreamWriter}
-import fi.oph.tor.log.Logging
+import fi.oph.tor.log.{TorOperation, AuditLogMessage, AuditLog, Logging}
 import fi.oph.tor.schema.Henkilö.Oid
 import fi.oph.tor.schema.{Henkilö, HenkilöWithOid, TorOppija}
 import fi.oph.tor.servlet.{ErrorHandlingServlet, InvalidRequestException, NoCache}
@@ -72,6 +72,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
   }
 
   get("/:oid") {
+    AuditLog.log(AuditLogMessage(TorOperation.OPISKELUOIKEUS_KATSOMINEN, torUser))
     renderEither(findByOid(torUser))
   }
 

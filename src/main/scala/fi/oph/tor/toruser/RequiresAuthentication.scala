@@ -6,7 +6,7 @@ trait RequiresAuthentication extends ErrorHandlingServlet with AuthenticationSup
   def userRepository: UserOrganisationsRepository
 
   def torUser: TorUser = {
-    TorUser(userOption.get.oid, userRepository)
+    TorUser(userOption.get.oid, request.headers.getOrElse("HTTP_X_FORWARDED_FOR", request.remoteAddress), userRepository)
   }
 
   before() {

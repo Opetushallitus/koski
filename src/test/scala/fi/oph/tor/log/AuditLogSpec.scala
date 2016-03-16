@@ -1,5 +1,6 @@
 package fi.oph.tor.log
 
+import fi.oph.tor.toruser.{MockUsers, TorUser}
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito._
 import org.scalatest.{Assertions, FreeSpec, Matchers}
@@ -12,7 +13,7 @@ class AuditLogSpec extends FreeSpec with Assertions with Matchers {
 
   "AuditLog" - {
     "Logs in JSON format" in {
-      verifyLogMessage(AuditLogMessage(TorOperation.OPISKELUOIKEUS_LISAYS), """\{"timestamp":".*","serviceName":"koski","applicationType":"backend","operaatio":"OPISKELUOIKEUS_LISAYS"}""".r)
+      verifyLogMessage(AuditLogMessage(TorOperation.OPISKELUOIKEUS_LISAYS, MockUsers.hiiri.asTorUser), """\{"timestamp":".*","serviceName":"koski","applicationType":"backend","CLIENT_IP":"192.168.0.10","operaatio":"OPISKELUOIKEUS_LISAYS"}""".r)
     }
   }
 
