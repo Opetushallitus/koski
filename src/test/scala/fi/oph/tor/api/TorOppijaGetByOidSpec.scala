@@ -2,16 +2,19 @@ package fi.oph.tor.api
 
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.jettylauncher.SharedJetty
+import fi.oph.tor.log.AuditLogTester
 import fi.oph.tor.oppija.MockOppijat
 import org.scalatest.{FreeSpec, Matchers}
 
 class TorOppijaGetByOidSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification {
   "/api/oppija/" - {
     SharedJetty.start
+    AuditLogTester.setup
     "GET" - {
       "with valid oid" in {
         get("api/oppija/" + MockOppijat.eero.oid, headers = authHeaders()) {
           verifyResponseStatus(200)
+          AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "OPISKELUOIKEUS_KATSOMINEN"))
         }
       }
       "with invalid oid" in {
