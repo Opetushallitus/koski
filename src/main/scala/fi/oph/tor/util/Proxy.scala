@@ -6,8 +6,8 @@ import scala.reflect.ClassTag
 
 case class Invocation(val method: Method, val args: List[AnyRef], val target: AnyRef) {
   def invoke: AnyRef = method.invoke(target, args:_*)
-  override def toString: String = method.getName + "(" + args.map(Loggable.describe).mkString(", ") +")"
-  override def hashCode() = toString.hashCode
+  override lazy val toString: String = method.getName + "(" + args.map(Loggable.describe).mkString(", ") +")"
+  override lazy val hashCode = toString.hashCode
 }
 
 object Proxy {
