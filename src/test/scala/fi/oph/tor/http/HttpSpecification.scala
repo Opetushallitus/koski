@@ -2,8 +2,6 @@ package fi.oph.tor.http
 
 import fi.oph.tor.http
 import fi.oph.tor.json.Json
-import fi.oph.tor.toruser.MockUsers
-import fi.oph.tor.toruser.MockUsers.MockUser
 import org.scalatest.{Assertions, Matchers}
 import org.scalatra.test.HttpComponentsClient
 
