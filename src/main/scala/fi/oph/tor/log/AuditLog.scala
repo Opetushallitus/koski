@@ -1,7 +1,9 @@
 package fi.oph.tor.log
 
+import fi.oph.tor.log.TorMessageField.{kayttajaHenkiloOid, oppijaHenkiloOid, clientIp}
 import fi.oph.tor.log.TorOperation.TorOperation
 import fi.oph.tor.toruser.TorUser
+import fi.vm.sade.auditlog.CommonLogMessageFields.OPERAATIO
 import fi.vm.sade.auditlog._
 import org.slf4j.{LoggerFactory, Logger}
 
@@ -17,13 +19,15 @@ class AuditLog(logger: Logger) {
 
   private class TorLogMessageBuilder(msg: AuditLogMessage) extends SimpleLogMessageBuilder[TorLogMessageBuilder] {
     def build = new AbstractLogMessage(mapping) {
-      safePut(CommonLogMessageFields.OPERAATIO, msg.operation.toString)
-      safePut(TorMessageField.clientIp.toString, msg.user.clientIp)
+      safePut(clientIp.toString, msg.user.clientIp)
+      safePut(oppijaHenkiloOid.toString, msg.oppijaOid)
+      safePut(OPERAATIO, msg.operation.toString)
+      safePut(kayttajaHenkiloOid.toString, msg.user.oid)
     }
   }
 }
 
-case class AuditLogMessage(operation: TorOperation, user: TorUser)
+case class AuditLogMessage(operation: TorOperation, user: TorUser, oppijaOid: String)
 
 object TorOperation extends Enumeration {
   type TorOperation = Value
@@ -34,4 +38,6 @@ object TorOperation extends Enumeration {
 object TorMessageField extends Enumeration {
   type TorMessageField = Value
   val clientIp = Value
+  val oppijaHenkiloOid = Value
+  val kayttajaHenkiloOid = Value
 }

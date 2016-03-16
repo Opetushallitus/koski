@@ -72,8 +72,8 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
   }
 
   get("/:oid") {
-    AuditLog.log(AuditLogMessage(TorOperation.OPISKELUOIKEUS_KATSOMINEN, torUser))
-    renderEither(findByOid(torUser))
+    AuditLog.log(AuditLogMessage(TorOperation.OPISKELUOIKEUS_KATSOMINEN, torUser, params("oid")))
+    renderEither(findByOid(params("oid"), torUser))
   }
 
   get("/validate") {
@@ -85,7 +85,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
 
   get("/validate/:oid") {
     renderEither(
-      findByOid(torUser)
+      findByOid(params("oid"), torUser)
         .right.flatMap(validateHistory)
         .right.map(validateOppija)
     )
@@ -149,9 +149,9 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
     }
   }
 
-  private def findByOid(implicit user: TorUser): Either[HttpStatus, TorOppija] = {
-    HenkiloOid.validateHenkilöOid(params("oid")).right.flatMap { oid =>
-      rekisteri.findTorOppija(oid)
+  private def findByOid(oid: String, user: TorUser): Either[HttpStatus, TorOppija] = {
+    HenkiloOid.validateHenkilöOid(oid).right.flatMap { oid =>
+      rekisteri.findTorOppija(oid)(user)
     }
   }
 
