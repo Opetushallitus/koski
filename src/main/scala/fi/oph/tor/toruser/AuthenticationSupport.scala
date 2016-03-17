@@ -73,7 +73,8 @@ class UserPasswordStrategy(protected val app: ErrorHandlingServlet, val director
 
   private def loginRequestInBody = {
     try {
-      Some(Json.read[Login](RichRequest(request).body))
+      val body: String = RichRequest(request).body
+      Some(Json.read[Login](body))
     } catch {
       case e: Exception => None
     }
