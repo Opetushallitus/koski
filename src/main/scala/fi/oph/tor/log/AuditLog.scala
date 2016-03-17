@@ -1,9 +1,8 @@
 package fi.oph.tor.log
 
-import fi.oph.tor.log.TorMessageField.{TorMessageField, clientIp, kayttajaHenkiloOid}
+import fi.oph.tor.log.TorMessageField.TorMessageField
 import fi.oph.tor.log.TorOperation.TorOperation
 import fi.oph.tor.toruser.TorUser
-import fi.vm.sade.auditlog.CommonLogMessageFields.OPERAATIO
 import fi.vm.sade.auditlog._
 import org.slf4j.{Logger, LoggerFactory}
 
@@ -19,9 +18,9 @@ class AuditLog(logger: Logger) {
 
   private class TorLogMessageBuilder(msg: AuditLogMessage) extends SimpleLogMessageBuilder[TorLogMessageBuilder] {
     def build = new AbstractLogMessage(mapping) {
-      safePut(clientIp.toString, msg.user.clientIp)
-      safePut(OPERAATIO, msg.operation.toString)
-      safePut(kayttajaHenkiloOid.toString, msg.user.oid)
+      safePut(TorMessageField.clientIp.toString, msg.user.clientIp)
+      safePut(CommonLogMessageFields.OPERAATIO, msg.operation.toString)
+      safePut(TorMessageField.kayttajaHenkiloOid.toString, msg.user.oid)
 
       msg.extraFields.toList.foreach { case (k: TorMessageField,v: String) =>
         safePut(k.toString, v)
@@ -30,22 +29,15 @@ class AuditLog(logger: Logger) {
   }
 }
 
-
 case class AuditLogMessage(operation: TorOperation, user: TorUser, extraFields: Map[TorMessageField, String])
 
 object TorMessageField extends Enumeration {
   type TorMessageField = Value
-  val clientIp = Value
-  val oppijaHenkiloOid = Value
-  val kayttajaHenkiloOid = Value
-  val opiskeluOikeusId = Value
-  val opiskeluOikeusVersio = Value
+  val clientIp, oppijaHenkiloOid, kayttajaHenkiloOid, opiskeluOikeusId, opiskeluOikeusVersio = Value
 }
 
 object TorOperation extends Enumeration {
   type TorOperation = Value
-  val OPISKELUOIKEUS_LISAYS = Value
-  val OPISKELUOIKEUS_MUUTOS = Value
-  val OPISKELUOIKEUS_KATSOMINEN = Value
+  val OPISKELUOIKEUS_LISAYS, OPISKELUOIKEUS_MUUTOS, OPISKELUOIKEUS_KATSOMINEN = Value
 }
 
