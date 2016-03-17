@@ -32,12 +32,13 @@ class AuditLog(logger: Logger) {
 case class AuditLogMessage(operation: TorOperation, user: TorUser, extraFields: Map[TorMessageField, String])
 
 object TorMessageField extends Enumeration {
+
   type TorMessageField = Value
-  val clientIp, oppijaHenkiloOid, kayttajaHenkiloOid, opiskeluOikeusId, opiskeluOikeusVersio = Value
+  val clientIp, oppijaHenkiloOid, kayttajaHenkiloOid, opiskeluOikeusId, opiskeluOikeusVersio, oppijaHakuEhto = Value
 }
 
 object TorOperation extends Enumeration {
   type TorOperation = Value
-  val LOGIN, OPISKELUOIKEUS_LISAYS, OPISKELUOIKEUS_MUUTOS, OPISKELUOIKEUS_KATSOMINEN, MUUTOSHISTORIA_KATSOMINEN = Value
+  val LOGIN, OPISKELUOIKEUS_LISAYS, OPISKELUOIKEUS_MUUTOS, OPISKELUOIKEUS_KATSOMINEN, MUUTOSHISTORIA_KATSOMINEN, OPPIJA_HAKU = Value
 }
 

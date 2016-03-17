@@ -2,7 +2,7 @@ package fi.oph.tor.tor
 
 import fi.oph.tor.http.{TorErrorCategory, HttpStatus}
 import fi.oph.tor.json.Json
-import fi.oph.tor.log.TorOperation.{OPISKELUOIKEUS_LISAYS, OPISKELUOIKEUS_MUUTOS}
+import fi.oph.tor.log.TorOperation.{OPPIJA_HAKU, OPISKELUOIKEUS_LISAYS, OPISKELUOIKEUS_MUUTOS}
 import fi.oph.tor.opiskeluoikeus._
 import fi.oph.tor.oppija._
 import fi.oph.tor.schema.Henkilö.Oid
@@ -38,6 +38,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
 
   def findOppijat(query: String)(implicit user: TorUser): Seq[FullHenkilö] = {
     val oppijat: List[FullHenkilö] = oppijaRepository.findOppijat(query)
+    AuditLog.log(AuditLogMessage(OPPIJA_HAKU, user, Map(TorMessageField.oppijaHakuEhto -> query)))
     val filtered = opiskeluOikeusRepository.filterOppijat(oppijat)
     filtered.sortBy(oppija => (oppija.sukunimi, oppija.etunimet))
   }
