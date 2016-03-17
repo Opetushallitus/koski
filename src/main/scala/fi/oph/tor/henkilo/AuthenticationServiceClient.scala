@@ -45,7 +45,7 @@ class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances wit
       case (200, data, _) => Right(Json.read[User](data))
       case (400, error, _) => Left(TorErrorCategory.badRequest.validation.henkilötiedot.virheelliset(error))
       case (status, text, uri) => throw new HttpStatusException(status, text, uri)
-    }) // TODO: use runFor instead (all occurrences)
+    })
   }
   def create(createUserInfo: CreateUser): Either[HttpStatus, String] = {
     val request: Request = Request(uri = http.uriFromString("/authentication-service/resources/henkilo"), method = Method.POST)
