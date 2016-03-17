@@ -7,6 +7,7 @@ import fi.oph.tor.documentation.TorOppijaExamples
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.jettylauncher.SharedJetty
 import fi.oph.tor.json.Json
+import fi.oph.tor.log.AuditLogTester
 import fi.oph.tor.opiskeluoikeus.OpiskeluOikeusTestData
 import fi.oph.tor.oppija.MockOppijat
 import fi.oph.tor.organisaatio.MockOrganisaatiot
@@ -16,6 +17,7 @@ import org.scalatest.FunSpec
 
 class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
   SharedJetty.start
+  AuditLogTester.setup
   val uusiOpiskeluOikeus = OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 351161)
   val oppija: FullHenkilö = MockOppijat.tyhjä
 
@@ -94,13 +96,24 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
       }
     }
 
+    describe("Versiohistorian hakeminen") {
+      it("Onnistuu ja tuottaa auditlog-merkinnän") {
+        val opiskeluOikeus = createOpiskeluOikeus(oppija, uusiOpiskeluOikeus)
+        authGet("api/opiskeluoikeus/historia/" + opiskeluOikeus.id.get) {
+          getHistory(opiskeluOikeus.id.get)
+          AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "MUUTOSHISTORIA_KATSOMINEN"))
+        }
+      }
+    }
+
     describe("Yksittäisen version hakeminen") {
-      it("Onnistuu") {
+      it("Onnistuu ja tuottaa auditlog-merkinnän") {
         val opiskeluOikeus = createOpiskeluOikeus(oppija, uusiOpiskeluOikeus)
         authGet("api/opiskeluoikeus/historia/" + opiskeluOikeus.id.get + "/1") {
           verifyResponseStatus(200)
           val versio = Json.read[OpiskeluOikeus](body);
           versio should equal(opiskeluOikeus)
+          AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "MUUTOSHISTORIA_KATSOMINEN"))
         }
       }
       describe("Tuntematon versionumero") {
@@ -114,18 +127,22 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
     }
   }
 
-  def verifyHistory(oppija: FullHenkilö, opiskeluOikeus: OpiskeluOikeus, versions: List[Int]): Unit = {
-    authGet("api/opiskeluoikeus/historia/" + opiskeluOikeus.id.get) {
+  def getHistory(opiskeluOikeusId: Int): List[OpiskeluOikeusHistoryRow] = {
+    authGet("api/opiskeluoikeus/historia/" + opiskeluOikeusId) {
       verifyResponseStatus(200)
-      val historia = Json.read[List[OpiskeluOikeusHistoryRow]](body)
-      historia.map(_.versionumero) should equal(versions)
+      Json.read[List[OpiskeluOikeusHistoryRow]](body)
+    }
+  }
 
-      markup("Validoidaan versiohistoria eheys")
+  def verifyHistory(oppija: FullHenkilö, opiskeluOikeus: OpiskeluOikeus, versions: List[Int]): Unit = {
+    val historia: List[OpiskeluOikeusHistoryRow] = getHistory(opiskeluOikeus.id.get)
+    historia.map(_.versionumero) should equal(versions)
 
-      authGet("api/oppija/validate/" + oppija.oid) {
-        // Validates version history integrity by applying all history patches on top of first version and comparing to stored final value.
-        verifyResponseStatus(200)
-      }
+    markup("Validoidaan versiohistoria eheys")
+
+    authGet("api/oppija/validate/" + oppija.oid) {
+      // Validates version history integrity by applying all history patches on top of first version and comparing to stored final value.
+      verifyResponseStatus(200)
     }
   }
 }

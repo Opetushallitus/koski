@@ -1,7 +1,7 @@
 package fi.oph.tor.history
 
 import fi.oph.tor.http.{HttpStatus, TorErrorCategory}
-import fi.oph.tor.log.Logging
+import fi.oph.tor.log._
 import fi.oph.tor.schema.OpiskeluOikeus
 import fi.oph.tor.servlet.{ErrorHandlingServlet, NoCache}
 import fi.oph.tor.toruser.{RequiresAuthentication, UserOrganisationsRepository}
@@ -12,8 +12,11 @@ class TorHistoryServlet(val userRepository: UserOrganisationsRepository, val dir
   extends ErrorHandlingServlet with Logging with RequiresAuthentication with JsonMethods with NoCache {
 
   get("/:id") {
+    val id: Int = getIntegerParam("id")
     renderOption(TorErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia) {
-      historyRepository.findByOpiskeluoikeusId(getIntegerParam("id"))(torUser)
+      val history = historyRepository.findByOpiskeluoikeusId(id)(torUser)
+      history.foreach { _ => logHistoryView(id)}
+      history
     }
   }
 
@@ -23,6 +26,12 @@ class TorHistoryServlet(val userRepository: UserOrganisationsRepository, val dir
 
     val result: Either[HttpStatus, OpiskeluOikeus] = historyRepository.findVersion(id, version)(torUser)
 
+    result.right.foreach { _ => logHistoryView(id)}
+
     renderEither(result)
+  }
+
+  private def logHistoryView(id: Int): Unit = {
+    AuditLog.log(AuditLogMessage(TorOperation.MUUTOSHISTORIA_KATSOMINEN, torUser, Map(TorMessageField.opiskeluOikeusId -> id.toString)))
   }
 }
