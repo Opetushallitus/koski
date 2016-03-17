@@ -2,10 +2,11 @@ package fi.oph.tor.toruser
 
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.json.Json
+import fi.oph.tor.log.{TorOperation, AuditLogMessage, AuditLog}
 import fi.oph.tor.servlet.ErrorHandlingServlet
 import fi.vm.sade.security.ldap.DirectoryClient
 
-class AuthenticationServlet(val directoryClient: DirectoryClient) extends ErrorHandlingServlet with AuthenticationSupport {
+class AuthenticationServlet(val directoryClient: DirectoryClient, val userRepository: UserOrganisationsRepository) extends ErrorHandlingServlet with AuthenticationSupport {
   get("/") {
     contentType = "application/json;charset=utf-8"
     userOption match {
@@ -15,9 +16,10 @@ class AuthenticationServlet(val directoryClient: DirectoryClient) extends ErrorH
   }
 
   post("/login") {
-    scentry.authenticate()
+    scentry.authenticate() // Halts on login failure, so the code below won't be run
+    AuditLog.log(AuditLogMessage(TorOperation.LOGIN, torUserOption.get, Map()))
     contentType = "application/json;charset=utf-8"
-    Json.write(userOption)
+    Json.write(userOption.get)
   }
 
   get("/logout") {

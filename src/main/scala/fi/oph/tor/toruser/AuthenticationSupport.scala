@@ -16,11 +16,18 @@ trait AuthenticationSupport extends ScentrySupport[AuthenticationUser] with Basi
   val realm = "Todennetun Osaamisen Rekisteri"
 
   def directoryClient: DirectoryClient
+  def userRepository: UserOrganisationsRepository
 
   protected def fromSession = { case user: String => Json.read[AuthenticationUser](user)  }
   protected def toSession   = { case user: AuthenticationUser => Json.write(user) }
 
   protected val scentryConfig = (new ScentryConfig {}).asInstanceOf[ScentryConfiguration]
+
+  def torUserOption: Option[TorUser] = {
+    userOption.map { authUser =>
+      TorUser(authUser.oid, request.headers.getOrElse("HTTP_X_FORWARDED_FOR", request.remoteAddress), userRepository)
+    }
+  }
 
   override protected def configureScentry = {
     scentry.unauthenticated {
