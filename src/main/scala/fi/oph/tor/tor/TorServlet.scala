@@ -1,26 +1,22 @@
 package fi.oph.tor.tor
 
-import java.time.LocalDate
-import java.time.format.DateTimeParseException
-
 import fi.oph.tor.db.GlobalExecutionContext
 import fi.oph.tor.henkilo.HenkiloOid
 import fi.oph.tor.history.OpiskeluoikeusHistoryRepository
 import fi.oph.tor.http.{HttpStatus, TorErrorCategory}
 import fi.oph.tor.json.{Json, JsonStreamWriter}
+import fi.oph.tor.log.AuditLog.{log => auditLog}
 import fi.oph.tor.log._
 import fi.oph.tor.schema.Henkilö.Oid
-import fi.oph.tor.schema.{Henkilö, HenkilöWithOid, TorOppija}
+import fi.oph.tor.schema.{HenkilöWithOid, TorOppija}
 import fi.oph.tor.servlet.{ErrorHandlingServlet, InvalidRequestException, NoCache}
-import fi.oph.tor.toruser.{TorUser, RequiresAuthentication, UserOrganisationsRepository}
-import fi.oph.tor.util.{Pools, Timing}
+import fi.oph.tor.toruser.{RequiresAuthentication, TorUser, UserOrganisationsRepository}
+import fi.oph.tor.util.Timing
 import fi.vm.sade.security.ldap.DirectoryClient
-import org.json4s.JValue
 import org.json4s.JsonAST.JArray
 import org.scalatra.{FutureSupport, GZipSupport}
 import rx.lang.scala.Observable
-import scala.collection.parallel.ForkJoinTaskSupport
-import scala.collection.parallel.immutable.ParSeq
+
 import scala.concurrent.Future
 import scala.concurrent.duration.Duration
 
@@ -131,20 +127,9 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
   private def query(handleResults: Observable[TorOppija] => Future[String]) = {
     logger.info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
 
-    val queryFilters: List[Either[HttpStatus, QueryFilter]] = params.toList.map {
-      case (p, v) if p == "opiskeluoikeusPäättynytAikaisintaan" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytAikaisintaan(_))
-      case (p, v) if p == "opiskeluoikeusPäättynytViimeistään" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytViimeistään(_))
-      case ("tutkinnonTila", v) => Right(TutkinnonTila(v))
-      case (p, _) => Left(TorErrorCategory.badRequest.queryParam.unknown("Unsupported query parameter: " + p))
-    }
-
-    queryFilters.partition(_.isLeft) match {
-      case (Nil, queries) =>
-        val filters = queries.map(_.right.get)
-        val oppijat: Observable[TorOppija] = rekisteri.findOppijat(filters)(torUser)
-        handleResults(oppijat)
-      case (errors, _) =>
-        renderStatus(HttpStatus.fold(errors.map(_.left.get)))
+    rekisteri.findOppijat(params.toList, torUser) match {
+      case Right(oppijat) => handleResults(oppijat)
+      case Left(status) => renderStatus(status)
     }
   }
 
@@ -153,20 +138,4 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
       rekisteri.findTorOppija(oid)(user)
     }
   }
-
-  private def dateParam(q: (String, String)): Either[HttpStatus, LocalDate] = q match {
-    case (p, v) => try {
-      Right(LocalDate.parse(v))
-    } catch {
-      case e: DateTimeParseException => Left(TorErrorCategory.badRequest.format.pvm("Invalid date parameter: " + p + "=" + v))
-    }
-  }
 }
-
-trait QueryFilter
-
-case class OpiskeluoikeusPäättynytAikaisintaan(päivä: LocalDate) extends QueryFilter
-case class OpiskeluoikeusPäättynytViimeistään(päivä: LocalDate) extends QueryFilter
-case class TutkinnonTila(tila: String) extends QueryFilter
-case class ValidationResult(oid: Henkilö.Oid, errors: List[AnyRef])
-case class HistoryInconsistency(message: String, diff: JValue)

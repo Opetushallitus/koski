@@ -1,44 +1,57 @@
 package fi.oph.tor.tor
 
-import fi.oph.tor.http.{TorErrorCategory, HttpStatus}
+import java.time.LocalDate
+import java.time.format.DateTimeParseException
+
+import fi.oph.tor.http.{HttpStatus, TorErrorCategory}
 import fi.oph.tor.json.Json
-import fi.oph.tor.log.TorOperation.{OPPIJA_HAKU, OPISKELUOIKEUS_LISAYS, OPISKELUOIKEUS_MUUTOS}
+import fi.oph.tor.log.AuditLog.{log => auditLog}
+import fi.oph.tor.log.TorMessageField.{hakuEhto, opiskeluOikeusId, opiskeluOikeusVersio, oppijaHenkiloOid}
+import fi.oph.tor.log.TorOperation._
+import fi.oph.tor.log._
 import fi.oph.tor.opiskeluoikeus._
 import fi.oph.tor.oppija._
 import fi.oph.tor.schema.Henkilö.Oid
 import fi.oph.tor.schema._
 import fi.oph.tor.toruser.TorUser
-import fi.oph.tor.log._
 import fi.oph.tor.util.Timing
+import org.json4s._
 import rx.lang.scala.Observable
 
 class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
                                    opiskeluOikeusRepository: OpiskeluOikeusRepository) extends Logging with Timing {
 
-  def findOppijat(filters: List[QueryFilter])(implicit user: TorUser): Observable[TorOppija] = {
-    val oikeudetPerOppijaOid: Observable[(Oid, List[OpiskeluOikeus])] = opiskeluOikeusRepository.query(filters)
-    oikeudetPerOppijaOid.tumblingBuffer(500).flatMap {
-      oppijatJaOidit: Seq[(Oid, List[OpiskeluOikeus])] =>
-        val oids: List[String] = oppijatJaOidit.map(_._1).toList
+  def findOppijat(params: List[(String, String)], user: TorUser): Either[HttpStatus, Observable[TorOppija]] with Product with Serializable = {
 
-        val henkilöt: Map[String, FullHenkilö] = oppijaRepository.findByOids(oids).map(henkilö => (henkilö.oid, henkilö)).toMap
+    auditLog(AuditLogMessage(OPISKELUOIKEUS_HAKU, user, Map(hakuEhto -> params.map { case (p,v) => p + "=" + v }.mkString("&"))))
 
-        val torOppijat: Iterable[TorOppija] = oppijatJaOidit.flatMap { case (oid, opiskeluOikeudet) =>
-          henkilöt.get(oid) match {
-            case Some(henkilö) =>
-              Some(TorOppija(henkilö, opiskeluOikeudet))
-            case None =>
-              logger.warn("Oppijaa " + oid + " ei löydy henkilöpalvelusta")
-              None
-          }
-        }
-        Observable.from(torOppijat)
+    def dateParam(q: (String, String)): Either[HttpStatus, LocalDate] = q match {
+      case (p, v) => try {
+        Right(LocalDate.parse(v))
+      } catch {
+        case e: DateTimeParseException => Left(TorErrorCategory.badRequest.format.pvm("Invalid date parameter: " + p + "=" + v))
+      }
+    }
+
+    val queryFilters: List[Either[HttpStatus, QueryFilter]] = params.map {
+      case (p, v) if p == "opiskeluoikeusPäättynytAikaisintaan" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytAikaisintaan(_))
+      case (p, v) if p == "opiskeluoikeusPäättynytViimeistään" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytViimeistään(_))
+      case ("tutkinnonTila", v) => Right(TutkinnonTila(v))
+      case (p, _) => Left(TorErrorCategory.badRequest.queryParam.unknown("Unsupported query parameter: " + p))
+    }
+
+    queryFilters.partition(_.isLeft) match {
+      case (Nil, queries) =>
+        val filters: List[QueryFilter] = queries.map(_.right.get)
+        Right(query(filters)(user))
+      case (errors, _) =>
+        Left(HttpStatus.fold(errors.map(_.left.get)))
     }
   }
 
   def findOppijat(query: String)(implicit user: TorUser): Seq[FullHenkilö] = {
     val oppijat: List[FullHenkilö] = oppijaRepository.findOppijat(query)
-    AuditLog.log(AuditLogMessage(OPPIJA_HAKU, user, Map(TorMessageField.oppijaHakuEhto -> query)))
+    auditLog(AuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> query)))
     val filtered = opiskeluOikeusRepository.filterOppijat(oppijat)
     filtered.sortBy(oppija => (oppija.sukunimi, oppija.etunimet))
   }
@@ -60,8 +73,8 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
         case _: Created => Some(OPISKELUOIKEUS_LISAYS)
         case _ => None
       }).foreach { operaatio =>
-        AuditLog.log(AuditLogMessage(operaatio, user,
-          Map(TorMessageField.oppijaHenkiloOid -> oppijaOid.oppijaOid, TorMessageField.opiskeluOikeusId -> result.id.toString, TorMessageField.opiskeluOikeusVersio -> result.versionumero.toString))
+        auditLog(AuditLogMessage(operaatio, user,
+          Map(oppijaHenkiloOid -> oppijaOid.oppijaOid, opiskeluOikeusId -> result.id.toString, opiskeluOikeusVersio -> result.versionumero.toString))
         )
       }
     }
@@ -106,10 +119,41 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
       case None =>
         notFound
     }
-    result.right.foreach((oppija: TorOppija) => AuditLog.log(AuditLogMessage(TorOperation.OPISKELUOIKEUS_KATSOMINEN, user, Map(TorMessageField.oppijaHenkiloOid -> oid))))
+    result.right.foreach((oppija: TorOppija) => auditLog(AuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, user, Map(oppijaHenkiloOid -> oid))))
     result
+  }
+
+
+  private def query(filters: List[QueryFilter])(implicit user: TorUser): Observable[TorOppija] = {
+    val oikeudetPerOppijaOid: Observable[(Oid, List[OpiskeluOikeus])] = opiskeluOikeusRepository.query(filters)
+    oikeudetPerOppijaOid.tumblingBuffer(500).flatMap {
+      oppijatJaOidit: Seq[(Oid, List[OpiskeluOikeus])] =>
+        val oids: List[String] = oppijatJaOidit.map(_._1).toList
+
+        val henkilöt: Map[String, FullHenkilö] = oppijaRepository.findByOids(oids).map(henkilö => (henkilö.oid, henkilö)).toMap
+
+        val torOppijat: Iterable[TorOppija] = oppijatJaOidit.flatMap { case (oid, opiskeluOikeudet) =>
+          henkilöt.get(oid) match {
+            case Some(henkilö) =>
+              Some(TorOppija(henkilö, opiskeluOikeudet))
+            case None =>
+              logger.warn("Oppijaa " + oid + " ei löydy henkilöpalvelusta")
+              None
+          }
+        }
+        Observable.from(torOppijat)
+    }
   }
 }
 
 case class HenkilönOpiskeluoikeusVersiot(henkilö: OidHenkilö, opiskeluoikeudet: List[OpiskeluoikeusVersio])
 case class OpiskeluoikeusVersio(id: OpiskeluOikeus.Id, versionumero: Int)
+
+
+trait QueryFilter
+
+case class OpiskeluoikeusPäättynytAikaisintaan(päivä: LocalDate) extends QueryFilter
+case class OpiskeluoikeusPäättynytViimeistään(päivä: LocalDate) extends QueryFilter
+case class TutkinnonTila(tila: String) extends QueryFilter
+case class ValidationResult(oid: Henkilö.Oid, errors: List[AnyRef])
+case class HistoryInconsistency(message: String, diff: JValue)

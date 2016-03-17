@@ -34,11 +34,11 @@ case class AuditLogMessage(operation: TorOperation, user: TorUser, extraFields: 
 object TorMessageField extends Enumeration {
 
   type TorMessageField = Value
-  val clientIp, oppijaHenkiloOid, kayttajaHenkiloOid, opiskeluOikeusId, opiskeluOikeusVersio, oppijaHakuEhto = Value
+  val clientIp, oppijaHenkiloOid, kayttajaHenkiloOid, opiskeluOikeusId, opiskeluOikeusVersio, hakuEhto = Value
 }
 
 object TorOperation extends Enumeration {
   type TorOperation = Value
-  val LOGIN, OPISKELUOIKEUS_LISAYS, OPISKELUOIKEUS_MUUTOS, OPISKELUOIKEUS_KATSOMINEN, MUUTOSHISTORIA_KATSOMINEN, OPPIJA_HAKU = Value
+  val LOGIN, OPISKELUOIKEUS_LISAYS, OPISKELUOIKEUS_MUUTOS, OPISKELUOIKEUS_KATSOMINEN, OPISKELUOIKEUS_HAKU, MUUTOSHISTORIA_KATSOMINEN, OPPIJA_HAKU = Value
 }
 

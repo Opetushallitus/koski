@@ -16,7 +16,7 @@ class TorOppijaSearchSpec extends FreeSpec with Matchers with LocalJettyHttpSpec
       get("api/oppija/search", params = List(("query" -> "eero")), headers = authHeaders()) {
         verifyResponseStatus(200)
         Json.read[List[FullHenkilö]](body).length should equal(3)
-        AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "OPPIJA_HAKU", "oppijaHakuEhto" -> "EERO"))
+        AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "OPPIJA_HAKU", "hakuEhto" -> "EERO"))
       }
     }
     "When query is missing" - {
