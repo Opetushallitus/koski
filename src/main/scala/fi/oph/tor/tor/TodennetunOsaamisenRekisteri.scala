@@ -96,7 +96,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
   def findTorOppija(oid: String)(implicit user: TorUser): Either[HttpStatus, TorOppija] = {
     def notFound = Left(TorErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa " + oid + " ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
 
-    oppijaRepository.findByOid(oid) match {
+    val result = oppijaRepository.findByOid(oid) match {
       case Some(oppija) =>
         opiskeluOikeusRepository.findByOppijaOid(oppija.oid) match {
           case Nil => notFound
@@ -105,6 +105,8 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
       case None =>
         notFound
     }
+    result.right.foreach((oppija: TorOppija) => AuditLog.log(AuditLogMessage(TorOperation.OPISKELUOIKEUS_KATSOMINEN, user, Map(TorMessageField.oppijaHenkiloOid -> oid))))
+    result
   }
 }
 

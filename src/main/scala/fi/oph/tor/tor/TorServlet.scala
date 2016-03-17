@@ -72,7 +72,6 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
   }
 
   get("/:oid") {
-    AuditLog.log(AuditLogMessage(TorOperation.OPISKELUOIKEUS_KATSOMINEN, torUser, Map(TorMessageField.oppijaHenkiloOid -> params("oid"))))
     renderEither(findByOid(params("oid"), torUser))
   }
 
