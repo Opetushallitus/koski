@@ -6,6 +6,10 @@ module.exports = {
     path: __dirname + '/dist',
     filename: 'bundle.js'
   },
+  eslint: {
+    failOnWarning: !!process.env.failOnWarning,
+    failOnError: true
+  },
   module: {
     loaders: [
       {

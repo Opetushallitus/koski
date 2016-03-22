@@ -113,6 +113,10 @@ Buildaa koko systeemi
 Buildaa frontti, ja päivitä automaattisesti kun tiedostoja muokataan:
 
     make watch
+    
+Staattinen analyysi (ScalaStyle + ESLint):
+
+    make lint
 
 ### TOR-sovelluksen ajaminen kehitystyöasemalla
 
