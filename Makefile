@@ -41,9 +41,9 @@ watch:
 	cd web && npm run watch
 eslint:
 	cd web && npm run lint
-scalacheck:
+scalastyle:
 	mvn verify -DskipTests 
-lint: eslint scalacheck
+lint: eslint scalastyle
 it: test
 happen:
 #	# Pow pow!
