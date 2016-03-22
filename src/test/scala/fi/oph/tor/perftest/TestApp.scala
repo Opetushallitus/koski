@@ -10,7 +10,7 @@ trait TestApp extends HttpComponentsClient {
 
 
   def authHeaders = {
-    val auth: String = "Basic " + Base64.encode((username+":"+password).getBytes("UTF8"))
+    val auth: String = "Basic " + Base64.encode((username + ":" + password).getBytes("UTF8"))
     Map("Authorization" -> auth)
   }
 }

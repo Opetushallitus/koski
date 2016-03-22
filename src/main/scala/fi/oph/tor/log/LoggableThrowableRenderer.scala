@@ -5,12 +5,11 @@ import org.apache.log4j.spi.ThrowableRenderer
 import org.http4s.ParseException
 
 class LoggableThrowableRenderer extends ThrowableRenderer {
-
   val renderer = new DefaultThrowableRenderer
 
   def getRootCause(t: Throwable): Throwable = t.getCause match {
     case null => t
-    case cause => getRootCause(cause)
+    case cause: Throwable => getRootCause(cause)
   }
 
   override def doRender(t: Throwable): Array[String] = {

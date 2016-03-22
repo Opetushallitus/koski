@@ -8,7 +8,6 @@ import fi.oph.tor.schema._
 import fi.oph.tor.util.Files
 import org.json4s
 import org.json4s.JsonAST.{JInt, JNull, JString}
-import org.json4s.JsonMethods
 import org.json4s._
 import org.json4s.ext.JodaTimeSerializers
 import org.json4s.jackson.JsonMethods._
@@ -68,7 +67,7 @@ object Json {
   def maskSensitiveInformation(parsedJson: JValue): JValue = {
     val maskedJson = parsedJson.mapField {
       case ("hetu", JString(_)) => ("hetu", JString("******-****"))
-      case x => x
+      case field: (String, JsonAST.JValue) => field
     }
     maskedJson
   }
@@ -86,7 +85,7 @@ object LocalDateSerializer extends CustomSerializer[LocalDate](format => (
   {
     case JString(s) => ContextualExtractor.tryExtract(LocalDate.parse(s))(TorErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: " + s))
     case JInt(i) => ContextualExtractor.tryExtract(LocalDateTime.ofInstant(Instant.ofEpochMilli(i.longValue()), ZoneId.of("UTC")).toLocalDate())(TorErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: " + i))
-    case JNull => null
+    case JNull => ContextualExtractor.extractionError(TorErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: null"))
   },
   {
     case d: LocalDate => JString(d.toString)

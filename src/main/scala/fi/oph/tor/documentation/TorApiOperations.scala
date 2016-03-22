@@ -12,7 +12,9 @@ object TorApiOperations {
  val operations = List(
    ApiOperation(
       "GET", "/tor/api/oppija/search",
-      <div>Etsii oppijoita annetulla hakusanalla. Hakutuloksissa vain oppijoiden perustiedot. Hakusana voi olla hetu, oppija-oid tai nimen osa. Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</div>,
+      <div> Etsii oppijoita annetulla hakusanalla. Hakutuloksissa vain oppijoiden perustiedot.
+            Hakusana voi olla hetu, oppija-oid tai nimen osa. Tuloksiin sisällytetään vain ne oppijat,
+            joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</div>,
       Nil,
       List(QueryParameter("query", "Hakusana, joka voi olla hetu, oppija-oid tai nimen osa.", "eero")),
       List(
@@ -23,7 +25,9 @@ object TorApiOperations {
    ),
    ApiOperation(
     "GET", "/tor/api/oppija",
-     <div>Palauttaa oppijoiden tiedot annetuilla parametreilla. Sisältää oppijoiden henkilötiedot, opiskeluoikeudet suorituksineen. Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</div>,
+     <div>Palauttaa oppijoiden tiedot annetuilla parametreilla. Sisältää oppijoiden henkilötiedot,
+          opiskeluoikeudet suorituksineen.
+          Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</div>,
      Nil,
      hakuParametrit,
      List(
@@ -35,7 +39,10 @@ object TorApiOperations {
    ),
    ApiOperation(
      "GET", "/tor/api/oppija/validate",
-     <div>Etsii oppijat annetuilla parametreilla ja validoi hakutulokset. Validointi suoritetaan tämän hetkisen JSON-scheman ja muiden validointisääntöjen mukaan. Lisäksi validoidaan opinto-oikeuksien versiohistorioiden eheys. Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</div>,
+     <div>Etsii oppijat annetuilla parametreilla ja validoi hakutulokset.
+          Validointi suoritetaan tämän hetkisen JSON-scheman ja muiden validointisääntöjen mukaan.
+          Lisäksi validoidaan opinto-oikeuksien versiohistorioiden eheys.
+          Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</div>,
      Nil,
      hakuParametrit,
      List(
@@ -98,7 +105,9 @@ object TorApiOperations {
    ApiOperation(
      "PUT", "/tor/api/oppija",
      <div>
-       <p>Lisää/päivittää oppijan ja opiskeluoikeuksia. Palauttaa objektin, jossa on henkilön <em>oid</em>, eli henkilön yksilöivä tunniste TOR ja Opintopolku-järjestelmissä. Lisäksi paluuarvossa on lista päivitetyistä/luoduista opiskeluoikeuksista tunnisteineen ja versioineen.</p>
+       <p>Lisää/päivittää oppijan ja opiskeluoikeuksia.
+          Palauttaa objektin, jossa on henkilön <em>oid</em>, eli henkilön yksilöivä tunniste TOR ja Opintopolku-järjestelmissä.
+         Lisäksi paluuarvossa on lista päivitetyistä/luoduista opiskeluoikeuksista tunnisteineen ja versioineen.</p>
        <p>
          Tallennettava henkilö tunnistetaan joko henkilötunnuksen tai <em>oid</em>in perusteella. Tietojen päivittäminen on huomattavasti
          tehokkaampaa käytettäessä oidia, joten sen käyttöä suositellaan vahvasti. Jos lähdejärjestelmässä ei alun perin ole oideja, on ne mahdollista

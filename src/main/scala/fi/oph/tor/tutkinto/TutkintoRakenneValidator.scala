@@ -14,7 +14,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
               TorErrorCategory.badRequest.validation.rakenne.suoritustapaPuuttuu()
             case osa: OpsTutkinnonosatoteutus =>
               validateTutkinnonOsa(osa, Some(rakenne), tutkintoToteutus.suoritustapa)
-            case osa =>
+            case osa: Koulutusmoduulitoteutus =>
               HttpStatus.ok // vain OpsTutkinnonosatoteutukset validoidaan, muut sellaisenaan läpi, koska niiden rakennetta ei tunneta
           }))
       }
@@ -65,7 +65,8 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
   private def validoiTutkinnonOsaRakenteessa(tutkinnonOsa: OpsTutkinnonosa, rakenne: TutkintoRakenne, suoritustapa: Suoritustapa): HttpStatus = {
     findTutkinnonOsa(rakenne, suoritustapa.tunniste, tutkinnonOsa.tunniste) match {
       case None =>
-        TorErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa("Tutkinnon osa " + tutkinnonOsa.tunniste + " ei löydy tutkintorakenteesta perusteelle " + rakenne.diaarinumero + " - suoritustapa " + suoritustapa.tunniste.koodiarvo)
+        TorErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa(
+          "Tutkinnon osa " + tutkinnonOsa.tunniste + " ei löydy tutkintorakenteesta perusteelle " + rakenne.diaarinumero + " - suoritustapa " + suoritustapa.tunniste.koodiarvo)
       case Some(tutkinnonOsa) =>
         HttpStatus.ok
     }

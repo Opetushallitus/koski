@@ -13,7 +13,7 @@ object RegularExpression extends MetadataSupport {
 
   override def appendMetadataToJsonSchema(obj: JObject, metadata: Metadata) = metadata match {
     case RegularExpression(pattern) =>
-      appendToDescription(obj.merge(JObject("pattern" -> JString(pattern))), "(Muoto: " + pattern+")")
+      appendToDescription(obj.merge(JObject("pattern" -> JString(pattern))), "(Muoto: " + pattern + ")")
     case _ => obj
   }
 }

@@ -29,7 +29,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
       oo
     }
 
-    //println(query.result.statements.head)
+    //logger.info(query.result.statements.head)
 
     val oppijatJoillaOpiskeluoikeuksia: Set[String] = await(db.run(query.map(_.oppijaOid).result)).toSet
 
@@ -140,7 +140,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
         diff.values.length match {
           case 0 =>
             DBIO.successful(Right(NotChanged(id, versionumero, diff)))
-          case more =>
+          case _ =>
             val nextVersionumero = versionumero + 1
             for {
               rowsUpdated <- OpiskeluOikeudetWithAccessCheck.filter(_.id === id).map(row => (row.data, row.versionumero)).update((uusiData, nextVersionumero))
@@ -148,7 +148,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
             } yield {
               rowsUpdated match {
                 case 1 => Right(Updated(id, nextVersionumero, diff))
-                case x =>
+                case x: Int =>
                   throw new RuntimeException("Unexpected number of updated rows: " + x) // throw exception to cause rollback!
               }
             }

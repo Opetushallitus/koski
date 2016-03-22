@@ -9,6 +9,7 @@ import slick.driver.PostgresDriver
 import slick.driver.PostgresDriver.api._
 
 import scala.sys.process._
+import TorDatabase._
 
 object TorDatabase {
   type DB = PostgresDriver.backend.DatabaseDef
@@ -19,7 +20,7 @@ object TorDatabase {
     val dbName: String = c.getString("db.name")
 
     val config = c.getConfig("db")
-      .withValue("url", fromAnyRef("jdbc:postgresql://"+host+":"+port+"/"+dbName))
+      .withValue("url", fromAnyRef("jdbc:postgresql://" + host + ":" + port + "/" + dbName))
       .withValue("numThreads", fromAnyRef(Pools.dbThreads))
 
     val password: String = config.getString("password")
@@ -32,8 +33,6 @@ object TorDatabase {
 }
 
 class TorDatabase(val config: Config) extends Logging {
-  import TorDatabase._
-
   val serverProcess = startLocalDatabaseServerIfNotRunning
 
   if (!config.isRemote) {

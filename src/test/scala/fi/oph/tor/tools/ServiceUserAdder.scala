@@ -6,9 +6,10 @@ import fi.oph.tor.config.TorApplication
 import fi.oph.tor.henkilo.{AuthenticationServiceClient, CreateUser, UserQueryResult}
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.koodisto.{KoodistoMuokkausPalvelu, KoodistoKoodi, KoodistoKoodiMetadata}
+import fi.oph.tor.log.Logging
 import fi.oph.tor.toruser.{KäyttöoikeusRyhmät, RemoteUserOrganisationsRepository}
 
-object ServiceUserAdder extends App {
+object ServiceUserAdder extends App with Logging {
   args match {
     case Array(username, organisaatioOid, password, lahdejarjestelma) =>
       val app: TorApplication = TorApplication()
@@ -18,7 +19,7 @@ object ServiceUserAdder extends App {
 
       val oid = authService.create(CreateUser.palvelu(username)) match {
         case Right(oid) =>
-          println("User created")
+          logger.info("User created")
           oid
         case Left(HttpStatus(400, _)) =>
           authService.search("testing") match {
@@ -27,7 +28,7 @@ object ServiceUserAdder extends App {
           }
       }
 
-      println("Username " + username + ", oid: " + oid)
+      logger.info("Username " + username + ", oid: " + oid)
 
       authService.lisääOrganisaatio(oid, organisaatioOid, "oppilashallintojärjestelmä")
 
@@ -35,18 +36,18 @@ object ServiceUserAdder extends App {
 
       authService.asetaSalasana(oid, password)
       authService.syncLdap(oid)
-      println("Set password " + password + ", requested LDAP sync")
+      logger.info("Set password " + password + ", requested LDAP sync")
 
       val koodiarvo = lahdejarjestelma
       val koodisto = kp.getLatestVersion("lahdejarjestelma").get
 
       if (!kp.getKoodistoKoodit(koodisto).toList.flatten.find(_.koodiArvo == koodiarvo).isDefined) {
         kmp.createKoodi("lahdejarjestelma", KoodistoKoodi("lahdejarjestelma_" + koodiarvo, koodiarvo, List(KoodistoKoodiMetadata(Some(koodiarvo), None, None, Some("FI"))), 1, Some(LocalDate.now)))
-        println("Luotu lähdejärjestelmäkoodi " + koodiarvo)
+        logger.info("Luotu lähdejärjestelmäkoodi " + koodiarvo)
       }
 
-      println("OK")
+      logger.info("OK")
     case _ =>
-      println("Usage: ServiceUserAdder <username> <organisaatio> <salasana> <lahdejärjestelmä>")
+      logger.info("Usage: ServiceUserAdder <username> <organisaatio> <salasana> <lahdejärjestelmä>")
   }
 }

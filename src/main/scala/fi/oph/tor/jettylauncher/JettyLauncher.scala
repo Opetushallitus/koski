@@ -61,5 +61,4 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) {
   def baseUrl = "http://localhost:" + port + "/tor"
 }
 
-object SharedJetty extends JettyLauncher(PortChecker.findFreeLocalPort, Map("db.name" -> "tortest", "fixtures.use" -> "true")) {
-}
+object SharedJetty extends JettyLauncher(PortChecker.findFreeLocalPort, Map("db.name" -> "tortest", "fixtures.use" -> "true"))

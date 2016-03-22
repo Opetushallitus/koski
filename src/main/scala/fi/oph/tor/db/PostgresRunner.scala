@@ -2,8 +2,9 @@ package fi.oph.tor.db
 
 import java.io.File
 import java.nio.file.Files
+import fi.oph.tor.log.Logging
 
-class PostgresRunner(dataDirName: String, configFile: String, port: Integer) {
+class PostgresRunner(dataDirName: String, configFile: String, port: Integer) extends Logging {
 
   import sys.process._
 
@@ -15,12 +16,12 @@ class PostgresRunner(dataDirName: String, configFile: String, port: Integer) {
     if (!dataDirExists) {
       createDataDir
     } else {
-      println("Data directory exists")
+      logger.info("Data directory exists")
     }
   }
 
   private def createDataDir = {
-    println("Initializing data directory")
+    logger.info("Initializing data directory")
     Files.createDirectory(dataPath)
     s"chmod 0700 $dataDirName" !;
     s"initdb -D $dataDirName" !;
@@ -31,7 +32,7 @@ class PostgresRunner(dataDirName: String, configFile: String, port: Integer) {
   def start = {
     if (!serverProcess.isDefined) {
       ensureDataDirExists
-      println("Starting server on port " + port)
+      logger.info("Starting server on port " + port)
       serverProcess = Some(("postgres --config_file=" + configFile + " -D " + dataDirName + " -p " + port).run)
       Thread.sleep(1000)
       sys.addShutdownHook {

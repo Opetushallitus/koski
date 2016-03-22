@@ -1,8 +1,8 @@
 package fi.oph.tor.log
 
-object Debug {
+object Debug extends Logging {
   def debug[A](x: A): A = {
-    println(x)
+    logger.info(x.toString)
     x
   }
 }

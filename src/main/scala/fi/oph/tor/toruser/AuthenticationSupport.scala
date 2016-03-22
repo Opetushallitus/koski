@@ -75,7 +75,9 @@ import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 
 import org.scalatra.auth.ScentryStrategy
 
-class UserPasswordStrategy(protected val app: ErrorHandlingServlet, val directoryClient: DirectoryClient)(implicit request: HttpServletRequest, response: HttpServletResponse) extends ScentryStrategy[AuthenticationUser] with TorAuthenticationStrategy with Logging {
+class UserPasswordStrategy(protected val app: ErrorHandlingServlet, val directoryClient: DirectoryClient)
+                          (implicit request: HttpServletRequest, response: HttpServletResponse)
+                           extends ScentryStrategy[AuthenticationUser] with TorAuthenticationStrategy with Logging {
   override def name: String = "UserPassword"
 
   private def loginRequestInBody = {

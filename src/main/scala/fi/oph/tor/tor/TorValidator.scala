@@ -27,15 +27,15 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
   def extractAndValidate(parsedJson: JValue)(implicit user: TorUser): Either[HttpStatus, TorOppija] = {
     timed("extractAndValidate") {
       TorJsonSchemaValidator.jsonSchemaValidate(parsedJson) match {
-        case status if status.isOk =>
+        case status: HttpStatus if status.isOk =>
           val extractionResult: Either[HttpStatus, TorOppija] = ValidatingAndResolvingExtractor.extract[TorOppija](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository))
           extractionResult.right.flatMap { oppija =>
             validateOpiskeluoikeudet(oppija.opiskeluoikeudet) match {
-              case status if status.isOk => Right(oppija)
-              case status => Left(status)
+              case status: HttpStatus if status.isOk => Right(oppija)
+              case status: HttpStatus => Left(status)
             }
           }
-        case status => Left(status)
+        case status: HttpStatus => Left(status)
       }
     }
   }
@@ -85,7 +85,8 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
     } else {
       (tilaValmis, suoritus.kaikkiOsasuoritukset.find(_.tila.koodiarvo == "KESKEN")) match {
         case (true, Some(keskeneräinenOsasuoritus)) =>
-          TorErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Suorituksella " + suorituksenTunniste(suoritus) + " on keskeneräinen osasuoritus " + suorituksenTunniste(keskeneräinenOsasuoritus) + " vaikka suorituksen tila on " + suoritus.tila.koodiarvo)
+          TorErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus(
+            "Suorituksella " + suorituksenTunniste(suoritus) + " on keskeneräinen osasuoritus " + suorituksenTunniste(keskeneräinenOsasuoritus) + " vaikka suorituksen tila on " + suoritus.tila.koodiarvo)
         case _ =>
           HttpStatus.ok
       }

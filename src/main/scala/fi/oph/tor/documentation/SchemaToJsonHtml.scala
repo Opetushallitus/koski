@@ -35,7 +35,7 @@ object SchemaToJsonHtml {
 
   private def keyHtml(key: String) = key match {
     case ""          => ""
-    case key         => <span class="key">{key}: </span>
+    case _           => <span class="key">{key}: </span>
   }
 
   private def buildHtmlForObject(property: Property, obj: AnyRef, schema: ClassSchema, context: NodeContext): List[Elem] = {
@@ -45,7 +45,7 @@ object SchemaToJsonHtml {
         val value = classSchema.getPropertyValue(property, obj)
         value match {
           case None => None
-          case x => Some((index, property, x))
+          case _ => Some((index, property, value))
         }
       }
 

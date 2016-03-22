@@ -7,6 +7,7 @@ import fi.oph.tor.json.Json
 import fi.oph.tor.oppija.MockOppijat
 import fi.oph.tor.schema._
 import fi.oph.tor.toruser.MockUsers
+import org.json4s.JValue
 import org.json4s.JsonAST.JObject
 import org.scalatest.FunSpec
 
@@ -221,11 +222,13 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
             Paikallinenkoodi("1", "paikallinen osa", "paikallinenkoodisto"), "Paikallinen tutkinnon osa", false, Some(laajuus)
           )
           describe("Tutkinnon osa ja arviointi ok") {
-            it("palautetaan HTTP 200") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = PaikallinenTutkinnonosatoteutus(paikallinenTutkinnonOsa)), tutkinnonSuoritustapaNäyttönä) (verifyResponseStatus(200)))
+            val suoritus: Suoritus = tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = PaikallinenTutkinnonosatoteutus(paikallinenTutkinnonOsa))
+            it("palautetaan HTTP 200") (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä) (verifyResponseStatus(200)))
           }
 
           describe("Laajuus negatiivinen") {
-            it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = PaikallinenTutkinnonosatoteutus(paikallinenTutkinnonOsa.copy(laajuus = Some(laajuus.copy(arvo = -1))))), tutkinnonSuoritustapaNäyttönä) (
+            val suoritus: Suoritus = tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = PaikallinenTutkinnonosatoteutus(paikallinenTutkinnonOsa.copy(laajuus = Some(laajuus.copy(arvo = -1)))))
+            it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä) (
               verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema(".*numeric instance is lower than the required minimum.*".r)))
             )
           }
@@ -240,24 +243,26 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
           )
 
           describe("Kun tutkinto löytyy ja osa kuuluu sen rakenteeseen") {
-            it("palautetaan HTTP 200") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus(autoalanTyönjohdonErikoisammattitutkinto, johtaminenJaHenkilöstönKehittäminen)), tutkinnonSuoritustapaNäyttönä)(
+            val suoritus: Suoritus = tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus(autoalanTyönjohdonErikoisammattitutkinto, johtaminenJaHenkilöstönKehittäminen))
+            it("palautetaan HTTP 200") (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(
               verifyResponseStatus(200)))
           }
 
           describe("Kun tutkintoa ei löydy") {
-            it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus(TutkintoKoulutus(KoodistoKoodiViite("123456", "koulutus"), Some("40/011/2001")), johtaminenJaHenkilöstönKehittäminen)), tutkinnonSuoritustapaNäyttönä)(
+            val suoritus: Suoritus = tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus(TutkintoKoulutus(KoodistoKoodiViite("123456", "koulutus"), Some("40/011/2001")), johtaminenJaHenkilöstönKehittäminen))
+            it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(
               verifyResponseStatus(400, TorErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia koulutus/123456 ei löydy koodistosta"))))
           }
 
           describe("Kun osa ei kuulu annetun tutkinnon rakenteeseen") {
-            it("palautetaan HTTP 200 (ei validoida rakennetta tässä)") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus(autoalanPerustutkinto, johtaminenJaHenkilöstönKehittäminen)), tutkinnonSuoritustapaNäyttönä)(
+            val suoritus: Suoritus = tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus(autoalanPerustutkinto, johtaminenJaHenkilöstönKehittäminen))
+            it("palautetaan HTTP 200 (ei validoida rakennetta tässä)") (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(
               verifyResponseStatus(200)))
           }
 
           describe("Kun tutkinnolla ei ole diaarinumeroa") {
-            it("palautetaan HTTP 200 (diaarinumeroa ei vaadita)") (putTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus(
-              autoalanTyönjohdonErikoisammattitutkinto.copy(perusteenDiaarinumero = None),
-              johtaminenJaHenkilöstönKehittäminen)), tutkinnonSuoritustapaNäyttönä)(
+            val suoritus: Suoritus = tutkinnonOsaSuoritus.copy(koulutusmoduulitoteutus = tutkinnonosatoteutus(autoalanTyönjohdonErikoisammattitutkinto.copy(perusteenDiaarinumero = None), johtaminenJaHenkilöstönKehittäminen))
+            it("palautetaan HTTP 200 (diaarinumeroa ei vaadita)") (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(
                 verifyResponseStatus(200)))
           }
 
@@ -279,7 +284,10 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
           testSuorituksenTila(tutkinnonOsaSuoritus, "tutkinnonosat/100023", { suoritus => { f => putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(f)} })
 
           describe("Kun tutkinto on VALMIS-tilassa ja sillä on osa, joka on KESKEN-tilassa") {
-            it("palautetaan HTTP 400") (putOpiskeluOikeus(opiskeluoikeus().copy(suoritus = tutkintoSuoritus(toteutus = tutkintototeutus.copy(suoritustapa = tutkinnonSuoritustapaNäyttönä)).copy(tila = tilaValmis, vahvistus = vahvistus, osasuoritukset = Some(List(tutkinnonOsaSuoritus))))) (
+            val opiskeluOikeus: JValue = opiskeluoikeus().copy(suoritus = tutkintoSuoritus(
+              toteutus = tutkintototeutus.copy(suoritustapa = tutkinnonSuoritustapaNäyttönä)).copy(
+                  tila = tilaValmis, vahvistus = vahvistus, osasuoritukset = Some(List(tutkinnonOsaSuoritus))))
+            it("palautetaan HTTP 400") (putOpiskeluOikeus(opiskeluOikeus) (
               verifyResponseStatus(400, TorErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Suorituksella koulutus/351301 on keskeneräinen osasuoritus tutkinnonosat/100023 vaikka suorituksen tila on VALMIS"))))
           }
         }
@@ -354,7 +362,8 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
       describe("alku > loppu") {
         it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
           Map( "alku" -> "2016-08-01", "loppu" -> "2015-12-31", "tila" -> Map("koodiarvo" -> "aktiivinen", "koodistoUri" -> "opiskeluoikeudentila"))
-        )))) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.loppuEnnenAlkua("opiskeluoikeudenTila.opiskeluoikeusjaksot.alku (2016-08-01) oltava sama tai aiempi kuin opiskeluoikeudenTila.opiskeluoikeusjaksot.loppu(2015-12-31)"))))
+        )))) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.loppuEnnenAlkua(
+          "opiskeluoikeudenTila.opiskeluoikeusjaksot.alku (2016-08-01) oltava sama tai aiempi kuin opiskeluoikeudenTila.opiskeluoikeusjaksot.loppu(2015-12-31)"))))
       }
       describe("ei-viimeiseltä jaksolta puuttuu loppupäivä") {
         it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
@@ -467,7 +476,9 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
     }
 
     describe("Suorituksen päivämäärät") {
-      def päivämäärillä(alkamispäivä: String, arviointipäivä: String, vahvistuspäivä: String) = suoritus.copy(alkamispäivä = Some(LocalDate.parse(alkamispäivä)), tila = tilaValmis, arviointi = arviointiHyvä(Some(LocalDate.parse(arviointipäivä))), vahvistus = Some(Vahvistus(Some(LocalDate.parse(vahvistuspäivä)))))
+      def päivämäärillä(alkamispäivä: String, arviointipäivä: String, vahvistuspäivä: String) = {
+        suoritus.copy(alkamispäivä = Some(LocalDate.parse(alkamispäivä)), tila = tilaValmis, arviointi = arviointiHyvä(Some(LocalDate.parse(arviointipäivä))), vahvistus = Some(Vahvistus(Some(LocalDate.parse(vahvistuspäivä)))))
+      }
 
       describe("Päivämäärät kunnossa") {
         it("palautetaan HTTP 200" ) (put(päivämäärillä("2015-08-01", "2016-05-30", "2016-05-31"))(

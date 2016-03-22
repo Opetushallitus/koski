@@ -25,7 +25,8 @@ import fi.oph.tor.henkilo.AuthenticationServiceClient
 import fi.oph.tor.organisaatio.OrganisaatioRepository
 import org.http4s.EntityDecoderInstances
 
-class RemoteUserOrganisationsRepository(henkilöPalveluClient: AuthenticationServiceClient, organisaatioRepository: OrganisaatioRepository, käyttöoikeusRyhmät: KäyttöoikeusRyhmät) extends UserOrganisationsRepository with EntityDecoderInstances with Timing {
+class RemoteUserOrganisationsRepository(henkilöPalveluClient: AuthenticationServiceClient, organisaatioRepository: OrganisaatioRepository, käyttöoikeusRyhmät: KäyttöoikeusRyhmät)
+                                       extends UserOrganisationsRepository with EntityDecoderInstances with Timing {
   def getUserOrganisations(oid: String): Observable[Set[String]] = {
     timedObservable("käyttäjänOrganisaatiot")(henkilöPalveluClient.käyttäjänOrganisaatiot(oid, käyttöoikeusRyhmät.readWrite)
       .map { oids =>

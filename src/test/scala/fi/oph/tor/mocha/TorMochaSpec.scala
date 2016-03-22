@@ -1,11 +1,12 @@
 package fi.oph.tor.mocha
 
 import fi.oph.tor.jettylauncher.SharedJetty
+import fi.oph.tor.log.Logging
 import org.scalatest.{FreeSpec, Matchers}
 
 import scala.sys.process._
 
-class TorMochaSpec extends FreeSpec with Matchers {
+class TorMochaSpec extends FreeSpec with Matchers with Logging {
   "Mocha tests" in {
     SharedJetty.start
     log("running mocha-phantom")
@@ -17,5 +18,5 @@ class TorMochaSpec extends FreeSpec with Matchers {
     res should equal (0)
   }
 
-  private def log(x: String) = println(s"********** mocha test: $x **********")
+  private def log(x: String) = logger.info(x)
 }

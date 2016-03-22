@@ -17,7 +17,7 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
 
       val laajuusYksikkö: Option[KoodistoKoodiViite] = suoritustapa.laajuusYksikko.flatMap(_ match {
         case "OSAAMISPISTE" => koodistoPalvelu.validate(KoodistoKoodiViite("6", None, "opintojenlaajuusyksikko", None))
-        case x => {
+        case x: String => {
           logger.warn("Opintojenlaajuusyksikkö not found for laajuusYksikko " + x)
           None
         }

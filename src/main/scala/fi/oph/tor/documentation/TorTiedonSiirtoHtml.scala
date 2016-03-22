@@ -20,10 +20,13 @@ Muutama perusasia tullee kuitenkin säilymään:
 
 - Rajapinnan avulla järjestelmään voi tallentaa tietoja oppijoiden opinto-oikeuksista, opintosuorituksista ja läsnäolosta oppilaitoksissa
 - Rajapinnan avulla tietoja voi myös hakea ja muokata
-- Rajapinnan käyttö vaatii autentikoinnin ja pääsy tietoihin rajataan käyttöoikeusryhmillä. Näin ollen esimerkiksi oikeus oppilaan tietyssä oppilaitoksessa suorittamien opintojen päivittämiseen voidaan antaa kyseisen oppilaitoksen henkilöstölle
-- Rajapinta mahdollistaa myös automaattiset tiedonsiirrot tietojärjstelmien välillä. Näin esimerkiksi tietyt viranomaiset voivat saada tietoja TORista. Samoin oppilaitoksen tietojärjestelmät voivat päivittää tietoja TORiin.
+- Rajapinnan käyttö vaatii autentikoinnin ja pääsy tietoihin rajataan käyttöoikeusryhmillä.
+  Näin ollen esimerkiksi oikeus oppilaan tietyssä oppilaitoksessa suorittamien opintojen päivittämiseen voidaan antaa kyseisen oppilaitoksen henkilöstölle
+- Rajapinta mahdollistaa myös automaattiset tiedonsiirrot tietojärjstelmien välillä. Näin esimerkiksi tietyt viranomaiset voivat saada tietoja TORista.
+  Samoin oppilaitoksen tietojärjestelmät voivat päivittää tietoja TORiin.
 - Järjestelmä tarjoaa REST-tyyppisen tiedonsiirtorajapinnan, jossa dataformaattina on JSON
-- Samaa tiedonsiirtoprotokollaa ja dataformaattia pyritään soveltuvilta osin käyttämään sekä käyttöliittymille, jotka näyttävät tietoa loppukäyttäjille, että järjestelmien väliseen kommunikaatioon
+- Samaa tiedonsiirtoprotokollaa ja dataformaattia pyritään soveltuvilta osin käyttämään sekä käyttöliittymille,
+  jotka näyttävät tietoa loppukäyttäjille, että järjestelmien väliseen kommunikaatioon
 
 ## JSON-dataformaatti
 
@@ -37,21 +40,26 @@ jotta konkreettista dataformaattia voitaisiin suunnitella. Yksi formaatin suunni
 
 Käytettävä JSON-dataformaatti on kuvattu [JSON-schemalla](http://json-schema.org/), jota vasten siirretyt tiedot voidaan myös automaattisesti validoida.
 
-- Tarkastele schemaa  [visualisointityökalun](/tor/json-schema-viewer#tor-oppija-schema.json) avulla. Tällä työkalulla voi myös validoida JSON-viestejä schemaa vasten. Klikkaamalla kenttiä saat näkyviin niiden tarkemmat kuvaukset.
+- Tarkastele schemaa  [visualisointityökalun](/tor/json-schema-viewer#tor-oppija-schema.json) avulla.
+  Tällä työkalulla voi myös validoida JSON-viestejä schemaa vasten. Klikkaamalla kenttiä saat näkyviin niiden tarkemmat kuvaukset.
 - Lataa schema tiedostona: [tor-oppija-schema.json](/tor/documentation/tor-oppija-schema.json).
 
 
-Tietokentät, joissa validit arvot on lueteltavissa, on kooditettu käyttäen hyväksi Opintopolku-järjestelmään kuuluvaa [Koodistopalvelua](https://github.com/Opetushallitus/koodisto). Esimerkki tällaisesta kentästä on tutkintoon johtavan koulutuksen [koulutuskoodi](/tor/documentation/koodisto/koulutus/latest).
+Tietokentät, joissa validit arvot on lueteltavissa, on kooditettu käyttäen hyväksi Opintopolku-järjestelmään kuuluvaa [Koodistopalvelua](https://github.com/Opetushallitus/koodisto).
+Esimerkki tällaisesta kentästä on tutkintoon johtavan koulutuksen [koulutuskoodi](/tor/documentation/koodisto/koulutus/latest).
 
-Scalaa osaaville ehkä nopein tapa tutkia tietomallia on kuitenkin sen lähdekoodi. Githubista löytyy sekä [scheman](https://github.com/Opetushallitus/tor/blob/master/src/main/scala/fi/oph/tor/schema/TorOppija.scala), että [esimerkkien](https://github.com/Opetushallitus/tor/blob/master/src/main/scala/fi/oph/tor/documentation/TorOppijaExamples.scala) lähdekoodit.
+Scalaa osaaville ehkä nopein tapa tutkia tietomallia on kuitenkin sen lähdekoodi. Githubista löytyy sekä [scheman](https://github.com/Opetushallitus/tor/blob/master/src/main/scala/fi/oph/tor/schema/TorOppija.scala),
+että [esimerkkien](https://github.com/Opetushallitus/tor/blob/master/src/main/scala/fi/oph/tor/documentation/TorOppijaExamples.scala) lähdekoodit.
 
 ## REST-rajapinnat
 
 Kaikki rajapinnat vaativat HTTP Basic Authentication -tunnistautumisen, eli käytännössä `Authorization`-headerin HTTP-pyyntöön.
 
-Rajapinnat on lueteltu ja kuvattu alla. Voit myös testata rajapintojen toimintaa tällä sivulla, kunhan käyt ensin [kirjautumassa sisään](/tor) järjestelmään. Saat tarvittavat tunnukset TOR-kehitystiimiltä pyydettäessä.
+Rajapinnat on lueteltu ja kuvattu alla. Voit myös testata rajapintojen toimintaa tällä sivulla, kunhan käyt ensin [kirjautumassa sisään](/tor) järjestelmään.
+Saat tarvittavat tunnukset TOR-kehitystiimiltä pyydettäessä.
 
-Rajapintojen käyttämät virhekoodit on myös kuvattu alla. Virhetapauksissa rajapinnat käyttävät alla kuvattuja HTTP-statuskoodeja ja sisällyttävät tarkemmat virhekoodit ja selitteineen JSON-tyyppiseen paluuviestiin. Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
+Rajapintojen käyttämät virhekoodit on myös kuvattu alla. Virhetapauksissa rajapinnat käyttävät alla kuvattuja HTTP-statuskoodeja ja sisällyttävät tarkemmat virhekoodit ja selitteineen JSON-tyyppiseen paluuviestiin.
+Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
 
 """
 
@@ -68,93 +76,15 @@ Rajapintojen käyttämät virhekoodit on myös kuvattu alla. Virhetapauksissa ra
       </head>
       <body>
         {toXHTML( knockoff(markdown) )}
-        <div>
-        {
-          TorApiOperations.operations.map { operation =>
-            <div class="api-operation">
-              <h3><a class="toggle-details"></a>{operation.method} {operation.path}</h3>
-              {operation.doc}
-              <div class="api-details">
-              <h4>Paluukoodit</h4>
-              <div class="status-codes">
-                <table>
-                  <thead>
-                    <tr><th>HTTP-status</th><th>Virhekoodi <small>(JSON-vastauksen sisällä)</small></th><th>Tilanne</th></tr>
-                  </thead>
-                  <tbody>
-                    {operation.statusCodes.flatMap(_.flatten).map { errorCategory =>
-                    <tr>
-                      <td>{errorCategory.statusCode}</td><td>{if (errorCategory.statusCode != 200) { errorCategory.key} else {""} }</td><td>{errorCategory.message}</td>
-                    </tr>
-                  }}
-                  </tbody>
-                </table>
-              </div>
-
-              <h4>Kokeile heti</h4>
-              <div class="api-tester" data-method={operation.method} data-path={operation.path}>
-                {
-                  if (operation.examples.nonEmpty) {
-                    <div class="postdata">
-                      <h4>Syötedata</h4>
-                      <div class="examples"><label>Esimerkkejä<select>
-                        {operation.examples.map { example =>
-                          <option data-exampledata={Json.writePretty(example.data)}>{example.name}</option>
-                        }}
-                      </select></label></div>
-                      <textarea cols="80" rows="50">{Json.writePretty(operation.examples(0).data)}</textarea>
-                    </div>
-                  } else if (operation.parameters.nonEmpty) {
-                    <div class="parameters">
-                      <h4>Parametrit</h4>
-                      <table>
-                        <thead>
-                            <tr><th>Nimi</th><th>Merkitys</th><th>Arvo</th></tr>
-                        </thead>
-                        <tbody>
-                          { operation.parameters.map { parameter =>
-                            <tr>
-                              <td>{parameter.name}</td><td>{parameter.description}</td>
-                              <td>
-                                <input name={parameter.name} value={parameter.example} class={parameter match {
-                                  case p: QueryParameter => "query-param"
-                                  case p: PathParameter => "path-param"
-                                }}></input>
-                              </td>
-                            </tr>
-                          }}
-                        </tbody>
-                      </table>
-                    </div>
-                  } else {
-                    <div></div>
-                  }
-                }
-
-                <div class="buttons">
-                  <button class="try">Kokeile</button>
-                  <a class="try-newwindow">uuteen ikkunaan</a>
-                </div>
-                <div class="result"></div>
-              </div>
-              </div>
-            </div>
-          }
-        }
-        </div>
+        { ApiTesterHtml.apiOperationsHtml }
         <div>
           <h2>Esimerkkidata annotoituna</h2>
-          <p>Toinen hyvä tapa tutustua tiedonsiirtoprotokollaan on tutkia esimerkkiviestejä. Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esimerkissa on varsinaisen JSON-sisällön lisäksi schemaan pohjautuva annotointi ja linkitykset koodistoon ja OKSA-sanastoon.</p>
-        </div>{
-        TorOppijaExamples.examples.map { example =>
-          <div>
-            <h3>{example.description} <small><a href={"/tor/documentation/examples/" + example.name + ".json"}>lataa JSON</a></small></h3>
-            <table class="json">
-              {SchemaToJsonHtml.buildHtml(TorSchema.schema, example.data)}
-            </table>
-          </div>
-        }
-        }
+          <p>
+            Toinen hyvä tapa tutustua tiedonsiirtoprotokollaan on tutkia esimerkkiviestejä.
+            Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esimerkissa on varsinaisen JSON-sisällön lisäksi schemaan pohjautuva annotointi ja linkitykset koodistoon ja OKSA-sanastoon.
+          </p>
+        </div>
+        { examplesHtml }
         <script src="js/polyfills/promise.js"></script>
         <script src="js/polyfills/fetch.js"></script>
         <script src="js/polyfills/dataset.js"></script>
@@ -162,12 +92,28 @@ Rajapintojen käyttämät virhekoodit on myös kuvattu alla. Virhetapauksissa ra
       </body>
     </html>
   }
+
+  def examplesHtml: List[Elem] = {
+    TorOppijaExamples.examples.map { example =>
+      <div>
+        <h3>
+          {example.description}<small>
+          <a href={"/tor/documentation/examples/" + example.name + ".json"}>lataa JSON</a>
+        </small>
+        </h3>
+        <table class="json">
+          {SchemaToJsonHtml.buildHtml(TorSchema.schema, example.data)}
+        </table>
+      </div>
+    }
+  }
+
+
 }
 
 
 
-case class
-ApiOperation(method: String, path: String, doc: Elem, examples: List[Example], parameters: List[Parameter], statusCodes: List[ErrorCategory])
+case class ApiOperation(method: String, path: String, doc: Elem, examples: List[Example], parameters: List[Parameter], statusCodes: List[ErrorCategory])
 
 sealed trait Parameter {
   def name: String

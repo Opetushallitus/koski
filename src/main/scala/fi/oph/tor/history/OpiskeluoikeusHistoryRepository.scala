@@ -26,7 +26,7 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends Futures with Logging 
 
     await(db.run(query.result)) match {
       case Nil => None
-      case rows => Some(rows)
+      case rows: Seq[OpiskeluOikeusHistoryRow] => Some(rows)
     }
   }
 

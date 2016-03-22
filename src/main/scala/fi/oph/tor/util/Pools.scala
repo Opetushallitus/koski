@@ -1,7 +1,7 @@
 package fi.oph.tor.util
 
 import java.util.concurrent.{Executors, ThreadFactory}
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContextExecutor, ExecutionContext}
 import scala.math._
 
 /**
@@ -50,17 +50,16 @@ import java.util.concurrent.{ AbstractExecutorService, TimeUnit }
 import java.util.Collections
 
 object ExecutionContextExecutorServiceBridge {
-  def apply(ec: ExecutionContext): ExecutionContextExecutorService = ec match {
-    case null => throw null
+  def apply(ec: ExecutionContextExecutor): ExecutionContextExecutorService = ec match {
     case eces: ExecutionContextExecutorService => eces
-    case other => new AbstractExecutorService with ExecutionContextExecutorService {
-      override def prepare(): ExecutionContext = other
+    case _ => new AbstractExecutorService with ExecutionContextExecutorService {
+      override def prepare(): ExecutionContext = ec
       override def isShutdown = false
       override def isTerminated = false
       override def shutdown() = ()
       override def shutdownNow() = Collections.emptyList[Runnable]
-      override def execute(runnable: Runnable): Unit = other execute runnable
-      override def reportFailure(t: Throwable): Unit = other reportFailure t
+      override def execute(runnable: Runnable): Unit = ec execute runnable
+      override def reportFailure(t: Throwable): Unit = ec reportFailure t
       override def awaitTermination(length: Long,unit: TimeUnit): Boolean = false
     }
   }

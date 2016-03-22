@@ -35,7 +35,7 @@ class RemoteKoodistoPalvelu(virkailijaUrl: String) extends KoodistoPalvelu with 
   private def noCache = "?noCache=" + System.currentTimeMillis()
 
   private def getKoodiMetadata(koodi: KoodistoKoodi) = {
-    runTask(http("/koodisto-service/rest/codeelement/"+koodi.koodiUri+"/"+koodi.versio + noCache)(Http.parseJson[KoodiLisätiedot])).metadata
+    runTask(http("/koodisto-service/rest/codeelement/" + koodi.koodiUri + "/" + koodi.versio + noCache)(Http.parseJson[KoodiLisätiedot])).metadata
   }
 }
 

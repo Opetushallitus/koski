@@ -6,8 +6,7 @@ import fi.oph.tor.toruser.TorUser
 import fi.vm.sade.auditlog._
 import org.slf4j.{Logger, LoggerFactory}
 
-object AuditLog extends AuditLog(LoggerFactory.getLogger(classOf[Audit].getName)){
-}
+object AuditLog extends AuditLog(LoggerFactory.getLogger(classOf[Audit].getName))
 
 class AuditLog(logger: Logger) {
   val audit = new Audit(logger, "koski", ApplicationType.BACKEND)

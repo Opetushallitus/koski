@@ -13,7 +13,9 @@ class AuditLogSpec extends FreeSpec with Assertions with Matchers {
 
   "AuditLog" - {
     "Logs in JSON format" in {
-      verifyLogMessage(AuditLogMessage(TorOperation.OPISKELUOIKEUS_LISAYS, MockUsers.hiiri.asTorUser, Map(TorMessageField.oppijaHenkiloOid ->  "1.2.246.562.24.00000000001")), """\{"timestamp":".*","serviceName":"koski","applicationType":"backend","oppijaHenkiloOid":"1.2.246.562.24.00000000001","clientIp":"192.168.0.10","kayttajaHenkiloOid":"11111","operaatio":"OPISKELUOIKEUS_LISAYS"}""".r)
+      verifyLogMessage(AuditLogMessage(
+        TorOperation.OPISKELUOIKEUS_LISAYS, MockUsers.hiiri.asTorUser, Map(TorMessageField.oppijaHenkiloOid ->  "1.2.246.562.24.00000000001")),
+        """\{"timestamp":".*","serviceName":"koski","applicationType":"backend","oppijaHenkiloOid":"1.2.246.562.24.00000000001","clientIp":"192.168.0.10","kayttajaHenkiloOid":"11111","operaatio":"OPISKELUOIKEUS_LISAYS"}""".r)
     }
   }
 

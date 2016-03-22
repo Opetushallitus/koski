@@ -29,8 +29,7 @@ object CachingProxy {
   }
 }
 
-trait CachingStrategy extends Function1[Invocation, AnyRef] with Cached {
-}
+trait CachingStrategy extends Function1[Invocation, AnyRef] with Cached
 
 object CachingStrategy {
   def noCache = NoCache

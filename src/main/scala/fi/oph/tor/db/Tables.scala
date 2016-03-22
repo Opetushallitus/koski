@@ -4,7 +4,6 @@ import java.sql.Timestamp
 
 import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.json.Json
-import fi.oph.tor.koodisto.Koodisto
 import fi.oph.tor.schema.{KoodistoKoodiViite, OpiskeluOikeus}
 import fi.oph.tor.toruser.TorUser
 import org.json4s._

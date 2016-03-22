@@ -7,7 +7,6 @@ import org.joda.time.DateTime
 
 object ISO8601DateParser {
   def parseDateTime(dateTime: String): Date = {
-    println(dateTime + " -> " + parse(dateTime).toDate)
     parse(dateTime).toDate
   }
 

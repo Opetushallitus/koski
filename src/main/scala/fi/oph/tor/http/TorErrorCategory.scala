@@ -44,7 +44,8 @@ object TorErrorCategory {
       class Date extends ErrorCategory(Validation.this, "date", "Päivämäärä on oikeassa formaatissa, mutta semanttisesti epäkelpo.") {
         val loppuEnnenAlkua = subcategory("loppuEnnenAlkua", "Annettu (arviointu) loppupäivä on aiemmin kuin alkupäivä.")
         val jaksonLoppupäiväPuuttuu = subcategory("jaksonLoppupäiväPuuttuu", "Ei-viimeiseltä jaksolta puuttuu loppupäivä (esim. opiskeluoikeusjaksot tai läsnäolojaksot).")
-        val jaksotEivätMuodostaJatkumoa = subcategory("jaksotEivätMuodostaJatkumoa", "Annettu lista jaksoa ei muodosta keskeytymätöntä jatkumoa: päivämääriä puuttuu välistä, tai jaksot päällekkäisiä (esim. opiskeluoikeusjaksot tai läsnäolojaksot).")
+        val jaksotEivätMuodostaJatkumoa = subcategory("jaksotEivätMuodostaJatkumoa",
+          "Annettu lista jaksoa ei muodosta keskeytymätöntä jatkumoa: päivämääriä puuttuu välistä, tai jaksot päällekkäisiä (esim. opiskeluoikeusjaksot tai läsnäolojaksot).")
       }
       val date = new Date
 

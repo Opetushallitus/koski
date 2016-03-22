@@ -44,7 +44,7 @@ object HenkilöDeserialializer extends Deserializer[Henkilö] {
       json match {
         case henkilö: JObject if hasOid(henkilö) && hasHetu(henkilö) => henkilö.extract[FullHenkilö]
         case henkilö: JObject if hasOid(henkilö) => henkilö.extract[OidHenkilö]
-        case henkilö => henkilö.extract[NewHenkilö]
+        case henkilö: JObject => henkilö.extract[NewHenkilö]
       }
   }
 
@@ -59,7 +59,7 @@ object JärjestämismuotoDeserializer extends Deserializer[Järjestämismuoto] {
     case (TypeInfo(TheClass, _), json) =>
       json match {
         case järjestämismuoto: JObject if järjestämismuoto.values.contains("oppisopimus") => järjestämismuoto.extract[OppisopimuksellinenJärjestämismuoto]
-        case järjestämismuoto => järjestämismuoto.extract[DefaultJärjestämismuoto]
+        case järjestämismuoto: JObject => järjestämismuoto.extract[DefaultJärjestämismuoto]
       }
   }
 }

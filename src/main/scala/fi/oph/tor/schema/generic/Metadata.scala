@@ -11,9 +11,7 @@ trait ObjectWithMetadata[T <: ObjectWithMetadata[T]] {
   def appendMetadata(newMetadata: List[Metadata]): ObjectWithMetadata[T] = replaceMetadata(metadata ++ newMetadata)
 }
 
-trait MetadataSupport extends AnnotationSupport with JsonMetadataSupport {
-
-}
+trait MetadataSupport extends AnnotationSupport with JsonMetadataSupport
 
 trait AnnotationSupport {
   val applyAnnotations: PartialFunction[(String, List[String], ObjectWithMetadata[_], SchemaFactory), ObjectWithMetadata[_]]
@@ -33,7 +31,7 @@ trait JsonMetadataSupport {
     val newSchema = p.schema match {
       case StringSchema(enumValues) =>
         StringSchema(Some(enumValues.toList.flatten ++ List(value)))
-      case x => throw new RuntimeException("Unexpected schema: " + x)
+      case x: Any => throw new RuntimeException("Unexpected schema: " + x)
 
     }
     p.copy(schema = newSchema)

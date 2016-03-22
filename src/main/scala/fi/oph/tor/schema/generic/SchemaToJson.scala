@@ -68,7 +68,7 @@ object SchemaToJson {
     case _ => Nil
   } match {
     case Nil => None
-    case xs =>
+    case _ =>
       Some("definitions", JObject(definitions.map(definition => (definition.simpleName, toJsonSchema(definition)))))
   }
 

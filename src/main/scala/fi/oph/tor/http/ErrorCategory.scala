@@ -19,7 +19,7 @@ case class ErrorCategory(val key: String, val statusCode: Int, val message: Stri
   def children: List[(String, ErrorCategory)] = children_
   def flatten: List[ErrorCategory] = children match {
     case Nil => List(this)
-    case nonEmpty => children.flatMap(_._2.flatten)
+    case _ => children.flatMap(_._2.flatten)
   }
 
   private var children_ : List[(String, ErrorCategory)] = Nil

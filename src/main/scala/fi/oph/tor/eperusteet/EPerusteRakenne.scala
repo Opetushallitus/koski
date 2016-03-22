@@ -4,7 +4,8 @@ import org.json4s.JsonAST.JObject
 import org.json4s._
 import org.json4s.reflect.TypeInfo
 
-case class EPerusteRakenne(id: Long, nimi: Map[String, String], diaarinumero: String, koulutustyyppi: String, koulutukset: List[EPerusteKoulutus], suoritustavat: List[ESuoritustapa], tutkinnonOsat: List[ETutkinnonOsa], osaamisalat: List[EOsaamisala])
+case class EPerusteRakenne(id: Long, nimi: Map[String, String], diaarinumero: String, koulutustyyppi: String,
+                           koulutukset: List[EPerusteKoulutus], suoritustavat: List[ESuoritustapa], tutkinnonOsat: List[ETutkinnonOsa], osaamisalat: List[EOsaamisala])
 
 case class ESuoritustapa(suoritustapakoodi: String, laajuusYksikko: Option[String], rakenne: ERakenneOsa, tutkinnonOsaViitteet: List[ETutkinnonOsaViite])
 case class ETutkinnonOsaViite(id: Long, laajuus: Option[Float], _tutkinnonOsa: String)

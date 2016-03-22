@@ -17,7 +17,8 @@ object TorOppijaExampleData {
     KoodistoKoodiViite("1", Some("Opiskelija ja opettaja"), "ammatillisennaytonarviointikeskusteluunosallistuneet", None)
   )
 
-  def näyttö(kuvaus: String, paikka: String, arviointi: Option[NäytönArviointi] = None) = Näyttö(kuvaus, NäytönSuorituspaikka(KoodistoKoodiViite("1", Some("työpaikka"), "ammatillisennaytonsuorituspaikka", Some(1)), paikka), arviointi)
+  def näyttö(kuvaus: String, paikka: String, arviointi: Option[NäytönArviointi] = None) = Näyttö(
+    kuvaus, NäytönSuorituspaikka(KoodistoKoodiViite("1", Some("työpaikka"), "ammatillisennaytonsuorituspaikka", Some(1)), paikka), arviointi)
 
   lazy val suoritustapaNäyttö = Suoritustapa(KoodistoKoodiViite("naytto", Some("Näyttö"), "suoritustapa", Some(1)))
   lazy val suoritustapaOps = Suoritustapa(KoodistoKoodiViite("ops", Some("Opetussuunnitelman mukainen"), "suoritustapa", Some(1)))
@@ -31,10 +32,14 @@ object TorOppijaExampleData {
   lazy val opiskeluoikeusPäättynyt = KoodistoKoodiViite("paattynyt", Some("Päättynyt"), "opiskeluoikeudentila", Some(1))
   lazy val opiskeluoikeusKeskeyttänyt = KoodistoKoodiViite("keskeyttanyt", Some("Keskeyttänyt"), "opiskeluoikeudentila", Some(1))
   lazy val lähdeWinnova = KoodistoKoodiViite("winnova", Some("Winnova"), "lahdejarjestelma", Some(1))
-  lazy val hyväksiluku = Hyväksiluku(OpsTutkinnonosa(KoodistoKoodiViite("100238", Some("Asennushitsaus"), "tutkinnonosat", Some(1)), true, None), Some("Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"))
+  lazy val hyväksiluku = Hyväksiluku(
+    OpsTutkinnonosa(KoodistoKoodiViite("100238", Some("Asennushitsaus"), "tutkinnonosat", Some(1)), true, None),
+    Some("Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"))
   lazy val tilaKesken = KoodistoKoodiViite("KESKEN", "suorituksentila")
   lazy val tilaValmis = KoodistoKoodiViite("VALMIS", "suorituksentila")
-  lazy val arviointiHyväksytty: Some[List[Arviointi]] = Some(List(Arviointi(arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)), Some(date(2013, 3, 20)), arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen"))))))
+  lazy val arviointiHyväksytty: Some[List[Arviointi]] = Some(List(Arviointi(
+    arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)), Some(date(2013, 3, 20)),
+    arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen"))))))
   lazy val paikallisenOsanSuoritus = Suoritus(Some("suoritus-12345-2"),
     PaikallinenTutkinnonosatoteutus(
       PaikallinenTutkinnonosa(Paikallinenkoodi("123456789", "Pintavauriotyöt", "kallion_oma_koodisto"), "Opetellaan korjaamaan pinnallisia vaurioita", false, None),
@@ -121,7 +126,9 @@ object TorOppijaExamples {
         Some("suoritus-12345-1"),
         OpsTutkinnonosatoteutus(
           OpsTutkinnonosa(KoodistoKoodiViite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Some(Laajuus(11, opintojenLaajuusYksikkö))),
-          lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(KoodistoKoodiViite("mukautettu", "ammatillisentutkinnonosanlisatieto"), "Tutkinnon osan ammattitaitovaatimuksia ja osaamisen arviointi on mukautettu (ja/tai niistä on poikettu) ammatillisesta peruskoulutuksesta annetun lain\n(630/1998, muutos 246/2015) 19 a (ja/tai 21) §:n perusteella")))
+          lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(
+            KoodistoKoodiViite("mukautettu", "ammatillisentutkinnonosanlisatieto"),
+            "Tutkinnon osan ammattitaitovaatimuksia ja osaamisen arviointi on mukautettu (ja/tai niistä on poikettu) ammatillisesta peruskoulutuksesta annetun lain\n(630/1998, muutos 246/2015) 19 a (ja/tai 21) §:n perusteella")))
         ),
         suorituskieli = None,
         tila = tilaValmis,

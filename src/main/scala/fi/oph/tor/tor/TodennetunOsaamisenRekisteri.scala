@@ -64,7 +64,8 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
         case _: Created => ("Luotu", Json.write(opiskeluOikeus))
         case _: NotChanged => ("Päivitetty", "ei muutoksia")
       }
-      logger.info(verb + " opiskeluoikeus " + result.id + " (versio " + result.versionumero + ")" + " oppijalle " + oppijaOid + " tutkintoon " + opiskeluOikeus.suoritus.koulutusmoduulitoteutus.koulutusmoduuli.tunniste + " oppilaitoksessa " + opiskeluOikeus.oppilaitos.oid + ": " + content)
+      logger.info(verb + " opiskeluoikeus " + result.id + " (versio " + result.versionumero + ")" + " oppijalle " + oppijaOid + " tutkintoon " + opiskeluOikeus.suoritus.koulutusmoduulitoteutus.koulutusmoduuli.tunniste +
+        " oppilaitoksessa " + opiskeluOikeus.oppilaitos.oid + ": " + content)
     }
 
     def accessLog(oppijaOid: PossiblyUnverifiedOppijaOid, result: CreateOrUpdateResult): Unit = {
@@ -114,7 +115,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
       case Some(oppija) =>
         opiskeluOikeusRepository.findByOppijaOid(oppija.oid) match {
           case Nil => notFound
-          case opiskeluoikeudet => Right(TorOppija(oppija, opiskeluoikeudet))
+          case opiskeluoikeudet: Seq[OpiskeluOikeus] => Right(TorOppija(oppija, opiskeluoikeudet))
         }
       case None =>
         notFound

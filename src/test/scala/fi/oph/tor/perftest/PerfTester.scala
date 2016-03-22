@@ -1,13 +1,14 @@
 package fi.oph.tor.perftest
 
 import fi.oph.tor.db.{Futures, GlobalExecutionContext}
+import fi.oph.tor.log.Logging
 import fi.oph.tor.util.Timing
 
 import scala.collection.immutable.IndexedSeq
 import scala.concurrent.Future
 import scala.concurrent.duration._
 
-object PerfTester extends App with TestApp with GlobalExecutionContext with Futures with Timing {
+object PerfTester extends App with TestApp with GlobalExecutionContext with Futures with Timing with Logging {
   val blockSize = 100
   val blockCount = 1
   timed("Haettu " + (blockSize * blockCount) + " suoritusta") {
@@ -16,9 +17,9 @@ object PerfTester extends App with TestApp with GlobalExecutionContext with Futu
       fetch(i * blockSize, blockSize).map(_ => blockSize)
     }
 
-    println(await(Future.reduce(futures)((a, b) =>
+    logger.info(await(Future.reduce(futures)((a, b) =>
       a + b
-    ), 5 minutes))
+    ), 5 minutes).toString)
 
   }
 
@@ -41,7 +42,7 @@ object PerfTester extends App with TestApp with GlobalExecutionContext with Futu
   def fetchSuoritukset(oppijaId: String): Unit = {
     get("api/oppija/" + oppijaId, headers = (authHeaders + ("Content-type" -> "application/json"))) {
       if(response.status != 200) {
-        println(response.body)
+        logger.info(response.body)
       }
     }
   }

@@ -120,7 +120,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
       }
     }) match {
       case HttpStatus.ok => Right(oppija)
-      case status => Left(status)
+      case status: HttpStatus => Left(status)
     }
   }
 

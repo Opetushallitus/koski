@@ -33,7 +33,10 @@ class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances wit
     ))(json4sEncoderOf[List[LisääOrganisaatio]], Http.unitDecoder)
   }
   def lisääKäyttöoikeusRyhmä(henkilöOid: String, organisaatioOid: String, ryhmä: Int): Unit = {
-    http.put("/authentication-service/resources/henkilo/" + henkilöOid + "/organisaatiohenkilo/" + organisaatioOid + "/kayttooikeusryhmat", List(LisääKäyttöoikeusryhmä(ryhmä)))(json4sEncoderOf[List[LisääKäyttöoikeusryhmä]], Http.unitDecoder)
+    http.put(
+      "/authentication-service/resources/henkilo/" + henkilöOid + "/organisaatiohenkilo/" + organisaatioOid + "/kayttooikeusryhmat",
+      List(LisääKäyttöoikeusryhmä(ryhmä))
+    )(json4sEncoderOf[List[LisääKäyttöoikeusryhmä]], Http.unitDecoder)
   }
   def asetaSalasana(henkilöOid: String, salasana: String) = {
     http.post ("/authentication-service/resources/salasana/" + henkilöOid, salasana)(EntityEncoder.stringEncoder(Charset.`UTF-8`)

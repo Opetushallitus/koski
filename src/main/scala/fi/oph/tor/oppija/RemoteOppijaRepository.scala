@@ -3,7 +3,7 @@ package fi.oph.tor.oppija
 import fi.oph.tor.henkilo._
 import fi.oph.tor.http.HttpStatus
 import fi.oph.tor.koodisto.KoodistoViitePalvelu
-import fi.oph.tor.schema.{FullHenkilö, Henkilö, NewHenkilö}
+import fi.oph.tor.schema.{KoodistoKoodiViite, FullHenkilö, Henkilö, NewHenkilö}
 
 class RemoteOppijaRepository(henkilöPalveluClient: AuthenticationServiceClient, koodisto: KoodistoViitePalvelu) extends OppijaRepository {
   override def findOppijat(query: String): List[FullHenkilö] = {
@@ -27,7 +27,7 @@ class RemoteOppijaRepository(henkilöPalveluClient: AuthenticationServiceClient,
   private def convertKansalaisuus(kansalaisuus: Option[List[String]]) = {
     kansalaisuus.flatMap(_.flatMap(kansalaisuus => koodisto.getKoodistoKoodiViite("maatjavaltiot2", kansalaisuus)) match {
       case Nil => None
-      case xs => Some(xs)
+      case xs: List[KoodistoKoodiViite] => Some(xs)
     })
   }
 }

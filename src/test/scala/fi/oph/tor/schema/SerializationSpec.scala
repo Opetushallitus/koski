@@ -2,9 +2,10 @@ package fi.oph.tor.schema
 
 import fi.oph.tor.documentation.{TorOppijaExampleData, TorOppijaExamples}
 import fi.oph.tor.json.Json
+import fi.oph.tor.log.Logging
 import org.scalatest.{FunSpec, Matchers}
 
-class SerializationSpec extends FunSpec with Matchers {
+class SerializationSpec extends FunSpec with Matchers with Logging {
   describe("Serialization / deserialization") {
     it("Hyväksiluku") {
       val jsonString = Json.write(TorOppijaExampleData.hyväksiluku)
@@ -17,7 +18,7 @@ class SerializationSpec extends FunSpec with Matchers {
           val jsonString = Json.write(example.data)
           val oppija = Json.read[TorOppija](jsonString)
           oppija should(equal(example.data))
-          println(example.name + " ok")
+          logger.info(example.name + " ok")
         }
       }
     }

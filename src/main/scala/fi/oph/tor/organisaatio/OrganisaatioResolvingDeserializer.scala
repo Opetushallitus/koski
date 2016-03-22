@@ -22,7 +22,7 @@ object OrganisaatioResolvingDeserializer extends Deserializer[Organisaatio] with
               case None => ContextualExtractor.extractionError(TorErrorCategory.badRequest.validation.organisaatio.tuntematon("Organisaatiota " + o.oid + " ei löydy organisaatiopalvelusta"))
             }
           }
-        case org => org
+        case org: Organisaatio => org
       }
   }
 }
