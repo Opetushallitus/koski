@@ -114,7 +114,7 @@ Buildaa frontti, ja päivitä automaattisesti kun tiedostoja muokataan:
 
     make watch
     
-Staattinen analyysi (ScalaStyle + ESLint):
+Staattinen analyysi [ScalaStyle](http://www.scalastyle.org/) ja [ESLint](http://eslint.org/)
 
     make lint
 
@@ -161,7 +161,13 @@ Mocha-testit voi ajaa myös nopeasti komentoriviltä
 
 TOR:n Jenkins CI-palvelin palvelee osoitteessa http://86.50.170.109:8080/, jonne pääsy on rajattu käyttäjätunnuksella ja salasanalla.
 
-CI-palvelimella sovellus testataan jokaisen commitin yhteydessä. Suorituskykytestit ajetaan joka aamu. CI-palvelimen konfiguraatio synkronoidaan [Github-repositorioon](https://github.com/Opetushallitus/koski-ci-configuration) Jenkins SCM sync congiguration [pluginilla](https://wiki.jenkins-ci.org/display/JENKINS/SCM+Sync+configuration+plugin).
+CI-palvelimella sovellus testataan jokaisen commitin yhteydessä. Paikallisten testien lisäksi ajetaan pieni määrä integraatiotestejä testiympäristön REST-rajapintoja vasten.
+ 
+Myös staattinen analyysi [ScalaStyle](http://www.scalastyle.org/) ja [ESLint](http://eslint.org/) -työkaluilla ajetaan joka commitille.
+
+Suorituskykytestit ajetaan joka aamu. 
+
+CI-palvelimen konfiguraatio synkronoidaan [Github-repositorioon](https://github.com/Opetushallitus/koski-ci-configuration) Jenkins SCM sync congiguration [pluginilla](https://wiki.jenkins-ci.org/display/JENKINS/SCM+Sync+configuration+plugin).
 
 ## Testiympäristö (CSC:n ePouta-pilvessä)
 
