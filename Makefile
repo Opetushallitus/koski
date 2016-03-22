@@ -39,7 +39,7 @@ postgres-clean:
 	rm postgresql/data/postmaster.pid 2> /dev/null||true
 watch:
 	cd web && npm run watch
-eslint:
+eslint: front
 	cd web && npm run lint
 scalastyle:
 	mvn verify -DskipTests 
