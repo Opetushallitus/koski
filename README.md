@@ -155,7 +155,9 @@ Mocha-testit voi ajaa myös nopeasti komentoriviltä
 
 ## CI-palvelin
 
-TOR:n Jenkins CI-palvelin palvelee osoitteessa http://86.50.170.109:8080/
+TOR:n Jenkins CI-palvelin palvelee osoitteessa http://86.50.170.109:8080/, jonne pääsy on rajattu käyttäjätunnuksella ja salasanalla.
+
+CI-palvelimella sovellus testataan jokaisen commitin yhteydessä. Suorituskykytestit ajetaan joka aamu. CI-palvelimen konfiguraatio synkronoidaan [Github-repositorioon](https://github.com/Opetushallitus/koski-ci-configuration) Jenkins SCM sync congiguration [pluginilla](https://wiki.jenkins-ci.org/display/JENKINS/SCM+Sync+configuration+plugin).
 
 ## Testiympäristö (CSC:n ePouta-pilvessä)
 
