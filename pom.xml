@@ -15,6 +15,7 @@
       <slick.version>3.1.1</slick.version>
       <scalatra.version>2.4.0</scalatra.version>
       <json4s.version>3.3.0</json4s.version>
+      <scoverage.plugin.version>1.1.1</scoverage.plugin.version>
   </properties>
   <dependencies>
     <!-- OPH internal deps -->
@@ -312,6 +313,19 @@
             <goals>
               <goal>check</goal>
             </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.scoverage</groupId>
+        <artifactId>scoverage-maven-plugin</artifactId>
+        <version>${scoverage.plugin.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <phase>verify</phase>
           </execution>
         </executions>
       </plugin>
