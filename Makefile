@@ -42,7 +42,7 @@ watch:
 eslint: front
 	cd web && npm run lint
 scalastyle:
-	mvn verify -DskipTests 
+	mvn clean verify
 lint: eslint scalastyle
 it: test
 happen:
