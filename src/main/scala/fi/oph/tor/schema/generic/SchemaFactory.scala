@@ -7,7 +7,12 @@ import scala.reflect.runtime.{universe => ru}
 
 case class SchemaFactory(annotationsSupported: List[AnnotationSupport]) {
   def createSchema(className: String): SchemaWithClassName = {
-    createSchema(reflect.runtime.currentMirror.classSymbol(Class.forName(className)).toType, ScanState()).asInstanceOf[SchemaWithClassName]
+    createSchema(typeByName(className), ScanState()).asInstanceOf[SchemaWithClassName]
+  }
+
+  private def typeByName(className: String): ru.Type = {
+    val tyep: ru.Type = reflect.runtime.currentMirror.classSymbol(Class.forName(className)).toType
+    tyep
   }
 
   case class ScanState(root: Boolean = true, foundTypes: collection.mutable.Set[String] = collection.mutable.Set.empty, createdTypes: collection.mutable.Set[SchemaWithClassName] = collection.mutable.Set.empty) {
@@ -56,6 +61,8 @@ case class SchemaFactory(annotationsSupported: List[AnnotationSupport]) {
   }
 
   private def createClassSchema(tpe: ru.Type, state: ScanState) = {
+    val traits = findTraits(tpe)
+
     val className: String = tpe.typeSymbol.fullName
     def ref: ClassRefSchema = applyAnnotations(tpe.typeSymbol, ClassRefSchema(className, Nil))
     if (!state.foundTypes.contains(className)) {
@@ -66,7 +73,14 @@ case class SchemaFactory(annotationsSupported: List[AnnotationSupport]) {
         val term = paramSymbol.asTerm
         val termType = createSchema(term.typeSignature, state.childState)
         val termName: String = term.name.decoded.trim
-        applyAnnotations(term, Property(termName, termType, Nil))
+        val property = applyAnnotations(term, Property(termName, termType, Nil))
+        val matchingMethodsFromTraits = traits.flatMap (_.members
+          .filter(_.isMethod)
+          .filter(_.asTerm.asMethod.name.toString == termName )
+        ).map(_.asTerm)
+        matchingMethodsFromTraits.foldLeft(property) { (property, traitMethod) =>
+          applyAnnotations(traitMethod, property)
+        }
       }.toList
 
       if (state.root) {
@@ -81,12 +95,22 @@ case class SchemaFactory(annotationsSupported: List[AnnotationSupport]) {
     }
   }
 
+  def findTraits(tpe: ru.Type) = {
+    tpe.baseClasses
+      .map(_.fullName)
+      .filter(!List("scala.Any").contains(_))
+      .map {typeByName(_)}
+      .filter {_.typeSymbol.asClass.isTrait}
+  }
+
   private def applyAnnotations[T <: ObjectWithMetadata[T]](symbol: ru.Symbol, x: T): T = {
     symbol.annotations.flatMap(annotation => annotationsSupported.map((annotation, _))).foldLeft(x) { case (current, (annotation, metadataSupport)) =>
       val f: PartialFunction[(String, List[String], ObjectWithMetadata[_], SchemaFactory), ObjectWithMetadata[_]] = metadataSupport.applyAnnotations orElse { case (_, _, obj, _) => obj }
 
       val annotationParams: List[String] = annotation.tree.children.tail.map(str => StringEscapeUtils.unescapeJava(str.toString.replaceAll("\"$|^\"", "")))
       val annotationType: String = annotation.tree.tpe.toString
+
+      println("Annotation: " + annotationType)
 
       val result: T = f(annotationType, annotationParams, current, this).asInstanceOf[T]
       result
@@ -101,8 +125,8 @@ case class SchemaFactory(annotationsSupported: List[AnnotationSupport]) {
       s.fullName == "scala.Vector")
   }
 
-  private def findImplementations(tpe: ru.Type, state: ScanState): List[SchemaWithClassName] = {
-    val implementationClasses = TraitImplementationFinder.findTraitImplementations(tpe)
+  private def findImplementations(traitType: ru.Type, state: ScanState): List[SchemaWithClassName] = {
+    val implementationClasses = TraitImplementationFinder.findTraitImplementations(traitType)
 
     import reflect.runtime.currentMirror
     implementationClasses.toList.map { klass =>
