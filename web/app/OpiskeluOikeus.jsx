@@ -13,12 +13,12 @@ export const OpiskeluOikeus = React.createClass({
     return (
         rakenne
           ? <div className="opiskeluoikeus">
-              <span className="tutkinto">{opiskeluOikeus.suoritus.koulutusmoduulitoteutus.koulutusmoduuli.tunniste.nimi}</span> <span className="oppilaitos">{opiskeluOikeus.oppilaitos.nimi}</span>
+              <span className="tutkinto">{opiskeluOikeus.suoritus.koulutusmoduuli.tunniste.nimi}</span> <span className="oppilaitos">{opiskeluOikeus.oppilaitos.nimi}</span>
               <div className="tutkinto-rakenne">
                 <Dropdown className="suoritustapa"
                           title="Suoritustapa"
                           options={rakenne.suoritustavat.map(s => s.suoritustapa)}
-                          value={opiskeluOikeus.suoritus.koulutusmoduulitoteutus.suoritustapa ? opiskeluOikeus.suoritus.koulutusmoduulitoteutus.suoritustapa.tunniste.koodiarvo : ''}
+                          value={opiskeluOikeus.suoritus.suoritustapa ? opiskeluOikeus.suoritus.suoritustapa.tunniste.koodiarvo : ''}
                           autoselect={true}
                           onChange={(value) => opiskeluOikeusChange.push([opiskeluOikeus.id,
                             oo => {
@@ -28,26 +28,26 @@ export const OpiskeluOikeus = React.createClass({
                                   koodistoUri: 'suoritustapa'
                                 }
                               } : undefined
-                              return oo.mergeDeep({suoritus: {koulutusmoduulitoteutus: {suoritustapa: suoritustapa}}})
+                              return oo.mergeDeep({suoritus: {suoritustapa: suoritustapa}})
                             }
                           ])}
                 />
                 <Dropdown className="osaamisala"
                           title="Osaamisala"
                           options={rakenne.osaamisalat}
-                          value={opiskeluOikeus.suoritus.koulutusmoduulitoteutus.osaamisala ? opiskeluOikeus.suoritus.koulutusmoduulitoteutus.osaamisala[0].koodiarvo : ''}
+                          value={opiskeluOikeus.suoritus.osaamisala ? opiskeluOikeus.suoritus.osaamisala[0].koodiarvo : ''}
                           onChange={(value) => opiskeluOikeusChange.push([opiskeluOikeus.id,
                             oo => {
                               let osaamisala = value ? [{
                                   koodiarvo: value,
                                   koodistoUri: 'osaamisala'
                               }] : undefined
-                              return oo.mergeDeep({suoritus: {koulutusmoduulitoteutus: {osaamisala: osaamisala}}})
+                              return oo.mergeDeep({suoritus: {osaamisala: osaamisala}})
                             }
                           ])}
                   />
-                { opiskeluOikeus.suoritus.koulutusmoduulitoteutus.suoritustapa
-                  ? rakenne.suoritustavat.find(x => x.suoritustapa.koodiarvo == opiskeluOikeus.suoritus.koulutusmoduulitoteutus.suoritustapa.tunniste.koodiarvo).rakenne.osat.map(rakenneOsa => <Rakenneosa
+                { opiskeluOikeus.suoritus.suoritustapa
+                  ? rakenne.suoritustavat.find(x => x.suoritustapa.koodiarvo == opiskeluOikeus.suoritus.suoritustapa.tunniste.koodiarvo).rakenne.osat.map(rakenneOsa => <Rakenneosa
                       rakenneosa={rakenneOsa}
                       opiskeluOikeus={opiskeluOikeus}
                       rakenne={rakenne}
@@ -62,7 +62,7 @@ export const OpiskeluOikeus = React.createClass({
   },
   componentDidMount() {
     let {opiskeluOikeus} = this.props
-    let diaarinumero = opiskeluOikeus.suoritus.koulutusmoduulitoteutus.koulutusmoduuli.perusteenDiaarinumero
+    let diaarinumero = opiskeluOikeus.suoritus.koulutusmoduuli.perusteenDiaarinumero
     Http.get('/tor/api/tutkinto/rakenne/' + encodeURIComponent(diaarinumero)).onValue(rakenne => {
         if (this.isMounted()) {
           this.setState({rakenne: rakenne})
@@ -93,7 +93,7 @@ const RakenneModuuli = React.createClass({
         <ul className="osat">
           { rakenneosa.osat
             .filter(osa => {
-              let osaamisala = opiskeluOikeus.suoritus.koulutusmoduulitoteutus.osaamisala ? opiskeluOikeus.suoritus.koulutusmoduulitoteutus.osaamisala[0].koodiarvo : undefined
+              let osaamisala = opiskeluOikeus.suoritus.osaamisala ? opiskeluOikeus.suoritus.osaamisala[0].koodiarvo : undefined
               return !osa.osaamisalaKoodi || osa.osaamisalaKoodi == osaamisala
             })
             .map((osa, i) => <li key={i}>
@@ -116,7 +116,7 @@ const TutkinnonOsa = React.createClass({
     const arviointiAsteikko = R.find(asteikko => R.equals(asteikko.koodisto, tutkinnonOsa.arviointiAsteikko))(rakenne.arviointiAsteikot)
     const arvosanat = arviointiAsteikko ? arviointiAsteikko.arvosanat : undefined
     const laajuudenYksikkö = R.find(tapa => {
-      return tapa.suoritustapa.koodiarvo == opiskeluOikeus.suoritus.koulutusmoduulitoteutus.suoritustapa.tunniste.koodiarvo
+      return tapa.suoritustapa.koodiarvo == opiskeluOikeus.suoritus.suoritustapa.tunniste.koodiarvo
     })(rakenne.suoritustavat).laajuusYksikkö
 
     const addArvosana = (arvosana) => (oOikeus) => {
@@ -124,15 +124,13 @@ const TutkinnonOsa = React.createClass({
 
       return oo.updateIn(['suoritus', 'osasuoritukset'], x => x.push(
         {
-          koulutusmoduulitoteutus: {
-            koulutusmoduuli: {
-              tunniste: tutkinnonOsa.tunniste,
-              pakollinen: tutkinnonOsa.pakollinen,
-              laajuus: tutkinnonOsa.laajuus ? {
-                arvo : tutkinnonOsa.laajuus,
-                yksikkö : laajuudenYksikkö
-              } : undefined
-            }
+          koulutusmoduuli: {
+            tunniste: tutkinnonOsa.tunniste,
+            pakollinen: tutkinnonOsa.pakollinen,
+            laajuus: tutkinnonOsa.laajuus ? {
+              arvo : tutkinnonOsa.laajuus,
+              yksikkö : laajuudenYksikkö
+            } : undefined
           },
           tila: { koodistoUri: 'suorituksentila', koodiarvo: 'KESKEN' },
           arviointi: [
@@ -149,7 +147,7 @@ const TutkinnonOsa = React.createClass({
       opiskeluOikeusChange.push([opiskeluOikeus.id, addArvosana(arvosana)])
     }
 
-    const suoritus = R.find(osanSuoritus => R.equals(osanSuoritus.koulutusmoduulitoteutus.koulutusmoduuli.tunniste, tutkinnonOsa.tunniste))(opiskeluOikeus.suoritus.osasuoritukset ? opiskeluOikeus.suoritus.osasuoritukset : [])
+    const suoritus = R.find(osanSuoritus => R.equals(osanSuoritus.koulutusmoduuli.tunniste, tutkinnonOsa.tunniste))(opiskeluOikeus.suoritus.osasuoritukset ? opiskeluOikeus.suoritus.osasuoritukset : [])
     const arviointi = suoritus && suoritus.arviointi
 
     return (
