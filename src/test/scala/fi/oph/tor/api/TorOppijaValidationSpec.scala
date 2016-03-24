@@ -155,7 +155,7 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
       describe("Kun yritetään lisätä opinto-oikeus virheelliseen perusteeseen") {
         it("palautetaan HTTP 400 virhe" ) {
           putOpiskeluOikeus(Map(
-            "suoritus" -> Map("koulutusmoduulitoteutus" -> Map("koulutusmoduuli" -> Map("perusteenDiaarinumero" -> "39/xxx/2014")))
+            "suoritus" -> Map("koulutusmoduuli" -> Map("perusteenDiaarinumero" -> "39/xxx/2014"))
           )) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Tutkinnon perustetta ei löydy diaarinumerolla 39/xxx/2014")))
         }
       }
@@ -163,35 +163,35 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
       describe("Kun yritetään lisätä opinto-oikeus ilman perustetta") {
         it("palautetaan HTTP 400 virhe" ) {
           putOpiskeluOikeus(Map(
-            "suoritus" -> Map("koulutusmoduulitoteutus" -> Map("koulutusmoduuli" -> Map("perusteenDiaarinumero"-> "")))
+            "suoritus" -> Map("koulutusmoduuli" -> Map("perusteenDiaarinumero"-> ""))
           )) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema(".*perusteenDiaarinumero.*".r)))
         }
       }
 
       describe("Osaamisala ja suoritustapa") {
         describe("Osaamisala ja suoritustapa ok") {
-          it("palautetaan HTTP 200") (putOpiskeluOikeus(Map("suoritus" -> Map("koulutusmoduulitoteutus" -> Map(
+          it("palautetaan HTTP 200") (putOpiskeluOikeus(Map("suoritus" -> Map(
             "suoritustapa" -> Map("tunniste" -> Map("koodiarvo" -> "ops", "koodistoUri" -> "suoritustapa")),
             "osaamisala" -> List(Map("koodiarvo" -> "1527", "koodistoUri" -> "osaamisala"))
-          ))))(verifyResponseStatus(200)))
+          )))(verifyResponseStatus(200)))
         }
         describe("Suoritustapa virheellinen") {
-          it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("suoritus" -> Map("koulutusmoduulitoteutus" -> Map(
+          it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("suoritus" -> Map(
             "suoritustapa" -> Map("tunniste" -> Map("koodiarvo" -> "blahblahtest", "koodistoUri" -> "suoritustapa")),
             "osaamisala" -> List(Map("koodiarvo" -> "1527", "koodistoUri" -> "osaamisala"))
-          ))))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia suoritustapa/blahblahtest ei löydy koodistosta"))))
+          )))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia suoritustapa/blahblahtest ei löydy koodistosta"))))
         }
         describe("Osaamisala ei löydy tutkintorakenteesta") {
-          it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("suoritus" -> Map("koulutusmoduulitoteutus" -> Map(
+          it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("suoritus" -> Map(
             "suoritustapa" -> Map("tunniste" -> Map("koodiarvo" -> "ops", "koodistoUri" -> "suoritustapa")),
             "osaamisala" -> List(Map("koodiarvo" -> "3053", "koodistoUri" -> "osaamisala"))
-          )))) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.rakenne.tuntematonOsaamisala("Osaamisala 3053 ei löydy tutkintorakenteesta perusteelle 39/011/2014"))))
+          ))) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.rakenne.tuntematonOsaamisala("Osaamisala 3053 ei löydy tutkintorakenteesta perusteelle 39/011/2014"))))
         }
         describe("Osaamisala virheellinen") {
-          it("palautetaan HTTP 400")(putOpiskeluOikeus(Map("suoritus" -> Map("koulutusmoduulitoteutus" -> Map(
+          it("palautetaan HTTP 400")(putOpiskeluOikeus(Map("suoritus" -> Map(
             "suoritustapa" -> Map("tunniste" -> Map("koodiarvo" -> "ops", "koodistoUri" -> "suoritustapa")),
             "osaamisala" -> List(Map("koodiarvo" -> "0", "koodistoUri" -> "osaamisala"))
-          ))))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia osaamisala/0 ei löydy koodistosta"))))
+          )))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia osaamisala/0 ei löydy koodistosta"))))
         }
       }
 
