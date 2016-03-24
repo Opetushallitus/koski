@@ -416,10 +416,11 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
 
   def testSuorituksenTila[T <: Suoritus[_, _]](suoritus: T, desc: String, put: (T => ((=> Unit) => Unit))): Unit = {
     def copySuoritus(suoritus: T, t: KoodistoKoodiViite, a: Option[List[Arviointi]], v: Option[Vahvistus], ap: Option[LocalDate] = None): T = {
+      val alkamispäivä = ap.orElse(suoritus.alkamispäivä)
       (suoritus match {
-        case s: AmmatillinenTutkintoSuoritus => s.copy(tila = t, arviointi = a, vahvistus = v, alkamispäivä = ap)
-        case s: AmmatillinenOpsTutkinnonosaSuoritus => s.copy(tila = t, arviointi = a, vahvistus = v)
-        case s: AmmatillinenPaikallinenTutkinnonosaSuoritus => s.copy(tila = t, arviointi = a, vahvistus = v)
+        case s: AmmatillinenTutkintoSuoritus => s.copy(tila = t, arviointi = a, vahvistus = v, alkamispäivä = alkamispäivä)
+        case s: AmmatillinenOpsTutkinnonosaSuoritus => s.copy(tila = t, arviointi = a, vahvistus = v, alkamispäivä = alkamispäivä)
+        case s: AmmatillinenPaikallinenTutkinnonosaSuoritus => s.copy(tila = t, arviointi = a, vahvistus = v, alkamispäivä = alkamispäivä)
       }).asInstanceOf[T]
     }
 
