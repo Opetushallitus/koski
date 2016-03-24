@@ -23,40 +23,38 @@
         },
         "suoritus": {
           "paikallinenId": "suoritus-12345",
-          "koulutusmoduulitoteutus": {
-            "koulutusmoduuli": {
-              "tunniste": {
-                "koodiarvo": "351301",
-                "nimi": "Autoalan perustutkinto",
-                "koodistoUri": "koulutus"
-              },
-              "perusteenDiaarinumero": "39/011/2014"
+          "koulutusmoduuli": {
+            "tunniste": {
+              "koodiarvo": "351301",
+              "nimi": "Autoalan perustutkinto",
+              "koodistoUri": "koulutus"
             },
-            "tutkintonimike": [{
-              "koodiarvo": "10024",
-              "nimi": "Autokorinkorjaaja",
-              "koodistoUri": "tutkintonimikkeet"
-            }],
-            "osaamisala": [{
-              "koodiarvo": "1525",
-              "nimi": "Autokorinkorjauksen osaamisala",
-              "koodistoUri": "osaamisala"
-            }],
-            "suoritustapa": {
-              "tunniste": {
-                "koodiarvo": "naytto",
-                "nimi": "Näyttö",
-                "koodistoUri": "suoritustapa",
-                "koodistoVersio": 1
-              }
-            },
-            "järjestämismuoto": {
-              "tunniste": {
-                "koodiarvo": "10",
-                "nimi": "Oppilaitosmuotoinen",
-                "koodistoUri": "jarjestamismuoto",
-                "koodistoVersio": 1
-              }
+            "perusteenDiaarinumero": "39/011/2014"
+          },
+          "tutkintonimike": [{
+            "koodiarvo": "10024",
+            "nimi": "Autokorinkorjaaja",
+            "koodistoUri": "tutkintonimikkeet"
+          }],
+          "osaamisala": [{
+            "koodiarvo": "1525",
+            "nimi": "Autokorinkorjauksen osaamisala",
+            "koodistoUri": "osaamisala"
+          }],
+          "suoritustapa": {
+            "tunniste": {
+              "koodiarvo": "naytto",
+              "nimi": "Näyttö",
+              "koodistoUri": "suoritustapa",
+              "koodistoVersio": 1
+            }
+          },
+          "järjestämismuoto": {
+            "tunniste": {
+              "koodiarvo": "10",
+              "nimi": "Oppilaitosmuotoinen",
+              "koodistoUri": "jarjestamismuoto",
+              "koodistoVersio": 1
             }
           },
           "tila" : {
@@ -89,16 +87,14 @@
           },
           "osasuoritukset": [{
             "paikallinenId": "suoritus-12345-1",
-            "koulutusmoduulitoteutus": {
-              "koulutusmoduuli": {
-                "tunniste": {
-                  "koodiarvo": "100016",
-                  "nimi": "Huolto- ja korjaustyöt",
-                  "koodistoUri": "tutkinnonosat",
-                  "koodistoVersio": 1
-                },
-                "pakollinen": true
-              }
+            "koulutusmoduuli": {
+              "tunniste": {
+                "koodiarvo": "100016",
+                "nimi": "Huolto- ja korjaustyöt",
+                "koodistoUri": "tutkinnonosat",
+                "koodistoVersio": 1
+              },
+              "pakollinen": true
             },
             "tila" : {
               "koodiarvo" : "VALMIS",
@@ -133,16 +129,14 @@
             }
           }, {
             "paikallinenId": "suoritus-12345-2",
-            "koulutusmoduulitoteutus": {
-              "koulutusmoduuli": {
-                "tunniste": {
-                  "koodiarvo": "123456789",
-                  "nimi": "Pintavauriotyöt",
-                  "koodistoUri": "kallion_oma_koodisto"
-                },
-                "kuvaus": "Opetellaan korjaamaan pinnallisia vaurioita",
-                "pakollinen": false
-              }
+            "koulutusmoduuli": {
+              "tunniste": {
+                "koodiarvo": "123456789",
+                "nimi": "Pintavauriotyöt",
+                "koodistoUri": "kallion_oma_koodisto"
+              },
+              "kuvaus": "Opetellaan korjaamaan pinnallisia vaurioita",
+              "pakollinen": false
             },
             "tila" : {
               "koodiarvo" : "VALMIS",
@@ -177,16 +171,14 @@
             }
           }, {
             "paikallinenId": "suoritus-12345-3",
-            "koulutusmoduulitoteutus": {
-              "koulutusmoduuli": {
-                "tunniste": {
-                  "koodiarvo": "100019",
-                  "nimi": "Mittaus- ja korivauriotyöt",
-                  "koodistoUri": "tutkinnonosat",
-                  "koodistoVersio": 1
-                },
-                "pakollinen": true
-              }
+            "koulutusmoduuli": {
+              "tunniste": {
+                "koodiarvo": "100019",
+                "nimi": "Mittaus- ja korivauriotyöt",
+                "koodistoUri": "tutkinnonosat",
+                "koodistoVersio": 1
+              },
+              "pakollinen": true
             },
             "tila" : {
               "koodiarvo" : "VALMIS",
@@ -221,16 +213,14 @@
             }
           }, {
             "paikallinenId": "suoritus-12345-4",
-            "koulutusmoduulitoteutus": {
-              "koulutusmoduuli": {
-                "tunniste": {
-                  "koodiarvo": "100034",
-                  "nimi": "Maalauksen esikäsittelytyöt",
-                  "koodistoUri": "tutkinnonosat",
-                  "koodistoVersio": 1
-                },
-                "pakollinen": true
-              }
+            "koulutusmoduuli": {
+              "tunniste": {
+                "koodiarvo": "100034",
+                "nimi": "Maalauksen esikäsittelytyöt",
+                "koodistoUri": "tutkinnonosat",
+                "koodistoVersio": 1
+              },
+              "pakollinen": true
             },
             "tila" : {
               "koodiarvo" : "VALMIS",
@@ -265,16 +255,14 @@
             }
           }, {
             "paikallinenId": "suoritus-12345-5",
-            "koulutusmoduulitoteutus": {
-              "koulutusmoduuli": {
-                "tunniste": {
-                  "koodiarvo": "100037",
-                  "nimi": "Auton lisävarustetyöt",
-                  "koodistoUri": "tutkinnonosat",
-                  "koodistoVersio": 1
-                },
-                "pakollinen": true
-              }
+            "koulutusmoduuli": {
+              "tunniste": {
+                "koodiarvo": "100037",
+                "nimi": "Auton lisävarustetyöt",
+                "koodistoUri": "tutkinnonosat",
+                "koodistoVersio": 1
+              },
+              "pakollinen": true
             },
             "tila" : {
               "koodiarvo" : "VALMIS",
@@ -309,28 +297,26 @@
             }
           }, {
             "paikallinenId": "suoritus-12345-6",
-            "koulutusmoduulitoteutus": {
-              "koulutusmoduuli": {
+            "koulutusmoduuli": {
+              "tunniste": {
+                "koodiarvo": "101050",
+                "nimi": "Yritystoiminnan suunnittelu",
+                "koodistoUri": "tutkinnonosat",
+                "koodistoVersio": 1
+              },
+              "pakollinen": true
+            },
+            "hyväksiluku": {
+              "osaaminen": {
                 "tunniste": {
-                  "koodiarvo": "101050",
-                  "nimi": "Yritystoiminnan suunnittelu",
+                  "koodiarvo": "100238",
+                  "nimi": "Asennushitsaus",
                   "koodistoUri": "tutkinnonosat",
                   "koodistoVersio": 1
                 },
                 "pakollinen": true
               },
-              "hyväksiluku": {
-                "osaaminen": {
-                  "tunniste": {
-                    "koodiarvo": "100238",
-                    "nimi": "Asennushitsaus",
-                    "koodistoUri": "tutkinnonosat",
-                    "koodistoVersio": 1
-                  },
-                  "pakollinen": true
-                },
-                "selite": "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
-              }
+              "selite": "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
             },
             "tila" : {
               "koodiarvo" : "VALMIS",
