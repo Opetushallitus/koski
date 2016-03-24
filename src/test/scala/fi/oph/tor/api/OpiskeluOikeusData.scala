@@ -16,13 +16,14 @@ trait OpiskeluOikeusData {
 
   val autoalanPerustutkinto: TutkintoKoulutus = TutkintoKoulutus(KoodistoKoodiViite("351301", "koulutus"), Some("39/011/2014"))
 
-  val tutkintototeutus: TutkintoKoulutustoteutus = TutkintoKoulutustoteutus(autoalanPerustutkinto)
+  val tutkintoSuoritus: AmmatillinenTutkintoSuoritus = AmmatillinenTutkintoSuoritus(
+    autoalanPerustutkinto, None, None, None, None, None, None, tilaKesken, None, toimipiste = OidOrganisaatio(MockOrganisaatiot.lehtikuusentienToimipiste),
+    None, None, None
+  )
 
-  def tutkintoSuoritus(toteutus: TutkintoKoulutustoteutus = tutkintototeutus): Suoritus = Suoritus(None, toteutus, None, tilaKesken, None, toimipiste = OidOrganisaatio(MockOrganisaatiot.lehtikuusentienToimipiste), None, None, None)
-
-  def opiskeluoikeus(toteutus: TutkintoKoulutustoteutus = tutkintototeutus) = OpiskeluOikeus(None, None, None, None, None, None,
+  def opiskeluoikeus(tutintoSuoritus: AmmatillinenTutkintoSuoritus = tutkintoSuoritus) = OpiskeluOikeus(None, None, None, None, None, None,
     oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto),
-    suoritus = tutkintoSuoritus(toteutus),
+    suoritus = tutkintoSuoritus,
     None, None, None, None
   )
 
@@ -30,7 +31,9 @@ trait OpiskeluOikeusData {
 
   val tutkinnonOsa: OpsTutkinnonosa = OpsTutkinnonosa(KoodistoKoodiViite("100023", "tutkinnonosat"), true, Some(laajuus), None, None)
 
-  val tutkinnonOsaToteutus: OpsTutkinnonosatoteutus = OpsTutkinnonosatoteutus(tutkinnonOsa, None, None)
+  val paikallinenTutkinnonOsa = PaikallinenTutkinnonosa(
+    Paikallinenkoodi("1", "paikallinen osa", "paikallinenkoodisto"), "Paikallinen tutkinnon osa", false, Some(laajuus)
+  )
 
   def arviointiHyvä(päivä: Option[LocalDate] = None): Some[List[Arviointi]] = Some(List(Arviointi(KoodistoKoodiViite("2", "arviointiasteikkoammatillinent1k3"), päivä)))
 
@@ -41,8 +44,13 @@ trait OpiskeluOikeusData {
 
   val tutkinnonSuoritustapaNäyttönä = Some(Suoritustapa(KoodistoKoodiViite("naytto", "suoritustapa")))
 
-  val tutkinnonOsaSuoritus = Suoritus(
-    None, tutkinnonOsaToteutus, None, tilaKesken, None,
+  val tutkinnonOsaSuoritus = AmmatillinenOpsTutkinnonosaSuoritus(
+    tutkinnonOsa, None, None, None, None, None, None, tilaKesken, None,
+    OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka")),
+    arviointiHyvä(), None, None)
+
+  val paikallinenTutkinnonOsaSuoritus = AmmatillinenPaikallinenTutkinnonosaSuoritus(
+    paikallinenTutkinnonOsa, None, None, None, None, None, tilaKesken, None,
     OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka")),
     arviointiHyvä(), None, None)
 }

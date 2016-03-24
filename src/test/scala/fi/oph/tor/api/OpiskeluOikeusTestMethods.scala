@@ -12,10 +12,8 @@ trait OpiskeluOikeusTestMethods extends LocalJettyHttpSpecification with Matcher
 
   implicit def any2j(o: AnyRef): JValue = Json.toJValue(o)
 
-  def putTutkinnonOsaSuoritus[A](tutkinnonOsaSuoritus: Suoritus, tutkinnonSuoritustapa: Option[Suoritustapa])(f: => A) = {
-    val oo = opiskeluoikeus().copy(suoritus = tutkintoSuoritus(
-      toteutus = tutkintototeutus.copy(suoritustapa = tutkinnonSuoritustapa)
-    ).copy(osasuoritukset = Some(List(tutkinnonOsaSuoritus))))
+  def putTutkinnonOsaSuoritus[A](tutkinnonOsaSuoritus: AmmatillinenTutkinnonosaSuoritus[_], tutkinnonSuoritustapa: Option[Suoritustapa])(f: => A) = {
+    val oo = opiskeluoikeus().copy(suoritus = tutkintoSuoritus.copy(suoritustapa = tutkinnonSuoritustapa, osasuoritukset = Some(List(tutkinnonOsaSuoritus))))
 
     putOpiskeluOikeus(oo)(f)
   }
