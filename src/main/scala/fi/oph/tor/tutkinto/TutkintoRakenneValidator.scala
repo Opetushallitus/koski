@@ -4,17 +4,17 @@ import fi.oph.tor.http.{HttpStatus, TorErrorCategory}
 import fi.oph.tor.schema._
 
 case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
-  def validateTutkintoRakenne(suoritus: Suoritus) = suoritus.koulutusmoduulitoteutus match {
-    case (tutkintoToteutus: TutkintoKoulutustoteutus) =>
-      getRakenne(tutkintoToteutus.koulutusmoduuli) match {
+  def validateTutkintoRakenne(suoritus: Suoritus[_,_]) = suoritus match {
+    case (tutkintoSuoritus: AmmatillinenTutkintoSuoritus) =>
+      getRakenne(tutkintoSuoritus.koulutusmoduuli) match {
         case Left(status) => status
         case Right(rakenne) =>
-          validateOsaamisala(tutkintoToteutus.osaamisala.toList.flatten, rakenne).then(HttpStatus.fold(suoritus.osasuoritukset.toList.flatten.map(_.koulutusmoduulitoteutus).map {
-            case osa: AmmatillinenTutkinnonosaToteutus if !tutkintoToteutus.suoritustapa.isDefined =>
+          validateOsaamisala(tutkintoSuoritus.osaamisala.toList.flatten, rakenne).then(HttpStatus.fold(suoritus.osasuoritukset.toList.flatten.map {
+            case osa: AmmatillinenTutkinnonosaSuoritus[_] if !tutkintoSuoritus.suoritustapa.isDefined =>
               TorErrorCategory.badRequest.validation.rakenne.suoritustapaPuuttuu()
-            case osa: OpsTutkinnonosatoteutus =>
-              validateTutkinnonOsa(osa, Some(rakenne), tutkintoToteutus.suoritustapa)
-            case osa: Koulutusmoduulitoteutus =>
+            case osa: AmmatillinenOpsTutkinnonosaSuoritus =>
+              validateTutkinnonOsa(osa, Some(rakenne), tutkintoSuoritus.suoritustapa)
+            case osa: AmmatillinenPaikallinenTutkinnonosaSuoritus =>
               HttpStatus.ok // vain OpsTutkinnonosatoteutukset validoidaan, muut sellaisenaan läpi, koska niiden rakennetta ei tunneta
           }))
       }
@@ -44,8 +44,8 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
     })
   }
 
-  private def validateTutkinnonOsa(tutkinnonOsaToteutus: OpsTutkinnonosatoteutus, rakenne: Option[TutkintoRakenne], suoritustapa: Option[Suoritustapa]): HttpStatus = (tutkinnonOsaToteutus, rakenne, suoritustapa) match {
-    case (t: OpsTutkinnonosatoteutus, Some(rakenne), Some(suoritustapa))  =>
+  private def validateTutkinnonOsa(tutkinnonOsaToteutus: AmmatillinenOpsTutkinnonosaSuoritus, rakenne: Option[TutkintoRakenne], suoritustapa: Option[Suoritustapa]): HttpStatus = (tutkinnonOsaToteutus, rakenne, suoritustapa) match {
+    case (t: AmmatillinenOpsTutkinnonosaSuoritus, Some(rakenne), Some(suoritustapa))  =>
       t.tutkinto match {
         case Some(tutkinto) =>
           // Tutkinnon osa toisesta tutkinnosta.

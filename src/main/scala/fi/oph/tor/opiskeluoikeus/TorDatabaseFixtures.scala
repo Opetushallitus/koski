@@ -50,9 +50,13 @@ object OpiskeluOikeusTestData {
       None,
       None,
       oppilaitos,
-      Suoritus(
+      AmmatillinenTutkintoSuoritus(
+        TutkintoKoulutus(koulutusKoodiViite, Some("39/011/2014")),
         None,
-        TutkintoKoulutustoteutus(TutkintoKoulutus(koulutusKoodiViite, Some("39/011/2014")), None, None, None, None),
+        None,
+        None,
+        None,
+        None,
         None,
         KoodistoKoodiViite("KESKEN", "suorituksentila"),
         None,

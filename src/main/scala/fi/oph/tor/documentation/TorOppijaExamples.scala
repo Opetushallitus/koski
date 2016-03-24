@@ -3,9 +3,16 @@ package fi.oph.tor.documentation
 import java.time.LocalDate.{of => date}
 
 import fi.oph.tor.schema._
+import fi.oph.tor.schema.generic.annotation.Description
 
 object TorOppijaExampleData {
-  lazy val autoalanPerustutkinto: TutkintoKoulutustoteutus = TutkintoKoulutustoteutus(TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")), None, None, None, None)
+
+  def TutkintoKoulutustoteutus(tutkintoKoulutus: TutkintoKoulutus, tutkintonimike: Option[List[KoodistoKoodiViite]] = None,
+                               osaamisala: Option[List[KoodistoKoodiViite]] = None,
+                               suoritustapa: Option[Suoritustapa] = None,
+                               järjestämismuoto: Option[Järjestämismuoto] = None, tila: KoodistoKoodiViite): AmmatillinenTutkintoSuoritus = AmmatillinenTutkintoSuoritus(tutkintoKoulutus, None, osaamisala, suoritustapa, järjestämismuoto, None, None, tila, )
+
+  lazy val autoalanPerustutkinto: AmmatillinenTutkintoSuoritus = TutkintoKoulutustoteutus(TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")), None, None)
   lazy val h2: KoodistoKoodiViite = KoodistoKoodiViite("2", Some("H2"), "arviointiasteikkoammatillinent1k3", None)
   lazy val k3: KoodistoKoodiViite = KoodistoKoodiViite("3", Some("K3"), "arviointiasteikkoammatillinent1k3", None)
   lazy val näytönArviointi = NäytönArviointi(List(

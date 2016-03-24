@@ -89,7 +89,7 @@ case class OpiskeluOikeus(
   @Description("Oppilaitos, jossa opinnot on suoritettu")
   oppilaitos: Oppilaitos,
   @Description("Opiskeluoikeuteen liittyvän (tutkinto-)suorituksen tiedot")
-  suoritus: Suoritus,
+  suoritus: AmmatillinenTutkintoSuoritus,
   hojks: Option[Hojks],
   @Description("Opiskelijan suorituksen tavoite-tieto kertoo sen, suorittaako opiskelija tutkintotavoitteista koulutusta (koko tutkintoa) vai tutkinnon osa tavoitteista koulutusta (tutkinnon osaa)")
   @KoodistoUri("opintojentavoite")
@@ -109,42 +109,105 @@ object OpiskeluOikeus {
   val VERSIO_1 = 1
 }
 
-case class Suoritus(
+trait Suoritus[KOULUTUSMODUULI <: Koulutusmoduuli, OSASUORITUS <: Suoritus[_,_]] {
+  def koulutusmoduuli: KOULUTUSMODUULI
   @Description("Paikallinen tunniste suoritukselle. Tiedonsiirroissa tarpeellinen, jotta voidaan varmistaa päivitysten osuminen oikeaan suoritukseen")
-  paikallinenId: Option[String],
-  @Description("Koulutusmoduulin tunniste. Joko tutkinto tai tutkinnon osa")
-  koulutusmoduulitoteutus: Koulutusmoduulitoteutus,
+  def paikallinenId: Option[String]
   @Description("Opintojen suorituskieli")
   @KoodistoUri("kieli")
   @OksaUri("tmpOKSAID309", "opintosuorituksen kieli")
-  suorituskieli: Option[KoodistoKoodiViite],
+  def suorituskieli: Option[KoodistoKoodiViite]
   @Description("Suorituksen tila (KESKEN, VALMIS, KESKEYTYNYT)")
   @KoodistoUri("suorituksentila")
-  tila: KoodistoKoodiViite,
-  alkamispäivä: Option[LocalDate],
+  def tila: KoodistoKoodiViite
+  def alkamispäivä: Option[LocalDate]
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
-  toimipiste: OrganisaatioWithOid,
+  def toimipiste: OrganisaatioWithOid
   @Description("Arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota")
-  arviointi: Option[List[Arviointi]] = None,
+  def arviointi: Option[List[Arviointi]]
   @Description("Suorituksen virallinen vahvistus (päivämäärä, henkilöt). Vaaditaan silloin, kun suorituksen tila on VALMIS.")
-  vahvistus: Option[Vahvistus] = None,
-  osasuoritukset: Option[List[Suoritus]] = None
-) {
-  def kaikkiOsasuoritukset: List[Suoritus] = osasuoritukset.toList.flatten ++ osasuoritukset.toList.flatten.flatMap(_.kaikkiOsasuoritukset)
+  def vahvistus: Option[Vahvistus]
+  def osasuoritukset: Option[List[OSASUORITUS]]
+  def kaikkiOsasuoritukset: List[Suoritus[_,_]] = osasuoritukset.toList.flatten ++ osasuoritukset.toList.flatten.flatMap(_.kaikkiOsasuoritukset)
 }
+
+case class AmmatillinenTutkintoSuoritus(
+  koulutusmoduuli: TutkintoKoulutus,
+  @Description("Tieto siitä mihin tutkintonimikkeeseen oppijan tutkinto liittyy")
+  @KoodistoUri("tutkintonimikkeet")
+  @OksaUri("tmpOKSAID588", "tutkintonimike")
+  tutkintonimike: Option[List[KoodistoKoodiViite]] = None,
+  @Description("Osaamisala")
+  @KoodistoUri("osaamisala")
+  @OksaUri(tunnus = "tmpOKSAID299", käsite = "osaamisala")
+  osaamisala: Option[List[KoodistoKoodiViite]] = None,
+  @Description("Tutkinnon tai tutkinnon osan suoritustapa")
+  @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
+  suoritustapa: Option[Suoritustapa] = None,
+  @Description("Koulutuksen järjestämismuoto")
+  @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
+  järjestämismuoto: Option[Järjestämismuoto] = None,
+
+  paikallinenId: Option[String],
+  suorituskieli: Option[KoodistoKoodiViite],
+  tila: KoodistoKoodiViite,
+  alkamispäivä: Option[LocalDate],
+  toimipiste: OrganisaatioWithOid,
+  arviointi: Option[List[Arviointi]] = None,
+  vahvistus: Option[Vahvistus] = None,
+  osasuoritukset: Option[List[AmmatillinenTutkinnonosaSuoritus[_]]] = None
+) extends Suoritus[TutkintoKoulutus, AmmatillinenTutkinnonosaSuoritus[_]]
+
+trait AmmatillinenTutkinnonosaSuoritus[KOULUTUSMODUULI <: Koulutusmoduuli] extends Suoritus[KOULUTUSMODUULI, AmmatillinenTutkinnonosaSuoritus[_]] // TODO What should be done with non existing suoritus?
+
+  case class AmmatillinenOpsTutkinnonosaSuoritus(
+    koulutusmoduuli: OpsTutkinnonosa,
+    hyväksiluku: Option[Hyväksiluku] = None,
+    @Description("Suoritukseen liittyvän näytön tiedot")
+    näyttö: Option[Näyttö] = None,
+    lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
+    @Description("Tutkinto, jonka rakenteeseen tutkinnon osa liittyy. Käytetään vain tapauksissa, joissa tutkinnon osa on poimittu toisesta tutkinnosta.")
+    tutkinto: Option[TutkintoKoulutus] = None,
+
+    paikallinenId: Option[String],
+    suorituskieli: Option[KoodistoKoodiViite],
+    tila: KoodistoKoodiViite,
+    alkamispäivä: Option[LocalDate],
+    toimipiste: OrganisaatioWithOid,
+    arviointi: Option[List[Arviointi]] = None,
+    vahvistus: Option[Vahvistus] = None,
+    osasuoritukset: Option[List[AmmatillinenOpsTutkinnonosaSuoritus]] = None
+  ) extends AmmatillinenTutkinnonosaSuoritus[OpsTutkinnonosa]
+
+  case class AmmatillinenPaikallinenTutkinnonosaSuoritus(
+    koulutusmoduuli: PaikallinenTutkinnonosa,
+    hyväksiluku: Option[Hyväksiluku] = None,
+    @Description("Suoritukseen liittyvän näytön tiedot")
+    näyttö: Option[Näyttö] = None,
+    lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
+
+    paikallinenId: Option[String],
+    suorituskieli: Option[KoodistoKoodiViite],
+    tila: KoodistoKoodiViite,
+    alkamispäivä: Option[LocalDate],
+    toimipiste: OrganisaatioWithOid,
+    arviointi: Option[List[Arviointi]] = None,
+    vahvistus: Option[Vahvistus] = None,
+    osasuoritukset: Option[List[AmmatillinenPaikallinenTutkinnonosaSuoritus]] = None
+  ) extends AmmatillinenTutkinnonosaSuoritus[PaikallinenTutkinnonosa]
 
 trait Koulutusmoduuli {
   def tunniste: KoodiViite
 }
   @Description("Tutkintoon johtava koulutus")
   case class TutkintoKoulutus(
-    @Description("Tutkinnon 6-numeroinen tutkintokoodi")
-    @KoodistoUri("koulutus")
-    @OksaUri("tmpOKSAID560", "tutkinto")
-    tunniste: KoodistoKoodiViite,
-    @Description("Tutkinnon perusteen diaarinumero (pakollinen). Ks. ePerusteet-palvelu")
-    perusteenDiaarinumero: Option[String]
+   @Description("Tutkinnon 6-numeroinen tutkintokoodi")
+   @KoodistoUri("koulutus")
+   @OksaUri("tmpOKSAID560", "tutkinto")
+   tunniste: KoodistoKoodiViite,
+   @Description("Tutkinnon perusteen diaarinumero (pakollinen). Ks. ePerusteet-palvelu")
+   perusteenDiaarinumero: Option[String]
   ) extends Koulutusmoduuli
 
   @Description("Opetussuunnitelmaan kuuluva tutkinnon osa")
@@ -167,54 +230,6 @@ trait Koulutusmoduuli {
     pakollinen: Boolean,
     laajuus: Option[Laajuus]
   ) extends Koulutusmoduuli
-
-trait Koulutusmoduulitoteutus {
-  def koulutusmoduuli: Koulutusmoduuli
-}
-  @Description("Tutkintoon johtava koulutus")
-  case class TutkintoKoulutustoteutus(
-    koulutusmoduuli: TutkintoKoulutus,
-    @Description("Tieto siitä mihin tutkintonimikkeeseen oppijan tutkinto liittyy")
-    @KoodistoUri("tutkintonimikkeet")
-    @OksaUri("tmpOKSAID588", "tutkintonimike")
-    tutkintonimike: Option[List[KoodistoKoodiViite]] = None,
-    @Description("Osaamisala")
-    @KoodistoUri("osaamisala")
-    @OksaUri(tunnus = "tmpOKSAID299", käsite = "osaamisala")
-    osaamisala: Option[List[KoodistoKoodiViite]] = None,
-    @Description("Tutkinnon tai tutkinnon osan suoritustapa")
-    @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
-    suoritustapa: Option[Suoritustapa] = None,
-    @Description("Koulutuksen järjestämismuoto")
-    @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
-    järjestämismuoto: Option[Järjestämismuoto] = None
-  ) extends Koulutusmoduulitoteutus
-
-  @Description("Opetussuunnitelmaan kuuluva tutkinnon osa")
-  case class OpsTutkinnonosatoteutus(
-    koulutusmoduuli: OpsTutkinnonosa,
-    hyväksiluku: Option[Hyväksiluku] = None,
-    @Description("Suoritukseen liittyvän näytön tiedot")
-    näyttö: Option[Näyttö] = None,
-    lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
-    @Description("Tutkinto, jonka rakenteeseen tutkinnon osa liittyy. Käytetään vain tapauksissa, joissa tutkinnon osa on poimittu toisesta tutkinnosta.")
-    tutkinto: Option[TutkintoKoulutus] = None
-  ) extends AmmatillinenTutkinnonosaToteutus
-
-  @Description("Paikallinen tutkinnon osa")
-  case class PaikallinenTutkinnonosatoteutus(
-    koulutusmoduuli: PaikallinenTutkinnonosa,
-    hyväksiluku: Option[Hyväksiluku] = None,
-    @Description("Suoritukseen liittyvän näytön tiedot")
-    näyttö: Option[Näyttö] = None,
-    lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None
-  ) extends AmmatillinenTutkinnonosaToteutus
-
-trait AmmatillinenTutkinnonosaToteutus extends Koulutusmoduulitoteutus {
-  def hyväksiluku: Option[Hyväksiluku]
-  def näyttö: Option[Näyttö]
-  def lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]
-}
 
 case class AmmatillisenTutkinnonOsanLisätieto(
   @Description("Lisätiedon tyyppi kooditettuna")

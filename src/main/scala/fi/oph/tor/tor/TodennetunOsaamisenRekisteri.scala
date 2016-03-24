@@ -64,7 +64,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
         case _: Created => ("Luotu", Json.write(opiskeluOikeus))
         case _: NotChanged => ("Päivitetty", "ei muutoksia")
       }
-      logger.info(verb + " opiskeluoikeus " + result.id + " (versio " + result.versionumero + ")" + " oppijalle " + oppijaOid + " tutkintoon " + opiskeluOikeus.suoritus.koulutusmoduulitoteutus.koulutusmoduuli.tunniste +
+      logger.info(verb + " opiskeluoikeus " + result.id + " (versio " + result.versionumero + ")" + " oppijalle " + oppijaOid + " tutkintoon " + opiskeluOikeus.suoritus.koulutusmoduuli.tunniste +
         " oppilaitoksessa " + opiskeluOikeus.oppilaitos.oid + ": " + content)
     }
 

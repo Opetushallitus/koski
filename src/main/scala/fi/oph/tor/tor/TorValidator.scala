@@ -61,7 +61,7 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
       .then { TutkintoRakenneValidator(tutkintoRepository).validateTutkintoRakenne(opiskeluOikeus.suoritus)}
   }
 
-  def validateSuoritus(suoritus: Suoritus): HttpStatus = {
+  def validateSuoritus(suoritus: Suoritus[_,_]): HttpStatus = {
     val arviointipäivä = ("suoritus.arviointi.päivä", suoritus.arviointi.toList.flatten.flatMap(_.päivä))
     HttpStatus.fold(
       validateDateOrder(("suoritus.alkamispäivä", suoritus.alkamispäivä), arviointipäivä)
@@ -71,12 +71,12 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
     )
   }
 
-  private def validateStatus(suoritus: Suoritus): HttpStatus = {
+  private def validateStatus(suoritus: Suoritus[_,_]): HttpStatus = {
     val hasArviointi: Boolean = !suoritus.arviointi.toList.flatten.isEmpty
     val hasVahvistus: Boolean = suoritus.vahvistus.isDefined
     val tilaValmis: Boolean = suoritus.tila.koodiarvo == "VALMIS"
-    def suorituksenTunniste(suoritus: Suoritus): KoodiViite = {
-      suoritus.koulutusmoduulitoteutus.koulutusmoduuli.tunniste
+    def suorituksenTunniste(suoritus: Suoritus[_,_]): KoodiViite = {
+      suoritus.koulutusmoduuli.tunniste
     }
     if (hasVahvistus && !tilaValmis) {
       TorErrorCategory.badRequest.validation.tila.vahvistusVäärässäTilassa("Suorituksella " + suorituksenTunniste(suoritus) + " on vahvistus, vaikka suorituksen tila on " + suoritus.tila.koodiarvo)
