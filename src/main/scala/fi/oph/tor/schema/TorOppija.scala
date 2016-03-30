@@ -109,8 +109,8 @@ object OpiskeluOikeus {
   val VERSIO_1 = 1
 }
 
-trait Suoritus[KOULUTUSMODUULI <: Koulutusmoduuli, OSASUORITUS <: Suoritus[_,_]] {
-  def koulutusmoduuli: KOULUTUSMODUULI
+trait Suoritus[K <: Koulutusmoduuli, S <: Suoritus[_,_]] { // TODO, types are not respected
+  def koulutusmoduuli: Koulutusmoduuli
   @Description("Paikallinen tunniste suoritukselle. Tiedonsiirroissa tarpeellinen, jotta voidaan varmistaa päivitysten osuminen oikeaan suoritukseen")
   def paikallinenId: Option[String]
   @Description("Opintojen suorituskieli")
@@ -128,7 +128,7 @@ trait Suoritus[KOULUTUSMODUULI <: Koulutusmoduuli, OSASUORITUS <: Suoritus[_,_]]
   def arviointi: Option[List[Arviointi]]
   @Description("Suorituksen virallinen vahvistus (päivämäärä, henkilöt). Vaaditaan silloin, kun suorituksen tila on VALMIS.")
   def vahvistus: Option[Vahvistus]
-  def osasuoritukset: Option[List[OSASUORITUS]]
+  def osasuoritukset: Option[List[Suoritus[_,_]]]
   def kaikkiOsasuoritukset: List[Suoritus[_,_]] = osasuoritukset.toList.flatten ++ osasuoritukset.toList.flatten.flatMap(_.kaikkiOsasuoritukset)
 }
 
@@ -159,7 +159,7 @@ case class AmmatillinenTutkintoSuoritus(
   osasuoritukset: Option[List[AmmatillinenTutkinnonosaSuoritus[_]]] = None
 ) extends Suoritus[TutkintoKoulutus, AmmatillinenTutkinnonosaSuoritus[_]]
 
-trait AmmatillinenTutkinnonosaSuoritus[KOULUTUSMODUULI <: Koulutusmoduuli] extends Suoritus[KOULUTUSMODUULI, AmmatillinenTutkinnonosaSuoritus[_]] // TODO What should be done with non existing suoritus?
+trait AmmatillinenTutkinnonosaSuoritus[K <: Koulutusmoduuli] extends Suoritus[K, AmmatillinenTutkinnonosaSuoritus[_]] // TODO What should be done with non existing suoritus?
 
   case class AmmatillinenOpsTutkinnonosaSuoritus(
     koulutusmoduuli: OpsTutkinnonosa,
