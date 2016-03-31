@@ -16,14 +16,25 @@ trait OpiskeluOikeusData {
 
   val autoalanPerustutkinto: TutkintoKoulutus = TutkintoKoulutus(KoodistoKoodiViite("351301", "koulutus"), Some("39/011/2014"))
 
-  val tutkintoSuoritus: AmmatillinenTutkintoSuoritus = AmmatillinenTutkintoSuoritus(
-    autoalanPerustutkinto, None, None, None, None, None, None, tilaKesken, None, toimipiste = OidOrganisaatio(MockOrganisaatiot.lehtikuusentienToimipiste),
-    None, None, None
+  lazy val tutkintoSuoritus: AmmatillinenTutkintoSuoritus = AmmatillinenTutkintoSuoritus(
+    koulutusmoduuli = autoalanPerustutkinto,
+    tutkintonimike = None,
+    osaamisala = None,
+    suoritustapa = None,
+    järjestämismuoto = None,
+    paikallinenId = None,
+    suorituskieli = None,
+    tila = tilaKesken,
+    alkamispäivä = None,
+    toimipiste = OidOrganisaatio(MockOrganisaatiot.lehtikuusentienToimipiste),
+    arviointi = None,
+    vahvistus = None,
+    osasuoritukset = None
   )
 
-  def opiskeluoikeus(tutintoSuoritus: AmmatillinenTutkintoSuoritus = tutkintoSuoritus) = OpiskeluOikeus(None, None, None, None, None, None,
+  def opiskeluoikeus(suoritus: AmmatillinenTutkintoSuoritus = tutkintoSuoritus) = OpiskeluOikeus(None, None, None, None, None, None,
     oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto),
-    suoritus = tutkintoSuoritus,
+    suoritus = suoritus,
     None, None, None, None
   )
 

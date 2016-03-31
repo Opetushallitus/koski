@@ -1,23 +1,21 @@
 package fi.oph.tor.schema
 
 import org.json4s._
-import shapeless.Nat._0
 
 object Deserializers {
-  val deserializers = List(SuoritusDeserializer, KoulutusmoduuliDeserializer, HenkilöDeserialializer, JärjestämismuotoDeserializer, OrganisaatioDeserializer)
+  val deserializers = List(AmmatillinenTutkinnonosaSuoritusDeserializer, KoulutusmoduuliDeserializer, HenkilöDeserialializer, JärjestämismuotoDeserializer, OrganisaatioDeserializer)
 }
 
 trait Deserializer[T] extends Serializer[T] {
   def serialize(implicit format: Formats): PartialFunction[Any, JValue] = PartialFunction.empty
 }
 
-object SuoritusDeserializer extends Deserializer[Suoritus[_,_]] {
-  private val TheClass = classOf[Suoritus[_,_]]
+object AmmatillinenTutkinnonosaSuoritusDeserializer extends Deserializer[AmmatillinenTutkinnonosaSuoritus[_]] {
+  private val TheClass = classOf[AmmatillinenTutkinnonosaSuoritus[_]]
 
-  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Suoritus[_,_]] = {
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), AmmatillinenTutkinnonosaSuoritus[_]] = {
     case (TypeInfo(TheClass, _), json) =>
       json match {
-        case moduuli: JObject if moduuli \ "koulutusmoduuli" \ "tunniste" \ "koodistoUri" == JString("koulutus") => moduuli.extract[AmmatillinenTutkintoSuoritus]
         case moduuli: JObject if moduuli \ "koulutusmoduuli" \ "tunniste" \ "koodistoUri" == JString("tutkinnonosat") => moduuli.extract[AmmatillinenOpsTutkinnonosaSuoritus]
         case moduuli: JObject => moduuli.extract[AmmatillinenPaikallinenTutkinnonosaSuoritus]
       }
