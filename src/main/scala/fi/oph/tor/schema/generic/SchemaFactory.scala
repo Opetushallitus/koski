@@ -77,7 +77,7 @@ case class SchemaFactory(annotationsSupported: List[AnnotationSupport]) {
         val matchingMethodsFromTraits = traits.flatMap (_.members
           .filter(_.isMethod)
           .filter(_.asTerm.asMethod.name.toString == termName )
-        ).map(_.asTerm)
+        ).map(_.asTerm).distinct
         matchingMethodsFromTraits.foldLeft(property) { (property, traitMethod) =>
           applyAnnotations(traitMethod, property)
         }
