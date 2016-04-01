@@ -110,8 +110,6 @@ case class SchemaFactory(annotationsSupported: List[AnnotationSupport]) {
       val annotationParams: List[String] = annotation.tree.children.tail.map(str => StringEscapeUtils.unescapeJava(str.toString.replaceAll("\"$|^\"", "")))
       val annotationType: String = annotation.tree.tpe.toString
 
-      println("Annotation: " + annotationType)
-
       val result: T = f(annotationType, annotationParams, current, this).asInstanceOf[T]
       result
     }
