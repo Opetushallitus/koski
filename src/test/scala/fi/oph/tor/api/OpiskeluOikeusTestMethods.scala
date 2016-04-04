@@ -18,6 +18,11 @@ trait OpiskeluOikeusTestMethods extends LocalJettyHttpSpecification with Matcher
     putOpiskeluOikeus(oo)(f)
   }
 
+  def putTutkintoSuoritus[A](suoritus: AmmatillinenTutkintoSuoritus)(f: => A): A = {
+    val oo = opiskeluoikeus().copy(suoritukset = List(suoritus))
+    putOpiskeluOikeus(oo)(f)
+  }
+
   def putOpiskeluOikeus[A](opiskeluOikeus: JValue, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
     putOppija(makeOppija(henkilö, List(Json.toJValue(opiskeluoikeus()).merge(opiskeluOikeus))), headers)(f)
   }

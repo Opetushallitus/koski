@@ -21,7 +21,9 @@ trait HttpSpecification extends HttpComponentsClient with Assertions with Matche
       val errors: List[ErrorDetail] = Json.read[List[ErrorDetail]](body)
       errors.length should equal(dets.length)
       errors.zip(dets) foreach { case (errorDetail, expectedErrorDetail) =>
-        errorDetail.key should equal(expectedErrorDetail.key)
+        if (errorDetail.key != expectedErrorDetail.key) {
+          fail("Unexpected error key " + errorDetail.key + "(expected " + expectedErrorDetail.key + "), message=" + errorDetail.message)
+        }
         expectedErrorDetail.message match {
           case s: String => errorDetail.message.toString should equal(s)
           case r: Regex => errorDetail.message.toString should fullyMatch regex(r)
