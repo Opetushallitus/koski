@@ -38,11 +38,11 @@ class TorDatabaseFixtureCreator(database: TorDatabase, repository: OpiskeluOikeu
 }
 
 object OpiskeluOikeusTestData {
-  def opiskeluOikeus(oppilaitosId: String, koulutusKoodi: Int = 351301): OpiskeluOikeus = {
+  def opiskeluOikeus(oppilaitosId: String, koulutusKoodi: Int = 351301): AmmatillinenOpiskeluOikeus = {
     val oppilaitos: Oppilaitos = Oppilaitos(oppilaitosId, None, None)
     val koulutusKoodiViite = KoodistoKoodiViite(koulutusKoodi.toString, None, "koulutus", None)
 
-    OpiskeluOikeus(
+    AmmatillinenOpiskeluOikeus(
       None,
       None,
       None,

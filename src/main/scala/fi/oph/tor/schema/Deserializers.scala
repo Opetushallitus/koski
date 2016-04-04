@@ -3,19 +3,30 @@ package fi.oph.tor.schema
 import org.json4s._
 
 object Deserializers {
-  val deserializers = List(AmmatillinenTutkinnonosaSuoritusDeserializer, KoulutusmoduuliDeserializer, HenkilöDeserialializer, JärjestämismuotoDeserializer, OrganisaatioDeserializer)
+  val deserializers = List(OpiskeluOikeusSerializer, SuoritusDeserializer, KoulutusmoduuliDeserializer, HenkilöDeserialializer, JärjestämismuotoDeserializer, OrganisaatioDeserializer)
 }
 
 trait Deserializer[T] extends Serializer[T] {
   def serialize(implicit format: Formats): PartialFunction[Any, JValue] = PartialFunction.empty
 }
 
-object AmmatillinenTutkinnonosaSuoritusDeserializer extends Deserializer[AmmatillinenTutkinnonosaSuoritus] {
-  private val TheClass = classOf[AmmatillinenTutkinnonosaSuoritus]
+object OpiskeluOikeusSerializer extends Deserializer[OpiskeluOikeus] {
+  private val OpiskeluOikeusClass = classOf[OpiskeluOikeus]
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), OpiskeluOikeus] = {
+    case (TypeInfo(OpiskeluOikeusClass, _), json) =>
+      json.extract[AmmatillinenOpiskeluOikeus]
+  }
+}
 
-  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), AmmatillinenTutkinnonosaSuoritus] = {
-    case (TypeInfo(TheClass, _), json) =>
+object SuoritusDeserializer extends Deserializer[Suoritus] {
+  private val SuoritusClass = classOf[Suoritus]
+  private val AmmatillinenTutkinnonosaSuoritusClass = classOf[AmmatillinenTutkinnonosaSuoritus]
+  private val classes = List(SuoritusClass, AmmatillinenTutkinnonosaSuoritusClass)
+
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Suoritus] = {
+    case (TypeInfo(c, _), json) if (classes.contains(c)) =>
       json match {
+        case moduuli: JObject if moduuli \ "koulutusmoduuli" \ "tunniste" \ "koodistoUri" == JString("koulutus") => moduuli.extract[AmmatillinenTutkintoSuoritus]
         case moduuli: JObject if moduuli \ "koulutusmoduuli" \ "tunniste" \ "koodistoUri" == JString("tutkinnonosat") => moduuli.extract[AmmatillinenOpsTutkinnonosaSuoritus]
         case moduuli: JObject => moduuli.extract[AmmatillinenPaikallinenTutkinnonosaSuoritus]
       }

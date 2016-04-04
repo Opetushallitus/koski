@@ -4,6 +4,25 @@ import java.time.LocalDate
 
 import fi.oph.tor.schema.generic.annotation.Description
 
+case class AmmatillinenOpiskeluOikeus(
+  id: Option[Int],
+  versionumero: Option[Int],
+  lähdejärjestelmänId: Option[LähdejärjestelmäId],
+  alkamispäivä: Option[LocalDate],
+  arvioituPäättymispäivä: Option[LocalDate],
+  päättymispäivä: Option[LocalDate],
+  oppilaitos: Oppilaitos,
+  suoritus: AmmatillinenTutkintoSuoritus,
+  hojks: Option[Hojks],
+  @Description("Opiskelijan suorituksen tavoite-tieto kertoo sen, suorittaako opiskelija tutkintotavoitteista koulutusta (koko tutkintoa) vai tutkinnon osa tavoitteista koulutusta (tutkinnon osaa)")
+  @KoodistoUri("opintojentavoite")
+  tavoite: Option[KoodistoKoodiViite],
+  opiskeluoikeudenTila: Option[OpiskeluoikeudenTila],
+  läsnäolotiedot: Option[Läsnäolotiedot]
+) extends OpiskeluOikeus {
+  override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
+}
+
 case class AmmatillinenTutkintoSuoritus(
   koulutusmoduuli: TutkintoKoulutus,
   @Description("Tieto siitä mihin tutkintonimikkeeseen oppijan tutkinto liittyy")

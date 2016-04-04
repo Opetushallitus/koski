@@ -40,10 +40,10 @@ trait OpiskeluOikeusTestMethods extends LocalJettyHttpSpecification with Matcher
     lastOpiskeluOikeus(oppija.oid)
   }
 
-  def createOpiskeluOikeus(oppija: FullHenkilö, opiskeluOikeus: OpiskeluOikeus) = {
+  def createOpiskeluOikeus[T <: OpiskeluOikeus](oppija: FullHenkilö, opiskeluOikeus: T) = {
     resetFixtures
     createOrUpdate(oppija, opiskeluOikeus)
-    lastOpiskeluOikeus(oppija.oid)
+    lastOpiskeluOikeus(oppija.oid).asInstanceOf[T]
   }
 
   def lastOpiskeluOikeus(oppijaOid: String) = {

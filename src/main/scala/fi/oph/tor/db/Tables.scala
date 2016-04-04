@@ -71,7 +71,9 @@ object OpiskeluOikeusStoredDataDeserializer {
     val migratedData = data.transformField {
       case JField("suoritus", suoritus: JObject) => JField("suoritus", addDefaultTila(suoritus))
     }
-    Json.fromJValue[OpiskeluOikeus](migratedData).copy ( id = Some(id), versionumero = Some(versionumero) )
+    Json.fromJValue[OpiskeluOikeus](migratedData).withIdAndVersion( id = Some(id), versionumero = Some(versionumero) )
+
+    // TODO: kantaan constraint: opiskeluoikeuden id,versionumero täytyy mätsätä jsonissa/kentissä
   }
 }
 

@@ -4,7 +4,6 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.tor.schema._
-import fi.oph.tor.schema.generic.annotation.Description
 
 object TorOppijaExampleData {
 
@@ -115,7 +114,7 @@ object TorOppijaExampleData {
   def opiskeluoikeus(oppilaitos: Oppilaitos = Oppilaitos("1.2.246.562.10.52251087186"),
                      tutkinto: AmmatillinenTutkintoSuoritus = autoalanPerustutkinto,
                      osat: Option[List[AmmatillinenTutkinnonosaSuoritus]] = None) = {
-    OpiskeluOikeus(
+    AmmatillinenOpiskeluOikeus(
       None,
       None,
       None,
@@ -218,7 +217,7 @@ object TorOppijaExamples {
   lazy val ops = TorOppija(
     Henkilö.withOid("1.2.246.562.24.00000000001"),
     List(
-      OpiskeluOikeus(
+      AmmatillinenOpiskeluOikeus(
         None,
         None,
         None,
@@ -301,7 +300,7 @@ object FullExample {
   lazy val full = TorOppija(
     Henkilö.withOid("1.2.246.562.24.00000000001"),
     List(
-      OpiskeluOikeus(
+      AmmatillinenOpiskeluOikeus(
         None,
         None,
         Some(LähdejärjestelmäId("847823465", lähdeWinnova)),

@@ -119,7 +119,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
 
   private def createAction(oppijaOid: String, opiskeluOikeus: OpiskeluOikeus)(implicit user: TorUser): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Write] = {
     val versionumero = OpiskeluOikeus.VERSIO_1
-    val tallennettavaOpiskeluOikeus = opiskeluOikeus.copy(id = None, versionumero = None)
+    val tallennettavaOpiskeluOikeus = opiskeluOikeus.withIdAndVersion(id = None, versionumero = None)
     for {
       opiskeluoikeusId <- OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += new OpiskeluOikeusRow(oppijaOid, tallennettavaOpiskeluOikeus, versionumero)
       diff = Json.toJValue(List(Map("op" -> "add", "path" -> "", "value" -> tallennettavaOpiskeluOikeus)))
@@ -135,7 +135,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     uusiOlio.versionumero match {
       case Some(requestedVersionumero) if (requestedVersionumero != versionumero) => DBIO.successful(Left(TorErrorCategory.conflict.versionumero("Annettu versionumero " + requestedVersionumero + " <> " + versionumero)))
       case _ =>
-        val uusiData = Json.toJValue(uusiOlio.copy(id = None, versionumero = None))
+        val uusiData = Json.toJValue(uusiOlio.withIdAndVersion(id = None, versionumero = None))
         val diff: JArray = Json.jsonDiff(oldRow.data, uusiData)
         diff.values.length match {
           case 0 =>

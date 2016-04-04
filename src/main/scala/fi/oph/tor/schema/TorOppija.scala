@@ -68,39 +68,37 @@ object Henkilö {
   def apply(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String) = NewHenkilö(hetu, etunimet, kutsumanimi, sukunimi)
 }
 
-case class OpiskeluOikeus(
+trait OpiskeluOikeus extends Loggable {
   @Description("Opiskeluoikeuden uniikki tunniste, joka generoidaan TOR-järjestelmässä. Tietoja syötettäessä kenttä ei ole pakollinen. " +
     "Tietoja päivitettäessä TOR tunnistaa opiskeluoikeuden joko tämän id:n tai muiden kenttien (oppijaOid, organisaatio, diaarinumero) perusteella")
-  id: Option[Int],
+  def id: Option[Int]
   @Description("Versionumero, joka generoidaan TOR-järjestelmässä. Tietoja syötettäessä kenttä ei ole pakollinen. " +
     "Ensimmäinen tallennettu versio saa versionumeron 1, jonka jälkeen jokainen päivitys aiheuttaa versionumeron noston yhdellä. " +
     "Jos tietoja päivitettäessä käytetään versionumeroa, pitää sen täsmätä viimeisimpään tallennettuun versioon. " +
     "Tällä menettelyllä esimerkiksi käyttöliittymässä varmistetaan, ettei tehdä päivityksiä vanhentuneeseen dataan.")
-  versionumero: Option[Int],
+  def versionumero: Option[Int]
   @Description("Lähdejärjestelmän tunniste ja opiskeluoikeuden tunniste lähdejärjestelmässä. " +
     "Käytetään silloin, kun opiskeluoikeus on tuotu TOR:iin tiedonsiirrolla ulkoisesta järjestelmästä, eli käytännössä oppilashallintojärjestelmästä.")
-  lähdejärjestelmänId: Option[LähdejärjestelmäId],
+  def lähdejärjestelmänId: Option[LähdejärjestelmäId]
   @Description("Opiskelijan opiskeluoikeuden alkamisaika joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
-  alkamispäivä: Option[LocalDate],
+  def alkamispäivä: Option[LocalDate]
   @Description("Opiskelijan opiskeluoikeuden arvioitu päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
-  arvioituPäättymispäivä: Option[LocalDate],
+  def arvioituPäättymispäivä: Option[LocalDate]
   @Description("Opiskelijan opiskeluoikeuden päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
-  päättymispäivä: Option[LocalDate],
+  def päättymispäivä: Option[LocalDate]
   @Description("Oppilaitos, jossa opinnot on suoritettu")
-  oppilaitos: Oppilaitos,
+  def oppilaitos: Oppilaitos
   @Description("Opiskeluoikeuteen liittyvän (tutkinto-)suorituksen tiedot")
-  suoritus: AmmatillinenTutkintoSuoritus,
-  hojks: Option[Hojks],
-  @Description("Opiskelijan suorituksen tavoite-tieto kertoo sen, suorittaako opiskelija tutkintotavoitteista koulutusta (koko tutkintoa) vai tutkinnon osa tavoitteista koulutusta (tutkinnon osaa)")
-  @KoodistoUri("opintojentavoite")
-  tavoite: Option[KoodistoKoodiViite],
-  opiskeluoikeudenTila: Option[OpiskeluoikeudenTila],
-  läsnäolotiedot: Option[Läsnäolotiedot]
-) extends Loggable {
+  def suoritus: Suoritus
+  def opiskeluoikeudenTila: Option[OpiskeluoikeudenTila]
+  def läsnäolotiedot: Option[Läsnäolotiedot]
+
   override def toString = id match {
     case None => "opiskeluoikeus"
     case Some(id) => "opiskeluoikeus " + id
   }
+
+  def withIdAndVersion(id: Option[Int], versionumero: Option[Int]): OpiskeluOikeus
 }
 
 object OpiskeluOikeus {
@@ -129,6 +127,7 @@ trait Suoritus {
   @Description("Suorituksen virallinen vahvistus (päivämäärä, henkilöt). Vaaditaan silloin, kun suorituksen tila on VALMIS.")
   def vahvistus: Option[Vahvistus]
   def osasuoritukset: Option[List[Suoritus]] = None
+
   def osasuoritusLista: List[Suoritus] = osasuoritukset.toList.flatten
   def rekursiivisetOsasuoritukset: List[Suoritus] = {
     osasuoritusLista ++ osasuoritusLista.flatMap(_.rekursiivisetOsasuoritukset)

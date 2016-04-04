@@ -116,7 +116,7 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
 
         it("Tuntematon id") {
           val opiskeluoikeus = lastOpiskeluOikeus(MockOppijat.eero.oid)
-          putOppija(TorOppija(MockOppijat.eero, List(opiskeluoikeus.copy(id = Some(0))))) {
+          putOppija(TorOppija(MockOppijat.eero, List(opiskeluoikeus.withIdAndVersion(id = Some(0), versionumero = None)))) {
             verifyResponseStatus(404, TorErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta 0 ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
           }
         }
