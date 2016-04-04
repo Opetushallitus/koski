@@ -128,7 +128,7 @@ trait Suoritus {
   def arviointi: Option[List[Arviointi]]
   @Description("Suorituksen virallinen vahvistus (päivämäärä, henkilöt). Vaaditaan silloin, kun suorituksen tila on VALMIS.")
   def vahvistus: Option[Vahvistus]
-  def osasuoritukset: Option[List[Suoritus]]
+  def osasuoritukset: Option[List[Suoritus]] = None
   def osasuoritusLista: List[Suoritus] = osasuoritukset.toList.flatten
   def rekursiivisetOsasuoritukset: List[Suoritus] = {
     osasuoritusLista ++ osasuoritusLista.flatMap(_.rekursiivisetOsasuoritukset)
@@ -159,7 +159,7 @@ case class AmmatillinenTutkintoSuoritus(
   toimipiste: OrganisaatioWithOid,
   arviointi: Option[List[Arviointi]] = None,
   vahvistus: Option[Vahvistus] = None,
-  osasuoritukset: Option[List[AmmatillinenTutkinnonosaSuoritus]] = None
+  override val osasuoritukset: Option[List[AmmatillinenTutkinnonosaSuoritus]] = None
 ) extends Suoritus
 
 trait AmmatillinenTutkinnonosaSuoritus extends Suoritus
@@ -178,8 +178,7 @@ trait AmmatillinenTutkinnonosaSuoritus extends Suoritus
     alkamispäivä: Option[LocalDate],
     toimipiste: OrganisaatioWithOid,
     arviointi: Option[List[Arviointi]] = None,
-    vahvistus: Option[Vahvistus] = None,
-    osasuoritukset: Option[List[AmmatillinenOpsTutkinnonosaSuoritus]] = None
+    vahvistus: Option[Vahvistus] = None
   ) extends AmmatillinenTutkinnonosaSuoritus
 
   case class AmmatillinenPaikallinenTutkinnonosaSuoritus(
@@ -196,7 +195,7 @@ trait AmmatillinenTutkinnonosaSuoritus extends Suoritus
     toimipiste: OrganisaatioWithOid,
     arviointi: Option[List[Arviointi]] = None,
     vahvistus: Option[Vahvistus] = None,
-    osasuoritukset: Option[List[AmmatillinenPaikallinenTutkinnonosaSuoritus]] = None
+    override val osasuoritukset: Option[List[AmmatillinenPaikallinenTutkinnonosaSuoritus]] = None
   ) extends AmmatillinenTutkinnonosaSuoritus
 
 trait Koulutusmoduuli {

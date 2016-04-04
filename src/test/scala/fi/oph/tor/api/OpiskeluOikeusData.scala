@@ -58,10 +58,10 @@ trait OpiskeluOikeusData {
   val tutkinnonOsaSuoritus = AmmatillinenOpsTutkinnonosaSuoritus(
     tutkinnonOsa, None, None, None, None, None, None, tilaKesken, None,
     OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka")),
-    arviointiHyvä(), None, None)
+    arviointiHyvä(), None)
 
   val paikallinenTutkinnonOsaSuoritus = AmmatillinenPaikallinenTutkinnonosaSuoritus(
     paikallinenTutkinnonOsa, None, None, None, None, None, tilaKesken, None,
     OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka")),
-    arviointiHyvä(), None, None)
+    arviointiHyvä(), None)
 }
