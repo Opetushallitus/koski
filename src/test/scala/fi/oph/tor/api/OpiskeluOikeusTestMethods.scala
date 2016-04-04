@@ -12,7 +12,6 @@ trait OpiskeluOikeusTestMethods extends LocalJettyHttpSpecification with Matcher
 
   implicit def any2j(o: AnyRef): JValue = Json.toJValue(o)
 
-  // TODO, is K type correct ???
   def putTutkinnonOsaSuoritus[A, K <: Koulutusmoduuli](tutkinnonOsaSuoritus: AmmatillinenTutkinnonosaSuoritus[K], tutkinnonSuoritustapa: Option[Suoritustapa])(f: => A) = {
     val oo = opiskeluoikeus().copy(suoritus = tutkintoSuoritus.copy(suoritustapa = tutkinnonSuoritustapa, osasuoritukset = Some(List(tutkinnonOsaSuoritus))))
 
