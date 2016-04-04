@@ -50,7 +50,7 @@ object OpiskeluOikeusTestData {
       None,
       None,
       oppilaitos,
-      AmmatillinenTutkintoSuoritus(
+      List(AmmatillinenTutkintoSuoritus(
         TutkintoKoulutus(koulutusKoodiViite, Some("39/011/2014")),
         None,
         None,
@@ -64,7 +64,7 @@ object OpiskeluOikeusTestData {
         None,
         None,
         None
-      ),
+      )),
       hojks = None,
       None,
       None,

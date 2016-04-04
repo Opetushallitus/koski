@@ -1,6 +1,7 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import R from 'ramda'
+import * as L from "partial.lenses"
 import Http from './http'
 import Dropdown from './Dropdown.jsx'
 
@@ -8,61 +9,75 @@ export const opiskeluOikeusChange = Bacon.Bus()
 
 export const OpiskeluOikeus = React.createClass({
   render() {
-    let {opiskeluOikeus} = this.props
+    let {opiskeluOikeus, lens} = this.props
+    return (
+      <div className="opiskeluoikeus">
+        {
+          opiskeluOikeus.suoritukset.map((suoritus, index) => <Suoritus opiskeluOikeus={opiskeluOikeus} suoritus={suoritus} lens={L.compose(lens, L.prop('suoritukset'), L.index(index))} />)
+        }
+      </div>
+    )
+  }
+})
+
+export const Suoritus = React.createClass({
+  render() {
+    let {opiskeluOikeus, suoritus, lens} = this.props
     let {rakenne} = this.state
     return (
-        rakenne
-          ? <div className="opiskeluoikeus">
-              <span className="tutkinto">{opiskeluOikeus.suoritus.koulutusmoduuli.tunniste.nimi}</span> <span className="oppilaitos">{opiskeluOikeus.oppilaitos.nimi}</span>
-              <div className="tutkinto-rakenne">
-                <Dropdown className="suoritustapa"
-                          title="Suoritustapa"
-                          options={rakenne.suoritustavat.map(s => s.suoritustapa)}
-                          value={opiskeluOikeus.suoritus.suoritustapa ? opiskeluOikeus.suoritus.suoritustapa.tunniste.koodiarvo : ''}
-                          autoselect={true}
-                          onChange={(value) => opiskeluOikeusChange.push([opiskeluOikeus.id,
-                            oo => {
+      rakenne
+        ? <div className="suoritus">
+        <span className="tutkinto">{suoritus.koulutusmoduuli.tunniste.nimi}</span> <span className="oppilaitos">{opiskeluOikeus.oppilaitos.nimi}</span>
+        <div className="tutkinto-rakenne">
+          <Dropdown className="suoritustapa"
+                    title="Suoritustapa"
+                    options={rakenne.suoritustavat.map(s => s.suoritustapa)}
+                    value={suoritus.suoritustapa ? suoritus.suoritustapa.tunniste.koodiarvo : ''}
+                    autoselect={true}
+                    onChange={(value) => opiskeluOikeusChange.push([L.compose(lens, L.prop('suoritustapa')),
+                            () => {
                               let suoritustapa = value ? {
                                 tunniste: {
                                   koodiarvo: value,
                                   koodistoUri: 'suoritustapa'
                                 }
                               } : undefined
-                              return oo.mergeDeep({suoritus: {suoritustapa: suoritustapa}})
+                              return suoritustapa
                             }
                           ])}
-                />
-                <Dropdown className="osaamisala"
-                          title="Osaamisala"
-                          options={rakenne.osaamisalat}
-                          value={opiskeluOikeus.suoritus.osaamisala ? opiskeluOikeus.suoritus.osaamisala[0].koodiarvo : ''}
-                          onChange={(value) => opiskeluOikeusChange.push([opiskeluOikeus.id,
-                            oo => {
+            />
+          <Dropdown className="osaamisala"
+                    title="Osaamisala"
+                    options={rakenne.osaamisalat}
+                    value={suoritus.osaamisala ? suoritus.osaamisala[0].koodiarvo : ''}
+                    onChange={(value) => opiskeluOikeusChange.push([L.compose(lens, L.prop('osaamisala')),
+                            () => {
                               let osaamisala = value ? [{
                                   koodiarvo: value,
                                   koodistoUri: 'osaamisala'
                               }] : undefined
-                              return oo.mergeDeep({suoritus: {osaamisala: osaamisala}})
+                              return osaamisala
                             }
                           ])}
-                  />
-                { opiskeluOikeus.suoritus.suoritustapa
-                  ? rakenne.suoritustavat.find(x => x.suoritustapa.koodiarvo == opiskeluOikeus.suoritus.suoritustapa.tunniste.koodiarvo).rakenne.osat.map(rakenneOsa => <Rakenneosa
-                      rakenneosa={rakenneOsa}
-                      opiskeluOikeus={opiskeluOikeus}
-                      rakenne={rakenne}
-                      key={rakenneOsa.nimi}
-                    />)
-                  : null
-                }
-              </div>
-            </div>
-          : null
+            />
+          { suoritus.suoritustapa
+            ? rakenne.suoritustavat.find(x => x.suoritustapa.koodiarvo == suoritus.suoritustapa.tunniste.koodiarvo).rakenne.osat.map(rakenneOsa => <Rakenneosa
+            rakenneosa={rakenneOsa}
+            suoritus={suoritus}
+            lens={lens}
+            rakenne={rakenne}
+            key={rakenneOsa.nimi}
+            />)
+            : null
+          }
+        </div>
+      </div>
+        : null
     )
   },
   componentDidMount() {
-    let {opiskeluOikeus} = this.props
-    let diaarinumero = opiskeluOikeus.suoritus.koulutusmoduuli.perusteenDiaarinumero
+    let {suoritus} = this.props
+    let diaarinumero = suoritus.koulutusmoduuli.perusteenDiaarinumero
     Http.get('/tor/api/tutkinto/rakenne/' + encodeURIComponent(diaarinumero)).onValue(rakenne => {
         if (this.isMounted()) {
           this.setState({rakenne: rakenne})
@@ -75,31 +90,33 @@ export const OpiskeluOikeus = React.createClass({
   }
 })
 
+
 const Rakenneosa = React.createClass({
   render() {
-    let { rakenneosa, opiskeluOikeus, rakenne } = this.props
+    let { rakenneosa, suoritus, lens, rakenne } = this.props
     return rakenneosa.osat
-      ? <RakenneModuuli key={rakenneosa.nimi} opiskeluOikeus={opiskeluOikeus} rakenneosa={rakenneosa} rakenne={rakenne}/>
-      : <TutkinnonOsa key={rakenneosa.nimi} opiskeluOikeus={opiskeluOikeus} tutkinnonOsa={rakenneosa} rakenne={rakenne}/>
+      ? <RakenneModuuli key={rakenneosa.nimi} suoritus={suoritus} lens={lens} rakenneosa={rakenneosa} rakenne={rakenne}/>
+      : <TutkinnonOsa key={rakenneosa.nimi} suoritus={suoritus} lens={lens} tutkinnonOsa={rakenneosa} rakenne={rakenne}/>
   }
 })
 
 const RakenneModuuli = React.createClass({
   render() {
-    let { rakenneosa, opiskeluOikeus, rakenne } = this.props
+    let { rakenneosa, suoritus, lens, rakenne } = this.props
     return (
       <div className="rakenne-moduuli">
         <span className="name">{rakenneosa.nimi}</span>
         <ul className="osat">
           { rakenneosa.osat
             .filter(osa => {
-              let osaamisala = opiskeluOikeus.suoritus.osaamisala ? opiskeluOikeus.suoritus.osaamisala[0].koodiarvo : undefined
+              let osaamisala = suoritus.osaamisala ? suoritus.osaamisala[0].koodiarvo : undefined
               return !osa.osaamisalaKoodi || osa.osaamisalaKoodi == osaamisala
             })
             .map((osa, i) => <li key={i}>
               <Rakenneosa
                 rakenneosa={osa}
-                opiskeluOikeus={opiskeluOikeus}
+                suoritus={suoritus}
+                lens={lens}
                 rakenne={rakenne}
               />
             </li>)
@@ -112,44 +129,44 @@ const RakenneModuuli = React.createClass({
 
 const TutkinnonOsa = React.createClass({
   render() {
-    const {tutkinnonOsa, opiskeluOikeus, rakenne} = this.props
+    const {tutkinnonOsa, suoritus, lens, rakenne} = this.props
     const arviointiAsteikko = R.find(asteikko => R.equals(asteikko.koodisto, tutkinnonOsa.arviointiAsteikko))(rakenne.arviointiAsteikot)
     const arvosanat = arviointiAsteikko ? arviointiAsteikko.arvosanat : undefined
     const laajuudenYksikkö = R.find(tapa => {
-      return tapa.suoritustapa.koodiarvo == opiskeluOikeus.suoritus.suoritustapa.tunniste.koodiarvo
+      return tapa.suoritustapa.koodiarvo == suoritus.suoritustapa.tunniste.koodiarvo
     })(rakenne.suoritustavat).laajuusYksikkö
 
-    const addArvosana = (arvosana) => (oOikeus) => {
-      let oo = oOikeus.hasIn['suoritus','osasuoritukset'] ? oOikeus : oOikeus.mergeDeep({suoritus: {osasuoritukset: []}})
+    const osaSuorituksetLens = L.compose(lens, L.prop('osasuoritukset'))
 
-      return oo.updateIn(['suoritus', 'osasuoritukset'], x => x.push(
-        {
-          koulutusmoduuli: {
-            tunniste: tutkinnonOsa.tunniste,
-            pakollinen: tutkinnonOsa.pakollinen,
-            laajuus: tutkinnonOsa.laajuus ? {
-              arvo : tutkinnonOsa.laajuus,
-              yksikkö : laajuudenYksikkö
-            } : undefined
-          },
-          tila: { koodistoUri: 'suorituksentila', koodiarvo: 'KESKEN' },
-          arviointi: [
-            {
-              arvosana: arvosana
-            }
-          ],
-          toimipiste: oo.getIn(['suoritus','toimipiste']),
-          tyyppi: { 'koodistoUri': 'suorituksentyyppi', 'koodiarvo': 'ammatillinenopstutkinnonosasuoritus'}
-        }
-      ))
+    const addArvosana = (arvosana) => (osasuoritukset) => {
+      // Lisää aina uuden osasuorituksen, ts. ei tue arvosanan päivitystä
+      return (osasuoritukset || []).concat([{
+        koulutusmoduuli: {
+          tunniste: tutkinnonOsa.tunniste,
+          pakollinen: tutkinnonOsa.pakollinen,
+          laajuus: tutkinnonOsa.laajuus ? {
+            arvo : tutkinnonOsa.laajuus,
+            yksikkö : laajuudenYksikkö
+          } : undefined
+        },
+        tila: { koodistoUri: 'suorituksentila', koodiarvo: 'KESKEN' },
+        arviointi: [
+          {
+            arvosana: arvosana
+          }
+        ],
+        toimipiste: suoritus.toimipiste,
+        tyyppi: { 'koodistoUri': 'suorituksentyyppi', 'koodiarvo': 'ammatillinenopstutkinnonosasuoritus'}
+      }])
     }
 
     const saveArvosana = (arvosana) => {
-      opiskeluOikeusChange.push([opiskeluOikeus.id, addArvosana(arvosana)])
+      opiskeluOikeusChange.push([osaSuorituksetLens, addArvosana(arvosana)])
     }
 
-    const suoritus = R.find(osanSuoritus => R.equals(osanSuoritus.koulutusmoduuli.tunniste, tutkinnonOsa.tunniste))(opiskeluOikeus.suoritus.osasuoritukset ? opiskeluOikeus.suoritus.osasuoritukset : [])
-    const arviointi = suoritus && suoritus.arviointi
+    const osasuoritus = R.find(osanSuoritus => R.equals(osanSuoritus.koulutusmoduuli.tunniste, tutkinnonOsa.tunniste))(suoritus.osasuoritukset ? suoritus.osasuoritukset : [])
+
+    const arviointi = osasuoritus && osasuoritus.arviointi
 
     return (
       <div className={ arviointi ? 'tutkinnon-osa suoritettu' : 'tutkinnon-osa'}>

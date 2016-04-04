@@ -69,6 +69,10 @@ object Henkilö {
 }
 
 trait OpiskeluOikeus extends Loggable {
+  @Description("Opiskeluoikeden tyyppi, jolla erotellaan eri koulutusmuotoihin (peruskoulutus, lukio, ammatillinen...) liittyvät opiskeluoikeudet")
+  @OksaUri("tmpOKSAID869", "koulutusmuoto (1)")
+  @KoodistoUri("opiskeluoikeudentyyppi")
+  def tyyppi: KoodistoKoodiViite
   @Description("Opiskeluoikeuden uniikki tunniste, joka generoidaan TOR-järjestelmässä. Tietoja syötettäessä kenttä ei ole pakollinen. " +
     "Tietoja päivitettäessä TOR tunnistaa opiskeluoikeuden joko tämän id:n tai muiden kenttien (oppijaOid, organisaatio, diaarinumero) perusteella")
   def id: Option[Int]
@@ -88,8 +92,8 @@ trait OpiskeluOikeus extends Loggable {
   def päättymispäivä: Option[LocalDate]
   @Description("Oppilaitos, jossa opinnot on suoritettu")
   def oppilaitos: Oppilaitos
-  @Description("Opiskeluoikeuteen liittyvän (tutkinto-)suorituksen tiedot")
-  def suoritus: Suoritus
+  @Description("Opiskeluoikeuteen liittyvien (tutkinto-)suorituksien tiedot")
+  def suoritukset: List[Suoritus] // TODO: min/max sizes with annotations!
   def opiskeluoikeudenTila: Option[OpiskeluoikeudenTila]
   def läsnäolotiedot: Option[Läsnäolotiedot]
 

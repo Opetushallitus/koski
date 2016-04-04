@@ -14,6 +14,7 @@
     "baconjs": "~0.7.77",
     "ramda": "^0.17",
     "immutable": "^3.7.5",
+    "partial.lenses": "^2",
     "es6-promise": "^3"
   },
   "devDependencies": {

@@ -12,13 +12,15 @@ case class AmmatillinenOpiskeluOikeus(
   arvioituPäättymispäivä: Option[LocalDate],
   päättymispäivä: Option[LocalDate],
   oppilaitos: Oppilaitos,
-  suoritus: AmmatillinenTutkintoSuoritus,
+  suoritukset: List[AmmatillinenTutkintoSuoritus],
   hojks: Option[Hojks],
   @Description("Opiskelijan suorituksen tavoite-tieto kertoo sen, suorittaako opiskelija tutkintotavoitteista koulutusta (koko tutkintoa) vai tutkinnon osa tavoitteista koulutusta (tutkinnon osaa)")
   @KoodistoUri("opintojentavoite")
   tavoite: Option[KoodistoKoodiViite],
   opiskeluoikeudenTila: Option[OpiskeluoikeudenTila],
-  läsnäolotiedot: Option[Läsnäolotiedot]
+  läsnäolotiedot: Option[Läsnäolotiedot],
+  @KoodistoKoodiarvo("ammatillinenkoulutus")
+  tyyppi: KoodistoKoodiViite = KoodistoKoodiViite("ammatillinenkoulutus", Some("Ammatillinen koulutus"), "opiskeluoikeudentyyppi", None)
 ) extends OpiskeluOikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
 }

@@ -94,20 +94,21 @@ export const CreateOppija = React.createClass({
         hetu: hetu
       },
       opiskeluoikeudet: [{
+        tyyppi: { 'koodistoUri': 'opiskeluoikeudentyyppi', 'koodiarvo': 'ammatillinenkoulutus'},
         oppilaitos: oppilaitosOrganisaatio,
-        suoritus: {
+        suoritukset: [{
           koulutusmoduuli: {
             tunniste: {
               koodiarvo: tutkinto.tutkintoKoodi,
               nimi: tutkinto.nimi,
               koodistoUri: 'koulutus'
             },
-            perusteenDiaarinumero: tutkinto.diaarinumero,
+            perusteenDiaarinumero: tutkinto.diaarinumero
           },
           toimipiste : oppilaitosOrganisaatio,
           tila: { 'koodistoUri': 'suorituksentila', 'koodiarvo': 'KESKEN'},
           tyyppi: { 'koodistoUri': 'suorituksentyyppi', 'koodiarvo': 'ammatillinentutkintosuoritus'}
-        }
+        }]
       }]
     }
   },

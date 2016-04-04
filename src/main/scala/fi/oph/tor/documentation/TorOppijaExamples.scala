@@ -7,7 +7,7 @@ import fi.oph.tor.schema._
 
 object TorOppijaExampleData {
 
-  def TutkintoKoulutustoteutus(tutkintoKoulutus: TutkintoKoulutus,
+  def tutkintoSuoritus(tutkintoKoulutus: TutkintoKoulutus,
                                tutkintonimike: Option[List[KoodistoKoodiViite]] = None,
                                osaamisala: Option[List[KoodistoKoodiViite]] = None,
                                suoritustapa: Option[Suoritustapa] = None,
@@ -36,7 +36,7 @@ object TorOppijaExampleData {
       vahvistus = vahvistus,
       osasuoritukset = osasuoritukset)
 
-  lazy val autoalanPerustutkinto: AmmatillinenTutkintoSuoritus = TutkintoKoulutustoteutus(
+  lazy val autoalanPerustutkinto: AmmatillinenTutkintoSuoritus = tutkintoSuoritus(
     tutkintoKoulutus = TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
     tutkintonimike = None,
     osaamisala = None,
@@ -122,7 +122,7 @@ object TorOppijaExampleData {
       Some(date(2020, 5, 1)),
       None,
       oppilaitos,
-      tutkinto.copy(osasuoritukset = osat),
+      List(tutkinto.copy(osasuoritukset = osat)),
       hojks = None,
       None,
       None,
@@ -146,7 +146,7 @@ object TorOppijaExamples {
   lazy val oppisopimus = oppija(
     opiskeluOikeus = opiskeluoikeus(
       oppilaitos = stadinAmmattiopisto,
-      tutkinto = TutkintoKoulutustoteutus(
+      tutkinto = tutkintoSuoritus(
         tutkintoKoulutus = TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
         tutkintonimike = None,
         osaamisala = None,
@@ -191,7 +191,7 @@ object TorOppijaExamples {
   ))
 
   lazy val tutkinnonOsaToisestaTutkinnosta = oppija(opiskeluOikeus = opiskeluoikeus(
-    tutkinto = TutkintoKoulutustoteutus(
+    tutkinto = tutkintoSuoritus(
       tutkintoKoulutus = TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
       suoritustapa = Some(suoritustapaNäyttö),
       järjestämismuoto = None,
@@ -225,7 +225,7 @@ object TorOppijaExamples {
         Some(date(2015, 5, 31)),
         Some(date(2016, 1, 9)),
         stadinAmmattiopisto,
-        TutkintoKoulutustoteutus(
+        List(tutkintoSuoritus(
           tutkintoKoulutus = TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
           tutkintonimike = Some(List(KoodistoKoodiViite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
           osaamisala = Some(List(KoodistoKoodiViite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
@@ -263,7 +263,7 @@ object TorOppijaExamples {
               vahvistus = Some(Vahvistus(Some(date(2014, 11, 8)), Some(stadinAmmattiopisto), None))
             )
           ))
-        ),
+        )),
         hojks = Some(Hojks(hojksTehty = true, opetusryhmä = Some(KoodistoKoodiViite("1", Some("Yleinen opetusryhmä"), "opetusryhma", None)))),
         Some(KoodistoKoodiViite("tutkinto", Some("Tutkinto"), "opintojentavoite", None)),
         Some(OpiskeluoikeudenTila(
@@ -308,7 +308,7 @@ object FullExample {
         Some(date(2015, 5, 31)),
         Some(date(2016, 1, 9)),
         stadinAmmattiopisto,
-        TutkintoKoulutustoteutus(
+        List(tutkintoSuoritus(
           tutkintoKoulutus = TutkintoKoulutus(
             KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None),
             Some("39/011/2014")
@@ -327,7 +327,7 @@ object FullExample {
             OrganisaatioHenkilö("Jack Bauer", "puheenjohtaja", tutkintotoimikunta),
             OrganisaatioHenkilö("Keijo Perttilä", "rehtori", stadinAmmattiopisto))))),
           osasuoritukset = Some(tutkinnonOsat)
-        ),
+        )),
         hojks = None,
         Some(KoodistoKoodiViite("tutkinto", Some("Tutkinto"), "opintojentavoite", None)),
         Some(OpiskeluoikeudenTila(

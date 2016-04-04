@@ -56,9 +56,11 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
       validateDateOrder(("alkamispäivä", opiskeluOikeus.alkamispäivä), ("arvioituPäättymispäivä", opiskeluOikeus.arvioituPäättymispäivä)),
       DateValidation.validateJaksot("opiskeluoikeudenTila.opiskeluoikeusjaksot", opiskeluOikeus.opiskeluoikeudenTila.toList.flatMap(_.opiskeluoikeusjaksot)),
       DateValidation.validateJaksot("läsnäolotiedot.läsnäolojaksot", opiskeluOikeus.läsnäolotiedot.toList.flatMap(_.läsnäolojaksot)),
-      validateSuoritus(opiskeluOikeus.suoritus)
+      HttpStatus.fold(opiskeluOikeus.suoritukset.map(validateSuoritus(_)))
     )}
-      .then { TutkintoRakenneValidator(tutkintoRepository).validateTutkintoRakenne(opiskeluOikeus.suoritus)}
+      .then {
+        HttpStatus.fold(opiskeluOikeus.suoritukset.map(TutkintoRakenneValidator(tutkintoRepository).validateTutkintoRakenne(_)))
+      }
   }
 
   def validateSuoritus(suoritus: Suoritus): HttpStatus = {

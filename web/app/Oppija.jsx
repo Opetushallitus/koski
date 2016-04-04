@@ -4,7 +4,8 @@ import Http from './http'
 import {routeP} from './router'
 import {CreateOppija} from './CreateOppija.jsx'
 import {OpiskeluOikeus, opiskeluOikeusChange} from './OpiskeluOikeus.jsx'
-import Immutable from 'immutable'
+import * as L from "partial.lenses"
+import R from 'ramda'
 
 export const selectOppijaE = routeP.map('.oppijaId').flatMap(oppijaId => {
   return oppijaId ? Bacon.once({loading: true}).concat(Http.get(`/tor/api/oppija/${oppijaId}`)) : Bacon.once({ empty: true})
@@ -12,21 +13,21 @@ export const selectOppijaE = routeP.map('.oppijaId').flatMap(oppijaId => {
 
 export const updateResultE = Bacon.Bus()
 
-const applyChange = (oppija, opiskeluOikeusId, change) => {
-  let current = Immutable.fromJS(oppija)
-  return current.set('opiskeluoikeudet', current.get('opiskeluoikeudet').map(opiskeluOikeus => {
-      return (opiskeluOikeus.get('id') == opiskeluOikeusId
-        ? change(opiskeluOikeus)
-        : opiskeluOikeus)}
-  )).toJS()
+const applyChange = (oppija, lens, change) => {
+  let currentValue = L.view(lens, oppija)
+  let newValue = change(currentValue)
+  let newOppija = L.set(lens, newValue, oppija)
+  return newOppija
 }
+
+const opiskeluOikeusIdLens = (id) => (L.compose(L.prop('opiskeluoikeudet'), L.find(R.whereEq({id}))))
 
 export const oppijaP = Bacon.update({ loading: true },
   selectOppijaE, (previous, oppija) => oppija,
   updateResultE.map('.opiskeluoikeudet').flatMap(Bacon.fromArray), (currentOppija, {id, versionumero}) => {
-    return applyChange(currentOppija, id, (opiskeluoikeus) => opiskeluoikeus.set('versionumero', versionumero))
+    return applyChange(currentOppija, L.compose(opiskeluOikeusIdLens(id), L.prop('versionumero')), () => versionumero)
   },
-  opiskeluOikeusChange, (currentOppija, [opiskeluOikeusId, change]) => applyChange(currentOppija, opiskeluOikeusId, change)
+  opiskeluOikeusChange, (currentOppija, [lens, change]) => applyChange(currentOppija, lens, change)
 )
 
 updateResultE.plug(oppijaP.sampledBy(opiskeluOikeusChange).flatMapLatest(oppijaUpdate => Http.put('/tor/api/oppija', oppijaUpdate)))
@@ -55,7 +56,7 @@ const ExistingOppija = React.createClass({
         <hr></hr>
         <h4>Opiskeluoikeudet</h4>
         { opiskeluoikeudet.map( opiskeluOikeus =>
-          <OpiskeluOikeus key={opiskeluOikeus.id} opiskeluOikeus={ opiskeluOikeus } />
+          <OpiskeluOikeus key={opiskeluOikeus.id} opiskeluOikeus={ opiskeluOikeus } lens= { opiskeluOikeusIdLens(opiskeluOikeus.id) } />
         ) }
       </div>
     )

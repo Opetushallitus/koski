@@ -279,9 +279,9 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
           testSuorituksenTila[AmmatillinenOpsTutkinnonosaSuoritus](tutkinnonOsaSuoritus, "tutkinnonosat/100023", { suoritus => { f => putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(f)} })
 
           describe("Kun tutkinto on VALMIS-tilassa ja sillä on osa, joka on KESKEN-tilassa") {
-            val opiskeluOikeus: JValue = opiskeluoikeus().copy(suoritus = tutkintoSuoritus.copy(
+            val opiskeluOikeus: JValue = opiskeluoikeus().copy(suoritukset = List(tutkintoSuoritus.copy(
               suoritustapa = tutkinnonSuoritustapaNäyttönä, tila = tilaValmis, vahvistus = vahvistus,osasuoritukset = Some(List(tutkinnonOsaSuoritus))
-            ))
+            )))
 
             it("palautetaan HTTP 400") (putOpiskeluOikeus(opiskeluOikeus) (
               verifyResponseStatus(400, TorErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Suorituksella koulutus/351301 on keskeneräinen osasuoritus tutkinnonosat/100023 vaikka suorituksen tila on VALMIS"))))
@@ -292,7 +292,7 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
 
     describe("Tutkinnon tila ja arviointi") {
       testSuorituksenTila[AmmatillinenTutkintoSuoritus](tutkintoSuoritus, "koulutus/351301", { suoritus => { f => {
-        putOpiskeluOikeus(opiskeluoikeus().copy(suoritus = suoritus))(f)
+        putOpiskeluOikeus(opiskeluoikeus().copy(suoritukset = List(suoritus)))(f)
       }}})
     }
 
