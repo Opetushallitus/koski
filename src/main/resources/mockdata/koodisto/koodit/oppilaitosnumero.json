@@ -18691,6 +18691,14 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "oppilaitosnumero_10118",
+  "koodiArvo" : "10118",
+  "metadata" : [ {
+    "nimi" : "Kaakkois-Suomen ammattikorkeakoulu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "oppilaitosnumero_07920",
   "koodiArvo" : "07920",
   "metadata" : [ {
@@ -19254,6 +19262,14 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "oppilaitosnumero_77777",
+  "koodiArvo" : "77777",
+  "metadata" : [ {
+    "nimi" : "KKC",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "oppilaitosnumero_08168",
   "koodiArvo" : "08168",
   "metadata" : [ {
@@ -19439,11 +19455,30 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "oppilaitosnumero_11111",
+  "koodiArvo" : "11111",
+  "metadata" : [ {
+    "nimi" : "Kamarikuorojen koulu",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kamarikuorojen koulu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "oppilaitosnumero_04519",
   "koodiArvo" : "04519",
   "metadata" : [ {
     "nimi" : "Tuurin koulu",
     "lyhytNimi" : "Tuurin koulu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_55555",
+  "koodiArvo" : "55555",
+  "metadata" : [ {
+    "nimi" : "Heidin testi",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -65371,7 +65406,7 @@
   "koodiUri" : "oppilaitosnumero_01810",
   "koodiArvo" : "01810",
   "metadata" : [ {
-    "nimi" : "Lybeckerin opisto",
+    "nimi" : "Lybeckerin oppilaitos",
     "lyhytNimi" : "Lybeckerin käsi- ja taideteollisuusop.",
     "kieli" : "FI"
   } ],
@@ -67207,6 +67242,15 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "oppilaitosnumero_10106",
+  "koodiArvo" : "10106",
+  "metadata" : [ {
+    "nimi" : "Stadin aikuisopisto",
+    "lyhytNimi" : "Stadin aikuisopisto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "oppilaitosnumero_16859",
   "koodiArvo" : "16859",
   "metadata" : [ {
@@ -67216,15 +67260,6 @@
   }, {
     "nimi" : "Brändö låg- och högstadium",
     "lyhytNimi" : "Brändö låg- och högstadium",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "oppilaitosnumero_10106",
-  "koodiArvo" : "10106",
-  "metadata" : [ {
-    "nimi" : "Stadin aikuisopisto",
-    "lyhytNimi" : "Stadin aikuisopisto",
     "kieli" : "FI"
   } ],
   "versio" : 1

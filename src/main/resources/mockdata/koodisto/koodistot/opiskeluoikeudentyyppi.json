@@ -1,0 +1,18 @@
+{
+  "koodistoUri" : "opiskeluoikeudentyyppi",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Opiskeluoikeuden tyyppi",
+    "kuvaus" : "Opiskeluoikeuden tyyppi"
+  }, {
+    "kieli" : "SV",
+    "nimi" : "Opiskeluoikeuden tyyppi"
+  }, {
+    "kieli" : "EN",
+    "nimi" : "Opiskeluoikeuden tyyppi"
+  } ],
+  "codesGroupUri" : "http://tor",
+  "voimassaAlkuPvm" : "2016-04-04",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}
