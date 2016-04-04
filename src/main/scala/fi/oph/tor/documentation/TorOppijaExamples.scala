@@ -20,7 +20,7 @@ object TorOppijaExampleData {
                                toimipiste: OrganisaatioWithOid,
                                arviointi: Option[List[Arviointi]] = None,
                                vahvistus: Option[Vahvistus] = None,
-                               osasuoritukset: Option[List[AmmatillinenTutkinnonosaSuoritus[_]]] = None): AmmatillinenTutkintoSuoritus =
+                               osasuoritukset: Option[List[AmmatillinenTutkinnonosaSuoritus]] = None): AmmatillinenTutkintoSuoritus =
 
     AmmatillinenTutkintoSuoritus(
       koulutusmoduuli = tutkintoKoulutus,
@@ -114,7 +114,7 @@ object TorOppijaExampleData {
 
   def opiskeluoikeus(oppilaitos: Oppilaitos = Oppilaitos("1.2.246.562.10.52251087186"),
                      tutkinto: AmmatillinenTutkintoSuoritus = autoalanPerustutkinto,
-                     osat: Option[List[AmmatillinenTutkinnonosaSuoritus[_]]] = None) = {
+                     osat: Option[List[AmmatillinenTutkinnonosaSuoritus]] = None) = {
     OpiskeluOikeus(
       None,
       None,

@@ -4,7 +4,7 @@ import fi.oph.tor.http.{TorErrorCategory, HttpStatus}
 import fi.oph.tor.json.Json
 import fi.oph.tor.koodisto.KoodistoViitePalvelu
 import fi.oph.tor.organisaatio.OrganisaatioRepository
-import fi.oph.tor.schema.{KoodiViite, OpiskeluOikeus, Suoritus, TorOppija}
+import fi.oph.tor.schema._
 import fi.oph.tor.tor.DateValidation._
 import fi.oph.tor.toruser.TorUser
 import fi.oph.tor.tutkinto.{TutkintoRakenneValidator, TutkintoRepository}
@@ -61,21 +61,21 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
       .then { TutkintoRakenneValidator(tutkintoRepository).validateTutkintoRakenne(opiskeluOikeus.suoritus)}
   }
 
-  def validateSuoritus(suoritus: Suoritus[_,_]): HttpStatus = {
+  def validateSuoritus(suoritus: Suoritus): HttpStatus = {
     val arviointipäivä = ("suoritus.arviointi.päivä", suoritus.arviointi.toList.flatten.flatMap(_.päivä))
     HttpStatus.fold(
       validateDateOrder(("suoritus.alkamispäivä", suoritus.alkamispäivä), arviointipäivä)
         :: validateDateOrder(arviointipäivä, ("suoritus.vahvistus.päivä", suoritus.vahvistus.flatMap(_.päivä)))
         :: validateStatus(suoritus)
-        :: suoritus.osasuoritukset.toList.flatten.map(validateSuoritus(_))
+        :: suoritus.osasuoritusLista.map(validateSuoritus(_))
     )
   }
 
-  private def validateStatus(suoritus: Suoritus[_,_]): HttpStatus = {
+  private def validateStatus(suoritus: Suoritus): HttpStatus = {
     val hasArviointi: Boolean = !suoritus.arviointi.toList.flatten.isEmpty
     val hasVahvistus: Boolean = suoritus.vahvistus.isDefined
     val tilaValmis: Boolean = suoritus.tila.koodiarvo == "VALMIS"
-    def suorituksenTunniste(suoritus: Suoritus[_,_]): KoodiViite = {
+    def suorituksenTunniste(suoritus: Suoritus): KoodiViite = {
       suoritus.koulutusmoduuli.tunniste
     }
     if (hasVahvistus && !tilaValmis) {
@@ -83,7 +83,7 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
     } else if (!hasVahvistus && tilaValmis) {
       TorErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta " + suorituksenTunniste(suoritus) + " puuttuu vahvistus, vaikka suorituksen tila on " + suoritus.tila.koodiarvo)
     } else {
-      (tilaValmis, suoritus.kaikkiOsasuoritukset.find(_.tila.koodiarvo == "KESKEN")) match {
+      (tilaValmis, suoritus.rekursiivisetOsasuoritukset.find(_.tila.koodiarvo == "KESKEN")) match {
         case (true, Some(keskeneräinenOsasuoritus)) =>
           TorErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus(
             "Suorituksella " + suorituksenTunniste(suoritus) + " on keskeneräinen osasuoritus " + suorituksenTunniste(keskeneräinenOsasuoritus) + " vaikka suorituksen tila on " + suoritus.tila.koodiarvo)

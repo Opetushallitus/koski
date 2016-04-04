@@ -4,13 +4,13 @@ import fi.oph.tor.http.{HttpStatus, TorErrorCategory}
 import fi.oph.tor.schema._
 
 case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
-  def validateTutkintoRakenne(suoritus: Suoritus[_,_]) = suoritus match {
+  def validateTutkintoRakenne(suoritus: Suoritus) = suoritus match {
     case (tutkintoSuoritus: AmmatillinenTutkintoSuoritus) =>
       getRakenne(tutkintoSuoritus.koulutusmoduuli) match {
         case Left(status) => status
         case Right(rakenne) =>
-          validateOsaamisala(tutkintoSuoritus.osaamisala.toList.flatten, rakenne).then(HttpStatus.fold(suoritus.osasuoritukset.toList.flatten.map {
-            case osa: AmmatillinenTutkinnonosaSuoritus[_] if !tutkintoSuoritus.suoritustapa.isDefined =>
+          validateOsaamisala(tutkintoSuoritus.osaamisala.toList.flatten, rakenne).then(HttpStatus.fold(suoritus.osasuoritusLista.map {
+            case osa: AmmatillinenTutkinnonosaSuoritus if !tutkintoSuoritus.suoritustapa.isDefined =>
               TorErrorCategory.badRequest.validation.rakenne.suoritustapaPuuttuu()
             case osa: AmmatillinenOpsTutkinnonosaSuoritus =>
               validateTutkinnonOsa(osa, Some(rakenne), tutkintoSuoritus.suoritustapa)

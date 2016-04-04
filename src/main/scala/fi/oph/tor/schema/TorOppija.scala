@@ -109,7 +109,7 @@ object OpiskeluOikeus {
   val VERSIO_1 = 1
 }
 
-trait Suoritus[K <: Koulutusmoduuli, S <: Suoritus[_,_]] { // TODO, types are not respected
+trait Suoritus {
   def koulutusmoduuli: Koulutusmoduuli
   @Description("Paikallinen tunniste suoritukselle. Tiedonsiirroissa tarpeellinen, jotta voidaan varmistaa päivitysten osuminen oikeaan suoritukseen")
   def paikallinenId: Option[String]
@@ -128,8 +128,11 @@ trait Suoritus[K <: Koulutusmoduuli, S <: Suoritus[_,_]] { // TODO, types are no
   def arviointi: Option[List[Arviointi]]
   @Description("Suorituksen virallinen vahvistus (päivämäärä, henkilöt). Vaaditaan silloin, kun suorituksen tila on VALMIS.")
   def vahvistus: Option[Vahvistus]
-  def osasuoritukset: Option[List[Suoritus[_,_]]]
-  def kaikkiOsasuoritukset: List[Suoritus[_,_]] = osasuoritukset.toList.flatten ++ osasuoritukset.toList.flatten.flatMap(_.kaikkiOsasuoritukset)
+  def osasuoritukset: Option[List[Suoritus]]
+  def osasuoritusLista: List[Suoritus] = osasuoritukset.toList.flatten
+  def rekursiivisetOsasuoritukset: List[Suoritus] = {
+    osasuoritusLista ++ osasuoritusLista.flatMap(_.rekursiivisetOsasuoritukset)
+  }
 }
 
 case class AmmatillinenTutkintoSuoritus(
@@ -156,11 +159,10 @@ case class AmmatillinenTutkintoSuoritus(
   toimipiste: OrganisaatioWithOid,
   arviointi: Option[List[Arviointi]] = None,
   vahvistus: Option[Vahvistus] = None,
-  osasuoritukset: Option[List[AmmatillinenTutkinnonosaSuoritus[_]]] = None
-) extends Suoritus[TutkintoKoulutus, AmmatillinenTutkinnonosaSuoritus[_]]
+  osasuoritukset: Option[List[AmmatillinenTutkinnonosaSuoritus]] = None
+) extends Suoritus
 
-trait AmmatillinenTutkinnonosaSuoritus[K <: Koulutusmoduuli] extends Suoritus[K, AmmatillinenTutkinnonosaSuoritus[_]] // TODO What should be done with non existing suoritus?
-
+trait AmmatillinenTutkinnonosaSuoritus extends Suoritus
   case class AmmatillinenOpsTutkinnonosaSuoritus(
     koulutusmoduuli: OpsTutkinnonosa,
     hyväksiluku: Option[Hyväksiluku] = None,
@@ -178,7 +180,7 @@ trait AmmatillinenTutkinnonosaSuoritus[K <: Koulutusmoduuli] extends Suoritus[K,
     arviointi: Option[List[Arviointi]] = None,
     vahvistus: Option[Vahvistus] = None,
     osasuoritukset: Option[List[AmmatillinenOpsTutkinnonosaSuoritus]] = None
-  ) extends AmmatillinenTutkinnonosaSuoritus[OpsTutkinnonosa]
+  ) extends AmmatillinenTutkinnonosaSuoritus
 
   case class AmmatillinenPaikallinenTutkinnonosaSuoritus(
     koulutusmoduuli: PaikallinenTutkinnonosa,
@@ -195,7 +197,7 @@ trait AmmatillinenTutkinnonosaSuoritus[K <: Koulutusmoduuli] extends Suoritus[K,
     arviointi: Option[List[Arviointi]] = None,
     vahvistus: Option[Vahvistus] = None,
     osasuoritukset: Option[List[AmmatillinenPaikallinenTutkinnonosaSuoritus]] = None
-  ) extends AmmatillinenTutkinnonosaSuoritus[PaikallinenTutkinnonosa]
+  ) extends AmmatillinenTutkinnonosaSuoritus
 
 trait Koulutusmoduuli {
   def tunniste: KoodiViite

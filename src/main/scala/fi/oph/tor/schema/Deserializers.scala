@@ -10,10 +10,10 @@ trait Deserializer[T] extends Serializer[T] {
   def serialize(implicit format: Formats): PartialFunction[Any, JValue] = PartialFunction.empty
 }
 
-object AmmatillinenTutkinnonosaSuoritusDeserializer extends Deserializer[AmmatillinenTutkinnonosaSuoritus[_]] {
-  private val TheClass = classOf[AmmatillinenTutkinnonosaSuoritus[_]]
+object AmmatillinenTutkinnonosaSuoritusDeserializer extends Deserializer[AmmatillinenTutkinnonosaSuoritus] {
+  private val TheClass = classOf[AmmatillinenTutkinnonosaSuoritus]
 
-  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), AmmatillinenTutkinnonosaSuoritus[_]] = {
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), AmmatillinenTutkinnonosaSuoritus] = {
     case (TypeInfo(TheClass, _), json) =>
       json match {
         case moduuli: JObject if moduuli \ "koulutusmoduuli" \ "tunniste" \ "koodistoUri" == JString("tutkinnonosat") => moduuli.extract[AmmatillinenOpsTutkinnonosaSuoritus]

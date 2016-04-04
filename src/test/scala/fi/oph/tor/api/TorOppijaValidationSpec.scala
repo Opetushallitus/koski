@@ -414,7 +414,7 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
     }
   }
 
-  def testSuorituksenTila[T <: Suoritus[_, _]](suoritus: T, desc: String, put: (T => ((=> Unit) => Unit))): Unit = {
+  def testSuorituksenTila[T <: Suoritus](suoritus: T, desc: String, put: (T => ((=> Unit) => Unit))): Unit = {
     def copySuoritus(suoritus: T, t: KoodistoKoodiViite, a: Option[List[Arviointi]], v: Option[Vahvistus], ap: Option[LocalDate] = None): T = {
       val alkamispäivä = ap.orElse(suoritus.alkamispäivä)
       (suoritus match {
