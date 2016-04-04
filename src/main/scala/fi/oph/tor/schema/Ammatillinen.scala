@@ -47,7 +47,9 @@ case class AmmatillinenTutkintoSuoritus(
   toimipiste: OrganisaatioWithOid,
   arviointi: Option[List[Arviointi]] = None,
   vahvistus: Option[Vahvistus] = None,
-  override val osasuoritukset: Option[List[AmmatillinenTutkinnonosaSuoritus]] = None
+  override val osasuoritukset: Option[List[AmmatillinenTutkinnonosaSuoritus]] = None,
+  @KoodistoKoodiarvo("ammatillinentutkintosuoritus")
+  tyyppi: KoodistoKoodiViite = KoodistoKoodiViite("ammatillinentutkintosuoritus", koodistoUri = "suorituksentyyppi")
 ) extends Suoritus
 
 trait AmmatillinenTutkinnonosaSuoritus extends Suoritus
@@ -66,7 +68,9 @@ trait AmmatillinenTutkinnonosaSuoritus extends Suoritus
     alkamispäivä: Option[LocalDate],
     toimipiste: OrganisaatioWithOid,
     arviointi: Option[List[Arviointi]] = None,
-    vahvistus: Option[Vahvistus] = None
+    vahvistus: Option[Vahvistus] = None,
+    @KoodistoKoodiarvo("ammatillinenopstutkinnonosasuoritus")
+    tyyppi: KoodistoKoodiViite = KoodistoKoodiViite("ammatillinenopstutkinnonosasuoritus", koodistoUri = "suorituksentyyppi")
   ) extends AmmatillinenTutkinnonosaSuoritus
 
   case class AmmatillinenPaikallinenTutkinnonosaSuoritus(
@@ -83,7 +87,9 @@ trait AmmatillinenTutkinnonosaSuoritus extends Suoritus
     toimipiste: OrganisaatioWithOid,
     arviointi: Option[List[Arviointi]] = None,
     vahvistus: Option[Vahvistus] = None,
-    override val osasuoritukset: Option[List[AmmatillinenPaikallinenTutkinnonosaSuoritus]] = None
+    override val osasuoritukset: Option[List[AmmatillinenPaikallinenTutkinnonosaSuoritus]] = None,
+    @KoodistoKoodiarvo("ammatillinenpaikallinentutkinnonosasuoritus")
+    tyyppi: KoodistoKoodiViite = KoodistoKoodiViite("ammatillinenpaikallinentutkinnonosasuoritus", koodistoUri = "suorituksentyyppi")
   ) extends AmmatillinenTutkinnonosaSuoritus
 
 @Description("Tutkintoon johtava koulutus")

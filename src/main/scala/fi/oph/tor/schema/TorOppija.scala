@@ -132,6 +132,9 @@ trait Suoritus {
   def rekursiivisetOsasuoritukset: List[Suoritus] = {
     osasuoritusLista ++ osasuoritusLista.flatMap(_.rekursiivisetOsasuoritukset)
   }
+  @Description("Suorituksen tyyppi")
+  @KoodistoUri("suorituksentyyppi")
+  def tyyppi: KoodistoKoodiViite
 }
 
 trait Koulutusmoduuli {

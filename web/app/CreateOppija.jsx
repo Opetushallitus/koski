@@ -102,10 +102,11 @@ export const CreateOppija = React.createClass({
               nimi: tutkinto.nimi,
               koodistoUri: 'koulutus'
             },
-            perusteenDiaarinumero: tutkinto.diaarinumero
+            perusteenDiaarinumero: tutkinto.diaarinumero,
           },
           toimipiste : oppilaitosOrganisaatio,
-          tila: { 'koodistoUri': 'suorituksentila', 'koodiarvo': 'KESKEN'}
+          tila: { 'koodistoUri': 'suorituksentila', 'koodiarvo': 'KESKEN'},
+          tyyppi: { 'koodistoUri': 'suorituksentyyppi', 'koodiarvo': 'ammatillinentutkintosuoritus'}
         }
       }]
     }

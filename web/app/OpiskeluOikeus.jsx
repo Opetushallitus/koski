@@ -138,7 +138,8 @@ const TutkinnonOsa = React.createClass({
               arvosana: arvosana
             }
           ],
-          toimipiste: oo.getIn(['suoritus','toimipiste'])
+          toimipiste: oo.getIn(['suoritus','toimipiste']),
+          tyyppi: { 'koodistoUri': 'suorituksentyyppi', 'koodiarvo': 'ammatillinenopstutkinnonosasuoritus'}
         }
       ))
     }
