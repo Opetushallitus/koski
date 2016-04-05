@@ -112,9 +112,16 @@ object OpiskeluOikeus {
 }
 
 trait Suoritus {
+  @Description("Suorituksen tyyppi")
+  @KoodistoUri("suorituksentyyppi")
+  def tyyppi: KoodistoKoodiViite
   def koulutusmoduuli: Koulutusmoduuli
   @Description("Paikallinen tunniste suoritukselle. Tiedonsiirroissa tarpeellinen, jotta voidaan varmistaa päivitysten osuminen oikeaan suoritukseen")
   def paikallinenId: Option[String]
+  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
+  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
+  def toimipiste: OrganisaatioWithOid
+  def alkamispäivä: Option[LocalDate]
   @Description("Opintojen suorituskieli")
   @KoodistoUri("kieli")
   @OksaUri("tmpOKSAID309", "opintosuorituksen kieli")
@@ -122,10 +129,6 @@ trait Suoritus {
   @Description("Suorituksen tila (KESKEN, VALMIS, KESKEYTYNYT)")
   @KoodistoUri("suorituksentila")
   def tila: KoodistoKoodiViite
-  def alkamispäivä: Option[LocalDate]
-  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
-  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
-  def toimipiste: OrganisaatioWithOid
   @Description("Arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota")
   def arviointi: Option[List[Arviointi]]
   @Description("Suorituksen virallinen vahvistus (päivämäärä, henkilöt). Vaaditaan silloin, kun suorituksen tila on VALMIS.")
@@ -136,9 +139,6 @@ trait Suoritus {
   def rekursiivisetOsasuoritukset: List[Suoritus] = {
     osasuoritusLista ++ osasuoritusLista.flatMap(_.rekursiivisetOsasuoritukset)
   }
-  @Description("Suorituksen tyyppi")
-  @KoodistoUri("suorituksentyyppi")
-  def tyyppi: KoodistoKoodiViite
 }
 
 trait Koulutusmoduuli {
