@@ -1,0 +1,68 @@
+[
+  {
+    "koodiUri": "oppiaineuskonto_kt1",
+    "koodiArvo": "KT1",
+    "metadata": [
+      {
+        "nimi": "Evankelisluterilainen uskonto",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "oppiaineuskonto_kt2",
+    "koodiArvo": "KT2",
+    "metadata": [
+      {
+        "nimi": "Ortodoksinen uskonto",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "oppiaineuskonto_kt3",
+    "koodiArvo": "KT3",
+    "metadata": [
+      {
+        "nimi": "Katolinen uskonto",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "oppiaineuskonto_kt4",
+    "koodiArvo": "KT4",
+    "metadata": [
+      {
+        "nimi": "Islam",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "oppiaineuskonto_kt5",
+    "koodiArvo": "KT5",
+    "metadata": [
+      {
+        "nimi": "Juutalainen uskonto",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "oppiaineuskonto_ux",
+    "koodiArvo": "UX",
+    "metadata": [
+      {
+        "nimi": "muut uskonnot",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  }
+]
