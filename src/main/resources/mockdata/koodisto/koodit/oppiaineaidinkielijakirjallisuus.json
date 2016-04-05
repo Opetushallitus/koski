@@ -55,11 +55,88 @@
     "versio": 1
   },
   {
-    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai5",
-    "koodiArvo": "AI5",
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai6",
+    "koodiArvo": "AI6",
     "metadata": [
       {
         "nimi": "Muu oppilaan äidinkieli",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai7",
+    "koodiArvo": "AI7",
+    "metadata": [
+      {
+        "nimi": "Suomi toisena kielenä ja kirjallisuus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai8",
+    "koodiArvo": "AI8",
+    "metadata": [
+      {
+        "nimi": "Ruotsi toisena kielenä ja kirjallisuus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai9",
+    "koodiArvo": "AI9",
+    "metadata": [
+      {
+        "nimi": "Suomi saamenkielisille",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai10",
+    "koodiArvo": "AI10",
+    "metadata": [
+      {
+        "nimi": "Ruotsi saamenkielisille",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai11",
+    "koodiArvo": "AI11",
+    "metadata": [
+      {
+        "nimi": "Suomi viittomakielisille",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai12",
+    "koodiArvo": "AI12",
+    "metadata": [
+      {
+        "nimi": "Ruotsi viittomakielisille",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_aiai",
+    "koodiArvo": "AIAI",
+    "metadata": [
+      {
+        "nimi": "Suomen kieli, äidinkielenomainen suomi",
         "kieli": "FI"
       }
     ],
