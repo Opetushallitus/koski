@@ -23,7 +23,7 @@ object KoodistoCreator extends Logging {
       val koodit = kp.getKoodistoKoodit(koodistoViite).toList.flatten
       val luotavatKoodit = MockKoodistoPalvelu.getKoodistoKoodit(koodistoViite).toList.flatten.filter { koodi: KoodistoKoodi => !koodit.find(_.koodiArvo == koodi.koodiArvo).isDefined }
       luotavatKoodit.zipWithIndex.foreach { case (koodi, index) =>
-        logger.info("Luodaan koodi (" + index + "/" + (luotavatKoodit.length) + ") " + koodi.koodiUri)
+        logger.info("Luodaan koodi (" + index + 1 + "/" + (luotavatKoodit.length) + ") " + koodi.koodiUri)
         kmp.createKoodi(koodistoUri, koodi.copy(voimassaAlkuPvm = Some(LocalDate.now)))
       }
     }
