@@ -4,17 +4,21 @@ import java.time.LocalDate
 
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.schema._
-import org.json4s.JValue
-import org.json4s.JsonAST.JObject
 import org.scalatest.FunSpec
 
 class AmmatillinenValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
   describe("Ammatillisen koulutuksen opiskeluoikeuden lisääminen") {
     describe("Valideilla tiedoilla") {
       it("palautetaan HTTP 200") {
-        putOpiskeluOikeus(JObject()) {
+        putOpiskeluOikeus(opiskeluoikeus()) {
           verifyResponseStatus(200)
         }
+      }
+    }
+
+    describe("Kun tutkintosuoritus puuttuu") {
+      it("palautetaan HTTP 400 virhe" ) {
+        putOpiskeluOikeus(opiskeluoikeus().copy(suoritukset = Nil)) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema(".*array is too short.*".r)))
       }
     }
 
@@ -165,7 +169,7 @@ class AmmatillinenValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
           testSuorituksenTila[AmmatillinenOpsTutkinnonosaSuoritus](tutkinnonOsaSuoritus, "tutkinnonosat/100023", { suoritus => { f => putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(f)} })
 
           describe("Kun tutkinto on VALMIS-tilassa ja sillä on osa, joka on KESKEN-tilassa") {
-            val opiskeluOikeus: JValue = opiskeluoikeus().copy(suoritukset = List(tutkintoSuoritus.copy(
+            val opiskeluOikeus = opiskeluoikeus().copy(suoritukset = List(tutkintoSuoritus.copy(
               suoritustapa = tutkinnonSuoritustapaNäyttönä, tila = tilaValmis, vahvistus = vahvistus,osasuoritukset = Some(List(tutkinnonOsaSuoritus))
             )))
 

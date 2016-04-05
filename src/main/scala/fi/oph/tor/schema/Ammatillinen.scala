@@ -2,7 +2,7 @@ package fi.oph.tor.schema
 
 import java.time.LocalDate
 
-import fi.oph.tor.schema.generic.annotation.Description
+import fi.oph.tor.schema.generic.annotation.{MaxItems, MinItems, Description}
 
 @Description("Ammatillisen koulutuksen opiskeluoikeus")
 case class AmmatillinenOpiskeluOikeus(
@@ -13,6 +13,7 @@ case class AmmatillinenOpiskeluOikeus(
   arvioituPäättymispäivä: Option[LocalDate],
   päättymispäivä: Option[LocalDate],
   oppilaitos: Oppilaitos,
+  @MinItems(1) @MaxItems(1)
   suoritukset: List[AmmatillinenTutkintoSuoritus],
   hojks: Option[Hojks],
   @Description("Opiskelijan suorituksen tavoite-tieto kertoo sen, suorittaako opiskelija tutkintotavoitteista koulutusta (koko tutkintoa) vai tutkinnon osa tavoitteista koulutusta (tutkinnon osaa)")

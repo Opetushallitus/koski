@@ -13,17 +13,22 @@ trait OpiskeluOikeusTestMethods extends LocalJettyHttpSpecification with Matcher
   implicit def any2j(o: AnyRef): JValue = Json.toJValue(o)
 
   def putTutkinnonOsaSuoritus[A](tutkinnonOsaSuoritus: AmmatillinenTutkinnonosaSuoritus, tutkinnonSuoritustapa: Option[Suoritustapa])(f: => A) = {
-    val oo = opiskeluoikeus().copy(suoritukset = List(tutkintoSuoritus.copy(suoritustapa = tutkinnonSuoritustapa, osasuoritukset = Some(List(tutkinnonOsaSuoritus)))))
+    val s = tutkintoSuoritus.copy(suoritustapa = tutkinnonSuoritustapa, osasuoritukset = Some(List(tutkinnonOsaSuoritus)))
 
-    putOpiskeluOikeus(oo)(f)
+    putTutkintoSuoritus(s)(f)
   }
 
-  def putTutkintoSuoritus[A](suoritus: AmmatillinenTutkintoSuoritus)(f: => A): A = {
-    val oo = opiskeluoikeus().copy(suoritukset = List(suoritus))
-    putOpiskeluOikeus(oo)(f)
+  def putTutkintoSuoritus[A](suoritus: AmmatillinenTutkintoSuoritus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
+    val opiskeluOikeus = opiskeluoikeus().copy(suoritukset = List(suoritus))
+
+    putOppija(makeOppija(henkilö, List(Json.toJValue(opiskeluOikeus))), headers)(f)
   }
 
-  def putOpiskeluOikeus[A](opiskeluOikeus: JValue, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
+  def putOpiskeluOikeus[A](opiskeluOikeus: OpiskeluOikeus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
+    putOppija(makeOppija(henkilö, List(opiskeluOikeus)), headers)(f)
+  }
+
+  def putOpiskeluOikeusMerged[A](opiskeluOikeus: JValue, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
     putOppija(makeOppija(henkilö, List(Json.toJValue(opiskeluoikeus()).merge(opiskeluOikeus))), headers)(f)
   }
 

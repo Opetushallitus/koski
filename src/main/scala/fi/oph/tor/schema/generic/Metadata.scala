@@ -32,11 +32,13 @@ trait AnnotationSupport[M] {
   def parseAnnotation(params: List[String]): M = {
     val StringClass = classOf[String]
     val DoubleClass = classOf[Double]
+    val IntegerClass = classOf[Int]
 
     val constructor: Constructor[_] = metadataClass.getConstructors()(0)
     val constructorParams: Array[Object] = constructor.getParameterTypes.zipWithIndex.map {
       case (StringClass, index) => params(index)
       case (DoubleClass, index) => new lang.Double(params(index).toDouble)
+      case (IntegerClass, index) => new lang.Integer(params(index).toDouble.toInt)
       case (tyep, _) =>
         // Only a handful of types supported at the moment
         throw new IllegalArgumentException("Argument type not supported: " + tyep)

@@ -16,8 +16,8 @@ class TorOppijaQuerySpec extends FunSpec with OpiskeluOikeusTestMethods with Mat
     describe("kun haku osuu") {
       it("palautetaan hakutulokset") {
         resetFixtures
-        putOpiskeluOikeus(Map("päättymispäivä"-> "2016-01-09")) {
-          putOpiskeluOikeus(Map("päättymispäivä"-> "2013-01-09"), teija) {
+        putOpiskeluOikeusMerged(Map("päättymispäivä"-> "2016-01-09")) {
+          putOpiskeluOikeusMerged(Map("päättymispäivä"-> "2013-01-09"), teija) {
             val queryString: String = "opiskeluoikeusPäättynytAikaisintaan=2016-01-01&opiskeluoikeusPäättynytViimeistään=2016-12-31"
             authGet ("api/oppija?" + queryString) {
               verifyResponseStatus(200)
@@ -36,7 +36,7 @@ class TorOppijaQuerySpec extends FunSpec with OpiskeluOikeusTestMethods with Mat
 
     describe("Kun haku ei osu") {
       it("palautetaan tyhjä lista") {
-        putOpiskeluOikeus(Map("päättymispäivä"-> "2016-01-09")) {
+        putOpiskeluOikeusMerged(Map("päättymispäivä"-> "2016-01-09")) {
           authGet ("api/oppija?opiskeluoikeusPäättynytViimeistään=2014-12-31&opiskeluoikeusPäättynytAikaisintaan=2014-01-01") {
             verifyResponseStatus(200)
             val oppijat: List[TorOppija] = Json.read[List[TorOppija]](response.body)
@@ -56,8 +56,8 @@ class TorOppijaQuerySpec extends FunSpec with OpiskeluOikeusTestMethods with Mat
 
     describe("Kun haetaan ilman parametreja") {
       it("palautetaan kaikki oppijat") {
-        putOpiskeluOikeus(Map("päättymispäivä"-> "2016-01-09")) {
-          putOpiskeluOikeus(Map("päättymispäivä"-> "2013-01-09"), teija) {
+        putOpiskeluOikeusMerged(Map("päättymispäivä"-> "2016-01-09")) {
+          putOpiskeluOikeusMerged(Map("päättymispäivä"-> "2013-01-09"), teija) {
             authGet ("api/oppija") {
               verifyResponseStatus(200)
               val oppijat: List[TorOppija] = Json.read[List[TorOppija]](response.body)

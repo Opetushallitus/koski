@@ -93,7 +93,7 @@ trait OpiskeluOikeus extends Loggable {
   @Description("Oppilaitos, jossa opinnot on suoritettu")
   def oppilaitos: Oppilaitos
   @Description("Opiskeluoikeuteen liittyvien (tutkinto-)suorituksien tiedot")
-  def suoritukset: List[Suoritus] // TODO: min/max sizes with annotations!
+  def suoritukset: List[Suoritus]
   def opiskeluoikeudenTila: Option[OpiskeluoikeudenTila]
   def läsnäolotiedot: Option[Läsnäolotiedot]
 

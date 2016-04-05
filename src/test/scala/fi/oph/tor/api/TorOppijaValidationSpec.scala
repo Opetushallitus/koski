@@ -12,7 +12,7 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
   describe("Opiskeluoikeuden lisääminen") {
     describe("Valideilla tiedoilla") {
       it("palautetaan HTTP 200") {
-        putOpiskeluOikeus(JObject()) {
+        putOpiskeluOikeus(opiskeluoikeus()) {
           verifyResponseStatus(200)
         }
       }
@@ -20,7 +20,7 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
 
     describe("Ilman tunnistautumista") {
       it("palautetaan HTTP 401") {
-        putOpiskeluOikeus(JObject(), headers = jsonContent) {
+        putOpiskeluOikeus(opiskeluoikeus(), headers = jsonContent) {
           verifyResponseStatus(401, TorErrorCategory.unauthorized("Käyttäjä ei ole tunnistautunut."))
         }
       }
@@ -121,7 +121,7 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
     }
 
     describe("Oppilaitos") {
-      def oppilaitoksella(oid: String) = Json.toJValue(opiskeluoikeus().copy(oppilaitos = Oppilaitos(oid)))
+      def oppilaitoksella(oid: String) = opiskeluoikeus().copy(oppilaitos = Oppilaitos(oid))
 
       describe("Kun opinto-oikeutta yritetään lisätä oppilaitokseen, johon käyttäjällä ei ole pääsyä") {
         it("palautetaan HTTP 403 virhe" ) { putOpiskeluOikeus(oppilaitoksella("1.2.246.562.10.93135224694"), headers = authHeaders(MockUsers.hiiri) ++ jsonContent) (
@@ -151,29 +151,29 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
 
     describe("Opiskeluoikeuden päivämäärät") {
       describe("Päivämäärät kunnossa") {
-        it("palautetaan HTTP 200" ) (putOpiskeluOikeus(Map(
+        it("palautetaan HTTP 200" ) (putOpiskeluOikeusMerged(Map(
           "alkamispäivä" -> "2015-08-01",
           "päättymispäivä" -> "2016-05-31",
           "arvioituPäättymispäivä" -> "2018-05-31"
         ))(verifyResponseStatus(200)))
       }
       describe("Päivämääräformaatti virheellinen") {
-        it("palautetaan HTTP 400" ) (putOpiskeluOikeus(Map(
+        it("palautetaan HTTP 400" ) (putOpiskeluOikeusMerged(Map(
           "alkamispäivä" -> "2015.01-12"
         ))(verifyResponseStatus(400, TorErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: 2015.01-12"))))
       }
       describe("Päivämäärä virheellinen") {
-        it("palautetaan HTTP 400" ) (putOpiskeluOikeus(Map(
+        it("palautetaan HTTP 400" ) (putOpiskeluOikeusMerged(Map(
           "alkamispäivä" -> "2015-01-32"
         ))(verifyResponseStatus(400, TorErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: 2015-01-32"))))
       }
       describe("Väärä päivämääräjärjestys") {
-        it("alkamispäivä > päättymispäivä" ) (putOpiskeluOikeus(Map(
+        it("alkamispäivä > päättymispäivä" ) (putOpiskeluOikeusMerged(Map(
           "alkamispäivä" -> "2015-08-01",
           "päättymispäivä" -> "2014-05-31"
         ))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.loppuEnnenAlkua("alkamispäivä (2015-08-01) oltava sama tai aiempi kuin päättymispäivä(2014-05-31)"))))
 
-        it("alkamispäivä > arvioituPäättymispäivä" ) (putOpiskeluOikeus(Map(
+        it("alkamispäivä > arvioituPäättymispäivä" ) (putOpiskeluOikeusMerged(Map(
           "alkamispäivä" -> "2015-08-01",
           "arvioituPäättymispäivä" -> "2014-05-31"
         ))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.loppuEnnenAlkua("alkamispäivä (2015-08-01) oltava sama tai aiempi kuin arvioituPäättymispäivä(2014-05-31)"))))
@@ -182,31 +182,31 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
 
     describe("Opiskeluoikeusjaksot"){
       describe("Päivämäärät kunnossa") {
-        it("palautetaan HTTP 200") (putOpiskeluOikeus(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
+        it("palautetaan HTTP 200") (putOpiskeluOikeusMerged(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
           Map( "alku" -> "2015-08-01", "loppu" -> "2015-12-31", "tila" -> Map("koodiarvo" -> "aktiivinen", "koodistoUri" -> "opiskeluoikeudentila")),
           Map( "alku" -> "2016-01-01", "loppu" -> "2016-06-01", "tila" -> Map("koodiarvo" -> "keskeyttanyt", "koodistoUri" -> "opiskeluoikeudentila")),
           Map( "alku" -> "2016-06-02", "tila" -> Map("koodiarvo" -> "paattynyt", "koodistoUri" -> "opiskeluoikeudentila"))
         )))) (verifyResponseStatus(200)))
       }
       describe("alku > loppu") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
+        it("palautetaan HTTP 400") (putOpiskeluOikeusMerged(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
           Map( "alku" -> "2016-08-01", "loppu" -> "2015-12-31", "tila" -> Map("koodiarvo" -> "aktiivinen", "koodistoUri" -> "opiskeluoikeudentila"))
         )))) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.loppuEnnenAlkua(
           "opiskeluoikeudenTila.opiskeluoikeusjaksot.alku (2016-08-01) oltava sama tai aiempi kuin opiskeluoikeudenTila.opiskeluoikeusjaksot.loppu(2015-12-31)"))))
       }
       describe("ei-viimeiseltä jaksolta puuttuu loppupäivä") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
+        it("palautetaan HTTP 400") (putOpiskeluOikeusMerged(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
           Map("alku" -> "2015-08-01", "tila" -> Map("koodiarvo" -> "aktiivinen", "koodistoUri" -> "opiskeluoikeudentila")),
           Map("alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "keskeyttanyt", "koodistoUri" -> "opiskeluoikeudentila"))
         )))) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.jaksonLoppupäiväPuuttuu("opiskeluoikeudenTila.opiskeluoikeusjaksot: ei-viimeiseltä jaksolta puuttuu loppupäivä")))) }
       describe("jaksot ovat päällekkäiset") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
+        it("palautetaan HTTP 400") (putOpiskeluOikeusMerged(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
           Map( "alku" -> "2015-08-01", "loppu" -> "2016-01-01", "tila" -> Map("koodiarvo" -> "aktiivinen", "koodistoUri" -> "opiskeluoikeudentila")),
           Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "keskeyttanyt", "koodistoUri" -> "opiskeluoikeudentila"))
         ))))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.jaksotEivätMuodostaJatkumoa("opiskeluoikeudenTila.opiskeluoikeusjaksot: jaksot eivät muodosta jatkumoa"))))
       }
       describe("jaksojen väliin jää tyhjää") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
+        it("palautetaan HTTP 400") (putOpiskeluOikeusMerged(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
           Map( "alku" -> "2015-08-01", "loppu" -> "2015-10-01", "tila" -> Map("koodiarvo" -> "aktiivinen", "koodistoUri" -> "opiskeluoikeudentila")),
           Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "keskeyttanyt", "koodistoUri" -> "opiskeluoikeudentila"))
         ))))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.jaksotEivätMuodostaJatkumoa("opiskeluoikeudenTila.opiskeluoikeusjaksot: jaksot eivät muodosta jatkumoa"))))
@@ -215,31 +215,31 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
 
     describe("Läsnäolojaksot") {
       describe("Päivämäärät kunnossa") {
-        it("palautetaan HTTP 200") (putOpiskeluOikeus(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
+        it("palautetaan HTTP 200") (putOpiskeluOikeusMerged(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
           Map( "alku" -> "2015-08-01", "loppu" -> "2015-12-31", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila")),
           Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-20", "tila" -> Map("koodiarvo" -> "poissa", "koodistoUri" -> "lasnaolotila")),
           Map( "alku" -> "2016-05-21", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila"))
         ))))(verifyResponseStatus(200)))
       }
       describe("alku > loppu") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
+        it("palautetaan HTTP 400") (putOpiskeluOikeusMerged(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
           Map( "alku" -> "2016-08-01", "loppu" -> "2015-12-31", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila"))
         ))))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.loppuEnnenAlkua("läsnäolotiedot.läsnäolojaksot.alku (2016-08-01) oltava sama tai aiempi kuin läsnäolotiedot.läsnäolojaksot.loppu(2015-12-31)"))))
       }
       describe("ei-viimeiseltä jaksolta puuttuu loppupäivä") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
+        it("palautetaan HTTP 400") (putOpiskeluOikeusMerged(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
           Map( "alku" -> "2015-08-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila")),
           Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "poissa", "koodistoUri" -> "lasnaolotila"))
         ))))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.jaksonLoppupäiväPuuttuu("läsnäolotiedot.läsnäolojaksot: ei-viimeiseltä jaksolta puuttuu loppupäivä"))))
       }
       describe("jaksot ovat päällekkäiset") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
+        it("palautetaan HTTP 400") (putOpiskeluOikeusMerged(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
           Map( "alku" -> "2015-08-01", "loppu" -> "2016-01-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila")),
           Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "poissa", "koodistoUri" -> "lasnaolotila"))
         ))))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.jaksotEivätMuodostaJatkumoa("läsnäolotiedot.läsnäolojaksot: jaksot eivät muodosta jatkumoa"))))
       }
       describe("jaksojen väliin jää tyhjää") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeus(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
+        it("palautetaan HTTP 400") (putOpiskeluOikeusMerged(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
           Map( "alku" -> "2015-08-01", "loppu" -> "2015-10-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila")),
           Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "poissa", "koodistoUri" -> "lasnaolotila"))
         ))))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.jaksotEivätMuodostaJatkumoa("läsnäolotiedot.läsnäolojaksot: jaksot eivät muodosta jatkumoa"))))
