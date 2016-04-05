@@ -13,7 +13,7 @@ case class OksaUri(tunnus: String, käsite: String) extends StaticAnnotation wit
 object OksaUri extends MetadataSupport {
   val baseUrl = "https://confluence.csc.fi/display/oppija/Opetus+ja+koulutussanasto+-+OKSA#Opetusjakoulutussanasto-OKSA-"
 
-  def apply(x: ObjectWithMetadata[_], params: List[String], schemaFactory: SchemaFactory): ObjectWithMetadata[_] = params match {
+  def applyAnnotation(x: ObjectWithMetadata[_], params: List[String], schemaFactory: SchemaFactory): ObjectWithMetadata[_] = params match {
     case List(tunnus, käsite) => x.appendMetadata(List(OksaUri(tunnus, käsite)))
   }
 

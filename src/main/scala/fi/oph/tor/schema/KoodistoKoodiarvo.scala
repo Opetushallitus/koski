@@ -12,7 +12,7 @@ import scala.annotation.StaticAnnotation
 case class KoodistoKoodiarvo(arvo: String) extends StaticAnnotation with Metadata
 
 object KoodistoKoodiarvo extends MetadataSupport {
-  def apply(x: ObjectWithMetadata[_], params: List[String], schemaFactory: SchemaFactory): ObjectWithMetadata[_] = x match {
+  def applyAnnotation(x: ObjectWithMetadata[_], params: List[String], schemaFactory: SchemaFactory): ObjectWithMetadata[_] = x match {
     case property: Property =>
       val koodiarvo = KoodistoKoodiarvo(params.mkString(" "))
 

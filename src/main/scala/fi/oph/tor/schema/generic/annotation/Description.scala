@@ -6,7 +6,7 @@ import org.json4s.JsonAST.JObject
 import scala.annotation.StaticAnnotation
 
 object Description extends MetadataSupport {
-  def apply(x: ObjectWithMetadata[_], params: List[String], schemaFactory: SchemaFactory): ObjectWithMetadata[_] = x.appendMetadata(List(Description(params.mkString(" "))))
+  def applyAnnotation(x: ObjectWithMetadata[_], params: List[String], schemaFactory: SchemaFactory): ObjectWithMetadata[_] = x.appendMetadata(List(Description(params.mkString(" "))))
 
   override def appendMetadataToJsonSchema(obj: JObject, metadata: Metadata) = metadata match {
     case Description(desc) => appendToDescription(obj, desc)

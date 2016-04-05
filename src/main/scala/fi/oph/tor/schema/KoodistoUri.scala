@@ -10,7 +10,7 @@ case class KoodistoUri(koodistoUri: String) extends StaticAnnotation with Metada
 }
 
 object KoodistoUri extends MetadataSupport {
-  def apply(x: ObjectWithMetadata[_], params: List[String], schemaFactory: SchemaFactory): ObjectWithMetadata[_] = x match {
+  def applyAnnotation(x: ObjectWithMetadata[_], params: List[String], schemaFactory: SchemaFactory): ObjectWithMetadata[_] = x match {
     case property: Property =>
       val koodistoUri = KoodistoUri(params.mkString(" "))
       val finalInnerSchema = property.schema.mapItems { itemSchema =>

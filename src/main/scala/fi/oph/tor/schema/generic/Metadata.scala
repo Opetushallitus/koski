@@ -14,10 +14,10 @@ trait ObjectWithMetadata[T <: ObjectWithMetadata[T]] {
 trait MetadataSupport extends AnnotationSupport with JsonMetadataSupport
 
 trait AnnotationSupport {
-  def apply(x: ObjectWithMetadata[_], params: List[String], schemaFactory: SchemaFactory): ObjectWithMetadata[_]
+  def applyAnnotation(x: ObjectWithMetadata[_], params: List[String], schemaFactory: SchemaFactory): ObjectWithMetadata[_]
 
   def applyAnnotations(annotationClass: String, params: List[String], x: ObjectWithMetadata[_], schemaFactory: SchemaFactory) = if (annotationClass == myAnnotationClass.getName) {
-    apply(x, params, schemaFactory)
+    applyAnnotation(x, params, schemaFactory)
   } else {
     x
   }
