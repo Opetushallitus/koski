@@ -4,7 +4,7 @@ import java.time.LocalDate
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.json.Json
 import fi.oph.tor.log.{AuditLogTester, AuditLog}
-import fi.oph.tor.schema.{NewHenkilö, TorOppija}
+import fi.oph.tor.schema.{FullHenkilö, NewHenkilö, TorOppija}
 import org.scalatest.{FunSpec, Matchers}
 
 class TorOppijaQuerySpec extends FunSpec with OpiskeluOikeusTestMethods with Matchers {
@@ -13,7 +13,7 @@ class TorOppijaQuerySpec extends FunSpec with OpiskeluOikeusTestMethods with Mat
   AuditLogTester.setup
 
   describe("Kyselyrajapinta") {
-    describe("Kun haku osuu") {
+    describe("kun haku osuu") {
       it("palautetaan hakutulokset") {
         resetFixtures
         putOpiskeluOikeus(Map("päättymispäivä"-> "2016-01-09")) {
@@ -22,8 +22,11 @@ class TorOppijaQuerySpec extends FunSpec with OpiskeluOikeusTestMethods with Mat
             authGet ("api/oppija?" + queryString) {
               verifyResponseStatus(200)
               val oppijat: List[TorOppija] = Json.read[List[TorOppija]](response.body)
-              oppijat.length should equal(1)
-              oppijat(0).opiskeluoikeudet(0).päättymispäivä should equal(Some(LocalDate.parse("2016-01-09")))
+              val päättymispäivät: List[(String, LocalDate)] = oppijat.flatMap{oppija =>
+                oppija.opiskeluoikeudet.flatMap(_.päättymispäivä).map((oppija.henkilö.asInstanceOf[FullHenkilö].hetu, _))
+              }
+
+              päättymispäivät should equal(List(("010101-123N", LocalDate.parse("2016-01-09"))))
               AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "OPISKELUOIKEUS_HAKU", "hakuEhto" -> queryString))
             }
           }
