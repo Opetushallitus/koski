@@ -11,16 +11,17 @@ case class OksaUri(tunnus: String, käsite: String) extends StaticAnnotation wit
 }
 
 object OksaUri extends MetadataSupport {
-
   val baseUrl = "https://confluence.csc.fi/display/oppija/Opetus+ja+koulutussanasto+-+OKSA#Opetusjakoulutussanasto-OKSA-"
 
-  val applyAnnotations: PartialFunction[(String, List[String], ObjectWithMetadata[_], SchemaFactory), ObjectWithMetadata[_]] = {
-    case (annotationClass, List(tunnus, käsite), schema: ObjectWithMetadata[_], _)  if (annotationClass == classOf[OksaUri].getName) =>
-      schema.appendMetadata(List(OksaUri(tunnus, käsite)))
+  def apply(x: ObjectWithMetadata[_], params: List[String], schemaFactory: SchemaFactory): ObjectWithMetadata[_] = params match {
+    case List(tunnus, käsite) => x.appendMetadata(List(OksaUri(tunnus, käsite)))
   }
+
   override def appendMetadataToJsonSchema(obj: JObject, metadata: Metadata) = metadata match {
     case o: OksaUri => appendToDescription(obj, "(Oksa: " + o.asLink + ")")
     case _ => obj
   }
+
+  override def myAnnotationClass = classOf[OksaUri]
 }
 

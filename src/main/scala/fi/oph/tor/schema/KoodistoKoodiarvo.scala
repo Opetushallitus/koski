@@ -12,8 +12,8 @@ import scala.annotation.StaticAnnotation
 case class KoodistoKoodiarvo(arvo: String) extends StaticAnnotation with Metadata
 
 object KoodistoKoodiarvo extends MetadataSupport {
-  override val applyAnnotations: PartialFunction[(String, List[String], ObjectWithMetadata[_], SchemaFactory), ObjectWithMetadata[_]] = {
-    case (annotationClass, params, property: Property, schemaFactory) if (annotationClass == classOf[KoodistoKoodiarvo].getName) =>
+  def apply(x: ObjectWithMetadata[_], params: List[String], schemaFactory: SchemaFactory): ObjectWithMetadata[_] = x match {
+    case property: Property =>
       val koodiarvo = KoodistoKoodiarvo(params.mkString(" "))
 
       val finalInnerSchema = property.schema.mapItems { itemSchema =>
@@ -24,10 +24,12 @@ object KoodistoKoodiarvo extends MetadataSupport {
         })
       }
       property.copy(schema = finalInnerSchema).appendMetadata(List(koodiarvo))
-
+    case x => x
   }
 
   override def appendMetadataToJsonSchema(obj: JObject, metadata: Metadata) = metadata match {
     case _ => obj
   }
+
+  override def myAnnotationClass = classOf[KoodistoKoodiarvo]
 }

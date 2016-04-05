@@ -89,7 +89,7 @@ object TorErrorCategory {
 
   object conflict extends ErrorCategory("conflict", 409, "Ristiriitainen päivitys")  {
     val versionumero = subcategory("versionumero", "Yritetty päivittää vanhan version päälle; annettu versionumero on erisuuri kuin viimeisin rekisteristä löytyvä.")
-    val hetu = subcategory("hetu", "Henkilö on jo lisätty annetulla hetulla.") // TODO: Tätä ei pitäisi koskaan näkyä ulospäin
+    val hetu = subcategory("hetu", "Henkilö on jo lisätty annetulla hetulla.")
   }
 
   object unsupportedMediaType extends ErrorCategory("unsupportedMediaType", 415, "Unsupported media type") {

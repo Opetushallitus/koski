@@ -33,28 +33,11 @@ class OppijaRepositoryCachingStrategy extends CachingStrategyBase(new BaseCacheD
   }})
 
 trait OppijaRepository extends Logging {
-  def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String): Either[HttpStatus, Henkilö.Oid]
-
   def findOppijat(query: String): List[FullHenkilö]
   def findByOid(id: String): Option[FullHenkilö]
   def findByOids(oids: List[String]): List[FullHenkilö]
 
   def resetFixtures {}
 
-  def findOrCreate(henkilö: NewHenkilö): Either[HttpStatus, Henkilö.Oid] =  {
-    def oidFrom(oppijat: List[FullHenkilö]): Either[HttpStatus, Henkilö.Oid] = {
-      oppijat match {
-        case List(oppija) => Right(oppija.oid)
-        case _ =>
-          logger.error("Oppijan lisääminen epäonnistui: ei voitu lisätä, muttei myöskään löytynyt.")
-          Left(TorErrorCategory.internalError())
-      }
-    }
-    val NewHenkilö(hetu, etunimet, kutsumanimi, sukunimi) = henkilö
-    Hetu.validate(hetu).right.flatMap { hetu =>
-      create(hetu, etunimet, kutsumanimi, sukunimi).left.flatMap { case HttpStatus(409, _) =>
-        oidFrom(findOppijat(hetu))
-      }
-    }
-  }
+  def findOrCreate(henkilö: NewHenkilö): Either[HttpStatus, Henkilö.Oid]
 }

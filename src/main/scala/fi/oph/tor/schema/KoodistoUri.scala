@@ -10,8 +10,8 @@ case class KoodistoUri(koodistoUri: String) extends StaticAnnotation with Metada
 }
 
 object KoodistoUri extends MetadataSupport {
-  override val applyAnnotations: PartialFunction[(String, List[String], ObjectWithMetadata[_], SchemaFactory), ObjectWithMetadata[_]] = {
-    case (annotationClass, params, property: Property, schemaFactory) if (annotationClass == classOf[KoodistoUri].getName) =>
+  def apply(x: ObjectWithMetadata[_], params: List[String], schemaFactory: SchemaFactory): ObjectWithMetadata[_] = x match {
+    case property: Property =>
       val koodistoUri = KoodistoUri(params.mkString(" "))
       val finalInnerSchema = property.schema.mapItems { itemSchema =>
         val koodistoViiteSchema: ClassSchema = toKoodistoKoodiViiteSchema(schemaFactory, itemSchema)
@@ -21,6 +21,8 @@ object KoodistoUri extends MetadataSupport {
         })
       }
       property.copy(schema = finalInnerSchema).appendMetadata(List(koodistoUri))
+    case x =>
+      x
   }
 
   def toKoodistoKoodiViiteSchema(schemaFactory: SchemaFactory, itemSchema: Schema): ClassSchema = {
@@ -35,4 +37,6 @@ object KoodistoUri extends MetadataSupport {
     case k: KoodistoUri => appendToDescription(obj, "(Koodisto: " + k.asLink + ")")
     case _ => obj
   }
+
+  override def myAnnotationClass = classOf[KoodistoUri]
 }

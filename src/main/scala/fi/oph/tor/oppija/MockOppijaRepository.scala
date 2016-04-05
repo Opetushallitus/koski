@@ -3,9 +3,10 @@ package fi.oph.tor.oppija
 import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.db.TorDatabase.DB
 import fi.oph.tor.db.{Tables, Futures, GlobalExecutionContext, PostgresDriverWithJsonSupport}
+import fi.oph.tor.henkilo.Hetu
 import fi.oph.tor.http.{TorErrorCategory, HttpStatus}
 import fi.oph.tor.log.Loggable
-import fi.oph.tor.schema.{KoodistoKoodiViite, FullHenkilö, Henkilö}
+import fi.oph.tor.schema.{NewHenkilö, KoodistoKoodiViite, FullHenkilö, Henkilö}
 
 object MockOppijat {
   private val oppijat = new MockOppijat
@@ -50,11 +51,26 @@ class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with 
     oppijat.getOppijat.filter(searchString(_).contains(query))
   }
 
-  override def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String): Either[HttpStatus, Henkilö.Oid] = {
+  def findOrCreate(henkilö: NewHenkilö): Either[HttpStatus, Henkilö.Oid] =  {
+    def oidFrom(oppijat: List[FullHenkilö]): Either[HttpStatus, Henkilö.Oid] = {
+      oppijat match {
+        case List(oppija) => Right(oppija.oid)
+        case _ =>
+          logger.error("Oppijan lisääminen epäonnistui: ei voitu lisätä, muttei myöskään löytynyt.")
+          Left(TorErrorCategory.internalError())
+      }
+    }
+    val NewHenkilö(hetu, etunimet, kutsumanimi, sukunimi) = henkilö
+    Hetu.validate(hetu).right.flatMap { hetu =>
+      create(hetu, etunimet, kutsumanimi, sukunimi).left.flatMap { case HttpStatus(409, _) =>
+        oidFrom(findOppijat(hetu))
+      }
+    }
+  }
+
+  private def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String): Either[HttpStatus, Henkilö.Oid] = {
     if (sukunimi == "error") {
       throw new TestingException("Testing error handling")
-    } else if (oppijat.getOppijat.find { o => (o.hetu == hetu) } .isDefined) {
-      Left(TorErrorCategory.conflict.hetu("conflict"))
     } else {
       val newOppija = oppijat.oppija(sukunimi, etunimet, hetu)
       Right(newOppija.oid)

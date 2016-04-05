@@ -6,15 +6,14 @@ import org.json4s.JsonAST.JObject
 import scala.annotation.StaticAnnotation
 
 object ReadOnly extends MetadataSupport {
-  override val applyAnnotations: PartialFunction[(String, List[String], ObjectWithMetadata[_], SchemaFactory), ObjectWithMetadata[_]] = {
-    case (annotationClass, params, schema: ObjectWithMetadata[_], _)  if (annotationClass == classOf[ReadOnly].getName) =>
-      schema.appendMetadata(List(ReadOnly(params.mkString(" "))))
-  }
+  def apply(x: ObjectWithMetadata[_], params: List[String], schemaFactory: SchemaFactory): ObjectWithMetadata[_] = x.appendMetadata(List(ReadOnly(params.mkString(" "))))
 
   override def appendMetadataToJsonSchema(obj: JObject, metadata: Metadata) = metadata match {
     case ReadOnly(desc) => appendToDescription(obj, desc)
     case _ => obj
   }
+
+  override def myAnnotationClass = classOf[ReadOnly]
 }
 
 case class ReadOnly(desc: String) extends StaticAnnotation with Metadata

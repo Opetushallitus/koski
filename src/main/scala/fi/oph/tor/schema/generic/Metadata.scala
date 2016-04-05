@@ -1,7 +1,7 @@
 package fi.oph.tor.schema.generic
 
 import org.json4s.JsonAST
-import org.json4s.JsonAST.{JNothing, JString, JObject}
+import org.json4s.JsonAST.{JNothing, JObject, JString}
 
 trait Metadata
 
@@ -14,7 +14,15 @@ trait ObjectWithMetadata[T <: ObjectWithMetadata[T]] {
 trait MetadataSupport extends AnnotationSupport with JsonMetadataSupport
 
 trait AnnotationSupport {
-  val applyAnnotations: PartialFunction[(String, List[String], ObjectWithMetadata[_], SchemaFactory), ObjectWithMetadata[_]]
+  def apply(x: ObjectWithMetadata[_], params: List[String], schemaFactory: SchemaFactory): ObjectWithMetadata[_]
+
+  def applyAnnotations(annotationClass: String, params: List[String], x: ObjectWithMetadata[_], schemaFactory: SchemaFactory) = if (annotationClass == myAnnotationClass.getName) {
+    apply(x, params, schemaFactory)
+  } else {
+    x
+  }
+
+  def myAnnotationClass: Class[_]
 }
 
 trait JsonMetadataSupport {
