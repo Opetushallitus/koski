@@ -4,7 +4,7 @@ import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.db.Tables._
 import fi.oph.tor.db.TorDatabase._
 import fi.oph.tor.db._
-import fi.oph.tor.oppija.{OppijaRepository, MockOppijaRepository, MockOppijat, VerifiedOppijaOid}
+import fi.oph.tor.oppija.{MockOppijat, OppijaRepository, VerifiedOppijaOid}
 import fi.oph.tor.organisaatio.MockOrganisaatiot
 import fi.oph.tor.schema._
 import fi.oph.tor.tor.TorValidator
