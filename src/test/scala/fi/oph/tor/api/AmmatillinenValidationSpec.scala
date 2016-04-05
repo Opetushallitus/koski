@@ -106,6 +106,15 @@ class AmmatillinenValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
           }
         }
 
+        describe("Tuntematon tutkinnonosa") {
+          it("palautetaan HTTP 400 virhe" ) {
+            val suoritus = paikallinenTutkinnonOsaSuoritus.copy(tyyppi = KoodistoKoodiViite(koodiarvo = "tuntematon", koodistoUri = "suorituksentyyppi"))
+            putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä) (
+              verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema(".*instance value ..tuntematon.. not found in enum.*".r))
+            )
+          }
+        }
+
         describe("Tutkinnon osa toisesta tutkinnosta") {
           val autoalanTyönjohdonErikoisammattitutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(KoodistoKoodiViite("357305", "koulutus"), Some("40/011/2001"))
 
