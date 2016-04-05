@@ -51,7 +51,7 @@ object OpiskeluOikeusTestData {
       None,
       oppilaitos,
       List(AmmatillinenTutkintoSuoritus(
-        TutkintoKoulutus(koulutusKoodiViite, Some("39/011/2014")),
+        AmmatillinenTutkintoKoulutus(koulutusKoodiViite, Some("39/011/2014")),
         None,
         None,
         None,

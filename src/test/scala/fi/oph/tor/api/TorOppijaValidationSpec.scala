@@ -154,21 +154,21 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
     describe("Tutkinnon perusteet ja rakenne") {
       describe("Kun yritetään lisätä opinto-oikeus tuntemattomaan tutkinnon perusteeseen") {
         it("palautetaan HTTP 400 virhe" ) {
-          val suoritus: AmmatillinenTutkintoSuoritus = tutkintoSuoritus.copy(koulutusmoduuli = TutkintoKoulutus(KoodistoKoodiViite("351301", "koulutus"), Some("39/xxx/2014")))
+          val suoritus: AmmatillinenTutkintoSuoritus = tutkintoSuoritus.copy(koulutusmoduuli = AmmatillinenTutkintoKoulutus(KoodistoKoodiViite("351301", "koulutus"), Some("39/xxx/2014")))
           putTutkintoSuoritus(suoritus) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Tutkinnon perustetta ei löydy diaarinumerolla 39/xxx/2014")))
         }
       }
 
       describe("Kun yritetään lisätä opinto-oikeus ilman tutkinnon perusteen diaarinumeroa") {
         it("palautetaan HTTP 200" ) {
-          val suoritus: AmmatillinenTutkintoSuoritus = tutkintoSuoritus.copy(koulutusmoduuli = TutkintoKoulutus(KoodistoKoodiViite("351301", "koulutus"), None))
+          val suoritus: AmmatillinenTutkintoSuoritus = tutkintoSuoritus.copy(koulutusmoduuli = AmmatillinenTutkintoKoulutus(KoodistoKoodiViite("351301", "koulutus"), None))
           putTutkintoSuoritus(suoritus) (verifyResponseStatus(200))
         }
       }
 
       describe("Kun yritetään lisätä opinto-oikeus tyhjällä diaarinumerolla") {
         it("palautetaan HTTP 400 virhe" ) {
-          val suoritus = tutkintoSuoritus.copy(koulutusmoduuli = TutkintoKoulutus(KoodistoKoodiViite("351301", "koulutus"), Some("")))
+          val suoritus = tutkintoSuoritus.copy(koulutusmoduuli = AmmatillinenTutkintoKoulutus(KoodistoKoodiViite("351301", "koulutus"), Some("")))
 
           putTutkintoSuoritus(suoritus) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema(".*perusteenDiaarinumero.*".r)))
         }
@@ -240,9 +240,9 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
         }
 
         describe("Tutkinnon osa toisesta tutkinnosta") {
-          val autoalanTyönjohdonErikoisammattitutkinto: TutkintoKoulutus = TutkintoKoulutus(KoodistoKoodiViite("357305", "koulutus"), Some("40/011/2001"))
+          val autoalanTyönjohdonErikoisammattitutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(KoodistoKoodiViite("357305", "koulutus"), Some("40/011/2001"))
 
-          def osanSuoritusToisestaTutkinnosta(tutkinto: TutkintoKoulutus, tutkinnonOsa: OpsTutkinnonosa): AmmatillinenOpsTutkinnonosaSuoritus = tutkinnonOsaSuoritus.copy(
+          def osanSuoritusToisestaTutkinnosta(tutkinto: AmmatillinenTutkintoKoulutus, tutkinnonOsa: OpsTutkinnonosa): AmmatillinenOpsTutkinnonosaSuoritus = tutkinnonOsaSuoritus.copy(
             tutkinto = Some(tutkinto),
             koulutusmoduuli = tutkinnonOsa
           )
@@ -254,7 +254,7 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
           }
 
           describe("Kun tutkintoa ei löydy") {
-            val suoritus = osanSuoritusToisestaTutkinnosta(TutkintoKoulutus(KoodistoKoodiViite("123456", "koulutus"), Some("40/011/2001")), johtaminenJaHenkilöstönKehittäminen)
+            val suoritus = osanSuoritusToisestaTutkinnosta(AmmatillinenTutkintoKoulutus(KoodistoKoodiViite("123456", "koulutus"), Some("40/011/2001")), johtaminenJaHenkilöstönKehittäminen)
             it("palautetaan HTTP 400") (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(
               verifyResponseStatus(400, TorErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia koulutus/123456 ei löydy koodistosta"))))
           }

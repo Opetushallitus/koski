@@ -7,7 +7,7 @@ import fi.oph.tor.schema._
 
 object TorOppijaExampleData {
 
-  def tutkintoSuoritus(tutkintoKoulutus: TutkintoKoulutus,
+  def tutkintoSuoritus(tutkintoKoulutus: AmmatillinenTutkintoKoulutus,
                                tutkintonimike: Option[List[KoodistoKoodiViite]] = None,
                                osaamisala: Option[List[KoodistoKoodiViite]] = None,
                                suoritustapa: Option[Suoritustapa] = None,
@@ -37,7 +37,7 @@ object TorOppijaExampleData {
       osasuoritukset = osasuoritukset)
 
   lazy val autoalanPerustutkinto: AmmatillinenTutkintoSuoritus = tutkintoSuoritus(
-    tutkintoKoulutus = TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
+    tutkintoKoulutus = AmmatillinenTutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
     tutkintonimike = None,
     osaamisala = None,
     suoritustapa = None,
@@ -98,8 +98,7 @@ object TorOppijaExampleData {
     alkamispäivä = None,
     toimipiste = toimipiste,
     arviointi = arviointiHyväksytty,
-    vahvistus = Some(Vahvistus(Some(date(2013, 5, 31)), Some(stadinAmmattiopisto), None)),
-    osasuoritukset = None
+    vahvistus = Some(Vahvistus(Some(date(2013, 5, 31)), Some(stadinAmmattiopisto), None))
   )
 
   lazy val arviointiKiitettävä = Some(
@@ -147,7 +146,7 @@ object TorOppijaExamples {
     opiskeluOikeus = opiskeluoikeus(
       oppilaitos = stadinAmmattiopisto,
       tutkinto = tutkintoSuoritus(
-        tutkintoKoulutus = TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
+        tutkintoKoulutus = AmmatillinenTutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
         tutkintonimike = None,
         osaamisala = None,
         suoritustapa = Some(suoritustapaNäyttö),
@@ -192,7 +191,7 @@ object TorOppijaExamples {
 
   lazy val tutkinnonOsaToisestaTutkinnosta = oppija(opiskeluOikeus = opiskeluoikeus(
     tutkinto = tutkintoSuoritus(
-      tutkintoKoulutus = TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
+      tutkintoKoulutus = AmmatillinenTutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
       suoritustapa = Some(suoritustapaNäyttö),
       järjestämismuoto = None,
       tila = tilaKesken,
@@ -202,7 +201,7 @@ object TorOppijaExamples {
     osat = Some(List(
       AmmatillinenOpsTutkinnonosaSuoritus(
         koulutusmoduuli = OpsTutkinnonosa(KoodistoKoodiViite("104052", "tutkinnonosat"), true, None, None, None),
-        tutkinto = Some(TutkintoKoulutus(KoodistoKoodiViite("357305", "koulutus"), Some("40/011/2001"))),
+        tutkinto = Some(AmmatillinenTutkintoKoulutus(KoodistoKoodiViite("357305", "koulutus"), Some("40/011/2001"))),
         paikallinenId = Some("suoritus-12345-1"),
         suorituskieli = None,
         tila = tilaValmis,
@@ -226,7 +225,7 @@ object TorOppijaExamples {
         Some(date(2016, 1, 9)),
         stadinAmmattiopisto,
         List(tutkintoSuoritus(
-          tutkintoKoulutus = TutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
+          tutkintoKoulutus = AmmatillinenTutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
           tutkintonimike = Some(List(KoodistoKoodiViite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
           osaamisala = Some(List(KoodistoKoodiViite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
           suoritustapa = Some(suoritustapaOps),
@@ -309,7 +308,7 @@ object FullExample {
         Some(date(2016, 1, 9)),
         stadinAmmattiopisto,
         List(tutkintoSuoritus(
-          tutkintoKoulutus = TutkintoKoulutus(
+          tutkintoKoulutus = AmmatillinenTutkintoKoulutus(
             KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None),
             Some("39/011/2014")
           ),

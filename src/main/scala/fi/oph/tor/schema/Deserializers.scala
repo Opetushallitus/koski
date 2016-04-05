@@ -39,7 +39,7 @@ object KoulutusmoduuliDeserializer extends Deserializer[Koulutusmoduuli] {
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Koulutusmoduuli] = {
     case (TypeInfo(TheClass, _), json) =>
       json match {
-        case moduuli: JObject if moduuli \ "tunniste" \ "koodistoUri" == JString("koulutus") => moduuli.extract[TutkintoKoulutus]
+        case moduuli: JObject if moduuli \ "tunniste" \ "koodistoUri" == JString("koulutus") => moduuli.extract[AmmatillinenTutkintoKoulutus]
         case moduuli: JObject if moduuli \ "tunniste" \ "koodistoUri" == JString("tutkinnonosat") => moduuli.extract[OpsTutkinnonosa]
         case moduuli: JObject => moduuli.extract[PaikallinenTutkinnonosa]
       }

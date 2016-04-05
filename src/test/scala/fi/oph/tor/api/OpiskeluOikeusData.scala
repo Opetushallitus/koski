@@ -14,7 +14,7 @@ trait OpiskeluOikeusData {
     "opiskeluoikeudet" -> opiskeluOikeudet
   ))
 
-  val autoalanPerustutkinto: TutkintoKoulutus = TutkintoKoulutus(KoodistoKoodiViite("351301", "koulutus"), Some("39/011/2014"))
+  val autoalanPerustutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(KoodistoKoodiViite("351301", "koulutus"), Some("39/011/2014"))
 
   lazy val tutkintoSuoritus: AmmatillinenTutkintoSuoritus = AmmatillinenTutkintoSuoritus(
     koulutusmoduuli = autoalanPerustutkinto,

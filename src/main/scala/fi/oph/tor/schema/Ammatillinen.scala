@@ -26,7 +26,7 @@ case class AmmatillinenOpiskeluOikeus(
 }
 
 case class AmmatillinenTutkintoSuoritus(
-  koulutusmoduuli: TutkintoKoulutus,
+  koulutusmoduuli: AmmatillinenTutkintoKoulutus,
   @Description("Tieto siitä mihin tutkintonimikkeeseen oppijan tutkinto liittyy")
   @KoodistoUri("tutkintonimikkeet")
   @OksaUri("tmpOKSAID588", "tutkintonimike")
@@ -62,7 +62,7 @@ trait AmmatillinenTutkinnonosaSuoritus extends Suoritus
     näyttö: Option[Näyttö] = None,
     lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
     @Description("Tutkinto, jonka rakenteeseen tutkinnon osa liittyy. Käytetään vain tapauksissa, joissa tutkinnon osa on poimittu toisesta tutkinnosta.")
-    tutkinto: Option[TutkintoKoulutus] = None,
+    tutkinto: Option[AmmatillinenTutkintoKoulutus] = None,
 
     paikallinenId: Option[String],
     suorituskieli: Option[KoodistoKoodiViite],
@@ -89,13 +89,12 @@ trait AmmatillinenTutkinnonosaSuoritus extends Suoritus
     toimipiste: OrganisaatioWithOid,
     arviointi: Option[List[Arviointi]] = None,
     vahvistus: Option[Vahvistus] = None,
-    override val osasuoritukset: Option[List[AmmatillinenPaikallinenTutkinnonosaSuoritus]] = None,
     @KoodistoKoodiarvo("ammatillinenpaikallinentutkinnonosasuoritus")
     tyyppi: KoodistoKoodiViite = KoodistoKoodiViite("ammatillinenpaikallinentutkinnonosasuoritus", koodistoUri = "suorituksentyyppi")
   ) extends AmmatillinenTutkinnonosaSuoritus
 
 @Description("Tutkintoon johtava koulutus")
-case class TutkintoKoulutus(
+case class AmmatillinenTutkintoKoulutus(
  @Description("Tutkinnon 6-numeroinen tutkintokoodi")
  @KoodistoUri("koulutus")
  @OksaUri("tmpOKSAID560", "tutkinto")

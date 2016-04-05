@@ -23,7 +23,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
       HttpStatus.ok
   }
 
-  private def getRakenne(tutkinto: TutkintoKoulutus): Either[HttpStatus, TutkintoRakenne] = {
+  private def getRakenne(tutkinto: AmmatillinenTutkintoKoulutus): Either[HttpStatus, TutkintoRakenne] = {
     tutkinto.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_)) match {
       case None =>
         tutkinto.perusteenDiaarinumero match {
