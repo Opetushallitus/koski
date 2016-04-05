@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.tor.schema.generic.annotation.Description
 
-@Description("Peruskoulutuksen opiskeluoikeus")
+@Description("Perusopetuksen opiskeluoikeus")
 case class PeruskouluOpiskeluOikeus(
   id: Option[Int],
   versionumero: Option[Int],
@@ -23,6 +23,8 @@ case class PeruskouluOpiskeluOikeus(
 }
 
 case class PeruskoulunPäättötodistus(
+  @KoodistoKoodiarvo("peruskoulunpaattotodistus")
+  tyyppi: KoodistoKoodiViite = KoodistoKoodiViite("peruskoulunpaattotodistus", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: Peruskoulutus,
   paikallinenId: Option[String],
   suorituskieli: Option[KoodistoKoodiViite],
@@ -30,9 +32,20 @@ case class PeruskoulunPäättötodistus(
   alkamispäivä: Option[LocalDate],
   toimipiste: OrganisaatioWithOid,
   arviointi: Option[List[Arviointi]] = None,
-  vahvistus: Option[Vahvistus] = None,
-  @KoodistoKoodiarvo("peruskoulunpaattotodistus")
-  tyyppi: KoodistoKoodiViite = KoodistoKoodiViite("peruskoulunpaattotodistus", koodistoUri = "suorituksentyyppi")
+  vahvistus: Option[Vahvistus] = None
+) extends Suoritus
+
+case class PeruskoulunOppiaineSuoritus(
+  @KoodistoKoodiarvo("peruskoulunoppiainesuoritus")
+  tyyppi: KoodistoKoodiViite,
+  koulutusmoduuli: Koulutusmoduuli,
+  paikallinenId: Option[String],
+  suorituskieli: Option[KoodistoKoodiViite],
+  tila: KoodistoKoodiViite,
+  alkamispäivä: Option[LocalDate],
+  toimipiste: OrganisaatioWithOid,
+  arviointi: Option[List[Arviointi]] = None,
+  vahvistus: Option[Vahvistus] = None
 ) extends Suoritus
 
 @Description("Tutkintoon johtava koulutus")
