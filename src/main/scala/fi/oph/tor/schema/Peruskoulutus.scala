@@ -38,7 +38,7 @@ case class PeruskoulunPäättötodistus(
 case class PeruskoulunOppiaineSuoritus(
   @KoodistoKoodiarvo("peruskoulunoppiainesuoritus")
   tyyppi: KoodistoKoodiViite,
-  koulutusmoduuli: Koulutusmoduuli,
+  koulutusmoduuli: Oppiaine,
   paikallinenId: Option[String],
   suorituskieli: Option[KoodistoKoodiViite],
   tila: KoodistoKoodiViite,
@@ -55,4 +55,11 @@ case class Peruskoulutus(
  @KoodistoKoodiarvo("201100")
  @OksaUri("tmpOKSAID560", "tutkinto")
  tunniste: KoodistoKoodiViite = KoodistoKoodiViite("201100", koodistoUri = "koulutus")
+) extends Koulutusmoduuli
+
+case class Oppiaine(
+  @Description("Peruskoulutuksen oppiaine")
+  @KoodistoUri("koskioppiaineetyleissivistava")
+  @OksaUri("tmpOKSAID256", "oppiaine")
+  tunniste: KoodistoKoodiViite
 ) extends Koulutusmoduuli
