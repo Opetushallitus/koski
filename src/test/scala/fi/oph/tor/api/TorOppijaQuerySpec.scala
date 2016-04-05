@@ -15,6 +15,7 @@ class TorOppijaQuerySpec extends FunSpec with OpiskeluOikeusTestMethods with Mat
   describe("Kyselyrajapinta") {
     describe("Kun haku osuu") {
       it("palautetaan hakutulokset") {
+        resetFixtures
         putOpiskeluOikeus(Map("päättymispäivä"-> "2016-01-09")) {
           putOpiskeluOikeus(Map("päättymispäivä"-> "2013-01-09"), teija) {
             val queryString: String = "opiskeluoikeusPäättynytAikaisintaan=2016-01-01&opiskeluoikeusPäättynytViimeistään=2016-12-31"
