@@ -1,7 +1,11 @@
 package fi.oph.tor.schema.generic
 
+import java.lang
+import java.lang.reflect.Constructor
+
 import org.json4s.JsonAST
 import org.json4s.JsonAST.{JNothing, JObject, JString}
+
 import scala.annotation.StaticAnnotation
 
 trait Metadata extends StaticAnnotation
@@ -12,18 +16,33 @@ trait ObjectWithMetadata[T <: ObjectWithMetadata[T]] {
   def appendMetadata(newMetadata: List[Metadata]): ObjectWithMetadata[T] = replaceMetadata(metadata ++ newMetadata)
 }
 
-trait MetadataSupport[M] extends AnnotationSupport[M] with JsonMetadataSupport[M]
+trait MetadataSupport[M] extends AnnotationSupport[M] with JsonMetadataSupport[M] // <- make M Metadata
 
 trait AnnotationSupport[M] {
-  def applyAnnotation(x: ObjectWithMetadata[_], params: List[String], schemaFactory: SchemaFactory): ObjectWithMetadata[_]
+  def applyMetadata(x: ObjectWithMetadata[_], metadata: M, schemaFactory: SchemaFactory) = x.appendMetadata(List(metadata.asInstanceOf[Metadata]))
 
-  def applyAnnotations(annotationClass: String, params: List[String], x: ObjectWithMetadata[_], schemaFactory: SchemaFactory) = if (annotationClass == metadataClass.getName) {
-    applyAnnotation(x, params, schemaFactory)
+  final def applyAnnotations(annotationClass: String, params: List[String], x: ObjectWithMetadata[_], schemaFactory: SchemaFactory) = if (annotationClass == metadataClass.getName) {
+    applyMetadata(x, parseAnnotation(params), schemaFactory)
   } else {
     x
   }
 
   def metadataClass: Class[M]
+
+  def parseAnnotation(params: List[String]): M = {
+    val StringClass = classOf[String]
+    val DoubleClass = classOf[Double]
+
+    val constructor: Constructor[_] = metadataClass.getConstructors()(0)
+    val constructorParams: Array[Object] = constructor.getParameterTypes.zipWithIndex.map {
+      case (StringClass, index) => params(index)
+      case (DoubleClass, index) => new lang.Double(params(index).toDouble)
+      case (tyep, _) =>
+        // Only a handful of types supported at the moment
+        throw new IllegalArgumentException("Argument type not supported: " + tyep)
+    }
+    constructor.newInstance(constructorParams:_*).asInstanceOf[M]
+  }
 }
 
 trait JsonMetadataSupport[M] {

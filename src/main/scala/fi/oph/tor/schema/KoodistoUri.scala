@@ -8,9 +8,8 @@ case class KoodistoUri(koodistoUri: String) extends Metadata {
 }
 
 object KoodistoUri extends MetadataSupport[KoodistoUri] {
-  def applyAnnotation(x: ObjectWithMetadata[_], params: List[String], schemaFactory: SchemaFactory): ObjectWithMetadata[_] = x match {
+  override def applyMetadata(x: ObjectWithMetadata[_], koodistoUri: KoodistoUri, schemaFactory: SchemaFactory): ObjectWithMetadata[_] = x match {
     case property: Property =>
-      val koodistoUri = KoodistoUri(params.mkString(" "))
       val finalInnerSchema = property.schema.mapItems { itemSchema =>
         val koodistoViiteSchema: ClassSchema = toKoodistoKoodiViiteSchema(schemaFactory, itemSchema)
         koodistoViiteSchema.copy(properties = koodistoViiteSchema.properties.map{

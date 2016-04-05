@@ -10,10 +10,8 @@ import org.json4s.JsonAST._
 case class KoodistoKoodiarvo(arvo: String) extends Metadata
 
 object KoodistoKoodiarvo extends MetadataSupport[KoodistoKoodiarvo] {
-  def applyAnnotation(x: ObjectWithMetadata[_], params: List[String], schemaFactory: SchemaFactory): ObjectWithMetadata[_] = x match {
+  override def applyMetadata(x: ObjectWithMetadata[_], koodiarvo: KoodistoKoodiarvo, schemaFactory: SchemaFactory): ObjectWithMetadata[_] = x match {
     case property: Property =>
-      val koodiarvo = KoodistoKoodiarvo(params.mkString(" "))
-
       val finalInnerSchema = property.schema.mapItems { itemSchema =>
         val koodistoViiteSchema: ClassSchema = toKoodistoKoodiViiteSchema(schemaFactory, itemSchema)
         koodistoViiteSchema.copy(properties = koodistoViiteSchema.properties.map{

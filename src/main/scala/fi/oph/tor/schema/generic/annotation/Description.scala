@@ -4,8 +4,6 @@ import fi.oph.tor.schema.generic.{Metadata, MetadataSupport, ObjectWithMetadata,
 import org.json4s.JsonAST.JObject
 
 object Description extends MetadataSupport[Description] {
-  def applyAnnotation(x: ObjectWithMetadata[_], params: List[String], schemaFactory: SchemaFactory): ObjectWithMetadata[_] = x.appendMetadata(List(Description(params.mkString(" "))))
-
   override def metadataClass = classOf[Description]
 
   override def appendMetadataToJsonSchema(obj: JObject, desc: Description) = appendToDescription(obj, desc.text)
