@@ -83,8 +83,8 @@ fyysisesti samassa datahakemistossa.
 
 Jos ja kun haluat tarkastella paikallisen kehityskannan tilaa SQL-työkalulla, se onnistuu esimerkiksi Postgren omalla komentorivityökalulla `psql`:
 
-    psql tor tor
-    psql tortest tor
+    psql -h localhost tor tor
+    psql -h localhost tortest tor
 
 Peruskomennot
 
