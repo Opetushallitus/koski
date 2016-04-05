@@ -1,0 +1,24 @@
+{
+  "koodistoUri": "oppiaineaidinkielijakirjallisuus",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "codesGroupUri": "http://tor",
+  "versio": 1,
+  "voimassaAlkuPvm": "2013-01-01",
+  "metadata": [
+    {
+      "kieli": "EN",
+      "nimi": "Oppiaine Äidinkieli ja kirjallisuus",
+      "kuvaus": "Oppiaine Äidinkieli ja kirjallisuus"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "Oppiaine Äidinkieli ja kirjallisuus",
+      "kuvaus": "Oppiaine Äidinkieli ja kirjallisuus"
+    },
+    {
+      "kieli": "FI",
+      "nimi": "Oppiaine Äidinkieli ja kirjallisuus",
+      "kuvaus": "Oppiaine Äidinkieli ja kirjallisuus"
+    }
+  ]
+}

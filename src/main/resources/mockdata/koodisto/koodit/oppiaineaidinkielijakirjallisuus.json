@@ -1,0 +1,68 @@
+[
+  {
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai1",
+    "koodiArvo": "AI1",
+    "metadata": [
+      {
+        "nimi": "Suomen kieli ja kirjallisuus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai2",
+    "koodiArvo": "AI2",
+    "metadata": [
+      {
+        "nimi": "Ruotsin kieli ja kirjallisuus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai3",
+    "koodiArvo": "AI3",
+    "metadata": [
+      {
+        "nimi": "Saamen kieli ja kirjallisuus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai4",
+    "koodiArvo": "AI4",
+    "metadata": [
+      {
+        "nimi": "Romanikieli ja kirjallisuus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai5",
+    "koodiArvo": "AI5",
+    "metadata": [
+      {
+        "nimi": "Viittomakieli ja kirjallisuus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "oppiaineaidinkielijakirjallisuus_ai5",
+    "koodiArvo": "AI5",
+    "metadata": [
+      {
+        "nimi": "Muu oppilaan äidinkieli",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  }
+]
