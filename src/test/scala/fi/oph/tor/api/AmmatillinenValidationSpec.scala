@@ -276,17 +276,17 @@ class AmmatillinenValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
       }
 
       describe("Päivämäärät kunnossa") {
-        it("palautetaan HTTP 200" ) (put(päivämäärillä("2015-08-01", "2016-05-30", "2016-05-31"))(
+        it("palautetaan HTTP 200" ) (put(päivämäärillä("2015-08-01", "2016-05-30", "2016-06-01"))(
           verifyResponseStatus(200)))
       }
 
       describe("alkamispäivä > arviointi.päivä") {
-        it("palautetaan HTTP 200" ) (put(päivämäärillä("2017-08-01", "2016-05-31", "2016-05-31"))(
+        it("palautetaan HTTP 400" ) (put(päivämäärillä("2017-08-01", "2016-05-31", "2016-05-31"))(
           verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.loppuEnnenAlkua("suoritus.alkamispäivä (2017-08-01) oltava sama tai aiempi kuin suoritus.arviointi.päivä(2016-05-31)"))))
       }
 
       describe("arviointi.päivä > vahvistus.päivä") {
-        it("palautetaan HTTP 200" ) (put(päivämäärillä("2015-08-01", "2016-05-31", "2016-05-30"))(
+        it("palautetaan HTTP 400" ) (put(päivämäärillä("2015-08-01", "2016-05-31", "2016-05-30"))(
           verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.loppuEnnenAlkua("suoritus.arviointi.päivä (2016-05-31) oltava sama tai aiempi kuin suoritus.vahvistus.päivä(2016-05-30)"))))
       }
     }
