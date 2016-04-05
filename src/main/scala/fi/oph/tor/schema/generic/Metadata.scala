@@ -2,8 +2,9 @@ package fi.oph.tor.schema.generic
 
 import org.json4s.JsonAST
 import org.json4s.JsonAST.{JNothing, JObject, JString}
+import scala.annotation.StaticAnnotation
 
-trait Metadata
+trait Metadata extends StaticAnnotation
 
 trait ObjectWithMetadata[T <: ObjectWithMetadata[T]] {
   def metadata: List[Metadata]
@@ -11,22 +12,28 @@ trait ObjectWithMetadata[T <: ObjectWithMetadata[T]] {
   def appendMetadata(newMetadata: List[Metadata]): ObjectWithMetadata[T] = replaceMetadata(metadata ++ newMetadata)
 }
 
-trait MetadataSupport extends AnnotationSupport with JsonMetadataSupport
+trait MetadataSupport[M] extends AnnotationSupport[M] with JsonMetadataSupport[M]
 
-trait AnnotationSupport {
+trait AnnotationSupport[M] {
   def applyAnnotation(x: ObjectWithMetadata[_], params: List[String], schemaFactory: SchemaFactory): ObjectWithMetadata[_]
 
-  def applyAnnotations(annotationClass: String, params: List[String], x: ObjectWithMetadata[_], schemaFactory: SchemaFactory) = if (annotationClass == myAnnotationClass.getName) {
+  def applyAnnotations(annotationClass: String, params: List[String], x: ObjectWithMetadata[_], schemaFactory: SchemaFactory) = if (annotationClass == metadataClass.getName) {
     applyAnnotation(x, params, schemaFactory)
   } else {
     x
   }
 
-  def myAnnotationClass: Class[_]
+  def metadataClass: Class[M]
 }
 
-trait JsonMetadataSupport {
-  def appendMetadataToJsonSchema(obj: JObject, metadata: Metadata): JObject
+trait JsonMetadataSupport[M] {
+  def appendMetadataToJsonSchema(obj: JObject, metadata: M): JObject
+
+  def appendMetadataToJsonSchema(obj: JObject, metadata: Metadata): JObject = if (metadataClass.isInstance(metadata)) {
+    appendMetadataToJsonSchema(obj, metadata.asInstanceOf[M])
+  } else {
+    obj
+  }
   def appendToDescription(obj: JObject, newDescription: String): JsonAST.JObject = {
     val description = obj.\("description") match {
       case JString(s) => s + "\n" + newDescription
@@ -44,4 +51,6 @@ trait JsonMetadataSupport {
     }
     p.copy(schema = newSchema)
   }
+
+  def metadataClass: Class[M]
 }

@@ -3,13 +3,11 @@ package fi.oph.tor.schema
 import fi.oph.tor.schema.generic._
 import org.json4s.JsonAST._
 
-import scala.annotation.StaticAnnotation
-
-case class KoodistoUri(koodistoUri: String) extends StaticAnnotation with Metadata {
+case class KoodistoUri(koodistoUri: String) extends Metadata {
   def asLink = <a href={"/tor/documentation/koodisto/" + koodistoUri + "/latest"} target="_blank">{koodistoUri}</a>
 }
 
-object KoodistoUri extends MetadataSupport {
+object KoodistoUri extends MetadataSupport[KoodistoUri] {
   def applyAnnotation(x: ObjectWithMetadata[_], params: List[String], schemaFactory: SchemaFactory): ObjectWithMetadata[_] = x match {
     case property: Property =>
       val koodistoUri = KoodistoUri(params.mkString(" "))
@@ -33,10 +31,7 @@ object KoodistoUri extends MetadataSupport {
     koodistoViiteSchema
   }
 
-  override def appendMetadataToJsonSchema(obj: JObject, metadata: Metadata) = metadata match {
-    case k: KoodistoUri => appendToDescription(obj, "(Koodisto: " + k.asLink + ")")
-    case _ => obj
-  }
+  override def metadataClass = classOf[KoodistoUri]
 
-  override def myAnnotationClass = classOf[KoodistoUri]
+  override def appendMetadataToJsonSchema(obj: JObject, k: KoodistoUri) = appendToDescription(obj, "(Koodisto: " + k.asLink + ")")
 }

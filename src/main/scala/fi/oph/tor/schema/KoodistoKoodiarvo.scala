@@ -4,14 +4,12 @@ import fi.oph.tor.schema.KoodistoUri._
 import fi.oph.tor.schema.generic._
 import org.json4s.JsonAST._
 
-import scala.annotation.StaticAnnotation
-
 /*
   Vain tietty koodiarvo hyväksytään -annotaatio
  */
-case class KoodistoKoodiarvo(arvo: String) extends StaticAnnotation with Metadata
+case class KoodistoKoodiarvo(arvo: String) extends Metadata
 
-object KoodistoKoodiarvo extends MetadataSupport {
+object KoodistoKoodiarvo extends MetadataSupport[KoodistoKoodiarvo] {
   def applyAnnotation(x: ObjectWithMetadata[_], params: List[String], schemaFactory: SchemaFactory): ObjectWithMetadata[_] = x match {
     case property: Property =>
       val koodiarvo = KoodistoKoodiarvo(params.mkString(" "))
@@ -27,9 +25,7 @@ object KoodistoKoodiarvo extends MetadataSupport {
     case x => x
   }
 
-  override def appendMetadataToJsonSchema(obj: JObject, metadata: Metadata) = metadata match {
-    case _ => obj
-  }
+  override def metadataClass = classOf[KoodistoKoodiarvo]
 
-  override def myAnnotationClass = classOf[KoodistoKoodiarvo]
+  override def appendMetadataToJsonSchema(obj: JObject, metadata: KoodistoKoodiarvo) = obj
 }

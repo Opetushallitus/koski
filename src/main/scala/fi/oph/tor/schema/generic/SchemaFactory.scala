@@ -5,7 +5,7 @@ import org.reflections.Reflections
 
 import scala.reflect.runtime.{universe => ru}
 
-case class SchemaFactory(annotationsSupported: List[AnnotationSupport]) {
+case class SchemaFactory(annotationsSupported: List[AnnotationSupport[_]]) {
   def createSchema(className: String): SchemaWithClassName = {
     createSchema(typeByName(className), ScanState()).asInstanceOf[SchemaWithClassName]
   }
