@@ -1,10 +1,22 @@
-[ {
-  "koodiUri" : "opiskeluoikeudentyyppi_ammatillinenkoulutus",
-  "koodiArvo" : "ammatillinenkoulutus",
-  "metadata" : [ {
-    "nimi" : "Ammatillinen koulutus",
-    "lyhytNimi" : "Ammatillinen koulutus",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-} ]
+[
+  {
+    "koodiUri" : "opiskeluoikeudentyyppi_ammatillinenkoulutus",
+    "koodiArvo" : "ammatillinenkoulutus",
+    "metadata" : [ {
+      "nimi" : "Ammatillinen koulutus",
+      "lyhytNimi" : "Ammatillinen koulutus",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "opiskeluoikeudentyyppi_peruskoulutus",
+    "koodiArvo" : "peruskoulutus",
+    "metadata" : [ {
+      "nimi" : "Peruskoulutus",
+      "lyhytNimi" : "Peruskoulutus",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  }
+]

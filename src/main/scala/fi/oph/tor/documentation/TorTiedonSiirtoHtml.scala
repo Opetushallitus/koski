@@ -94,7 +94,7 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
   }
 
   def examplesHtml: List[Elem] = {
-    TorOppijaExamples.examples.map { example =>
+    ExamplesAmmatillinen.examples.map { example =>
       <div>
         <h3>
           {example.description}<small>

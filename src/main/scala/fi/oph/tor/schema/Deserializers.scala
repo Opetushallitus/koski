@@ -14,7 +14,10 @@ object OpiskeluOikeusSerializer extends Deserializer[OpiskeluOikeus] {
   private val OpiskeluOikeusClass = classOf[OpiskeluOikeus]
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), OpiskeluOikeus] = {
     case (TypeInfo(OpiskeluOikeusClass, _), json) =>
-      json.extract[AmmatillinenOpiskeluOikeus]
+      json match {
+        case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("ammatillinenkoulutus") => oo.extract[AmmatillinenOpiskeluOikeus]
+        case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("peruskoulutus") => oo.extract[PeruskouluOpiskeluOikeus]
+      }
   }
 }
 

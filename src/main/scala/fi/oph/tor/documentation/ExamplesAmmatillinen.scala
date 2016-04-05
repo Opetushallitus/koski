@@ -2,11 +2,10 @@ package fi.oph.tor.documentation
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
-
+import ExampleData._
 import fi.oph.tor.schema._
 
-object TorOppijaExampleData {
-
+object AmmatillinenExampleData {
   def tutkintoSuoritus(tutkintoKoulutus: AmmatillinenTutkintoKoulutus,
                                tutkintonimike: Option[List[KoodistoKoodiViite]] = None,
                                osaamisala: Option[List[KoodistoKoodiViite]] = None,
@@ -74,9 +73,6 @@ object TorOppijaExampleData {
   lazy val toimipiste: OidOrganisaatio = OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))
   lazy val tutkintotoimikunta: Organisaatio = Tutkintotoimikunta("Autokorjaamoalan tutkintotoimikunta", 8406)
   lazy val opintojenLaajuusYksikkö = KoodistoKoodiViite("6", Some("osaamispistettä"), "opintojenlaajuusyksikko", Some(1))
-  lazy val opiskeluoikeusAktiivinen = KoodistoKoodiViite("aktiivinen", Some("Aktiivinen"), "opiskeluoikeudentila", Some(1))
-  lazy val opiskeluoikeusPäättynyt = KoodistoKoodiViite("paattynyt", Some("Päättynyt"), "opiskeluoikeudentila", Some(1))
-  lazy val opiskeluoikeusKeskeyttänyt = KoodistoKoodiViite("keskeyttanyt", Some("Keskeyttänyt"), "opiskeluoikeudentila", Some(1))
   lazy val lähdeWinnova = KoodistoKoodiViite("winnova", Some("Winnova"), "lahdejarjestelma", Some(1))
   lazy val hyväksiluku = Hyväksiluku(
     OpsTutkinnonosa(KoodistoKoodiViite("100238", Some("Asennushitsaus"), "tutkinnonosat", Some(1)), true, None),
@@ -129,16 +125,16 @@ object TorOppijaExampleData {
     )
   }
 
-  def oppija( henkilö: Henkilö = Henkilö("010101-123N", "matti pekka", "matti", "virtanen"),
+  def oppija( henkilö: Henkilö = ExampleData.exampleHenkilö,
               opiskeluOikeus: OpiskeluOikeus = opiskeluoikeus()) = {
     TorOppija(
-      Henkilö("010101-123N", "matti pekka", "matti", "virtanen"),
+      henkilö,
       List(opiskeluOikeus)
     )
   }
 }
-object TorOppijaExamples {
-  import TorOppijaExampleData._
+object ExamplesAmmatillinen {
+  import AmmatillinenExampleData._
 
   lazy val uusi = oppija()
 
@@ -279,22 +275,21 @@ object TorOppijaExamples {
         )))
   )))
 
-  lazy val full = FullExample.full
+  lazy val full = AmmatillinenFullExample.full
 
   lazy val examples = List(
-    Example("uusi", "Uusi oppija lisätään suorittamaan Autoalan perustutkintoa", uusi),
-    Example("oppisopimus", "Uusi oppija, suorittaa oppisopimuksella", oppisopimus),
-    Example("paikallinen", "Oppija on suorittanut paikallisen tutkinnon osan", paikallinen),
-    Example("mukautettu", "Tutkinnon osan arviointia on mukautettu", mukautettu),
-    Example("osatoisestatutkinnosta", "Oppija on suorittanut toiseen tutkintoon liittyvän tutkinnon osan", tutkinnonOsaToisestaTutkinnosta),
-    Example("full", "Isompi esimerkki. Suorittaa perustutkintoa näyttönä. Tähän lisätty lähes kaikki kaavaillut tietokentät.", full),
-    Example("ops", "Perustutkinto ops:n mukaan, läsnäolotiedoilla, hojks", ops)
+    Example("ammatillinen - uusi", "Uusi oppija lisätään suorittamaan Autoalan perustutkintoa", uusi),
+    Example("ammatillinen - oppisopimus", "Uusi oppija, suorittaa oppisopimuksella", oppisopimus),
+    Example("ammatillinen - paikallinen", "Oppija on suorittanut paikallisen tutkinnon osan", paikallinen),
+    Example("ammatillinen - mukautettu", "Tutkinnon osan arviointia on mukautettu", mukautettu),
+    Example("ammatillinen - osatoisestatutkinnosta", "Oppija on suorittanut toiseen tutkintoon liittyvän tutkinnon osan", tutkinnonOsaToisestaTutkinnosta),
+    Example("ammatillinen - full", "Isompi esimerkki. Suorittaa perustutkintoa näyttönä. Tähän lisätty lähes kaikki kaavaillut tietokentät.", full),
+    Example("ammatillinen - ops", "Perustutkinto ops:n mukaan, läsnäolotiedoilla, hojks", ops)
   )
-
 }
 
-object FullExample {
-  import TorOppijaExampleData._
+object AmmatillinenFullExample {
+  import AmmatillinenExampleData._
 
   lazy val full = TorOppija(
     Henkilö.withOid("1.2.246.562.24.00000000001"),
@@ -439,5 +434,3 @@ object FullExample {
     )
   )
 }
-
-case class Example(name: String, description: String, data: TorOppija)

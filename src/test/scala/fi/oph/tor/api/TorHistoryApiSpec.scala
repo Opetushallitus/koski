@@ -3,7 +3,7 @@ package fi.oph.tor.api
 import java.time.LocalDate
 
 import fi.oph.tor.db.OpiskeluOikeusHistoryRow
-import fi.oph.tor.documentation.TorOppijaExamples
+import fi.oph.tor.documentation.ExamplesAmmatillinen
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.jettylauncher.SharedJetty
 import fi.oph.tor.json.Json
@@ -29,7 +29,7 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
       }
 
       it("osasuorituksilla") {
-        val opiskeluOikeus = createOpiskeluOikeus(oppija, TorOppijaExamples.full.opiskeluoikeudet(0))
+        val opiskeluOikeus = createOpiskeluOikeus(oppija, ExamplesAmmatillinen.full.opiskeluoikeudet(0))
         verifyHistory(oppija, opiskeluOikeus, List(1))
       }
     }

@@ -1,6 +1,6 @@
 package fi.oph.tor.schema
 
-import fi.oph.tor.documentation.TorOppijaExamples
+import fi.oph.tor.documentation.ExamplesAmmatillinen
 import fi.oph.tor.json.Json
 import fi.oph.tor.schema.generic.annotation.{RegularExpression, MinValue, Description, ReadOnly}
 import fi.oph.tor.schema.generic._

@@ -4,6 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.tor.schema.generic.annotation.Description
 
+@Description("Ammatillisen koulutuksen opiskeluoikeus")
 case class AmmatillinenOpiskeluOikeus(
   id: Option[Int],
   versionumero: Option[Int],

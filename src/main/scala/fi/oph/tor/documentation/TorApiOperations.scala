@@ -114,7 +114,7 @@ object TorApiOperations {
          kerätä tätä rajapintaa kutsuttaessa; rajapinta palauttaa aina oppijan oidin.
        </p>
      </div>,
-     TorOppijaExamples.examples,
+     Examples.examples,
      Nil,
      List(
        TorErrorCategory.ok.createdOrUpdated,

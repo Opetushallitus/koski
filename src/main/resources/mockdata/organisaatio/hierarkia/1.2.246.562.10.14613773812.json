@@ -1,0 +1,89 @@
+{
+  "organisaatiot": [
+    {
+      "oid": "1.2.246.562.10.77055527103",
+      "alkuPvm": 1392069600000,
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "1.2.246.562.10.77055527103/1.2.246.562.10.00000000001",
+      "ytunnus": "0245894-7",
+      "toimipistekoodi": "",
+      "match": true,
+      "nimi": {
+        "fi": "Jyväskylän yliopisto"
+      },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
+      "kotipaikkaUri": "kunta_179",
+      "children": [
+        {
+          "oid": "1.2.246.562.10.14613773812",
+          "alkuPvm": 694216800000,
+          "parentOid": "1.2.246.562.10.77055527103",
+          "parentOidPath": "1.2.246.562.10.14613773812/1.2.246.562.10.77055527103/1.2.246.562.10.00000000001",
+          "oppilaitosKoodi": "00204",
+          "oppilaitostyyppi": "oppilaitostyyppi_19#1",
+          "toimipistekoodi": "00204",
+          "match": true,
+          "nimi": {
+            "fi": "Jyväskylän normaalikoulu"
+          },
+          "kieletUris": [
+            "oppilaitoksenopetuskieli_1#1"
+          ],
+          "kotipaikkaUri": "kunta_179",
+          "children": [
+            {
+              "oid": "1.2.246.562.10.13635400305",
+              "alkuPvm": 1122843600000,
+              "parentOid": "1.2.246.562.10.14613773812",
+              "parentOidPath": "1.2.246.562.10.13635400305/1.2.246.562.10.14613773812/1.2.246.562.10.77055527103/1.2.246.562.10.00000000001",
+              "toimipistekoodi": "0020402",
+              "match": true,
+              "nimi": {
+                "fi": "Jyväskylän normaalikoulu, alakoulu"
+              },
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_179",
+              "children": [],
+              "organisaatiotyypit": [
+                "TOIMIPISTE"
+              ],
+              "aliOrganisaatioMaara": 0
+            },
+            {
+              "oid": "1.2.246.562.10.34087756457",
+              "alkuPvm": 694216800000,
+              "parentOid": "1.2.246.562.10.14613773812",
+              "parentOidPath": "1.2.246.562.10.34087756457/1.2.246.562.10.14613773812/1.2.246.562.10.77055527103/1.2.246.562.10.00000000001",
+              "toimipistekoodi": "0020401",
+              "match": true,
+              "nimi": {
+                "fi": "Jyväskylän normaalikoulu, yläkoulu ja lukio"
+              },
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_179",
+              "children": [],
+              "organisaatiotyypit": [
+                "TOIMIPISTE"
+              ],
+              "aliOrganisaatioMaara": 0
+            }
+          ],
+          "organisaatiotyypit": [
+            "OPPILAITOS"
+          ],
+          "aliOrganisaatioMaara": 2
+        }
+      ],
+      "organisaatiotyypit": [
+        "KOULUTUSTOIMIJA"
+      ],
+      "aliOrganisaatioMaara": 2
+    }
+  ]
+}
