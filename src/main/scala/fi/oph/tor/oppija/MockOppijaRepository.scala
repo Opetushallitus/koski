@@ -71,6 +71,8 @@ class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with 
   private def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String): Either[HttpStatus, Henkilö.Oid] = {
     if (sukunimi == "error") {
       throw new TestingException("Testing error handling")
+    } else if (oppijat.getOppijat.find { o => (o.hetu == hetu) } .isDefined) {
+      Left(TorErrorCategory.conflict.hetu("conflict"))
     } else {
       val newOppija = oppijat.oppija(sukunimi, etunimet, hetu)
       Right(newOppija.oid)
