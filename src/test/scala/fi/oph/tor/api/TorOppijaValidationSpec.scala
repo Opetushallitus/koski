@@ -153,7 +153,7 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
       describe("Päivämäärät kunnossa") {
         it("palautetaan HTTP 200" ) (putOpiskeluOikeusMerged(Map(
           "alkamispäivä" -> "2015-08-01",
-          "päättymispäivä" -> "2016-05-31",
+          "päättymispäivä" -> "2016-06-30",
           "arvioituPäättymispäivä" -> "2018-05-31"
         ))(verifyResponseStatus(200)))
       }
