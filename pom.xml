@@ -22,7 +22,7 @@
     <dependency>
       <groupId>com.github.Opetushallitus.scala-utils</groupId>
       <artifactId>scala-cas_2.11</artifactId>
-      <version>e5fc009</version>
+      <version>271995c</version>
       <exclusions>
         <exclusion>
           <groupId>org.http4s</groupId>

@@ -1,7 +1,6 @@
 package fi.oph.tor.http
 
-import fi.vm.sade.utils.cas.{CasClient, CasParams, CasAuthenticatingClient}
-import org.http4s.Uri._
+import fi.vm.sade.utils.cas.{CasAuthenticatingClient, CasClient, CasParams}
 import org.http4s.client.Client
 
 object VirkailijaHttpClient {
@@ -9,7 +8,7 @@ object VirkailijaHttpClient {
     val blazeHttpClient = Http.newClient
     val casClient = new CasClient(opintoPolkuVirkailijaUrl, blazeHttpClient)
     val casAuthenticatingClient: Client = if (useCas) {
-      CasAuthenticatingClient(casClient, CasParams(serviceUrl, username, password), blazeHttpClient)
+      CasAuthenticatingClient(casClient, CasParams(serviceUrl, username, password), blazeHttpClient, "koski")
     } else {
       ClientWithBasicAuthentication(blazeHttpClient, username, password)
     }
