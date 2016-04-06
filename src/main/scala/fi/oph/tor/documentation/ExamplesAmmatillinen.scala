@@ -16,7 +16,7 @@ object AmmatillinenExampleData {
                                tila: KoodistoKoodiViite,
                                alkamisPäivä: Option[LocalDate] = None,
                                toimipiste: OrganisaatioWithOid,
-                               arviointi: Option[List[Arviointi]] = None,
+                               arviointi: Option[List[AmmatillinenArviointi]] = None,
                                vahvistus: Option[Vahvistus] = None,
                                osasuoritukset: Option[List[AmmatillinenTutkinnonosaSuoritus]] = None): AmmatillinenTutkintoSuoritus =
 
@@ -79,7 +79,7 @@ object AmmatillinenExampleData {
     Some("Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"))
   lazy val tilaKesken = KoodistoKoodiViite("KESKEN", "suorituksentila")
   lazy val tilaValmis = KoodistoKoodiViite("VALMIS", "suorituksentila")
-  lazy val arviointiHyväksytty: Some[List[Arviointi]] = Some(List(Arviointi(
+  lazy val arviointiHyväksytty: Some[List[AmmatillinenArviointi]] = Some(List(AmmatillinenArviointi(
     arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)), Some(date(2013, 3, 20)),
     arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen"))))))
 
@@ -99,7 +99,7 @@ object AmmatillinenExampleData {
 
   lazy val arviointiKiitettävä = Some(
     List(
-      Arviointi(
+      AmmatillinenArviointi(
         arvosana = k3,
         Some(date(2014, 10, 20))
       )
@@ -245,11 +245,11 @@ object ExamplesAmmatillinen {
               toimipiste = toimipiste,
               arviointi = Some(
                 List(
-                  Arviointi(
+                  AmmatillinenArviointi(
                     arvosana = h2,
                     Some(date(2014, 5, 20))
                   ),
-                  Arviointi(
+                  AmmatillinenArviointi(
                     arvosana = k3,
                     Some(date(2014, 10, 20))
                   )
@@ -348,7 +348,7 @@ object AmmatillinenFullExample {
       tila = tilaValmis,
       alkamispäivä = None,
       toimipiste = toimipiste,
-      arviointi = Some(List(Arviointi(
+      arviointi = Some(List(AmmatillinenArviointi(
         arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
         Some(date(2012, 10, 20)),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
@@ -368,7 +368,7 @@ object AmmatillinenFullExample {
       tila = tilaValmis,
       alkamispäivä = None,
       toimipiste = toimipiste,
-      arviointi = Some(List(Arviointi(
+      arviointi = Some(List(AmmatillinenArviointi(
         arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
         Some(date(2013, 4, 1)),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
@@ -387,7 +387,7 @@ object AmmatillinenFullExample {
       tila = tilaValmis,
       alkamispäivä = None,
       toimipiste = toimipiste,
-      arviointi = Some(List(Arviointi(
+      arviointi = Some(List(AmmatillinenArviointi(
         arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
         Some(date(2014, 10, 20)),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
@@ -406,7 +406,7 @@ object AmmatillinenFullExample {
       tila = tilaValmis,
       alkamispäivä = None,
       toimipiste = toimipiste,
-      arviointi = Some(List(Arviointi(
+      arviointi = Some(List(AmmatillinenArviointi(
         arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
         Some(date(2015, 4, 1)),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
@@ -425,7 +425,7 @@ object AmmatillinenFullExample {
       tila = tilaValmis,
       alkamispäivä = None,
       toimipiste = toimipiste,
-      arviointi = Some(List(Arviointi(
+      arviointi = Some(List(AmmatillinenArviointi(
         arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
         Some(date(2016, 2, 1)),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))

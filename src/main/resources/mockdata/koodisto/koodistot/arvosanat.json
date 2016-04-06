@@ -1,0 +1,20 @@
+{
+  "koodistoUri" : "arvosanat",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "arvosanat",
+    "kuvaus" : "arvosanat"
+  }, {
+    "kieli" : "SV",
+    "nimi" : "arvosanat",
+    "kuvaus" : "arvosanat"
+  }, {
+    "kieli" : "EN",
+    "nimi" : "arvosanat",
+    "kuvaus" : "arvosanat"
+  } ],
+  "codesGroupUri" : "http://koulutuskoodistot",
+  "voimassaAlkuPvm" : "2013-01-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}

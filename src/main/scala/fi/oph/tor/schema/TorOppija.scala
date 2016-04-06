@@ -144,16 +144,14 @@ trait Suoritus {
 trait Koulutusmoduuli {
   def tunniste: KoodiViite
 }
-case class Arviointi(
+
+trait Arviointi {
   @Description("Arvosana. Kullekin arviointiasteikolle löytyy oma koodistonsa")
-  @KoodistoUri("arviointiasteikkoammatillinenhyvaksyttyhylatty")
-  @KoodistoUri("arviointiasteikkoammatillinent1k3")
-  arvosana: KoodistoKoodiViite,
+  def arvosana: KoodistoKoodiViite
   @Description("Päivämäärä, jolloin arviointi on annettu")
-  päivä: Option[LocalDate],
-  @Description("Tutkinnon osan suorituksen arvioinnista päättäneen henkilön nimi")
-  arvioitsijat: Option[List[Arvioitsija]] = None
-)
+  def päivä: Option[LocalDate]
+  def arvioitsijat: Option[List[Arvioitsija]]
+}
 
 case class Arvioitsija(
   nimi: String

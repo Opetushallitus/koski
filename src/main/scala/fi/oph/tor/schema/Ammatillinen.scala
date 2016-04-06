@@ -49,7 +49,7 @@ case class AmmatillinenTutkintoSuoritus(
   tila: KoodistoKoodiViite,
   alkamispäivä: Option[LocalDate],
   toimipiste: OrganisaatioWithOid,
-  arviointi: Option[List[Arviointi]] = None,
+  arviointi: Option[List[AmmatillinenArviointi]] = None,
   vahvistus: Option[Vahvistus] = None,
   override val osasuoritukset: Option[List[AmmatillinenTutkinnonosaSuoritus]] = None,
   @KoodistoKoodiarvo("ammatillinentutkintosuoritus")
@@ -71,7 +71,7 @@ trait AmmatillinenTutkinnonosaSuoritus extends Suoritus
     tila: KoodistoKoodiViite,
     alkamispäivä: Option[LocalDate],
     toimipiste: OrganisaatioWithOid,
-    arviointi: Option[List[Arviointi]] = None,
+    arviointi: Option[List[AmmatillinenArviointi]] = None,
     vahvistus: Option[Vahvistus] = None,
     @KoodistoKoodiarvo("ammatillinenopstutkinnonosasuoritus")
     tyyppi: KoodistoKoodiViite = KoodistoKoodiViite("ammatillinenopstutkinnonosasuoritus", koodistoUri = "suorituksentyyppi")
@@ -89,7 +89,7 @@ trait AmmatillinenTutkinnonosaSuoritus extends Suoritus
     tila: KoodistoKoodiViite,
     alkamispäivä: Option[LocalDate],
     toimipiste: OrganisaatioWithOid,
-    arviointi: Option[List[Arviointi]] = None,
+    arviointi: Option[List[AmmatillinenArviointi]] = None,
     vahvistus: Option[Vahvistus] = None,
     @KoodistoKoodiarvo("ammatillinenpaikallinentutkinnonosasuoritus")
     tyyppi: KoodistoKoodiViite = KoodistoKoodiViite("ammatillinenpaikallinentutkinnonosasuoritus", koodistoUri = "suorituksentyyppi")
@@ -140,6 +140,15 @@ case class OppisopimuksellinenJärjestämismuoto(
   tunniste: KoodistoKoodiViite,
   oppisopimus: Oppisopimus
 ) extends Järjestämismuoto
+
+case class AmmatillinenArviointi(
+  @KoodistoUri("arviointiasteikkoammatillinenhyvaksyttyhylatty")
+  @KoodistoUri("arviointiasteikkoammatillinent1k3")
+  arvosana: KoodistoKoodiViite,
+  päivä: Option[LocalDate],
+  @Description("Tutkinnon osan suorituksen arvioinnista päättäneen henkilön nimi")
+  arvioitsijat: Option[List[Arvioitsija]] = None
+) extends Arviointi
 
 @Description("Näytön kuvaus")
 case class Näyttö(

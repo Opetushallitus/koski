@@ -2,6 +2,7 @@ package fi.oph.tor.schema
 
 import java.time.LocalDate
 
+import fi.oph.tor.arvosana.Arvosana
 import fi.oph.tor.schema.generic.annotation.Description
 
 @Description("Perusopetuksen opiskeluoikeus")
@@ -31,7 +32,7 @@ case class PeruskoulunPäättötodistus(
   tila: KoodistoKoodiViite,
   alkamispäivä: Option[LocalDate],
   toimipiste: OrganisaatioWithOid,
-  arviointi: Option[List[Arviointi]] = None,
+  arviointi: Option[List[PeruskoulunArviointi]] = None,
   vahvistus: Option[Vahvistus] = None,
   override val osasuoritukset: Option[List[PeruskoulunOppiaineSuoritus]]
 ) extends Suoritus
@@ -45,7 +46,7 @@ case class PeruskoulunOppiaineSuoritus(
   tila: KoodistoKoodiViite,
   alkamispäivä: Option[LocalDate],
   toimipiste: OrganisaatioWithOid,
-  arviointi: Option[List[Arviointi]] = None,
+  arviointi: Option[List[PeruskoulunArviointi]] = None,
   vahvistus: Option[Vahvistus] = None
 ) extends Suoritus
 
@@ -57,6 +58,13 @@ case class Peruskoulutus(
  @OksaUri("tmpOKSAID560", "tutkinto")
  tunniste: KoodistoKoodiViite = KoodistoKoodiViite("201100", koodistoUri = "koulutus")
 ) extends Koulutusmoduuli
+
+case class PeruskoulunArviointi(
+  @KoodistoUri("arvosanat")
+  arvosana: KoodistoKoodiViite,
+  päivä: Option[LocalDate],
+  arvioitsijat: Option[List[Arvioitsija]] = None
+) extends Arviointi
 
 trait PeruskoulunOppiaine extends Koulutusmoduuli {
   @Description("Peruskoulutuksen oppiaine")

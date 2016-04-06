@@ -46,7 +46,7 @@ trait OpiskeluOikeusData {
     Paikallinenkoodi("1", "paikallinen osa", "paikallinenkoodisto"), "Paikallinen tutkinnon osa", false, Some(laajuus)
   )
 
-  def arviointiHyvä(päivä: Option[LocalDate] = None): Some[List[Arviointi]] = Some(List(Arviointi(KoodistoKoodiViite("2", "arviointiasteikkoammatillinent1k3"), päivä)))
+  def arviointiHyvä(päivä: Option[LocalDate] = None): Some[List[AmmatillinenArviointi]] = Some(List(AmmatillinenArviointi(KoodistoKoodiViite("2", "arviointiasteikkoammatillinent1k3"), päivä)))
 
   val tilaValmis: KoodistoKoodiViite = KoodistoKoodiViite("VALMIS", "suorituksentila")
   val tilaKesken: KoodistoKoodiViite = KoodistoKoodiViite("KESKEN", "suorituksentila")

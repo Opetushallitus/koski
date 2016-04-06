@@ -208,7 +208,7 @@ class AmmatillinenValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
   }
 
   private def testSuorituksenTila[T <: Suoritus](suoritus: T, desc: String, put: (T => ((=> Unit) => Unit))): Unit = {
-    def copySuoritus(suoritus: T, t: KoodistoKoodiViite, a: Option[List[Arviointi]], v: Option[Vahvistus], ap: Option[LocalDate] = None): T = {
+    def copySuoritus(suoritus: T, t: KoodistoKoodiViite, a: Option[List[AmmatillinenArviointi]], v: Option[Vahvistus], ap: Option[LocalDate] = None): T = {
       val alkamispäivä = ap.orElse(suoritus.alkamispäivä)
       (suoritus match {
         case s: AmmatillinenTutkintoSuoritus => s.copy(tila = t, arviointi = a, vahvistus = v, alkamispäivä = alkamispäivä)
@@ -264,12 +264,12 @@ class AmmatillinenValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
 
     describe("Arviointi") {
       describe("Arviointiasteikko on tuntematon") {
-        it("palautetaan HTTP 400") (put(copySuoritus(suoritus, suoritus.tila, Some(List(Arviointi(KoodistoKoodiViite("2", "vääräasteikko"), None))), None))
+        it("palautetaan HTTP 400") (put(copySuoritus(suoritus, suoritus.tila, Some(List(AmmatillinenArviointi(KoodistoKoodiViite("2", "vääräasteikko"), None))), None))
           (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema(".*not found in enum.*".r))))
       }
 
       describe("Arvosana ei kuulu perusteiden mukaiseen arviointiasteikkoon") {
-        it("palautetaan HTTP 400") (put(copySuoritus(suoritus, suoritus.tila, Some(List(Arviointi(KoodistoKoodiViite("x", "arviointiasteikkoammatillinent1k3"), None))), None))
+        it("palautetaan HTTP 400") (put(copySuoritus(suoritus, suoritus.tila, Some(List(AmmatillinenArviointi(KoodistoKoodiViite("x", "arviointiasteikkoammatillinent1k3"), None))), None))
           (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia arviointiasteikkoammatillinent1k3/x ei löydy koodistosta"))))
       }
     }
