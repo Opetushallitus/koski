@@ -1,10 +1,11 @@
 package fi.oph.tor.http
 
 import fi.vm.sade.utils.cas.{CasAuthenticatingClient, CasClient, CasParams}
+
 import org.http4s.client.Client
 
 object VirkailijaHttpClient {
-  def apply(username: String, password: String, opintoPolkuVirkailijaUrl: Path, serviceUrl: String, useCas: Boolean = true) = {
+  def apply(username: String, password: String, opintoPolkuVirkailijaUrl: String, serviceUrl: String, useCas: Boolean = true) = {
     val blazeHttpClient = Http.newClient
     val casClient = new CasClient(opintoPolkuVirkailijaUrl, blazeHttpClient)
     val casAuthenticatingClient: Client = if (useCas) {
