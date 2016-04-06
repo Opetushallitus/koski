@@ -10,8 +10,8 @@ object PeruskoulutusExampleData {
   lazy val jyväskylänNormaalikoulu: Oppilaitos = Oppilaitos(MockOrganisaatiot.jyväskylänNormaalikoulu, Some(KoodistoKoodiViite("00204", None, "oppilaitosnumero", None)), Some("Jyväskylän normaalikoulu"))
   lazy val tilaValmis: KoodistoKoodiViite = KoodistoKoodiViite(koodistoUri = "suorituksentila", koodiarvo = "VALMIS")
 
-  def suoritus(aine: String) = PeruskoulunOppiaineSuoritus(
-    koulutusmoduuli = oppiaine(aine),
+  def suoritus(aine: PeruskoulunOppiaine) = PeruskoulunOppiaineSuoritus(
+    koulutusmoduuli = aine,
     paikallinenId = None,
     suorituskieli = None,
     tila = tilaValmis,
@@ -21,7 +21,9 @@ object PeruskoulutusExampleData {
     vahvistus = None
   )
 
-  def oppiaine(koodiarvo: String) = Oppiaine(tunniste = KoodistoKoodiViite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = koodiarvo))
+  def oppiaine(aine: String) = Oppiaine(tunniste = KoodistoKoodiViite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine))
+  def äidinkieli(kieli: String) = AidinkieliJaKirjallisuus(kieli = KoodistoKoodiViite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"))
+
 
   def arviointi(arvosana: Int): Some[List[PeruskoulunArviointi]] = {
     Some(List(PeruskoulunArviointi(arvosana = KoodistoKoodiViite(koodiarvo = arvosana.toString, koodistoUri = "arvosanat"), None)))
@@ -42,8 +44,8 @@ object ExamplesPeruskoulutus {
       suoritukset = Nil,
       opiskeluoikeudenTila = Some(OpiskeluoikeudenTila(
         List(
-          Opiskeluoikeusjakso(date(2012, 9, 1), Some(date(2016, 1, 9)), opiskeluoikeusAktiivinen, Some(KoodistoKoodiViite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None))),
-          Opiskeluoikeusjakso(date(2016, 1, 10), None, opiskeluoikeusPäättynyt, Some(KoodistoKoodiViite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
+          Opiskeluoikeusjakso(date(2012, 9, 1), Some(date(2016, 1, 9)), opiskeluoikeusAktiivinen, None),
+          Opiskeluoikeusjakso(date(2016, 1, 10), None, opiskeluoikeusPäättynyt, None)
         )
       )),
       läsnäolotiedot = None
@@ -72,7 +74,8 @@ object ExamplesPeruskoulutus {
           vahvistus = Some(Vahvistus(Some(date(2016, 6, 4)))),
           osasuoritukset = Some(
             List(
-              suoritus("HI").copy(vahvistus = Some(Vahvistus(Some(date(2016, 6, 4))))).copy(arviointi = arviointi(9))
+              suoritus(oppiaine("HI")).copy(vahvistus = Some(Vahvistus(Some(date(2016, 6, 4))))).copy(arviointi = arviointi(9)),
+              suoritus(äidinkieli("AI1")).copy(vahvistus = Some(Vahvistus(Some(date(2016, 6, 4))))).copy(arviointi = arviointi(9))
             ))
         )),
       opiskeluoikeudenTila = Some(OpiskeluoikeudenTila(

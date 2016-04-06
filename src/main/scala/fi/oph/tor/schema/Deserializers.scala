@@ -1,9 +1,10 @@
 package fi.oph.tor.schema
 
+import fi.oph.tor.schema.PeruskoulunOppiaine
 import org.json4s._
 
 object Deserializers {
-  val deserializers = List(OpiskeluOikeusSerializer, SuoritusDeserializer, KoulutusmoduuliDeserializer, HenkilöDeserialializer, JärjestämismuotoDeserializer, OrganisaatioDeserializer)
+  val deserializers = List(OpiskeluOikeusSerializer, SuoritusDeserializer, KoulutusmoduuliDeserializer, HenkilöDeserialializer, JärjestämismuotoDeserializer, OrganisaatioDeserializer, PeruskoulunOppiaineDeserializer)
 }
 
 trait Deserializer[T] extends Serializer[T] {
@@ -22,9 +23,7 @@ object OpiskeluOikeusSerializer extends Deserializer[OpiskeluOikeus] {
 }
 
 object SuoritusDeserializer extends Deserializer[Suoritus] {
-  private val SuoritusClass = classOf[Suoritus]
-  private val AmmatillinenTutkinnonosaSuoritusClass = classOf[AmmatillinenTutkinnonosaSuoritus]
-  private val classes = List(SuoritusClass, AmmatillinenTutkinnonosaSuoritusClass)
+  private val classes = List(classOf[Suoritus], classOf[AmmatillinenTutkinnonosaSuoritus])
 
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Suoritus] = {
     case (TypeInfo(c, _), json) if (classes.contains(c)) =>
@@ -32,6 +31,18 @@ object SuoritusDeserializer extends Deserializer[Suoritus] {
         case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("ammatillinentutkintosuoritus") => suoritus.extract[AmmatillinenTutkintoSuoritus]
         case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("ammatillinenopstutkinnonosasuoritus") => suoritus.extract[AmmatillinenOpsTutkinnonosaSuoritus]
         case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("ammatillinenpaikallinentutkinnonosasuoritus") => suoritus.extract[AmmatillinenPaikallinenTutkinnonosaSuoritus]
+      }
+  }
+}
+
+object PeruskoulunOppiaineDeserializer extends Deserializer[Koulutusmoduuli] {
+  private val TheClass = classOf[PeruskoulunOppiaine]
+
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), PeruskoulunOppiaine] = {
+    case (TypeInfo(TheClass, _), json) =>
+      json match {
+        case moduuli: JObject if moduuli \ "tunniste" \ "koodiarvo" == JString("AI") => moduuli.extract[AidinkieliJaKirjallisuus]
+        case moduuli: JObject => moduuli.extract[Oppiaine]
       }
   }
 }

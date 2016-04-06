@@ -40,7 +40,7 @@ case class PeruskoulunPäättötodistus(
 case class PeruskoulunOppiaineSuoritus(
   @KoodistoKoodiarvo("peruskoulunoppiainesuoritus")
   tyyppi: KoodistoKoodiViite = KoodistoKoodiViite(koodiarvo = "peruskoulunoppiainesuoritus", koodistoUri = "suorituksentyyppi"),
-  koulutusmoduuli: Oppiaine,
+  koulutusmoduuli: PeruskoulunOppiaine,
   paikallinenId: Option[String],
   suorituskieli: Option[KoodistoKoodiViite],
   tila: KoodistoKoodiViite,
@@ -85,8 +85,9 @@ trait PeruskoulunOppiaine extends Koulutusmoduuli {
   ) extends PeruskoulunOppiaine
 
   case class AidinkieliJaKirjallisuus(
-    tunniste: KoodistoKoodiViite,
+    @KoodistoKoodiarvo("AI")
+    tunniste: KoodistoKoodiViite = KoodistoKoodiViite(koodiarvo = "AI", koodistoUri = "koskioppiaineetyleissivistava"),
     @Description("Mikä kieli on kyseessä")
     @KoodistoUri("oppiaineaidinkielijakirjallisuus")
     kieli: KoodistoKoodiViite
-  )
+  ) extends PeruskoulunOppiaine
