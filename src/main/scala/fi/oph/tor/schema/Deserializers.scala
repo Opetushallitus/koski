@@ -35,13 +35,14 @@ object SuoritusDeserializer extends Deserializer[Suoritus] {
   }
 }
 
-object PeruskoulunOppiaineDeserializer extends Deserializer[Koulutusmoduuli] {
+object PeruskoulunOppiaineDeserializer extends Deserializer[PeruskoulunOppiaine] {
   private val TheClass = classOf[PeruskoulunOppiaine]
 
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), PeruskoulunOppiaine] = {
     case (TypeInfo(TheClass, _), json) =>
       json match {
         case moduuli: JObject if moduuli \ "tunniste" \ "koodiarvo" == JString("AI") => moduuli.extract[AidinkieliJaKirjallisuus]
+        case moduuli: JObject if moduuli \ "tunniste" \ "koodiarvo" == JString("KT") => moduuli.extract[Uskonto]
         case moduuli: JObject => moduuli.extract[Oppiaine]
       }
   }

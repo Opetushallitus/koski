@@ -78,9 +78,10 @@ trait PeruskoulunOppiaine extends Koulutusmoduuli {
   ) extends PeruskoulunOppiaine
 
   case class Uskonto(
-    tunniste: KoodistoKoodiViite,
+    @KoodistoKoodiarvo("KT")
+    tunniste: KoodistoKoodiViite = KoodistoKoodiViite(koodiarvo = "KT", koodistoUri = "koskioppiaineetyleissivistava"),
     @Description("Mikä uskonto on kyseessä")
-    @KoodistoUri("oppiainenuskonto")
+    @KoodistoUri("oppiaineuskonto")
     uskonto: KoodistoKoodiViite
   ) extends PeruskoulunOppiaine
 

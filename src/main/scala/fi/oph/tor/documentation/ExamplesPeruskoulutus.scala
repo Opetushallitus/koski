@@ -23,6 +23,7 @@ object PeruskoulutusExampleData {
 
   def oppiaine(aine: String) = Oppiaine(tunniste = KoodistoKoodiViite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine))
   def äidinkieli(kieli: String) = AidinkieliJaKirjallisuus(kieli = KoodistoKoodiViite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"))
+  def uskonto(uskonto: String) = Uskonto(uskonto = KoodistoKoodiViite(koodiarvo = uskonto, koodistoUri = "oppiaineuskonto"))
 
 
   def arviointi(arvosana: Int): Some[List[PeruskoulunArviointi]] = {
@@ -75,7 +76,8 @@ object ExamplesPeruskoulutus {
           osasuoritukset = Some(
             List(
               suoritus(oppiaine("HI")).copy(vahvistus = Some(Vahvistus(Some(date(2016, 6, 4))))).copy(arviointi = arviointi(9)),
-              suoritus(äidinkieli("AI1")).copy(vahvistus = Some(Vahvistus(Some(date(2016, 6, 4))))).copy(arviointi = arviointi(9))
+              suoritus(äidinkieli("AI1")).copy(vahvistus = Some(Vahvistus(Some(date(2016, 6, 4))))).copy(arviointi = arviointi(10)),
+              suoritus(uskonto("KT1")).copy(vahvistus = Some(Vahvistus(Some(date(2016, 6, 4))))).copy(arviointi = arviointi(7))
             ))
         )),
       opiskeluoikeudenTila = Some(OpiskeluoikeudenTila(
