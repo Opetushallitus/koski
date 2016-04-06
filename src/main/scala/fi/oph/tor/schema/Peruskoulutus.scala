@@ -34,6 +34,7 @@ case class PeruskoulunPäättötodistus(
   toimipiste: OrganisaatioWithOid,
   arviointi: Option[List[PeruskoulunArviointi]] = None,
   vahvistus: Option[Vahvistus] = None,
+  @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
   override val osasuoritukset: Option[List[PeruskoulunOppiaineSuoritus]]
 ) extends Suoritus
 

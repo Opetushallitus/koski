@@ -51,6 +51,7 @@ case class AmmatillinenTutkintoSuoritus(
   toimipiste: OrganisaatioWithOid,
   arviointi: Option[List[AmmatillinenArviointi]] = None,
   vahvistus: Option[Vahvistus] = None,
+  @Description("Ammatilliseen tutkintoon liittyvät tutkinnonosan suoritukset")
   override val osasuoritukset: Option[List[AmmatillinenTutkinnonosaSuoritus]] = None,
   @KoodistoKoodiarvo("ammatillinentutkintosuoritus")
   tyyppi: KoodistoKoodiViite = KoodistoKoodiViite("ammatillinentutkintosuoritus", koodistoUri = "suorituksentyyppi")
