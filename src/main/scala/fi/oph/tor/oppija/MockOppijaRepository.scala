@@ -5,7 +5,7 @@ import fi.oph.tor.db.TorDatabase.DB
 import fi.oph.tor.db.{Tables, Futures, GlobalExecutionContext, PostgresDriverWithJsonSupport}
 import fi.oph.tor.henkilo.Hetu
 import fi.oph.tor.http.{TorErrorCategory, HttpStatus}
-import fi.oph.tor.log.Loggable
+import fi.oph.tor.log.{Logging, Loggable}
 import fi.oph.tor.schema.{NewHenkilö, KoodistoKoodiViite, FullHenkilö, Henkilö}
 
 object MockOppijat {
@@ -22,13 +22,13 @@ object MockOppijat {
   def defaultOppijat = oppijat.getOppijat
 }
 
-class MockOppijat(private var oppijat: List[FullHenkilö] = Nil) {
+class MockOppijat(private var oppijat: List[FullHenkilö] = Nil) extends Logging {
   private var idCounter = oppijat.length
   val äidinkieli: Some[KoodistoKoodiViite] = Some(KoodistoKoodiViite("FI", None, "kieli", None))
 
   def oppija(suku: String, etu: String, hetu: String): FullHenkilö = {
-
     val oppija = FullHenkilö(generateId(), hetu, etu, etu, suku, äidinkieli, None)
+    logger.info("Oppija added: " + oppija)
     oppijat = oppija :: oppijat
     oppija
   }
