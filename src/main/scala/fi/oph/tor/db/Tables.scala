@@ -11,8 +11,8 @@ import org.json4s._
 object Tables {
   class OpiskeluOikeusTable(tag: Tag) extends Table[OpiskeluOikeusRow](tag, "opiskeluoikeus") {
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
-    val oppijaOid: Rep[String] = column[String]("oppija_oid")
     val versionumero = column[Int]("versionumero")
+    val oppijaOid: Rep[String] = column[String]("oppija_oid")
     def data = column[JValue]("data")
 
     def * = (id, oppijaOid, versionumero, data) <> (OpiskeluOikeusRow.tupled, OpiskeluOikeusRow.unapply)
@@ -45,6 +45,7 @@ object Tables {
   }
 }
 
+// Note: the data json must not contain [id, versionumero] fields. This is enforced by DB constraint.
 case class OpiskeluOikeusRow(id: Int, oppijaOid: String, versionumero: Int, data: JValue) {
   lazy val toOpiskeluOikeus: OpiskeluOikeus = {
     OpiskeluOikeusStoredDataDeserializer.read(data, id, versionumero)
@@ -71,9 +72,7 @@ object OpiskeluOikeusStoredDataDeserializer {
     val migratedData = data.transformField {
       case JField("suoritus", suoritus: JObject) => JField("suoritus", addDefaultTila(suoritus))
     }
-    Json.fromJValue[OpiskeluOikeus](migratedData).withIdAndVersion( id = Some(id), versionumero = Some(versionumero) )
-
-    // TODO: kantaan constraint: opiskeluoikeuden id,versionumero täytyy mätsätä jsonissa/kentissä
+    Json.fromJValue[OpiskeluOikeus](migratedData).withIdAndVersion(id = Some(id), versionumero = Some(versionumero))
   }
 }
 
