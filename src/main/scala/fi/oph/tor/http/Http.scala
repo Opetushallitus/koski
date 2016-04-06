@@ -5,6 +5,7 @@ import fi.oph.tor.json.Json
 import fi.oph.tor.log.Logging
 import fi.oph.tor.util.Pools
 import org.http4s._
+import org.http4s.client.blaze.BlazeClientConfig
 import org.http4s.client.{Client, blaze}
 
 import scala.concurrent.duration._
@@ -12,7 +13,7 @@ import scalaz.concurrent.Task
 
 object Http extends Logging {
   private val maxHttpConnections = Pools.jettyThreads + Pools.httpThreads
-  def newClient = blaze.PooledHttp1Client(maxTotalConnections = maxHttpConnections, executor = Pools.httpPool)
+  def newClient = blaze.PooledHttp1Client(maxTotalConnections = maxHttpConnections, config = BlazeClientConfig.defaultConfig.copy(customExecutor = Some(Pools.httpPool)))
 
   def expectSuccess(status: Int, text: String, request: Request): Unit = (status, text) match {
     case (status, text) if status < 300 && status >= 200 =>

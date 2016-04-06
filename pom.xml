@@ -22,7 +22,7 @@
     <dependency>
       <groupId>com.github.Opetushallitus.scala-utils</groupId>
       <artifactId>scala-cas_2.11</artifactId>
-      <version>a38f43ab115f996785bbc9b1e77c04c3587e723b</version>
+      <version>e5fc009</version>
       <exclusions>
         <exclusion>
           <groupId>org.http4s</groupId>
@@ -159,12 +159,12 @@
     <dependency>
       <groupId>org.http4s</groupId>
       <artifactId>http4s-blaze-client_2.11</artifactId>
-      <version>0.12.3</version>
+      <version>0.13.0a</version>
     </dependency>
     <dependency>
       <groupId>org.http4s</groupId>
       <artifactId>http4s-dsl_2.11</artifactId>
-      <version>0.12.3</version>
+      <version>0.13.0a</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
