@@ -5,16 +5,16 @@ import fi.oph.tor.schema._
 
 case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
   def validateTutkintoRakenne(suoritus: Suoritus) = suoritus match {
-    case (tutkintoSuoritus: AmmatillinenTutkintoSuoritus) =>
+    case (tutkintoSuoritus: AmmatillinenTutkintosuoritus) =>
       getRakenne(tutkintoSuoritus.koulutusmoduuli) match {
         case Left(status) => status
         case Right(rakenne) =>
           validateOsaamisala(tutkintoSuoritus.osaamisala.toList.flatten, rakenne).then(HttpStatus.fold(suoritus.osasuoritusLista.map {
             case osa: AmmatillinenTutkinnonosaSuoritus if !tutkintoSuoritus.suoritustapa.isDefined =>
               TorErrorCategory.badRequest.validation.rakenne.suoritustapaPuuttuu()
-            case osa: AmmatillinenOpsTutkinnonosaSuoritus =>
+            case osa: AmmatillinenOpsTutkinnonosasuoritus =>
               validateTutkinnonOsa(osa, Some(rakenne), tutkintoSuoritus.suoritustapa)
-            case osa: AmmatillinenPaikallinenTutkinnonosaSuoritus =>
+            case osa: AmmatillinenPaikallinenTutkinnonosasuoritus =>
               HttpStatus.ok // vain OpsTutkinnonosatoteutukset validoidaan, muut sellaisenaan läpi, koska niiden rakennetta ei tunneta
           }))
       }
@@ -36,16 +36,16 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
   }
 
 
-  private def validateOsaamisala(osaamisala: List[KoodistoKoodiViite], rakenne: TutkintoRakenne): HttpStatus = {
-    val tuntemattomatOsaamisalat: List[KoodistoKoodiViite] = osaamisala.filter(osaamisala => !findOsaamisala(rakenne, osaamisala.koodiarvo).isDefined)
+  private def validateOsaamisala(osaamisala: List[Koodistokoodiviite], rakenne: TutkintoRakenne): HttpStatus = {
+    val tuntemattomatOsaamisalat: List[Koodistokoodiviite] = osaamisala.filter(osaamisala => !findOsaamisala(rakenne, osaamisala.koodiarvo).isDefined)
 
     HttpStatus.fold(tuntemattomatOsaamisalat.map {
-      osaamisala: KoodistoKoodiViite => TorErrorCategory.badRequest.validation.rakenne.tuntematonOsaamisala("Osaamisala " + osaamisala.koodiarvo + " ei löydy tutkintorakenteesta perusteelle " + rakenne.diaarinumero)
+      osaamisala: Koodistokoodiviite => TorErrorCategory.badRequest.validation.rakenne.tuntematonOsaamisala("Osaamisala " + osaamisala.koodiarvo + " ei löydy tutkintorakenteesta perusteelle " + rakenne.diaarinumero)
     })
   }
 
-  private def validateTutkinnonOsa(tutkinnonOsaToteutus: AmmatillinenOpsTutkinnonosaSuoritus, rakenne: Option[TutkintoRakenne], suoritustapa: Option[Suoritustapa]): HttpStatus = (tutkinnonOsaToteutus, rakenne, suoritustapa) match {
-    case (t: AmmatillinenOpsTutkinnonosaSuoritus, Some(rakenne), Some(suoritustapa))  =>
+  private def validateTutkinnonOsa(tutkinnonOsaToteutus: AmmatillinenOpsTutkinnonosasuoritus, rakenne: Option[TutkintoRakenne], suoritustapa: Option[Suoritustapa]): HttpStatus = (tutkinnonOsaToteutus, rakenne, suoritustapa) match {
+    case (t: AmmatillinenOpsTutkinnonosasuoritus, Some(rakenne), Some(suoritustapa))  =>
       t.tutkinto match {
         case Some(tutkinto) =>
           // Tutkinnon osa toisesta tutkinnosta.
@@ -72,11 +72,11 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
     }
   }
 
-  private def findTutkinnonOsa(rakenne: TutkintoRakenne, suoritustapa: KoodistoKoodiViite, koulutusModuuliTunniste: KoodistoKoodiViite): Option[TutkinnonOsa] = {
+  private def findTutkinnonOsa(rakenne: TutkintoRakenne, suoritustapa: Koodistokoodiviite, koulutusModuuliTunniste: Koodistokoodiviite): Option[TutkinnonOsa] = {
     rakenne.suoritustavat.find(_.suoritustapa == suoritustapa).flatMap(suoritustapa => findTutkinnonOsa(suoritustapa.rakenne, koulutusModuuliTunniste)).headOption
   }
 
-  private def findTutkinnonOsa(rakenne: RakenneOsa, koulutusModuuliTunniste: KoodistoKoodiViite): Option[TutkinnonOsa] = rakenne match {
+  private def findTutkinnonOsa(rakenne: RakenneOsa, koulutusModuuliTunniste: Koodistokoodiviite): Option[TutkinnonOsa] = rakenne match {
     case t:TutkinnonOsa if t.tunniste == koulutusModuuliTunniste => Some(t)
     case t:RakenneModuuli => t.osat.flatMap(findTutkinnonOsa(_, koulutusModuuliTunniste)).headOption
     case _ => None

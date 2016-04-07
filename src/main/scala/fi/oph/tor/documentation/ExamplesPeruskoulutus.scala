@@ -1,16 +1,17 @@
 package fi.oph.tor.documentation
 
 import java.time.LocalDate.{of => date}
+
+import fi.oph.tor.documentation.ExampleData._
+import fi.oph.tor.documentation.PeruskoulutusExampleData._
 import fi.oph.tor.organisaatio.MockOrganisaatiot
 import fi.oph.tor.schema._
-import ExampleData._
-import PeruskoulutusExampleData._
 
 object PeruskoulutusExampleData {
-  lazy val jyväskylänNormaalikoulu: Oppilaitos = Oppilaitos(MockOrganisaatiot.jyväskylänNormaalikoulu, Some(KoodistoKoodiViite("00204", None, "oppilaitosnumero", None)), Some("Jyväskylän normaalikoulu"))
-  lazy val tilaValmis: KoodistoKoodiViite = KoodistoKoodiViite(koodistoUri = "suorituksentila", koodiarvo = "VALMIS")
+  lazy val jyväskylänNormaalikoulu: Oppilaitos = Oppilaitos(MockOrganisaatiot.jyväskylänNormaalikoulu, Some(Koodistokoodiviite("00204", None, "oppilaitosnumero", None)), Some("Jyväskylän normaalikoulu"))
+  lazy val tilaValmis: Koodistokoodiviite = Koodistokoodiviite(koodistoUri = "suorituksentila", koodiarvo = "VALMIS")
 
-  def suoritus(aine: PeruskoulunOppiaine) = PeruskoulunOppiaineSuoritus(
+  def suoritus(aine: PeruskoulunOppiaine) = PeruskoulunOppiainesuoritus(
     koulutusmoduuli = aine,
     paikallinenId = None,
     suorituskieli = None,
@@ -20,23 +21,22 @@ object PeruskoulutusExampleData {
     vahvistus = None
   )
 
-  def oppiaine(aine: String) = Oppiaine(tunniste = KoodistoKoodiViite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine))
-  def äidinkieli(kieli: String) = AidinkieliJaKirjallisuus(kieli = KoodistoKoodiViite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"))
+  def oppiaine(aine: String) = Oppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine))
+  def äidinkieli(kieli: String) = AidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"))
   def kieli(oppiaine: String, kieli: String) = VierasTaiToinenKotimainenKieli(
-    tunniste = KoodistoKoodiViite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),
-    kieli = KoodistoKoodiViite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
-  def uskonto(uskonto: String) = Uskonto(uskonto = KoodistoKoodiViite(koodiarvo = uskonto, koodistoUri = "oppiaineuskonto"))
-
+    tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),
+    kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
+  def uskonto(uskonto: String) = Uskonto(uskonto = Koodistokoodiviite(koodiarvo = uskonto, koodistoUri = "oppiaineuskonto"))
 
   def arviointi(arvosana: Int): Some[List[PeruskoulunArviointi]] = {
-    Some(List(PeruskoulunArviointi(arvosana = KoodistoKoodiViite(koodiarvo = arvosana.toString, koodistoUri = "arvosanat"), None)))
+    Some(List(PeruskoulunArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana.toString, koodistoUri = "arvosanat"), None)))
   }
 }
 
 object ExamplesPeruskoulutus {
   val uusi = TorOppija(
     exampleHenkilö,
-    List(PeruskouluOpiskeluOikeus(
+    List(PerusopetuksenOpiskeluoikeus(
       id = None,
       versionumero = None,
       lähdejärjestelmänId = None,
@@ -57,7 +57,7 @@ object ExamplesPeruskoulutus {
 
   val päättötodistus = TorOppija(
     exampleHenkilö,
-    List(PeruskouluOpiskeluOikeus(
+    List(PerusopetuksenOpiskeluoikeus(
       id = None,
       versionumero = None,
       lähdejärjestelmänId = None,

@@ -2,11 +2,10 @@ package fi.oph.tor.schema
 
 import java.time.LocalDate
 
-import fi.oph.tor.arvosana.Arvosana
 import fi.oph.tor.schema.generic.annotation.Description
 
 @Description("Perusopetuksen opiskeluoikeus")
-case class PeruskouluOpiskeluOikeus(
+case class PerusopetuksenOpiskeluoikeus(
   id: Option[Int],
   versionumero: Option[Int],
   lähdejärjestelmänId: Option[LähdejärjestelmäId],
@@ -18,18 +17,18 @@ case class PeruskouluOpiskeluOikeus(
   opiskeluoikeudenTila: Option[OpiskeluoikeudenTila],
   läsnäolotiedot: Option[Läsnäolotiedot],
   @KoodistoKoodiarvo("peruskoulutus")
-  tyyppi: KoodistoKoodiViite = KoodistoKoodiViite("peruskoulutus", Some("Peruskoulutus"), "opiskeluoikeudentyyppi", None)
-) extends OpiskeluOikeus {
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("peruskoulutus", Some("Peruskoulutus"), "opiskeluoikeudentyyppi", None)
+) extends Opiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
 }
 
 case class PeruskoulunPäättötodistus(
   @KoodistoKoodiarvo("peruskoulunpaattotodistus")
-  tyyppi: KoodistoKoodiViite = KoodistoKoodiViite("peruskoulunpaattotodistus", koodistoUri = "suorituksentyyppi"),
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("peruskoulunpaattotodistus", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: Peruskoulutus,
   paikallinenId: Option[String],
-  suorituskieli: Option[KoodistoKoodiViite],
-  tila: KoodistoKoodiViite,
+  suorituskieli: Option[Koodistokoodiviite],
+  tila: Koodistokoodiviite,
   alkamispäivä: Option[LocalDate],
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
@@ -37,16 +36,16 @@ case class PeruskoulunPäättötodistus(
   arviointi: Option[List[PeruskoulunArviointi]] = None,
   vahvistus: Option[Vahvistus] = None,
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
-  override val osasuoritukset: Option[List[PeruskoulunOppiaineSuoritus]]
+  override val osasuoritukset: Option[List[PeruskoulunOppiainesuoritus]]
 ) extends Suoritus
 
-case class PeruskoulunOppiaineSuoritus(
+case class PeruskoulunOppiainesuoritus(
   @KoodistoKoodiarvo("peruskoulunoppiainesuoritus")
-  tyyppi: KoodistoKoodiViite = KoodistoKoodiViite(koodiarvo = "peruskoulunoppiainesuoritus", koodistoUri = "suorituksentyyppi"),
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "peruskoulunoppiainesuoritus", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: PeruskoulunOppiaine,
   paikallinenId: Option[String],
-  suorituskieli: Option[KoodistoKoodiViite],
-  tila: KoodistoKoodiViite,
+  suorituskieli: Option[Koodistokoodiviite],
+  tila: Koodistokoodiviite,
   alkamispäivä: Option[LocalDate],
   arviointi: Option[List[PeruskoulunArviointi]] = None,
   vahvistus: Option[Vahvistus] = None
@@ -58,12 +57,12 @@ case class Peruskoulutus(
  @KoodistoUri("koulutus")
  @KoodistoKoodiarvo("201100")
  @OksaUri("tmpOKSAID560", "tutkinto")
- tunniste: KoodistoKoodiViite = KoodistoKoodiViite("201100", koodistoUri = "koulutus")
+ tunniste: Koodistokoodiviite = Koodistokoodiviite("201100", koodistoUri = "koulutus")
 ) extends Koulutusmoduuli
 
 case class PeruskoulunArviointi(
   @KoodistoUri("arvosanat")
-  arvosana: KoodistoKoodiViite,
+  arvosana: Koodistokoodiviite,
   päivä: Option[LocalDate],
   arvioitsijat: Option[List[Arvioitsija]] = None
 ) extends Arviointi
@@ -72,27 +71,27 @@ trait PeruskoulunOppiaine extends Koulutusmoduuli {
   @Description("Peruskoulutuksen oppiaine")
   @KoodistoUri("koskioppiaineetyleissivistava")
   @OksaUri("tmpOKSAID256", "oppiaine")
-  def tunniste: KoodistoKoodiViite
+  def tunniste: Koodistokoodiviite
 }
 
   case class Oppiaine(
-    tunniste: KoodistoKoodiViite
+    tunniste: Koodistokoodiviite
   ) extends PeruskoulunOppiaine
 
   case class Uskonto(
     @KoodistoKoodiarvo("KT")
-    tunniste: KoodistoKoodiViite = KoodistoKoodiViite(koodiarvo = "KT", koodistoUri = "koskioppiaineetyleissivistava"),
+    tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "KT", koodistoUri = "koskioppiaineetyleissivistava"),
     @Description("Mikä uskonto on kyseessä")
     @KoodistoUri("oppiaineuskonto")
-    uskonto: KoodistoKoodiViite
+    uskonto: Koodistokoodiviite
   ) extends PeruskoulunOppiaine
 
   case class AidinkieliJaKirjallisuus(
     @KoodistoKoodiarvo("AI")
-    tunniste: KoodistoKoodiViite = KoodistoKoodiViite(koodiarvo = "AI", koodistoUri = "koskioppiaineetyleissivistava"),
+    tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "AI", koodistoUri = "koskioppiaineetyleissivistava"),
     @Description("Mikä kieli on kyseessä")
     @KoodistoUri("oppiaineaidinkielijakirjallisuus")
-    kieli: KoodistoKoodiViite
+    kieli: Koodistokoodiviite
   ) extends PeruskoulunOppiaine
 
   case class VierasTaiToinenKotimainenKieli(
@@ -101,8 +100,8 @@ trait PeruskoulunOppiaine extends Koulutusmoduuli {
     @KoodistoKoodiarvo("B1")
     @KoodistoKoodiarvo("B2")
     @KoodistoKoodiarvo("B3")
-    tunniste: KoodistoKoodiViite,
+    tunniste: Koodistokoodiviite,
     @Description("Mikä kieli on kyseessä")
     @KoodistoUri("kielivalikoima")
-    kieli: KoodistoKoodiViite
+    kieli: Koodistokoodiviite
   ) extends PeruskoulunOppiaine

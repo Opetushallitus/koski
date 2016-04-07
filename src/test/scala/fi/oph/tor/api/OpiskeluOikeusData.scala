@@ -7,16 +7,16 @@ import fi.oph.tor.schema._
 import org.json4s.JValue
 
 trait OpiskeluOikeusData {
-  val defaultHenkilö = NewHenkilö("010101-123N", "Testi", "Testi", "Toivola")
+  val defaultHenkilö = UusiHenkilö("010101-123N", "Testi", "Testi", "Toivola")
 
   def makeOppija(henkilö: Henkilö = defaultHenkilö, opiskeluOikeudet: List[AnyRef] = List(opiskeluoikeus())): JValue = toJValue(Map(
     "henkilö" -> henkilö,
     "opiskeluoikeudet" -> opiskeluOikeudet
   ))
 
-  val autoalanPerustutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(KoodistoKoodiViite("351301", "koulutus"), Some("39/011/2014"))
+  val autoalanPerustutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", "koulutus"), Some("39/011/2014"))
 
-  lazy val tutkintoSuoritus: AmmatillinenTutkintoSuoritus = AmmatillinenTutkintoSuoritus(
+  lazy val tutkintoSuoritus: AmmatillinenTutkintosuoritus = AmmatillinenTutkintosuoritus(
     koulutusmoduuli = autoalanPerustutkinto,
     tutkintonimike = None,
     osaamisala = None,
@@ -32,35 +32,35 @@ trait OpiskeluOikeusData {
     osasuoritukset = None
   )
 
-  def opiskeluoikeus(suoritus: AmmatillinenTutkintoSuoritus = tutkintoSuoritus) = AmmatillinenOpiskeluOikeus(None, None, None, None, None, None,
+  def opiskeluoikeus(suoritus: AmmatillinenTutkintosuoritus = tutkintoSuoritus) = AmmatillinenOpiskeluoikeus(None, None, None, None, None, None,
     oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto),
     suoritukset = List(suoritus),
     None, None, None, None
   )
 
-  val laajuus = Laajuus(11, KoodistoKoodiViite("6", "opintojenlaajuusyksikko"))
+  val laajuus = Laajuus(11, Koodistokoodiviite("6", "opintojenlaajuusyksikko"))
 
-  val tutkinnonOsa: OpsTutkinnonosa = OpsTutkinnonosa(KoodistoKoodiViite("100023", "tutkinnonosat"), true, Some(laajuus), None, None)
+  val tutkinnonOsa: OpsTutkinnonosa = OpsTutkinnonosa(Koodistokoodiviite("100023", "tutkinnonosat"), true, Some(laajuus), None, None)
 
   val paikallinenTutkinnonOsa = PaikallinenTutkinnonosa(
     Paikallinenkoodi("1", "paikallinen osa", "paikallinenkoodisto"), "Paikallinen tutkinnon osa", false, Some(laajuus)
   )
 
-  def arviointiHyvä(päivä: Option[LocalDate] = None): Some[List[AmmatillinenArviointi]] = Some(List(AmmatillinenArviointi(KoodistoKoodiViite("2", "arviointiasteikkoammatillinent1k3"), päivä)))
+  def arviointiHyvä(päivä: Option[LocalDate] = None): Some[List[AmmatillinenArviointi]] = Some(List(AmmatillinenArviointi(Koodistokoodiviite("2", "arviointiasteikkoammatillinent1k3"), päivä)))
 
-  val tilaValmis: KoodistoKoodiViite = KoodistoKoodiViite("VALMIS", "suorituksentila")
-  val tilaKesken: KoodistoKoodiViite = KoodistoKoodiViite("KESKEN", "suorituksentila")
-  val tilaKeskeytynyt: KoodistoKoodiViite = KoodistoKoodiViite("KESKEYTYNYT", "suorituksentila")
+  val tilaValmis: Koodistokoodiviite = Koodistokoodiviite("VALMIS", "suorituksentila")
+  val tilaKesken: Koodistokoodiviite = Koodistokoodiviite("KESKEN", "suorituksentila")
+  val tilaKeskeytynyt: Koodistokoodiviite = Koodistokoodiviite("KESKEYTYNYT", "suorituksentila")
   val vahvistus: Some[Vahvistus] = Some(Vahvistus(Some(LocalDate.parse("2016-08-08"))))
 
-  val tutkinnonSuoritustapaNäyttönä = Some(Suoritustapa(KoodistoKoodiViite("naytto", "suoritustapa")))
+  val tutkinnonSuoritustapaNäyttönä = Some(Suoritustapa(Koodistokoodiviite("naytto", "suoritustapa")))
 
-  val tutkinnonOsaSuoritus = AmmatillinenOpsTutkinnonosaSuoritus(
+  val tutkinnonOsaSuoritus = AmmatillinenOpsTutkinnonosasuoritus(
     tutkinnonOsa, None, None, None, None, None, None, tilaKesken, None,
     OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka")),
     arviointiHyvä(), None)
 
-  val paikallinenTutkinnonOsaSuoritus = AmmatillinenPaikallinenTutkinnonosaSuoritus(
+  val paikallinenTutkinnonOsaSuoritus = AmmatillinenPaikallinenTutkinnonosasuoritus(
     paikallinenTutkinnonOsa, None, None, None, None, None, tilaKesken, None,
     OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka")),
     arviointiHyvä(), None)

@@ -33,11 +33,11 @@ class OppijaRepositoryCachingStrategy extends CachingStrategyBase(new BaseCacheD
   }})
 
 trait OppijaRepository extends Logging {
-  def findOppijat(query: String): List[FullHenkilö]
-  def findByOid(id: String): Option[FullHenkilö]
-  def findByOids(oids: List[String]): List[FullHenkilö]
+  def findOppijat(query: String): List[TaydellisetHenkilötiedot]
+  def findByOid(id: String): Option[TaydellisetHenkilötiedot]
+  def findByOids(oids: List[String]): List[TaydellisetHenkilötiedot]
 
   def resetFixtures {}
 
-  def findOrCreate(henkilö: NewHenkilö): Either[HttpStatus, Henkilö.Oid]
+  def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, Henkilö.Oid]
 }

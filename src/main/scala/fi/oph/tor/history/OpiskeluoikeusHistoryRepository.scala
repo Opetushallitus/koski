@@ -9,7 +9,7 @@ import fi.oph.tor.db.TorDatabase._
 import fi.oph.tor.db.{Futures, OpiskeluOikeusHistoryRow, OpiskeluOikeusStoredDataDeserializer}
 import fi.oph.tor.http.{HttpStatus, TorErrorCategory}
 import fi.oph.tor.log.Logging
-import fi.oph.tor.schema.OpiskeluOikeus
+import fi.oph.tor.schema.{Opiskeluoikeus}
 import fi.oph.tor.toruser.TorUser
 import org.json4s._
 import org.json4s.jackson.JsonMethods
@@ -30,7 +30,7 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends Futures with Logging 
     }
   }
 
-  def findVersion(id: Int, version: Int)(implicit user: TorUser): Either[HttpStatus, OpiskeluOikeus] = {
+  def findVersion(id: Int, version: Int)(implicit user: TorUser): Either[HttpStatus, Opiskeluoikeus] = {
     findByOpiskeluoikeusId(id, version) match {
       case Some(diffs) =>
         if (diffs.length < version) {

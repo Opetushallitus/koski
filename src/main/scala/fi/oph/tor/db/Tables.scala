@@ -4,7 +4,7 @@ import java.sql.Timestamp
 
 import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.json.Json
-import fi.oph.tor.schema.{KoodistoKoodiViite, OpiskeluOikeus}
+import fi.oph.tor.schema.{Koodistokoodiviite, Opiskeluoikeus}
 import fi.oph.tor.toruser.TorUser
 import org.json4s._
 
@@ -47,21 +47,21 @@ object Tables {
 
 // Note: the data json must not contain [id, versionumero] fields. This is enforced by DB constraint.
 case class OpiskeluOikeusRow(id: Int, oppijaOid: String, versionumero: Int, data: JValue) {
-  lazy val toOpiskeluOikeus: OpiskeluOikeus = {
+  lazy val toOpiskeluOikeus: Opiskeluoikeus = {
     OpiskeluOikeusStoredDataDeserializer.read(data, id, versionumero)
   }
 
-  def this(oppijaOid: String, opiskeluOikeus: OpiskeluOikeus, versionumero: Int) = {
+  def this(oppijaOid: String, opiskeluOikeus: Opiskeluoikeus, versionumero: Int) = {
     this(0, oppijaOid, versionumero, Json.toJValue(opiskeluOikeus))
   }
 }
 
 object OpiskeluOikeusStoredDataDeserializer {
-  def read(data: JValue, id: Int, versionumero: Int): OpiskeluOikeus = {
+  def read(data: JValue, id: Int, versionumero: Int): Opiskeluoikeus = {
     def addDefaultTila(suoritus: JObject): JObject = {
       // Migrating data on the fly: if tila is missing, add default value. This migration should later be performed on db level or removed
       (if (!suoritus.values.contains("tila")) {
-        suoritus.merge(JObject("tila" -> Json.toJValue(KoodistoKoodiViite("KESKEN", Some("Suoritus kesken"), "suorituksentila", Some(1))) ))
+        suoritus.merge(JObject("tila" -> Json.toJValue(Koodistokoodiviite("KESKEN", Some("Suoritus kesken"), "suorituksentila", Some(1))) ))
       } else {
         suoritus
       }).transformField {
@@ -72,7 +72,7 @@ object OpiskeluOikeusStoredDataDeserializer {
     val migratedData = data.transformField {
       case JField("suoritus", suoritus: JObject) => JField("suoritus", addDefaultTila(suoritus))
     }
-    Json.fromJValue[OpiskeluOikeus](migratedData).withIdAndVersion(id = Some(id), versionumero = Some(versionumero))
+    Json.fromJValue[Opiskeluoikeus](migratedData).withIdAndVersion(id = Some(id), versionumero = Some(versionumero))
   }
 }
 

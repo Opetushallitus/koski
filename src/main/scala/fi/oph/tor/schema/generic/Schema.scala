@@ -44,12 +44,19 @@ case class AnyOfSchema(alternatives: List[SchemaWithClassName], fullClassName: S
 trait SchemaWithClassName extends Schema {
   def fullClassName: String
   def simpleName: String = {
-    fullClassName.split("\\.").toList.last.toLowerCase
+    simpleClassName.toLowerCase
+  }
+  def titleName: String = {
+    simpleClassName.split("(?=\\p{Lu})").map(_.toLowerCase).mkString(" ").capitalize
   }
   def getSchema(className: String): Option[SchemaWithClassName] = if (className == fullClassName) {
     Some(this)
   } else {
     None
+  }
+
+  private def simpleClassName = {
+    fullClassName.split("\\.").toList.last
   }
 }
 

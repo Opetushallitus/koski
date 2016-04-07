@@ -18,13 +18,13 @@ trait OpiskeluOikeusTestMethods extends LocalJettyHttpSpecification with Matcher
     putTutkintoSuoritus(s)(f)
   }
 
-  def putTutkintoSuoritus[A](suoritus: AmmatillinenTutkintoSuoritus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
+  def putTutkintoSuoritus[A](suoritus: AmmatillinenTutkintosuoritus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
     val opiskeluOikeus = opiskeluoikeus().copy(suoritukset = List(suoritus))
 
     putOppija(makeOppija(henkilö, List(Json.toJValue(opiskeluOikeus))), headers)(f)
   }
 
-  def putOpiskeluOikeus[A](opiskeluOikeus: OpiskeluOikeus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
+  def putOpiskeluOikeus[A](opiskeluOikeus: Opiskeluoikeus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
     putOppija(makeOppija(henkilö, List(opiskeluOikeus)), headers)(f)
   }
 
@@ -45,12 +45,12 @@ trait OpiskeluOikeusTestMethods extends LocalJettyHttpSpecification with Matcher
     submit(method, path, body = content.getBytes("UTF-8"), headers = authHeaders() ++ jsonContent) (f)
   }
 
-  def createOrUpdate(oppija: FullHenkilö, opiskeluOikeus: OpiskeluOikeus, check: => Unit = { verifyResponseStatus(200) }) = {
+  def createOrUpdate(oppija: TaydellisetHenkilötiedot, opiskeluOikeus: Opiskeluoikeus, check: => Unit = { verifyResponseStatus(200) }) = {
     putOppija(Json.toJValue(TorOppija(oppija, List(opiskeluOikeus))))(check)
     lastOpiskeluOikeus(oppija.oid)
   }
 
-  def createOpiskeluOikeus[T <: OpiskeluOikeus](oppija: FullHenkilö, opiskeluOikeus: T) = {
+  def createOpiskeluOikeus[T <: Opiskeluoikeus](oppija: TaydellisetHenkilötiedot, opiskeluOikeus: T) = {
     resetFixtures
     createOrUpdate(oppija, opiskeluOikeus)
     lastOpiskeluOikeus(oppija.oid).asInstanceOf[T]

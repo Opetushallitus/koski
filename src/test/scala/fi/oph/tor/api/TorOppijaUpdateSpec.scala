@@ -3,12 +3,12 @@ package fi.oph.tor.api
 import fi.oph.tor.opiskeluoikeus.OpiskeluOikeusTestData
 import fi.oph.tor.oppija.MockOppijat
 import fi.oph.tor.organisaatio.MockOrganisaatiot
-import fi.oph.tor.schema.{KoodistoKoodiViite, FullHenkilö}
+import fi.oph.tor.schema.TaydellisetHenkilötiedot
 import org.scalatest.FreeSpec
 
 class TorOppijaUpdateSpec extends FreeSpec with OpiskeluOikeusTestMethods {
   val uusiOpiskeluOikeus = OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 351161)
-  val oppija: FullHenkilö = MockOppijat.tyhjä
+  val oppija: TaydellisetHenkilötiedot = MockOppijat.tyhjä
 
   "Opiskeluoikeuden lisääminen" - {
     "Puuttuvien tietojen täyttäminen" - {

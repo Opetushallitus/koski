@@ -17,7 +17,7 @@ class TorDatabaseFixtureCreator(database: TorDatabase, repository: OpiskeluOikeu
     if (database.config.isRemote) throw new IllegalStateException("Trying to reset fixtures in remote database")
     implicit val user = MockUsers.kalle.asTorUser
 
-    val oppijat: List[FullHenkilö] = oppijaRepository.findOppijat("")
+    val oppijat: List[TaydellisetHenkilötiedot] = oppijaRepository.findOppijat("")
     val deleteOpiskeluOikeudet = oppijat.map{oppija => OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid === oppija.oid).delete}
 
     await(database.db.run(DBIO.sequence(deleteOpiskeluOikeudet)))
@@ -38,11 +38,11 @@ class TorDatabaseFixtureCreator(database: TorDatabase, repository: OpiskeluOikeu
 }
 
 object OpiskeluOikeusTestData {
-  def opiskeluOikeus(oppilaitosId: String, koulutusKoodi: Int = 351301): AmmatillinenOpiskeluOikeus = {
+  def opiskeluOikeus(oppilaitosId: String, koulutusKoodi: Int = 351301): AmmatillinenOpiskeluoikeus = {
     val oppilaitos: Oppilaitos = Oppilaitos(oppilaitosId, None, None)
-    val koulutusKoodiViite = KoodistoKoodiViite(koulutusKoodi.toString, None, "koulutus", None)
+    val koulutusKoodiViite = Koodistokoodiviite(koulutusKoodi.toString, None, "koulutus", None)
 
-    AmmatillinenOpiskeluOikeus(
+    AmmatillinenOpiskeluoikeus(
       None,
       None,
       None,
@@ -50,7 +50,7 @@ object OpiskeluOikeusTestData {
       None,
       None,
       oppilaitos,
-      List(AmmatillinenTutkintoSuoritus(
+      List(AmmatillinenTutkintosuoritus(
         AmmatillinenTutkintoKoulutus(koulutusKoodiViite, Some("39/011/2014")),
         None,
         None,
@@ -58,7 +58,7 @@ object OpiskeluOikeusTestData {
         None,
         None,
         None,
-        KoodistoKoodiViite("KESKEN", "suorituksentila"),
+        Koodistokoodiviite("KESKEN", "suorituksentila"),
         None,
         oppilaitos,
         None,

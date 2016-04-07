@@ -25,7 +25,7 @@ object KoodistoUri extends MetadataSupport[KoodistoUri] {
   def toKoodistoKoodiViiteSchema(schemaFactory: SchemaFactory, itemSchema: Schema): ClassSchema = {
     val koodistoViiteSchema: ClassSchema = itemSchema match {
       case s: ClassSchema => s
-      case s: ClassRefSchema => schemaFactory.createSchema(classOf[KoodistoKoodiViite].getName).asInstanceOf[ClassSchema]
+      case s: ClassRefSchema => schemaFactory.createSchema(classOf[Koodistokoodiviite].getName).asInstanceOf[ClassSchema]
     }
     koodistoViiteSchema
   }

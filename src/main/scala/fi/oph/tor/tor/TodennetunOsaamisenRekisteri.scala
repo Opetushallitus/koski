@@ -49,8 +49,8 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     }
   }
 
-  def findOppijat(query: String)(implicit user: TorUser): Seq[FullHenkilö] = {
-    val oppijat: List[FullHenkilö] = oppijaRepository.findOppijat(query)
+  def findOppijat(query: String)(implicit user: TorUser): Seq[TaydellisetHenkilötiedot] = {
+    val oppijat: List[TaydellisetHenkilötiedot] = oppijaRepository.findOppijat(query)
     auditLog(AuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> query)))
     val filtered = opiskeluOikeusRepository.filterOppijat(oppijat)
     filtered.sortBy(oppija => (oppija.sukunimi, oppija.etunimet))
@@ -58,7 +58,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
 
   def createOrUpdate(oppija: TorOppija)(implicit user: TorUser): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
 
-    def applicationLog(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: OpiskeluOikeus, result: CreateOrUpdateResult): Unit = {
+    def applicationLog(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: Opiskeluoikeus, result: CreateOrUpdateResult): Unit = {
       val (verb, content) = result match {
         case _: Updated => ("Päivitetty", Json.write(result.diff))
         case _: Created => ("Luotu", Json.write(opiskeluOikeus))
@@ -83,7 +83,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
 
     timed("createOrUpdate") {
       val oppijaOid: Either[HttpStatus, PossiblyUnverifiedOppijaOid] = oppija.henkilö match {
-        case h:NewHenkilö => oppijaRepository.findOrCreate(h).right.map(VerifiedOppijaOid(_))
+        case h:UusiHenkilö => oppijaRepository.findOrCreate(h).right.map(VerifiedOppijaOid(_))
         case h:HenkilöWithOid => Right(UnverifiedOppijaOid(h.oid, oppijaRepository))
       }
 
@@ -116,7 +116,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
       case Some(oppija) =>
         opiskeluOikeusRepository.findByOppijaOid(oppija.oid) match {
           case Nil => notFound
-          case opiskeluoikeudet: Seq[OpiskeluOikeus] => Right(TorOppija(oppija, opiskeluoikeudet))
+          case opiskeluoikeudet: Seq[Opiskeluoikeus] => Right(TorOppija(oppija, opiskeluoikeudet))
         }
       case None =>
         notFound
@@ -127,12 +127,12 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
 
 
   private def query(filters: List[QueryFilter])(implicit user: TorUser): Observable[TorOppija] = {
-    val oikeudetPerOppijaOid: Observable[(Oid, List[OpiskeluOikeus])] = opiskeluOikeusRepository.query(filters)
+    val oikeudetPerOppijaOid: Observable[(Oid, List[Opiskeluoikeus])] = opiskeluOikeusRepository.query(filters)
     oikeudetPerOppijaOid.tumblingBuffer(500).flatMap {
-      oppijatJaOidit: Seq[(Oid, List[OpiskeluOikeus])] =>
+      oppijatJaOidit: Seq[(Oid, List[Opiskeluoikeus])] =>
         val oids: List[String] = oppijatJaOidit.map(_._1).toList
 
-        val henkilöt: Map[String, FullHenkilö] = oppijaRepository.findByOids(oids).map(henkilö => (henkilö.oid, henkilö)).toMap
+        val henkilöt: Map[String, TaydellisetHenkilötiedot] = oppijaRepository.findByOids(oids).map(henkilö => (henkilö.oid, henkilö)).toMap
 
         val torOppijat: Iterable[TorOppija] = oppijatJaOidit.flatMap { case (oid, opiskeluOikeudet) =>
           henkilöt.get(oid) match {
@@ -149,7 +149,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
 }
 
 case class HenkilönOpiskeluoikeusVersiot(henkilö: OidHenkilö, opiskeluoikeudet: List[OpiskeluoikeusVersio])
-case class OpiskeluoikeusVersio(id: OpiskeluOikeus.Id, versionumero: Int)
+case class OpiskeluoikeusVersio(id: Opiskeluoikeus.Id, versionumero: Int)
 
 
 trait QueryFilter

@@ -1,8 +1,8 @@
 package fi.oph.tor.organisaatio
 
-import fi.oph.tor.schema.{KoodistoKoodiViite, OidOrganisaatio, Oppilaitos, OrganisaatioWithOid}
+import fi.oph.tor.schema._
 
-case class OrganisaatioHierarkia(oid: String, oppilaitosnumero: Option[KoodistoKoodiViite], nimi: String, organisaatiotyypit: List[String], children: List[OrganisaatioHierarkia]) {
+case class OrganisaatioHierarkia(oid: String, oppilaitosnumero: Option[Koodistokoodiviite], nimi: String, organisaatiotyypit: List[String], children: List[OrganisaatioHierarkia]) {
   def find(oid: String): Option[OrganisaatioHierarkia] = {
     if (oid == this.oid) {
       Some(this)

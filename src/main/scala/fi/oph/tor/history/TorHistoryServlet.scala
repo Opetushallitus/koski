@@ -2,7 +2,7 @@ package fi.oph.tor.history
 
 import fi.oph.tor.http.{HttpStatus, TorErrorCategory}
 import fi.oph.tor.log._
-import fi.oph.tor.schema.OpiskeluOikeus
+import fi.oph.tor.schema.Opiskeluoikeus
 import fi.oph.tor.servlet.{ErrorHandlingServlet, NoCache}
 import fi.oph.tor.toruser.{RequiresAuthentication, UserOrganisationsRepository}
 import fi.vm.sade.security.ldap.DirectoryClient
@@ -24,7 +24,7 @@ class TorHistoryServlet(val userRepository: UserOrganisationsRepository, val dir
     val id = getIntegerParam("id")
     val version = getIntegerParam("version")
 
-    val result: Either[HttpStatus, OpiskeluOikeus] = historyRepository.findVersion(id, version)(torUser)
+    val result: Either[HttpStatus, Opiskeluoikeus] = historyRepository.findVersion(id, version)(torUser)
 
     result.right.foreach { _ => logHistoryView(id)}
 

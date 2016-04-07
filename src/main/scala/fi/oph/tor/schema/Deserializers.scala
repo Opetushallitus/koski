@@ -11,13 +11,13 @@ trait Deserializer[T] extends Serializer[T] {
   def serialize(implicit format: Formats): PartialFunction[Any, JValue] = PartialFunction.empty
 }
 
-object OpiskeluOikeusSerializer extends Deserializer[OpiskeluOikeus] {
-  private val OpiskeluOikeusClass = classOf[OpiskeluOikeus]
-  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), OpiskeluOikeus] = {
+object OpiskeluOikeusSerializer extends Deserializer[Opiskeluoikeus] {
+  private val OpiskeluOikeusClass = classOf[Opiskeluoikeus]
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Opiskeluoikeus] = {
     case (TypeInfo(OpiskeluOikeusClass, _), json) =>
       json match {
-        case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("ammatillinenkoulutus") => oo.extract[AmmatillinenOpiskeluOikeus]
-        case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("peruskoulutus") => oo.extract[PeruskouluOpiskeluOikeus]
+        case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("ammatillinenkoulutus") => oo.extract[AmmatillinenOpiskeluoikeus]
+        case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("peruskoulutus") => oo.extract[PerusopetuksenOpiskeluoikeus]
       }
   }
 }
@@ -28,9 +28,9 @@ object SuoritusDeserializer extends Deserializer[Suoritus] {
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Suoritus] = {
     case (TypeInfo(c, _), json) if (classes.contains(c)) =>
       json match {
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("ammatillinentutkintosuoritus") => suoritus.extract[AmmatillinenTutkintoSuoritus]
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("ammatillinenopstutkinnonosasuoritus") => suoritus.extract[AmmatillinenOpsTutkinnonosaSuoritus]
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("ammatillinenpaikallinentutkinnonosasuoritus") => suoritus.extract[AmmatillinenPaikallinenTutkinnonosaSuoritus]
+        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("ammatillinentutkintosuoritus") => suoritus.extract[AmmatillinenTutkintosuoritus]
+        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("ammatillinenopstutkinnonosasuoritus") => suoritus.extract[AmmatillinenOpsTutkinnonosasuoritus]
+        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("ammatillinenpaikallinentutkinnonosasuoritus") => suoritus.extract[AmmatillinenPaikallinenTutkinnonosasuoritus]
       }
   }
 }
@@ -68,9 +68,9 @@ object HenkilöDeserialializer extends Deserializer[Henkilö] {
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Henkilö] = {
     case (TypeInfo(TheClass, _), json) =>
       json match {
-        case henkilö: JObject if hasOid(henkilö) && hasHetu(henkilö) => henkilö.extract[FullHenkilö]
+        case henkilö: JObject if hasOid(henkilö) && hasHetu(henkilö) => henkilö.extract[TaydellisetHenkilötiedot]
         case henkilö: JObject if hasOid(henkilö) => henkilö.extract[OidHenkilö]
-        case henkilö: JObject => henkilö.extract[NewHenkilö]
+        case henkilö: JObject => henkilö.extract[UusiHenkilö]
       }
   }
 

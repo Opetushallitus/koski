@@ -6,7 +6,7 @@ import fi.oph.tor.db.{Tables, Futures, GlobalExecutionContext, PostgresDriverWit
 import fi.oph.tor.henkilo.Hetu
 import fi.oph.tor.http.{TorErrorCategory, HttpStatus}
 import fi.oph.tor.log.{Logging, Loggable}
-import fi.oph.tor.schema.{NewHenkilö, KoodistoKoodiViite, FullHenkilö, Henkilö}
+import fi.oph.tor.schema._
 
 object MockOppijat {
   private val oppijat = new MockOppijat
@@ -22,12 +22,12 @@ object MockOppijat {
   def defaultOppijat = oppijat.getOppijat
 }
 
-class MockOppijat(private var oppijat: List[FullHenkilö] = Nil) extends Logging {
+class MockOppijat(private var oppijat: List[TaydellisetHenkilötiedot] = Nil) extends Logging {
   private var idCounter = oppijat.length
-  val äidinkieli: Some[KoodistoKoodiViite] = Some(KoodistoKoodiViite("FI", None, "kieli", None))
+  val äidinkieli: Some[Koodistokoodiviite] = Some(Koodistokoodiviite("FI", None, "kieli", None))
 
-  def oppija(suku: String, etu: String, hetu: String): FullHenkilö = {
-    val oppija = FullHenkilö(generateId(), hetu, etu, etu, suku, äidinkieli, None)
+  def oppija(suku: String, etu: String, hetu: String): TaydellisetHenkilötiedot = {
+    val oppija = TaydellisetHenkilötiedot(generateId(), hetu, etu, etu, suku, äidinkieli, None)
     logger.info("Oppija added: " + oppija)
     oppijat = oppija :: oppijat
     oppija
@@ -51,8 +51,8 @@ class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with 
     oppijat.getOppijat.filter(searchString(_).contains(query))
   }
 
-  def findOrCreate(henkilö: NewHenkilö): Either[HttpStatus, Henkilö.Oid] =  {
-    def oidFrom(oppijat: List[FullHenkilö]): Either[HttpStatus, Henkilö.Oid] = {
+  def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, Henkilö.Oid] =  {
+    def oidFrom(oppijat: List[TaydellisetHenkilötiedot]): Either[HttpStatus, Henkilö.Oid] = {
       oppijat match {
         case List(oppija) => Right(oppija.oid)
         case _ =>
@@ -60,7 +60,7 @@ class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with 
           Left(TorErrorCategory.internalError())
       }
     }
-    val NewHenkilö(hetu, etunimet, kutsumanimi, sukunimi) = henkilö
+    val UusiHenkilö(hetu, etunimet, kutsumanimi, sukunimi) = henkilö
     Hetu.validate(hetu).right.flatMap { hetu =>
       create(hetu, etunimet, kutsumanimi, sukunimi).left.flatMap { case HttpStatus(409, _) =>
         oidFrom(findOppijat(hetu))
@@ -79,7 +79,7 @@ class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with 
     }
   }
 
-  private def searchString(oppija: FullHenkilö) = {
+  private def searchString(oppija: TaydellisetHenkilötiedot) = {
     oppija.toString.toUpperCase
   }
 
@@ -88,10 +88,10 @@ class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with 
     oppijat = new MockOppijat(MockOppijat.defaultOppijat)
   }
 
-  def findFromDb(oid: String): Option[FullHenkilö] = {
+  def findFromDb(oid: String): Option[TaydellisetHenkilötiedot] = {
     import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
     runQuery(Tables.OpiskeluOikeudet.filter(_.oppijaOid === oid)).headOption.map { oppijaRow =>
-      FullHenkilö(oid, oid, oid, oid, oid, oppijat.äidinkieli, None)
+      TaydellisetHenkilötiedot(oid, oid, oid, oid, oid, oppijat.äidinkieli, None)
     }
   }
 
@@ -99,11 +99,11 @@ class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with 
     db.toSeq.flatMap { db => await(db.run(fullQuery.result)) }
   }
 
-  override def findByOid(id: String): Option[FullHenkilö] = {
+  override def findByOid(id: String): Option[TaydellisetHenkilötiedot] = {
     oppijat.getOppijat.filter {_.oid == id}.headOption.orElse(findFromDb(id))
   }
 
-  override def findByOids(oids: List[String]): List[FullHenkilö] = oids.map(oid => findByOid(oid).get)
+  override def findByOids(oids: List[String]): List[TaydellisetHenkilötiedot] = oids.map(oid => findByOid(oid).get)
 
 }
 

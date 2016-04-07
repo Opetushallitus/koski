@@ -85,11 +85,11 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
 
       describe("Käytettäessä oppijan kaikkia tietoja") {
         describe("Oid ok") {
-          it("palautetaan HTTP 200" ) (putHenkilö(FullHenkilö(MockOppijat.eero.oid, "010101-123N", "Testi", "Testi", "Toivola", None, None)) (verifyResponseStatus(200)))
+          it("palautetaan HTTP 200" ) (putHenkilö(TaydellisetHenkilötiedot(MockOppijat.eero.oid, "010101-123N", "Testi", "Testi", "Toivola", None, None)) (verifyResponseStatus(200)))
         }
 
         describe("Oid virheellinen") {
-          it("palautetaan HTTP 400" ) (putHenkilö(FullHenkilö("123.123.123", "010101-123N", "Testi", "Testi", "Toivola", None, None)) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema(".*ECMA 262 regex.*".r))))
+          it("palautetaan HTTP 400" ) (putHenkilö(TaydellisetHenkilötiedot("123.123.123", "010101-123N", "Testi", "Testi", "Toivola", None, None)) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema(".*ECMA 262 regex.*".r))))
         }
       }
     }

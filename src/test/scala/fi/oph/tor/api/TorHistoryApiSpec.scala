@@ -11,7 +11,7 @@ import fi.oph.tor.log.AuditLogTester
 import fi.oph.tor.opiskeluoikeus.OpiskeluOikeusTestData
 import fi.oph.tor.oppija.MockOppijat
 import fi.oph.tor.organisaatio.MockOrganisaatiot
-import fi.oph.tor.schema.{FullHenkilö, OpiskeluOikeus}
+import fi.oph.tor.schema.{Opiskeluoikeus, TaydellisetHenkilötiedot}
 import fi.oph.tor.toruser.MockUsers
 import org.scalatest.FunSpec
 
@@ -19,7 +19,7 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
   SharedJetty.start
   AuditLogTester.setup
   val uusiOpiskeluOikeus = OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 351161)
-  val oppija: FullHenkilö = MockOppijat.tyhjä
+  val oppija: TaydellisetHenkilötiedot = MockOppijat.tyhjä
 
   describe("Muutoshistoria") {
     describe("Luotaessa uusi opiskeluoikeus") {
@@ -36,14 +36,14 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
     describe("Päivitettäessä") {
       it("Luodaan uusi versiorivi") {
         val opiskeluOikeus = createOpiskeluOikeus(oppija, uusiOpiskeluOikeus)
-        val modified: OpiskeluOikeus = createOrUpdate(oppija, opiskeluOikeus.copy(päättymispäivä = Some(LocalDate.now)))
+        val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluOikeus.copy(päättymispäivä = Some(LocalDate.now)))
         verifyHistory(oppija, modified, List(1, 2))
       }
 
       describe("Jos mikään ei ole muuttunut") {
         it("Ei luoda uutta versioriviä") {
           val opiskeluOikeus = createOpiskeluOikeus(oppija, uusiOpiskeluOikeus)
-          val modified: OpiskeluOikeus = createOrUpdate(oppija, opiskeluOikeus)
+          val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluOikeus)
           verifyHistory(oppija, modified, List(1))
         }
       }
@@ -52,7 +52,7 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
         describe("Versionumero sama kuin viimeisin") {
           it("Päivitys hyväksytään") {
             val opiskeluOikeus = createOpiskeluOikeus(oppija, uusiOpiskeluOikeus)
-            val modified: OpiskeluOikeus = createOrUpdate(oppija, opiskeluOikeus.copy(päättymispäivä = Some(LocalDate.now), versionumero = Some(1)))
+            val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluOikeus.copy(päättymispäivä = Some(LocalDate.now), versionumero = Some(1)))
             verifyHistory(oppija, modified, List(1, 2))
           }
         }
@@ -60,7 +60,7 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
         describe("Versionumero ei täsmää") {
           it("Päivitys hylätään") {
             val opiskeluOikeus = createOpiskeluOikeus(oppija, uusiOpiskeluOikeus)
-            val modified: OpiskeluOikeus = createOrUpdate(oppija, opiskeluOikeus.copy(päättymispäivä = Some(LocalDate.now), versionumero = Some(3)), {
+            val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluOikeus.copy(päättymispäivä = Some(LocalDate.now), versionumero = Some(3)), {
               verifyResponseStatus(409, TorErrorCategory.conflict.versionumero("Annettu versionumero 3 <> 1"))
             })
             verifyHistory(oppija, modified, List(1))
@@ -111,7 +111,7 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
         val opiskeluOikeus = createOpiskeluOikeus(oppija, uusiOpiskeluOikeus)
         authGet("api/opiskeluoikeus/historia/" + opiskeluOikeus.id.get + "/1") {
           verifyResponseStatus(200)
-          val versio = Json.read[OpiskeluOikeus](body);
+          val versio = Json.read[Opiskeluoikeus](body);
           versio should equal(opiskeluOikeus)
           AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "MUUTOSHISTORIA_KATSOMINEN"))
         }
@@ -134,7 +134,7 @@ class TorHistoryApiSpec extends FunSpec with OpiskeluOikeusTestMethods {
     }
   }
 
-  def verifyHistory(oppija: FullHenkilö, opiskeluOikeus: OpiskeluOikeus, versions: List[Int]): Unit = {
+  def verifyHistory(oppija: TaydellisetHenkilötiedot, opiskeluOikeus: Opiskeluoikeus, versions: List[Int]): Unit = {
     val historia: List[OpiskeluOikeusHistoryRow] = getHistory(opiskeluOikeus.id.get)
     historia.map(_.versionumero) should equal(versions)
 

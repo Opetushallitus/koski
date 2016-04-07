@@ -10,14 +10,14 @@ import fi.oph.tor.schema.generic.annotation.{Description, MinValue, ReadOnly, Re
 case class TorOppija(
   henkilö: Henkilö,
   @Description("Lista henkilön opiskeluoikeuksista. Sisältää vain ne opiskeluoikeudet, joihin käyttäjällä on oikeudet. Esimerkiksi ammatilliselle toimijalle ei välttämättä näy henkilön lukio-opintojen tietoja")
-  opiskeluoikeudet: Seq[OpiskeluOikeus]
+  opiskeluoikeudet: Seq[Opiskeluoikeus]
 )
 
 @Description("Henkilötiedot. Syötettäessä vaaditaan joko `oid` tai kaikki muut kentät, jolloin järjestelmään voidaan tarvittaessa luoda uusi henkilö")
 sealed trait Henkilö
 
 @Description("Täydet henkilötiedot. Tietoja haettaessa TOR:sta saadaan aina täydet henkilötiedot.")
-case class FullHenkilö(
+case class TaydellisetHenkilötiedot(
   @Description("Yksilöivä tunniste (oppijanumero) Opintopolku-palvelussa")
   @OksaUri("tmpOKSAID760", "oppijanumero")
   @RegularExpression("""1\.2\.246\.562\.24\.\d{11}""")
@@ -32,14 +32,14 @@ case class FullHenkilö(
   sukunimi: String,
   @Description("Opiskelijan äidinkieli")
   @KoodistoUri("kieli")
-  äidinkieli: Option[KoodistoKoodiViite],
+  äidinkieli: Option[Koodistokoodiviite],
   @Description("Opiskelijan kansalaisuudet")
   @KoodistoUri("maatjavaltiot2")
-  kansalaisuus: Option[List[KoodistoKoodiViite]]
+  kansalaisuus: Option[List[Koodistokoodiviite]]
 ) extends HenkilöWithOid
 
 @Description("Henkilö, jonka oppijanumero ei ole tiedossa. Tietoja syötettäessä luodaan mahdollisesti uusi henkilö Henkilöpalveluun, jolloin henkilölle muodostuu oppijanumero")
-case class NewHenkilö(
+case class UusiHenkilö(
   @Description("Suomalainen henkilötunnus")
   hetu: String,
   @Description("Henkilön kaikki etunimet. Esimerkiksi Sanna Katariina")
@@ -65,14 +65,14 @@ trait HenkilöWithOid extends Henkilö {
 object Henkilö {
   type Oid = String
   def withOid(oid: String) = OidHenkilö(oid)
-  def apply(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String) = NewHenkilö(hetu, etunimet, kutsumanimi, sukunimi)
+  def apply(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String) = UusiHenkilö(hetu, etunimet, kutsumanimi, sukunimi)
 }
 
-trait OpiskeluOikeus extends Loggable {
+trait Opiskeluoikeus extends Loggable {
   @Description("Opiskeluoikeden tyyppi, jolla erotellaan eri koulutusmuotoihin (peruskoulutus, lukio, ammatillinen...) liittyvät opiskeluoikeudet")
   @OksaUri("tmpOKSAID869", "koulutusmuoto (1)")
   @KoodistoUri("opiskeluoikeudentyyppi")
-  def tyyppi: KoodistoKoodiViite
+  def tyyppi: Koodistokoodiviite
   @Description("Opiskeluoikeuden uniikki tunniste, joka generoidaan TOR-järjestelmässä. Tietoja syötettäessä kenttä ei ole pakollinen. " +
     "Tietoja päivitettäessä TOR tunnistaa opiskeluoikeuden joko tämän id:n tai muiden kenttien (oppijaOid, organisaatio, diaarinumero) perusteella")
   def id: Option[Int]
@@ -102,10 +102,10 @@ trait OpiskeluOikeus extends Loggable {
     case Some(id) => "opiskeluoikeus " + id
   }
 
-  def withIdAndVersion(id: Option[Int], versionumero: Option[Int]): OpiskeluOikeus
+  def withIdAndVersion(id: Option[Int], versionumero: Option[Int]): Opiskeluoikeus
 }
 
-object OpiskeluOikeus {
+object Opiskeluoikeus {
   type Id = Int
   type Versionumero = Int
   val VERSIO_1 = 1
@@ -114,7 +114,7 @@ object OpiskeluOikeus {
 trait Suoritus {
   @Description("Suorituksen tyyppi")
   @KoodistoUri("suorituksentyyppi")
-  def tyyppi: KoodistoKoodiViite
+  def tyyppi: Koodistokoodiviite
   def koulutusmoduuli: Koulutusmoduuli
   @Description("Paikallinen tunniste suoritukselle. Tiedonsiirroissa tarpeellinen, jotta voidaan varmistaa päivitysten osuminen oikeaan suoritukseen")
   def paikallinenId: Option[String]
@@ -122,10 +122,10 @@ trait Suoritus {
   @Description("Opintojen suorituskieli")
   @KoodistoUri("kieli")
   @OksaUri("tmpOKSAID309", "opintosuorituksen kieli")
-  def suorituskieli: Option[KoodistoKoodiViite]
+  def suorituskieli: Option[Koodistokoodiviite]
   @Description("Suorituksen tila (KESKEN, VALMIS, KESKEYTYNYT)")
   @KoodistoUri("suorituksentila")
-  def tila: KoodistoKoodiViite
+  def tila: Koodistokoodiviite
   @Description("Arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota")
   def arviointi: Option[List[Arviointi]]
   @Description("Suorituksen virallinen vahvistus (päivämäärä, henkilöt). Vaaditaan silloin, kun suorituksen tila on VALMIS.")
@@ -144,7 +144,7 @@ trait Koulutusmoduuli {
 
 trait Arviointi {
   @Description("Arvosana. Kullekin arviointiasteikolle löytyy oma koodistonsa")
-  def arvosana: KoodistoKoodiViite
+  def arvosana: Koodistokoodiviite
   @Description("Päivämäärä, jolloin arviointi on annettu")
   def päivä: Option[LocalDate]
   def arvioitsijat: Option[List[Arvioitsija]]
@@ -169,17 +169,17 @@ case class OrganisaatioHenkilö(
 
 case class Suoritustapa(
   @KoodistoUri("suoritustapa")
-  tunniste: KoodistoKoodiViite
+  tunniste: Koodistokoodiviite
 )
 
 trait Järjestämismuoto {
-  def tunniste: KoodistoKoodiViite
+  def tunniste: Koodistokoodiviite
 }
 
 @Description("Järjestämismuoto ilman lisätietoja")
 case class DefaultJärjestämismuoto(
   @KoodistoUri("jarjestamismuoto")
-  tunniste: KoodistoKoodiViite
+  tunniste: Koodistokoodiviite
 ) extends Järjestämismuoto
 
 case class Hyväksiluku(
@@ -205,7 +205,7 @@ case class Läsnäolojakso(
   loppu: Option[LocalDate],
   @Description("Läsnäolotila (läsnä, poissa...)")
   @KoodistoUri("lasnaolotila")
-  tila: KoodistoKoodiViite
+  tila: Koodistokoodiviite
 ) extends Jakso
 
 case class OpiskeluoikeudenTila(
@@ -218,10 +218,10 @@ case class Opiskeluoikeusjakso(
   loppu: Option[LocalDate],
   @Description("Opiskeluoikeuden tila (aktiivinen, keskeyttänyt, päättynyt...)")
   @KoodistoUri("opiskeluoikeudentila")
-  tila: KoodistoKoodiViite,
+  tila: Koodistokoodiviite,
   @Description("Opintojen rahoitus")
   @KoodistoUri("opintojenrahoitus")
-  opintojenRahoitus: Option[KoodistoKoodiViite]
+  opintojenRahoitus: Option[Koodistokoodiviite]
 ) extends Jakso
 
 case class Kunta(koodi: String, nimi: Option[String])
@@ -231,7 +231,7 @@ trait KoodiViite {
   def koodistoUri: String
 }
 
-case class KoodistoKoodiViite(
+case class Koodistokoodiviite(
   @Description("Koodin tunniste koodistossa")
   koodiarvo: String,
   @Description("Koodin selväkielinen, kielistetty nimi")
@@ -246,8 +246,8 @@ case class KoodistoKoodiViite(
   def koodistoViite = koodistoVersio.map(KoodistoViite(koodistoUri, _))
 }
 
-object KoodistoKoodiViite {
-  def apply(koodiarvo: String, koodistoUri: String): KoodistoKoodiViite = KoodistoKoodiViite(koodiarvo, None, koodistoUri, None)
+object Koodistokoodiviite {
+  def apply(koodiarvo: String, koodistoUri: String): Koodistokoodiviite = Koodistokoodiviite(koodiarvo, None, koodistoUri, None)
 }
 
 @Description("Henkilökohtainen opetuksen järjestämistä koskeva suunnitelma, https://fi.wikipedia.org/wiki/HOJKS")
@@ -255,7 +255,7 @@ object KoodistoKoodiViite {
 case class Hojks(
   hojksTehty: Boolean,
   @KoodistoUri("opetusryhma")
-  opetusryhmä: Option[KoodistoKoodiViite]
+  opetusryhmä: Option[Koodistokoodiviite]
 )
 
 @Description("Paikallinen, koulutustoimijan oma kooditus koulutukselle. Käytetään kansallisen koodiston puuttuessa")
@@ -275,7 +275,7 @@ case class Laajuus(
   arvo: Float,
   @Description("Opintojen laajuuden yksikkö")
   @KoodistoUri("opintojenlaajuusyksikko")
-  yksikkö: KoodistoKoodiViite
+  yksikkö: Koodistokoodiviite
 )
 
 case class LähdejärjestelmäId(
@@ -285,7 +285,7 @@ case class LähdejärjestelmäId(
     "Kullakin erillisellä tietojärjestelmäinstanssilla tulisi olla oma tunniste. " +
     "Jos siis oppilaitoksella on oma tietojärjestelmäinstanssi, tulee myös tällä instanssilla olla uniikki tunniste.")
   @KoodistoUri("lahdejarjestelma")
-  lähdejärjestelmä: KoodistoKoodiViite
+  lähdejärjestelmä: Koodistokoodiviite
 )
 
 @Description("Organisaatio. Voi olla Opintopolun organisaatiosta löytyvä oid:illinen organisaatio, y-tunnuksellinen yritys tai tutkintotoimikunta.")
@@ -308,7 +308,7 @@ sealed trait Organisaatio
      @Description("5-numeroinen oppilaitosnumero, esimerkiksi 00001")
      @ReadOnly("Tiedon syötössä oppilaitosnumeroa ei tarvita; numero haetaan Organisaatiopalvelusta")
      @KoodistoUri("oppilaitosnumero")
-     oppilaitosnumero: Option[KoodistoKoodiViite] = None,
+     oppilaitosnumero: Option[Koodistokoodiviite] = None,
      @Description("Organisaation (kielistetty) nimi")
      @ReadOnly("Tiedon syötössä nimeä ei tarvita; kuvaus haetaan Organisaatiopalvelusta")
      nimi: Option[String] = None

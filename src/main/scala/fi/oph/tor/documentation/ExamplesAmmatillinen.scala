@@ -7,20 +7,20 @@ import fi.oph.tor.schema._
 
 object AmmatillinenExampleData {
   def tutkintoSuoritus(tutkintoKoulutus: AmmatillinenTutkintoKoulutus,
-                               tutkintonimike: Option[List[KoodistoKoodiViite]] = None,
-                               osaamisala: Option[List[KoodistoKoodiViite]] = None,
+                               tutkintonimike: Option[List[Koodistokoodiviite]] = None,
+                               osaamisala: Option[List[Koodistokoodiviite]] = None,
                                suoritustapa: Option[Suoritustapa] = None,
                                järjestämismuoto: Option[Järjestämismuoto] = None,
                                paikallinenId: Option[String] = None,
-                               suorituskieli: Option[KoodistoKoodiViite] = None,
-                               tila: KoodistoKoodiViite,
+                               suorituskieli: Option[Koodistokoodiviite] = None,
+                               tila: Koodistokoodiviite,
                                alkamisPäivä: Option[LocalDate] = None,
                                toimipiste: OrganisaatioWithOid,
                                arviointi: Option[List[AmmatillinenArviointi]] = None,
                                vahvistus: Option[Vahvistus] = None,
-                               osasuoritukset: Option[List[AmmatillinenTutkinnonosaSuoritus]] = None): AmmatillinenTutkintoSuoritus =
+                               osasuoritukset: Option[List[AmmatillinenTutkinnonosaSuoritus]] = None): AmmatillinenTutkintosuoritus =
 
-    AmmatillinenTutkintoSuoritus(
+    AmmatillinenTutkintosuoritus(
       koulutusmoduuli = tutkintoKoulutus,
       tutkintonimike,
       osaamisala = osaamisala,
@@ -35,8 +35,8 @@ object AmmatillinenExampleData {
       vahvistus = vahvistus,
       osasuoritukset = osasuoritukset)
 
-  lazy val autoalanPerustutkinto: AmmatillinenTutkintoSuoritus = tutkintoSuoritus(
-    tutkintoKoulutus = AmmatillinenTutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
+  lazy val autoalanPerustutkinto: AmmatillinenTutkintosuoritus = tutkintoSuoritus(
+    tutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
     tutkintonimike = None,
     osaamisala = None,
     suoritustapa = None,
@@ -51,39 +51,39 @@ object AmmatillinenExampleData {
     osasuoritukset = None
   )
 
-  lazy val h2: KoodistoKoodiViite = KoodistoKoodiViite("2", Some("H2"), "arviointiasteikkoammatillinent1k3", None)
-  lazy val k3: KoodistoKoodiViite = KoodistoKoodiViite("3", Some("K3"), "arviointiasteikkoammatillinent1k3", None)
+  lazy val h2: Koodistokoodiviite = Koodistokoodiviite("2", Some("H2"), "arviointiasteikkoammatillinent1k3", None)
+  lazy val k3: Koodistokoodiviite = Koodistokoodiviite("3", Some("K3"), "arviointiasteikkoammatillinent1k3", None)
   lazy val näytönArviointi = NäytönArviointi(List(
-    NäytönArviointikohde(KoodistoKoodiViite("1", Some("Työprosessin hallinta"), "ammatillisennaytonarviointikohde", None), k3),
-    NäytönArviointikohde(KoodistoKoodiViite("2", Some("Työmenetelmien, -välineiden ja materiaalin hallinta"), "ammatillisennaytonarviointikohde", None), h2),
-    NäytönArviointikohde(KoodistoKoodiViite("3", Some("Työn perustana olevan tiedon hallinta"), "ammatillisennaytonarviointikohde", None), h2),
-    NäytönArviointikohde(KoodistoKoodiViite("4", Some("Elinikäisen oppimisen avaintaidot"), "ammatillisennaytonarviointikohde", None), k3)),
-    KoodistoKoodiViite("1", Some("Opettaja"), "ammatillisennaytonarvioinnistapaattaneet", None),
-    KoodistoKoodiViite("1", Some("Opiskelija ja opettaja"), "ammatillisennaytonarviointikeskusteluunosallistuneet", None)
+    NäytönArviointikohde(Koodistokoodiviite("1", Some("Työprosessin hallinta"), "ammatillisennaytonarviointikohde", None), k3),
+    NäytönArviointikohde(Koodistokoodiviite("2", Some("Työmenetelmien, -välineiden ja materiaalin hallinta"), "ammatillisennaytonarviointikohde", None), h2),
+    NäytönArviointikohde(Koodistokoodiviite("3", Some("Työn perustana olevan tiedon hallinta"), "ammatillisennaytonarviointikohde", None), h2),
+    NäytönArviointikohde(Koodistokoodiviite("4", Some("Elinikäisen oppimisen avaintaidot"), "ammatillisennaytonarviointikohde", None), k3)),
+    Koodistokoodiviite("1", Some("Opettaja"), "ammatillisennaytonarvioinnistapaattaneet", None),
+    Koodistokoodiviite("1", Some("Opiskelija ja opettaja"), "ammatillisennaytonarviointikeskusteluunosallistuneet", None)
   )
 
   def näyttö(kuvaus: String, paikka: String, arviointi: Option[NäytönArviointi] = None) = Näyttö(
-    kuvaus, NäytönSuorituspaikka(KoodistoKoodiViite("1", Some("työpaikka"), "ammatillisennaytonsuorituspaikka", Some(1)), paikka), arviointi)
+    kuvaus, NäytönSuorituspaikka(Koodistokoodiviite("1", Some("työpaikka"), "ammatillisennaytonsuorituspaikka", Some(1)), paikka), arviointi)
 
-  lazy val suoritustapaNäyttö = Suoritustapa(KoodistoKoodiViite("naytto", Some("Näyttö"), "suoritustapa", Some(1)))
-  lazy val suoritustapaOps = Suoritustapa(KoodistoKoodiViite("ops", Some("Opetussuunnitelman mukainen"), "suoritustapa", Some(1)))
-  lazy val järjestämismuotoOppisopimus = KoodistoKoodiViite("20", Some("Oppisopimusmuotoinen"), "jarjestamismuoto", Some(1))
-  lazy val järjestämismuotoOppilaitos = KoodistoKoodiViite("10", Some("Oppilaitosmuotoinen"), "jarjestamismuoto", Some(1))
-  lazy val stadinAmmattiopisto: Oppilaitos = Oppilaitos("1.2.246.562.10.52251087186", Some(KoodistoKoodiViite("10105", None, "oppilaitosnumero", None)), Some("Stadin ammattiopisto"))
+  lazy val suoritustapaNäyttö = Suoritustapa(Koodistokoodiviite("naytto", Some("Näyttö"), "suoritustapa", Some(1)))
+  lazy val suoritustapaOps = Suoritustapa(Koodistokoodiviite("ops", Some("Opetussuunnitelman mukainen"), "suoritustapa", Some(1)))
+  lazy val järjestämismuotoOppisopimus = Koodistokoodiviite("20", Some("Oppisopimusmuotoinen"), "jarjestamismuoto", Some(1))
+  lazy val järjestämismuotoOppilaitos = Koodistokoodiviite("10", Some("Oppilaitosmuotoinen"), "jarjestamismuoto", Some(1))
+  lazy val stadinAmmattiopisto: Oppilaitos = Oppilaitos("1.2.246.562.10.52251087186", Some(Koodistokoodiviite("10105", None, "oppilaitosnumero", None)), Some("Stadin ammattiopisto"))
   lazy val toimipiste: OidOrganisaatio = OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))
   lazy val tutkintotoimikunta: Organisaatio = Tutkintotoimikunta("Autokorjaamoalan tutkintotoimikunta", 8406)
-  lazy val opintojenLaajuusYksikkö = KoodistoKoodiViite("6", Some("osaamispistettä"), "opintojenlaajuusyksikko", Some(1))
-  lazy val lähdeWinnova = KoodistoKoodiViite("winnova", Some("Winnova"), "lahdejarjestelma", Some(1))
+  lazy val opintojenLaajuusYksikkö = Koodistokoodiviite("6", Some("osaamispistettä"), "opintojenlaajuusyksikko", Some(1))
+  lazy val lähdeWinnova = Koodistokoodiviite("winnova", Some("Winnova"), "lahdejarjestelma", Some(1))
   lazy val hyväksiluku = Hyväksiluku(
-    OpsTutkinnonosa(KoodistoKoodiViite("100238", Some("Asennushitsaus"), "tutkinnonosat", Some(1)), true, None),
+    OpsTutkinnonosa(Koodistokoodiviite("100238", Some("Asennushitsaus"), "tutkinnonosat", Some(1)), true, None),
     Some("Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"))
-  lazy val tilaKesken = KoodistoKoodiViite("KESKEN", "suorituksentila")
-  lazy val tilaValmis = KoodistoKoodiViite("VALMIS", "suorituksentila")
+  lazy val tilaKesken = Koodistokoodiviite("KESKEN", "suorituksentila")
+  lazy val tilaValmis = Koodistokoodiviite("VALMIS", "suorituksentila")
   lazy val arviointiHyväksytty: Some[List[AmmatillinenArviointi]] = Some(List(AmmatillinenArviointi(
-    arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)), Some(date(2013, 3, 20)),
+    arvosana = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)), Some(date(2013, 3, 20)),
     arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen"))))))
 
-  lazy val paikallisenOsanSuoritus = AmmatillinenPaikallinenTutkinnonosaSuoritus(
+  lazy val paikallisenOsanSuoritus = AmmatillinenPaikallinenTutkinnonosasuoritus(
     koulutusmoduuli = PaikallinenTutkinnonosa(Paikallinenkoodi("123456789", "Pintavauriotyöt", "kallion_oma_koodisto"), "Opetellaan korjaamaan pinnallisia vaurioita", false, None),
     hyväksiluku = None,
     näyttö = Some(näyttö("Pintavaurioiden korjausta", "Autokorjaamo Oy, Riihimäki")),
@@ -107,9 +107,9 @@ object AmmatillinenExampleData {
   )
 
   def opiskeluoikeus(oppilaitos: Oppilaitos = Oppilaitos("1.2.246.562.10.52251087186"),
-                     tutkinto: AmmatillinenTutkintoSuoritus = autoalanPerustutkinto,
+                     tutkinto: AmmatillinenTutkintosuoritus = autoalanPerustutkinto,
                      osat: Option[List[AmmatillinenTutkinnonosaSuoritus]] = None) = {
-    AmmatillinenOpiskeluOikeus(
+    AmmatillinenOpiskeluoikeus(
       None,
       None,
       None,
@@ -126,7 +126,7 @@ object AmmatillinenExampleData {
   }
 
   def oppija( henkilö: Henkilö = ExampleData.exampleHenkilö,
-              opiskeluOikeus: OpiskeluOikeus = opiskeluoikeus()) = {
+              opiskeluOikeus: Opiskeluoikeus = opiskeluoikeus()) = {
     TorOppija(
       henkilö,
       List(opiskeluOikeus)
@@ -142,7 +142,7 @@ object ExamplesAmmatillinen {
     opiskeluOikeus = opiskeluoikeus(
       oppilaitos = stadinAmmattiopisto,
       tutkinto = tutkintoSuoritus(
-        tutkintoKoulutus = AmmatillinenTutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
+        tutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
         tutkintonimike = None,
         osaamisala = None,
         suoritustapa = Some(suoritustapaNäyttö),
@@ -157,7 +157,7 @@ object ExamplesAmmatillinen {
         osasuoritukset = None
       )
     ).copy(opiskeluoikeudenTila = Some(OpiskeluoikeudenTila(List(
-      Opiskeluoikeusjakso(date(2016, 9, 1), None, opiskeluoikeusAktiivinen, Some(KoodistoKoodiViite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
+      Opiskeluoikeusjakso(date(2016, 9, 1), None, opiskeluoikeusAktiivinen, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
     ))))
   )
 
@@ -169,10 +169,10 @@ object ExamplesAmmatillinen {
   lazy val mukautettu = oppija(opiskeluOikeus = opiskeluoikeus(
     tutkinto = autoalanPerustutkinto.copy(suoritustapa = Some(suoritustapaOps)),
     osat = Some(List(
-      AmmatillinenOpsTutkinnonosaSuoritus(
-        koulutusmoduuli = OpsTutkinnonosa(KoodistoKoodiViite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Some(Laajuus(11, opintojenLaajuusYksikkö))),
+      AmmatillinenOpsTutkinnonosasuoritus(
+        koulutusmoduuli = OpsTutkinnonosa(Koodistokoodiviite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Some(Laajuus(11, opintojenLaajuusYksikkö))),
         lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(
-          KoodistoKoodiViite("mukautettu", "ammatillisentutkinnonosanlisatieto"),
+          Koodistokoodiviite("mukautettu", "ammatillisentutkinnonosanlisatieto"),
           "Tutkinnon osan ammattitaitovaatimuksia ja osaamisen arviointi on mukautettu (ja/tai niistä on poikettu) ammatillisesta peruskoulutuksesta annetun lain\n(630/1998, muutos 246/2015) 19 a (ja/tai 21) §:n perusteella"))),
         paikallinenId = Some("suoritus-12345-1"),
         suorituskieli = None,
@@ -187,7 +187,7 @@ object ExamplesAmmatillinen {
 
   lazy val tutkinnonOsaToisestaTutkinnosta = oppija(opiskeluOikeus = opiskeluoikeus(
     tutkinto = tutkintoSuoritus(
-      tutkintoKoulutus = AmmatillinenTutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
+      tutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
       suoritustapa = Some(suoritustapaNäyttö),
       järjestämismuoto = None,
       tila = tilaKesken,
@@ -195,9 +195,9 @@ object ExamplesAmmatillinen {
     ),
 
     osat = Some(List(
-      AmmatillinenOpsTutkinnonosaSuoritus(
-        koulutusmoduuli = OpsTutkinnonosa(KoodistoKoodiViite("104052", "tutkinnonosat"), true, None, None, None),
-        tutkinto = Some(AmmatillinenTutkintoKoulutus(KoodistoKoodiViite("357305", "koulutus"), Some("40/011/2001"))),
+      AmmatillinenOpsTutkinnonosasuoritus(
+        koulutusmoduuli = OpsTutkinnonosa(Koodistokoodiviite("104052", "tutkinnonosat"), true, None, None, None),
+        tutkinto = Some(AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357305", "koulutus"), Some("40/011/2001"))),
         paikallinenId = Some("suoritus-12345-1"),
         suorituskieli = None,
         tila = tilaValmis,
@@ -212,7 +212,7 @@ object ExamplesAmmatillinen {
   lazy val ops = TorOppija(
     Henkilö.withOid("1.2.246.562.24.00000000001"),
     List(
-      AmmatillinenOpiskeluOikeus(
+      AmmatillinenOpiskeluoikeus(
         None,
         None,
         None,
@@ -221,19 +221,19 @@ object ExamplesAmmatillinen {
         Some(date(2016, 1, 9)),
         stadinAmmattiopisto,
         List(tutkintoSuoritus(
-          tutkintoKoulutus = AmmatillinenTutkintoKoulutus(KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
-          tutkintonimike = Some(List(KoodistoKoodiViite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
-          osaamisala = Some(List(KoodistoKoodiViite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
+          tutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
+          tutkintonimike = Some(List(Koodistokoodiviite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
+          osaamisala = Some(List(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
           suoritustapa = Some(suoritustapaOps),
           järjestämismuoto = Some(DefaultJärjestämismuoto(järjestämismuotoOppilaitos)),
           paikallinenId = Some("suoritus-12345"),
           tila = tilaKesken,
           toimipiste = toimipiste,
-          suorituskieli = Some(KoodistoKoodiViite("FI", Some("suomi"), "kieli", None)),
+          suorituskieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None)),
 
           osasuoritukset = Some(List(
-            AmmatillinenOpsTutkinnonosaSuoritus(
-              koulutusmoduuli = OpsTutkinnonosa(KoodistoKoodiViite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Some(Laajuus(11, opintojenLaajuusYksikkö))),
+            AmmatillinenOpsTutkinnonosasuoritus(
+              koulutusmoduuli = OpsTutkinnonosa(Koodistokoodiviite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Some(Laajuus(11, opintojenLaajuusYksikkö))),
               hyväksiluku = None,
               näyttö = None,
               lisätiedot = None,
@@ -259,19 +259,19 @@ object ExamplesAmmatillinen {
             )
           ))
         )),
-        hojks = Some(Hojks(hojksTehty = true, opetusryhmä = Some(KoodistoKoodiViite("1", Some("Yleinen opetusryhmä"), "opetusryhma", None)))),
-        Some(KoodistoKoodiViite("tutkinto", Some("Tutkinto"), "opintojentavoite", None)),
+        hojks = Some(Hojks(hojksTehty = true, opetusryhmä = Some(Koodistokoodiviite("1", Some("Yleinen opetusryhmä"), "opetusryhma", None)))),
+        Some(Koodistokoodiviite("tutkinto", Some("Tutkinto"), "opintojentavoite", None)),
         Some(OpiskeluoikeudenTila(
           List(
-            Opiskeluoikeusjakso(date(2012, 9, 1), Some(date(2012, 12, 31)), opiskeluoikeusAktiivinen, Some(KoodistoKoodiViite("1", Some("Valtionosuusrahoitteinen koulutus"), "opintojenrahoitus", None))),
-            Opiskeluoikeusjakso(date(2013, 1, 1), Some(date(2013, 12, 31)), opiskeluoikeusKeskeyttänyt, Some(KoodistoKoodiViite("1", Some("Valtionosuusrahoitteinen koulutus"), "opintojenrahoitus", None))),
-            Opiskeluoikeusjakso(date(2014, 1, 1), None, opiskeluoikeusAktiivinen, Some(KoodistoKoodiViite("1", Some("Valtionosuusrahoitteinen koulutus"), "opintojenrahoitus", None)))
+            Opiskeluoikeusjakso(date(2012, 9, 1), Some(date(2012, 12, 31)), opiskeluoikeusAktiivinen, Some(Koodistokoodiviite("1", Some("Valtionosuusrahoitteinen koulutus"), "opintojenrahoitus", None))),
+            Opiskeluoikeusjakso(date(2013, 1, 1), Some(date(2013, 12, 31)), opiskeluoikeusKeskeyttänyt, Some(Koodistokoodiviite("1", Some("Valtionosuusrahoitteinen koulutus"), "opintojenrahoitus", None))),
+            Opiskeluoikeusjakso(date(2014, 1, 1), None, opiskeluoikeusAktiivinen, Some(Koodistokoodiviite("1", Some("Valtionosuusrahoitteinen koulutus"), "opintojenrahoitus", None)))
           )
         )),
         Some(Läsnäolotiedot(List(
-          Läsnäolojakso(date(2012, 9, 1), Some(date(2012, 12, 31)), KoodistoKoodiViite("lasna", Some("Läsnä"), "lasnaolotila", Some(1))),
-          Läsnäolojakso(date(2013, 1, 1), Some(date(2013, 12, 31)), KoodistoKoodiViite("poissa", Some("Poissa"), "lasnaolotila", Some(1))),
-          Läsnäolojakso(date(2014, 1, 1), None, KoodistoKoodiViite("lasna", Some("Läsnä"), "lasnaolotila", Some(1)))
+          Läsnäolojakso(date(2012, 9, 1), Some(date(2012, 12, 31)), Koodistokoodiviite("lasna", Some("Läsnä"), "lasnaolotila", Some(1))),
+          Läsnäolojakso(date(2013, 1, 1), Some(date(2013, 12, 31)), Koodistokoodiviite("poissa", Some("Poissa"), "lasnaolotila", Some(1))),
+          Läsnäolojakso(date(2014, 1, 1), None, Koodistokoodiviite("lasna", Some("Läsnä"), "lasnaolotila", Some(1)))
         )))
   )))
 
@@ -294,7 +294,7 @@ object AmmatillinenFullExample {
   lazy val full = TorOppija(
     Henkilö.withOid("1.2.246.562.24.00000000001"),
     List(
-      AmmatillinenOpiskeluOikeus(
+      AmmatillinenOpiskeluoikeus(
         None,
         None,
         Some(LähdejärjestelmäId("847823465", lähdeWinnova)),
@@ -304,15 +304,15 @@ object AmmatillinenFullExample {
         stadinAmmattiopisto,
         List(tutkintoSuoritus(
           tutkintoKoulutus = AmmatillinenTutkintoKoulutus(
-            KoodistoKoodiViite("351301", Some("Autoalan perustutkinto"), "koulutus", None),
+            Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None),
             Some("39/011/2014")
           ),
-          tutkintonimike = Some(List(KoodistoKoodiViite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
-          osaamisala = Some(List(KoodistoKoodiViite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
+          tutkintonimike = Some(List(Koodistokoodiviite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
+          osaamisala = Some(List(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
           suoritustapa = Some(suoritustapaNäyttö),
           järjestämismuoto = Some(DefaultJärjestämismuoto(järjestämismuotoOppilaitos)),
           paikallinenId= Some("suoritus-12345"),
-          suorituskieli = Some(KoodistoKoodiViite("FI", Some("suomi"), "kieli", None)),
+          suorituskieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None)),
           tila = tilaValmis,
           alkamisPäivä = None,
           toimipiste = toimipiste,
@@ -323,11 +323,11 @@ object AmmatillinenFullExample {
           osasuoritukset = Some(tutkinnonOsat)
         )),
         hojks = None,
-        Some(KoodistoKoodiViite("tutkinto", Some("Tutkinto"), "opintojentavoite", None)),
+        Some(Koodistokoodiviite("tutkinto", Some("Tutkinto"), "opintojentavoite", None)),
         Some(OpiskeluoikeudenTila(
           List(
-            Opiskeluoikeusjakso(date(2012, 9, 1), Some(date(2016, 1, 9)), opiskeluoikeusAktiivinen, Some(KoodistoKoodiViite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None))),
-            Opiskeluoikeusjakso(date(2016, 1, 10), None, opiskeluoikeusPäättynyt, Some(KoodistoKoodiViite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
+            Opiskeluoikeusjakso(date(2012, 9, 1), Some(date(2016, 1, 9)), opiskeluoikeusAktiivinen, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None))),
+            Opiskeluoikeusjakso(date(2016, 1, 10), None, opiskeluoikeusPäättynyt, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
           )
         )),
         None
@@ -336,9 +336,9 @@ object AmmatillinenFullExample {
   )
 
   private lazy val tutkinnonOsat = List(
-    AmmatillinenOpsTutkinnonosaSuoritus(
+    AmmatillinenOpsTutkinnonosasuoritus(
       koulutusmoduuli = OpsTutkinnonosa(
-        KoodistoKoodiViite("100016", Some("Huolto- ja korjaustyöt"), "tutkinnonosat", Some(1)),
+        Koodistokoodiviite("100016", Some("Huolto- ja korjaustyöt"), "tutkinnonosat", Some(1)),
         true,
         laajuus = None
       ),
@@ -349,16 +349,16 @@ object AmmatillinenFullExample {
       alkamispäivä = None,
       toimipiste = toimipiste,
       arviointi = Some(List(AmmatillinenArviointi(
-        arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
+        arvosana = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
         Some(date(2012, 10, 20)),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
       vahvistus = Some(Vahvistus(Some(date(2013, 1, 31)), Some(stadinAmmattiopisto), None))
     ),
     paikallisenOsanSuoritus,
-    AmmatillinenOpsTutkinnonosaSuoritus(
+    AmmatillinenOpsTutkinnonosasuoritus(
       koulutusmoduuli =  OpsTutkinnonosa(
-        KoodistoKoodiViite("100019", Some("Mittaus- ja korivauriotyöt"), "tutkinnonosat", Some(1)),
+        Koodistokoodiviite("100019", Some("Mittaus- ja korivauriotyöt"), "tutkinnonosat", Some(1)),
         true,
         None
       ),
@@ -369,15 +369,15 @@ object AmmatillinenFullExample {
       alkamispäivä = None,
       toimipiste = toimipiste,
       arviointi = Some(List(AmmatillinenArviointi(
-        arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
+        arvosana = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
         Some(date(2013, 4, 1)),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
       vahvistus = Some(Vahvistus(Some(date(2013, 5, 31)), Some(stadinAmmattiopisto), None))
     ),
-    AmmatillinenOpsTutkinnonosaSuoritus(
+    AmmatillinenOpsTutkinnonosasuoritus(
       koulutusmoduuli = OpsTutkinnonosa(
-        KoodistoKoodiViite("100034", Some("Maalauksen esikäsittelytyöt"), "tutkinnonosat", Some(1)),
+        Koodistokoodiviite("100034", Some("Maalauksen esikäsittelytyöt"), "tutkinnonosat", Some(1)),
         true,
         None
       ),
@@ -388,15 +388,15 @@ object AmmatillinenFullExample {
       alkamispäivä = None,
       toimipiste = toimipiste,
       arviointi = Some(List(AmmatillinenArviointi(
-        arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
+        arvosana = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
         Some(date(2014, 10, 20)),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
       vahvistus = Some(Vahvistus(Some(date(2014, 11, 8)), Some(stadinAmmattiopisto), None))
     ),
-    AmmatillinenOpsTutkinnonosaSuoritus(
+    AmmatillinenOpsTutkinnonosasuoritus(
       koulutusmoduuli = OpsTutkinnonosa(
-        KoodistoKoodiViite("100037", Some("Auton lisävarustetyöt"), "tutkinnonosat", Some(1)),
+        Koodistokoodiviite("100037", Some("Auton lisävarustetyöt"), "tutkinnonosat", Some(1)),
         true,
         None
       ),
@@ -407,15 +407,15 @@ object AmmatillinenFullExample {
       alkamispäivä = None,
       toimipiste = toimipiste,
       arviointi = Some(List(AmmatillinenArviointi(
-        arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
+        arvosana = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
         Some(date(2015, 4, 1)),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
       vahvistus = Some(Vahvistus(Some(date(2015, 5, 1)), Some(stadinAmmattiopisto), None))
     ),
-    AmmatillinenOpsTutkinnonosaSuoritus(
+    AmmatillinenOpsTutkinnonosasuoritus(
       koulutusmoduuli = OpsTutkinnonosa(
-        KoodistoKoodiViite("101050", Some("Yritystoiminnan suunnittelu"), "tutkinnonosat", Some(1)),
+        Koodistokoodiviite("101050", Some("Yritystoiminnan suunnittelu"), "tutkinnonosat", Some(1)),
         true,
         None
       ),
@@ -426,7 +426,7 @@ object AmmatillinenFullExample {
       alkamispäivä = None,
       toimipiste = toimipiste,
       arviointi = Some(List(AmmatillinenArviointi(
-        arvosana = KoodistoKoodiViite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
+        arvosana = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
         Some(date(2016, 2, 1)),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),

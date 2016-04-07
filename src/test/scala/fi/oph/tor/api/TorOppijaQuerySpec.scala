@@ -4,11 +4,11 @@ import java.time.LocalDate
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.json.Json
 import fi.oph.tor.log.{AuditLogTester, AuditLog}
-import fi.oph.tor.schema.{FullHenkilö, NewHenkilö, TorOppija}
+import fi.oph.tor.schema.{TaydellisetHenkilötiedot, UusiHenkilö, TorOppija}
 import org.scalatest.{FunSpec, Matchers}
 
 class TorOppijaQuerySpec extends FunSpec with OpiskeluOikeusTestMethods with Matchers {
-  val teija = NewHenkilö("150995-914X", "Teija", "Teija", "Tekijä")
+  val teija = UusiHenkilö("150995-914X", "Teija", "Teija", "Tekijä")
 
   AuditLogTester.setup
 
@@ -23,7 +23,7 @@ class TorOppijaQuerySpec extends FunSpec with OpiskeluOikeusTestMethods with Mat
               verifyResponseStatus(200)
               val oppijat: List[TorOppija] = Json.read[List[TorOppija]](response.body)
               val päättymispäivät: List[(String, LocalDate)] = oppijat.flatMap{oppija =>
-                oppija.opiskeluoikeudet.flatMap(_.päättymispäivä).map((oppija.henkilö.asInstanceOf[FullHenkilö].hetu, _))
+                oppija.opiskeluoikeudet.flatMap(_.päättymispäivä).map((oppija.henkilö.asInstanceOf[TaydellisetHenkilötiedot].hetu, _))
               }
 
               päättymispäivät should equal(List(("010101-123N", LocalDate.parse("2016-01-09"))))
