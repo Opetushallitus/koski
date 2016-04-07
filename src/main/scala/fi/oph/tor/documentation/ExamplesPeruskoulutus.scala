@@ -27,8 +27,12 @@ object PeruskoulutusExampleData {
   def uskonto(uskonto: String) = Uskonto(uskonto = Koodistokoodiviite(koodiarvo = uskonto, koodistoUri = "oppiaineuskonto"))
 
   def arviointi(arvosana: Int): Some[List[PeruskoulunArviointi]] = {
-    Some(List(PeruskoulunArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana.toString, koodistoUri = "arvosanat"), None)))
+    Some(List(PeruskoulunArviointi(arvosana.toString)))
   }
+
+  val hyväksytty = Some(List(PeruskoulunArviointi("S")))
+
+  def vuosiviikkotuntia(määrä: Double): Some[Laajuus] = Some(Laajuus(määrä.toFloat, Koodistokoodiviite("", Some("Vuosiviikkotuntia"), "3")))
 }
 
 object ExamplesPeruskoulutus {
@@ -52,6 +56,7 @@ object ExamplesPeruskoulutus {
       läsnäolotiedot = None
     ))
   )
+  private val vahvistus: Some[Vahvistus] = Some(Vahvistus(Some(date(2016, 6, 4))))
 
   val päättötodistus = TorOppija(
     exampleHenkilö,
@@ -70,28 +75,30 @@ object ExamplesPeruskoulutus {
           suorituskieli = None,
           tila = tilaValmis,
           toimipiste = jyväskylänNormaalikoulu,
-          vahvistus = Some(Vahvistus(Some(date(2016, 6, 4)))),
+          vahvistus = vahvistus,
           osasuoritukset = Some(
             List(
-              suoritus(äidinkieli("AI1")).copy(vahvistus = Some(Vahvistus(Some(date(2016, 6, 4))))).copy(arviointi = arviointi(10)),
-              suoritus(kieli("B1", "SV")).copy(vahvistus = Some(Vahvistus(Some(date(2016, 6, 4))))).copy(arviointi = arviointi(8)),
-              suoritus(kieli("A1", "EN")).copy(vahvistus = Some(Vahvistus(Some(date(2016, 6, 4))))).copy(arviointi = arviointi(8)),
-              suoritus(uskonto("KT1")).copy(vahvistus = Some(Vahvistus(Some(date(2016, 6, 4))))).copy(arviointi = arviointi(7)),
-              suoritus(oppiaine("HI")).copy(vahvistus = Some(Vahvistus(Some(date(2016, 6, 4))))).copy(arviointi = arviointi(9)),
-
-              suoritus(oppiaine("YH")).copy(vahvistus = Some(Vahvistus(Some(date(2016, 6, 4))))).copy(arviointi = arviointi(8)),
-              suoritus(oppiaine("MA")).copy(vahvistus = Some(Vahvistus(Some(date(2016, 6, 4))))).copy(arviointi = arviointi(6)),
-              suoritus(oppiaine("KE")).copy(vahvistus = Some(Vahvistus(Some(date(2016, 6, 4))))).copy(arviointi = arviointi(7)),
-              suoritus(oppiaine("FY")).copy(vahvistus = Some(Vahvistus(Some(date(2016, 6, 4))))).copy(arviointi = arviointi(8)),
-              suoritus(oppiaine("BI")).copy(vahvistus = Some(Vahvistus(Some(date(2016, 6, 4))))).copy(arviointi = arviointi(7)),
-              suoritus(oppiaine("GE")).copy(vahvistus = Some(Vahvistus(Some(date(2016, 6, 4))))).copy(arviointi = arviointi(10)),
-              suoritus(oppiaine("MU")).copy(vahvistus = Some(Vahvistus(Some(date(2016, 6, 4))))).copy(arviointi = arviointi(8)),
-              suoritus(oppiaine("KU")).copy(vahvistus = Some(Vahvistus(Some(date(2016, 6, 4))))).copy(arviointi = arviointi(7)),
-              suoritus(oppiaine("KO")).copy(vahvistus = Some(Vahvistus(Some(date(2016, 6, 4))))).copy(arviointi = arviointi(9)),
-              suoritus(oppiaine("TE")).copy(vahvistus = Some(Vahvistus(Some(date(2016, 6, 4))))).copy(arviointi = arviointi(7)),
-              suoritus(oppiaine("KS")).copy(vahvistus = Some(Vahvistus(Some(date(2016, 6, 4))))).copy(arviointi = arviointi(6)),
-              suoritus(oppiaine("LI")).copy(vahvistus = Some(Vahvistus(Some(date(2016, 6, 4))))).copy(arviointi = arviointi(9)),
-              suoritus(kieli("B2", "DE")).copy(vahvistus = Some(Vahvistus(Some(date(2016, 6, 4))))).copy(arviointi = arviointi(10))
+              suoritus(äidinkieli("AI1")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(9)),
+              suoritus(kieli("B1", "SV")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(8)),
+              suoritus(kieli("B1", "SV").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(vahvistus = vahvistus).copy(arviointi = hyväksytty),
+              suoritus(kieli("A1", "EN")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(8)),
+              suoritus(uskonto("KT1")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(10)),
+              suoritus(oppiaine("HI")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(8)),
+              suoritus(oppiaine("YH")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(10)),
+              suoritus(oppiaine("MA")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(9)),
+              suoritus(oppiaine("KE")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(7)),
+              suoritus(oppiaine("FY")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(9)),
+              suoritus(oppiaine("BI")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(9)),
+              suoritus(oppiaine("GE")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(9)),
+              suoritus(oppiaine("MU")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(7)),
+              suoritus(oppiaine("KU")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(8)),
+              suoritus(oppiaine("KO")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(8)),
+              suoritus(oppiaine("KO").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(vahvistus = vahvistus).copy(arviointi = hyväksytty),
+              suoritus(oppiaine("TE")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(8)),
+              suoritus(oppiaine("KS")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(9)),
+              suoritus(oppiaine("LI")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(9)),
+              suoritus(oppiaine("LI").copy(pakollinen = false, laajuus = vuosiviikkotuntia(0.5))).copy(vahvistus = vahvistus).copy(arviointi = hyväksytty),
+              suoritus(kieli("B2", "DE").copy(pakollinen = false, laajuus = vuosiviikkotuntia(4))).copy(vahvistus = vahvistus).copy(arviointi = arviointi(9))
             ))
         )),
       opiskeluoikeudenTila = Some(OpiskeluoikeudenTila(
