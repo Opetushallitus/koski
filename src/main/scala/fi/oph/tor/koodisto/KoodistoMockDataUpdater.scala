@@ -3,8 +3,9 @@ package fi.oph.tor.koodisto
 import com.typesafe.config.Config
 import fi.oph.tor.config.TorApplication
 import fi.oph.tor.json.Json
+import fi.oph.tor.log.Logging
 
-object KoodistoMockDataUpdater extends App {
+object KoodistoMockDataUpdater extends App with Logging {
   updateMockDataFromKoodistoPalvelu(TorApplication.apply().config)
 
 
@@ -16,6 +17,7 @@ object KoodistoMockDataUpdater extends App {
   private def updateMockDataForKoodisto(koodistoUri: String, kp: KoodistoPalvelu): Unit = {
     kp.getLatestVersion(koodistoUri) match {
       case Some(versio) =>
+        logger.info("Päivitetään testidata koodistolle " + koodistoUri + "/" + versio)
         Json.writeFile(
           MockKoodistoPalvelu.koodistoFileName(koodistoUri),
           kp.getKoodisto(versio)
@@ -25,7 +27,8 @@ object KoodistoMockDataUpdater extends App {
           MockKoodistoPalvelu.koodistoKooditFileName(koodistoUri),
           koodit
         )
-      case None => throw new IllegalStateException("Koodisto not found from koodisto-service: " + koodistoUri)
+      case None =>
+        logger.warn("Koodistoa ei löydy koodistopalvelusta: " + koodistoUri)
     }
   }
 }

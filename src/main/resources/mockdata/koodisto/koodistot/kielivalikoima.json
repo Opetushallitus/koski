@@ -1,0 +1,20 @@
+{
+  "koodistoUri" : "kielivalikoima",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "kielivalikoima",
+    "kuvaus" : "kielivalikoima"
+  }, {
+    "kieli" : "SV",
+    "nimi" : "kielivalikoima",
+    "kuvaus" : "kielivalikoima"
+  }, {
+    "kieli" : "EN",
+    "nimi" : "kielivalikoima",
+    "kuvaus" : "kielivalikoima"
+  } ],
+  "codesGroupUri" : "http://koulutuskoodistot",
+  "voimassaAlkuPvm" : "2013-01-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}
