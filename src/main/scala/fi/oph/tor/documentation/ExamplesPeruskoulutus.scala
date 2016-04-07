@@ -32,7 +32,7 @@ object PeruskoulutusExampleData {
 
   val hyväksytty = Some(List(PeruskoulunArviointi("S")))
 
-  def vuosiviikkotuntia(määrä: Double): Some[Laajuus] = Some(Laajuus(määrä.toFloat, Koodistokoodiviite("", Some("Vuosiviikkotuntia"), "3")))
+  def vuosiviikkotuntia(määrä: Double): Some[Laajuus] = Some(Laajuus(määrä.toFloat, Koodistokoodiviite("3", Some("Vuosiviikkotuntia"), "opintojenlaajuusyksikko")))
 }
 
 object ExamplesPeruskoulutus {
