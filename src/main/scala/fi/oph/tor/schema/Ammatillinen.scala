@@ -99,7 +99,7 @@ sealed trait AmmatillinenTutkinnonOsa extends Koulutusmoduuli
     tunniste: Koodistokoodiviite,
     @Description("Onko pakollinen osa tutkinnossa")
     pakollinen: Boolean,
-    laajuus: Option[Laajuus],
+    override val laajuus: Option[Laajuus],
     paikallinenKoodi: Option[Paikallinenkoodi] = None,
     kuvaus: Option[String] = None
   ) extends AmmatillinenTutkinnonOsa
@@ -110,7 +110,7 @@ sealed trait AmmatillinenTutkinnonOsa extends Koulutusmoduuli
     kuvaus: String,
     @Description("Onko pakollinen osa tutkinnossa")
     pakollinen: Boolean,
-    laajuus: Option[Laajuus]
+    override val laajuus: Option[Laajuus]
   ) extends AmmatillinenTutkinnonOsa
 
 case class AmmatillisenTutkinnonOsanLisätieto(

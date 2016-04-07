@@ -66,15 +66,23 @@ case class PeruskoulunArviointi(
   arvioitsijat: Option[List[Arvioitsija]] = None
 ) extends Arviointi
 
+object PeruskoulunArviointi {
+  def apply(arvosana: String) = new PeruskoulunArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arvosanat"), None)
+}
+
 trait PeruskoulunOppiaine extends Koulutusmoduuli {
   @Description("Peruskoulutuksen oppiaine")
   @KoodistoUri("koskioppiaineetyleissivistava")
   @OksaUri("tmpOKSAID256", "oppiaine")
   def tunniste: Koodistokoodiviite
+  def pakollinen: Boolean
+  def laajuus: Option[Laajuus]
 }
 
   case class Oppiaine(
-    tunniste: Koodistokoodiviite
+    tunniste: Koodistokoodiviite,
+    pakollinen: Boolean = true,
+    override val laajuus: Option[Laajuus] = None
   ) extends PeruskoulunOppiaine
 
   case class Uskonto(
@@ -82,7 +90,9 @@ trait PeruskoulunOppiaine extends Koulutusmoduuli {
     tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "KT", koodistoUri = "koskioppiaineetyleissivistava"),
     @Description("Mikä uskonto on kyseessä")
     @KoodistoUri("oppiaineuskonto")
-    uskonto: Koodistokoodiviite
+    uskonto: Koodistokoodiviite,
+    pakollinen: Boolean = true,
+    override val laajuus: Option[Laajuus] = None
   ) extends PeruskoulunOppiaine
 
   case class AidinkieliJaKirjallisuus(
@@ -90,7 +100,9 @@ trait PeruskoulunOppiaine extends Koulutusmoduuli {
     tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "AI", koodistoUri = "koskioppiaineetyleissivistava"),
     @Description("Mikä kieli on kyseessä")
     @KoodistoUri("oppiaineaidinkielijakirjallisuus")
-    kieli: Koodistokoodiviite
+    kieli: Koodistokoodiviite,
+    pakollinen: Boolean = true,
+    override val laajuus: Option[Laajuus] = None
   ) extends PeruskoulunOppiaine
 
   case class VierasTaiToinenKotimainenKieli(
@@ -102,5 +114,7 @@ trait PeruskoulunOppiaine extends Koulutusmoduuli {
     tunniste: Koodistokoodiviite,
     @Description("Mikä kieli on kyseessä")
     @KoodistoUri("kielivalikoima")
-    kieli: Koodistokoodiviite
+    kieli: Koodistokoodiviite,
+    pakollinen: Boolean = true,
+    override val laajuus: Option[Laajuus] = None
   ) extends PeruskoulunOppiaine

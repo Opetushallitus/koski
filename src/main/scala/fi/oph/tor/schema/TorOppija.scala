@@ -140,6 +140,7 @@ trait Suoritus {
 
 trait Koulutusmoduuli {
   def tunniste: KoodiViite
+  def laajuus: Option[Laajuus] = None
 }
 
 trait Arviointi {
