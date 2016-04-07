@@ -23,7 +23,8 @@ object SchemaToJson {
         ("type" -> JString("object")),
         ("properties" -> toJsonProperties(t.properties)),
         ("id" -> JString("#" + t.simpleName)),
-        ("additionalProperties" -> JBool(false))
+        ("additionalProperties" -> JBool(false)),
+        ("title" -> JString(t.simpleName))
       ) ++ toRequiredProperties(t.properties).toList
         ++ toDefinitionProperty(t.definitions).toList
       ),
