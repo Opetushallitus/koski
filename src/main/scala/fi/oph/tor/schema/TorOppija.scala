@@ -241,14 +241,14 @@ case class Koodistokoodiviite(
   @Description("Käytetyn koodiston tunniste")
   koodistoUri: String,
   @Description("Käytetyn koodiston versio. Jos versiota ei määritellä, käytetään uusinta versiota")
-  koodistoVersio: Option[Int]
+  koodistoVersio: Option[Int] = None
 ) extends KoodiViite {
   override def toString = koodistoUri + "/" + koodiarvo
   def koodistoViite = koodistoVersio.map(KoodistoViite(koodistoUri, _))
 }
 
 object Koodistokoodiviite {
-  def apply(koodiarvo: String, koodistoUri: String): Koodistokoodiviite = Koodistokoodiviite(koodiarvo, None, koodistoUri, None)
+  def apply(koodiarvo: String, koodistoUri: String): Koodistokoodiviite = Koodistokoodiviite(koodiarvo, None, koodistoUri)
 }
 
 @Description("Henkilökohtainen opetuksen järjestämistä koskeva suunnitelma, https://fi.wikipedia.org/wiki/HOJKS")
