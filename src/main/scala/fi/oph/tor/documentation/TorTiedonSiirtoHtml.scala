@@ -2,7 +2,6 @@ package fi.oph.tor.documentation
 
 import com.tristanhunt.knockoff.DefaultDiscounter._
 import fi.oph.tor.http.ErrorCategory
-import fi.oph.tor.json.Json
 import fi.oph.tor.schema.TorSchema
 
 import scala.xml.Elem
@@ -94,7 +93,7 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
   }
 
   def examplesHtml: List[Elem] = {
-    ExamplesAmmatillinen.examples.map { example =>
+    Examples.examples.map { example =>
       <div>
         <h3>
           {example.description}<small>
@@ -107,11 +106,7 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
       </div>
     }
   }
-
-
 }
-
-
 
 case class ApiOperation(method: String, path: String, doc: Elem, examples: List[Example], parameters: List[Parameter], statusCodes: List[ErrorCategory])
 
