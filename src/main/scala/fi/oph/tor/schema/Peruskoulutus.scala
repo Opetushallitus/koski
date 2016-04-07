@@ -93,3 +93,15 @@ trait PeruskoulunOppiaine extends Koulutusmoduuli {
     @KoodistoUri("oppiaineaidinkielijakirjallisuus")
     kieli: KoodistoKoodiViite
   ) extends PeruskoulunOppiaine
+
+  case class VierasTaiToinenKotimainenKieli(
+    @KoodistoKoodiarvo("A1")
+    @KoodistoKoodiarvo("A2")
+    @KoodistoKoodiarvo("B1")
+    @KoodistoKoodiarvo("B2")
+    @KoodistoKoodiarvo("B3")
+    tunniste: KoodistoKoodiViite,
+    @Description("Mikä kieli on kyseessä")
+    @KoodistoUri("kielivalikoima")
+    kieli: KoodistoKoodiViite
+  ) extends PeruskoulunOppiaine

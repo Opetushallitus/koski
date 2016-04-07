@@ -43,6 +43,7 @@ object PeruskoulunOppiaineDeserializer extends Deserializer[PeruskoulunOppiaine]
       json match {
         case moduuli: JObject if moduuli \ "tunniste" \ "koodiarvo" == JString("AI") => moduuli.extract[AidinkieliJaKirjallisuus]
         case moduuli: JObject if moduuli \ "tunniste" \ "koodiarvo" == JString("KT") => moduuli.extract[Uskonto]
+        case moduuli: JObject if (moduuli \ "kieli").isInstanceOf[JObject] => moduuli.extract[VierasTaiToinenKotimainenKieli]
         case moduuli: JObject => moduuli.extract[Oppiaine]
       }
   }
