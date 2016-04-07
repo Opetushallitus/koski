@@ -122,7 +122,7 @@ class AmmatillinenValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
         describe("Tutkinnon osa toisesta tutkinnosta") {
           val autoalanTyönjohdonErikoisammattitutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357305", "koulutus"), Some("40/011/2001"))
 
-          def osanSuoritusToisestaTutkinnosta(tutkinto: AmmatillinenTutkintoKoulutus, tutkinnonOsa: OpsTutkinnonosa): AmmatillinenOpsTutkinnonosasuoritus = tutkinnonOsaSuoritus.copy(
+          def osanSuoritusToisestaTutkinnosta(tutkinto: AmmatillinenTutkintoKoulutus, tutkinnonOsa: OpsTutkinnonosa): AmmatillinenTutkinnonosasuoritus = tutkinnonOsaSuoritus.copy(
             tutkinto = Some(tutkinto),
             koulutusmoduuli = tutkinnonOsa
           )
@@ -166,7 +166,7 @@ class AmmatillinenValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
         }
 
         describe("Suorituksen tila") {
-          testSuorituksenTila[AmmatillinenOpsTutkinnonosasuoritus](tutkinnonOsaSuoritus, "tutkinnonosat/100023", { suoritus => { f => putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(f)} })
+          testSuorituksenTila[AmmatillinenTutkinnonosasuoritus](tutkinnonOsaSuoritus, "tutkinnonosat/100023", { suoritus => { f => putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(f)} })
 
           describe("Kun tutkinto on VALMIS-tilassa ja sillä on osa, joka on KESKEN-tilassa") {
             val opiskeluOikeus = opiskeluoikeus().copy(suoritukset = List(tutkintoSuoritus.copy(
@@ -212,8 +212,7 @@ class AmmatillinenValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
       val alkamispäivä = ap.orElse(suoritus.alkamispäivä)
       (suoritus match {
         case s: AmmatillinenTutkintosuoritus => s.copy(tila = t, arviointi = a, vahvistus = v, alkamispäivä = alkamispäivä)
-        case s: AmmatillinenOpsTutkinnonosasuoritus => s.copy(tila = t, arviointi = a, vahvistus = v, alkamispäivä = alkamispäivä)
-        case s: AmmatillinenPaikallinenTutkinnonosasuoritus => s.copy(tila = t, arviointi = a, vahvistus = v, alkamispäivä = alkamispäivä)
+        case s: AmmatillinenTutkinnonosasuoritus => s.copy(tila = t, arviointi = a, vahvistus = v, alkamispäivä = alkamispäivä)
       }).asInstanceOf[T]
     }
 

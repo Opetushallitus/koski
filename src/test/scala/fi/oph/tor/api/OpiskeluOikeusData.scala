@@ -55,13 +55,13 @@ trait OpiskeluOikeusData {
 
   val tutkinnonSuoritustapaNäyttönä = Some(Suoritustapa(Koodistokoodiviite("naytto", "suoritustapa")))
 
-  val tutkinnonOsaSuoritus = AmmatillinenOpsTutkinnonosasuoritus(
+  val tutkinnonOsaSuoritus = AmmatillinenTutkinnonosasuoritus(
     tutkinnonOsa, None, None, None, None, None, None, tilaKesken, None,
     OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka")),
     arviointiHyvä(), None)
 
-  val paikallinenTutkinnonOsaSuoritus = AmmatillinenPaikallinenTutkinnonosasuoritus(
-    paikallinenTutkinnonOsa, None, None, None, None, None, tilaKesken, None,
+  val paikallinenTutkinnonOsaSuoritus = AmmatillinenTutkinnonosasuoritus(
+    paikallinenTutkinnonOsa, None, None, None, None, None, None, tilaKesken, None,
     OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka")),
     arviointiHyvä(), None)
 }

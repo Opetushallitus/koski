@@ -12,23 +12,11 @@
     "versio": 1
   },
   {
-    "koodiUri": "suorituksentyyppi_ammatillinenpaikallinentutkinnonosasuoritus",
-    "koodiArvo": "ammatillinenpaikallinentutkinnonosasuoritus",
+    "koodiUri": "suorituksentyyppi_ammatillinentutkinnonosasuoritus",
+    "koodiArvo": "ammatillinentutkinnonosasuoritus",
     "metadata": [
       {
-        "nimi": "Ammatillinen paikallinen tutkinnonosasuoritus",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "suorituksentyyppi_ammatillinenopstutkinnonosasuoritus",
-    "koodiArvo": "ammatillinenopstutkinnonosasuoritus",
-    "metadata": [
-      {
-        "nimi": "Ammatillinen OPS tutkinnonosasuoritus",
+        "nimi": "Ammatillinen tutkinnonosasuoritus",
         "lyhytNimi": "",
         "kieli": "FI"
       }

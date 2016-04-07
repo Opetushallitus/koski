@@ -1,6 +1,5 @@
 package fi.oph.tor.schema
 
-import fi.oph.tor.schema.PeruskoulunOppiaine
 import org.json4s._
 
 object Deserializers {
@@ -24,14 +23,13 @@ object OpiskeluOikeusSerializer extends Deserializer[Opiskeluoikeus] {
 }
 
 object SuoritusDeserializer extends Deserializer[Suoritus] {
-  private val classes = List(classOf[Suoritus], classOf[AmmatillinenTutkinnonosaSuoritus])
+  private val classes = List(classOf[Suoritus])
 
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Suoritus] = {
     case (TypeInfo(c, _), json) if (classes.contains(c)) =>
       json match {
         case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("ammatillinentutkintosuoritus") => suoritus.extract[AmmatillinenTutkintosuoritus]
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("ammatillinenopstutkinnonosasuoritus") => suoritus.extract[AmmatillinenOpsTutkinnonosasuoritus]
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("ammatillinenpaikallinentutkinnonosasuoritus") => suoritus.extract[AmmatillinenPaikallinenTutkinnonosasuoritus]
+        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("ammatillinentutkinnonosasuoritus") => suoritus.extract[AmmatillinenTutkinnonosasuoritus]
       }
   }
 }
@@ -51,10 +49,10 @@ object PeruskoulunOppiaineDeserializer extends Deserializer[PeruskoulunOppiaine]
 }
 
 object KoulutusmoduuliDeserializer extends Deserializer[Koulutusmoduuli] {
-  private val TheClass = classOf[Koulutusmoduuli]
+  private val classes = List(classOf[Koulutusmoduuli], classOf[AmmatillinenTutkinnonOsa])
 
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Koulutusmoduuli] = {
-    case (TypeInfo(TheClass, _), json) =>
+    case (TypeInfo(c, _), json) if classes.contains(c) =>
       json match {
         case moduuli: JObject if moduuli \ "tunniste" \ "koodistoUri" == JString("koulutus") => moduuli.extract[AmmatillinenTutkintoKoulutus]
         case moduuli: JObject if moduuli \ "tunniste" \ "koodistoUri" == JString("tutkinnonosat") => moduuli.extract[OpsTutkinnonosa]

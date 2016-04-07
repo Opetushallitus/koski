@@ -184,7 +184,7 @@ case class DefaultJärjestämismuoto(
 
 case class Hyväksiluku(
   @Description("Aiemman, korvaavan suorituksen kuvaus")
-  osaaminen: Koulutusmoduuli,
+  osaaminen: Koulutusmoduuli, // TODO: tähän ehkä mieluummin Suoritus, koska se on "standalone"-entiteetti (löytyy diskriminaattori)
   @Description("Osaamisen tunnustamisen kautta saatavan tutkinnon osan suorituksen selite")
   @OksaUri("tmpOKSAID629", "osaamisen tunnustaminen")
   selite: Option[String]
