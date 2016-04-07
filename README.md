@@ -1,13 +1,13 @@
-# Todennetun Osaamisen Rekisteri (TOR)
+# Koski
 
-Todennetun osaamisen rekisteri (TOR) tulee toimimaan kattavana opetustoimialan tietovarantona, joka tarjoaa
-tutkintoon johtavat suoritustiedot eri koulutusasteilta. Yleinen TOR-dokumentaatio kootaan CSC:n wikiin: https://confluence.csc.fi/display/OPHPALV/Todennetun+osaamisen+rekisteri
+Todennetun osaamisen rekisteri (aiemmin TOR) tulee toimimaan kattavana opetustoimialan tietovarantona, joka tarjoaa
+tutkintoon johtavat suoritustiedot eri koulutusasteilta. Yleinen Koski-dokumentaatio kootaan CSC:n wikiin: https://confluence.csc.fi/display/OPHPALV/Koski
 
-Tässä git-repositoriossa on TOR-järjestelmän ohjelmakoodi, tietokannan rakennuslausekkeet ja tekninen dokumentaatio ohjelmistokehitystä varten.
+Tässä git-repositoriossa on Koski-järjestelmän ohjelmakoodi, tietokannan rakennuslausekkeet ja tekninen dokumentaatio ohjelmistokehitystä varten.
 
-TOR on [EUPL](LICENSE.txt)-lisensoitu sovellus, josta on mahdollista käynnistää kehitysinstanssi omalla työasemalla, alla olevien kehitysohjeiden mukaisesti. TOR-sovellus on alustariippumaton, sillä se pyörii Java-virtuaalikoneella. Kehitysympäristö toimii sellaisenaan ainakin Linux ja OSX-käyttöjärjestelmissä.
+Koski on [EUPL](LICENSE.txt)-lisensoitu sovellus, josta on mahdollista käynnistää kehitysinstanssi omalla työasemalla, alla olevien kehitysohjeiden mukaisesti. Koski-sovellus on alustariippumaton, sillä se pyörii Java-virtuaalikoneella. Kehitysympäristö toimii sellaisenaan ainakin Linux ja OSX-käyttöjärjestelmissä.
 
-Huom! TOR-järjestelmän kehitys on vielä alkuvaiheessa ja kaikki tässä dokumentissa kuvattu voi vielä muuttua matkan varrella.
+Huom! Koski-järjestelmän kehitys on vielä alkuvaiheessa ja kaikki tässä dokumentissa kuvattu voi vielä muuttua matkan varrella.
 
 ## Käsitteet
 
@@ -19,14 +19,14 @@ Keskeiset entiteetit, ja järjestelmät, joihin nämä tallennetaan.
 | Koodi          | Yksittäisen objektin koodi koodistossa       | id (tekstiä)     | Koodistopalvelu        |
 | Oppija         | Opiskelija, oppilas.                         | henkilöOid       | Henkilöpalvelu         |
 | Organisaatio   | Oppilaitos, kunta, eri rooleissa             | organisaatioOid  | Organisaatiopalvelu    |
-| Opinto-oikeus  | Oppijan suhde oppilaitokseen ja suoritettavaan tutkintoon (tutkinto, oppija, oppilaitos, voimassaoloaika, läsnäolotiedot...) | id (numeerinen)  | TOR        |
+| Opinto-oikeus  | Oppijan suhde oppilaitokseen ja suoritettavaan tutkintoon (tutkinto, oppija, oppilaitos, voimassaoloaika, läsnäolotiedot...) | id (numeerinen)  | Koski        |
 | Peruste        | Tutkinnon tai tutkinnon osan peruste         | diaarinumero     | ePerusteet             |
-| Suoritus       | Oppijan suoritus (tutkinto, oppija, oppilaitos, aika...) | id (numeerinen)  | TOR        |
+| Suoritus       | Oppijan suoritus (tutkinto, oppija, oppilaitos, aika...) | id (numeerinen)  | Koski        |
 | Tutkinto       | Tutkinnon kuvaus (tutkintotunnus, nimi...)   | tutkintotunnus   | Koodisto               |
 
 ## Teknologiat
 
-Nämä ovat keskeiset TOR-järjestelmässä käytettävät teknologiat. Lista kuvaa järjestelmän nykytilaa ja muuttuu matkan varrella
+Nämä ovat keskeiset Koski-järjestelmässä käytettävät teknologiat. Lista kuvaa järjestelmän nykytilaa ja muuttuu matkan varrella
 tarpeen mukaan.
 
 - PostgreSQL 9.4 -tietokanta
@@ -61,7 +61,7 @@ Minimissään tarvitset nämä:
 
 ## Paikallinen PostgreSQL-tietokanta
 
-Kehityskäyttöön tarvitaan paikallinen PostgreSQL-tietokanta. TOR-sovellus luo paikallisen kannan, skeeman ja käyttäjän
+Kehityskäyttöön tarvitaan paikallinen PostgreSQL-tietokanta. Koski-sovellus luo paikallisen kannan, skeeman ja käyttäjän
 automaattisesti ja käynnistää myös tarvittavan PostgreSQL-serveriprosessin.
 
 Paikallisen kannan konfiguraatio on tiedostossa `postgresql/postgresql.conf` ja tietokannan datahakemisto on `postgresql/data`.
@@ -72,7 +72,7 @@ Jos haluat pitää Postgresin käynnissä erikseen, voit käynnistää sen komen
 
 PostgreSQL jää pyörimään konsoliin ja voit sammuttaa sen painamalla ctrl-c.
 
-Käynnistyessään Tor-sovellus huomaa, jos tietokanta on jo käynnissä, eikä siinä tapauksessa yritä käynnistää sitä.
+Käynnistyessään Koski-sovellus huomaa, jos tietokanta on jo käynnissä, eikä siinä tapauksessa yritä käynnistää sitä.
 
 Kehityksessä käytetään kahta kantaa: `tor` jota käytetään normaalisti ja `tortest` jota käytetään automaattisissa
 testeissä (tämä kanta tyhjennetään aina testiajon alussa). Molemmat kannat sisältävät `tor` -skeeman, ja sijaitsevat
@@ -99,11 +99,11 @@ Sitten vaikka
 
 Tietokannan rakenne luodaan ja päivitetään Flywayllä migraatioskripteillä, jotka ovat hakemistossa `src/main/resources/db/migration`.
 
-Tor-sovellus ajaa migraatiot automaattisesti käynnistyessään.
+Koski-sovellus ajaa migraatiot automaattisesti käynnistyessään.
 
 ## Buildi ja ajaminen
 
-TOR:n buildiin kuuluu frontin buildaus (npm / webpack) ja serverin buildaus Mavenilla. Tätä helpottamaan on otettu käyttöön `make`, jonka avulla
+Koski:n buildiin kuuluu frontin buildaus (npm / webpack) ja serverin buildaus Mavenilla. Tätä helpottamaan on otettu käyttöön `make`, jonka avulla
 eri taskit on helppo suorittaa. Ks `Makefile`-tiedosto.
 
 Buildaa koko systeemi
@@ -118,9 +118,9 @@ Staattinen analyysi [ScalaStyle](http://www.scalastyle.org/) ja [ESLint](http://
 
     make lint
 
-### TOR-sovelluksen ajaminen kehitystyöasemalla
+### Koski-sovelluksen ajaminen kehitystyöasemalla
 
-Aja JettyLauncher-luokka IDEAsta/Eclipsestä, tai käynnistä TOR vaihtoehtoisesti komentoriviltä
+Aja JettyLauncher-luokka IDEAsta/Eclipsestä, tai käynnistä Koski vaihtoehtoisesti komentoriviltä
 
     make build
     make run
@@ -135,9 +135,9 @@ Suoritus-testidatat näkyy
 
 ### Ajaminen paikallisesti käyttäen ulkoisia palveluja (esim henkilöpalvelu)
 
-Ilman parametrejä ajettaessa TOR käyttää mockattuja ulkoisia riippuvuuksia.
+Ilman parametrejä ajettaessa Koski käyttää mockattuja ulkoisia riippuvuuksia.
 
-Ottaaksesi käyttöön ulkoiset integraatiot, kuten henkilpalvelun, voit antaa TOR:lle käynnistysparametrinä käytettävän konfiguraatiotiedoston sijainnin. Esimerkiksi
+Ottaaksesi käyttöön ulkoiset integraatiot, kuten henkilpalvelun, voit antaa Koski:lle käynnistysparametrinä käytettävän konfiguraatiotiedoston sijainnin. Esimerkiksi
 
     -Dconfig.resource=qa.conf
 
@@ -159,7 +159,7 @@ Mocha-testit voi ajaa myös nopeasti komentoriviltä
 
 ## CI-palvelin
 
-TOR:n Jenkins CI-palvelin palvelee osoitteessa http://86.50.170.109:8080/, jonne pääsy on rajattu käyttäjätunnuksella ja salasanalla.
+Koski:n Jenkins CI-palvelin palvelee osoitteessa http://86.50.170.109:8080/, jonne pääsy on rajattu käyttäjätunnuksella ja salasanalla.
 
 CI-palvelimella sovellus testataan jokaisen commitin yhteydessä. Paikallisten testien lisäksi ajetaan pieni määrä integraatiotestejä testiympäristön REST-rajapintoja vasten.
  
@@ -173,7 +173,7 @@ CI-palvelimen konfiguraatio synkronoidaan [Github-repositorioon](https://github.
 
 ### URLit
 
-Testiympäristön TOR löytyy täältä:
+Testiympäristön Koski löytyy täältä:
 
     http://tordev.tor.oph.reaktor.fi/tor/
 
@@ -204,7 +204,7 @@ Ennakkovaatimukset:
   * `brew install openssl`
   * `brew install ruby`
 
-Tämän jälkeen voit pushata uuden version TOR:sta ajamalla,
+Tämän jälkeen voit pushata uuden version Koski:sta ajamalla,
 
     make deploy
 
@@ -229,7 +229,7 @@ Kun sovellus käynnistetään ilman ulkoisia parametrejä, käynnistyy se näill
 ja toimii "kehitysmoodissa", eli käynnistää paikallisen tietokannan, 
 eikä ota yhteyttä ulkoisiin järjestelmiin.
 
-Tuotantokäytössä ja testiympäristössä käytetään asetuksia, joilla TOR saadaan ottamaan yhteys ulkoisiin
+Tuotantokäytössä ja testiympäristössä käytetään asetuksia, joilla Koski saadaan ottamaan yhteys ulkoisiin
 järjestelmiin. Pilviympäristössä käytetään tällä hetkellä [cloud/restart.sh] -skriptiä, jolla annetaan
 tarvittavat asetukset.
 
@@ -239,7 +239,7 @@ esim. `-Dconfig.resource=tordev.conf`. Valmiita asetustiedostoja voi pyytää ke
 
 ### Henkilötiedot
 
-TOR ei tallenna henkilötietoja omaan kantaansa, vaan hakee/tallentaa ne Opintopolun [henkilöpalveluun](https://github.com/Opetushallitus/henkilo). [toteutus](src/main/scala/fi/oph/tor/oppija/OppijaRepository.scala)
+Koski ei tallenna henkilötietoja omaan kantaansa, vaan hakee/tallentaa ne Opintopolun [henkilöpalveluun](https://github.com/Opetushallitus/henkilo). [toteutus](src/main/scala/fi/oph/tor/oppija/OppijaRepository.scala)
 
 Kun TORissa haetaan henkilön tietoja esimerkiksi sukunimellä, haetaan lista mahdollisista henkilöistä ensin henkilöpalvelusta, jonka jälkeen se [suodatetaan](src/main/scala/fi/oph/tor/opiskeluoikeus/OpiskeluOikeusRepository.scala#L8)
 TORissa olevien opinto-oikeuksien perusteella.
@@ -259,7 +259,7 @@ Henkilöpalvelun swagger:
 Tällä hetkellä TORiin voi tallentaa vain [ePerusteista](https://eperusteet.opintopolku.fi/) löytyvien tutkintojen tietoja. Opinto-oikeutta lisättäessa lista mahdollisista tutkinnoista haetaan
 ePerusteista ja [Opinto-oikeuden](src/main/scala/fi/oph/tor/opiskeluoikeus/OpiskeluOikeus.scala) sisältämään [tutkinto](src/main/scala/fi/oph/tor/tutkinto/Tutkinto.scala)-osioon tallennetaan tieto ePerusteet-linkityksestä.
 
-EPerusteista haetaan myös tutkinnon hierarkkinen [rakenne](src/main/scala/fi/oph/tor/tutkinto/TutkintoRakenne.scala), joka kuvaa, mistä tutkinnon osista tutkinto koostuu. [toteutus](https://github.com/Opetushallitus/tor/blob/master/src/main/scala/fi/oph/tor/eperusteet/RemoteEPerusteetRepository.scala)
+EPerusteista haetaan myös tutkinnon hierarkkinen [rakenne](src/main/scala/fi/oph/tor/tutkinto/TutkintoRakenne.scala), joka kuvaa, mistä tutkinnon osista tutkinto koostuu. [toteutus](https://github.com/Opetushallitus/koski/blob/master/src/main/scala/fi/oph/tor/eperusteet/RemoteEPerusteetRepository.scala)
 
 EPerusteiden Swagger-dokumentaatio:
 
@@ -273,7 +273,7 @@ Pari testiurlia:
 
 ### Koodistopalvelu
 
-TOR käyttää [Koodistopalvelua](https://github.com/Opetushallitus/koodisto) mm. tutkintoihin liittyvien arviointiasteikkojen hakemiseen.
+Koski käyttää [Koodistopalvelua](https://github.com/Opetushallitus/koodisto) mm. tutkintoihin liittyvien arviointiasteikkojen hakemiseen.
 
 Koodistopalvelun Swagger-dokumentaatio:
 
@@ -284,7 +284,7 @@ Pari testiurlia Koodistopalveluun:
     https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codes/arviointiasteikkoammatillinenhyvaksyttyhylatty/1
     https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codeelement/codes/arviointiasteikkoammatillinenhyvaksyttyhylatty/1
     
-TOR osaa tarvittaessa luoda käytettävät koodistot ja koodistopalveluun. Käynnistä parametrillä `-Dkoodisto.create=true`. 
+Koski osaa tarvittaessa luoda käytettävät koodistot ja koodistopalveluun. Käynnistä parametrillä `-Dkoodisto.create=true`. 
 
 ### LDAP
 
