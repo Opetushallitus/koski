@@ -31,6 +31,8 @@ case class PeruskoulunPäättötodistus(
   suorituskieli: Option[KoodistoKoodiViite],
   tila: KoodistoKoodiViite,
   alkamispäivä: Option[LocalDate],
+  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
+  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
   arviointi: Option[List[PeruskoulunArviointi]] = None,
   vahvistus: Option[Vahvistus] = None,
@@ -46,7 +48,6 @@ case class PeruskoulunOppiaineSuoritus(
   suorituskieli: Option[KoodistoKoodiViite],
   tila: KoodistoKoodiViite,
   alkamispäivä: Option[LocalDate],
-  toimipiste: OrganisaatioWithOid,
   arviointi: Option[List[PeruskoulunArviointi]] = None,
   vahvistus: Option[Vahvistus] = None
 ) extends Suoritus

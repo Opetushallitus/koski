@@ -118,9 +118,6 @@ trait Suoritus {
   def koulutusmoduuli: Koulutusmoduuli
   @Description("Paikallinen tunniste suoritukselle. Tiedonsiirroissa tarpeellinen, jotta voidaan varmistaa päivitysten osuminen oikeaan suoritukseen")
   def paikallinenId: Option[String]
-  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
-  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
-  def toimipiste: OrganisaatioWithOid
   def alkamispäivä: Option[LocalDate]
   @Description("Opintojen suorituskieli")
   @KoodistoUri("kieli")

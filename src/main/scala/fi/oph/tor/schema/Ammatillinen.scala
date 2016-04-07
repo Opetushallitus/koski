@@ -48,6 +48,8 @@ case class AmmatillinenTutkintoSuoritus(
   suorituskieli: Option[KoodistoKoodiViite],
   tila: KoodistoKoodiViite,
   alkamispäivä: Option[LocalDate],
+  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
+  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
   arviointi: Option[List[AmmatillinenArviointi]] = None,
   vahvistus: Option[Vahvistus] = None,
@@ -71,6 +73,8 @@ trait AmmatillinenTutkinnonosaSuoritus extends Suoritus
     suorituskieli: Option[KoodistoKoodiViite],
     tila: KoodistoKoodiViite,
     alkamispäivä: Option[LocalDate],
+    @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
+    @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
     toimipiste: OrganisaatioWithOid,
     arviointi: Option[List[AmmatillinenArviointi]] = None,
     vahvistus: Option[Vahvistus] = None,
@@ -89,6 +93,8 @@ trait AmmatillinenTutkinnonosaSuoritus extends Suoritus
     suorituskieli: Option[KoodistoKoodiViite],
     tila: KoodistoKoodiViite,
     alkamispäivä: Option[LocalDate],
+    @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
+    @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
     toimipiste: OrganisaatioWithOid,
     arviointi: Option[List[AmmatillinenArviointi]] = None,
     vahvistus: Option[Vahvistus] = None,

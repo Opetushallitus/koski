@@ -16,7 +16,6 @@ object PeruskoulutusExampleData {
     suorituskieli = None,
     tila = tilaValmis,
     alkamispäivä = None,
-    toimipiste = jyväskylänNormaalikoulu,
     arviointi = None,
     vahvistus = None
   )
