@@ -16,7 +16,6 @@ object PeruskoulutusExampleData {
     paikallinenId = None,
     suorituskieli = None,
     tila = tilaValmis,
-    alkamispäivä = None,
     arviointi = None,
     vahvistus = None
   )
@@ -71,7 +70,6 @@ object ExamplesPeruskoulutus {
           paikallinenId = None,
           suorituskieli = None,
           tila = tilaValmis,
-          alkamispäivä = None,
           toimipiste = jyväskylänNormaalikoulu,
           arviointi = None,
           vahvistus = Some(Vahvistus(Some(date(2016, 6, 4)))),

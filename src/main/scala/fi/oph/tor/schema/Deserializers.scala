@@ -18,6 +18,7 @@ object OpiskeluOikeusSerializer extends Deserializer[Opiskeluoikeus] {
       json match {
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("ammatillinenkoulutus") => oo.extract[AmmatillinenOpiskeluoikeus]
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("peruskoulutus") => oo.extract[PerusopetuksenOpiskeluoikeus]
+        case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("lukiokoulutus") => oo.extract[LukionOpiskeluoikeus]
       }
   }
 }

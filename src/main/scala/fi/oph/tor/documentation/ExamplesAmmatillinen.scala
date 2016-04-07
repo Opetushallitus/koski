@@ -77,8 +77,6 @@ object AmmatillinenExampleData {
   lazy val hyväksiluku = Hyväksiluku(
     OpsTutkinnonosa(Koodistokoodiviite("100238", Some("Asennushitsaus"), "tutkinnonosat", Some(1)), true, None),
     Some("Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"))
-  lazy val tilaKesken = Koodistokoodiviite("KESKEN", "suorituksentila")
-  lazy val tilaValmis = Koodistokoodiviite("VALMIS", "suorituksentila")
   lazy val arviointiHyväksytty: Some[List[AmmatillinenArviointi]] = Some(List(AmmatillinenArviointi(
     arvosana = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)), Some(date(2013, 3, 20)),
     arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen"))))))
@@ -229,7 +227,7 @@ object ExamplesAmmatillinen {
           paikallinenId = Some("suoritus-12345"),
           tila = tilaKesken,
           toimipiste = toimipiste,
-          suorituskieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None)),
+          suorituskieli = suomenKieli,
 
           osasuoritukset = Some(List(
             AmmatillinenOpsTutkinnonosasuoritus(

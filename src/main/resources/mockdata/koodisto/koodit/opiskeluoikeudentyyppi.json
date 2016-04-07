@@ -18,5 +18,15 @@
       "kieli" : "FI"
     } ],
     "versio" : 1
+  },
+  {
+    "koodiUri" : "opiskeluoikeudentyyppi_lukiokoulutus",
+    "koodiArvo" : "lukiokoulutus",
+    "metadata" : [ {
+      "nimi" : "Lukiokoulutus",
+      "lyhytNimi" : "Lukiokoulutus",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
   }
 ]

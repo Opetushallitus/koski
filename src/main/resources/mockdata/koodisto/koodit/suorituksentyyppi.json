@@ -58,5 +58,17 @@
       }
     ],
     "versio": 1
+  },
+  {
+    "koodiUri": "suorituksentyyppi_lukionoppimaara",
+    "koodiArvo": "lukionoppimaara",
+    "metadata": [
+      {
+        "nimi": "Lukion oppimäärä",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
   }
 ]

@@ -47,7 +47,7 @@ case class AmmatillinenTutkintosuoritus(
   paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
-  alkamispäivä: Option[LocalDate],
+  override val alkamispäivä: Option[LocalDate],
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
@@ -73,7 +73,7 @@ trait AmmatillinenTutkinnonosaSuoritus extends Suoritus
     paikallinenId: Option[String],
     suorituskieli: Option[Koodistokoodiviite],
     tila: Koodistokoodiviite,
-    alkamispäivä: Option[LocalDate],
+    override val alkamispäivä: Option[LocalDate],
     @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
     @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
     toimipiste: OrganisaatioWithOid,
@@ -93,7 +93,7 @@ trait AmmatillinenTutkinnonosaSuoritus extends Suoritus
     paikallinenId: Option[String],
     suorituskieli: Option[Koodistokoodiviite],
     tila: Koodistokoodiviite,
-    alkamispäivä: Option[LocalDate],
+    override val alkamispäivä: Option[LocalDate],
     @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
     @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
     toimipiste: OrganisaatioWithOid,

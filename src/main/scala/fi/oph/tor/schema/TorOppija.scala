@@ -118,7 +118,7 @@ trait Suoritus {
   def koulutusmoduuli: Koulutusmoduuli
   @Description("Paikallinen tunniste suoritukselle. Tiedonsiirroissa tarpeellinen, jotta voidaan varmistaa päivitysten osuminen oikeaan suoritukseen")
   def paikallinenId: Option[String]
-  def alkamispäivä: Option[LocalDate]
+  def alkamispäivä: Option[LocalDate] = None
   @Description("Opintojen suorituskieli")
   @KoodistoUri("kieli")
   @OksaUri("tmpOKSAID309", "opintosuorituksen kieli")
