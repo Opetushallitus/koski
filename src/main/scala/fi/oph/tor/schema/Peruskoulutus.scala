@@ -32,11 +32,12 @@ case class PeruskoulunPäättötodistus(
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
-  arviointi: Option[List[PeruskoulunArviointi]] = None,
   vahvistus: Option[Vahvistus] = None,
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
   override val osasuoritukset: Option[List[PeruskoulunOppiainesuoritus]]
-) extends Suoritus
+) extends Suoritus {
+  def arviointi: Option[List[Arviointi]] = None
+}
 
 case class PeruskoulunOppiainesuoritus(
   @KoodistoKoodiarvo("peruskoulunoppiainesuoritus")

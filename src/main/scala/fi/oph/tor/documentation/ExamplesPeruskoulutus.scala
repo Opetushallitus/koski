@@ -70,7 +70,6 @@ object ExamplesPeruskoulutus {
           suorituskieli = None,
           tila = tilaValmis,
           toimipiste = jyväskylänNormaalikoulu,
-          arviointi = None,
           vahvistus = Some(Vahvistus(Some(date(2016, 6, 4)))),
           osasuoritukset = Some(
             List(
