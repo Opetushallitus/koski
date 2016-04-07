@@ -43,6 +43,11 @@
     </div>
     <div data-role="footer">
         <div id="schema-path" class="ui-content">
+            <a href="#permalink-popup" id="permalink" data-rel="popup">Select a Node</a>
+            <div data-role="popup" id="permalink-popup" class="ui-content" data-arrow="true">
+                <label for="sharelink">Share:</label>
+                <input type="text" id="sharelink" style="min-width:300px;" placeholder="Select a Node to create a permalink." value="" data-theme="a">
+            </div>
         </div>
     </div><!-- /footer -->
     <div data-display="push" data-role="panel" id="info-panel" data-swipe-close=false>
@@ -154,11 +159,19 @@
     (function($) {
         $('body').one('pagecontainershow', function(event, ui) {
             var schema = '/tor/documentation/tor-oppija-schema.json'
+            var selectedNode = window.location.hash.match(/v=([^\&]+)/)[1]
+
             JSV.init({
                 schema: schema
             }, function() {
                 JSV.setVersion(tv4.getSchema(JSV.treeData.schema).version);
-                JSV.resetViewer();
+                if (selectedNode) {
+                    var node = JSV.expandNodePath(selectedNode.split('-'));
+                    JSV.flashNode(node);
+                    JSV.clickTitle(node);
+                } else {
+                    JSV.resetViewer();
+                }
             });
         });
     })(jQuery);
