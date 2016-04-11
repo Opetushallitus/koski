@@ -17,7 +17,7 @@ object ExamplesLukio {
       alkamispäivä = Some(date(2016, 9, 1)),
       arvioituPäättymispäivä = Some(date(2020, 5, 1)),
       päättymispäivä = None,
-      oppilaitos = jyväskylänNormaalikoulu,
+      oppilaitos = jyväskylänNormaalikoulu, None,
       suoritukset = List(
         LukionOppimääränSuoritus(
           paikallinenId = None,
@@ -48,7 +48,7 @@ object ExamplesLukio {
       alkamispäivä = Some(date(2016, 9, 1)),
       arvioituPäättymispäivä = Some(date(2020, 5, 1)),
       päättymispäivä = None,
-      oppilaitos = jyväskylänNormaalikoulu,
+      oppilaitos = jyväskylänNormaalikoulu, None,
       suoritukset = List(
         LukionOppimääränSuoritus(
           paikallinenId = None,

@@ -24,6 +24,15 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
     }
   }
 
+  def fillMissingInfo(oppija: TorOppija) = oppija.copy(opiskeluoikeudet = oppija.opiskeluoikeudet.map(addKoulutusToimija(_)))
+
+  def addKoulutusToimija(oo: Opiskeluoikeus) = {
+    organisaatioRepository.getOrganisaatioHierarkiaIncludingParents(oo.oppilaitos.oid) match {
+      case Some(hierarkia) => oo.withKoulutustoimija(hierarkia.toOrganisaatio)
+      case _ => oo
+    }
+  }
+
   def extractAndValidate(parsedJson: JValue)(implicit user: TorUser): Either[HttpStatus, TorOppija] = {
     timed("extractAndValidate") {
       TorJsonSchemaValidator.jsonSchemaValidate(parsedJson) match {
@@ -31,7 +40,7 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
           val extractionResult: Either[HttpStatus, TorOppija] = ValidatingAndResolvingExtractor.extract[TorOppija](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository))
           extractionResult.right.flatMap { oppija =>
             validateOpiskeluoikeudet(oppija.opiskeluoikeudet) match {
-              case status: HttpStatus if status.isOk => Right(oppija)
+              case status: HttpStatus if status.isOk => Right(fillMissingInfo(oppija))
               case status: HttpStatus => Left(status)
             }
           }

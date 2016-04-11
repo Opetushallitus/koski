@@ -33,7 +33,7 @@ trait OpiskeluOikeusData {
   )
 
   def opiskeluoikeus(suoritus: AmmatillisenTutkinnonSuoritus = tutkintoSuoritus) = AmmatillinenOpiskeluoikeus(None, None, None, None, None, None,
-    oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto),
+    oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto), None,
     suoritukset = List(suoritus),
     None, None, None, None
   )

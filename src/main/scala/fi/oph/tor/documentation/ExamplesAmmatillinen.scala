@@ -114,7 +114,7 @@ object AmmatillinenExampleData {
       Some(date(2016, 9, 1)),
       Some(date(2020, 5, 1)),
       None,
-      oppilaitos,
+      oppilaitos, None,
       List(tutkinto.copy(osasuoritukset = osat)),
       hojks = None,
       None,
@@ -217,7 +217,7 @@ object ExamplesAmmatillinen {
         Some(date(2012, 9, 1)),
         Some(date(2015, 5, 31)),
         Some(date(2016, 1, 9)),
-        stadinAmmattiopisto,
+        stadinAmmattiopisto, None,
         List(tutkintoSuoritus(
           tutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
           tutkintonimike = Some(List(Koodistokoodiviite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
@@ -299,7 +299,7 @@ object AmmatillinenFullExample {
         Some(date(2012, 9, 1)),
         Some(date(2015, 5, 31)),
         Some(date(2016, 1, 9)),
-        stadinAmmattiopisto,
+        stadinAmmattiopisto, None,
         List(tutkintoSuoritus(
           tutkintoKoulutus = AmmatillinenTutkintoKoulutus(
             Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None),

@@ -21,6 +21,10 @@ class TorOppijaUpdateSpec extends FreeSpec with OpiskeluOikeusTestMethods {
         val opiskeluOikeus = createOpiskeluOikeus(oppija, uusiOpiskeluOikeus)
         opiskeluOikeus.suoritukset(0).koulutusmoduuli.tunniste.nimi should equal(Some("Laitosasentaja"))
       }
+      "Koulutustoimijan tiedot" in {
+        val opiskeluOikeus = createOpiskeluOikeus(oppija, uusiOpiskeluOikeus)
+        opiskeluOikeus.koulutustoimija.map(_.oid) should equal(Some("1.2.246.562.10.346830761110"))
+      }
     }
   }
 }

@@ -13,6 +13,7 @@ case class AmmatillinenOpiskeluoikeus(
   arvioituPäättymispäivä: Option[LocalDate],
   päättymispäivä: Option[LocalDate],
   oppilaitos: Oppilaitos,
+  koulutustoimija: Option[OrganisaatioWithOid],
   @MinItems(1) @MaxItems(1)
   suoritukset: List[AmmatillisenTutkinnonSuoritus],
   hojks: Option[Hojks],
@@ -25,6 +26,7 @@ case class AmmatillinenOpiskeluoikeus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinenkoulutus", Some("Ammatillinen koulutus"), "opiskeluoikeudentyyppi", None)
 ) extends Opiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
+  override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
 }
 
 case class AmmatillisenTutkinnonSuoritus(

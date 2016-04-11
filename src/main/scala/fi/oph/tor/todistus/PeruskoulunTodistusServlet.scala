@@ -19,17 +19,17 @@ class PeruskoulunTodistusServlet(val userRepository: UserOrganisationsRepository
 
   def renderTodistus(oppija: TorOppija) = {
     val oppijaHenkilö = oppija.henkilö.asInstanceOf[Henkilötiedot]
-    oppija.opiskeluoikeudet.flatMap(_.suoritukset.flatMap { case t: PeruskoulunPäättötodistus =>
-      Some(t)
+    oppija.opiskeluoikeudet.flatMap(oo => oo.suoritukset.flatMap { case t: PeruskoulunPäättötodistus =>
+      Some(oo, t)
     case x: AnyRef =>
       None
     }).headOption match {
-      case Some(t) => renderPeruskoulunPäättötodistus(oppijaHenkilö, t)
+      case Some((oo, t)) => renderPeruskoulunPäättötodistus(oo.koulutustoimija, oppijaHenkilö, t)
       case _ => renderStatus(TorErrorCategory.notFound.todistustaEiLöydy())
     }
   }
 
-  def renderPeruskoulunPäättötodistus(oppijaHenkilö: Henkilötiedot, päättötodistus: PeruskoulunPäättötodistus) = {
+  def renderPeruskoulunPäättötodistus(koulutustoimija: Option[OrganisaatioWithOid], oppijaHenkilö: Henkilötiedot, päättötodistus: PeruskoulunPäättötodistus) = {
     val oppiaineet: List[PeruskoulunOppiaineenSuoritus] = päättötodistus.osasuoritukset.toList.flatten
     val pakolliset = oppiaineet.filter(_.koulutusmoduuli.pakollinen)
     val pakollisetJaNiihinLiittyvätValinnaiset: List[Aine] = pakolliset.flatMap { case pakollinen =>
@@ -63,9 +63,9 @@ class PeruskoulunTodistusServlet(val userRepository: UserOrganisationsRepository
       </head>
       <body>
         <div class="todistus peruskoulu">
-          <h2>Tampereen kaupunki</h2><!-- TODO: tätä tietoa ei ole datassa -->
+          <h2 class="koulutustoimija">{koulutustoimija.flatMap(_.nimi).getOrElse("")}</h2>
           <h1>Peruskoulun päättötodistus</h1>
-          <h2 class="koulu">{päättötodistus.toimipiste.nimi.getOrElse("")}</h2>
+          <h2 class="oppilaitos">{päättötodistus.toimipiste.nimi.getOrElse("")}</h2>
           <div class="oppija">
             <span class="nimi">{oppijaHenkilö.sukunimi}, {oppijaHenkilö.etunimet}</span>
             <span class="hetu">{oppijaHenkilö.hetu}</span>

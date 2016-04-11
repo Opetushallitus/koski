@@ -1,6 +1,6 @@
 package fi.oph.tor.organisaatio
 
-import fi.oph.tor.http.{HttpStatus, TorErrorCategory}
+import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.json.{ContextualExtractor, Json}
 import fi.oph.tor.log.Logging
 import fi.oph.tor.schema._

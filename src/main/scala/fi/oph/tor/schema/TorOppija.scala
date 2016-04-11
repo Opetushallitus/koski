@@ -95,6 +95,9 @@ trait Opiskeluoikeus extends Loggable {
   def päättymispäivä: Option[LocalDate]
   @Description("Oppilaitos, jossa opinnot on suoritettu")
   def oppilaitos: Oppilaitos
+  @Description("Koulutustoimija, käytännössä oppilaitoksen yliorganisaatio")
+  @ReadOnly("Tiedon syötössä tietoa ei tarvita; kuvaus haetaan Organisaatiopalvelusta")
+  def koulutustoimija: Option[OrganisaatioWithOid]
   @Description("Opiskeluoikeuteen liittyvien (tutkinto-)suorituksien tiedot")
   def suoritukset: List[Suoritus]
   def opiskeluoikeudenTila: Option[OpiskeluoikeudenTila]
@@ -106,6 +109,7 @@ trait Opiskeluoikeus extends Loggable {
   }
 
   def withIdAndVersion(id: Option[Int], versionumero: Option[Int]): Opiskeluoikeus
+  def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid): Opiskeluoikeus
 }
 
 object Opiskeluoikeus {

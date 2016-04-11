@@ -2,7 +2,7 @@ package fi.oph.tor.schema
 
 import java.time.LocalDate
 
-import fi.oph.tor.schema.generic.annotation.{MaxItems, MinItems, Description}
+import fi.oph.tor.schema.generic.annotation.Description
 
 @Description("Perusopetuksen opiskeluoikeus")
 case class PerusopetuksenOpiskeluoikeus(
@@ -13,6 +13,7 @@ case class PerusopetuksenOpiskeluoikeus(
   arvioituPäättymispäivä: Option[LocalDate],
   päättymispäivä: Option[LocalDate],
   oppilaitos: Oppilaitos,
+  koulutustoimija: Option[OrganisaatioWithOid],
   suoritukset: List[PeruskoulunPäättötodistus],
   opiskeluoikeudenTila: Option[OpiskeluoikeudenTila],
   läsnäolotiedot: Option[Läsnäolotiedot],
@@ -20,6 +21,7 @@ case class PerusopetuksenOpiskeluoikeus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("peruskoulutus", Some("Peruskoulutus"), "opiskeluoikeudentyyppi", None)
 ) extends Opiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
+  override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
 }
 
 case class PeruskoulunPäättötodistus(
