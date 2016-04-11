@@ -84,7 +84,7 @@ class PeruskoulunTodistusServlet(val userRepository: UserOrganisationsRepository
           </table>
           <div class="vahvistus">
             <span class="paikkakunta">Tampere<!-- TODO: paikkakuntaa ei ole datassa --></span>
-            <span class="date">{päättötodistus.vahvistus.flatMap(_.päivä).map(dateFormatter.format(_)).getOrElse("")}</span>
+            <span class="date">{päättötodistus.vahvistus.map(_.päivä).map(dateFormatter.format(_)).getOrElse("")}</span>
             {
             päättötodistus.vahvistus.flatMap(_.myöntäjäHenkilöt).toList.flatten.map { myöntäjäHenkilö =>
               <span class="allekirjoitus">

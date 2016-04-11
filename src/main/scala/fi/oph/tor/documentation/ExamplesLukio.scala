@@ -37,7 +37,7 @@ object ExamplesLukio {
     ))
   )
 
-  private val vahvistus: Some[Vahvistus] = Some(Vahvistus(Some(date(2016, 6, 4))))
+  private val vahvistus: Some[Vahvistus] = Some(Vahvistus(date(2016, 6, 4)))
 
   val päättötodistus = TorOppija(
     exampleHenkilö,

@@ -164,7 +164,7 @@ case class Arvioitsija(
 
 case class Vahvistus(
   @Description("Tutkinnon tai tutkinnonosan vahvistettu suorituspäivämäärä, eli päivämäärä jolloin suoritus on hyväksyttyä todennettua osaamista")
-  päivä: Option[LocalDate],
+  päivä: LocalDate,
   myöntäjäOrganisaatio: Option[Organisaatio] = None,
   myöntäjäHenkilöt: Option[List[OrganisaatioHenkilö]] = None
 )

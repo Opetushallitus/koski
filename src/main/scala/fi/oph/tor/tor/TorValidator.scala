@@ -76,7 +76,7 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
     val arviointipäivä = ("suoritus.arviointi.päivä", suoritus.arviointi.toList.flatten.flatMap(_.päivä))
     HttpStatus.fold(
       validateDateOrder(("suoritus.alkamispäivä", suoritus.alkamispäivä), arviointipäivä)
-        :: validateDateOrder(arviointipäivä, ("suoritus.vahvistus.päivä", suoritus.vahvistus.flatMap(_.päivä)))
+        :: validateDateOrder(arviointipäivä, ("suoritus.vahvistus.päivä", suoritus.vahvistus.map(_.päivä)))
         :: validateStatus(suoritus)
         :: suoritus.osasuoritusLista.map(validateSuoritus(_))
     )

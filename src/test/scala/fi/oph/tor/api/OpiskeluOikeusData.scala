@@ -51,7 +51,7 @@ trait OpiskeluOikeusData {
   val tilaValmis: Koodistokoodiviite = Koodistokoodiviite("VALMIS", "suorituksentila")
   val tilaKesken: Koodistokoodiviite = Koodistokoodiviite("KESKEN", "suorituksentila")
   val tilaKeskeytynyt: Koodistokoodiviite = Koodistokoodiviite("KESKEYTYNYT", "suorituksentila")
-  val vahvistus: Some[Vahvistus] = Some(Vahvistus(Some(LocalDate.parse("2016-08-08"))))
+  val vahvistus: Some[Vahvistus] = Some(Vahvistus(LocalDate.parse("2016-08-08")))
 
   val tutkinnonSuoritustapaNäyttönä = Some(Suoritustapa(Koodistokoodiviite("naytto", "suoritustapa")))
 

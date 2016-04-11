@@ -275,7 +275,7 @@ class AmmatillinenValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
 
     describe("Suorituksen päivämäärät") {
       def päivämäärillä(alkamispäivä: String, arviointipäivä: String, vahvistuspäivä: String) = {
-        copySuoritus(suoritus, tilaValmis, arviointiHyvä(Some(LocalDate.parse(arviointipäivä))), Some(Vahvistus(Some(LocalDate.parse(vahvistuspäivä)))), Some(LocalDate.parse(alkamispäivä)))
+        copySuoritus(suoritus, tilaValmis, arviointiHyvä(Some(LocalDate.parse(arviointipäivä))), Some(Vahvistus(LocalDate.parse(vahvistuspäivä))), Some(LocalDate.parse(alkamispäivä)))
       }
 
       describe("Päivämäärät kunnossa") {
