@@ -1,5 +1,7 @@
 package fi.oph.tor.schema
 
+import java.time.LocalDate
+
 import fi.oph.tor.schema.generic.annotation.Description
 
 trait YleissivistavaOppiaine extends Koulutusmoduuli {
@@ -50,3 +52,15 @@ trait YleissivistavaOppiaine extends Koulutusmoduuli {
     pakollinen: Boolean = true,
     override val laajuus: Option[Laajuus] = None
   ) extends YleissivistavaOppiaine
+
+
+case class YleissivistävänkoulutuksenArviointi(
+  @KoodistoUri("arvosanat")
+  arvosana: Koodistokoodiviite,
+  päivä: Option[LocalDate],
+  arvioitsijat: Option[List[Arvioitsija]] = None
+) extends Arviointi
+
+object YleissivistävänkoulutuksenArviointi {
+  def apply(arvosana: String) = new YleissivistävänkoulutuksenArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arvosanat"), None)
+}

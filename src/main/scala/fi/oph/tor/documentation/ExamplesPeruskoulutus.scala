@@ -26,11 +26,11 @@ object PeruskoulutusExampleData {
     kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
   def uskonto(uskonto: String) = Uskonto(uskonto = Koodistokoodiviite(koodiarvo = uskonto, koodistoUri = "oppiaineuskonto"))
 
-  def arviointi(arvosana: Int): Some[List[PeruskoulunArviointi]] = {
-    Some(List(PeruskoulunArviointi(arvosana.toString)))
+  def arviointi(arvosana: Int): Some[List[YleissivistävänkoulutuksenArviointi]] = {
+    Some(List(YleissivistävänkoulutuksenArviointi(arvosana.toString)))
   }
 
-  val hyväksytty = Some(List(PeruskoulunArviointi("S")))
+  val hyväksytty = Some(List(YleissivistävänkoulutuksenArviointi("S")))
 
   def vuosiviikkotuntia(määrä: Double): Some[Laajuus] = Some(Laajuus(määrä.toFloat, Koodistokoodiviite("3", Some("Vuosiviikkotuntia"), "opintojenlaajuusyksikko")))
 }

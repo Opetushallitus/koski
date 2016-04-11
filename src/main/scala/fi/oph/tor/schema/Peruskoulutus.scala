@@ -46,7 +46,7 @@ case class PeruskoulunOppiainesuoritus(
   paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
-  arviointi: Option[List[PeruskoulunArviointi]] = None,
+  arviointi: Option[List[YleissivistävänkoulutuksenArviointi]] = None,
   vahvistus: Option[Vahvistus] = None
 ) extends Suoritus
 
@@ -58,14 +58,3 @@ case class Peruskoulutus(
  @OksaUri("tmpOKSAID560", "tutkinto")
  tunniste: Koodistokoodiviite = Koodistokoodiviite("201100", koodistoUri = "koulutus")
 ) extends Koulutusmoduuli
-
-case class PeruskoulunArviointi(
-  @KoodistoUri("arvosanat")
-  arvosana: Koodistokoodiviite,
-  päivä: Option[LocalDate],
-  arvioitsijat: Option[List[Arvioitsija]] = None
-) extends Arviointi
-
-object PeruskoulunArviointi {
-  def apply(arvosana: String) = new PeruskoulunArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arvosanat"), None)
-}
