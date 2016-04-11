@@ -1,10 +1,11 @@
 package fi.oph.tor.api
 
 import java.time.LocalDate
+
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.json.Json
-import fi.oph.tor.log.{AuditLogTester, AuditLog}
-import fi.oph.tor.schema.{TaydellisetHenkilötiedot, UusiHenkilö, TorOppija}
+import fi.oph.tor.log.AuditLogTester
+import fi.oph.tor.schema.{TaydellisetHenkilötiedot, TorOppija, UusiHenkilö}
 import org.scalatest.{FunSpec, Matchers}
 
 class TorOppijaQuerySpec extends FunSpec with OpiskeluOikeusTestMethods with Matchers {
@@ -25,8 +26,8 @@ class TorOppijaQuerySpec extends FunSpec with OpiskeluOikeusTestMethods with Mat
               val päättymispäivät: List[(String, LocalDate)] = oppijat.flatMap{oppija =>
                 oppija.opiskeluoikeudet.flatMap(_.päättymispäivä).map((oppija.henkilö.asInstanceOf[TaydellisetHenkilötiedot].hetu, _))
               }
-
-              päättymispäivät should equal(List(("010101-123N", LocalDate.parse("2016-01-09"))))
+              päättymispäivät should contain(("010101-123N", LocalDate.parse("2016-01-09")))
+              päättymispäivät.map(_._2).foreach { pvm => pvm should (be >= LocalDate.parse("2016-01-01") and be <= LocalDate.parse("2016-12-31"))}
               AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "OPISKELUOIKEUS_HAKU", "hakuEhto" -> queryString))
             }
           }
@@ -69,4 +70,7 @@ class TorOppijaQuerySpec extends FunSpec with OpiskeluOikeusTestMethods with Mat
     }
   }
 
+  implicit val localDateOrdering: Ordering[LocalDate] = new Ordering[LocalDate] {
+    override def compare(x: LocalDate, y: LocalDate) = x.compareTo(y)
+  }
 }
