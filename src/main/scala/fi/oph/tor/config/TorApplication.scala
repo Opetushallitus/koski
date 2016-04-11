@@ -7,11 +7,11 @@ import fi.oph.tor.cache.CachingProxy
 import fi.oph.tor.cache.CachingStrategy.cacheAllRefresh
 import fi.oph.tor.db._
 import fi.oph.tor.eperusteet.EPerusteetRepository
-import fi.oph.tor.fixture.Fixtures
+import fi.oph.tor.fixture.{TorDatabaseFixtureCreator, Fixtures}
 import fi.oph.tor.history.OpiskeluoikeusHistoryRepository
 import fi.oph.tor.koodisto.{KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.tor.log.{Logging, TimedProxy}
-import fi.oph.tor.opiskeluoikeus.{OpiskeluOikeusRepository, PostgresOpiskeluOikeusRepository, TorDatabaseFixtureCreator}
+import fi.oph.tor.opiskeluoikeus.{OpiskeluOikeusRepository, PostgresOpiskeluOikeusRepository}
 import fi.oph.tor.oppija.OppijaRepository
 import fi.oph.tor.oppilaitos.OppilaitosRepository
 import fi.oph.tor.organisaatio.OrganisaatioRepository
@@ -44,11 +44,7 @@ class TorApplication(val config: Config) extends Logging {
   lazy val opiskeluOikeusRepository = TimedProxy[OpiskeluOikeusRepository](new PostgresOpiskeluOikeusRepository(database.db, historyRepository))
   lazy val validator: TorValidator = new TorValidator(tutkintoRepository, koodistoViitePalvelu, organisaatioRepository)
 
-  def resetFixtures = if(Fixtures.shouldUseFixtures(config)) {
-    new TorDatabaseFixtureCreator(database, opiskeluOikeusRepository, oppijaRepository, validator).resetFixtures
-    oppijaRepository.resetFixtures
-    logger.info("Reset application fixtures")
-  }
+  def resetFixtures = Fixtures.resetFixtures(config, database, opiskeluOikeusRepository, oppijaRepository, validator)
 
   def invalidateCaches = List(organisaatioRepository, directoryClient, tutkintoRepository, koodistoPalvelu, userRepository, oppijaRepository).foreach(_.invalidateCache)
 }

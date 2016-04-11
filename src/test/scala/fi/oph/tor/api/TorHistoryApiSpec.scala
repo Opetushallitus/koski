@@ -4,11 +4,11 @@ import java.time.LocalDate
 
 import fi.oph.tor.db.OpiskeluOikeusHistoryRow
 import fi.oph.tor.documentation.ExamplesAmmatillinen
+import fi.oph.tor.fixture.OpiskeluOikeusTestData
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.jettylauncher.SharedJetty
 import fi.oph.tor.json.Json
 import fi.oph.tor.log.AuditLogTester
-import fi.oph.tor.opiskeluoikeus.OpiskeluOikeusTestData
 import fi.oph.tor.oppija.MockOppijat
 import fi.oph.tor.organisaatio.MockOrganisaatiot
 import fi.oph.tor.schema.{Opiskeluoikeus, TaydellisetHenkilötiedot}

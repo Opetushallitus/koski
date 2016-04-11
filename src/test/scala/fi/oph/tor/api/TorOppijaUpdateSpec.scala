@@ -1,6 +1,6 @@
 package fi.oph.tor.api
 
-import fi.oph.tor.opiskeluoikeus.OpiskeluOikeusTestData
+import fi.oph.tor.fixture.OpiskeluOikeusTestData
 import fi.oph.tor.oppija.MockOppijat
 import fi.oph.tor.organisaatio.MockOrganisaatiot
 import fi.oph.tor.schema.TaydellisetHenkilötiedot

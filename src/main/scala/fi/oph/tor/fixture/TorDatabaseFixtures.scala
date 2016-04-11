@@ -1,9 +1,10 @@
-package fi.oph.tor.opiskeluoikeus
+package fi.oph.tor.fixture
 
 import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.db.Tables._
 import fi.oph.tor.db.TorDatabase._
 import fi.oph.tor.db._
+import fi.oph.tor.opiskeluoikeus.OpiskeluOikeusRepository
 import fi.oph.tor.oppija.{MockOppijat, OppijaRepository, VerifiedOppijaOid}
 import fi.oph.tor.organisaatio.MockOrganisaatiot
 import fi.oph.tor.schema._
