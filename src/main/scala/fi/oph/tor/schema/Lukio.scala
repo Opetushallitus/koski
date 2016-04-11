@@ -41,7 +41,7 @@ case class LukionOppimääränSuoritus(
 case class LukionOppiaineSuoritus(
   @KoodistoKoodiarvo("lukionoppiainesuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionoppiainesuoritus", koodistoUri = "suorituksentyyppi"),
-  koulutusmoduuli: LukionOppiaineModuuli,
+  koulutusmoduuli: YleissivistavaOppiaine,
   paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
@@ -67,16 +67,6 @@ case class LukionKurssiModuuli(
   @OksaUri("tmpOKSAID873", "kurssi")
   tunniste: Koodistokoodiviite
 ) extends Koulutusmoduuli
-
-trait LukionOppiaineModuuli extends Koulutusmoduuli {
-  @Description("Lukion oppiaine")
-  @KoodistoUri("koskioppiaineetyleissivistava")
-  @OksaUri("tmpOKSAID256", "oppiaine")
-  def tunniste: Koodistokoodiviite
-  def laajuus: Option[Laajuus]
-}
-
-case class LukionOppiaine(tunniste: Koodistokoodiviite) extends LukionOppiaineModuuli
 
 case class Ylioppilastutkinto(
  @Description("Tutkinnon 6-numeroinen tutkintokoodi")

@@ -10,7 +10,7 @@ import fi.oph.tor.schema._
 object PeruskoulutusExampleData {
   lazy val jyväskylänNormaalikoulu: Oppilaitos = Oppilaitos(MockOrganisaatiot.jyväskylänNormaalikoulu, Some(Koodistokoodiviite("00204", None, "oppilaitosnumero", None)), Some("Jyväskylän normaalikoulu"))
 
-  def suoritus(aine: PeruskoulunOppiaine) = PeruskoulunOppiainesuoritus(
+  def suoritus(aine: YleissivistavaOppiaine) = PeruskoulunOppiainesuoritus(
     koulutusmoduuli = aine,
     paikallinenId = None,
     suorituskieli = None,
