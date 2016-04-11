@@ -5,6 +5,7 @@ import java.time.LocalDate.{of => date}
 import fi.oph.tor.documentation.ExampleData._
 import fi.oph.tor.documentation.LukioExampleData._
 import fi.oph.tor.documentation.YleissivistavakoulutusExampleData._
+import fi.oph.tor.oppija.MockOppijat
 import fi.oph.tor.schema._
 
 object ExamplesLukio {
@@ -96,6 +97,8 @@ object ExamplesLukio {
 }
 
 object LukioExampleData {
+  val exampleHenkilö = MockOppijat.lukiolainen.vainHenkilötiedot
+
   def suoritus(aine: YleissivistavaOppiaine): LukionOppiaineenSuoritus = LukionOppiaineenSuoritus(
     koulutusmoduuli = aine,
     paikallinenId = None,

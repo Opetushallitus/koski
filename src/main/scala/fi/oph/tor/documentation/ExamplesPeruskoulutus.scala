@@ -5,6 +5,7 @@ import java.time.LocalDate.{of => date}
 import fi.oph.tor.documentation.ExampleData._
 import fi.oph.tor.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.tor.documentation.PeruskoulutusExampleData._
+import fi.oph.tor.oppija.MockOppijat
 import fi.oph.tor.schema._
 
 object PeruskoulutusExampleData {
@@ -19,6 +20,8 @@ object PeruskoulutusExampleData {
   )
 
   def vuosiviikkotuntia(määrä: Double): Some[Laajuus] = Some(Laajuus(määrä.toFloat, Koodistokoodiviite("3", Some("Vuosiviikkotuntia"), "opintojenlaajuusyksikko")))
+
+  val exampleHenkilö = MockOppijat.koululainen.vainHenkilötiedot
 }
 
 object ExamplesPeruskoulutus {

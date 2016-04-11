@@ -19,6 +19,7 @@ object MockOppijat {
   val tero = oppijat.oppija("Tunkkila-Fagerlund", "Tero Petteri Gustaf", "091095-9833")
   val presidentti = oppijat.oppija("Presidentti", "Tasavallan", "")
   val koululainen = oppijat.oppija("Koululainen", "Kaisa", "110496-926Y")
+  val lukiolainen = oppijat.oppija("Lukiolainen", "Liisa", "110496-9369")
 
   def defaultOppijat = oppijat.getOppijat
 }

@@ -6,6 +6,8 @@ import ExampleData._
 import fi.oph.tor.schema._
 
 object AmmatillinenExampleData {
+  val exampleHenkilö = Henkilö("010101-123N", "matti pekka", "matti", "virtanen")
+
   def tutkintoSuoritus(tutkintoKoulutus: AmmatillinenTutkintoKoulutus,
                                tutkintonimike: Option[List[Koodistokoodiviite]] = None,
                                osaamisala: Option[List[Koodistokoodiviite]] = None,
@@ -123,7 +125,7 @@ object AmmatillinenExampleData {
     )
   }
 
-  def oppija( henkilö: Henkilö = ExampleData.exampleHenkilö,
+  def oppija( henkilö: Henkilö = exampleHenkilö,
               opiskeluOikeus: Opiskeluoikeus = opiskeluoikeus()) = {
     TorOppija(
       henkilö,

@@ -32,7 +32,9 @@ case class TaydellisetHenkilötiedot(
   @Description("Opiskelijan kansalaisuudet")
   @KoodistoUri("maatjavaltiot2")
   kansalaisuus: Option[List[Koodistokoodiviite]]
-) extends HenkilöWithOid with Henkilötiedot
+) extends HenkilöWithOid with Henkilötiedot {
+  def vainHenkilötiedot = UusiHenkilö(hetu, etunimet, kutsumanimi, sukunimi)
+}
 
 @Description("Henkilö, jonka oppijanumero ei ole tiedossa. Tietoja syötettäessä luodaan mahdollisesti uusi henkilö Henkilöpalveluun, jolloin henkilölle muodostuu oppijanumero")
 case class UusiHenkilö(

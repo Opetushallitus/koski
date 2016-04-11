@@ -9,7 +9,6 @@ object Examples {
 }
 
 object ExampleData {
-  val exampleHenkilö = Henkilö("010101-123N", "matti pekka", "matti", "virtanen")
   lazy val opiskeluoikeusAktiivinen = Koodistokoodiviite("aktiivinen", Some("Aktiivinen"), "opiskeluoikeudentila", Some(1))
   lazy val opiskeluoikeusPäättynyt = Koodistokoodiviite("paattynyt", Some("Päättynyt"), "opiskeluoikeudentila", Some(1))
   lazy val opiskeluoikeusKeskeyttänyt = Koodistokoodiviite("keskeyttanyt", Some("Keskeyttänyt"), "opiskeluoikeudentila", Some(1))
