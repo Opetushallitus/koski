@@ -13,21 +13,16 @@ export const selectOppijaE = routeP.map('.oppijaId').flatMap(oppijaId => {
 
 export const updateResultE = Bacon.Bus()
 
-const applyChange = (oppija, lens, change) => {
-  let currentValue = L.view(lens, oppija)
-  let newValue = change(currentValue)
-  let newOppija = L.set(lens, newValue, oppija)
-  return newOppija
-}
+const applyChange = (lens, change, oppija) => L.modify(lens, change, oppija)
 
 const opiskeluOikeusIdLens = (id) => (L.compose(L.prop('opiskeluoikeudet'), L.find(R.whereEq({id}))))
 
 export const oppijaP = Bacon.update({ loading: true },
   selectOppijaE, (previous, oppija) => oppija,
   updateResultE.map('.opiskeluoikeudet').flatMap(Bacon.fromArray), (currentOppija, {id, versionumero}) => {
-    return applyChange(currentOppija, L.compose(opiskeluOikeusIdLens(id), L.prop('versionumero')), () => versionumero)
+    return applyChange(L.compose(opiskeluOikeusIdLens(id), L.prop('versionumero')), () => versionumero, currentOppija)
   },
-  opiskeluOikeusChange, (currentOppija, [lens, change]) => applyChange(currentOppija, lens, change)
+  opiskeluOikeusChange, (currentOppija, [lens, change]) => applyChange(lens, change, currentOppija)
 )
 
 updateResultE.plug(oppijaP.sampledBy(opiskeluOikeusChange).flatMapLatest(oppijaUpdate => Http.put('/tor/api/oppija', oppijaUpdate)))
