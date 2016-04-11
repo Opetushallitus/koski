@@ -47,10 +47,11 @@ class PeruskoulunTodistusServlet(val userRepository: UserOrganisationsRepository
         case LiittyväValinnainen(suoritus) => "Valinnainen " + nimiTeksti
         case _ => nimiTeksti
       }
-      <tr>
-        <td>{nimi}</td>
-        <td>{oppiaine.suoritus.koulutusmoduuli.laajuus.map(_.arvo).getOrElse("")}</td>
-        <td>{oppiaine.suoritus.arviointi.toList.flatten.lastOption.flatMap(_.arvosana.nimi).getOrElse("")}</td>
+      val rowClass="oppiaine " + oppiaine.suoritus.koulutusmoduuli.tunniste.koodiarvo
+      <tr class={rowClass}>
+        <td class="oppiaine">{nimi}</td>
+        <td class="laajuus">{oppiaine.suoritus.koulutusmoduuli.laajuus.map(_.arvo).getOrElse("")}</td>
+        <td class="arvosana">{oppiaine.suoritus.arviointi.toList.flatten.lastOption.flatMap(_.arvosana.nimi).getOrElse("")}</td>
       </tr>
     }
 
@@ -72,7 +73,7 @@ class PeruskoulunTodistusServlet(val userRepository: UserOrganisationsRepository
           <table class="arvosanat">
             <tr>
               <th class="oppiaine">Yhteiset ja niihin liittyvät valinnaiset oppiaineet</th>
-              <th class="vuosiviikkotuntimaara">Vuosiviikko- tuntimäärä</th>
+              <th class="laajuus">Vuosiviikko- tuntimäärä</th>
               <th class="arvosana">Arvosana</th>
             </tr>
             { arvosanaLista(pakollisetJaNiihinLiittyvätValinnaiset) }

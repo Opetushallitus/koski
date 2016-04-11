@@ -438,6 +438,14 @@ describe('TOR', function() {
     })
   })
 
+  describe('Peruskoulun päättötodistus', function() {
+    var todistus = PeruskoulunTodistusPage()
+    before(resetFixtures, authentication.login(), openPage('/tor/todistus/peruskoulu/paattotodistus/1.2.246.562.24.00000000008', todistus.isVisible))
+    it('näytetään', function() {
+      expect(S('.oppiaine.KT .arvosana').text()).to.equal('10')
+    })
+  })
+
   describe('Navigointi suoraan oppijan sivulle', function() {
     before(
       resetFixtures,
