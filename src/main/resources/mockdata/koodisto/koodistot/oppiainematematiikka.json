@@ -1,0 +1,24 @@
+{
+  "koodistoUri": "oppiainematematiikka",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "codesGroupUri": "http://tor",
+  "versio": 1,
+  "voimassaAlkuPvm": "2013-01-01",
+  "metadata": [
+    {
+      "kieli": "EN",
+      "nimi": "Oppiaine matematiikka",
+      "kuvaus": "Oppiaine matematiikka"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "Oppiaine matematiikka",
+      "kuvaus": "Oppiaine matematiikka"
+    },
+    {
+      "kieli": "FI",
+      "nimi": "Oppiaine matematiikka",
+      "kuvaus": "Oppiaine matematiikka"
+    }
+  ]
+}

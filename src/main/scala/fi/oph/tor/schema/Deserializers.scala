@@ -1,9 +1,10 @@
 package fi.oph.tor.schema
 
+import fi.oph.tor.json.Json
 import org.json4s._
 
 object Deserializers {
-  val deserializers = List(OpiskeluOikeusSerializer, SuoritusDeserializer, KoulutusmoduuliDeserializer, HenkilöDeserialializer, JärjestämismuotoDeserializer, OrganisaatioDeserializer, PeruskoulunOppiaineDeserializer)
+  val deserializers = List(OpiskeluOikeusSerializer, SuoritusDeserializer, KoulutusmoduuliDeserializer, HenkilöDeserialializer, JärjestämismuotoDeserializer, OrganisaatioDeserializer, YleissivistavaOppiaineDeserializer)
 }
 
 trait Deserializer[T] extends Serializer[T] {
@@ -34,15 +35,17 @@ object SuoritusDeserializer extends Deserializer[Suoritus] {
   }
 }
 
-object PeruskoulunOppiaineDeserializer extends Deserializer[YleissivistavaOppiaine] {
+object YleissivistavaOppiaineDeserializer extends Deserializer[YleissivistavaOppiaine] {
   private val TheClass = classOf[YleissivistavaOppiaine]
 
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), YleissivistavaOppiaine] = {
     case (TypeInfo(TheClass, _), json) =>
+      println(Json.writePretty(json))
       json match {
         case moduuli: JObject if moduuli \ "tunniste" \ "koodiarvo" == JString("AI") => moduuli.extract[AidinkieliJaKirjallisuus]
         case moduuli: JObject if moduuli \ "tunniste" \ "koodiarvo" == JString("KT") => moduuli.extract[Uskonto]
         case moduuli: JObject if (moduuli \ "kieli").isInstanceOf[JObject] => moduuli.extract[VierasTaiToinenKotimainenKieli]
+        case moduuli: JObject if (moduuli \ "matematiikka").isInstanceOf[JObject] => moduuli.extract[LukionMatematiikka]
         case moduuli: JObject => moduuli.extract[Oppiaine]
       }
   }

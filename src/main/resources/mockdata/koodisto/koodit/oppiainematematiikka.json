@@ -1,0 +1,35 @@
+[
+  {
+    "koodiUri": "oppiainematematiikka_maa",
+    "koodiArvo": "MAA",
+    "metadata": [
+      {
+        "nimi": " Matematiikka, pitkä oppimäärä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "oppiainematematiikka_mab",
+    "koodiArvo": "MAB",
+    "metadata": [
+      {
+        "nimi": "Matematiikka, lyhyt oppimäärä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "oppiainematematiikka_may",
+    "koodiArvo": "MAY",
+    "metadata": [
+      {
+        "nimi": "Matematiikka, yhteinen opintokokonaisuus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  }
+]

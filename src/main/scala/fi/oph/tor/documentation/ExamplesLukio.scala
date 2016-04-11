@@ -1,10 +1,10 @@
 package fi.oph.tor.documentation
 
 import java.time.LocalDate.{of => date}
+
 import fi.oph.tor.documentation.ExampleData._
 import fi.oph.tor.documentation.LukioExampleData._
 import fi.oph.tor.documentation.YleissivistavakoulutusExampleData._
-import fi.oph.tor.organisaatio.MockOrganisaatiot
 import fi.oph.tor.schema._
 
 object ExamplesLukio {
@@ -60,7 +60,7 @@ object ExamplesLukio {
             suoritus(kieli("A1", "EN")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(9)),
             suoritus(kieli("B1", "SV")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(7)),
             suoritus(kieli("B3", "LA")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(9)),
-            suoritus(oppiaine("MA")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(9)), // TODO, laajaoppimäärä
+            suoritus(matematiikka("MAA")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(9)),
             suoritus(oppiaine("BI")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(9)),
             suoritus(oppiaine("GE")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(8)),
             suoritus(oppiaine("FY")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(8)),
@@ -105,4 +105,6 @@ object LukioExampleData {
     vahvistus = None,
     osasuoritukset = None
   )
+
+  def matematiikka(matematiikka: String) = LukionMatematiikka(matematiikka = Koodistokoodiviite(koodiarvo = matematiikka, koodistoUri = "oppiainematematiikka"))
 }

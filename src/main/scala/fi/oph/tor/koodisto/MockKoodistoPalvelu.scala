@@ -26,6 +26,7 @@ object MockKoodistoPalvelu extends KoodistoPalvelu {
     "opintojentavoite",
     "opiskeluoikeudentila",
     "opiskeluoikeudentyyppi",
+    "oppiainematematiikka",
     "oppiaineuskonto",
     "oppiaineaidinkielijakirjallisuus",
     "oppilaitosnumero",

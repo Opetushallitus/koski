@@ -76,3 +76,12 @@ case class Ylioppilastutkinto(
  tunniste: Koodistokoodiviite = Koodistokoodiviite("301000", koodistoUri = "koulutus")
 ) extends Koulutusmoduuli
 
+case class LukionMatematiikka(
+  @KoodistoKoodiarvo("MA")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "MA", koodistoUri = "koskioppiaineetyleissivistava"),
+  @Description("Mikä matematiikka on kyseessä")
+  @KoodistoUri("oppiainematematiikka")
+  matematiikka: Koodistokoodiviite,
+  pakollinen: Boolean = true,
+  override val laajuus: Option[Laajuus] = None
+) extends YleissivistavaOppiaine
