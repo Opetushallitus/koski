@@ -76,7 +76,8 @@ class TorDatabase(val config: Config) extends Logging {
 
   private def createUser = {
     val user = config.user
-    s"createuser -s $user -w"!
+    val port = config.port
+    s"createuser -p $port -s $user -w"!
   }
 
   private def migrateSchema = {
