@@ -5,9 +5,9 @@ import java.time.LocalDate
 import fi.oph.tor.config.TorApplication
 import fi.oph.tor.henkilo.{AuthenticationServiceClient, CreateUser, UserQueryResult}
 import fi.oph.tor.http.HttpStatus
-import fi.oph.tor.koodisto.{KoodistoMuokkausPalvelu, KoodistoKoodi, KoodistoKoodiMetadata}
+import fi.oph.tor.koodisto.{KoodistoKoodi, KoodistoKoodiMetadata, KoodistoMuokkausPalvelu}
 import fi.oph.tor.log.Logging
-import fi.oph.tor.toruser.{KäyttöoikeusRyhmät, RemoteUserOrganisationsRepository}
+import fi.oph.tor.toruser.KäyttöoikeusRyhmät
 
 object ServiceUserAdder extends App with Logging {
   args match {
@@ -22,7 +22,7 @@ object ServiceUserAdder extends App with Logging {
           logger.info("User created")
           oid
         case Left(HttpStatus(400, _)) =>
-          authService.search("testing") match {
+          authService.search(username) match {
             case r:UserQueryResult if (r.totalCount == 1) =>
               r.results(0).oidHenkilo
           }
