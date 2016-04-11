@@ -8,6 +8,7 @@ import fi.oph.tor.history.TorHistoryServlet
 import fi.oph.tor.koodisto.KoodistoCreator
 import fi.oph.tor.oppilaitos.OppilaitosServlet
 import fi.oph.tor.servlet.{StaticFileServlet, SingleFileServlet}
+import fi.oph.tor.todistus.PeruskoulunTodistusServlet
 import fi.oph.tor.tor.{TodennetunOsaamisenRekisteri, TorServlet, TorValidator}
 import fi.oph.tor.toruser.{AuthenticationServlet, UserOrganisationsRepository}
 import fi.oph.tor.tutkinto.TutkintoServlet
@@ -33,6 +34,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       context.mount(new OppilaitosServlet(application.oppilaitosRepository, application.userRepository, application.directoryClient), "/api/oppilaitos")
       context.mount(new TutkintoServlet(application.tutkintoRepository), "/api/tutkinto")
       context.mount(new SchemaDocumentationServlet(application.koodistoPalvelu), "/documentation")
+      context.mount(new PeruskoulunTodistusServlet(userRepository, application.directoryClient, rekisteri), "/todistus")
       val indexHtml = StaticFileServlet.contentOf("web/static/index.html").get
       context.mount(new SingleFileServlet(indexHtml, List(("/*", 404), ("/uusioppija", 200), ("/oppija/:oid", 200))), "/")
       context.mount(new CacheServlet(userRepository, application.directoryClient, application), "/cache")

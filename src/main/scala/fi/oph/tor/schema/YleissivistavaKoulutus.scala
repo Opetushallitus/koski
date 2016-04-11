@@ -11,6 +11,7 @@ trait YleissivistavaOppiaine extends Koulutusmoduuli {
   def tunniste: Koodistokoodiviite
   def pakollinen: Boolean
   def laajuus: Option[Laajuus]
+  override def toString = tunniste.nimi.getOrElse("")
 }
 
   case class Oppiaine(
@@ -27,7 +28,9 @@ trait YleissivistavaOppiaine extends Koulutusmoduuli {
     uskonto: Koodistokoodiviite,
     pakollinen: Boolean = true,
     override val laajuus: Option[Laajuus] = None
-  ) extends YleissivistavaOppiaine
+  ) extends YleissivistavaOppiaine {
+    override def toString = super.toString + uskonto.nimi.map(", " + _).getOrElse("")
+  }
 
   case class AidinkieliJaKirjallisuus(
     @KoodistoKoodiarvo("AI")
@@ -37,7 +40,9 @@ trait YleissivistavaOppiaine extends Koulutusmoduuli {
     kieli: Koodistokoodiviite,
     pakollinen: Boolean = true,
     override val laajuus: Option[Laajuus] = None
-  ) extends YleissivistavaOppiaine
+  ) extends YleissivistavaOppiaine {
+    override def toString = super.toString + kieli.nimi.map(", " + _).getOrElse("")
+  }
 
   case class VierasTaiToinenKotimainenKieli(
     @KoodistoKoodiarvo("A1")
@@ -51,7 +56,9 @@ trait YleissivistavaOppiaine extends Koulutusmoduuli {
     kieli: Koodistokoodiviite,
     pakollinen: Boolean = true,
     override val laajuus: Option[Laajuus] = None
-  ) extends YleissivistavaOppiaine
+  ) extends YleissivistavaOppiaine {
+    override def toString = super.toString + kieli.nimi.map(", " + _).getOrElse("")
+  }
 
 
 case class YleissivistävänkoulutuksenArviointi(

@@ -42,7 +42,7 @@ object ExamplesPeruskoulutus {
       läsnäolotiedot = None
     ))
   )
-  private val vahvistus: Some[Vahvistus] = Some(Vahvistus(Some(date(2016, 6, 4))))
+  private val vahvistus: Some[Vahvistus] = Some(Vahvistus(päivä = Some(date(2016, 6, 4)), myöntäjäOrganisaatio = Some(jyväskylänNormaalikoulu), myöntäjäHenkilöt = Some(List(OrganisaatioHenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu)))))
 
   val päättötodistus = TorOppija(
     exampleHenkilö,

@@ -5,10 +5,10 @@ describe('TOR', function() {
   var opinnot = OpinnotPage()
   var addOppija = AddOppijaPage()
 
-  var eero = 'esimerkki, eero 010101-123N'
-  var markkanen = 'markkanen, eero '
-  var eerola = 'eerola, jouni '
-  var teija = 'tekijä, teija 150995-914X'
+  var eero = 'Esimerkki, Eero 010101-123N'
+  var markkanen = 'Markkanen, Eero '
+  var eerola = 'Eerola, Jouni '
+  var teija = 'Tekijä, Teija 150995-914X'
 
   describe('Login-sivu', function() {
     before(login.openPage)
@@ -87,7 +87,7 @@ describe('TOR', function() {
       })
 
       describe('Kun klikataan oppijaa listalla', function() {
-        before(page.oppijaHaku.selectOppija('markkanen'))
+        before(page.oppijaHaku.selectOppija('Markkanen'))
 
         it('Oppija valitaan', function() {
           expect(page.getSelectedOppija()).to.equal(markkanen)
@@ -149,7 +149,7 @@ describe('TOR', function() {
         before(addNewOppija('kalle', 'Tunkkila', { etunimet: 'Tero Terde', kutsumanimi: 'Terde', sukunimi: 'Tunkkila', hetu: '091095-9833', oppilaitos: 'Stadin', tutkinto: 'Autoalan'}))
 
         it('Onnistuu, näyttää henkilöpalvelussa olevat nimitiedot', function() {
-          expect(page.getSelectedOppija()).to.equal('tunkkila-fagerlund, tero petteri gustaf 091095-9833')
+          expect(page.getSelectedOppija()).to.equal('Tunkkila-Fagerlund, Tero Petteri Gustaf 091095-9833')
         })
       })
 
@@ -371,7 +371,7 @@ describe('TOR', function() {
 
       describe('Kun sivu ladataan uudelleen', function() {
         before( page.oppijaHaku.search('ero', 4),
-                page.oppijaHaku.selectOppija('tunkkila'), opinnot.waitUntilTutkintoVisible())
+                page.oppijaHaku.selectOppija('Tunkkila'), opinnot.waitUntilTutkintoVisible())
 
         it('Muuttuneet tiedot on tallennettu', function() {
           expect(opinnot.getTutkinnonOsat()[0]).to.equal('Myynti ja tuotetuntemus')
@@ -391,7 +391,7 @@ describe('TOR', function() {
 
           describe('Kun sivu ladataan uudelleen', function() {
             before( page.oppijaHaku.search('ero', 4),
-              page.oppijaHaku.selectOppija('tunkkila'), opinnot.waitUntilTutkintoVisible())
+              page.oppijaHaku.selectOppija('Tunkkila'), opinnot.waitUntilTutkintoVisible())
 
             it('Muuttuneet tiedot on tallennettu', function() {
               expect(tutkinnonOsa.getArvosana()).to.equal("H2")
@@ -408,7 +408,7 @@ describe('TOR', function() {
 
           describe('Kun sivu ladataan uudelleen', function() {
             before( page.oppijaHaku.search('ero', 4),
-              page.oppijaHaku.selectOppija('tunkkila'), opinnot.waitUntilTutkintoVisible())
+              page.oppijaHaku.selectOppija('Tunkkila'), opinnot.waitUntilTutkintoVisible())
 
             it('Muuttuneet tiedot on tallennettu', function() {
               expect(tutkinnonOsa.getArvosana()).to.equal("Hylätty")
@@ -442,7 +442,7 @@ describe('TOR', function() {
     before(
       resetFixtures,
       authentication.login(),
-      openPage('/tor/oppija/1.2.246.562.24.00000000001', page.isOppijaSelected('eero')),
+      openPage('/tor/oppija/1.2.246.562.24.00000000001', page.isOppijaSelected('Eero')),
       opinnot.waitUntilTutkintoVisible()
     )
 

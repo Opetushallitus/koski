@@ -1,0 +1,51 @@
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    color: rgb(51, 51, 51);
+    font-size: 15px;
+}
+
+.todistus {
+    margin: 40px auto;
+    width: 800px;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+h1, h2.koulu {
+    text-transform: uppercase;
+}
+
+.oppija {
+    text-transform: capitalize;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-top: 60px;
+}
+
+td, th {
+    text-align: left;
+}
+
+td.vuosiviikkotuntimaara, th.vuosiviikkotuntimaara {
+    width: 150px;
+}
+
+td, th {
+    padding-right: 20px;
+}
+
+.vahvistus {
+    margin-top: 80px;
+}
+
+.vahvistus .allekirjoitus {
+    float: right;
+}
+.vahvistus .allekirjoitus .viiva {
+    border-bottom: 1px solid black;
+    width: 200px;
+    height: 2em;
+}

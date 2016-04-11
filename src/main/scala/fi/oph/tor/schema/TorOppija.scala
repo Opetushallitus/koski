@@ -22,13 +22,9 @@ case class TaydellisetHenkilötiedot(
   @OksaUri("tmpOKSAID760", "oppijanumero")
   @RegularExpression("""1\.2\.246\.562\.24\.\d{11}""")
   oid: String,
-  @Description("Suomalainen henkilötunnus")
   hetu: String,
-  @Description("Henkilön kaikki etunimet. Esimerkiksi Sanna Katariina")
   etunimet:String,
-  @Description("Kutsumanimi, oltava yksi etunimistä. Esimerkiksi etunimille \"Juha-Matti Petteri\" kelpaavat joko \"Juha-Matti\", \"Juha\", \"Matti\" tai \"Petteri\"")
   kutsumanimi: String,
-  @Description("Henkilön sukunimi. Henkilön sukunimen etuliite tulee osana sukunimeä")
   sukunimi: String,
   @Description("Opiskelijan äidinkieli")
   @KoodistoUri("kieli")
@@ -36,19 +32,15 @@ case class TaydellisetHenkilötiedot(
   @Description("Opiskelijan kansalaisuudet")
   @KoodistoUri("maatjavaltiot2")
   kansalaisuus: Option[List[Koodistokoodiviite]]
-) extends HenkilöWithOid
+) extends HenkilöWithOid with Henkilötiedot
 
 @Description("Henkilö, jonka oppijanumero ei ole tiedossa. Tietoja syötettäessä luodaan mahdollisesti uusi henkilö Henkilöpalveluun, jolloin henkilölle muodostuu oppijanumero")
 case class UusiHenkilö(
-  @Description("Suomalainen henkilötunnus")
   hetu: String,
-  @Description("Henkilön kaikki etunimet. Esimerkiksi Sanna Katariina")
   etunimet:String,
-  @Description("Kutsumanimi, oltava yksi etunimistä. Esimerkiksi etunimille \"Juha-Matti Petteri\" kelpaavat joko \"Juha-Matti\", \"Juha\", \"Matti\" tai \"Petteri\"")
   kutsumanimi: String,
-  @Description("Henkilön sukunimi. Henkilön sukunimen etuliite tulee osana sukunimeä")
   sukunimi: String
-) extends Henkilö
+) extends Henkilö with Henkilötiedot
 
 @Description("Henkilö, jonka oid on tiedossa. Tietoja syötettäessä henkilö haetaan henkilöpalvelusta.")
 case class OidHenkilö(
@@ -57,6 +49,17 @@ case class OidHenkilö(
   @RegularExpression("""1\.2\.246\.562\.24\.\d{11}""")
   oid: String
 ) extends HenkilöWithOid
+
+trait Henkilötiedot {
+  @Description("Suomalainen henkilötunnus")
+  def hetu: String
+  @Description("Henkilön kaikki etunimet. Esimerkiksi Sanna Katariina")
+  def etunimet:String
+  @Description("Kutsumanimi, oltava yksi etunimistä. Esimerkiksi etunimille \"Juha-Matti Petteri\" kelpaavat joko \"Juha-Matti\", \"Juha\", \"Matti\" tai \"Petteri\"")
+  def kutsumanimi: String
+  @Description("Henkilön sukunimi. Henkilön sukunimen etuliite tulee osana sukunimeä")
+  def sukunimi: String
+}
 
 trait HenkilöWithOid extends Henkilö {
   def oid: String

@@ -11,12 +11,12 @@ import fi.oph.tor.schema._
 object MockOppijat {
   private val oppijat = new MockOppijat
 
-  val eero = oppijat.oppija("esimerkki", "eero", "010101-123N")
-  val eerola = oppijat.oppija("eerola", "jouni", "")
-  val markkanen = oppijat.oppija("markkanen", "eero", "")
-  val teija = oppijat.oppija("tekijä", "teija", "150995-914X")
-  val tyhjä = oppijat.oppija("tyhjä", "tyhjä", "130196-961Y")
-  val tero = oppijat.oppija("tunkkila-fagerlund", "tero petteri gustaf", "091095-9833")
+  val eero = oppijat.oppija("Esimerkki", "Eero", "010101-123N")
+  val eerola = oppijat.oppija("Eerola", "Jouni", "")
+  val markkanen = oppijat.oppija("Markkanen", "Eero", "")
+  val teija = oppijat.oppija("Tekijä", "Teija", "150995-914X")
+  val tyhjä = oppijat.oppija("Tyhjä", "Tyhjä", "130196-961Y")
+  val tero = oppijat.oppija("Tunkkila-Fagerlund", "Tero Petteri Gustaf", "091095-9833")
   val presidentti = oppijat.oppija("Presidentti", "Tasavallan", "")
 
   def defaultOppijat = oppijat.getOppijat
