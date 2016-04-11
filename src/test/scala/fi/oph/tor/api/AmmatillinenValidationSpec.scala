@@ -25,14 +25,14 @@ class AmmatillinenValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
     describe("Tutkinnon perusteet ja rakenne") {
       describe("Kun yritetään lisätä opinto-oikeus tuntemattomaan tutkinnon perusteeseen") {
         it("palautetaan HTTP 400 virhe" ) {
-          val suoritus: AmmatillinenTutkintosuoritus = tutkintoSuoritus.copy(koulutusmoduuli = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", "koulutus"), Some("39/xxx/2014")))
+          val suoritus: AmmatillisenTutkinnonSuoritus = tutkintoSuoritus.copy(koulutusmoduuli = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", "koulutus"), Some("39/xxx/2014")))
           putTutkintoSuoritus(suoritus) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Tutkinnon perustetta ei löydy diaarinumerolla 39/xxx/2014")))
         }
       }
 
       describe("Kun yritetään lisätä opinto-oikeus ilman tutkinnon perusteen diaarinumeroa") {
         it("palautetaan HTTP 200" ) {
-          val suoritus: AmmatillinenTutkintosuoritus = tutkintoSuoritus.copy(koulutusmoduuli = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", "koulutus"), None))
+          val suoritus: AmmatillisenTutkinnonSuoritus = tutkintoSuoritus.copy(koulutusmoduuli = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", "koulutus"), None))
           putTutkintoSuoritus(suoritus) (verifyResponseStatus(200))
         }
       }
@@ -122,7 +122,7 @@ class AmmatillinenValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
         describe("Tutkinnon osa toisesta tutkinnosta") {
           val autoalanTyönjohdonErikoisammattitutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357305", "koulutus"), Some("40/011/2001"))
 
-          def osanSuoritusToisestaTutkinnosta(tutkinto: AmmatillinenTutkintoKoulutus, tutkinnonOsa: OpsTutkinnonosa): AmmatillinenTutkinnonosasuoritus = tutkinnonOsaSuoritus.copy(
+          def osanSuoritusToisestaTutkinnosta(tutkinto: AmmatillinenTutkintoKoulutus, tutkinnonOsa: OpsTutkinnonosa): AmmatillisenTutkinnonosanSuoritus = tutkinnonOsaSuoritus.copy(
             tutkinto = Some(tutkinto),
             koulutusmoduuli = tutkinnonOsa
           )
@@ -166,7 +166,7 @@ class AmmatillinenValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
         }
 
         describe("Suorituksen tila") {
-          testSuorituksenTila[AmmatillinenTutkinnonosasuoritus](tutkinnonOsaSuoritus, "tutkinnonosat/100023", { suoritus => { f => putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(f)} })
+          testSuorituksenTila[AmmatillisenTutkinnonosanSuoritus](tutkinnonOsaSuoritus, "tutkinnonosat/100023", { suoritus => { f => putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(f)} })
 
           describe("Kun tutkinto on VALMIS-tilassa ja sillä on osa, joka on KESKEN-tilassa") {
             val opiskeluOikeus = opiskeluoikeus().copy(suoritukset = List(tutkintoSuoritus.copy(
@@ -181,13 +181,13 @@ class AmmatillinenValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
     }
 
     describe("Tutkinnon tila ja arviointi") {
-      testSuorituksenTila[AmmatillinenTutkintosuoritus](tutkintoSuoritus, "koulutus/351301", { suoritus => { f => {
+      testSuorituksenTila[AmmatillisenTutkinnonSuoritus](tutkintoSuoritus, "koulutus/351301", { suoritus => { f => {
         putOpiskeluOikeus(opiskeluoikeus().copy(suoritukset = List(suoritus)))(f)
       }}})
     }
 
     describe("Oppisopimus") {
-      def toteutusOppisopimuksella(yTunnus: String): AmmatillinenTutkintosuoritus = {
+      def toteutusOppisopimuksella(yTunnus: String): AmmatillisenTutkinnonSuoritus = {
         tutkintoSuoritus.copy(järjestämismuoto = Some(OppisopimuksellinenJärjestämismuoto(Koodistokoodiviite("20", "jarjestamismuoto"), Oppisopimus(Yritys("Reaktor", yTunnus)))))
       }
 
@@ -211,8 +211,8 @@ class AmmatillinenValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
     def copySuoritus(suoritus: T, t: Koodistokoodiviite, a: Option[List[AmmatillinenArviointi]], v: Option[Vahvistus], ap: Option[LocalDate] = None): T = {
       val alkamispäivä = ap.orElse(suoritus.alkamispäivä)
       (suoritus match {
-        case s: AmmatillinenTutkintosuoritus => s.copy(tila = t, arviointi = a, vahvistus = v, alkamispäivä = alkamispäivä)
-        case s: AmmatillinenTutkinnonosasuoritus => s.copy(tila = t, arviointi = a, vahvistus = v, alkamispäivä = alkamispäivä)
+        case s: AmmatillisenTutkinnonSuoritus => s.copy(tila = t, arviointi = a, vahvistus = v, alkamispäivä = alkamispäivä)
+        case s: AmmatillisenTutkinnonosanSuoritus => s.copy(tila = t, arviointi = a, vahvistus = v, alkamispäivä = alkamispäivä)
       }).asInstanceOf[T]
     }
 

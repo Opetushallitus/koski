@@ -16,7 +16,7 @@ trait OpiskeluOikeusData {
 
   val autoalanPerustutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", "koulutus"), Some("39/011/2014"))
 
-  lazy val tutkintoSuoritus: AmmatillinenTutkintosuoritus = AmmatillinenTutkintosuoritus(
+  lazy val tutkintoSuoritus: AmmatillisenTutkinnonSuoritus = AmmatillisenTutkinnonSuoritus(
     koulutusmoduuli = autoalanPerustutkinto,
     tutkintonimike = None,
     osaamisala = None,
@@ -32,7 +32,7 @@ trait OpiskeluOikeusData {
     osasuoritukset = None
   )
 
-  def opiskeluoikeus(suoritus: AmmatillinenTutkintosuoritus = tutkintoSuoritus) = AmmatillinenOpiskeluoikeus(None, None, None, None, None, None,
+  def opiskeluoikeus(suoritus: AmmatillisenTutkinnonSuoritus = tutkintoSuoritus) = AmmatillinenOpiskeluoikeus(None, None, None, None, None, None,
     oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto),
     suoritukset = List(suoritus),
     None, None, None, None
@@ -55,12 +55,12 @@ trait OpiskeluOikeusData {
 
   val tutkinnonSuoritustapaNäyttönä = Some(Suoritustapa(Koodistokoodiviite("naytto", "suoritustapa")))
 
-  val tutkinnonOsaSuoritus = AmmatillinenTutkinnonosasuoritus(
+  val tutkinnonOsaSuoritus = AmmatillisenTutkinnonosanSuoritus(
     tutkinnonOsa, None, None, None, None, None, None, tilaKesken, None,
     OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka")),
     arviointiHyvä(), None)
 
-  val paikallinenTutkinnonOsaSuoritus = AmmatillinenTutkinnonosasuoritus(
+  val paikallinenTutkinnonOsaSuoritus = AmmatillisenTutkinnonosanSuoritus(
     paikallinenTutkinnonOsa, None, None, None, None, None, None, tilaKesken, None,
     OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka")),
     arviointiHyvä(), None)

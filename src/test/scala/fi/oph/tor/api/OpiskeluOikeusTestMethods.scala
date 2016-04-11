@@ -12,13 +12,13 @@ trait OpiskeluOikeusTestMethods extends LocalJettyHttpSpecification with Matcher
 
   implicit def any2j(o: AnyRef): JValue = Json.toJValue(o)
 
-  def putTutkinnonOsaSuoritus[A](tutkinnonOsaSuoritus: AmmatillinenTutkinnonosasuoritus, tutkinnonSuoritustapa: Option[Suoritustapa])(f: => A) = {
+  def putTutkinnonOsaSuoritus[A](tutkinnonOsaSuoritus: AmmatillisenTutkinnonosanSuoritus, tutkinnonSuoritustapa: Option[Suoritustapa])(f: => A) = {
     val s = tutkintoSuoritus.copy(suoritustapa = tutkinnonSuoritustapa, osasuoritukset = Some(List(tutkinnonOsaSuoritus)))
 
     putTutkintoSuoritus(s)(f)
   }
 
-  def putTutkintoSuoritus[A](suoritus: AmmatillinenTutkintosuoritus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
+  def putTutkintoSuoritus[A](suoritus: AmmatillisenTutkinnonSuoritus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
     val opiskeluOikeus = opiskeluoikeus().copy(suoritukset = List(suoritus))
 
     putOppija(makeOppija(henkilö, List(Json.toJValue(opiskeluOikeus))), headers)(f)

@@ -35,10 +35,10 @@ case class LukionOppimääränSuoritus(
   koulutusmoduuli: Ylioppilastutkinto = Ylioppilastutkinto(),
   arviointi: Option[List[LukionArviointi]] = None,
   vahvistus: Option[Vahvistus] = None,
-  override val osasuoritukset: Option[List[LukionOppiaineSuoritus]]
+  override val osasuoritukset: Option[List[LukionOppiaineenSuoritus]]
 ) extends Suoritus
 
-case class LukionOppiaineSuoritus(
+case class LukionOppiaineenSuoritus(
   @KoodistoKoodiarvo("lukionoppiainesuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionoppiainesuoritus", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: YleissivistavaOppiaine,
@@ -47,10 +47,10 @@ case class LukionOppiaineSuoritus(
   tila: Koodistokoodiviite,
   arviointi: Option[List[LukionArviointi]] = None,
   vahvistus: Option[Vahvistus] = None,
-  override val osasuoritukset: Option[List[LukionKurssiSuoritus]]
+  override val osasuoritukset: Option[List[LukionKurssinSuoritus]]
 ) extends Suoritus
 
-case class LukionKurssiSuoritus(
+case class LukionKurssinSuoritus(
   @KoodistoKoodiarvo("lukionkurssisuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionkurssisuoritus", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: LukionKurssiModuuli,

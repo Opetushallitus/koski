@@ -5,14 +5,14 @@ import fi.oph.tor.schema._
 
 case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
   def validateTutkintoRakenne(suoritus: Suoritus) = suoritus match {
-    case (tutkintoSuoritus: AmmatillinenTutkintosuoritus) =>
+    case (tutkintoSuoritus: AmmatillisenTutkinnonSuoritus) =>
       getRakenne(tutkintoSuoritus.koulutusmoduuli) match {
         case Left(status) => status
         case Right(rakenne) =>
           validateOsaamisala(tutkintoSuoritus.osaamisala.toList.flatten, rakenne).then(HttpStatus.fold(suoritus.osasuoritusLista.map {
-            case osaSuoritus: AmmatillinenTutkinnonosasuoritus if !tutkintoSuoritus.suoritustapa.isDefined =>
+            case osaSuoritus: AmmatillisenTutkinnonosanSuoritus if !tutkintoSuoritus.suoritustapa.isDefined =>
               TorErrorCategory.badRequest.validation.rakenne.suoritustapaPuuttuu()
-            case osaSuoritus: AmmatillinenTutkinnonosasuoritus => osaSuoritus.koulutusmoduuli match {
+            case osaSuoritus: AmmatillisenTutkinnonosanSuoritus => osaSuoritus.koulutusmoduuli match {
               case osa: OpsTutkinnonosa =>
                 validateTutkinnonOsa(osaSuoritus, osa, Some(rakenne), tutkintoSuoritus.suoritustapa)
               case osa: PaikallinenTutkinnonosa =>
@@ -46,8 +46,8 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
     })
   }
 
-  private def validateTutkinnonOsa(suoritus: AmmatillinenTutkinnonosasuoritus, osa: OpsTutkinnonosa, rakenne: Option[TutkintoRakenne], suoritustapa: Option[Suoritustapa]): HttpStatus = (suoritus, rakenne, suoritustapa) match {
-    case (suoritus: AmmatillinenTutkinnonosasuoritus, Some(rakenne), Some(suoritustapa))  =>
+  private def validateTutkinnonOsa(suoritus: AmmatillisenTutkinnonosanSuoritus, osa: OpsTutkinnonosa, rakenne: Option[TutkintoRakenne], suoritustapa: Option[Suoritustapa]): HttpStatus = (suoritus, rakenne, suoritustapa) match {
+    case (suoritus: AmmatillisenTutkinnonosanSuoritus, Some(rakenne), Some(suoritustapa))  =>
       suoritus.tutkinto match {
         case Some(tutkinto) =>
           // Tutkinnon osa toisesta tutkinnosta.

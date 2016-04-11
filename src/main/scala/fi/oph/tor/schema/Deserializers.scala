@@ -28,8 +28,8 @@ object SuoritusDeserializer extends Deserializer[Suoritus] {
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Suoritus] = {
     case (TypeInfo(c, _), json) if (classes.contains(c)) =>
       json match {
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("ammatillinentutkintosuoritus") => suoritus.extract[AmmatillinenTutkintosuoritus]
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("ammatillinentutkinnonosasuoritus") => suoritus.extract[AmmatillinenTutkinnonosasuoritus]
+        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("ammatillinentutkintosuoritus") => suoritus.extract[AmmatillisenTutkinnonSuoritus]
+        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("ammatillinentutkinnonosasuoritus") => suoritus.extract[AmmatillisenTutkinnonosanSuoritus]
       }
   }
 }

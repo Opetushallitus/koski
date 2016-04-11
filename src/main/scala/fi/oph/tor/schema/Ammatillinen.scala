@@ -14,7 +14,7 @@ case class AmmatillinenOpiskeluoikeus(
   päättymispäivä: Option[LocalDate],
   oppilaitos: Oppilaitos,
   @MinItems(1) @MaxItems(1)
-  suoritukset: List[AmmatillinenTutkintosuoritus],
+  suoritukset: List[AmmatillisenTutkinnonSuoritus],
   hojks: Option[Hojks],
   @Description("Opiskelijan suorituksen tavoite-tieto kertoo sen, suorittaako opiskelija tutkintotavoitteista koulutusta (koko tutkintoa) vai tutkinnon osa tavoitteista koulutusta (tutkinnon osaa)")
   @KoodistoUri("opintojentavoite")
@@ -27,7 +27,7 @@ case class AmmatillinenOpiskeluoikeus(
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
 }
 
-case class AmmatillinenTutkintosuoritus(
+case class AmmatillisenTutkinnonSuoritus(
   koulutusmoduuli: AmmatillinenTutkintoKoulutus,
   @Description("Tieto siitä mihin tutkintonimikkeeseen oppijan tutkinto liittyy")
   @KoodistoUri("tutkintonimikkeet")
@@ -54,12 +54,12 @@ case class AmmatillinenTutkintosuoritus(
   arviointi: Option[List[AmmatillinenArviointi]] = None,
   vahvistus: Option[Vahvistus] = None,
   @Description("Ammatilliseen tutkintoon liittyvät tutkinnonosan suoritukset")
-  override val osasuoritukset: Option[List[AmmatillinenTutkinnonosasuoritus]] = None,
+  override val osasuoritukset: Option[List[AmmatillisenTutkinnonosanSuoritus]] = None,
   @KoodistoKoodiarvo("ammatillinentutkintosuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinentutkintosuoritus", koodistoUri = "suorituksentyyppi")
 ) extends Suoritus
 
-case class AmmatillinenTutkinnonosasuoritus(
+case class AmmatillisenTutkinnonosanSuoritus(
   koulutusmoduuli: AmmatillinenTutkinnonOsa,
   hyväksiluku: Option[Hyväksiluku] = None,
   @Description("Suoritukseen liittyvän näytön tiedot")
