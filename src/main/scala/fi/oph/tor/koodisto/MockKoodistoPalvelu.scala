@@ -19,6 +19,7 @@ object MockKoodistoPalvelu extends KoodistoPalvelu {
     "kielivalikoima",
     "lahdejarjestelma",
     "lasnaolotila",
+    "lukionkurssit",
     "opetusryhma",
     "opintojenlaajuusyksikko",
     "opintojenrahoitus",

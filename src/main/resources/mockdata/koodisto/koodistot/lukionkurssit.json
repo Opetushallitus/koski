@@ -1,0 +1,12 @@
+{
+  "koodistoUri" : "lukionkurssit",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Lukion kurssit",
+    "kuvaus" : "Lukion kurssit, sisältää perusteiden kurssikoodit"
+  } ],
+  "codesGroupUri" : "http://koulutuskoodistot",
+  "voimassaAlkuPvm" : "2015-09-22",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}

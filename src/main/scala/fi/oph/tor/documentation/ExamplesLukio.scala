@@ -22,7 +22,8 @@ object ExamplesLukio {
           paikallinenId = None,
           suorituskieli = suomenKieli,
           tila = tilaKesken,
-          toimipiste = jyväskylänNormaalikoulu
+          toimipiste = jyväskylänNormaalikoulu,
+          osasuoritukset = None
         )
       ),
       opiskeluoikeudenTila = Some(OpiskeluoikeudenTila(

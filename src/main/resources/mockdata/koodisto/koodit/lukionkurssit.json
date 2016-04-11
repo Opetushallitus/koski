@@ -1,0 +1,3001 @@
+[ {
+  "koodiUri" : "lukionkurssit_sma1",
+  "koodiArvo" : "SMA1",
+  "metadata" : [ {
+    "nimi" : "Saamen kieli ja maailmani ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vka8",
+  "koodiArvo" : "VKA8",
+  "metadata" : [ {
+    "nimi" : "Viesti ja vaikuta puhuen ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_uk5",
+  "koodiArvo" : "UK5",
+  "metadata" : [ {
+    "nimi" : "Uskonnot tieteessä, taiteessa ja populaarikulttuurissa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_sma2",
+  "koodiArvo" : "SMA2",
+  "metadata" : [ {
+    "nimi" : "Ihminen verkostoissa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vka7",
+  "koodiArvo" : "VKA7",
+  "metadata" : [ {
+    "nimi" : "Kestävä elämäntapa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_uk4",
+  "koodiArvo" : "UK4",
+  "metadata" : [ {
+    "nimi" : "Uskonto suomalaisessa yhteiskunnassa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_sma3",
+  "koodiArvo" : "SMA3",
+  "metadata" : [ {
+    "nimi" : "Saamelaisalueen kulttuuri-ilmiöitä ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vka6",
+  "koodiArvo" : "VKA6",
+  "metadata" : [ {
+    "nimi" : "Opiskelu, työ ja toimeentulo ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_uk3",
+  "koodiArvo" : "UK3",
+  "metadata" : [ {
+    "nimi" : "Maailman uskontoja ja uskonnollisia liikkeitä ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_sma4",
+  "koodiArvo" : "SMA4",
+  "metadata" : [ {
+    "nimi" : "Sápmi – Saamenmaa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vka5",
+  "koodiArvo" : "VKA5",
+  "metadata" : [ {
+    "nimi" : "Tiede ja tulevaisuus ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_uk2",
+  "koodiArvo" : "UK2",
+  "metadata" : [ {
+    "nimi" : "Maailmanlaajuinen katolisuus ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vka4",
+  "koodiArvo" : "VKA4",
+  "metadata" : [ {
+    "nimi" : "Yhteiskunta ja ympäröivä maailma ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_sma5",
+  "koodiArvo" : "SMA5",
+  "metadata" : [ {
+    "nimi" : "Saamelainen luontotieto ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ui3",
+  "koodiArvo" : "UI3",
+  "metadata" : [ {
+    "nimi" : "Maailman uskontoja ja uskonnollisia liikkeitä ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vka3",
+  "koodiArvo" : "VKA3",
+  "metadata" : [ {
+    "nimi" : "Kulttuuri-ilmiöitä ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_sma6",
+  "koodiArvo" : "SMA6",
+  "metadata" : [ {
+    "nimi" : "Opiskelu, työ ja toimeentulo ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ui2",
+  "koodiArvo" : "UI2",
+  "metadata" : [ {
+    "nimi" : "Maailmanlaajuinen islam ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vka2",
+  "koodiArvo" : "VKA2",
+  "metadata" : [ {
+    "nimi" : "Ihminen verkostoissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_sma7",
+  "koodiArvo" : "SMA7",
+  "metadata" : [ {
+    "nimi" : "Kestävä elämäntapa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ui1",
+  "koodiArvo" : "UI1",
+  "metadata" : [ {
+    "nimi" : "Uskonto ilmiönä – islamin, juutalaisuuden ja kristinuskon jäljillä ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vka1",
+  "koodiArvo" : "VKA1",
+  "metadata" : [ {
+    "nimi" : "Kieli ja maailmani ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_sma8",
+  "koodiArvo" : "SMA8",
+  "metadata" : [ {
+    "nimi" : "Viesti ja vaikuta puhuen ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_uk6",
+  "koodiArvo" : "UK6",
+  "metadata" : [ {
+    "nimi" : "Uskonnot ja media ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_tvk",
+  "koodiArvo" : "TVK",
+  "metadata" : [ {
+    "nimi" : "Taiteiden väliset kurssit",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_uo3",
+  "koodiArvo" : "UO3",
+  "metadata" : [ {
+    "nimi" : "Maailman uskontoja ja uskonnollisia liikkeitä ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkb21",
+  "koodiArvo" : "VKB21",
+  "metadata" : [ {
+    "nimi" : "Elämän tärkeitä asioita",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_uo2",
+  "koodiArvo" : "UO2",
+  "metadata" : [ {
+    "nimi" : "Ortodoksisuus maailmassa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkb7",
+  "koodiArvo" : "VKB7",
+  "metadata" : [ {
+    "nimi" : "Kestävä elämäntapa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_uo1",
+  "koodiArvo" : "UO1",
+  "metadata" : [ {
+    "nimi" : "Uskonto ilmiönä – ortodoksisuus, juutalaisuus ja islam ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkb6",
+  "koodiArvo" : "VKB6",
+  "metadata" : [ {
+    "nimi" : "Viesti ja vaikuta puhuen ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ue6",
+  "koodiArvo" : "UE6",
+  "metadata" : [ {
+    "nimi" : "Uskonnot ja media ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkb5",
+  "koodiArvo" : "VKB5",
+  "metadata" : [ {
+    "nimi" : "Opiskelija- ja työelämää",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_uk1",
+  "koodiArvo" : "UK1",
+  "metadata" : [ {
+    "nimi" : "Uskonto ilmiönä – kristinuskon, juutalaisuuden ja islamin jäljillä ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkb4",
+  "koodiArvo" : "VKB4",
+  "metadata" : [ {
+    "nimi" : "Monenlaiset elinympäristömme  ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_uo6",
+  "koodiArvo" : "UO6",
+  "metadata" : [ {
+    "nimi" : "Ortodoksisuus ja uskonnot mediassa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_smb21",
+  "koodiArvo" : "SMB21",
+  "metadata" : [ {
+    "nimi" : "Kohtaamisia saamelaisalueella",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkb3",
+  "koodiArvo" : "VKB3",
+  "metadata" : [ {
+    "nimi" : "Kulttuuri ja mediat ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_uo5",
+  "koodiArvo" : "UO5",
+  "metadata" : [ {
+    "nimi" : "Taide ortodoksisuudessa ja muissa uskonnoissa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_smb22",
+  "koodiArvo" : "SMB22",
+  "metadata" : [ {
+    "nimi" : "Hyvinvointi ja huolenpito",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkb2",
+  "koodiArvo" : "VKB2",
+  "metadata" : [ {
+    "nimi" : "Hyvinvointi ja ihmissuhteet ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_uo4",
+  "koodiArvo" : "UO4",
+  "metadata" : [ {
+    "nimi" : "Uskonto suomalaisessa yhteiskunnassa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkb1",
+  "koodiArvo" : "VKB1",
+  "metadata" : [ {
+    "nimi" : "Kieli ja maailmani ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fim7",
+  "koodiArvo" : "FIM7",
+  "metadata" : [ {
+    "nimi" : "Viesti kirjoittaen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_et2",
+  "koodiArvo" : "ET2",
+  "metadata" : [ {
+    "nimi" : "Ihminen, identiteetti ja hyvä elämä ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fim8",
+  "koodiArvo" : "FIM8",
+  "metadata" : [ {
+    "nimi" : "Viesti puhuen ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_et3",
+  "koodiArvo" : "ET3",
+  "metadata" : [ {
+    "nimi" : "Yksilö ja yhteisö ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fim5",
+  "koodiArvo" : "FIM5",
+  "metadata" : [ {
+    "nimi" : "Koulutus ja työelämä ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_uj6",
+  "koodiArvo" : "UJ6",
+  "metadata" : [ {
+    "nimi" : "Uskonnot ja media ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fim6",
+  "koodiArvo" : "FIM6",
+  "metadata" : [ {
+    "nimi" : "Suomalainen kulttuuri ja kirjallisuus ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_et1",
+  "koodiArvo" : "ET1",
+  "metadata" : [ {
+    "nimi" : "Maailmankatsomus ja kriittinen ajattelu ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fim3",
+  "koodiArvo" : "FIM3",
+  "metadata" : [ {
+    "nimi" : "Tekniikka ja kulutus ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_et6",
+  "koodiArvo" : "ET6",
+  "metadata" : [ {
+    "nimi" : "Teknologia, maailmankatsomukset ja ihmiskunnan tulevaisuus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fim4",
+  "koodiArvo" : "FIM4",
+  "metadata" : [ {
+    "nimi" : "Yhteiskunta ja tiedotusvälineet ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_te1",
+  "koodiArvo" : "TE1",
+  "metadata" : [ {
+    "nimi" : "Terveyden perusteet ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fim1",
+  "koodiArvo" : "FIM1",
+  "metadata" : [ {
+    "nimi" : "Arkielämä, lähiympäristö ja terveys",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_et4",
+  "koodiArvo" : "ET4",
+  "metadata" : [ {
+    "nimi" : "Kulttuurit katsomuksen muovaajina ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fim2",
+  "koodiArvo" : "FIM2",
+  "metadata" : [ {
+    "nimi" : "Luonto ja tiede ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_et5",
+  "koodiArvo" : "ET5",
+  "metadata" : [ {
+    "nimi" : "Katsomusten maailma ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ui6",
+  "koodiArvo" : "UI6",
+  "metadata" : [ {
+    "nimi" : "Uskonnot ja media ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ena7",
+  "koodiArvo" : "ENA7",
+  "metadata" : [ {
+    "nimi" : "Kestävä elämäntapa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_uj1",
+  "koodiArvo" : "UJ1",
+  "metadata" : [ {
+    "nimi" : "Uskonto ilmiönä – juutalaisuuden, kristinuskon ja islamin jäljillä ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ena8",
+  "koodiArvo" : "ENA8",
+  "metadata" : [ {
+    "nimi" : "Viesti ja vaikuta puhuen ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ui4",
+  "koodiArvo" : "UI4",
+  "metadata" : [ {
+    "nimi" : "Uskonto suomalaisessa yhteiskunnassa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ena5",
+  "koodiArvo" : "ENA5",
+  "metadata" : [ {
+    "nimi" : "Tiede ja tulevaisuus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ui5",
+  "koodiArvo" : "UI5",
+  "metadata" : [ {
+    "nimi" : "Uskonnot tieteessä, taiteessa ja populaarikulttuurissa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ena6",
+  "koodiArvo" : "ENA6",
+  "metadata" : [ {
+    "nimi" : "Opiskelu, työ ja toimeentulo ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_uj4",
+  "koodiArvo" : "UJ4",
+  "metadata" : [ {
+    "nimi" : "Uskonto suomalaisessa yhteiskunnassa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ena3",
+  "koodiArvo" : "ENA3",
+  "metadata" : [ {
+    "nimi" : "Kulttuuri-ilmiöitä ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_uj5",
+  "koodiArvo" : "UJ5",
+  "metadata" : [ {
+    "nimi" : "Uskonnot tieteessä, taiteessa ja populaarikulttuurissa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ena4",
+  "koodiArvo" : "ENA4",
+  "metadata" : [ {
+    "nimi" : "Yhteiskunta ja ympäröivä maailma ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_uj2",
+  "koodiArvo" : "UJ2",
+  "metadata" : [ {
+    "nimi" : "Maailmanlaajuinen juutalaisuus ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ena1",
+  "koodiArvo" : "ENA1",
+  "metadata" : [ {
+    "nimi" : "Englannin kieli ja maailmani ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_uj3",
+  "koodiArvo" : "UJ3",
+  "metadata" : [ {
+    "nimi" : "Maailman uskontoja ja uskonnollisia liikkeitä ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ena2",
+  "koodiArvo" : "ENA2",
+  "metadata" : [ {
+    "nimi" : "Ihminen verkostoissa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkaa7",
+  "koodiArvo" : "VKAA7",
+  "metadata" : [ {
+    "nimi" : "Opiskelu, työ ja tulevaisuus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_s25",
+  "koodiArvo" : "S25",
+  "metadata" : [ {
+    "nimi" : "Teksti ja konteksti",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fi2",
+  "koodiArvo" : "FI2",
+  "metadata" : [ {
+    "nimi" : "Etiikka",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_smb26",
+  "koodiArvo" : "SMB26",
+  "metadata" : [ {
+    "nimi" : "Saamelainen luontotieto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkaa6",
+  "koodiArvo" : "VKAA6",
+  "metadata" : [ {
+    "nimi" : "Kulttuuri ja mediat",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_s26",
+  "koodiArvo" : "S26",
+  "metadata" : [ {
+    "nimi" : "Nykykulttuuri ja kertomukset",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fi1",
+  "koodiArvo" : "FI1",
+  "metadata" : [ {
+    "nimi" : "Johdatus filosofiseen ajatteluun ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_smb27",
+  "koodiArvo" : "SMB27",
+  "metadata" : [ {
+    "nimi" : "Kansainvälinen toiminta",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ska1",
+  "koodiArvo" : "SKA1",
+  "metadata" : [ {
+    "nimi" : "Saamen kieli ja maailmani ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fi4",
+  "koodiArvo" : "FI4",
+  "metadata" : [ {
+    "nimi" : "Tieto, tiede ja todellisuus ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_s27",
+  "koodiArvo" : "S27",
+  "metadata" : [ {
+    "nimi" : "Puhe- ja vuorovaikutustaitojen syventäminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_smb24",
+  "koodiArvo" : "SMB24",
+  "metadata" : [ {
+    "nimi" : "Kulttuuri ja mediat",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkaa8",
+  "koodiArvo" : "VKAA8",
+  "metadata" : [ {
+    "nimi" : "Yhteinen maapallomme",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fi3",
+  "koodiArvo" : "FI3",
+  "metadata" : [ {
+    "nimi" : "Yhteiskuntafilosofia",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_s28",
+  "koodiArvo" : "S28",
+  "metadata" : [ {
+    "nimi" : "Kirjoittamistaitojen syventäminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_smb25",
+  "koodiArvo" : "SMB25",
+  "metadata" : [ {
+    "nimi" : "Opiskelu, työ ja tulevaisuus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkaa3",
+  "koodiArvo" : "VKAA3",
+  "metadata" : [ {
+    "nimi" : "Elämän tärkeitä asioita",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_s21",
+  "koodiArvo" : "S21",
+  "metadata" : [ {
+    "nimi" : "Tekstit ja vuorovaikutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ps2",
+  "koodiArvo" : "PS2",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä ihminen ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkaa2",
+  "koodiArvo" : "VKAA2",
+  "metadata" : [ {
+    "nimi" : "Matkalla maailmassa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ps1",
+  "koodiArvo" : "PS1",
+  "metadata" : [ {
+    "nimi" : "Psyykkinen toiminta ja oppiminen ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_s22",
+  "koodiArvo" : "S22",
+  "metadata" : [ {
+    "nimi" : "Kieli, kulttuuri ja identiteetti",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkaa5",
+  "koodiArvo" : "VKAA5",
+  "metadata" : [ {
+    "nimi" : "Hyvinvointi ja huolenpito",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_smb28",
+  "koodiArvo" : "SMB28",
+  "metadata" : [ {
+    "nimi" : "Viesti puhuen ja kirjoittaen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_s23",
+  "koodiArvo" : "S23",
+  "metadata" : [ {
+    "nimi" : "Kirjallisuuden keinoja ja tulkintaa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ps4",
+  "koodiArvo" : "PS4",
+  "metadata" : [ {
+    "nimi" : "Tunteet, psyykkinen hyvinvointi ja mielenterveys ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkaa4",
+  "koodiArvo" : "VKAA4",
+  "metadata" : [ {
+    "nimi" : "Kulttuurikohtaamisia",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ps3",
+  "koodiArvo" : "PS3",
+  "metadata" : [ {
+    "nimi" : "Tietoa käsittelevä ihminen ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_s24",
+  "koodiArvo" : "S24",
+  "metadata" : [ {
+    "nimi" : "Tekstit ja vaikuttaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_aiv6",
+  "koodiArvo" : "ÄIV6",
+  "metadata" : [ {
+    "nimi" : "Nykykulttuuri ja kertomukset",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fy6",
+  "koodiArvo" : "FY6",
+  "metadata" : [ {
+    "nimi" : "Sähkömagnetismi",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ska7",
+  "koodiArvo" : "SKA7",
+  "metadata" : [ {
+    "nimi" : "Kestävä elämäntapa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fy5",
+  "koodiArvo" : "FY5",
+  "metadata" : [ {
+    "nimi" : "Jaksollinen liike ja aallot ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_aiv7",
+  "koodiArvo" : "ÄIV7",
+  "metadata" : [ {
+    "nimi" : "Vuorovaikutustaitojen syventäminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ska6",
+  "koodiArvo" : "SKA6",
+  "metadata" : [ {
+    "nimi" : "Opiskelu, työ ja toimeentulo ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_aiv8",
+  "koodiArvo" : "ÄIV8",
+  "metadata" : [ {
+    "nimi" : "Tekstin tuottamistaitojen syventäminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ke1",
+  "koodiArvo" : "KE1",
+  "metadata" : [ {
+    "nimi" : "Kemiaa kaikkialla ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_skb1",
+  "koodiArvo" : "SKB1",
+  "metadata" : [ {
+    "nimi" : "Kohtaamisia saamelaisalueella",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_aiv9",
+  "koodiArvo" : "ÄIV9",
+  "metadata" : [ {
+    "nimi" : "Lukutaitojen syventäminen viitotussa kielessä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fy7",
+  "koodiArvo" : "FY7",
+  "metadata" : [ {
+    "nimi" : "Aine ja säteily ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ska8",
+  "koodiArvo" : "SKA8",
+  "metadata" : [ {
+    "nimi" : "Viesti ja vaikuta puhuen ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ke3",
+  "koodiArvo" : "KE3",
+  "metadata" : [ {
+    "nimi" : "Reaktiot ja energia ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_aiv2",
+  "koodiArvo" : "ÄIV2",
+  "metadata" : [ {
+    "nimi" : "Kieli, kulttuuri ja identiteetti",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ska3",
+  "koodiArvo" : "SKA3",
+  "metadata" : [ {
+    "nimi" : "Saamelaisalueen kulttuuri-ilmiöitä ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_smb23",
+  "koodiArvo" : "SMB23",
+  "metadata" : [ {
+    "nimi" : "Sápmi - Saamenmaa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ke2",
+  "koodiArvo" : "KE2",
+  "metadata" : [ {
+    "nimi" : "Ihmisen ja elinympäristön kemiaa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_aiv3",
+  "koodiArvo" : "ÄIV3",
+  "metadata" : [ {
+    "nimi" : "Kirjallisuuden keinoja ja tulkintaa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ska2",
+  "koodiArvo" : "SKA2",
+  "metadata" : [ {
+    "nimi" : "Ihminen verkostoissa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ke5",
+  "koodiArvo" : "KE5",
+  "metadata" : [ {
+    "nimi" : "Reaktiot ja tasapaino ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_aiv4",
+  "koodiArvo" : "ÄIV4",
+  "metadata" : [ {
+    "nimi" : "Tekstit ja vaikuttaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ska5",
+  "koodiArvo" : "SKA5",
+  "metadata" : [ {
+    "nimi" : "Saamelainen luontotieto ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ke4",
+  "koodiArvo" : "KE4",
+  "metadata" : [ {
+    "nimi" : "Materiaalit ja teknologia ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_aiv5",
+  "koodiArvo" : "ÄIV5",
+  "metadata" : [ {
+    "nimi" : "Teksti ja konteksti",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ska4",
+  "koodiArvo" : "SKA4",
+  "metadata" : [ {
+    "nimi" : "Sápmi – Saamenmaa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkb26",
+  "koodiArvo" : "VKB26",
+  "metadata" : [ {
+    "nimi" : "Yhteinen maapallomme",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_yh2",
+  "koodiArvo" : "YH2",
+  "metadata" : [ {
+    "nimi" : "Taloustieto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_air8",
+  "koodiArvo" : "ÄIR8",
+  "metadata" : [ {
+    "nimi" : "Kirjoittamistaitojen syventäminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkb27",
+  "koodiArvo" : "VKB27",
+  "metadata" : [ {
+    "nimi" : "Kansainvälinen toiminta",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_yh3",
+  "koodiArvo" : "YH3",
+  "metadata" : [ {
+    "nimi" : "Suomi, Eurooppa ja muuttuva maailma ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_air7",
+  "koodiArvo" : "ÄIR7",
+  "metadata" : [ {
+    "nimi" : "Puhe- ja vuorovaikutustaitojen syventäminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkb28",
+  "koodiArvo" : "VKB28",
+  "metadata" : [ {
+    "nimi" : "Viesti puhuen ja kirjoittaen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_aiv1",
+  "koodiArvo" : "ÄIV1",
+  "metadata" : [ {
+    "nimi" : "Tekstit ja vuorovaikutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_yh4",
+  "koodiArvo" : "YH4",
+  "metadata" : [ {
+    "nimi" : "Kansalaisen lakitieto ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkb31",
+  "koodiArvo" : "VKB31",
+  "metadata" : [ {
+    "nimi" : "Tutustutaan toisiimme ja uuteen kieleen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_air9",
+  "koodiArvo" : "ÄIR9",
+  "metadata" : [ {
+    "nimi" : "Lukutaitojen syventäminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ue1",
+  "koodiArvo" : "UE1",
+  "metadata" : [ {
+    "nimi" : "Uskonto ilmiönä – kristinuskon, juutalaisuuden ja islamin jäljillä ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkb22",
+  "koodiArvo" : "VKB22",
+  "metadata" : [ {
+    "nimi" : "Monenlaista elämää",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_air4",
+  "koodiArvo" : "ÄIR4",
+  "metadata" : [ {
+    "nimi" : "Tekstit ja vaikuttaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ue2",
+  "koodiArvo" : "UE2",
+  "metadata" : [ {
+    "nimi" : "Maailmanlaajuinen kristinusko ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkb23",
+  "koodiArvo" : "VKB23",
+  "metadata" : [ {
+    "nimi" : "Hyvinvointi ja huolenpito",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ue3",
+  "koodiArvo" : "UE3",
+  "metadata" : [ {
+    "nimi" : "Maailman uskontoja ja uskonnollisia liikkeitä ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_air3",
+  "koodiArvo" : "ÄIR3",
+  "metadata" : [ {
+    "nimi" : "Kirjallisuuden keinoja ja tulkintaa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkb24",
+  "koodiArvo" : "VKB24",
+  "metadata" : [ {
+    "nimi" : "Kulttuuri ja mediat",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_air6",
+  "koodiArvo" : "ÄIR6",
+  "metadata" : [ {
+    "nimi" : "Nykykulttuuri ja kertomukset",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ue4",
+  "koodiArvo" : "UE4",
+  "metadata" : [ {
+    "nimi" : "Uskonto suomalaisessa yhteiskunnassa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkb25",
+  "koodiArvo" : "VKB25",
+  "metadata" : [ {
+    "nimi" : "Opiskelu, työ ja tulevaisuus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ue5",
+  "koodiArvo" : "UE5",
+  "metadata" : [ {
+    "nimi" : "Uskonnot tieteessä, taiteessa ja populaarikulttuurissa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_air5",
+  "koodiArvo" : "ÄIR5",
+  "metadata" : [ {
+    "nimi" : "Teksti ja konteksti",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ps5",
+  "koodiArvo" : "PS5",
+  "metadata" : [ {
+    "nimi" : "Yksilöllinen ja yhteisöllinen ihminen ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkb36",
+  "koodiArvo" : "VKB36",
+  "metadata" : [ {
+    "nimi" : "Kulttuuri ja mediat",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_hi1",
+  "koodiArvo" : "HI1",
+  "metadata" : [ {
+    "nimi" : "Ihminen ympäristön ja yhteiskuntien muutoksessa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkb37",
+  "koodiArvo" : "VKB37",
+  "metadata" : [ {
+    "nimi" : "Opiskelu, työ ja tulevaisuus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_hi2",
+  "koodiArvo" : "HI2",
+  "metadata" : [ {
+    "nimi" : "Kansainväliset suhteet ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_air2",
+  "koodiArvo" : "ÄIR2",
+  "metadata" : [ {
+    "nimi" : "Kieli, kulttuuri ja identiteetti",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkb38",
+  "koodiArvo" : "VKB38",
+  "metadata" : [ {
+    "nimi" : "Yhteinen maapallomme",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_hi3",
+  "koodiArvo" : "HI3",
+  "metadata" : [ {
+    "nimi" : "Itsenäisen Suomen historia ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_air1",
+  "koodiArvo" : "ÄIR1",
+  "metadata" : [ {
+    "nimi" : "Tekstit ja vuorovaikutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkaa1",
+  "koodiArvo" : "VKAA1",
+  "metadata" : [ {
+    "nimi" : "Tutustutaan toisiimme ja uuteen kieleen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_hi4",
+  "koodiArvo" : "HI4",
+  "metadata" : [ {
+    "nimi" : "Eurooppalaisen maailmankuvan kehitys ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkb32",
+  "koodiArvo" : "VKB32",
+  "metadata" : [ {
+    "nimi" : "Matkalla maailmassa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_hi5",
+  "koodiArvo" : "HI5",
+  "metadata" : [ {
+    "nimi" : "Ruotsin itämaasta Suomeksi ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkb33",
+  "koodiArvo" : "VKB33",
+  "metadata" : [ {
+    "nimi" : "Elämän tärkeitä asioita",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_hi6",
+  "koodiArvo" : "HI6",
+  "metadata" : [ {
+    "nimi" : "Maailman kulttuurit kohtaavat ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkb34",
+  "koodiArvo" : "VKB34",
+  "metadata" : [ {
+    "nimi" : "Monenlaista elämää",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_yh1",
+  "koodiArvo" : "YH1",
+  "metadata" : [ {
+    "nimi" : "Suomalainen yhteiskunta ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_vkb35",
+  "koodiArvo" : "VKB35",
+  "metadata" : [ {
+    "nimi" : "Hyvinvointi ja huolenpito",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_rub32",
+  "koodiArvo" : "RUB32",
+  "metadata" : [ {
+    "nimi" : "Matkalla Pohjoismaissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_lab25",
+  "koodiArvo" : "LAB25",
+  "metadata" : [ {
+    "nimi" : "Latinaa kautta vuosisatojen ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ais3",
+  "koodiArvo" : "ÄIS3",
+  "metadata" : [ {
+    "nimi" : "Kirjallisuuden keinoja ja tulkintaa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_rub33",
+  "koodiArvo" : "RUB33",
+  "metadata" : [ {
+    "nimi" : "Elämän tärkeitä asioita",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_lab24",
+  "koodiArvo" : "LAB24",
+  "metadata" : [ {
+    "nimi" : "Viestejä menneisyydestä ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ais2",
+  "koodiArvo" : "ÄIS2",
+  "metadata" : [ {
+    "nimi" : "Kieli, kulttuuri ja identiteetti",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_rub17",
+  "koodiArvo" : "RUB17",
+  "metadata" : [ {
+    "nimi" : "Kestävä elämätapa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_lab23",
+  "koodiArvo" : "LAB23",
+  "metadata" : [ {
+    "nimi" : "Kulttuuriperintömme",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ais1",
+  "koodiArvo" : "ÄIS1",
+  "metadata" : [ {
+    "nimi" : "Tekstit ja vuorovaikutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_rub31",
+  "koodiArvo" : "RUB31",
+  "metadata" : [ {
+    "nimi" : "Tutustutaan toisiimme ja ruotsinkieliseen kulttuuriympäristöön",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_lab22",
+  "koodiArvo" : "LAB22",
+  "metadata" : [ {
+    "nimi" : "Merkittäviä roomalaisia ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_mo9",
+  "koodiArvo" : "MO9",
+  "metadata" : [ {
+    "nimi" : "Lukutaitojen syventäminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_rub36",
+  "koodiArvo" : "RUB36",
+  "metadata" : [ {
+    "nimi" : "Kulttuuri ja mediat",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_mo8",
+  "koodiArvo" : "MO8",
+  "metadata" : [ {
+    "nimi" : "Kirjoittamistaitojen syventäminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_lab31",
+  "koodiArvo" : "LAB31",
+  "metadata" : [ {
+    "nimi" : "Ikkunat auki antiikkiin",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_rub37",
+  "koodiArvo" : "RUB37",
+  "metadata" : [ {
+    "nimi" : "Opiskelu- ja työelämää ruotsiksi",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_mo7",
+  "koodiArvo" : "MO7",
+  "metadata" : [ {
+    "nimi" : "Puhe- ja vuorovaikutustaitojen syventäminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_lab28",
+  "koodiArvo" : "LAB28",
+  "metadata" : [ {
+    "nimi" : "Latina keskiajalla ja nykyaikana ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_rub34",
+  "koodiArvo" : "RUB34",
+  "metadata" : [ {
+    "nimi" : "Monenlaista elämää",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_mo6",
+  "koodiArvo" : "MO6",
+  "metadata" : [ {
+    "nimi" : "Nykyajan kertomuksia ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_lab27",
+  "koodiArvo" : "LAB27",
+  "metadata" : [ {
+    "nimi" : "Retoriikkaa ja filosofiaa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_rub35",
+  "koodiArvo" : "RUB35",
+  "metadata" : [ {
+    "nimi" : "Hyvinvointi ja huolenpito",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_mo5",
+  "koodiArvo" : "MO5",
+  "metadata" : [ {
+    "nimi" : "Teksti ja konteksti",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_lab26",
+  "koodiArvo" : "LAB26",
+  "metadata" : [ {
+    "nimi" : "Epiikkaa ja lyriikkaa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_lab35",
+  "koodiArvo" : "LAB35",
+  "metadata" : [ {
+    "nimi" : "Merkittäviä roomalaisia ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_mo4",
+  "koodiArvo" : "MO4",
+  "metadata" : [ {
+    "nimi" : "Tekstit ja vaikuttaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_rub11",
+  "koodiArvo" : "RUB11",
+  "metadata" : [ {
+    "nimi" : "Minun ruotsini",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_lab34",
+  "koodiArvo" : "LAB34",
+  "metadata" : [ {
+    "nimi" : "Rooman historian vaiheita ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_mo3",
+  "koodiArvo" : "MO3",
+  "metadata" : [ {
+    "nimi" : "Kirjallisuuden keinoja ja tulkintaa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_rub12",
+  "koodiArvo" : "RUB12",
+  "metadata" : [ {
+    "nimi" : "Hyvinvointi ja ihmissuhteet",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_lab33",
+  "koodiArvo" : "LAB33",
+  "metadata" : [ {
+    "nimi" : "Tietoa, taitoa ja taruperintöä ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_mo2",
+  "koodiArvo" : "MO2",
+  "metadata" : [ {
+    "nimi" : "Kieli, kulttuuri ja identiteetti",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_rua7",
+  "koodiArvo" : "RUA7",
+  "metadata" : [ {
+    "nimi" : "Kestävä elämäntapa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_lab32",
+  "koodiArvo" : "LAB32",
+  "metadata" : [ {
+    "nimi" : "Antiikin elämää ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_mo1",
+  "koodiArvo" : "MO1",
+  "metadata" : [ {
+    "nimi" : "Tekstien maailma",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_rua8",
+  "koodiArvo" : "RUA8",
+  "metadata" : [ {
+    "nimi" : "Viesti ja vaikuta puhuen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ai9",
+  "koodiArvo" : "ÄI9",
+  "metadata" : [ {
+    "nimi" : "Lukutaitojen syventäminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_may1",
+  "koodiArvo" : "MAY1",
+  "metadata" : [ {
+    "nimi" : "Luvut ja lukujonot ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_rub15",
+  "koodiArvo" : "RUB15",
+  "metadata" : [ {
+    "nimi" : "Opiskelu- ja työelämää ruotsiksi",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ai8",
+  "koodiArvo" : "ÄI8",
+  "metadata" : [ {
+    "nimi" : "Kirjoittamistaitojen syventäminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_lab38",
+  "koodiArvo" : "LAB38",
+  "metadata" : [ {
+    "nimi" : "Latinaa kautta vuosisatojen ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_rub16",
+  "koodiArvo" : "RUB16",
+  "metadata" : [ {
+    "nimi" : "Viesti ja vaikuta puhuen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ai7",
+  "koodiArvo" : "ÄI7",
+  "metadata" : [ {
+    "nimi" : "Puhe- ja vuorovaikutustaitojen syventäminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_lab37",
+  "koodiArvo" : "LAB37",
+  "metadata" : [ {
+    "nimi" : "Viestejä menneisyydestä ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_rub13",
+  "koodiArvo" : "RUB13",
+  "metadata" : [ {
+    "nimi" : "Kulttuuri ja mediat",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ai6",
+  "koodiArvo" : "ÄI6",
+  "metadata" : [ {
+    "nimi" : "Nykykulttuuri ja kertomukset",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_lab36",
+  "koodiArvo" : "LAB36",
+  "metadata" : [ {
+    "nimi" : "Kulttuuriperintömme ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_rub14",
+  "koodiArvo" : "RUB14",
+  "metadata" : [ {
+    "nimi" : "Monenlaiset elinympäristömme",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_rua2",
+  "koodiArvo" : "RUA2",
+  "metadata" : [ {
+    "nimi" : "Ihminen verkostoissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_skb4",
+  "koodiArvo" : "SKB4",
+  "metadata" : [ {
+    "nimi" : "Kulttuuri ja mediat",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ai4",
+  "koodiArvo" : "ÄI4",
+  "metadata" : [ {
+    "nimi" : "Tekstit ja vaikuttaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_rua1",
+  "koodiArvo" : "RUA1",
+  "metadata" : [ {
+    "nimi" : "Ruotsinkielinen maailmani",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_skb5",
+  "koodiArvo" : "SKB5",
+  "metadata" : [ {
+    "nimi" : "Opiskelu, työ ja tulevaisuus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ai5",
+  "koodiArvo" : "ÄI5",
+  "metadata" : [ {
+    "nimi" : "Teksti ja konteksti",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_sv29",
+  "koodiArvo" : "SV29",
+  "metadata" : [ {
+    "nimi" : "Lukutaitojen syventäminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_skb2",
+  "koodiArvo" : "SKB2",
+  "metadata" : [ {
+    "nimi" : "Hyvinvointi ja huolenpito",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ai2",
+  "koodiArvo" : "ÄI2",
+  "metadata" : [ {
+    "nimi" : "Kieli, kulttuuri ja identiteetti",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_sv28",
+  "koodiArvo" : "SV28",
+  "metadata" : [ {
+    "nimi" : "Kirjoittamistaitojen syventäminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_skb3",
+  "koodiArvo" : "SKB3",
+  "metadata" : [ {
+    "nimi" : "Sápmi - Saamenmaa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ai3",
+  "koodiArvo" : "ÄI3",
+  "metadata" : [ {
+    "nimi" : "Kirjallisuuden keinoja ja tulkintaa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_rua6",
+  "koodiArvo" : "RUA6",
+  "metadata" : [ {
+    "nimi" : "Opiskelu, työ ja toimeentulo",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_skb8",
+  "koodiArvo" : "SKB8",
+  "metadata" : [ {
+    "nimi" : "Viesti puhuen ja kirjoittaen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_rua5",
+  "koodiArvo" : "RUA5",
+  "metadata" : [ {
+    "nimi" : "Tiede ja tulevaisuus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ai1",
+  "koodiArvo" : "ÄI1",
+  "metadata" : [ {
+    "nimi" : "Tekstit ja vuorovaikutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_skb31",
+  "koodiArvo" : "SKB31",
+  "metadata" : [ {
+    "nimi" : "Tutustutaan toisiimme ja saamen kieleen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_rua4",
+  "koodiArvo" : "RUA4",
+  "metadata" : [ {
+    "nimi" : "Yhteiskunta ja ympäröivä maailma",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_skb6",
+  "koodiArvo" : "SKB6",
+  "metadata" : [ {
+    "nimi" : "Saamelainen luontotieto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_rua3",
+  "koodiArvo" : "RUA3",
+  "metadata" : [ {
+    "nimi" : "Pohjoismaisia kulttuuri-ilmiöitä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_skb7",
+  "koodiArvo" : "SKB7",
+  "metadata" : [ {
+    "nimi" : "Kansainvälinen toiminta",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_skb34",
+  "koodiArvo" : "SKB34",
+  "metadata" : [ {
+    "nimi" : "Hyvinvointi ja huolenpito",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_sv23",
+  "koodiArvo" : "SV23",
+  "metadata" : [ {
+    "nimi" : "Kirjallisuuden keinoja ja tulkintaa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_skb35",
+  "koodiArvo" : "SKB35",
+  "metadata" : [ {
+    "nimi" : "Sápmi - Saamenmaa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_psy",
+  "koodiArvo" : "PSY",
+  "metadata" : [ {
+    "nimi" : "Paikallinen syventävä kurssi",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_sv22",
+  "koodiArvo" : "SV22",
+  "metadata" : [ {
+    "nimi" : "Kieli, kulttuuri ja identiteetti",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_skb32",
+  "koodiArvo" : "SKB32",
+  "metadata" : [ {
+    "nimi" : "Matkalla maailmassa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_sv21",
+  "koodiArvo" : "SV21",
+  "metadata" : [ {
+    "nimi" : "Tekstit ja vuorovaikutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_skb33",
+  "koodiArvo" : "SKB33",
+  "metadata" : [ {
+    "nimi" : "Kohtaamisia saamelaisalueella",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_s29",
+  "koodiArvo" : "S29",
+  "metadata" : [ {
+    "nimi" : "Lukutaitojen syventäminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_skb38",
+  "koodiArvo" : "SKB38",
+  "metadata" : [ {
+    "nimi" : "Saamelainen luontotieto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_sv27",
+  "koodiArvo" : "SV27",
+  "metadata" : [ {
+    "nimi" : "Puhe- ja vuorovaikutustaitojen syventäminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_lab21",
+  "koodiArvo" : "LAB21",
+  "metadata" : [ {
+    "nimi" : "Rooman historian vaiheita ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_sv26",
+  "koodiArvo" : "SV26",
+  "metadata" : [ {
+    "nimi" : "Nykykulttuuri ja kertomukset",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_pso",
+  "koodiArvo" : "PSO",
+  "metadata" : [ {
+    "nimi" : "Paikallinen soveltava kurssi",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_skb36",
+  "koodiArvo" : "SKB36",
+  "metadata" : [ {
+    "nimi" : "Kulttuuri ja mediat",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_sv25",
+  "koodiArvo" : "SV25",
+  "metadata" : [ {
+    "nimi" : "Teksti ja konteksti",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_skb37",
+  "koodiArvo" : "SKB37",
+  "metadata" : [ {
+    "nimi" : "Opiskelu, työ ja tulevaisuus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_sv24",
+  "koodiArvo" : "SV24",
+  "metadata" : [ {
+    "nimi" : "Tekstit ja vaikuttaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_finb31",
+  "koodiArvo" : "FINB31",
+  "metadata" : [ {
+    "nimi" : "Tutustutaan toisiimme ja suomenkieliseen kulttuuriympäristöön ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ku3",
+  "koodiArvo" : "KU3",
+  "metadata" : [ {
+    "nimi" : "Osallisena mediassa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_mab7",
+  "koodiArvo" : "MAB7",
+  "metadata" : [ {
+    "nimi" : "Matemaattinen analyysi ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_finb32",
+  "koodiArvo" : "FINB32",
+  "metadata" : [ {
+    "nimi" : "Suomessa suomeksi ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ku2",
+  "koodiArvo" : "KU2",
+  "metadata" : [ {
+    "nimi" : "Muotoillut ja rakennetut ympäristöt ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_mab6",
+  "koodiArvo" : "MAB6",
+  "metadata" : [ {
+    "nimi" : "Talousmatematiikka",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_op1",
+  "koodiArvo" : "OP1",
+  "metadata" : [ {
+    "nimi" : "Minä opiskelijana ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_finb33",
+  "koodiArvo" : "FINB33",
+  "metadata" : [ {
+    "nimi" : "Elämän tärkeitä vaiheita ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_bi1",
+  "koodiArvo" : "BI1",
+  "metadata" : [ {
+    "nimi" : "Elämä ja evoluutio ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ku4",
+  "koodiArvo" : "KU4",
+  "metadata" : [ {
+    "nimi" : "Taiteen monet maailmat ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_finb34",
+  "koodiArvo" : "FINB34",
+  "metadata" : [ {
+    "nimi" : "Monenlaista elämää ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_mab8",
+  "koodiArvo" : "MAB8",
+  "metadata" : [ {
+    "nimi" : "Tilastot ja todennäköisyys II ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_mu3",
+  "koodiArvo" : "MU3",
+  "metadata" : [ {
+    "nimi" : "Ovet auki musiikille ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_finb35",
+  "koodiArvo" : "FINB35",
+  "metadata" : [ {
+    "nimi" : "Hyvinvointi ja terveys",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_bi3",
+  "koodiArvo" : "BI3",
+  "metadata" : [ {
+    "nimi" : "Solu ja perinnöllisyys ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_mu2",
+  "koodiArvo" : "MU2",
+  "metadata" : [ {
+    "nimi" : "Moniääninen Suomi ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_finb36",
+  "koodiArvo" : "FINB36",
+  "metadata" : [ {
+    "nimi" : "Kulttuuri ja mediat ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_bi2",
+  "koodiArvo" : "BI2",
+  "metadata" : [ {
+    "nimi" : "Ekologia ja ympäristö ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_finb37",
+  "koodiArvo" : "FINB37",
+  "metadata" : [ {
+    "nimi" : "Opiskelu- ja työelämää suomeksi ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ku1",
+  "koodiArvo" : "KU1",
+  "metadata" : [ {
+    "nimi" : "Kuvat ja kulttuurit ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_bi5",
+  "koodiArvo" : "BI5",
+  "metadata" : [ {
+    "nimi" : "Biologian sovellukset ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_mu4",
+  "koodiArvo" : "MU4",
+  "metadata" : [ {
+    "nimi" : "Musiikki viestii ja vaikuttaa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_finb38",
+  "koodiArvo" : "FINB38",
+  "metadata" : [ {
+    "nimi" : "Yhteinen maapallomme ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_bi4",
+  "koodiArvo" : "BI4",
+  "metadata" : [ {
+    "nimi" : "Ihmisen biologia ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ge2",
+  "koodiArvo" : "GE2",
+  "metadata" : [ {
+    "nimi" : "Sininen planeetta ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_li4",
+  "koodiArvo" : "LI4",
+  "metadata" : [ {
+    "nimi" : "Yhdessä liikkuen ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fina8",
+  "koodiArvo" : "FINA8",
+  "metadata" : [ {
+    "nimi" : "Viesti puhuen ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ge1",
+  "koodiArvo" : "GE1",
+  "metadata" : [ {
+    "nimi" : "Maailma muutoksessa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_li3",
+  "koodiArvo" : "LI3",
+  "metadata" : [ {
+    "nimi" : "Terveyttä liikkuen ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_finb11",
+  "koodiArvo" : "FINB11",
+  "metadata" : [ {
+    "nimi" : "Arkielämä, lähiympäristö ja terveys",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ge4",
+  "koodiArvo" : "GE4",
+  "metadata" : [ {
+    "nimi" : "Geomedia – tutki, osallistu ja vaikuta ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_finb12",
+  "koodiArvo" : "FINB12",
+  "metadata" : [ {
+    "nimi" : "Luonto ja tiede ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_mu1",
+  "koodiArvo" : "MU1",
+  "metadata" : [ {
+    "nimi" : "Musiikki ja minä ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ge3",
+  "koodiArvo" : "GE3",
+  "metadata" : [ {
+    "nimi" : "Yhteinen maailma ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_finb13",
+  "koodiArvo" : "FINB13",
+  "metadata" : [ {
+    "nimi" : "Tekniikka ja kulutus ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_li5",
+  "koodiArvo" : "LI5",
+  "metadata" : [ {
+    "nimi" : "Hyvinvointia liikkuen ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fy2",
+  "koodiArvo" : "FY2",
+  "metadata" : [ {
+    "nimi" : "Lämpö",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_finb14",
+  "koodiArvo" : "FINB14",
+  "metadata" : [ {
+    "nimi" : "Yhteiskunta, kulttuuri ja tiedotusvälineet ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_te3",
+  "koodiArvo" : "TE3",
+  "metadata" : [ {
+    "nimi" : "Terveyttä tutkimassa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fy1",
+  "koodiArvo" : "FY1",
+  "metadata" : [ {
+    "nimi" : "Fysiikka luonnontieteenä ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_te2",
+  "koodiArvo" : "TE2",
+  "metadata" : [ {
+    "nimi" : "Ihminen, ympäristö ja terveys ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_finb15",
+  "koodiArvo" : "FINB15",
+  "metadata" : [ {
+    "nimi" : "Koulutus ja työelämä ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fy4",
+  "koodiArvo" : "FY4",
+  "metadata" : [ {
+    "nimi" : "Voima ja liike ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_finb16",
+  "koodiArvo" : "FINB16",
+  "metadata" : [ {
+    "nimi" : "Viesti puhuen ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_li2",
+  "koodiArvo" : "LI2",
+  "metadata" : [ {
+    "nimi" : "Aktiivinen elämäntapa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fy3",
+  "koodiArvo" : "FY3",
+  "metadata" : [ {
+    "nimi" : "Sähkö ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_li1",
+  "koodiArvo" : "LI1",
+  "metadata" : [ {
+    "nimi" : "Energiaa liikunnasta ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_finb17",
+  "koodiArvo" : "FINB17",
+  "metadata" : [ {
+    "nimi" : "Viesti kirjoittaen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fina1",
+  "koodiArvo" : "FINA1",
+  "metadata" : [ {
+    "nimi" : "Arkielämä, lähiympäristö ja terveys",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ta1",
+  "koodiArvo" : "TA1",
+  "metadata" : [ {
+    "nimi" : "Monitaiteellinen musiikkiprojekti ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_smb38",
+  "koodiArvo" : "SMB38",
+  "metadata" : [ {
+    "nimi" : "Saamelainen luontotieto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_maa2",
+  "koodiArvo" : "MAA2",
+  "metadata" : [ {
+    "nimi" : "Polynomifunktiot ja -yhtälöt ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ta2",
+  "koodiArvo" : "TA2",
+  "metadata" : [ {
+    "nimi" : "Nykytaiteen keinoin ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ruao8",
+  "koodiArvo" : "RUÄO8",
+  "metadata" : [ {
+    "nimi" : "Viesti ja vaikuta puhuen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_smb37",
+  "koodiArvo" : "SMB37",
+  "metadata" : [ {
+    "nimi" : "Opiskelu, työ ja tulevaisuus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_maa3",
+  "koodiArvo" : "MAA3",
+  "metadata" : [ {
+    "nimi" : "Geometria",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fina3",
+  "koodiArvo" : "FINA3",
+  "metadata" : [ {
+    "nimi" : "Tekniikka ja kulutus ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ta3",
+  "koodiArvo" : "TA3",
+  "metadata" : [ {
+    "nimi" : "Taidetta kaikilla aisteilla ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_smb36",
+  "koodiArvo" : "SMB36",
+  "metadata" : [ {
+    "nimi" : "Kulttuuri ja mediat",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_maa4",
+  "koodiArvo" : "MAA4",
+  "metadata" : [ {
+    "nimi" : "Vektorit",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fina2",
+  "koodiArvo" : "FINA2",
+  "metadata" : [ {
+    "nimi" : "Luonto ja tiede ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_smb35",
+  "koodiArvo" : "SMB35",
+  "metadata" : [ {
+    "nimi" : "Sápmi - Saamenmaa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_maa5",
+  "koodiArvo" : "MAA5",
+  "metadata" : [ {
+    "nimi" : "Analyyttinen geometria ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fina5",
+  "koodiArvo" : "FINA5",
+  "metadata" : [ {
+    "nimi" : "Koulutus ja työelämä ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_meld5",
+  "koodiArvo" : "MELD5",
+  "metadata" : [ {
+    "nimi" : "Median lukiodiplomi ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_maa6",
+  "koodiArvo" : "MAA6",
+  "metadata" : [ {
+    "nimi" : "Derivaatta",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_smb34",
+  "koodiArvo" : "SMB34",
+  "metadata" : [ {
+    "nimi" : "Hyvinvointi ja huolenpito",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fina4",
+  "koodiArvo" : "FINA4",
+  "metadata" : [ {
+    "nimi" : "Yhteiskunta ja tiedotusvälineet ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_muld6",
+  "koodiArvo" : "MULD6",
+  "metadata" : [ {
+    "nimi" : "Musiikin lukiodiplomi ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_maa7",
+  "koodiArvo" : "MAA7",
+  "metadata" : [ {
+    "nimi" : "Trigonometriset funktiot ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_smb33",
+  "koodiArvo" : "SMB33",
+  "metadata" : [ {
+    "nimi" : "Kohtaamisia saamelaisalueella",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_tald7",
+  "koodiArvo" : "TALD7",
+  "metadata" : [ {
+    "nimi" : "Tanssin lukiodiplomi ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fina7",
+  "koodiArvo" : "FINA7",
+  "metadata" : [ {
+    "nimi" : "Viesti kirjoittaen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_maa8",
+  "koodiArvo" : "MAA8",
+  "metadata" : [ {
+    "nimi" : "Juuri- ja logaritmifunktiot ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_smb32",
+  "koodiArvo" : "SMB32",
+  "metadata" : [ {
+    "nimi" : "Matkalla maailmassa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_fina6",
+  "koodiArvo" : "FINA6",
+  "metadata" : [ {
+    "nimi" : "Suomalainen kulttuuri ja kirjallisuus ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_teld8",
+  "koodiArvo" : "TELD8",
+  "metadata" : [ {
+    "nimi" : "Teatterin lukiodiplomi ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_maa9",
+  "koodiArvo" : "MAA9",
+  "metadata" : [ {
+    "nimi" : "Integraalilaskenta",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_smb31",
+  "koodiArvo" : "SMB31",
+  "metadata" : [ {
+    "nimi" : "Tutustutaan toisiimme ja saamen kieleen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ais8",
+  "koodiArvo" : "ÄIS8",
+  "metadata" : [ {
+    "nimi" : "Kirjoittamistaitojen syventäminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_smb8",
+  "koodiArvo" : "SMB8",
+  "metadata" : [ {
+    "nimi" : "Viesti puhuen ja kirjoittaen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_maa10",
+  "koodiArvo" : "MAA10",
+  "metadata" : [ {
+    "nimi" : "Todennäköisyys ja tilastot ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_kold1",
+  "koodiArvo" : "KOLD1",
+  "metadata" : [ {
+    "nimi" : "Kotitalouden lukiodiplomi ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ruao1",
+  "koodiArvo" : "RUÄO1",
+  "metadata" : [ {
+    "nimi" : "Ruotsinkielinen maailmani",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ais9",
+  "koodiArvo" : "ÄIS9",
+  "metadata" : [ {
+    "nimi" : "Lukutaitojen syventäminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_smb7",
+  "koodiArvo" : "SMB7",
+  "metadata" : [ {
+    "nimi" : "Kansainvälinen toiminta",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_maa11",
+  "koodiArvo" : "MAA11",
+  "metadata" : [ {
+    "nimi" : "Lukuteoria ja todistaminen ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_kuld2",
+  "koodiArvo" : "KULD2",
+  "metadata" : [ {
+    "nimi" : "Kuvataiteen lukiodiplomi ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_rub38",
+  "koodiArvo" : "RUB38",
+  "metadata" : [ {
+    "nimi" : "Yhteinen maapallomme",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_smb6",
+  "koodiArvo" : "SMB6",
+  "metadata" : [ {
+    "nimi" : "Saamelainen luontotieto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_maa12",
+  "koodiArvo" : "MAA12",
+  "metadata" : [ {
+    "nimi" : "Algoritmit matematiikassa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ruao3",
+  "koodiArvo" : "RUÄO3",
+  "metadata" : [ {
+    "nimi" : "Pohjoismaisia kulttuuri-ilmiöitä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_kald3",
+  "koodiArvo" : "KÄLD3",
+  "metadata" : [ {
+    "nimi" : "Käsityön lukiodiplomi ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_smb5",
+  "koodiArvo" : "SMB5",
+  "metadata" : [ {
+    "nimi" : "Opiskelu, työ ja tulevaisuus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_maa13",
+  "koodiArvo" : "MAA13",
+  "metadata" : [ {
+    "nimi" : "Differentiaali- ja integraalilaskennan jatkokurssi ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_lild4",
+  "koodiArvo" : "LILD4",
+  "metadata" : [ {
+    "nimi" : "Liikunnan lukiodiplomi ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ruao2",
+  "koodiArvo" : "RUÄO2",
+  "metadata" : [ {
+    "nimi" : "Ihminen verkostoissa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_mab2",
+  "koodiArvo" : "MAB2",
+  "metadata" : [ {
+    "nimi" : "Lausekkeet ja yhtälöt ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ais4",
+  "koodiArvo" : "ÄIS4",
+  "metadata" : [ {
+    "nimi" : "Tekstit ja vaikuttaminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_smb4",
+  "koodiArvo" : "SMB4",
+  "metadata" : [ {
+    "nimi" : "Kulttuuri ja mediat",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_op2",
+  "koodiArvo" : "OP2",
+  "metadata" : [ {
+    "nimi" : "Jatko-opinnot ja työelämä ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ruao5",
+  "koodiArvo" : "RUÄO5",
+  "metadata" : [ {
+    "nimi" : "Tiede ja tulevaisuus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_mab3",
+  "koodiArvo" : "MAB3",
+  "metadata" : [ {
+    "nimi" : "Geometria",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ais5",
+  "koodiArvo" : "ÄIS5",
+  "metadata" : [ {
+    "nimi" : "Teksti ja konteksti",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_smb3",
+  "koodiArvo" : "SMB3",
+  "metadata" : [ {
+    "nimi" : "Sápmi - Saamenmaa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ruao4",
+  "koodiArvo" : "RUÄO4",
+  "metadata" : [ {
+    "nimi" : "Yhteiskunta ja ympäröivä maailma",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_to1",
+  "koodiArvo" : "TO1",
+  "metadata" : [ {
+    "nimi" : "Monitieteinen ajattelu ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_mab4",
+  "koodiArvo" : "MAB4",
+  "metadata" : [ {
+    "nimi" : "Matemaattisia malleja ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_smb2",
+  "koodiArvo" : "SMB2",
+  "metadata" : [ {
+    "nimi" : "Hyvinvointi ja huolenpito",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ais6",
+  "koodiArvo" : "ÄIS6",
+  "metadata" : [ {
+    "nimi" : "Nykykulttuuri ja kertomukset",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_to2",
+  "koodiArvo" : "TO2",
+  "metadata" : [ {
+    "nimi" : "Tutkiva työskentely teknologialla ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ruao7",
+  "koodiArvo" : "RUÄO7",
+  "metadata" : [ {
+    "nimi" : "Kestävä elämäntapa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_mab5",
+  "koodiArvo" : "MAB5",
+  "metadata" : [ {
+    "nimi" : "Tilastot ja todennäköisyys",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_smb1",
+  "koodiArvo" : "SMB1",
+  "metadata" : [ {
+    "nimi" : "Kohtaamisia saamelaisalueella",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ais7",
+  "koodiArvo" : "ÄIS7",
+  "metadata" : [ {
+    "nimi" : "Puhe- ja vuorovaikutustaitojen syventäminen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_to3",
+  "koodiArvo" : "TO3",
+  "metadata" : [ {
+    "nimi" : "Osaaminen arjessa ",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "lukionkurssit_ruao6",
+  "koodiArvo" : "RUÄO6",
+  "metadata" : [ {
+    "nimi" : "Opiskelu, työ ja toimeentulo",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+} ]

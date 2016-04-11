@@ -58,5 +58,29 @@
       }
     ],
     "versio": 1
+  },
+  {
+    "koodiUri": "suorituksentyyppi_lukionoppiainesuoritus",
+    "koodiArvo": "lukionoppiainesuoritus",
+    "metadata": [
+      {
+        "nimi": "Lukion oppiainesuoritus",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "suorituksentyyppi_lukionkurssisuoritus",
+    "koodiArvo": "lukionkurssisuoritus",
+    "metadata": [
+      {
+        "nimi": "Lukion kurssisuoritus",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
   }
 ]
