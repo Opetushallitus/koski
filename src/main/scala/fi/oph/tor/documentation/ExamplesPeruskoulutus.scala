@@ -3,12 +3,11 @@ package fi.oph.tor.documentation
 import java.time.LocalDate.{of => date}
 
 import fi.oph.tor.documentation.ExampleData._
+import fi.oph.tor.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.tor.documentation.PeruskoulutusExampleData._
-import fi.oph.tor.organisaatio.MockOrganisaatiot
 import fi.oph.tor.schema._
 
 object PeruskoulutusExampleData {
-  lazy val jyväskylänNormaalikoulu: Oppilaitos = Oppilaitos(MockOrganisaatiot.jyväskylänNormaalikoulu, Some(Koodistokoodiviite("00204", None, "oppilaitosnumero", None)), Some("Jyväskylän normaalikoulu"))
 
   def suoritus(aine: YleissivistavaOppiaine) = PeruskoulunOppiaineenSuoritus(
     koulutusmoduuli = aine,
@@ -18,19 +17,6 @@ object PeruskoulutusExampleData {
     arviointi = None,
     vahvistus = None
   )
-
-  def oppiaine(aine: String) = Oppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine))
-  def äidinkieli(kieli: String) = AidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"))
-  def kieli(oppiaine: String, kieli: String) = VierasTaiToinenKotimainenKieli(
-    tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),
-    kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
-  def uskonto(uskonto: String) = Uskonto(uskonto = Koodistokoodiviite(koodiarvo = uskonto, koodistoUri = "oppiaineuskonto"))
-
-  def arviointi(arvosana: Int): Some[List[YleissivistävänkoulutuksenArviointi]] = {
-    Some(List(YleissivistävänkoulutuksenArviointi(arvosana.toString)))
-  }
-
-  val hyväksytty = Some(List(YleissivistävänkoulutuksenArviointi("S")))
 
   def vuosiviikkotuntia(määrä: Double): Some[Laajuus] = Some(Laajuus(määrä.toFloat, Koodistokoodiviite("3", Some("Vuosiviikkotuntia"), "opintojenlaajuusyksikko")))
 }

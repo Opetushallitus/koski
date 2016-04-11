@@ -33,7 +33,7 @@ case class LukionOppimääränSuoritus(
   @KoodistoKoodiarvo("lukionoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: Ylioppilastutkinto = Ylioppilastutkinto(),
-  arviointi: Option[List[LukionArviointi]] = None,
+  arviointi: Option[List[YleissivistävänkoulutuksenArviointi]] = None,
   vahvistus: Option[Vahvistus] = None,
   override val osasuoritukset: Option[List[LukionOppiaineenSuoritus]]
 ) extends Suoritus
@@ -45,7 +45,7 @@ case class LukionOppiaineenSuoritus(
   paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
-  arviointi: Option[List[LukionArviointi]] = None,
+  arviointi: Option[List[YleissivistävänkoulutuksenArviointi]] = None,
   vahvistus: Option[Vahvistus] = None,
   override val osasuoritukset: Option[List[LukionKurssinSuoritus]]
 ) extends Suoritus
@@ -57,7 +57,7 @@ case class LukionKurssinSuoritus(
   paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
-  arviointi: Option[List[LukionArviointi]] = None,
+  arviointi: Option[List[YleissivistävänkoulutuksenArviointi]] = None,
   vahvistus: Option[Vahvistus] = None
 ) extends Suoritus
 
@@ -76,9 +76,3 @@ case class Ylioppilastutkinto(
  tunniste: Koodistokoodiviite = Koodistokoodiviite("301000", koodistoUri = "koulutus")
 ) extends Koulutusmoduuli
 
-case class LukionArviointi(
-  @KoodistoUri("arvosanat")
-  arvosana: Koodistokoodiviite,
-  päivä: Option[LocalDate],
-  arvioitsijat: Option[List[Arvioitsija]] = None
-) extends Arviointi
