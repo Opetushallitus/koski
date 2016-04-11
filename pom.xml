@@ -159,12 +159,12 @@
     <dependency>
       <groupId>org.http4s</groupId>
       <artifactId>http4s-blaze-client_2.11</artifactId>
-      <version>0.13.0a</version>
+      <version>0.13.1</version>
     </dependency>
     <dependency>
       <groupId>org.http4s</groupId>
       <artifactId>http4s-dsl_2.11</artifactId>
-      <version>0.13.0a</version>
+      <version>0.13.1</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
