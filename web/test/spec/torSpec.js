@@ -442,15 +442,18 @@ describe('TOR', function() {
   describe('Peruskoulun päättötodistus', function() {
     var todistus = PeruskoulunTodistusPage()
     before(resetFixtures, authentication.login())
+    before(openPage('/tor/oppija/1.2.246.562.24.00000000008', page.isOppijaSelected('Kaisa')))
     describe('Oppijan suorituksissa', function() {
-      before(openPage('/tor/oppija/1.2.246.562.24.00000000008', page.isOppijaSelected('Kaisa')))
       it('näytetään', function() {
         expect(OpinnotPage().getTutkinto()).to.equal("Peruskoulu")
         expect(OpinnotPage().getOppilaitos()).to.equal("Jyväskylän normaalikoulu")
       })
     })
     describe('Tulostettava todistus', function() {
-      before(openPage('/tor/todistus/peruskoulu/paattotodistus/1.2.246.562.24.00000000008', todistus.isVisible))
+      before(
+        function() { triggerEvent(S('a.todistus'), 'click') },
+        wait.until(function() { return S('.todistus.peruskoulu').is(":visible") })
+      )
       it('näytetään', function() {
         expect(S('.oppiaine.KT .arvosana').text()).to.equal('10')
       })

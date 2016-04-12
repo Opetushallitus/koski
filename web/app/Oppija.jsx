@@ -4,7 +4,7 @@ import Http from './http'
 import {routeP} from './router'
 import {CreateOppija} from './CreateOppija.jsx'
 import {OpiskeluOikeus, opiskeluOikeusChange} from './OpiskeluOikeus.jsx'
-import * as L from "partial.lenses"
+import * as L from 'partial.lenses'
 import R from 'ramda'
 
 export const selectOppijaE = routeP.map('.oppijaId').flatMap(oppijaId => {
@@ -51,7 +51,7 @@ const ExistingOppija = React.createClass({
         <hr></hr>
         <h4>Opiskeluoikeudet</h4>
         { opiskeluoikeudet.map( opiskeluOikeus =>
-          <OpiskeluOikeus key={opiskeluOikeus.id} opiskeluOikeus={ opiskeluOikeus } lens= { opiskeluOikeusIdLens(opiskeluOikeus.id) } />
+          <OpiskeluOikeus key={opiskeluOikeus.id} opiskeluOikeus={ opiskeluOikeus } oppijaOid={henkilö.oid} lens= { opiskeluOikeusIdLens(opiskeluOikeus.id) } />
         ) }
       </div>
     )

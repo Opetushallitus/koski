@@ -1,7 +1,7 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import R from 'ramda'
-import * as L from "partial.lenses"
+import * as L from 'partial.lenses'
 import Http from './http'
 import Dropdown from './Dropdown.jsx'
 
@@ -9,27 +9,34 @@ export const opiskeluOikeusChange = Bacon.Bus()
 
 export const OpiskeluOikeus = React.createClass({
   render() {
-    let {opiskeluOikeus, lens} = this.props
+    let {opiskeluOikeus, lens, oppijaOid} = this.props
     return (
       <div className="opiskeluoikeus">
         {
-          opiskeluOikeus.suoritukset.map((suoritus, index) => <Suoritus opiskeluOikeus={opiskeluOikeus} suoritus={suoritus} lens={L.compose(lens, L.prop('suoritukset'), L.index(index))} />)
+          opiskeluOikeus.suoritukset.map((suoritus, index) =>  {
+            let suoritusLens = L.compose(lens, L.prop('suoritukset'), L.index(index))
+            return (
+              <div className="suoritus">
+                <span className="tutkinto">{suoritus.koulutusmoduuli.tunniste.nimi}</span> <span className="oppilaitos">{opiskeluOikeus.oppilaitos.nimi}</span>
+                <TutkinnonRakenne suoritus={suoritus} lens={suoritusLens} />
+                <Todistus suoritus={suoritus} oppijaOid={oppijaOid}/>
+              </div>
+            )
+          })
         }
       </div>
     )
   }
 })
 
-export const Suoritus = React.createClass({
+const Todistus = React.createClass({
   render() {
-    let {opiskeluOikeus, suoritus, lens} = this.props
-    return (
-      <div className="suoritus">
-        <span className="tutkinto">{suoritus.koulutusmoduuli.tunniste.nimi}</span> <span className="oppilaitos">{opiskeluOikeus.oppilaitos.nimi}</span>
-        <TutkinnonRakenne suoritus={suoritus} lens={lens} />
-      </div>
-    )
-  },
+    let {suoritus, oppijaOid} = this.props
+    let href = '/tor/todistus/peruskoulu/paattotodistus/' + oppijaOid
+    return suoritus.tyyppi.koodiarvo == 'peruskoulunpaattotodistus' && suoritus.tila.koodiarvo == 'VALMIS'
+      ? <a className="todistus" href={href}>näytä todistus</a>
+      : null
+  }
 })
 
 const TutkinnonRakenne = React.createClass({

@@ -1,92 +1,100 @@
-.rakenne-moduuli {
-  ul {
-    list-style: none;
-    padding-left: 24px;
-    margin: 0;
+.tutkinto-rakenne {
+  margin-top: 25px;
+
+  .suoritustapa, .osaamisala {
+    width: 350px;
   }
 
-  .name {
-    line-height: 40px;
-    display: inline-block;
-  }
-
-  .tutkinnon-osa {
-    color: @color-darkgray-text;
-
-    &.suoritettu {
-      transition: background-color 1500ms ease-in,color 1500ms ease-in;
-      background: @color-darkgray;
-      color: black;
+  .rakenne-moduuli {
+    ul {
+      list-style: none;
+      padding-left: 24px;
+      margin: 0;
     }
 
     .name {
-      padding-left: 14px;
-      max-width: 400px;
+      line-height: 40px;
+      display: inline-block;
     }
 
-    &:hover:not(.suoritettu) {
-      color: black;
-      background-color: white;
-      cursor: pointer;
-      .arviointi.edit {
-        display: block;
+    .tutkinnon-osa {
+      color: @color-darkgray-text;
+
+      &.suoritettu {
+        transition: background-color 1500ms ease-in,color 1500ms ease-in;
+        background: @color-darkgray;
+        color: black;
+      }
+
+      .name {
+        padding-left: 14px;
+        max-width: 400px;
+      }
+
+      &:hover:not(.suoritettu) {
+        color: black;
+        background-color: white;
+        cursor: pointer;
+        .arviointi.edit {
+          display: block;
+        }
       }
     }
-  }
 
-  .arviointi {
-    float: right;
-    height: 40px;
+    .arviointi {
+      float: right;
+      height: 40px;
 
-    &.edit {
-      background-color: @color-darkgray;
-      display: none;
-    }
+      &.edit {
+        background-color: @color-darkgray;
+        display: none;
+      }
 
-    button {
-      padding: 0 10px;
-      outline: none;
-    }
-
-    .arvosanat {
-      margin: 0 5px 0 0;
-      padding: 0;
-      display: inline-block;
-      background-color: white;
-      height: 100%;
-
-      li {
+      button {
         padding: 0 10px;
-        line-height: 38px;
-        text-align: center;
+        outline: none;
+      }
+
+      .arvosanat {
+        margin: 0 5px 0 0;
+        padding: 0;
         display: inline-block;
-        border: 1px solid #E6DBD8;
-        border-right-width: 0;
-        position: relative;
+        background-color: white;
+        height: 100%;
 
-        &:last-child {
-          border-right-width: 1px;
-        }
+        li {
+          padding: 0 10px;
+          line-height: 38px;
+          text-align: center;
+          display: inline-block;
+          border: 1px solid #E6DBD8;
+          border-right-width: 0;
+          position: relative;
 
-        &:hover, &.selected {
-          &:before {
-            display: block;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 3px solid #4194bf;
-            content: "";
-            top: -3px;
-            z-index: (@z-index-base + 1);
-            left: -3px;
+          &:last-child {
+            border-right-width: 1px;
+          }
+
+          &:hover, &.selected {
+            &:before {
+              display: block;
+              position: absolute;
+              width: 100%;
+              height: 100%;
+              border: 3px solid #4194bf;
+              content: "";
+              top: -3px;
+              z-index: (@z-index-base + 1);
+              left: -3px;
+            }
           }
         }
       }
-    }
-    
-    .arvosana {
-      line-height: 40px;
-      margin-right: 50px;
+
+      .arvosana {
+        line-height: 40px;
+        margin-right: 50px;
+      }
     }
   }
 }
