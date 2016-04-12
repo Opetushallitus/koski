@@ -9,7 +9,7 @@ export const opiskeluOikeusChange = Bacon.Bus()
 
 export const OpiskeluOikeus = React.createClass({
   render() {
-    let {opiskeluOikeus, lens, oppijaOid} = this.props
+    let {opiskeluOikeus, lens} = this.props
     return (
       <div className="opiskeluoikeus">
         {
@@ -19,7 +19,7 @@ export const OpiskeluOikeus = React.createClass({
               <div className="suoritus">
                 <span className="tutkinto">{suoritus.koulutusmoduuli.tunniste.nimi}</span> <span className="oppilaitos">{opiskeluOikeus.oppilaitos.nimi}</span>
                 <TutkinnonRakenne suoritus={suoritus} lens={suoritusLens} />
-                <Todistus suoritus={suoritus} oppijaOid={oppijaOid}/>
+                <Todistus suoritus={suoritus} opiskeluOikeus={opiskeluOikeus}/>
               </div>
             )
           })
@@ -31,8 +31,8 @@ export const OpiskeluOikeus = React.createClass({
 
 const Todistus = React.createClass({
   render() {
-    let {suoritus, oppijaOid} = this.props
-    let href = '/tor/todistus/peruskoulu/paattotodistus/' + oppijaOid
+    let {suoritus, opiskeluOikeus} = this.props
+    let href = '/tor/todistus/opiskeluoikeus/' + opiskeluOikeus.id
     return suoritus.tyyppi.koodiarvo == 'peruskoulunpaattotodistus' && suoritus.tila.koodiarvo == 'VALMIS'
       ? <a className="todistus" href={href}>näytä todistus</a>
       : null

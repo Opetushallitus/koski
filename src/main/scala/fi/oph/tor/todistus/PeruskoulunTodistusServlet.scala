@@ -9,26 +9,18 @@ import fi.oph.tor.toruser.{RequiresAuthentication, UserOrganisationsRepository}
 import fi.vm.sade.security.ldap.DirectoryClient
 
 class PeruskoulunTodistusServlet(val userRepository: UserOrganisationsRepository, val directoryClient: DirectoryClient, rekisteri: TodennetunOsaamisenRekisteri) extends ErrorHandlingServlet with RequiresAuthentication {
-  get("/peruskoulu/paattotodistus/:personOid") {
-    val oid = params("personOid")
-    rekisteri.findTorOppija(oid)(torUser) match {
-      case Right(oppija) => renderTodistus(oppija)
-      case _ => renderStatus(TorErrorCategory.notFound.oppijaaEiLöydy())
+  get("/opiskeluoikeus/:opiskeluoikeusId") {
+    val opiskeluoikeusId = getIntegerParam("opiskeluoikeusId")
+    rekisteri.findOpiskeluOikeus(opiskeluoikeusId)(torUser) match {
+      case Right((henkilötiedot, opiskeluoikeus)) =>
+          opiskeluoikeus.suoritukset.head match {
+            case t: PeruskoulunPäättötodistus if t.tila.koodiarvo == "VALMIS" =>
+              renderPeruskoulunPäättötodistus(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)
+            case _ => TorErrorCategory.notFound.todistustaEiLöydy()
+          }
+      case Left(status) => renderStatus(status)
     }
   }
-
-  def renderTodistus(oppija: TorOppija) = {
-    val oppijaHenkilö = oppija.henkilö.asInstanceOf[Henkilötiedot]
-    oppija.opiskeluoikeudet.flatMap(oo => oo.suoritukset.flatMap { case t: PeruskoulunPäättötodistus if t.tila.koodiarvo == "VALMIS" =>
-      Some(oo, t)
-    case x: AnyRef =>
-      None
-    }).headOption match {
-      case Some((oo, t)) => renderPeruskoulunPäättötodistus(oo.koulutustoimija, oo.oppilaitos, oppijaHenkilö, t)
-      case _ => renderStatus(TorErrorCategory.notFound.todistustaEiLöydy())
-    }
-  }
-
   def renderPeruskoulunPäättötodistus(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: PeruskoulunPäättötodistus) = {
     val oppiaineet: List[PeruskoulunOppiaineenSuoritus] = päättötodistus.osasuoritukset.toList.flatten
     val pakolliset = oppiaineet.filter(_.koulutusmoduuli.pakollinen)

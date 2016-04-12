@@ -51,7 +51,7 @@ const ExistingOppija = React.createClass({
         <hr></hr>
         <h4>Opiskeluoikeudet</h4>
         { opiskeluoikeudet.map( opiskeluOikeus =>
-          <OpiskeluOikeus key={opiskeluOikeus.id} opiskeluOikeus={ opiskeluOikeus } oppijaOid={henkilö.oid} lens= { opiskeluOikeusIdLens(opiskeluOikeus.id) } />
+          <OpiskeluOikeus key={opiskeluOikeus.id} opiskeluOikeus={ opiskeluOikeus } lens= { opiskeluOikeusIdLens(opiskeluOikeus.id) } />
         ) }
       </div>
     )

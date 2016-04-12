@@ -125,6 +125,19 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     result
   }
 
+  def findOpiskeluOikeus(id: Int)(implicit user: TorUser): Either[HttpStatus, (TaydellisetHenkilötiedot, Opiskeluoikeus)] = {
+    val result: Option[(TaydellisetHenkilötiedot, Opiskeluoikeus)] = opiskeluOikeusRepository.findById(id) flatMap { case (oo, oppijaOid) =>
+      oppijaRepository.findByOid(oppijaOid).map((_, oo))
+    }
+    result match {
+      case Some((henkilö, oo)) =>
+        auditLog(AuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, user, Map(oppijaHenkiloOid -> henkilö.oid)))
+        Right((henkilö, oo))
+      case _ =>
+        Left(TorErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
+    }
+  }
+
 
   private def query(filters: List[QueryFilter])(implicit user: TorUser): Observable[TorOppija] = {
     val oikeudetPerOppijaOid: Observable[(Oid, List[Opiskeluoikeus])] = opiskeluOikeusRepository.query(filters)

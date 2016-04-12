@@ -41,6 +41,10 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     await(db.run(findByOppijaOidAction(oid).map(rows => rows.map(_.toOpiskeluOikeus))))
   }
 
+  def findById(id: Int)(implicit user: TorUser): Option[(Opiskeluoikeus, String)] = {
+    await(db.run(findAction(OpiskeluOikeudetWithAccessCheck.filter(_.id === id)).map(rows => rows.map(row => (row.toOpiskeluOikeus, row.oppijaOid))))).headOption
+  }
+
   override def query(filters: List[QueryFilter])(implicit user: TorUser): Observable[(Oid, List[Opiskeluoikeus])] = {
     import ReactiveStreamsToRx._
 
