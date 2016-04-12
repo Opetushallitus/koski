@@ -5,7 +5,9 @@ import org.json4s._
 import org.json4s.reflect.TypeInfo
 
 case class EPerusteRakenne(id: Long, nimi: Map[String, String], diaarinumero: String, koulutustyyppi: String,
-                           koulutukset: List[EPerusteKoulutus], suoritustavat: List[ESuoritustapa], tutkinnonOsat: List[ETutkinnonOsa], osaamisalat: List[EOsaamisala])
+                           koulutukset: List[EPerusteKoulutus], suoritustavat: List[ESuoritustapa], tutkinnonOsat: List[ETutkinnonOsa], osaamisalat: List[EOsaamisala]) {
+  def toEPeruste = EPeruste(id, nimi, diaarinumero, koulutukset)
+}
 
 case class ESuoritustapa(suoritustapakoodi: String, laajuusYksikko: Option[String], rakenne: ERakenneOsa, tutkinnonOsaViitteet: List[ETutkinnonOsaViite])
 case class ETutkinnonOsaViite(id: Long, laajuus: Option[Float], _tutkinnonOsa: String)

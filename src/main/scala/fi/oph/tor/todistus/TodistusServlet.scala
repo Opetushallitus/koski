@@ -15,6 +15,8 @@ class TodistusServlet(val userRepository: UserOrganisationsRepository, val direc
           opiskeluoikeus.suoritukset.head match {
             case t: PeruskoulunPäättötodistus if t.tila.koodiarvo == "VALMIS" =>
               PeruskoulunPaattotodistusHtml.renderPeruskoulunPäättötodistus(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)
+            case t: AmmatillisenTutkinnonSuoritus if t.tila.koodiarvo == "VALMIS" => // TODO: vain perustutkinnot
+              AmmatillisenPerustutkinnonPaattotodistusHtml.renderAmmatillisenPerustutkinnonPaattotodistus(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)
             case _ => TorErrorCategory.notFound.todistustaEiLöydy()
           }
       case Left(status) => renderStatus(status)

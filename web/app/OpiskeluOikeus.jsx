@@ -18,8 +18,8 @@ export const OpiskeluOikeus = React.createClass({
             return (
               <div className="suoritus">
                 <span className="tutkinto">{suoritus.koulutusmoduuli.tunniste.nimi}</span> <span className="oppilaitos">{opiskeluOikeus.oppilaitos.nimi}</span>
-                <TutkinnonRakenne suoritus={suoritus} lens={suoritusLens} />
                 <Todistus suoritus={suoritus} opiskeluOikeus={opiskeluOikeus}/>
+                <TutkinnonRakenne suoritus={suoritus} lens={suoritusLens} />
               </div>
             )
           })
@@ -33,7 +33,7 @@ const Todistus = React.createClass({
   render() {
     let {suoritus, opiskeluOikeus} = this.props
     let href = '/tor/todistus/opiskeluoikeus/' + opiskeluOikeus.id
-    return suoritus.tyyppi.koodiarvo == 'peruskoulunpaattotodistus' && suoritus.tila.koodiarvo == 'VALMIS'
+    return suoritus.tila.koodiarvo == 'VALMIS'
       ? <a className="todistus" href={href}>näytä todistus</a>
       : null
   }

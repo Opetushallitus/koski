@@ -439,6 +439,27 @@ describe('TOR', function() {
     })
   })
 
+  describe('Ammatillisen perustutkinnon päättötodistus', function() {
+    var todistus = AmmatillisenPerustutkinnonTodistusPage()
+    before(resetFixtures, authentication.login())
+    before(openPage('/tor/oppija/1.2.246.562.24.000000000010', page.isOppijaSelected('Aarne')))
+    describe('Oppijan suorituksissa', function() {
+      it('näytetään', function() {
+        expect(OpinnotPage().getTutkinto()).to.equal("Luonto- ja ympäristöalan perustutkinto")
+        expect(OpinnotPage().getOppilaitos()).to.equal("Stadin ammattiopisto")
+      })
+    })
+    describe('Tulostettava todistus', function() {
+      before(
+        function() { triggerEvent(S('a.todistus'), 'click') },
+        wait.until(function() { return S('.todistus.ammatillinenperustutkinto').is(":visible") })
+      )
+      it('näytetään', function() {
+        
+      })
+    })
+  })
+
   describe('Peruskoulun päättötodistus', function() {
     var todistus = PeruskoulunTodistusPage()
     before(resetFixtures, authentication.login())
