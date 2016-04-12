@@ -7,18 +7,6 @@ import fi.oph.tor.schema._
 object LukionPaattotodistusHtml {
   def renderLukionPäättötodistus(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: LukionOppimääränSuoritus) = {
     val oppiaineet: List[LukionOppiaineenSuoritus] = päättötodistus.osasuoritukset.toList.flatten
-
-    def arvosanaLista(oppiaineet: List[LukionOppiaineenSuoritus]) = oppiaineet.map { oppiaine =>
-      val nimiTeksti = oppiaine.koulutusmoduuli.toString
-      val rowClass="oppiaine " + oppiaine.koulutusmoduuli.tunniste.koodiarvo
-      <tr class={rowClass}>
-        <td class="oppiaine">{nimiTeksti}</td>
-        <td class="laajuus">{oppiaine.koulutusmoduuli.laajuus.map(_.arvo).getOrElse("")}</td>
-        <td class="arvosana-kirjaimin">{oppiaine.arviointi.toList.flatten.lastOption.map(_.arvosanaKirjaimin("fi")).getOrElse("")}</td>
-        <td class="arvosana-numeroin">{oppiaine.arviointi.toList.flatten.lastOption.flatMap(_.arvosanaNumeroin).getOrElse("")}</td>
-      </tr>
-    }
-
     val dateFormatter = DateTimeFormatter.ofPattern("d.M.yyyy")
 
     <html>
@@ -42,7 +30,18 @@ object LukionPaattotodistusHtml {
               <th class="arvosana-kirjaimin">Arvosana kirjaimin</th>
               <th class="arvosana-numeroin">Arvosana numeroin</th>
             </tr>
-            { arvosanaLista(oppiaineet) }
+            {
+              oppiaineet.map { oppiaine =>
+                val nimiTeksti = oppiaine.koulutusmoduuli.toString
+                val rowClass="oppiaine " + oppiaine.koulutusmoduuli.tunniste.koodiarvo
+                <tr class={rowClass}>
+                  <td class="oppiaine">{nimiTeksti}</td>
+                  <td class="laajuus"></td>
+                  <td class="arvosana-kirjaimin">{oppiaine.arviointi.toList.flatten.lastOption.map(_.arvosanaKirjaimin("fi")).getOrElse("")}</td>
+                  <td class="arvosana-numeroin">{oppiaine.arviointi.toList.flatten.lastOption.flatMap(_.arvosanaNumeroin).getOrElse("")}</td>
+                </tr>
+              }
+            }
           </table>
           <div class="vahvistus">
             <span class="paikkakunta">Tampere<!-- TODO: paikkakuntaa ei ole datassa --></span>
