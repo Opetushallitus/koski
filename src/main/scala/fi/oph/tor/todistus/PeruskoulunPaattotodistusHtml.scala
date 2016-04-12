@@ -1,26 +1,9 @@
 package fi.oph.tor.todistus
 
 import java.time.format.DateTimeFormatter
-import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.schema._
-import fi.oph.tor.servlet.ErrorHandlingServlet
-import fi.oph.tor.tor.TodennetunOsaamisenRekisteri
-import fi.oph.tor.toruser.{RequiresAuthentication, UserOrganisationsRepository}
-import fi.vm.sade.security.ldap.DirectoryClient
 
-class PeruskoulunTodistusServlet(val userRepository: UserOrganisationsRepository, val directoryClient: DirectoryClient, rekisteri: TodennetunOsaamisenRekisteri) extends ErrorHandlingServlet with RequiresAuthentication {
-  get("/opiskeluoikeus/:opiskeluoikeusId") {
-    val opiskeluoikeusId = getIntegerParam("opiskeluoikeusId")
-    rekisteri.findOpiskeluOikeus(opiskeluoikeusId)(torUser) match {
-      case Right((henkilötiedot, opiskeluoikeus)) =>
-          opiskeluoikeus.suoritukset.head match {
-            case t: PeruskoulunPäättötodistus if t.tila.koodiarvo == "VALMIS" =>
-              renderPeruskoulunPäättötodistus(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)
-            case _ => TorErrorCategory.notFound.todistustaEiLöydy()
-          }
-      case Left(status) => renderStatus(status)
-    }
-  }
+object PeruskoulunPaattotodistusHtml {
   def renderPeruskoulunPäättötodistus(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: PeruskoulunPäättötodistus) = {
     val oppiaineet: List[PeruskoulunOppiaineenSuoritus] = päättötodistus.osasuoritukset.toList.flatten
     val pakolliset = oppiaineet.filter(_.koulutusmoduuli.pakollinen)
@@ -91,10 +74,9 @@ class PeruskoulunTodistusServlet(val userRepository: UserOrganisationsRepository
       </body>
     </html>
   }
+
+  sealed trait Aine { def suoritus: PeruskoulunOppiaineenSuoritus }
+  case class Pakollinen(suoritus: PeruskoulunOppiaineenSuoritus) extends Aine
+  case class Valinnainen(suoritus: PeruskoulunOppiaineenSuoritus) extends Aine
+  case class LiittyväValinnainen(suoritus: PeruskoulunOppiaineenSuoritus) extends Aine
 }
-
-sealed trait Aine { def suoritus: PeruskoulunOppiaineenSuoritus }
-case class Pakollinen(suoritus: PeruskoulunOppiaineenSuoritus) extends Aine
-case class Valinnainen(suoritus: PeruskoulunOppiaineenSuoritus) extends Aine
-case class LiittyväValinnainen(suoritus: PeruskoulunOppiaineenSuoritus) extends Aine
-
