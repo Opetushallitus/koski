@@ -5,7 +5,7 @@
 
 1. Opiskeluoikeudessa ja suorituksessa tyyppi-koodisto
 2. Koulutusmoduulitoteutus-taso poistettu rakenteesta; suorituksen alla suoraan koulutusmoduuli
-3. ???
+3. Vahvistuksen päivämäärä on pakollinen (vahvistus itsessään ei ole muulloin kuin VALMIS-tilaisissa suorituksissa)
 
 ## Draft 2
 
