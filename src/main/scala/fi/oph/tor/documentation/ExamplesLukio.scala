@@ -54,7 +54,8 @@ object ExamplesLukio {
         LukionOppimääränSuoritus(
           paikallinenId = None,
           suorituskieli = suomenKieli,
-          tila = tilaKesken,
+          tila = tilaValmis,
+          vahvistus = vahvistus,
           toimipiste = jyväskylänNormaalikoulu,
           osasuoritukset = Some(List(
             suoritus(äidinkieli("AI1")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(9)).copy(osasuoritukset = Some(List(

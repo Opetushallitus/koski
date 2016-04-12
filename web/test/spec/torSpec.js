@@ -439,44 +439,67 @@ describe('TOR', function() {
     })
   })
 
-  describe('Ammatillisen perustutkinnon päättötodistus', function() {
-    var todistus = AmmatillisenPerustutkinnonTodistusPage()
-    before(resetFixtures, authentication.login())
-    before(openPage('/tor/oppija/1.2.246.562.24.000000000010', page.isOppijaSelected('Aarne')))
-    describe('Oppijan suorituksissa', function() {
-      it('näytetään', function() {
-        expect(OpinnotPage().getTutkinto()).to.equal("Luonto- ja ympäristöalan perustutkinto")
-        expect(OpinnotPage().getOppilaitos()).to.equal("Stadin ammattiopisto")
+  describe('Todistukset', function( ){
+    describe('Lukion päättötodistus', function() {
+      var todistus = LukionTodistusPage()
+      before(resetFixtures, authentication.login())
+      before(openPage('/tor/oppija/1.2.246.562.24.00000000009', page.isOppijaSelected('Liisa')))
+      describe('Oppijan suorituksissa', function() {
+        it('näytetään', function() {
+          expect(OpinnotPage().getTutkinto()).to.equal("Ylioppilastutkinto")
+          expect(OpinnotPage().getOppilaitos()).to.equal("Jyväskylän normaalikoulu")
+        })
+      })
+      describe('Tulostettava todistus', function() {
+        before(
+          function() { triggerEvent(S('a.todistus'), 'click') },
+          wait.until(function() { return S('.todistus.lukio').is(":visible") })
+        )
+        it('näytetään', function() {
+          expect(S('.oppiaine.KT .arvosana-numeroin').text()).to.equal('8')
+        })
       })
     })
-    describe('Tulostettava todistus', function() {
-      before(
-        function() { triggerEvent(S('a.todistus'), 'click') },
-        wait.until(function() { return S('.todistus.ammatillinenperustutkinto').is(":visible") })
-      )
-      it('näytetään', function() {
-        
-      })
-    })
-  })
 
-  describe('Peruskoulun päättötodistus', function() {
-    var todistus = PeruskoulunTodistusPage()
-    before(resetFixtures, authentication.login())
-    before(openPage('/tor/oppija/1.2.246.562.24.00000000008', page.isOppijaSelected('Kaisa')))
-    describe('Oppijan suorituksissa', function() {
-      it('näytetään', function() {
-        expect(OpinnotPage().getTutkinto()).to.equal("Peruskoulu")
-        expect(OpinnotPage().getOppilaitos()).to.equal("Jyväskylän normaalikoulu")
+    describe('Peruskoulun päättötodistus', function() {
+      var todistus = PeruskoulunTodistusPage()
+      before(resetFixtures, authentication.login())
+      before(openPage('/tor/oppija/1.2.246.562.24.00000000008', page.isOppijaSelected('Kaisa')))
+      describe('Oppijan suorituksissa', function() {
+        it('näytetään', function() {
+          expect(OpinnotPage().getTutkinto()).to.equal("Peruskoulu")
+          expect(OpinnotPage().getOppilaitos()).to.equal("Jyväskylän normaalikoulu")
+        })
+      })
+      describe('Tulostettava todistus', function() {
+        before(
+          function() { triggerEvent(S('a.todistus'), 'click') },
+          wait.until(function() { return S('.todistus.peruskoulu').is(":visible") })
+        )
+        it('näytetään', function() {
+          expect(S('.oppiaine.KT .arvosana-numeroin').text()).to.equal('10')
+        })
       })
     })
-    describe('Tulostettava todistus', function() {
-      before(
-        function() { triggerEvent(S('a.todistus'), 'click') },
-        wait.until(function() { return S('.todistus.peruskoulu').is(":visible") })
-      )
-      it('näytetään', function() {
-        expect(S('.oppiaine.KT .arvosana').text()).to.equal('10')
+
+    describe('Ammatillisen perustutkinnon päättötodistus', function() {
+      var todistus = AmmatillisenPerustutkinnonTodistusPage()
+      before(resetFixtures, authentication.login())
+      before(openPage('/tor/oppija/1.2.246.562.24.000000000010', page.isOppijaSelected('Aarne')))
+      describe('Oppijan suorituksissa', function() {
+        it('näytetään', function() {
+          expect(OpinnotPage().getTutkinto()).to.equal("Luonto- ja ympäristöalan perustutkinto")
+          expect(OpinnotPage().getOppilaitos()).to.equal("Stadin ammattiopisto")
+        })
+      })
+      describe('Tulostettava todistus', function() {
+        before(
+          function() { triggerEvent(S('a.todistus'), 'click') },
+          wait.until(function() { return S('.todistus.ammatillinenperustutkinto').is(":visible") })
+        )
+        it('näytetään', function() {
+
+        })
       })
     })
   })
