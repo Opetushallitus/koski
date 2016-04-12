@@ -139,6 +139,7 @@ describe('TOR', function() {
       return prepareForNewOppija(username, searchString)()
         .then(addOppija.enterValidData(oppijaData))
         .then(addOppija.submitAndExpectSuccess(oppijaData.hetu, oppijaData.tutkinto))
+        .then(OpinnotPage().waitUntilRakenneVisible())
     }
   }
 
@@ -371,7 +372,7 @@ describe('TOR', function() {
 
       describe('Kun sivu ladataan uudelleen', function() {
         before( page.oppijaHaku.search('ero', 4),
-                page.oppijaHaku.selectOppija('Tunkkila'), opinnot.waitUntilTutkintoVisible())
+                page.oppijaHaku.selectOppija('Tunkkila'), opinnot.waitUntilRakenneVisible())
 
         it('Muuttuneet tiedot on tallennettu', function() {
           expect(opinnot.getTutkinnonOsat()[0]).to.equal('Myynti ja tuotetuntemus')
@@ -391,7 +392,7 @@ describe('TOR', function() {
 
           describe('Kun sivu ladataan uudelleen', function() {
             before( page.oppijaHaku.search('ero', 4),
-              page.oppijaHaku.selectOppija('Tunkkila'), opinnot.waitUntilTutkintoVisible())
+              page.oppijaHaku.selectOppija('Tunkkila'), opinnot.waitUntilRakenneVisible())
 
             it('Muuttuneet tiedot on tallennettu', function() {
               expect(tutkinnonOsa.getArvosana()).to.equal("H2")
@@ -408,7 +409,7 @@ describe('TOR', function() {
 
           describe('Kun sivu ladataan uudelleen', function() {
             before( page.oppijaHaku.search('ero', 4),
-              page.oppijaHaku.selectOppija('Tunkkila'), opinnot.waitUntilTutkintoVisible())
+              page.oppijaHaku.selectOppija('Tunkkila'), opinnot.waitUntilRakenneVisible())
 
             it('Muuttuneet tiedot on tallennettu', function() {
               expect(tutkinnonOsa.getArvosana()).to.equal("Hylätty")
@@ -440,9 +441,19 @@ describe('TOR', function() {
 
   describe('Peruskoulun päättötodistus', function() {
     var todistus = PeruskoulunTodistusPage()
-    before(resetFixtures, authentication.login(), openPage('/tor/todistus/peruskoulu/paattotodistus/1.2.246.562.24.00000000008', todistus.isVisible))
-    it('näytetään', function() {
-      expect(S('.oppiaine.KT .arvosana').text()).to.equal('10')
+    before(resetFixtures, authentication.login())
+    describe('Oppijan suorituksissa', function() {
+      before(openPage('/tor/oppija/1.2.246.562.24.00000000008', page.isOppijaSelected('Kaisa')))
+      it('näytetään', function() {
+        expect(OpinnotPage().getTutkinto()).to.equal("Peruskoulu")
+        expect(OpinnotPage().getOppilaitos()).to.equal("Jyväskylän normaalikoulu")
+      })
+    })
+    describe('Tulostettava todistus', function() {
+      before(openPage('/tor/todistus/peruskoulu/paattotodistus/1.2.246.562.24.00000000008', todistus.isVisible))
+      it('näytetään', function() {
+        expect(S('.oppiaine.KT .arvosana').text()).to.equal('10')
+      })
     })
   })
 
@@ -451,7 +462,7 @@ describe('TOR', function() {
       resetFixtures,
       authentication.login(),
       openPage('/tor/oppija/1.2.246.562.24.00000000001', page.isOppijaSelected('Eero')),
-      opinnot.waitUntilTutkintoVisible()
+      opinnot.waitUntilRakenneVisible()
     )
 
     it('Oppijan tiedot näytetään', function() {

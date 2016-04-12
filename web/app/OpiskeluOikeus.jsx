@@ -23,67 +23,79 @@ export const OpiskeluOikeus = React.createClass({
 export const Suoritus = React.createClass({
   render() {
     let {opiskeluOikeus, suoritus, lens} = this.props
+    return (
+      <div className="suoritus">
+        <span className="tutkinto">{suoritus.koulutusmoduuli.tunniste.nimi}</span> <span className="oppilaitos">{opiskeluOikeus.oppilaitos.nimi}</span>
+        <TutkinnonRakenne suoritus={suoritus} lens={lens} />
+      </div>
+    )
+  },
+})
+
+const TutkinnonRakenne = React.createClass({
+  render() {
+    let {suoritus, lens} = this.props
     let {rakenne} = this.state
     return (
       rakenne
-        ? <div className="suoritus">
-        <span className="tutkinto">{suoritus.koulutusmoduuli.tunniste.nimi}</span> <span className="oppilaitos">{opiskeluOikeus.oppilaitos.nimi}</span>
-        <div className="tutkinto-rakenne">
-          <Dropdown className="suoritustapa"
-                    title="Suoritustapa"
-                    options={rakenne.suoritustavat.map(s => s.suoritustapa)}
-                    value={suoritus.suoritustapa ? suoritus.suoritustapa.tunniste.koodiarvo : ''}
-                    autoselect={true}
-                    onChange={(value) => opiskeluOikeusChange.push([L.compose(lens, L.prop('suoritustapa')),
-                            () => {
-                              let suoritustapa = value ? {
-                                tunniste: {
-                                  koodiarvo: value,
-                                  koodistoUri: 'suoritustapa'
-                                }
-                              } : undefined
-                              return suoritustapa
-                            }
-                          ])}
-            />
-          <Dropdown className="osaamisala"
-                    title="Osaamisala"
-                    options={rakenne.osaamisalat}
-                    value={suoritus.osaamisala ? suoritus.osaamisala[0].koodiarvo : ''}
-                    onChange={(value) => opiskeluOikeusChange.push([L.compose(lens, L.prop('osaamisala')),
-                            () => {
-                              let osaamisala = value ? [{
-                                  koodiarvo: value,
-                                  koodistoUri: 'osaamisala'
-                              }] : undefined
-                              return osaamisala
-                            }
-                          ])}
-            />
-          { suoritus.suoritustapa
-            ? rakenne.suoritustavat.find(x => x.suoritustapa.koodiarvo == suoritus.suoritustapa.tunniste.koodiarvo).rakenne.osat.map(rakenneOsa => <Rakenneosa
-            rakenneosa={rakenneOsa}
-            suoritus={suoritus}
-            lens={lens}
-            rakenne={rakenne}
-            key={rakenneOsa.nimi}
-            />)
-            : null
-          }
-        </div>
-      </div>
+        ?
+          <div className="tutkinto-rakenne">
+            <Dropdown className="suoritustapa"
+                      title="Suoritustapa"
+                      options={rakenne.suoritustavat.map(s => s.suoritustapa)}
+                      value={suoritus.suoritustapa ? suoritus.suoritustapa.tunniste.koodiarvo : ''}
+                      autoselect={true}
+                      onChange={(value) => opiskeluOikeusChange.push([L.compose(lens, L.prop('suoritustapa')),
+                              () => {
+                                let suoritustapa = value ? {
+                                  tunniste: {
+                                    koodiarvo: value,
+                                    koodistoUri: 'suoritustapa'
+                                  }
+                                } : undefined
+                                return suoritustapa
+                              }
+                            ])}
+              />
+            <Dropdown className="osaamisala"
+                      title="Osaamisala"
+                      options={rakenne.osaamisalat}
+                      value={suoritus.osaamisala ? suoritus.osaamisala[0].koodiarvo : ''}
+                      onChange={(value) => opiskeluOikeusChange.push([L.compose(lens, L.prop('osaamisala')),
+                              () => {
+                                let osaamisala = value ? [{
+                                    koodiarvo: value,
+                                    koodistoUri: 'osaamisala'
+                                }] : undefined
+                                return osaamisala
+                              }
+                            ])}
+              />
+            { suoritus.suoritustapa
+              ? rakenne.suoritustavat.find(x => x.suoritustapa.koodiarvo == suoritus.suoritustapa.tunniste.koodiarvo).rakenne.osat.map(rakenneOsa => <Rakenneosa
+              rakenneosa={rakenneOsa}
+              suoritus={suoritus}
+              lens={lens}
+              rakenne={rakenne}
+              key={rakenneOsa.nimi}
+              />)
+              : null
+            }
+          </div>
         : null
     )
   },
   componentDidMount() {
     let {suoritus} = this.props
     let diaarinumero = suoritus.koulutusmoduuli.perusteenDiaarinumero
-    Http.get('/tor/api/tutkinto/rakenne/' + encodeURIComponent(diaarinumero)).onValue(rakenne => {
-        if (this.isMounted()) {
-          this.setState({rakenne: rakenne})
+    if (diaarinumero) {
+      Http.get('/tor/api/tutkinto/rakenne/' + encodeURIComponent(diaarinumero)).onValue(rakenne => {
+          if (this.isMounted()) {
+            this.setState({rakenne: rakenne})
+          }
         }
-      }
-    )
+      )
+    }
   },
   getInitialState() {
     return {}

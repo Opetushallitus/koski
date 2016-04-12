@@ -8,6 +8,9 @@ function OpinnotPage() {
     getTutkinto: function() {
       return S('.opiskeluoikeus .tutkinto').text()
     },
+    isRakenneVisible: function() {
+      return S('.opiskeluoikeus .suoritus .tutkinto-rakenne').is(":visible")
+    },
     getOppilaitos: function() {
       return S('.opiskeluoikeus .oppilaitos').text()
     },
@@ -33,8 +36,8 @@ function OpinnotPage() {
     isOsaamisalaSelectable: function() {
       return isElementVisible(S(".osaamisala"))
     },
-    waitUntilTutkintoVisible: function() {
-      return wait.until(function() {return isElementVisible(S('.opiskeluoikeus .tutkinto'))})
+    waitUntilRakenneVisible: function() {
+      return wait.until(api.isRakenneVisible)
     }
   }
 

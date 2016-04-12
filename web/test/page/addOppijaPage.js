@@ -61,7 +61,8 @@ function AddOppijaPage() {
       return function() {
         api.submit()
         return wait.until(function() {
-          return TorPage().getSelectedOppija().indexOf(oppija) >= 0 && (OpinnotPage().getTutkinto().indexOf(tutkinto) >= 0)
+          return TorPage().getSelectedOppija().indexOf(oppija) >= 0 &&
+                 OpinnotPage().getTutkinto().indexOf(tutkinto) >= 0
         })()
       }
     },
