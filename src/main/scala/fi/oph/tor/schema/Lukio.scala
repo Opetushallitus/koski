@@ -2,6 +2,7 @@ package fi.oph.tor.schema
 
 import java.time.LocalDate
 
+import fi.oph.tor.eperusteet.EPerusteTunniste
 import fi.oph.tor.schema.generic.annotation.{Description, MaxItems, MinItems}
 
 @Description("Lukion opiskeluoikeus")
@@ -56,7 +57,7 @@ case class LukionOppiaineenSuoritus(
 case class LukionKurssinSuoritus(
   @KoodistoKoodiarvo("lukionkurssisuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionkurssisuoritus", koodistoUri = "suorituksentyyppi"),
-  koulutusmoduuli: LukionKurssiModuuli,
+  koulutusmoduuli: LukionKurssi,
   paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
@@ -64,12 +65,20 @@ case class LukionKurssinSuoritus(
   vahvistus: Option[Vahvistus] = None
 ) extends Suoritus
 
-case class LukionKurssiModuuli(
-  @Description("Lukion kurssi")
-  @KoodistoUri("lukionkurssit")
-  @OksaUri("tmpOKSAID873", "kurssi")
-  tunniste: Koodistokoodiviite
-) extends Koulutusmoduuli
+
+sealed trait LukionKurssi extends Koulutusmoduuli {
+  def pakollinen: Boolean = false
+}
+  case class ValtakunnallinenLukionKurssi(
+    @Description("Lukion kurssi")
+    @KoodistoUri("lukionkurssit")
+    @OksaUri("tmpOKSAID873", "kurssi")
+    tunniste: Koodistokoodiviite
+  ) extends LukionKurssi
+
+  case class PaikallinenLukionKurssi(
+    tunniste: Paikallinenkoodi
+  ) extends LukionKurssi
 
 case class Ylioppilastutkinto(
  @Description("Tutkinnon 6-numeroinen tutkintokoodi")

@@ -57,7 +57,16 @@ object ExamplesLukio {
           tila = tilaKesken,
           toimipiste = jyväskylänNormaalikoulu,
           osasuoritukset = Some(List(
-            suoritus(äidinkieli("AI1")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(9)),
+            suoritus(äidinkieli("AI1")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(9)).copy(osasuoritukset = Some(List(
+              kurssisuoritus(valtakunnallinenKurssi("ÄI1")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(8)),
+              kurssisuoritus(valtakunnallinenKurssi("ÄI2")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(8)),
+              kurssisuoritus(valtakunnallinenKurssi("ÄI3")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(8)),
+              kurssisuoritus(valtakunnallinenKurssi("ÄI4")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(8)),
+              kurssisuoritus(valtakunnallinenKurssi("ÄI5")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(9)),
+              kurssisuoritus(valtakunnallinenKurssi("ÄI6")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(9)),
+              kurssisuoritus(valtakunnallinenKurssi("ÄI8")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(9)),
+              kurssisuoritus(valtakunnallinenKurssi("ÄI9")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(9))
+            ))),
             suoritus(kieli("A1", "EN")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(9)),
             suoritus(kieli("B1", "SV")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(7)),
             suoritus(kieli("B3", "LA")).copy(vahvistus = vahvistus).copy(arviointi = arviointi(9)),
@@ -108,6 +117,18 @@ object LukioExampleData {
     vahvistus = None,
     osasuoritukset = None
   )
+
+  def kurssisuoritus(kurssi: LukionKurssi) = LukionKurssinSuoritus(
+    koulutusmoduuli = kurssi,
+    suorituskieli = None,
+    paikallinenId = None,
+    vahvistus = None,
+    arviointi = None,
+    tila = tilaValmis
+  )
+
+  def valtakunnallinenKurssi(kurssi: String) = ValtakunnallinenLukionKurssi(Koodistokoodiviite(koodistoUri = "lukionkurssit", koodiarvo = kurssi))
+  def paikallinenKurssi(koodi: String, nimi: String) = PaikallinenLukionKurssi(Paikallinenkoodi(koodiarvo = koodi, nimi = nimi, koodistoUri = "paikallinen"))
 
   def matematiikka(matematiikka: String) = LukionMatematiikka(oppimäärä = Koodistokoodiviite(koodiarvo = matematiikka, koodistoUri = "oppiainematematiikka"))
 }
