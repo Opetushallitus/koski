@@ -69,16 +69,20 @@ case class LukionKurssinSuoritus(
 sealed trait LukionKurssi extends Koulutusmoduuli {
   def pakollinen: Boolean = false
 }
+
   case class ValtakunnallinenLukionKurssi(
     @Description("Lukion kurssi")
     @KoodistoUri("lukionkurssit")
     @OksaUri("tmpOKSAID873", "kurssi")
-    tunniste: Koodistokoodiviite
+    tunniste: Koodistokoodiviite,
+    override val laajuus: Option[Laajuus]
   ) extends LukionKurssi with KoodistostaLöytyväKoulutusmoduuli
 
   case class PaikallinenLukionKurssi(
-    tunniste: Paikallinenkoodi
+    tunniste: Paikallinenkoodi,
+    override val laajuus: Option[Laajuus]
   ) extends LukionKurssi with PaikallinenKoulutusmoduuli
+
 
 case class Ylioppilastutkinto(
  @Description("Tutkinnon 6-numeroinen tutkintokoodi")
