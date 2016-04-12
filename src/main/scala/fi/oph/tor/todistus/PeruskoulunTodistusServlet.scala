@@ -24,12 +24,12 @@ class PeruskoulunTodistusServlet(val userRepository: UserOrganisationsRepository
     case x: AnyRef =>
       None
     }).headOption match {
-      case Some((oo, t)) => renderPeruskoulunPäättötodistus(oo.koulutustoimija, oppijaHenkilö, t)
+      case Some((oo, t)) => renderPeruskoulunPäättötodistus(oo.koulutustoimija, oo.oppilaitos, oppijaHenkilö, t)
       case _ => renderStatus(TorErrorCategory.notFound.todistustaEiLöydy())
     }
   }
 
-  def renderPeruskoulunPäättötodistus(koulutustoimija: Option[OrganisaatioWithOid], oppijaHenkilö: Henkilötiedot, päättötodistus: PeruskoulunPäättötodistus) = {
+  def renderPeruskoulunPäättötodistus(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: PeruskoulunPäättötodistus) = {
     val oppiaineet: List[PeruskoulunOppiaineenSuoritus] = päättötodistus.osasuoritukset.toList.flatten
     val pakolliset = oppiaineet.filter(_.koulutusmoduuli.pakollinen)
     val pakollisetJaNiihinLiittyvätValinnaiset: List[Aine] = pakolliset.flatMap { case pakollinen =>
@@ -65,7 +65,7 @@ class PeruskoulunTodistusServlet(val userRepository: UserOrganisationsRepository
         <div class="todistus peruskoulu">
           <h2 class="koulutustoimija">{koulutustoimija.flatMap(_.nimi).getOrElse("")}</h2>
           <h1>Peruskoulun päättötodistus</h1>
-          <h2 class="oppilaitos">{päättötodistus.toimipiste.nimi.getOrElse("")}</h2>
+          <h2 class="oppilaitos">{oppilaitos.nimi.getOrElse("")}</h2>
           <div class="oppija">
             <span class="nimi">{oppijaHenkilö.sukunimi}, {oppijaHenkilö.etunimet}</span>
             <span class="hetu">{oppijaHenkilö.hetu}</span>
