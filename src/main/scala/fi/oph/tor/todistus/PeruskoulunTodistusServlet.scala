@@ -19,7 +19,7 @@ class PeruskoulunTodistusServlet(val userRepository: UserOrganisationsRepository
 
   def renderTodistus(oppija: TorOppija) = {
     val oppijaHenkilö = oppija.henkilö.asInstanceOf[Henkilötiedot]
-    oppija.opiskeluoikeudet.flatMap(oo => oo.suoritukset.flatMap { case t: PeruskoulunPäättötodistus =>
+    oppija.opiskeluoikeudet.flatMap(oo => oo.suoritukset.flatMap { case t: PeruskoulunPäättötodistus if t.tila.koodiarvo == "VALMIS" =>
       Some(oo, t)
     case x: AnyRef =>
       None
