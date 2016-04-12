@@ -44,7 +44,7 @@ case class LukionOppimääränSuoritus(
 case class LukionOppiaineenSuoritus(
   @KoodistoKoodiarvo("lukionoppiainesuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionoppiainesuoritus", koodistoUri = "suorituksentyyppi"),
-  koulutusmoduuli: YleissivistavaOppiaine,
+  koulutusmoduuli: LukionOppiaine,
   paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
@@ -82,9 +82,9 @@ case class Ylioppilastutkinto(
 case class LukionMatematiikka(
   @KoodistoKoodiarvo("MA")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "MA", koodistoUri = "koskioppiaineetyleissivistava"),
-  @Description("Mikä matematiikka on kyseessä")
+  @Description("Onko kyseessä laaja vai lyhyt oppimäärä")
   @KoodistoUri("oppiainematematiikka")
-  matematiikka: Koodistokoodiviite,
+  oppimäärä: Koodistokoodiviite,
   pakollinen: Boolean = true,
   override val laajuus: Option[Laajuus] = None
-) extends YleissivistavaOppiaine
+) extends LukionOppiaine

@@ -99,7 +99,7 @@ object ExamplesLukio {
 object LukioExampleData {
   val exampleHenkilö = MockOppijat.lukiolainen.vainHenkilötiedot
 
-  def suoritus(aine: YleissivistavaOppiaine): LukionOppiaineenSuoritus = LukionOppiaineenSuoritus(
+  def suoritus(aine: LukionOppiaine): LukionOppiaineenSuoritus = LukionOppiaineenSuoritus(
     koulutusmoduuli = aine,
     paikallinenId = None,
     suorituskieli = None,
@@ -109,5 +109,5 @@ object LukioExampleData {
     osasuoritukset = None
   )
 
-  def matematiikka(matematiikka: String) = LukionMatematiikka(matematiikka = Koodistokoodiviite(koodiarvo = matematiikka, koodistoUri = "oppiainematematiikka"))
+  def matematiikka(matematiikka: String) = LukionMatematiikka(oppimäärä = Koodistokoodiviite(koodiarvo = matematiikka, koodistoUri = "oppiainematematiikka"))
 }

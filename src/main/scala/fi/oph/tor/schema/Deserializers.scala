@@ -36,17 +36,16 @@ object SuoritusDeserializer extends Deserializer[Suoritus] {
 }
 
 object YleissivistavaOppiaineDeserializer extends Deserializer[YleissivistavaOppiaine] {
-  private val TheClass = classOf[YleissivistavaOppiaine]
+  private val classes = List(classOf[PeruskoulunOppiaine], classOf[LukionOppiaine])
 
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), YleissivistavaOppiaine] = {
-    case (TypeInfo(TheClass, _), json) =>
-      println(Json.writePretty(json))
+    case (TypeInfo(c, _), json) if classes.contains(c) =>
       json match {
         case moduuli: JObject if moduuli \ "tunniste" \ "koodiarvo" == JString("AI") => moduuli.extract[AidinkieliJaKirjallisuus]
         case moduuli: JObject if moduuli \ "tunniste" \ "koodiarvo" == JString("KT") => moduuli.extract[Uskonto]
         case moduuli: JObject if (moduuli \ "kieli").isInstanceOf[JObject] => moduuli.extract[VierasTaiToinenKotimainenKieli]
-        case moduuli: JObject if (moduuli \ "matematiikka").isInstanceOf[JObject] => moduuli.extract[LukionMatematiikka]
-        case moduuli: JObject => moduuli.extract[Oppiaine]
+        case moduuli: JObject if (moduuli \ "oppimäärä").isInstanceOf[JObject] => moduuli.extract[LukionMatematiikka]
+        case moduuli: JObject => moduuli.extract[MuuOppiaine]
       }
   }
 }

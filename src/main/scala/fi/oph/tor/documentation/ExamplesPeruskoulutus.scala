@@ -10,7 +10,7 @@ import fi.oph.tor.schema._
 
 object PeruskoulutusExampleData {
 
-  def suoritus(aine: YleissivistavaOppiaine) = PeruskoulunOppiaineenSuoritus(
+  def suoritus(aine: PeruskoulunOppiaine) = PeruskoulunOppiaineenSuoritus(
     koulutusmoduuli = aine,
     paikallinenId = None,
     suorituskieli = None,

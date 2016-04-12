@@ -4,7 +4,7 @@ import fi.oph.tor.organisaatio.MockOrganisaatiot
 import fi.oph.tor.schema._
 
 object YleissivistavakoulutusExampleData {
-  def oppiaine(aine: String) = Oppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine))
+  def oppiaine(aine: String) = MuuOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine))
   def äidinkieli(kieli: String) = AidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"))
   def kieli(oppiaine: String, kieli: String) = VierasTaiToinenKotimainenKieli(
     tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),

@@ -44,7 +44,7 @@ case class PeruskoulunPäättötodistus(
 case class PeruskoulunOppiaineenSuoritus(
   @KoodistoKoodiarvo("peruskoulunoppiainesuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "peruskoulunoppiainesuoritus", koodistoUri = "suorituksentyyppi"),
-  koulutusmoduuli: YleissivistavaOppiaine,
+  koulutusmoduuli: PeruskoulunOppiaine,
   paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
