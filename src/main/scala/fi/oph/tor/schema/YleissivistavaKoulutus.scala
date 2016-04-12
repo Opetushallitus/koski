@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.tor.schema.generic.annotation.Description
 
-trait YleissivistavaOppiaine extends Koulutusmoduuli {
+trait YleissivistavaOppiaine extends KoodistostaLöytyväKoulutusmoduuli {
   @Description("Oppiaine")
   @KoodistoUri("koskioppiaineetyleissivistava")
   @OksaUri("tmpOKSAID256", "oppiaine")

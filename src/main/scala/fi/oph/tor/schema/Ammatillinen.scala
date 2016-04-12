@@ -91,7 +91,7 @@ case class AmmatillinenTutkintoKoulutus(
  tunniste: Koodistokoodiviite,
  @Description("Tutkinnon perusteen diaarinumero (pakollinen). Ks. ePerusteet-palvelu")
  perusteenDiaarinumero: Option[String]
-) extends Koulutusmoduuli
+) extends KoodistostaLöytyväKoulutusmoduuli
 
 sealed trait AmmatillinenTutkinnonOsa extends Koulutusmoduuli
   @Description("Opetussuunnitelmaan kuuluva tutkinnon osa")
@@ -104,7 +104,7 @@ sealed trait AmmatillinenTutkinnonOsa extends Koulutusmoduuli
     override val laajuus: Option[Laajuus],
     paikallinenKoodi: Option[Paikallinenkoodi] = None,
     kuvaus: Option[String] = None
-  ) extends AmmatillinenTutkinnonOsa
+  ) extends AmmatillinenTutkinnonOsa with KoodistostaLöytyväKoulutusmoduuli
 
   @Description("Paikallinen tutkinnon osa")
   case class PaikallinenTutkinnonosa(
@@ -113,7 +113,7 @@ sealed trait AmmatillinenTutkinnonOsa extends Koulutusmoduuli
     @Description("Onko pakollinen osa tutkinnossa")
     pakollinen: Boolean,
     override val laajuus: Option[Laajuus]
-  ) extends AmmatillinenTutkinnonOsa
+  ) extends AmmatillinenTutkinnonOsa with PaikallinenKoulutusmoduuli
 
 case class AmmatillisenTutkinnonOsanLisätieto(
   @Description("Lisätiedon tyyppi kooditettuna")
@@ -137,7 +137,21 @@ case class AmmatillinenArviointi(
   päivä: Option[LocalDate],
   @Description("Tutkinnon osan suorituksen arvioinnista päättäneen henkilön nimi")
   arvioitsijat: Option[List[Arvioitsija]] = None
-) extends Arviointi
+) extends Arviointi {
+  def arvosanaNumeroin = {
+    try { Some(arvosana.koodiarvo.toInt) } catch {
+      case e: NumberFormatException => None
+    }
+  }
+  def arvosanaKirjaimin(kieli: String) = arvosanaNumeroin match {
+    case Some(num) if num == 0 => "hylätty" // TODO: localize
+    case Some(num) if num == 1 => "tyydyttävä"
+    case Some(num) if num == 2 => "hyvä"
+    case Some(num) if num == 3 => "kiitettävä"
+    case _ => arvosana.nimi.getOrElse(arvosana.koodiarvo)
+  }
+
+}
 
 @Description("Näytön kuvaus")
 case class Näyttö(

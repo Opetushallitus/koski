@@ -74,11 +74,11 @@ sealed trait LukionKurssi extends Koulutusmoduuli {
     @KoodistoUri("lukionkurssit")
     @OksaUri("tmpOKSAID873", "kurssi")
     tunniste: Koodistokoodiviite
-  ) extends LukionKurssi
+  ) extends LukionKurssi with KoodistostaLöytyväKoulutusmoduuli
 
   case class PaikallinenLukionKurssi(
     tunniste: Paikallinenkoodi
-  ) extends LukionKurssi
+  ) extends LukionKurssi with PaikallinenKoulutusmoduuli
 
 case class Ylioppilastutkinto(
  @Description("Tutkinnon 6-numeroinen tutkintokoodi")
@@ -86,7 +86,7 @@ case class Ylioppilastutkinto(
  @KoodistoKoodiarvo("301000")
  @OksaUri("tmpOKSAID560", "tutkinto")
  tunniste: Koodistokoodiviite = Koodistokoodiviite("301000", koodistoUri = "koulutus")
-) extends Koulutusmoduuli
+) extends KoodistostaLöytyväKoulutusmoduuli
 
 case class LukionMatematiikka(
   @KoodistoKoodiarvo("MA")
@@ -96,4 +96,4 @@ case class LukionMatematiikka(
   oppimäärä: Koodistokoodiviite,
   pakollinen: Boolean = true,
   override val laajuus: Option[Laajuus] = None
-) extends LukionOppiaine
+) extends LukionOppiaine with KoodistostaLöytyväKoulutusmoduuli

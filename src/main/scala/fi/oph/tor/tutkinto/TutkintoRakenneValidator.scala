@@ -14,7 +14,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
               TorErrorCategory.badRequest.validation.rakenne.suoritustapaPuuttuu()
             case osaSuoritus: AmmatillisenTutkinnonosanSuoritus => osaSuoritus.koulutusmoduuli match {
               case osa: OpsTutkinnonosa =>
-                validateTutkinnonOsa(osaSuoritus, osa, Some(rakenne), tutkintoSuoritus.suoritustapa)
+                validateTutkinnonOsa(osaSuoritus, osa, rakenne, tutkintoSuoritus.suoritustapa)
               case osa: PaikallinenTutkinnonosa =>
                 HttpStatus.ok // vain OpsTutkinnonosatoteutukset validoidaan, muut sellaisenaan läpi, koska niiden rakennetta ei tunneta
             }
@@ -46,36 +46,37 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
     })
   }
 
-  private def validateTutkinnonOsa(suoritus: AmmatillisenTutkinnonosanSuoritus, osa: OpsTutkinnonosa, rakenne: Option[TutkintoRakenne], suoritustapa: Option[Suoritustapa]): HttpStatus = (suoritus, rakenne, suoritustapa) match {
-    case (suoritus: AmmatillisenTutkinnonosanSuoritus, Some(rakenne), Some(suoritustapa))  =>
-      suoritus.tutkinto match {
-        case Some(tutkinto) =>
-          // Tutkinnon osa toisesta tutkinnosta.
-          getRakenne(tutkinto) match {
-            case Right(rakenne) =>
-              // Ei validoida rakenteeseen kuuluvuutta.
-              HttpStatus.ok
-            case Left(status) =>
-              status
-          }
-        case None =>
-          // Validoidaan tutkintorakenteen mukaisesti
-          validoiTutkinnonOsaRakenteessa(osa, rakenne, suoritustapa)
-      }
-  }
-
-  private def validoiTutkinnonOsaRakenteessa(tutkinnonOsa: OpsTutkinnonosa, rakenne: TutkintoRakenne, suoritustapa: Suoritustapa): HttpStatus = {
-    findTutkinnonOsa(rakenne, suoritustapa.tunniste, tutkinnonOsa.tunniste) match {
+  private def validateTutkinnonOsa(suoritus: AmmatillisenTutkinnonosanSuoritus, osa: OpsTutkinnonosa, rakenne: TutkintoRakenne, suoritustapa: Option[Suoritustapa]): HttpStatus = {
+    val suoritustapaJaRakenne = suoritustapa.flatMap(rakenne.findSuoritustapaJaRakenne(_))
+    suoritustapaJaRakenne match {
+      case Some(suoritustapaJaRakenne)  =>
+        suoritus.tutkinto match {
+          case Some(tutkinto) =>
+            // Tutkinnon osa toisesta tutkinnosta.
+            getRakenne(tutkinto) match {
+              case Right(rakenne) =>
+                // Ei validoida rakenteeseen kuuluvuutta.
+                HttpStatus.ok
+              case Left(status) =>
+                status
+            }
+          case None =>
+            // Validoidaan tutkintorakenteen mukaisesti
+            findTutkinnonOsa(suoritustapaJaRakenne, osa.tunniste) match {
+              case None =>
+                TorErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa(
+                  "Tutkinnon osa " + osa.tunniste + " ei löydy tutkintorakenteesta perusteelle " + rakenne.diaarinumero + " - suoritustapa " + suoritustapaJaRakenne.suoritustapa.koodiarvo)
+              case Some(tutkinnonOsa) =>
+                HttpStatus.ok
+            }
+        }
       case None =>
-        TorErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa(
-          "Tutkinnon osa " + tutkinnonOsa.tunniste + " ei löydy tutkintorakenteesta perusteelle " + rakenne.diaarinumero + " - suoritustapa " + suoritustapa.tunniste.koodiarvo)
-      case Some(tutkinnonOsa) =>
-        HttpStatus.ok
+        TorErrorCategory.badRequest.validation.rakenne.suoritustapaaEiLöydyRakenteesta()
     }
   }
 
-  private def findTutkinnonOsa(rakenne: TutkintoRakenne, suoritustapa: Koodistokoodiviite, koulutusModuuliTunniste: Koodistokoodiviite): Option[TutkinnonOsa] = {
-    rakenne.suoritustavat.find(_.suoritustapa == suoritustapa).flatMap(suoritustapa => findTutkinnonOsa(suoritustapa.rakenne, koulutusModuuliTunniste)).headOption
+  private def findTutkinnonOsa(rakenne: SuoritustapaJaRakenne, koulutusModuuliTunniste: Koodistokoodiviite): Option[TutkinnonOsa] = {
+    findTutkinnonOsa(rakenne.rakenne, koulutusModuuliTunniste)
   }
 
   private def findTutkinnonOsa(rakenne: RakenneOsa, koulutusModuuliTunniste: Koodistokoodiviite): Option[TutkinnonOsa] = rakenne match {

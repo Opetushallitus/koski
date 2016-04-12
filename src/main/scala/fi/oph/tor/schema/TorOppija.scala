@@ -150,6 +150,17 @@ trait Suoritus {
 trait Koulutusmoduuli {
   def tunniste: KoodiViite
   def laajuus: Option[Laajuus] = None
+  def nimi: String // TODO: localize
+}
+
+trait KoodistostaLöytyväKoulutusmoduuli extends Koulutusmoduuli {
+  def tunniste: Koodistokoodiviite
+  def nimi = tunniste.nimi.getOrElse(tunniste.koodiarvo)
+}
+
+trait PaikallinenKoulutusmoduuli extends Koulutusmoduuli {
+  def tunniste: Paikallinenkoodi
+  def nimi = tunniste.nimi
 }
 
 trait Arviointi {

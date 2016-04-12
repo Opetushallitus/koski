@@ -34,7 +34,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       context.mount(new OppilaitosServlet(application.oppilaitosRepository, application.userRepository, application.directoryClient), "/api/oppilaitos")
       context.mount(new TutkintoServlet(application.tutkintoRepository), "/api/tutkinto")
       context.mount(new SchemaDocumentationServlet(application.koodistoPalvelu), "/documentation")
-      context.mount(new TodistusServlet(userRepository, application.directoryClient, rekisteri), "/todistus")
+      context.mount(new TodistusServlet(userRepository, application.directoryClient, rekisteri, application.tutkintoRepository), "/todistus")
       val indexHtml = StaticFileServlet.contentOf("web/static/index.html").get
       context.mount(new SingleFileServlet(indexHtml, List(("/*", 404), ("/uusioppija", 200), ("/oppija/:oid", 200))), "/")
       context.mount(new CacheServlet(userRepository, application.directoryClient, application), "/cache")
