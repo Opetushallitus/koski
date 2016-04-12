@@ -1,6 +1,5 @@
 package fi.oph.tor.schema
 
-import fi.oph.tor.json.Json
 import org.json4s._
 
 object Deserializers {
