@@ -10,20 +10,21 @@ import org.scalatra.ScalatraServlet
 
 trait ErrorHandlingServlet extends ScalatraServlet with Logging with Timing {
   def withJsonBody(block: JValue => Any) = {
-    if (request.getContentType != "application/json") {
-      renderStatus(TorErrorCategory.unsupportedMediaType.jsonOnly())
-    } else {
-      val json = timed("json parsing") {
-        try {
-          Some(org.json4s.jackson.JsonMethods.parse(request.body))
-        } catch {
-          case e: Exception => None
+    (request.contentType.map(_.split(";")(0).toLowerCase), request.characterEncoding.map(_.toLowerCase)) match {
+      case (Some("application/json"), Some("utf-8")) =>
+        val json = timed("json parsing") {
+          try {
+            Some(org.json4s.jackson.JsonMethods.parse(request.body))
+          } catch {
+            case e: Exception => None
+          }
         }
-      }
-      json match {
-        case Some(json) => block(json)
-        case None => renderStatus(TorErrorCategory.badRequest.format.json("Invalid JSON"))
-      }
+        json match {
+          case Some(json) => block(json)
+          case None => renderStatus(TorErrorCategory.badRequest.format.json("Invalid JSON"))
+        }
+      case _ =>
+        renderStatus(TorErrorCategory.unsupportedMediaType.jsonOnly())
     }
   }
 

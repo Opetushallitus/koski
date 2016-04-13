@@ -35,7 +35,7 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
       it("palautetaan HTTP 415") {
 
         put("api/oppija", body = Json.write(makeOppija(defaultHenkilö, List(opiskeluoikeus()))), headers = authHeaders() ++ Map(("Content-type" -> "text/plain"))) {
-          verifyResponseStatus(415, TorErrorCategory.unsupportedMediaType.jsonOnly("Wrong content type: only application/json content type allowed"))
+          verifyResponseStatus(415, TorErrorCategory.unsupportedMediaType.jsonOnly("Wrong content type: only application/json content type with UTF-8 encoding allowed"))
         }
       }
     }

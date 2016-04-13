@@ -95,7 +95,7 @@ object TorErrorCategory {
   }
 
   object unsupportedMediaType extends ErrorCategory("unsupportedMediaType", 415, "Unsupported media type") {
-    val jsonOnly = subcategory("jsonOnly", "Wrong content type: only application/json content type allowed")
+    val jsonOnly = subcategory("jsonOnly", "Wrong content type: only application/json content type with UTF-8 encoding allowed")
   }
 
   object internalError extends ErrorCategory("internalError", 500, "Internal server error")
