@@ -44,8 +44,8 @@ object LukionPaattotodistusHtml {
                 <tr class={rowClass}>
                   <td class="oppiaine">{nimiTeksti}</td>
                   <td class="laajuus">{decimalFormat.format(oppiaineenKurssimäärä(oppiaine))}</td>
-                  <td class="arvosana-kirjaimin">{oppiaine.arviointi.toList.flatten.lastOption.map(_.arvosanaKirjaimin("fi")).getOrElse("")}</td>
-                  <td class="arvosana-numeroin">{oppiaine.arviointi.toList.flatten.lastOption.flatMap(_.arvosanaNumeroin).getOrElse("")}</td>
+                  <td class="arvosana-kirjaimin">{oppiaine.arvosanaKirjaimin("fi").capitalize}</td>
+                  <td class="arvosana-numeroin">{oppiaine.arvosanaNumeroin}</td>
                 </tr>
               }
             }

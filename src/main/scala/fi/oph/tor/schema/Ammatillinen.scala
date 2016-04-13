@@ -1,7 +1,7 @@
 package fi.oph.tor.schema
 
 import java.time.LocalDate
-
+import fi.oph.tor.localization.LocalizedString.unlocalized
 import fi.oph.tor.schema.generic.annotation.{MaxItems, MinItems, Description}
 
 @Description("Ammatillisen koulutuksen opiskeluoikeus")
@@ -137,14 +137,7 @@ case class AmmatillinenArviointi(
   päivä: Option[LocalDate],
   @Description("Tutkinnon osan suorituksen arvioinnista päättäneen henkilön nimi")
   arvioitsijat: Option[List[Arvioitsija]] = None
-) extends Arviointi {
-  def arvosanaNumeroin = {
-    try { Some(arvosana.koodiarvo.toInt) } catch {
-      case e: NumberFormatException => None
-    }
-  }
-  def arvosanaKirjaimin(kieli: String) = arvosana.nimi.getOrElse(arvosana.koodiarvo)
-}
+) extends Arviointi
 
 @Description("Näytön kuvaus")
 case class Näyttö(

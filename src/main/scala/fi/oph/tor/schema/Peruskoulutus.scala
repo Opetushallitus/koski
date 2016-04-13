@@ -3,6 +3,7 @@ package fi.oph.tor.schema
 import java.time.LocalDate
 
 import fi.oph.tor.schema.generic.annotation.Description
+import fi.oph.tor.localization.LocalizedString._
 
 @Description("Perusopetuksen opiskeluoikeus")
 case class PerusopetuksenOpiskeluoikeus(

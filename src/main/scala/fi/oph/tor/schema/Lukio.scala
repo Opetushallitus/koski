@@ -4,6 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.tor.eperusteet.EPerusteTunniste
 import fi.oph.tor.schema.generic.annotation.{Description, MaxItems, MinItems}
+import fi.oph.tor.localization.LocalizedString._
 
 @Description("Lukion opiskeluoikeus")
 case class LukionOpiskeluoikeus(

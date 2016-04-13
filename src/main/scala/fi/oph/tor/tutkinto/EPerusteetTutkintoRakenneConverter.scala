@@ -2,6 +2,7 @@ package fi.oph.tor.tutkinto
 import fi.oph.tor.arvosana.ArviointiasteikkoRepository
 import fi.oph.tor.eperusteet._
 import fi.oph.tor.koodisto.{KoodistoViite, KoodistoViitePalvelu}
+import fi.oph.tor.localization.LocalizedString
 import fi.oph.tor.log.Logging
 import fi.oph.tor.schema.Koodistokoodiviite
 import fi.oph.tor.tutkinto
@@ -55,7 +56,7 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
       suoritustapaKoodistoViite.map(SuoritustapaJaRakenne(_, convertRakenneOsa(suoritustapa.rakenne, suoritustapa), laajuusYksikkö))
     }
 
-    val osaamisalat: List[Osaamisala] = rakenne.osaamisalat.map(o => Osaamisala(o.nimi("fi"), o.arvo))
+    val osaamisalat: List[Koodistokoodiviite] = rakenne.osaamisalat.map(o => Koodistokoodiviite(o.arvo, Some(LocalizedString(o.nimi)), None, "osaamisala", None))
 
     TutkintoRakenne(rakenne.diaarinumero, suoritustavat, osaamisalat, arviointiasteikkoViittaukset.toList.flatMap(arviointiasteikkoRepository.getArviointiasteikko(_)))
   }

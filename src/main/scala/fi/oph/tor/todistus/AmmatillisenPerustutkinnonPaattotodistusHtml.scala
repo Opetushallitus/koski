@@ -1,7 +1,6 @@
 package fi.oph.tor.todistus
 
 import java.time.format.DateTimeFormatter
-
 import fi.oph.tor.schema._
 import fi.oph.tor.tutkinto.{RakenneModuuli, SuoritustapaJaRakenne, TutkintoRakenne}
 
@@ -48,8 +47,8 @@ object AmmatillisenPerustutkinnonPaattotodistusHtml {
                     <tr class="tutkinnon-osa">
                       <td class="nimi">{ osasuoritus.koulutusmoduuli.nimi }</td>
                       <td class="laajuus">{ osasuoritus.koulutusmoduuli.laajuus.map(_.arvo.toInt).getOrElse("") }</td>
-                      <td class="arvosana-kirjaimin">{osasuoritus.arviointi.toList.flatten.lastOption.map(_.arvosanaKirjaimin("fi")).getOrElse("").capitalize}</td>
-                      <td class="arvosana-numeroin">{osasuoritus.arviointi.toList.flatten.lastOption.flatMap(_.arvosanaNumeroin).getOrElse("")}</td>
+                      <td class="arvosana-kirjaimin">{osasuoritus.arvosanaKirjaimin("fi").capitalize}</td>
+                      <td class="arvosana-numeroin">{osasuoritus.arvosanaNumeroin}</td>
                     </tr>
                   }
                 }

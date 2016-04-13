@@ -3,6 +3,8 @@ package fi.oph.tor.schema
 import java.time.LocalDate
 
 import fi.oph.tor.koodisto.KoodistoViite
+import fi.oph.tor.localization.LocalizedString.unlocalized
+import fi.oph.tor.localization.LocalizedString
 import fi.oph.tor.log.Loggable
 import fi.oph.tor.schema.generic.annotation.{Description, MinValue, ReadOnly, RegularExpression}
 
@@ -145,17 +147,19 @@ trait Suoritus {
   def rekursiivisetOsasuoritukset: List[Suoritus] = {
     osasuoritusLista ++ osasuoritusLista.flatMap(_.rekursiivisetOsasuoritukset)
   }
+  def arvosanaKirjaimin(kieli: String) = arviointi.toList.flatten.lastOption.map(_.arvosanaKirjaimin).getOrElse(unlocalized("")).get(kieli)
+  def arvosanaNumeroin = arviointi.toList.flatten.lastOption.flatMap(_.arvosanaNumeroin).getOrElse("")
 }
 
 trait Koulutusmoduuli {
   def tunniste: KoodiViite
   def laajuus: Option[Laajuus] = None
-  def nimi: String // TODO: localize
+  def nimi: LocalizedString
 }
 
 trait KoodistostaLöytyväKoulutusmoduuli extends Koulutusmoduuli {
   def tunniste: Koodistokoodiviite
-  def nimi = tunniste.nimi.getOrElse(tunniste.koodiarvo)
+  def nimi = tunniste.nimi.getOrElse(unlocalized(tunniste.koodiarvo))
 }
 
 trait PaikallinenKoulutusmoduuli extends Koulutusmoduuli {
@@ -169,6 +173,13 @@ trait Arviointi {
   @Description("Päivämäärä, jolloin arviointi on annettu")
   def päivä: Option[LocalDate]
   def arvioitsijat: Option[List[Arvioitsija]]
+
+  def arvosanaNumeroin = {
+    try { Some(arvosana.koodiarvo.toInt) } catch {
+      case e: NumberFormatException => None
+    }
+  }
+  def arvosanaKirjaimin = arvosana.nimi.getOrElse(unlocalized(arvosana.koodiarvo))
 }
 
 case class Arvioitsija(
@@ -257,7 +268,7 @@ case class Koodistokoodiviite(
   koodiarvo: String,
   @Description("Koodin selväkielinen, kielistetty nimi")
   @ReadOnly("Tiedon syötössä kuvausta ei tarvita; kuvaus haetaan Koodistopalvelusta")
-  nimi: Option[String],
+  nimi: Option[LocalizedString],
   @Description("Koodin selväkielinen, kielistetty lyhennetty nimi")
   @ReadOnly("Tiedon syötössä kuvausta ei tarvita; kuvaus haetaan Koodistopalvelusta")
   lyhytNimi: Option[String],
@@ -272,7 +283,7 @@ case class Koodistokoodiviite(
 
 object Koodistokoodiviite {
   def apply(koodiarvo: String, koodistoUri: String): Koodistokoodiviite = Koodistokoodiviite(koodiarvo, None, None, koodistoUri, None)
-  def apply(koodiarvo: String, nimi: Option[String], koodistoUri: String, koodistoVersio: Option[Int] = None): Koodistokoodiviite = Koodistokoodiviite(koodiarvo, nimi, None, koodistoUri, koodistoVersio)
+  def apply(koodiarvo: String, nimi: Option[LocalizedString], koodistoUri: String, koodistoVersio: Option[Int] = None): Koodistokoodiviite = Koodistokoodiviite(koodiarvo, nimi, None, koodistoUri, koodistoVersio)
 }
 
 @Description("Henkilökohtainen opetuksen järjestämistä koskeva suunnitelma, https://fi.wikipedia.org/wiki/HOJKS")
@@ -288,7 +299,7 @@ case class Paikallinenkoodi(
   @Description("Koodin tunniste koodistossa")
   koodiarvo: String,
   @Description("Koodin selväkielinen nimi")
-  nimi: String,
+  nimi: LocalizedString,
   @Description("Koodiston tunniste")
   koodistoUri: String
 ) extends KoodiViite

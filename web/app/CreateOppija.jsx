@@ -100,7 +100,6 @@ export const CreateOppija = React.createClass({
           koulutusmoduuli: {
             tunniste: {
               koodiarvo: tutkinto.tutkintoKoodi,
-              nimi: tutkinto.nimi,
               koodistoUri: 'koulutus'
             },
             perusteenDiaarinumero: tutkinto.diaarinumero

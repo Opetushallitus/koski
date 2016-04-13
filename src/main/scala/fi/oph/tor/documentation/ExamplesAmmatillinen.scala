@@ -3,6 +3,7 @@ package fi.oph.tor.documentation
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 import ExampleData._
+import fi.oph.tor.localization.LocalizedString._
 import fi.oph.tor.oppija.MockOppijat
 import fi.oph.tor.schema._
 

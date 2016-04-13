@@ -1,7 +1,7 @@
 package fi.oph.tor.documentation
 
-import fi.oph.tor.schema.{Koodistokoodiviite, Henkilö, TorOppija}
-
+import fi.oph.tor.localization.LocalizedString._
+import fi.oph.tor.schema.{Koodistokoodiviite, TorOppija}
 case class Example(name: String, description: String, data: TorOppija)
 
 object Examples {

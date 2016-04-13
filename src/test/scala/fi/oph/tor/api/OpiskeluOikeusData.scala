@@ -1,7 +1,9 @@
 package fi.oph.tor.api
 
 import java.time.LocalDate
+
 import fi.oph.tor.json.Json._
+import fi.oph.tor.localization.LocalizedString._
 import fi.oph.tor.organisaatio.MockOrganisaatiot
 import fi.oph.tor.schema._
 import org.json4s.JValue

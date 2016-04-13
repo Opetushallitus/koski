@@ -4,15 +4,13 @@ import fi.oph.tor.arvosana.Arviointiasteikko
 import fi.oph.tor.koodisto.KoodistoViite
 import fi.oph.tor.schema.{Suoritustapa, Koodistokoodiviite}
 
-case class TutkintoRakenne(diaarinumero: String, suoritustavat: List[SuoritustapaJaRakenne], osaamisalat: List[Osaamisala], arviointiAsteikot: List[Arviointiasteikko]) {
+case class TutkintoRakenne(diaarinumero: String, suoritustavat: List[SuoritustapaJaRakenne], osaamisalat: List[Koodistokoodiviite], arviointiAsteikot: List[Arviointiasteikko]) {
   def findSuoritustapaJaRakenne(suoritustapa: Suoritustapa): Option[SuoritustapaJaRakenne] = {
     suoritustavat.find(_.suoritustapa == suoritustapa.tunniste)
   }
 }
 
 case class SuoritustapaJaRakenne(suoritustapa: Koodistokoodiviite, rakenne: RakenneOsa, laajuusYksikkö: Option[Koodistokoodiviite])
-
-case class Osaamisala(nimi: String, koodiarvo: String)
 
 sealed trait RakenneOsa
 

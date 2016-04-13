@@ -7,6 +7,7 @@ import fi.oph.tor.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.tor.documentation.PeruskoulutusExampleData._
 import fi.oph.tor.oppija.MockOppijat
 import fi.oph.tor.schema._
+import fi.oph.tor.localization.LocalizedString._
 
 object PeruskoulutusExampleData {
 

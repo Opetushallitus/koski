@@ -5,7 +5,7 @@ export default React.createClass({
   render() {
     let { title, options, value, onChange, className, autoselect } = this.props
     let withEmptyValue = (xs) => [{ koodiarvo: '', nimi: 'Valitse...'}].concat(xs)
-    let optionElems = opts => withEmptyValue(opts).map(s => <option key={s.koodiarvo} value={s.koodiarvo}>{s.nimi ? s.nimi : s.koodiarvo}</option>)
+    let optionElems = opts => withEmptyValue(opts).map(s => <option key={s.koodiarvo} value={s.koodiarvo}>{s.nimi && s.nimi.fi ? s.nimi.fi : s.koodiarvo}</option>)
 
     return (!autoselect && options.length >= 1) || options.length > 1
       ? <label>{title}

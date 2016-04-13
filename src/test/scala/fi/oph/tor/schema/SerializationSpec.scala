@@ -2,6 +2,7 @@ package fi.oph.tor.schema
 
 import fi.oph.tor.documentation.{AmmatillinenExampleData, Examples}
 import fi.oph.tor.json.Json
+import fi.oph.tor.localization.LocalizedString
 import fi.oph.tor.log.Logging
 import org.scalatest.{FunSpec, Matchers}
 
@@ -22,6 +23,13 @@ class SerializationSpec extends FunSpec with Matchers with Logging {
           logger.info(example.name + " ok")
         }
       }
+    }
+
+    it ("LocalizedString") {
+      val string: LocalizedString = LocalizedString.unlocalized("rölli")
+      string.values.foreach{x: AnyRef => {}} // <- force lazy val to evaluate
+      val jsonString = Json.write(string)
+      jsonString should equal("""{"fi":"rölli"}""")
     }
   }
 }
