@@ -10,6 +10,7 @@ trait YleissivistavaOppiaine extends KoodistostaLöytyväKoulutusmoduuli {
   def tunniste: Koodistokoodiviite
   def pakollinen: Boolean
   def laajuus: Option[Laajuus]
+  override def toString = tunniste.nimi.map(_.get("fi")).getOrElse("") // TODO: remove this, localization
 }
 
 trait LukionOppiaine extends YleissivistavaOppiaine
@@ -31,7 +32,7 @@ trait PeruskoulunOppiaine extends YleissivistavaOppiaine
     pakollinen: Boolean = true,
     override val laajuus: Option[Laajuus] = None
   ) extends PeruskoulunOppiaine with LukionOppiaine {
-    override def toString = super.toString + uskonto.nimi.map(", " + _).getOrElse("")
+    override def toString = super.toString + uskonto.nimi.map(_.get("fi")).map(", " + _).getOrElse("") // TODO: remove this, localization
   }
 
   case class AidinkieliJaKirjallisuus(
@@ -57,7 +58,7 @@ trait PeruskoulunOppiaine extends YleissivistavaOppiaine
     pakollinen: Boolean = true,
     override val laajuus: Option[Laajuus] = None
   ) extends PeruskoulunOppiaine with LukionOppiaine {
-    override def toString = super.toString + kieli.nimi.map(", " + _).getOrElse("")
+    override def toString = super.toString + kieli.nimi.map(_.get("fi")).map(", " + _).getOrElse("") // TODO: remove this, localization
   }
 
 case class YleissivistävänkoulutuksenArviointi(

@@ -5,6 +5,8 @@ import fi.oph.tor.log.Logging
 case class LocalizedString(fi: String, sv: Option[String] = None, en: Option[String] = None) {
   lazy val values: Map[String, String] = Map(((("fi" -> fi) :: sv.toList.map(("sv", _))) ++ en.toList.map(("en", _))) :_*)
   def get(lang: String) = values.get(lang).orElse(values.get("fi")).getOrElse("")
+
+  override def toString = get("fi") // TODO: remove this, should not be used in UI
 }
 
 object LocalizedString extends Logging {
