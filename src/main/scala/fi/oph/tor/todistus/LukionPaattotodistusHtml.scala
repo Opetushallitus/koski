@@ -9,10 +9,8 @@ object LukionPaattotodistusHtml {
     val oppiaineet: List[LukionOppiaineenSuoritus] = päättötodistus.osasuoritukset.toList.flatten
     val dateFormatter = DateTimeFormatter.ofPattern("d.M.yyyy")
 
-    val kokonaisKurssiMäärä = oppiaineet.foldLeft(0f) { (summa, aine) =>
-      summa + aine.osasuoritukset.toList.flatten.foldLeft(0f) { (laajuus, kurssi) =>
-        laajuus + kurssi.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(0f)
-      }
+    def oppiaineenKurssimäärä(oppiaine: LukionOppiaineenSuoritus): Float = oppiaine.osasuoritukset.toList.flatten.foldLeft(0f) {
+      (laajuus: Float, kurssi: LukionKurssinSuoritus) => laajuus + kurssi.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(0f)
     }
 
     <html>
@@ -42,7 +40,7 @@ object LukionPaattotodistusHtml {
                 val rowClass="oppiaine " + oppiaine.koulutusmoduuli.tunniste.koodiarvo
                 <tr class={rowClass}>
                   <td class="oppiaine">{nimiTeksti}</td>
-                  <td class="laajuus">{oppiaine.osasuoritukset.toList.flatten.foldLeft(0f) {(laajuus, kurssi) => laajuus + kurssi.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(0f)}}</td>
+                  <td class="laajuus">{oppiaineenKurssimäärä(oppiaine)}</td>
                   <td class="arvosana-kirjaimin">{oppiaine.arviointi.toList.flatten.lastOption.map(_.arvosanaKirjaimin("fi")).getOrElse("")}</td>
                   <td class="arvosana-numeroin">{oppiaine.arviointi.toList.flatten.lastOption.flatMap(_.arvosanaNumeroin).getOrElse("")}</td>
                 </tr>
@@ -50,7 +48,7 @@ object LukionPaattotodistusHtml {
             }
             <tr class="kurssimaara">
               <td class="kurssimaara-title">Opiskelijan suorittama kokonaiskurssimäärä</td>
-              <td>{kokonaisKurssiMäärä}</td>
+              <td>{oppiaineet.foldLeft(0f) { (summa, aine) => summa + oppiaineenKurssimäärä(aine)}}</td>
             </tr>
           </table>
           <div class="vahvistus">
