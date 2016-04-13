@@ -9,6 +9,12 @@ object LukionPaattotodistusHtml {
     val oppiaineet: List[LukionOppiaineenSuoritus] = päättötodistus.osasuoritukset.toList.flatten
     val dateFormatter = DateTimeFormatter.ofPattern("d.M.yyyy")
 
+    val kokonaisKurssiMäärä = oppiaineet.foldLeft(0f) { (summa, aine) =>
+      summa + aine.osasuoritukset.toList.flatten.foldLeft(0f) { (laajuus, kurssi) =>
+        laajuus + kurssi.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(0f)
+      }
+    }
+
     <html>
       <head>
         <link rel="stylesheet" type="text/css" href="/tor/css/todistus-lukio.css"></link>
@@ -42,6 +48,10 @@ object LukionPaattotodistusHtml {
                 </tr>
               }
             }
+            <tr class="kurssimaara">
+              <td class="kurssimaara-title">Opiskelijan suorittama kokonaiskurssimäärä</td>
+              <td>{kokonaisKurssiMäärä}</td>
+            </tr>
           </table>
           <div class="vahvistus">
             <span class="paikkakunta">Tampere<!-- TODO: paikkakuntaa ei ole datassa --></span>

@@ -53,3 +53,11 @@ td, th {
     width: 200px;
     height: 2em;
 }
+
+.kurssimaara td {
+    padding-top: 50px;
+}
+
+.kurssimaara-title {
+    font-size: 12px;
+}
