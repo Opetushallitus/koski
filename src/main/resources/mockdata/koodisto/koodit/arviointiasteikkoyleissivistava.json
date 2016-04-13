@@ -1,0 +1,111 @@
+[
+  {
+    "koodiUri": "arviointiasteikkoyleissivistava_4",
+    "koodiArvo": "4",
+    "metadata": [
+      {
+        "nimi": "hylätty",
+        "lyhytNimi": "4",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "arviointiasteikkoyleissivistava_5",
+    "koodiArvo": "5",
+    "metadata": [
+      {
+        "nimi": "välttävä",
+        "lyhytNimi": "5",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "arviointiasteikkoyleissivistava_6",
+    "koodiArvo": "6",
+    "metadata": [
+      {
+        "nimi": "kohtalainen",
+        "lyhytNimi": "6",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "arviointiasteikkoyleissivistava_7",
+    "koodiArvo": "7",
+    "metadata": [
+      {
+        "nimi": "tyydyttävä",
+        "lyhytNimi": "7",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "arviointiasteikkoyleissivistava_8",
+    "koodiArvo": "8",
+    "metadata": [
+      {
+        "nimi": "hyvä",
+        "lyhytNimi": "8",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+
+  {
+    "koodiUri": "arviointiasteikkoyleissivistava_9",
+    "koodiArvo": "9",
+    "metadata": [
+      {
+        "nimi": "kiitettävä",
+        "lyhytNimi": "9",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "arviointiasteikkoyleissivistava_10",
+    "koodiArvo": "10",
+    "metadata": [
+      {
+        "nimi": "erinomainen",
+        "lyhytNimi": "10",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "arviointiasteikkoyleissivistava_s",
+    "koodiArvo": "S",
+    "metadata": [
+      {
+        "nimi": "hyväksytty",
+        "lyhytNimi": "hyväksytty",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "arviointiasteikkoyleissivistava_h",
+    "koodiArvo": "H",
+    "metadata": [
+      {
+        "nimi": "hylätty",
+        "lyhytNimi": "hylätty",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "koodistoUri" : "arviointiasteikkoyleissivistava",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "SV",
+    "nimi" : "Arviointiasteikko yleissivistava",
+    "kasite" : "arviointiasteikko"
+  }, {
+    "kieli" : "EN",
+    "nimi" : "Arviointiasteikko yleissivistava",
+    "kasite" : "arvosana"
+  }, {
+    "kieli" : "FI",
+    "nimi" : "Arviointiasteikko yleissivistava",
+    "kasite" : "arviointiasteikko"
+  } ],
+  "codesGroupUri" : "http://tor",
+  "voimassaAlkuPvm" : "2015-10-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}
