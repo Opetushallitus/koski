@@ -9,7 +9,7 @@ export default React.createClass({
 
     let itemElems = items ? items.map((item, i) => {
         return (
-          <li key={i} className={i === selectionIndex ? 'selected' : null} onClick={this.handleSelect.bind(this, item)}>{item.nimi}</li>
+          <li key={i} className={i === selectionIndex ? 'selected' : null} onClick={this.handleSelect.bind(this, item)}>{item.nimi.fi}</li>
         )}
     ) : []
 
@@ -17,7 +17,7 @@ export default React.createClass({
 
     return (
       <div ref='autocomplete' className='autocomplete'>
-        <input className='autocomplete-input' onKeyDown={this.onKeyDown} onChange={this.handleInput} value={query ? query : (selected ? selected.nimi : '')} disabled={disabled}></input>
+        <input className='autocomplete-input' onKeyDown={this.onKeyDown} onChange={this.handleInput} value={query ? query : (selected ? selected.nimi.fi : '')} disabled={disabled}></input>
         {results}
       </div>
     )

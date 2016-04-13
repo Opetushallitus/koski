@@ -5,8 +5,9 @@ import fi.oph.tor.cache.{CachingProxy, TorCache}
 import fi.oph.tor.http.Http.runTask
 import fi.oph.tor.http.{Http, VirkailijaHttpClient}
 import fi.oph.tor.koodisto.KoodistoViitePalvelu
+import fi.oph.tor.localization.LocalizedString
 import fi.oph.tor.log.TimedProxy
-import fi.oph.tor.schema.{Oppilaitos, OrganisaatioWithOid}
+import fi.oph.tor.schema.OrganisaatioWithOid
 
 trait OrganisaatioRepository {
   /**
@@ -49,7 +50,7 @@ abstract class JsonOrganisaatioRepository(koodisto: KoodistoViitePalvelu) extend
 
   private def convertOrganisaatio(org: OrganisaatioPalveluOrganisaatio): OrganisaatioHierarkia = {
     val oppilaitosnumero = org.oppilaitosKoodi.flatMap(oppilaitosnumero => koodisto.getKoodistoKoodiViite("oppilaitosnumero", oppilaitosnumero))
-    val nimi: String = org.nimi.getOrElse("fi", org.oid)
+    val nimi = LocalizedString(org.nimi)
     OrganisaatioHierarkia(org.oid, oppilaitosnumero, nimi, org.organisaatiotyypit, org.children.map(convertOrganisaatio))
   }
 

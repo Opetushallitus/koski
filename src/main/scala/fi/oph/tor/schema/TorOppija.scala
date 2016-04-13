@@ -333,7 +333,7 @@ sealed trait Organisaatio
     oid: String,
     @Description("Organisaation (kielistetty) nimi")
     @ReadOnly("Tiedon syötössä nimeä ei tarvita; kuvaus haetaan Organisaatiopalvelusta")
-    nimi: Option[String] = None
+    nimi: Option[LocalizedString] = None
   ) extends OrganisaatioWithOid
 
   @Description("Opintopolun organisaatiopalvelusta löytyvä oppilaitos-tyyppinen organisaatio.")
@@ -347,7 +347,7 @@ sealed trait Organisaatio
      oppilaitosnumero: Option[Koodistokoodiviite] = None,
      @Description("Organisaation (kielistetty) nimi")
      @ReadOnly("Tiedon syötössä nimeä ei tarvita; kuvaus haetaan Organisaatiopalvelusta")
-     nimi: Option[String] = None
+     nimi: Option[LocalizedString] = None
   ) extends OrganisaatioWithOid
 
   @Description("Yritys, jolla on y-tunnus")
@@ -369,5 +369,5 @@ trait OrganisaatioWithOid extends Organisaatio {
   def oid: String
   @Description("Organisaation (kielistetty) nimi")
   @ReadOnly("Tiedon syötössä nimeä ei tarvita; kuvaus haetaan Organisaatiopalvelusta")
-  def nimi: Option[String]
+  def nimi: Option[LocalizedString]
 }

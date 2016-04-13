@@ -12,7 +12,7 @@ class OppilaitosRepository(organisatioRepository: OrganisaatioRepository) {
   def findOppilaitokset(query: String)(implicit context: TorUser): Iterable[OidOrganisaatio] = {
     context.organisationOids
       .flatMap(oid => organisatioRepository.getOrganisaatioHierarkia(oid))
-      .filter(org => org.organisaatiotyypit.contains("OPPILAITOS") && org.nimi.toLowerCase.contains(query.toLowerCase))
+      .filter(org => org.organisaatiotyypit.contains("OPPILAITOS") && org.nimi.get("fi").toLowerCase.contains(query.toLowerCase))
       .map(toOppilaitos)
       .toList
   }

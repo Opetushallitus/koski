@@ -17,7 +17,7 @@ export const OpiskeluOikeus = React.createClass({
             let suoritusLens = L.compose(lens, L.prop('suoritukset'), L.index(index))
             return (
               <div className="suoritus">
-                <span className="tutkinto">{suoritus.koulutusmoduuli.tunniste.nimi.fi}</span> <span className="oppilaitos">{opiskeluOikeus.oppilaitos.nimi}</span>
+                <span className="tutkinto">{suoritus.koulutusmoduuli.tunniste.nimi.fi}</span> <span className="oppilaitos">{opiskeluOikeus.oppilaitos.nimi.fi}</span>
                 <Todistus suoritus={suoritus} opiskeluOikeus={opiskeluOikeus}/>
                 <TutkinnonRakenne suoritus={suoritus} lens={suoritusLens} />
               </div>
@@ -84,7 +84,7 @@ const TutkinnonRakenne = React.createClass({
               suoritus={suoritus}
               lens={lens}
               rakenne={rakenne}
-              key={rakenneOsa.nimi}
+              key={rakenneOsa.nimi.fi}
               />)
               : null
             }

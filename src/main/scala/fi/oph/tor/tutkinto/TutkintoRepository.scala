@@ -3,6 +3,7 @@ package fi.oph.tor.tutkinto
 import fi.oph.tor.arvosana.ArviointiasteikkoRepository
 import fi.oph.tor.eperusteet._
 import fi.oph.tor.koodisto.KoodistoViitePalvelu
+import fi.oph.tor.localization.LocalizedString
 
 trait TutkintoRepository {
   def findTutkinnot(oppilaitosId: String, query: String): List[TutkintoPeruste]
@@ -32,7 +33,7 @@ class TutkintoRepositoryImpl(eperusteet: EPerusteetRepository, arviointiAsteikot
 
   private def ePerusteetToTutkinnot(perusteet: List[EPeruste]) = {
     perusteet.flatMap { peruste =>
-      peruste.koulutukset.map(koulutus => TutkintoPeruste(peruste.diaarinumero, koulutus.koulutuskoodiArvo, peruste.nimi.get("fi")))
+      peruste.koulutukset.map(koulutus => TutkintoPeruste(peruste.diaarinumero, koulutus.koulutuskoodiArvo, Some(LocalizedString(peruste.nimi))))
     }
   }
 }
