@@ -35,6 +35,7 @@ object PeruskoulunPaattotodistusHtml {
 
     <html>
       <head>
+        <link rel="stylesheet" type="text/css" href="/tor/css/todistus-common.css"></link>
         <link rel="stylesheet" type="text/css" href="/tor/css/todistus-peruskoulu.css"></link>
       </head>
       <body>

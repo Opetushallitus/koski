@@ -18,6 +18,7 @@ object AmmatillisenPerustutkinnonPaattotodistusHtml {
     }
     <html>
       <head>
+        <link rel="stylesheet" type="text/css" href="/tor/css/todistus-common.css"></link>
         <link rel="stylesheet" type="text/css" href="/tor/css/todistus-ammatillinen-perustutkinto.css"></link>
       </head>
       <body>
@@ -77,6 +78,5 @@ object AmmatillisenPerustutkinnonPaattotodistusHtml {
       </body>
     </html>
   }
-
 
 }
