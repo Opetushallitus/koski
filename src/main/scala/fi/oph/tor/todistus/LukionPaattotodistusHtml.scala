@@ -36,7 +36,7 @@ object LukionPaattotodistusHtml {
                 val rowClass="oppiaine " + oppiaine.koulutusmoduuli.tunniste.koodiarvo
                 <tr class={rowClass}>
                   <td class="oppiaine">{nimiTeksti}</td>
-                  <td class="laajuus"></td>
+                  <td class="laajuus">{oppiaine.osasuoritukset.toList.flatten.foldLeft(0f) {(laajuus, kurssi) => laajuus + kurssi.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(0f)}}</td>
                   <td class="arvosana-kirjaimin">{oppiaine.arviointi.toList.flatten.lastOption.map(_.arvosanaKirjaimin("fi")).getOrElse("")}</td>
                   <td class="arvosana-numeroin">{oppiaine.arviointi.toList.flatten.lastOption.flatMap(_.arvosanaNumeroin).getOrElse("")}</td>
                 </tr>
