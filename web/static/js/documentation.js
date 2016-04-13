@@ -45,13 +45,16 @@ forEach(document.querySelectorAll('.api-operation'), function(operationElem) {
 forEach(document.querySelectorAll('.api-tester'), function(elem) {
   var exampleSelector = elem.querySelector(".examples select")
   var codeMirror
+  var queryParamInputs = a(elem.querySelectorAll(".parameters input.query-param"))
+  var pathParamInputs = a(elem.querySelectorAll(".parameters input.path-param"))
+  var paramInputs = queryParamInputs.concat(pathParamInputs)
 
   function apiUrl() {
     var path = elem.dataset.path
-    a(elem.querySelectorAll(".parameters input.path-param")).forEach(function(input) {
+    pathParamInputs.forEach(function(input) {
       path = path.replace('{' + input.name + '}', encodeURIComponent(input.value))
     })
-    var queryParameters = a(elem.querySelectorAll(".parameters input.query-param")).reduce(function(query, input) {
+    var queryParameters = queryParamInputs.reduce(function(query, input) {
       return input.value ? query + (query ? '&' : '?') + encodeURIComponent(input.name) + '=' + encodeURIComponent(input.value) : ''
     },'')
     return document.location.protocol + "//" + document.location.host + path + queryParameters
@@ -111,8 +114,39 @@ forEach(document.querySelectorAll('.api-tester'), function(elem) {
     newWindowButton.className = 'hidden'
   }
 
+  elem.querySelector(".curl").onclick = function() {
+    elem.querySelector(".curl").className="curl open"
+    selectElementContents(elem.querySelector(".curl .line"))
+  }
+  updateCurl()
+
+  paramInputs.forEach(function(input) {
+    input.addEventListener("keyup", updateCurl)
+    input.addEventListener("input", updateCurl)
+    input.addEventListener("change", updateCurl)
+  })
+
+  function updateCurl() {
+    var curl = "curl '" + apiUrl() + "' --user kalle:kalle"
+    if (elem.dataset.method != "GET") {
+      curl += " -X " + elem.dataset.method
+    }
+    if (elem.dataset.method == "POST" || elem.dataset.method == "PUT") {
+      curl += " -H 'content-type: application/json' -d @curltestdata.json"
+    }
+    elem.querySelector(".curl .line").innerHTML = curl
+  }
+
   function a(elems) {
     return Array.prototype.slice.call(elems, 0)
+  }
+
+  function selectElementContents(el) {
+    var range = document.createRange();
+    range.selectNodeContents(el);
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
   }
 })
 

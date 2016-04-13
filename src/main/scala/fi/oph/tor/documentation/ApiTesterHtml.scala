@@ -50,6 +50,7 @@ object ApiTesterHtml {
       <div class="buttons">
         <button class="try">Kokeile</button>
         <a class="try-newwindow">uuteen ikkunaan</a>
+        <span class="curl"><span class="title">curl</span><span class="line"></span></span>
       </div>
       <div class="result"></div>
     </div>

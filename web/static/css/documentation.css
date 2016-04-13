@@ -120,6 +120,27 @@ th {
     margin-left: 10px;
 }
 
+.api-operation .curl .line {
+    display: none;
+}
+
+.api-operation .curl.open .line {
+    display: inline-block;
+    font-size: 0.6em;
+}
+
+.api-operation .curl.open .title {
+    display: none;
+}
+
+.api-operation .curl {
+    background: teal;
+    cursor: pointer;
+    color: white;
+    border-radius: 3px;
+    padding: 0 4px;
+}
+
 .toggle-details {
     color: transparent;
     background: url('/tor/images/plusminusbuttons.png') 0 0 no-repeat;
