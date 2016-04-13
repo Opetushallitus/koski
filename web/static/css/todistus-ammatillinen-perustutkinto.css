@@ -1,3 +1,9 @@
+@media print
+{
+    @page { margin: 0; }
+    body  { margin: 1.6cm; }
+}
+
 body {
     font-family: Helvetica, Arial, sans-serif;
     color: rgb(51, 51, 51);
@@ -23,6 +29,11 @@ div {
 
 td, th {
     text-align: left;
+}
+
+th {
+    font-size: 13px;
+    padding-bottom: 10px;
 }
 
 td.laajuus, th.laajuus {

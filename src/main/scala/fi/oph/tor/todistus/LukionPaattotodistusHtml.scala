@@ -1,5 +1,6 @@
 package fi.oph.tor.todistus
 
+import java.text.DecimalFormat
 import java.time.format.DateTimeFormatter
 
 import fi.oph.tor.schema._
@@ -8,6 +9,7 @@ object LukionPaattotodistusHtml {
   def renderLukionPäättötodistus(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: LukionOppimääränSuoritus) = {
     val oppiaineet: List[LukionOppiaineenSuoritus] = päättötodistus.osasuoritukset.toList.flatten
     val dateFormatter = DateTimeFormatter.ofPattern("d.M.yyyy")
+    val decimalFormat = new DecimalFormat("#.#")
 
     def oppiaineenKurssimäärä(oppiaine: LukionOppiaineenSuoritus): Float = oppiaine.osasuoritukset.toList.flatten.foldLeft(0f) {
       (laajuus: Float, kurssi: LukionKurssinSuoritus) => laajuus + kurssi.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(0f)
@@ -40,7 +42,7 @@ object LukionPaattotodistusHtml {
                 val rowClass="oppiaine " + oppiaine.koulutusmoduuli.tunniste.koodiarvo
                 <tr class={rowClass}>
                   <td class="oppiaine">{nimiTeksti}</td>
-                  <td class="laajuus">{oppiaineenKurssimäärä(oppiaine)}</td>
+                  <td class="laajuus">{decimalFormat.format(oppiaineenKurssimäärä(oppiaine))}</td>
                   <td class="arvosana-kirjaimin">{oppiaine.arviointi.toList.flatten.lastOption.map(_.arvosanaKirjaimin("fi")).getOrElse("")}</td>
                   <td class="arvosana-numeroin">{oppiaine.arviointi.toList.flatten.lastOption.flatMap(_.arvosanaNumeroin).getOrElse("")}</td>
                 </tr>
@@ -48,7 +50,7 @@ object LukionPaattotodistusHtml {
             }
             <tr class="kurssimaara">
               <td class="kurssimaara-title">Opiskelijan suorittama kokonaiskurssimäärä</td>
-              <td>{oppiaineet.foldLeft(0f) { (summa, aine) => summa + oppiaineenKurssimäärä(aine)}}</td>
+              <td>{decimalFormat.format(oppiaineet.foldLeft(0f) { (summa, aine) => summa + oppiaineenKurssimäärä(aine)})}</td>
             </tr>
           </table>
           <div class="vahvistus">
