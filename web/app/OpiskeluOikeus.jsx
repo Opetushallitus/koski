@@ -114,8 +114,8 @@ const Rakenneosa = React.createClass({
   render() {
     let { rakenneosa, suoritus, lens, rakenne } = this.props
     return rakenneosa.osat
-      ? <RakenneModuuli key={rakenneosa.nimi} suoritus={suoritus} lens={lens} rakenneosa={rakenneosa} rakenne={rakenne}/>
-      : <TutkinnonOsa key={rakenneosa.nimi} suoritus={suoritus} lens={lens} tutkinnonOsa={rakenneosa} rakenne={rakenne}/>
+      ? <RakenneModuuli key={rakenneosa.nimi.fi} suoritus={suoritus} lens={lens} rakenneosa={rakenneosa} rakenne={rakenne}/>
+      : <TutkinnonOsa key={rakenneosa.nimi.fi} suoritus={suoritus} lens={lens} tutkinnonOsa={rakenneosa} rakenne={rakenne}/>
   }
 })
 
@@ -124,7 +124,7 @@ const RakenneModuuli = React.createClass({
     let { rakenneosa, suoritus, lens, rakenne } = this.props
     return (
       <div className="rakenne-moduuli">
-        <span className="name">{rakenneosa.nimi}</span>
+        <span className="name">{rakenneosa.nimi.fi}</span>
         <ul className="osat">
           { rakenneosa.osat
             .filter(osa => {
@@ -189,7 +189,7 @@ const TutkinnonOsa = React.createClass({
 
     return (
       <div className={ arviointi ? 'tutkinnon-osa suoritettu' : 'tutkinnon-osa'}>
-        <span className="name">{tutkinnonOsa.nimi}</span>
+        <span className="name">{tutkinnonOsa.nimi.fi}</span>
         { arvosanat && !arviointi
           ?
             <div className="arviointi edit">

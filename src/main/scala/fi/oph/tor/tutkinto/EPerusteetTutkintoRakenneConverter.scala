@@ -27,7 +27,7 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
       def convertRakenneOsa(rakenneOsa: ERakenneOsa, suoritustapa: ESuoritustapa): RakenneOsa = {
         rakenneOsa match {
           case x: ERakenneModuuli => RakenneModuuli(
-            x.nimi.getOrElse(Map.empty).getOrElse("fi", ""),
+            LocalizedString(x.nimi.getOrElse(Map.empty)),
             x.osat.map(osa => convertRakenneOsa(osa, suoritustapa)),
             x.osaamisala.map(_.osaamisalakoodiArvo)
           )
@@ -42,7 +42,7 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
               val laajuus = laajuusYksikkö.flatMap(yksikkö => tutkinnonOsaViite.laajuus.map(laajuus => laajuus))
 
               koodistoPalvelu.validate(Koodistokoodiviite(eTutkinnonOsa.koodiArvo, None, "tutkinnonosat", None)) match {
-                case Some(tutkinnonosaKoodi) => TutkinnonOsa(tutkinnonosaKoodi, eTutkinnonOsa.nimi.getOrElse("fi", ""), arviointiasteikkoViittaus, tutkinnonOsaViite.laajuus, x.pakollinen)
+                case Some(tutkinnonosaKoodi) => TutkinnonOsa(tutkinnonosaKoodi, LocalizedString(eTutkinnonOsa.nimi), arviointiasteikkoViittaus, tutkinnonOsaViite.laajuus, x.pakollinen)
                 case None => throw new RuntimeException("Tutkinnon osaa ei löydy koodistosta: " + eTutkinnonOsa.koodiArvo)
               }
 
