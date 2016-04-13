@@ -12,7 +12,6 @@ object MockKoodistoPalvelu extends KoodistoPalvelu {
     "arviointiasteikkoammatillinent1k3",
     "arviointiasteikkoammatillinenhyvaksyttyhylatty",
     "arviointiasteikkoyleissivistava",
-    "arvosanat",
     "jarjestamismuoto",
     "koskioppiaineetyleissivistava",
     "koulutus",

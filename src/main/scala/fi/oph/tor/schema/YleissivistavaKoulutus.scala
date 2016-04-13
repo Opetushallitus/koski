@@ -63,7 +63,7 @@ trait PeruskoulunOppiaine extends YleissivistavaOppiaine
   }
 
 case class YleissivistävänkoulutuksenArviointi(
-  @KoodistoUri("arvosanat")
+  @KoodistoUri("arviointiasteikkoyleissivistava")
   arvosana: Koodistokoodiviite,
   päivä: Option[LocalDate],
   arvioitsijat: Option[List[Arvioitsija]] = None
@@ -73,18 +73,9 @@ case class YleissivistävänkoulutuksenArviointi(
       case e: NumberFormatException => None
     }
   }
-  def arvosanaKirjaimin(kieli: String) = arvosanaNumeroin match {
-    case Some(num) if num == 4 => "hylätty" // TODO: localize
-    case Some(num) if num == 5 => "välttävä"
-    case Some(num) if num == 6 => "kohtalainen"
-    case Some(num) if num == 7 => "tyydyttävä"
-    case Some(num) if num == 8 => "hyvä"
-    case Some(num) if num == 9 => "kiitettävä"
-    case Some(num) if num == 10 => "erinomainen"
-    case _ => arvosana.nimi.getOrElse(arvosana.koodiarvo)
-  }
+  def arvosanaKirjaimin(kieli: String) = arvosana.nimi.getOrElse(arvosana.koodiarvo)
 }
 
 object YleissivistävänkoulutuksenArviointi {
-  def apply(arvosana: String) = new YleissivistävänkoulutuksenArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arvosanat"), None)
+  def apply(arvosana: String) = new YleissivistävänkoulutuksenArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), None)
 }
