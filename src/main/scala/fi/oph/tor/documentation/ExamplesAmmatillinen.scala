@@ -39,7 +39,7 @@ object AmmatillinenExampleData {
       osasuoritukset = osasuoritukset)
 
   lazy val autoalanPerustutkinto: AmmatillisenTutkinnonSuoritus = tutkintoSuoritus(
-    tutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
+    tutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus"), Some("39/011/2014")),
     tutkintonimike = None,
     osaamisala = None,
     suoritustapa = None,
@@ -68,7 +68,7 @@ object AmmatillinenExampleData {
   def näyttö(kuvaus: String, paikka: String, arviointi: Option[NäytönArviointi] = None) = Näyttö(
     kuvaus, NäytönSuorituspaikka(Koodistokoodiviite("1", Some("työpaikka"), "ammatillisennaytonsuorituspaikka", Some(1)), paikka), arviointi)
 
-  lazy val suoritustapaNäyttö = Suoritustapa(Koodistokoodiviite("naytto", Some("Näyttö"), "suoritustapa", Some(1)))
+  lazy val suoritustapaNäyttö = Suoritustapa(Koodistokoodiviite("naytto", Some("Näyttö"), None, "suoritustapa", Some(1)))
   lazy val suoritustapaOps = Suoritustapa(Koodistokoodiviite("ops", Some("Opetussuunnitelman mukainen"), "suoritustapa", Some(1)))
   lazy val järjestämismuotoOppisopimus = Koodistokoodiviite("20", Some("Oppisopimusmuotoinen"), "jarjestamismuoto", Some(1))
   lazy val järjestämismuotoOppilaitos = Koodistokoodiviite("10", Some("Oppilaitosmuotoinen"), "jarjestamismuoto", Some(1))

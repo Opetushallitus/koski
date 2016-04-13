@@ -3,7 +3,7 @@
   "koodiArvo" : "Hylätty",
   "metadata" : [ {
     "nimi" : "Hylätty",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "Hylätty",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -12,7 +12,7 @@
   "koodiArvo" : "Hyväksytty",
   "metadata" : [ {
     "nimi" : "Hyväksytty",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "Hyväksytty",
     "kieli" : "FI"
   } ],
   "versio" : 1

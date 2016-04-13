@@ -258,17 +258,21 @@ case class Koodistokoodiviite(
   @Description("Koodin selväkielinen, kielistetty nimi")
   @ReadOnly("Tiedon syötössä kuvausta ei tarvita; kuvaus haetaan Koodistopalvelusta")
   nimi: Option[String],
+  @Description("Koodin selväkielinen, kielistetty lyhennetty nimi")
+  @ReadOnly("Tiedon syötössä kuvausta ei tarvita; kuvaus haetaan Koodistopalvelusta")
+  lyhytNimi: Option[String],
   @Description("Käytetyn koodiston tunniste")
   koodistoUri: String,
   @Description("Käytetyn koodiston versio. Jos versiota ei määritellä, käytetään uusinta versiota")
-  koodistoVersio: Option[Int] = None
+  koodistoVersio: Option[Int]
 ) extends KoodiViite {
   override def toString = koodistoUri + "/" + koodiarvo
   def koodistoViite = koodistoVersio.map(KoodistoViite(koodistoUri, _))
 }
 
 object Koodistokoodiviite {
-  def apply(koodiarvo: String, koodistoUri: String): Koodistokoodiviite = Koodistokoodiviite(koodiarvo, None, koodistoUri)
+  def apply(koodiarvo: String, koodistoUri: String): Koodistokoodiviite = Koodistokoodiviite(koodiarvo, None, None, koodistoUri, None)
+  def apply(koodiarvo: String, nimi: Option[String], koodistoUri: String, koodistoVersio: Option[Int] = None): Koodistokoodiviite = Koodistokoodiviite(koodiarvo, nimi, None, koodistoUri, koodistoVersio)
 }
 
 @Description("Henkilökohtainen opetuksen järjestämistä koskeva suunnitelma, https://fi.wikipedia.org/wiki/HOJKS")

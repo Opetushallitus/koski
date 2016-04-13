@@ -143,14 +143,7 @@ case class AmmatillinenArviointi(
       case e: NumberFormatException => None
     }
   }
-  def arvosanaKirjaimin(kieli: String) = arvosanaNumeroin match {
-    case Some(num) if num == 0 => "hylätty" // TODO: localize
-    case Some(num) if num == 1 => "tyydyttävä"
-    case Some(num) if num == 2 => "hyvä"
-    case Some(num) if num == 3 => "kiitettävä"
-    case _ => arvosana.nimi.getOrElse(arvosana.koodiarvo)
-  }
-
+  def arvosanaKirjaimin(kieli: String) = arvosana.nimi.getOrElse(arvosana.koodiarvo)
 }
 
 @Description("Näytön kuvaus")

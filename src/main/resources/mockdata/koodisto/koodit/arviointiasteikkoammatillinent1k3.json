@@ -2,8 +2,8 @@
   "koodiUri" : "arviointiasteikkoammatillinent1k3_2",
   "koodiArvo" : "2",
   "metadata" : [ {
-    "nimi" : "H2",
-    "lyhytNimi" : "",
+    "nimi" : "hyvä",
+    "lyhytNimi" : "H2",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -11,8 +11,8 @@
   "koodiUri" : "arviointiasteikkoammatillinent1k3_3",
   "koodiArvo" : "3",
   "metadata" : [ {
-    "nimi" : "K3",
-    "lyhytNimi" : "",
+    "nimi" : "kiitettävä",
+    "lyhytNimi" : "K3",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -20,8 +20,8 @@
   "koodiUri" : "arviointiasteikkoammatillinent1k3_0",
   "koodiArvo" : "0",
   "metadata" : [ {
-    "nimi" : "H",
-    "lyhytNimi" : "",
+    "nimi" : "hylätty",
+    "lyhytNimi" : "H",
     "kieli" : "FI"
   } ],
   "versio" : 1
@@ -29,8 +29,8 @@
   "koodiUri" : "arviointiasteikkoammatillinent1k3_1",
   "koodiArvo" : "1",
   "metadata" : [ {
-    "nimi" : "T1",
-    "lyhytNimi" : "",
+    "nimi" : "tyydyttävä",
+    "lyhytNimi" : "T1",
     "kieli" : "FI"
   } ],
   "versio" : 1
