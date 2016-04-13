@@ -22,5 +22,8 @@ class LoggableThrowableRenderer extends ThrowableRenderer {
 
   def omitStackTrace(t: Throwable) = Array(signature(t))
 
-  def signature(t: Throwable): String = t.getClass.getName + ": " + t.toString
+  def signature(t: Throwable): String = t match {
+    case t: Loggable => t.getClass.getName + ": " + t.logString
+    case t: Throwable => t.getClass.getName + ": " + t.toString
+  }
 }

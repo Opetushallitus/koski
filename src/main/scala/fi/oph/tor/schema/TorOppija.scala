@@ -105,7 +105,7 @@ trait Opiskeluoikeus extends Loggable {
   def opiskeluoikeudenTila: Option[OpiskeluoikeudenTila]
   def läsnäolotiedot: Option[Läsnäolotiedot]
 
-  override def toString = id match {
+  override def logString = id match {
     case None => "opiskeluoikeus"
     case Some(id) => "opiskeluoikeus " + id
   }

@@ -7,7 +7,8 @@ trait Loggable {
   /**
    * Returns a log-safe string
    */
-  def toString: String
+  def logString: String
+  override def toString = logString
 }
 
 object Loggable {
@@ -19,7 +20,7 @@ object Loggable {
         case s: java.lang.Boolean => s.toString
         case n: Number => n.toString
         case x: Option[AnyRef] => x.map(y => describe(y)).toString
-        case x: Loggable => x.toString
+        case x: Loggable => x.logString
         case _ => "_"
       }
     } catch {

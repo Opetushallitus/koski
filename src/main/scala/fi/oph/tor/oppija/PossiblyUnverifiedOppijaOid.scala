@@ -7,7 +7,7 @@ trait PossiblyUnverifiedOppijaOid extends Loggable {
   def oppijaOid: Henkilö.Oid
   def verifiedOid: Option[Henkilö.Oid]
 
-  override def toString = oppijaOid
+  def logString = oppijaOid
 }
 
 case class VerifiedOppijaOid(val oppijaOid: Henkilö.Oid) extends PossiblyUnverifiedOppijaOid {

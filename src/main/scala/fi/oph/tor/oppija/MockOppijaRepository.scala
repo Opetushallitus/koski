@@ -111,5 +111,5 @@ class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with 
 }
 
 class TestingException(text: String) extends RuntimeException(text) with Loggable {
-  override def toString = text
+  def logString = text
 }
