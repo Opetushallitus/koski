@@ -26,7 +26,7 @@ object PeruskoulunPaattotodistusHtml {
       <tr class={rowClass}>
         <td class="oppiaine">{nimi}</td>
         <td class="laajuus">{oppiaine.suoritus.koulutusmoduuli.laajuus.map(_.arvo).getOrElse("")}</td>
-        <td class="arvosana-kirjaimin">{oppiaine.suoritus.arvosanaKirjaimin("fi").capitalize}</td>
+        <td class="arvosana-kirjaimin">{oppiaine.suoritus.arvosanaKirjaimin.get("fi").capitalize}</td>
         <td class="arvosana-numeroin">{oppiaine.suoritus.arvosanaNumeroin}</td>
       </tr>
     }

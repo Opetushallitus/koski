@@ -147,7 +147,7 @@ trait Suoritus {
   def rekursiivisetOsasuoritukset: List[Suoritus] = {
     osasuoritusLista ++ osasuoritusLista.flatMap(_.rekursiivisetOsasuoritukset)
   }
-  def arvosanaKirjaimin(kieli: String) = arviointi.toList.flatten.lastOption.map(_.arvosanaKirjaimin).getOrElse(unlocalized("")).get(kieli)
+  def arvosanaKirjaimin = arviointi.toList.flatten.lastOption.map(_.arvosanaKirjaimin).getOrElse(unlocalized(""))
   def arvosanaNumeroin = arviointi.toList.flatten.lastOption.flatMap(_.arvosanaNumeroin).getOrElse("")
 }
 
