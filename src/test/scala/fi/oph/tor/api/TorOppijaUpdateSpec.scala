@@ -14,7 +14,7 @@ class TorOppijaUpdateSpec extends FreeSpec with OpiskeluOikeusTestMethods {
     "Puuttuvien tietojen täyttäminen" - {
       "Oppilaitoksen tiedot" in {
         val opiskeluOikeus = createOpiskeluOikeus(oppija, uusiOpiskeluOikeus)
-        opiskeluOikeus.oppilaitos.nimi.get should equal("Stadin ammattiopisto")
+        opiskeluOikeus.oppilaitos.nimi.get.get("fi") should equal("Stadin ammattiopisto")
         opiskeluOikeus.oppilaitos.oppilaitosnumero.get.koodiarvo should equal("10105")
       }
       "Koodistojen tiedot" in {
