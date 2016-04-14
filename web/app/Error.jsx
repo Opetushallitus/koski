@@ -40,7 +40,7 @@ const errorTexts = {
 }
 
 export const Error = ({error}) => {
-  return errorTexts[error.httpStatus] ? <div id="error" className="error">{errorTexts[error.httpStatus]}<a>&#10005;</a></div> : <div id="error"></div>
+  return errorTexts[error.httpStatus] ? <div id="error" className="error"><span className="error-text">{errorTexts[error.httpStatus]}</span><a>&#10005;</a></div> : <div id="error"></div>
 }
 
 export const NotFound = () => <div className="not-found content-area"><h1>404</h1><div className="error-message">Etsimääsi sivua ei löytynyt</div></div>

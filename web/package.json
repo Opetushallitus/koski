@@ -8,8 +8,8 @@
     "url": "https://github.com/Opetushallitus/tor.git"
   },
   "dependencies": {
-    "react": "~0.14.0",
-    "react-dom": "~0.14.0",
+    "react": "~15.0.0",
+    "react-dom": "~15.0.0",
     "whatwg-fetch": "^0.9",
     "baconjs": "~0.7.77",
     "ramda": "^0.17",
