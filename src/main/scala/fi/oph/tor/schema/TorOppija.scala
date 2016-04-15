@@ -195,7 +195,7 @@ case class Vahvistus(
 
 case class OrganisaatioHenkilö(
   nimi: String,
-  titteli: String,
+  titteli: LocalizedString,
   organisaatio: Organisaatio
 )
 
@@ -219,7 +219,7 @@ case class Hyväksiluku(
   osaaminen: Koulutusmoduuli, // TODO: tähän ehkä mieluummin Suoritus, koska se on "standalone"-entiteetti (löytyy diskriminaattori)
   @Description("Osaamisen tunnustamisen kautta saatavan tutkinnon osan suorituksen selite")
   @OksaUri("tmpOKSAID629", "osaamisen tunnustaminen")
-  selite: Option[String]
+  selite: Option[LocalizedString]
 )
 
 case class Läsnäolotiedot(
@@ -256,7 +256,7 @@ case class Opiskeluoikeusjakso(
   opintojenRahoitus: Option[Koodistokoodiviite]
 ) extends Jakso
 
-case class Kunta(koodi: String, nimi: Option[String])
+case class Kunta(koodi: String, nimi: Option[LocalizedString])
 
 trait KoodiViite {
   def koodiarvo: String
@@ -352,14 +352,14 @@ sealed trait Organisaatio
 
   @Description("Yritys, jolla on y-tunnus")
   case class Yritys(
-    nimi: String,
+    nimi: LocalizedString,
     @RegularExpression("\\d{7}-\\d")
     yTunnus: String
   ) extends Organisaatio
 
   @Description("Tutkintotoimikunta")
   case class Tutkintotoimikunta(
-    nimi: String,
+    nimi: LocalizedString,
     @MinValue(1)
     tutkintotoimikunnanNumero: Int
   ) extends Organisaatio
