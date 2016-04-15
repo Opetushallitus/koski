@@ -1,6 +1,7 @@
 package fi.oph.tor.schema
 
 import java.time.LocalDate
+import fi.oph.tor.localization.LocalizedString
 import fi.oph.tor.localization.LocalizedString.unlocalized
 import fi.oph.tor.schema.generic.annotation.{MaxItems, MinItems, Description}
 
@@ -103,13 +104,13 @@ sealed trait AmmatillinenTutkinnonOsa extends Koulutusmoduuli
     pakollinen: Boolean,
     override val laajuus: Option[Laajuus],
     paikallinenKoodi: Option[Paikallinenkoodi] = None,
-    kuvaus: Option[String] = None
+    kuvaus: Option[LocalizedString] = None
   ) extends AmmatillinenTutkinnonOsa with KoodistostaLöytyväKoulutusmoduuli
 
   @Description("Paikallinen tutkinnon osa")
   case class PaikallinenTutkinnonosa(
     tunniste: Paikallinenkoodi,
-    kuvaus: String,
+    kuvaus: LocalizedString,
     @Description("Onko pakollinen osa tutkinnossa")
     pakollinen: Boolean,
     override val laajuus: Option[Laajuus]
@@ -120,7 +121,7 @@ case class AmmatillisenTutkinnonOsanLisätieto(
   @KoodistoUri("ammatillisentutkinnonosanlisatieto")
   tunniste: Koodistokoodiviite,
   @Description("Lisätiedon kuvaus siinä muodossa, kuin se näytetään todistuksella")
-  kuvaus: String
+  kuvaus: LocalizedString
 )
 
 case class OppisopimuksellinenJärjestämismuoto(
@@ -142,7 +143,7 @@ case class AmmatillinenArviointi(
 @Description("Näytön kuvaus")
 case class Näyttö(
   @Description("Vapaamuotoinen kuvaus suoritetusta näytöstä")
-  kuvaus: String,
+  kuvaus: LocalizedString,
   suorituspaikka: NäytönSuorituspaikka,
   arviointi: Option[NäytönArviointi]
 )
@@ -153,7 +154,7 @@ case class NäytönSuorituspaikka(
   @KoodistoUri("ammatillisennaytonsuorituspaikka")
   tunniste: Koodistokoodiviite,
   @Description("Vapaamuotoinen suorituspaikan kuvaus")
-  kuvaus: String
+  kuvaus: LocalizedString
 )
 
 case class NäytönArviointi (
