@@ -256,8 +256,6 @@ case class Opiskeluoikeusjakso(
   opintojenRahoitus: Option[Koodistokoodiviite]
 ) extends Jakso
 
-case class Kunta(koodi: String, nimi: Option[LocalizedString])
-
 trait KoodiViite {
   def koodiarvo: String
   def koodistoUri: String
