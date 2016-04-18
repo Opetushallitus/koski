@@ -4,8 +4,9 @@ import fi.oph.tor.arvosana.Arviointiasteikko
 import fi.oph.tor.koodisto.KoodistoViite
 import fi.oph.tor.localization.LocalizedString
 import fi.oph.tor.schema.{Suoritustapa, Koodistokoodiviite}
+import fi.oph.tor.tutkinto.Koulutustyyppi.Koulutustyyppi
 
-case class TutkintoRakenne(diaarinumero: String, suoritustavat: List[SuoritustapaJaRakenne], osaamisalat: List[Koodistokoodiviite], arviointiAsteikot: List[Arviointiasteikko]) {
+case class TutkintoRakenne(diaarinumero: String, koulutustyyppi: Koulutustyyppi, suoritustavat: List[SuoritustapaJaRakenne], osaamisalat: List[Koodistokoodiviite], arviointiAsteikot: List[Arviointiasteikko]) {
   def findSuoritustapaJaRakenne(suoritustapa: Suoritustapa): Option[SuoritustapaJaRakenne] = {
     suoritustavat.find(_.suoritustapa == suoritustapa.tunniste)
   }

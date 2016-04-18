@@ -2,15 +2,16 @@ package fi.oph.tor.tutkinto
 
 import fi.oph.tor.http.{HttpStatus, TorErrorCategory}
 import fi.oph.tor.schema._
+import fi.oph.tor.tutkinto.Koulutustyyppi._
 
 case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
   def validateTutkintoRakenne(suoritus: Suoritus) = suoritus match {
     case (todistus: PeruskoulunPäättötodistus) =>
-      HttpStatus.justStatus(getRakenne(todistus.koulutusmoduuli))
+      HttpStatus.justStatus(getRakenne(todistus.koulutusmoduuli, perusopetuksenKoulutustyypit))
     case (todistus: LukionOppimääränSuoritus) =>
-      HttpStatus.justStatus(getRakenne(todistus.koulutusmoduuli))
+      HttpStatus.justStatus(getRakenne(todistus.koulutusmoduuli, lukionKoulutustyypit))
     case (tutkintoSuoritus: AmmatillisenTutkinnonSuoritus) =>
-      getRakenne(tutkintoSuoritus.koulutusmoduuli) match {
+      getRakenne(tutkintoSuoritus.koulutusmoduuli, ammatillisetKoulutustyypit) match {
         case Left(status) => status
         case Right(rakenne) =>
           validateOsaamisala(tutkintoSuoritus.osaamisala.toList.flatten, rakenne).then(HttpStatus.fold(suoritus.osasuoritusLista.map {
@@ -29,7 +30,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
       HttpStatus.ok
   }
 
-  private def getRakenne(tutkinto: EPerusteistaLöytyväKoulutusmoduuli): Either[HttpStatus, TutkintoRakenne] = {
+  private def getRakenne(tutkinto: EPerusteistaLöytyväKoulutusmoduuli, koulutustyypit: List[Koulutustyyppi.Koulutustyyppi]): Either[HttpStatus, TutkintoRakenne] = {
     tutkinto.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_)) match {
       case None =>
         tutkinto.perusteenDiaarinumero match {
@@ -37,7 +38,11 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
           case None => Left(TorErrorCategory.ok()) // Ei diaarinumeroa -> ei validointia
         }
       case Some(rakenne) =>
-        Right(rakenne)
+        if (koulutustyypit.contains(rakenne.koulutustyyppi)) {
+          Right(rakenne)
+        } else {
+          Left(TorErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi("Perusteella " + rakenne.diaarinumero + " on väärä koulutustyyppi"))
+        }
     }
   }
 
@@ -58,7 +63,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
           case Some(tutkinto) =>
             // Tutkinnon osa toisesta tutkinnosta.
             // Ei validoida rakenteeseen kuuluvuutta, vain se, että rakenne löytyy diaarinumerolla
-            HttpStatus.justStatus(getRakenne(tutkinto))
+            HttpStatus.justStatus(getRakenne(tutkinto, ammatillisetKoulutustyypit))
           case None =>
             // Validoidaan tutkintorakenteen mukaisesti
             findTutkinnonOsa(suoritustapaJaRakenne, osa.tunniste) match {

@@ -16,10 +16,17 @@ class TorOppijaValidationPerusopetusSpec extends FunSpec with OpiskeluoikeusTest
     }
 
     describe("Tutkinnon perusteet ja rakenne") {
-      describe("Kun yritetään lisätä opinto-oikeus tuntemattomaan tutkinnon perusteeseen") {
+      describe("Kun yritetään lisätä suoritus tuntemattomaan tutkinnon perusteeseen") {
         it("palautetaan HTTP 400 virhe" ) {
           val suoritus = päättötodistusSuoritus.copy(koulutusmoduuli = päättötodistusSuoritus.koulutusmoduuli.copy(perusteenDiaarinumero = Some("39/xxx/2014")))
           putTodistus(suoritus) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Tutkinnon perustetta ei löydy diaarinumerolla 39/xxx/2014")))
+        }
+      }
+
+      describe("Kun yritetään lisätä suoritus ei-perusopetukselliseen tutkinnon perusteeseen") {
+        it("palautetaan HTTP 400 virhe" ) {
+          val suoritus = päättötodistusSuoritus.copy(koulutusmoduuli = päättötodistusSuoritus.koulutusmoduuli.copy(perusteenDiaarinumero = Some("39/011/2014")))
+          putTodistus(suoritus) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi("Perusteella 39/011/2014 on väärä koulutustyyppi")))
         }
       }
 

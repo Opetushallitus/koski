@@ -58,15 +58,21 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
 
     val osaamisalat: List[Koodistokoodiviite] = rakenne.osaamisalat.map(o => Koodistokoodiviite(o.arvo, Some(LocalizedString(o.nimi)), None, "osaamisala", None))
 
-    TutkintoRakenne(rakenne.diaarinumero, suoritustavat, osaamisalat, arviointiasteikkoViittaukset.toList.flatMap(arviointiasteikkoRepository.getArviointiasteikko(_)))
+    TutkintoRakenne(rakenne.diaarinumero, parseKoulutustyyppi(rakenne.koulutustyyppi), suoritustavat, osaamisalat, arviointiasteikkoViittaukset.toList.flatMap(arviointiasteikkoRepository.getArviointiasteikko(_)))
   }
 
+
+
   private def convertKoulutusTyyppi(ePerusteetKoulutustyyppi: String, suoritustapa: String): Koulutustyyppi = {
-    val tyyppi: Koulutustyyppi = ePerusteetKoulutustyyppi.substring(15).toInt
-    if (ePerusteetKoulutustyyppi == 1 && suoritustapa == "naytto") {
-      13 // <- Ammatillinen perustutkinto näyttötutkintona
+    val tyyppi: Koulutustyyppi = parseKoulutustyyppi(ePerusteetKoulutustyyppi)
+    if (ePerusteetKoulutustyyppi == Koulutustyyppi.ammatillinenPerustutkinto && suoritustapa == "naytto") {
+      Koulutustyyppi.ammatillinenPerustutkintoNäyttötutkintona
     } else {
       tyyppi
     }
+  }
+
+  def parseKoulutustyyppi(ePerusteetKoulutustyyppi: String): Koulutustyyppi = {
+    ePerusteetKoulutustyyppi.substring(15).toInt
   }
 }
