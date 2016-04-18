@@ -259,6 +259,13 @@ class AmmatillinenValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
           verifyResponseStatus(400, TorErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta " + desc + " puuttuu vahvistus, vaikka suorituksen tila on VALMIS"))
         ))
       }
+
+      describe("Vahvistuksen myöntäjähenkilö puuttuu") {
+        it("palautetaan HTTP 400") (put(copySuoritus(suoritus, tilaValmis, arviointiHyvä(), Some(Vahvistus(LocalDate.parse("2016-08-08"), stadinOpisto, Nil)))) (
+          verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema(".*array is too short.*".r))
+        ))
+      }
+
     }
 
     describe("Arviointi") {
