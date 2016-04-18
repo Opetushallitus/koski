@@ -8,8 +8,6 @@ import fi.oph.tor.localization.LocalizedString
 trait TutkintoRepository {
   def findTutkinnot(oppilaitosId: String, query: String): List[TutkintoPeruste]
 
-  def findByEPerusteDiaarinumero(diaarinumero: String): Option[TutkintoPeruste]
-
   def findPerusteRakenne(diaariNumero: String): Option[TutkintoRakenne]
 }
 
@@ -19,22 +17,14 @@ object TutkintoRepository {
 
 class TutkintoRepositoryImpl(eperusteet: EPerusteetRepository, arviointiAsteikot: ArviointiasteikkoRepository, koodistoPalvelu: KoodistoViitePalvelu) extends TutkintoRepository{
   def findTutkinnot(oppilaitosId: String, query: String): List[TutkintoPeruste] = {
-    ePerusteetToTutkinnot(eperusteet.findPerusteet(query))
-  }
-
-  def findByEPerusteDiaarinumero(diaarinumero: String): Option[TutkintoPeruste] = {
-    ePerusteetToTutkinnot(eperusteet.findPerusteetByDiaarinumero(diaarinumero)).headOption
+    eperusteet.findPerusteet(query) flatMap { peruste =>
+      peruste.koulutukset.map(koulutus => TutkintoPeruste(peruste.diaarinumero, koulutus.koulutuskoodiArvo, Some(LocalizedString(peruste.nimi))))
+    }
   }
 
   def findPerusteRakenne(diaariNumero: String): Option[TutkintoRakenne] = {
     eperusteet.findRakenne(diaariNumero)
       .map(rakenne => EPerusteetTutkintoRakenneConverter.convertRakenne(rakenne)(arviointiAsteikot, koodistoPalvelu))
-  }
-
-  private def ePerusteetToTutkinnot(perusteet: List[EPeruste]) = {
-    perusteet.flatMap { peruste =>
-      peruste.koulutukset.map(koulutus => TutkintoPeruste(peruste.diaarinumero, koulutus.koulutuskoodiArvo, Some(LocalizedString(peruste.nimi))))
-    }
   }
 }
 
