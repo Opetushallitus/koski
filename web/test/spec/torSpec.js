@@ -498,7 +498,7 @@ describe('TOR', function() {
           wait.until(function() { return S('.todistus.ammatillinenperustutkinto').is(":visible") })
         )
         it('näytetään', function() {
-
+          expect(S('.tutkinnon-osa.100431 .arvosana-kirjaimin').text()).to.equal('Kiitettävä')
         })
       })
     })

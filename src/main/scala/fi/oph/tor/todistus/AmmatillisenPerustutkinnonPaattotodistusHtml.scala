@@ -44,7 +44,8 @@ object AmmatillisenPerustutkinnonPaattotodistusHtml {
                 val xs = päätasot.flatMap { m =>
                   <tr class="rakennemoduuli"><td class="nimi">{m.nimi}</td></tr> ::
                   osasuoritukset.filter(osasuoritus => goesTo(m, osasuoritus.koulutusmoduuli)).map { osasuoritus =>
-                    <tr class="tutkinnon-osa">
+                    val className = "tutkinnon-osa " + osasuoritus.koulutusmoduuli.tunniste.koodiarvo
+                    <tr class={className}>
                       <td class="nimi">{ osasuoritus.koulutusmoduuli.nimi }</td>
                       <td class="laajuus">{ osasuoritus.koulutusmoduuli.laajuus.map(_.arvo.toInt).getOrElse("") }</td>
                       <td class="arvosana-kirjaimin">{osasuoritus.arvosanaKirjaimin.get("fi").capitalize}</td>
