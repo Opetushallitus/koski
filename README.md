@@ -299,3 +299,4 @@ Koski osaa tarvittaessa luoda käytettävät koodistot ja koodistopalveluun. Kä
 ### LDAP
 
 TORin käyttäjäautentikaatio on toteutettu Opintopolku-järjestelmän LDAPia vasten. LDAP-palvelimen osoite ja tunnukset konfiguroidaan `ldap.host`, `ldap.userdn` ja `ldap.password` -asetuksilla.
+Mon Apr 18 14:18:11 EEST 2016
