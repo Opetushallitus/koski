@@ -59,5 +59,6 @@ case class Peruskoulutus(
  @KoodistoUri("koulutus")
  @KoodistoKoodiarvo("201100")
  @OksaUri("tmpOKSAID560", "tutkinto")
- tunniste: Koodistokoodiviite = Koodistokoodiviite("201100", koodistoUri = "koulutus")
-) extends KoodistostaLöytyväKoulutusmoduuli
+ tunniste: Koodistokoodiviite = Koodistokoodiviite("201100", koodistoUri = "koulutus"),
+ perusteenDiaarinumero: Option[String] = Some("104/011/2014")
+) extends KoodistostaLöytyväKoulutusmoduuli with EPerusteistaLöytyväKoulutusmoduuli

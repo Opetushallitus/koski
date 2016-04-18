@@ -90,9 +90,8 @@ case class AmmatillinenTutkintoKoulutus(
  @KoodistoUri("koulutus")
  @OksaUri("tmpOKSAID560", "tutkinto")
  tunniste: Koodistokoodiviite,
- @Description("Tutkinnon perusteen diaarinumero (pakollinen). Ks. ePerusteet-palvelu")
  perusteenDiaarinumero: Option[String]
-) extends KoodistostaLöytyväKoulutusmoduuli
+) extends KoodistostaLöytyväKoulutusmoduuli with EPerusteistaLöytyväKoulutusmoduuli
 
 sealed trait AmmatillinenTutkinnonOsa extends Koulutusmoduuli
   @Description("Opetussuunnitelmaan kuuluva tutkinnon osa")

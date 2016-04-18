@@ -37,7 +37,7 @@ case class LukionOppimääränSuoritus(
   toimipiste: OrganisaatioWithOid,
   @KoodistoKoodiarvo("lukionoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"),
-  koulutusmoduuli: Ylioppilastutkinto = Ylioppilastutkinto(),
+  koulutusmoduuli: Ylioppilastutkinto = Ylioppilastutkinto(perusteenDiaarinumero = Some("60/011/2015")),
   arviointi: Option[List[YleissivistävänkoulutuksenArviointi]] = None,
   vahvistus: Option[Vahvistus] = None,
   override val osasuoritukset: Option[List[LukionOppiaineenSuoritus]]
@@ -90,8 +90,9 @@ case class Ylioppilastutkinto(
  @KoodistoUri("koulutus")
  @KoodistoKoodiarvo("301000")
  @OksaUri("tmpOKSAID560", "tutkinto")
- tunniste: Koodistokoodiviite = Koodistokoodiviite("301000", koodistoUri = "koulutus")
-) extends KoodistostaLöytyväKoulutusmoduuli
+ tunniste: Koodistokoodiviite = Koodistokoodiviite("301000", koodistoUri = "koulutus"),
+ perusteenDiaarinumero: Option[String]
+) extends KoodistostaLöytyväKoulutusmoduuli with EPerusteistaLöytyväKoulutusmoduuli
 
 case class LukionMatematiikka(
   @KoodistoKoodiarvo("MA")
