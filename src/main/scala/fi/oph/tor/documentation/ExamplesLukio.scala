@@ -39,8 +39,6 @@ object ExamplesLukio {
     ))
   )
 
-  private val vahvistus: Some[Vahvistus] = Some(Vahvistus(päivä = date(2016, 6, 4), myöntäjäOrganisaatio = Some(jyväskylänNormaalikoulu), myöntäjäHenkilöt = Some(List(OrganisaatioHenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu)))))
-
   val päättötodistus = TorOppija(
     exampleHenkilö,
     List(LukionOpiskeluoikeus(
@@ -206,13 +204,15 @@ object ExamplesLukio {
 object LukioExampleData {
   val exampleHenkilö = MockOppijat.lukiolainen.vainHenkilötiedot
 
+  val vahvistus: Some[Vahvistus] = Some(Vahvistus(päivä = date(2016, 6, 4), myöntäjäOrganisaatio = jyväskylänNormaalikoulu, myöntäjäHenkilöt = Some(List(OrganisaatioHenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu)))))
+
   def suoritus(aine: LukionOppiaine): LukionOppiaineenSuoritus = LukionOppiaineenSuoritus(
     koulutusmoduuli = aine,
     paikallinenId = None,
     suorituskieli = None,
     arviointi = None,
     tila = tilaValmis,
-    vahvistus = Some(Vahvistus(date(2016, 6, 4))),
+    vahvistus = vahvistus,
     osasuoritukset = None
   )
 
@@ -220,7 +220,7 @@ object LukioExampleData {
     koulutusmoduuli = kurssi,
     suorituskieli = None,
     paikallinenId = None,
-    vahvistus = Some(Vahvistus(date(2016, 6, 4))),
+    vahvistus = vahvistus,
     arviointi = None,
     tila = tilaValmis
   )

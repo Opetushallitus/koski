@@ -84,7 +84,7 @@ object AmmatillinenExampleData {
   lazy val arviointiHyväksytty: Some[List[AmmatillinenArviointi]] = Some(List(AmmatillinenArviointi(
     arvosana = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)), Some(date(2013, 3, 20)),
     arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen"))))))
-
+  def vahvistus(date: LocalDate) = Some(Vahvistus(date, stadinAmmattiopisto, Some(List(OrganisaatioHenkilö("Keijo Perttilä", "rehtori", stadinAmmattiopisto)))))
   lazy val paikallisenOsanSuoritus = AmmatillisenTutkinnonosanSuoritus(
     koulutusmoduuli = PaikallinenTutkinnonosa(Paikallinenkoodi("123456789", "Pintavauriotyöt", "kallion_oma_koodisto"), "Opetellaan korjaamaan pinnallisia vaurioita", false, None),
     hyväksiluku = None,
@@ -96,7 +96,7 @@ object AmmatillinenExampleData {
     alkamispäivä = None,
     toimipiste = toimipiste,
     arviointi = arviointiHyväksytty,
-    vahvistus = Some(Vahvistus(date(2013, 5, 31), Some(stadinAmmattiopisto), None))
+    vahvistus = vahvistus(date(2013, 5, 31))
   )
 
   lazy val arviointiKiitettävä = Some(
@@ -182,7 +182,7 @@ object ExamplesAmmatillinen {
         alkamispäivä = None,
         toimipiste = toimipiste,
         arviointi = arviointiKiitettävä,
-        vahvistus = Some(Vahvistus(date(2014, 11, 8), Some(stadinAmmattiopisto), None))
+        vahvistus = vahvistus(date(2014, 11, 8))
       )
     ))
   ))
@@ -206,7 +206,7 @@ object ExamplesAmmatillinen {
         alkamispäivä = None,
         toimipiste = toimipiste,
         arviointi = arviointiKiitettävä,
-        vahvistus = Some(Vahvistus(date(2014, 11, 8), Some(stadinAmmattiopisto), None))
+        vahvistus = vahvistus(date(2014, 11, 8))
       )
     ))
   ))
@@ -257,7 +257,7 @@ object ExamplesAmmatillinen {
                   )
                 )
               ),
-              vahvistus = Some(Vahvistus(date(2014, 11, 8), Some(stadinAmmattiopisto), None))
+              vahvistus = vahvistus(date(2014, 11, 8))
             )
           ))
         )),
@@ -320,8 +320,7 @@ object AmmatillinenTodistusExample {
           alkamisPäivä = None,
           toimipiste = toimipiste,
           arviointi = arviointiHyväksytty,
-          vahvistus = Some(Vahvistus(date(2016, 5, 31), Some(stadinAmmattiopisto), Some(List(
-            OrganisaatioHenkilö("Keijo Perttilä", "rehtori", stadinAmmattiopisto))))),
+          vahvistus = vahvistus(date(2016, 5, 31)),
           osasuoritukset = Some(List(
             tutkinnonOsanSuoritus("100431", "Kestävällä tavalla toimiminen", k3, 40),
             tutkinnonOsanSuoritus("100432", "Ympäristön hoitaminen", k3, 35),
@@ -371,7 +370,8 @@ object AmmatillinenTodistusExample {
       alkamispäivä = None,
       toimipiste = toimipiste,
       arviointi = Some(List(AmmatillinenArviointi(arvosana = arvosana, Some(date(2014, 10, 20))))),
-      vahvistus = Some(Vahvistus(date(2016, 5, 31), Some(stadinAmmattiopisto), None)))
+      vahvistus = vahvistus(date(2016, 5, 31))
+    )
   }
 }
 
@@ -404,8 +404,8 @@ object AmmatillinenFullExample {
           alkamisPäivä = None,
           toimipiste = toimipiste,
           arviointi = arviointiHyväksytty,
-          vahvistus = Some(Vahvistus(date(2016, 1, 9), Some(stadinAmmattiopisto), Some(List(
-            OrganisaatioHenkilö("Jack Bauer", "puheenjohtaja", tutkintotoimikunta),
+          vahvistus = Some(Vahvistus(date(2016, 1, 9), stadinAmmattiopisto, Some(List(
+            OrganisaatioHenkilö("Mauri Bauer", "puheenjohtaja", tutkintotoimikunta),
             OrganisaatioHenkilö("Keijo Perttilä", "rehtori", stadinAmmattiopisto))))),
           osasuoritukset = Some(tutkinnonOsat)
         )),
@@ -440,7 +440,7 @@ object AmmatillinenFullExample {
         Some(date(2012, 10, 20)),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
-      vahvistus = Some(Vahvistus(date(2013, 1, 31), Some(stadinAmmattiopisto), None))
+      vahvistus = vahvistus(date(2013, 1, 31))
     ),
     paikallisenOsanSuoritus,
     AmmatillisenTutkinnonosanSuoritus(
@@ -460,7 +460,7 @@ object AmmatillinenFullExample {
         Some(date(2013, 4, 1)),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
-      vahvistus = Some(Vahvistus(date(2013, 5, 31), Some(stadinAmmattiopisto), None))
+      vahvistus = vahvistus(date(2013, 5, 31))
     ),
     AmmatillisenTutkinnonosanSuoritus(
       koulutusmoduuli = OpsTutkinnonosa(
@@ -479,7 +479,7 @@ object AmmatillinenFullExample {
         Some(date(2014, 10, 20)),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
-      vahvistus = Some(Vahvistus(date(2014, 11, 8), Some(stadinAmmattiopisto), None))
+      vahvistus = vahvistus(date(2014, 11, 8))
     ),
     AmmatillisenTutkinnonosanSuoritus(
       koulutusmoduuli = OpsTutkinnonosa(
@@ -498,7 +498,7 @@ object AmmatillinenFullExample {
         Some(date(2015, 4, 1)),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
-      vahvistus = Some(Vahvistus(date(2015, 5, 1), Some(stadinAmmattiopisto), None))
+      vahvistus = vahvistus(date(2015, 5, 1))
     ),
     AmmatillisenTutkinnonosanSuoritus(
       koulutusmoduuli = OpsTutkinnonosa(
@@ -517,7 +517,7 @@ object AmmatillinenFullExample {
         Some(date(2016, 2, 1)),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
-      vahvistus = Some(Vahvistus(date(2016, 5, 1), Some(stadinAmmattiopisto), None))
+      vahvistus = vahvistus(date(2016, 5, 1))
     )
   )
 }

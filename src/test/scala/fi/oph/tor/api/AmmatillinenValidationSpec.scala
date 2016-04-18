@@ -170,7 +170,7 @@ class AmmatillinenValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
 
           describe("Kun tutkinto on VALMIS-tilassa ja sillä on osa, joka on KESKEN-tilassa") {
             val opiskeluOikeus = opiskeluoikeus().copy(suoritukset = List(tutkintoSuoritus.copy(
-              suoritustapa = tutkinnonSuoritustapaNäyttönä, tila = tilaValmis, vahvistus = vahvistus,osasuoritukset = Some(List(tutkinnonOsaSuoritus))
+              suoritustapa = tutkinnonSuoritustapaNäyttönä, tila = tilaValmis, vahvistus = vahvistus(LocalDate.parse("2016-08-08")),osasuoritukset = Some(List(tutkinnonOsaSuoritus))
             )))
 
             it("palautetaan HTTP 400") (putOpiskeluOikeus(opiskeluOikeus) (
@@ -229,7 +229,7 @@ class AmmatillinenValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
         ))
       }
       describe("Vahvistus annettu") {
-        it("palautetaan HTTP 400") (put(copySuoritus(suoritus, tila, arviointiHyvä(), vahvistus)) (
+        it("palautetaan HTTP 400") (put(copySuoritus(suoritus, tila, arviointiHyvä(), vahvistus(LocalDate.parse("2016-08-08")))) (
           verifyResponseStatus(400, TorErrorCategory.badRequest.validation.tila.vahvistusVäärässäTilassa("Suorituksella " + desc + " on vahvistus, vaikka suorituksen tila on " + tila.koodiarvo))
         ))
       }
@@ -244,12 +244,12 @@ class AmmatillinenValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
 
     describe("Kun suorituksen tila on VALMIS") {
       describe("Suorituksella arviointi ja vahvistus") {
-        it("palautetaan HTTP 200") (put(copySuoritus(suoritus, tilaValmis, arviointiHyvä(), vahvistus)) (
+        it("palautetaan HTTP 200") (put(copySuoritus(suoritus, tilaValmis, arviointiHyvä(), vahvistus(LocalDate.parse("2016-08-08")))) (
           verifyResponseStatus(200)
         ))
       }
       describe("Vahvistus annettu, mutta arviointi puuttuu") {
-        it("palautetaan HTTP 200") (put(copySuoritus(suoritus, tilaValmis, None, vahvistus)) (
+        it("palautetaan HTTP 200") (put(copySuoritus(suoritus, tilaValmis, None, vahvistus(LocalDate.parse("2016-08-08")))) (
           verifyResponseStatus(200)
         ))
       }
@@ -275,7 +275,7 @@ class AmmatillinenValidationSpec extends FunSpec with OpiskeluOikeusTestMethods 
 
     describe("Suorituksen päivämäärät") {
       def päivämäärillä(alkamispäivä: String, arviointipäivä: String, vahvistuspäivä: String) = {
-        copySuoritus(suoritus, tilaValmis, arviointiHyvä(Some(LocalDate.parse(arviointipäivä))), Some(Vahvistus(LocalDate.parse(vahvistuspäivä))), Some(LocalDate.parse(alkamispäivä)))
+        copySuoritus(suoritus, tilaValmis, arviointiHyvä(Some(LocalDate.parse(arviointipäivä))), vahvistus(LocalDate.parse(vahvistuspäivä)), Some(LocalDate.parse(alkamispäivä)))
       }
 
       describe("Päivämäärät kunnossa") {
