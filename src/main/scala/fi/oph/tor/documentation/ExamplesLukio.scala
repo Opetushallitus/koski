@@ -39,6 +39,8 @@ object ExamplesLukio {
     ))
   )
 
+  private val vahvistus: Some[Vahvistus] = Some(Vahvistus(päivä = date(2016, 6, 4), myöntäjäOrganisaatio = Some(jyväskylänNormaalikoulu), myöntäjäHenkilöt = Some(List(OrganisaatioHenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu)))))
+
   val päättötodistus = TorOppija(
     exampleHenkilö,
     List(LukionOpiskeluoikeus(
@@ -54,7 +56,7 @@ object ExamplesLukio {
           paikallinenId = None,
           suorituskieli = suomenKieli,
           tila = tilaValmis,
-          vahvistus = Some(Vahvistus(date(2016, 6, 4))),
+          vahvistus = vahvistus,
           toimipiste = jyväskylänNormaalikoulu,
           osasuoritukset = Some(List(
             suoritus(äidinkieli("AI1")).copy(arviointi = arviointi(9)).copy(osasuoritukset = Some(List(
