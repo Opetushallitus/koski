@@ -7,7 +7,10 @@ import fi.oph.tor.tutkinto.{RakenneModuuli, SuoritustapaJaRakenne, TutkintoRaken
 object AmmatillisenPerustutkinnonPaattotodistusHtml {
   def renderAmmatillisenPerustutkinnonPaattotodistus(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, tutkintoSuoritus: AmmatillisenTutkinnonSuoritus, rakenne: SuoritustapaJaRakenne) = {
     val dateFormatter = DateTimeFormatter.ofPattern("d.M.yyyy")
-    val päätasot: List[RakenneModuuli] = rakenne.rakenne.asInstanceOf[RakenneModuuli].osat.map(_.asInstanceOf[RakenneModuuli])
+    val päätasot: List[RakenneModuuli] = rakenne.rakenne match {
+      case Some(moduuli: RakenneModuuli) => moduuli.osat.map(_.asInstanceOf[RakenneModuuli])
+      case _ => Nil
+    }
     val osasuoritukset = tutkintoSuoritus.osasuoritukset.toList.flatten
     def contains(rakenne: RakenneModuuli, tutkinnonOsa: AmmatillinenTutkinnonOsa) = {
       rakenne.tutkinnonOsat.map(_.tunniste).contains(tutkinnonOsa.tunniste)
