@@ -6,7 +6,7 @@ import fi.oph.tor.koodisto.KoodistoViite
 import fi.oph.tor.localization.LocalizedString.unlocalized
 import fi.oph.tor.localization.LocalizedString
 import fi.oph.tor.log.Loggable
-import fi.oph.tor.schema.generic.annotation.{Description, MinValue, ReadOnly, RegularExpression}
+import fi.oph.tor.schema.generic.annotation._
 
 
 case class TorOppija(
@@ -195,7 +195,8 @@ case class Vahvistus(
   @Description("Tutkinnon tai tutkinnonosan vahvistettu suorituspäivämäärä, eli päivämäärä jolloin suoritus on hyväksyttyä todennettua osaamista")
   päivä: LocalDate,
   myöntäjäOrganisaatio: Organisaatio,
-  myöntäjäHenkilöt: Option[List[OrganisaatioHenkilö]] = None
+  @MinItems(1)
+  myöntäjäHenkilöt: List[OrganisaatioHenkilö]
 )
 
 case class OrganisaatioHenkilö(

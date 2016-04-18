@@ -54,7 +54,8 @@ trait OpiskeluOikeusData {
   val tilaKesken: Koodistokoodiviite = Koodistokoodiviite("KESKEN", "suorituksentila")
   val tilaKeskeytynyt: Koodistokoodiviite = Koodistokoodiviite("KESKEYTYNYT", "suorituksentila")
   def vahvistus(date: LocalDate): Some[Vahvistus] = {
-    Some(Vahvistus(date, OidOrganisaatio(MockOrganisaatiot.stadinAmmattiopisto)))
+    val stadinOpisto: OidOrganisaatio = OidOrganisaatio(MockOrganisaatiot.stadinAmmattiopisto)
+    Some(Vahvistus(date, stadinOpisto, List(OrganisaatioHenkilö("Teppo Testaaja", "rehtori", stadinOpisto))))
   }
 
   val tutkinnonSuoritustapaNäyttönä = Some(Suoritustapa(Koodistokoodiviite("naytto", "suoritustapa")))

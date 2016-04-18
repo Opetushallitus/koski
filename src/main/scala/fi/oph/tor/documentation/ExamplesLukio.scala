@@ -204,7 +204,7 @@ object ExamplesLukio {
 object LukioExampleData {
   val exampleHenkilö = MockOppijat.lukiolainen.vainHenkilötiedot
 
-  val vahvistus: Some[Vahvistus] = Some(Vahvistus(päivä = date(2016, 6, 4), myöntäjäOrganisaatio = jyväskylänNormaalikoulu, myöntäjäHenkilöt = Some(List(OrganisaatioHenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu)))))
+  val vahvistus: Some[Vahvistus] = Some(Vahvistus(päivä = date(2016, 6, 4), myöntäjäOrganisaatio = jyväskylänNormaalikoulu, myöntäjäHenkilöt = List(OrganisaatioHenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))
 
   def suoritus(aine: LukionOppiaine): LukionOppiaineenSuoritus = LukionOppiaineenSuoritus(
     koulutusmoduuli = aine,

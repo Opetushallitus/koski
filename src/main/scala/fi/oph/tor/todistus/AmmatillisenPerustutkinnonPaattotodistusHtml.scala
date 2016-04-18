@@ -65,7 +65,7 @@ object AmmatillisenPerustutkinnonPaattotodistusHtml {
             <span class="paikkakunta">Tampere<!-- TODO: paikkakuntaa ei ole datassa --></span>
             <span class="date">{tutkintoSuoritus.vahvistus.map(_.päivä).map(dateFormatter.format(_)).getOrElse("")}</span>
             {
-            tutkintoSuoritus.vahvistus.flatMap(_.myöntäjäHenkilöt).toList.flatten.map { myöntäjäHenkilö =>
+            tutkintoSuoritus.vahvistus.map(_.myöntäjäHenkilöt).toList.flatten.map { myöntäjäHenkilö =>
               <span class="allekirjoitus">
                 <div class="viiva">&nbsp;</div>
                 <div class="nimenselvennys">{myöntäjäHenkilö.nimi}</div>

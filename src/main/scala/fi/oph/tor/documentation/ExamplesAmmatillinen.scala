@@ -84,7 +84,7 @@ object AmmatillinenExampleData {
   lazy val arviointiHyväksytty: Some[List[AmmatillinenArviointi]] = Some(List(AmmatillinenArviointi(
     arvosana = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)), Some(date(2013, 3, 20)),
     arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen"))))))
-  def vahvistus(date: LocalDate) = Some(Vahvistus(date, stadinAmmattiopisto, Some(List(OrganisaatioHenkilö("Keijo Perttilä", "rehtori", stadinAmmattiopisto)))))
+  def vahvistus(date: LocalDate) = Some(Vahvistus(date, stadinAmmattiopisto, List(OrganisaatioHenkilö("Keijo Perttilä", "rehtori", stadinAmmattiopisto))))
   lazy val paikallisenOsanSuoritus = AmmatillisenTutkinnonosanSuoritus(
     koulutusmoduuli = PaikallinenTutkinnonosa(Paikallinenkoodi("123456789", "Pintavauriotyöt", "kallion_oma_koodisto"), "Opetellaan korjaamaan pinnallisia vaurioita", false, None),
     hyväksiluku = None,
@@ -404,9 +404,9 @@ object AmmatillinenFullExample {
           alkamisPäivä = None,
           toimipiste = toimipiste,
           arviointi = arviointiHyväksytty,
-          vahvistus = Some(Vahvistus(date(2016, 1, 9), stadinAmmattiopisto, Some(List(
+          vahvistus = Some(Vahvistus(date(2016, 1, 9), stadinAmmattiopisto, List(
             OrganisaatioHenkilö("Mauri Bauer", "puheenjohtaja", tutkintotoimikunta),
-            OrganisaatioHenkilö("Keijo Perttilä", "rehtori", stadinAmmattiopisto))))),
+            OrganisaatioHenkilö("Keijo Perttilä", "rehtori", stadinAmmattiopisto)))),
           osasuoritukset = Some(tutkinnonOsat)
         )),
         hojks = None,

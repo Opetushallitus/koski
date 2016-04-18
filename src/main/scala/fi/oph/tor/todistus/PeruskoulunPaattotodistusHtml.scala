@@ -63,7 +63,7 @@ object PeruskoulunPaattotodistusHtml {
             <span class="paikkakunta">Tampere<!-- TODO: paikkakuntaa ei ole datassa --></span>
             <span class="date">{päättötodistus.vahvistus.map(_.päivä).map(dateFormatter.format(_)).getOrElse("")}</span>
             {
-            päättötodistus.vahvistus.flatMap(_.myöntäjäHenkilöt).toList.flatten.map { myöntäjäHenkilö =>
+            päättötodistus.vahvistus.map(_.myöntäjäHenkilöt).toList.flatten.map { myöntäjäHenkilö =>
               <span class="allekirjoitus">
                 <div class="viiva">&nbsp;</div>
                 <div class="nimenselvennys">{myöntäjäHenkilö.nimi}</div>
