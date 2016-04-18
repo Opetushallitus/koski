@@ -26,9 +26,6 @@ case class PerusopetuksenOpiskeluoikeus(
 }
 
 case class PeruskoulunPäättötodistus(
-  @KoodistoKoodiarvo("peruskoulunpaattotodistus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("peruskoulunpaattotodistus", koodistoUri = "suorituksentyyppi"),
-  koulutusmoduuli: Peruskoulutus,
   paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
@@ -36,8 +33,11 @@ case class PeruskoulunPäättötodistus(
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Vahvistus] = None,
+  @KoodistoKoodiarvo("peruskoulunpaattotodistus")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("peruskoulunpaattotodistus", koodistoUri = "suorituksentyyppi"),
+  koulutusmoduuli: Peruskoulutus,
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
-  override val osasuoritukset: Option[List[PeruskoulunOppiaineenSuoritus]]
+  override val osasuoritukset: Option[List[PeruskoulunOppiaineenSuoritus]] = None
 ) extends Suoritus {
   def arviointi: Option[List[Arviointi]] = None
 }
@@ -55,10 +55,10 @@ case class PeruskoulunOppiaineenSuoritus(
 
 @Description("Peruskoulutus")
 case class Peruskoulutus(
+ perusteenDiaarinumero: Option[String],
  @Description("Tutkinnon 6-numeroinen tutkintokoodi")
  @KoodistoUri("koulutus")
  @KoodistoKoodiarvo("201100")
  @OksaUri("tmpOKSAID560", "tutkinto")
- tunniste: Koodistokoodiviite = Koodistokoodiviite("201100", koodistoUri = "koulutus"),
- perusteenDiaarinumero: Option[String] = Some("104/011/2014")
+ tunniste: Koodistokoodiviite = Koodistokoodiviite("201100", koodistoUri = "koulutus")
 ) extends KoodistostaLöytyväKoulutusmoduuli with EPerusteistaLöytyväKoulutusmoduuli

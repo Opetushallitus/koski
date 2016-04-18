@@ -1,35 +1,20 @@
 package fi.oph.tor.api
 
 import fi.oph.tor.json.Json
+import fi.oph.tor.json.Json._
 import fi.oph.tor.koodisto.{KoodistoViitePalvelu, MockKoodistoPalvelu}
 import fi.oph.tor.schema._
 import org.json4s._
 import org.scalatest.Matchers
 
-trait OpiskeluOikeusTestMethods extends LocalJettyHttpSpecification with Matchers with OpiskeluOikeusData {
+trait OpiskeluOikeusTestMethods[Oikeus <: Opiskeluoikeus] extends LocalJettyHttpSpecification with Matchers with OpiskeluOikeusData[Oikeus] {
   val koodisto: KoodistoViitePalvelu = KoodistoViitePalvelu(MockKoodistoPalvelu)
   val oppijaPath = "/api/oppija"
 
   implicit def any2j(o: AnyRef): JValue = Json.toJValue(o)
 
-  def putTutkinnonOsaSuoritus[A](tutkinnonOsaSuoritus: AmmatillisenTutkinnonosanSuoritus, tutkinnonSuoritustapa: Option[Suoritustapa])(f: => A) = {
-    val s = tutkintoSuoritus.copy(suoritustapa = tutkinnonSuoritustapa, osasuoritukset = Some(List(tutkinnonOsaSuoritus)))
-
-    putTutkintoSuoritus(s)(f)
-  }
-
-  def putTutkintoSuoritus[A](suoritus: AmmatillisenTutkinnonSuoritus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
-    val opiskeluOikeus = opiskeluoikeus().copy(suoritukset = List(suoritus))
-
-    putOppija(makeOppija(henkilö, List(Json.toJValue(opiskeluOikeus))), headers)(f)
-  }
-
   def putOpiskeluOikeus[A](opiskeluOikeus: Opiskeluoikeus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
     putOppija(makeOppija(henkilö, List(opiskeluOikeus)), headers)(f)
-  }
-
-  def putOpiskeluOikeusMerged[A](opiskeluOikeus: JValue, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
-    putOppija(makeOppija(henkilö, List(Json.toJValue(opiskeluoikeus()).merge(opiskeluOikeus))), headers)(f)
   }
 
   def putHenkilö[A](henkilö: Henkilö)(f: => A): Unit = {
@@ -62,4 +47,9 @@ trait OpiskeluOikeusTestMethods extends LocalJettyHttpSpecification with Matcher
       Json.read[TorOppija](body).opiskeluoikeudet.last
     }
   }
+
+  def makeOppija(henkilö: Henkilö = defaultHenkilö, opiskeluOikeudet: List[AnyRef] = List(defaultOpiskeluoikeus)): JValue = toJValue(Map(
+    "henkilö" -> henkilö,
+    "opiskeluoikeudet" -> opiskeluOikeudet
+  ))
 }

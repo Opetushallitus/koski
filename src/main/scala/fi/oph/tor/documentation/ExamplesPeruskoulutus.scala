@@ -23,6 +23,8 @@ object PeruskoulutusExampleData {
   def vuosiviikkotuntia(määrä: Double): Some[Laajuus] = Some(Laajuus(määrä.toFloat, Koodistokoodiviite("3", Some("Vuosiviikkotuntia"), "opintojenlaajuusyksikko")))
 
   val exampleHenkilö = MockOppijat.koululainen.vainHenkilötiedot
+
+  val peruskoulutus = Peruskoulutus(Some("104/011/2014"))
 }
 
 object ExamplesPeruskoulutus {
@@ -60,7 +62,7 @@ object ExamplesPeruskoulutus {
       oppilaitos = jyväskylänNormaalikoulu, None,
       suoritukset = List(
         PeruskoulunPäättötodistus(
-          koulutusmoduuli = Peruskoulutus(),
+          koulutusmoduuli = peruskoulutus,
           paikallinenId = None,
           suorituskieli = None,
           tila = tilaValmis,

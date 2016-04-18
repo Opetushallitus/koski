@@ -5,6 +5,10 @@ import fi.oph.tor.schema._
 
 case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
   def validateTutkintoRakenne(suoritus: Suoritus) = suoritus match {
+    case (todistus: PeruskoulunPäättötodistus) =>
+      HttpStatus.justStatus(getRakenne(todistus.koulutusmoduuli))
+    case (todistus: LukionOppimääränSuoritus) =>
+      HttpStatus.justStatus(getRakenne(todistus.koulutusmoduuli))
     case (tutkintoSuoritus: AmmatillisenTutkinnonSuoritus) =>
       getRakenne(tutkintoSuoritus.koulutusmoduuli) match {
         case Left(status) => status
@@ -25,7 +29,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
       HttpStatus.ok
   }
 
-  private def getRakenne(tutkinto: AmmatillinenTutkintoKoulutus): Either[HttpStatus, TutkintoRakenne] = {
+  private def getRakenne(tutkinto: EPerusteistaLöytyväKoulutusmoduuli): Either[HttpStatus, TutkintoRakenne] = {
     tutkinto.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_)) match {
       case None =>
         tutkinto.perusteenDiaarinumero match {
@@ -53,13 +57,8 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
         suoritus.tutkinto match {
           case Some(tutkinto) =>
             // Tutkinnon osa toisesta tutkinnosta.
-            getRakenne(tutkinto) match {
-              case Right(rakenne) =>
-                // Ei validoida rakenteeseen kuuluvuutta.
-                HttpStatus.ok
-              case Left(status) =>
-                status
-            }
+            // Ei validoida rakenteeseen kuuluvuutta, vain se, että rakenne löytyy diaarinumerolla
+            HttpStatus.justStatus(getRakenne(tutkinto))
           case None =>
             // Validoidaan tutkintorakenteen mukaisesti
             findTutkinnonOsa(suoritustapaJaRakenne, osa.tunniste) match {

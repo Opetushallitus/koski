@@ -4,7 +4,7 @@ import fi.oph.tor.json.Json
 import fi.oph.tor.json.Json._
 
 class MockEPerusteetRepository extends EPerusteetRepository {
-  lazy val rakenteet: List[EPerusteRakenne] = List("612", "33827", "1013059").map { id =>
+  lazy val rakenteet: List[EPerusteRakenne] = List("612", "33827", "1013059", "rakenne-perusopetus").map { id =>
     Json.readFile("src/main/resources/mockdata/eperusteet/" + id + ".json").extract[EPerusteRakenne]
   }
 
@@ -18,8 +18,6 @@ class MockEPerusteetRepository extends EPerusteetRepository {
   }
 
   def findRakenne(diaariNumero: String): Option[EPerusteRakenne] = {
-    findPerusteetByDiaarinumero(diaariNumero).headOption.flatMap { peruste =>
-      Json.readFileIfExists("src/main/resources/mockdata/eperusteet/" + peruste.id + ".json").map(_.extract[EPerusteRakenne])
-    }
+    rakenteet.find(_.diaarinumero == diaariNumero)
   }
 }

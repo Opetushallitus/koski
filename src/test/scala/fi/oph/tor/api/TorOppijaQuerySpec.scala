@@ -5,10 +5,11 @@ import java.time.LocalDate
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.json.Json
 import fi.oph.tor.log.AuditLogTester
-import fi.oph.tor.schema.{TaydellisetHenkilötiedot, TorOppija, UusiHenkilö}
+import fi.oph.tor.schema._
 import org.scalatest.{FunSpec, Matchers}
+import java.time.LocalDate.{of => date}
 
-class TorOppijaQuerySpec extends FunSpec with OpiskeluOikeusTestMethods with Matchers {
+class TorOppijaQuerySpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatillinen with Matchers {
   val teija = UusiHenkilö("150995-914X", "Teija", "Teija", "Tekijä")
 
   AuditLogTester.setup
@@ -17,8 +18,8 @@ class TorOppijaQuerySpec extends FunSpec with OpiskeluOikeusTestMethods with Mat
     describe("kun haku osuu") {
       it("palautetaan hakutulokset") {
         resetFixtures
-        putOpiskeluOikeusMerged(Map("päättymispäivä"-> "2016-01-09")) {
-          putOpiskeluOikeusMerged(Map("päättymispäivä"-> "2013-01-09"), teija) {
+        putOpiskeluOikeus(defaultOpiskeluoikeus.copy(päättymispäivä = Some(date(2016,1,9)))) {
+          putOpiskeluOikeus(defaultOpiskeluoikeus.copy(päättymispäivä = Some(date(2013,1,9))), teija) {
             val queryString: String = "opiskeluoikeusPäättynytAikaisintaan=2016-01-01&opiskeluoikeusPäättynytViimeistään=2016-12-31"
             authGet ("api/oppija?" + queryString) {
               verifyResponseStatus(200)
@@ -37,7 +38,7 @@ class TorOppijaQuerySpec extends FunSpec with OpiskeluOikeusTestMethods with Mat
 
     describe("Kun haku ei osu") {
       it("palautetaan tyhjä lista") {
-        putOpiskeluOikeusMerged(Map("päättymispäivä"-> "2016-01-09")) {
+        putOpiskeluOikeus(defaultOpiskeluoikeus.copy(päättymispäivä = Some(date(2016,1,9)))) {
           authGet ("api/oppija?opiskeluoikeusPäättynytViimeistään=2014-12-31&opiskeluoikeusPäättynytAikaisintaan=2014-01-01") {
             verifyResponseStatus(200)
             val oppijat: List[TorOppija] = Json.read[List[TorOppija]](response.body)
@@ -57,8 +58,8 @@ class TorOppijaQuerySpec extends FunSpec with OpiskeluOikeusTestMethods with Mat
 
     describe("Kun haetaan ilman parametreja") {
       it("palautetaan kaikki oppijat") {
-        putOpiskeluOikeusMerged(Map("päättymispäivä"-> "2016-01-09")) {
-          putOpiskeluOikeusMerged(Map("päättymispäivä"-> "2013-01-09"), teija) {
+        putOpiskeluOikeus(defaultOpiskeluoikeus.copy(päättymispäivä = Some(date(2016,1,9)))) {
+          putOpiskeluOikeus(defaultOpiskeluoikeus.copy(päättymispäivä = Some(date(2013,1,9))), teija) {
             authGet ("api/oppija") {
               verifyResponseStatus(200)
               val oppijat: List[TorOppija] = Json.read[List[TorOppija]](response.body)

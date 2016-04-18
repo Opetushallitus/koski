@@ -5,10 +5,10 @@ import fi.oph.tor.json.Json
 import fi.oph.tor.oppija.MockOppijat
 import fi.oph.tor.schema._
 import fi.oph.tor.toruser.MockUsers
-import org.json4s.JsonAST.JObject
+import org.json4s._
 import org.scalatest.FunSpec
 
-class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
+class TorOppijaValidationSpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatillinen {
   describe("Opiskeluoikeuden lisääminen") {
     describe("Valideilla tiedoilla") {
       it("palautetaan HTTP 200") {
@@ -246,4 +246,9 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluOikeusTestMethods {
       }
     }
   }
+
+  def putOpiskeluOikeusMerged[A](opiskeluOikeus: JValue, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
+    putOppija(makeOppija(henkilö, List(Json.toJValue(defaultOpiskeluoikeus).merge(opiskeluOikeus))), headers)(f)
+  }
+
 }

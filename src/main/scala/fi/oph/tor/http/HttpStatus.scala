@@ -30,4 +30,9 @@ object HttpStatus {
 
   /** Append all given statii into one, concatenating error list, picking highest status code */
   def fold(statii: HttpStatus*): HttpStatus = fold(statii.toList)
+
+  def justStatus[A](either: Either[HttpStatus, A]) = either match {
+    case Right(_) => HttpStatus.ok
+    case Left(status) => status
+  }
 }
