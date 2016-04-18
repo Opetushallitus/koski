@@ -62,10 +62,11 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
   }
 
   private def convertKoulutusTyyppi(ePerusteetKoulutustyyppi: String, suoritustapa: String): Koulutustyyppi = {
-    if (ePerusteetKoulutustyyppi == "koulutustyyppi_1" && suoritustapa == "naytto") {
-      13
+    val tyyppi: Koulutustyyppi = ePerusteetKoulutustyyppi.substring(15).toInt
+    if (ePerusteetKoulutustyyppi == 1 && suoritustapa == "naytto") {
+      13 // <- Ammatillinen perustutkinto näyttötutkintona
     } else {
-      ePerusteetKoulutustyyppi.substring(15).toInt
+      tyyppi
     }
   }
 }
