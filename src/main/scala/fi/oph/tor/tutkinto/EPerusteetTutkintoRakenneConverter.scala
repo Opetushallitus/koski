@@ -31,7 +31,7 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
             x.osat.map(osa => convertRakenneOsa(osa, suoritustapa)),
             x.osaamisala.map(_.osaamisalakoodiArvo)
           )
-          case x: ERakenneTutkinnonOsa => suoritustapa.tutkinnonOsaViitteet.find(v => v.id.toString == x._tutkinnonOsaViite) match {
+          case x: ERakenneTutkinnonOsa => suoritustapa.tutkinnonOsaViitteet.toList.flatten.find(v => v.id.toString == x._tutkinnonOsaViite) match {
             case Some(tutkinnonOsaViite) =>
               val eTutkinnonOsa: ETutkinnonOsa = rakenne.tutkinnonOsat.find(o => o.id.toString == tutkinnonOsaViite._tutkinnonOsa).get
               arviointiasteikkoViittaukset ++= arviointiasteikkoViittaus.toList
@@ -53,7 +53,7 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
 
 
       val suoritustapaKoodistoViite: Option[Koodistokoodiviite] = koodistoPalvelu.validate(Koodistokoodiviite(suoritustapa.suoritustapakoodi, None, "suoritustapa", None))
-      suoritustapaKoodistoViite.map(SuoritustapaJaRakenne(_, convertRakenneOsa(suoritustapa.rakenne, suoritustapa), laajuusYksikkö))
+      suoritustapaKoodistoViite.map(SuoritustapaJaRakenne(_, suoritustapa.rakenne.map(convertRakenneOsa(_, suoritustapa)), laajuusYksikkö))
     }
 
     val osaamisalat: List[Koodistokoodiviite] = rakenne.osaamisalat.map(o => Koodistokoodiviite(o.arvo, Some(LocalizedString(o.nimi)), None, "osaamisala", None))

@@ -4,7 +4,7 @@ import fi.oph.tor.json.Json
 import fi.oph.tor.json.Json._
 
 class MockEPerusteetRepository extends EPerusteetRepository {
-  lazy val rakenteet: List[EPerusteRakenne] = List("612", "33827", "1013059", "rakenne-perusopetus").map { id =>
+  lazy val rakenteet: List[EPerusteRakenne] = List("612", "33827", "1013059", "rakenne-perusopetus", "rakenne-lukio").map { id =>
     Json.readFile("src/main/resources/mockdata/eperusteet/" + id + ".json").extract[EPerusteRakenne]
   }
 

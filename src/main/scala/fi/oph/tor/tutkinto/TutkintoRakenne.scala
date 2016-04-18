@@ -11,7 +11,7 @@ case class TutkintoRakenne(diaarinumero: String, suoritustavat: List[Suoritustap
   }
 }
 
-case class SuoritustapaJaRakenne(suoritustapa: Koodistokoodiviite, rakenne: RakenneOsa, laajuusYksikkö: Option[Koodistokoodiviite])
+case class SuoritustapaJaRakenne(suoritustapa: Koodistokoodiviite, rakenne: Option[RakenneOsa], laajuusYksikkö: Option[Koodistokoodiviite])
 
 sealed trait RakenneOsa
 

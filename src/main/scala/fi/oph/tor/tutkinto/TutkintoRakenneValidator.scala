@@ -75,7 +75,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
   }
 
   private def findTutkinnonOsa(rakenne: SuoritustapaJaRakenne, koulutusModuuliTunniste: Koodistokoodiviite): Option[TutkinnonOsa] = {
-    findTutkinnonOsa(rakenne.rakenne, koulutusModuuliTunniste)
+    rakenne.rakenne.flatMap(findTutkinnonOsa(_, koulutusModuuliTunniste))
   }
 
   private def findTutkinnonOsa(rakenne: RakenneOsa, koulutusModuuliTunniste: Koodistokoodiviite): Option[TutkinnonOsa] = rakenne match {

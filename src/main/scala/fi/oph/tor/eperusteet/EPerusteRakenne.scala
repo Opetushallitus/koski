@@ -9,7 +9,7 @@ case class EPerusteRakenne(id: Long, nimi: Map[String, String], diaarinumero: St
   def toEPeruste = EPeruste(id, nimi, diaarinumero, koulutukset)
 }
 
-case class ESuoritustapa(suoritustapakoodi: String, laajuusYksikko: Option[String], rakenne: ERakenneOsa, tutkinnonOsaViitteet: List[ETutkinnonOsaViite])
+case class ESuoritustapa(suoritustapakoodi: String, laajuusYksikko: Option[String], rakenne: Option[ERakenneOsa], tutkinnonOsaViitteet: Option[List[ETutkinnonOsaViite]])
 case class ETutkinnonOsaViite(id: Long, laajuus: Option[Float], _tutkinnonOsa: String)
 case class EOsaamisala(nimi: Map[String, String], arvo: String)
 case class EOsaamisalaViite(osaamisalakoodiArvo: String)
