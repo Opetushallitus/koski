@@ -65,7 +65,7 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
 
   private def convertKoulutusTyyppi(ePerusteetKoulutustyyppi: String, suoritustapa: String): Koulutustyyppi = {
     val tyyppi: Koulutustyyppi = parseKoulutustyyppi(ePerusteetKoulutustyyppi)
-    if (ePerusteetKoulutustyyppi == Koulutustyyppi.ammatillinenPerustutkinto && suoritustapa == "naytto") {
+    if (tyyppi == Koulutustyyppi.ammatillinenPerustutkinto && suoritustapa == "naytto") {
       Koulutustyyppi.ammatillinenPerustutkintoNäyttötutkintona
     } else {
       tyyppi
