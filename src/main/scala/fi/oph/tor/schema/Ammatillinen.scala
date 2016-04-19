@@ -20,7 +20,7 @@ case class AmmatillinenOpiskeluoikeus(
   @Description("Opiskelijan suorituksen tavoite-tieto kertoo sen, suorittaako opiskelija tutkintotavoitteista koulutusta (koko tutkintoa) vai tutkinnon osa tavoitteista koulutusta (tutkinnon osaa)")
   @KoodistoUri("opintojentavoite")
   tavoite: Option[Koodistokoodiviite],
-  opiskeluoikeudenTila: Option[OpiskeluoikeudenTila],
+  opiskeluoikeudenTila: Option[AmmatillinenOpiskeluoikeudenTila],
   läsnäolotiedot: Option[Läsnäolotiedot],
   @KoodistoKoodiarvo("ammatillinenkoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinenkoulutus", "opiskeluoikeudentyyppi")
@@ -28,6 +28,20 @@ case class AmmatillinenOpiskeluoikeus(
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
 }
+
+case class AmmatillinenOpiskeluoikeudenTila(
+  opiskeluoikeusjaksot: List[Opiskeluoikeusjakso]
+) extends OpiskeluoikeudenTila
+
+case class AmmatillinenOpiskeluoikeusjakso(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  tila: Koodistokoodiviite,
+  @Description("Opintojen rahoitus")
+  @KoodistoUri("opintojenrahoitus")
+  opintojenRahoitus: Option[Koodistokoodiviite]
+) extends Opiskeluoikeusjakso
+
 
 case class AmmatillisenTutkinnonSuoritus(
   koulutusmoduuli: AmmatillinenTutkintoKoulutus,

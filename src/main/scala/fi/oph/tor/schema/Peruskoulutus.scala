@@ -16,7 +16,7 @@ case class PerusopetuksenOpiskeluoikeus(
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OrganisaatioWithOid],
   suoritukset: List[PeruskoulunPäättötodistus],
-  opiskeluoikeudenTila: Option[OpiskeluoikeudenTila],
+  opiskeluoikeudenTila: Option[YleissivistäväOpiskeluoikeudenTila],
   läsnäolotiedot: Option[Läsnäolotiedot],
   @KoodistoKoodiarvo("peruskoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("peruskoulutus", Some("Peruskoulutus"), "opiskeluoikeudentyyppi", None)

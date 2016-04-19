@@ -249,21 +249,18 @@ case class Läsnäolojakso(
   tila: Koodistokoodiviite
 ) extends Jakso
 
-case class OpiskeluoikeudenTila(
+trait OpiskeluoikeudenTila {
   @Description("Opiskeluoikeuden tilahistoria (aktiivinen, keskeyttänyt, päättynyt...) jaksoittain. Sisältää myös tiedon opintojen rahoituksesta jaksoittain.")
-  opiskeluoikeusjaksot: List[Opiskeluoikeusjakso]
-)
+  def opiskeluoikeusjaksot: List[Opiskeluoikeusjakso]
+}
 
-case class Opiskeluoikeusjakso(
-  alku: LocalDate,
-  loppu: Option[LocalDate],
+trait Opiskeluoikeusjakso extends Jakso {
+  def alku: LocalDate
+  def loppu: Option[LocalDate]
   @Description("Opiskeluoikeuden tila (aktiivinen, keskeyttänyt, päättynyt...)")
   @KoodistoUri("opiskeluoikeudentila")
-  tila: Koodistokoodiviite,
-  @Description("Opintojen rahoitus")
-  @KoodistoUri("opintojenrahoitus")
-  opintojenRahoitus: Option[Koodistokoodiviite]
-) extends Jakso
+  def tila: Koodistokoodiviite
+}
 
 trait KoodiViite {
   def koodiarvo: String

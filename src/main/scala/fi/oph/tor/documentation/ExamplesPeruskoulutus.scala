@@ -39,10 +39,10 @@ object ExamplesPeruskoulutus {
       päättymispäivä = None,
       oppilaitos = jyväskylänNormaalikoulu, None,
       suoritukset = Nil,
-      opiskeluoikeudenTila = Some(OpiskeluoikeudenTila(
+      opiskeluoikeudenTila = Some(YleissivistäväOpiskeluoikeudenTila(
         List(
-          Opiskeluoikeusjakso(date(2012, 9, 1), Some(date(2016, 1, 9)), opiskeluoikeusAktiivinen, None),
-          Opiskeluoikeusjakso(date(2016, 1, 10), None, opiskeluoikeusPäättynyt, None)
+          YleissivistäväOpiskeluoikeusjakso(date(2012, 9, 1), Some(date(2016, 1, 9)), opiskeluoikeusAktiivinen),
+          YleissivistäväOpiskeluoikeusjakso(date(2016, 1, 10), None, opiskeluoikeusPäättynyt)
         )
       )),
       läsnäolotiedot = None
@@ -93,10 +93,10 @@ object ExamplesPeruskoulutus {
               suoritus(kieli("B2", "DE").copy(pakollinen = false, laajuus = vuosiviikkotuntia(4))).copy(vahvistus = vahvistus).copy(arviointi = arviointi(9))
             ))
         )),
-      opiskeluoikeudenTila = Some(OpiskeluoikeudenTila(
+      opiskeluoikeudenTila = Some(YleissivistäväOpiskeluoikeudenTila(
         List(
-          Opiskeluoikeusjakso(date(2007, 8, 15), Some(date(2016, 6, 3)), opiskeluoikeusAktiivinen, None),
-          Opiskeluoikeusjakso(date(2016, 6, 4), None, opiskeluoikeusPäättynyt, None)
+          YleissivistäväOpiskeluoikeusjakso(date(2007, 8, 15), Some(date(2016, 6, 3)), opiskeluoikeusAktiivinen),
+          YleissivistäväOpiskeluoikeusjakso(date(2016, 6, 4), None, opiskeluoikeusPäättynyt)
         )
       )),
       läsnäolotiedot = None

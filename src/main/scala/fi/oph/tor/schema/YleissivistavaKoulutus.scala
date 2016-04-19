@@ -1,9 +1,21 @@
 package fi.oph.tor.schema
 
 import java.time.LocalDate
-import fi.oph.tor.localization.{LocalizedStringImplicits, LocalizedString}
+
+import fi.oph.tor.localization.LocalizedStringImplicits
+import fi.oph.tor.localization.LocalizedStringImplicits.LocalizedStringInterpolator
 import fi.oph.tor.schema.generic.annotation.Description
-import LocalizedStringImplicits.LocalizedStringInterpolator
+
+
+case class YleissivistäväOpiskeluoikeudenTila(
+  opiskeluoikeusjaksot: List[YleissivistäväOpiskeluoikeusjakso]
+) extends OpiskeluoikeudenTila
+
+case class YleissivistäväOpiskeluoikeusjakso(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  tila: Koodistokoodiviite
+) extends Opiskeluoikeusjakso
 
 trait YleissivistavaOppiaine extends KoodistostaLöytyväKoulutusmoduuli {
   @Description("Oppiaine")
