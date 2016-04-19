@@ -3,6 +3,17 @@ import fi.oph.tor.json.Json
 import fi.oph.tor.json.Json._
 
 object MockKoodistoPalvelu extends KoodistoPalvelu {
+  /*
+    Aakkostettu listaus mockatuista koodistoista.
+
+    Uuden koodiston lisäys:
+
+    1) lisää tähän listaan koodiston nimi
+    2) aja KoodistoMockDataUpdater -Dconfig.resource=qa.conf, jolloin koodiston sisältö haetaan qa-ympäristöstä paikallisiin json-fileisiin.
+    3) kommitui uudet json-fileet. Muutoksia olemassa oleviin fileisiin ei kannattane tässä yhteydessä kommitoida.
+    4) aja koski-applikaatio -Dconfig.resource=tordev.conf -Dkoodisto.create=true, jolloin uusi koodisto kopioituu myös tordev-ympäristöön.
+
+   */
   val koodistot = List (
     "ammatillisennaytonarvioinnistapaattaneet",
     "ammatillisennaytonarviointikeskusteluunosallistuneet",
@@ -17,6 +28,7 @@ object MockKoodistoPalvelu extends KoodistoPalvelu {
     "koulutus",
     "kieli",
     "kielivalikoima",
+    "kunta",
     "lahdejarjestelma",
     "lasnaolotila",
     "lukionkurssit",

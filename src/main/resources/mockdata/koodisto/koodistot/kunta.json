@@ -1,0 +1,23 @@
+{
+  "koodistoUri" : "kunta",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "SV",
+    "nimi" : "kommun",
+    "kuvaus" : "kommun",
+    "kasite" : ""
+  }, {
+    "kieli" : "FI",
+    "nimi" : "kunta",
+    "kuvaus" : "Kunta on tietyn alueen ja sen asukkaiden muodostama yhteisö. Kunta on rajoiltaan määrätty alue niin, että kunkin kunnan toiminta kohdistuu sen alueeseen, siellä asuviin ja oleskeleviin ihmisiin ja siellä tapahtuvaan toimintaan. Uusien kuntien perustamisesta päättää valtioneuvosto ja uusista kuntanumeroista valtiovarainministeriön kuntaosasto. Vuonna 1995 voimaan tullut kuntalaki tuntee virallisena kuntamuotona vain kunnan, mutta kunta voi käyttää kaupunki-nimitystä, jos se itse katsoo täyttävänsä kaupunkimaiselle yhdyskunnalle asetettavat vaatimukset.",
+    "kasite" : ""
+  }, {
+    "kieli" : "EN",
+    "nimi" : "municipality",
+    "kuvaus" : "municipality",
+    "kasite" : ""
+  } ],
+  "codesGroupUri" : "http://alueet",
+  "voimassaAlkuPvm" : "2014-03-27",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}
