@@ -46,4 +46,15 @@
     "kieli" : "FI"
   } ],
   "versio" : 1
-} ]
+},
+  {
+    "koodiUri" : "opintojenrahoitus_8",
+    "koodiArvo" : "8",
+    "metadata" : [ {
+      "nimi" : "Aikuisten osaamisperustan vahvistaminen",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  }
+
+]
