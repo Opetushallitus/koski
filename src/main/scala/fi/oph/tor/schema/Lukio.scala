@@ -35,9 +35,9 @@ case class LukionOppimääränSuoritus(
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
+  koulutusmoduuli: Ylioppilastutkinto,
   @KoodistoKoodiarvo("lukionoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"),
-  koulutusmoduuli: Ylioppilastutkinto = Ylioppilastutkinto(perusteenDiaarinumero = Some("60/011/2015")),
   arviointi: Option[List[YleissivistävänkoulutuksenArviointi]] = None,
   vahvistus: Option[Vahvistus] = None,
   override val osasuoritukset: Option[List[LukionOppiaineenSuoritus]]
