@@ -2,9 +2,10 @@ package fi.oph.tor.todistus
 
 import java.time.format.DateTimeFormatter
 import fi.oph.tor.schema._
+import fi.oph.tor.toruser.TorUser
 
-object PeruskoulunPaattotodistusHtml {
-  def renderPeruskoulunPäättötodistus(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: PeruskoulunPäättötodistus) = {
+class PeruskoulunPaattotodistusHtml(implicit val user: TorUser) extends TodistusHtml {
+  def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: PeruskoulunPäättötodistus) = {
     val oppiaineet: List[PeruskoulunOppiaineenSuoritus] = päättötodistus.osasuoritukset.toList.flatten
     val pakolliset = oppiaineet.filter(_.koulutusmoduuli.pakollinen)
     val pakollisetJaNiihinLiittyvätValinnaiset: List[Aine] = pakolliset.flatMap { case pakollinen =>
@@ -26,7 +27,7 @@ object PeruskoulunPaattotodistusHtml {
       <tr class={rowClass}>
         <td class="oppiaine">{nimi}</td>
         <td class="laajuus">{oppiaine.suoritus.koulutusmoduuli.laajuus.map(_.arvo).getOrElse("")}</td>
-        <td class="arvosana-kirjaimin">{oppiaine.suoritus.arvosanaKirjaimin.get("fi").capitalize}</td>
+        <td class="arvosana-kirjaimin">{i(oppiaine.suoritus.arvosanaKirjaimin).capitalize}</td>
         <td class="arvosana-numeroin">{oppiaine.suoritus.arvosanaNumeroin}</td>
       </tr>
     }
@@ -40,9 +41,9 @@ object PeruskoulunPaattotodistusHtml {
       </head>
       <body>
         <div class="todistus peruskoulu">
-          <h2 class="koulutustoimija">{koulutustoimija.flatMap(_.nimi).getOrElse("")}</h2>
+          <h2 class="koulutustoimija">{i(koulutustoimija.flatMap(_.nimi))}</h2>
           <h1>Peruskoulun päättötodistus</h1>
-          <h2 class="oppilaitos">{oppilaitos.nimi.getOrElse("")}</h2>
+          <h2 class="oppilaitos">{i(oppilaitos.nimi)}</h2>
           <div class="oppija">
             <span class="nimi">{oppijaHenkilö.sukunimi}, {oppijaHenkilö.etunimet}</span>
             <span class="hetu">{oppijaHenkilö.hetu}</span>
@@ -59,19 +60,7 @@ object PeruskoulunPaattotodistusHtml {
             </tr>
             { arvosanaLista(muutValinnaiset) }
           </table>
-          <div class="vahvistus">
-            <span class="paikkakunta">Tampere<!-- TODO: paikkakuntaa ei ole datassa --></span>
-            <span class="date">{päättötodistus.vahvistus.map(_.päivä).map(dateFormatter.format(_)).getOrElse("")}</span>
-            {
-            päättötodistus.vahvistus.map(_.myöntäjäHenkilöt).toList.flatten.map { myöntäjäHenkilö =>
-              <span class="allekirjoitus">
-                <div class="viiva">&nbsp;</div>
-                <div class="nimenselvennys">{myöntäjäHenkilö.nimi}</div>
-                <div class="titteli">{myöntäjäHenkilö.titteli}</div>
-              </span>
-            }
-            }
-          </div>
+          { päättötodistus.vahvistus.toList.map(vahvistusHTML)}
         </div>
       </body>
     </html>

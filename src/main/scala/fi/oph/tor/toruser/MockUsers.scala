@@ -7,7 +7,7 @@ import rx.lang.scala.Observable
 
 object MockUsers extends UserOrganisationsRepository with DirectoryClient {
   case class MockUser(ldapUser: LdapUser, organisaatiot: Set[String]) {
-    def asTorUser = new TorUser(ldapUser.oid, "192.168.0.10", Observable.just(organisaatiot))
+    def asTorUser = new TorUser(ldapUser.oid, "192.168.0.10", "fi", Observable.just(organisaatiot))
     def oid = ldapUser.oid
     def username = ldapUser.givenNames
   }

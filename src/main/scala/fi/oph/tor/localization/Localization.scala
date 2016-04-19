@@ -1,12 +1,7 @@
 package fi.oph.tor.localization
 
-import fi.oph.tor.http.TorErrorCategory
-import fi.oph.tor.json.{ContextualExtractor, Json}
 import fi.oph.tor.log.Logging
-import fi.oph.tor.schema._
 import fi.oph.tor.schema.generic.annotation.Description
-import org.json4s._
-import org.json4s.reflect.TypeInfo
 
 @Description("Lokalisoitu teksti. Vähintään yksi kielistä (fi/sv/en) vaaditaan")
 trait LocalizedString {

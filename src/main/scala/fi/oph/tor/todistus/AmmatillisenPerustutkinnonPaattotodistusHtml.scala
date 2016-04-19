@@ -1,12 +1,11 @@
 package fi.oph.tor.todistus
 
-import java.time.format.DateTimeFormatter
 import fi.oph.tor.schema._
-import fi.oph.tor.tutkinto.{RakenneModuuli, SuoritustapaJaRakenne, TutkintoRakenne}
+import fi.oph.tor.toruser.TorUser
+import fi.oph.tor.tutkinto.{RakenneModuuli, SuoritustapaJaRakenne}
 
-object AmmatillisenPerustutkinnonPaattotodistusHtml {
-  def renderAmmatillisenPerustutkinnonPaattotodistus(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, tutkintoSuoritus: AmmatillisenTutkinnonSuoritus, rakenne: SuoritustapaJaRakenne) = {
-    val dateFormatter = DateTimeFormatter.ofPattern("d.M.yyyy")
+class AmmatillisenPerustutkinnonPaattotodistusHtml(implicit val user: TorUser) extends TodistusHtml {
+  def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, tutkintoSuoritus: AmmatillisenTutkinnonSuoritus, rakenne: SuoritustapaJaRakenne) = {
     val päätasot: List[RakenneModuuli] = rakenne.rakenne match {
       case Some(moduuli: RakenneModuuli) => moduuli.osat.map(_.asInstanceOf[RakenneModuuli])
       case _ => Nil
@@ -18,6 +17,7 @@ object AmmatillisenPerustutkinnonPaattotodistusHtml {
     def goesTo(rakenne: RakenneModuuli, tutkinnonOsa: AmmatillinenTutkinnonOsa) = {
       contains(rakenne, tutkinnonOsa) || (rakenne == päätasot.last && !päätasot.find(m => contains(m, tutkinnonOsa)).isDefined)
     }
+
     <html>
       <head>
         <link rel="stylesheet" type="text/css" href="/tor/css/todistus-common.css"></link>
@@ -29,7 +29,7 @@ object AmmatillisenPerustutkinnonPaattotodistusHtml {
           <h2 class="oppilaitos">{oppilaitos.nimi.getOrElse("")}</h2>
           <h1>Päättötodistus</h1>
           <h2 class="koulutus">{tutkintoSuoritus.koulutusmoduuli.nimi}</h2>
-          <h3 class="osaamisala-tutkintonimike">{(tutkintoSuoritus.osaamisala.toList.flatten ++ tutkintoSuoritus.tutkintonimike.toList.flatten).flatMap(_.nimi).mkString(", ")}</h3>
+          <h3 class="osaamisala-tutkintonimike">{(tutkintoSuoritus.osaamisala.toList.flatten ++ tutkintoSuoritus.tutkintonimike.toList.flatten).map(s => i(s.nimi)).mkString(", ")}</h3>
           <h3 class="oppija">
             <span class="nimi">{oppijaHenkilö.sukunimi}, {oppijaHenkilö.etunimet}</span>
             <span class="hetu">({oppijaHenkilö.hetu})</span>
@@ -51,7 +51,7 @@ object AmmatillisenPerustutkinnonPaattotodistusHtml {
                     <tr class={className}>
                       <td class="nimi">{ osasuoritus.koulutusmoduuli.nimi }</td>
                       <td class="laajuus">{ osasuoritus.koulutusmoduuli.laajuus.map(_.arvo.toInt).getOrElse("") }</td>
-                      <td class="arvosana-kirjaimin">{osasuoritus.arvosanaKirjaimin.get("fi").capitalize}</td>
+                      <td class="arvosana-kirjaimin">{i(osasuoritus.arvosanaKirjaimin).capitalize}</td>
                       <td class="arvosana-numeroin">{osasuoritus.arvosanaNumeroin}</td>
                     </tr>
                   }
@@ -64,19 +64,7 @@ object AmmatillisenPerustutkinnonPaattotodistusHtml {
               </tr>
             </tbody>
           </table>
-          <div class="vahvistus">
-            <span class="paikkakunta">Tampere<!-- TODO: paikkakuntaa ei ole datassa --></span>
-            <span class="date">{tutkintoSuoritus.vahvistus.map(_.päivä).map(dateFormatter.format(_)).getOrElse("")}</span>
-            {
-            tutkintoSuoritus.vahvistus.map(_.myöntäjäHenkilöt).toList.flatten.map { myöntäjäHenkilö =>
-              <span class="allekirjoitus">
-                <div class="viiva">&nbsp;</div>
-                <div class="nimenselvennys">{myöntäjäHenkilö.nimi}</div>
-                <div class="titteli">{myöntäjäHenkilö.titteli}</div>
-              </span>
-            }
-            }
-          </div>
+          { tutkintoSuoritus.vahvistus.toList.map(vahvistusHTML)}
         </div>
       </body>
     </html>

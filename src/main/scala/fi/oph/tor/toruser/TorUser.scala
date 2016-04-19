@@ -4,7 +4,7 @@ import fi.oph.tor.log.{Loggable, Logging}
 import fi.oph.tor.schema.OrganisaatioWithOid
 import rx.lang.scala.Observable
 
-class TorUser(val oid: String, val clientIp: String, val organisationOidsObservable: Observable[Set[String]]) extends Loggable with Logging {
+class TorUser(val oid: String, val clientIp: String, val lang: String, val organisationOidsObservable: Observable[Set[String]]) extends Loggable with Logging {
   def logString = "käyttäjä " + oid
   lazy val organisationOids: Set[String] = organisationOidsObservable.toBlocking.first
   def hasReadAccess(organisaatio: OrganisaatioWithOid) = organisationOids.contains(organisaatio.oid)
@@ -13,6 +13,6 @@ class TorUser(val oid: String, val clientIp: String, val organisationOidsObserva
 
 object TorUser {
   def apply(oid: String, clientIp: String, userOrganisationsRepository: UserOrganisationsRepository) = {
-    new TorUser(oid, clientIp, userOrganisationsRepository.getUserOrganisations(oid))
+    new TorUser(oid, clientIp, "fi", userOrganisationsRepository.getUserOrganisations(oid))
   }
 }

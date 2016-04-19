@@ -15,7 +15,7 @@ class TodistusServlet(val userRepository: UserOrganisationsRepository, val direc
       case Right((henkilötiedot, opiskeluoikeus)) =>
           opiskeluoikeus.suoritukset.head match {
             case t: PeruskoulunPäättötodistus if t.tila.koodiarvo == "VALMIS" =>
-              PeruskoulunPaattotodistusHtml.renderPeruskoulunPäättötodistus(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)
+              (new PeruskoulunPaattotodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)
             case t: AmmatillisenTutkinnonSuoritus if t.tila.koodiarvo == "VALMIS" => // TODO: vain perustutkinnot
 
 
@@ -23,14 +23,14 @@ class TodistusServlet(val userRepository: UserOrganisationsRepository, val direc
                 case Some(rakenne: TutkintoRakenne) =>
                   val maybeSuoritustapaJaRakenne: Option[SuoritustapaJaRakenne] = rakenne.suoritustavat.find(x => Some(x.suoritustapa) == t.suoritustapa.map(_.tunniste))
                   maybeSuoritustapaJaRakenne match {
-                    case Some(suoritustapaJaRakenne) => AmmatillisenPerustutkinnonPaattotodistusHtml.renderAmmatillisenPerustutkinnonPaattotodistus(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t, suoritustapaJaRakenne)
+                    case Some(suoritustapaJaRakenne) => (new AmmatillisenPerustutkinnonPaattotodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t, suoritustapaJaRakenne)
                     case _ => TorErrorCategory.badRequest.validation.rakenne.suoritustapaPuuttuu
                   }
                 case None => TorErrorCategory.notFound.diaarinumeroaEiLöydy("Tutkinnon rakennetta diaarinumerolla " + t.koulutusmoduuli.perusteenDiaarinumero.getOrElse("(puuttuu)") + " ei löydy")
               }
 
             case t: LukionOppimääränSuoritus if t.tila.koodiarvo == "VALMIS" =>
-              LukionPaattotodistusHtml.renderLukionPäättötodistus(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)
+              (new LukionPaattotodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)
             case _ => TorErrorCategory.notFound.todistustaEiLöydy()
           }
       case Left(status) => renderStatus(status)

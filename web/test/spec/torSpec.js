@@ -457,6 +457,7 @@ describe('TOR', function() {
         )
         it('näytetään', function() {
           expect(S('.oppiaine.KT .arvosana-numeroin').text()).to.equal('8')
+          expect(S('.vahvistus .paikkakunta').text()).to.equal('Jyväskylä')
         })
       })
     })
@@ -478,6 +479,7 @@ describe('TOR', function() {
         )
         it('näytetään', function() {
           expect(S('.oppiaine.KT .arvosana-numeroin').text()).to.equal('10')
+          expect(S('.vahvistus .paikkakunta').text()).to.equal('Jyväskylä')
         })
       })
     })
@@ -499,6 +501,7 @@ describe('TOR', function() {
         )
         it('näytetään', function() {
           expect(S('.tutkinnon-osa.100431 .arvosana-kirjaimin').text()).to.equal('Kiitettävä')
+          expect(S('.vahvistus .paikkakunta').text()).to.equal('Helsinki')
         })
       })
     })
