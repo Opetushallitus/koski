@@ -194,13 +194,13 @@ const TutkinnonOsa = React.createClass({
           ?
             <div className="arviointi edit">
               <ul className="arvosanat">{
-                arvosanat.map((arvosana) => <li className= { arvosana == this.state.valittuArvosana ? 'selected' : '' } key={arvosana.koodiarvo} onClick={() => this.setState({ valittuArvosana: arvosana })}>{arvosana.lyhytNimi}</li>)
+                arvosanat.map((arvosana) => <li className= { arvosana == this.state.valittuArvosana ? 'selected' : '' } key={arvosana.koodiarvo} onClick={() => this.setState({ valittuArvosana: arvosana })}>{arvosana.lyhytNimi.fi}</li>)
               }</ul>
               <button className="button blue" disabled={!this.state.valittuArvosana} onClick={() => saveArvosana(this.state.valittuArvosana)}>Tallenna arvio</button>
             </div>
           : (
             arviointi
-              ? <div className="arviointi"><span className="arvosana">{arviointi[arviointi.length - 1].arvosana.lyhytNimi}</span></div>
+              ? <div className="arviointi"><span className="arvosana">{arviointi[arviointi.length - 1].arvosana.lyhytNimi.fi}</span></div>
               : null
           )
         }

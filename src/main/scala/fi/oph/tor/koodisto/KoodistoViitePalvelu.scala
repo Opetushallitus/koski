@@ -5,7 +5,7 @@ import fi.oph.tor.schema.Koodistokoodiviite
 
 case class KoodistoViitePalvelu(koodistoPalvelu: KoodistoPalvelu) extends Logging {
   def getKoodistoKoodiViitteet(koodisto: KoodistoViite): Option[List[Koodistokoodiviite]] = {
-    koodistoPalvelu.getKoodistoKoodit(koodisto).map { _.map { koodi => Koodistokoodiviite(koodi.koodiArvo, Some(koodi.nimi), Some(koodi.lyhytNimi), koodisto.koodistoUri, Some(koodisto.versio))} }
+    koodistoPalvelu.getKoodistoKoodit(koodisto).map { _.map { koodi => Koodistokoodiviite(koodi.koodiArvo, koodi.nimi, koodi.lyhytNimi, koodisto.koodistoUri, Some(koodisto.versio))} }
   }
   def getLatestVersion(koodistoUri: String): Option[KoodistoViite] = koodistoPalvelu.getLatestVersion(koodistoUri)
 

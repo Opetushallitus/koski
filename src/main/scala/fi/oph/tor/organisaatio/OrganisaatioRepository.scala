@@ -51,7 +51,7 @@ abstract class JsonOrganisaatioRepository(koodisto: KoodistoViitePalvelu) extend
   private def convertOrganisaatio(org: OrganisaatioPalveluOrganisaatio): OrganisaatioHierarkia = {
     val oppilaitosnumero = org.oppilaitosKoodi.flatMap(oppilaitosnumero => koodisto.getKoodistoKoodiViite("oppilaitosnumero", oppilaitosnumero))
     val nimi = LocalizedString(org.nimi)
-    OrganisaatioHierarkia(org.oid, oppilaitosnumero, nimi, org.organisaatiotyypit, org.children.map(convertOrganisaatio))
+    OrganisaatioHierarkia(org.oid, oppilaitosnumero, nimi.getOrElse(LocalizedString.missing), org.organisaatiotyypit, org.children.map(convertOrganisaatio))
   }
 
   def fetch(oid: String): OrganisaatioHakuTulos

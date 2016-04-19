@@ -34,14 +34,29 @@ case class English(en: String, sv: Option[String] = None, fi: Option[String] = N
 
 
 object LocalizedString extends Logging {
-  def apply(values: Map[String, String]): LocalizedString = {
+  /**
+   * Sanitize map of localized values:
+   * 1. lowercase all keys
+   * 2. ditch empty values
+   * 3. return None if no non-empty values available
+   * 4. patch it to always contain a Finnish value
+   */
+  def apply(values: Map[String, String]): Option[LocalizedString] = {
     def getAny(values: Map[String, String]) = {
       //logger.warn("Finnish localization missing from " + values)
       values.toList.map(_._2).headOption.getOrElse("???")
     }
-    val lowerCased = values.map { case (key, value) => (key.toLowerCase(), value) }.toMap
-    Finnish(lowerCased.getOrElse("fi", getAny(lowerCased)), lowerCased.get("sv"), lowerCased.get("en"))
+    val lowerCased = values.flatMap {
+      case (key, "") => None
+      case (key, value) => Some((key.toLowerCase(), value))
+    }.toMap
+
+    lowerCased.isEmpty match {
+      case true => None
+      case false => Some(Finnish(lowerCased.getOrElse("fi", getAny(lowerCased)), lowerCased.get("sv"), lowerCased.get("en")))
+    }
   }
+  val missing: LocalizedString = finnish("???")
   def finnish(string: String): LocalizedString = Finnish(string)
   def swedish(string: String): LocalizedString = Swedish(string)
   def english(string: String): LocalizedString = English(string)

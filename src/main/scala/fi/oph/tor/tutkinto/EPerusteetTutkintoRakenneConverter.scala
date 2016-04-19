@@ -27,7 +27,7 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
       def convertRakenneOsa(rakenneOsa: ERakenneOsa, suoritustapa: ESuoritustapa): RakenneOsa = {
         rakenneOsa match {
           case x: ERakenneModuuli => RakenneModuuli(
-            LocalizedString(x.nimi.getOrElse(Map.empty)),
+            LocalizedString(x.nimi.getOrElse(Map.empty)).getOrElse(LocalizedString.missing),
             x.osat.map(osa => convertRakenneOsa(osa, suoritustapa)),
             x.osaamisala.map(_.osaamisalakoodiArvo)
           )
@@ -42,7 +42,7 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
               val laajuus = laajuusYksikkö.flatMap(yksikkö => tutkinnonOsaViite.laajuus.map(laajuus => laajuus))
 
               koodistoPalvelu.validate(Koodistokoodiviite(eTutkinnonOsa.koodiArvo, None, "tutkinnonosat", None)) match {
-                case Some(tutkinnonosaKoodi) => TutkinnonOsa(tutkinnonosaKoodi, LocalizedString(eTutkinnonOsa.nimi), arviointiasteikkoViittaus, tutkinnonOsaViite.laajuus, x.pakollinen)
+                case Some(tutkinnonosaKoodi) => TutkinnonOsa(tutkinnonosaKoodi, LocalizedString(eTutkinnonOsa.nimi).getOrElse(LocalizedString.missing), arviointiasteikkoViittaus, tutkinnonOsaViite.laajuus, x.pakollinen)
                 case None => throw new RuntimeException("Tutkinnon osaa ei löydy koodistosta: " + eTutkinnonOsa.koodiArvo)
               }
 
@@ -56,7 +56,7 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
       suoritustapaKoodistoViite.map(SuoritustapaJaRakenne(_, suoritustapa.rakenne.map(convertRakenneOsa(_, suoritustapa)), laajuusYksikkö))
     }
 
-    val osaamisalat: List[Koodistokoodiviite] = rakenne.osaamisalat.map(o => Koodistokoodiviite(o.arvo, Some(LocalizedString(o.nimi)), None, "osaamisala", None))
+    val osaamisalat: List[Koodistokoodiviite] = rakenne.osaamisalat.map(o => Koodistokoodiviite(o.arvo, LocalizedString(o.nimi), None, "osaamisala", None))
 
     TutkintoRakenne(rakenne.diaarinumero, parseKoulutustyyppi(rakenne.koulutustyyppi), suoritustavat, osaamisalat, arviointiasteikkoViittaukset.toList.flatMap(arviointiasteikkoRepository.getArviointiasteikko(_)))
   }
