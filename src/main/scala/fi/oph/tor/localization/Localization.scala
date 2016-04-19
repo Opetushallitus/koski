@@ -8,8 +8,6 @@ trait LocalizedString {
   def valueList: List[(String, String)]
   lazy val values: Map[String, String] = Map(valueList : _*)
   def get(lang: String) = values.get(lang).orElse(values.get("fi")).getOrElse("")
-  override def toString = get("fi") // TODO: remove this, should not be used in UI
-
 }
 
 @Description("Lokalisoitu teksti, jossa mukana suomi")

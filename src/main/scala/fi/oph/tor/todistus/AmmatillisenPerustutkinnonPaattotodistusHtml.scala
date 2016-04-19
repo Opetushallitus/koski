@@ -25,10 +25,10 @@ class AmmatillisenPerustutkinnonPaattotodistusHtml(implicit val user: TorUser) e
       </head>
       <body>
         <div class="todistus ammatillinenperustutkinto">
-          <h2 class="koulutustoimija">{koulutustoimija.flatMap(_.nimi).getOrElse("")}</h2>
-          <h2 class="oppilaitos">{oppilaitos.nimi.getOrElse("")}</h2>
+          <h2 class="koulutustoimija">{i(koulutustoimija.flatMap(_.nimi))}</h2>
+          <h2 class="oppilaitos">{i(oppilaitos.nimi)}</h2>
           <h1>Päättötodistus</h1>
-          <h2 class="koulutus">{tutkintoSuoritus.koulutusmoduuli.nimi}</h2>
+          <h2 class="koulutus">{i(tutkintoSuoritus.koulutusmoduuli.nimi)}</h2>
           <h3 class="osaamisala-tutkintonimike">{(tutkintoSuoritus.osaamisala.toList.flatten ++ tutkintoSuoritus.tutkintonimike.toList.flatten).map(s => i(s.nimi)).mkString(", ")}</h3>
           <h3 class="oppija">
             <span class="nimi">{oppijaHenkilö.sukunimi}, {oppijaHenkilö.etunimet}</span>
@@ -45,11 +45,11 @@ class AmmatillisenPerustutkinnonPaattotodistusHtml(implicit val user: TorUser) e
             <tbody>
               {
                 val xs = päätasot.flatMap { m =>
-                  <tr class="rakennemoduuli"><td class="nimi">{m.nimi}</td></tr> ::
+                  <tr class="rakennemoduuli"><td class="nimi">{i(m.nimi)}</td></tr> ::
                   osasuoritukset.filter(osasuoritus => goesTo(m, osasuoritus.koulutusmoduuli)).map { osasuoritus =>
                     val className = "tutkinnon-osa " + osasuoritus.koulutusmoduuli.tunniste.koodiarvo
                     <tr class={className}>
-                      <td class="nimi">{ osasuoritus.koulutusmoduuli.nimi }</td>
+                      <td class="nimi">{ i(osasuoritus.koulutusmoduuli.nimi) }</td>
                       <td class="laajuus">{ osasuoritus.koulutusmoduuli.laajuus.map(_.arvo.toInt).getOrElse("") }</td>
                       <td class="arvosana-kirjaimin">{i(osasuoritus.arvosanaKirjaimin).capitalize}</td>
                       <td class="arvosana-numeroin">{osasuoritus.arvosanaNumeroin}</td>
