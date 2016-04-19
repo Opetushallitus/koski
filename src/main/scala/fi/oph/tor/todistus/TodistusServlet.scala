@@ -17,8 +17,6 @@ class TodistusServlet(val userRepository: UserOrganisationsRepository, val direc
             case t: PeruskoulunPäättötodistus if t.tila.koodiarvo == "VALMIS" =>
               (new PeruskoulunPaattotodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)
             case t: AmmatillisenTutkinnonSuoritus if t.tila.koodiarvo == "VALMIS" => // TODO: vain perustutkinnot
-
-
               t.koulutusmoduuli.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_)) match {
                 case Some(rakenne: TutkintoRakenne) =>
                   val maybeSuoritustapaJaRakenne: Option[SuoritustapaJaRakenne] = rakenne.suoritustavat.find(x => Some(x.suoritustapa) == t.suoritustapa.map(_.tunniste))
