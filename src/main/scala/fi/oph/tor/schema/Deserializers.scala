@@ -1,10 +1,12 @@
 package fi.oph.tor.schema
 
-import fi.oph.tor.json.Json
+import fi.oph.tor.localization.{English, Swedish, Finnish, LocalizedString}
 import org.json4s._
+import org.json4s.reflect.TypeInfo
 
 object Deserializers {
   val deserializers = List(
+    LocalizedStringDeserializer,
     OpiskeluOikeusSerializer,
     SuoritusDeserializer,
     KoulutusmoduuliDeserializer,
@@ -125,5 +127,15 @@ object OrganisaatioDeserializer extends Deserializer[Organisaatio] {
         case organisaatio: JObject if organisaatio.values.contains("oid") => organisaatio.extract[OidOrganisaatio]
         case organisaatio: JObject => organisaatio.extract[Yritys]
       }
+  }
+}
+
+object LocalizedStringDeserializer extends Deserializer[LocalizedString] {
+  val LocalizedStringClass = classOf[LocalizedString]
+
+  override def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), LocalizedString] = {
+    case (TypeInfo(LocalizedStringClass, _), json: JObject) if json.values.contains("fi") => json.extract[Finnish]
+    case (TypeInfo(LocalizedStringClass, _), json: JObject) if json.values.contains("sv") => json.extract[Swedish]
+    case (TypeInfo(LocalizedStringClass, _), json: JObject) if json.values.contains("en") => json.extract[English]
   }
 }

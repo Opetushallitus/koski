@@ -266,12 +266,11 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluoikeusTestMethodsAmma
       }
 
       it("vähintään yksi kieli vaaditaan") {
-        putOpiskeluOikeus(withName(LocalizedString(None))) {
-          verifyResponseStatus(400, TorErrorCategory.badRequest.validation.localizedTextMissing())
+        putOpiskeluOikeusMerged(Map("tyyppi" -> Map("nimi" -> Map()))) {
+          verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema(".*object has missing required properties.*".r))
         }
       }
     }
-
   }
 
   def putOpiskeluOikeusMerged[A](opiskeluOikeus: JValue, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {

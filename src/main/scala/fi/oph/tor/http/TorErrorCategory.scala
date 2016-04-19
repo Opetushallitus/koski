@@ -27,7 +27,6 @@ object TorErrorCategory {
 
     class Validation extends ErrorCategory(badRequest, "validation", "Syötteen validointi epäonnistui") {
       val jsonSchema = subcategory("jsonSchema", "JSON-schema -validointi epäonnistui. Paluuviestin sisällä virheilmoitukset JSON-muodossa.")
-      val localizedTextMissing = subcategory("localizedTextMissing", "Lokalisoitu teksti on annettava vähintään yhdellä kielellä.")
       val tyhjäOpiskeluoikeusLista = subcategory("tyhjäOpiskeluoikeusLista", "Annettiin tyhjä lista opiskeluoikeuksia.")
 
       class Organisaatio extends ErrorCategory(Validation.this, "organisaatio", "Epäkelpo organisaatio") {
