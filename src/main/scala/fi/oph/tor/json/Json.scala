@@ -24,7 +24,6 @@ object GenericJsonFormats {
 }
 
 object Json {
-  // Find out why SchemaBasedTraitSerializer breaks current serialization
   implicit val jsonFormats = GenericJsonFormats.genericFormats + LocalDateSerializer + RakenneOsaSerializer ++ Deserializers.deserializers
 
   def write(x: AnyRef, pretty: Boolean = false): String = {

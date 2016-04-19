@@ -2,6 +2,7 @@ package fi.oph.tor.documentation
 
 import fi.oph.tor.organisaatio.MockOrganisaatiot
 import fi.oph.tor.schema._
+import fi.oph.tor.localization.LocalizedStringImplicits._
 
 object YleissivistavakoulutusExampleData {
   implicit def int2String(int: Int) = int.toString

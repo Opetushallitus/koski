@@ -2,7 +2,6 @@ package fi.oph.tor.schema
 
 import java.time.LocalDate
 import fi.oph.tor.localization.LocalizedString
-import fi.oph.tor.localization.LocalizedString.unlocalized
 import fi.oph.tor.schema.generic.annotation.{MaxItems, MinItems, Description}
 
 @Description("Ammatillisen koulutuksen opiskeluoikeus")
@@ -24,7 +23,7 @@ case class AmmatillinenOpiskeluoikeus(
   opiskeluoikeudenTila: Option[OpiskeluoikeudenTila],
   läsnäolotiedot: Option[Läsnäolotiedot],
   @KoodistoKoodiarvo("ammatillinenkoulutus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinenkoulutus", Some("Ammatillinen koulutus"), "opiskeluoikeudentyyppi", None)
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinenkoulutus", "opiskeluoikeudentyyppi")
 ) extends Opiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
@@ -59,7 +58,7 @@ case class AmmatillisenTutkinnonSuoritus(
   @Description("Ammatilliseen tutkintoon liittyvät tutkinnonosan suoritukset")
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonosanSuoritus]] = None,
   @KoodistoKoodiarvo("ammatillinentutkintosuoritus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinentutkintosuoritus", koodistoUri = "suorituksentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinentutkintosuoritus", "suorituksentyyppi")
 ) extends Suoritus
 
 case class AmmatillisenTutkinnonosanSuoritus(

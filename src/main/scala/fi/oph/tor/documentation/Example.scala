@@ -1,6 +1,6 @@
 package fi.oph.tor.documentation
 
-import fi.oph.tor.localization.LocalizedString._
+import fi.oph.tor.localization.LocalizedStringImplicits._
 import fi.oph.tor.schema.{Koodistokoodiviite, TorOppija}
 case class Example(name: String, description: String, data: TorOppija)
 

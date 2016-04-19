@@ -4,7 +4,8 @@ import java.sql.Timestamp
 
 import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.json.Json
-import fi.oph.tor.localization.LocalizedString._
+import fi.oph.tor.localization.LocalizedString
+import fi.oph.tor.localization.LocalizedStringImplicits._
 import fi.oph.tor.schema.{Koodistokoodiviite, Opiskeluoikeus}
 import fi.oph.tor.toruser.TorUser
 import org.json4s._
@@ -62,7 +63,7 @@ object OpiskeluOikeusStoredDataDeserializer {
     def addDefaultTila(suoritus: JObject): JObject = {
       // Migrating data on the fly: if tila is missing, add default value. This migration should later be performed on db level or removed
       (if (!suoritus.values.contains("tila")) {
-        suoritus.merge(JObject("tila" -> Json.toJValue(Koodistokoodiviite("KESKEN", Some(unlocalized("Suoritus kesken")), "suorituksentila", Some(1))) ))
+        suoritus.merge(JObject("tila" -> Json.toJValue(Koodistokoodiviite("KESKEN", Some(LocalizedString.finnish("Suoritus kesken")), "suorituksentila", Some(1))) ))
       } else {
         suoritus
       }).transformField {

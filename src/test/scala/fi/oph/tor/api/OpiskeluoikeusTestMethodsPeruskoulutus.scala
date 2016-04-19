@@ -2,7 +2,9 @@ package fi.oph.tor.api
 
 import java.time.LocalDate.{of => date}
 
-import fi.oph.tor.organisaatio.MockOrganisaatiot
+import fi.oph.tor.documentation.ExampleData.jyväskylä
+import fi.oph.tor.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
+import fi.oph.tor.localization.LocalizedStringImplicits._
 import fi.oph.tor.schema._
 
 trait OpiskeluoikeusTestMethodsPeruskoulutus extends OpiskeluOikeusTestMethods[PerusopetuksenOpiskeluoikeus]{

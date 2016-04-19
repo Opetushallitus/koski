@@ -25,11 +25,13 @@ class SerializationSpec extends FunSpec with Matchers with Logging {
       }
     }
 
-    it ("LocalizedString") {
-      val string: LocalizedString = LocalizedString.unlocalized("rölli")
-      string.values.foreach{x: AnyRef => {}} // <- force lazy val to evaluate
-      val jsonString = Json.write(string)
-      jsonString should equal("""{"fi":"rölli"}""")
+    describe("LocalizedString") {
+      it("Serialized/deserializes cleanly") {
+        val string: LocalizedString = LocalizedString.finnish("rölli")
+        string.values.foreach{x: AnyRef => {}} // <- force lazy val to evaluate
+        val jsonString = Json.write(string)
+        jsonString should equal("""{"fi":"rölli"}""")
+      }
     }
   }
 }

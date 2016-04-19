@@ -2,6 +2,7 @@ package fi.oph.tor.api
 
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.json.Json
+import fi.oph.tor.localization.LocalizedString
 import fi.oph.tor.oppija.MockOppijat
 import fi.oph.tor.schema._
 import fi.oph.tor.toruser.MockUsers
@@ -148,7 +149,6 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluoikeusTestMethodsAmma
       }
     }
 
-
     describe("Opiskeluoikeuden päivämäärät") {
       describe("Päivämäärät kunnossa") {
         it("palautetaan HTTP 200" ) (putOpiskeluOikeusMerged(Map(
@@ -245,6 +245,33 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluoikeusTestMethodsAmma
         ))))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.jaksotEivätMuodostaJatkumoa("läsnäolotiedot.läsnäolojaksot: jaksot eivät muodosta jatkumoa"))))
       }
     }
+
+    describe("Lokalisoidut tekstit") {
+      def withName(name: LocalizedString) = defaultOpiskeluoikeus.copy(tyyppi = defaultOpiskeluoikeus.tyyppi.copy(nimi = Some(name)))
+
+      it("suomi riittää") {
+        putOpiskeluOikeus(withName(LocalizedString.finnish("Jotain"))) {
+          verifyResponseStatus(200)
+        }
+      }
+      it("ruotsi riittää") {
+        putOpiskeluOikeus(withName(LocalizedString.swedish("Något"))) {
+          verifyResponseStatus(200)
+        }
+      }
+      it("englanti riittää") {
+        putOpiskeluOikeus(withName(LocalizedString.english("Something"))) {
+          verifyResponseStatus(200)
+        }
+      }
+
+      it("vähintään yksi kieli vaaditaan") {
+        putOpiskeluOikeus(withName(LocalizedString(None))) {
+          verifyResponseStatus(400, TorErrorCategory.badRequest.validation.localizedTextMissing())
+        }
+      }
+    }
+
   }
 
   def putOpiskeluOikeusMerged[A](opiskeluOikeus: JValue, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {

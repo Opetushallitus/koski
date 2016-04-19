@@ -3,7 +3,7 @@ package fi.oph.tor.schema
 import java.time.LocalDate
 
 import fi.oph.tor.koodisto.KoodistoViite
-import fi.oph.tor.localization.LocalizedString.unlocalized
+import fi.oph.tor.localization.LocalizedString.finnish
 import fi.oph.tor.localization.LocalizedString
 import fi.oph.tor.log.Loggable
 import fi.oph.tor.schema.generic.annotation._
@@ -147,7 +147,7 @@ trait Suoritus {
   def rekursiivisetOsasuoritukset: List[Suoritus] = {
     osasuoritusLista ++ osasuoritusLista.flatMap(_.rekursiivisetOsasuoritukset)
   }
-  def arvosanaKirjaimin = arviointi.toList.flatten.lastOption.map(_.arvosanaKirjaimin).getOrElse(unlocalized(""))
+  def arvosanaKirjaimin = arviointi.toList.flatten.lastOption.map(_.arvosanaKirjaimin).getOrElse(finnish(""))
   def arvosanaNumeroin = arviointi.toList.flatten.lastOption.flatMap(_.arvosanaNumeroin).getOrElse("")
 }
 
@@ -159,7 +159,7 @@ trait Koulutusmoduuli {
 
 trait KoodistostaLöytyväKoulutusmoduuli extends Koulutusmoduuli {
   def tunniste: Koodistokoodiviite
-  def nimi = tunniste.nimi.getOrElse(unlocalized(tunniste.koodiarvo))
+  def nimi = tunniste.nimi.getOrElse(finnish(tunniste.koodiarvo))
 }
 
 trait EPerusteistaLöytyväKoulutusmoduuli extends Koulutusmoduuli {
@@ -184,7 +184,7 @@ trait Arviointi {
       case e: NumberFormatException => None
     }
   }
-  def arvosanaKirjaimin = arvosana.nimi.getOrElse(unlocalized(arvosana.koodiarvo))
+  def arvosanaKirjaimin = arvosana.nimi.getOrElse(finnish(arvosana.koodiarvo))
 }
 
 case class Arvioitsija(

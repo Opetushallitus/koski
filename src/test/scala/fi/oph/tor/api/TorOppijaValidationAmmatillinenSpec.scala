@@ -2,10 +2,12 @@ package fi.oph.tor.api
 
 import java.time.LocalDate
 
+import fi.oph.tor.documentation.ExampleData.helsinki
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.json.Json
 import fi.oph.tor.organisaatio.MockOrganisaatiot
 import fi.oph.tor.schema._
+import fi.oph.tor.localization.LocalizedStringImplicits._
 
 class TorOppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[AmmatillinenOpiskeluoikeus] with OpiskeluoikeusTestMethodsAmmatillinen {
   describe("Ammatillisen koulutuksen opiskeluoikeuden lisääminen") {

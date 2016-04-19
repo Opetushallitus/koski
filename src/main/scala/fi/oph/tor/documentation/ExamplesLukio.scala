@@ -7,7 +7,7 @@ import fi.oph.tor.documentation.LukioExampleData._
 import fi.oph.tor.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.tor.oppija.MockOppijat
 import fi.oph.tor.schema._
-import fi.oph.tor.localization.LocalizedString._
+import fi.oph.tor.localization.LocalizedStringImplicits._
 
 object ExamplesLukio {
   val uusi = TorOppija(

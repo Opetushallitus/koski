@@ -2,6 +2,7 @@ package fi.oph.tor.koodisto
 
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.json.{ContextualExtractor, Json}
+import fi.oph.tor.localization.LocalizedStringValidatingDeserializer
 import fi.oph.tor.log.Logging
 import fi.oph.tor.schema.{Deserializer, Koodistokoodiviite}
 import org.json4s.{Formats, JValue, TypeInfo}
@@ -11,7 +12,7 @@ object KoodistoResolvingDeserializer extends Deserializer[Koodistokoodiviite] wi
 
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Koodistokoodiviite] = {
     case (TypeInfo(TheClass, _), json) =>
-      val viite = json.extract[Koodistokoodiviite](Json.jsonFormats, Manifest.classType(TheClass))
+      val viite = json.extract[Koodistokoodiviite](Json.jsonFormats + LocalizedStringValidatingDeserializer, Manifest.classType(TheClass))
       ContextualExtractor.getContext[{def koodistoPalvelu: KoodistoViitePalvelu}] match {
         case Some(context) =>
           val validated: Option[Koodistokoodiviite] = try {
