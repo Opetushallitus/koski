@@ -72,17 +72,17 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
       }
   }
 
-  def validateSuoritus(suoritus: Suoritus, parent: Option[Suoritus]): HttpStatus = {
+  def validateSuoritus(suoritus: Suoritus, parentVahvistus: Option[Vahvistus]): HttpStatus = {
     val arviointipäivä = ("suoritus.arviointi.päivä", suoritus.arviointi.toList.flatten.flatMap(_.päivä))
     HttpStatus.fold(
       validateDateOrder(("suoritus.alkamispäivä", suoritus.alkamispäivä), arviointipäivä)
         :: validateDateOrder(arviointipäivä, ("suoritus.vahvistus.päivä", suoritus.vahvistus.map(_.päivä)))
-        :: validateStatus(suoritus, parent)
-        :: suoritus.osasuoritusLista.map(validateSuoritus(_, Some(suoritus)))
+        :: validateStatus(suoritus, parentVahvistus)
+        :: suoritus.osasuoritusLista.map(validateSuoritus(_, suoritus.vahvistus.orElse(parentVahvistus)))
     )
   }
 
-  private def validateStatus(suoritus: Suoritus, parent: Option[Suoritus]): HttpStatus = {
+  private def validateStatus(suoritus: Suoritus, parentVahvistus: Option[Vahvistus]): HttpStatus = {
     val hasArviointi: Boolean = !suoritus.arviointi.toList.flatten.isEmpty
     val hasVahvistus: Boolean = suoritus.vahvistus.isDefined
     val tilaValmis: Boolean = suoritus.tila.koodiarvo == "VALMIS"
@@ -91,7 +91,7 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
     }
     if (hasVahvistus && !tilaValmis) {
       TorErrorCategory.badRequest.validation.tila.vahvistusVäärässäTilassa("Suorituksella " + suorituksenTunniste(suoritus) + " on vahvistus, vaikka suorituksen tila on " + suoritus.tila.koodiarvo)
-    } else if (!hasVahvistus && tilaValmis && !parent.flatMap(_.vahvistus).isDefined) {
+    } else if (!hasVahvistus && tilaValmis && !parentVahvistus.isDefined) {
       TorErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta " + suorituksenTunniste(suoritus) + " puuttuu vahvistus, vaikka suorituksen tila on " + suoritus.tila.koodiarvo)
     } else {
       (tilaValmis, suoritus.rekursiivisetOsasuoritukset.find(_.tila.koodiarvo == "KESKEN")) match {
