@@ -15,12 +15,12 @@ class TorOppijaUpdateSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatil
       "Oppilaitoksen tiedot" - {
         "Ilman nimeä -> haetaan nimi" in {
           val opiskeluOikeus = createOpiskeluOikeus(oppija, uusiOpiskeluOikeus)
-          opiskeluOikeus.oppilaitos.nimi.get.get("fi") should equal(Some("Stadin ammattiopisto"))
+          opiskeluOikeus.oppilaitos.nimi.get.get("fi") should equal("Stadin ammattiopisto")
           opiskeluOikeus.oppilaitos.oppilaitosnumero.get.koodiarvo should equal("10105")
         }
         "Väärällä nimellä -> korvataan nimi" in {
           val opiskeluOikeus = createOpiskeluOikeus(oppija, uusiOpiskeluOikeus.copy(oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto, nimi = Some(LocalizedString.finnish("Läppäkoulu")))))
-          opiskeluOikeus.oppilaitos.nimi.get.get("fi") should equal(Some("Stadin ammattiopisto"))
+          opiskeluOikeus.oppilaitos.nimi.get.get("fi") should equal("Stadin ammattiopisto")
         }
       }
       "Koodistojen tiedot" - {
