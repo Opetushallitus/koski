@@ -11,8 +11,8 @@ trait LocalizedString extends Localizable {
   def get(lang: String) = values.get(lang).orElse(values.get("fi")).orElse(values.values.headOption).getOrElse(missingString)
   def description = this
   def concat(x: LocalizedString) = {
-    val valueList: List[(String, String)] = LocalizedString.languages.map { lang => (lang, get(lang) + x.get(lang)) }
-    LocalizedString(Map(valueList: _*)).getOrElse(LocalizedString.empty)
+    val (fi :: sv :: en :: Nil) = LocalizedString.languages.map { lang => get(lang) + x.get(lang) }
+    Finnish(fi, Some(sv), Some(en))
   }
 }
 
@@ -46,7 +46,7 @@ object LocalizedString extends Logging {
    * 3. return None if no non-empty values available
    * 4. patch it to always contain a Finnish value
    */
-  def apply(values: Map[String, String]): Option[LocalizedString] = {
+  def sanitize(values: Map[String, String]): Option[LocalizedString] = {
     def getAny(values: Map[String, String]) = {
       //logger.warn("Finnish localization missing from " + values)
       values.toList.map(_._2).headOption.getOrElse(missingString)
@@ -61,6 +61,8 @@ object LocalizedString extends Logging {
       case false => Some(Finnish(lowerCased.getOrElse("fi", getAny(lowerCased)), lowerCased.get("sv"), lowerCased.get("en")))
     }
   }
+
+  def sanitizeRequired(values: Map[String, String]): LocalizedString = sanitize(values).getOrElse(missing)
 
   val empty: LocalizedString = Finnish("", Some(""), Some(""))
   val missing: LocalizedString = unlocalized(missingString)

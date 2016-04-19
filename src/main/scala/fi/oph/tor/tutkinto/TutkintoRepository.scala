@@ -18,7 +18,7 @@ object TutkintoRepository {
 class TutkintoRepositoryImpl(eperusteet: EPerusteetRepository, arviointiAsteikot: ArviointiasteikkoRepository, koodistoPalvelu: KoodistoViitePalvelu) extends TutkintoRepository{
   def findTutkinnot(oppilaitosId: String, query: String): List[TutkintoPeruste] = {
     eperusteet.findPerusteet(query) flatMap { peruste =>
-      peruste.koulutukset.map(koulutus => TutkintoPeruste(peruste.diaarinumero, koulutus.koulutuskoodiArvo, LocalizedString(peruste.nimi)))
+      peruste.koulutukset.map(koulutus => TutkintoPeruste(peruste.diaarinumero, koulutus.koulutuskoodiArvo, LocalizedString.sanitize(peruste.nimi)))
     }
   }
 
