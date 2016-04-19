@@ -1,5 +1,7 @@
 package fi.oph.tor.api
 
+import fi.oph.tor.documentation.{YleissivistavakoulutusExampleData, PeruskoulutusExampleData}
+import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.schema._
 
 // Perusopetuksen validointi perustuu tässä testattua diaarinumeroa lukuunottamatta domain-luokista generoituun JSON-schemaan.
@@ -10,4 +12,24 @@ class TorOppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusope
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = defaultOpiskeluoikeus.suoritukset.map(
     suoritus => suoritus.copy(koulutusmoduuli = suoritus.koulutusmoduuli.copy(perusteenDiaarinumero = diaari))
   ))
+
+  describe("Suoritusten tila") {
+    it("Todistus VALMIS ilman vahvistusta -> HTTP 400") {
+      val oo: PerusopetuksenOpiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = defaultOpiskeluoikeus.suoritukset.map(_.copy(vahvistus = None)))
+      putOpiskeluOikeus(oo) {
+        verifyResponseStatus(400, TorErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta koulutus/201100 puuttuu vahvistus, vaikka suorituksen tila on VALMIS"))
+      }
+    }
+
+    it("Oppiainesuoritus VALMIS ilman todistuksen vahvistusta -> HTTP 400") {
+      val oo: PerusopetuksenOpiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = defaultOpiskeluoikeus.suoritukset.map(_.copy(
+        tila = tilaKesken,
+        vahvistus = None,
+        osasuoritukset = Some(List(PeruskoulutusExampleData.suoritus(YleissivistavakoulutusExampleData.oppiaine("GE")).copy(tila = tilaValmis)))
+      )))
+      putOpiskeluOikeus(oo) {
+        verifyResponseStatus(400, TorErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta koskioppiaineetyleissivistava/GE puuttuu vahvistus, vaikka suorituksen tila on VALMIS"))
+      }
+    }
+  }
 }

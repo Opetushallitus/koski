@@ -91,7 +91,7 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
     }
     if (hasVahvistus && !tilaValmis) {
       TorErrorCategory.badRequest.validation.tila.vahvistusVäärässäTilassa("Suorituksella " + suorituksenTunniste(suoritus) + " on vahvistus, vaikka suorituksen tila on " + suoritus.tila.koodiarvo)
-    } else if (!hasVahvistus && tilaValmis && !parent.isDefined) {
+    } else if (!hasVahvistus && tilaValmis && !parent.flatMap(_.vahvistus).isDefined) {
       TorErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta " + suorituksenTunniste(suoritus) + " puuttuu vahvistus, vaikka suorituksen tila on " + suoritus.tila.koodiarvo)
     } else {
       (tilaValmis, suoritus.rekursiivisetOsasuoritukset.find(_.tila.koodiarvo == "KESKEN")) match {
