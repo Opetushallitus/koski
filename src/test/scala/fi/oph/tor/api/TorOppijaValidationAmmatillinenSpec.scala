@@ -299,7 +299,7 @@ class TorOppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatil
 
   lazy val tutkinnonOsaSuoritus = AmmatillisenTutkinnonosanSuoritus(
     tutkinnonOsa, None, None, None, None, None, None, tilaKesken, None,
-    OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka")),
+    Some(OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))),
     arviointiHyvä(), None)
 
   lazy val paikallinenTutkinnonOsa = PaikallinenTutkinnonosa(
@@ -308,7 +308,7 @@ class TorOppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatil
 
   lazy val paikallinenTutkinnonOsaSuoritus = AmmatillisenTutkinnonosanSuoritus(
     paikallinenTutkinnonOsa, None, None, None, None, None, None, tilaKesken, None,
-    OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka")),
+    Some(OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))),
     arviointiHyvä(), None)
 
   def putTutkinnonOsaSuoritus[A](tutkinnonOsaSuoritus: AmmatillisenTutkinnonosanSuoritus, tutkinnonSuoritustapa: Option[Suoritustapa])(f: => A) = {

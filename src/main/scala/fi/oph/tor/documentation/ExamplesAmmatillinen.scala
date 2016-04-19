@@ -95,7 +95,7 @@ object AmmatillinenExampleData {
     suorituskieli = None,
     tila = tilaValmis,
     alkamispäivä = None,
-    toimipiste = toimipiste,
+    toimipiste = Some(toimipiste),
     arviointi = arviointiHyväksytty,
     vahvistus = vahvistus(date(2013, 5, 31))
   )
@@ -181,7 +181,7 @@ object ExamplesAmmatillinen {
         suorituskieli = None,
         tila = tilaValmis,
         alkamispäivä = None,
-        toimipiste = toimipiste,
+        toimipiste = Some(toimipiste),
         arviointi = arviointiKiitettävä,
         vahvistus = vahvistus(date(2014, 11, 8))
       )
@@ -205,7 +205,7 @@ object ExamplesAmmatillinen {
         suorituskieli = None,
         tila = tilaValmis,
         alkamispäivä = None,
-        toimipiste = toimipiste,
+        toimipiste = Some(toimipiste),
         arviointi = arviointiKiitettävä,
         vahvistus = vahvistus(date(2014, 11, 8))
       )
@@ -245,7 +245,7 @@ object ExamplesAmmatillinen {
               suorituskieli = None,
               tila = tilaValmis,
               alkamispäivä = None,
-              toimipiste = toimipiste,
+              toimipiste = Some(toimipiste),
               arviointi = Some(
                 List(
                   AmmatillinenArviointi(
@@ -369,7 +369,7 @@ object AmmatillinenTodistusExample {
       näyttö = None, paikallinenId = None, suorituskieli = None,
       tila = tilaValmis,
       alkamispäivä = None,
-      toimipiste = toimipiste,
+      toimipiste = Some(toimipiste),
       arviointi = Some(List(AmmatillinenArviointi(arvosana = arvosana, Some(date(2014, 10, 20))))),
       vahvistus = vahvistus(date(2016, 5, 31))
     )
@@ -435,7 +435,7 @@ object AmmatillinenFullExample {
       suorituskieli = None,
       tila = tilaValmis,
       alkamispäivä = None,
-      toimipiste = toimipiste,
+      toimipiste = Some(toimipiste),
       arviointi = Some(List(AmmatillinenArviointi(
         arvosana = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
         Some(date(2012, 10, 20)),
@@ -455,7 +455,7 @@ object AmmatillinenFullExample {
       suorituskieli = None,
       tila = tilaValmis,
       alkamispäivä = None,
-      toimipiste = toimipiste,
+      toimipiste = Some(toimipiste),
       arviointi = Some(List(AmmatillinenArviointi(
         arvosana = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
         Some(date(2013, 4, 1)),
@@ -474,7 +474,7 @@ object AmmatillinenFullExample {
       suorituskieli = None,
       tila = tilaValmis,
       alkamispäivä = None,
-      toimipiste = toimipiste,
+      toimipiste = Some(toimipiste),
       arviointi = Some(List(AmmatillinenArviointi(
         arvosana = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
         Some(date(2014, 10, 20)),
@@ -493,7 +493,7 @@ object AmmatillinenFullExample {
       suorituskieli = None,
       tila = tilaValmis,
       alkamispäivä = None,
-      toimipiste = toimipiste,
+      toimipiste = Some(toimipiste),
       arviointi = Some(List(AmmatillinenArviointi(
         arvosana = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
         Some(date(2015, 4, 1)),
@@ -512,7 +512,7 @@ object AmmatillinenFullExample {
       suorituskieli = None,
       tila = tilaValmis,
       alkamispäivä = None,
-      toimipiste = toimipiste,
+      toimipiste = Some(toimipiste),
       arviointi = Some(List(AmmatillinenArviointi(
         arvosana = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)),
         Some(date(2016, 2, 1)),
