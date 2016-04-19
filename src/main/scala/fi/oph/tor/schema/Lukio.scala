@@ -60,9 +60,10 @@ case class LukionKurssinSuoritus(
   paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
-  arviointi: Option[List[YleissivistävänkoulutuksenArviointi]] = None,
-  vahvistus: Option[Vahvistus] = None
-) extends Suoritus
+  arviointi: Option[List[YleissivistävänkoulutuksenArviointi]] = None
+) extends Suoritus {
+  def vahvistus: Option[Vahvistus] = None
+}
 
 
 sealed trait LukionKurssi extends Koulutusmoduuli {

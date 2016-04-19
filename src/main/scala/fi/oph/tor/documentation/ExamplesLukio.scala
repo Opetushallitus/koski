@@ -223,7 +223,6 @@ object LukioExampleData {
     koulutusmoduuli = kurssi,
     suorituskieli = None,
     paikallinenId = None,
-    vahvistus = None,
     arviointi = None,
     tila = tilaValmis
   )
