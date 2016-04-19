@@ -13,6 +13,7 @@ class TodistusServlet(val userRepository: UserOrganisationsRepository, val direc
     val opiskeluoikeusId = getIntegerParam("opiskeluoikeusId")
     rekisteri.findOpiskeluOikeus(opiskeluoikeusId)(torUser) match {
       case Right((henkilötiedot, opiskeluoikeus)) =>
+          implicit val user = torUser
           opiskeluoikeus.suoritukset.head match {
             case t: PeruskoulunPäättötodistus if t.tila.koodiarvo == "VALMIS" =>
               (new PeruskoulunPaattotodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)
