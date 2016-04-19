@@ -6,9 +6,9 @@ import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.json.Json
 import fi.oph.tor.organisaatio.MockOrganisaatiot
 import fi.oph.tor.schema._
-import org.scalatest.FunSpec
 
-class TorOppijaValidationAmmatillinenSpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatillinen {
+
+class TorOppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[AmmatillinenOpiskeluoikeus] with OpiskeluoikeusTestMethodsAmmatillinen {
   describe("Ammatillisen koulutuksen opiskeluoikeuden lisääminen") {
     describe("Valideilla tiedoilla") {
       it("palautetaan HTTP 200") {
@@ -25,28 +25,6 @@ class TorOppijaValidationAmmatillinenSpec extends FunSpec with OpiskeluoikeusTes
     }
 
     describe("Tutkinnon perusteet ja rakenne") {
-      describe("Kun yritetään lisätä opinto-oikeus tuntemattomaan tutkinnon perusteeseen") {
-        it("palautetaan HTTP 400 virhe" ) {
-          val suoritus: AmmatillisenTutkinnonSuoritus = tutkintoSuoritus.copy(koulutusmoduuli = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", "koulutus"), Some("39/xxx/2014")))
-          putTutkintoSuoritus(suoritus) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Tutkinnon perustetta ei löydy diaarinumerolla 39/xxx/2014")))
-        }
-      }
-
-      describe("Kun lisätään opinto-oikeus ilman tutkinnon perusteen diaarinumeroa") {
-        it("palautetaan HTTP 200" ) {
-          val suoritus: AmmatillisenTutkinnonSuoritus = tutkintoSuoritus.copy(koulutusmoduuli = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", "koulutus"), None))
-          putTutkintoSuoritus(suoritus) (verifyResponseStatus(200))
-        }
-      }
-
-      describe("Kun yritetään lisätä opinto-oikeus tyhjällä diaarinumerolla") {
-        it("palautetaan HTTP 400 virhe" ) {
-          val suoritus = tutkintoSuoritus.copy(koulutusmoduuli = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", "koulutus"), Some("")))
-
-          putTutkintoSuoritus(suoritus) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema(".*perusteenDiaarinumero.*".r)))
-        }
-      }
-
       describe("Osaamisala ja suoritustapa") {
         describe("Osaamisala ja suoritustapa ok") {
           val suoritus = tutkintoSuoritus.copy(
@@ -343,4 +321,10 @@ class TorOppijaValidationAmmatillinenSpec extends FunSpec with OpiskeluoikeusTes
 
     putOppija(makeOppija(henkilö, List(Json.toJValue(opiskeluOikeus))), headers)(f)
   }
+
+  def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = defaultOpiskeluoikeus.suoritukset.map(
+    suoritus => suoritus.copy(koulutusmoduuli = suoritus.koulutusmoduuli.copy(perusteenDiaarinumero = diaari))
+  ))
+
+  override def vääräntyyppisenPerusteenDiaarinumero: String = "60/011/2015"
 }
