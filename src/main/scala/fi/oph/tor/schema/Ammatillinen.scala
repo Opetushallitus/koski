@@ -30,7 +30,7 @@ case class AmmatillinenOpiskeluoikeus(
 }
 
 case class AmmatillinenOpiskeluoikeudenTila(
-  opiskeluoikeusjaksot: List[Opiskeluoikeusjakso]
+  opiskeluoikeusjaksot: List[AmmatillinenOpiskeluoikeusjakso]
 ) extends OpiskeluoikeudenTila
 
 case class AmmatillinenOpiskeluoikeusjakso(
