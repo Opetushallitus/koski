@@ -194,6 +194,8 @@ case class Arvioitsija(
 case class Vahvistus(
   @Description("Tutkinnon tai tutkinnonosan vahvistettu suorituspäivämäärä, eli päivämäärä jolloin suoritus on hyväksyttyä todennettua osaamista")
   päivä: LocalDate,
+  @KoodistoUri("kunta")
+  paikkakunta: Koodistokoodiviite,
   myöntäjäOrganisaatio: Organisaatio,
   @MinItems(1)
   myöntäjäHenkilöt: List[OrganisaatioHenkilö]

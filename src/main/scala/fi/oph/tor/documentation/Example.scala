@@ -15,4 +15,6 @@ object ExampleData {
   lazy val suomenKieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None))
   lazy val tilaKesken = Koodistokoodiviite("KESKEN", "suorituksentila")
   lazy val tilaValmis: Koodistokoodiviite = Koodistokoodiviite(koodistoUri = "suorituksentila", koodiarvo = "VALMIS")
+  val helsinki = Koodistokoodiviite(koodistoUri = "kunta", koodiarvo = "091", nimi = Some("Helsinki"))
+  val jyväskylä = Koodistokoodiviite(koodistoUri = "kunta", koodiarvo = "179", nimi = Some("Jyväskylä"))
 }

@@ -1,7 +1,9 @@
 package fi.oph.tor.api
 
+import fi.oph.tor.localization.LocalizedString
 import fi.oph.tor.oppija.MockOppijat
-import fi.oph.tor.schema.TaydellisetHenkilötiedot
+import fi.oph.tor.organisaatio.MockOrganisaatiot
+import fi.oph.tor.schema.{Koodistokoodiviite, Oppilaitos, TaydellisetHenkilötiedot}
 import org.scalatest.FreeSpec
 
 class TorOppijaUpdateSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillinen {

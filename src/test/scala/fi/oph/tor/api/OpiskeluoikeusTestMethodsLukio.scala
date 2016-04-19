@@ -2,12 +2,13 @@ package fi.oph.tor.api
 
 import java.time.LocalDate.{of => date}
 
-import fi.oph.tor.organisaatio.MockOrganisaatiot
+import fi.oph.tor.documentation.ExampleData.jyväskylä
+import fi.oph.tor.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.tor.schema._
+import fi.oph.tor.localization.LocalizedStringImplicits._
 
 trait OpiskeluoikeusTestMethodsLukio extends OpiskeluOikeusTestMethods[LukionOpiskeluoikeus]{
-  val jyväskylänNormaalikoulu: Oppilaitos = Oppilaitos(MockOrganisaatiot.jyväskylänNormaalikoulu, Some(Koodistokoodiviite("00204", None, "oppilaitosnumero", None)), Some("Jyväskylän normaalikoulu"))
-  val vahvistus: Some[Vahvistus] = Some(Vahvistus(päivä = date(2016, 6, 4), myöntäjäOrganisaatio = jyväskylänNormaalikoulu, myöntäjäHenkilöt = List(OrganisaatioHenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))
+  val vahvistus: Some[Vahvistus] = Some(Vahvistus(päivä = date(2016, 6, 4), jyväskylä, myöntäjäOrganisaatio = jyväskylänNormaalikoulu, myöntäjäHenkilöt = List(OrganisaatioHenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))
 
   override def defaultOpiskeluoikeus = LukionOpiskeluoikeus(
     id = None, versionumero = None, lähdejärjestelmänId = None, alkamispäivä = None, arvioituPäättymispäivä = None, päättymispäivä = None,

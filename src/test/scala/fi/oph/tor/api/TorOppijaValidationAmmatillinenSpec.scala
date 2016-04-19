@@ -240,7 +240,7 @@ class TorOppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatil
       }
 
       describe("Vahvistuksen myöntäjähenkilö puuttuu") {
-        it("palautetaan HTTP 400") (put(copySuoritus(suoritus, tilaValmis, arviointiHyvä(), Some(Vahvistus(LocalDate.parse("2016-08-08"), stadinOpisto, Nil)))) (
+        it("palautetaan HTTP 400") (put(copySuoritus(suoritus, tilaValmis, arviointiHyvä(), Some(Vahvistus(LocalDate.parse("2016-08-08"), helsinki, stadinOpisto, Nil)))) (
           verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema(".*array is too short.*".r))
         ))
       }
@@ -282,7 +282,7 @@ class TorOppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatil
   }
 
   def vahvistus(date: LocalDate): Some[Vahvistus] = {
-    Some(Vahvistus(date, stadinOpisto, List(OrganisaatioHenkilö("Teppo Testaaja", "rehtori", stadinOpisto))))
+    Some(Vahvistus(date, helsinki, stadinOpisto, List(OrganisaatioHenkilö("Teppo Testaaja", "rehtori", stadinOpisto))))
   }
 
   def arviointiHyvä(päivä: Option[LocalDate] = None): Some[List[AmmatillinenArviointi]] = Some(List(AmmatillinenArviointi(Koodistokoodiviite("2", "arviointiasteikkoammatillinent1k3"), päivä)))
