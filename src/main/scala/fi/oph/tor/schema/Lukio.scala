@@ -2,9 +2,8 @@ package fi.oph.tor.schema
 
 import java.time.LocalDate
 
-import fi.oph.tor.eperusteet.EPerusteTunniste
-import fi.oph.tor.schema.generic.annotation.{Description, MaxItems, MinItems}
 import fi.oph.tor.localization.LocalizedString._
+import fi.oph.tor.schema.generic.annotation.{Description, MaxItems, MinItems}
 
 @Description("Lukion opiskeluoikeus")
 case class LukionOpiskeluoikeus(

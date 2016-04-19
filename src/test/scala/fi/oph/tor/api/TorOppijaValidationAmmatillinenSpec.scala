@@ -7,7 +7,6 @@ import fi.oph.tor.json.Json
 import fi.oph.tor.organisaatio.MockOrganisaatiot
 import fi.oph.tor.schema._
 
-
 class TorOppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[AmmatillinenOpiskeluoikeus] with OpiskeluoikeusTestMethodsAmmatillinen {
   describe("Ammatillisen koulutuksen opiskeluoikeuden lisääminen") {
     describe("Valideilla tiedoilla") {
