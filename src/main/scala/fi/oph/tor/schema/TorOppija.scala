@@ -277,7 +277,7 @@ case class Koodistokoodiviite(
   nimi: Option[LocalizedString],
   @Description("Koodin selväkielinen, kielistetty lyhennetty nimi")
   @ReadOnly("Tiedon syötössä kuvausta ei tarvita; kuvaus haetaan Koodistopalvelusta")
-  lyhytNimi: Option[String],
+  lyhytNimi: Option[LocalizedString],
   @Description("Käytetyn koodiston tunniste")
   koodistoUri: String,
   @Description("Käytetyn koodiston versio. Jos versiota ei määritellä, käytetään uusinta versiota")
