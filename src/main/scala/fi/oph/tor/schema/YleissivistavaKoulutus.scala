@@ -1,7 +1,9 @@
 package fi.oph.tor.schema
 
 import java.time.LocalDate
+import fi.oph.tor.localization.{LocalizedStringImplicits, LocalizedString}
 import fi.oph.tor.schema.generic.annotation.Description
+import LocalizedStringImplicits.LocalizedStringInterpolator
 
 trait YleissivistavaOppiaine extends KoodistostaLöytyväKoulutusmoduuli {
   @Description("Oppiaine")
@@ -10,7 +12,6 @@ trait YleissivistavaOppiaine extends KoodistostaLöytyväKoulutusmoduuli {
   def tunniste: Koodistokoodiviite
   def pakollinen: Boolean
   def laajuus: Option[Laajuus]
-  override def toString = tunniste.nimi.map(_.get("fi")).getOrElse("") // TODO: remove this, localization
 }
 
 trait LukionOppiaine extends YleissivistavaOppiaine
@@ -32,7 +33,7 @@ trait PeruskoulunOppiaine extends YleissivistavaOppiaine
     pakollinen: Boolean = true,
     override val laajuus: Option[Laajuus] = None
   ) extends PeruskoulunOppiaine with LukionOppiaine {
-    override def toString = super.toString + uskonto.nimi.map(_.get("fi")).map(", " + _).getOrElse("") // TODO: remove this, localization
+    override def description = localized"$nimi, $uskonto"
   }
 
   case class AidinkieliJaKirjallisuus(
@@ -58,7 +59,7 @@ trait PeruskoulunOppiaine extends YleissivistavaOppiaine
     pakollinen: Boolean = true,
     override val laajuus: Option[Laajuus] = None
   ) extends PeruskoulunOppiaine with LukionOppiaine {
-    override def toString = super.toString + kieli.nimi.map(_.get("fi")).map(", " + _).getOrElse("") // TODO: remove this, localization
+    override def description = localized"$nimi, $kieli"
   }
 
 case class YleissivistävänkoulutuksenArviointi(

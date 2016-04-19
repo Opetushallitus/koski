@@ -18,7 +18,7 @@ class PeruskoulunPaattotodistusHtml(implicit val user: TorUser) extends Todistus
       .map(Valinnainen(_))
 
     def arvosanaLista(oppiaineet: List[Aine]) = oppiaineet.map { oppiaine =>
-      val nimiTeksti = oppiaine.suoritus.koulutusmoduuli.toString
+      val nimiTeksti = i(oppiaine.suoritus.koulutusmoduuli)
       val nimi = oppiaine match {
         case LiittyväValinnainen(suoritus) => "Valinnainen " + nimiTeksti
         case _ => nimiTeksti

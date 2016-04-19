@@ -38,7 +38,7 @@ class LukionPaattotodistusHtml(implicit val user: TorUser) extends TodistusHtml 
             </tr>
             {
               oppiaineet.map { oppiaine =>
-                val nimiTeksti = oppiaine.koulutusmoduuli.toString
+                val nimiTeksti = i(oppiaine.koulutusmoduuli)
                 val rowClass="oppiaine " + oppiaine.koulutusmoduuli.tunniste.koodiarvo
                 <tr class={rowClass}>
                   <td class="oppiaine">{nimiTeksti}</td>

@@ -3,8 +3,8 @@ package fi.oph.tor.schema
 import java.time.LocalDate
 
 import fi.oph.tor.koodisto.KoodistoViite
-import fi.oph.tor.localization.LocalizedString.finnish
-import fi.oph.tor.localization.LocalizedString
+import fi.oph.tor.localization.LocalizedString.{unlocalized, finnish}
+import fi.oph.tor.localization.{Localizable, LocalizedString}
 import fi.oph.tor.log.Loggable
 import fi.oph.tor.schema.generic.annotation._
 
@@ -147,19 +147,20 @@ trait Suoritus {
   def rekursiivisetOsasuoritukset: List[Suoritus] = {
     osasuoritusLista ++ osasuoritusLista.flatMap(_.rekursiivisetOsasuoritukset)
   }
-  def arvosanaKirjaimin = arviointi.toList.flatten.lastOption.map(_.arvosanaKirjaimin).getOrElse(finnish(""))
+  def arvosanaKirjaimin = arviointi.toList.flatten.lastOption.map(_.arvosanaKirjaimin).getOrElse(unlocalized(""))
   def arvosanaNumeroin = arviointi.toList.flatten.lastOption.flatMap(_.arvosanaNumeroin).getOrElse("")
 }
 
-trait Koulutusmoduuli {
+trait Koulutusmoduuli extends Localizable {
   def tunniste: KoodiViite
   def laajuus: Option[Laajuus] = None
   def nimi: LocalizedString
+  def description: LocalizedString = nimi
 }
 
 trait KoodistostaLöytyväKoulutusmoduuli extends Koulutusmoduuli {
   def tunniste: Koodistokoodiviite
-  def nimi = tunniste.nimi.getOrElse(finnish(tunniste.koodiarvo))
+  def nimi: LocalizedString = tunniste.nimi.getOrElse(unlocalized(tunniste.koodiarvo))
 }
 
 trait EPerusteistaLöytyväKoulutusmoduuli extends Koulutusmoduuli {
@@ -184,7 +185,7 @@ trait Arviointi {
       case e: NumberFormatException => None
     }
   }
-  def arvosanaKirjaimin = arvosana.nimi.getOrElse(finnish(arvosana.koodiarvo))
+  def arvosanaKirjaimin = arvosana.nimi.getOrElse(unlocalized(arvosana.koodiarvo))
 }
 
 case class Arvioitsija(
@@ -282,8 +283,9 @@ case class Koodistokoodiviite(
   koodistoUri: String,
   @Description("Käytetyn koodiston versio. Jos versiota ei määritellä, käytetään uusinta versiota")
   koodistoVersio: Option[Int]
-) extends KoodiViite {
+) extends KoodiViite with Localizable {
   override def toString = koodistoUri + "/" + koodiarvo
+  def description: LocalizedString = nimi.getOrElse(unlocalized(koodiarvo))
   def koodistoViite = koodistoVersio.map(KoodistoViite(koodistoUri, _))
 }
 

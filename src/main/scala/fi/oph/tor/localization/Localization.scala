@@ -1,13 +1,23 @@
 package fi.oph.tor.localization
 
+import fi.oph.tor.localization.LocalizedString.missingString
 import fi.oph.tor.log.Logging
 import fi.oph.tor.schema.generic.annotation.Description
 
 @Description("Lokalisoitu teksti. Vähintään yksi kielistä (fi/sv/en) vaaditaan")
-trait LocalizedString {
+trait LocalizedString extends Localizable {
   def valueList: List[(String, String)]
   lazy val values: Map[String, String] = Map(valueList : _*)
-  def get(lang: String) = values.get(lang).orElse(values.get("fi")).getOrElse("")
+  def get(lang: String) = values.get(lang).orElse(values.get("fi")).orElse(values.values.headOption).getOrElse(missingString)
+  def description = this
+  def concat(x: LocalizedString) = {
+    val valueList: List[(String, String)] = LocalizedString.languages.map { lang => (lang, get(lang) + x.get(lang)) }
+    LocalizedString(Map(valueList: _*)).getOrElse(LocalizedString.empty)
+  }
+}
+
+trait Localizable {
+  def description: LocalizedString
 }
 
 @Description("Lokalisoitu teksti, jossa mukana suomi")
@@ -27,6 +37,8 @@ case class English(en: String, sv: Option[String] = None, fi: Option[String] = N
 
 
 object LocalizedString extends Logging {
+  val missingString = "???"
+  def languages = List("fi", "sv", "en")
   /**
    * Sanitize map of localized values:
    * 1. lowercase all keys
@@ -37,7 +49,7 @@ object LocalizedString extends Logging {
   def apply(values: Map[String, String]): Option[LocalizedString] = {
     def getAny(values: Map[String, String]) = {
       //logger.warn("Finnish localization missing from " + values)
-      values.toList.map(_._2).headOption.getOrElse("???")
+      values.toList.map(_._2).headOption.getOrElse(missingString)
     }
     val lowerCased = values.flatMap {
       case (key, "") => None
@@ -49,12 +61,28 @@ object LocalizedString extends Logging {
       case false => Some(Finnish(lowerCased.getOrElse("fi", getAny(lowerCased)), lowerCased.get("sv"), lowerCased.get("en")))
     }
   }
-  val missing: LocalizedString = finnish("???")
+
+  val empty: LocalizedString = Finnish("", Some(""), Some(""))
+  val missing: LocalizedString = unlocalized(missingString)
+  def unlocalized(string: String): LocalizedString = Finnish(string, Some(string), Some(string))
   def finnish(string: String): LocalizedString = Finnish(string)
   def swedish(string: String): LocalizedString = Swedish(string)
   def english(string: String): LocalizedString = English(string)
+  def concat(strings: Seq[Localizable]) = strings.foldLeft(LocalizedString.empty) {
+    case (built, next) => built.concat(next.description)
+  }
 }
 
 object LocalizedStringImplicits {
   implicit def str2localized(string: String): LocalizedString = LocalizedString.finnish(string)
+  implicit class LocalizedStringInterpolator(val sc: StringContext) extends AnyVal {
+    def localized(args: Any*): LocalizedString = {
+      val pairs: Seq[(String, Option[Any])] = sc.parts.zip(args.toList.map(Some(_)) ++ List(None))
+      val stuff: Seq[LocalizedString] = pairs.flatMap { case (string, maybeLocalized) => List(LocalizedString.unlocalized(string)) ++ maybeLocalized.toList }.map {
+        case x: Localizable => x.description
+        case x: Any => LocalizedString.unlocalized(x.toString)
+      }
+      LocalizedString.concat(stuff)
+    }
+  }
 }
