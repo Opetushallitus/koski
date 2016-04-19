@@ -216,7 +216,6 @@ object LukioExampleData {
     suorituskieli = None,
     arviointi = None,
     tila = tilaValmis,
-    vahvistus = vahvistus,
     osasuoritukset = None
   )
 
@@ -224,7 +223,7 @@ object LukioExampleData {
     koulutusmoduuli = kurssi,
     suorituskieli = None,
     paikallinenId = None,
-    vahvistus = vahvistus,
+    vahvistus = None,
     arviointi = None,
     tila = tilaValmis
   )

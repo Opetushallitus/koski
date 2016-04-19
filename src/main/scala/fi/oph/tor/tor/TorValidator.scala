@@ -65,24 +65,24 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
       validateDateOrder(("alkamispäivä", opiskeluOikeus.alkamispäivä), ("arvioituPäättymispäivä", opiskeluOikeus.arvioituPäättymispäivä)),
       DateValidation.validateJaksot("opiskeluoikeudenTila.opiskeluoikeusjaksot", opiskeluOikeus.opiskeluoikeudenTila.toList.flatMap(_.opiskeluoikeusjaksot)),
       DateValidation.validateJaksot("läsnäolotiedot.läsnäolojaksot", opiskeluOikeus.läsnäolotiedot.toList.flatMap(_.läsnäolojaksot)),
-      HttpStatus.fold(opiskeluOikeus.suoritukset.map(validateSuoritus(_)))
+      HttpStatus.fold(opiskeluOikeus.suoritukset.map(validateSuoritus(_, None)))
     )}
       .then {
         HttpStatus.fold(opiskeluOikeus.suoritukset.map(TutkintoRakenneValidator(tutkintoRepository).validateTutkintoRakenne(_)))
       }
   }
 
-  def validateSuoritus(suoritus: Suoritus): HttpStatus = {
+  def validateSuoritus(suoritus: Suoritus, parent: Option[Suoritus]): HttpStatus = {
     val arviointipäivä = ("suoritus.arviointi.päivä", suoritus.arviointi.toList.flatten.flatMap(_.päivä))
     HttpStatus.fold(
       validateDateOrder(("suoritus.alkamispäivä", suoritus.alkamispäivä), arviointipäivä)
         :: validateDateOrder(arviointipäivä, ("suoritus.vahvistus.päivä", suoritus.vahvistus.map(_.päivä)))
-        :: validateStatus(suoritus)
-        :: suoritus.osasuoritusLista.map(validateSuoritus(_))
+        :: validateStatus(suoritus, parent)
+        :: suoritus.osasuoritusLista.map(validateSuoritus(_, Some(suoritus)))
     )
   }
 
-  private def validateStatus(suoritus: Suoritus): HttpStatus = {
+  private def validateStatus(suoritus: Suoritus, parent: Option[Suoritus]): HttpStatus = {
     val hasArviointi: Boolean = !suoritus.arviointi.toList.flatten.isEmpty
     val hasVahvistus: Boolean = suoritus.vahvistus.isDefined
     val tilaValmis: Boolean = suoritus.tila.koodiarvo == "VALMIS"
@@ -91,7 +91,7 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
     }
     if (hasVahvistus && !tilaValmis) {
       TorErrorCategory.badRequest.validation.tila.vahvistusVäärässäTilassa("Suorituksella " + suorituksenTunniste(suoritus) + " on vahvistus, vaikka suorituksen tila on " + suoritus.tila.koodiarvo)
-    } else if (!hasVahvistus && tilaValmis) {
+    } else if (!hasVahvistus && tilaValmis && !parent.isDefined) {
       TorErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta " + suorituksenTunniste(suoritus) + " puuttuu vahvistus, vaikka suorituksen tila on " + suoritus.tila.koodiarvo)
     } else {
       (tilaValmis, suoritus.rekursiivisetOsasuoritukset.find(_.tila.koodiarvo == "KESKEN")) match {

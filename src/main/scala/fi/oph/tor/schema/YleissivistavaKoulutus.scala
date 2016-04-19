@@ -2,10 +2,13 @@ package fi.oph.tor.schema
 
 import java.time.LocalDate
 
-import fi.oph.tor.localization.LocalizedStringImplicits
 import fi.oph.tor.localization.LocalizedStringImplicits.LocalizedStringInterpolator
 import fi.oph.tor.schema.generic.annotation.Description
 
+trait Oppiaineensuoritus extends Suoritus {
+  // Oppiaineen suorituksella ei ole erillistä vahvistusta - todistuksen vahvistus riittää
+  def vahvistus: Option[Vahvistus] = None
+}
 
 case class YleissivistäväOpiskeluoikeudenTila(
   opiskeluoikeusjaksot: List[YleissivistäväOpiskeluoikeusjakso]
