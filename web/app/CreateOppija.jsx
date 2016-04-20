@@ -106,7 +106,7 @@ export const CreateOppija = React.createClass({
           },
           toimipiste : oppilaitosOrganisaatio,
           tila: { 'koodistoUri': 'suorituksentila', 'koodiarvo': 'KESKEN'},
-          tyyppi: { 'koodistoUri': 'suorituksentyyppi', 'koodiarvo': 'ammatillinentutkintosuoritus'}
+          tyyppi: { 'koodistoUri': 'suorituksentyyppi', 'koodiarvo': 'ammatillinentutkinto'}
         }]
       }]
     }

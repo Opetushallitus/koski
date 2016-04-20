@@ -175,7 +175,7 @@ const TutkinnonOsa = React.createClass({
           }
         ],
         toimipiste: suoritus.toimipiste,
-        tyyppi: { 'koodistoUri': 'suorituksentyyppi', 'koodiarvo': 'ammatillinentutkinnonosasuoritus'}
+        tyyppi: { 'koodistoUri': 'suorituksentyyppi', 'koodiarvo': 'ammatillisentutkinnonosa'}
       }])
     }
 

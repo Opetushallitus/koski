@@ -11,10 +11,10 @@ class AmmatillisenPerustutkinnonPaattotodistusHtml(implicit val user: TorUser) e
       case _ => Nil
     }
     val osasuoritukset = tutkintoSuoritus.osasuoritukset.toList.flatten
-    def contains(rakenne: RakenneModuuli, tutkinnonOsa: AmmatillinenTutkinnonOsa) = {
+    def contains(rakenne: RakenneModuuli, tutkinnonOsa: AmmatillisenTutkinnonOsa) = {
       rakenne.tutkinnonOsat.map(_.tunniste).contains(tutkinnonOsa.tunniste)
     }
-    def goesTo(rakenne: RakenneModuuli, tutkinnonOsa: AmmatillinenTutkinnonOsa) = {
+    def goesTo(rakenne: RakenneModuuli, tutkinnonOsa: AmmatillisenTutkinnonOsa) = {
       contains(rakenne, tutkinnonOsa) || (rakenne == päätasot.last && !päätasot.find(m => contains(m, tutkinnonOsa)).isDefined)
     }
 

@@ -47,8 +47,8 @@ case class PerusopetuksenOppiaineenSuoritus(
   paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
-  @KoodistoKoodiarvo("perusopetuksenoppiainesuoritus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenoppiainesuoritus", koodistoUri = "suorituksentyyppi"),
+  @KoodistoKoodiarvo("perusopetuksenoppiaine")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenoppiaine", koodistoUri = "suorituksentyyppi"),
   arviointi: Option[List[YleissivistävänkoulutuksenArviointi]] = None
 ) extends Oppiaineensuoritus
 

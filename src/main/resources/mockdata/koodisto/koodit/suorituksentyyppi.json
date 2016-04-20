@@ -1,10 +1,10 @@
 [
   {
-    "koodiUri": "suorituksentyyppi_ammatillinentutkintosuoritus",
-    "koodiArvo": "ammatillinentutkintosuoritus",
+    "koodiUri": "suorituksentyyppi_ammatillinentutkinto",
+    "koodiArvo": "ammatillinentutkinto",
     "metadata": [
       {
-        "nimi": "Ammatillinen tutkintosuoritus",
+        "nimi": "Ammatillinen tutkinto",
         "lyhytNimi": "",
         "kieli": "FI"
       }
@@ -12,11 +12,11 @@
     "versio": 1
   },
   {
-    "koodiUri": "suorituksentyyppi_ammatillinentutkinnonosasuoritus",
-    "koodiArvo": "ammatillinentutkinnonosasuoritus",
+    "koodiUri": "suorituksentyyppi_ammatillisentutkinnonosa",
+    "koodiArvo": "ammatillisentutkinnonosa",
     "metadata": [
       {
-        "nimi": "Ammatillinen tutkinnonosasuoritus",
+        "nimi": "Ammatillisen tutkinnon osa",
         "lyhytNimi": "",
         "kieli": "FI"
       }
@@ -36,8 +36,8 @@
     "versio": 1
   },
   {
-    "koodiUri": "suorituksentyyppi_perusopetuksenoppiainesuoritus",
-    "koodiArvo": "perusopetuksenoppiainesuoritus",
+    "koodiUri": "suorituksentyyppi_perusopetuksenoppiaine",
+    "koodiArvo": "perusopetuksenoppiaine",
     "metadata": [
       {
         "nimi": "Perusopetuksen oppiaine",
@@ -60,11 +60,11 @@
     "versio": 1
   },
   {
-    "koodiUri": "suorituksentyyppi_lukionoppiainesuoritus",
-    "koodiArvo": "lukionoppiainesuoritus",
+    "koodiUri": "suorituksentyyppi_lukionoppiaine",
+    "koodiArvo": "lukionoppiaine",
     "metadata": [
       {
-        "nimi": "Lukion oppiainesuoritus",
+        "nimi": "Lukion oppiaine",
         "lyhytNimi": "",
         "kieli": "FI"
       }
@@ -72,11 +72,11 @@
     "versio": 1
   },
   {
-    "koodiUri": "suorituksentyyppi_lukionkurssisuoritus",
-    "koodiArvo": "lukionkurssisuoritus",
+    "koodiUri": "suorituksentyyppi_lukionkurssi",
+    "koodiArvo": "lukionkurssi",
     "metadata": [
       {
-        "nimi": "Lukion kurssisuoritus",
+        "nimi": "Lukion kurssi",
         "lyhytNimi": "",
         "kieli": "FI"
       }

@@ -103,7 +103,7 @@ class TorOppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatil
         describe("Tutkinnon osa toisesta tutkinnosta") {
           val autoalanTyönjohdonErikoisammattitutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357305", "koulutus"), Some("40/011/2001"))
 
-          def osanSuoritusToisestaTutkinnosta(tutkinto: AmmatillinenTutkintoKoulutus, tutkinnonOsa: OpsTutkinnonosa): AmmatillisenTutkinnonosanSuoritus = tutkinnonOsaSuoritus.copy(
+          def osanSuoritusToisestaTutkinnosta(tutkinto: AmmatillinenTutkintoKoulutus, tutkinnonOsa: OpsTutkinnonosa): AmmatillisenTutkinnonOsanSuoritus = tutkinnonOsaSuoritus.copy(
             tutkinto = Some(tutkinto),
             koulutusmoduuli = tutkinnonOsa
           )
@@ -147,7 +147,7 @@ class TorOppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatil
         }
 
         describe("Suorituksen tila") {
-          testSuorituksenTila[AmmatillisenTutkinnonosanSuoritus](tutkinnonOsaSuoritus, "tutkinnonosat/100023", { suoritus => { f => putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(f)} })
+          testSuorituksenTila[AmmatillisenTutkinnonOsanSuoritus](tutkinnonOsaSuoritus, "tutkinnonosat/100023", { suoritus => { f => putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(f)} })
 
           describe("Kun tutkinto on VALMIS-tilassa ja sillä on osa, joka on KESKEN-tilassa") {
             val opiskeluOikeus = opiskeluoikeus().copy(suoritukset = List(tutkintoSuoritus.copy(
@@ -193,7 +193,7 @@ class TorOppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatil
       val alkamispäivä = ap.orElse(suoritus.alkamispäivä)
       (suoritus match {
         case s: AmmatillisenTutkinnonSuoritus => s.copy(tila = t, arviointi = a, vahvistus = v, alkamispäivä = alkamispäivä)
-        case s: AmmatillisenTutkinnonosanSuoritus => s.copy(tila = t, arviointi = a, vahvistus = v, alkamispäivä = alkamispäivä)
+        case s: AmmatillisenTutkinnonOsanSuoritus => s.copy(tila = t, arviointi = a, vahvistus = v, alkamispäivä = alkamispäivä)
       }).asInstanceOf[T]
     }
 
@@ -297,7 +297,7 @@ class TorOppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatil
 
   lazy val tutkinnonSuoritustapaNäyttönä = Some(Suoritustapa(Koodistokoodiviite("naytto", "suoritustapa")))
 
-  lazy val tutkinnonOsaSuoritus = AmmatillisenTutkinnonosanSuoritus(
+  lazy val tutkinnonOsaSuoritus = AmmatillisenTutkinnonOsanSuoritus(
     tutkinnonOsa, None, None, None, None, None, None, tilaKesken, None,
     Some(OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))),
     arviointiHyvä(), None)
@@ -306,12 +306,12 @@ class TorOppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatil
     Paikallinenkoodi("1", "paikallinen osa", "paikallinenkoodisto"), "Paikallinen tutkinnon osa", false, Some(laajuus)
   )
 
-  lazy val paikallinenTutkinnonOsaSuoritus = AmmatillisenTutkinnonosanSuoritus(
+  lazy val paikallinenTutkinnonOsaSuoritus = AmmatillisenTutkinnonOsanSuoritus(
     paikallinenTutkinnonOsa, None, None, None, None, None, None, tilaKesken, None,
     Some(OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))),
     arviointiHyvä(), None)
 
-  def putTutkinnonOsaSuoritus[A](tutkinnonOsaSuoritus: AmmatillisenTutkinnonosanSuoritus, tutkinnonSuoritustapa: Option[Suoritustapa])(f: => A) = {
+  def putTutkinnonOsaSuoritus[A](tutkinnonOsaSuoritus: AmmatillisenTutkinnonOsanSuoritus, tutkinnonSuoritustapa: Option[Suoritustapa])(f: => A) = {
     val s = tutkintoSuoritus.copy(suoritustapa = tutkinnonSuoritustapa, osasuoritukset = Some(List(tutkinnonOsaSuoritus)))
 
     putTutkintoSuoritus(s)(f)

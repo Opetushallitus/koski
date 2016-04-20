@@ -40,8 +40,8 @@ object SuoritusDeserializer extends Deserializer[Suoritus] {
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Suoritus] = {
     case (TypeInfo(c, _), json) if (classes.contains(c)) =>
       json match {
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("ammatillinentutkintosuoritus") => suoritus.extract[AmmatillisenTutkinnonSuoritus]
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("ammatillinentutkinnonosasuoritus") => suoritus.extract[AmmatillisenTutkinnonosanSuoritus]
+        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("ammatillinentutkinto") => suoritus.extract[AmmatillisenTutkinnonSuoritus]
+        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("ammatillisentutkinnonosa") => suoritus.extract[AmmatillisenTutkinnonOsanSuoritus]
       }
   }
 }
@@ -62,7 +62,7 @@ object YleissivistavaOppiaineDeserializer extends Deserializer[YleissivistavaOpp
 }
 
 object KoulutusmoduuliDeserializer extends Deserializer[Koulutusmoduuli] {
-  private val classes = List(classOf[Koulutusmoduuli], classOf[AmmatillinenTutkinnonOsa])
+  private val classes = List(classOf[Koulutusmoduuli], classOf[AmmatillisenTutkinnonOsa])
 
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Koulutusmoduuli] = {
     case (TypeInfo(c, _), json) if classes.contains(c) =>

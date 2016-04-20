@@ -43,8 +43,8 @@ case class LukionOppimääränSuoritus(
 ) extends Suoritus
 
 case class LukionOppiaineenSuoritus(
-  @KoodistoKoodiarvo("lukionoppiainesuoritus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionoppiainesuoritus", koodistoUri = "suorituksentyyppi"),
+  @KoodistoKoodiarvo("lukionoppiaine")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionoppiaine", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: LukionOppiaine,
   paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
@@ -54,8 +54,8 @@ case class LukionOppiaineenSuoritus(
 ) extends Oppiaineensuoritus
 
 case class LukionKurssinSuoritus(
-  @KoodistoKoodiarvo("lukionkurssisuoritus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionkurssisuoritus", koodistoUri = "suorituksentyyppi"),
+  @KoodistoKoodiarvo("lukionkurssi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionkurssi", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: LukionKurssi,
   paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
