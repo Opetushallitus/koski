@@ -25,5 +25,5 @@ object KoodistoKoodiarvo extends MetadataSupport[KoodistoKoodiarvo] {
 
   override def metadataClass = classOf[KoodistoKoodiarvo]
 
-  override def appendMetadataToJsonSchema(obj: JObject, metadata: KoodistoKoodiarvo) = obj
+  override def appendMetadataToJsonSchema(obj: JObject, k: KoodistoKoodiarvo) = appendToDescription(obj, "(Hyväksytty koodiarvo: " + k.arvo + ")")
 }
