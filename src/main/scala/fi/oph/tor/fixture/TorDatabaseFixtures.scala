@@ -4,7 +4,7 @@ import fi.oph.tor.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.tor.db.Tables._
 import fi.oph.tor.db.TorDatabase._
 import fi.oph.tor.db._
-import fi.oph.tor.documentation.{ExamplesLukio, AmmatillinenTodistusExample, ExamplesAmmatillinen, ExamplesPeruskoulutus}
+import fi.oph.tor.documentation.{ExamplesLukio, AmmatillinenTodistusExample, ExamplesAmmatillinen, ExamplesPerusopetus}
 import fi.oph.tor.opiskeluoikeus.OpiskeluOikeusRepository
 import fi.oph.tor.oppija.{MockOppijat, OppijaRepository, VerifiedOppijaOid}
 import fi.oph.tor.organisaatio.MockOrganisaatiot
@@ -36,7 +36,7 @@ class TorDatabaseFixtureCreator(database: TorDatabase, repository: OpiskeluOikeu
       (MockOppijat.eerola.oid, OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto)),
       (MockOppijat.teija.oid, OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto)),
       (MockOppijat.markkanen.oid, OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.omnomnia)),
-      (MockOppijat.koululainen.oid, ExamplesPeruskoulutus.päättötodistus.opiskeluoikeudet.head),
+      (MockOppijat.koululainen.oid, ExamplesPerusopetus.päättötodistus.opiskeluoikeudet.head),
       (MockOppijat.lukiolainen.oid, ExamplesLukio.päättötodistus.opiskeluoikeudet.head),
       (MockOppijat.ammattilainen.oid, AmmatillinenTodistusExample.todistus.opiskeluoikeudet.head))
   }

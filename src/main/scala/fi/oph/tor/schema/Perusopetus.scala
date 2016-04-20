@@ -15,17 +15,17 @@ case class PerusopetuksenOpiskeluoikeus(
   päättymispäivä: Option[LocalDate],
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OrganisaatioWithOid],
-  suoritukset: List[PeruskoulunPäättötodistus],
+  suoritukset: List[PerusopetuksenOppimääränSuoritus],
   opiskeluoikeudenTila: Option[YleissivistäväOpiskeluoikeudenTila],
   läsnäolotiedot: Option[Läsnäolotiedot],
-  @KoodistoKoodiarvo("peruskoulutus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("peruskoulutus", Some("Peruskoulutus"), "opiskeluoikeudentyyppi", None)
+  @KoodistoKoodiarvo("perusopetus")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetus", Some("Perusopetus"), "opiskeluoikeudentyyppi", None)
 ) extends Opiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
 }
 
-case class PeruskoulunPäättötodistus(
+case class PerusopetuksenOppimääränSuoritus(
   paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
@@ -33,27 +33,27 @@ case class PeruskoulunPäättötodistus(
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Vahvistus] = None,
-  @KoodistoKoodiarvo("peruskoulunpaattotodistus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("peruskoulunpaattotodistus", koodistoUri = "suorituksentyyppi"),
-  koulutusmoduuli: Peruskoulutus,
+  @KoodistoKoodiarvo("perusopetuksenoppimaara")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppimaara", koodistoUri = "suorituksentyyppi"),
+  koulutusmoduuli: Perusopetus,
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
-  override val osasuoritukset: Option[List[PeruskoulunOppiaineenSuoritus]] = None
+  override val osasuoritukset: Option[List[PerusopetuksenOppiaineenSuoritus]] = None
 ) extends Suoritus {
   def arviointi: Option[List[Arviointi]] = None
 }
 
-case class PeruskoulunOppiaineenSuoritus(
-  koulutusmoduuli: PeruskoulunOppiaine,
+case class PerusopetuksenOppiaineenSuoritus(
+  koulutusmoduuli: PerusopetuksenOppiaine,
   paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
-  @KoodistoKoodiarvo("peruskoulunoppiainesuoritus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "peruskoulunoppiainesuoritus", koodistoUri = "suorituksentyyppi"),
+  @KoodistoKoodiarvo("perusopetuksenoppiainesuoritus")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenoppiainesuoritus", koodistoUri = "suorituksentyyppi"),
   arviointi: Option[List[YleissivistävänkoulutuksenArviointi]] = None
 ) extends Oppiaineensuoritus
 
-@Description("Peruskoulutus")
-case class Peruskoulutus(
+@Description("Perusopetus")
+case class Perusopetus(
  perusteenDiaarinumero: Option[String],
  @Description("Tutkinnon 6-numeroinen tutkintokoodi")
  @KoodistoUri("koulutus")

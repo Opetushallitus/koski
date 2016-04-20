@@ -28,7 +28,7 @@ object OpiskeluOikeusSerializer extends Deserializer[Opiskeluoikeus] {
     case (TypeInfo(OpiskeluOikeusClass, _), json) =>
       json match {
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("ammatillinenkoulutus") => oo.extract[AmmatillinenOpiskeluoikeus]
-        case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("peruskoulutus") => oo.extract[PerusopetuksenOpiskeluoikeus]
+        case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("perusopetus") => oo.extract[PerusopetuksenOpiskeluoikeus]
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("lukiokoulutus") => oo.extract[LukionOpiskeluoikeus]
       }
   }
@@ -47,7 +47,7 @@ object SuoritusDeserializer extends Deserializer[Suoritus] {
 }
 
 object YleissivistavaOppiaineDeserializer extends Deserializer[YleissivistavaOppiaine] {
-  private val classes = List(classOf[PeruskoulunOppiaine], classOf[LukionOppiaine])
+  private val classes = List(classOf[PerusopetuksenOppiaine], classOf[LukionOppiaine])
 
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), YleissivistavaOppiaine] = {
     case (TypeInfo(c, _), json) if classes.contains(c) =>

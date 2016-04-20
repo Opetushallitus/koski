@@ -31,13 +31,13 @@ trait YleissivistavaOppiaine extends KoodistostaLöytyväKoulutusmoduuli {
 
 trait LukionOppiaine extends YleissivistavaOppiaine
 
-trait PeruskoulunOppiaine extends YleissivistavaOppiaine
+trait PerusopetuksenOppiaine extends YleissivistavaOppiaine
 
   case class MuuOppiaine(
     tunniste: Koodistokoodiviite,
     pakollinen: Boolean = true,
     override val laajuus: Option[Laajuus] = None
-  ) extends PeruskoulunOppiaine with LukionOppiaine
+  ) extends PerusopetuksenOppiaine with LukionOppiaine
 
   case class Uskonto(
     @KoodistoKoodiarvo("KT")
@@ -47,7 +47,7 @@ trait PeruskoulunOppiaine extends YleissivistavaOppiaine
     uskonto: Koodistokoodiviite,
     pakollinen: Boolean = true,
     override val laajuus: Option[Laajuus] = None
-  ) extends PeruskoulunOppiaine with LukionOppiaine {
+  ) extends PerusopetuksenOppiaine with LukionOppiaine {
     override def description = concat(nimi, ", ", uskonto)
   }
 
@@ -59,7 +59,7 @@ trait PeruskoulunOppiaine extends YleissivistavaOppiaine
     kieli: Koodistokoodiviite,
     pakollinen: Boolean = true,
     override val laajuus: Option[Laajuus] = None
-  ) extends PeruskoulunOppiaine with LukionOppiaine
+  ) extends PerusopetuksenOppiaine with LukionOppiaine
 
   case class VierasTaiToinenKotimainenKieli(
     @KoodistoKoodiarvo("A1")
@@ -73,7 +73,7 @@ trait PeruskoulunOppiaine extends YleissivistavaOppiaine
     kieli: Koodistokoodiviite,
     pakollinen: Boolean = true,
     override val laajuus: Option[Laajuus] = None
-  ) extends PeruskoulunOppiaine with LukionOppiaine {
+  ) extends PerusopetuksenOppiaine with LukionOppiaine {
     override def description = concat(nimi, ", ", kieli)
   }
 

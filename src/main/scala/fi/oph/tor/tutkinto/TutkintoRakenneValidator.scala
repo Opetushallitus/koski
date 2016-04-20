@@ -6,7 +6,7 @@ import fi.oph.tor.tutkinto.Koulutustyyppi._
 
 case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
   def validateTutkintoRakenne(suoritus: Suoritus) = suoritus match {
-    case (todistus: PeruskoulunPäättötodistus) =>
+    case (todistus: PerusopetuksenOppimääränSuoritus) =>
       HttpStatus.justStatus(getRakenne(todistus.koulutusmoduuli, perusopetuksenKoulutustyypit))
     case (todistus: LukionOppimääränSuoritus) =>
       HttpStatus.justStatus(getRakenne(todistus.koulutusmoduuli, lukionKoulutustyypit))

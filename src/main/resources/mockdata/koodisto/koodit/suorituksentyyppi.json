@@ -24,11 +24,11 @@
     "versio": 1
   },
   {
-    "koodiUri": "suorituksentyyppi_peruskoulunpaattotodistus",
-    "koodiArvo": "peruskoulunpaattotodistus",
+    "koodiUri": "suorituksentyyppi_perusopetuksenoppimaara",
+    "koodiArvo": "perusopetuksenoppimaara",
     "metadata": [
       {
-        "nimi": "Peruskoulun päättötodistus",
+        "nimi": "Perusopetuksen oppimäärä",
         "lyhytNimi": "",
         "kieli": "FI"
       }
@@ -36,11 +36,11 @@
     "versio": 1
   },
   {
-    "koodiUri": "suorituksentyyppi_peruskoulunoppiainesuoritus",
-    "koodiArvo": "peruskoulunoppiainesuoritus",
+    "koodiUri": "suorituksentyyppi_perusopetuksenoppiainesuoritus",
+    "koodiArvo": "perusopetuksenoppiainesuoritus",
     "metadata": [
       {
-        "nimi": "Peruskoulun oppiaine",
+        "nimi": "Perusopetuksen oppiaine",
         "lyhytNimi": "",
         "kieli": "FI"
       }

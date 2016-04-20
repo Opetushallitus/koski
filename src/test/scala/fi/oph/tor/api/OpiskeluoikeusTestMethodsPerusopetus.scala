@@ -7,7 +7,7 @@ import fi.oph.tor.documentation.YleissivistavakoulutusExampleData.jyväskylänNo
 import fi.oph.tor.localization.LocalizedStringImplicits._
 import fi.oph.tor.schema._
 
-trait OpiskeluoikeusTestMethodsPeruskoulutus extends OpiskeluOikeusTestMethods[PerusopetuksenOpiskeluoikeus]{
+trait OpiskeluoikeusTestMethodsPerusopetus extends OpiskeluOikeusTestMethods[PerusopetuksenOpiskeluoikeus]{
   val vahvistus: Some[Vahvistus] = Some(Vahvistus(date(2016, 6, 4), jyväskylä, jyväskylänNormaalikoulu, List(OrganisaatioHenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))
 
   override def defaultOpiskeluoikeus = PerusopetuksenOpiskeluoikeus(
@@ -17,8 +17,8 @@ trait OpiskeluoikeusTestMethodsPeruskoulutus extends OpiskeluOikeusTestMethods[P
     opiskeluoikeudenTila = None, läsnäolotiedot = None
   )
 
-  val päättötodistusSuoritus = PeruskoulunPäättötodistus(
-    koulutusmoduuli = Peruskoulutus(perusteenDiaarinumero = Some("104/011/2014")),
+  val päättötodistusSuoritus = PerusopetuksenOppimääränSuoritus(
+    koulutusmoduuli = Perusopetus(perusteenDiaarinumero = Some("104/011/2014")),
     paikallinenId = None,
     suorituskieli = None,
     tila = tilaValmis,

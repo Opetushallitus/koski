@@ -4,9 +4,9 @@ import java.time.format.DateTimeFormatter
 import fi.oph.tor.schema._
 import fi.oph.tor.toruser.TorUser
 
-class PeruskoulunPaattotodistusHtml(implicit val user: TorUser) extends TodistusHtml {
-  def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: PeruskoulunPäättötodistus) = {
-    val oppiaineet: List[PeruskoulunOppiaineenSuoritus] = päättötodistus.osasuoritukset.toList.flatten
+class PerusopetuksenPaattotodistusHtml(implicit val user: TorUser) extends TodistusHtml {
+  def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: PerusopetuksenOppimääränSuoritus) = {
+    val oppiaineet: List[PerusopetuksenOppiaineenSuoritus] = päättötodistus.osasuoritukset.toList.flatten
     val pakolliset = oppiaineet.filter(_.koulutusmoduuli.pakollinen)
     val pakollisetJaNiihinLiittyvätValinnaiset: List[Aine] = pakolliset.flatMap { case pakollinen =>
       val liittyvätValinnaiset: List[LiittyväValinnainen] = oppiaineet
@@ -37,12 +37,12 @@ class PeruskoulunPaattotodistusHtml(implicit val user: TorUser) extends Todistus
     <html>
       <head>
         <link rel="stylesheet" type="text/css" href="/tor/css/todistus-common.css"></link>
-        <link rel="stylesheet" type="text/css" href="/tor/css/todistus-peruskoulu.css"></link>
+        <link rel="stylesheet" type="text/css" href="/tor/css/todistus-perusopetus.css"></link>
       </head>
       <body>
-        <div class="todistus peruskoulu">
+        <div class="todistus perusopetus">
           <h2 class="koulutustoimija">{i(koulutustoimija.flatMap(_.nimi))}</h2>
-          <h1>Peruskoulun päättötodistus</h1>
+          <h1>Perusopetuksen päättötodistus</h1>
           <h2 class="oppilaitos">{i(oppilaitos.nimi)}</h2>
           <div class="oppija">
             <span class="nimi">{oppijaHenkilö.sukunimi}, {oppijaHenkilö.etunimet}</span>
@@ -66,8 +66,8 @@ class PeruskoulunPaattotodistusHtml(implicit val user: TorUser) extends Todistus
     </html>
   }
 
-  sealed trait Aine { def suoritus: PeruskoulunOppiaineenSuoritus }
-  case class Pakollinen(suoritus: PeruskoulunOppiaineenSuoritus) extends Aine
-  case class Valinnainen(suoritus: PeruskoulunOppiaineenSuoritus) extends Aine
-  case class LiittyväValinnainen(suoritus: PeruskoulunOppiaineenSuoritus) extends Aine
+  sealed trait Aine { def suoritus: PerusopetuksenOppiaineenSuoritus }
+  case class Pakollinen(suoritus: PerusopetuksenOppiaineenSuoritus) extends Aine
+  case class Valinnainen(suoritus: PerusopetuksenOppiaineenSuoritus) extends Aine
+  case class LiittyväValinnainen(suoritus: PerusopetuksenOppiaineenSuoritus) extends Aine
 }

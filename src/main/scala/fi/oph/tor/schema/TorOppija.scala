@@ -76,7 +76,7 @@ object Henkilö {
 }
 
 trait Opiskeluoikeus extends Loggable {
-  @Description("Opiskeluoikeden tyyppi, jolla erotellaan eri koulutusmuotoihin (peruskoulutus, lukio, ammatillinen...) liittyvät opiskeluoikeudet")
+  @Description("Opiskeluoikeden tyyppi, jolla erotellaan eri koulutusmuotoihin (perusopetus, lukio, ammatillinen...) liittyvät opiskeluoikeudet")
   @OksaUri("tmpOKSAID869", "koulutusmuoto (1)")
   @KoodistoUri("opiskeluoikeudentyyppi")
   def tyyppi: Koodistokoodiviite

@@ -15,8 +15,8 @@ class TodistusServlet(val userRepository: UserOrganisationsRepository, val direc
       case Right((henkilötiedot, opiskeluoikeus)) =>
           implicit val user = torUser
           opiskeluoikeus.suoritukset.head match {
-            case t: PeruskoulunPäättötodistus if t.tila.koodiarvo == "VALMIS" =>
-              (new PeruskoulunPaattotodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)
+            case t: PerusopetuksenOppimääränSuoritus if t.tila.koodiarvo == "VALMIS" =>
+              (new PerusopetuksenPaattotodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)
             case t: AmmatillisenTutkinnonSuoritus if t.tila.koodiarvo == "VALMIS" => // TODO: vain perustutkinnot
               t.koulutusmoduuli.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_)) match {
                 case Some(rakenne: TutkintoRakenne) =>

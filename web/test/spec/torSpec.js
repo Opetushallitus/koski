@@ -462,8 +462,8 @@ describe('TOR', function() {
       })
     })
 
-    describe('Peruskoulun päättötodistus', function() {
-      var todistus = PeruskoulunTodistusPage()
+    describe('Perusopetuksen päättötodistus', function() {
+      var todistus = PerusopetuksenTodistusPage()
       before(resetFixtures, authentication.login())
       before(openPage('/tor/oppija/1.2.246.562.24.00000000008', page.isOppijaSelected('Kaisa')))
       describe('Oppijan suorituksissa', function() {
@@ -475,7 +475,7 @@ describe('TOR', function() {
       describe('Tulostettava todistus', function() {
         before(
           function() { triggerEvent(S('a.todistus'), 'click') },
-          wait.until(function() { return S('.todistus.peruskoulu').is(":visible") })
+          wait.until(function() { return S('.todistus.perusopetus').is(":visible") })
         )
         it('näytetään', function() {
           expect(S('.oppiaine.KT .arvosana-numeroin').text()).to.equal('10')

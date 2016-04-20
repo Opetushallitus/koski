@@ -4,13 +4,13 @@ import java.time.LocalDate.{of => date}
 
 import fi.oph.tor.documentation.ExampleData._
 import fi.oph.tor.documentation.YleissivistavakoulutusExampleData._
-import fi.oph.tor.documentation.PeruskoulutusExampleData._
+import fi.oph.tor.documentation.PerusopetusExampleData._
 import fi.oph.tor.oppija.MockOppijat
 import fi.oph.tor.schema._
 import fi.oph.tor.localization.LocalizedStringImplicits._
 
-object PeruskoulutusExampleData {
-  def suoritus(aine: PeruskoulunOppiaine) = PeruskoulunOppiaineenSuoritus(
+object PerusopetusExampleData {
+  def suoritus(aine: PerusopetuksenOppiaine) = PerusopetuksenOppiaineenSuoritus(
     koulutusmoduuli = aine,
     paikallinenId = None,
     suorituskieli = None,
@@ -22,10 +22,10 @@ object PeruskoulutusExampleData {
 
   val exampleHenkilö = MockOppijat.koululainen.vainHenkilötiedot
 
-  val peruskoulutus = Peruskoulutus(Some("104/011/2014"))
+  val perusopetus = Perusopetus(Some("104/011/2014"))
 }
 
-object ExamplesPeruskoulutus {
+object ExamplesPerusopetus {
   val uusi = TorOppija(
     exampleHenkilö,
     List(PerusopetuksenOpiskeluoikeus(
@@ -59,8 +59,8 @@ object ExamplesPeruskoulutus {
       päättymispäivä = Some(date(2016, 6, 4)),
       oppilaitos = jyväskylänNormaalikoulu, None,
       suoritukset = List(
-        PeruskoulunPäättötodistus(
-          koulutusmoduuli = peruskoulutus,
+        PerusopetuksenOppimääränSuoritus(
+          koulutusmoduuli = perusopetus,
           paikallinenId = None,
           suorituskieli = None,
           tila = tilaValmis,
@@ -102,7 +102,7 @@ object ExamplesPeruskoulutus {
   )
 
   val examples = List(
-    Example("peruskoulutus - uusi", "Uusi oppija lisätään suorittamaan peruskoulua", uusi),
-    Example("peruskoulutus - päättötodistus", "Oppija on saanut peruskoulun päättötodistuksen", päättötodistus)
+    Example("perusopetuksen oppimäärä - uusi", "Uusi oppija lisätään suorittamaan perusopetuksen oppimäärää", uusi),
+    Example("perusopetuksen oppimäärä - päättötodistus", "Oppija on saanut perusopetuksen päättötodistuksen", päättötodistus)
   )
 }

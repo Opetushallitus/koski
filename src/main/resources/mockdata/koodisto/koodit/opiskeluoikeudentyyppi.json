@@ -10,11 +10,11 @@
     "versio" : 1
   },
   {
-    "koodiUri" : "opiskeluoikeudentyyppi_peruskoulutus",
-    "koodiArvo" : "peruskoulutus",
+    "koodiUri" : "opiskeluoikeudentyyppi_perusopetus",
+    "koodiArvo" : "perusopetus",
     "metadata" : [ {
-      "nimi" : "Peruskoulutus",
-      "lyhytNimi" : "Peruskoulutus",
+      "nimi" : "Perusopetus",
+      "lyhytNimi" : "Perusopetus",
       "kieli" : "FI"
     } ],
     "versio" : 1
