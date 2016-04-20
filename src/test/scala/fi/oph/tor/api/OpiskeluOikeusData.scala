@@ -1,11 +1,10 @@
 package fi.oph.tor.api
 
-import fi.oph.tor.json.Json._
+import fi.oph.tor.oppija.MockOppijat
 import fi.oph.tor.schema._
-import org.json4s.JValue
 
 trait OpiskeluOikeusData[Oikeus <: Opiskeluoikeus] {
-  val defaultHenkilö = UusiHenkilö("010101-123N", "Testi", "Testi", "Toivola")
+  val defaultHenkilö = MockOppijat.eero.vainHenkilötiedot
 
   def defaultOpiskeluoikeus: Oikeus
 

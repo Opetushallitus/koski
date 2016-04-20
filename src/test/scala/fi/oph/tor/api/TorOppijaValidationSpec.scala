@@ -86,7 +86,7 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluoikeusTestMethodsAmma
 
       describe("Käytettäessä oppijan kaikkia tietoja") {
         describe("Oid ok") {
-          it("palautetaan HTTP 200" ) (putHenkilö(TaydellisetHenkilötiedot(MockOppijat.eero.oid, "010101-123N", "Testi", "Testi", "Toivola", None, None)) (verifyResponseStatus(200)))
+          it("palautetaan HTTP 200" ) (putHenkilö(MockOppijat.eero) (verifyResponseStatus(200)))
         }
 
         describe("Oid virheellinen") {
