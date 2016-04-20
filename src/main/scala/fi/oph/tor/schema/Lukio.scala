@@ -1,7 +1,7 @@
 package fi.oph.tor.schema
 
 import java.time.LocalDate
-
+import fi.oph.tor.localization.LocalizedString._
 import fi.oph.tor.localization.LocalizedStringImplicits._
 import fi.oph.tor.schema.generic.annotation.{Description, MaxItems, MinItems}
 
@@ -101,4 +101,6 @@ case class LukionMatematiikka(
   oppimäärä: Koodistokoodiviite,
   pakollinen: Boolean = true,
   override val laajuus: Option[Laajuus] = None
-) extends LukionOppiaine with KoodistostaLöytyväKoulutusmoduuli
+) extends LukionOppiaine with KoodistostaLöytyväKoulutusmoduuli {
+  override def description = oppimäärä.description
+}
