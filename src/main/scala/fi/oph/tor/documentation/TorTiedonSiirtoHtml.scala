@@ -9,11 +9,11 @@ import scala.xml.Elem
 object TorTiedonSiirtoHtml {
   def markdown ="""
 
-# TOR-tiedonsiirtoprotokolla
+# Koski-tiedonsiirtoprotokolla
 
-Tässä dokumentissa kuvataan TOR (Todennetun Osaamisen Rekisteri) -järjestelmän tiedonsiirrossa käytettävä protokolla.
+Tässä dokumentissa kuvataan Koski-järjestelmän tiedonsiirrossa käytettävä protokolla.
 
-Protokolla, kuten TOR-järjestelmäkin, on työn alla, joten kaikki voi vielä muuttua.
+Protokolla, kuten Koski-järjestelmäkin, on työn alla, joten kaikki voi vielä muuttua.
 
 Muutama perusasia tullee kuitenkin säilymään:
 
@@ -21,8 +21,8 @@ Muutama perusasia tullee kuitenkin säilymään:
 - Rajapinnan avulla tietoja voi myös hakea ja muokata
 - Rajapinnan käyttö vaatii autentikoinnin ja pääsy tietoihin rajataan käyttöoikeusryhmillä.
   Näin ollen esimerkiksi oikeus oppilaan tietyssä oppilaitoksessa suorittamien opintojen päivittämiseen voidaan antaa kyseisen oppilaitoksen henkilöstölle
-- Rajapinta mahdollistaa myös automaattiset tiedonsiirrot tietojärjstelmien välillä. Näin esimerkiksi tietyt viranomaiset voivat saada tietoja TORista.
-  Samoin oppilaitoksen tietojärjestelmät voivat päivittää tietoja TORiin.
+- Rajapinta mahdollistaa myös automaattiset tiedonsiirrot tietojärjstelmien välillä. Näin esimerkiksi tietyt viranomaiset voivat saada tietoja Koskesta.
+  Samoin oppilaitoksen tietojärjestelmät voivat päivittää tietoja Koskeen.
 - Järjestelmä tarjoaa REST-tyyppisen tiedonsiirtorajapinnan, jossa dataformaattina on JSON
 - Samaa tiedonsiirtoprotokollaa ja dataformaattia pyritään soveltuvilta osin käyttämään sekä käyttöliittymille,
   jotka näyttävät tietoa loppukäyttäjille, että järjestelmien väliseen kommunikaatioon
@@ -30,7 +30,7 @@ Muutama perusasia tullee kuitenkin säilymään:
 ## JSON-dataformaatti
 
 Käytettävästä JSON-formaatista on laadittu työversio, jonka toivotaan vastaavan ammatillisen koulutuksen tarpeisiin.
-Tällä formaatilla siis tulisi voida siirtää tietoja ammatillista koulutusta tarjoavien koulutustoimijoiden tietojärjestelmistä TORiin ja eteenpäin
+Tällä formaatilla siis tulisi voida siirtää tietoja ammatillista koulutusta tarjoavien koulutustoimijoiden tietojärjestelmistä Koskeen ja eteenpäin
 tietoja tarvitsevien viramomaisten järjestelmiin ja loppukäyttäjiä, kuten oppilaitosten virkailijoita palveleviin käyttöliittymiin.
 Formaattia on tarkoitus laajentaa soveltumaan myös muiden koulutustyyppien tarpeisiin, mutta näitä tarpeita ei ole vielä riittävällä tasolla kartoitettu,
 jotta konkreettista dataformaattia voitaisiin suunnitella. Yksi formaatin suunnittelukriteereistä on toki ollut sovellettavuus muihinkin koulutustyyppeihin.
@@ -55,7 +55,7 @@ että [esimerkkien](https://github.com/Opetushallitus/tor/blob/master/src/main/s
 Kaikki rajapinnat vaativat HTTP Basic Authentication -tunnistautumisen, eli käytännössä `Authorization`-headerin HTTP-pyyntöön.
 
 Rajapinnat on lueteltu ja kuvattu alla. Voit myös testata rajapintojen toimintaa tällä sivulla, kunhan käyt ensin [kirjautumassa sisään](/tor) järjestelmään.
-Saat tarvittavat tunnukset TOR-kehitystiimiltä pyydettäessä.
+Saat tarvittavat tunnukset Koski-kehitystiimiltä pyydettäessä.
 
 Rajapintojen käyttämät virhekoodit on myös kuvattu alla. Virhetapauksissa rajapinnat käyttävät alla kuvattuja HTTP-statuskoodeja ja sisällyttävät tarkemmat virhekoodit ja selitteineen JSON-tyyppiseen paluuviestiin.
 Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
