@@ -12,6 +12,10 @@ trait TodistusHtml {
   def lang = user.lang
   def i(s: Localizable): String = s.description.get(lang)
   def i(s: Option[Localizable]): String = s.map(i).getOrElse("")
+  def decapitalize(s: String) = {
+    val (head, tail) = s.splitAt(1)
+    head.toLowerCase + tail
+  }
 
   def vahvistusHTML(vahvistus: Vahvistus) = <div class="vahvistus">
     <span class="paikkakunta">{i(vahvistus.paikkakunta.nimi)}</span>

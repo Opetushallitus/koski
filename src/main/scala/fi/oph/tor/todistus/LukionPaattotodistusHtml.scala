@@ -24,10 +24,10 @@ class LukionPaattotodistusHtml(implicit val user: TorUser) extends TodistusHtml 
           <h1>Lukion päättötodistus</h1>
           <h2 class="koulutustoimija">{i(koulutustoimija.flatMap(_.nimi))}</h2>
           <h2 class="oppilaitos">{i(oppilaitos.nimi)}</h2>
-          <div class="oppija">
+          <h3 class="oppija">
             <span class="nimi">{oppijaHenkilö.sukunimi}, {oppijaHenkilö.etunimet}</span>
             <span class="hetu">{oppijaHenkilö.hetu}</span>
-          </div>
+          </h3>
           <div>on suorittanut lukion koko oppimäärän ja saanut tiedoistaan ja taidoistaan seuraavat arvosanat:</div>
           <table class="arvosanat">
             <tr>

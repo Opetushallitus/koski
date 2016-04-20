@@ -8,10 +8,18 @@ div {
 
 .oppija {
     text-transform: capitalize;
-    font-size: 1.5em;
+    font-size: 1.2em;
     font-weight: bold;
     margin-bottom: 20px;
-    margin-top: 60px;
+    margin-top: 30px;
+    text-align: left;
+}
+
+.oppija .hetu {
+    float: right;
+    text-align: left;
+    display: inline-block;
+    width: 235px;
 }
 
 .kurssimaara td {

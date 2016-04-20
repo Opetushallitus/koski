@@ -1,22 +1,17 @@
-function LukionTodistusPage() {
-  return {
-    isVisible: function() {
-      return isElementVisible(S('.todistus.lukio'))
-    }
+function TodistusPage() {
+  function getText(selector) {
+    return S(selector).text().replace(/\s+/g, ' ').trim()
   }
-}
-function AmmatillisenPerustutkinnonTodistusPage() {
   return {
     isVisible: function() {
-      return isElementVisible(S('.todistus.ammatillinenperustutkinto'))
-    }
-  }
-}
-
-function PeruskoulunTodistusPage() {
-  return {
-    isVisible: function() {
-      return isElementVisible(S('.todistus.peruskoulu'))
+      return isElementVisible(S('body>div.todistus'))
+    },
+    arvosanarivi: getText,
+    headings: function() {
+      return getText('h1,h2,h3')
+    },
+    vahvistus: function() {
+      return getText('.vahvistus')
     }
   }
 }

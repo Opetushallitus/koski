@@ -20,10 +20,10 @@ class PerusopetuksenPaattotodistusHtml(implicit val user: TorUser) extends Todis
     def arvosanaLista(oppiaineet: List[Aine]) = oppiaineet.map { oppiaine =>
       val nimiTeksti = i(oppiaine.suoritus.koulutusmoduuli)
       val nimi = oppiaine match {
-        case LiittyväValinnainen(suoritus) => "Valinnainen " + nimiTeksti
+        case LiittyväValinnainen(suoritus) => "Valinnainen " + decapitalize(nimiTeksti)
         case _ => nimiTeksti
       }
-      val rowClass="oppiaine " + oppiaine.suoritus.koulutusmoduuli.tunniste.koodiarvo
+      val rowClass="oppiaine " + oppiaine.suoritus.koulutusmoduuli.tunniste.koodiarvo + (if (oppiaine.suoritus.koulutusmoduuli.pakollinen) { "" } else {" valinnainen" })
       <tr class={rowClass}>
         <td class="oppiaine">{nimi}</td>
         <td class="laajuus">{oppiaine.suoritus.koulutusmoduuli.laajuus.map(_.arvo).getOrElse("")}</td>
@@ -44,10 +44,10 @@ class PerusopetuksenPaattotodistusHtml(implicit val user: TorUser) extends Todis
           <h2 class="koulutustoimija">{i(koulutustoimija.flatMap(_.nimi))}</h2>
           <h1>Perusopetuksen päättötodistus</h1>
           <h2 class="oppilaitos">{i(oppilaitos.nimi)}</h2>
-          <div class="oppija">
+          <h3 class="oppija">
             <span class="nimi">{oppijaHenkilö.sukunimi}, {oppijaHenkilö.etunimet}</span>
             <span class="hetu">{oppijaHenkilö.hetu}</span>
-          </div>
+          </h3>
           <table class="arvosanat">
             <tr>
               <th class="oppiaine">Yhteiset ja niihin liittyvät valinnaiset oppiaineet</th>
