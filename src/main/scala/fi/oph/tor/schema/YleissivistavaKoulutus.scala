@@ -1,8 +1,8 @@
 package fi.oph.tor.schema
 
 import java.time.LocalDate
-
-import fi.oph.tor.localization.LocalizedStringImplicits.LocalizedStringInterpolator
+import fi.oph.tor.localization.LocalizedString
+import fi.oph.tor.localization.LocalizedString.{unlocalized, concat}
 import fi.oph.tor.schema.generic.annotation.Description
 
 trait Oppiaineensuoritus extends Suoritus {
@@ -48,7 +48,7 @@ trait PeruskoulunOppiaine extends YleissivistavaOppiaine
     pakollinen: Boolean = true,
     override val laajuus: Option[Laajuus] = None
   ) extends PeruskoulunOppiaine with LukionOppiaine {
-    override def description = localized"$nimi, $uskonto"
+    override def description = concat(nimi, ", ", uskonto)
   }
 
   case class AidinkieliJaKirjallisuus(
@@ -74,7 +74,7 @@ trait PeruskoulunOppiaine extends YleissivistavaOppiaine
     pakollinen: Boolean = true,
     override val laajuus: Option[Laajuus] = None
   ) extends PeruskoulunOppiaine with LukionOppiaine {
-    override def description = localized"$nimi, $kieli"
+    override def description = concat(nimi, ", ", kieli)
   }
 
 case class YleissivistävänkoulutuksenArviointi(

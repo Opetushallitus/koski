@@ -62,7 +62,7 @@ object LocalizedString extends Logging {
     }
   }
 
-  def sanitizeRequired(values: Map[String, String]): LocalizedString = sanitize(values).getOrElse(missing)
+  def sanitizeRequired(values: Map[String, String], defaultValue: String): LocalizedString = sanitize(values).getOrElse(missing)
 
   val empty: LocalizedString = Finnish("", Some(""), Some(""))
   val missing: LocalizedString = unlocalized(missingString)
@@ -70,21 +70,15 @@ object LocalizedString extends Logging {
   def finnish(string: String): LocalizedString = Finnish(string)
   def swedish(string: String): LocalizedString = Swedish(string)
   def english(string: String): LocalizedString = English(string)
-  def concat(strings: Seq[Localizable]) = strings.foldLeft(LocalizedString.empty) {
-    case (built, next) => built.concat(next.description)
+  def concat(strings: Any*) = strings.foldLeft(LocalizedString.empty) {
+    case (built, next) => built.concat(fromAny(next))
+  }
+  def fromAny(thing: Any) = thing match {
+    case x: Localizable => x.description
+    case x: Any => unlocalized(x.toString)
   }
 }
 
 object LocalizedStringImplicits {
   implicit def str2localized(string: String): LocalizedString = LocalizedString.finnish(string)
-  implicit class LocalizedStringInterpolator(val sc: StringContext) extends AnyVal {
-    def localized(args: Any*): LocalizedString = {
-      val pairs: Seq[(String, Option[Any])] = sc.parts.zip(args.toList.map(Some(_)) ++ List(None))
-      val stuff: Seq[LocalizedString] = pairs.flatMap { case (string, maybeLocalized) => List(LocalizedString.unlocalized(string)) ++ maybeLocalized.toList }.map {
-        case x: Localizable => x.description
-        case x: Any => LocalizedString.unlocalized(x.toString)
-      }
-      LocalizedString.concat(stuff)
-    }
-  }
 }
