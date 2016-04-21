@@ -21,7 +21,7 @@ import rx.lang.scala.Observable
 class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
                                    opiskeluOikeusRepository: OpiskeluOikeusRepository) extends Logging with Timing {
 
-  def findOppijat(params: List[(String, String)], user: TorUser): Either[HttpStatus, Observable[TorOppija]] with Product with Serializable = {
+  def findOppijat(params: List[(String, String)], user: TorUser): Either[HttpStatus, Observable[Oppija]] with Product with Serializable = {
 
     auditLog(AuditLogMessage(OPISKELUOIKEUS_HAKU, user, Map(hakuEhto -> params.map { case (p,v) => p + "=" + v }.mkString("&"))))
 
@@ -56,7 +56,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     filtered.sortBy(oppija => (oppija.sukunimi, oppija.etunimet))
   }
 
-  def createOrUpdate(oppija: TorOppija)(implicit user: TorUser): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
+  def createOrUpdate(oppija: Oppija)(implicit user: TorUser): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
 
     def applicationLog(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: Opiskeluoikeus, result: CreateOrUpdateResult): Unit = {
       val (verb, content) = result match {
@@ -109,19 +109,19 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     }
   }
 
-  def findTorOppija(oid: String)(implicit user: TorUser): Either[HttpStatus, TorOppija] = {
+  def findTorOppija(oid: String)(implicit user: TorUser): Either[HttpStatus, Oppija] = {
     def notFound = Left(TorErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa " + oid + " ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
 
     val result = oppijaRepository.findByOid(oid) match {
       case Some(oppija) =>
         opiskeluOikeusRepository.findByOppijaOid(oppija.oid) match {
           case Nil => notFound
-          case opiskeluoikeudet: Seq[Opiskeluoikeus] => Right(TorOppija(oppija, opiskeluoikeudet))
+          case opiskeluoikeudet: Seq[Opiskeluoikeus] => Right(Oppija(oppija, opiskeluoikeudet))
         }
       case None =>
         notFound
     }
-    result.right.foreach((oppija: TorOppija) => auditLog(AuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, user, Map(oppijaHenkiloOid -> oid))))
+    result.right.foreach((oppija: Oppija) => auditLog(AuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, user, Map(oppijaHenkiloOid -> oid))))
     result
   }
 
@@ -139,7 +139,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
   }
 
 
-  private def query(filters: List[QueryFilter])(implicit user: TorUser): Observable[TorOppija] = {
+  private def query(filters: List[QueryFilter])(implicit user: TorUser): Observable[Oppija] = {
     val oikeudetPerOppijaOid: Observable[(Oid, List[Opiskeluoikeus])] = opiskeluOikeusRepository.query(filters)
     oikeudetPerOppijaOid.tumblingBuffer(500).flatMap {
       oppijatJaOidit: Seq[(Oid, List[Opiskeluoikeus])] =>
@@ -147,10 +147,10 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
 
         val henkilöt: Map[String, TaydellisetHenkilötiedot] = oppijaRepository.findByOids(oids).map(henkilö => (henkilö.oid, henkilö)).toMap
 
-        val torOppijat: Iterable[TorOppija] = oppijatJaOidit.flatMap { case (oid, opiskeluOikeudet) =>
+        val torOppijat: Iterable[Oppija] = oppijatJaOidit.flatMap { case (oid, opiskeluOikeudet) =>
           henkilöt.get(oid) match {
             case Some(henkilö) =>
-              Some(TorOppija(henkilö, opiskeluOikeudet))
+              Some(Oppija(henkilö, opiskeluOikeudet))
             case None =>
               logger.warn("Oppijaa " + oid + " ei löydy henkilöpalvelusta")
               None

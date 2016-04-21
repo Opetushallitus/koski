@@ -8,7 +8,7 @@ import fi.oph.tor.json.{Json, JsonStreamWriter}
 import fi.oph.tor.log.AuditLog.{log => auditLog}
 import fi.oph.tor.log._
 import fi.oph.tor.schema.Henkilö.Oid
-import fi.oph.tor.schema.{HenkilöWithOid, TorOppija}
+import fi.oph.tor.schema.{HenkilöWithOid, Oppija}
 import fi.oph.tor.servlet.{ErrorHandlingServlet, InvalidRequestException, NoCache}
 import fi.oph.tor.toruser.{RequiresAuthentication, TorUser, UserOrganisationsRepository}
 import fi.oph.tor.util.Timing
@@ -26,14 +26,14 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
   put("/") {
     timed("PUT /oppija", thresholdMs = 10) {
       withJsonBody { parsedJson =>
-        val validationResult: Either[HttpStatus, TorOppija] = validator.extractAndValidate(parsedJson)(torUser)
+        val validationResult: Either[HttpStatus, Oppija] = validator.extractAndValidate(parsedJson)(torUser)
         val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = putSingle(validationResult, torUser)
         renderEither(result)
       }
     }
   }
 
-  def putSingle(validationResult: Either[HttpStatus, TorOppija], user: TorUser): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
+  def putSingle(validationResult: Either[HttpStatus, Oppija], user: TorUser): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
     val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = validationResult.right.flatMap(rekisteri.createOrUpdate(_)(user))
 
     result.left.foreach { case HttpStatus(code, errors) =>
@@ -48,7 +48,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
 
         implicit val user = torUser
 
-        val validationResults: List[Either[HttpStatus, TorOppija]] = validator.extractAndValidateBatch(parsedJson.asInstanceOf[JArray])
+        val validationResults: List[Either[HttpStatus, Oppija]] = validator.extractAndValidateBatch(parsedJson.asInstanceOf[JArray])
         val batchResults: List[Either[HttpStatus, HenkilönOpiskeluoikeusVersiot]] = validationResults.par.map(putSingle(_, user)).toList
 
         response.setStatus(batchResults.map {
@@ -98,7 +98,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
 
   override protected def asyncTimeout = Duration.Inf
 
-  private def validateOppija(oppija: TorOppija): ValidationResult = {
+  private def validateOppija(oppija: Oppija): ValidationResult = {
     val oppijaOid: Oid = oppija.henkilö.asInstanceOf[HenkilöWithOid].oid
     val validationResult = validator.validateAsJson(oppija)(torUser)
     validationResult match {
@@ -109,7 +109,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
     }
   }
 
-  private def validateHistory(oppija: TorOppija): Either[HttpStatus, TorOppija] = {
+  private def validateHistory(oppija: Oppija): Either[HttpStatus, Oppija] = {
     HttpStatus.fold(oppija.opiskeluoikeudet.map { oikeus =>
       historyRepository.findVersion(oikeus.id.get, oikeus.versionumero.get)(torUser) match {
         case Right(latestVersion) =>
@@ -124,7 +124,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
     }
   }
 
-  private def query(handleResults: Observable[TorOppija] => Future[String]) = {
+  private def query(handleResults: Observable[Oppija] => Future[String]) = {
     logger.info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
 
     rekisteri.findOppijat(params.toList, torUser) match {
@@ -133,7 +133,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
     }
   }
 
-  private def findByOid(oid: String, user: TorUser): Either[HttpStatus, TorOppija] = {
+  private def findByOid(oid: String, user: TorUser): Either[HttpStatus, Oppija] = {
     HenkiloOid.validateHenkilöOid(oid).right.flatMap { oid =>
       rekisteri.findTorOppija(oid)(user)
     }

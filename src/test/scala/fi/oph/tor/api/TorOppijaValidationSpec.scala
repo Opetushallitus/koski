@@ -98,7 +98,7 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluoikeusTestMethodsAmma
     describe("Opiskeluoikeudet") {
       describe("Jos lähetetään 0 opiskeluoikeutta") {
         it("palautetaan HTTP 400") {
-          putOppija(TorOppija(defaultHenkilö, List())) {
+          putOppija(Oppija(defaultHenkilö, List())) {
             verifyResponseStatus(400, TorErrorCategory.badRequest.validation.tyhjäOpiskeluoikeusLista("Annettiin tyhjä lista opiskeluoikeuksia."))
           }
         }
@@ -107,14 +107,14 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluoikeusTestMethodsAmma
       describe("Päivitettäessä opiskeluoikeus käyttäen sen id:tä") {
         it("Id ok") {
           val opiskeluoikeus = lastOpiskeluOikeus(MockOppijat.eero.oid)
-          putOppija(TorOppija(MockOppijat.eero, List(opiskeluoikeus))) {
+          putOppija(Oppija(MockOppijat.eero, List(opiskeluoikeus))) {
             verifyResponseStatus(200)
           }
         }
 
         it("Tuntematon id") {
           val opiskeluoikeus = lastOpiskeluOikeus(MockOppijat.eero.oid)
-          putOppija(TorOppija(MockOppijat.eero, List(opiskeluoikeus.withIdAndVersion(id = Some(0), versionumero = None)))) {
+          putOppija(Oppija(MockOppijat.eero, List(opiskeluoikeus.withIdAndVersion(id = Some(0), versionumero = None)))) {
             verifyResponseStatus(404, TorErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta 0 ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
           }
         }

@@ -5,7 +5,7 @@ import fi.oph.tor.json.Json
 import fi.oph.tor.log.Logging
 import org.scalatest.{FreeSpec, Matchers}
 
-class TorOppijaExamplesTest extends FreeSpec with Matchers with LocalJettyHttpSpecification with Logging {
+class OppijaExamplesTest extends FreeSpec with Matchers with LocalJettyHttpSpecification with Logging {
   "API examples" - {
     resetFixtures
     examples.foreach { example =>

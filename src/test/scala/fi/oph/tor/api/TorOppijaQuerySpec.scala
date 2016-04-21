@@ -23,7 +23,7 @@ class TorOppijaQuerySpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatilli
             val queryString: String = "opiskeluoikeusPäättynytAikaisintaan=2016-01-01&opiskeluoikeusPäättynytViimeistään=2016-12-31"
             authGet ("api/oppija?" + queryString) {
               verifyResponseStatus(200)
-              val oppijat: List[TorOppija] = Json.read[List[TorOppija]](response.body)
+              val oppijat: List[Oppija] = Json.read[List[Oppija]](response.body)
               val päättymispäivät: List[(String, LocalDate)] = oppijat.flatMap{oppija =>
                 oppija.opiskeluoikeudet.flatMap(_.päättymispäivä).map((oppija.henkilö.asInstanceOf[TaydellisetHenkilötiedot].hetu, _))
               }
@@ -41,7 +41,7 @@ class TorOppijaQuerySpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatilli
         putOpiskeluOikeus(defaultOpiskeluoikeus.copy(päättymispäivä = Some(date(2016,1,9)))) {
           authGet ("api/oppija?opiskeluoikeusPäättynytViimeistään=2014-12-31&opiskeluoikeusPäättynytAikaisintaan=2014-01-01") {
             verifyResponseStatus(200)
-            val oppijat: List[TorOppija] = Json.read[List[TorOppija]](response.body)
+            val oppijat: List[Oppija] = Json.read[List[Oppija]](response.body)
             oppijat.length should equal(0)
           }
         }
@@ -62,7 +62,7 @@ class TorOppijaQuerySpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatilli
           putOpiskeluOikeus(defaultOpiskeluoikeus.copy(päättymispäivä = Some(date(2013,1,9))), teija) {
             authGet ("api/oppija") {
               verifyResponseStatus(200)
-              val oppijat: List[TorOppija] = Json.read[List[TorOppija]](response.body)
+              val oppijat: List[Oppija] = Json.read[List[Oppija]](response.body)
               oppijat.length should be >= 2
             }
           }

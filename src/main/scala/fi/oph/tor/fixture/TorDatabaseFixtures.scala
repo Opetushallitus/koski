@@ -25,7 +25,7 @@ class TorDatabaseFixtureCreator(database: TorDatabase, repository: OpiskeluOikeu
     await(database.db.run(DBIO.sequence(deleteOpiskeluOikeudet)))
 
     defaultOpiskeluOikeudet.foreach { case (oid, oikeus) =>
-      validator.validateAsJson(TorOppija(OidHenkilö(oid), List(oikeus))) match {
+      validator.validateAsJson(Oppija(OidHenkilö(oid), List(oikeus))) match {
         case Right(oppija) => repository.createOrUpdate(VerifiedOppijaOid(oid), oppija.opiskeluoikeudet(0))
       }
     }

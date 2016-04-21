@@ -10,7 +10,7 @@ import fi.oph.tor.schema._
 import fi.oph.tor.localization.LocalizedStringImplicits._
 
 object ExamplesLukio {
-  val uusi = TorOppija(
+  val uusi = Oppija(
     exampleHenkilö,
     List(LukionOpiskeluoikeus(
       id = None,
@@ -40,7 +40,7 @@ object ExamplesLukio {
     ))
   )
 
-  val päättötodistus = TorOppija(
+  val päättötodistus = Oppija(
     exampleHenkilö,
     List(LukionOpiskeluoikeus(
       id = None,

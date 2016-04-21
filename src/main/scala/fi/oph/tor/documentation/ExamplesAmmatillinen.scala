@@ -130,7 +130,7 @@ object AmmatillinenExampleData {
 
   def oppija( henkilö: Henkilö = exampleHenkilö,
               opiskeluOikeus: Opiskeluoikeus = opiskeluoikeus()) = {
-    TorOppija(
+    Oppija(
       henkilö,
       List(opiskeluOikeus)
     )
@@ -212,7 +212,7 @@ object ExamplesAmmatillinen {
     ))
   ))
 
-  lazy val ops = TorOppija(
+  lazy val ops = Oppija(
     Henkilö.withOid("1.2.246.562.24.00000000001"),
     List(
       AmmatillinenOpiskeluoikeus(
@@ -295,7 +295,7 @@ object ExamplesAmmatillinen {
 object AmmatillinenTodistusExample {
   import AmmatillinenExampleData._
 
-  lazy val todistus = TorOppija(
+  lazy val todistus = Oppija(
     exampleHenkilö,
     List(
       AmmatillinenOpiskeluoikeus(
@@ -379,7 +379,7 @@ object AmmatillinenTodistusExample {
 object AmmatillinenFullExample {
   import AmmatillinenExampleData._
 
-  lazy val full = TorOppija(
+  lazy val full = Oppija(
     Henkilö.withOid("1.2.246.562.24.00000000001"),
     List(
       AmmatillinenOpiskeluoikeus(

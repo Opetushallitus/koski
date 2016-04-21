@@ -12,11 +12,11 @@ import fi.oph.tor.util.Timing
 import org.json4s.{JArray, JValue}
 
 class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: KoodistoViitePalvelu, val organisaatioRepository: OrganisaatioRepository) extends Timing {
-  def validateAsJson(oppija: TorOppija)(implicit user: TorUser): Either[HttpStatus, TorOppija] = {
+  def validateAsJson(oppija: Oppija)(implicit user: TorUser): Either[HttpStatus, Oppija] = {
     extractAndValidate(Json.toJValue(oppija))
   }
 
-  def extractAndValidateBatch(parsedJson: JArray)(implicit user: TorUser): List[Either[HttpStatus, TorOppija]] = {
+  def extractAndValidateBatch(parsedJson: JArray)(implicit user: TorUser): List[Either[HttpStatus, Oppija]] = {
     timed("extractAndValidateBatch") {
       parsedJson.arr.par.map { row =>
         extractAndValidate(row.asInstanceOf[JValue])
@@ -24,7 +24,7 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
     }
   }
 
-  def fillMissingInfo(oppija: TorOppija) = oppija.copy(opiskeluoikeudet = oppija.opiskeluoikeudet.map(addKoulutusToimija(_)))
+  def fillMissingInfo(oppija: Oppija) = oppija.copy(opiskeluoikeudet = oppija.opiskeluoikeudet.map(addKoulutusToimija(_)))
 
   def addKoulutusToimija(oo: Opiskeluoikeus) = {
     organisaatioRepository.getOrganisaatioHierarkiaIncludingParents(oo.oppilaitos.oid) match {
@@ -33,11 +33,11 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
     }
   }
 
-  def extractAndValidate(parsedJson: JValue)(implicit user: TorUser): Either[HttpStatus, TorOppija] = {
+  def extractAndValidate(parsedJson: JValue)(implicit user: TorUser): Either[HttpStatus, Oppija] = {
     timed("extractAndValidate") {
       TorJsonSchemaValidator.jsonSchemaValidate(parsedJson) match {
         case status: HttpStatus if status.isOk =>
-          val extractionResult: Either[HttpStatus, TorOppija] = ValidatingAndResolvingExtractor.extract[TorOppija](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository))
+          val extractionResult: Either[HttpStatus, Oppija] = ValidatingAndResolvingExtractor.extract[Oppija](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository))
           extractionResult.right.flatMap { oppija =>
             validateOpiskeluoikeudet(oppija.opiskeluoikeudet) match {
               case status: HttpStatus if status.isOk => Right(fillMissingInfo(oppija))

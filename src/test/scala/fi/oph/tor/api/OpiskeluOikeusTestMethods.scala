@@ -18,7 +18,7 @@ trait OpiskeluOikeusTestMethods[Oikeus <: Opiskeluoikeus] extends LocalJettyHttp
   }
 
   def putHenkilö[A](henkilö: Henkilö)(f: => A): Unit = {
-    putOppija(Json.toJValue(Json.fromJValue[TorOppija](makeOppija()).copy(henkilö = henkilö)))(f)
+    putOppija(Json.toJValue(Json.fromJValue[Oppija](makeOppija()).copy(henkilö = henkilö)))(f)
   }
 
   def putOppija[A](oppija: JValue, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
@@ -31,7 +31,7 @@ trait OpiskeluOikeusTestMethods[Oikeus <: Opiskeluoikeus] extends LocalJettyHttp
   }
 
   def createOrUpdate(oppija: TaydellisetHenkilötiedot, opiskeluOikeus: Opiskeluoikeus, check: => Unit = { verifyResponseStatus(200) }) = {
-    putOppija(Json.toJValue(TorOppija(oppija, List(opiskeluOikeus))))(check)
+    putOppija(Json.toJValue(Oppija(oppija, List(opiskeluOikeus))))(check)
     lastOpiskeluOikeus(oppija.oid)
   }
 
@@ -44,7 +44,7 @@ trait OpiskeluOikeusTestMethods[Oikeus <: Opiskeluoikeus] extends LocalJettyHttp
   def lastOpiskeluOikeus(oppijaOid: String) = {
     authGet("api/oppija/" + oppijaOid) {
       verifyResponseStatus(200)
-      Json.read[TorOppija](body).opiskeluoikeudet.last
+      Json.read[Oppija](body).opiskeluoikeudet.last
     }
   }
 

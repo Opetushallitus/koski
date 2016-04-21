@@ -26,7 +26,7 @@ object PerusopetusExampleData {
 }
 
 object ExamplesPerusopetus {
-  val uusi = TorOppija(
+  val uusi = Oppija(
     exampleHenkilö,
     List(PerusopetuksenOpiskeluoikeus(
       id = None,
@@ -48,7 +48,7 @@ object ExamplesPerusopetus {
   )
   private val vahvistus: Some[Vahvistus] = Some(Vahvistus(päivä = date(2016, 6, 4), jyväskylä, myöntäjäOrganisaatio = jyväskylänNormaalikoulu, myöntäjäHenkilöt = List(OrganisaatioHenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))
 
-  val päättötodistus = TorOppija(
+  val päättötodistus = Oppija(
     exampleHenkilö,
     List(PerusopetuksenOpiskeluoikeus(
       id = None,

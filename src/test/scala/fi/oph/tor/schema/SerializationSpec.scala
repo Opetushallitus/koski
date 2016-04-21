@@ -18,7 +18,7 @@ class SerializationSpec extends FunSpec with Matchers with Logging {
       Examples.examples.foreach { example =>
         it(example.name) {
           val jsonString = Json.write(example.data)
-          val oppija = Json.read[TorOppija](jsonString)
+          val oppija = Json.read[Oppija](jsonString)
           oppija should(equal(example.data))
           logger.info(example.name + " ok")
         }

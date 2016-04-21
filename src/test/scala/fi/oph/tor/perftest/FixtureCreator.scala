@@ -7,7 +7,7 @@ import fi.oph.tor.http.Http.runTask
 import fi.oph.tor.json.Json
 import fi.oph.tor.log.Logging
 import fi.oph.tor.perftest.PerfTestData.opiskeluoikeudet
-import fi.oph.tor.schema.{Henkilö, Opiskeluoikeus, TorOppija}
+import fi.oph.tor.schema.{Henkilö, Opiskeluoikeus, Oppija}
 
 import scala.collection.mutable
 import scala.util.Random.{nextInt => randomInt}
@@ -24,7 +24,7 @@ object FixtureCreator extends App with TestApp with Logging {
   1 to amount foreach { x =>
     val oikeus: Opiskeluoikeus = opiskeluoikeudet(x % opiskeluoikeudet.length)
     val nimi = "Tor-Perf-" + x
-    val oppija: TorOppija = TorOppija(Henkilö(nextHetu, nimi, nimi, nimi), List(oikeus))
+    val oppija: Oppija = Oppija(Henkilö(nextHetu, nimi, nimi, nimi), List(oikeus))
     val body = Json.write(oppija).getBytes("utf-8")
 
 
