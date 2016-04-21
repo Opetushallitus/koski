@@ -1,6 +1,6 @@
 package fi.oph.tor.schema
 
-import fi.oph.tor.schema.generic.annotation._
+import fi.oph.scalaschema.annotation._
 
 @Description("Oppija Koski-järjestelmässä. Sisältää henkilötiedot ja listan opiskeluoikeuksista, jotka puolestaan sisältävät suorituksia, läsnäolotietoja jne. Henkilötietoja ei tallenneta Koskeen, vaan haetaan/tallennetaan Opintopolun henkilöpalveluun.")
 case class Oppija(

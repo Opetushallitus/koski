@@ -1,6 +1,6 @@
 package fi.oph.tor.schema
 
-import fi.oph.tor.schema.generic._
+import fi.oph.scalaschema._
 import org.json4s.JsonAST._
 
 case class KoodistoUri(koodistoUri: String) extends Metadata {

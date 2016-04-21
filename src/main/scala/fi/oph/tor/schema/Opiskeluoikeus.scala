@@ -3,7 +3,7 @@ package fi.oph.tor.schema
 import java.time.LocalDate
 
 import fi.oph.tor.log.Loggable
-import fi.oph.tor.schema.generic.annotation._
+import fi.oph.scalaschema.annotation._
 
 object Opiskeluoikeus {
   type Id = Int

@@ -1,6 +1,6 @@
 package fi.oph.tor.schema
 
-import fi.oph.tor.schema.generic.annotation._
+import fi.oph.scalaschema.annotation._
 
 
 object Henkilö {

@@ -1,7 +1,7 @@
 package fi.oph.tor.schema
 
 import fi.oph.tor.schema.OksaUri.baseUrl
-import fi.oph.tor.schema.generic.{Metadata, MetadataSupport, ObjectWithMetadata, SchemaFactory}
+import fi.oph.scalaschema.{Metadata, MetadataSupport, ObjectWithMetadata, SchemaFactory}
 import org.json4s.JsonAST
 
 case class OksaUri(tunnus: String, käsite: String) extends Metadata {

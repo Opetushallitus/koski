@@ -55,6 +55,11 @@
       <artifactId>auditlogger</artifactId>
       <version>a22938c041811bd409970c7a3c210c74da1368d0</version>
     </dependency>
+    <dependency>
+      <groupId>com.github.Opetushallitus</groupId>
+      <artifactId>scala-schema</artifactId>
+      <version>cb06bd7</version>
+    </dependency>
     <!-- external deps -->
     <dependency>
       <groupId>org.scala-lang</groupId>

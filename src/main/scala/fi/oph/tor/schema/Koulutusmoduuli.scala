@@ -2,7 +2,7 @@ package fi.oph.tor.schema
 
 import fi.oph.tor.localization.LocalizedString._
 import fi.oph.tor.localization.{Localizable, LocalizedString}
-import fi.oph.tor.schema.generic.annotation.{MinValue, Description}
+import fi.oph.scalaschema.annotation.{MinValue, Description}
 
 trait Koulutusmoduuli extends Localizable {
   def tunniste: KoodiViite

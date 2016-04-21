@@ -2,7 +2,7 @@ package fi.oph.tor.schema
 
 import java.time.LocalDate
 
-import fi.oph.tor.schema.generic.annotation.Description
+import fi.oph.scalaschema.annotation.Description
 import fi.oph.tor.localization.LocalizedStringImplicits._
 
 @Description("Perusopetuksen opiskeluoikeus")

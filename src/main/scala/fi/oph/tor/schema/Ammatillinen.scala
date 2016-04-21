@@ -2,7 +2,7 @@ package fi.oph.tor.schema
 
 import java.time.LocalDate
 import fi.oph.tor.localization.LocalizedString
-import fi.oph.tor.schema.generic.annotation.{MaxItems, MinItems, Description}
+import fi.oph.scalaschema.annotation.{MaxItems, MinItems, Description}
 
 @Description("Ammatillisen koulutuksen opiskeluoikeus")
 case class AmmatillinenOpiskeluoikeus(

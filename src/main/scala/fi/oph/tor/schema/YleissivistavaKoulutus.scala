@@ -3,7 +3,7 @@ package fi.oph.tor.schema
 import java.time.LocalDate
 import fi.oph.tor.localization.LocalizedString
 import fi.oph.tor.localization.LocalizedString.{unlocalized, concat}
-import fi.oph.tor.schema.generic.annotation.Description
+import fi.oph.scalaschema.annotation.Description
 
 trait Oppiaineensuoritus extends Suoritus {
   // Oppiaineen suorituksella ei ole erillistä vahvistusta - todistuksen vahvistus riittää

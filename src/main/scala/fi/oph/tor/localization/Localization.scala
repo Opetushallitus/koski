@@ -2,7 +2,7 @@ package fi.oph.tor.localization
 
 import fi.oph.tor.localization.LocalizedString.missingString
 import fi.oph.tor.log.Logging
-import fi.oph.tor.schema.generic.annotation.Description
+import fi.oph.scalaschema.annotation.Description
 
 @Description("Lokalisoitu teksti. Vähintään yksi kielistä (fi/sv/en) vaaditaan")
 trait LocalizedString extends Localizable {

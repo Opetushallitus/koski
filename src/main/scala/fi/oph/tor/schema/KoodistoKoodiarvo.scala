@@ -1,7 +1,7 @@
 package fi.oph.tor.schema
 
 import fi.oph.tor.schema.KoodistoUri._
-import fi.oph.tor.schema.generic._
+import fi.oph.scalaschema._
 import org.json4s.JsonAST._
 
 /*

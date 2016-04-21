@@ -1,8 +1,8 @@
 package fi.oph.tor.schema
 
 import fi.oph.tor.json.Json
-import fi.oph.tor.schema.generic._
-import fi.oph.tor.schema.generic.annotation._
+import fi.oph.scalaschema._
+import fi.oph.scalaschema.annotation._
 
 object TorSchema {
   private val metadataTypes: List[MetadataSupport[_]] = List(Description, KoodistoUri, KoodistoKoodiarvo, ReadOnly, MinValue, MinItems, MaxItems, RegularExpression, OksaUri)
