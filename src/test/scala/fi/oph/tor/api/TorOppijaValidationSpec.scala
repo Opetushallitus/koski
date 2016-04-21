@@ -182,34 +182,34 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluoikeusTestMethodsAmma
 
     describe("Opiskeluoikeusjaksot"){
       describe("Päivämäärät kunnossa") {
-        it("palautetaan HTTP 200") (putOpiskeluOikeusMerged(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
+        it("palautetaan HTTP 200") (putOpiskeluOikeusMerged(Map("tila" -> Map("opiskeluoikeusjaksot" -> List(
           Map( "alku" -> "2015-08-01", "loppu" -> "2015-12-31", "tila" -> Map("koodiarvo" -> "aktiivinen", "koodistoUri" -> "opiskeluoikeudentila")),
           Map( "alku" -> "2016-01-01", "loppu" -> "2016-06-01", "tila" -> Map("koodiarvo" -> "keskeyttanyt", "koodistoUri" -> "opiskeluoikeudentila")),
           Map( "alku" -> "2016-06-02", "tila" -> Map("koodiarvo" -> "paattynyt", "koodistoUri" -> "opiskeluoikeudentila"))
         )))) (verifyResponseStatus(200)))
       }
       describe("alku > loppu") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeusMerged(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
+        it("palautetaan HTTP 400") (putOpiskeluOikeusMerged(Map("tila" -> Map("opiskeluoikeusjaksot" -> List(
           Map( "alku" -> "2016-08-01", "loppu" -> "2015-12-31", "tila" -> Map("koodiarvo" -> "aktiivinen", "koodistoUri" -> "opiskeluoikeudentila"))
         )))) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.loppuEnnenAlkua(
-          "opiskeluoikeudenTila.opiskeluoikeusjaksot.alku (2016-08-01) oltava sama tai aiempi kuin opiskeluoikeudenTila.opiskeluoikeusjaksot.loppu(2015-12-31)"))))
+          "tila.opiskeluoikeusjaksot.alku (2016-08-01) oltava sama tai aiempi kuin tila.opiskeluoikeusjaksot.loppu(2015-12-31)"))))
       }
       describe("ei-viimeiseltä jaksolta puuttuu loppupäivä") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeusMerged(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
+        it("palautetaan HTTP 400") (putOpiskeluOikeusMerged(Map("tila" -> Map("opiskeluoikeusjaksot" -> List(
           Map("alku" -> "2015-08-01", "tila" -> Map("koodiarvo" -> "aktiivinen", "koodistoUri" -> "opiskeluoikeudentila")),
           Map("alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "keskeyttanyt", "koodistoUri" -> "opiskeluoikeudentila"))
-        )))) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.jaksonLoppupäiväPuuttuu("opiskeluoikeudenTila.opiskeluoikeusjaksot: ei-viimeiseltä jaksolta puuttuu loppupäivä")))) }
+        )))) (verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.jaksonLoppupäiväPuuttuu("tila.opiskeluoikeusjaksot: ei-viimeiseltä jaksolta puuttuu loppupäivä")))) }
       describe("jaksot ovat päällekkäiset") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeusMerged(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
+        it("palautetaan HTTP 400") (putOpiskeluOikeusMerged(Map("tila" -> Map("opiskeluoikeusjaksot" -> List(
           Map( "alku" -> "2015-08-01", "loppu" -> "2016-01-01", "tila" -> Map("koodiarvo" -> "aktiivinen", "koodistoUri" -> "opiskeluoikeudentila")),
           Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "keskeyttanyt", "koodistoUri" -> "opiskeluoikeudentila"))
-        ))))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.jaksotEivätMuodostaJatkumoa("opiskeluoikeudenTila.opiskeluoikeusjaksot: jaksot eivät muodosta jatkumoa"))))
+        ))))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.jaksotEivätMuodostaJatkumoa("tila.opiskeluoikeusjaksot: jaksot eivät muodosta jatkumoa"))))
       }
       describe("jaksojen väliin jää tyhjää") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeusMerged(Map("opiskeluoikeudenTila" -> Map("opiskeluoikeusjaksot" -> List(
+        it("palautetaan HTTP 400") (putOpiskeluOikeusMerged(Map("tila" -> Map("opiskeluoikeusjaksot" -> List(
           Map( "alku" -> "2015-08-01", "loppu" -> "2015-10-01", "tila" -> Map("koodiarvo" -> "aktiivinen", "koodistoUri" -> "opiskeluoikeudentila")),
           Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "keskeyttanyt", "koodistoUri" -> "opiskeluoikeudentila"))
-        ))))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.jaksotEivätMuodostaJatkumoa("opiskeluoikeudenTila.opiskeluoikeusjaksot: jaksot eivät muodosta jatkumoa"))))
+        ))))(verifyResponseStatus(400, TorErrorCategory.badRequest.validation.date.jaksotEivätMuodostaJatkumoa("tila.opiskeluoikeusjaksot: jaksot eivät muodosta jatkumoa"))))
       }
     }
 

@@ -30,7 +30,7 @@ object ExamplesLukio {
           osasuoritukset = None
         )
       ),
-      opiskeluoikeudenTila = Some(YleissivistäväOpiskeluoikeudenTila(
+      tila = Some(YleissivistäväOpiskeluoikeudenTila(
         List(
           YleissivistäväOpiskeluoikeusjakso(date(2012, 9, 1), Some(date(2016, 1, 9)), opiskeluoikeusAktiivinen),
           YleissivistäväOpiskeluoikeusjakso(date(2016, 1, 10), None, opiskeluoikeusPäättynyt)
@@ -187,7 +187,7 @@ object ExamplesLukio {
           ))
         )
       ),
-      opiskeluoikeudenTila = Some(YleissivistäväOpiskeluoikeudenTila(
+      tila = Some(YleissivistäväOpiskeluoikeudenTila(
         List(
           YleissivistäväOpiskeluoikeusjakso(alku = date(2012, 9, 1), loppu = Some(date(2016, 1, 9)), tila = opiskeluoikeusAktiivinen),
           YleissivistäväOpiskeluoikeusjakso(alku = date(2016, 1, 10), loppu = None, tila = opiskeluoikeusPäättynyt)

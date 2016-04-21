@@ -159,7 +159,7 @@ object ExamplesAmmatillinen {
         vahvistus = None,
         osasuoritukset = None
       )
-    ).copy(opiskeluoikeudenTila = Some(AmmatillinenOpiskeluoikeudenTila(List(
+    ).copy(tila = Some(AmmatillinenOpiskeluoikeudenTila(List(
       AmmatillinenOpiskeluoikeusjakso(date(2016, 9, 1), None, opiskeluoikeusAktiivinen, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
     ))))
   )

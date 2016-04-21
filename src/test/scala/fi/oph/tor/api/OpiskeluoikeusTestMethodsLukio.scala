@@ -14,7 +14,7 @@ trait OpiskeluoikeusTestMethodsLukio extends OpiskeluOikeusTestMethods[LukionOpi
     id = None, versionumero = None, lähdejärjestelmänId = None, alkamispäivä = None, arvioituPäättymispäivä = None, päättymispäivä = None,
     oppilaitos = jyväskylänNormaalikoulu, koulutustoimija = None,
     suoritukset = List(päättötodistusSuoritus),
-    opiskeluoikeudenTila = None, läsnäolotiedot = None
+    tila = None, läsnäolotiedot = None
   )
 
   val päättötodistusSuoritus = LukionOppimääränSuoritus(

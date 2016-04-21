@@ -104,7 +104,7 @@ trait Opiskeluoikeus extends Loggable {
   def koulutustoimija: Option[OrganisaatioWithOid]
   @Description("Opiskeluoikeuteen liittyvien (tutkinto-)suorituksien tiedot")
   def suoritukset: List[Suoritus]
-  def opiskeluoikeudenTila: Option[OpiskeluoikeudenTila]
+  def tila: Option[OpiskeluoikeudenTila]
   def läsnäolotiedot: Option[Läsnäolotiedot]
 
   override def logString = id match {
