@@ -32,12 +32,22 @@ forEach(document.querySelectorAll('.json-row .collapsible'), function(node) {
 })
 
 forEach(document.querySelectorAll('.api-operation'), function(operationElem) {
-  var toggleLink = operationElem.querySelector(".toggle-details")
+  var toggleLink = operationElem.querySelector("h3")
   toggleLink.addEventListener("click", function() {
     if (operationElem.className.indexOf("expanded") >= 0) {
       operationElem.className = "api-operation"
     } else {
       operationElem.className = "api-operation expanded"
+    }
+  })
+})
+
+forEach(document.querySelectorAll('.example-item'), function(exampleElem) {
+  exampleElem.querySelector('.example-link').addEventListener('click', function() {
+    if (exampleElem.className.indexOf("expanded") >= 0) {
+      exampleElem.className = "example-item"
+    } else {
+      exampleElem.className = "example-item expanded"
     }
   })
 })

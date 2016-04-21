@@ -1,7 +1,30 @@
 body {
     font-family: Helvetica, Arial, sans-serif;
     color: rgb(51, 51, 51);
-    font-size: 15px;
+    font-size: 16px;
+}
+header {
+}
+.logo {
+    background: url("/tor/images/oph_fin_vaaka.png") 0 0 no-repeat;
+    height: 70px;
+    margin: 10px 0 10px 50px;
+}
+.content {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1200px;
+    line-height: 1.3em;
+    padding: 20px;
+    background-color: #fafafa;
+}
+section:after {
+    content: '';
+    border: 1px solid #d9d9d9;
+    display: block;
+    width: 100%;
+    border-top-width: 0;
+    margin-bottom: 30px;
 }
 small {
     font-size: 10px;
@@ -29,6 +52,7 @@ small {
 table.json {
     border-collapse: collapse;
     width: 100%;
+    display: none;
 }
 .metadata > span:after {
     display: inline;
@@ -36,7 +60,7 @@ table.json {
 }
 a, a:visited {
     text-decoration: none;
-    color: teal;
+    color: #4194bf;
 }
 
 span.indent:after {
@@ -58,6 +82,13 @@ span.indent:after {
     content: '-';
     cursor: pointer;
     margin-right: 5px;
+}
+
+.api-tester input {
+    width: 300px;
+    height: 30px;
+    font-size: 14px;
+    padding-left: 10px;
 }
 .api-tester, .status-codes {
     margin: 0 20px;
@@ -101,12 +132,35 @@ td {
 }
 
 th {
-    background-color: #ccffcc;
+    background-color: #f5f5f5;
     padding: 9px 10px;
 }
 
 .api-tester.loading .buttons {
     background: url('/tor/images/loader-small.gif') 70px 0 no-repeat;
+}
+
+.api-operation {
+    border: 1px solid #d9d9d9;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.api-operation.expanded {
+    padding-bottom: 40px;
+}
+
+.api-operation h3 {
+    margin-top: 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    line-height: 30px;
+    margin-bottom: 10px;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #d9d9d9;
+    font-weight: 500;
+    color: #4194bf;
+    cursor: pointer;
 }
 
 .api-operation:not(.expanded) .api-details > * {
@@ -116,7 +170,7 @@ th {
 .api-operation .api-details > * {
 }
 
-.api-operation > div {
+.api-operation > p, .api-operation > div {
     margin-left: 10px;
 }
 
@@ -126,7 +180,6 @@ th {
 
 .api-operation .curl.open .line {
     display: inline-block;
-    font-size: 0.6em;
 }
 
 .api-operation .curl.open .title {
@@ -134,22 +187,19 @@ th {
 }
 
 .api-operation .curl {
-    background: teal;
-    cursor: pointer;
-    color: white;
-    border-radius: 3px;
-    padding: 0 4px;
+
 }
 
-.toggle-details {
-    color: transparent;
-    background: url('/tor/images/plusminusbuttons.png') 0 0 no-repeat;
-    background-size: 20px;
+.api-method {
     display: inline-block;
-    height: 18px;
-    width: 20px;
+    height: 30px;
     margin-right: 10px;
-    line-height: 6px;
+    color: white;
+    background: #4194bf;
+    line-height: 30px;
+    border-top-left-radius: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .api-operation.expanded .toggle-details {
@@ -160,14 +210,43 @@ a {
     cursor: pointer;
 }
 
-.api-tester .try-newwindow {
-    font-size: 0.6em;
-}
-
 .api-tester.loading .try-newwindow {
     display: none;
 }
 
 .hidden {
     display: none;
+}
+
+.button.blue {
+    background: #4194bf;
+    color: #fff;
+}
+
+.button {
+    height: 35px;
+    font-size: 1pc;
+    border: none;
+    padding: 0 20px;
+    display: inline-block;
+    text-align: center;
+    line-height: 35px;
+    cursor: pointer;
+}
+
+.example-list {
+    line-height: 1.5em;
+    padding-bottom: 20px;
+    list-style: none;
+    padding: 0;
+}
+
+.example-as-json {
+    float: right;
+    font-size: smaller;
+}
+
+.example-item.expanded table.json {
+    display: inherit;
+    margin: 20px 0;
 }

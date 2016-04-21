@@ -12,9 +12,9 @@ object TorApiOperations {
  val operations = List(
    ApiOperation(
       "GET", "/tor/api/oppija/search",
-      <div> Etsii oppijoita annetulla hakusanalla. Hakutuloksissa vain oppijoiden perustiedot.
+      <p> Etsii oppijoita annetulla hakusanalla. Hakutuloksissa vain oppijoiden perustiedot.
             Hakusana voi olla hetu, oppija-oid tai nimen osa. Tuloksiin sisällytetään vain ne oppijat,
-            joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</div>,
+            joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</p>,
       Nil,
       List(QueryParameter("query", "Hakusana, joka voi olla hetu, oppija-oid tai nimen osa.", "eero")),
       List(
@@ -25,9 +25,9 @@ object TorApiOperations {
    ),
    ApiOperation(
     "GET", "/tor/api/oppija",
-     <div>Palauttaa oppijoiden tiedot annetuilla parametreilla. Sisältää oppijoiden henkilötiedot,
+     <p>Palauttaa oppijoiden tiedot annetuilla parametreilla. Sisältää oppijoiden henkilötiedot,
           opiskeluoikeudet suorituksineen.
-          Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</div>,
+          Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</p>,
      Nil,
      hakuParametrit,
      List(
@@ -39,10 +39,10 @@ object TorApiOperations {
    ),
    ApiOperation(
      "GET", "/tor/api/oppija/validate",
-     <div>Etsii oppijat annetuilla parametreilla ja validoi hakutulokset.
+     <p>Etsii oppijat annetuilla parametreilla ja validoi hakutulokset.
           Validointi suoritetaan tämän hetkisen JSON-scheman ja muiden validointisääntöjen mukaan.
           Lisäksi validoidaan opinto-oikeuksien versiohistorioiden eheys.
-          Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</div>,
+          Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</p>,
      Nil,
      hakuParametrit,
      List(
@@ -54,7 +54,7 @@ object TorApiOperations {
    ),
    ApiOperation(
      "GET", "/tor/api/oppija/{oid}",
-     <div>Hakee oppijan tiedot ja opiskeluoikeudet suorituksineen.</div>,
+     <p>Hakee oppijan tiedot ja opiskeluoikeudet suorituksineen.</p>,
      Nil,
      List(PathParameter("oid", "Oppijan tunniste", "1.2.246.562.24.00000000001")),
      List(
@@ -66,7 +66,7 @@ object TorApiOperations {
    ),
    ApiOperation(
      "GET", "/tor/api/oppija/validate/{oid}",
-     <div>Validoi oppijan kantaan tallennetun datan oikeellisuuden</div>,
+     <p>Validoi oppijan kantaan tallennetun datan oikeellisuuden</p>,
      Nil,
      List(PathParameter("oid", "Oppijan tunniste", "1.2.246.562.24.00000000001")),
      List(
@@ -78,7 +78,7 @@ object TorApiOperations {
    ),
    ApiOperation(
      "GET", "/tor/api/opiskeluoikeus/historia/{opiskeluoikeus_id}",
-     <div>Listaa tiettyyn opiskeluoikeuteen kohdistuneet muutokset</div>,
+     <p>Listaa tiettyyn opiskeluoikeuteen kohdistuneet muutokset</p>,
      Nil,
      List(PathParameter("opiskeluoikeus_id", "Opiskeluoikeuden tunniste", "354")),
      List(
@@ -89,7 +89,7 @@ object TorApiOperations {
    ),
    ApiOperation(
      "GET", "/tor/api/opiskeluoikeus/historia/{opiskeluoikeus_id}/{versionumero}",
-     <div>Palauttaa opiskeluoikeuden tiedot tietyssä versiossa</div>,
+     <p>Palauttaa opiskeluoikeuden tiedot tietyssä versiossa</p>,
      Nil,
      List(
        PathParameter("opiskeluoikeus_id", "Opiskeluoikeuden tunniste", "354"),

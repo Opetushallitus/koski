@@ -7,7 +7,7 @@ import fi.oph.tor.schema.TorSchema
 import scala.xml.Elem
 
 object TorTiedonSiirtoHtml {
-  def markdown ="""
+  def general ="""
 
 # Koski-tiedonsiirtoprotokolla
 
@@ -50,6 +50,10 @@ Esimerkki tällaisesta kentästä on tutkintoon johtavan koulutuksen [koulutusko
 Scalaa osaaville ehkä nopein tapa tutkia tietomallia on kuitenkin sen lähdekoodi. Githubista löytyy sekä [scheman](https://github.com/Opetushallitus/tor/blob/master/src/main/scala/fi/oph/tor/schema/TorOppija.scala),
 että [esimerkkien](https://github.com/Opetushallitus/tor/blob/master/src/main/scala/fi/oph/tor/documentation/TorOppijaExamples.scala) lähdekoodit.
 
+"""
+
+  def rest_apis ="""
+
 ## REST-rajapinnat
 
 Kaikki rajapinnat vaativat HTTP Basic Authentication -tunnistautumisen, eli käytännössä `Authorization`-headerin HTTP-pyyntöön.
@@ -60,7 +64,7 @@ Saat tarvittavat tunnukset Koski-kehitystiimiltä pyydettäessä.
 Rajapintojen käyttämät virhekoodit on myös kuvattu alla. Virhetapauksissa rajapinnat käyttävät alla kuvattuja HTTP-statuskoodeja ja sisällyttävät tarkemmat virhekoodit ja selitteineen JSON-tyyppiseen paluuviestiin.
 Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
 
-"""
+  """
 
   def html = {
     <html>
@@ -74,16 +78,26 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
         <script src="/tor/codemirror/mode/javascript/javascript.js"></script>
       </head>
       <body>
-        {toXHTML( knockoff(markdown) )}
-        { ApiTesterHtml.apiOperationsHtml }
-        <div>
+        <header><div class="logo"/></header>
+        <div class="content">
+          <section>
+            {toXHTML( knockoff(general) )}
+          </section>
+          <section>
+            {toXHTML( knockoff(rest_apis) )}
+            { ApiTesterHtml.apiOperationsHtml }
+          </section>
+        <section>
           <h2>Esimerkkidata annotoituna</h2>
           <p>
             Toinen hyvä tapa tutustua tiedonsiirtoprotokollaan on tutkia esimerkkiviestejä.
             Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esimerkissa on varsinaisen JSON-sisällön lisäksi schemaan pohjautuva annotointi ja linkitykset koodistoon ja OKSA-sanastoon.
           </p>
+          <ul class="example-list">
+            { examplesHtml }
+          </ul>
+        </section>
         </div>
-        { examplesHtml }
         <script src="js/polyfills/promise.js"></script>
         <script src="js/polyfills/fetch.js"></script>
         <script src="js/polyfills/dataset.js"></script>
@@ -94,16 +108,13 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
 
   def examplesHtml: List[Elem] = {
     Examples.examples.map { example =>
-      <div>
-        <h3>
-          {example.description}<small>
-          <a href={"/tor/documentation/examples/" + example.name + ".json"}>lataa JSON</a>
-        </small>
-        </h3>
+      <li class="example-item">
+        <a class="example-link">{example.description}</a>
+        <a class="example-as-json" href={"/tor/documentation/examples/" + example.name + ".json"} target="_blank">lataa JSON</a>
         <table class="json">
           {SchemaToJsonHtml.buildHtml(TorSchema.schema, example.data)}
         </table>
-      </div>
+      </li>
     }
   }
 }

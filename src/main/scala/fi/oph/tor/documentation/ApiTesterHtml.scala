@@ -9,7 +9,7 @@ object ApiTesterHtml {
       TorApiOperations.operations.map { operation =>
         <div class="api-operation">
           <h3>
-            <a class="toggle-details"></a>{operation.method}{operation.path}
+            <span class="api-method">{operation.method}</span>{operation.path}
           </h3>{operation.doc}<div class="api-details">
           <h4>Paluukoodit</h4>
           <div class="status-codes">
@@ -48,9 +48,9 @@ object ApiTesterHtml {
     <div class="api-tester" data-method={operation.method} data-path={operation.path}>
       {apiOperationTesterParametersHtml(operation)}
       <div class="buttons">
-        <button class="try">Kokeile</button>
-        <a class="try-newwindow">uuteen ikkunaan</a>
-        <span class="curl"><span class="title">curl</span><span class="line"></span></span>
+        <a class="try button blue">Kokeile</a>
+        <a class="try-newwindow button blue">uuteen ikkunaan</a>
+        <span class="curl button blue"><span class="title">curl</span><span class="line"></span></span>
       </div>
       <div class="result"></div>
     </div>
