@@ -1,14 +1,17 @@
 package fi.oph.tor.todistus
 
-import java.text.DecimalFormat
+import java.text.NumberFormat
 
+import fi.oph.tor.localization.Locale
+import fi.oph.tor.localization.Locale.finnish
 import fi.oph.tor.schema._
 import fi.oph.tor.toruser.TorUser
+
 
 class LukionPaattotodistusHtml(implicit val user: TorUser) extends TodistusHtml {
   def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: LukionOppimääränSuoritus) = {
     val oppiaineet: List[LukionOppiaineenSuoritus] = päättötodistus.osasuoritukset.toList.flatten
-    val decimalFormat = new DecimalFormat("#.#")
+    val decimalFormat = NumberFormat.getInstance(finnish)
 
     def oppiaineenKurssimäärä(oppiaine: LukionOppiaineenSuoritus): Float = oppiaine.osasuoritukset.toList.flatten.foldLeft(0f) {
       (laajuus: Float, kurssi: LukionKurssinSuoritus) => laajuus + kurssi.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(0f)
