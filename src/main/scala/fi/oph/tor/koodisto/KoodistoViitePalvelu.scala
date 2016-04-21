@@ -12,7 +12,9 @@ case class KoodistoViitePalvelu(koodistoPalvelu: KoodistoPalvelu) extends Loggin
   def getKoodistoKoodiViite(koodistoUri: String, koodiArvo: String): Option[Koodistokoodiviite] = getLatestVersion(koodistoUri).flatMap(koodisto => getKoodistoKoodiViitteet(koodisto).toList.flatten.find(_.koodiarvo == koodiArvo))
 
   def validate(input: Koodistokoodiviite):Option[Koodistokoodiviite] = {
-    val koodistoViite = input.koodistoViite.orElse(getLatestVersion(input.koodistoUri))
+    def toKoodistoViite(koodiviite: Koodistokoodiviite) = koodiviite.koodistoVersio.map(KoodistoViite(koodiviite.koodistoUri, _))
+
+    val koodistoViite = toKoodistoViite(input).orElse(getLatestVersion(input.koodistoUri))
 
     val viite = koodistoViite.flatMap(getKoodistoKoodiViitteet).toList.flatten.find(_.koodiarvo == input.koodiarvo)
 
