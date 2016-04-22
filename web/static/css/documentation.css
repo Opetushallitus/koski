@@ -136,10 +136,6 @@ th {
     padding: 9px 10px;
 }
 
-.api-tester.loading .buttons {
-    background: url('/tor/images/loader-small.gif') 70px 0 no-repeat;
-}
-
 .api-operation {
     border: 1px solid #d9d9d9;
     margin-bottom: 20px;
@@ -210,10 +206,6 @@ a {
     cursor: pointer;
 }
 
-.api-tester.loading .try-newwindow {
-    display: none;
-}
-
 .hidden {
     display: none;
 }
@@ -232,6 +224,10 @@ a {
     text-align: center;
     line-height: 35px;
     cursor: pointer;
+}
+
+.button:disabled {
+    background-color: #E6E6E6;
 }
 
 .example-list {

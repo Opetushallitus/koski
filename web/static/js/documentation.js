@@ -32,8 +32,7 @@ forEach(document.querySelectorAll('.json-row .collapsible'), function(node) {
 })
 
 forEach(document.querySelectorAll('.api-operation'), function(operationElem) {
-  var toggleLink = operationElem.querySelector("h3")
-  toggleLink.addEventListener("click", function() {
+  operationElem.querySelector("h3").addEventListener("click", function() {
     if (operationElem.className.indexOf("expanded") >= 0) {
       operationElem.className = "api-operation"
     } else {
@@ -79,10 +78,12 @@ forEach(document.querySelectorAll('.api-tester'), function(elem) {
       codeMirror.setValue(data)
     })
   }
-  var button = elem.querySelector(".try")
-  button.addEventListener('click', function() {
+
+  elem.querySelector('.try').addEventListener('click', function() {
     elem.className = "api-tester loading"
-    button.disabled = true
+
+    forEach(elem.querySelectorAll('button'), function(buttonElem) { buttonElem.disabled = true })
+
     var options = {credentials: 'include', method: elem.dataset.method, headers: {'Content-Type': 'application/json'}};
 
     if (codeMirror) {
@@ -92,7 +93,7 @@ forEach(document.querySelectorAll('.api-tester'), function(elem) {
     function showResponse(response) {
       var resultElem = elem.querySelector(".result");
       elem.className = "api-tester"
-      button.disabled = false
+      forEach(elem.querySelectorAll('button'), function(buttonElem) {buttonElem.disabled = false})
       resultElem.innerHTML = response
       var codeBlock = resultElem.querySelector("code");
       if (codeBlock)
@@ -115,6 +116,7 @@ forEach(document.querySelectorAll('.api-tester'), function(elem) {
         showResponse(error)
       })
   })
+
   var newWindowButton = elem.querySelector(".try-newwindow")
   if (elem.dataset.method == 'GET') {
     newWindowButton.addEventListener('click', function() {

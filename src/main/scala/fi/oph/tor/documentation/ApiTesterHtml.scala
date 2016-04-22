@@ -48,9 +48,9 @@ object ApiTesterHtml {
     <div class="api-tester" data-method={operation.method} data-path={operation.path}>
       {apiOperationTesterParametersHtml(operation)}
       <div class="buttons">
-        <a class="try button blue">Kokeile</a>
-        <a class="try-newwindow button blue">uuteen ikkunaan</a>
-        <span class="curl button blue"><span class="title">curl</span><span class="line"></span></span>
+        <button class="try button blue">Kokeile</button>
+        <button class="try-newwindow button blue">uuteen ikkunaan</button>
+        <button class="curl button blue"><span class="title">curl</span><span class="line"></span></button>
       </div>
       <div class="result"></div>
     </div>
