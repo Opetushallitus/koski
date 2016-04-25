@@ -20,13 +20,15 @@ import fi.oph.tor.toruser.{DirectoryClientFactory, UserOrganisationsRepository}
 import fi.oph.tor.tutkinto.TutkintoRepository
 
 object TorApplication {
+  val defaultConfig = ConfigFactory.load
+
   def apply: TorApplication = apply(Map.empty)
 
   def apply(overrides: Map[String, String] = Map.empty): TorApplication = {
     new TorApplication(config(overrides))
   }
 
-  def config(overrides: Map[String, String] = Map.empty) = overrides.toList.foldLeft(ConfigFactory.load)({ case (config, (key, value)) => config.withValue(key, fromAnyRef(value)) })
+  def config(overrides: Map[String, String] = Map.empty) = overrides.toList.foldLeft(defaultConfig)({ case (config, (key, value)) => config.withValue(key, fromAnyRef(value)) })
 }
 
 class TorApplication(val config: Config) extends Logging {

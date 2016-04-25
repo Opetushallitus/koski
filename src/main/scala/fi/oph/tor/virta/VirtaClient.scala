@@ -1,5 +1,7 @@
 package fi.oph.tor.virta
 
+import com.typesafe.config.Config
+import fi.oph.tor.config.TorApplication
 import fi.oph.tor.http.Http
 
 import scala.xml.PrettyPrinter
@@ -8,7 +10,7 @@ import scala.xml.PrettyPrinter
 object VirtaClient extends App {
   val hetulla: VirtaHakuehtoHetu = VirtaHakuehtoHetu("290204A9999")
   val oppijanumerolla = VirtaHakuehtoKansallinenOppijanumero("aed09afd87a8c6d76b76bbd")
-  VirtaClient(VirtaConfig.virtaTestEnvironment).fetchVirtaData(hetulla)
+  VirtaClient(VirtaConfig.fromConfig(TorApplication.defaultConfig)).fetchVirtaData(hetulla)
 }
 
 case class VirtaClient(config: VirtaConfig) {
@@ -36,12 +38,10 @@ sealed trait VirtaHakuehto
 case class VirtaHakuehtoHetu(hetu: String) extends VirtaHakuehto
 case class VirtaHakuehtoKansallinenOppijanumero(numero: String) extends VirtaHakuehto
 
-case class VirtaConfig(serviceUrl: String = "http://virtawstesti.csc.fi/luku/OpiskelijanTiedot",
-                       jarjestelma: String = "",
-                       tunnus: String = "",
-                       avain: String = "salaisuus")
+case class VirtaConfig(serviceUrl: String, jarjestelma: String, tunnus: String, avain: String)
 
 object VirtaConfig {
   // Virta test environment config, see http://virtawstesti.csc.fi/
-  val virtaTestEnvironment = VirtaConfig()
+  val virtaTestEnvironment = VirtaConfig("http://virtawstesti.csc.fi/luku/OpiskelijanTiedot", "", "", "salaisuus")
+  def fromConfig(config: Config) = VirtaConfig(config.getString("virta.serviceUrl"), config.getString("virta.jarjestelma"), config.getString("virta.tunnus"), config.getString("virta.avain"))
 }
