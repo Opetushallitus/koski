@@ -11,8 +11,8 @@ object ApiTesterHtml {
           <h3>
             <span class="api-method">{operation.method}</span>{operation.path}
           </h3>{operation.doc}<div class="api-details">
-          <h4>Paluukoodit</h4>
           <div class="status-codes">
+            <h4><a>Paluukoodit</a></h4>
             <table>
               <thead>
                 <tr>

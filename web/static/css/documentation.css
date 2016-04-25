@@ -90,8 +90,21 @@ span.indent:after {
     font-size: 14px;
     padding-left: 10px;
 }
-.api-tester, .status-codes {
+.api-tester {
     margin: 0 20px;
+}
+
+.status-codes h4 {
+    cursor: pointer;
+}
+
+.status-codes table {
+    display: none;
+    margin: 0 20px;
+}
+
+.status-codes.expanded table {
+    display: block;
 }
 
 .api-tester .buttons, .api-tester .result {

@@ -42,14 +42,23 @@ forEach(document.querySelectorAll('.api-operation'), function(operationElem) {
 })
 
 forEach(document.querySelectorAll('.example-item'), function(exampleElem) {
-  exampleElem.querySelector('.example-link').addEventListener('click', function() {
-    if (exampleElem.className.indexOf("expanded") >= 0) {
-      exampleElem.className = "example-item"
-    } else {
-      exampleElem.className = "example-item expanded"
-    }
-  })
+  exampleElem.querySelector('.example-link').addEventListener('click', toggleExpanded(exampleElem))
 })
+
+forEach(document.querySelectorAll('.status-codes'), function(elem) {
+  elem.querySelector('h4').addEventListener('click', toggleExpanded(elem))
+})
+
+function toggleExpanded(elem) {
+  return function() {
+    var index = elem.className.indexOf(" expanded");
+    if (index >= 0) {
+      elem.className = elem.className.substring(0, index)
+    } else {
+      elem.className = elem.className + " expanded"
+    }
+  }
+}
 
 forEach(document.querySelectorAll('.api-tester'), function(elem) {
   var exampleSelector = elem.querySelector(".examples select")
