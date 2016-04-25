@@ -1,42 +1,56 @@
-[{"content":
-{
-  "opiskeluoikeudet" : [ {
-    "lähdejärjestelmänId" : {
-      "id" : "847823465",
-      "lähdejärjestelmä" : {
-        "koodiarvo" : "winnova",
-        "nimi" : "Winnova",
-        "koodistoUri" : "lahdejarjestelma",
-        "koodistoVersio" : 1
-      }
-    },
-    "alkamispäivä" : "2016-09-01",
-    "arvioituPäättymispäivä" : "2020-05-01",
-    "oppilaitos" : {
-      "oid" : "1.2.246.562.10.52251087186",
-      "nimi" : "Stadin ammattiopisto"
-    },
-    "suoritus" : {
-      "paikallinenId" : "suoritus-12345",
-      "koulutusmoduuli" : {
-        "tunniste" : {
-          "koodiarvo" : "351301",
-          "nimi" : "Autoalan perustutkinto",
-          "koodistoUri" : "koulutus"
-        },
-        "perusteenDiaarinumero" : "39/011/2014"
+[
+  {
+    "content": {
+      "henkilö": {
+        "hetu": "120496-949B",
+        "etunimet": "Aarne",
+        "kutsumanimi": "Aarne",
+        "sukunimi": "Ammattilainen"
       },
-      "tila" : {
-        "koodiarvo" : "KESKEN",
-        "koodistoUri" : "suorituksentila"
-      },
-      "alkamispäivä" : "2016-09-01",
-      "toimipiste" : {
-        "oid" : "1.2.246.562.10.42456023292",
-        "nimi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
-      }
+      "opiskeluoikeudet": [
+        {
+          "alkamispäivä": "2016-09-01",
+          "arvioituPäättymispäivä": "2020-05-01",
+          "oppilaitos": {
+            "oid": "1.2.246.562.10.52251087186"
+          },
+          "suoritukset": [
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "351301",
+                  "nimi": {
+                    "fi": "Autoalan perustutkinto"
+                  },
+                  "koodistoUri": "koulutus"
+                },
+                "perusteenDiaarinumero": "39/011/2014"
+              },
+              "paikallinenId": "suoritus-12345",
+              "tila": {
+                "koodiarvo": "KESKEN",
+                "koodistoUri": "suorituksentila"
+              },
+              "alkamispäivä": "2016-09-01",
+              "toimipiste": {
+                "oid": "1.2.246.562.10.42456023292",
+                "nimi": {
+                  "fi": "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+                }
+              },
+              "tyyppi": {
+                "koodiarvo": "ammatillinentutkinto",
+                "koodistoUri": "suorituksentyyppi"
+              }
+            }
+          ],
+          "tyyppi": {
+            "koodiarvo": "ammatillinenkoulutus",
+            "koodistoUri": "opiskeluoikeudentyyppi"
+          }
+        }
+      ]
     }
-  } ]
-}
-}]
+  }
+]
 
