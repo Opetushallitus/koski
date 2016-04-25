@@ -7,8 +7,11 @@ import fi.oph.tor.util.Pools
 import org.http4s._
 import org.http4s.client.blaze.BlazeClientConfig
 import org.http4s.client.{Client, blaze}
-
+import org.http4s.headers.`Content-Type`
+import org.json4s.Formats
+import org.json4s.jackson.Serialization._
 import scala.concurrent.duration._
+import scala.xml.Elem
 import scalaz.concurrent.Task
 
 object Http extends Logging {
@@ -23,6 +26,13 @@ object Http extends Logging {
   def parseJson[T](status: Int, text: String, request: Request)(implicit mf : scala.reflect.Manifest[T]): T = {
     (status, text) match {
       case (200, text) => Json.read[T](text)
+      case (status, text) => throw new HttpStatusException(status, text, request)
+    }
+  }
+
+  def parseXml(status: Int, text: String, request: Request) = {
+    (status, text) match {
+      case (200, text) => scala.xml.XML.loadString(text)
       case (status, text) => throw new HttpStatusException(status, text, request)
     }
   }
@@ -64,6 +74,11 @@ object Http extends Logging {
   }
 
   type Decode[ResultType] = (Int, String, Request) => ResultType
+
+  object Encoders extends Logging {
+    def xml: EntityEncoder[Elem] = EntityEncoder.stringEncoder(Charset.`UTF-8`).contramap[Elem](item => item.toString)
+      .withContentType(`Content-Type`(MediaType.`text/xml`))
+  }
 }
 
 case class Http(root: String, client: Client = Http.newClient) extends Logging {
