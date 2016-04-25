@@ -1,8 +1,8 @@
 package fi.oph.tor.schema
 
+import fi.oph.scalaschema.annotation.Description
 import fi.oph.tor.localization.LocalizedString.unlocalized
 import fi.oph.tor.localization.{Localizable, LocalizedString}
-import fi.oph.scalaschema.annotation.{Description, ReadOnly}
 
 trait KoodiViite {
   def koodiarvo: String

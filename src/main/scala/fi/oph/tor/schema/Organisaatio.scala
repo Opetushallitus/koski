@@ -1,7 +1,7 @@
 package fi.oph.tor.schema
 
+import fi.oph.scalaschema.annotation.{Description, MinValue, RegularExpression}
 import fi.oph.tor.localization.LocalizedString
-import fi.oph.scalaschema.annotation.{MinValue, ReadOnly, RegularExpression, Description}
 
 @Description("Organisaatio. Voi olla Opintopolun organisaatiosta löytyvä oid:illinen organisaatio, y-tunnuksellinen yritys tai tutkintotoimikunta.")
 sealed trait Organisaatio

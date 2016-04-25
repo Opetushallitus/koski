@@ -1,9 +1,9 @@
 package fi.oph.tor.documentation
 
-import fi.oph.tor.json.Json
 import fi.oph.scalaschema._
-import fi.oph.scalaschema.annotation.{Description, ReadOnly}
-import fi.oph.tor.schema.{KoodistoUri, OksaUri}
+import fi.oph.scalaschema.annotation.Description
+import fi.oph.tor.json.Json
+import fi.oph.tor.schema.{KoodistoUri, OksaUri, ReadOnly}
 
 import scala.xml.Elem
 
