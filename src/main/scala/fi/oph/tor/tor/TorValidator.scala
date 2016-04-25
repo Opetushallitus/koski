@@ -72,23 +72,49 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
       }
   }
 
-  def validateSuoritus(suoritus: Suoritus, parentVahvistus: Option[Vahvistus]): HttpStatus = {
+  def validateSuoritus(suoritus: Suoritus, vahvistus: Option[Vahvistus]): HttpStatus = {
     val arviointipäivä = ("suoritus.arviointi.päivä", suoritus.arviointi.toList.flatten.flatMap(_.päivä))
     HttpStatus.fold(
       validateDateOrder(("suoritus.alkamispäivä", suoritus.alkamispäivä), arviointipäivä)
         :: validateDateOrder(arviointipäivä, ("suoritus.vahvistus.päivä", suoritus.vahvistus.map(_.päivä)))
-        :: validateStatus(suoritus, parentVahvistus)
-        :: suoritus.osasuoritusLista.map(validateSuoritus(_, suoritus.vahvistus.orElse(parentVahvistus)))
+        :: validateStatus(suoritus, vahvistus)
+        :: validateLaajuus(suoritus)
+        :: suoritus.osasuoritusLista.map(validateSuoritus(_, suoritus.vahvistus.orElse(vahvistus)))
     )
+  }
+
+  private def validateLaajuus(suoritus: Suoritus): HttpStatus = {
+    suoritus.koulutusmoduuli.laajuus match {
+      case Some(Laajuus(laajuus, yksikkö)) =>
+        val yksikköValidaatio = HttpStatus.fold(suoritus.osasuoritusLista.map { case osasuoritus =>
+          osasuoritus.koulutusmoduuli.laajuus match {
+            case Some(Laajuus(_, osasuoritusYksikkö)) if osasuoritusYksikkö != yksikkö =>
+              TorErrorCategory.badRequest.validation.laajudet.osasuorituksellaEriLaajuusyksikkö("Osasuorituksella " + suorituksenTunniste(osasuoritus) + " eri laajuuden yksikkö kuin suorituksella " + suorituksenTunniste(suoritus))
+            case _ => HttpStatus.ok
+          }
+        })
+
+        yksikköValidaatio.then({
+        val osasuoritustenLaajuudet: List[Laajuus] = suoritus.osasuoritusLista.flatMap(_.koulutusmoduuli.laajuus)
+        osasuoritustenLaajuudet match {
+          case Nil => HttpStatus.ok
+          case _ =>
+            osasuoritustenLaajuudet.map(_.arvo).sum match {
+              case summa if summa == laajuus =>
+                HttpStatus.ok
+              case summa =>
+                TorErrorCategory.badRequest.validation.laajudet.osasuoritustenLaajuuksienSumma("Suorituksen " + suorituksenTunniste(suoritus) + " osasuoritusten laajuuksien summa " + summa + " ei vastaa suorituksen laajuutta " + laajuus)
+            }
+        }
+        })
+      case _ => HttpStatus.ok
+    }
   }
 
   private def validateStatus(suoritus: Suoritus, parentVahvistus: Option[Vahvistus]): HttpStatus = {
     val hasArviointi: Boolean = !suoritus.arviointi.toList.flatten.isEmpty
     val hasVahvistus: Boolean = suoritus.vahvistus.isDefined
     val tilaValmis: Boolean = suoritus.tila.koodiarvo == "VALMIS"
-    def suorituksenTunniste(suoritus: Suoritus): KoodiViite = {
-      suoritus.koulutusmoduuli.tunniste
-    }
     if (hasVahvistus && !tilaValmis) {
       TorErrorCategory.badRequest.validation.tila.vahvistusVäärässäTilassa("Suorituksella " + suorituksenTunniste(suoritus) + " on vahvistus, vaikka suorituksen tila on " + suoritus.tila.koodiarvo)
     } else if (!hasVahvistus && tilaValmis && !parentVahvistus.isDefined) {
@@ -103,4 +129,9 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
       }
     }
   }
+
+  private def suorituksenTunniste(suoritus: Suoritus): KoodiViite = {
+    suoritus.koulutusmoduuli.tunniste
+  }
+
 }

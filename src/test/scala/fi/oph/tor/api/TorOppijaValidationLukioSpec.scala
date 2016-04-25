@@ -1,5 +1,9 @@
 package fi.oph.tor.api
 
+import fi.oph.tor.documentation.LukioExampleData._
+import fi.oph.tor.documentation.YleissivistavakoulutusExampleData.oppiaine
+import fi.oph.tor.documentation.{LukioExampleData, YleissivistavakoulutusExampleData, PerusopetusExampleData}
+import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.schema._
 
 // Lukiosuoritusten validointi perustuu tässä testattua diaarinumeroa lukuunottamatta domain-luokista generoituun JSON-schemaan.
@@ -10,4 +14,32 @@ class TorOppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskelu
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = defaultOpiskeluoikeus.suoritukset.map(
    suoritus => suoritus.copy(koulutusmoduuli = suoritus.koulutusmoduuli.copy(perusteenDiaarinumero = diaari))
   ))
+
+  describe("Laajuudet") {
+    it("Kurssin laajuusyksikkö eri kuin oppiaineella -> HTTP 400") {
+      val oo: LukionOpiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = defaultOpiskeluoikeus.suoritukset.map(_.copy(
+        osasuoritukset = Some(List(suoritus(oppiaine("GE", laajuus(1.0f, "4"))).copy(
+          osasuoritukset = Some(List(
+            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = laajuus(1.0f, "5")))
+          ))
+        )))
+      )))
+      putOpiskeluOikeus(oo) {
+        verifyResponseStatus(400, TorErrorCategory.badRequest.validation.laajudet.osasuorituksellaEriLaajuusyksikkö("Osasuorituksella lukionkurssit/GE1 eri laajuuden yksikkö kuin suorituksella koskioppiaineetyleissivistava/GE"))
+      }
+    }
+    it("Kurssien laajuuksien summa ei täsmää -> HTTP 400") {
+      val oo: LukionOpiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = defaultOpiskeluoikeus.suoritukset.map(_.copy(
+        osasuoritukset = Some(List(suoritus(oppiaine("GE", laajuus(2.0f, "5"))).copy(
+          osasuoritukset = Some(List(
+            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = laajuus(1.0f, "5")))
+          ))
+        )))
+      )))
+      putOpiskeluOikeus(oo) {
+        verifyResponseStatus(400, TorErrorCategory.badRequest.validation.laajudet.osasuoritustenLaajuuksienSumma("Suorituksen koskioppiaineetyleissivistava/GE osasuoritusten laajuuksien summa 1.0 ei vastaa suorituksen laajuutta 2.0"))
+      }
+    }
+  }
+
 }

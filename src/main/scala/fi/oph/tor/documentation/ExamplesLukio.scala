@@ -232,5 +232,5 @@ object LukioExampleData {
 
   def matematiikka(matematiikka: String) = LukionMatematiikka(oppimäärä = Koodistokoodiviite(koodiarvo = matematiikka, koodistoUri = "oppiainematematiikka"))
 
-  def laajuus(laajuus: Float): Some[Laajuus] = Some(Laajuus(laajuus, Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = "4")))
+  def laajuus(laajuus: Float, yksikkö: String = "4"): Some[Laajuus] = Some(Laajuus(laajuus, Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = yksikkö)))
 }
