@@ -4,11 +4,10 @@ import java.time.LocalDate.{of => date}
 
 import fi.oph.tor.documentation.ExampleData._
 import fi.oph.tor.documentation.KorkeakouluTestdata._
-import fi.oph.tor.documentation.YleissivistavakoulutusExampleData._
+import fi.oph.tor.localization.LocalizedStringImplicits._
 import fi.oph.tor.oppija.MockOppijat
 import fi.oph.tor.organisaatio.MockOrganisaatiot
 import fi.oph.tor.schema._
-import fi.oph.tor.localization.LocalizedStringImplicits._
 
 object ExamplesKorkeakoulu {
 

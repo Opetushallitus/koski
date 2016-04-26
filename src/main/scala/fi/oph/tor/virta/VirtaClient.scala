@@ -10,7 +10,7 @@ import scala.xml.PrettyPrinter
 object VirtaClient extends App {
   val hetulla: VirtaHakuehtoHetu = VirtaHakuehtoHetu("290204A9999")
   val oppijanumerolla = VirtaHakuehtoKansallinenOppijanumero("aed09afd87a8c6d76b76bbd")
-  VirtaClient(VirtaConfig.fromConfig(TorApplication.defaultConfig)).fetchVirtaData(hetulla)
+  VirtaClient(VirtaConfig.fromConfig(TorApplication.defaultConfig)).fetchVirtaData(oppijanumerolla)
 }
 
 case class VirtaClient(config: VirtaConfig) {

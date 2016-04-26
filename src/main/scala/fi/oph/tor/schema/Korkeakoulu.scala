@@ -23,11 +23,24 @@ case class KorkeakoulunOpiskeluoikeus(
 ) extends Opiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
- }
+}
 
 case class KorkeakouluTutkinnonSuoritus(
   koulutusmoduuli: Koulutusmoduuli,
-  tyyppi: Koodistokoodiviite,
+  @KoodistoKoodiarvo("korkeakoulututkinto")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulututkinto", koodistoUri = "suorituksentyyppi"),
+  paikallinenId: Option[String],
+  arviointi: Option[List[Arviointi]],
+  tila: Koodistokoodiviite,
+  vahvistus: Option[Vahvistus],
+  suorituskieli: Option[Koodistokoodiviite],
+  override val osasuoritukset: Option[List[KorkeakoulunOpintosuoritus]]
+) extends Suoritus
+
+case class KorkeakoulunOpintosuoritus(
+  koulutusmoduuli: Koulutusmoduuli,
+  @KoodistoKoodiarvo("korkeakoulunopintosuoritus")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulunopintosuoritus", koodistoUri = "suorituksentyyppi"),
   paikallinenId: Option[String],
   arviointi: Option[List[Arviointi]],
   tila: Koodistokoodiviite,
