@@ -3,7 +3,8 @@ package fi.oph.tor.schema
 import java.time.LocalDate
 
 import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems}
-import fi.oph.tor.localization.LocalizedStringImplicits._
+import fi.oph.tor.localization.LocalizedString
+import fi.oph.tor.localization.LocalizedString.{finnish, concat}
 
 @Description("Lukion opiskeluoikeus")
 case class LukionOpiskeluoikeus(
@@ -20,7 +21,7 @@ case class LukionOpiskeluoikeus(
   tila: Option[YleissivistäväOpiskeluoikeudenTila],
   läsnäolotiedot: Option[Läsnäolotiedot],
   @KoodistoKoodiarvo("lukiokoulutus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukiokoulutus", Some("Lukiokoulutus"), "opiskeluoikeudentyyppi", None)
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukiokoulutus", "opiskeluoikeudentyyppi")
 ) extends Opiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
@@ -155,3 +156,9 @@ case class LukionMatematiikka(
 ) extends LukionOppiaine with KoodistostaLöytyväKoulutusmoduuli {
   override def description = oppimäärä.description
 }
+
+case class LaajuusKursseissa(
+  arvo: Float,
+  @KoodistoKoodiarvo("4")
+  yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = "4", nimi = Some(finnish("kurssia")))
+) extends Laajuus

@@ -3,7 +3,6 @@ package fi.oph.tor.schema
 import java.time.LocalDate
 
 import fi.oph.scalaschema.annotation.Description
-import fi.oph.tor.localization.LocalizedStringImplicits._
 
 trait Oppiaineensuoritus extends Suoritus {
   // Oppiaineen suorituksella ei ole erillistä vahvistusta - todistuksen vahvistus riittää
@@ -27,18 +26,6 @@ trait YleissivistavaOppiaine extends KoodistostaLöytyväKoulutusmoduuli {
   def tunniste: Koodistokoodiviite
   def pakollinen: Boolean
 }
-
-case class LaajuusKursseissa(
-  arvo: Float,
-  @KoodistoKoodiarvo("4")
-  yksikkö: Koodistokoodiviite
-) extends Laajuus
-
-case class LaajuusVuosiviikkotunneissa(
-  arvo: Float,
-  @KoodistoKoodiarvo("3")
-  yksikkö: Koodistokoodiviite = Koodistokoodiviite("3", Some("Vuosiviikkotuntia"), "opintojenlaajuusyksikko")
-) extends Laajuus
 
 case class YleissivistävänkoulutuksenArviointi(
   @KoodistoUri("arviointiasteikkoyleissivistava")

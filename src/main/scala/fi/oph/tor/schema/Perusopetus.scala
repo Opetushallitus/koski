@@ -3,8 +3,8 @@ package fi.oph.tor.schema
 import java.time.LocalDate
 
 import fi.oph.scalaschema.annotation.Description
-import fi.oph.tor.localization.LocalizedStringImplicits._
-import fi.oph.tor.localization.LocalizedString._
+import fi.oph.tor.localization.LocalizedString
+import fi.oph.tor.localization.LocalizedString.{finnish, concat}
 
 @Description("Perusopetuksen opiskeluoikeus")
 case class PerusopetuksenOpiskeluoikeus(
@@ -20,7 +20,7 @@ case class PerusopetuksenOpiskeluoikeus(
   tila: Option[YleissivistäväOpiskeluoikeudenTila],
   läsnäolotiedot: Option[Läsnäolotiedot],
   @KoodistoKoodiarvo("perusopetus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetus", Some("Perusopetus"), "opiskeluoikeudentyyppi", None)
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetus", "opiskeluoikeudentyyppi")
 ) extends Opiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
@@ -112,3 +112,9 @@ case class PeruskoulunVierasTaiToinenKotimainenKieli(
 ) extends PerusopetuksenOppiaine {
   override def description = concat(nimi, ", ", kieli)
 }
+
+case class LaajuusVuosiviikkotunneissa(
+  arvo: Float,
+  @KoodistoKoodiarvo("3")
+  yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "3", nimi = Some(finnish("Vuosiviikkotuntia")), koodistoUri = "opintojenlaajuusyksikko")
+) extends Laajuus
