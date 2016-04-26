@@ -17,6 +17,6 @@ object OrganisaatioMockDataUpdater extends App {
 
   def updateMockDataForOrganisaatio(oid: String, organisaatioPalvelu: JsonOrganisaatioRepository): Unit = {
     val tulos = organisaatioPalvelu.fetch(oid)
-    Json.writeFile(MockOrganisaatioRepository.filename(oid), tulos)
+    Json.writeFile(MockOrganisaatioRepository.hierarchyFilename(oid), tulos)
   }
 }

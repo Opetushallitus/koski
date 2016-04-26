@@ -1,0 +1,72 @@
+{
+  "numHits": 3,
+  "organisaatiot": [
+    {
+      "oid": "1.2.246.562.10.32554715246",
+      "alkuPvm": 631144800000,
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "1.2.246.562.10.32554715246/1.2.246.562.10.00000000001",
+      "ytunnus": "0190140-9",
+      "toimipistekoodi": "",
+      "match": true,
+      "nimi": {
+        "fi": "TYRNÄVÄN KUNTA"
+      },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
+      "kotipaikkaUri": "kunta_859",
+      "children": [],
+      "organisaatiotyypit": [
+        "KOULUTUSTOIMIJA"
+      ],
+      "aliOrganisaatioMaara": 5
+    },
+    {
+      "oid": "1.2.246.562.10.17131065538",
+      "alkuPvm": 631144800000,
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "1.2.246.562.10.17131065538/1.2.246.562.10.00000000001",
+      "ytunnus": "0190100-3",
+      "toimipistekoodi": "",
+      "match": true,
+      "nimi": {
+        "fi": "TAIVALKOSKEN KUNTA"
+      },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
+      "kotipaikkaUri": "kunta_832",
+      "children": [],
+      "organisaatiotyypit": [
+        "KOULUTUSTOIMIJA"
+      ],
+      "aliOrganisaatioMaara": 4
+    },
+    {
+      "oid": "1.2.246.562.10.39218317368",
+      "alkuPvm": 725839200000,
+      "parentOid": "1.2.246.562.10.53814745062",
+      "parentOidPath": "1.2.246.562.10.39218317368/1.2.246.562.10.53814745062/1.2.246.562.10.00000000001",
+      "oppilaitosKoodi": "01901",
+      "oppilaitostyyppi": "oppilaitostyyppi_42#1",
+      "toimipistekoodi": "01901",
+      "match": true,
+      "nimi": {
+        "fi": "Helsingin yliopisto",
+        "sv": "Helsingfors universitet",
+        "en": "University of Helsinki"
+      },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1",
+        "oppilaitoksenopetuskieli_2#1"
+      ],
+      "kotipaikkaUri": "kunta_091",
+      "children": [],
+      "organisaatiotyypit": [
+        "OPPILAITOS"
+      ],
+      "aliOrganisaatioMaara": 13
+    }
+  ]
+}

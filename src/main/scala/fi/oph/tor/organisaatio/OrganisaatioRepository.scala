@@ -25,6 +25,7 @@ trait OrganisaatioRepository {
     }
     flatten(List(hierarkia)).map(_.oid).toSet
   }
+  def search(searchTerm: String): List[OrganisaatioWithOid]
 }
 
 object OrganisaatioRepository {
@@ -53,12 +54,19 @@ abstract class JsonOrganisaatioRepository(koodisto: KoodistoViitePalvelu) extend
     OrganisaatioHierarkia(org.oid, oppilaitosnumero, LocalizedString.sanitizeRequired(org.nimi, org.oid), org.organisaatiotyypit, org.children.map(convertOrganisaatio))
   }
 
+  def search(searchTerm: String): List[OrganisaatioWithOid] = fetchSearch(searchTerm).organisaatiot.map(convertOrganisaatio).map(_.toOrganisaatio)
+
   def fetch(oid: String): OrganisaatioHakuTulos
+  def fetchSearch(searchTerm: String): OrganisaatioHakuTulos
 }
 
 class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu) extends JsonOrganisaatioRepository(koodisto) {
   def fetch(oid: String): OrganisaatioHakuTulos = {
     runTask(http("/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=false&oid=" + oid)(Http.parseJson[OrganisaatioHakuTulos]))
+  }
+  def fetchSearch(searchTerm: String): OrganisaatioHakuTulos = {
+    // TODO: URI encoding of searchTerm
+    runTask(http("/organisaatio-service/rest/organisaatio/v2/hae?aktiiviset=true&lakkautetut=false&searchStr=" + searchTerm)(Http.parseJson[OrganisaatioHakuTulos]))
   }
 }
 

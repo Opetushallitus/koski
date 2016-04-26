@@ -2,7 +2,7 @@ package fi.oph.tor.organisaatio
 
 import fi.oph.tor.json.Json
 import fi.oph.tor.koodisto.KoodistoViitePalvelu
-import fi.oph.tor.organisaatio.MockOrganisaatioRepository.filename
+import fi.oph.tor.organisaatio.MockOrganisaatioRepository._
 
 // Testeissä käytetyt organisaatio-oidit
 object MockOrganisaatiot {
@@ -27,14 +27,23 @@ object MockOrganisaatiot {
 
 class MockOrganisaatioRepository(koodisto: KoodistoViitePalvelu) extends JsonOrganisaatioRepository(koodisto) {
   override def fetch(oid: String) = {
-    Json.readFileIfExists(filename(oid))
+    Json.readFileIfExists(hierarchyFilename(oid))
+      .map(json => Json.fromJValue[OrganisaatioHakuTulos](json))
+      .getOrElse(OrganisaatioHakuTulos(Nil))
+  }
+
+  override def fetchSearch(searchTerm: String) = {
+    Json.readFileIfExists(searchFilename(searchTerm))
       .map(json => Json.fromJValue[OrganisaatioHakuTulos](json))
       .getOrElse(OrganisaatioHakuTulos(Nil))
   }
 }
 
 object MockOrganisaatioRepository {
-  def filename(oid: String): String = {
+  def hierarchyFilename(oid: String): String = {
     "src/main/resources/mockdata/organisaatio/hierarkia/" + oid + ".json"
+  }
+  def searchFilename(oid: String): String = {
+    "src/main/resources/mockdata/organisaatio/search/" + oid + ".json"
   }
 }

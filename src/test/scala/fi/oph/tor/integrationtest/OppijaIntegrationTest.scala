@@ -1,12 +1,8 @@
 package fi.oph.tor.integrationtest
 
-import fi.oph.tor.http.{BasicAuthentication, HttpSpecification}
 import fi.oph.tor.json.Json
-import fi.oph.tor.schema.{TaydellisetHenkilötiedot, Oppija}
+import fi.oph.tor.schema.{Oppija, TaydellisetHenkilötiedot}
 import org.scalatest.{FreeSpec, Matchers, Tag}
-
-
-object TorDevEnvironment extends Tag("tordev")
 
 class OppijaIntegrationTest extends FreeSpec with Matchers with TordevHttpSpecification {
   val testOid = "1.2.246.562.24.51633620848"
@@ -21,15 +17,4 @@ class OppijaIntegrationTest extends FreeSpec with Matchers with TordevHttpSpecif
       henkilö.äidinkieli.get.koodiarvo should equal("FI")
     }
   }
-}
-
-trait TordevHttpSpecification extends HttpSpecification {
-  private def requiredEnv(name: String) = util.Properties.envOrNone(name).getOrElse(throw new IllegalStateException("System property " + name + " missing"))
-
-  override def baseUrl = "http://tordev.tor.oph.reaktor.fi/tor"
-
-  lazy val username = requiredEnv("TOR_USER")
-  lazy val password = requiredEnv("TOR_PASS")
-
-  def authHeaders = Map(BasicAuthentication.basicAuthHeader(username, password))
 }

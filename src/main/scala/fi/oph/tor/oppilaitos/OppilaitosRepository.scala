@@ -1,7 +1,7 @@
 package fi.oph.tor.oppilaitos
 
 import fi.oph.tor.organisaatio.{OrganisaatioRepository, OrganisaatioHierarkia}
-import fi.oph.tor.schema.OidOrganisaatio
+import fi.oph.tor.schema.{Koodistokoodiviite, Oppilaitos, OidOrganisaatio}
 import fi.oph.tor.toruser.TorUser
 
 class OppilaitosRepository(organisatioRepository: OrganisaatioRepository) {
@@ -15,6 +15,14 @@ class OppilaitosRepository(organisatioRepository: OrganisaatioRepository) {
       .filter(org => org.organisaatiotyypit.contains("OPPILAITOS") && org.nimi.get("fi").toLowerCase.contains(query.toLowerCase))
       .map(toOppilaitos)
       .toList
+  }
+
+  // Haetaan 5-numeroisella oppilaitosnumerolla (TK-koodi)
+  def findByOppilaitosnumero(numero: String): Option[Oppilaitos] = {
+    organisatioRepository.search(numero).flatMap {
+      case o@Oppilaitos(_, Some(Koodistokoodiviite(koodiarvo, _, _, _, _)), _) if koodiarvo == numero => Some(o)
+      case _ => None
+    }.headOption
   }
 
   private def toOppilaitos(org: OrganisaatioHierarkia) = OidOrganisaatio(org.oid, Some(org.nimi))
