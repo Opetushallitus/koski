@@ -6,7 +6,7 @@ import fi.oph.scalaschema.annotation.{MinValue, Description}
 
 trait Koulutusmoduuli extends Localizable {
   def tunniste: KoodiViite
-  def laajuus: Option[Laajuus] = None
+  def laajuus: Option[Laajuus]
   def nimi: LocalizedString
   def description: LocalizedString = nimi
 }
@@ -27,11 +27,11 @@ trait PaikallinenKoulutusmoduuli extends Koulutusmoduuli {
 }
 
 @Description("Tutkinnon tai tutkinnon osan laajuus. Koostuu opintojen laajuuden arvosta ja yksiköstä")
-case class Laajuus(
+trait Laajuus {
   @Description("Opintojen laajuuden arvo")
   @MinValue(0)
-  arvo: Float,
+  def arvo: Float
   @Description("Opintojen laajuuden yksikkö")
   @KoodistoUri("opintojenlaajuusyksikko")
-  yksikkö: Koodistokoodiviite
-)
+  def yksikkö: Koodistokoodiviite
+}

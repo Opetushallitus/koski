@@ -7,13 +7,6 @@ import fi.oph.tor.localization.LocalizedStringImplicits._
 object YleissivistavakoulutusExampleData {
   implicit def int2String(int: Int) = int.toString
 
-  def oppiaine(aine: String, laajuus: Option[Laajuus] = None) = MuuOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), laajuus = laajuus)
-  def äidinkieli(kieli: String) = AidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"))
-  def kieli(oppiaine: String, kieli: String) = VierasTaiToinenKotimainenKieli(
-    tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),
-    kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
-  def uskonto(uskonto: String) = Uskonto(uskonto = Koodistokoodiviite(koodiarvo = uskonto, koodistoUri = "oppiaineuskonto"))
-
   def arviointi(arvosana: String): Some[List[YleissivistävänkoulutuksenArviointi]] = {
     Some(List(YleissivistävänkoulutuksenArviointi(arvosana.toString)))
   }

@@ -85,10 +85,10 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
 
   private def validateLaajuus(suoritus: Suoritus): HttpStatus = {
     suoritus.koulutusmoduuli.laajuus match {
-      case Some(Laajuus(laajuus, yksikkö)) =>
+      case Some(laajuus: Laajuus) =>
         val yksikköValidaatio = HttpStatus.fold(suoritus.osasuoritusLista.map { case osasuoritus =>
           osasuoritus.koulutusmoduuli.laajuus match {
-            case Some(Laajuus(_, osasuoritusYksikkö)) if osasuoritusYksikkö != yksikkö =>
+            case Some(osasuorituksenLaajuus: Laajuus) if laajuus.yksikkö != osasuorituksenLaajuus.yksikkö =>
               TorErrorCategory.badRequest.validation.laajudet.osasuorituksellaEriLaajuusyksikkö("Osasuorituksella " + suorituksenTunniste(osasuoritus) + " eri laajuuden yksikkö kuin suorituksella " + suorituksenTunniste(suoritus))
             case _ => HttpStatus.ok
           }
@@ -103,7 +103,7 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
               case summa if summa == laajuus =>
                 HttpStatus.ok
               case summa =>
-                TorErrorCategory.badRequest.validation.laajudet.osasuoritustenLaajuuksienSumma("Suorituksen " + suorituksenTunniste(suoritus) + " osasuoritusten laajuuksien summa " + summa + " ei vastaa suorituksen laajuutta " + laajuus)
+                TorErrorCategory.badRequest.validation.laajudet.osasuoritustenLaajuuksienSumma("Suorituksen " + suorituksenTunniste(suoritus) + " osasuoritusten laajuuksien summa " + summa + " ei vastaa suorituksen laajuutta " + laajuus.arvo)
             }
         }
         })

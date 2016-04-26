@@ -3,7 +3,7 @@ package fi.oph.tor.documentation
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation.Description
 import fi.oph.tor.json.Json
-import fi.oph.tor.schema.{KoodistoUri, OksaUri, ReadOnly}
+import fi.oph.tor.schema.{KoodistoKoodiarvo, KoodistoUri, OksaUri, ReadOnly}
 
 import scala.xml.Elem
 
@@ -73,6 +73,7 @@ object SchemaToJsonHtml {
         case Description(desc) => Some(<span class="description">{desc}</span>)
         case ReadOnly(desc) => Some(<span class="readonly">{desc}</span>)
         case k: KoodistoUri =>Some(<span class="koodisto">Koodisto: {k.asLink}</span>)
+        case k: KoodistoKoodiarvo =>Some(<span class="koodiarvo">Hyväksytty koodiarvo: {k.arvo}</span>)
         case o: OksaUri => Some(<span class="oksa">Oksa: {o.asLink}</span>)
         case _ => None
       }

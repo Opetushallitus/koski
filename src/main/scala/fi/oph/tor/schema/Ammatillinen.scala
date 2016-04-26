@@ -3,6 +3,7 @@ package fi.oph.tor.schema
 import java.time.LocalDate
 import fi.oph.tor.localization.LocalizedString
 import fi.oph.scalaschema.annotation.{MaxItems, MinItems, Description}
+import fi.oph.tor.localization.LocalizedString.finnish
 
 @Description("Ammatillisen koulutuksen opiskeluoikeus")
 case class AmmatillinenOpiskeluoikeus(
@@ -104,29 +105,34 @@ case class AmmatillinenTutkintoKoulutus(
  @OksaUri("tmpOKSAID560", "tutkinto")
  tunniste: Koodistokoodiviite,
  perusteenDiaarinumero: Option[String]
-) extends KoodistostaLöytyväKoulutusmoduuli with EPerusteistaLöytyväKoulutusmoduuli
+) extends KoodistostaLöytyväKoulutusmoduuli with EPerusteistaLöytyväKoulutusmoduuli {
+  override def laajuus = None
+}
 
-sealed trait AmmatillisenTutkinnonOsa extends Koulutusmoduuli
-  @Description("Opetussuunnitelmaan kuuluva tutkinnon osa")
-  case class OpsTutkinnonosa(
-    @Description("Tutkinnon osan kansallinen koodi")
-    @KoodistoUri("tutkinnonosat")
-    tunniste: Koodistokoodiviite,
-    @Description("Onko pakollinen osa tutkinnossa")
-    pakollinen: Boolean,
-    override val laajuus: Option[Laajuus],
-    paikallinenKoodi: Option[Paikallinenkoodi] = None,
-    kuvaus: Option[LocalizedString] = None
-  ) extends AmmatillisenTutkinnonOsa with KoodistostaLöytyväKoulutusmoduuli
+sealed trait AmmatillisenTutkinnonOsa extends Koulutusmoduuli {
+  def laajuus: Option[LaajuusOsaamispisteissä]
+}
 
-  @Description("Paikallinen tutkinnon osa")
-  case class PaikallinenTutkinnonosa(
-    tunniste: Paikallinenkoodi,
-    kuvaus: LocalizedString,
-    @Description("Onko pakollinen osa tutkinnossa")
-    pakollinen: Boolean,
-    override val laajuus: Option[Laajuus]
-  ) extends AmmatillisenTutkinnonOsa with PaikallinenKoulutusmoduuli
+@Description("Opetussuunnitelmaan kuuluva tutkinnon osa")
+case class OpsTutkinnonosa(
+  @Description("Tutkinnon osan kansallinen koodi")
+  @KoodistoUri("tutkinnonosat")
+  tunniste: Koodistokoodiviite,
+  @Description("Onko pakollinen osa tutkinnossa")
+  pakollinen: Boolean,
+  override val laajuus: Option[LaajuusOsaamispisteissä],
+  paikallinenKoodi: Option[Paikallinenkoodi] = None,
+  kuvaus: Option[LocalizedString] = None
+) extends AmmatillisenTutkinnonOsa with KoodistostaLöytyväKoulutusmoduuli
+
+@Description("Paikallinen tutkinnon osa")
+case class PaikallinenTutkinnonosa(
+  tunniste: Paikallinenkoodi,
+  kuvaus: LocalizedString,
+  @Description("Onko pakollinen osa tutkinnossa")
+  pakollinen: Boolean,
+  override val laajuus: Option[LaajuusOsaamispisteissä]
+) extends AmmatillisenTutkinnonOsa with PaikallinenKoulutusmoduuli
 
 case class AmmatillisenTutkinnonOsanLisätieto(
   @Description("Lisätiedon tyyppi kooditettuna")
@@ -226,3 +232,9 @@ case class Hojks(
   @KoodistoUri("opetusryhma")
   opetusryhmä: Option[Koodistokoodiviite]
 )
+
+case class LaajuusOsaamispisteissä(
+  arvo: Float,
+  @KoodistoKoodiarvo("6")
+  yksikkö: Koodistokoodiviite = Koodistokoodiviite("6", Some(finnish("Osaamispistettä")), "opintojenlaajuusyksikko")
+) extends Laajuus

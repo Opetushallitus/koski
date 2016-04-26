@@ -76,7 +76,6 @@ object AmmatillinenExampleData {
   lazy val stadinAmmattiopisto: Oppilaitos = Oppilaitos("1.2.246.562.10.52251087186", Some(Koodistokoodiviite("10105", None, "oppilaitosnumero", None)), Some("Stadin ammattiopisto"))
   lazy val toimipiste: OidOrganisaatio = OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))
   lazy val tutkintotoimikunta: Organisaatio = Tutkintotoimikunta("Autokorjaamoalan tutkintotoimikunta", 8406)
-  lazy val osaamispistettä = Koodistokoodiviite("6", Some("osaamispistettä"), "opintojenlaajuusyksikko", Some(1))
   lazy val lähdeWinnova = Koodistokoodiviite("winnova", Some("Winnova"), "lahdejarjestelma", Some(1))
   lazy val hyväksiluku = Hyväksiluku(
     OpsTutkinnonosa(Koodistokoodiviite("100238", Some("Asennushitsaus"), "tutkinnonosat", Some(1)), true, None),
@@ -173,7 +172,7 @@ object ExamplesAmmatillinen {
     tutkinto = autoalanPerustutkinto.copy(suoritustapa = Some(suoritustapaOps)),
     osat = Some(List(
       AmmatillisenTutkinnonOsanSuoritus(
-        koulutusmoduuli = OpsTutkinnonosa(Koodistokoodiviite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Some(Laajuus(11, osaamispistettä))),
+        koulutusmoduuli = OpsTutkinnonosa(Koodistokoodiviite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Some(LaajuusOsaamispisteissä(11))),
         lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(
           Koodistokoodiviite("mukautettu", "ammatillisentutkinnonosanlisatieto"),
           "Tutkinnon osan ammattitaitovaatimuksia ja osaamisen arviointi on mukautettu (ja/tai niistä on poikettu) ammatillisesta peruskoulutuksesta annetun lain\n(630/1998, muutos 246/2015) 19 a (ja/tai 21) §:n perusteella"))),
@@ -236,7 +235,7 @@ object ExamplesAmmatillinen {
 
           osasuoritukset = Some(List(
             AmmatillisenTutkinnonOsanSuoritus(
-              koulutusmoduuli = OpsTutkinnonosa(Koodistokoodiviite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Some(Laajuus(11, osaamispistettä))),
+              koulutusmoduuli = OpsTutkinnonosa(Koodistokoodiviite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Some(LaajuusOsaamispisteissä(11))),
               hyväksiluku = None,
               näyttö = None,
               lisätiedot = None,
@@ -354,12 +353,12 @@ object AmmatillinenTodistusExample {
   )
 
   def tutkinnonOsanSuoritus(koodi: String, nimi: String, arvosana: Koodistokoodiviite, laajuus: Float): AmmatillisenTutkinnonOsanSuoritus = {
-    val osa: OpsTutkinnonosa = OpsTutkinnonosa(Koodistokoodiviite(koodi, Some(nimi), "tutkinnonosat", Some(1)), true, Some(Laajuus(laajuus, osaamispistettä)))
+    val osa: OpsTutkinnonosa = OpsTutkinnonosa(Koodistokoodiviite(koodi, Some(nimi), "tutkinnonosat", Some(1)), true, Some(LaajuusOsaamispisteissä(laajuus)))
     tutkonnonOsanSuoritus(arvosana, osa)
   }
 
   def paikallisenTutkinnonOsanSuoritus(koodi: String, nimi: String, arvosana: Koodistokoodiviite, laajuus: Float): AmmatillisenTutkinnonOsanSuoritus = {
-    val osa: PaikallinenTutkinnonosa = PaikallinenTutkinnonosa(Paikallinenkoodi(koodi, nimi, "paikallinen"), nimi, false, Some(Laajuus(laajuus, osaamispistettä)))
+    val osa: PaikallinenTutkinnonosa = PaikallinenTutkinnonosa(Paikallinenkoodi(koodi, nimi, "paikallinen"), nimi, false, Some(LaajuusOsaamispisteissä(laajuus)))
     tutkonnonOsanSuoritus(arvosana, osa)
   }
 

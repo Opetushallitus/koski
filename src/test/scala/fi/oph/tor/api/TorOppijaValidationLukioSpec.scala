@@ -1,8 +1,7 @@
 package fi.oph.tor.api
 
+import fi.oph.tor.documentation.LukioExampleData
 import fi.oph.tor.documentation.LukioExampleData._
-import fi.oph.tor.documentation.YleissivistavakoulutusExampleData.oppiaine
-import fi.oph.tor.documentation.{LukioExampleData, YleissivistavakoulutusExampleData, PerusopetusExampleData}
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.schema._
 
@@ -16,7 +15,7 @@ class TorOppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskelu
   ))
 
   describe("Laajuudet") {
-    it("Kurssin laajuusyksikkö eri kuin oppiaineella -> HTTP 400") {
+    it("""Kurssin laajuusyksikkö muu kuin "kurssia" -> HTTP 400""") {
       val oo: LukionOpiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = defaultOpiskeluoikeus.suoritukset.map(_.copy(
         osasuoritukset = Some(List(suoritus(oppiaine("GE", laajuus(1.0f, "4"))).copy(
           osasuoritukset = Some(List(
@@ -25,14 +24,14 @@ class TorOppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskelu
         )))
       )))
       putOpiskeluOikeus(oo) {
-        verifyResponseStatus(400, TorErrorCategory.badRequest.validation.laajudet.osasuorituksellaEriLaajuusyksikkö("Osasuorituksella lukionkurssit/GE1 eri laajuuden yksikkö kuin suorituksella koskioppiaineetyleissivistava/GE"))
+        verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema(".*instance value .+ not found.*".r))
       }
     }
     it("Kurssien laajuuksien summa ei täsmää -> HTTP 400") {
       val oo: LukionOpiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = defaultOpiskeluoikeus.suoritukset.map(_.copy(
-        osasuoritukset = Some(List(suoritus(oppiaine("GE", laajuus(2.0f, "5"))).copy(
+        osasuoritukset = Some(List(suoritus(oppiaine("GE", laajuus(2.0f, "4"))).copy(
           osasuoritukset = Some(List(
-            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = laajuus(1.0f, "5")))
+            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = laajuus(1.0f, "4")))
           ))
         )))
       )))

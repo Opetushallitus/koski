@@ -13,7 +13,8 @@ object Deserializers {
     HenkilöDeserialializer,
     JärjestämismuotoDeserializer,
     OrganisaatioDeserializer,
-    YleissivistavaOppiaineDeserializer,
+    LukionOppiaineDeserializer,
+    PerusopetuksenOppiaineDeserializer,
     LukionKurssiDeserializer
   )
 }
@@ -47,17 +48,31 @@ object SuoritusDeserializer extends Deserializer[Suoritus] {
   }
 }
 
-object YleissivistavaOppiaineDeserializer extends Deserializer[YleissivistavaOppiaine] {
-  private val classes = List(classOf[PerusopetuksenOppiaine], classOf[LukionOppiaine])
+object LukionOppiaineDeserializer extends Deserializer[LukionOppiaine] {
+  private val LukionOppiaineClass = classOf[LukionOppiaine]
 
-  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), YleissivistavaOppiaine] = {
-    case (TypeInfo(c, _), json) if classes.contains(c) =>
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), LukionOppiaine] = {
+    case (TypeInfo(LukionOppiaineClass, _), json) =>
       json match {
         case moduuli: JObject if moduuli \ "tunniste" \ "koodiarvo" == JString("AI") => moduuli.extract[AidinkieliJaKirjallisuus]
         case moduuli: JObject if moduuli \ "tunniste" \ "koodiarvo" == JString("KT") => moduuli.extract[Uskonto]
         case moduuli: JObject if (moduuli \ "kieli").isInstanceOf[JObject] => moduuli.extract[VierasTaiToinenKotimainenKieli]
         case moduuli: JObject if (moduuli \ "oppimäärä").isInstanceOf[JObject] => moduuli.extract[LukionMatematiikka]
         case moduuli: JObject => moduuli.extract[MuuOppiaine]
+      }
+  }
+}
+
+object PerusopetuksenOppiaineDeserializer extends Deserializer[PerusopetuksenOppiaine] {
+  private val PerusopetuksenOppiaineClass = classOf[PerusopetuksenOppiaine]
+
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), PerusopetuksenOppiaine] = {
+    case (TypeInfo(PerusopetuksenOppiaineClass, _), json) =>
+      json match {
+        case moduuli: JObject if moduuli \ "tunniste" \ "koodiarvo" == JString("AI") => moduuli.extract[PeruskoulunAidinkieliJaKirjallisuus]
+        case moduuli: JObject if moduuli \ "tunniste" \ "koodiarvo" == JString("KT") => moduuli.extract[PeruskoulunUskonto]
+        case moduuli: JObject if (moduuli \ "kieli").isInstanceOf[JObject] => moduuli.extract[PeruskoulunVierasTaiToinenKotimainenKieli]
+        case moduuli: JObject => moduuli.extract[MuuPeruskoulunOppiaine]
       }
   }
 }

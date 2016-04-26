@@ -291,7 +291,7 @@ class TorOppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatil
 
   lazy val stadinOpisto: OidOrganisaatio = OidOrganisaatio(MockOrganisaatiot.stadinAmmattiopisto)
 
-  lazy val laajuus = Laajuus(11, Koodistokoodiviite("6", "opintojenlaajuusyksikko"))
+  lazy val laajuus = LaajuusOsaamispisteissä(11)
 
   lazy val tutkinnonOsa: OpsTutkinnonosa = OpsTutkinnonosa(Koodistokoodiviite("100023", "tutkinnonosat"), true, Some(laajuus), None, None)
 

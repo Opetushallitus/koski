@@ -25,7 +25,7 @@ class TorOppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusope
       val oo: PerusopetuksenOpiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = defaultOpiskeluoikeus.suoritukset.map(_.copy(
         tila = tilaKesken,
         vahvistus = None,
-        osasuoritukset = Some(List(PerusopetusExampleData.suoritus(YleissivistavakoulutusExampleData.oppiaine("GE")).copy(tila = tilaValmis)))
+        osasuoritukset = Some(List(PerusopetusExampleData.suoritus(PerusopetusExampleData.oppiaine("GE")).copy(tila = tilaValmis)))
       )))
       putOpiskeluOikeus(oo) {
         verifyResponseStatus(400, TorErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta koskioppiaineetyleissivistava/GE puuttuu vahvistus, vaikka suorituksen tila on VALMIS"))
