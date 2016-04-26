@@ -1,9 +1,9 @@
 package fi.oph.tor.schema
 
 import java.time.LocalDate
-import fi.oph.tor.localization.LocalizedString._
-import fi.oph.tor.localization.LocalizedStringImplicits._
+
 import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems}
+import fi.oph.tor.localization.LocalizedStringImplicits._
 
 @Description("Lukion opiskeluoikeus")
 case class LukionOpiskeluoikeus(

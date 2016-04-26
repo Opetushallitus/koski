@@ -1,12 +1,15 @@
 package fi.oph.tor.schema
 
-import fi.oph.tor.documentation.{AmmatillinenExampleData, Examples}
+import fi.oph.tor.documentation.{ExamplesKorkeakoulu, AmmatillinenExampleData, Examples}
 import fi.oph.tor.json.Json
 import fi.oph.tor.localization.LocalizedString
 import fi.oph.tor.log.Logging
 import org.scalatest.{FunSpec, Matchers}
 
 class SerializationSpec extends FunSpec with Matchers with Logging {
+
+  val examples = Examples.examples ++ ExamplesKorkeakoulu.examples
+
   describe("Serialization / deserialization") {
     it("Hyväksiluku") {
       val jsonString = Json.write(AmmatillinenExampleData.hyväksiluku)
@@ -15,7 +18,7 @@ class SerializationSpec extends FunSpec with Matchers with Logging {
     }
 
     describe("Examples") {
-      Examples.examples.foreach { example =>
+      examples.foreach { example =>
         it(example.name) {
           val jsonString = Json.write(example.data)
           val oppija = Json.read[Oppija](jsonString)
