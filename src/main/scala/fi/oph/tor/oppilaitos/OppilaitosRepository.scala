@@ -3,6 +3,7 @@ package fi.oph.tor.oppilaitos
 import fi.oph.tor.organisaatio.{OrganisaatioRepository, OrganisaatioHierarkia}
 import fi.oph.tor.schema.{Koodistokoodiviite, Oppilaitos, OidOrganisaatio}
 import fi.oph.tor.toruser.TorUser
+import fi.oph.tor.localization.LocalizedStringImplicits.LocalizedStringFinnishOrdering
 
 class OppilaitosRepository(organisatioRepository: OrganisaatioRepository) {
   def oppilaitokset(implicit context: TorUser): Iterable[OidOrganisaatio] = {
@@ -15,6 +16,7 @@ class OppilaitosRepository(organisatioRepository: OrganisaatioRepository) {
       .filter(org => org.organisaatiotyypit.contains("OPPILAITOS") && org.nimi.get("fi").toLowerCase.contains(query.toLowerCase))
       .map(toOppilaitos)
       .toList
+      .sortBy(_.nimi)
   }
 
   // Haetaan 5-numeroisella oppilaitosnumerolla (TK-koodi)

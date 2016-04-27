@@ -81,4 +81,7 @@ object LocalizedString extends Logging {
 
 object LocalizedStringImplicits {
   implicit def str2localized(string: String): LocalizedString = LocalizedString.finnish(string)
+  implicit object LocalizedStringFinnishOrdering extends Ordering[LocalizedString] {
+    override def compare(x: LocalizedString, y: LocalizedString) = x.get("fi").compareTo(y.get("fi"))
+  }
 }
