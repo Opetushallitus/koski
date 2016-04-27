@@ -7,8 +7,7 @@ import fi.oph.tor.log.Logging
 import org.scalatest.{FunSpec, Matchers}
 
 class SerializationSpec extends FunSpec with Matchers with Logging {
-
-  val examples = Examples.examples ++ ExamplesKorkeakoulu.examples
+  val examples = Examples.examples
 
   describe("Serialization / deserialization") {
     it("Hyväksiluku") {
