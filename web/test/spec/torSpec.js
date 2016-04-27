@@ -287,7 +287,7 @@ describe('TOR', function() {
               .then(addOppija.enterOppilaitos('ammatti'))
               .then(wait.forMilliseconds(500))
               .then(function() {
-                expect(addOppija.oppilaitokset()).to.deep.equal(['Stadin ammattiopisto', 'Omnian ammattiopisto'])
+                expect(addOppija.oppilaitokset()).to.deep.equal(['Omnian ammattiopisto', 'Stadin ammattiopisto'])
               })
           })
         })
