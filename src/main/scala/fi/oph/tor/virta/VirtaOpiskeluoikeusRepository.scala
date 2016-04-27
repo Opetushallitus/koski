@@ -1,11 +1,12 @@
 package fi.oph.tor.virta
 
 import java.time.LocalDate
-
+import java.util.Random
 import com.typesafe.config.Config
 import fi.oph.tor.http.{TorErrorCategory, HttpStatus}
 import fi.oph.tor.opiskeluoikeus.{CreateOrUpdateResult, OpiskeluOikeusRepository}
 import fi.oph.tor.oppija.{OppijaRepository, PossiblyUnverifiedOppijaOid}
+import fi.oph.tor.oppilaitos.OppilaitosRepository
 import fi.oph.tor.schema.Henkilö._
 import fi.oph.tor.schema._
 import fi.oph.tor.tor.QueryFilter
@@ -14,7 +15,7 @@ import fi.oph.tor.util.Files
 import rx.lang.scala.Observable
 
 object VirtaOpiskeluoikeusRepository {
-  def apply(config: Config, oppijaRepository: OppijaRepository) = new MockVirtaPalvelu(oppijaRepository)
+  def apply(config: Config, oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository) = new MockVirtaPalvelu(oppijaRepository, oppilaitosRepository)
 }
 
 trait VirtaOpiskeluoikeusRepository extends OpiskeluOikeusRepository {
@@ -36,18 +37,18 @@ class RemoteVirtaPalvelu(config: Config, val oppijaRepository: OppijaRepository)
 }
 
 
-class MockVirtaPalvelu(val oppijaRepository: OppijaRepository) extends VirtaOpiskeluoikeusRepository {
+class MockVirtaPalvelu(val oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository) extends VirtaOpiskeluoikeusRepository {
   override def findByHetu(hetu: String): List[KorkeakoulunOpiskeluoikeus] = {
     Files.asString("src/main/resources/mockdata/virta/" + hetu + ".xml") match {
       case Some(data) => (scala.xml.XML.loadString(data) \\ "Opiskeluoikeus").map { oo =>
           KorkeakoulunOpiskeluoikeus(
-            id = None,
+            id = Some(new Random().nextInt()),
             versionumero = None,
             lähdejärjestelmänId = None, // TODO virta
             alkamispäivä = (oo \ "AlkuPvm").headOption.map(alku => LocalDate.parse(alku.text)),
             arvioituPäättymispäivä = None,
             päättymispäivä = (oo \ "LoppuPvm").headOption.map(loppu => LocalDate.parse(loppu.text)),
-            oppilaitos = (oo \ "Myontaja" \ "Koodi").headOption.map(koodi => Oppilaitos("dummy", Some(Koodistokoodiviite(koodi.text, None, None, koodistoUri = "oppilaitosnumero", None)))).getOrElse(throw new RuntimeException("missing oppilaitos")),
+            oppilaitos = (oo \ "Myontaja" \ "Koodi").headOption.flatMap(koodi => oppilaitosRepository.findByOppilaitosnumero(koodi.text)).getOrElse(throw new RuntimeException("missing oppilaitos")),
             koulutustoimija = None,
             suoritukset = Nil,
             tila = None,
