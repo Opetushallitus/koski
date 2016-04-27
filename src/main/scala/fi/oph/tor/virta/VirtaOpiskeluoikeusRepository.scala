@@ -23,7 +23,7 @@ trait VirtaOpiskeluoikeusRepository extends OpiskeluOikeusRepository {
   def findByHetu(hetu: String): List[KorkeakoulunOpiskeluoikeus]
   def getHetu(oid: String): Option[String] = oppijaRepository.findByOid(oid).map(_.hetu)
 
-  def query(filters: List[QueryFilter])(implicit user: TorUser): Observable[(Oid, List[Opiskeluoikeus])] = Observable.never
+  def query(filters: List[QueryFilter])(implicit user: TorUser): Observable[(Oid, List[Opiskeluoikeus])] = Observable.empty
   def filterOppijat(oppijat: Seq[TaydellisetHenkilötiedot])(implicit user: TorUser): Seq[TaydellisetHenkilötiedot] = oppijat.filter(oppija => !findByHetu(oppija.hetu).isEmpty)
   def findByOppijaOid(oid: String)(implicit user: TorUser): Seq[Opiskeluoikeus] = getHetu(oid).toList.flatMap(hetu => findByHetu(hetu))
   def findById(id: Int)(implicit user: TorUser): Option[(Opiskeluoikeus, String)] = None
