@@ -31,7 +31,7 @@ object ExamplesKorkeakoulu {
     ))
   )
 
-  val examples = List(Example("korkeakoulu - uusi", "Uusi oppija lisätään suorittamaan korkeakoulututkintoa", uusi))
+  val examples = List(Example("korkeakoulu - uusi", "Uusi oppija lisätään suorittamaan korkeakoulututkintoa", uusi, statusCode = 501))
 
 }
 

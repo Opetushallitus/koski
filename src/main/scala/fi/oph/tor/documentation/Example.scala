@@ -2,7 +2,8 @@ package fi.oph.tor.documentation
 
 import fi.oph.tor.localization.LocalizedStringImplicits._
 import fi.oph.tor.schema.{Koodistokoodiviite, Oppija}
-case class Example(name: String, description: String, data: Oppija)
+
+case class Example(name: String, description: String, data: Oppija, statusCode: Int = 200)
 
 object Examples {
   val examples = ExamplesAmmatillinen.examples ++ ExamplesPerusopetus.examples ++ ExamplesLukio.examples ++ ExamplesKorkeakoulu.examples

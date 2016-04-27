@@ -10,7 +10,7 @@ import fi.oph.tor.json.Json
 import fi.oph.tor.log.Logging
 import fi.oph.tor.oppija.PossiblyUnverifiedOppijaOid
 import fi.oph.tor.schema.Henkilö._
-import fi.oph.tor.schema.{Opiskeluoikeus, TaydellisetHenkilötiedot}
+import fi.oph.tor.schema.{KorkeakoulunOpiskeluoikeus, Opiskeluoikeus, TaydellisetHenkilötiedot}
 import fi.oph.tor.tor.{OpiskeluoikeusPäättynytAikaisintaan, OpiskeluoikeusPäättynytViimeistään, QueryFilter, TutkinnonTila}
 import fi.oph.tor.toruser.TorUser
 import fi.oph.tor.util.ReactiveStreamsToRx
@@ -72,12 +72,15 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
   }
 
 
-  override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: Opiskeluoikeus)(implicit user: TorUser): Either[HttpStatus, CreateOrUpdateResult] = {
-    if (!user.hasReadAccess(opiskeluOikeus.oppilaitos)) {
-      Left(TorErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid))
-    } else {
-      doInIsolatedTransaction(db, createOrUpdateAction(oppijaOid, opiskeluOikeus), "Oppijan " + oppijaOid + " opiskeluoikeuden lisäys/muutos")
-    }
+  override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: Opiskeluoikeus)(implicit user: TorUser): Either[HttpStatus, CreateOrUpdateResult] = opiskeluOikeus match {
+    case o: KorkeakoulunOpiskeluoikeus =>
+      Left(TorErrorCategory.notImplemented.readOnly("Korkeakoulutuksen opiskeluoikeuksia ei voi päivittää Koski-järjestelmässä"))
+    case _ =>
+      if (!user.hasReadAccess(opiskeluOikeus.oppilaitos)) {
+        Left(TorErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid))
+      } else {
+        doInIsolatedTransaction(db, createOrUpdateAction(oppijaOid, opiskeluOikeus), "Oppijan " + oppijaOid + " opiskeluoikeuden lisäys/muutos")
+      }
   }
 
   private def findByOppijaOidAction(oid: String)(implicit user: TorUser): dbio.DBIOAction[Seq[OpiskeluOikeusRow], NoStream, Read] = {

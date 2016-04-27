@@ -1,5 +1,6 @@
 package fi.oph.tor.api
 
+import fi.oph.tor.documentation.ExamplesKorkeakoulu
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.json.Json
 import fi.oph.tor.localization.LocalizedString
@@ -268,6 +269,14 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluoikeusTestMethodsAmma
       it("vähintään yksi kieli vaaditaan") {
         putOpiskeluOikeusMerged(Map("tyyppi" -> Map("nimi" -> Map()))) {
           verifyResponseStatus(400, TorErrorCategory.badRequest.validation.jsonSchema(".*object has missing required properties.*".r))
+        }
+      }
+    }
+
+    describe("Korkeakoulun opiskeluoikeus") {
+      it("palautetaan HTTP 501") {
+        putOpiskeluOikeus(ExamplesKorkeakoulu.examples.head.data.opiskeluoikeudet.head) {
+          verifyResponseStatus(501, TorErrorCategory.notImplemented.readOnly("Korkeakoulutuksen opiskeluoikeuksia ei voi päivittää Koski-järjestelmässä"))
         }
       }
     }
