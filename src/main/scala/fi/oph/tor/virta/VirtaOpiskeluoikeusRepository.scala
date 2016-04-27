@@ -27,7 +27,7 @@ trait VirtaOpiskeluoikeusRepository extends OpiskeluOikeusRepository {
   def filterOppijat(oppijat: Seq[TaydellisetHenkilötiedot])(implicit user: TorUser): Seq[TaydellisetHenkilötiedot] = oppijat.filter(oppija => !findByHetu(oppija.hetu).isEmpty)
   def findByOppijaOid(oid: String)(implicit user: TorUser): Seq[Opiskeluoikeus] = getHetu(oid).toList.flatMap(hetu => findByHetu(hetu))
   def findById(id: Int)(implicit user: TorUser): Option[(Opiskeluoikeus, String)] = None
-  def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: Opiskeluoikeus)(implicit user: TorUser): Either[HttpStatus, CreateOrUpdateResult] = Left(TorErrorCategory.badRequest.readOnly("Virta-järjestelmään ei voi päivittää tietoja Koskesta"))
+  def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: Opiskeluoikeus)(implicit user: TorUser): Either[HttpStatus, CreateOrUpdateResult] = Left(TorErrorCategory.notImplemented.readOnly("Virta-järjestelmään ei voi päivittää tietoja Koskesta"))
 }
 
 class RemoteVirtaPalvelu(config: Config, val oppijaRepository: OppijaRepository) extends VirtaOpiskeluoikeusRepository {

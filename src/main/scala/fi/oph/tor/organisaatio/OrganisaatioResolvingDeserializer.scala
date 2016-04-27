@@ -19,7 +19,8 @@ object OrganisaatioResolvingDeserializer extends Deserializer[Organisaatio] with
             case Some(context) => context.organisaatioRepository.getOrganisaatio(o.oid) match {
               case Some(org) if (c.isInstance(org)) => org
               case Some(org) => ContextualExtractor.extractionError(TorErrorCategory.badRequest.validation.organisaatio.vääränTyyppinen("Organisaatio " + o.oid + " ei ole " + c.getSimpleName))
-              case None => ContextualExtractor.extractionError(TorErrorCategory.badRequest.validation.organisaatio.tuntematon("Organisaatiota " + o.oid + " ei löydy organisaatiopalvelusta"))
+              case None =>
+                ContextualExtractor.extractionError(TorErrorCategory.badRequest.validation.organisaatio.tuntematon("Organisaatiota " + o.oid + " ei löydy organisaatiopalvelusta"))
             }
           }
         case org: Organisaatio => org

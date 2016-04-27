@@ -28,5 +28,15 @@
       "kieli" : "FI"
     } ],
     "versio" : 1
+  },
+  {
+    "koodiUri" : "opiskeluoikeudentyyppi_korkeakoulutus",
+    "koodiArvo" : "korkeakoulutus",
+    "metadata" : [ {
+      "nimi" : "Korkeakoulutus",
+      "lyhytNimi" : "Korkeakoulutus",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
   }
 ]

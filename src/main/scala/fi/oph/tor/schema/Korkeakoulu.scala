@@ -14,7 +14,6 @@ case class KorkeakoulunOpiskeluoikeus(
   päättymispäivä: Option[LocalDate],
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OrganisaatioWithOid],
-  @MinItems(1) @MaxItems(1)
   suoritukset: List[KorkeakouluTutkinnonSuoritus],
   tila: Option[KorkeakoulunOpiskeluoikeudenTila],
   läsnäolotiedot: Option[Läsnäolotiedot],

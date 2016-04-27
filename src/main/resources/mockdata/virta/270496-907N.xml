@@ -4,7 +4,7 @@
         <virtaluku:OpiskelijanKaikkiTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
             <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2013/01/29">
                 <virta:Opiskelija avain="H1">
-                    <virta:Henkilotunnus>290204A9999</virta:Henkilotunnus>
+                    <virta:Henkilotunnus>270496-907N</virta:Henkilotunnus>
                     <virta:KansallinenOppijanumero>aed09afd87a8c6d76b76bbd</virta:KansallinenOppijanumero>
                     <virta:Opiskeluoikeudet>
                         <virta:Opiskeluoikeus opiskelijaAvain="H1" avain="O1">

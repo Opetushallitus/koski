@@ -1,0 +1,128 @@
+{
+  "organisaatiot" : [ {
+    "oid" : "1.2.246.562.10.53814745062",
+    "nimi" : {
+      "fi" : "Helsingin Yliopisto"
+    },
+    "organisaatiotyypit" : [ "KOULUTUSTOIMIJA" ],
+    "children" : [ {
+      "oid" : "1.2.246.562.10.39218317368",
+      "nimi" : {
+        "fi" : "Helsingin yliopisto",
+        "sv" : "Helsingfors universitet",
+        "en" : "University of Helsinki"
+      },
+      "oppilaitosKoodi" : "01901",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ {
+        "oid" : "1.2.246.562.10.37753840224",
+        "nimi" : {
+          "fi" : "Helsingin yliopisto, Oikeustieteellinen tiedekunta",
+          "sv" : "Helsingfors universitet, Juridiska fakulteten",
+          "en" : "University of Helsinki, Faculty of Law"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.45501388404",
+        "nimi" : {
+          "fi" : "Helsingin yliopisto, Eläinlääketieteellinen tiedekunta",
+          "sv" : "Helsingfors universitet, Veterinärmedicinska fakulteten",
+          "en" : "University of Helsinki, Faculty of Veterinary Medicine"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.80593660139",
+        "nimi" : {
+          "fi" : "Helsingin yliopisto, Farmasian tiedekunta",
+          "sv" : "Helsingfors universitet, Farmaceutiska fakulteten",
+          "en" : "University of Helsinki, Faculty of Pharmacy"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.94639300915",
+        "nimi" : {
+          "fi" : "Helsingin yliopisto, Matemaattis-luonnontieteellinen tiedekunta",
+          "sv" : "Helsingfors universitet, Matematisk-naturvetenskapliga fakulteten",
+          "en" : "University of Helsinki, Faculty of Science"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.67451633415",
+        "nimi" : {
+          "fi" : "Helsingin yliopisto, Käyttäytymistieteellinen tiedekunta",
+          "sv" : "Helsingfors universitet, Beteendevetenskapliga fakulteten",
+          "en" : "University of Helsinki, Faculty of Behavioural Sciences"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.94997228401",
+        "nimi" : {
+          "fi" : "Helsingin yliopisto, Lääketieteellinen tiedekunta",
+          "sv" : "Helsingfors universitet, Medicinska fakulteten",
+          "en" : "University of Helsinki, Faculty of Medicine"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.73307006806",
+        "nimi" : {
+          "fi" : "Svenska social- och kommunalhögskolan vid Helsingfors universitet",
+          "sv" : "Svenska social- och kommunalhögskolan vid Helsingfors universitet",
+          "en" : "Swedish School of Social Science"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.41941575486",
+        "nimi" : {
+          "fi" : "Helsingin yliopisto, Bio- ja ympäristötieteellinen tiedekunta",
+          "sv" : "Helsingfors universitet, Bio- och miljövetenskapliga fakulteten",
+          "en" : "University of Helsinki, Faculty of Biological and Environmental Sciences"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.61397511793",
+        "nimi" : {
+          "fi" : "Helsingin yliopisto, Humanistinen tiedekunta",
+          "sv" : "Helsingfors universitet, Humanistiska fakulteten",
+          "en" : "University of Helsinki, Faculty of Arts"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.74478323608",
+        "nimi" : {
+          "fi" : "Helsingin yliopisto, Teologinen tiedekunta",
+          "sv" : "Helsingfors universitet, Teologiska fakulteten",
+          "en" : "University of Helsinki, Faculty of Theology"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.80520096209",
+        "nimi" : {
+          "fi" : "Helsingin yliopisto, Valtiotieteellinen tiedekunta",
+          "sv" : "Helsingfors universitet, Statsvetenskapliga fakulteten",
+          "en" : "University of Helsinki, Faculty of Social Sciences"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.445049088710",
+        "nimi" : {
+          "fi" : "Helsingin yliopisto, Maatalous-metsätieteellinen tiedekunta",
+          "sv" : "Helsingfors universitet, Agrikultur-forstvetenskapliga fakulteten",
+          "en" : "University of Helsinki, Faculty of Agriculture and Forestry"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      } ]
+    } ]
+  } ]
+}

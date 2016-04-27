@@ -9,7 +9,7 @@ import fi.oph.tor.jettylauncher.SharedJetty
 import fi.oph.tor.json.Json
 import fi.oph.tor.log.AuditLogTester
 import fi.oph.tor.oppija.MockOppijat
-import fi.oph.tor.schema.{AmmatillinenOpiskeluoikeus, Opiskeluoikeus, TaydellisetHenkilötiedot}
+import fi.oph.tor.schema.{Opiskeluoikeus, TaydellisetHenkilötiedot}
 import fi.oph.tor.toruser.MockUsers
 import org.scalatest.FunSpec
 

@@ -1,5 +1,7 @@
 package fi.oph.tor.http
 
+import fi.oph.tor.http.TorErrorCategory.badRequest._
+
 object TorErrorCategory {
   val children = List(ok, badRequest, unauthorized, forbidden, notFound, conflict, unsupportedMediaType, internalError)
 
@@ -77,7 +79,6 @@ object TorErrorCategory {
       }
       val laajudet = new Laajuudet
     }
-    val readOnly = subcategory("readOnly", "Opiskeluoikeuden tietoja ei voi muuttaa")
     val validation = new Validation
   }
 
@@ -107,4 +108,8 @@ object TorErrorCategory {
   }
 
   object internalError extends ErrorCategory("internalError", 500, "Internal server error")
+
+  object notImplemented extends ErrorCategory("notImplemented", 501, "Not implemented") {
+    val readOnly = subcategory("readOnly", "Opiskeluoikeuden tietoja ei voi muuttaa")
+  }
 }
