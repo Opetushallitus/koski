@@ -11,13 +11,14 @@ import fi.oph.tor.fixture.{TorDatabaseFixtureCreator, Fixtures}
 import fi.oph.tor.history.OpiskeluoikeusHistoryRepository
 import fi.oph.tor.koodisto.{KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.tor.log.{Logging, TimedProxy}
-import fi.oph.tor.opiskeluoikeus.{OpiskeluOikeusRepository, PostgresOpiskeluOikeusRepository}
+import fi.oph.tor.opiskeluoikeus.{CompositeOpiskeluOikeusRepository, OpiskeluOikeusRepository, PostgresOpiskeluOikeusRepository}
 import fi.oph.tor.oppija.OppijaRepository
 import fi.oph.tor.oppilaitos.OppilaitosRepository
 import fi.oph.tor.organisaatio.OrganisaatioRepository
 import fi.oph.tor.tor.TorValidator
 import fi.oph.tor.toruser.{DirectoryClientFactory, UserOrganisationsRepository}
 import fi.oph.tor.tutkinto.TutkintoRepository
+import fi.oph.tor.virta.VirtaOpiskeluoikeusRepository
 
 object TorApplication {
   val defaultConfig = ConfigFactory.load
@@ -43,7 +44,9 @@ class TorApplication(val config: Config) extends Logging {
   lazy val database = new TorDatabase(config)
   lazy val oppijaRepository = OppijaRepository(config, database, koodistoViitePalvelu)
   lazy val historyRepository = OpiskeluoikeusHistoryRepository(database.db)
-  lazy val opiskeluOikeusRepository = TimedProxy[OpiskeluOikeusRepository](new PostgresOpiskeluOikeusRepository(database.db, historyRepository))
+  lazy val virta = VirtaOpiskeluoikeusRepository(config, oppijaRepository)
+  lazy val possu = TimedProxy[OpiskeluOikeusRepository](new PostgresOpiskeluOikeusRepository(database.db, historyRepository))
+  lazy val opiskeluOikeusRepository = new CompositeOpiskeluOikeusRepository(List(possu, virta))
   lazy val validator: TorValidator = new TorValidator(tutkintoRepository, koodistoViitePalvelu, organisaatioRepository)
 
   def resetFixtures = Fixtures.resetFixtures(config, database, opiskeluOikeusRepository, oppijaRepository, validator)

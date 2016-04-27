@@ -77,6 +77,7 @@ object TorErrorCategory {
       }
       val laajudet = new Laajuudet
     }
+    val readOnly = subcategory("readOnly", "Opiskeluoikeuden tietoja ei voi muuttaa")
     val validation = new Validation
   }
 
