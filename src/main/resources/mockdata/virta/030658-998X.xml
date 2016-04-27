@@ -1,0 +1,3027 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+    <SOAP-ENV:Header/>
+    <SOAP-ENV:Body>
+        <virtaluku:OpiskelijanKaikkiTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
+            <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2013/01/29">
+                <virta:Opiskelija avain="42997622">
+                    <virta:Henkilotunnus>030658-998X</virta:Henkilotunnus>
+                    <virta:Opiskeluoikeudet>
+                        <virta:Opiskeluoikeus opiskelijaAvain="42997622" avain="42997623">
+                            <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2018-07-31</virta:LoppuPvm>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2018-07-31</virta:LoppuPvm>
+                                <virta:Koodi>1</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tyyppi>2</virta:Tyyppi>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Jakso koulutusmoduulitunniste="Fa, Farmaseutin ko., Farmasia">
+                                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2018-07-31</virta:LoppuPvm>
+                                <virta:Koulutuskoodi>672401</virta:Koulutuskoodi>
+                                <virta:Koulutuskunta>297</virta:Koulutuskunta>
+                            </virta:Jakso>
+                            <virta:Ensisijaisuus>
+                                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2112-12-21</virta:LoppuPvm>
+                            </virta:Ensisijaisuus>
+                            <virta:Opintoala1995>93</virta:Opintoala1995>
+                            <virta:AvoinVayla>false</virta:AvoinVayla>
+                            <virta:AsetusMaisteriohjelma>false</virta:AsetusMaisteriohjelma>
+                        </virta:Opiskeluoikeus>
+                        <virta:Opiskeluoikeus opiskelijaAvain="42997622" avain="42997623">
+                            <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2018-07-31</virta:LoppuPvm>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2018-07-31</virta:LoppuPvm>
+                                <virta:Koodi>1</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tyyppi>2</virta:Tyyppi>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Jakso koulutusmoduulitunniste="Fa, Farmaseutin ko., Farmasia">
+                                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2018-07-31</virta:LoppuPvm>
+                                <virta:Koulutuskoodi>672401</virta:Koulutuskoodi>
+                                <virta:Koulutuskunta>297</virta:Koulutuskunta>
+                            </virta:Jakso>
+                            <virta:Ensisijaisuus>
+                                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2112-12-21</virta:LoppuPvm>
+                            </virta:Ensisijaisuus>
+                            <virta:Koulutusala versio="opm95opa">93</virta:Koulutusala>
+                        </virta:Opiskeluoikeus>
+                    </virta:Opiskeluoikeudet>
+                    <virta:LukukausiIlmoittautumiset>
+                        <virta:LukukausiIlmoittautuminen opiskelijaAvain="42997622">
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2015-08-07</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2016-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2016-07-31</virta:LoppuPvm>
+                            <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+                            <virta:YTHSMaksu>true</virta:YTHSMaksu>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskelijaAvain="42997622">
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2014-08-11</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+                            <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+                            <virta:YTHSMaksu>false</virta:YTHSMaksu>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskelijaAvain="42997622">
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2014-08-11</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2015-07-31</virta:LoppuPvm>
+                            <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+                            <virta:YTHSMaksu>false</virta:YTHSMaksu>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskelijaAvain="42997622">
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2015-08-07</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2015-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2015-12-31</virta:LoppuPvm>
+                            <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+                            <virta:YTHSMaksu>true</virta:YTHSMaksu>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskelijaAvain="42997622">
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2015-08-07</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2016-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2016-07-31</virta:LoppuPvm>
+                            <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+                            <virta:YTHSMaksu>true</virta:YTHSMaksu>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskelijaAvain="42997622">
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2014-08-11</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+                            <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+                            <virta:YTHSMaksu>false</virta:YTHSMaksu>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskelijaAvain="42997622">
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2014-08-11</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2015-07-31</virta:LoppuPvm>
+                            <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+                            <virta:YTHSMaksu>false</virta:YTHSMaksu>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskelijaAvain="42997622">
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2015-08-07</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2015-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2015-12-31</virta:LoppuPvm>
+                            <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+                            <virta:YTHSMaksu>true</virta:YTHSMaksu>
+                        </virta:LukukausiIlmoittautuminen>
+                    </virta:LukukausiIlmoittautumiset>
+                    <virta:Opintosuoritukset>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24502416" avain="49298652">
+                            <virta:SuoritusPvm>2016-02-18</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>1.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11"/>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">English Academic and Professional Communication for Pharmacy</virta:Nimi>
+                            <virta:Nimi kieli="en">English Academic and Professional Communication for Pharmacy</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>76</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="28534455" avain="43458215">
+                            <virta:SuoritusPvm>2013-04-17</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4.5</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>3</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Kemian perusteet, osa 2: orgaaninen kemia</virta:Nimi>
+                            <virta:Nimi kieli="en">Fundamentals of Chemistry, Part 2: Organic Chemistry</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>93</virta:Koodi>
+                            </virta:Opintoala1995>
+                            <virta:HyvaksilukuPvm>2014-08-28</virta:HyvaksilukuPvm>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24495215" avain="43968916">
+                            <virta:SuoritusPvm>2014-04-07</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>3</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Farmasian molekyylibiologia</virta:Nimi>
+                            <virta:Nimi kieli="en">Molecular Biology of Pharmacy</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>93</virta:Koodi>
+                            </virta:Opintoala1995>
+                            <virta:HyvaksilukuPvm>2014-09-18</virta:HyvaksilukuPvm>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24393345" avain="43357790">
+                            <virta:SuoritusPvm>2015-12-02</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>1.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11"/>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Ensiapu</virta:Nimi>
+                            <virta:Nimi kieli="en">First aid</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>93</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="33913902" avain="43131592">
+                            <virta:SuoritusPvm>2014-12-08</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Kasvirohdokset ja ravintolisät</virta:Nimi>
+                            <virta:Nimi kieli="en">Medicinal herbs and food supplements</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>93</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24387912" avain="47102625">
+                            <virta:SuoritusPvm>2016-02-15</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>14.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Farmakologia ja toksikologia</virta:Nimi>
+                            <virta:Nimi kieli="en">Pharmacology and Toxicology</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>93</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="28810464" avain="43654095">
+                            <virta:SuoritusPvm>2015-04-24</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.0</virta:Opintopiste>
+                                <virta:Opintoviikko>1.11</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11"/>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Mikrobiologian perusteet, harjoitustyöt</virta:Nimi>
+                            <virta:Nimi kieli="en">Basic Microbiology, practicals</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>84</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="41784608" avain="43888738">
+                            <virta:SuoritusPvm>2013-01-22</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>6.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>3</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Farmasian biokemia ja solubiologia</virta:Nimi>
+                            <virta:Nimi kieli="en">Cell Biology and Biochemistry for Pharmacists</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>90</virta:Koodi>
+                            </virta:Opintoala1995>
+                            <virta:HyvaksilukuPvm>2014-09-09</virta:HyvaksilukuPvm>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="33301020" avain="43361768">
+                            <virta:SuoritusPvm>2015-03-23</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>11.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Ihmisen anatomia ja fysiologia</virta:Nimi>
+                            <virta:Nimi kieli="en">Human anatomy and physiology</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>90</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="37069740" avain="47102586">
+                            <virta:SuoritusPvm>2016-02-22</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Farmaseuttinen kemia</virta:Nimi>
+                            <virta:Nimi kieli="en">Pharmaceutical chemistry</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>93</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="31823605" avain="45397570">
+                            <virta:SuoritusPvm>2013-04-17</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>3</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Orgaaninen kemia</virta:Nimi>
+                            <virta:Nimi kieli="en">Organic Chemistry</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>93</virta:Koodi>
+                            </virta:Opintoala1995>
+                            <virta:HyvaksilukuPvm>2014-09-05</virta:HyvaksilukuPvm>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="28810317" avain="43653162">
+                            <virta:SuoritusPvm>2013-11-12</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.0</virta:Opintopiste>
+                                <virta:Opintoviikko>1.11</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>3</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Mikrobiologian perusteet</virta:Nimi>
+                            <virta:Nimi kieli="en">Basic Microbiology</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>84</virta:Koodi>
+                            </virta:Opintoala1995>
+                            <virta:HyvaksilukuPvm>2014-08-28</virta:HyvaksilukuPvm>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24009684" avain="43260361">
+                            <virta:SuoritusPvm>2015-11-25</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>1.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11"/>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Yliopisto-opinnot käyntiin</virta:Nimi>
+                            <virta:Nimi kieli="en">Starting academic studies</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>82</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="37087569" avain="43260504">
+                            <virta:SuoritusPvm>2015-04-13</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>2</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Farmasian teknologia 2</virta:Nimi>
+                            <virta:Nimi kieli="en">Pharmaceutical Technology 2</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>93</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24389956" avain="43260314">
+                            <virta:SuoritusPvm>2014-12-12</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11"/>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Huumausaineiden farmakologiaa</virta:Nimi>
+                            <virta:Nimi kieli="en">Pharmacology of drugs of abuse</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>93</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24285523" avain="43260348">
+                            <virta:SuoritusPvm>2015-06-12</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Tautioppi farmasian opiskelijoille</virta:Nimi>
+                            <virta:Nimi kieli="en">Pathology for Students of Pharmacy</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>93</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="37087112" avain="43260496">
+                            <virta:SuoritusPvm>2015-02-05</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Farmasian teknologia 1</virta:Nimi>
+                            <virta:Nimi kieli="en">Pharmaceutical Technology 1</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>93</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="37094101" avain="43260508">
+                            <virta:SuoritusPvm>2015-05-27</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4.5</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11"/>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Farmasian teknologia 3</virta:Nimi>
+                            <virta:Nimi kieli="en">Pharmaceutical Technology 3</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>93</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24774706" avain="47260226">
+                            <virta:SuoritusPvm>2015-10-26</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Kliinisen farmasian perusteet</virta:Nimi>
+                            <virta:Nimi kieli="en">Introduction to Clinical Pharmacy</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>93</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24264095" avain="47241945">
+                            <virta:SuoritusPvm>2016-02-01</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>6.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11"/>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Lääkehoito</virta:Nimi>
+                            <virta:Nimi kieli="en">Drug Therapy</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>93</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24555878" avain="43131603">
+                            <virta:SuoritusPvm>2014-10-27</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Farmakokinetiikka</virta:Nimi>
+                            <virta:Nimi kieli="en">Pharmacokinetics</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>93</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="46006079" avain="50032092">
+                            <virta:SuoritusPvm>2016-04-05</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11"/>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Farmasia: Harjoitteluun vaaditut opinnot suoritettu</virta:Nimi>
+                            <virta:Nimi kieli="en">Pharmacy: Prerequisite Studies for Training Completed</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>93</virta:Koodi>
+                            </virta:Opintoala1995>
+                            <virta:Patevyys>far</virta:Patevyys>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="28534181" avain="43457380">
+                            <virta:SuoritusPvm>2012-03-05</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4.5</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>3</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Kemian perusteet, osa 1: yleinen ja epäorgaaninen kemia</virta:Nimi>
+                            <virta:Nimi kieli="en">Fundamentals of Chemistry, Part 1: General and Inorganic Chemistry</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>93</virta:Koodi>
+                            </virta:Opintoala1995>
+                            <virta:HyvaksilukuPvm>2014-08-28</virta:HyvaksilukuPvm>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24527104" avain="43260437">
+                            <virta:SuoritusPvm>2014-11-17</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Farmaseuttisen analytiikan perusteet</virta:Nimi>
+                            <virta:Nimi kieli="en">Principles of Pharmaceutical Analysis</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>93</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24744954" avain="46721798">
+                            <virta:SuoritusPvm>2015-05-28</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>5</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Lääkkeiden hyvät tuotantotavat</virta:Nimi>
+                            <virta:Nimi kieli="en">Good Manufacturing Practice</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>93</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24501151" avain="45203113">
+                            <virta:SuoritusPvm>2015-03-31</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11"/>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">English Academic Reading Skills for Pharmacy</virta:Nimi>
+                            <virta:Nimi kieli="en">English Academic Reading Skills for Pharmacy</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>76</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24774709" avain="43260338">
+                            <virta:SuoritusPvm>2014-11-03</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3.5</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>2</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Koodi>01905</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Lääkkeet terveydenhuollossa</virta:Nimi>
+                            <virta:Nimi kieli="en">Drugs in Health Care</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>93</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24502416" avain="49298652">
+                            <virta:SuoritusPvm>2016-02-18</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>1.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11"/>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">English Academic and Professional Communication for Pharmacy</virta:Nimi>
+                            <virta:Nimi kieli="en">English Academic and Professional Communication for Pharmacy</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">76</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="28534455" avain="43458215">
+                            <virta:SuoritusPvm>2013-04-17</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4.5</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>3</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Kemian perusteet, osa 2: orgaaninen kemia</virta:Nimi>
+                            <virta:Nimi kieli="en">Fundamentals of Chemistry, Part 2: Organic Chemistry</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">93</virta:Koodi>
+                            </virta:Koulutusala>
+                            <virta:HyvaksilukuPvm>2014-08-28</virta:HyvaksilukuPvm>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24495215" avain="43968916">
+                            <virta:SuoritusPvm>2014-04-07</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>3</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Farmasian molekyylibiologia</virta:Nimi>
+                            <virta:Nimi kieli="en">Molecular Biology of Pharmacy</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">93</virta:Koodi>
+                            </virta:Koulutusala>
+                            <virta:HyvaksilukuPvm>2014-09-18</virta:HyvaksilukuPvm>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24393345" avain="43357790">
+                            <virta:SuoritusPvm>2015-12-02</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>1.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11"/>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Ensiapu</virta:Nimi>
+                            <virta:Nimi kieli="en">First aid</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">93</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="33913902" avain="43131592">
+                            <virta:SuoritusPvm>2014-12-08</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Kasvirohdokset ja ravintolisät</virta:Nimi>
+                            <virta:Nimi kieli="en">Medicinal herbs and food supplements</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">93</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24387912" avain="47102625">
+                            <virta:SuoritusPvm>2016-02-15</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>14.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Farmakologia ja toksikologia</virta:Nimi>
+                            <virta:Nimi kieli="en">Pharmacology and Toxicology</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">93</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="28810464" avain="43654095">
+                            <virta:SuoritusPvm>2015-04-24</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.0</virta:Opintopiste>
+                                <virta:Opintoviikko>1.11</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11"/>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Mikrobiologian perusteet, harjoitustyöt</virta:Nimi>
+                            <virta:Nimi kieli="en">Basic Microbiology, practicals</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">84</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="41784608" avain="43888738">
+                            <virta:SuoritusPvm>2013-01-22</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>6.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>3</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Farmasian biokemia ja solubiologia</virta:Nimi>
+                            <virta:Nimi kieli="en">Cell Biology and Biochemistry for Pharmacists</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                            <virta:HyvaksilukuPvm>2014-09-09</virta:HyvaksilukuPvm>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="33301020" avain="43361768">
+                            <virta:SuoritusPvm>2015-03-23</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>11.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Ihmisen anatomia ja fysiologia</virta:Nimi>
+                            <virta:Nimi kieli="en">Human anatomy and physiology</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="37069740" avain="47102586">
+                            <virta:SuoritusPvm>2016-02-22</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Farmaseuttinen kemia</virta:Nimi>
+                            <virta:Nimi kieli="en">Pharmaceutical chemistry</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">93</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="31823605" avain="45397570">
+                            <virta:SuoritusPvm>2013-04-17</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>3</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Orgaaninen kemia</virta:Nimi>
+                            <virta:Nimi kieli="en">Organic Chemistry</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">93</virta:Koodi>
+                            </virta:Koulutusala>
+                            <virta:HyvaksilukuPvm>2014-09-05</virta:HyvaksilukuPvm>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="28810317" avain="43653162">
+                            <virta:SuoritusPvm>2013-11-12</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.0</virta:Opintopiste>
+                                <virta:Opintoviikko>1.11</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>3</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Mikrobiologian perusteet</virta:Nimi>
+                            <virta:Nimi kieli="en">Basic Microbiology</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">84</virta:Koodi>
+                            </virta:Koulutusala>
+                            <virta:HyvaksilukuPvm>2014-08-28</virta:HyvaksilukuPvm>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24009684" avain="43260361">
+                            <virta:SuoritusPvm>2015-11-25</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>1.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11"/>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Yliopisto-opinnot käyntiin</virta:Nimi>
+                            <virta:Nimi kieli="en">Starting academic studies</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">82</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="37087569" avain="43260504">
+                            <virta:SuoritusPvm>2015-04-13</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>2</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Farmasian teknologia 2</virta:Nimi>
+                            <virta:Nimi kieli="en">Pharmaceutical Technology 2</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">93</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24389956" avain="43260314">
+                            <virta:SuoritusPvm>2014-12-12</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11"/>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Huumausaineiden farmakologiaa</virta:Nimi>
+                            <virta:Nimi kieli="en">Pharmacology of drugs of abuse</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">93</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24285523" avain="43260348">
+                            <virta:SuoritusPvm>2015-06-12</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Tautioppi farmasian opiskelijoille</virta:Nimi>
+                            <virta:Nimi kieli="en">Pathology for Students of Pharmacy</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">93</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="37087112" avain="43260496">
+                            <virta:SuoritusPvm>2015-02-05</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Farmasian teknologia 1</virta:Nimi>
+                            <virta:Nimi kieli="en">Pharmaceutical Technology 1</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">93</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="37094101" avain="43260508">
+                            <virta:SuoritusPvm>2015-05-27</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4.5</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11"/>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Farmasian teknologia 3</virta:Nimi>
+                            <virta:Nimi kieli="en">Pharmaceutical Technology 3</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">93</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24774706" avain="47260226">
+                            <virta:SuoritusPvm>2015-10-26</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Kliinisen farmasian perusteet</virta:Nimi>
+                            <virta:Nimi kieli="en">Introduction to Clinical Pharmacy</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">93</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24264095" avain="47241945">
+                            <virta:SuoritusPvm>2016-02-01</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>6.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11"/>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Lääkehoito</virta:Nimi>
+                            <virta:Nimi kieli="en">Drug Therapy</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">93</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24555878" avain="43131603">
+                            <virta:SuoritusPvm>2014-10-27</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Farmakokinetiikka</virta:Nimi>
+                            <virta:Nimi kieli="en">Pharmacokinetics</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">93</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="46006079" avain="50032092">
+                            <virta:SuoritusPvm>2016-04-05</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11"/>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Farmasia: Harjoitteluun vaaditut opinnot suoritettu</virta:Nimi>
+                            <virta:Nimi kieli="en">Pharmacy: Prerequisite Studies for Training Completed</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">93</virta:Koodi>
+                            </virta:Koulutusala>
+                            <virta:Patevyys>far</virta:Patevyys>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="28534181" avain="43457380">
+                            <virta:SuoritusPvm>2012-03-05</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4.5</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>3</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Kemian perusteet, osa 1: yleinen ja epäorgaaninen kemia</virta:Nimi>
+                            <virta:Nimi kieli="en">Fundamentals of Chemistry, Part 1: General and Inorganic Chemistry</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">93</virta:Koodi>
+                            </virta:Koulutusala>
+                            <virta:HyvaksilukuPvm>2014-08-28</virta:HyvaksilukuPvm>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24527104" avain="43260437">
+                            <virta:SuoritusPvm>2014-11-17</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Farmaseuttisen analytiikan perusteet</virta:Nimi>
+                            <virta:Nimi kieli="en">Principles of Pharmaceutical Analysis</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">93</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24744954" avain="46721798">
+                            <virta:SuoritusPvm>2015-05-28</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>5</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Lääkkeiden hyvät tuotantotavat</virta:Nimi>
+                            <virta:Nimi kieli="en">Good Manufacturing Practice</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">93</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24501151" avain="45203113">
+                            <virta:SuoritusPvm>2015-03-31</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11"/>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">English Academic Reading Skills for Pharmacy</virta:Nimi>
+                            <virta:Nimi kieli="en">English Academic Reading Skills for Pharmacy</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">76</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="42997622" koulutusmoduulitunniste="24774709" avain="43260338">
+                            <virta:SuoritusPvm>2014-11-03</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3.5</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>2</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01905</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Lääkkeet terveydenhuollossa</virta:Nimi>
+                            <virta:Nimi kieli="en">Drugs in Health Care</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">93</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                    </virta:Opintosuoritukset>
+                </virta:Opiskelija>
+                <virta:Opiskelija avain="JY:4624210">
+                    <virta:Henkilotunnus>030658-998X</virta:Henkilotunnus>
+                    <virta:Opiskeluoikeudet>
+                        <virta:Opiskeluoikeus opiskelijaAvain="JY:4624210" avain="JY:211979">
+                            <virta:AlkuPvm>2010-09-01</virta:AlkuPvm>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2010-09-01</virta:AlkuPvm>
+                                <virta:Koodi>2</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tyyppi>4</virta:Tyyppi>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Jakso koulutusmoduulitunniste="urn:subject:jyu:kem">
+                                <virta:AlkuPvm>2010-09-01</virta:AlkuPvm>
+                                <virta:Koulutuskoodi>742401</virta:Koulutuskoodi>
+                                <virta:Koulutuskunta>179</virta:Koulutuskunta>
+                                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+                                <virta:Patevyys>il</virta:Patevyys>
+                            </virta:Jakso>
+                            <virta:Opintoala1995>87</virta:Opintoala1995>
+                            <virta:Liittyvyys liittyvaOpiskeluoikeusAvain="JY:90761"/>
+                        </virta:Opiskeluoikeus>
+                        <virta:Opiskeluoikeus opiskelijaAvain="JY:4624210" avain="JY:90761">
+                            <virta:AlkuPvm>2010-09-01</virta:AlkuPvm>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                                <virta:Koodi>4</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2010-09-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2014-07-31</virta:LoppuPvm>
+                                <virta:Koodi>1</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tyyppi>2</virta:Tyyppi>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Jakso koulutusmoduulitunniste="urn:subject:jyu:kem">
+                                <virta:AlkuPvm>2010-09-01</virta:AlkuPvm>
+                                <virta:Koulutuskoodi>642401</virta:Koulutuskoodi>
+                                <virta:Koulutuskunta>179</virta:Koulutuskunta>
+                                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+                                <virta:Patevyys>il</virta:Patevyys>
+                            </virta:Jakso>
+                            <virta:Ensisijaisuus>
+                                <virta:AlkuPvm>2010-09-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2010-12-31</virta:LoppuPvm>
+                            </virta:Ensisijaisuus>
+                            <virta:Ensisijaisuus>
+                                <virta:AlkuPvm>2011-01-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2011-07-31</virta:LoppuPvm>
+                            </virta:Ensisijaisuus>
+                            <virta:Ensisijaisuus>
+                                <virta:AlkuPvm>2011-08-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2011-12-31</virta:LoppuPvm>
+                            </virta:Ensisijaisuus>
+                            <virta:Ensisijaisuus>
+                                <virta:AlkuPvm>2012-01-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2012-07-31</virta:LoppuPvm>
+                            </virta:Ensisijaisuus>
+                            <virta:Ensisijaisuus>
+                                <virta:AlkuPvm>2012-08-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2012-12-31</virta:LoppuPvm>
+                            </virta:Ensisijaisuus>
+                            <virta:Ensisijaisuus>
+                                <virta:AlkuPvm>2013-01-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2013-07-31</virta:LoppuPvm>
+                            </virta:Ensisijaisuus>
+                            <virta:Ensisijaisuus>
+                                <virta:AlkuPvm>2013-08-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2013-12-31</virta:LoppuPvm>
+                            </virta:Ensisijaisuus>
+                            <virta:Ensisijaisuus>
+                                <virta:AlkuPvm>2014-01-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2014-07-31</virta:LoppuPvm>
+                            </virta:Ensisijaisuus>
+                            <virta:Opintoala1995>87</virta:Opintoala1995>
+                            <virta:Liittyvyys liittyvaOpiskeluoikeusAvain="JY:211979"/>
+                        </virta:Opiskeluoikeus>
+                        <virta:Opiskeluoikeus opiskelijaAvain="JY:4624210" avain="JY:211979">
+                            <virta:AlkuPvm>2010-09-01</virta:AlkuPvm>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2010-09-01</virta:AlkuPvm>
+                                <virta:Koodi>2</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tyyppi>4</virta:Tyyppi>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Jakso koulutusmoduulitunniste="urn:subject:jyu:kem">
+                                <virta:AlkuPvm>2010-09-01</virta:AlkuPvm>
+                                <virta:Koulutuskoodi>742401</virta:Koulutuskoodi>
+                                <virta:Koulutuskunta>179</virta:Koulutuskunta>
+                                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+                                <virta:Patevyys>il</virta:Patevyys>
+                            </virta:Jakso>
+                            <virta:Koulutusala versio="opm95opa">87</virta:Koulutusala>
+                            <virta:Liittyvyys liittyvaOpiskeluoikeusAvain="JY:90761"/>
+                        </virta:Opiskeluoikeus>
+                        <virta:Opiskeluoikeus opiskelijaAvain="JY:4624210" avain="JY:90761">
+                            <virta:AlkuPvm>2010-09-01</virta:AlkuPvm>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                                <virta:Koodi>4</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2010-09-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2014-07-31</virta:LoppuPvm>
+                                <virta:Koodi>1</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tyyppi>2</virta:Tyyppi>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Jakso koulutusmoduulitunniste="urn:subject:jyu:kem">
+                                <virta:AlkuPvm>2010-09-01</virta:AlkuPvm>
+                                <virta:Koulutuskoodi>642401</virta:Koulutuskoodi>
+                                <virta:Koulutuskunta>179</virta:Koulutuskunta>
+                                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+                                <virta:Patevyys>il</virta:Patevyys>
+                            </virta:Jakso>
+                            <virta:Ensisijaisuus>
+                                <virta:AlkuPvm>2010-09-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2010-12-31</virta:LoppuPvm>
+                            </virta:Ensisijaisuus>
+                            <virta:Ensisijaisuus>
+                                <virta:AlkuPvm>2011-01-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2011-07-31</virta:LoppuPvm>
+                            </virta:Ensisijaisuus>
+                            <virta:Ensisijaisuus>
+                                <virta:AlkuPvm>2011-08-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2011-12-31</virta:LoppuPvm>
+                            </virta:Ensisijaisuus>
+                            <virta:Ensisijaisuus>
+                                <virta:AlkuPvm>2012-01-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2012-07-31</virta:LoppuPvm>
+                            </virta:Ensisijaisuus>
+                            <virta:Ensisijaisuus>
+                                <virta:AlkuPvm>2012-08-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2012-12-31</virta:LoppuPvm>
+                            </virta:Ensisijaisuus>
+                            <virta:Ensisijaisuus>
+                                <virta:AlkuPvm>2013-01-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2013-07-31</virta:LoppuPvm>
+                            </virta:Ensisijaisuus>
+                            <virta:Ensisijaisuus>
+                                <virta:AlkuPvm>2013-08-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2013-12-31</virta:LoppuPvm>
+                            </virta:Ensisijaisuus>
+                            <virta:Ensisijaisuus>
+                                <virta:AlkuPvm>2014-01-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2014-07-31</virta:LoppuPvm>
+                            </virta:Ensisijaisuus>
+                            <virta:Koulutusala versio="opm95opa">87</virta:Koulutusala>
+                            <virta:Liittyvyys liittyvaOpiskeluoikeusAvain="JY:211979"/>
+                        </virta:Opiskeluoikeus>
+                    </virta:Opiskeluoikeudet>
+                    <virta:LukukausiIlmoittautumiset>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2013-09-06</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2013-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2013-12-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:211979" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2011-08-01</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2011-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2011-12-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2011-08-01</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2011-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2011-12-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2013-09-06</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2014-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2014-07-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:211979" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2011-08-01</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2012-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2012-07-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:211979" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2013-09-06</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2013-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2013-12-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:211979" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Tila>2</virta:Tila>
+                            <virta:IlmoittautumisPvm>2010-09-01</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2011-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2011-07-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:211979" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2012-09-13</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2012-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2012-12-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:211979" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2013-09-06</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2014-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2014-07-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2011-08-01</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2012-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2012-07-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Tila>2</virta:Tila>
+                            <virta:IlmoittautumisPvm>2010-09-01</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2010-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2010-12-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:211979" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2012-09-13</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2013-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2013-07-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:211979" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Tila>2</virta:Tila>
+                            <virta:IlmoittautumisPvm>2010-09-01</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2010-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2010-12-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2012-09-13</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2012-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2012-12-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Tila>2</virta:Tila>
+                            <virta:IlmoittautumisPvm>2010-09-01</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2011-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2011-07-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2012-09-13</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2013-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2013-07-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2013-09-06</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2013-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2013-12-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:211979" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2011-08-01</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2011-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2011-12-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2011-08-01</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2011-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2011-12-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2013-09-06</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2014-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2014-07-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:211979" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2011-08-01</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2012-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2012-07-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:211979" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2013-09-06</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2013-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2013-12-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:211979" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Tila>2</virta:Tila>
+                            <virta:IlmoittautumisPvm>2010-09-01</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2011-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2011-07-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:211979" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2012-09-13</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2012-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2012-12-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:211979" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2013-09-06</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2014-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2014-07-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2011-08-01</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2012-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2012-07-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Tila>2</virta:Tila>
+                            <virta:IlmoittautumisPvm>2010-09-01</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2010-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2010-12-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:211979" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2012-09-13</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2013-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2013-07-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:211979" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Tila>2</virta:Tila>
+                            <virta:IlmoittautumisPvm>2010-09-01</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2010-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2010-12-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2012-09-13</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2012-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2012-12-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Tila>2</virta:Tila>
+                            <virta:IlmoittautumisPvm>2010-09-01</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2011-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2011-07-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210">
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2012-09-13</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2013-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2013-07-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                    </virta:LukukausiIlmoittautumiset>
+                    <virta:Opintosuoritukset>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMA215" avain="JY:jakso:2458194">
+                            <virta:SuoritusPvm>2013-10-21</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMA215 Epäorgaaninen kemia 2</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>87</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMA283" avain="JY:jakso:2458199">
+                            <virta:SuoritusPvm>2014-05-12</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMA283 Orgaaninen kemia 2</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>87</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMP112" avain="JY:jakso:2458202">
+                            <virta:SuoritusPvm>2011-12-12</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>2</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMP112 Kemian perusteet 2 (yleinen kemia 2)</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>87</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KTKP103" avain="JY:jakso:2458207">
+                            <virta:SuoritusPvm>2012-05-25</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KTKP103 Kasvatustieteen sosiologiset perusteet</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>80</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="SMBA301" avain="JY:jakso:2458211">
+                            <virta:SuoritusPvm>2014-04-07</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">SMBA301 Moderni molekyylibiologia</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>87</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="YTPP240" avain="JY:jakso:2458216">
+                            <virta:SuoritusPvm>2014-04-11</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>6</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">YTPP240 Yrittäjyyden perusteet</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>86</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="BIOP101" avain="JY:jakso:2458188">
+                            <virta:SuoritusPvm>2013-01-22</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>6</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>2</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">BIOP101 Biokemian, solubiologian ja molekyylibiologian perusteet</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>87</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMA210" avain="JY:jakso:2458192">
+                            <virta:SuoritusPvm>2013-01-18</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMA210 Analyyttisen kemian työt</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>87</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMA239" avain="JY:jakso:2458197">
+                            <virta:SuoritusPvm>2013-04-17</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMA239 Orgaanisen kemian työt</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>87</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMP010" avain="JY:jakso:2458200">
+                            <virta:SuoritusPvm>2011-11-11</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMP010 Alkukeitos</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>87</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMP115" avain="JY:jakso:2458205">
+                            <virta:SuoritusPvm>2011-12-10</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMP115 Kemian perusteet 5 (kemia elinympäristössä)</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>87</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="SMBA502" avain="JY:jakso:2458214">
+                            <virta:SuoritusPvm>2013-10-28</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">SMBA502 Solun kemia</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>87</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="BIOA112" avain="JY:jakso:2458187">
+                            <virta:SuoritusPvm>2014-02-10</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">BIOA112 Ihmisen fysiologian kuulustelu</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>87</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMA204" avain="JY:jakso:2458191">
+                            <virta:SuoritusPvm>2012-12-18</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>2</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMA204 Analyyttinen kemia 2</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>87</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMA224" avain="JY:jakso:2458196">
+                            <virta:SuoritusPvm>2013-11-22</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMA224 Fysikaalinen kemia 1</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>87</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMP114" avain="JY:jakso:2458204">
+                            <virta:SuoritusPvm>2012-03-29</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>6</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMP114 Kemian perusteet 4 (orgaaninen kemia)</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>87</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="MATY010" avain="JY:jakso:2458209">
+                            <virta:SuoritusPvm>2012-12-10</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">MATY010 Matematiikan propedeuttinen kurssi</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>87</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="SMBA310" avain="JY:jakso:2458213">
+                            <virta:SuoritusPvm>2014-02-11</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">SMBA310 Virologian perusteet</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>87</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMA203" avain="JY:jakso:2458190">
+                            <virta:SuoritusPvm>2012-10-24</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMA203 Analyyttinen kemia 1</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>87</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMA220" avain="JY:jakso:2458195">
+                            <virta:SuoritusPvm>2014-02-20</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMA220 Epäorgaanisen kemian työt</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>87</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMP113" avain="JY:jakso:2458203">
+                            <virta:SuoritusPvm>2012-03-05</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMP113 Kemian perusteet 3 (epäorgaaninen kemia)</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>87</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KTKP110" avain="JY:jakso:2458208">
+                            <virta:SuoritusPvm>2012-01-30</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KTKP110 Kasvatustieteen filosofiset ja historialliset perusteet</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>80</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="SMBA302" avain="JY:jakso:2458212">
+                            <virta:SuoritusPvm>2013-11-12</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">SMBA302 Mikrobiologian perusteet</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>87</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMA200" avain="JY:jakso:2458189">
+                            <virta:SuoritusPvm>2011-12-20</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMA200 Johdatus laboratoriotöihin</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>87</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMA214" avain="JY:jakso:2458193">
+                            <virta:SuoritusPvm>2013-06-14</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMA214 Epäorgaaninen kemia 1</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>87</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMA282" avain="JY:jakso:2458198">
+                            <virta:SuoritusPvm>2013-03-11</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMA282 Orgaaninen kemia 1</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>87</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMP111" avain="JY:jakso:2458201">
+                            <virta:SuoritusPvm>2011-10-24</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>2</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMP111 Kemian perusteet 1 (yleinen kemia 1)</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>87</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KTKP102" avain="JY:jakso:2458206">
+                            <virta:SuoritusPvm>2012-03-20</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KTKP102 Kasvatustieteen psykologiset perusteet</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>80</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="SMBA101" avain="JY:jakso:2458210">
+                            <virta:SuoritusPvm>2014-04-09</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>6</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">SMBA101 Solubiologian perusteet</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>87</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="YTPP220" avain="JY:jakso:2458215">
+                            <virta:SuoritusPvm>2014-01-17</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>6</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>
+                                <virta:Rooli>1</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">YTPP220 Laskentatoimen perusteet</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Opintoala1995>
+                                <virta:Koodi>86</virta:Koodi>
+                            </virta:Opintoala1995>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMA215" avain="JY:jakso:2458194">
+                            <virta:SuoritusPvm>2013-10-21</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMA215 Epäorgaaninen kemia 2</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMA283" avain="JY:jakso:2458199">
+                            <virta:SuoritusPvm>2014-05-12</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMA283 Orgaaninen kemia 2</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMP112" avain="JY:jakso:2458202">
+                            <virta:SuoritusPvm>2011-12-12</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>2</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMP112 Kemian perusteet 2 (yleinen kemia 2)</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KTKP103" avain="JY:jakso:2458207">
+                            <virta:SuoritusPvm>2012-05-25</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KTKP103 Kasvatustieteen sosiologiset perusteet</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="SMBA301" avain="JY:jakso:2458211">
+                            <virta:SuoritusPvm>2014-04-07</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">SMBA301 Moderni molekyylibiologia</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="YTPP240" avain="JY:jakso:2458216">
+                            <virta:SuoritusPvm>2014-04-11</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>6</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">YTPP240 Yrittäjyyden perusteet</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">86</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="BIOP101" avain="JY:jakso:2458188">
+                            <virta:SuoritusPvm>2013-01-22</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>6</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>2</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">BIOP101 Biokemian, solubiologian ja molekyylibiologian perusteet</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMA210" avain="JY:jakso:2458192">
+                            <virta:SuoritusPvm>2013-01-18</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMA210 Analyyttisen kemian työt</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMA239" avain="JY:jakso:2458197">
+                            <virta:SuoritusPvm>2013-04-17</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMA239 Orgaanisen kemian työt</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMP010" avain="JY:jakso:2458200">
+                            <virta:SuoritusPvm>2011-11-11</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMP010 Alkukeitos</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMP115" avain="JY:jakso:2458205">
+                            <virta:SuoritusPvm>2011-12-10</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMP115 Kemian perusteet 5 (kemia elinympäristössä)</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="SMBA502" avain="JY:jakso:2458214">
+                            <virta:SuoritusPvm>2013-10-28</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">SMBA502 Solun kemia</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="BIOA112" avain="JY:jakso:2458187">
+                            <virta:SuoritusPvm>2014-02-10</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">BIOA112 Ihmisen fysiologian kuulustelu</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMA204" avain="JY:jakso:2458191">
+                            <virta:SuoritusPvm>2012-12-18</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>2</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMA204 Analyyttinen kemia 2</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMA224" avain="JY:jakso:2458196">
+                            <virta:SuoritusPvm>2013-11-22</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMA224 Fysikaalinen kemia 1</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMP114" avain="JY:jakso:2458204">
+                            <virta:SuoritusPvm>2012-03-29</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>6</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMP114 Kemian perusteet 4 (orgaaninen kemia)</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="MATY010" avain="JY:jakso:2458209">
+                            <virta:SuoritusPvm>2012-12-10</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">MATY010 Matematiikan propedeuttinen kurssi</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="SMBA310" avain="JY:jakso:2458213">
+                            <virta:SuoritusPvm>2014-02-11</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">SMBA310 Virologian perusteet</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMA203" avain="JY:jakso:2458190">
+                            <virta:SuoritusPvm>2012-10-24</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMA203 Analyyttinen kemia 1</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMA220" avain="JY:jakso:2458195">
+                            <virta:SuoritusPvm>2014-02-20</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMA220 Epäorgaanisen kemian työt</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMP113" avain="JY:jakso:2458203">
+                            <virta:SuoritusPvm>2012-03-05</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMP113 Kemian perusteet 3 (epäorgaaninen kemia)</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KTKP110" avain="JY:jakso:2458208">
+                            <virta:SuoritusPvm>2012-01-30</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KTKP110 Kasvatustieteen filosofiset ja historialliset perusteet</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="SMBA302" avain="JY:jakso:2458212">
+                            <virta:SuoritusPvm>2013-11-12</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">SMBA302 Mikrobiologian perusteet</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMA200" avain="JY:jakso:2458189">
+                            <virta:SuoritusPvm>2011-12-20</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMA200 Johdatus laboratoriotöihin</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMA214" avain="JY:jakso:2458193">
+                            <virta:SuoritusPvm>2013-06-14</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMA214 Epäorgaaninen kemia 1</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMA282" avain="JY:jakso:2458198">
+                            <virta:SuoritusPvm>2013-03-11</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMA282 Orgaaninen kemia 1</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KEMP111" avain="JY:jakso:2458201">
+                            <virta:SuoritusPvm>2011-10-24</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>2</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KEMP111 Kemian perusteet 1 (yleinen kemia 1)</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="KTKP102" avain="JY:jakso:2458206">
+                            <virta:SuoritusPvm>2012-03-20</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">KTKP102 Kasvatustieteen psykologiset perusteet</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="SMBA101" avain="JY:jakso:2458210">
+                            <virta:SuoritusPvm>2014-04-09</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>6</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">SMBA101 Solubiologian perusteet</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="JY:90761" opiskelijaAvain="JY:4624210" koulutusmoduulitunniste="YTPP220" avain="JY:jakso:2458215">
+                            <virta:SuoritusPvm>2014-01-17</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>6</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>01906</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>01906</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">YTPP220 Laskentatoimen perusteet</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">86</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                    </virta:Opintosuoritukset>
+                </virta:Opiskelija>
+            </virta:Virta>
+        </virtaluku:OpiskelijanKaikkiTiedotResponse>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

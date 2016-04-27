@@ -8,9 +8,9 @@ import scala.xml.PrettyPrinter
 
 // Client for the Virta Opintotietopalvelu, see https://confluence.csc.fi/display/VIRTA/VIRTA-opintotietopalvelu
 object VirtaClient extends App {
-  val hetulla: VirtaHakuehtoHetu = VirtaHakuehtoHetu("290204A9999")
+  val hetulla: VirtaHakuehtoHetu = VirtaHakuehtoHetu("090888-929X")
   val oppijanumerolla = VirtaHakuehtoKansallinenOppijanumero("aed09afd87a8c6d76b76bbd")
-  VirtaClient(VirtaConfig.fromConfig(TorApplication.defaultConfig)).fetchVirtaData(oppijanumerolla)
+  VirtaClient(VirtaConfig.fromConfig(TorApplication.defaultConfig)).fetchVirtaData(hetulla)
 }
 
 case class VirtaClient(config: VirtaConfig) {
@@ -42,6 +42,6 @@ case class VirtaConfig(serviceUrl: String, jarjestelma: String, tunnus: String, 
 
 object VirtaConfig {
   // Virta test environment config, see http://virtawstesti.csc.fi/
-  val virtaTestEnvironment = VirtaConfig("http://virtawstesti.csc.fi/luku/OpiskelijanTiedot", "", "", "salaisuus")
+  val virtaTestEnvironment = VirtaConfig("http://virtawstesti.csc.fi/luku106/OpiskelijanTiedot", "", "", "salaisuus")
   def fromConfig(config: Config) = VirtaConfig(config.getString("virta.serviceUrl"), config.getString("virta.jarjestelma"), config.getString("virta.tunnus"), config.getString("virta.avain"))
 }
