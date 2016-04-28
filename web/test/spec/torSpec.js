@@ -439,6 +439,18 @@ describe('TOR', function() {
     })
   })
 
+  describe('Korkeakoulujen opiskeluoikeudet', function() {
+    var todistus = TodistusPage()
+    before(resetFixtures, authentication.login())
+    before(openPage('/tor/oppija/1.2.246.562.24.000000000011', page.isOppijaSelected('Keijo')))
+    describe('Oppijan suorituksissa', function() {
+      it('näytetään', function() {
+        expect(OpinnotPage().getTutkinto()).to.equal("Luonnont. kand., matematiikkaFil. maist., matematiikkaFil. maist., matematiikkaFil. maist., matematiikka")
+        expect(OpinnotPage().getOppilaitos()).to.equal("Helsingin yliopistoHelsingin yliopistoHelsingin yliopistoHelsingin yliopisto")
+      })
+    })
+  })
+
   describe('Todistukset', function( ){
     describe('Perusopetuksen päättötodistus', function() {
       var todistus = TodistusPage()
