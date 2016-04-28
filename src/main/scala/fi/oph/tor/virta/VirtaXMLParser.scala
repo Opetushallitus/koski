@@ -5,7 +5,7 @@ import java.util.Random
 
 import fi.oph.tor.koodisto.KoodistoViitePalvelu
 import fi.oph.tor.localization.LocalizedString
-import fi.oph.tor.localization.LocalizedString.finnish
+import fi.oph.tor.localization.LocalizedString.{finnish, sanitize}
 import fi.oph.tor.oppija.OppijaRepository
 import fi.oph.tor.oppilaitos.OppilaitosRepository
 import fi.oph.tor.schema._
@@ -50,7 +50,7 @@ case class VirtaXMLParser(oppijaRepository: OppijaRepository, oppilaitosReposito
 
   def opintoSuoritukset(opiskeluoikeus: Node, virtaXml: Node) = {
     def nimi(suoritus: Node): LocalizedString = {
-      finnish((suoritus \\ "Nimi").filter(node => node.attribute("kieli").exists(_.text == "fi")).text)
+      sanitize((suoritus \\ "Nimi" map (nimi => (nimi \ "@kieli" text, nimi text))).toMap).getOrElse(finnish("Suoritus: " + (suoritus \ "@avain" text)))
     }
 
     (virtaXml \\ "Opintosuoritukset" \\ "Opintosuoritus").filter(suoritus => (suoritus \ "@opiskeluoikeusAvain").text == (opiskeluoikeus \ "@avain").text).map { suoritus =>
