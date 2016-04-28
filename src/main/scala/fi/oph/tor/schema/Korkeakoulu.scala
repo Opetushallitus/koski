@@ -1,6 +1,7 @@
 package fi.oph.tor.schema
 
 import java.time.LocalDate
+import fi.oph.tor.localization.LocalizedString
 import fi.oph.tor.localization.LocalizedStringImplicits._
 
 import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems}
@@ -33,7 +34,7 @@ case class KorkeakouluTutkinnonSuoritus(
   tila: Koodistokoodiviite,
   vahvistus: Option[Vahvistus],
   suorituskieli: Option[Koodistokoodiviite],
-  override val osasuoritukset: Option[List[KorkeakoulunOpintosuoritus]]
+  override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]]
 ) extends Suoritus
 
 @Description("Tutkintoon johtava koulutus")
@@ -46,16 +47,23 @@ case class KorkeakouluTutkinto(
   override def laajuus = None
 }
 
-case class KorkeakoulunOpintosuoritus(
-  koulutusmoduuli: Koulutusmoduuli,
-  @KoodistoKoodiarvo("korkeakoulunopintosuoritus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulunopintosuoritus", koodistoUri = "suorituksentyyppi"),
+case class KorkeakoulunOpintojaksonSuoritus(
+  koulutusmoduuli: KorkeakoulunOpintojakso,
+  @KoodistoKoodiarvo("korkeakoulunopintojaksonsuoritus")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulunopintojaksonsuoritus", koodistoUri = "suorituksentyyppi"),
   paikallinenId: Option[String],
   arviointi: Option[List[Arviointi]],
   tila: Koodistokoodiviite,
   vahvistus: Option[Vahvistus],
   suorituskieli: Option[Koodistokoodiviite]
 ) extends Suoritus
+
+@Description("Opintojakson suoritus")
+case class KorkeakoulunOpintojakso(
+  tunniste: Paikallinenkoodi,
+  nimi: LocalizedString,
+  laajuus: Option[LaajuusOsaamispisteissä]
+) extends Koulutusmoduuli
 
 case class KorkeakoulunOpiskeluoikeudenTila(
   opiskeluoikeusjaksot: List[KorkeakoulunOpiskeluoikeusjakso]

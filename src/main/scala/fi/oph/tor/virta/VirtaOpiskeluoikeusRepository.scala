@@ -6,6 +6,8 @@ import java.util.Random
 import com.typesafe.config.Config
 import fi.oph.tor.http.{HttpStatus, TorErrorCategory}
 import fi.oph.tor.koodisto.KoodistoViitePalvelu
+import fi.oph.tor.localization.LocalizedString
+import fi.oph.tor.localization.LocalizedString.finnish
 import fi.oph.tor.opiskeluoikeus.{CreateOrUpdateResult, OpiskeluOikeusRepository}
 import fi.oph.tor.oppija.{OppijaRepository, PossiblyUnverifiedOppijaOid}
 import fi.oph.tor.oppilaitos.OppilaitosRepository
@@ -17,6 +19,7 @@ import fi.oph.tor.util.Files
 import rx.lang.scala.Observable
 
 import scala.xml.Node
+
 
 object VirtaOpiskeluoikeusRepository {
   def apply(config: Config, oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu) = new MockVirtaPalvelu(oppijaRepository, oppilaitosRepository, koodistoViitePalvelu)
@@ -44,7 +47,7 @@ class RemoteVirtaPalvelu(config: Config, val oppijaRepository: OppijaRepository)
 
 class MockVirtaPalvelu(val oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu) extends VirtaOpiskeluoikeusRepository {
 
-  def tutkintoSuoritus(opiskeluoikeus: Node) = {
+  def tutkintoSuoritus(opiskeluoikeus: Node, virtaXml: Node) = {
     (opiskeluoikeus \\ "Jakso" \\ "Koulutuskoodi").headOption.map { koulutuskoodi =>
       KorkeakouluTutkinnonSuoritus(
         koulutusmoduuli = KorkeakouluTutkinto(koodistoViitePalvelu.getKoodistoKoodiViite("koulutus", koulutuskoodi.text).getOrElse(throw new RuntimeException("missing koulutus: " + koulutuskoodi.text))),
@@ -53,15 +56,43 @@ class MockVirtaPalvelu(val oppijaRepository: OppijaRepository, oppilaitosReposit
         tila = Koodistokoodiviite("KESKEN", "suorituksentila"), // TODO, how to get this ???
         vahvistus = None,
         suorituskieli = None,
-        osasuoritukset = None
+        osasuoritukset = opintoSuoritukset(opiskeluoikeus, virtaXml)
       )
+    }
+  }
+
+  def opintoSuoritukset(opiskeluoikeus: Node, virtaXml: Node) = {
+    def nimi(suoritus: Node): LocalizedString = {
+      finnish((suoritus \\ "Nimi").filter(node => node.attribute("kieli").exists(_.text == "fi")).text)
+    }
+
+    (virtaXml \\ "Opintosuoritukset" \\ "Opintosuoritus").filter(suoritus => (suoritus \ "@opiskeluoikeusAvain").text == (opiskeluoikeus \ "@avain").text).map { suoritus =>
+      KorkeakoulunOpintojaksonSuoritus(
+        koulutusmoduuli = KorkeakoulunOpintojakso(
+          tunniste = Paikallinenkoodi(
+            (suoritus \\ "@koulutusmoduulitunniste").text,
+            nimi(suoritus),
+            "koodistoUri"), // hardcoded
+          nimi = nimi(suoritus),
+          laajuus = Some(LaajuusOsaamispisteissä(15)) // hardcoded
+        ),
+        paikallinenId = None,
+        arviointi = None,
+        tila = Koodistokoodiviite("VALMIS", "suorituksentila"),
+        vahvistus = None,
+        suorituskieli = None
+      )
+    }.toList match {
+      case Nil => None
+      case xs => Some(xs)
     }
   }
 
   override def findByHetu(hetu: String): List[KorkeakoulunOpiskeluoikeus] = {
     Files.asString("src/main/resources/mockdata/virta/" + hetu + ".xml") match {
       case Some(data) =>
-        (scala.xml.XML.loadString(data) \\ "Opiskeluoikeus").map { (opiskeluoikeus: Node) =>
+        val virtaXml = scala.xml.XML.loadString(data)
+        (virtaXml \\ "Opiskeluoikeus").map { (opiskeluoikeus: Node) =>
           KorkeakoulunOpiskeluoikeus(
             id = Some(new Random().nextInt()),
             versionumero = None,
@@ -71,7 +102,7 @@ class MockVirtaPalvelu(val oppijaRepository: OppijaRepository, oppilaitosReposit
             päättymispäivä = (opiskeluoikeus \ "LoppuPvm").headOption.map(loppu => LocalDate.parse(loppu.text)),
             oppilaitos = (opiskeluoikeus \ "Myontaja" \ "Koodi").headOption.flatMap(koodi => oppilaitosRepository.findByOppilaitosnumero(koodi.text)).getOrElse(throw new RuntimeException("missing oppilaitos")),
             koulutustoimija = None,
-            suoritukset = tutkintoSuoritus(opiskeluoikeus).toList,
+            suoritukset = tutkintoSuoritus(opiskeluoikeus, virtaXml).toList,
             tila = None,
             läsnäolotiedot = None
           )
