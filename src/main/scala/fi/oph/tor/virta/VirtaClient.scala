@@ -4,17 +4,18 @@ import com.typesafe.config.Config
 import fi.oph.tor.config.TorApplication
 import fi.oph.tor.http.Http
 
-import scala.xml.PrettyPrinter
+import scala.xml.{Elem, PrettyPrinter}
 
 // Client for the Virta Opintotietopalvelu, see https://confluence.csc.fi/display/VIRTA/VIRTA-opintotietopalvelu
 object VirtaClient extends App {
-  val hetulla: VirtaHakuehtoHetu = VirtaHakuehtoHetu("090888-929X")
+  val hetulla: VirtaHakuehtoHetu = VirtaHakuehtoHetu("010280-123A")
   val oppijanumerolla = VirtaHakuehtoKansallinenOppijanumero("aed09afd87a8c6d76b76bbd")
-  VirtaClient(VirtaConfig.fromConfig(TorApplication.defaultConfig)).fetchVirtaData(hetulla)
+  val result = VirtaClient(VirtaConfig.fromConfig(TorApplication.defaultConfig)).fetchVirtaData(hetulla)
+  println(new PrettyPrinter(200, 2).format(result))
 }
 
 case class VirtaClient(config: VirtaConfig) {
-  def fetchVirtaData(hakuehto: VirtaHakuehto) = {
+  def fetchVirtaData(hakuehto: VirtaHakuehto): Elem = {
     val hakuehdot = hakuehto match {
       case VirtaHakuehtoHetu(hetu) => <henkilotunnus>{hetu}</henkilotunnus>
       case VirtaHakuehtoKansallinenOppijanumero(oppijanumero) => <kansallinenOppijanumero>{oppijanumero}</kansallinenOppijanumero>
@@ -29,8 +30,7 @@ case class VirtaClient(config: VirtaConfig) {
       <Hakuehdot>{ hakuehdot }</Hakuehdot>
     </OpiskelijanKaikkiTiedotRequest></SOAP-ENV:Body>
     </SOAP-ENV:Envelope>
-    val result = Http(config.serviceUrl).post("", body)(Http.Encoders.xml, Http.parseXml)
-    println(new PrettyPrinter(200, 2).format(result))
+    Http(config.serviceUrl).post("", body)(Http.Encoders.xml, Http.parseXml)
   }
 }
 
