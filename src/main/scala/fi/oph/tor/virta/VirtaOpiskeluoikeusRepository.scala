@@ -20,9 +20,11 @@ import rx.lang.scala.Observable
 
 import scala.xml.Node
 
-
 object VirtaOpiskeluoikeusRepository {
-  def apply(config: Config, oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu) = new MockVirtaPalvelu(oppijaRepository, oppilaitosRepository, koodistoViitePalvelu)
+  def apply(config: Config, oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu) = config.hasPath("virta.serviceUrl") match {
+    case false => MockVirtaPalvelu(oppijaRepository, oppilaitosRepository, koodistoViitePalvelu)
+    case true => RemoteVirtaPalvelu(config, oppijaRepository, oppilaitosRepository, koodistoViitePalvelu)
+  }
 }
 
 trait VirtaOpiskeluoikeusRepository extends OpiskeluOikeusRepository {
@@ -37,15 +39,43 @@ trait VirtaOpiskeluoikeusRepository extends OpiskeluOikeusRepository {
   def findById(id: Int)(implicit user: TorUser): Option[(Opiskeluoikeus, String)] = None
   def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: Opiskeluoikeus)(implicit user: TorUser): Either[HttpStatus, CreateOrUpdateResult] = Left(TorErrorCategory.notImplemented.readOnly("Virta-järjestelmään ei voi päivittää tietoja Koskesta"))
 }
-
-class RemoteVirtaPalvelu(config: Config, val oppijaRepository: OppijaRepository) extends VirtaOpiskeluoikeusRepository {
+case class RemoteVirtaPalvelu(config: Config, val oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu) extends VirtaOpiskeluoikeusRepository {
   val virtaClient = VirtaClient(VirtaConfig.fromConfig(config))
 
-  override def findByHetu(hetu: String): List[KorkeakoulunOpiskeluoikeus] = ???
+  override def findByHetu(hetu: String): List[KorkeakoulunOpiskeluoikeus] =  {
+    val xmlData = virtaClient.fetchVirtaData(VirtaHakuehtoHetu(hetu))
+    VirtaXMLParser(oppijaRepository, oppilaitosRepository, koodistoViitePalvelu).parseVirtaXML(xmlData)
+  }
 }
 
+case class MockVirtaPalvelu(val oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu) extends VirtaOpiskeluoikeusRepository {
+  override def findByHetu(hetu: String): List[KorkeakoulunOpiskeluoikeus] = {
+    Files.asString("src/main/resources/mockdata/virta/" + hetu + ".xml") match {
+      case Some(data) =>
+        VirtaXMLParser(oppijaRepository, oppilaitosRepository, koodistoViitePalvelu).parseVirtaXML(scala.xml.XML.loadString(data))
+      case _ => Nil
+    }
+  }
+}
 
-class MockVirtaPalvelu(val oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu) extends VirtaOpiskeluoikeusRepository {
+case class VirtaXMLParser(oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu) {
+  def parseVirtaXML(virtaXml: Node) = {
+    (virtaXml \\ "Opiskeluoikeus").map { (opiskeluoikeus: Node) =>
+      KorkeakoulunOpiskeluoikeus(
+        id = Some(new Random().nextInt()),
+        versionumero = None,
+        lähdejärjestelmänId = None, // TODO virta
+        alkamispäivä = (opiskeluoikeus \ "AlkuPvm").headOption.map(alku => LocalDate.parse(alku.text)),
+        arvioituPäättymispäivä = None,
+        päättymispäivä = (opiskeluoikeus \ "LoppuPvm").headOption.map(loppu => LocalDate.parse(loppu.text)),
+        oppilaitos = (opiskeluoikeus \ "Myontaja" \ "Koodi").headOption.flatMap(koodi => oppilaitosRepository.findByOppilaitosnumero(koodi.text)).getOrElse(throw new RuntimeException("missing oppilaitos")),
+        koulutustoimija = None,
+        suoritukset = tutkintoSuoritus(opiskeluoikeus, virtaXml).toList,
+        tila = None,
+        läsnäolotiedot = None
+      )
+    }.toList
+  }
 
   def tutkintoSuoritus(opiskeluoikeus: Node, virtaXml: Node) = {
     (opiskeluoikeus \\ "Jakso" \\ "Koulutuskoodi").headOption.map { koulutuskoodi =>
@@ -85,29 +115,6 @@ class MockVirtaPalvelu(val oppijaRepository: OppijaRepository, oppilaitosReposit
     }.toList match {
       case Nil => None
       case xs => Some(xs)
-    }
-  }
-
-  override def findByHetu(hetu: String): List[KorkeakoulunOpiskeluoikeus] = {
-    Files.asString("src/main/resources/mockdata/virta/" + hetu + ".xml") match {
-      case Some(data) =>
-        val virtaXml = scala.xml.XML.loadString(data)
-        (virtaXml \\ "Opiskeluoikeus").map { (opiskeluoikeus: Node) =>
-          KorkeakoulunOpiskeluoikeus(
-            id = Some(new Random().nextInt()),
-            versionumero = None,
-            lähdejärjestelmänId = None, // TODO virta
-            alkamispäivä = (opiskeluoikeus \ "AlkuPvm").headOption.map(alku => LocalDate.parse(alku.text)),
-            arvioituPäättymispäivä = None,
-            päättymispäivä = (opiskeluoikeus \ "LoppuPvm").headOption.map(loppu => LocalDate.parse(loppu.text)),
-            oppilaitos = (opiskeluoikeus \ "Myontaja" \ "Koodi").headOption.flatMap(koodi => oppilaitosRepository.findByOppilaitosnumero(koodi.text)).getOrElse(throw new RuntimeException("missing oppilaitos")),
-            koulutustoimija = None,
-            suoritukset = tutkintoSuoritus(opiskeluoikeus, virtaXml).toList,
-            tila = None,
-            läsnäolotiedot = None
-          )
-        }.toList
-      case _ => Nil
     }
   }
 }

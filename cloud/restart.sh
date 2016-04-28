@@ -18,6 +18,7 @@ export JAVA_OPTS="\
 -Dopintopolku.virkailija.username=$AUTHENTICATION_SERVICE_USERNAME \
 -Dopintopolku.virkailija.password=$AUTHENTICATION_SERVICE_PASSWORD \
 -Deperusteet.url=\"https://eperusteet.opintopolku.fi/eperusteet-service\" \
+-Dvirta.serviceUrl="http://virtawstesti.csc.fi/luku/OpiskelijanTiedot" \
 "
 
 pkill java
