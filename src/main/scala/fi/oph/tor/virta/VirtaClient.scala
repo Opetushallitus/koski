@@ -3,19 +3,42 @@ package fi.oph.tor.virta
 import com.typesafe.config.Config
 import fi.oph.tor.config.TorApplication
 import fi.oph.tor.http.Http
+import fi.oph.tor.util.Files
 
 import scala.xml.{Elem, PrettyPrinter}
 
 // Client for the Virta Opintotietopalvelu, see https://confluence.csc.fi/display/VIRTA/VIRTA-opintotietopalvelu
-object VirtaClient extends App {
+object VirtaClientTester extends App {
   val hetulla: VirtaHakuehtoHetu = VirtaHakuehtoHetu("010280-123A")
   val oppijanumerolla = VirtaHakuehtoKansallinenOppijanumero("aed09afd87a8c6d76b76bbd")
-  val result = VirtaClient(VirtaConfig.fromConfig(TorApplication.defaultConfig)).fetchVirtaData(hetulla)
-  println(new PrettyPrinter(200, 2).format(result))
+  val result = VirtaClient(TorApplication.defaultConfig).fetchVirtaData(hetulla)
+  println(new PrettyPrinter(200, 2).format(result.get))
 }
 
-case class VirtaClient(config: VirtaConfig) {
-  def fetchVirtaData(hakuehto: VirtaHakuehto): Elem = {
+object VirtaClient {
+  def apply(config: Config) = config.hasPath("virta.serviceUrl") match {
+    case false => MockVirtaClient
+    case true => RemoteVirtaClient(VirtaConfig.fromConfig(config))
+  }
+}
+
+trait VirtaClient {
+  def fetchVirtaData(hakuehto: VirtaHakuehto): Option[Elem]
+}
+
+object MockVirtaClient extends VirtaClient {
+  override def fetchVirtaData(hakuehto: VirtaHakuehto) = {
+    hakuehto match {
+      case VirtaHakuehtoHetu(hetu) =>
+        Files.asString("src/main/resources/mockdata/virta/" + hetu + ".xml").map(scala.xml.XML.loadString)
+      case _ =>
+        throw new UnsupportedOperationException()
+    }
+  }
+}
+
+case class RemoteVirtaClient(config: VirtaConfig) extends VirtaClient {
+  def fetchVirtaData(hakuehto: VirtaHakuehto) = {
     val hakuehdot = hakuehto match {
       case VirtaHakuehtoHetu(hetu) => <henkilotunnus>{hetu}</henkilotunnus>
       case VirtaHakuehtoKansallinenOppijanumero(oppijanumero) => <kansallinenOppijanumero>{oppijanumero}</kansallinenOppijanumero>
@@ -30,7 +53,7 @@ case class VirtaClient(config: VirtaConfig) {
       <Hakuehdot>{ hakuehdot }</Hakuehdot>
     </OpiskelijanKaikkiTiedotRequest></SOAP-ENV:Body>
     </SOAP-ENV:Envelope>
-    Http(config.serviceUrl).post("", body)(Http.Encoders.xml, Http.parseXml)
+    Some(Http(config.serviceUrl).post("", body)(Http.Encoders.xml, Http.parseXml))
   }
 }
 

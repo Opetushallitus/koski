@@ -8,8 +8,7 @@ import org.http4s._
 import org.http4s.client.blaze.BlazeClientConfig
 import org.http4s.client.{Client, blaze}
 import org.http4s.headers.`Content-Type`
-import org.json4s.Formats
-import org.json4s.jackson.Serialization._
+
 import scala.concurrent.duration._
 import scala.xml.Elem
 import scalaz.concurrent.Task

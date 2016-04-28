@@ -8,19 +8,17 @@ import fi.oph.tor.http.{HttpStatus, TorErrorCategory}
 import scala.util.matching.Regex
 
 object Hetu {
-
   val checkChars = List('0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','H','J','K','L','M','N','P','R','S','T','U','V','W','X','Y')
   val hetuRegex: Regex = "^(0[1-9]|1[0-9]|2[0-9]|3[0-1])(0[1-9]|1[0-2])([0-9][0-9])(A|-|\\+)([0-9]{3})([0-9A-Y])$".r
 
-  def validate(hetu: String) = {
-
-    def validFormat(hetu: String) = {
-      hetuRegex.findFirstIn(hetu) match {
-        case Some(_) => Right(hetu)
-        case None => Left(TorErrorCategory.badRequest.validation.henkilötiedot.hetu("Virheellinen muoto hetulla: " + hetu))
-      }
+  def validFormat(hetu: String): Either[HttpStatus, String] with Product with Serializable = {
+    hetuRegex.findFirstIn(hetu) match {
+      case Some(_) => Right(hetu)
+      case None => Left(TorErrorCategory.badRequest.validation.henkilötiedot.hetu("Virheellinen muoto hetulla: " + hetu))
     }
+  }
 
+  def validate(hetu: String): Either[HttpStatus, String] = {
     def validDate(hetu: String) = {
       val century = hetu.lift(6) match {
         case Some('+') => Some(1800)
