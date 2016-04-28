@@ -2,8 +2,9 @@ package fi.oph.tor.virta
 
 import java.time.LocalDate
 import java.util.Random
+
 import com.typesafe.config.Config
-import fi.oph.tor.http.{TorErrorCategory, HttpStatus}
+import fi.oph.tor.http.{HttpStatus, TorErrorCategory}
 import fi.oph.tor.koodisto.KoodistoViitePalvelu
 import fi.oph.tor.opiskeluoikeus.{CreateOrUpdateResult, OpiskeluOikeusRepository}
 import fi.oph.tor.oppija.{OppijaRepository, PossiblyUnverifiedOppijaOid}
@@ -15,7 +16,6 @@ import fi.oph.tor.toruser.TorUser
 import fi.oph.tor.util.Files
 import rx.lang.scala.Observable
 
-import scala.RuntimeException
 import scala.xml.Node
 
 object VirtaOpiskeluoikeusRepository {
@@ -23,13 +23,14 @@ object VirtaOpiskeluoikeusRepository {
 }
 
 trait VirtaOpiskeluoikeusRepository extends OpiskeluOikeusRepository {
-  def oppijaRepository: OppijaRepository
-  def findByHetu(hetu: String): List[KorkeakoulunOpiskeluoikeus]
-  def getHetu(oid: String): Option[String] = oppijaRepository.findByOid(oid).map(_.hetu)
+  protected def oppijaRepository: OppijaRepository
+  protected def findByHetu(hetu: String): List[KorkeakoulunOpiskeluoikeus]
+  private def getHetu(oid: String): Option[String] = oppijaRepository.findByOid(oid).map(_.hetu)
+  private def findByHetuWithAccessCheck(hetu: String)(implicit user: TorUser) = findByHetu(hetu).filter(oo => user.hasReadAccess(oo.oppilaitos))
 
   def query(filters: List[QueryFilter])(implicit user: TorUser): Observable[(Oid, List[Opiskeluoikeus])] = Observable.empty
-  def filterOppijat(oppijat: Seq[TaydellisetHenkilötiedot])(implicit user: TorUser): Seq[TaydellisetHenkilötiedot] = oppijat.filter(oppija => !findByHetu(oppija.hetu).isEmpty)
-  def findByOppijaOid(oid: String)(implicit user: TorUser): Seq[Opiskeluoikeus] = getHetu(oid).toList.flatMap(hetu => findByHetu(hetu))
+  def filterOppijat(oppijat: Seq[TaydellisetHenkilötiedot])(implicit user: TorUser): Seq[TaydellisetHenkilötiedot] = oppijat.filter(oppija => !findByHetuWithAccessCheck(oppija.hetu).isEmpty)
+  def findByOppijaOid(oid: String)(implicit user: TorUser): Seq[Opiskeluoikeus] = getHetu(oid).toList.flatMap(hetu => findByHetuWithAccessCheck(hetu))
   def findById(id: Int)(implicit user: TorUser): Option[(Opiskeluoikeus, String)] = None
   def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: Opiskeluoikeus)(implicit user: TorUser): Either[HttpStatus, CreateOrUpdateResult] = Left(TorErrorCategory.notImplemented.readOnly("Virta-järjestelmään ei voi päivittää tietoja Koskesta"))
 }
