@@ -21,13 +21,17 @@ case class VirtaXMLParser(oppijaRepository: OppijaRepository, oppilaitosReposito
         alkamispäivä = (opiskeluoikeus \ "AlkuPvm").headOption.map(alku => LocalDate.parse(alku.text)),
         arvioituPäättymispäivä = None,
         päättymispäivä = (opiskeluoikeus \ "LoppuPvm").headOption.map(loppu => LocalDate.parse(loppu.text)),
-        oppilaitos = (opiskeluoikeus \ "Myontaja" \ "Koodi").headOption.flatMap(koodi => oppilaitosRepository.findByOppilaitosnumero(koodi.text)).getOrElse(throw new RuntimeException("missing oppilaitos")),
+        oppilaitos = (opiskeluoikeus \ "Myontaja" \ "Koodi").headOption.flatMap(koodi => findOppilaitos(koodi.text)).getOrElse(throw new RuntimeException("missing oppilaitos")),
         koulutustoimija = None,
         suoritukset = tutkintoSuoritus(opiskeluoikeus, virtaXml).toList,
         tila = None,
         läsnäolotiedot = None
       )
     }.toList
+  }
+
+  private def findOppilaitos(numero: String) = {
+    oppilaitosRepository.findByOppilaitosnumero(numero).orElse(throw new RuntimeException("Oppilaitosta ei löydy: " + numero))
   }
 
   def tutkintoSuoritus(opiskeluoikeus: Node, virtaXml: Node) = {
