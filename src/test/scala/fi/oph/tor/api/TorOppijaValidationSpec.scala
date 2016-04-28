@@ -272,14 +272,6 @@ class TorOppijaValidationSpec extends FunSpec with OpiskeluoikeusTestMethodsAmma
         }
       }
     }
-
-    describe("Korkeakoulun opiskeluoikeus") {
-      it("palautetaan HTTP 501") {
-        putOpiskeluOikeus(ExamplesKorkeakoulu.examples.head.data.opiskeluoikeudet.head) {
-          verifyResponseStatus(501, TorErrorCategory.notImplemented.readOnly("Korkeakoulutuksen opiskeluoikeuksia ei voi päivittää Koski-järjestelmässä"))
-        }
-      }
-    }
   }
 
   def putOpiskeluOikeusMerged[A](opiskeluOikeus: JValue, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
