@@ -3,7 +3,7 @@ package fi.oph.tor.schema
 import java.time.LocalDate
 import fi.oph.tor.localization.LocalizedStringImplicits._
 
-import fi.oph.scalaschema.annotation.{MaxItems, MinItems}
+import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems}
 
 case class KorkeakoulunOpiskeluoikeus(
   id: Option[Int],
@@ -25,7 +25,7 @@ case class KorkeakoulunOpiskeluoikeus(
 }
 
 case class KorkeakouluTutkinnonSuoritus(
-  koulutusmoduuli: Koulutusmoduuli,
+  koulutusmoduuli: KorkeakouluTutkinto,
   @KoodistoKoodiarvo("korkeakoulututkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulututkinto", koodistoUri = "suorituksentyyppi"),
   paikallinenId: Option[String],
@@ -35,6 +35,16 @@ case class KorkeakouluTutkinnonSuoritus(
   suorituskieli: Option[Koodistokoodiviite],
   override val osasuoritukset: Option[List[KorkeakoulunOpintosuoritus]]
 ) extends Suoritus
+
+@Description("Tutkintoon johtava koulutus")
+case class KorkeakouluTutkinto(
+  @Description("Tutkinnon 6-numeroinen tutkintokoodi")
+  @KoodistoUri("koulutus")
+  @OksaUri("tmpOKSAID560", "tutkinto")
+  tunniste: Koodistokoodiviite
+) extends KoodistostaLöytyväKoulutusmoduuli  {
+  override def laajuus = None
+}
 
 case class KorkeakoulunOpintosuoritus(
   koulutusmoduuli: Koulutusmoduuli,

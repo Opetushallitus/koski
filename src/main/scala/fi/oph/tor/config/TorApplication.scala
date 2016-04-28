@@ -44,7 +44,7 @@ class TorApplication(val config: Config) extends Logging {
   lazy val database = new TorDatabase(config)
   lazy val oppijaRepository = OppijaRepository(config, database, koodistoViitePalvelu)
   lazy val historyRepository = OpiskeluoikeusHistoryRepository(database.db)
-  lazy val virta = VirtaOpiskeluoikeusRepository(config, oppijaRepository, oppilaitosRepository)
+  lazy val virta = VirtaOpiskeluoikeusRepository(config, oppijaRepository, oppilaitosRepository, koodistoViitePalvelu)
   lazy val possu = TimedProxy[OpiskeluOikeusRepository](new PostgresOpiskeluOikeusRepository(database.db, historyRepository))
   lazy val opiskeluOikeusRepository = new CompositeOpiskeluOikeusRepository(List(possu, virta))
   lazy val validator: TorValidator = new TorValidator(tutkintoRepository, koodistoViitePalvelu, organisaatioRepository)
