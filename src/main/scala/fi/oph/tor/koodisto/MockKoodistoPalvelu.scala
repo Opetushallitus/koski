@@ -48,6 +48,7 @@ object MockKoodistoPalvelu extends KoodistoPalvelu {
     "suorituksentyyppi",
     "tutkintonimikkeet",
     "tutkinnonosat",
+    "virtaarvosana",
     "maatjavaltiot2"
   )
 

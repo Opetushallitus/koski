@@ -21,7 +21,7 @@ object MockOppijat {
   val koululainen = oppijat.oppija("Koululainen", "Kaisa", "110496-926Y")
   val lukiolainen = oppijat.oppija("Lukiolainen", "Liisa", "110496-9369")
   val ammattilainen = oppijat.oppija("Ammattilainen", "Aarne", "120496-949B")
-  val korkeakoululainen = oppijat.oppija("Korkeakoululainen", "Keijo", "270496-907N")
+  val korkeakoululainen = oppijat.oppija("Korkeakoululainen", "Keijo", "290492-9455")
 
   def defaultOppijat = oppijat.getOppijat
 }

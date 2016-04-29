@@ -21,7 +21,9 @@ case class VirtaXMLParser(oppijaRepository: OppijaRepository, oppilaitosReposito
         alkamispäivä = (opiskeluoikeus \ "AlkuPvm").headOption.map(alku => LocalDate.parse(alku.text)),
         arvioituPäättymispäivä = None,
         päättymispäivä = (opiskeluoikeus \ "LoppuPvm").headOption.map(loppu => LocalDate.parse(loppu.text)),
-        oppilaitos = (opiskeluoikeus \ "Myontaja" \ "Koodi").headOption.flatMap(koodi => findOppilaitos(koodi.text)).getOrElse(throw new RuntimeException("missing oppilaitos")),
+        oppilaitos = (opiskeluoikeus \ "Myontaja" \ "Koodi").headOption.orElse(opiskeluoikeus \ "Myontaja" headOption).flatMap(
+          koodi => findOppilaitos(koodi.text)
+        ).getOrElse(throw new RuntimeException("missing oppilaitos")),
         koulutustoimija = None,
         suoritukset = tutkintoSuoritus(opiskeluoikeus, virtaXml).toList,
         tila = None,
@@ -64,7 +66,12 @@ case class VirtaXMLParser(oppijaRepository: OppijaRepository, oppilaitosReposito
           laajuus = Some(LaajuusOsaamispisteissä(15)) // hardcoded
         ),
         paikallinenId = None,
-        arviointi = None,
+        arviointi = koodistoViitePalvelu.getKoodistoKoodiViite("virtaarvosana", suoritus \ "Arvosana" text).map( arvosana =>
+          List(KorkeakoulunArviointi(
+            arvosana = arvosana,
+            päivä = Some(LocalDate.parse(suoritus \ "SuoritusPvm" text))
+          ))
+        ),
         tila = Koodistokoodiviite("VALMIS", "suorituksentila"),
         vahvistus = None,
         suorituskieli = None

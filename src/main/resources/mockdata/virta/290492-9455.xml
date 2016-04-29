@@ -1,0 +1,910 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+    <SOAP-ENV:Header/>
+    <SOAP-ENV:Body>
+        <virtaluku:OpiskelijanKaikkiTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
+            <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2015/09/01">
+                <virta:Opiskelija avain="1114082124">
+                    <virta:Henkilotunnus>290492-9455</virta:Henkilotunnus>
+                    <virta:Opiskeluoikeudet>
+                        <virta:Opiskeluoikeus opiskelijaAvain="1114082124" avain="1114082125">
+                            <virta:AlkuPvm>2013-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2016-03-22</virta:LoppuPvm>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2013-08-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2016-03-21</virta:LoppuPvm>
+                                <virta:Koodi>1</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2016-03-22</virta:AlkuPvm>
+                                <virta:Koodi>3</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tyyppi>4</virta:Tyyppi>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Jakso valtakunnallinenKoulutusmoduulitunniste="" koulutusmoduulitunniste="2/TS-2005/751999/KON2/IA302/MP18">
+                                <virta:AlkuPvm>2013-08-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2016-03-22</virta:LoppuPvm>
+                                <virta:Koulutuskoodi>751101</virta:Koulutuskoodi>
+                                <virta:Koulutuskunta>049</virta:Koulutuskunta>
+                                <virta:Rahoituslahde>5</virta:Rahoituslahde>
+                            </virta:Jakso>
+                            <virta:Ensisijaisuus>
+                                <virta:AlkuPvm>2013-08-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2016-03-22</virta:LoppuPvm>
+                            </virta:Ensisijaisuus>
+                            <virta:Koulutusala versio="opm95opa">89</virta:Koulutusala>
+                        </virta:Opiskeluoikeus>
+                    </virta:Opiskeluoikeudet>
+                    <virta:LukukausiIlmoittautumiset>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124">
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2015-06-20</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2016-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2016-07-31</virta:LoppuPvm>
+                            <virta:YlioppilaskuntaJasen>1</virta:YlioppilaskuntaJasen>
+                            <virta:YTHSMaksu>1</virta:YTHSMaksu>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124">
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2014-08-06</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+                            <virta:YlioppilaskuntaJasen>1</virta:YlioppilaskuntaJasen>
+                            <virta:YTHSMaksu>1</virta:YTHSMaksu>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124">
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2013-09-02</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2014-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2014-07-31</virta:LoppuPvm>
+                            <virta:YlioppilaskuntaJasen>1</virta:YlioppilaskuntaJasen>
+                            <virta:YTHSMaksu>1</virta:YTHSMaksu>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124">
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2013-09-02</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2013-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2013-12-31</virta:LoppuPvm>
+                            <virta:YlioppilaskuntaJasen>1</virta:YlioppilaskuntaJasen>
+                            <virta:YTHSMaksu>1</virta:YTHSMaksu>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124">
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2015-06-20</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2015-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2015-12-31</virta:LoppuPvm>
+                            <virta:YlioppilaskuntaJasen>1</virta:YlioppilaskuntaJasen>
+                            <virta:YTHSMaksu>1</virta:YTHSMaksu>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124">
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2014-08-06</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2015-07-31</virta:LoppuPvm>
+                            <virta:YlioppilaskuntaJasen>1</virta:YlioppilaskuntaJasen>
+                            <virta:YTHSMaksu>1</virta:YTHSMaksu>
+                        </virta:LukukausiIlmoittautuminen>
+                    </virta:LukukausiIlmoittautumiset>
+                    <virta:Opintosuoritukset>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kul-49.3400" avain="1114935190">
+                            <virta:SuoritusPvm>2014-05-30</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>5</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Dynamics of Structures; lectures and exercises L</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kon-41.4207" avain="1122409476">
+                            <virta:SuoritusPvm>2015-05-20</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>CAE Project</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kie-98.7009" avain="1116014099">
+                            <virta:SuoritusPvm>2013-11-21</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>1.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Get to know Finland</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kon-67.4206" avain="1116262555">
+                            <virta:SuoritusPvm>2014-06-23</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Design and Analysis of Welded Structures</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kul-49.4350" avain="1119433855">
+                            <virta:SuoritusPvm>2015-02-16</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>5</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Rakenteiden väsyminen L</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="K901-D" avain="1125735061">
+                            <virta:SuoritusPvm>2016-03-21</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>30.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Diplomityö (KON)</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1125712277">
+                                <virta:Opintopiste>30.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1125568099">
+                                <virta:Opintopiste>0.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="IA3027" avain="1125491590">
+                            <virta:SuoritusPvm>2015-12-04</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>65.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Mechanical Engineering</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1124983451">
+                                <virta:Opintopiste>20.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1124983940">
+                                <virta:Opintopiste>25.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1124983404">
+                                <virta:Opintopiste>20.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Ene-39.4031" avain="1117523860">
+                            <virta:SuoritusPvm>2014-02-16</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Kitkallinen virtaus L</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kul-49.4100" avain="1118809391">
+                            <virta:SuoritusPvm>2014-12-16</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>5</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Elementtimenetelmä II L</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="K420-3" avain="1124983940">
+                            <virta:SuoritusPvm>2015-02-19</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>25.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>5</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Mechanics of Materials</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1115039064">
+                                <virta:Opintopiste>5.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1121747356">
+                                <virta:Opintopiste>5.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1118809391">
+                                <virta:Opintopiste>5.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1114935190">
+                                <virta:Opintopiste>5.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1119433855">
+                                <virta:Opintopiste>5.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kon-41.4001" avain="1123839777">
+                            <virta:SuoritusPvm>2015-12-04</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>5</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Product Development P</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kie-98.4011" avain="1120018761">
+                            <virta:SuoritusPvm>2014-10-21</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Ranska 1A</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kon-67.4208" avain="1116262320">
+                            <virta:SuoritusPvm>2014-06-23</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Welding Methods and Production</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kul-49.3300" avain="1116262478">
+                            <virta:SuoritusPvm>2014-04-15</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Finite Element Method I</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="K901-M" avain="1124983455">
+                            <virta:SuoritusPvm>2014-09-05</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>12.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Tieteen metodiikan opinnot (KON)</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1116014099">
+                                <virta:Opintopiste>1.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1115679582">
+                                <virta:Opintopiste>2.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1117457758">
+                                <virta:Opintopiste>2.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1119759428">
+                                <virta:Opintopiste>5.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1117973075">
+                                <virta:Opintopiste>2.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="T-61.5010" avain="1119759428">
+                            <virta:SuoritusPvm>2014-09-05</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Information Visualization L</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kul-24.3710" avain="1122650777">
+                            <virta:SuoritusPvm>2015-05-31</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Potential Flow Theory for Lifting Surfaces</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="K410-3" avain="1124983404">
+                            <virta:SuoritusPvm>2015-12-04</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>20.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>5</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Product Development</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1123839777">
+                                <virta:Opintopiste>5.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1116499397">
+                                <virta:Opintopiste>5.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1115044847">
+                                <virta:Opintopiste>10.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kon-80.3125" avain="1118822265">
+                            <virta:SuoritusPvm>2014-12-21</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Castings</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kon-41.4002" avain="1115044847">
+                            <virta:SuoritusPvm>2014-05-22</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>10.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>5</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Product Development Project P</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Eri-0.5014" avain="1115679582">
+                            <virta:SuoritusPvm>2013-12-13</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Searching for Scientific Information</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="MEN.thes" avain="1125712277">
+                            <virta:SuoritusPvm>2016-03-21</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>30.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Diplomityö</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>1</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kon-67.3401" avain="1121747356">
+                            <virta:SuoritusPvm>2015-02-19</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>5</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Rakenneaineet jännitysten ja ympäristön vaikutusten alaisina</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kie-98.7011" avain="1117457758">
+                            <virta:SuoritusPvm>2014-02-20</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Suomi 1A</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kon-41.3006" avain="1118426546">
+                            <virta:SuoritusPvm>2014-04-28</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Computer Aided Design Basic Course</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kie-98.7012" avain="1117973075">
+                            <virta:SuoritusPvm>2014-04-08</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Suomi 1B</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Ene-39.4037" avain="1118941720">
+                            <virta:SuoritusPvm>2015-02-17</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>7.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Laskennallisen virtausmekaniikan ja lämmönsiirron perusteet L</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="" opiskelijaAvain="1114082124" koulutusmoduulitunniste="DI-2005" avain="1125491744">
+                            <virta:SuoritusPvm>2016-03-22</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>123.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="310">
+                                        <virta:Nimi>OIV · Perustutkinnot</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="311">
+                                            <virta:Koodi>OIV</virta:Koodi>
+                                            <virta:LaskennallinenArvo>0.000000</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                        <virta:AsteikkoArvosana avain="319">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:LaskennallinenArvo>0.000000</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                        <virta:AsteikkoArvosana avain="310">
+                                            <virta:Koodi>HYL</virta:Koodi>
+                                            <virta:LaskennallinenArvo>0.000000</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
+                                    <virta:Koodi>311</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>1</virta:Laji>
+                            <virta:Nimi>Diplomi-insinööri</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutuskoodi>751101</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1124983546">
+                                <virta:Opintopiste>16.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1125735061">
+                                <virta:Opintopiste>30.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1125491590">
+                                <virta:Opintopiste>65.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1124983455">
+                                <virta:Opintopiste>12.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kul-34.3600" avain="1119289707">
+                            <virta:SuoritusPvm>2015-01-12</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Composite Structures</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kul-34.4700" avain="1114957060">
+                            <virta:SuoritusPvm>2015-05-12</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>2</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Lightweight Structures P</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kon-41.3131" avain="1122409478">
+                            <virta:SuoritusPvm>2015-05-28</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Mechatronics Exercises</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="K901-W" avain="1124983546">
+                            <virta:SuoritusPvm>2015-05-28</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>16.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Vapaasti valittavat opinnot (KON)</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1118941720">
+                                <virta:Opintopiste>7.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1114970443">
+                                <virta:Opintopiste>5.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1122409478">
+                                <virta:Opintopiste>4.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kul-49.5100" avain="1115039064">
+                            <virta:SuoritusPvm>2014-07-08</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Lujuusopin lisensiaattiseminaari L</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                            <virta:JulkinenLisatieto>Theory of Elasticity</virta:JulkinenLisatieto>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="TU-91.2041" avain="1116499397">
+                            <virta:SuoritusPvm>2014-06-05</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Research and Development (R&amp;D) Management</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="ENG.matr" avain="1125568099">
+                            <virta:SuoritusPvm>2016-03-08</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>0.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Kypsyysnäyte</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Ene-39.4054" avain="1120778476">
+                            <virta:SuoritusPvm>2015-08-31</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>6.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Virtaussimulointi L</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kul-24.4200" avain="1114970443">
+                            <virta:SuoritusPvm>2013-11-18</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Introduction to Risk Analysis of Structure P</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kon-15.4101" avain="1118898605">
+                            <virta:SuoritusPvm>2014-12-28</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Digital Manufacturing</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="K430-3" avain="1124983451">
+                            <virta:SuoritusPvm>2015-05-20</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>20.000000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10076</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi>Digital Design and Manufacturing</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                                <virta:Osuus>1.000000</virta:Osuus>
+                            </virta:Koulutusala>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1118426546">
+                                <virta:Opintopiste>5.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1118898605">
+                                <virta:Opintopiste>4.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1122409476">
+                                <virta:Opintopiste>3.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1118822265">
+                                <virta:Opintopiste>4.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1116262320">
+                                <virta:Opintopiste>4.000000</virta:Opintopiste>
+                            </virta:Sisaltyvyys>
+                            <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                        </virta:Opintosuoritus>
+                    </virta:Opintosuoritukset>
+                </virta:Opiskelija>
+            </virta:Virta>
+        </virtaluku:OpiskelijanKaikkiTiedotResponse>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

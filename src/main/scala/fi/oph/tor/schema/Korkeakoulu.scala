@@ -52,7 +52,7 @@ case class KorkeakoulunOpintojaksonSuoritus(
   @KoodistoKoodiarvo("korkeakoulunopintojaksonsuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulunopintojaksonsuoritus", koodistoUri = "suorituksentyyppi"),
   paikallinenId: Option[String],
-  arviointi: Option[List[Arviointi]],
+  arviointi: Option[List[KorkeakoulunArviointi]],
   tila: Koodistokoodiviite,
   vahvistus: Option[Vahvistus],
   suorituskieli: Option[Koodistokoodiviite]
@@ -74,3 +74,12 @@ case class KorkeakoulunOpiskeluoikeusjakso(
   loppu: Option[LocalDate],
   tila: Koodistokoodiviite
 ) extends Opiskeluoikeusjakso
+
+
+case class KorkeakoulunArviointi(
+  @KoodistoUri("virtaarvosana")
+  arvosana: Koodistokoodiviite,
+  päivä: Option[LocalDate]
+) extends Arviointi {
+  override def arvioitsijat: Option[List[Arvioitsija]] = None
+}

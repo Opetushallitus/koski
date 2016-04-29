@@ -1,0 +1,13 @@
+{
+  "koodistoUri" : "virtaarvosana",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "VIRTA Arvosana",
+    "kuvaus" : "Arvosana (ks. https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot)",
+    "kasite" : ""
+  } ],
+  "codesGroupUri" : "http://virta",
+  "voimassaAlkuPvm" : "2014-11-01",
+  "organisaatioOid" : "1.2.246.562.10.2013112012294919827487"
+}

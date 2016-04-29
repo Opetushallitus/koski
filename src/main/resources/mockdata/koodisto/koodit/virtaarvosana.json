@@ -1,0 +1,154 @@
+[ {
+  "koodiUri" : "virtaarvosana_a",
+  "koodiArvo" : "A",
+  "metadata" : [ {
+    "nimi" : "approbatur",
+    "lyhytNimi" : "A",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaarvosana_tt",
+  "koodiArvo" : "TT",
+  "metadata" : [ {
+    "nimi" : "tyydyttävät tiedot",
+    "lyhytNimi" : "TT",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaarvosana_2",
+  "koodiArvo" : "2",
+  "metadata" : [ {
+    "nimi" : "2",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaarvosana_n",
+  "koodiArvo" : "N",
+  "metadata" : [ {
+    "nimi" : "non sine laude approbatur",
+    "lyhytNimi" : "N",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaarvosana_4",
+  "koodiArvo" : "4",
+  "metadata" : [ {
+    "nimi" : "4",
+    "lyhytNimi" : "4",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaarvosana_kh",
+  "koodiArvo" : "KH",
+  "metadata" : [ {
+    "nimi" : "kiittäen hyväksytty",
+    "lyhytNimi" : "KH",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaarvosana_5",
+  "koodiArvo" : "5",
+  "metadata" : [ {
+    "nimi" : "5",
+    "lyhytNimi" : "5",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaarvosana_hyv",
+  "koodiArvo" : "HYV",
+  "metadata" : [ {
+    "nimi" : "hyväksytty",
+    "lyhytNimi" : "HYV",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaarvosana_b",
+  "koodiArvo" : "B",
+  "metadata" : [ {
+    "nimi" : "lubenter approbatur",
+    "lyhytNimi" : "B",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaarvosana_l",
+  "koodiArvo" : "L",
+  "metadata" : [ {
+    "nimi" : "laudatur",
+    "lyhytNimi" : "L",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaarvosana_c",
+  "koodiArvo" : "C",
+  "metadata" : [ {
+    "nimi" : "cum laude approbatur",
+    "lyhytNimi" : "C",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaarvosana_3",
+  "koodiArvo" : "3",
+  "metadata" : [ {
+    "nimi" : "3",
+    "lyhytNimi" : "3",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaarvosana_m",
+  "koodiArvo" : "M",
+  "metadata" : [ {
+    "nimi" : "magna cum laude approbatur",
+    "lyhytNimi" : "M",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaarvosana_e",
+  "koodiArvo" : "E",
+  "metadata" : [ {
+    "nimi" : "eximia cum laude approbatur",
+    "lyhytNimi" : "E",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaarvosana_arvosanaeikaytossa",
+  "koodiArvo" : "Arvosana ei kaytossa",
+  "metadata" : [ {
+    "nimi" : "Arvosana ei käytössä",
+    "lyhytNimi" : "EiKaytossa",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaarvosana_1",
+  "koodiArvo" : "1",
+  "metadata" : [ {
+    "nimi" : "1",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaarvosana_ht",
+  "koodiArvo" : "HT",
+  "metadata" : [ {
+    "nimi" : "hyvät tiedot",
+    "lyhytNimi" : "HT",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+} ]
