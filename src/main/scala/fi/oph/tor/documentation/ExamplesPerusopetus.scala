@@ -43,7 +43,6 @@ object ExamplesPerusopetus {
       versionumero = None,
       lähdejärjestelmänId = None,
       alkamispäivä = Some(date(2016, 9, 1)),
-      arvioituPäättymispäivä = Some(date(2020, 5, 1)),
       päättymispäivä = None,
       oppilaitos = jyväskylänNormaalikoulu, None,
       suoritukset = Nil,
@@ -65,7 +64,6 @@ object ExamplesPerusopetus {
       versionumero = None,
       lähdejärjestelmänId = None,
       alkamispäivä = Some(date(2007, 8, 15)),
-      arvioituPäättymispäivä = Some(date(2016, 6, 4)),
       päättymispäivä = Some(date(2016, 6, 4)),
       oppilaitos = jyväskylänNormaalikoulu, None,
       suoritukset = List(

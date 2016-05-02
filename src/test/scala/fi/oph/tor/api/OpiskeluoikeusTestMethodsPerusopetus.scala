@@ -11,7 +11,7 @@ trait OpiskeluoikeusTestMethodsPerusopetus extends OpiskeluOikeusTestMethods[Per
   val vahvistus: Some[Vahvistus] = Some(Vahvistus(date(2016, 6, 4), jyväskylä, jyväskylänNormaalikoulu, List(OrganisaatioHenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))
 
   override def defaultOpiskeluoikeus = PerusopetuksenOpiskeluoikeus(
-    id = None, versionumero = None, lähdejärjestelmänId = None, alkamispäivä = None, arvioituPäättymispäivä = None, päättymispäivä = None,
+    id = None, versionumero = None, lähdejärjestelmänId = None, alkamispäivä = None, päättymispäivä = None,
     oppilaitos = jyväskylänNormaalikoulu, koulutustoimija = None,
     suoritukset = List(päättötodistusSuoritus),
     tila = None, läsnäolotiedot = None

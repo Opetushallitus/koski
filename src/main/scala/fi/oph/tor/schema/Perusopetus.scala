@@ -12,7 +12,6 @@ case class PerusopetuksenOpiskeluoikeus(
   versionumero: Option[Int],
   lähdejärjestelmänId: Option[LähdejärjestelmäId],
   alkamispäivä: Option[LocalDate],
-  arvioituPäättymispäivä: Option[LocalDate],
   päättymispäivä: Option[LocalDate],
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OrganisaatioWithOid],
@@ -24,6 +23,7 @@ case class PerusopetuksenOpiskeluoikeus(
 ) extends Opiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
+  override def arvioituPäättymispäivä = None
 }
 
 case class PerusopetuksenOppimääränSuoritus(
