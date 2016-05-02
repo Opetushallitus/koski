@@ -1,6 +1,6 @@
 # Koski
 
-Todennetun osaamisen rekisteri (aiemmin TOR) tulee toimimaan kattavana opetustoimialan tietovarantona, joka tarjoaa
+Koski (aiemmin TOR) tulee toimimaan kattavana opetustoimialan tietovarantona, joka tarjoaa
 tutkintoon johtavat suoritustiedot eri koulutusasteilta. Yleinen Koski-dokumentaatio kootaan CSC:n wikiin: https://confluence.csc.fi/display/OPHPALV/Koski
 
 Tässä git-repositoriossa on Koski-järjestelmän ohjelmakoodi, tietokannan rakennuslausekkeet ja tekninen dokumentaatio ohjelmistokehitystä varten.
