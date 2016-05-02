@@ -11,7 +11,7 @@ object TorTiedonSiirtoHtml {
 
 # Koski-tiedonsiirtoprotokolla
 
-Tässä dokumentissa kuvataan Koski-järjestelmän tiedonsiirrossa käytettävä protokolla.
+Tässä dokumentissa kuvataan Koski-järjestelmän tiedonsiirrossa käytettävä protokolla. Lisätietoja Koski-järjestelmästä löydät [Opetushallituksen wiki-sivustolta](https://confluence.csc.fi/display/OPHPALV/Koski). Järjestelmän lähdekoodit ja kehitysdokumentaatio [Githubissa](https://github.com/Opetushallitus/koski).
 
 Protokolla, kuten Koski-järjestelmäkin, on työn alla, joten kaikki voi vielä muuttua.
 
