@@ -13,6 +13,10 @@ import fi.oph.tor.schema._
 import scala.xml.Node
 case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu) {
   def convert(virtaXml: Node): List[KorkeakoulunOpiskeluoikeus] = {
+    def findOppilaitos(numero: String) = {
+      oppilaitosRepository.findByOppilaitosnumero(numero).orElse(throw new RuntimeException("Oppilaitosta ei löydy: " + numero))
+    }
+
     (virtaXml \\ "Opiskeluoikeus").map { (opiskeluoikeus: Node) =>
       KorkeakoulunOpiskeluoikeus(
         id = Some(new Random().nextInt()),
@@ -32,11 +36,14 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
     }.toList
   }
 
-  private def findOppilaitos(numero: String) = {
-    oppilaitosRepository.findByOppilaitosnumero(numero).orElse(throw new RuntimeException("Oppilaitosta ei löydy: " + numero))
-  }
-
   private def tutkintoSuoritukset(opiskeluoikeus: Node, virtaXml: Node) = {
+    def tutkinto(koulutuskoodi: String): KorkeakouluTutkinto = {
+      KorkeakouluTutkinto(koodistoViitePalvelu.getKoodistoKoodiViite("koulutus", koulutuskoodi).getOrElse(throw new scala.RuntimeException("missing koulutus: " + koulutuskoodi)))
+    }
+    def opintojaksonSuoritukset(opiskeluoikeus: Node, virtaXml: Node) = {
+      buildHierarchy(suoritusNodes(opiskeluoikeus, virtaXml).filter(laji(_) == "2"))
+    }
+
     val tutkintosuoritusNodes: List[Node] = suoritusNodes(opiskeluoikeus, virtaXml).filter(laji(_) == "1")
     tutkintosuoritusNodes match {
       case Nil =>
@@ -48,7 +55,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
             tila = Koodistokoodiviite("KESKEN", "suorituksentila"),
             vahvistus = None,
             suorituskieli = None,
-            osasuoritukset = optionalList(opintoSuoritukset(opiskeluoikeus, virtaXml))
+            osasuoritukset = optionalList(opintojaksonSuoritukset(opiskeluoikeus, virtaXml))
           )
         }.toList
       case _ =>
@@ -61,53 +68,16 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
               tila = Koodistokoodiviite("VALMIS", "suorituksentila"),
               vahvistus = None,
               suorituskieli = None,
-              osasuoritukset = optionalList(opintoSuoritukset(opiskeluoikeus, virtaXml))
+              osasuoritukset = optionalList(opintojaksonSuoritukset(opiskeluoikeus, virtaXml))
             )
           }
         }
     }
   }
 
-  def tutkinto(koulutuskoodi: String): KorkeakouluTutkinto = {
-    KorkeakouluTutkinto(koodistoViitePalvelu.getKoodistoKoodiViite("koulutus", koulutuskoodi).getOrElse(throw new scala.RuntimeException("missing koulutus: " + koulutuskoodi)))
-  }
-
-  private def avain(node: Node) = {
-    (node \ "@avain").text
-  }
-
-  private def myöntäjä(node: Node) = {
-    (node \ "Myontaja").text
-  }
-
-  private def laji(node: Node) = {
-    (node \ "Laji").text
-  }
-
-  private def koulutuskoodi(node: Node) = {
-    (node \\ "Koulutuskoodi").headOption.map(_.text)
-  }
-
-  private def sisältyvyysAvain(sisaltyvyysNode: Node) = {
-    (sisaltyvyysNode \ "@sisaltyvaOpintosuoritusAvain").text
-  }
-
-  private def nimi(suoritus: Node): LocalizedString = {
-    sanitize((suoritus \\ "Nimi" map (nimi => (nimi \ "@kieli" text, nimi text))).toMap).getOrElse(finnish("Suoritus: " + avain(suoritus)))
-  }
-
-  private def opintoSuoritukset(opiskeluoikeus: Node, virtaXml: Node) = {
-    def onAlisuoritus(suoritus: Node): Boolean = {
-      val sisältyvyydet: List[String] = (virtaXml \\ "Opintosuoritus" \\ "Sisaltyvyys").toList.map(sisältyvyysAvain)
-      val a = avain(suoritus)
-      sisältyvyydet.contains(a)
-    }
-    kaikkiSuoritukset(opiskeluoikeus, virtaXml)
-  }
-
   private def buildHierarchy(suoritukset: List[Node]): List[KorkeakoulunOpintojaksonSuoritus] = {
     def sisaltyvatAvaimet(node: Node) = {
-      (node \ "Sisaltyvyys").toList.map(sisältyvyysAvain)
+      (node \ "Sisaltyvyys").toList.map(sisaltyvyysNode => (sisaltyvyysNode \ "@sisaltyvaOpintosuoritusAvain").text)
     }
     def isRoot(node: Node) = {
       !suoritukset.find(sisaltyvatAvaimet(_).contains(avain(node))).isDefined
@@ -127,15 +97,11 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
     suoritukset.filter(isRoot).map(buildHierarchyFromNode)
   }
 
-  private def kaikkiSuoritukset(opiskeluoikeus: Node, virtaXml: Node): List[KorkeakoulunOpintojaksonSuoritus] = {
-    buildHierarchy(suoritusNodes(opiskeluoikeus, virtaXml).filter(laji(_) == "2"))
-  }
-
   private def suoritusNodes(opiskeluoikeus: Node, virtaXml: Node): List[Node] = {
     def sisältyyOpiskeluoikeuteen(suoritus: Node): Boolean = {
       val opiskeluoikeusAvain: String = (suoritus \ "@opiskeluoikeusAvain").text
       opiskeluoikeusAvain match {
-        case "" => myöntäjä(suoritus) == myöntäjä(opiskeluoikeus)
+        case "" => myöntäjä(suoritus) == myöntäjä(opiskeluoikeus) // Jos suorituksella ei ole linkkiä opiskeluoikeuteen, oletetaan sen kuuluvan saman oppilaitoksen opiskeluoikeuteen
         case _ => opiskeluoikeusAvain == avain(opiskeluoikeus)
       }
     }
@@ -167,5 +133,25 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
   private def optionalList[A](list: List[A]): Option[List[A]] = list match {
     case Nil => None
     case _ => Some(list)
+  }
+
+  private def avain(node: Node) = {
+    (node \ "@avain").text
+  }
+
+  private def myöntäjä(node: Node) = {
+    (node \ "Myontaja").text
+  }
+
+  private def laji(node: Node) = {
+    (node \ "Laji").text
+  }
+
+  private def koulutuskoodi(node: Node) = {
+    (node \\ "Koulutuskoodi").headOption.map(_.text)
+  }
+
+  private def nimi(suoritus: Node): LocalizedString = {
+    sanitize((suoritus \\ "Nimi" map (nimi => (nimi \ "@kieli" text, nimi text))).toMap).getOrElse(finnish("Suoritus: " + avain(suoritus)))
   }
 }
