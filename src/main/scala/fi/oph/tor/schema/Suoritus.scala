@@ -32,4 +32,5 @@ trait Suoritus {
   }
   def arvosanaKirjaimin = arviointi.toList.flatten.lastOption.map(_.arvosanaKirjaimin).getOrElse(unlocalized(""))
   def arvosanaNumeroin = arviointi.toList.flatten.lastOption.flatMap(_.arvosanaNumeroin).getOrElse("")
+  def tarvitseeVahvistuksen = true
 }

@@ -100,7 +100,7 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
           case Nil => HttpStatus.ok
           case _ =>
             osasuoritustenLaajuudet.map(_.arvo).sum match {
-              case summa if summa == laajuus =>
+              case summa if summa == laajuus.arvo =>
                 HttpStatus.ok
               case summa =>
                 TorErrorCategory.badRequest.validation.laajudet.osasuoritustenLaajuuksienSumma("Suorituksen " + suorituksenTunniste(suoritus) + " osasuoritusten laajuuksien summa " + summa + " ei vastaa suorituksen laajuutta " + laajuus.arvo)
@@ -117,7 +117,7 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
     val tilaValmis: Boolean = suoritus.tila.koodiarvo == "VALMIS"
     if (hasVahvistus && !tilaValmis) {
       TorErrorCategory.badRequest.validation.tila.vahvistusVäärässäTilassa("Suorituksella " + suorituksenTunniste(suoritus) + " on vahvistus, vaikka suorituksen tila on " + suoritus.tila.koodiarvo)
-    } else if (!hasVahvistus && tilaValmis && !parentVahvistus.isDefined) {
+    } else if (suoritus.tarvitseeVahvistuksen && !hasVahvistus && tilaValmis && !parentVahvistus.isDefined) {
       TorErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta " + suorituksenTunniste(suoritus) + " puuttuu vahvistus, vaikka suorituksen tila on " + suoritus.tila.koodiarvo)
     } else {
       (tilaValmis, suoritus.rekursiivisetOsasuoritukset.find(_.tila.koodiarvo == "KESKEN")) match {

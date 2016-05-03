@@ -82,5 +82,30 @@
       }
     ],
     "versio": 1
+  },
+  {
+    "koodiUri": "suorituksentyyppi_korkeakoulututkinto",
+    "koodiArvo": "korkeakoulututkinto",
+    "metadata": [
+      {
+        "nimi": "Korkeakoulututkinto",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "suorituksentyyppi_korkeakoulunopintojakso",
+    "koodiArvo": "korkeakoulunopintojakso",
+    "metadata": [
+      {
+        "nimi": "Korkeakoulun opintojakso",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
   }
+
 ]
