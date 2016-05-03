@@ -45,37 +45,108 @@ case class VirtaXMLParser(oppijaRepository: OppijaRepository, oppilaitosReposito
         tila = Koodistokoodiviite("KESKEN", "suorituksentila"), // TODO, how to get this ???
         vahvistus = None,
         suorituskieli = None,
-        osasuoritukset = opintoSuoritukset(opiskeluoikeus, virtaXml)
+        osasuoritukset = optionalList(opintoSuoritukset(opiskeluoikeus, virtaXml))
       )
     }
   }
 
-  def opintoSuoritukset(opiskeluoikeus: Node, virtaXml: Node) = {
-    def nimi(suoritus: Node): LocalizedString = {
-      sanitize((suoritus \\ "Nimi" map (nimi => (nimi \ "@kieli" text, nimi text))).toMap).getOrElse(finnish("Suoritus: " + (suoritus \ "@avain" text)))
+
+  private def avain(node: Node) = {
+    (node \ "@avain").text
+  }
+
+  private def myöntäjä(node: Node) = {
+    (node \ "Myontaja").text
+  }
+
+  private def laji(node: Node) = {
+    (node \ "Laji").text
+  }
+
+  private def sisältyvyysAvain(sisaltyvyysNode: Node) = {
+    (sisaltyvyysNode \ "@sisaltyvaOpintosuoritusAvain").text
+  }
+
+  private def nimi(suoritus: Node): LocalizedString = {
+    sanitize((suoritus \\ "Nimi" map (nimi => (nimi \ "@kieli" text, nimi text))).toMap).getOrElse(finnish("Suoritus: " + avain(suoritus)))
+  }
+
+  private def opintoSuoritukset(opiskeluoikeus: Node, virtaXml: Node) = {
+    def onAlisuoritus(suoritus: Node): Boolean = {
+      val sisältyvyydet: List[String] = (virtaXml \\ "Opintosuoritus" \\ "Sisaltyvyys").toList.map(sisältyvyysAvain)
+      val a = avain(suoritus)
+      sisältyvyydet.contains(a)
+    }
+    kaikkiSuoritukset(opiskeluoikeus, virtaXml)
+  }
+
+  private def buildHierarchy(suoritukset: List[Node]): List[KorkeakoulunOpintojaksonSuoritus] = {
+    var unsorted = suoritukset
+    var sorted: List[KorkeakoulunOpintojaksonSuoritus] = Nil
+    def sisaltyvatAvaimet(node: Node) = {
+      (node \ "Sisaltyvyys").toList.map(sisältyvyysAvain)
+    }
+    def buildFromNode(node: Node): KorkeakoulunOpintojaksonSuoritus = {
+      val suoritus = convertSuoritus(node)
+      val osasuoritukset: List[KorkeakoulunOpintojaksonSuoritus] = sisaltyvatAvaimet(node).map { opintosuoritusAvain =>
+        val (osasuoritusNodes, rest) = unsorted.partition(avain(_) == opintosuoritusAvain)
+        unsorted = rest
+        osasuoritusNodes match {
+          case osasuoritusNode :: Nil => buildFromNode(osasuoritusNode)
+          case osasuoritusNode :: _ => throw new IllegalArgumentException("Enemmän kuin yksi suoritus avaimella " + opintosuoritusAvain)
+          case Nil => throw new IllegalArgumentException("Opintosuoritusta " + opintosuoritusAvain + " ei löydy dokumentista")
+        }
+      }
+      suoritus.copy(osasuoritukset = optionalList(osasuoritukset))
+    }
+    while(!unsorted.isEmpty) {
+      val (node :: independent, dependent) = unsorted.partition { node =>
+        val opintosuoritusAvain = avain(node)
+        !unsorted.find { parent =>
+          sisaltyvatAvaimet(parent).contains(opintosuoritusAvain)
+        }.isDefined
+      }
+
+      unsorted = independent ++ dependent
+      sorted = sorted ++ List(buildFromNode(node))
+    }
+    sorted
+  }
+
+  private def kaikkiSuoritukset(opiskeluoikeus: Node, virtaXml: Node): List[KorkeakoulunOpintojaksonSuoritus] = {
+    def sisältyyOpiskeluoikeuteen(suoritus: Node): Boolean = {
+      val opiskeluoikeusAvain: String = (suoritus \ "@opiskeluoikeusAvain").text
+      opiskeluoikeusAvain match {
+        case "" => myöntäjä(suoritus) == myöntäjä(opiskeluoikeus)
+        case _ => opiskeluoikeusAvain == avain(opiskeluoikeus)
+      }
     }
 
-    (virtaXml \\ "Opintosuoritukset" \\ "Opintosuoritus").filter(suoritus => (suoritus \ "@opiskeluoikeusAvain").text == (opiskeluoikeus \ "@avain").text).map { suoritus =>
-      KorkeakoulunOpintojaksonSuoritus(
-        koulutusmoduuli = KorkeakoulunOpintojakso(
-          tunniste = Paikallinenkoodi((suoritus \\ "@koulutusmoduulitunniste").text, nimi(suoritus), "koodistoUri"), // hardcoded uri
-          nimi = nimi(suoritus),
-          laajuus = Some(LaajuusOsaamispisteissä(15)) // hardcoded
-        ),
-        paikallinenId = None,
-        arviointi = koodistoViitePalvelu.getKoodistoKoodiViite("virtaarvosana", suoritus \ "Arvosana" text).map( arvosana =>
-          List(KorkeakoulunArviointi(
-            arvosana = arvosana,
-            päivä = Some(LocalDate.parse(suoritus \ "SuoritusPvm" text))
-          ))
-        ),
-        tila = Koodistokoodiviite("VALMIS", "suorituksentila"),
-        vahvistus = None,
-        suorituskieli = (suoritus \\ "Kieli").headOption.flatMap(kieli => koodistoViitePalvelu.getKoodistoKoodiViite("kieli", kieli.text.toUpperCase))
-      )
-    }.toList match {
-      case Nil => None
-      case xs => Some(xs)
-    }
+    buildHierarchy((virtaXml \\ "Opintosuoritukset" \\ "Opintosuoritus").filter(sisältyyOpiskeluoikeuteen).filter(laji(_) == "2").toList)
+  }
+
+  private def convertSuoritus(suoritus: Node) = {
+    KorkeakoulunOpintojaksonSuoritus(
+      koulutusmoduuli = KorkeakoulunOpintojakso(
+        tunniste = Paikallinenkoodi((suoritus \\ "@koulutusmoduulitunniste").text, nimi(suoritus), "koodistoUri"), // hardcoded uri
+        nimi = nimi(suoritus),
+        laajuus = Some(LaajuusOsaamispisteissä(15)) // hardcoded
+      ),
+      paikallinenId = None,
+      arviointi = koodistoViitePalvelu.getKoodistoKoodiViite("virtaarvosana", suoritus \ "Arvosana" text).map( arvosana =>
+        List(KorkeakoulunArviointi(
+          arvosana = arvosana,
+          päivä = Some(LocalDate.parse(suoritus \ "SuoritusPvm" text))
+        ))
+      ),
+      tila = Koodistokoodiviite("VALMIS", "suorituksentila"),
+      vahvistus = None,
+      suorituskieli = (suoritus \\ "Kieli").headOption.flatMap(kieli => koodistoViitePalvelu.getKoodistoKoodiViite("kieli", kieli.text.toUpperCase))
+    )
+  }
+
+  private def optionalList[A](list: List[A]): Option[List[A]] = list match {
+    case Nil => None
+    case _ => Some(list)
   }
 }

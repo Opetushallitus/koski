@@ -55,7 +55,8 @@ case class KorkeakoulunOpintojaksonSuoritus(
   arviointi: Option[List[KorkeakoulunArviointi]],
   tila: Koodistokoodiviite,
   vahvistus: Option[Vahvistus],
-  suorituskieli: Option[Koodistokoodiviite]
+  suorituskieli: Option[Koodistokoodiviite],
+  override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]] = None
 ) extends Suoritus
 
 @Description("Opintojakson suoritus")
