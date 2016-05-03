@@ -58,10 +58,7 @@ case class VirtaXMLParser(oppijaRepository: OppijaRepository, oppilaitosReposito
     (virtaXml \\ "Opintosuoritukset" \\ "Opintosuoritus").filter(suoritus => (suoritus \ "@opiskeluoikeusAvain").text == (opiskeluoikeus \ "@avain").text).map { suoritus =>
       KorkeakoulunOpintojaksonSuoritus(
         koulutusmoduuli = KorkeakoulunOpintojakso(
-          tunniste = Paikallinenkoodi(
-            (suoritus \\ "@koulutusmoduulitunniste").text,
-            nimi(suoritus),
-            "koodistoUri"), // hardcoded
+          tunniste = Paikallinenkoodi((suoritus \\ "@koulutusmoduulitunniste").text, nimi(suoritus), "koodistoUri"), // hardcoded uri
           nimi = nimi(suoritus),
           laajuus = Some(LaajuusOsaamispisteissä(15)) // hardcoded
         ),
@@ -74,7 +71,7 @@ case class VirtaXMLParser(oppijaRepository: OppijaRepository, oppilaitosReposito
         ),
         tila = Koodistokoodiviite("VALMIS", "suorituksentila"),
         vahvistus = None,
-        suorituskieli = None
+        suorituskieli = (suoritus \\ "Kieli").headOption.flatMap(kieli => koodistoViitePalvelu.getKoodistoKoodiViite("kieli", kieli.text.toUpperCase))
       )
     }.toList match {
       case Nil => None
