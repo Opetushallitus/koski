@@ -93,9 +93,9 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
             Toinen hyvä tapa tutustua tiedonsiirtoprotokollaan on tutkia esimerkkiviestejä.
             Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esimerkissa on varsinaisen JSON-sisällön lisäksi schemaan pohjautuva annotointi ja linkitykset koodistoon ja OKSA-sanastoon.
           </p>
-          <ul class="example-list">
-            { examplesHtml }
-          </ul>
+          { examplesHtml(ExamplesAmmatillinen.examples, "Ammatillinen") }
+          { examplesHtml(ExamplesPerusopetus.examples, "Peruskoulu") }
+          { examplesHtml(ExamplesLukio.examples, "Lukio") }
         </section>
         </div>
         <script src="js/polyfills/promise.js"></script>
@@ -106,16 +106,23 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
     </html>
   }
 
-  def examplesHtml: List[Elem] = {
-    Examples.examples.map { example =>
-      <li class="example-item">
-        <a class="example-link">{example.description}</a>
-        <a class="example-as-json" href={"/tor/documentation/examples/" + example.name + ".json"} target="_blank">lataa JSON</a>
-        <table class="json">
-          {SchemaToJsonHtml.buildHtml(TorSchema.schema, example.data)}
-        </table>
-      </li>
-    }
+  def examplesHtml(examples: List[Example], title: String) = {
+    <h3>{title}</h3>
+    <ul class="example-list">
+      {
+        examples.map { example: Example =>
+          <li class="example-item">
+            <a class="example-link">
+              {example.description}
+            </a>
+            <a class="example-as-json" href={"/tor/documentation/examples/" + example.name + ".json"} target="_blank">lataa JSON</a>
+            <table class="json">
+              {SchemaToJsonHtml.buildHtml(TorSchema.schema, example.data)}
+            </table>
+          </li>
+        }
+      }
+    </ul>
   }
 }
 
