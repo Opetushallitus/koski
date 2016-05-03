@@ -84,24 +84,22 @@ case class VirtaXMLParser(oppijaRepository: OppijaRepository, oppilaitosReposito
     def sisaltyvatAvaimet(node: Node) = {
       (node \ "Sisaltyvyys").toList.map(sisältyvyysAvain)
     }
-    def buildFromNode(node: Node): KorkeakoulunOpintojaksonSuoritus = {
+    def isRoot(node: Node) = {
+      !suoritukset.find(sisaltyvatAvaimet(_).contains(avain(node))).isDefined
+    }
+    def buildHierarchyFromNode(node: Node): KorkeakoulunOpintojaksonSuoritus = {
       val suoritus = convertSuoritus(node)
       val osasuoritukset: List[KorkeakoulunOpintojaksonSuoritus] = sisaltyvatAvaimet(node).map { opintosuoritusAvain =>
         val (osasuoritusNodes, rest) = suoritukset.partition(avain(_) == opintosuoritusAvain)
         osasuoritusNodes match {
-          case osasuoritusNode :: Nil => buildFromNode(osasuoritusNode)
+          case osasuoritusNode :: Nil => buildHierarchyFromNode(osasuoritusNode)
           case osasuoritusNode :: _ => throw new IllegalArgumentException("Enemmän kuin yksi suoritus avaimella " + opintosuoritusAvain)
           case Nil => throw new IllegalArgumentException("Opintosuoritusta " + opintosuoritusAvain + " ei löydy dokumentista")
         }
       }
       suoritus.copy(osasuoritukset = optionalList(osasuoritukset))
     }
-    val (independent, dependent) = suoritukset.partition { node =>
-      val opintosuoritusAvain = avain(node)
-      !suoritukset.find(sisaltyvatAvaimet(_).contains(opintosuoritusAvain)).isDefined
-    }
-
-    independent.map(buildFromNode)
+    suoritukset.filter(isRoot).map(buildHierarchyFromNode)
   }
 
   private def kaikkiSuoritukset(opiskeluoikeus: Node, virtaXml: Node): List[KorkeakoulunOpintojaksonSuoritus] = {
