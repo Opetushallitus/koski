@@ -18,7 +18,7 @@ class SchemaDocumentationServlet(koodistoPalvelu: KoodistoPalvelu) extends Error
   get("/examples/:name.json") {
     contentType = "application/json"
 
-    renderOption(TorErrorCategory.notFound)(ExamplesAmmatillinen.examples.find(_.name == params("name")).map(_.data), pretty = true)
+    renderOption(TorErrorCategory.notFound)(Examples.examples.find(_.name == params("name")).map(_.data), pretty = true)
   }
 
   get("/koodisto/:name/:version") {
