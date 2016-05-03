@@ -28,44 +28,44 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
         val diploma: String = suoritukset.flatMap(print(_, 0)).mkString("\n").trim
         diploma should equal(
 """751101
-  Design and Analysis of Welded Structures
-  Diplomityö (KON)
-    Diplomityö
-    Kypsyysnäyte
-  Mechanical Engineering
-    Digital Design and Manufacturing
-      Computer Aided Design Basic Course
-      Digital Manufacturing
-      CAE Project
-      Castings
-      Welding Methods and Production
-    Mechanics of Materials
-      Lujuusopin lisensiaattiseminaari L
-      Rakenneaineet jännitysten ja ympäristön vaikutusten alaisina
-      Elementtimenetelmä II L
-      Dynamics of Structures; lectures and exercises L
-      Rakenteiden väsyminen L
-    Product Development
-      Product Development P
-      Research and Development (R&D) Management
-      Product Development Project P
-  Kitkallinen virtaus L
-  Ranska 1A
-  Finite Element Method I
-  Tieteen metodiikan opinnot (KON)
-    Get to know Finland
-    Searching for Scientific Information
-    Suomi 1A
-    Information Visualization L
-    Suomi 1B
-  Potential Flow Theory for Lifting Surfaces
-  Composite Structures
-  Lightweight Structures P
-  Vapaasti valittavat opinnot (KON)
-    Laskennallisen virtausmekaniikan ja lämmönsiirron perusteet L
-    Introduction to Risk Analysis of Structure P
-    Mechatronics Exercises
-  Virtaussimulointi L""")
+  Design and Analysis of Welded Structures 3.0 op
+  Diplomityö (KON) 30.0 op
+    Diplomityö 30.0 op
+    Kypsyysnäyte 0.0 op
+  Mechanical Engineering 65.0 op
+    Digital Design and Manufacturing 20.0 op
+      Computer Aided Design Basic Course 5.0 op
+      Digital Manufacturing 4.0 op
+      CAE Project 3.0 op
+      Castings 4.0 op
+      Welding Methods and Production 4.0 op
+    Mechanics of Materials 25.0 op
+      Lujuusopin lisensiaattiseminaari L 5.0 op
+      Rakenneaineet jännitysten ja ympäristön vaikutusten alaisina 5.0 op
+      Elementtimenetelmä II L 5.0 op
+      Dynamics of Structures; lectures and exercises L 5.0 op
+      Rakenteiden väsyminen L 5.0 op
+    Product Development 20.0 op
+      Product Development P 5.0 op
+      Research and Development (R&D) Management 5.0 op
+      Product Development Project P 10.0 op
+  Kitkallinen virtaus L 5.0 op
+  Ranska 1A 2.0 op
+  Finite Element Method I 5.0 op
+  Tieteen metodiikan opinnot (KON) 12.0 op
+    Get to know Finland 1.0 op
+    Searching for Scientific Information 2.0 op
+    Suomi 1A 2.0 op
+    Information Visualization L 5.0 op
+    Suomi 1B 2.0 op
+  Potential Flow Theory for Lifting Surfaces 3.0 op
+  Composite Structures 5.0 op
+  Lightweight Structures P 5.0 op
+  Vapaasti valittavat opinnot (KON) 16.0 op
+    Laskennallisen virtausmekaniikan ja lämmönsiirron perusteet L 7.0 op
+    Introduction to Risk Analysis of Structure P 5.0 op
+    Mechatronics Exercises 4.0 op
+  Virtaussimulointi L 6.0 op""")
       }
     }
   }
@@ -73,7 +73,7 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
   def print(suoritus: Suoritus, indent: Int = 0): List[String] = {
     val description: String = suoritus match {
       case s: KorkeakouluTutkinnonSuoritus => s.koulutusmoduuli.tunniste.koodiarvo
-      case s: KorkeakoulunOpintojaksonSuoritus => s.koulutusmoduuli.nimi.get("fi")
+      case s: KorkeakoulunOpintojaksonSuoritus => s.koulutusmoduuli.nimi.get("fi") + s.koulutusmoduuli.laajuus.map(l => " " + l.arvo + " op").getOrElse("")
     }
     val indented: String = (1 to indent).map(_ => " ").mkString("") + description
     val osat = suoritus.osasuoritusLista.flatMap(osasuoritus => print(osasuoritus, indent + 2))

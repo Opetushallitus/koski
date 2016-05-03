@@ -2,6 +2,7 @@ package fi.oph.tor.schema
 
 import java.time.LocalDate
 import fi.oph.tor.localization.LocalizedString
+import fi.oph.tor.localization.LocalizedString._
 import fi.oph.tor.localization.LocalizedStringImplicits._
 
 import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems}
@@ -63,7 +64,7 @@ case class KorkeakoulunOpintojaksonSuoritus(
 case class KorkeakoulunOpintojakso(
   tunniste: Paikallinenkoodi,
   nimi: LocalizedString,
-  laajuus: Option[LaajuusOsaamispisteissä]
+  laajuus: Option[LaajuusOpintopisteissä]
 ) extends Koulutusmoduuli
 
 case class KorkeakoulunOpiskeluoikeudenTila(
@@ -84,3 +85,9 @@ case class KorkeakoulunArviointi(
 ) extends Arviointi {
   override def arvioitsijat: Option[List[Arvioitsija]] = None
 }
+
+case class LaajuusOpintopisteissä(
+  arvo: Float,
+  @KoodistoKoodiarvo("2")
+  yksikkö: Koodistokoodiviite = Koodistokoodiviite("2", Some(finnish("opintopistettä")), "opintojenlaajuusyksikko")
+) extends Laajuus

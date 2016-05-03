@@ -119,7 +119,7 @@ case class VirtaXMLParser(oppijaRepository: OppijaRepository, oppilaitosReposito
       koulutusmoduuli = KorkeakoulunOpintojakso(
         tunniste = Paikallinenkoodi((suoritus \\ "@koulutusmoduulitunniste").text, nimi(suoritus), "koodistoUri"), // hardcoded uri
         nimi = nimi(suoritus),
-        laajuus = Some(LaajuusOsaamispisteissä(15)) // hardcoded
+        laajuus = (suoritus \ "Laajuus" \ "Opintopiste").headOption.map(op => LaajuusOpintopisteissä(op.text.toFloat))
       ),
       paikallinenId = None,
       arviointi = koodistoViitePalvelu.getKoodistoKoodiViite("virtaarvosana", suoritus \ "Arvosana" text).map( arvosana =>
