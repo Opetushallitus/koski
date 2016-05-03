@@ -21,7 +21,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
       KorkeakoulunOpiskeluoikeus(
         id = Some(new Random().nextInt()),
         versionumero = None,
-        lähdejärjestelmänId = None, // TODO virta
+        lähdejärjestelmänId = Some(LähdejärjestelmäId(opiskeluoikeus \ "@avain" text, Koodistokoodiviite("virta", "lahdejarjestelma"))),
         alkamispäivä = (opiskeluoikeus \ "AlkuPvm").headOption.map(alku => LocalDate.parse(alku.text)),
         arvioituPäättymispäivä = None,
         päättymispäivä = (opiskeluoikeus \ "LoppuPvm").headOption.map(loppu => LocalDate.parse(loppu.text)),
