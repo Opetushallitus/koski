@@ -81,16 +81,13 @@ case class VirtaXMLParser(oppijaRepository: OppijaRepository, oppilaitosReposito
   }
 
   private def buildHierarchy(suoritukset: List[Node]): List[KorkeakoulunOpintojaksonSuoritus] = {
-    var unsorted = suoritukset
-    var sorted: List[KorkeakoulunOpintojaksonSuoritus] = Nil
     def sisaltyvatAvaimet(node: Node) = {
       (node \ "Sisaltyvyys").toList.map(sisältyvyysAvain)
     }
     def buildFromNode(node: Node): KorkeakoulunOpintojaksonSuoritus = {
       val suoritus = convertSuoritus(node)
       val osasuoritukset: List[KorkeakoulunOpintojaksonSuoritus] = sisaltyvatAvaimet(node).map { opintosuoritusAvain =>
-        val (osasuoritusNodes, rest) = unsorted.partition(avain(_) == opintosuoritusAvain)
-        unsorted = rest
+        val (osasuoritusNodes, rest) = suoritukset.partition(avain(_) == opintosuoritusAvain)
         osasuoritusNodes match {
           case osasuoritusNode :: Nil => buildFromNode(osasuoritusNode)
           case osasuoritusNode :: _ => throw new IllegalArgumentException("Enemmän kuin yksi suoritus avaimella " + opintosuoritusAvain)
@@ -99,18 +96,12 @@ case class VirtaXMLParser(oppijaRepository: OppijaRepository, oppilaitosReposito
       }
       suoritus.copy(osasuoritukset = optionalList(osasuoritukset))
     }
-    while(!unsorted.isEmpty) {
-      val (node :: independent, dependent) = unsorted.partition { node =>
-        val opintosuoritusAvain = avain(node)
-        !unsorted.find { parent =>
-          sisaltyvatAvaimet(parent).contains(opintosuoritusAvain)
-        }.isDefined
-      }
-
-      unsorted = independent ++ dependent
-      sorted = sorted ++ List(buildFromNode(node))
+    val (independent, dependent) = suoritukset.partition { node =>
+      val opintosuoritusAvain = avain(node)
+      !suoritukset.find(sisaltyvatAvaimet(_).contains(opintosuoritusAvain)).isDefined
     }
-    sorted
+
+    independent.map(buildFromNode)
   }
 
   private def kaikkiSuoritukset(opiskeluoikeus: Node, virtaXml: Node): List[KorkeakoulunOpintojaksonSuoritus] = {
