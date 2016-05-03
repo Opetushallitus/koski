@@ -1,0 +1,30 @@
+{
+  "numHits": 1,
+  "organisaatiot": [
+    {
+      "oid": "1.2.246.562.10.38515028629",
+      "alkuPvm": 1262296800000,
+      "parentOid": "1.2.246.562.10.240484683010",
+      "parentOidPath": "1.2.246.562.10.38515028629/1.2.246.562.10.240484683010/1.2.246.562.10.00000000001",
+      "oppilaitosKoodi": "10088",
+      "oppilaitostyyppi": "oppilaitostyyppi_42#1",
+      "toimipistekoodi": "10088",
+      "match": true,
+      "nimi": {
+        "fi": "Itä-Suomen yliopisto",
+        "sv": "Östra Finlands Universitet",
+        "en": "University of Eastern Finland"
+      },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_4#1",
+        "oppilaitoksenopetuskieli_1#1"
+      ],
+      "kotipaikkaUri": "kunta_167",
+      "children": [],
+      "organisaatiotyypit": [
+        "OPPILAITOS"
+      ],
+      "aliOrganisaatioMaara": 5
+    }
+  ]
+}

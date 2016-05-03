@@ -14,6 +14,7 @@ object MockOrganisaatiot {
   val jyväskylänNormaalikoulu = "1.2.246.562.10.14613773812"
   val helsinginYliopisto = "1.2.246.562.10.39218317368"
   val aaltoYliopisto = "1.2.246.562.10.56753942459"
+  val itäsuomenYliopisto = "1.2.246.562.10.38515028629"
 
   val oppilaitokset: List[String] = List(
     stadinAmmattiopisto,
@@ -21,7 +22,8 @@ object MockOrganisaatiot {
     winnova,
     jyväskylänNormaalikoulu,
     helsinginYliopisto,
-    aaltoYliopisto
+    aaltoYliopisto,
+    itäsuomenYliopisto
   )
 
   val organisaatiot: List[String] = oppilaitokset ++ List(helsinginKaupunki, lehtikuusentienToimipiste)
@@ -46,7 +48,7 @@ object MockOrganisaatioRepository {
     "src/main/resources/mockdata/organisaatio/hierarkia/" + oid + ".json"
   }
 
-  def searchFilename(oid: String): String = {
-    "src/main/resources/mockdata/organisaatio/search/" + oid + ".json"
+  def searchFilename(searchTerm: String): String = {
+    "src/main/resources/mockdata/organisaatio/search/" + searchTerm + ".json"
   }
 }
