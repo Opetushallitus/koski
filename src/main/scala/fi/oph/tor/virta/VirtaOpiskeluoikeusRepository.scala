@@ -16,7 +16,7 @@ case class VirtaOpiskeluoikeusRepository(v: VirtaClient, val oppijaRepository: O
 
   def findByHetuWithoutAccessCheck(hetu: String): List[KorkeakoulunOpiskeluoikeus] =  {
     v.fetchVirtaData(VirtaHakuehtoHetu(hetu)).toList.flatMap( xmlData =>
-      VirtaXMLParser(oppijaRepository, oppilaitosRepository, koodistoViitePalvelu).parseVirtaXML(xmlData)
+      VirtaXMLConverter(oppijaRepository, oppilaitosRepository, koodistoViitePalvelu).convert(xmlData)
     )
   }
 

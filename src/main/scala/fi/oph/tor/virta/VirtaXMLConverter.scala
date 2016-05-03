@@ -11,8 +11,8 @@ import fi.oph.tor.oppilaitos.OppilaitosRepository
 import fi.oph.tor.schema._
 
 import scala.xml.Node
-case class VirtaXMLParser(oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu) {
-  def parseVirtaXML(virtaXml: Node) = {
+case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu) {
+  def convert(virtaXml: Node): List[KorkeakoulunOpiskeluoikeus] = {
     (virtaXml \\ "Opiskeluoikeus").map { (opiskeluoikeus: Node) =>
       KorkeakoulunOpiskeluoikeus(
         id = Some(new Random().nextInt()),
@@ -36,7 +36,7 @@ case class VirtaXMLParser(oppijaRepository: OppijaRepository, oppilaitosReposito
     oppilaitosRepository.findByOppilaitosnumero(numero).orElse(throw new RuntimeException("Oppilaitosta ei löydy: " + numero))
   }
 
-  def tutkintoSuoritukset(opiskeluoikeus: Node, virtaXml: Node) = {
+  private def tutkintoSuoritukset(opiskeluoikeus: Node, virtaXml: Node) = {
     val tutkintosuoritusNodes: List[Node] = suoritusNodes(opiskeluoikeus, virtaXml).filter(laji(_) == "1")
     tutkintosuoritusNodes match {
       case Nil =>
