@@ -25,6 +25,8 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
 
         val suoritukset: List[KorkeakouluTutkinnonSuoritus] = opiskeluoikeus.asInstanceOf[KorkeakoulunOpiskeluoikeus].suoritukset
 
+        suoritukset.map(_.tila.koodiarvo) should equal(List("VALMIS"))
+
         val diploma: String = suoritukset.flatMap(print(_, 0)).mkString("\n").trim
         diploma should equal(
 """751101
