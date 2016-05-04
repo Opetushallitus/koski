@@ -1,6 +1,7 @@
 package fi.oph.tor.virta
 
 import java.time.LocalDate
+import java.time.LocalDate.{parse => date}
 import java.util.Random
 
 import fi.oph.tor.koodisto.KoodistoViitePalvelu
@@ -12,12 +13,30 @@ import fi.oph.tor.schema._
 
 import scala.xml.Node
 case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu) {
+
   def convert(virtaXml: Node): List[KorkeakoulunOpiskeluoikeus] = {
+    implicit def localDateOrdering: Ordering[LocalDate] = Ordering.fromLessThan(_ isBefore _)
+
     def findOppilaitos(numero: String) = {
       oppilaitosRepository.findByOppilaitosnumero(numero).orElse(throw new RuntimeException("Oppilaitosta ei löydy: " + numero))
     }
 
     (virtaXml \\ "Opiskeluoikeus").map { (opiskeluoikeus: Node) =>
+
+      val oppilaitos: Option[Oppilaitos] = (opiskeluoikeus \ "Myontaja" \ "Koodi").headOption.orElse(opiskeluoikeus \ "Myontaja" headOption).flatMap(
+        koodi => findOppilaitos(koodi.text)
+      )
+
+      val läsnäolotiedot: Option[Läsnäolotiedot] = {
+        (virtaXml \\ "LukukausiIlmoittautuminen").filter(i => opiskelijaAvain(i) == opiskelijaAvain(opiskeluoikeus) && myöntäjä(opiskeluoikeus) == myöntäjä(i))
+          .sortBy(alkuPvm)
+          .map(i => Läsnäolojakso(alkuPvm(i), (i \ "LoppuPvm").headOption.map(l => date(l.text)), koodistoViitePalvelu.getKoodistoKoodiViite("korkeakoululasnaolotila", i \ "Tila" text).getOrElse(throw new RuntimeException("invalid läsnäolontila: " + (i \ "Tila").text))))
+          .toList match {
+            case Nil => None
+            case xs => Some(Läsnäolotiedot(xs))
+        }
+      }
+
       KorkeakoulunOpiskeluoikeus(
         id = Some(new Random().nextInt()),
         versionumero = None,
@@ -25,13 +44,11 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
         alkamispäivä = (opiskeluoikeus \ "AlkuPvm").headOption.map(alku => LocalDate.parse(alku.text)),
         arvioituPäättymispäivä = None,
         päättymispäivä = (opiskeluoikeus \ "LoppuPvm").headOption.map(loppu => LocalDate.parse(loppu.text)),
-        oppilaitos = (opiskeluoikeus \ "Myontaja" \ "Koodi").headOption.orElse(opiskeluoikeus \ "Myontaja" headOption).flatMap(
-          koodi => findOppilaitos(koodi.text)
-        ).getOrElse(throw new RuntimeException("missing oppilaitos")),
+        oppilaitos = oppilaitos.getOrElse(throw new RuntimeException("missing oppilaitos")),
         koulutustoimija = None,
         suoritukset = tutkintoSuoritukset(opiskeluoikeus, virtaXml),
         tila = None,
-        läsnäolotiedot = None
+        läsnäolotiedot = läsnäolotiedot
       )
     }.toList
   }
@@ -135,9 +152,18 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
     case _ => Some(list)
   }
 
+  private def opiskelijaAvain(node: Node) = {
+    (node \ "@opiskelijaAvain").text
+  }
+
   private def avain(node: Node) = {
     (node \ "@avain").text
   }
+
+  private def alkuPvm(node: Node) = {
+    date((node \ "AlkuPvm").text)
+  }
+
 
   private def myöntäjä(node: Node) = {
     (node \ "Myontaja").text

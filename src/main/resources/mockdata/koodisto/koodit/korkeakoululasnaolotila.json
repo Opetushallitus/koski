@@ -1,0 +1,70 @@
+[
+  {
+    "koodiUri": "korkeakoululasnaolotila_4",
+    "metadata": [
+      {
+        "nimi": "Saknas",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Puuttuu",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "4"
+  },
+  {
+    "koodiUri": "korkeakoululasnaolotila_3",
+    "metadata": [
+      {
+        "nimi": "Frånvarande med lagstadgad orsak",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Poissa, ei kuluta opintoaikaa",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "3"
+  },
+  {
+    "koodiUri": "korkeakoululasnaolotila_2",
+    "metadata": [
+      {
+        "nimi": "Poissa",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Frånvarande",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "2"
+  },
+  {
+    "koodiUri": "korkeakoululasnaolotila_1",
+    "metadata": [
+      {
+        "nimi": "Läsnä",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Närvarande",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1"
+  }
+]
