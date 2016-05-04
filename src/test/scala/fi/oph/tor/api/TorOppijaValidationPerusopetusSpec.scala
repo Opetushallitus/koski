@@ -16,7 +16,7 @@ class TorOppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusope
     it("Todistus VALMIS ilman vahvistusta -> HTTP 400") {
       val oo: PerusopetuksenOpiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(vahvistus = None)))
       putOpiskeluOikeus(oo) {
-        verifyResponseStatus(400, TorErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta koulutus/201100 puuttuu vahvistus, vaikka suorituksen tila on VALMIS"))
+        verifyResponseStatus(400, TorErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta koulutus/201101 puuttuu vahvistus, vaikka suorituksen tila on VALMIS"))
       }
     }
 

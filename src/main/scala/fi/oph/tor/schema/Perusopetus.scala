@@ -82,9 +82,9 @@ case class Perusopetus(
  perusteenDiaarinumero: Option[String],
  @Description("Tutkinnon 6-numeroinen tutkintokoodi")
  @KoodistoUri("koulutus")
- @KoodistoKoodiarvo("201100")
+ @KoodistoKoodiarvo("201101")
  @OksaUri("tmpOKSAID560", "tutkinto")
- tunniste: Koodistokoodiviite = Koodistokoodiviite("201100", koodistoUri = "koulutus")
+ tunniste: Koodistokoodiviite = Koodistokoodiviite("201101", koodistoUri = "koulutus")
 ) extends KoodistostaLöytyväKoulutusmoduuli with EPerusteistaLöytyväKoulutusmoduuli {
   override def laajuus = None
 }
