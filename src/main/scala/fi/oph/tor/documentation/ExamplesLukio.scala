@@ -17,7 +17,6 @@ object ExamplesLukio {
       versionumero = None,
       lähdejärjestelmänId = None,
       alkamispäivä = Some(date(2016, 9, 1)),
-      arvioituPäättymispäivä = Some(date(2020, 5, 1)),
       päättymispäivä = None,
       oppilaitos = jyväskylänNormaalikoulu, None,
       suoritukset = List(
@@ -47,7 +46,6 @@ object ExamplesLukio {
       versionumero = None,
       lähdejärjestelmänId = None,
       alkamispäivä = Some(date(2016, 9, 1)),
-      arvioituPäättymispäivä = Some(date(2020, 5, 1)),
       päättymispäivä = None,
       oppilaitos = jyväskylänNormaalikoulu, None,
       suoritukset = List(

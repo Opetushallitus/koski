@@ -11,7 +11,7 @@ trait OpiskeluoikeusTestMethodsLukio extends OpiskeluOikeusTestMethods[LukionOpi
   val vahvistus: Some[Vahvistus] = Some(Vahvistus(päivä = date(2016, 6, 4), jyväskylä, myöntäjäOrganisaatio = jyväskylänNormaalikoulu, myöntäjäHenkilöt = List(OrganisaatioHenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))
 
   override def defaultOpiskeluoikeus = LukionOpiskeluoikeus(
-    id = None, versionumero = None, lähdejärjestelmänId = None, alkamispäivä = None, arvioituPäättymispäivä = None, päättymispäivä = None,
+    id = None, versionumero = None, lähdejärjestelmänId = None, alkamispäivä = None, päättymispäivä = None,
     oppilaitos = jyväskylänNormaalikoulu, koulutustoimija = None,
     suoritukset = List(päättötodistusSuoritus),
     tila = None, läsnäolotiedot = None

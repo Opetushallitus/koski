@@ -3,8 +3,7 @@ package fi.oph.tor.schema
 import java.time.LocalDate
 
 import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems}
-import fi.oph.tor.localization.LocalizedString
-import fi.oph.tor.localization.LocalizedString.{finnish, concat}
+import fi.oph.tor.localization.LocalizedString.{concat, finnish}
 
 @Description("Lukion opiskeluoikeus")
 case class LukionOpiskeluoikeus(
@@ -12,7 +11,6 @@ case class LukionOpiskeluoikeus(
   versionumero: Option[Int],
   lähdejärjestelmänId: Option[LähdejärjestelmäId],
   alkamispäivä: Option[LocalDate],
-  arvioituPäättymispäivä: Option[LocalDate],
   päättymispäivä: Option[LocalDate],
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OrganisaatioWithOid],
@@ -25,7 +23,7 @@ case class LukionOpiskeluoikeus(
 ) extends Opiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
-
+  override def arvioituPäättymispäivä: Option[LocalDate] = None
 }
 
 case class LukionOppimääränSuoritus(
