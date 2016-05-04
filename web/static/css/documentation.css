@@ -259,3 +259,7 @@ a {
     display: inherit;
     margin: 20px 0;
 }
+
+table.json td:first-child {
+    width: 40%;
+}
