@@ -48,6 +48,18 @@
     "versio": 1
   },
   {
+    "koodiUri": "suorituksentyyppi_perusopetuksenvuosiluokka",
+    "koodiArvo": "perusopetuksenvuosiluokka",
+    "metadata": [
+      {
+        "nimi": "Perusopetuksen vuosiluokka",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
     "koodiUri": "suorituksentyyppi_lukionoppimaara",
     "koodiArvo": "lukionoppimaara",
     "metadata": [

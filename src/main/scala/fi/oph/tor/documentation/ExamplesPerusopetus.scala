@@ -36,34 +36,38 @@ object PerusopetusExampleData {
 }
 
 object ExamplesPerusopetus {
-  val uusi = Oppija(
+  private val vahvistus: Some[Vahvistus] = Some(Vahvistus(päivä = date(2016, 6, 4), jyväskylä, myöntäjäOrganisaatio = jyväskylänNormaalikoulu, myöntäjäHenkilöt = List(OrganisaatioHenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))
+  private val ysiluokanSuoritus = PerusopetuksenVuosiluokanSuoritus(
+    luokkaAste = 9, luokka = "9C", alkamispäivä = Some(date(2008, 8, 15)),
+    paikallinenId = None, tila = tilaKesken, toimipiste = jyväskylänNormaalikoulu, suorituskieli = suomenKieli,
+    koulutusmoduuli = perusopetus
+  )
+
+  val ysiluokkalainen = Oppija(
     exampleHenkilö,
     List(PerusopetuksenOpiskeluoikeus(
       id = None,
       versionumero = None,
       lähdejärjestelmänId = None,
-      alkamispäivä = Some(date(2016, 9, 1)),
+      alkamispäivä = Some(date(2008, 8, 15)),
       päättymispäivä = None,
       oppilaitos = jyväskylänNormaalikoulu, None,
-      suoritukset = Nil,
+      suoritukset = List(ysiluokanSuoritus),
       tila = Some(YleissivistäväOpiskeluoikeudenTila(
         List(
-          YleissivistäväOpiskeluoikeusjakso(date(2012, 9, 1), Some(date(2016, 1, 9)), opiskeluoikeusAktiivinen),
-          YleissivistäväOpiskeluoikeusjakso(date(2016, 1, 10), None, opiskeluoikeusPäättynyt)
+          YleissivistäväOpiskeluoikeusjakso(date(2008, 8, 15), None, opiskeluoikeusAktiivinen)
         )
       )),
       läsnäolotiedot = None
     ))
   )
-  private val vahvistus: Some[Vahvistus] = Some(Vahvistus(päivä = date(2016, 6, 4), jyväskylä, myöntäjäOrganisaatio = jyväskylänNormaalikoulu, myöntäjäHenkilöt = List(OrganisaatioHenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))
-
   val päättötodistus = Oppija(
     exampleHenkilö,
     List(PerusopetuksenOpiskeluoikeus(
       id = None,
       versionumero = None,
       lähdejärjestelmänId = None,
-      alkamispäivä = Some(date(2007, 8, 15)),
+      alkamispäivä = Some(date(2008, 8, 15)),
       päättymispäivä = Some(date(2016, 6, 4)),
       oppilaitos = jyväskylänNormaalikoulu, None,
       suoritukset = List(
@@ -101,7 +105,7 @@ object ExamplesPerusopetus {
         )),
       tila = Some(YleissivistäväOpiskeluoikeudenTila(
         List(
-          YleissivistäväOpiskeluoikeusjakso(date(2007, 8, 15), Some(date(2016, 6, 3)), opiskeluoikeusAktiivinen),
+          YleissivistäväOpiskeluoikeusjakso(date(2008, 8, 15), Some(date(2016, 6, 3)), opiskeluoikeusAktiivinen),
           YleissivistäväOpiskeluoikeusjakso(date(2016, 6, 4), None, opiskeluoikeusPäättynyt)
         )
       )),
@@ -110,7 +114,7 @@ object ExamplesPerusopetus {
   )
 
   val examples = List(
-    Example("perusopetuksen oppimäärä - uusi", "Uusi oppija lisätään suorittamaan perusopetuksen oppimäärää", uusi),
+    Example("perusopetuksen oppimäärä - ysiluokkalainen", "Oppija on suorittamassa 9. luokkaa", ysiluokkalainen),
     Example("perusopetuksen oppimäärä - päättötodistus", "Oppija on saanut perusopetuksen päättötodistuksen", päättötodistus)
   )
 }

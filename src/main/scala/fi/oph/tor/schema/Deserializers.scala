@@ -15,6 +15,7 @@ object Deserializers {
     OrganisaatioDeserializer,
     LukionOppiaineDeserializer,
     PerusopetuksenOppiaineDeserializer,
+    PerusopetuksenPäätasonSuoritusDeserializer,
     LukionKurssiDeserializer
   )
 }
@@ -73,6 +74,18 @@ object PerusopetuksenOppiaineDeserializer extends Deserializer[PerusopetuksenOpp
         case moduuli: JObject if moduuli \ "tunniste" \ "koodiarvo" == JString("KT") => moduuli.extract[PeruskoulunUskonto]
         case moduuli: JObject if (moduuli \ "kieli").isInstanceOf[JObject] => moduuli.extract[PeruskoulunVierasTaiToinenKotimainenKieli]
         case moduuli: JObject => moduuli.extract[MuuPeruskoulunOppiaine]
+      }
+  }
+}
+
+object PerusopetuksenPäätasonSuoritusDeserializer extends Deserializer[PerusopetuksenPäätasonSuoritus] {
+  private val PerusopetuksenPäätasonSuoritusClass = classOf[PerusopetuksenPäätasonSuoritus]
+
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), PerusopetuksenPäätasonSuoritus] = {
+    case (TypeInfo(PerusopetuksenPäätasonSuoritusClass, _), json) =>
+      json match {
+        case suoritus: JObject if suoritus.values.contains("luokkaAste") => suoritus.extract[PerusopetuksenVuosiluokanSuoritus]
+        case suoritus: JObject => suoritus.extract[PerusopetuksenOppimääränSuoritus]
       }
   }
 }

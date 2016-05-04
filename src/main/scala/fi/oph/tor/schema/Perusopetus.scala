@@ -2,9 +2,8 @@ package fi.oph.tor.schema
 
 import java.time.LocalDate
 
-import fi.oph.scalaschema.annotation.Description
-import fi.oph.tor.localization.LocalizedString
-import fi.oph.tor.localization.LocalizedString.{finnish, concat}
+import fi.oph.scalaschema.annotation.{MaxValue, MinValue, Description}
+import fi.oph.tor.localization.LocalizedString.{concat, finnish}
 
 @Description("Perusopetuksen opiskeluoikeus")
 case class PerusopetuksenOpiskeluoikeus(
@@ -15,7 +14,7 @@ case class PerusopetuksenOpiskeluoikeus(
   päättymispäivä: Option[LocalDate],
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OrganisaatioWithOid],
-  suoritukset: List[PerusopetuksenOppimääränSuoritus],
+  suoritukset: List[PerusopetuksenPäätasonSuoritus],
   tila: Option[YleissivistäväOpiskeluoikeudenTila],
   läsnäolotiedot: Option[Läsnäolotiedot],
   @KoodistoKoodiarvo("perusopetus")
@@ -24,6 +23,31 @@ case class PerusopetuksenOpiskeluoikeus(
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def arvioituPäättymispäivä = None
+}
+
+trait PerusopetuksenPäätasonSuoritus extends Suoritus
+
+case class PerusopetuksenVuosiluokanSuoritus(
+  @Description("Luokkaaste numeroin")
+  @MinValue(1)
+  @MaxValue(9)
+  luokkaAste: Int,
+  @Description("Luokan tunniste, esimerkiksi 9C")
+  luokka: String,
+  override val alkamispäivä: Option[LocalDate],
+  paikallinenId: Option[String],
+  tila: Koodistokoodiviite,
+  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
+  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
+  toimipiste: OrganisaatioWithOid,
+  suorituskieli: Option[Koodistokoodiviite],
+  koulutusmoduuli: Perusopetus,
+  @KoodistoKoodiarvo("perusopetuksenvuosiluokka")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenvuosiluokka", koodistoUri = "suorituksentyyppi")
+) extends PerusopetuksenPäätasonSuoritus {
+  override def arviointi = None
+  override def vahvistus = None
+  override def tarvitseeVahvistuksen = false
 }
 
 case class PerusopetuksenOppimääränSuoritus(
@@ -39,7 +63,7 @@ case class PerusopetuksenOppimääränSuoritus(
   koulutusmoduuli: Perusopetus,
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
   override val osasuoritukset: Option[List[PerusopetuksenOppiaineenSuoritus]] = None
-) extends Suoritus {
+) extends PerusopetuksenPäätasonSuoritus {
   def arviointi: Option[List[Arviointi]] = None
 }
 
