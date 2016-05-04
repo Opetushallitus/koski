@@ -93,9 +93,9 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
             Toinen hyvä tapa tutustua tiedonsiirtoprotokollaan on tutkia esimerkkiviestejä.
             Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esimerkissa on varsinaisen JSON-sisällön lisäksi schemaan pohjautuva annotointi ja linkitykset koodistoon ja OKSA-sanastoon.
           </p>
-          { examplesHtml(ExamplesAmmatillinen.examples, "Ammatillinen") }
-          { examplesHtml(ExamplesPerusopetus.examples, "Peruskoulu") }
-          { examplesHtml(ExamplesLukio.examples, "Lukio") }
+          { examplesHtml(ExamplesPerusopetus.examples, "Perusopetus") }
+          { examplesHtml(ExamplesLukio.examples, "Lukiokoulutus") }
+          { examplesHtml(ExamplesAmmatillinen.examples, "Ammatillinen koulutus") }
         </section>
         </div>
         <script src="js/polyfills/promise.js"></script>
