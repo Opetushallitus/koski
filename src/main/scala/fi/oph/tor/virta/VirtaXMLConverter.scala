@@ -48,7 +48,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
         koulutustoimija = None,
         suoritukset = tutkintoSuoritukset(opiskeluoikeus, virtaXml),
         tila = None,
-        läsnäolotiedot = läsnäolotiedot
+        läsnäolotiedot = None
       )
     }.toList
   }
