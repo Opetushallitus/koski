@@ -29,12 +29,12 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
 
       val läsnäolotiedot = list2Optional((virtaXml \\ "LukukausiIlmoittautuminen").filter(i => opiskelijaAvain(i) == opiskelijaAvain(opiskeluoikeus) && myöntäjä(opiskeluoikeus) == myöntäjä(i))
           .sortBy(alkuPvm)
-          .map(i => KorkeakoulunLäsnäolojakso(alkuPvm(i), loppuPvm(i), koodistoViitePalvelu.getKoodistoKoodiViite("virtalukukausiilmtila", i \ "Tila" text).getOrElse(throw new RuntimeException("invalid läsnäolontila: " + (i \ "Tila").text))))
+          .map(i => KorkeakoulunLäsnäolojakso(alkuPvm(i), loppuPvm(i), requiredKoodi("virtalukukausiilmtila", i \ "Tila" text).get))
           .toList, KorkeakoulunLäsnäolotiedot)
 
       val opiskeluoikeudenTila: Option[KorkeakoulunOpiskeluoikeudenTila] = list2Optional((opiskeluoikeus \ "Tila")
         .sortBy(alkuPvm)
-        .map(tila => KorkeakoulunOpiskeluoikeusjakso(alkuPvm(tila), loppuPvm(tila), koodistoViitePalvelu.getKoodistoKoodiViite("virtaopiskeluoikeudentila", tila \ "Koodi" text).getOrElse(throw new RuntimeException("invalid opiskeluoikeuden tila: " + (tila \ "Koodi").text))))
+        .map(tila => KorkeakoulunOpiskeluoikeusjakso(alkuPvm(tila), loppuPvm(tila), requiredKoodi("virtaopiskeluoikeudentila", tila \ "Koodi" text).get))
         .toList, KorkeakoulunOpiskeluoikeudenTila)
 
 
@@ -56,7 +56,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
 
   private def tutkintoSuoritukset(opiskeluoikeus: Node, virtaXml: Node) = {
     def tutkinto(koulutuskoodi: String): KorkeakouluTutkinto = {
-      KorkeakouluTutkinto(koodistoViitePalvelu.getKoodistoKoodiViite("koulutus", koulutuskoodi).getOrElse(throw new RuntimeException("missing koulutus: " + koulutuskoodi)))
+      KorkeakouluTutkinto(requiredKoodi("koulutus", koulutuskoodi).get)
     }
     def opintojaksonSuoritukset(opiskeluoikeus: Node, virtaXml: Node) = {
       buildHierarchy(suoritusNodes(opiskeluoikeus, virtaXml).filter(laji(_) == "2"))
@@ -97,9 +97,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
     def sisaltyvatAvaimet(node: Node) = {
       (node \ "Sisaltyvyys").toList.map(sisaltyvyysNode => (sisaltyvyysNode \ "@sisaltyvaOpintosuoritusAvain").text)
     }
-    def isRoot(node: Node) = {
-      !suoritukset.find(sisaltyvatAvaimet(_).contains(avain(node))).isDefined
-    }
+    def isRoot(node: Node) = !suoritukset.exists(sisaltyvatAvaimet(_).contains(avain(node)))
     def buildHierarchyFromNode(node: Node): KorkeakoulunOpintojaksonSuoritus = {
       val suoritus = convertSuoritus(node)
       val osasuoritukset: List[KorkeakoulunOpintojaksonSuoritus] = sisaltyvatAvaimet(node).map { opintosuoritusAvain =>
@@ -144,7 +142,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
       ),
       tila = Koodistokoodiviite("VALMIS", "suorituksentila"),
       vahvistus = None,
-      suorituskieli = (suoritus \\ "Kieli").headOption.flatMap(kieli => koodistoViitePalvelu.getKoodistoKoodiViite("kieli", kieli.text.toUpperCase))
+      suorituskieli = (suoritus \\ "Kieli").headOption.flatMap(kieli => requiredKoodi("kieli", kieli.text.toUpperCase))
     )
   }
 
@@ -155,6 +153,9 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
 
   private def optionalList[A](list: List[A]): Option[List[A]] = list2Optional[A, List[A]](list, identity)
 
+  private def requiredKoodi(uri: String, koodi: String) = {
+    koodistoViitePalvelu.validate(Koodistokoodiviite(koodi, uri)).orElse(throw new IllegalArgumentException("Puuttuva koodi: " + Koodistokoodiviite(koodi, uri)))
+  }
 
   private def loppuPvm(n: Node): Option[LocalDate] = {
     (n \ "LoppuPvm").headOption.map(l => date(l.text))
