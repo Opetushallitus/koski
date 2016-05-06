@@ -16,6 +16,7 @@ case class YleissivistäväOpiskeluoikeudenTila(
 case class YleissivistäväOpiskeluoikeusjakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
+  @KoodistoUri("opiskeluoikeudentila")
   tila: Koodistokoodiviite
 ) extends Opiskeluoikeusjakso
 

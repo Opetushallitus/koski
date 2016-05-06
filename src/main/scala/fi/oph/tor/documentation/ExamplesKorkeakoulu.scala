@@ -2,7 +2,6 @@ package fi.oph.tor.documentation
 
 import java.time.LocalDate.{of => date}
 
-import fi.oph.tor.documentation.ExampleData._
 import fi.oph.tor.documentation.KorkeakouluTestdata._
 import fi.oph.tor.localization.LocalizedStringImplicits._
 import fi.oph.tor.oppija.MockOppijat
@@ -38,4 +37,5 @@ object ExamplesKorkeakoulu {
 object KorkeakouluTestdata {
   lazy val oppija = MockOppijat.korkeakoululainen.vainHenkilötiedot
   lazy val helsinginYliopisto: Oppilaitos = Oppilaitos(MockOrganisaatiot.helsinginYliopisto, Some(Koodistokoodiviite("01901", None, "oppilaitosnumero", None)), Some("Helsingin yliopisto"))
+  lazy val opiskeluoikeusAktiivinen = Koodistokoodiviite("1", Some("aktiivinen"), "virtaopiskeluoikeudentila", Some(1))
 }

@@ -1,0 +1,87 @@
+[
+  {
+    "koodiUri": "virtaopiskeluoikeudentila_2",
+    "metadata": [
+      {
+        "nimi": "optio",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "option",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "2"
+  },
+  {
+    "koodiUri": "virtaopiskeluoikeudentila_4",
+    "metadata": [
+      {
+        "nimi": "passivoitu",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "passiverad",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "4"
+  },
+  {
+    "koodiUri": "virtaopiskeluoikeudentila_1",
+    "metadata": [
+      {
+        "nimi": "aktiv",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "aktiivinen",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "1"
+  },
+  {
+    "koodiUri": "virtaopiskeluoikeudentila_3",
+    "metadata": [
+      {
+        "nimi": "päättynyt",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "slutförd",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "3"
+  },
+  {
+    "koodiUri": "virtaopiskeluoikeudentila_5",
+    "metadata": [
+      {
+        "nimi": "luopunut",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "avstått",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "5"
+  }
+]

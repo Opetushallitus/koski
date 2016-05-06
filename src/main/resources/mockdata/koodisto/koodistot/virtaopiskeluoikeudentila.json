@@ -1,0 +1,34 @@
+{
+  "koodistoUri": "virtaopiskeluoikeudentila",
+  "resourceUri": "https://testi.virkailija.opintopolku.fi/koodisto-service/rest/codes/virtaopiskeluoikeudentila",
+  "omistaja": "",
+  "organisaatioOid": "1.2.246.562.10.2013112012294919827487",
+  "lukittu": null,
+  "codesGroupUri": "http://virta",
+  "version": 2,
+  "versio": 1,
+  "paivitysPvm": 1455269631122,
+  "voimassaAlkuPvm": "2013-01-01",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "VIRTA Opiskeluoikeuden tila",
+      "kuvaus": "Opiskeluoikeuden tila (ks. https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot)",
+      "kayttoohje": "",
+      "kasite": "",
+      "kohdealue": "",
+      "sitovuustaso": "",
+      "kohdealueenOsaAlue": "",
+      "toimintaymparisto": "",
+      "tarkentaaKoodistoa": "",
+      "huomioitavaKoodisto": "",
+      "koodistonLahde": ""
+    }
+  ],
+  "codesVersions": [],
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": []
+}

@@ -61,7 +61,6 @@ trait Opiskeluoikeusjakso extends Jakso {
   def alku: LocalDate
   def loppu: Option[LocalDate]
   @Description("Opiskeluoikeuden tila (aktiivinen, keskeyttänyt, päättynyt...)")
-  @KoodistoUri("opiskeluoikeudentila")
   def tila: Koodistokoodiviite
 }
 

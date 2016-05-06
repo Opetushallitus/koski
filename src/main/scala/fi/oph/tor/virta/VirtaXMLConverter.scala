@@ -27,12 +27,16 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
         koodi => findOppilaitos(koodi.text)
       )
 
-      val läsnäolotiedot: Option[KorkeakoulunLäsnäolotiedot] = {
-        list2Optional((virtaXml \\ "LukukausiIlmoittautuminen").filter(i => opiskelijaAvain(i) == opiskelijaAvain(opiskeluoikeus) && myöntäjä(opiskeluoikeus) == myöntäjä(i))
+      val läsnäolotiedot = list2Optional((virtaXml \\ "LukukausiIlmoittautuminen").filter(i => opiskelijaAvain(i) == opiskelijaAvain(opiskeluoikeus) && myöntäjä(opiskeluoikeus) == myöntäjä(i))
           .sortBy(alkuPvm)
-          .map(i => KorkeakoulunLäsnäolojakso(alkuPvm(i), (i \ "LoppuPvm").headOption.map(l => date(l.text)), koodistoViitePalvelu.getKoodistoKoodiViite("virtalukukausiilmtila", i \ "Tila" text).getOrElse(throw new RuntimeException("invalid läsnäolontila: " + (i \ "Tila").text))))
+          .map(i => KorkeakoulunLäsnäolojakso(alkuPvm(i), loppuPvm(i), koodistoViitePalvelu.getKoodistoKoodiViite("virtalukukausiilmtila", i \ "Tila" text).getOrElse(throw new RuntimeException("invalid läsnäolontila: " + (i \ "Tila").text))))
           .toList, KorkeakoulunLäsnäolotiedot)
-      }
+
+      val opiskeluoikeudenTila: Option[KorkeakoulunOpiskeluoikeudenTila] = list2Optional((opiskeluoikeus \ "Tila")
+        .sortBy(alkuPvm)
+        .map(tila => KorkeakoulunOpiskeluoikeusjakso(alkuPvm(tila), loppuPvm(tila), koodistoViitePalvelu.getKoodistoKoodiViite("virtaopiskeluoikeudentila", tila \ "Koodi" text).getOrElse(throw new RuntimeException("invalid opiskeluoikeuden tila: " + (tila \ "Koodi").text))))
+        .toList, KorkeakoulunOpiskeluoikeudenTila)
+
 
       KorkeakoulunOpiskeluoikeus(
         id = Some(new Random().nextInt()),
@@ -44,7 +48,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
         oppilaitos = oppilaitos.getOrElse(throw new RuntimeException("missing oppilaitos")),
         koulutustoimija = None,
         suoritukset = tutkintoSuoritukset(opiskeluoikeus, virtaXml),
-        tila = None,
+        tila = opiskeluoikeudenTila,
         läsnäolotiedot = läsnäolotiedot
       )
     }.toList
@@ -52,7 +56,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
 
   private def tutkintoSuoritukset(opiskeluoikeus: Node, virtaXml: Node) = {
     def tutkinto(koulutuskoodi: String): KorkeakouluTutkinto = {
-      KorkeakouluTutkinto(koodistoViitePalvelu.getKoodistoKoodiViite("koulutus", koulutuskoodi).getOrElse(throw new scala.RuntimeException("missing koulutus: " + koulutuskoodi)))
+      KorkeakouluTutkinto(koodistoViitePalvelu.getKoodistoKoodiViite("koulutus", koulutuskoodi).getOrElse(throw new RuntimeException("missing koulutus: " + koulutuskoodi)))
     }
     def opintojaksonSuoritukset(opiskeluoikeus: Node, virtaXml: Node) = {
       buildHierarchy(suoritusNodes(opiskeluoikeus, virtaXml).filter(laji(_) == "2"))
@@ -150,6 +154,11 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
   }
 
   private def optionalList[A](list: List[A]): Option[List[A]] = list2Optional[A, List[A]](list, identity)
+
+
+  private def loppuPvm(n: Node): Option[LocalDate] = {
+    (n \ "LoppuPvm").headOption.map(l => date(l.text))
+  }
 
   private def opiskelijaAvain(node: Node) = {
     (node \ "@opiskelijaAvain").text
