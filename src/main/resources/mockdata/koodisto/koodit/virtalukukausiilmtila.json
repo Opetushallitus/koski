@@ -1,6 +1,6 @@
 [
   {
-    "koodiUri": "korkeakoululasnaolotila_4",
+    "koodiUri": "virtalukukausiilmtila_4",
     "metadata": [
       {
         "nimi": "Saknas",
@@ -17,7 +17,7 @@
     "koodiArvo": "4"
   },
   {
-    "koodiUri": "korkeakoululasnaolotila_3",
+    "koodiUri": "virtalukukausiilmtila_3",
     "metadata": [
       {
         "nimi": "Frånvarande med lagstadgad orsak",
@@ -34,7 +34,7 @@
     "koodiArvo": "3"
   },
   {
-    "koodiUri": "korkeakoululasnaolotila_2",
+    "koodiUri": "virtalukukausiilmtila_2",
     "metadata": [
       {
         "nimi": "Poissa",
@@ -51,7 +51,7 @@
     "koodiArvo": "2"
   },
   {
-    "koodiUri": "korkeakoululasnaolotila_1",
+    "koodiUri": "virtalukukausiilmtila_1",
     "metadata": [
       {
         "nimi": "Läsnä",

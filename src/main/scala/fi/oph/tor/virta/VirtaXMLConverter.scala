@@ -27,14 +27,11 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
         koodi => findOppilaitos(koodi.text)
       )
 
-      val läsnäolotiedot: Option[Läsnäolotiedot] = {
-        (virtaXml \\ "LukukausiIlmoittautuminen").filter(i => opiskelijaAvain(i) == opiskelijaAvain(opiskeluoikeus) && myöntäjä(opiskeluoikeus) == myöntäjä(i))
+      val läsnäolotiedot: Option[KorkeakoulunLäsnäolotiedot] = {
+        list2Optional((virtaXml \\ "LukukausiIlmoittautuminen").filter(i => opiskelijaAvain(i) == opiskelijaAvain(opiskeluoikeus) && myöntäjä(opiskeluoikeus) == myöntäjä(i))
           .sortBy(alkuPvm)
-          .map(i => Läsnäolojakso(alkuPvm(i), (i \ "LoppuPvm").headOption.map(l => date(l.text)), koodistoViitePalvelu.getKoodistoKoodiViite("korkeakoululasnaolotila", i \ "Tila" text).getOrElse(throw new RuntimeException("invalid läsnäolontila: " + (i \ "Tila").text))))
-          .toList match {
-            case Nil => None
-            case xs => Some(Läsnäolotiedot(xs))
-        }
+          .map(i => KorkeakoulunLäsnäolojakso(alkuPvm(i), (i \ "LoppuPvm").headOption.map(l => date(l.text)), koodistoViitePalvelu.getKoodistoKoodiViite("virtalukukausiilmtila", i \ "Tila" text).getOrElse(throw new RuntimeException("invalid läsnäolontila: " + (i \ "Tila").text))))
+          .toList, KorkeakoulunLäsnäolotiedot)
       }
 
       KorkeakoulunOpiskeluoikeus(
@@ -48,7 +45,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
         koulutustoimija = None,
         suoritukset = tutkintoSuoritukset(opiskeluoikeus, virtaXml),
         tila = None,
-        läsnäolotiedot = None
+        läsnäolotiedot = läsnäolotiedot
       )
     }.toList
   }
@@ -147,10 +144,12 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
     )
   }
 
-  private def optionalList[A](list: List[A]): Option[List[A]] = list match {
+  private def list2Optional[A, B](list: List[A], f: List[A] => B): Option[B] = list match {
     case Nil => None
-    case _ => Some(list)
+    case xs => Some(f(xs))
   }
+
+  private def optionalList[A](list: List[A]): Option[List[A]] = list2Optional[A, List[A]](list, identity)
 
   private def opiskelijaAvain(node: Node) = {
     (node \ "@opiskelijaAvain").text
@@ -163,7 +162,6 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
   private def alkuPvm(node: Node) = {
     date((node \ "AlkuPvm").text)
   }
-
 
   private def myöntäjä(node: Node) = {
     (node \ "Myontaja").text
