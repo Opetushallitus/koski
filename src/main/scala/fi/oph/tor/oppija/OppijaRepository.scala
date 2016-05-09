@@ -12,15 +12,15 @@ import fi.oph.tor.util.Invocation
 import fi.oph.tor.virta.{VirtaClient, VirtaOppijaRepository}
 
 object OppijaRepository {
-  def apply(config: Config, database: TorDatabase, koodistoViitePalvelu: KoodistoViitePalvelu) = {
-    CachingProxy(new OppijaRepositoryCachingStrategy, TimedProxy(withoutCache(config, database, koodistoViitePalvelu)))
+  def apply(config: Config, database: TorDatabase, koodistoViitePalvelu: KoodistoViitePalvelu, virtaClient: VirtaClient) = {
+    CachingProxy(new OppijaRepositoryCachingStrategy, TimedProxy(withoutCache(config, database, koodistoViitePalvelu, virtaClient)))
   }
 
-  def withoutCache(config: Config, database: TorDatabase, koodistoViitePalvelu: KoodistoViitePalvelu): OppijaRepository = {
+  def withoutCache(config: Config, database: TorDatabase, koodistoViitePalvelu: KoodistoViitePalvelu, virtaClient: VirtaClient): OppijaRepository = {
     val opintopolku = opintopolkuOppijaRepository(config, database, koodistoViitePalvelu)
     CompositeOppijaRepository(List(
       opintopolku,
-      VirtaOppijaRepository(VirtaClient(config), opintopolku)
+      VirtaOppijaRepository(virtaClient, opintopolku)
     ))
   }
 
