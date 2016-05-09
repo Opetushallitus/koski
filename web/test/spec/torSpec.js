@@ -442,7 +442,7 @@ describe('TOR', function() {
   describe('Korkeakoulujen opiskeluoikeudet', function() {
     var todistus = TodistusPage()
     before(resetFixtures, authentication.login())
-    before(openPage('/tor/oppija/1.2.246.562.24.000000000011', page.isOppijaSelected('Keijo')))
+    before(openPage('/tor/oppija/1.2.246.562.24.000000000011', page.isOppijaSelected('Dick')))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
         expect(OpinnotPage().getTutkinto()).to.equal("Dipl.ins., konetekniikka")
