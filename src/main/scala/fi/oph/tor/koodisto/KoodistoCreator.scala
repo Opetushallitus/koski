@@ -28,7 +28,7 @@ object KoodistoCreator extends Logging {
       }
     }
 
-    MockKoodistoPalvelu.koodistot.foreach(koodisto => createKoodistoFromMockData(koodisto))
+    MockKoodistoPalvelu.koodistot.par.foreach(koodisto => createKoodistoFromMockData(koodisto))
   }
 
 }
