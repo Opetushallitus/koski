@@ -2,7 +2,7 @@ package fi.oph.tor.api
 
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.oppija.MockOppijat
-import fi.oph.tor.schema.{KorkeakoulunOpintojaksonSuoritus, KorkeakouluTutkinnonSuoritus, KorkeakoulunOpiskeluoikeus, Suoritus}
+import fi.oph.tor.schema._
 import org.scalatest.{FunSpec, Matchers}
 
 class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMethodsKorkeakoulu {
@@ -15,9 +15,18 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
       }
     }
 
+    describe("Suoritusten tilat") {
+      it("Keskeneräinen tutkinto") {
+        lastOpiskeluOikeus(MockOppijat.korkeakoululainen.oid).suoritukset.map(_.tila.koodiarvo) should equal(List("KESKEN"))
+      }
+      it("Valmis tutkinto") {
+        lastOpiskeluOikeus(MockOppijat.dippainssi.oid).suoritukset.map(_.tila.koodiarvo) should equal(List("VALMIS"))
+      }
+    }
+
     describe("Haettaessa") {
       it("Konvertoidaan Virta-järjestelmän opiskeluoikeus") {
-        val opiskeluoikeus = lastOpiskeluOikeus(MockOppijat.korkeakoululainen.oid)
+        val opiskeluoikeus = lastOpiskeluOikeus(MockOppijat.dippainssi.oid)
 
         opiskeluoikeus.tyyppi.koodiarvo should equal("korkeakoulutus")
 

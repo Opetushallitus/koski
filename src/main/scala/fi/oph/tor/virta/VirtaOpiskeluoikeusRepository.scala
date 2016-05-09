@@ -36,7 +36,7 @@ case class VirtaOpiskeluoikeusRepository(v: VirtaClient, val oppijaRepository: O
   private def getHetu(oid: String): Option[TaydellisetHenkilötiedot] = oppijaRepository.findByOid(oid)
 
   def query(filters: List[QueryFilter])(implicit user: TorUser): Observable[(Oid, List[Opiskeluoikeus])] = Observable.empty
-  def filterOppijat(oppijat: Seq[TaydellisetHenkilötiedot])(implicit user: TorUser): Seq[TaydellisetHenkilötiedot] = oppijat.filter(oppija => !findByHenkilö(oppija).isEmpty)
+  def filterOppijat(oppijat: Seq[TaydellisetHenkilötiedot])(implicit user: TorUser): Seq[TaydellisetHenkilötiedot] = oppijat.par.filter(oppija => !findByHenkilö(oppija).isEmpty).toList
   def findByOppijaOid(oid: String)(implicit user: TorUser): Seq[Opiskeluoikeus] = {
     getHetu(oid).toList.flatMap(findByHenkilö(_))
   }

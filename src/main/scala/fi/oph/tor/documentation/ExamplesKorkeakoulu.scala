@@ -35,7 +35,7 @@ object ExamplesKorkeakoulu {
 }
 
 object KorkeakouluTestdata {
-  lazy val oppija = MockOppijat.korkeakoululainen.vainHenkilötiedot
+  lazy val oppija = MockOppijat.dippainssi.vainHenkilötiedot
   lazy val helsinginYliopisto: Oppilaitos = Oppilaitos(MockOrganisaatiot.helsinginYliopisto, Some(Koodistokoodiviite("01901", None, "oppilaitosnumero", None)), Some("Helsingin yliopisto"))
   lazy val opiskeluoikeusAktiivinen = Koodistokoodiviite("1", Some("aktiivinen"), "virtaopiskeluoikeudentila", Some(1))
 }
