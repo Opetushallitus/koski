@@ -7,7 +7,9 @@ import fi.oph.tor.schema._
 import scala.collection.parallel.immutable.ParSeq
 
 case class CompositeOppijaRepository(repos: List[OppijaRepository]) extends OppijaRepository {
-  override def findOppijat(query: String) = mergeDuplicates(repos.par.map(_.findOppijat(query)).toList)
+  override def findOppijat(query: String) = {
+    repos.iterator.map(_.findOppijat(query)).find(!_.isEmpty).getOrElse(Nil)
+  }
 
   override def findByOid(oid: String) = mergeDuplicates(repos.par.map(_.findByOid(oid).toList).toList).headOption
 
