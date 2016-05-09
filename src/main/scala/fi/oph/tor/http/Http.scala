@@ -116,17 +116,18 @@ case class Http(root: String, client: Client = Http.newClient) extends Logging {
   }
 
   def apply[ResultType](uri: Uri)(decode: Decode[ResultType]): Task[ResultType] = {
-    val resolved = uri"${rootUri}${uri}"
-    apply(Request(uri = resolved))(decode)
+    apply(Request(uri = addRoot(uri)))(decode)
   }
 
   def post[I <: AnyRef, O <: Any](path: Uri, entity: I)(implicit encode: EntityEncoder[I], decode: Decode[O]): O = {
-    send(path, Method.POST, entity)
+    send(addRoot(path), Method.POST, entity)
   }
 
   def put[I <: AnyRef, O <: Any](path: Uri, entity: I)(implicit encode: EntityEncoder[I], decode: Decode[O]): O = {
-    send(path, Method.PUT, entity)
+    send(addRoot(path), Method.PUT, entity)
   }
+
+  private def addRoot(uri: Uri) = uri"${rootUri}${uri}"
 
   def send[I <: AnyRef, O <: Any](path: Uri, method: Method, entity: I)(implicit encode: EntityEncoder[I], decode: Decode[O]): O = {
     val request: Request = Request(uri = path, method = method)
