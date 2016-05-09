@@ -18,7 +18,10 @@ import rx.lang.scala.Observable
 import scalaz.concurrent.Task
 
 class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances with Timing {
-  def search(query: String): UserQueryResult = runTask(http("/authentication-service/resources/henkilo?no=true&count=0&q=" + query)(Http.parseJson[UserQueryResult]))
+  def search(query: String): UserQueryResult = {
+    // TODO: URL encoding
+    runTask(http("/authentication-service/resources/henkilo?no=true&count=0&q=" + query)(Http.parseJson[UserQueryResult]))
+  }
 
 
   def findByOid(id: String): Option[User] = findByOids(List(id)).headOption

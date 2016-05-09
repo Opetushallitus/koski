@@ -29,7 +29,7 @@ object OppijaRepository {
     if (config.hasPath("opintopolku.virkailija.username")) {
       new RemoteOppijaRepository(AuthenticationServiceClient(config), koodistoViitePalvelu)
     } else {
-      new MockOppijaRepository(Some(database.db))
+      new MockOppijaRepository(MockOppijat.defaultOppijat, Some(database.db))
     }
   }
 }

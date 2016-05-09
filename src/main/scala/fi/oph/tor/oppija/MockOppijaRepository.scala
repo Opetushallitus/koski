@@ -45,14 +45,18 @@ class MockOppijat(private var oppijat: List[TaydellisetHenkilötiedot] = Nil) ex
   }
 }
 
-class MockOppijaRepository(db: Option[DB] = None) extends OppijaRepository with Futures {
-  private var oppijat = new MockOppijat(MockOppijat.defaultOppijat)
+class MockOppijaRepository(initialOppijat: List[TaydellisetHenkilötiedot], db: Option[DB] = None) extends OppijaRepository with Futures {
+  private var oppijat = new MockOppijat(initialOppijat)
 
   override def findOppijat(query: String) = {
     if (query.toLowerCase.contains("error")) {
       throw new TestingException("Testing error handling")
     }
     oppijat.getOppijat.filter(searchString(_).contains(query))
+  }
+
+  def addOppija(suku: String, etu: String, hetu: String): TaydellisetHenkilötiedot = {
+    oppijat.oppija(suku, etu, hetu)
   }
 
   def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, Henkilö.Oid] =  {

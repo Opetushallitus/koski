@@ -7,13 +7,7 @@ import fi.oph.tor.util.Files
 
 import scala.xml.{Elem, PrettyPrinter}
 
-// Client for the Virta Opintotietopalvelu, see https://confluence.csc.fi/display/VIRTA/VIRTA-opintotietopalvelu
-object VirtaClientTester extends App {
-  val hetulla: VirtaHakuehtoHetu = VirtaHakuehtoHetu("010280-123A")
-  val oppijanumerolla = VirtaHakuehtoKansallinenOppijanumero("aed09afd87a8c6d76b76bbd")
-  val result = VirtaClient(TorApplication.defaultConfig).fetchVirtaData(hetulla)
-  println(new PrettyPrinter(200, 2).format(result.get))
-}
+
 
 object VirtaClient {
   def apply(config: Config) = config.hasPath("virta.serviceUrl") match {
