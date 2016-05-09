@@ -16,16 +16,20 @@ case class VirtaOpiskeluoikeusRepository(v: VirtaClient, val oppijaRepository: O
   private val converter = VirtaXMLConverter(oppijaRepository, oppilaitosRepository, koodistoViitePalvelu)
 
   def findByHenkilö(henkilö: Henkilö with Henkilötiedot)(implicit user: TorUser) = {
-    val opiskeluoikeudet = v.fetchVirtaData(VirtaHakuehtoHetu(henkilö.hetu)).toList
+    val opiskeluoikeudet: List[KorkeakoulunOpiskeluoikeus] = v.fetchVirtaData(VirtaHakuehtoHetu(henkilö.hetu)).toList
       .flatMap(xmlData => converter.convert(xmlData))
       .filter(oo => user.hasReadAccess(oo.oppilaitos))
 
-    val oppija = Oppija(henkilö, opiskeluoikeudet)
-    validator.validateAsJson(oppija) match {
-      case Right(oppija) => opiskeluoikeudet
-      case Left(status) =>
-        logger.error("Virrasta saatu opiskeluoikeus ei ole validi: " + status)
-        Nil
+    opiskeluoikeudet match {
+      case Nil => Nil
+      case _ =>
+        val oppija = Oppija(henkilö, opiskeluoikeudet)
+        validator.validateAsJson(oppija) match {
+          case Right(oppija) => opiskeluoikeudet
+          case Left(status) =>
+            logger.error("Virrasta saatu opiskeluoikeus ei ole validi: " + status)
+            Nil
+        }
     }
   }
 
