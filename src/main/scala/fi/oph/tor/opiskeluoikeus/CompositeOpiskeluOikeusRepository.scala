@@ -13,7 +13,13 @@ import scala.collection.parallel.immutable.ParSeq
 class CompositeOpiskeluOikeusRepository(repos: List[OpiskeluOikeusRepository]) extends OpiskeluOikeusRepository {
   override def query(filters: List[QueryFilter])(implicit user: TorUser) = repos.foldLeft(Observable.empty.asInstanceOf[Observable[(Oid, List[Opiskeluoikeus])]]) { (result, repo) => result.merge(repo.query(filters)) }
 
-  override def filterOppijat(oppijat: Seq[TaydellisetHenkilötiedot])(implicit user: TorUser) = repos.par.flatMap(repo => repo.filterOppijat(oppijat)).toSet.toList
+  override def filterOppijat(oppijat: Seq[TaydellisetHenkilötiedot])(implicit user: TorUser) = {
+    repos.foldLeft((oppijat, Nil: Seq[TaydellisetHenkilötiedot])) { case ((left, found), repo) =>
+      val newlyFound = repo.filterOppijat(left)
+      val stillLeft = left.diff(newlyFound)
+      (stillLeft, found ++ newlyFound)
+    }._2
+  }
 
   override def findById(id: Int)(implicit user: TorUser) = repos.par.flatMap(_.findById(id)).headOption
 
