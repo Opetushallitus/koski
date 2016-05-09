@@ -21,6 +21,8 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
       oppilaitosRepository.findByOppilaitosnumero(numero).orElse(throw new RuntimeException("Oppilaitosta ei löydy: " + numero))
     }
 
+    //println(XML.prettyPrint(virtaXml))
+
     (virtaXml \\ "Opiskeluoikeus").map { (opiskeluoikeus: Node) =>
 
       val oppilaitos: Option[Oppilaitos] = (opiskeluoikeus \ "Myontaja" \ "Koodi").headOption.orElse(opiskeluoikeus \ "Myontaja" headOption).flatMap(

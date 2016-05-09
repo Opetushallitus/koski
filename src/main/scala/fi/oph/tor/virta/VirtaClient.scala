@@ -5,9 +5,7 @@ import fi.oph.tor.config.TorApplication
 import fi.oph.tor.http.Http
 import fi.oph.tor.util.Files
 
-import scala.xml.{Elem, PrettyPrinter}
-
-
+import scala.xml.{Node, Elem, PrettyPrinter}
 
 object VirtaClient {
   def apply(config: Config) = config.hasPath("virta.serviceUrl") match {
@@ -18,6 +16,7 @@ object VirtaClient {
 
 trait VirtaClient {
   def fetchVirtaData(hakuehto: VirtaHakuehto): Option[Elem]
+  def fetchHenkilöData(hakuehto: VirtaHakuehto, oppilaitosNumero: String): Option[Elem]
 }
 
 object MockVirtaClient extends VirtaClient {
@@ -29,6 +28,7 @@ object MockVirtaClient extends VirtaClient {
         throw new UnsupportedOperationException()
     }
   }
+  def fetchHenkilöData(hakuehto: VirtaHakuehto, oppilaitosNumero: String) = None
 }
 
 case class RemoteVirtaClient(config: VirtaConfig) extends VirtaClient {
@@ -37,18 +37,37 @@ case class RemoteVirtaClient(config: VirtaConfig) extends VirtaClient {
       case VirtaHakuehtoHetu(hetu) => <henkilotunnus>{hetu}</henkilotunnus>
       case VirtaHakuehtoKansallinenOppijanumero(oppijanumero) => <kansallinenOppijanumero>{oppijanumero}</kansallinenOppijanumero>
     }
-    val body = <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
-      <SOAP-ENV:Body><OpiskelijanKaikkiTiedotRequest xmlns="http://tietovaranto.csc.fi/luku">
-      <Kutsuja>
-        <jarjestelma>{config.jarjestelma}</jarjestelma>
-        <tunnus>{config.tunnus}</tunnus>
-        <avain>{config.avain}</avain>
-      </Kutsuja>
-      <Hakuehdot>{ hakuehdot }</Hakuehdot>
-    </OpiskelijanKaikkiTiedotRequest></SOAP-ENV:Body>
-    </SOAP-ENV:Envelope>
+    val body = soapEnvelope(
+      <OpiskelijanKaikkiTiedotRequest xmlns="http://tietovaranto.csc.fi/luku">
+        {kutsuja}
+        <Hakuehdot>{ hakuehdot }</Hakuehdot>
+      </OpiskelijanKaikkiTiedotRequest>)
     Some(Http(config.serviceUrl).post("", body)(Http.Encoders.xml, Http.parseXml))
   }
+
+  def fetchHenkilöData(hakuehto: VirtaHakuehto, oppilaitosNumero: String) = {
+    val hakuehdot = hakuehto match {
+      case VirtaHakuehtoHetu(hetu) => <henkilotunnus>{hetu}</henkilotunnus>
+      case VirtaHakuehtoKansallinenOppijanumero(oppijanumero) => <kansallinenOppijanumero>{oppijanumero}</kansallinenOppijanumero>
+    }
+    val body = soapEnvelope(
+      <OpiskelijanTiedotRequest xmlns="http://tietovaranto.csc.fi/luku">
+        {kutsuja}
+        <Hakuehdot>{ hakuehdot }<organisaatio>{oppilaitosNumero}</organisaatio></Hakuehdot>
+      </OpiskelijanTiedotRequest>)
+    Some(Http(config.serviceUrl).post("", body)(Http.Encoders.xml, Http.parseXml))
+  }
+
+  def kutsuja = <Kutsuja>
+    <jarjestelma>{config.jarjestelma}</jarjestelma>
+    <tunnus>{config.tunnus}</tunnus>
+    <avain>{config.avain}</avain>
+  </Kutsuja>
+
+
+  def soapEnvelope(node: Node) = <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+    <SOAP-ENV:Body>{node}</SOAP-ENV:Body>
+  </SOAP-ENV:Envelope>
 }
 
 sealed trait VirtaHakuehto
