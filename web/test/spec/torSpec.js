@@ -451,6 +451,18 @@ describe('TOR', function() {
     })
   })
 
+  describe('Opintosuoritusote', function() {
+    describe('Korkeakoulun opintosuoritusote', function() {
+      before(resetFixtures, authentication.login())
+      before(openPage('/tor/opintosuoritusote/1.2.246.562.24.000000000011/1114082125'))
+      describe('ote', function() {
+        it('näytetään', function() {
+          expect(true)
+        })
+      })
+    })
+  })
+
   describe('Todistukset', function( ){
     describe('Perusopetuksen päättötodistus', function() {
       var todistus = TodistusPage()
