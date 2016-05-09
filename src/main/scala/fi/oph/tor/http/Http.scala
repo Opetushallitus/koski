@@ -1,5 +1,6 @@
 package fi.oph.tor.http
 
+import java.net.URLEncoder
 import fi.oph.tor.http.Http.{Decode, runTask}
 import fi.oph.tor.json.Json
 import fi.oph.tor.log.Logging
@@ -11,11 +12,38 @@ import org.http4s.headers.`Content-Type`
 
 import scala.concurrent.duration._
 import scala.xml.Elem
+import scalaz.{-\/, \/-}
 import scalaz.concurrent.Task
 
 object Http extends Logging {
   private val maxHttpConnections = Pools.jettyThreads + Pools.httpThreads
   def newClient = blaze.PooledHttp1Client(maxTotalConnections = maxHttpConnections, config = BlazeClientConfig.defaultConfig.copy(customExecutor = Some(Pools.httpPool)))
+
+  // This guys allows you to make URIs from your Strings as in uri"http://google.com/s=${searchTerm}"
+  // Takes care of URI encoding the components. You can prevent encoding a part by wrapping into an Uri using this selfsame method.
+  implicit class UriInterpolator(val sc: StringContext) extends AnyVal {
+    private def uriFromString(uri: String): Uri = {
+      Uri.fromString(uri) match {
+        case \/-(result) => result
+        case -\/(failure) =>
+          throw new IllegalArgumentException("Cannot create URI: " + uri + ": " + failure)
+      }
+    }
+
+    def uri(args: Any*): Uri = {
+      val pairs: Seq[(String, Option[Any])] = sc.parts.zip(args.toList.map(Some(_)) ++ List(None))
+
+      val stuff: Seq[String] = pairs.map { case (fixedPart, encodeablePartOption) =>
+          fixedPart + (encodeablePartOption match {
+            case None => ""
+            case Some(encoded: Uri) => encoded.toString
+            case Some(encodeable) => URLEncoder.encode(encodeable.toString, "UTF-8")
+          })
+      }
+
+      uriFromString(stuff.mkString(""))
+    }
+  }
 
   def expectSuccess(status: Int, text: String, request: Request): Unit = (status, text) match {
     case (status, text) if status < 300 && status >= 200 =>
@@ -63,10 +91,6 @@ object Http extends Logging {
     case _ =>
   }
 
-  def uriFromString(uri: String): Uri = {
-    Uri.fromString(uri).toOption.get
-  }
-
   // Http task runner: runs at most 2 minutes. We must avoid using the timeout-less run method, that may block forever.
   def runTask[A](task: Task[A]): A = {
     task.runFor(2 minutes)
@@ -81,7 +105,8 @@ object Http extends Logging {
 }
 
 case class Http(root: String, client: Client = Http.newClient) extends Logging {
-  def uriFromString(relativePath: String) = Http.uriFromString(root + relativePath)
+  import Http.UriInterpolator
+  private val rootUri = uri"${root}"
 
   def apply[ResultType](request: Request)(decode: Decode[ResultType]): Task[ResultType] = {
     processRequest(request)(decode)
@@ -92,19 +117,16 @@ case class Http(root: String, client: Client = Http.newClient) extends Logging {
   }
 
   def apply[ResultType](uri: Uri)(decode: Decode[ResultType]): Task[ResultType] = {
-    apply(Request(uri = uri))(decode)
+    val resolved = uri"${rootUri}${uri}"
+    apply(Request(uri = resolved))(decode)
   }
 
-  def apply[ResultType](uri: String = "")(decode: Decode[ResultType]): Task[ResultType] = {
-    apply(Request(uri = Http.uriFromString(root + uri)))(decode)
+  def post[I <: AnyRef, O <: Any](path: Uri, entity: I)(implicit encode: EntityEncoder[I], decode: Decode[O]): O = {
+    send(path, Method.POST, entity)
   }
 
-  def post[I <: AnyRef, O <: Any](path: String, entity: I)(implicit encode: EntityEncoder[I], decode: Decode[O]): O = {
-    send(uriFromString(path), Method.POST, entity)
-  }
-
-  def put[I <: AnyRef, O <: Any](path: String, entity: I)(implicit encode: EntityEncoder[I], decode: Decode[O]): O = {
-    send(uriFromString(path), Method.PUT, entity)
+  def put[I <: AnyRef, O <: Any](path: Uri, entity: I)(implicit encode: EntityEncoder[I], decode: Decode[O]): O = {
+    send(path, Method.PUT, entity)
   }
 
   def send[I <: AnyRef, O <: Any](path: Uri, method: Method, entity: I)(implicit encode: EntityEncoder[I], decode: Decode[O]): O = {
@@ -115,7 +137,8 @@ case class Http(root: String, client: Client = Http.newClient) extends Logging {
 
   private def processRequest[ResultType](request: Request)(decoder: (Int, String, Request) => ResultType): Task[ResultType] = {
     client.fetch(request) { response =>
-      response.as[String].map { text => // TODO: don't convert to string here
+      //logger.info(request + " -> " + response.status.code)
+      response.as[String].map { text => // Might be able to optimize by not turning into String here
         decoder(response.status.code, text, request)
       }
     }

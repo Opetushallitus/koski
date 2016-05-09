@@ -3,6 +3,7 @@ package fi.oph.tor.virta
 import com.typesafe.config.Config
 import fi.oph.tor.config.TorApplication
 import fi.oph.tor.http.Http
+import fi.oph.tor.http.Http._
 import fi.oph.tor.util.Files
 
 import scala.xml.{Node, Elem, PrettyPrinter}
@@ -42,7 +43,7 @@ case class RemoteVirtaClient(config: VirtaConfig) extends VirtaClient {
         {kutsuja}
         <Hakuehdot>{ hakuehdot }</Hakuehdot>
       </OpiskelijanKaikkiTiedotRequest>)
-    Some(Http(config.serviceUrl).post("", body)(Http.Encoders.xml, Http.parseXml))
+    Some(Http(config.serviceUrl).post(uri"", body)(Http.Encoders.xml, Http.parseXml))
   }
 
   def fetchHenkilöData(hakuehto: VirtaHakuehto, oppilaitosNumero: String) = {
@@ -55,7 +56,7 @@ case class RemoteVirtaClient(config: VirtaConfig) extends VirtaClient {
         {kutsuja}
         <Hakuehdot>{ hakuehdot }<organisaatio>{oppilaitosNumero}</organisaatio></Hakuehdot>
       </OpiskelijanTiedotRequest>)
-    Some(Http(config.serviceUrl).post("", body)(Http.Encoders.xml, Http.parseXml))
+    Some(Http(config.serviceUrl).post(uri"", body)(Http.Encoders.xml, Http.parseXml))
   }
 
   def kutsuja = <Kutsuja>

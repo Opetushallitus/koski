@@ -2,7 +2,7 @@ package fi.oph.tor.organisaatio
 
 import com.typesafe.config.Config
 import fi.oph.tor.cache.{CachingProxy, TorCache}
-import fi.oph.tor.http.Http.runTask
+import fi.oph.tor.http.Http._
 import fi.oph.tor.http.{Http, VirkailijaHttpClient}
 import fi.oph.tor.koodisto.KoodistoViitePalvelu
 import fi.oph.tor.localization.LocalizedString
@@ -62,11 +62,10 @@ abstract class JsonOrganisaatioRepository(koodisto: KoodistoViitePalvelu) extend
 
 class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu) extends JsonOrganisaatioRepository(koodisto) {
   def fetch(oid: String): OrganisaatioHakuTulos = {
-    runTask(http("/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=false&oid=" + oid)(Http.parseJson[OrganisaatioHakuTulos]))
+    runTask(http(uri"/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=false&oid=${oid}")(Http.parseJson[OrganisaatioHakuTulos]))
   }
   def fetchSearch(searchTerm: String): OrganisaatioHakuTulos = {
-    // TODO: URI encoding of searchTerm
-    runTask(http("/organisaatio-service/rest/organisaatio/v2/hae?aktiiviset=true&lakkautetut=false&searchStr=" + searchTerm)(Http.parseJson[OrganisaatioHakuTulos]))
+    runTask(http(uri"/organisaatio-service/rest/organisaatio/v2/hae?aktiiviset=true&lakkautetut=false&searchStr=${searchTerm}")(Http.parseJson[OrganisaatioHakuTulos]))
   }
 }
 
