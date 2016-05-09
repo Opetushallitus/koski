@@ -10,7 +10,7 @@ import fi.oph.tor.log._
 import fi.oph.tor.schema.Henkilö.Oid
 import fi.oph.tor.schema.{HenkilöWithOid, Oppija}
 import fi.oph.tor.servlet.{ErrorHandlingServlet, InvalidRequestException, NoCache}
-import fi.oph.tor.toruser.{RequiresAuthentication, TorUser, UserOrganisationsRepository}
+import fi.oph.tor.toruser.{AccessType, RequiresAuthentication, TorUser, UserOrganisationsRepository}
 import fi.oph.tor.util.Timing
 import fi.vm.sade.security.ldap.DirectoryClient
 import org.json4s.JsonAST.JArray
@@ -26,7 +26,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
   put("/") {
     timed("PUT /oppija", thresholdMs = 10) {
       withJsonBody { parsedJson =>
-        val validationResult: Either[HttpStatus, Oppija] = validator.extractAndValidate(parsedJson)(torUser)
+        val validationResult: Either[HttpStatus, Oppija] = validator.extractAndValidate(parsedJson)(torUser, AccessType.write)
         val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = putSingle(validationResult, torUser)
         renderEither(result)
       }
@@ -48,7 +48,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
 
         implicit val user = torUser
 
-        val validationResults: List[Either[HttpStatus, Oppija]] = validator.extractAndValidateBatch(parsedJson.asInstanceOf[JArray])
+        val validationResults: List[Either[HttpStatus, Oppija]] = validator.extractAndValidateBatch(parsedJson.asInstanceOf[JArray])(user, AccessType.write)
         val batchResults: List[Either[HttpStatus, HenkilönOpiskeluoikeusVersiot]] = validationResults.par.map(putSingle(_, user)).toList
 
         response.setStatus(batchResults.map {
@@ -100,7 +100,7 @@ class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: Us
 
   private def validateOppija(oppija: Oppija): ValidationResult = {
     val oppijaOid: Oid = oppija.henkilö.asInstanceOf[HenkilöWithOid].oid
-    val validationResult = validator.validateAsJson(oppija)(torUser)
+    val validationResult = validator.validateAsJson(oppija)(torUser, AccessType.read)
     validationResult match {
       case Right(oppija) =>
         ValidationResult(oppijaOid, Nil)
