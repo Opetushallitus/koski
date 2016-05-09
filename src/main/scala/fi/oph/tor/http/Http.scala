@@ -1,6 +1,6 @@
 package fi.oph.tor.http
 
-import java.net.URLEncoder
+import java.net.{ConnectException, URLEncoder}
 import fi.oph.tor.http.Http.{Decode, runTask}
 import fi.oph.tor.json.Json
 import fi.oph.tor.log.Logging
@@ -22,14 +22,6 @@ object Http extends Logging {
   // This guys allows you to make URIs from your Strings as in uri"http://google.com/s=${searchTerm}"
   // Takes care of URI encoding the components. You can prevent encoding a part by wrapping into an Uri using this selfsame method.
   implicit class UriInterpolator(val sc: StringContext) extends AnyVal {
-    private def uriFromString(uri: String): Uri = {
-      Uri.fromString(uri) match {
-        case \/-(result) => result
-        case -\/(failure) =>
-          throw new IllegalArgumentException("Cannot create URI: " + uri + ": " + failure)
-      }
-    }
-
     def uri(args: Any*): Uri = {
       val pairs: Seq[(String, Option[Any])] = sc.parts.zip(args.toList.map(Some(_)) ++ List(None))
 
@@ -42,6 +34,15 @@ object Http extends Logging {
       }
 
       uriFromString(stuff.mkString(""))
+    }
+  }
+
+  // Warning: does not do any URI encoding
+  def uriFromString(uri: String): Uri = {
+    Uri.fromString(uri) match {
+      case \/-(result) => result
+      case -\/(failure) =>
+        throw new IllegalArgumentException("Cannot create URI: " + uri + ": " + failure)
     }
   }
 
@@ -92,9 +93,7 @@ object Http extends Logging {
   }
 
   // Http task runner: runs at most 2 minutes. We must avoid using the timeout-less run method, that may block forever.
-  def runTask[A](task: Task[A]): A = {
-    task.runFor(2 minutes)
-  }
+  def runTask[A](task: Task[A]): A = task.runFor(2 minutes)
 
   type Decode[ResultType] = (Int, String, Request) => ResultType
 
@@ -106,7 +105,7 @@ object Http extends Logging {
 
 case class Http(root: String, client: Client = Http.newClient) extends Logging {
   import Http.UriInterpolator
-  private val rootUri = uri"${root}"
+  private val rootUri = Http.uriFromString(root)
 
   def apply[ResultType](request: Request)(decode: Decode[ResultType]): Task[ResultType] = {
     processRequest(request)(decode)
