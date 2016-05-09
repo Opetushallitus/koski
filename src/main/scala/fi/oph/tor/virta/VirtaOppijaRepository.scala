@@ -2,35 +2,43 @@ package fi.oph.tor.virta
 
 import fi.oph.tor.henkilo.Hetu
 import fi.oph.tor.http.TorErrorCategory
+import fi.oph.tor.log.Logging
 import fi.oph.tor.oppija.{MockOppijaRepository, OppijaRepository}
 import fi.oph.tor.schema.UusiHenkilö
 
-// Wrapper that implements OppijaRepository on top of Virta
-case class VirtaOppijaRepository(v: VirtaClient) extends OppijaRepository {
-  val mockOppijat = new MockOppijaRepository(Nil)
-
+/*
+  OppijaRepositoryn toteutus, jota käytetään oppijoiden etsimiseen Virta-järjestelmästä hetulla.
+ */
+case class VirtaOppijaRepository(v: VirtaClient, henkilöpalvelu: OppijaRepository) extends OppijaRepository with Logging {
   override def findOppijat(query: String) = Hetu.validFormat(query) match {
     case Left(_) =>
       Nil
     case Right(hetu) =>
-      mockOppijat.findOppijat(query) match {
-        case Nil =>
-          val hakuehto: VirtaHakuehtoHetu = VirtaHakuehtoHetu(hetu)
-          val organisaatiot = v.fetchVirtaData(hakuehto).toSeq.flatMap(_ \\ "Opiskeluoikeus" \ "Myontaja").map(_.text)
-          val opiskelijaNodes = organisaatiot.flatMap(v.fetchHenkilöData(hakuehto, _)).flatMap(_ \\ "Opiskelija")
-          opiskelijaNodes
-            .map { opiskelijaNode => ((opiskelijaNode \ "Sukunimi").text, (opiskelijaNode \ "Etunimet").text) }
-            .find { case (suku, etu) => !suku.isEmpty && !etu.isEmpty }
-            .map { case (suku, etu) => mockOppijat.addOppija(suku, etu, hetu) }
-            .toList
-        case oppijat => oppijat
+      // Tänne tullaan vain, jos oppijaa ei löytynyt henkilöpalvelusta (ks CompositeOppijaRepository)
+      val hakuehto: VirtaHakuehtoHetu = VirtaHakuehtoHetu(hetu)
+      // Oppijan organisaatiot haetaan ensin tällä raskaammalla kyselyllä
+      val organisaatiot = v.fetchVirtaData(hakuehto).toSeq.flatMap(_ \\ "Opiskeluoikeus" \ "Myontaja").map(_.text)
+      // Organisaatioden avulla haetaan henkilötietoja ja valitaan niistä ensimmäinen validi
+      val opiskelijaNodes = organisaatiot.flatMap(v.fetchHenkilöData(hakuehto, _)).flatMap(_ \\ "Opiskelija")
+      opiskelijaNodes
+        .map { opiskelijaNode => ((opiskelijaNode \ "Sukunimi").text, (opiskelijaNode \ "Etunimet").text) }
+        .find { case (sukunimi, etunimet) => !sukunimi.isEmpty && !etunimet.isEmpty }
+        .flatMap { case (sukunimi, etunimet) =>
+          val kutsumanimi = etunimet.split(" ").toList.head
+          // Validi oppija lisätään henkilöpalveluun, jolloin samaa oppijaa ei haeta enää uudestaan Virrasta
+          henkilöpalvelu.findOrCreate(UusiHenkilö(hetu, etunimet, kutsumanimi, sukunimi)) match {
+            case Right(oid) => henkilöpalvelu.findByOid(oid)
+            case Left(error) =>
+              logger.error("Virta-oppijan lisäys henkilöpalveluun epäonnistui: " + error)
+              None
+          }
       }
-
+      .toList
   }
 
   override def findOrCreate(henkilö: UusiHenkilö) = Left(TorErrorCategory.notImplemented.readOnly("Virta-järjestelmään ei voi lisätä henkilöitä"))
 
-  override def findByOid(oid: String) = mockOppijat.findByOid(oid)
+  override def findByOid(oid: String) = None
 
-  override def findByOids(oids: List[String]) = mockOppijat.findByOids(oids)
+  override def findByOids(oids: List[String]) = Nil
 }

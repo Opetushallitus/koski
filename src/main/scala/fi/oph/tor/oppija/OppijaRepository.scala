@@ -17,13 +17,12 @@ object OppijaRepository {
   }
 
   def withoutCache(config: Config, database: TorDatabase, koodistoViitePalvelu: KoodistoViitePalvelu): OppijaRepository = {
+    val opintopolku = opintopolkuOppijaRepository(config, database, koodistoViitePalvelu)
     CompositeOppijaRepository(List(
-      opintopolkuOppijaRepository(config, database, koodistoViitePalvelu),
-      virtaOppijaRepository(config)
+      opintopolku,
+      VirtaOppijaRepository(VirtaClient(config), opintopolku)
     ))
   }
-
-  def virtaOppijaRepository(config: Config) = VirtaOppijaRepository(VirtaClient(config))
 
   def opintopolkuOppijaRepository(config: Config, database: TorDatabase, koodistoViitePalvelu: KoodistoViitePalvelu): OppijaRepository = {
     if (config.hasPath("opintopolku.virkailija.username")) {
