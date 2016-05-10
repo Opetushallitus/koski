@@ -34,18 +34,16 @@ class TorValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: 
   }
 
   def extractAndValidate(parsedJson: JValue)(implicit user: TorUser, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
-    timed("extractAndValidate") {
-      TorJsonSchemaValidator.jsonSchemaValidate(parsedJson) match {
-        case status: HttpStatus if status.isOk =>
-          val extractionResult: Either[HttpStatus, Oppija] = ValidatingAndResolvingExtractor.extract[Oppija](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository))
-          extractionResult.right.flatMap { oppija =>
-            validateOpiskeluoikeudet(oppija.opiskeluoikeudet) match {
-              case status: HttpStatus if status.isOk => Right(fillMissingInfo(oppija))
-              case status: HttpStatus => Left(status)
-            }
+    timed("jsonSchemaValidate")(TorJsonSchemaValidator.jsonSchemaValidate(parsedJson)) match {
+      case status: HttpStatus if status.isOk =>
+        val extractionResult: Either[HttpStatus, Oppija] = timed("extract")(ValidatingAndResolvingExtractor.extract[Oppija](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository)))
+        extractionResult.right.flatMap { oppija =>
+          validateOpiskeluoikeudet(oppija.opiskeluoikeudet) match {
+            case status: HttpStatus if status.isOk => Right(fillMissingInfo(oppija))
+            case status: HttpStatus => Left(status)
           }
-        case status: HttpStatus => Left(status)
-      }
+        }
+      case status: HttpStatus => Left(status)
     }
   }
 
