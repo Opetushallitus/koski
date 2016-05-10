@@ -1,0 +1,27 @@
+{
+  "numHits": 1,
+  "organisaatiot": [
+    {
+      "oid": "1.2.246.562.10.27756776996",
+      "alkuPvm": 838846800000,
+      "parentOid": "1.2.246.562.10.85149969462",
+      "parentOidPath": "1.2.246.562.10.27756776996/1.2.246.562.10.85149969462/1.2.246.562.10.00000000001",
+      "oppilaitosKoodi": "02470",
+      "oppilaitostyyppi": "oppilaitostyyppi_41#1",
+      "match": true,
+      "nimi": {
+        "fi": "Lahden ammattikorkeakoulu",
+        "en": "Lahti University of Applied Sciences"
+      },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
+      "kotipaikkaUri": "kunta_398",
+      "children": [],
+      "organisaatiotyypit": [
+        "OPPILAITOS"
+      ],
+      "aliOrganisaatioMaara": 7
+    }
+  ]
+}

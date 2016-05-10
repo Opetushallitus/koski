@@ -1,0 +1,3297 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Header/>
+  <SOAP-ENV:Body>
+    <virtaluku:OpiskelijanKaikkiTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
+      <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2015/09/01">
+        <virta:Opiskelija avain="02470_55317">
+          <virta:Henkilotunnus>090888-929X</virta:Henkilotunnus>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus opiskelijaAvain="02470_55317" avain="02470_1502434">
+              <virta:AlkuPvm>2015-10-20</virta:AlkuPvm>
+              <virta:LoppuPvm>2016-04-12</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2015-10-20</virta:AlkuPvm>
+                <virta:LoppuPvm>2015-11-07</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2015-11-08</virta:AlkuPvm>
+                <virta:LoppuPvm>2016-02-03</virta:LoppuPvm>
+                <virta:Koodi>3</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2016-02-04</virta:AlkuPvm>
+                <virta:LoppuPvm>2016-04-12</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2016-04-13</virta:AlkuPvm>
+                <virta:LoppuPvm>2016-04-13</virta:LoppuPvm>
+                <virta:Koodi>3</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="05AVOIN/EISUVA">
+                <virta:AlkuPvm>2015-10-20</virta:AlkuPvm>
+                <virta:LoppuPvm>2016-04-12</virta:LoppuPvm>
+                <virta:Koulutuskunta>398</virta:Koulutuskunta>
+              </virta:Jakso>
+              <virta:Koulutusala versio="opmala">2</virta:Koulutusala>
+              <virta:Laajuus>
+                <virta:Opintopiste>0.000000</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+          <virta:Opintosuoritukset>
+            <virta:Opintosuoritus opiskeluoikeusAvain="02470_1502434" opiskelijaAvain="02470_55317" koulutusmoduulitunniste="05AVOIN/MI00BB13/3" avain="02470_1502434_MI00BB13_3_1">
+              <virta:SuoritusPvm>2016-04-11</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.000000</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Typografian perusteet</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opmala">2</virta:Koodi>
+                <virta:Osuus>1.000000</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="02470_1502434" opiskelijaAvain="02470_55317" koulutusmoduulitunniste="05AVOIN/MI00AX91/3" avain="02470_1502434_MI00AX91_3_1">
+              <virta:SuoritusPvm>2015-11-07</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5.000000</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Graafisen suunnittelun perusteet</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opmala">2</virta:Koodi>
+                <virta:Osuus>1.000000</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+          </virta:Opintosuoritukset>
+        </virta:Opiskelija>
+        <virta:Opiskelija avain="34732584">
+          <virta:Henkilotunnus>090888-929X</virta:Henkilotunnus>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus opiskelijaAvain="34732584" avain="34732586">
+              <virta:AlkuPvm>2012-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2019-07-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2012-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2019-07-31</virta:LoppuPvm>
+                <virta:Koodi>2</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>4</virta:Tyyppi>
+              <virta:Myontaja>10088</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="FM, Matematiikka">
+                <virta:AlkuPvm>2012-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2019-07-31</virta:LoppuPvm>
+                <virta:Koulutuskoodi>742101</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>167</virta:Koulutuskunta>
+              </virta:Jakso>
+              <virta:Koulutusala versio="opm95opa">87</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus opiskelijaAvain="34732584" avain="34732585">
+              <virta:AlkuPvm>2012-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2019-07-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2012-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2019-07-31</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>2</virta:Tyyppi>
+              <virta:Myontaja>10088</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="LuK, Matematiikka">
+                <virta:AlkuPvm>2012-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2019-07-31</virta:LoppuPvm>
+                <virta:Koulutuskoodi>642101</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>167</virta:Koulutuskunta>
+              </virta:Jakso>
+              <virta:Ensisijaisuus>
+                <virta:AlkuPvm>2012-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2112-12-21</virta:LoppuPvm>
+              </virta:Ensisijaisuus>
+              <virta:Koulutusala versio="opm95opa">87</virta:Koulutusala>
+              <virta:Liittyvyys liittyvaOpiskeluoikeusAvain="34732586"/>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+          <virta:LukukausiIlmoittautumiset>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="34732584">
+              <virta:Myontaja>10088</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2013-08-19</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2014-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2014-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>false</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="34732584">
+              <virta:Myontaja>10088</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2014-08-13</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2015-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>false</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="34732584">
+              <virta:Myontaja>10088</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2012-08-15</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2013-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2013-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>false</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="34732584">
+              <virta:Myontaja>10088</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2015-08-15</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2015-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2015-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="34732584">
+              <virta:Myontaja>10088</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2013-08-19</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2013-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2013-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>false</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="34732584">
+              <virta:Myontaja>10088</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2015-08-15</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2016-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2016-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="34732584">
+              <virta:Myontaja>10088</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2012-08-15</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2012-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2012-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>false</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="34732584">
+              <virta:Myontaja>10088</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2014-08-13</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>false</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+          </virta:LukukausiIlmoittautumiset>
+          <virta:Opintosuoritukset>
+            <virta:Opintosuoritus opiskeluoikeusAvain="34732585" opiskelijaAvain="34732584" koulutusmoduulitunniste="28397107" avain="45732310">
+              <virta:SuoritusPvm>2015-02-16</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>26.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10088</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Opetushallinto</virta:Nimi>
+              <virta:Nimi kieli="en">Educational Administration</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="34831912">
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="35649135">
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="37546926">
+                <virta:Opintopiste>6.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="39194822">
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="40485003">
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="45716130">
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="34732584" koulutusmoduulitunniste="28921493" avain="39194822">
+              <virta:SuoritusPvm>2013-10-07</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>1</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10088</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">J: Koulutusoikeus</virta:Nimi>
+              <virta:Nimi kieli="en">J: Introduction to Legislation of the Educational System</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">85</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="34732584" koulutusmoduulitunniste="24009684" avain="35474123">
+              <virta:SuoritusPvm>2012-09-28</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>1.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Muu>
+                  <virta:Asteikko avain="11"/>
+                  <virta:Koodi>10979859</virta:Koodi>
+                </virta:Muu>
+              </virta:Arvosana>
+              <virta:Myontaja>10088</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Johdatus akateemisiin opintoihin</virta:Nimi>
+              <virta:Nimi kieli="en">Introduction to Academic Studies</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">82</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="34732584" koulutusmoduulitunniste="37672860" avain="42767332">
+              <virta:SuoritusPvm>2014-06-19</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>2</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10088</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Kehittynyt data-analytiikka - tulosten tulkinta (aineopinnot)</virta:Nimi>
+              <virta:Nimi kieli="en">Advanced data analytics - interpretation (intermediate studies)</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="34732584" koulutusmoduulitunniste="24548316" avain="40484673">
+              <virta:SuoritusPvm>2013-12-18</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+                <virta:Opintoviikko>3.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10088</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Diskreetit rakenteet</virta:Nimi>
+              <virta:Nimi kieli="en">Discrete Structures</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="34732584" koulutusmoduulitunniste="37670490" avain="39097597">
+              <virta:SuoritusPvm>2013-10-21</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10088</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Kehittynyt data-analytiikka johtamisessa (aineopinnot)</virta:Nimi>
+              <virta:Nimi kieli="en">Advanced data analytics (intermediate level)</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="34732584" koulutusmoduulitunniste="28708777" avain="37546926">
+              <virta:SuoritusPvm>2013-03-11</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10088</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Johtamisen perusteet</virta:Nimi>
+              <virta:Nimi kieli="en">Introduction to Management</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">86</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="34732584" koulutusmoduulitunniste="28921132" avain="40485003">
+              <virta:SuoritusPvm>2014-04-04</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>2</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10088</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">J: Virkamiesoikeus</virta:Nimi>
+              <virta:Nimi kieli="en">J: Law of Civil Servants</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">85</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="34732584" koulutusmoduulitunniste="28964769" avain="35649135">
+              <virta:SuoritusPvm>2012-11-23</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10088</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Organisaatiopsykologia</virta:Nimi>
+              <virta:Nimi kieli="en">Introduction to psychology of organizations</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">83</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="34732584" koulutusmoduulitunniste="24716470" avain="45713872">
+              <virta:SuoritusPvm>2015-07-28</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10088</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Ihminen ja vuorovaikutteinen teknologia</virta:Nimi>
+              <virta:Nimi kieli="en">Human Factors of Interactive Technology</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="34732584" koulutusmoduulitunniste="37672686" avain="40630626">
+              <virta:SuoritusPvm>2014-04-03</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>2</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10088</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Big data ja pilvipalvelut (aineopinnot)</virta:Nimi>
+              <virta:Nimi kieli="en">Big Data and Cloud computing (intermediate studies)</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="34732584" koulutusmoduulitunniste="24554818" avain="43069619">
+              <virta:SuoritusPvm>2014-08-29</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10088</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Tiedonhallinta</virta:Nimi>
+              <virta:Nimi kieli="en">Data Management</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="34732584" koulutusmoduulitunniste="28920993" avain="45716130">
+              <virta:SuoritusPvm>2015-02-16</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>1</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10088</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">J: Yleishallinto-oikeus</virta:Nimi>
+              <virta:Nimi kieli="en">J: General Administrative Law</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">85</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="34732584" koulutusmoduulitunniste="37670659" avain="39791877">
+              <virta:SuoritusPvm>2013-12-20</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10088</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Kehittynyt data-analytiikka - menetelmät (aineopinnot)</virta:Nimi>
+              <virta:Nimi kieli="en">Advanced data analytics - methods (intermediate studies)</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="34732584" koulutusmoduulitunniste="28350453" avain="34831912">
+              <virta:SuoritusPvm>2012-12-21</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10088</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Koulutuspolitiikka ja koulutusjärjestelmä</virta:Nimi>
+              <virta:Nimi kieli="en">Educational Policy and Educational System</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+          </virta:Opintosuoritukset>
+        </virta:Opiskelija>
+        <virta:Opiskelija avain="73069557">
+          <virta:Henkilotunnus>090888-929X</virta:Henkilotunnus>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus opiskelijaAvain="73069557" avain="84130989">
+              <virta:AlkuPvm>2011-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2011-12-30</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2011-12-31</virta:AlkuPvm>
+                <virta:Koodi>3</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2011-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2011-12-30</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="#Avoin yliopisto/Muu koulutus, j/Tietokantojen p">
+                <virta:AlkuPvm>2011-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2011-12-30</virta:LoppuPvm>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+              </virta:Jakso>
+              <virta:Koulutusala versio="opm95opa">87</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus opiskelijaAvain="73069557" avain="77799062">
+              <virta:AlkuPvm>2010-05-17</virta:AlkuPvm>
+              <virta:LoppuPvm>2010-12-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2011-01-01</virta:AlkuPvm>
+                <virta:Koodi>3</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2010-05-17</virta:AlkuPvm>
+                <virta:LoppuPvm>2010-12-31</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="#Avoin yliopisto/Muu koulutus, j/PSY100">
+                <virta:AlkuPvm>2010-05-17</virta:AlkuPvm>
+                <virta:LoppuPvm>2010-12-31</virta:LoppuPvm>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+              </virta:Jakso>
+              <virta:Koulutusala versio="opm95opa">83</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus opiskelijaAvain="73069557" avain="87672087">
+              <virta:AlkuPvm>2012-01-09</virta:AlkuPvm>
+              <virta:LoppuPvm>2012-07-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2012-08-01</virta:AlkuPvm>
+                <virta:Koodi>3</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2012-01-09</virta:AlkuPvm>
+                <virta:LoppuPvm>2012-07-31</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="#Avoin yliopisto/Muu koulutus, j/PSY221">
+                <virta:AlkuPvm>2012-01-09</virta:AlkuPvm>
+                <virta:LoppuPvm>2012-07-31</virta:LoppuPvm>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+              </virta:Jakso>
+              <virta:Koulutusala versio="opm95opa">83</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus opiskelijaAvain="73069557" avain="84129367">
+              <virta:AlkuPvm>2011-08-02</virta:AlkuPvm>
+              <virta:LoppuPvm>2011-12-30</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2011-12-31</virta:AlkuPvm>
+                <virta:Koodi>3</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2011-08-02</virta:AlkuPvm>
+                <virta:LoppuPvm>2011-12-30</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="#Avoin yliopisto/Muu koulutus, j/Ohjelmistotekni">
+                <virta:AlkuPvm>2011-08-02</virta:AlkuPvm>
+                <virta:LoppuPvm>2011-12-30</virta:LoppuPvm>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+              </virta:Jakso>
+              <virta:Koulutusala versio="opm95opa">87</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus opiskelijaAvain="73069557" avain="87923887">
+              <virta:AlkuPvm>2012-02-08</virta:AlkuPvm>
+              <virta:LoppuPvm>2012-11-30</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2012-12-01</virta:AlkuPvm>
+                <virta:Koodi>3</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2012-02-08</virta:AlkuPvm>
+                <virta:LoppuPvm>2012-11-30</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="#Avoin yliopisto/Muu koulutus, j/PSY212">
+                <virta:AlkuPvm>2012-02-08</virta:AlkuPvm>
+                <virta:LoppuPvm>2012-11-30</virta:LoppuPvm>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+              </virta:Jakso>
+              <virta:Koulutusala versio="opm95opa">83</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus opiskelijaAvain="73069557" avain="77797076">
+              <virta:AlkuPvm>2010-05-17</virta:AlkuPvm>
+              <virta:LoppuPvm>2010-07-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2010-08-01</virta:AlkuPvm>
+                <virta:Koodi>3</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2010-05-17</virta:AlkuPvm>
+                <virta:LoppuPvm>2010-07-31</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="#Avoin yliopisto/Muu koulutus, j/Johdatus tietoj">
+                <virta:AlkuPvm>2010-05-17</virta:AlkuPvm>
+                <virta:LoppuPvm>2010-07-31</virta:LoppuPvm>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+              </virta:Jakso>
+              <virta:Koulutusala versio="opm95opa">87</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus opiskelijaAvain="73069557" avain="84623896">
+              <virta:AlkuPvm>2011-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2014-07-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                <virta:Koodi>3</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2011-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2014-07-31</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>18</virta:Tyyppi>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="#ML/Erilliset opinn/Tietojenkäsitte">
+                <virta:AlkuPvm>2011-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2014-07-31</virta:LoppuPvm>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+              </virta:Jakso>
+              <virta:Koulutusala versio="opm95opa">87</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus opiskelijaAvain="73069557" avain="80644106">
+              <virta:AlkuPvm>2009-09-15</virta:AlkuPvm>
+              <virta:LoppuPvm>2009-12-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2010-01-01</virta:AlkuPvm>
+                <virta:Koodi>3</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2009-09-15</virta:AlkuPvm>
+                <virta:LoppuPvm>2009-12-31</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>13</virta:Tyyppi>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="#Avoin yliopisto/Muu koulutus, j/Tietojenkäsitte">
+                <virta:AlkuPvm>2009-09-15</virta:AlkuPvm>
+                <virta:LoppuPvm>2009-12-31</virta:LoppuPvm>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+              </virta:Jakso>
+              <virta:Koulutusala versio="opm95opa">87</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus opiskelijaAvain="73069557" avain="84699482">
+              <virta:AlkuPvm>2011-07-11</virta:AlkuPvm>
+              <virta:LoppuPvm>2016-07-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2011-07-11</virta:AlkuPvm>
+                <virta:LoppuPvm>2016-07-31</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>18</virta:Tyyppi>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="Psykologian kou/PSY100/PSY200B Psykolo">
+                <virta:AlkuPvm>2011-07-11</virta:AlkuPvm>
+                <virta:LoppuPvm>2016-07-31</virta:LoppuPvm>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+              </virta:Jakso>
+              <virta:Koulutusala versio="opm95opa">83</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus opiskelijaAvain="73069557" avain="73069559">
+              <virta:AlkuPvm>2009-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2014-07-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                <virta:Koodi>3</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2009-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2012-10-26</virta:LoppuPvm>
+                <virta:Koodi>2</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2012-10-27</virta:AlkuPvm>
+                <virta:LoppuPvm>2014-07-31</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>4</virta:Tyyppi>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="FM (luonnont.), Matematiikan koulutusohjelma, Matematiikka">
+                <virta:AlkuPvm>2009-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2010-07-31</virta:LoppuPvm>
+                <virta:Koulutuskoodi>742101</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+              </virta:Jakso>
+              <virta:Jakso koulutusmoduulitunniste="FM (luonnont.), Matematiikan koulutusohjelma, Matematiikka">
+                <virta:AlkuPvm>2010-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2014-07-31</virta:LoppuPvm>
+                <virta:Koulutuskoodi>742101</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                <virta:Patevyys>il</virta:Patevyys>
+              </virta:Jakso>
+              <virta:Ensisijaisuus>
+                <virta:AlkuPvm>2012-10-19</virta:AlkuPvm>
+                <virta:LoppuPvm>2112-12-21</virta:LoppuPvm>
+              </virta:Ensisijaisuus>
+              <virta:Koulutusala versio="opm95opa">87</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus opiskelijaAvain="73069557" avain="73069558">
+              <virta:AlkuPvm>2009-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2012-10-26</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2012-10-27</virta:AlkuPvm>
+                <virta:Koodi>3</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2009-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2012-10-26</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>2</virta:Tyyppi>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="LuK, Matematiikan koulutusohjelma, Matematiikka">
+                <virta:AlkuPvm>2009-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2010-07-31</virta:LoppuPvm>
+                <virta:Koulutuskoodi>642101</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+              </virta:Jakso>
+              <virta:Jakso koulutusmoduulitunniste="LuK, Matematiikan koulutusohjelma, Matematiikka">
+                <virta:AlkuPvm>2010-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2012-10-26</virta:LoppuPvm>
+                <virta:Koulutuskoodi>642101</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                <virta:Patevyys>il</virta:Patevyys>
+              </virta:Jakso>
+              <virta:Ensisijaisuus>
+                <virta:AlkuPvm>2009-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2012-10-18</virta:LoppuPvm>
+              </virta:Ensisijaisuus>
+              <virta:Koulutusala versio="opm95opa">87</virta:Koulutusala>
+              <virta:Liittyvyys liittyvaOpiskeluoikeusAvain="73069559"/>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+          <virta:LukukausiIlmoittautumiset>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="73069557">
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2011-07-27</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2011-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2011-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>false</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="73069557">
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2013-08-16</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2013-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2013-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>false</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="73069557">
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2012-08-15</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2012-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2012-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>false</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="73069557">
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2009-08-13</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2009-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2009-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>false</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="73069557">
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2010-07-25</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2010-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2010-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>false</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="73069557">
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Tila>2</virta:Tila>
+              <virta:IlmoittautumisPvm>2013-08-16</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2014-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2014-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>false</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>false</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="73069557">
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2012-08-15</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2013-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2013-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>false</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="73069557">
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2009-08-13</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2010-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2010-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>false</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="73069557">
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2010-07-25</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2011-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2011-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>false</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="73069557">
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2011-07-27</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2012-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2012-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>false</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+          </virta:LukukausiIlmoittautumiset>
+          <virta:Opintosuoritukset>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="61137768" avain="79365782">
+              <virta:SuoritusPvm>2009-12-15</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>2</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>10076</virta:Koodi>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Yleinen kemia I</virta:Nimi>
+              <virta:Nimi kieli="sv">Allmän kemi I</virta:Nimi>
+              <virta:Nimi kieli="en">General chemistry I</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2010-09-06</virta:HyvaksilukuPvm>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="53807425" avain="80905503">
+              <virta:SuoritusPvm>2011-12-19</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>25.0</virta:Opintopiste>
+                <virta:Opintoviikko>15.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Kasvatustieteen perusopinnot, opettajan pedagogisten opintojen perusopinnot 25 op</virta:Nimi>
+              <virta:Nimi kieli="sv">Grundstudier i pedagogik, pedagogiska studier för lärare (grundstudier 25 sp)</virta:Nimi>
+              <virta:Nimi kieli="en">Basic Studies in Education, Pedagogical Studies for Teachers (basic studies 25 sc)</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="87061036">
+                <virta:Opintopiste>1.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="87060352">
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="87059535">
+                <virta:Opintopiste>1.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="87054335">
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="84490705">
+                <virta:Opintopiste>7.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="80481863">
+                <virta:Opintopiste>10.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2021417" avain="87061036">
+              <virta:SuoritusPvm>2011-10-17</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>1.0</virta:Opintopiste>
+                <virta:Opintoviikko>1.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="en">Interactional Skills I</virta:Nimi>
+              <virta:Nimi kieli="sv">Förmåga att växelverka I</virta:Nimi>
+              <virta:Nimi kieli="fi">Kehitys- ja oppimispsyk. ryhmä</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="56980140" avain="92172887">
+              <virta:SuoritusPvm>2012-10-16</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>18.0</virta:Opintopiste>
+                <virta:Opintoviikko>6.5</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Muut opinnot kandidaatintutkinnossa</virta:Nimi>
+              <virta:Nimi kieli="sv">Övriga studier i kandidatexamen</virta:Nimi>
+              <virta:Nimi kieli="en">Other studies in Bachelor's degree</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="92171440">
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="88619198">
+                <virta:Opintopiste>2.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="81368815">
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="81265375">
+                <virta:Opintopiste>1.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="81264927">
+                <virta:Opintopiste>2.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="80278450">
+                <virta:Opintopiste>2.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="77151133">
+                <virta:Opintopiste>1.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="74326639">
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="55181954" avain="94962576">
+              <virta:SuoritusPvm>2013-04-03</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Harjoittelu maisterintutkinnossa</virta:Nimi>
+              <virta:Nimi kieli="sv">Praktik i magisterexamen</virta:Nimi>
+              <virta:Nimi kieli="en">Practical training in Master's Degree</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="52375355" avain="97631631">
+              <virta:SuoritusPvm>2013-08-27</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>0.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Suomenkielinen kypsyysnäyte FM</virta:Nimi>
+              <virta:Nimi kieli="sv">Mognadsprov i finska FM</virta:Nimi>
+              <virta:Nimi kieli="en">Maturity Test in Finnish MSc</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2012277" avain="78637188">
+              <virta:SuoritusPvm>2010-10-30</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>25.0</virta:Opintopiste>
+                <virta:Opintoviikko>15.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="en">PSY100 Basic Studies in Psychology</virta:Nimi>
+              <virta:Nimi kieli="sv">PSY100 Grundstudier i psykologi</virta:Nimi>
+              <virta:Nimi kieli="fi">PSY100 Psykologian perusopinnot</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">83</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="80618709">
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="80005605">
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="79288440">
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="78732322">
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="78637138">
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="52483067" avain="78637138">
+              <virta:SuoritusPvm>2010-06-12</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+                <virta:Opintoviikko>3.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>2</virta:Rooli>
+                <virta:Koodi>01901</virta:Koodi>
+                <virta:Osuus>1.0</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">PSY111 Neuro- ja kognitiivinen psykologia I</virta:Nimi>
+              <virta:Nimi kieli="sv">PSY111 Kognitiv och neuropskologi I</virta:Nimi>
+              <virta:Nimi kieli="en">PSY111 Cognitive and Neuropsychology I</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">83</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2021440" avain="80481841">
+              <virta:SuoritusPvm>2010-09-28</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2.0</virta:Opintopiste>
+                <virta:Opintoviikko>1.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>1</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="en">Introduction to General Didactics</virta:Nimi>
+              <virta:Nimi kieli="sv">Introduktion till allmän didaktik, ht</virta:Nimi>
+              <virta:Nimi kieli="fi">Yleisdidaktiikan johdanto, sl</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="53807671" avain="82743208">
+              <virta:SuoritusPvm>2013-05-10</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>35.0</virta:Opintopiste>
+                <virta:Opintoviikko>14.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Kasvatustieteen aineopinnot, opettajan pedagogisten opintojen aineopinnot 35 op</virta:Nimi>
+              <virta:Nimi kieli="sv">Ämnesstudier i pedagogik, pedagogiska studier för lärare (ämnestudier 35 sp)</virta:Nimi>
+              <virta:Nimi kieli="en">Intermediate Studies in Education, Pedagogical Studies for Teachers (intermediate studies 35 sc)</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="95274048">
+                <virta:Opintopiste>8.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="91717566">
+                <virta:Opintopiste>8.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="91717107">
+                <virta:Opintopiste>1.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="91717054">
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="84159031">
+                <virta:Opintopiste>10.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="82743065">
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="50312733" avain="79346492">
+              <virta:SuoritusPvm>2010-10-24</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+                <virta:Opintoviikko>3.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Lineaarialgebra ja matriisilaskenta I</virta:Nimi>
+              <virta:Nimi kieli="sv">Linjär algebra och matrisräkning I</virta:Nimi>
+              <virta:Nimi kieli="en">Linear Algebra and Matrices I</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="53263116" avain="80410092">
+              <virta:SuoritusPvm>2010-12-19</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+                <virta:Opintoviikko>2.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>1</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Lineaarialgebra ja matriisilaskenta II</virta:Nimi>
+              <virta:Nimi kieli="sv">Linjär algebra och matrisräkning II</virta:Nimi>
+              <virta:Nimi kieli="en">Linear Algebra and Matrices II</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="60731596" avain="92684275">
+              <virta:SuoritusPvm>2011-06-01</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>25.0</virta:Opintopiste>
+                <virta:Opintoviikko>11.33</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Kemian perusopinnot(opettaja,sivuaine)</virta:Nimi>
+              <virta:Nimi kieli="sv">Grundstudier i kemi(lärare,biämne)</virta:Nimi>
+              <virta:Nimi kieli="en">Minor Basic studies in chemistry(teacher)</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="83882328">
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="79742722">
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="79550297">
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="79450054">
+                <virta:Opintopiste>1.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="79449792">
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="79366308">
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="79365782">
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="79365687">
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="82337204" avain="95274048">
+              <virta:SuoritusPvm>2013-05-10</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>8.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Evaluation and Development of Teaching</virta:Nimi>
+              <virta:Nimi kieli="sv">Evaluation and Development of Teaching</virta:Nimi>
+              <virta:Nimi kieli="en">Evaluation and Development of Teaching</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="95576054">
+                <virta:Opintopiste>1.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="91717158">
+                <virta:Opintopiste>2.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="91717049">
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="33524759" avain="83882328">
+              <virta:SuoritusPvm>2011-06-01</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+                <virta:Opintoviikko>2.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Johdatus kemian opetukseen(kemia toisena opetettavana aineena)</virta:Nimi>
+              <virta:Nimi kieli="sv">Introduktion till kemiundervisningen(biämne kemi,lärare)</virta:Nimi>
+              <virta:Nimi kieli="en">Introduction to chemistry education(minor subject chemistry,teacher)</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="88655375" avain="89147231">
+              <virta:SuoritusPvm>2012-03-17</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6.0</virta:Opintopiste>
+                <virta:Opintoviikko>4.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>2</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>2</virta:Rooli>
+                <virta:Koodi>01901</virta:Koodi>
+                <virta:Osuus>1.0</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Avoin yo: PSY221 Havaintopsykologia I</virta:Nimi>
+              <virta:Nimi kieli="sv">Öppna uni: PSY221 Perceptionspsykologi I</virta:Nimi>
+              <virta:Nimi kieli="en">Open uni: PSY221 Psychology of Perception I</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">83</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="56980405" avain="97631850">
+              <virta:SuoritusPvm>2013-04-04</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6.0</virta:Opintopiste>
+                <virta:Opintoviikko>1.5</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Muut opinnot maisterintutkinnossa</virta:Nimi>
+              <virta:Nimi kieli="sv">Övriga studier i magisterexamen</virta:Nimi>
+              <virta:Nimi kieli="en">Other studies in Master's degree</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="94980639">
+                <virta:Opintopiste>1.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="94962576">
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="90393830">
+                <virta:Opintopiste>1.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2018044" avain="93569758">
+              <virta:SuoritusPvm>2013-05-19</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>10.0</virta:Opintopiste>
+                <virta:Opintoviikko>5.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="en">Geometry</virta:Nimi>
+              <virta:Nimi kieli="sv">Geometri</virta:Nimi>
+              <virta:Nimi kieli="fi">Geometria</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2021576" avain="87209366">
+              <virta:SuoritusPvm>2013-05-10</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>60.0</virta:Opintopiste>
+                <virta:Opintoviikko>29.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="en">Education Subject Studies (Cum Laude Approbatur) Pedagogical Studies for Teachers</virta:Nimi>
+              <virta:Nimi kieli="sv">Ämnesstudier i pedagogik (cum laude approbatur) pedagogiska studier för lärare</virta:Nimi>
+              <virta:Nimi kieli="fi">Kasvatustieteen aineopinnot 60 op (cum laude approbatur) opettajan pedagogiset opinnot</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="82743208">
+                <virta:Opintopiste>35.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="80905503">
+                <virta:Opintopiste>25.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="37067166" avain="79742722">
+              <virta:SuoritusPvm>2011-05-27</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+                <virta:Opintoviikko>3.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Kemia elinympäristössä</virta:Nimi>
+              <virta:Nimi kieli="sv">Kemi i livsmiljö</virta:Nimi>
+              <virta:Nimi kieli="en">Chemistry in environment</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2021418" avain="87059535">
+              <virta:SuoritusPvm>2011-11-03</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>1.0</virta:Opintopiste>
+                <virta:Opintoviikko>1.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="en">Interactional Skills II</virta:Nimi>
+              <virta:Nimi kieli="sv">Förmåga att växelverka II</virta:Nimi>
+              <virta:Nimi kieli="fi">Erityispedagogiikan ryhmä</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2017983" avain="90868647">
+              <virta:SuoritusPvm>2012-08-09</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>10.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="en">Topology I</virta:Nimi>
+              <virta:Nimi kieli="sv">Topologi I</virta:Nimi>
+              <virta:Nimi kieli="fi">Topologia I</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2012171" avain="89913024">
+              <virta:SuoritusPvm>2012-05-03</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>40.0</virta:Opintopiste>
+                <virta:Opintoviikko>7.33</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="en">PSY200B Psychology, Intermediate Studies (Minor Subject)</virta:Nimi>
+              <virta:Nimi kieli="sv">PSY200B Psykologi, ämnesstudier (biämne)</virta:Nimi>
+              <virta:Nimi kieli="fi">PSY200B Psykologian aineopinnot sivuaineopiskelijoille</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">83</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="89334118">
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="89147231">
+                <virta:Opintopiste>6.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="87693604">
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="87075394">
+                <virta:Opintopiste>6.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="87075386">
+                <virta:Opintopiste>7.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="87075362">
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="85974026">
+                <virta:Opintopiste>7.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="55622960" avain="94980639">
+              <virta:SuoritusPvm>2013-04-04</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>1.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Henkilökohtainen opintosuunnitelma maisterintutkintoa varten</virta:Nimi>
+              <virta:Nimi kieli="sv">Individuell studieplan för magistersexamen</virta:Nimi>
+              <virta:Nimi kieli="en">Personal study plan for masters's degree</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2012285" avain="80005605">
+              <virta:SuoritusPvm>2010-09-11</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+                <virta:Opintoviikko>3.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>2</virta:Rooli>
+                <virta:Koodi>01901</virta:Koodi>
+                <virta:Osuus>1.0</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">PSY181 Psykologisen tutkimuksen perusteet</virta:Nimi>
+              <virta:Nimi kieli="sv">PSY181 Grundkurs i psykologiska forskningsmetoder</virta:Nimi>
+              <virta:Nimi kieli="en">PSY181 Introduction to Psychological Research</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">83</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2021481" avain="84159035">
+              <virta:SuoritusPvm>2011-06-14</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+                <virta:Opintoviikko>3.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="en">Seminar II</virta:Nimi>
+              <virta:Nimi kieli="sv">Temaseminarium II</virta:Nimi>
+              <virta:Nimi kieli="fi">Tutkielmaseminaari</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="56839589" avain="92171440">
+              <virta:SuoritusPvm>2012-10-16</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+                <virta:Opintoviikko>1.5</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Äidinkielen opinnot kandidaatintutkinnossa (kirjallinen ja suullinen osa)</virta:Nimi>
+              <virta:Nimi kieli="sv">Studier i modersmålet i kandidatexamen (skriftlig och muntlig del)</virta:Nimi>
+              <virta:Nimi kieli="en">Finnish or Swedish</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="55622851" avain="77151133">
+              <virta:SuoritusPvm>2010-04-08</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>1.0</virta:Opintopiste>
+                <virta:Opintoviikko>1.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Henkilökohtainen opintosuunnitelma kandidaatintutkintoa varten</virta:Nimi>
+              <virta:Nimi kieli="sv">Personlig studieplan för kandidatexamen</virta:Nimi>
+              <virta:Nimi kieli="en">Personal study plan for bachelors's degree</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2021462" avain="84159031">
+              <virta:SuoritusPvm>2011-06-14</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>10.0</virta:Opintopiste>
+                <virta:Opintoviikko>7.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="sv">Ämnesdidaktik 4</virta:Nimi>
+              <virta:Nimi kieli="en">Subject didactics 4</virta:Nimi>
+              <virta:Nimi kieli="fi">Opettaja työnsä tutkijana -seminaari</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="84159034">
+                <virta:Opintopiste>7.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="84158909">
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2012282" avain="79288440">
+              <virta:SuoritusPvm>2010-08-18</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+                <virta:Opintoviikko>3.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>2</virta:Rooli>
+                <virta:Koodi>01901</virta:Koodi>
+                <virta:Osuus>1.0</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">PSY141 Persoonallisuuspsykologia I</virta:Nimi>
+              <virta:Nimi kieli="sv">PSY141 Personlighetspsykologi I</virta:Nimi>
+              <virta:Nimi kieli="en">PSY141 Personality Psychology I</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">83</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2012303" avain="87075386">
+              <virta:SuoritusPvm>2012-05-02</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>7.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="en">PSY231 Developmental Psychology II</virta:Nimi>
+              <virta:Nimi kieli="sv">PSY231 Utvecklingspsykologi II</virta:Nimi>
+              <virta:Nimi kieli="fi">PSY231 Kehityspsykologia II</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">83</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="67477078" avain="75842024">
+              <virta:SuoritusPvm>2010-02-21</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+                <virta:Opintoviikko>1.5</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Lukualueet</virta:Nimi>
+              <virta:Nimi kieli="sv">Lukualueet</virta:Nimi>
+              <virta:Nimi kieli="en">Introduction to Complex Numbers</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2021463" avain="84158909">
+              <virta:SuoritusPvm>2011-06-14</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+                <virta:Opintoviikko>2.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Tutkimus ja metodit</virta:Nimi>
+              <virta:Nimi kieli="sv">Forskning och metoder</virta:Nimi>
+              <virta:Nimi kieli="en">Research and methods</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2017970" avain="90393830">
+              <virta:SuoritusPvm>2012-06-26</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>1.0</virta:Opintopiste>
+                <virta:Opintoviikko>1.5</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Koulumatematiikka</virta:Nimi>
+              <virta:Nimi kieli="sv">Skolmatematik</virta:Nimi>
+              <virta:Nimi kieli="en">School Mathematics</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="55181826" avain="88619198">
+              <virta:SuoritusPvm>2012-03-13</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2.0</virta:Opintopiste>
+                <virta:Opintoviikko>1.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Harjoittelu kandidaatintutkinnossa</virta:Nimi>
+              <virta:Nimi kieli="sv">Praktik i kandidatexamen</virta:Nimi>
+              <virta:Nimi kieli="en">Practical training in Bachelor's Degree</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="51962854" avain="76798264">
+              <virta:SuoritusPvm>2010-05-07</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+                <virta:Opintoviikko>3.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Johdatus tilastolliseen päättelyyn</virta:Nimi>
+              <virta:Nimi kieli="sv">Introduktion till statistik</virta:Nimi>
+              <virta:Nimi kieli="en">Introduction to Statistical Inference</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2012306" avain="85974026">
+              <virta:SuoritusPvm>2011-12-15</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>7.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">PSY241 Persoonallisuuspsykologia II</virta:Nimi>
+              <virta:Nimi kieli="sv">PSY241 Personlighetspsykologi II</virta:Nimi>
+              <virta:Nimi kieli="en">PSY241 Personality Psychology II</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">83</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="55100400" avain="74326639">
+              <virta:SuoritusPvm>2009-10-23</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+                <virta:Opintoviikko>2.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">TVT- ajokortti</virta:Nimi>
+              <virta:Nimi kieli="sv">IKT- körkort</virta:Nimi>
+              <virta:Nimi kieli="en">ICT Driving Licence</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2017977" avain="81486904">
+              <virta:SuoritusPvm>2011-05-05</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>10.0</virta:Opintopiste>
+                <virta:Opintoviikko>5.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="en">Algebra I</virta:Nimi>
+              <virta:Nimi kieli="sv">Algebra I</virta:Nimi>
+              <virta:Nimi kieli="fi">Algebra I</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2012279" avain="87075362">
+              <virta:SuoritusPvm>2012-04-26</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">PSY211 Neuropsykologia II</virta:Nimi>
+              <virta:Nimi kieli="sv">PSY211 Neuropsykologi II</virta:Nimi>
+              <virta:Nimi kieli="en">PSY211 Neuropsychology II</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">83</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="81802986" avain="95576054">
+              <virta:SuoritusPvm>2013-05-10</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>1.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Reflection</virta:Nimi>
+              <virta:Nimi kieli="sv">Reflection</virta:Nimi>
+              <virta:Nimi kieli="en">Reflection</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="88693356" avain="89334118">
+              <virta:SuoritusPvm>2012-03-28</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+                <virta:Opintoviikko>3.33</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>2</virta:Rooli>
+                <virta:Koodi>01901</virta:Koodi>
+                <virta:Osuus>1.0</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Avoin yo: PSY212 Neuropsykologia III</virta:Nimi>
+              <virta:Nimi kieli="sv">Öppna uni: PSY212 Neuropsykologi III</virta:Nimi>
+              <virta:Nimi kieli="en">Open uni: PSY212 Neuropsychology III</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">83</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="73069559" opiskelijaAvain="73069557" koulutusmoduulitunniste="2028801" avain="97827541">
+              <virta:SuoritusPvm>2013-09-27</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>161.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>1</virta:Laji>
+              <virta:Nimi kieli="fi">Filosofian maisteri (luonnontieteellinen)</virta:Nimi>
+              <virta:Nimi kieli="sv">Filosofie magister (naturvetenskaplig)</virta:Nimi>
+              <virta:Nimi kieli="en">Master of Science (science)</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutuskoodi>742101</virta:Koulutuskoodi>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="97631850">
+                <virta:Opintopiste>6.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="97631262">
+                <virta:Opintopiste>70.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="92684275">
+                <virta:Opintopiste>25.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="87209366">
+                <virta:Opintopiste>60.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="86485959">
+                <virta:Opintopiste>25.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="53466971" avain="79366308">
+              <virta:SuoritusPvm>2010-12-10</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+                <virta:Opintoviikko>2.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Epäorgaanisen kemian perustyöt IA</virta:Nimi>
+              <virta:Nimi kieli="sv">Grundarbeten i oorganisk kemi IA</virta:Nimi>
+              <virta:Nimi kieli="en">Intermediate inorganic chemistry laboratory</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="51962832" avain="75831646">
+              <virta:SuoritusPvm>2010-03-09</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+                <virta:Opintoviikko>3.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Johdatus todennäköisyyslaskentaan</virta:Nimi>
+              <virta:Nimi kieli="sv">Introduktion till sannolikhetslära</virta:Nimi>
+              <virta:Nimi kieli="en">Introduction to Probability</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="52374912" avain="92019238">
+              <virta:SuoritusPvm>2012-10-08</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>0.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Suomenkielinen kypsyysnäyte LuK</virta:Nimi>
+              <virta:Nimi kieli="sv">Mognadsprov i finska NaK</virta:Nimi>
+              <virta:Nimi kieli="en">Maturity Test in Finnish BSc</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="37425202" avain="82743065">
+              <virta:SuoritusPvm>2011-02-22</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+                <virta:Opintoviikko>2.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Soveltava harjoittelu</virta:Nimi>
+              <virta:Nimi kieli="sv">Tillämpad praktik</virta:Nimi>
+              <virta:Nimi kieli="en">Applied practice</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2017981" avain="77200835">
+              <virta:SuoritusPvm>2010-04-13</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2.0</virta:Opintopiste>
+                <virta:Opintoviikko>1.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Analyysin harjoitustyö</virta:Nimi>
+              <virta:Nimi kieli="sv">Analys, övningsarbete</virta:Nimi>
+              <virta:Nimi kieli="en">Analysis, Essay</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="55562501" avain="81368815">
+              <virta:SuoritusPvm>2011-04-27</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">English Academic &amp; Professional Skills: Reading, Writing &amp; Spoken Communication (CEFR B2)*</virta:Nimi>
+              <virta:Nimi kieli="sv">English Academic &amp; Professional Skills: Reading, Writing &amp; Spoken Communication (CEFR B2)*</virta:Nimi>
+              <virta:Nimi kieli="en">English Academic &amp; Professional Skills: Reading, Writing &amp; Spoken Communication (CEFR B2)*</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">76</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2021398" avain="87060352">
+              <virta:SuoritusPvm>2011-10-07</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+                <virta:Opintoviikko>2.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Kehitys- ja oppimispsykologia</virta:Nimi>
+              <virta:Nimi kieli="sv">Utvecklings- och inlärningspsykologi</virta:Nimi>
+              <virta:Nimi kieli="en">Psychology of development and learning</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2018090" avain="75831530">
+              <virta:SuoritusPvm>2010-05-07</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>10.0</virta:Opintopiste>
+                <virta:Opintoviikko>5.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="en">Logic I</virta:Nimi>
+              <virta:Nimi kieli="sv">Logik I</virta:Nimi>
+              <virta:Nimi kieli="fi">Logiikka I</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2021466" avain="84159034">
+              <virta:SuoritusPvm>2011-06-14</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>7.0</virta:Opintopiste>
+                <virta:Opintoviikko>5.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="en">Seminar</virta:Nimi>
+              <virta:Nimi kieli="sv">Temaseminarium</virta:Nimi>
+              <virta:Nimi kieli="fi">Tutkielmaseminaari</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="84159035">
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="84159032">
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="67444221" avain="86469075">
+              <virta:SuoritusPvm>2011-10-19</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>2</virta:Rooli>
+                <virta:Koodi>01901</virta:Koodi>
+                <virta:Osuus>1.0</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Ohjelmistojen mallintaminen</virta:Nimi>
+              <virta:Nimi kieli="en">Software Modelling</virta:Nimi>
+              <virta:Nimi kieli="sv">Modellering av mjukvara</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="81802447" avain="91717107">
+              <virta:SuoritusPvm>2013-02-23</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>1.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Social, Historical and Philosophical Foundations of Education / Groups</virta:Nimi>
+              <virta:Nimi kieli="sv">Social, Historical and Philosophical Foundations of Education / Groups</virta:Nimi>
+              <virta:Nimi kieli="en">Social, Historical and Philosophical Foundations of Education / Groups</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="81802897" avain="91717158">
+              <virta:SuoritusPvm>2013-04-11</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Subject Didactics, Lectures</virta:Nimi>
+              <virta:Nimi kieli="sv">Subject Didactics, Lectures</virta:Nimi>
+              <virta:Nimi kieli="en">Subject Didactics, Lectures</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="54039187" avain="86485959">
+              <virta:SuoritusPvm>2011-10-27</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>25.0</virta:Opintopiste>
+                <virta:Opintoviikko>4.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Tietojenkäsittelytieteen perusopinnot (sivuaine)</virta:Nimi>
+              <virta:Nimi kieli="sv">Grundstudier i datavetenskap (biämne)</virta:Nimi>
+              <virta:Nimi kieli="en">Basic Studies in Computer Science (minor)</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="86469075">
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="86304303">
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="85788724">
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="78985344">
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="78073118">
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="76917785">
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="53812049" avain="74649174">
+              <virta:SuoritusPvm>2009-12-20</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+                <virta:Opintoviikko>3.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Johdatus diskreettiin matematiikkaan</virta:Nimi>
+              <virta:Nimi kieli="sv">Introduktion till diskret matematik</virta:Nimi>
+              <virta:Nimi kieli="en">Introduction to Discrete Mathematics</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="61138650" avain="79365687">
+              <virta:SuoritusPvm>2010-12-15</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Yleinen kemia II</virta:Nimi>
+              <virta:Nimi kieli="sv">Allmän kemi II</virta:Nimi>
+              <virta:Nimi kieli="en">General chemistry II</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2021533" avain="80484088">
+              <virta:SuoritusPvm>2010-11-05</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>1.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.5</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="en">Self Estimation I</virta:Nimi>
+              <virta:Nimi kieli="sv">Självbedömning I</virta:Nimi>
+              <virta:Nimi kieli="fi">Reflektointi I</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2018348" avain="85788724">
+              <virta:SuoritusPvm>2011-09-03</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+                <virta:Opintoviikko>2.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>2</virta:Rooli>
+                <virta:Koodi>01901</virta:Koodi>
+                <virta:Osuus>1.0</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Tietokantojen perusteet</virta:Nimi>
+              <virta:Nimi kieli="sv">Databasernas grunder</virta:Nimi>
+              <virta:Nimi kieli="en">Introduction to Databases</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2017980" avain="75721319">
+              <virta:SuoritusPvm>2010-05-07</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>10.0</virta:Opintopiste>
+                <virta:Opintoviikko>6.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Analyysi II</virta:Nimi>
+              <virta:Nimi kieli="sv">Analys II</virta:Nimi>
+              <virta:Nimi kieli="en">Analysis II</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="81802959" avain="91717049">
+              <virta:SuoritusPvm>2013-04-11</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Subject Didactics, Groups</virta:Nimi>
+              <virta:Nimi kieli="sv">Subject Didactics, Groups</virta:Nimi>
+              <virta:Nimi kieli="en">Subject Didactics, Groups</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="53788557" avain="97631262">
+              <virta:SuoritusPvm>2013-09-28</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>70.0</virta:Opintopiste>
+                <virta:Opintoviikko>16.5</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Matematiikan aineenopettajan syventävät opinnot</virta:Nimi>
+              <virta:Nimi kieli="sv">Fördjupade studier för ämneslärare i matematik</virta:Nimi>
+              <virta:Nimi kieli="en">Advanced Studies in Mathematics for Teachers</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="97631631">
+                <virta:Opintopiste>0.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="97591092">
+                <virta:Opintopiste>40.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="95624468">
+                <virta:Opintopiste>10.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="93569758">
+                <virta:Opintopiste>10.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="93569744">
+                <virta:Opintopiste>12.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="81492578">
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="74649174">
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2021436" avain="80483954">
+              <virta:SuoritusPvm>2010-11-05</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>1.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.5</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="sv">Analyskursen</virta:Nimi>
+              <virta:Nimi kieli="en">Observation Course in Teaching</virta:Nimi>
+              <virta:Nimi kieli="fi">Kouluun tutustuminen</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="81801928" avain="91717054">
+              <virta:SuoritusPvm>2013-05-05</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Social, Historical and Philosophical Foundations of Education / Lectures</virta:Nimi>
+              <virta:Nimi kieli="sv">Social, Historical and Philosophical Foundations of Education / Lectures</virta:Nimi>
+              <virta:Nimi kieli="en">Social, Historical and Philosophical Foundations of Education / Lectures</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2017449" avain="79550297">
+              <virta:SuoritusPvm>2010-12-13</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+                <virta:Opintoviikko>2.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="en">Organic Chemistry I</virta:Nimi>
+              <virta:Nimi kieli="sv">Organisk kemi I</virta:Nimi>
+              <virta:Nimi kieli="fi">Orgaaninen kemia I</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="48048016" avain="81265375">
+              <virta:SuoritusPvm>2010-11-24</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>1.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:ToinenKotimainen>TT</virta:ToinenKotimainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Toisen kotimaisen kielen kirjallinen taito, ruotsi</virta:Nimi>
+              <virta:Nimi kieli="sv">Skriftlig färdighet i andra inhemska språket, svenska</virta:Nimi>
+              <virta:Nimi kieli="en">Written Skills in the Second Official Language, Swedish</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">76</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="67444028" avain="78073118">
+              <virta:SuoritusPvm>2010-05-04</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Ohjelmoinnin jatkokurssi</virta:Nimi>
+              <virta:Nimi kieli="en">Advanced Course in Programming</virta:Nimi>
+              <virta:Nimi kieli="sv">Fortsättningskurs i programmering</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2021508" avain="80481863">
+              <virta:SuoritusPvm>2010-11-16</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>10.0</virta:Opintopiste>
+                <virta:Opintoviikko>5.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Ainedidaktiikan perusteet</virta:Nimi>
+              <virta:Nimi kieli="sv">Grunderna i ämnesundervisning</virta:Nimi>
+              <virta:Nimi kieli="en">Introduction to subject teaching</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="80484088">
+                <virta:Opintopiste>1.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="80483954">
+                <virta:Opintopiste>1.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="80481841">
+                <virta:Opintopiste>2.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="78070612">
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="78069637">
+                <virta:Opintopiste>2.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="67710810" avain="92172882">
+              <virta:SuoritusPvm>2012-10-12</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>56.0</virta:Opintopiste>
+                <virta:Opintoviikko>20.5</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Matematiikan aineopinnot</virta:Nimi>
+              <virta:Nimi kieli="sv">Ämnesstudier i matematik</virta:Nimi>
+              <virta:Nimi kieli="en">Intermediate studies in mathematics</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="92125456">
+                <virta:Opintopiste>6.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="92019238">
+                <virta:Opintopiste>0.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="90868647">
+                <virta:Opintopiste>10.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="81486904">
+                <virta:Opintopiste>10.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="80410092">
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="77200835">
+                <virta:Opintopiste>2.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="76798264">
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="75842024">
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="75831646">
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="75831530">
+                <virta:Opintopiste>10.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2017979" avain="81551871">
+              <virta:SuoritusPvm>2010-12-19</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>10.0</virta:Opintopiste>
+                <virta:Opintoviikko>5.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Analyysi I</virta:Nimi>
+              <virta:Nimi kieli="sv">Analys I</virta:Nimi>
+              <virta:Nimi kieli="en">Analysis I</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="77981005" avain="78069637">
+              <virta:SuoritusPvm>2010-11-16</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2.0</virta:Opintopiste>
+                <virta:Opintoviikko>1.5</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Ainedid. 1 ryhmät</virta:Nimi>
+              <virta:Nimi kieli="en">Subject-Specific Didaktics, grupp</virta:Nimi>
+              <virta:Nimi kieli="sv">Ämnesdidaktik, grupp</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2018042" avain="93569744">
+              <virta:SuoritusPvm>2013-05-19</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>12.0</virta:Opintopiste>
+                <virta:Opintoviikko>6.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="en">Basic Course for Math Teachers</virta:Nimi>
+              <virta:Nimi kieli="sv">Lärarlinjens grundkurs</virta:Nimi>
+              <virta:Nimi kieli="fi">Opettajalinjan peruskurssi</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="56839320" avain="92125456">
+              <virta:SuoritusPvm>2012-10-12</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Kandidaatintutkielma</virta:Nimi>
+              <virta:Nimi kieli="sv">Kandidatavhandling</virta:Nimi>
+              <virta:Nimi kieli="en">Bachelor's Thesis</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="62554387" avain="97591092">
+              <virta:SuoritusPvm>2013-09-28</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>40.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Tutkielma>E</virta:Tutkielma>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Matematiikan aineenopettajan pro gradu -tutkielma</virta:Nimi>
+              <virta:Nimi kieli="sv">Pro gradu -avhandling för ämneslärare i matematik</virta:Nimi>
+              <virta:Nimi kieli="en">Master's Thesis for Mathematics Teachers</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2012294" avain="87075394">
+              <virta:SuoritusPvm>2012-05-03</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>2</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="en">PSY225 Cognitive Psychology II</virta:Nimi>
+              <virta:Nimi kieli="sv">PSY225 Kognitiv psykologi II</virta:Nimi>
+              <virta:Nimi kieli="fi">PSY225 Kognitiivinen psykologia II</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">83</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2017237" avain="79450054">
+              <virta:SuoritusPvm>2009-12-10</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>1.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.33</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>10076</virta:Koodi>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="en">Safety in the Laboratory</virta:Nimi>
+              <virta:Nimi kieli="sv">Säkerhet i laboratoriet</virta:Nimi>
+              <virta:Nimi kieli="fi">Turvallinen työskentely laboratoriossa</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2010-09-06</virta:HyvaksilukuPvm>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2021399" avain="87054335">
+              <virta:SuoritusPvm>2011-11-03</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+                <virta:Opintoviikko>2.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Erityispedagogiikka</virta:Nimi>
+              <virta:Nimi kieli="sv">Specialpedagogik</virta:Nimi>
+              <virta:Nimi kieli="en">Special education</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="53598640" avain="86304303">
+              <virta:SuoritusPvm>2011-10-27</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+                <virta:Opintoviikko>2.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Johdatus tietojenkäsittelytieteeseen</virta:Nimi>
+              <virta:Nimi kieli="sv">Introduktion till datavetenskap</virta:Nimi>
+              <virta:Nimi kieli="en">Introduction to Computer Science</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="37277047" avain="80278450">
+              <virta:SuoritusPvm>2010-10-25</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2.0</virta:Opintopiste>
+                <virta:Opintoviikko>1.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Ryhmänohjauskoulutus ja tuutorointi</virta:Nimi>
+              <virta:Nimi kieli="sv">Grupphandledningsutbildning och tutorverksamhet</virta:Nimi>
+              <virta:Nimi kieli="en">Tutortraining and Tutoring</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2017978" avain="95624468">
+              <virta:SuoritusPvm>2013-06-13</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>10.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Vektorianalyysi</virta:Nimi>
+              <virta:Nimi kieli="sv">Vektoranalys</virta:Nimi>
+              <virta:Nimi kieli="en">Vector Analysis</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2018603" avain="78985344">
+              <virta:SuoritusPvm>2010-06-08</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="en">Programming Project</virta:Nimi>
+              <virta:Nimi kieli="sv">Övningsarbete i programmering</virta:Nimi>
+              <virta:Nimi kieli="fi">Ohjelmoinnin harjoitustyö</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="53764968" avain="81960818">
+              <virta:SuoritusPvm>2010-12-19</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>25.0</virta:Opintopiste>
+                <virta:Opintoviikko>14.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Matematiikan perusopinnot</virta:Nimi>
+              <virta:Nimi kieli="sv">Grundstudier i matematik</virta:Nimi>
+              <virta:Nimi kieli="en">Basic Studies in Mathematics</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="81551871">
+                <virta:Opintopiste>10.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="79346492">
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="75721319">
+                <virta:Opintopiste>10.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2021543" avain="91717566">
+              <virta:SuoritusPvm>2013-05-02</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>8.0</virta:Opintopiste>
+                <virta:Opintoviikko>5.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="en">Teaching Practice</virta:Nimi>
+              <virta:Nimi kieli="fi">Syventävä harjoittelu</virta:Nimi>
+              <virta:Nimi kieli="sv">Fördjupad praktik</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="81153439" avain="81492578">
+              <virta:SuoritusPvm>2011-03-11</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+                <virta:Opintoviikko>2.5</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Johdatus GeoGebraan</virta:Nimi>
+              <virta:Nimi kieli="en">Introduction to GeoGebra</virta:Nimi>
+              <virta:Nimi kieli="sv">Introduktion till GeoGebra</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2021454" avain="84490705">
+              <virta:SuoritusPvm>2011-12-19</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>7.0</virta:Opintopiste>
+                <virta:Opintoviikko>4.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Perusharjoittelu</virta:Nimi>
+              <virta:Nimi kieli="sv">Grundpraktik</virta:Nimi>
+              <virta:Nimi kieli="en">Basic practice</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2018346" avain="76917785">
+              <virta:SuoritusPvm>2010-03-05</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Ohjelmoinnin perusteet</virta:Nimi>
+              <virta:Nimi kieli="sv">Introduktion till programmering</virta:Nimi>
+              <virta:Nimi kieli="en">Introduction to Programming</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="48047761" avain="81264927">
+              <virta:SuoritusPvm>2010-11-24</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:ToinenKotimainen>TT</virta:ToinenKotimainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Toisen kotimaisen kielen suullinen taito, ruotsi</virta:Nimi>
+              <virta:Nimi kieli="sv">Muntlig färdighet i andra inhemska språket, svenska</virta:Nimi>
+              <virta:Nimi kieli="en">Oral Skills in the Second Official Language, Swedish</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">76</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2012316" avain="87693604">
+              <virta:SuoritusPvm>2012-02-15</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">PSY251 Kliininen psykologia II</virta:Nimi>
+              <virta:Nimi kieli="sv">PSY251 Klinisk psykologi II</virta:Nimi>
+              <virta:Nimi kieli="en">PSY251 Clinical Psychology II</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">83</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>4</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2021480" avain="84159032">
+              <virta:SuoritusPvm>2011-06-14</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+                <virta:Opintoviikko>2.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="en">Seminar I</virta:Nimi>
+              <virta:Nimi kieli="sv">Temaseminarium I</virta:Nimi>
+              <virta:Nimi kieli="fi">Tutkimussuunnitelma</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="53467384" avain="79449792">
+              <virta:SuoritusPvm>2009-12-10</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3.0</virta:Opintopiste>
+                <virta:Opintoviikko>2.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>10076</virta:Koodi>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Epäorgaanisen kemian perustyöt IB</virta:Nimi>
+              <virta:Nimi kieli="sv">Grundarbeten i oorganiska kemi IB</virta:Nimi>
+              <virta:Nimi kieli="en">Intermediate inorganic chemistry laboratory</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2010-09-06</virta:HyvaksilukuPvm>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="73069558" opiskelijaAvain="73069557" koulutusmoduulitunniste="2028808" avain="92260325">
+              <virta:SuoritusPvm>2012-10-26</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>189.0</virta:Opintopiste>
+                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>1</virta:Laji>
+              <virta:Nimi kieli="fi">Luonnontieteiden kandidaatti</virta:Nimi>
+              <virta:Nimi kieli="sv">Kandidat i naturvetenskaperna</virta:Nimi>
+              <virta:Nimi kieli="en">Bachelor of Science</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutuskoodi>642101</virta:Koulutuskoodi>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="92172887">
+                <virta:Opintopiste>18.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="92172882">
+                <virta:Opintopiste>56.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="89913024">
+                <virta:Opintopiste>40.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="81960818">
+                <virta:Opintopiste>25.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="80905503">
+                <virta:Opintopiste>25.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="78637188">
+                <virta:Opintopiste>25.0</virta:Opintopiste>
+              </virta:Sisaltyvyys>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2021450" avain="78070612">
+              <virta:SuoritusPvm>2010-11-05</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.0</virta:Opintopiste>
+                <virta:Opintoviikko>2.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Ainedidaktiikan luennot, sl</virta:Nimi>
+              <virta:Nimi kieli="sv">Föreläsningar i ämnesdidaktik</virta:Nimi>
+              <virta:Nimi kieli="en">Subject-Specific Didactics, Lectures</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">80</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2012283" avain="80618709">
+              <virta:SuoritusPvm>2010-10-30</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+                <virta:Opintoviikko>3.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>2</virta:Rooli>
+                <virta:Koodi>01901</virta:Koodi>
+                <virta:Osuus>1.0</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="en">PSY151 Clinical Psychology I</virta:Nimi>
+              <virta:Nimi kieli="sv">PSY151 Klinisk psykologi I</virta:Nimi>
+              <virta:Nimi kieli="fi">PSY151 Kliininen psykologia I: Terveyden ja mielenterveyden psykologia</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">83</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskelijaAvain="73069557" koulutusmoduulitunniste="2012281" avain="78732322">
+              <virta:SuoritusPvm>2010-06-30</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5.0</virta:Opintopiste>
+                <virta:Opintoviikko>3.0</virta:Opintoviikko>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01901</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>2</virta:Rooli>
+                <virta:Koodi>01901</virta:Koodi>
+                <virta:Osuus>1.0</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="en">PSY131 Developmental Psychology I</virta:Nimi>
+              <virta:Nimi kieli="sv">PSY131 Utvecklingspsykologi I</virta:Nimi>
+              <virta:Nimi kieli="fi">PSY131 Kehityspsykologia I</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">83</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+          </virta:Opintosuoritukset>
+        </virta:Opiskelija>
+        <virta:Opiskelija avain="10895922">
+          <virta:Henkilotunnus>090888-929X</virta:Henkilotunnus>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus opiskelijaAvain="10895922" avain="10895924">
+              <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2012-09-14</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2012-09-14</virta:AlkuPvm>
+                <virta:Koodi>4</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2012-09-13</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>4</virta:Tyyppi>
+              <virta:Myontaja>10076</virta:Myontaja>
+              <virta:Jakso valtakunnallinenKoulutusmoduulitunniste="" koulutusmoduulitunniste="2/TS-2005/751999/KEM2">
+                <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2012-09-14</virta:LoppuPvm>
+                <virta:Koulutuskoodi>751401</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>049</virta:Koulutuskunta>
+              </virta:Jakso>
+              <virta:Koulutusala versio="opm95opa">89</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus opiskelijaAvain="10895922" avain="10895923">
+              <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2012-09-14</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2012-09-13</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2012-09-14</virta:AlkuPvm>
+                <virta:Koodi>4</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>2</virta:Tyyppi>
+              <virta:Myontaja>10076</virta:Myontaja>
+              <virta:Jakso valtakunnallinenKoulutusmoduulitunniste="" koulutusmoduulitunniste="1/TS-2005/655999/KEM1/KE951-P">
+                <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2012-09-14</virta:LoppuPvm>
+                <virta:Koulutuskoodi>655401</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>049</virta:Koulutuskunta>
+              </virta:Jakso>
+              <virta:Ensisijaisuus>
+                <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2017-07-31</virta:LoppuPvm>
+              </virta:Ensisijaisuus>
+              <virta:Koulutusala versio="opm95opa">89</virta:Koulutusala>
+              <virta:Liittyvyys liittyvaOpiskeluoikeusAvain="10895924"/>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+          <virta:LukukausiIlmoittautumiset>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="10895923" opiskelijaAvain="10895922">
+              <virta:Myontaja>10076</virta:Myontaja>
+              <virta:Tila>2</virta:Tila>
+              <virta:IlmoittautumisPvm>2010-07-26</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2011-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2011-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>0</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>0</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="10895924" opiskelijaAvain="10895922">
+              <virta:Myontaja>10076</virta:Myontaja>
+              <virta:Tila>2</virta:Tila>
+              <virta:IlmoittautumisPvm>2010-07-26</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2010-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2010-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>0</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>0</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="10895923" opiskelijaAvain="10895922">
+              <virta:Myontaja>10076</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2009-07-30</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2010-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2010-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>1</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>1</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="10895923" opiskelijaAvain="10895922">
+              <virta:Myontaja>10076</virta:Myontaja>
+              <virta:Tila>2</virta:Tila>
+              <virta:IlmoittautumisPvm>2008-08-06</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2009-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2009-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>0</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>0</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="10895923" opiskelijaAvain="10895922">
+              <virta:Myontaja>10076</virta:Myontaja>
+              <virta:Tila>2</virta:Tila>
+              <virta:IlmoittautumisPvm>2010-07-26</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2010-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2010-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>0</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>0</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="10895924" opiskelijaAvain="10895922">
+              <virta:Myontaja>10076</virta:Myontaja>
+              <virta:Tila>2</virta:Tila>
+              <virta:IlmoittautumisPvm>2008-08-06</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2009-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2009-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>0</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>0</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="10895923" opiskelijaAvain="10895922">
+              <virta:Myontaja>10076</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2009-07-30</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2009-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2009-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>1</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>1</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="10895924" opiskelijaAvain="10895922">
+              <virta:Myontaja>10076</virta:Myontaja>
+              <virta:Tila>2</virta:Tila>
+              <virta:IlmoittautumisPvm>2010-07-26</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2011-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2011-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>0</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>0</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="10895924" opiskelijaAvain="10895922">
+              <virta:Myontaja>10076</virta:Myontaja>
+              <virta:Tila>2</virta:Tila>
+              <virta:IlmoittautumisPvm>2008-08-06</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2008-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>0</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>0</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="10895924" opiskelijaAvain="10895922">
+              <virta:Myontaja>10076</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2009-07-30</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2010-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2010-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>1</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>1</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="10895924" opiskelijaAvain="10895922">
+              <virta:Myontaja>10076</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2009-07-30</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2009-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2009-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>1</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>1</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="10895923" opiskelijaAvain="10895922">
+              <virta:Myontaja>10076</virta:Myontaja>
+              <virta:Tila>2</virta:Tila>
+              <virta:IlmoittautumisPvm>2008-08-06</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2008-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>0</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>0</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+          </virta:LukukausiIlmoittautumiset>
+          <virta:Opintosuoritukset>
+            <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="" opiskelijaAvain="10895922" koulutusmoduulitunniste="KE-35.1210" avain="13335530">
+              <virta:SuoritusPvm>2009-12-10</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.000000</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10076</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Epäorgaanisen kemian laboratoriotyöt</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                <virta:Osuus>1.000000</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="" opiskelijaAvain="10895922" koulutusmoduulitunniste="T-106.1111" avain="13764188">
+              <virta:SuoritusPvm>2009-10-26</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2.000000</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10076</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Johdatus opiskeluun ja tietojärjestelmiin</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                <virta:Osuus>1.000000</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="" opiskelijaAvain="10895922" koulutusmoduulitunniste="KE-35.1200" avain="13335574">
+              <virta:SuoritusPvm>2009-12-15</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4.000000</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>2</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10076</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Epäorgaaninen kemia I</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                <virta:Osuus>1.000000</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="" opiskelijaAvain="10895922" koulutusmoduulitunniste="Tfy-3.1241" avain="13336049">
+              <virta:SuoritusPvm>2009-10-28</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3.000000</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10076</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Fysiikka IA</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">89</virta:Koodi>
+                <virta:Osuus>1.000000</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+          </virta:Opintosuoritukset>
+        </virta:Opiskelija>
+      </virta:Virta>
+    </virtaluku:OpiskelijanKaikkiTiedotResponse>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

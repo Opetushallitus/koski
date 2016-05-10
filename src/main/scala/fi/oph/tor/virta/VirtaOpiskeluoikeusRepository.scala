@@ -21,16 +21,20 @@ case class VirtaOpiskeluoikeusRepository(virta: VirtaClient, val oppijaRepositor
         .flatMap(xmlData => converter.convert(xmlData))
       //.filter(oo => user.hasReadAccess(oo.oppilaitos)) TODO: access check, kuha on olemassa asiaan kuuluvat käyttöoikeusryhmät. Nyt kovakoodattau 2aste-rajapinnat -ryhmää ei löydy esim. aalto-yliopistolta.
 
-      opiskeluoikeudet match {
-        case Nil => Nil
-        case _ =>
-          val oppija = Oppija(henkilö, opiskeluoikeudet)
-          validator.validateAsJson(oppija)(user, AccessType.read) match {
-            case Right(oppija) => opiskeluoikeudet
-            case Left(status) =>
-              logger.error("Virrasta saatu opiskeluoikeus ei ole validi: " + status)
-              Nil
-          }
+      opiskeluoikeudet flatMap { opiskeluoikeus =>
+        val oppija = Oppija(henkilö, List(opiskeluoikeus))
+        validator.validateAsJson(oppija)(user, AccessType.read) match {
+          case Right(oppija) =>
+            Some(opiskeluoikeus)
+          case Left(status) =>
+            if (status.errors.map(_.key).contains(TorErrorCategory.badRequest.validation.jsonSchema.key)) {
+              logger.error("Virrasta saatu opiskeluoikeus ei ole validi Koski-järjestelmän JSON schemassa: " + status)
+              None
+            } else {
+              logger.warn("Virrasta saatu opiskeluoikeus sisältää validointivirheitä " + status)
+              Some(opiskeluoikeus)
+            }
+        }
       }
     } catch {
       case e: Exception =>

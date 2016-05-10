@@ -1,0 +1,185 @@
+{
+  "numHits": 9,
+  "organisaatiot": [
+    {
+      "oid": "1.2.246.562.10.85149969462",
+      "alkuPvm": 1408654800000,
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "1.2.246.562.10.85149969462/1.2.246.562.10.00000000001",
+      "ytunnus": "2630644-6",
+      "match": true,
+      "nimi": {
+        "fi": "Lahden ammattikorkeakoulu Oy"
+      },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
+      "kotipaikkaUri": "kunta_398",
+      "children": [
+        {
+          "oid": "1.2.246.562.10.27756776996",
+          "alkuPvm": 838846800000,
+          "parentOid": "1.2.246.562.10.85149969462",
+          "parentOidPath": "1.2.246.562.10.27756776996/1.2.246.562.10.85149969462/1.2.246.562.10.00000000001",
+          "oppilaitosKoodi": "02470",
+          "oppilaitostyyppi": "oppilaitostyyppi_41#1",
+          "match": true,
+          "nimi": {
+            "fi": "Lahden ammattikorkeakoulu",
+            "en": "Lahti University of Applied Sciences"
+          },
+          "kieletUris": [
+            "oppilaitoksenopetuskieli_1#1"
+          ],
+          "kotipaikkaUri": "kunta_398",
+          "children": [
+            {
+              "oid": "1.2.246.562.10.97153157454",
+              "alkuPvm": 898808400000,
+              "parentOid": "1.2.246.562.10.27756776996",
+              "parentOidPath": "1.2.246.562.10.97153157454/1.2.246.562.10.27756776996/1.2.246.562.10.85149969462/1.2.246.562.10.00000000001",
+              "match": false,
+              "nimi": {
+                "fi": "Lahden ammattikorkeakoulu, Muotoiluinstituutti"
+              },
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_398",
+              "children": [],
+              "organisaatiotyypit": [
+                "TOIMIPISTE"
+              ],
+              "aliOrganisaatioMaara": 0
+            },
+            {
+              "oid": "1.2.246.562.10.28509703055",
+              "alkuPvm": 903992400000,
+              "parentOid": "1.2.246.562.10.27756776996",
+              "parentOidPath": "1.2.246.562.10.28509703055/1.2.246.562.10.27756776996/1.2.246.562.10.85149969462/1.2.246.562.10.00000000001",
+              "match": false,
+              "nimi": {
+                "fi": "Lahden ammattikorkeakoulu, Musiikki- ja draamainstituutti"
+              },
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_398",
+              "children": [],
+              "organisaatiotyypit": [
+                "TOIMIPISTE"
+              ],
+              "aliOrganisaatioMaara": 0
+            },
+            {
+              "oid": "1.2.246.562.10.31543894393",
+              "alkuPvm": 898808400000,
+              "parentOid": "1.2.246.562.10.27756776996",
+              "parentOidPath": "1.2.246.562.10.31543894393/1.2.246.562.10.27756776996/1.2.246.562.10.85149969462/1.2.246.562.10.00000000001",
+              "match": false,
+              "nimi": {
+                "fi": "Lahden ammattikorkeakoulu, Liiketalouden ala",
+                "en": "Lahti University of Applied Sciences, Faculty of Business Studies"
+              },
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_398",
+              "children": [],
+              "organisaatiotyypit": [
+                "TOIMIPISTE"
+              ],
+              "aliOrganisaatioMaara": 0
+            },
+            {
+              "oid": "1.2.246.562.10.36509583518",
+              "alkuPvm": 903992400000,
+              "parentOid": "1.2.246.562.10.27756776996",
+              "parentOidPath": "1.2.246.562.10.36509583518/1.2.246.562.10.27756776996/1.2.246.562.10.85149969462/1.2.246.562.10.00000000001",
+              "match": false,
+              "nimi": {
+                "fi": "Lahden ammattikorkeakoulu, Matkailun ala"
+              },
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_398",
+              "children": [],
+              "organisaatiotyypit": [
+                "TOIMIPISTE"
+              ],
+              "aliOrganisaatioMaara": 0
+            },
+            {
+              "oid": "1.2.246.562.10.21989237215",
+              "alkuPvm": 898808400000,
+              "parentOid": "1.2.246.562.10.27756776996",
+              "parentOidPath": "1.2.246.562.10.21989237215/1.2.246.562.10.27756776996/1.2.246.562.10.85149969462/1.2.246.562.10.00000000001",
+              "match": false,
+              "nimi": {
+                "fi": "Lahden ammattikorkeakoulu, Sosiaali- ja terveysala",
+                "en": "Lahti University of Applied Sciences, Faculty of Social and Health Care"
+              },
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_398",
+              "children": [],
+              "organisaatiotyypit": [
+                "TOIMIPISTE"
+              ],
+              "aliOrganisaatioMaara": 0
+            },
+            {
+              "oid": "1.2.246.562.10.40630858302",
+              "alkuPvm": 898808400000,
+              "parentOid": "1.2.246.562.10.27756776996",
+              "parentOidPath": "1.2.246.562.10.40630858302/1.2.246.562.10.27756776996/1.2.246.562.10.85149969462/1.2.246.562.10.00000000001",
+              "match": false,
+              "nimi": {
+                "fi": "Lahden ammattikorkeakoulu, Taideinstituutti"
+              },
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_398",
+              "children": [],
+              "organisaatiotyypit": [
+                "TOIMIPISTE"
+              ],
+              "aliOrganisaatioMaara": 0
+            },
+            {
+              "oid": "1.2.246.562.10.23444268835",
+              "alkuPvm": 898808400000,
+              "parentOid": "1.2.246.562.10.27756776996",
+              "parentOidPath": "1.2.246.562.10.23444268835/1.2.246.562.10.27756776996/1.2.246.562.10.85149969462/1.2.246.562.10.00000000001",
+              "match": false,
+              "nimi": {
+                "fi": "Lahden ammattikorkeakoulu, Tekniikan ala",
+                "en": "Faculty of Technology"
+              },
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
+              "kotipaikkaUri": "kunta_398",
+              "children": [],
+              "organisaatiotyypit": [
+                "TOIMIPISTE"
+              ],
+              "aliOrganisaatioMaara": 0
+            }
+          ],
+          "organisaatiotyypit": [
+            "OPPILAITOS"
+          ],
+          "aliOrganisaatioMaara": 7
+        }
+      ],
+      "organisaatiotyypit": [
+        "KOULUTUSTOIMIJA"
+      ],
+      "aliOrganisaatioMaara": 1
+    }
+  ]
+}

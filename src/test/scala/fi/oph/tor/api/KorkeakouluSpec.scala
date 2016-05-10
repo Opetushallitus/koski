@@ -18,10 +18,10 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
     describe("Haettaessa henkilötunnuksella") {
       describe("Jos henkilöä ei löydy henkilöpalvelusta") {
         it("Haetaan Virrasta ja luodaan henkilö") {
-          searchForHenkilötiedot("100596-973M").map(_.kokonimi) should equal(List("Pelle Hermanni"))
+          searchForHenkilötiedot("090888-929X").map(_.kokonimi) should equal(List("Harri Koskinen"))
         }
         it("Seuraavalla haulla käytetään aiemmin luotua henkilöä") {
-          searchForHenkilötiedot("100596-973M").map(_.oid) should equal(searchForHenkilötiedot("100596-973M").map(_.oid))
+          searchForHenkilötiedot("090888-929X").map(_.oid) should equal(searchForHenkilötiedot("090888-929X").map(_.oid))
         }
       }
     }
