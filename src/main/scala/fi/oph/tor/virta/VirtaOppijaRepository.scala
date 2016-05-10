@@ -25,14 +25,14 @@ case class VirtaOppijaRepository(v: VirtaClient, henkilöpalvelu: OppijaReposito
           .map { opiskelijaNode => ((opiskelijaNode \ "Sukunimi").text, (opiskelijaNode \ "Etunimet").text) }
           .find { case (sukunimi, etunimet) => !sukunimi.isEmpty && !etunimet.isEmpty }
           .flatMap { case (sukunimi, etunimet) =>
-          val kutsumanimi = etunimet.split(" ").toList.head
-          // Validi oppija lisätään henkilöpalveluun, jolloin samaa oppijaa ei haeta enää uudestaan Virrasta
-          henkilöpalvelu.findOrCreate(UusiHenkilö(hetu, etunimet, kutsumanimi, sukunimi)) match {
-            case Right(oid) => henkilöpalvelu.findByOid(oid)
-            case Left(error) =>
-              logger.error("Virta-oppijan lisäys henkilöpalveluun epäonnistui: " + error)
-              None
-          }
+            val kutsumanimi = etunimet.split(" ").toList.head
+            // Validi oppija lisätään henkilöpalveluun, jolloin samaa oppijaa ei haeta enää uudestaan Virrasta
+            henkilöpalvelu.findOrCreate(UusiHenkilö(hetu, etunimet, kutsumanimi, sukunimi)) match {
+              case Right(oid) => henkilöpalvelu.findByOid(oid)
+              case Left(error) =>
+                logger.error("Virta-oppijan lisäys henkilöpalveluun epäonnistui: " + error)
+                None
+            }
         }
         .toList
       } catch {

@@ -25,12 +25,19 @@ object MockVirtaClient extends VirtaClient {
   override def opintotiedot(hakuehto: VirtaHakuehto) = {
     hakuehto match {
       case VirtaHakuehtoHetu(hetu) =>
-        Files.asString("src/main/resources/mockdata/virta/" + hetu + ".xml").map(scala.xml.XML.loadString)
-      case _ =>
-        throw new UnsupportedOperationException()
+        loadXml("src/main/resources/mockdata/virta/opintotiedot/" + hetu + ".xml")
     }
   }
-  def henkilötiedot(hakuehto: VirtaHakuehto, oppilaitosNumero: String) = None
+  override def henkilötiedot(hakuehto: VirtaHakuehto, oppilaitosNumero: String) = {
+    hakuehto match {
+      case VirtaHakuehtoHetu(hetu) =>
+        loadXml("src/main/resources/mockdata/virta/henkilotiedot/" + hetu + ".xml")
+    }
+  }
+
+  private def loadXml(filename: String) = {
+    Files.asString(filename).map(scala.xml.XML.loadString)
+  }
 }
 
 case class RemoteVirtaClient(config: VirtaConfig) extends VirtaClient {

@@ -176,7 +176,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
   }
 
   private def myöntäjä(node: Node) = {
-    (node \ "Myontaja").text
+    (node \ "Myontaja" \ "Koodi").text
   }
 
   private def laji(node: Node) = {

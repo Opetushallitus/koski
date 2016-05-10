@@ -1,0 +1,19 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+    <SOAP-ENV:Header/>
+    <SOAP-ENV:Body>
+        <virtaluku:OpiskelijanTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
+            <virta:Opiskelijat xmlns:virta="urn:mace:funet.fi:virta/2015/09/01">
+                <virta:Opiskelija avain="1114082124">
+                    <virta:Henkilotunnus>100596-973M</virta:Henkilotunnus>
+                    <virta:Sukunimi>Hermanni</virta:Sukunimi>
+                    <virta:Etunimet>Pelle</virta:Etunimet>
+                    <virta:Sukupuoli>1</virta:Sukupuoli>
+                    <virta:Kansalaisuus>246</virta:Kansalaisuus>
+                    <virta:Aidinkieli>fi</virta:Aidinkieli>
+                    <virta:Asuinkunta>049</virta:Asuinkunta>
+                    <virta:KirjoihintuloPvm>2013-08-01</virta:KirjoihintuloPvm>
+                </virta:Opiskelija>
+            </virta:Opiskelijat>
+        </virtaluku:OpiskelijanTiedotResponse>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

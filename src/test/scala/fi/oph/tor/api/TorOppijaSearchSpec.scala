@@ -2,20 +2,22 @@ package fi.oph.tor.api
 
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.jettylauncher.SharedJetty
-import fi.oph.tor.json.Json
 import fi.oph.tor.log.AuditLogTester
-import fi.oph.tor.schema.TaydellisetHenkilötiedot
 import org.scalatest.{FreeSpec, Matchers}
 
-class TorOppijaSearchSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification {
+class TorOppijaSearchSpec extends FreeSpec with Matchers with SearchTestMethods {
   AuditLogTester.setup
 
   "/api/oppija/search" - {
     SharedJetty.start
-    "Returns results" in {
-      get("api/oppija/search", params = List(("query" -> "eero")), headers = authHeaders()) {
-        verifyResponseStatus(200)
-        Json.read[List[TaydellisetHenkilötiedot]](body).length should equal(3)
+    "Finds by name" in {
+      searchForNames("eero") should equal(List("Jouni Eerola", "Eero Esimerkki", "Eero Markkanen"))
+    }
+    "Finds by hetu" in {
+      searchForNames("010101-123N") should equal(List("Eero Esimerkki"))
+    }
+    "Audit logging" in {
+      search("eero") {
         AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "OPPIJA_HAKU", "hakuEhto" -> "EERO"))
       }
     }

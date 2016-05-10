@@ -57,6 +57,8 @@ trait Henkilötiedot {
   def kutsumanimi: String
   @Description("Henkilön sukunimi. Henkilön sukunimen etuliite tulee osana sukunimeä")
   def sukunimi: String
+
+  def kokonimi = etunimet + " " + sukunimi
 }
 
 trait HenkilöWithOid extends Henkilö {

@@ -5,12 +5,23 @@ import fi.oph.tor.oppija.MockOppijat
 import fi.oph.tor.schema._
 import org.scalatest.{FunSpec, Matchers}
 
-class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMethodsKorkeakoulu {
+class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMethodsKorkeakoulu with SearchTestMethods {
   describe("Korkeakoulun opiskeluoikeudet") {
     describe("Lisättäessä/päivitettäessä") {
       it("palautetaan HTTP 501") {
         putOpiskeluOikeus(defaultOpiskeluoikeus) {
           verifyResponseStatus(501, TorErrorCategory.notImplemented.readOnly("Korkeakoulutuksen opiskeluoikeuksia ei voi päivittää Koski-järjestelmässä"))
+        }
+      }
+    }
+
+    describe("Haettaessa henkilötunnuksella") {
+      describe("Jos henkilöä ei löydy henkilöpalvelusta") {
+        it("Haetaan Virrasta ja luodaan henkilö") {
+          searchForHenkilötiedot("100596-973M").map(_.kokonimi) should equal(List("Pelle Hermanni"))
+        }
+        it("Seuraavalla haulla käytetään aiemmin luotua henkilöä") {
+          searchForHenkilötiedot("100596-973M").map(_.oid) should equal(searchForHenkilötiedot("100596-973M").map(_.oid))
         }
       }
     }
