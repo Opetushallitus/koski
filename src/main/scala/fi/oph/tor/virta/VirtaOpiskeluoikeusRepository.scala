@@ -12,24 +12,30 @@ import fi.oph.tor.tor.{TorValidator, QueryFilter}
 import fi.oph.tor.toruser.{AccessType, TorUser}
 import rx.lang.scala.Observable
 
-case class VirtaOpiskeluoikeusRepository(v: VirtaClient, val oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, validator: TorValidator) extends OpiskeluOikeusRepository with Logging {
+case class VirtaOpiskeluoikeusRepository(virta: VirtaClient, val oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, validator: TorValidator) extends OpiskeluOikeusRepository with Logging {
   private val converter = VirtaXMLConverter(oppijaRepository, oppilaitosRepository, koodistoViitePalvelu)
 
-  def findByHenkilö(henkilö: Henkilö with Henkilötiedot)(implicit user: TorUser) = {
-    val opiskeluoikeudet: List[KorkeakoulunOpiskeluoikeus] = v.opintotiedot(VirtaHakuehtoHetu(henkilö.hetu)).toList
-      .flatMap(xmlData => converter.convert(xmlData))
+  def findByHenkilö(henkilö: Henkilö with Henkilötiedot)(implicit user: TorUser): List[KorkeakoulunOpiskeluoikeus] = {
+    try {
+      val opiskeluoikeudet: List[KorkeakoulunOpiskeluoikeus] = virta.opintotiedot(VirtaHakuehtoHetu(henkilö.hetu)).toList
+        .flatMap(xmlData => converter.convert(xmlData))
       //.filter(oo => user.hasReadAccess(oo.oppilaitos)) TODO: access check, kuha on olemassa asiaan kuuluvat käyttöoikeusryhmät. Nyt kovakoodattau 2aste-rajapinnat -ryhmää ei löydy esim. aalto-yliopistolta.
 
-    opiskeluoikeudet match {
-      case Nil => Nil
-      case _ =>
-        val oppija = Oppija(henkilö, opiskeluoikeudet)
-        validator.validateAsJson(oppija)(user, AccessType.read) match {
-          case Right(oppija) => opiskeluoikeudet
-          case Left(status) =>
-            logger.error("Virrasta saatu opiskeluoikeus ei ole validi: " + status)
-            Nil
-        }
+      opiskeluoikeudet match {
+        case Nil => Nil
+        case _ =>
+          val oppija = Oppija(henkilö, opiskeluoikeudet)
+          validator.validateAsJson(oppija)(user, AccessType.read) match {
+            case Right(oppija) => opiskeluoikeudet
+            case Left(status) =>
+              logger.error("Virrasta saatu opiskeluoikeus ei ole validi: " + status)
+              Nil
+          }
+      }
+    } catch {
+      case e: Exception =>
+        logger.error("Failed to fetch data from Virta", e)
+        Nil
     }
   }
 
