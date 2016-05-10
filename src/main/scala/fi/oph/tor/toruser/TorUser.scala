@@ -7,6 +7,7 @@ import rx.lang.scala.Observable
 class TorUser(val oid: String, val clientIp: String, val lang: String, val organisationOidsObservable: Observable[Set[String]]) extends Loggable with Logging {
   def logString = "käyttäjä " + oid
   lazy val organisationOids: Set[String] = organisationOidsObservable.toBlocking.first
+  def hasReadAccess(organisaatio: OrganisaatioWithOid) = hasAccess(organisaatio, AccessType.read)
   def hasWriteAccess(organisaatio: OrganisaatioWithOid) = hasAccess(organisaatio, AccessType.write)
   def hasAccess(organisaatio: OrganisaatioWithOid, accessType: AccessType.Value) = accessType match {
     case AccessType.read => true // TODO: käyttöoikeusryhmät
@@ -19,4 +20,6 @@ object TorUser {
   def apply(oid: String, clientIp: String, userOrganisationsRepository: UserOrganisationsRepository) = {
     new TorUser(oid, clientIp, "fi", userOrganisationsRepository.getUserOrganisations(oid))
   }
+
+  val systemUser = new TorUser("Koski", "-", "fi", Observable.empty) // TODO: not necessarily a good idea
 }

@@ -1,5 +1,6 @@
 package fi.oph.tor.virta
 
+import fi.oph.tor.cache.{CachingStrategy, KeyValueCache}
 import fi.oph.tor.http.{HttpStatus, TorErrorCategory}
 import fi.oph.tor.koodisto.KoodistoViitePalvelu
 import fi.oph.tor.log.Logging
@@ -15,15 +16,16 @@ import rx.lang.scala.Observable
 case class VirtaOpiskeluoikeusRepository(virta: VirtaClient, val oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, validator: TorValidator) extends OpiskeluOikeusRepository with Logging {
   private val converter = VirtaXMLConverter(oppijaRepository, oppilaitosRepository, koodistoViitePalvelu)
 
-  def findByHenkilö(henkilö: Henkilö with Henkilötiedot)(implicit user: TorUser): List[KorkeakoulunOpiskeluoikeus] = {
+  private val cache = KeyValueCache[Henkilö with Henkilötiedot, List[KorkeakoulunOpiskeluoikeus]](CachingStrategy.cacheAllNoRefresh(3600, 100), doFindByHenkilö)
+
+  def doFindByHenkilö(henkilö: Henkilö with Henkilötiedot): List[KorkeakoulunOpiskeluoikeus] = {
     try {
       val opiskeluoikeudet: List[KorkeakoulunOpiskeluoikeus] = virta.opintotiedot(VirtaHakuehtoHetu(henkilö.hetu)).toList
         .flatMap(xmlData => converter.convert(xmlData))
-      //.filter(oo => user.hasReadAccess(oo.oppilaitos)) TODO: access check, kuha on olemassa asiaan kuuluvat käyttöoikeusryhmät. Nyt kovakoodattau 2aste-rajapinnat -ryhmää ei löydy esim. aalto-yliopistolta.
 
       opiskeluoikeudet flatMap { opiskeluoikeus =>
         val oppija = Oppija(henkilö, List(opiskeluoikeus))
-        validator.validateAsJson(oppija)(user, AccessType.read) match {
+        validator.validateAsJson(oppija)(TorUser.systemUser, AccessType.read) match {
           case Right(oppija) =>
             Some(opiskeluoikeus)
           case Left(status) =>
@@ -41,6 +43,10 @@ case class VirtaOpiskeluoikeusRepository(virta: VirtaClient, val oppijaRepositor
         logger.error("Failed to fetch data from Virta", e)
         Nil
     }
+  }
+
+  def findByHenkilö(henkilö: Henkilö with Henkilötiedot)(implicit user: TorUser): List[KorkeakoulunOpiskeluoikeus] = {
+    cache(henkilö).filter(oo => user.hasReadAccess(oo.oppilaitos))
   }
 
   private def getHetu(oid: String): Option[TaydellisetHenkilötiedot] = oppijaRepository.findByOid(oid)
