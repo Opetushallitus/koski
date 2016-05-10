@@ -5,14 +5,14 @@ import org.slf4j.Logger
 import rx.lang.scala.Observable
 
 object Timing {
-  def timed[R](blockname: String, thresholdMs: Int = 0, logger: Logger)(block: => R): R = {
+  def timed[R](blockname: String, thresholdMs: Int = 50, logger: Logger)(block: => R): R = {
     val timer = new Timer(logger, blockname, thresholdMs)
     timer.complete(block)
   }
 }
 
 trait Timing extends Logging {
-  def timed[R](blockname: String, thresholdMs: Int = 0)(block: => R): R = {
+  def timed[R](blockname: String, thresholdMs: Int = 50)(block: => R): R = {
     Timing.timed(blockname, thresholdMs, this.logger)(block)
   }
 
