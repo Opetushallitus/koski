@@ -116,18 +116,24 @@ case class Http(root: String, client: Client = Http.newClient) extends Logging {
   }
 
   def apply[ResultType](uri: Uri)(decode: Decode[ResultType]): Task[ResultType] = {
-    apply(Request(uri = addRoot(uri)))(decode)
+    apply(Request(uri = uri))(decode)
   }
 
   def post[I <: AnyRef, O <: Any](path: Uri, entity: I)(implicit encode: EntityEncoder[I], decode: Decode[O]): O = {
-    send(addRoot(path), Method.POST, entity)
+    send(path, Method.POST, entity)
   }
 
   def put[I <: AnyRef, O <: Any](path: Uri, entity: I)(implicit encode: EntityEncoder[I], decode: Decode[O]): O = {
-    send(addRoot(path), Method.PUT, entity)
+    send(path, Method.PUT, entity)
   }
 
-  private def addRoot(uri: Uri) = uri"${rootUri}${uri}"
+  private def addRoot(uri: Uri) = {
+    if (!uri.toString.startsWith("http")) {
+      uri"${rootUri}${uri}"
+    } else {
+      uri
+    }
+  }
 
   def send[I <: AnyRef, O <: Any](path: Uri, method: Method, entity: I)(implicit encode: EntityEncoder[I], decode: Decode[O]): O = {
     val request: Request = Request(uri = path, method = method)
@@ -136,7 +142,7 @@ case class Http(root: String, client: Client = Http.newClient) extends Logging {
   }
 
   private def processRequest[ResultType](request: Request)(decoder: (Int, String, Request) => ResultType): Task[ResultType] = {
-    client.fetch(request) { response =>
+    client.fetch(request.copy(uri = addRoot(request.uri))) { response =>
       //logger.info(request + " -> " + response.status.code)
       response.as[String].map { text => // Might be able to optimize by not turning into String here
         decoder(response.status.code, text, request)
