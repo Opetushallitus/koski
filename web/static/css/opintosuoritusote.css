@@ -11,5 +11,53 @@ body {
 
 table {
     border-collapse: separate;
-    border-spacing: 30px 5px;
+    border-spacing: 0 5px;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.nimi {
+    font-weight: bold;
+    margin-bottom: 50px;
+    width: 50%;
+    float: left;
+}
+
+.opiskelija {
+    float: right;
+    width: 50%;
+}
+
+section {
+    clear: both;
+    margin-bottom: 50px;
+}
+
+.laajuus, .arvosana, .suoritus-pvm {
+    text-align: right;
+}
+
+.suoritukset, .tutkinnot {
+    width: 100%;
+    margin-top: -20px;
+}
+
+.date-now {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.tunnus {
+    width: 15%;
+}
+
+.opintosuoritusote {
+    padding: 0 20px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    text-transform: uppercase;
 }
