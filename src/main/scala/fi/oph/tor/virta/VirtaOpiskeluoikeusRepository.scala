@@ -16,7 +16,7 @@ case class VirtaOpiskeluoikeusRepository(v: VirtaClient, val oppijaRepository: O
   private val converter = VirtaXMLConverter(oppijaRepository, oppilaitosRepository, koodistoViitePalvelu)
 
   def findByHenkilö(henkilö: Henkilö with Henkilötiedot)(implicit user: TorUser) = {
-    val opiskeluoikeudet: List[KorkeakoulunOpiskeluoikeus] = v.fetchVirtaData(VirtaHakuehtoHetu(henkilö.hetu)).toList
+    val opiskeluoikeudet: List[KorkeakoulunOpiskeluoikeus] = v.opintotiedot(VirtaHakuehtoHetu(henkilö.hetu)).toList
       .flatMap(xmlData => converter.convert(xmlData))
       //.filter(oo => user.hasReadAccess(oo.oppilaitos)) TODO: access check, kuha on olemassa asiaan kuuluvat käyttöoikeusryhmät. Nyt kovakoodattau 2aste-rajapinnat -ryhmää ei löydy esim. aalto-yliopistolta.
 

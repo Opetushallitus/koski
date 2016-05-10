@@ -8,8 +8,8 @@ object VirtaClientTester extends App {
   val oppijanumerolla = VirtaHakuehtoKansallinenOppijanumero("aed09afd87a8c6d76b76bbd")
   private val client: VirtaClient = VirtaClient(TorApplication.defaultConfig)
 
-  client.fetchVirtaData(hetulla).foreach(result => println(XML.prettyPrint(result)))
+  client.opintotiedot(hetulla).foreach(result => println(XML.prettyPrint(result)))
 
-  client.fetchHenkilöData(hetulla, "10076").foreach(result => println(XML.prettyPrint(result)))
+  client.henkilötiedot(hetulla, "10076").foreach(result => println(XML.prettyPrint(result)))
 
 }

@@ -3,7 +3,7 @@ package fi.oph.tor.virta
 import fi.oph.tor.henkilo.Hetu
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.log.Logging
-import fi.oph.tor.oppija.{MockOppijaRepository, OppijaRepository}
+import fi.oph.tor.oppija.OppijaRepository
 import fi.oph.tor.schema.UusiHenkilö
 
 /*
@@ -17,9 +17,9 @@ case class VirtaOppijaRepository(v: VirtaClient, henkilöpalvelu: OppijaReposito
       // Tänne tullaan vain, jos oppijaa ei löytynyt henkilöpalvelusta (ks CompositeOppijaRepository)
       val hakuehto: VirtaHakuehtoHetu = VirtaHakuehtoHetu(hetu)
       // Oppijan organisaatiot haetaan ensin tällä raskaammalla kyselyllä
-      val organisaatiot = v.fetchVirtaData(hakuehto).toSeq.flatMap(_ \\ "Opiskeluoikeus" \ "Myontaja").map(_.text)
+      val organisaatiot = v.opintotiedot(hakuehto).toSeq.flatMap(_ \\ "Opiskeluoikeus" \ "Myontaja").map(_.text)
       // Organisaatioden avulla haetaan henkilötietoja ja valitaan niistä ensimmäinen validi
-      val opiskelijaNodes = organisaatiot.flatMap(v.fetchHenkilöData(hakuehto, _)).flatMap(_ \\ "Opiskelija")
+      val opiskelijaNodes = organisaatiot.flatMap(v.henkilötiedot(hakuehto, _)).flatMap(_ \\ "Opiskelija")
       opiskelijaNodes
         .map { opiskelijaNode => ((opiskelijaNode \ "Sukunimi").text, (opiskelijaNode \ "Etunimet").text) }
         .find { case (sukunimi, etunimet) => !sukunimi.isEmpty && !etunimet.isEmpty }
