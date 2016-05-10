@@ -1,7 +1,6 @@
 package fi.oph.tor.virta
 
 import com.typesafe.config.Config
-import fi.oph.tor.cache.{CachingProxy, CachingStrategy}
 import fi.oph.tor.http.Http
 import fi.oph.tor.http.Http._
 import fi.oph.tor.log.TimedProxy
@@ -12,7 +11,7 @@ import scala.xml.{Elem, Node}
 object VirtaClient {
   def apply(config: Config) = config.hasPath("virta.serviceUrl") match {
     case false => MockVirtaClient
-    case true => CachingProxy(CachingStrategy.cacheAllNoRefresh(3600, 1000), TimedProxy[VirtaClient](RemoteVirtaClient(VirtaConfig.fromConfig(config))))
+    case true => TimedProxy[VirtaClient](RemoteVirtaClient(VirtaConfig.fromConfig(config)))
   }
 }
 
