@@ -12,7 +12,7 @@ import scala.xml.{Elem, Node}
 object VirtaClient {
   def apply(config: Config) = config.hasPath("virta.serviceUrl") match {
     case false => MockVirtaClient
-    case true => CachingProxy(CachingStrategy.noCache, TimedProxy[VirtaClient](RemoteVirtaClient(VirtaConfig.fromConfig(config))))
+    case true => CachingProxy(CachingStrategy.cacheAllNoRefresh(3600, 1000), TimedProxy[VirtaClient](RemoteVirtaClient(VirtaConfig.fromConfig(config))))
   }
 }
 
