@@ -22,8 +22,7 @@ class SuoritusServlet(
 
     opiskeluOikeusRepository.findByOppijaOid(oid)(torUser).find(oo => oo.tyyppi.koodiarvo == "korkeakoulutus" && oo.lähdejärjestelmänId.exists(_.id == opiskeluoikeusId)).flatMap(oo => oppijaRepository.findByOid(oid).map((_, oo))) match {
       case Some((ht, oo)) => new OpintosuoritusoteHtml().render(ht, oo)
-      case _ => TorErrorCategory.notFound
+      case _ => renderStatus(TorErrorCategory.notFound.suoritustaEiLöydy())
     }
   }
-
 }

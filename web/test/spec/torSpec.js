@@ -440,7 +440,7 @@ describe('TOR', function() {
   })
 
   describe('Korkeakoulujen opiskeluoikeudet', function() {
-    var todistus = TodistusPage()
+    var opintosuoritusote = OpintosuoritusotePage()
     before(resetFixtures, authentication.login())
     before(openPage('/tor/oppija/1.2.246.562.24.000000000011', page.isOppijaSelected('Dick')))
     describe('Oppijan suorituksissa', function() {
@@ -449,16 +449,13 @@ describe('TOR', function() {
         expect(OpinnotPage().getOppilaitos()).to.equal("Aalto-yliopisto")
       })
     })
-  })
-
-  describe('Opintosuoritusote', function() {
     describe('Korkeakoulun opintosuoritusote', function() {
-      before(resetFixtures, authentication.login())
-      before(openPage('/tor/opintosuoritusote/1.2.246.562.24.000000000011/1114082125'))
-      describe('ote', function() {
-        it('näytetään', function() {
-          expect(true)
-        })
+      before(
+        function() { triggerEvent(S('a.opintosuoritusote'), 'click') },
+        wait.until(opintosuoritusote.isVisible)
+      )
+
+      it('näytetään', function() {
       })
     })
   })

@@ -24,7 +24,7 @@ class OpintosuoritusoteHtml(implicit val user: TorUser) {
           .depth-3 {{ padding-left:1.5em; }}
         </style>
       </head>
-      <body>
+      <body class="opintosuoritusote">
         <h1>Opintosuoritusote</h1>
         <h3>Opintosuoritukset</h3>
 

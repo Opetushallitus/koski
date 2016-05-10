@@ -9,7 +9,7 @@ export const opiskeluOikeusChange = Bacon.Bus()
 
 export const OpiskeluOikeus = React.createClass({
   render() {
-    let {opiskeluOikeus, lens} = this.props
+    let {oppija, opiskeluOikeus, lens} = this.props
     return (
       <div className="opiskeluoikeus">
         {
@@ -19,6 +19,7 @@ export const OpiskeluOikeus = React.createClass({
               <div className="suoritus" key={index}>
                 <span className="tutkinto">{suoritus.koulutusmoduuli.tunniste.nimi.fi}</span> <span className="oppilaitos">{opiskeluOikeus.oppilaitos.nimi.fi}</span>
                 <Todistus suoritus={suoritus} opiskeluOikeus={opiskeluOikeus}/>
+                <Opintosuoritusote oppija={oppija} suoritus={suoritus} opiskeluOikeus={opiskeluOikeus}/>
                 <TutkinnonRakenne suoritus={suoritus} lens={suoritusLens} />
               </div>
             )
@@ -33,9 +34,21 @@ const Todistus = React.createClass({
   render() {
     let {suoritus, opiskeluOikeus} = this.props
     let href = '/tor/todistus/opiskeluoikeus/' + opiskeluOikeus.id
-    return suoritus.tila.koodiarvo == 'VALMIS'
+    return suoritus.tila.koodiarvo == 'VALMIS' && suoritus.tyyppi.koodiarvo != 'korkeakoulututkinto'
       ? <a className="todistus" href={href}>näytä todistus</a>
       : null
+  }
+})
+
+const Opintosuoritusote = React.createClass({
+  render() {
+    let {opiskeluOikeus, oppija} = this.props
+    if (opiskeluOikeus.lähdejärjestelmänId) {
+      let href = '/tor/opintosuoritusote/' + oppija.oid + '/' + opiskeluOikeus.lähdejärjestelmänId.id
+      return <a className="opintosuoritusote" href={href}>näytä opintosuoritusote</a>
+    } else {
+      return null
+    }
   }
 })
 
