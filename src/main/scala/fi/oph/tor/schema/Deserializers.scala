@@ -1,14 +1,15 @@
 package fi.oph.tor.schema
 
 import fi.oph.tor.localization.{English, Swedish, Finnish, LocalizedString}
+import org.json4s
 import org.json4s._
 import org.json4s.reflect.TypeInfo
 
 object Deserializers {
   val deserializers = List(
     LocalizedStringDeserializer,
-    OpiskeluOikeusSerializer,
-    //SuoritusDeserializer,
+    OpiskeluOikeusDeserializer,
+    KorkeakouluSuoritusDeserializer,
     KoulutusmoduuliDeserializer,
     HenkilöDeserialializer,
     JärjestämismuotoDeserializer,
@@ -24,7 +25,7 @@ trait Deserializer[T] extends Serializer[T] {
   def serialize(implicit format: Formats): PartialFunction[Any, JValue] = PartialFunction.empty
 }
 
-object OpiskeluOikeusSerializer extends Deserializer[Opiskeluoikeus] {
+object OpiskeluOikeusDeserializer extends Deserializer[Opiskeluoikeus] {
   private val OpiskeluOikeusClass = classOf[Opiskeluoikeus]
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Opiskeluoikeus] = {
     case (TypeInfo(OpiskeluOikeusClass, _), json) =>
@@ -33,6 +34,18 @@ object OpiskeluOikeusSerializer extends Deserializer[Opiskeluoikeus] {
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("perusopetus") => oo.extract[PerusopetuksenOpiskeluoikeus]
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("lukiokoulutus") => oo.extract[LukionOpiskeluoikeus]
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("korkeakoulutus") => oo.extract[KorkeakoulunOpiskeluoikeus]
+      }
+  }
+}
+
+object KorkeakouluSuoritusDeserializer extends Deserializer[KorkeakouluSuoritus] {
+  private val KorkeakouluSuoritusClass = classOf[KorkeakouluSuoritus]
+
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), KorkeakouluSuoritus] = {
+    case (TypeInfo(KorkeakouluSuoritusClass, _), json) =>
+      json match {
+        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("korkeakoulututkinto") => suoritus.extract[KorkeakouluTutkinnonSuoritus]
+        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("korkeakoulunopintojakso") => suoritus.extract[KorkeakoulunOpintojaksonSuoritus]
       }
   }
 }

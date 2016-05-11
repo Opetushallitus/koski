@@ -43,7 +43,7 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
 
         opiskeluoikeus.suoritukset.length should equal(1)
 
-        val suoritukset: List[KorkeakouluTutkinnonSuoritus] = opiskeluoikeus.asInstanceOf[KorkeakoulunOpiskeluoikeus].suoritukset
+        val suoritukset: List[KorkeakouluSuoritus] = opiskeluoikeus.asInstanceOf[KorkeakoulunOpiskeluoikeus].suoritukset
 
         suoritukset.map(_.tila.koodiarvo) should equal(List("VALMIS"))
 
