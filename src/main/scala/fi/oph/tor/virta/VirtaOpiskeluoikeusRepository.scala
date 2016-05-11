@@ -21,7 +21,7 @@ case class VirtaOpiskeluoikeusRepository(virta: VirtaClient, val oppijaRepositor
   def doFindByHenkilö(henkilö: Henkilö with Henkilötiedot): List[KorkeakoulunOpiskeluoikeus] = {
     try {
       val opiskeluoikeudet: List[KorkeakoulunOpiskeluoikeus] = virta.opintotiedot(VirtaHakuehtoHetu(henkilö.hetu)).toList
-        .flatMap(xmlData => converter.convert(xmlData))
+        .flatMap(xmlData => converter.convertToOpiskeluoikeudet(xmlData))
 
       opiskeluoikeudet flatMap { opiskeluoikeus =>
         val oppija = Oppija(henkilö, List(opiskeluoikeus))

@@ -7,14 +7,15 @@ import java.util.Random
 import fi.oph.tor.koodisto.KoodistoViitePalvelu
 import fi.oph.tor.localization.LocalizedString
 import fi.oph.tor.localization.LocalizedString.{finnish, sanitize}
+import fi.oph.tor.log.Logging
 import fi.oph.tor.oppija.OppijaRepository
 import fi.oph.tor.oppilaitos.OppilaitosRepository
 import fi.oph.tor.schema._
 
 import scala.xml.Node
-case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu) {
+case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu) extends Logging {
 
-  def convert(virtaXml: Node): List[KorkeakoulunOpiskeluoikeus] = {
+  def convertToOpiskeluoikeudet(virtaXml: Node): List[KorkeakoulunOpiskeluoikeus] = {
     implicit def localDateOrdering: Ordering[LocalDate] = Ordering.fromLessThan(_ isBefore _)
 
     def findOppilaitos(numero: String) = {
@@ -22,130 +23,125 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
     }
 
     //println(XML.prettyPrint(virtaXml))
+    val suoritusNodeList: List[Node] = suoritusNodes(virtaXml)
+    val suoritusRoots: List[Node] = suoritusNodeList.filter(isRoot(suoritusNodeList)(_))
+    val opiskeluOikeusNodes: List[Node] = (virtaXml \\ "Opiskeluoikeus").toList
 
-    (virtaXml \\ "Opiskeluoikeus").map { (opiskeluoikeus: Node) =>
+    val (orphans, opiskeluoikeudet) = opiskeluOikeusNodes.foldLeft((suoritusRoots, Nil: List[KorkeakoulunOpiskeluoikeus])) { case ((suoritusRootsLeft, opiskeluOikeudet), opiskeluoikeusNode) =>
+      val (opiskeluOikeudenSuoritukset: List[Node], muutSuoritukset: List[Node]) = suoritusRootsLeft.partition(sisältyyOpiskeluoikeuteen(_, opiskeluoikeusNode, suoritusNodeList))
 
-      val oppilaitos: Option[Oppilaitos] = (opiskeluoikeus \ "Myontaja" \ "Koodi").headOption.orElse(opiskeluoikeus \ "Myontaja" headOption).flatMap(
+      val oppilaitos: Option[Oppilaitos] = (opiskeluoikeusNode \ "Myontaja" \ "Koodi").headOption.orElse(opiskeluoikeusNode \ "Myontaja" headOption).flatMap(
         koodi => findOppilaitos(koodi.text)
       )
 
-      val läsnäolotiedot = list2Optional((virtaXml \\ "LukukausiIlmoittautuminen").filter(i => opiskelijaAvain(i) == opiskelijaAvain(opiskeluoikeus) && myöntäjä(opiskeluoikeus) == myöntäjä(i))
-          .sortBy(alkuPvm)
-          .map(i => KorkeakoulunLäsnäolojakso(alkuPvm(i), loppuPvm(i), requiredKoodi("virtalukukausiilmtila", i \ "Tila" text).get))
-          .toList, KorkeakoulunLäsnäolotiedot)
+      val läsnäolotiedot = list2Optional((virtaXml \\ "LukukausiIlmoittautuminen").filter(i => opiskelijaAvain(i) == opiskelijaAvain(opiskeluoikeusNode) && myöntäjä(opiskeluoikeusNode) == myöntäjä(i))
+        .sortBy(alkuPvm)
+        .map(i => KorkeakoulunLäsnäolojakso(alkuPvm(i), loppuPvm(i), requiredKoodi("virtalukukausiilmtila", i \ "Tila" text).get))
+        .toList, KorkeakoulunLäsnäolotiedot)
 
-      val opiskeluoikeudenTila: Option[KorkeakoulunOpiskeluoikeudenTila] = list2Optional((opiskeluoikeus \ "Tila")
+      val opiskeluoikeudenTila: Option[KorkeakoulunOpiskeluoikeudenTila] = list2Optional((opiskeluoikeusNode \ "Tila")
         .sortBy(alkuPvm)
         .map(tila => KorkeakoulunOpiskeluoikeusjakso(alkuPvm(tila), loppuPvm(tila), requiredKoodi("virtaopiskeluoikeudentila", tila \ "Koodi" text).get))
         .toList, KorkeakoulunOpiskeluoikeudenTila)
 
 
-      KorkeakoulunOpiskeluoikeus(
+      val opiskeluoikeus = KorkeakoulunOpiskeluoikeus(
         id = Some(new Random().nextInt()),
         versionumero = None,
-        lähdejärjestelmänId = Some(LähdejärjestelmäId(opiskeluoikeus \ "@avain" text, Koodistokoodiviite("virta", "lahdejarjestelma"))),
-        alkamispäivä = (opiskeluoikeus \ "AlkuPvm").headOption.map(alku => LocalDate.parse(alku.text)),
+        lähdejärjestelmänId = Some(LähdejärjestelmäId(opiskeluoikeusNode \ "@avain" text, Koodistokoodiviite("virta", "lahdejarjestelma"))),
+        alkamispäivä = (opiskeluoikeusNode \ "AlkuPvm").headOption.map(alku => LocalDate.parse(alku.text)),
         arvioituPäättymispäivä = None,
-        päättymispäivä = (opiskeluoikeus \ "LoppuPvm").headOption.map(loppu => LocalDate.parse(loppu.text)),
+        päättymispäivä = (opiskeluoikeusNode \ "LoppuPvm").headOption.map(loppu => LocalDate.parse(loppu.text)),
         oppilaitos = oppilaitos.getOrElse(throw new RuntimeException("missing oppilaitos")),
         koulutustoimija = None,
-        suoritukset = tutkintoSuoritukset(opiskeluoikeus, virtaXml),
+        suoritukset = opiskeluOikeudenSuoritukset.flatMap(convertSuoritus(_, suoritusNodeList)),
         tila = opiskeluoikeudenTila,
         läsnäolotiedot = läsnäolotiedot
       )
-    }.toList
+
+      (muutSuoritukset, opiskeluoikeus :: opiskeluOikeudet)
+    }
+
+    // TODO: collect orphans
+    // TODO: "synteettinen tutkinto" KESKEN-tilassa
+    // TODO: KorkeakoulutSpec fails
+
+    opiskeluoikeudet
   }
 
-  private def tutkintoSuoritukset(opiskeluoikeus: Node, virtaXml: Node) = {
-    def tutkinto(koulutuskoodi: String): KorkeakouluTutkinto = {
-      KorkeakouluTutkinto(requiredKoodi("koulutus", koulutuskoodi).get)
-    }
-    def opintojaksonSuoritukset(opiskeluoikeus: Node, virtaXml: Node) = {
-      buildHierarchy(suoritusNodes(opiskeluoikeus, virtaXml).filter(laji(_) == "2"))
-    }
+  private def convertSuoritus(node: Node, allNodes: List[Node]): Option[KorkeakouluSuoritus] = {
+    laji(node) match {
+      case "1" => // tutkinto
+        koulutuskoodi(node).map { koulutuskoodi =>
+          val osasuoritukset = childNodes(node, allNodes).map(convertOpintojaksonSuoritus(_, allNodes))
 
-    val tutkintosuoritusNodes: List[Node] = suoritusNodes(opiskeluoikeus, virtaXml).filter(laji(_) == "1")
-    tutkintosuoritusNodes match {
-      case Nil =>
-        koulutuskoodi(opiskeluoikeus).map { koulutuskoodi =>
           KorkeakouluTutkinnonSuoritus(
             koulutusmoduuli = tutkinto(koulutuskoodi),
             paikallinenId = None,
             arviointi = None,
-            tila = Koodistokoodiviite("KESKEN", "suorituksentila"),
+            tila = Koodistokoodiviite("VALMIS", "suorituksentila"),
             vahvistus = None,
             suorituskieli = None,
-            osasuoritukset = optionalList(opintojaksonSuoritukset(opiskeluoikeus, virtaXml))
+            osasuoritukset = optionalList(osasuoritukset)
           )
-        }.toList
-      case _ =>
-        tutkintosuoritusNodes flatMap { node: Node =>
-          koulutuskoodi(node).map { koulutuskoodi =>
-            KorkeakouluTutkinnonSuoritus(
-              koulutusmoduuli = tutkinto(koulutuskoodi),
-              paikallinenId = None,
-              arviointi = None,
-              tila = Koodistokoodiviite("VALMIS", "suorituksentila"),
-              vahvistus = None,
-              suorituskieli = None,
-              osasuoritukset = optionalList(opintojaksonSuoritukset(opiskeluoikeus, virtaXml))
-            )
-          }
         }
+      case "2" => // opintojakso
+        Some(convertOpintojaksonSuoritus(node, allNodes))
+      case laji: String =>
+        logger.warn("Tuntematon laji: " + laji)
+        None
     }
   }
 
-  private def buildHierarchy(suoritukset: List[Node]): List[KorkeakoulunOpintojaksonSuoritus] = {
-    def sisaltyvatAvaimet(node: Node) = {
-      (node \ "Sisaltyvyys").toList.map(sisaltyvyysNode => (sisaltyvyysNode \ "@sisaltyvaOpintosuoritusAvain").text)
-    }
-    def isRoot(node: Node) = !suoritukset.exists(sisaltyvatAvaimet(_).contains(avain(node)))
-    def buildHierarchyFromNode(node: Node): KorkeakoulunOpintojaksonSuoritus = {
-      val suoritus = convertSuoritus(node)
-      val osasuoritukset: List[KorkeakoulunOpintojaksonSuoritus] = sisaltyvatAvaimet(node).map { opintosuoritusAvain =>
-        val (osasuoritusNodes, rest) = suoritukset.partition(avain(_) == opintosuoritusAvain)
-        osasuoritusNodes match {
-          case osasuoritusNode :: Nil => buildHierarchyFromNode(osasuoritusNode)
-          case osasuoritusNode :: _ => throw new IllegalArgumentException("Enemmän kuin yksi suoritus avaimella " + opintosuoritusAvain)
-          case Nil => throw new IllegalArgumentException("Opintosuoritusta " + opintosuoritusAvain + " ei löydy dokumentista")
-        }
-      }
-      suoritus.copy(osasuoritukset = optionalList(osasuoritukset))
-    }
-    suoritukset.filter(isRoot).map(buildHierarchyFromNode)
-  }
+  def convertOpintojaksonSuoritus(node: Node, allNodes: List[Node]): KorkeakoulunOpintojaksonSuoritus = {
+    val osasuoritukset = childNodes(node, allNodes).map(convertOpintojaksonSuoritus(_, allNodes))
 
-  private def suoritusNodes(opiskeluoikeus: Node, virtaXml: Node): List[Node] = {
-    def sisältyyOpiskeluoikeuteen(suoritus: Node): Boolean = {
-      val opiskeluoikeusAvain: String = (suoritus \ "@opiskeluoikeusAvain").text
-      opiskeluoikeusAvain match {
-        case "" => myöntäjä(suoritus) == myöntäjä(opiskeluoikeus) // Jos suorituksella ei ole linkkiä opiskeluoikeuteen, oletetaan sen kuuluvan saman oppilaitoksen opiskeluoikeuteen
-        case _ => opiskeluoikeusAvain == avain(opiskeluoikeus)
-      }
-    }
-
-    val suoritusNodes: List[Node] = (virtaXml \\ "Opintosuoritukset" \\ "Opintosuoritus").filter(sisältyyOpiskeluoikeuteen).toList
-    suoritusNodes
-  }
-
-  private def convertSuoritus(suoritus: Node) = {
     KorkeakoulunOpintojaksonSuoritus(
       koulutusmoduuli = KorkeakoulunOpintojakso(
-        tunniste = Paikallinenkoodi((suoritus \\ "@koulutusmoduulitunniste").text, nimi(suoritus), "koodistoUri"), // hardcoded uri
-        nimi = nimi(suoritus),
-        laajuus = (suoritus \ "Laajuus" \ "Opintopiste").headOption.map(op => LaajuusOpintopisteissä(op.text.toFloat))
+        tunniste = Paikallinenkoodi((node \\ "@koulutusmoduulitunniste").text, nimi(node), "koodistoUri"), // hardcoded uri
+        nimi = nimi(node),
+        laajuus = (node \ "Laajuus" \ "Opintopiste").headOption.map(op => LaajuusOpintopisteissä(op.text.toFloat))
       ),
       paikallinenId = None,
-      arviointi = koodistoViitePalvelu.getKoodistoKoodiViite("virtaarvosana", suoritus \ "Arvosana" \ "_" text).map( arvosana =>
+      arviointi = koodistoViitePalvelu.getKoodistoKoodiViite("virtaarvosana", node \ "Arvosana" \ "_" text).map( arvosana =>
         List(KorkeakoulunArviointi(
           arvosana = arvosana,
-          päivä = Some(LocalDate.parse(suoritus \ "SuoritusPvm" text))
+          päivä = Some(LocalDate.parse(node \ "SuoritusPvm" text))
         ))
       ),
       tila = Koodistokoodiviite("VALMIS", "suorituksentila"),
       vahvistus = None,
-      suorituskieli = (suoritus \\ "Kieli").headOption.flatMap(kieli => requiredKoodi("kieli", kieli.text.toUpperCase))
+      suorituskieli = (node \\ "Kieli").headOption.flatMap(kieli => requiredKoodi("kieli", kieli.text.toUpperCase)),
+      osasuoritukset = optionalList(osasuoritukset)
     )
+  }
+
+  private def isRoot(suoritukset: Seq[Node])(node: Node) = {
+    !suoritukset.exists(sisaltyvatAvaimet(_).contains(avain(node)))
+  }
+
+  private def sisaltyvatAvaimet(node: Node) = {
+    (node \ "Sisaltyvyys").toList.map(sisaltyvyysNode => (sisaltyvyysNode \ "@sisaltyvaOpintosuoritusAvain").text)
+  }
+
+  private def childNodes(node: Node, allNodes: List[Node]) = {
+    sisaltyvatAvaimet(node).map { opintosuoritusAvain =>
+      val osasuoritusNodes = allNodes.filter(avain(_) == opintosuoritusAvain)
+      osasuoritusNodes match {
+        case osasuoritusNode :: Nil => osasuoritusNode
+        case osasuoritusNode :: _ => throw new IllegalArgumentException("Enemmän kuin yksi suoritus avaimella " + opintosuoritusAvain)
+        case Nil => throw new IllegalArgumentException("Opintosuoritusta " + opintosuoritusAvain + " ei löydy dokumentista")
+      }
+    }
+  }
+
+  private def suoritusNodes(virtaXml: Node) = {
+    (virtaXml \\ "Opintosuoritukset" \\ "Opintosuoritus").toList
+  }
+
+  def sisältyyOpiskeluoikeuteen(suoritus: Node, opiskeluoikeus: Node, allNodes: List[Node]): Boolean = {
+    val opiskeluoikeusAvain: String = (suoritus \ "@opiskeluoikeusAvain").text
+    opiskeluoikeusAvain == avain(opiskeluoikeus) || childNodes(suoritus, allNodes).find(sisältyyOpiskeluoikeuteen(_, opiskeluoikeus, allNodes)).isDefined
   }
 
   private def list2Optional[A, B](list: List[A], f: List[A] => B): Option[B] = list match {
@@ -157,6 +153,10 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
 
   private def requiredKoodi(uri: String, koodi: String) = {
     koodistoViitePalvelu.validate(Koodistokoodiviite(koodi, uri)).orElse(throw new IllegalArgumentException("Puuttuva koodi: " + Koodistokoodiviite(koodi, uri)))
+  }
+
+  private def tutkinto(koulutuskoodi: String): KorkeakouluTutkinto = {
+    KorkeakouluTutkinto(requiredKoodi("koulutus", koulutuskoodi).get)
   }
 
   private def loppuPvm(n: Node): Option[LocalDate] = {
@@ -183,7 +183,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
     (node \ "Laji").text
   }
 
-  private def koulutuskoodi(node: Node) = {
+  private def koulutuskoodi(node: Node): Option[String] = {
     (node \\ "Koulutuskoodi").headOption.map(_.text)
   }
 
