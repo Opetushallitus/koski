@@ -9,7 +9,7 @@ export const opiskeluOikeusChange = Bacon.Bus()
 
 export const OpiskeluOikeus = React.createClass({
   render() {
-    let {oppija, opiskeluOikeus, lens} = this.props
+    let {opiskeluOikeus, lens} = this.props
     return (
       <div className="opiskeluoikeus">
         {
