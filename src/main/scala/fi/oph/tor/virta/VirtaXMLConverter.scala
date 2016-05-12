@@ -18,10 +18,6 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
   def convertToOpiskeluoikeudet(virtaXml: Node): List[KorkeakoulunOpiskeluoikeus] = {
     implicit def localDateOrdering: Ordering[LocalDate] = Ordering.fromLessThan(_ isBefore _)
 
-    def findOppilaitos(numero: String) = {
-      oppilaitosRepository.findByOppilaitosnumero(numero).orElse(throw new RuntimeException("Oppilaitosta ei löydy: " + numero))
-    }
-
     //println(XML.prettyPrint(virtaXml))
     val suoritusNodeList: List[Node] = suoritusNodes(virtaXml)
     val suoritusRoots: List[Node] = suoritusNodeList.filter(isRoot(suoritusNodeList)(_))
@@ -30,9 +26,6 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
     val (orphans, opiskeluoikeudet) = opiskeluOikeusNodes.foldLeft((suoritusRoots, Nil: List[KorkeakoulunOpiskeluoikeus])) { case ((suoritusRootsLeft, opiskeluOikeudet), opiskeluoikeusNode) =>
       val (opiskeluOikeudenSuoritukset: List[Node], muutSuoritukset: List[Node]) = suoritusRootsLeft.partition(sisältyyOpiskeluoikeuteen(_, opiskeluoikeusNode, suoritusNodeList))
 
-      val oppilaitos: Option[Oppilaitos] = (opiskeluoikeusNode \ "Myontaja" \ "Koodi").headOption.orElse(opiskeluoikeusNode \ "Myontaja" headOption).flatMap(
-        koodi => findOppilaitos(koodi.text)
-      )
 
       val läsnäolotiedot = list2Optional((virtaXml \\ "LukukausiIlmoittautuminen").filter(i => opiskelijaAvain(i) == opiskelijaAvain(opiskeluoikeusNode) && myöntäjä(opiskeluoikeusNode) == myöntäjä(i))
         .sortBy(alkuPvm)
@@ -44,6 +37,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
         .map(tila => KorkeakoulunOpiskeluoikeusjakso(alkuPvm(tila), loppuPvm(tila), requiredKoodi("virtaopiskeluoikeudentila", tila \ "Koodi" text).get))
         .toList, KorkeakoulunOpiskeluoikeudenTila)
 
+      val suoritukset: List[KorkeakouluSuoritus] = opiskeluOikeudenSuoritukset.flatMap(convertSuoritus(_, suoritusNodeList))
 
       val opiskeluoikeus = KorkeakoulunOpiskeluoikeus(
         id = Some(new Random().nextInt()),
@@ -52,9 +46,9 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
         alkamispäivä = (opiskeluoikeusNode \ "AlkuPvm").headOption.map(alku => LocalDate.parse(alku.text)),
         arvioituPäättymispäivä = None,
         päättymispäivä = (opiskeluoikeusNode \ "LoppuPvm").headOption.map(loppu => LocalDate.parse(loppu.text)),
-        oppilaitos = oppilaitos.getOrElse(throw new RuntimeException("missing oppilaitos")),
+        oppilaitos = oppilaitos(opiskeluoikeusNode),
         koulutustoimija = None,
-        suoritukset = opiskeluOikeudenSuoritukset.flatMap(convertSuoritus(_, suoritusNodeList)),
+        suoritukset = lisääKeskeneräinenTutkintosuoritus(suoritukset, opiskeluoikeusNode),
         tila = opiskeluoikeudenTila,
         läsnäolotiedot = läsnäolotiedot
       )
@@ -62,11 +56,45 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
       (muutSuoritukset, opiskeluoikeus :: opiskeluOikeudet)
     }
 
-    // TODO: collect orphans
-    // TODO: "synteettinen tutkinto" KESKEN-tilassa
-    // TODO: KorkeakoulutSpec fails
+    val orphanSuoritukset = orphans.flatMap(convertSuoritus(_, suoritusNodeList))
+    val orphanages = orphanSuoritukset.groupBy(_.toimipiste).toList.map { case (organisaatio, suoritukset) =>
+      KorkeakoulunOpiskeluoikeus(
+        id = None,
+        versionumero = None,
+        lähdejärjestelmänId = None,
+        alkamispäivä = None,
+        arvioituPäättymispäivä = None,
+        päättymispäivä = None,
+        oppilaitos = organisaatio,
+        koulutustoimija = None,
+        suoritukset = suoritukset,
+        tila = None,
+        läsnäolotiedot = None
+      )
+    }
 
-    opiskeluoikeudet
+    opiskeluoikeudet.filter(!_.suoritukset.isEmpty) ++ orphanages
+  }
+
+  private def lisääKeskeneräinenTutkintosuoritus(suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node) = {
+    koulutuskoodi(opiskeluoikeusNode).map { koulutuskoodi =>
+      val t = tutkinto(koulutuskoodi)
+      suoritukset.find(_.koulutusmoduuli == t) match {
+        case Some(_) =>
+          suoritukset
+        case None =>
+          KorkeakouluTutkinnonSuoritus(
+            koulutusmoduuli = t,
+            paikallinenId = None,
+            arviointi = None,
+            tila = Koodistokoodiviite("KESKEN", "suorituksentila"),
+            vahvistus = None,
+            suorituskieli = None,
+            osasuoritukset = None,
+            toimipiste = oppilaitos(opiskeluoikeusNode)
+          ) :: suoritukset
+      }
+    }.toList.flatten
   }
 
   private def convertSuoritus(node: Node, allNodes: List[Node]): Option[KorkeakouluSuoritus] = {
@@ -82,6 +110,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
             tila = Koodistokoodiviite("VALMIS", "suorituksentila"),
             vahvistus = None,
             suorituskieli = None,
+            toimipiste = oppilaitos(node),
             osasuoritukset = optionalList(osasuoritukset)
           )
         }
@@ -112,6 +141,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
       tila = Koodistokoodiviite("VALMIS", "suorituksentila"),
       vahvistus = None,
       suorituskieli = (node \\ "Kieli").headOption.flatMap(kieli => requiredKoodi("kieli", kieli.text.toUpperCase)),
+      toimipiste = oppilaitos(node),
       osasuoritukset = optionalList(osasuoritukset)
     )
   }
@@ -190,4 +220,13 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
   private def nimi(suoritus: Node): LocalizedString = {
     sanitize((suoritus \\ "Nimi" map (nimi => (nimi \ "@kieli" text, nimi text))).toMap).getOrElse(finnish("Suoritus: " + avain(suoritus)))
   }
+
+  private def oppilaitos(node: Node): Oppilaitos = (node \ "Myontaja" headOption).flatMap(
+    koodi => findOppilaitos(koodi.text)
+  ).getOrElse(throw new RuntimeException("missing oppilaitos"))
+
+  private def findOppilaitos(numero: String) = {
+    oppilaitosRepository.findByOppilaitosnumero(numero).orElse(throw new RuntimeException("Oppilaitosta ei löydy: " + numero))
+  }
+
 }

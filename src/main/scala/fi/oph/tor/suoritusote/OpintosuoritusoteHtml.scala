@@ -14,7 +14,7 @@ class OpintosuoritusoteHtml(implicit val user: TorUser) {
   val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
   val decimalFormat = NumberFormat.getInstance(finnish)
 
-  def render(ht: TaydellisetHenkilötiedot, oo: Opiskeluoikeus) = {
+  def render(ht: TaydellisetHenkilötiedot, opiskeluoikeudet: List[Opiskeluoikeus]) = {
     <html>
       <head>
         <link rel="stylesheet" type="text/css" href="/tor/css/opintosuoritusote.css"></link>
@@ -39,7 +39,7 @@ class OpintosuoritusoteHtml(implicit val user: TorUser) {
               <th class="tunnus"></th>
               <th class="nimi"></th>
             </tr>
-            { tutkinnot(oo) }
+            { opiskeluoikeudet.flatMap(tutkinnot) }
           </table>
         </section>
 
@@ -53,7 +53,7 @@ class OpintosuoritusoteHtml(implicit val user: TorUser) {
               <th class="arvosana">Arv.</th>
               <th class="suoritus-pvm">Suor.pvm</th>
             </tr>
-            { suoritukset(oo) }
+            { opiskeluoikeudet.flatMap(suoritukset) }
           </table>
         </section>
 
@@ -61,7 +61,7 @@ class OpintosuoritusoteHtml(implicit val user: TorUser) {
     </html>
   }
 
-  def tutkinnot(oo: Opiskeluoikeus) = oo.suoritukset.filter(_.tila.koodiarvo == "VALMIS").map { t =>
+  def tutkinnot(oo: Opiskeluoikeus) = oo.suoritukset.filter(s => s.tila.koodiarvo == "VALMIS" && s.koulutusmoduuli.isTutkinto).map { t =>
     <tr>
       <td>{t.koulutusmoduuli.tunniste.koodiarvo}</td>
       <td>{i(t.koulutusmoduuli)}</td>
@@ -70,24 +70,25 @@ class OpintosuoritusoteHtml(implicit val user: TorUser) {
     </tr>
   }
 
-  private def suoritukset(opiskeluoikeus: Opiskeluoikeus) = opiskeluoikeus.suoritukset.headOption.map(tutkinto =>
-    suoritusWithDepth(0, tutkinto).tail.flatMap {
-      case (depth, suoritus) =>
-        <tr>
-          <td class={"depth-" + depth}>{suoritus.koulutusmoduuli.tunniste.koodiarvo}</td>
-          <td class={"depth-" + depth}>{i(suoritus.koulutusmoduuli)}</td>
-          <td class="laajuus">{suoritus.koulutusmoduuli.laajuus.map(l => decimalFormat.format(l.arvo)).getOrElse("")}</td>
-          <td class="arvosana">{i(suoritus.arvosanaKirjaimin)}</td>
-          <td class="suoritus-pvm">{suoritus.arviointi.flatMap(_.lastOption.flatMap(_.päivä.map(dateFormatter.format(_)))).getOrElse("")}</td>
-        </tr>
-    }
-  ).toList.flatten
+  private def suoritukset(opiskeluoikeus: Opiskeluoikeus) = {
+    opiskeluoikeus.suoritukset.flatMap(suoritus => suoritusWithDepth((0, suoritus))).map(suoritusHtml)
+  }
+
+  private def suoritusHtml(t: (Int, Suoritus)) = t match { case (depth, suoritus) =>
+    <tr>
+      <td class={"depth-" + depth}>{suoritus.koulutusmoduuli.tunniste.koodiarvo}</td>
+      <td class={"depth-" + depth}>{i(suoritus.koulutusmoduuli)}</td>
+      <td class="laajuus">{suoritus.koulutusmoduuli.laajuus.map(l => decimalFormat.format(l.arvo)).getOrElse("")}</td>
+      <td class="arvosana">{i(suoritus.arvosanaKirjaimin)}</td>
+      <td class="suoritus-pvm">{suoritus.arviointi.flatMap(_.lastOption.flatMap(_.päivä.map(dateFormatter.format(_)))).getOrElse("")}</td>
+    </tr>
+  }
 
   private def suoritusWithDepth(t: (Int, Suoritus)) : List[(Int, Suoritus)] = {
     t :: t._2.osasuoritusLista.flatMap(s => suoritusWithDepth((t._1 + 1, s)))
   }
 
-  private def indentCss = 1 to 5 map { i => ".depth-" + i + " { padding-left:" + (0.5 * i - 0.5) + "em; }" } mkString("\n")
+  private def indentCss = 0 to 5 map { i => ".depth-" + i + " { padding-left:" + (0.5 * i) + "em; }" } mkString("\n")
 
   def lang = user.lang
   private def i(s: Localizable): String = s.description.get(lang)

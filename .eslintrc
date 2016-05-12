@@ -25,7 +25,7 @@
     "semi": [2, "never"],
     "no-undef": 2,
     "no-unreachable": 2,
-    "no-unused-vars": 2,
+    "no-unused-vars": 1,
     "no-trailing-spaces": 1,
     "no-multiple-empty-lines": 1,
     "react/jsx-no-undef": 1,

@@ -87,6 +87,7 @@ case class Perusopetus(
  tunniste: Koodistokoodiviite = Koodistokoodiviite("201101", koodistoUri = "koulutus")
 ) extends KoodistostaLöytyväKoulutusmoduuli with EPerusteistaLöytyväKoulutusmoduuli {
   override def laajuus = None
+  override def isTutkinto = true
 }
 
 trait PerusopetuksenOppiaine extends YleissivistavaOppiaine {

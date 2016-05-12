@@ -92,6 +92,7 @@ case class Ylioppilastutkinto(
  perusteenDiaarinumero: Option[String]
 ) extends KoodistostaLöytyväKoulutusmoduuli with EPerusteistaLöytyväKoulutusmoduuli {
   override def laajuus = None
+  override def isTutkinto = true
 }
 
 

@@ -9,6 +9,7 @@ trait Koulutusmoduuli extends Localizable {
   def laajuus: Option[Laajuus]
   def nimi: LocalizedString
   def description: LocalizedString = nimi
+  def isTutkinto = false
 }
 
 trait KoodistostaLöytyväKoulutusmoduuli extends Koulutusmoduuli {

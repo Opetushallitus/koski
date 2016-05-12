@@ -27,7 +27,9 @@ case class KorkeakoulunOpiskeluoikeus(
 }
 
 
-trait KorkeakouluSuoritus extends Suoritus
+trait KorkeakouluSuoritus extends Suoritus {
+  def toimipiste: Oppilaitos
+}
 
   case class KorkeakouluTutkinnonSuoritus(
     koulutusmoduuli: KorkeakouluTutkinto,
@@ -38,6 +40,7 @@ trait KorkeakouluSuoritus extends Suoritus
     tila: Koodistokoodiviite,
     vahvistus: Option[Vahvistus],
     suorituskieli: Option[Koodistokoodiviite],
+    toimipiste: Oppilaitos,
     override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]]
   ) extends KorkeakouluSuoritus {
     override def tarvitseeVahvistuksen = false
@@ -52,6 +55,7 @@ trait KorkeakouluSuoritus extends Suoritus
     tila: Koodistokoodiviite,
     vahvistus: Option[Vahvistus],
     suorituskieli: Option[Koodistokoodiviite],
+    toimipiste: Oppilaitos,
     override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]] = None
   ) extends KorkeakouluSuoritus {
     override def tarvitseeVahvistuksen = false
@@ -65,6 +69,7 @@ case class KorkeakouluTutkinto(
   tunniste: Koodistokoodiviite
 ) extends KoodistostaLöytyväKoulutusmoduuli  {
   override def laajuus = None
+  override def isTutkinto = true
 }
 
 @Description("Opintojakson suoritus")

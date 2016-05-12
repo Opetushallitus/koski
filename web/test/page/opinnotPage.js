@@ -12,7 +12,7 @@ function OpinnotPage() {
       return S('.opiskeluoikeus .suoritus .tutkinto-rakenne').is(":visible")
     },
     getOppilaitos: function() {
-      return S('.opiskeluoikeus .oppilaitos').text()
+      return S('.oppilaitos .oppilaitos').text()
     },
     getTutkinnonOsat: function() {
       return textsOf(tutkinnonOsa().find('.name'))
