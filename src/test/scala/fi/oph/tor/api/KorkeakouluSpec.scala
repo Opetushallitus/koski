@@ -5,6 +5,8 @@ import fi.oph.tor.oppija.MockOppijat
 import fi.oph.tor.schema._
 import org.scalatest.{FunSpec, Matchers}
 
+import scala.collection.immutable.Seq
+
 class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMethodsKorkeakoulu with SearchTestMethods {
   describe("Korkeakoulun opiskeluoikeudet") {
     describe("Lisättäessä/päivitettäessä") {
@@ -46,49 +48,64 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
         val suoritukset: List[KorkeakouluSuoritus] = opiskeluoikeus.asInstanceOf[KorkeakoulunOpiskeluoikeus].suoritukset
 
         suoritukset.map(_.tila.koodiarvo) should equal(List("VALMIS"))
-
-        val diploma: String = suoritukset.flatMap(print(_, 0)).mkString("\n").trim
-        diploma should equal(
-"""751101
-  Design and Analysis of Welded Structures laajuus: 3.0 op arvosana: 4 pvm: 2014-06-23
-  Diplomityö (KON) laajuus: 30.0 op arvosana: 4 pvm: 2016-03-21
-    Diplomityö laajuus: 30.0 op arvosana: 4 pvm: 2016-03-21
-    Kypsyysnäyte laajuus: 0.0 op arvosana: HYV pvm: 2016-03-08
-  Mechanical Engineering laajuus: 65.0 op arvosana: 4 pvm: 2015-12-04
-    Digital Design and Manufacturing laajuus: 20.0 op arvosana: 4 pvm: 2015-05-20
-      Computer Aided Design Basic Course laajuus: 5.0 op arvosana: 3 pvm: 2014-04-28
-      Digital Manufacturing laajuus: 4.0 op arvosana: 4 pvm: 2014-12-28
-      CAE Project laajuus: 3.0 op arvosana: 4 pvm: 2015-05-20
-      Castings laajuus: 4.0 op arvosana: 4 pvm: 2014-12-21
-      Welding Methods and Production laajuus: 4.0 op arvosana: 3 pvm: 2014-06-23
-    Mechanics of Materials laajuus: 25.0 op arvosana: 5 pvm: 2015-02-19
-      Lujuusopin lisensiaattiseminaari L laajuus: 5.0 op arvosana: 3 pvm: 2014-07-08
-      Rakenneaineet jännitysten ja ympäristön vaikutusten alaisina laajuus: 5.0 op arvosana: 5 pvm: 2015-02-19
-      Elementtimenetelmä II L laajuus: 5.0 op arvosana: 5 pvm: 2014-12-16
-      Dynamics of Structures; lectures and exercises L laajuus: 5.0 op arvosana: 5 pvm: 2014-05-30
-      Rakenteiden väsyminen L laajuus: 5.0 op arvosana: 5 pvm: 2015-02-16
-    Product Development laajuus: 20.0 op arvosana: 5 pvm: 2015-12-04
-      Product Development P laajuus: 5.0 op arvosana: 5 pvm: 2015-12-04
-      Research and Development (R&D) Management laajuus: 5.0 op arvosana: 4 pvm: 2014-06-05
-      Product Development Project P laajuus: 10.0 op arvosana: 5 pvm: 2014-05-22
-  Kitkallinen virtaus L laajuus: 5.0 op arvosana: 3 pvm: 2014-02-16
-  Ranska 1A laajuus: 2.0 op arvosana: 4 pvm: 2014-10-21
-  Finite Element Method I laajuus: 5.0 op arvosana: 4 pvm: 2014-04-15
-  Tieteen metodiikan opinnot (KON) laajuus: 12.0 op arvosana: 3 pvm: 2014-09-05
-    Get to know Finland laajuus: 1.0 op arvosana: HYV pvm: 2013-11-21
-    Searching for Scientific Information laajuus: 2.0 op arvosana: HYV pvm: 2013-12-13
-    Suomi 1A laajuus: 2.0 op arvosana: 3 pvm: 2014-02-20
-    Information Visualization L laajuus: 5.0 op arvosana: 3 pvm: 2014-09-05
-    Suomi 1B laajuus: 2.0 op arvosana: 3 pvm: 2014-04-08
-  Potential Flow Theory for Lifting Surfaces laajuus: 3.0 op arvosana: 3 pvm: 2015-05-31
-  Composite Structures laajuus: 5.0 op arvosana: 3 pvm: 2015-01-12
-  Lightweight Structures P laajuus: 5.0 op arvosana: 2 pvm: 2015-05-12
-  Vapaasti valittavat opinnot (KON) laajuus: 16.0 op arvosana: 4 pvm: 2015-05-28
-    Laskennallisen virtausmekaniikan ja lämmönsiirron perusteet L laajuus: 7.0 op arvosana: 4 pvm: 2015-02-17
-    Introduction to Risk Analysis of Structure P laajuus: 5.0 op arvosana: 4 pvm: 2013-11-18
-    Mechatronics Exercises laajuus: 4.0 op arvosana: 4 pvm: 2015-05-28
-  Virtaussimulointi L laajuus: 6.0 op arvosana: 3 pvm: 2015-08-31""")
       }
+    }
+
+    describe("Opintosuoritusote") {
+      it("näytetään") {
+        val get1 = authGet("opintosuoritusote/1.2.246.562.24.000000000011/1.2.246.562.10.56753942459") {
+          verifyResponseStatus(200)
+
+          val ote: String = (scala.xml.XML.loadString(response.body) \\ "tr").map { s =>
+            (s \ "td").map(_.text).mkString(" ").trim
+          }.mkString("\n")
+
+          ote.trim should equal(
+            """|751101 Dipl.ins., konetekniikka
+              |
+              |751101 Dipl.ins., konetekniikka
+              |K901-W Vapaasti valittavat opinnot (KON) 16 4 28.05.2015
+              |Ene-39.4037 Laskennallisen virtausmekaniikan ja lämmönsiirron perusteet L 7 4 17.02.2015
+              |Kul-24.4200 Introduction to Risk Analysis of Structure P 5 4 18.11.2013
+              |Kon-41.3131 Mechatronics Exercises 4 4 28.05.2015
+              |K901-D Diplomityö (KON) 30 4 21.03.2016
+              |MEN.thes Diplomityö 30 4 21.03.2016
+              |ENG.matr Kypsyysnäyte 0 hyväksytty 08.03.2016
+              |IA3027 Mechanical Engineering 65 4 04.12.2015
+              |K430-3 Digital Design and Manufacturing 20 4 20.05.2015
+              |Kon-41.3006 Computer Aided Design Basic Course 5 3 28.04.2014
+              |Kon-15.4101 Digital Manufacturing 4 4 28.12.2014
+              |Kon-41.4207 CAE Project 3 4 20.05.2015
+              |Kon-80.3125 Castings 4 4 21.12.2014
+              |Kon-67.4208 Welding Methods and Production 4 3 23.06.2014
+              |K420-3 Mechanics of Materials 25 5 19.02.2015
+              |Kul-49.5100 Lujuusopin lisensiaattiseminaari L 5 3 08.07.2014
+              |Kon-67.3401 Rakenneaineet jännitysten ja ympäristön vaikutusten alaisina 5 5 19.02.2015
+              |Kul-49.4100 Elementtimenetelmä II L 5 5 16.12.2014
+              |Kul-49.3400 Dynamics of Structures; lectures and exercises L 5 5 30.05.2014
+              |Kul-49.4350 Rakenteiden väsyminen L 5 5 16.02.2015
+              |K410-3 Product Development 20 5 04.12.2015
+              |Kon-41.4001 Product Development P 5 5 04.12.2015
+              |TU-91.2041 Research and Development (R&D) Management 5 4 05.06.2014
+              |Kon-41.4002 Product Development Project P 10 5 22.05.2014
+              |K901-M Tieteen metodiikan opinnot (KON) 12 3 05.09.2014
+              |Kie-98.7009 Get to know Finland 1 hyväksytty 21.11.2013
+              |Eri-0.5014 Searching for Scientific Information 2 hyväksytty 13.12.2013
+              |Kie-98.7011 Suomi 1A 2 3 20.02.2014
+              |T-61.5010 Information Visualization L 5 3 05.09.2014
+              |Kie-98.7012 Suomi 1B 2 3 08.04.2014
+              |Kon-67.4206 Design and Analysis of Welded Structures 3 4 23.06.2014
+              |Ene-39.4031 Kitkallinen virtaus L 5 3 16.02.2014
+              |Kie-98.4011 Ranska 1A 2 4 21.10.2014
+              |Kul-49.3300 Finite Element Method I 5 4 15.04.2014
+              |Kul-24.3710 Potential Flow Theory for Lifting Surfaces 3 3 31.05.2015
+              |Kul-34.3600 Composite Structures 5 3 12.01.2015
+              |Kul-34.4700 Lightweight Structures P 5 2 12.05.2015
+              |Ene-39.4054 Virtaussimulointi L 6 3 31.08.2015""".stripMargin
+          )
+        }
+      }
+
     }
   }
 
