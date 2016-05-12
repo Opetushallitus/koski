@@ -30,24 +30,27 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
 
     describe("Suoritusten tilat") {
       it("Keskeneräinen tutkinto") {
-        lastOpiskeluOikeus(MockOppijat.korkeakoululainen.oid).suoritukset.map(_.tila.koodiarvo) should equal(List("KESKEN"))
+        opiskeluoikeudet(MockOppijat.korkeakoululainen.oid).flatMap(_.suoritukset).filter(_.koulutusmoduuli.isTutkinto).map(_.tila.koodiarvo) should equal(List("KESKEN"))
       }
       it("Valmis tutkinto") {
-        lastOpiskeluOikeus(MockOppijat.dippainssi.oid).suoritukset.map(_.tila.koodiarvo) should equal(List("VALMIS"))
+        opiskeluoikeudet(MockOppijat.dippainssi.oid).flatMap(_.suoritukset).filter(_.koulutusmoduuli.isTutkinto).map(_.tila.koodiarvo) should equal(List("VALMIS"))
       }
     }
 
     describe("Haettaessa") {
       it("Konvertoidaan Virta-järjestelmän opiskeluoikeus") {
-        val opiskeluoikeus = lastOpiskeluOikeus(MockOppijat.dippainssi.oid)
+        val oikeudet = opiskeluoikeudet(MockOppijat.dippainssi.oid)
+        oikeudet.length should equal(2)
 
-        opiskeluoikeus.tyyppi.koodiarvo should equal("korkeakoulutus")
+        oikeudet(0).tyyppi.koodiarvo should equal("korkeakoulutus")
+        oikeudet(0).suoritukset.length should equal(1)
+        oikeudet(0).asInstanceOf[KorkeakoulunOpiskeluoikeus].suoritukset.map(_.tila.koodiarvo) should equal(List("VALMIS"))
 
-        opiskeluoikeus.suoritukset.length should equal(1)
-
-        val suoritukset: List[KorkeakouluSuoritus] = opiskeluoikeus.asInstanceOf[KorkeakoulunOpiskeluoikeus].suoritukset
-
-        suoritukset.map(_.tila.koodiarvo) should equal(List("VALMIS"))
+        oikeudet(1).tyyppi.koodiarvo should equal("korkeakoulutus")
+        oikeudet(1).suoritukset.length should equal(8)
+        oikeudet(1).asInstanceOf[KorkeakoulunOpiskeluoikeus].suoritukset.map(_.tila.koodiarvo) foreach {
+          _ should equal("VALMIS")
+        }
       }
     }
 

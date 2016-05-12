@@ -48,6 +48,13 @@ trait OpiskeluOikeusTestMethods[Oikeus <: Opiskeluoikeus] extends LocalJettyHttp
     }
   }
 
+  def opiskeluoikeudet(oppijaOid: String): Seq[Opiskeluoikeus] = {
+    authGet("api/oppija/" + oppijaOid) {
+      verifyResponseStatus(200)
+      Json.read[Oppija](body).opiskeluoikeudet
+    }
+  }
+
   def makeOppija(henkilö: Henkilö = defaultHenkilö, opiskeluOikeudet: List[AnyRef] = List(defaultOpiskeluoikeus)): JValue = toJValue(Map(
     "henkilö" -> henkilö,
     "opiskeluoikeudet" -> opiskeluOikeudet
