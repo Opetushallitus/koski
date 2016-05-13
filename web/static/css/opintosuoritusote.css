@@ -40,9 +40,12 @@ section {
     text-align: right;
 }
 
-.suoritukset, .tutkinnot {
+.arvosana {
+    padding-right: 20px;
+}
+
+.suoritukset, .tutkinnot, .ensisijainen-opiskeluoikeus {
     width: 100%;
-    margin-top: -20px;
 }
 
 .date-now {
@@ -55,9 +58,13 @@ section {
 }
 
 .opintosuoritusote {
-    padding: 0 20px;
+    padding: 0 80px;
 }
 
 h1, h2, h3, h4, h5, h6 {
     text-transform: uppercase;
+}
+
+.ensisijainen-opiskeluoikeus tr td:first-child {
+    width: 50%;
 }

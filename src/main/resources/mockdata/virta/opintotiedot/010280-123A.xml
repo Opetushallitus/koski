@@ -2,151 +2,7 @@
     <SOAP-ENV:Header/>
     <SOAP-ENV:Body>
         <virtaluku:OpiskelijanKaikkiTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
-            <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2013/01/29">
-                <virta:Opiskelija avain="avop-csc-H1">
-                    <virta:Henkilotunnus>010280-123A</virta:Henkilotunnus>
-                    <virta:KansallinenOppijanumero>avop001</virta:KansallinenOppijanumero>
-                    <virta:Opiskeluoikeudet>
-                        <virta:Opiskeluoikeus opiskelijaAvain="avop-csc-H1" avain="avop-csc-H1O1">
-                            <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
-                            <virta:Tila>
-                                <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
-                                <virta:Koodi>1</virta:Koodi>
-                            </virta:Tila>
-                            <virta:Tyyppi>1</virta:Tyyppi>
-                            <virta:Myontaja>
-                                <virta:Koodi>XX</virta:Koodi>
-                            </virta:Myontaja>
-                            <virta:Jakso koulutusmoduulitunniste="opiskeluoikeuden_kk_tunniste">
-                                <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
-                                <virta:Koulutuskoodi>671107</virta:Koulutuskoodi>
-                                <virta:Koulutuskunta>049</virta:Koulutuskunta>
-                                <virta:Koulutuskieli>en</virta:Koulutuskieli>
-                                <virta:Rahoituslahde>1</virta:Rahoituslahde>
-                            </virta:Jakso>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>240</virta:Opintopiste>
-                            </virta:Laajuus>
-                            <virta:Aikuiskoulutus>1</virta:Aikuiskoulutus>
-                        </virta:Opiskeluoikeus>
-                        <virta:Opiskeluoikeus opiskelijaAvain="avop-csc-H1" avain="avop-csc-H1O2">
-                            <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
-                            <virta:Tila>
-                                <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
-                                <virta:Koodi>1</virta:Koodi>
-                            </virta:Tila>
-                            <virta:Tyyppi>3</virta:Tyyppi>
-                            <virta:Myontaja>
-                                <virta:Koodi>XX</virta:Koodi>
-                            </virta:Myontaja>
-                            <virta:Jakso koulutusmoduulitunniste="opiskeluoikeuden_kk_tunniste">
-                                <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
-                                <virta:Koulutuskoodi>771207</virta:Koulutuskoodi>
-                                <virta:Koulutuskunta>049</virta:Koulutuskunta>
-                                <virta:Koulutuskieli>en</virta:Koulutuskieli>
-                                <virta:Rahoituslahde>1</virta:Rahoituslahde>
-                            </virta:Jakso>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>60</virta:Opintopiste>
-                            </virta:Laajuus>
-                        </virta:Opiskeluoikeus>
-                    </virta:Opiskeluoikeudet>
-                    <virta:LukukausiIlmoittautumiset>
-                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="avop-csc-H1O1" opiskelijaAvain="avop-csc-H1">
-                            <virta:Myontaja>
-                                <virta:Koodi>XX</virta:Koodi>
-                            </virta:Myontaja>
-                            <virta:Tila>1</virta:Tila>
-                            <virta:IlmoittautumisPvm>2015-08-01</virta:IlmoittautumisPvm>
-                            <virta:AlkuPvm>2016-01-01</virta:AlkuPvm>
-                            <virta:LoppuPvm>2016-07-31</virta:LoppuPvm>
-                        </virta:LukukausiIlmoittautuminen>
-                    </virta:LukukausiIlmoittautumiset>
-                    <virta:Opintosuoritukset>
-                        <virta:Opintosuoritus opiskeluoikeusAvain="avop-csc-H1O1" opiskelijaAvain="avop-csc-H1" koulutusmoduulitunniste="suorituksen_kk_tunniste" avain="avop-csc-H1O1S1">
-                            <virta:SuoritusPvm>2012-04-27</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>87.00000</virta:Opintopiste>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>5</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>
-                                <virta:Koodi>XX</virta:Koodi>
-                            </virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Nimi I</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala2002>
-                                <virta:Koodi>2</virta:Koodi>
-                                <virta:Osuus>1.0</virta:Osuus>
-                            </virta:Koulutusala2002>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskeluoikeusAvain="avop-csc-H1O1" opiskelijaAvain="avop-csc-H1" koulutusmoduulitunniste="suorituksen_kk_tunniste" avain="avop-csc-H1O1S2">
-                            <virta:SuoritusPvm>2015-12-31</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>105.00000</virta:Opintopiste>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>4</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>
-                                <virta:Koodi>XX</virta:Koodi>
-                            </virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Mega I</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala2002>
-                                <virta:Koodi>2</virta:Koodi>
-                                <virta:Osuus>1.0</virta:Osuus>
-                            </virta:Koulutusala2002>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskeluoikeusAvain="avop-csc-H1O1" opiskelijaAvain="avop-csc-H1" koulutusmoduulitunniste="suorituksen_kk_tunniste" avain="avop-csc-H1O1kS1">
-                            <virta:SuoritusPvm>2015-12-31</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>192.00000</virta:Opintopiste>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>4</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>
-                                <virta:Koodi>XX</virta:Koodi>
-                            </virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Kokoava, ei laskuun</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala2002>
-                                <virta:Koodi>2</virta:Koodi>
-                                <virta:Osuus>1.0</virta:Osuus>
-                            </virta:Koulutusala2002>
-                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="avop-csc-H1S1">
-                                <virta:Opintopiste>87.0</virta:Opintopiste>
-                            </virta:Sisaltyvyys>
-                            <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="avop-csc-H1S2">
-                                <virta:Opintopiste>105.0</virta:Opintopiste>
-                            </virta:Sisaltyvyys>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskeluoikeusAvain="avop-csc-H1O2" opiskelijaAvain="avop-csc-H1" koulutusmoduulitunniste="suorituksen_kk_tunniste" avain="avop-csc-H1O2S3">
-                            <virta:SuoritusPvm>2015-12-31</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>30.00000</virta:Opintopiste>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>4</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>
-                                <virta:Koodi>XX</virta:Koodi>
-                            </virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Mega II</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala2002>
-                                <virta:Koodi>2</virta:Koodi>
-                                <virta:Osuus>1.0</virta:Osuus>
-                            </virta:Koulutusala2002>
-                        </virta:Opintosuoritus>
-                    </virta:Opintosuoritukset>
-                </virta:Opiskelija>
+            <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2015/09/01">
                 <virta:Opiskelija avain="avopH1">
                     <virta:Henkilotunnus>010280-123A</virta:Henkilotunnus>
                     <virta:KansallinenOppijanumero>avop001</virta:KansallinenOppijanumero>
@@ -158,20 +14,18 @@
                                 <virta:Koodi>1</virta:Koodi>
                             </virta:Tila>
                             <virta:Tyyppi>1</virta:Tyyppi>
-                            <virta:Myontaja>
-                                <virta:Koodi>10065</virta:Koodi>
-                            </virta:Myontaja>
+                            <virta:Myontaja>10065</virta:Myontaja>
                             <virta:Jakso koulutusmoduulitunniste="opiskeluoikeuden_kk_tunniste">
                                 <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
                                 <virta:Koulutuskoodi>621702</virta:Koulutuskoodi>
                                 <virta:Koulutuskunta>091</virta:Koulutuskunta>
                                 <virta:Koulutuskieli>en</virta:Koulutuskieli>
                                 <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                                <virta:Luokittelu>3</virta:Luokittelu>
                             </virta:Jakso>
                             <virta:Laajuus>
                                 <virta:Opintopiste>240</virta:Opintopiste>
                             </virta:Laajuus>
-                            <virta:Aikuiskoulutus>1</virta:Aikuiskoulutus>
                         </virta:Opiskeluoikeus>
                         <virta:Opiskeluoikeus opiskelijaAvain="avopH1" avain="avopH1O2">
                             <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
@@ -180,9 +34,7 @@
                                 <virta:Koodi>1</virta:Koodi>
                             </virta:Tila>
                             <virta:Tyyppi>3</virta:Tyyppi>
-                            <virta:Myontaja>
-                                <virta:Koodi>10065</virta:Koodi>
-                            </virta:Myontaja>
+                            <virta:Myontaja>10065</virta:Myontaja>
                             <virta:Jakso koulutusmoduulitunniste="opiskeluoikeuden_kk_tunniste">
                                 <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
                                 <virta:Koulutuskoodi>721702</virta:Koulutuskoodi>
@@ -194,12 +46,169 @@
                                 <virta:Opintopiste>60</virta:Opintopiste>
                             </virta:Laajuus>
                         </virta:Opiskeluoikeus>
+                        <virta:Opiskeluoikeus opiskelijaAvain="avopH1" avain="avopH1O3">
+                            <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2008-12-31</virta:LoppuPvm>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2008-12-31</virta:LoppuPvm>
+                                <virta:Koodi>1</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2009-01-01</virta:AlkuPvm>
+                                <virta:Koodi>3</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tyyppi>1</virta:Tyyppi>
+                            <virta:Myontaja>10065</virta:Myontaja>
+                            <virta:Jakso koulutusmoduulitunniste="opiskeluoikeuden_kk_tunniste">
+                                <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+                                <virta:Koulutuskoodi>621101</virta:Koulutuskoodi>
+                                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                                <virta:Koulutuskieli>en</virta:Koulutuskieli>
+                                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                            </virta:Jakso>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>210</virta:Opintopiste>
+                            </virta:Laajuus>
+                        </virta:Opiskeluoikeus>
+                        <virta:Opiskeluoikeus opiskelijaAvain="avopH1" avain="avopH1O4">
+                            <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2009-12-31</virta:LoppuPvm>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2008-12-31</virta:LoppuPvm>
+                                <virta:Koodi>1</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2009-01-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2009-12-31</virta:LoppuPvm>
+                                <virta:Koodi>1</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2010-01-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2010-01-01</virta:LoppuPvm>
+                                <virta:Koodi>3</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tyyppi>3</virta:Tyyppi>
+                            <virta:Myontaja>10065</virta:Myontaja>
+                            <virta:Jakso koulutusmoduulitunniste="opiskeluoikeuden_kk_tunniste">
+                                <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2009-12-31</virta:LoppuPvm>
+                                <virta:Koulutuskoodi>731207</virta:Koulutuskoodi>
+                                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                                <virta:Koulutuskieli>en</virta:Koulutuskieli>
+                                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                            </virta:Jakso>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>90</virta:Opintopiste>
+                            </virta:Laajuus>
+                        </virta:Opiskeluoikeus>
+                        <virta:Opiskeluoikeus opiskelijaAvain="avopH1" avain="avopH1O5">
+                            <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2016-07-31</virta:LoppuPvm>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2008-12-31</virta:LoppuPvm>
+                                <virta:Koodi>1</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2009-01-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2009-12-31</virta:LoppuPvm>
+                                <virta:Koodi>1</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2010-01-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2016-07-31</virta:LoppuPvm>
+                                <virta:Koodi>1</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2016-08-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2016-08-01</virta:LoppuPvm>
+                                <virta:Koodi>3</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tyyppi>3</virta:Tyyppi>
+                            <virta:Myontaja>10065</virta:Myontaja>
+                            <virta:Jakso koulutusmoduulitunniste="opiskeluoikeuden_kk_tunniste">
+                                <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2015-12-31</virta:LoppuPvm>
+                                <virta:Koulutuskoodi>731207</virta:Koulutuskoodi>
+                                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                                <virta:Koulutuskieli>sv</virta:Koulutuskieli>
+                                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                                <virta:Luokittelu>3</virta:Luokittelu>
+                            </virta:Jakso>
+                            <virta:Jakso koulutusmoduulitunniste="opiskeluoikeuden_kk_tunniste">
+                                <virta:AlkuPvm>2016-01-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2016-07-31</virta:LoppuPvm>
+                                <virta:Koulutuskoodi>731207</virta:Koulutuskoodi>
+                                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                                <virta:Koulutuskieli>en</virta:Koulutuskieli>
+                                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                                <virta:Luokittelu>3</virta:Luokittelu>
+                            </virta:Jakso>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>90</virta:Opintopiste>
+                            </virta:Laajuus>
+                        </virta:Opiskeluoikeus>
+                        <virta:Opiskeluoikeus opiskelijaAvain="avopH1" avain="avopH1O6">
+                            <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2016-05-10</virta:LoppuPvm>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2016-05-10</virta:LoppuPvm>
+                                <virta:Koodi>1</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2016-05-11</virta:AlkuPvm>
+                                <virta:LoppuPvm>2016-05-11</virta:LoppuPvm>
+                                <virta:Koodi>3</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tyyppi>3</virta:Tyyppi>
+                            <virta:Myontaja>10065</virta:Myontaja>
+                            <virta:Jakso koulutusmoduulitunniste="opiskeluoikeuden_kk_tunniste">
+                                <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2016-05-10</virta:LoppuPvm>
+                                <virta:Koulutuskoodi>731201</virta:Koulutuskoodi>
+                                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                                <virta:Koulutuskieli>sv</virta:Koulutuskieli>
+                                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                                <virta:Luokittelu>3</virta:Luokittelu>
+                            </virta:Jakso>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>90</virta:Opintopiste>
+                            </virta:Laajuus>
+                        </virta:Opiskeluoikeus>
+                        <virta:Opiskeluoikeus opiskelijaAvain="avopH1" avain="avopH1O7">
+                            <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2016-05-11</virta:LoppuPvm>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2016-05-11</virta:LoppuPvm>
+                                <virta:Koodi>1</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2016-05-12</virta:AlkuPvm>
+                                <virta:LoppuPvm>2016-05-12</virta:LoppuPvm>
+                                <virta:Koodi>3</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tyyppi>3</virta:Tyyppi>
+                            <virta:Myontaja>10065</virta:Myontaja>
+                            <virta:Jakso koulutusmoduulitunniste="opiskeluoikeuden_kk_tunniste">
+                                <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+                                <virta:LoppuPvm>2016-05-11</virta:LoppuPvm>
+                                <virta:Koulutuskoodi>731299</virta:Koulutuskoodi>
+                                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                                <virta:Koulutuskieli>en</virta:Koulutuskieli>
+                                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                            </virta:Jakso>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>90</virta:Opintopiste>
+                            </virta:Laajuus>
+                        </virta:Opiskeluoikeus>
                     </virta:Opiskeluoikeudet>
                     <virta:LukukausiIlmoittautumiset>
                         <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="avopH1O1" opiskelijaAvain="avopH1">
-                            <virta:Myontaja>
-                                <virta:Koodi>10065</virta:Koodi>
-                            </virta:Myontaja>
+                            <virta:Myontaja>10065</virta:Myontaja>
                             <virta:Tila>1</virta:Tila>
                             <virta:IlmoittautumisPvm>2015-08-01</virta:IlmoittautumisPvm>
                             <virta:AlkuPvm>2016-01-01</virta:AlkuPvm>
@@ -215,16 +224,14 @@
                             <virta:Arvosana>
                                 <virta:Viisiportainen>5</virta:Viisiportainen>
                             </virta:Arvosana>
-                            <virta:Myontaja>
-                                <virta:Koodi>10065</virta:Koodi>
-                            </virta:Myontaja>
+                            <virta:Myontaja>10065</virta:Myontaja>
                             <virta:Laji>2</virta:Laji>
                             <virta:Nimi kieli="fi">Nimi I</virta:Nimi>
                             <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala2002>
-                                <virta:Koodi>2</virta:Koodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
                                 <virta:Osuus>1.0</virta:Osuus>
-                            </virta:Koulutusala2002>
+                            </virta:Koulutusala>
                         </virta:Opintosuoritus>
                         <virta:Opintosuoritus opiskeluoikeusAvain="avopH1O1" opiskelijaAvain="avopH1" koulutusmoduulitunniste="suorituksen_kk_tunniste" avain="avopH1O1S2">
                             <virta:SuoritusPvm>2015-12-31</virta:SuoritusPvm>
@@ -234,16 +241,14 @@
                             <virta:Arvosana>
                                 <virta:Viisiportainen>4</virta:Viisiportainen>
                             </virta:Arvosana>
-                            <virta:Myontaja>
-                                <virta:Koodi>10065</virta:Koodi>
-                            </virta:Myontaja>
+                            <virta:Myontaja>10065</virta:Myontaja>
                             <virta:Laji>2</virta:Laji>
                             <virta:Nimi kieli="fi">Mega I</virta:Nimi>
                             <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala2002>
-                                <virta:Koodi>2</virta:Koodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
                                 <virta:Osuus>1.0</virta:Osuus>
-                            </virta:Koulutusala2002>
+                            </virta:Koulutusala>
                         </virta:Opintosuoritus>
                         <virta:Opintosuoritus opiskeluoikeusAvain="avopH1O1" opiskelijaAvain="avopH1" koulutusmoduulitunniste="suorituksen_kk_tunniste" avain="avopH1O1kS1">
                             <virta:SuoritusPvm>2015-12-31</virta:SuoritusPvm>
@@ -253,16 +258,14 @@
                             <virta:Arvosana>
                                 <virta:Viisiportainen>4</virta:Viisiportainen>
                             </virta:Arvosana>
-                            <virta:Myontaja>
-                                <virta:Koodi>10065</virta:Koodi>
-                            </virta:Myontaja>
+                            <virta:Myontaja>10065</virta:Myontaja>
                             <virta:Laji>2</virta:Laji>
                             <virta:Nimi kieli="fi">Kokoava, ei laskuun</virta:Nimi>
                             <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala2002>
-                                <virta:Koodi>2</virta:Koodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
                                 <virta:Osuus>1.0</virta:Osuus>
-                            </virta:Koulutusala2002>
+                            </virta:Koulutusala>
                             <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="avopH1S1">
                                 <virta:Opintopiste>87.0</virta:Opintopiste>
                             </virta:Sisaltyvyys>
@@ -278,16 +281,99 @@
                             <virta:Arvosana>
                                 <virta:Viisiportainen>4</virta:Viisiportainen>
                             </virta:Arvosana>
-                            <virta:Myontaja>
-                                <virta:Koodi>10065</virta:Koodi>
-                            </virta:Myontaja>
+                            <virta:Myontaja>10065</virta:Myontaja>
                             <virta:Laji>2</virta:Laji>
                             <virta:Nimi kieli="fi">Mega II</virta:Nimi>
                             <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala2002>
-                                <virta:Koodi>2</virta:Koodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
                                 <virta:Osuus>1.0</virta:Osuus>
-                            </virta:Koulutusala2002>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="avopH1O3" opiskelijaAvain="avopH1" koulutusmoduulitunniste="suorituksen_kk_tunniste" avain="avopH1O3S1">
+                            <virta:SuoritusPvm>2008-10-30</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>211.00000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10065</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Mega III</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
+                                <virta:Osuus>1.0</virta:Osuus>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="avopH1O4" opiskelijaAvain="avopH1" koulutusmoduulitunniste="suorituksen_kk_tunniste" avain="avopH1O4S1">
+                            <virta:SuoritusPvm>2008-10-30</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>91.00000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10065</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Mega IV</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
+                                <virta:Osuus>1.0</virta:Osuus>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="avopH1O5" opiskelijaAvain="avopH1" koulutusmoduulitunniste="suorituksen_kk_tunniste" avain="avopH1O5S1">
+                            <virta:SuoritusPvm>2015-10-30</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>91.00000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10065</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Mega V</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
+                                <virta:Osuus>1.0</virta:Osuus>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="avopH1O6" opiskelijaAvain="avopH1" koulutusmoduulitunniste="suorituksen_kk_tunniste" avain="avopH1O6S1">
+                            <virta:SuoritusPvm>2015-10-30</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>91.00000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10065</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Mega VI</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
+                                <virta:Osuus>1.0</virta:Osuus>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="avopH1O7" opiskelijaAvain="avopH1" koulutusmoduulitunniste="suorituksen_kk_tunniste" avain="avopH1O7S1">
+                            <virta:SuoritusPvm>2015-10-30</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>91.00000</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10065</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Mega VII</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
+                                <virta:Osuus>1.0</virta:Osuus>
+                            </virta:Koulutusala>
                         </virta:Opintosuoritus>
                     </virta:Opintosuoritukset>
                 </virta:Opiskelija>

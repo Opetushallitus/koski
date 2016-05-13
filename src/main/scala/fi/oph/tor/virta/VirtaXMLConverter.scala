@@ -18,14 +18,12 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
   def convertToOpiskeluoikeudet(virtaXml: Node): List[KorkeakoulunOpiskeluoikeus] = {
     implicit def localDateOrdering: Ordering[LocalDate] = Ordering.fromLessThan(_ isBefore _)
 
-    //println(XML.prettyPrint(virtaXml))
     val suoritusNodeList: List[Node] = suoritusNodes(virtaXml)
     val suoritusRoots: List[Node] = suoritusNodeList.filter(isRoot(suoritusNodeList)(_))
     val opiskeluOikeusNodes: List[Node] = (virtaXml \\ "Opiskeluoikeus").toList
 
     val (orphans, opiskeluoikeudet) = opiskeluOikeusNodes.foldLeft((suoritusRoots, Nil: List[KorkeakoulunOpiskeluoikeus])) { case ((suoritusRootsLeft, opiskeluOikeudet), opiskeluoikeusNode) =>
       val (opiskeluOikeudenSuoritukset: List[Node], muutSuoritukset: List[Node]) = suoritusRootsLeft.partition(sisältyyOpiskeluoikeuteen(_, opiskeluoikeusNode, suoritusNodeList))
-
 
       val läsnäolotiedot = list2Optional((virtaXml \\ "LukukausiIlmoittautuminen").filter(i => opiskelijaAvain(i) == opiskelijaAvain(opiskeluoikeusNode) && myöntäjä(opiskeluoikeusNode) == myöntäjä(i))
         .sortBy(alkuPvm)
@@ -50,7 +48,10 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
         koulutustoimija = None,
         suoritukset = lisääKeskeneräinenTutkintosuoritus(suoritukset, opiskeluoikeusNode),
         tila = opiskeluoikeudenTila,
-        läsnäolotiedot = läsnäolotiedot
+        läsnäolotiedot = läsnäolotiedot,
+        ensisijaisuus = (opiskeluoikeusNode \ "Ensisijaisuus").headOption.map { e => // TODO, should this be a list ?
+          Ensisijaisuus(alkuPvm(e), loppuPvm(e))
+        }
       )
 
       (muutSuoritukset, opiskeluoikeus :: opiskeluOikeudet)

@@ -32,13 +32,28 @@ class OpintosuoritusoteHtml(implicit val user: TorUser) {
           <div class="opiskelija"><div class="hetu">{ht.hetu}</div></div>
         </section>
 
+
+        {
+          ensisijainenOpiskeluoikeus(opiskeluoikeudet).toList.map { ensisijainen =>
+            <section>
+              <h3>Ensisijainen opinto-oikeus</h3>
+              <table class="ensisijainen-opiskeluoikeus">
+                <tr>
+                  <td>Tavoitetutkinto</td>
+                  <td>{i(ensisijainen.suoritukset.find(_.koulutusmoduuli.isTutkinto).map(_.koulutusmoduuli))}</td>
+                </tr>
+                <tr>
+                  <td>Voimassa</td>
+                  <td>{ensisijainen.ensisijaisuus.toList.map(e => dateFormatter.format(e.alkamispäivä) + " - " + e.päättymispäivä.map(dateFormatter.format(_)).getOrElse(""))}</td>
+                </tr>
+              </table>
+            </section>
+          }
+        }
+
         <section>
           <h3>Suoritetut tutkinnot</h3>
           <table class="tutkinnot">
-            <tr>
-              <th class="tunnus"></th>
-              <th class="nimi"></th>
-            </tr>
             { opiskeluoikeudet.flatMap(tutkinnot) }
           </table>
         </section>
@@ -61,6 +76,15 @@ class OpintosuoritusoteHtml(implicit val user: TorUser) {
     </html>
   }
 
+  def ensisijainenOpiskeluoikeus(opiskeluoikeudet: List[Opiskeluoikeus]): Option[KorkeakoulunOpiskeluoikeus] = {
+    opiskeluoikeudet.collect { case oo: KorkeakoulunOpiskeluoikeus => oo }
+      .find(_.ensisijaisuus.exists { _.päättymispäivä match {
+        case None => true
+        case Some(pp) => pp.isAfter(LocalDate.now())
+      }
+      })
+  }
+
   def tutkinnot(oo: Opiskeluoikeus) = oo.suoritukset.filter(s => s.tila.koodiarvo == "VALMIS" && s.koulutusmoduuli.isTutkinto).map { t =>
     <tr>
       <td>{t.koulutusmoduuli.tunniste.koodiarvo}</td>
@@ -71,7 +95,7 @@ class OpintosuoritusoteHtml(implicit val user: TorUser) {
   }
 
   private def suoritukset(opiskeluoikeus: Opiskeluoikeus) = {
-    opiskeluoikeus.suoritukset.flatMap(suoritus => suoritusWithDepth((0, suoritus))).map(suoritusHtml)
+    opiskeluoikeus.suoritukset.filter(s => s.tila.koodiarvo == "VALMIS").flatMap(suoritus => suoritusWithDepth((0, suoritus))).map(suoritusHtml)
   }
 
   private def suoritusHtml(t: (Int, Suoritus)) = t match { case (depth, suoritus) =>

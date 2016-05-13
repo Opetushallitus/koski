@@ -20,12 +20,17 @@ case class KorkeakoulunOpiskeluoikeus(
   tila: Option[KorkeakoulunOpiskeluoikeudenTila],
   läsnäolotiedot: Option[KorkeakoulunLäsnäolotiedot],
   @KoodistoKoodiarvo("korkeakoulutus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulutus", Some("Korkeakoulutus"), "opiskeluoikeudentyyppi", None)
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulutus", Some("Korkeakoulutus"), "opiskeluoikeudentyyppi", None),
+  ensisijaisuus: Option[Ensisijaisuus] = None
 ) extends Opiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
 }
 
+case class Ensisijaisuus(
+  alkamispäivä: LocalDate,
+  päättymispäivä: Option[LocalDate]
+)
 
 trait KorkeakouluSuoritus extends Suoritus {
   def toimipiste: Oppilaitos
