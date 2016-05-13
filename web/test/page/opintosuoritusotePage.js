@@ -4,7 +4,7 @@ function OpintosuoritusotePage() {
   }
   return {
     isVisible: function() {
-      return isElementVisible(S('body.opintosuoritusote'))
+      return isElementVisible(S('.opintosuoritusote'))
     },
     arvosanarivi: getText,
     headings: function() {
