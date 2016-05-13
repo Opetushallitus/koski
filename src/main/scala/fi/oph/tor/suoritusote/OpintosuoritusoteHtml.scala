@@ -20,20 +20,20 @@ class OpintosuoritusoteHtml(implicit val user: TorUser) {
         <link rel="stylesheet" type="text/css" href="/tor/css/opintosuoritusote.css"></link>
         <style>{ indentCss }</style>
       </head>
-      <body class="opintosuoritusote">
+      <body>
+        <div class="opintosuoritusote">
+          <section>
+            <h3 class="title">Opintosuoritusote</h3>
+            <div class="date-now">{dateFormatter.format(LocalDate.now)}</div>
+          </section>
 
-        <section>
-          <h3 class="title">Opintosuoritusote</h3>
-          <div class="date-now">{dateFormatter.format(LocalDate.now)}</div>
-        </section>
-
-        <section class="henkilo">
-          <div class="nimi">{ht.sukunimi} {ht.etunimet}</div>
-          <div class="opiskelija"><div class="hetu">{ht.hetu}</div></div>
-        </section>
+          <section class="henkilo">
+            <div class="nimi">{ht.sukunimi} {ht.etunimet}</div>
+            <div class="opiskelija"><div class="hetu">{ht.hetu}</div></div>
+          </section>
 
 
-        {
+          {
           ensisijainenOpiskeluoikeus(opiskeluoikeudet).toList.map { ensisijainen =>
             <section>
               <h3>Ensisijainen opinto-oikeus</h3>
@@ -49,29 +49,29 @@ class OpintosuoritusoteHtml(implicit val user: TorUser) {
               </table>
             </section>
           }
-        }
+          }
 
-        <section>
-          <h3>Suoritetut tutkinnot</h3>
-          <table class="tutkinnot">
-            { opiskeluoikeudet.flatMap(tutkinnot) }
-          </table>
-        </section>
+          <section>
+            <h3>Suoritetut tutkinnot</h3>
+            <table class="tutkinnot">
+              { opiskeluoikeudet.flatMap(tutkinnot) }
+            </table>
+          </section>
 
-        <section>
-          <h3 class="suoritukset-title">Opintosuoritukset</h3>
-          <table class="suoritukset">
-            <tr>
-              <th class="tunnus"></th>
-              <th class="nimi"></th>
-              <th class="laajuus">Op</th>
-              <th class="arvosana">Arv.</th>
-              <th class="suoritus-pvm">Suor.pvm</th>
-            </tr>
-            { opiskeluoikeudet.flatMap(suoritukset) }
-          </table>
-        </section>
-
+          <section>
+            <h3 class="suoritukset-title">Opintosuoritukset</h3>
+            <table class="suoritukset">
+              <tr>
+                <th class="tunnus"></th>
+                <th class="nimi"></th>
+                <th class="laajuus">Op</th>
+                <th class="arvosana">Arv.</th>
+                <th class="suoritus-pvm">Suor.pvm</th>
+              </tr>
+              { opiskeluoikeudet.flatMap(suoritukset) }
+            </table>
+          </section>
+        </div>
       </body>
     </html>
   }

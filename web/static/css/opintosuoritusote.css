@@ -1,6 +1,9 @@
 @media print {
-    @page { margin: 0; }
-    body  { margin: 1.6cm; }
+    @page { margin: 0 1.6cm; }
+    body {
+        margin-top: 1.6cm;
+        margin-bottom: 1.6cm;
+    }
 }
 
 body {
@@ -58,7 +61,8 @@ section {
 }
 
 .opintosuoritusote {
-    padding: 0 80px;
+    margin: 40px auto;
+    width: 1000px;
 }
 
 h1, h2, h3, h4, h5, h6 {
