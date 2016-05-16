@@ -56,7 +56,7 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
     }
 
     describe("Opintosuoritusote") {
-      it("näytetään") {
+      it("Valmistunut diplomi-insinööri") {
         opintosuoritusote("1.2.246.562.24.000000000011", "1.2.246.562.10.56753942459") should equal(
           """|Suoritetut tutkinnot
             |751101 Dipl.ins., konetekniikka
@@ -102,6 +102,8 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
             |Ene-39.4054 Virtaussimulointi L 6 3 31.08.2015""".stripMargin
         )
       }
+
+      // TODO: keskeneräinen, ensisijainen opinto-oikeus
     }
   }
 
