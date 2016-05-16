@@ -60,7 +60,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
     val orphanSuoritukset = orphans.flatMap(convertSuoritus(_, suoritusNodeList))
     val orphanages = orphanSuoritukset.groupBy(_.toimipiste).toList.map { case (organisaatio, suoritukset) =>
       KorkeakoulunOpiskeluoikeus(
-        id = None,
+        id = Some(new Random().nextInt()),
         versionumero = None,
         lähdejärjestelmänId = None,
         alkamispäivä = None,
