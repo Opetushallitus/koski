@@ -57,7 +57,7 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
 
     describe("Opintosuoritusote") {
       it("Valmistunut diplomi-insinööri") {
-        opintosuoritusote("1.2.246.562.24.000000000011", "1.2.246.562.10.56753942459") should equal(
+        opintosuoritusote("290492-9455", "1.2.246.562.10.56753942459") should equal(
           """|Suoritetut tutkinnot
             |751101 Dipl.ins., konetekniikka
             |Opintosuoritukset
@@ -103,19 +103,34 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
         )
       }
 
-      // TODO: keskeneräinen, ensisijainen opinto-oikeus
+      it("Opinto-oikeus, keskeneräinen tutkinto") {
+        opintosuoritusote("090888-929X", "1.2.246.562.10.56753942459") should equal(
+          """|Ensisijainen opinto-oikeus
+            |Tavoitetutkinto Tekn. kand., kemian tekniikka
+            |Voimassa 01.08.2008 - 31.07.2017
+            |Suoritetut tutkinnot
+            |Opintosuoritukset
+            |KE-35.1210 Epäorgaanisen kemian laboratoriotyöt 4 hyväksytty 10.12.2009
+            |T-106.1111 Johdatus opiskeluun ja tietojärjestelmiin 2 hyväksytty 26.10.2009
+            |KE-35.1200 Epäorgaaninen kemia I 4 2 15.12.2009
+            |Tfy-3.1241 Fysiikka IA 3 5 28.10.2009""".stripMargin
+        )
+      }
+
     }
   }
 
-  private def opintosuoritusote(oppijaOid: String, oppilaitosOid: String) = {
-    authGet(s"opintosuoritusote/${oppijaOid}/${oppilaitosOid}") {
-      verifyResponseStatus(200)
+  private def opintosuoritusote(searchTerm: String, oppilaitosOid: String) = {
+    searchForHenkilötiedot(searchTerm).map(_.oid).map { oppijaOid =>
+      authGet(s"opintosuoritusote/${oppijaOid}/${oppilaitosOid}") {
+        verifyResponseStatus(200)
 
-      val lines: Seq[String] = scala.xml.XML.loadString(response.body).flatMap(_.descendant_or_self).flatMap { case tr: Node if tr.label == "tr" && (tr \ "@class").text != "header" => Some((tr \ "td").map(_.text).mkString(" ").trim)
-      case h3: Node if h3.label == "h3" => Some(h3.text.trim)
-      case _ => None
+        val lines: Seq[String] = scala.xml.XML.loadString(response.body).flatMap(_.descendant_or_self).flatMap { case tr: Node if tr.label == "tr" && (tr \ "@class").text != "header" => Some((tr \ "td").map(_.text).mkString(" ").trim)
+          case h3: Node if h3.label == "h3" => Some(h3.text.trim)
+          case _ => None
+        }
+        lines.mkString("\n").trim
       }
-      lines.mkString("\n").trim
-    }
+    }.headOption.getOrElse("")
   }
 }
