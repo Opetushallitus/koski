@@ -59,48 +59,6 @@ Minimissään tarvitset nämä:
 - Node.js ja NPM (osx: `brew install node`)
 - Tekstieditori (kehitystiimi käyttää IntelliJ IDEA 14/15)
 
-## Paikallinen PostgreSQL-tietokanta
-
-Kehityskäyttöön tarvitaan paikallinen PostgreSQL-tietokanta. Koski-sovellus luo paikallisen kannan, skeeman ja käyttäjän
-automaattisesti ja käynnistää myös tarvittavan PostgreSQL-serveriprosessin.
-
-Paikallisen kannan konfiguraatio on tiedostossa `postgresql/postgresql.conf` ja tietokannan datahakemisto on `postgresql/data`.
-
-Jos haluat pitää Postgresin käynnissä erikseen, voit käynnistää sen komentoriviltä komennolla
-
-    make postgres
-
-PostgreSQL jää pyörimään konsoliin ja voit sammuttaa sen painamalla ctrl-c.
-
-Käynnistyessään Koski-sovellus huomaa, jos tietokanta on jo käynnissä, eikä siinä tapauksessa yritä käynnistää sitä.
-
-Kehityksessä käytetään kahta kantaa: `tor` jota käytetään normaalisti ja `tortest` jota käytetään automaattisissa
-testeissä (tämä kanta tyhjennetään aina testiajon alussa). Molemmat kannat sisältävät `tor` -skeeman, ja sijaitsevat
-fyysisesti samassa datahakemistossa.
-
-
-### SQL-yhteys paikalliseen kantaan
-
-Jos ja kun haluat tarkastella paikallisen kehityskannan tilaa SQL-työkalulla, se onnistuu esimerkiksi Postgren omalla komentorivityökalulla `psql`:
-
-    psql -h localhost tor tor
-    psql -h localhost tortest tor
-
-Peruskomennot
-
-    \dt    listaa taulut
-    \q     poistuu psql:stä
-
-Sitten vaikka
-
-    select * from arviointi;
-
-### Kantamigraatiot
-
-Tietokannan rakenne luodaan ja päivitetään Flywayllä migraatioskripteillä, jotka ovat hakemistossa `src/main/resources/db/migration`.
-
-Koski-sovellus ajaa migraatiot automaattisesti käynnistyessään.
-
 ## Buildi ja ajaminen
 
 Koski:n buildiin kuuluu frontin buildaus (npm / webpack) ja serverin buildaus Mavenilla. Tätä helpottamaan on otettu käyttöön `make`, jonka avulla
@@ -142,6 +100,48 @@ Ottaaksesi käyttöön ulkoiset integraatiot, kuten henkilpalvelun, voit antaa K
     -Dconfig.resource=qa.conf
 
 Tällä asetuksella käytetään tiedostoa `src/main/resources/qa.conf`. Tämä tiedosto ei ole versionhallinnassa, koska se sisältää ei-julkista tietoa.
+
+## Paikallinen PostgreSQL-tietokanta
+
+Kehityskäyttöön tarvitaan paikallinen PostgreSQL-tietokanta. Koski-sovellus luo paikallisen kannan, skeeman ja käyttäjän
+automaattisesti ja käynnistää myös tarvittavan PostgreSQL-serveriprosessin.
+
+Paikallisen kannan konfiguraatio on tiedostossa `postgresql/postgresql.conf` ja tietokannan datahakemisto on `postgresql/data`.
+
+Jos haluat pitää Postgresin käynnissä erikseen, voit käynnistää sen komentoriviltä komennolla
+
+    make postgres
+
+PostgreSQL jää pyörimään konsoliin ja voit sammuttaa sen painamalla ctrl-c.
+
+Käynnistyessään Koski-sovellus huomaa, jos tietokanta on jo käynnissä, eikä siinä tapauksessa yritä käynnistää sitä.
+
+Kehityksessä käytetään kahta kantaa: `tor` jota käytetään normaalisti ja `tortest` jota käytetään automaattisissa
+testeissä (tämä kanta tyhjennetään aina testiajon alussa). Molemmat kannat sisältävät `tor` -skeeman, ja sijaitsevat
+fyysisesti samassa datahakemistossa.
+
+
+### SQL-yhteys paikalliseen kantaan
+
+Jos ja kun haluat tarkastella paikallisen kehityskannan tilaa SQL-työkalulla, se onnistuu esimerkiksi Postgren omalla komentorivityökalulla `psql`:
+
+    psql -h localhost tor tor
+    psql -h localhost tortest tor
+
+Peruskomennot
+
+    \dt    listaa taulut
+    \q     poistuu psql:stä
+
+Sitten vaikka
+
+    select * from arviointi;
+
+### Kantamigraatiot
+
+Tietokannan rakenne luodaan ja päivitetään Flywayllä migraatioskripteillä, jotka ovat hakemistossa `src/main/resources/db/migration`.
+
+Koski-sovellus ajaa migraatiot automaattisesti käynnistyessään.
 
 ### Testit
 
