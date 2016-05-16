@@ -467,7 +467,7 @@ describe('TOR', function() {
       before(
         page.openPage,
         page.oppijaHaku.search('090888-929X', page.isOppijaSelected('Harri')),
-        before(OpinnotPage().avaaOpintosuoritusote(2))
+        OpinnotPage().avaaOpintosuoritusote(2)
       )
       it('opiskeluoikeus näytetään', function() {
         expect(S('section.opiskeluoikeus h3').text()).to.equal('Ensisijainen opinto-oikeus')
@@ -477,7 +477,7 @@ describe('TOR', function() {
       before(
         page.openPage,
         page.oppijaHaku.search('010675-9981', page.isOppijaSelected('Kikka')),
-        before(OpinnotPage().avaaOpintosuoritusote(1))
+        OpinnotPage().avaaOpintosuoritusote(1)
       )
       it('näytetään', function() {
         expect(S('section.opiskeluoikeus h3').text()).to.equal('Ensisijainen opinto-oikeus')
