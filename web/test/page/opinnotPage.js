@@ -36,6 +36,12 @@ function OpinnotPage() {
     isOsaamisalaSelectable: function() {
       return isElementVisible(S(".osaamisala"))
     },
+    avaaOpintosuoritusote: function (index) {
+      return function() {
+        triggerEvent(S('li.oppilaitos:nth-child('+index+') a.opintosuoritusote'), 'click')
+        return wait.until(OpintosuoritusotePage().isVisible)()
+      }
+    },
     waitUntilRakenneVisible: function() {
       return wait.until(api.isRakenneVisible)
     }

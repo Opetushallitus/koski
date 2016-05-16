@@ -1,20 +1,24 @@
-.oppija .oppilaitos {
-  a.todistus, a.opintosuoritusote {
-    float: right;
-    margin-right: 51px;
-    text-decoration: underline;
-    font-size: 0.8em;
-  }
-  .opiskeluoikeus {
-    .tutkinto {
-      font-size: 15px;
-      color: @color-darkgray-text;
-      display: inline-block;
-      margin-left: 6px;
+.oppija ul.oppilaitokset {
+  padding: 0;
+  li.oppilaitos {
+    list-style: none;
+    a.todistus, a.opintosuoritusote {
+      float: right;
+      margin-right: 51px;
+      text-decoration: underline;
+      font-size: 0.8em;
     }
+    .opiskeluoikeus {
+      .tutkinto {
+        font-size: 15px;
+        color: @color-darkgray-text;
+        display: inline-block;
+        margin-left: 6px;
+      }
 
-    .oppilaitos {
-      font-size: 18px;
+      .oppilaitos {
+        font-size: 18px;
+      }
     }
   }
 }

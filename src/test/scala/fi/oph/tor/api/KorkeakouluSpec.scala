@@ -59,9 +59,11 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
         val get1 = authGet("opintosuoritusote/1.2.246.562.24.000000000011/1.2.246.562.10.56753942459") {
           verifyResponseStatus(200)
 
-          val ote: String = (scala.xml.XML.loadString(response.body) \\ "tr").map { s =>
+          val tableRows: Seq[String] = (scala.xml.XML.loadString(response.body) \\ "tr").map { s =>
             (s \ "td").map(_.text).mkString(" ").trim
-          }.mkString("\n")
+          }
+          val lines: Seq[String] = tableRows
+          val ote: String = lines.mkString("\n")
 
           ote.trim should equal(
             """|751101 Dipl.ins., konetekniikka

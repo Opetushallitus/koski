@@ -50,17 +50,18 @@ const ExistingOppija = React.createClass({
         <h2>{henkilö.sukunimi}, {henkilö.etunimet} <span className='hetu'>{henkilö.hetu}</span></h2>
         <hr></hr>
         <h4>Opiskeluoikeudet</h4>
-
+        <ul className="oppilaitokset">
         { R.toPairs(R.groupBy((opiskeluOikeus => opiskeluOikeus.oppilaitos.oid), opiskeluoikeudet)).map( ([, opiskeluOikeudet]) =>
-          <div className="oppilaitos">
+          <li className="oppilaitos">
             <span className="oppilaitos">{opiskeluOikeudet[0].oppilaitos.nimi.fi}</span><Opintosuoritusote oppija={henkilö} oppilaitos={opiskeluOikeudet[0].oppilaitos}/>
             {
               opiskeluOikeudet.map( opiskeluOikeus =>
                   <OpiskeluOikeus key={opiskeluOikeus.id} oppija={ henkilö } opiskeluOikeus={ opiskeluOikeus } lens= { opiskeluOikeusIdLens(opiskeluOikeus.id) } />
               )
             }
-          </div>
+          </li>
         ) }
+        </ul>
       </div>
     )
   }

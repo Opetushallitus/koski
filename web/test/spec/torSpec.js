@@ -441,21 +441,46 @@ describe('TOR', function() {
 
   describe('Korkeakoulujen opiskeluoikeudet', function() {
     var opintosuoritusote = OpintosuoritusotePage()
-    before(resetFixtures, authentication.login())
-    before(openPage('/tor/oppija/1.2.246.562.24.000000000011', page.isOppijaSelected('Dick')))
-    describe('Oppijan suorituksissa', function() {
-      it('näytetään', function() {
-        expect(OpinnotPage().getTutkinto()).to.equal("Dipl.ins., konetekniikka")
-        expect(OpinnotPage().getOppilaitos()).to.equal("Aalto-yliopisto")
+    before(
+      resetFixtures,
+      authentication.login()
+    )
+    describe('Valmis diplomi-insinööri', function() {
+      before(
+        page.openPage,
+        page.oppijaHaku.search('290492-9455', page.isOppijaSelected('Dick'))
+      )
+      describe('Oppilaitos ja tutkinto', function() {
+        it('näytetään', function() {
+          expect(OpinnotPage().getTutkinto()).to.equal("Dipl.ins., konetekniikka")
+          expect(OpinnotPage().getOppilaitos()).to.equal("Aalto-yliopisto")
+        })
+      })
+      describe('Opintosuoritusote', function() {
+        before(OpinnotPage().avaaOpintosuoritusote(1))
+
+        it('näytetään', function() {
+        })
       })
     })
-    describe('Korkeakoulun opintosuoritusote', function() {
+    describe('Maisteri, jolla ensisijainen opiskeluoikeus', function() {
       before(
-        function() { triggerEvent(S('a.opintosuoritusote'), 'click') },
-        wait.until(opintosuoritusote.isVisible)
+        page.openPage,
+        page.oppijaHaku.search('090888-929X', page.isOppijaSelected('Harri')),
+        before(OpinnotPage().avaaOpintosuoritusote(2))
       )
-
+      it('opiskeluoikeus näytetään', function() {
+        expect(S('section.opiskeluoikeus h3').text()).to.equal('Ensisijainen opinto-oikeus')
+      })
+    })
+    describe('Keskeneräinen tutkinto', function() {
+      before(
+        page.openPage,
+        page.oppijaHaku.search('010675-9981', page.isOppijaSelected('Kikka')),
+        before(OpinnotPage().avaaOpintosuoritusote(1))
+      )
       it('näytetään', function() {
+        expect(S('section.opiskeluoikeus h3').text()).to.equal('Ensisijainen opinto-oikeus')
       })
     })
   })

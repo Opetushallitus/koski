@@ -20,8 +20,8 @@ class OpintosuoritusoteHtml(implicit val user: TorUser) {
         <link rel="stylesheet" type="text/css" href="/tor/css/opintosuoritusote.css"></link>
         <style>{ indentCss }</style>
       </head>
-      <body>
-        <div class="opintosuoritusote">
+      <body class="opintosuoritusote">
+        <div>
           <section>
             <h3 class="title">Opintosuoritusote</h3>
             <div class="date-now">{dateFormatter.format(LocalDate.now)}</div>
@@ -35,7 +35,7 @@ class OpintosuoritusoteHtml(implicit val user: TorUser) {
 
           {
           ensisijainenOpiskeluoikeus(opiskeluoikeudet).toList.map { ensisijainen =>
-            <section>
+            <section class="opiskeluoikeus">
               <h3>Ensisijainen opinto-oikeus</h3>
               <table class="ensisijainen-opiskeluoikeus">
                 <tr>
