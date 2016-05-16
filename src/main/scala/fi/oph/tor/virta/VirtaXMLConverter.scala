@@ -40,7 +40,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
       val opiskeluoikeus = KorkeakoulunOpiskeluoikeus(
         id = Some(new Random().nextInt()),
         versionumero = None,
-        lähdejärjestelmänId = Some(LähdejärjestelmäId(opiskeluoikeusNode \ "@avain" text, Koodistokoodiviite("virta", "lahdejarjestelma"))),
+        lähdejärjestelmänId = Some(LähdejärjestelmäId(opiskeluoikeusNode \ "@avain" text, requiredKoodi("lahdejarjestelma", "virta").get)),
         alkamispäivä = (opiskeluoikeusNode \ "AlkuPvm").headOption.map(alku => LocalDate.parse(alku.text)),
         arvioituPäättymispäivä = None,
         päättymispäivä = (opiskeluoikeusNode \ "LoppuPvm").headOption.map(loppu => LocalDate.parse(loppu.text)),
@@ -88,7 +88,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
             koulutusmoduuli = t,
             paikallinenId = None,
             arviointi = None,
-            tila = Koodistokoodiviite("KESKEN", "suorituksentila"),
+            tila = requiredKoodi("suorituksentila", "KESKEN").get,
             vahvistus = None,
             suorituskieli = None,
             osasuoritukset = None,
@@ -108,7 +108,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
             koulutusmoduuli = tutkinto(koulutuskoodi),
             paikallinenId = None,
             arviointi = None,
-            tila = Koodistokoodiviite("VALMIS", "suorituksentila"),
+            tila = requiredKoodi("suorituksentila", "VALMIS").get,
             vahvistus = None,
             suorituskieli = None,
             toimipiste = oppilaitos(node),
@@ -139,7 +139,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
           päivä = Some(LocalDate.parse(node \ "SuoritusPvm" text))
         ))
       ),
-      tila = Koodistokoodiviite("VALMIS", "suorituksentila"),
+      tila = requiredKoodi("suorituksentila", "VALMIS").get,
       vahvistus = None,
       suorituskieli = (node \\ "Kieli").headOption.flatMap(kieli => requiredKoodi("kieli", kieli.text.toUpperCase)),
       toimipiste = oppilaitos(node),
