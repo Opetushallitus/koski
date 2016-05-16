@@ -6,6 +6,7 @@ import fi.oph.tor.schema._
 import org.scalatest.{FunSpec, Matchers}
 
 import scala.collection.immutable.Seq
+import scala.xml.Node
 
 class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMethodsKorkeakoulu with SearchTestMethods {
   describe("Korkeakoulun opiskeluoikeudet") {
@@ -59,15 +60,18 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
         val get1 = authGet("opintosuoritusote/1.2.246.562.24.000000000011/1.2.246.562.10.56753942459") {
           verifyResponseStatus(200)
 
-          val tableRows: Seq[String] = (scala.xml.XML.loadString(response.body) \\ "tr").map { s =>
-            (s \ "td").map(_.text).mkString(" ").trim
+          val lines: Seq[String] = scala.xml.XML.loadString(response.body).flatMap(_.descendant_or_self).flatMap {
+            case tr: Node if tr.label == "tr" && tr.attribute("class").map(_.text).getOrElse("") != "header" => Some((tr \ "td").map(_.text).mkString(" ").trim)
+            case h3: Node if h3.label == "h3" => Some(h3.text.trim)
+            case _ => None
           }
-          val lines: Seq[String] = tableRows
+
           val ote: String = lines.mkString("\n")
 
           ote.trim should equal(
-            """|751101 Dipl.ins., konetekniikka
-              |
+            """|Suoritetut tutkinnot
+              |751101 Dipl.ins., konetekniikka
+              |Opintosuoritukset
               |751101 Dipl.ins., konetekniikka
               |K901-W Vapaasti valittavat opinnot (KON) 16 4 28.05.2015
               |Ene-39.4037 Laskennallisen virtausmekaniikan ja lämmönsiirron perusteet L 7 4 17.02.2015

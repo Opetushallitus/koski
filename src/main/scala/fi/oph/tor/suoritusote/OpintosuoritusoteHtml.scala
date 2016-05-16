@@ -23,7 +23,7 @@ class OpintosuoritusoteHtml(implicit val user: TorUser) {
       <body class="opintosuoritusote">
         <div>
           <section>
-            <h3 class="title">Opintosuoritusote</h3>
+            <h1 class="title">Opintosuoritusote</h1>
             <div class="date-now">{dateFormatter.format(LocalDate.now)}</div>
           </section>
 
@@ -51,17 +51,17 @@ class OpintosuoritusoteHtml(implicit val user: TorUser) {
           }
           }
 
-          <section>
+          <section class="suoritetut-tutkinnot">
             <h3>Suoritetut tutkinnot</h3>
             <table class="tutkinnot">
               { opiskeluoikeudet.flatMap(tutkinnot) }
             </table>
           </section>
 
-          <section>
+          <section class="opintosuoritukset">
             <h3 class="suoritukset-title">Opintosuoritukset</h3>
             <table class="suoritukset">
-              <tr>
+              <tr class="header">
                 <th class="tunnus"></th>
                 <th class="nimi"></th>
                 <th class="laajuus">Op</th>
