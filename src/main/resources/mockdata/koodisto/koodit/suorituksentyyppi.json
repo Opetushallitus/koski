@@ -118,6 +118,42 @@
       }
     ],
     "versio": 1
+  },
+  {
+    "koodiUri": "suorituksentyyppi_valma",
+    "koodiArvo": "valma",
+    "metadata": [
+      {
+        "nimi": "Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "suorituksentyyppi_luva",
+    "koodiArvo": "luva",
+    "metadata": [
+      {
+        "nimi": "Lukioon valmentava koulutus (LUVA)",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "suorituksentyyppi_perusopetuksenlisaopetus",
+    "koodiArvo": "perusopetuksenlisaopetus",
+    "metadata": [
+      {
+        "nimi": "Perusopetuksen lisäopetus",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
   }
 
 ]

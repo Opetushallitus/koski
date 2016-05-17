@@ -38,5 +38,35 @@
       "kieli" : "FI"
     } ],
     "versio" : 1
+  },
+  {
+    "koodiUri" : "opiskeluoikeudentyyppi_valma",
+    "koodiArvo" : "valma",
+    "metadata" : [ {
+      "nimi" : "Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)",
+      "lyhytNimi" : "Valma",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "opiskeluoikeudentyyppi_luva",
+    "koodiArvo" : "luva",
+    "metadata" : [ {
+      "nimi" : "Lukioon valmistava koulutus (LUVA)",
+      "lyhytNimi" : "Luva",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "opiskeluoikeudentyyppi_perusopetuksenlisaopetus",
+    "koodiArvo" : "perusopetuksenlisaopetus",
+    "metadata" : [ {
+      "nimi" : "Perusopetuksen lisäopetus",
+      "lyhytNimi" : "Perusopetuksen lisäopetus",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
   }
 ]
