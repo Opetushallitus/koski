@@ -17,7 +17,7 @@ case class PerusopetuksenOpiskeluoikeus(
   @Description("Onko tavoitteena perusopetuksen koko oppimäärän vai yksittäisen oppiaineen suoritus")
   @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("perusopetuksenoppimaara")
-  @KoodistoKoodiarvo("perusopetuksenoppiaine")
+  @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
   tavoite: Koodistokoodiviite,
   suoritukset: List[PerusopetuksenPäätasonSuoritus],
   tila: Option[YleissivistäväOpiskeluoikeudenTila],
@@ -55,6 +55,7 @@ case class PerusopetuksenVuosiluokanSuoritus(
   override def tarvitseeVahvistuksen = false
 }
 
+@Description("Perusopetuksen koko oppimäärän suoritus. Nämä suoritukset näkyvät päättötodistuksella.")
 case class PerusopetuksenOppimääränSuoritus(
   paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
@@ -72,6 +73,23 @@ case class PerusopetuksenOppimääränSuoritus(
   def arviointi: Option[List[Arviointi]] = None
 }
 
+@Description("Perusopetuksen yksittäisen oppiaineen oppimäärän suoritus erillisenä kokonaisuutena")
+case class PerusopetuksenOppiaineenOppimääränSuoritus(
+  paikallinenId: Option[String],
+  suorituskieli: Option[Koodistokoodiviite],
+  tila: Koodistokoodiviite,
+  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
+  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
+  toimipiste: OrganisaatioWithOid,
+  vahvistus: Option[Vahvistus] = None,
+  @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppiaineenoppimaara", koodistoUri = "suorituksentyyppi"),
+  koulutusmoduuli: PerusopetuksenOppiaine,
+  @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
+  arviointi: Option[List[YleissivistävänkoulutuksenArviointi]] = None
+) extends PerusopetuksenPäätasonSuoritus
+
+@Description("Perusopetuksen oppiaineen suoritus osana perusopetuksen oppimäärän tai vuosiluokan suoritusta")
 case class PerusopetuksenOppiaineenSuoritus(
   koulutusmoduuli: PerusopetuksenOppiaine,
   paikallinenId: Option[String],

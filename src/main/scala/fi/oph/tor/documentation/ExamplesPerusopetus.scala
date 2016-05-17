@@ -116,8 +116,41 @@ object ExamplesPerusopetus {
     ))
   )
 
+  val aineopiskelija = Oppija(
+    MockOppijat.eero.vainHenkilötiedot,
+    List(PerusopetuksenOpiskeluoikeus(
+      id = None,
+      versionumero = None,
+      lähdejärjestelmänId = None,
+      alkamispäivä = Some(date(2008, 8, 15)),
+      päättymispäivä = None,
+      oppilaitos = jyväskylänNormaalikoulu,
+      None,
+      suoritukset = List(
+        PerusopetuksenOppiaineenOppimääränSuoritus(
+          koulutusmoduuli = äidinkieli("AI1"),
+          paikallinenId = None,
+          suorituskieli = None,
+          tila = tilaValmis,
+          toimipiste = jyväskylänNormaalikoulu,
+          arviointi = arviointi(9),
+          vahvistus = vahvistus
+        )),
+      tila = Some(YleissivistäväOpiskeluoikeudenTila(
+        List(
+          YleissivistäväOpiskeluoikeusjakso(date(2008, 8, 15), Some(date(2016, 6, 3)), opiskeluoikeusAktiivinen),
+          YleissivistäväOpiskeluoikeusjakso(date(2016, 6, 4), None, opiskeluoikeusPäättynyt)
+        )
+      )),
+      tavoite = Koodistokoodiviite("perusopetuksenoppiaineenoppimaara", "suorituksentyyppi"),
+      läsnäolotiedot = None
+    ))
+  )
+
+
   val examples = List(
     Example("perusopetuksen oppimäärä - ysiluokkalainen", "Oppija on suorittamassa 9. luokkaa", ysiluokkalainen),
-    Example("perusopetuksen oppimäärä - päättötodistus", "Oppija on saanut perusopetuksen päättötodistuksen", päättötodistus)
+    Example("perusopetuksen oppimäärä - päättötodistus", "Oppija on saanut perusopetuksen päättötodistuksen", päättötodistus),
+    Example("perusopetuksen oppiaineen oppimäärä - päättötodistus", "Aikuisopiskelija on suorittanut peruskoulun äidinkielen oppimäärän", aineopiskelija)
   )
 }

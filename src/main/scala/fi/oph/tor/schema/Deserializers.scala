@@ -85,7 +85,8 @@ object PerusopetuksenPäätasonSuoritusDeserializer extends Deserializer[Perusop
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), PerusopetuksenPäätasonSuoritus] = {
     case (TypeInfo(PerusopetuksenPäätasonSuoritusClass, _), json) =>
       json match {
-        case suoritus: JObject if suoritus.values.contains("luokkaAste") => suoritus.extract[PerusopetuksenVuosiluokanSuoritus]
+        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("perusopetuksenvuosiluokka") => suoritus.extract[PerusopetuksenVuosiluokanSuoritus]
+        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("perusopetuksenoppiaineenoppimaara") => suoritus.extract[PerusopetuksenOppiaineenOppimääränSuoritus]
         case suoritus: JObject => suoritus.extract[PerusopetuksenOppimääränSuoritus]
       }
   }
