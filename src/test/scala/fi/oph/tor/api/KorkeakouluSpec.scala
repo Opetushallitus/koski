@@ -117,6 +117,68 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
         )
       }
 
+      it("AMK, keskeyttänyt") {
+        opintosuoritusote("100193-948U", "1.2.246.562.10.25619624254") should equal(
+          """|Suoritetut tutkinnot
+            |Opintosuoritukset
+            |106000 Hälsovård 5 4 13.09.2013
+            |106000 Patientsäkerhet och evidensbaserat vårdande 5 hyväksytty 12.02.2014
+            |106000 Kirurgisk vård 6 hyväksytty 06.06.2014
+            |106000 Medicinska ämnen I, Inremedicin 5 2 12.03.2014
+            |106000 Engelska, Akutvård 5 3 03.04.2014
+            |106000 Introduktion till högskolestudier 5 hyväksytty 06.11.2013
+            |106000 Klinisk vård I 5 3 17.12.2013
+            |106000 Inremedicinsk vård 9 hyväksytty 06.06.2014
+            |106000 Inhemska språk 1, finska för akutvårdare och fysioterapeuter, 2 sp 2 3 14.02.2014
+            |106000 Läkemedelsräkning, terminstentamen för AV, februari, 5 tal 0 hyväksytty 12.02.2014
+            |106000 Anatomi och fysiologi 5 1 15.11.2013
+            |106000 Inhemska språk 1, svenska för fysioterapeuter och akutvårdare, 3 sp 3 4 12.12.2013
+            |106000 Klinisk vård II 5 1 20.03.2014""".stripMargin
+        )
+      }
+
+      it("AMK, valmistunut") {
+        opintosuoritusote("101291-954C", "1.2.246.562.10.25619624254") should equal(
+          """|Suoritetut tutkinnot
+            |671112 Fysioterapeutti (AMK)
+            |Opintosuoritukset
+            |116000 Introduktion till högskolestudier 5 hyväksytty 28.10.2011
+            |116000 Finska för akutvård och ergo- och fysioterapi 5 5 17.03.2012
+            |116000 Hälsofrämjande strategier i fysioterapi 5 4 26.06.2012
+            |116000 Inriktad fysioterapi I - sjukhus 10 4 20.12.2012
+            |116000 Vetenskapsteori och metodik 10 5 13.12.2013
+            |116000 Arbetslivsorienterade projekt 0,5 hyväksytty 27.05.2015
+            |116000 Fördjupad yrkespraktik 10 hyväksytty 27.05.2015
+            |116000 Grundkurs i fysioterapi 5 3 09.12.2011
+            |116000 Medicinska ämnen I, Inremedicin 5 3 05.04.2012
+            |116000 Metoder i fysioterapi 5 4 16.11.2012
+            |116000 Inriktad fysioterapi II 10 5 19.04.2013
+            |116000 Orientation to Studies at the Faculty of Health Sciences 1,5 hyväksytty 15.11.2014
+            |116000 Yrkespraktik II - HVC 10 hyväksytty 20.12.2013
+            |116000 Förebyggandet av CRPS inom fysioterapi - En systematisk litteraturstudie 5 hyväksytty 09.06.2014
+            |116000 Anatomi, fysiologi och biomekanik 5 3 11.11.2011
+            |116000 Motorisk utveckling, kontroll och inlärning 5 5 20.12.2011
+            |116000 Beteendevetenskap och rehabilitering 5 4 15.06.2012
+            |116000 Tillämpad fysioterapeutisk bedömning 5 5 16.01.2013
+            |116000 Inriktad fysioterapi III 10 4 23.10.2013
+            |116000 Ländryggsbesvär - undersökning och behandling 7,5 hyväksytty 15.11.2014
+            |116000 Breddstudier 3 hyväksytty 15.11.2014
+            |116000 Svenska 5 5 02.12.2011
+            |116000 Idrottsvetenskap 5 4 19.04.2012
+            |116000 Organisation och Ledarskap 5 4 26.10.2012
+            |116000 Engelska 5 5 07.03.2013
+            |116000 Grundfrågor inom fysioterapiforskning 5 hyväksytty 10.12.2014
+            |116000 Practical Training, Hospital 10 hyväksytty 03.06.2013
+            |116000 Förebyggandet av CRPS inom fysioterapi - En systematisk litteraturstudie 10 3 19.05.2015
+            |671112 Fysioterapeutti (AMK)
+            |116000 Rörelseapparatens anatomi 5 5 16.12.2011
+            |116000 Bedömningsmetoder i fysioterapi 5 5 15.05.2012
+            |116000 Medicinska ämnen II (psykiatri, neurologi och geriatrik) 5 4 25.10.2012
+            |116000 Kunskapsutveckling inom fysioterapi 5 4 14.06.2013
+            |116000 Idrottsmedicin 7,5 hyväksytty 15.11.2014
+            |116000 Yrkespraktik III, neurologisk fysioterapi 10 hyväksytty 08.04.2014""".stripMargin
+        )
+      }
     }
   }
 
