@@ -37,7 +37,7 @@ case class AmmatilliseenKoulutukseenValmentavanKoulutuksenSuoritus(
   @KoodistoKoodiarvo("valma")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valma", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: Valma
-) extends PerusopetuksenPäätasonSuoritus {
+) extends Suoritus {
   def arviointi: Option[List[Arviointi]] = None
 }
 
