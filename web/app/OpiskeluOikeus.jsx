@@ -7,7 +7,17 @@ import Dropdown from './Dropdown.jsx'
 
 export const opiskeluOikeusChange = Bacon.Bus()
 
+const opiskeluOikeudenTila = (oo) => {
+  if (oo.tila) {
+    let jakso = R.last(oo.tila.opiskeluoikeusjaksot)
+    return jakso ? jakso.tila.nimi.fi : ""
+  } else {
+    return ""
+  }
+}
+
 export const OpiskeluOikeus = React.createClass({
+
   render() {
     let {opiskeluOikeus, lens} = this.props
     return (
@@ -20,7 +30,7 @@ export const OpiskeluOikeus = React.createClass({
               return (
                 <div className="suoritus" key={index}>
                   <span className="tutkinto">{suoritus.koulutusmoduuli.tunniste.nimi.fi}</span>
-                  <span className="tutkinnon-tila">({suoritus.tila.nimi.fi})</span>
+                  <span className="tutkinnon-tila">(Opiskeluoikeus {opiskeluOikeudenTila(opiskeluOikeus)}, {suoritus.tila.nimi.fi})</span>
                   <Todistus suoritus={suoritus} opiskeluOikeus={opiskeluOikeus}/>
                   <TutkinnonRakenne suoritus={suoritus} lens={suoritusLens} />
                 </div>
