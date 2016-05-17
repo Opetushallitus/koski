@@ -19,8 +19,10 @@ case class AmmatillinenOpiskeluoikeus(
   suoritukset: List[AmmatillisenTutkinnonSuoritus],
   hojks: Option[Hojks],
   @Description("Opiskelijan suorituksen tavoite-tieto kertoo sen, suorittaako opiskelija tutkintotavoitteista koulutusta (koko tutkintoa) vai tutkinnon osa tavoitteista koulutusta (tutkinnon osaa)")
-  @KoodistoUri("opintojentavoite")
-  tavoite: Option[Koodistokoodiviite],
+  @KoodistoUri("suorituksentyyppi")
+  @KoodistoKoodiarvo("ammatillinentutkinto")
+  @KoodistoKoodiarvo("ammatillisentutkinnonosa")
+  tavoite: Koodistokoodiviite,
   tila: Option[AmmatillinenOpiskeluoikeudenTila],
   läsnäolotiedot: Option[AmmatillisenLäsnäolotiedot],
   @KoodistoKoodiarvo("ammatillinenkoulutus")

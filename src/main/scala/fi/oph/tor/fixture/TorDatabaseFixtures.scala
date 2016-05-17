@@ -72,7 +72,7 @@ object OpiskeluOikeusTestData {
         None
       )),
       hojks = None,
-      None,
+      Koodistokoodiviite("ammatillinentutkinto", "suorituksentyyppi"),
       None,
       None
     )

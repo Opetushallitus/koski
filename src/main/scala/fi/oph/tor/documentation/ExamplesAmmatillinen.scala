@@ -69,6 +69,7 @@ object AmmatillinenExampleData {
   def näyttö(kuvaus: String, paikka: String, arviointi: Option[NäytönArviointi] = None) = Näyttö(
     kuvaus, NäytönSuorituspaikka(Koodistokoodiviite("1", Some("työpaikka"), "ammatillisennaytonsuorituspaikka", Some(1)), paikka), arviointi)
 
+  lazy val tavoiteTutkinto = Koodistokoodiviite("ammatillinentutkinto", "suorituksentyyppi")
   lazy val suoritustapaNäyttö = Suoritustapa(Koodistokoodiviite("naytto", Some("Näyttö"), None, "suoritustapa", Some(1)))
   lazy val suoritustapaOps = Suoritustapa(Koodistokoodiviite("ops", Some("Opetussuunnitelman mukainen"), "suoritustapa", Some(1)))
   lazy val järjestämismuotoOppisopimus = Koodistokoodiviite("20", Some("Oppisopimusmuotoinen"), "jarjestamismuoto", Some(1))
@@ -121,7 +122,7 @@ object AmmatillinenExampleData {
       oppilaitos, None,
       List(tutkinto.copy(osasuoritukset = osat)),
       hojks = None,
-      None,
+      tavoiteTutkinto,
       None,
       None
     )
@@ -262,7 +263,7 @@ object ExamplesAmmatillinen {
           ))
         )),
         hojks = Some(Hojks(hojksTehty = true, opetusryhmä = Some(Koodistokoodiviite("1", Some("Yleinen opetusryhmä"), "opetusryhma", None)))),
-        Some(Koodistokoodiviite("tutkinto", Some("Tutkinto"), "opintojentavoite", None)),
+        tavoiteTutkinto,
         Some(AmmatillinenOpiskeluoikeudenTila(
           List(
             AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), Some(date(2012, 12, 31)), opiskeluoikeusAktiivinen, Some(Koodistokoodiviite("1", Some("Valtionosuusrahoitteinen koulutus"), "opintojenrahoitus", None))),
@@ -339,7 +340,7 @@ object AmmatillinenTodistusExample {
           ))
         )),
         hojks = None,
-        Some(Koodistokoodiviite("tutkinto", Some("Tutkinto"), "opintojentavoite", None)),
+        tavoiteTutkinto,
         Some(AmmatillinenOpiskeluoikeudenTila(
           List(
             AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), Some(date(2016, 5, 31)), opiskeluoikeusAktiivinen, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None))),
@@ -382,12 +383,12 @@ object AmmatillinenFullExample {
     Henkilö.withOid("1.2.246.562.24.00000000001"),
     List(
       AmmatillinenOpiskeluoikeus(
-        None,
-        None,
-        Some(LähdejärjestelmäId("847823465", lähdeWinnova)),
-        Some(date(2012, 9, 1)),
-        Some(date(2015, 5, 31)),
-        Some(date(2016, 1, 9)),
+        id = None,
+        versionumero = None,
+        lähdejärjestelmänId = Some(LähdejärjestelmäId("847823465", lähdeWinnova)),
+        alkamispäivä = Some(date(2012, 9, 1)),
+        arvioituPäättymispäivä = Some(date(2015, 5, 31)),
+        päättymispäivä = Some(date(2016, 1, 9)),
         stadinAmmattiopisto, None,
         List(tutkintoSuoritus(
           tutkintoKoulutus = AmmatillinenTutkintoKoulutus(
@@ -410,14 +411,14 @@ object AmmatillinenFullExample {
           osasuoritukset = Some(tutkinnonOsat)
         )),
         hojks = None,
-        Some(Koodistokoodiviite("tutkinto", Some("Tutkinto"), "opintojentavoite", None)),
-        Some(AmmatillinenOpiskeluoikeudenTila(
+        tavoite = tavoiteTutkinto,
+        tila = Some(AmmatillinenOpiskeluoikeudenTila(
           List(
             AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), Some(date(2016, 1, 9)), opiskeluoikeusAktiivinen, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None))),
             AmmatillinenOpiskeluoikeusjakso(date(2016, 1, 10), None, opiskeluoikeusPäättynyt, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
           )
         )),
-        None
+        läsnäolotiedot = None
       )
     )
   )

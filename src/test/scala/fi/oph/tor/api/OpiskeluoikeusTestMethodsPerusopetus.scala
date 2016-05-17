@@ -3,6 +3,7 @@ package fi.oph.tor.api
 import java.time.LocalDate.{of => date}
 
 import fi.oph.tor.documentation.ExampleData.jyväskylä
+import fi.oph.tor.documentation.PerusopetusExampleData
 import fi.oph.tor.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.tor.localization.LocalizedStringImplicits._
 import fi.oph.tor.schema._
@@ -12,7 +13,7 @@ trait OpiskeluoikeusTestMethodsPerusopetus extends OpiskeluOikeusTestMethods[Per
 
   override def defaultOpiskeluoikeus = PerusopetuksenOpiskeluoikeus(
     id = None, versionumero = None, lähdejärjestelmänId = None, alkamispäivä = None, päättymispäivä = None,
-    oppilaitos = jyväskylänNormaalikoulu, koulutustoimija = None,
+    oppilaitos = jyväskylänNormaalikoulu, koulutustoimija = None, tavoite = PerusopetusExampleData.tavoiteOppimäärä,
     suoritukset = List(päättötodistusSuoritus),
     tila = None, läsnäolotiedot = None
   )

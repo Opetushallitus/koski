@@ -1,5 +1,6 @@
 package fi.oph.tor.api
 
+import fi.oph.tor.documentation.AmmatillinenExampleData
 import fi.oph.tor.organisaatio.MockOrganisaatiot
 import fi.oph.tor.schema._
 
@@ -27,6 +28,6 @@ trait OpiskeluoikeusTestMethodsAmmatillinen extends OpiskeluOikeusTestMethods[Am
   def opiskeluoikeus(suoritus: AmmatillisenTutkinnonSuoritus = tutkintoSuoritus) = AmmatillinenOpiskeluoikeus(None, None, None, None, None, None,
     oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto), None,
     suoritukset = List(suoritus),
-    None, None, None, None
+    None, AmmatillinenExampleData.tavoiteTutkinto, None, None
   )
 }
