@@ -1,0 +1,506 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+    <SOAP-ENV:Header/>
+    <SOAP-ENV:Body>
+        <virtaluku:OpiskelijanKaikkiTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
+            <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2015/09/01">
+                <virta:Opiskelija avain="15469">
+                    <virta:Henkilotunnus>100292-980D</virta:Henkilotunnus>
+                    <virta:Opiskeluoikeudet>
+                        <virta:Opiskeluoikeus opiskelijaAvain="15469" avain="17395">
+                            <virta:AlkuPvm>2014-08-25</virta:AlkuPvm>
+                            <virta:LoppuPvm>2019-07-31</virta:LoppuPvm>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2014-08-25</virta:AlkuPvm>
+                                <virta:Koodi>1</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tyyppi>1</virta:Tyyppi>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Jakso koulutusmoduulitunniste="Mediekultur">
+                                <virta:AlkuPvm>2014-08-25</virta:AlkuPvm>
+                                <virta:LoppuPvm>2019-07-31</virta:LoppuPvm>
+                                <virta:Koulutuskoodi>621601</virta:Koulutuskoodi>
+                                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                                <virta:Koulutuskieli>sv</virta:Koulutuskieli>
+                                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                            </virta:Jakso>
+                            <virta:Koulutusala versio="opmala">2</virta:Koulutusala>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>240</virta:Opintopiste>
+                            </virta:Laajuus>
+                        </virta:Opiskeluoikeus>
+                    </virta:Opiskeluoikeudet>
+                    <virta:LukukausiIlmoittautumiset>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="17395" opiskelijaAvain="15469">
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2014-07-03</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2015-07-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="17395" opiskelijaAvain="15469">
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2014-07-03</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="17395" opiskelijaAvain="15469">
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2015-07-13</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2015-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2015-12-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="17395" opiskelijaAvain="15469">
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2015-07-13</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2016-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2016-07-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                    </virta:LukukausiIlmoittautumiset>
+                    <virta:Opintosuoritukset>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="17395" opiskelijaAvain="15469" koulutusmoduulitunniste="601000" avain="279296">
+                            <virta:SuoritusPvm>2014-12-28</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Engelska muntlig framställning (MK)</virta:Nimi>
+                            <virta:Nimi kieli="en">English Oral Presentations (MK)</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutuskoodi>621601</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="17395" opiskelijaAvain="15469" koulutusmoduulitunniste="601000" avain="279301">
+                            <virta:SuoritusPvm>2015-06-01</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Webbanalys och sociala medier</virta:Nimi>
+                            <virta:Nimi kieli="en">Web Analysis and Social Media</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutuskoodi>621601</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="17395" opiskelijaAvain="15469" koulutusmoduulitunniste="601000" avain="279306">
+                            <virta:SuoritusPvm>2015-12-18</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Foto och Klipp: Ljussättning</virta:Nimi>
+                            <virta:Nimi kieli="en">Cinematography and Editing: Lighting</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>621601</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="17395" opiskelijaAvain="15469" koulutusmoduulitunniste="601000" avain="317517">
+                            <virta:SuoritusPvm>2015-09-14</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Videoproduktion, foto och redigering</virta:Nimi>
+                            <virta:Nimi kieli="en">Videoproduction, photography and editing</virta:Nimi>
+                            <virta:Koulutuskoodi>621601</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="17395" opiskelijaAvain="15469" koulutusmoduulitunniste="601000" avain="279293">
+                            <virta:SuoritusPvm>2014-11-24</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Fältkurs i analog kommunikation 1</virta:Nimi>
+                            <virta:Nimi kieli="en">Field Communication 1</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>621601</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="17395" opiskelijaAvain="15469" koulutusmoduulitunniste="601000" avain="279298">
+                            <virta:SuoritusPvm>2015-02-02</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Innovation och konceptualisering</virta:Nimi>
+                            <virta:Nimi kieli="en">Innovations and Concepts</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>621601</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="17395" opiskelijaAvain="15469" koulutusmoduulitunniste="601000" avain="279303">
+                            <virta:SuoritusPvm>2015-12-31</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Visuellt berättande</virta:Nimi>
+                            <virta:Nimi kieli="en">Visual Storytelling</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>621601</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="17395" opiskelijaAvain="15469" koulutusmoduulitunniste="601000" avain="279308">
+                            <virta:SuoritusPvm>2016-02-17</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>5</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Arbetslivsfinska för medie- och multimediebranschen</virta:Nimi>
+                            <virta:Nimi kieli="en">Professional Finnish for the media industries</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutuskoodi>621601</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="17395" opiskelijaAvain="15469" koulutusmoduulitunniste="601000" avain="279295">
+                            <virta:SuoritusPvm>2014-12-22</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Introduktion till högskolestudier</virta:Nimi>
+                            <virta:Nimi kieli="en">Introduction to University Studies</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>621601</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="17395" opiskelijaAvain="15469" koulutusmoduulitunniste="601000" avain="279300">
+                            <virta:SuoritusPvm>2015-02-20</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Stil och genrer</virta:Nimi>
+                            <virta:Nimi kieli="en">Stil och genrer</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>621601</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="17395" opiskelijaAvain="15469" koulutusmoduulitunniste="601000" avain="279305">
+                            <virta:SuoritusPvm>2015-12-15</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Critical Media Analysis</virta:Nimi>
+                            <virta:Nimi kieli="en">Critical Media Analysis</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutuskoodi>621601</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="17395" opiskelijaAvain="15469" koulutusmoduulitunniste="601000" avain="317516">
+                            <virta:SuoritusPvm>2015-07-31</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>11</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Videoproduktion, foto och redigering</virta:Nimi>
+                            <virta:Nimi kieli="en">Videoproduction, photography and editing</virta:Nimi>
+                            <virta:Koulutuskoodi>621601</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="17395" opiskelijaAvain="15469" koulutusmoduulitunniste="601000" avain="279292">
+                            <virta:SuoritusPvm>2014-11-06</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>5</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Finska, muntlig framställning för mediekultur årsk 1</virta:Nimi>
+                            <virta:Nimi kieli="en">Finnish, oral presentation</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutuskoodi>621601</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="17395" opiskelijaAvain="15469" koulutusmoduulitunniste="601000" avain="279297">
+                            <virta:SuoritusPvm>2014-12-30</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>10</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Introduktion till berättande</virta:Nimi>
+                            <virta:Nimi kieli="en">Introduction to Storytelling</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>621601</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="17395" opiskelijaAvain="15469" koulutusmoduulitunniste="601000" avain="279302">
+                            <virta:SuoritusPvm>2015-06-07</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>10</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Reportage och inslag</virta:Nimi>
+                            <virta:Nimi kieli="en">Reportage och inslag</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>621601</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="17395" opiskelijaAvain="15469" koulutusmoduulitunniste="601000" avain="279307">
+                            <virta:SuoritusPvm>2016-01-14</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>10</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Dokumentärt berättande</virta:Nimi>
+                            <virta:Nimi kieli="en">Documentary Storytelling</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>621601</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="17395" opiskelijaAvain="15469" koulutusmoduulitunniste="601000" avain="279294">
+                            <virta:SuoritusPvm>2014-12-19</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>10</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>2</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Introduktion till medieproduktion</virta:Nimi>
+                            <virta:Nimi kieli="en">Introduction to Media Production</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>621601</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="17395" opiskelijaAvain="15469" koulutusmoduulitunniste="601000" avain="279299">
+                            <virta:SuoritusPvm>2015-06-01</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Mediespråk och journalistik</virta:Nimi>
+                            <virta:Nimi kieli="en">Media Swedish and Journalism</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>621601</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="17395" opiskelijaAvain="15469" koulutusmoduulitunniste="601000" avain="279304">
+                            <virta:SuoritusPvm>2015-11-24</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Engelska (MK)</virta:Nimi>
+                            <virta:Nimi kieli="en">English (MK)</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutuskoodi>621601</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="17395" opiskelijaAvain="15469" koulutusmoduulitunniste="601000" avain="279309">
+                            <virta:SuoritusPvm>2016-04-11</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Personregi</virta:Nimi>
+                            <virta:Nimi kieli="en">Directing Actors</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>621601</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">2</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                    </virta:Opintosuoritukset>
+                </virta:Opiskelija>
+            </virta:Virta>
+        </virtaluku:OpiskelijanKaikkiTiedotResponse>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

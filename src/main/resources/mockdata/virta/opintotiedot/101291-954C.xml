@@ -1,0 +1,919 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+    <SOAP-ENV:Header/>
+    <SOAP-ENV:Body>
+        <virtaluku:OpiskelijanKaikkiTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
+            <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2015/09/01">
+                <virta:Opiskelija avain="12058">
+                    <virta:Henkilotunnus>101291-954C</virta:Henkilotunnus>
+                    <virta:Opiskeluoikeudet>
+                        <virta:Opiskeluoikeus opiskelijaAvain="12058" avain="14070">
+                            <virta:AlkuPvm>2011-08-25</virta:AlkuPvm>
+                            <virta:LoppuPvm>2015-05-29</virta:LoppuPvm>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2011-08-25</virta:AlkuPvm>
+                                <virta:LoppuPvm>2015-05-29</virta:LoppuPvm>
+                                <virta:Koodi>1</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2015-05-30</virta:AlkuPvm>
+                                <virta:Koodi>3</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tyyppi>1</virta:Tyyppi>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Jakso koulutusmoduulitunniste="Fysioterapi">
+                                <virta:AlkuPvm>2011-08-25</virta:AlkuPvm>
+                                <virta:LoppuPvm>2015-05-29</virta:LoppuPvm>
+                                <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                                <virta:Koulutuskieli>sv</virta:Koulutuskieli>
+                                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                                <virta:Patevyys>16</virta:Patevyys>
+                            </virta:Jakso>
+                            <virta:Koulutusala versio="opmala">7</virta:Koulutusala>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>210</virta:Opintopiste>
+                            </virta:Laajuus>
+                        </virta:Opiskeluoikeus>
+                    </virta:Opiskeluoikeudet>
+                    <virta:LukukausiIlmoittautumiset>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="14070" opiskelijaAvain="12058">
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2013-08-11</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2013-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2013-12-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="14070" opiskelijaAvain="12058">
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2012-08-01</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2013-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2013-07-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="14070" opiskelijaAvain="12058">
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2011-07-21</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2011-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2011-12-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="14070" opiskelijaAvain="12058">
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2013-08-11</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2014-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2014-07-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="14070" opiskelijaAvain="12058">
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2011-07-21</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2012-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2012-07-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="14070" opiskelijaAvain="12058">
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2014-08-05</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="14070" opiskelijaAvain="12058">
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2012-08-01</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2012-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2012-12-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="14070" opiskelijaAvain="12058">
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2014-08-05</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2015-07-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                    </virta:LukukausiIlmoittautumiset>
+                    <virta:Opintosuoritukset>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232422">
+                            <virta:SuoritusPvm>2011-10-28</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Introduktion till högskolestudier</virta:Nimi>
+                            <virta:Nimi kieli="en">Introduction to University Studies</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232427">
+                            <virta:SuoritusPvm>2012-03-17</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>5</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Finska för akutvård och ergo- och fysioterapi</virta:Nimi>
+                            <virta:Nimi kieli="en">Finnish</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232432">
+                            <virta:SuoritusPvm>2012-06-26</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Hälsofrämjande strategier i fysioterapi</virta:Nimi>
+                            <virta:Nimi kieli="en">Health Promotion Strategies in Physiotherapy</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232437">
+                            <virta:SuoritusPvm>2012-12-20</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>10</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Inriktad fysioterapi I - sjukhus</virta:Nimi>
+                            <virta:Nimi kieli="en">Applied Physiotherapy I - Hospital</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                            <virta:TKILaajuusMuu>
+                                <virta:Opintopiste>1</virta:Opintopiste>
+                            </virta:TKILaajuusMuu>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232442">
+                            <virta:SuoritusPvm>2013-12-13</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>10</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>5</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Vetenskapsteori och metodik</virta:Nimi>
+                            <virta:Nimi kieli="en">Theory of Science and Methodology</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                            <virta:TKILaajuusMuu>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:TKILaajuusMuu>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232447">
+                            <virta:SuoritusPvm>2015-05-27</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>0.5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Arbetslivsorienterade projekt</virta:Nimi>
+                            <virta:Nimi kieli="en">Projects in Working Life</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="313409">
+                            <virta:SuoritusPvm>2015-05-27</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>10</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Fördjupad yrkespraktik</virta:Nimi>
+                            <virta:Nimi kieli="en">Extension studies practice</virta:Nimi>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                            <virta:TKILaajuusHarjoittelu>
+                                <virta:Opintopiste>10</virta:Opintopiste>
+                            </virta:TKILaajuusHarjoittelu>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232424">
+                            <virta:SuoritusPvm>2011-12-09</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Grundkurs i fysioterapi</virta:Nimi>
+                            <virta:Nimi kieli="en">Elementary Course in Physiotherapy</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232429">
+                            <virta:SuoritusPvm>2012-04-05</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Medicinska ämnen I, Inremedicin</virta:Nimi>
+                            <virta:Nimi kieli="en">Medical Studies I</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232434">
+                            <virta:SuoritusPvm>2012-11-16</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Metoder i fysioterapi</virta:Nimi>
+                            <virta:Nimi kieli="en">Physiotherapeutic Methods</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232439">
+                            <virta:SuoritusPvm>2013-04-19</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>10</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>5</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Inriktad fysioterapi II</virta:Nimi>
+                            <virta:Nimi kieli="en">Applied Physiotherapy II</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232444">
+                            <virta:SuoritusPvm>2014-11-15</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>1.5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>3</virta:Rooli>
+                                <virta:Koodi>UK</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Orientation to Studies at the Faculty of Health Sciences</virta:Nimi>
+                            <virta:Nimi kieli="en">Orientation to Studies at the Faculty of Health Sciences</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                            <virta:HyvaksilukuPvm>2014-12-16</virta:HyvaksilukuPvm>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="313406">
+                            <virta:SuoritusPvm>2013-12-20</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>10</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Yrkespraktik II - HVC</virta:Nimi>
+                            <virta:Nimi kieli="en">Practical Training II - Health Care Centre</virta:Nimi>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                            <virta:TKILaajuusHarjoittelu>
+                                <virta:Opintopiste>10</virta:Opintopiste>
+                            </virta:TKILaajuusHarjoittelu>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="322753">
+                            <virta:SuoritusPvm>2014-06-09</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Förebyggandet av CRPS inom fysioterapi - En systematisk litteraturstudie</virta:Nimi>
+                            <virta:Nimi kieli="en">The Physiotherapeutic Prevention of CRPS - A systematic Literature Review</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                            <virta:TKILaajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:TKILaajuus>
+                            <virta:Opinnaytetyo>true</virta:Opinnaytetyo>
+                            <virta:Hankkeistettu>true</virta:Hankkeistettu>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232421">
+                            <virta:SuoritusPvm>2011-11-11</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Anatomi, fysiologi och biomekanik</virta:Nimi>
+                            <virta:Nimi kieli="en">Anatomy, Physiology and Biomechanics</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232426">
+                            <virta:SuoritusPvm>2011-12-20</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>5</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Motorisk utveckling, kontroll och inlärning</virta:Nimi>
+                            <virta:Nimi kieli="en">Motor development, control and learning</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232431">
+                            <virta:SuoritusPvm>2012-06-15</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Beteendevetenskap och rehabilitering</virta:Nimi>
+                            <virta:Nimi kieli="en">Behaviour Science and Rehabilitation</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232436">
+                            <virta:SuoritusPvm>2013-01-16</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>5</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Tillämpad fysioterapeutisk bedömning</virta:Nimi>
+                            <virta:Nimi kieli="en">Applied Pt Assessment</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                            <virta:TKILaajuusMuu>
+                                <virta:Opintopiste>1</virta:Opintopiste>
+                            </virta:TKILaajuusMuu>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232441">
+                            <virta:SuoritusPvm>2013-10-23</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>10</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Inriktad fysioterapi III</virta:Nimi>
+                            <virta:Nimi kieli="en">Applied Physiotherapy III</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232446">
+                            <virta:SuoritusPvm>2014-11-15</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>7.5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>3</virta:Rooli>
+                                <virta:Koodi>UK</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Ländryggsbesvär - undersökning och behandling</virta:Nimi>
+                            <virta:Nimi kieli="en">Low Back Pain - Examination and Clinical Management</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                            <virta:HyvaksilukuPvm>2014-12-16</virta:HyvaksilukuPvm>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="313408">
+                            <virta:SuoritusPvm>2014-11-15</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>3</virta:Rooli>
+                                <virta:Koodi>UM</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Breddstudier</virta:Nimi>
+                            <virta:Nimi kieli="en">Extension studies</virta:Nimi>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232423">
+                            <virta:SuoritusPvm>2011-12-02</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>5</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Svenska</virta:Nimi>
+                            <virta:Nimi kieli="en">Swedish as Mother Tongue</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232428">
+                            <virta:SuoritusPvm>2012-04-19</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Idrottsvetenskap</virta:Nimi>
+                            <virta:Nimi kieli="en">Physical Education</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232433">
+                            <virta:SuoritusPvm>2012-10-26</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Organisation och Ledarskap</virta:Nimi>
+                            <virta:Nimi kieli="en">Organization and Leadership</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232438">
+                            <virta:SuoritusPvm>2013-03-07</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>5</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Engelska</virta:Nimi>
+                            <virta:Nimi kieli="en">English</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232443">
+                            <virta:SuoritusPvm>2014-12-10</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Grundfrågor inom fysioterapiforskning</virta:Nimi>
+                            <virta:Nimi kieli="en">Majors Issues of Physiotherapy</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                            <virta:TKILaajuusMuu>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:TKILaajuusMuu>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="313405">
+                            <virta:SuoritusPvm>2013-06-03</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>10</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Practical Training, Hospital</virta:Nimi>
+                            <virta:Nimi kieli="en">Practical Training I - Hospital</virta:Nimi>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                            <virta:TKILaajuusHarjoittelu>
+                                <virta:Opintopiste>10</virta:Opintopiste>
+                            </virta:TKILaajuusHarjoittelu>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="322752">
+                            <virta:SuoritusPvm>2015-05-19</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>10</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Förebyggandet av CRPS inom fysioterapi - En systematisk litteraturstudie</virta:Nimi>
+                            <virta:Nimi kieli="en">The Physiotherapeutic Prevention of CRPS - A systematic Literature Review</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                            <virta:TKILaajuus>
+                                <virta:Opintopiste>10</virta:Opintopiste>
+                            </virta:TKILaajuus>
+                            <virta:Opinnaytetyo>true</virta:Opinnaytetyo>
+                            <virta:Hankkeistettu>true</virta:Hankkeistettu>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="12058-14070">
+                            <virta:SuoritusPvm>2015-05-29</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>210</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Laji>1</virta:Laji>
+                            <virta:Nimi kieli="sv">YH-examen inom hälsovård och det sociala området, Fysioterapeut (YH)</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                            <virta:Patevyys>16</virta:Patevyys>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232425">
+                            <virta:SuoritusPvm>2011-12-16</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>5</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Rörelseapparatens anatomi</virta:Nimi>
+                            <virta:Nimi kieli="en">Functional Anatomy</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232430">
+                            <virta:SuoritusPvm>2012-05-15</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>5</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Bedömningsmetoder i fysioterapi</virta:Nimi>
+                            <virta:Nimi kieli="en">Assessment Methods in Physiotherapy</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232435">
+                            <virta:SuoritusPvm>2012-10-25</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Medicinska ämnen II (psykiatri, neurologi och geriatrik)</virta:Nimi>
+                            <virta:Nimi kieli="en">Medical Studies II ( Psychiatry, Neurology and Geriatrics)</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232440">
+                            <virta:SuoritusPvm>2013-06-14</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Kunskapsutveckling inom fysioterapi</virta:Nimi>
+                            <virta:Nimi kieli="en">Knowledge Development in Physiotherapy</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                            <virta:TKILaajuusMuu>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:TKILaajuusMuu>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="232445">
+                            <virta:SuoritusPvm>2014-11-15</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>7.5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>3</virta:Rooli>
+                                <virta:Koodi>UK</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Idrottsmedicin</virta:Nimi>
+                            <virta:Nimi kieli="en">Sports Medicine</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                            <virta:HyvaksilukuPvm>2014-12-16</virta:HyvaksilukuPvm>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="14070" opiskelijaAvain="12058" koulutusmoduulitunniste="116000" avain="313407">
+                            <virta:SuoritusPvm>2014-04-08</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>10</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Yrkespraktik III, neurologisk fysioterapi</virta:Nimi>
+                            <virta:Nimi kieli="en">Neurological Physiotherapy</virta:Nimi>
+                            <virta:Koulutuskoodi>671112</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                            <virta:TKILaajuusHarjoittelu>
+                                <virta:Opintopiste>10</virta:Opintopiste>
+                            </virta:TKILaajuusHarjoittelu>
+                        </virta:Opintosuoritus>
+                    </virta:Opintosuoritukset>
+                </virta:Opiskelija>
+            </virta:Virta>
+        </virtaluku:OpiskelijanKaikkiTiedotResponse>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

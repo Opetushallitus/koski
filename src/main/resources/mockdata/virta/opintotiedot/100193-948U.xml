@@ -1,0 +1,350 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+    <SOAP-ENV:Header/>
+    <SOAP-ENV:Body>
+        <virtaluku:OpiskelijanKaikkiTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
+            <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2015/09/01">
+                <virta:Opiskelija avain="13701">
+                    <virta:Henkilotunnus>100193-948U</virta:Henkilotunnus>
+                    <virta:Opiskeluoikeudet>
+                        <virta:Opiskeluoikeus opiskelijaAvain="13701" avain="16526">
+                            <virta:AlkuPvm>2013-08-26</virta:AlkuPvm>
+                            <virta:LoppuPvm>2014-08-27</virta:LoppuPvm>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2013-08-26</virta:AlkuPvm>
+                                <virta:LoppuPvm>2014-08-27</virta:LoppuPvm>
+                                <virta:Koodi>1</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2014-08-28</virta:AlkuPvm>
+                                <virta:Koodi>5</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tyyppi>1</virta:Tyyppi>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Jakso koulutusmoduulitunniste="Akutvård">
+                                <virta:AlkuPvm>2013-08-26</virta:AlkuPvm>
+                                <virta:LoppuPvm>2014-08-27</virta:LoppuPvm>
+                                <virta:Koulutuskoodi>671116</virta:Koulutuskoodi>
+                                <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                                <virta:Koulutuskieli>sv</virta:Koulutuskieli>
+                                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                                <virta:Patevyys>12</virta:Patevyys>
+                            </virta:Jakso>
+                            <virta:Koulutusala versio="opmala">7</virta:Koulutusala>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>240</virta:Opintopiste>
+                            </virta:Laajuus>
+                        </virta:Opiskeluoikeus>
+                    </virta:Opiskeluoikeudet>
+                    <virta:LukukausiIlmoittautumiset>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="16526" opiskelijaAvain="13701">
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2013-07-10</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2014-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2014-07-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="16526" opiskelijaAvain="13701">
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2013-07-10</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2013-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2013-12-31</virta:LoppuPvm>
+                        </virta:LukukausiIlmoittautuminen>
+                    </virta:LukukausiIlmoittautumiset>
+                    <virta:Opintosuoritukset>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="16526" opiskelijaAvain="13701" koulutusmoduulitunniste="106000" avain="249113">
+                            <virta:SuoritusPvm>2013-09-13</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Hälsovård</virta:Nimi>
+                            <virta:Nimi kieli="en">Health Care</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671116</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                            <virta:TKILaajuusMuu>
+                                <virta:Opintopiste>1</virta:Opintopiste>
+                            </virta:TKILaajuusMuu>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="16526" opiskelijaAvain="13701" koulutusmoduulitunniste="106000" avain="249118">
+                            <virta:SuoritusPvm>2014-02-12</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Patientsäkerhet och evidensbaserat vårdande</virta:Nimi>
+                            <virta:Nimi kieli="en">Patient Safety and Bases in Evidence Based Care</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671116</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                            <virta:TKILaajuusMuu>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:TKILaajuusMuu>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="16526" opiskelijaAvain="13701" koulutusmoduulitunniste="106000" avain="315091">
+                            <virta:SuoritusPvm>2014-06-06</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>6</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Kirurgisk vård</virta:Nimi>
+                            <virta:Nimi kieli="en">Surgical care</virta:Nimi>
+                            <virta:Koulutuskoodi>671116</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="16526" opiskelijaAvain="13701" koulutusmoduulitunniste="106000" avain="249115">
+                            <virta:SuoritusPvm>2014-03-12</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>2</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Medicinska ämnen I, Inremedicin</virta:Nimi>
+                            <virta:Nimi kieli="en">Medical studies I</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671116</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="16526" opiskelijaAvain="13701" koulutusmoduulitunniste="106000" avain="249120">
+                            <virta:SuoritusPvm>2014-04-03</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Engelska, Akutvård</virta:Nimi>
+                            <virta:Nimi kieli="en">English, Paramedics</virta:Nimi>
+                            <virta:Kieli>en</virta:Kieli>
+                            <virta:Koulutuskoodi>671116</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="16526" opiskelijaAvain="13701" koulutusmoduulitunniste="106000" avain="249112">
+                            <virta:SuoritusPvm>2013-11-06</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Introduktion till högskolestudier</virta:Nimi>
+                            <virta:Nimi kieli="en">Introduction to University Studies</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671116</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="16526" opiskelijaAvain="13701" koulutusmoduulitunniste="106000" avain="249117">
+                            <virta:SuoritusPvm>2013-12-17</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Klinisk vård I</virta:Nimi>
+                            <virta:Nimi kieli="en">Basic caring I</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671116</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="16526" opiskelijaAvain="13701" koulutusmoduulitunniste="106000" avain="315090">
+                            <virta:SuoritusPvm>2014-06-06</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>9</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Inremedicinsk vård</virta:Nimi>
+                            <virta:Nimi kieli="en">Internal medicine</virta:Nimi>
+                            <virta:Koulutuskoodi>671116</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="16526" opiskelijaAvain="13701" koulutusmoduulitunniste="106000" avain="249114">
+                            <virta:SuoritusPvm>2014-02-14</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Inhemska språk 1, finska för akutvårdare och fysioterapeuter, 2 sp</virta:Nimi>
+                            <virta:Nimi kieli="en">Swedish and Finnish for native Swedish speakers 1</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671116</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="16526" opiskelijaAvain="13701" koulutusmoduulitunniste="106000" avain="249119">
+                            <virta:SuoritusPvm>2014-02-12</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>0</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Läkemedelsräkning, terminstentamen för AV, februari, 5 tal</virta:Nimi>
+                            <virta:Nimi kieli="en">Dosage calculation test for paramedics, exam in February, 5 problems</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671116</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="16526" opiskelijaAvain="13701" koulutusmoduulitunniste="106000" avain="249111">
+                            <virta:SuoritusPvm>2013-11-15</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Anatomi och fysiologi</virta:Nimi>
+                            <virta:Nimi kieli="en">Anatomy and Physiology</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671116</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="16526" opiskelijaAvain="13701" koulutusmoduulitunniste="106000" avain="249116">
+                            <virta:SuoritusPvm>2013-12-12</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Inhemska språk 1, svenska för fysioterapeuter och akutvårdare, 3 sp</virta:Nimi>
+                            <virta:Nimi kieli="en">Swedish and Finnish for native Swedish speakers 1</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671116</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="16526" opiskelijaAvain="13701" koulutusmoduulitunniste="106000" avain="249121">
+                            <virta:SuoritusPvm>2014-03-20</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>02535</virta:Myontaja>
+                            <virta:Organisaatio>
+                                <virta:Rooli>2</virta:Rooli>
+                                <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="sv">Klinisk vård II</virta:Nimi>
+                            <virta:Nimi kieli="en">Basic Care II</virta:Nimi>
+                            <virta:Kieli>sv</virta:Kieli>
+                            <virta:Koulutuskoodi>671116</virta:Koulutuskoodi>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opmala">7</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                    </virta:Opintosuoritukset>
+                </virta:Opiskelija>
+            </virta:Virta>
+        </virtaluku:OpiskelijanKaikkiTiedotResponse>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
