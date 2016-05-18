@@ -5,14 +5,23 @@ function OpinnotPage() {
   function opiskeluOikeus() { return S('.opiskeluoikeus')}
 
   var api = {
-    getTutkinto: function() {
-      return S('.opiskeluoikeus .tutkinto').text()
+    getTutkinto: function(index) {
+      index = typeof index !== 'undefined' ? index : 0
+      var nth = S('.opiskeluoikeus .tutkinto')[index]
+      return S(nth).text()
     },
     isRakenneVisible: function() {
       return S('.opiskeluoikeus .suoritus .tutkinto-rakenne').is(":visible")
     },
-    getOppilaitos: function() {
-      return S('.oppilaitos .oppilaitos').text()
+    getOppilaitos: function(index) {
+      index = typeof index !== 'undefined' ? index : 0
+      var nth = S('.oppilaitos .oppilaitos')[index]
+      return S(nth).text()
+    },
+    getOpintoOikeus: function(index) {
+      index = typeof index !== 'undefined' ? index : 0
+      var nth = S('.opiskeluoikeus .tutkinnon-tila')[index]
+      return S(nth).text()
     },
     getTutkinnonOsat: function() {
       return textsOf(tutkinnonOsa().find('.name'))

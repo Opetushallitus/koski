@@ -452,8 +452,9 @@ describe('TOR', function() {
       )
       describe('Oppilaitos ja tutkinto', function() {
         it('näytetään', function() {
-          expect(OpinnotPage().getTutkinto()).to.equal("Dipl.ins., konetekniikka")
-          expect(OpinnotPage().getOppilaitos()).to.equal("Aalto-yliopisto")
+          expect(OpinnotPage().getTutkinto()).to.equal('Dipl.ins., konetekniikka')
+          expect(OpinnotPage().getOppilaitos()).to.equal('Aalto-yliopisto')
+          expect(OpinnotPage().getOpintoOikeus()).to.equal('(Opiskeluoikeus päättynyt, Suoritus valmis)')
         })
       })
       describe('Opintosuoritusote', function() {
@@ -466,11 +467,20 @@ describe('TOR', function() {
     describe('Maisteri, jolla ensisijainen opiskeluoikeus', function() {
       before(
         page.openPage,
-        page.oppijaHaku.search('090888-929X', page.isOppijaSelected('Harri')),
-        OpinnotPage().avaaOpintosuoritusote(2)
+        page.oppijaHaku.search('090888-929X', page.isOppijaSelected('Harri'))
       )
-      it('opiskeluoikeus näytetään', function() {
-        expect(S('section.opiskeluoikeus h3').text()).to.equal('Ensisijainen opinto-oikeus')
+      describe('Oppilaitos ja tutkinto', function() {
+        it('näytetään', function() {
+          expect(OpinnotPage().getTutkinto(1)).to.equal('Dipl.ins., kemian tekniikka')
+          expect(OpinnotPage().getOppilaitos(1)).to.equal('Helsingin yliopisto')
+          expect(OpinnotPage().getOpintoOikeus(1)).to.equal('(Opiskeluoikeus passivoitu, Suoritus kesken)')
+        })
+      })
+      describe('Opiskeluoikeus', function() {
+        before(OpinnotPage().avaaOpintosuoritusote(2))
+        it('näytetään', function() {
+          expect(S('section.opiskeluoikeus h3').text()).to.equal('Ensisijainen opinto-oikeus')
+        })
       })
     })
     describe('Keskeneräinen tutkinto', function() {
@@ -481,6 +491,19 @@ describe('TOR', function() {
       )
       it('näytetään', function() {
         expect(S('section.opiskeluoikeus h3').text()).to.equal('Ensisijainen opinto-oikeus')
+      })
+    })
+    describe('AMK, keskeyttänyt', function() {
+      before(
+        page.openPage,
+        page.oppijaHaku.search('100193-948U', page.isOppijaSelected('Valtteri'))
+      )
+      describe('Oppilaitos ja tutkinto', function() {
+        it('näytetään', function() {
+          expect(OpinnotPage().getTutkinto()).to.equal('Ensihoitaja (AMK)')
+          expect(OpinnotPage().getOppilaitos()).to.equal('Yrkeshögskolan Arcada')
+          expect(OpinnotPage().getOpintoOikeus()).to.equal('(Opiskeluoikeus luopunut, Suoritus kesken)')
+        })
       })
     })
   })
