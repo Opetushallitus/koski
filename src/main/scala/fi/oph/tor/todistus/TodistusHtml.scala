@@ -1,17 +1,8 @@
 package fi.oph.tor.todistus
-import java.time.format.DateTimeFormatter
 
-import fi.oph.tor.localization.{Localizable, LocalizedString}
 import fi.oph.tor.schema._
-import fi.oph.tor.toruser.TorUser
 
-
-trait TodistusHtml {
-  implicit val user: TorUser
-  val dateFormatter = DateTimeFormatter.ofPattern("d.M.yyyy")
-  def lang = user.lang
-  def i(s: Localizable): String = s.description.get(lang)
-  def i(s: Option[Localizable]): String = s.map(i).getOrElse("")
+trait TodistusHtml extends LocalizedHtml {
   def decapitalize(s: String) = {
     val (head, tail) = s.splitAt(1)
     head.toLowerCase + tail
