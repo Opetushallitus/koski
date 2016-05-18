@@ -74,7 +74,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
       )
     }
 
-    opiskeluoikeudet.filter(!_.suoritukset.isEmpty) ++ orphanages
+    opiskeluoikeudet.filter(_.suoritukset.nonEmpty) ++ orphanages
   }
 
   private def lisääKeskeneräinenTutkintosuoritus(suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node) = {
