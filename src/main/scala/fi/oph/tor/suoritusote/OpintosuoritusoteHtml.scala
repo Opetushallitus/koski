@@ -7,11 +7,10 @@ import java.time.format.DateTimeFormatter
 import fi.oph.tor.localization.Locale._
 import fi.oph.tor.localization.Localizable
 import fi.oph.tor.schema._
+import fi.oph.tor.todistus.LocalizedHtml
 import fi.oph.tor.toruser.TorUser
 
-class OpintosuoritusoteHtml(implicit val user: TorUser) {
-
-  val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+class OpintosuoritusoteHtml(implicit val user: TorUser) extends LocalizedHtml {
   val decimalFormat = NumberFormat.getInstance(finnish)
 
   def render(ht: TaydellisetHenkilötiedot, opiskeluoikeudet: List[Opiskeluoikeus]) = {
@@ -94,9 +93,10 @@ class OpintosuoritusoteHtml(implicit val user: TorUser) {
     </tr>
   }
 
-  private def suoritukset(opiskeluoikeus: Opiskeluoikeus) = {
-    opiskeluoikeus.suoritukset.filter(s => s.tila.koodiarvo == "VALMIS").flatMap(suoritus => suoritusWithDepth((0, suoritus))).map(suoritusHtml)
-  }
+  private def suoritukset(opiskeluoikeus: Opiskeluoikeus) =
+    opiskeluoikeus.suoritukset.filter(s => s.tila.koodiarvo == "VALMIS")
+      .sortBy(s => (!s.koulutusmoduuli.isTutkinto, i(s.koulutusmoduuli.nimi)))
+      .flatMap(suoritus => suoritusWithDepth((0, suoritus))).map(suoritusHtml)
 
   private def suoritusHtml(t: (Int, Suoritus)) = t match { case (depth, suoritus) =>
     <tr>
@@ -109,13 +109,8 @@ class OpintosuoritusoteHtml(implicit val user: TorUser) {
   }
 
   private def suoritusWithDepth(t: (Int, Suoritus)) : List[(Int, Suoritus)] = {
-    t :: t._2.osasuoritusLista.flatMap(s => suoritusWithDepth((t._1 + 1, s)))
+    t :: t._2.osasuoritusLista.sortBy(s => i(s.koulutusmoduuli.nimi)).flatMap(s => suoritusWithDepth((t._1 + 1, s)))
   }
 
   private def indentCss = 0 to 5 map { i => ".depth-" + i + " { padding-left:" + (0.5 * i) + "em; }" } mkString("\n")
-
-  def lang = user.lang
-  private def i(s: Localizable): String = s.description.get(lang)
-  private def i(s: Option[Localizable]): String = s.map(i).getOrElse("")
-
 }
