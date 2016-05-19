@@ -85,7 +85,7 @@
         "koodistoUri" : "perusopetuksenoppimaara"
       },
       "suoritustapa" : {
-        "koodiarvo" : "peruskoulu",
+        "koodiarvo" : "koulutus",
         "koodistoUri" : "perusopetuksensuoritustapa"
       },
       "tyyppi" : {
