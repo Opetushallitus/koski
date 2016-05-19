@@ -24,7 +24,7 @@ object PerusopetusExampleData {
 
   val perusopetus = Perusopetus(Some("104/011/2014"))
   val tavoiteOppimäärä = Koodistokoodiviite("perusopetuksenoppimaara", "suorituksentyyppi")
-  val suoritustapaPeruskoulu = Koodistokoodiviite("peruskoulu", "perusopetuksensuoritustapa")
+  val suoritustapaPeruskoulu = Koodistokoodiviite("koulutus", "perusopetuksensuoritustapa")
   val perusopetuksenOppimäärä = Koodistokoodiviite("perusopetus", "perusopetuksenoppimaara")
 
   def oppiaine(aine: String, laajuus: Option[LaajuusVuosiviikkotunneissa] = None) = MuuPeruskoulunOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), laajuus = laajuus)

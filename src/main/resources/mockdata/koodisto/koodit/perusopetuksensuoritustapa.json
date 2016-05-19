@@ -1,6 +1,6 @@
 [{
-  "koodiUri" : "perusopetuksensuoritustapa_peruskoulu",
-  "koodiArvo" : "peruskoulu",
+  "koodiUri" : "perusopetuksensuoritustapa_koulutus",
+  "koodiArvo" : "koulutus",
   "metadata" : [ {
     "nimi" : "Peruskoulu",
     "kieli" : "FI"
@@ -12,4 +12,19 @@
     "kieli" : "EN"
   } ],
   "versio" : 1
-}]
+},{
+  "koodiUri" : "perusopetuksensuoritustapa_erityinentutkinto",
+  "koodiArvo" : "erityinentutkinto",
+  "metadata" : [ {
+    "nimi" : "Erityinen tutkinto",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Erityinen tutkinto",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Erityinen tutkinto",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}
+]
