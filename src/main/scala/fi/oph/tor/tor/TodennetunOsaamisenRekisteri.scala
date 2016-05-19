@@ -42,7 +42,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
 
     queryFilters.partition(_.isLeft) match {
       case (Nil, queries) =>
-        val filters: List[QueryFilter] = queries.map(_.right.get)
+        val filters: List[QueryFilter] = queries.flatMap(_.right.toOption)
         Right(query(filters)(user))
       case (errors, _) =>
         Left(HttpStatus.fold(errors.map(_.left.get)))
