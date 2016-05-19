@@ -59,7 +59,7 @@ case class AmmatillisenTutkinnonSuoritus(
   osaamisala: Option[List[Koodistokoodiviite]] = None,
   @Description("Tutkinnon tai tutkinnon osan suoritustapa")
   @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
-  suoritustapa: Option[Suoritustapa] = None,
+  suoritustapa: Option[AmmatillisenTutkinnonSuoritustapa] = None,
   @Description("Koulutuksen järjestämismuoto")
   @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
   järjestämismuoto: Option[Järjestämismuoto] = None,
@@ -206,8 +206,8 @@ case class Oppisopimus(
 )
 
 
-case class Suoritustapa(
-  @KoodistoUri("suoritustapa")
+case class AmmatillisenTutkinnonSuoritustapa(
+  @KoodistoUri("ammatillisentutkinnonsuoritustapa")
   tunniste: Koodistokoodiviite
 )
 

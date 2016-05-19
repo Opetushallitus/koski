@@ -52,7 +52,7 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
       }
 
 
-      val suoritustapaKoodistoViite: Option[Koodistokoodiviite] = koodistoPalvelu.validate(Koodistokoodiviite(suoritustapa.suoritustapakoodi, None, "suoritustapa", None))
+      val suoritustapaKoodistoViite: Option[Koodistokoodiviite] = koodistoPalvelu.validate(Koodistokoodiviite(suoritustapa.suoritustapakoodi, None, "ammatillisentutkinnonsuoritustapa", None))
       suoritustapaKoodistoViite.map(SuoritustapaJaRakenne(_, suoritustapa.rakenne.map(convertRakenneOsa(_, suoritustapa)), laajuusYksikkö))
     }
 

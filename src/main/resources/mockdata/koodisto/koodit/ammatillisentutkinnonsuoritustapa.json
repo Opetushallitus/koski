@@ -1,5 +1,5 @@
 [ {
-  "koodiUri" : "suoritustapa_naytto",
+  "koodiUri" : "ammatillisentutkinnonsuoritustapa_naytto",
   "koodiArvo" : "naytto",
   "metadata" : [ {
     "nimi" : "Näyttö",
@@ -13,7 +13,7 @@
   } ],
   "versio" : 1
 }, {
-  "koodiUri" : "suoritustapa_ops",
+  "koodiUri" : "ammatillisentutkinnonsuoritustapa_ops",
   "koodiArvo" : "ops",
   "metadata" : [ {
     "nimi" : "Opetussuunnitelman mukainen",

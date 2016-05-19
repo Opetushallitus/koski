@@ -64,9 +64,11 @@ case class PerusopetuksenOppimääränSuoritus(
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Vahvistus] = None,
+  koulutusmoduuli: Perusopetus,
+  @KoodistoUri("perusopetuksensuoritustapa")
+  suoritustapa: Koodistokoodiviite,
   @KoodistoKoodiarvo("perusopetuksenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppimaara", koodistoUri = "suorituksentyyppi"),
-  koulutusmoduuli: Perusopetus,
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
   override val osasuoritukset: Option[List[PerusopetuksenOppiaineenSuoritus]] = None
 ) extends PerusopetuksenPäätasonSuoritus {

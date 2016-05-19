@@ -1,17 +1,17 @@
 {
-  "koodistoUri" : "suoritustapa",
+  "koodistoUri" : "perusopetuksensuoritustapa",
   "versio" : 1,
   "metadata" : [ {
     "kieli" : "SV",
-    "nimi" : "suoritustapa",
+    "nimi" : "Perusopetuksen suoritustapa",
     "kuvaus" : "Tutkinnon tai tutkinnon osan suoritustapa"
   }, {
     "kieli" : "EN",
-    "nimi" : "suoritustapa",
+    "nimi" : "Perusopetuksen suoritustapa",
     "kuvaus" : "Tutkinnon tai tutkinnon osan suoritustapa"
   }, {
     "kieli" : "FI",
-    "nimi" : "suoritustapa",
+    "nimi" : "Perusopetuksen suoritustapa",
     "kuvaus" : "Tutkinnon tai tutkinnon osan suoritustapa"
   } ],
   "codesGroupUri" : "http://tor",

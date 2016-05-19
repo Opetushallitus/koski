@@ -13,7 +13,7 @@ object AmmatillinenExampleData {
   def tutkintoSuoritus(tutkintoKoulutus: AmmatillinenTutkintoKoulutus,
                                tutkintonimike: Option[List[Koodistokoodiviite]] = None,
                                osaamisala: Option[List[Koodistokoodiviite]] = None,
-                               suoritustapa: Option[Suoritustapa] = None,
+                               suoritustapa: Option[AmmatillisenTutkinnonSuoritustapa] = None,
                                järjestämismuoto: Option[Järjestämismuoto] = None,
                                paikallinenId: Option[String] = None,
                                suorituskieli: Option[Koodistokoodiviite] = None,
@@ -70,8 +70,8 @@ object AmmatillinenExampleData {
     kuvaus, NäytönSuorituspaikka(Koodistokoodiviite("1", Some("työpaikka"), "ammatillisennaytonsuorituspaikka", Some(1)), paikka), arviointi)
 
   lazy val tavoiteTutkinto = Koodistokoodiviite("ammatillinentutkinto", "suorituksentyyppi")
-  lazy val suoritustapaNäyttö = Suoritustapa(Koodistokoodiviite("naytto", Some("Näyttö"), None, "suoritustapa", Some(1)))
-  lazy val suoritustapaOps = Suoritustapa(Koodistokoodiviite("ops", Some("Opetussuunnitelman mukainen"), "suoritustapa", Some(1)))
+  lazy val suoritustapaNäyttö = AmmatillisenTutkinnonSuoritustapa(Koodistokoodiviite("naytto", Some("Näyttö"), None, "ammatillisentutkinnonsuoritustapa", Some(1)))
+  lazy val suoritustapaOps = AmmatillisenTutkinnonSuoritustapa(Koodistokoodiviite("ops", Some("Opetussuunnitelman mukainen"), "ammatillisentutkinnonsuoritustapa", Some(1)))
   lazy val järjestämismuotoOppisopimus = Koodistokoodiviite("20", Some("Oppisopimusmuotoinen"), "jarjestamismuoto", Some(1))
   lazy val järjestämismuotoOppilaitos = Koodistokoodiviite("10", Some("Oppilaitosmuotoinen"), "jarjestamismuoto", Some(1))
   lazy val stadinAmmattiopisto: Oppilaitos = Oppilaitos("1.2.246.562.10.52251087186", Some(Koodistokoodiviite("10105", None, "oppilaitosnumero", None)), Some("Stadin ammattiopisto"))

@@ -71,7 +71,7 @@ const TutkinnonRakenne = React.createClass({
                                 let suoritustapa = value ? {
                                   tunniste: {
                                     koodiarvo: value,
-                                    koodistoUri: 'suoritustapa'
+                                    koodistoUri: 'ammatillisentutkinnonsuoritustapa'
                                   }
                                 } : undefined
                                 return suoritustapa

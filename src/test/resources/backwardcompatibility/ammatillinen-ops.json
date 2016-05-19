@@ -47,7 +47,7 @@
           "nimi" : {
             "fi" : "Opetussuunnitelman mukainen"
           },
-          "koodistoUri" : "suoritustapa",
+          "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
           "koodistoVersio" : 1
         }
       },

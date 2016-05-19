@@ -73,16 +73,20 @@
           }
         } ]
       },
-      "tyyppi" : {
-        "koodiarvo" : "perusopetuksenoppimaara",
-        "koodistoUri" : "suorituksentyyppi"
-      },
       "koulutusmoduuli" : {
         "perusteenDiaarinumero" : "104/011/2014",
         "tunniste" : {
           "koodiarvo" : "201101",
           "koodistoUri" : "koulutus"
         }
+      },
+      "suoritustapa" : {
+        "koodiarvo" : "peruskoulu",
+        "koodistoUri" : "perusopetuksensuoritustapa"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "perusopetuksenoppimaara",
+        "koodistoUri" : "suorituksentyyppi"
       },
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {

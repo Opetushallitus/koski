@@ -28,7 +28,7 @@
           "nimi" : {
             "fi" : "Näyttö"
           },
-          "koodistoUri" : "suoritustapa",
+          "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
           "koodistoVersio" : 1
         }
       },

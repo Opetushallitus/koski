@@ -1,0 +1,15 @@
+[{
+  "koodiUri" : "perusopetuksensuoritustapa_peruskoulu",
+  "koodiArvo" : "peruskoulu",
+  "metadata" : [ {
+    "nimi" : "Peruskoulu",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Peruskoulu",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Peruskoulu",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}]

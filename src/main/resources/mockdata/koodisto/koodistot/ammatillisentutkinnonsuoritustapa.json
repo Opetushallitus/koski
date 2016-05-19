@@ -1,0 +1,20 @@
+{
+  "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "SV",
+    "nimi" : "Ammatillisen tutkinnon suoritustapa",
+    "kuvaus" : "Tutkinnon tai tutkinnon osan suoritustapa"
+  }, {
+    "kieli" : "EN",
+    "nimi" : "Ammatillisen tutkinnon suoritustapa",
+    "kuvaus" : "Tutkinnon tai tutkinnon osan suoritustapa"
+  }, {
+    "kieli" : "FI",
+    "nimi" : "Ammatillisen tutkinnon suoritustapa",
+    "kuvaus" : "Tutkinnon tai tutkinnon osan suoritustapa"
+  } ],
+  "codesGroupUri" : "http://tor",
+  "voimassaAlkuPvm" : "2015-11-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}
