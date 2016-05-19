@@ -29,7 +29,7 @@ object MockOrganisaatiot {
   val organisaatiot: List[String] = oppilaitokset ++ List(helsinginKaupunki, lehtikuusentienToimipiste)
 }
 
-class MockOrganisaatioRepository(koodisto: KoodistoViitePalvelu) extends JsonOrganisaatioRepository(koodisto) {
+case class MockOrganisaatioRepository(koodisto: KoodistoViitePalvelu) extends JsonOrganisaatioRepository(koodisto) {
   override def fetch(oid: String) = {
     Json.readFileIfExists(hierarchyFilename(oid))
       .map(json => Json.fromJValue[OrganisaatioHakuTulos](json))

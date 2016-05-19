@@ -13,7 +13,7 @@ import fi.oph.tor.tor.{TorValidator, QueryFilter}
 import fi.oph.tor.toruser.{AccessType, TorUser}
 import rx.lang.scala.Observable
 
-case class VirtaOpiskeluoikeusRepository(virta: VirtaClient, val oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, validator: TorValidator) extends OpiskeluOikeusRepository with Logging {
+case class VirtaOpiskeluoikeusRepository(virta: VirtaClient, val oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, validator: Option[TorValidator] = None) extends OpiskeluOikeusRepository with Logging {
   private val converter = VirtaXMLConverter(oppijaRepository, oppilaitosRepository, koodistoViitePalvelu)
 
   private val cache = KeyValueCache[Henkilö with Henkilötiedot, List[KorkeakoulunOpiskeluoikeus]](CachingStrategy.cacheAllNoRefresh(3600, 100), doFindByHenkilö)
@@ -25,17 +25,21 @@ case class VirtaOpiskeluoikeusRepository(virta: VirtaClient, val oppijaRepositor
 
       opiskeluoikeudet flatMap { opiskeluoikeus =>
         val oppija = Oppija(henkilö, List(opiskeluoikeus))
-        validator.validateAsJson(oppija)(TorUser.systemUser, AccessType.read) match {
-          case Right(oppija) =>
-            Some(opiskeluoikeus)
-          case Left(status) =>
-            if (status.errors.map(_.key).contains(TorErrorCategory.badRequest.validation.jsonSchema.key)) {
-              logger.error("Virrasta saatu opiskeluoikeus ei ole validi Koski-järjestelmän JSON schemassa: " + status)
-              None
-            } else {
-              logger.warn("Virrasta saatu opiskeluoikeus sisältää validointivirheitä " + status)
-              Some(opiskeluoikeus)
+        validator match {
+          case Some(validator) =>
+            validator.validateAsJson(oppija)(TorUser.systemUser, AccessType.read) match {
+              case Right(oppija) =>
+                Some(opiskeluoikeus)
+              case Left(status) =>
+                if (status.errors.map(_.key).contains(TorErrorCategory.badRequest.validation.jsonSchema.key)) {
+                  logger.error("Virrasta saatu opiskeluoikeus ei ole validi Koski-järjestelmän JSON schemassa: " + status)
+                  None
+                } else {
+                  logger.warn("Virrasta saatu opiskeluoikeus sisältää validointivirheitä " + status)
+                  Some(opiskeluoikeus)
+                }
             }
+          case None => Some(opiskeluoikeus)
         }
       }
     } catch {

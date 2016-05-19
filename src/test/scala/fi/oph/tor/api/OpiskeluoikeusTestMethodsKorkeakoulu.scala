@@ -1,8 +1,25 @@
 package fi.oph.tor.api
 
-import fi.oph.tor.documentation.ExamplesKorkeakoulu
+import java.time.LocalDate.{of => date}
+
+import fi.oph.tor.documentation.KorkeakouluTestdata
 import fi.oph.tor.schema._
 
 trait OpiskeluoikeusTestMethodsKorkeakoulu extends OpiskeluOikeusTestMethods[KorkeakoulunOpiskeluoikeus]{
-  override def defaultOpiskeluoikeus = ExamplesKorkeakoulu.uusi.opiskeluoikeudet.head.asInstanceOf[KorkeakoulunOpiskeluoikeus]
+  override def defaultOpiskeluoikeus = KorkeakoulunOpiskeluoikeus(
+    id = None,
+    versionumero = None,
+    lähdejärjestelmänId = None,
+    alkamispäivä = Some(date(2016, 9, 1)),
+    arvioituPäättymispäivä = Some(date(2020, 5, 1)),
+    päättymispäivä = None,
+    oppilaitos = KorkeakouluTestdata.helsinginYliopisto, None,
+    suoritukset = Nil,
+    tila = Some(KorkeakoulunOpiskeluoikeudenTila(
+      List(
+        KorkeakoulunOpiskeluoikeusjakso(date(2012, 9, 1), Some(date(2016, 1, 9)), KorkeakouluTestdata.opiskeluoikeusAktiivinen)
+      )
+    )),
+    läsnäolotiedot = None
+  )
 }

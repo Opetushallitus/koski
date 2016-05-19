@@ -48,7 +48,7 @@ class MockOppijat(private var oppijat: List[TaydellisetHenkilötiedot] = Nil) ex
   }
 }
 
-class MockOppijaRepository(initialOppijat: List[TaydellisetHenkilötiedot], db: Option[DB] = None) extends OppijaRepository with Futures {
+case class MockOppijaRepository(initialOppijat: List[TaydellisetHenkilötiedot] = MockOppijat.defaultOppijat, db: Option[DB] = None) extends OppijaRepository with Futures {
   private var oppijat = new MockOppijat(initialOppijat)
 
   override def findOppijat(query: String) = {

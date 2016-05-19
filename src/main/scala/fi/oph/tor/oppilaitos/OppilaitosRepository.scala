@@ -5,7 +5,7 @@ import fi.oph.tor.schema.{Koodistokoodiviite, Oppilaitos, OidOrganisaatio}
 import fi.oph.tor.toruser.TorUser
 import fi.oph.tor.localization.LocalizedStringImplicits.LocalizedStringFinnishOrdering
 
-class OppilaitosRepository(organisatioRepository: OrganisaatioRepository) {
+case class OppilaitosRepository(organisatioRepository: OrganisaatioRepository) {
   def oppilaitokset(implicit context: TorUser): Iterable[OidOrganisaatio] = {
     findOppilaitokset("")
   }

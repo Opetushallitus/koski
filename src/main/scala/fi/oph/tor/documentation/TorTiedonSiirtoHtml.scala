@@ -96,6 +96,7 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
           { examplesHtml(ExamplesPerusopetus.examples, "Perusopetus") }
           { examplesHtml(ExamplesLukio.examples, "Lukiokoulutus") }
           { examplesHtml(ExamplesAmmatillinen.examples, "Ammatillinen koulutus") }
+          { examplesHtml(ExamplesKorkeakoulu.examples, "Korkeakoulu (Virrasta)") }
         </section>
         </div>
         <script src="js/polyfills/promise.js"></script>

@@ -1,37 +1,23 @@
 package fi.oph.tor.documentation
 
 import java.time.LocalDate.{of => date}
-
-import fi.oph.tor.documentation.KorkeakouluTestdata._
+import fi.oph.tor.koodisto.{KoodistoViitePalvelu, MockKoodistoPalvelu}
 import fi.oph.tor.localization.LocalizedStringImplicits._
-import fi.oph.tor.oppija.MockOppijat
-import fi.oph.tor.organisaatio.MockOrganisaatiot
+import fi.oph.tor.oppija.{MockOppijaRepository, MockOppijat}
+import fi.oph.tor.oppilaitos.OppilaitosRepository
+import fi.oph.tor.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
 import fi.oph.tor.schema._
+import fi.oph.tor.toruser.MockUsers
+import fi.oph.tor.virta.{VirtaOpiskeluoikeusRepository, MockVirtaClient}
 
 object ExamplesKorkeakoulu {
-
-  val uusi = Oppija(
-    oppija,
-    List(KorkeakoulunOpiskeluoikeus(
-      id = None,
-      versionumero = None,
-      lähdejärjestelmänId = None,
-      alkamispäivä = Some(date(2016, 9, 1)),
-      arvioituPäättymispäivä = Some(date(2020, 5, 1)),
-      päättymispäivä = None,
-      oppilaitos = helsinginYliopisto, None,
-      suoritukset = Nil,
-      tila = Some(KorkeakoulunOpiskeluoikeudenTila(
-        List(
-          KorkeakoulunOpiskeluoikeusjakso(date(2012, 9, 1), Some(date(2016, 1, 9)), opiskeluoikeusAktiivinen)
-        )
-      )),
-      läsnäolotiedot = None
-    ))
+  private lazy val koodistoViitePalvelu = KoodistoViitePalvelu(MockKoodistoPalvelu)
+  private def oppija = Oppija(MockOppijat.dippainssi.vainHenkilötiedot, VirtaOpiskeluoikeusRepository(MockVirtaClient, MockOppijaRepository(), OppilaitosRepository(MockOrganisaatioRepository(koodistoViitePalvelu)), koodistoViitePalvelu)
+    .findByOppijaOid(MockOppijat.dippainssi.oid)(MockUsers.kalle.asTorUser)
   )
-
-  val examples = List(Example("korkeakoulu - uusi", "Uusi oppija lisätään suorittamaan korkeakoulututkintoa", uusi, statusCode = 501))
-
+  lazy val examples = List(
+    Example("korkeakoulu - valmis diplomi-insinööri", "Diplomi-insinööriksi valmistunut opiskelija", oppija, 501)
+  )
 }
 
 object KorkeakouluTestdata {
