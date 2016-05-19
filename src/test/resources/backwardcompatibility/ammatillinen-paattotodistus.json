@@ -1,0 +1,1179 @@
+{
+  "henkilö" : {
+    "hetu" : "120496-949B",
+    "etunimet" : "Aarne",
+    "kutsumanimi" : "Aarne",
+    "sukunimi" : "Ammattilainen"
+  },
+  "opiskeluoikeudet" : [ {
+    "alkamispäivä" : "2012-09-01",
+    "arvioituPäättymispäivä" : "2015-05-31",
+    "päättymispäivä" : "2016-05-31",
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.52251087186",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "10105",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Stadin ammattiopisto"
+      }
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "361902",
+          "nimi" : {
+            "fi" : "Luonto- ja ympäristöalan perustutkinto"
+          },
+          "koodistoUri" : "koulutus"
+        },
+        "perusteenDiaarinumero" : "62/011/2014"
+      },
+      "tutkintonimike" : [ {
+        "koodiarvo" : "10083",
+        "nimi" : {
+          "fi" : "Ympäristönhoitaja"
+        },
+        "koodistoUri" : "tutkintonimikkeet"
+      } ],
+      "osaamisala" : [ {
+        "koodiarvo" : "1590",
+        "nimi" : {
+          "fi" : "Ympäristöalan osaamisala"
+        },
+        "koodistoUri" : "osaamisala"
+      } ],
+      "suoritustapa" : {
+        "tunniste" : {
+          "koodiarvo" : "ops",
+          "nimi" : {
+            "fi" : "Opetussuunnitelman mukainen"
+          },
+          "koodistoUri" : "suoritustapa",
+          "koodistoVersio" : 1
+        }
+      },
+      "järjestämismuoto" : {
+        "tunniste" : {
+          "koodiarvo" : "10",
+          "nimi" : {
+            "fi" : "Oppilaitosmuotoinen"
+          },
+          "koodistoUri" : "jarjestamismuoto",
+          "koodistoVersio" : 1
+        }
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "tila" : {
+        "koodiarvo" : "VALMIS",
+        "koodistoUri" : "suorituksentila"
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.42456023292",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+        }
+      },
+      "arviointi" : [ {
+        "arvosana" : {
+          "koodiarvo" : "Hyväksytty",
+          "nimi" : {
+            "fi" : "Hyväksytty"
+          },
+          "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+          "koodistoVersio" : 1
+        },
+        "päivä" : "2013-03-20",
+        "arvioitsijat" : [ {
+          "nimi" : "Jaana Arstila"
+        }, {
+          "nimi" : "Pekka Saurmann"
+        }, {
+          "nimi" : "Juhani Mykkänen"
+        } ]
+      } ],
+      "vahvistus" : {
+        "päivä" : "2016-05-31",
+        "paikkakunta" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.52251087186",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "10105",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Keijo Perttilä",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          }
+        } ]
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "100431",
+            "nimi" : {
+              "fi" : "Kestävällä tavalla toimiminen"
+            },
+            "koodistoUri" : "tutkinnonosat",
+            "koodistoVersio" : 1
+          },
+          "pakollinen" : true,
+          "laajuus" : {
+            "arvo" : 40.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "Osaamispistettä"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "3",
+            "nimi" : {
+              "fi" : "K3"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+          },
+          "päivä" : "2014-10-20"
+        } ],
+        "vahvistus" : {
+          "päivä" : "2016-05-31",
+          "paikkakunta" : {
+            "koodiarvo" : "091",
+            "nimi" : {
+              "fi" : "Helsinki"
+            },
+            "koodistoUri" : "kunta"
+          },
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Keijo Perttilä",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "100432",
+            "nimi" : {
+              "fi" : "Ympäristön hoitaminen"
+            },
+            "koodistoUri" : "tutkinnonosat",
+            "koodistoVersio" : 1
+          },
+          "pakollinen" : true,
+          "laajuus" : {
+            "arvo" : 35.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "Osaamispistettä"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "3",
+            "nimi" : {
+              "fi" : "K3"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+          },
+          "päivä" : "2014-10-20"
+        } ],
+        "vahvistus" : {
+          "päivä" : "2016-05-31",
+          "paikkakunta" : {
+            "koodiarvo" : "091",
+            "nimi" : {
+              "fi" : "Helsinki"
+            },
+            "koodistoUri" : "kunta"
+          },
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Keijo Perttilä",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "100439",
+            "nimi" : {
+              "fi" : "Uusiutuvien energialähteiden hyödyntäminen"
+            },
+            "koodistoUri" : "tutkinnonosat",
+            "koodistoVersio" : 1
+          },
+          "pakollinen" : true,
+          "laajuus" : {
+            "arvo" : 15.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "Osaamispistettä"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "3",
+            "nimi" : {
+              "fi" : "K3"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+          },
+          "päivä" : "2014-10-20"
+        } ],
+        "vahvistus" : {
+          "päivä" : "2016-05-31",
+          "paikkakunta" : {
+            "koodiarvo" : "091",
+            "nimi" : {
+              "fi" : "Helsinki"
+            },
+            "koodistoUri" : "kunta"
+          },
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Keijo Perttilä",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "100442",
+            "nimi" : {
+              "fi" : "Ulkoilureittien rakentaminen ja hoitaminen"
+            },
+            "koodistoUri" : "tutkinnonosat",
+            "koodistoVersio" : 1
+          },
+          "pakollinen" : true,
+          "laajuus" : {
+            "arvo" : 15.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "Osaamispistettä"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "3",
+            "nimi" : {
+              "fi" : "K3"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+          },
+          "päivä" : "2014-10-20"
+        } ],
+        "vahvistus" : {
+          "päivä" : "2016-05-31",
+          "paikkakunta" : {
+            "koodiarvo" : "091",
+            "nimi" : {
+              "fi" : "Helsinki"
+            },
+            "koodistoUri" : "kunta"
+          },
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Keijo Perttilä",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "100443",
+            "nimi" : {
+              "fi" : "Kulttuuriympäristöjen kunnostaminen ja hoitaminen"
+            },
+            "koodistoUri" : "tutkinnonosat",
+            "koodistoVersio" : 1
+          },
+          "pakollinen" : true,
+          "laajuus" : {
+            "arvo" : 15.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "Osaamispistettä"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "3",
+            "nimi" : {
+              "fi" : "K3"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+          },
+          "päivä" : "2014-10-20"
+        } ],
+        "vahvistus" : {
+          "päivä" : "2016-05-31",
+          "paikkakunta" : {
+            "koodiarvo" : "091",
+            "nimi" : {
+              "fi" : "Helsinki"
+            },
+            "koodistoUri" : "kunta"
+          },
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Keijo Perttilä",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "100447",
+            "nimi" : {
+              "fi" : "Vesistöjen kunnostaminen ja hoitaminen"
+            },
+            "koodistoUri" : "tutkinnonosat",
+            "koodistoVersio" : 1
+          },
+          "pakollinen" : true,
+          "laajuus" : {
+            "arvo" : 15.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "Osaamispistettä"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "3",
+            "nimi" : {
+              "fi" : "K3"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+          },
+          "päivä" : "2014-10-20"
+        } ],
+        "vahvistus" : {
+          "päivä" : "2016-05-31",
+          "paikkakunta" : {
+            "koodiarvo" : "091",
+            "nimi" : {
+              "fi" : "Helsinki"
+            },
+            "koodistoUri" : "kunta"
+          },
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Keijo Perttilä",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "101053",
+            "nimi" : {
+              "fi" : "Viestintä- ja vuorovaikutusosaaminen"
+            },
+            "koodistoUri" : "tutkinnonosat",
+            "koodistoVersio" : 1
+          },
+          "pakollinen" : true,
+          "laajuus" : {
+            "arvo" : 11.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "Osaamispistettä"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "3",
+            "nimi" : {
+              "fi" : "K3"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+          },
+          "päivä" : "2014-10-20"
+        } ],
+        "vahvistus" : {
+          "päivä" : "2016-05-31",
+          "paikkakunta" : {
+            "koodiarvo" : "091",
+            "nimi" : {
+              "fi" : "Helsinki"
+            },
+            "koodistoUri" : "kunta"
+          },
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Keijo Perttilä",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "101054",
+            "nimi" : {
+              "fi" : "Matemaattis-luonnontieteellinen osaaminen"
+            },
+            "koodistoUri" : "tutkinnonosat",
+            "koodistoVersio" : 1
+          },
+          "pakollinen" : true,
+          "laajuus" : {
+            "arvo" : 9.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "Osaamispistettä"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "3",
+            "nimi" : {
+              "fi" : "K3"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+          },
+          "päivä" : "2014-10-20"
+        } ],
+        "vahvistus" : {
+          "päivä" : "2016-05-31",
+          "paikkakunta" : {
+            "koodiarvo" : "091",
+            "nimi" : {
+              "fi" : "Helsinki"
+            },
+            "koodistoUri" : "kunta"
+          },
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Keijo Perttilä",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "101055",
+            "nimi" : {
+              "fi" : "Yhteiskunnassa ja työelämässä tarvittava osaaminen"
+            },
+            "koodistoUri" : "tutkinnonosat",
+            "koodistoVersio" : 1
+          },
+          "pakollinen" : true,
+          "laajuus" : {
+            "arvo" : 8.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "Osaamispistettä"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "3",
+            "nimi" : {
+              "fi" : "K3"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+          },
+          "päivä" : "2014-10-20"
+        } ],
+        "vahvistus" : {
+          "päivä" : "2016-05-31",
+          "paikkakunta" : {
+            "koodiarvo" : "091",
+            "nimi" : {
+              "fi" : "Helsinki"
+            },
+            "koodistoUri" : "kunta"
+          },
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Keijo Perttilä",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "101056",
+            "nimi" : {
+              "fi" : "Sosiaalinen ja kulttuurinen osaaminen"
+            },
+            "koodistoUri" : "tutkinnonosat",
+            "koodistoVersio" : 1
+          },
+          "pakollinen" : true,
+          "laajuus" : {
+            "arvo" : 7.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "Osaamispistettä"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "3",
+            "nimi" : {
+              "fi" : "K3"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+          },
+          "päivä" : "2014-10-20"
+        } ],
+        "vahvistus" : {
+          "päivä" : "2016-05-31",
+          "paikkakunta" : {
+            "koodiarvo" : "091",
+            "nimi" : {
+              "fi" : "Helsinki"
+            },
+            "koodistoUri" : "kunta"
+          },
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Keijo Perttilä",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "enkku3",
+            "nimi" : {
+              "fi" : "Matkailuenglanti"
+            },
+            "koodistoUri" : "paikallinen"
+          },
+          "kuvaus" : {
+            "fi" : "Matkailuenglanti"
+          },
+          "pakollinen" : false,
+          "laajuus" : {
+            "arvo" : 5.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "Osaamispistettä"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "3",
+            "nimi" : {
+              "fi" : "K3"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+          },
+          "päivä" : "2014-10-20"
+        } ],
+        "vahvistus" : {
+          "päivä" : "2016-05-31",
+          "paikkakunta" : {
+            "koodiarvo" : "091",
+            "nimi" : {
+              "fi" : "Helsinki"
+            },
+            "koodistoUri" : "kunta"
+          },
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Keijo Perttilä",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "soskultos1",
+            "nimi" : {
+              "fi" : "Sosiaalinen ja kulttuurinen osaaminen"
+            },
+            "koodistoUri" : "paikallinen"
+          },
+          "kuvaus" : {
+            "fi" : "Sosiaalinen ja kulttuurinen osaaminen"
+          },
+          "pakollinen" : false,
+          "laajuus" : {
+            "arvo" : 5.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "Osaamispistettä"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "3",
+            "nimi" : {
+              "fi" : "K3"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+          },
+          "päivä" : "2014-10-20"
+        } ],
+        "vahvistus" : {
+          "päivä" : "2016-05-31",
+          "paikkakunta" : {
+            "koodiarvo" : "091",
+            "nimi" : {
+              "fi" : "Helsinki"
+            },
+            "koodistoUri" : "kunta"
+          },
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Keijo Perttilä",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "ammatillinentutkinto",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    } ],
+    "tavoite" : {
+      "koodiarvo" : "ammatillinentutkinto",
+      "koodistoUri" : "suorituksentyyppi"
+    },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2012-09-01",
+        "loppu" : "2016-05-31",
+        "tila" : {
+          "koodiarvo" : "aktiivinen",
+          "nimi" : {
+            "fi" : "Aktiivinen"
+          },
+          "koodistoUri" : "opiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "4",
+          "nimi" : {
+            "fi" : "Työnantajan kokonaan rahoittama"
+          },
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      }, {
+        "alku" : "2016-06-01",
+        "tila" : {
+          "koodiarvo" : "paattynyt",
+          "nimi" : {
+            "fi" : "Päättynyt"
+          },
+          "koodistoUri" : "opiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "4",
+          "nimi" : {
+            "fi" : "Työnantajan kokonaan rahoittama"
+          },
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      } ]
+    },
+    "tyyppi" : {
+      "koodiarvo" : "ammatillinenkoulutus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    }
+  } ]
+}

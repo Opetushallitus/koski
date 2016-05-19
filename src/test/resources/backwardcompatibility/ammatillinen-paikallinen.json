@@ -1,0 +1,163 @@
+{
+  "henkilö" : {
+    "hetu" : "120496-949B",
+    "etunimet" : "Aarne",
+    "kutsumanimi" : "Aarne",
+    "sukunimi" : "Ammattilainen"
+  },
+  "opiskeluoikeudet" : [ {
+    "alkamispäivä" : "2016-09-01",
+    "arvioituPäättymispäivä" : "2020-05-01",
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.52251087186"
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "351301",
+          "nimi" : {
+            "fi" : "Autoalan perustutkinto"
+          },
+          "koodistoUri" : "koulutus"
+        },
+        "perusteenDiaarinumero" : "39/011/2014"
+      },
+      "suoritustapa" : {
+        "tunniste" : {
+          "koodiarvo" : "naytto",
+          "nimi" : {
+            "fi" : "Näyttö"
+          },
+          "koodistoUri" : "suoritustapa",
+          "koodistoVersio" : 1
+        }
+      },
+      "paikallinenId" : "suoritus-12345",
+      "tila" : {
+        "koodiarvo" : "KESKEN",
+        "koodistoUri" : "suorituksentila"
+      },
+      "alkamispäivä" : "2016-09-01",
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.42456023292",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+        }
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "123456789",
+            "nimi" : {
+              "fi" : "Pintavauriotyöt"
+            },
+            "koodistoUri" : "kallion_oma_koodisto"
+          },
+          "kuvaus" : {
+            "fi" : "Opetellaan korjaamaan pinnallisia vaurioita"
+          },
+          "pakollinen" : false
+        },
+        "näyttö" : {
+          "kuvaus" : {
+            "fi" : "Pintavaurioiden korjausta"
+          },
+          "suorituspaikka" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "nimi" : {
+                "fi" : "työpaikka"
+              },
+              "koodistoUri" : "ammatillisennaytonsuorituspaikka",
+              "koodistoVersio" : 1
+            },
+            "kuvaus" : {
+              "fi" : "Autokorjaamo Oy, Riihimäki"
+            }
+          }
+        },
+        "paikallinenId" : "suoritus-12345-2",
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "nimi" : {
+              "fi" : "Hyväksytty"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+            "koodistoVersio" : 1
+          },
+          "päivä" : "2013-03-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ]
+        } ],
+        "vahvistus" : {
+          "päivä" : "2013-05-31",
+          "paikkakunta" : {
+            "koodiarvo" : "091",
+            "nimi" : {
+              "fi" : "Helsinki"
+            },
+            "koodistoUri" : "kunta"
+          },
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Keijo Perttilä",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "ammatillinentutkinto",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    } ],
+    "tavoite" : {
+      "koodiarvo" : "ammatillinentutkinto",
+      "koodistoUri" : "suorituksentyyppi"
+    },
+    "tyyppi" : {
+      "koodiarvo" : "ammatillinenkoulutus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    }
+  } ]
+}

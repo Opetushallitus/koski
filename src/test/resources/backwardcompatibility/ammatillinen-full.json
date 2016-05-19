@@ -1,0 +1,882 @@
+{
+  "henkilö" : {
+    "oid" : "1.2.246.562.24.00000000001"
+  },
+  "opiskeluoikeudet" : [ {
+    "lähdejärjestelmänId" : {
+      "id" : "847823465",
+      "lähdejärjestelmä" : {
+        "koodiarvo" : "winnova",
+        "nimi" : {
+          "fi" : "Winnova"
+        },
+        "koodistoUri" : "lahdejarjestelma",
+        "koodistoVersio" : 1
+      }
+    },
+    "alkamispäivä" : "2012-09-01",
+    "arvioituPäättymispäivä" : "2015-05-31",
+    "päättymispäivä" : "2016-01-09",
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.52251087186",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "10105",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Stadin ammattiopisto"
+      }
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "351301",
+          "nimi" : {
+            "fi" : "Autoalan perustutkinto"
+          },
+          "koodistoUri" : "koulutus"
+        },
+        "perusteenDiaarinumero" : "39/011/2014"
+      },
+      "tutkintonimike" : [ {
+        "koodiarvo" : "10024",
+        "nimi" : {
+          "fi" : "Autokorinkorjaaja"
+        },
+        "koodistoUri" : "tutkintonimikkeet"
+      } ],
+      "osaamisala" : [ {
+        "koodiarvo" : "1525",
+        "nimi" : {
+          "fi" : "Autokorinkorjauksen osaamisala"
+        },
+        "koodistoUri" : "osaamisala"
+      } ],
+      "suoritustapa" : {
+        "tunniste" : {
+          "koodiarvo" : "naytto",
+          "nimi" : {
+            "fi" : "Näyttö"
+          },
+          "koodistoUri" : "suoritustapa",
+          "koodistoVersio" : 1
+        }
+      },
+      "järjestämismuoto" : {
+        "tunniste" : {
+          "koodiarvo" : "10",
+          "nimi" : {
+            "fi" : "Oppilaitosmuotoinen"
+          },
+          "koodistoUri" : "jarjestamismuoto",
+          "koodistoVersio" : 1
+        }
+      },
+      "paikallinenId" : "suoritus-12345",
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "tila" : {
+        "koodiarvo" : "VALMIS",
+        "koodistoUri" : "suorituksentila"
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.42456023292",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+        }
+      },
+      "arviointi" : [ {
+        "arvosana" : {
+          "koodiarvo" : "Hyväksytty",
+          "nimi" : {
+            "fi" : "Hyväksytty"
+          },
+          "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+          "koodistoVersio" : 1
+        },
+        "päivä" : "2013-03-20",
+        "arvioitsijat" : [ {
+          "nimi" : "Jaana Arstila"
+        }, {
+          "nimi" : "Pekka Saurmann"
+        }, {
+          "nimi" : "Juhani Mykkänen"
+        } ]
+      } ],
+      "vahvistus" : {
+        "päivä" : "2016-01-09",
+        "paikkakunta" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.52251087186",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "10105",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Mauri Bauer",
+          "titteli" : {
+            "fi" : "puheenjohtaja"
+          },
+          "organisaatio" : {
+            "nimi" : {
+              "fi" : "Autokorjaamoalan tutkintotoimikunta"
+            },
+            "tutkintotoimikunnanNumero" : 8406
+          }
+        }, {
+          "nimi" : "Keijo Perttilä",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          }
+        } ]
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "100016",
+            "nimi" : {
+              "fi" : "Huolto- ja korjaustyöt"
+            },
+            "koodistoUri" : "tutkinnonosat",
+            "koodistoVersio" : 1
+          },
+          "pakollinen" : true
+        },
+        "näyttö" : {
+          "kuvaus" : {
+            "fi" : "Huolto- ja korjaustyöt"
+          },
+          "suorituspaikka" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "nimi" : {
+                "fi" : "työpaikka"
+              },
+              "koodistoUri" : "ammatillisennaytonsuorituspaikka",
+              "koodistoVersio" : 1
+            },
+            "kuvaus" : {
+              "fi" : "Autokorjaamo Oy, Riihimäki"
+            }
+          },
+          "arviointi" : {
+            "arviointiKohteet" : [ {
+              "tunniste" : {
+                "koodiarvo" : "1",
+                "nimi" : {
+                  "fi" : "Työprosessin hallinta"
+                },
+                "koodistoUri" : "ammatillisennaytonarviointikohde"
+              },
+              "arvosana" : {
+                "koodiarvo" : "3",
+                "nimi" : {
+                  "fi" : "K3"
+                },
+                "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+              }
+            }, {
+              "tunniste" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "Työmenetelmien, -välineiden ja materiaalin hallinta"
+                },
+                "koodistoUri" : "ammatillisennaytonarviointikohde"
+              },
+              "arvosana" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "H2"
+                },
+                "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+              }
+            }, {
+              "tunniste" : {
+                "koodiarvo" : "3",
+                "nimi" : {
+                  "fi" : "Työn perustana olevan tiedon hallinta"
+                },
+                "koodistoUri" : "ammatillisennaytonarviointikohde"
+              },
+              "arvosana" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "H2"
+                },
+                "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+              }
+            }, {
+              "tunniste" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "Elinikäisen oppimisen avaintaidot"
+                },
+                "koodistoUri" : "ammatillisennaytonarviointikohde"
+              },
+              "arvosana" : {
+                "koodiarvo" : "3",
+                "nimi" : {
+                  "fi" : "K3"
+                },
+                "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+              }
+            } ],
+            "arvioinnistaPäättäneet" : {
+              "koodiarvo" : "1",
+              "nimi" : {
+                "fi" : "Opettaja"
+              },
+              "koodistoUri" : "ammatillisennaytonarvioinnistapaattaneet"
+            },
+            "arviointikeskusteluunOsallistuneet" : {
+              "koodiarvo" : "1",
+              "nimi" : {
+                "fi" : "Opiskelija ja opettaja"
+              },
+              "koodistoUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet"
+            }
+          }
+        },
+        "paikallinenId" : "suoritus-12345-1",
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "nimi" : {
+              "fi" : "Hyväksytty"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+            "koodistoVersio" : 1
+          },
+          "päivä" : "2012-10-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ]
+        } ],
+        "vahvistus" : {
+          "päivä" : "2013-01-31",
+          "paikkakunta" : {
+            "koodiarvo" : "091",
+            "nimi" : {
+              "fi" : "Helsinki"
+            },
+            "koodistoUri" : "kunta"
+          },
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Keijo Perttilä",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "123456789",
+            "nimi" : {
+              "fi" : "Pintavauriotyöt"
+            },
+            "koodistoUri" : "kallion_oma_koodisto"
+          },
+          "kuvaus" : {
+            "fi" : "Opetellaan korjaamaan pinnallisia vaurioita"
+          },
+          "pakollinen" : false
+        },
+        "näyttö" : {
+          "kuvaus" : {
+            "fi" : "Pintavaurioiden korjausta"
+          },
+          "suorituspaikka" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "nimi" : {
+                "fi" : "työpaikka"
+              },
+              "koodistoUri" : "ammatillisennaytonsuorituspaikka",
+              "koodistoVersio" : 1
+            },
+            "kuvaus" : {
+              "fi" : "Autokorjaamo Oy, Riihimäki"
+            }
+          }
+        },
+        "paikallinenId" : "suoritus-12345-2",
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "nimi" : {
+              "fi" : "Hyväksytty"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+            "koodistoVersio" : 1
+          },
+          "päivä" : "2013-03-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ]
+        } ],
+        "vahvistus" : {
+          "päivä" : "2013-05-31",
+          "paikkakunta" : {
+            "koodiarvo" : "091",
+            "nimi" : {
+              "fi" : "Helsinki"
+            },
+            "koodistoUri" : "kunta"
+          },
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Keijo Perttilä",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "100019",
+            "nimi" : {
+              "fi" : "Mittaus- ja korivauriotyöt"
+            },
+            "koodistoUri" : "tutkinnonosat",
+            "koodistoVersio" : 1
+          },
+          "pakollinen" : true
+        },
+        "näyttö" : {
+          "kuvaus" : {
+            "fi" : "Mittaus- ja korivauriotöitä"
+          },
+          "suorituspaikka" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "nimi" : {
+                "fi" : "työpaikka"
+              },
+              "koodistoUri" : "ammatillisennaytonsuorituspaikka",
+              "koodistoVersio" : 1
+            },
+            "kuvaus" : {
+              "fi" : "Autokorjaamo Oy, Riihimäki"
+            }
+          }
+        },
+        "paikallinenId" : "suoritus-12345-3",
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "nimi" : {
+              "fi" : "Hyväksytty"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+            "koodistoVersio" : 1
+          },
+          "päivä" : "2013-04-01",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ]
+        } ],
+        "vahvistus" : {
+          "päivä" : "2013-05-31",
+          "paikkakunta" : {
+            "koodiarvo" : "091",
+            "nimi" : {
+              "fi" : "Helsinki"
+            },
+            "koodistoUri" : "kunta"
+          },
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Keijo Perttilä",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "100034",
+            "nimi" : {
+              "fi" : "Maalauksen esikäsittelytyöt"
+            },
+            "koodistoUri" : "tutkinnonosat",
+            "koodistoVersio" : 1
+          },
+          "pakollinen" : true
+        },
+        "näyttö" : {
+          "kuvaus" : {
+            "fi" : "Maalauksen esikäsittelytöitä"
+          },
+          "suorituspaikka" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "nimi" : {
+                "fi" : "työpaikka"
+              },
+              "koodistoUri" : "ammatillisennaytonsuorituspaikka",
+              "koodistoVersio" : 1
+            },
+            "kuvaus" : {
+              "fi" : "Autokorjaamo Oy, Riihimäki"
+            }
+          }
+        },
+        "paikallinenId" : "suoritus-12345-4",
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "nimi" : {
+              "fi" : "Hyväksytty"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+            "koodistoVersio" : 1
+          },
+          "päivä" : "2014-10-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ]
+        } ],
+        "vahvistus" : {
+          "päivä" : "2014-11-08",
+          "paikkakunta" : {
+            "koodiarvo" : "091",
+            "nimi" : {
+              "fi" : "Helsinki"
+            },
+            "koodistoUri" : "kunta"
+          },
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Keijo Perttilä",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "100037",
+            "nimi" : {
+              "fi" : "Auton lisävarustetyöt"
+            },
+            "koodistoUri" : "tutkinnonosat",
+            "koodistoVersio" : 1
+          },
+          "pakollinen" : true
+        },
+        "näyttö" : {
+          "kuvaus" : {
+            "fi" : "Auton lisävarustetöitä"
+          },
+          "suorituspaikka" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "nimi" : {
+                "fi" : "työpaikka"
+              },
+              "koodistoUri" : "ammatillisennaytonsuorituspaikka",
+              "koodistoVersio" : 1
+            },
+            "kuvaus" : {
+              "fi" : "Autokorjaamo Oy, Riihimäki"
+            }
+          }
+        },
+        "paikallinenId" : "suoritus-12345-5",
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "nimi" : {
+              "fi" : "Hyväksytty"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+            "koodistoVersio" : 1
+          },
+          "päivä" : "2015-04-01",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ]
+        } ],
+        "vahvistus" : {
+          "päivä" : "2015-05-01",
+          "paikkakunta" : {
+            "koodiarvo" : "091",
+            "nimi" : {
+              "fi" : "Helsinki"
+            },
+            "koodistoUri" : "kunta"
+          },
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Keijo Perttilä",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "101050",
+            "nimi" : {
+              "fi" : "Yritystoiminnan suunnittelu"
+            },
+            "koodistoUri" : "tutkinnonosat",
+            "koodistoVersio" : 1
+          },
+          "pakollinen" : true
+        },
+        "hyväksiluku" : {
+          "osaaminen" : {
+            "tunniste" : {
+              "koodiarvo" : "100238",
+              "nimi" : {
+                "fi" : "Asennushitsaus"
+              },
+              "koodistoUri" : "tutkinnonosat",
+              "koodistoVersio" : 1
+            },
+            "pakollinen" : true
+          },
+          "selite" : {
+            "fi" : "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
+          }
+        },
+        "paikallinenId" : "suoritus-12345-6",
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "nimi" : {
+              "fi" : "Hyväksytty"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+            "koodistoVersio" : 1
+          },
+          "päivä" : "2016-02-01",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ]
+        } ],
+        "vahvistus" : {
+          "päivä" : "2016-05-01",
+          "paikkakunta" : {
+            "koodiarvo" : "091",
+            "nimi" : {
+              "fi" : "Helsinki"
+            },
+            "koodistoUri" : "kunta"
+          },
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Keijo Perttilä",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "ammatillinentutkinto",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    } ],
+    "tavoite" : {
+      "koodiarvo" : "ammatillinentutkinto",
+      "koodistoUri" : "suorituksentyyppi"
+    },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2012-09-01",
+        "loppu" : "2016-01-09",
+        "tila" : {
+          "koodiarvo" : "aktiivinen",
+          "nimi" : {
+            "fi" : "Aktiivinen"
+          },
+          "koodistoUri" : "opiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "4",
+          "nimi" : {
+            "fi" : "Työnantajan kokonaan rahoittama"
+          },
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      }, {
+        "alku" : "2016-01-10",
+        "tila" : {
+          "koodiarvo" : "paattynyt",
+          "nimi" : {
+            "fi" : "Päättynyt"
+          },
+          "koodistoUri" : "opiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "4",
+          "nimi" : {
+            "fi" : "Työnantajan kokonaan rahoittama"
+          },
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      } ]
+    },
+    "tyyppi" : {
+      "koodiarvo" : "ammatillinenkoulutus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    }
+  } ]
+}

@@ -1,0 +1,289 @@
+{
+  "henkilö" : {
+    "oid" : "1.2.246.562.24.00000000001"
+  },
+  "opiskeluoikeudet" : [ {
+    "alkamispäivä" : "2012-09-01",
+    "arvioituPäättymispäivä" : "2015-05-31",
+    "päättymispäivä" : "2016-01-09",
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.52251087186",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "10105",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Stadin ammattiopisto"
+      }
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "351301",
+          "nimi" : {
+            "fi" : "Autoalan perustutkinto"
+          },
+          "koodistoUri" : "koulutus"
+        },
+        "perusteenDiaarinumero" : "39/011/2014"
+      },
+      "tutkintonimike" : [ {
+        "koodiarvo" : "10024",
+        "nimi" : {
+          "fi" : "Autokorinkorjaaja"
+        },
+        "koodistoUri" : "tutkintonimikkeet"
+      } ],
+      "osaamisala" : [ {
+        "koodiarvo" : "1525",
+        "nimi" : {
+          "fi" : "Autokorinkorjauksen osaamisala"
+        },
+        "koodistoUri" : "osaamisala"
+      } ],
+      "suoritustapa" : {
+        "tunniste" : {
+          "koodiarvo" : "ops",
+          "nimi" : {
+            "fi" : "Opetussuunnitelman mukainen"
+          },
+          "koodistoUri" : "suoritustapa",
+          "koodistoVersio" : 1
+        }
+      },
+      "järjestämismuoto" : {
+        "tunniste" : {
+          "koodiarvo" : "10",
+          "nimi" : {
+            "fi" : "Oppilaitosmuotoinen"
+          },
+          "koodistoUri" : "jarjestamismuoto",
+          "koodistoVersio" : 1
+        }
+      },
+      "paikallinenId" : "suoritus-12345",
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "tila" : {
+        "koodiarvo" : "KESKEN",
+        "koodistoUri" : "suorituksentila"
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.42456023292",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+        }
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "101053",
+            "nimi" : {
+              "fi" : "Viestintä- ja vuorovaikutusosaaminen"
+            },
+            "koodistoUri" : "tutkinnonosat"
+          },
+          "pakollinen" : true,
+          "laajuus" : {
+            "arvo" : 11.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "Osaamispistettä"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "paikallinenId" : "suoritus-12345-1",
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "2",
+            "nimi" : {
+              "fi" : "H2"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+          },
+          "päivä" : "2014-05-20"
+        }, {
+          "arvosana" : {
+            "koodiarvo" : "3",
+            "nimi" : {
+              "fi" : "K3"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+          },
+          "päivä" : "2014-10-20"
+        } ],
+        "vahvistus" : {
+          "päivä" : "2014-11-08",
+          "paikkakunta" : {
+            "koodiarvo" : "091",
+            "nimi" : {
+              "fi" : "Helsinki"
+            },
+            "koodistoUri" : "kunta"
+          },
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Keijo Perttilä",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "ammatillinentutkinto",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    } ],
+    "hojks" : {
+      "hojksTehty" : true,
+      "opetusryhmä" : {
+        "koodiarvo" : "1",
+        "nimi" : {
+          "fi" : "Yleinen opetusryhmä"
+        },
+        "koodistoUri" : "opetusryhma"
+      }
+    },
+    "tavoite" : {
+      "koodiarvo" : "ammatillinentutkinto",
+      "koodistoUri" : "suorituksentyyppi"
+    },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2012-09-01",
+        "loppu" : "2012-12-31",
+        "tila" : {
+          "koodiarvo" : "aktiivinen",
+          "nimi" : {
+            "fi" : "Aktiivinen"
+          },
+          "koodistoUri" : "opiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "nimi" : {
+            "fi" : "Valtionosuusrahoitteinen koulutus"
+          },
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      }, {
+        "alku" : "2013-01-01",
+        "loppu" : "2013-12-31",
+        "tila" : {
+          "koodiarvo" : "keskeyttanyt",
+          "nimi" : {
+            "fi" : "Keskeyttänyt"
+          },
+          "koodistoUri" : "opiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "nimi" : {
+            "fi" : "Valtionosuusrahoitteinen koulutus"
+          },
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      }, {
+        "alku" : "2014-01-01",
+        "tila" : {
+          "koodiarvo" : "aktiivinen",
+          "nimi" : {
+            "fi" : "Aktiivinen"
+          },
+          "koodistoUri" : "opiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "nimi" : {
+            "fi" : "Valtionosuusrahoitteinen koulutus"
+          },
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      } ]
+    },
+    "läsnäolotiedot" : {
+      "läsnäolojaksot" : [ {
+        "alku" : "2012-09-01",
+        "loppu" : "2012-12-31",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "lasnaolotila",
+          "koodistoVersio" : 1
+        }
+      }, {
+        "alku" : "2013-01-01",
+        "loppu" : "2013-12-31",
+        "tila" : {
+          "koodiarvo" : "poissa",
+          "nimi" : {
+            "fi" : "Poissa"
+          },
+          "koodistoUri" : "lasnaolotila",
+          "koodistoVersio" : 1
+        }
+      }, {
+        "alku" : "2014-01-01",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "lasnaolotila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
+    "tyyppi" : {
+      "koodiarvo" : "ammatillinenkoulutus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    }
+  } ]
+}

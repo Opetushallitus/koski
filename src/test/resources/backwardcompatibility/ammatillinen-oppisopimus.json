@@ -1,0 +1,106 @@
+{
+  "henkilö" : {
+    "hetu" : "120496-949B",
+    "etunimet" : "Aarne",
+    "kutsumanimi" : "Aarne",
+    "sukunimi" : "Ammattilainen"
+  },
+  "opiskeluoikeudet" : [ {
+    "alkamispäivä" : "2016-09-01",
+    "arvioituPäättymispäivä" : "2020-05-01",
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.52251087186",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "10105",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Stadin ammattiopisto"
+      }
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "351301",
+          "nimi" : {
+            "fi" : "Autoalan perustutkinto"
+          },
+          "koodistoUri" : "koulutus"
+        },
+        "perusteenDiaarinumero" : "39/011/2014"
+      },
+      "suoritustapa" : {
+        "tunniste" : {
+          "koodiarvo" : "naytto",
+          "nimi" : {
+            "fi" : "Näyttö"
+          },
+          "koodistoUri" : "suoritustapa",
+          "koodistoVersio" : 1
+        }
+      },
+      "järjestämismuoto" : {
+        "tunniste" : {
+          "koodiarvo" : "20",
+          "nimi" : {
+            "fi" : "Oppisopimusmuotoinen"
+          },
+          "koodistoUri" : "jarjestamismuoto",
+          "koodistoVersio" : 1
+        },
+        "oppisopimus" : {
+          "työnantaja" : {
+            "nimi" : {
+              "fi" : "Autokorjaamo Oy"
+            },
+            "yTunnus" : "1234567-8"
+          }
+        }
+      },
+      "paikallinenId" : "suoritus-12345",
+      "tila" : {
+        "koodiarvo" : "KESKEN",
+        "koodistoUri" : "suorituksentila"
+      },
+      "alkamispäivä" : "2016-09-01",
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.42456023292",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+        }
+      },
+      "tyyppi" : {
+        "koodiarvo" : "ammatillinentutkinto",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    } ],
+    "tavoite" : {
+      "koodiarvo" : "ammatillinentutkinto",
+      "koodistoUri" : "suorituksentyyppi"
+    },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2016-09-01",
+        "tila" : {
+          "koodiarvo" : "aktiivinen",
+          "nimi" : {
+            "fi" : "Aktiivinen"
+          },
+          "koodistoUri" : "opiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "4",
+          "nimi" : {
+            "fi" : "Työnantajan kokonaan rahoittama"
+          },
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      } ]
+    },
+    "tyyppi" : {
+      "koodiarvo" : "ammatillinenkoulutus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    }
+  } ]
+}

@@ -1,0 +1,136 @@
+{
+  "henkilö" : {
+    "hetu" : "120496-949B",
+    "etunimet" : "Aarne",
+    "kutsumanimi" : "Aarne",
+    "sukunimi" : "Ammattilainen"
+  },
+  "opiskeluoikeudet" : [ {
+    "alkamispäivä" : "2016-09-01",
+    "arvioituPäättymispäivä" : "2020-05-01",
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.52251087186"
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "351301",
+          "nimi" : {
+            "fi" : "Autoalan perustutkinto"
+          },
+          "koodistoUri" : "koulutus"
+        },
+        "perusteenDiaarinumero" : "39/011/2014"
+      },
+      "suoritustapa" : {
+        "tunniste" : {
+          "koodiarvo" : "naytto",
+          "nimi" : {
+            "fi" : "Näyttö"
+          },
+          "koodistoUri" : "suoritustapa",
+          "koodistoVersio" : 1
+        }
+      },
+      "tila" : {
+        "koodiarvo" : "KESKEN",
+        "koodistoUri" : "suorituksentila"
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.42456023292",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+        }
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "104052",
+            "koodistoUri" : "tutkinnonosat"
+          },
+          "pakollinen" : true
+        },
+        "tutkinto" : {
+          "tunniste" : {
+            "koodiarvo" : "357305",
+            "koodistoUri" : "koulutus"
+          },
+          "perusteenDiaarinumero" : "40/011/2001"
+        },
+        "paikallinenId" : "suoritus-12345-1",
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "3",
+            "nimi" : {
+              "fi" : "K3"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+          },
+          "päivä" : "2014-10-20"
+        } ],
+        "vahvistus" : {
+          "päivä" : "2014-11-08",
+          "paikkakunta" : {
+            "koodiarvo" : "091",
+            "nimi" : {
+              "fi" : "Helsinki"
+            },
+            "koodistoUri" : "kunta"
+          },
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Keijo Perttilä",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
+        },
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "ammatillinentutkinto",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    } ],
+    "tavoite" : {
+      "koodiarvo" : "ammatillinentutkinto",
+      "koodistoUri" : "suorituksentyyppi"
+    },
+    "tyyppi" : {
+      "koodiarvo" : "ammatillinenkoulutus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    }
+  } ]
+}

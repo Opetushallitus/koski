@@ -1,0 +1,3073 @@
+{
+  "henkilö" : {
+    "hetu" : "110496-9369",
+    "etunimet" : "Liisa",
+    "kutsumanimi" : "Liisa",
+    "sukunimi" : "Lukiolainen"
+  },
+  "opiskeluoikeudet" : [ {
+    "alkamispäivä" : "2016-09-01",
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.14613773812",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "00204",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Jyväskylän normaalikoulu"
+      }
+    },
+    "suoritukset" : [ {
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "tila" : {
+        "koodiarvo" : "VALMIS",
+        "koodistoUri" : "suorituksentila"
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.14613773812",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "00204",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Jyväskylän normaalikoulu"
+        }
+      },
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "301000",
+          "koodistoUri" : "koulutus"
+        },
+        "perusteenDiaarinumero" : "60/011/2015"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "lukionoppimaara",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "vahvistus" : {
+        "päivä" : "2016-06-04",
+        "paikkakunta" : {
+          "koodiarvo" : "179",
+          "nimi" : {
+            "fi" : "Jyväskylä"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.14613773812",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "00204",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.14613773812",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "00204",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu"
+            }
+          }
+        } ]
+      },
+      "osasuoritukset" : [ {
+        "tyyppi" : {
+          "koodiarvo" : "lukionoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "AI",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "kieli" : {
+            "koodiarvo" : "AI1",
+            "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
+          },
+          "pakollinen" : true
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          }
+        } ],
+        "osasuoritukset" : [ {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ÄI1",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ÄI2",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ÄI3",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ÄI4",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ÄI5",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ÄI6",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ÄI8",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ÄI9",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        } ]
+      }, {
+        "tyyppi" : {
+          "koodiarvo" : "lukionoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "A1",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "kieli" : {
+            "koodiarvo" : "EN",
+            "koodistoUri" : "kielivalikoima"
+          },
+          "pakollinen" : true
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          }
+        } ],
+        "osasuoritukset" : [ {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ENA1",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "10",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ENA2",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "10",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ENA3",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ENA4",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ENA5",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ENA6",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ENA7",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ENA8",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ENA 10",
+              "nimi" : {
+                "fi" : "Abituki"
+              },
+              "koodistoUri" : "paikallinen"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        } ]
+      }, {
+        "tyyppi" : {
+          "koodiarvo" : "lukionoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "B1",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "kieli" : {
+            "koodiarvo" : "SV",
+            "koodistoUri" : "kielivalikoima"
+          },
+          "pakollinen" : true
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          }
+        } ],
+        "osasuoritukset" : [ {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "RUB11",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "RUB12",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "RUB13",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "7",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "RUB14",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "7",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "RUB15",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        } ]
+      }, {
+        "tyyppi" : {
+          "koodiarvo" : "lukionoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "B3",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "kieli" : {
+            "koodiarvo" : "LA",
+            "koodistoUri" : "kielivalikoima"
+          },
+          "pakollinen" : true
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          }
+        } ],
+        "osasuoritukset" : [ {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "LAB31",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "LAB32",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        } ]
+      }, {
+        "tyyppi" : {
+          "koodiarvo" : "lukionoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MA",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "oppimäärä" : {
+            "koodiarvo" : "MAA",
+            "koodistoUri" : "oppiainematematiikka"
+          },
+          "pakollinen" : true
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          }
+        } ],
+        "osasuoritukset" : [ {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MAA1",
+              "nimi" : {
+                "fi" : "Funktiot ja yhtälöt, pa, vuositaso 1"
+              },
+              "koodistoUri" : "paikallinen"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MAA2",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "10",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MAA3",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MAA4",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "10",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MAA5",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "7",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MAA6",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MAA7",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MAA8",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "7",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MAA9",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MAA10",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MAA11",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MAA12",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "10",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MAA13",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MAA14",
+              "nimi" : {
+                "fi" : "Kertauskurssi, ksy, vuositaso 3"
+              },
+              "koodistoUri" : "paikallinen"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MAA16",
+              "nimi" : {
+                "fi" : "Analyyttisten menetelmien lisäkurssi, ksy, vuositaso 2"
+              },
+              "koodistoUri" : "paikallinen"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        } ]
+      }, {
+        "tyyppi" : {
+          "koodiarvo" : "lukionoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "BI",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          }
+        } ],
+        "osasuoritukset" : [ {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "BI1",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "BI2",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "BI3",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "BI4",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "BI5",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "10",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "BI6",
+              "nimi" : {
+                "fi" : "Cell Biology (½ kurssia), so, vuositaso 3"
+              },
+              "koodistoUri" : "paikallinen"
+            },
+            "laajuus" : {
+              "arvo" : 0.5,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "BI7",
+              "nimi" : {
+                "fi" : "Biologia nova - ympäristö tutuksi (1-3 kurssia), so, vuositasot 1-2"
+              },
+              "koodistoUri" : "paikallinen"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "BI8",
+              "nimi" : {
+                "fi" : "Biologian kertauskurssi (½ kurssia), so, vuositaso 3"
+              },
+              "koodistoUri" : "paikallinen"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        } ]
+      }, {
+        "tyyppi" : {
+          "koodiarvo" : "lukionoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "GE",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          }
+        } ],
+        "osasuoritukset" : [ {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "GE1",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "GE2",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "7",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        } ]
+      }, {
+        "tyyppi" : {
+          "koodiarvo" : "lukionoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "FY",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          }
+        } ],
+        "osasuoritukset" : [ {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "FY1",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "FY2",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "FY3",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "FY4",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "7",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "FY5",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "FY6",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "7",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "FY7",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "FY8",
+              "nimi" : {
+                "fi" : "Aine ja säteily, sy, vuositaso 3"
+              },
+              "koodistoUri" : "paikallinen"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "7",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "FY9",
+              "nimi" : {
+                "fi" : "Kokeellinen fysiikka, so, vuositaso 2"
+              },
+              "koodistoUri" : "paikallinen"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "7",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "FY10",
+              "nimi" : {
+                "fi" : "Lukion fysiikan kokonaiskuva, so, vuositaso 3"
+              },
+              "koodistoUri" : "paikallinen"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "FY11",
+              "nimi" : {
+                "fi" : "Fysiikka 11"
+              },
+              "koodistoUri" : "paikallinen"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "FY12",
+              "nimi" : {
+                "fi" : "Fysiikka 12"
+              },
+              "koodistoUri" : "paikallinen"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "FY13",
+              "nimi" : {
+                "fi" : "Fysiikka 13"
+              },
+              "koodistoUri" : "paikallinen"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        } ]
+      }, {
+        "tyyppi" : {
+          "koodiarvo" : "lukionoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "KE",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          }
+        } ],
+        "osasuoritukset" : [ {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "KE1",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "KE2",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "KE3",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "KE4",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "KE5",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "7",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "KE6",
+              "nimi" : {
+                "fi" : "Kokeellinen kemia, so, vuositasot 2-3"
+              },
+              "koodistoUri" : "paikallinen"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "KE7",
+              "nimi" : {
+                "fi" : "Lukion kemian kokonaiskuva, so, vuositaso 3"
+              },
+              "koodistoUri" : "paikallinen"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "KE8",
+              "nimi" : {
+                "fi" : "Kemia 8"
+              },
+              "koodistoUri" : "paikallinen"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        } ]
+      }, {
+        "tyyppi" : {
+          "koodiarvo" : "lukionoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "KT",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "uskonto" : {
+            "koodiarvo" : "KT1",
+            "koodistoUri" : "oppiaineuskonto"
+          },
+          "pakollinen" : true
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          }
+        } ],
+        "osasuoritukset" : [ {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "UE1",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "UE2",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "7",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "UE3",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        } ]
+      }, {
+        "tyyppi" : {
+          "koodiarvo" : "lukionoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "FI",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          }
+        } ],
+        "osasuoritukset" : [ {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "FI1",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        } ]
+      }, {
+        "tyyppi" : {
+          "koodiarvo" : "lukionoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "PS",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          }
+        } ],
+        "osasuoritukset" : [ {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "PS1",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        } ]
+      }, {
+        "tyyppi" : {
+          "koodiarvo" : "lukionoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "HI",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          }
+        } ],
+        "osasuoritukset" : [ {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "HI1",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "7",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "HI2",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "HI3",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "7",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "HI4",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        } ]
+      }, {
+        "tyyppi" : {
+          "koodiarvo" : "lukionoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "YH",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          }
+        } ],
+        "osasuoritukset" : [ {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "YH1",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "YH2",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        } ]
+      }, {
+        "tyyppi" : {
+          "koodiarvo" : "lukionoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "LI",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          }
+        } ],
+        "osasuoritukset" : [ {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "LI1",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "LI2",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "LI12",
+              "nimi" : {
+                "fi" : "Vanhat tanssit, kso"
+              },
+              "koodistoUri" : "paikallinen"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        } ]
+      }, {
+        "tyyppi" : {
+          "koodiarvo" : "lukionoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MU",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          }
+        } ],
+        "osasuoritukset" : [ {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MU1",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        } ]
+      }, {
+        "tyyppi" : {
+          "koodiarvo" : "lukionoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "KU",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          }
+        } ],
+        "osasuoritukset" : [ {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "KU1",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "KU2",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "9",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        } ]
+      }, {
+        "tyyppi" : {
+          "koodiarvo" : "lukionoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "TE",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          }
+        } ],
+        "osasuoritukset" : [ {
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "TE1",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            }
+          } ]
+        } ]
+      } ]
+    } ],
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2012-09-01",
+        "loppu" : "2016-01-09",
+        "tila" : {
+          "koodiarvo" : "aktiivinen",
+          "nimi" : {
+            "fi" : "Aktiivinen"
+          },
+          "koodistoUri" : "opiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      }, {
+        "alku" : "2016-01-10",
+        "tila" : {
+          "koodiarvo" : "paattynyt",
+          "nimi" : {
+            "fi" : "Päättynyt"
+          },
+          "koodistoUri" : "opiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
+    "tyyppi" : {
+      "koodiarvo" : "lukiokoulutus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    }
+  } ]
+}

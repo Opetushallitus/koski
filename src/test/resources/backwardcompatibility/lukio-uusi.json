@@ -1,0 +1,83 @@
+{
+  "henkilö" : {
+    "hetu" : "110496-9369",
+    "etunimet" : "Liisa",
+    "kutsumanimi" : "Liisa",
+    "sukunimi" : "Lukiolainen"
+  },
+  "opiskeluoikeudet" : [ {
+    "alkamispäivä" : "2016-09-01",
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.14613773812",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "00204",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Jyväskylän normaalikoulu"
+      }
+    },
+    "suoritukset" : [ {
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "tila" : {
+        "koodiarvo" : "KESKEN",
+        "koodistoUri" : "suorituksentila"
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.14613773812",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "00204",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Jyväskylän normaalikoulu"
+        }
+      },
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "301000",
+          "koodistoUri" : "koulutus"
+        },
+        "perusteenDiaarinumero" : "60/011/2015"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "lukionoppimaara",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    } ],
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2012-09-01",
+        "loppu" : "2016-01-09",
+        "tila" : {
+          "koodiarvo" : "aktiivinen",
+          "nimi" : {
+            "fi" : "Aktiivinen"
+          },
+          "koodistoUri" : "opiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      }, {
+        "alku" : "2016-01-10",
+        "tila" : {
+          "koodiarvo" : "paattynyt",
+          "nimi" : {
+            "fi" : "Päättynyt"
+          },
+          "koodistoUri" : "opiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
+    "tyyppi" : {
+      "koodiarvo" : "lukiokoulutus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    }
+  } ]
+}

@@ -1,0 +1,79 @@
+{
+  "henkilö" : {
+    "hetu" : "110496-926Y",
+    "etunimet" : "Kaisa",
+    "kutsumanimi" : "Kaisa",
+    "sukunimi" : "Koululainen"
+  },
+  "opiskeluoikeudet" : [ {
+    "alkamispäivä" : "2008-08-15",
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.14613773812",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "00204",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Jyväskylän normaalikoulu"
+      }
+    },
+    "tavoite" : {
+      "koodiarvo" : "perusopetuksenoppimaara",
+      "koodistoUri" : "suorituksentyyppi"
+    },
+    "suoritukset" : [ {
+      "luokkaAste" : 9,
+      "luokka" : "9C",
+      "alkamispäivä" : "2008-08-15",
+      "tila" : {
+        "koodiarvo" : "KESKEN",
+        "koodistoUri" : "suorituksentila"
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.14613773812",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "00204",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Jyväskylän normaalikoulu"
+        }
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "koulutusmoduuli" : {
+        "perusteenDiaarinumero" : "104/011/2014",
+        "tunniste" : {
+          "koodiarvo" : "201101",
+          "koodistoUri" : "koulutus"
+        }
+      },
+      "tyyppi" : {
+        "koodiarvo" : "perusopetuksenvuosiluokka",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    } ],
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2008-08-15",
+        "tila" : {
+          "koodiarvo" : "aktiivinen",
+          "nimi" : {
+            "fi" : "Aktiivinen"
+          },
+          "koodistoUri" : "opiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
+    "tyyppi" : {
+      "koodiarvo" : "perusopetus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    }
+  } ]
+}

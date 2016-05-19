@@ -1,0 +1,126 @@
+{
+  "henkilö" : {
+    "hetu" : "010101-123N",
+    "etunimet" : "Eero",
+    "kutsumanimi" : "Eero",
+    "sukunimi" : "Esimerkki"
+  },
+  "opiskeluoikeudet" : [ {
+    "alkamispäivä" : "2008-08-15",
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.14613773812",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "00204",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Jyväskylän normaalikoulu"
+      }
+    },
+    "tavoite" : {
+      "koodiarvo" : "perusopetuksenoppiaineenoppimaara",
+      "koodistoUri" : "suorituksentyyppi"
+    },
+    "suoritukset" : [ {
+      "tila" : {
+        "koodiarvo" : "VALMIS",
+        "koodistoUri" : "suorituksentila"
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.14613773812",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "00204",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Jyväskylän normaalikoulu"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2016-06-04",
+        "paikkakunta" : {
+          "koodiarvo" : "179",
+          "nimi" : {
+            "fi" : "Jyväskylä"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.14613773812",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "00204",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.14613773812",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "00204",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu"
+            }
+          }
+        } ]
+      },
+      "tyyppi" : {
+        "koodiarvo" : "perusopetuksenoppiaineenoppimaara",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "AI",
+          "koodistoUri" : "koskioppiaineetyleissivistava"
+        },
+        "kieli" : {
+          "koodiarvo" : "AI1",
+          "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
+        },
+        "pakollinen" : true
+      },
+      "arviointi" : [ {
+        "arvosana" : {
+          "koodiarvo" : "9",
+          "koodistoUri" : "arviointiasteikkoyleissivistava"
+        }
+      } ]
+    } ],
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2008-08-15",
+        "loppu" : "2016-06-03",
+        "tila" : {
+          "koodiarvo" : "aktiivinen",
+          "nimi" : {
+            "fi" : "Aktiivinen"
+          },
+          "koodistoUri" : "opiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      }, {
+        "alku" : "2016-06-04",
+        "tila" : {
+          "koodiarvo" : "paattynyt",
+          "nimi" : {
+            "fi" : "Päättynyt"
+          },
+          "koodistoUri" : "opiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
+    "tyyppi" : {
+      "koodiarvo" : "perusopetus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    }
+  } ]
+}
