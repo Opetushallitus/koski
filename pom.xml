@@ -2,11 +2,11 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
   <modelVersion>4.0.0</modelVersion>
   <groupId>fi.vm.sade</groupId>
-  <artifactId>tor</artifactId>
+  <artifactId>koski</artifactId>
   <packaging>jar</packaging>
-  <description>todennetun osaamisen rekisteri</description>
+  <description>Kansallisten opiskeluoikeuksien ja suoritusten keskitetty integraatiopalvelu - KOSKI</description>
   <version>0.1.0-SNAPSHOT</version>
-  <name>todennetun osaamisen rekisteri</name>
+  <name>koski</name>
   <organization>
     <name>fi.vm.sade</name>
   </organization>
