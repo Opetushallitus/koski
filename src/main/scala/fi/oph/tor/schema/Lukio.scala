@@ -50,7 +50,7 @@ case class LukionOppiaineenSuoritus(
   tila: Koodistokoodiviite,
   arviointi: Option[List[YleissivistävänkoulutuksenArviointi]] = None,
   override val osasuoritukset: Option[List[LukionKurssinSuoritus]]
-) extends Oppiaineensuoritus
+) extends OppiaineenSuoritus
 
 case class LukionKurssinSuoritus(
   @KoodistoKoodiarvo("lukionkurssi")

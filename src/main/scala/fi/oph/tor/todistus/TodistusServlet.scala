@@ -17,6 +17,10 @@ class TodistusServlet(val userRepository: UserOrganisationsRepository, val direc
           opiskeluoikeus.suoritukset.head match {
             case t: PerusopetuksenOppimääränSuoritus if t.tila.koodiarvo == "VALMIS" =>
               (new PerusopetuksenPaattotodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)
+
+            case t: PerusopetuksenOppiaineenOppimääränSuoritus if t.tila.koodiarvo == "VALMIS" =>
+              (new PerusopetuksenOppiaineenOppimaaranTodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)
+
             case t: AmmatillisenTutkinnonSuoritus if t.tila.koodiarvo == "VALMIS" => // TODO: vain perustutkinnot
               t.koulutusmoduuli.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_)) match {
                 case Some(rakenne: TutkintoRakenne) =>
@@ -30,6 +34,7 @@ class TodistusServlet(val userRepository: UserOrganisationsRepository, val direc
 
             case t: LukionOppimääränSuoritus if t.tila.koodiarvo == "VALMIS" =>
               (new LukionPaattotodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)
+
             case _ => TorErrorCategory.notFound.todistustaEiLöydy()
           }
       case Left(status) => renderStatus(status)

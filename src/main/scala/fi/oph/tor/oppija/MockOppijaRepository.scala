@@ -26,6 +26,7 @@ object MockOppijat {
   val amkValmistunut = oppijat.oppija("Amis", "Valmis", "101291-954C")
   val amkKesken = oppijat.oppija("Amiskesken", "Jalmari", "100292-980D")
   val amkKeskeytynyt = oppijat.oppija("Pudokas", "Valtteri", "100193-948U")
+  val oppiaineenKorottaja = oppijat.oppija("Oppiaineenkorottaja", "Olli", "190596-953T")
 
   def defaultOppijat = oppijat.getOppijat
 }

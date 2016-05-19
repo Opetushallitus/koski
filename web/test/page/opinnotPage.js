@@ -51,6 +51,10 @@ function OpinnotPage() {
         return wait.until(OpintosuoritusotePage().isVisible)()
       }
     },
+    avaaTodistus: function() {
+      triggerEvent(S('a.todistus'), 'click')
+      return wait.until(TodistusPage().isVisible)()
+    },
     waitUntilRakenneVisible: function() {
       return wait.until(api.isRakenneVisible)
     }

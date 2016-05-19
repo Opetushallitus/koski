@@ -509,10 +509,11 @@ describe('TOR', function() {
   })
 
   describe('Todistukset', function( ){
+    var todistus = TodistusPage()
+    before(resetFixtures, authentication.login())
+
     describe('Perusopetuksen päättötodistus', function() {
-      var todistus = TodistusPage()
-      before(resetFixtures, authentication.login())
-      before(openPage('/tor/oppija/1.2.246.562.24.00000000008', page.isOppijaSelected('Kaisa')))
+      before(page.openPage, page.oppijaHaku.search('110496-926Y', page.isOppijaSelected('Kaisa')))
       describe('Oppijan suorituksissa', function() {
         it('näytetään', function() {
           expect(OpinnotPage().getTutkinto()).to.equal("Peruskoulu")
@@ -520,12 +521,9 @@ describe('TOR', function() {
         })
       })
       describe('Tulostettava todistus', function() {
-        before(
-          function() { triggerEvent(S('a.todistus'), 'click') },
-          wait.until(todistus.isVisible)
-        )
+        before(OpinnotPage().avaaTodistus)
         it('näytetään', function() {
-          expect(todistus.headings()).to.equal('Jyväskylän yliopistoPerusopetuksen päättötodistusJyväskylän normaalikoulu Koululainen, Kaisa 110496-926Y')
+          expect(todistus.headings()).to.equal('Jyväskylän yliopisto Perusopetuksen päättötodistus Jyväskylän normaalikoulu Koululainen , Kaisa 110496-926Y')
           expect(todistus.arvosanarivi('.oppiaine.KT')).to.equal('Uskonto tai elämänkatsomustieto, Evankelisluterilainen uskonto Erinomainen 10')
           expect(todistus.arvosanarivi('.oppiaine.KO.valinnainen')).to.equal('Valinnainen kotitalous 1.0 Hyväksytty')
           expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
@@ -533,10 +531,16 @@ describe('TOR', function() {
       })
     })
 
+    describe('Perusopetuksen oppiaineen oppimäärän todistus', function() {
+      before(page.openPage, page.oppijaHaku.search('190596-953T', page.isOppijaSelected('Olli')), OpinnotPage().avaaTodistus)
+      it('näytetään', function() {
+        expect(todistus.headings()).to.equal('Jyväskylän yliopisto Perusopetuksen oppiaineen oppimäärän suoritus Jyväskylän normaalikoulu Oppiaineenkorottaja , Olli 190596-953T')
+        expect(todistus.arvosanarivi('.oppiaine.AI')).to.equal('Äidinkieli ja kirjallisuus Kiitettävä 9')
+      })
+    })
+
     describe('Lukion päättötodistus', function() {
-      var todistus = TodistusPage()
-      before(resetFixtures, authentication.login())
-      before(openPage('/tor/oppija/1.2.246.562.24.00000000009', page.isOppijaSelected('Liisa')))
+      before(page.openPage, page.oppijaHaku.search('110496-9369', page.isOppijaSelected('Liisa')))
       describe('Oppijan suorituksissa', function() {
         it('näytetään', function() {
           expect(OpinnotPage().getTutkinto()).to.equal("Ylioppilastutkinto")
@@ -544,10 +548,7 @@ describe('TOR', function() {
         })
       })
       describe('Tulostettava todistus', function() {
-        before(
-          function() { triggerEvent(S('a.todistus'), 'click') },
-          wait.until(todistus.isVisible)
-        )
+        before(OpinnotPage().avaaTodistus)
         it('näytetään', function() {
           expect(todistus.headings()).to.equal('Lukion päättötodistusJyväskylän yliopistoJyväskylän normaalikoulu Lukiolainen, Liisa 110496-9369')
           expect(todistus.arvosanarivi('.oppiaine.KT')).to.equal('Uskonto tai elämänkatsomustieto, Evankelisluterilainen uskonto 3 Hyvä 8')
@@ -559,9 +560,7 @@ describe('TOR', function() {
     })
 
     describe('Ammatillisen perustutkinnon päättötodistus', function() {
-      var todistus = TodistusPage()
-      before(resetFixtures, authentication.login())
-      before(openPage('/tor/oppija/1.2.246.562.24.000000000010', page.isOppijaSelected('Aarne')))
+      before(page.openPage, page.oppijaHaku.search('120496-949B', page.isOppijaSelected('Aarne')))
       describe('Oppijan suorituksissa', function() {
         it('näytetään', function() {
           expect(OpinnotPage().getTutkinto()).to.equal("Luonto- ja ympäristöalan perustutkinto")
@@ -569,10 +568,7 @@ describe('TOR', function() {
         })
       })
       describe('Tulostettava todistus', function() {
-        before(
-          function() { triggerEvent(S('a.todistus'), 'click') },
-          wait.until(todistus.isVisible)
-        )
+        before(OpinnotPage().avaaTodistus)
         it('näytetään', function() {
           expect(todistus.headings()).to.equal('HELSINGIN KAUPUNKIStadin ammattiopistoPäättötodistusLuonto- ja ympäristöalan perustutkintoYmpäristöalan osaamisala, Ympäristönhoitaja Ammattilainen, Aarne (120496-949B)')
           expect(todistus.arvosanarivi('.tutkinnon-osa.100431')).to.equal('Kestävällä tavalla toimiminen 40 Kiitettävä 3')

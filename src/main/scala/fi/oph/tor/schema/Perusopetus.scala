@@ -85,13 +85,13 @@ case class PerusopetuksenOppiaineenOppimääränSuoritus(
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
-  vahvistus: Option[Vahvistus] = None,
+  override val vahvistus: Option[Vahvistus] = None,
   @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppiaineenoppimaara", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: PerusopetuksenOppiaine,
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
   arviointi: Option[List[YleissivistävänkoulutuksenArviointi]] = None
-) extends PerusopetuksenPäätasonSuoritus
+) extends PerusopetuksenPäätasonSuoritus with OppiaineenSuoritus
 
 @Description("Perusopetuksen oppiaineen suoritus osana perusopetuksen oppimäärän tai vuosiluokan suoritusta")
 case class PerusopetuksenOppiaineenSuoritus(
@@ -102,7 +102,7 @@ case class PerusopetuksenOppiaineenSuoritus(
   @KoodistoKoodiarvo("perusopetuksenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenoppiaine", koodistoUri = "suorituksentyyppi"),
   arviointi: Option[List[YleissivistävänkoulutuksenArviointi]] = None
-) extends Oppiaineensuoritus
+) extends OppiaineenSuoritus
 
 @Description("Perusopetus")
 case class Perusopetus(
