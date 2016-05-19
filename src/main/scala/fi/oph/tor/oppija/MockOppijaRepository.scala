@@ -36,7 +36,6 @@ class MockOppijat(private var oppijat: List[TaydellisetHenkilötiedot] = Nil) ex
 
   def oppija(suku: String, etu: String, hetu: String): TaydellisetHenkilötiedot = {
     val oppija = TaydellisetHenkilötiedot(generateId(), hetu, etu, etu, suku, äidinkieli, None)
-    logger.info("Oppija added: " + oppija)
     oppijat = oppija :: oppijat
     oppija
   }
