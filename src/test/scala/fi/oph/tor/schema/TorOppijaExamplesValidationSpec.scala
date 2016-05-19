@@ -3,7 +3,7 @@ package fi.oph.tor.schema
 import com.fasterxml.jackson.databind.JsonNode
 import com.github.fge.jackson.JsonLoader
 import com.github.fge.jsonschema.main.{JsonSchemaFactory, JsonValidator}
-import fi.oph.tor.documentation.ExamplesAmmatillinen
+import fi.oph.tor.documentation.Examples
 import fi.oph.tor.json.Json
 import org.scalatest.{FreeSpec, Matchers}
 
@@ -15,7 +15,7 @@ class TorOppijaExamplesValidationSpec extends FreeSpec with Matchers {
   private val schema: JsonNode =  JsonLoader.fromString(TorSchema.schemaJsonString)
 
   "Validation" - {
-    ExamplesAmmatillinen.examples.foreach { example =>
+    Examples.examples.foreach { example =>
       example.name in {
         val json = JsonLoader.fromString(Json.write(example.data))
         val report = validator.validate(schema, json)
