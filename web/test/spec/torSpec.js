@@ -448,7 +448,7 @@ describe('TOR', function() {
     describe('Valmis diplomi-insinööri', function() {
       before(
         page.openPage,
-        page.oppijaHaku.search('290492-9455', page.isOppijaSelected('Dick'))
+        page.oppijaHaku.search('290492-9455', page.isOppijaSelected('Dilbert'))
       )
       describe('Oppilaitos ja tutkinto', function() {
         it('näytetään', function() {
