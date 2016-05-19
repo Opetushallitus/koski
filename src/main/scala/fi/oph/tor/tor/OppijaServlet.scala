@@ -4,7 +4,7 @@ import fi.oph.tor.db.GlobalExecutionContext
 import fi.oph.tor.henkilo.HenkiloOid
 import fi.oph.tor.history.OpiskeluoikeusHistoryRepository
 import fi.oph.tor.http.{HttpStatus, TorErrorCategory}
-import fi.oph.tor.json.{Json, JsonStreamWriter}
+import fi.oph.tor.json.Json
 import fi.oph.tor.log.AuditLog.{log => auditLog}
 import fi.oph.tor.log._
 import fi.oph.tor.schema.Henkilö.Oid
@@ -14,14 +14,10 @@ import fi.oph.tor.toruser.{AccessType, RequiresAuthentication, TorUser, UserOrga
 import fi.oph.tor.util.Timing
 import fi.vm.sade.security.ldap.DirectoryClient
 import org.json4s.JsonAST.JArray
-import org.scalatra.{FutureSupport, GZipSupport}
-import rx.lang.scala.Observable
-
-import scala.concurrent.Future
-import scala.concurrent.duration.Duration
+import org.scalatra.GZipSupport
 
 class OppijaServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: UserOrganisationsRepository, val directoryClient: DirectoryClient, val validator: TorValidator, val historyRepository: OpiskeluoikeusHistoryRepository)
-  extends ErrorHandlingServlet with Logging with RequiresAuthentication with GlobalExecutionContext with FutureSupport with GZipSupport with NoCache with Timing {
+  extends ErrorHandlingServlet with Logging with RequiresAuthentication with GlobalExecutionContext with ObservableSupport with GZipSupport with NoCache with Timing {
 
   put("/") {
     timed("PUT /oppija", thresholdMs = 10) {
@@ -62,9 +58,7 @@ class OppijaServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository:
   }
 
   get("/") {
-    query { oppijat =>
-      JsonStreamWriter.writeJsonStream(oppijat)(this, Json.jsonFormats)
-    }
+    query
   }
 
   get("/:oid") {
@@ -72,10 +66,7 @@ class OppijaServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository:
   }
 
   get("/validate") {
-    query { oppijat =>
-      val validationResults = oppijat.map(validateOppija)
-      JsonStreamWriter.writeJsonStream(validationResults)(this, Json.jsonFormats)
-    }
+    query.map(validateOppija)
   }
 
   get("/validate/:oid") {
@@ -95,8 +86,6 @@ class OppijaServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository:
         throw new InvalidRequestException(TorErrorCategory.badRequest.queryParam.searchTermTooShort)
     }
   }
-
-  override protected def asyncTimeout = Duration.Inf
 
   private def validateOppija(oppija: Oppija): ValidationResult = {
     val oppijaOid: Oid = oppija.henkilö.asInstanceOf[HenkilöWithOid].oid
@@ -124,11 +113,11 @@ class OppijaServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository:
     }
   }
 
-  private def query(handleResults: Observable[Oppija] => Future[String]) = {
+  private def query = {
     logger.info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
 
     rekisteri.findOppijat(params.toList, torUser) match {
-      case Right(oppijat) => handleResults(oppijat)
+      case Right(oppijat) => oppijat
       case Left(status) => renderStatus(status)
     }
   }
@@ -139,3 +128,4 @@ class OppijaServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository:
     }
   }
 }
+
