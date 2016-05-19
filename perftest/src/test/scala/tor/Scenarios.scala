@@ -3,9 +3,11 @@ package tor
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter.{ofPattern => dateFormat}
 import java.time.temporal.ChronoUnit._
-import java.util.LinkedHashMap
-import com.fasterxml.jackson.databind.ObjectMapper
+
 import com.ning.http.client.RequestBuilder
+import fi.oph.tor.documentation.{AmmatillinenFullExample, ExamplesAmmatillinen}
+import fi.oph.tor.json.Json
+import fi.oph.tor.schema.{AmmatillinenOpiskeluoikeus, Oppija, UusiHenkilö}
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.request.Body
@@ -16,6 +18,8 @@ import scala.util.Random.{nextInt => randomInt}
 trait TorScenario {
   val username = sys.env("TOR_USER")
   val password = sys.env("TOR_PASS")
+  val uusiOppijaFeeder = Array(Map("content" -> ExamplesAmmatillinen.uusi)).circular
+  val oppijaFeeder = Array(Map("content" -> AmmatillinenFullExample.full)).circular
 }
 
 object Scenarios extends UpdateOppijaScenario with FindOppijaScenario with QueryOppijatScenario with InsertOppijaScenario {
@@ -42,83 +46,58 @@ trait InsertOrUpdateScenario extends TorScenario {
 trait UpdateOppijaScenario extends InsertOrUpdateScenario {
   private val updateHttp = insertOrUpdate("update", OppijaWithOpiskeluoikeusWithIncrementingStartdate)
 
-  val updateOppija = scenario("Update oppija").feed(jsonFile("src/test/resources/bodies/oppija.json").circular).exec(updateHttp)
-  val prepareForUpdateOppija = scenario("Prepare for update").feed(jsonFile("src/test/resources/bodies/oppija.json").circular).exec(updateHttp.silent)
+  val updateOppija = scenario("Update oppija").feed(oppijaFeeder).exec(updateHttp)
+  val prepareForUpdateOppija = scenario("Prepare for update").feed(oppijaFeeder).exec(updateHttp.silent)
 }
 
 trait InsertOppijaScenario extends InsertOrUpdateScenario {
   private val insertHttp = insertOrUpdate("insert", UusiOppijaBody)
-  private val uusiOppijaJson = jsonFile("src/test/resources/bodies/uusioppija.json").circular
 
-  val prepareForInsertOppija = scenario("Prepare for insert").feed(uusiOppijaJson).exec(insertHttp.silent)
-  val insertOppija = scenario("Insert oppija").feed(uusiOppijaJson).exec(insertHttp)
-
-
-  val batchInsertOppija = scenario("Batch insert oppija").feed(uusiOppijaJson).exec(insertOrUpdate("batchInsert", UusiOppijaBatchBody, "/api/oppija/batch"))
+  val prepareForInsertOppija = scenario("Prepare for insert").feed(uusiOppijaFeeder).exec(insertHttp.silent)
+  val insertOppija = scenario("Insert oppija").feed(uusiOppijaFeeder).exec(insertHttp)
+  val batchInsertOppija = scenario("Batch insert oppija").feed(uusiOppijaFeeder).exec(insertOrUpdate("batchInsert", UusiOppijaBatchBody, "/api/oppija/batch"))
 }
 
-trait CrappyJavaTypes {
-  type Map = java.util.LinkedHashMap[Any, Any]
-  type Array = java.util.List[Any]
-}
-
-object OppijaWithOpiskeluoikeusWithIncrementingStartdate extends Body with CrappyJavaTypes {
+object OppijaWithOpiskeluoikeusWithIncrementingStartdate extends Body {
   var dateCounter = LocalDate.parse("2012-09-01")
 
   private def nextDate = this.synchronized {
     dateCounter = dateCounter.plusDays(1)
-    dateCounter.toString
+    dateCounter
   }
 
   override def setBody(req: RequestBuilder, session: Session) = {
-    val contentMap = session.apply("content").as[Map]
-    contentMap.get("opiskeluoikeudet").asInstanceOf[Array].get(0).asInstanceOf[Map].put("alkamispäivä", nextDate)
-    val contentBytes = new ObjectMapper().writeValueAsBytes(contentMap)
-    req.setBody(contentBytes)
+    val oppija = session("content").as[Oppija]
+
+    val opiskeluoikeudet: List[AmmatillinenOpiskeluoikeus] = oppija.opiskeluoikeudet.asInstanceOf[List[AmmatillinenOpiskeluoikeus]]
+    req.setBody(Json.write(oppija.copy(opiskeluoikeudet = opiskeluoikeudet.updated(0, opiskeluoikeudet.head.copy(alkamispäivä = Some(nextDate))))).getBytes)
   }
 }
 
-abstract class HenkilöGenerator extends Body with CrappyJavaTypes {
-  val mapper: ObjectMapper = new ObjectMapper()
-  def newHenkilö = {
-    val hetu = Hetu.generate(LocalDate.now, LocalDate.now.minusYears(50))
-
-    new Map {{
-      put("etunimet", "tor-perf-"+hetu)
-      put("kutsumanimi", "tor-perf-"+hetu)
-      put("sukunimi", "tor-perf-"+hetu)
-      put("hetu", hetu)
-    }}
-  }
+abstract class HenkilöGenerator extends Body {
 
   def addHenkilö(session: Session) = {
-    val content = session("content").as[Map].clone.asInstanceOf[Map]
-    content.put("henkilö", newHenkilö)
-    content
+    val hetu = Hetu.generate(LocalDate.now, LocalDate.now.minusYears(50))
+    val nimi = "tor-perf-" + hetu
+    session("content").as[Oppija].copy(henkilö = UusiHenkilö(hetu,  nimi, nimi, nimi))
   }
+
 }
 
 object UusiOppijaBody extends HenkilöGenerator {
   override def setBody(req: RequestBuilder, session: Session) = {
-    val content = addHenkilö(session)
-
-    req.setBody(new ObjectMapper().writeValueAsBytes(content))
+    req.setBody(Json.write(addHenkilö(session)).getBytes)
   }
 }
 
 object UusiOppijaBatchBody extends HenkilöGenerator {
-  import collection.JavaConversions._
   val batchSize = sys.env.getOrElse("BATCH_SIZE", "10").toInt
+
   override def setBody(req: RequestBuilder, session: Session) = {
-    val content = session("content").as[Map]
-
-    session.set("content", List())
-
     val oppijat = (1 to batchSize).map { num =>
       addHenkilö(session)
     }
-
-    req.setBody(new ObjectMapper().writeValueAsBytes(seqAsJavaList(oppijat)))
+    req.setBody(Json.write(oppijat).getBytes)
   }
 }
 
