@@ -19,7 +19,7 @@ class BackwardCompatibilitySpec extends FreeSpec with Matchers {
           val afterRoundtrip = Json.toJValue(Json.fromJValue[Oppija](json))
           afterRoundtrip should equal(json)
         case _ =>
-          println("Updating " + filename)
+          println("Updating/creating " + filename)
           new java.io.File(filename).getParentFile().mkdirs()
           Json.writeFile(filename, example.data)
       }

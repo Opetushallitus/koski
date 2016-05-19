@@ -24,8 +24,11 @@ object PerusopetusExampleData {
 
   val perusopetus = Perusopetus(Some("104/011/2014"))
   val tavoiteKokoOppimäärä = Koodistokoodiviite("perusopetuksenoppimaara", "suorituksentyyppi")
+  val tavoiteAine = Koodistokoodiviite("perusopetuksenoppiaineenoppimaara", "suorituksentyyppi")
   val suoritustapaKoulutus = Koodistokoodiviite("koulutus", "perusopetuksensuoritustapa")
+  val suoritustapaErityinenTutkinto = Koodistokoodiviite("erityinentutkinto", "perusopetuksensuoritustapa")
   val perusopetuksenOppimäärä = Koodistokoodiviite("perusopetus", "perusopetuksenoppimaara")
+  val aikuistenOppimäärä = Koodistokoodiviite("aikuistenperusopetus", "perusopetuksenoppimaara")
 
   def oppiaine(aine: String, laajuus: Option[LaajuusVuosiviikkotunneissa] = None) = MuuPeruskoulunOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), laajuus = laajuus)
   def äidinkieli(kieli: String) = PeruskoulunAidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"))
@@ -34,7 +37,30 @@ object PerusopetusExampleData {
     kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
   def uskonto(uskonto: String) = PeruskoulunUskonto(uskonto = Koodistokoodiviite(koodiarvo = uskonto, koodistoUri = "oppiaineuskonto"))
 
-
+  val kaikkiAineet = Some(
+    List(
+      suoritus(äidinkieli("AI1")).copy(arviointi = arviointi(9)),
+      suoritus(kieli("B1", "SV")).copy(arviointi = arviointi(8)),
+      suoritus(kieli("B1", "SV").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
+      suoritus(kieli("A1", "EN")).copy(arviointi = arviointi(8)),
+      suoritus(uskonto("KT1")).copy(arviointi = arviointi(10)),
+      suoritus(oppiaine("HI")).copy(arviointi = arviointi(8)),
+      suoritus(oppiaine("YH")).copy(arviointi = arviointi(10)),
+      suoritus(oppiaine("MA")).copy(arviointi = arviointi(9)),
+      suoritus(oppiaine("KE")).copy(arviointi = arviointi(7)),
+      suoritus(oppiaine("FY")).copy(arviointi = arviointi(9)),
+      suoritus(oppiaine("BI")).copy(arviointi = arviointi(9)),
+      suoritus(oppiaine("GE")).copy(arviointi = arviointi(9)),
+      suoritus(oppiaine("MU")).copy(arviointi = arviointi(7)),
+      suoritus(oppiaine("KU")).copy(arviointi = arviointi(8)),
+      suoritus(oppiaine("KO")).copy(arviointi = arviointi(8)),
+      suoritus(oppiaine("KO").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
+      suoritus(oppiaine("TE")).copy(arviointi = arviointi(8)),
+      suoritus(oppiaine("KS")).copy(arviointi = arviointi(9)),
+      suoritus(oppiaine("LI")).copy(arviointi = arviointi(9)),
+      suoritus(oppiaine("LI").copy(pakollinen = false, laajuus = vuosiviikkotuntia(0.5))).copy(arviointi = hyväksytty),
+      suoritus(kieli("B2", "DE").copy(pakollinen = false, laajuus = vuosiviikkotuntia(4))).copy(arviointi = arviointi(9))
+    ))
 }
 
 object ExamplesPerusopetus {
@@ -48,13 +74,10 @@ object ExamplesPerusopetus {
   val ysiluokkalainen = Oppija(
     exampleHenkilö,
     List(PerusopetuksenOpiskeluoikeus(
-      id = None,
-      versionumero = None,
-      lähdejärjestelmänId = None,
       alkamispäivä = Some(date(2008, 8, 15)),
       päättymispäivä = None,
       oppilaitos = jyväskylänNormaalikoulu,
-      None,
+      koulutustoimija = None,
       suoritukset = List(ysiluokanSuoritus),
       tila = Some(YleissivistäväOpiskeluoikeudenTila(
         List(
@@ -68,46 +91,19 @@ object ExamplesPerusopetus {
   val päättötodistus = Oppija(
     exampleHenkilö,
     List(PerusopetuksenOpiskeluoikeus(
-      id = None,
-      versionumero = None,
-      lähdejärjestelmänId = None,
       alkamispäivä = Some(date(2008, 8, 15)),
       päättymispäivä = Some(date(2016, 6, 4)),
-      oppilaitos = jyväskylänNormaalikoulu, None,
+      oppilaitos = jyväskylänNormaalikoulu,
+      koulutustoimija = None,
       suoritukset = List(
         PerusopetuksenOppimääränSuoritus(
           koulutusmoduuli = perusopetus,
-          paikallinenId = None,
-          suorituskieli = None,
           tila = tilaValmis,
           toimipiste = jyväskylänNormaalikoulu,
           vahvistus = vahvistus,
           suoritustapa = suoritustapaKoulutus,
           oppimäärä = perusopetuksenOppimäärä,
-          osasuoritukset = Some(
-            List(
-              suoritus(äidinkieli("AI1")).copy(arviointi = arviointi(9)),
-              suoritus(kieli("B1", "SV")).copy(arviointi = arviointi(8)),
-              suoritus(kieli("B1", "SV").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
-              suoritus(kieli("A1", "EN")).copy(arviointi = arviointi(8)),
-              suoritus(uskonto("KT1")).copy(arviointi = arviointi(10)),
-              suoritus(oppiaine("HI")).copy(arviointi = arviointi(8)),
-              suoritus(oppiaine("YH")).copy(arviointi = arviointi(10)),
-              suoritus(oppiaine("MA")).copy(arviointi = arviointi(9)),
-              suoritus(oppiaine("KE")).copy(arviointi = arviointi(7)),
-              suoritus(oppiaine("FY")).copy(arviointi = arviointi(9)),
-              suoritus(oppiaine("BI")).copy(arviointi = arviointi(9)),
-              suoritus(oppiaine("GE")).copy(arviointi = arviointi(9)),
-              suoritus(oppiaine("MU")).copy(arviointi = arviointi(7)),
-              suoritus(oppiaine("KU")).copy(arviointi = arviointi(8)),
-              suoritus(oppiaine("KO")).copy(arviointi = arviointi(8)),
-              suoritus(oppiaine("KO").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
-              suoritus(oppiaine("TE")).copy(arviointi = arviointi(8)),
-              suoritus(oppiaine("KS")).copy(arviointi = arviointi(9)),
-              suoritus(oppiaine("LI")).copy(arviointi = arviointi(9)),
-              suoritus(oppiaine("LI").copy(pakollinen = false, laajuus = vuosiviikkotuntia(0.5))).copy(arviointi = hyväksytty),
-              suoritus(kieli("B2", "DE").copy(pakollinen = false, laajuus = vuosiviikkotuntia(4))).copy(arviointi = arviointi(9))
-            ))
+          osasuoritukset = kaikkiAineet
         )),
       tila = Some(YleissivistäväOpiskeluoikeudenTila(
         List(
@@ -123,18 +119,12 @@ object ExamplesPerusopetus {
   val aineopiskelija = Oppija(
     MockOppijat.eero.vainHenkilötiedot,
     List(PerusopetuksenOpiskeluoikeus(
-      id = None,
-      versionumero = None,
-      lähdejärjestelmänId = None,
       alkamispäivä = Some(date(2008, 8, 15)),
-      päättymispäivä = None,
       oppilaitos = jyväskylänNormaalikoulu,
-      None,
+      koulutustoimija = None,
       suoritukset = List(
         PerusopetuksenOppiaineenOppimääränSuoritus(
           koulutusmoduuli = äidinkieli("AI1"),
-          paikallinenId = None,
-          suorituskieli = None,
           tila = tilaValmis,
           toimipiste = jyväskylänNormaalikoulu,
           arviointi = arviointi(9),
@@ -146,15 +136,45 @@ object ExamplesPerusopetus {
           YleissivistäväOpiskeluoikeusjakso(date(2016, 6, 4), None, opiskeluoikeusPäättynyt)
         )
       )),
-      tavoite = Koodistokoodiviite("perusopetuksenoppiaineenoppimaara", "suorituksentyyppi"),
+      tavoite = tavoiteAine,
       läsnäolotiedot = None
     ))
   )
 
+  val erityinenTutkintoAikuinen = Oppija(
+    exampleHenkilö,
+    List(PerusopetuksenOpiskeluoikeus(
+      alkamispäivä = Some(date(2008, 8, 15)),
+      päättymispäivä = Some(date(2016, 6, 4)),
+      oppilaitos = jyväskylänNormaalikoulu,
+      koulutustoimija = None,
+      suoritukset = List(
+        PerusopetuksenOppimääränSuoritus(
+          koulutusmoduuli = perusopetus,
+          paikallinenId = None,
+          suorituskieli = None,
+          tila = tilaValmis,
+          toimipiste = jyväskylänNormaalikoulu,
+          vahvistus = vahvistus,
+          suoritustapa = suoritustapaErityinenTutkinto,
+          oppimäärä = aikuistenOppimäärä,
+          osasuoritukset = kaikkiAineet
+        )),
+      tila = Some(YleissivistäväOpiskeluoikeudenTila(
+        List(
+          YleissivistäväOpiskeluoikeusjakso(date(2008, 8, 15), Some(date(2016, 6, 3)), opiskeluoikeusAktiivinen),
+          YleissivistäväOpiskeluoikeusjakso(date(2016, 6, 4), None, opiskeluoikeusPäättynyt)
+        )
+      )),
+      tavoite = tavoiteKokoOppimäärä,
+      läsnäolotiedot = None
+    ))
+  )
 
   val examples = List(
     Example("perusopetuksen oppimäärä - ysiluokkalainen", "Oppija on suorittamassa 9. luokkaa", ysiluokkalainen),
     Example("perusopetuksen oppimäärä - päättötodistus", "Oppija on saanut perusopetuksen päättötodistuksen", päättötodistus),
-    Example("perusopetuksen oppiaineen oppimäärä - päättötodistus", "Aikuisopiskelija on suorittanut peruskoulun äidinkielen oppimäärän", aineopiskelija)
+    Example("perusopetuksen oppiaineen oppimäärä - päättötodistus", "Aikuisopiskelija on suorittanut peruskoulun äidinkielen oppimäärän", aineopiskelija),
+    Example("aikuisten perusopetuksen oppimäärä - erityinen tutkinto", "Aikuisopiskelija on suorittanut peruskoulun oppimäärän erityisenä tutkintona", erityinenTutkintoAikuinen)
   )
 }
