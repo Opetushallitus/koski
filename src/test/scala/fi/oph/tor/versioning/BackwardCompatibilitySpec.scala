@@ -15,7 +15,8 @@ class BackwardCompatibilitySpec extends FreeSpec with Matchers {
     (updateAll, Json.readFileIfExists(filename)) match {
       case (false, Some(json)) =>
         println("Checking backward compatibility: " + filename)
-        Json.fromJValue[Oppija](json) should equal(example.data)
+        val afterRoundtrip = Json.toJValue(Json.fromJValue[Oppija](json))
+        afterRoundtrip should equal(json)
       case _ =>
         println("Updating " + filename)
         new java.io.File(filename).getParentFile().mkdirs()
