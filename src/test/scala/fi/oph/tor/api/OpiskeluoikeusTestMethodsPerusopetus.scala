@@ -13,14 +13,14 @@ trait OpiskeluoikeusTestMethodsPerusopetus extends OpiskeluOikeusTestMethods[Per
 
   override def defaultOpiskeluoikeus = PerusopetuksenOpiskeluoikeus(
     id = None, versionumero = None, lähdejärjestelmänId = None, alkamispäivä = None, päättymispäivä = None,
-    oppilaitos = jyväskylänNormaalikoulu, koulutustoimija = None, tavoite = PerusopetusExampleData.tavoiteOppimäärä,
+    oppilaitos = jyväskylänNormaalikoulu, koulutustoimija = None, tavoite = PerusopetusExampleData.tavoiteKokoOppimäärä,
     suoritukset = List(päättötodistusSuoritus),
     tila = None, läsnäolotiedot = None
   )
 
   val päättötodistusSuoritus = PerusopetuksenOppimääränSuoritus(
     koulutusmoduuli = Perusopetus(perusteenDiaarinumero = Some("104/011/2014")),
-    suoritustapa = PerusopetusExampleData.suoritustapaPeruskoulu,
+    suoritustapa = PerusopetusExampleData.suoritustapaKoulutus,
     oppimäärä = PerusopetusExampleData.perusopetuksenOppimäärä,
     paikallinenId = None,
     suorituskieli = None,

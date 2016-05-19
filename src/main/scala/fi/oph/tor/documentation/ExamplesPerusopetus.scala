@@ -23,8 +23,8 @@ object PerusopetusExampleData {
   val exampleHenkilö = MockOppijat.koululainen.vainHenkilötiedot
 
   val perusopetus = Perusopetus(Some("104/011/2014"))
-  val tavoiteOppimäärä = Koodistokoodiviite("perusopetuksenoppimaara", "suorituksentyyppi")
-  val suoritustapaPeruskoulu = Koodistokoodiviite("koulutus", "perusopetuksensuoritustapa")
+  val tavoiteKokoOppimäärä = Koodistokoodiviite("perusopetuksenoppimaara", "suorituksentyyppi")
+  val suoritustapaKoulutus = Koodistokoodiviite("koulutus", "perusopetuksensuoritustapa")
   val perusopetuksenOppimäärä = Koodistokoodiviite("perusopetus", "perusopetuksenoppimaara")
 
   def oppiaine(aine: String, laajuus: Option[LaajuusVuosiviikkotunneissa] = None) = MuuPeruskoulunOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), laajuus = laajuus)
@@ -61,7 +61,7 @@ object ExamplesPerusopetus {
           YleissivistäväOpiskeluoikeusjakso(date(2008, 8, 15), None, opiskeluoikeusAktiivinen)
         )
       )),
-      tavoite = tavoiteOppimäärä,
+      tavoite = tavoiteKokoOppimäärä,
       läsnäolotiedot = None
     ))
   )
@@ -82,7 +82,7 @@ object ExamplesPerusopetus {
           tila = tilaValmis,
           toimipiste = jyväskylänNormaalikoulu,
           vahvistus = vahvistus,
-          suoritustapa = suoritustapaPeruskoulu,
+          suoritustapa = suoritustapaKoulutus,
           oppimäärä = perusopetuksenOppimäärä,
           osasuoritukset = Some(
             List(
@@ -115,7 +115,7 @@ object ExamplesPerusopetus {
           YleissivistäväOpiskeluoikeusjakso(date(2016, 6, 4), None, opiskeluoikeusPäättynyt)
         )
       )),
-      tavoite = tavoiteOppimäärä,
+      tavoite = tavoiteKokoOppimäärä,
       läsnäolotiedot = None
     ))
   )
