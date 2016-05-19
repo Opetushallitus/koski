@@ -20,7 +20,7 @@ import rx.lang.scala.Observable
 import scala.concurrent.Future
 import scala.concurrent.duration.Duration
 
-class TorServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: UserOrganisationsRepository, val directoryClient: DirectoryClient, val validator: TorValidator, val historyRepository: OpiskeluoikeusHistoryRepository)
+class OppijaServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: UserOrganisationsRepository, val directoryClient: DirectoryClient, val validator: TorValidator, val historyRepository: OpiskeluoikeusHistoryRepository)
   extends ErrorHandlingServlet with Logging with RequiresAuthentication with GlobalExecutionContext with FutureSupport with GZipSupport with NoCache with Timing {
 
   put("/") {
