@@ -22,7 +22,7 @@
         </dependency>
       <dependency>
         <groupId>fi.vm.sade</groupId>
-        <artifactId>tor</artifactId>
+        <artifactId>koski</artifactId>
         <version>0.1.0-SNAPSHOT</version>
         <exclusions>
           <exclusion>
