@@ -179,6 +179,15 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
             |116000 Yrkespraktik III, neurologisk fysioterapi 10 hyväksytty 8.4.2014""".stripMargin
         )
       }
+
+      it("Tutkintoon johtamaton opiskeluoikeus") {
+        opintosuoritusote("090888-929X", "1.2.246.562.10.27756776996") should equal(
+          """|Suoritetut tutkinnot
+            |Opintosuoritukset
+            |05AVOIN/MI00AX91/3 Graafisen suunnittelun perusteet 5 hyväksytty 7.11.2015
+            |05AVOIN/MI00BB13/3 Typografian perusteet 4 hyväksytty 11.4.2016""".stripMargin
+        )
+      }
     }
   }
 

@@ -80,22 +80,18 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
   private def lisääKeskeneräinenTutkintosuoritus(suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node) = {
     koulutuskoodi(opiskeluoikeusNode).map { koulutuskoodi =>
       val t = tutkinto(koulutuskoodi)
-      suoritukset.find(_.koulutusmoduuli == t) match {
-        case Some(_) =>
-          suoritukset
-        case None =>
-          KorkeakouluTutkinnonSuoritus(
-            koulutusmoduuli = t,
-            paikallinenId = None,
-            arviointi = None,
-            tila = requiredKoodi("suorituksentila", "KESKEN").get,
-            vahvistus = None,
-            suorituskieli = None,
-            osasuoritukset = None,
-            toimipiste = oppilaitos(opiskeluoikeusNode)
-          ) :: suoritukset
-      }
-    }.toList.flatten
+      if (suoritukset.exists(_.koulutusmoduuli == t)) suoritukset
+      else KorkeakouluTutkinnonSuoritus(
+        koulutusmoduuli = t,
+        paikallinenId = None,
+        arviointi = None,
+        tila = requiredKoodi("suorituksentila", "KESKEN").get,
+        vahvistus = None,
+        suorituskieli = None,
+        osasuoritukset = None,
+        toimipiste = oppilaitos(opiskeluoikeusNode)
+      ) :: suoritukset
+    }.getOrElse(suoritukset)
   }
 
   private def convertSuoritus(node: Node, allNodes: List[Node]): Option[KorkeakouluSuoritus] = {
