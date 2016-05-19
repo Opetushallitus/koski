@@ -65,6 +65,8 @@ case class PerusopetuksenOppimääränSuoritus(
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Vahvistus] = None,
   koulutusmoduuli: Perusopetus,
+  @KoodistoUri("perusopetuksenoppimaara")
+  oppimäärä: Koodistokoodiviite,
   @KoodistoUri("perusopetuksensuoritustapa")
   suoritustapa: Koodistokoodiviite,
   @KoodistoKoodiarvo("perusopetuksenoppimaara")

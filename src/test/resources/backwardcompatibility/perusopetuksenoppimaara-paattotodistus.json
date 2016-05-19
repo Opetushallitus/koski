@@ -80,6 +80,10 @@
           "koodistoUri" : "koulutus"
         }
       },
+      "oppimäärä" : {
+        "koodiarvo" : "perusopetus",
+        "koodistoUri" : "perusopetuksenoppimaara"
+      },
       "suoritustapa" : {
         "koodiarvo" : "peruskoulu",
         "koodistoUri" : "perusopetuksensuoritustapa"

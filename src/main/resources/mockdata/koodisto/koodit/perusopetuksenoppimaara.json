@@ -1,0 +1,29 @@
+[ {
+  "koodiUri" : "perusopetuksenoppimaara_perusopetus",
+  "koodiArvo" : "perusopetus",
+  "metadata" : [ {
+    "nimi" : "Perusopetus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Perusopetus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Perusopetus",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "perusopetuksenoppimaara_aikuistenperusopetus",
+  "koodiArvo" : "aikuistenperusopetus",
+  "metadata" : [ {
+    "nimi" : "Aikuisten perusopetus",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Aikuisten perusopetus",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Aikuisten perusopetus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+} ]

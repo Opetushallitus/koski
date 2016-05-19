@@ -25,6 +25,7 @@ object PerusopetusExampleData {
   val perusopetus = Perusopetus(Some("104/011/2014"))
   val tavoiteOppimäärä = Koodistokoodiviite("perusopetuksenoppimaara", "suorituksentyyppi")
   val suoritustapaPeruskoulu = Koodistokoodiviite("peruskoulu", "perusopetuksensuoritustapa")
+  val perusopetuksenOppimäärä = Koodistokoodiviite("perusopetus", "perusopetuksenoppimaara")
 
   def oppiaine(aine: String, laajuus: Option[LaajuusVuosiviikkotunneissa] = None) = MuuPeruskoulunOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), laajuus = laajuus)
   def äidinkieli(kieli: String) = PeruskoulunAidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"))
@@ -82,6 +83,7 @@ object ExamplesPerusopetus {
           toimipiste = jyväskylänNormaalikoulu,
           vahvistus = vahvistus,
           suoritustapa = suoritustapaPeruskoulu,
+          oppimäärä = perusopetuksenOppimäärä,
           osasuoritukset = Some(
             List(
               suoritus(äidinkieli("AI1")).copy(arviointi = arviointi(9)),

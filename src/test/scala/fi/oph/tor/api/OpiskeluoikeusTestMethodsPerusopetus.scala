@@ -21,6 +21,7 @@ trait OpiskeluoikeusTestMethodsPerusopetus extends OpiskeluOikeusTestMethods[Per
   val päättötodistusSuoritus = PerusopetuksenOppimääränSuoritus(
     koulutusmoduuli = Perusopetus(perusteenDiaarinumero = Some("104/011/2014")),
     suoritustapa = PerusopetusExampleData.suoritustapaPeruskoulu,
+    oppimäärä = PerusopetusExampleData.perusopetuksenOppimäärä,
     paikallinenId = None,
     suorituskieli = None,
     tila = tilaValmis,
