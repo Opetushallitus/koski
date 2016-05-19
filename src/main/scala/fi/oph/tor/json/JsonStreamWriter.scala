@@ -28,10 +28,12 @@ object JsonStreamWriter extends Logging {
       subscription.foreach { _.unsubscribe}
     }
 
-    subscription = Some(objects.zipWithIndex.subscribe(onNext _, onError _, () => {
+    def onEnd {
       writer.print("]")
       p.success("")
-    }))
+    }
+
+    subscription = Some(objects.zipWithIndex.subscribe(onNext _, onError _, onEnd _))
 
     p.future
   }
