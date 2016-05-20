@@ -37,7 +37,7 @@ case class PerusopetuksenLisäopetuksenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenlisaopetus", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: PerusopetuksenLisäopetus
 ) extends Suoritus {
-  def arviointi: Option[List[Arviointi]] = None
+  def arviointi: Option[List[KoodistostaLöytyväArviointi]] = None
 }
 
 case class PerusopetuksenLisäopetus(

@@ -33,18 +33,9 @@
                         <virta:LukukausiIlmoittautuminen opiskelijaAvain="30855810">
                             <virta:Myontaja>10088</virta:Myontaja>
                             <virta:Tila>1</virta:Tila>
-                            <virta:IlmoittautumisPvm>2015-07-23</virta:IlmoittautumisPvm>
-                            <virta:AlkuPvm>2016-01-01</virta:AlkuPvm>
-                            <virta:LoppuPvm>2016-07-31</virta:LoppuPvm>
-                            <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
-                            <virta:YTHSMaksu>true</virta:YTHSMaksu>
-                        </virta:LukukausiIlmoittautuminen>
-                        <virta:LukukausiIlmoittautuminen opiskelijaAvain="30855810">
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Tila>1</virta:Tila>
                             <virta:IlmoittautumisPvm>2011-08-17</virta:IlmoittautumisPvm>
-                            <virta:AlkuPvm>2012-01-01</virta:AlkuPvm>
-                            <virta:LoppuPvm>2012-07-31</virta:LoppuPvm>
+                            <virta:AlkuPvm>2011-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2011-12-31</virta:LoppuPvm>
                             <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
                             <virta:YTHSMaksu>false</virta:YTHSMaksu>
                         </virta:LukukausiIlmoittautuminen>
@@ -60,27 +51,9 @@
                         <virta:LukukausiIlmoittautuminen opiskelijaAvain="30855810">
                             <virta:Myontaja>10088</virta:Myontaja>
                             <virta:Tila>1</virta:Tila>
-                            <virta:IlmoittautumisPvm>2011-08-17</virta:IlmoittautumisPvm>
-                            <virta:AlkuPvm>2011-08-01</virta:AlkuPvm>
-                            <virta:LoppuPvm>2011-12-31</virta:LoppuPvm>
-                            <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
-                            <virta:YTHSMaksu>false</virta:YTHSMaksu>
-                        </virta:LukukausiIlmoittautuminen>
-                        <virta:LukukausiIlmoittautuminen opiskelijaAvain="30855810">
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Tila>1</virta:Tila>
-                            <virta:IlmoittautumisPvm>2013-08-20</virta:IlmoittautumisPvm>
-                            <virta:AlkuPvm>2014-01-01</virta:AlkuPvm>
-                            <virta:LoppuPvm>2014-07-31</virta:LoppuPvm>
-                            <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
-                            <virta:YTHSMaksu>false</virta:YTHSMaksu>
-                        </virta:LukukausiIlmoittautuminen>
-                        <virta:LukukausiIlmoittautuminen opiskelijaAvain="30855810">
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Tila>1</virta:Tila>
                             <virta:IlmoittautumisPvm>2014-07-03</virta:IlmoittautumisPvm>
-                            <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
-                            <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+                            <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2015-07-31</virta:LoppuPvm>
                             <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
                             <virta:YTHSMaksu>false</virta:YTHSMaksu>
                         </virta:LukukausiIlmoittautuminen>
@@ -105,9 +78,27 @@
                         <virta:LukukausiIlmoittautuminen opiskelijaAvain="30855810">
                             <virta:Myontaja>10088</virta:Myontaja>
                             <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2013-08-20</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2014-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2014-07-31</virta:LoppuPvm>
+                            <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+                            <virta:YTHSMaksu>false</virta:YTHSMaksu>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskelijaAvain="30855810">
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2015-07-23</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2016-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2016-07-31</virta:LoppuPvm>
+                            <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+                            <virta:YTHSMaksu>true</virta:YTHSMaksu>
+                        </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskelijaAvain="30855810">
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
                             <virta:IlmoittautumisPvm>2014-07-03</virta:IlmoittautumisPvm>
-                            <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
-                            <virta:LoppuPvm>2015-07-31</virta:LoppuPvm>
+                            <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
                             <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
                             <virta:YTHSMaksu>false</virta:YTHSMaksu>
                         </virta:LukukausiIlmoittautuminen>
@@ -120,903 +111,40 @@
                             <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
                             <virta:YTHSMaksu>false</virta:YTHSMaksu>
                         </virta:LukukausiIlmoittautuminen>
+                        <virta:LukukausiIlmoittautuminen opiskelijaAvain="30855810">
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Tila>1</virta:Tila>
+                            <virta:IlmoittautumisPvm>2011-08-17</virta:IlmoittautumisPvm>
+                            <virta:AlkuPvm>2012-01-01</virta:AlkuPvm>
+                            <virta:LoppuPvm>2012-07-31</virta:LoppuPvm>
+                            <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+                            <virta:YTHSMaksu>false</virta:YTHSMaksu>
+                        </virta:LukukausiIlmoittautuminen>
                     </virta:LukukausiIlmoittautumiset>
                     <virta:Opintosuoritukset>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24171566" avain="43092799">
-                            <virta:SuoritusPvm>2014-10-03</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>4.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>2</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Radiologia</virta:Nimi>
-                            <virta:Nimi kieli="en">Radiology</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24263697" avain="47024455">
-                            <virta:SuoritusPvm>2015-10-09</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>8.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>4</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Korva-, nenä- ja kurkkutaudit</virta:Nimi>
-                            <virta:Nimi kieli="en">Otorhinolaryngology-Head and Neck Surgery</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24171014" avain="47237737">
-                            <virta:SuoritusPvm>2016-01-22</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>1.5</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
-                                    <virta:Koodi>10979859</virta:Koodi>
-                                </virta:Muu>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Ympäristöterveydenhuollon perusteet</virta:Nimi>
-                            <virta:Nimi kieli="en">Introduction to Environmental Health</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24170561" avain="47237709">
-                            <virta:SuoritusPvm>2016-02-19</virta:SuoritusPvm>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24069138" avain="43458715">
+                            <virta:SuoritusPvm>2014-11-14</virta:SuoritusPvm>
                             <virta:Laajuus>
                                 <virta:Opintopiste>3.0</virta:Opintopiste>
                                 <virta:Opintoviikko>0.0</virta:Opintoviikko>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
                                     <virta:Koodi>10979859</virta:Koodi>
                                 </virta:Muu>
                             </virta:Arvosana>
                             <virta:Myontaja>10088</virta:Myontaja>
                             <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Työlääketiede ja työterveyshuolto</virta:Nimi>
-                            <virta:Nimi kieli="en">Occupational Medicine and Occupational Health Services</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24067161" avain="39116850">
-                            <virta:SuoritusPvm>2013-11-27</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>5.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>3</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">YEK: Gastroenterologia</virta:Nimi>
-                            <virta:Nimi kieli="en">YEK: Gastroenterology</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24254896" avain="32881070">
-                            <virta:SuoritusPvm>2012-05-02</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>1.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
-                                    <virta:Koodi>10979859</virta:Koodi>
-                                </virta:Muu>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Hätäensiapu</virta:Nimi>
-                            <virta:Nimi kieli="en">First Aid</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24428313" avain="41867735">
-                            <virta:SuoritusPvm>2014-10-09</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>1.5</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
-                                    <virta:Koodi>10979859</virta:Koodi>
-                                </virta:Muu>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Valinnainen anestesiologia ja tehohoito</virta:Nimi>
-                            <virta:Nimi kieli="en">Voluntary Anesthesiology and Intensive Care</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="33368710" avain="35459344">
-                            <virta:SuoritusPvm>2012-12-18</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>3.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
-                                    <virta:Koodi>10979859</virta:Koodi>
-                                </virta:Muu>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Biostatistiikka</virta:Nimi>
-                            <virta:Nimi kieli="en">Biostatistics</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24071905" avain="34741844">
-                            <virta:SuoritusPvm>2012-11-14</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>6.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>3</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Yleinen patologia</virta:Nimi>
-                            <virta:Nimi kieli="en">General Pathology</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24068908" avain="39393595">
-                            <virta:SuoritusPvm>2014-02-21</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>5.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>2</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">YEK: Endokrinologia ja hematologia</virta:Nimi>
-                            <virta:Nimi kieli="en">YEK: Endocrinology and Hematology</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24511671" avain="31888057">
-                            <virta:SuoritusPvm>2011-10-24</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>2.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
-                                    <virta:Koodi>10979859</virta:Koodi>
-                                </virta:Muu>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">English Academic Reading and Study Skills for Students of Medicine</virta:Nimi>
-                            <virta:Nimi kieli="en">English Academic Reading and Study Skills for Students of Medicine</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">76</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24068951" avain="39116860">
-                            <virta:SuoritusPvm>2013-12-13</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>2.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>3</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">YEK: Munuaisten- ja virtsateidensairaudet</virta:Nimi>
-                            <virta:Nimi kieli="en">Renal and Urinary Diseases</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24067129" avain="36060880">
-                            <virta:SuoritusPvm>2013-10-11</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>6.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
-                                    <virta:Koodi>10979859</virta:Koodi>
-                                </virta:Muu>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Propedeuttinen kurssi</virta:Nimi>
-                            <virta:Nimi kieli="en">Propaedeutics</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24115621" avain="43092595">
-                            <virta:SuoritusPvm>2014-09-26</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>1.5</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
-                                    <virta:Koodi>10979859</virta:Koodi>
-                                </virta:Muu>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Valinnainen syventävä EKG-kurssi</virta:Nimi>
-                            <virta:Nimi kieli="en"> ECG and Patient Cases</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24069778" avain="39035197">
-                            <virta:SuoritusPvm>2014-05-28</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>11.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
-                                    <virta:Koodi>10979859</virta:Koodi>
-                                </virta:Muu>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">YEK: Kirurgian, neurologian ja sisätautien ryhmä-, toimenpide- ja osasto-opetukset, päivystykset ja tutkimuspotilaat</virta:Nimi>
-                            <virta:Nimi kieli="en">YEK: Internal Medicine, Surgery and Neurology: Wards, Therapies, Patients and On-Duty service</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24071789" avain="44441573">
-                            <virta:SuoritusPvm>2015-03-13</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>2.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>4</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Neurokirurgia</virta:Nimi>
-                            <virta:Nimi kieli="en">Neurosurgery</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24169265" avain="39393959">
-                            <virta:SuoritusPvm>2014-09-12</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>3.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>3</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Kliininen Kemia</virta:Nimi>
-                            <virta:Nimi kieli="en">Clinical Chemistry</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24653651" avain="31222619">
-                            <virta:SuoritusPvm>2011-12-07</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>1.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
-                                    <virta:Koodi>10979859</virta:Koodi>
-                                </virta:Muu>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Yliopisto tutkimusympäristönä</virta:Nimi>
-                            <virta:Nimi kieli="en">University Research</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24073206" avain="39393724">
-                            <virta:SuoritusPvm>2014-09-05</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>7.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>4</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Elinpatologia</virta:Nimi>
-                            <virta:Nimi kieli="en">Systematic Pathology</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24162319" avain="35569147">
-                            <virta:SuoritusPvm>2013-02-08</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>2.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>3</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Epidemiologia I</virta:Nimi>
-                            <virta:Nimi kieli="en">Epidemiology I</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24264104" avain="36060882">
-                            <virta:SuoritusPvm>2013-05-27</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>12.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>3</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Systemaattinen farmakologia ja lääkeainetoksikologia</virta:Nimi>
-                            <virta:Nimi kieli="en">Systematic Pharmacology and Pharmaceutical Toxicology</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">93</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="33571756" avain="35603464">
-                            <virta:SuoritusPvm>2012-11-30</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>5.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
-                                    <virta:Koodi>10979859</virta:Koodi>
-                                </virta:Muu>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Kansanterveystiede</virta:Nimi>
-                            <virta:Nimi kieli="en">Public Health</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="25130939" avain="31583282">
-                            <virta:SuoritusPvm>2011-12-09</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>3.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>2</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Fysiikkaa lääketieteen opiskelijoille</virta:Nimi>
-                            <virta:Nimi kieli="en">Physics for Medical Students</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="26683237" avain="47732500">
-                            <virta:SuoritusPvm>2015-06-30</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>6.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
-                                    <virta:Koodi>10979859</virta:Koodi>
-                                </virta:Muu>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Amanuenssuuri, linjaopinnot</virta:Nimi>
-                            <virta:Nimi kieli="en">Practical training, track studies</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24187061" avain="39393818">
-                            <virta:SuoritusPvm>2014-10-31</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>4.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>3</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Anestesiologia ja tehohoito</virta:Nimi>
-                            <virta:Nimi kieli="en">Anesthesiology and Intensive Care</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24540952" avain="31583294">
-                            <virta:SuoritusPvm>2012-03-12</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>7.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>4</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Lääketieteellinen solu- ja molekyylibiologia</virta:Nimi>
-                            <virta:Nimi kieli="en">Medical cell and molecular biology</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24067135" avain="44441555">
-                            <virta:SuoritusPvm>2015-02-06</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>6.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>3</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Silmätaudit</virta:Nimi>
-                            <virta:Nimi kieli="en">Ophthalmology</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24267936" avain="34741891">
-                            <virta:SuoritusPvm>2012-11-26</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>2.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
-                                    <virta:Koodi>10979859</virta:Koodi>
-                                </virta:Muu>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Vuorovaikutus potilas-lääkärisuhteessa lääketieteen opiskelijoille</virta:Nimi>
-                            <virta:Nimi kieli="en">Patient-Doctor Communication for students of Medicine</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24069381" avain="48085762">
-                            <virta:SuoritusPvm>2016-03-18</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>1.5</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>2</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Oikeuspsykiatria</virta:Nimi>
-                            <virta:Nimi kieli="en">Forensic Psychiatry</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24170418" avain="31583286">
-                            <virta:SuoritusPvm>2011-12-13</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>6.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>2</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Elinanatomia</virta:Nimi>
-                            <virta:Nimi kieli="en">Visceral Anatomy</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24069347" avain="47237633">
-                            <virta:SuoritusPvm>2015-08-28</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>1.5</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
-                                    <virta:Koodi>10979859</virta:Koodi>
-                                </virta:Muu>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Terveyskeskusopetus II</virta:Nimi>
-                            <virta:Nimi kieli="en">Health Centre Training II</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24080635" avain="39159589">
-                            <virta:SuoritusPvm>2014-10-10</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>4.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>4</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Keuhkosairaudet</virta:Nimi>
-                            <virta:Nimi kieli="en"> Pulmonary diseases</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24651546" avain="32419515">
-                            <virta:SuoritusPvm>2012-03-22</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>3.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>3</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Embryologia</virta:Nimi>
-                            <virta:Nimi kieli="en">Embryology</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24067318" avain="48100799">
-                            <virta:SuoritusPvm>2015-09-11</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>3.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>2</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Lastenpsykiatria</virta:Nimi>
-                            <virta:Nimi kieli="en">Child Psychiatry</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="40547637" avain="40560027">
-                            <virta:SuoritusPvm>2013-10-14</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>0.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
-                                    <virta:Koodi>10979859</virta:Koodi>
-                                </virta:Muu>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Lääketieteen kandidaatin arvo</virta:Nimi>
-                            <virta:Nimi kieli="en">awarded title: Bachelor of Medicine</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24208007" avain="34741824">
-                            <virta:SuoritusPvm>2012-12-04</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>10.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>3</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Lääketieteellinen yleisfysiologia</virta:Nimi>
-                            <virta:Nimi kieli="en">Medical General Physiology</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="28289407" avain="42982259">
-                            <virta:SuoritusPvm>2015-03-23</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>6.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>1</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Psykiatria</virta:Nimi>
-                            <virta:Nimi kieli="en">Basic course in psychiatry</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24727457" avain="47237455">
-                            <virta:SuoritusPvm>2016-03-04</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>2.5</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>3</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Kliininen ravitsemustiede</virta:Nimi>
-                            <virta:Nimi kieli="en">Clinical Nutrition</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">84</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24068945" avain="39035171">
-                            <virta:SuoritusPvm>2014-01-10</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>1.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
-                                    <virta:Koodi>10979859</virta:Koodi>
-                                </virta:Muu>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">YEK: EKG</virta:Nimi>
-                            <virta:Nimi kieli="en">YEK: ECG</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24652810" avain="31222371">
-                            <virta:SuoritusPvm>2011-10-27</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>6.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>3</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Tuki- ja liikuntaelimistön anatomia</virta:Nimi>
-                            <virta:Nimi kieli="en">Locomotor System</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24511752" avain="48731052">
-                            <virta:SuoritusPvm>2015-11-24</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>1.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
-                                    <virta:Koodi>10979859</virta:Koodi>
-                                </virta:Muu>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Advanced English Academic and Professional Communication for Medicine</virta:Nimi>
-                            <virta:Nimi kieli="en">Advanced English Academic and Professional Communication for Medicine</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">76</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24280064" avain="32419529">
-                            <virta:SuoritusPvm>2012-05-25</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>3.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>2</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Biokemiallinen endokrinologia</virta:Nimi>
-                            <virta:Nimi kieli="en">Biochemical Endocrinology</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24564901" avain="32419526">
-                            <virta:SuoritusPvm>2012-09-24</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>4.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>2</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Histologia</virta:Nimi>
-                            <virta:Nimi kieli="en">Histology</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24206843" avain="35221078">
-                            <virta:SuoritusPvm>2013-02-07</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>6.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>2</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Neurotieteet</virta:Nimi>
-                            <virta:Nimi kieli="en">Neuroscienses</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24407392" avain="43092809">
-                            <virta:SuoritusPvm>2014-09-15</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>1.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
-                                    <virta:Koodi>10979859</virta:Koodi>
-                                </virta:Muu>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Reseptioppi (lääketieteen opiskelijat)</virta:Nimi>
-                            <virta:Nimi kieli="en">Prescribing for Medical Students</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">93</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="28311069" avain="39393761">
-                            <virta:SuoritusPvm>2014-01-16</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>2.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>1</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Potilas-lääkärisuhde ja johdatus psykiatriaan</virta:Nimi>
-                            <virta:Nimi kieli="en">Doctor-patient relationship and introductory course to psychiatry</virta:Nimi>
-                            <virta:Kieli>fi</virta:Kieli>
-                            <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
-                            </virta:Koulutusala>
-                        </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24279610" avain="32419521">
-                            <virta:SuoritusPvm>2012-05-04</virta:SuoritusPvm>
-                            <virta:Laajuus>
-                                <virta:Opintopiste>6.0</virta:Opintopiste>
-                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
-                            </virta:Laajuus>
-                            <virta:Arvosana>
-                                <virta:Viisiportainen>2</virta:Viisiportainen>
-                            </virta:Arvosana>
-                            <virta:Myontaja>10088</virta:Myontaja>
-                            <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Lääketieteellinen biokemia 2</virta:Nimi>
-                            <virta:Nimi kieli="en">Medical Biochemistry 2</virta:Nimi>
+                            <virta:Nimi kieli="fi">Terveyskeskusopetus I</virta:Nimi>
+                            <virta:Nimi kieli="en">Health Centre Training I</virta:Nimi>
                             <virta:Kieli>fi</virta:Kieli>
                             <virta:Koulutusala>
                                 <virta:Koodi versio="opm95opa">90</virta:Koodi>
@@ -1040,6 +168,199 @@
                                 <virta:Koodi versio="opm95opa">90</virta:Koodi>
                             </virta:Koulutusala>
                         </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24067167" avain="47024458">
+                            <virta:SuoritusPvm>2015-12-11</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>13.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Naistentaudit ja synnytysoppi</virta:Nimi>
+                            <virta:Nimi kieli="en">Obstetrics and gynaecology</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24407392" avain="43092809">
+                            <virta:SuoritusPvm>2014-09-15</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>1.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Reseptioppi (lääketieteen opiskelijat)</virta:Nimi>
+                            <virta:Nimi kieli="en">Prescribing for Medical Students</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">93</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24170561" avain="47237709">
+                            <virta:SuoritusPvm>2016-02-19</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Työlääketiede ja työterveyshuolto</virta:Nimi>
+                            <virta:Nimi kieli="en">Occupational Medicine and Occupational Health Services</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24169303" avain="31222335">
+                            <virta:SuoritusPvm>2011-11-15</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Johdatus lääketieteeseen</virta:Nimi>
+                            <virta:Nimi kieli="en">Introduction to Medicine</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24073368" avain="47236987">
+                            <virta:SuoritusPvm>2016-04-15</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Oikeuslääketiede</virta:Nimi>
+                            <virta:Nimi kieli="en">Forensic Medicine</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24073206" avain="39393724">
+                            <virta:SuoritusPvm>2014-09-05</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>7.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Elinpatologia</virta:Nimi>
+                            <virta:Nimi kieli="en">Systematic Pathology</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24428313" avain="41867735">
+                            <virta:SuoritusPvm>2014-10-09</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>1.5</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Valinnainen anestesiologia ja tehohoito</virta:Nimi>
+                            <virta:Nimi kieli="en">Voluntary Anesthesiology and Intensive Care</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24264934" avain="47053985">
+                            <virta:SuoritusPvm>2016-04-25</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Päivystysradiologia</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
                         <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="45996447" avain="46541438">
                             <virta:SuoritusPvm>2015-05-27</virta:SuoritusPvm>
                             <virta:Laajuus>
@@ -1048,7 +369,14 @@
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
                                     <virta:Koodi>10979859</virta:Koodi>
                                 </virta:Muu>
                             </virta:Arvosana>
@@ -1062,22 +390,57 @@
                             </virta:Koulutusala>
                             <virta:Patevyys>ll4</virta:Patevyys>
                         </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24068511" avain="47237664">
-                            <virta:SuoritusPvm>2016-03-30</virta:SuoritusPvm>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24511752" avain="48731052">
+                            <virta:SuoritusPvm>2015-11-24</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>1.5</virta:Opintopiste>
+                                <virta:Opintopiste>1.0</virta:Opintopiste>
                                 <virta:Opintoviikko>0.0</virta:Opintoviikko>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
                                     <virta:Koodi>10979859</virta:Koodi>
                                 </virta:Muu>
                             </virta:Arvosana>
                             <virta:Myontaja>10088</virta:Myontaja>
                             <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Toimintakyvyn arviointi ja kuntoutus</virta:Nimi>
-                            <virta:Nimi kieli="en">Assessment of Functional Capacity and Rehabilitation</virta:Nimi>
+                            <virta:Nimi kieli="fi">Advanced English Academic and Professional Communication for Medicine</virta:Nimi>
+                            <virta:Nimi kieli="en">Advanced English Academic and Professional Communication for Medicine</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">76</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24067139" avain="44000648">
+                            <virta:SuoritusPvm>2014-11-21</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Johdatus yleislääketieteeseen</virta:Nimi>
+                            <virta:Nimi kieli="en">Introduction to General Practice</virta:Nimi>
                             <virta:Kieli>fi</virta:Kieli>
                             <virta:Koulutusala>
                                 <virta:Koodi versio="opm95opa">90</virta:Koodi>
@@ -1101,31 +464,28 @@
                                 <virta:Koodi versio="opm95opa">90</virta:Koodi>
                             </virta:Koulutusala>
                         </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24533704" avain="42412748">
-                            <virta:SuoritusPvm>2014-08-18</virta:SuoritusPvm>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24652810" avain="31222371">
+                            <virta:SuoritusPvm>2011-10-27</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>1.5</virta:Opintopiste>
+                                <virta:Opintopiste>6.0</virta:Opintopiste>
                                 <virta:Opintoviikko>0.0</virta:Opintoviikko>
                             </virta:Laajuus>
                             <virta:Arvosana>
-                                <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
-                                    <virta:Koodi>10979859</virta:Koodi>
-                                </virta:Muu>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
                             </virta:Arvosana>
                             <virta:Myontaja>10088</virta:Myontaja>
                             <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Valinnainen sisätautien päivystystoiminta</virta:Nimi>
-                            <virta:Nimi kieli="en">Optional training in internal medicine: Emergency medicine</virta:Nimi>
+                            <virta:Nimi kieli="fi">Tuki- ja liikuntaelimistön anatomia</virta:Nimi>
+                            <virta:Nimi kieli="en">Locomotor System</virta:Nimi>
                             <virta:Kieli>fi</virta:Kieli>
                             <virta:Koulutusala>
                                 <virta:Koodi versio="opm95opa">90</virta:Koodi>
                             </virta:Koulutusala>
                         </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24073175" avain="44441563">
-                            <virta:SuoritusPvm>2015-03-03</virta:SuoritusPvm>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24080635" avain="39159589">
+                            <virta:SuoritusPvm>2014-10-10</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>6.0</virta:Opintopiste>
+                                <virta:Opintopiste>4.0</virta:Opintopiste>
                                 <virta:Opintoviikko>0.0</virta:Opintoviikko>
                             </virta:Laajuus>
                             <virta:Arvosana>
@@ -1133,17 +493,53 @@
                             </virta:Arvosana>
                             <virta:Myontaja>10088</virta:Myontaja>
                             <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Neurologia</virta:Nimi>
-                            <virta:Nimi kieli="en">Neurology</virta:Nimi>
+                            <virta:Nimi kieli="fi">Keuhkosairaudet</virta:Nimi>
+                            <virta:Nimi kieli="en"> Pulmonary diseases</virta:Nimi>
                             <virta:Kieli>fi</virta:Kieli>
                             <virta:Koulutusala>
                                 <virta:Koodi versio="opm95opa">90</virta:Koodi>
                             </virta:Koulutusala>
                         </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24067167" avain="47024458">
-                            <virta:SuoritusPvm>2015-12-11</virta:SuoritusPvm>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24696670" avain="45023512">
+                            <virta:SuoritusPvm>2015-03-27</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>13.0</virta:Opintopiste>
+                                <virta:Opintopiste>5.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>5</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Infektiosairaudet</virta:Nimi>
+                            <virta:Nimi kieli="en">Infectious Diseases</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24170418" avain="31583286">
+                            <virta:SuoritusPvm>2011-12-13</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>6.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>2</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Elinanatomia</virta:Nimi>
+                            <virta:Nimi kieli="en">Visceral Anatomy</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24727457" avain="47237455">
+                            <virta:SuoritusPvm>2016-03-04</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.5</virta:Opintopiste>
                                 <virta:Opintoviikko>0.0</virta:Opintoviikko>
                             </virta:Laajuus>
                             <virta:Arvosana>
@@ -1151,36 +547,263 @@
                             </virta:Arvosana>
                             <virta:Myontaja>10088</virta:Myontaja>
                             <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Naistentaudit ja synnytysoppi</virta:Nimi>
-                            <virta:Nimi kieli="en">Obstetrics and gynaecology</virta:Nimi>
+                            <virta:Nimi kieli="fi">Kliininen ravitsemustiede</virta:Nimi>
+                            <virta:Nimi kieli="en">Clinical Nutrition</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">84</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24208007" avain="34741824">
+                            <virta:SuoritusPvm>2012-12-04</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>10.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Lääketieteellinen yleisfysiologia</virta:Nimi>
+                            <virta:Nimi kieli="en">Medical General Physiology</virta:Nimi>
                             <virta:Kieli>fi</virta:Kieli>
                             <virta:Koulutusala>
                                 <virta:Koodi versio="opm95opa">90</virta:Koodi>
                             </virta:Koulutusala>
                         </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24169303" avain="31222335">
-                            <virta:SuoritusPvm>2011-11-15</virta:SuoritusPvm>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="40547637" avain="40560027">
+                            <virta:SuoritusPvm>2013-10-14</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>2.0</virta:Opintopiste>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
                                 <virta:Opintoviikko>0.0</virta:Opintoviikko>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
                                     <virta:Koodi>10979859</virta:Koodi>
                                 </virta:Muu>
                             </virta:Arvosana>
                             <virta:Myontaja>10088</virta:Myontaja>
                             <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Johdatus lääketieteeseen</virta:Nimi>
-                            <virta:Nimi kieli="en">Introduction to Medicine</virta:Nimi>
+                            <virta:Nimi kieli="fi">Lääketieteen kandidaatin arvo</virta:Nimi>
+                            <virta:Nimi kieli="en">awarded title: Bachelor of Medicine</virta:Nimi>
                             <virta:Kieli>fi</virta:Kieli>
                             <virta:Koulutusala>
                                 <virta:Koodi versio="opm95opa">90</virta:Koodi>
                             </virta:Koulutusala>
                         </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24094064" avain="47209616">
-                            <virta:SuoritusPvm>2016-02-12</virta:SuoritusPvm>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24068511" avain="47237664">
+                            <virta:SuoritusPvm>2016-03-30</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>1.5</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Toimintakyvyn arviointi ja kuntoutus</virta:Nimi>
+                            <virta:Nimi kieli="en">Assessment of Functional Capacity and Rehabilitation</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="28289407" avain="42982259">
+                            <virta:SuoritusPvm>2015-03-23</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>6.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Psykiatria</virta:Nimi>
+                            <virta:Nimi kieli="en">Basic course in psychiatry</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24068951" avain="39116860">
+                            <virta:SuoritusPvm>2013-12-13</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">YEK: Munuaisten- ja virtsateidensairaudet</virta:Nimi>
+                            <virta:Nimi kieli="en">Renal and Urinary Diseases</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24067318" avain="48100799">
+                            <virta:SuoritusPvm>2015-09-11</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>2</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Lastenpsykiatria</virta:Nimi>
+                            <virta:Nimi kieli="en">Child Psychiatry</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24115621" avain="43092595">
+                            <virta:SuoritusPvm>2014-09-26</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>1.5</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Valinnainen syventävä EKG-kurssi</virta:Nimi>
+                            <virta:Nimi kieli="en"> ECG and Patient Cases</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24162319" avain="35569147">
+                            <virta:SuoritusPvm>2013-02-08</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Epidemiologia I</virta:Nimi>
+                            <virta:Nimi kieli="en">Epidemiology I</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="33368710" avain="35459344">
+                            <virta:SuoritusPvm>2012-12-18</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Biostatistiikka</virta:Nimi>
+                            <virta:Nimi kieli="en">Biostatistics</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24653651" avain="31222619">
+                            <virta:SuoritusPvm>2011-12-07</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>1.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Yliopisto tutkimusympäristönä</virta:Nimi>
+                            <virta:Nimi kieli="en">University Research</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24540952" avain="31583294">
+                            <virta:SuoritusPvm>2012-03-12</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>7.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Lääketieteellinen solu- ja molekyylibiologia</virta:Nimi>
+                            <virta:Nimi kieli="en">Medical cell and molecular biology</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24169265" avain="39393959">
+                            <virta:SuoritusPvm>2014-09-12</virta:SuoritusPvm>
                             <virta:Laajuus>
                                 <virta:Opintopiste>3.0</virta:Opintopiste>
                                 <virta:Opintoviikko>0.0</virta:Opintoviikko>
@@ -1190,15 +813,105 @@
                             </virta:Arvosana>
                             <virta:Myontaja>10088</virta:Myontaja>
                             <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Fysiatria</virta:Nimi>
-                            <virta:Nimi kieli="en">Physical and rehabilitation medicine</virta:Nimi>
+                            <virta:Nimi kieli="fi">Kliininen Kemia</virta:Nimi>
+                            <virta:Nimi kieli="en">Clinical Chemistry</virta:Nimi>
                             <virta:Kieli>fi</virta:Kieli>
                             <virta:Koulutusala>
                                 <virta:Koodi versio="opm95opa">90</virta:Koodi>
                             </virta:Koulutusala>
                         </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24169357" avain="31583289">
-                            <virta:SuoritusPvm>2012-02-06</virta:SuoritusPvm>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24171566" avain="43092799">
+                            <virta:SuoritusPvm>2014-10-03</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>2</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Radiologia</virta:Nimi>
+                            <virta:Nimi kieli="en">Radiology</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24187061" avain="39393818">
+                            <virta:SuoritusPvm>2014-10-31</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Anestesiologia ja tehohoito</virta:Nimi>
+                            <virta:Nimi kieli="en">Anesthesiology and Intensive Care</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="25130939" avain="31583282">
+                            <virta:SuoritusPvm>2011-12-09</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>2</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Fysiikkaa lääketieteen opiskelijoille</virta:Nimi>
+                            <virta:Nimi kieli="en">Physics for Medical Students</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">87</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="28311069" avain="39393761">
+                            <virta:SuoritusPvm>2014-01-16</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>1</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Potilas-lääkärisuhde ja johdatus psykiatriaan</virta:Nimi>
+                            <virta:Nimi kieli="en">Doctor-patient relationship and introductory course to psychiatry</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24564901" avain="32419526">
+                            <virta:SuoritusPvm>2012-09-24</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>4.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>2</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Histologia</virta:Nimi>
+                            <virta:Nimi kieli="en">Histology</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24067135" avain="44441555">
+                            <virta:SuoritusPvm>2015-02-06</virta:SuoritusPvm>
                             <virta:Laajuus>
                                 <virta:Opintopiste>6.0</virta:Opintopiste>
                                 <virta:Opintoviikko>0.0</virta:Opintoviikko>
@@ -1208,17 +921,45 @@
                             </virta:Arvosana>
                             <virta:Myontaja>10088</virta:Myontaja>
                             <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Dissektiot</virta:Nimi>
-                            <virta:Nimi kieli="en">Dissections</virta:Nimi>
+                            <virta:Nimi kieli="fi">Silmätaudit</virta:Nimi>
+                            <virta:Nimi kieli="en">Ophthalmology</virta:Nimi>
                             <virta:Kieli>fi</virta:Kieli>
                             <virta:Koulutusala>
                                 <virta:Koodi versio="opm95opa">90</virta:Koodi>
                             </virta:Koulutusala>
                         </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24267385" avain="35526066">
-                            <virta:SuoritusPvm>2013-03-19</virta:SuoritusPvm>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="33571756" avain="35603464">
+                            <virta:SuoritusPvm>2012-11-30</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>5.5</virta:Opintopiste>
+                                <virta:Opintopiste>5.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Kansanterveystiede</virta:Nimi>
+                            <virta:Nimi kieli="en">Public Health</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24279610" avain="32419521">
+                            <virta:SuoritusPvm>2012-05-04</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>6.0</virta:Opintopiste>
                                 <virta:Opintoviikko>0.0</virta:Opintoviikko>
                             </virta:Laajuus>
                             <virta:Arvosana>
@@ -1226,17 +967,63 @@
                             </virta:Arvosana>
                             <virta:Myontaja>10088</virta:Myontaja>
                             <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Kliininen mikrobiologia</virta:Nimi>
-                            <virta:Nimi kieli="en">Clinical Microbiology</virta:Nimi>
+                            <virta:Nimi kieli="fi">Lääketieteellinen biokemia 2</virta:Nimi>
+                            <virta:Nimi kieli="en">Medical Biochemistry 2</virta:Nimi>
                             <virta:Kieli>fi</virta:Kieli>
                             <virta:Koulutusala>
                                 <virta:Koodi versio="opm95opa">90</virta:Koodi>
                             </virta:Koulutusala>
                         </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24279911" avain="31222375">
-                            <virta:SuoritusPvm>2011-10-17</virta:SuoritusPvm>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24263697" avain="47024455">
+                            <virta:SuoritusPvm>2015-10-09</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>3.0</virta:Opintopiste>
+                                <virta:Opintopiste>8.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Korva-, nenä- ja kurkkutaudit</virta:Nimi>
+                            <virta:Nimi kieli="en">Otorhinolaryngology-Head and Neck Surgery</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24511671" avain="31888057">
+                            <virta:SuoritusPvm>2011-10-24</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">English Academic Reading and Study Skills for Students of Medicine</virta:Nimi>
+                            <virta:Nimi kieli="en">English Academic Reading and Study Skills for Students of Medicine</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">76</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24067161" avain="39116850">
+                            <virta:SuoritusPvm>2013-11-27</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5.0</virta:Opintopiste>
                                 <virta:Opintoviikko>0.0</virta:Opintoviikko>
                             </virta:Laajuus>
                             <virta:Arvosana>
@@ -1244,29 +1031,26 @@
                             </virta:Arvosana>
                             <virta:Myontaja>10088</virta:Myontaja>
                             <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Lääketieteellinen biokemia 1</virta:Nimi>
-                            <virta:Nimi kieli="en">Medical Biochemistry 1</virta:Nimi>
+                            <virta:Nimi kieli="fi">YEK: Gastroenterologia</virta:Nimi>
+                            <virta:Nimi kieli="en">YEK: Gastroenterology</virta:Nimi>
                             <virta:Kieli>fi</virta:Kieli>
                             <virta:Koulutusala>
                                 <virta:Koodi versio="opm95opa">90</virta:Koodi>
                             </virta:Koulutusala>
                         </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24069138" avain="43458715">
-                            <virta:SuoritusPvm>2014-11-14</virta:SuoritusPvm>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24280064" avain="32419529">
+                            <virta:SuoritusPvm>2012-05-25</virta:SuoritusPvm>
                             <virta:Laajuus>
                                 <virta:Opintopiste>3.0</virta:Opintopiste>
                                 <virta:Opintoviikko>0.0</virta:Opintoviikko>
                             </virta:Laajuus>
                             <virta:Arvosana>
-                                <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
-                                    <virta:Koodi>10979859</virta:Koodi>
-                                </virta:Muu>
+                                <virta:Viisiportainen>2</virta:Viisiportainen>
                             </virta:Arvosana>
                             <virta:Myontaja>10088</virta:Myontaja>
                             <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Terveyskeskusopetus I</virta:Nimi>
-                            <virta:Nimi kieli="en">Health Centre Training I</virta:Nimi>
+                            <virta:Nimi kieli="fi">Biokemiallinen endokrinologia</virta:Nimi>
+                            <virta:Nimi kieli="en">Biochemical Endocrinology</virta:Nimi>
                             <virta:Kieli>fi</virta:Kieli>
                             <virta:Koulutusala>
                                 <virta:Koodi versio="opm95opa">90</virta:Koodi>
@@ -1290,46 +1074,96 @@
                                 <virta:Koodi versio="opm95opa">90</virta:Koodi>
                             </virta:Koulutusala>
                         </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="37539740" avain="37960176">
-                            <virta:SuoritusPvm>2013-06-26</virta:SuoritusPvm>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24069778" avain="39035197">
+                            <virta:SuoritusPvm>2014-05-28</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>0.0</virta:Opintopiste>
+                                <virta:Opintopiste>11.0</virta:Opintopiste>
                                 <virta:Opintoviikko>0.0</virta:Opintoviikko>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
                                     <virta:Koodi>10979859</virta:Koodi>
                                 </virta:Muu>
                             </virta:Arvosana>
                             <virta:Myontaja>10088</virta:Myontaja>
                             <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Klinikkakynnys 2013</virta:Nimi>
-                            <virta:Nimi kieli="en">Entrance to clinical studies</virta:Nimi>
+                            <virta:Nimi kieli="fi">YEK: Kirurgian, neurologian ja sisätautien ryhmä-, toimenpide- ja osasto-opetukset, päivystykset ja tutkimuspotilaat</virta:Nimi>
+                            <virta:Nimi kieli="en">YEK: Internal Medicine, Surgery and Neurology: Wards, Therapies, Patients and On-Duty service</virta:Nimi>
                             <virta:Kieli>fi</virta:Kieli>
                             <virta:Koulutusala>
                                 <virta:Koodi versio="opm95opa">90</virta:Koodi>
                             </virta:Koulutusala>
                         </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24009684" avain="32136412">
-                            <virta:SuoritusPvm>2011-09-15</virta:SuoritusPvm>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24169357" avain="31583289">
+                            <virta:SuoritusPvm>2012-02-06</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>1.0</virta:Opintopiste>
+                                <virta:Opintopiste>6.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Dissektiot</virta:Nimi>
+                            <virta:Nimi kieli="en">Dissections</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24069347" avain="47237633">
+                            <virta:SuoritusPvm>2015-08-28</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>1.5</virta:Opintopiste>
                                 <virta:Opintoviikko>0.0</virta:Opintoviikko>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
                                     <virta:Koodi>10979859</virta:Koodi>
                                 </virta:Muu>
                             </virta:Arvosana>
                             <virta:Myontaja>10088</virta:Myontaja>
                             <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Johdatus akateemisiin opintoihin</virta:Nimi>
-                            <virta:Nimi kieli="en">Introduction to Academic Studies</virta:Nimi>
+                            <virta:Nimi kieli="fi">Terveyskeskusopetus II</virta:Nimi>
+                            <virta:Nimi kieli="en">Health Centre Training II</virta:Nimi>
                             <virta:Kieli>fi</virta:Kieli>
                             <virta:Koulutusala>
-                                <virta:Koodi versio="opm95opa">82</virta:Koodi>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24071905" avain="34741844">
+                            <virta:SuoritusPvm>2012-11-14</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>6.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Yleinen patologia</virta:Nimi>
+                            <virta:Nimi kieli="en">General Pathology</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
                             </virta:Koulutusala>
                         </virta:Opintosuoritus>
                         <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24067171" avain="44441589">
@@ -1350,21 +1184,249 @@
                                 <virta:Koodi versio="opm95opa">90</virta:Koodi>
                             </virta:Koulutusala>
                         </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24264934" avain="47053985">
-                            <virta:SuoritusPvm>2016-04-25</virta:SuoritusPvm>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24171014" avain="47237737">
+                            <virta:SuoritusPvm>2016-01-22</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>3.0</virta:Opintopiste>
+                                <virta:Opintopiste>1.5</virta:Opintopiste>
                                 <virta:Opintoviikko>0.0</virta:Opintoviikko>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
                                     <virta:Koodi>10979859</virta:Koodi>
                                 </virta:Muu>
                             </virta:Arvosana>
                             <virta:Myontaja>10088</virta:Myontaja>
                             <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Päivystysradiologia</virta:Nimi>
+                            <virta:Nimi kieli="fi">Ympäristöterveydenhuollon perusteet</virta:Nimi>
+                            <virta:Nimi kieli="en">Introduction to Environmental Health</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="26683237" avain="47732500">
+                            <virta:SuoritusPvm>2015-06-30</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>6.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Amanuenssuuri, linjaopinnot</virta:Nimi>
+                            <virta:Nimi kieli="en">Practical training, track studies</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="37539740" avain="37960176">
+                            <virta:SuoritusPvm>2013-06-26</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Klinikkakynnys 2013</virta:Nimi>
+                            <virta:Nimi kieli="en">Entrance to clinical studies</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24067129" avain="36060880">
+                            <virta:SuoritusPvm>2013-10-11</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>6.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Propedeuttinen kurssi</virta:Nimi>
+                            <virta:Nimi kieli="en">Propaedeutics</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24069381" avain="48085762">
+                            <virta:SuoritusPvm>2016-03-18</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>1.5</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>2</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Oikeuspsykiatria</virta:Nimi>
+                            <virta:Nimi kieli="en">Forensic Psychiatry</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24206843" avain="35221078">
+                            <virta:SuoritusPvm>2013-02-07</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>6.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>2</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Neurotieteet</virta:Nimi>
+                            <virta:Nimi kieli="en">Neuroscienses</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24073175" avain="44441563">
+                            <virta:SuoritusPvm>2015-03-03</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>6.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Neurologia</virta:Nimi>
+                            <virta:Nimi kieli="en">Neurology</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24279911" avain="31222375">
+                            <virta:SuoritusPvm>2011-10-17</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Lääketieteellinen biokemia 1</virta:Nimi>
+                            <virta:Nimi kieli="en">Medical Biochemistry 1</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24267385" avain="35526066">
+                            <virta:SuoritusPvm>2013-03-19</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>5.5</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>2</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Kliininen mikrobiologia</virta:Nimi>
+                            <virta:Nimi kieli="en">Clinical Microbiology</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24071789" avain="44441573">
+                            <virta:SuoritusPvm>2015-03-13</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>2.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>4</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Neurokirurgia</virta:Nimi>
+                            <virta:Nimi kieli="en">Neurosurgery</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24533704" avain="42412748">
+                            <virta:SuoritusPvm>2014-08-18</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>1.5</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Valinnainen sisätautien päivystystoiminta</virta:Nimi>
+                            <virta:Nimi kieli="en">Optional training in internal medicine: Emergency medicine</virta:Nimi>
                             <virta:Kieli>fi</virta:Kieli>
                             <virta:Koulutusala>
                                 <virta:Koodi versio="opm95opa">90</virta:Koodi>
@@ -1388,40 +1450,185 @@
                                 <virta:Koodi versio="opm95opa">90</virta:Koodi>
                             </virta:Koulutusala>
                         </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24067139" avain="44000648">
-                            <virta:SuoritusPvm>2014-11-21</virta:SuoritusPvm>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24267936" avain="34741891">
+                            <virta:SuoritusPvm>2012-11-26</virta:SuoritusPvm>
                             <virta:Laajuus>
-                                <virta:Opintopiste>3.0</virta:Opintopiste>
+                                <virta:Opintopiste>2.0</virta:Opintopiste>
                                 <virta:Opintoviikko>0.0</virta:Opintoviikko>
                             </virta:Laajuus>
                             <virta:Arvosana>
                                 <virta:Muu>
-                                    <virta:Asteikko avain="11"/>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
                                     <virta:Koodi>10979859</virta:Koodi>
                                 </virta:Muu>
                             </virta:Arvosana>
                             <virta:Myontaja>10088</virta:Myontaja>
                             <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Johdatus yleislääketieteeseen</virta:Nimi>
-                            <virta:Nimi kieli="en">Introduction to General Practice</virta:Nimi>
+                            <virta:Nimi kieli="fi">Vuorovaikutus potilas-lääkärisuhteessa lääketieteen opiskelijoille</virta:Nimi>
+                            <virta:Nimi kieli="en">Patient-Doctor Communication for students of Medicine</virta:Nimi>
                             <virta:Kieli>fi</virta:Kieli>
                             <virta:Koulutusala>
                                 <virta:Koodi versio="opm95opa">90</virta:Koodi>
                             </virta:Koulutusala>
                         </virta:Opintosuoritus>
-                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24696670" avain="45023512">
-                            <virta:SuoritusPvm>2015-03-27</virta:SuoritusPvm>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24068945" avain="39035171">
+                            <virta:SuoritusPvm>2014-01-10</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>1.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">YEK: EKG</virta:Nimi>
+                            <virta:Nimi kieli="en">YEK: ECG</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24651546" avain="32419515">
+                            <virta:SuoritusPvm>2012-03-22</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Embryologia</virta:Nimi>
+                            <virta:Nimi kieli="en">Embryology</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24068908" avain="39393595">
+                            <virta:SuoritusPvm>2014-02-21</virta:SuoritusPvm>
                             <virta:Laajuus>
                                 <virta:Opintopiste>5.0</virta:Opintopiste>
                                 <virta:Opintoviikko>0.0</virta:Opintoviikko>
                             </virta:Laajuus>
                             <virta:Arvosana>
-                                <virta:Viisiportainen>5</virta:Viisiportainen>
+                                <virta:Viisiportainen>2</virta:Viisiportainen>
                             </virta:Arvosana>
                             <virta:Myontaja>10088</virta:Myontaja>
                             <virta:Laji>2</virta:Laji>
-                            <virta:Nimi kieli="fi">Infektiosairaudet</virta:Nimi>
-                            <virta:Nimi kieli="en">Infectious Diseases</virta:Nimi>
+                            <virta:Nimi kieli="fi">YEK: Endokrinologia ja hematologia</virta:Nimi>
+                            <virta:Nimi kieli="en">YEK: Endocrinology and Hematology</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24264104" avain="36060882">
+                            <virta:SuoritusPvm>2013-05-27</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>12.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Systemaattinen farmakologia ja lääkeainetoksikologia</virta:Nimi>
+                            <virta:Nimi kieli="en">Systematic Pharmacology and Pharmaceutical Toxicology</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">93</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24009684" avain="32136412">
+                            <virta:SuoritusPvm>2011-09-15</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>1.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Johdatus akateemisiin opintoihin</virta:Nimi>
+                            <virta:Nimi kieli="en">Introduction to Academic Studies</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">82</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24094064" avain="47209616">
+                            <virta:SuoritusPvm>2016-02-12</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>3.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Viisiportainen>3</virta:Viisiportainen>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Fysiatria</virta:Nimi>
+                            <virta:Nimi kieli="en">Physical and rehabilitation medicine</virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutusala>
+                                <virta:Koodi versio="opm95opa">90</virta:Koodi>
+                            </virta:Koulutusala>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskelijaAvain="30855810" koulutusmoduulitunniste="24254896" avain="32881070">
+                            <virta:SuoritusPvm>2012-05-02</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>1.0</virta:Opintopiste>
+                                <virta:Opintoviikko>0.0</virta:Opintoviikko>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Muu>
+                                    <virta:Asteikko avain="11">
+                                        <virta:Nimi>HYL-HYV</virta:Nimi>
+                                        <virta:AsteikkoArvosana avain="10979859">
+                                            <virta:Koodi>HYV</virta:Koodi>
+                                            <virta:Nimi>Hyväksytty</virta:Nimi>
+                                            <virta:LaskennallinenArvo>2.0</virta:LaskennallinenArvo>
+                                        </virta:AsteikkoArvosana>
+                                    </virta:Asteikko>
+                                    <virta:Koodi>10979859</virta:Koodi>
+                                </virta:Muu>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Laji>2</virta:Laji>
+                            <virta:Nimi kieli="fi">Hätäensiapu</virta:Nimi>
+                            <virta:Nimi kieli="en">First Aid</virta:Nimi>
                             <virta:Kieli>fi</virta:Kieli>
                             <virta:Koulutusala>
                                 <virta:Koodi versio="opm95opa">90</virta:Koodi>

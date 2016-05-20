@@ -160,7 +160,7 @@ case class AmmatillinenArviointi(
   päivä: Option[LocalDate],
   @Description("Tutkinnon osan suorituksen arvioinnista päättäneen henkilön nimi")
   arvioitsijat: Option[List[Arvioitsija]] = None
-) extends Arviointi
+) extends KoodistostaLöytyväArviointi
 
 @Description("Näytön kuvaus")
 case class Näyttö(

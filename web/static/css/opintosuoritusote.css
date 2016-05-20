@@ -41,10 +41,7 @@ section {
 
 .laajuus, .arvosana, .suoritus-pvm {
     text-align: right;
-}
-
-.arvosana {
-    padding-right: 20px;
+    padding-left: 20px;
 }
 
 .suoritukset, .tutkinnot, .ensisijainen-opiskeluoikeus {

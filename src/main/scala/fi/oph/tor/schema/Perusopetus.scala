@@ -74,7 +74,7 @@ case class PerusopetuksenOppimääränSuoritus(
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
   override val osasuoritukset: Option[List[PerusopetuksenOppiaineenSuoritus]] = None
 ) extends PerusopetuksenPäätasonSuoritus {
-  def arviointi: Option[List[Arviointi]] = None
+  def arviointi: Option[List[KoodistostaLöytyväArviointi]] = None
 }
 
 @Description("Perusopetuksen yksittäisen oppiaineen oppimäärän suoritus erillisenä kokonaisuutena")

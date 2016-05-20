@@ -41,7 +41,7 @@ trait KorkeakouluSuoritus extends Suoritus {
     @KoodistoKoodiarvo("korkeakoulututkinto")
     tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulututkinto", koodistoUri = "suorituksentyyppi"),
     paikallinenId: Option[String],
-    arviointi: Option[List[Arviointi]],
+    arviointi: Option[List[KorkeakoulunArviointi]],
     tila: Koodistokoodiviite,
     vahvistus: Option[Vahvistus],
     suorituskieli: Option[Koodistokoodiviite],
@@ -95,12 +95,20 @@ case class KorkeakoulunOpiskeluoikeusjakso(
   tila: Koodistokoodiviite
 ) extends Opiskeluoikeusjakso
 
+trait KorkeakoulunArviointi extends Arviointi
 
-case class KorkeakoulunArviointi(
+case class KorkeakoulunKoodistostaLöytyväArviointi(
   @KoodistoUri("virtaarvosana")
   arvosana: Koodistokoodiviite,
   päivä: Option[LocalDate]
-) extends Arviointi {
+) extends KoodistostaLöytyväArviointi with KorkeakoulunArviointi {
+  override def arvioitsijat: Option[List[Arvioitsija]] = None
+}
+
+case class KorkeakoulunPaikallinenArviointi(
+  arvosana: Paikallinenkoodi,
+  päivä: Option[LocalDate]
+) extends PaikallinenArviointi with KorkeakoulunArviointi {
   override def arvioitsijat: Option[List[Arvioitsija]] = None
 }
 

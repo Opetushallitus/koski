@@ -38,7 +38,7 @@ case class LukioonValmistavanKoulutuksenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("luva", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: LukioonValmistavaKoulutus
 ) extends Suoritus {
-  def arviointi: Option[List[Arviointi]] = None
+  def arviointi: Option[List[KoodistostaLöytyväArviointi]] = None
 }
 
 @Description("Lukioon valmistava koulutus (LUVA)")

@@ -32,7 +32,7 @@ case class Koodistokoodiviite(
   def description: LocalizedString = nimi.getOrElse(unlocalized(koodiarvo))
 }
 
-@Description("Paikallinen, koulutustoimijan oma kooditus koulutukselle. Käytetään kansallisen koodiston puuttuessa")
+@Description("Paikallinen, koulutustoimijan oma kooditus. Käytetään kansallisen koodiston puuttuessa")
 case class Paikallinenkoodi(
   @Description("Koodin tunniste koodistossa")
   koodiarvo: String,

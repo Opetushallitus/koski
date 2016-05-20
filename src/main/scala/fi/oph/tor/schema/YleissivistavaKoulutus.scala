@@ -34,7 +34,7 @@ case class YleissivistävänkoulutuksenArviointi(
   arvosana: Koodistokoodiviite,
   päivä: Option[LocalDate],
   arvioitsijat: Option[List[Arvioitsija]] = None
-) extends Arviointi
+) extends KoodistostaLöytyväArviointi
 
 object YleissivistävänkoulutuksenArviointi {
   def apply(arvosana: String) = new YleissivistävänkoulutuksenArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), None)

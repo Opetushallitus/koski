@@ -17,7 +17,8 @@ object Deserializers {
     LukionOppiaineDeserializer,
     PerusopetuksenOppiaineDeserializer,
     PerusopetuksenPäätasonSuoritusDeserializer,
-    LukionKurssiDeserializer
+    LukionKurssiDeserializer,
+    KorkeakoulunArviointiDeserializer
   )
 }
 
@@ -34,6 +35,18 @@ object OpiskeluOikeusDeserializer extends Deserializer[Opiskeluoikeus] {
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("perusopetus") => oo.extract[PerusopetuksenOpiskeluoikeus]
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("lukiokoulutus") => oo.extract[LukionOpiskeluoikeus]
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("korkeakoulutus") => oo.extract[KorkeakoulunOpiskeluoikeus]
+      }
+  }
+}
+
+object KorkeakoulunArviointiDeserializer extends Deserializer[KorkeakoulunArviointi] {
+  private val ArviointiClass = classOf[KorkeakoulunArviointi]
+
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), KorkeakoulunArviointi] = {
+    case (TypeInfo(ArviointiClass, _), json) =>
+      json match {
+        case arviointi: JObject if arviointi \ "arvosana" \ "koodistoUri" == JString("virtaarvosana") => arviointi.extract[KorkeakoulunKoodistostaLöytyväArviointi]
+        case arviointi: JObject => arviointi.extract[KorkeakoulunPaikallinenArviointi]
       }
   }
 }

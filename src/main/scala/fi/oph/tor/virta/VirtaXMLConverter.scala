@@ -11,6 +11,7 @@ import fi.oph.tor.log.Logging
 import fi.oph.tor.oppija.OppijaRepository
 import fi.oph.tor.oppilaitos.OppilaitosRepository
 import fi.oph.tor.schema._
+import fi.oph.tor.localization.LocalizedStringImplicits._
 
 import scala.xml.Node
 case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu) extends Logging {
@@ -94,53 +95,70 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
     }.getOrElse(suoritukset)
   }
 
-  private def convertSuoritus(node: Node, allNodes: List[Node]): Option[KorkeakouluSuoritus] = {
-    laji(node) match {
+  private def convertSuoritus(suoritus: Node, allNodes: List[Node]): Option[KorkeakouluSuoritus] = {
+    laji(suoritus) match {
       case "1" => // tutkinto
-        koulutuskoodi(node).map { koulutuskoodi =>
-          val osasuoritukset = childNodes(node, allNodes).map(convertOpintojaksonSuoritus(_, allNodes))
+        koulutuskoodi(suoritus).map { koulutuskoodi =>
+          val osasuoritukset = childNodes(suoritus, allNodes).map(convertOpintojaksonSuoritus(_, allNodes))
 
           KorkeakouluTutkinnonSuoritus(
             koulutusmoduuli = tutkinto(koulutuskoodi),
             paikallinenId = None,
-            arviointi = None,
+            arviointi = arviointi(suoritus),
             tila = requiredKoodi("suorituksentila", "VALMIS").get,
             vahvistus = None,
             suorituskieli = None,
-            toimipiste = oppilaitos(node),
+            toimipiste = oppilaitos(suoritus),
             osasuoritukset = optionalList(osasuoritukset)
           )
         }
       case "2" => // opintojakso
-        Some(convertOpintojaksonSuoritus(node, allNodes))
+        Some(convertOpintojaksonSuoritus(suoritus, allNodes))
       case laji: String =>
         logger.warn("Tuntematon laji: " + laji)
         None
     }
   }
 
-  def convertOpintojaksonSuoritus(node: Node, allNodes: List[Node]): KorkeakoulunOpintojaksonSuoritus = {
-    val osasuoritukset = childNodes(node, allNodes).map(convertOpintojaksonSuoritus(_, allNodes))
+  def convertOpintojaksonSuoritus(suoritus: Node, allNodes: List[Node]): KorkeakoulunOpintojaksonSuoritus = {
+    val osasuoritukset = childNodes(suoritus, allNodes).map(convertOpintojaksonSuoritus(_, allNodes))
 
     KorkeakoulunOpintojaksonSuoritus(
       koulutusmoduuli = KorkeakoulunOpintojakso(
-        tunniste = Paikallinenkoodi((node \\ "@koulutusmoduulitunniste").text, nimi(node), "koodistoUri"), // hardcoded uri
-        nimi = nimi(node),
-        laajuus = (node \ "Laajuus" \ "Opintopiste").headOption.map(op => LaajuusOpintopisteissä(op.text.toFloat))
+        tunniste = Paikallinenkoodi((suoritus \\ "@koulutusmoduulitunniste").text, nimi(suoritus), "koodistoUri"), // hardcoded uri
+        nimi = nimi(suoritus),
+        laajuus = (suoritus \ "Laajuus" \ "Opintopiste").headOption.map(op => LaajuusOpintopisteissä(op.text.toFloat))
       ),
       paikallinenId = None,
-      arviointi = koodistoViitePalvelu.getKoodistoKoodiViite("virtaarvosana", node \ "Arvosana" \ "_" text).map( arvosana =>
-        List(KorkeakoulunArviointi(
-          arvosana = arvosana,
-          päivä = Some(LocalDate.parse(node \ "SuoritusPvm" text))
-        ))
-      ),
+      arviointi = arviointi(suoritus),
       tila = requiredKoodi("suorituksentila", "VALMIS").get,
       vahvistus = None,
-      suorituskieli = (node \\ "Kieli").headOption.flatMap(kieli => requiredKoodi("kieli", kieli.text.toUpperCase)),
-      toimipiste = oppilaitos(node),
+      suorituskieli = (suoritus \\ "Kieli").headOption.flatMap(kieli => requiredKoodi("kieli", kieli.text.toUpperCase)),
+      toimipiste = oppilaitos(suoritus),
       osasuoritukset = optionalList(osasuoritukset)
     )
+  }
+
+  private def arviointi(suoritus: Node) =
+    koodistoViitePalvelu.getKoodistoKoodiViite("virtaarvosana", suoritus \ "Arvosana" \ "_" text).map( arvosana =>
+      List(KorkeakoulunKoodistostaLöytyväArviointi(
+        arvosana = arvosana,
+        päivä = Some(LocalDate.parse(suoritus \ "SuoritusPvm" text))
+      ))
+    ).orElse(paikallinenArviointi(suoritus)) // TODO, Mitä jos arvosanaa ei löydy koodistosta eikä ole paikallinen arvosana ?
+
+  private def paikallinenArviointi(suoritus: Node): Option[List[KorkeakoulunArviointi]] = {
+    val asteikkoUri = "virta/" + (suoritus \ "Arvosana" \ "Muu" \ "Asteikko" \ "@avain").text
+    def nimi(a: Node) = (a \ "Nimi").headOption.getOrElse(a \ "Koodi").text
+
+    (suoritus \ "Arvosana" \ "Muu" \\ "AsteikkoArvosana")
+      .find(a => (a \ "@avain").text == (suoritus \ "Arvosana" \ "Muu" \ "Koodi").text)
+      .map { a => List(
+        KorkeakoulunPaikallinenArviointi(
+          Paikallinenkoodi((a \ "Koodi").text, nimi(a), asteikkoUri),
+          Some(LocalDate.parse(suoritus \ "SuoritusPvm" text))
+        ))
+      }
   }
 
   private def isRoot(suoritukset: Seq[Node])(node: Node) = {
