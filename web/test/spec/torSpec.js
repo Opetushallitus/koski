@@ -539,6 +539,13 @@ describe('TOR', function() {
       })
     })
 
+    describe('Perusopetuksen lisäopetuksen todistus', function() {
+      before(page.openPage, page.oppijaHaku.search('200596-9755', page.isOppijaSelected('Kaisa')), OpinnotPage().avaaTodistus)
+      it('näytetään', function() {
+        expect(todistus.headings()).to.equal('Jyväskylän yliopisto Todistus lisäopetuksen suorittamisesta Jyväskylän normaalikoulu Kymppiluokkalainen , Kaisa 200596-9755')
+      })
+    })
+
     describe('Lukion päättötodistus', function() {
       before(page.openPage, page.oppijaHaku.search('110496-9369', page.isOppijaSelected('Liisa')))
       describe('Oppijan suorituksissa', function() {

@@ -5,9 +5,9 @@ import java.time.LocalDate
 import fi.oph.scalaschema.annotation.{Description, MinItems, MaxItems}
 
 case class PerusopetuksenLisäopetuksenOpiskeluoikeus(
-  id: Option[Int],
-  versionumero: Option[Int],
-  lähdejärjestelmänId: Option[LähdejärjestelmäId],
+  id: Option[Int] = None,
+  versionumero: Option[Int] = None,
+  lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
   alkamispäivä: Option[LocalDate],
   päättymispäivä: Option[LocalDate],
   oppilaitos: Oppilaitos,
@@ -26,8 +26,8 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeus(
 }
 
 case class PerusopetuksenLisäopetuksenSuoritus(
-  paikallinenId: Option[String],
-  suorituskieli: Option[Koodistokoodiviite],
+  paikallinenId: Option[String] = None,
+  suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
@@ -35,8 +35,9 @@ case class PerusopetuksenLisäopetuksenSuoritus(
   vahvistus: Option[Vahvistus] = None,
   @KoodistoKoodiarvo("perusopetuksenlisaopetus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenlisaopetus", koodistoUri = "suorituksentyyppi"),
+  override val osasuoritukset: Option[List[OppiaineenSuoritus]],
   koulutusmoduuli: PerusopetuksenLisäopetus
-) extends Suoritus {
+) extends PerusopetuksenPäätasonSuoritus {
   def arviointi: Option[List[KoodistostaLöytyväArviointi]] = None
 }
 

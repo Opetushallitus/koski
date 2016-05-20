@@ -39,6 +39,7 @@ class TorDatabaseFixtureCreator(database: TorDatabase, repository: OpiskeluOikeu
       (MockOppijat.markkanen.oid, OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.omnomnia)),
       (MockOppijat.koululainen.oid, ExamplesPerusopetus.päättötodistus.opiskeluoikeudet.head),
       (MockOppijat.oppiaineenKorottaja.oid, ExamplesPerusopetus.aineopiskelija.opiskeluoikeudet.head),
+      (MockOppijat.kymppiluokkalainen.oid, ExamplesPerusopetus.lisäopetuksenPäättötodistus.opiskeluoikeudet.head),
       (MockOppijat.lukiolainen.oid, ExamplesLukio.päättötodistus.opiskeluoikeudet.head),
       (MockOppijat.ammattilainen.oid, AmmatillinenTodistusExample.todistus.opiskeluoikeudet.head))
   }

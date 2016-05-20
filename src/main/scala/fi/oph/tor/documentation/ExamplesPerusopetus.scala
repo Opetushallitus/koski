@@ -116,6 +116,31 @@ object ExamplesPerusopetus {
     ))
   )
 
+  val lisäopetuksenPäättötodistus = Oppija(
+    exampleHenkilö,
+    List(PerusopetuksenLisäopetuksenOpiskeluoikeus(
+      alkamispäivä = Some(date(2008, 8, 15)),
+      päättymispäivä = Some(date(2016, 6, 4)),
+      oppilaitos = jyväskylänNormaalikoulu,
+      koulutustoimija = None,
+      suoritukset = List(
+        PerusopetuksenLisäopetuksenSuoritus(
+          koulutusmoduuli = PerusopetuksenLisäopetus(),
+          tila = tilaValmis,
+          toimipiste = jyväskylänNormaalikoulu,
+          vahvistus = vahvistus,
+          osasuoritukset = kaikkiAineet
+        )),
+      tila = Some(YleissivistäväOpiskeluoikeudenTila(
+        List(
+          YleissivistäväOpiskeluoikeusjakso(date(2008, 8, 15), Some(date(2016, 6, 3)), opiskeluoikeusAktiivinen),
+          YleissivistäväOpiskeluoikeusjakso(date(2016, 6, 4), None, opiskeluoikeusPäättynyt)
+        )
+      )),
+      läsnäolotiedot = None
+    ))
+  )
+
   val aineopiskelija = Oppija(
     MockOppijat.eero.vainHenkilötiedot,
     List(PerusopetuksenOpiskeluoikeus(
