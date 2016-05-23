@@ -1,4 +1,5 @@
 import javax.servlet.ServletContext
+
 import fi.oph.tor.cache.CacheServlet
 import fi.oph.tor.config.TorApplication
 import fi.oph.tor.db._
@@ -6,14 +7,15 @@ import fi.oph.tor.documentation.SchemaDocumentationServlet
 import fi.oph.tor.fixture.{FixtureServlet, Fixtures}
 import fi.oph.tor.history.TorHistoryServlet
 import fi.oph.tor.koodisto.KoodistoCreator
+import fi.oph.tor.log.Logging
 import fi.oph.tor.oppilaitos.OppilaitosServlet
-import fi.oph.tor.servlet.{StaticFileServlet, SingleFileServlet}
+import fi.oph.tor.servlet.StaticFileServlet.indexHtml
+import fi.oph.tor.servlet.{SingleFileServlet}
 import fi.oph.tor.suoritusote.SuoritusServlet
 import fi.oph.tor.todistus.TodistusServlet
-import fi.oph.tor.tor.{TodennetunOsaamisenRekisteri, OppijaServlet, TorValidator}
-import fi.oph.tor.toruser.{LogoutServlet, UserServlet, UserOrganisationsRepository}
+import fi.oph.tor.tor.{OppijaServlet, TodennetunOsaamisenRekisteri}
+import fi.oph.tor.toruser.{LogoutServlet, UserOrganisationsRepository, UserServlet}
 import fi.oph.tor.tutkinto.TutkintoServlet
-import fi.oph.tor.log.Logging
 import fi.oph.tor.util.Pools
 import org.scalatra._
 
@@ -38,7 +40,6 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       context.mount(new SchemaDocumentationServlet(application.koodistoPalvelu), "/documentation")
       context.mount(new TodistusServlet(userRepository, application.directoryClient, rekisteri, application.tutkintoRepository), "/todistus")
       context.mount(new SuoritusServlet(userRepository, application.directoryClient, rekisteri, application.oppijaRepository, application.opiskeluOikeusRepository), "/opintosuoritusote")
-      val indexHtml = StaticFileServlet.contentOf("web/static/index.html").get
       context.mount(new SingleFileServlet(indexHtml, List(("/*", 404), ("/uusioppija", 200), ("/oppija/:oid", 200))), "/")
       context.mount(new CacheServlet(userRepository, application.directoryClient, application), "/cache")
       if (Fixtures.shouldUseFixtures(application.config)) {

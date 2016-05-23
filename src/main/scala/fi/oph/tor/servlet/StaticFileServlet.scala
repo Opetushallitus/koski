@@ -43,6 +43,8 @@ trait StaticFileServlet extends ScalatraServlet {
 }
 
 object StaticFileServlet {
+  lazy val indexHtml: Content = StaticFileServlet.contentOf("web/static/index.html").get
+
   private val properties: Properties = new Properties()
   properties.load(classOf[StaticFileServlet].getResourceAsStream("/mime.properties"))
 
