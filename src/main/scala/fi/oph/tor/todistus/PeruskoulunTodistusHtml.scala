@@ -7,16 +7,16 @@ import fi.oph.tor.schema._
 import scala.xml.Elem
 
 trait PeruskoulunTodistusHtml extends TodistusHtml {
-  def renderTodistus(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: PerusopetuksenPäätasonSuoritus, oppiaineet: List[OppiaineenSuoritus], title: String): Elem = {
+  def renderTodistus(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: Suoritus, oppiaineet: List[OppiaineenSuoritus], title: String): Elem = {
     val pakolliset = oppiaineet.filter(_.koulutusmoduuli.pakollinen)
     val pakollisetJaNiihinLiittyvätValinnaiset: List[Aine] = pakolliset.flatMap { case pakollinen =>
       val liittyvätValinnaiset: List[LiittyväValinnainen] = oppiaineet
         .filter(aine => !aine.koulutusmoduuli.pakollinen && aine.koulutusmoduuli.tunniste == pakollinen.koulutusmoduuli.tunniste)
-        .map(LiittyväValinnainen(_))
+        .map(LiittyväValinnainen)
       Pakollinen(pakollinen) :: liittyvätValinnaiset
     }
     val muutValinnaiset = oppiaineet.filter(!pakollisetJaNiihinLiittyvätValinnaiset.map(_.suoritus).contains(_))
-      .map(Valinnainen(_))
+      .map(Valinnainen)
 
     def arvosanaLista(oppiaineet: List[Aine]) = oppiaineet.map { oppiaine =>
       val nimiTeksti = i(oppiaine.suoritus.koulutusmoduuli)
