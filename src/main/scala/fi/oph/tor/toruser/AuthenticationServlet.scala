@@ -24,6 +24,6 @@ class AuthenticationServlet(val directoryClient: DirectoryClient, val userReposi
 
   get("/logout") {
     Option(request.getSession(false)).foreach(_.invalidate())
-    response.redirect("/tor")
+    redirectToLogin
   }
 }

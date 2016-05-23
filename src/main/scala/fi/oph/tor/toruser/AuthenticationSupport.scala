@@ -23,6 +23,10 @@ trait AuthenticationSupport extends ScentrySupport[AuthenticationUser] with Basi
 
   protected val scentryConfig = (new ScentryConfig {}).asInstanceOf[ScentryConfiguration]
 
+  def redirectToLogin = {
+    response.redirect("/tor")
+  }
+
   def torUserOption: Option[TorUser] = {
     userOption.map { authUser =>
       TorUser(authUser.oid, request.headers.getOrElse("HTTP_X_FORWARDED_FOR", request.remoteAddress), userRepository)

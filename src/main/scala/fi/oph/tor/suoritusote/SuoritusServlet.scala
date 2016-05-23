@@ -5,7 +5,7 @@ import fi.oph.tor.opiskeluoikeus.OpiskeluOikeusRepository
 import fi.oph.tor.oppija.OppijaRepository
 import fi.oph.tor.servlet.ErrorHandlingServlet
 import fi.oph.tor.tor.TodennetunOsaamisenRekisteri
-import fi.oph.tor.toruser.{RequiresAuthentication, UserOrganisationsRepository}
+import fi.oph.tor.toruser.{AuthenticationSupport, UserOrganisationsRepository}
 import fi.vm.sade.security.ldap.DirectoryClient
 
 class SuoritusServlet(
@@ -13,20 +13,25 @@ class SuoritusServlet(
   val directoryClient: DirectoryClient,
   val rekisteri: TodennetunOsaamisenRekisteri,
   val oppijaRepository: OppijaRepository,
-  val opiskeluOikeusRepository: OpiskeluOikeusRepository) extends ErrorHandlingServlet with RequiresAuthentication {
+  val opiskeluOikeusRepository: OpiskeluOikeusRepository) extends ErrorHandlingServlet with AuthenticationSupport {
 
   get("/:oppijaOid/:oppilaitosOid") {
-    val oid = params("oppijaOid")
-    val oppilaitosOid = params("oppilaitosOid")
-    implicit val user = torUser
-    oppijaRepository.findByOid(oid) match {
-      case Some(henkilötiedot) =>
-        val opiskeluoikeudet = opiskeluOikeusRepository.findByOppijaOid(oid)(torUser)
-          .filter(_.oppilaitos.oid == oppilaitosOid).toList
+    torUserOption match {
+      case Some(torUser) =>
+        val oid = params("oppijaOid")
+        val oppilaitosOid = params("oppilaitosOid")
+        implicit val user = torUser
+        oppijaRepository.findByOid(oid) match {
+          case Some(henkilötiedot) =>
+            val opiskeluoikeudet = opiskeluOikeusRepository.findByOppijaOid(oid)(torUser)
+              .filter(_.oppilaitos.oid == oppilaitosOid).toList
 
-        new OpintosuoritusoteHtml().render(henkilötiedot, opiskeluoikeudet)
+            new OpintosuoritusoteHtml().render(henkilötiedot, opiskeluoikeudet)
 
-      case None => renderStatus(TorErrorCategory.notFound.oppijaaEiLöydy())
+          case None => renderStatus(TorErrorCategory.notFound.oppijaaEiLöydy())
+        }
+      case None =>
+        redirectToLogin
     }
   }
 }

@@ -460,7 +460,16 @@ describe('TOR', function() {
       describe('Opintosuoritusote', function() {
         before(OpinnotPage().avaaOpintosuoritusote(1))
 
-        it('näytetään', function() {
+        describe('Kun klikataan linkkiä', function() {
+          it('näytetään', function() {
+          })
+        })
+
+        describe('Todistuksen avaaminen, kun käyttäjä ei ole kirjautunut', function() {
+          before(authentication.logout,  reloadTestFrame, wait.until(login.isVisible))
+          it('Näytetään login-sivu', function() {
+            expect(login.isVisible()).to.equal(true)
+          })
         })
       })
     })
@@ -532,7 +541,7 @@ describe('TOR', function() {
           })
         })
         describe('Todistuksen avaaminen, kun käyttäjä ei ole kirjautunut', function() {
-          before(authentication.logout,  reloadTestFrame)
+          before(authentication.logout,  reloadTestFrame, wait.until(login.isVisible))
           it('Näytetään login-sivu', function() {
             expect(login.isVisible()).to.equal(true)
           })
