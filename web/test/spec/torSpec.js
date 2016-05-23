@@ -475,6 +475,7 @@ describe('TOR', function() {
     })
     describe('Maisteri, jolla ensisijainen opiskeluoikeus', function() {
       before(
+        authentication.login(),
         page.openPage,
         page.oppijaHaku.search('090888-929X', page.isOppijaSelected('Harri'))
       )
@@ -550,7 +551,7 @@ describe('TOR', function() {
     })
 
     describe('Perusopetuksen oppiaineen oppimäärän todistus', function() {
-      before(page.openPage, page.oppijaHaku.search('190596-953T', page.isOppijaSelected('Olli')), OpinnotPage().avaaTodistus)
+      before(authentication.login(), page.openPage, page.oppijaHaku.search('190596-953T', page.isOppijaSelected('Olli')), OpinnotPage().avaaTodistus)
       it('näytetään', function() {
         expect(todistus.headings()).to.equal('Jyväskylän yliopisto Perusopetuksen oppiaineen oppimäärän suoritus Jyväskylän normaalikoulu Oppiaineenkorottaja , Olli 190596-953T')
         expect(todistus.arvosanarivi('.oppiaine.AI')).to.equal('Äidinkieli ja kirjallisuus Kiitettävä 9')
