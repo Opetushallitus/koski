@@ -3,7 +3,6 @@ package fi.oph.tor.suoritusote
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.opiskeluoikeus.OpiskeluOikeusRepository
 import fi.oph.tor.oppija.OppijaRepository
-import fi.oph.tor.schema.Opiskeluoikeus
 import fi.oph.tor.servlet.ErrorHandlingServlet
 import fi.oph.tor.tor.TodennetunOsaamisenRekisteri
 import fi.oph.tor.toruser.{RequiresAuthentication, UserOrganisationsRepository}

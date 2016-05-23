@@ -522,12 +522,20 @@ describe('TOR', function() {
       })
       describe('Tulostettava todistus', function() {
         before(OpinnotPage().avaaTodistus)
-        it('näytetään', function() {
-          expect(todistus.headings()).to.equal('Jyväskylän yliopisto Perusopetuksen päättötodistus Jyväskylän normaalikoulu Koululainen , Kaisa 110496-926Y')
-          expect(todistus.arvosanarivi('.oppiaine.KT')).to.equal('Uskonto tai elämänkatsomustieto, Evankelisluterilainen uskonto Erinomainen 10')
-          expect(todistus.arvosanarivi('.oppiaine.KO.valinnainen')).to.equal('Valinnainen kotitalous 1.0 Hyväksytty')
-          expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
-          expect(todistus.arvosanarivi('.muut-opinnot')).to.equal('Muut valinnaiset opinnot')
+        describe('Klikattaessa linkkiä', function() {
+          it('näytetään', function() {
+            expect(todistus.headings()).to.equal('Jyväskylän yliopisto Perusopetuksen päättötodistus Jyväskylän normaalikoulu Koululainen , Kaisa 110496-926Y')
+            expect(todistus.arvosanarivi('.oppiaine.KT')).to.equal('Uskonto tai elämänkatsomustieto, Evankelisluterilainen uskonto Erinomainen 10')
+            expect(todistus.arvosanarivi('.oppiaine.KO.valinnainen')).to.equal('Valinnainen kotitalous 1.0 Hyväksytty')
+            expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
+            expect(todistus.arvosanarivi('.muut-opinnot')).to.equal('Muut valinnaiset opinnot')
+          })
+        })
+        describe('Todistuksen avaaminen, kun käyttäjä ei ole kirjautunut', function() {
+          before(authentication.logout,  reloadTestFrame)
+          it('Näytetään login-sivu', function() {
+            expect(login.isVisible()).to.equal(true)
+          })
         })
       })
     })

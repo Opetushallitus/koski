@@ -86,6 +86,10 @@ function testFrame() {
   return $("#testframe").get(0).contentWindow
 }
 
+function reloadTestFrame() {
+  testFrame().document.location.reload()
+}
+
 function triggerEvent(element, eventName) {
   const evt = testFrame().document.createEvent('HTMLEvents');
   evt.initEvent(eventName, true, true);
