@@ -4,7 +4,7 @@ import './style/main.less'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Bacon from 'baconjs'
-import {Error, NotFound, handleError, errorP} from './Error.jsx'
+import {Error, TopLevelError, isTopLevel, handleError, errorP} from './Error.jsx'
 import {Login, userP} from './Login.jsx'
 import {OppijaHaku, oppijatP, searchInProgressP} from './OppijaHaku.jsx'
 import {Oppija, oppijaP, uusiOppijaP, selectOppijaE, updateResultE} from './Oppija.jsx'
@@ -32,8 +32,8 @@ const domP = Bacon.combineWith(stateP, errorP(Bacon.combineAsArray(stateP, saved
       <Error error={error}/>
       <TopBar user={user} saved={saved} />
       {
-        error.httpStatus === 404
-          ? <NotFound/>
+        isTopLevel(error)
+          ? <TopLevelError status={error.httpStatus} text={error.text} />
           : ( user
               ? <div className='content-area'>
                 <OppijaHaku oppijat={oppijaHaku.oppijat} valittu={oppija.valittuOppija} searching={oppijaHaku.searchInProgress}/>

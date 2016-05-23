@@ -26,12 +26,12 @@ class DirectoryServlet extends StaticFileServlet {
   }
 }
 
-case class Content(contentType: String, bytes: Array[Byte])
+case class Content(contentType: String, text: String)
 
 trait StaticFileServlet extends ScalatraServlet {
   def serveContent(content: Content) = {
     contentType = content.contentType
-    content.bytes
+    content.text
   }
 
   def serveStaticFileIfExists(resourcePath: String) = StaticFileServlet.contentOf(resourcePath) match {
@@ -52,7 +52,7 @@ object StaticFileServlet {
   }
 
   def contentOf(resourcePath: String) = {
-    Files.asByteArray(resourcePath).map(Content(resolveContentType(resourcePath), _))
+    Files.asString(resourcePath).map(Content(resolveContentType(resourcePath), _))
   }
 
   private def suffix(path: String): String = path.reverse.takeWhile(_ != '.').reverse

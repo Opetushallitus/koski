@@ -86,7 +86,7 @@ function TorPage() {
       return S("#error.error .error-text").text()
     },
     is404: function() {
-      return isElementVisible(S(".not-found"))
+      return isElementVisible(S(".http-status:contains(404)"))
     },
     isSavedLabelShown: function() {
       return isElementVisible(S('.saved'))

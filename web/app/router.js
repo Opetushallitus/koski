@@ -22,7 +22,7 @@ export const routeP = b.toProperty(document.location.pathname)
     } else if (route === '/tor/') {
       return {}
     } else {
-      return { httpStatus: 404, text: 'route not found: ' + route }
+      return { httpStatus: 404, comment: 'route not found: ' + route }
     }
   })
 

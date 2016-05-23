@@ -547,6 +547,13 @@ describe('TOR', function() {
             expect(login.isVisible()).to.equal(true)
           })
         })
+
+        describe('Todistuksen avaaminen, kun todistusta ei löydy', function() {
+          before(authentication.login(), page.openPage, openPage('/tor/todistus/opiskeluoikeus/1010101010', page.is404))
+          it('Näytetään 404-sivu', function() {
+
+          })
+        })
       })
     })
 

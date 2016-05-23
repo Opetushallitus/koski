@@ -8,16 +8,20 @@ const logError = (error) => {
 }
 
 export const errorP = (stateP) => {
-  const stateErrorP = stateP.changes().errors()
-    .mapError(error => ({ httpStatus: error.httpStatus }))
-    .flatMap(e => Bacon.once(e).concat(errorTexts[e.httpStatus]
-        ? Bacon.fromEvent(document.body, 'click').map({}) // Retryable errors can be dismissed
-        : Bacon.never()
-    )).toProperty({})
+  if (window.koskiError) {
+    return Bacon.constant(window.koskiError)
+  } else {
+    const stateErrorP = stateP.changes().errors()
+      .mapError(error => ({ httpStatus: error.httpStatus }))
+      .flatMap(e => Bacon.once(e).concat(errorTexts[e.httpStatus]
+          ? Bacon.fromEvent(document.body, 'click').map({}) // Retryable errors can be dismissed
+          : Bacon.never()
+      )).toProperty({})
 
-  return Bacon.combineWith(stateErrorP, routeP, (error, route) =>
-      error.httpStatus ? error : route
-  )
+    return Bacon.combineWith(stateErrorP, routeP, (error, route) =>
+        error.httpStatus ? error : route
+    )
+  }
 }
 
 export const handleError = (error) => {
@@ -34,13 +38,16 @@ export function requiresLogin(e) {
 
 const errorTexts = {
   400: 'Järjestelmässä tapahtui odottamaton virhe. Yritä myöhemmin uudelleen.',
+  404: 'Etsimääsi sivua ei löytynyt',
   409: 'Muutoksia ei voida tallentaa, koska toinen käyttäjä on muuttanut tietoja sivun latauksen jälkeen. Lataa sivu uudelleen.',
   500: 'Järjestelmässä tapahtui odottamaton virhe. Yritä myöhemmin uudelleen.',
   503: 'Palvelimeen ei saatu yhteyttä. Yritä myöhemmin uudelleen.'
 }
 
 export const Error = ({error}) => {
-  return errorTexts[error.httpStatus] ? <div id="error" className="error"><span className="error-text">{errorTexts[error.httpStatus]}</span><a>&#10005;</a></div> : <div id="error"></div>
+  return errorTexts[error.httpStatus] && !isTopLevel(error) ? <div id="error" className="error"><span className="error-text">{errorTexts[error.httpStatus]}</span><a>&#10005;</a></div> : <div id="error"></div>
 }
 
-export const NotFound = () => <div className="not-found content-area"><h1>404</h1><div className="error-message">Etsimääsi sivua ei löytynyt</div></div>
+export const TopLevelError = (props) => <div className="error content-area"><h1 className="http-status">{props.status}</h1><div className="error-message">{props.text || errorTexts[props.status]}</div></div>
+
+export const isTopLevel = (error) => error.httpStatus === 404 || error.topLevel
