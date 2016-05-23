@@ -2,9 +2,9 @@ package fi.oph.tor.tutkinto
 
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.json.Json
-import fi.oph.tor.servlet.{InvalidRequestException, ErrorHandlingServlet}
+import fi.oph.tor.servlet.{InvalidRequestException, ApiServlet}
 
-class TutkintoServlet(tutkintoRepository: TutkintoRepository) extends ErrorHandlingServlet {
+class TutkintoServlet(tutkintoRepository: TutkintoRepository) extends ApiServlet {
    get("/oppilaitos/:oppilaitosId") {
      contentType = "application/json;charset=utf-8"
      (params.get("query"), params.get("oppilaitosId")) match {

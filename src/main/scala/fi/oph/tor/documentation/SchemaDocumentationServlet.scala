@@ -3,9 +3,9 @@ package fi.oph.tor.documentation
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.koodisto.{KoodistoKoodi, KoodistoPalvelu, KoodistoViite}
 import fi.oph.tor.schema.TorSchema
-import fi.oph.tor.servlet.ErrorHandlingServlet
+import fi.oph.tor.servlet.ApiServlet
 
-class SchemaDocumentationServlet(koodistoPalvelu: KoodistoPalvelu) extends ErrorHandlingServlet {
+class SchemaDocumentationServlet(koodistoPalvelu: KoodistoPalvelu) extends ApiServlet {
   get("/") {
     TorTiedonSiirtoHtml.html
   }

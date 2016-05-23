@@ -9,15 +9,15 @@ import fi.oph.tor.log.AuditLog.{log => auditLog}
 import fi.oph.tor.log._
 import fi.oph.tor.schema.Henkilö.Oid
 import fi.oph.tor.schema.{HenkilöWithOid, Oppija}
-import fi.oph.tor.servlet.{ErrorHandlingServlet, InvalidRequestException, NoCache}
-import fi.oph.tor.toruser.{AccessType, RequiresAuthentication, TorUser, UserOrganisationsRepository}
+import fi.oph.tor.servlet.{ApiServlet, InvalidRequestException, NoCache}
+import fi.oph.tor.toruser._
 import fi.oph.tor.util.Timing
 import fi.vm.sade.security.ldap.DirectoryClient
 import org.json4s.JsonAST.JArray
 import org.scalatra.GZipSupport
 
 class OppijaServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository: UserOrganisationsRepository, val directoryClient: DirectoryClient, val validator: TorValidator, val historyRepository: OpiskeluoikeusHistoryRepository)
-  extends ErrorHandlingServlet with Logging with RequiresAuthentication with GlobalExecutionContext with ObservableSupport with GZipSupport with NoCache with Timing {
+  extends ApiServlet with RequiresAuthentication with Logging with GlobalExecutionContext with ObservableSupport with GZipSupport with NoCache with Timing {
 
   put("/") {
     timed("PUT /oppija", thresholdMs = 10) {

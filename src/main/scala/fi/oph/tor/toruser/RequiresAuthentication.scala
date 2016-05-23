@@ -1,8 +1,6 @@
 package fi.oph.tor.toruser
 
-import fi.oph.tor.servlet.ErrorHandlingServlet
-
-trait RequiresAuthentication extends ErrorHandlingServlet with AuthenticationSupport {
+trait RequiresAuthentication extends AuthenticationSupport {
   def torUser: TorUser = torUserOption.get
 
   before() {

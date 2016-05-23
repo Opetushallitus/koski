@@ -2,11 +2,11 @@ package fi.oph.tor.toruser
 
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.json.Json
-import fi.oph.tor.log.{TorOperation, AuditLogMessage, AuditLog}
-import fi.oph.tor.servlet.ErrorHandlingServlet
+import fi.oph.tor.log.{AuditLog, AuditLogMessage, TorOperation}
+import fi.oph.tor.servlet.ApiServlet
 import fi.vm.sade.security.ldap.DirectoryClient
 
-class AuthenticationServlet(val directoryClient: DirectoryClient, val userRepository: UserOrganisationsRepository) extends ErrorHandlingServlet with AuthenticationSupport {
+class UserServlet(val directoryClient: DirectoryClient, val userRepository: UserOrganisationsRepository) extends ApiServlet with AuthenticationSupport {
   get("/") {
     contentType = "application/json;charset=utf-8"
     userOption match {
@@ -20,10 +20,5 @@ class AuthenticationServlet(val directoryClient: DirectoryClient, val userReposi
     AuditLog.log(AuditLogMessage(TorOperation.LOGIN, torUserOption.get, Map()))
     contentType = "application/json;charset=utf-8"
     Json.write(userOption.get)
-  }
-
-  get("/logout") {
-    Option(request.getSession(false)).foreach(_.invalidate())
-    redirectToLogin
   }
 }

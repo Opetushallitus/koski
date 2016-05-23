@@ -11,7 +11,7 @@ import fi.oph.tor.servlet.{StaticFileServlet, SingleFileServlet}
 import fi.oph.tor.suoritusote.SuoritusServlet
 import fi.oph.tor.todistus.TodistusServlet
 import fi.oph.tor.tor.{TodennetunOsaamisenRekisteri, OppijaServlet, TorValidator}
-import fi.oph.tor.toruser.{AuthenticationServlet, UserOrganisationsRepository}
+import fi.oph.tor.toruser.{LogoutServlet, UserServlet, UserOrganisationsRepository}
 import fi.oph.tor.tutkinto.TutkintoServlet
 import fi.oph.tor.log.Logging
 import fi.oph.tor.util.Pools
@@ -31,7 +31,8 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       val rekisteri = new TodennetunOsaamisenRekisteri(application.oppijaRepository, application.opiskeluOikeusRepository)
       context.mount(new OppijaServlet(rekisteri, userRepository, application.directoryClient, application.validator, application.historyRepository), "/api/oppija")
       context.mount(new TorHistoryServlet(userRepository, application.directoryClient, application.historyRepository), "/api/opiskeluoikeus/historia")
-      context.mount(new AuthenticationServlet(application.directoryClient, application.userRepository), "/user")
+      context.mount(new UserServlet(application.directoryClient, application.userRepository), "/user")
+      context.mount(new LogoutServlet, "/user/logout")
       context.mount(new OppilaitosServlet(application.oppilaitosRepository, application.userRepository, application.directoryClient), "/api/oppilaitos")
       context.mount(new TutkintoServlet(application.tutkintoRepository), "/api/tutkinto")
       context.mount(new SchemaDocumentationServlet(application.koodistoPalvelu), "/documentation")

@@ -3,9 +3,9 @@ package fi.oph.tor.suoritusote
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.opiskeluoikeus.OpiskeluOikeusRepository
 import fi.oph.tor.oppija.OppijaRepository
-import fi.oph.tor.servlet.ErrorHandlingServlet
+import fi.oph.tor.servlet.HtmlServlet
 import fi.oph.tor.tor.TodennetunOsaamisenRekisteri
-import fi.oph.tor.toruser.{AuthenticationSupport, UserOrganisationsRepository}
+import fi.oph.tor.toruser.{RequiresAuthentication, UserOrganisationsRepository}
 import fi.vm.sade.security.ldap.DirectoryClient
 
 class SuoritusServlet(
@@ -13,25 +13,20 @@ class SuoritusServlet(
   val directoryClient: DirectoryClient,
   val rekisteri: TodennetunOsaamisenRekisteri,
   val oppijaRepository: OppijaRepository,
-  val opiskeluOikeusRepository: OpiskeluOikeusRepository) extends ErrorHandlingServlet with AuthenticationSupport {
+  val opiskeluOikeusRepository: OpiskeluOikeusRepository) extends HtmlServlet with RequiresAuthentication {
 
   get("/:oppijaOid/:oppilaitosOid") {
-    torUserOption match {
-      case Some(torUser) =>
-        val oid = params("oppijaOid")
-        val oppilaitosOid = params("oppilaitosOid")
-        implicit val user = torUser
-        oppijaRepository.findByOid(oid) match {
-          case Some(henkilötiedot) =>
-            val opiskeluoikeudet = opiskeluOikeusRepository.findByOppijaOid(oid)(torUser)
-              .filter(_.oppilaitos.oid == oppilaitosOid).toList
+    val oid = params("oppijaOid")
+    val oppilaitosOid = params("oppilaitosOid")
+    implicit val user = torUser
+    oppijaRepository.findByOid(oid) match {
+      case Some(henkilötiedot) =>
+        val opiskeluoikeudet = opiskeluOikeusRepository.findByOppijaOid(oid)(torUser)
+          .filter(_.oppilaitos.oid == oppilaitosOid).toList
 
-            new OpintosuoritusoteHtml().render(henkilötiedot, opiskeluoikeudet)
+        new OpintosuoritusoteHtml().render(henkilötiedot, opiskeluoikeudet)
 
-          case None => renderStatus(TorErrorCategory.notFound.oppijaaEiLöydy())
-        }
-      case None =>
-        redirectToLogin
+      case None => renderStatus(TorErrorCategory.notFound.oppijaaEiLöydy())
     }
   }
 }

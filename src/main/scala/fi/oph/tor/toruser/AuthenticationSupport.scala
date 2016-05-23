@@ -5,14 +5,14 @@ import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.json.Json
 import fi.oph.tor.log.Logging
-import fi.oph.tor.servlet.ErrorHandlingServlet
+import fi.oph.tor.servlet.KoskiBaseServlet
 import fi.vm.sade.security.ldap.DirectoryClient
 import org.scalatra.ScalatraBase
 import org.scalatra.auth.strategy.{BasicAuthStrategy, BasicAuthSupport}
 import org.scalatra.auth.{ScentryConfig, ScentrySupport}
 import org.scalatra.servlet.RichRequest
 
-trait AuthenticationSupport extends ScentrySupport[AuthenticationUser] with BasicAuthSupport[AuthenticationUser] { self: ErrorHandlingServlet =>
+trait AuthenticationSupport extends KoskiBaseServlet with ScentrySupport[AuthenticationUser] with BasicAuthSupport[AuthenticationUser] {
   val realm = "Todennetun Osaamisen Rekisteri"
 
   def directoryClient: DirectoryClient
@@ -23,8 +23,8 @@ trait AuthenticationSupport extends ScentrySupport[AuthenticationUser] with Basi
 
   protected val scentryConfig = (new ScentryConfig {}).asInstanceOf[ScentryConfiguration]
 
-  def redirectToLogin = {
-    response.redirect("/tor")
+  def userNotAuthenticatedError = {
+    renderStatus(TorErrorCategory.unauthorized())
   }
 
   def torUserOption: Option[TorUser] = {
@@ -41,7 +41,7 @@ trait AuthenticationSupport extends ScentrySupport[AuthenticationUser] with Basi
   }
 
   override protected def registerAuthStrategies = {
-    scentry.register("UsernamePassword", app => new UserPasswordStrategy(app.asInstanceOf[ErrorHandlingServlet], directoryClient))
+    scentry.register("UsernamePassword", app => new UserPasswordStrategy(app.asInstanceOf[AuthenticationSupport], directoryClient))
     scentry.register("Basic", app => new TorBasicAuthStrategy(app, realm, directoryClient))
   }
 }
@@ -79,7 +79,7 @@ import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 
 import org.scalatra.auth.ScentryStrategy
 
-class UserPasswordStrategy(protected val app: ErrorHandlingServlet, val directoryClient: DirectoryClient)
+class UserPasswordStrategy(protected val app: AuthenticationSupport, val directoryClient: DirectoryClient)
                           (implicit request: HttpServletRequest, response: HttpServletResponse)
                            extends ScentryStrategy[AuthenticationUser] with TorAuthenticationStrategy with Logging {
   override def name: String = "UserPassword"
@@ -111,6 +111,6 @@ class UserPasswordStrategy(protected val app: ErrorHandlingServlet, val director
    * What should happen if the user is currently not authenticated
    */
   override def unauthenticated()(implicit request: HttpServletRequest, response: HttpServletResponse) {
-    app.renderStatus(TorErrorCategory.unauthorized())
+    app.userNotAuthenticatedError
   }
 }
