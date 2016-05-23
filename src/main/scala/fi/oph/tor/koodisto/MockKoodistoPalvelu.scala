@@ -44,6 +44,7 @@ object MockKoodistoPalvelu extends KoodistoPalvelu {
     "oppiaineaidinkielijakirjallisuus",
     "oppilaitosnumero",
     "osaamisala",
+    "perusopetuksenoppimaara",
     "suorituksentila",
     "suorituksentyyppi",
     "tutkintonimikkeet",
