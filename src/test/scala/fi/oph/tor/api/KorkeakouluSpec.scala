@@ -61,7 +61,7 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
           """|Suoritetut tutkinnot
             |751101 Dipl.ins., konetekniikka  22.3.2016
             |Opintosuoritukset
-            |751101 Dipl.ins., konetekniikka  OIV 22.3.2016
+            |751101 Dipl.ins., konetekniikka 123 OIV 22.3.2016
             |K901-D Diplomityö (KON) 30 4 21.3.2016
             |MEN.thes Diplomityö 30 4 21.3.2016
             |ENG.matr Kypsyysnäyte 0 hyväksytty 8.3.2016

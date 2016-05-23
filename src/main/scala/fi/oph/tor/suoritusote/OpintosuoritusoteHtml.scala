@@ -102,10 +102,18 @@ class OpintosuoritusoteHtml(implicit val user: TorUser) extends LocalizedHtml {
     <tr>
       <td class={"depth-" + depth}>{suoritus.koulutusmoduuli.tunniste.koodiarvo}</td>
       <td class={"depth-" + depth}>{i(suoritus.koulutusmoduuli)}</td>
-      <td class="laajuus">{suoritus.koulutusmoduuli.laajuus.map(l => decimalFormat.format(l.arvo)).getOrElse("")}</td>
+      <td class="laajuus">{laajuus(suoritus)}</td>
       <td class="arvosana">{i(suoritus.arvosanaKirjaimin)}</td>
       <td class="suoritus-pvm">{suoritus.arviointi.flatMap(_.lastOption.flatMap(_.päivä.map(dateFormatter.format(_)))).getOrElse("")}</td>
     </tr>
+  }
+
+  private def laajuus(suoritus: Suoritus) = if (suoritus.osasuoritukset.isDefined) {
+    decimalFormat.format(suoritus.osasuoritusLista.foldLeft(0f) { (laajuus: Float, suoritus: Suoritus) =>
+      laajuus + suoritus.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(0f)
+    })
+  } else {
+    suoritus.koulutusmoduuli.laajuus.map(l => decimalFormat.format(l.arvo)).getOrElse("")
   }
 
   private def suoritusWithDepth(t: (Int, Suoritus)) : List[(Int, Suoritus)] = {
