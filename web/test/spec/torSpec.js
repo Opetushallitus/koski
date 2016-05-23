@@ -527,6 +527,7 @@ describe('TOR', function() {
           expect(todistus.arvosanarivi('.oppiaine.KT')).to.equal('Uskonto tai elämänkatsomustieto, Evankelisluterilainen uskonto Erinomainen 10')
           expect(todistus.arvosanarivi('.oppiaine.KO.valinnainen')).to.equal('Valinnainen kotitalous 1.0 Hyväksytty')
           expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
+          expect(todistus.arvosanarivi('.muut-opinnot')).to.equal('Muut valinnaiset opinnot')
         })
       })
     })
@@ -536,6 +537,7 @@ describe('TOR', function() {
       it('näytetään', function() {
         expect(todistus.headings()).to.equal('Jyväskylän yliopisto Perusopetuksen oppiaineen oppimäärän suoritus Jyväskylän normaalikoulu Oppiaineenkorottaja , Olli 190596-953T')
         expect(todistus.arvosanarivi('.oppiaine.AI')).to.equal('Äidinkieli ja kirjallisuus Kiitettävä 9')
+        expect(todistus.arvosanarivi('.muut-opinnot')).to.equal('')
       })
     })
 

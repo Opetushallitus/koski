@@ -45,6 +45,12 @@ trait PeruskoulunTodistusHtml extends TodistusHtml {
       </tr>
     }
 
+    def muutOpinnot(valinnaiset: List[Valinnainen]) =
+      if (valinnaiset.nonEmpty)
+          <th class="muut-opinnot">Muut valinnaiset opinnot</th> ++
+          {arvosanaLista(valinnaiset)}
+      else Nil
+
     val dateFormatter = DateTimeFormatter.ofPattern("d.M.yyyy")
 
     <html>
@@ -76,10 +82,11 @@ trait PeruskoulunTodistusHtml extends TodistusHtml {
               <th class="oppiaine">Yhteiset ja niihin liittyvät valinnaiset oppiaineet</th>
               <th class="laajuus">Vuosiviikko- tuntimäärä</th>
               <th class="arvosana">Arvosana</th>
-            </tr>{arvosanaLista(pakollisetJaNiihinLiittyvätValinnaiset)}<tr>
-            <th>Muut valinnaiset opinnot</th>
-          </tr>{arvosanaLista(muutValinnaiset)}
-          </table>{päättötodistus.vahvistus.toList.map(vahvistusHTML)}
+            </tr>
+            {arvosanaLista(pakollisetJaNiihinLiittyvätValinnaiset)}
+            {muutOpinnot(muutValinnaiset)}
+          </table>
+          {päättötodistus.vahvistus.toList.map(vahvistusHTML)}
         </div>
       </body>
     </html>
