@@ -31,7 +31,6 @@ class OppijaServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository:
 
   def putSingle(validationResult: Either[HttpStatus, Oppija], user: TorUser): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
     val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = validationResult.right.flatMap(rekisteri.createOrUpdate(_)(user))
-
     result.left.foreach { case HttpStatus(code, errors) =>
       logger.warn("Opinto-oikeuden päivitys estetty: " + code + " " + errors + " for request " + describeRequest)
     }
@@ -52,7 +51,7 @@ class OppijaServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository:
           case _ => 200
         }.max)
 
-        Json.write(batchResults)
+        batchResults
       }
     }
   }
@@ -81,7 +80,7 @@ class OppijaServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository:
     contentType = "application/json;charset=utf-8"
     params.get("query") match {
       case Some(query) if (query.length >= 3) =>
-        Json.write(rekisteri.findOppijat(query.toUpperCase)(torUser))
+        rekisteri.findOppijat(query.toUpperCase)(torUser)
       case _ =>
         throw new InvalidRequestException(TorErrorCategory.badRequest.queryParam.searchTermTooShort)
     }
@@ -118,7 +117,7 @@ class OppijaServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository:
 
     rekisteri.findOppijat(params.toList, torUser) match {
       case Right(oppijat) => oppijat
-      case Left(status) => renderStatus(status)
+      case Left(status) => haltWithStatus(status)
     }
   }
 

@@ -5,7 +5,9 @@ import fi.oph.tor.json.Json
 import fi.oph.tor.json.Json._
 import fi.oph.tor.log.Logging
 import org.json4s._
-import org.scalatra.ScalatraServlet
+import org.scalatra._
+
+import scala.xml.Elem
 
 trait KoskiBaseServlet extends ScalatraServlet with Logging {
   def getIntegerParam(name: String) = {
@@ -19,14 +21,23 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
 
   error {
     case InvalidRequestException(detail) =>
-      renderStatus(detail)
+      haltWithStatus(detail)
     case e: Throwable =>
-      renderInternalError(e)
+      haltWithInternalError(e)
   }
 
-  def renderInternalError(e: Throwable) = {
+  override protected def renderPipeline: RenderPipeline = ({
+    case s: HttpStatus =>
+      renderStatus(s)
+    case e: Elem =>
+      super.renderPipeline(e)
+    case x: AnyRef =>
+      renderObject(x)
+  }: RenderPipeline) orElse super.renderPipeline
+
+  def haltWithInternalError(e: Throwable) = {
     logger.error("Error while processing request " + describeRequest, e)
-    renderStatus(TorErrorCategory.internalError())
+    haltWithStatus(TorErrorCategory.internalError())
   }
 
   def describeRequest: String = {
@@ -51,4 +62,10 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
   }
 
   def renderStatus(status: HttpStatus): Unit
+
+  def renderObject(x: AnyRef): Unit
+
+  def haltWithStatus(status: HttpStatus) = {
+    halt(status.statusCode, status)
+  }
 }

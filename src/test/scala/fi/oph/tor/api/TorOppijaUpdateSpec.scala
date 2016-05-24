@@ -1,9 +1,11 @@
 package fi.oph.tor.api
 
+import fi.oph.tor.json.Json
 import fi.oph.tor.localization.LocalizedString
 import fi.oph.tor.oppija.MockOppijat
 import fi.oph.tor.organisaatio.MockOrganisaatiot
-import fi.oph.tor.schema.{Koodistokoodiviite, Oppilaitos, TaydellisetHenkilötiedot}
+import fi.oph.tor.schema.{Oppija, Koodistokoodiviite, Oppilaitos, TaydellisetHenkilötiedot}
+import fi.oph.tor.tor.HenkilönOpiskeluoikeusVersiot
 import org.scalatest.FreeSpec
 
 class TorOppijaUpdateSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillinen {
@@ -11,6 +13,15 @@ class TorOppijaUpdateSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatil
   val oppija: TaydellisetHenkilötiedot = MockOppijat.tyhjä
 
   "Opiskeluoikeuden lisääminen" - {
+    "Palauttaa oidin ja versiot" in {
+      resetFixtures
+      putOppija(Oppija(oppija, List(uusiOpiskeluOikeus))) {
+        response.status should equal(200)
+        val result = Json.read[HenkilönOpiskeluoikeusVersiot](response.body)
+        result.henkilö.oid should equal(oppija.oid)
+        result.opiskeluoikeudet.map(_.versionumero) should equal(List(1))
+      }
+    }
     "Puuttuvien tietojen täyttäminen" - {
       "Oppilaitoksen tiedot" - {
         "Ilman nimeä -> haetaan nimi" in {

@@ -24,7 +24,7 @@ trait AuthenticationSupport extends KoskiBaseServlet with ScentrySupport[Authent
   protected val scentryConfig = (new ScentryConfig {}).asInstanceOf[ScentryConfiguration]
 
   def userNotAuthenticatedError = {
-    renderStatus(TorErrorCategory.unauthorized())
+    haltWithStatus(TorErrorCategory.unauthorized())
   }
 
   def torUserOption: Option[TorUser] = {

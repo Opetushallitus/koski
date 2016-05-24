@@ -19,30 +19,34 @@ trait ApiServlet extends KoskiBaseServlet with Logging with Timing {
         }
         json match {
           case Some(json) => block(json)
-          case None => renderStatus(TorErrorCategory.badRequest.format.json("Invalid JSON"))
+          case None => haltWithStatus(TorErrorCategory.badRequest.format.json("Invalid JSON"))
         }
       case _ =>
-        renderStatus(TorErrorCategory.unsupportedMediaType.jsonOnly())
+        haltWithStatus(TorErrorCategory.unsupportedMediaType.jsonOnly())
     }
   }
 
-  def renderOption[T <: AnyRef](errorCategory: ErrorCategory)(result: Option[T], pretty: Boolean = false) = {
-    contentType = "application/json;charset=utf-8"
+  def renderOption[T <: AnyRef](errorCategory: ErrorCategory)(result: Option[T]) = {
     result match {
-      case Some(x) => Json.write(x, pretty)
-      case _ => renderStatus(errorCategory())
+      case Some(x) => renderObject(x)
+      case _ => haltWithStatus(errorCategory())
     }
   }
 
-  def renderEither[T <: AnyRef](result: Either[HttpStatus, T], pretty: Boolean = false) = {
-    contentType = "application/json;charset=utf-8"
+  def renderEither[T <: AnyRef](result: Either[HttpStatus, T]) = {
     result match {
-      case Right(x) => Json.write(x, pretty)
-      case Left(status) => renderStatus(status)
+      case Right(x) => renderObject(x)
+      case Left(status) => haltWithStatus(status)
     }
   }
 
   def renderStatus(status: HttpStatus) = {
-    halt(status = status.statusCode, body = Json.write(status.errors))
+    response.setStatus(status.statusCode)
+    renderObject(status.errors)
+  }
+
+  def renderObject(x: AnyRef): Unit = {
+    contentType = "application/json;charset=utf-8"
+    response.writer.print(Json.write(x))
   }
 }

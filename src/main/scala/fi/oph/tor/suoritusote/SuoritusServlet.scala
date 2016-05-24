@@ -23,10 +23,10 @@ class SuoritusServlet(
       case Some(henkilötiedot) =>
         val opiskeluoikeudet = opiskeluOikeusRepository.findByOppijaOid(oid)(torUser)
           .filter(_.oppilaitos.oid == oppilaitosOid).toList
-
         new OpintosuoritusoteHtml().render(henkilötiedot, opiskeluoikeudet)
 
-      case None => renderStatus(TorErrorCategory.notFound.oppijaaEiLöydy())
+      case None =>
+        TorErrorCategory.notFound.oppijaaEiLöydy()
     }
   }
 }

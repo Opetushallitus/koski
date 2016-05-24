@@ -18,7 +18,7 @@ class SchemaDocumentationServlet(koodistoPalvelu: KoodistoPalvelu) extends ApiSe
   get("/examples/:name.json") {
     contentType = "application/json"
 
-    renderOption(TorErrorCategory.notFound)(Examples.examples.find(_.name == params("name")).map(_.data), pretty = true)
+    renderOption(TorErrorCategory.notFound)(Examples.examples.find(_.name == params("name")).map(_.data))
   }
 
   get("/koodisto/:name/:version") {
@@ -31,6 +31,6 @@ class SchemaDocumentationServlet(koodistoPalvelu: KoodistoPalvelu) extends ApiSe
         Some(KoodistoViite(koodistoUri, getIntegerParam("version")))
     }
     val result: Option[List[KoodistoKoodi]] = versio.flatMap(koodistoPalvelu.getKoodistoKoodit)
-    renderOption(TorErrorCategory.notFound.koodistoaEiLöydy)(result, pretty = true)
+    renderOption(TorErrorCategory.notFound.koodistoaEiLöydy)(result)
   }
 }
