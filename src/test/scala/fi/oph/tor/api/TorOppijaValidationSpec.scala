@@ -1,6 +1,5 @@
 package fi.oph.tor.api
 
-import fi.oph.tor.documentation.ExamplesKorkeakoulu
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.json.Json
 import fi.oph.tor.localization.LocalizedString

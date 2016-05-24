@@ -4,10 +4,9 @@ import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 
 import fi.oph.tor.http.TorErrorCategory
 import fi.oph.tor.json.Json
-import fi.oph.tor.log.Logging
+import fi.oph.tor.log._
 import fi.oph.tor.servlet.KoskiBaseServlet
 import fi.vm.sade.security.ldap.DirectoryClient
-import org.scalatra.ScalatraBase
 import org.scalatra.auth.strategy.{BasicAuthStrategy, BasicAuthSupport}
 import org.scalatra.auth.{ScentryConfig, ScentrySupport}
 import org.scalatra.servlet.RichRequest
@@ -29,7 +28,7 @@ trait AuthenticationSupport extends KoskiBaseServlet with ScentrySupport[Authent
 
   override def torUserOption: Option[TorUser] = {
     userOption.map { authUser =>
-      TorUser(authUser.oid, request.headers.getOrElse("HTTP_X_FORWARDED_FOR", request.remoteAddress), userRepository)
+      TorUser(authUser.oid, request, userRepository)
     }
   }
 
@@ -42,33 +41,35 @@ trait AuthenticationSupport extends KoskiBaseServlet with ScentrySupport[Authent
 
   override protected def registerAuthStrategies = {
     scentry.register("UsernamePassword", app => new UserPasswordStrategy(app.asInstanceOf[AuthenticationSupport], directoryClient))
-    scentry.register("Basic", app => new TorBasicAuthStrategy(app, realm, directoryClient))
+    scentry.register("Basic", app => new TorBasicAuthStrategy(app.asInstanceOf[AuthenticationSupport], realm, directoryClient))
   }
 }
 
-class TorBasicAuthStrategy(protected override val app: ScalatraBase, realm: String, val directoryClient: DirectoryClient) extends BasicAuthStrategy[AuthenticationUser](app, realm) with TorAuthenticationStrategy with Logging {
+class TorBasicAuthStrategy(protected override val app: AuthenticationSupport, realm: String, val directoryClient: DirectoryClient) extends BasicAuthStrategy[AuthenticationUser](app, realm) with TorAuthenticationStrategy with Logging {
   override protected def getUserId(user: AuthenticationUser)(implicit request: HttpServletRequest, response: HttpServletResponse): String = user.oid
 
   override protected def validate(username: String, password: String)(implicit request: HttpServletRequest, response: HttpServletResponse): Option[AuthenticationUser] = {
-    tryLogin(username, password)
+    tryLogin(username, password, app)
   }
 }
 
 trait TorAuthenticationStrategy extends Logging {
   def directoryClient: DirectoryClient
-  def tryLogin(username: String, password: String) = {
+  def tryLogin(username: String, password: String, app: AuthenticationSupport) = {
     val loginResult: Boolean = directoryClient.authenticate(username, password)
 
     if(!loginResult) {
+      logger(LogUserContext(app.request)).info(s"Login failed with username ${username}")
       None
     } else {
       directoryClient.findUser(username).map { ldapUser =>
         AuthenticationUser(ldapUser.oid, ldapUser.givenNames + " " + ldapUser.lastName)
       } match {
         case Some(user) =>
+          logger(LogUserContext(app.request, user.oid)).info("Login successful")
           Some(user)
         case _ =>
-          logger.error("User " + username + " not found from LDAP")
+          logger(LogUserContext(app.request)).error("User " + username + " not found from LDAP")
           None
       }
     }
@@ -102,7 +103,7 @@ class UserPasswordStrategy(protected val app: AuthenticationSupport, val directo
 
   def authenticate()(implicit request: HttpServletRequest, response: HttpServletResponse): Option[AuthenticationUser] = {
     loginRequestInBody match {
-      case Some(Login(username, password)) => tryLogin(username, password)
+      case Some(Login(username, password)) => tryLogin(username, password, app)
       case _ => None
     }
   }
