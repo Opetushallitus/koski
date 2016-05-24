@@ -2,8 +2,9 @@ package fi.oph.tor.servlet
 
 import fi.oph.tor.http.{TorErrorCategory, HttpStatus}
 import fi.oph.tor.servlet.StaticFileServlet.indexHtml
+import fi.oph.tor.toruser.AuthenticationSupport
 
-trait HtmlServlet extends KoskiBaseServlet with StaticFileServlet {
+trait HtmlServlet extends AuthenticationSupport with StaticFileServlet {
   def redirectToLogin = {
     redirect("/")
   }
