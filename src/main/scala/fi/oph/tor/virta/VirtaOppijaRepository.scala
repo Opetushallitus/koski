@@ -37,7 +37,7 @@ case class VirtaOppijaRepository(v: VirtaClient, henkilöpalvelu: OppijaReposito
         .toList
       } catch {
         case e: Exception =>
-          logger.error("Failed to fetch data from Virta", e)
+          logger.error(e)("Failed to fetch data from Virta")
           Nil
       }
   }

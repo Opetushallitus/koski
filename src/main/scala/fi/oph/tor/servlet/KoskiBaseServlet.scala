@@ -36,7 +36,7 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
   }: RenderPipeline) orElse super.renderPipeline
 
   def haltWithInternalError(e: Throwable) = {
-    logger.error("Error while processing request " + describeRequest, e)
+    logger.error(e)("Error while processing request " + describeRequest)
     haltWithStatus(TorErrorCategory.internalError())
   }
 

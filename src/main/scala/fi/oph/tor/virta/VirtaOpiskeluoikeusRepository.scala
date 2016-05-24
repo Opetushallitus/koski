@@ -44,7 +44,7 @@ case class VirtaOpiskeluoikeusRepository(virta: VirtaClient, val oppijaRepositor
       }
     } catch {
       case e: Exception =>
-        logger.error("Failed to fetch data from Virta", e)
+        logger.error(e)("Failed to fetch data from Virta")
         Nil
     }
   }

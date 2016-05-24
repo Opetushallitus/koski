@@ -91,7 +91,7 @@ class TorDatabase(val config: Config) extends Logging {
       }
       flyway.migrate
     } catch {
-      case e: Exception => logger.warn("Migration failure", e)
+      case e: Exception => logger.warn(e)("Migration failure")
     }
   }
 }

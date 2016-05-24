@@ -1,7 +1,7 @@
 package fi.oph.tor.log
 
-import org.slf4j.{Logger, LoggerFactory}
+import org.log4s._
 
 trait Logging {
-  protected lazy val logger: Logger = LoggerFactory.getLogger(getClass())
+  protected lazy val logger: Logger = getLogger
 }

@@ -16,7 +16,7 @@ object StreamCounter extends Logging {
     }
 
     def onError(error: Throwable) = {
-      logger.error("Error while streaming output", error)
+      logger.error(error)("Error while streaming output")
     }
 
 

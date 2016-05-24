@@ -1,7 +1,7 @@
 package fi.oph.tor.util
 
 import fi.oph.tor.log.Logging
-import org.slf4j.Logger
+import org.log4s._
 import rx.lang.scala.Observable
 
 object Timing {

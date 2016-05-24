@@ -9,8 +9,8 @@ import fi.oph.tor.history.TorHistoryServlet
 import fi.oph.tor.koodisto.KoodistoCreator
 import fi.oph.tor.log.Logging
 import fi.oph.tor.oppilaitos.OppilaitosServlet
+import fi.oph.tor.servlet.SingleFileServlet
 import fi.oph.tor.servlet.StaticFileServlet.indexHtml
-import fi.oph.tor.servlet.{SingleFileServlet}
 import fi.oph.tor.suoritusote.SuoritusServlet
 import fi.oph.tor.todistus.TodistusServlet
 import fi.oph.tor.tor.{OppijaServlet, TodennetunOsaamisenRekisteri}
@@ -47,7 +47,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       }
     } catch {
       case e: Throwable =>
-        logger.error("Error in server startup", e)
+        logger.error(e)("Error in server startup")
         System.exit(1)
     }
   }

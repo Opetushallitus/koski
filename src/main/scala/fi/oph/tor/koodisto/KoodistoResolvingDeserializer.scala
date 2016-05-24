@@ -18,7 +18,7 @@ object KoodistoResolvingDeserializer extends Deserializer[Koodistokoodiviite] wi
             context.koodistoPalvelu.validate(viite)
           } catch {
             case e: Exception =>
-              logger.error("Error from koodisto-service", e)
+              logger.error(e)("Error from koodisto-service")
               ContextualExtractor.extractionError(TorErrorCategory.internalError())
           }
           validated match {
