@@ -1,11 +1,11 @@
 package fi.oph.tor.util
 
-import fi.oph.tor.log.Logging
+import fi.oph.tor.log.{LoggerWithContext, Logging}
 import org.log4s._
 import rx.lang.scala.Observable
 
 object Timing {
-  def timed[R](blockname: String, thresholdMs: Int = 50, logger: Logger)(block: => R): R = {
+  def timed[R](blockname: String, thresholdMs: Int = 50, logger: LoggerWithContext)(block: => R): R = {
     val timer = new Timer(logger, blockname, thresholdMs)
     timer.complete(block)
   }
@@ -28,7 +28,7 @@ trait Timing extends Logging {
   }
 }
 
-class Timer(logger: Logger, blockname: String, thresholdMs: Int) {
+class Timer(logger: LoggerWithContext, blockname: String, thresholdMs: Int) {
   private val t0 = System.nanoTime()
   private var completed = false
   def complete[T](result: T): T = {

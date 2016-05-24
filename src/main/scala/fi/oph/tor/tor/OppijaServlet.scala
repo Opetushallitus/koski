@@ -29,10 +29,10 @@ class OppijaServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository:
     }
   }
 
-  def putSingle(validationResult: Either[HttpStatus, Oppija], user: TorUser): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
+  def putSingle(validationResult: Either[HttpStatus, Oppija], user: TorUser): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = { // <- user passed explicitly because this may be called in another thread (see batch below)
     val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = validationResult.right.flatMap(rekisteri.createOrUpdate(_)(user))
     result.left.foreach { case HttpStatus(code, errors) =>
-      logger.warn("Opinto-oikeuden päivitys estetty: " + code + " " + errors + " for request " + describeRequest)
+      logger(user).warn("Opinto-oikeuden päivitys estetty: " + code + " " + errors + " for request " + describeRequest)
     }
     result
   }
@@ -113,7 +113,7 @@ class OppijaServlet(rekisteri: TodennetunOsaamisenRekisteri, val userRepository:
   }
 
   private def query = {
-    logger.info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
+    logger(torUser).info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
 
     rekisteri.findOppijat(params.toList, torUser) match {
       case Right(oppijat) => oppijat

@@ -49,9 +49,7 @@ case class VirtaOpiskeluoikeusRepository(virta: VirtaClient, val oppijaRepositor
     }
   }
 
-  def findByHenkilö(henkilö: Henkilö with Henkilötiedot)(implicit user: TorUser): List[KorkeakoulunOpiskeluoikeus] = {
-    cache(henkilö).filter(oo => user.hasReadAccess(oo.oppilaitos))
-  }
+  def findByHenkilö(henkilö: Henkilö with Henkilötiedot)(implicit user: TorUser): List[KorkeakoulunOpiskeluoikeus] = cache(henkilö).filter(oo => user.hasReadAccess(oo.oppilaitos))
 
   private def getHetu(oid: String): Option[TaydellisetHenkilötiedot] = oppijaRepository.findByOid(oid)
 

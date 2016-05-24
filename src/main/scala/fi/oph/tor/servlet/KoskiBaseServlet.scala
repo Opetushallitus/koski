@@ -3,13 +3,16 @@ package fi.oph.tor.servlet
 import fi.oph.tor.http.{HttpStatus, TorErrorCategory}
 import fi.oph.tor.json.Json
 import fi.oph.tor.json.Json._
-import fi.oph.tor.log.Logging
+import fi.oph.tor.log.{LoggerWithContext, Logging}
+import fi.oph.tor.toruser.TorUser
 import org.json4s._
 import org.scalatra._
 
 import scala.xml.Elem
 
 trait KoskiBaseServlet extends ScalatraServlet with Logging {
+  override protected def logger: LoggerWithContext = logger(torUserOption)
+
   def getIntegerParam(name: String) = {
     params.getAs[Int](name) match {
       case Some(id) if id > 0 => id
@@ -18,6 +21,8 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
         throw new InvalidRequestException(TorErrorCategory.badRequest.format.number, "Invalid " + name + " : " + params(name))
     }
   }
+
+  def torUserOption: Option[TorUser] = None
 
   error {
     case InvalidRequestException(detail) =>
