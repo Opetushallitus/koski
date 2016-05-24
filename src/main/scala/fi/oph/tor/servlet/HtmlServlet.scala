@@ -18,7 +18,8 @@ trait HtmlServlet extends ScalatraServlet with StaticFileServlet {
                                        |  window.koskiError = { httpStatus: ${status.statusCode}, text: "${status.errors(0).message.toString}", topLevel: true }
                                        |</script>""".stripMargin
 
-        halt(status = status.statusCode, body = serveContent(indexHtml.copy(text = indexHtml.text.replace("""<script id="pre-bundle"></script>""", errorInjectionScript))))
+        val bundleScriptTag: String = """<script id="bundle"""
+        halt(status = status.statusCode, body = serveContent(indexHtml.copy(text = indexHtml.text.replace(bundleScriptTag, errorInjectionScript + bundleScriptTag))))
     }
   }
 }
