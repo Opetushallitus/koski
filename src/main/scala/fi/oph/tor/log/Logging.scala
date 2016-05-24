@@ -12,11 +12,12 @@ trait Logging {
 }
 
 case class LoggerWithContext(logger: Logger, user: Option[TorUser]) {
+  def debug(msg: => String) = logger.debug(fmt(msg))
   def info(msg: => String) = logger.info(fmt(msg))
   def warn(msg: => String) = logger.warn(fmt(msg))
+  def warn(e: Throwable)(msg: => String) = logger.warn(e)(fmt(msg))
   def error(msg: => String) = logger.error(fmt(msg))
   def error(e: Throwable)(msg: => String) = logger.error(e)(fmt(msg))
-  def warn(e: Throwable)(msg: => String) = logger.warn(e)(fmt(msg))
 
   private def fmt(msg: => String) = user match {
     case Some(user) => s"${user.oid}@${user.clientIp} " + msg
