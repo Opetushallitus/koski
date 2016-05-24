@@ -17,3 +17,12 @@ h2.oppilaitos {
     display: inline-block;
     width: 155px;
 }
+
+.arvosanat th {
+    vertical-align: bottom;
+}
+
+.arvosana-korotus {
+    text-align: center;
+    width: 60px;
+}

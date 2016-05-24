@@ -14,7 +14,7 @@ trait TodistusHtml extends LocalizedHtml {
     {
     vahvistus.myöntäjäHenkilöt.map { myöntäjäHenkilö =>
       <span class="allekirjoitus">
-        <div class="viiva">&nbsp;</div>
+        <div class="viiva">&#160;</div>
         <div class="nimenselvennys">{myöntäjäHenkilö.nimi}</div>
         <div class="titteli">{i(myöntäjäHenkilö.titteli)}</div>
       </span>

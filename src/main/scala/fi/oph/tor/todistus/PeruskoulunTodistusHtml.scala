@@ -6,8 +6,8 @@ import fi.oph.tor.schema._
 
 import scala.xml.Elem
 
-trait PeruskoulunTodistusHtml extends TodistusHtml {
-  def renderTodistus(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: Suoritus, oppiaineet: List[OppiaineenSuoritus], title: String): Elem = {
+trait PeruskoulunTodistusHtml[T <: OppiaineenSuoritus] extends TodistusHtml {
+  def renderTodistus(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: Suoritus, oppiaineet: List[T], title: String): Elem = {
     val pakolliset = oppiaineet.filter(_.koulutusmoduuli.pakollinen)
     val pakollisetJaNiihinLiittyvätValinnaiset: List[Aine] = pakolliset.flatMap { case pakollinen =>
       val liittyvätValinnaiset: List[LiittyväValinnainen] = oppiaineet
@@ -18,7 +18,7 @@ trait PeruskoulunTodistusHtml extends TodistusHtml {
     val muutValinnaiset = oppiaineet.filter(!pakollisetJaNiihinLiittyvätValinnaiset.map(_.suoritus).contains(_))
       .map(Valinnainen)
 
-    def arvosanaLista(oppiaineet: List[Aine]) = oppiaineet.map { oppiaine =>
+    def arvosanaLista(oppiaineet: List[Aine]) = renderHeader :: oppiaineet.map { oppiaine =>
       val nimiTeksti = i(oppiaine.suoritus.koulutusmoduuli)
       val nimi = oppiaine match {
         case LiittyväValinnainen(suoritus) => "Valinnainen " + decapitalize(nimiTeksti)
@@ -29,20 +29,7 @@ trait PeruskoulunTodistusHtml extends TodistusHtml {
       } else {
         " valinnainen"
       })
-      <tr class={rowClass}>
-        <td class="oppiaine">
-          {nimi}
-        </td>
-        <td class="laajuus">
-          {oppiaine.suoritus.koulutusmoduuli.laajuus.map(_.arvo).getOrElse("")}
-        </td>
-        <td class="arvosana-kirjaimin">
-          {i(oppiaine.suoritus.arvosanaKirjaimin).capitalize}
-        </td>
-        <td class="arvosana-numeroin">
-          {oppiaine.suoritus.arvosanaNumeroin}
-        </td>
-      </tr>
+      renderRows(oppiaine, nimi, rowClass)
     }
 
     def muutOpinnot(valinnaiset: List[Valinnainen]) =
@@ -68,21 +55,10 @@ trait PeruskoulunTodistusHtml extends TodistusHtml {
             {i(oppilaitos.nimi)}
           </h2>
           <h3 class="oppija">
-            <span class="nimi">
-              {oppijaHenkilö.sukunimi}
-              ,
-              {oppijaHenkilö.etunimet}
-            </span>
-            <span class="hetu">
-              {oppijaHenkilö.hetu}
-            </span>
+            <span class="nimi">{oppijaHenkilö.sukunimi}, {oppijaHenkilö.etunimet}</span>
+            <span class="hetu">{oppijaHenkilö.hetu}</span>
           </h3>
           <table class="arvosanat">
-            <tr>
-              <th class="oppiaine">Yhteiset ja niihin liittyvät valinnaiset oppiaineet</th>
-              <th class="laajuus">Vuosiviikko- tuntimäärä</th>
-              <th class="arvosana">Arvosana</th>
-            </tr>
             {arvosanaLista(pakollisetJaNiihinLiittyvätValinnaiset)}
             {muutOpinnot(muutValinnaiset)}
           </table>
@@ -92,8 +68,32 @@ trait PeruskoulunTodistusHtml extends TodistusHtml {
     </html>
   }
 
-  sealed trait Aine { def suoritus: OppiaineenSuoritus }
-  case class Pakollinen(suoritus: OppiaineenSuoritus) extends Aine
-  case class Valinnainen(suoritus: OppiaineenSuoritus) extends Aine
-  case class LiittyväValinnainen(suoritus: OppiaineenSuoritus) extends Aine
+  def renderHeader: Elem =
+    <tr>
+      <th class="oppiaine">Yhteiset ja niihin liittyvät valinnaiset oppiaineet</th>
+      <th class="laajuus">Vuosiviikko- tuntimäärä</th>
+      <th class="arvosana">Arvosana</th>
+    </tr>
+
+  def renderRows(oppiaine: Aine, nimi: String, rowClass: String): Elem = {
+    <tr class={rowClass}>
+      <td class="oppiaine">
+        {nimi}
+      </td>
+      <td class="laajuus">
+        {oppiaine.suoritus.koulutusmoduuli.laajuus.map(_.arvo).getOrElse("")}
+      </td>
+      <td class="arvosana-kirjaimin">
+        {i(oppiaine.suoritus.arvosanaKirjaimin).capitalize}
+      </td>
+      <td class="arvosana-numeroin">
+        {oppiaine.suoritus.arvosanaNumeroin}
+      </td>
+    </tr>
+  }
+
+  sealed trait Aine { def suoritus: T }
+  case class Pakollinen(suoritus: T) extends Aine
+  case class Valinnainen(suoritus: T) extends Aine
+  case class LiittyväValinnainen(suoritus: T) extends Aine
 }
