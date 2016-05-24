@@ -166,6 +166,17 @@
       }
     ],
     "versio": 1
+  },
+  {
+    "koodiUri": "suorituksentyyppi_perusopetuksenlisaopetuksenoppiaine",
+    "koodiArvo": "perusopetuksenlisaopetuksenoppiaine",
+    "metadata": [
+      {
+        "nimi": "Perusopetuksen lisäopetuksen oppiaineen suoritus",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
   }
-
 ]

@@ -6,7 +6,7 @@ import fi.oph.tor.schema.{Koodistokoodiviite, Oppija}
 case class Example(name: String, description: String, data: Oppija, statusCode: Int = 200)
 
 object Examples {
-  val examples = ExamplesAmmatillinen.examples ++ ExamplesPerusopetus.examples ++ ExamplesLukio.examples ++ ExamplesKorkeakoulu.examples
+  val examples = ExamplesAmmatillinen.examples ++ ExamplesPerusopetus.examples ++ ExamplesPerusopetuksenLisaopetus.examples ++ ExamplesLukio.examples ++ ExamplesKorkeakoulu.examples
 }
 
 object ExampleData {

@@ -8,7 +8,7 @@ object YleissivistavakoulutusExampleData {
   implicit def int2String(int: Int) = int.toString
 
   def arviointi(arvosana: String): Some[List[YleissivistävänkoulutuksenArviointi]] = {
-    Some(List(YleissivistävänkoulutuksenArviointi(arvosana.toString)))
+    Some(List(YleissivistävänkoulutuksenArviointi(arvosana)))
   }
 
   val hyväksytty = Some(List(YleissivistävänkoulutuksenArviointi("S")))

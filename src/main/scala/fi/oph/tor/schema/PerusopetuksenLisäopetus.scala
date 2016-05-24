@@ -35,11 +35,31 @@ case class PerusopetuksenLisäopetuksenSuoritus(
   vahvistus: Option[Vahvistus] = None,
   @KoodistoKoodiarvo("perusopetuksenlisaopetus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenlisaopetus", koodistoUri = "suorituksentyyppi"),
-  override val osasuoritukset: Option[List[PerusopetuksenOppiaineenSuoritus]],
+  override val osasuoritukset: Option[List[PerusopetuksenLisäopetuksenOppiaineenSuoritus]],
   koulutusmoduuli: PerusopetuksenLisäopetus
 ) extends Suoritus {
   def arviointi: Option[List[KoodistostaLöytyväArviointi]] = None
 }
+
+@Description("Perusopetuksen oppiaineen suoritus osana perusopetuksen lisäopetusta")
+case class PerusopetuksenLisäopetuksenOppiaineenSuoritus(
+  koulutusmoduuli: PerusopetuksenOppiaine,
+  paikallinenId: Option[String],
+  suorituskieli: Option[Koodistokoodiviite],
+  tila: Koodistokoodiviite,
+  @KoodistoKoodiarvo("perusopetuksenlisaopetuksenoppiaine")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenlisaopetuksenoppiaine", koodistoUri = "suorituksentyyppi"),
+  arviointi: Option[List[PerusopetuksenLisäopetuksenOppiaineenArviointi]] = None
+) extends OppiaineenSuoritus
+
+case class PerusopetuksenLisäopetuksenOppiaineenArviointi(
+  @KoodistoUri("arviointiasteikkoyleissivistava")
+  arvosana: Koodistokoodiviite,
+  päivä: Option[LocalDate] = None,
+  arvioitsijat: Option[List[Arvioitsija]] = None,
+  @Description("Onko kyseessä perusopetuksen oppiaineen arvosanan korotus")
+  korotus: Boolean
+) extends KoodistostaLöytyväArviointi
 
 case class PerusopetuksenLisäopetus(
   @KoodistoUri("koulutus")
