@@ -114,76 +114,15 @@
           "koodistoUri" : "suorituksentila"
         },
         "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "9",
+            "koodiarvo" : "7",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
-        } ]
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "B1",
-            "koodistoUri" : "koskioppiaineetyleissivistava"
           },
-          "kieli" : {
-            "koodiarvo" : "SV",
-            "koodistoUri" : "kielivalikoima"
-          },
-          "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "8",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
-        } ]
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "B1",
-            "koodistoUri" : "koskioppiaineetyleissivistava"
-          },
-          "kieli" : {
-            "koodiarvo" : "SV",
-            "koodistoUri" : "kielivalikoima"
-          },
-          "pakollinen" : false,
-          "laajuus" : {
-            "arvo" : 1.0,
-            "yksikkö" : {
-              "koodiarvo" : "3",
-              "nimi" : {
-                "fi" : "Vuosiviikkotuntia"
-              },
-              "koodistoUri" : "opintojenlaajuusyksikko"
-            }
-          }
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "S",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          "korotus" : true
         } ]
       }, {
         "koulutusmoduuli" : {
@@ -202,46 +141,25 @@
           "koodistoUri" : "suorituksentila"
         },
         "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "8",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
-        } ]
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "KT",
-            "koodistoUri" : "koskioppiaineetyleissivistava"
-          },
-          "uskonto" : {
-            "koodiarvo" : "KT1",
-            "koodistoUri" : "oppiaineuskonto"
-          },
-          "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "10",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "korotus" : true
         } ]
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "HI",
+            "koodiarvo" : "B1",
             "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "kieli" : {
+            "koodiarvo" : "SV",
+            "koodistoUri" : "kielivalikoima"
           },
           "pakollinen" : true
         },
@@ -250,36 +168,15 @@
           "koodistoUri" : "suorituksentila"
         },
         "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "8",
+            "koodiarvo" : "6",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
-        } ]
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "YH",
-            "koodistoUri" : "koskioppiaineetyleissivistava"
           },
-          "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "10",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          "korotus" : true
         } ]
       }, {
         "koulutusmoduuli" : {
@@ -294,58 +191,15 @@
           "koodistoUri" : "suorituksentila"
         },
         "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "9",
+            "koodiarvo" : "6",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
-        } ]
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "KE",
-            "koodistoUri" : "koskioppiaineetyleissivistava"
           },
-          "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "7",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
-        } ]
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "FY",
-            "koodistoUri" : "koskioppiaineetyleissivistava"
-          },
-          "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "9",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          "korotus" : true
         } ]
       }, {
         "koulutusmoduuli" : {
@@ -360,14 +214,15 @@
           "koodistoUri" : "suorituksentila"
         },
         "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "9",
+            "koodiarvo" : "10",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "korotus" : true
         } ]
       }, {
         "koulutusmoduuli" : {
@@ -382,19 +237,20 @@
           "koodistoUri" : "suorituksentila"
         },
         "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "9",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "korotus" : true
         } ]
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "MU",
+            "koodiarvo" : "FY",
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
@@ -404,41 +260,20 @@
           "koodistoUri" : "suorituksentila"
         },
         "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "7",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
-        } ]
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "KU",
-            "koodistoUri" : "koskioppiaineetyleissivistava"
-          },
-          "pakollinen" : true
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "8",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "korotus" : true
         } ]
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "KO",
+            "koodiarvo" : "KE",
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
@@ -448,46 +283,15 @@
           "koodistoUri" : "suorituksentila"
         },
         "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "8",
+            "koodiarvo" : "9",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
-        } ]
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "KO",
-            "koodistoUri" : "koskioppiaineetyleissivistava"
           },
-          "pakollinen" : false,
-          "laajuus" : {
-            "arvo" : 1.0,
-            "yksikkö" : {
-              "koodiarvo" : "3",
-              "nimi" : {
-                "fi" : "Vuosiviikkotuntia"
-              },
-              "koodistoUri" : "opintojenlaajuusyksikko"
-            }
-          }
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "S",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          "korotus" : true
         } ]
       }, {
         "koulutusmoduuli" : {
@@ -502,19 +306,20 @@
           "koodistoUri" : "suorituksentila"
         },
         "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "8",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "korotus" : true
         } ]
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "KS",
+            "koodiarvo" : "HI",
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
           "pakollinen" : true
@@ -524,14 +329,61 @@
           "koodistoUri" : "suorituksentila"
         },
         "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "9",
+            "koodiarvo" : "7",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "korotus" : false
+        } ]
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "YH",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "korotus" : true
+        } ]
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "KU",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "8",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "korotus" : false
         } ]
       }, {
         "koulutusmoduuli" : {
@@ -546,82 +398,15 @@
           "koodistoUri" : "suorituksentila"
         },
         "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "9",
+            "koodiarvo" : "7",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
-        } ]
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "LI",
-            "koodistoUri" : "koskioppiaineetyleissivistava"
           },
-          "pakollinen" : false,
-          "laajuus" : {
-            "arvo" : 0.5,
-            "yksikkö" : {
-              "koodiarvo" : "3",
-              "nimi" : {
-                "fi" : "Vuosiviikkotuntia"
-              },
-              "koodistoUri" : "opintojenlaajuusyksikko"
-            }
-          }
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "S",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
-        } ]
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "B2",
-            "koodistoUri" : "koskioppiaineetyleissivistava"
-          },
-          "kieli" : {
-            "koodiarvo" : "DE",
-            "koodistoUri" : "kielivalikoima"
-          },
-          "pakollinen" : false,
-          "laajuus" : {
-            "arvo" : 4.0,
-            "yksikkö" : {
-              "koodiarvo" : "3",
-              "nimi" : {
-                "fi" : "Vuosiviikkotuntia"
-              },
-              "koodistoUri" : "opintojenlaajuusyksikko"
-            }
-          }
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "9",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          "korotus" : true
         } ]
       } ],
       "koulutusmoduuli" : {
