@@ -8,7 +8,7 @@ import * as L from 'partial.lenses'
 import R from 'ramda'
 
 export const selectOppijaE = routeP.map('.oppijaId').flatMap(oppijaId => {
-  return oppijaId ? Bacon.once({loading: true}).concat(Http.get(`/tor/api/oppija/${oppijaId}`)) : Bacon.once({ empty: true})
+  return oppijaId ? Bacon.once({loading: true}).concat(Http.get(`/koski/api/oppija/${oppijaId}`)) : Bacon.once({ empty: true})
 })
 
 export const updateResultE = Bacon.Bus()
@@ -25,7 +25,7 @@ export const oppijaP = Bacon.update({ loading: true },
   opiskeluOikeusChange, (currentOppija, [lens, change]) => applyChange(lens, change, currentOppija)
 )
 
-updateResultE.plug(oppijaP.sampledBy(opiskeluOikeusChange).flatMapLatest(oppijaUpdate => Http.put('/tor/api/oppija', oppijaUpdate)))
+updateResultE.plug(oppijaP.sampledBy(opiskeluOikeusChange).flatMapLatest(oppijaUpdate => Http.put('/koski/api/oppija', oppijaUpdate)))
 
 export const uusiOppijaP = routeP.map(route => { return !!route.uusiOppija })
 
@@ -72,7 +72,7 @@ const Opintosuoritusote = React.createClass({
   render() {
     let {oppilaitos, oppija, tyyppi} = this.props
     if (tyyppi == 'korkeakoulutus') {
-      let href = '/tor/opintosuoritusote/' + oppija.oid + '/' + oppilaitos.oid
+      let href = '/koski/opintosuoritusote/' + oppija.oid + '/' + oppilaitos.oid
       return <a className="opintosuoritusote" href={href}>näytä opintosuoritusote</a>
     } else {
       return null

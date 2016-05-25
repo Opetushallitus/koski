@@ -22,17 +22,17 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) {
   server.addConnector(connector)
 
   val context = new WebAppContext()
-  context.setContextPath("/tor")
+  context.setContextPath("/koski")
   context.setResourceBase("src/main/webapp")
   context.setDescriptor("src/main/webapp/WEB-INF/web.xml")
   context.setAttribute("tor.overrides", overrides)
 
   val all = new HandlerList
   all.setHandlers(List(
-    staticResources("./web/static", "/tor"),
-    staticResources("./web/dist", "/tor"),
-    staticResources("./web/test", "/tor/test"),
-    staticResources("./web/node_modules/codemirror", "/tor/codemirror"),
+    staticResources("./web/static", "/koski"),
+    staticResources("./web/dist", "/koski"),
+    staticResources("./web/test", "/koski/test"),
+    staticResources("./web/node_modules/codemirror", "/koski/codemirror"),
     context).toArray)
 
   server.setHandler(all)
@@ -59,7 +59,7 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) {
     }
   }
 
-  def baseUrl = "http://localhost:" + port + "/tor"
+  def baseUrl = "http://localhost:" + port + "/koski"
 }
 
 object SharedJetty extends JettyLauncher(PortChecker.findFreeLocalPort, Map("db.name" -> "tortest", "fixtures.use" -> "true"))

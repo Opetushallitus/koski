@@ -108,7 +108,7 @@ class KoskiFacade(oppijaRepository: OppijaRepository,
     }
   }
 
-  def findTorOppija(oid: String)(implicit user: KoskiUser): Either[HttpStatus, Oppija] = {
+  def findOppija(oid: String)(implicit user: KoskiUser): Either[HttpStatus, Oppija] = {
     def notFound = Left(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa " + oid + " ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
 
     val result = oppijaRepository.findByOid(oid) match {
@@ -146,7 +146,7 @@ class KoskiFacade(oppijaRepository: OppijaRepository,
 
         val henkilöt: Map[String, TaydellisetHenkilötiedot] = oppijaRepository.findByOids(oids).map(henkilö => (henkilö.oid, henkilö)).toMap
 
-        val torOppijat: Iterable[Oppija] = oppijatJaOidit.flatMap { case (oid, opiskeluOikeudet) =>
+        val oppijat: Iterable[Oppija] = oppijatJaOidit.flatMap { case (oid, opiskeluOikeudet) =>
           henkilöt.get(oid) match {
             case Some(henkilö) =>
               Some(Oppija(henkilö, opiskeluOikeudet))
@@ -155,7 +155,7 @@ class KoskiFacade(oppijaRepository: OppijaRepository,
               None
           }
         }
-        Observable.from(torOppijat)
+        Observable.from(oppijat)
     }
   }
 }

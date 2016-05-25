@@ -20,7 +20,7 @@ const Oppilaitos = React.createClass({
   },
 
   getInitialState() {
-    return { oppilaitokset: Http.get('/tor/api/oppilaitos').toProperty()}
+    return { oppilaitokset: Http.get('/koski/api/oppilaitos').toProperty()}
   },
 
   componentDidMount() {
@@ -35,7 +35,7 @@ const Tutkinto = React.createClass({
           <Autocomplete
               resultBus={this.props.tutkintoBus}
               fetchItems={(value) => (value.length >= 3)
-                ? Http.get('/tor/api/tutkinto/oppilaitos/' + this.state.oppilaitos.oid + '?query=' + value)
+                ? Http.get('/koski/api/tutkinto/oppilaitos/' + this.state.oppilaitos.oid + '?query=' + value)
                 : Bacon.once([])}
               disabled={!this.state.oppilaitos}
               selected={this.state.selected}

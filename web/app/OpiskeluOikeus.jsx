@@ -46,7 +46,7 @@ export const OpiskeluOikeus = React.createClass({
 const Todistus = React.createClass({
   render() {
     let {suoritus, opiskeluOikeus} = this.props
-    let href = '/tor/todistus/opiskeluoikeus/' + opiskeluOikeus.id
+    let href = '/koski/todistus/opiskeluoikeus/' + opiskeluOikeus.id
     return suoritus.tila.koodiarvo == 'VALMIS' && suoritus.tyyppi.koodiarvo != 'korkeakoulututkinto'
       ? <a className="todistus" href={href}>näytä todistus</a>
       : null
@@ -110,7 +110,7 @@ const TutkinnonRakenne = React.createClass({
     let {suoritus} = this.props
     let diaarinumero = suoritus.koulutusmoduuli.perusteenDiaarinumero
     if (diaarinumero) {
-      Http.get('/tor/api/tutkinto/rakenne/' + encodeURIComponent(diaarinumero)).onValue(rakenne => {
+      Http.get('/koski/api/tutkinto/rakenne/' + encodeURIComponent(diaarinumero)).onValue(rakenne => {
           if (this.isMounted()) {
             this.setState({rakenne: rakenne})
           }

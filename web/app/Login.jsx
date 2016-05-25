@@ -5,14 +5,14 @@ import Http from './http'
 const loginE = new Bacon.Bus()
 
 const loginResultE = loginE
-    .flatMap((credentials) => Http.post('/tor/user/login', credentials))
+    .flatMap((credentials) => Http.post('/koski/user/login', credentials))
 
-export const userP = Http.get('/tor/user').mapError()
+export const userP = Http.get('/koski/user').mapError()
     .merge(loginResultE.skipErrors())
     .toProperty()
 
 export const logout = () => {
-  document.location = '/tor/user/logout'
+  document.location = '/koski/user/logout'
 }
 
 export const Login = React.createClass({

@@ -123,7 +123,7 @@ class OppijaServlet(rekisteri: KoskiFacade, val userRepository: UserOrganisation
 
   private def findByOid(oid: String, user: KoskiUser): Either[HttpStatus, Oppija] = {
     HenkiloOid.validateHenkilöOid(oid).right.flatMap { oid =>
-      rekisteri.findTorOppija(oid)(user)
+      rekisteri.findOppija(oid)(user)
     }
   }
 }

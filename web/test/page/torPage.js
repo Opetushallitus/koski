@@ -43,7 +43,7 @@ function TorPage() {
 
   var api = {
     openPage: function() {
-      return openPage('/tor/', api.isVisible)()
+      return openPage('/koski/', api.isVisible)()
     },
     isVisible: function() {
       return isElementVisible(S('#content .oppija-haku'))

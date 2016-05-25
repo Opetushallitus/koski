@@ -5,7 +5,7 @@ function LoginPage() {
   var api = {
     openPage: function() {
       return Authentication().logout().then(function() {
-          return openPage('/tor/', api.isVisible)()
+          return openPage('/koski/', api.isVisible)()
         }
       )
     },

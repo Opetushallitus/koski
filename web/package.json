@@ -5,7 +5,7 @@
   "license": "EUPL-1.1",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Opetushallitus/tor.git"
+    "url": "https://github.com/Opetushallitus/koski.git"
   },
   "dependencies": {
     "react": "~15.0.0",
@@ -40,6 +40,6 @@
     "lint": "failOnWarning=true webpack --bail",
     "postinstall": "webpack -p",
     "watch": "webpack -d --progress --colors --watch",
-    "test": "mocha-phantomjs http://localhost:7021/tor/test/runner.html"
+    "test": "mocha-phantomjs http://localhost:7021/koski/test/runner.html"
   }
 }

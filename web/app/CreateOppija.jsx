@@ -74,7 +74,7 @@ export const CreateOppija = React.createClass({
   submit(e) {
     e.preventDefault()
     this.setState({inProgress: true})
-    const createOppijaS = Http.put('/tor/api/oppija',  this.toCreateOppija()).map(oppija => ({oid: oppija.henkilö.oid}))
+    const createOppijaS = Http.put('/koski/api/oppija',  this.toCreateOppija()).map(oppija => ({oid: oppija.henkilö.oid}))
     createOppijaS.onValue(navigateToOppija)
     createOppijaS.onError((error) => {
       this.setState({inProgress: false})

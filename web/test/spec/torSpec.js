@@ -199,7 +199,7 @@ describe('TOR', function() {
       })
 
       describe('Kun sessio on vanhentunut', function() {
-        before( openPage('/tor/uusioppija', function() {return addOppija.isVisible()}),
+        before( openPage('/koski/uusioppija', function() {return addOppija.isVisible()}),
           addOppija.enterValidData(),
           authentication.logout,
           addOppija.submit)
@@ -210,7 +210,7 @@ describe('TOR', function() {
       describe('Kun hetu on virheellinen', function() {
         before(
           authentication.login(),
-          openPage('/tor/uusioppija'),
+          openPage('/koski/uusioppija'),
           wait.until(function() {return addOppija.isVisible()}),
           addOppija.enterValidData({hetu: '123456-1234'})
         )
@@ -313,7 +313,7 @@ describe('TOR', function() {
       describe('Kun tallennus epäonnistuu', function() {
         before(
           authentication.login(),
-          openPage('/tor/uusioppija', function() {return addOppija.isVisible()}),
+          openPage('/koski/uusioppija', function() {return addOppija.isVisible()}),
           addOppija.enterValidData({sukunimi: "error"}),
           addOppija.submit)
 
@@ -426,7 +426,7 @@ describe('TOR', function() {
       function verifyErrorMessage(desc, statusCode, message) {
         describe(desc, function() {
           before(
-            mockHttp("/tor/api/oppija", { status: statusCode }),
+            mockHttp("/koski/api/oppija", { status: statusCode }),
             opinnot.selectOsaamisala("1622"),
             wait.until(page.isErrorShown)
           )
@@ -549,7 +549,7 @@ describe('TOR', function() {
         })
 
         describe('Todistuksen avaaminen, kun todistusta ei löydy', function() {
-          before(authentication.login(), page.openPage, openPage('/tor/todistus/opiskeluoikeus/1010101010', page.is404))
+          before(authentication.login(), page.openPage, openPage('/koski/todistus/opiskeluoikeus/1010101010', page.is404))
           it('Näytetään 404-sivu', function() {
 
           })
@@ -617,7 +617,7 @@ describe('TOR', function() {
     before(
       resetFixtures,
       authentication.login(),
-      openPage('/tor/oppija/1.2.246.562.24.00000000001', page.isOppijaSelected('Eero')),
+      openPage('/koski/oppija/1.2.246.562.24.00000000001', page.isOppijaSelected('Eero')),
       opinnot.waitUntilRakenneVisible()
     )
 
@@ -652,7 +652,7 @@ describe('TOR', function() {
     describe('Kun palvelimeen ei saada yhteyttä', function() {
       before(
         page.openPage,
-        mockHttp('/tor/api/oppija/search?query=blah', {}),
+        mockHttp('/koski/api/oppija/search?query=blah', {}),
         page.oppijaHaku.search('blah', page.isErrorShown))
 
       it('näytetään virheilmoitus', function() {})
@@ -660,7 +660,7 @@ describe('TOR', function() {
 
 
     describe('Kun sivua ei löydy', function() {
-      before(authentication.login(), openPage('/tor/asdf', page.is404))
+      before(authentication.login(), openPage('/koski/asdf', page.is404))
 
       it('näytetään 404-sivu', function() {})
     })
@@ -676,7 +676,7 @@ describe('TOR', function() {
     })
 
     describe('Navigointi oppijan sivulle', function() {
-      before(authentication.login('hiiri'), openPage('/tor/oppija/1.2.246.562.24.00000000002', page.is404))
+      before(authentication.login('hiiri'), openPage('/koski/oppija/1.2.246.562.24.00000000002', page.is404))
 
       it('Estetään jos oppijalla ei opinto-oikeutta, joihin käyttäjällä on katseluoikeudet', function() {
 
@@ -695,7 +695,7 @@ describe('TOR', function() {
       })
 
       describe('Kun ladataan sivu uudelleen', function() {
-        before(openPage('/tor', login.isVisible))
+        before(openPage('/koski', login.isVisible))
 
         it('Sessio on päättynyt ja login-sivu näytetään', function() {
           expect(login.isVisible()).to.equal(true)
@@ -721,7 +721,7 @@ describe('TOR', function() {
   })
 
   function resetFixtures() {
-    return Q($.ajax({ url: '/tor/fixtures/reset', method: 'post'}))
+    return Q($.ajax({ url: '/koski/fixtures/reset', method: 'post'}))
   }
 
   function mockHttp(url, result) {

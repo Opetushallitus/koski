@@ -20,8 +20,8 @@ class AmmatillisenPerustutkinnonPaattotodistusHtml(implicit val user: KoskiUser)
 
     <html>
       <head>
-        <link rel="stylesheet" type="text/css" href="/tor/css/todistus-common.css"></link>
-        <link rel="stylesheet" type="text/css" href="/tor/css/todistus-ammatillinen-perustutkinto.css"></link>
+        <link rel="stylesheet" type="text/css" href="/koski/css/todistus-common.css"></link>
+        <link rel="stylesheet" type="text/css" href="/koski/css/todistus-ammatillinen-perustutkinto.css"></link>
       </head>
       <body>
         <div class="todistus ammatillinenperustutkinto">

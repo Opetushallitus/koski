@@ -19,8 +19,8 @@ class LukionPaattotodistusHtml(implicit val user: KoskiUser) extends TodistusHtm
 
     <html>
       <head>
-        <link rel="stylesheet" type="text/css" href="/tor/css/todistus-common.css"></link>
-        <link rel="stylesheet" type="text/css" href="/tor/css/todistus-lukio.css"></link>
+        <link rel="stylesheet" type="text/css" href="/koski/css/todistus-common.css"></link>
+        <link rel="stylesheet" type="text/css" href="/koski/css/todistus-lukio.css"></link>
       </head>
       <body>
         <div class="todistus lukio">

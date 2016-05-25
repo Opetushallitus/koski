@@ -21,7 +21,7 @@ class SuoritusServlet(
     val oppilaitosOid = params("oppilaitosOid")
     implicit val user = torUser
 
-    todennetunOsaamisenRekisteri.findTorOppija(oid) match {
+    todennetunOsaamisenRekisteri.findOppija(oid) match {
       case Right(Oppija(henkilö: TaydellisetHenkilötiedot, opiskeluoikeudet)) =>
         new OpintosuoritusoteHtml().render(henkilö, opiskeluoikeudet.filter(_.oppilaitos.oid == oppilaitosOid).toList)
       case _ => KoskiErrorCategory.notFound.oppijaaEiLöydy()

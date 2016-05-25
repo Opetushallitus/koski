@@ -6,7 +6,7 @@
     "nimi" : "opiskeluoikeudentila",
     "kuvaus" : "Opiskeluoikeuden tila"
   } ],
-  "codesGroupUri" : "http://tor",
+  "codesGroupUri" : "http://koski",
   "voimassaAlkuPvm" : "2015-11-01",
   "organisaatioOid" : "1.2.246.562.10.00000000001"
 }

@@ -6,7 +6,7 @@ import org.scalatra.test.HttpComponentsClient
 trait TestApp extends HttpComponentsClient {
   val username: String = System.getProperty("tor.username", "kalle")
   val password: String = System.getProperty("tor.password", "kalle")
-  override def baseUrl = System.getProperty("tor.url", "http://localhost:7021/tor")
+  override def baseUrl = System.getProperty("tor.url", "http://localhost:7021/koski")
 
 
   def authHeaders = {

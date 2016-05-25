@@ -85,11 +85,11 @@ Aja JettyLauncher-luokka IDEAsta/Eclipsestä, tai käynnistä Koski vaihtoehtois
 
 Avaa selaimessa
 
-    http://localhost:7021/tor
+    http://localhost:7021/koski
 
 Suoritus-testidatat näkyy
 
-    http://localhost:7021/tor/suoritus/
+    http://localhost:7021/koski/suoritus/
 
 ### Ajaminen paikallisesti käyttäen ulkoisia palveluja (esim henkilöpalvelu)
 
@@ -151,7 +151,7 @@ Buildaa ja aja kaikki testit
 
 Kun applikaatio pyörii paikallisesti (ks. ohjeet yllä), voi Mocha-testit ajaa selaimessa osoitteessa
 
-    http://localhost:7021/tor/test/runner.html
+    http://localhost:7021/koski/test/runner.html
 
 Mocha-testit voi ajaa myös nopeasti komentoriviltä
 
@@ -189,7 +189,7 @@ Koski-sovelluskoodissa audit-loggaus tehdään `AuditLog`-luokan kautta ja sovel
 
 Testiympäristön Koski löytyy täältä:
 
-    http://tordev.tor.oph.reaktor.fi/tor/
+    http://tordev.tor.oph.reaktor.fi/koski/
 
 Ympäristöön kuuluvat Opintopolku-palvelun osat täällä:
 
@@ -229,7 +229,7 @@ Lokien katsominen onnistuu komennolla:
 Serverille pääsee myös ssh:lla kätevästi:
 
     make ssh
-    less /home/git/logs/tor.log
+    less /home/git/logs/koski.log
 
 ## Toteutus ja integraatiot
 
@@ -253,12 +253,12 @@ esim. `-Dconfig.resource=tordev.conf`. Valmiita asetustiedostoja voi pyytää ke
 
 ### Henkilötiedot
 
-Koski ei tallenna henkilötietoja omaan kantaansa, vaan hakee/tallentaa ne Opintopolun [henkilöpalveluun](https://github.com/Opetushallitus/henkilo). [toteutus](src/main/scala/fi/oph/tor/oppija/OppijaRepository.scala)
+Koski ei tallenna henkilötietoja omaan kantaansa, vaan hakee/tallentaa ne Opintopolun [henkilöpalveluun](https://github.com/Opetushallitus/henkilo). [toteutus](src/main/scala/fi/oph/koski/oppija/OppijaRepository.scala)
 
-Kun TORissa haetaan henkilön tietoja esimerkiksi sukunimellä, haetaan lista mahdollisista henkilöistä ensin henkilöpalvelusta, jonka jälkeen se [suodatetaan](src/main/scala/fi/oph/tor/opiskeluoikeus/OpiskeluOikeusRepository.scala#L8)
+Kun TORissa haetaan henkilön tietoja esimerkiksi sukunimellä, haetaan lista mahdollisista henkilöistä ensin henkilöpalvelusta, jonka jälkeen se [suodatetaan](src/main/scala/fi/oph/koski/opiskeluoikeus/OpiskeluOikeusRepository.scala#L8)
 TORissa olevien opinto-oikeuksien perusteella.
 
-Käyttäjä voi nähdä vain ne opinto-oikeudet, jotka liittyvät oppilaitokseen, johon hänellä on käyttöoikeus. Henkilön organisaatioliitokset ja käyttöoikeudet haetaan [henkilöpalvelusta](https://github.com/Opetushallitus/henkilo) ja [organisaatiopalvelusta](https://github.com/Opetushallitus/organisaatio). [toteutus](src/main/scala/fi/oph/tor/user/RemoteUserRepository.scala)
+Käyttäjä voi nähdä vain ne opinto-oikeudet, jotka liittyvät oppilaitokseen, johon hänellä on käyttöoikeus. Henkilön organisaatioliitokset ja käyttöoikeudet haetaan [henkilöpalvelusta](https://github.com/Opetushallitus/henkilo) ja [organisaatiopalvelusta](https://github.com/Opetushallitus/organisaatio). [toteutus](src/main/scala/fi/oph/koski/user/RemoteUserRepository.scala)
 
 Esimerkkihaku: haetaan organisaatiopuurakenne.
 
@@ -271,9 +271,9 @@ Henkilöpalvelun swagger:
 ### ePerusteet
 
 Tällä hetkellä TORiin voi tallentaa vain [ePerusteista](https://eperusteet.opintopolku.fi/) löytyvien tutkintojen tietoja. Opinto-oikeutta lisättäessa lista mahdollisista tutkinnoista haetaan
-ePerusteista ja [Opinto-oikeuden](src/main/scala/fi/oph/tor/opiskeluoikeus/OpiskeluOikeus.scala) sisältämään [tutkinto](src/main/scala/fi/oph/tor/tutkinto/Tutkinto.scala)-osioon tallennetaan tieto ePerusteet-linkityksestä.
+ePerusteista ja [Opinto-oikeuden](src/main/scala/fi/oph/koski/opiskeluoikeus/OpiskeluOikeus.scala) sisältämään [tutkinto](src/main/scala/fi/oph/koski/tutkinto/Tutkinto.scala)-osioon tallennetaan tieto ePerusteet-linkityksestä.
 
-EPerusteista haetaan myös tutkinnon hierarkkinen [rakenne](src/main/scala/fi/oph/tor/tutkinto/TutkintoRakenne.scala), joka kuvaa, mistä tutkinnon osista tutkinto koostuu. [toteutus](https://github.com/Opetushallitus/koski/blob/master/src/main/scala/fi/oph/tor/eperusteet/RemoteEPerusteetRepository.scala)
+EPerusteista haetaan myös tutkinnon hierarkkinen [rakenne](src/main/scala/fi/oph/koski/tutkinto/TutkintoRakenne.scala), joka kuvaa, mistä tutkinnon osista tutkinto koostuu. [toteutus](https://github.com/Opetushallitus/koski/blob/master/src/main/scala/fi/oph/koski/eperusteet/RemoteEPerusteetRepository.scala)
 
 EPerusteiden Swagger-dokumentaatio:
 

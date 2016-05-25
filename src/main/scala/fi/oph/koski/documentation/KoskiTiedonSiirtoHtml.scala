@@ -39,16 +39,16 @@ jotta konkreettista dataformaattia voitaisiin suunnitella. Yksi formaatin suunni
 
 Käytettävä JSON-dataformaatti on kuvattu [JSON-schemalla](http://json-schema.org/), jota vasten siirretyt tiedot voidaan myös automaattisesti validoida.
 
-- Tarkastele schemaa  [visualisointityökalun](/tor/json-schema-viewer#tor-oppija-schema.json) avulla.
+- Tarkastele schemaa  [visualisointityökalun](/koski/json-schema-viewer#tor-oppija-schema.json) avulla.
   Tällä työkalulla voi myös validoida JSON-viestejä schemaa vasten. Klikkaamalla kenttiä saat näkyviin niiden tarkemmat kuvaukset.
-- Lataa schema tiedostona: [tor-oppija-schema.json](/tor/documentation/tor-oppija-schema.json).
+- Lataa schema tiedostona: [tor-oppija-schema.json](/koski/documentation/tor-oppija-schema.json).
 
 
 Tietokentät, joissa validit arvot on lueteltavissa, on kooditettu käyttäen hyväksi Opintopolku-järjestelmään kuuluvaa [Koodistopalvelua](https://github.com/Opetushallitus/koodisto).
-Esimerkki tällaisesta kentästä on tutkintoon johtavan koulutuksen [koulutuskoodi](/tor/documentation/koodisto/koulutus/latest).
+Esimerkki tällaisesta kentästä on tutkintoon johtavan koulutuksen [koulutuskoodi](/koski/documentation/koodisto/koulutus/latest).
 
-Scalaa osaaville ehkä nopein tapa tutkia tietomallia on kuitenkin sen lähdekoodi. Githubista löytyy sekä [scheman](https://github.com/Opetushallitus/tor/blob/master/src/main/scala/fi/oph/tor/schema/TorOppija.scala),
-että [esimerkkien](https://github.com/Opetushallitus/tor/blob/master/src/main/scala/fi/oph/tor/documentation/TorOppijaExamples.scala) lähdekoodit.
+Scalaa osaaville ehkä nopein tapa tutkia tietomallia on kuitenkin sen lähdekoodi. Githubista löytyy sekä [scheman](https://github.com/Opetushallitus/koski/blob/master/src/main/scala/fi/oph/koski/schema/Oppija.scala),
+että [esimerkkien](https://github.com/Opetushallitus/koski/blob/master/src/main/scala/fi/oph/koski/documentation/Examples.scala) lähdekoodit.
 
 """
 
@@ -58,7 +58,7 @@ että [esimerkkien](https://github.com/Opetushallitus/tor/blob/master/src/main/s
 
 Kaikki rajapinnat vaativat HTTP Basic Authentication -tunnistautumisen, eli käytännössä `Authorization`-headerin HTTP-pyyntöön.
 
-Rajapinnat on lueteltu ja kuvattu alla. Voit myös testata rajapintojen toimintaa tällä sivulla, kunhan käyt ensin [kirjautumassa sisään](/tor) järjestelmään.
+Rajapinnat on lueteltu ja kuvattu alla. Voit myös testata rajapintojen toimintaa tällä sivulla, kunhan käyt ensin [kirjautumassa sisään](/koski) järjestelmään.
 Saat tarvittavat tunnukset Koski-kehitystiimiltä pyydettäessä.
 
 Rajapintojen käyttämät virhekoodit on myös kuvattu alla. Virhetapauksissa rajapinnat käyttävät alla kuvattuja HTTP-statuskoodeja ja sisällyttävät tarkemmat virhekoodit ja selitteineen JSON-tyyppiseen paluuviestiin.
@@ -72,10 +72,10 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
         <meta charset="UTF-8"></meta>
         <link rel="stylesheet" type="text/css" href="css/documentation.css"></link>
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/default.min.css"/>
-        <link rel="stylesheet" type="text/css" href="/tor/codemirror/lib/codemirror.css"/>
+        <link rel="stylesheet" type="text/css" href="/koski/codemirror/lib/codemirror.css"/>
         <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
-        <script src="/tor/codemirror/lib/codemirror.js"></script>
-        <script src="/tor/codemirror/mode/javascript/javascript.js"></script>
+        <script src="/koski/codemirror/lib/codemirror.js"></script>
+        <script src="/koski/codemirror/mode/javascript/javascript.js"></script>
       </head>
       <body>
         <header><div class="logo"/></header>
@@ -116,7 +116,7 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
             <a class="example-link">
               {example.description}
             </a>
-            <a class="example-as-json" href={"/tor/documentation/examples/" + example.name + ".json"} target="_blank">lataa JSON</a>
+            <a class="example-as-json" href={"/koski/documentation/examples/" + example.name + ".json"} target="_blank">lataa JSON</a>
             <table class="json">
               {SchemaToJsonHtml.buildHtml(KoskiSchema.schema, example.data)}
             </table>

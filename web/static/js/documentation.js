@@ -113,7 +113,7 @@ forEach(document.querySelectorAll('.api-tester'), function(elem) {
       .then(function(response) {
         return response.text().then(function(text, err) {
           if (response.status == 401) {
-            showResponse(response.status + " " + response.statusText + ' <a href="/tor" target="_new">Login</a>')
+            showResponse(response.status + " " + response.statusText + ' <a href="/koski" target="_new">Login</a>')
           } else if (text) {
             showResponse(response.status + " " + response.statusText + "<pre><code>" + JSON.stringify(JSON.parse(text), null, 2) + "</code></pre>")
           } else {

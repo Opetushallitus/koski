@@ -14,7 +14,7 @@ class OpintosuoritusoteHtml(implicit val user: KoskiUser) extends LocalizedHtml 
   def render(ht: TaydellisetHenkilötiedot, opiskeluoikeudet: List[Opiskeluoikeus]) = {
     <html>
       <head>
-        <link rel="stylesheet" type="text/css" href="/tor/css/opintosuoritusote.css"></link>
+        <link rel="stylesheet" type="text/css" href="/koski/css/opintosuoritusote.css"></link>
         <style>{ indentCss }</style>
       </head>
       <body class="opintosuoritusote">

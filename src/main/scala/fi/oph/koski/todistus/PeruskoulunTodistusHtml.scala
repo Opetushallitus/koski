@@ -42,8 +42,8 @@ trait PeruskoulunTodistusHtml[T <: OppiaineenSuoritus] extends TodistusHtml {
 
     <html>
       <head>
-        <link rel="stylesheet" type="text/css" href="/tor/css/todistus-common.css"></link>
-        <link rel="stylesheet" type="text/css" href="/tor/css/todistus-perusopetus.css"></link>
+        <link rel="stylesheet" type="text/css" href="/koski/css/todistus-common.css"></link>
+        <link rel="stylesheet" type="text/css" href="/koski/css/todistus-perusopetus.css"></link>
       </head>
       <body>
         <div class="todistus perusopetus">

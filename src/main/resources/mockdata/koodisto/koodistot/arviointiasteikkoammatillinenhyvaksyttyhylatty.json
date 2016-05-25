@@ -14,7 +14,7 @@
     "nimi" : "Arviointiasteikko ammatillinen Hyväksytty/Hylätty",
     "kasite" : "arviointiasteikko"
   } ],
-  "codesGroupUri" : "http://tor",
+  "codesGroupUri" : "http://koski",
   "voimassaAlkuPvm" : "2015-10-05",
   "organisaatioOid" : "1.2.246.562.10.00000000001"
 }

@@ -16,7 +16,7 @@ node_modules
 bundle.js
 web/dist
 src/main/resources/*.conf
-src/test/scala/fi/oph/tor/ServiceTester.scala
+src/test/scala/fi/oph/koski/ServiceTester.scala
 src/test/resources/opiskeluoikeudet.txt
 /ignore
 PersonOids.scala
