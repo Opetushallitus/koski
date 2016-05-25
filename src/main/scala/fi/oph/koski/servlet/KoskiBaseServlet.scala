@@ -3,15 +3,21 @@ package fi.oph.koski.servlet
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
+import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.log.{LoggerWithContext, Logging}
-import fi.oph.koski.koskiuser.{KoskiUser, KoskiUser$}
 import org.json4s._
 import org.scalatra._
 
 import scala.xml.Elem
 
 trait KoskiBaseServlet extends ScalatraServlet with Logging {
-  override protected def logger: LoggerWithContext = logger(torUserOption)
+  override protected def logger: LoggerWithContext = {
+    try {
+      logger(torUserOption)
+    } catch {
+      case e: Throwable => super.logger
+    }
+  }
 
   def getIntegerParam(name: String) = {
     params.getAs[Int](name) match {
