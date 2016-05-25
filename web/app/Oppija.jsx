@@ -53,7 +53,7 @@ const ExistingOppija = React.createClass({
         <ul className="oppilaitokset">
         { R.toPairs(R.groupBy((opiskeluOikeus => opiskeluOikeus.oppilaitos.oid), opiskeluoikeudet)).map( ([, opiskeluOikeudet]) =>
           <li className="oppilaitos" key={opiskeluOikeudet[0].oppilaitos.oid}>
-            <span className="oppilaitos">{opiskeluOikeudet[0].oppilaitos.nimi.fi}</span><Opintosuoritusote oppija={henkilö} oppilaitos={opiskeluOikeudet[0].oppilaitos}/>
+            <span className="oppilaitos">{opiskeluOikeudet[0].oppilaitos.nimi.fi}</span><Opintosuoritusote oppija={henkilö} oppilaitos={opiskeluOikeudet[0].oppilaitos} tyyppi={opiskeluOikeudet[0].tyyppi.koodiarvo}/>
             {
               opiskeluOikeudet.map( opiskeluOikeus =>
                   <OpiskeluOikeus key={opiskeluOikeus.id} oppija={ henkilö } opiskeluOikeus={ opiskeluOikeus } lens= { opiskeluOikeusIdLens(opiskeluOikeus.id) } />
@@ -70,8 +70,8 @@ const ExistingOppija = React.createClass({
 
 const Opintosuoritusote = React.createClass({
   render() {
-    let {oppilaitos, oppija} = this.props
-    if (true) {
+    let {oppilaitos, oppija, tyyppi} = this.props
+    if (tyyppi == 'korkeakoulutus') {
       let href = '/tor/opintosuoritusote/' + oppija.oid + '/' + oppilaitos.oid
       return <a className="opintosuoritusote" href={href}>näytä opintosuoritusote</a>
     } else {
