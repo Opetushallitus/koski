@@ -9,13 +9,13 @@ Suorituskykytestit ajetaan automaattisesti CI-serverillä http://86.50.170.109:8
 ### Testien ajaminen omalta koneella
 
 
-    TOR_USER=<käyttäjä> TOR_PASS=<salasana> [TOR_BASE_URL=<tor_url>] mvn gatling:execute -Dgatling.simulationClass=<simulationClass>
+    KOSKI_USER=<käyttäjä> KOSKI_PASS=<salasana> [KOSKI_BASE_URL=<tor_url>] mvn gatling:execute -Dgatling.simulationClass=<simulationClass>
 
 <!-- br -->
 
-    TOR_USER        = Validi TOR-applikaation käyttäjätunnus
-    TOR_PASS        = Käyttäjän salasana
-    TOR_BASE_URL    = Testattavan TOR-applikaation osoite. Jos ei määritetty, niin oletuksena on http://tordev.tor.oph.reaktor.fi/koski
+    KOSKI_USER        = Validi KOSKI-applikaation käyttäjätunnus
+    KOSKI_PASS        = Käyttäjän salasana
+    KOSKI_BASE_URL    = Testattavan KOSKI-applikaation osoite. Jos ei määritetty, niin oletuksena on http://tordev.tor.oph.reaktor.fi/koski
     gatling.simulationClass = Ajettava simulaation (tor.OverloadSimulation | tor.NormalSimulation)
     
 
@@ -23,14 +23,14 @@ Esimerkiksi:
 
 Suorituskykytestin ajaminen testiympäristöä vasten normaalilla kuormalla
 
-    TOR_USER=<käyttäjä> TOR_PASS=<salasana> mvn gatling:execute -Dgatling.simulationClass=tor.NormalSimulation
+    KOSKI_USER=<käyttäjä> KOSKI_PASS=<salasana> mvn gatling:execute -Dgatling.simulationClass=tor.NormalSimulation
     
 Suorituskykytestin ajaminen testiympäristöä vasten ylikuormalla
 
-    TOR_USER=<käyttäjä> TOR_PASS=<salasana> mvn gatling:execute -Dgatling.simulationClass=tor.OverloadSimulation
+    KOSKI_USER=<käyttäjä> KOSKI_PASS=<salasana> mvn gatling:execute -Dgatling.simulationClass=tor.OverloadSimulation
     
 Suorituskykytestin ajaminen omaa lokaalia ympäristöä vasten normaalilla kuormalla
     
-    TOR_USER=<käyttäjä> TOR_PASS=<salasana> TOR_BASE_URL=http://localhost:7021/koski mvn gatling:execute -Dgatling.simulationClass=tor.NormalSimulation
+    KOSKI_USER=<käyttäjä> KOSKI_PASS=<salasana> KOSKI_BASE_URL=http://localhost:7021/koski mvn gatling:execute -Dgatling.simulationClass=tor.NormalSimulation
 
 Wed Jan 20 16:33:23 EET 2016

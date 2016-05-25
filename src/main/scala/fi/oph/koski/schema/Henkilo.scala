@@ -13,7 +13,7 @@ object Henkilö {
 @Description("Henkilötiedot. Syötettäessä vaaditaan joko `oid` tai kaikki muut kentät, jolloin järjestelmään voidaan tarvittaessa luoda uusi henkilö")
 sealed trait Henkilö
 
-@Description("Täydet henkilötiedot. Tietoja haettaessa TOR:sta saadaan aina täydet henkilötiedot.")
+@Description("Täydet henkilötiedot. Tietoja haettaessa Koskesta saadaan aina täydet henkilötiedot.")
 case class TaydellisetHenkilötiedot(
   @Description("Yksilöivä tunniste (oppijanumero) Opintopolku-palvelussa")
   @OksaUri("tmpOKSAID760", "oppijanumero")

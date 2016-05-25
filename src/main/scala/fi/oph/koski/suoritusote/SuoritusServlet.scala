@@ -14,14 +14,14 @@ class SuoritusServlet(
   val directoryClient: DirectoryClient,
   val rekisteri: KoskiFacade,
   val oppijaRepository: OppijaRepository,
-  val todennetunOsaamisenRekisteri: KoskiFacade) extends HtmlServlet with RequiresAuthentication {
+  val koski: KoskiFacade) extends HtmlServlet with RequiresAuthentication {
 
   get("/:oppijaOid/:oppilaitosOid") {
     val oid = params("oppijaOid")
     val oppilaitosOid = params("oppilaitosOid")
     implicit val user = torUser
 
-    todennetunOsaamisenRekisteri.findOppija(oid) match {
+    koski.findOppija(oid) match {
       case Right(Oppija(henkilö: TaydellisetHenkilötiedot, opiskeluoikeudet)) =>
         new OpintosuoritusoteHtml().render(henkilö, opiskeluoikeudet.filter(_.oppilaitos.oid == oppilaitosOid).toList)
       case _ => KoskiErrorCategory.notFound.oppijaaEiLöydy()

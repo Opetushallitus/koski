@@ -12,7 +12,7 @@ import org.scalatra.auth.{ScentryConfig, ScentrySupport}
 import org.scalatra.servlet.RichRequest
 
 trait AuthenticationSupport extends KoskiBaseServlet with ScentrySupport[AuthenticationUser] with BasicAuthSupport[AuthenticationUser] {
-  val realm = "Todennetun Osaamisen Rekisteri"
+  val realm = "Koski"
 
   def directoryClient: DirectoryClient
   def userRepository: UserOrganisationsRepository

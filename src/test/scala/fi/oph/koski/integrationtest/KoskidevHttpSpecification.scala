@@ -7,8 +7,8 @@ trait KoskidevHttpSpecification extends HttpSpecification {
 
   override def baseUrl = "https://tordev.tor.oph.reaktor.fi/koski"
 
-  lazy val username = requiredEnv("TOR_USER")
-  lazy val password = requiredEnv("TOR_PASS")
+  lazy val username = requiredEnv("KOSKI_USER")
+  lazy val password = requiredEnv("KOSKI_PASS")
 
   def authHeaders = Map(BasicAuthentication.basicAuthHeader(username, password))
 }

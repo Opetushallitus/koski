@@ -1,4 +1,4 @@
-TOR-SERVER = tordev-tor-app
+KOSKI-SERVER = tordev-tor-app
 help:
 	@echo ""
 	@echo "make build	- Build the whole application, ready for running or testing"
@@ -12,7 +12,7 @@ help:
 	@echo "make deploy 	- Deploy to CSC's ePouta cloud"
 	@echo "make tail	- Tail the cloud logs"
 	@echo "make ssh	- Ssh connection to koski cloud server"
-	@echo "make TOR-SERVER=tordev-authentication-app ssh	- Ssh connection to authentication app server in test env"
+	@echo "make KOSKI-SERVER=tordev-authentication-app ssh	- Ssh connection to authentication app server in test env"
 
 clean:
 	mvn clean
@@ -46,9 +46,9 @@ happen:
 #	# Pow pow!
 deploy:
 	-@git remote remove tordev &> /dev/null
-	git remote add tordev git@$(TOR-SERVER):tor.git
+	git remote add tordev git@$(KOSKI-SERVER):tor.git
 	git push -f tordev head:master
 tail:
-	ssh $(TOR-SERVER) 'tail -f /home/git/logs/*log'
+	ssh $(KOSKI-SERVER) 'tail -f /home/git/logs/*log'
 ssh:
-	ssh $(TOR-SERVER)
+	ssh $(KOSKI-SERVER)

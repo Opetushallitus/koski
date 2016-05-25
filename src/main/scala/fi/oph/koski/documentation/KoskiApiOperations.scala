@@ -106,7 +106,7 @@ object KoskiApiOperations {
      "PUT", "/koski/api/oppija",
      <div>
        <p>Lisää/päivittää oppijan ja opiskeluoikeuksia.
-          Palauttaa objektin, jossa on henkilön <em>oid</em>, eli henkilön yksilöivä tunniste TOR ja Opintopolku-järjestelmissä.
+          Palauttaa objektin, jossa on henkilön <em>oid</em>, eli henkilön yksilöivä tunniste Koski ja Opintopolku-järjestelmissä.
          Lisäksi paluuarvossa on lista päivitetyistä/luoduista opiskeluoikeuksista tunnisteineen ja versioineen.</p>
        <p>
          Tallennettava henkilö tunnistetaan joko henkilötunnuksen tai <em>oid</em>in perusteella. Tietojen päivittäminen on huomattavasti

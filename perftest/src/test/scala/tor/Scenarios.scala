@@ -16,8 +16,8 @@ import io.gatling.http.request.builder.HttpRequestBuilder
 import scala.util.Random.{nextInt => randomInt}
 
 trait KoskiScenario {
-  val username = sys.env("TOR_USER")
-  val password = sys.env("TOR_PASS")
+  val username = sys.env("KOSKI_USER")
+  val password = sys.env("KOSKI_PASS")
   val uusiOppijaFeeder = Array(Map("content" -> ExamplesAmmatillinen.uusi)).circular
   val oppijaFeeder = Array(Map("content" -> AmmatillinenFullExample.full)).circular
 }
@@ -78,7 +78,7 @@ abstract class HenkilöGenerator extends Body {
 
   def addHenkilö(session: Session) = {
     val hetu = Hetu.generate(LocalDate.now, LocalDate.now.minusYears(50))
-    val nimi = "tor-perf-" + hetu
+    val nimi = "koski-perf-" + hetu
     session("content").as[Oppija].copy(henkilö = UusiHenkilö(hetu,  nimi, nimi, nimi))
   }
 

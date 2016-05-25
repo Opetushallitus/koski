@@ -1,6 +1,6 @@
 # Koski
 
-Koski (aiemmin TOR) tulee toimimaan kattavana opetustoimialan tietovarantona, joka tarjoaa
+Koski tulee toimimaan kattavana opetustoimialan tietovarantona, joka tarjoaa
 tutkintoon johtavat suoritustiedot eri koulutusasteilta. Yleinen Koski-dokumentaatio kootaan CSC:n wikiin: https://confluence.csc.fi/display/OPHPALV/Koski
 
 Tässä git-repositoriossa on Koski-järjestelmän ohjelmakoodi, tietokannan rakennuslausekkeet ja tekninen dokumentaatio ohjelmistokehitystä varten.
@@ -255,8 +255,8 @@ esim. `-Dconfig.resource=tordev.conf`. Valmiita asetustiedostoja voi pyytää ke
 
 Koski ei tallenna henkilötietoja omaan kantaansa, vaan hakee/tallentaa ne Opintopolun [henkilöpalveluun](https://github.com/Opetushallitus/henkilo). [toteutus](src/main/scala/fi/oph/koski/oppija/OppijaRepository.scala)
 
-Kun TORissa haetaan henkilön tietoja esimerkiksi sukunimellä, haetaan lista mahdollisista henkilöistä ensin henkilöpalvelusta, jonka jälkeen se [suodatetaan](src/main/scala/fi/oph/koski/opiskeluoikeus/OpiskeluOikeusRepository.scala#L8)
-TORissa olevien opinto-oikeuksien perusteella.
+Kun Koskessa haetaan henkilön tietoja esimerkiksi sukunimellä, haetaan lista mahdollisista henkilöistä ensin henkilöpalvelusta, jonka jälkeen se [suodatetaan](src/main/scala/fi/oph/koski/opiskeluoikeus/OpiskeluOikeusRepository.scala#L8)
+Koskessa olevien opinto-oikeuksien perusteella.
 
 Käyttäjä voi nähdä vain ne opinto-oikeudet, jotka liittyvät oppilaitokseen, johon hänellä on käyttöoikeus. Henkilön organisaatioliitokset ja käyttöoikeudet haetaan [henkilöpalvelusta](https://github.com/Opetushallitus/henkilo) ja [organisaatiopalvelusta](https://github.com/Opetushallitus/organisaatio). [toteutus](src/main/scala/fi/oph/koski/user/RemoteUserRepository.scala)
 
@@ -270,7 +270,7 @@ Henkilöpalvelun swagger:
 
 ### ePerusteet
 
-Tällä hetkellä TORiin voi tallentaa vain [ePerusteista](https://eperusteet.opintopolku.fi/) löytyvien tutkintojen tietoja. Opinto-oikeutta lisättäessa lista mahdollisista tutkinnoista haetaan
+Tällä hetkellä Koskeen voi tallentaa vain [ePerusteista](https://eperusteet.opintopolku.fi/) löytyvien tutkintojen tietoja. Opinto-oikeutta lisättäessa lista mahdollisista tutkinnoista haetaan
 ePerusteista ja [Opinto-oikeuden](src/main/scala/fi/oph/koski/opiskeluoikeus/OpiskeluOikeus.scala) sisältämään [tutkinto](src/main/scala/fi/oph/koski/tutkinto/Tutkinto.scala)-osioon tallennetaan tieto ePerusteet-linkityksestä.
 
 EPerusteista haetaan myös tutkinnon hierarkkinen [rakenne](src/main/scala/fi/oph/koski/tutkinto/TutkintoRakenne.scala), joka kuvaa, mistä tutkinnon osista tutkinto koostuu. [toteutus](https://github.com/Opetushallitus/koski/blob/master/src/main/scala/fi/oph/koski/eperusteet/RemoteEPerusteetRepository.scala)
@@ -303,5 +303,5 @@ Koski osaa tarvittaessa luoda käytettävät koodistot ja koodistopalveluun. Kä
 
 ### LDAP
 
-TORin käyttäjäautentikaatio on toteutettu Opintopolku-järjestelmän LDAPia vasten. LDAP-palvelimen osoite ja tunnukset konfiguroidaan `ldap.host`, `ldap.userdn` ja `ldap.password` -asetuksilla.
+Kosken käyttäjäautentikaatio on toteutettu Opintopolku-järjestelmän LDAPia vasten. LDAP-palvelimen osoite ja tunnukset konfiguroidaan `ldap.host`, `ldap.userdn` ja `ldap.password` -asetuksilla.
 Mon Apr 18 14:18:11 EEST 2016
