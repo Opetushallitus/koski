@@ -5,7 +5,7 @@ import io.gatling.core.structure.PopulatedScenarioBuilder
 import io.gatling.http.Predef._
 
 trait KoskiSimulation extends Simulation {
-  val baseUrl = sys.env.getOrElse("KOSKI_BASE_URL", "http://tordev.tor.oph.reaktor.fi/koski")
+  val baseUrl = sys.env.getOrElse("KOSKI_BASE_URL", "https://koskidev.koski.oph.reaktor.fi/koski")
 
   val httpConf = http.baseURL(baseUrl).acceptEncodingHeader("gzip, deflate")
 
