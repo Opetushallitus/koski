@@ -11,7 +11,7 @@ help:
 	@echo "make watch	- Watch for changes in webapp files"
 	@echo "make deploy 	- Deploy to CSC's ePouta cloud"
 	@echo "make tail	- Tail the cloud logs"
-	@echo "make ssh	- Ssh connection to tor cloud server"
+	@echo "make ssh	- Ssh connection to koski cloud server"
 	@echo "make TOR-SERVER=tordev-authentication-app ssh	- Ssh connection to authentication app server in test env"
 
 clean:
@@ -24,15 +24,12 @@ front:
 server:
 	mvn compile
 	# server-side build done
-codegen:
-	# Generate database access code from local Postgres database
-	mvn compile exec:java -Dexec.mainClass=fi.oph.tor.db.CodeGenerator
 test: build
 	mvn test
 fronttest:
 	cd web && npm run test
 run:
-	mvn exec:java $(JAVA_OPTS) -Dexec.mainClass=fi.oph.tor.jettylauncher.JettyLauncher
+	mvn exec:java $(JAVA_OPTS) -Dexec.mainClass=fi.oph.koski.jettylauncher.JettyLauncher
 postgres:
 	postgres --config_file=postgresql/postgresql.conf -D postgresql/data
 postgres-clean:
