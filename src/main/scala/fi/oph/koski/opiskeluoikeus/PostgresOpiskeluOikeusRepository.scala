@@ -1,18 +1,18 @@
 package fi.oph.koski.opiskeluoikeus
 
+import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
-import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db._
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json
+import fi.oph.koski.koski.{OpiskeluoikeusPäättynytAikaisintaan, OpiskeluoikeusPäättynytViimeistään, QueryFilter, TutkinnonTila}
+import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppija.PossiblyUnverifiedOppijaOid
 import fi.oph.koski.schema.Henkilö._
 import fi.oph.koski.schema.{KorkeakoulunOpiskeluoikeus, Opiskeluoikeus, TaydellisetHenkilötiedot}
-import fi.oph.koski.koski.{OpiskeluoikeusPäättynytAikaisintaan, OpiskeluoikeusPäättynytViimeistään, QueryFilter, TutkinnonTila}
-import fi.oph.koski.koskiuser.{KoskiUser, KoskiUser$}
 import fi.oph.koski.util.ReactiveStreamsToRx
 import org.json4s.JArray
 import rx.lang.scala.Observable

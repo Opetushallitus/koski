@@ -5,7 +5,7 @@ import fi.oph.koski.oppija.PossiblyUnverifiedOppijaOid
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.{Opiskeluoikeus, TaydellisetHenkilötiedot}
 import fi.oph.koski.koski.QueryFilter
-import fi.oph.koski.koskiuser.{KoskiUser, KoskiUser$}
+import fi.oph.koski.koskiuser.KoskiUser
 import org.json4s.JValue
 import rx.lang.scala.Observable
 

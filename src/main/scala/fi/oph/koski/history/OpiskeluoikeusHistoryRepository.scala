@@ -10,7 +10,7 @@ import fi.oph.koski.db.{Futures, OpiskeluOikeusHistoryRow, OpiskeluOikeusStoredD
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{Opiskeluoikeus}
-import fi.oph.koski.koskiuser.{KoskiUser, KoskiUser$}
+import fi.oph.koski.koskiuser.KoskiUser
 import org.json4s._
 import org.json4s.jackson.JsonMethods
 import slick.dbio.DBIOAction

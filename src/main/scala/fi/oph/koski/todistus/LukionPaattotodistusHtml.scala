@@ -5,7 +5,7 @@ import java.text.NumberFormat
 import fi.oph.koski.localization.Locale
 import fi.oph.koski.localization.Locale.finnish
 import fi.oph.koski.schema._
-import fi.oph.koski.koskiuser.{KoskiUser, KoskiUser$}
+import fi.oph.koski.koskiuser.KoskiUser
 
 
 class LukionPaattotodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
