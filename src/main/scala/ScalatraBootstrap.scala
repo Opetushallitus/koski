@@ -39,7 +39,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       context.mount(new TutkintoServlet(application.tutkintoRepository), "/api/tutkinto")
       context.mount(new SchemaDocumentationServlet(application.koodistoPalvelu), "/documentation")
       context.mount(new TodistusServlet(userRepository, application.directoryClient, rekisteri, application.tutkintoRepository), "/todistus")
-      context.mount(new SuoritusServlet(userRepository, application.directoryClient, rekisteri, application.oppijaRepository, application.opiskeluOikeusRepository), "/opintosuoritusote")
+      context.mount(new SuoritusServlet(userRepository, application.directoryClient, rekisteri, application.oppijaRepository, rekisteri), "/opintosuoritusote")
       context.mount(new SingleFileServlet(indexHtml, List(("/*", 404), ("/uusioppija", 200), ("/oppija/:oid", 200))), "/")
       context.mount(new CacheServlet(userRepository, application.directoryClient, application), "/cache")
       if (Fixtures.shouldUseFixtures(application.config)) {

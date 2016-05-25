@@ -5,7 +5,7 @@ import java.time.format.DateTimeParseException
 
 import fi.oph.tor.http.{HttpStatus, TorErrorCategory}
 import fi.oph.tor.json.Json
-import fi.oph.tor.log.AuditLog.{log => auditLog}
+import fi.oph.tor.log.AuditLog
 import fi.oph.tor.log.TorMessageField.{hakuEhto, opiskeluOikeusId, opiskeluOikeusVersio, oppijaHenkiloOid}
 import fi.oph.tor.log.TorOperation._
 import fi.oph.tor.log._
@@ -23,7 +23,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
 
   def findOppijat(params: List[(String, String)], user: TorUser): Either[HttpStatus, Observable[Oppija]] with Product with Serializable = {
 
-    auditLog(AuditLogMessage(OPISKELUOIKEUS_HAKU, user, Map(hakuEhto -> params.map { case (p,v) => p + "=" + v }.mkString("&"))))
+    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_HAKU, user, Map(hakuEhto -> params.map { case (p,v) => p + "=" + v }.mkString("&"))))
 
     def dateParam(q: (String, String)): Either[HttpStatus, LocalDate] = q match {
       case (p, v) => try {
@@ -51,7 +51,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
 
   def findOppijat(query: String)(implicit user: TorUser): Seq[TaydellisetHenkilötiedot] = {
     val oppijat: List[TaydellisetHenkilötiedot] = oppijaRepository.findOppijat(query)
-    auditLog(AuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> query)))
+    AuditLog.log(AuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> query)))
     val filtered = opiskeluOikeusRepository.filterOppijat(oppijat)
     filtered.sortBy(oppija => (oppija.sukunimi, oppija.etunimet))
   }
@@ -69,13 +69,13 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
         " oppilaitoksessa " + opiskeluOikeus.oppilaitos.oid + ": " + content)
     }
 
-    def accessLog(oppijaOid: PossiblyUnverifiedOppijaOid, result: CreateOrUpdateResult): Unit = {
+    def auditLog(oppijaOid: PossiblyUnverifiedOppijaOid, result: CreateOrUpdateResult): Unit = {
       (result match {
         case _: Updated => Some(OPISKELUOIKEUS_MUUTOS)
         case _: Created => Some(OPISKELUOIKEUS_LISAYS)
         case _ => None
       }).foreach { operaatio =>
-        auditLog(AuditLogMessage(operaatio, user,
+        AuditLog.log(AuditLogMessage(operaatio, user,
           Map(oppijaHenkiloOid -> oppijaOid.oppijaOid, opiskeluOikeusId -> result.id.toString, opiskeluOikeusVersio -> result.versionumero.toString))
         )
       }
@@ -93,7 +93,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
           result match {
             case Right(result) =>
               applicationLog(oppijaOid, opiskeluOikeus, result)
-              accessLog(oppijaOid, result)
+              auditLog(oppijaOid, result)
             case _ =>
           }
           result
@@ -121,7 +121,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
       case None =>
         notFound
     }
-    result.right.foreach((oppija: Oppija) => auditLog(AuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, user, Map(oppijaHenkiloOid -> oid))))
+    result.right.foreach((oppija: Oppija) => AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, user, Map(oppijaHenkiloOid -> oid))))
     result
   }
 
@@ -131,7 +131,7 @@ class TodennetunOsaamisenRekisteri(oppijaRepository: OppijaRepository,
     }
     result match {
       case Some((henkilö, oo)) =>
-        auditLog(AuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, user, Map(oppijaHenkiloOid -> henkilö.oid)))
+        AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, user, Map(oppijaHenkiloOid -> henkilö.oid)))
         Right((henkilö, oo))
       case _ =>
         Left(TorErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
