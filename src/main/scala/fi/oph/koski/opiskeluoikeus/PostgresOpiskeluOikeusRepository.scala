@@ -76,7 +76,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     case o: KorkeakoulunOpiskeluoikeus =>
       Left(KoskiErrorCategory.notImplemented.readOnly("Korkeakoulutuksen opiskeluoikeuksia ei voi päivittää Koski-järjestelmässä"))
     case _ =>
-      if (!user.hasWriteAccess(opiskeluOikeus.oppilaitos)) {
+      if (!user.hasWriteAccess(opiskeluOikeus.oppilaitos.oid)) {
         Left(KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid))
       } else {
         doInIsolatedTransaction(db, createOrUpdateAction(oppijaOid, opiskeluOikeus), "Oppijan " + oppijaOid + " opiskeluoikeuden lisäys/muutos")

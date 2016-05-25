@@ -57,7 +57,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   private def validateOpiskeluOikeus(opiskeluOikeus: Opiskeluoikeus)(implicit user: KoskiUser, accessType: AccessType.Value): HttpStatus = {
-    HttpStatus.validate(user.hasAccess(opiskeluOikeus.oppilaitos, accessType)) { KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid) }
+    HttpStatus.validate(user.hasAccess(opiskeluOikeus.oppilaitos.oid, accessType)) { KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid) }
       .then { HttpStatus.fold(
       validateDateOrder(("alkamispäivä", opiskeluOikeus.alkamispäivä), ("päättymispäivä", opiskeluOikeus.päättymispäivä)),
       validateDateOrder(("alkamispäivä", opiskeluOikeus.alkamispäivä), ("arvioituPäättymispäivä", opiskeluOikeus.arvioituPäättymispäivä)),

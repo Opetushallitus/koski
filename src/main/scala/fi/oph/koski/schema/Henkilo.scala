@@ -5,6 +5,7 @@ import fi.oph.scalaschema.annotation._
 
 object Henkilö {
   type Oid = String
+  type Hetu = String
   def withOid(oid: String) = OidHenkilö(oid)
   def apply(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String) = UusiHenkilö(hetu, etunimet, kutsumanimi, sukunimi)
 }
@@ -17,8 +18,8 @@ case class TaydellisetHenkilötiedot(
   @Description("Yksilöivä tunniste (oppijanumero) Opintopolku-palvelussa")
   @OksaUri("tmpOKSAID760", "oppijanumero")
   @RegularExpression("""1\.2\.246\.562\.24\.\d{11}""")
-  oid: String,
-  hetu: String,
+  oid: Henkilö.Oid,
+  hetu: Henkilö.Hetu,
   etunimet:String,
   kutsumanimi: String,
   sukunimi: String,

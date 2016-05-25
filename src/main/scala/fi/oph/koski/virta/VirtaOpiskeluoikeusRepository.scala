@@ -16,15 +16,21 @@ import rx.lang.scala.Observable
 case class VirtaOpiskeluoikeusRepository(virta: VirtaClient, val oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, validator: Option[KoskiValidator] = None) extends OpiskeluOikeusRepository with Logging {
   private val converter = VirtaXMLConverter(oppijaRepository, oppilaitosRepository, koodistoViitePalvelu)
 
-  private val cache = KeyValueCache[Henkilö with Henkilötiedot, List[KorkeakoulunOpiskeluoikeus]](CachingStrategy.cacheAllNoRefresh(3600, 100), doFindByHenkilö)
+  // hetu -> org.oids cache for filtering only
+  private val organizationsCache = KeyValueCache[Henkilö.Hetu, List[Organisaatio.Oid]](CachingStrategy.cacheAllNoRefresh(3600, 100000), doFindOrgs)
+  private val cache = KeyValueCache[Henkilö.Hetu, List[KorkeakoulunOpiskeluoikeus]](CachingStrategy.cacheAllNoRefresh(3600, 100), doFindByHenkilö)
 
-  def doFindByHenkilö(henkilö: Henkilö with Henkilötiedot): List[KorkeakoulunOpiskeluoikeus] = {
+  def doFindOrgs(hetu: Henkilö.Hetu): List[Organisaatio.Oid] = {
+    cache(hetu).map(_.oppilaitos.oid)
+  }
+
+  def doFindByHenkilö(hetu: Henkilö.Hetu): List[KorkeakoulunOpiskeluoikeus] = {
     try {
-      val opiskeluoikeudet: List[KorkeakoulunOpiskeluoikeus] = virta.opintotiedot(VirtaHakuehtoHetu(henkilö.hetu)).toList
+      val opiskeluoikeudet: List[KorkeakoulunOpiskeluoikeus] = virta.opintotiedot(VirtaHakuehtoHetu(hetu)).toList
         .flatMap(xmlData => converter.convertToOpiskeluoikeudet(xmlData))
 
       opiskeluoikeudet flatMap { opiskeluoikeus =>
-        val oppija = Oppija(henkilö, List(opiskeluoikeus))
+        val oppija = Oppija(UusiHenkilö(hetu, "tuntematon", "tuntematon", "tuntematon"), List(opiskeluoikeus))
         validator match {
           case Some(validator) =>
             validator.validateAsJson(oppija)(KoskiUser.systemUser, AccessType.read) match {
@@ -49,12 +55,12 @@ case class VirtaOpiskeluoikeusRepository(virta: VirtaClient, val oppijaRepositor
     }
   }
 
-  def findByHenkilö(henkilö: Henkilö with Henkilötiedot)(implicit user: KoskiUser): List[KorkeakoulunOpiskeluoikeus] = cache(henkilö).filter(oo => user.hasReadAccess(oo.oppilaitos))
+  def findByHenkilö(henkilö: Henkilö with Henkilötiedot)(implicit user: KoskiUser): List[KorkeakoulunOpiskeluoikeus] = cache(henkilö.hetu).filter(oo => user.hasReadAccess(oo.oppilaitos.oid))
 
   private def getHetu(oid: String): Option[TaydellisetHenkilötiedot] = oppijaRepository.findByOid(oid)
 
   def query(filters: List[QueryFilter])(implicit user: KoskiUser): Observable[(Oid, List[Opiskeluoikeus])] = Observable.empty
-  def filterOppijat(oppijat: Seq[TaydellisetHenkilötiedot])(implicit user: KoskiUser): Seq[TaydellisetHenkilötiedot] = oppijat.par.filter(oppija => !findByHenkilö(oppija).isEmpty).toList
+  def filterOppijat(oppijat: Seq[TaydellisetHenkilötiedot])(implicit user: KoskiUser): Seq[TaydellisetHenkilötiedot] = oppijat.par.filter(oppija => !organizationsCache(oppija.hetu).filter(orgOid => user.hasReadAccess(orgOid)).isEmpty).toList
   def findByOppijaOid(oid: String)(implicit user: KoskiUser): Seq[Opiskeluoikeus] = {
     getHetu(oid).toList.flatMap(findByHenkilö(_))
   }

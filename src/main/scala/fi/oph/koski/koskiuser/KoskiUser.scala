@@ -3,18 +3,18 @@ package fi.oph.koski.koskiuser
 import javax.servlet.http.HttpServletRequest
 
 import fi.oph.koski.log.{Loggable, Logging, LogUserContext}
-import fi.oph.koski.schema.OrganisaatioWithOid
+import fi.oph.koski.schema.{Organisaatio, OrganisaatioWithOid}
 import rx.lang.scala.Observable
 
 class KoskiUser(val oid: String, val clientIp: String, val lang: String, val organisationOidsObservable: Observable[Set[String]]) extends LogUserContext with Loggable with Logging {
   def oidOption = Some(oid)
   def logString = "käyttäjä " + oid
   lazy val organisationOids: Set[String] = organisationOidsObservable.toBlocking.first
-  def hasReadAccess(organisaatio: OrganisaatioWithOid) = hasAccess(organisaatio, AccessType.read)
-  def hasWriteAccess(organisaatio: OrganisaatioWithOid) = hasAccess(organisaatio, AccessType.write)
-  def hasAccess(organisaatio: OrganisaatioWithOid, accessType: AccessType.Value) = accessType match {
+  def hasReadAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.read)
+  def hasWriteAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.write)
+  def hasAccess(organisaatio: Organisaatio.Oid, accessType: AccessType.Value) = accessType match {
     case AccessType.read => true // TODO: käyttöoikeusryhmät
-    case AccessType.write => organisationOids.contains(organisaatio.oid)
+    case AccessType.write => organisationOids.contains(organisaatio)
   }
   organisationOidsObservable.foreach(org => {}) // <- force evaluation to ensure parallel operation
 }

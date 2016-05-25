@@ -6,11 +6,15 @@ import fi.oph.koski.localization.LocalizedString
 @Description("Organisaatio. Voi olla Opintopolun organisaatiosta löytyvä oid:illinen organisaatio, y-tunnuksellinen yritys tai tutkintotoimikunta.")
 sealed trait Organisaatio
 
+object Organisaatio {
+  type Oid = String
+}
+
 @Description("Opintopolun organisaatiopalvelusta löytyvä organisaatio. Esimerkiksi koulutustoimijat, oppilaitokset ja toimipisteet ovat tällaisia organisaatioita.")
 case class OidOrganisaatio(
   @Description("Organisaation tunniste Opintopolku-palvelussa")
   @RegularExpression("""1\.2\.246\.562\.10\.\d{11}""")
-  oid: String,
+  oid: Organisaatio.Oid,
   @Description("Organisaation (kielistetty) nimi")
   @ReadOnly("Tiedon syötössä nimeä ei tarvita; kuvaus haetaan Organisaatiopalvelusta")
   nimi: Option[LocalizedString] = None
