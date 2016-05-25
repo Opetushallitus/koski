@@ -1,22 +1,22 @@
 import javax.servlet.ServletContext
 
-import fi.oph.tor.cache.CacheServlet
-import fi.oph.tor.config.TorApplication
-import fi.oph.tor.db._
-import fi.oph.tor.documentation.SchemaDocumentationServlet
-import fi.oph.tor.fixture.{FixtureServlet, Fixtures}
-import fi.oph.tor.history.TorHistoryServlet
-import fi.oph.tor.koodisto.KoodistoCreator
-import fi.oph.tor.log.Logging
-import fi.oph.tor.oppilaitos.OppilaitosServlet
-import fi.oph.tor.servlet.SingleFileServlet
-import fi.oph.tor.servlet.StaticFileServlet.indexHtml
-import fi.oph.tor.suoritusote.SuoritusServlet
-import fi.oph.tor.todistus.TodistusServlet
-import fi.oph.tor.tor.{OppijaServlet, TodennetunOsaamisenRekisteri}
-import fi.oph.tor.toruser.{LogoutServlet, UserOrganisationsRepository, UserServlet}
-import fi.oph.tor.tutkinto.TutkintoServlet
-import fi.oph.tor.util.Pools
+import fi.oph.koski.cache.CacheServlet
+import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.db._
+import fi.oph.koski.documentation.SchemaDocumentationServlet
+import fi.oph.koski.fixture.{FixtureServlet, Fixtures}
+import fi.oph.koski.history.KoskiHistoryServlet
+import fi.oph.koski.koodisto.KoodistoCreator
+import fi.oph.koski.log.Logging
+import fi.oph.koski.oppilaitos.OppilaitosServlet
+import fi.oph.koski.servlet.SingleFileServlet
+import fi.oph.koski.servlet.StaticFileServlet.indexHtml
+import fi.oph.koski.suoritusote.SuoritusServlet
+import fi.oph.koski.todistus.TodistusServlet
+import fi.oph.koski.koski.{OppijaServlet, KoskiFacade}
+import fi.oph.koski.koskiuser.{LogoutServlet, UserOrganisationsRepository, UserServlet}
+import fi.oph.koski.tutkinto.TutkintoServlet
+import fi.oph.koski.util.Pools
 import org.scalatra._
 
 class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionContext with Futures {
@@ -24,15 +24,15 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     try {
       Pools.init
       val configOverrides: Map[String, String] = Option(context.getAttribute("tor.overrides").asInstanceOf[Map[String, String]]).getOrElse(Map.empty)
-      val application = TorApplication(configOverrides)
+      val application = KoskiApplication(configOverrides)
       if (application.config.getBoolean("koodisto.create")) {
         KoodistoCreator.createKoodistotFromMockData(application.config)
       }
       implicit val userRepository = UserOrganisationsRepository(application.config, application.organisaatioRepository)
 
-      val rekisteri = new TodennetunOsaamisenRekisteri(application.oppijaRepository, application.opiskeluOikeusRepository)
+      val rekisteri = new KoskiFacade(application.oppijaRepository, application.opiskeluOikeusRepository)
       context.mount(new OppijaServlet(rekisteri, userRepository, application.directoryClient, application.validator, application.historyRepository), "/api/oppija")
-      context.mount(new TorHistoryServlet(userRepository, application.directoryClient, application.historyRepository), "/api/opiskeluoikeus/historia")
+      context.mount(new KoskiHistoryServlet(userRepository, application.directoryClient, application.historyRepository), "/api/opiskeluoikeus/historia")
       context.mount(new UserServlet(application.directoryClient, application.userRepository), "/user")
       context.mount(new LogoutServlet(application.userRepository, application.directoryClient), "/user/logout")
       context.mount(new OppilaitosServlet(application.oppilaitosRepository, application.userRepository, application.directoryClient), "/api/oppilaitos")

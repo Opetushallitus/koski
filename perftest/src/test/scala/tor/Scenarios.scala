@@ -5,9 +5,9 @@ import java.time.format.DateTimeFormatter.{ofPattern => dateFormat}
 import java.time.temporal.ChronoUnit._
 
 import com.ning.http.client.RequestBuilder
-import fi.oph.tor.documentation.{AmmatillinenFullExample, ExamplesAmmatillinen}
-import fi.oph.tor.json.Json
-import fi.oph.tor.schema.{AmmatillinenOpiskeluoikeus, Oppija, UusiHenkilö}
+import fi.oph.koski.documentation.{AmmatillinenFullExample, ExamplesAmmatillinen}
+import fi.oph.koski.json.Json
+import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, Oppija, UusiHenkilö}
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.request.Body
