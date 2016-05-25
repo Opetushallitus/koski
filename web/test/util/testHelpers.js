@@ -52,7 +52,7 @@ wait = {
     }
   },
   forAjax: function() {
-    return wait.forMilliseconds(1)().then(wait.until(TorPage().isReady))
+    return wait.forMilliseconds(1)().then(wait.until(KoskiPage().isReady))
   }
 }
 

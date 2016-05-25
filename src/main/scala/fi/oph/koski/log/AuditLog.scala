@@ -1,6 +1,6 @@
 package fi.oph.koski.log
 
-import fi.oph.koski.log.KoskiMessageField.TorMessageField
+import fi.oph.koski.log.KoskiMessageField.KoskiMessageField
 import fi.oph.koski.log.KoskiOperation.KoskiOperation
 import fi.oph.koski.koskiuser.KoskiUser
 import fi.vm.sade.auditlog._
@@ -21,18 +21,18 @@ class AuditLog(logger: Logger) {
       safePut(CommonLogMessageFields.OPERAATIO, msg.operation.toString)
       safePut(KoskiMessageField.kayttajaHenkiloOid.toString, msg.user.oid)
 
-      msg.extraFields.toList.foreach { case (k: TorMessageField,v: String) =>
+      msg.extraFields.toList.foreach { case (k: KoskiMessageField,v: String) =>
         safePut(k.toString, v)
       }
     }
   }
 }
 
-case class AuditLogMessage(operation: KoskiOperation, user: KoskiUser, extraFields: Map[TorMessageField, String])
+case class AuditLogMessage(operation: KoskiOperation, user: KoskiUser, extraFields: Map[KoskiMessageField, String])
 
 object KoskiMessageField extends Enumeration {
 
-  type TorMessageField = Value
+  type KoskiMessageField = Value
   val clientIp, oppijaHenkiloOid, kayttajaHenkiloOid, opiskeluOikeusId, opiskeluOikeusVersio, hakuEhto = Value
 }
 

@@ -15,7 +15,7 @@ import io.gatling.http.request.builder.HttpRequestBuilder
 
 import scala.util.Random.{nextInt => randomInt}
 
-trait TorScenario {
+trait KoskiScenario {
   val username = sys.env("TOR_USER")
   val password = sys.env("TOR_PASS")
   val uusiOppijaFeeder = Array(Map("content" -> ExamplesAmmatillinen.uusi)).circular
@@ -25,21 +25,21 @@ trait TorScenario {
 object Scenarios extends UpdateOppijaScenario with FindOppijaScenario with QueryOppijatScenario with InsertOppijaScenario {
 }
 
-trait FindOppijaScenario extends TorScenario {
+trait FindOppijaScenario extends KoskiScenario {
   private val findHttp: HttpRequestBuilder = http("find by oid").get("/api/oppija/1.2.246.562.24.00000000001").basicAuth(username, password)
 
   val findOppija = scenario("Find oppija").exec(findHttp)
   val prepareForFind = scenario("Prepare for find").exec(findHttp.silent)
 }
 
-trait QueryOppijatScenario extends TorScenario {
+trait QueryOppijatScenario extends KoskiScenario {
   private val queryHttp = http("query oppijat").get("/api/oppija?opiskeluoikeusPäättynytAikaisintaan=2016-01-10&opiskeluoikeusPäättynytViimeistään=2016-01-10").basicAuth(username, password)
 
   val queryOppijat = scenario("Query oppijat").exec(queryHttp)
   val prepareForQuery = scenario("Prepare for query").exec(queryHttp.silent)
 }
 
-trait InsertOrUpdateScenario extends TorScenario {
+trait InsertOrUpdateScenario extends KoskiScenario {
   def insertOrUpdate(name: String, body: Body, path: String = "/api/oppija") = http(name).put(path).body(body).asJSON.basicAuth(username, password).check(status.in(200))
 }
 

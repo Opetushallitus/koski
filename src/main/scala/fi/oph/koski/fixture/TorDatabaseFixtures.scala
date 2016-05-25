@@ -17,7 +17,7 @@ import slick.dbio.DBIO
 class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluOikeusRepository, oppijaRepository: OppijaRepository, validator: KoskiValidator) extends Futures with Timing {
   def resetFixtures: Unit = timed("resetFixtures", 10) {
     if (database.config.isRemote) throw new IllegalStateException("Trying to reset fixtures in remote database")
-    implicit val user = MockUsers.kalle.asTorUser
+    implicit val user = MockUsers.kalle.asKoskiUser
     implicit val accessType = AccessType.write
 
     val oppijat: List[TaydellisetHenkilötiedot] = oppijaRepository.findOppijat("")

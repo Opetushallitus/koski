@@ -23,7 +23,7 @@ object FixtureCreator extends App with TestApp with Logging {
 
   1 to amount foreach { x =>
     val oikeus: Opiskeluoikeus = opiskeluoikeudet(x % opiskeluoikeudet.length)
-    val nimi = "Tor-Perf-" + x
+    val nimi = "Koski-Perf-" + x
     val oppija: Oppija = Oppija(Henkilö(nextHetu, nimi, nimi, nimi), List(oikeus))
     val body = Json.write(oppija).getBytes("utf-8")
 

@@ -1,4 +1,4 @@
-function TorPage() {
+function KoskiPage() {
   var pageApi = Page(function() {return S('#content')})
 
   var OppijaHaku = {

@@ -5,7 +5,7 @@ import tor.Scenarios._
 
 import scala.concurrent.duration._
 
-class BatchInsertSimulation extends TorSimulation {
+class BatchInsertSimulation extends KoskiSimulation {
   setUp(
     prepareForInsertOppija.inject(atOnceUsers(1)),
     batchInsertOppija.inject(nothingFor(10 seconds), constantUsersPerSec(1) during(10 seconds) randomized)

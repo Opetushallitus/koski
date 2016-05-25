@@ -13,7 +13,7 @@ import fi.oph.koski.virta.{VirtaOpiskeluoikeusRepository, MockVirtaClient}
 object ExamplesKorkeakoulu {
   private lazy val koodistoViitePalvelu = KoodistoViitePalvelu(MockKoodistoPalvelu)
   private def oppija = Oppija(MockOppijat.dippainssi.vainHenkilötiedot, VirtaOpiskeluoikeusRepository(MockVirtaClient, MockOppijaRepository(), OppilaitosRepository(MockOrganisaatioRepository(koodistoViitePalvelu)), koodistoViitePalvelu)
-    .findByOppijaOid(MockOppijat.dippainssi.oid)(MockUsers.kalle.asTorUser)
+    .findByOppijaOid(MockOppijat.dippainssi.oid)(MockUsers.kalle.asKoskiUser)
   )
   lazy val examples = List(
     Example("korkeakoulu - valmis diplomi-insinööri", "Diplomi-insinööriksi valmistunut opiskelija", oppija, 501)

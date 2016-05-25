@@ -1,5 +1,5 @@
-describe('TOR', function() {
-  var page = TorPage()
+describe('Koski', function() {
+  var page = KoskiPage()
   var login = LoginPage()
   var authentication = Authentication()
   var opinnot = OpinnotPage()
@@ -30,7 +30,7 @@ describe('TOR', function() {
       before(login.openPage)
       before(login.login('kalle', 'kalle'))
       before(wait.until(page.isVisible))
-      it('siirrytään TOR-etusivulle', function() {
+      it('siirrytään Koski-etusivulle', function() {
         expect(page.isVisible()).to.equal(true)
       })
       it('näytetään kirjautuneen käyttäjän nimi', function() {

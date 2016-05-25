@@ -5,7 +5,7 @@ import tor.Scenarios._
 
 import scala.concurrent.duration._
 
-class NormalSimulation extends TorSimulation {
+class NormalSimulation extends KoskiSimulation {
   setUp(
     prepareForFind.inject(atOnceUsers(1)),
     prepareForUpdateOppija.inject(atOnceUsers(1)),
