@@ -1,7 +1,7 @@
 package fi.oph.koski.koskiuser
 
 trait RequiresAuthentication extends AuthenticationSupport {
-  def torUser: KoskiUser = torUserOption.get
+  def koskiUser: KoskiUser = koskiUserOption.get
 
   before() {
     if(!isAuthenticated) {

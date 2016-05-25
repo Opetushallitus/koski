@@ -6,6 +6,6 @@ import fi.vm.sade.security.ldap.DirectoryClient
 
 class OppilaitosServlet(oppilaitosRepository: OppilaitosRepository, val userRepository: UserOrganisationsRepository, val directoryClient: DirectoryClient) extends ApiServlet with RequiresAuthentication {
   get("/") {
-    oppilaitosRepository.oppilaitokset(torUser).toList
+    oppilaitosRepository.oppilaitokset(koskiUser).toList
   }
 }

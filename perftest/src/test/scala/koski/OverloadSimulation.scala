@@ -1,7 +1,7 @@
-package tor
+package koski
 
 import io.gatling.core.Predef._
-import tor.Scenarios._
+import koski.Scenarios._
 
 import scala.concurrent.duration._
 

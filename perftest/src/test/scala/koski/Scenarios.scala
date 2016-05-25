@@ -1,4 +1,4 @@
-package tor
+package koski
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter.{ofPattern => dateFormat}

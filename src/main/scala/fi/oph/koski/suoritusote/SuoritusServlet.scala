@@ -19,7 +19,7 @@ class SuoritusServlet(
   get("/:oppijaOid/:oppilaitosOid") {
     val oid = params("oppijaOid")
     val oppilaitosOid = params("oppilaitosOid")
-    implicit val user = torUser
+    implicit val user = koskiUser
 
     koski.findOppija(oid) match {
       case Right(Oppija(henkilö: TaydellisetHenkilötiedot, opiskeluoikeudet)) =>

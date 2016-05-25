@@ -86,7 +86,7 @@ class KoskiDatabase(val config: Config) extends Logging {
       flyway.setDataSource(config.url, config.user, config.password)
       flyway.setSchemas(config.user)
       flyway.setValidateOnMigrate(false)
-      if (System.getProperty("tor.db.clean", "false").equals("true")) {
+      if (System.getProperty("koski.db.clean", "false").equals("true")) {
         flyway.clean
       }
       flyway.migrate

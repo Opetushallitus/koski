@@ -16,7 +16,7 @@ class UserServlet(val directoryClient: DirectoryClient, val userRepository: User
 
   post("/login") {
     scentry.authenticate() // Halts on login failure, so the code below won't be run
-    AuditLog.log(AuditLogMessage(KoskiOperation.LOGIN, torUserOption.get, Map()))
+    AuditLog.log(AuditLogMessage(KoskiOperation.LOGIN, koskiUserOption.get, Map()))
     userOption.get
   }
 }

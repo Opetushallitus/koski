@@ -26,7 +26,7 @@ trait AuthenticationSupport extends KoskiBaseServlet with ScentrySupport[Authent
     haltWithStatus(KoskiErrorCategory.unauthorized())
   }
 
-  override def torUserOption: Option[KoskiUser] = {
+  override def koskiUserOption: Option[KoskiUser] = {
     userOption.map { authUser =>
       KoskiUser(authUser.oid, request, userRepository)
     }

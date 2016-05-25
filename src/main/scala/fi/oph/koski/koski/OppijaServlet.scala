@@ -22,8 +22,8 @@ class OppijaServlet(rekisteri: KoskiFacade, val userRepository: UserOrganisation
   put("/") {
     timed("PUT /oppija", thresholdMs = 10) {
       withJsonBody { parsedJson =>
-        val validationResult: Either[HttpStatus, Oppija] = validator.extractAndValidate(parsedJson)(torUser, AccessType.write)
-        val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = putSingle(validationResult, torUser)
+        val validationResult: Either[HttpStatus, Oppija] = validator.extractAndValidate(parsedJson)(koskiUser, AccessType.write)
+        val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = putSingle(validationResult, koskiUser)
         renderEither(result)
       }
     }
@@ -41,7 +41,7 @@ class OppijaServlet(rekisteri: KoskiFacade, val userRepository: UserOrganisation
     timed("PUT /oppija/batch", thresholdMs = 10) {
       withJsonBody { parsedJson =>
 
-        implicit val user = torUser
+        implicit val user = koskiUser
 
         val validationResults: List[Either[HttpStatus, Oppija]] = validator.extractAndValidateBatch(parsedJson.asInstanceOf[JArray])(user, AccessType.write)
         val batchResults: List[Either[HttpStatus, HenkilönOpiskeluoikeusVersiot]] = validationResults.par.map(putSingle(_, user)).toList
@@ -61,7 +61,7 @@ class OppijaServlet(rekisteri: KoskiFacade, val userRepository: UserOrganisation
   }
 
   get("/:oid") {
-    renderEither(findByOid(params("oid"), torUser))
+    renderEither(findByOid(params("oid"), koskiUser))
   }
 
   get("/validate") {
@@ -70,7 +70,7 @@ class OppijaServlet(rekisteri: KoskiFacade, val userRepository: UserOrganisation
 
   get("/validate/:oid") {
     renderEither(
-      findByOid(params("oid"), torUser)
+      findByOid(params("oid"), koskiUser)
         .right.flatMap(validateHistory)
         .right.map(validateOppija)
     )
@@ -80,7 +80,7 @@ class OppijaServlet(rekisteri: KoskiFacade, val userRepository: UserOrganisation
     contentType = "application/json;charset=utf-8"
     params.get("query") match {
       case Some(query) if (query.length >= 3) =>
-        rekisteri.findOppijat(query.toUpperCase)(torUser)
+        rekisteri.findOppijat(query.toUpperCase)(koskiUser)
       case _ =>
         throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort)
     }
@@ -88,7 +88,7 @@ class OppijaServlet(rekisteri: KoskiFacade, val userRepository: UserOrganisation
 
   private def validateOppija(oppija: Oppija): ValidationResult = {
     val oppijaOid: Oid = oppija.henkilö.asInstanceOf[HenkilöWithOid].oid
-    val validationResult = validator.validateAsJson(oppija)(torUser, AccessType.read)
+    val validationResult = validator.validateAsJson(oppija)(koskiUser, AccessType.read)
     validationResult match {
       case Right(oppija) =>
         ValidationResult(oppijaOid, Nil)
@@ -99,7 +99,7 @@ class OppijaServlet(rekisteri: KoskiFacade, val userRepository: UserOrganisation
 
   private def validateHistory(oppija: Oppija): Either[HttpStatus, Oppija] = {
     HttpStatus.fold(oppija.opiskeluoikeudet.map { oikeus =>
-      historyRepository.findVersion(oikeus.id.get, oikeus.versionumero.get)(torUser) match {
+      historyRepository.findVersion(oikeus.id.get, oikeus.versionumero.get)(koskiUser) match {
         case Right(latestVersion) =>
           HttpStatus.validate(latestVersion == oikeus) {
             KoskiErrorCategory.internalError(Json.toJValue(HistoryInconsistency(oikeus + " versiohistoria epäkonsistentti", Json.jsonDiff(oikeus, latestVersion))))
@@ -113,9 +113,9 @@ class OppijaServlet(rekisteri: KoskiFacade, val userRepository: UserOrganisation
   }
 
   private def query = {
-    logger(torUser).info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
+    logger(koskiUser).info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
 
-    rekisteri.findOppijat(params.toList, torUser) match {
+    rekisteri.findOppijat(params.toList, koskiUser) match {
       case Right(oppijat) => oppijat
       case Left(status) => haltWithStatus(status)
     }

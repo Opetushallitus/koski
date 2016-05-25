@@ -13,7 +13,7 @@ import scala.xml.Elem
 trait KoskiBaseServlet extends ScalatraServlet with Logging {
   override protected def logger: LoggerWithContext = {
     try {
-      logger(torUserOption)
+      logger(koskiUserOption)
     } catch {
       case e: Throwable => super.logger
     }
@@ -28,7 +28,7 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
     }
   }
 
-  def torUserOption: Option[KoskiUser] = None
+  def koskiUserOption: Option[KoskiUser] = None
 
   error {
     case InvalidRequestException(detail) =>
