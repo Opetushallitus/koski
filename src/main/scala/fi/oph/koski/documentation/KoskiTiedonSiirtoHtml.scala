@@ -39,9 +39,9 @@ jotta konkreettista dataformaattia voitaisiin suunnitella. Yksi formaatin suunni
 
 Käytettävä JSON-dataformaatti on kuvattu [JSON-schemalla](http://json-schema.org/), jota vasten siirretyt tiedot voidaan myös automaattisesti validoida.
 
-- Tarkastele schemaa  [visualisointityökalun](/koski/json-schema-viewer#tor-oppija-schema.json) avulla.
+- Tarkastele schemaa  [visualisointityökalun](/koski/json-schema-viewer#koski-oppija-schema.json) avulla.
   Tällä työkalulla voi myös validoida JSON-viestejä schemaa vasten. Klikkaamalla kenttiä saat näkyviin niiden tarkemmat kuvaukset.
-- Lataa schema tiedostona: [tor-oppija-schema.json](/koski/documentation/tor-oppija-schema.json).
+- Lataa schema tiedostona: [koski-oppija-schema.json](/koski/documentation/koski-oppija-schema.json).
 
 
 Tietokentät, joissa validit arvot on lueteltavissa, on kooditettu käyttäen hyväksi Opintopolku-järjestelmään kuuluvaa [Koodistopalvelua](https://github.com/Opetushallitus/koodisto).

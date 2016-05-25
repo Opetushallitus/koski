@@ -10,14 +10,11 @@ class SchemaDocumentationServlet(koodistoPalvelu: KoodistoPalvelu) extends ApiSe
     KoskiTiedonSiirtoHtml.html
   }
 
-  get("/tor-oppija-schema.json") {
-    contentType = "application/json"
-    KoskiSchema.schemaJsonString
+  get("/koski-oppija-schema.json") {
+    KoskiSchema.schemaJson
   }
 
   get("/examples/:name.json") {
-    contentType = "application/json"
-
     renderOption(KoskiErrorCategory.notFound)(Examples.examples.find(_.name == params("name")).map(_.data))
   }
 
