@@ -1,7 +1,7 @@
 const webpack = require('webpack')
 
 module.exports = {
-  entry: './app/Tor.jsx',
+  entry: './app/Koski.jsx',
   output: {
     path: __dirname + '/dist',
     filename: 'bundle.js'
