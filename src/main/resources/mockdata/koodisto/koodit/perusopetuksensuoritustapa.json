@@ -2,13 +2,13 @@
   "koodiUri" : "perusopetuksensuoritustapa_koulutus",
   "koodiArvo" : "koulutus",
   "metadata" : [ {
-    "nimi" : "Peruskoulu",
+    "nimi" : "Koulutus",
     "kieli" : "FI"
   }, {
-    "nimi" : "Peruskoulu",
+    "nimi" : "Koulutus",
     "kieli" : "SV"
   }, {
-    "nimi" : "Peruskoulu",
+    "nimi" : "Koulutus",
     "kieli" : "EN"
   } ],
   "versio" : 1
