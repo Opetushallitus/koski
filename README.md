@@ -177,7 +177,11 @@ Koski loggaa tapahtumia kolmeen erilliseen logitiedostoon
 2. `tor-access.log` eli Access-logi sisältää kaikki palvelimen käsittelemät HTTP-pyynnöt polkuineen, paluukoodeineen ja käsittelyaikoineen.
 3. `tor.log` eli "sovelluslogi" sisältää kehitys- ja diagnostiikkatietoa, kuten kaikki virheilmoitukset
 
-Kaikkien logien tapahtumat siirretään testiympäristön palvelimilta Filebeat-agentilla Elasticsearch -tietokantaan, josta ne ovat katseltavissa Kibana-käyttöliittymän avulla. 
+Kaikkien logien tapahtumat siirretään testiympäristön palvelimilta Filebeat-agentilla Elasticsearch -tietokantaan, josta ne ovat katseltavissa Kibana-käyttöliittymän avulla.
+
+Loggaus on konfiguroitu tiedostoilla `log4j.properties` ja `log4j-cloud.properties`, joista edellinen määrittää loggausksen kehitysympäristössä ja jälkimmäinen tuotantoympäristössä. Tämän konfiguraatiotiedoston avulla määritellään esimerkiksi se, mitä logataan mihin tiedostoon. Kuten konfiguraatiotiedostosta ilmenee, tapahtuu access-loggaus ohjaamalla Jettyn `RequestLog`-luokan logitus `tor-access.log` -tiedostoon. Vastaavasti `fi.vm.sade.auditlog.Audit` -luokan loggaus ohjataan tiedostoon `tor-audit.log` ja kaikki muu sovelluslogiin `tor.log`.
+
+Koski-sovelluskoodissa audit-loggaus tehdään `AuditLog`-luokan kautta ja sovellusloggaus käyttäen `Logging`-luokkaa, jolta sovelluskoodi saa käyttöönsä loggerin, joka automaattisesti liittää logiviesteihin käyttäjä- ja IP-osoitetiedot.
 
 ## Testiympäristö (CSC:n ePouta-pilvessä)
 
