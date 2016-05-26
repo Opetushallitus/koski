@@ -13,8 +13,8 @@ trait Arviointi {
   def päivä: Option[LocalDate]
   def arvioitsijat: Option[List[Arvioitsija]]
 
-  def arvosanaNumeroin = {
-    try { Some(arvosana.koodiarvo.toInt) } catch {
+  def arvosanaNumeroin: Option[LocalizedString] = {
+    try { Some(LocalizedString.unlocalized(arvosana.koodiarvo.toInt.toString)) } catch {
       case e: NumberFormatException => None
     }
   }

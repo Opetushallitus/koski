@@ -52,7 +52,7 @@ class AmmatillisenPerustutkinnonPaattotodistusHtml(implicit val user: KoskiUser)
                       <td class="nimi">{ i(osasuoritus.koulutusmoduuli.nimi) }</td>
                       <td class="laajuus">{ osasuoritus.koulutusmoduuli.laajuus.map(_.arvo.toInt).getOrElse("") }</td>
                       <td class="arvosana-kirjaimin">{i(osasuoritus.arvosanaKirjaimin).capitalize}</td>
-                      <td class="arvosana-numeroin">{osasuoritus.arvosanaNumeroin}</td>
+                      <td class="arvosana-numeroin">{i(osasuoritus.arvosanaNumeroin)}</td>
                     </tr>
                   }
                 }

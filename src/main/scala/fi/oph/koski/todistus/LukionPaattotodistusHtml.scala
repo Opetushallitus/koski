@@ -47,7 +47,7 @@ class LukionPaattotodistusHtml(implicit val user: KoskiUser) extends TodistusHtm
                   <td class="oppiaine">{nimiTeksti}</td>
                   <td class="laajuus">{decimalFormat.format(oppiaineenKurssimäärä(oppiaine))}</td>
                   <td class="arvosana-kirjaimin">{i(oppiaine.arvosanaKirjaimin).capitalize}</td>
-                  <td class="arvosana-numeroin">{oppiaine.arvosanaNumeroin}</td>
+                  <td class="arvosana-numeroin">{i(oppiaine.arvosanaNumeroin)}</td>
                 </tr>
               }
             }

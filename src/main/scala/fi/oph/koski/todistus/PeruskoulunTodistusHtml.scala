@@ -87,7 +87,7 @@ trait PeruskoulunTodistusHtml[T <: OppiaineenSuoritus] extends TodistusHtml {
         {i(oppiaine.suoritus.arvosanaKirjaimin).capitalize}
       </td>
       <td class="arvosana-numeroin">
-        {oppiaine.suoritus.arvosanaNumeroin}
+        {i(oppiaine.suoritus.arvosanaNumeroin)}
       </td>
     </tr>
   }

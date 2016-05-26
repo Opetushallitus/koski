@@ -33,10 +33,10 @@ class PerusopetuksenLisaopetuksenTodistusHtml(implicit val user: KoskiUser) exte
         {i(oppiaine.suoritus.arvosanaKirjaimin).capitalize}
       </td>
       <td class="arvosana-numeroin">
-        {if (!korotus) oppiaine.suoritus.arvosanaNumeroin}
+        {if (!korotus) i(oppiaine.suoritus.arvosanaNumeroin)}
       </td>
       <td class="arvosana-korotus">
-        {if (korotus) oppiaine.suoritus.arvosanaNumeroin}
+        {if (korotus) i(oppiaine.suoritus.arvosanaNumeroin)}
       </td>
     </tr>
 

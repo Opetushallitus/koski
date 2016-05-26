@@ -80,6 +80,26 @@ class OpintosuoritusoteHtml(implicit val user: KoskiUser) extends LocalizedHtml 
   }
 
   private def suorituksetHtml(suoritukset: List[(Int, Suoritus)]) = {
+    def suoritusHtml(t: (Int, Suoritus)) = {
+      def laajuus(suoritus: Suoritus) = if (suoritus.osasuoritukset.isDefined) {
+        decimalFormat.format(suoritus.osasuoritusLista.foldLeft(0f) { (laajuus: Float, suoritus: Suoritus) =>
+          laajuus + suoritus.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(0f)
+        })
+      } else {
+        suoritus.koulutusmoduuli.laajuus.map(l => decimalFormat.format(l.arvo)).getOrElse("")
+      }
+
+      t match { case (depth, suoritus) =>
+        <tr>
+          <td class={"depth-" + depth}>{suoritus.koulutusmoduuli.tunniste.koodiarvo}</td>
+          <td class={"depth-" + depth}>{i(suoritus.koulutusmoduuli)}</td>
+          <td class="laajuus">{laajuus(suoritus)}</td>
+          <td class="arvosana">{i(suoritus.arvosanaNumeroin.getOrElse(suoritus.arvosanaKirjaimin))}</td>
+          <td class="suoritus-pvm">{suoritus.arviointi.flatMap(_.lastOption.flatMap(_.päivä.map(dateFormatter.format(_)))).getOrElse("")}</td>
+        </tr>
+      }
+    }
+
     val laajuudet: List[LocalizedString] = suoritukset.map(_._2).flatMap(_.koulutusmoduuli.laajuus.flatMap(laajuus => laajuus.yksikkö.lyhytNimi.orElse(laajuus.yksikkö.nimi)))
     val laajuusYksikkö = laajuudet.headOption
 
@@ -132,25 +152,6 @@ class OpintosuoritusoteHtml(implicit val user: KoskiUser) extends LocalizedHtml 
       .flatMap(suoritus => suoritusWithDepth((0, suoritus)))
   }
 
-  private def suoritusHtml(t: (Int, Suoritus)) = {
-    def laajuus(suoritus: Suoritus) = if (suoritus.osasuoritukset.isDefined) {
-      decimalFormat.format(suoritus.osasuoritusLista.foldLeft(0f) { (laajuus: Float, suoritus: Suoritus) =>
-        laajuus + suoritus.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(0f)
-      })
-    } else {
-      suoritus.koulutusmoduuli.laajuus.map(l => decimalFormat.format(l.arvo)).getOrElse("")
-    }
-
-    t match { case (depth, suoritus) =>
-      <tr>
-        <td class={"depth-" + depth}>{suoritus.koulutusmoduuli.tunniste.koodiarvo}</td>
-        <td class={"depth-" + depth}>{i(suoritus.koulutusmoduuli)}</td>
-        <td class="laajuus">{laajuus(suoritus)}</td>
-        <td class="arvosana">{i(suoritus.arvosanaKirjaimin)}</td>
-        <td class="suoritus-pvm">{suoritus.arviointi.flatMap(_.lastOption.flatMap(_.päivä.map(dateFormatter.format(_)))).getOrElse("")}</td>
-      </tr>
-    }
-  }
 
   private def indentCss = 0 to 5 map { i => ".depth-" + i + " { padding-left:" + (0.5 * i) + "em; }" } mkString("\n")
 }
