@@ -1,6 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.json.Json
+import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.schema._
 import org.scalatest.{FunSpec, Matchers}
 
@@ -10,7 +11,7 @@ import scala.xml.{Node, XML}
 class PerusopetusSpec extends FunSpec with Matchers with SearchTestMethods {
   describe("Perusopetuksen lisäopetus") {
     it("todistus") {
-      todistus("200596-9755") should equal(
+      todistus(MockOppijat.kymppiluokkalainen.hetu) should equal(
         """|Kymppiluokkalainen, Kaisa 200596-9755
           |
           |Äidinkieli ja kirjallisuus  Tyydyttävä  7
