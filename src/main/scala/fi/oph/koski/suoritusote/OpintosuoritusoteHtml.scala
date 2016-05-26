@@ -66,8 +66,8 @@ class OpintosuoritusoteHtml(implicit val user: KoskiUser) extends LocalizedHtml 
                 <tr class="header">
                   <th class="tunnus"></th>
                   <th class="nimi"></th>
-                  <th class="laajuus">{ i(laajuusYksikkö) }</th>
-                  <th class="arvosana">Arv.</th>
+                  <th class="laajuus">{ i(laajuusYksikkö).capitalize }</th>
+                  <th class="arvosana">Arvosana</th>
                   <th class="suoritus-pvm">Suor.pvm</th>
                 </tr>
                 { suoritukset.map(suoritusHtml) }

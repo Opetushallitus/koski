@@ -11,7 +11,7 @@ class LukioSpec extends FunSpec with Matchers with OpintosuoritusoteTestMethods 
         """Suoritetut tutkinnot
           |301000 Ylioppilastutkinto
           |Opintosuoritukset
-          |kurssia Arv. Suor.pvm
+          |Kurssia Arvosana Suor.pvm
           |301000 Ylioppilastutkinto 0
           |A1 A1-kieli, englanti 9 kiitettävä
           |ENA 10 Abituki 1 hyväksytty
