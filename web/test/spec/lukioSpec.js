@@ -22,4 +22,14 @@ describe('Lukiokoulutus', function( ){
       })
     })
   })
+
+  describe('Opintosuoritusote', function() {
+    before(page.openPage, page.oppijaHaku.search('110496-9369', page.isOppijaSelected('Liisa')))
+    before(OpinnotPage().avaaOpintosuoritusote(1))
+
+    describe('Kun klikataan linkkiä', function() {
+      it('näytetään', function() {
+      })
+    })
+  })
 })

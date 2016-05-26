@@ -1,5 +1,6 @@
 describe('Oppijahaku', function() {
   var page = KoskiPage()
+  var opinnot = OpinnotPage()
   var eero = 'Esimerkki, Eero 010101-123N'
   var markkanen = 'Markkanen, Eero '
   var eerola = 'Eerola, Jouni '
