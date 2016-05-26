@@ -163,7 +163,8 @@
             var selectedNode = path ? path[1] : null
 
             JSV.init({
-                schema: schema
+                schema: schema,
+                maxDepth: 10
             }, function() {
                 JSV.setVersion(tv4.getSchema(JSV.treeData.schema).version);
                 if (selectedNode) {
