@@ -26,6 +26,28 @@ section:after {
     border-top-width: 0;
     margin-bottom: 30px;
 }
+.preview-image-links {
+    text-align: center;
+    margin: 32px auto;
+    background: rgba(85, 85, 85, 0.1);
+}
+.preview-image-links a {
+    display: inline-block;
+    padding: 27px 50px;
+    max-width: 40%;
+    vertical-align: top;
+}
+.preview-image-links img {
+    border: 2px solid;
+    max-height: 280px;
+    margin-bottom: 13px;
+}
+.preview-image-links p {
+    font-size: 0.8em;
+    color: black;
+    padding: 0 80px;
+}
+
 small {
     font-size: 10px;
 }

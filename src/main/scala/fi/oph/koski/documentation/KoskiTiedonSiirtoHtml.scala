@@ -7,7 +7,9 @@ import fi.oph.koski.schema.KoskiSchema
 import scala.xml.Elem
 
 object KoskiTiedonSiirtoHtml {
-  def general ="""
+  private val schemaViewerUrl = "/koski/json-schema-viewer#koski-oppija-schema.json"
+  private val schemaFileUrl = "/koski/documentation/koski-oppija-schema.json"
+  private def general =s"""
 
 # Koski-tiedonsiirtoprotokolla
 
@@ -39,10 +41,18 @@ jotta konkreettista dataformaattia voitaisiin suunnitella. Yksi formaatin suunni
 
 Käytettävä JSON-dataformaatti on kuvattu [JSON-schemalla](http://json-schema.org/), jota vasten siirretyt tiedot voidaan myös automaattisesti validoida.
 
-- Tarkastele schemaa  [visualisointityökalun](/koski/json-schema-viewer#koski-oppija-schema.json) avulla.
-  Tällä työkalulla voi myös validoida JSON-viestejä schemaa vasten. Klikkaamalla kenttiä saat näkyviin niiden tarkemmat kuvaukset.
-- Lataa schema tiedostona: [koski-oppija-schema.json](/koski/documentation/koski-oppija-schema.json).
-
+<div class="preview-image-links">
+  <a href="${schemaViewerUrl}">
+    <image src="/koski/images/tor-schema-preview.png">
+    <div class="caption">Visualisoitu JSON-schema</div>
+    <p>Voi tarkastella schemaa visualisointityökalun avulla. Tällä työkalulla voi myös validoida JSON-viestejä schemaa vasten. Klikkaamalla kenttiä saat näkyviin niiden tarkemmat kuvaukset.</p>
+  </a>
+  <a href="${schemaFileUrl}">
+    <image src="/koski/images/tor-schema-json-preview.png">
+    <div class="caption">Lataa JSON-tiedostona</div>
+    <p>Voit myös ladata scheman tiedostona</p>
+  </a>
+</div>
 
 Tietokentät, joissa validit arvot on lueteltavissa, on kooditettu käyttäen hyväksi Opintopolku-järjestelmään kuuluvaa [Koodistopalvelua](https://github.com/Opetushallitus/koodisto).
 Esimerkki tällaisesta kentästä on tutkintoon johtavan koulutuksen [koulutuskoodi](/koski/documentation/koodisto/koulutus/latest).
