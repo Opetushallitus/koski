@@ -9,7 +9,7 @@ import fi.oph.koski.schema._
 // Schemavalidoinnille on tehty kattavat testit ammatillisten opiskeluoikeuksien osalle. Yleissivistävän koulutuksen validoinnissa luotamme
 // toistaiseksi siihen, että schema itsessään on katselmoitu, ja että geneerinen mekanismi toimii.
 
-class KoskiOppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoikeus] with OpiskeluoikeusTestMethodsLukio {
+class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoikeus] with OpiskeluoikeusTestMethodsLukio {
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = defaultOpiskeluoikeus.suoritukset.map(
    suoritus => suoritus.copy(koulutusmoduuli = suoritus.koulutusmoduuli.copy(perusteenDiaarinumero = diaari))
   ))

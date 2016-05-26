@@ -6,7 +6,7 @@ import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.oppija.MockOppijat
 import org.scalatest.{FreeSpec, Matchers}
 
-class KoskiOppijaGetByOidSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification {
+class OppijaGetByOidSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification {
   "/api/oppija/" - {
     SharedJetty.start
     AuditLogTester.setup

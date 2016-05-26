@@ -9,7 +9,7 @@ import fi.oph.koski.koskiuser.MockUsers
 import org.json4s._
 import org.scalatest.FunSpec
 
-class KoskiOppijaValidationSpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatillinen {
+class OppijaValidationSpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatillinen {
   describe("Opiskeluoikeuden lisääminen") {
     describe("Valideilla tiedoilla") {
       it("palautetaan HTTP 200") {

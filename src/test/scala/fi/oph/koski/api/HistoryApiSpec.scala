@@ -13,7 +13,7 @@ import fi.oph.koski.schema.{Opiskeluoikeus, TaydellisetHenkilötiedot}
 import fi.oph.koski.koskiuser.MockUsers
 import org.scalatest.FunSpec
 
-class KoskiHistoryApiSpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatillinen{
+class HistoryApiSpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatillinen{
   SharedJetty.start
   AuditLogTester.setup
   val uusiOpiskeluOikeus = defaultOpiskeluoikeus
