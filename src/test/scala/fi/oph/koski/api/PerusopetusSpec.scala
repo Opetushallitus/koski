@@ -7,7 +7,7 @@ import org.scalatest.{FunSpec, Matchers}
 import scala.collection.immutable.Seq
 import scala.xml.{Node, XML}
 
-class PerusopetusSpec extends FunSpec with Matchers with OpiskeluoikeusTestMethodsKorkeakoulu with SearchTestMethods {
+class PerusopetusSpec extends FunSpec with Matchers with SearchTestMethods {
   describe("Perusopetuksen lisäopetus") {
     it("todistus") {
       todistus("200596-9755") should equal(
