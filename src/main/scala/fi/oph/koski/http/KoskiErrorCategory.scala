@@ -90,6 +90,7 @@ object KoskiErrorCategory {
     val oppijaaEiLöydyTaiEiOikeuksia = subcategory("oppijaaEiLöydyTaiEiOikeuksia", "Oppijaa ei löydy annetulla oidilla tai käyttäjällä ei ole oikeuksia tietojen katseluun.")
     val oppijaaEiLöydy = subcategory("oppijaaEiLöydy", "Oppijaa ei löydy annetulla oidilla.")
     val opiskeluoikeuttaEiLöydyTaiEiOikeuksia = subcategory("opiskeluoikeuttaEiLöydyTaiEiOikeuksia", "Opiskeluoikeutta ei löydy annetulla id:llä tai käyttäjällä ei ole siihen oikeuksia")
+    val opiskeluoikeuttaOppilaitoksessaEiLöydy = subcategory("opiskeluoikeuttaOppilaitoksessaEiLöydy", "Oppijalla ei ole opiskeluoikeutta oppilaitoksessa tai käyttäjällä ei ole siihen oikeuksia")
     val versiotaEiLöydy = subcategory("versiotaEiLöydy", "Haettua versiota ei löydy")
     val koodistoaEiLöydy = subcategory("koodistoaEiLöydy", "Pyydettyä koodistoa ei löydy.")
     val diaarinumeroaEiLöydy = subcategory("diaarinumeroaEiLöydy", "Tutkinnon rakennetta ei löydy annetulla diaarinumerolla.")

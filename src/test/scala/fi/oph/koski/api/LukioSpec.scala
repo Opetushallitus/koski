@@ -8,11 +8,8 @@ class LukioSpec extends FunSpec with Matchers with OpintosuoritusoteTestMethods 
   describe("Lukio") {
     it("Opintosuoritusote") {
       opintosuoritusote(MockOppijat.lukiolainen.hetu, MockOrganisaatiot.jyväskylänNormaalikoulu) should equal(
-        """Suoritetut tutkinnot
-          |301000 Ylioppilastutkinto
-          |Opintosuoritukset
+        """Opintosuoritukset
           |Kurssia Arvosana Suor.pvm
-          |301000 Ylioppilastutkinto 0
           |A1 A1-kieli, englanti 9 kiitettävä
           |ENA 10 Abituki 1 hyväksytty
           |ENA1 Englannin kieli ja maailmani  1 erinomainen
