@@ -5,6 +5,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.localization.Locale._
+import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.schema._
 import fi.oph.koski.todistus.LocalizedHtml
 
@@ -54,20 +55,25 @@ class OpintosuoritusoteHtml(implicit val user: KoskiUser) extends LocalizedHtml 
               { opiskeluoikeudet.flatMap(tutkinnot) }
             </table>
           </section>
+          {
+            val suoritukset = opiskeluoikeudet.flatMap(opiskeluoikeudenSuoritukset)
+            val laajuudet: List[LocalizedString] = suoritukset.map(_._2).flatMap(_.koulutusmoduuli.laajuus.flatMap(laajuus => laajuus.yksikkö.lyhytNimi.orElse(laajuus.yksikkö.nimi)))
+            val laajuusYksikkö = laajuudet.headOption
 
-          <section class="opintosuoritukset">
-            <h3 class="suoritukset-title">Opintosuoritukset</h3>
-            <table class="suoritukset">
-              <tr class="header">
-                <th class="tunnus"></th>
-                <th class="nimi"></th>
-                <th class="laajuus">Op</th>
-                <th class="arvosana">Arv.</th>
-                <th class="suoritus-pvm">Suor.pvm</th>
-              </tr>
-              { opiskeluoikeudet.flatMap(suoritukset) }
-            </table>
-          </section>
+            <section class="opintosuoritukset">
+              <h3 class="suoritukset-title">Opintosuoritukset</h3>
+              <table class="suoritukset">
+                <tr class="header">
+                  <th class="tunnus"></th>
+                  <th class="nimi"></th>
+                  <th class="laajuus">{ i(laajuusYksikkö) }</th>
+                  <th class="arvosana">Arv.</th>
+                  <th class="suoritus-pvm">Suor.pvm</th>
+                </tr>
+                { suoritukset.map(suoritusHtml) }
+              </table>
+            </section>
+          }
         </div>
       </body>
     </html>
@@ -91,10 +97,10 @@ class OpintosuoritusoteHtml(implicit val user: KoskiUser) extends LocalizedHtml 
     </tr>
   }
 
-  private def suoritukset(opiskeluoikeus: Opiskeluoikeus) =
+  private def opiskeluoikeudenSuoritukset(opiskeluoikeus: Opiskeluoikeus): List[(Int, Suoritus)] =
     opiskeluoikeus.suoritukset.filter(s => s.tila.koodiarvo == "VALMIS")
       .sortBy(s => (!s.koulutusmoduuli.isTutkinto, i(s.koulutusmoduuli.nimi)))
-      .flatMap(suoritus => suoritusWithDepth((0, suoritus))).map(suoritusHtml)
+      .flatMap(suoritus => suoritusWithDepth((0, suoritus)))
 
   private def suoritusHtml(t: (Int, Suoritus)) = t match { case (depth, suoritus) =>
     <tr>

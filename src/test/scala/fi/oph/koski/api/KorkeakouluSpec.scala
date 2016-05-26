@@ -58,7 +58,7 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
           """|Suoritetut tutkinnot
             |751101 Dipl.ins., konetekniikka  22.3.2016
             |Opintosuoritukset
-            |Op Arv. Suor.pvm
+            |opintopistettä Arv. Suor.pvm
             |751101 Dipl.ins., konetekniikka 123 OIV 22.3.2016
             |K901-D Diplomityö (KON) 30 4 21.3.2016
             |MEN.thes Diplomityö 30 4 21.3.2016
@@ -108,7 +108,7 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
             |Voimassa 1.8.2008 - 31.7.2017
             |Suoritetut tutkinnot
             |Opintosuoritukset
-            |Op Arv. Suor.pvm
+            |opintopistettä Arv. Suor.pvm
             |KE-35.1200 Epäorgaaninen kemia I 4 2 15.12.2009
             |KE-35.1210 Epäorgaanisen kemian laboratoriotyöt 4 hyväksytty 10.12.2009
             |Tfy-3.1241 Fysiikka IA 3 5 28.10.2009
@@ -120,7 +120,7 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
         opintosuoritusote("100193-948U", "1.2.246.562.10.25619624254") should equal(
           """|Suoritetut tutkinnot
             |Opintosuoritukset
-            |Op Arv. Suor.pvm
+            |opintopistettä Arv. Suor.pvm
             |106000 Anatomi och fysiologi 5 1 15.11.2013
             |106000 Engelska, Akutvård 5 3 3.4.2014
             |106000 Hälsovård 5 4 13.9.2013
@@ -142,7 +142,7 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
           """|Suoritetut tutkinnot
             |671112 Fysioterapeutti (AMK)  29.5.2015
             |Opintosuoritukset
-            |Op Arv. Suor.pvm
+            |opintopistettä Arv. Suor.pvm
             |671112 Fysioterapeutti (AMK)  hyväksytty 29.5.2015
             |116000 Anatomi, fysiologi och biomekanik 5 3 11.11.2011
             |116000 Arbetslivsorienterade projekt 0,5 hyväksytty 27.5.2015
@@ -185,7 +185,7 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
         opintosuoritusote("090888-929X", "1.2.246.562.10.27756776996") should equal(
           """|Suoritetut tutkinnot
             |Opintosuoritukset
-            |Op Arv. Suor.pvm
+            |opintopistettä Arv. Suor.pvm
             |05AVOIN/MI00AX91/3 Graafisen suunnittelun perusteet 5 hyväksytty 7.11.2015
             |05AVOIN/MI00BB13/3 Typografian perusteet 4 hyväksytty 11.4.2016""".stripMargin
         )
