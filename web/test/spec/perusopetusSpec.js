@@ -40,7 +40,7 @@ describe('Perusopetus', function() {
   describe('Perusopetuksen oppiaineen oppimäärän todistus', function() {
     before(Authentication().login(), page.openPage, page.oppijaHaku.search('190596-953T', page.isOppijaSelected('Olli')), OpinnotPage().avaaTodistus)
     it('näytetään', function() {
-      expect(todistus.headings()).to.equal('Jyväskylän yliopisto Perusopetuksen oppiaineen oppimäärän suoritus Jyväskylän normaalikoulu Oppiaineenkorottaja, Olli 190596-953T')
+      expect(todistus.headings()).to.equal('Jyväskylän yliopisto Todistus perusopetuksen oppiaineen oppimäärän suorittamisesta Jyväskylän normaalikoulu Oppiaineenkorottaja, Olli 190596-953T')
       expect(todistus.arvosanarivi('.oppiaine.AI')).to.equal('Äidinkieli ja kirjallisuus Kiitettävä 9')
       expect(todistus.arvosanarivi('.muut-opinnot')).to.equal('')
     })
