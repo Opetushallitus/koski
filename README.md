@@ -189,7 +189,7 @@ Koski-sovelluskoodissa audit-loggaus tehdään `AuditLog`-luokan kautta ja sovel
 
 Testiympäristön Koski löytyy täältä:
 
-    http://tordev.tor.oph.reaktor.fi/koski/
+    https://koskidev.koski.oph.reaktor.fi/koski/
 
 Ympäristöön kuuluvat Opintopolku-palvelun osat täällä:
 
@@ -247,9 +247,9 @@ Tuotantokäytössä ja testiympäristössä käytetään asetuksia, joilla Koski
 järjestelmiin. Pilviympäristössä käytetään tällä hetkellä [cloud/restart.sh] -skriptiä, jolla annetaan
 tarvittavat asetukset.
 
-Kehityskäytössä voit käyttää erilaisia asetuksia tekemällä asetustiedostoja, kuten vaikkapa [src/main/resources/tordev.conf]
+Kehityskäytössä voit käyttää erilaisia asetuksia tekemällä asetustiedostoja, kuten vaikkapa [src/main/resources/koksidev.conf]
 (ei versionhallinnassa, koska sisältää luottamuksellista tietoa) ja antaa käytettävän tiedoston nimi käynnistysparametrina, 
-esim. `-Dconfig.resource=tordev.conf`. Valmiita asetustiedostoja voi pyytää kehitystiimiltä.
+esim. `-Dconfig.resource=koskidev.conf`. Valmiita asetustiedostoja voi pyytää kehitystiimiltä.
 
 ### Henkilötiedot
 

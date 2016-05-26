@@ -11,7 +11,7 @@ object MockKoodistoPalvelu extends KoodistoPalvelu {
     1) lisää tähän listaan koodiston nimi
     2) aja KoodistoMockDataUpdater -Dconfig.resource=qa.conf, jolloin koodiston sisältö haetaan qa-ympäristöstä paikallisiin json-fileisiin.
     3) kommitui uudet json-fileet. Muutoksia olemassa oleviin fileisiin ei kannattane tässä yhteydessä kommitoida.
-    4) aja koski-applikaatio -Dconfig.resource=tordev.conf -Dkoodisto.create=true, jolloin uusi koodisto kopioituu myös tordev-ympäristöön.
+    4) aja koski-applikaatio -Dconfig.resource=koskidev.conf -Dkoodisto.create=true, jolloin uusi koodisto kopioituu myös koskidev-ympäristöön.
 
    */
   val koodistot = List (

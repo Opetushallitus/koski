@@ -347,21 +347,21 @@
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest-maven-plugin</artifactId>
             <configuration>
-              <tagsToExclude>tordev</tagsToExclude>
+              <tagsToExclude>koskidev</tagsToExclude>
             </configuration>
           </plugin>
         </plugins>
       </build>
     </profile>
     <profile>
-      <id>tordev</id>
+      <id>koskidev</id>
       <build>
         <plugins>
           <plugin>
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest-maven-plugin</artifactId>
             <configuration>
-              <tagsToInclude>tordev</tagsToInclude>
+              <tagsToInclude>koskidev</tagsToInclude>
             </configuration>
           </plugin>
         </plugins>
@@ -380,7 +380,7 @@
               <groupId>org.scalatest</groupId>
               <artifactId>scalatest-maven-plugin</artifactId>
               <configuration>
-                <tagsToExclude>tordev</tagsToExclude>
+                <tagsToExclude>koskidev</tagsToExclude>
               </configuration>
             </plugin>
         </plugins>
