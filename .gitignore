@@ -20,6 +20,5 @@ src/test/scala/fi/oph/koski/ServiceTester.scala
 src/test/resources/opiskeluoikeudet.txt
 /ignore
 PersonOids.scala
-scripts/forcedeploy.sh
 *.log
 curltestdata.json
