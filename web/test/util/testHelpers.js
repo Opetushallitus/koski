@@ -181,3 +181,12 @@ function debug(x) {
   console.log(x)
   return x
 }
+
+
+function resetFixtures() {
+  return Q($.ajax({ url: '/koski/fixtures/reset', method: 'post'}))
+}
+
+function mockHttp(url, result) {
+  return function() { testFrame().http.mock(url, result) }
+}

@@ -71,7 +71,7 @@ const ExistingOppija = React.createClass({
 const Opintosuoritusote = React.createClass({
   render() {
     let {oppilaitos, oppija, tyyppi} = this.props
-    if (tyyppi == 'korkeakoulutus') {
+    if (tyyppi == 'korkeakoulutus' || tyyppi == 'lukiokoulutus') {
       let href = '/koski/opintosuoritusote/' + oppija.oid + '/' + oppilaitos.oid
       return <a className="opintosuoritusote" href={href}>näytä opintosuoritusote</a>
     } else {
