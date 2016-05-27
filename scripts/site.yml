@@ -1,0 +1,18 @@
+---
+- name: Koski deployment
+  hosts: koski
+  sudo: true
+  vars:
+    koski_home: /srv/tomcat/koski
+    koski_user: tomcat
+  tasks:
+  - name: Copy koski application package
+    unarchive:
+      src=../{{ koski_package }}
+      dest={{ koski_home }}/deploy
+      group={{ koski_user }}
+      owner={{ koski_user }}
+    notify: restart koski
+  handlers:
+    - name: restart koski
+      service: name=koski state=restarted

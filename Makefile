@@ -1,4 +1,9 @@
 KOSKI-SERVER = tordev-tor-app
+TARGET = qa
+commit = $(shell git rev-parse --short HEAD)
+dist-dir = target/koski-$(commit)
+deploy-file = $(dist-dir).zip
+
 help:
 	@echo ""
 	@echo "make build	- Build the whole application, ready for running or testing"
@@ -44,6 +49,10 @@ lint: eslint scalastyle
 it: test
 happen:
 #	# Pow pow!
+dist: build
+	./scripts/dist.sh $(dist-dir)
+newdeploy: dist
+	./scripts/deploy.sh $(TARGET) $(deploy-file)
 deploy:
 	-@git remote remove tordev &> /dev/null
 	git remote add tordev git@$(KOSKI-SERVER):tor.git
