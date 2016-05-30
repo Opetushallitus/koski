@@ -3,6 +3,8 @@ describe('Perusopetus', function() {
   var login = LoginPage()
   var todistus = TodistusPage()
 
+  before(Authentication().login(), resetFixtures)
+
   describe('Perusopetuksen päättötodistus', function() {
     before(page.openPage, page.oppijaHaku.search('110496-926Y', page.isOppijaSelected('Kaisa')))
     describe('Oppijan suorituksissa', function() {
@@ -15,9 +17,7 @@ describe('Perusopetus', function() {
       before(OpinnotPage().avaaTodistus)
       describe('Klikattaessa linkkiä', function() {
         it('näytetään', function() {
-          expect(todistus.headings()).to.equal('Jyväskylän yliopisto Perusopetuksen päättötodistus Jyväskylän normaalikoulu Koululainen, Kaisa 110496-926Y')
-          expect(todistus.arvosanarivi('.oppiaine.KT')).to.equal('Uskonto tai elämänkatsomustieto, Evankelisluterilainen uskonto Erinomainen 10')
-          expect(todistus.arvosanarivi('.oppiaine.KO.valinnainen')).to.equal('Valinnainen kotitalous 1.0 Hyväksytty')
+          // See more detailed content specification in PerusopetusSpec.scala
           expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
           expect(todistus.arvosanarivi('.muut-opinnot')).to.equal('Muut valinnaiset opinnot')
         })
@@ -50,6 +50,7 @@ describe('Perusopetus', function() {
     before(page.openPage, page.oppijaHaku.search('200596-9755', page.isOppijaSelected('Kaisa')), OpinnotPage().avaaTodistus)
     it('näytetään', function() {
       expect(todistus.headings()).to.equal('Jyväskylän yliopisto Todistus lisäopetuksen suorittamisesta Jyväskylän normaalikoulu Kymppiluokkalainen, Kaisa 200596-9755')
+      // See more detailed content specification in PerusopetusSpec.scala
     })
   })
 })

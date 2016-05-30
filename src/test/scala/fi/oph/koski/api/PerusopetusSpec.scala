@@ -1,18 +1,58 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.json.Json
 import fi.oph.koski.oppija.MockOppijat
-import fi.oph.koski.schema._
 import org.scalatest.{FunSpec, Matchers}
 
-import scala.collection.immutable.Seq
-import scala.xml.{Node, XML}
+class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods {
+  describe("Perusopetuksen todistukset") {
+    it("Perusopetuksen päättötodistus") {
+      todistus(MockOppijat.koululainen.hetu) should equal(
+        """|Jyväskylän yliopisto
+          |Perusopetuksen päättötodistus
+          |Jyväskylän normaalikoulu
+          |Koululainen, Kaisa 110496-926Y
+          |
+          |Äidinkieli ja kirjallisuus  Kiitettävä 9
+          |B1-kieli, ruotsi  Hyvä 8
+          |Valinnainen b1-kieli, ruotsi 1.0 Hyväksytty
+          |A1-kieli, englanti  Hyvä 8
+          |Uskonto tai elämänkatsomustieto, Evankelisluterilainen uskonto  Erinomainen 10
+          |Historia  Hyvä 8
+          |Yhteiskuntaoppi  Erinomainen 10
+          |Matematiikka  Kiitettävä 9
+          |Kemia  Tyydyttävä 7
+          |Fysiikka  Kiitettävä 9
+          |Biologia  Kiitettävä 9
+          |Maantieto  Kiitettävä 9
+          |Musiikki  Tyydyttävä 7
+          |Kuvataide  Hyvä 8
+          |Kotitalous  Hyvä 8
+          |Valinnainen kotitalous 1.0 Hyväksytty
+          |Terveystieto  Hyvä 8
+          |Käsityö  Kiitettävä 9
+          |Liikunta  Kiitettävä 9
+          |Valinnainen liikunta 0.5 Hyväksytty
+          |
+          |B2-kieli, saksa 4.0 Kiitettävä 9""".stripMargin)
+    }
+    it("Perusopetuksen oppiaineen oppimäärän todistus") {
+      todistus(MockOppijat.oppiaineenKorottaja.hetu) should equal(
+        """Jyväskylän yliopisto
+          |Todistus perusopetuksen oppiaineen oppimäärän suorittamisesta
+          |Jyväskylän normaalikoulu
+          |Oppiaineenkorottaja, Olli 190596-953T
+          |
+          |Äidinkieli ja kirjallisuus  Kiitettävä 9""".stripMargin)
+    }
 
-class PerusopetusSpec extends FunSpec with Matchers with SearchTestMethods {
+  }
   describe("Perusopetuksen lisäopetus") {
     it("todistus") {
       todistus(MockOppijat.kymppiluokkalainen.hetu) should equal(
-        """|Kymppiluokkalainen, Kaisa 200596-9755
+        """|Jyväskylän yliopisto
+          |Todistus lisäopetuksen suorittamisesta
+          |Jyväskylän normaalikoulu
+          |Kymppiluokkalainen, Kaisa 200596-9755
           |
           |Äidinkieli ja kirjallisuus  Tyydyttävä  7
           |A1-kieli, englanti  Erinomainen  10
@@ -30,29 +70,5 @@ class PerusopetusSpec extends FunSpec with Matchers with SearchTestMethods {
     }
   }
 
-  private def todistus(hetu: String) = {
-    opiskeluoikeus(hetu).flatMap(_.id).map { opiskeluoikeusID =>
-      authGet(s"todistus/opiskeluoikeus/${opiskeluoikeusID}") {
-        verifyResponseStatus(200)
-        val lines: Seq[String] = XML.loadString(response.body)
-          .flatMap(_.descendant_or_self)
-          .flatMap {
-            case tr: Node if tr.label == "tr" && (tr \ "@class").text != "header" => Some((tr \ "td").map(_.text.trim).mkString(" ").trim)
-            case h3: Node if h3.label == "h3" => Some((h3 \ "span").map(_.text.trim).mkString(" ").trim)
-            case _ => None
-        }
-        lines.mkString("\n").trim
-      }
-    }.getOrElse("")
-  }
-
-  private def opiskeluoikeus(searchTerm: String): Option[PerusopetuksenLisäopetuksenOpiskeluoikeus] = {
-    searchForHenkilötiedot(searchTerm).flatMap { henkilötiedot =>
-      val oppija: Oppija = authGet("api/oppija/" + henkilötiedot.oid) {
-        verifyResponseStatus(200)
-        Json.read[Oppija](body)
-      }
-      oppija.opiskeluoikeudet.collect { case x: PerusopetuksenLisäopetuksenOpiskeluoikeus => x }.headOption
-    }.headOption
-  }
 }
+

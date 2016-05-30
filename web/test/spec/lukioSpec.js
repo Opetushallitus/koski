@@ -14,10 +14,7 @@ describe('Lukiokoulutus', function( ){
     describe('Tulostettava todistus', function() {
       before(OpinnotPage().avaaTodistus)
       it('näytetään', function() {
-        expect(todistus.headings()).to.equal('Lukion päättötodistusJyväskylän yliopistoJyväskylän normaalikoulu Lukiolainen, Liisa 110496-9369')
-        expect(todistus.arvosanarivi('.oppiaine.KT')).to.equal('Uskonto tai elämänkatsomustieto, Evankelisluterilainen uskonto 3 Hyvä 8')
-        expect(todistus.arvosanarivi('.oppiaine.MA')).to.equal('Matematiikka, pitkä oppimäärä 15 Kiitettävä 9')
-        expect(todistus.arvosanarivi('.kurssimaara')).to.equal('Opiskelijan suorittama kokonaiskurssimäärä 87,5')
+        // See more detailed content specification in LukioSpec.scala
         expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
       })
     })

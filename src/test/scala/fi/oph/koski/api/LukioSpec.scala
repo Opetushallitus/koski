@@ -4,7 +4,7 @@ import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import org.scalatest.{FunSpec, Matchers}
 
-class LukioSpec extends FunSpec with Matchers with OpintosuoritusoteTestMethods {
+class LukioSpec extends FunSpec with Matchers with OpintosuoritusoteTestMethods with TodistusTestMethods {
   describe("Lukio") {
     it("Opintosuoritusote") {
       opintosuoritusote(MockOppijat.lukiolainen.hetu, MockOrganisaatiot.jyväskylänNormaalikoulu) should equal(
@@ -117,6 +117,33 @@ class LukioSpec extends FunSpec with Matchers with OpintosuoritusoteTestMethods 
           |ÄI4 Tekstit ja vaikuttaminen 1 8
           |ÄI1 Tekstit ja vuorovaikutus 1 8""".stripMargin
       )
+    }
+
+    it("Päättötodistus") {
+      todistus(MockOppijat.lukiolainen.hetu) should equal("""Lukion päättötodistus
+                                                            |Jyväskylän yliopisto
+                                                            |Jyväskylän normaalikoulu
+                                                            |Lukiolainen, Liisa 110496-9369
+                                                            |
+                                                            |Äidinkieli ja kirjallisuus 8 Kiitettävä 9
+                                                            |A1-kieli, englanti 9 Kiitettävä 9
+                                                            |B1-kieli, ruotsi 5 Tyydyttävä 7
+                                                            |B3-kieli, latina 2 Kiitettävä 9
+                                                            |Matematiikka, pitkä oppimäärä 15 Kiitettävä 9
+                                                            |Biologia 7,5 Kiitettävä 9
+                                                            |Maantieto 2 Hyvä 8
+                                                            |Fysiikka 13 Hyvä 8
+                                                            |Kemia 8 Hyvä 8
+                                                            |Uskonto tai elämänkatsomustieto, Evankelisluterilainen uskonto 3 Hyvä 8
+                                                            |Filosofia 1 Hyvä 8
+                                                            |Psykologia 1 Kiitettävä 9
+                                                            |Historia 4 Tyydyttävä 7
+                                                            |Yhteiskuntaoppi 2 Hyvä 8
+                                                            |Liikunta 3 Kiitettävä 9
+                                                            |Musiikki 1 Hyvä 8
+                                                            |Kuvataide 2 Kiitettävä 9
+                                                            |Terveystieto 1 Kiitettävä 9
+                                                            |Opiskelijan suorittama kokonaiskurssimäärä 87,5""".stripMargin)
     }
   }
 }
