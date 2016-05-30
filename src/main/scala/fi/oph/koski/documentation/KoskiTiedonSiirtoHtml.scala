@@ -104,6 +104,7 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
             Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esimerkissa on varsinaisen JSON-sisällön lisäksi schemaan pohjautuva annotointi ja linkitykset koodistoon ja OKSA-sanastoon.
           </p>
           { examplesHtml(ExamplesPerusopetus.examples, "Perusopetus") }
+          { examplesHtml(ExamplesPerusopetuksenLisaopetus.examples, "Perusopetuksen lisäopetus") }
           { examplesHtml(ExamplesLukio.examples, "Lukiokoulutus") }
           { examplesHtml(ExamplesAmmatillinen.examples, "Ammatillinen koulutus") }
           { examplesHtml(ExamplesKorkeakoulu.examples, "Korkeakoulu (Virrasta)") }
