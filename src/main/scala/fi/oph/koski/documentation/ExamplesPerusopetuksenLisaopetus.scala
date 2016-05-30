@@ -62,6 +62,6 @@ object ExamplesPerusopetuksenLisaopetus {
   )
 
   val examples = List(
-    Example("aikuisten perusopetuksen lisäopetus", "Opiskelija on suorittanut perusopetuksen lisäopetuksen (kymppiluokka)", lisäopetuksenPäättötodistus)
+    Example("perusopetuksen lisäopetus", "Opiskelija on suorittanut perusopetuksen lisäopetuksen (kymppiluokka)", lisäopetuksenPäättötodistus)
   )
 }
