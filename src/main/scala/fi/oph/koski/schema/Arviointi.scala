@@ -10,7 +10,7 @@ import fi.oph.scalaschema.annotation._
 trait Arviointi {
   def arvosana: KoodiViite
   @Description("Päivämäärä, jolloin arviointi on annettu")
-  def päivä: Option[LocalDate]
+  def arviointipäivä: Option[LocalDate]
   def arvioitsijat: Option[List[Arvioitsija]]
 
   def arvosanaNumeroin: Option[LocalizedString] = {
@@ -19,6 +19,11 @@ trait Arviointi {
     }
   }
   def arvosanaKirjaimin: LocalizedString
+}
+
+trait ArviointiPäivämäärällä extends Arviointi {
+  def päivä: LocalDate
+  def arviointipäivä = Some(päivä)
 }
 
 trait KoodistostaLöytyväArviointi extends Arviointi {

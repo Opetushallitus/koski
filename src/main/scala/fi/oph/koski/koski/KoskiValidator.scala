@@ -1,5 +1,6 @@
 package fi.oph.koski.koski
 
+import java.time.LocalDate
 import fi.oph.koski.http.{KoskiErrorCategory, HttpStatus}
 import fi.oph.koski.json.Json
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
@@ -71,10 +72,11 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   def validateSuoritus(suoritus: Suoritus, vahvistus: Option[Vahvistus]): HttpStatus = {
-    val arviointipäivä = ("suoritus.arviointi.päivä", suoritus.arviointi.toList.flatten.flatMap(_.päivä))
+    val arviointipäivä = ("suoritus.arviointi.päivä", suoritus.arviointi.toList.flatten.flatMap(_.arviointipäivä))
+    val alkamispäivä: (String, Iterable[LocalDate]) = ("suoritus.alkamispäivä", suoritus.alkamispäivä)
+    val vahvistuspäivä: (String, Iterable[LocalDate]) = ("suoritus.vahvistus.päivä", suoritus.vahvistus.map(_.päivä))
     HttpStatus.fold(
-      validateDateOrder(("suoritus.alkamispäivä", suoritus.alkamispäivä), arviointipäivä)
-        :: validateDateOrder(arviointipäivä, ("suoritus.vahvistus.päivä", suoritus.vahvistus.map(_.päivä)))
+      validateDateOrder(alkamispäivä, arviointipäivä).then(validateDateOrder(arviointipäivä, vahvistuspäivä).then(validateDateOrder(alkamispäivä, vahvistuspäivä)))
         :: validateStatus(suoritus, vahvistus)
         :: validateLaajuus(suoritus)
         :: suoritus.osasuoritusLista.map(validateSuoritus(_, suoritus.vahvistus.orElse(vahvistus)))

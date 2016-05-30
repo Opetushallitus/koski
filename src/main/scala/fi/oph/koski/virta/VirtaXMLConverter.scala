@@ -143,7 +143,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
     koodistoViitePalvelu.getKoodistoKoodiViite("virtaarvosana", suoritus \ "Arvosana" \ "_" text).map( arvosana =>
       List(KorkeakoulunKoodistostaLöytyväArviointi(
         arvosana = arvosana,
-        päivä = Some(LocalDate.parse(suoritus \ "SuoritusPvm" text))
+        päivä = LocalDate.parse(suoritus \ "SuoritusPvm" text)
       ))
     ).orElse(paikallinenArviointi(suoritus)) // TODO, Mitä jos arvosanaa ei löydy koodistosta eikä ole paikallinen arvosana ?
 
@@ -156,7 +156,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
       .map { a => List(
         KorkeakoulunPaikallinenArviointi(
           Paikallinenkoodi((a \ "Koodi").text, nimi(a), asteikkoUri),
-          Some(LocalDate.parse(suoritus \ "SuoritusPvm" text))
+          LocalDate.parse(suoritus \ "SuoritusPvm" text)
         ))
       }
   }

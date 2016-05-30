@@ -81,24 +81,6 @@
           "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
         }
       },
-      "arviointi" : [ {
-        "arvosana" : {
-          "koodiarvo" : "Hyväksytty",
-          "nimi" : {
-            "fi" : "Hyväksytty"
-          },
-          "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
-          "koodistoVersio" : 1
-        },
-        "päivä" : "2013-03-20",
-        "arvioitsijat" : [ {
-          "nimi" : "Jaana Arstila"
-        }, {
-          "nimi" : "Pekka Saurmann"
-        }, {
-          "nimi" : "Juhani Mykkänen"
-        } ]
-      } ],
       "vahvistus" : {
         "päivä" : "2016-05-31",
         "paikkakunta" : {

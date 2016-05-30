@@ -71,13 +71,14 @@ case class AmmatillisenTutkinnonSuoritus(
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
-  arviointi: Option[List[AmmatillinenArviointi]] = None,
   vahvistus: Option[Vahvistus] = None,
   @Description("Ammatilliseen tutkintoon liittyvät tutkinnonosan suoritukset")
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = None,
   @KoodistoKoodiarvo("ammatillinentutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinentutkinto", "suorituksentyyppi")
-) extends Suoritus
+) extends Suoritus {
+  def arviointi: Option[List[AmmatillinenArviointi]] = None
+}
 
 case class AmmatillisenTutkinnonOsanSuoritus(
   koulutusmoduuli: AmmatillisenTutkinnonOsa,
@@ -157,10 +158,10 @@ case class AmmatillinenArviointi(
   @KoodistoUri("arviointiasteikkoammatillinenhyvaksyttyhylatty")
   @KoodistoUri("arviointiasteikkoammatillinent1k3")
   arvosana: Koodistokoodiviite,
-  päivä: Option[LocalDate],
+  päivä: LocalDate,
   @Description("Tutkinnon osan suorituksen arvioinnista päättäneen henkilön nimi")
   arvioitsijat: Option[List[Arvioitsija]] = None
-) extends KoodistostaLöytyväArviointi
+) extends KoodistostaLöytyväArviointi with ArviointiPäivämäärällä
 
 @Description("Näytön kuvaus")
 case class Näyttö(

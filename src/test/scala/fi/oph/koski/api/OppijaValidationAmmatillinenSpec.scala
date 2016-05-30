@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
 import java.time.LocalDate
-
+import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.ExampleData.helsinki
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.Json
@@ -147,7 +147,99 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         }
 
         describe("Suorituksen tila") {
-          testSuorituksenTila[AmmatillisenTutkinnonOsanSuoritus](tutkinnonOsaSuoritus, "tutkinnonosat/100023", { suoritus => { f => putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(f)} })
+          def copySuoritus(t: Koodistokoodiviite, a: Option[List[AmmatillinenArviointi]], v: Option[Vahvistus], ap: Option[LocalDate] = None): AmmatillisenTutkinnonOsanSuoritus = {
+            val alkamispäivä = ap.orElse(tutkinnonOsaSuoritus.alkamispäivä)
+            tutkinnonOsaSuoritus.copy(tila = t, arviointi = a, vahvistus = v, alkamispäivä = alkamispäivä)
+          }
+
+          def put(suoritus: AmmatillisenTutkinnonOsanSuoritus)(f: => Unit) = {
+            putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(f)
+          }
+
+
+          def testKesken(tila: Koodistokoodiviite): Unit = {
+            describe("Arviointi puuttuu") {
+              it("palautetaan HTTP 200") (put(copySuoritus(tila, None, None)) (
+                verifyResponseStatus(200)
+              ))
+            }
+            describe("Arviointi annettu") {
+              it("palautetaan HTTP 200") (put(copySuoritus(tila, arviointiHyvä(), None)) (
+                verifyResponseStatus(200)
+              ))
+            }
+            describe("Vahvistus annettu") {
+              it("palautetaan HTTP 400") (put(copySuoritus(tila, arviointiHyvä(), vahvistus(LocalDate.parse("2016-08-08")))) (
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusVäärässäTilassa("Suorituksella tutkinnonosat/100023 on vahvistus, vaikka suorituksen tila on " + tila.koodiarvo))
+              ))
+            }
+          }
+          describe("Kun suorituksen tila on KESKEN") {
+            testKesken(tilaKesken)
+          }
+
+          describe("Kun suorituksen tila on KESKEYTYNYT") {
+            testKesken(tilaKesken)
+          }
+
+          describe("Kun suorituksen tila on VALMIS") {
+            describe("Suorituksella arviointi ja vahvistus") {
+              it("palautetaan HTTP 200") (put(copySuoritus(tilaValmis, arviointiHyvä(), vahvistus(LocalDate.parse("2016-08-08")))) (
+                verifyResponseStatus(200)
+              ))
+            }
+            describe("Vahvistus annettu, mutta arviointi puuttuu") {
+              it("palautetaan HTTP 200") (put(copySuoritus(tilaValmis, None, vahvistus(LocalDate.parse("2016-08-08")))) (
+                verifyResponseStatus(200)
+              ))
+            }
+
+            describe("Vahvistus puuttuu") {
+              it("palautetaan HTTP 400") (put(copySuoritus(tilaValmis, arviointiHyvä(), None)) (
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta tutkinnonosat/100023 puuttuu vahvistus, vaikka suorituksen tila on VALMIS"))
+              ))
+            }
+
+            describe("Vahvistuksen myöntäjähenkilö puuttuu") {
+              it("palautetaan HTTP 400") (put(copySuoritus(tilaValmis, arviointiHyvä(), Some(Vahvistus(LocalDate.parse("2016-08-08"), helsinki, stadinOpisto, Nil)))) (
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*array is too short.*".r))
+              ))
+            }
+
+          }
+
+          describe("Arviointi") {
+            describe("Arviointiasteikko on tuntematon") {
+              it("palautetaan HTTP 400") (put(copySuoritus(tutkinnonOsaSuoritus.tila, Some(List(AmmatillinenArviointi(Koodistokoodiviite("2", "vääräasteikko"), date(2015, 5, 1)))), None))
+                (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*not found in enum.*".r))))
+            }
+
+            describe("Arvosana ei kuulu perusteiden mukaiseen arviointiasteikkoon") {
+              it("palautetaan HTTP 400") (put(copySuoritus(tutkinnonOsaSuoritus.tila, Some(List(AmmatillinenArviointi(Koodistokoodiviite("x", "arviointiasteikkoammatillinent1k3"), date(2015, 5, 1)))), None))
+                (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia arviointiasteikkoammatillinent1k3/x ei löydy koodistosta"))))
+            }
+          }
+
+          describe("Suorituksen päivämäärät") {
+            def päivämäärillä(alkamispäivä: String, arviointipäivä: String, vahvistuspäivä: String) = {
+              copySuoritus(tilaValmis, arviointiHyvä(LocalDate.parse(arviointipäivä)), vahvistus(LocalDate.parse(vahvistuspäivä)), Some(LocalDate.parse(alkamispäivä)))
+            }
+
+            describe("Päivämäärät kunnossa") {
+              it("palautetaan HTTP 200" ) (put(päivämäärillä("2015-08-01", "2016-05-30", "2016-06-01"))(
+                verifyResponseStatus(200)))
+            }
+
+            describe("alkamispäivä > arviointi.päivä") {
+              it("palautetaan HTTP 400" ) (put(päivämäärillä("2017-08-01", "2016-05-31", "2016-05-31"))(
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua("suoritus.alkamispäivä (2017-08-01) oltava sama tai aiempi kuin suoritus.arviointi.päivä(2016-05-31)"))))
+            }
+
+            describe("arviointi.päivä > vahvistus.päivä") {
+              it("palautetaan HTTP 400" ) (put(päivämäärillä("2015-08-01", "2016-05-31", "2016-05-30"))(
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua("suoritus.arviointi.päivä (2016-05-31) oltava sama tai aiempi kuin suoritus.vahvistus.päivä(2016-05-30)"))))
+            }
+          }
 
           describe("Kun tutkinto on VALMIS-tilassa ja sillä on osa, joka on KESKEN-tilassa") {
             val opiskeluOikeus = opiskeluoikeus().copy(suoritukset = List(tutkintoSuoritus.copy(
@@ -162,9 +254,71 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     }
 
     describe("Tutkinnon tila ja arviointi") {
-      testSuorituksenTila[AmmatillisenTutkinnonSuoritus](tutkintoSuoritus, "koulutus/351301", { suoritus => { f => {
-        putOpiskeluOikeus(opiskeluoikeus().copy(suoritukset = List(suoritus)))(f)
-      }}})
+      def copySuoritus(t: Koodistokoodiviite, v: Option[Vahvistus], ap: Option[LocalDate] = None) = {
+        val alkamispäivä = ap.orElse(tutkinnonOsaSuoritus.alkamispäivä)
+        tutkintoSuoritus.copy(tila = t, vahvistus = v, alkamispäivä = alkamispäivä)
+      }
+
+      def put(s: AmmatillisenTutkinnonSuoritus)(f: => Unit) = {
+        putOpiskeluOikeus(opiskeluoikeus().copy(suoritukset = List(s)))(f)
+      }
+
+      def testKesken(tila: Koodistokoodiviite): Unit = {
+        describe("Vahvistus puuttuu") {
+          it("palautetaan HTTP 200") (put(copySuoritus(tila, None, None)) (
+            verifyResponseStatus(200)
+          ))
+        }
+        describe("Vahvistus annettu") {
+          it("palautetaan HTTP 400") (put(copySuoritus(tila, vahvistus(LocalDate.parse("2016-08-08")))) (
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusVäärässäTilassa("Suorituksella koulutus/351301 on vahvistus, vaikka suorituksen tila on " + tila.koodiarvo))
+          ))
+        }
+      }
+      describe("Kun suorituksen tila on KESKEN") {
+        testKesken(tilaKesken)
+      }
+
+      describe("Kun suorituksen tila on KESKEYTYNYT") {
+        testKesken(tilaKesken)
+      }
+
+      describe("Kun suorituksen tila on VALMIS") {
+        describe("Suorituksella on vahvistus") {
+          it("palautetaan HTTP 200") (put(copySuoritus(tilaValmis, vahvistus(LocalDate.parse("2016-08-08")))) (
+            verifyResponseStatus(200)
+          ))
+        }
+
+        describe("Vahvistus puuttuu") {
+          it("palautetaan HTTP 400") (put(copySuoritus(tilaValmis, None)) (
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta koulutus/351301 puuttuu vahvistus, vaikka suorituksen tila on VALMIS"))
+          ))
+        }
+
+        describe("Vahvistuksen myöntäjähenkilö puuttuu") {
+          it("palautetaan HTTP 400") (put(copySuoritus(tilaValmis, Some(Vahvistus(LocalDate.parse("2016-08-08"), helsinki, stadinOpisto, Nil)))) (
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*array is too short.*".r))
+          ))
+        }
+
+      }
+
+      describe("Suorituksen päivämäärät") {
+        def päivämäärillä(alkamispäivä: String, vahvistuspäivä: String) = {
+          copySuoritus(tilaValmis, vahvistus(LocalDate.parse(vahvistuspäivä)), Some(LocalDate.parse(alkamispäivä)))
+        }
+
+        describe("Päivämäärät kunnossa") {
+          it("palautetaan HTTP 200" ) (put(päivämäärillä("2015-08-01", "2016-06-01"))(
+            verifyResponseStatus(200)))
+        }
+
+        describe("alkamispäivä > vahvistus.päivä") {
+          it("palautetaan HTTP 400" ) (put(päivämäärillä("2017-08-01", "2016-05-31"))(
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua("suoritus.alkamispäivä (2017-08-01) oltava sama tai aiempi kuin suoritus.vahvistus.päivä(2016-05-31)"))))
+        }
+      }
     }
 
     describe("Oppisopimus") {
@@ -188,106 +342,11 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     }
   }
 
-  private def testSuorituksenTila[T <: Suoritus](suoritus: T, desc: String, put: (T => ((=> Unit) => Unit))): Unit = {
-    def copySuoritus(suoritus: T, t: Koodistokoodiviite, a: Option[List[AmmatillinenArviointi]], v: Option[Vahvistus], ap: Option[LocalDate] = None): T = {
-      val alkamispäivä = ap.orElse(suoritus.alkamispäivä)
-      (suoritus match {
-        case s: AmmatillisenTutkinnonSuoritus => s.copy(tila = t, arviointi = a, vahvistus = v, alkamispäivä = alkamispäivä)
-        case s: AmmatillisenTutkinnonOsanSuoritus => s.copy(tila = t, arviointi = a, vahvistus = v, alkamispäivä = alkamispäivä)
-      }).asInstanceOf[T]
-    }
-
-
-    def testKesken(tila: Koodistokoodiviite): Unit = {
-      describe("Arviointi puuttuu") {
-        it("palautetaan HTTP 200") (put(copySuoritus(suoritus, tila, None, None)) (
-          verifyResponseStatus(200)
-        ))
-      }
-      describe("Arviointi annettu") {
-        it("palautetaan HTTP 200") (put(copySuoritus(suoritus, tila, arviointiHyvä(), None)) (
-          verifyResponseStatus(200)
-        ))
-      }
-      describe("Vahvistus annettu") {
-        it("palautetaan HTTP 400") (put(copySuoritus(suoritus, tila, arviointiHyvä(), vahvistus(LocalDate.parse("2016-08-08")))) (
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusVäärässäTilassa("Suorituksella " + desc + " on vahvistus, vaikka suorituksen tila on " + tila.koodiarvo))
-        ))
-      }
-    }
-    describe("Kun suorituksen tila on KESKEN") {
-      testKesken(tilaKesken)
-    }
-
-    describe("Kun suorituksen tila on KESKEYTYNYT") {
-      testKesken(tilaKesken)
-    }
-
-    describe("Kun suorituksen tila on VALMIS") {
-      describe("Suorituksella arviointi ja vahvistus") {
-        it("palautetaan HTTP 200") (put(copySuoritus(suoritus, tilaValmis, arviointiHyvä(), vahvistus(LocalDate.parse("2016-08-08")))) (
-          verifyResponseStatus(200)
-        ))
-      }
-      describe("Vahvistus annettu, mutta arviointi puuttuu") {
-        it("palautetaan HTTP 200") (put(copySuoritus(suoritus, tilaValmis, None, vahvistus(LocalDate.parse("2016-08-08")))) (
-          verifyResponseStatus(200)
-        ))
-      }
-
-      describe("Vahvistus puuttuu") {
-        it("palautetaan HTTP 400") (put(copySuoritus(suoritus, tilaValmis, arviointiHyvä(), None)) (
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta " + desc + " puuttuu vahvistus, vaikka suorituksen tila on VALMIS"))
-        ))
-      }
-
-      describe("Vahvistuksen myöntäjähenkilö puuttuu") {
-        it("palautetaan HTTP 400") (put(copySuoritus(suoritus, tilaValmis, arviointiHyvä(), Some(Vahvistus(LocalDate.parse("2016-08-08"), helsinki, stadinOpisto, Nil)))) (
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*array is too short.*".r))
-        ))
-      }
-
-    }
-
-    describe("Arviointi") {
-      describe("Arviointiasteikko on tuntematon") {
-        it("palautetaan HTTP 400") (put(copySuoritus(suoritus, suoritus.tila, Some(List(AmmatillinenArviointi(Koodistokoodiviite("2", "vääräasteikko"), None))), None))
-          (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*not found in enum.*".r))))
-      }
-
-      describe("Arvosana ei kuulu perusteiden mukaiseen arviointiasteikkoon") {
-        it("palautetaan HTTP 400") (put(copySuoritus(suoritus, suoritus.tila, Some(List(AmmatillinenArviointi(Koodistokoodiviite("x", "arviointiasteikkoammatillinent1k3"), None))), None))
-          (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia arviointiasteikkoammatillinent1k3/x ei löydy koodistosta"))))
-      }
-    }
-
-    describe("Suorituksen päivämäärät") {
-      def päivämäärillä(alkamispäivä: String, arviointipäivä: String, vahvistuspäivä: String) = {
-        copySuoritus(suoritus, tilaValmis, arviointiHyvä(Some(LocalDate.parse(arviointipäivä))), vahvistus(LocalDate.parse(vahvistuspäivä)), Some(LocalDate.parse(alkamispäivä)))
-      }
-
-      describe("Päivämäärät kunnossa") {
-        it("palautetaan HTTP 200" ) (put(päivämäärillä("2015-08-01", "2016-05-30", "2016-06-01"))(
-          verifyResponseStatus(200)))
-      }
-
-      describe("alkamispäivä > arviointi.päivä") {
-        it("palautetaan HTTP 400" ) (put(päivämäärillä("2017-08-01", "2016-05-31", "2016-05-31"))(
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua("suoritus.alkamispäivä (2017-08-01) oltava sama tai aiempi kuin suoritus.arviointi.päivä(2016-05-31)"))))
-      }
-
-      describe("arviointi.päivä > vahvistus.päivä") {
-        it("palautetaan HTTP 400" ) (put(päivämäärillä("2015-08-01", "2016-05-31", "2016-05-30"))(
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua("suoritus.arviointi.päivä (2016-05-31) oltava sama tai aiempi kuin suoritus.vahvistus.päivä(2016-05-30)"))))
-      }
-    }
-  }
-
   def vahvistus(date: LocalDate): Some[Vahvistus] = {
     Some(Vahvistus(date, helsinki, stadinOpisto, List(OrganisaatioHenkilö("Teppo Testaaja", "rehtori", stadinOpisto))))
   }
 
-  def arviointiHyvä(päivä: Option[LocalDate] = None): Some[List[AmmatillinenArviointi]] = Some(List(AmmatillinenArviointi(Koodistokoodiviite("2", "arviointiasteikkoammatillinent1k3"), päivä)))
+  def arviointiHyvä(päivä: LocalDate = date(2015, 1, 1)): Some[List[AmmatillinenArviointi]] = Some(List(AmmatillinenArviointi(Koodistokoodiviite("2", "arviointiasteikkoammatillinent1k3"), päivä)))
 
   lazy val stadinOpisto: OidOrganisaatio = OidOrganisaatio(MockOrganisaatiot.stadinAmmattiopisto)
 

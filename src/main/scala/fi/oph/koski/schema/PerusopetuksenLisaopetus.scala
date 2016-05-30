@@ -59,7 +59,9 @@ case class PerusopetuksenLisäopetuksenOppiaineenArviointi(
   arvioitsijat: Option[List[Arvioitsija]] = None,
   @Description("Onko kyseessä perusopetuksen oppiaineen arvosanan korotus")
   korotus: Boolean
-) extends KoodistostaLöytyväArviointi
+) extends KoodistostaLöytyväArviointi {
+  def arviointipäivä = päivä
+}
 
 case class PerusopetuksenLisäopetus(
   @KoodistoUri("koulutus")

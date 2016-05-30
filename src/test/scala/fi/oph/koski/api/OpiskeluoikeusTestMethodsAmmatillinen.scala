@@ -20,7 +20,6 @@ trait OpiskeluoikeusTestMethodsAmmatillinen extends OpiskeluOikeusTestMethods[Am
     tila = tilaKesken,
     alkamispäivä = None,
     toimipiste = OidOrganisaatio(MockOrganisaatiot.lehtikuusentienToimipiste),
-    arviointi = None,
     vahvistus = None,
     osasuoritukset = None
   )

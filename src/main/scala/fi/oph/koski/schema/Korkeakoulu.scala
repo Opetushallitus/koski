@@ -95,19 +95,19 @@ case class KorkeakoulunOpiskeluoikeusjakso(
   tila: Koodistokoodiviite
 ) extends Opiskeluoikeusjakso
 
-trait KorkeakoulunArviointi extends Arviointi
+trait KorkeakoulunArviointi extends ArviointiPäivämäärällä
 
 case class KorkeakoulunKoodistostaLöytyväArviointi(
   @KoodistoUri("virtaarvosana")
   arvosana: Koodistokoodiviite,
-  päivä: Option[LocalDate]
+  päivä: LocalDate
 ) extends KoodistostaLöytyväArviointi with KorkeakoulunArviointi {
   override def arvioitsijat: Option[List[Arvioitsija]] = None
 }
 
 case class KorkeakoulunPaikallinenArviointi(
   arvosana: Paikallinenkoodi,
-  päivä: Option[LocalDate]
+  päivä: LocalDate
 ) extends PaikallinenArviointi with KorkeakoulunArviointi {
   override def arvioitsijat: Option[List[Arvioitsija]] = None
 }

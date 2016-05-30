@@ -42,7 +42,7 @@ class OpintosuoritusoteHtml(implicit val user: KoskiUser) extends LocalizedHtml 
         <td>{t.koulutusmoduuli.tunniste.koodiarvo}</td>
         <td>{i(t.koulutusmoduuli)}</td>
         <td class="laajuus">{t.koulutusmoduuli.laajuus.map(l => decimalFormat.format(0)).getOrElse("")}</td>
-        <td class="suoritus-pvm">{t.arviointi.flatMap(_.lastOption.flatMap(_.päivä.map(dateFormatter.format(_)))).getOrElse("")}</td>
+        <td class="suoritus-pvm">{t.arviointi.flatMap(_.lastOption.flatMap(_.arviointipäivä.map(dateFormatter.format(_)))).getOrElse("")}</td>
       </tr>
     }
 
@@ -95,7 +95,7 @@ class OpintosuoritusoteHtml(implicit val user: KoskiUser) extends LocalizedHtml 
           <td class={"depth-" + depth}>{i(suoritus.koulutusmoduuli)}</td>
           <td class="laajuus">{laajuus(suoritus)}</td>
           <td class="arvosana">{i(suoritus.arvosanaNumeroin.getOrElse(suoritus.arvosanaKirjaimin))}</td>
-          <td class="suoritus-pvm">{suoritus.arviointi.flatMap(_.lastOption.flatMap(_.päivä.map(dateFormatter.format(_)))).getOrElse("")}</td>
+          <td class="suoritus-pvm">{suoritus.arviointi.flatMap(_.lastOption.flatMap(_.arviointipäivä.map(dateFormatter.format(_)))).getOrElse("")}</td>
         </tr>
       }
     }

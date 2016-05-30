@@ -185,7 +185,8 @@ const TutkinnonOsa = React.createClass({
         tila: { koodistoUri: 'suorituksentila', koodiarvo: 'KESKEN' },
         arviointi: [
           {
-            arvosana: arvosana
+            arvosana: arvosana,
+            päivä: new Date().toISOString().substring(0, 10)
           }
         ],
         toimipiste: suoritus.toimipiste,

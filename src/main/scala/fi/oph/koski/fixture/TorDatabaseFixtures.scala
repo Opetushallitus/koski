@@ -70,7 +70,6 @@ object OpiskeluOikeusTestData {
         None,
         oppilaitos,
         None,
-        None,
         None
       )),
       hojks = None,
