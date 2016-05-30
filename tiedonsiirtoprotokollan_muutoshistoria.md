@@ -1,3 +1,8 @@
+## 30.5.2016
+
+- Poistettu arviointi-kenttä ammatillisista tutkinnoista
+- Tehty arvioinnin päivä-kenttä pakolliseksi ammatillisen tutkinnon osissa ja lukion kursseissa
+
 ## Draft 3
 
 - Mukana peruskoulun ja lukion päättötodistustiedot
