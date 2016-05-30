@@ -5,9 +5,9 @@ import fi.oph.scalaschema.annotation.{MaxItems, MinItems, Description}
 
 @Description("Lukioon valmistava koulutus (LUVA)")
 case class LukioonValmistavanKoulutuksenOpiskeluoikeus(
-  id: Option[Int],
-  versionumero: Option[Int],
-  lähdejärjestelmänId: Option[LähdejärjestelmäId],
+  id: Option[Int] = None,
+  versionumero: Option[Int] = None,
+  lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
   alkamispäivä: Option[LocalDate],
   päättymispäivä: Option[LocalDate],
   oppilaitos: Oppilaitos,
@@ -27,13 +27,14 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeus(
 
 @Description("Lukioon valmistava koulutus (LUVA)")
 case class LukioonValmistavanKoulutuksenSuoritus(
-  paikallinenId: Option[String],
-  suorituskieli: Option[Koodistokoodiviite],
+  paikallinenId: Option[String] = None,
+  suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Vahvistus] = None,
+  override val osasuoritukset: Option[List[LukioonValmistavanKoulutuksenOsasuoritus]],
   @KoodistoKoodiarvo("luva")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("luva", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: LukioonValmistavaKoulutus
@@ -49,3 +50,22 @@ case class LukioonValmistavaKoulutus(
 ) extends KoodistostaLöytyväKoulutusmoduuli {
   def laajuus = None
 }
+
+trait LukioonValmistavanKoulutuksenOsasuoritus extends Suoritus
+
+case class LukioonValmistavanKurssinSuoritus(
+  paikallinenId: Option[String] = None,
+  suorituskieli: Option[Koodistokoodiviite] = None,
+  tila: Koodistokoodiviite,
+  arviointi: Option[List[LukionKurssinArviointi]],
+  @KoodistoKoodiarvo("luvakurssi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("luvakurssi", koodistoUri = "suorituksentyyppi"),
+  koulutusmoduuli: LukioonValmistavanKoulutuksenKurssi
+) extends LukioonValmistavanKoulutuksenOsasuoritus {
+  def vahvistus: Option[Vahvistus] = None
+}
+
+case class LukioonValmistavanKoulutuksenKurssi(
+  tunniste: Paikallinenkoodi,
+  laajuus: Option[LaajuusKursseissa]
+) extends PaikallinenKoulutusmoduuli

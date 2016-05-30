@@ -61,7 +61,7 @@ case class LukionKurssinSuoritus(
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
   arviointi: Option[List[LukionKurssinArviointi]] = None
-) extends Suoritus {
+) extends Suoritus with LukioonValmistavanKoulutuksenOsasuoritus {
   def vahvistus: Option[Vahvistus] = None
 }
 

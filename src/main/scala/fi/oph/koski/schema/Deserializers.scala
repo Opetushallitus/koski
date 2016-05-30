@@ -1,7 +1,6 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.localization.{English, Swedish, Finnish, LocalizedString}
-import org.json4s
+import fi.oph.koski.localization.{English, Finnish, LocalizedString, Swedish}
 import org.json4s._
 import org.json4s.reflect.TypeInfo
 
@@ -18,7 +17,8 @@ object Deserializers {
     PerusopetuksenOppiaineDeserializer,
     PerusopetuksenPäätasonSuoritusDeserializer,
     LukionKurssiDeserializer,
-    KorkeakoulunArviointiDeserializer
+    KorkeakoulunArviointiDeserializer,
+    LukioonValmistavanKoulutuksenOsasuoritusDeserializer
   )
 }
 
@@ -34,6 +34,7 @@ object OpiskeluOikeusDeserializer extends Deserializer[Opiskeluoikeus] {
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("ammatillinenkoulutus") => oo.extract[AmmatillinenOpiskeluoikeus]
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("perusopetus") => oo.extract[PerusopetuksenOpiskeluoikeus]
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("perusopetuksenlisaopetus") => oo.extract[PerusopetuksenLisäopetuksenOpiskeluoikeus]
+        case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("luva") => oo.extract[LukioonValmistavanKoulutuksenOpiskeluoikeus]
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("lukiokoulutus") => oo.extract[LukionOpiskeluoikeus]
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("korkeakoulutus") => oo.extract[KorkeakoulunOpiskeluoikeus]
       }
@@ -78,6 +79,19 @@ object LukionOppiaineDeserializer extends Deserializer[LukionOppiaine] {
       }
   }
 }
+
+object LukioonValmistavanKoulutuksenOsasuoritusDeserializer extends Deserializer[LukioonValmistavanKoulutuksenOsasuoritus] {
+  private val LukioonValmistavanKoulutuksenOsasuoritusClass = classOf[LukioonValmistavanKoulutuksenOsasuoritus]
+
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), LukioonValmistavanKoulutuksenOsasuoritus] = {
+    case (TypeInfo(LukioonValmistavanKoulutuksenOsasuoritusClass, _), json) =>
+      json match {
+        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("lukionkurssi") => suoritus.extract[LukionKurssinSuoritus]
+        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("luvakurssi") => suoritus.extract[LukioonValmistavanKurssinSuoritus]
+      }
+  }
+}
+
 
 object PerusopetuksenOppiaineDeserializer extends Deserializer[PerusopetuksenOppiaine] {
   private val PerusopetuksenOppiaineClass = classOf[PerusopetuksenOppiaine]

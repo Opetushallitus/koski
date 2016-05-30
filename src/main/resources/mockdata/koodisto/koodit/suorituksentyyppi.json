@@ -156,6 +156,17 @@
     "versio": 1
   },
   {
+    "koodiUri": "suorituksentyyppi_luvakurssi",
+    "koodiArvo": "luvakurssi",
+    "metadata": [
+      {
+        "nimi": "Lukioon valmentavan koulutuksen kurssi",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },  {
     "koodiUri": "suorituksentyyppi_perusopetuksenlisaopetus",
     "koodiArvo": "perusopetuksenlisaopetus",
     "metadata": [
