@@ -10,9 +10,9 @@ case class KoodistoKoodi(koodiUri: String, koodiArvo: String, metadata: List[Koo
     LocalizedString.sanitize(values)
   }
 
-  def nimi = localizedStringFromMetadata { meta => meta.nimi }
+  def nimi = localizedStringFromMetadata { meta => meta.nimi.map(_.trim) }
 
-  def lyhytNimi = localizedStringFromMetadata { meta => meta.lyhytNimi }
+  def lyhytNimi = localizedStringFromMetadata { meta => meta.lyhytNimi.map(_.trim) }
 
   def getMetadata(kieli: String): Option[KoodistoKoodiMetadata] = {
     metadata.find(_.kieli == Some(kieli.toUpperCase))

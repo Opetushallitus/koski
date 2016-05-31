@@ -29,4 +29,21 @@ describe('Lukiokoulutus', function( ){
       })
     })
   })
+
+  describe('Lukioon valmistava koulutus', function() {
+    before(page.openPage, page.oppijaHaku.search('300596-9615', page.isOppijaSelected('Luke')))
+    describe('Oppijan suorituksissa', function() {
+      it('näytetään', function() {
+        expect(OpinnotPage().getTutkinto()).to.equal("Maahanmuuttajien ja vieraskielisten lukiokoulutukseen valmistava koulutus")
+        expect(OpinnotPage().getOppilaitos()).to.equal("Jyväskylän normaalikoulu")
+      })
+    })
+    describe('Tulostettava todistus', function() {
+      before(OpinnotPage().avaaTodistus)
+      it('näytetään', function() {
+        // See more detailed content specification in LukioSpec.scala
+        expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
+      })
+    })
+  })
 })

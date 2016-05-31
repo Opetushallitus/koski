@@ -1,21 +1,14 @@
 package fi.oph.koski.todistus
 
-import java.text.NumberFormat
-
-import fi.oph.koski.localization.Locale
-import fi.oph.koski.localization.Locale.finnish
-import fi.oph.koski.schema._
 import fi.oph.koski.koskiuser.KoskiUser
+import fi.oph.koski.schema._
 
 
-class LukionPaattotodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
-  def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: LukionOppimääränSuoritus) = {
-    val oppiaineet: List[LukionOppiaineenSuoritus] = päättötodistus.osasuoritukset.toList.flatten
-    val decimalFormat = NumberFormat.getInstance(finnish)
+class LukionPaattoTodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
+  def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: Suoritus) = {
+    val oppiaineet: List[Suoritus] = päättötodistus.osasuoritukset.toList.flatten
 
-    def oppiaineenKurssimäärä(oppiaine: LukionOppiaineenSuoritus): Float = oppiaine.osasuoritukset.toList.flatten.foldLeft(0f) {
-      (laajuus: Float, kurssi: LukionKurssinSuoritus) => laajuus + kurssi.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(0f)
-    }
+    def oppiaineenKurssimäärä(oppiaine: Suoritus): Float = oppiaine.osasuoritukset.toList.flatten.map(laajuus).sum
 
     <html>
       <head>

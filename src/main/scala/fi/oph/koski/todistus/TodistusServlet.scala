@@ -1,10 +1,11 @@
 package fi.oph.koski.todistus
 
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.schema._
-import fi.oph.koski.servlet.HtmlServlet
 import fi.oph.koski.koski.KoskiFacade
 import fi.oph.koski.koskiuser.{RequiresAuthentication, UserOrganisationsRepository}
+import fi.oph.koski.localization.LocalizedString.finnish
+import fi.oph.koski.schema._
+import fi.oph.koski.servlet.HtmlServlet
 import fi.oph.koski.tutkinto.{SuoritustapaJaRakenne, TutkintoRakenne, TutkintoRepository}
 import fi.vm.sade.security.ldap.DirectoryClient
 
@@ -15,17 +16,17 @@ class TodistusServlet(val userRepository: UserOrganisationsRepository, val direc
     rekisteri.findOpiskeluOikeus(opiskeluoikeusId)(koskiUser) match {
       case Right((henkilötiedot, opiskeluoikeus)) =>
           implicit val user = koskiUser
-          opiskeluoikeus.suoritukset.head match {
-            case t: PerusopetuksenOppimääränSuoritus if t.tila.koodiarvo == "VALMIS" =>
+          opiskeluoikeus.suoritukset.filter(_.tila.koodiarvo == "VALMIS").headOption match {
+            case Some(t: PerusopetuksenOppimääränSuoritus) =>
               (new PerusopetuksenPaattotodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)
 
-            case t: PerusopetuksenOppiaineenOppimääränSuoritus if t.tila.koodiarvo == "VALMIS" =>
+            case Some(t: PerusopetuksenOppiaineenOppimääränSuoritus) =>
               (new PerusopetuksenOppiaineenOppimaaranTodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)
 
-            case t: PerusopetuksenLisäopetuksenSuoritus if t.tila.koodiarvo == "VALMIS" =>
+            case Some(t: PerusopetuksenLisäopetuksenSuoritus) =>
               (new PerusopetuksenLisaopetuksenTodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)
 
-            case t: AmmatillisenTutkinnonSuoritus if t.tila.koodiarvo == "VALMIS" =>
+            case Some(t: AmmatillisenTutkinnonSuoritus) =>
               t.koulutusmoduuli.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_)) match {
                 case Some(rakenne: TutkintoRakenne) =>
                   val maybeSuoritustapaJaRakenne: Option[SuoritustapaJaRakenne] = rakenne.suoritustavat.find(x => Some(x.suoritustapa) == t.suoritustapa.map(_.tunniste))
@@ -36,8 +37,11 @@ class TodistusServlet(val userRepository: UserOrganisationsRepository, val direc
                 case None => KoskiErrorCategory.notFound.diaarinumeroaEiLöydy("Tutkinnon rakennetta diaarinumerolla " + t.koulutusmoduuli.perusteenDiaarinumero.getOrElse("(puuttuu)") + " ei löydy")
               }
 
-            case t: LukionOppimääränSuoritus if t.tila.koodiarvo == "VALMIS" =>
-              (new LukionPaattotodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)
+            case Some(t: LukionOppimääränSuoritus) =>
+              (new LukionPaattoTodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)
+
+            case Some(t: LukioonValmistavanKoulutuksenSuoritus) =>
+              (new LuvaTodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)
 
             case _ => KoskiErrorCategory.notFound.todistustaEiLöydy()
           }

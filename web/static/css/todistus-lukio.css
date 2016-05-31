@@ -29,3 +29,11 @@ div {
 .kurssimaara-title {
     font-size: 12px;
 }
+
+.valiotsikko {
+    font-weight: bold;
+}
+
+.valiotsikko td {
+    padding-top: 10px;
+}
