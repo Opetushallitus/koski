@@ -25,9 +25,9 @@ object ExamplesLukioonValmistavaKoulutus {
           toimipiste = jyväskylänNormaalikoulu,
           koulutusmoduuli = LukioonValmistavaKoulutus(),
           osasuoritukset = Some(List(
-            luvaKurssiSuoritus("STK", "Suomi toisena kielenä ja kirjallisuus", 2.0f),
-            luvaKurssiSuoritus("STK", "Yhteiskuntatietous ja kulttuurintuntemus", 1.0f),
-            luvaKurssiSuoritus("STK", "Opinto-ohjaus", 1.0f),
+            luvaKurssinSuoritus("STK", "Suomi toisena kielenä ja kirjallisuus", 2.0f),
+            luvaKurssinSuoritus("STK", "Yhteiskuntatietous ja kulttuurintuntemus", 1.0f),
+            luvaKurssinSuoritus("STK", "Opinto-ohjaus", 1.0f),
             kurssisuoritus(valtakunnallinenKurssi("KU1")).copy(arviointi = kurssinArviointi(7))
           ))
         ))
@@ -36,7 +36,7 @@ object ExamplesLukioonValmistavaKoulutus {
   )
   val examples = List(Example("lukioon valmistava koulutus", "Oppija on suorittanut lukioon valmistavan koulutuksen (LUVA)", luvaTodistus, 200))
 
-  private def luvaKurssiSuoritus(koodi: String, kuvaus: String, laajuusKursseissa: Float) = LukioonValmistavanKurssinSuoritus(
+  private def luvaKurssinSuoritus(koodi: String, kuvaus: String, laajuusKursseissa: Float) = LukioonValmistavanKurssinSuoritus(
     tila = tilaValmis,
     koulutusmoduuli = LukioonValmistavanKoulutuksenKurssi(
       tunniste = Paikallinenkoodi(koodi, LocalizedString.finnish(kuvaus), "jyväskylän-luva-kurssit"),
