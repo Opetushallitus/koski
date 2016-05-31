@@ -10,7 +10,7 @@ trait OpintosuoritusoteTestMethods extends SearchTestMethods {
         verifyResponseStatus(200)
 
         val lines: Seq[String] = scala.xml.XML.loadString(response.body).flatMap(_.descendant_or_self).flatMap {
-          case tr: Node if tr.label == "tr" => Some(((tr \ "td") ++ (tr \ "th")).map(_.text).mkString(" ").trim)
+          case tr: Node if tr.label == "tr" => Some((((tr \ "td") ++ (tr \ "th")).map(_.text.trim)).filterNot(_ == "").mkString(" ").trim)
           case h3: Node if h3.label == "h3" => Some(h3.text.trim)
           case _ => None
         }

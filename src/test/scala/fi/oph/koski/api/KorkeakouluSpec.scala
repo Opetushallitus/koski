@@ -56,7 +56,7 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
       it("Valmistunut diplomi-insinööri") {
         opintosuoritusote("290492-9455", "1.2.246.562.10.56753942459") should equal(
           """|Suoritetut tutkinnot
-            |751101 Dipl.ins., konetekniikka  22.3.2016
+            |751101 Dipl.ins., konetekniikka 22.3.2016
             |Opintosuoritukset
             |Opintopistettä Arvosana Suor.pvm
             |751101 Dipl.ins., konetekniikka 123 OIV 22.3.2016
@@ -140,10 +140,10 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
       it("AMK, valmistunut") {
         opintosuoritusote("101291-954C", "1.2.246.562.10.25619624254") should equal(
           """|Suoritetut tutkinnot
-            |671112 Fysioterapeutti (AMK)  29.5.2015
+            |671112 Fysioterapeutti (AMK) 29.5.2015
             |Opintosuoritukset
             |Opintopistettä Arvosana Suor.pvm
-            |671112 Fysioterapeutti (AMK)  hyväksytty 29.5.2015
+            |671112 Fysioterapeutti (AMK) hyväksytty 29.5.2015
             |116000 Anatomi, fysiologi och biomekanik 5 3 11.11.2011
             |116000 Arbetslivsorienterade projekt 0,5 hyväksytty 27.5.2015
             |116000 Bedömningsmetoder i fysioterapi 5 5 15.5.2012
