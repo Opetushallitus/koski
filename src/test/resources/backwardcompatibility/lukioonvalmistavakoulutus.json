@@ -1,0 +1,214 @@
+{
+  "henkilö" : {
+    "hetu" : "300596-9615",
+    "etunimet" : "Luke",
+    "kutsumanimi" : "Luke",
+    "sukunimi" : "Lukioonvalmistautuja"
+  },
+  "opiskeluoikeudet" : [ {
+    "alkamispäivä" : "2008-08-15",
+    "päättymispäivä" : "2016-06-04",
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.14613773812",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "00204",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Jyväskylän normaalikoulu"
+      }
+    },
+    "suoritukset" : [ {
+      "tila" : {
+        "koodiarvo" : "VALMIS",
+        "koodistoUri" : "suorituksentila"
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.14613773812",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "00204",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Jyväskylän normaalikoulu"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2016-06-04",
+        "paikkakunta" : {
+          "koodiarvo" : "179",
+          "nimi" : {
+            "fi" : "Jyväskylä"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.14613773812",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "00204",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.14613773812",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "00204",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu"
+            }
+          }
+        } ]
+      },
+      "osasuoritukset" : [ {
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "S",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2016-06-04"
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "luvakurssi",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "STK",
+            "nimi" : {
+              "fi" : "Suomi toisena kielenä ja kirjallisuus"
+            },
+            "koodistoUri" : "jyväskylän-luva-kurssit"
+          },
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        }
+      }, {
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "S",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2016-06-04"
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "luvakurssi",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "STK",
+            "nimi" : {
+              "fi" : "Yhteiskuntatietous ja kulttuurintuntemus"
+            },
+            "koodistoUri" : "jyväskylän-luva-kurssit"
+          },
+          "laajuus" : {
+            "arvo" : 1.0,
+            "yksikkö" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        }
+      }, {
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "S",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2016-06-04"
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "luvakurssi",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "STK",
+            "nimi" : {
+              "fi" : "Opinto-ohjaus"
+            },
+            "koodistoUri" : "jyväskylän-luva-kurssit"
+          },
+          "laajuus" : {
+            "arvo" : 1.0,
+            "yksikkö" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        }
+      }, {
+        "tyyppi" : {
+          "koodiarvo" : "lukionkurssi",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "KU1",
+            "koodistoUri" : "lukionkurssit"
+          },
+          "laajuus" : {
+            "arvo" : 1.0,
+            "yksikkö" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "7",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2016-06-04"
+        } ]
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "luva",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "039997",
+          "koodistoUri" : "koulutus"
+        }
+      }
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "luva",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    }
+  } ]
+}
