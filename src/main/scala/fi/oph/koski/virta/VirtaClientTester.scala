@@ -1,6 +1,7 @@
 package fi.oph.koski.virta
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.util.XML
 
 // Client for the Virta Opintotietopalvelu, see https://confluence.csc.fi/display/VIRTA/VIRTA-opintotietopalvelu
 object VirtaClientTester extends App {
