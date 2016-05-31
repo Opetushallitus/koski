@@ -65,6 +65,7 @@ case class LukioonValmistavanKurssinSuoritus(
   def vahvistus: Option[Vahvistus] = None
 }
 
+@Description("Lukioon valmistavassa koulutuksessa suoritettava lukioon valmistava kurssi")
 case class LukioonValmistavanKoulutuksenKurssi(
   tunniste: Paikallinenkoodi,
   laajuus: Option[LaajuusKursseissa]
