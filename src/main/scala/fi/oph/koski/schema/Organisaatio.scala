@@ -18,7 +18,9 @@ case class OidOrganisaatio(
   @Description("Organisaation (kielistetty) nimi")
   @ReadOnly("Tiedon syötössä nimeä ei tarvita; kuvaus haetaan Organisaatiopalvelusta")
   nimi: Option[LocalizedString] = None
-) extends OrganisaatioWithOid
+) extends OrganisaatioWithOid {
+  def toOppilaitos = None
+}
 
 @Description("Opintopolun organisaatiopalvelusta löytyvä oppilaitos-tyyppinen organisaatio.")
 case class Oppilaitos(
@@ -32,7 +34,9 @@ case class Oppilaitos(
    @Description("Organisaation (kielistetty) nimi")
    @ReadOnly("Tiedon syötössä nimeä ei tarvita; kuvaus haetaan Organisaatiopalvelusta")
    nimi: Option[LocalizedString] = None
-) extends OrganisaatioWithOid
+) extends OrganisaatioWithOid {
+  def toOppilaitos = Some(this)
+}
 
 @Description("Yritys, jolla on y-tunnus")
 case class Yritys(
@@ -54,4 +58,5 @@ trait OrganisaatioWithOid extends Organisaatio {
   @Description("Organisaation (kielistetty) nimi")
   @ReadOnly("Tiedon syötössä nimeä ei tarvita; kuvaus haetaan Organisaatiopalvelusta")
   def nimi: Option[LocalizedString]
+  def toOppilaitos: Option[Oppilaitos]
 }

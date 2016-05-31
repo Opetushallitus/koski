@@ -33,6 +33,7 @@ object MockKoodistoPalvelu extends KoodistoPalvelu {
     "lahdejarjestelma",
     "lasnaolotila",
     "lukionkurssit",
+    "maatjavaltiot2",
     "opetusryhma",
     "opintojenlaajuusyksikko",
     "opintojenrahoitus",
@@ -53,7 +54,7 @@ object MockKoodistoPalvelu extends KoodistoPalvelu {
     "virtaarvosana",
     "virtalukukausiilmtila",
     "virtaopiskeluoikeudentila",
-    "maatjavaltiot2"
+    "koskiyoarvosanat"
   )
 
   def getKoodistoKoodit(koodisto: KoodistoViite): Option[List[KoodistoKoodi]] = {

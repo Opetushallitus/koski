@@ -30,6 +30,16 @@
     "versio" : 1
   },
   {
+    "koodiUri" : "opiskeluoikeudentyyppi_ylioppilastutkinto",
+    "koodiArvo" : "ylioppilastutkinto",
+    "metadata" : [ {
+      "nimi" : "Ylioppilastutkinto",
+      "lyhytNimi" : "Ylioppilastutkinto",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
     "koodiUri" : "opiskeluoikeudentyyppi_korkeakoulutus",
     "koodiArvo" : "korkeakoulutus",
     "metadata" : [ {

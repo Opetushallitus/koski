@@ -9,7 +9,6 @@ import fi.oph.koski.localization.LocalizedStringImplicits._
 
 case class KorkeakoulunOpiskeluoikeus(
   id: Option[Int],
-  versionumero: Option[Int],
   lähdejärjestelmänId: Option[LähdejärjestelmäId],
   alkamispäivä: Option[LocalDate],
   arvioituPäättymispäivä: Option[LocalDate],
@@ -23,8 +22,8 @@ case class KorkeakoulunOpiskeluoikeus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulutus", Some("Korkeakoulutus"), "opiskeluoikeudentyyppi", None),
   ensisijaisuus: Option[Ensisijaisuus] = None
 ) extends Opiskeluoikeus {
-  override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
+  override def versionumero = None
 }
 
 case class Ensisijaisuus(
@@ -79,7 +78,7 @@ case class KorkeakouluTutkinto(
 
 @Description("Opintojakson suoritus")
 case class KorkeakoulunOpintojakso(
-  tunniste: Paikallinenkoodi,
+  tunniste: PaikallinenKoodi,
   nimi: LocalizedString,
   laajuus: Option[LaajuusOpintopisteissä]
 ) extends Koulutusmoduuli
@@ -106,7 +105,7 @@ case class KorkeakoulunKoodistostaLöytyväArviointi(
 }
 
 case class KorkeakoulunPaikallinenArviointi(
-  arvosana: Paikallinenkoodi,
+  arvosana: PaikallinenKoodi,
   päivä: LocalDate
 ) extends PaikallinenArviointi with KorkeakoulunArviointi {
   override def arvioitsijat: Option[List[Arvioitsija]] = None

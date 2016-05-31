@@ -19,6 +19,7 @@ import fi.oph.koski.koski.KoskiValidator
 import fi.oph.koski.koskiuser.{DirectoryClientFactory, UserOrganisationsRepository}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.virta.{VirtaClient, VirtaOpiskeluoikeusRepository}
+import fi.oph.koski.ytr.{YtrMock, YtrOpiskeluoikeusRepository}
 
 object KoskiApplication {
   val defaultConfig = ConfigFactory.load
@@ -43,11 +44,13 @@ class KoskiApplication(val config: Config) extends Logging {
   lazy val userRepository = UserOrganisationsRepository(config, organisaatioRepository)
   lazy val database = new KoskiDatabase(config)
   lazy val virtaClient = VirtaClient(config)
-  lazy val oppijaRepository = OppijaRepository(config, database, koodistoViitePalvelu, virtaClient)
+  lazy val ytrClient = YtrMock
+  lazy val oppijaRepository = OppijaRepository(config, database, koodistoViitePalvelu, virtaClient, ytrClient)
   lazy val historyRepository = OpiskeluoikeusHistoryRepository(database.db)
   lazy val virta = TimedProxy[OpiskeluOikeusRepository](VirtaOpiskeluoikeusRepository(virtaClient, oppijaRepository, oppilaitosRepository, koodistoViitePalvelu, Some(validator)))
   lazy val possu = TimedProxy[OpiskeluOikeusRepository](new PostgresOpiskeluOikeusRepository(database.db, historyRepository))
-  lazy val opiskeluOikeusRepository = new CompositeOpiskeluOikeusRepository(List(possu, virta))
+  lazy val ytr = TimedProxy[OpiskeluOikeusRepository](YtrOpiskeluoikeusRepository(ytrClient, oppijaRepository, oppilaitosRepository, koodistoViitePalvelu, Some(validator)))
+  lazy val opiskeluOikeusRepository = new CompositeOpiskeluOikeusRepository(List(possu, virta, ytr))
   lazy val validator: KoskiValidator = new KoskiValidator(tutkintoRepository, koodistoViitePalvelu, organisaatioRepository)
 
   def resetFixtures = Fixtures.resetFixtures(config, database, opiskeluOikeusRepository, oppijaRepository, validator)

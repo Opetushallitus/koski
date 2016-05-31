@@ -27,7 +27,7 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluO
 
     defaultOpiskeluOikeudet.foreach { case (oid, oikeus) =>
       validator.validateAsJson(Oppija(OidHenkilö(oid), List(oikeus))) match {
-        case Right(oppija) => repository.createOrUpdate(VerifiedOppijaOid(oid), oppija.opiskeluoikeudet(0))
+        case Right(oppija) => repository.createOrUpdate(VerifiedOppijaOid(oid), oppija.tallennettavatOpiskeluoikeudet(0))
       }
     }
   }

@@ -8,7 +8,7 @@ case class Example(name: String, description: String, data: Oppija, statusCode: 
 object Examples {
   val examples = ExamplesAmmatillinen.examples ++
     ExamplesPerusopetus.examples ++ ExamplesPerusopetuksenLisaopetus.examples ++ ExamplesLukioonValmistavaKoulutus.examples ++
-    ExamplesLukio.examples ++
+    ExamplesLukio.examples ++ ExamplesYlioppilastutkinto.examples ++
     ExamplesKorkeakoulu.examples
 }
 

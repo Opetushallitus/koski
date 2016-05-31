@@ -27,7 +27,7 @@ case class AmmatillinenOpiskeluoikeus(
   läsnäolotiedot: Option[AmmatillisenLäsnäolotiedot],
   @KoodistoKoodiarvo("ammatillinenkoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinenkoulutus", "opiskeluoikeudentyyppi")
-) extends Opiskeluoikeus {
+) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
 }
@@ -126,13 +126,13 @@ case class OpsTutkinnonosa(
   @Description("Onko pakollinen osa tutkinnossa")
   pakollinen: Boolean,
   override val laajuus: Option[LaajuusOsaamispisteissä],
-  paikallinenKoodi: Option[Paikallinenkoodi] = None,
+  paikallinenKoodi: Option[PaikallinenKoodi] = None,
   kuvaus: Option[LocalizedString] = None
 ) extends AmmatillisenTutkinnonOsa with KoodistostaLöytyväKoulutusmoduuli
 
 @Description("Paikallinen tutkinnon osa")
 case class PaikallinenTutkinnonosa(
-  tunniste: Paikallinenkoodi,
+  tunniste: PaikallinenKoodi,
   kuvaus: LocalizedString,
   @Description("Onko pakollinen osa tutkinnossa")
   pakollinen: Boolean,

@@ -10,7 +10,7 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
     describe("Lisättäessä/päivitettäessä") {
       it("palautetaan HTTP 501") {
         putOpiskeluOikeus(defaultOpiskeluoikeus) {
-          verifyResponseStatus(501, KoskiErrorCategory.notImplemented.readOnly("Korkeakoulutuksen opiskeluoikeuksia ei voi päivittää Koski-järjestelmässä"))
+          verifyResponseStatus(501, KoskiErrorCategory.notImplemented.readOnly("Korkeakoulutuksen opiskeluoikeuksia ja ylioppilastutkintojen tietoja ei voi päivittää Koski-järjestelmässä"))
         }
       }
     }

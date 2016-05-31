@@ -10,17 +10,19 @@ import fi.oph.koski.log.{Logging, TimedProxy}
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Invocation
 import fi.oph.koski.virta.{VirtaClient, VirtaOppijaRepository}
+import fi.oph.koski.ytr.{YtrOppijaRepository, YlioppilasTutkintoRekisteri}
 
 object OppijaRepository {
-  def apply(config: Config, database: KoskiDatabase, koodistoViitePalvelu: KoodistoViitePalvelu, virtaClient: VirtaClient) = {
-    CachingProxy(new OppijaRepositoryCachingStrategy, TimedProxy(withoutCache(config, database, koodistoViitePalvelu, virtaClient)))
+  def apply(config: Config, database: KoskiDatabase, koodistoViitePalvelu: KoodistoViitePalvelu, virtaClient: VirtaClient, ytr: YlioppilasTutkintoRekisteri) = {
+    CachingProxy(new OppijaRepositoryCachingStrategy, TimedProxy(withoutCache(config, database, koodistoViitePalvelu, virtaClient, ytr)))
   }
 
-  def withoutCache(config: Config, database: KoskiDatabase, koodistoViitePalvelu: KoodistoViitePalvelu, virtaClient: VirtaClient): OppijaRepository = {
+  def withoutCache(config: Config, database: KoskiDatabase, koodistoViitePalvelu: KoodistoViitePalvelu, virtaClient: VirtaClient, ytr: YlioppilasTutkintoRekisteri): OppijaRepository = {
     val opintopolku = opintopolkuOppijaRepository(config, database, koodistoViitePalvelu)
     CompositeOppijaRepository(List(
       opintopolku,
-      VirtaOppijaRepository(virtaClient, opintopolku)
+      VirtaOppijaRepository(virtaClient, opintopolku),
+      YtrOppijaRepository(ytr, opintopolku)
     ))
   }
 

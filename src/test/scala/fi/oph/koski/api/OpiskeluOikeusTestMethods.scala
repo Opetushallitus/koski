@@ -41,10 +41,10 @@ trait OpiskeluOikeusTestMethods[Oikeus <: Opiskeluoikeus] extends LocalJettyHttp
     lastOpiskeluOikeus(oppija.oid).asInstanceOf[T]
   }
 
-  def lastOpiskeluOikeus(oppijaOid: String): Opiskeluoikeus = {
+  def lastOpiskeluOikeus(oppijaOid: String): KoskeenTallennettavaOpiskeluoikeus = {
     authGet("api/oppija/" + oppijaOid) {
       verifyResponseStatus(200)
-      Json.read[Oppija](body).opiskeluoikeudet.last
+      Json.read[Oppija](body).tallennettavatOpiskeluoikeudet.last
     }
   }
 

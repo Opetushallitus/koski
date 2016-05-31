@@ -12,7 +12,7 @@ import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppija.PossiblyUnverifiedOppijaOid
 import fi.oph.koski.schema.Henkilö._
-import fi.oph.koski.schema.{KorkeakoulunOpiskeluoikeus, Opiskeluoikeus, TaydellisetHenkilötiedot}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KorkeakoulunOpiskeluoikeus, Opiskeluoikeus, TaydellisetHenkilötiedot}
 import fi.oph.koski.util.ReactiveStreamsToRx
 import org.json4s.JArray
 import rx.lang.scala.Observable
@@ -72,15 +72,12 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
   }
 
 
-  override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: Opiskeluoikeus)(implicit user: KoskiUser): Either[HttpStatus, CreateOrUpdateResult] = opiskeluOikeus match {
-    case o: KorkeakoulunOpiskeluoikeus =>
-      Left(KoskiErrorCategory.notImplemented.readOnly("Korkeakoulutuksen opiskeluoikeuksia ei voi päivittää Koski-järjestelmässä"))
-    case _ =>
-      if (!user.hasWriteAccess(opiskeluOikeus.oppilaitos.oid)) {
-        Left(KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid))
-      } else {
-        doInIsolatedTransaction(db, createOrUpdateAction(oppijaOid, opiskeluOikeus), "Oppijan " + oppijaOid + " opiskeluoikeuden lisäys/muutos")
-      }
+  override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiUser): Either[HttpStatus, CreateOrUpdateResult] = {
+    if (!user.hasWriteAccess(opiskeluOikeus.oppilaitos.oid)) {
+      Left(KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid))
+    } else {
+      doInIsolatedTransaction(db, createOrUpdateAction(oppijaOid, opiskeluOikeus), "Oppijan " + oppijaOid + " opiskeluoikeuden lisäys/muutos")
+    }
   }
 
   private def findByOppijaOidAction(oid: String)(implicit user: KoskiUser): dbio.DBIOAction[Seq[OpiskeluOikeusRow], NoStream, Read] = {
@@ -109,7 +106,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     query.result
   }
 
-  private def createOrUpdateAction(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: Opiskeluoikeus)(implicit user: KoskiUser): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
+  private def createOrUpdateAction(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiUser): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
     findByIdentifierAction(OpiskeluOikeusIdentifier(oppijaOid.oppijaOid, opiskeluOikeus)).flatMap { rows: Either[HttpStatus, Option[OpiskeluOikeusRow]] =>
       rows match {
         case Right(Some(vanhaOpiskeluOikeus)) =>
@@ -124,7 +121,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     }
   }
 
-  private def createAction(oppijaOid: String, opiskeluOikeus: Opiskeluoikeus)(implicit user: KoskiUser): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Write] = {
+  private def createAction(oppijaOid: String, opiskeluOikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiUser): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Write] = {
     val versionumero = Opiskeluoikeus.VERSIO_1
     val tallennettavaOpiskeluOikeus = opiskeluOikeus.withIdAndVersion(id = None, versionumero = None)
     for {
@@ -136,7 +133,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     }
   }
 
-  private def updateAction(oldRow: OpiskeluOikeusRow, uusiOlio: Opiskeluoikeus)(implicit user: KoskiUser): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Write] = {
+  private def updateAction(oldRow: OpiskeluOikeusRow, uusiOlio: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiUser): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Write] = {
     val (id, versionumero) = (oldRow.id, oldRow.versionumero)
 
     uusiOlio.versionumero match {

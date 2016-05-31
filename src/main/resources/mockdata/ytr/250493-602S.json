@@ -1,0 +1,128 @@
+{
+  "graduationSchoolOphOid": "1.2.246.562.10.70411521654",
+  "graduationSchoolYtlNumber": 1648,
+  "ssn": "250493-602S",
+  "lastname": "Aalto",
+  "firstnames": "Christian",
+  "graduationDate": "2012-06-02",
+  "graduationPeriod": "2012K",
+  "exams": [
+    {
+      "period": "2012K",
+      "examId": "GE",
+      "examRole": "41",
+      "grade": "M",
+      "points": 26,
+      "sections": [
+        {
+          "sectionPoints": 26,
+          "sectionId": "T000"
+        }
+      ]
+    },
+    {
+      "period": "2012K",
+      "examId": "EA",
+      "examRole": "31",
+      "grade": "C",
+      "points": 210,
+      "sections": [
+        {
+          "sectionPoints": 37,
+          "sectionId": "HM02"
+        },
+        {
+          "sectionPoints": 18,
+          "sectionId": "HT01"
+        },
+        {
+          "sectionPoints": 34,
+          "sectionId": "LM02"
+        },
+        {
+          "sectionPoints": 14,
+          "sectionId": "LT02"
+        },
+        {
+          "sectionPoints": 21,
+          "sectionId": "RM01"
+        },
+        {
+          "sectionPoints": 8,
+          "sectionId": "RT03"
+        },
+        {
+          "sectionPoints": 78,
+          "sectionId": "KK01"
+        }
+      ]
+    },
+    {
+      "period": "2012K",
+      "examId": "A",
+      "examRole": "11",
+      "grade": "B",
+      "points": 46,
+      "sections": [
+        {
+          "sectionPoints": 25,
+          "sectionId": "T001"
+        },
+        {
+          "sectionPoints": 21,
+          "sectionId": "T002"
+        }
+      ]
+    },
+    {
+      "period": "2012K",
+      "examId": "N",
+      "examRole": "42",
+      "grade": "L",
+      "points": 59,
+      "sections": [
+        {
+          "sectionPoints": 59,
+          "sectionId": "T000"
+        }
+      ]
+    },
+    {
+      "period": "2012K",
+      "examId": "BB",
+      "examRole": "62",
+      "grade": "C",
+      "points": 166,
+      "sections": [
+        {
+          "sectionPoints": 33,
+          "sectionId": "HM02"
+        },
+        {
+          "sectionPoints": 9,
+          "sectionId": "HT01"
+        },
+        {
+          "sectionPoints": 34,
+          "sectionId": "LM02"
+        },
+        {
+          "sectionPoints": 12,
+          "sectionId": "LT02"
+        },
+        {
+          "sectionPoints": 17,
+          "sectionId": "RM01"
+        },
+        {
+          "sectionPoints": 4,
+          "sectionId": "RT01"
+        },
+        {
+          "sectionPoints": 57,
+          "sectionId": "KK01"
+        }
+      ]
+    }
+  ]
+}

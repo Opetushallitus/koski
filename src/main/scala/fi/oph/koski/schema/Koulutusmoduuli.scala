@@ -23,7 +23,7 @@ trait EPerusteistaLöytyväKoulutusmoduuli extends Koulutusmoduuli {
 }
 
 trait PaikallinenKoulutusmoduuli extends Koulutusmoduuli {
-  def tunniste: Paikallinenkoodi
+  def tunniste: PaikallinenKoodi
   def nimi = tunniste.nimi
 }
 

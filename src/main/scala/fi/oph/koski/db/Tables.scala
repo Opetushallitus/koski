@@ -6,7 +6,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.json.Json
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import fi.oph.koski.schema.{Koodistokoodiviite, Opiskeluoikeus}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Koodistokoodiviite, Opiskeluoikeus}
 import fi.oph.koski.koskiuser.KoskiUser
 import org.json4s._
 
@@ -74,7 +74,7 @@ object OpiskeluOikeusStoredDataDeserializer {
     val migratedData = data.transformField {
       case JField("suoritus", suoritus: JObject) => JField("suoritus", addDefaultTila(suoritus))
     }
-    Json.fromJValue[Opiskeluoikeus](migratedData).withIdAndVersion(id = Some(id), versionumero = Some(versionumero))
+    Json.fromJValue[Opiskeluoikeus](migratedData).asInstanceOf[KoskeenTallennettavaOpiskeluoikeus].withIdAndVersion(id = Some(id), versionumero = Some(versionumero))
   }
 }
 

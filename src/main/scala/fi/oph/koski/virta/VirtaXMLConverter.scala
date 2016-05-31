@@ -40,7 +40,6 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
 
       val opiskeluoikeus = KorkeakoulunOpiskeluoikeus(
         id = Some(new Random().nextInt()),
-        versionumero = None,
         lähdejärjestelmänId = Some(LähdejärjestelmäId(opiskeluoikeusNode \ "@avain" text, requiredKoodi("lahdejarjestelma", "virta").get)),
         alkamispäivä = (opiskeluoikeusNode \ "AlkuPvm").headOption.map(alku => LocalDate.parse(alku.text)),
         arvioituPäättymispäivä = None,
@@ -62,7 +61,6 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
     val orphanages = orphanSuoritukset.groupBy(_.toimipiste).toList.map { case (organisaatio, suoritukset) =>
       KorkeakoulunOpiskeluoikeus(
         id = Some(new Random().nextInt()),
-        versionumero = None,
         lähdejärjestelmänId = None,
         alkamispäivä = None,
         arvioituPäättymispäivä = None,
@@ -125,7 +123,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
 
     KorkeakoulunOpintojaksonSuoritus(
       koulutusmoduuli = KorkeakoulunOpintojakso(
-        tunniste = Paikallinenkoodi((suoritus \\ "@koulutusmoduulitunniste").text, nimi(suoritus), "koodistoUri"), // hardcoded uri
+        tunniste = PaikallinenKoodi((suoritus \\ "@koulutusmoduulitunniste").text, nimi(suoritus), "koodistoUri"), // hardcoded uri
         nimi = nimi(suoritus),
         laajuus = (suoritus \ "Laajuus" \ "Opintopiste").headOption.map(op => LaajuusOpintopisteissä(op.text.toFloat))
       ),
@@ -155,7 +153,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
       .find(a => (a \ "@avain").text == (suoritus \ "Arvosana" \ "Muu" \ "Koodi").text)
       .map { a => List(
         KorkeakoulunPaikallinenArviointi(
-          Paikallinenkoodi((a \ "Koodi").text, nimi(a), asteikkoUri),
+          PaikallinenKoodi((a \ "Koodi").text, nimi(a), asteikkoUri),
           LocalDate.parse(suoritus \ "SuoritusPvm" text)
         ))
       }

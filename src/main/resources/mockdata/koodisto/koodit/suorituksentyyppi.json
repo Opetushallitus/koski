@@ -108,6 +108,30 @@
     "versio": 1
   },
   {
+    "koodiUri": "suorituksentyyppi_ylioppilastutkinto",
+    "koodiArvo": "ylioppilastutkinto",
+    "metadata": [
+      {
+        "nimi": "Ylioppilastutkinto",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "suorituksentyyppi_ylioppilastutkinnonkoe",
+    "koodiArvo": "ylioppilastutkinnonkoe",
+    "metadata": [
+      {
+        "nimi": "Ylioppilastutkinnon koe",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
     "koodiUri": "suorituksentyyppi_korkeakoulututkinto",
     "koodiArvo": "korkeakoulututkinto",
     "metadata": [

@@ -108,6 +108,7 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
           { examplesHtml(ExamplesLukio.examples ++ ExamplesLukioonValmistavaKoulutus.examples, "Lukiokoulutus") }
           { examplesHtml(ExamplesAmmatillinen.examples, "Ammatillinen koulutus") }
           { examplesHtml(ExamplesKorkeakoulu.examples, "Korkeakoulu (Virrasta)") }
+          { examplesHtml(ExamplesYlioppilastutkinto.examples, "Ylioppilastutkinto (Ylioppilastutkintorekisteristä)") }
         </section>
         </div>
         <script src="js/polyfills/promise.js"></script>

@@ -20,7 +20,7 @@ case class LukionOpiskeluoikeus(
   läsnäolotiedot: Option[Läsnäolotiedot],
   @KoodistoKoodiarvo("lukiokoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukiokoulutus", "opiskeluoikeudentyyppi")
-) extends Opiskeluoikeus {
+) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def arvioituPäättymispäivä: Option[LocalDate] = None
@@ -86,23 +86,9 @@ sealed trait LukionKurssi extends Koulutusmoduuli {
   ) extends LukionKurssi with KoodistostaLöytyväKoulutusmoduuli
 
   case class PaikallinenLukionKurssi(
-    tunniste: Paikallinenkoodi,
+    tunniste: PaikallinenKoodi,
     override val laajuus: Option[LaajuusKursseissa]
   ) extends LukionKurssi with PaikallinenKoulutusmoduuli
-
-
-case class Ylioppilastutkinto(
- @Description("Tutkinnon 6-numeroinen tutkintokoodi")
- @KoodistoUri("koulutus")
- @KoodistoKoodiarvo("301000")
- @OksaUri("tmpOKSAID560", "tutkinto")
- tunniste: Koodistokoodiviite = Koodistokoodiviite("301000", koodistoUri = "koulutus"),
- perusteenDiaarinumero: Option[String]
-) extends KoodistostaLöytyväKoulutusmoduuli with EPerusteistaLöytyväKoulutusmoduuli {
-  override def laajuus = None
-  override def isTutkinto = true
-}
-
 
 trait LukionOppiaine extends YleissivistavaOppiaine {
   def laajuus: Option[LaajuusKursseissa]

@@ -39,7 +39,7 @@ object ExamplesLukioonValmistavaKoulutus {
   private def luvaKurssinSuoritus(koodi: String, kuvaus: String, laajuusKursseissa: Float) = LukioonValmistavanKurssinSuoritus(
     tila = tilaValmis,
     koulutusmoduuli = LukioonValmistavanKoulutuksenKurssi(
-      tunniste = Paikallinenkoodi(koodi, LocalizedString.finnish(kuvaus), "jyväskylän-luva-kurssit"),
+      tunniste = PaikallinenKoodi(koodi, LocalizedString.finnish(kuvaus), "jyväskylän-luva-kurssit"),
       laajuus = laajuus(laajuusKursseissa)
     ),
     arviointi = kurssinArviointi("S")

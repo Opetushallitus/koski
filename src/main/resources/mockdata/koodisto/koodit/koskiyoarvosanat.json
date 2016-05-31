@@ -1,0 +1,86 @@
+[
+  {
+    "koodiUri": "koskiyoarvosanat_b",
+    "metadata": [
+      {
+        "nimi": "B",
+        "lyhytNimi": "B",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "B"
+  },
+  {
+    "koodiUri": "koskiyoarvosanat_l",
+    "metadata": [
+      {
+        "nimi": "L",
+        "lyhytNimi": "L",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "L"
+  },
+  {
+    "koodiUri": "koskiyoarvosanat_m",
+    "metadata": [
+      {
+        "nimi": "M",
+        "lyhytNimi": "M",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "M"
+  },
+  {
+    "koodiUri": "koskiyoarvosanat_a",
+    "metadata": [
+      {
+        "nimi": "A",
+        "lyhytNimi": "A",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "A"
+  },
+  {
+    "koodiUri": "koskiyoarvosanat_e",
+    "metadata": [
+      {
+        "nimi": "E",
+        "lyhytNimi": "E",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "E"
+  },
+  {
+    "koodiUri": "koskiyoarvosanat_i",
+    "metadata": [
+      {
+        "nimi": "I",
+        "lyhytNimi": "I",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "I"
+  },
+  {
+    "koodiUri": "koskiyoarvosanat_c",
+    "metadata": [
+      {
+        "nimi": "C",
+        "lyhytNimi": "C",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "C"
+  }
+]

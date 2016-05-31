@@ -8,7 +8,6 @@ import fi.oph.koski.schema._
 trait OpiskeluoikeusTestMethodsKorkeakoulu extends OpiskeluOikeusTestMethods[KorkeakoulunOpiskeluoikeus]{
   override def defaultOpiskeluoikeus = KorkeakoulunOpiskeluoikeus(
     id = None,
-    versionumero = None,
     lähdejärjestelmänId = None,
     alkamispäivä = Some(date(2016, 9, 1)),
     arvioituPäättymispäivä = Some(date(2020, 5, 1)),

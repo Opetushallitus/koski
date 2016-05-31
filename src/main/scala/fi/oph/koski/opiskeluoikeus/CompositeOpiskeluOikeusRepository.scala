@@ -3,7 +3,7 @@ package fi.oph.koski.opiskeluoikeus
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.oppija.PossiblyUnverifiedOppijaOid
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema.{Opiskeluoikeus, TaydellisetHenkilötiedot}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, TaydellisetHenkilötiedot}
 import fi.oph.koski.koski.QueryFilter
 import fi.oph.koski.koskiuser.KoskiUser
 import rx.lang.scala.Observable
@@ -23,7 +23,7 @@ class CompositeOpiskeluOikeusRepository(repos: List[OpiskeluOikeusRepository]) e
 
   override def findById(id: Int)(implicit user: KoskiUser) = repos.par.flatMap(_.findById(id)).headOption
 
-  override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: Opiskeluoikeus)(implicit user: KoskiUser) = {
+  override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiUser) = {
     val results: ParSeq[Either[HttpStatus, CreateOrUpdateResult]] = repos.par.map(_.createOrUpdate(oppijaOid, opiskeluOikeus))
     results.toList.sortWith {
       case (Right(_), Left(_)) => true // prefer success

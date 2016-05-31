@@ -48,8 +48,11 @@ trait Opiskeluoikeus extends Loggable {
     case Some(id) => "opiskeluoikeus " + id
   }
 
-  def withIdAndVersion(id: Option[Int], versionumero: Option[Int]): Opiskeluoikeus
   def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid): Opiskeluoikeus
+}
+
+trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
+  def withIdAndVersion(id: Option[Int], versionumero: Option[Int]): Opiskeluoikeus
 }
 
 trait OpiskeluoikeudenTila {

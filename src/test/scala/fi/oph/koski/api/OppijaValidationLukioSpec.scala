@@ -36,7 +36,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
         )))
       )))
       putOpiskeluOikeus(oo) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajudet.osasuoritustenLaajuuksienSumma("Suorituksen koskioppiaineetyleissivistava/GE osasuoritusten laajuuksien summa 1.0 ei vastaa suorituksen laajuutta 2.0"))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma("Suorituksen koskioppiaineetyleissivistava/GE osasuoritusten laajuuksien summa 1.0 ei vastaa suorituksen laajuutta 2.0"))
       }
     }
   }

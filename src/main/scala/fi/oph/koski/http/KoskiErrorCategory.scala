@@ -75,7 +75,7 @@ object KoskiErrorCategory {
         val osasuorituksellaEriLaajuusyksikkö = subcategory("osasuorituksellaEriLaajuusyksikkö", "Osasuorituksella on eri laajuusyksikkö kuin ylemmän tason suorituksella")
         val osasuoritustenLaajuuksienSumma = subcategory("osasuoritustenLaajuuksienSumma", "Osasuoritusten laajuuksien summa ei täsmää")
       }
-      val laajudet = new Laajuudet
+      val laajuudet = new Laajuudet
     }
     val validation = new Validation
   }

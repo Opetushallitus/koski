@@ -33,7 +33,7 @@ case class Koodistokoodiviite(
 }
 
 @Description("Paikallinen, koulutustoimijan oma kooditus. Käytetään kansallisen koodiston puuttuessa")
-case class Paikallinenkoodi(
+case class PaikallinenKoodi(
   @Description("Koodin tunniste koodistossa")
   koodiarvo: String,
   @Description("Koodin selväkielinen nimi")

@@ -19,7 +19,7 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeus(
   suoritukset: List[LukioonValmistavanKoulutuksenSuoritus],
   @KoodistoKoodiarvo("luva")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("luva", "opiskeluoikeudentyyppi")
-) extends Opiskeluoikeus {
+) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def arvioituPäättymispäivä = None
@@ -67,6 +67,6 @@ case class LukioonValmistavanKurssinSuoritus(
 
 @Description("Lukioon valmistavassa koulutuksessa suoritettava lukioon valmistava kurssi")
 case class LukioonValmistavanKoulutuksenKurssi(
-  tunniste: Paikallinenkoodi,
+  tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusKursseissa]
 ) extends PaikallinenKoulutusmoduuli

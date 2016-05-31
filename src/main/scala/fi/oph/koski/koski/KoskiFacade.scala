@@ -87,7 +87,7 @@ class KoskiFacade(oppijaRepository: OppijaRepository,
       }
 
       oppijaOid.right.flatMap { oppijaOid: PossiblyUnverifiedOppijaOid =>
-        val opiskeluOikeusCreationResults: Seq[Either[HttpStatus, CreateOrUpdateResult]] = oppija.opiskeluoikeudet.map { opiskeluOikeus =>
+        val opiskeluOikeusCreationResults: Seq[Either[HttpStatus, CreateOrUpdateResult]] = oppija.tallennettavatOpiskeluoikeudet.map { opiskeluOikeus =>
           val result = opiskeluOikeusRepository.createOrUpdate(oppijaOid, opiskeluOikeus)
           result match {
             case Right(result) =>

@@ -39,7 +39,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       case status: HttpStatus if status.isOk =>
         val extractionResult: Either[HttpStatus, Oppija] = timed("extract")(ValidatingAndResolvingExtractor.extract[Oppija](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository)))
         extractionResult.right.flatMap { oppija =>
-          validateOpiskeluoikeudet(oppija.opiskeluoikeudet) match {
+          validateOpiskeluoikeudet(oppija) match {
             case status: HttpStatus if status.isOk => Right(fillMissingInfo(oppija))
             case status: HttpStatus => Left(status)
           }
@@ -48,12 +48,13 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
   }
 
-  private def validateOpiskeluoikeudet(opiskeluoikeudet: Seq[Opiskeluoikeus])(implicit user: KoskiUser, accessType: AccessType.Value): HttpStatus = {
-    if (opiskeluoikeudet.length == 0) {
+  private def validateOpiskeluoikeudet(oppija: Oppija)(implicit user: KoskiUser, accessType: AccessType.Value): HttpStatus = {
+    if (oppija.opiskeluoikeudet.length == 0) {
       KoskiErrorCategory.badRequest.validation.tyhjäOpiskeluoikeusLista()
-    }
-    else {
-      HttpStatus.fold(opiskeluoikeudet.map(validateOpiskeluOikeus))
+    } else if (accessType == AccessType.write && !oppija.ulkoisistaJärjestelmistäHaetutOpiskeluoikeudet.isEmpty) {
+      KoskiErrorCategory.notImplemented.readOnly("Korkeakoulutuksen opiskeluoikeuksia ja ylioppilastutkintojen tietoja ei voi päivittää Koski-järjestelmässä")
+    } else {
+      HttpStatus.fold(oppija.opiskeluoikeudet.map(validateOpiskeluOikeus))
     }
   }
 
@@ -89,7 +90,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         val yksikköValidaatio = HttpStatus.fold(suoritus.osasuoritusLista.map { case osasuoritus =>
           osasuoritus.koulutusmoduuli.laajuus match {
             case Some(osasuorituksenLaajuus: Laajuus) if laajuus.yksikkö != osasuorituksenLaajuus.yksikkö =>
-              KoskiErrorCategory.badRequest.validation.laajudet.osasuorituksellaEriLaajuusyksikkö("Osasuorituksella " + suorituksenTunniste(osasuoritus) + " eri laajuuden yksikkö kuin suorituksella " + suorituksenTunniste(suoritus))
+              KoskiErrorCategory.badRequest.validation.laajuudet.osasuorituksellaEriLaajuusyksikkö("Osasuorituksella " + suorituksenTunniste(osasuoritus) + " eri laajuuden yksikkö kuin suorituksella " + suorituksenTunniste(suoritus))
             case _ => HttpStatus.ok
           }
         })
@@ -103,7 +104,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
               case summa if summa == laajuus.arvo =>
                 HttpStatus.ok
               case summa =>
-                KoskiErrorCategory.badRequest.validation.laajudet.osasuoritustenLaajuuksienSumma("Suorituksen " + suorituksenTunniste(suoritus) + " osasuoritusten laajuuksien summa " + summa + " ei vastaa suorituksen laajuutta " + laajuus.arvo)
+                KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma("Suorituksen " + suorituksenTunniste(suoritus) + " osasuoritusten laajuuksien summa " + summa + " ei vastaa suorituksen laajuutta " + laajuus.arvo)
             }
         }
         })

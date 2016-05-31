@@ -7,4 +7,7 @@ case class Oppija(
   henkilö: Henkilö,
   @Description("Lista henkilön opiskeluoikeuksista. Sisältää vain ne opiskeluoikeudet, joihin käyttäjällä on oikeudet. Esimerkiksi ammatilliselle toimijalle ei välttämättä näy henkilön lukio-opintojen tietoja")
   opiskeluoikeudet: Seq[Opiskeluoikeus]
-)
+) {
+  def tallennettavatOpiskeluoikeudet = opiskeluoikeudet.collect { case oo: KoskeenTallennettavaOpiskeluoikeus => oo }
+  def ulkoisistaJärjestelmistäHaetutOpiskeluoikeudet = opiskeluoikeudet.diff(tallennettavatOpiskeluoikeudet)
+}

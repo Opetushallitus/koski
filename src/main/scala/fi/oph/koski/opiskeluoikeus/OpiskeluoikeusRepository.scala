@@ -3,7 +3,7 @@ package fi.oph.koski.opiskeluoikeus
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.oppija.PossiblyUnverifiedOppijaOid
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema.{Opiskeluoikeus, TaydellisetHenkilötiedot}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, TaydellisetHenkilötiedot}
 import fi.oph.koski.koski.QueryFilter
 import fi.oph.koski.koskiuser.KoskiUser
 import org.json4s.JValue
@@ -14,7 +14,7 @@ trait OpiskeluOikeusRepository {
   def filterOppijat(oppijat: Seq[TaydellisetHenkilötiedot])(implicit user: KoskiUser): Seq[TaydellisetHenkilötiedot]
   def findByOppijaOid(oid: String)(implicit user: KoskiUser): Seq[Opiskeluoikeus]
   def findById(id: Int)(implicit user: KoskiUser): Option[(Opiskeluoikeus, String)]
-  def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: Opiskeluoikeus)(implicit user: KoskiUser): Either[HttpStatus, CreateOrUpdateResult]
+  def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiUser): Either[HttpStatus, CreateOrUpdateResult]
 }
 
 

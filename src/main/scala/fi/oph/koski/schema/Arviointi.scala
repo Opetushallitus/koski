@@ -34,7 +34,7 @@ trait KoodistostaLöytyväArviointi extends Arviointi {
 
 trait PaikallinenArviointi extends Arviointi {
   @Description("Paikallinen arvosana, jota ei löydy kansallisesta koodistosta")
-  def arvosana: Paikallinenkoodi
+  def arvosana: PaikallinenKoodi
   def arvosanaKirjaimin = arvosana.nimi
 }
 

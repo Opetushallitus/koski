@@ -24,7 +24,7 @@ case class PerusopetuksenOpiskeluoikeus(
   läsnäolotiedot: Option[Läsnäolotiedot],
   @KoodistoKoodiarvo("perusopetus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetus", "opiskeluoikeudentyyppi")
-) extends Opiskeluoikeus {
+) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def arvioituPäättymispäivä = None
