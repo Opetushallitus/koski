@@ -309,11 +309,11 @@ Kosken käyttäjäautentikaatio on toteutettu Opintopolku-järjestelmän LDAPia 
 
 Koski-järjestelmän rajapinta-dokumentaatio generoidaan testidatasta ja esimerkiksi testiympäristön dokumentaatio löytyy osoitteesta
     
-[https://koskidev.koski.oph.reaktor.fi/koski/documentation](dokumentaatio)
+(https://koskidev.koski.oph.reaktor.fi/koski/documentation)
     
 JSON-scheman visualisointiin on käytetty json-schema-viewer nimistä kirjastoa, johon on tehty joitakin Koski-projektin vaatimia muutoksia. 
 Kirjaston lähdekoodi löytyy Opetushallituksen GitHub-repositoriosta
 
-[https://github.com/Opetushallitus/json-schema-viewer](schema-viewer)
+(https://github.com/Opetushallitus/json-schema-viewer)
 
 Mon Apr 18 14:18:11 EEST 2016
