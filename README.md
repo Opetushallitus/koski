@@ -305,15 +305,15 @@ Koski osaa tarvittaessa luoda käytettävät koodistot ja koodistopalveluun. Kä
 
 Kosken käyttäjäautentikaatio on toteutettu Opintopolku-järjestelmän LDAPia vasten. LDAP-palvelimen osoite ja tunnukset konfiguroidaan `ldap.host`, `ldap.userdn` ja `ldap.password` -asetuksilla.
 
-## Dokumentaatio
+## Rajapinta-dokumentaatio
 
-Koski-järjestelmän rajapinta-dokumentaatio generoidaan testidatasta ja esimerkiksi testiympäristön dokumentaatio löytyy osoitteesta
+Koski-järjestelmän rajapinta-dokumentaatio generoidaan lähdekoodista sekä testidatasta ja esimerkiksi testiympäristön dokumentaatio löytyy osoitteesta
     
-(https://koskidev.koski.oph.reaktor.fi/koski/documentation)
+https://koskidev.koski.oph.reaktor.fi/koski/documentation
     
 JSON-scheman visualisointiin on käytetty json-schema-viewer nimistä kirjastoa, johon on tehty joitakin Koski-projektin vaatimia muutoksia. 
 Kirjaston lähdekoodi löytyy Opetushallituksen GitHub-repositoriosta
 
-(https://github.com/Opetushallitus/json-schema-viewer)
+https://github.com/Opetushallitus/json-schema-viewer
 
 Mon Apr 18 14:18:11 EEST 2016
