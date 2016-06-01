@@ -7,22 +7,21 @@ import fi.oph.koski.util.XML.texts
 import scala.collection.immutable.Seq
 import scala.xml.{Node, XML}
 
-trait TodistusTestMethods extends SearchTestMethods {
-  def todistus(hetu: String) = {
-    opiskeluoikeus(hetu).flatMap(_.id).map { opiskeluoikeusID =>
-      authGet(s"todistus/opiskeluoikeus/${opiskeluoikeusID}") {
-        verifyResponseStatus(200)
-        val lines: Seq[String] = XML.loadString(response.body)
-          .flatMap(_.descendant_or_self)
-          .flatMap {
-          case tr: Node if tr.label == "tr" && (tr \ "@class").text != "header" => Some(texts(tr \ "td"))
-          case h1: Node if List("h1", "h2").contains(h1.label) => Some(h1.text.trim)
-          case h3: Node if h3.label == "h3" => Some(texts(h3 \ "span"))
-          case _ => None
-        }
-        lines.mkString("\n").trim
+trait TodistusTestMethods extends SearchTestMethods with OpiskeluOikeusTestMethods {
+  def todistus(oppijaOid: String, tyyppi: String): String = {
+    val opiskeluoikeusID: Int = opiskeluoikeus(oppijaOid, tyyppi).id.get
+    authGet(s"todistus/opiskeluoikeus/${opiskeluoikeusID}") {
+      verifyResponseStatus(200)
+      val lines: Seq[String] = XML.loadString(response.body)
+        .flatMap(_.descendant_or_self)
+        .flatMap {
+        case tr: Node if tr.label == "tr" && (tr \ "@class").text != "header" => Some(texts(tr \ "td"))
+        case h1: Node if List("h1", "h2").contains(h1.label) => Some(h1.text.trim)
+        case h3: Node if h3.label == "h3" => Some(texts(h3 \ "span"))
+        case _ => None
       }
-    }.getOrElse("")
+      lines.mkString("\n").trim
+    }
   }
 
   private def opiskeluoikeus(searchTerm: String): Option[Opiskeluoikeus] = {

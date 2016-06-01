@@ -1,13 +1,13 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.oppija.MockOppijat
-import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.schema.TaydellisetHenkilötiedot
 import org.scalatest.{FunSpec, Matchers}
 
-class LukioSpec extends FunSpec with Matchers with OpintosuoritusoteTestMethods with TodistusTestMethods {
+class LukioSpec extends FunSpec with Matchers with OpintosuoritusoteTestMethods with TodistusTestMethods with OpiskeluOikeusTestMethods {
   describe("Lukio") {
     it("Opintosuoritusote") {
-      opintosuoritusote(MockOppijat.lukiolainen.hetu, MockOrganisaatiot.jyväskylänNormaalikoulu) should equal(
+      opintosuoritusote(MockOppijat.lukiolainen) should equal(
         """Opintosuoritukset
           |Kurssia Arvosana Suor.pvm
           |A1 A1-kieli, englanti 9 9
@@ -120,7 +120,7 @@ class LukioSpec extends FunSpec with Matchers with OpintosuoritusoteTestMethods 
     }
 
     it("Päättötodistus") {
-      todistus(MockOppijat.lukiolainen.hetu) should equal("""Lukion päättötodistus
+      todistus(MockOppijat.lukiolainen.oid, "lukiokoulutus") should equal("""Lukion päättötodistus
                                                             |Jyväskylän yliopisto
                                                             |Jyväskylän normaalikoulu
                                                             |Lukiolainen, Liisa 110496-9369
@@ -145,5 +145,13 @@ class LukioSpec extends FunSpec with Matchers with OpintosuoritusoteTestMethods 
                                                             |Terveystieto 1 Kiitettävä 9
                                                             |Opiskelijan suorittama kokonaiskurssimäärä 87,5""".stripMargin)
     }
+  }
+
+  def opintosuoritusote(henkilö: TaydellisetHenkilötiedot): String = {
+    opintosuoritusoteOpiskeluoikeudelle(henkilö.oid, lukionOpiskeluoikeus)
+  }
+
+  def lukionOpiskeluoikeus = {
+    opiskeluoikeus(MockOppijat.lukiolainen.oid, "lukiokoulutus").id.get
   }
 }

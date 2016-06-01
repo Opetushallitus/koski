@@ -4,7 +4,7 @@ import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 
-trait OpiskeluoikeusTestMethodsAmmatillinen extends OpiskeluOikeusTestMethods[AmmatillinenOpiskeluoikeus] {
+trait OpiskeluoikeusTestMethodsAmmatillinen extends PutOpiskeluOikeusTestMethods[AmmatillinenOpiskeluoikeus] {
   override def defaultOpiskeluoikeus = opiskeluoikeus()
 
   val autoalanPerustutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", "koulutus"), Some("39/011/2014"))

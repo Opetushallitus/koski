@@ -54,7 +54,7 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
 
     describe("Opintosuoritusote") {
       it("Valmistunut diplomi-insinööri") {
-        opintosuoritusote("290492-9455", "1.2.246.562.10.56753942459") should equal(
+        opintosuoritusoteOppilaitokselle("290492-9455", "1.2.246.562.10.56753942459") should equal(
           """|Suoritetut tutkinnot
             |751101 Dipl.ins., konetekniikka 22.3.2016
             |Opintosuoritukset
@@ -102,7 +102,7 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
       }
 
       it("Opinto-oikeus, keskeneräinen tutkinto") {
-        opintosuoritusote("090888-929X", "1.2.246.562.10.56753942459") should equal(
+        opintosuoritusoteOppilaitokselle("090888-929X", "1.2.246.562.10.56753942459") should equal(
           """|Ensisijainen opinto-oikeus
             |Tavoitetutkinto Tekn. kand., kemian tekniikka
             |Voimassa 1.8.2008 - 31.7.2017
@@ -117,7 +117,7 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
       }
 
       it("AMK, keskeyttänyt") {
-        opintosuoritusote("100193-948U", "1.2.246.562.10.25619624254") should equal(
+        opintosuoritusoteOppilaitokselle("100193-948U", "1.2.246.562.10.25619624254") should equal(
           """|Suoritetut tutkinnot
             |Opintosuoritukset
             |Opintopistettä Arvosana Suor.pvm
@@ -138,7 +138,7 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
       }
 
       it("AMK, valmistunut") {
-        opintosuoritusote("101291-954C", "1.2.246.562.10.25619624254") should equal(
+        opintosuoritusoteOppilaitokselle("101291-954C", "1.2.246.562.10.25619624254") should equal(
           """|Suoritetut tutkinnot
             |671112 Fysioterapeutti (AMK) 29.5.2015
             |Opintosuoritukset
@@ -182,7 +182,7 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
       }
 
       it("Tutkintoon johtamaton opiskeluoikeus") {
-        opintosuoritusote("090888-929X", "1.2.246.562.10.27756776996") should equal(
+        opintosuoritusoteOppilaitokselle("090888-929X", "1.2.246.562.10.27756776996") should equal(
           """|Suoritetut tutkinnot
             |Opintosuoritukset
             |Opintopistettä Arvosana Suor.pvm

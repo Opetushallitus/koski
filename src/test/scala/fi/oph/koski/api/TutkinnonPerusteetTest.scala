@@ -5,7 +5,7 @@ import fi.oph.koski.json.Json
 import fi.oph.koski.schema._
 import org.scalatest.FunSpec
 
-trait TutkinnonPerusteetTest[T <: Opiskeluoikeus] extends FunSpec with OpiskeluOikeusTestMethods[T] {
+trait TutkinnonPerusteetTest[T <: Opiskeluoikeus] extends FunSpec with PutOpiskeluOikeusTestMethods[T] {
   describe("Tutkinnon perusteet") {
     describe("Valideilla tiedoilla") {
       it("palautetaan HTTP 200") {

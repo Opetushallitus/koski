@@ -3,10 +3,10 @@ package fi.oph.koski.api
 import fi.oph.koski.oppija.MockOppijat
 import org.scalatest.{FunSpec, Matchers}
 
-class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods {
+class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods with OpiskeluOikeusTestMethods {
   describe("Perusopetuksen todistukset") {
     it("Perusopetuksen päättötodistus") {
-      todistus(MockOppijat.koululainen.hetu) should equal(
+      todistus(MockOppijat.koululainen.oid, "perusopetus") should equal(
         """|Jyväskylän yliopisto
           |Perusopetuksen päättötodistus
           |Jyväskylän normaalikoulu
@@ -36,7 +36,7 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods {
           |B2-kieli, saksa 4.0 Kiitettävä 9""".stripMargin)
     }
     it("Perusopetuksen oppiaineen oppimäärän todistus") {
-      todistus(MockOppijat.oppiaineenKorottaja.hetu) should equal(
+      todistus(MockOppijat.oppiaineenKorottaja.oid, "perusopetus") should equal(
         """Jyväskylän yliopisto
           |Todistus perusopetuksen oppiaineen oppimäärän suorittamisesta
           |Jyväskylän normaalikoulu
@@ -48,7 +48,7 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods {
   }
   describe("Perusopetuksen lisäopetus") {
     it("todistus") {
-      todistus(MockOppijat.kymppiluokkalainen.hetu) should equal(
+      todistus(MockOppijat.kymppiluokkalainen.oid, "perusopetuksenlisaopetus") should equal(
         """|Jyväskylän yliopisto
           |Todistus lisäopetuksen suorittamisesta
           |Jyväskylän normaalikoulu

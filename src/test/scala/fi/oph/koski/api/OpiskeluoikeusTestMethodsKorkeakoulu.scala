@@ -5,7 +5,7 @@ import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.KorkeakouluTestdata
 import fi.oph.koski.schema._
 
-trait OpiskeluoikeusTestMethodsKorkeakoulu extends OpiskeluOikeusTestMethods[KorkeakoulunOpiskeluoikeus]{
+trait OpiskeluoikeusTestMethodsKorkeakoulu extends PutOpiskeluOikeusTestMethods[KorkeakoulunOpiskeluoikeus]{
   override def defaultOpiskeluoikeus = KorkeakoulunOpiskeluoikeus(
     id = None,
     lähdejärjestelmänId = None,

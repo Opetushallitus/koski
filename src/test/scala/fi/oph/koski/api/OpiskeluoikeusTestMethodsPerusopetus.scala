@@ -8,7 +8,7 @@ import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylän
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
 
-trait OpiskeluoikeusTestMethodsPerusopetus extends OpiskeluOikeusTestMethods[PerusopetuksenOpiskeluoikeus]{
+trait OpiskeluoikeusTestMethodsPerusopetus extends PutOpiskeluOikeusTestMethods[PerusopetuksenOpiskeluoikeus]{
   val vahvistus: Some[Vahvistus] = Some(Vahvistus(date(2016, 6, 4), jyväskylä, jyväskylänNormaalikoulu, List(OrganisaatioHenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))
 
   override def defaultOpiskeluoikeus = PerusopetuksenOpiskeluoikeus(
