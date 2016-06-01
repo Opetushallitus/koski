@@ -32,8 +32,8 @@ export const OpiskeluOikeus = React.createClass({
                 <div className="suoritus" key={index}>
                   <span className="tutkinto">{suoritus.koulutusmoduuli.tunniste.nimi.fi}</span>
                   <span className="tutkinnon-tila">(Opiskeluoikeus {opiskeluOikeudenTila(opiskeluOikeus)}, {suoritus.tila.nimi.fi})</span>
-                  <Todistus suoritus={suoritus} opiskeluOikeus={opiskeluOikeus}/>
                   <OpiskeluoikeudenOpintosuoritusote opiskeluoikeus={opiskeluOikeus} oppija={oppija}/>
+                  <Todistus suoritus={suoritus} opiskeluOikeus={opiskeluOikeus}/>
                   <TutkinnonRakenne suoritus={suoritus} lens={suoritusLens} />
                 </div>
               )
