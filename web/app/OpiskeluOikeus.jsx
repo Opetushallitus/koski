@@ -10,7 +10,7 @@ export const opiskeluOikeusChange = Bacon.Bus()
 export const OpiskeluOikeus = React.createClass({
 
   render() {
-    let {opiskeluOikeus, lens} = this.props
+    let {opiskeluOikeus, oppija, lens} = this.props
 
     const opiskeluOikeudenTila = (oo) => {
       if (oo.tila) {
@@ -33,6 +33,7 @@ export const OpiskeluOikeus = React.createClass({
                   <span className="tutkinto">{suoritus.koulutusmoduuli.tunniste.nimi.fi}</span>
                   <span className="tutkinnon-tila">(Opiskeluoikeus {opiskeluOikeudenTila(opiskeluOikeus)}, {suoritus.tila.nimi.fi})</span>
                   <Todistus suoritus={suoritus} opiskeluOikeus={opiskeluOikeus}/>
+                  <OpiskeluoikeudenOpintosuoritusote opiskeluoikeus={opiskeluOikeus} oppija={oppija}/>
                   <TutkinnonRakenne suoritus={suoritus} lens={suoritusLens} />
                 </div>
               )
@@ -50,6 +51,18 @@ const Todistus = React.createClass({
     return suoritus.tila.koodiarvo == 'VALMIS' && suoritus.tyyppi.koodiarvo != 'korkeakoulututkinto'
       ? <a className="todistus" href={href}>näytä todistus</a>
       : null
+  }
+})
+
+const OpiskeluoikeudenOpintosuoritusote = React.createClass({
+  render() {
+    let {opiskeluoikeus, oppija} = this.props
+    if (opiskeluoikeus.tyyppi.koodiarvo == 'lukiokoulutus') { // vain lukiokoulutukselle näytetään opiskeluoikeuskohtainen suoritusote
+      let href = '/koski/opintosuoritusote/' + oppija.oid + '?opiskeluoikeus=' + opiskeluoikeus.id
+      return <a className="opintosuoritusote" href={href}>näytä opintosuoritusote</a>
+    } else {
+      return null
+    }
   }
 })
 

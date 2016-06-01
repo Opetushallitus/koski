@@ -15,14 +15,21 @@ class SuoritusServlet(
   val oppijaRepository: OppijaRepository,
   val koski: KoskiFacade) extends HtmlServlet with RequiresAuthentication {
 
-  get("/:oppijaOid/:oppilaitosOid") {
+  get("/:oppijaOid") {
     val oid = params("oppijaOid")
-    val oppilaitosOid = params("oppilaitosOid")
+    val oppilaitosOid = params.get("oppilaitos")
+    val opiskeluoikeusId = getOptionalIntegerParam("opiskeluoikeus")
     implicit val user = koskiUser
 
     koski.findOppija(oid) match {
       case Right(Oppija(henkilö: TaydellisetHenkilötiedot, opiskeluoikeudet)) =>
-        val oppilaitoksenOpiskeluoikeudet: List[Opiskeluoikeus] = opiskeluoikeudet.filter(_.oppilaitos.oid == oppilaitosOid).toList
+        val oppilaitoksenOpiskeluoikeudet: List[Opiskeluoikeus] = opiskeluoikeudet.filter { oo =>
+          (oppilaitosOid, opiskeluoikeusId) match {
+            case (_, ooid@Some(_)) => oo.id == ooid
+            case (Some(oid), _) => oo.oppilaitos.oid == oid
+            case _ => true
+          }
+        }.toList
         val tyypit = oppilaitoksenOpiskeluoikeudet.map(_.tyyppi.koodiarvo).toSet.toList
         tyypit match {
           case "korkeakoulutus" :: Nil => new OpintosuoritusoteHtml().korkeakoulu(henkilö, oppilaitoksenOpiskeluoikeudet.asInstanceOf[List[KorkeakoulunOpiskeluoikeus]] )

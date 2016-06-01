@@ -7,7 +7,7 @@ describe('Lukiokoulutus', function( ){
     before(page.openPage, page.oppijaHaku.search('110496-9369', page.isOppijaSelected('Liisa')))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
-        expect(OpinnotPage().getTutkinto()).to.equal("Ylioppilastutkinto")
+        expect(OpinnotPage().getTutkinto(1)).to.equal("Ylioppilastutkinto")
         expect(OpinnotPage().getOppilaitos()).to.equal("Jyväskylän normaalikoulu")
       })
     })

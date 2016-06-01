@@ -28,6 +28,10 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
     }
   }
 
+  def getOptionalIntegerParam(name: String) = params.get(name) map { _ =>
+    getIntegerParam(name)
+  }
+
   def koskiUserOption: Option[KoskiUser] = None
 
   error {
