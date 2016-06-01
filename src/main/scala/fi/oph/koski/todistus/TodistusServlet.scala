@@ -3,7 +3,6 @@ package fi.oph.koski.todistus
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koski.KoskiFacade
 import fi.oph.koski.koskiuser.{RequiresAuthentication, UserOrganisationsRepository}
-import fi.oph.koski.localization.LocalizedString.finnish
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.HtmlServlet
 import fi.oph.koski.tutkinto.{SuoritustapaJaRakenne, TutkintoRakenne, TutkintoRepository}
