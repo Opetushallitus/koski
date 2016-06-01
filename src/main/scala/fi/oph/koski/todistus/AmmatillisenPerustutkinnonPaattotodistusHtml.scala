@@ -39,7 +39,7 @@ class AmmatillisenPerustutkinnonPaattotodistusHtml(implicit val user: KoskiUser)
               <tr>
                 <th class="nimi">Tutkinnon osat</th>
                 <th class="laajuus">Suoritettu laajuus, osp</th>
-                <th class="arvosana">Arvosana (1-3)</th>
+                <th colspan="2" class="arvosana">Arvosana (1-3)</th>
               </tr>
             </thead>
             <tbody>
