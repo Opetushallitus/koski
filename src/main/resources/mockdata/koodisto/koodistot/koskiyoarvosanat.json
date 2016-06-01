@@ -1,29 +1,24 @@
 {
   "koodistoUri": "koskiyoarvosanat",
-  "organisaatioOid": "1.2.246.562.10.00000000001",
-  "codesGroupUri": "http://koski",
   "versio": 1,
-  "voimassaAlkuPvm": "2013-01-01",
   "metadata": [
     {
       "kieli": "FI",
       "nimi": "Koski YO-arvosanat",
-      "kuvaus": "Koski YO-arvosanat",
-      "kayttoohje": "",
-      "kasite": "",
-      "kohdealue": "",
-      "sitovuustaso": "",
-      "kohdealueenOsaAlue": "",
-      "toimintaymparisto": "",
-      "tarkentaaKoodistoa": "",
-      "huomioitavaKoodisto": "",
-      "koodistonLahde": ""
+      "kuvaus": "Koski YO-arvosanat"
+    },
+    {
+      "kieli": "SV",
+      "nimi": "Koski YO-arvosanat",
+      "kuvaus": "Koski YO-arvosanat"
+    },
+    {
+      "kieli": "EN",
+      "nimi": "Koski YO-arvosanat",
+      "kuvaus": "Koski YO-arvosanat"
     }
   ],
-  "codesVersions": [
-    1
-  ],
-  "withinCodes": [],
-  "includesCodes": [],
-  "levelsWithCodes": []
+  "codesGroupUri" : "http://koski",
+  "voimassaAlkuPvm": "2013-01-01",
+  "organisaatioOid": "1.2.246.562.10.00000000001"
 }
