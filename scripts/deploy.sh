@@ -3,7 +3,6 @@ set -euo pipefail
 
 ENV=${1:-}
 PACKAGE=${2:-}
-PRIVATE_KEY=${PRIVATE_KEY:-}
 
 VALID_ENVS=(
   "vagrant"

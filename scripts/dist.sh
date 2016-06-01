@@ -3,8 +3,12 @@ set -euo pipefail
 
 cd `dirname $0`/..
 
-VERSION=$(git rev-parse --short HEAD)
-OUTPUTDIR=${1:-"target/koski-$VERSION"}
+OUTPUTDIR=${1:-}
+
+if [ -z "$OUTPUTDIR" ]; then
+  echo "Usage: `basename $0` <outputdir>"
+  exit 1
+fi
 
 mkdir -p $OUTPUTDIR
 cp -r web target/classes $OUTPUTDIR
