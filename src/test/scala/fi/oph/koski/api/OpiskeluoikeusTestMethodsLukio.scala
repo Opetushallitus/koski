@@ -18,7 +18,7 @@ trait OpiskeluoikeusTestMethodsLukio extends PutOpiskeluOikeusTestMethods[Lukion
   )
 
   val päättötodistusSuoritus = LukionOppimääränSuoritus(
-    koulutusmoduuli = Ylioppilastutkinto(perusteenDiaarinumero = Some("60/011/2015")),
+    koulutusmoduuli = LukionOppimäärä(perusteenDiaarinumero = Some("60/011/2015")),
     paikallinenId = None,
     suorituskieli = None,
     tila = tilaValmis,

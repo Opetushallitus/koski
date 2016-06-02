@@ -33,13 +33,25 @@ case class LukionOppimääränSuoritus(
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
-  koulutusmoduuli: Ylioppilastutkinto,
+  koulutusmoduuli: LukionOppimäärä,
   @KoodistoKoodiarvo("lukionoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"),
   vahvistus: Option[Vahvistus] = None,
   override val osasuoritukset: Option[List[LukionOppiaineenSuoritus]]
 ) extends Suoritus {
   def arviointi: Option[List[YleissivistävänkoulutuksenArviointi]] = None
+}
+
+case class LukionOppimäärä(
+ @Description("Tutkinnon 6-numeroinen tutkintokoodi")
+ @KoodistoUri("koulutus")
+ @KoodistoKoodiarvo("309902")
+ @OksaUri("tmpOKSAID560", "tutkinto")
+ tunniste: Koodistokoodiviite = Koodistokoodiviite("309902", koodistoUri = "koulutus"),
+ perusteenDiaarinumero: Option[String]
+) extends KoodistostaLöytyväKoulutusmoduuli with EPerusteistaLöytyväKoulutusmoduuli {
+  override def laajuus = None
+  override def isTutkinto = true
 }
 
 case class LukionOppiaineenSuoritus(

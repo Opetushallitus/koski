@@ -37605,6 +37605,15 @@
     "kieli" : "EN"
   } ],
   "versio" : 6
+},{
+  "koodiUri" : "koulutus_309902",
+  "koodiArvo" : "309902",
+  "metadata" : [ {
+    "nimi" : "Lukion oppimäärä",
+    "lyhytNimi" : "Lukion oppimäärä",
+    "kieli" : "FI"
+  }],
+  "versio" : 6
 }, {
   "koodiUri" : "koulutus_531199",
   "koodiArvo" : "531199",

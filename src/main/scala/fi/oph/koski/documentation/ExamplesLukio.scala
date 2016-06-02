@@ -22,7 +22,7 @@ object ExamplesLukio {
       oppilaitos = jyväskylänNormaalikoulu, None,
       suoritukset = List(
         LukionOppimääränSuoritus(
-          koulutusmoduuli = ylioppilastutkinto,
+          koulutusmoduuli = lukionOppimäärä,
           paikallinenId = None,
           suorituskieli = suomenKieli,
           tila = tilaKesken,
@@ -51,7 +51,7 @@ object ExamplesLukio {
       oppilaitos = jyväskylänNormaalikoulu, None,
       suoritukset = List(
         LukionOppimääränSuoritus(
-          koulutusmoduuli = ylioppilastutkinto,
+          koulutusmoduuli = lukionOppimäärä,
           paikallinenId = None,
           suorituskieli = suomenKieli,
           tila = tilaValmis,
@@ -206,6 +206,8 @@ object LukioExampleData {
   val exampleHenkilö = MockOppijat.lukiolainen.vainHenkilötiedot
 
   val ylioppilastutkinto: Ylioppilastutkinto = Ylioppilastutkinto(perusteenDiaarinumero = Some("60/011/2015"))
+
+  val lukionOppimäärä: LukionOppimäärä = LukionOppimäärä(perusteenDiaarinumero = Some("60/011/2015"))
 
   val vahvistus: Some[Vahvistus] = Some(Vahvistus(päivä = date(2016, 6, 4), jyväskylä, myöntäjäOrganisaatio = jyväskylänNormaalikoulu, myöntäjäHenkilöt = List(OrganisaatioHenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))
 
