@@ -51,7 +51,8 @@ lint: eslint scalastyle
 it: test
 happen:
 #	# Pow pow!
-dist: build
+dist: front
+	mvn dependency:copy-dependencies package -DskipTests -Pdeploy -DoutputDirectory=$(dist-dir)/lib
 	./scripts/dist.sh $(dist-dir)
 newdeploy: dist
 	./scripts/deploy.sh $(TARGET) $(deploy-file)
