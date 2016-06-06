@@ -1,35 +1,33 @@
 {
-  "ssn": "200695-889X",
-  "lastname": "Aalto",
-  "firstnames": "Aija",
-  "graduationDate": null,
-  "graduationPeriod": null,
-  "exams": [
-    {
-      "period": "2012K",
-      "examId": "KE",
-      "examRole": "41",
-      "grade": "B",
-      "points": 18,
-      "sections": [
-        {
-          "sectionPoints": 18,
-          "sectionId": "T000"
-        }
-      ]
-    },
-    {
-      "period": "2012K",
-      "examId": "FY",
-      "examRole": "71",
-      "grade": "B",
-      "points": 18,
-      "sections": [
-        {
-          "sectionPoints": 18,
-          "sectionId": "T000"
-        }
-      ]
-    }
-  ]
+  "ssn" : "200695-889X",
+  "lastname" : "Aalto",
+  "firstnames" : "Aija",
+  "graduationDate" : null,
+  "graduationPeriod" : null,
+  "hasCompletedMandatoryExams" : false,
+  "exams" : [ {
+    "period" : "2012K",
+    "examId" : "KE",
+    "examNameFi" : "Kemia",
+    "examNameSv" : "Kemi",
+    "examRole" : "41",
+    "grade" : "B",
+    "points" : 18,
+    "sections" : [ {
+      "sectionPoints" : 18,
+      "sectionId" : "T000"
+    } ]
+  }, {
+    "period" : "2012K",
+    "examId" : "FY",
+    "examNameFi" : "Fysiikka",
+    "examNameSv" : "Fysik",
+    "examRole" : "71",
+    "grade" : "B",
+    "points" : 18,
+    "sections" : [ {
+      "sectionPoints" : 18,
+      "sectionId" : "T000"
+    } ]
+  } ]
 }

@@ -1,12 +1,30 @@
 package fi.oph.koski.ytr
 
+import com.typesafe.config.Config
+import fi.oph.koski.http.Http._
+import fi.oph.koski.http.{ClientWithBasicAuthentication, Http}
 import fi.oph.koski.json.Json
+import org.json4s.JValue
 
 trait YlioppilasTutkintoRekisteri {
-  def oppijaByHetu(hetu: String): Option[YtrOppija]
+  implicit val formats = Json.jsonFormats
+  def oppijaByHetu(hetu: String): Option[YtrOppija] = oppijaJsonByHetu(hetu).map(_.extract[YtrOppija])
+  def oppijaJsonByHetu(hetu: String): Option[JValue]
+}
+
+object YlioppilasTutkintoRekisteri {
+  def apply(config: Config) = config.hasPath("ytr") match {
+    case true => YtrRemote(config.getString("ytr.url"), config.getString("ytr.username"), config.getString("ytr.password"))
+    case false => YtrMock
+  }
 }
 
 object YtrMock extends YlioppilasTutkintoRekisteri {
-  implicit val formats = Json.jsonFormats
-  def oppijaByHetu(hetu: String): Option[YtrOppija] = Json.readFileIfExists("src/main/resources/mockdata/ytr/" + hetu + ".json").map(_.extract[YtrOppija])
+  def oppijaJsonByHetu(hetu: String): Option[JValue] = Json.readFileIfExists(filename(hetu))
+  def filename(hetu: String) = "src/main/resources/mockdata/ytr/" + hetu + ".json"
+}
+
+case class YtrRemote(rootUrl: String, user: String, password: String) extends YlioppilasTutkintoRekisteri {
+  private val http = Http(rootUrl, ClientWithBasicAuthentication(Http.newClient, user, password))
+  def oppijaJsonByHetu(hetu: String): Option[JValue] = http(uri"/api/oph-transfer/student/${hetu}")(Http.parseJsonOptional[JValue]).run
 }

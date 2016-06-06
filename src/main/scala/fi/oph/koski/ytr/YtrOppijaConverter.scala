@@ -1,7 +1,7 @@
 package fi.oph.koski.ytr
 
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.localization.LocalizedString
+import fi.oph.koski.localization.Finnish
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.schema._
@@ -37,7 +37,7 @@ case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodis
   private def convertExam(exam: YtrExam) = YlioppilastutkinnonKokeenSuoritus(
     tila = tilaValmis,
     arviointi = Some(List(YlioppilaskokeenArviointi(exam.grade))),
-    koulutusmoduuli = YlioppilasTutkinnonKoe(PaikallinenKoodi(exam.examId, LocalizedString.unlocalized(exam.examId), "ytr/koetunnukset")) // TODO: oikea nimi
+    koulutusmoduuli = YlioppilasTutkinnonKoe(PaikallinenKoodi(exam.examId, Finnish(exam.examNameFi, exam.examNameSv, exam.examNameEn), "ytr/koetunnukset"))
   )
 
   private def requiredKoodi(uri: String, koodi: String) = {

@@ -49,11 +49,11 @@ class YlioppilastutkintoSpec extends FunSpec with Matchers with OpiskeluoikeusTe
                                                                                   |Helsingin medialukio
                                                                                   |Ylioppilas, Ynjevi 010696-971K
                                                                                   |
-                                                                                  |GE M
-                                                                                  |EA C
-                                                                                  |A B
-                                                                                  |N L
-                                                                                  |BB C""".stripMargin)
+                                                                                  |Maantiede M
+                                                                                  |Englanti, pitkä C
+                                                                                  |Äidinkieli, suomi B
+                                                                                  |Matematiikka, lyhyt L
+                                                                                  |Ruotsi, keskipitkä C""".stripMargin)
       }
     }
   }
