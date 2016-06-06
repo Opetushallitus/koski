@@ -9,8 +9,7 @@ import scala.xml.{Node, XML}
 
 trait TodistusTestMethods extends SearchTestMethods with OpiskeluOikeusTestMethods {
   def todistus(oppijaOid: String, tyyppi: String): String = {
-    val opiskeluoikeusID: Int = opiskeluoikeus(oppijaOid, tyyppi).id.get
-    authGet(s"todistus/opiskeluoikeus/${opiskeluoikeusID}") {
+    authGet(s"todistus/${oppijaOid}?opiskeluoikeusTyyppi=${tyyppi}") {
       verifyResponseStatus(200)
       val lines: Seq[String] = XML.loadString(response.body)
         .flatMap(_.descendant_or_self)

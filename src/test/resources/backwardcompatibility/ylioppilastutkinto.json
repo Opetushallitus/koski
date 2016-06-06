@@ -25,8 +25,13 @@
     },
     "suoritukset" : [ {
       "tila" : {
-        "koodiarvo" : "KESKEN",
-        "koodistoUri" : "suorituksentila"
+        "koodiarvo" : "VALMIS",
+        "nimi" : {
+          "fi" : "Suoritus valmis",
+          "sv" : "Prestationen slutförd"
+        },
+        "koodistoUri" : "suorituksentila",
+        "koodistoVersio" : 1
       },
       "toimipiste" : {
         "oid" : "1.2.246.562.10.70411521654",
@@ -45,10 +50,16 @@
           "fi" : "Helsingin medialukio"
         }
       },
+      "valmistumisPäivä" : "2012-06-02",
       "osasuoritukset" : [ {
         "tila" : {
-          "koodiarvo" : "KESKEN",
-          "koodistoUri" : "suorituksentila"
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila",
+          "koodistoVersio" : 1
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -73,8 +84,13 @@
         }
       }, {
         "tila" : {
-          "koodiarvo" : "KESKEN",
-          "koodistoUri" : "suorituksentila"
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila",
+          "koodistoVersio" : 1
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -99,8 +115,13 @@
         }
       }, {
         "tila" : {
-          "koodiarvo" : "KESKEN",
-          "koodistoUri" : "suorituksentila"
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila",
+          "koodistoVersio" : 1
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -125,8 +146,13 @@
         }
       }, {
         "tila" : {
-          "koodiarvo" : "KESKEN",
-          "koodistoUri" : "suorituksentila"
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila",
+          "koodistoVersio" : 1
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -151,8 +177,13 @@
         }
       }, {
         "tila" : {
-          "koodiarvo" : "KESKEN",
-          "koodistoUri" : "suorituksentila"
+          "koodiarvo" : "VALMIS",
+          "nimi" : {
+            "fi" : "Suoritus valmis",
+            "sv" : "Prestationen slutförd"
+          },
+          "koodistoUri" : "suorituksentila",
+          "koodistoVersio" : 1
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -183,7 +214,18 @@
       "koulutusmoduuli" : {
         "tunniste" : {
           "koodiarvo" : "301000",
-          "koodistoUri" : "koulutus"
+          "nimi" : {
+            "fi" : "Ylioppilastutkinto",
+            "sv" : "Studentexamen",
+            "en" : "Matriculation Examination"
+          },
+          "lyhytNimi" : {
+            "fi" : "Ylioppilastutkinto",
+            "sv" : "Studentexamen",
+            "en" : "Matriculation Examination"
+          },
+          "koodistoUri" : "koulutus",
+          "koodistoVersio" : 6
         }
       }
     } ],

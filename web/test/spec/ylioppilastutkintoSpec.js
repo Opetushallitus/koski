@@ -9,4 +9,11 @@ describe('Ylioppilastutkinto', function( ){
       expect(OpinnotPage().getOppilaitos()).to.equal("Helsingin medialukio")
     })
   })
+
+  describe('Tulostettava todistus', function() {
+    before(OpinnotPage().avaaTodistus)
+    it('näytetään', function() {
+      // See more detailed content specification in YlioppilastutkintoSpec.scala
+    })
+  })
 })

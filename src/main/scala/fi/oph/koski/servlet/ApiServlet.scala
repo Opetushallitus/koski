@@ -26,20 +26,6 @@ trait ApiServlet extends KoskiBaseServlet with Logging with Timing {
     }
   }
 
-  def renderOption[T <: AnyRef](errorCategory: ErrorCategory)(result: Option[T]) = {
-    result match {
-      case Some(x) => renderObject(x)
-      case _ => haltWithStatus(errorCategory())
-    }
-  }
-
-  def renderEither[T <: AnyRef](result: Either[HttpStatus, T]) = {
-    result match {
-      case Right(x) => renderObject(x)
-      case Left(status) => haltWithStatus(status)
-    }
-  }
-
   def renderStatus(status: HttpStatus) = {
     response.setStatus(status.statusCode)
     renderObject(status.errors)

@@ -1,6 +1,6 @@
 package fi.oph.koski.servlet
 
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.http.{ErrorCategory, HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import fi.oph.koski.koskiuser.KoskiUser
@@ -75,6 +75,21 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
       case (body, _) => body
     }
   }
+
+  def renderOption[T <: AnyRef](errorCategory: ErrorCategory)(result: Option[T]) = {
+    result match {
+      case Some(x) => renderObject(x)
+      case _ => haltWithStatus(errorCategory())
+    }
+  }
+
+  def renderEither[T <: AnyRef](result: Either[HttpStatus, T]) = {
+    result match {
+      case Right(x) => renderObject(x)
+      case Left(status) => haltWithStatus(status)
+    }
+  }
+
 
   def renderStatus(status: HttpStatus): Unit
 

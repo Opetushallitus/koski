@@ -5,7 +5,7 @@ import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.schema.{YlioppilastutkinnonOpiskeluoikeus, YlioppilastutkinnonSuoritus}
 import org.scalatest.{FunSpec, Matchers}
 
-class YlioppilastutkintoSpec extends FunSpec with Matchers with OpiskeluoikeusTestMethodsYlioppilastutkinto with OpintosuoritusoteTestMethods with SearchTestMethods {
+class YlioppilastutkintoSpec extends FunSpec with Matchers with OpiskeluoikeusTestMethodsYlioppilastutkinto with OpintosuoritusoteTestMethods with SearchTestMethods with TodistusTestMethods {
   describe("Ylioppilastutkinnot") {
     describe("Lisättäessä/päivitettäessä") {
       it("palautetaan HTTP 501") {
@@ -39,6 +39,21 @@ class YlioppilastutkintoSpec extends FunSpec with Matchers with OpiskeluoikeusTe
         tutkintoSuoritus.osasuoritusLista.foreach { koeSuoritus =>
           koeSuoritus.tila.koodiarvo should equal("VALMIS")
         }
+      }
+    }
+
+    describe("Todistus") {
+      it("Näytetään") {
+        todistus(MockOppijat.ylioppilas.oid, "ylioppilastutkinto") should equal("""Ylioppilastutkintotodistus
+                                                                                  |
+                                                                                  |Helsingin medialukio
+                                                                                  |Ylioppilas, Ynjevi 010696-971K
+                                                                                  |
+                                                                                  |GE M
+                                                                                  |EA C
+                                                                                  |A B
+                                                                                  |N L
+                                                                                  |BB C""".stripMargin)
       }
     }
   }

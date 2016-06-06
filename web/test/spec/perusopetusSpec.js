@@ -30,7 +30,7 @@ describe('Perusopetus', function() {
       })
 
       describe('Todistuksen avaaminen, kun todistusta ei löydy', function() {
-        before(Authentication().login(), page.openPage, openPage('/koski/todistus/opiskeluoikeus/1010101010', page.is404))
+        before(Authentication().login(), page.openPage, openPage('/koski/1010101010', page.is404))
         it('Näytetään 404-sivu', function() {
 
         })

@@ -6,7 +6,6 @@
     "sukunimi" : "Dippainssi"
   },
   "opiskeluoikeudet" : [ {
-    "id" : 934313546,
     "lähdejärjestelmänId" : {
       "id" : "1114082125",
       "lähdejärjestelmä" : {
@@ -2837,7 +2836,6 @@
       "päättymispäivä" : "2016-03-22"
     }
   }, {
-    "id" : -1220547095,
     "oppilaitos" : {
       "oid" : "1.2.246.562.10.56753942459",
       "oppilaitosnumero" : {

@@ -9,12 +9,12 @@ import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.schema._
 import fi.oph.koski.todistus.LocalizedHtml
 
-import scala.xml.Node
+import scala.xml.{Elem, Node}
 
 class OpintosuoritusoteHtml(implicit val user: KoskiUser) extends LocalizedHtml {
   val decimalFormat = NumberFormat.getInstance(finnish)
 
-  def lukio(ht: TaydellisetHenkilötiedot, opiskeluoikeudet: List[LukionOpiskeluoikeus]) = {
+  def lukio(ht: TaydellisetHenkilötiedot, opiskeluoikeudet: List[LukionOpiskeluoikeus]): Elem = {
     bodyHtml(ht, <div>
       {
       val suoritukset: List[(Int, Suoritus)] = opiskeluoikeudet.flatMap(oo => {
@@ -27,7 +27,7 @@ class OpintosuoritusoteHtml(implicit val user: KoskiUser) extends LocalizedHtml 
   }
 
 
-  def korkeakoulu(ht: TaydellisetHenkilötiedot, opiskeluoikeudet: List[KorkeakoulunOpiskeluoikeus]) = {
+  def korkeakoulu(ht: TaydellisetHenkilötiedot, opiskeluoikeudet: List[KorkeakoulunOpiskeluoikeus]): Elem = {
     def ensisijainenOpiskeluoikeus(opiskeluoikeudet: List[Opiskeluoikeus]): Option[KorkeakoulunOpiskeluoikeus] = {
       opiskeluoikeudet.collect { case oo: KorkeakoulunOpiskeluoikeus => oo }
         .find(_.ensisijaisuus.exists { _.päättymispäivä match {

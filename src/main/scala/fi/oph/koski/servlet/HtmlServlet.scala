@@ -3,6 +3,7 @@ package fi.oph.koski.servlet
 import fi.oph.koski.http.{KoskiErrorCategory, HttpStatus}
 import fi.oph.koski.servlet.StaticFileServlet.indexHtml
 import fi.oph.koski.koskiuser.AuthenticationSupport
+import scala.xml.Elem
 
 trait HtmlServlet extends AuthenticationSupport with StaticFileServlet {
   def redirectToLogin = {
@@ -27,8 +28,12 @@ trait HtmlServlet extends AuthenticationSupport with StaticFileServlet {
     response.writer.print(indexHtmlWithInjectedScript)
   }
 
-  def renderObject(x: AnyRef) = {
-    logger.error("HtmlServlet cannot render " + x)
-    renderStatus(KoskiErrorCategory.internalError())
+  def renderObject(x: AnyRef) = x match {
+    case e: Elem =>
+      contentType = indexHtml.contentType
+      response.writer.print(e.toString)
+    case _ =>
+      logger.error("HtmlServlet cannot render " + x)
+      renderStatus(KoskiErrorCategory.internalError())
   }
 }
