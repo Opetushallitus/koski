@@ -7,7 +7,7 @@ import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema._
 import fi.oph.koski.koski.DateValidation._
-import fi.oph.koski.koskiuser.{KoskiUser, AccessType, KoskiUser$}
+import fi.oph.koski.koskiuser.{KoskiUser, AccessType}
 import fi.oph.koski.tutkinto.{TutkintoRakenneValidator, TutkintoRepository}
 import fi.oph.koski.util.Timing
 import org.json4s.{JArray, JValue}
