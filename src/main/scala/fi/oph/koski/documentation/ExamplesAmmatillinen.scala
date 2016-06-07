@@ -20,7 +20,7 @@ object AmmatillinenExampleData {
                                tila: Koodistokoodiviite,
                                alkamisPäivä: Option[LocalDate] = None,
                                toimipiste: OrganisaatioWithOid,
-                               vahvistus: Option[Vahvistus] = None,
+                               vahvistus: Option[Henkilövahvistus] = None,
                                osasuoritukset: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = None): AmmatillisenTutkinnonSuoritus =
 
     AmmatillisenTutkinnonSuoritus(
@@ -82,7 +82,7 @@ object AmmatillinenExampleData {
     arvosana = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)), date(2013, 3, 20),
     arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen"))))))
 
-  def vahvistus(date: LocalDate) = Some(Vahvistus(date, helsinki, stadinAmmattiopisto, List(OrganisaatioHenkilö("Keijo Perttilä", "rehtori", stadinAmmattiopisto))))
+  def vahvistus(date: LocalDate) = Some(Henkilövahvistus(date, helsinki, stadinAmmattiopisto, List(OrganisaatioHenkilö("Keijo Perttilä", "rehtori", stadinAmmattiopisto))))
   lazy val paikallisenOsanSuoritus = AmmatillisenTutkinnonOsanSuoritus(
     koulutusmoduuli = PaikallinenTutkinnonosa(PaikallinenKoodi("123456789", "Pintavauriotyöt", "kallion_oma_koodisto"), "Opetellaan korjaamaan pinnallisia vaurioita", false, None),
     hyväksiluku = None,
@@ -399,7 +399,7 @@ object AmmatillinenFullExample {
           tila = tilaValmis,
           alkamisPäivä = None,
           toimipiste = toimipiste,
-          vahvistus = Some(Vahvistus(date(2016, 1, 9), helsinki, stadinAmmattiopisto, List(
+          vahvistus = Some(Henkilövahvistus(date(2016, 1, 9), helsinki, stadinAmmattiopisto, List(
             OrganisaatioHenkilö("Mauri Bauer", "puheenjohtaja", tutkintotoimikunta),
             OrganisaatioHenkilö("Keijo Perttilä", "rehtori", stadinAmmattiopisto)))),
           osasuoritukset = Some(tutkinnonOsat)

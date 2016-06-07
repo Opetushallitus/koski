@@ -23,9 +23,7 @@ case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodis
               case Some(graduationDate) =>
                 val helsinki: Koodistokoodiviite = koodistoViitePalvelu.getKoodistoKoodiViite("kunta", "091").getOrElse(throw new IllegalStateException("Helsingin kaupunkia ei löytynyt koodistopalvelusta"))
                 val ytl = organisaatioRepository.getOrganisaatio("1.2.246.562.10.43628088406").getOrElse(throw new IllegalStateException(("Ylioppilastutkintolautakuntaorganisaatiota ei löytynyt organisaatiopalvelusta")))
-                val puheenjohtajanNimi: String = "N N" // TODO: oikea nimi puuttuu
-                val puheenjohtaja = OrganisaatioHenkilö(puheenjohtajanNimi, Finnish("Ylioppilastutkintolautakunnan puheenjohtaja"), ytl)
-                (Some(Vahvistus(graduationDate, helsinki, oppilaitos, myöntäjäHenkilöt = List(puheenjohtaja))), tilaValmis)
+                (Some(Organisaatiovahvistus(graduationDate, helsinki, oppilaitos)), tilaValmis)
               case None =>
                 (None, tilaKesken)
             }

@@ -33,7 +33,7 @@ case class AmmatilliseenKoulutukseenValmentavanKoulutuksenSuoritus(
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
-  vahvistus: Option[Vahvistus] = None,
+  vahvistus: Option[Henkilövahvistus] = None,
   @KoodistoKoodiarvo("valma")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valma", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: Valma

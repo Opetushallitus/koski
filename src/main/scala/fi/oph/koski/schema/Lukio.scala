@@ -36,7 +36,7 @@ case class LukionOppimääränSuoritus(
   koulutusmoduuli: LukionOppimäärä,
   @KoodistoKoodiarvo("lukionoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"),
-  vahvistus: Option[Vahvistus] = None,
+  vahvistus: Option[Henkilövahvistus] = None,
   override val osasuoritukset: Option[List[LukionOppiaineenSuoritus]]
 ) extends Suoritus {
   def arviointi: Option[List[YleissivistävänkoulutuksenArviointi]] = None

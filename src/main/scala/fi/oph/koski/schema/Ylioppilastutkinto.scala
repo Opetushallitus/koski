@@ -32,7 +32,7 @@ case class YlioppilastutkinnonSuoritus(
   @KoodistoKoodiarvo("ylioppilastutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ylioppilastutkinto", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: Ylioppilastutkinto = Ylioppilastutkinto(perusteenDiaarinumero = None),
-  vahvistus: Option[Vahvistus] = None
+  vahvistus: Option[Organisaatiovahvistus] = None
 ) extends Suoritus {
   def arviointi: Option[List[KoodistostaLöytyväArviointi]] = None
   override def paikallinenId = None

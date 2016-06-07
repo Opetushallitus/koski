@@ -42,7 +42,7 @@ trait KorkeakouluSuoritus extends Suoritus {
     paikallinenId: Option[String],
     arviointi: Option[List[KorkeakoulunArviointi]],
     tila: Koodistokoodiviite,
-    vahvistus: Option[Vahvistus],
+    vahvistus: Option[Henkilövahvistus],
     suorituskieli: Option[Koodistokoodiviite],
     toimipiste: Oppilaitos,
     override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]]
@@ -57,7 +57,7 @@ trait KorkeakouluSuoritus extends Suoritus {
     paikallinenId: Option[String],
     arviointi: Option[List[KorkeakoulunArviointi]],
     tila: Koodistokoodiviite,
-    vahvistus: Option[Vahvistus],
+    vahvistus: Option[Henkilövahvistus],
     suorituskieli: Option[Koodistokoodiviite],
     toimipiste: Oppilaitos,
     override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]] = None
