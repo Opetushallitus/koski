@@ -1,0 +1,47 @@
+[
+  {
+    "koodiUri" : "perusopetuksentukimuoto_1",
+    "koodiArvo" : "1",
+    "metadata" : [ {
+      "nimi" : "Osa-aikainen erityisopetus",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "perusopetuksentukimuoto_2",
+    "koodiArvo" : "2",
+    "metadata" : [ {
+      "nimi" : "Tukiopetus",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "perusopetuksentukimuoto_3",
+    "koodiArvo" : "3",
+    "metadata" : [ {
+      "nimi" : "Avustajapalvelut",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "perusopetuksentukimuoto_4",
+    "koodiArvo" : "4",
+    "metadata" : [ {
+      "nimi" : "Tulkitsemispalvelut",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "perusopetuksentukimuoto_5",
+    "koodiArvo" : "5",
+    "metadata" : [ {
+      "nimi" : "Erityiset apuvälineet",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  }
+]

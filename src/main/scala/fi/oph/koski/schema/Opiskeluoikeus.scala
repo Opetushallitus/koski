@@ -73,7 +73,9 @@ trait Läsnäolotiedot {
 }
 
 trait Jakso {
+  @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
   def alku: LocalDate
+  @Description("Jakson loppupäivämäärä. Muoto YYYY-MM-DD")
   def loppu: Option[LocalDate]
 }
 

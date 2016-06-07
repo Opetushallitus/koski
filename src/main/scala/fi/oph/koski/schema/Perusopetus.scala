@@ -23,12 +23,76 @@ case class PerusopetuksenOpiskeluoikeus(
   tila: Option[YleissivistäväOpiskeluoikeudenTila],
   läsnäolotiedot: Option[Läsnäolotiedot],
   @KoodistoKoodiarvo("perusopetus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetus", "opiskeluoikeudentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetus", "opiskeluoikeudentyyppi"),
+  lisätiedot: Option[PerusopetuksenOpiskeluoikeudenLisätiedot] = None
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def arvioituPäättymispäivä = None
 }
+
+case class PerusopetuksenOpiskeluoikeudenLisätiedot(
+  @Description("""Perusopetuksen aloittamisesta lykkäys (true/false). Oppilas saa luvan  aloittaa perusopetuksen myöhemmin.""")
+  @OksaUri("tmpOKSAID242", "koulunkäynnin aloittamisen lykkääminen")
+  perusopetuksenAloittamistaLykätty: Boolean = false,
+  @Description("""Perusopetuksen aikastaminen (true/false). Oppilas aloittaa ennen oppivelvollisuusikää.""")
+  aloittanutEnnenOppivelvollisuutta: Boolean = false,
+  @Description("""Pidennetty oppivelvollisuus alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että oppilaalla ei ole pidennettyä oppivelvollisuutta.""")
+  @OksaUri("tmpOKSAID517", "pidennetty oppivelvollisuus")
+  pidennettyOppivelvollisuus: Option[Päätösjakso] = None,
+  @KoodistoUri("perusopetuksentukimuoto")
+  @Description("""Oppilaan saamat laissa säädetyt tukimuodot""")
+  tukimuodot: Option[List[Koodistokoodiviite]] = None,
+  @Description("""Erityisen tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty.""")
+  @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
+  erityisenTuenPäätös: Option[ErityisenTuenPäätös] = None,
+  @Description("""Tehostetun tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty.""")
+  @OksaUri("tmpOKSAID511", "tehostettu tuki")
+  tehostetunTuenPäätös: Option[Päätösjakso] = None,
+  @Description("""Opiskelu joustavassa perusopetuksessa (JOPO) alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole joustavassa perusopetuksessa.""")
+  @OksaUri("tmpOKSAID453", "joustava perusopetus")
+  joustavaPerusopetus: Option[Päätösjakso] = None,
+  @Description("""Opiskelu kotiopetuksessa huoltajan päätöksestä, alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole kotiopetuksessa.""")
+  kotiopetus: Option[Päätösjakso] = None,
+  @Description("""Opiskelu ulkomailla huoltajan ilmoituksesta, alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole ulkomailla.""")
+  ulkomailla: Option[Päätösjakso] = None,
+  @Description("""Oppilas on vuosiluokkiin sitoutumattomassa opetuksessa (true/false)""")
+  vuosiluokkiinSitoutumatonOpetus: Boolean = false,
+  @Description("""Tieto siitä, että oppilas on sisäoppilaismaisessa majoituksessa, alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole sisäoppilasmaisessa majoituksessa.""")
+  sisäoppilaitosmainenMajoitus: Option[Päätösjakso] = None,
+  @Description("""Tieto siitä, että oppilas saa majoitusetua, alkamis- ja päättymispäivineen. Jos oppilaalla on sisäoppilaitosmuotoinen majoitus, hän ei voi saada majoitusetua. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas saa majoitusetua.""")
+  majoitusetu: Option[Päätösjakso] = None,
+  @Description("""Tieto siitä, että oppilas saa kuljetusetua, alkamis- ja päättymispäivineen. Jos oppilas on sisäoppilaitosmuotoisessa majoituksessa tai saa majoitusetua, hän ei voi saada kuljetusetua. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas saa kuljetusetua.""")
+  kuljetusetu: Option[Päätösjakso] = None,
+  @Description("""Tieto siitä, että oppilaalla on oikeus maksuttomaan asuntolapaikkaan, alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilaalla ole oikeutta maksuttomaan asuntolapaikkaan.""")
+  oikeusMaksuttomaanAsuntolapaikkaan: Option[Päätösjakso] = None,
+  @Description("""Tieto siitä, että oppilas on osallistunut perusopetuslain (628/1998, 8a) mukaiseen aamu- tai iltapäivätoimintaan, alkamis- ja päättymispäivämäärineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole osallistunut aamu- tai iltapäivätoimintaan.""")
+  aamuTaiIltapäivätoiminta: Option[Päätösjakso] = None
+)
+
+case class Päätösjakso(
+  @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
+  alku: Option[LocalDate],
+  @Description("Jakson loppumispäivämäärä. Muoto YYYY-MM-DD")
+  loppu: Option[LocalDate]
+)
+
+case class ErityisenTuenPäätös(
+  @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
+  alku: Option[LocalDate],
+  @Description("Jakson loppumispäivämäärä. Muoto YYYY-MM-DD")
+  loppu: Option[LocalDate],
+  @Description("""Oppilas opiskelee toiminta-alueittain (true/false).
+                 | Toiminta-alueittain opiskelussa oppilaalla on yksilöllistetty oppimäärä ja opetus järjestetty toiminta-alueittain.
+                 | Tuolloin oppilaalla on aina erityisen tuen päätös.
+                 | Oppilaan opetussuunnitelmaan kuuluvat toiminta-alueet ovat motoriset taidot, kieli ja kommunikaatio, sosiaaliset taidot, päivittäisten toimintojen taidot ja kognitiiviset taidot.
+                 | huomautuksena: toiminta-alue arviointeineen on kuvattu oppiaineen suorituksessa.""")
+  opiskeleeToimintaAlueittain: Boolean = false,
+  @Description("""Suorittaako erityisoppilas koulutusta omassa erityisryhmässään vai inklusiivisesti opetuksen mukana""")
+  @OksaUri("tmpOKSAID444", "opetusryhmä")
+  erityisryhmässä: Boolean
+)
+
 
 trait PerusopetuksenPäätasonSuoritus extends Suoritus
 
