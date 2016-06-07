@@ -4,7 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.Examples
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.{AccessType, KoskiUser}
-import fi.oph.koski.schema.Oppija
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Oppija}
 import org.scalatest.{FreeSpec, Matchers}
 
 /**
@@ -17,7 +17,7 @@ class BackwardCompatibilitySpec extends FreeSpec with Matchers {
 
   "backward compatibility with stored JSON examples" in {
     val updateAll = System.getProperty("updateExamples", "false").toBoolean
-    Examples.examples.foreach { example =>
+    Examples.examples.filter(example => example.data.opiskeluoikeudet.head.isInstanceOf[KoskeenTallennettavaOpiskeluoikeus]).foreach { example =>
       val filename = "src/test/resources/backwardcompatibility/" + example.name.replaceAll(" ", "").replaceAll("ä", "a").replaceAll("ö", "o") + ".json"
       (updateAll, Json.readFileIfExists(filename)) match {
         case (false, Some(json)) =>
