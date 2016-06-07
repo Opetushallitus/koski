@@ -2,6 +2,8 @@ package fi.oph.koski.servlet
 
 import java.util.Properties
 
+import fi.oph.koski.jettylauncher.JettyLauncher
+import fi.oph.koski.jettylauncher.JettyLauncher.staticResourcesRoot
 import fi.oph.koski.util.Files
 import org.scalatra.ScalatraServlet
 
@@ -43,7 +45,7 @@ trait StaticFileServlet extends ScalatraServlet {
 }
 
 object StaticFileServlet {
-  lazy val indexHtml: Content = StaticFileServlet.contentOf("web/static/index.html").get
+  lazy val indexHtml: Content = StaticFileServlet.contentOf(staticResourcesRoot + "/index.html").get
 
   private val properties: Properties = new Properties()
   properties.load(classOf[StaticFileServlet].getResourceAsStream("/mime.properties"))

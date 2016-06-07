@@ -82,10 +82,10 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
         <meta charset="UTF-8"></meta>
         <link rel="stylesheet" type="text/css" href="css/documentation.css"></link>
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/default.min.css"/>
-        <link rel="stylesheet" type="text/css" href="/koski/codemirror/lib/codemirror.css"/>
+        <link rel="stylesheet" type="text/css" href="/koski/css/codemirror/codemirror.css"/>
         <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
-        <script src="/koski/codemirror/lib/codemirror.js"></script>
-        <script src="/koski/codemirror/mode/javascript/javascript.js"></script>
+        <script src="/koski/js/codemirror/codemirror.js"></script>
+        <script src="/koski/js/codemirror/javascript.js"></script>
       </head>
       <body>
         <header><div class="logo"/></header>

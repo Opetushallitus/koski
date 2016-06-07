@@ -1,10 +1,11 @@
 const webpack = require('webpack')
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './app/Koski.jsx',
   output: {
     path: __dirname + '/dist',
-    filename: 'bundle.js'
+    filename: 'js/bundle.js'
   },
   eslint: {
     failOnWarning: !!process.env.failOnWarning,
@@ -23,5 +24,16 @@ module.exports = {
         loader: 'style!css!autoprefixer-loader?browsers=last 2 version!less'
       }
     ]
-  }
+  },
+  plugins: [
+    new CopyWebpackPlugin(
+      [
+        { from: 'static'},
+        { from: 'test', to: 'test'},
+        { from: 'node_modules/codemirror/lib/codemirror.js', to: 'js/codemirror' },
+        { from: 'node_modules/codemirror/mode/javascript/javascript.js', to: 'js/codemirror' },
+        { from: 'node_modules/codemirror/lib/codemirror.css', to: 'css/codemirror' }
+      ]
+    )
+  ]
 }

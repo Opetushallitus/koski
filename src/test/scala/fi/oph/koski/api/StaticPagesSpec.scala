@@ -38,9 +38,9 @@ class StaticPagesSpec extends FreeSpec with LocalJettyHttpSpecification with Mat
 
   "Static resources" in {
     get("images/loader.gif") { verifyResponseStatus(200)}
-    get("bundle.js") { verifyResponseStatus(200)}
+    get("js/bundle.js") { verifyResponseStatus(200)}
     get("test/runner.html") { verifyResponseStatus(200)}
-    get("codemirror/lib/codemirror.js") { verifyResponseStatus(200)}
+    get("js/codemirror/codemirror.js") { verifyResponseStatus(200)}
   }
 
   "Documentation" in {

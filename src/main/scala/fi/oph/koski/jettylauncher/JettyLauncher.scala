@@ -1,5 +1,8 @@
 package fi.oph.koski.jettylauncher
 
+import java.nio.file.{Paths, Files}
+
+import fi.oph.koski.jettylauncher.JettyLauncher.staticResourcesRoot
 import fi.oph.koski.util.{Pools, PortChecker}
 import org.eclipse.jetty.server.handler.{ContextHandler, HandlerList, ResourceHandler}
 import org.eclipse.jetty.server.{Server, ServerConnector, Slf4jRequestLog}
@@ -9,6 +12,8 @@ import org.eclipse.jetty.webapp.WebAppContext
 object JettyLauncher extends App {
   lazy val globalPort = System.getProperty("tor.port","7021").toInt
   new JettyLauncher(globalPort).start.join
+
+  def staticResourcesRoot = if (Files.exists(Paths.get("./web/dist"))) "./web/dist" else "./web"
 }
 
 class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) {
@@ -28,18 +33,14 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) {
   context.setAttribute("tor.overrides", overrides)
 
   val all = new HandlerList
-  all.setHandlers(List(
-    staticResources("./web/static", "/koski"),
-    staticResources("./web/dist", "/koski"),
-    staticResources("./web/test", "/koski/test"),
-    staticResources("./web/node_modules/codemirror", "/koski/codemirror"),
-    context).toArray)
+
+  all.setHandlers(List(staticResources("/koski"), context).toArray)
 
   server.setHandler(all)
 
-  def staticResources(path: String, contextPath: String) = {
+  def staticResources(contextPath: String) = {
     val staticResources = new ResourceHandler()
-    staticResources.setResourceBase(path)
+    staticResources.setResourceBase(staticResourcesRoot)
     val contextHandler = new ContextHandler(contextPath)
     contextHandler.setHandler(staticResources)
     contextHandler
