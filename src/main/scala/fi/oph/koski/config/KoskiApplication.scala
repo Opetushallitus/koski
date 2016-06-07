@@ -19,7 +19,7 @@ import fi.oph.koski.koski.KoskiValidator
 import fi.oph.koski.koskiuser.{DirectoryClientFactory, UserOrganisationsRepository}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.virta.{VirtaClient, VirtaOpiskeluoikeusRepository}
-import fi.oph.koski.ytr.{YtrMock, YtrOpiskeluoikeusRepository}
+import fi.oph.koski.ytr.{YlioppilasTutkintoRekisteri, YtrMock, YtrOpiskeluoikeusRepository}
 
 object KoskiApplication {
   val defaultConfig = ConfigFactory.load
@@ -44,7 +44,7 @@ class KoskiApplication(val config: Config) extends Logging {
   lazy val userRepository = UserOrganisationsRepository(config, organisaatioRepository)
   lazy val database = new KoskiDatabase(config)
   lazy val virtaClient = VirtaClient(config)
-  lazy val ytrClient = YtrMock
+  lazy val ytrClient = YlioppilasTutkintoRekisteri(config)
   lazy val oppijaRepository = OppijaRepository(config, database, koodistoViitePalvelu, virtaClient, ytrClient)
   lazy val historyRepository = OpiskeluoikeusHistoryRepository(database.db)
   lazy val virta = TimedProxy[OpiskeluOikeusRepository](VirtaOpiskeluoikeusRepository(virtaClient, oppijaRepository, oppilaitosRepository, koodistoViitePalvelu, Some(validator)))
