@@ -9,7 +9,7 @@ case class OpiskeluoikeusFinder(koski: KoskiFacade) {
   def opiskeluoikeudet(oppijaOid: String, params: Map[String, String])(implicit user: KoskiUser): Either[HttpStatus, Oppija] with Product with Serializable = {
     val filters: List[(Opiskeluoikeus => Boolean)] = params.toList.flatMap {
       case ("oppilaitos", oppilaitosOid: String) => Some({ oo: Opiskeluoikeus => oo.oppilaitos.oid == oppilaitosOid })
-      case ("opiskeluoikeus", ooId: String) => Some({ oo: Opiskeluoikeus => oo.id.get.toString == ooId })
+      case ("opiskeluoikeus", ooId: String) => Some({ oo: Opiskeluoikeus => oo.id.exists(_.toString == ooId) })
       case ("opiskeluoikeusTyyppi", tyyppi: String) => Some({ oo: Opiskeluoikeus => oo.tyyppi.koodiarvo == tyyppi})
       case (_, _) => None
     }
