@@ -5,7 +5,7 @@ import fi.oph.koski.servlet.StaticFileServlet.indexHtml
 import fi.oph.koski.koskiuser.AuthenticationSupport
 import scala.xml.Elem
 
-trait HtmlServlet extends AuthenticationSupport with StaticFileServlet {
+trait HtmlServlet extends AuthenticationSupport {
   def redirectToLogin = {
     redirect("/")
   }

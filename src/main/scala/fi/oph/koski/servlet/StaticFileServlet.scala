@@ -2,7 +2,6 @@ package fi.oph.koski.servlet
 
 import java.util.Properties
 
-import fi.oph.koski.jettylauncher.JettyLauncher
 import fi.oph.koski.jettylauncher.JettyLauncher.staticResourcesRoot
 import fi.oph.koski.util.Files
 import org.scalatra.ScalatraServlet
@@ -13,18 +12,6 @@ class SingleFileServlet(val content: Content, matchedPaths: Seq[(String, Int)]) 
       status = statusCode
       serveContent(content)
     }
-  }
-}
-
-class DirectoryServlet extends StaticFileServlet {
-  get("/*") {
-    val splatPath = multiParams("splat").head
-    val resourcePath =
-      splatPath.isEmpty match {
-        case true  => request.getServletPath
-        case false => request.getServletPath + "/" + splatPath
-      }
-    serveStaticFileIfExists(resourcePath)
   }
 }
 
