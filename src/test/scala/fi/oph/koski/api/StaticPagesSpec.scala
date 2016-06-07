@@ -1,14 +1,15 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.servlet.IndexServlet
 import fi.oph.koski.util.Files
 import org.scalatest.{FreeSpec, Matchers}
 
 class StaticPagesSpec extends FreeSpec with LocalJettyHttpSpecification with Matchers {
-  val indexHtml = Files.asString("web/static/index.html").get
+  val indexHtml = IndexServlet.html.toString
 
   "Single page app" - {
     "GET /" in {
-      get("/") {
+      get("") {
         body should equal(indexHtml)
         verifyResponseStatus(200)
       }

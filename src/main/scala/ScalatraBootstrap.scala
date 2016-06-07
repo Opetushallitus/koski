@@ -7,14 +7,13 @@ import fi.oph.koski.documentation.SchemaDocumentationServlet
 import fi.oph.koski.fixture.{FixtureServlet, Fixtures}
 import fi.oph.koski.history.KoskiHistoryServlet
 import fi.oph.koski.koodisto.KoodistoCreator
+import fi.oph.koski.koski.{KoskiFacade, OppijaServlet}
+import fi.oph.koski.koskiuser.{LogoutServlet, UserOrganisationsRepository, UserServlet}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppilaitos.OppilaitosServlet
-import fi.oph.koski.servlet.SingleFileServlet
-import fi.oph.koski.servlet.StaticFileServlet.indexHtml
+import fi.oph.koski.servlet.IndexServlet
 import fi.oph.koski.suoritusote.SuoritusServlet
 import fi.oph.koski.todistus.TodistusServlet
-import fi.oph.koski.koski.{OppijaServlet, KoskiFacade}
-import fi.oph.koski.koskiuser.{LogoutServlet, UserOrganisationsRepository, UserServlet}
 import fi.oph.koski.tutkinto.TutkintoServlet
 import fi.oph.koski.util.Pools
 import org.scalatra._
@@ -40,7 +39,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       context.mount(new SchemaDocumentationServlet(application.koodistoPalvelu), "/documentation")
       context.mount(new TodistusServlet(userRepository, application.directoryClient, rekisteri, application.tutkintoRepository), "/todistus")
       context.mount(new SuoritusServlet(userRepository, application.directoryClient, rekisteri, application.oppijaRepository, rekisteri), "/opintosuoritusote")
-      context.mount(new SingleFileServlet(indexHtml, List(("/*", 404), ("/uusioppija", 200), ("/oppija/:oid", 200))), "/")
+      context.mount(new IndexServlet(), "/")
       context.mount(new CacheServlet(userRepository, application.directoryClient, application), "/cache")
       if (Fixtures.shouldUseFixtures(application.config)) {
         context.mount(new FixtureServlet(application), "/fixtures")

@@ -1,6 +1,6 @@
 package fi.oph.koski.jettylauncher
 
-import java.nio.file.{Paths, Files}
+import java.nio.file.{Files, Paths}
 
 import fi.oph.koski.jettylauncher.JettyLauncher.staticResourcesRoot
 import fi.oph.koski.util.{Pools, PortChecker}
@@ -34,13 +34,21 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) {
 
   val all = new HandlerList
 
-  all.setHandlers(List(staticResources("/koski"), context).toArray)
+  all.setHandlers(
+    List(
+      staticResources(staticResourcesRoot + "/js", "/koski/js"),
+      staticResources(staticResourcesRoot + "/css", "/koski/css"),
+      staticResources(staticResourcesRoot + "/images", "/koski/images"),
+      staticResources(staticResourcesRoot + "/json-schema-viewer", "/koski/json-schema-viewer"),
+      staticResources(staticResourcesRoot + "/test", "/koski/test"),
+      context
+    ).toArray)
 
   server.setHandler(all)
 
-  def staticResources(contextPath: String) = {
+  def staticResources(path: String, contextPath: String) = {
     val staticResources = new ResourceHandler()
-    staticResources.setResourceBase(staticResourcesRoot)
+    staticResources.setResourceBase(path)
     val contextHandler = new ContextHandler(contextPath)
     contextHandler.setHandler(staticResources)
     contextHandler
