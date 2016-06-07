@@ -1,6 +1,8 @@
 .oppija ul.oppilaitokset {
   padding: 0;
   li.oppilaitos {
+    margin-bottom: 20px;
+
     list-style: none;
     a.todistus, a.opintosuoritusote {
       float: right;
@@ -9,6 +11,7 @@
       font-size: 0.8em;
     }
     .opiskeluoikeus {
+      margin-bottom: 5px;
       .tutkinto, .tutkinnon-tila {
         font-size: 15px;
         color: @color-darkgray-text;
@@ -18,6 +21,10 @@
 
       .oppilaitos {
         font-size: 18px;
+      }
+
+      .suoritus {
+        overflow: auto;
       }
     }
   }
