@@ -115,10 +115,57 @@ object ExamplesPerusopetus {
     ))
   )
 
+  val toimintaAlueittainOpiskelija = Oppija(
+    exampleHenkilö,
+    List(PerusopetuksenOpiskeluoikeus(
+      alkamispäivä = Some(date(2008, 8, 15)),
+      päättymispäivä = Some(date(2016, 6, 4)),
+      oppilaitos = jyväskylänNormaalikoulu,
+      koulutustoimija = None,
+      suoritukset = List(
+        PerusopetuksenOppimääränSuoritus(
+          koulutusmoduuli = perusopetus,
+          paikallinenId = None,
+          suorituskieli = None,
+          tila = tilaValmis,
+          toimipiste = jyväskylänNormaalikoulu,
+          vahvistus = vahvistus,
+          suoritustapa = suoritustapaErityinenTutkinto,
+          oppimäärä = aikuistenOppimäärä,
+          osasuoritukset = Some(List(
+            toimintaAlueenSuoritus("1").copy(arviointi = arviointi("S")),
+            toimintaAlueenSuoritus("2").copy(arviointi = arviointi("S")),
+            toimintaAlueenSuoritus("3").copy(arviointi = arviointi("S")),
+            toimintaAlueenSuoritus("4").copy(arviointi = arviointi("S")),
+            toimintaAlueenSuoritus("5").copy(arviointi = arviointi("S"))
+          ))
+        )),
+      tila = Some(YleissivistäväOpiskeluoikeudenTila(
+        List(
+          YleissivistäväOpiskeluoikeusjakso(date(2008, 8, 15), Some(date(2016, 6, 3)), opiskeluoikeusAktiivinen),
+          YleissivistäväOpiskeluoikeusjakso(date(2016, 6, 4), None, opiskeluoikeusPäättynyt)
+        )
+      )),
+      tavoite = tavoiteKokoOppimäärä,
+      läsnäolotiedot = None,
+      lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(erityisenTuenPäätös = Some(ErityisenTuenPäätös(
+        alku = Some(date(2008, 8, 15)),
+        loppu = Some(date(2016, 6, 4)),
+        opiskeleeToimintaAlueittain = true,
+        erityisryhmässä = true
+      ))))
+    ))
+  )
+
+  def toimintaAlueenSuoritus(toimintaAlue: String): PerusopetuksenToimintaAlueenSuoritus = {
+    PerusopetuksenToimintaAlueenSuoritus(koulutusmoduuli = new PerusopetuksenToimintaAlue(toimintaAlue), tila = tilaValmis)
+  }
+
   val examples = List(
     Example("perusopetuksen oppimäärä - ysiluokkalainen", "Oppija on suorittamassa 9. luokkaa", ysiluokkalainen),
     Example("perusopetuksen oppimäärä - päättötodistus", "Oppija on saanut perusopetuksen päättötodistuksen", päättötodistus),
     Example("perusopetuksen oppiaineen oppimäärä - päättötodistus", "Aikuisopiskelija on suorittanut peruskoulun äidinkielen oppimäärän", aineopiskelija),
-    Example("aikuisten perusopetuksen oppimäärä - erityinen tutkinto", "Aikuisopiskelija on suorittanut peruskoulun oppimäärän erityisenä tutkintona", erityinenTutkintoAikuinen)
+    Example("aikuisten perusopetuksen oppimäärä - erityinen tutkinto", "Aikuisopiskelija on suorittanut peruskoulun oppimäärän erityisenä tutkintona", erityinenTutkintoAikuinen),
+    Example("perusopetuksen oppimäärä - toiminta-alueittain opiskelija", "Oppija on suorittanut peruskoulun opiskellen toiminta-alueittain", toimintaAlueittainOpiskelija)
   )
 }

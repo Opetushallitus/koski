@@ -1,0 +1,47 @@
+[
+  {
+    "koodiUri" : "perusopetuksentoimintaalue_1",
+    "koodiArvo" : "1",
+    "metadata" : [ {
+      "nimi" : "motoriset taidot",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "perusopetuksentoimintaalue_2",
+    "koodiArvo" : "2",
+    "metadata" : [ {
+      "nimi" : "kieli ja kommunikaatio",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "perusopetuksentoimintaalue_3",
+    "koodiArvo" : "3",
+    "metadata" : [ {
+      "nimi" : "sosiaaliset taidot",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "perusopetuksentoimintaalue_4",
+    "koodiArvo" : "4",
+    "metadata" : [ {
+      "nimi" : "päivittäisten toimintojen taidot",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "perusopetuksentoimintaalue_5",
+    "koodiArvo" : "5",
+    "metadata" : [ {
+      "nimi" : "kognitiiviset taidot",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  }
+]

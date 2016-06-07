@@ -16,6 +16,7 @@ object Deserializers {
     LukionOppiaineDeserializer,
     PerusopetuksenOppiaineDeserializer,
     PerusopetuksenPäätasonSuoritusDeserializer,
+    OppiaineenTaiToimintaAlueenSuoritusDeserializer,
     LukionKurssiDeserializer,
     KorkeakoulunArviointiDeserializer,
     LukioonValmistavanKoulutuksenOsasuoritusDeserializer
@@ -117,6 +118,18 @@ object PerusopetuksenPäätasonSuoritusDeserializer extends Deserializer[Perusop
         case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("perusopetuksenvuosiluokka") => suoritus.extract[PerusopetuksenVuosiluokanSuoritus]
         case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("perusopetuksenoppiaineenoppimaara") => suoritus.extract[PerusopetuksenOppiaineenOppimääränSuoritus]
         case suoritus: JObject => suoritus.extract[PerusopetuksenOppimääränSuoritus]
+      }
+  }
+}
+
+object OppiaineenTaiToimintaAlueenSuoritusDeserializer extends Deserializer[OppiaineenTaiToimintaAlueenSuoritus] {
+  private val OppiaineenTaiToimintaAlueenSuoritusClass = classOf[OppiaineenTaiToimintaAlueenSuoritus]
+
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), OppiaineenTaiToimintaAlueenSuoritus] = {
+    case (TypeInfo(OppiaineenTaiToimintaAlueenSuoritusClass, _), json) =>
+      json match {
+        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("perusopetuksenoppiaine") => suoritus.extract[PerusopetuksenOppiaineenSuoritus]
+        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("perusopetuksentoimintaalue") => suoritus.extract[PerusopetuksenToimintaAlueenSuoritus]
       }
   }
 }

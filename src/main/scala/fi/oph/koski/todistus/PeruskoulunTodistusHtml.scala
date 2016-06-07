@@ -6,12 +6,16 @@ import fi.oph.koski.schema._
 
 import scala.xml.Elem
 
-trait PeruskoulunTodistusHtml[T <: OppiaineenSuoritus] extends TodistusHtml {
+trait PeruskoulunTodistusHtml[T <: Suoritus] extends TodistusHtml {
   def renderTodistus(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: Suoritus, oppiaineet: List[T], title: String): Elem = {
-    val pakolliset = oppiaineet.filter(_.koulutusmoduuli.pakollinen)
+    def onPakollinen(suoritus: Suoritus) = suoritus match {
+      case s:OppiaineenSuoritus => s.koulutusmoduuli.pakollinen
+      case _ => true
+    }
+    val pakolliset = oppiaineet.filter(onPakollinen)
     val pakollisetJaNiihinLiittyvätValinnaiset: List[Aine] = pakolliset.flatMap { case pakollinen =>
       val liittyvätValinnaiset: List[LiittyväValinnainen] = oppiaineet
-        .filter(aine => !aine.koulutusmoduuli.pakollinen && aine.koulutusmoduuli.tunniste == pakollinen.koulutusmoduuli.tunniste)
+        .filter(aine => !onPakollinen(aine) && aine.koulutusmoduuli.tunniste == pakollinen.koulutusmoduuli.tunniste)
         .map(LiittyväValinnainen)
       Pakollinen(pakollinen) :: liittyvätValinnaiset
     }
@@ -24,7 +28,7 @@ trait PeruskoulunTodistusHtml[T <: OppiaineenSuoritus] extends TodistusHtml {
         case LiittyväValinnainen(suoritus) => "Valinnainen " + decapitalize(nimiTeksti)
         case _ => nimiTeksti
       }
-      val rowClass = "oppiaine " + oppiaine.suoritus.koulutusmoduuli.tunniste.koodiarvo + (if (oppiaine.suoritus.koulutusmoduuli.pakollinen) {
+      val rowClass = "oppiaine " + oppiaine.suoritus.koulutusmoduuli.tunniste.koodiarvo + (if (onPakollinen(oppiaine.suoritus)) {
         ""
       } else {
         " valinnainen"

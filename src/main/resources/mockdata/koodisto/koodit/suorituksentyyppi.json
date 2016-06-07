@@ -48,6 +48,18 @@
     "versio": 1
   },
   {
+    "koodiUri": "suorituksentyyppi_perusopetuksentoimintaalue",
+    "koodiArvo": "perusopetuksentoimintaalue",
+    "metadata": [
+      {
+        "nimi": "Perusopetuksen toiminta-alue",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
     "koodiUri": "suorituksentyyppi_perusopetuksenoppiaineenoppimaara",
     "koodiArvo": "perusopetuksenoppiaineenoppimaara",
     "metadata": [

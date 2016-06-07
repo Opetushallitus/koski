@@ -1,0 +1,242 @@
+{
+  "henkilö" : {
+    "hetu" : "110496-926Y",
+    "etunimet" : "Kaisa",
+    "kutsumanimi" : "Kaisa",
+    "sukunimi" : "Koululainen"
+  },
+  "opiskeluoikeudet" : [ {
+    "alkamispäivä" : "2008-08-15",
+    "päättymispäivä" : "2016-06-04",
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.14613773812",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "00204",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Jyväskylän normaalikoulu"
+      }
+    },
+    "tavoite" : {
+      "koodiarvo" : "perusopetuksenoppimaara",
+      "koodistoUri" : "suorituksentyyppi"
+    },
+    "suoritukset" : [ {
+      "tila" : {
+        "koodiarvo" : "VALMIS",
+        "koodistoUri" : "suorituksentila"
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.14613773812",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "00204",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Jyväskylän normaalikoulu"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2016-06-04",
+        "paikkakunta" : {
+          "koodiarvo" : "179",
+          "nimi" : {
+            "fi" : "Jyväskylä"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.14613773812",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "00204",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.14613773812",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "00204",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu"
+            }
+          }
+        } ]
+      },
+      "koulutusmoduuli" : {
+        "perusteenDiaarinumero" : "104/011/2014",
+        "tunniste" : {
+          "koodiarvo" : "201101",
+          "koodistoUri" : "koulutus"
+        }
+      },
+      "oppimäärä" : {
+        "koodiarvo" : "aikuistenperusopetus",
+        "koodistoUri" : "perusopetuksenoppimaara"
+      },
+      "suoritustapa" : {
+        "koodiarvo" : "erityinentutkinto",
+        "koodistoUri" : "perusopetuksensuoritustapa"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "perusopetuksenoppimaara",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "1",
+            "koodistoUri" : "perusopetuksentoimintaalue"
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksentoimintaalue",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "S",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          }
+        } ]
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "2",
+            "koodistoUri" : "perusopetuksentoimintaalue"
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksentoimintaalue",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "S",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          }
+        } ]
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "3",
+            "koodistoUri" : "perusopetuksentoimintaalue"
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksentoimintaalue",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "S",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          }
+        } ]
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "4",
+            "koodistoUri" : "perusopetuksentoimintaalue"
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksentoimintaalue",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "S",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          }
+        } ]
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "5",
+            "koodistoUri" : "perusopetuksentoimintaalue"
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksentoimintaalue",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "S",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          }
+        } ]
+      } ]
+    } ],
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2008-08-15",
+        "loppu" : "2016-06-03",
+        "tila" : {
+          "koodiarvo" : "aktiivinen",
+          "nimi" : {
+            "fi" : "Aktiivinen"
+          },
+          "koodistoUri" : "opiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      }, {
+        "alku" : "2016-06-04",
+        "tila" : {
+          "koodiarvo" : "paattynyt",
+          "nimi" : {
+            "fi" : "Päättynyt"
+          },
+          "koodistoUri" : "opiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
+    "tyyppi" : {
+      "koodiarvo" : "perusopetus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    },
+    "lisätiedot" : {
+      "perusopetuksenAloittamistaLykätty" : false,
+      "aloittanutEnnenOppivelvollisuutta" : false,
+      "erityisenTuenPäätös" : {
+        "alku" : "2008-08-15",
+        "loppu" : "2016-06-04",
+        "opiskeleeToimintaAlueittain" : true,
+        "erityisryhmässä" : true
+      },
+      "vuosiluokkiinSitoutumatonOpetus" : false
+    }
+  } ]
+}
