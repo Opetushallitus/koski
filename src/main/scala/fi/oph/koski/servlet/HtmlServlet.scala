@@ -22,7 +22,7 @@ trait HtmlServlet extends AuthenticationSupport {
 
     val html = new RewriteRule {
       override def transform(n: Node): Seq[Node] = n match {
-        case e: Elem if (e.label == "script" && ((e \ "@id") text) == "bundle") => errorInjectionScript
+        case e: Elem if (e.label == "script" && ((e \ "@id") text) == "bundle") => List(errorInjectionScript, e)
         case elem: Elem => elem copy (child = elem.child flatMap (this transform))
         case other => other
       }
