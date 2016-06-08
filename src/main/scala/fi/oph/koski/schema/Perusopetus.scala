@@ -112,6 +112,8 @@ case class PerusopetuksenVuosiluokanSuoritus(
   vahvistus: Option[Henkilövahvistus] = None,
   suorituskieli: Option[Koodistokoodiviite],
   jääLuokalle: Boolean = false,
+  @KoodistoUri("arviointiasteikkoyleissivistävä") // TODO: voi olla myös sanallinen
+  käyttäytymisenArvio: Option[Koodistokoodiviite] = None,
   koulutusmoduuli: Perusopetus,
   @KoodistoKoodiarvo("perusopetuksenvuosiluokka")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenvuosiluokka", koodistoUri = "suorituksentyyppi")
