@@ -54,12 +54,8 @@ happen:
 dist: front
 	mvn dependency:copy-dependencies package -DskipTests -Pdeploy -DoutputDirectory=$(dist-dir)/lib
 	./scripts/dist.sh $(dist-dir)
-newdeploy: dist
+deploy: dist
 	./scripts/deploy.sh $(TARGET) $(deploy-file)
-deploy:
-	-@git remote remove tordev &> /dev/null
-	git remote add tordev git@$(KOSKI-SERVER):tor.git
-	git push -f tordev head:master
 tail:
 	ssh $(KOSKI-SERVER) 'tail -f /home/git/logs/*log'
 ssh:
