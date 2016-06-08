@@ -109,14 +109,13 @@ case class PerusopetuksenVuosiluokanSuoritus(
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
+  vahvistus: Option[Henkilövahvistus] = None,
   suorituskieli: Option[Koodistokoodiviite],
   koulutusmoduuli: Perusopetus,
   @KoodistoKoodiarvo("perusopetuksenvuosiluokka")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenvuosiluokka", koodistoUri = "suorituksentyyppi")
 ) extends PerusopetuksenPäätasonSuoritus {
   override def arviointi = None
-  override def vahvistus = None
-  override def tarvitseeVahvistuksen = false
 }
 
 @Description("Perusopetuksen koko oppimäärän suoritus. Nämä suoritukset näkyvät päättötodistuksella.")
