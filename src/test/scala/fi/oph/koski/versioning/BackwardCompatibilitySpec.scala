@@ -15,24 +15,26 @@ class BackwardCompatibilitySpec extends FreeSpec with Matchers {
   implicit val user = KoskiUser.systemUser
   implicit val accessType = AccessType.read
 
-  "backward compatibility with stored JSON examples" in {
+  "backward compatibility with stored JSON examples" - {
     val updateAll = System.getProperty("updateExamples", "false").toBoolean
     Examples.examples.filter(example => example.data.opiskeluoikeudet.head.isInstanceOf[KoskeenTallennettavaOpiskeluoikeus]).foreach { example =>
-      val filename = "src/test/resources/backwardcompatibility/" + example.name.replaceAll(" ", "").replaceAll("ä", "a").replaceAll("ö", "o") + ".json"
-      (updateAll, Json.readFileIfExists(filename)) match {
-        case (false, Some(json)) =>
-          println("Checking backward compatibility: " + filename)
-          val oppija: Oppija = Json.fromJValue[Oppija](json)
-          val afterRoundtrip = Json.toJValue(oppija)
-          afterRoundtrip should equal(json)
-          validator.validateAsJson(oppija) match {
-            case Right(validated) => // Valid
-            case Left(err) => throw new IllegalStateException(err.toString)
-          }
-        case _ =>
-          println("Updating/creating " + filename)
-          new java.io.File(filename).getParentFile().mkdirs()
-          Json.writeFile(filename, example.data)
+      example.name in {
+        val filename = "src/test/resources/backwardcompatibility/" + example.name.replaceAll(" ", "").replaceAll("ä", "a").replaceAll("ö", "o") + ".json"
+        (updateAll, Json.readFileIfExists(filename)) match {
+          case (false, Some(json)) =>
+            println("Checking backward compatibility: " + filename)
+            val oppija: Oppija = Json.fromJValue[Oppija](json)
+            val afterRoundtrip = Json.toJValue(oppija)
+            afterRoundtrip should equal(json)
+            validator.validateAsJson(oppija) match {
+              case Right(validated) => // Valid
+              case Left(err) => throw new IllegalStateException(err.toString)
+            }
+          case _ =>
+            println("Updating/creating " + filename)
+            new java.io.File(filename).getParentFile().mkdirs()
+            Json.writeFile(filename, example.data)
+        }
       }
     }
   }
