@@ -18,7 +18,7 @@ trait HtmlServlet extends AuthenticationSupport {
 
   def renderStatus(status: HttpStatus): Unit = {
 
-    val errorInjectionScript = <script>window.koskiError = {{ httpStatus: ${status.statusCode}, text: "${status.errors(0).message.toString}", topLevel: true }}</script>
+    val errorInjectionScript = <script>window.koskiError = {{ httpStatus: {status.statusCode}, text: '{status.errors(0).message.toString}', topLevel: true }}</script>
 
     val html = new RewriteRule {
       override def transform(n: Node): Seq[Node] = n match {
