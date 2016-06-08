@@ -25,7 +25,7 @@ class BackwardCompatibilitySpec extends FreeSpec with Matchers {
             println("Checking backward compatibility: " + filename)
             val oppija: Oppija = Json.fromJValue[Oppija](json)
             val afterRoundtrip = Json.toJValue(oppija)
-            afterRoundtrip should equal(json)
+            Json.write(afterRoundtrip) should equal(Json.write(json))
             validator.validateAsJson(oppija) match {
               case Right(validated) => // Valid
               case Left(err) => throw new IllegalStateException(err.toString)
