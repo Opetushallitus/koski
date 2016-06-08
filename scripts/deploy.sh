@@ -32,16 +32,19 @@ if [ -z "$ENV" ] || ! [[ " ${VALID_ENVS[@]} " =~ " ${ENV} " ]] || [ ! -f "$PACKA
 fi
 
 ANSIBLE_ARGS=${ANSIBLE_ARGS:-""}
+INVENTORY=${INVENTORY:-"openstack_inventory.py"}
 if [ "$ENV" == "vagrant" ]; then
   ANSIBLE_ARGS="${ANSIBLE_ARGS} --user=vagrant"
+  INVENTORY="vagrant/inventory"
 fi
 
 cd "$CLOUD_ENV_DIR"
 set +u
-if [ -z "$OS_USERNAME" ] || [ -z "$OS_PASSWORD" ]; then
+if [ -z "$OS_USERNAME" ] || [ -z "$OS_PASSWORD" ] && [ "$ENV" != "vagrant" ]; then
+  echo "If you want to avoid typing your password, run the following before this script: source "$CLOUD_ENV_DIR"/*-openrc.sh"
   source "$CLOUD_ENV_DIR"/*-openrc.sh
 fi
 source "$CLOUD_ENV_DIR"/pouta-venv/bin/activate
 set -u
 export TF_VAR_env="$ENV"
-ansible-playbook $ANSIBLE_ARGS --extra-vars=koski_package="$PACKAGE" -i openstack_inventory.py "$DIR"/site.yml
+ansible-playbook $ANSIBLE_ARGS --extra-vars=koski_package="$PACKAGE" -i $INVENTORY "$DIR"/site.yml
