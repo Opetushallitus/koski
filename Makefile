@@ -1,5 +1,5 @@
 KOSKI-SERVER = tordev-tor-app
-TARGET = qa
+TARGET = tordev
 commit = $(shell git rev-parse --short HEAD)
 dist-dir = target/koski-$(commit)
 deploy-file = $(dist-dir).zip

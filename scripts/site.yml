@@ -1,15 +1,25 @@
 ---
 - name: Koski deployment
-  hosts: koski
+  hosts: tor_backends
   sudo: true
   vars:
     koski_home: /srv/tomcat/koski
     koski_user: tomcat
+    koski_deploy_dir: "{{ koski_home }}/deploy"
   tasks:
   - name: Copy koski application package
+    copy: src=../{{ koski_package }} dest=/tmp/{{ koski_package | basename }}
+  - name: Remove old application package
+    file: path={{ koski_deploy_dir }}/{{ item }} state=absent
+    with_items:
+      - lib
+      - web
+      - src
+  - name: Unpack koski application package
     unarchive:
-      src=../{{ koski_package }}
-      dest={{ koski_home }}/deploy
+      copy=no
+      src=/tmp/{{ koski_package | basename }}
+      dest={{ koski_deploy_dir }}
       group={{ koski_user }}
       owner={{ koski_user }}
     notify: restart koski
