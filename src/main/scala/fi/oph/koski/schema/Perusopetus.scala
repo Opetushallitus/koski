@@ -111,6 +111,7 @@ case class PerusopetuksenVuosiluokanSuoritus(
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Henkilövahvistus] = None,
   suorituskieli: Option[Koodistokoodiviite],
+  jääLuokalle: Boolean = false,
   koulutusmoduuli: Perusopetus,
   @KoodistoKoodiarvo("perusopetuksenvuosiluokka")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenvuosiluokka", koodistoUri = "suorituksentyyppi")

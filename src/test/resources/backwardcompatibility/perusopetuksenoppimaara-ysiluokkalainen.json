@@ -46,6 +46,7 @@
         },
         "koodistoUri" : "kieli"
       },
+      "jääLuokalle" : false,
       "koulutusmoduuli" : {
         "perusteenDiaarinumero" : "104/011/2014",
         "tunniste" : {
