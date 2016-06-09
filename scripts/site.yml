@@ -9,10 +9,10 @@
   tasks:
   - name: Copy koski application package
     copy: src=../{{ koski_package }} dest=/tmp/{{ koski_package | basename }}
+  - name: Remove old application package
+    file: path={{ koski_deploy_dir }} state=absent
   - name: Create application directory
     file: path={{ koski_deploy_dir }} state=directory
-  - name: Remove old application package
-    file: path={{ koski_deploy_dir }}/* state=absent
   - name: Unpack koski application package
     unarchive:
       copy=no
