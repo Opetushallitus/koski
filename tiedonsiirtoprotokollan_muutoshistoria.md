@@ -1,5 +1,6 @@
 ## 9.6.2016
 
+- Poistettu arvioitsijat perusopetuksen ja lukion arvioinneista
 - Lisätty vahvistus ja käyttäytymisenArvio perusopetuksen lukuvuosisuoritukseen
 - Lisätty yksilöllistettyOppimäärä perusopetuksen oppiaineen suoritukseen
 - Lisätty toiminta-alueittainen arviointi perusopetuksen oppimäärän suoritukseen

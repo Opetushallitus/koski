@@ -10,6 +10,11 @@ import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.schema._
 
 object PerusopetusExampleData {
+  def arviointi(arvosana: String): Some[List[PerusopetuksenOppiaineenArviointi]] = {
+    Some(List(PerusopetuksenOppiaineenArviointi(arvosana)))
+  }
+
+  val hyväksytty = Some(List(PerusopetuksenOppiaineenArviointi("S")))
 
   def suoritus(aine: PerusopetuksenOppiaine) = PerusopetuksenOppiaineenSuoritus(
     koulutusmoduuli = aine,

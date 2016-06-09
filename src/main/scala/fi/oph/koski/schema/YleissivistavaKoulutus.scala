@@ -28,16 +28,3 @@ trait YleissivistavaOppiaine extends KoodistostaLöytyväKoulutusmoduuli {
   def tunniste: Koodistokoodiviite
   def pakollinen: Boolean
 }
-
-case class YleissivistävänkoulutuksenArviointi(
-  @KoodistoUri("arviointiasteikkoyleissivistava")
-  arvosana: Koodistokoodiviite,
-  päivä: Option[LocalDate],
-  arvioitsijat: Option[List[Arvioitsija]] = None
-) extends KoodistostaLöytyväArviointi {
-  def arviointipäivä = päivä
-}
-
-object YleissivistävänkoulutuksenArviointi {
-  def apply(arvosana: String) = new YleissivistävänkoulutuksenArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), None)
-}

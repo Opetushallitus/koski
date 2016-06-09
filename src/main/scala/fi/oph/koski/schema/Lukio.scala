@@ -39,7 +39,7 @@ case class LukionOppimääränSuoritus(
   vahvistus: Option[Henkilövahvistus] = None,
   override val osasuoritukset: Option[List[LukionOppiaineenSuoritus]]
 ) extends Suoritus {
-  def arviointi: Option[List[YleissivistävänkoulutuksenArviointi]] = None
+  def arviointi = None
 }
 
 case class LukionOppimäärä(
@@ -61,7 +61,7 @@ case class LukionOppiaineenSuoritus(
   paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
-  arviointi: Option[List[YleissivistävänkoulutuksenArviointi]] = None,
+  arviointi: Option[List[LukionOppiaineenArviointi]] = None,
   override val osasuoritukset: Option[List[LukionKurssinSuoritus]]
 ) extends OppiaineenSuoritus
 
@@ -77,12 +77,26 @@ case class LukionKurssinSuoritus(
   def vahvistus: Option[Vahvistus] = None
 }
 
+case class LukionOppiaineenArviointi(
+  @KoodistoUri("arviointiasteikkoyleissivistava")
+  arvosana: Koodistokoodiviite,
+  päivä: Option[LocalDate]
+) extends KoodistostaLöytyväArviointi {
+  def arviointipäivä = päivä
+  def arvioitsijat = None
+}
+
+object LukionOppiaineenArviointi {
+  def apply(arvosana: String) = new LukionOppiaineenArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), None)
+}
+
 case class LukionKurssinArviointi(
   @KoodistoUri("arviointiasteikkoyleissivistava")
   arvosana: Koodistokoodiviite,
-  päivä: LocalDate,
-  arvioitsijat: Option[List[Arvioitsija]] = None
-) extends KoodistostaLöytyväArviointi with ArviointiPäivämäärällä
+  päivä: LocalDate
+) extends KoodistostaLöytyväArviointi with ArviointiPäivämäärällä {
+  def arvioitsijat = None
+}
 
 sealed trait LukionKurssi extends Koulutusmoduuli {
   def pakollinen: Boolean = false
