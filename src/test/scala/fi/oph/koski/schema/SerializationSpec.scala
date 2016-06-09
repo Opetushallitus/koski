@@ -4,12 +4,24 @@ import fi.oph.koski.documentation.{AmmatillinenExampleData, Examples}
 import fi.oph.koski.json.Json
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.log.Logging
+import org.json4s.MappingException
 import org.scalatest.{FunSpec, Matchers}
 
-class SerializationSpec extends FunSpec with Matchers with Logging {
-  val examples = Examples.examples
+private [schema] case class Application(user: Option[User])
+private [schema] case class User(firstName: String, lastName: String)
 
+class SerializationSpec extends FunSpec with Matchers with Logging {
   describe("Serialization / deserialization") {
+    describe("Optional field") {
+      it("Success case") {
+        Json.read[Application]("""{"user": {"firstName": "John", "lastName": "Doe"}}""")
+      }
+      it("When deserialization fails -> throw exception") {
+        intercept[MappingException] {
+          Json.read[Application]("""{"user": {"firstName": "John"}}""")
+        }
+      }
+    }
     it("Hyväksiluku") {
       val jsonString = Json.write(AmmatillinenExampleData.hyväksiluku)
       val hyväksiluku = Json.read[Hyväksiluku](jsonString)
@@ -17,7 +29,7 @@ class SerializationSpec extends FunSpec with Matchers with Logging {
     }
 
     describe("Examples") {
-      examples.foreach { example =>
+      Examples.examples.foreach { example =>
         it(example.name) {
           val jsonString = Json.write(example.data)
           val oppija = Json.read[Oppija](jsonString)
@@ -26,7 +38,6 @@ class SerializationSpec extends FunSpec with Matchers with Logging {
         }
       }
     }
-
     describe("LocalizedString") {
       it("Serialized/deserializes cleanly") {
         val string: LocalizedString = LocalizedString.finnish("rölli")
