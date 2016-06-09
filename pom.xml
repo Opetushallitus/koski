@@ -346,6 +346,7 @@
           <plugin>
             <artifactId>maven-war-plugin</artifactId>
             <configuration>
+              <archiveClasses>true</archiveClasses>
               <webResources>
                 <resource>
                   <directory>${basedir}/target/webapp</directory>

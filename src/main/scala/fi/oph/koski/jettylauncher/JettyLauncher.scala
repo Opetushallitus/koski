@@ -25,9 +25,10 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) {
   connector.setPort(port)
   server.addConnector(connector)
 
-  def resourceBase = if (Files.exists(Paths.get("./target/webapp"))) "./target/webapp" else "./web"
+  def resourceBase = System.getProperty("resourcebase", "./target/webapp")
 
   val context = new WebAppContext()
+  context.setParentLoaderPriority(true)
   context.setContextPath("/koski")
   context.setResourceBase(resourceBase)
   context.setAttribute("tor.overrides", overrides)
