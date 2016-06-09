@@ -6,7 +6,6 @@ import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedString.unlocalized
 import fi.oph.scalaschema.annotation._
 
-
 trait Arviointi {
   def arvosana: KoodiViite
   @Description("Päivämäärä, jolloin arviointi on annettu")
