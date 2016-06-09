@@ -103,18 +103,18 @@ sealed trait LukionKurssi extends Koulutusmoduuli {
   def laajuus: Option[LaajuusKursseissa]
 }
 
-  case class ValtakunnallinenLukionKurssi(
-    @Description("Lukion kurssi")
-    @KoodistoUri("lukionkurssit")
-    @OksaUri("tmpOKSAID873", "kurssi")
-    tunniste: Koodistokoodiviite,
-    override val laajuus: Option[LaajuusKursseissa]
-  ) extends LukionKurssi with KoodistostaLöytyväKoulutusmoduuli
+case class ValtakunnallinenLukionKurssi(
+  @Description("Lukion kurssi")
+  @KoodistoUri("lukionkurssit")
+  @OksaUri("tmpOKSAID873", "kurssi")
+  tunniste: Koodistokoodiviite,
+  override val laajuus: Option[LaajuusKursseissa]
+) extends LukionKurssi with KoodistostaLöytyväKoulutusmoduuli
 
-  case class PaikallinenLukionKurssi(
-    tunniste: PaikallinenKoodi,
-    override val laajuus: Option[LaajuusKursseissa]
-  ) extends LukionKurssi with PaikallinenKoulutusmoduuli
+case class PaikallinenLukionKurssi(
+  tunniste: PaikallinenKoodi,
+  override val laajuus: Option[LaajuusKursseissa]
+) extends LukionKurssi with PaikallinenKoulutusmoduuli
 
 trait LukionOppiaine extends YleissivistavaOppiaine {
   def laajuus: Option[LaajuusKursseissa]
