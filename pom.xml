@@ -16,6 +16,7 @@
       <scalatra.version>2.4.0</scalatra.version>
       <json4s.version>3.3.0</json4s.version>
       <scoverage.plugin.version>1.1.1</scoverage.plugin.version>
+      <finalName>${project.artifactId}-${project.version}</finalName>
   </properties>
   <dependencies>
     <!-- OPH internal deps -->
@@ -229,6 +230,7 @@
     </dependency>
   </dependencies>
   <build>
+    <finalName>${finalName}</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

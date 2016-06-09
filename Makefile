@@ -1,8 +1,6 @@
 KOSKI-SERVER = tordev-tor-app
 TARGET = tordev
-commit = $(shell git rev-parse --short HEAD)
-dist-dir = target/koski-$(commit)
-deploy-file = $(dist-dir).zip
+final-name = koski-$(shell git rev-parse --short HEAD)
 
 help:
 	@echo ""
@@ -52,9 +50,9 @@ it: test
 happen:
 #	# Pow pow!
 dist: clean front
-	mvn install -DskipTests=true
+	mvn install -DskipTests=true -DfinalName=$(final-name)
 deploy: dist
-	./scripts/deploy.sh $(TARGET) $(deploy-file)
+	./scripts/deploy.sh $(TARGET) target/$(final-name).war
 tail:
 	ssh $(KOSKI-SERVER) 'tail -f /home/git/logs/*log'
 ssh:
