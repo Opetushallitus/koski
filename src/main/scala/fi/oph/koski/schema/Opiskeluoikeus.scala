@@ -11,7 +11,7 @@ object Opiskeluoikeus {
   val VERSIO_1 = 1
 }
 
-trait Opiskeluoikeus extends Loggable {
+trait Opiskeluoikeus {
   @Description("Opiskeluoikeden tyyppi, jolla erotellaan eri koulutusmuotoihin (perusopetus, lukio, ammatillinen...) liittyvät opiskeluoikeudet")
   @OksaUri("tmpOKSAID869", "koulutusmuoto (1)")
   @KoodistoUri("opiskeluoikeudentyyppi")
@@ -42,12 +42,6 @@ trait Opiskeluoikeus extends Loggable {
   def suoritukset: List[Suoritus]
   def tila: Option[OpiskeluoikeudenTila]
   def läsnäolotiedot: Option[Läsnäolotiedot]
-
-  override def logString = id match {
-    case None => "opiskeluoikeus"
-    case Some(id) => "opiskeluoikeus " + id
-  }
-
   def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid): Opiskeluoikeus
 }
 
