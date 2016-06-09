@@ -39,6 +39,7 @@ object OpiskeluOikeusDeserializer extends Deserializer[Opiskeluoikeus] {
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("lukiokoulutus") => oo.extract[LukionOpiskeluoikeus]
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("korkeakoulutus") => oo.extract[KorkeakoulunOpiskeluoikeus]
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("ylioppilastutkinto") => oo.extract[YlioppilastutkinnonOpiskeluoikeus]
+        case _ => throw CannotDeserializeException(this, json)
       }
   }
 }
@@ -51,6 +52,7 @@ object KorkeakoulunArviointiDeserializer extends Deserializer[KorkeakoulunArvioi
       json match {
         case arviointi: JObject if arviointi \ "arvosana" \ "koodistoUri" == JString("virtaarvosana") => arviointi.extract[KorkeakoulunKoodistostaLöytyväArviointi]
         case arviointi: JObject => arviointi.extract[KorkeakoulunPaikallinenArviointi]
+        case _ => throw CannotDeserializeException(this, json)
       }
   }
 }
@@ -63,6 +65,7 @@ object KorkeakouluSuoritusDeserializer extends Deserializer[KorkeakouluSuoritus]
       json match {
         case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("korkeakoulututkinto") => suoritus.extract[KorkeakouluTutkinnonSuoritus]
         case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("korkeakoulunopintojakso") => suoritus.extract[KorkeakoulunOpintojaksonSuoritus]
+        case _ => throw CannotDeserializeException(this, json)
       }
   }
 }
@@ -78,6 +81,7 @@ object LukionOppiaineDeserializer extends Deserializer[LukionOppiaine] {
         case moduuli: JObject if (moduuli \ "kieli").isInstanceOf[JObject] => moduuli.extract[VierasTaiToinenKotimainenKieli]
         case moduuli: JObject if (moduuli \ "oppimäärä").isInstanceOf[JObject] => moduuli.extract[LukionMatematiikka]
         case moduuli: JObject => moduuli.extract[MuuOppiaine]
+        case _ => throw CannotDeserializeException(this, json)
       }
   }
 }
@@ -90,6 +94,7 @@ object LukioonValmistavanKoulutuksenOsasuoritusDeserializer extends Deserializer
       json match {
         case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("lukionkurssi") => suoritus.extract[LukionKurssinSuoritus]
         case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("luvakurssi") => suoritus.extract[LukioonValmistavanKurssinSuoritus]
+        case _ => throw CannotDeserializeException(this, json)
       }
   }
 }
@@ -105,6 +110,7 @@ object PerusopetuksenOppiaineDeserializer extends Deserializer[PerusopetuksenOpp
         case moduuli: JObject if moduuli \ "tunniste" \ "koodiarvo" == JString("KT") => moduuli.extract[PeruskoulunUskonto]
         case moduuli: JObject if (moduuli \ "kieli").isInstanceOf[JObject] => moduuli.extract[PeruskoulunVierasTaiToinenKotimainenKieli]
         case moduuli: JObject => moduuli.extract[MuuPeruskoulunOppiaine]
+        case _ => throw CannotDeserializeException(this, json)
       }
   }
 }
@@ -117,7 +123,8 @@ object PerusopetuksenPäätasonSuoritusDeserializer extends Deserializer[Perusop
       json match {
         case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("perusopetuksenvuosiluokka") => suoritus.extract[PerusopetuksenVuosiluokanSuoritus]
         case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("perusopetuksenoppiaineenoppimaara") => suoritus.extract[PerusopetuksenOppiaineenOppimääränSuoritus]
-        case suoritus: JObject => suoritus.extract[PerusopetuksenOppimääränSuoritus]
+        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("perusopetuksenoppimaara") => suoritus.extract[PerusopetuksenOppimääränSuoritus]
+        case _ => throw CannotDeserializeException(this, json)
       }
   }
 }
@@ -130,6 +137,7 @@ object OppiaineenTaiToimintaAlueenSuoritusDeserializer extends Deserializer[Oppi
       json match {
         case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("perusopetuksenoppiaine") => suoritus.extract[PerusopetuksenOppiaineenSuoritus]
         case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("perusopetuksentoimintaalue") => suoritus.extract[PerusopetuksenToimintaAlueenSuoritus]
+        case _ => throw CannotDeserializeException(this, json)
       }
   }
 }
@@ -212,3 +220,5 @@ object LocalizedStringDeserializer extends Deserializer[LocalizedString] {
     case (TypeInfo(LocalizedStringClass, _), json: JObject) if json.values.contains("en") => json.extract[English]
   }
 }
+
+case class CannotDeserializeException(deserializer: Deserializer[_], json: JValue) extends RuntimeException(deserializer + " cannot deserialize " + json)
