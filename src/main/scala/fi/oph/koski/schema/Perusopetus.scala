@@ -193,7 +193,6 @@ case class PerusopetuksenToimintaAlue(
   tunniste: Koodistokoodiviite
 ) extends KoodistostaLöytyväKoulutusmoduuli {
   def laajuus = None
-  def this(tunniste: String) = this(Koodistokoodiviite(tunniste, "perusopetuksentoimintaalue"))
 }
 
 @Description("Perusopetus")
