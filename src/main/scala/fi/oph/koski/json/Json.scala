@@ -20,6 +20,8 @@ object GenericJsonFormats {
       format.setTimeZone(DefaultFormats.UTC)
       format
     }
+
+    override val strictOptionParsing: Boolean = true
   } ++ JodaTimeSerializers.all
 }
 
