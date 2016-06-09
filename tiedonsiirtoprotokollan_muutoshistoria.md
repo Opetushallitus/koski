@@ -1,3 +1,11 @@
+## 9.6.2016
+
+- Lisätty vahvistus ja käyttäytymisenArvio perusopetuksen lukuvuosisuoritukseen
+- Lisätty yksilöllistettyOppimäärä perusopetuksen oppiaineen suoritukseen
+- Lisätty toiminta-alueittainen arviointi perusopetuksen oppimäärän suoritukseen
+- Lisätty lisätiedot (tukimuodot, päätökset, aloittamisen lykkäys, pidennetty oppivelvollisuus, joustava perusopetus, vuosiluokkiin situotumaton opetus, ulkomaanjaksot, kotiopetus, majoitus- ja kuljetustiedot, aamu- ja iltapäivätoiminta)
+- Käytetään lukion oppimäärälle uutta koulutuskoodia 309902
+
 ## 30.5.2016
 
 - Poistettu arviointi-kenttä ammatillisista tutkinnoista
