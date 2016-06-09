@@ -42,6 +42,8 @@ export const Oppija = ({oppija}) =>
 
 const Loading = () => <div className='main-content oppija loading'></div>
 
+const firstDate = ([, opiskeluoikeudet]) => new Date(opiskeluoikeudet[0].alkamispäivä)
+
 const ExistingOppija = React.createClass({
   render() {
     let {oppija: { henkilö: henkilö, opiskeluoikeudet: opiskeluoikeudet}} = this.props
@@ -51,8 +53,9 @@ const ExistingOppija = React.createClass({
         <hr></hr>
         <h4>Opiskeluoikeudet</h4>
         <ul className="oppilaitokset">
-        { R.toPairs(R.groupBy((opiskeluOikeus => opiskeluOikeus.oppilaitos.oid), opiskeluoikeudet)).map( ([, opiskeluOikeudet]) =>
-          <li className="oppilaitos" key={opiskeluOikeudet[0].oppilaitos.oid}>
+        {
+          R.sortBy(firstDate)(R.toPairs(R.groupBy((opiskeluOikeus => opiskeluOikeus.oppilaitos.oid), opiskeluoikeudet))).map( ([, opiskeluOikeudet]) =>
+           <li className="oppilaitos" key={opiskeluOikeudet[0].oppilaitos.oid}>
             <span className="oppilaitos">{opiskeluOikeudet[0].oppilaitos.nimi.fi}</span><OppilaitoksenOpintosuoritusote oppija={henkilö} oppilaitos={opiskeluOikeudet[0].oppilaitos} tyyppi={opiskeluOikeudet[0].tyyppi.koodiarvo}/>
             {
               opiskeluOikeudet.map( (opiskeluOikeus, index) =>
