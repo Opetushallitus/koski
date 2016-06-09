@@ -27,6 +27,10 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) {
 
   def resourceBase = System.getProperty("resourcebase", "./target/webapp")
 
+  if(!Files.exists(Paths.get(resourceBase))) {
+    throw new RuntimeException("WebApplication resource base: " + resourceBase + " does not exist.")
+  }
+
   val context = new WebAppContext()
   context.setParentLoaderPriority(true)
   context.setContextPath("/koski")
