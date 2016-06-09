@@ -1,10 +1,9 @@
 package fi.oph.koski.jettylauncher
 
-import java.nio.file.{Files, Paths}
+import java.nio.file.{Paths, Files}
 
-import fi.oph.koski.jettylauncher.JettyLauncher.staticResourcesRoot
 import fi.oph.koski.util.{Pools, PortChecker}
-import org.eclipse.jetty.server.handler.{ContextHandler, HandlerList, ResourceHandler}
+import org.eclipse.jetty.server.handler.{ContextHandler, ResourceHandler}
 import org.eclipse.jetty.server.{Server, ServerConnector, Slf4jRequestLog}
 import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.eclipse.jetty.webapp.WebAppContext
@@ -12,60 +11,32 @@ import org.eclipse.jetty.webapp.WebAppContext
 object JettyLauncher extends App {
   lazy val globalPort = System.getProperty("tor.port","7021").toInt
   new JettyLauncher(globalPort).start.join
-
-  def staticResourcesRoot = if (Files.exists(Paths.get("./web/dist"))) "./web/dist" else "./web"
 }
 
 class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) {
   lazy val threadPool = new QueuedThreadPool(Pools.jettyThreads, 10);
   lazy val server = new Server(threadPool)
   lazy val requestLog = new Slf4jRequestLog()
+
   requestLog.setLogLatency(true)
   server.setRequestLog(requestLog);
+
   lazy val connector: ServerConnector = new ServerConnector(server)
   connector.setPort(port)
   server.addConnector(connector)
 
+  def resourceBase = if (Files.exists(Paths.get("./target/webapp"))) "./target/webapp" else "./web"
+
   val context = new WebAppContext()
   context.setContextPath("/koski")
-  context.setResourceBase("src/main/webapp")
-  context.setDescriptor("src/main/webapp/WEB-INF/web.xml")
+  context.setResourceBase(resourceBase)
   context.setAttribute("tor.overrides", overrides)
 
-  val all = new HandlerList
-
-  all.setHandlers(
-    List(
-      staticResources(staticResourcesRoot + "/js", "/koski/js"),
-      staticResources(staticResourcesRoot + "/css", "/koski/css"),
-      staticResources(staticResourcesRoot + "/images", "/koski/images"),
-      staticResources(staticResourcesRoot + "/json-schema-viewer", "/koski/json-schema-viewer"),
-      staticResources(staticResourcesRoot + "/test", "/koski/test"),
-      context
-    ).toArray)
-
-  server.setHandler(all)
-
-  def staticResources(path: String, contextPath: String) = {
-    val staticResources = new ResourceHandler()
-    staticResources.setResourceBase(path)
-    val contextHandler = new ContextHandler(contextPath)
-    contextHandler.setHandler(staticResources)
-    contextHandler
-  }
+  server.setHandler(context)
 
   def start = {
     server.start
     server
-  }
-
-  def withJetty[T](block: => T) = {
-    val server = start
-    try {
-      block
-    } finally {
-      server.stop
-    }
   }
 
   def baseUrl = "http://localhost:" + port + "/koski"

@@ -4,7 +4,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 module.exports = {
   entry: './app/Koski.jsx',
   output: {
-    path: __dirname + '/dist',
+    path: __dirname + '/../target/webapp',
     filename: 'js/bundle.js'
   },
   eslint: {
@@ -30,6 +30,7 @@ module.exports = {
       [
         { from: 'static'},
         { from: 'test', to: 'test'},
+        { from: 'WEB-INF', to: 'WEB-INF'},
         { from: 'node_modules/codemirror/lib/codemirror.js', to: 'js/codemirror' },
         { from: 'node_modules/codemirror/mode/javascript/javascript.js', to: 'js/codemirror' },
         { from: 'node_modules/codemirror/lib/codemirror.css', to: 'css/codemirror' }
