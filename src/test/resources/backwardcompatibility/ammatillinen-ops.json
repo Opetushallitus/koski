@@ -119,7 +119,8 @@
             },
             "koodistoUri" : "arviointiasteikkoammatillinent1k3"
           },
-          "päivä" : "2014-05-20"
+          "päivä" : "2014-05-20",
+          "hyväksytty" : true
         }, {
           "arvosana" : {
             "koodiarvo" : "3",
@@ -128,7 +129,8 @@
             },
             "koodistoUri" : "arviointiasteikkoammatillinent1k3"
           },
-          "päivä" : "2014-10-20"
+          "päivä" : "2014-10-20",
+          "hyväksytty" : true
         } ],
         "vahvistus" : {
           "päivä" : "2014-11-08",

@@ -161,7 +161,13 @@ case class AmmatillinenArviointi(
   päivä: LocalDate,
   @Description("Tutkinnon osan suorituksen arvioinnista päättäneen henkilön nimi")
   arvioitsijat: Option[List[Arvioitsija]] = None
-) extends KoodistostaLöytyväArviointi with ArviointiPäivämäärällä
+) extends KoodistostaLöytyväArviointi with ArviointiPäivämäärällä {
+  override def hyväksytty = arvosana.koodiarvo match {
+    case "0" => false
+    case "Hylätty" => false
+    case _ => true
+  }
+}
 
 @Description("Näytön kuvaus")
 case class Näyttö(

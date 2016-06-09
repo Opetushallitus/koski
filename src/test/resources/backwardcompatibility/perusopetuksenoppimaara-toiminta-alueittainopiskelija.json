@@ -111,7 +111,8 @@
           "arvosana" : {
             "koodiarvo" : "S",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "hyväksytty" : true
         } ]
       }, {
         "koulutusmoduuli" : {
@@ -132,7 +133,8 @@
           "arvosana" : {
             "koodiarvo" : "S",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "hyväksytty" : true
         } ]
       }, {
         "koulutusmoduuli" : {
@@ -153,7 +155,8 @@
           "arvosana" : {
             "koodiarvo" : "S",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "hyväksytty" : true
         } ]
       }, {
         "koulutusmoduuli" : {
@@ -174,7 +177,8 @@
           "arvosana" : {
             "koodiarvo" : "S",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "hyväksytty" : true
         } ]
       }, {
         "koulutusmoduuli" : {
@@ -195,7 +199,8 @@
           "arvosana" : {
             "koodiarvo" : "S",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "hyväksytty" : true
         } ]
       } ]
     } ],

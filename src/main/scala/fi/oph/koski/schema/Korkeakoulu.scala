@@ -94,7 +94,9 @@ case class KorkeakoulunOpiskeluoikeusjakso(
   tila: Koodistokoodiviite
 ) extends Opiskeluoikeusjakso
 
-trait KorkeakoulunArviointi extends ArviointiPäivämäärällä
+trait KorkeakoulunArviointi extends ArviointiPäivämäärällä {
+  def hyväksytty = true
+}
 
 case class KorkeakoulunKoodistostaLöytyväArviointi(
   @KoodistoUri("virtaarvosana")

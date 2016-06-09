@@ -103,7 +103,8 @@
             "nimi" : "Pekka Saurmann"
           }, {
             "nimi" : "Juhani Mykkänen"
-          } ]
+          } ],
+          "hyväksytty" : true
         } ],
         "vahvistus" : {
           "päivä" : "2013-05-31",

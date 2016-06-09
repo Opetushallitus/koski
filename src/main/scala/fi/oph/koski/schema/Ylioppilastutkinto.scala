@@ -58,6 +58,7 @@ case class YlioppilaskokeenArviointi(
 ) extends KoodistostaLöytyväArviointi {
   override def arviointipäivä = None
   override def arvioitsijat = None
+  def hyväksytty = arvosana.koodiarvo != "I"
 }
 
 object YlioppilaskokeenArviointi {

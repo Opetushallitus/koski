@@ -271,7 +271,8 @@
             "nimi" : "Pekka Saurmann"
           }, {
             "nimi" : "Juhani Mykkänen"
-          } ]
+          } ],
+          "hyväksytty" : true
         } ],
         "vahvistus" : {
           "päivä" : "2013-01-31",
@@ -372,7 +373,8 @@
             "nimi" : "Pekka Saurmann"
           }, {
             "nimi" : "Juhani Mykkänen"
-          } ]
+          } ],
+          "hyväksytty" : true
         } ],
         "vahvistus" : {
           "päivä" : "2013-05-31",
@@ -471,7 +473,8 @@
             "nimi" : "Pekka Saurmann"
           }, {
             "nimi" : "Juhani Mykkänen"
-          } ]
+          } ],
+          "hyväksytty" : true
         } ],
         "vahvistus" : {
           "päivä" : "2013-05-31",
@@ -570,7 +573,8 @@
             "nimi" : "Pekka Saurmann"
           }, {
             "nimi" : "Juhani Mykkänen"
-          } ]
+          } ],
+          "hyväksytty" : true
         } ],
         "vahvistus" : {
           "päivä" : "2014-11-08",
@@ -669,7 +673,8 @@
             "nimi" : "Pekka Saurmann"
           }, {
             "nimi" : "Juhani Mykkänen"
-          } ]
+          } ],
+          "hyväksytty" : true
         } ],
         "vahvistus" : {
           "päivä" : "2015-05-01",
@@ -766,7 +771,8 @@
             "nimi" : "Pekka Saurmann"
           }, {
             "nimi" : "Juhani Mykkänen"
-          } ]
+          } ],
+          "hyväksytty" : true
         } ],
         "vahvistus" : {
           "päivä" : "2016-05-01",

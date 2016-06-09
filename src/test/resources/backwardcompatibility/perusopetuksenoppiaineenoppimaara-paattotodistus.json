@@ -91,7 +91,8 @@
         "arvosana" : {
           "koodiarvo" : "9",
           "koodistoUri" : "arviointiasteikkoyleissivistava"
-        }
+        },
+        "hyväksytty" : true
       } ]
     } ],
     "tila" : {

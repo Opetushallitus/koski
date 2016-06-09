@@ -79,7 +79,8 @@
             "koodiarvo" : "S",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "päivä" : "2016-06-04"
+          "päivä" : "2016-06-04",
+          "hyväksytty" : true
         } ],
         "tyyppi" : {
           "koodiarvo" : "luvakurssi",
@@ -111,7 +112,8 @@
             "koodiarvo" : "S",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "päivä" : "2016-06-04"
+          "päivä" : "2016-06-04",
+          "hyväksytty" : true
         } ],
         "tyyppi" : {
           "koodiarvo" : "luvakurssi",
@@ -143,7 +145,8 @@
             "koodiarvo" : "S",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "päivä" : "2016-06-04"
+          "päivä" : "2016-06-04",
+          "hyväksytty" : true
         } ],
         "tyyppi" : {
           "koodiarvo" : "luvakurssi",
@@ -192,7 +195,8 @@
             "koodiarvo" : "7",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "päivä" : "2016-06-04"
+          "päivä" : "2016-06-04",
+          "hyväksytty" : true
         } ]
       } ],
       "tyyppi" : {

@@ -148,6 +148,7 @@ class LukioSpec extends FunSpec with Matchers with OpintosuoritusoteTestMethods 
   }
 
   def opintosuoritusote(henkilö: TaydellisetHenkilötiedot): String = {
+    resetFixtures
     opintosuoritusoteOpiskeluoikeudelle(henkilö.oid, lukionOpiskeluoikeus)
   }
 

@@ -76,6 +76,11 @@ object KoskiErrorCategory {
         val osasuoritustenLaajuuksienSumma = subcategory("osasuoritustenLaajuuksienSumma", "Osasuoritusten laajuuksien summa ei täsmää")
       }
       val laajuudet = new Laajuudet
+
+      class Arviointi extends ErrorCategory(Validation.this, "arviointi", "Suoritusten arviointiin liittyvä validointivirhe") {
+        val vääräHyväksyttyArvo = subcategory("vääräHyväksyttyArvo", "hyväksytty-kentän arvo ristiriidassa annetun arvosanan kanssa")
+      }
+      val arviointi = new Arviointi
     }
     val validation = new Validation
   }

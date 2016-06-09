@@ -78,12 +78,10 @@ case class LukionKurssinSuoritus(
 }
 
 case class LukionOppiaineenArviointi(
-  @KoodistoUri("arviointiasteikkoyleissivistava")
   arvosana: Koodistokoodiviite,
   päivä: Option[LocalDate]
-) extends KoodistostaLöytyväArviointi {
+) extends YleissivistävänKoulutuksenArviointi {
   def arviointipäivä = päivä
-  def arvioitsijat = None
 }
 
 object LukionOppiaineenArviointi {
@@ -91,12 +89,9 @@ object LukionOppiaineenArviointi {
 }
 
 case class LukionKurssinArviointi(
-  @KoodistoUri("arviointiasteikkoyleissivistava")
   arvosana: Koodistokoodiviite,
   päivä: LocalDate
-) extends KoodistostaLöytyväArviointi with ArviointiPäivämäärällä {
-  def arvioitsijat = None
-}
+) extends YleissivistävänKoulutuksenArviointi with ArviointiPäivämäärällä
 
 sealed trait LukionKurssi extends Koulutusmoduuli {
   def pakollinen: Boolean = false

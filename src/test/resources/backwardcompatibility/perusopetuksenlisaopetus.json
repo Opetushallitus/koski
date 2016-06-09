@@ -122,7 +122,8 @@
             "koodiarvo" : "7",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "korotus" : true
+          "korotus" : true,
+          "hyväksytty" : true
         } ]
       }, {
         "koulutusmoduuli" : {
@@ -149,7 +150,8 @@
             "koodiarvo" : "10",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "korotus" : true
+          "korotus" : true,
+          "hyväksytty" : true
         } ]
       }, {
         "koulutusmoduuli" : {
@@ -176,7 +178,8 @@
             "koodiarvo" : "6",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "korotus" : true
+          "korotus" : true,
+          "hyväksytty" : true
         } ]
       }, {
         "koulutusmoduuli" : {
@@ -199,7 +202,8 @@
             "koodiarvo" : "6",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "korotus" : true
+          "korotus" : true,
+          "hyväksytty" : true
         } ]
       }, {
         "koulutusmoduuli" : {
@@ -222,7 +226,8 @@
             "koodiarvo" : "10",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "korotus" : true
+          "korotus" : true,
+          "hyväksytty" : true
         } ]
       }, {
         "koulutusmoduuli" : {
@@ -245,7 +250,8 @@
             "koodiarvo" : "9",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "korotus" : true
+          "korotus" : true,
+          "hyväksytty" : true
         } ]
       }, {
         "koulutusmoduuli" : {
@@ -268,7 +274,8 @@
             "koodiarvo" : "8",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "korotus" : true
+          "korotus" : true,
+          "hyväksytty" : true
         } ]
       }, {
         "koulutusmoduuli" : {
@@ -291,7 +298,8 @@
             "koodiarvo" : "9",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "korotus" : true
+          "korotus" : true,
+          "hyväksytty" : true
         } ]
       }, {
         "koulutusmoduuli" : {
@@ -314,7 +322,8 @@
             "koodiarvo" : "8",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "korotus" : true
+          "korotus" : true,
+          "hyväksytty" : true
         } ]
       }, {
         "koulutusmoduuli" : {
@@ -337,7 +346,8 @@
             "koodiarvo" : "7",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "korotus" : false
+          "korotus" : false,
+          "hyväksytty" : true
         } ]
       }, {
         "koulutusmoduuli" : {
@@ -360,7 +370,8 @@
             "koodiarvo" : "8",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "korotus" : true
+          "korotus" : true,
+          "hyväksytty" : true
         } ]
       }, {
         "koulutusmoduuli" : {
@@ -383,7 +394,8 @@
             "koodiarvo" : "8",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "korotus" : false
+          "korotus" : false,
+          "hyväksytty" : true
         } ]
       }, {
         "koulutusmoduuli" : {
@@ -406,7 +418,8 @@
             "koodiarvo" : "7",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "korotus" : true
+          "korotus" : true,
+          "hyväksytty" : true
         } ]
       } ],
       "koulutusmoduuli" : {

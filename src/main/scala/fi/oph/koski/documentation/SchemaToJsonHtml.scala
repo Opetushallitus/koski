@@ -20,6 +20,7 @@ object SchemaToJsonHtml {
     case (x: AnyRef, t:DateSchema) => buildValueHtml(property, x, context)
     case (x: String, t:StringSchema) => buildValueHtml(property, x, context)
     case (x: Option[_], t:OptionalSchema) => buildHtml(property.copy(schema = t.itemSchema), x.get, schema, context)
+    case (x: AnyRef, t:OptionalSchema) => buildHtml(property.copy(schema = t.itemSchema), x, schema, context)
     case (x: AnyRef, t:AnyOfSchema) => buildHtml(property.copy(schema = findOneOfSchema(t, x)), x, schema, context)
     case (x: AnyRef, t:ClassRefSchema) => buildHtml(property.copy(schema = schema.getSchema(t.fullClassName).get), x , schema, context)
     case _ =>

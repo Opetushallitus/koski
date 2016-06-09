@@ -28,3 +28,14 @@ trait YleissivistavaOppiaine extends KoodistostaLöytyväKoulutusmoduuli {
   def tunniste: Koodistokoodiviite
   def pakollinen: Boolean
 }
+
+trait YleissivistävänKoulutuksenArviointi extends KoodistostaLöytyväArviointi {
+  @KoodistoUri("arviointiasteikkoyleissivistava")
+  def arvosana: Koodistokoodiviite
+  def arvioitsijat = None
+  def hyväksytty = arvosana.koodiarvo match {
+    case "H" => false
+    case "4" => false
+    case _ => true
+  }
+}

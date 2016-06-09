@@ -1,5 +1,6 @@
 ## 9.6.2016
 
+- Lisätty "hyväksytty" kenttä kaikkiin arviointeihin. Sisään tulevassa datassa kentän arvoa ei tarvita.
 - Poistettu arvioitsijat perusopetuksen ja lukion arvioinneista
 - Lisätty vahvistus ja käyttäytymisenArvio perusopetuksen lukuvuosisuoritukseen
 - Lisätty yksilöllistettyOppimäärä perusopetuksen oppiaineen suoritukseen

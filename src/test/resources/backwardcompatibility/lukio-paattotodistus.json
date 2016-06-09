@@ -110,7 +110,8 @@
           "arvosana" : {
             "koodiarvo" : "9",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
           "tyyppi" : {
@@ -139,7 +140,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -168,7 +170,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -197,7 +200,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -226,7 +230,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -255,7 +260,8 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -284,7 +290,8 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -313,7 +320,8 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -342,7 +350,8 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         } ]
       }, {
@@ -369,7 +378,8 @@
           "arvosana" : {
             "koodiarvo" : "9",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
           "tyyppi" : {
@@ -398,7 +408,8 @@
               "koodiarvo" : "10",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -427,7 +438,8 @@
               "koodiarvo" : "10",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -456,7 +468,8 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -485,7 +498,8 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -514,7 +528,8 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -543,7 +558,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -572,7 +588,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -601,7 +618,8 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -633,7 +651,8 @@
               "koodiarvo" : "S",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         } ]
       }, {
@@ -660,7 +679,8 @@
           "arvosana" : {
             "koodiarvo" : "7",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
           "tyyppi" : {
@@ -689,7 +709,8 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -718,7 +739,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -747,7 +769,8 @@
               "koodiarvo" : "7",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -776,7 +799,8 @@
               "koodiarvo" : "7",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -805,7 +829,8 @@
               "koodiarvo" : "6",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         } ]
       }, {
@@ -832,7 +857,8 @@
           "arvosana" : {
             "koodiarvo" : "9",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
           "tyyppi" : {
@@ -861,7 +887,8 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -890,7 +917,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         } ]
       }, {
@@ -917,7 +945,8 @@
           "arvosana" : {
             "koodiarvo" : "9",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
           "tyyppi" : {
@@ -949,7 +978,8 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -978,7 +1008,8 @@
               "koodiarvo" : "10",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1007,7 +1038,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1036,7 +1068,8 @@
               "koodiarvo" : "10",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1065,7 +1098,8 @@
               "koodiarvo" : "7",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1094,7 +1128,8 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1123,7 +1158,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1152,7 +1188,8 @@
               "koodiarvo" : "7",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1181,7 +1218,8 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1210,7 +1248,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1239,7 +1278,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1268,7 +1308,8 @@
               "koodiarvo" : "10",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1297,7 +1338,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1329,7 +1371,8 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1361,7 +1404,8 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         } ]
       }, {
@@ -1384,7 +1428,8 @@
           "arvosana" : {
             "koodiarvo" : "9",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
           "tyyppi" : {
@@ -1413,7 +1458,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1442,7 +1488,8 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1471,7 +1518,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1500,7 +1548,8 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1529,7 +1578,8 @@
               "koodiarvo" : "10",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1561,7 +1611,8 @@
               "koodiarvo" : "S",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1593,7 +1644,8 @@
               "koodiarvo" : "S",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1625,7 +1677,8 @@
               "koodiarvo" : "S",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         } ]
       }, {
@@ -1648,7 +1701,8 @@
           "arvosana" : {
             "koodiarvo" : "8",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
           "tyyppi" : {
@@ -1677,7 +1731,8 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1706,7 +1761,8 @@
               "koodiarvo" : "7",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         } ]
       }, {
@@ -1729,7 +1785,8 @@
           "arvosana" : {
             "koodiarvo" : "8",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
           "tyyppi" : {
@@ -1758,7 +1815,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1787,7 +1845,8 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1816,7 +1875,8 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1845,7 +1905,8 @@
               "koodiarvo" : "7",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1874,7 +1935,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1903,7 +1965,8 @@
               "koodiarvo" : "7",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1932,7 +1995,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1964,7 +2028,8 @@
               "koodiarvo" : "7",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -1996,7 +2061,8 @@
               "koodiarvo" : "7",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -2028,7 +2094,8 @@
               "koodiarvo" : "S",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -2060,7 +2127,8 @@
               "koodiarvo" : "S",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -2092,7 +2160,8 @@
               "koodiarvo" : "S",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -2124,7 +2193,8 @@
               "koodiarvo" : "S",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         } ]
       }, {
@@ -2147,7 +2217,8 @@
           "arvosana" : {
             "koodiarvo" : "8",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
           "tyyppi" : {
@@ -2176,7 +2247,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -2205,7 +2277,8 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -2234,7 +2307,8 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -2263,7 +2337,8 @@
               "koodiarvo" : "5",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -2292,7 +2367,8 @@
               "koodiarvo" : "7",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -2324,7 +2400,8 @@
               "koodiarvo" : "5",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -2356,7 +2433,8 @@
               "koodiarvo" : "S",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -2388,7 +2466,8 @@
               "koodiarvo" : "S",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         } ]
       }, {
@@ -2415,7 +2494,8 @@
           "arvosana" : {
             "koodiarvo" : "8",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
           "tyyppi" : {
@@ -2444,7 +2524,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -2473,7 +2554,8 @@
               "koodiarvo" : "7",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -2502,7 +2584,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         } ]
       }, {
@@ -2525,7 +2608,8 @@
           "arvosana" : {
             "koodiarvo" : "8",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
           "tyyppi" : {
@@ -2554,7 +2638,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         } ]
       }, {
@@ -2577,7 +2662,8 @@
           "arvosana" : {
             "koodiarvo" : "9",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
           "tyyppi" : {
@@ -2606,7 +2692,8 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         } ]
       }, {
@@ -2629,7 +2716,8 @@
           "arvosana" : {
             "koodiarvo" : "7",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
           "tyyppi" : {
@@ -2658,7 +2746,8 @@
               "koodiarvo" : "7",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -2687,7 +2776,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -2716,7 +2806,8 @@
               "koodiarvo" : "7",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -2745,7 +2836,8 @@
               "koodiarvo" : "6",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         } ]
       }, {
@@ -2768,7 +2860,8 @@
           "arvosana" : {
             "koodiarvo" : "8",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
           "tyyppi" : {
@@ -2797,7 +2890,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -2826,7 +2920,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         } ]
       }, {
@@ -2849,7 +2944,8 @@
           "arvosana" : {
             "koodiarvo" : "9",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
           "tyyppi" : {
@@ -2878,7 +2974,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -2907,7 +3004,8 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -2939,7 +3037,8 @@
               "koodiarvo" : "S",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         } ]
       }, {
@@ -2962,7 +3061,8 @@
           "arvosana" : {
             "koodiarvo" : "8",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
           "tyyppi" : {
@@ -2991,7 +3091,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         } ]
       }, {
@@ -3014,7 +3115,8 @@
           "arvosana" : {
             "koodiarvo" : "9",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
           "tyyppi" : {
@@ -3043,7 +3145,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         }, {
           "tyyppi" : {
@@ -3072,7 +3175,8 @@
               "koodiarvo" : "9",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         } ]
       }, {
@@ -3095,7 +3199,8 @@
           "arvosana" : {
             "koodiarvo" : "9",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          }
+          },
+          "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
           "tyyppi" : {
@@ -3124,7 +3229,8 @@
               "koodiarvo" : "8",
               "koodistoUri" : "arviointiasteikkoyleissivistava"
             },
-            "päivä" : "2016-06-04"
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
           } ]
         } ]
       } ]

@@ -188,12 +188,10 @@ case class PerusopetuksenToimintaAlueenSuoritus(
 }
 
 case class PerusopetuksenOppiaineenArviointi(
-  @KoodistoUri("arviointiasteikkoyleissivistava")
   arvosana: Koodistokoodiviite,
   päivä: Option[LocalDate]
-) extends KoodistostaLöytyväArviointi {
+) extends YleissivistävänKoulutuksenArviointi {
   def arviointipäivä = päivä
-  def arvioitsijat = None
 }
 
 object PerusopetuksenOppiaineenArviointi {

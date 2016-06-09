@@ -1,5 +1,6 @@
 package fi.oph.koski.schema
 
+import java.time.LocalDate
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.json.Json
 import fi.oph.koski.koski.{ValidationAndResolvingContext, ValidatingAndResolvingExtractor}
@@ -65,6 +66,7 @@ class ArviointiSpec extends FreeSpec with Matchers {
   "Hyväksytty-kenttä" - {
     "Arvon generointi" in {
       Json.write(PerusopetuksenOppiaineenArviointi("8")) should equal("""{"arvosana":{"koodiarvo":"8","koodistoUri":"arviointiasteikkoyleissivistava"},"hyväksytty":true}""")
+      Json.write(KorkeakoulunKoodistostaLöytyväArviointi(Koodistokoodiviite("5", "virtaarvosana"), LocalDate.parse("2000-01-01"))) should equal("""{"arvosana":{"koodiarvo":"5","koodistoUri":"virtaarvosana"},"päivä":"2000-01-01","hyväksytty":true}""")
     }
     "Arvon validointi" in {
       val arviointi = read[PerusopetuksenOppiaineenArviointi]("""{"arvosana":{"koodistoUri":"arviointiasteikkoyleissivistava","koodiarvo":"H"},"hyväksytty": false}""")
