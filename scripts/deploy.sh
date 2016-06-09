@@ -41,7 +41,6 @@ fi
 cd "$CLOUD_ENV_DIR"
 set +u
 if [ -z "$OS_USERNAME" ] || [ -z "$OS_PASSWORD" ] && [ "$ENV" != "vagrant" ]; then
-  echo "If you want to avoid typing your password, run the following before this script: source "$CLOUD_ENV_DIR"/*-openrc.sh"
   source "$CLOUD_ENV_DIR"/*-openrc.sh
 fi
 source "$CLOUD_ENV_DIR"/pouta-venv/bin/activate
