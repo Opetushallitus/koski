@@ -49,10 +49,13 @@ lint: eslint scalastyle
 it: test
 happen:
 #	# Pow pow!
-dist: clean front
-	mvn install -DskipTests=true -DfinalName=$(final-name)
+dist: clean
+	mkdir target && git archive --format=tar --prefix=build/ HEAD | (cd target && tar xf -)
+	cp -r web/node_modules target/build/web/ || true
+	cd target/build && make front
+	cd target/build && mvn install -DskipTests=true -DfinalName=$(final-name)
 deploy: dist
-	./scripts/deploy.sh $(TARGET) target/$(final-name).war
+	./scripts/deploy.sh $(TARGET) target/build/target/$(final-name).war
 tail:
 	ssh $(KOSKI-SERVER) 'tail -f /home/git/logs/*log'
 ssh:
