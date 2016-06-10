@@ -42,8 +42,6 @@ export const Oppija = ({oppija}) =>
 
 const Loading = () => <div className='main-content oppija loading'></div>
 
-const firstDate = ([, opiskeluoikeudet]) => new Date(opiskeluoikeudet[0].alkamispäivä)
-
 const ExistingOppija = React.createClass({
   render() {
     let {oppija: { henkilö: henkilö, opiskeluoikeudet: opiskeluoikeudet}} = this.props
