@@ -49,7 +49,6 @@ happen:
 dist: clean
 	mkdir target && git archive --format=tar --prefix=build/ HEAD | (cd target && tar xf -)
 	cp -r web/node_modules target/build/web/ || true
-	cd target/build && make front
 	cd target/build && mvn install -DskipTests=true -DfinalName=$(final-name)
 deploy: dist
 	./scripts/deploy.sh $(TARGET) target/build/target/$(final-name).war
