@@ -11,12 +11,12 @@
     <name>fi.vm.sade</name>
   </organization>
   <properties>
-    <scala.version>2.11.4</scala.version>
-    <slick.version>3.1.1</slick.version>
-    <scalatra.version>2.4.0</scalatra.version>
-    <json4s.version>3.3.0</json4s.version>
-    <scoverage.plugin.version>1.1.1</scoverage.plugin.version>
-    <finalName>${project.artifactId}-${project.version}</finalName>
+      <scala.version>2.11.4</scala.version>
+      <slick.version>3.1.1</slick.version>
+      <scalatra.version>2.4.0</scalatra.version>
+      <json4s.version>3.3.0</json4s.version>
+      <scoverage.plugin.version>1.1.1</scoverage.plugin.version>
+      <finalName>${project.artifactId}-${project.version}</finalName>
   </properties>
   <dependencies>
     <!-- OPH internal deps -->
@@ -143,9 +143,9 @@
       <version>0.25.1</version>
     </dependency>
     <dependency>
-      <groupId>io.reactivex</groupId>
-      <artifactId>rxjava-reactive-streams</artifactId>
-      <version>1.0.1</version>
+        <groupId>io.reactivex</groupId>
+        <artifactId>rxjava-reactive-streams</artifactId>
+        <version>1.0.1</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -403,18 +403,18 @@
       <id>coverage</id>
       <build>
         <plugins>
-          <plugin>
-            <groupId>org.scoverage</groupId>
-            <artifactId>scoverage-maven-plugin</artifactId>
-            <version>${scoverage.plugin.version}</version>
-          </plugin>
-          <plugin>
-            <groupId>org.scalatest</groupId>
-            <artifactId>scalatest-maven-plugin</artifactId>
-            <configuration>
-              <tagsToExclude>koskidev</tagsToExclude>
-            </configuration>
-          </plugin>
+            <plugin>
+              <groupId>org.scoverage</groupId>
+              <artifactId>scoverage-maven-plugin</artifactId>
+              <version>${scoverage.plugin.version}</version>
+            </plugin>
+            <plugin>
+              <groupId>org.scalatest</groupId>
+              <artifactId>scalatest-maven-plugin</artifactId>
+              <configuration>
+                <tagsToExclude>koskidev</tagsToExclude>
+              </configuration>
+            </plugin>
         </plugins>
       </build>
     </profile>
