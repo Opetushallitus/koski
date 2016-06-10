@@ -59,7 +59,7 @@ object MockKoodistoPalvelu extends KoodistoPalvelu {
   )
 
   def getKoodistoKoodit(koodisto: KoodistoViite): Option[List[KoodistoKoodi]] = {
-    Json.readFileIfExists(koodistoKooditFileName(koodisto.koodistoUri)).map(_.extract[List[KoodistoKoodi]])
+    Json.readResourceIfExists(koodistoKooditResourceName(koodisto.koodistoUri)).map(_.extract[List[KoodistoKoodi]])
   }
 
   def getKoodisto(koodisto: KoodistoViite): Option[Koodisto] = {
@@ -67,16 +67,13 @@ object MockKoodistoPalvelu extends KoodistoPalvelu {
   }
 
   def getKoodisto(koodistoUri: String): Option[Koodisto] = {
-    Json.readFileIfExists(koodistoFileName(koodistoUri)).map(_.extract[Koodisto])
+    Json.readResourceIfExists(koodistoResourceName(koodistoUri)).map(_.extract[Koodisto])
   }
 
   def getLatestVersion(koodistoUri: String): Option[KoodistoViite] = getKoodisto(koodistoUri).map { _.koodistoViite }
 
-  def koodistoKooditFileName(koodistoUri: String): String = {
-    "src/main/resources/mockdata/koodisto/koodit/" + koodistoUri + ".json"
-  }
-
-  def koodistoFileName(koodistoUri: String): String = {
-    "src/main/resources/mockdata/koodisto/koodistot/" + koodistoUri + ".json"
-  }
+  def koodistoKooditFileName(koodistoUri: String): String = "src/main/resources" + koodistoKooditResourceName(koodistoUri)
+  def koodistoFileName(koodistoUri: String): String = "src/main/resources" + koodistoResourceName(koodistoUri)
+  private def koodistoKooditResourceName(koodistoUri: String) = "/mockdata/koodisto/koodit/" + koodistoUri + ".json"
+  private def koodistoResourceName(koodistoUri: String) = "/mockdata/koodisto/koodistot/" + koodistoUri + ".json"
 }

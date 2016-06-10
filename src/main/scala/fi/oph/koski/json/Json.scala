@@ -58,6 +58,8 @@ object Json {
 
   def readFileIfExists(filename: String): Option[json4s.JValue] = Files.asString(filename).map(parse(_))
 
+  def readResourceIfExists(resourcename: String): Option[json4s.JValue] = Files.resourceAsString(resourcename).map(parse(_))
+
   def writeFile(filename: String, json: AnyRef) = {
     import java.nio.charset.StandardCharsets
     import java.nio.file.{Files, Paths}

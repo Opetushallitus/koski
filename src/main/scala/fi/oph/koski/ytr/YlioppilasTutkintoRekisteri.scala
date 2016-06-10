@@ -20,8 +20,9 @@ object YlioppilasTutkintoRekisteri {
 }
 
 object YtrMock extends YlioppilasTutkintoRekisteri {
-  def oppijaJsonByHetu(hetu: String): Option[JValue] = Json.readFileIfExists(filename(hetu))
-  def filename(hetu: String) = "src/main/resources/mockdata/ytr/" + hetu + ".json"
+  def oppijaJsonByHetu(hetu: String): Option[JValue] = Json.readResourceIfExists(resourcename(hetu))
+  def filename(hetu: String) = "src/main/resources" + resourcename(hetu)
+  private def resourcename(hetu: String) = "/mockdata/ytr/" + hetu + ".json"
 }
 
 case class YtrRemote(rootUrl: String, user: String, password: String) extends YlioppilasTutkintoRekisteri {

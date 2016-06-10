@@ -31,7 +31,7 @@ object MockOrganisaatiot {
 
 case class MockOrganisaatioRepository(koodisto: KoodistoViitePalvelu) extends JsonOrganisaatioRepository(koodisto) {
   override def fetch(oid: String) = {
-    Json.readFileIfExists(hierarchyFilename(oid))
+    Json.readResourceIfExists(hierarchyResourcename(oid))
       .map(json => Json.fromJValue[OrganisaatioHakuTulos](json))
       .getOrElse(OrganisaatioHakuTulos(Nil))
   }
@@ -44,9 +44,8 @@ case class MockOrganisaatioRepository(koodisto: KoodistoViitePalvelu) extends Js
 }
 
 object MockOrganisaatioRepository {
-  def hierarchyFilename(oid: String): String = {
-    "src/main/resources/mockdata/organisaatio/hierarkia/" + oid + ".json"
-  }
+  def hierarchyResourcename(oid: String): String = "/mockdata/organisaatio/hierarkia/" + oid + ".json"
+  def hierarchyFilename(oid: String): String = "src/main/resources" + hierarchyResourcename(oid)
 
   def searchFilename(searchTerm: String): String = {
     "src/main/resources/mockdata/organisaatio/search/" + searchTerm + ".json"
