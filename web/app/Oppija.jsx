@@ -54,7 +54,7 @@ const ExistingOppija = React.createClass({
         <h4>Opiskeluoikeudet</h4>
         <ul className="oppilaitokset">
         {
-          R.sortBy(firstDate)(R.toPairs(R.groupBy((opiskeluOikeus => opiskeluOikeus.oppilaitos.oid), opiskeluoikeudet))).map( ([, opiskeluOikeudet]) =>
+          R.toPairs(R.groupBy((opiskeluOikeus => opiskeluOikeus.oppilaitos.oid), R.sortBy(o => o.alkamispäivä)(opiskeluoikeudet))).map( ([, opiskeluOikeudet]) =>
            <li className="oppilaitos" key={opiskeluOikeudet[0].oppilaitos.oid}>
             <span className="oppilaitos">{opiskeluOikeudet[0].oppilaitos.nimi.fi}</span><OppilaitoksenOpintosuoritusote oppija={henkilö} oppilaitos={opiskeluOikeudet[0].oppilaitos} tyyppi={opiskeluOikeudet[0].tyyppi.koodiarvo}/>
             {
