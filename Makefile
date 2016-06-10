@@ -6,7 +6,6 @@ help:
 	@echo ""
 	@echo "make build	- Build the whole application, ready for running or testing"
 	@echo "make front	- Build front end"
-	@echo "make server	- Build server side"
 	@echo "make codegen	- Generate database access code from local Postgres database"
 	@echo "make test	- Run unit tests"
 	@echo "make run	- Run previously built application in local environment"
@@ -19,15 +18,13 @@ help:
 
 clean:
 	mvn clean
-build: front server
+build:
+	mvn compile
 	# Built the whole application, ready for running or testing
 front:
 	cd web && npm install
 	# front end build done
-server:
-	mvn compile
-	# server-side build done
-test: build
+test:
 	mvn test
 testresults:
 	less +`grep -n "FAILED" target/surefire-reports/koski-tests.txt|head -1|cut -d ':' -f 1` target/surefire-reports/koski-tests.txt
