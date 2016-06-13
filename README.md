@@ -217,6 +217,18 @@ Ennakkovaatimukset:
 4. Käytössäsi Homebrew:n openssl ja ruby, koska OSX:n mukana tuleva OpenSSL 0.9.8zg ei toimi Poudan kanssa:
   * `brew install openssl`
   * `brew install ruby`
+5. Uusien versioiden asentaminen [Artifactoryyn](https://artifactory.oph.ware.fi) vaatii tunnukset ~/.m2/settings.xml tiedostoon
+```xml
+      <settings>
+        <servers>
+          <server>
+            <id>oph-sade-artifactory</id>
+            <username>*******</username>
+            <password>*******</password>
+          </server>
+        </servers>
+      </settings>
+```
   
 #### Lokaalin version asentaminen
 
