@@ -8,7 +8,6 @@ trait TodistusHtml extends LocalizedHtml {
   def laajuus(suoritus: Suoritus) = suoritus.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(0f)
   val decimalFormat = NumberFormat.getInstance(finnish)
 
-
   def decapitalize(s: String) = {
     val (head, tail) = s.splitAt(1)
     head.toLowerCase + tail

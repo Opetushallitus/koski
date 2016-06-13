@@ -31,12 +31,11 @@ describe('Perusopetus', function() {
 
       describe('Todistuksen avaaminen, kun todistusta ei löydy', function() {
         before(Authentication().login(), page.openPage, openPage('/koski/1010101010', page.is404))
-        it('Näytetään 404-sivu', function() {
-
-        })
+        it('Näytetään 404-sivu', function() {} )
       })
     })
   })
+
   describe('Päättötodistus toiminta-alueittain', function() {
     before(Authentication().login(), page.openPage, page.oppijaHaku.search('130696-913E', page.isOppijaSelected('Tommi')), OpinnotPage().avaaTodistus)
     it('näytetään', function() {
@@ -44,6 +43,7 @@ describe('Perusopetus', function() {
       expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
     })
   })
+
   describe('Perusopetuksen oppiaineen oppimäärän todistus', function() {
     before(Authentication().login(), page.openPage, page.oppijaHaku.search('190596-953T', page.isOppijaSelected('Olli')), OpinnotPage().avaaTodistus)
     it('näytetään', function() {

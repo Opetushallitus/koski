@@ -5,13 +5,11 @@ import fi.oph.koski.koskiuser.KoskiUser
 
 import scala.xml.Elem
 
-class PerusopetuksenLisaopetuksenTodistusHtml(implicit val user: KoskiUser) extends PeruskoulunTodistusHtml[PerusopetuksenLisäopetuksenOppiaineenSuoritus] {
-  def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, todistus: PerusopetuksenLisäopetuksenSuoritus) = {
-    val oppiaineet = todistus.osasuoritukset.toList.flatten
-    renderTodistus(koulutustoimija, oppilaitos, oppijaHenkilö, todistus, oppiaineet, "Todistus lisäopetuksen suorittamisesta")
-  }
+class PerusopetuksenLisaopetuksenTodistusHtml(val koulutustoimija: Option[OrganisaatioWithOid], val oppilaitos: Oppilaitos, val oppijaHenkilö: Henkilötiedot, val todistus: PerusopetuksenLisäopetuksenSuoritus)(implicit val user: KoskiUser) extends PeruskoulunTodistusHtml[PerusopetuksenLisäopetuksenOppiaineenSuoritus] {
+  val oppiaineet = todistus.osasuoritukset.toList.flatten
+  def title = "Todistus lisäopetuksen suorittamisesta"
 
-  override def renderHeader: Elem =
+  override def oppiaineetHeaderHtml: Elem =
     <tr>
       <th class="oppiaine">Yhteiset ja niihin liittyvät valinnaiset oppiaineet</th>
       <th class="laajuus">Vuosiviikko- tuntimäärä</th>
@@ -20,7 +18,7 @@ class PerusopetuksenLisaopetuksenTodistusHtml(implicit val user: KoskiUser) exte
       <th class="arvosana-korotus">Perusopetuksen päättöarvosanojen korottaminen</th>
     </tr>
 
-  override def renderRows(oppiaine: Aine, nimi: String, rowClass: String): Elem = {
+  override def oppiainerivitHtml(oppiaine: Aine, nimi: String, rowClass: String): Elem = {
     val korotus = oppiaine.suoritus.korotus
     <tr class={rowClass}>
       <td class="oppiaine">
@@ -39,6 +37,5 @@ class PerusopetuksenLisaopetuksenTodistusHtml(implicit val user: KoskiUser) exte
         {if (korotus) i(oppiaine.suoritus.arvosanaNumeroin)}
       </td>
     </tr>
-
   }
 }

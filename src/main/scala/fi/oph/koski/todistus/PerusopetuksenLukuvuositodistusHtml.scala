@@ -3,8 +3,12 @@ package fi.oph.koski.todistus
 import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.schema._
 
-class PerusopetuksenLukuvuositodistusHtml(implicit val user: KoskiUser) extends PeruskoulunTodistusHtml[OppiaineenTaiToimintaAlueenSuoritus] {
-  def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: PerusopetuksenVuosiluokanSuoritus) = {
-    renderTodistus(koulutustoimija, oppilaitos, oppijaHenkilö, päättötodistus, päättötodistus.osasuoritukset.toList.flatten, "Lukuvuositodistus")
-  }
+class PerusopetuksenLukuvuositodistusHtml(
+                                           val koulutustoimija: Option[OrganisaatioWithOid],
+                                           val oppilaitos: Oppilaitos,
+                                           val oppijaHenkilö: Henkilötiedot,
+                                           val todistus: PerusopetuksenVuosiluokanSuoritus)
+                                         (implicit val user: KoskiUser) extends PeruskoulunTodistusHtml[OppiaineenTaiToimintaAlueenSuoritus] {
+  def title = "Lukuvuositodistus"
+  def oppiaineet = todistus.osasuoritukset.toList.flatten
 }
