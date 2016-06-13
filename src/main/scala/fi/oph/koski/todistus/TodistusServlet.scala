@@ -21,21 +21,23 @@ class TodistusServlet(val userRepository: UserOrganisationsRepository, val direc
     }
 
     renderEither(OpiskeluoikeusFinder(rekisteri).opiskeluoikeudet(oppijaOid, params).right.flatMap {
-      case Oppija(henkilötiedot: TaydellisetHenkilötiedot, opiskeluoikeus :: Nil) =>
-        implicit val user = koskiUser
-        opiskeluoikeus.suoritukset.filter(suoritus => suoritus.tila.koodiarvo == "VALMIS" && filters.forall(f => f(suoritus))) match {
-          case (suoritus :: Nil) =>
+      case Oppija(henkilötiedot: TaydellisetHenkilötiedot, opiskeluoikeudet) =>
+        val suoritukset: Seq[(Opiskeluoikeus, Suoritus)] = opiskeluoikeudet.flatMap {
+          opiskeluoikeus => opiskeluoikeus.suoritukset.filter(suoritus => suoritus.tila.koodiarvo == "VALMIS" && filters.forall(f => f(suoritus)))
+            .map (suoritus => (opiskeluoikeus, suoritus))
+        }
+
+        suoritukset match {
+          case ((opiskeluoikeus, suoritus) :: Nil) =>
             suoritus match {
               case t: PerusopetuksenOppimääränSuoritus =>
                 Right((new PerusopetuksenPaattotodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)).todistusHtml)
-
               case t: PerusopetuksenOppiaineenOppimääränSuoritus =>
                 Right((new PerusopetuksenOppiaineenOppimaaranTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)).todistusHtml)
               case t: PerusopetuksenVuosiluokanSuoritus =>
                 Right((new PerusopetuksenLukuvuositodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)).todistusHtml)
               case t: PerusopetuksenLisäopetuksenSuoritus =>
                 Right((new PerusopetuksenLisaopetuksenTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)).todistusHtml)
-
               case t: AmmatillisenTutkinnonSuoritus =>
                 t.koulutusmoduuli.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_)) match {
                   case Some(rakenne: TutkintoRakenne) =>
@@ -46,24 +48,19 @@ class TodistusServlet(val userRepository: UserOrganisationsRepository, val direc
                     }
                   case None => Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy("Tutkinnon rakennetta diaarinumerolla " + t.koulutusmoduuli.perusteenDiaarinumero.getOrElse("(puuttuu)") + " ei löydy"))
                 }
-
               case t: LukionOppimääränSuoritus =>
                 Right((new LukionPaattoTodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t))
-
               case t: YlioppilastutkinnonSuoritus =>
                 Right((new YlioppilastutkintotodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t))
-
               case t: LukioonValmistavanKoulutuksenSuoritus =>
                 Right((new LuvaTodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t))
-
               case _ =>
                 Left(KoskiErrorCategory.notFound.todistustaEiLöydy())
           }
-          case (Nil) => Left(KoskiErrorCategory.notFound.todistustaEiLöydy("Annetuilla hakuehdoilla ei löydy suoritusta"))
-          case (suoritus :: more) => Left(KoskiErrorCategory.notFound.todistustaEiLöydy("Annetuilla hakuehdoilla löytyi useampi kuin yksi suoritus"))
+
+          case _ =>
+            Left(KoskiErrorCategory.notFound.todistustaEiLöydy())
         }
-      case Oppija(henkilötiedot: TaydellisetHenkilötiedot, opiskeluoikeudet) =>
-        Left(KoskiErrorCategory.notFound.todistustaEiLöydy("Annetuilla hakuehdoilla löytyi väärä määrä opiskeluoikeuksia: " + opiskeluoikeudet.length + " <> 1"))
     })
   }
 }
