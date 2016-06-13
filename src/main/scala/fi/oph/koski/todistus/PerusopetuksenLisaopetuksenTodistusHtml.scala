@@ -21,7 +21,7 @@ class PerusopetuksenLisaopetuksenTodistusHtml(implicit val user: KoskiUser) exte
     </tr>
 
   override def renderRows(oppiaine: Aine, nimi: String, rowClass: String): Elem = {
-    val korotus = oppiaine.suoritus.arviointi.exists(_.lastOption.exists(_.korotus))
+    val korotus = oppiaine.suoritus.korotus
     <tr class={rowClass}>
       <td class="oppiaine">
         {nimi}

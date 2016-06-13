@@ -1,3 +1,8 @@
+## 13.6.2016
+
+- Lisätty mahdollisuun sanalliseen arviointiin perusopetuksessa ja perusopetuksen lisäopetuksessa
+- Yhdenmukaisettu arviointi perusopetus/lisäopetus, siirretty lisäopetuksen oppiaineen suorituksen korotus-kenttä pois arvosanasta
+
 ## 9.6.2016
 
 - Lisätty "hyväksytty" kenttä kaikkiin arviointeihin. Sisään tulevassa datassa kentän arvoa ei tarvita.

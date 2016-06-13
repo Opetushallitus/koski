@@ -13,11 +13,12 @@ object ExamplesPerusopetuksenLisaopetus {
     paikallinenId = None,
     suorituskieli = None,
     tila = tilaValmis,
-    arviointi = None
+    arviointi = None,
+    korotus = false
   )
 
-  private def arviointi(arvosana: String, korotus: Boolean): Some[List[PerusopetuksenLisäopetuksenOppiaineenArviointi]] = {
-    Some(List(PerusopetuksenLisäopetuksenOppiaineenArviointi(arvosana = Koodistokoodiviite(arvosana, "arviointiasteikkoyleissivistava"), korotus = korotus )))
+  private def arviointi(arvosana: String): Some[List[PerusopetuksenOppiaineenArviointi]] = {
+    Some(List(PerusopetuksenOppiaineenArviointi(arvosana)))
   }
 
   val lisäopetuksenPäättötodistus = Oppija(
@@ -35,19 +36,19 @@ object ExamplesPerusopetuksenLisaopetus {
           vahvistus = vahvistus,
           osasuoritukset = Some(
             List(
-              suoritus(äidinkieli("AI1")).copy(arviointi = arviointi(7, true)),
-              suoritus(kieli("A1", "EN")).copy(arviointi = arviointi(10, true)),
-              suoritus(kieli("B1", "SV")).copy(arviointi = arviointi(6, true)),
-              suoritus(oppiaine("MA")).copy(arviointi = arviointi(6, true)),
-              suoritus(oppiaine("BI")).copy(arviointi = arviointi(10, true)),
-              suoritus(oppiaine("GE")).copy(arviointi = arviointi(9, true)),
-              suoritus(oppiaine("FY")).copy(arviointi = arviointi(8, true)),
-              suoritus(oppiaine("KE")).copy(arviointi = arviointi(9, true)),
-              suoritus(oppiaine("TE")).copy(arviointi = arviointi(8, true)),
-              suoritus(oppiaine("HI")).copy(arviointi = arviointi(7, false)),
-              suoritus(oppiaine("YH")).copy(arviointi = arviointi(8, true)),
-              suoritus(oppiaine("KU")).copy(arviointi = arviointi(8, false)),
-              suoritus(oppiaine("LI")).copy(arviointi = arviointi(7, true))
+              suoritus(äidinkieli("AI1")).copy(arviointi = arviointi(7), korotus = true),
+              suoritus(kieli("A1", "EN")).copy(arviointi = arviointi(10), korotus = true),
+              suoritus(kieli("B1", "SV")).copy(arviointi = arviointi(6), korotus = true),
+              suoritus(oppiaine("MA")).copy(arviointi = arviointi(6), korotus = true),
+              suoritus(oppiaine("BI")).copy(arviointi = arviointi(10), korotus = true),
+              suoritus(oppiaine("GE")).copy(arviointi = arviointi(9), korotus = true),
+              suoritus(oppiaine("FY")).copy(arviointi = arviointi(8), korotus = true),
+              suoritus(oppiaine("KE")).copy(arviointi = arviointi(9), korotus = true),
+              suoritus(oppiaine("TE")).copy(arviointi = arviointi(8), korotus = true),
+              suoritus(oppiaine("HI")).copy(arviointi = arviointi(7), korotus = false),
+              suoritus(oppiaine("YH")).copy(arviointi = arviointi(8), korotus = true),
+              suoritus(oppiaine("KU")).copy(arviointi = arviointi(8), korotus = false),
+              suoritus(oppiaine("LI")).copy(arviointi = arviointi(7), korotus = true)
             )
           )
         )),

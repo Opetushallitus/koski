@@ -49,17 +49,10 @@ case class PerusopetuksenLisäopetuksenOppiaineenSuoritus(
   tila: Koodistokoodiviite,
   @KoodistoKoodiarvo("perusopetuksenlisaopetuksenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenlisaopetuksenoppiaine", koodistoUri = "suorituksentyyppi"),
-  arviointi: Option[List[PerusopetuksenLisäopetuksenOppiaineenArviointi]] = None
-) extends OppiaineenSuoritus
-
-case class PerusopetuksenLisäopetuksenOppiaineenArviointi(
-  arvosana: Koodistokoodiviite,
-  päivä: Option[LocalDate] = None,
   @Description("Onko kyseessä perusopetuksen oppiaineen arvosanan korotus")
-  korotus: Boolean
-) extends YleissivistävänKoulutuksenArviointi {
-  def arviointipäivä = päivä
-}
+  korotus: Boolean,
+  arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None
+) extends OppiaineenSuoritus
 
 case class PerusopetuksenLisäopetus(
   @KoodistoUri("koulutus")
