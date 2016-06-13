@@ -65,7 +65,7 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
         """Jyväskylän yliopisto
           |Lukuvuositodistus - 8. vuosiluokka
           |Jyväskylän normaalikoulu
-          |Koululainen, Kaisa 110496-926Y
+          |Koululainen, Kaisa 110496-926Y 8C
           |
           |Äidinkieli ja kirjallisuus Kiitettävä 9
           |B1-kieli, ruotsi Hyvä 8
