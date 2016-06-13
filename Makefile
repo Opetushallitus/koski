@@ -47,7 +47,7 @@ it: test
 happen:
 #	# Pow pow!
 dist:
-	mkdir target && git archive --format=tar --prefix=build/ HEAD | (cd target && tar xf -)
+	mkdir -p target && rm -rf target/build && git archive --format=tar --prefix=build/ HEAD | (cd target && tar xf -)
 	cp -r web/node_modules target/build/web/ || true
 	cd target/build && mvn install -DskipTests=true -DfinalName=$(final-name)
 dist-artifact:
