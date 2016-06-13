@@ -10,6 +10,7 @@ RC_FILE="$DIR"/cloudrc
 VALID_ENVS=(
   "vagrant"
   "tordev"
+  "koskiqa"
 )
 
 function usage() {
