@@ -88,7 +88,12 @@ trait PeruskoulunTodistusHtml[T <: Suoritus] extends TodistusHtml {
         {oppiaine.suoritus.koulutusmoduuli.laajuus.map(_.arvo).getOrElse("")}
       </td>
       <td class="arvosana-kirjaimin">
-        {i(oppiaine.suoritus.arvosanaKirjaimin).capitalize}
+        {
+          oppiaine.suoritus.sanallinenArviointi match {
+            case Some(sanallinenArviointi) => <span class="sanallinen">{i(sanallinenArviointi)}</span>
+            case None => i(oppiaine.suoritus.arvosanaKirjaimin).capitalize
+          }
+        }
       </td>
       <td class="arvosana-numeroin">
         {i(oppiaine.suoritus.arvosanaNumeroin)}

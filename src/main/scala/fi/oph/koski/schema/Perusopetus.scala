@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
 import java.time.LocalDate
-
+import fi.oph.koski.localization.LocalizedString
 import fi.oph.scalaschema.annotation.{MaxValue, MinValue, Description}
 import fi.oph.koski.localization.LocalizedString.{concat, finnish}
 
@@ -187,15 +187,37 @@ case class PerusopetuksenToimintaAlueenSuoritus(
   def vahvistus: Option[Vahvistus] = None
 }
 
-case class PerusopetuksenOppiaineenArviointi(
+trait PerusopetuksenOppiaineenArviointi extends YleissivistävänKoulutuksenArviointi
+
+@Description("Numeerinen arviointi asteikolla 4 (hylätty) - 10 (erinomainen)")
+case class NumeerinenPerusopetuksenOppiaineenArviointi(
+  @KoodistoKoodiarvo("4")
+  @KoodistoKoodiarvo("5")
+  @KoodistoKoodiarvo("6")
+  @KoodistoKoodiarvo("7")
+  @KoodistoKoodiarvo("8")
+  @KoodistoKoodiarvo("9")
+  @KoodistoKoodiarvo("10")
   arvosana: Koodistokoodiviite,
   päivä: Option[LocalDate]
-) extends YleissivistävänKoulutuksenArviointi {
+) extends PerusopetuksenOppiaineenArviointi {
+  def arviointipäivä = päivä
+}
+
+@Description("Sanallisessa arvioinnissa suorituksen hyväksymisen ilmaisuun käytetään koodiarvoja S (suoritettu) ja H (hylätty). Koodiarvon lisäksi voidaan liittää sanallinen arviointi vapaana tekstinä kuvaus-kenttään.")
+case class SanallinenPerusopetuksenOppiaineenArviointi(
+  @KoodistoKoodiarvo("S")
+  @KoodistoKoodiarvo("H")
+  arvosana: Koodistokoodiviite,
+  päivä: Option[LocalDate],
+  kuvaus: Option[LocalizedString]
+) extends PerusopetuksenOppiaineenArviointi with SanallinenArviointi {
   def arviointipäivä = päivä
 }
 
 object PerusopetuksenOppiaineenArviointi {
-  def apply(arvosana: String) = new PerusopetuksenOppiaineenArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), None)
+  def apply(arvosana: String, kuvaus: Option[LocalizedString] = None) = new SanallinenPerusopetuksenOppiaineenArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), None, kuvaus)
+  def apply(arvosana: Int) = new NumeerinenPerusopetuksenOppiaineenArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana.toString, koodistoUri = "arviointiasteikkoyleissivistava"), None)
 }
 
 @Description("Perusopetuksen toiminta-alue")

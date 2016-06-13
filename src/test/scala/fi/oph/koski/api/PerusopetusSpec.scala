@@ -6,6 +6,7 @@ import org.scalatest.{FunSpec, Matchers}
 class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods with OpiskeluOikeusTestMethods {
   describe("Perusopetuksen todistukset") {
     it("Perusopetuksen päättötodistus") {
+      resetFixtures
       todistus(MockOppijat.koululainen.oid, "perusopetus") should equal(
         """|Jyväskylän yliopisto
           |Perusopetuksen päättötodistus
@@ -35,6 +36,20 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
           |
           |B2-kieli, saksa 4.0 Kiitettävä 9""".stripMargin)
     }
+    it("Perusopetuksen päättötodistus toiminta-alueittain, sanallisella arvioinnilla") {
+      todistus(MockOppijat.toimintaAlueittainOpiskelija.oid, "perusopetus") should equal(
+        """Jyväskylän yliopisto
+          |Perusopetuksen päättötodistus
+          |Jyväskylän normaalikoulu
+          |Toiminta, Tommi 130696-913E
+          |
+          |motoriset taidot Motoriset taidot kehittyneet hyvin perusopetuksen aikana
+          |kieli ja kommunikaatio Hyväksytty
+          |sosiaaliset taidot Hyväksytty
+          |päivittäisten toimintojen taidot Hyväksytty
+          |kognitiiviset taidot Hyväksytty""".stripMargin)
+    }
+
     it("Perusopetuksen oppiaineen oppimäärän todistus") {
       todistus(MockOppijat.oppiaineenKorottaja.oid, "perusopetus") should equal(
         """Jyväskylän yliopisto

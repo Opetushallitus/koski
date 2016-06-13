@@ -10,6 +10,7 @@ object Deserializers {
   val deserializers = List(
     ArviointiSerializer,
     KorkeakoulunArviointiDeserializer,
+    PerusopetuksenOppiaineenArviointiDeserializer,
     LocalizedStringDeserializer,
     OpiskeluOikeusDeserializer,
     KorkeakouluSuoritusDeserializer,
@@ -72,6 +73,18 @@ object KorkeakoulunArviointiDeserializer extends Deserializer[KorkeakoulunArvioi
         case arviointi: JObject if arviointi \ "arvosana" \ "koodistoUri" == JString("virtaarvosana") => arviointi.extract[KorkeakoulunKoodistostaLöytyväArviointi]
         case arviointi: JObject => arviointi.extract[KorkeakoulunPaikallinenArviointi]
         case _ => throw CannotDeserializeException(this, json)
+      }
+  }
+}
+
+object PerusopetuksenOppiaineenArviointiDeserializer extends Deserializer[PerusopetuksenOppiaineenArviointi] {
+  private val PerusopetuksenOppiaineenArviointiClass = classOf[PerusopetuksenOppiaineenArviointi]
+
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), PerusopetuksenOppiaineenArviointi] = {
+    case (TypeInfo(PerusopetuksenOppiaineenArviointiClass, _), json) =>
+      json match {
+        case arviointi: JObject if (List(JString("S"), JString("H")).contains(arviointi \ "arvosana" \ "koodiarvo")) => arviointi.extract[SanallinenPerusopetuksenOppiaineenArviointi]
+        case arviointi: JObject => arviointi.extract[NumeerinenPerusopetuksenOppiaineenArviointi]
       }
   }
 }

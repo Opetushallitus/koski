@@ -37,6 +37,13 @@ describe('Perusopetus', function() {
       })
     })
   })
+  describe('Päättötodistus toiminta-alueittain', function() {
+    before(Authentication().login(), page.openPage, page.oppijaHaku.search('130696-913E', page.isOppijaSelected('Tommi')), OpinnotPage().avaaTodistus)
+    it('näytetään', function() {
+      // See more detailed content specification in PerusopetusSpec.scala
+      expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
+    })
+  })
   describe('Perusopetuksen oppiaineen oppimäärän todistus', function() {
     before(Authentication().login(), page.openPage, page.oppijaHaku.search('190596-953T', page.isOppijaSelected('Olli')), OpinnotPage().avaaTodistus)
     it('näytetään', function() {

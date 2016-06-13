@@ -45,3 +45,7 @@ trait PaikallinenArviointi extends Arviointi {
 case class Arvioitsija(
   nimi: String
 )
+
+trait SanallinenArviointi extends Arviointi {
+  def kuvaus: Option[LocalizedString]
+}

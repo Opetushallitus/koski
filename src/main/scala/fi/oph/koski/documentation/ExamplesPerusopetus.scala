@@ -5,6 +5,7 @@ import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.PerusopetusExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
+import fi.oph.koski.localization.Finnish
 import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.schema._
 
@@ -133,7 +134,7 @@ object ExamplesPerusopetus {
           suoritustapa = suoritustapaErityinenTutkinto,
           oppimäärä = aikuistenOppimäärä,
           osasuoritukset = Some(List(
-            toimintaAlueenSuoritus("1").copy(arviointi = arviointi("S")),
+            toimintaAlueenSuoritus("1").copy(arviointi = arviointi("S", Some(Finnish("Motoriset taidot kehittyneet hyvin perusopetuksen aikana")))),
             toimintaAlueenSuoritus("2").copy(arviointi = arviointi("S")),
             toimintaAlueenSuoritus("3").copy(arviointi = arviointi("S")),
             toimintaAlueenSuoritus("4").copy(arviointi = arviointi("S")),

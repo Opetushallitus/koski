@@ -5,14 +5,14 @@ import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
+import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.schema._
 
 object PerusopetusExampleData {
-  def arviointi(arvosana: String): Some[List[PerusopetuksenOppiaineenArviointi]] = {
-    Some(List(PerusopetuksenOppiaineenArviointi(arvosana)))
-  }
+  def arviointi(arvosana: Int): Some[List[PerusopetuksenOppiaineenArviointi]] = Some(List(PerusopetuksenOppiaineenArviointi(arvosana)))
+  def arviointi(arvosana: String, kuvaus: Option[LocalizedString] = None): Some[List[PerusopetuksenOppiaineenArviointi]] = Some(List(PerusopetuksenOppiaineenArviointi(arvosana, kuvaus)))
 
   val hyväksytty = Some(List(PerusopetuksenOppiaineenArviointi("S")))
 

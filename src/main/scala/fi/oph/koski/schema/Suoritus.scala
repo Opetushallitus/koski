@@ -32,7 +32,12 @@ trait Suoritus {
   def rekursiivisetOsasuoritukset: List[Suoritus] = {
     osasuoritusLista ++ osasuoritusLista.flatMap(_.rekursiivisetOsasuoritukset)
   }
-  def arvosanaKirjaimin: LocalizedString = arviointi.toList.flatten.lastOption.map(_.arvosanaKirjaimin).getOrElse(unlocalized(""))
-  def arvosanaNumeroin: Option[LocalizedString] = arviointi.toList.flatten.lastOption.flatMap(_.arvosanaNumeroin)
+  def viimeisinArviointi = arviointi.toList.flatten.lastOption
+  def arvosanaKirjaimin: LocalizedString = viimeisinArviointi.map(_.arvosanaKirjaimin).getOrElse(unlocalized(""))
+  def arvosanaNumeroin: Option[LocalizedString] = viimeisinArviointi.flatMap(_.arvosanaNumeroin)
+  def sanallinenArviointi: Option[LocalizedString] = viimeisinArviointi.flatMap {
+    case a: SanallinenArviointi => a.kuvaus
+    case _ => None
+  }
   def tarvitseeVahvistuksen = true
 }

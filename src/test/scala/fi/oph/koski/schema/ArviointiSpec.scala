@@ -65,7 +65,7 @@ class ArviointiSpec extends FreeSpec with Matchers {
 
   "Hyväksytty-kenttä" - {
     "Arvon generointi" in {
-      Json.write(PerusopetuksenOppiaineenArviointi("8")) should equal("""{"arvosana":{"koodiarvo":"8","koodistoUri":"arviointiasteikkoyleissivistava"},"hyväksytty":true}""")
+      Json.write(PerusopetuksenOppiaineenArviointi(8)) should equal("""{"arvosana":{"koodiarvo":"8","koodistoUri":"arviointiasteikkoyleissivistava"},"hyväksytty":true}""")
       Json.write(KorkeakoulunKoodistostaLöytyväArviointi(Koodistokoodiviite("5", "virtaarvosana"), LocalDate.parse("2000-01-01"))) should equal("""{"arvosana":{"koodiarvo":"5","koodistoUri":"virtaarvosana"},"päivä":"2000-01-01","hyväksytty":true}""")
     }
     "Arvon validointi" in {
