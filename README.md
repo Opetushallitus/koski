@@ -219,22 +219,22 @@ Ennakkovaatimukset:
   * `brew install ruby`
 5. Uusien versioiden asentaminen [Artifactoryyn](https://artifactory.oph.ware.fi) vaatii tunnukset ~/.m2/settings.xml tiedostoon
 ```xml
-      <settings>
-        <servers>
-          <server>
-            <id>oph-sade-artifactory</id>
-            <username>*******</username>
-            <password>*******</password>
-          </server>
-        </servers>
-      </settings>
+<settings>
+  <servers>
+    <server>
+      <id>oph-sade-artifactory</id>
+      <username>*******</username>
+      <password>*******</password>
+    </server>
+  </servers>
+</settings>
 ```
   
 #### Lokaalin version asentaminen
 
 Ajamalla
 
-    make clean dist version=local
+    make dist version=local
     
 muodostuu uusi lokaali asennuspaketti applikaatiosta. Asennuspakettiin tulee mukaan kaikki lokaalisti kommitoidut muutokset.
 
@@ -242,18 +242,26 @@ Tämän jälkeen voit asentaa Koskesta uuden version tordev ympäristöön ajama
 
     make deploy version=local
     
+Paketin muodostamisen ja asennuksen voi hoitaa myös yhdellä komennolla
+
+    make dist deploy version=local
+    
 #### Versioidun paketin asentaminen
 
 Ajamalla
 
-    make clean dist version=<versio>
+    make dist version=<versio>
     
 muodostuu uusi versio applikaatiosta. Applikaatio siirretään Artifactoryyn ja versiohallintaan lisätään uusi tägi annetulla versionumerolla.
 Asennuspakettiin tulee mukaan kaikki lokaalisti kommitoidut muutokset.
 
 Tämän jälkeen voit asentaa Koskesta uuden version tordev ympäristöön ajamalla
 
-    make deploy version=local
+    make deploy version=<versio>
+    
+Paketin muodostamisen ja asennuksen voi hoitaa myös yhdellä komennolla
+
+    make dist deploy version=<versio>
 
 ### Pilviasennuksen operoiminen
 
