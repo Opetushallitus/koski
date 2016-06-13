@@ -9,6 +9,13 @@ class PerusopetuksenLukuvuositodistusHtml(
                                            val oppijaHenkilö: Henkilötiedot,
                                            val todistus: PerusopetuksenVuosiluokanSuoritus)
                                          (implicit val user: KoskiUser) extends PeruskoulunTodistusHtml[OppiaineenTaiToimintaAlueenSuoritus] {
-  def title = "Lukuvuositodistus"
+  def title = "Lukuvuositodistus - " + i(todistus.koulutusmoduuli.tunniste.nimi)
   def oppiaineet = todistus.osasuoritukset.toList.flatten
+
+  override def oppijaHtml = <h3 class="oppija">
+    <span class="nimi">{oppijaHenkilö.sukunimi}, {oppijaHenkilö.etunimet}</span>
+    <span class="hetu">{oppijaHenkilö.hetu}</span>
+    <span class="luokka">{todistus.luokka}</span>
+  </h3>
+
 }

@@ -63,7 +63,7 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
     it("Perusopetuksen lukuvuositodistus") {
       todistus(MockOppijat.koululainen.oid, "perusopetus", Some("perusopetuksenluokkaaste/8")) should equal(
         """Jyväskylän yliopisto
-          |Lukuvuositodistus
+          |Lukuvuositodistus - 8. vuosiluokka
           |Jyväskylän normaalikoulu
           |Koululainen, Kaisa 110496-926Y
           |
