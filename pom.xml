@@ -5,7 +5,7 @@
   <artifactId>koski</artifactId>
   <packaging>war</packaging>
   <description>Kansallisten opiskeluoikeuksien ja suoritusten keskitetty integraatiopalvelu - KOSKI</description>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>master-SNAPSHOT</version>
   <name>koski</name>
   <organization>
     <name>fi.vm.sade</name>
