@@ -1,7 +1,5 @@
 package fi.oph.koski.todistus
 
-import java.time.format.DateTimeFormatter
-
 import fi.oph.koski.schema._
 
 import scala.xml.Elem
@@ -13,7 +11,6 @@ trait PeruskoulunTodistusHtml[T <: Suoritus] extends TodistusHtml {
   def todistus: Suoritus
   def oppiaineet: List[T]
   def title: String
-
 
   private def onPakollinen(suoritus: Suoritus) = suoritus match {
     case s:OppiaineenSuoritus => s.koulutusmoduuli.pakollinen

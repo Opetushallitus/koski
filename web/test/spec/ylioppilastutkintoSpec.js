@@ -11,7 +11,7 @@ describe('Ylioppilastutkinto', function( ){
   })
 
   describe('Tulostettava todistus', function() {
-    before(OpinnotPage().avaaTodistus)
+    before(OpinnotPage().avaaTodistus(0))
     it('näytetään', function() {
       // See more detailed content specification in YlioppilastutkintoSpec.scala
     })

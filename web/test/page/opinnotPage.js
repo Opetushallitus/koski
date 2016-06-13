@@ -15,13 +15,11 @@ function OpinnotPage() {
     },
     getOppilaitos: function(index) {
       index = typeof index !== 'undefined' ? index : 0
-      var nth = S('.oppilaitos .oppilaitos')[index]
-      return S(nth).text()
+      return S(S('.oppilaitos .oppilaitos')[index]).text()
     },
     getOpintoOikeus: function(index) {
       index = typeof index !== 'undefined' ? index : 0
-      var nth = S('.opiskeluoikeus .tutkinnon-tila')[index]
-      return S(nth).text()
+      return S(S('.opiskeluoikeus .tutkinnon-tila')[index]).text()
     },
     getTutkinnonOsat: function() {
       return textsOf(tutkinnonOsa().find('.name'))
@@ -51,9 +49,12 @@ function OpinnotPage() {
         return wait.until(OpintosuoritusotePage().isVisible)()
       }
     },
-    avaaTodistus: function() {
-      triggerEvent(S('a.todistus'), 'click')
-      return wait.until(TodistusPage().isVisible)()
+    avaaTodistus: function(index) {
+      index = typeof index !== 'undefined' ? index : 0
+      return function() {
+        triggerEvent(S(S('a.todistus')[index]), 'click')
+        return wait.until(TodistusPage().isVisible)()
+      }
     },
     waitUntilRakenneVisible: function() {
       return wait.until(api.isRakenneVisible)

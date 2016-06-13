@@ -329,7 +329,7 @@ describe('Ammatillinen koulutus', function() {
       })
     })
     describe('Tulostettava todistus', function() {
-      before(OpinnotPage().avaaTodistus)
+      before(OpinnotPage().avaaTodistus(0))
       it('näytetään', function() {
         expect(TodistusPage().headings()).to.equal('HELSINGIN KAUPUNKIStadin ammattiopistoPäättötodistusLuonto- ja ympäristöalan perustutkintoYmpäristöalan osaamisala, Ympäristönhoitaja Ammattilainen, Aarne (120496-949B)')
         expect(TodistusPage().arvosanarivi('.tutkinnon-osa.100431')).to.equal('Kestävällä tavalla toimiminen 40 Kiitettävä 3')

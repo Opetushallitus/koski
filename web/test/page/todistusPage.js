@@ -2,7 +2,7 @@ function TodistusPage() {
   function getText(selector) {
     return S(selector).text().replace(/\s+/g, ' ').trim()
   }
-  return {
+  var api = {
     isVisible: function() {
       return isElementVisible(S('body>div.todistus'))
     },
@@ -12,6 +12,13 @@ function TodistusPage() {
     },
     vahvistus: function() {
       return getText('.vahvistus')
+    },
+    close: function() {
+      if (api.isVisible()) {
+        testFrame().history.go(-1)
+      }
     }
   }
+
+  return api
 }

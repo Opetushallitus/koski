@@ -12,7 +12,7 @@ describe('Lukiokoulutus', function( ){
       })
     })
     describe('Tulostettava todistus', function() {
-      before(OpinnotPage().avaaTodistus)
+      before(OpinnotPage().avaaTodistus(0))
       it('näytetään', function() {
         // See more detailed content specification in LukioSpec.scala
         expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
@@ -39,7 +39,7 @@ describe('Lukiokoulutus', function( ){
       })
     })
     describe('Tulostettava todistus', function() {
-      before(OpinnotPage().avaaTodistus)
+      before(OpinnotPage().avaaTodistus(0))
       it('näytetään', function() {
         // See more detailed content specification in LukioSpec.scala
         expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
