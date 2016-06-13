@@ -1,6 +1,5 @@
 KOSKI-SERVER = tordev-tor-app
-TARGET = tordev
-final-name = koski-$(shell git rev-parse --short HEAD)
+target = tordev
 
 help:
 	@echo ""
@@ -14,6 +13,8 @@ help:
 	@echo "make deploy 	- Deploy to CSC's ePouta cloud"
 	@echo "make tail	- Tail the cloud logs"
 	@echo "make ssh	- Ssh connection to koski cloud server"
+	@echo "make dist version=<version> - Tag and deploy application to artifactory."
+	@echo "make deploy target=<target> version=<version>	- Install deployed version to target."
 	@echo "make KOSKI-SERVER=tordev-authentication-app ssh	- Ssh connection to authentication app server in test env"
 
 clean:
@@ -47,13 +48,9 @@ it: test
 happen:
 #	# Pow pow!
 dist:
-	mkdir -p target && rm -rf target/build && git archive --format=tar --prefix=build/ HEAD | (cd target && tar xf -)
-	cp -r web/node_modules target/build/web/ || true
-	cd target/build && mvn install -DskipTests=true -DfinalName=$(final-name)
-dist-artifact:
-	./target/build/scripts/dist.sh $(version)
-deploy: dist
-	./scripts/deploy.sh $(TARGET) target/build/target/$(final-name).war
+	./scripts/dist.sh $(version)
+deploy:
+	./scripts/deploy.sh $(target) $(version)
 tail:
 	ssh $(KOSKI-SERVER) 'tail -f /home/git/logs/*log'
 ssh:

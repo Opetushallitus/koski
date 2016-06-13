@@ -11,11 +11,17 @@ function usage() {
 }
 
 function create_version() {
-  echo "create version"
-  (cd $BASE_DIR && mvn versions:set -DnewVersion=$version)
-  (cd $BASE_DIR && mvn clean deploy)
-  git tag $version
-  #git push origin $version
+  mkdir -p $BASE_DIR/target && rm -rf target/build && git archive --format=tar --prefix=build/ HEAD | (cd $BASE_DIR/target && tar xf -)
+  cp -r $BASE_DIR/web/node_modules $BASE_DIR/target/build/web/ || true
+
+  if [ "$version" == "local" ]; then
+    (cd $BASE_DIR/target/build && mvn install -DskipTests=true)
+  else
+    (cd $BASE_DIR/target/build && mvn versions:set -DnewVersion=$version)
+    (cd $BASE_DIR/target/build && mvn clean deploy)
+    git tag $version
+    git push origin $version
+  fi
 }
 
 if [ -z "$version" ]; then

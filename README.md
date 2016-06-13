@@ -217,10 +217,33 @@ Ennakkovaatimukset:
 4. Käytössäsi Homebrew:n openssl ja ruby, koska OSX:n mukana tuleva OpenSSL 0.9.8zg ei toimi Poudan kanssa:
   * `brew install openssl`
   * `brew install ruby`
+  
+#### Lokaalin version asentaminen
 
-Tämän jälkeen voit pushata uuden version Koski:sta ajamalla,
+Ajamalla
 
-    make deploy
+    make clean dist version=local
+    
+muodostuu uusi lokaali asennuspaketti applikaatiosta. Asennuspakettiin tulee mukaan kaikki lokaalisti kommitoidut muutokset.
+
+Tämän jälkeen voit asentaa Koskesta uuden version tordev ympäristöön ajamalla
+
+    make deploy version=local
+    
+#### Versioidun paketin asentaminen
+
+Ajamalla
+
+    make clean dist version=<versio>
+    
+muodostuu uusi versio applikaatiosta. Applikaatio siirretään Artifactoryyn ja versiohallintaan lisätään uusi tägi annetulla versionumerolla.
+Asennuspakettiin tulee mukaan kaikki lokaalisti kommitoidut muutokset.
+
+Tämän jälkeen voit asentaa Koskesta uuden version tordev ympäristöön ajamalla
+
+    make deploy version=local
+
+### Pilviasennuksen operoiminen
 
 Lokien katsominen onnistuu komennolla:
 
