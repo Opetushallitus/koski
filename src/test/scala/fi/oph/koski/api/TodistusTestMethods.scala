@@ -8,8 +8,10 @@ import scala.collection.immutable.Seq
 import scala.xml.{Node, XML}
 
 trait TodistusTestMethods extends SearchTestMethods with OpiskeluOikeusTestMethods {
-  def todistus(oppijaOid: String, tyyppi: String): String = {
-    authGet(s"todistus/${oppijaOid}?opiskeluoikeusTyyppi=${tyyppi}") {
+  def todistus(oppijaOid: String, tyyppi: String, suoritustyyppi: Option[String] = None): String = {
+    var path: String = s"todistus/${oppijaOid}?opiskeluoikeusTyyppi=${tyyppi}"
+    suoritustyyppi foreach { suoritusTyyppi => path = path + s"&suoritusTyyppi=${suoritusTyyppi}" }
+    authGet(path) {
       verifyResponseStatus(200)
       val lines: Seq[String] = XML.loadString(response.body)
         .flatMap(_.descendant_or_self)

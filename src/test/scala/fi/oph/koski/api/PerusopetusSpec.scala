@@ -7,7 +7,7 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
   describe("Perusopetuksen todistukset") {
     it("Perusopetuksen päättötodistus") {
       resetFixtures
-      todistus(MockOppijat.koululainen.oid, "perusopetus") should equal(
+      todistus(MockOppijat.koululainen.oid, "perusopetus", Some("perusopetuksenoppimaara")) should equal(
         """|Jyväskylän yliopisto
           |Perusopetuksen päättötodistus
           |Jyväskylän normaalikoulu
@@ -58,6 +58,10 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
           |Oppiaineenkorottaja, Olli 190596-953T
           |
           |Äidinkieli ja kirjallisuus Kiitettävä 9""".stripMargin)
+    }
+
+    it("Perusopetuksen lukuvuositodistus") {
+
     }
 
   }

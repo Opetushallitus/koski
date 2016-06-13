@@ -29,7 +29,7 @@ object ExamplesPerusopetuksenLisaopetus {
           koulutusmoduuli = PerusopetuksenLisäopetus(),
           tila = tilaValmis,
           toimipiste = jyväskylänNormaalikoulu,
-          vahvistus = vahvistus,
+          vahvistus = vahvistus(),
           osasuoritukset = Some(
             List(
               suoritus(äidinkieli("AI1")).copy(arviointi = arviointi(7), korotus = true),

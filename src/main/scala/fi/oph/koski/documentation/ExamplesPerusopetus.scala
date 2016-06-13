@@ -10,14 +10,6 @@ import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.schema._
 
 object ExamplesPerusopetus {
-  private val ysiluokanSuoritus = PerusopetuksenVuosiluokanSuoritus(
-    luokkaAste = 9, luokka = "9C", alkamispäivä = Some(date(2008, 8, 15)),
-    paikallinenId = None,
-    tila = tilaKesken,
-    toimipiste = jyväskylänNormaalikoulu, suorituskieli = suomenKieli,
-    koulutusmoduuli = perusopetus
-  )
-
   val ysiluokkalainen = Oppija(
     exampleHenkilö,
     List(PerusopetuksenOpiskeluoikeus(
@@ -25,7 +17,25 @@ object ExamplesPerusopetus {
       päättymispäivä = None,
       oppilaitos = jyväskylänNormaalikoulu,
       koulutustoimija = None,
-      suoritukset = List(ysiluokanSuoritus),
+      suoritukset = List(
+          PerusopetuksenVuosiluokanSuoritus(
+            luokkaAste = 8, luokka = "8C", alkamispäivä = Some(date(2014, 8, 15)),
+            paikallinenId = None,
+            tila = tilaValmis,
+            toimipiste = jyväskylänNormaalikoulu, suorituskieli = suomenKieli,
+            koulutusmoduuli = perusopetus,
+            osasuoritukset = kaikkiAineet,
+            vahvistus = vahvistus(date(2015, 5, 30))
+          ),
+
+          PerusopetuksenVuosiluokanSuoritus(
+            luokkaAste = 9, luokka = "9C", alkamispäivä = Some(date(2015, 8, 15)),
+            paikallinenId = None,
+            tila = tilaKesken,
+            toimipiste = jyväskylänNormaalikoulu, suorituskieli = suomenKieli,
+            koulutusmoduuli = perusopetus
+          )
+      ),
       tila = Some(YleissivistäväOpiskeluoikeudenTila(
         List(
           YleissivistäväOpiskeluoikeusjakso(date(2008, 8, 15), None, opiskeluoikeusAktiivinen)
@@ -43,11 +53,30 @@ object ExamplesPerusopetus {
       oppilaitos = jyväskylänNormaalikoulu,
       koulutustoimija = None,
       suoritukset = List(
+        PerusopetuksenVuosiluokanSuoritus(
+          luokkaAste = 8, luokka = "8C", alkamispäivä = Some(date(2014, 8, 15)),
+          paikallinenId = None,
+          tila = tilaValmis,
+          toimipiste = jyväskylänNormaalikoulu, suorituskieli = suomenKieli,
+          koulutusmoduuli = perusopetus,
+          osasuoritukset = kaikkiAineet,
+          vahvistus = vahvistus(date(2015, 5, 30))
+        ),
+
+        PerusopetuksenVuosiluokanSuoritus(
+          luokkaAste = 9, luokka = "9C", alkamispäivä = Some(date(2015, 8, 15)),
+          paikallinenId = None,
+          tila = tilaValmis,
+          toimipiste = jyväskylänNormaalikoulu, suorituskieli = suomenKieli,
+          koulutusmoduuli = perusopetus,
+          vahvistus = vahvistus(date(2016, 5, 30))
+        ),
+
         PerusopetuksenOppimääränSuoritus(
           koulutusmoduuli = perusopetus,
           tila = tilaValmis,
           toimipiste = jyväskylänNormaalikoulu,
-          vahvistus = vahvistus,
+          vahvistus = vahvistus(date(2016, 6, 4)),
           suoritustapa = suoritustapaKoulutus,
           oppimäärä = perusopetuksenOppimäärä,
           osasuoritukset = kaikkiAineet
@@ -75,7 +104,7 @@ object ExamplesPerusopetus {
           tila = tilaValmis,
           toimipiste = jyväskylänNormaalikoulu,
           arviointi = arviointi(9),
-          vahvistus = vahvistus
+          vahvistus = vahvistus()
         )),
       tila = Some(YleissivistäväOpiskeluoikeudenTila(
         List(
@@ -102,7 +131,7 @@ object ExamplesPerusopetus {
           suorituskieli = None,
           tila = tilaValmis,
           toimipiste = jyväskylänNormaalikoulu,
-          vahvistus = vahvistus,
+          vahvistus = vahvistus(),
           suoritustapa = suoritustapaErityinenTutkinto,
           oppimäärä = aikuistenOppimäärä,
           osasuoritukset = kaikkiAineet
@@ -132,7 +161,7 @@ object ExamplesPerusopetus {
           suorituskieli = None,
           tila = tilaValmis,
           toimipiste = jyväskylänNormaalikoulu,
-          vahvistus = vahvistus,
+          vahvistus = vahvistus(),
           suoritustapa = suoritustapaErityinenTutkinto,
           oppimäärä = aikuistenOppimäärä,
           osasuoritukset = Some(List(
