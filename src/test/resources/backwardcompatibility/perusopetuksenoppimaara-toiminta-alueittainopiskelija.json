@@ -112,6 +112,9 @@
             "koodiarvo" : "S",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
+          "kuvaus" : {
+            "fi" : "Motoriset taidot kehittyneet hyvin perusopetuksen aikana"
+          },
           "hyväksytty" : true
         } ]
       }, {

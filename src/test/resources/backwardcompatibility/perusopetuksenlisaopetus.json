@@ -117,12 +117,12 @@
           "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         },
+        "korotus" : true,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "7",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "korotus" : true,
           "hyväksytty" : true
         } ]
       }, {
@@ -145,12 +145,12 @@
           "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         },
+        "korotus" : true,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "10",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "korotus" : true,
           "hyväksytty" : true
         } ]
       }, {
@@ -173,12 +173,12 @@
           "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         },
+        "korotus" : true,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "6",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "korotus" : true,
           "hyväksytty" : true
         } ]
       }, {
@@ -197,12 +197,12 @@
           "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         },
+        "korotus" : true,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "6",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "korotus" : true,
           "hyväksytty" : true
         } ]
       }, {
@@ -221,12 +221,12 @@
           "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         },
+        "korotus" : true,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "10",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "korotus" : true,
           "hyväksytty" : true
         } ]
       }, {
@@ -245,12 +245,12 @@
           "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         },
+        "korotus" : true,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "9",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "korotus" : true,
           "hyväksytty" : true
         } ]
       }, {
@@ -269,12 +269,12 @@
           "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         },
+        "korotus" : true,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "8",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "korotus" : true,
           "hyväksytty" : true
         } ]
       }, {
@@ -293,12 +293,12 @@
           "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         },
+        "korotus" : true,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "9",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "korotus" : true,
           "hyväksytty" : true
         } ]
       }, {
@@ -317,12 +317,12 @@
           "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         },
+        "korotus" : true,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "8",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "korotus" : true,
           "hyväksytty" : true
         } ]
       }, {
@@ -341,12 +341,12 @@
           "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         },
+        "korotus" : false,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "7",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "korotus" : false,
           "hyväksytty" : true
         } ]
       }, {
@@ -365,12 +365,12 @@
           "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         },
+        "korotus" : true,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "8",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "korotus" : true,
           "hyväksytty" : true
         } ]
       }, {
@@ -389,12 +389,12 @@
           "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         },
+        "korotus" : false,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "8",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "korotus" : false,
           "hyväksytty" : true
         } ]
       }, {
@@ -413,12 +413,12 @@
           "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         },
+        "korotus" : true,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "7",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
-          "korotus" : true,
           "hyväksytty" : true
         } ]
       } ],

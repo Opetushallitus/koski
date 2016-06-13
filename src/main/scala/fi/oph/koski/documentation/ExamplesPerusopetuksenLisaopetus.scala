@@ -17,10 +17,6 @@ object ExamplesPerusopetuksenLisaopetus {
     korotus = false
   )
 
-  private def arviointi(arvosana: String): Some[List[PerusopetuksenOppiaineenArviointi]] = {
-    Some(List(PerusopetuksenOppiaineenArviointi(arvosana)))
-  }
-
   val lisäopetuksenPäättötodistus = Oppija(
     exampleHenkilö,
     List(PerusopetuksenLisäopetuksenOpiskeluoikeus(
