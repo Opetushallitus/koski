@@ -12,7 +12,9 @@ import fi.oph.koski.schema._
 object ExamplesPerusopetus {
   private val ysiluokanSuoritus = PerusopetuksenVuosiluokanSuoritus(
     luokkaAste = 9, luokka = "9C", alkamispäivä = Some(date(2008, 8, 15)),
-    paikallinenId = None, tila = tilaKesken, toimipiste = jyväskylänNormaalikoulu, suorituskieli = suomenKieli,
+    paikallinenId = None,
+    tila = tilaKesken,
+    toimipiste = jyväskylänNormaalikoulu, suorituskieli = suomenKieli,
     koulutusmoduuli = perusopetus
   )
 

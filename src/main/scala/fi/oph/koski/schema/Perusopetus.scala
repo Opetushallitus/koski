@@ -96,6 +96,7 @@ case class ErityisenTuenPäätös(
 
 trait PerusopetuksenPäätasonSuoritus extends Suoritus
 
+@Description("Perusopetuksen vuosiluokan suoritus. Nämä suoritukset näkyvät lukuvuositodistuksella.")
 case class PerusopetuksenVuosiluokanSuoritus(
   @Description("Luokkaaste numeroin")
   @MinValue(1)
@@ -116,7 +117,9 @@ case class PerusopetuksenVuosiluokanSuoritus(
   käyttäytymisenArvio: Option[PerusopetuksenOppiaineenArviointi] = None,
   koulutusmoduuli: Perusopetus,
   @KoodistoKoodiarvo("perusopetuksenvuosiluokka")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenvuosiluokka", koodistoUri = "suorituksentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenvuosiluokka", koodistoUri = "suorituksentyyppi"),
+  @Description("Vuosiluokan suoritukseen liittyvät oppiaineen suoritukset")
+  override val osasuoritukset: Option[List[OppiaineenTaiToimintaAlueenSuoritus]] = None
 ) extends PerusopetuksenPäätasonSuoritus {
   override def arviointi = None
 }
