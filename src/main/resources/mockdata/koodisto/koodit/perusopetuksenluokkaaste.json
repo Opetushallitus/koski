@@ -1,0 +1,83 @@
+[
+  {
+    "koodiUri" : "perusopetuksenluokkaaste_1",
+    "koodiArvo" : "1",
+    "metadata" : [ {
+      "nimi" : "1. vuosiluokka",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "perusopetuksenluokkaaste_2",
+    "koodiArvo" : "2",
+    "metadata" : [ {
+      "nimi" : "2. vuosiluokka",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "perusopetuksenluokkaaste_3",
+    "koodiArvo" : "3",
+    "metadata" : [ {
+      "nimi" : "3. vuosiluokka",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "perusopetuksenluokkaaste_4",
+    "koodiArvo" : "4",
+    "metadata" : [ {
+      "nimi" : "4. vuosiluokka",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "perusopetuksenluokkaaste_5",
+    "koodiArvo" : "5",
+    "metadata" : [ {
+      "nimi" : "5. vuosiluokka",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "perusopetuksenluokkaaste_6",
+    "koodiArvo" : "6",
+    "metadata" : [ {
+      "nimi" : "6. vuosiluokka",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "perusopetuksenluokkaaste_7",
+    "koodiArvo" : "7",
+    "metadata" : [ {
+      "nimi" : "7. vuosiluokka",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "perusopetuksenluokkaaste_8",
+    "koodiArvo" : "8",
+    "metadata" : [ {
+      "nimi" : "8. vuosiluokka",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "perusopetuksenluokkaaste_9",
+    "koodiArvo" : "9",
+    "metadata" : [ {
+      "nimi" : "9. vuosiluokka",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  }
+]

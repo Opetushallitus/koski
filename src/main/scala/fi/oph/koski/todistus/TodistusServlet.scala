@@ -16,7 +16,7 @@ class TodistusServlet(val userRepository: UserOrganisationsRepository, val direc
     implicit val user = koskiUser
 
     val filters: List[(Suoritus => Boolean)] = params.toList.flatMap {
-      case ("suoritusTyyppi", tyyppi: String) => Some({ s: Suoritus => s.tyyppi.koodiarvo == tyyppi})
+      case ("koulutusmoduuli", koulutusmoduuli: String) => Some({ s: Suoritus => s.koulutusmoduuli.tunniste.toString == koulutusmoduuli })
       case (_, _) => None
     }
 
@@ -31,7 +31,8 @@ class TodistusServlet(val userRepository: UserOrganisationsRepository, val direc
 
               case t: PerusopetuksenOppiaineenOppimääränSuoritus =>
                 Right((new PerusopetuksenOppiaineenOppimaaranTodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t))
-
+              case t: PerusopetuksenVuosiluokanSuoritus =>
+                Right((new PerusopetuksenLukuvuositodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t))
               case t: PerusopetuksenLisäopetuksenSuoritus =>
                 Right((new PerusopetuksenLisaopetuksenTodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t))
 

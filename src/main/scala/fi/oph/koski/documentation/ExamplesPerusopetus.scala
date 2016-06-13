@@ -19,21 +19,19 @@ object ExamplesPerusopetus {
       koulutustoimija = None,
       suoritukset = List(
           PerusopetuksenVuosiluokanSuoritus(
-            luokkaAste = 8, luokka = "8C", alkamispäivä = Some(date(2014, 8, 15)),
+            koulutusmoduuli = PerusopetuksenLuokkaAste(8), luokka = "8C", alkamispäivä = Some(date(2014, 8, 15)),
             paikallinenId = None,
             tila = tilaValmis,
             toimipiste = jyväskylänNormaalikoulu, suorituskieli = suomenKieli,
-            koulutusmoduuli = perusopetus,
             osasuoritukset = kaikkiAineet,
             vahvistus = vahvistus(date(2015, 5, 30))
           ),
 
           PerusopetuksenVuosiluokanSuoritus(
-            luokkaAste = 9, luokka = "9C", alkamispäivä = Some(date(2015, 8, 15)),
+            koulutusmoduuli = PerusopetuksenLuokkaAste(9), luokka = "9C", alkamispäivä = Some(date(2015, 8, 15)),
             paikallinenId = None,
             tila = tilaKesken,
-            toimipiste = jyväskylänNormaalikoulu, suorituskieli = suomenKieli,
-            koulutusmoduuli = perusopetus
+            toimipiste = jyväskylänNormaalikoulu, suorituskieli = suomenKieli
           )
       ),
       tila = Some(YleissivistäväOpiskeluoikeudenTila(
@@ -54,21 +52,19 @@ object ExamplesPerusopetus {
       koulutustoimija = None,
       suoritukset = List(
         PerusopetuksenVuosiluokanSuoritus(
-          luokkaAste = 8, luokka = "8C", alkamispäivä = Some(date(2014, 8, 15)),
+          koulutusmoduuli = PerusopetuksenLuokkaAste(8), luokka = "8C", alkamispäivä = Some(date(2014, 8, 15)),
           paikallinenId = None,
           tila = tilaValmis,
           toimipiste = jyväskylänNormaalikoulu, suorituskieli = suomenKieli,
-          koulutusmoduuli = perusopetus,
           osasuoritukset = kaikkiAineet,
           vahvistus = vahvistus(date(2015, 5, 30))
         ),
 
         PerusopetuksenVuosiluokanSuoritus(
-          luokkaAste = 9, luokka = "9C", alkamispäivä = Some(date(2015, 8, 15)),
+          koulutusmoduuli = PerusopetuksenLuokkaAste(9), luokka = "9C", alkamispäivä = Some(date(2015, 8, 15)),
           paikallinenId = None,
           tila = tilaValmis,
           toimipiste = jyväskylänNormaalikoulu, suorituskieli = suomenKieli,
-          koulutusmoduuli = perusopetus,
           vahvistus = vahvistus(date(2016, 5, 30))
         ),
 

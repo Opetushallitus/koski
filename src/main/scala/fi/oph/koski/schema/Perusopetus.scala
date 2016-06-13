@@ -98,10 +98,6 @@ trait PerusopetuksenPäätasonSuoritus extends Suoritus
 
 @Description("Perusopetuksen vuosiluokan suoritus. Nämä suoritukset näkyvät lukuvuositodistuksella.")
 case class PerusopetuksenVuosiluokanSuoritus(
-  @Description("Luokkaaste numeroin")
-  @MinValue(1)
-  @MaxValue(9)
-  luokkaAste: Int,
   @Description("Luokan tunniste, esimerkiksi 9C")
   luokka: String,
   override val alkamispäivä: Option[LocalDate],
@@ -113,9 +109,9 @@ case class PerusopetuksenVuosiluokanSuoritus(
   vahvistus: Option[Henkilövahvistus] = None,
   suorituskieli: Option[Koodistokoodiviite],
   jääLuokalle: Boolean = false,
-  @KoodistoUri("arviointiasteikkoyleissivistävä") // TODO: voi olla myös sanallinen
   käyttäytymisenArvio: Option[PerusopetuksenOppiaineenArviointi] = None,
-  koulutusmoduuli: Perusopetus,
+  @Description("Luokka-aste ilmaistaan perusopetuksenluokkaaste-koodistolla")
+  koulutusmoduuli: PerusopetuksenLuokkaAste,
   @KoodistoKoodiarvo("perusopetuksenvuosiluokka")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenvuosiluokka", koodistoUri = "suorituksentyyppi"),
   @Description("Vuosiluokan suoritukseen liittyvät oppiaineen suoritukset")
@@ -242,6 +238,21 @@ case class Perusopetus(
 ) extends KoodistostaLöytyväKoulutusmoduuli with EPerusteistaLöytyväKoulutusmoduuli {
   override def laajuus = None
   override def isTutkinto = true
+}
+
+@Description("Perusopetuksen luokka-aste (1-9)")
+case class PerusopetuksenLuokkaAste(
+ @Description("Luokka-asteen tunniste (1-9)")
+ @KoodistoUri("perusopetuksenluokkaaste")
+ tunniste: Koodistokoodiviite,
+ perusteenDiaarinumero: Option[String]
+) extends KoodistostaLöytyväKoulutusmoduuli with EPerusteistaLöytyväKoulutusmoduuli {
+  override def laajuus = None
+  override def isTutkinto = false
+}
+
+object PerusopetuksenLuokkaAste {
+  def apply(luokkaAste: Int): PerusopetuksenLuokkaAste = PerusopetuksenLuokkaAste(Koodistokoodiviite(luokkaAste.toString, "perusopetuksenluokkaaste"), None)
 }
 
 trait PerusopetuksenOppiaine extends YleissivistavaOppiaine {

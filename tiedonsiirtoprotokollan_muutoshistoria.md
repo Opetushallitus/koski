@@ -2,6 +2,7 @@
 
 - Lisätty mahdollisuun sanalliseen arviointiin perusopetuksessa ja perusopetuksen lisäopetuksessa
 - Yhdenmukaisettu arviointi perusopetus/lisäopetus, siirretty lisäopetuksen oppiaineen suorituksen korotus-kenttä pois arvosanasta
+- Perusopetuksen vuosiluokkasuoritus täydennetty
 
 ## 9.6.2016
 
