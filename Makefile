@@ -1,5 +1,5 @@
 KOSKI-SERVER = tordev-tor-app
-target = tordev
+env = tordev
 
 help:
 	@echo ""
@@ -14,7 +14,7 @@ help:
 	@echo "make tail	- Tail the cloud logs"
 	@echo "make ssh	- Ssh connection to koski cloud server"
 	@echo "make dist version=<version> - Tag and deploy application to artifactory."
-	@echo "make deploy target=<target> version=<version>	- Install deployed version to target."
+	@echo "make deploy env=<env> version=<version>	- Install deployed version to env."
 	@echo "make KOSKI-SERVER=tordev-authentication-app ssh	- Ssh connection to authentication app server in test env"
 
 clean:
@@ -47,11 +47,27 @@ lint: eslint scalastyle
 it: test
 happen:
 #	# Pow pow!
-dist:
+dist: check-version
 	./scripts/dist.sh $(version)
-deploy:
-	./scripts/deploy.sh $(target) $(version)
+deploy: check-version check-env
+	./scripts/deploy.sh $(env) $(version)
 tail:
 	ssh $(KOSKI-SERVER) 'tail -f /home/git/logs/*log'
 ssh:
 	ssh $(KOSKI-SERVER)
+
+check-env:
+ifndef env
+		@echo "env is not set."
+		@echo "Set env with env=<env>"
+		@echo "Available environments: vagrant, tordev, koskiqa"
+		exit 1
+endif
+
+check-version:
+ifndef version
+		@echo "version is not set."
+		@echo "Set version with version=<version>"
+		@echo "Use version=local for locally installed version"
+		exit 1
+endif

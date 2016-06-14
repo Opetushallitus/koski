@@ -9,6 +9,7 @@ BASE_DIR=$(git rev-parse --show-toplevel)
 RC_FILE="$BASE_DIR"/scripts/cloudrc
 GROUP_ID="fi/vm/sade"
 ARTIFACT_ID="koski"
+TMP_APPLICATION="${TMPDIR}${ARTIFACT_ID}-${VERSION}.war"
 
 VALID_ENVS=(
   "vagrant"
@@ -41,8 +42,8 @@ function download_version {
     fi
   fi
   echo "# Download url: $DOWNLOAD_URL"
-  curl -s -S -f -L $DOWNLOAD_URL -o "${TMPDIR}${ARTIFACT_ID}-${VERSION}.war"
-  echo "# Application downloaded to: ${TMPDIR}${ARTIFACT_ID}-${VERSION}.war"
+  curl -s -S -f -L $DOWNLOAD_URL -o "${TMP_APPLICATION}"
+  echo "# Application downloaded to: ${TMP_APPLICATION}"
 }
 
 if [ -f "$RC_FILE" ]; then
