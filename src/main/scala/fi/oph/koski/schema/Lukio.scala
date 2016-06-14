@@ -61,7 +61,8 @@ case class LukionOppiaineenOppimääränSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppiaineenoppimaara", koodistoUri = "suorituksentyyppi"),
   vahvistus: Option[Henkilövahvistus] = None,
   @Description("Lukion oppiaineen oppimäärän arviointi")
-  arviointi: Option[List[LukionOppiaineenArviointi]] = None
+  arviointi: Option[List[LukionOppiaineenArviointi]] = None,
+  override val osasuoritukset: Option[List[LukionKurssinSuoritus]]
 ) extends LukionPäätasonSuoritus
 
 case class LukionOppimäärä(

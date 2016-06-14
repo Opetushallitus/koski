@@ -204,8 +204,8 @@ object ExamplesLukio {
       id = None,
       versionumero = None,
       lähdejärjestelmänId = None,
-      alkamispäivä = Some(date(2016, 9, 1)),
-      päättymispäivä = None,
+      alkamispäivä = Some(date(2015, 9, 1)),
+      päättymispäivä = Some(date(2016, 1, 10)),
       oppilaitos = jyväskylänNormaalikoulu, None,
       tavoite = tavoiteOppiaineenOppimäärä,
       suoritukset = List(
@@ -215,7 +215,14 @@ object ExamplesLukio {
           suorituskieli = suomenKieli,
           tila = tilaValmis,
           vahvistus = vahvistus,
-          toimipiste = jyväskylänNormaalikoulu
+          toimipiste = jyväskylänNormaalikoulu,
+          arviointi = arviointi(9),
+          osasuoritukset = Some(List(
+            kurssisuoritus(valtakunnallinenKurssi("HI1")).copy(arviointi = kurssinArviointi(7)),
+            kurssisuoritus(valtakunnallinenKurssi("HI2")).copy(arviointi = kurssinArviointi(8)),
+            kurssisuoritus(valtakunnallinenKurssi("HI3")).copy(arviointi = kurssinArviointi(7)),
+            kurssisuoritus(valtakunnallinenKurssi("HI4")).copy(arviointi = kurssinArviointi(6))
+          ))
         )
       ),
       tila = Some(YleissivistäväOpiskeluoikeudenTila(
