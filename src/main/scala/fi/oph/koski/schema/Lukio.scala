@@ -15,7 +15,7 @@ case class LukionOpiskeluoikeus(
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OrganisaatioWithOid],
   @MinItems(1) @MaxItems(1)
-  suoritukset: List[LukionOppimääränSuoritus],
+  suoritukset: List[LukionPäätasonSuoritus],
   tila: Option[YleissivistäväOpiskeluoikeudenTila],
   läsnäolotiedot: Option[Läsnäolotiedot],
   @KoodistoKoodiarvo("lukiokoulutus")
@@ -25,6 +25,8 @@ case class LukionOpiskeluoikeus(
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def arvioituPäättymispäivä: Option[LocalDate] = None
 }
+
+trait LukionPäätasonSuoritus extends Suoritus
 
 case class LukionOppimääränSuoritus(
   paikallinenId: Option[String],
@@ -38,7 +40,7 @@ case class LukionOppimääränSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"),
   vahvistus: Option[Henkilövahvistus] = None,
   override val osasuoritukset: Option[List[LukionOppiaineenSuoritus]]
-) extends Suoritus {
+) extends LukionPäätasonSuoritus {
   def arviointi = None
 }
 

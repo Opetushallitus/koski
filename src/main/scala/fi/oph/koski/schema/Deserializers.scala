@@ -19,6 +19,7 @@ object Deserializers {
     JärjestämismuotoDeserializer,
     OrganisaatioDeserializer,
     LukionOppiaineDeserializer,
+    LukionPäätasonSuoritusDeserializer,
     PerusopetuksenOppiaineDeserializer,
     PerusopetuksenPäätasonSuoritusDeserializer,
     OppiaineenTaiToimintaAlueenSuoritusDeserializer,
@@ -147,6 +148,18 @@ object LukioonValmistavanKoulutuksenOsasuoritusDeserializer extends Deserializer
       json match {
         case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("lukionkurssi") => suoritus.extract[LukionKurssinSuoritus]
         case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("luvakurssi") => suoritus.extract[LukioonValmistavanKurssinSuoritus]
+        case _ => throw CannotDeserializeException(this, json)
+      }
+  }
+}
+
+object LukionPäätasonSuoritusDeserializer extends Deserializer[LukionPäätasonSuoritus] {
+  private val LukionPäätasonSuoritusClass = classOf[LukionPäätasonSuoritus]
+
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), LukionPäätasonSuoritus] = {
+    case (TypeInfo(LukionPäätasonSuoritusClass, _), json) =>
+      json match {
+        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("lukionoppimaara") => suoritus.extract[LukionOppimääränSuoritus]
         case _ => throw CannotDeserializeException(this, json)
       }
   }

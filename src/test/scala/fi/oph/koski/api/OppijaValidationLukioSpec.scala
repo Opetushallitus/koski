@@ -10,17 +10,14 @@ import fi.oph.koski.schema._
 // toistaiseksi siihen, että schema itsessään on katselmoitu, ja että geneerinen mekanismi toimii.
 
 class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoikeus] with OpiskeluoikeusTestMethodsLukio {
-  def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = defaultOpiskeluoikeus.suoritukset.map(
-   suoritus => suoritus.copy(koulutusmoduuli = suoritus.koulutusmoduuli.copy(perusteenDiaarinumero = diaari))
-  ))
+
+  def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(koulutusmoduuli = päättötodistusSuoritus.koulutusmoduuli.copy(perusteenDiaarinumero = diaari))))
 
   describe("Laajuudet") {
     it("""Kurssin laajuusyksikkö muu kuin "kurssia" -> HTTP 400""") {
-      val oo: LukionOpiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = defaultOpiskeluoikeus.suoritukset.map(_.copy(
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
         osasuoritukset = Some(List(suoritus(oppiaine("GE", laajuus(1.0f, "4"))).copy(
-          osasuoritukset = Some(List(
-            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = laajuus(1.0f, "5")))
-          ))
+          osasuoritukset = Some(List( kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = laajuus(1.0f, "5"))) ))
         )))
       )))
       putOpiskeluOikeus(oo) {
@@ -28,7 +25,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
       }
     }
     it("Kurssien laajuuksien summa ei täsmää -> HTTP 400") {
-      val oo: LukionOpiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = defaultOpiskeluoikeus.suoritukset.map(_.copy(
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
         osasuoritukset = Some(List(suoritus(oppiaine("GE", laajuus(2.0f, "4"))).copy(
           osasuoritukset = Some(List(
             kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = laajuus(1.0f, "4")))
@@ -40,5 +37,4 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
       }
     }
   }
-
 }
