@@ -4,11 +4,11 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.documentation.LukioExampleData._
+import fi.oph.koski.documentation.LukioExampleData.{arviointi, exampleHenkilö, kieli, oppiaine, suoritus, tavoiteKokoOppimäärä, uskonto, vahvistus, äidinkieli, _}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
+import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.schema._
-import fi.oph.koski.localization.LocalizedStringImplicits._
 
 object ExamplesLukio {
   val uusi = Oppija(
@@ -198,9 +198,40 @@ object ExamplesLukio {
     ))
   )
 
+  val aineopiskelija = Oppija(
+    exampleHenkilö,
+    List(LukionOpiskeluoikeus(
+      id = None,
+      versionumero = None,
+      lähdejärjestelmänId = None,
+      alkamispäivä = Some(date(2016, 9, 1)),
+      päättymispäivä = None,
+      oppilaitos = jyväskylänNormaalikoulu, None,
+      tavoite = tavoiteOppiaineenOppimäärä,
+      suoritukset = List(
+        LukionOppiaineenOppimääränSuoritus(
+          koulutusmoduuli = oppiaine("HI"),
+          paikallinenId = None,
+          suorituskieli = suomenKieli,
+          tila = tilaValmis,
+          vahvistus = vahvistus,
+          toimipiste = jyväskylänNormaalikoulu
+        )
+      ),
+      tila = Some(YleissivistäväOpiskeluoikeudenTila(
+        List(
+          YleissivistäväOpiskeluoikeusjakso(alku = date(2015, 9, 1), loppu = Some(date(2016, 1, 9)), tila = opiskeluoikeusAktiivinen),
+          YleissivistäväOpiskeluoikeusjakso(alku = date(2016, 1, 10), loppu = None, tila = opiskeluoikeusPäättynyt)
+        )
+      )),
+      läsnäolotiedot = None
+    ))
+  )
+
   val examples = List(
     Example("lukio - uusi", "Uusi oppija lisätään suorittamaan lukiota", uusi),
-    Example("lukio - päättötodistus", "Oppija on saanut päättötodistuksen", päättötodistus)
+    Example("lukio - päättötodistus", "Oppija on saanut päättötodistuksen", päättötodistus),
+    Example("lukio - lukion oppiaineen oppimäärä - päättötodistus", "Opiskelija on suorittanut lukion historian oppimäärän", aineopiskelija)
   )
 }
 
@@ -218,6 +249,8 @@ object LukioExampleData {
   val lukionOppimäärä: LukionOppimäärä = LukionOppimäärä(perusteenDiaarinumero = Some("60/011/2015"))
 
   val tavoiteKokoOppimäärä = Koodistokoodiviite("lukionoppimaara", "suorituksentyyppi")
+  val tavoiteOppiaineenOppimäärä = Koodistokoodiviite("lukionoppiaineenoppimaara", "suorituksentyyppi")
+
 
   val vahvistus = Some(Henkilövahvistus(päivä = date(2016, 6, 4), jyväskylä, myöntäjäOrganisaatio = jyväskylänNormaalikoulu, myöntäjäHenkilöt = List(OrganisaatioHenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))
 
