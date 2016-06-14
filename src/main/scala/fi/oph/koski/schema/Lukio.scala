@@ -14,6 +14,11 @@ case class LukionOpiskeluoikeus(
   päättymispäivä: Option[LocalDate],
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OrganisaatioWithOid],
+  @Description("Onko tavoitteena lukion koko oppimäärän vai yksittäisen oppiaineen oppimäärän suoritus")
+  @KoodistoUri("suorituksentyyppi")
+  @KoodistoKoodiarvo("lukionoppimaara")
+  @KoodistoKoodiarvo("lukionoppiaineenoppimaara")
+  tavoite: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", "suorituksentyyppi"),
   @MinItems(1) @MaxItems(1)
   suoritukset: List[LukionPäätasonSuoritus],
   tila: Option[YleissivistäväOpiskeluoikeudenTila],
@@ -43,6 +48,21 @@ case class LukionOppimääränSuoritus(
 ) extends LukionPäätasonSuoritus {
   def arviointi = None
 }
+
+case class LukionOppiaineenOppimääränSuoritus(
+  paikallinenId: Option[String],
+  suorituskieli: Option[Koodistokoodiviite],
+  tila: Koodistokoodiviite,
+  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
+  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
+  toimipiste: OrganisaatioWithOid,
+  koulutusmoduuli: LukionOppiaine,
+  @KoodistoKoodiarvo("lukionoppiaineenoppimaara")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppiaineenoppimaara", koodistoUri = "suorituksentyyppi"),
+  vahvistus: Option[Henkilövahvistus] = None,
+  @Description("Lukion oppiaineen oppimäärän arviointi")
+  arviointi: Option[List[LukionOppiaineenArviointi]] = None
+) extends LukionPäätasonSuoritus
 
 case class LukionOppimäärä(
  @Description("Tutkinnon 6-numeroinen tutkintokoodi")

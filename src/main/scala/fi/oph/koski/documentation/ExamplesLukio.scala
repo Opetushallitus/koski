@@ -20,6 +20,7 @@ object ExamplesLukio {
       alkamispäivä = Some(date(2016, 9, 1)),
       päättymispäivä = None,
       oppilaitos = jyväskylänNormaalikoulu, None,
+      tavoite = tavoiteKokoOppimäärä,
       suoritukset = List(
         LukionOppimääränSuoritus(
           koulutusmoduuli = lukionOppimäärä,
@@ -49,6 +50,7 @@ object ExamplesLukio {
       alkamispäivä = Some(date(2016, 9, 1)),
       päättymispäivä = None,
       oppilaitos = jyväskylänNormaalikoulu, None,
+      tavoite = tavoiteKokoOppimäärä,
       suoritukset = List(
         LukionOppimääränSuoritus(
           koulutusmoduuli = lukionOppimäärä,
@@ -214,6 +216,8 @@ object LukioExampleData {
   val ylioppilastutkinto: Ylioppilastutkinto = Ylioppilastutkinto(perusteenDiaarinumero = Some("60/011/2015"))
 
   val lukionOppimäärä: LukionOppimäärä = LukionOppimäärä(perusteenDiaarinumero = Some("60/011/2015"))
+
+  val tavoiteKokoOppimäärä = Koodistokoodiviite("lukionoppimaara", "suorituksentyyppi")
 
   val vahvistus = Some(Henkilövahvistus(päivä = date(2016, 6, 4), jyväskylä, myöntäjäOrganisaatio = jyväskylänNormaalikoulu, myöntäjäHenkilöt = List(OrganisaatioHenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))
 

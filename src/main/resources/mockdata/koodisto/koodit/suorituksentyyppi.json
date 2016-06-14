@@ -96,6 +96,18 @@
     "versio": 1
   },
   {
+    "koodiUri": "suorituksentyyppi_lukionoppiaineenoppimaara",
+    "koodiArvo": "lukionoppiaineenoppimaara",
+    "metadata": [
+      {
+        "nimi": "Lukion oppiaineen oppimäärä",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
     "koodiUri": "suorituksentyyppi_lukionoppiaine",
     "koodiArvo": "lukionoppiaine",
     "metadata": [

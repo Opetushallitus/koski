@@ -17,6 +17,10 @@
         "fi" : "Jyväskylän normaalikoulu"
       }
     },
+    "tavoite" : {
+      "koodiarvo" : "lukionoppimaara",
+      "koodistoUri" : "suorituksentyyppi"
+    },
     "suoritukset" : [ {
       "suorituskieli" : {
         "koodiarvo" : "FI",

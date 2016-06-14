@@ -160,6 +160,7 @@ object LukionPäätasonSuoritusDeserializer extends Deserializer[LukionPäätaso
     case (TypeInfo(LukionPäätasonSuoritusClass, _), json) =>
       json match {
         case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("lukionoppimaara") => suoritus.extract[LukionOppimääränSuoritus]
+        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("lukionoppiaineenoppimaara") => suoritus.extract[LukionOppiaineenOppimääränSuoritus]
         case _ => throw CannotDeserializeException(this, json)
       }
   }
