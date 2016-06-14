@@ -32,6 +32,7 @@ if GIT_DIR=$BASE_DIR/.git git show-ref --tags | egrep -q "refs/tags/$1$"
 then
     echo "Version already exists. All versions: "
     git tag
+    exit 1
 else
     create_version
 fi
