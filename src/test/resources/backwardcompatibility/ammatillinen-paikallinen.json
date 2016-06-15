@@ -74,7 +74,8 @@
             "kuvaus" : {
               "fi" : "Autokorjaamo Oy, Riihimäki"
             }
-          }
+          },
+          "työssäoppimisenYhteydessä" : false
         },
         "paikallinenId" : "suoritus-12345-2",
         "tila" : {

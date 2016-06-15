@@ -64,7 +64,11 @@ object AmmatillinenExampleData {
   )
 
   def näyttö(kuvaus: String, paikka: String, arviointi: Option[NäytönArviointi] = None) = Näyttö(
-    kuvaus, NäytönSuorituspaikka(Koodistokoodiviite("1", Some("työpaikka"), "ammatillisennaytonsuorituspaikka", Some(1)), paikka), arviointi)
+    kuvaus,
+    NäytönSuorituspaikka(Koodistokoodiviite("1", Some("työpaikka"), "ammatillisennaytonsuorituspaikka", Some(1)), paikka),
+    arviointi,
+    työssäoppimisenYhteydessä = false
+  )
 
   lazy val tavoiteTutkinto = Koodistokoodiviite("ammatillinentutkinto", "suorituksentyyppi")
   lazy val suoritustapaNäyttö = AmmatillisenTutkinnonSuoritustapa(Koodistokoodiviite("naytto", Some("Näyttö"), None, "ammatillisentutkinnonsuoritustapa", Some(1)))

@@ -242,7 +242,8 @@
               },
               "koodistoUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet"
             }
-          }
+          },
+          "työssäoppimisenYhteydessä" : false
         },
         "paikallinenId" : "suoritus-12345-1",
         "tila" : {
@@ -344,7 +345,8 @@
             "kuvaus" : {
               "fi" : "Autokorjaamo Oy, Riihimäki"
             }
-          }
+          },
+          "työssäoppimisenYhteydessä" : false
         },
         "paikallinenId" : "suoritus-12345-2",
         "tila" : {
@@ -444,7 +446,8 @@
             "kuvaus" : {
               "fi" : "Autokorjaamo Oy, Riihimäki"
             }
-          }
+          },
+          "työssäoppimisenYhteydessä" : false
         },
         "paikallinenId" : "suoritus-12345-3",
         "tila" : {
@@ -544,7 +547,8 @@
             "kuvaus" : {
               "fi" : "Autokorjaamo Oy, Riihimäki"
             }
-          }
+          },
+          "työssäoppimisenYhteydessä" : false
         },
         "paikallinenId" : "suoritus-12345-4",
         "tila" : {
@@ -644,7 +648,8 @@
             "kuvaus" : {
               "fi" : "Autokorjaamo Oy, Riihimäki"
             }
-          }
+          },
+          "työssäoppimisenYhteydessä" : false
         },
         "paikallinenId" : "suoritus-12345-5",
         "tila" : {

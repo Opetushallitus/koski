@@ -32,8 +32,6 @@ case class AmmatillinenOpiskeluoikeus(
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
 }
 
-// työssä oppiminen: https://confluence.csc.fi/pages/viewpage.action?pageId=56436590
-
 case class AmmatillisenOpiskeluoikeudenLisätiedot(
   hojks: Option[Hojks],
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false
@@ -106,8 +104,22 @@ case class AmmatillisenTutkinnonOsanSuoritus(
   arviointi: Option[List[AmmatillinenArviointi]] = None,
   vahvistus: Option[Henkilövahvistus] = None,
   @KoodistoKoodiarvo("ammatillisentutkinnonosa")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi"),
+  työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None
 ) extends Suoritus
+
+case class Työssäoppimisjakso(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  @KoodistoUri("kunta")
+  @Description("Kunta, jossa työssäoppiminen on tapahtunut")
+  paikkakunta: Koodistokoodiviite,
+  @Description("Maa, jossa työssäoppiminen on tapahtunut")
+  @KoodistoUri("maatjavaltiot2")
+  maa: Koodistokoodiviite,
+  työtehtävät: LocalizedString,
+  laajuus: LaajuusOsaamispisteissä
+) extends Jakso
 
 @Description("Tutkintoon johtava koulutus")
 case class AmmatillinenTutkintoKoulutus(
@@ -181,7 +193,8 @@ case class Näyttö(
   @Description("Vapaamuotoinen kuvaus suoritetusta näytöstä")
   kuvaus: LocalizedString,
   suorituspaikka: NäytönSuorituspaikka,
-  arviointi: Option[NäytönArviointi]
+  arviointi: Option[NäytönArviointi],
+  työssäoppimisenYhteydessä: Boolean = false
 )
 
 @Description("Ammatillisen näytön suorituspaikka")
