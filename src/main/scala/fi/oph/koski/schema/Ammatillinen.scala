@@ -7,30 +7,35 @@ import fi.oph.koski.localization.LocalizedString.finnish
 
 @Description("Ammatillisen koulutuksen opiskeluoikeus")
 case class AmmatillinenOpiskeluoikeus(
-  id: Option[Int],
-  versionumero: Option[Int],
-  lähdejärjestelmänId: Option[LähdejärjestelmäId],
-  alkamispäivä: Option[LocalDate],
-  arvioituPäättymispäivä: Option[LocalDate],
-  päättymispäivä: Option[LocalDate],
+  id: Option[Int] = None,
+  versionumero: Option[Int] = None,
+  lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
+  alkamispäivä: Option[LocalDate] = None,
+  arvioituPäättymispäivä: Option[LocalDate] = None,
+  päättymispäivä: Option[LocalDate] = None,
   oppilaitos: Oppilaitos,
-  koulutustoimija: Option[OrganisaatioWithOid],
+  koulutustoimija: Option[OrganisaatioWithOid] = None,
   @MinItems(1) @MaxItems(1)
   suoritukset: List[AmmatillisenTutkinnonSuoritus],
-  hojks: Option[Hojks],
   @Description("Opiskelijan suorituksen tavoite-tieto kertoo sen, suorittaako opiskelija tutkintotavoitteista koulutusta (koko tutkintoa) vai tutkinnon osa tavoitteista koulutusta (tutkinnon osaa)")
   @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("ammatillinentutkinto")
   @KoodistoKoodiarvo("ammatillisentutkinnonosa")
   tavoite: Koodistokoodiviite,
-  tila: Option[AmmatillinenOpiskeluoikeudenTila],
-  läsnäolotiedot: Option[AmmatillisenLäsnäolotiedot],
+  tila: Option[AmmatillinenOpiskeluoikeudenTila] = None,
+  läsnäolotiedot: Option[AmmatillisenLäsnäolotiedot] = None,
   @KoodistoKoodiarvo("ammatillinenkoulutus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinenkoulutus", "opiskeluoikeudentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinenkoulutus", "opiskeluoikeudentyyppi"),
+  lisätiedot: Option[AmmatillisenOpiskeluoikeudenLisätiedot] = None
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
 }
+
+case class AmmatillisenOpiskeluoikeudenLisätiedot(
+  hojks: Option[Hojks]
+
+)
 
 case class AmmatillinenOpiskeluoikeudenTila(
   opiskeluoikeusjaksot: List[AmmatillinenOpiskeluoikeusjakso]

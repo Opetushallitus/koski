@@ -24,9 +24,9 @@ trait OpiskeluoikeusTestMethodsAmmatillinen extends PutOpiskeluOikeusTestMethods
     osasuoritukset = None
   )
 
-  def opiskeluoikeus(suoritus: AmmatillisenTutkinnonSuoritus = tutkintoSuoritus) = AmmatillinenOpiskeluoikeus(None, None, None, None, None, None,
-    oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto), None,
+  def opiskeluoikeus(suoritus: AmmatillisenTutkinnonSuoritus = tutkintoSuoritus) = AmmatillinenOpiskeluoikeus(
+    oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto),
     suoritukset = List(suoritus),
-    None, AmmatillinenExampleData.tavoiteTutkinto, None, None
+    tavoite = AmmatillinenExampleData.tavoiteTutkinto
   )
 }

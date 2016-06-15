@@ -178,16 +178,6 @@
         "koodistoUri" : "suorituksentyyppi"
       }
     } ],
-    "hojks" : {
-      "hojksTehty" : true,
-      "opetusryhmä" : {
-        "koodiarvo" : "1",
-        "nimi" : {
-          "fi" : "Yleinen opetusryhmä"
-        },
-        "koodistoUri" : "opetusryhma"
-      }
-    },
     "tavoite" : {
       "koodiarvo" : "ammatillinentutkinto",
       "koodistoUri" : "suorituksentyyppi"
@@ -286,6 +276,18 @@
     "tyyppi" : {
       "koodiarvo" : "ammatillinenkoulutus",
       "koodistoUri" : "opiskeluoikeudentyyppi"
+    },
+    "lisätiedot" : {
+      "hojks" : {
+        "hojksTehty" : true,
+        "opetusryhmä" : {
+          "koodiarvo" : "1",
+          "nimi" : {
+            "fi" : "Yleinen opetusryhmä"
+          },
+          "koodistoUri" : "opetusryhma"
+        }
+      }
     }
   } ]
 }

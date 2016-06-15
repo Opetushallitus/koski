@@ -54,14 +54,8 @@ object OpiskeluOikeusTestData {
     val koulutusKoodiViite = Koodistokoodiviite(koulutusKoodi.toString, None, "koulutus", None)
 
     AmmatillinenOpiskeluoikeus(
-      None,
-      None,
-      None,
-      None,
-      None,
-      None,
-      oppilaitos, None,
-      List(AmmatillisenTutkinnonSuoritus(
+      oppilaitos = oppilaitos,
+      suoritukset = List(AmmatillisenTutkinnonSuoritus(
         AmmatillinenTutkintoKoulutus(koulutusKoodiViite, Some("39/011/2014")),
         None,
         None,
@@ -75,10 +69,8 @@ object OpiskeluOikeusTestData {
         None,
         None
       )),
-      hojks = None,
-      Koodistokoodiviite("ammatillinentutkinto", "suorituksentyyppi"),
-      None,
-      None
+      tavoite = AmmatillinenExampleData.tavoiteTutkinto,
+      tila = None
     )
   }
 }

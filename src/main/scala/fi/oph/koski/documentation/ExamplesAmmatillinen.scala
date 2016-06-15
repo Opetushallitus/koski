@@ -110,18 +110,12 @@ object AmmatillinenExampleData {
                      tutkinto: AmmatillisenTutkinnonSuoritus = autoalanPerustutkinto,
                      osat: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = None) = {
     AmmatillinenOpiskeluoikeus(
-      None,
-      None,
-      None,
-      Some(date(2016, 9, 1)),
-      Some(date(2020, 5, 1)),
-      None,
-      oppilaitos, None,
-      List(tutkinto.copy(osasuoritukset = osat)),
-      hojks = None,
-      tavoiteTutkinto,
-      None,
-      None
+      alkamispäivä = Some(date(2016, 9, 1)),
+      arvioituPäättymispäivä = Some(date(2020, 5, 1)),
+      tila = None,
+      oppilaitos = oppilaitos,
+      suoritukset = List(tutkinto.copy(osasuoritukset = osat)),
+      tavoite = tavoiteTutkinto
     )
   }
 
@@ -212,14 +206,11 @@ object ExamplesAmmatillinen {
     Henkilö.withOid("1.2.246.562.24.00000000001"),
     List(
       AmmatillinenOpiskeluoikeus(
-        None,
-        None,
-        None,
-        Some(date(2012, 9, 1)),
-        Some(date(2015, 5, 31)),
-        Some(date(2016, 1, 9)),
-        stadinAmmattiopisto, None,
-        List(tutkintoSuoritus(
+        alkamispäivä = Some(date(2012, 9, 1)),
+        arvioituPäättymispäivä = Some(date(2015, 5, 31)),
+        päättymispäivä = Some(date(2016, 1, 9)),
+        oppilaitos = stadinAmmattiopisto,
+        suoritukset = List(tutkintoSuoritus(
           tutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
           tutkintonimike = Some(List(Koodistokoodiviite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
           osaamisala = Some(List(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
@@ -258,16 +249,18 @@ object ExamplesAmmatillinen {
             )
           ))
         )),
-        hojks = Some(Hojks(hojksTehty = true, opetusryhmä = Some(Koodistokoodiviite("1", Some("Yleinen opetusryhmä"), "opetusryhma", None)))),
-        tavoiteTutkinto,
-        Some(AmmatillinenOpiskeluoikeudenTila(
+        lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+          hojks = Some(Hojks(hojksTehty = true, opetusryhmä = Some(Koodistokoodiviite("1", Some("Yleinen opetusryhmä"), "opetusryhma", None))))
+        )),
+        tavoite = tavoiteTutkinto,
+        tila = Some(AmmatillinenOpiskeluoikeudenTila(
           List(
             AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), Some(date(2012, 12, 31)), opiskeluoikeusAktiivinen, Some(Koodistokoodiviite("1", Some("Valtionosuusrahoitteinen koulutus"), "opintojenrahoitus", None))),
             AmmatillinenOpiskeluoikeusjakso(date(2013, 1, 1), Some(date(2013, 12, 31)), opiskeluoikeusKeskeyttänyt, Some(Koodistokoodiviite("1", Some("Valtionosuusrahoitteinen koulutus"), "opintojenrahoitus", None))),
             AmmatillinenOpiskeluoikeusjakso(date(2014, 1, 1), None, opiskeluoikeusAktiivinen, Some(Koodistokoodiviite("1", Some("Valtionosuusrahoitteinen koulutus"), "opintojenrahoitus", None)))
           )
         )),
-        Some(AmmatillisenLäsnäolotiedot(List(
+        läsnäolotiedot = Some(AmmatillisenLäsnäolotiedot(List(
           AmmatillinenLäsnäolojakso(date(2012, 9, 1), Some(date(2012, 12, 31)), Koodistokoodiviite("lasna", Some("Läsnä"), "lasnaolotila", Some(1))),
           AmmatillinenLäsnäolojakso(date(2013, 1, 1), Some(date(2013, 12, 31)), Koodistokoodiviite("poissa", Some("Poissa"), "lasnaolotila", Some(1))),
           AmmatillinenLäsnäolojakso(date(2014, 1, 1), None, Koodistokoodiviite("lasna", Some("Läsnä"), "lasnaolotila", Some(1)))
@@ -295,14 +288,11 @@ object AmmatillinenTodistusExample {
     exampleHenkilö,
     List(
       AmmatillinenOpiskeluoikeus(
-        None,
-        None,
-        None,
-        Some(date(2012, 9, 1)),
-        Some(date(2015, 5, 31)),
-        Some(date(2016, 5, 31)),
-        stadinAmmattiopisto, None,
-        List(tutkintoSuoritus(
+        alkamispäivä = Some(date(2012, 9, 1)),
+        arvioituPäättymispäivä = Some(date(2015, 5, 31)),
+        päättymispäivä = Some(date(2016, 5, 31)),
+        oppilaitos = stadinAmmattiopisto,
+        suoritukset = List(tutkintoSuoritus(
           tutkintoKoulutus = AmmatillinenTutkintoKoulutus(
             Koodistokoodiviite("361902", Some("Luonto- ja ympäristöalan perustutkinto"), "koulutus", None),
             Some("62/011/2014")
@@ -334,16 +324,13 @@ object AmmatillinenTodistusExample {
             paikallisenTutkinnonOsanSuoritus("soskultos1", "Sosiaalinen ja kulttuurinen osaaminen", k3, 5)
           ))
         )),
-        hojks = None,
-        tavoiteTutkinto,
-        Some(AmmatillinenOpiskeluoikeudenTila(
+        tavoite = tavoiteTutkinto,
+        tila = Some(AmmatillinenOpiskeluoikeudenTila(
           List(
             AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), Some(date(2016, 5, 31)), opiskeluoikeusAktiivinen, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None))),
             AmmatillinenOpiskeluoikeusjakso(date(2016, 6, 1), None, opiskeluoikeusPäättynyt, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
           )
-        )),
-        None
-
+        ))
       )
     )
   )
@@ -378,14 +365,12 @@ object AmmatillinenFullExample {
     Henkilö.withOid("1.2.246.562.24.00000000001"),
     List(
       AmmatillinenOpiskeluoikeus(
-        id = None,
-        versionumero = None,
         lähdejärjestelmänId = Some(LähdejärjestelmäId("847823465", lähdeWinnova)),
         alkamispäivä = Some(date(2012, 9, 1)),
         arvioituPäättymispäivä = Some(date(2015, 5, 31)),
         päättymispäivä = Some(date(2016, 1, 9)),
-        stadinAmmattiopisto, None,
-        List(tutkintoSuoritus(
+        oppilaitos = stadinAmmattiopisto,
+        suoritukset = List(tutkintoSuoritus(
           tutkintoKoulutus = AmmatillinenTutkintoKoulutus(
             Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None),
             Some("39/011/2014")
@@ -404,7 +389,6 @@ object AmmatillinenFullExample {
             OrganisaatioHenkilö("Keijo Perttilä", "rehtori", stadinAmmattiopisto)))),
           osasuoritukset = Some(tutkinnonOsat)
         )),
-        hojks = None,
         tavoite = tavoiteTutkinto,
         tila = Some(AmmatillinenOpiskeluoikeudenTila(
           List(
