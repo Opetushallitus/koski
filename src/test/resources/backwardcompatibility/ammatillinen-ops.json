@@ -287,7 +287,8 @@
           },
           "koodistoUri" : "opetusryhma"
         }
-      }
+      },
+      "oikeusMaksuttomaanAsuntolapaikkaan" : false
     }
   } ]
 }

@@ -32,9 +32,11 @@ case class AmmatillinenOpiskeluoikeus(
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
 }
 
-case class AmmatillisenOpiskeluoikeudenLisätiedot(
-  hojks: Option[Hojks]
+// työssä oppiminen: https://confluence.csc.fi/pages/viewpage.action?pageId=56436590
 
+case class AmmatillisenOpiskeluoikeudenLisätiedot(
+  hojks: Option[Hojks],
+  oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false
 )
 
 case class AmmatillinenOpiskeluoikeudenTila(
