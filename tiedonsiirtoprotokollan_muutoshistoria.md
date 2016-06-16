@@ -1,3 +1,8 @@
+## 16.6.2016
+
+- Lisätty oikeusMaksuttomaanAsuntolapaikkaan ammatilliseen koulutukseen
+- Lisätty työssäoppimistiedot ammatilliseen koulutukseen
+
 ## 13.6.2016
 
 - Lisätty mahdollisuun sanalliseen arviointiin perusopetuksessa ja perusopetuksen lisäopetuksessa
