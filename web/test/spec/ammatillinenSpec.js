@@ -340,7 +340,7 @@ describe('Ammatillinen koulutus', function() {
   })
 
   describe('Ammatilliseen peruskoulutukseen valmentava koulutus', function() {
-    before(page.openPage, page.oppijaHaku.search('160696-993Y', page.isOppijaSelected('Antti')))
+    before(page.openPage, page.oppijaHaku.search('160696-993Y', page.isOppijaSelected('Anneli')))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
         expect(OpinnotPage().getOppilaitos()).to.equal("Stadin ammattiopisto")
