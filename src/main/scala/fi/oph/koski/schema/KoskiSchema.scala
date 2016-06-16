@@ -1,8 +1,8 @@
 package fi.oph.koski.schema
 
-import fi.oph.scalaschema._
 import fi.oph.koski.json.Json
-import org.json4s.{JsonAST, JObject}
+import fi.oph.scalaschema._
+import org.json4s.JsonAST
 
 object KoskiSchema {
   private val metadataTypes = SchemaFactory.defaultAnnotations ++ List(classOf[KoodistoUri], classOf[KoodistoKoodiarvo], classOf[ReadOnly], classOf[OksaUri])
