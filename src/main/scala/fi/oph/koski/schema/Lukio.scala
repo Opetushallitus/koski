@@ -21,15 +21,23 @@ case class LukionOpiskeluoikeus(
   tavoite: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", "suorituksentyyppi"),
   @MinItems(1) @MaxItems(1)
   suoritukset: List[LukionPäätasonSuoritus],
-  tila: Option[YleissivistäväOpiskeluoikeudenTila],
+  tila: Option[LukionOpiskeluoikeudenTila],
   läsnäolotiedot: Option[Läsnäolotiedot],
   @KoodistoKoodiarvo("lukiokoulutus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukiokoulutus", "opiskeluoikeudentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukiokoulutus", "opiskeluoikeudentyyppi"),
+  lisätiedot: Option[LukionOpiskeluoikeudenLisätiedot] = None
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def arvioituPäättymispäivä: Option[LocalDate] = None
 }
+
+case class LukionOpiskeluoikeudenLisätiedot(
+  @Description("Opiskeluajan pidennetty päättymispäivä. Lukion oppimäärä tulee suorittaa enintään neljässä vuodessa, jollei opiskelijalle perustellusta syystä myönnetä suoritusaikaan pidennystä (lukiolaki 21.8.1998/629 24 §)")
+  pidennettyPäättymispäivä: Boolean = false,
+  @Description("Opiskelija on vaihto-opiskelija (ulkomainen vaihto-opiskelija Suomessa)")
+  ulkomainenVaihtoopiskelija: Boolean = false
+)
 
 trait LukionPäätasonSuoritus extends Suoritus
 
@@ -199,3 +207,14 @@ case class LaajuusKursseissa(
   @KoodistoKoodiarvo("4")
   yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = "4", nimi = Some(finnish("kurssia")))
 ) extends Laajuus
+
+case class LukionOpiskeluoikeudenTila(
+  opiskeluoikeusjaksot: List[LukionOpiskeluoikeusjakso]
+) extends OpiskeluoikeudenTila
+
+case class LukionOpiskeluoikeusjakso(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  @KoodistoUri("lukionopiskeluoikeudentila")
+  tila: Koodistokoodiviite
+) extends Opiskeluoikeusjakso

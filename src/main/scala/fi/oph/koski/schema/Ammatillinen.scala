@@ -44,7 +44,7 @@ case class AmmatillinenOpiskeluoikeudenTila(
 case class AmmatillinenOpiskeluoikeusjakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
-  @KoodistoUri("opiskeluoikeudentila")
+  @KoodistoUri("ammatillinenopiskeluoikeudentila")
   tila: Koodistokoodiviite,
   @Description("Opintojen rahoitus")
   @KoodistoUri("opintojenrahoitus")

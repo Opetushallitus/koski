@@ -1,9 +1,10 @@
 package fi.oph.koski.schema
 
 import java.time.LocalDate
+
 import fi.oph.koski.localization.LocalizedString
-import fi.oph.scalaschema.annotation.{MaxValue, MinValue, Description}
 import fi.oph.koski.localization.LocalizedString.{concat, finnish}
+import fi.oph.scalaschema.annotation.Description
 
 @Description("Perusopetuksen opiskeluoikeus")
 case class PerusopetuksenOpiskeluoikeus(
@@ -20,7 +21,7 @@ case class PerusopetuksenOpiskeluoikeus(
   @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
   tavoite: Koodistokoodiviite,
   suoritukset: List[PerusopetuksenPäätasonSuoritus],
-  tila: Option[YleissivistäväOpiskeluoikeudenTila],
+  tila: Option[PerusopetuksenOpiskeluoikeudenTila],
   läsnäolotiedot: Option[Läsnäolotiedot],
   @KoodistoKoodiarvo("perusopetus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetus", "opiskeluoikeudentyyppi"),
@@ -308,3 +309,14 @@ case class LaajuusVuosiviikkotunneissa(
   @KoodistoKoodiarvo("3")
   yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "3", nimi = Some(finnish("Vuosiviikkotuntia")), koodistoUri = "opintojenlaajuusyksikko")
 ) extends Laajuus
+
+case class PerusopetuksenOpiskeluoikeudenTila(
+  opiskeluoikeusjaksot: List[PerusopetuksenOpiskeluoikeusjakso]
+) extends OpiskeluoikeudenTila
+
+case class PerusopetuksenOpiskeluoikeusjakso(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  @KoodistoUri("perusopetuksenopiskeluoikeudentila")
+  tila: Koodistokoodiviite
+) extends Opiskeluoikeusjakso

@@ -3,12 +3,13 @@ package fi.oph.koski.documentation
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
+import fi.oph.koski.documentation.PerusopetuksenExampleData.{opiskeluoikeusLäsnä, opiskeluoikeusValmistunut}
 import fi.oph.koski.documentation.PerusopetusExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.localization.Finnish
+import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.schema._
-
 object ExamplesPerusopetus {
   val ysiluokkalainen = Oppija(
     exampleHenkilö,
@@ -34,9 +35,9 @@ object ExamplesPerusopetus {
             toimipiste = jyväskylänNormaalikoulu, suorituskieli = suomenKieli
           )
       ),
-      tila = Some(YleissivistäväOpiskeluoikeudenTila(
+      tila = Some(PerusopetuksenOpiskeluoikeudenTila(
         List(
-          YleissivistäväOpiskeluoikeusjakso(date(2008, 8, 15), None, opiskeluoikeusAktiivinen)
+          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), None, opiskeluoikeusLäsnä)
         )
       )),
       tavoite = tavoiteKokoOppimäärä,
@@ -77,10 +78,10 @@ object ExamplesPerusopetus {
           oppimäärä = perusopetuksenOppimäärä,
           osasuoritukset = kaikkiAineet
         )),
-      tila = Some(YleissivistäväOpiskeluoikeudenTila(
+      tila = Some(PerusopetuksenOpiskeluoikeudenTila(
         List(
-          YleissivistäväOpiskeluoikeusjakso(date(2008, 8, 15), Some(date(2016, 6, 3)), opiskeluoikeusAktiivinen),
-          YleissivistäväOpiskeluoikeusjakso(date(2016, 6, 4), None, opiskeluoikeusPäättynyt)
+          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), Some(date(2016, 6, 3)), opiskeluoikeusLäsnä),
+          PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), None, opiskeluoikeusValmistunut)
         )
       )),
       tavoite = tavoiteKokoOppimäärä,
@@ -102,10 +103,10 @@ object ExamplesPerusopetus {
           arviointi = arviointi(9),
           vahvistus = vahvistus()
         )),
-      tila = Some(YleissivistäväOpiskeluoikeudenTila(
+      tila = Some(PerusopetuksenOpiskeluoikeudenTila(
         List(
-          YleissivistäväOpiskeluoikeusjakso(date(2008, 8, 15), Some(date(2016, 6, 3)), opiskeluoikeusAktiivinen),
-          YleissivistäväOpiskeluoikeusjakso(date(2016, 6, 4), None, opiskeluoikeusPäättynyt)
+          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), Some(date(2016, 6, 3)), opiskeluoikeusLäsnä),
+          PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), None, opiskeluoikeusValmistunut)
         )
       )),
       tavoite = tavoiteAine,
@@ -132,10 +133,10 @@ object ExamplesPerusopetus {
           oppimäärä = aikuistenOppimäärä,
           osasuoritukset = kaikkiAineet
         )),
-      tila = Some(YleissivistäväOpiskeluoikeudenTila(
+      tila = Some(PerusopetuksenOpiskeluoikeudenTila(
         List(
-          YleissivistäväOpiskeluoikeusjakso(date(2008, 8, 15), Some(date(2016, 6, 3)), opiskeluoikeusAktiivinen),
-          YleissivistäväOpiskeluoikeusjakso(date(2016, 6, 4), None, opiskeluoikeusPäättynyt)
+          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), Some(date(2016, 6, 3)), opiskeluoikeusLäsnä),
+          PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), None, opiskeluoikeusValmistunut)
         )
       )),
       tavoite = tavoiteKokoOppimäärä,
@@ -168,10 +169,10 @@ object ExamplesPerusopetus {
             toimintaAlueenSuoritus("5").copy(arviointi = arviointi("S"))
           ))
         )),
-      tila = Some(YleissivistäväOpiskeluoikeudenTila(
+      tila = Some(PerusopetuksenOpiskeluoikeudenTila(
         List(
-          YleissivistäväOpiskeluoikeusjakso(date(2008, 8, 15), Some(date(2016, 6, 3)), opiskeluoikeusAktiivinen),
-          YleissivistäväOpiskeluoikeusjakso(date(2016, 6, 4), None, opiskeluoikeusPäättynyt)
+          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), Some(date(2016, 6, 3)), opiskeluoikeusLäsnä),
+          PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), None, opiskeluoikeusValmistunut)
         )
       )),
       tavoite = tavoiteKokoOppimäärä,
@@ -196,4 +197,9 @@ object ExamplesPerusopetus {
     Example("aikuisten perusopetuksen oppimäärä - erityinen tutkinto", "Aikuisopiskelija on suorittanut peruskoulun oppimäärän erityisenä tutkintona", erityinenTutkintoAikuinen),
     Example("perusopetuksen oppimäärä - toiminta-alueittain opiskelija", "Oppija on suorittanut peruskoulun opiskellen toiminta-alueittain", toimintaAlueittainOpiskelija)
   )
+}
+
+object PerusopetuksenExampleData {
+  val opiskeluoikeusLäsnä = Koodistokoodiviite("lasna", Some("Läsnä"), "perusopetuksenopiskeluoikeudentila", Some(1))
+  val opiskeluoikeusValmistunut = Koodistokoodiviite("valmistunut", Some("Valmistunut"), "perusopetuksenopiskeluoikeudentila", Some(1))
 }

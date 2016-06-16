@@ -680,11 +680,11 @@
       "opiskeluoikeusjaksot" : [ {
         "alku" : "2008-08-15",
         "tila" : {
-          "koodiarvo" : "aktiivinen",
+          "koodiarvo" : "lasna",
           "nimi" : {
-            "fi" : "Aktiivinen"
+            "fi" : "Läsnä"
           },
-          "koodistoUri" : "opiskeluoikeudentila",
+          "koodistoUri" : "perusopetuksenopiskeluoikeudentila",
           "koodistoVersio" : 1
         }
       } ]

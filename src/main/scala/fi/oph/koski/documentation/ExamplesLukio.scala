@@ -31,10 +31,10 @@ object ExamplesLukio {
           osasuoritukset = None
         )
       ),
-      tila = Some(YleissivistäväOpiskeluoikeudenTila(
+      tila = Some(LukionOpiskeluoikeudenTila(
         List(
-          YleissivistäväOpiskeluoikeusjakso(date(2012, 9, 1), Some(date(2016, 1, 9)), opiskeluoikeusAktiivinen),
-          YleissivistäväOpiskeluoikeusjakso(date(2016, 1, 10), None, opiskeluoikeusPäättynyt)
+          LukionOpiskeluoikeusjakso(date(2012, 9, 1), Some(date(2016, 1, 9)), opiskeluoikeusAktiivinen),
+          LukionOpiskeluoikeusjakso(date(2016, 1, 10), None, opiskeluoikeusPäättynyt)
         )
       )),
       läsnäolotiedot = None
@@ -188,10 +188,10 @@ object ExamplesLukio {
           ))
         )
       ),
-      tila = Some(YleissivistäväOpiskeluoikeudenTila(
+      tila = Some(LukionOpiskeluoikeudenTila(
         List(
-          YleissivistäväOpiskeluoikeusjakso(alku = date(2012, 9, 1), loppu = Some(date(2016, 1, 9)), tila = opiskeluoikeusAktiivinen),
-          YleissivistäväOpiskeluoikeusjakso(alku = date(2016, 1, 10), loppu = None, tila = opiskeluoikeusPäättynyt)
+          LukionOpiskeluoikeusjakso(alku = date(2012, 9, 1), loppu = Some(date(2016, 1, 9)), tila = opiskeluoikeusAktiivinen),
+          LukionOpiskeluoikeusjakso(alku = date(2016, 1, 10), loppu = None, tila = opiskeluoikeusPäättynyt)
         )
       )),
       läsnäolotiedot = None
@@ -225,10 +225,10 @@ object ExamplesLukio {
           ))
         )
       ),
-      tila = Some(YleissivistäväOpiskeluoikeudenTila(
+      tila = Some(LukionOpiskeluoikeudenTila(
         List(
-          YleissivistäväOpiskeluoikeusjakso(alku = date(2015, 9, 1), loppu = Some(date(2016, 1, 9)), tila = opiskeluoikeusAktiivinen),
-          YleissivistäväOpiskeluoikeusjakso(alku = date(2016, 1, 10), loppu = None, tila = opiskeluoikeusPäättynyt)
+          LukionOpiskeluoikeusjakso(alku = date(2015, 9, 1), loppu = Some(date(2016, 1, 9)), tila = opiskeluoikeusAktiivinen),
+          LukionOpiskeluoikeusjakso(alku = date(2016, 1, 10), loppu = None, tila = opiskeluoikeusPäättynyt)
         )
       )),
       läsnäolotiedot = None
@@ -257,6 +257,9 @@ object LukioExampleData {
 
   val tavoiteKokoOppimäärä = Koodistokoodiviite("lukionoppimaara", "suorituksentyyppi")
   val tavoiteOppiaineenOppimäärä = Koodistokoodiviite("lukionoppiaineenoppimaara", "suorituksentyyppi")
+
+  val opiskeluoikeusAktiivinen = Koodistokoodiviite("aktiivinen", Some("Aktiivinen"), "lukionopiskeluoikeudentila", Some(1))
+  val opiskeluoikeusPäättynyt = Koodistokoodiviite("paattynyt", Some("Päättynyt"), "lukionopiskeluoikeudentila", Some(1))
 
 
   val vahvistus = Some(Henkilövahvistus(päivä = date(2016, 6, 4), jyväskylä, myöntäjäOrganisaatio = jyväskylänNormaalikoulu, myöntäjäHenkilöt = List(OrganisaatioHenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))

@@ -212,21 +212,21 @@
         "alku" : "2008-08-15",
         "loppu" : "2016-06-03",
         "tila" : {
-          "koodiarvo" : "aktiivinen",
+          "koodiarvo" : "lasna",
           "nimi" : {
-            "fi" : "Aktiivinen"
+            "fi" : "Läsnä"
           },
-          "koodistoUri" : "opiskeluoikeudentila",
+          "koodistoUri" : "perusopetuksenopiskeluoikeudentila",
           "koodistoVersio" : 1
         }
       }, {
         "alku" : "2016-06-04",
         "tila" : {
-          "koodiarvo" : "paattynyt",
+          "koodiarvo" : "valmistunut",
           "nimi" : {
-            "fi" : "Päättynyt"
+            "fi" : "Valmistunut"
           },
-          "koodistoUri" : "opiskeluoikeudentila",
+          "koodistoUri" : "perusopetuksenopiskeluoikeudentila",
           "koodistoVersio" : 1
         }
       } ]

@@ -10,17 +10,6 @@ trait OppiaineenSuoritus extends Suoritus {
   def koulutusmoduuli: YleissivistavaOppiaine
 }
 
-case class YleissivistäväOpiskeluoikeudenTila(
-  opiskeluoikeusjaksot: List[YleissivistäväOpiskeluoikeusjakso]
-) extends OpiskeluoikeudenTila
-
-case class YleissivistäväOpiskeluoikeusjakso(
-  alku: LocalDate,
-  loppu: Option[LocalDate],
-  @KoodistoUri("opiskeluoikeudentila")
-  tila: Koodistokoodiviite
-) extends Opiskeluoikeusjakso
-
 trait YleissivistavaOppiaine extends KoodistostaLöytyväKoulutusmoduuli {
   @Description("Oppiaine")
   @KoodistoUri("koskioppiaineetyleissivistava")

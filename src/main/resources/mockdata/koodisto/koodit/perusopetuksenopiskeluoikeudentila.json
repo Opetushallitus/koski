@@ -1,0 +1,57 @@
+[
+  {
+    "koodiUri": "perusopetuksenopiskeluoikeudentila_lasna",
+    "koodiArvo": "lasna",
+    "metadata": [
+      {
+        "nimi": "Läsnä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "perusopetuksenopiskeluoikeudentila_valmistunut",
+    "koodiArvo": "valmistunut",
+    "metadata": [
+      {
+        "nimi": "Valmistunut",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "perusopetuksenopiskeluoikeudentila_sairauslomalla",
+    "koodiArvo": "sairauslomalla",
+    "metadata": [
+      {
+        "nimi": "Sairauslomalla",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "perusopetuksenopiskeluoikeudentila_laiminlyooppivelvollisuutta",
+    "koodiArvo": "laiminlyooppivelvollisuutta",
+    "metadata": [
+      {
+        "nimi": "Laiminlyö oppivelvollisuutta",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "perusopetuksenopiskeluoikeudentila_keskeyttanytoppivelvollisuudenpaatyttya",
+    "koodiArvo": "keskeyttanytoppivelvollisuudenpaatyttya",
+    "metadata": [
+      {
+        "nimi": "Keskeyttänyt oppivelvollisuuden päätyttyä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  }
+]

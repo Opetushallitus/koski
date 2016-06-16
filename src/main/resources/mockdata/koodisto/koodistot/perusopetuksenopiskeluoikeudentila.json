@@ -1,0 +1,12 @@
+{
+  "koodistoUri" : "perusopetuksenopiskeluoikeudentila",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "EN",
+    "nimi" : "perusopetuksenopiskeluoikeudentila",
+    "kuvaus" : "Opiskeluoikeuden tila"
+  } ],
+  "codesGroupUri" : "http://koski",
+  "voimassaAlkuPvm" : "2015-11-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}

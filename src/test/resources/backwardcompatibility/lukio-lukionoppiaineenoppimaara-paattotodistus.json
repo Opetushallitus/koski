@@ -229,7 +229,7 @@
           "nimi" : {
             "fi" : "Aktiivinen"
           },
-          "koodistoUri" : "opiskeluoikeudentila",
+          "koodistoUri" : "lukionopiskeluoikeudentila",
           "koodistoVersio" : 1
         }
       }, {
@@ -239,7 +239,7 @@
           "nimi" : {
             "fi" : "Päättynyt"
           },
-          "koodistoUri" : "opiskeluoikeudentila",
+          "koodistoUri" : "lukionopiskeluoikeudentila",
           "koodistoVersio" : 1
         }
       } ]

@@ -3,8 +3,9 @@ package fi.oph.koski.documentation
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
+import fi.oph.koski.documentation.PerusopetuksenExampleData.{opiskeluoikeusLäsnä, opiskeluoikeusValmistunut}
 import fi.oph.koski.documentation.PerusopetusExampleData._
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.schema._
 
 object ExamplesPerusopetuksenLisaopetus {
@@ -48,10 +49,10 @@ object ExamplesPerusopetuksenLisaopetus {
             )
           )
         )),
-      tila = Some(YleissivistäväOpiskeluoikeudenTila(
+      tila = Some(PerusopetuksenOpiskeluoikeudenTila(
         List(
-          YleissivistäväOpiskeluoikeusjakso(date(2008, 8, 15), Some(date(2016, 6, 3)), opiskeluoikeusAktiivinen),
-          YleissivistäväOpiskeluoikeusjakso(date(2016, 6, 4), None, opiskeluoikeusPäättynyt)
+          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), Some(date(2016, 6, 3)), opiskeluoikeusLäsnä),
+          PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), None, opiskeluoikeusValmistunut)
         )
       )),
       läsnäolotiedot = None

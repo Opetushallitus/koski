@@ -838,7 +838,7 @@
           "nimi" : {
             "fi" : "Aktiivinen"
           },
-          "koodistoUri" : "opiskeluoikeudentila",
+          "koodistoUri" : "ammatillinenopiskeluoikeudentila",
           "koodistoVersio" : 1
         },
         "opintojenRahoitus" : {
@@ -855,7 +855,7 @@
           "nimi" : {
             "fi" : "Päättynyt"
           },
-          "koodistoUri" : "opiskeluoikeudentila",
+          "koodistoUri" : "ammatillinenopiskeluoikeudentila",
           "koodistoVersio" : 1
         },
         "opintojenRahoitus" : {
