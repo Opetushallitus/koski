@@ -9,12 +9,12 @@ case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOpiskeluoikeus(
   id: Option[Int] = None,
   versionumero: Option[Int] = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
-  alkamispäivä: Option[LocalDate],
-  päättymispäivä: Option[LocalDate],
+  alkamispäivä: Option[LocalDate] = None,
+  päättymispäivä: Option[LocalDate] = None,
   oppilaitos: Oppilaitos,
-  koulutustoimija: Option[OrganisaatioWithOid],
+  koulutustoimija: Option[OrganisaatioWithOid] = None,
   tila: Option[AmmatillinenOpiskeluoikeudenTila] = None,
-  läsnäolotiedot: Option[Läsnäolotiedot],
+  läsnäolotiedot: Option[Läsnäolotiedot] = None,
   @MinItems(1)
   @MaxItems(1)
   suoritukset: List[AmmatilliseenPerustutkintoonValmentavanKoulutuksenSuoritus],
@@ -48,9 +48,6 @@ case class AmmatilliseenPerustutkintoonValmentavanKoulutuksenOsanSuoritus(
   paikallinenId: Option[String] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
-  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
-  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
-  toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Henkilövahvistus] = None,
   @KoodistoKoodiarvo("valmakoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valmakoulutuksenosa", koodistoUri = "suorituksentyyppi"),
@@ -71,5 +68,7 @@ case class AmmatilliseenPerustutkintoonValmentavaKoulutus(
 @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osa")
 case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa(
   tunniste: PaikallinenKoodi,
-  laajuus: Option[LaajuusOsaamispisteissä]
+  laajuus: Option[LaajuusOsaamispisteissä],
+  @Description("Onko pakollinen osa tutkinnossa")
+  pakollinen: Boolean
 ) extends PaikallinenKoulutusmoduuli
