@@ -338,4 +338,21 @@ describe('Ammatillinen koulutus', function() {
       })
     })
   })
+
+  describe('Ammatilliseen peruskoulutukseen valmentava koulutus', function() {
+    before(page.openPage, page.oppijaHaku.search('160696-993Y', page.isOppijaSelected('Antti')))
+    describe('Oppijan suorituksissa', function() {
+      it('näytetään', function() {
+        expect(OpinnotPage().getOppilaitos()).to.equal("Stadin ammattiopisto")
+        expect(OpinnotPage().getTutkinto()).to.equal("Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)")
+      })
+    })
+    describe('Tulostettava todistus', function() {
+      before(OpinnotPage().avaaTodistus(0))
+      it('näytetään', function() {
+        // See more detailed content specification in ValmaSpec.scala
+        expect(TodistusPage().vahvistus()).to.equal('Helsinki 4.6.2016 Keijo Perttilä rehtori')
+      })
+    })
+  })
 })

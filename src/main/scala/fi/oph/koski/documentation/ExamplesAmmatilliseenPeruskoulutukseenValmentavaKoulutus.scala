@@ -2,9 +2,8 @@ package fi.oph.koski.documentation
 
 import java.time.LocalDate.{of => date}
 
-import fi.oph.koski.documentation.AmmatillinenExampleData.{arviointiHyväksytty, arviointiKiitettävä, stadinAmmattiopisto}
+import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.schema._
@@ -19,7 +18,7 @@ object ExamplesAmmatilliseenPeruskoulutukseenValmentavaKoulutus {
         oppilaitos = stadinAmmattiopisto,
         suoritukset = List(AmmatilliseenPerustutkintoonValmentavanKoulutuksenSuoritus(
           tila = tilaValmis,
-          vahvistus = vahvistus,
+          vahvistus = vahvistus(date(2016, 6, 4)),
           toimipiste = stadinAmmattiopisto,
           koulutusmoduuli = AmmatilliseenPerustutkintoonValmentavaKoulutus(),
           osasuoritukset = Some(List(
