@@ -321,7 +321,7 @@ describe('Ammatillinen koulutus', function() {
   })
 
   describe('Ammatillisen perustutkinnon päättötodistus', function() {
-    before(page.openPage, page.oppijaHaku.search('120496-949B', page.isOppijaSelected('Aarne')))
+    before(resetFixtures, page.openPage, page.oppijaHaku.search('120496-949B', page.isOppijaSelected('Aarne')))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
         expect(OpinnotPage().getTutkinto()).to.equal("Luonto- ja ympäristöalan perustutkinto")

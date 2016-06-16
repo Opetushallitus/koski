@@ -16,7 +16,7 @@ trait TodistusTestMethods extends SearchTestMethods with OpiskeluOikeusTestMetho
       val lines: Seq[String] = XML.loadString(response.body)
         .flatMap(_.descendant_or_self).flatMap {
         case tr: Node if tr.label == "tr" && (tr \ "@class").text != "header" => Some(texts(tr \ "td"))
-        case header: Node if List("h1", "h2", "h3").contains(header.label) => Some(texts(header))
+        case node: Node if List("h1", "h2", "h3", "h4", "p").contains(node.label) => Some(texts(node))
         case _ => None
       }
       lines.mkString("\n").trim

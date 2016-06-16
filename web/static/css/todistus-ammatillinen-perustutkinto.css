@@ -9,3 +9,12 @@ div {
 .tutkinnon-osa td:first-child {
     padding-left: 50px;
 }
+
+.tyossa-oppiminen h4 {
+    margin-bottom: 10px;
+}
+
+.tyossa-oppiminen p {
+    margin-left: 50px;
+    margin-top: 0;
+}

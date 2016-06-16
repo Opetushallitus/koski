@@ -3,6 +3,7 @@ package fi.oph.koski.documentation
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
+import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
 
@@ -187,7 +188,9 @@ object AmmatillinenTodistusExample {
           toimipiste = toimipiste,
           vahvistus = vahvistus(date(2016, 5, 31)),
           osasuoritukset = Some(List(
-            tutkinnonOsanSuoritus("100431", "Kestävällä tavalla toimiminen", k3, 40),
+            tutkinnonOsanSuoritus("100431", "Kestävällä tavalla toimiminen", k3, 40).copy(työssäoppimisjaksot = Some(List(
+              Työssäoppimisjakso(date(2014, 1, 1), Some(date(2014, 3, 15)), jyväskylä, suomi, LocalizedString.finnish("Toimi harjoittelijana Sortti-asemalla"), LaajuusOsaamispisteissä(5))
+            ))),
             tutkinnonOsanSuoritus("100432", "Ympäristön hoitaminen", k3, 35),
             tutkinnonOsanSuoritus("100439", "Uusiutuvien energialähteiden hyödyntäminen", k3, 15),
             tutkinnonOsanSuoritus("100442", "Ulkoilureittien rakentaminen ja hoitaminen", k3, 15),
