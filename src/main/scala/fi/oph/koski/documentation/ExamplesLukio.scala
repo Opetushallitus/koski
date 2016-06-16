@@ -24,6 +24,7 @@ object ExamplesLukio {
       suoritukset = List(
         LukionOppimääränSuoritus(
           koulutusmoduuli = lukionOppimäärä,
+          oppimäärä = nuortenOpetussuunnitelma,
           paikallinenId = None,
           suorituskieli = suomenKieli,
           tila = tilaKesken,
@@ -54,6 +55,7 @@ object ExamplesLukio {
       suoritukset = List(
         LukionOppimääränSuoritus(
           koulutusmoduuli = lukionOppimäärä,
+          oppimäärä = nuortenOpetussuunnitelma,
           paikallinenId = None,
           suorituskieli = suomenKieli,
           tila = tilaValmis,
@@ -260,6 +262,9 @@ object LukioExampleData {
 
   val opiskeluoikeusAktiivinen = Koodistokoodiviite("aktiivinen", Some("Aktiivinen"), "lukionopiskeluoikeudentila", Some(1))
   val opiskeluoikeusPäättynyt = Koodistokoodiviite("paattynyt", Some("Päättynyt"), "lukionopiskeluoikeudentila", Some(1))
+
+  val aikuistenOpetussuunnitelma = Koodistokoodiviite("aikuistenops", Some("Aikuisten ops"), "lukionoppimaara", Some(1))
+  val nuortenOpetussuunnitelma = Koodistokoodiviite("nuortenops", Some("Nuorten ops"), "lukionoppimaara", Some(1))
 
 
   val vahvistus = Some(Henkilövahvistus(päivä = date(2016, 6, 4), jyväskylä, myöntäjäOrganisaatio = jyväskylänNormaalikoulu, myöntäjäHenkilöt = List(OrganisaatioHenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))

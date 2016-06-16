@@ -71,13 +71,6 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   aamuTaiIltapäivätoiminta: Option[Päätösjakso] = None
 )
 
-case class Päätösjakso(
-  @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
-  alku: Option[LocalDate],
-  @Description("Jakson loppumispäivämäärä. Muoto YYYY-MM-DD")
-  loppu: Option[LocalDate]
-)
-
 case class ErityisenTuenPäätös(
   @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
   alku: Option[LocalDate],

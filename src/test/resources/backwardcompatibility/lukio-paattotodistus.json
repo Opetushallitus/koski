@@ -50,6 +50,14 @@
         },
         "perusteenDiaarinumero" : "60/011/2015"
       },
+      "oppimäärä" : {
+        "koodiarvo" : "nuortenops",
+        "nimi" : {
+          "fi" : "Nuorten ops"
+        },
+        "koodistoUri" : "lukionoppimaara",
+        "koodistoVersio" : 1
+      },
       "tyyppi" : {
         "koodiarvo" : "lukionoppimaara",
         "koodistoUri" : "suorituksentyyppi"

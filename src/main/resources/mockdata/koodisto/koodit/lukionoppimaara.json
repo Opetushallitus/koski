@@ -1,0 +1,24 @@
+[
+  {
+    "koodiUri": "lukionoppimaara_aikuistenops",
+    "koodiArvo": "aikuistenops",
+    "metadata": [
+      {
+        "nimi": "Lukio suoritetaan aikuisten opetussuunnitelman mukaan",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lukionoppimaara_nuortenops",
+    "koodiArvo": "nuortenops",
+    "metadata": [
+      {
+        "nimi": "Lukio suoritetaan nuorten opetussuunnitelman mukaan",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  }
+]

@@ -2,6 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
+import fi.oph.koski.localization.LocalizedString
 import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems}
 import fi.oph.koski.localization.LocalizedString.{concat, finnish}
 
@@ -36,7 +37,25 @@ case class LukionOpiskeluoikeudenLisätiedot(
   @Description("Opiskeluajan pidennetty päättymispäivä. Lukion oppimäärä tulee suorittaa enintään neljässä vuodessa, jollei opiskelijalle perustellusta syystä myönnetä suoritusaikaan pidennystä (lukiolaki 21.8.1998/629 24 §)")
   pidennettyPäättymispäivä: Boolean = false,
   @Description("Opiskelija on vaihto-opiskelija (ulkomainen vaihto-opiskelija Suomessa)")
-  ulkomainenVaihtoopiskelija: Boolean = false
+  ulkomainenVaihtoopiskelija: Boolean = false,
+  @Description("Syy alle 18-vuotiaana aloitettuun opiskeluun aikuisten lukiokoulutuksessa. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei opiskelija opiskele aikuisten lukiokoulutuksessa alle 18-vuotiaana")
+  alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy: Option[LocalizedString] = None,
+  @Description("Yksityisopiskelija (aikuisten lukiokoulutuksessa)")
+  yksityisopiskelija: Boolean = false,
+  @Description("Opiskelija opiskelee erityisen koulutustehtävän mukaisesti (ib, musiikki, urheilu, kielet, luonnontieteet, jne.). Kentän puuttuminen tai null-arvo tulkitaan siten, ettei opiskelija opiskele erityisen koulutustehtävän mukaisesti")
+  erityinenkoulutustehtävä: Option[Erityinenkoulutustehtävä] = None,
+  @Description("Tieto siitä, että oppilaalla on oikeus maksuttomaan asuntolapaikkaan, alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilaalla ole oikeutta maksuttomaan asuntolapaikkaan.")
+  oikeusMaksuttomaanAsuntolapaikkaan: Option[Päätösjakso] = None,
+  @Description("""Tieto siitä, että oppilas on sisäoppilaismaisessa majoituksessa, alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole sisäoppilasmaisessa majoituksessa.""")
+  sisäoppilaitosmainenMajoitus: Option[Päätösjakso] = None
+)
+
+case class Erityinenkoulutustehtävä(
+  @Description("Opiskelijan erityisen koulutustehtävän mukaisen koulutuksen alkamispäivä")
+  alku: Option[LocalDate],
+  @Description("Opiskelijan erityisen koulutustehtävän mukaisen koulutuksen päättämispäivä")
+  loppu: Option[LocalDate]
+  // TODO, tarvitaanko tieto opiskeltavasta erityisestä koulutuksesta ???
 )
 
 trait LukionPäätasonSuoritus extends Suoritus
@@ -49,6 +68,8 @@ case class LukionOppimääränSuoritus(
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
   koulutusmoduuli: LukionOppimäärä,
+  @KoodistoUri("lukionoppimaara")
+  oppimäärä: Koodistokoodiviite,
   @KoodistoKoodiarvo("lukionoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"),
   vahvistus: Option[Henkilövahvistus] = None,
