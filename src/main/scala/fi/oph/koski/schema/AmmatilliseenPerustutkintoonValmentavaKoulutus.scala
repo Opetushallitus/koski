@@ -5,7 +5,7 @@ import java.time.LocalDate
 import fi.oph.scalaschema.annotation.{MaxItems, MinItems, Description}
 
 @Description("Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)")
-case class AmmatilliseenPerustutkintoonValmentavanKoulutuksenOpiskeluoikeus(
+case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOpiskeluoikeus(
   id: Option[Int] = None,
   versionumero: Option[Int] = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
@@ -35,12 +35,29 @@ case class AmmatilliseenPerustutkintoonValmentavanKoulutuksenSuoritus(
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Henkilövahvistus] = None,
-  override val osasuoritukset: Option[List[Suoritus]],
+  @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osasuoritukset")
+  override val osasuoritukset: Option[List[AmmatilliseenPerustutkintoonValmentavanKoulutuksenOsanSuoritus]],
   @KoodistoKoodiarvo("valma")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valma", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: AmmatilliseenPerustutkintoonValmentavaKoulutus
 ) extends Suoritus {
-  def arviointi: Option[List[AmmatillinenArviointi]] = None
+  def arviointi = None
+}
+
+case class AmmatilliseenPerustutkintoonValmentavanKoulutuksenOsanSuoritus(
+  paikallinenId: Option[String] = None,
+  suorituskieli: Option[Koodistokoodiviite] = None,
+  tila: Koodistokoodiviite,
+  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
+  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
+  toimipiste: OrganisaatioWithOid,
+  vahvistus: Option[Henkilövahvistus] = None,
+  @KoodistoKoodiarvo("valmakoulutuksenosa")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("valmakoulutuksenosa", koodistoUri = "suorituksentyyppi"),
+  koulutusmoduuli: AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa,
+  arviointi: Option[List[AmmatillinenArviointi]]
+) extends Suoritus {
+  override def osasuoritukset = None
 }
 
 @Description("Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)")
@@ -51,3 +68,8 @@ case class AmmatilliseenPerustutkintoonValmentavaKoulutus(
   laajuus: Option[Laajuus] = None
 ) extends KoodistostaLöytyväKoulutusmoduuli
 
+@Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osa")
+case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa(
+  tunniste: PaikallinenKoodi,
+  laajuus: Option[LaajuusOsaamispisteissä]
+) extends PaikallinenKoulutusmoduuli

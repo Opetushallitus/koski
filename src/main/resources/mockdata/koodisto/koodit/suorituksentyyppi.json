@@ -190,8 +190,18 @@
       }
     ],
     "versio": 1
-  },
-  {
+  }, {
+    "koodiUri": "suorituksentyyppi_valmakoulutuksenosa",
+    "koodiArvo": "valmakoulutuksenosa",
+    "metadata": [
+      {
+        "nimi": "Ammatilliseen peruskoulutukseen valmentavan koulutuksen osa",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  }, {
     "koodiUri": "suorituksentyyppi_luva",
     "koodiArvo": "luva",
     "metadata": [
