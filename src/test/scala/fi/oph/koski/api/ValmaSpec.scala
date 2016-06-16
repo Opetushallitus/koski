@@ -9,7 +9,7 @@ class ValmaSpec extends FunSpec with Matchers with TodistusTestMethods with Opis
       todistus(MockOppijat.valma.oid, "valma") should equal("""Ammatilliseen peruskoulutukseen valmentava koulutus
       |HELSINGIN KAUPUNKI
       |Stadin ammattiopisto
-      |Amikseenvalmistautuja, Antti 160696-993Y
+      |Amikseenvalmistautuja, Anneli 160696-993Y
       |
       |Pakolliset koulutuksen osat 10 osp
       |Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen 10 Hyväksytty
