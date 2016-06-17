@@ -180,6 +180,30 @@
     "versio": 1
   },
   {
+    "koodiUri": "suorituksentyyppi_telma",
+    "koodiArvo": "telma",
+    "metadata": [
+      {
+        "nimi": "Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "suorituksentyyppi_telmakoulutuksenosa",
+    "koodiArvo": "telmakoulutuksenosa",
+    "metadata": [
+      {
+        "nimi": "Työhön ja itsenäiseen elämään valmentavan koulutuksen osa",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
     "koodiUri": "suorituksentyyppi_valma",
     "koodiArvo": "valma",
     "metadata": [
@@ -201,7 +225,8 @@
       }
     ],
     "versio": 1
-  }, {
+  },
+  {
     "koodiUri": "suorituksentyyppi_luva",
     "koodiArvo": "luva",
     "metadata": [
