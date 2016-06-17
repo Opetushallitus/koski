@@ -34,27 +34,7 @@ trait ValmentavanKoulutuksenTodistusHtml extends TodistusHtml {
               <th class="laajuus">Suoritettu laajuus, osp</th>
               <th colspan="2" class="arvosana">Arvosana</th>
             </tr>
-            {
-            def tyypinKuvaus(km: Koulutusmoduuli) = km match {
-              case o: Valinnaisuus if o.pakollinen => finnish("Pakolliset koulutuksen osat")
-              case _ => finnish("Valinnaiset koulutuksen osat")
-            }
-            oppiaineet.groupBy(s => tyypinKuvaus(s.koulutusmoduuli)).toList.sortBy(_._1.get("fi")).map { case (tyyppi, suoritukset) =>
-              val väliotsikko = <tr class="rakennemoduuli">
-                <td class="oppiaine">{i(tyyppi)} {decimalFormat.format(suoritukset.map(laajuus).sum)} osp</td>
-              </tr>
-
-              List(väliotsikko) ++ suoritukset.map { oppiaine =>
-                val nimiTeksti = i(oppiaine.koulutusmoduuli)
-                <tr class="tutkinnon-osa">
-                  <td class="nimi">{nimiTeksti}</td>
-                  <td class="laajuus">{decimalFormat.format(laajuus(oppiaine))}</td>
-                  <td class="arvosana-kirjaimin">{i(oppiaine.arvosanaKirjaimin).capitalize}</td>
-                  <td class="arvosana-numeroin">{i(oppiaine.arvosanaNumeroin)}</td>
-                </tr>
-              }
-            }
-            }
+            {suoritukset}
             <tr class="opintojen-laajuus">
               <td class="nimi">Opiskelijan suorittamien koulutuksen osien laajuus osaamispisteinä</td>
               <td class="laajuus">{decimalFormat.format(oppiaineet.map(laajuus).sum)}</td>
@@ -64,5 +44,24 @@ trait ValmentavanKoulutuksenTodistusHtml extends TodistusHtml {
         </div>
       </body>
     </html>
+  }
+
+  val suoritukset = oppiaineet.groupBy(s => tyypinKuvaus(s.koulutusmoduuli)).toList.sortBy(_._1.get("fi")).flatMap { case (tyyppi, suoritukset) =>
+      <tr class="rakennemoduuli">
+        <td class="oppiaine">{i(tyyppi)} {decimalFormat.format(suoritukset.map(laajuus).sum)} osp</td>
+      </tr> :: suoritukset.map { oppiaine =>
+      val nimiTeksti = i(oppiaine.koulutusmoduuli)
+      <tr class="tutkinnon-osa">
+        <td class="nimi">{nimiTeksti}</td>
+        <td class="laajuus">{decimalFormat.format(laajuus(oppiaine))}</td>
+        <td class="arvosana-kirjaimin">{i(oppiaine.arvosanaKirjaimin).capitalize}</td>
+        <td class="arvosana-numeroin">{i(oppiaine.arvosanaNumeroin)}</td>
+      </tr>
+    }
+  }
+
+  private def tyypinKuvaus(km: Koulutusmoduuli) = km match {
+    case o: Valinnaisuus if o.pakollinen => finnish("Pakolliset koulutuksen osat")
+    case _ => finnish("Valinnaiset koulutuksen osat")
   }
 }

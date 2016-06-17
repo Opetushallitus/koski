@@ -86,4 +86,6 @@ case class TelmaArviointi(
     case "Hylätty" => false
     case _ => true
   }
+
+  override def arvosanaKirjaimin = kuvaus.getOrElse(super.arvosanaKirjaimin)
 }

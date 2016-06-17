@@ -2,8 +2,8 @@ package fi.oph.koski.documentation
 
 import java.time.LocalDate.{of => date}
 
-import fi.oph.koski.documentation.AmmatillinenExampleData.{stadinAmmattiopisto, vahvistus}
 import fi.oph.koski.documentation.ExampleData._
+import fi.oph.koski.documentation.LukioExampleData.vahvistus
 import fi.oph.koski.documentation.TelmaExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.localization.LocalizedString
@@ -21,8 +21,8 @@ object ExamplesTelma {
         oppilaitos = jyväskylänNormaalikoulu,
         suoritukset = List(TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenSuoritus(
           tila = tilaValmis,
-          vahvistus = vahvistus(date(2016, 6, 4)),
-          toimipiste = stadinAmmattiopisto,
+          vahvistus = vahvistus,
+          toimipiste = jyväskylänNormaalikoulu,
           koulutusmoduuli = TyöhönJaItsenäiseenElämäänValmentavaKoulutus(),
           osasuoritukset = Some(List(
             telmaKurssinSuoritus("TV", "Toimintakyvyn vahvistaminen", 18f, pakollinen = true,

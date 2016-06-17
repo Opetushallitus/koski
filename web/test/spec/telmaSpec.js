@@ -7,7 +7,7 @@ describe('Telma', function() {
     before(page.openPage, page.oppijaHaku.search('170696-986C', page.isOppijaSelected('Tuula')))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
-        expect(OpinnotPage().getTutkinto()).to.equal("Työhön ja itsenäiseen elämään valmentava koulutus")
+        expect(OpinnotPage().getTutkinto()).to.equal("Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)")
         expect(OpinnotPage().getOppilaitos()).to.equal("Jyväskylän normaalikoulu")
       })
     })
