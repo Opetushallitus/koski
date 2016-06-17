@@ -1,6 +1,5 @@
 package fi.oph.koski.todistus
 
-import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.localization.LocalizedString._
 import fi.oph.koski.schema._
 
