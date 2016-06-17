@@ -1,7 +1,7 @@
 package fi.oph.koski.todistus
 
-import fi.oph.koski.schema._
 import fi.oph.koski.koskiuser.KoskiUser
+import fi.oph.koski.schema._
 import fi.oph.koski.tutkinto.{RakenneModuuli, SuoritustapaJaRakenne}
 
 class AmmatillisenPerustutkinnonPaattotodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {

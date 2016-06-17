@@ -1,16 +1,16 @@
 package fi.oph.koski.fixture
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.Tables._
 import fi.oph.koski.db.KoskiDatabase._
+import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
 import fi.oph.koski.documentation._
+import fi.oph.koski.koski.KoskiValidator
+import fi.oph.koski.koskiuser.{AccessType, MockUsers}
 import fi.oph.koski.opiskeluoikeus.OpiskeluOikeusRepository
 import fi.oph.koski.oppija.{MockOppijat, OppijaRepository, VerifiedOppijaOid}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
-import fi.oph.koski.koski.KoskiValidator
-import fi.oph.koski.koskiuser.{AccessType, MockUsers}
 import fi.oph.koski.util.Timing
 import slick.dbio.DBIO
 

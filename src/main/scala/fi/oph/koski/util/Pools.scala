@@ -1,7 +1,8 @@
 package fi.oph.koski.util
 
 import java.util.concurrent.{Executors, ThreadFactory}
-import scala.concurrent.{ExecutionContextExecutor, ExecutionContext}
+
+import scala.concurrent.{ExecutionContext, ExecutionContextExecutor}
 import scala.math._
 
 /**
@@ -45,9 +46,10 @@ object NamedThreadPool {
   }
 }
 
-import scala.concurrent.{ExecutionContext, ExecutionContextExecutorService}
-import java.util.concurrent.{ AbstractExecutorService, TimeUnit }
 import java.util.Collections
+import java.util.concurrent.{AbstractExecutorService, TimeUnit}
+
+import scala.concurrent.{ExecutionContext, ExecutionContextExecutorService}
 
 object ExecutionContextExecutorServiceBridge {
   def apply(ec: ExecutionContextExecutor): ExecutionContextExecutorService = ec match {

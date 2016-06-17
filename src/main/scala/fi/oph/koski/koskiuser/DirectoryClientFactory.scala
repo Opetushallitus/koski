@@ -1,8 +1,8 @@
 package fi.oph.koski.koskiuser
 
 import com.typesafe.config.Config
-import fi.oph.koski.cache.{Cached, CachingProxy}
 import fi.oph.koski.cache.CachingStrategy.cacheAllNoRefresh
+import fi.oph.koski.cache.{Cached, CachingProxy}
 import fi.vm.sade.security.ldap.{DirectoryClient, LdapClient, LdapConfig}
 
 object DirectoryClientFactory {

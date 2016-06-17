@@ -2,6 +2,7 @@ package fi.oph.koski.db
 
 import java.io.File
 import java.nio.file.Files
+
 import fi.oph.koski.log.Logging
 
 class PostgresRunner(dataDirName: String, configFile: String, port: Integer) extends Logging {

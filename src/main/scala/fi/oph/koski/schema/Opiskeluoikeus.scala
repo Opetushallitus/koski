@@ -2,7 +2,6 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
-import fi.oph.koski.log.Loggable
 import fi.oph.scalaschema.annotation._
 
 object Opiskeluoikeus {

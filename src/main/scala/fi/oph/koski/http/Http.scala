@@ -1,6 +1,7 @@
 package fi.oph.koski.http
 
-import java.net.{ConnectException, URLEncoder}
+import java.net.URLEncoder
+
 import fi.oph.koski.http.Http.{Decode, runTask}
 import fi.oph.koski.json.Json
 import fi.oph.koski.log.Logging
@@ -12,8 +13,8 @@ import org.http4s.headers.`Content-Type`
 
 import scala.concurrent.duration._
 import scala.xml.Elem
-import scalaz.{-\/, \/-}
 import scalaz.concurrent.Task
+import scalaz.{-\/, \/-}
 
 object Http extends Logging {
   private val maxHttpConnections = Pools.jettyThreads + Pools.httpThreads

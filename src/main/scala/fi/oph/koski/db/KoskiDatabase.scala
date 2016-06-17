@@ -2,6 +2,7 @@ package fi.oph.koski.db
 
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigValueFactory._
+import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.{Pools, PortChecker}
 import org.flywaydb.core.Flyway
@@ -9,7 +10,6 @@ import slick.driver.PostgresDriver
 import slick.driver.PostgresDriver.api._
 
 import scala.sys.process._
-import KoskiDatabase._
 
 object KoskiDatabase {
   type DB = PostgresDriver.backend.DatabaseDef

@@ -2,10 +2,10 @@ package fi.oph.koski.oppija
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.KoskiDatabase.DB
-import fi.oph.koski.db.{Tables, Futures, GlobalExecutionContext, PostgresDriverWithJsonSupport}
+import fi.oph.koski.db.{Futures, PostgresDriverWithJsonSupport, Tables}
 import fi.oph.koski.henkilo.Hetu
-import fi.oph.koski.http.{KoskiErrorCategory, HttpStatus}
-import fi.oph.koski.log.{Logging, Loggable}
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.log.{Loggable, Logging}
 import fi.oph.koski.schema._
 
 object MockOppijat {
@@ -106,7 +106,6 @@ case class MockOppijaRepository(initialOppijat: List[TaydellisetHenkilötiedot] 
   }
 
   def findFromDb(oid: String): Option[TaydellisetHenkilötiedot] = {
-    import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
     runQuery(Tables.OpiskeluOikeudet.filter(_.oppijaOid === oid)).headOption.map { oppijaRow =>
       TaydellisetHenkilötiedot(oid, oid, oid, oid, oid, oppijat.äidinkieli, None)
     }

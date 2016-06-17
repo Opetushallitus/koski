@@ -1,6 +1,6 @@
 package fi.oph.koski.arvosana
 
-import fi.oph.koski.koodisto.{KoodistoViitePalvelu, KoodistoViite}
+import fi.oph.koski.koodisto.{KoodistoViite, KoodistoViitePalvelu}
 import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 
 class ArviointiasteikkoRepository(koodistoPalvelu: KoodistoViitePalvelu) {

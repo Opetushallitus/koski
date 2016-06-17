@@ -1,7 +1,7 @@
 package fi.oph.koski.http
 
 import fi.oph.koski.log.Loggable
-import org.http4s.{EntityBody, Request}
+import org.http4s.Request
 
 /**
  *  Thrown when an external service returns an unexpected HTTP status code.

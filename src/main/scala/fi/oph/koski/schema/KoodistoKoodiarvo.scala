@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
-import fi.oph.scalaschema._
 import fi.oph.koski.schema.SchemaClassMapper.mapClasses
+import fi.oph.scalaschema._
 import org.json4s.JsonAST._
 
 /*

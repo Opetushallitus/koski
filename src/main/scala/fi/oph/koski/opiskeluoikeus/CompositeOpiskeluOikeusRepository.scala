@@ -1,11 +1,11 @@
 package fi.oph.koski.opiskeluoikeus
 
 import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.koski.QueryFilter
+import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.oppija.PossiblyUnverifiedOppijaOid
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, TaydellisetHenkilötiedot}
-import fi.oph.koski.koski.QueryFilter
-import fi.oph.koski.koskiuser.KoskiUser
 import rx.lang.scala.Observable
 
 import scala.collection.parallel.immutable.ParSeq

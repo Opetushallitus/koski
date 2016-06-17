@@ -1,10 +1,8 @@
 package fi.oph.koski.util
 
-import scala.concurrent.ExecutionContext
-import scala.util.Failure
-import scala.util.Success
+import scala.concurrent.{ExecutionContext, Future, Promise}
+import scala.util.{Failure, Success}
 import scalaz.concurrent.Task
-import scala.concurrent.{ Promise, Future }
 
 object ScalazTaskToFuture {
   def futureToTask[A](x: => Future[A])(implicit executor: ExecutionContext): Task[A] = {
@@ -20,7 +18,7 @@ object ScalazTaskToFuture {
   }
 
   def taskToFuture[A](x: => Task[A]): Future[A] = {
-    import scalaz.{ \/-, -\/ }
+    import scalaz.{-\/, \/-}
     val p: Promise[A] = Promise()
     x.runAsync {
       case -\/(ex) =>

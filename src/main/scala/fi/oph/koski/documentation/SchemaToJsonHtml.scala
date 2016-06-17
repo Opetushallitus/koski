@@ -1,9 +1,9 @@
 package fi.oph.koski.documentation
 
-import fi.oph.scalaschema._
-import fi.oph.scalaschema.annotation.Description
 import fi.oph.koski.json.Json
 import fi.oph.koski.schema.{KoodistoKoodiarvo, KoodistoUri, OksaUri, ReadOnly}
+import fi.oph.scalaschema._
+import fi.oph.scalaschema.annotation.Description
 
 import scala.xml.Elem
 

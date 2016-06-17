@@ -1,8 +1,8 @@
 package fi.oph.koski.http
 
 import com.unboundid.util.Base64
-import org.http4s.{Service, Header, Request}
 import org.http4s.client.Client
+import org.http4s.{Header, Request, Service}
 
 object BasicAuthentication {
   def basicAuthHeader(user: String, password: String) = {

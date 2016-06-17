@@ -1,6 +1,7 @@
 package fi.oph.koski.date
 
 import java.util.Date
+
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.servlet.InvalidRequestException
 import org.joda.time.DateTime

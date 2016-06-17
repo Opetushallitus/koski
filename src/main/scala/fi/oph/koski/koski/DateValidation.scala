@@ -1,7 +1,8 @@
 package fi.oph.koski.koski
 
 import java.time.LocalDate
-import fi.oph.koski.http.{KoskiErrorCategory, HttpStatus}
+
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.schema.Jakso
 
 object DateValidation {

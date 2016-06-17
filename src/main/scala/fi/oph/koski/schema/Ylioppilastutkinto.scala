@@ -1,6 +1,5 @@
 package fi.oph.koski.schema
 
-import java.time.LocalDate
 import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems}
 
 case class YlioppilastutkinnonOpiskeluoikeus(

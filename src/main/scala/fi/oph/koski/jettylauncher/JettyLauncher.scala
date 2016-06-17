@@ -1,9 +1,8 @@
 package fi.oph.koski.jettylauncher
 
-import java.nio.file.{Paths, Files}
+import java.nio.file.{Files, Paths}
 
 import fi.oph.koski.util.{Pools, PortChecker}
-import org.eclipse.jetty.server.handler.{ContextHandler, ResourceHandler}
 import org.eclipse.jetty.server.{Server, ServerConnector, Slf4jRequestLog}
 import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.eclipse.jetty.webapp.WebAppContext

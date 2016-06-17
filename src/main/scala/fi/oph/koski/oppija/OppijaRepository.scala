@@ -10,7 +10,7 @@ import fi.oph.koski.log.{Logging, TimedProxy}
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Invocation
 import fi.oph.koski.virta.{VirtaClient, VirtaOppijaRepository}
-import fi.oph.koski.ytr.{YtrOppijaRepository, YlioppilasTutkintoRekisteri}
+import fi.oph.koski.ytr.{YlioppilasTutkintoRekisteri, YtrOppijaRepository}
 
 object OppijaRepository {
   def apply(config: Config, database: KoskiDatabase, koodistoViitePalvelu: KoodistoViitePalvelu, virtaClient: VirtaClient, ytr: YlioppilasTutkintoRekisteri) = {

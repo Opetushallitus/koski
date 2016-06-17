@@ -1,8 +1,8 @@
 package fi.oph.koski.log
 
+import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.log.KoskiMessageField.KoskiMessageField
 import fi.oph.koski.log.KoskiOperation.KoskiOperation
-import fi.oph.koski.koskiuser.KoskiUser
 import fi.vm.sade.auditlog._
 import org.slf4j.{Logger, LoggerFactory}
 

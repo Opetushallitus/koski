@@ -1,10 +1,10 @@
 package fi.oph.koski.history
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.koskiuser.{RequiresAuthentication, UserOrganisationsRepository}
 import fi.oph.koski.log._
 import fi.oph.koski.schema.Opiskeluoikeus
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
-import fi.oph.koski.koskiuser.{RequiresAuthentication, UserOrganisationsRepository}
 import fi.vm.sade.security.ldap.DirectoryClient
 import org.json4s.jackson.JsonMethods
 

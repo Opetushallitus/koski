@@ -1,6 +1,7 @@
 package fi.oph.koski.todistus
 
 import java.text.NumberFormat
+
 import fi.oph.koski.localization.Locale._
 import fi.oph.koski.schema._
 

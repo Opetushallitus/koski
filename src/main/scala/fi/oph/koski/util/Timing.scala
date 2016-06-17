@@ -1,7 +1,6 @@
 package fi.oph.koski.util
 
 import fi.oph.koski.log.{LoggerWithContext, Logging}
-import org.log4s._
 import rx.lang.scala.Observable
 
 object Timing {

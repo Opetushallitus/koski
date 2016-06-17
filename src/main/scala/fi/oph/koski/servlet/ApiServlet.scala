@@ -1,6 +1,6 @@
 package fi.oph.koski.servlet
 
-import fi.oph.koski.http.{ErrorCategory, HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Timing

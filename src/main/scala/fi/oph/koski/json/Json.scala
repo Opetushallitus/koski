@@ -1,6 +1,7 @@
 package fi.oph.koski.json
 
 import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
+
 import com.github.fge.jsonpatch.diff.JsonDiff
 import fi.oph.koski.eperusteet.RakenneOsaSerializer
 import fi.oph.koski.http.KoskiErrorCategory

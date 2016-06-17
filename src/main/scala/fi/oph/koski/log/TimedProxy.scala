@@ -2,6 +2,7 @@ package fi.oph.koski.log
 
 import fi.oph.koski.util.{Proxy, Timing}
 import org.log4s._
+
 import scala.reflect.ClassTag
 
 object TimedProxy {

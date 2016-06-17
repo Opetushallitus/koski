@@ -1,6 +1,6 @@
 package fi.oph.koski.henkilo
 
-import fi.oph.koski.http.{KoskiErrorCategory, HttpStatus}
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 
 object HenkiloOid {
   def isValidHenkilöOid(oid: String) = {

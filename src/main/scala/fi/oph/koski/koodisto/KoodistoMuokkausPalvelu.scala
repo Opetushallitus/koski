@@ -1,9 +1,9 @@
 package fi.oph.koski.koodisto
 
 import com.typesafe.config.Config
+import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpStatusException, VirkailijaHttpClient}
 import fi.oph.koski.log.Logging
-import Http._
 
 /** Koodistojen ja koodien lisäyspalvelu **/
 

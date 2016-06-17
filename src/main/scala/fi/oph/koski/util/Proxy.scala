@@ -1,7 +1,9 @@
 package fi.oph.koski.util
 
 import java.lang.reflect.{InvocationHandler, Method}
+
 import fi.oph.koski.log.Loggable
+
 import scala.reflect.ClassTag
 
 case class Invocation(val f: NamedFunction, val args: List[AnyRef]) {

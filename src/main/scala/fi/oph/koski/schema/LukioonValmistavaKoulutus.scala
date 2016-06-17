@@ -1,7 +1,8 @@
 package fi.oph.koski.schema
 
 import java.time.LocalDate
-import fi.oph.scalaschema.annotation.{MaxItems, MinItems, Description}
+
+import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems}
 
 @Description("Lukioon valmistava koulutus (LUVA)")
 case class LukioonValmistavanKoulutuksenOpiskeluoikeus(

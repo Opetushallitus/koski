@@ -10,16 +10,16 @@ import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.fixture.Fixtures
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViitePalvelu}
+import fi.oph.koski.koski.KoskiValidator
+import fi.oph.koski.koskiuser.{DirectoryClientFactory, UserOrganisationsRepository}
 import fi.oph.koski.log.{Logging, TimedProxy}
 import fi.oph.koski.opiskeluoikeus.{CompositeOpiskeluOikeusRepository, OpiskeluOikeusRepository, PostgresOpiskeluOikeusRepository}
 import fi.oph.koski.oppija.OppijaRepository
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
-import fi.oph.koski.koski.KoskiValidator
-import fi.oph.koski.koskiuser.{DirectoryClientFactory, UserOrganisationsRepository}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.virta.{VirtaClient, VirtaOpiskeluoikeusRepository}
-import fi.oph.koski.ytr.{YlioppilasTutkintoRekisteri, YtrMock, YtrOpiskeluoikeusRepository}
+import fi.oph.koski.ytr.{YlioppilasTutkintoRekisteri, YtrOpiskeluoikeusRepository}
 
 object KoskiApplication {
   val defaultConfig = ConfigFactory.load

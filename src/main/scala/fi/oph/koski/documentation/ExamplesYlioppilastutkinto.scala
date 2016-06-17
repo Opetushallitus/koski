@@ -1,11 +1,11 @@
 package fi.oph.koski.documentation
 
-import fi.oph.koski.koodisto.{MockKoodistoPalvelu, KoodistoViitePalvelu}
+import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoPalvelu}
 import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.MockOrganisaatioRepository
 import fi.oph.koski.schema.Oppija
-import fi.oph.koski.ytr.{YtrOppijaConverter, YtrMock}
+import fi.oph.koski.ytr.{YtrMock, YtrOppijaConverter}
 
 object ExamplesYlioppilastutkinto {
   private lazy val koodistoViitePalvelu = KoodistoViitePalvelu(MockKoodistoPalvelu)

@@ -4,10 +4,10 @@ import java.sql.Timestamp
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.json.Json
-import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Koodistokoodiviite, Opiskeluoikeus}
 import fi.oph.koski.koskiuser.KoskiUser
+import fi.oph.koski.localization.LocalizedString
+import fi.oph.koski.schema.{Koodistokoodiviite, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
 import org.json4s._
 
 object Tables {

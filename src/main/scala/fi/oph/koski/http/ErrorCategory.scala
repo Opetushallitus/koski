@@ -4,7 +4,7 @@ private object ErrorCategory {
   def makeKey(key: String, subkey: String) = key + "." + subkey
 }
 
-import ErrorCategory._
+import fi.oph.koski.http.ErrorCategory._
 
 case class ErrorCategory(val key: String, val statusCode: Int, val message: String) {
   def this(parent: ErrorCategory, key: String, message: String) = {

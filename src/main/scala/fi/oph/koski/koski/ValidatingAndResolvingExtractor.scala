@@ -3,7 +3,7 @@ package fi.oph.koski.koski
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.{ContextualExtractor, Json}
 import fi.oph.koski.koodisto.{KoodistoResolvingDeserializer, KoodistoViitePalvelu}
-import fi.oph.koski.organisaatio.{OrganisaatioResolvingDeserializer, OrganisaatioRepository}
+import fi.oph.koski.organisaatio.{OrganisaatioRepository, OrganisaatioResolvingDeserializer}
 import org.json4s._
 
 object ValidatingAndResolvingExtractor {

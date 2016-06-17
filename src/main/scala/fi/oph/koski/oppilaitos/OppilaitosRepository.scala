@@ -3,7 +3,7 @@ package fi.oph.koski.oppilaitos
 import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.localization.LocalizedStringImplicits.LocalizedStringFinnishOrdering
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
-import fi.oph.koski.schema.{OrganisaatioWithOid, Koodistokoodiviite, OidOrganisaatio, Oppilaitos}
+import fi.oph.koski.schema.{Koodistokoodiviite, OidOrganisaatio, Oppilaitos}
 
 case class OppilaitosRepository(organisatioRepository: OrganisaatioRepository) {
   def oppilaitokset(implicit context: KoskiUser): Iterable[OidOrganisaatio] = {
