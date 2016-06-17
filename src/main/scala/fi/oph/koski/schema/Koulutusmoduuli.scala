@@ -36,3 +36,8 @@ trait Laajuus {
   @KoodistoUri("opintojenlaajuusyksikko")
   def yksikkö: Koodistokoodiviite
 }
+
+trait Valinnaisuus {
+  @Description("Onko pakollinen osa tutkinnossa")
+  def pakollinen: Boolean
+}

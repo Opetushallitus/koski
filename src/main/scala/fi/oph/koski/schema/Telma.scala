@@ -69,9 +69,8 @@ case class TyöhönJaItsenäiseenElämäänValmentavaKoulutus(
 case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa(
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusOsaamispisteissä],
-  @Description("Onko pakollinen osa tutkinnossa")
   pakollinen: Boolean
-) extends PaikallinenKoulutusmoduuli
+) extends PaikallinenKoulutusmoduuli with Valinnaisuus
 
 case class TelmaArviointi(
   @KoodistoUri("arviointiasteikkoammatillinenhyvaksyttyhylatty")

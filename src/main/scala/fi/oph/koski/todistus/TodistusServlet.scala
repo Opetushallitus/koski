@@ -48,8 +48,10 @@ class TodistusServlet(val userRepository: UserOrganisationsRepository, val direc
                     }
                   case None => Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy("Tutkinnon rakennetta diaarinumerolla " + t.koulutusmoduuli.perusteenDiaarinumero.getOrElse("(puuttuu)") + " ei löydy"))
                 }
-              case t @ (_: AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus | _:TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenSuoritus) =>
-                Right((new ValmaTodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t))
+              case t: AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus =>
+                Right(new ValmaTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t).todistusHtml)
+              case t: TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenSuoritus =>
+                Right(new TelmaTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t).todistusHtml)
               case t: LukionOppimääränSuoritus =>
                 Right((new LukionPaattoTodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t))
               case t: YlioppilastutkinnonSuoritus =>

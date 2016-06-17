@@ -18,8 +18,8 @@ class TelmaSpec extends FunSpec with Matchers with TodistusTestMethods with Opis
           |Työelämään valmentautuminen 20 Opiskelijalla on käsitys itsestä työntekijänä, mutta työyhteisön säännöt vaativat vielä harjaantumista.
           |
           |Valinnaiset koulutuksen osat 20 osp
-          |Tieto- ja viestintätekniikka sekä sen hyödyntäminen 1) 2 tyydyttävä 1
-          |Uimaliikunta ja vesiturvallisuus 2) 5 hyväksytty""".stripMargin)
+          |Tieto- ja viestintätekniikka sekä sen hyödyntäminen 2 tyydyttävä 1
+          |Uimaliikunta ja vesiturvallisuus 5 hyväksytty""".stripMargin)
     }
   }
 }

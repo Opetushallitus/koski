@@ -69,6 +69,5 @@ case class AmmatilliseenPeruskoulutukseenValmentavaKoulutus(
 case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa(
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusOsaamispisteissä],
-  @Description("Onko pakollinen osa tutkinnossa")
   pakollinen: Boolean
-) extends PaikallinenKoulutusmoduuli
+) extends PaikallinenKoulutusmoduuli with Valinnaisuus
