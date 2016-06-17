@@ -106,7 +106,7 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
           { examplesHtml(ExamplesPerusopetus.examples, "Perusopetus") }
           { examplesHtml(ExamplesPerusopetuksenLisaopetus.examples, "Perusopetuksen lisäopetus") }
           { examplesHtml(ExamplesLukio.examples ++ ExamplesLukioonValmistavaKoulutus.examples, "Lukiokoulutus") }
-          { examplesHtml(ExamplesAmmatillinen.examples ++ ExamplesAmmatilliseenPeruskoulutukseenValmentavaKoulutus.examples, "Ammatillinen koulutus") }
+          { examplesHtml(ExamplesAmmatillinen.examples ++ ExamplesValma.examples, "Ammatillinen koulutus") }
           { examplesHtml(ExamplesKorkeakoulu.examples, "Korkeakoulu (Virrasta)") }
           { examplesHtml(ExamplesYlioppilastutkinto.examples, "Ylioppilastutkinto (Ylioppilastutkintorekisteristä)") }
         </section>

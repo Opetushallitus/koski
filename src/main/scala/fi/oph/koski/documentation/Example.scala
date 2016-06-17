@@ -6,7 +6,7 @@ import fi.oph.koski.schema.{Koodistokoodiviite, Oppija}
 case class Example(name: String, description: String, data: Oppija, statusCode: Int = 200)
 
 object Examples {
-  val examples = ExamplesAmmatillinen.examples ++ ExamplesAmmatilliseenPeruskoulutukseenValmentavaKoulutus.examples ++
+  val examples = ExamplesAmmatillinen.examples ++ ExamplesValma.examples ++
     ExamplesPerusopetus.examples ++ ExamplesPerusopetuksenLisaopetus.examples ++ ExamplesLukioonValmistavaKoulutus.examples ++
     ExamplesLukio.examples ++ ExamplesYlioppilastutkinto.examples ++
     ExamplesKorkeakoulu.examples

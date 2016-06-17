@@ -17,7 +17,7 @@ case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOpiskeluoikeus(
   läsnäolotiedot: Option[Läsnäolotiedot] = None,
   @MinItems(1)
   @MaxItems(1)
-  suoritukset: List[AmmatilliseenPerustutkintoonValmentavanKoulutuksenSuoritus],
+  suoritukset: List[AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus],
   @KoodistoKoodiarvo("valma")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valma", "opiskeluoikeudentyyppi")
 ) extends KoskeenTallennettavaOpiskeluoikeus {
@@ -27,7 +27,7 @@ case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOpiskeluoikeus(
 }
 
 @Description("Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)")
-case class AmmatilliseenPerustutkintoonValmentavanKoulutuksenSuoritus(
+case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus(
   paikallinenId: Option[String] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
@@ -36,15 +36,15 @@ case class AmmatilliseenPerustutkintoonValmentavanKoulutuksenSuoritus(
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Henkilövahvistus] = None,
   @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osasuoritukset")
-  override val osasuoritukset: Option[List[AmmatilliseenPerustutkintoonValmentavanKoulutuksenOsanSuoritus]],
+  override val osasuoritukset: Option[List[AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus]],
   @KoodistoKoodiarvo("valma")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valma", koodistoUri = "suorituksentyyppi"),
-  koulutusmoduuli: AmmatilliseenPerustutkintoonValmentavaKoulutus
+  koulutusmoduuli: AmmatilliseenPeruskoulutukseenValmentavaKoulutus
 ) extends Suoritus {
   def arviointi = None
 }
 
-case class AmmatilliseenPerustutkintoonValmentavanKoulutuksenOsanSuoritus(
+case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus(
   paikallinenId: Option[String] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
@@ -58,7 +58,7 @@ case class AmmatilliseenPerustutkintoonValmentavanKoulutuksenOsanSuoritus(
 }
 
 @Description("Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)")
-case class AmmatilliseenPerustutkintoonValmentavaKoulutus(
+case class AmmatilliseenPeruskoulutukseenValmentavaKoulutus(
   @KoodistoUri("koulutus")
   @KoodistoKoodiarvo("999901")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999901", koodistoUri = "koulutus"),

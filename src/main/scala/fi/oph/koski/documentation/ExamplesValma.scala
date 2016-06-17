@@ -8,7 +8,7 @@ import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.schema._
 
-object ExamplesAmmatilliseenPeruskoulutukseenValmentavaKoulutus {
+object ExamplesValma {
   val valmaTodistus = Oppija(
     MockOppijat.valma.vainHenkilötiedot,
     List(
@@ -16,11 +16,11 @@ object ExamplesAmmatilliseenPeruskoulutukseenValmentavaKoulutus {
         alkamispäivä = Some(date(2009, 9, 14)),
         päättymispäivä = Some(date(2016, 6, 4)),
         oppilaitos = stadinAmmattiopisto,
-        suoritukset = List(AmmatilliseenPerustutkintoonValmentavanKoulutuksenSuoritus(
+        suoritukset = List(AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus(
           tila = tilaValmis,
           vahvistus = vahvistus(date(2016, 6, 4)),
           toimipiste = stadinAmmattiopisto,
-          koulutusmoduuli = AmmatilliseenPerustutkintoonValmentavaKoulutus(),
+          koulutusmoduuli = AmmatilliseenPeruskoulutukseenValmentavaKoulutus(),
           osasuoritukset = Some(List(
             valmaKurssinSuoritus("AKO", "Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen", 10f, arviointiHyväksytty, pakollinen = true),
             valmaKurssinSuoritus("OV", "Opiskeluvalmiuksien vahvistaminen", 10f, arviointiHyväksytty, pakollinen = false),
@@ -34,7 +34,7 @@ object ExamplesAmmatilliseenPeruskoulutukseenValmentavaKoulutus {
   )
   val examples = List(Example("ammatilliseen peruskoulutukseen valmentava koulutus", "Oppija on suorittanut ammatilliseen peruskoulutukseen valmentavan koulutuksen (VALMA)", valmaTodistus, 200))
 
-  private def valmaKurssinSuoritus(koodi: String, kuvaus: String, laajuusOsaamispisteissä: Float, arviointi: Option[List[AmmatillinenArviointi]], pakollinen: Boolean) = AmmatilliseenPerustutkintoonValmentavanKoulutuksenOsanSuoritus(
+  private def valmaKurssinSuoritus(koodi: String, kuvaus: String, laajuusOsaamispisteissä: Float, arviointi: Option[List[AmmatillinenArviointi]], pakollinen: Boolean) = AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus(
     tila = tilaValmis,
     koulutusmoduuli = AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa(
       tunniste = PaikallinenKoodi(koodi, LocalizedString.finnish(kuvaus), "stadin-valma-kurssit"),
