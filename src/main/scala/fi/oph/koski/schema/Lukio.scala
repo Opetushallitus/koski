@@ -160,7 +160,8 @@ case class ValtakunnallinenLukionKurssi(
 
 case class PaikallinenLukionKurssi(
   tunniste: PaikallinenKoodi,
-  override val laajuus: Option[LaajuusKursseissa]
+  override val laajuus: Option[LaajuusKursseissa],
+  kuvaus: LocalizedString
 ) extends LukionKurssi with PaikallinenKoulutusmoduuli
 
 trait LukionOppiaine extends YleissivistavaOppiaine {

@@ -199,7 +199,38 @@
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",
           "koodistoUri" : "suorituksentyyppi"
-        }
+        },
+        "työssäoppimisjaksot" : [ {
+          "alku" : "2014-01-01",
+          "loppu" : "2014-03-15",
+          "paikkakunta" : {
+            "koodiarvo" : "179",
+            "nimi" : {
+              "fi" : "Jyväskylä"
+            },
+            "koodistoUri" : "kunta"
+          },
+          "maa" : {
+            "koodiarvo" : "246",
+            "nimi" : {
+              "fi" : "Suomi"
+            },
+            "koodistoUri" : "maatjavaltiot2"
+          },
+          "työtehtävät" : {
+            "fi" : "Toimi harjoittelijana Sortti-asemalla"
+          },
+          "laajuus" : {
+            "arvo" : 5.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "Osaamispistettä"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        } ]
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
