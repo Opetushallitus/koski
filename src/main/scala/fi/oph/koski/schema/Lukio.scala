@@ -135,7 +135,16 @@ case class LukionKurssinSuoritus(
   paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
-  arviointi: Option[List[LukionKurssinArviointi]] = None
+  arviointi: Option[List[LukionKurssinArviointi]] = None,
+  @Description(
+    """
+      |Tieto siitä, onko kurssi saatu hyväksiluvun/tunnustetun (osaamisen tunnustamisen) kautta.
+      |
+      |Osaamisen tunnustamisella voidaan opiskelijalle lukea hyväksi ja korvata lukion oppimäärään kuuluvia pakollisia, syventäviä tai soveltavia opintoja.
+      |Opiskelijan osaamisen tunnustamisessa noudatetaan, mitä 17 ja 17 a §:ssä säädetään opiskelijan arvioinnista ja siitä päättämisestä.
+      |Mikäli opinnot tai muutoin hankittu osaaminen luetaan hyväksi opetussuunnitelman perusteiden mukaan numerolla arvioitavaan kurssiin, tulee kurssista antaa numeroarvosana.
+    """.stripMargin)
+  hyväksiluku: Option[Hyväksiluku] = None
 ) extends Suoritus with LukioonValmistavanKoulutuksenOsasuoritus {
   def vahvistus: Option[Vahvistus] = None
 }

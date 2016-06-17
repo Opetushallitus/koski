@@ -248,14 +248,6 @@ case class DefaultJärjestämismuoto(
   tunniste: Koodistokoodiviite
 ) extends Järjestämismuoto
 
-case class Hyväksiluku(
-  @Description("Aiemman, korvaavan suorituksen kuvaus")
-  osaaminen: Koulutusmoduuli, // TODO: tähän ehkä mieluummin Suoritus, koska se on "standalone"-entiteetti (löytyy diskriminaattori)
-  @Description("Osaamisen tunnustamisen kautta saatavan tutkinnon osan suorituksen selite")
-  @OksaUri("tmpOKSAID629", "osaamisen tunnustaminen")
-  selite: Option[LocalizedString]
-)
-
 @Description("Henkilökohtainen opetuksen järjestämistä koskeva suunnitelma, https://fi.wikipedia.org/wiki/HOJKS")
 @OksaUri("tmpOKSAID228", "erityisopiskelija")
 case class Hojks(
