@@ -47,7 +47,18 @@ case class LukionOpiskeluoikeudenLisätiedot(
   @Description("Tieto siitä, että oppilaalla on oikeus maksuttomaan asuntolapaikkaan, alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilaalla ole oikeutta maksuttomaan asuntolapaikkaan.")
   oikeusMaksuttomaanAsuntolapaikkaan: Option[Päätösjakso] = None,
   @Description("""Tieto siitä, että oppilas on sisäoppilaismaisessa majoituksessa, alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole sisäoppilasmaisessa majoituksessa.""")
-  sisäoppilaitosmainenMajoitus: Option[Päätösjakso] = None
+  sisäoppilaitosmainenMajoitus: Option[Päätösjakso] = None,
+  @Description("Tieto siitä liittyykö opintoihin ulkomaanjakso")
+  ulkomaanjakso: Option[Ulkomaanjakso] = None
+)
+
+case class Ulkomaanjakso(
+  @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
+  alku: Option[LocalDate],
+  @Description("Jakson loppumispäivämäärä. Muoto YYYY-MM-DD")
+  loppu: Option[LocalDate],
+  @KoodistoUri("maatjavaltiot2")
+  maa: Koodistokoodiviite
 )
 
 case class Erityinenkoulutustehtävä(
