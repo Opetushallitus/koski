@@ -12,17 +12,18 @@ import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppija.PossiblyUnverifiedOppijaOid
 import fi.oph.koski.schema.Henkilö._
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KorkeakoulunOpiskeluoikeus, Opiskeluoikeus, TaydellisetHenkilötiedot}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, TaydellisetHenkilötiedot}
 import fi.oph.koski.util.ReactiveStreamsToRx
 import org.json4s.JArray
 import rx.lang.scala.Observable
-import slick.dbio
 import slick.dbio.Effect.{Read, Transactional, Write}
 import slick.dbio.NoStream
+import slick.lifted.Query
+import slick.{dbio, lifted}
 
 class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: OpiskeluoikeusHistoryRepository) extends OpiskeluOikeusRepository with GlobalExecutionContext with Futures with Logging with SerializableTransactions {
   override def filterOppijat(oppijat: Seq[TaydellisetHenkilötiedot])(implicit user: KoskiUser) = {
-    val query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = for {
+    val query: lifted.Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = for {
       oo <- OpiskeluOikeudetWithAccessCheck
       if oo.oppijaOid inSetBind oppijat.map(_.oid)
     } yield {
