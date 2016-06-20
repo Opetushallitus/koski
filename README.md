@@ -273,6 +273,16 @@ Serverille pääsee myös ssh:lla kätevästi:
 
     make ssh
     less /home/git/logs/koski.log
+    
+## Build-prosessi ja hakemistot
+
+Paikallisesti ajettaessa Jetty lataa resurssit hakemistosta [target/webapp] jonka sisältyy muodostuu webpack-buildilla, ks [webpack.config.js](web/webpack.config.js), joka muun muassa kopioi staattisia resursseja paikoilleen
+hakemistosta [web] ja sen alihakemistoista.
+
+Staattisista tiedostoista palvellaan vain `web.xml` -tiedostossa erikseen määritellyt polut. 
+Tietyt polut ohjataan palvelemaan etusivun sisältö, ks. [ScalatraBootstrap](src/main/scala/ScalatraBootstrap.scala) ja [IndexServlet](src/main/scala/fi/oph/koski/servlet/IndexServlet.scala). 
+
+Versioitu paketti tehdään kopioimalla versionhallinnassa olevat tiedostot hakemistoon [target/build] ja buildaamalla applikaatio uudelleen siellä (ks [scripts/dist.sh]. War-pakettiin päätyy siis lopulta [target/build/target/webapp] -hakemiston sisältö.
 
 ## Toteutus ja integraatiot
 
