@@ -1,3 +1,16 @@
+## 20.6.2016
+- Lisätty lukion oppiaineen oppimäärän suoritus
+- Lisätty ulkomainen vaihtoopiskelija lukion opiskeluoikeuden lisätietoihin
+- Lisätty alle 18 vuotiaan aikuisten lukiokoulutuksen aloittamisen syy lukion opiskeluoikeuden lisätietoihin
+- Lisätty yksityisopiskelija lukion opiskeluoikeuden lisätietoihin
+- Lisätty erityinen koulutustehtävä (kesken) lukion opiskeluoikeuden lisätietoihin
+- Lisätty oikeus maksuttomaan asuntolapaikkaan lukion opiskeluoikeuden lisätietoihin
+- Lisätty sisäoppilaitosmainen majoitus lukion opiskeluoikeuden lisätietoihin
+- Lisätty oppimäärä (aikuisten/nuorten ops) lukion oppimäärän suoritukseen
+- Lisätty ulkomaanjakso lukion opiskeluoikeuden lisätietoihin
+- Lisätty kuvaus paikalliseen lukiokurssiin
+- Lisätty hyväksiluku lukion kurssin suoritukseen (kesken)
+
 ## 16.6.2016
 
 - Lisätty oikeusMaksuttomaanAsuntolapaikkaan ammatilliseen koulutukseen
