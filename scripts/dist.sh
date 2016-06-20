@@ -11,7 +11,7 @@ function usage() {
 }
 
 function buildversiontxt() {
-  cat >$BASE_DIR/target/build/web/buildversion.txt <<EOL
+  cat >$BASE_DIR/target/build/web/static/buildversion.txt <<EOL
 artifactId=koski
 version=$version
 vcsRevision=`git rev-parse HEAD`
