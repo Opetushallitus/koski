@@ -10,6 +10,7 @@
 - Lisätty ulkomaanjakso lukion opiskeluoikeuden lisätietoihin
 - Lisätty kuvaus paikalliseen lukiokurssiin
 - Lisätty hyväksiluku lukion kurssin suoritukseen (kesken)
+- Lisätty näyttötutkintoon valmistava koulutus
 
 ## 16.6.2016
 
