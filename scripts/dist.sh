@@ -10,9 +10,18 @@ function usage() {
   exit 1
 }
 
+function buildversiontxt() {
+  cat >$BASE_DIR/target/build/web/buildversion.txt <<EOL
+artifactId=koski
+version=$version
+vcsRevision=`git rev-parse HEAD`
+EOL
+}
+
 function create_version() {
-  mkdir -p $BASE_DIR/target && rm -rf target/build && git archive --format=tar --prefix=build/ HEAD | (cd $BASE_DIR/target && tar xf -)
+  mkdir -p $BASE_DIR/target && rm -rf $BASE_DIR/target/build && git archive --format=tar --prefix=build/ HEAD | (cd $BASE_DIR/target && tar xf -)
   cp -r $BASE_DIR/web/node_modules $BASE_DIR/target/build/web/ || true
+  buildversiontxt
 
   if [ "$version" == "local" ]; then
     (cd $BASE_DIR/target/build && mvn install -DskipTests=true)
