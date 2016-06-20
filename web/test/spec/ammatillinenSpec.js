@@ -339,6 +339,17 @@ describe('Ammatillinen koulutus', function() {
     })
   })
 
+  describe('Näyttötutkintoon valmistava koulutus', function() {
+    before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.search('200696-906R', page.isOppijaSelected('Erja')))
+    describe('Oppijan suorituksissa', function() {
+      it('näytetään', function() {
+        expect(OpinnotPage().getOppilaitos()).to.equal("Stadin ammattiopisto")
+        expect(OpinnotPage().getTutkinto(0)).to.equal("Autoalan työnjohdon erikoisammattitutkinto")
+        expect(OpinnotPage().getTutkinto(1)).to.equal("Autoalan työnjohdon erikoisammattitutkinto")
+      })
+    })
+  })
+
   describe('Ammatilliseen peruskoulutukseen valmentava koulutus', function() {
     before(page.openPage, page.oppijaHaku.search('160696-993Y', page.isOppijaSelected('Anneli')))
     describe('Oppijan suorituksissa', function() {

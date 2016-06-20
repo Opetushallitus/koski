@@ -33,6 +33,7 @@ object MockOppijat {
   val ylioppilas = oppijat.oppija("Ylioppilas", "Ynjevi", "010696-971K")
   val toimintaAlueittainOpiskelija = oppijat.oppija("Toiminta", "Tommi", "130696-913E")
   val telma = oppijat.oppija("Telmanen", "Tuula", "170696-986C")
+  val erikoisammattitutkinto = oppijat.oppija("Erikoinen", "Erja", "200696-906R")
 
   def defaultOppijat = oppijat.getOppijat
 }

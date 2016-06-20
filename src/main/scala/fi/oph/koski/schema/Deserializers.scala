@@ -20,6 +20,7 @@ object Deserializers {
     LukionPäätasonSuoritusDeserializer,
     PerusopetuksenOppiaineDeserializer,
     PerusopetuksenPäätasonSuoritusDeserializer,
+    AmmatillinenPäätasonSuoritusDeserializer,
     OppiaineenTaiToimintaAlueenSuoritusDeserializer,
     LukionKurssiDeserializer,
     LukioonValmistavanKoulutuksenOsasuoritusDeserializer
@@ -177,6 +178,19 @@ object PerusopetuksenPäätasonSuoritusDeserializer extends Deserializer[Perusop
         case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("perusopetuksenvuosiluokka") => suoritus.extract[PerusopetuksenVuosiluokanSuoritus]
         case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("perusopetuksenoppiaineenoppimaara") => suoritus.extract[PerusopetuksenOppiaineenOppimääränSuoritus]
         case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("perusopetuksenoppimaara") => suoritus.extract[PerusopetuksenOppimääränSuoritus]
+        case _ => throw CannotDeserializeException(this, json)
+      }
+  }
+}
+
+object AmmatillinenPäätasonSuoritusDeserializer extends Deserializer[AmmatillinenPäätasonSuoritus] {
+  private val AmmatillinenPäätasonSuoritusClass = classOf[AmmatillinenPäätasonSuoritus]
+
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), AmmatillinenPäätasonSuoritus] = {
+    case (TypeInfo(AmmatillinenPäätasonSuoritusClass, _), json) =>
+      json match {
+        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("ammatillinentutkinto") => suoritus.extract[AmmatillisenTutkinnonSuoritus]
+        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("nayttotutkintoonvalmistavakoulutus") => suoritus.extract[NäyttötutkintoonValmistavanKoulutuksenSuoritus]
         case _ => throw CannotDeserializeException(this, json)
       }
   }

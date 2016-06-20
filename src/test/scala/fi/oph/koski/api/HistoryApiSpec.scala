@@ -3,7 +3,7 @@ package fi.oph.koski.api
 import java.time.LocalDate
 
 import fi.oph.koski.db.OpiskeluOikeusHistoryRow
-import fi.oph.koski.documentation.ExamplesAmmatillinen
+import fi.oph.koski.documentation.{AmmatillinenOldExamples, ExamplesAmmatillinen}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.jettylauncher.SharedJetty
 import fi.oph.koski.json.Json
@@ -27,7 +27,7 @@ class HistoryApiSpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatillinen{
       }
 
       it("osasuorituksilla") {
-        val opiskeluOikeus = createOpiskeluOikeus(oppija, ExamplesAmmatillinen.full.opiskeluoikeudet(0))
+        val opiskeluOikeus = createOpiskeluOikeus(oppija, AmmatillinenOldExamples.full.opiskeluoikeudet(0))
         verifyHistory(oppija, opiskeluOikeus, List(1))
       }
     }

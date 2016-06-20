@@ -4,7 +4,7 @@ import fi.oph.koski.json.Json
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.schema.{Oppija, Koodistokoodiviite, Oppilaitos, TaydellisetHenkilötiedot}
+import fi.oph.koski.schema._
 import fi.oph.koski.koski.HenkilönOpiskeluoikeusVersiot
 import org.scalatest.FreeSpec
 
@@ -37,14 +37,14 @@ class OppijaUpdateSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillin
       "Koodistojen tiedot" - {
         "Ilman nimeä -> haetaan nimi" in {
           val opiskeluOikeus = createOpiskeluOikeus(oppija, uusiOpiskeluOikeus)
-          opiskeluOikeus.suoritukset(0).koulutusmoduuli.tunniste.nimi.get.get("fi") should equal("Autoalan perustutkinto")
-          opiskeluOikeus.suoritukset(0).koulutusmoduuli.tunniste.nimi.get.get("sv") should equal("Grundexamen inom bilbranschen")
+          val suoritus = opiskeluOikeus.suoritukset(0).asInstanceOf[AmmatillisenTutkinnonSuoritus]
+          suoritus.koulutusmoduuli.tunniste.nimi.get.get("fi") should equal("Autoalan perustutkinto")
+          suoritus.koulutusmoduuli.tunniste.nimi.get.get("sv") should equal("Grundexamen inom bilbranschen")
         }
         "Väärällä nimellä -> korvataan nimi" in {
-          val opiskeluOikeus = createOpiskeluOikeus(oppija, uusiOpiskeluOikeus.copy(suoritukset = uusiOpiskeluOikeus.suoritukset.map(suoritus =>
-            suoritus.copy(koulutusmoduuli = suoritus.koulutusmoduuli.copy(tunniste = Koodistokoodiviite(koodiarvo = "351301", nimi=Some(LocalizedString.finnish("Läppätutkinto")), koodistoUri = "koulutus")))
-          )))
-          opiskeluOikeus.suoritukset(0).koulutusmoduuli.tunniste.nimi.get.get("fi") should equal("Autoalan perustutkinto")
+          val opiskeluOikeus = createOpiskeluOikeus(oppija, uusiOpiskeluOikeus.copy(suoritukset = List(tutkintoSuoritus.copy(koulutusmoduuli = tutkintoSuoritus.koulutusmoduuli.copy(tunniste = Koodistokoodiviite(koodiarvo = "351301", nimi=Some(LocalizedString.finnish("Läppätutkinto")), koodistoUri = "koulutus"))))))
+
+          opiskeluOikeus.suoritukset(0).asInstanceOf[AmmatillisenTutkinnonSuoritus].koulutusmoduuli.tunniste.nimi.get.get("fi") should equal("Autoalan perustutkinto")
         }
       }
 

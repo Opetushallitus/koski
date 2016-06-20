@@ -86,8 +86,9 @@ object AmmatillinenExampleData {
   lazy val hyväksiluku = Hyväksiluku(
     OpsTutkinnonosa(Koodistokoodiviite("100238", Some("Asennushitsaus"), "tutkinnonosat", Some(1)), true, None),
     Some("Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"))
+  lazy val hyväksytty: Koodistokoodiviite = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1))
   lazy val arviointiHyväksytty: Some[List[AmmatillinenArviointi]] = Some(List(AmmatillinenArviointi(
-    arvosana = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1)), date(2013, 3, 20),
+    arvosana = hyväksytty, date(2013, 3, 20),
     arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen"))))))
 
   def vahvistus(date: LocalDate) = Some(Henkilövahvistus(date, helsinki, stadinAmmattiopisto, List(OrganisaatioHenkilö("Keijo Perttilä", "rehtori", stadinAmmattiopisto))))
@@ -132,6 +133,32 @@ object AmmatillinenExampleData {
     Oppija(
       henkilö,
       List(opiskeluOikeus)
+    )
+  }
+
+  def tutkinnonOsanSuoritus(koodi: String, nimi: String, arvosana: Koodistokoodiviite, laajuus: Float): AmmatillisenTutkinnonOsanSuoritus = {
+    tutkinnonOsanSuoritus(koodi, nimi, arvosana, Some(laajuus))
+  }
+
+  def tutkinnonOsanSuoritus(koodi: String, nimi: String, arvosana: Koodistokoodiviite, laajuus: Option[Float] = None): AmmatillisenTutkinnonOsanSuoritus = {
+    val osa: OpsTutkinnonosa = OpsTutkinnonosa(Koodistokoodiviite(koodi, Some(nimi), "tutkinnonosat", Some(1)), true, laajuus.map(l =>LaajuusOsaamispisteissä(l)))
+    tutkonnonOsanSuoritus(arvosana, osa)
+  }
+
+  def paikallisenTutkinnonOsanSuoritus(koodi: String, nimi: String, arvosana: Koodistokoodiviite, laajuus: Float): AmmatillisenTutkinnonOsanSuoritus = {
+    val osa: PaikallinenTutkinnonosa = PaikallinenTutkinnonosa(PaikallinenKoodi(koodi, nimi, "paikallinen"), nimi, false, Some(LaajuusOsaamispisteissä(laajuus)))
+    tutkonnonOsanSuoritus(arvosana, osa)
+  }
+
+  def tutkonnonOsanSuoritus(arvosana: Koodistokoodiviite, osa: AmmatillisenTutkinnonOsa): AmmatillisenTutkinnonOsanSuoritus = {
+    AmmatillisenTutkinnonOsanSuoritus(
+      koulutusmoduuli = osa,
+      näyttö = None, paikallinenId = None, suorituskieli = None,
+      tila = tilaValmis,
+      alkamispäivä = None,
+      toimipiste = Some(toimipiste),
+      arviointi = Some(List(AmmatillinenArviointi(arvosana = arvosana, date(2014, 10, 20)))),
+      vahvistus = vahvistus(date(2016, 5, 31))
     )
   }
 }

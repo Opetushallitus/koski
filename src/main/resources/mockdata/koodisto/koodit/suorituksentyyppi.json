@@ -24,6 +24,30 @@
     "versio": 1
   },
   {
+    "koodiUri": "suorituksentyyppi_nayttotutkintoonvalmistavakoulutus",
+    "koodiArvo": "nayttotutkintoonvalmistavakoulutus",
+    "metadata": [
+      {
+        "nimi": "Näyttötutkintoon valmistava koulutus",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "suorituksentyyppi_nayttotutkintoonvalmistavankoulutuksenosa",
+    "koodiArvo": "nayttotutkintoonvalmistavankoulutuksenosa",
+    "metadata": [
+      {
+        "nimi": "Näyttötutkintoon valmistavan koulutuksen osa",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
     "koodiUri": "suorituksentyyppi_perusopetuksenoppimaara",
     "koodiArvo": "perusopetuksenoppimaara",
     "metadata": [

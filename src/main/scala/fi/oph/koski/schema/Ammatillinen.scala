@@ -16,8 +16,8 @@ case class AmmatillinenOpiskeluoikeus(
   päättymispäivä: Option[LocalDate] = None,
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OrganisaatioWithOid] = None,
-  @MinItems(1) @MaxItems(1)
-  suoritukset: List[AmmatillisenTutkinnonSuoritus],
+  @MinItems(1) @MaxItems(2)
+  suoritukset: List[AmmatillinenPäätasonSuoritus],
   @Description("Opiskelijan suorituksen tavoite-tieto kertoo sen, suorittaako opiskelija tutkintotavoitteista koulutusta (koko tutkintoa) vai tutkinnon osa tavoitteista koulutusta (tutkinnon osaa)")
   @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("ammatillinentutkinto")
@@ -32,6 +32,8 @@ case class AmmatillinenOpiskeluoikeus(
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
 }
+
+sealed trait AmmatillinenPäätasonSuoritus extends Suoritus
 
 case class AmmatillisenOpiskeluoikeudenLisätiedot(
   hojks: Option[Hojks],
@@ -52,6 +54,31 @@ case class AmmatillinenOpiskeluoikeusjakso(
   opintojenRahoitus: Option[Koodistokoodiviite]
 ) extends Opiskeluoikeusjakso
 
+case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
+  koulutusmoduuli: AmmatillinenTutkintoKoulutus,
+  @Description("Tieto siitä mihin tutkintonimikkeeseen oppijan tutkinto liittyy")
+  @KoodistoUri("tutkintonimikkeet")
+  @OksaUri("tmpOKSAID588", "tutkintonimike")
+  tutkintonimike: Option[List[Koodistokoodiviite]] = None,
+  @Description("Osaamisala")
+  @KoodistoUri("osaamisala")
+  @OksaUri(tunnus = "tmpOKSAID299", käsite = "osaamisala")
+  osaamisala: Option[List[Koodistokoodiviite]] = None,
+  paikallinenId: Option[String] = None,
+  suorituskieli: Option[Koodistokoodiviite] = None,
+  tila: Koodistokoodiviite,
+  override val alkamispäivä: Option[LocalDate],
+  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
+  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
+  toimipiste: OrganisaatioWithOid,
+  vahvistus: Option[Henkilövahvistus] = None,
+  @Description("Valmistavan koulutuksen osat")
+  override val osasuoritukset: Option[List[NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus]] = None,
+  @KoodistoKoodiarvo("nayttotutkintoonvalmistavakoulutus")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("nayttotutkintoonvalmistavakoulutus", "suorituksentyyppi")
+) extends AmmatillinenPäätasonSuoritus {
+  def arviointi: Option[List[AmmatillinenArviointi]] = None
+}
 
 case class AmmatillisenTutkinnonSuoritus(
   koulutusmoduuli: AmmatillinenTutkintoKoulutus,
@@ -82,7 +109,7 @@ case class AmmatillisenTutkinnonSuoritus(
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = None,
   @KoodistoKoodiarvo("ammatillinentutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinentutkinto", "suorituksentyyppi")
-) extends Suoritus {
+) extends AmmatillinenPäätasonSuoritus {
   def arviointi: Option[List[AmmatillinenArviointi]] = None
 }
 
@@ -273,3 +300,23 @@ case class AmmatillinenLäsnäolojakso(
   @KoodistoUri("lasnaolotila")
   tila: Koodistokoodiviite
 ) extends Läsnäolojakso
+
+case class NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
+  paikallinenId: Option[String] = None,
+  suorituskieli: Option[Koodistokoodiviite] = None,
+  tila: Koodistokoodiviite,
+  @KoodistoKoodiarvo("nayttotutkintoonvalmistavankoulutuksenosa")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("nayttotutkintoonvalmistavankoulutuksenosa", koodistoUri = "suorituksentyyppi"),
+  koulutusmoduuli: NäyttötutkintoonValmistavanKoulutuksenOsa
+) extends Suoritus {
+  override def osasuoritukset = None
+  def arviointi = None
+  def vahvistus = None
+}
+
+@Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osa")
+case class NäyttötutkintoonValmistavanKoulutuksenOsa(
+  tunniste: PaikallinenKoodi
+) extends PaikallinenKoulutusmoduuli {
+  def laajuus = None
+}
