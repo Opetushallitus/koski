@@ -7,7 +7,7 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
   describe("Perusopetuksen todistukset") {
     it("Perusopetuksen päättötodistus") {
       resetFixtures
-      todistus(MockOppijat.koululainen.oid, "perusopetus", Some("koulutus/201101")) should equal(
+      todistus(MockOppijat.koululainen.oid, "perusopetuksenoppimaara", Some("koulutus/201101")) should equal(
         """|Jyväskylän yliopisto
           |Perusopetuksen päättötodistus
           |Jyväskylän normaalikoulu
@@ -37,7 +37,7 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
           |B2-kieli, saksa 4.0 Kiitettävä 9""".stripMargin)
     }
     it("Perusopetuksen päättötodistus toiminta-alueittain, sanallisella arvioinnilla") {
-      todistus(MockOppijat.toimintaAlueittainOpiskelija.oid, "perusopetus") should equal(
+      todistus(MockOppijat.toimintaAlueittainOpiskelija.oid, "perusopetuksenoppimaara") should equal(
         """Jyväskylän yliopisto
           |Perusopetuksen päättötodistus
           |Jyväskylän normaalikoulu
@@ -51,7 +51,7 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
     }
 
     it("Perusopetuksen oppiaineen oppimäärän todistus") {
-      todistus(MockOppijat.oppiaineenKorottaja.oid, "perusopetus") should equal(
+      todistus(MockOppijat.oppiaineenKorottaja.oid, "perusopetuksenoppiaineenoppimaara") should equal(
         """Jyväskylän yliopisto
           |Todistus perusopetuksen oppiaineen oppimäärän suorittamisesta
           |Jyväskylän normaalikoulu
@@ -61,7 +61,7 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
     }
 
     it("Perusopetuksen lukuvuositodistus") {
-      todistus(MockOppijat.koululainen.oid, "perusopetus", Some("perusopetuksenluokkaaste/8")) should equal(
+      todistus(MockOppijat.koululainen.oid, "perusopetuksenvuosiluokka", Some("perusopetuksenluokkaaste/8")) should equal(
         """Jyväskylän yliopisto
           |Lukuvuositodistus - 8. vuosiluokka
           |Jyväskylän normaalikoulu

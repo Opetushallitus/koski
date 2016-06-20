@@ -5,7 +5,7 @@ import org.scalatest.FreeSpec
 
 class AmmatillinenSpec extends FreeSpec with TodistusTestMethods{
   "Ammatillisen perustutkinnon päättötodistus" in {
-    todistus(MockOppijat.ammattilainen.oid, "ammatillinenkoulutus") should equal("""HELSINGIN KAUPUNKI
+    todistus(MockOppijat.ammattilainen.oid, "ammatillinentutkinto") should equal("""HELSINGIN KAUPUNKI
                                                                                    |Stadin ammattiopisto
                                                                                    |Päättötodistus
                                                                                    |Luonto- ja ympäristöalan perustutkinto
@@ -31,5 +31,16 @@ class AmmatillinenSpec extends FreeSpec with TodistusTestMethods{
                                                                                    |Opiskelijan suorittamien tutkinnon osien laajuus osaamispisteinä 180
                                                                                    |Tutkintoon sisältyy
                                                                                    |Työssäoppimisen kautta hankittu osaaminen (5.0 osp)""".stripMargin)
+  }
+
+  "Näyttötutkintoon valmistava koulutus" in {
+    resetFixtures
+    todistus(MockOppijat.erikoisammattitutkinto.oid, "nayttotutkintoonvalmistavakoulutus") should equal("""Stadin ammattiopisto
+                                                                                                          |Näyttötutkintoon valmistavan koulutuksen osallistumistodistus
+                                                                                                          |Erikoinen, Erja 200696-906R
+                                                                                                          |on osallistunut Autoalan työnjohdon erikoisammattitutkinto, valmistavaan koulutukseen 1.9.2012 seuraavilta osin:
+                                                                                                          |Koulutuksen sisällöt
+                                                                                                          |Johtaminen ja henkilöstön kehittäminen
+                                                                                                          |Tutkintotodistuksen saamiseksi on osoitettava tukinnon perusteissa edellytetty ammattitaito tutkintotilaisuuksissa tutkintotoimikunnan valvonnassa. Tutkintotoimikunta antaa tutkintotodistuksen erikseen.""".stripMargin)
   }
 }

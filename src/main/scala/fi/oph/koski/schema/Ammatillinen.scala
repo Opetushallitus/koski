@@ -68,6 +68,7 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate],
+  val loppumispäivä: Option[LocalDate],
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,

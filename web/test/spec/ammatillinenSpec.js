@@ -339,13 +339,38 @@ describe('Ammatillinen koulutus', function() {
     })
   })
 
-  describe('Näyttötutkintoon valmistava koulutus', function() {
+  describe('Näyttötutkinnot', function() {
     before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.search('200696-906R', page.isOppijaSelected('Erja')))
-    describe('Oppijan suorituksissa', function() {
-      it('näytetään', function() {
-        expect(OpinnotPage().getOppilaitos()).to.equal("Stadin ammattiopisto")
-        expect(OpinnotPage().getTutkinto(0)).to.equal("Autoalan työnjohdon erikoisammattitutkinto")
-        expect(OpinnotPage().getTutkinto(1)).to.equal("Autoalan työnjohdon erikoisammattitutkinto")
+    describe('Näyttötutkintoon valmistava koulutus', function() {
+      describe('Oppijan suorituksissa', function() {
+        it('näytetään', function() {
+          expect(OpinnotPage().getOppilaitos()).to.equal("Stadin ammattiopisto")
+          expect(OpinnotPage().getTutkinto(0)).to.equal("Autoalan työnjohdon erikoisammattitutkinto") // Toistaiseksi näkyy näin
+        })
+      })
+
+      describe('Tulostettava todistus', function() {
+        before(OpinnotPage().avaaTodistus(0))
+        it('näytetään', function() {
+          expect(TodistusPage().vahvistus()).to.equal('Helsinki 31.5.2015 Keijo Perttilä rehtori')
+        })
+      })
+    })
+
+    describe('Erikoisammattitutkinto', function() {
+      before(TodistusPage().close, wait.until(page.isOppijaSelected('Erja')))
+      describe('Oppijan suorituksissa', function() {
+        it('näytetään', function() {
+          expect(OpinnotPage().getOppilaitos()).to.equal("Stadin ammattiopisto")
+          expect(OpinnotPage().getTutkinto(1)).to.equal("Autoalan työnjohdon erikoisammattitutkinto")
+        })
+      })
+
+      describe('Tulostettava todistus', function() {
+        before(OpinnotPage().avaaTodistus(1))
+        it('näytetään', function() {
+          expect(TodistusPage().vahvistus()).to.equal('Helsinki 31.5.2016 Keijo Perttilä rehtori')
+        })
       })
     })
   })

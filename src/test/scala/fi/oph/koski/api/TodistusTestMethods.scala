@@ -9,7 +9,7 @@ import scala.xml.{Node, XML}
 
 trait TodistusTestMethods extends SearchTestMethods with OpiskeluOikeusTestMethods {
   def todistus(oppijaOid: String, tyyppi: String, koulutusmoduuli: Option[String] = None): String = {
-    var path: String = s"todistus/${oppijaOid}?opiskeluoikeusTyyppi=${tyyppi}"
+    var path: String = s"todistus/${oppijaOid}?suoritustyyppi=${tyyppi}"
     koulutusmoduuli foreach { koulutusmoduuli => path = path + s"&koulutusmoduuli=${koulutusmoduuli}" }
     authGet(path) {
       verifyResponseStatus(200)

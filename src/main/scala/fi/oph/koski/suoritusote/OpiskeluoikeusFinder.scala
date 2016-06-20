@@ -10,7 +10,6 @@ case class OpiskeluoikeusFinder(koski: KoskiFacade) {
     val filters: List[(Opiskeluoikeus => Boolean)] = params.toList.flatMap {
       case ("oppilaitos", oppilaitosOid: String) => Some({ oo: Opiskeluoikeus => oo.oppilaitos.oid == oppilaitosOid })
       case ("opiskeluoikeus", ooId: String) => Some({ oo: Opiskeluoikeus => oo.id.exists(_.toString == ooId) })
-      case ("opiskeluoikeusTyyppi", tyyppi: String) => Some({ oo: Opiskeluoikeus => oo.tyyppi.koodiarvo == tyyppi})
       case (_, _) => None
     }
     koski.findOppija(oppijaOid) match {

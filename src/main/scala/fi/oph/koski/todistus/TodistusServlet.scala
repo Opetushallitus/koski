@@ -17,6 +17,7 @@ class TodistusServlet(val userRepository: UserOrganisationsRepository, val direc
 
     val filters: List[(Suoritus => Boolean)] = params.toList.flatMap {
       case ("koulutusmoduuli", koulutusmoduuli: String) => Some({ s: Suoritus => s.koulutusmoduuli.tunniste.toString == koulutusmoduuli })
+      case ("suoritustyyppi", suoritustyyppi: String) => Some({ s: Suoritus => s.tyyppi.koodiarvo == suoritustyyppi })
       case (_, _) => None
     }
 
@@ -48,6 +49,8 @@ class TodistusServlet(val userRepository: UserOrganisationsRepository, val direc
                     }
                   case None => Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy("Tutkinnon rakennetta diaarinumerolla " + t.koulutusmoduuli.perusteenDiaarinumero.getOrElse("(puuttuu)") + " ei löydy"))
                 }
+              case t: NäyttötutkintoonValmistavanKoulutuksenSuoritus =>
+                Right(new NäyttötutkintoonValmentavanKoulutuksenTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t).todistusHtml)
               case t: AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus =>
                 Right(new ValmaTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t).todistusHtml)
               case t: TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenSuoritus =>

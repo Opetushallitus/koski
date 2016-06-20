@@ -47,7 +47,7 @@ export const OpiskeluOikeus = React.createClass({
 const Todistus = React.createClass({
   render() {
     let {suoritus, oppija} = this.props
-    let href = '/koski/todistus/' + oppija.oid + '?koulutusmoduuli=' + suoritus.koulutusmoduuli.tunniste.koodistoUri + '/' + suoritus.koulutusmoduuli.tunniste.koodiarvo
+    let href = '/koski/todistus/' + oppija.oid + '?suoritustyyppi=' + suoritus.tyyppi.koodiarvo + '&koulutusmoduuli=' + suoritus.koulutusmoduuli.tunniste.koodistoUri + '/' + suoritus.koulutusmoduuli.tunniste.koodiarvo
     return suoritus.tila.koodiarvo == 'VALMIS' && suoritus.tyyppi.koodiarvo != 'korkeakoulututkinto'
       ? <a className="todistus" href={href}>näytä todistus</a>
       : null
