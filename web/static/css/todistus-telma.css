@@ -1,0 +1,28 @@
+div {
+    margin-bottom: 20px;
+}
+
+.rakennemoduuli td, .opintojen-laajuus td {
+    padding: 10px 0 10px;
+    font-weight: bold;
+}
+
+td, th {
+    vertical-align: top;
+}
+
+.tutkinnon-osa td:first-child {
+    padding-left: 50px;
+}
+
+td.oppiaine, th.oppiaine {
+    width: 41%;
+}
+
+td.laajuus, th.laajuus {
+    width: 5%;
+}
+
+td.arvosana, th.arvosana {
+    width: 48%;
+}

@@ -6,9 +6,7 @@ import org.scalatest.{FunSpec, Matchers}
 class TelmaSpec extends FunSpec with Matchers with TodistusTestMethods with OpiskeluOikeusTestMethods {
   describe("Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)") {
     it("Päättötodistus") {
-      val todistus1: String = todistus(MockOppijat.telma.oid, "telma")
-      println(todistus1)
-      todistus1 should equal(
+      todistus(MockOppijat.telma.oid, "telma") should equal(
         """Työhön ja itsenäiseen elämään valmentava koulutus
           |Jyväskylän yliopisto
           |Jyväskylän normaalikoulu
