@@ -9,8 +9,6 @@ import org.json4s.reflect.{Reflector, TypeInfo}
 object Deserializers {
   val deserializers = List(
     ArviointiSerializer,
-    KorkeakoulunArviointiDeserializer,
-    PerusopetuksenOppiaineenArviointiDeserializer,
     LocalizedStringDeserializer,
     OpiskeluOikeusDeserializer,
     KorkeakouluSuoritusDeserializer,
@@ -29,9 +27,34 @@ object Deserializers {
 }
 
 object ArviointiSerializer extends Serializer[Arviointi] {
+  object KorkeakoulunArviointiDeserializer extends Deserializer[KorkeakoulunArviointi] {
+    private val ArviointiClass = classOf[KorkeakoulunArviointi]
+
+    def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), KorkeakoulunArviointi] = {
+      case (TypeInfo(ArviointiClass, _), json) =>
+        json match {
+          case arviointi: JObject if arviointi \ "arvosana" \ "koodistoUri" == JString("virtaarvosana") => arviointi.extract[KorkeakoulunKoodistostaLöytyväArviointi]
+          case arviointi: JObject => arviointi.extract[KorkeakoulunPaikallinenArviointi]
+          case _ => throw CannotDeserializeException(this, json)
+        }
+    }
+  }
+
+  object PerusopetuksenOppiaineenArviointiDeserializer extends Deserializer[PerusopetuksenOppiaineenArviointi] {
+    private val PerusopetuksenOppiaineenArviointiClass = classOf[PerusopetuksenOppiaineenArviointi]
+
+    def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), PerusopetuksenOppiaineenArviointi] = {
+      case (TypeInfo(PerusopetuksenOppiaineenArviointiClass, _), json) =>
+        json match {
+          case arviointi: JObject if (List(JString("S"), JString("H")).contains(arviointi \ "arvosana" \ "koodiarvo")) => arviointi.extract[SanallinenPerusopetuksenOppiaineenArviointi]
+          case arviointi: JObject => arviointi.extract[NumeerinenPerusopetuksenOppiaineenArviointi]
+        }
+    }
+  }
+
   override def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Arviointi] = {
     case (TypeInfo(c, _), json: JObject) if classOf[Arviointi].isAssignableFrom(c) =>
-      val arviointi = Extraction.extract(json, Reflector.scalaTypeOf(c))(format - ArviointiSerializer).asInstanceOf[Arviointi]
+      val arviointi = Extraction.extract(json, Reflector.scalaTypeOf(c))(format - ArviointiSerializer + KorkeakoulunArviointiDeserializer + PerusopetuksenOppiaineenArviointiDeserializer).asInstanceOf[Arviointi]
       (json \\ "hyväksytty") match {
         case JBool(jsonHyväksytty) if (jsonHyväksytty != arviointi.hyväksytty) =>
           ContextualExtractor.extractionError(KoskiErrorCategory.badRequest.validation.arviointi.vääräHyväksyttyArvo())
@@ -47,31 +70,6 @@ object ArviointiSerializer extends Serializer[Arviointi] {
         json.merge(JObject("hyväksytty" -> JBool(a.hyväksytty)))
       } else {
         json
-      }
-  }
-}
-
-object KorkeakoulunArviointiDeserializer extends Deserializer[KorkeakoulunArviointi] {
-  private val ArviointiClass = classOf[KorkeakoulunArviointi]
-
-  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), KorkeakoulunArviointi] = {
-    case (TypeInfo(ArviointiClass, _), json) =>
-      json match {
-        case arviointi: JObject if arviointi \ "arvosana" \ "koodistoUri" == JString("virtaarvosana") => arviointi.extract[KorkeakoulunKoodistostaLöytyväArviointi]
-        case arviointi: JObject => arviointi.extract[KorkeakoulunPaikallinenArviointi]
-        case _ => throw CannotDeserializeException(this, json)
-      }
-  }
-}
-
-object PerusopetuksenOppiaineenArviointiDeserializer extends Deserializer[PerusopetuksenOppiaineenArviointi] {
-  private val PerusopetuksenOppiaineenArviointiClass = classOf[PerusopetuksenOppiaineenArviointi]
-
-  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), PerusopetuksenOppiaineenArviointi] = {
-    case (TypeInfo(PerusopetuksenOppiaineenArviointiClass, _), json) =>
-      json match {
-        case arviointi: JObject if (List(JString("S"), JString("H")).contains(arviointi \ "arvosana" \ "koodiarvo")) => arviointi.extract[SanallinenPerusopetuksenOppiaineenArviointi]
-        case arviointi: JObject => arviointi.extract[NumeerinenPerusopetuksenOppiaineenArviointi]
       }
   }
 }
