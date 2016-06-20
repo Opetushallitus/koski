@@ -10,7 +10,6 @@ class IndexServlet extends ScalatraServlet {
   }
 
   get("/") {
-    status = 200
     IndexServlet.html
   }
 
