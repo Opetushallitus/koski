@@ -52,15 +52,6 @@ case class LukionOpiskeluoikeudenLisätiedot(
   ulkomaanjakso: Option[List[Ulkomaanjakso]] = None
 )
 
-case class Ulkomaanjakso(
-  @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
-  alku: Option[LocalDate],
-  @Description("Jakson loppumispäivämäärä. Muoto YYYY-MM-DD")
-  loppu: Option[LocalDate],
-  @KoodistoUri("maatjavaltiot2")
-  maa: Koodistokoodiviite
-)
-
 case class Erityinenkoulutustehtävä(
   @Description("Opiskelijan erityisen koulutustehtävän mukaisen koulutuksen alkamispäivä")
   alku: Option[LocalDate],

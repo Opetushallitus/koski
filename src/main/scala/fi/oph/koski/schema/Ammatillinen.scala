@@ -37,7 +37,9 @@ sealed trait AmmatillinenPäätasonSuoritus extends Suoritus
 
 case class AmmatillisenOpiskeluoikeudenLisätiedot(
   hojks: Option[Hojks],
-  oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false
+  oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false,
+  @Description("Tieto siitä liittyykö opintoihin ulkomaanjaksoja")
+  ulkomaanjakso: Option[List[Ulkomaanjakso]] = None
 )
 
 case class AmmatillinenOpiskeluoikeudenTila(
