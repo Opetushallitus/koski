@@ -41,3 +41,8 @@ trait Suoritus {
   }
   def tarvitseeVahvistuksen = true
 }
+
+trait ValmentavaSuoritus extends Suoritus {
+  def todistuksellaNäkyvätLisätiedot: Option[LocalizedString]
+  def arviointi = None
+}

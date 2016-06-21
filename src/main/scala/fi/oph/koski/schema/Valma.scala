@@ -2,6 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
+import fi.oph.koski.localization.LocalizedString
 import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems}
 
 @Description("Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)")
@@ -15,8 +16,7 @@ case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOpiskeluoikeus(
   koulutustoimija: Option[OrganisaatioWithOid] = None,
   tila: Option[AmmatillinenOpiskeluoikeudenTila] = None,
   läsnäolotiedot: Option[Läsnäolotiedot] = None,
-  @MinItems(1)
-  @MaxItems(1)
+  @MinItems(1) @MaxItems(1)
   suoritukset: List[AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus],
   @KoodistoKoodiarvo("valma")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valma", "opiskeluoikeudentyyppi")
@@ -39,10 +39,9 @@ case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus(
   override val osasuoritukset: Option[List[AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus]],
   @KoodistoKoodiarvo("valma")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valma", koodistoUri = "suorituksentyyppi"),
-  koulutusmoduuli: AmmatilliseenPeruskoulutukseenValmentavaKoulutus
-) extends Suoritus {
-  def arviointi = None
-}
+  koulutusmoduuli: AmmatilliseenPeruskoulutukseenValmentavaKoulutus,
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
+) extends ValmentavaSuoritus
 
 case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus(
   paikallinenId: Option[String] = None,

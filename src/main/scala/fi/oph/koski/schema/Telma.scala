@@ -39,10 +39,9 @@ case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenSuoritus(
   override val osasuoritukset: Option[List[TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus]],
   @KoodistoKoodiarvo("telma")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("telma", koodistoUri = "suorituksentyyppi"),
-  koulutusmoduuli: TyöhönJaItsenäiseenElämäänValmentavaKoulutus
-) extends Suoritus {
-  def arviointi = None
-}
+  koulutusmoduuli: TyöhönJaItsenäiseenElämäänValmentavaKoulutus,
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
+) extends ValmentavaSuoritus
 
 case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus(
   paikallinenId: Option[String] = None,
