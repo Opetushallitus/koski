@@ -1,0 +1,12 @@
+{
+  "koodistoUri" : "erityinenkoulutustehtava",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "erityinenkoulutustehtava",
+    "kuvaus" : "erityinenkoulutustehtava"
+  } ],
+  "codesGroupUri" : "http://koski",
+  "voimassaAlkuPvm" : "2015-11-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}

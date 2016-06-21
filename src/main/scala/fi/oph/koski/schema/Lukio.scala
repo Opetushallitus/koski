@@ -53,11 +53,9 @@ case class LukionOpiskeluoikeudenLisätiedot(
 )
 
 case class Erityinenkoulutustehtävä(
-  @Description("Opiskelijan erityisen koulutustehtävän mukaisen koulutuksen alkamispäivä")
-  alku: Option[LocalDate],
-  @Description("Opiskelijan erityisen koulutustehtävän mukaisen koulutuksen päättämispäivä")
-  loppu: Option[LocalDate]
-  // TODO, tarvitaanko tieto opiskeltavasta erityisestä koulutuksesta ???
+  @KoodistoUri("erityinenkoulutustehtava")
+  @OksaUri("tmpOKSAID181", "erityinen koulutustehtävä")
+  tehtävä: Koodistokoodiviite
 )
 
 trait LukionPäätasonSuoritus extends Suoritus
