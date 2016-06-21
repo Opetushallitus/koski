@@ -3,9 +3,8 @@ package fi.oph.koski.schema
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.ContextualExtractor
 import fi.oph.koski.localization.{English, Finnish, LocalizedString, Swedish}
-import fi.oph.koski.schema
 import org.json4s._
-import org.json4s.reflect.{ManifestFactory, Reflector, TypeInfo}
+import org.json4s.reflect.{Reflector, TypeInfo}
 
 object Deserializers {
   val deserializers = List(

@@ -48,8 +48,8 @@ case class LukionOpiskeluoikeudenLisätiedot(
   oikeusMaksuttomaanAsuntolapaikkaan: Option[Päätösjakso] = None,
   @Description("""Tieto siitä, että oppilas on sisäoppilaismaisessa majoituksessa, alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole sisäoppilasmaisessa majoituksessa.""")
   sisäoppilaitosmainenMajoitus: Option[Päätösjakso] = None,
-  @Description("Tieto siitä liittyykö opintoihin ulkomaanjakso")
-  ulkomaanjakso: Option[Ulkomaanjakso] = None
+  @Description("Tieto siitä liittyykö opintoihin ulkomaanjaksoja")
+  ulkomaanjakso: Option[List[Ulkomaanjakso]] = None
 )
 
 case class Ulkomaanjakso(
