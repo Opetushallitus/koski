@@ -101,7 +101,7 @@ object AmmatillinenExampleData {
 
   def vahvistus(date: LocalDate) = Some(Henkilövahvistus(date, helsinki, stadinAmmattiopisto, List(OrganisaatioHenkilö("Keijo Perttilä", "rehtori", stadinAmmattiopisto))))
   lazy val paikallisenOsanSuoritus = AmmatillisenTutkinnonOsanSuoritus(
-    koulutusmoduuli = PaikallinenTutkinnonosa(PaikallinenKoodi("123456789", "Pintavauriotyöt", "kallion_oma_koodisto"), "Opetellaan korjaamaan pinnallisia vaurioita", false, None),
+    koulutusmoduuli = PaikallinenTutkinnonosa(PaikallinenKoodi("123456789", "Pintavauriotyöt"), "Opetellaan korjaamaan pinnallisia vaurioita", false, None),
     hyväksiluku = None,
     näyttö = Some(näyttö("Pintavaurioiden korjausta", "Autokorjaamo Oy, Riihimäki")),
     lisätiedot = None,
@@ -154,7 +154,7 @@ object AmmatillinenExampleData {
   }
 
   def paikallisenTutkinnonOsanSuoritus(koodi: String, nimi: String, arvosana: Koodistokoodiviite, laajuus: Float): AmmatillisenTutkinnonOsanSuoritus = {
-    val osa: PaikallinenTutkinnonosa = PaikallinenTutkinnonosa(PaikallinenKoodi(koodi, nimi, "paikallinen"), nimi, false, Some(LaajuusOsaamispisteissä(laajuus)))
+    val osa: PaikallinenTutkinnonosa = PaikallinenTutkinnonosa(PaikallinenKoodi(koodi, nimi), nimi, false, Some(LaajuusOsaamispisteissä(laajuus)))
     tutkonnonOsanSuoritus(arvosana, osa)
   }
 

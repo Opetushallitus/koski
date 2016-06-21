@@ -122,7 +122,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
 
     KorkeakoulunOpintojaksonSuoritus(
       koulutusmoduuli = KorkeakoulunOpintojakso(
-        tunniste = PaikallinenKoodi((suoritus \\ "@koulutusmoduulitunniste").text, nimi(suoritus), "koodistoUri"), // hardcoded uri
+        tunniste = PaikallinenKoodi((suoritus \\ "@koulutusmoduulitunniste").text, nimi(suoritus)),
         nimi = nimi(suoritus),
         laajuus = (suoritus \ "Laajuus" \ "Opintopiste").headOption.map(op => LaajuusOpintopisteissä(op.text.toFloat))
       ),
@@ -152,7 +152,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
       .find(a => (a \ "@avain").text == (suoritus \ "Arvosana" \ "Muu" \ "Koodi").text)
       .map { a => List(
         KorkeakoulunPaikallinenArviointi(
-          PaikallinenKoodi((a \ "Koodi").text, nimi(a), asteikkoUri),
+          PaikallinenKoodi((a \ "Koodi").text, nimi(a), Some(asteikkoUri)),
           LocalDate.parse(suoritus \ "SuoritusPvm" text)
         ))
       }

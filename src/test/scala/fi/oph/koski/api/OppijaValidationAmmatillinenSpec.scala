@@ -362,7 +362,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     arviointiHyvä(), None)
 
   lazy val paikallinenTutkinnonOsa = PaikallinenTutkinnonosa(
-    PaikallinenKoodi("1", "paikallinen osa", "paikallinenkoodisto"), "Paikallinen tutkinnon osa", false, Some(laajuus)
+    PaikallinenKoodi("1", "paikallinen osa"), "Paikallinen tutkinnon osa", false, Some(laajuus)
   )
 
   lazy val paikallinenTutkinnonOsaSuoritus = AmmatillisenTutkinnonOsanSuoritus(

@@ -6,7 +6,6 @@ import fi.oph.scalaschema.annotation.Description
 
 trait KoodiViite {
   def koodiarvo: String
-  def koodistoUri: String
 }
 
 object Koodistokoodiviite {
@@ -34,10 +33,10 @@ case class Koodistokoodiviite(
 
 @Description("Paikallinen, koulutustoimijan oma kooditus. Käytetään kansallisen koodiston puuttuessa")
 case class PaikallinenKoodi(
-  @Description("Koodin tunniste koodistossa")
+  @Description("Koodin yksilöivä tunniste käytetyssä koodistossa")
   koodiarvo: String,
   @Description("Koodin selväkielinen nimi")
   nimi: LocalizedString,
-  @Description("Koodiston tunniste")
-  koodistoUri: String
+  @Description("Koodiston tunniste. Esimerkiksi Virta-järjestelmästä saatavissa arvioinneissa käytetään virta/x, missä x on arviointiasteikon tunniste. Jos koodistolla ei ole tunnistetta, voidaan kenttä jättää tyhjäksi.")
+  koodistoUri: Option[String] = None
 ) extends KoodiViite

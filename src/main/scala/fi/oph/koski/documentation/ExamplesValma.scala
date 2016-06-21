@@ -37,7 +37,7 @@ object ExamplesValma {
   private def valmaKurssinSuoritus(koodi: String, kuvaus: String, laajuusOsaamispisteissä: Float, arviointi: Option[List[AmmatillinenArviointi]], pakollinen: Boolean) = AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus(
     tila = tilaValmis,
     koulutusmoduuli = AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa(
-      tunniste = PaikallinenKoodi(koodi, LocalizedString.finnish(kuvaus), "stadin-valma-kurssit"),
+      tunniste = PaikallinenKoodi(koodi, LocalizedString.finnish(kuvaus)),
       laajuus = Some(LaajuusOsaamispisteissä(laajuusOsaamispisteissä)),
       pakollinen = pakollinen
     ),

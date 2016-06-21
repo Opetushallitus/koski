@@ -302,7 +302,7 @@ object LukioExampleData {
   )
 
   def valtakunnallinenKurssi(kurssi: String) = ValtakunnallinenLukionKurssi(Koodistokoodiviite(koodistoUri = "lukionkurssit", koodiarvo = kurssi), laajuus(1.0f))
-  def paikallinenKurssi(koodi: String, nimi: String, kuvaus: String) = PaikallinenLukionKurssi(PaikallinenKoodi(koodiarvo = koodi, nimi = nimi, koodistoUri = "paikallinen"), laajuus(1.0f), kuvaus)
+  def paikallinenKurssi(koodi: String, nimi: String, kuvaus: String) = PaikallinenLukionKurssi(PaikallinenKoodi(koodiarvo = koodi, nimi = nimi), laajuus(1.0f), kuvaus)
 
   def matematiikka(matematiikka: String) = LukionMatematiikka(oppimäärä = Koodistokoodiviite(koodiarvo = matematiikka, koodistoUri = "oppiainematematiikka"))
 
