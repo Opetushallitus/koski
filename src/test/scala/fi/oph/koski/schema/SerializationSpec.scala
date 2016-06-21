@@ -7,8 +7,9 @@ import fi.oph.koski.log.Logging
 import org.json4s.MappingException
 import org.scalatest.{FunSpec, Matchers}
 
-private [schema] case class Application(user: Option[User])
-private [schema] case class User(firstName: String, lastName: String)
+private[schema] case class Application(user: Option[User])
+
+private[schema] case class User(firstName: String, lastName: String)
 
 class SerializationSpec extends FunSpec with Matchers with Logging {
   describe("Serialization / deserialization") {
@@ -41,9 +42,24 @@ class SerializationSpec extends FunSpec with Matchers with Logging {
     describe("LocalizedString") {
       it("Serialized/deserializes cleanly") {
         val string: LocalizedString = LocalizedString.finnish("rölli")
-        string.values.foreach{x: AnyRef => {}} // <- force lazy val to evaluate
+        string.values.foreach { x: AnyRef => {} } // <- force lazy val to evaluate
         val jsonString = Json.write(string)
         jsonString should equal("""{"fi":"rölli"}""")
+      }
+    }
+
+    describe("Suoritukset") {
+      Examples.examples.foreach { e =>
+        it(e.name + " serialisoituu") {
+          val kaikkiSuoritukset: Seq[Suoritus] = e.data.opiskeluoikeudet.flatMap(_.suoritukset.flatMap(_.rekursiivisetOsasuoritukset))
+
+          kaikkiSuoritukset.foreach { s =>
+            println(s.getClass.getName)
+            val jsonString = Json.write(s)
+            val suoritus = Json.read[Suoritus](jsonString)
+            suoritus should (equal(s))
+          }
+        }
       }
     }
   }

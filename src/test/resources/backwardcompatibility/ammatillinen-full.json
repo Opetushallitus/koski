@@ -735,15 +735,25 @@
         },
         "hyväksiluku" : {
           "osaaminen" : {
-            "tunniste" : {
-              "koodiarvo" : "100238",
-              "nimi" : {
-                "fi" : "Asennushitsaus"
+            "koulutusmoduuli" : {
+              "tunniste" : {
+                "koodiarvo" : "100238",
+                "nimi" : {
+                  "fi" : "Asennushitsaus"
+                },
+                "koodistoUri" : "tutkinnonosat",
+                "koodistoVersio" : 1
               },
-              "koodistoUri" : "tutkinnonosat",
-              "koodistoVersio" : 1
+              "pakollinen" : true
             },
-            "pakollinen" : true
+            "tila" : {
+              "koodiarvo" : "VALMIS",
+              "koodistoUri" : "suorituksentila"
+            },
+            "tyyppi" : {
+              "koodiarvo" : "ammatillisentutkinnonosa",
+              "koodistoUri" : "suorituksentyyppi"
+            }
           },
           "selite" : {
             "fi" : "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"

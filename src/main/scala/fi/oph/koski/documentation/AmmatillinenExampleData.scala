@@ -83,10 +83,18 @@ object AmmatillinenExampleData {
   lazy val toimipiste: OidOrganisaatio = OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))
   lazy val tutkintotoimikunta: Organisaatio = Tutkintotoimikunta("Autokorjaamoalan tutkintotoimikunta", 8406)
   lazy val lähdeWinnova = Koodistokoodiviite("winnova", Some("Winnova"), "lahdejarjestelma", Some(1))
-  lazy val hyväksiluku = Hyväksiluku(
-    OpsTutkinnonosa(Koodistokoodiviite("100238", Some("Asennushitsaus"), "tutkinnonosat", Some(1)), true, None),
-    Some("Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"))
   lazy val hyväksytty: Koodistokoodiviite = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1))
+  lazy val hyväksiluku: Hyväksiluku = Hyväksiluku(
+    Some(AmmatillisenTutkinnonOsanSuoritus(
+      koulutusmoduuli = OpsTutkinnonosa(Koodistokoodiviite("100238", Some("Asennushitsaus"), "tutkinnonosat", Some(1)), true, None),
+      paikallinenId = None,
+      suorituskieli = None,
+      tila = tilaValmis,
+      alkamispäivä = None,
+      toimipiste = None
+    )),
+    "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
+  )
   lazy val arviointiHyväksytty: Some[List[AmmatillinenArviointi]] = Some(List(AmmatillinenArviointi(
     arvosana = hyväksytty, date(2013, 3, 20),
     arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen"))))))
