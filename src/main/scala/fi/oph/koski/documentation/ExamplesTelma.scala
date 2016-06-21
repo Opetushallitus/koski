@@ -38,7 +38,7 @@ object ExamplesTelma {
       )
     )
   )
-  val examples = List(Example("ammatilliseen peruskoulutukseen valmentava koulutus", "Oppija on suorittanut ammatilliseen peruskoulutukseen valmentavan koulutuksen (VALMA)", telmaTodistus, 200))
+  val examples = List(Example("työhön ja itsenäiseen elämään valmentava koulutus", "Oppija on suorittanut työhön ja itsenäiseen elämään valmentava koulutuksen (TELMA)", telmaTodistus, 200))
 
   private def telmaKurssinSuoritus(koodi: String, kuvaus: String, laajuusOsaamispisteissä: Float, pakollinen: Boolean, arviointi: Option[List[TelmaArviointi]]) = TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus(
     tila = tilaValmis,
