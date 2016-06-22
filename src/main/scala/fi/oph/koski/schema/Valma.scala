@@ -49,10 +49,10 @@ case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus(
   @KoodistoKoodiarvo("valmakoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valmakoulutuksenosa", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa,
-  arviointi: Option[List[AmmatillinenArviointi]]
-) extends Suoritus {
-  override def osasuoritukset = None
-}
+  arviointi: Option[List[AmmatillinenArviointi]],
+  tunnustettu: Option[Tunnustaminen] = None,
+  lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None
+) extends ValmentavanKoulutuksenOsanSuoritus
 
 @Description("Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)")
 case class AmmatilliseenPeruskoulutukseenValmentavaKoulutus(

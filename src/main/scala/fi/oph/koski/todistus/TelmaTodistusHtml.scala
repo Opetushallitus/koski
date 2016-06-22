@@ -5,7 +5,7 @@ import fi.oph.koski.schema._
 
 import scala.xml.{Elem, NodeSeq}
 
-class TelmaTodistusHtml(val koulutustoimija: Option[OrganisaatioWithOid], val oppilaitos: Oppilaitos, val oppijaHenkilö: Henkilötiedot, val todistus: Suoritus)(implicit val user: KoskiUser) extends ValmentavanKoulutuksenTodistusHtml {
+class TelmaTodistusHtml(val koulutustoimija: Option[OrganisaatioWithOid], val oppilaitos: Oppilaitos, val oppijaHenkilö: Henkilötiedot, val todistus: ValmentavaSuoritus)(implicit val user: KoskiUser) extends ValmentavanKoulutuksenTodistusHtml {
   def title = "Työhön ja itsenäiseen elämään valmentava koulutus"
   override def styles: NodeSeq = <link rel="stylesheet" type="text/css" href="/koski/css/todistus-telma.css"></link>
 
@@ -15,10 +15,9 @@ class TelmaTodistusHtml(val koulutustoimija: Option[OrganisaatioWithOid], val op
     <th class="arvosana">Arvosana</th>
   </tr>
 
-  override def tutkinnonOsaRivit(suoritukset: List[Suoritus]): List[Elem] = suoritukset.map { oppiaine =>
-    val nimiTeksti = i(oppiaine.koulutusmoduuli)
+  override def tutkinnonOsaRivit(suoritukset: List[ValmentavanKoulutuksenOsanSuoritus]): List[Elem] = suoritukset.map { oppiaine =>
     <tr class="tutkinnon-osa">
-      <td class="nimi">{nimiTeksti}</td>
+      <td class="nimi">{nimiTeksti(oppiaine)}</td>
       <td class="laajuus">{decimalFormat.format(laajuus(oppiaine))}</td>
       <td class="arvosana">{i(oppiaine.arvosanaKirjaimin).capitalize} {i(oppiaine.arvosanaNumeroin)}</td>
     </tr>

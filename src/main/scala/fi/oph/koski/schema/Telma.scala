@@ -49,10 +49,10 @@ case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus(
   @KoodistoKoodiarvo("telmakoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("telmakoulutuksenosa", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa,
-  arviointi: Option[List[TelmaArviointi]]
-) extends Suoritus {
-  override def osasuoritukset = None
-}
+  arviointi: Option[List[TelmaArviointi]],
+  tunnustettu: Option[Tunnustaminen] = None,
+  lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None
+) extends ValmentavanKoulutuksenOsanSuoritus
 
 @Description("Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)")
 case class TyöhönJaItsenäiseenElämäänValmentavaKoulutus(

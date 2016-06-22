@@ -5,6 +5,7 @@ import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.localization.LocalizedString
+import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.schema._
 
@@ -26,21 +27,40 @@ object ExamplesValma {
             valmaKurssinSuoritus("OV", "Opiskeluvalmiuksien vahvistaminen", 10f, arviointiHyväksytty, pakollinen = false),
             valmaKurssinSuoritus("TOV", "Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen", 15f, arviointiHyväksytty, pakollinen = false),
             valmaKurssinSuoritus("ATH", "Arjen taitojen ja hyvinvoinnin vahvistaminen", 10f, arviointiHyväksytty, pakollinen = false),
-            valmaKurssinSuoritus("APT", "Ammatillisen perustutkinnon tutkinnon osat tai osa-alueet", 10f, arviointiKiitettävä, pakollinen = false)
+            valmaKurssinSuoritus("APT", "Ammatillisen perustutkinnon tutkinnon osat tai osa-alueet", 15f, arviointiKiitettävä, pakollinen = false, tunnustettu)
           ))
         ))
       )
     )
   )
+
   val examples = List(Example("ammatilliseen peruskoulutukseen valmentava koulutus", "Oppija on suorittanut ammatilliseen peruskoulutukseen valmentavan koulutuksen (VALMA)", valmaTodistus, 200))
 
-  private def valmaKurssinSuoritus(koodi: String, kuvaus: String, laajuusOsaamispisteissä: Float, arviointi: Option[List[AmmatillinenArviointi]], pakollinen: Boolean) = AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus(
-    tila = tilaValmis,
-    koulutusmoduuli = AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa(
-      tunniste = PaikallinenKoodi(koodi, LocalizedString.finnish(kuvaus)),
-      laajuus = Some(LaajuusOsaamispisteissä(laajuusOsaamispisteissä)),
-      pakollinen = pakollinen
-    ),
-    arviointi = arviointi
-  )
+  lazy val tunnustettu: Some[Tunnustaminen] = Some(Tunnustaminen(
+    osaaminen = Some(AmmatillisenTutkinnonOsanSuoritus(
+      koulutusmoduuli = OpsTutkinnonosa(Koodistokoodiviite("100209", Some("Asennuksen ja automaation perustyöt"), "tutkinnonosat", Some(1)), true, None),
+      paikallinenId = None,
+      suorituskieli = None,
+      tila = tilaValmis,
+      alkamispäivä = None,
+      toimipiste = Some(toimipiste),
+      tutkinto = Some(AmmatillinenTutkintoKoulutus(
+        tunniste = Koodistokoodiviite("351101", Some("Kone- ja metallialan perustutkinto"), "koulutus"),
+        perusteenDiaarinumero = Some("39/011/2014"))
+      ),
+      vahvistus = vahvistus(date(2015, 10, 3), stadinAmmattiopisto, helsinki)
+    )),
+    selite = "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"))
+
+  private def valmaKurssinSuoritus(koodi: String, kuvaus: String, laajuusOsaamispisteissä: Float, arviointi: Option[List[AmmatillinenArviointi]], pakollinen: Boolean, tunnustettu: Option[Tunnustaminen] = None) =
+    AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus(
+      tila = tilaValmis,
+      koulutusmoduuli = AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa(
+        tunniste = PaikallinenKoodi(koodi, LocalizedString.finnish(kuvaus)),
+        laajuus = Some(LaajuusOsaamispisteissä(laajuusOsaamispisteissä)),
+        pakollinen = pakollinen
+      ),
+      arviointi = arviointi,
+      tunnustettu = tunnustettu
+    )
 }

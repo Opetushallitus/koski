@@ -2,11 +2,6 @@ div {
     margin-bottom: 20px;
 }
 
-.rakennemoduuli td, .opintojen-laajuus td {
-    padding: 10px 0 10px;
-    font-weight: bold;
-}
-
 td, th {
     vertical-align: top;
 }
