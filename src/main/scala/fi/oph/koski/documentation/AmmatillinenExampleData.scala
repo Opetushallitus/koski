@@ -84,7 +84,7 @@ object AmmatillinenExampleData {
   lazy val tutkintotoimikunta: Organisaatio = Tutkintotoimikunta("Autokorjaamoalan tutkintotoimikunta", 8406)
   lazy val lähdeWinnova = Koodistokoodiviite("winnova", Some("Winnova"), "lahdejarjestelma", Some(1))
   lazy val hyväksytty: Koodistokoodiviite = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1))
-  lazy val hyväksiluku: Hyväksiluku = Hyväksiluku(
+  lazy val tunnustettu: Tunnustaminen = Tunnustaminen(
     Some(AmmatillisenTutkinnonOsanSuoritus(
       koulutusmoduuli = OpsTutkinnonosa(Koodistokoodiviite("100238", Some("Asennushitsaus"), "tutkinnonosat", Some(1)), true, None),
       paikallinenId = None,
@@ -102,7 +102,7 @@ object AmmatillinenExampleData {
   def vahvistus(date: LocalDate) = Some(Henkilövahvistus(date, helsinki, stadinAmmattiopisto, List(OrganisaatioHenkilö("Keijo Perttilä", "rehtori", stadinAmmattiopisto))))
   lazy val paikallisenOsanSuoritus = AmmatillisenTutkinnonOsanSuoritus(
     koulutusmoduuli = PaikallinenTutkinnonosa(PaikallinenKoodi("123456789", "Pintavauriotyöt"), "Opetellaan korjaamaan pinnallisia vaurioita", false, None),
-    hyväksiluku = None,
+    tunnustettu = None,
     näyttö = Some(näyttö("Pintavaurioiden korjausta", "Autokorjaamo Oy, Riihimäki")),
     lisätiedot = None,
     paikallinenId = Some("suoritus-12345-2"),

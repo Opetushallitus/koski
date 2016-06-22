@@ -23,10 +23,10 @@ class SerializationSpec extends FunSpec with Matchers with Logging {
         }
       }
     }
-    it("Hyväksiluku") {
-      val jsonString = Json.write(AmmatillinenExampleData.hyväksiluku)
-      val hyväksiluku = Json.read[Hyväksiluku](jsonString)
-      hyväksiluku should(equal(AmmatillinenExampleData.hyväksiluku))
+    it("Tunnustaminen") {
+      val jsonString = Json.write(AmmatillinenExampleData.tunnustettu)
+      val tunnustettu = Json.read[Tunnustaminen](jsonString)
+      tunnustettu should(equal(AmmatillinenExampleData.tunnustettu))
     }
 
     describe("Examples") {

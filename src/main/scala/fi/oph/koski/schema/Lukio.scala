@@ -133,7 +133,7 @@ case class LukionKurssinSuoritus(
       |Opiskelijan osaamisen tunnustamisessa noudatetaan, mitä 17 ja 17 a §:ssä säädetään opiskelijan arvioinnista ja siitä päättämisestä.
       |Mikäli opinnot tai muutoin hankittu osaaminen luetaan hyväksi opetussuunnitelman perusteiden mukaan numerolla arvioitavaan kurssiin, tulee kurssista antaa numeroarvosana.
     """.stripMargin)
-  hyväksiluku: Option[Hyväksiluku] = None
+  tunnustettu: Option[Tunnustaminen] = None
 ) extends Suoritus with LukioonValmistavanKoulutuksenOsasuoritus {
   def vahvistus: Option[Vahvistus] = None
 }

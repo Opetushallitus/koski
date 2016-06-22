@@ -224,7 +224,7 @@ object AmmatillinenOldExamples {
           osasuoritukset = Some(List(
             AmmatillisenTutkinnonOsanSuoritus(
               koulutusmoduuli = OpsTutkinnonosa(Koodistokoodiviite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Some(LaajuusOsaamispisteissä(11))),
-              hyväksiluku = None,
+              tunnustettu = None,
               näyttö = None,
               lisätiedot = None,
               tutkinto = None,
@@ -391,7 +391,7 @@ object AmmatillinenOldExamples {
         true,
         None
       ),
-      hyväksiluku = Some(hyväksiluku),
+      tunnustettu = Some(tunnustettu),
       paikallinenId = Some("suoritus-12345-6"),
       suorituskieli = None,
       tila = tilaValmis,

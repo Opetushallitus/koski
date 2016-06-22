@@ -118,7 +118,7 @@ case class AmmatillisenTutkinnonSuoritus(
 
 case class AmmatillisenTutkinnonOsanSuoritus(
   koulutusmoduuli: AmmatillisenTutkinnonOsa,
-  hyväksiluku: Option[Hyväksiluku] = None,
+  tunnustettu: Option[Tunnustaminen] = None,
   @Description("Suoritukseen liittyvän näytön tiedot")
   näyttö: Option[Näyttö] = None,
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,

@@ -321,8 +321,7 @@
             "koodiarvo" : "123456789",
             "nimi" : {
               "fi" : "Pintavauriotyöt"
-            },
-            "koodistoUri" : "kallion_oma_koodisto"
+            }
           },
           "kuvaus" : {
             "fi" : "Opetellaan korjaamaan pinnallisia vaurioita"
@@ -733,7 +732,7 @@
           },
           "pakollinen" : true
         },
-        "hyväksiluku" : {
+        "tunnustettu" : {
           "osaaminen" : {
             "koulutusmoduuli" : {
               "tunniste" : {

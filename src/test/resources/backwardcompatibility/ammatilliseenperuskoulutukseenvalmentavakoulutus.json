@@ -83,8 +83,7 @@
             "koodiarvo" : "AKO",
             "nimi" : {
               "fi" : "Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen"
-            },
-            "koodistoUri" : "stadin-valma-kurssit"
+            }
           },
           "laajuus" : {
             "arvo" : 10.0,
@@ -131,8 +130,7 @@
             "koodiarvo" : "OV",
             "nimi" : {
               "fi" : "Opiskeluvalmiuksien vahvistaminen"
-            },
-            "koodistoUri" : "stadin-valma-kurssit"
+            }
           },
           "laajuus" : {
             "arvo" : 10.0,
@@ -179,8 +177,7 @@
             "koodiarvo" : "TOV",
             "nimi" : {
               "fi" : "Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen"
-            },
-            "koodistoUri" : "stadin-valma-kurssit"
+            }
           },
           "laajuus" : {
             "arvo" : 15.0,
@@ -227,8 +224,7 @@
             "koodiarvo" : "ATH",
             "nimi" : {
               "fi" : "Arjen taitojen ja hyvinvoinnin vahvistaminen"
-            },
-            "koodistoUri" : "stadin-valma-kurssit"
+            }
           },
           "laajuus" : {
             "arvo" : 10.0,
@@ -275,8 +271,7 @@
             "koodiarvo" : "APT",
             "nimi" : {
               "fi" : "Ammatillisen perustutkinnon tutkinnon osat tai osa-alueet"
-            },
-            "koodistoUri" : "stadin-valma-kurssit"
+            }
           },
           "laajuus" : {
             "arvo" : 10.0,

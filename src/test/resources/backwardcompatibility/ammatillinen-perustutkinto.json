@@ -984,8 +984,7 @@
             "koodiarvo" : "enkku3",
             "nimi" : {
               "fi" : "Matkailuenglanti"
-            },
-            "koodistoUri" : "paikallinen"
+            }
           },
           "kuvaus" : {
             "fi" : "Matkailuenglanti"
@@ -1069,8 +1068,7 @@
             "koodiarvo" : "soskultos1",
             "nimi" : {
               "fi" : "Sosiaalinen ja kulttuurinen osaaminen"
-            },
-            "koodistoUri" : "paikallinen"
+            }
           },
           "kuvaus" : {
             "fi" : "Sosiaalinen ja kulttuurinen osaaminen"
