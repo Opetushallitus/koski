@@ -3,6 +3,7 @@ package fi.oph.koski.schema
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.{Json, ContextualExtractor}
 import fi.oph.koski.localization.{English, Finnish, LocalizedString, Swedish}
+import org.json4s
 import org.json4s._
 import org.json4s.reflect.{Reflector, TypeInfo}
 
@@ -27,41 +28,45 @@ object SuoritusDeserializer extends Deserializer[Suoritus] {
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Suoritus] = {
     case (TypeInfo(c, _), json: JObject) if classOf[Suoritus].isAssignableFrom(c) && c.isInterface =>
       json match {
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("ammatillinentutkinto") => suoritus.extract[AmmatillisenTutkinnonSuoritus]
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("ammatillisentutkinnonosa") => suoritus.extract[AmmatillisenTutkinnonOsanSuoritus]
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("nayttotutkintoonvalmistavakoulutus") => suoritus.extract[NäyttötutkintoonValmistavanKoulutuksenSuoritus]
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("nayttotutkintoonvalmistavankoulutuksenosa") => suoritus.extract[NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("ammatillinentutkinto") => suoritus.extract[AmmatillisenTutkinnonSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("ammatillisentutkinnonosa") => suoritus.extract[AmmatillisenTutkinnonOsanSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("nayttotutkintoonvalmistavakoulutus") => suoritus.extract[NäyttötutkintoonValmistavanKoulutuksenSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("nayttotutkintoonvalmistavankoulutuksenosa") => suoritus.extract[NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus]
 
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("perusopetuksenoppimaara") => suoritus.extract[PerusopetuksenOppimääränSuoritus]
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("perusopetuksenoppiaine") => suoritus.extract[PerusopetuksenOppiaineenSuoritus]
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("perusopetuksentoimintaalue") => suoritus.extract[PerusopetuksenToimintaAlueenSuoritus]
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("perusopetuksenoppiaineenoppimaara") => suoritus.extract[PerusopetuksenOppiaineenOppimääränSuoritus]
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("perusopetuksenvuosiluokka") => suoritus.extract[PerusopetuksenVuosiluokanSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("perusopetuksenoppimaara") => suoritus.extract[PerusopetuksenOppimääränSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("perusopetuksenoppiaine") => suoritus.extract[PerusopetuksenOppiaineenSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("perusopetuksentoimintaalue") => suoritus.extract[PerusopetuksenToimintaAlueenSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("perusopetuksenoppiaineenoppimaara") => suoritus.extract[PerusopetuksenOppiaineenOppimääränSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("perusopetuksenvuosiluokka") => suoritus.extract[PerusopetuksenVuosiluokanSuoritus]
 
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("lukionoppimaara") => suoritus.extract[LukionOppimääränSuoritus]
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("lukionoppiaineenoppimaara") => suoritus.extract[LukionOppiaineenOppimääränSuoritus]
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("lukionoppiaine") => suoritus.extract[LukionOppiaineenSuoritus]
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("lukionkurssi") => suoritus.extract[LukionKurssinSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("lukionoppimaara") => suoritus.extract[LukionOppimääränSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("lukionoppiaineenoppimaara") => suoritus.extract[LukionOppiaineenOppimääränSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("lukionoppiaine") => suoritus.extract[LukionOppiaineenSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("lukionkurssi") => suoritus.extract[LukionKurssinSuoritus]
 
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("ylioppilastutkinto") => suoritus.extract[YlioppilastutkinnonSuoritus]
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("ylioppilastutkinnonkoe") => suoritus.extract[YlioppilastutkinnonKokeenSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("ylioppilastutkinto") => suoritus.extract[YlioppilastutkinnonSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("ylioppilastutkinnonkoe") => suoritus.extract[YlioppilastutkinnonKokeenSuoritus]
 
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("korkeakoulututkinto") => suoritus.extract[KorkeakouluTutkinnonSuoritus]
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("korkeakoulunopintojakso") => suoritus.extract[KorkeakoulunOpintojaksonSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("korkeakoulututkinto") => suoritus.extract[KorkeakouluTutkinnonSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("korkeakoulunopintojakso") => suoritus.extract[KorkeakoulunOpintojaksonSuoritus]
 
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("telma") => suoritus.extract[TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenSuoritus]
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("telmakoulutuksenosa") => suoritus.extract[TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("telma") => suoritus.extract[TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("telmakoulutuksenosa") => suoritus.extract[TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus]
 
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("valma") => suoritus.extract[AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus]
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("valmakoulutuksenosa") => suoritus.extract[AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("valma") => suoritus.extract[AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("valmakoulutuksenosa") => suoritus.extract[AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus]
 
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("luva") => suoritus.extract[LukioonValmistavanKoulutuksenSuoritus]
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("luvakurssi") => suoritus.extract[LukioonValmistavanKurssinSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("luva") => suoritus.extract[LukioonValmistavanKoulutuksenSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("luvakurssi") => suoritus.extract[LukioonValmistavanKurssinSuoritus]
 
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("perusopetuksenlisaopetus") => suoritus.extract[PerusopetuksenLisäopetuksenSuoritus]
-        case suoritus: JObject if suoritus \ "tyyppi" \ "koodiarvo" == JString("perusopetuksenlisaopetuksenoppiaine") => suoritus.extract[PerusopetuksenLisäopetuksenOppiaineenSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("perusopetuksenlisaopetus") => suoritus.extract[PerusopetuksenLisäopetuksenSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("perusopetuksenlisaopetuksenoppiaine") => suoritus.extract[PerusopetuksenLisäopetuksenOppiaineenSuoritus]
         case _ => throw CannotDeserializeException(this, json)
       }
+  }
+
+  private def tyyppi(suoritus: JObject) = {
+    suoritus \ "tyyppi" \ "koodiarvo"
   }
 }
 
