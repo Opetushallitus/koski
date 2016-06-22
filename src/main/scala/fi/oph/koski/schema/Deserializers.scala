@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.json.ContextualExtractor
+import fi.oph.koski.json.{Json, ContextualExtractor}
 import fi.oph.koski.localization.{English, Finnish, LocalizedString, Swedish}
 import org.json4s._
 import org.json4s.reflect.{Reflector, TypeInfo}
@@ -246,4 +246,4 @@ object LocalizedStringDeserializer extends Deserializer[LocalizedString] {
   }
 }
 
-case class CannotDeserializeException(deserializer: Deserializer[_], json: JValue) extends RuntimeException(deserializer + " cannot deserialize " + json)
+case class CannotDeserializeException(deserializer: Deserializer[_], json: JValue) extends RuntimeException(deserializer + " cannot deserialize " + Json.write(json))
