@@ -2524,10 +2524,6 @@
             "koodiarvo" : "KT",
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
-          "uskonto" : {
-            "koodiarvo" : "KT1",
-            "koodistoUri" : "oppiaineuskonto"
-          },
           "pakollinen" : true
         },
         "tila" : {

@@ -143,7 +143,6 @@ object LukionOppiaineDeserializer extends Deserializer[LukionOppiaine] {
     case (TypeInfo(LukionOppiaineClass, _), json) =>
       json match {
         case moduuli: JObject if moduuli \ "tunniste" \ "koodiarvo" == JString("AI") => moduuli.extract[AidinkieliJaKirjallisuus]
-        case moduuli: JObject if moduuli \ "tunniste" \ "koodiarvo" == JString("KT") => moduuli.extract[Uskonto]
         case moduuli: JObject if (moduuli \ "kieli").isInstanceOf[JObject] => moduuli.extract[VierasTaiToinenKotimainenKieli]
         case moduuli: JObject if (moduuli \ "oppimäärä").isInstanceOf[JObject] => moduuli.extract[LukionMatematiikka]
         case moduuli: JObject => moduuli.extract[MuuOppiaine]
@@ -159,7 +158,6 @@ object PerusopetuksenOppiaineDeserializer extends Deserializer[PerusopetuksenOpp
     case (TypeInfo(PerusopetuksenOppiaineClass, _), json) =>
       json match {
         case moduuli: JObject if moduuli \ "tunniste" \ "koodiarvo" == JString("AI") => moduuli.extract[PeruskoulunAidinkieliJaKirjallisuus]
-        case moduuli: JObject if moduuli \ "tunniste" \ "koodiarvo" == JString("KT") => moduuli.extract[PeruskoulunUskonto]
         case moduuli: JObject if (moduuli \ "kieli").isInstanceOf[JObject] => moduuli.extract[PeruskoulunVierasTaiToinenKotimainenKieli]
         case moduuli: JObject => moduuli.extract[MuuPeruskoulunOppiaine]
         case _ => throw CannotDeserializeException(this, json)

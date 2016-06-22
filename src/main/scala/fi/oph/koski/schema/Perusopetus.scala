@@ -259,18 +259,6 @@ case class MuuPeruskoulunOppiaine(
   override val laajuus: Option[LaajuusVuosiviikkotunneissa] = None
 ) extends PerusopetuksenOppiaine
 
-case class PeruskoulunUskonto(
-  @KoodistoKoodiarvo("KT")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "KT", koodistoUri = "koskioppiaineetyleissivistava"),
-  @Description("Mikä uskonto on kyseessä")
-  @KoodistoUri("oppiaineuskonto")
-  uskonto: Koodistokoodiviite,
-  pakollinen: Boolean = true,
-  override val laajuus: Option[LaajuusVuosiviikkotunneissa] = None
-) extends PerusopetuksenOppiaine {
-  override def description = concat(nimi, ", ", uskonto)
-}
-
 case class PeruskoulunAidinkieliJaKirjallisuus(
   @KoodistoKoodiarvo("AI")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "AI", koodistoUri = "koskioppiaineetyleissivistava"),

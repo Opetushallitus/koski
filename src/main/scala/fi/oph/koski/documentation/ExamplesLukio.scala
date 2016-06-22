@@ -4,7 +4,7 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.documentation.LukioExampleData.{arviointi, exampleHenkilö, kieli, oppiaine, suoritus, tavoiteKokoOppimäärä, uskonto, vahvistus, äidinkieli, _}
+import fi.oph.koski.documentation.LukioExampleData.{arviointi, exampleHenkilö, kieli, oppiaine, suoritus, tavoiteKokoOppimäärä, vahvistus, äidinkieli, _}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.oppija.MockOppijat
@@ -164,7 +164,7 @@ object ExamplesLukio {
               kurssisuoritus(paikallinenKurssi("KE8", "Kemia 8", "Kemia 8"))
                 .copy(arviointi = kurssinArviointi("S"))
             ))),
-            suoritus(uskonto("KT1")).copy(arviointi = arviointi(8)).copy(osasuoritukset = Some(List(
+            suoritus(oppiaine("KT")).copy(arviointi = arviointi(8)).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("UE1")).copy(arviointi = kurssinArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("UE2")).copy(arviointi = kurssinArviointi(7)),
               kurssisuoritus(valtakunnallinenKurssi("UE3")).copy(arviointi = kurssinArviointi(8))
@@ -313,7 +313,6 @@ object LukioExampleData {
   def kieli(oppiaine: String, kieli: String) = VierasTaiToinenKotimainenKieli(
     tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),
     kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
-  def uskonto(uskonto: String) = Uskonto(uskonto = Koodistokoodiviite(koodiarvo = uskonto, koodistoUri = "oppiaineuskonto"))
 
   def kurssinArviointi(arvosana: String, päivä: LocalDate = date(2016, 6, 4)): Some[List[LukionKurssinArviointi]] = {
     Some(List(new LukionKurssinArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), päivä)))

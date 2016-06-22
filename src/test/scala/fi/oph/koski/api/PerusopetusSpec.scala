@@ -17,7 +17,7 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
           |B1-kieli, ruotsi Hyvä 8
           |Valinnainen b1-kieli, ruotsi 1.0 Hyväksytty
           |A1-kieli, englanti Hyvä 8
-          |Uskonto tai elämänkatsomustieto, Evankelisluterilainen uskonto Erinomainen 10
+          |Uskonto tai elämänkatsomustieto Erinomainen 10
           |Historia Hyvä 8
           |Yhteiskuntaoppi Erinomainen 10
           |Matematiikka Kiitettävä 9
@@ -71,7 +71,7 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
           |B1-kieli, ruotsi Hyvä 8
           |Valinnainen b1-kieli, ruotsi 1.0 Hyväksytty
           |A1-kieli, englanti Hyvä 8
-          |Uskonto tai elämänkatsomustieto, Evankelisluterilainen uskonto Erinomainen 10
+          |Uskonto tai elämänkatsomustieto Erinomainen 10
           |Historia Hyvä 8
           |Yhteiskuntaoppi Erinomainen 10
           |Matematiikka Kiitettävä 9

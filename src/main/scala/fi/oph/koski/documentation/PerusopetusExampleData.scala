@@ -43,7 +43,6 @@ object PerusopetusExampleData {
   def kieli(oppiaine: String, kieli: String) = PeruskoulunVierasTaiToinenKotimainenKieli(
     tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),
     kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
-  def uskonto(uskonto: String) = PeruskoulunUskonto(uskonto = Koodistokoodiviite(koodiarvo = uskonto, koodistoUri = "oppiaineuskonto"))
 
   val kaikkiAineet = Some(
     List(
@@ -51,7 +50,7 @@ object PerusopetusExampleData {
       suoritus(kieli("B1", "SV")).copy(arviointi = arviointi(8)),
       suoritus(kieli("B1", "SV").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
       suoritus(kieli("A1", "EN")).copy(arviointi = arviointi(8)),
-      suoritus(uskonto("KT1")).copy(arviointi = arviointi(10)),
+      suoritus(oppiaine("KT")).copy(arviointi = arviointi(10)),
       suoritus(oppiaine("HI")).copy(arviointi = arviointi(8)),
       suoritus(oppiaine("YH")).copy(arviointi = arviointi(10)),
       suoritus(oppiaine("MA")).copy(arviointi = arviointi(9)),

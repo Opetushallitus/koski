@@ -183,18 +183,6 @@ case class MuuOppiaine(
   override val laajuus: Option[LaajuusKursseissa] = None
 ) extends LukionOppiaine
 
-case class Uskonto(
-  @KoodistoKoodiarvo("KT")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "KT", koodistoUri = "koskioppiaineetyleissivistava"),
-  @Description("Mikä uskonto on kyseessä")
-  @KoodistoUri("oppiaineuskonto")
-  uskonto: Koodistokoodiviite,
-  pakollinen: Boolean = true,
-  override val laajuus: Option[LaajuusKursseissa] = None
-) extends LukionOppiaine {
-  override def description = concat(nimi, ", ", uskonto)
-}
-
 case class AidinkieliJaKirjallisuus(
   @KoodistoKoodiarvo("AI")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "AI", koodistoUri = "koskioppiaineetyleissivistava"),
