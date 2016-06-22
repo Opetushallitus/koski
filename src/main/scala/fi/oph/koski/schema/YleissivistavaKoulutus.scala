@@ -17,12 +17,11 @@ case class Päätösjakso(
   loppu: Option[LocalDate]
 )
 
-trait YleissivistavaOppiaine extends KoodistostaLöytyväKoulutusmoduuli {
+trait YleissivistavaOppiaine extends KoodistostaLöytyväKoulutusmoduuli with Valinnaisuus {
   @Description("Oppiaine")
   @KoodistoUri("koskioppiaineetyleissivistava")
   @OksaUri("tmpOKSAID256", "oppiaine")
   def tunniste: Koodistokoodiviite
-  def pakollinen: Boolean
 }
 
 trait YleissivistävänKoulutuksenArviointi extends KoodistostaLöytyväArviointi {

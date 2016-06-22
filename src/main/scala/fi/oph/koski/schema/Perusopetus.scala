@@ -88,7 +88,7 @@ case class ErityisenTuenPäätös(
 )
 
 
-trait PerusopetuksenPäätasonSuoritus extends Suoritus
+trait PerusopetuksenPäätasonSuoritus extends Suoritus with Toimipisteellinen
 
 @Description("Perusopetuksen vuosiluokan suoritus. Nämä suoritukset näkyvät lukuvuositodistuksella.")
 case class PerusopetuksenVuosiluokanSuoritus(
@@ -97,8 +97,6 @@ case class PerusopetuksenVuosiluokanSuoritus(
   override val alkamispäivä: Option[LocalDate],
   paikallinenId: Option[String],
   tila: Koodistokoodiviite,
-  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
-  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Henkilövahvistus] = None,
   suorituskieli: Option[Koodistokoodiviite],
@@ -119,8 +117,6 @@ case class PerusopetuksenOppimääränSuoritus(
   paikallinenId: Option[String] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
-  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
-  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Henkilövahvistus] = None,
   koulutusmoduuli: Perusopetus,
@@ -141,8 +137,6 @@ case class PerusopetuksenOppiaineenOppimääränSuoritus(
   paikallinenId: Option[String] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
-  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
-  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
   override val vahvistus: Option[Henkilövahvistus] = None,
   @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
@@ -224,12 +218,9 @@ case class PerusopetuksenToimintaAlue(
 @Description("Perusopetus")
 case class Perusopetus(
  perusteenDiaarinumero: Option[String],
- @Description("Tutkinnon 6-numeroinen tutkintokoodi")
- @KoodistoUri("koulutus")
  @KoodistoKoodiarvo("201101")
- @OksaUri("tmpOKSAID560", "tutkinto")
  tunniste: Koodistokoodiviite = Koodistokoodiviite("201101", koodistoUri = "koulutus")
-) extends KoodistostaLöytyväKoulutusmoduuli with EPerusteistaLöytyväKoulutusmoduuli {
+) extends Koulutus with EPerusteistaLöytyväKoulutusmoduuli {
   override def laajuus = None
   override def isTutkinto = true
 }

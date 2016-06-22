@@ -31,8 +31,6 @@ case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus(
   paikallinenId: Option[String] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
-  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
-  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Henkilövahvistus] = None,
   @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osasuoritukset")
@@ -58,11 +56,10 @@ case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus(
 
 @Description("Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)")
 case class AmmatilliseenPeruskoulutukseenValmentavaKoulutus(
-  @KoodistoUri("koulutus")
   @KoodistoKoodiarvo("999901")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999901", koodistoUri = "koulutus"),
   laajuus: Option[Laajuus] = None
-) extends KoodistostaLöytyväKoulutusmoduuli
+) extends Koulutus
 
 @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osa")
 case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa(

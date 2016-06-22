@@ -67,11 +67,8 @@ trait KorkeakouluSuoritus extends Suoritus {
 
 @Description("Tutkintoon johtava koulutus")
 case class KorkeakouluTutkinto(
-  @Description("Tutkinnon 6-numeroinen tutkintokoodi")
-  @KoodistoUri("koulutus")
-  @OksaUri("tmpOKSAID560", "tutkinto")
   tunniste: Koodistokoodiviite
-) extends KoodistostaLöytyväKoulutusmoduuli  {
+) extends Koulutus  {
   override def laajuus = None
   override def isTutkinto = true
 }

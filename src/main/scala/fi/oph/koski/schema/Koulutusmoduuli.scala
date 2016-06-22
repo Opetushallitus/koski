@@ -17,6 +17,13 @@ trait KoodistostaLöytyväKoulutusmoduuli extends Koulutusmoduuli {
   def nimi: LocalizedString = tunniste.nimi.getOrElse(unlocalized(tunniste.koodiarvo))
 }
 
+trait Koulutus extends KoodistostaLöytyväKoulutusmoduuli {
+  @Description("Tutkinnon 6-numeroinen tutkintokoodi")
+  @KoodistoUri("koulutus")
+  @OksaUri("tmpOKSAID560", "tutkinto")
+  def tunniste: Koodistokoodiviite
+}
+
 trait EPerusteistaLöytyväKoulutusmoduuli extends Koulutusmoduuli {
   @Description("Tutkinnon perusteen diaarinumero Ks. ePerusteet-palvelu")
   def perusteenDiaarinumero: Option[String]

@@ -31,24 +31,21 @@ case class LukioonValmistavanKoulutuksenSuoritus(
   paikallinenId: Option[String] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
-  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
-  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Henkilövahvistus] = None,
   override val osasuoritukset: Option[List[LukioonValmistavanKoulutuksenOsasuoritus]],
   @KoodistoKoodiarvo("luva")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("luva", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: LukioonValmistavaKoulutus
-) extends Suoritus {
+) extends Suoritus with Toimipisteellinen {
   def arviointi: Option[List[KoodistostaLöytyväArviointi]] = None
 }
 
 @Description("Lukioon valmistava koulutus (LUVA)")
 case class LukioonValmistavaKoulutus(
-  @KoodistoUri("koulutus")
   @KoodistoKoodiarvo("039997")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("039997", koodistoUri = "koulutus")
-) extends KoodistostaLöytyväKoulutusmoduuli {
+) extends Koulutus {
   def laajuus = None
 }
 

@@ -71,15 +71,13 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate],
   val loppumispäivä: Option[LocalDate],
-  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
-  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Henkilövahvistus] = None,
   @Description("Valmistavan koulutuksen osat")
   override val osasuoritukset: Option[List[NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus]] = None,
   @KoodistoKoodiarvo("nayttotutkintoonvalmistavakoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("nayttotutkintoonvalmistavakoulutus", "suorituksentyyppi")
-) extends AmmatillinenPäätasonSuoritus {
+) extends AmmatillinenPäätasonSuoritus with Toimipisteellinen {
   def arviointi: Option[List[AmmatillinenArviointi]] = None
 }
 
@@ -104,15 +102,13 @@ case class AmmatillisenTutkinnonSuoritus(
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate],
-  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
-  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Henkilövahvistus] = None,
   @Description("Ammatilliseen tutkintoon liittyvät tutkinnonosan suoritukset")
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = None,
   @KoodistoKoodiarvo("ammatillinentutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinentutkinto", "suorituksentyyppi")
-) extends AmmatillinenPäätasonSuoritus {
+) extends AmmatillinenPäätasonSuoritus with Toimipisteellinen {
   def arviointi: Option[List[AmmatillinenArviointi]] = None
 }
 
@@ -154,12 +150,9 @@ case class Työssäoppimisjakso(
 
 @Description("Tutkintoon johtava koulutus")
 case class AmmatillinenTutkintoKoulutus(
- @Description("Tutkinnon 6-numeroinen tutkintokoodi")
- @KoodistoUri("koulutus")
- @OksaUri("tmpOKSAID560", "tutkinto")
  tunniste: Koodistokoodiviite,
  perusteenDiaarinumero: Option[String]
-) extends KoodistostaLöytyväKoulutusmoduuli with EPerusteistaLöytyväKoulutusmoduuli {
+) extends Koulutus with EPerusteistaLöytyväKoulutusmoduuli {
   override def laajuus = None
   override def isTutkinto = true
 }

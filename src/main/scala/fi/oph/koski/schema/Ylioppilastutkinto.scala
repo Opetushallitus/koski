@@ -24,15 +24,13 @@ case class YlioppilastutkinnonOpiskeluoikeus(
 
 case class YlioppilastutkinnonSuoritus(
   tila: Koodistokoodiviite,
-  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
-  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
   override val osasuoritukset: Option[List[YlioppilastutkinnonKokeenSuoritus]],
   @KoodistoKoodiarvo("ylioppilastutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ylioppilastutkinto", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: Ylioppilastutkinto = Ylioppilastutkinto(perusteenDiaarinumero = None),
   vahvistus: Option[Organisaatiovahvistus] = None
-) extends Suoritus {
+) extends Suoritus with Toimipisteellinen {
   def arviointi: Option[List[KoodistostaLöytyväArviointi]] = None
   override def paikallinenId = None
   override def suorituskieli: Option[Koodistokoodiviite] = None
@@ -65,13 +63,10 @@ object YlioppilaskokeenArviointi {
 }
 
 case class Ylioppilastutkinto(
- @Description("Tutkinnon 6-numeroinen tutkintokoodi")
- @KoodistoUri("koulutus")
  @KoodistoKoodiarvo("301000")
- @OksaUri("tmpOKSAID560", "tutkinto")
  tunniste: Koodistokoodiviite = Koodistokoodiviite("301000", koodistoUri = "koulutus"),
  perusteenDiaarinumero: Option[String]
-) extends KoodistostaLöytyväKoulutusmoduuli with EPerusteistaLöytyväKoulutusmoduuli {
+) extends Koulutus with EPerusteistaLöytyväKoulutusmoduuli {
   override def laajuus = None
   override def isTutkinto = true
 }

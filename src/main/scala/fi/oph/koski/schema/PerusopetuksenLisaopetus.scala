@@ -30,15 +30,13 @@ case class PerusopetuksenLisäopetuksenSuoritus(
   paikallinenId: Option[String] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
-  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
-  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Henkilövahvistus] = None,
   @KoodistoKoodiarvo("perusopetuksenlisaopetus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenlisaopetus", koodistoUri = "suorituksentyyppi"),
   override val osasuoritukset: Option[List[PerusopetuksenLisäopetuksenOppiaineenSuoritus]],
   koulutusmoduuli: PerusopetuksenLisäopetus
-) extends Suoritus {
+) extends Suoritus with Toimipisteellinen {
   def arviointi: Option[List[KoodistostaLöytyväArviointi]] = None
 }
 
@@ -56,9 +54,8 @@ case class PerusopetuksenLisäopetuksenOppiaineenSuoritus(
 ) extends OppiaineenSuoritus
 
 case class PerusopetuksenLisäopetus(
-  @KoodistoUri("koulutus")
   @KoodistoKoodiarvo("020075")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("020075", koodistoUri = "koulutus")
-) extends KoodistostaLöytyväKoulutusmoduuli {
+) extends Koulutus {
   def laajuus = None
 }

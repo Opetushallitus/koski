@@ -31,8 +31,6 @@ case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenSuoritus(
   paikallinenId: Option[String] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
-  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
-  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Henkilövahvistus] = None,
   @Description("Työhön ja itsenäiseen elämään valmentava koulutuksen osasuoritukset")
@@ -58,11 +56,10 @@ case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus(
 
 @Description("Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)")
 case class TyöhönJaItsenäiseenElämäänValmentavaKoulutus(
-  @KoodistoUri("koulutus")
   @KoodistoKoodiarvo("999903")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999903", koodistoUri = "koulutus"),
   laajuus: Option[Laajuus] = None
-) extends KoodistostaLöytyväKoulutusmoduuli
+) extends Koulutus
 
 @Description("Työhön ja itsenäiseen elämään valmentava koulutuksen osa")
 case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa(

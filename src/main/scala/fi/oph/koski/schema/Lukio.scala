@@ -58,14 +58,12 @@ case class Erityinenkoulutustehtävä(
   tehtävä: Koodistokoodiviite
 )
 
-trait LukionPäätasonSuoritus extends Suoritus
+trait LukionPäätasonSuoritus extends Suoritus with Toimipisteellinen
 
 case class LukionOppimääränSuoritus(
   paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
-  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
-  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
   koulutusmoduuli: LukionOppimäärä,
   @KoodistoUri("lukionoppimaara")
@@ -82,8 +80,6 @@ case class LukionOppiaineenOppimääränSuoritus(
   paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
-  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
-  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   toimipiste: OrganisaatioWithOid,
   koulutusmoduuli: LukionOppiaine,
   @KoodistoKoodiarvo("lukionoppiaineenoppimaara")
@@ -95,13 +91,10 @@ case class LukionOppiaineenOppimääränSuoritus(
 ) extends LukionPäätasonSuoritus
 
 case class LukionOppimäärä(
- @Description("Tutkinnon 6-numeroinen tutkintokoodi")
- @KoodistoUri("koulutus")
  @KoodistoKoodiarvo("309902")
- @OksaUri("tmpOKSAID560", "tutkinto")
  tunniste: Koodistokoodiviite = Koodistokoodiviite("309902", koodistoUri = "koulutus"),
  perusteenDiaarinumero: Option[String]
-) extends KoodistostaLöytyväKoulutusmoduuli with EPerusteistaLöytyväKoulutusmoduuli {
+) extends Koulutus with EPerusteistaLöytyväKoulutusmoduuli {
   override def laajuus = None
   override def isTutkinto = true
 }
@@ -154,7 +147,7 @@ case class LukionKurssinArviointi(
   päivä: LocalDate
 ) extends YleissivistävänKoulutuksenArviointi with ArviointiPäivämäärällä
 
-sealed trait LukionKurssi extends Koulutusmoduuli {
+sealed trait LukionKurssi extends Koulutusmoduuli with Valinnaisuus {
   def pakollinen: Boolean = false
   def laajuus: Option[LaajuusKursseissa]
 }

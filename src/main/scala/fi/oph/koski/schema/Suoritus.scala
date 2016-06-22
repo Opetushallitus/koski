@@ -42,7 +42,13 @@ trait Suoritus {
   def tarvitseeVahvistuksen = true
 }
 
-trait ValmentavaSuoritus extends Suoritus {
+trait ValmentavaSuoritus extends Suoritus with Toimipisteellinen {
   def todistuksellaNäkyvätLisätiedot: Option[LocalizedString]
   def arviointi = None
+}
+
+trait Toimipisteellinen {
+  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
+  @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
+  def toimipiste: OrganisaatioWithOid
 }
