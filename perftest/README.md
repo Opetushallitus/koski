@@ -8,6 +8,11 @@ Suorituskykytestit ajetaan automaattisesti CI-serverillä http://86.50.170.109:8
 
 ### Testien ajaminen omalta koneella
 
+Buildaa ensin applikaatio projektin juurihakemistossa:
+
+    mvn install -DskipTests
+
+Testit ajetaan tässä hakemistossa (perftest) seuraavasti:
 
     KOSKI_USER=<käyttäjä> KOSKI_PASS=<salasana> [KOSKI_BASE_URL=<koski_url>] mvn gatling:execute -Dgatling.simulationClass=<simulationClass>
 
@@ -32,5 +37,3 @@ Suorituskykytestin ajaminen testiympäristöä vasten ylikuormalla
 Suorituskykytestin ajaminen omaa lokaalia ympäristöä vasten normaalilla kuormalla
     
     KOSKI_USER=<käyttäjä> KOSKI_PASS=<salasana> KOSKI_BASE_URL=http://localhost:7021/koski mvn gatling:execute -Dgatling.simulationClass=koski.NormalSimulation
-
-Wed Jan 20 16:33:23 EET 2016

@@ -23,7 +23,8 @@
       <dependency>
         <groupId>fi.vm.sade</groupId>
         <artifactId>koski</artifactId>
-        <version>0.1.0-SNAPSHOT</version>
+        <version>master-SNAPSHOT</version>
+        <classifier>classes</classifier>
         <exclusions>
           <exclusion>
             <groupId>org.scala-lang</groupId>

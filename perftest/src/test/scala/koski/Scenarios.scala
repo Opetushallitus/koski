@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter.{ofPattern => dateFormat}
 import java.time.temporal.ChronoUnit._
 
 import com.ning.http.client.RequestBuilder
-import fi.oph.koski.documentation.{AmmatillinenFullExample, ExamplesAmmatillinen}
+import fi.oph.koski.documentation.AmmatillinenOldExamples
 import fi.oph.koski.json.Json
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, Oppija, UusiHenkilö}
 import io.gatling.core.Predef._
@@ -18,8 +18,8 @@ import scala.util.Random.{nextInt => randomInt}
 trait KoskiScenario {
   val username = sys.env("KOSKI_USER")
   val password = sys.env("KOSKI_PASS")
-  val uusiOppijaFeeder = Array(Map("content" -> ExamplesAmmatillinen.uusi)).circular
-  val oppijaFeeder = Array(Map("content" -> AmmatillinenFullExample.full)).circular
+  val uusiOppijaFeeder = Array(Map("content" -> AmmatillinenOldExamples.uusi)).circular
+  val oppijaFeeder = Array(Map("content" -> AmmatillinenOldExamples.full)).circular
 }
 
 object Scenarios extends UpdateOppijaScenario with FindOppijaScenario with QueryOppijatScenario with InsertOppijaScenario {
