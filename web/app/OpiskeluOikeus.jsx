@@ -25,7 +25,7 @@ export const OpiskeluOikeus = React.createClass({
       <div className="opiskeluoikeus">
         {
           opiskeluOikeus.suoritukset
-            .filter((suoritus) => /perusopetuksenoppimaara|perusopetuksenoppiaineenoppimaara|perusopetuksenlisaopetus|perusopetuksenvuosiluokka|lukionoppimaara|lukionoppiaineenoppimaara|luva|ammatillinentutkinto|nayttotutkintoonvalmistavakoulutus|valma|telma|korkeakoulututkinto|ylioppilastutkinto/.test(suoritus.tyyppi.koodiarvo))
+            .filter((suoritus) => /perusopetukseenvalmistavaopetus|perusopetuksenoppimaara|perusopetuksenoppiaineenoppimaara|perusopetuksenlisaopetus|perusopetuksenvuosiluokka|lukionoppimaara|lukionoppiaineenoppimaara|luva|ammatillinentutkinto|nayttotutkintoonvalmistavakoulutus|valma|telma|korkeakoulututkinto|ylioppilastutkinto/.test(suoritus.tyyppi.koodiarvo))
             .map((suoritus, index) =>  {
               let suoritusLens = L.compose(lens, L.prop('suoritukset'), L.index(index))
               return (

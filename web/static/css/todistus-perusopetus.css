@@ -26,3 +26,9 @@ h2.oppilaitos {
     text-align: center;
     width: 60px;
 }
+
+.arvosanat .oppiaine .kuvaus {
+    display: block;
+    font-size: 0.8em;
+    padding: 10px 21px;
+}

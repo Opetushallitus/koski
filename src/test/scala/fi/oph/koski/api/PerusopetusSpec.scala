@@ -117,5 +117,18 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
     }
   }
 
+  describe("Perusopetukseen valmistava opetus") {
+    it("todistus") {
+      todistus(MockOppijat.koululainen.oid, "perusopetukseenvalmistavaopetus") should equal (
+        """Todistus perusopetukseen valmistavaan opetukseen osallistumisesta
+          |Jyväskylän yliopisto
+          |Jyväskylän normaalikoulu
+          |Koululainen, Kaisa 110496-926Y
+          |
+          |Äidinkieli Suullinen ilmaisu ja kuullun ymmärtäminen 10 Keskustelee sujuvasti suomeksi""".stripMargin
+      )
+    }
+  }
+
 }
 

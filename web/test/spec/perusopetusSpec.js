@@ -10,13 +10,13 @@ describe('Perusopetus', function() {
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
         expect(OpinnotPage().getOppilaitos()).to.equal("Jyväskylän normaalikoulu")
-        expect(OpinnotPage().getTutkinto(0)).to.equal("8. vuosiluokka")
-        expect(OpinnotPage().getTutkinto(1)).to.equal("9. vuosiluokka")
-        expect(OpinnotPage().getTutkinto(2)).to.equal("Peruskoulu")
+        expect(OpinnotPage().getTutkinto(1)).to.equal("8. vuosiluokka")
+        expect(OpinnotPage().getTutkinto(2)).to.equal("9. vuosiluokka")
+        expect(OpinnotPage().getTutkinto(3)).to.equal("Peruskoulu")
       })
     })
     describe('Päättötodistus', function() {
-      before(OpinnotPage().avaaTodistus(2))
+      before(OpinnotPage().avaaTodistus(3))
       describe('Klikattaessa linkkiä', function() {
         it('näytetään', function() {
           // See more detailed content specification in PerusopetusSpec.scala
@@ -27,7 +27,7 @@ describe('Perusopetus', function() {
     })
 
     describe('Lukuvuositodistus', function() {
-      before(TodistusPage().close, wait.until(page.isOppijaSelected('Kaisa')), OpinnotPage().avaaTodistus(0))
+      before(TodistusPage().close, wait.until(page.isOppijaSelected('Kaisa')), OpinnotPage().avaaTodistus(1))
       it('näytetään', function() {})
     })
 
@@ -67,6 +67,14 @@ describe('Perusopetus', function() {
     before(page.openPage, page.oppijaHaku.search('200596-9755', page.isOppijaSelected('Kaisa')), OpinnotPage().avaaTodistus(0))
     it('näytetään', function() {
       expect(todistus.headings()).to.equal('Jyväskylän yliopisto Todistus lisäopetuksen suorittamisesta Jyväskylän normaalikoulu Kymppiluokkalainen, Kaisa 200596-9755')
+      // See more detailed content specification in PerusopetusSpec.scala
+    })
+  })
+
+  describe('Perusopetukseen valmistavan opetuksen todistus', function() {
+    before(page.openPage, page.oppijaHaku.search('110496-926Y', page.isOppijaSelected('Kaisa')), OpinnotPage().avaaTodistus(0))
+    it('näytetään', function() {
+      expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
       // See more detailed content specification in PerusopetusSpec.scala
     })
   })

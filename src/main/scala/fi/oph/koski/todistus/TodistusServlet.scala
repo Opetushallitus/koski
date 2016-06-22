@@ -31,6 +31,8 @@ class TodistusServlet(val userRepository: UserOrganisationsRepository, val direc
         suoritukset match {
           case ((opiskeluoikeus, suoritus) :: Nil) =>
             suoritus match {
+              case t: PerusopetukseenValmistavanOpetuksenSuoritus =>
+                Right((new PerusopetukseenValmistavanOpetuksenTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)).todistusHtml)
               case t: PerusopetuksenOppimääränSuoritus =>
                 Right((new PerusopetuksenPaattotodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)).todistusHtml)
               case t: PerusopetuksenOppiaineenOppimääränSuoritus =>
