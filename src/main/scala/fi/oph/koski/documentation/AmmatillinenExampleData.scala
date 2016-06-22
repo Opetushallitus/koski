@@ -99,7 +99,7 @@ object AmmatillinenExampleData {
     arvosana = hyväksytty, date(2013, 3, 20),
     arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen"))))))
 
-  def vahvistus(date: LocalDate) = Some(Henkilövahvistus(date, helsinki, stadinAmmattiopisto, List(OrganisaatioHenkilö("Keijo Perttilä", "rehtori", stadinAmmattiopisto))))
+
   lazy val paikallisenOsanSuoritus = AmmatillisenTutkinnonOsanSuoritus(
     koulutusmoduuli = PaikallinenTutkinnonosa(PaikallinenKoodi("123456789", "Pintavauriotyöt"), "Opetellaan korjaamaan pinnallisia vaurioita", false, None),
     tunnustettu = None,

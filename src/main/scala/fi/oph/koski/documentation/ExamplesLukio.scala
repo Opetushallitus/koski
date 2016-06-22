@@ -4,7 +4,7 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.documentation.LukioExampleData.{arviointi, exampleHenkilö, kieli, oppiaine, suoritus, tavoiteKokoOppimäärä, vahvistus, äidinkieli, _}
+import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.oppija.MockOppijat
@@ -59,7 +59,7 @@ object ExamplesLukio {
           paikallinenId = None,
           suorituskieli = suomenKieli,
           tila = tilaValmis,
-          vahvistus = vahvistus,
+          vahvistus = vahvistus(),
           toimipiste = jyväskylänNormaalikoulu,
           osasuoritukset = Some(List(
             suoritus(äidinkieli("AI1")).copy(arviointi = arviointi(9)).copy(osasuoritukset = Some(List(
@@ -231,7 +231,7 @@ object ExamplesLukio {
           paikallinenId = None,
           suorituskieli = suomenKieli,
           tila = tilaValmis,
-          vahvistus = vahvistus,
+          vahvistus = vahvistus(),
           toimipiste = jyväskylänNormaalikoulu,
           arviointi = arviointi(9),
           osasuoritukset = Some(List(
@@ -280,9 +280,6 @@ object LukioExampleData {
 
   val aikuistenOpetussuunnitelma = Koodistokoodiviite("aikuistenops", Some("Aikuisten ops"), "lukionoppimaara", Some(1))
   val nuortenOpetussuunnitelma = Koodistokoodiviite("nuortenops", Some("Nuorten ops"), "lukionoppimaara", Some(1))
-
-
-  val vahvistus = Some(Henkilövahvistus(päivä = date(2016, 6, 4), jyväskylä, myöntäjäOrganisaatio = jyväskylänNormaalikoulu, myöntäjäHenkilöt = List(OrganisaatioHenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))
 
   def suoritus(aine: LukionOppiaine): LukionOppiaineenSuoritus = LukionOppiaineenSuoritus(
     koulutusmoduuli = aine,

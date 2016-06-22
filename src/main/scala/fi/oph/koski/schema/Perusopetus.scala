@@ -193,18 +193,25 @@ case class NumeerinenPerusopetuksenOppiaineenArviointi(
 
 @Description("Sanallisessa arvioinnissa suorituksen hyväksymisen ilmaisuun käytetään koodiarvoja S (suoritettu) ja H (hylätty). Koodiarvon lisäksi voidaan liittää sanallinen arviointi vapaana tekstinä kuvaus-kenttään.")
 case class SanallinenPerusopetuksenOppiaineenArviointi(
+  kuvaus: Option[LocalizedString],
+  päivä: Option[LocalDate] = None,
   @KoodistoKoodiarvo("S")
   @KoodistoKoodiarvo("H")
-  arvosana: Koodistokoodiviite,
-  päivä: Option[LocalDate],
-  kuvaus: Option[LocalizedString]
+  arvosana: Koodistokoodiviite = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava")
 ) extends PerusopetuksenOppiaineenArviointi with SanallinenArviointi {
   def arviointipäivä = päivä
 }
 
 object PerusopetuksenOppiaineenArviointi {
-  def apply(arvosana: String, kuvaus: Option[LocalizedString] = None) = new SanallinenPerusopetuksenOppiaineenArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), None, kuvaus)
-  def apply(arvosana: Int) = new NumeerinenPerusopetuksenOppiaineenArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana.toString, koodistoUri = "arviointiasteikkoyleissivistava"), None)
+  def apply(arvosana: String, kuvaus: Option[LocalizedString] = None) = new SanallinenPerusopetuksenOppiaineenArviointi(
+    arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"),
+    päivä = None,
+    kuvaus = kuvaus
+  )
+  def apply(arvosana: Int) = new NumeerinenPerusopetuksenOppiaineenArviointi(
+    arvosana = Koodistokoodiviite(koodiarvo = arvosana.toString, koodistoUri = "arviointiasteikkoyleissivistava"),
+    päivä = None
+  )
 }
 
 @Description("Perusopetuksen toiminta-alue")

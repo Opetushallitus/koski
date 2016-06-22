@@ -22,7 +22,7 @@ object ExamplesLukioonValmistavaKoulutus {
         tila = None,
         suoritukset = List(LukioonValmistavanKoulutuksenSuoritus(
           tila = tilaValmis,
-          vahvistus = vahvistus,
+          vahvistus = vahvistus(),
           toimipiste = jyväskylänNormaalikoulu,
           koulutusmoduuli = LukioonValmistavaKoulutus(),
           osasuoritukset = Some(List(

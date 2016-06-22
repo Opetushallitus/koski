@@ -334,7 +334,7 @@ describe('Ammatillinen koulutus', function() {
         expect(TodistusPage().headings()).to.equal('HELSINGIN KAUPUNKIStadin ammattiopistoPäättötodistusLuonto- ja ympäristöalan perustutkintoYmpäristöalan osaamisala, Ympäristönhoitaja Ammattilainen, Aarne (120496-949B)')
         expect(TodistusPage().arvosanarivi('.tutkinnon-osa.100431')).to.equal('Kestävällä tavalla toimiminen 40 Kiitettävä 3')
         expect(TodistusPage().arvosanarivi('.opintojen-laajuus')).to.equal('Opiskelijan suorittamien tutkinnon osien laajuus osaamispisteinä 180')
-        expect(TodistusPage().vahvistus()).to.equal('Helsinki 31.5.2016 Keijo Perttilä rehtori')
+        expect(TodistusPage().vahvistus()).to.equal('Helsinki 31.5.2016 Reijo Reksi rehtori')
       })
     })
   })
@@ -352,7 +352,7 @@ describe('Ammatillinen koulutus', function() {
       describe('Tulostettava todistus', function() {
         before(OpinnotPage().avaaTodistus(0))
         it('näytetään', function() {
-          expect(TodistusPage().vahvistus()).to.equal('Helsinki 31.5.2015 Keijo Perttilä rehtori')
+          expect(TodistusPage().vahvistus()).to.equal('Helsinki 31.5.2015 Reijo Reksi rehtori')
         })
       })
     })
@@ -369,7 +369,7 @@ describe('Ammatillinen koulutus', function() {
       describe('Tulostettava todistus', function() {
         before(OpinnotPage().avaaTodistus(1))
         it('näytetään', function() {
-          expect(TodistusPage().vahvistus()).to.equal('Helsinki 31.5.2016 Keijo Perttilä rehtori')
+          expect(TodistusPage().vahvistus()).to.equal('Helsinki 31.5.2016 Reijo Reksi rehtori')
         })
       })
     })
@@ -387,7 +387,7 @@ describe('Ammatillinen koulutus', function() {
       before(OpinnotPage().avaaTodistus(0))
       it('näytetään', function() {
         // See more detailed content specification in ValmaSpec.scala
-        expect(TodistusPage().vahvistus()).to.equal('Helsinki 4.6.2016 Keijo Perttilä rehtori')
+        expect(TodistusPage().vahvistus()).to.equal('Helsinki 4.6.2016 Reijo Reksi rehtori')
       })
     })
   })

@@ -19,4 +19,5 @@ object ExampleData {
   val helsinki = Koodistokoodiviite(koodistoUri = "kunta", koodiarvo = "091", nimi = Some("Helsinki"))
   val jyväskylä = Koodistokoodiviite(koodistoUri = "kunta", koodiarvo = "179", nimi = Some("Jyväskylä"))
   val suomi = Koodistokoodiviite(koodistoUri = "maatjavaltiot2", koodiarvo = "246", nimi = Some("Suomi"))
+  def vahvistus(päivä: LocalDate = date(2016, 6, 4), org: OrganisaatioWithOid = jyväskylänNormaalikoulu) = Some(Henkilövahvistus(päivä = päivä, jyväskylä, myöntäjäOrganisaatio = org, myöntäjäHenkilöt = List(OrganisaatioHenkilö("Reijo Reksi", "rehtori", org))))
 }
