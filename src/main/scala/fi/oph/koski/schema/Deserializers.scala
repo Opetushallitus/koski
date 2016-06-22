@@ -39,6 +39,9 @@ object SuoritusDeserializer extends Deserializer[Suoritus] {
         case suoritus: JObject if tyyppi(suoritus) == JString("perusopetuksenoppiaineenoppimaara") => suoritus.extract[PerusopetuksenOppiaineenOppimääränSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("perusopetuksenvuosiluokka") => suoritus.extract[PerusopetuksenVuosiluokanSuoritus]
 
+        case suoritus: JObject if tyyppi(suoritus) == JString("perusopetukseenvalmistavaopetus") => suoritus.extract[PerusopetukseenValmistavanOpetuksenSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("perusopetukseenvalmistavanopetuksenoppiaine") => suoritus.extract[PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus]
+
         case suoritus: JObject if tyyppi(suoritus) == JString("lukionoppimaara") => suoritus.extract[LukionOppimääränSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("lukionoppiaineenoppimaara") => suoritus.extract[LukionOppiaineenOppimääränSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("lukionoppiaine") => suoritus.extract[LukionOppiaineenSuoritus]
@@ -132,6 +135,7 @@ object OpiskeluOikeusDeserializer extends Deserializer[Opiskeluoikeus] {
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("telma") => oo.extract[TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOpiskeluoikeus]
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("perusopetus") => oo.extract[PerusopetuksenOpiskeluoikeus]
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("perusopetuksenlisaopetus") => oo.extract[PerusopetuksenLisäopetuksenOpiskeluoikeus]
+        case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("perusopetukseenvalmistavaopetus") => oo.extract[PerusopetukseenValmistavanOpetuksenOpiskeluoikeus]
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("luva") => oo.extract[LukioonValmistavanKoulutuksenOpiskeluoikeus]
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("lukiokoulutus") => oo.extract[LukionOpiskeluoikeus]
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("korkeakoulutus") => oo.extract[KorkeakoulunOpiskeluoikeus]

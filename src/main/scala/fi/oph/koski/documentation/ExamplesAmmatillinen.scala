@@ -36,7 +36,7 @@ object AmmattitutkintoExample {
             alkamispäivä = Some(date(2012, 9, 1)),
             loppumispäivä = None,
             toimipiste = toimipiste,
-            vahvistus = vahvistus(date(2015, 5, 31), stadinAmmattiopisto),
+            vahvistus = vahvistus(date(2015, 5, 31), stadinAmmattiopisto, helsinki),
             osasuoritukset = Some(List(
               NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
                 tila = tilaValmis, koulutusmoduuli = NäyttötutkintoonValmistavanKoulutuksenOsa(PaikallinenKoodi("104052", LocalizedString.finnish("Johtaminen ja henkilöstön kehittäminen")))
@@ -52,7 +52,7 @@ object AmmattitutkintoExample {
             tila = tilaValmis,
             alkamisPäivä = None,
             toimipiste = toimipiste,
-            vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto),
+            vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto, helsinki),
             osasuoritukset = Some(List(
               tutkinnonOsanSuoritus("104052", "Johtaminen ja henkilöstön kehittäminen", hyväksytty),
               tutkinnonOsanSuoritus("104053", "Asiakaspalvelu ja korjaamopalvelujen markkinointi", hyväksytty),
@@ -96,7 +96,7 @@ object AmmatillinenPerustutkintoExample {
           tila = tilaValmis,
           alkamisPäivä = None,
           toimipiste = toimipiste,
-          vahvistus = vahvistus(date(2016, 5, 31)),
+          vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto, helsinki),
           osasuoritukset = Some(List(
             tutkinnonOsanSuoritus("100431", "Kestävällä tavalla toimiminen", k3, 40).copy(työssäoppimisjaksot = Some(List(
               Työssäoppimisjakso(date(2014, 1, 1), Some(date(2014, 3, 15)), jyväskylä, suomi, LocalizedString.finnish("Toimi harjoittelijana Sortti-asemalla"), LaajuusOsaamispisteissä(5))
@@ -173,7 +173,7 @@ object AmmatillinenOldExamples {
         alkamispäivä = None,
         toimipiste = Some(toimipiste),
         arviointi = arviointiKiitettävä,
-        vahvistus = vahvistus(date(2014, 11, 8), stadinAmmattiopisto)
+        vahvistus = vahvistus(date(2014, 11, 8), stadinAmmattiopisto, helsinki)
       )
     ))
   ))
@@ -197,7 +197,7 @@ object AmmatillinenOldExamples {
         alkamispäivä = None,
         toimipiste = Some(toimipiste),
         arviointi = arviointiKiitettävä,
-        vahvistus = vahvistus(date(2014, 11, 8), stadinAmmattiopisto)
+        vahvistus = vahvistus(date(2014, 11, 8), stadinAmmattiopisto, helsinki)
       )
     ))
   ))
@@ -245,7 +245,7 @@ object AmmatillinenOldExamples {
                   )
                 )
               ),
-              vahvistus = vahvistus(date(2014, 11, 8), stadinAmmattiopisto)
+              vahvistus = vahvistus(date(2014, 11, 8), stadinAmmattiopisto, helsinki)
             )
           ))
         )),
@@ -325,7 +325,7 @@ object AmmatillinenOldExamples {
         date(2012, 10, 20),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
-      vahvistus = vahvistus(date(2013, 1, 31), stadinAmmattiopisto)
+      vahvistus = vahvistus(date(2013, 1, 31), stadinAmmattiopisto, helsinki)
     ),
     paikallisenOsanSuoritus,
     AmmatillisenTutkinnonOsanSuoritus(
@@ -345,7 +345,7 @@ object AmmatillinenOldExamples {
         date(2013, 4, 1),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
-      vahvistus = vahvistus(date(2013, 5, 31), stadinAmmattiopisto)
+      vahvistus = vahvistus(date(2013, 5, 31), stadinAmmattiopisto, helsinki)
     ),
     AmmatillisenTutkinnonOsanSuoritus(
       koulutusmoduuli = OpsTutkinnonosa(
@@ -364,7 +364,7 @@ object AmmatillinenOldExamples {
         date(2014, 10, 20),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
-      vahvistus = vahvistus(date(2014, 11, 8), stadinAmmattiopisto)
+      vahvistus = vahvistus(date(2014, 11, 8), stadinAmmattiopisto, helsinki)
     ),
     AmmatillisenTutkinnonOsanSuoritus(
       koulutusmoduuli = OpsTutkinnonosa(
@@ -383,7 +383,7 @@ object AmmatillinenOldExamples {
         date(2015, 4, 1),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
-      vahvistus = vahvistus(date(2015, 5, 1), stadinAmmattiopisto)
+      vahvistus = vahvistus(date(2015, 5, 1), stadinAmmattiopisto, helsinki)
     ),
     AmmatillisenTutkinnonOsanSuoritus(
       koulutusmoduuli = OpsTutkinnonosa(
@@ -402,7 +402,7 @@ object AmmatillinenOldExamples {
         date(2016, 2, 1),
         arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen")))
       ))),
-      vahvistus = vahvistus(date(2016, 5, 1), stadinAmmattiopisto)
+      vahvistus = vahvistus(date(2016, 5, 1), stadinAmmattiopisto, helsinki)
     )
   )
 }

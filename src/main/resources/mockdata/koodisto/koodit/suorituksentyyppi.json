@@ -48,6 +48,30 @@
     "versio": 1
   },
   {
+    "koodiUri": "suorituksentyyppi_perusopetukseenvalmistavaopetus",
+    "koodiArvo": "perusopetukseenvalmistavaopetus",
+    "metadata": [
+      {
+        "nimi": "Perusopetukseen valmistava opetus",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "suorituksentyyppi_perusopetukseenvalmistavanopetuksenoppiaine",
+    "koodiArvo": "perusopetukseenvalmistavanopetuksenoppiaine",
+    "metadata": [
+      {
+        "nimi": "Perusopetukseen valmistavan opetuksen oppiaine",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
     "koodiUri": "suorituksentyyppi_perusopetuksenoppimaara",
     "koodiArvo": "perusopetuksenoppimaara",
     "metadata": [

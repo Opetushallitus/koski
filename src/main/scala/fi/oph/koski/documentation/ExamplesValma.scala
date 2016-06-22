@@ -18,7 +18,7 @@ object ExamplesValma {
         oppilaitos = stadinAmmattiopisto,
         suoritukset = List(AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus(
           tila = tilaValmis,
-          vahvistus = vahvistus(date(2016, 6, 4)),
+          vahvistus = vahvistus(date(2016, 6, 4), stadinAmmattiopisto, helsinki),
           toimipiste = stadinAmmattiopisto,
           koulutusmoduuli = AmmatilliseenPeruskoulutukseenValmentavaKoulutus(),
           osasuoritukset = Some(List(

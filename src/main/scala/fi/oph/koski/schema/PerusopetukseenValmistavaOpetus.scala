@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
 import java.time.LocalDate
-
+import fi.oph.koski.localization.LocalizedString
 import fi.oph.scalaschema.annotation.{MaxItems, MinItems}
 
 case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
@@ -11,9 +11,9 @@ case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
   alkamispäivä: Option[LocalDate],
   päättymispäivä: Option[LocalDate],
   oppilaitos: Oppilaitos,
-  koulutustoimija: Option[OrganisaatioWithOid],
-  tila: Option[PerusopetuksenOpiskeluoikeudenTila],
-  läsnäolotiedot: Option[Läsnäolotiedot],
+  koulutustoimija: Option[OrganisaatioWithOid] = None,
+  tila: Option[PerusopetuksenOpiskeluoikeudenTila] = None,
+  läsnäolotiedot: Option[Läsnäolotiedot] = None,
   @MinItems(1)
   @MaxItems(1)
   suoritukset: List[PerusopetukseenValmistavanOpetuksenSuoritus],
@@ -33,14 +33,32 @@ case class PerusopetukseenValmistavanOpetuksenSuoritus(
   vahvistus: Option[Henkilövahvistus] = None,
   @KoodistoKoodiarvo("perusopetukseenvalmistavaopetus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetukseenvalmistavaopetus", koodistoUri = "suorituksentyyppi"),
-  koulutusmoduuli: PerusopetukseenValmistavaOpetus
+  koulutusmoduuli: PerusopetukseenValmistavaOpetus = PerusopetukseenValmistavaOpetus(),
+  override val osasuoritukset: Option[List[PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus]]
 ) extends Suoritus with Toimipisteellinen {
   def arviointi = None
 }
 
+case class PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus(
+  koulutusmoduuli: PerusopetukseenValmistavanOpetuksenOppiaine,
+  tila: Koodistokoodiviite,
+  paikallinenId: Option[String] = None,
+  suorituskieli: Option[Koodistokoodiviite] = None,
+  arviointi: Option[List[SanallinenPerusopetuksenOppiaineenArviointi]],
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetukseenvalmistavanopetuksenoppiaine", koodistoUri = "suorituksentyyppi")
+) extends Suoritus {
+  def vahvistus = None
+}
+
 case class PerusopetukseenValmistavaOpetus(
-  @KoodistoKoodiarvo("039997")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite("039997", koodistoUri = "koulutus")
+  @KoodistoKoodiarvo("koski1") // TODO: odotetaan virallista koodia
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("koski1", koodistoUri = "koulutus")
 ) extends Koulutus {
   def laajuus = None
 }
+
+case class PerusopetukseenValmistavanOpetuksenOppiaine(
+  tunniste: PaikallinenKoodi,
+  laajuus: Option[LaajuusVuosiviikkotunneissa],
+  opetuksenSisältö: Option[LocalizedString]
+) extends PaikallinenKoulutusmoduuli

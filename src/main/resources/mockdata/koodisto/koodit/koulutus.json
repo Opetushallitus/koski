@@ -46575,4 +46575,24 @@
     "kieli" : "FI"
   } ],
   "versio" : 6
-} ]
+},
+
+
+
+
+  {
+    "koodiUri" : "koulutus_koski1",
+    "koodiArvo" : "koski1",
+    "metadata" : [ {
+      "nimi" : "Perusopetukseen valmistava opetus",
+      "lyhytNimi" : "Perusopetukseen valmistava opetus",
+      "kieli" : "FI"
+    }, {
+      "nimi" : "Perusopetukseen valmistava opetus",
+      "lyhytNimi" : "Perusopetukseen valmistava opetus",
+      "kieli" : "SV"
+    } ],
+    "versio" : 6
+  }
+
+]

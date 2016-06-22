@@ -111,7 +111,7 @@ object AmmatillinenExampleData {
     alkamispäivä = None,
     toimipiste = Some(toimipiste),
     arviointi = arviointiHyväksytty,
-    vahvistus = vahvistus(date(2013, 5, 31))
+    vahvistus = vahvistus(date(2013, 5, 31), stadinAmmattiopisto, helsinki)
   )
 
   lazy val arviointiKiitettävä = Some(
@@ -166,7 +166,7 @@ object AmmatillinenExampleData {
       alkamispäivä = None,
       toimipiste = Some(toimipiste),
       arviointi = Some(List(AmmatillinenArviointi(arvosana = arvosana, date(2014, 10, 20)))),
-      vahvistus = vahvistus(date(2016, 5, 31))
+      vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto, helsinki)
     )
   }
 }
