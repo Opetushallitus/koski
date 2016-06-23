@@ -81,7 +81,6 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
       if (suoritukset.exists(_.koulutusmoduuli == t)) suoritukset
       else KorkeakouluTutkinnonSuoritus(
         koulutusmoduuli = t,
-        paikallinenId = None,
         arviointi = None,
         tila = requiredKoodi("suorituksentila", "KESKEN").get,
         vahvistus = None,
@@ -100,7 +99,6 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
 
           KorkeakouluTutkinnonSuoritus(
             koulutusmoduuli = tutkinto(koulutuskoodi),
-            paikallinenId = None,
             arviointi = arviointi(suoritus),
             tila = requiredKoodi("suorituksentila", "VALMIS").get,
             vahvistus = None,
@@ -126,7 +124,6 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
         nimi = nimi(suoritus),
         laajuus = (suoritus \ "Laajuus" \ "Opintopiste").headOption.map(op => LaajuusOpintopisteissä(op.text.toFloat))
       ),
-      paikallinenId = None,
       arviointi = arviointi(suoritus),
       tila = requiredKoodi("suorituksentila", "VALMIS").get,
       vahvistus = None,

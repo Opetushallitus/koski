@@ -39,7 +39,6 @@ trait KorkeakouluSuoritus extends Suoritus {
     koulutusmoduuli: KorkeakouluTutkinto,
     @KoodistoKoodiarvo("korkeakoulututkinto")
     tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulututkinto", koodistoUri = "suorituksentyyppi"),
-    paikallinenId: Option[String],
     arviointi: Option[List[KorkeakoulunArviointi]],
     tila: Koodistokoodiviite,
     vahvistus: Option[Henkilövahvistus],
@@ -54,7 +53,6 @@ trait KorkeakouluSuoritus extends Suoritus {
     koulutusmoduuli: KorkeakoulunOpintojakso,
     @KoodistoKoodiarvo("korkeakoulunopintojakso")
     tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulunopintojakso", koodistoUri = "suorituksentyyppi"),
-    paikallinenId: Option[String],
     arviointi: Option[List[KorkeakoulunArviointi]],
     tila: Koodistokoodiviite,
     vahvistus: Option[Henkilövahvistus],

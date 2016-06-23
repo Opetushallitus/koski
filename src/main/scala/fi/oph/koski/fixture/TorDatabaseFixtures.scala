@@ -67,7 +67,6 @@ object OpiskeluOikeusTestData {
         None,
         None,
         None,
-        None,
         Koodistokoodiviite("KESKEN", "suorituksentila"),
         None,
         oppilaitos,

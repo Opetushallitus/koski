@@ -57,7 +57,6 @@
           },
           "perusteenDiaarinumero" : "40/011/2001"
         },
-        "paikallinenId" : "suoritus-12345-1",
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"

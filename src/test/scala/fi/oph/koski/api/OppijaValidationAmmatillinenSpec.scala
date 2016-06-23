@@ -357,7 +357,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
   lazy val tutkinnonSuoritustapaNäyttönä = Some(AmmatillisenTutkinnonSuoritustapa(Koodistokoodiviite("naytto", "ammatillisentutkinnonsuoritustapa")))
 
   lazy val tutkinnonOsaSuoritus = AmmatillisenTutkinnonOsanSuoritus(
-    tutkinnonOsa, None, None, None, None, None, None, tilaKesken, None,
+    tutkinnonOsa, None, None, None, None, None, tilaKesken, None,
     Some(OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))),
     arviointiHyvä(), None)
 
@@ -366,7 +366,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
   )
 
   lazy val paikallinenTutkinnonOsaSuoritus = AmmatillisenTutkinnonOsanSuoritus(
-    paikallinenTutkinnonOsa, None, None, None, None, None, None, tilaKesken, None,
+    paikallinenTutkinnonOsa, None, None, None, None, None, tilaKesken, None,
     Some(OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))),
     arviointiHyvä(), None)
 

@@ -22,7 +22,6 @@
         },
         "perusteenDiaarinumero" : "39/011/2014"
       },
-      "paikallinenId" : "suoritus-12345",
       "tila" : {
         "koodiarvo" : "KESKEN",
         "koodistoUri" : "suorituksentila"

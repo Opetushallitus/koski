@@ -15,7 +15,6 @@ trait OpiskeluoikeusTestMethodsAmmatillinen extends PutOpiskeluOikeusTestMethods
     osaamisala = None,
     suoritustapa = None,
     järjestämismuoto = None,
-    paikallinenId = None,
     suorituskieli = None,
     tila = tilaKesken,
     alkamispäivä = None,

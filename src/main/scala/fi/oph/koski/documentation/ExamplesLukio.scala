@@ -25,7 +25,6 @@ object ExamplesLukio {
         LukionOppimääränSuoritus(
           koulutusmoduuli = lukionOppimäärä,
           oppimäärä = nuortenOpetussuunnitelma,
-          paikallinenId = None,
           suorituskieli = suomenKieli,
           tila = tilaKesken,
           toimipiste = jyväskylänNormaalikoulu,
@@ -56,7 +55,6 @@ object ExamplesLukio {
         LukionOppimääränSuoritus(
           koulutusmoduuli = lukionOppimäärä,
           oppimäärä = nuortenOpetussuunnitelma,
-          paikallinenId = None,
           suorituskieli = suomenKieli,
           tila = tilaValmis,
           vahvistus = vahvistus(),
@@ -228,7 +226,6 @@ object ExamplesLukio {
       suoritukset = List(
         LukionOppiaineenOppimääränSuoritus(
           koulutusmoduuli = oppiaine("HI"),
-          paikallinenId = None,
           suorituskieli = suomenKieli,
           tila = tilaValmis,
           vahvistus = vahvistus(),
@@ -283,7 +280,6 @@ object LukioExampleData {
 
   def suoritus(aine: LukionOppiaine): LukionOppiaineenSuoritus = LukionOppiaineenSuoritus(
     koulutusmoduuli = aine,
-    paikallinenId = None,
     suorituskieli = None,
     arviointi = None,
     tila = tilaValmis,
@@ -293,7 +289,6 @@ object LukioExampleData {
   def kurssisuoritus(kurssi: LukionKurssi) = LukionKurssinSuoritus(
     koulutusmoduuli = kurssi,
     suorituskieli = None,
-    paikallinenId = None,
     arviointi = None,
     tila = tilaValmis
   )

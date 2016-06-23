@@ -32,7 +32,6 @@
           "koodistoVersio" : 1
         }
       },
-      "paikallinenId" : "suoritus-12345",
       "tila" : {
         "koodiarvo" : "KESKEN",
         "koodistoUri" : "suorituksentila"
@@ -74,7 +73,6 @@
             "fi" : "Tutkinnon osan ammattitaitovaatimuksia ja osaamisen arviointi on mukautettu (ja/tai niistä on poikettu) ammatillisesta peruskoulutuksesta annetun lain\n(630/1998, muutos 246/2015) 19 a (ja/tai 21) §:n perusteella"
           }
         } ],
-        "paikallinenId" : "suoritus-12345-1",
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"

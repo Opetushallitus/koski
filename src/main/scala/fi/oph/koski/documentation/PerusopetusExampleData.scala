@@ -1,12 +1,9 @@
 package fi.oph.koski.documentation
 
-import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.localization.LocalizedString
-import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.schema._
 
@@ -18,7 +15,6 @@ object PerusopetusExampleData {
 
   def suoritus(aine: PerusopetuksenOppiaine) = PerusopetuksenOppiaineenSuoritus(
     koulutusmoduuli = aine,
-    paikallinenId = None,
     suorituskieli = None,
     tila = tilaValmis,
     arviointi = None

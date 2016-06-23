@@ -28,7 +28,6 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeus(
 
 @Description("Lukioon valmistava koulutus (LUVA)")
 case class LukioonValmistavanKoulutuksenSuoritus(
-  paikallinenId: Option[String] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
   toimipiste: OrganisaatioWithOid,
@@ -52,7 +51,6 @@ case class LukioonValmistavaKoulutus(
 trait LukioonValmistavanKoulutuksenOsasuoritus extends Suoritus
 
 case class LukioonValmistavanKurssinSuoritus(
-  paikallinenId: Option[String] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
   arviointi: Option[List[LukionKurssinArviointi]],

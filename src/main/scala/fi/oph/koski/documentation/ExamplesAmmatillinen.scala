@@ -47,7 +47,6 @@ object AmmattitutkintoExample {
             tutkintoKoulutus = tutkinto,
             suoritustapa = Some(suoritustapaNäyttö),
             järjestämismuoto = Some(DefaultJärjestämismuoto(järjestämismuotoOppilaitos)),
-            paikallinenId= None,
             suorituskieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None)),
             tila = tilaValmis,
             alkamisPäivä = None,
@@ -91,7 +90,6 @@ object AmmatillinenPerustutkintoExample {
           osaamisala = Some(List(Koodistokoodiviite("1590", Some("Ympäristöalan osaamisala"), "osaamisala", None))),
           suoritustapa = Some(suoritustapaOps),
           järjestämismuoto = Some(DefaultJärjestämismuoto(järjestämismuotoOppilaitos)),
-          paikallinenId= None,
           suorituskieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None)),
           tila = tilaValmis,
           alkamisPäivä = None,
@@ -141,7 +139,6 @@ object AmmatillinenOldExamples {
         osaamisala = None,
         suoritustapa = Some(suoritustapaNäyttö),
         järjestämismuoto = Some(OppisopimuksellinenJärjestämismuoto(järjestämismuotoOppisopimus, Oppisopimus(Yritys("Autokorjaamo Oy", "1234567-8")))),
-        paikallinenId = Some("suoritus-12345"),
         suorituskieli = None,
         tila = tilaKesken,
         alkamisPäivä = Some(date(2016, 9, 1)),
@@ -167,7 +164,6 @@ object AmmatillinenOldExamples {
         lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(
           Koodistokoodiviite("mukautettu", "ammatillisentutkinnonosanlisatieto"),
           "Tutkinnon osan ammattitaitovaatimuksia ja osaamisen arviointi on mukautettu (ja/tai niistä on poikettu) ammatillisesta peruskoulutuksesta annetun lain\n(630/1998, muutos 246/2015) 19 a (ja/tai 21) §:n perusteella"))),
-        paikallinenId = Some("suoritus-12345-1"),
         suorituskieli = None,
         tila = tilaValmis,
         alkamispäivä = None,
@@ -191,7 +187,6 @@ object AmmatillinenOldExamples {
       AmmatillisenTutkinnonOsanSuoritus(
         koulutusmoduuli = OpsTutkinnonosa(Koodistokoodiviite("104052", "tutkinnonosat"), true, None, None, None),
         tutkinto = Some(AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357305", "koulutus"), Some("40/011/2001"))),
-        paikallinenId = Some("suoritus-12345-1"),
         suorituskieli = None,
         tila = tilaValmis,
         alkamispäivä = None,
@@ -216,7 +211,6 @@ object AmmatillinenOldExamples {
           osaamisala = Some(List(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
           suoritustapa = Some(suoritustapaOps),
           järjestämismuoto = Some(DefaultJärjestämismuoto(järjestämismuotoOppilaitos)),
-          paikallinenId = Some("suoritus-12345"),
           tila = tilaKesken,
           toimipiste = toimipiste,
           suorituskieli = suomenKieli,
@@ -228,7 +222,6 @@ object AmmatillinenOldExamples {
               näyttö = None,
               lisätiedot = None,
               tutkinto = None,
-              paikallinenId = Some("suoritus-12345-1"),
               suorituskieli = None,
               tila = tilaValmis,
               alkamispäivä = None,
@@ -285,7 +278,6 @@ object AmmatillinenOldExamples {
           osaamisala = Some(List(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
           suoritustapa = Some(suoritustapaNäyttö),
           järjestämismuoto = Some(DefaultJärjestämismuoto(järjestämismuotoOppilaitos)),
-          paikallinenId= Some("suoritus-12345"),
           suorituskieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None)),
           tila = tilaValmis,
           alkamisPäivä = None,
@@ -315,7 +307,6 @@ object AmmatillinenOldExamples {
         laajuus = None
       ),
       näyttö = Some(näyttö("Huolto- ja korjaustyöt", "Autokorjaamo Oy, Riihimäki", Some(näytönArviointi))),
-      paikallinenId = Some("suoritus-12345-1"),
       suorituskieli = None,
       tila = tilaValmis,
       alkamispäivä = None,
@@ -335,7 +326,6 @@ object AmmatillinenOldExamples {
         None
       ),
       näyttö = Some(näyttö("Mittaus- ja korivauriotöitä", "Autokorjaamo Oy, Riihimäki")),
-      paikallinenId = Some("suoritus-12345-3"),
       suorituskieli = None,
       tila = tilaValmis,
       alkamispäivä = None,
@@ -354,7 +344,6 @@ object AmmatillinenOldExamples {
         None
       ),
       näyttö = Some(näyttö("Maalauksen esikäsittelytöitä", "Autokorjaamo Oy, Riihimäki")),
-      paikallinenId = Some("suoritus-12345-4"),
       suorituskieli = None,
       tila = tilaValmis,
       alkamispäivä = None,
@@ -373,7 +362,6 @@ object AmmatillinenOldExamples {
         None
       ),
       näyttö = Some(näyttö("Auton lisävarustetöitä", "Autokorjaamo Oy, Riihimäki")),
-      paikallinenId = Some("suoritus-12345-5"),
       suorituskieli = None,
       tila = tilaValmis,
       alkamispäivä = None,
@@ -392,7 +380,6 @@ object AmmatillinenOldExamples {
         None
       ),
       tunnustettu = Some(tunnustettu),
-      paikallinenId = Some("suoritus-12345-6"),
       suorituskieli = None,
       tila = tilaValmis,
       alkamispäivä = None,

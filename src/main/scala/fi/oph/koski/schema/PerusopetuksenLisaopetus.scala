@@ -27,7 +27,6 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeus(
 }
 
 case class PerusopetuksenLisäopetuksenSuoritus(
-  paikallinenId: Option[String] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
   toimipiste: OrganisaatioWithOid,
@@ -43,7 +42,6 @@ case class PerusopetuksenLisäopetuksenSuoritus(
 @Description("Perusopetuksen oppiaineen suoritus osana perusopetuksen lisäopetusta")
 case class PerusopetuksenLisäopetuksenOppiaineenSuoritus(
   koulutusmoduuli: PerusopetuksenOppiaine,
-  paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
   @KoodistoKoodiarvo("perusopetuksenlisaopetuksenoppiaine")

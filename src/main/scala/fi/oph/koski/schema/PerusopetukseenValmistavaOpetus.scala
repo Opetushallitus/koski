@@ -26,7 +26,6 @@ case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
 }
 
 case class PerusopetukseenValmistavanOpetuksenSuoritus(
-  paikallinenId: Option[String] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
   toimipiste: OrganisaatioWithOid,
@@ -42,7 +41,6 @@ case class PerusopetukseenValmistavanOpetuksenSuoritus(
 case class PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus(
   koulutusmoduuli: PerusopetukseenValmistavanOpetuksenOppiaine,
   tila: Koodistokoodiviite,
-  paikallinenId: Option[String] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   arviointi: Option[List[SanallinenPerusopetuksenOppiaineenArviointi]],
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetukseenvalmistavanopetuksenoppiaine", koodistoUri = "suorituksentyyppi")

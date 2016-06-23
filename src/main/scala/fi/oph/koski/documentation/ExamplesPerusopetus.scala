@@ -21,7 +21,6 @@ object ExamplesPerusopetus {
       suoritukset = List(
           PerusopetuksenVuosiluokanSuoritus(
             koulutusmoduuli = PerusopetuksenLuokkaAste(8), luokka = "8C", alkamispäivä = Some(date(2014, 8, 15)),
-            paikallinenId = None,
             tila = tilaValmis,
             toimipiste = jyväskylänNormaalikoulu, suorituskieli = suomenKieli,
             osasuoritukset = kaikkiAineet,
@@ -30,7 +29,6 @@ object ExamplesPerusopetus {
 
           PerusopetuksenVuosiluokanSuoritus(
             koulutusmoduuli = PerusopetuksenLuokkaAste(9), luokka = "9C", alkamispäivä = Some(date(2015, 8, 15)),
-            paikallinenId = None,
             tila = tilaKesken,
             toimipiste = jyväskylänNormaalikoulu, suorituskieli = suomenKieli
           )
@@ -54,7 +52,6 @@ object ExamplesPerusopetus {
       suoritukset = List(
         PerusopetuksenVuosiluokanSuoritus(
           koulutusmoduuli = PerusopetuksenLuokkaAste(8), luokka = "8C", alkamispäivä = Some(date(2014, 8, 15)),
-          paikallinenId = None,
           tila = tilaValmis,
           toimipiste = jyväskylänNormaalikoulu, suorituskieli = suomenKieli,
           osasuoritukset = kaikkiAineet,
@@ -63,7 +60,6 @@ object ExamplesPerusopetus {
 
         PerusopetuksenVuosiluokanSuoritus(
           koulutusmoduuli = PerusopetuksenLuokkaAste(9), luokka = "9C", alkamispäivä = Some(date(2015, 8, 15)),
-          paikallinenId = None,
           tila = tilaValmis,
           toimipiste = jyväskylänNormaalikoulu, suorituskieli = suomenKieli,
           vahvistus = vahvistus(date(2016, 5, 30))
@@ -124,7 +120,6 @@ object ExamplesPerusopetus {
       suoritukset = List(
         PerusopetuksenOppimääränSuoritus(
           koulutusmoduuli = perusopetus,
-          paikallinenId = None,
           suorituskieli = None,
           tila = tilaValmis,
           toimipiste = jyväskylänNormaalikoulu,
@@ -154,7 +149,6 @@ object ExamplesPerusopetus {
       suoritukset = List(
         PerusopetuksenOppimääränSuoritus(
           koulutusmoduuli = perusopetus,
-          paikallinenId = None,
           suorituskieli = None,
           tila = tilaValmis,
           toimipiste = jyväskylänNormaalikoulu,

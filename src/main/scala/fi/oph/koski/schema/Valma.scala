@@ -28,7 +28,6 @@ case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOpiskeluoikeus(
 
 @Description("Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)")
 case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus(
-  paikallinenId: Option[String] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
   toimipiste: OrganisaatioWithOid,
@@ -42,7 +41,6 @@ case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus(
 ) extends ValmentavaSuoritus
 
 case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus(
-  paikallinenId: Option[String] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
   vahvistus: Option[Henkilövahvistus] = None,

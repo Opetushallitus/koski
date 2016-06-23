@@ -22,7 +22,6 @@ trait OpiskeluoikeusTestMethodsLukio extends PutOpiskeluOikeusTestMethods[Lukion
   val päättötodistusSuoritus = LukionOppimääränSuoritus(
     koulutusmoduuli = LukionOppimäärä(perusteenDiaarinumero = Some("60/011/2015")),
     oppimäärä = nuortenOpetussuunnitelma,
-    paikallinenId = None,
     suorituskieli = None,
     tila = tilaValmis,
     toimipiste = jyväskylänNormaalikoulu,

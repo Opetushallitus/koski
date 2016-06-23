@@ -28,7 +28,6 @@ case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOpiskeluoikeus(
 
 @Description("Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)")
 case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenSuoritus(
-  paikallinenId: Option[String] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
   toimipiste: OrganisaatioWithOid,
@@ -42,7 +41,6 @@ case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenSuoritus(
 ) extends ValmentavaSuoritus
 
 case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus(
-  paikallinenId: Option[String] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
   vahvistus: Option[Henkilövahvistus] = None,

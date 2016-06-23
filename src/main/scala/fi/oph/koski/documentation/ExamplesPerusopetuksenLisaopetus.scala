@@ -11,7 +11,6 @@ import fi.oph.koski.schema._
 object ExamplesPerusopetuksenLisaopetus {
   private def suoritus(aine: PerusopetuksenOppiaine) = PerusopetuksenLisäopetuksenOppiaineenSuoritus(
     koulutusmoduuli = aine,
-    paikallinenId = None,
     suorituskieli = None,
     tila = tilaValmis,
     arviointi = None,

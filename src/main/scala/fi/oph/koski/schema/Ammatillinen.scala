@@ -66,7 +66,6 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   @KoodistoUri("osaamisala")
   @OksaUri(tunnus = "tmpOKSAID299", käsite = "osaamisala")
   osaamisala: Option[List[Koodistokoodiviite]] = None,
-  paikallinenId: Option[String] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate],
@@ -98,7 +97,6 @@ case class AmmatillisenTutkinnonSuoritus(
   @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
   järjestämismuoto: Option[Järjestämismuoto] = None,
 
-  paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate],
@@ -120,8 +118,6 @@ case class AmmatillisenTutkinnonOsanSuoritus(
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
   @Description("Tutkinto, jonka rakenteeseen tutkinnon osa liittyy. Käytetään vain tapauksissa, joissa tutkinnon osa on poimittu toisesta tutkinnosta.")
   tutkinto: Option[AmmatillinenTutkintoKoulutus] = None,
-
-  paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate],
@@ -298,7 +294,6 @@ case class AmmatillinenLäsnäolojakso(
 ) extends Läsnäolojakso
 
 case class NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
-  paikallinenId: Option[String] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
   @KoodistoKoodiarvo("nayttotutkintoonvalmistavankoulutuksenosa")

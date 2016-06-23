@@ -22,7 +22,6 @@ trait OpiskeluoikeusTestMethodsPerusopetus extends PutOpiskeluOikeusTestMethods[
     koulutusmoduuli = Perusopetus(perusteenDiaarinumero = Some("104/011/2014")),
     suoritustapa = PerusopetusExampleData.suoritustapaKoulutus,
     oppimäärä = PerusopetusExampleData.perusopetuksenOppimäärä,
-    paikallinenId = None,
     suorituskieli = None,
     tila = tilaValmis,
     toimipiste = jyväskylänNormaalikoulu,

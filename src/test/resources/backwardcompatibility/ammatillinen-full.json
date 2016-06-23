@@ -72,7 +72,6 @@
           "koodistoVersio" : 1
         }
       },
-      "paikallinenId" : "suoritus-12345",
       "suorituskieli" : {
         "koodiarvo" : "FI",
         "nimi" : {
@@ -245,7 +244,6 @@
           },
           "työssäoppimisenYhteydessä" : false
         },
-        "paikallinenId" : "suoritus-12345-1",
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -347,7 +345,6 @@
           },
           "työssäoppimisenYhteydessä" : false
         },
-        "paikallinenId" : "suoritus-12345-2",
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -448,7 +445,6 @@
           },
           "työssäoppimisenYhteydessä" : false
         },
-        "paikallinenId" : "suoritus-12345-3",
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -549,7 +545,6 @@
           },
           "työssäoppimisenYhteydessä" : false
         },
-        "paikallinenId" : "suoritus-12345-4",
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -650,7 +645,6 @@
           },
           "työssäoppimisenYhteydessä" : false
         },
-        "paikallinenId" : "suoritus-12345-5",
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -758,7 +752,6 @@
             "fi" : "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
           }
         },
-        "paikallinenId" : "suoritus-12345-6",
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"

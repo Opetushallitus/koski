@@ -95,7 +95,6 @@ case class PerusopetuksenVuosiluokanSuoritus(
   @Description("Luokan tunniste, esimerkiksi 9C")
   luokka: String,
   override val alkamispäivä: Option[LocalDate],
-  paikallinenId: Option[String],
   tila: Koodistokoodiviite,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Henkilövahvistus] = None,
@@ -114,7 +113,6 @@ case class PerusopetuksenVuosiluokanSuoritus(
 
 @Description("Perusopetuksen koko oppimäärän suoritus. Nämä suoritukset näkyvät päättötodistuksella.")
 case class PerusopetuksenOppimääränSuoritus(
-  paikallinenId: Option[String] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
   toimipiste: OrganisaatioWithOid,
@@ -134,7 +132,6 @@ case class PerusopetuksenOppimääränSuoritus(
 
 @Description("Perusopetuksen yksittäisen oppiaineen oppimäärän suoritus erillisenä kokonaisuutena")
 case class PerusopetuksenOppiaineenOppimääränSuoritus(
-  paikallinenId: Option[String] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
   toimipiste: OrganisaatioWithOid,
@@ -151,7 +148,6 @@ sealed trait OppiaineenTaiToimintaAlueenSuoritus extends Suoritus
 @Description("Perusopetuksen oppiaineen suoritus osana perusopetuksen oppimäärän tai vuosiluokan suoritusta")
 case class PerusopetuksenOppiaineenSuoritus(
   koulutusmoduuli: PerusopetuksenOppiaine,
-  paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
   @Description("Tieto siitä, että oppiaineen oppimäärä on yksilöllistetty")
@@ -164,7 +160,6 @@ case class PerusopetuksenOppiaineenSuoritus(
 @Description("Perusopetuksen toiminta-alueen suoritus osana perusopetuksen oppimäärän tai vuosiluokan suoritusta. Suoritukset voidaan kirjata oppiaineiden sijaan toiminta-alueittain, jos opiskelijalle on tehty erityisen tuen päätös.")
 case class PerusopetuksenToimintaAlueenSuoritus(
   koulutusmoduuli: PerusopetuksenToimintaAlue,
-  paikallinenId: Option[String] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
   @KoodistoKoodiarvo("perusopetuksentoimintaalue")

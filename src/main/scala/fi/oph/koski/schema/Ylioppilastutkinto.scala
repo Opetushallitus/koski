@@ -32,7 +32,6 @@ case class YlioppilastutkinnonSuoritus(
   vahvistus: Option[Organisaatiovahvistus] = None
 ) extends Suoritus with Toimipisteellinen {
   def arviointi: Option[List[KoodistostaLöytyväArviointi]] = None
-  override def paikallinenId = None
   override def suorituskieli: Option[Koodistokoodiviite] = None
 }
 
@@ -45,7 +44,6 @@ case class YlioppilastutkinnonKokeenSuoritus(
 ) extends Suoritus {
   def vahvistus = None
   override def tarvitseeVahvistuksen = false
-  override def paikallinenId = None
   override def suorituskieli: Option[Koodistokoodiviite] = None
 }
 

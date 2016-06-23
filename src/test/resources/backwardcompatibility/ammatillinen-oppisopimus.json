@@ -57,7 +57,6 @@
           }
         }
       },
-      "paikallinenId" : "suoritus-12345",
       "tila" : {
         "koodiarvo" : "KESKEN",
         "koodistoUri" : "suorituksentila"

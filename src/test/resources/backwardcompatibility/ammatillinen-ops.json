@@ -61,7 +61,6 @@
           "koodistoVersio" : 1
         }
       },
-      "paikallinenId" : "suoritus-12345",
       "suorituskieli" : {
         "koodiarvo" : "FI",
         "nimi" : {
@@ -100,7 +99,6 @@
             }
           }
         },
-        "paikallinenId" : "suoritus-12345-1",
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"

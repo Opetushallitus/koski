@@ -61,7 +61,6 @@ case class Erityinenkoulutustehtävä(
 trait LukionPäätasonSuoritus extends Suoritus with Toimipisteellinen
 
 case class LukionOppimääränSuoritus(
-  paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
   toimipiste: OrganisaatioWithOid,
@@ -77,7 +76,6 @@ case class LukionOppimääränSuoritus(
 }
 
 case class LukionOppiaineenOppimääränSuoritus(
-  paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
   toimipiste: OrganisaatioWithOid,
@@ -103,7 +101,6 @@ case class LukionOppiaineenSuoritus(
   @KoodistoKoodiarvo("lukionoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionoppiaine", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: LukionOppiaine,
-  paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
   arviointi: Option[List[LukionOppiaineenArviointi]] = None,
@@ -114,7 +111,6 @@ case class LukionKurssinSuoritus(
   @KoodistoKoodiarvo("lukionkurssi")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionkurssi", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: LukionKurssi,
-  paikallinenId: Option[String],
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
   arviointi: Option[List[LukionKurssinArviointi]] = None,

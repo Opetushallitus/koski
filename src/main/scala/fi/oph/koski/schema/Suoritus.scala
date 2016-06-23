@@ -11,8 +11,6 @@ trait Suoritus {
   @KoodistoUri("suorituksentyyppi")
   def tyyppi: Koodistokoodiviite
   def koulutusmoduuli: Koulutusmoduuli
-  @Description("Paikallinen tunniste suoritukselle. Tiedonsiirroissa tarpeellinen, jotta voidaan varmistaa päivitysten osuminen oikeaan suoritukseen")
-  def paikallinenId: Option[String]
   @Description("Suorituksen alkamispäivä")
   def alkamispäivä: Option[LocalDate] = None
   @Description("Opintojen suorituskieli")

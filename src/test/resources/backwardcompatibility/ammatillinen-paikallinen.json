@@ -32,7 +32,6 @@
           "koodistoVersio" : 1
         }
       },
-      "paikallinenId" : "suoritus-12345",
       "tila" : {
         "koodiarvo" : "KESKEN",
         "koodistoUri" : "suorituksentila"
@@ -76,7 +75,6 @@
           },
           "työssäoppimisenYhteydessä" : false
         },
-        "paikallinenId" : "suoritus-12345-2",
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"

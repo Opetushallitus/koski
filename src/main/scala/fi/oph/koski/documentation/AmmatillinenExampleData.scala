@@ -19,7 +19,6 @@ object AmmatillinenExampleData {
     osaamisala: Option[List[Koodistokoodiviite]] = None,
     suoritustapa: Option[AmmatillisenTutkinnonSuoritustapa] = None,
     järjestämismuoto: Option[Järjestämismuoto] = None,
-    paikallinenId: Option[String] = None,
     suorituskieli: Option[Koodistokoodiviite] = None,
     tila: Koodistokoodiviite,
     alkamisPäivä: Option[LocalDate] = None,
@@ -33,7 +32,6 @@ object AmmatillinenExampleData {
       osaamisala = osaamisala,
       suoritustapa = suoritustapa,
       järjestämismuoto = järjestämismuoto,
-      paikallinenId,
       suorituskieli,
       tila = tila,
       alkamispäivä = alkamisPäivä,
@@ -47,7 +45,6 @@ object AmmatillinenExampleData {
     osaamisala = None,
     suoritustapa = None,
     järjestämismuoto = None,
-    paikallinenId = Some("suoritus-12345"),
     suorituskieli = None,
     tila = tilaKesken,
     alkamisPäivä = Some(date(2016, 9, 1)),
@@ -87,7 +84,6 @@ object AmmatillinenExampleData {
   lazy val tunnustettu: Tunnustaminen = Tunnustaminen(
     Some(AmmatillisenTutkinnonOsanSuoritus(
       koulutusmoduuli = OpsTutkinnonosa(Koodistokoodiviite("100238", Some("Asennushitsaus"), "tutkinnonosat", Some(1)), true, None),
-      paikallinenId = None,
       suorituskieli = None,
       tila = tilaValmis,
       alkamispäivä = None,
@@ -105,7 +101,6 @@ object AmmatillinenExampleData {
     tunnustettu = None,
     näyttö = Some(näyttö("Pintavaurioiden korjausta", "Autokorjaamo Oy, Riihimäki")),
     lisätiedot = None,
-    paikallinenId = Some("suoritus-12345-2"),
     suorituskieli = None,
     tila = tilaValmis,
     alkamispäivä = None,
@@ -161,7 +156,8 @@ object AmmatillinenExampleData {
   def tutkonnonOsanSuoritus(arvosana: Koodistokoodiviite, osa: AmmatillisenTutkinnonOsa): AmmatillisenTutkinnonOsanSuoritus = {
     AmmatillisenTutkinnonOsanSuoritus(
       koulutusmoduuli = osa,
-      näyttö = None, paikallinenId = None, suorituskieli = None,
+      näyttö = None,
+      suorituskieli = None,
       tila = tilaValmis,
       alkamispäivä = None,
       toimipiste = Some(toimipiste),

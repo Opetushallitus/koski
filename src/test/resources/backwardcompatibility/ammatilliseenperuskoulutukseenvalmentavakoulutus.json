@@ -36,20 +36,20 @@
       "vahvistus" : {
         "päivä" : "2016-06-04",
         "paikkakunta" : {
-          "koodiarvo" : "179",
+          "koodiarvo" : "091",
           "nimi" : {
-            "fi" : "Jyväskylä"
+            "fi" : "Helsinki"
           },
           "koodistoUri" : "kunta"
         },
         "myöntäjäOrganisaatio" : {
-          "oid" : "1.2.246.562.10.14613773812",
+          "oid" : "1.2.246.562.10.52251087186",
           "oppilaitosnumero" : {
-            "koodiarvo" : "00204",
+            "koodiarvo" : "10105",
             "koodistoUri" : "oppilaitosnumero"
           },
           "nimi" : {
-            "fi" : "Jyväskylän normaalikoulu"
+            "fi" : "Stadin ammattiopisto"
           }
         },
         "myöntäjäHenkilöt" : [ {
@@ -58,13 +58,13 @@
             "fi" : "rehtori"
           },
           "organisaatio" : {
-            "oid" : "1.2.246.562.10.14613773812",
+            "oid" : "1.2.246.562.10.52251087186",
             "oppilaitosnumero" : {
-              "koodiarvo" : "00204",
+              "koodiarvo" : "10105",
               "koodistoUri" : "oppilaitosnumero"
             },
             "nimi" : {
-              "fi" : "Jyväskylän normaalikoulu"
+              "fi" : "Stadin ammattiopisto"
             }
           }
         } ]
