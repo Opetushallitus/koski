@@ -1,3 +1,8 @@
+## 23.6.2016
+
+- Lisätty perusopetukseen valmistava opetus
+- Poistettu Suoritus.paikallinenId
+
 ## 20.6.2016
 - Lisätty lukion oppiaineen oppimäärän suoritus
 - Lisätty ulkomainen vaihtoopiskelija lukion opiskeluoikeuden lisätietoihin
