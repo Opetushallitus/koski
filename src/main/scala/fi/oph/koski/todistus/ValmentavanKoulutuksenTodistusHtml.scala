@@ -73,28 +73,32 @@ trait ValmentavanKoulutuksenTodistusHtml extends TodistusHtml {
     i(oppiaine.koulutusmoduuli) + lisätiedotIndex.get(oppiaine).map(i => s" $i)").getOrElse("")
 
   private def lisätietoja = if (tunnustetut.nonEmpty) {
-    <tr class="lisatietoja"><td>Lisätietoja:</td></tr> ::
+    <tr class="lisatieto-otsikko"><td>Lisätietoja:</td></tr> ::
     tunnustetut.map { oppiaine =>
-      val tunnustettu = oppiaine.tunnustettu.get
-      val vahvistus = tunnustettu.osaaminen.flatMap(_.vahvistus)
-      val pvm = vahvistus.map(_.päivä).map(dateFormatter.format)
-      val ammatillinenSuoritus = tunnustettu.osaaminen match {
-        case Some(s: AmmatillisenTutkinnonOsanSuoritus) => Some(s)
-        case _ => None
-      }
-      val diaariNumero = ammatillinenSuoritus.flatMap(_.tutkinto).flatMap(_.perusteenDiaarinumero).getOrElse("")
-      val organisaatioNimi = vahvistus.map(_.myöntäjäOrganisaatio).collect {
-        case o : OrganisaatioWithOid => o.nimi
-        case Yritys(nimi, _) => Some(nimi)
-        case Tutkintotoimikunta(nimi, _) => Some(nimi)
-        case _ => None
-      }.map(nimi => s", ${i(nimi)}").getOrElse("")
-
-      <tr><td colspan="4">
-        <span>{lisätiedotIndex.get(oppiaine).map(i => s"$i)").getOrElse("")}</span> {i(tunnustettu.selite)} ({pvm.map(p => s"$p, ").getOrElse("")}{diaariNumero}){organisaatioNimi}
+      <tr class="lisatieto"><td colspan="4">
+        <span>{lisätiedotIndex.get(oppiaine).map(i => s"$i)").getOrElse("")}</span>{tunnustamisenTiedot(oppiaine)}
       </td></tr>
     }
   } else Empty
+
+  private def tunnustamisenTiedot(oppiaine: ValmentavanKoulutuksenOsanSuoritus): String = {
+    val tunnustettu = oppiaine.tunnustettu.get
+    val vahvistus = tunnustettu.osaaminen.flatMap(_.vahvistus)
+    val ammatillinenSuoritus = tunnustettu.osaaminen match {
+      case Some(s: AmmatillisenTutkinnonOsanSuoritus) => Some(s)
+      case _ => None
+    }
+    val diaariNumero = ammatillinenSuoritus.flatMap(_.tutkinto).flatMap(_.perusteenDiaarinumero)
+    val pvmJaDnro = (vahvistus.map(_.päivä).map(dateFormatter.format) ++ diaariNumero).mkString(", ")
+    val myöntäjäOrganisaatio = vahvistus.map(_.myöntäjäOrganisaatio).collect {
+      case o: OrganisaatioWithOid => o.nimi
+      case Yritys(nimi, _) => Some(nimi)
+      case Tutkintotoimikunta(nimi, _) => Some(nimi)
+      case _ => None
+    }.map(nimi => s", ${i(nimi)}").getOrElse("")
+
+    s"${i(tunnustettu.selite)}${if (pvmJaDnro.isEmpty) " " else s" ($pvmJaDnro)"}$myöntäjäOrganisaatio"
+  }
 
   private val oppiaineetTyypeittäin: List[(LocalizedString, List[ValmentavanKoulutuksenOsanSuoritus])] =
     oppiaineet.groupBy(s => tyypinKuvaus(s.koulutusmoduuli)).toList.sortBy(_._1.get("fi"))
