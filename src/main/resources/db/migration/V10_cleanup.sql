@@ -1,0 +1,1 @@
+ALTER INDEX opintooikeus_pkey RENAME TO opiskeluoikeus_pkey;
