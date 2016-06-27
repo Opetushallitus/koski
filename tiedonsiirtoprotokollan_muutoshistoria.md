@@ -7,6 +7,8 @@
 
 - Lisätty perusopetukseen valmistava opetus
 - Poistettu Suoritus.paikallinenId
+- Lisätty ammatilliseen peruskoulutukseen valmentava koulutus
+- Lisätty työhön ja itsenäiseen elämään valmentava koulutus
 
 ## 20.6.2016
 - Lisätty lukion oppiaineen oppimäärän suoritus
