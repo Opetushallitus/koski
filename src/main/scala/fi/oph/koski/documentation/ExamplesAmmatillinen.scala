@@ -34,7 +34,7 @@ object AmmattitutkintoExample {
             koulutusmoduuli = tutkinto,
             tila = tilaValmis,
             alkamispäivä = Some(date(2012, 9, 1)),
-            loppumispäivä = None,
+            päättymispäivä = None,
             toimipiste = toimipiste,
             vahvistus = vahvistus(date(2015, 5, 31), stadinAmmattiopisto, helsinki),
             osasuoritukset = Some(List(

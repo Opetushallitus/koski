@@ -71,7 +71,7 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate],
-  val loppumispäivä: Option[LocalDate],
+  val päättymispäivä: Option[LocalDate],
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Henkilövahvistus] = None,
   @Description("Valmistavan koulutuksen osat")

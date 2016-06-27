@@ -1,6 +1,7 @@
 ## 27.6.2016
 
-- Poistettu turhna tunniste-taso ammatillisten tutkintojen suoritustavasta
+- Nimi muutettu ammatilliseen näyttötutkintoon valmistavan koulutuksen suorituksessa: loppumispäivä -> päättymispäivä
+- Poistettu turha tunniste-taso ammatillisten tutkintojen suoritustavasta
 - Lisätty erityisopetuksen peruste ammatillisen opiskeluoikeuden lisätietojen hojks-osioon
 - Muutettu ammatillisen opiskeluoikeuden lisätietojen hojks:n rakennetta: poistettu hojksTehty-flagi
 
