@@ -7,7 +7,7 @@ import fi.oph.koski.json.Json
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koski.DateValidation._
 import fi.oph.koski.koskiuser.{AccessType, KoskiUser}
-import fi.oph.koski.organisaatio.OrganisaatioRepository
+import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
 import fi.oph.koski.schema._
 import fi.oph.koski.tutkinto.{TutkintoRakenneValidator, TutkintoRepository}
 import fi.oph.koski.util.Timing
@@ -26,10 +26,16 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
   }
 
-  def fillMissingInfo(oppija: Oppija) = oppija.copy(opiskeluoikeudet = oppija.opiskeluoikeudet.map(addKoulutusToimija(_)))
+  def fillMissingInfo(oppija: Oppija) = oppija.copy(opiskeluoikeudet = oppija.opiskeluoikeudet.map(addKoulutustoimija(_)))
 
-  def addKoulutusToimija(oo: Opiskeluoikeus) = {
-    organisaatioRepository.getOrganisaatioHierarkiaIncludingParents(oo.oppilaitos.oid) match {
+  def addKoulutustoimija(oo: Opiskeluoikeus) = {
+    def findKoulutustoimija(root: OrganisaatioHierarkia): Option[OrganisaatioHierarkia] = if (root.organisaatiotyypit.contains("KOULUTUSTOIMIJA") && root.children.exists(_.oid == oo.oppilaitos.oid)) {
+      Some(root)
+    } else {
+      root.children.flatMap(findKoulutustoimija).headOption
+    }
+
+    organisaatioRepository.getOrganisaatioHierarkiaIncludingParents(oo.oppilaitos.oid).flatMap(findKoulutustoimija) match {
       case Some(hierarkia) => oo.withKoulutustoimija(hierarkia.toOrganisaatio)
       case _ => oo
     }
