@@ -1,0 +1,101 @@
+[
+  {
+    "koodiUri": "ammatillisenerityisopetuksenperuste_1",
+    "koodiArvo": "1",
+    "metadata": [
+      {
+        "nimi": "Vaikea kehitysviivästymä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "ammatillisenerityisopetuksenperuste_2",
+    "koodiArvo": "2",
+    "metadata": [
+      {
+        "nimi": "Lievä kehitysviivästymä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "ammatillisenerityisopetuksenperuste_3",
+    "koodiArvo": "3",
+    "metadata": [
+      {
+        "nimi": "Eriasteinen aivotoiminnan häiri, liikuntavamma tai vastaava",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "ammatillisenerityisopetuksenperuste_4",
+    "koodiArvo": "4",
+    "metadata": [
+      {
+        "nimi": "Tunne-elämän häiriö tai sosiaalinen sopeutumattomuus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "ammatillisenerityisopetuksenperuste_5",
+    "koodiArvo": "5",
+    "metadata": [
+      {
+        "nimi": "Autismiin tai Aspergerin oireyhtymään liittyvät oppimisvaikeudet",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "ammatillisenerityisopetuksenperuste_6",
+    "koodiArvo": "6",
+    "metadata": [
+      {
+        "nimi": "Kielen kehityksen häiriöstä (dysfasiasta) johtuvat oppimisen vaikeudet",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "ammatillisenerityisopetuksenperuste_7",
+    "koodiArvo": "7",
+    "metadata": [
+      {
+        "nimi": "Näkövamma",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "ammatillisenerityisopetuksenperuste_8",
+    "koodiArvo": "8",
+    "metadata": [
+      {
+        "nimi": "Kuulovamma",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "ammatillisenerityisopetuksenperuste_9",
+    "koodiArvo": "9",
+    "metadata": [
+      {
+        "nimi": "Muu syy",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  }
+]

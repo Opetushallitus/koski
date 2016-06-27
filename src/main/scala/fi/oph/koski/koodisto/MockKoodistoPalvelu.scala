@@ -16,6 +16,7 @@ object MockKoodistoPalvelu extends KoodistoPalvelu {
    */
   val koodistot = List (
     "ammatillinenopiskeluoikeudentila",
+    "ammatillisenerityisopetuksenperuste",
     "ammatillisennaytonarvioinnistapaattaneet",
     "ammatillisennaytonarviointikeskusteluunosallistuneet",
     "ammatillisennaytonarviointikohde",

@@ -273,9 +273,9 @@ case class DefaultJärjestämismuoto(
 @OksaUri("tmpOKSAID228", "erityisopiskelija")
 case class Hojks(
   @KoodistoUri("opetusryhma")
-  opetusryhmä: Koodistokoodiviite/*,
+  opetusryhmä: Koodistokoodiviite,
   @KoodistoUri("ammatillisenerityisopetuksenperuste")
-  peruste: Option[Koodistokoodiviite]*/
+  peruste: Koodistokoodiviite
 )
 
 case class LaajuusOsaamispisteissä(

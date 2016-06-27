@@ -283,6 +283,13 @@
             "fi" : "Yleinen opetusryhmä"
           },
           "koodistoUri" : "opetusryhma"
+        },
+        "peruste" : {
+          "koodiarvo" : "8",
+          "nimi" : {
+            "fi" : "Kuulovamma"
+          },
+          "koodistoUri" : "ammatillisenerityisopetuksenperuste"
         }
       },
       "oikeusMaksuttomaanAsuntolapaikkaan" : false
