@@ -274,7 +274,7 @@
             }
           },
           "laajuus" : {
-            "arvo" : 10.0,
+            "arvo" : 15.0,
             "yksikkö" : {
               "koodiarvo" : "6",
               "nimi" : {
@@ -295,7 +295,85 @@
           },
           "päivä" : "2014-10-20",
           "hyväksytty" : true
-        } ]
+        } ],
+        "tunnustettu" : {
+          "osaaminen" : {
+            "koulutusmoduuli" : {
+              "tunniste" : {
+                "koodiarvo" : "100209",
+                "nimi" : {
+                  "fi" : "Asennuksen ja automaation perustyöt"
+                },
+                "koodistoUri" : "tutkinnonosat",
+                "koodistoVersio" : 1
+              },
+              "pakollinen" : true
+            },
+            "tutkinto" : {
+              "tunniste" : {
+                "koodiarvo" : "351101",
+                "nimi" : {
+                  "fi" : "Kone- ja metallialan perustutkinto"
+                },
+                "koodistoUri" : "koulutus"
+              },
+              "perusteenDiaarinumero" : "39/011/2014"
+            },
+            "tila" : {
+              "koodiarvo" : "VALMIS",
+              "koodistoUri" : "suorituksentila"
+            },
+            "toimipiste" : {
+              "oid" : "1.2.246.562.10.42456023292",
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+              }
+            },
+            "vahvistus" : {
+              "päivä" : "2015-10-03",
+              "paikkakunta" : {
+                "koodiarvo" : "091",
+                "nimi" : {
+                  "fi" : "Helsinki"
+                },
+                "koodistoUri" : "kunta"
+              },
+              "myöntäjäOrganisaatio" : {
+                "oid" : "1.2.246.562.10.52251087186",
+                "oppilaitosnumero" : {
+                  "koodiarvo" : "10105",
+                  "koodistoUri" : "oppilaitosnumero"
+                },
+                "nimi" : {
+                  "fi" : "Stadin ammattiopisto"
+                }
+              },
+              "myöntäjäHenkilöt" : [ {
+                "nimi" : "Reijo Reksi",
+                "titteli" : {
+                  "fi" : "rehtori"
+                },
+                "organisaatio" : {
+                  "oid" : "1.2.246.562.10.52251087186",
+                  "oppilaitosnumero" : {
+                    "koodiarvo" : "10105",
+                    "koodistoUri" : "oppilaitosnumero"
+                  },
+                  "nimi" : {
+                    "fi" : "Stadin ammattiopisto"
+                  }
+                }
+              } ]
+            },
+            "tyyppi" : {
+              "koodiarvo" : "ammatillisentutkinnonosa",
+              "koodistoUri" : "suorituksentyyppi"
+            }
+          },
+          "selite" : {
+            "fi" : "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
+          }
+        }
       } ],
       "tyyppi" : {
         "koodiarvo" : "valma",

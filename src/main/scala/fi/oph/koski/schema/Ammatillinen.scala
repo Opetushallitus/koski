@@ -36,6 +36,7 @@ case class AmmatillinenOpiskeluoikeus(
 sealed trait AmmatillinenPäätasonSuoritus extends Suoritus
 
 case class AmmatillisenOpiskeluoikeudenLisätiedot(
+  @Description("Jos kyseessä erityisopiskelija, jolle on tehty henkilökohtainen opetuksen järjestämistä koskeva suunnitelma (hojks), täytetään tämä tieto. Kentän puuttuminen tai null-arvo tulkitaan siten, että suunnitelmaa ei ole tehty.")
   hojks: Option[Hojks],
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false,
   @Description("Tieto siitä liittyykö opintoihin ulkomaanjaksoja")
@@ -271,9 +272,10 @@ case class DefaultJärjestämismuoto(
 @Description("Henkilökohtainen opetuksen järjestämistä koskeva suunnitelma, https://fi.wikipedia.org/wiki/HOJKS")
 @OksaUri("tmpOKSAID228", "erityisopiskelija")
 case class Hojks(
-  hojksTehty: Boolean,
   @KoodistoUri("opetusryhma")
-  opetusryhmä: Option[Koodistokoodiviite]
+  opetusryhmä: Koodistokoodiviite/*,
+  @KoodistoUri("ammatillisenerityisopetuksenperuste")
+  peruste: Option[Koodistokoodiviite]*/
 )
 
 case class LaajuusOsaamispisteissä(

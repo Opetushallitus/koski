@@ -237,7 +237,12 @@
           },
           "päivä" : "2013-03-20",
           "hyväksytty" : true
-        } ]
+        } ],
+        "tunnustettu" : {
+          "selite" : {
+            "fi" : "Yhteisten tutkinnon osien osa-alue on suoritettu x- perustutkinnon perusteiden (2015) osaamistavoitteiden mukaisesti"
+          }
+        }
       }, {
         "tila" : {
           "koodiarvo" : "VALMIS",
@@ -276,7 +281,12 @@
           },
           "päivä" : "2013-03-20",
           "hyväksytty" : true
-        } ]
+        } ],
+        "tunnustettu" : {
+          "selite" : {
+            "fi" : "Koulutuksen osa on tunnustettu Vesikallion urheiluopiston osaamistavoitteiden mukaisesti"
+          }
+        }
       } ],
       "tyyppi" : {
         "koodiarvo" : "telma",

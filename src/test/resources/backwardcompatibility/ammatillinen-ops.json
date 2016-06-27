@@ -277,7 +277,6 @@
     },
     "lisätiedot" : {
       "hojks" : {
-        "hojksTehty" : true,
         "opetusryhmä" : {
           "koodiarvo" : "1",
           "nimi" : {
