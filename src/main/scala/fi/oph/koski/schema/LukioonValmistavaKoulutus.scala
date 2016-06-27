@@ -14,7 +14,7 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeus(
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OrganisaatioWithOid],
   tila: Option[LukionOpiskeluoikeudenTila],
-  läsnäolotiedot: Option[Läsnäolotiedot],
+  läsnäolotiedot: Option[YleisetLäsnäolotiedot],
   @MinItems(1)
   @MaxItems(1)
   suoritukset: List[LukioonValmistavanKoulutuksenSuoritus],

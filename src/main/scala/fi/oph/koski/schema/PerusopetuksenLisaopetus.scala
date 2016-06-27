@@ -14,7 +14,7 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeus(
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OrganisaatioWithOid],
   tila: Option[PerusopetuksenOpiskeluoikeudenTila],
-  läsnäolotiedot: Option[Läsnäolotiedot],
+  läsnäolotiedot: Option[YleisetLäsnäolotiedot],
   @MinItems(1)
   @MaxItems(1)
   suoritukset: List[PerusopetuksenLisäopetuksenSuoritus],

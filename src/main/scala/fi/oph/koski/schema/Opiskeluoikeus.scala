@@ -46,6 +46,7 @@ trait Opiskeluoikeus {
 
 trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
   def withIdAndVersion(id: Option[Int], versionumero: Option[Int]): Opiskeluoikeus
+  override def läsnäolotiedot: Option[YleisetLäsnäolotiedot]
 }
 
 trait OpiskeluoikeudenTila {
@@ -65,6 +66,10 @@ trait Läsnäolotiedot {
   def läsnäolojaksot: List[Läsnäolojakso]
 }
 
+case class YleisetLäsnäolotiedot(
+  läsnäolojaksot: List[YleinenLäsnäolojakso]
+) extends Läsnäolotiedot
+
 trait Jakso {
   @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
   def alku: LocalDate
@@ -78,6 +83,13 @@ trait Läsnäolojakso extends Jakso {
   @Description("Läsnäolotila (läsnä, poissa...)")
   def tila: Koodistokoodiviite
 }
+
+case class YleinenLäsnäolojakso(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  @KoodistoUri("lasnaolotila")
+  tila: Koodistokoodiviite
+) extends Läsnäolojakso
 
 case class LähdejärjestelmäId(
   @Description("Opiskeluoikeuden paikallinen uniikki tunniste lähdejärjestelmässä. Tiedonsiirroissa tarpeellinen, jotta voidaan varmistaa päivitysten osuminen oikeaan opiskeluoikeuteen.")

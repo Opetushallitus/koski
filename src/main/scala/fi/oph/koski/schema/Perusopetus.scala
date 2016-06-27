@@ -22,7 +22,7 @@ case class PerusopetuksenOpiskeluoikeus(
   tavoite: Koodistokoodiviite,
   suoritukset: List[PerusopetuksenPäätasonSuoritus],
   tila: Option[PerusopetuksenOpiskeluoikeudenTila],
-  läsnäolotiedot: Option[Läsnäolotiedot],
+  läsnäolotiedot: Option[YleisetLäsnäolotiedot],
   @KoodistoKoodiarvo("perusopetus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetus", "opiskeluoikeudentyyppi"),
   lisätiedot: Option[PerusopetuksenOpiskeluoikeudenLisätiedot] = None

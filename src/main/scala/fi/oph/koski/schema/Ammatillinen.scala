@@ -24,7 +24,7 @@ case class AmmatillinenOpiskeluoikeus(
   @KoodistoKoodiarvo("ammatillisentutkinnonosa")
   tavoite: Koodistokoodiviite,
   tila: Option[AmmatillinenOpiskeluoikeudenTila] = None,
-  läsnäolotiedot: Option[AmmatillisenLäsnäolotiedot] = None,
+  läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
   @KoodistoKoodiarvo("ammatillinenkoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinenkoulutus", "opiskeluoikeudentyyppi"),
   lisätiedot: Option[AmmatillisenOpiskeluoikeudenLisätiedot] = None
@@ -283,17 +283,6 @@ case class LaajuusOsaamispisteissä(
   @KoodistoKoodiarvo("6")
   yksikkö: Koodistokoodiviite = Koodistokoodiviite("6", Some(finnish("Osaamispistettä")), "opintojenlaajuusyksikko")
 ) extends Laajuus
-
-case class AmmatillisenLäsnäolotiedot(
-  läsnäolojaksot: List[AmmatillinenLäsnäolojakso]
-) extends Läsnäolotiedot
-
-case class AmmatillinenLäsnäolojakso(
-  alku: LocalDate,
-  loppu: Option[LocalDate],
-  @KoodistoUri("lasnaolotila")
-  tila: Koodistokoodiviite
-) extends Läsnäolojakso
 
 case class NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,

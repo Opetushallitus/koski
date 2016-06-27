@@ -15,7 +15,7 @@ case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOpiskeluoikeus(
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OrganisaatioWithOid] = None,
   tila: Option[AmmatillinenOpiskeluoikeudenTila] = None,
-  läsnäolotiedot: Option[Läsnäolotiedot] = None,
+  läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
   @MinItems(1) @MaxItems(1)
   suoritukset: List[TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenSuoritus],
   @KoodistoKoodiarvo("telma")

@@ -13,7 +13,7 @@ case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OrganisaatioWithOid] = None,
   tila: Option[PerusopetuksenOpiskeluoikeudenTila] = None,
-  läsnäolotiedot: Option[Läsnäolotiedot] = None,
+  läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
   @MinItems(1)
   @MaxItems(1)
   suoritukset: List[PerusopetukseenValmistavanOpetuksenSuoritus],
