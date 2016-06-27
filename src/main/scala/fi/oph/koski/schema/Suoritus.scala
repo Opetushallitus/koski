@@ -7,7 +7,7 @@ import fi.oph.koski.localization.LocalizedString.unlocalized
 import fi.oph.scalaschema.annotation._
 
 trait Suoritus {
-  @Description("Suorituksen tyyppi")
+  @Description("Suorituksen tyyppi, jolla erotellaan eri koulutusmuotoihin (perusopetus, lukio, ammatillinen...) ja eri tasoihin (tutkinto, tutkinnon osa, kurssi, oppiaine...) liittyvät suoritukset")
   @KoodistoUri("suorituksentyyppi")
   def tyyppi: Koodistokoodiviite
   def koulutusmoduuli: Koulutusmoduuli

@@ -29,28 +29,28 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       describe("Osaamisala ja suoritustapa") {
         describe("Osaamisala ja suoritustapa ok") {
           val suoritus = tutkintoSuoritus.copy(
-            suoritustapa = Some(AmmatillisenTutkinnonSuoritustapa(Koodistokoodiviite("ops", "ammatillisentutkinnonsuoritustapa"))),
+            suoritustapa = Some(Koodistokoodiviite("ops", "ammatillisentutkinnonsuoritustapa")),
             osaamisala = Some(List(Koodistokoodiviite("1527", "osaamisala"))))
 
           it("palautetaan HTTP 200") (putTutkintoSuoritus(suoritus)(verifyResponseStatus(200)))
         }
         describe("Suoritustapa virheellinen") {
           val suoritus = tutkintoSuoritus.copy(
-            suoritustapa = Some(AmmatillisenTutkinnonSuoritustapa(Koodistokoodiviite("blahblahtest", "ammatillisentutkinnonsuoritustapa"))),
+            suoritustapa = Some(Koodistokoodiviite("blahblahtest", "ammatillisentutkinnonsuoritustapa")),
             osaamisala = Some(List(Koodistokoodiviite("1527", "osaamisala"))))
 
           it("palautetaan HTTP 400") (putTutkintoSuoritus(suoritus)(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia ammatillisentutkinnonsuoritustapa/blahblahtest ei löydy koodistosta"))))
         }
         describe("Osaamisala ei löydy tutkintorakenteesta") {
           val suoritus = tutkintoSuoritus.copy(
-            suoritustapa = Some(AmmatillisenTutkinnonSuoritustapa(Koodistokoodiviite("ops", "ammatillisentutkinnonsuoritustapa"))),
+            suoritustapa = Some(Koodistokoodiviite("ops", "ammatillisentutkinnonsuoritustapa")),
             osaamisala = Some(List(Koodistokoodiviite("3053", "osaamisala"))))
 
           it("palautetaan HTTP 400") (putTutkintoSuoritus(suoritus) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonOsaamisala("Osaamisala 3053 ei löydy tutkintorakenteesta perusteelle 39/011/2014"))))
         }
         describe("Osaamisala virheellinen") {
           val suoritus = tutkintoSuoritus.copy(
-            suoritustapa = Some(AmmatillisenTutkinnonSuoritustapa(Koodistokoodiviite("ops", "ammatillisentutkinnonsuoritustapa"))),
+            suoritustapa = Some(Koodistokoodiviite("ops", "ammatillisentutkinnonsuoritustapa")),
             osaamisala = Some(List(Koodistokoodiviite("0", "osaamisala"))))
 
           it("palautetaan HTTP 400")(putTutkintoSuoritus(suoritus)(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia osaamisala/0 ei löydy koodistosta"))))
@@ -354,7 +354,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
   lazy val tutkinnonOsa: OpsTutkinnonosa = OpsTutkinnonosa(Koodistokoodiviite("100023", "tutkinnonosat"), true, Some(laajuus), None, None)
 
-  lazy val tutkinnonSuoritustapaNäyttönä = Some(AmmatillisenTutkinnonSuoritustapa(Koodistokoodiviite("naytto", "ammatillisentutkinnonsuoritustapa")))
+  lazy val tutkinnonSuoritustapaNäyttönä = Some(Koodistokoodiviite("naytto", "ammatillisentutkinnonsuoritustapa"))
 
   lazy val tutkinnonOsaSuoritus = AmmatillisenTutkinnonOsanSuoritus(
     tutkinnonOsa, None, None, None, None, None, tilaKesken, None,
@@ -370,7 +370,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     Some(OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))),
     arviointiHyvä(), None)
 
-  def putTutkinnonOsaSuoritus[A](tutkinnonOsaSuoritus: AmmatillisenTutkinnonOsanSuoritus, tutkinnonSuoritustapa: Option[AmmatillisenTutkinnonSuoritustapa])(f: => A) = {
+  def putTutkinnonOsaSuoritus[A](tutkinnonOsaSuoritus: AmmatillisenTutkinnonOsanSuoritus, tutkinnonSuoritustapa: Option[Koodistokoodiviite])(f: => A) = {
     val s = tutkintoSuoritus.copy(suoritustapa = tutkinnonSuoritustapa, osasuoritukset = Some(List(tutkinnonOsaSuoritus)))
 
     putTutkintoSuoritus(s)(f)

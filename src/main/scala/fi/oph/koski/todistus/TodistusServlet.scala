@@ -44,7 +44,7 @@ class TodistusServlet(val userRepository: UserOrganisationsRepository, val direc
               case t: AmmatillisenTutkinnonSuoritus =>
                 t.koulutusmoduuli.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_)) match {
                   case Some(rakenne: TutkintoRakenne) =>
-                    val maybeSuoritustapaJaRakenne: Option[SuoritustapaJaRakenne] = rakenne.suoritustavat.find(x => Some(x.suoritustapa) == t.suoritustapa.map(_.tunniste))
+                    val maybeSuoritustapaJaRakenne: Option[SuoritustapaJaRakenne] = rakenne.suoritustavat.find(x => Some(x.suoritustapa) == t.suoritustapa)
                     maybeSuoritustapaJaRakenne match {
                       case Some(suoritustapaJaRakenne) => Right((new AmmatillisenPerustutkinnonPaattotodistusHtml).render(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t, suoritustapaJaRakenne))
                       case _ => Left(KoskiErrorCategory.badRequest.validation.rakenne.suoritustapaPuuttuu())

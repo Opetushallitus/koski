@@ -77,15 +77,13 @@ const TutkinnonRakenne = React.createClass({
             <Dropdown className="suoritustapa"
                       title="Suoritustapa"
                       options={rakenne.suoritustavat.map(s => s.suoritustapa)}
-                      value={suoritus.suoritustapa ? suoritus.suoritustapa.tunniste.koodiarvo : ''}
+                      value={suoritus.suoritustapa ? suoritus.suoritustapa.koodiarvo : ''}
                       autoselect={true}
                       onChange={(value) => opiskeluOikeusChange.push([L.compose(lens, L.prop('suoritustapa')),
                               () => {
                                 let suoritustapa = value ? {
-                                  tunniste: {
                                     koodiarvo: value,
                                     koodistoUri: 'ammatillisentutkinnonsuoritustapa'
-                                  }
                                 } : undefined
                                 return suoritustapa
                               }
@@ -106,7 +104,7 @@ const TutkinnonRakenne = React.createClass({
                             ])}
               />
             { suoritus.suoritustapa
-              ? rakenne.suoritustavat.find(x => x.suoritustapa.koodiarvo == suoritus.suoritustapa.tunniste.koodiarvo).rakenne.osat.map(rakenneOsa => <Rakenneosa
+              ? rakenne.suoritustavat.find(x => x.suoritustapa.koodiarvo == suoritus.suoritustapa.koodiarvo).rakenne.osat.map(rakenneOsa => <Rakenneosa
               rakenneosa={rakenneOsa}
               suoritus={suoritus}
               lens={lens}
@@ -179,7 +177,7 @@ const TutkinnonOsa = React.createClass({
     const arviointiAsteikko = R.find(asteikko => R.equals(asteikko.koodisto, tutkinnonOsa.arviointiAsteikko))(rakenne.arviointiAsteikot)
     const arvosanat = arviointiAsteikko ? arviointiAsteikko.arvosanat : undefined
     const laajuudenYksikkö = R.find(tapa => {
-      return tapa.suoritustapa.koodiarvo == suoritus.suoritustapa.tunniste.koodiarvo
+      return tapa.suoritustapa.koodiarvo == suoritus.suoritustapa.koodiarvo
     })(rakenne.suoritustavat).laajuusYksikkö
 
     const osaSuorituksetLens = L.compose(lens, L.prop('osasuoritukset'))

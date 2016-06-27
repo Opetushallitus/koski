@@ -111,14 +111,12 @@
         "perusteenDiaarinumero" : "40/011/2001"
       },
       "suoritustapa" : {
-        "tunniste" : {
-          "koodiarvo" : "naytto",
-          "nimi" : {
-            "fi" : "Näyttö"
-          },
-          "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
-          "koodistoVersio" : 1
-        }
+        "koodiarvo" : "naytto",
+        "nimi" : {
+          "fi" : "Näyttö"
+        },
+        "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
+        "koodistoVersio" : 1
       },
       "järjestämismuoto" : {
         "tunniste" : {

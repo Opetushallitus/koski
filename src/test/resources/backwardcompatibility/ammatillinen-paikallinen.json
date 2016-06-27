@@ -23,14 +23,12 @@
         "perusteenDiaarinumero" : "39/011/2014"
       },
       "suoritustapa" : {
-        "tunniste" : {
-          "koodiarvo" : "naytto",
-          "nimi" : {
-            "fi" : "Näyttö"
-          },
-          "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
-          "koodistoVersio" : 1
-        }
+        "koodiarvo" : "naytto",
+        "nimi" : {
+          "fi" : "Näyttö"
+        },
+        "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
+        "koodistoVersio" : 1
       },
       "tila" : {
         "koodiarvo" : "KESKEN",

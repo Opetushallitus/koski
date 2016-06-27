@@ -23,14 +23,12 @@
         "perusteenDiaarinumero" : "39/011/2014"
       },
       "suoritustapa" : {
-        "tunniste" : {
-          "koodiarvo" : "ops",
-          "nimi" : {
-            "fi" : "Opetussuunnitelman mukainen"
-          },
-          "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
-          "koodistoVersio" : 1
-        }
+        "koodiarvo" : "ops",
+        "nimi" : {
+          "fi" : "Opetussuunnitelman mukainen"
+        },
+        "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
+        "koodistoVersio" : 1
       },
       "tila" : {
         "koodiarvo" : "KESKEN",

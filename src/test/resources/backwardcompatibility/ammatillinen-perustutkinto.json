@@ -45,14 +45,12 @@
         "koodistoUri" : "osaamisala"
       } ],
       "suoritustapa" : {
-        "tunniste" : {
-          "koodiarvo" : "ops",
-          "nimi" : {
-            "fi" : "Opetussuunnitelman mukainen"
-          },
-          "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
-          "koodistoVersio" : 1
-        }
+        "koodiarvo" : "ops",
+        "nimi" : {
+          "fi" : "Opetussuunnitelman mukainen"
+        },
+        "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
+        "koodistoVersio" : 1
       },
       "järjestämismuoto" : {
         "tunniste" : {

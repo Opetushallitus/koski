@@ -64,7 +64,7 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   @KoodistoUri("tutkintonimikkeet")
   @OksaUri("tmpOKSAID588", "tutkintonimike")
   tutkintonimike: Option[List[Koodistokoodiviite]] = None,
-  @Description("Osaamisala")
+  @Description("Tieto siitä mihin osaamisalaan/osaamisaloihin oppijan tutkinto liittyy")
   @KoodistoUri("osaamisala")
   @OksaUri(tunnus = "tmpOKSAID299", käsite = "osaamisala")
   osaamisala: Option[List[Koodistokoodiviite]] = None,
@@ -88,13 +88,14 @@ case class AmmatillisenTutkinnonSuoritus(
   @KoodistoUri("tutkintonimikkeet")
   @OksaUri("tmpOKSAID588", "tutkintonimike")
   tutkintonimike: Option[List[Koodistokoodiviite]] = None,
-  @Description("Osaamisala")
+  @Description("Tieto siitä mihin osaamisalaan/osaamisaloihin oppijan tutkinto liittyy")
   @KoodistoUri("osaamisala")
   @OksaUri(tunnus = "tmpOKSAID299", käsite = "osaamisala")
   osaamisala: Option[List[Koodistokoodiviite]] = None,
   @Description("Tutkinnon tai tutkinnon osan suoritustapa")
   @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
-  suoritustapa: Option[AmmatillisenTutkinnonSuoritustapa] = None,
+  @KoodistoUri("ammatillisentutkinnonsuoritustapa")
+  suoritustapa: Option[Koodistokoodiviite] = None,
   @Description("Koulutuksen järjestämismuoto")
   @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
   järjestämismuoto: Option[Järjestämismuoto] = None,
@@ -252,12 +253,6 @@ case class NäytönArviointikohde(
 @Description("Oppisopimuksen tiedot")
 case class Oppisopimus(
   työnantaja: Yritys
-)
-
-
-case class AmmatillisenTutkinnonSuoritustapa(
-  @KoodistoUri("ammatillisentutkinnonsuoritustapa")
-  tunniste: Koodistokoodiviite
 )
 
 trait Järjestämismuoto {

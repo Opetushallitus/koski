@@ -55,7 +55,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
     })
   }
 
-  private def validateTutkinnonOsa(suoritus: AmmatillisenTutkinnonOsanSuoritus, osa: OpsTutkinnonosa, rakenne: TutkintoRakenne, suoritustapa: Option[AmmatillisenTutkinnonSuoritustapa]): HttpStatus = {
+  private def validateTutkinnonOsa(suoritus: AmmatillisenTutkinnonOsanSuoritus, osa: OpsTutkinnonosa, rakenne: TutkintoRakenne, suoritustapa: Option[Koodistokoodiviite]): HttpStatus = {
     val suoritustapaJaRakenne = suoritustapa.flatMap(rakenne.findSuoritustapaJaRakenne(_))
     suoritustapaJaRakenne match {
       case Some(suoritustapaJaRakenne)  =>
