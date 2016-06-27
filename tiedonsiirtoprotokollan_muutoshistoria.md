@@ -1,5 +1,6 @@
 ## 27.6.2016
 
+- Poistettu turhna tunniste-taso ammatillisten tutkintojen suoritustavasta
 - Lisätty erityisopetuksen peruste ammatillisen opiskeluoikeuden lisätietojen hojks-osioon
 - Muutettu ammatillisen opiskeluoikeuden lisätietojen hojks:n rakennetta: poistettu hojksTehty-flagi
 
