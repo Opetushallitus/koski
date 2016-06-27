@@ -130,6 +130,7 @@ case class LukionKurssinSuoritus(
 
 case class LukionOppiaineenArviointi(
   arvosana: Koodistokoodiviite,
+  @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
   päivä: Option[LocalDate]
 ) extends YleissivistävänKoulutuksenArviointi {
   def arviointipäivä = päivä
@@ -141,6 +142,7 @@ object LukionOppiaineenArviointi {
 
 case class LukionKurssinArviointi(
   arvosana: Koodistokoodiviite,
+  @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
   päivä: LocalDate
 ) extends YleissivistävänKoulutuksenArviointi with ArviointiPäivämäärällä
 

@@ -11,7 +11,7 @@ trait Suoritus {
   @KoodistoUri("suorituksentyyppi")
   def tyyppi: Koodistokoodiviite
   def koulutusmoduuli: Koulutusmoduuli
-  @Description("Suorituksen alkamispäivä")
+  @Description("Suorituksen alkamispäivä. Muoto YYYY-MM-DD")
   def alkamispäivä: Option[LocalDate] = None
   @Description("Opintojen suorituskieli")
   @KoodistoUri("kieli")

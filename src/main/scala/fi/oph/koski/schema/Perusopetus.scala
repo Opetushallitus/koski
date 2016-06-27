@@ -181,6 +181,7 @@ case class NumeerinenPerusopetuksenOppiaineenArviointi(
   @KoodistoKoodiarvo("9")
   @KoodistoKoodiarvo("10")
   arvosana: Koodistokoodiviite,
+  @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
   päivä: Option[LocalDate]
 ) extends PerusopetuksenOppiaineenArviointi {
   def arviointipäivä = päivä
@@ -192,6 +193,7 @@ case class SanallinenPerusopetuksenOppiaineenArviointi(
   @KoodistoKoodiarvo("H")
   arvosana: Koodistokoodiviite = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
   kuvaus: Option[LocalizedString],
+  @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
   päivä: Option[LocalDate] = None
 ) extends PerusopetuksenOppiaineenArviointi with SanallinenArviointi {
   def arviointipäivä = päivä

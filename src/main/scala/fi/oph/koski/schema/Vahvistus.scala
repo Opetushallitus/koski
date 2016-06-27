@@ -6,7 +6,7 @@ import fi.oph.koski.localization.LocalizedString
 import fi.oph.scalaschema.annotation._
 
 trait Vahvistus {
-  @Description("Tutkinnon tai tutkinnonosan vahvistettu suorituspäivämäärä, eli päivämäärä jolloin suoritus on hyväksyttyä todennettua osaamista")
+  @Description("Tutkinnon tai tutkinnonosan vahvistettu suorituspäivämäärä, eli päivämäärä jolloin suoritus on hyväksyttyä todennettua osaamista. Muoto YYYY-MM-DD")
   def päivä: LocalDate
   @KoodistoUri("kunta")
   @Description("Paikkakunta, jossa suoritus on vahvistettu (allekirjoituksen paikkakunta)")
