@@ -40,7 +40,7 @@ case class LukioonValmistavanKoulutuksenSuoritus(
   def arviointi: Option[List[KoodistostaLöytyväArviointi]] = None
 }
 
-@Description("Lukioon valmistava koulutus (LUVA)")
+@Description("Lukioon valmistavan koulutuksen (LUVA) tunnistetiedot")
 case class LukioonValmistavaKoulutus(
   @KoodistoKoodiarvo("039997")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("039997", koodistoUri = "koulutus")
@@ -61,7 +61,7 @@ case class LukioonValmistavanKurssinSuoritus(
   def vahvistus: Option[Henkilövahvistus] = None
 }
 
-@Description("Lukioon valmistavassa koulutuksessa suoritettava lukioon valmistava kurssi")
+@Description("Lukioon valmistavassa koulutuksessa suoritettava lukioon valmistavan kurssin tunnistetiedot")
 case class LukioonValmistavanKoulutuksenKurssi(
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusKursseissa]

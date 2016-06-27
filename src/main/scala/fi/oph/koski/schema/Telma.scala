@@ -52,14 +52,14 @@ case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus(
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None
 ) extends ValmentavanKoulutuksenOsanSuoritus
 
-@Description("Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)")
+@Description("Työhön ja itsenäiseen elämään valmentavan koulutuksen (TELMA) tunnistetiedot")
 case class TyöhönJaItsenäiseenElämäänValmentavaKoulutus(
   @KoodistoKoodiarvo("999903")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999903", koodistoUri = "koulutus"),
   laajuus: Option[Laajuus] = None
 ) extends Koulutus
 
-@Description("Työhön ja itsenäiseen elämään valmentava koulutuksen osa")
+@Description("Työhön ja itsenäiseen elämään valmentava koulutuksen osan tunnistiedot")
 case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa(
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusOsaamispisteissä],

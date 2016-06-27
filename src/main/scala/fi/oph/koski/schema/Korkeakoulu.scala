@@ -63,7 +63,7 @@ trait KorkeakouluSuoritus extends Suoritus {
     override def tarvitseeVahvistuksen = false
   }
 
-@Description("Tutkintoon johtava koulutus")
+@Description("Korkeakoulututkinnon tunnistetiedot")
 case class KorkeakouluTutkinto(
   tunniste: Koodistokoodiviite
 ) extends Koulutus  {
@@ -71,7 +71,7 @@ case class KorkeakouluTutkinto(
   override def isTutkinto = true
 }
 
-@Description("Opintojakson suoritus")
+@Description("Korkeakoulun opintojakson tunnistetiedot")
 case class KorkeakoulunOpintojakso(
   tunniste: PaikallinenKoodi,
   nimi: LocalizedString,

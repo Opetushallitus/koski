@@ -2,7 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 import fi.oph.koski.localization.LocalizedString
-import fi.oph.scalaschema.annotation.{MaxItems, MinItems}
+import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems}
 
 case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
   id: Option[Int] = None,
@@ -48,6 +48,7 @@ case class PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus(
   def vahvistus = None
 }
 
+@Description("Perusopetukseen valmistavan opetuksen tunnistetiedot")
 case class PerusopetukseenValmistavaOpetus(
   @KoodistoKoodiarvo("koski1") // TODO: odotetaan virallista koodia
   tunniste: Koodistokoodiviite = Koodistokoodiviite("koski1", koodistoUri = "koulutus")
@@ -55,6 +56,7 @@ case class PerusopetukseenValmistavaOpetus(
   def laajuus = None
 }
 
+@Description("Perusopetukseen valmistavan opetuksen oppiaineen tunnistetiedot")
 case class PerusopetukseenValmistavanOpetuksenOppiaine(
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusVuosiviikkotunneissa],

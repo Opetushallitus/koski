@@ -209,7 +209,7 @@ object PerusopetuksenOppiaineenArviointi {
   )
 }
 
-@Description("Perusopetuksen toiminta-alue")
+@Description("Perusopetuksen toiminta-alueen tunnistetiedot")
 case class PerusopetuksenToimintaAlue(
   @KoodistoUri("perusopetuksentoimintaalue")
   tunniste: Koodistokoodiviite
@@ -217,7 +217,7 @@ case class PerusopetuksenToimintaAlue(
   def laajuus = None
 }
 
-@Description("Perusopetus")
+@Description("Perusopetuksen tunnistetiedot")
 case class Perusopetus(
  perusteenDiaarinumero: Option[String],
  @KoodistoKoodiarvo("201101")
@@ -227,7 +227,7 @@ case class Perusopetus(
   override def isTutkinto = true
 }
 
-@Description("Perusopetuksen luokka-aste (1-9)")
+@Description("Perusopetuksen luokka-asteen (1-9) tunnistetiedot")
 case class PerusopetuksenLuokkaAste(
  @Description("Luokka-asteen tunniste (1-9)")
  @KoodistoUri("perusopetuksenluokkaaste")
@@ -242,6 +242,7 @@ object PerusopetuksenLuokkaAste {
   def apply(luokkaAste: Int): PerusopetuksenLuokkaAste = PerusopetuksenLuokkaAste(Koodistokoodiviite(luokkaAste.toString, "perusopetuksenluokkaaste"), None)
 }
 
+@Description("Perusopetuksen oppiaineen tunnistetiedot")
 trait PerusopetuksenOppiaine extends YleissivistavaOppiaine {
   def laajuus: Option[LaajuusVuosiviikkotunneissa]
 }
@@ -252,6 +253,7 @@ case class MuuPeruskoulunOppiaine(
   override val laajuus: Option[LaajuusVuosiviikkotunneissa] = None
 ) extends PerusopetuksenOppiaine
 
+@Description("Oppiaineena äidinkieli ja kirjallisuus")
 case class PeruskoulunAidinkieliJaKirjallisuus(
   @KoodistoKoodiarvo("AI")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "AI", koodistoUri = "koskioppiaineetyleissivistava"),
@@ -262,6 +264,8 @@ case class PeruskoulunAidinkieliJaKirjallisuus(
   override val laajuus: Option[LaajuusVuosiviikkotunneissa] = None
 ) extends PerusopetuksenOppiaine
 
+
+@Description("Oppiaineena vieras tai toinen kotimainen kieli")
 case class PeruskoulunVierasTaiToinenKotimainenKieli(
   @KoodistoKoodiarvo("A1")
   @KoodistoKoodiarvo("A2")

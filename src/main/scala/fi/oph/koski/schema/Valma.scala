@@ -52,14 +52,14 @@ case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus(
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None
 ) extends ValmentavanKoulutuksenOsanSuoritus
 
-@Description("Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)")
+@Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen (VALMA) tunnistetiedot")
 case class AmmatilliseenPeruskoulutukseenValmentavaKoulutus(
   @KoodistoKoodiarvo("999901")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999901", koodistoUri = "koulutus"),
   laajuus: Option[Laajuus] = None
 ) extends Koulutus
 
-@Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osa")
+@Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osan tunnistetiedot")
 case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa(
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusOsaamispisteissä],

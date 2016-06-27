@@ -60,6 +60,7 @@ object YlioppilaskokeenArviointi {
   def apply(arvosana: String) = new YlioppilaskokeenArviointi(Koodistokoodiviite(arvosana, "koskiyoarvosanat"))
 }
 
+@Description("Ylioppilastutkinnon tunnistetiedot")
 case class Ylioppilastutkinto(
  @KoodistoKoodiarvo("301000")
  tunniste: Koodistokoodiviite = Koodistokoodiviite("301000", koodistoUri = "koulutus"),
@@ -69,6 +70,7 @@ case class Ylioppilastutkinto(
   override def isTutkinto = true
 }
 
+@Description("Ylioppilastutkinnon kokeen tunnistetiedot")
 case class YlioppilasTutkinnonKoe(
   tunniste: PaikallinenKoodi
 ) extends PaikallinenKoulutusmoduuli {

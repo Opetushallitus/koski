@@ -146,7 +146,7 @@ case class Työssäoppimisjakso(
   laajuus: LaajuusOsaamispisteissä
 ) extends Jakso
 
-@Description("Tutkintoon johtava koulutus")
+@Description("Ammatillisen tutkinnon tunnistetiedot")
 case class AmmatillinenTutkintoKoulutus(
  tunniste: Koodistokoodiviite,
  perusteenDiaarinumero: Option[String]
@@ -159,7 +159,7 @@ sealed trait AmmatillisenTutkinnonOsa extends Koulutusmoduuli {
   def laajuus: Option[LaajuusOsaamispisteissä]
 }
 
-@Description("Opetussuunnitelmaan kuuluva tutkinnon osa")
+@Description("Opetussuunnitelmaan kuuluvan tutkinnon osan tunnistetiedot")
 case class OpsTutkinnonosa(
   @Description("Tutkinnon osan kansallinen koodi")
   @KoodistoUri("tutkinnonosat")
@@ -171,7 +171,7 @@ case class OpsTutkinnonosa(
   kuvaus: Option[LocalizedString] = None
 ) extends AmmatillisenTutkinnonOsa with KoodistostaLöytyväKoulutusmoduuli
 
-@Description("Paikallinen tutkinnon osa")
+@Description("Paikallisen tutkinnon osan tunnistetiedot")
 case class PaikallinenTutkinnonosa(
   tunniste: PaikallinenKoodi,
   kuvaus: LocalizedString,
@@ -297,7 +297,7 @@ case class NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
   def vahvistus = None
 }
 
-@Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osa")
+@Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osan tunnistetiedot")
 case class NäyttötutkintoonValmistavanKoulutuksenOsa(
   tunniste: PaikallinenKoodi
 ) extends PaikallinenKoulutusmoduuli {

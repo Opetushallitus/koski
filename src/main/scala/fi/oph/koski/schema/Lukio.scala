@@ -88,6 +88,7 @@ case class LukionOppiaineenOppimääränSuoritus(
   override val osasuoritukset: Option[List[LukionKurssinSuoritus]]
 ) extends LukionPäätasonSuoritus
 
+@Description("Lukion oppimäärän tunnistetiedot")
 case class LukionOppimäärä(
  @KoodistoKoodiarvo("309902")
  tunniste: Koodistokoodiviite = Koodistokoodiviite("309902", koodistoUri = "koulutus"),
@@ -148,6 +149,7 @@ sealed trait LukionKurssi extends Koulutusmoduuli with Valinnaisuus {
   def laajuus: Option[LaajuusKursseissa]
 }
 
+@Description("Valtakunnallisen lukion kurssin tunnistetiedot")
 case class ValtakunnallinenLukionKurssi(
   @Description("Lukion kurssi")
   @KoodistoUri("lukionkurssit")
@@ -156,12 +158,14 @@ case class ValtakunnallinenLukionKurssi(
   override val laajuus: Option[LaajuusKursseissa]
 ) extends LukionKurssi with KoodistostaLöytyväKoulutusmoduuli
 
+@Description("Paikallisen lukion kurssin tunnistetiedot")
 case class PaikallinenLukionKurssi(
   tunniste: PaikallinenKoodi,
   override val laajuus: Option[LaajuusKursseissa],
   kuvaus: LocalizedString
 ) extends LukionKurssi with PaikallinenKoulutusmoduuli
 
+@Description("Lukion oppiaineen tunnistetiedot")
 trait LukionOppiaine extends YleissivistavaOppiaine {
   def laajuus: Option[LaajuusKursseissa]
 }
@@ -172,6 +176,7 @@ case class MuuOppiaine(
   override val laajuus: Option[LaajuusKursseissa] = None
 ) extends LukionOppiaine
 
+@Description("Oppiaineena äidinkieli ja kirjallisuus")
 case class AidinkieliJaKirjallisuus(
   @KoodistoKoodiarvo("AI")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "AI", koodistoUri = "koskioppiaineetyleissivistava"),
@@ -182,6 +187,7 @@ case class AidinkieliJaKirjallisuus(
   override val laajuus: Option[LaajuusKursseissa] = None
 ) extends LukionOppiaine
 
+@Description("Oppiaineena vieras tai toinen kotimainen kieli")
 case class VierasTaiToinenKotimainenKieli(
   @KoodistoKoodiarvo("A1")
   @KoodistoKoodiarvo("A2")
@@ -198,6 +204,7 @@ case class VierasTaiToinenKotimainenKieli(
   override def description = concat(nimi, ", ", kieli)
 }
 
+@Description("Oppiaineena matematiikka")
 case class LukionMatematiikka(
   @KoodistoKoodiarvo("MA")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "MA", koodistoUri = "koskioppiaineetyleissivistava"),

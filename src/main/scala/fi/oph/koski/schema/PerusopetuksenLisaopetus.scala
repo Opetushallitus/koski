@@ -51,6 +51,7 @@ case class PerusopetuksenLisäopetuksenOppiaineenSuoritus(
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None
 ) extends OppiaineenSuoritus
 
+@Description("Perusopetuksen lisäopetuksen tunnistetiedot")
 case class PerusopetuksenLisäopetus(
   @KoodistoKoodiarvo("020075")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("020075", koodistoUri = "koulutus")
