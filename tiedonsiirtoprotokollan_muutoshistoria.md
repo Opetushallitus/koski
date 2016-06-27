@@ -1,3 +1,8 @@
+## 27.6.2016
+
+- Lisätty erityisopetuksen peruste ammatillisen opiskeluoikeuden lisätietojen hojks-osioon
+- Muutettu ammatillisen opiskeluoikeuden lisätietojen hojks:n rakennetta: poistettu hojksTehty-flagi
+
 ## 23.6.2016
 
 - Lisätty perusopetukseen valmistava opetus
