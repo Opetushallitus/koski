@@ -92,7 +92,7 @@ case class AmmatillisenTutkinnonSuoritus(
   @KoodistoUri("osaamisala")
   @OksaUri(tunnus = "tmpOKSAID299", käsite = "osaamisala")
   osaamisala: Option[List[Koodistokoodiviite]] = None,
-  @Description("Tutkinnon tai tutkinnon osan suoritustapa")
+  @Description("Tutkinnon suoritustapa")
   @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
   @KoodistoUri("ammatillisentutkinnonsuoritustapa")
   suoritustapa: Option[Koodistokoodiviite] = None,

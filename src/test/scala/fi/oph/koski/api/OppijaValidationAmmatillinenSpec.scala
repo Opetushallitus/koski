@@ -343,7 +343,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
   }
 
   def vahvistus(date: LocalDate) = {
-    Some(Henkilövahvistus(date, helsinki, stadinOpisto, List(OrganisaatioHenkilö("Teppo Testaaja", "rehtori", stadinOpisto))))
+    Some(Henkilövahvistus(date, helsinki, stadinOpisto, List(Organisaatiohenkilö("Teppo Testaaja", "rehtori", stadinOpisto))))
   }
 
   def arviointiHyvä(päivä: LocalDate = date(2015, 1, 1)): Some[List[AmmatillinenArviointi]] = Some(List(AmmatillinenArviointi(Koodistokoodiviite("2", "arviointiasteikkoammatillinent1k3"), päivä)))

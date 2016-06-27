@@ -286,8 +286,8 @@ object AmmatillinenOldExamples {
           alkamisPäivä = None,
           toimipiste = toimipiste,
           vahvistus = Some(Henkilövahvistus(date(2016, 1, 9), helsinki, stadinAmmattiopisto, List(
-            OrganisaatioHenkilö("Mauri Bauer", "puheenjohtaja", tutkintotoimikunta),
-            OrganisaatioHenkilö("Reijo Reksi", "rehtori", stadinAmmattiopisto)))),
+            Organisaatiohenkilö("Mauri Bauer", "puheenjohtaja", tutkintotoimikunta),
+            Organisaatiohenkilö("Reijo Reksi", "rehtori", stadinAmmattiopisto)))),
           osasuoritukset = Some(tutkinnonOsat)
         )),
         tavoite = tavoiteTutkinto,

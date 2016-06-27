@@ -14,7 +14,7 @@ trait Vahvistus {
   @Description("Organisaatio, joka suorituksen on vahvistanut")
   def myöntäjäOrganisaatio: Organisaatio
   @Description("Myöntäjähenkilö/-henkilöt, eli suorituksen/todistuksen allekirjoittajat")
-  def myöntäjäHenkilöt: List[OrganisaatioHenkilö]
+  def myöntäjäHenkilöt: List[Organisaatiohenkilö]
 }
 
 @Description("Suorituksen vahvistus organisaatio- ja henkilötiedoilla")
@@ -23,7 +23,7 @@ case class Henkilövahvistus(
   paikkakunta: Koodistokoodiviite,
   myöntäjäOrganisaatio: Organisaatio,
   @MinItems(1)
-  myöntäjäHenkilöt: List[OrganisaatioHenkilö]
+  myöntäjäHenkilöt: List[Organisaatiohenkilö]
 ) extends Vahvistus
 
 
@@ -36,8 +36,12 @@ case class Organisaatiovahvistus(
   def myöntäjäHenkilöt = Nil
 }
 
-case class OrganisaatioHenkilö(
+@Description("Henkilö- ja organisaatiotiedot")
+case class Organisaatiohenkilö(
+  @Description("Henkilön koko nimi, esimerkiksi \"Matti Meikäläinen\"")
   nimi: String,
+  @Description("Henkilön titteli organisaatiossa, esimerkiksi \"rehtori\"")
   titteli: LocalizedString,
+  @Description("Organisaation tunnistetiedot")
   organisaatio: Organisaatio
 )
