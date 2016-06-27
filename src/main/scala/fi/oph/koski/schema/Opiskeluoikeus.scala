@@ -39,7 +39,9 @@ trait Opiskeluoikeus {
   def koulutustoimija: Option[OrganisaatioWithOid]
   @Description("Opiskeluoikeuteen liittyvien (tutkinto-)suorituksien tiedot")
   def suoritukset: List[Suoritus]
+  @Description("Opiskeluoikeuden tila, joka muodostuu opiskeluoikeusjaksoista.")
   def tila: Option[OpiskeluoikeudenTila]
+  @Description("Läsnä- ja poissaolojaksot päivämääräväleinä.")
   def läsnäolotiedot: Option[Läsnäolotiedot]
   def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid): Opiskeluoikeus
 }
@@ -50,7 +52,7 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
 }
 
 trait OpiskeluoikeudenTila {
-  @Description("Opiskeluoikeuden tilahistoria (aktiivinen, keskeyttänyt, päättynyt...) jaksoittain. Sisältää myös tiedon opintojen rahoituksesta jaksoittain.")
+  @Description("Opiskeluoikeuden tilahistoria (aktiivinen, keskeyttänyt, päättynyt...) jaksoittain")
   def opiskeluoikeusjaksot: List[Opiskeluoikeusjakso]
 }
 

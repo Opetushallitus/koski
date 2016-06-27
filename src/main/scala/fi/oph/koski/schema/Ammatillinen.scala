@@ -44,6 +44,7 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
 )
 
 case class AmmatillinenOpiskeluoikeudenTila(
+  @Description("Sisältää myös tiedon opintojen rahoituksesta jaksoittain.")
   opiskeluoikeusjaksot: List[AmmatillinenOpiskeluoikeusjakso]
 ) extends OpiskeluoikeudenTila
 

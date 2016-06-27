@@ -12,11 +12,7 @@ object Organisaatio {
 
 @Description("Opintopolun organisaatiopalvelusta löytyvä organisaatio. Esimerkiksi koulutustoimijat, oppilaitokset ja toimipisteet ovat tällaisia organisaatioita.")
 case class OidOrganisaatio(
-  @Description("Organisaation tunniste Opintopolku-palvelussa")
-  @RegularExpression("""1\.2\.246\.562\.10\.\d{11}""")
   oid: Organisaatio.Oid,
-  @Description("Organisaation (kielistetty) nimi")
-  @ReadOnly("Tiedon syötössä nimeä ei tarvita; kuvaus haetaan Organisaatiopalvelusta")
   nimi: Option[LocalizedString] = None
 ) extends OrganisaatioWithOid {
   def toOppilaitos = None
@@ -24,15 +20,11 @@ case class OidOrganisaatio(
 
 @Description("Opintopolun organisaatiopalvelusta löytyvä oppilaitos-tyyppinen organisaatio.")
 case class Oppilaitos(
-   @Description("Organisaation tunniste Opintopolku-palvelussa")
-   @RegularExpression("""1\.2\.246\.562\.10\.\d{11}""")
    oid: String,
    @Description("5-numeroinen oppilaitosnumero, esimerkiksi 00001")
    @ReadOnly("Tiedon syötössä oppilaitosnumeroa ei tarvita; numero haetaan Organisaatiopalvelusta")
    @KoodistoUri("oppilaitosnumero")
    oppilaitosnumero: Option[Koodistokoodiviite] = None,
-   @Description("Organisaation (kielistetty) nimi")
-   @ReadOnly("Tiedon syötössä nimeä ei tarvita; kuvaus haetaan Organisaatiopalvelusta")
    nimi: Option[LocalizedString] = None
 ) extends OrganisaatioWithOid {
   def toOppilaitos = Some(this)
@@ -54,6 +46,7 @@ case class Tutkintotoimikunta(
 
 trait OrganisaatioWithOid extends Organisaatio {
   @Description("Organisaation tunniste Opintopolku-palvelussa")
+  @RegularExpression("""1\.2\.246\.562\.10\.\d{11}""")
   def oid: String
   @Description("Organisaation (kielistetty) nimi")
   @ReadOnly("Tiedon syötössä nimeä ei tarvita; kuvaus haetaan Organisaatiopalvelusta")
