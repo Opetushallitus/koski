@@ -52,10 +52,10 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
 }
 
 trait OpiskeluoikeudenTila {
-  @Description("Opiskeluoikeuden tilahistoria (aktiivinen, keskeyttänyt, päättynyt...) jaksoittain")
   def opiskeluoikeusjaksot: List[Opiskeluoikeusjakso]
 }
 
+@Description("Opiskeluoikeuden tilahistoria (aktiivinen, keskeyttänyt, päättynyt...) jaksoittain")
 trait Opiskeluoikeusjakso extends Jakso {
   def alku: LocalDate
   def loppu: Option[LocalDate]
