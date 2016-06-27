@@ -7,6 +7,7 @@ import fi.oph.koski.koskiuser.MockUsers.MockUser
 
 trait LocalJettyHttpSpecification extends HttpSpecification {
   SharedJetty.start
+  resetFixtures
 
   override def baseUrl = SharedJetty.baseUrl
 
