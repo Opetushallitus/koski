@@ -16,6 +16,7 @@ object ServiceUserAdder extends App with Logging {
       val authService = AuthenticationServiceClient(app.config)
       val kp = app.koodistoPalvelu
       val kmp = KoodistoMuokkausPalvelu(app.config)
+      val organisaatio = app.organisaatioRepository.getOrganisaatio(organisaatioOid).get
 
       val oid = authService.create(CreateUser.palvelu(username)) match {
         case Right(oid) =>
@@ -46,7 +47,23 @@ object ServiceUserAdder extends App with Logging {
         logger.info("Luotu lähdejärjestelmäkoodi " + koodiarvo)
       }
 
-      logger.info("OK")
+      println(
+        s"""Hei,
+          |
+          |Pyysitte testitunnuksia Koski-järjestelmään. Loin käyttöönne tunnuksen:
+          |
+          |käyttäjätunnus: ${username}
+          |salasana: ${password}
+          |
+          |Tunnuksella on oikeus luoda/katsella/päivittää Kosken opiskeluoikeuksia organisaatiossa ${organisaatioOid} (${organisaatio.nimi.get.get("fi")}).
+          |
+          |Koski-testijärjestelmän etusivu: https://koskidev.koski.oph.reaktor.fi/koski/
+          |API-dokumentaatiosivu: https://koskidev.koski.oph.reaktor.fi/koski/documentation
+          |
+          |Tervetuloa keskustelemaan Koski-järjestelmän kehityksestä ja käytöstä yhteistyökanavallemme Flowdockiin! Lähetän sinne erilliset kutsut kohta.
+          |
+          |Ystävällisin terveisin,
+          |___________________""".stripMargin)
     case _ =>
       logger.info("Usage: ServiceUserAdder <username> <organisaatio> <salasana> <lahdejärjestelmä>")
   }
