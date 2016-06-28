@@ -22,7 +22,7 @@ class TodistusServlet(val userRepository: UserOrganisationsRepository, val direc
     }
 
     renderEither(OpiskeluoikeusFinder(rekisteri).opiskeluoikeudet(oppijaOid, params).right.flatMap {
-      case Oppija(henkilötiedot: TaydellisetHenkilötiedot, opiskeluoikeudet) =>
+      case Oppija(henkilötiedot: TäydellisetHenkilötiedot, opiskeluoikeudet) =>
         val suoritukset: Seq[(Opiskeluoikeus, Suoritus)] = opiskeluoikeudet.flatMap {
           opiskeluoikeus => opiskeluoikeus.suoritukset.filter(suoritus => suoritus.tila.koodiarvo == "VALMIS" && filters.forall(f => f(suoritus)))
             .map (suoritus => (opiskeluoikeus, suoritus))

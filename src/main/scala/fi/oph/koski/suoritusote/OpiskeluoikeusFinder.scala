@@ -13,7 +13,7 @@ case class OpiskeluoikeusFinder(koski: KoskiFacade) {
       case (_, _) => None
     }
     koski.findOppija(oppijaOid) match {
-      case Right(Oppija(henkilö: TaydellisetHenkilötiedot, opiskeluoikeudet)) =>
+      case Right(Oppija(henkilö: TäydellisetHenkilötiedot, opiskeluoikeudet)) =>
         Right(Oppija(henkilö, opiskeluoikeudet.filter{ oo: Opiskeluoikeus => filters.forall { f => f(oo)} }.toList))
       case _ =>
         Left(KoskiErrorCategory.notFound.oppijaaEiLöydy())

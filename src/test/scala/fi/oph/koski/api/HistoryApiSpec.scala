@@ -9,7 +9,7 @@ import fi.oph.koski.jettylauncher.SharedJetty
 import fi.oph.koski.json.Json
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.oppija.MockOppijat
-import fi.oph.koski.schema.{Opiskeluoikeus, TaydellisetHenkilötiedot}
+import fi.oph.koski.schema.{Opiskeluoikeus, TäydellisetHenkilötiedot}
 import fi.oph.koski.koskiuser.MockUsers
 import org.scalatest.FunSpec
 
@@ -17,7 +17,7 @@ class HistoryApiSpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatillinen{
   SharedJetty.start
   AuditLogTester.setup
   val uusiOpiskeluOikeus = defaultOpiskeluoikeus
-  val oppija: TaydellisetHenkilötiedot = MockOppijat.tyhjä
+  val oppija: TäydellisetHenkilötiedot = MockOppijat.tyhjä
 
   describe("Muutoshistoria") {
     describe("Luotaessa uusi opiskeluoikeus") {
@@ -132,7 +132,7 @@ class HistoryApiSpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatillinen{
     }
   }
 
-  def verifyHistory(oppija: TaydellisetHenkilötiedot, opiskeluOikeus: Opiskeluoikeus, versions: List[Int]): Unit = {
+  def verifyHistory(oppija: TäydellisetHenkilötiedot, opiskeluOikeus: Opiskeluoikeus, versions: List[Int]): Unit = {
     val historia: List[OpiskeluOikeusHistoryRow] = getHistory(opiskeluOikeus.id.get)
     historia.map(_.versionumero) should equal(versions)
 

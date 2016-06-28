@@ -14,7 +14,7 @@ object Henkilö {
 sealed trait Henkilö
 
 @Description("Täydet henkilötiedot. Tietoja haettaessa Koskesta saadaan aina täydet henkilötiedot.")
-case class TaydellisetHenkilötiedot(
+case class TäydellisetHenkilötiedot(
   @Description("Yksilöivä tunniste (oppijanumero) Opintopolku-palvelussa")
   @OksaUri("tmpOKSAID760", "oppijanumero")
   @RegularExpression("""1\.2\.246\.562\.24\.\d{11}""")

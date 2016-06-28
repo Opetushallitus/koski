@@ -38,12 +38,12 @@ object MockOppijat {
   def defaultOppijat = oppijat.getOppijat
 }
 
-class MockOppijat(private var oppijat: List[TaydellisetHenkilötiedot] = Nil) extends Logging {
+class MockOppijat(private var oppijat: List[TäydellisetHenkilötiedot] = Nil) extends Logging {
   private var idCounter = oppijat.length
   val äidinkieli: Some[Koodistokoodiviite] = Some(Koodistokoodiviite("FI", None, "kieli", None))
 
-  def oppija(suku: String, etu: String, hetu: String): TaydellisetHenkilötiedot = {
-    val oppija = TaydellisetHenkilötiedot(generateId(), hetu, etu, etu, suku, äidinkieli, None)
+  def oppija(suku: String, etu: String, hetu: String): TäydellisetHenkilötiedot = {
+    val oppija = TäydellisetHenkilötiedot(generateId(), hetu, etu, etu, suku, äidinkieli, None)
     oppijat = oppija :: oppijat
     oppija
   }
@@ -56,7 +56,7 @@ class MockOppijat(private var oppijat: List[TaydellisetHenkilötiedot] = Nil) ex
   }
 }
 
-case class MockOppijaRepository(initialOppijat: List[TaydellisetHenkilötiedot] = MockOppijat.defaultOppijat, db: Option[DB] = None) extends OppijaRepository with Futures {
+case class MockOppijaRepository(initialOppijat: List[TäydellisetHenkilötiedot] = MockOppijat.defaultOppijat, db: Option[DB] = None) extends OppijaRepository with Futures {
   private var oppijat = new MockOppijat(initialOppijat)
 
   override def findOppijat(query: String) = {
@@ -66,12 +66,12 @@ case class MockOppijaRepository(initialOppijat: List[TaydellisetHenkilötiedot] 
     oppijat.getOppijat.filter(searchString(_).contains(query))
   }
 
-  def addOppija(suku: String, etu: String, hetu: String): TaydellisetHenkilötiedot = {
+  def addOppija(suku: String, etu: String, hetu: String): TäydellisetHenkilötiedot = {
     oppijat.oppija(suku, etu, hetu)
   }
 
   def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, Henkilö.Oid] =  {
-    def oidFrom(oppijat: List[TaydellisetHenkilötiedot]): Either[HttpStatus, Henkilö.Oid] = {
+    def oidFrom(oppijat: List[TäydellisetHenkilötiedot]): Either[HttpStatus, Henkilö.Oid] = {
       oppijat match {
         case List(oppija) => Right(oppija.oid)
         case _ =>
@@ -98,7 +98,7 @@ case class MockOppijaRepository(initialOppijat: List[TaydellisetHenkilötiedot] 
     }
   }
 
-  private def searchString(oppija: TaydellisetHenkilötiedot) = {
+  private def searchString(oppija: TäydellisetHenkilötiedot) = {
     oppija.toString.toUpperCase
   }
 
@@ -107,9 +107,9 @@ case class MockOppijaRepository(initialOppijat: List[TaydellisetHenkilötiedot] 
     oppijat = new MockOppijat(MockOppijat.defaultOppijat)
   }
 
-  def findFromDb(oid: String): Option[TaydellisetHenkilötiedot] = {
+  def findFromDb(oid: String): Option[TäydellisetHenkilötiedot] = {
     runQuery(Tables.OpiskeluOikeudet.filter(_.oppijaOid === oid)).headOption.map { oppijaRow =>
-      TaydellisetHenkilötiedot(oid, oid, oid, oid, oid, oppijat.äidinkieli, None)
+      TäydellisetHenkilötiedot(oid, oid, oid, oid, oid, oppijat.äidinkieli, None)
     }
   }
 
@@ -117,11 +117,11 @@ case class MockOppijaRepository(initialOppijat: List[TaydellisetHenkilötiedot] 
     db.toSeq.flatMap { db => await(db.run(fullQuery.result)) }
   }
 
-  override def findByOid(id: String): Option[TaydellisetHenkilötiedot] = {
+  override def findByOid(id: String): Option[TäydellisetHenkilötiedot] = {
     oppijat.getOppijat.filter {_.oid == id}.headOption.orElse(findFromDb(id))
   }
 
-  override def findByOids(oids: List[String]): List[TaydellisetHenkilötiedot] = oids.map(oid => findByOid(oid).get)
+  override def findByOids(oids: List[String]): List[TäydellisetHenkilötiedot] = oids.map(oid => findByOid(oid).get)
 
 }
 

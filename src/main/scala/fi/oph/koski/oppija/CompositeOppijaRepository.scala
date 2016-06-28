@@ -24,7 +24,7 @@ case class CompositeOppijaRepository(repos: List[OppijaRepository]) extends Oppi
 
   override def findByOids(oids: List[String]) = mergeDuplicates(repos.par.map(_.findByOids(oids)).toList)
 
-  private def mergeDuplicates(oppijat: Iterable[Iterable[TaydellisetHenkilötiedot]]): List[TaydellisetHenkilötiedot] = {
+  private def mergeDuplicates(oppijat: Iterable[Iterable[TäydellisetHenkilötiedot]]): List[TäydellisetHenkilötiedot] = {
     val grouped = oppijat.flatten.toList.groupBy(_.hetu).values
     grouped.flatMap { duplicates =>
       // de-duplicate the ones with nonempty hetu

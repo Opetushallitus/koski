@@ -25,7 +25,7 @@ class OppijaQuerySpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatillinen
               verifyResponseStatus(200)
               val oppijat: List[Oppija] = Json.read[List[Oppija]](response.body)
               val päättymispäivät: List[(String, LocalDate)] = oppijat.flatMap{oppija =>
-                oppija.opiskeluoikeudet.flatMap(_.päättymispäivä).map((oppija.henkilö.asInstanceOf[TaydellisetHenkilötiedot].hetu, _))
+                oppija.opiskeluoikeudet.flatMap(_.päättymispäivä).map((oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot].hetu, _))
               }
               päättymispäivät should contain(("010101-123N", LocalDate.parse("2016-01-09")))
               päättymispäivät.map(_._2).foreach { pvm => pvm should (be >= LocalDate.parse("2016-01-01") and be <= LocalDate.parse("2016-12-31"))}

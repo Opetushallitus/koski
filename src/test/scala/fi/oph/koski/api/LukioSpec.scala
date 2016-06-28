@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.oppija.MockOppijat
-import fi.oph.koski.schema.TaydellisetHenkilötiedot
+import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import org.scalatest.{FunSpec, Matchers}
 
 class LukioSpec extends FunSpec with Matchers with OpintosuoritusoteTestMethods with TodistusTestMethods with OpiskeluOikeusTestMethods {
@@ -147,7 +147,7 @@ class LukioSpec extends FunSpec with Matchers with OpintosuoritusoteTestMethods 
     }
   }
 
-  def opintosuoritusote(henkilö: TaydellisetHenkilötiedot): String = {
+  def opintosuoritusote(henkilö: TäydellisetHenkilötiedot): String = {
     resetFixtures
     opintosuoritusoteOpiskeluoikeudelle(henkilö.oid, lukionOpiskeluoikeus)
   }

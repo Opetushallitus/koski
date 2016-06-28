@@ -1,7 +1,7 @@
 package fi.oph.koski.integrationtest
 
 import fi.oph.koski.json.Json
-import fi.oph.koski.schema.{Oppija, TaydellisetHenkilötiedot}
+import fi.oph.koski.schema.{Oppija, TäydellisetHenkilötiedot}
 import org.scalatest.{FreeSpec, Matchers, Tag}
 
 class OppijaIntegrationTest extends FreeSpec with Matchers with KoskidevHttpSpecification {
@@ -11,7 +11,7 @@ class OppijaIntegrationTest extends FreeSpec with Matchers with KoskidevHttpSpec
     get("api/oppija/" + testOid, headers = authHeaders) {
       verifyResponseStatus(200)
       val oppija = Json.read[Oppija](response.body)
-      val henkilö = oppija.henkilö.asInstanceOf[TaydellisetHenkilötiedot]
+      val henkilö = oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot]
       henkilö.oid should equal(testOid)
       (henkilö.kansalaisuus.get)(0).koodiarvo should equal("246")
       henkilö.äidinkieli.get.koodiarvo should equal("FI")

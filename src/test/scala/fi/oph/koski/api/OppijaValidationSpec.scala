@@ -90,7 +90,7 @@ class OppijaValidationSpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatil
         }
 
         describe("Oid virheellinen") {
-          it("palautetaan HTTP 400" ) (putHenkilö(TaydellisetHenkilötiedot("123.123.123", "010101-123N", "Testi", "Testi", "Toivola", None, None)) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*ECMA 262 regex.*".r))))
+          it("palautetaan HTTP 400" ) (putHenkilö(TäydellisetHenkilötiedot("123.123.123", "010101-123N", "Testi", "Testi", "Toivola", None, None)) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*ECMA 262 regex.*".r))))
         }
       }
     }

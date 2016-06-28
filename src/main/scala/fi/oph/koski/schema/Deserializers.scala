@@ -205,7 +205,7 @@ object HenkilöDeserialializer extends Deserializer[Henkilö] {
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Henkilö] = {
     case (TypeInfo(TheClass, _), json) =>
       json match {
-        case henkilö: JObject if hasOid(henkilö) && hasHetu(henkilö) => henkilö.extract[TaydellisetHenkilötiedot]
+        case henkilö: JObject if hasOid(henkilö) && hasHetu(henkilö) => henkilö.extract[TäydellisetHenkilötiedot]
         case henkilö: JObject if hasOid(henkilö) => henkilö.extract[OidHenkilö]
         case henkilö: JObject => henkilö.extract[UusiHenkilö]
       }

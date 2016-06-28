@@ -20,7 +20,7 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluO
     implicit val user = MockUsers.kalle.asKoskiUser
     implicit val accessType = AccessType.write
 
-    val oppijat: List[TaydellisetHenkilötiedot] = oppijaRepository.findOppijat("")
+    val oppijat: List[TäydellisetHenkilötiedot] = oppijaRepository.findOppijat("")
     val deleteOpiskeluOikeudet = oppijat.map{oppija => OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid === oppija.oid).delete}
 
     await(database.db.run(DBIO.sequence(deleteOpiskeluOikeudet)))

@@ -14,7 +14,7 @@ import scala.xml.{Elem, Node}
 class OpintosuoritusoteHtml(implicit val user: KoskiUser) extends LocalizedHtml {
   val decimalFormat = NumberFormat.getInstance(finnish)
 
-  def lukio(ht: TaydellisetHenkilötiedot, opiskeluoikeudet: List[LukionOpiskeluoikeus]): Elem = {
+  def lukio(ht: TäydellisetHenkilötiedot, opiskeluoikeudet: List[LukionOpiskeluoikeus]): Elem = {
     bodyHtml(ht, <div>
       {
       val suoritukset: List[(Int, Suoritus)] = opiskeluoikeudet.flatMap(oo => {
@@ -27,7 +27,7 @@ class OpintosuoritusoteHtml(implicit val user: KoskiUser) extends LocalizedHtml 
   }
 
 
-  def korkeakoulu(ht: TaydellisetHenkilötiedot, opiskeluoikeudet: List[KorkeakoulunOpiskeluoikeus]): Elem = {
+  def korkeakoulu(ht: TäydellisetHenkilötiedot, opiskeluoikeudet: List[KorkeakoulunOpiskeluoikeus]): Elem = {
     def ensisijainenOpiskeluoikeus(opiskeluoikeudet: List[Opiskeluoikeus]): Option[KorkeakoulunOpiskeluoikeus] = {
       opiskeluoikeudet.collect { case oo: KorkeakoulunOpiskeluoikeus => oo }
         .find(_.ensisijaisuus.exists { _.päättymispäivä match {
@@ -119,7 +119,7 @@ class OpintosuoritusoteHtml(implicit val user: KoskiUser) extends LocalizedHtml 
   }
 
 
-  private def bodyHtml(ht: TaydellisetHenkilötiedot, content: Node) = {
+  private def bodyHtml(ht: TäydellisetHenkilötiedot, content: Node) = {
     <html>
       <head>
         <link rel="stylesheet" type="text/css" href="/koski/css/opintosuoritusote.css"></link>

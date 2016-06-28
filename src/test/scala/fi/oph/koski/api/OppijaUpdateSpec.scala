@@ -10,7 +10,7 @@ import org.scalatest.FreeSpec
 
 class OppijaUpdateSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillinen {
   val uusiOpiskeluOikeus = defaultOpiskeluoikeus
-  val oppija: TaydellisetHenkilötiedot = MockOppijat.tyhjä
+  val oppija: TäydellisetHenkilötiedot = MockOppijat.tyhjä
 
   "Opiskeluoikeuden lisääminen" - {
     "Palauttaa oidin ja versiot" in {

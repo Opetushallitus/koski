@@ -48,8 +48,8 @@ class KoskiFacade(oppijaRepository: OppijaRepository,
     }
   }
 
-  def findOppijat(query: String)(implicit user: KoskiUser): Seq[TaydellisetHenkilötiedot] = {
-    val oppijat: List[TaydellisetHenkilötiedot] = oppijaRepository.findOppijat(query)
+  def findOppijat(query: String)(implicit user: KoskiUser): Seq[TäydellisetHenkilötiedot] = {
+    val oppijat: List[TäydellisetHenkilötiedot] = oppijaRepository.findOppijat(query)
     AuditLog.log(AuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> query)))
     val filtered = opiskeluOikeusRepository.filterOppijat(oppijat)
     filtered.sortBy(oppija => (oppija.sukunimi, oppija.etunimet))
@@ -124,8 +124,8 @@ class KoskiFacade(oppijaRepository: OppijaRepository,
     result
   }
 
-  def findOpiskeluOikeus(id: Int)(implicit user: KoskiUser): Either[HttpStatus, (TaydellisetHenkilötiedot, Opiskeluoikeus)] = {
-    val result: Option[(TaydellisetHenkilötiedot, Opiskeluoikeus)] = opiskeluOikeusRepository.findById(id) flatMap { case (oo, oppijaOid) =>
+  def findOpiskeluOikeus(id: Int)(implicit user: KoskiUser): Either[HttpStatus, (TäydellisetHenkilötiedot, Opiskeluoikeus)] = {
+    val result: Option[(TäydellisetHenkilötiedot, Opiskeluoikeus)] = opiskeluOikeusRepository.findById(id) flatMap { case (oo, oppijaOid) =>
       oppijaRepository.findByOid(oppijaOid).map((_, oo))
     }
     result match {
@@ -144,7 +144,7 @@ class KoskiFacade(oppijaRepository: OppijaRepository,
       oppijatJaOidit: Seq[(Oid, List[Opiskeluoikeus])] =>
         val oids: List[String] = oppijatJaOidit.map(_._1).toList
 
-        val henkilöt: Map[String, TaydellisetHenkilötiedot] = oppijaRepository.findByOids(oids).map(henkilö => (henkilö.oid, henkilö)).toMap
+        val henkilöt: Map[String, TäydellisetHenkilötiedot] = oppijaRepository.findByOids(oids).map(henkilö => (henkilö.oid, henkilö)).toMap
 
         val oppijat: Iterable[Oppija] = oppijatJaOidit.flatMap { case (oid, opiskeluOikeudet) =>
           henkilöt.get(oid) match {

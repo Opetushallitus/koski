@@ -6,7 +6,7 @@ import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema._
 
 class RemoteOppijaRepository(henkilöPalveluClient: AuthenticationServiceClient, koodisto: KoodistoViitePalvelu) extends OppijaRepository {
-  override def findOppijat(query: String): List[TaydellisetHenkilötiedot] = {
+  override def findOppijat(query: String): List[TäydellisetHenkilötiedot] = {
     henkilöPalveluClient.search(query).results.map(toOppija)
   }
 
@@ -14,11 +14,11 @@ class RemoteOppijaRepository(henkilöPalveluClient: AuthenticationServiceClient,
     henkilöPalveluClient.findOrCreate(CreateUser.oppija(henkilö.hetu, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi)).right.map(_.oidHenkilo)
   }
 
-  override def findByOid(oid: String): Option[TaydellisetHenkilötiedot] = henkilöPalveluClient.findByOid(oid).map(toOppija)
+  override def findByOid(oid: String): Option[TäydellisetHenkilötiedot] = henkilöPalveluClient.findByOid(oid).map(toOppija)
 
-  override def findByOids(oids: List[String]): List[TaydellisetHenkilötiedot] = henkilöPalveluClient.findByOids(oids).map(toOppija)
+  override def findByOids(oids: List[String]): List[TäydellisetHenkilötiedot] = henkilöPalveluClient.findByOids(oids).map(toOppija)
 
-  private def toOppija(user: User) = TaydellisetHenkilötiedot(user.oidHenkilo, user.hetu, user.etunimet, user.kutsumanimi, user.sukunimi, convertÄidinkieli(user.aidinkieli), convertKansalaisuus(user.kansalaisuus))
+  private def toOppija(user: User) = TäydellisetHenkilötiedot(user.oidHenkilo, user.hetu, user.etunimet, user.kutsumanimi, user.sukunimi, convertÄidinkieli(user.aidinkieli), convertKansalaisuus(user.kansalaisuus))
 
   private def convertÄidinkieli(äidinkieli: Option[String]) = äidinkieli.flatMap(äidinkieli => koodisto.getKoodistoKoodiViite("kieli", äidinkieli.toUpperCase))
 

@@ -29,12 +29,12 @@ trait PutOpiskeluOikeusTestMethods[Oikeus <: Opiskeluoikeus] extends OpiskeluOik
     submit(method, path, body = content.getBytes("UTF-8"), headers = authHeaders() ++ jsonContent) (f)
   }
 
-  def createOrUpdate(oppija: TaydellisetHenkilötiedot, opiskeluOikeus: Opiskeluoikeus, check: => Unit = { verifyResponseStatus(200) }) = {
+  def createOrUpdate(oppija: TäydellisetHenkilötiedot, opiskeluOikeus: Opiskeluoikeus, check: => Unit = { verifyResponseStatus(200) }) = {
     putOppija(Json.toJValue(Oppija(oppija, List(opiskeluOikeus))))(check)
     lastOpiskeluOikeus(oppija.oid)
   }
 
-  def createOpiskeluOikeus[T <: Opiskeluoikeus](oppija: TaydellisetHenkilötiedot, opiskeluOikeus: T) = {
+  def createOpiskeluOikeus[T <: Opiskeluoikeus](oppija: TäydellisetHenkilötiedot, opiskeluOikeus: T) = {
     resetFixtures
     createOrUpdate(oppija, opiskeluOikeus)
     lastOpiskeluOikeus(oppija.oid).asInstanceOf[T]

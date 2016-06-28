@@ -5,13 +5,13 @@ import fi.oph.koski.koski.QueryFilter
 import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.oppija.PossiblyUnverifiedOppijaOid
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, TaydellisetHenkilötiedot}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, TäydellisetHenkilötiedot}
 import org.json4s.JValue
 import rx.lang.scala.Observable
 
 trait OpiskeluOikeusRepository {
   def query(filters: List[QueryFilter])(implicit user: KoskiUser): Observable[(Oid, List[Opiskeluoikeus])]
-  def filterOppijat(oppijat: Seq[TaydellisetHenkilötiedot])(implicit user: KoskiUser): Seq[TaydellisetHenkilötiedot]
+  def filterOppijat(oppijat: Seq[TäydellisetHenkilötiedot])(implicit user: KoskiUser): Seq[TäydellisetHenkilötiedot]
   def findByOppijaOid(oid: String)(implicit user: KoskiUser): Seq[Opiskeluoikeus]
   def findById(id: Int)(implicit user: KoskiUser): Option[(Opiskeluoikeus, String)]
   def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiUser): Either[HttpStatus, CreateOrUpdateResult]

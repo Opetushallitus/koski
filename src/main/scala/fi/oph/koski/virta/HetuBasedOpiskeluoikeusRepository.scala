@@ -56,10 +56,10 @@ abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](oppijaRep
 
   def findByHenkilö(henkilö: Henkilö with Henkilötiedot)(implicit user: KoskiUser): List[OO] = cache(henkilö.hetu).filter(oo => user.hasReadAccess(oo.oppilaitos.oid))
 
-  private def getHetu(oid: String): Option[TaydellisetHenkilötiedot] = oppijaRepository.findByOid(oid)
+  private def getHetu(oid: String): Option[TäydellisetHenkilötiedot] = oppijaRepository.findByOid(oid)
 
   def query(filters: List[QueryFilter])(implicit user: KoskiUser): Observable[(Oid, List[Opiskeluoikeus])] = Observable.empty
-  def filterOppijat(oppijat: Seq[TaydellisetHenkilötiedot])(implicit user: KoskiUser): Seq[TaydellisetHenkilötiedot] = oppijat.par.filter(oppija => !organizationsCache(oppija.hetu).filter(orgOid => user.hasReadAccess(orgOid)).isEmpty).toList
+  def filterOppijat(oppijat: Seq[TäydellisetHenkilötiedot])(implicit user: KoskiUser): Seq[TäydellisetHenkilötiedot] = oppijat.par.filter(oppija => !organizationsCache(oppija.hetu).filter(orgOid => user.hasReadAccess(orgOid)).isEmpty).toList
   def findByOppijaOid(oid: String)(implicit user: KoskiUser): Seq[Opiskeluoikeus] = {
     getHetu(oid).toList.flatMap(findByHenkilö(_))
   }
