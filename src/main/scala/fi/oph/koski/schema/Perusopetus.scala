@@ -153,7 +153,7 @@ case class PerusopetuksenOppiaineenSuoritus(
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
   @Description("Tieto siitä, onko oppiaineen oppimäärä yksilöllistetty (true/false)")
-  yksilöllistettyOppimäärä: Option[Boolean] = None,
+  yksilöllistettyOppimäärä: Boolean = false,
   @KoodistoKoodiarvo("perusopetuksenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenoppiaine", koodistoUri = "suorituksentyyppi"),
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None

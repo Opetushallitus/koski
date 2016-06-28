@@ -109,6 +109,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -136,6 +137,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -173,6 +175,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -200,6 +203,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -223,6 +227,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -246,6 +251,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -269,6 +275,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -292,6 +299,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -315,6 +323,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -338,6 +347,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -361,6 +371,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -384,6 +395,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -407,6 +419,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -430,6 +443,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -453,6 +467,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -486,6 +501,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -509,6 +525,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -532,6 +549,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -555,6 +573,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -588,6 +607,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -625,6 +645,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -794,6 +815,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -821,6 +843,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -858,6 +881,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -885,6 +909,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -908,6 +933,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -931,6 +957,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -954,6 +981,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -977,6 +1005,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -1000,6 +1029,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -1023,6 +1053,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -1046,6 +1077,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -1069,6 +1101,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -1092,6 +1125,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -1115,6 +1149,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -1138,6 +1173,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -1171,6 +1207,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -1194,6 +1231,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -1217,6 +1255,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -1240,6 +1279,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -1273,6 +1313,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -1310,6 +1351,7 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
+        "yksilöllistettyOppimäärä" : false,
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
