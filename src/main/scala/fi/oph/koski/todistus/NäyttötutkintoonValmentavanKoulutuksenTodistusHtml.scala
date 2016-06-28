@@ -25,7 +25,7 @@ class NäyttötutkintoonValmentavanKoulutuksenTodistusHtml(val koulutustoimija: 
           </h3>
           {
             val dates = (todistus.alkamispäivä.toList ++ todistus.päättymispäivä.toList).map(dateFormatter.format).mkString("-")
-            val tutkinnonKuvaus = (todistus.koulutusmoduuli.tunniste.nimi.toList ++ todistus.osaamisala.toList.flatten.flatMap(_.nimi) ++ todistus.tutkintonimike.toList.flatten.flatMap(_.nimi)).map(i).mkString(", ")
+            val tutkinnonKuvaus = (todistus.tutkinto.tunniste.nimi.toList ++ todistus.osaamisala.toList.flatten.flatMap(_.nimi) ++ todistus.tutkintonimike.toList.flatten.flatMap(_.nimi)).map(i).mkString(", ")
 
             <p>on osallistunut { tutkinnonKuvaus}, valmistavaan koulutukseen { dates } seuraavilta osin: </p>
           }

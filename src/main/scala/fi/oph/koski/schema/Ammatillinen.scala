@@ -59,7 +59,9 @@ case class AmmatillinenOpiskeluoikeusjakso(
 ) extends Opiskeluoikeusjakso
 
 case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
-  koulutusmoduuli: AmmatillinenTutkintoKoulutus,
+  koulutusmoduuli: NäyttötutkintoonValmistavaKoulutus = NäyttötutkintoonValmistavaKoulutus(),
+  @Description("Tässä kentässä kuvataan sen tutkinnon tiedot, joihin valmistava koulutus tähtää")
+  tutkinto: AmmatillinenTutkintoKoulutus,
   @Description("Tieto siitä mihin tutkintonimikkeeseen oppijan tutkinto liittyy")
   @KoodistoUri("tutkintonimikkeet")
   @OksaUri("tmpOKSAID588", "tutkintonimike")
@@ -81,6 +83,14 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("nayttotutkintoonvalmistavakoulutus", "suorituksentyyppi")
 ) extends AmmatillinenPäätasonSuoritus with Toimipisteellinen {
   def arviointi: Option[List[AmmatillinenArviointi]] = None
+}
+
+@Description("Näyttötutkintoon valmistavan koulutuksen tunnistetiedot")
+case class NäyttötutkintoonValmistavaKoulutus(
+  @KoodistoKoodiarvo("koski2")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("koski2", "koulutus")
+) extends Koulutus {
+  def laajuus = None
 }
 
 case class AmmatillisenTutkinnonSuoritus(

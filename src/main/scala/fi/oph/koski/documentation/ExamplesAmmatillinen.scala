@@ -31,7 +31,7 @@ object AmmattitutkintoExample {
         oppilaitos = stadinAmmattiopisto,
         suoritukset = List(
           NäyttötutkintoonValmistavanKoulutuksenSuoritus(
-            koulutusmoduuli = tutkinto,
+            tutkinto = tutkinto,
             tila = tilaValmis,
             alkamispäivä = Some(date(2012, 9, 1)),
             päättymispäivä = None,

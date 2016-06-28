@@ -1,3 +1,7 @@
+## 28.6.2016
+
+- Näyttötutkintoon valmistavassa koulutuksessa käytössä väliaikainen koodi. Tutkinto, johon koulutus tähtää on siirretty omaan tutkinto-kenttäänsä
+
 ## 27.6.2016
 
 - Nimi muutettu ammatilliseen näyttötutkintoon valmistavan koulutuksen suorituksessa: loppumispäivä -> päättymispäivä

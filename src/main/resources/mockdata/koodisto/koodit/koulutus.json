@@ -46593,6 +46593,22 @@
       "kieli" : "SV"
     } ],
     "versio" : 6
+  },
+
+  {
+    "koodiUri" : "koulutus_koski2",
+    "koodiArvo" : "koski2",
+    "metadata" : [ {
+      "nimi" : "Näyttötutkintoon valmistava koulutus",
+      "lyhytNimi" : "Näyttötutkintoon valmistava koulutus",
+      "kieli" : "FI"
+    }, {
+      "nimi" : "Näyttötutkintoon valmistava koulutus",
+      "lyhytNimi" : "Näyttötutkintoon valmistava koulutus",
+      "kieli" : "SV"
+    } ],
+    "versio" : 6
   }
+
 
 ]

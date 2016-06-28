@@ -345,7 +345,7 @@ describe('Ammatillinen koulutus', function() {
       describe('Oppijan suorituksissa', function() {
         it('näytetään', function() {
           expect(OpinnotPage().getOppilaitos()).to.equal("Stadin ammattiopisto")
-          expect(OpinnotPage().getTutkinto(0)).to.equal("Autoalan työnjohdon erikoisammattitutkinto") // Toistaiseksi näkyy näin
+          expect(OpinnotPage().getTutkinto(0)).to.equal("Näyttötutkintoon valmistava koulutus")
         })
       })
 

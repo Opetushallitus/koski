@@ -22,6 +22,12 @@
     "suoritukset" : [ {
       "koulutusmoduuli" : {
         "tunniste" : {
+          "koodiarvo" : "koski2",
+          "koodistoUri" : "koulutus"
+        }
+      },
+      "tutkinto" : {
+        "tunniste" : {
           "koodiarvo" : "357305",
           "nimi" : {
             "fi" : "Autoalan työnjohdon erikoisammattitutkinto"
