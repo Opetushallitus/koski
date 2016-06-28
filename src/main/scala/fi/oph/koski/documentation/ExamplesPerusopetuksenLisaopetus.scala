@@ -48,12 +48,12 @@ object ExamplesPerusopetuksenLisaopetus {
             )
           )
         )),
-      tila = Some(PerusopetuksenOpiskeluoikeudenTila(
+      tila = PerusopetuksenOpiskeluoikeudenTila(
         List(
-          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), Some(date(2016, 6, 3)), opiskeluoikeusLäsnä),
-          PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), None, opiskeluoikeusValmistunut)
+          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
+          PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
         )
-      )),
+      ),
       läsnäolotiedot = None
     ))
   )

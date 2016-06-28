@@ -5,6 +5,7 @@
 - Poistettu paikallinenKoodi ja kuvaus valtakunnallisilta ammatillisilta tutkinnon osilta
 - Nimenmuutos ulkomaanjakso -> ulkomaanjaksot
 - Perusopetus, lukio ja ammatillinen käyttävät nyt samaa koskiopiskeluoikeudentila-koodistoa opiskeluoikeuksien tiloihin
+- Opiskeluoikeusjaksot pakollisia (vähintään 1). Opiskeluoikeus- ja läsnäolojaksoista poistettu redundantti loppupäivämäärä
 
 ## 27.6.2016
 

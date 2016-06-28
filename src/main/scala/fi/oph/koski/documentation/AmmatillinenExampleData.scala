@@ -10,9 +10,6 @@ import fi.oph.koski.schema._
 
 object AmmatillinenExampleData {
   val exampleHenkilö = MockOppijat.ammattilainen.vainHenkilötiedot
-  val ammatillinenOpiskeluoikeusLäsnä = Koodistokoodiviite("lasna", Some("Läsnä"), "koskiopiskeluoikeudentila", Some(1))
-  val ammatillinenOpiskeluoikeusValmis = Koodistokoodiviite("valmistunut", Some("Valmistunut"), "koskiopiskeluoikeudentila", Some(1))
-  val ammatillinenOpiskeluoikeusEronnut = Koodistokoodiviite("eronnut", Some("Eronnut"), "koskiopiskeluoikeudentila", Some(1))
 
   def tutkintoSuoritus(tutkintoKoulutus: AmmatillinenTutkintoKoulutus,
     tutkintonimike: Option[List[Koodistokoodiviite]] = None,
@@ -124,7 +121,7 @@ object AmmatillinenExampleData {
     AmmatillinenOpiskeluoikeus(
       alkamispäivä = Some(date(2016, 9, 1)),
       arvioituPäättymispäivä = Some(date(2020, 5, 1)),
-      tila = None,
+      tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(date(2016, 9, 1), opiskeluoikeusLäsnä, None))),
       oppilaitos = oppilaitos,
       suoritukset = List(tutkinto.copy(osasuoritukset = osat)),
       tavoite = tavoiteTutkinto

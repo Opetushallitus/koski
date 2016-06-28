@@ -3,7 +3,7 @@ package fi.oph.koski.koski
 import java.time.LocalDate
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.schema.Jakso
+import fi.oph.koski.schema.Alkupäivällinen
 
 object DateValidation {
   type NamedDates = (String, Iterable[LocalDate])
@@ -14,19 +14,9 @@ object DateValidation {
     })
   }
 
-  def validateJaksot(name: String, jaksot: Iterable[Jakso]): HttpStatus = {
-    HttpStatus.fold(jaksot.map { jakso => validateDateOrder((name + ".alku", Some(jakso.alku)), (name + ".loppu", jakso.loppu))})
-      .then {
-        val pairs = jaksot.zip(jaksot.drop(1)).map {
-          case (left, right) => (left.loppu, right.alku)
-        }
-        HttpStatus.fold(pairs.map {
-          case (None, _) => KoskiErrorCategory.badRequest.validation.date.jaksonLoppupäiväPuuttuu(name + ": ei-viimeiseltä jaksolta puuttuu loppupäivä")
-          case (Some(edellisenLoppu), seuraavanAlku) if (!areConsecutiveDates(edellisenLoppu, seuraavanAlku)) => KoskiErrorCategory.badRequest.validation.date.jaksotEivätMuodostaJatkumoa(name + ": jaksot eivät muodosta jatkumoa")
-          case _ => HttpStatus.ok
-        })
-      }
+  def validateJaksot(name: String, jaksot: Iterable[Alkupäivällinen]): HttpStatus = {
+    HttpStatus.fold(jaksot.zip(jaksot.drop(1)).map { case (jakso1, jakso2) =>
+      HttpStatus.validate(jakso1.alku.compareTo(jakso2.alku) <= 0)(KoskiErrorCategory.badRequest.validation.date.jaksojenJärjestys(s"${name}: ${jakso1.alku} oltava sama tai aiempi kuin ${jakso2.alku}"))
+    })
   }
-
-  def areConsecutiveDates(edellisenLoppu: LocalDate, seuraavanAlku: LocalDate) = edellisenLoppu.plusDays(1) == seuraavanAlku
 }

@@ -18,6 +18,29 @@
         "fi" : "Jyväskylän normaalikoulu"
       }
     },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2007-08-15",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      }, {
+        "alku" : "2008-06-01",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "nimi" : {
+            "fi" : "Valmistunut"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
     "suoritukset" : [ {
       "tila" : {
         "koodiarvo" : "VALMIS",

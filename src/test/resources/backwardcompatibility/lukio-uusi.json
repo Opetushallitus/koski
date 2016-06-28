@@ -66,7 +66,6 @@
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
         "alku" : "2012-09-01",
-        "loppu" : "2016-01-09",
         "tila" : {
           "koodiarvo" : "lasna",
           "nimi" : {

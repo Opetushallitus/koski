@@ -183,66 +183,31 @@ class OppijaValidationSpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatil
     describe("Opiskeluoikeusjaksot"){
       describe("Päivämäärät kunnossa") {
         it("palautetaan HTTP 200") (putOpiskeluOikeusMerged(Map("tila" -> Map("opiskeluoikeusjaksot" -> List(
-          Map( "alku" -> "2015-08-01", "loppu" -> "2015-12-31", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "koskiopiskeluoikeudentila")),
-          Map( "alku" -> "2016-01-01", "loppu" -> "2016-06-01", "tila" -> Map("koodiarvo" -> "keskeyttanytmaaraajaksi", "koodistoUri" -> "koskiopiskeluoikeudentila")),
+          Map( "alku" -> "2015-08-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "koskiopiskeluoikeudentila")),
+          Map( "alku" -> "2016-01-01", "tila" -> Map("koodiarvo" -> "keskeyttanytmaaraajaksi", "koodistoUri" -> "koskiopiskeluoikeudentila")),
           Map( "alku" -> "2016-06-02", "tila" -> Map("koodiarvo" -> "eronnut", "koodistoUri" -> "koskiopiskeluoikeudentila"))
         )))) (verifyResponseStatus(200)))
       }
-      describe("alku > loppu") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeusMerged(Map("tila" -> Map("opiskeluoikeusjaksot" -> List(
-          Map( "alku" -> "2016-08-01", "loppu" -> "2015-12-31", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "koskiopiskeluoikeudentila"))
-        )))) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua(
-          "tila.opiskeluoikeusjaksot.alku (2016-08-01) oltava sama tai aiempi kuin tila.opiskeluoikeusjaksot.loppu(2015-12-31)"))))
-      }
-      describe("ei-viimeiseltä jaksolta puuttuu loppupäivä") {
+      describe("jaksojen päivämääräjärjestys on väärä") {
         it("palautetaan HTTP 400") (putOpiskeluOikeusMerged(Map("tila" -> Map("opiskeluoikeusjaksot" -> List(
           Map("alku" -> "2015-08-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "koskiopiskeluoikeudentila")),
-          Map("alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "keskeyttanytmaaraajaksi", "koodistoUri" -> "koskiopiskeluoikeudentila"))
-        )))) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.jaksonLoppupäiväPuuttuu("tila.opiskeluoikeusjaksot: ei-viimeiseltä jaksolta puuttuu loppupäivä")))) }
-      describe("jaksot ovat päällekkäiset") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeusMerged(Map("tila" -> Map("opiskeluoikeusjaksot" -> List(
-          Map( "alku" -> "2015-08-01", "loppu" -> "2016-01-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "koskiopiskeluoikeudentila")),
-          Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "keskeyttanytmaaraajaksi", "koodistoUri" -> "koskiopiskeluoikeudentila"))
-        ))))(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.jaksotEivätMuodostaJatkumoa("tila.opiskeluoikeusjaksot: jaksot eivät muodosta jatkumoa"))))
-      }
-      describe("jaksojen väliin jää tyhjää") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeusMerged(Map("tila" -> Map("opiskeluoikeusjaksot" -> List(
-          Map( "alku" -> "2015-08-01", "loppu" -> "2015-10-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "koskiopiskeluoikeudentila")),
-          Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "keskeyttanytmaaraajaksi", "koodistoUri" -> "koskiopiskeluoikeudentila"))
-        ))))(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.jaksotEivätMuodostaJatkumoa("tila.opiskeluoikeusjaksot: jaksot eivät muodosta jatkumoa"))))
-      }
+          Map("alku" -> "2015-07-01", "tila" -> Map("koodiarvo" -> "keskeyttanytmaaraajaksi", "koodistoUri" -> "koskiopiskeluoikeudentila"))
+        )))) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.jaksojenJärjestys("tila.opiskeluoikeusjaksot: 2015-08-01 oltava sama tai aiempi kuin 2015-07-01")))) }
     }
 
     describe("Läsnäolojaksot") {
       describe("Päivämäärät kunnossa") {
         it("palautetaan HTTP 200") (putOpiskeluOikeusMerged(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
-          Map( "alku" -> "2015-08-01", "loppu" -> "2015-12-31", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila")),
-          Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-20", "tila" -> Map("koodiarvo" -> "poissa", "koodistoUri" -> "lasnaolotila")),
+          Map( "alku" -> "2015-08-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila")),
+          Map( "alku" -> "2016-01-01", "tila" -> Map("koodiarvo" -> "poissa", "koodistoUri" -> "lasnaolotila")),
           Map( "alku" -> "2016-05-21", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila"))
         ))))(verifyResponseStatus(200)))
       }
-      describe("alku > loppu") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeusMerged(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
-          Map( "alku" -> "2016-08-01", "loppu" -> "2015-12-31", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila"))
-        ))))(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua("läsnäolotiedot.läsnäolojaksot.alku (2016-08-01) oltava sama tai aiempi kuin läsnäolotiedot.läsnäolojaksot.loppu(2015-12-31)"))))
-      }
-      describe("ei-viimeiseltä jaksolta puuttuu loppupäivä") {
+      describe("jaksojen päivämääräjärjestys on väärä") {
         it("palautetaan HTTP 400") (putOpiskeluOikeusMerged(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
           Map( "alku" -> "2015-08-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila")),
-          Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "poissa", "koodistoUri" -> "lasnaolotila"))
-        ))))(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.jaksonLoppupäiväPuuttuu("läsnäolotiedot.läsnäolojaksot: ei-viimeiseltä jaksolta puuttuu loppupäivä"))))
-      }
-      describe("jaksot ovat päällekkäiset") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeusMerged(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
-          Map( "alku" -> "2015-08-01", "loppu" -> "2016-01-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila")),
-          Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "poissa", "koodistoUri" -> "lasnaolotila"))
-        ))))(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.jaksotEivätMuodostaJatkumoa("läsnäolotiedot.läsnäolojaksot: jaksot eivät muodosta jatkumoa"))))
-      }
-      describe("jaksojen väliin jää tyhjää") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeusMerged(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
-          Map( "alku" -> "2015-08-01", "loppu" -> "2015-10-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila")),
-          Map( "alku" -> "2016-01-01", "loppu" -> "2016-05-31", "tila" -> Map("koodiarvo" -> "poissa", "koodistoUri" -> "lasnaolotila"))
-        ))))(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.jaksotEivätMuodostaJatkumoa("läsnäolotiedot.läsnäolojaksot: jaksot eivät muodosta jatkumoa"))))
+          Map( "alku" -> "2015-07-01", "tila" -> Map("koodiarvo" -> "poissa", "koodistoUri" -> "lasnaolotila"))
+        ))))(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.jaksojenJärjestys("läsnäolotiedot.läsnäolojaksot: 2015-08-01 oltava sama tai aiempi kuin 2015-07-01"))))
       }
     }
 

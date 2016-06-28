@@ -567,6 +567,29 @@
       "koodiarvo" : "ammatillinentutkinto",
       "koodistoUri" : "suorituksentyyppi"
     },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2012-09-01",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      }, {
+        "alku" : "2016-06-01",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "nimi" : {
+            "fi" : "Valmistunut"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
     "tyyppi" : {
       "koodiarvo" : "ammatillinenkoulutus",
       "koodistoUri" : "opiskeluoikeudentyyppi"

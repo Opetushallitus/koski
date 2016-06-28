@@ -27,19 +27,19 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
 
       val läsnäolotiedot = list2Optional((virtaXml \\ "LukukausiIlmoittautuminen").filter(i => opiskelijaAvain(i) == opiskelijaAvain(opiskeluoikeusNode) && myöntäjä(opiskeluoikeusNode) == myöntäjä(i))
         .sortBy(alkuPvm)
-        .map(i => KorkeakoulunLäsnäolojakso(alkuPvm(i), loppuPvm(i), requiredKoodi("virtalukukausiilmtila", i \ "Tila" text).get))
+        .map(i => KorkeakoulunLäsnäolojakso(alkuPvm(i), requiredKoodi("virtalukukausiilmtila", i \ "Tila" text)))
         .toList, KorkeakoulunLäsnäolotiedot)
 
-      val opiskeluoikeudenTila: Option[KorkeakoulunOpiskeluoikeudenTila] = list2Optional((opiskeluoikeusNode \ "Tila")
+      val opiskeluoikeudenTila: KorkeakoulunOpiskeluoikeudenTila = KorkeakoulunOpiskeluoikeudenTila((opiskeluoikeusNode \ "Tila")
         .sortBy(alkuPvm)
-        .map(tila => KorkeakoulunOpiskeluoikeusjakso(alkuPvm(tila), loppuPvm(tila), requiredKoodi("virtaopiskeluoikeudentila", tila \ "Koodi" text).get))
-        .toList, KorkeakoulunOpiskeluoikeudenTila)
+        .map(tila => KorkeakoulunOpiskeluoikeusjakso(alkuPvm(tila), requiredKoodi("virtaopiskeluoikeudentila", tila \ "Koodi" text)))
+        .toList)
 
       val suoritukset: List[KorkeakouluSuoritus] = opiskeluOikeudenSuoritukset.flatMap(convertSuoritus(_, suoritusNodeList))
 
       val opiskeluoikeus = KorkeakoulunOpiskeluoikeus(
         id = None,
-        lähdejärjestelmänId = Some(LähdejärjestelmäId(opiskeluoikeusNode \ "@avain" text, requiredKoodi("lahdejarjestelma", "virta").get)),
+        lähdejärjestelmänId = Some(LähdejärjestelmäId(opiskeluoikeusNode \ "@avain" text, requiredKoodi("lahdejarjestelma", "virta"))),
         alkamispäivä = (opiskeluoikeusNode \ "AlkuPvm").headOption.map(alku => LocalDate.parse(alku.text)),
         arvioituPäättymispäivä = None,
         päättymispäivä = (opiskeluoikeusNode \ "LoppuPvm").headOption.map(loppu => LocalDate.parse(loppu.text)),
@@ -67,7 +67,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
         oppilaitos = organisaatio,
         koulutustoimija = None,
         suoritukset = suoritukset,
-        tila = None,
+        tila = KorkeakoulunOpiskeluoikeudenTila(Nil),
         läsnäolotiedot = None
       )
     }
@@ -82,7 +82,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
       else KorkeakoulututkinnonSuoritus(
         koulutusmoduuli = t,
         arviointi = None,
-        tila = requiredKoodi("suorituksentila", "KESKEN").get,
+        tila = requiredKoodi("suorituksentila", "KESKEN"),
         vahvistus = None,
         suorituskieli = None,
         osasuoritukset = None,
@@ -100,7 +100,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
           KorkeakoulututkinnonSuoritus(
             koulutusmoduuli = tutkinto(koulutuskoodi),
             arviointi = arviointi(suoritus),
-            tila = requiredKoodi("suorituksentila", "VALMIS").get,
+            tila = requiredKoodi("suorituksentila", "VALMIS"),
             vahvistus = None,
             suorituskieli = None,
             toimipiste = oppilaitos(suoritus),
@@ -125,9 +125,9 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
         laajuus = (suoritus \ "Laajuus" \ "Opintopiste").headOption.map(op => LaajuusOpintopisteissä(op.text.toFloat))
       ),
       arviointi = arviointi(suoritus),
-      tila = requiredKoodi("suorituksentila", "VALMIS").get,
+      tila = requiredKoodi("suorituksentila", "VALMIS"),
       vahvistus = None,
-      suorituskieli = (suoritus \\ "Kieli").headOption.flatMap(kieli => requiredKoodi("kieli", kieli.text.toUpperCase)),
+      suorituskieli = (suoritus \\ "Kieli").headOption.map(kieli => requiredKoodi("kieli", kieli.text.toUpperCase)),
       toimipiste = oppilaitos(suoritus),
       osasuoritukset = optionalList(osasuoritukset)
     )
@@ -191,11 +191,11 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
   private def optionalList[A](list: List[A]): Option[List[A]] = list2Optional[A, List[A]](list, identity)
 
   private def requiredKoodi(uri: String, koodi: String) = {
-    koodistoViitePalvelu.validate(Koodistokoodiviite(koodi, uri)).orElse(throw new IllegalArgumentException("Puuttuva koodi: " + Koodistokoodiviite(koodi, uri)))
+    koodistoViitePalvelu.validate(Koodistokoodiviite(koodi, uri)).getOrElse(throw new IllegalArgumentException("Puuttuva koodi: " + Koodistokoodiviite(koodi, uri)))
   }
 
   private def tutkinto(koulutuskoodi: String): Korkeakoulututkinto = {
-    Korkeakoulututkinto(requiredKoodi("koulutus", koulutuskoodi).get)
+    Korkeakoulututkinto(requiredKoodi("koulutus", koulutuskoodi))
   }
 
   private def loppuPvm(n: Node): Option[LocalDate] = {

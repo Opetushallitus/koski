@@ -16,7 +16,7 @@ case class KorkeakoulunOpiskeluoikeus(
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OrganisaatioWithOid],
   suoritukset: List[KorkeakouluSuoritus],
-  tila: Option[KorkeakoulunOpiskeluoikeudenTila],
+  tila: KorkeakoulunOpiskeluoikeudenTila,
   läsnäolotiedot: Option[KorkeakoulunLäsnäolotiedot],
   @KoodistoKoodiarvo("korkeakoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulutus", Some("Korkeakoulutus"), "opiskeluoikeudentyyppi", None),
@@ -88,7 +88,6 @@ case class KorkeakoulunOpiskeluoikeudenTila(
 
 case class KorkeakoulunOpiskeluoikeusjakso(
   alku: LocalDate,
-  loppu: Option[LocalDate],
   @KoodistoUri("virtaopiskeluoikeudentila")
   tila: Koodistokoodiviite
 ) extends Opiskeluoikeusjakso
@@ -124,7 +123,6 @@ case class KorkeakoulunLäsnäolotiedot(
 
 case class KorkeakoulunLäsnäolojakso(
   alku: LocalDate,
-  loppu: Option[LocalDate],
   @KoodistoUri("virtalukukausiilmtila")
   tila: Koodistokoodiviite
 ) extends Läsnäolojakso

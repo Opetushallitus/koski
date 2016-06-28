@@ -23,7 +23,7 @@ case class AmmatillinenOpiskeluoikeus(
   @KoodistoKoodiarvo("ammatillinentutkinto")
   @KoodistoKoodiarvo("ammatillisentutkinnonosa")
   tavoite: Koodistokoodiviite,
-  tila: Option[AmmatillinenOpiskeluoikeudenTila] = None,
+  tila: AmmatillinenOpiskeluoikeudenTila,
   läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
   @KoodistoKoodiarvo("ammatillinenkoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinenkoulutus", "opiskeluoikeudentyyppi"),
@@ -44,13 +44,13 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
 )
 
 case class AmmatillinenOpiskeluoikeudenTila(
+  @MinItems(1)
   opiskeluoikeusjaksot: List[AmmatillinenOpiskeluoikeusjakso]
 ) extends OpiskeluoikeudenTila
 
 @Description("Sisältää myös tiedon opintojen rahoituksesta jaksoittain.")
 case class AmmatillinenOpiskeluoikeusjakso(
   alku: LocalDate,
-  loppu: Option[LocalDate],
   @KoodistoUri("koskiopiskeluoikeudentila")
   tila: Koodistokoodiviite,
   @Description("Opintojen rahoitus")

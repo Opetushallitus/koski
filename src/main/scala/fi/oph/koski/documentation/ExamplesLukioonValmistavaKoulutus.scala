@@ -19,7 +19,10 @@ object ExamplesLukioonValmistavaKoulutus {
         oppilaitos = jyväskylänNormaalikoulu,
         koulutustoimija = None,
         läsnäolotiedot = None,
-        tila = None,
+        tila = LukionOpiskeluoikeudenTila(List(
+          LukionOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
+          LukionOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
+        )),
         suoritukset = List(LukioonValmistavanKoulutuksenSuoritus(
           tila = tilaValmis,
           vahvistus = vahvistus(),

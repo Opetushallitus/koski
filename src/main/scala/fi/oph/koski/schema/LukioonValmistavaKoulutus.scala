@@ -13,7 +13,7 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeus(
   päättymispäivä: Option[LocalDate],
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OrganisaatioWithOid],
-  tila: Option[LukionOpiskeluoikeudenTila],
+  tila: LukionOpiskeluoikeudenTila,
   läsnäolotiedot: Option[YleisetLäsnäolotiedot],
   @MinItems(1)
   @MaxItems(1)

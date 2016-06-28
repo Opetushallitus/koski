@@ -14,7 +14,7 @@ case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOpiskeluoikeus(
   päättymispäivä: Option[LocalDate] = None,
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OrganisaatioWithOid] = None,
-  tila: Option[AmmatillinenOpiskeluoikeudenTila] = None,
+  tila: AmmatillinenOpiskeluoikeudenTila,
   läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
   @MinItems(1) @MaxItems(1)
   suoritukset: List[AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus],

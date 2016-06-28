@@ -12,6 +12,7 @@ import fi.oph.koski.oppija.{MockOppijat, OppijaRepository, VerifiedOppijaOid}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
+import java.time.LocalDate.{of => date}
 import slick.dbio.DBIO
 
 class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluOikeusRepository, oppijaRepository: OppijaRepository, validator: KoskiValidator) extends Futures with Timing {
@@ -74,7 +75,8 @@ object OpiskeluOikeusTestData {
         None
       )),
       tavoite = AmmatillinenExampleData.tavoiteTutkinto,
-      tila = None
+      alkamispäivä = Some(date(2000, 1, 1)),
+      tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(date(2000, 1, 1), ExampleData.opiskeluoikeusLäsnä, None)))
     )
   }
 }

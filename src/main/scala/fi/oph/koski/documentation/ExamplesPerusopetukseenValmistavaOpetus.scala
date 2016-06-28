@@ -12,6 +12,10 @@ object ExamplesPerusopetukseenValmistavaOpetus {
   val opiskeluoikeus = PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
     alkamispäivä = Some(date(2007, 8, 15)),
     päättymispäivä = Some(date(2008, 6, 1)),
+    tila = PerusopetuksenOpiskeluoikeudenTila(List(
+      PerusopetuksenOpiskeluoikeusjakso(date(2007, 8, 15), opiskeluoikeusLäsnä),
+      PerusopetuksenOpiskeluoikeusjakso(date(2008, 6, 1), opiskeluoikeusValmistunut)
+    )),
     oppilaitos = jyväskylänNormaalikoulu,
     suoritukset = List(
       PerusopetukseenValmistavanOpetuksenSuoritus(

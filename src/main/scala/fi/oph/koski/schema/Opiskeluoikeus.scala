@@ -40,7 +40,7 @@ trait Opiskeluoikeus {
   @Description("Opiskeluoikeuteen liittyvien tutkinto- ja muiden suoritusten tiedot")
   def suoritukset: List[Suoritus]
   @Description("Opiskeluoikeuden tila, joka muodostuu opiskeluoikeusjaksoista.")
-  def tila: Option[OpiskeluoikeudenTila]
+  def tila: OpiskeluoikeudenTila
   @Description("Läsnä- ja poissaolojaksot päivämääräväleinä.")
   def läsnäolotiedot: Option[Läsnäolotiedot]
   def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid): Opiskeluoikeus
@@ -56,9 +56,7 @@ trait OpiskeluoikeudenTila {
 }
 
 @Description("Opiskeluoikeuden tilahistoria (aktiivinen, keskeyttänyt, päättynyt...) jaksoittain")
-trait Opiskeluoikeusjakso extends Jakso {
-  def alku: LocalDate
-  def loppu: Option[LocalDate]
+trait Opiskeluoikeusjakso extends Alkupäivällinen {
   @Description("Opiskeluoikeuden tila (aktiivinen, keskeyttänyt, päättynyt...)")
   def tila: Koodistokoodiviite
 }
@@ -72,23 +70,23 @@ case class YleisetLäsnäolotiedot(
   läsnäolojaksot: List[YleinenLäsnäolojakso]
 ) extends Läsnäolotiedot
 
-trait Jakso {
+trait Alkupäivällinen {
   @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
   def alku: LocalDate
+}
+
+trait Jakso extends Alkupäivällinen {
   @Description("Jakson loppupäivämäärä. Muoto YYYY-MM-DD")
   def loppu: Option[LocalDate]
 }
 
-trait Läsnäolojakso extends Jakso {
-  def alku: LocalDate
-  def loppu: Option[LocalDate]
+trait Läsnäolojakso extends Alkupäivällinen {
   @Description("Läsnäolotila (läsnä, poissa...)")
   def tila: Koodistokoodiviite
 }
 
 case class YleinenLäsnäolojakso(
   alku: LocalDate,
-  loppu: Option[LocalDate],
   @KoodistoUri("lasnaolotila")
   tila: Koodistokoodiviite
 ) extends Läsnäolojakso

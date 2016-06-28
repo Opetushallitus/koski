@@ -12,7 +12,7 @@ case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
   päättymispäivä: Option[LocalDate],
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OrganisaatioWithOid] = None,
-  tila: Option[PerusopetuksenOpiskeluoikeudenTila] = None,
+  tila: PerusopetuksenOpiskeluoikeudenTila,
   läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
   @MinItems(1)
   @MaxItems(1)

@@ -8,13 +8,13 @@ import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems}
 
 @Description("Lukion opiskeluoikeus")
 case class LukionOpiskeluoikeus(
-  id: Option[Int],
-  versionumero: Option[Int],
-  lähdejärjestelmänId: Option[LähdejärjestelmäId],
-  alkamispäivä: Option[LocalDate],
-  päättymispäivä: Option[LocalDate],
+  id: Option[Int] = None,
+  versionumero: Option[Int] = None,
+  lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
+  alkamispäivä: Option[LocalDate] = None,
+  päättymispäivä: Option[LocalDate] = None,
   oppilaitos: Oppilaitos,
-  koulutustoimija: Option[OrganisaatioWithOid],
+  koulutustoimija: Option[OrganisaatioWithOid] = None,
   @Description("Opiskeluoikeuden tavoite-tieto kertoo sen, suorittaako opiskelija lukion koko oppimäärää vai yksittäisen oppiaineen oppimäärää")
   @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("lukionoppimaara")
@@ -22,8 +22,8 @@ case class LukionOpiskeluoikeus(
   tavoite: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", "suorituksentyyppi"),
   @MinItems(1) @MaxItems(1)
   suoritukset: List[LukionPäätasonSuoritus],
-  tila: Option[LukionOpiskeluoikeudenTila],
-  läsnäolotiedot: Option[YleisetLäsnäolotiedot],
+  tila: LukionOpiskeluoikeudenTila,
+  läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
   @KoodistoKoodiarvo("lukiokoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukiokoulutus", "opiskeluoikeudentyyppi"),
   lisätiedot: Option[LukionOpiskeluoikeudenLisätiedot] = None
@@ -223,12 +223,12 @@ case class LaajuusKursseissa(
 ) extends Laajuus
 
 case class LukionOpiskeluoikeudenTila(
+  @MinItems(1)
   opiskeluoikeusjaksot: List[LukionOpiskeluoikeusjakso]
 ) extends OpiskeluoikeudenTila
 
 case class LukionOpiskeluoikeusjakso(
   alku: LocalDate,
-  loppu: Option[LocalDate],
   @KoodistoUri("koskiopiskeluoikeudentila")
   tila: Koodistokoodiviite
 ) extends Opiskeluoikeusjakso

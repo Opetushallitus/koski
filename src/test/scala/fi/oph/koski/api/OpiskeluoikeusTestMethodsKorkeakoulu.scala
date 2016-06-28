@@ -14,11 +14,11 @@ trait OpiskeluoikeusTestMethodsKorkeakoulu extends PutOpiskeluOikeusTestMethods[
     päättymispäivä = None,
     oppilaitos = KorkeakouluTestdata.helsinginYliopisto, None,
     suoritukset = Nil,
-    tila = Some(KorkeakoulunOpiskeluoikeudenTila(
+    tila = KorkeakoulunOpiskeluoikeudenTila(
       List(
-        KorkeakoulunOpiskeluoikeusjakso(date(2012, 9, 1), Some(date(2016, 1, 9)), KorkeakouluTestdata.opiskeluoikeusAktiivinen)
+        KorkeakoulunOpiskeluoikeusjakso(date(2012, 9, 1), KorkeakouluTestdata.opiskeluoikeusAktiivinen)
       )
-    )),
+    ),
     läsnäolotiedot = None
   )
 }

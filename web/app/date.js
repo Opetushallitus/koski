@@ -1,0 +1,1 @@
+export const formatISODate = (date) => date.toISOString().substring(0, 10)

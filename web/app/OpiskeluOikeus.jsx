@@ -4,7 +4,7 @@ import R from 'ramda'
 import * as L from 'partial.lenses'
 import Http from './http'
 import Dropdown from './Dropdown.jsx'
-
+import { formatISODate } from './date.js'
 export const opiskeluOikeusChange = Bacon.Bus()
 
 export const OpiskeluOikeus = React.createClass({
@@ -197,7 +197,7 @@ const TutkinnonOsa = React.createClass({
         arviointi: [
           {
             arvosana: arvosana,
-            päivä: new Date().toISOString().substring(0, 10)
+            päivä: formatISODate(new Date())
           }
         ],
         toimipiste: suoritus.toimipiste,

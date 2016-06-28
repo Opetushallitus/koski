@@ -5,7 +5,7 @@ import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems}
 case class YlioppilastutkinnonOpiskeluoikeus(
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OrganisaatioWithOid],
-  tila: Option[LukionOpiskeluoikeudenTila],
+  tila: YlioppilastutkinnonOpiskeluoikeudenTila,
   @MinItems(1)
   @MaxItems(1)
   suoritukset: List[YlioppilastutkinnonSuoritus],
@@ -21,6 +21,8 @@ case class YlioppilastutkinnonOpiskeluoikeus(
   override def läsnäolotiedot = None
   override def lähdejärjestelmänId = None
 }
+
+case class YlioppilastutkinnonOpiskeluoikeudenTila(opiskeluoikeusjaksot: List[LukionOpiskeluoikeusjakso]) extends OpiskeluoikeudenTila
 
 case class YlioppilastutkinnonSuoritus(
   tila: Koodistokoodiviite,

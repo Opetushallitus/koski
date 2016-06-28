@@ -28,6 +28,10 @@ object AmmattitutkintoExample {
         alkamispäivä = Some(date(2012, 9, 1)),
         arvioituPäättymispäivä = Some(date(2015, 5, 31)),
         päättymispäivä = Some(date(2016, 5, 31)),
+        tila = AmmatillinenOpiskeluoikeudenTila(List(
+          AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, None),
+          AmmatillinenOpiskeluoikeusjakso(date(2016, 6, 1), opiskeluoikeusValmistunut, None)
+        )),
         oppilaitos = stadinAmmattiopisto,
         suoritukset = List(
           NäyttötutkintoonValmistavanKoulutuksenSuoritus(
@@ -115,12 +119,12 @@ object AmmatillinenPerustutkintoExample {
           ))
         )),
         tavoite = tavoiteTutkinto,
-        tila = Some(AmmatillinenOpiskeluoikeudenTila(
+        tila = AmmatillinenOpiskeluoikeudenTila(
           List(
-            AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), Some(date(2016, 5, 31)), ammatillinenOpiskeluoikeusLäsnä, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None))),
-            AmmatillinenOpiskeluoikeusjakso(date(2016, 6, 1), None, ammatillinenOpiskeluoikeusValmis, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
+            AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None))),
+            AmmatillinenOpiskeluoikeusjakso(date(2016, 6, 1), opiskeluoikeusValmistunut, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
           )
-        ))
+        )
       )
     )
   )
@@ -146,9 +150,9 @@ object AmmatillinenOldExamples {
         vahvistus = None,
         osasuoritukset = None
       )
-    ).copy(tila = Some(AmmatillinenOpiskeluoikeudenTila(List(
-      AmmatillinenOpiskeluoikeusjakso(date(2016, 9, 1), None, ammatillinenOpiskeluoikeusLäsnä, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
-    ))))
+    ).copy(tila = AmmatillinenOpiskeluoikeudenTila(List(
+      AmmatillinenOpiskeluoikeusjakso(date(2016, 9, 1), opiskeluoikeusLäsnä, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
+    )))
   )
 
   lazy val paikallinen = oppija(opiskeluOikeus = opiskeluoikeus(
@@ -249,17 +253,17 @@ object AmmatillinenOldExamples {
           ))
         )),
         tavoite = tavoiteTutkinto,
-        tila = Some(AmmatillinenOpiskeluoikeudenTila(
+        tila = AmmatillinenOpiskeluoikeudenTila(
           List(
-            AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), Some(date(2012, 12, 31)), ammatillinenOpiskeluoikeusLäsnä, Some(Koodistokoodiviite("1", Some("Valtionosuusrahoitteinen koulutus"), "opintojenrahoitus", None))),
-            AmmatillinenOpiskeluoikeusjakso(date(2013, 1, 1), Some(date(2013, 12, 31)), ammatillinenOpiskeluoikeusEronnut, Some(Koodistokoodiviite("1", Some("Valtionosuusrahoitteinen koulutus"), "opintojenrahoitus", None))),
-            AmmatillinenOpiskeluoikeusjakso(date(2014, 1, 1), None, ammatillinenOpiskeluoikeusLäsnä, Some(Koodistokoodiviite("1", Some("Valtionosuusrahoitteinen koulutus"), "opintojenrahoitus", None)))
+            AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(Koodistokoodiviite("1", Some("Valtionosuusrahoitteinen koulutus"), "opintojenrahoitus", None))),
+            AmmatillinenOpiskeluoikeusjakso(date(2013, 1, 1), opiskeluoikeusEronnut, Some(Koodistokoodiviite("1", Some("Valtionosuusrahoitteinen koulutus"), "opintojenrahoitus", None))),
+            AmmatillinenOpiskeluoikeusjakso(date(2014, 1, 1), opiskeluoikeusLäsnä, Some(Koodistokoodiviite("1", Some("Valtionosuusrahoitteinen koulutus"), "opintojenrahoitus", None)))
           )
-        )),
+        ),
         läsnäolotiedot = Some(YleisetLäsnäolotiedot(List(
-          YleinenLäsnäolojakso(date(2012, 9, 1), Some(date(2012, 12, 31)), Koodistokoodiviite("lasna", Some("Läsnä"), "lasnaolotila", Some(1))),
-          YleinenLäsnäolojakso(date(2013, 1, 1), Some(date(2013, 12, 31)), Koodistokoodiviite("poissa", Some("Poissa"), "lasnaolotila", Some(1))),
-          YleinenLäsnäolojakso(date(2014, 1, 1), None, Koodistokoodiviite("lasna", Some("Läsnä"), "lasnaolotila", Some(1)))
+          YleinenLäsnäolojakso(date(2012, 9, 1), Koodistokoodiviite("lasna", Some("Läsnä"), "lasnaolotila", Some(1))),
+          YleinenLäsnäolojakso(date(2013, 1, 1), Koodistokoodiviite("poissa", Some("Poissa"), "lasnaolotila", Some(1))),
+          YleinenLäsnäolojakso(date(2014, 1, 1), Koodistokoodiviite("lasna", Some("Läsnä"), "lasnaolotila", Some(1)))
         )))
       )))
 
@@ -291,12 +295,12 @@ object AmmatillinenOldExamples {
           osasuoritukset = Some(tutkinnonOsat)
         )),
         tavoite = tavoiteTutkinto,
-        tila = Some(AmmatillinenOpiskeluoikeudenTila(
+        tila = AmmatillinenOpiskeluoikeudenTila(
           List(
-            AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), Some(date(2016, 1, 9)), ammatillinenOpiskeluoikeusLäsnä, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None))),
-            AmmatillinenOpiskeluoikeusjakso(date(2016, 1, 10), None, ammatillinenOpiskeluoikeusValmis, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
+            AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None))),
+            AmmatillinenOpiskeluoikeusjakso(date(2016, 1, 10), opiskeluoikeusValmistunut, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
           )
-        )),
+        ),
         läsnäolotiedot = None
       )
     )

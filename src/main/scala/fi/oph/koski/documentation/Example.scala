@@ -16,7 +16,11 @@ object Examples {
 }
 
 object ExampleData {
+  lazy val longTimeAgo = date(2000, 1, 1)
   lazy val suomenKieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None))
+  val opiskeluoikeusLäsnä = Koodistokoodiviite("lasna", Some("Läsnä"), "koskiopiskeluoikeudentila", Some(1))
+  val opiskeluoikeusValmistunut = Koodistokoodiviite("valmistunut", Some("Valmistunut"), "koskiopiskeluoikeudentila", Some(1))
+  val opiskeluoikeusEronnut = Koodistokoodiviite("eronnut", Some("Eronnut"), "koskiopiskeluoikeudentila", Some(1))
   lazy val tilaKesken = Koodistokoodiviite("KESKEN", "suorituksentila")
   lazy val tilaValmis: Koodistokoodiviite = Koodistokoodiviite(koodistoUri = "suorituksentila", koodiarvo = "VALMIS")
   val helsinki = Koodistokoodiviite(koodistoUri = "kunta", koodiarvo = "091", nimi = Some("Helsinki"))

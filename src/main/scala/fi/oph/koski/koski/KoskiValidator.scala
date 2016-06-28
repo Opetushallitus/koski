@@ -70,7 +70,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       .then { HttpStatus.fold(
       validateDateOrder(("alkamispäivä", opiskeluOikeus.alkamispäivä), ("päättymispäivä", opiskeluOikeus.päättymispäivä)),
       validateDateOrder(("alkamispäivä", opiskeluOikeus.alkamispäivä), ("arvioituPäättymispäivä", opiskeluOikeus.arvioituPäättymispäivä)),
-      DateValidation.validateJaksot("tila.opiskeluoikeusjaksot", opiskeluOikeus.tila.toList.flatMap(_.opiskeluoikeusjaksot)),
+      DateValidation.validateJaksot("tila.opiskeluoikeusjaksot", opiskeluOikeus.tila.opiskeluoikeusjaksot),
       DateValidation.validateJaksot("läsnäolotiedot.läsnäolojaksot", opiskeluOikeus.läsnäolotiedot.toList.flatMap(_.läsnäolojaksot)),
       HttpStatus.fold(opiskeluOikeus.suoritukset.map(validateSuoritus(_, None)))
     )}

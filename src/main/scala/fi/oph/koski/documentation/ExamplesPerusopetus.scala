@@ -33,11 +33,11 @@ object ExamplesPerusopetus {
             toimipiste = jyväskylänNormaalikoulu, suorituskieli = suomenKieli
           )
       ),
-      tila = Some(PerusopetuksenOpiskeluoikeudenTila(
+      tila = PerusopetuksenOpiskeluoikeudenTila(
         List(
-          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), None, opiskeluoikeusLäsnä)
+          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä)
         )
-      )),
+      ),
       tavoite = tavoiteKokoOppimäärä,
       läsnäolotiedot = None
     ))
@@ -74,12 +74,12 @@ object ExamplesPerusopetus {
           oppimäärä = perusopetuksenOppimäärä,
           osasuoritukset = kaikkiAineet
         )),
-      tila = Some(PerusopetuksenOpiskeluoikeudenTila(
+      tila = PerusopetuksenOpiskeluoikeudenTila(
         List(
-          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), Some(date(2016, 6, 3)), opiskeluoikeusLäsnä),
-          PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), None, opiskeluoikeusValmistunut)
+          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
+          PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
         )
-      )),
+      ),
       tavoite = tavoiteKokoOppimäärä,
       läsnäolotiedot = None
     ))
@@ -99,12 +99,12 @@ object ExamplesPerusopetus {
           arviointi = arviointi(9),
           vahvistus = vahvistus()
         )),
-      tila = Some(PerusopetuksenOpiskeluoikeudenTila(
+      tila = PerusopetuksenOpiskeluoikeudenTila(
         List(
-          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), Some(date(2016, 6, 3)), opiskeluoikeusLäsnä),
-          PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), None, opiskeluoikeusValmistunut)
+          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
+          PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
         )
-      )),
+      ),
       tavoite = tavoiteAine,
       läsnäolotiedot = None
     ))
@@ -128,12 +128,12 @@ object ExamplesPerusopetus {
           oppimäärä = aikuistenOppimäärä,
           osasuoritukset = kaikkiAineet
         )),
-      tila = Some(PerusopetuksenOpiskeluoikeudenTila(
+      tila = PerusopetuksenOpiskeluoikeudenTila(
         List(
-          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), Some(date(2016, 6, 3)), opiskeluoikeusLäsnä),
-          PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), None, opiskeluoikeusValmistunut)
+          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
+          PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
         )
-      )),
+      ),
       tavoite = tavoiteKokoOppimäärä,
       läsnäolotiedot = None
     ))
@@ -163,12 +163,12 @@ object ExamplesPerusopetus {
             toimintaAlueenSuoritus("5").copy(arviointi = arviointi("S"))
           ))
         )),
-      tila = Some(PerusopetuksenOpiskeluoikeudenTila(
+      tila = PerusopetuksenOpiskeluoikeudenTila(
         List(
-          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), Some(date(2016, 6, 3)), opiskeluoikeusLäsnä),
-          PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), None, opiskeluoikeusValmistunut)
+          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
+          PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
         )
-      )),
+      ),
       tavoite = tavoiteKokoOppimäärä,
       läsnäolotiedot = None,
       lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(erityisenTuenPäätös = Some(ErityisenTuenPäätös(

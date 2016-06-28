@@ -181,7 +181,6 @@
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
         "alku" : "2012-09-01",
-        "loppu" : "2012-12-31",
         "tila" : {
           "koodiarvo" : "lasna",
           "nimi" : {
@@ -199,7 +198,6 @@
         }
       }, {
         "alku" : "2013-01-01",
-        "loppu" : "2013-12-31",
         "tila" : {
           "koodiarvo" : "eronnut",
           "nimi" : {
@@ -237,7 +235,6 @@
     "läsnäolotiedot" : {
       "läsnäolojaksot" : [ {
         "alku" : "2012-09-01",
-        "loppu" : "2012-12-31",
         "tila" : {
           "koodiarvo" : "lasna",
           "nimi" : {
@@ -248,7 +245,6 @@
         }
       }, {
         "alku" : "2013-01-01",
-        "loppu" : "2013-12-31",
         "tila" : {
           "koodiarvo" : "poissa",
           "nimi" : {

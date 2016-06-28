@@ -31,12 +31,12 @@ object ExamplesLukio {
           osasuoritukset = None
         )
       ),
-      tila = Some(LukionOpiskeluoikeudenTila(
+      tila = LukionOpiskeluoikeudenTila(
         List(
-          LukionOpiskeluoikeusjakso(date(2012, 9, 1), Some(date(2016, 1, 9)), opiskeluoikeusAktiivinen),
-          LukionOpiskeluoikeusjakso(date(2016, 1, 10), None, opiskeluoikeusPäättynyt)
+          LukionOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusAktiivinen),
+          LukionOpiskeluoikeusjakso(date(2016, 1, 10), opiskeluoikeusPäättynyt)
         )
-      )),
+      ),
       läsnäolotiedot = None
     ))
   )
@@ -203,12 +203,12 @@ object ExamplesLukio {
           ))
         )
       ),
-      tila = Some(LukionOpiskeluoikeudenTila(
+      tila = LukionOpiskeluoikeudenTila(
         List(
-          LukionOpiskeluoikeusjakso(alku = date(2012, 9, 1), loppu = Some(date(2016, 1, 9)), tila = opiskeluoikeusAktiivinen),
-          LukionOpiskeluoikeusjakso(alku = date(2016, 1, 10), loppu = None, tila = opiskeluoikeusPäättynyt)
+          LukionOpiskeluoikeusjakso(alku = date(2012, 9, 1), tila = opiskeluoikeusAktiivinen),
+          LukionOpiskeluoikeusjakso(alku = date(2016, 1, 10), tila = opiskeluoikeusPäättynyt)
         )
-      )),
+      ),
       läsnäolotiedot = None
     ))
   )
@@ -239,12 +239,12 @@ object ExamplesLukio {
           ))
         )
       ),
-      tila = Some(LukionOpiskeluoikeudenTila(
+      tila = LukionOpiskeluoikeudenTila(
         List(
-          LukionOpiskeluoikeusjakso(alku = date(2015, 9, 1), loppu = Some(date(2016, 1, 9)), tila = opiskeluoikeusAktiivinen),
-          LukionOpiskeluoikeusjakso(alku = date(2016, 1, 10), loppu = None, tila = opiskeluoikeusPäättynyt)
+          LukionOpiskeluoikeusjakso(alku = date(2015, 9, 1), tila = opiskeluoikeusAktiivinen),
+          LukionOpiskeluoikeusjakso(alku = date(2016, 1, 10), tila = opiskeluoikeusPäättynyt)
         )
-      )),
+      ),
       läsnäolotiedot = None
     ))
   )

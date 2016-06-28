@@ -2,7 +2,7 @@ package fi.oph.koski.api
 
 import java.time.LocalDate.{of => date}
 
-import fi.oph.koski.documentation.ExampleData.jyväskylä
+import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.PerusopetusExampleData
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.localization.LocalizedStringImplicits._
@@ -12,10 +12,11 @@ trait OpiskeluoikeusTestMethodsPerusopetus extends PutOpiskeluOikeusTestMethods[
   val vahvistus = Some(Henkilövahvistus(date(2016, 6, 4), jyväskylä, jyväskylänNormaalikoulu, List(Organisaatiohenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))
 
   override def defaultOpiskeluoikeus = PerusopetuksenOpiskeluoikeus(
-    id = None, versionumero = None, lähdejärjestelmänId = None, alkamispäivä = None, päättymispäivä = None,
-    oppilaitos = jyväskylänNormaalikoulu, koulutustoimija = None, tavoite = PerusopetusExampleData.tavoiteKokoOppimäärä,
+    oppilaitos = jyväskylänNormaalikoulu,
+    tavoite = PerusopetusExampleData.tavoiteKokoOppimäärä,
     suoritukset = List(päättötodistusSuoritus),
-    tila = None, läsnäolotiedot = None
+    alkamispäivä = Some(longTimeAgo),
+    tila = PerusopetuksenOpiskeluoikeudenTila(List(PerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä)))
   )
 
   val päättötodistusSuoritus = PerusopetuksenOppimääränSuoritus(

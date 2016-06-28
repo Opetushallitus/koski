@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedString.{concat, finnish}
-import fi.oph.scalaschema.annotation.Description
+import fi.oph.scalaschema.annotation.{MinItems, Description}
 
 @Description("Perusopetuksen opiskeluoikeus")
 case class PerusopetuksenOpiskeluoikeus(
@@ -14,15 +14,15 @@ case class PerusopetuksenOpiskeluoikeus(
   alkamispäivä: Option[LocalDate] = None,
   päättymispäivä: Option[LocalDate] = None,
   oppilaitos: Oppilaitos,
-  koulutustoimija: Option[OrganisaatioWithOid],
+  koulutustoimija: Option[OrganisaatioWithOid] = None,
   @Description("Opiskeluoikeuden tavoite-tieto kertoo sen, suorittaako perusopetuksen koko oppimäärää vai yksittäisen oppiaineen oppimäärää")
   @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("perusopetuksenoppimaara")
   @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
   tavoite: Koodistokoodiviite,
   suoritukset: List[PerusopetuksenPäätasonSuoritus],
-  tila: Option[PerusopetuksenOpiskeluoikeudenTila],
-  läsnäolotiedot: Option[YleisetLäsnäolotiedot],
+  tila: PerusopetuksenOpiskeluoikeudenTila,
+  läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
   @KoodistoKoodiarvo("perusopetus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetus", "opiskeluoikeudentyyppi"),
   lisätiedot: Option[PerusopetuksenOpiskeluoikeudenLisätiedot] = None
@@ -293,12 +293,12 @@ case class LaajuusVuosiviikkotunneissa(
 ) extends Laajuus
 
 case class PerusopetuksenOpiskeluoikeudenTila(
+  @MinItems(1)
   opiskeluoikeusjaksot: List[PerusopetuksenOpiskeluoikeusjakso]
 ) extends OpiskeluoikeudenTila
 
 case class PerusopetuksenOpiskeluoikeusjakso(
   alku: LocalDate,
-  loppu: Option[LocalDate],
   @KoodistoUri("koskiopiskeluoikeudentila")
   @KoodistoKoodiarvo("lasna")
   @KoodistoKoodiarvo("erotettumaaraajaksi")

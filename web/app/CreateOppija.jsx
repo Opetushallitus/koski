@@ -4,6 +4,7 @@ import Http from './http'
 import {navigateToOppija, showError} from './router'
 import {isValidHetu} from './hetu'
 import {OpiskeluOikeus} from './CreateOpiskeluOikeus.jsx'
+import { formatISODate } from './date.js'
 
 export const CreateOppija = React.createClass({
   render() {
@@ -85,7 +86,7 @@ export const CreateOppija = React.createClass({
   toCreateOppija() {
     const {etunimet, sukunimi, kutsumanimi, hetu} = this.oppijaFromDom()
     const {tutkinto: tutkinto, oppilaitos: oppilaitosOrganisaatio} = this.state.opiskeluOikeus
-
+    const date = new Date()
     return {
       henkilö: {
         etunimet: etunimet,
@@ -97,6 +98,10 @@ export const CreateOppija = React.createClass({
         tyyppi: { 'koodistoUri': 'opiskeluoikeudentyyppi', 'koodiarvo': 'ammatillinenkoulutus'},
         tavoite: { 'koodistoUri': 'suorituksentyyppi', 'koodiarvo': 'ammatillinentutkinto'},
         oppilaitos: oppilaitosOrganisaatio,
+        alkamispäivä: formatISODate(date),
+        tila: {
+          opiskeluoikeusjaksot: [ { alku: formatISODate(date), tila: { 'koodistoUri': 'koskiopiskeluoikeudentila', 'koodiarvo': 'lasna' } }]
+        },
         suoritukset: [{
           koulutusmoduuli: {
             tunniste: {

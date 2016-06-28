@@ -28,7 +28,7 @@ case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodis
                 (None, tilaKesken)
             }
             Some(YlioppilastutkinnonOpiskeluoikeus(
-              oppilaitos = oppilaitos, koulutustoimija = None, tila = None, suoritukset = List(YlioppilastutkinnonSuoritus(
+              oppilaitos = oppilaitos, koulutustoimija = None, tila = YlioppilastutkinnonOpiskeluoikeudenTila(Nil), suoritukset = List(YlioppilastutkinnonSuoritus(
                 tila = tila,
                 vahvistus = vahvistus,
                 toimipiste = oppilaitos,
