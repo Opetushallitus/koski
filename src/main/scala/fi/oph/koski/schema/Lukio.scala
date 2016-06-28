@@ -123,7 +123,7 @@ case class LukionKurssinSuoritus(
       |Opiskelijan osaamisen tunnustamisessa noudatetaan, mitä 17 ja 17 a §:ssä säädetään opiskelijan arvioinnista ja siitä päättämisestä.
       |Mikäli opinnot tai muutoin hankittu osaaminen luetaan hyväksi opetussuunnitelman perusteiden mukaan numerolla arvioitavaan kurssiin, tulee kurssista antaa numeroarvosana.
     """.stripMargin)
-  tunnustettu: Option[Tunnustaminen] = None
+  tunnustettu: Option[OsaamisenTunnustaminen] = None
 ) extends Suoritus with LukioonValmistavanKoulutuksenOsasuoritus {
   def vahvistus: Option[Vahvistus] = None
 }
@@ -146,8 +146,7 @@ case class LukionKurssinArviointi(
   päivä: LocalDate
 ) extends YleissivistävänKoulutuksenArviointi with ArviointiPäivämäärällä
 
-sealed trait LukionKurssi extends Koulutusmoduuli with Valinnaisuus {
-  def pakollinen: Boolean = false
+sealed trait LukionKurssi extends Koulutusmoduuli {
   def laajuus: Option[LaajuusKursseissa]
 }
 

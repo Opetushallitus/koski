@@ -18,9 +18,9 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
             case osaSuoritus: AmmatillisenTutkinnonOsanSuoritus if !tutkintoSuoritus.suoritustapa.isDefined =>
               KoskiErrorCategory.badRequest.validation.rakenne.suoritustapaPuuttuu()
             case osaSuoritus: AmmatillisenTutkinnonOsanSuoritus => osaSuoritus.koulutusmoduuli match {
-              case osa: OpsTutkinnonosa =>
+              case osa: ValtakunnallinenTutkinnonOsa =>
                 validateTutkinnonOsa(osaSuoritus, osa, rakenne, tutkintoSuoritus.suoritustapa)
-              case osa: PaikallinenTutkinnonosa =>
+              case osa: PaikallinenTutkinnonOsa =>
                 HttpStatus.ok // vain OpsTutkinnonosatoteutukset validoidaan, muut sellaisenaan läpi, koska niiden rakennetta ei tunneta
             }
           }))
@@ -55,7 +55,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
     })
   }
 
-  private def validateTutkinnonOsa(suoritus: AmmatillisenTutkinnonOsanSuoritus, osa: OpsTutkinnonosa, rakenne: TutkintoRakenne, suoritustapa: Option[Koodistokoodiviite]): HttpStatus = {
+  private def validateTutkinnonOsa(suoritus: AmmatillisenTutkinnonOsanSuoritus, osa: ValtakunnallinenTutkinnonOsa, rakenne: TutkintoRakenne, suoritustapa: Option[Koodistokoodiviite]): HttpStatus = {
     val suoritustapaJaRakenne = suoritustapa.flatMap(rakenne.findSuoritustapaJaRakenne(_))
     suoritustapaJaRakenne match {
       case Some(suoritustapaJaRakenne)  =>

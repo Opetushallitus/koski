@@ -46,7 +46,7 @@ object AmmattitutkintoExample {
           tutkintoSuoritus(
             tutkintoKoulutus = tutkinto,
             suoritustapa = Some(suoritustapaNäyttö),
-            järjestämismuoto = Some(DefaultJärjestämismuoto(järjestämismuotoOppilaitos)),
+            järjestämismuoto = Some(JärjestämismuotoIlmanLisätietoja(järjestämismuotoOppilaitos)),
             suorituskieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None)),
             tila = tilaValmis,
             alkamisPäivä = None,
@@ -89,7 +89,7 @@ object AmmatillinenPerustutkintoExample {
           tutkintonimike = Some(List(Koodistokoodiviite("10083", Some("Ympäristönhoitaja"), "tutkintonimikkeet", None))),
           osaamisala = Some(List(Koodistokoodiviite("1590", Some("Ympäristöalan osaamisala"), "osaamisala", None))),
           suoritustapa = Some(suoritustapaOps),
-          järjestämismuoto = Some(DefaultJärjestämismuoto(järjestämismuotoOppilaitos)),
+          järjestämismuoto = Some(JärjestämismuotoIlmanLisätietoja(järjestämismuotoOppilaitos)),
           suorituskieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None)),
           tila = tilaValmis,
           alkamisPäivä = None,
@@ -160,7 +160,7 @@ object AmmatillinenOldExamples {
     tutkinto = autoalanPerustutkinto.copy(suoritustapa = Some(suoritustapaOps)),
     osat = Some(List(
       AmmatillisenTutkinnonOsanSuoritus(
-        koulutusmoduuli = OpsTutkinnonosa(Koodistokoodiviite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Some(LaajuusOsaamispisteissä(11))),
+        koulutusmoduuli = ValtakunnallinenTutkinnonOsa(Koodistokoodiviite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Some(LaajuusOsaamispisteissä(11))),
         lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(
           Koodistokoodiviite("mukautettu", "ammatillisentutkinnonosanlisatieto"),
           "Tutkinnon osan ammattitaitovaatimuksia ja osaamisen arviointi on mukautettu (ja/tai niistä on poikettu) ammatillisesta peruskoulutuksesta annetun lain\n(630/1998, muutos 246/2015) 19 a (ja/tai 21) §:n perusteella"))),
@@ -185,7 +185,7 @@ object AmmatillinenOldExamples {
 
     osat = Some(List(
       AmmatillisenTutkinnonOsanSuoritus(
-        koulutusmoduuli = OpsTutkinnonosa(Koodistokoodiviite("104052", "tutkinnonosat"), true, None, None, None),
+        koulutusmoduuli = ValtakunnallinenTutkinnonOsa(Koodistokoodiviite("104052", "tutkinnonosat"), true, None, None, None),
         tutkinto = Some(AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357305", "koulutus"), Some("40/011/2001"))),
         suorituskieli = None,
         tila = tilaValmis,
@@ -210,14 +210,14 @@ object AmmatillinenOldExamples {
           tutkintonimike = Some(List(Koodistokoodiviite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
           osaamisala = Some(List(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
           suoritustapa = Some(suoritustapaOps),
-          järjestämismuoto = Some(DefaultJärjestämismuoto(järjestämismuotoOppilaitos)),
+          järjestämismuoto = Some(JärjestämismuotoIlmanLisätietoja(järjestämismuotoOppilaitos)),
           tila = tilaKesken,
           toimipiste = toimipiste,
           suorituskieli = suomenKieli,
 
           osasuoritukset = Some(List(
             AmmatillisenTutkinnonOsanSuoritus(
-              koulutusmoduuli = OpsTutkinnonosa(Koodistokoodiviite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Some(LaajuusOsaamispisteissä(11))),
+              koulutusmoduuli = ValtakunnallinenTutkinnonOsa(Koodistokoodiviite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Some(LaajuusOsaamispisteissä(11))),
               tunnustettu = None,
               näyttö = None,
               lisätiedot = None,
@@ -280,7 +280,7 @@ object AmmatillinenOldExamples {
           tutkintonimike = Some(List(Koodistokoodiviite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
           osaamisala = Some(List(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None))),
           suoritustapa = Some(suoritustapaNäyttö),
-          järjestämismuoto = Some(DefaultJärjestämismuoto(järjestämismuotoOppilaitos)),
+          järjestämismuoto = Some(JärjestämismuotoIlmanLisätietoja(järjestämismuotoOppilaitos)),
           suorituskieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None)),
           tila = tilaValmis,
           alkamisPäivä = None,
@@ -304,7 +304,7 @@ object AmmatillinenOldExamples {
 
   private lazy val tutkinnonOsat = List(
     AmmatillisenTutkinnonOsanSuoritus(
-      koulutusmoduuli = OpsTutkinnonosa(
+      koulutusmoduuli = ValtakunnallinenTutkinnonOsa(
         Koodistokoodiviite("100016", Some("Huolto- ja korjaustyöt"), "tutkinnonosat", Some(1)),
         true,
         laajuus = None
@@ -323,7 +323,7 @@ object AmmatillinenOldExamples {
     ),
     paikallisenOsanSuoritus,
     AmmatillisenTutkinnonOsanSuoritus(
-      koulutusmoduuli =  OpsTutkinnonosa(
+      koulutusmoduuli =  ValtakunnallinenTutkinnonOsa(
         Koodistokoodiviite("100019", Some("Mittaus- ja korivauriotyöt"), "tutkinnonosat", Some(1)),
         true,
         None
@@ -341,7 +341,7 @@ object AmmatillinenOldExamples {
       vahvistus = vahvistus(date(2013, 5, 31), stadinAmmattiopisto, helsinki)
     ),
     AmmatillisenTutkinnonOsanSuoritus(
-      koulutusmoduuli = OpsTutkinnonosa(
+      koulutusmoduuli = ValtakunnallinenTutkinnonOsa(
         Koodistokoodiviite("100034", Some("Maalauksen esikäsittelytyöt"), "tutkinnonosat", Some(1)),
         true,
         None
@@ -359,7 +359,7 @@ object AmmatillinenOldExamples {
       vahvistus = vahvistus(date(2014, 11, 8), stadinAmmattiopisto, helsinki)
     ),
     AmmatillisenTutkinnonOsanSuoritus(
-      koulutusmoduuli = OpsTutkinnonosa(
+      koulutusmoduuli = ValtakunnallinenTutkinnonOsa(
         Koodistokoodiviite("100037", Some("Auton lisävarustetyöt"), "tutkinnonosat", Some(1)),
         true,
         None
@@ -377,7 +377,7 @@ object AmmatillinenOldExamples {
       vahvistus = vahvistus(date(2015, 5, 1), stadinAmmattiopisto, helsinki)
     ),
     AmmatillisenTutkinnonOsanSuoritus(
-      koulutusmoduuli = OpsTutkinnonosa(
+      koulutusmoduuli = ValtakunnallinenTutkinnonOsa(
         Koodistokoodiviite("101050", Some("Yritystoiminnan suunnittelu"), "tutkinnonosat", Some(1)),
         true,
         None

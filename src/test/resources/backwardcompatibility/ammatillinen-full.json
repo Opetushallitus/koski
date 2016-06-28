@@ -164,7 +164,7 @@
             }
           },
           "arviointi" : {
-            "arviointiKohteet" : [ {
+            "arviointikohteet" : [ {
               "tunniste" : {
                 "koodiarvo" : "1",
                 "nimi" : {

@@ -25,7 +25,7 @@ class SerializationSpec extends FunSpec with Matchers with Logging {
     }
     it("Tunnustaminen") {
       val jsonString = Json.write(AmmatillinenExampleData.tunnustettu)
-      val tunnustettu = Json.read[Tunnustaminen](jsonString)
+      val tunnustettu = Json.read[OsaamisenTunnustaminen](jsonString)
       tunnustettu should(equal(AmmatillinenExampleData.tunnustettu))
     }
 

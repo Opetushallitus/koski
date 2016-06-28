@@ -1,6 +1,7 @@
 ## 28.6.2016
 
 - Näyttötutkintoon valmistavassa koulutuksessa käytössä väliaikainen koodi. Tutkinto, johon koulutus tähtää on siirretty omaan tutkinto-kenttäänsä
+- Näytön arvioinnissa nimenmuutos arviointiKohteet -> arviointikohteet
 
 ## 27.6.2016
 

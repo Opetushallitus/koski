@@ -181,8 +181,8 @@ object KoulutusmoduuliDeserializer extends Deserializer[Koulutusmoduuli] {
     case (TypeInfo(c, _), json) if classes.contains(c) =>
       json match {
         case moduuli: JObject if moduuli \ "tunniste" \ "koodistoUri" == JString("koulutus") => moduuli.extract[AmmatillinenTutkintoKoulutus]
-        case moduuli: JObject if moduuli \ "tunniste" \ "koodistoUri" == JString("tutkinnonosat") => moduuli.extract[OpsTutkinnonosa]
-        case moduuli: JObject => moduuli.extract[PaikallinenTutkinnonosa]
+        case moduuli: JObject if moduuli \ "tunniste" \ "koodistoUri" == JString("tutkinnonosat") => moduuli.extract[ValtakunnallinenTutkinnonOsa]
+        case moduuli: JObject => moduuli.extract[PaikallinenTutkinnonOsa]
       }
   }
 }
@@ -222,7 +222,7 @@ object JärjestämismuotoDeserializer extends Deserializer[Järjestämismuoto] {
     case (TypeInfo(TheClass, _), json) =>
       json match {
         case järjestämismuoto: JObject if järjestämismuoto.values.contains("oppisopimus") => järjestämismuoto.extract[OppisopimuksellinenJärjestämismuoto]
-        case järjestämismuoto: JObject => järjestämismuoto.extract[DefaultJärjestämismuoto]
+        case järjestämismuoto: JObject => järjestämismuoto.extract[JärjestämismuotoIlmanLisätietoja]
       }
   }
 }

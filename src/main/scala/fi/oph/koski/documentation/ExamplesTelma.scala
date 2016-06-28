@@ -39,9 +39,9 @@ object ExamplesTelma {
   )
   val examples = List(Example("työhön ja itsenäiseen elämään valmentava koulutus", "Oppija on suorittanut työhön ja itsenäiseen elämään valmentava koulutuksen (TELMA)", telmaTodistus, 200))
 
-  def tunnustettu(selite: String): Some[Tunnustaminen] = Some(Tunnustaminen(None, selite))
+  def tunnustettu(selite: String): Some[OsaamisenTunnustaminen] = Some(OsaamisenTunnustaminen(None, selite))
 
-  private def telmaKurssinSuoritus(koodi: String, kuvaus: String, laajuusOsaamispisteissä: Float, pakollinen: Boolean, arviointi: Option[List[TelmaArviointi]], tunnustaminen: Option[Tunnustaminen] = None) =
+  private def telmaKurssinSuoritus(koodi: String, kuvaus: String, laajuusOsaamispisteissä: Float, pakollinen: Boolean, arviointi: Option[List[TelmaArviointi]], tunnustaminen: Option[OsaamisenTunnustaminen] = None) =
     TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus(
       tila = tilaValmis,
       koulutusmoduuli = TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa(

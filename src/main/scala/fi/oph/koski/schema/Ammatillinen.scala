@@ -103,7 +103,7 @@ case class AmmatillisenTutkinnonSuoritus(
   @KoodistoUri("osaamisala")
   @OksaUri(tunnus = "tmpOKSAID299", käsite = "osaamisala")
   osaamisala: Option[List[Koodistokoodiviite]] = None,
-  @Description("Tutkinnon suoritustapa")
+  @Description("Tutkinnon suoritustapa (näyttö / ops). Ammatillisen perustutkinnon voi suorittaa joko opetussuunnitelmaperusteisesti tai näyttönä. Ammattitutkinnot ja erikoisammattitutkinnot suoritetaan aina näyttönä.")
   @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
   @KoodistoUri("ammatillisentutkinnonsuoritustapa")
   suoritustapa: Option[Koodistokoodiviite] = None,
@@ -125,8 +125,10 @@ case class AmmatillisenTutkinnonSuoritus(
 }
 
 case class AmmatillisenTutkinnonOsanSuoritus(
+  @Description("Suoritettavan tutkinnon osan tunnistetiedot")
   koulutusmoduuli: AmmatillisenTutkinnonOsa,
-  tunnustettu: Option[Tunnustaminen] = None,
+  @Description("Jos tutkinnon osa on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
+  tunnustettu: Option[OsaamisenTunnustaminen] = None,
   @Description("Suoritukseen liittyvän näytön tiedot")
   näyttö: Option[Näyttö] = None,
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
@@ -172,25 +174,23 @@ sealed trait AmmatillisenTutkinnonOsa extends Koulutusmoduuli {
 }
 
 @Description("Opetussuunnitelmaan kuuluvan tutkinnon osan tunnistetiedot")
-case class OpsTutkinnonosa(
+case class ValtakunnallinenTutkinnonOsa(
   @Description("Tutkinnon osan kansallinen koodi")
   @KoodistoUri("tutkinnonosat")
   tunniste: Koodistokoodiviite,
-  @Description("Onko pakollinen osa tutkinnossa")
   pakollinen: Boolean,
   override val laajuus: Option[LaajuusOsaamispisteissä],
   paikallinenKoodi: Option[PaikallinenKoodi] = None,
   kuvaus: Option[LocalizedString] = None
-) extends AmmatillisenTutkinnonOsa with KoodistostaLöytyväKoulutusmoduuli
+) extends AmmatillisenTutkinnonOsa with KoodistostaLöytyväKoulutusmoduuli with Valinnaisuus
 
 @Description("Paikallisen tutkinnon osan tunnistetiedot")
-case class PaikallinenTutkinnonosa(
+case class PaikallinenTutkinnonOsa(
   tunniste: PaikallinenKoodi,
   kuvaus: LocalizedString,
-  @Description("Onko pakollinen osa tutkinnossa")
   pakollinen: Boolean,
   override val laajuus: Option[LaajuusOsaamispisteissä]
-) extends AmmatillisenTutkinnonOsa with PaikallinenKoulutusmoduuli
+) extends AmmatillisenTutkinnonOsa with PaikallinenKoulutusmoduuli with Valinnaisuus
 
 case class AmmatillisenTutkinnonOsanLisätieto(
   @Description("Lisätiedon tyyppi kooditettuna")
@@ -199,13 +199,6 @@ case class AmmatillisenTutkinnonOsanLisätieto(
   @Description("Lisätiedon kuvaus siinä muodossa, kuin se näytetään todistuksella")
   kuvaus: LocalizedString
 )
-
-case class OppisopimuksellinenJärjestämismuoto(
-  @KoodistoUri("jarjestamismuoto")
-  @KoodistoKoodiarvo("20")
-  tunniste: Koodistokoodiviite,
-  oppisopimus: Oppisopimus
-) extends Järjestämismuoto
 
 trait AmmatillinenKoodistostaLöytyväArviointi extends KoodistostaLöytyväArviointi with ArviointiPäivämäärällä {
   override def hyväksytty = arvosana.koodiarvo match {
@@ -229,7 +222,9 @@ case class Näyttö(
   @Description("Vapaamuotoinen kuvaus suoritetusta näytöstä")
   kuvaus: LocalizedString,
   suorituspaikka: NäytönSuorituspaikka,
+  @Description("Näytön arvioinnin lisätiedot")
   arviointi: Option[NäytönArviointi],
+  @Description("Onko näyttö suoritettu työssäoppimisen yhteydessä (true/false)")
   työssäoppimisenYhteydessä: Boolean = false
 )
 
@@ -244,7 +239,7 @@ case class NäytönSuorituspaikka(
 
 case class NäytönArviointi (
   @Description("Näytön eri arviointikohteiden (Työprosessin hallinta jne) arvosanat.")
-  arviointiKohteet: List[NäytönArviointikohde],
+  arviointikohteet: List[NäytönArviointikohde],
   @KoodistoUri("ammatillisennaytonarvioinnistapaattaneet")
   @Description("Arvioinnista päättäneet tahot, ilmaistuna 1-numeroisella koodilla")
   arvioinnistaPäättäneet: Koodistokoodiviite,
@@ -273,10 +268,19 @@ trait Järjestämismuoto {
 }
 
 @Description("Järjestämismuoto ilman lisätietoja")
-case class DefaultJärjestämismuoto(
+case class JärjestämismuotoIlmanLisätietoja(
   @KoodistoUri("jarjestamismuoto")
   tunniste: Koodistokoodiviite
 ) extends Järjestämismuoto
+
+@Description("Koulutuksen järjestäminen oppisopimuskoulutuksena. Sisältää oppisopimuksen lisätiedot")
+case class OppisopimuksellinenJärjestämismuoto(
+  @KoodistoUri("jarjestamismuoto")
+  @KoodistoKoodiarvo("20")
+  tunniste: Koodistokoodiviite,
+  oppisopimus: Oppisopimus
+) extends Järjestämismuoto
+
 
 @Description("Henkilökohtainen opetuksen järjestämistä koskeva suunnitelma, https://fi.wikipedia.org/wiki/HOJKS")
 @OksaUri("tmpOKSAID228", "erityisopiskelija")

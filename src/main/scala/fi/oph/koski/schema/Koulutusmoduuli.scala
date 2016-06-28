@@ -45,6 +45,6 @@ trait Laajuus {
 }
 
 trait Valinnaisuus {
-  @Description("Onko pakollinen osa tutkinnossa")
+  @Description("Onko pakollinen osa tutkinnossa (true/false)")
   def pakollinen: Boolean
 }

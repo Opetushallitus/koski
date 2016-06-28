@@ -47,7 +47,7 @@ trait ValmentavaSuoritus extends Suoritus with Toimipisteellinen {
 }
 
 trait Toimipisteellinen {
-  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu")
+  @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu. Jos oppilaitoksella ei ole toimipisteitä, syötetään tähän oppilaitoksen tiedot.")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   def toimipiste: OrganisaatioWithOid
 }
