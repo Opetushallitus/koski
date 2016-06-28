@@ -667,7 +667,7 @@
           "nimi" : {
             "fi" : "Läsnä"
           },
-          "koodistoUri" : "perusopetuksenopiskeluoikeudentila",
+          "koodistoUri" : "koskiopiskeluoikeudentila",
           "koodistoVersio" : 1
         }
       }, {
@@ -677,7 +677,7 @@
           "nimi" : {
             "fi" : "Valmistunut"
           },
-          "koodistoUri" : "perusopetuksenopiskeluoikeudentila",
+          "koodistoUri" : "koskiopiskeluoikeudentila",
           "koodistoVersio" : 1
         }
       } ]

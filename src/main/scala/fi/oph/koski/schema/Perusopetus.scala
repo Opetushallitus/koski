@@ -299,6 +299,12 @@ case class PerusopetuksenOpiskeluoikeudenTila(
 case class PerusopetuksenOpiskeluoikeusjakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
-  @KoodistoUri("perusopetuksenopiskeluoikeudentila")
+  @KoodistoUri("koskiopiskeluoikeudentila")
+  @KoodistoKoodiarvo("lasna")
+  @KoodistoKoodiarvo("erotettumaaraajaksi")
+  @KoodistoKoodiarvo("luvatonpoissaolo")
+  @KoodistoKoodiarvo("valmistunut")
+  @KoodistoKoodiarvo("eronnut")
+  @KoodistoKoodiarvo("keskeyttanytmaaraajaksi")
   tila: Koodistokoodiviite
 ) extends Opiskeluoikeusjakso

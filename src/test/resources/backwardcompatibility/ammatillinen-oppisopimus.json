@@ -79,11 +79,11 @@
       "opiskeluoikeusjaksot" : [ {
         "alku" : "2016-09-01",
         "tila" : {
-          "koodiarvo" : "aktiivinen",
+          "koodiarvo" : "lasna",
           "nimi" : {
-            "fi" : "Aktiivinen"
+            "fi" : "Läsnä"
           },
-          "koodistoUri" : "ammatillinenopiskeluoikeudentila",
+          "koodistoUri" : "koskiopiskeluoikeudentila",
           "koodistoVersio" : 1
         },
         "opintojenRahoitus" : {

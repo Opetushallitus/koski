@@ -1,0 +1,84 @@
+[
+  {
+    "koodiUri": "koskiopiskeluoikeudentila_lasna",
+    "koodiArvo": "lasna",
+    "metadata": [
+      {
+        "nimi": "Läsnä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "koskiopiskeluoikeudentila_erotettumaaraajaksi",
+    "koodiArvo": "erotettumaaraajaksi",
+    "metadata": [
+      {
+        "nimi": "Erotettu määräajaksi",
+        "kuvaus": "Erotettu määräajaksi, kuluttaa opiskeluoikeusaikaa",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "koskiopiskeluoikeudentila_luvatonpoissaolo",
+    "koodiArvo": "luvatonpoissaolo",
+    "metadata": [
+      {
+        "nimi": "Luvaton poissaolo",
+        "kuvaus": "Luvaton poissaolo, kuluttaa opiskeluoikeusaikaa",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },  {
+    "koodiUri": "koskiopiskeluoikeudentila_valmistunut",
+    "koodiArvo": "valmistunut",
+    "metadata": [
+      {
+        "nimi": "Valmistunut",
+        "kuvaus": "Opiskeluoikeus päättynyt suorituksen valmistumiseen",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "koskiopiskeluoikeudentila_eronnut",
+    "koodiArvo": "eronnut",
+    "metadata": [
+      {
+        "nimi": "Eronnut",
+        "kuvaus": "Opiskeluoikeus päättynyt oppijan toivomuksesta, suoritus ei valmistunut",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "koskiopiskeluoikeudentila_katsotaaneronneeksi",
+    "koodiArvo": "katsotaaneronneeksi",
+    "metadata": [
+      {
+        "nimi": "Katsotaan eronneeksi",
+        "kuvaus": "Opiskeluoikeus päättynyt, suoritus ei valmistunut. Oppija ei ole suorittanut opintojaan ajallaan, tai ollut poissa ilman pätevää syytä.",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "koskiopiskeluoikeudentila_keskeyttanytmaaraajaksi",
+    "koodiArvo": "keskeyttanytmaaraajaksi",
+    "metadata": [
+      {
+        "nimi": "Keskeyttänyt määräajaksi",
+        "kuvaus": "Opiskeluoikeus keskeytetty määräajaksi. Ei kuluta opiskeluoikeusaikaa.",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  }
+]

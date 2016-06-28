@@ -10,9 +10,9 @@ import fi.oph.koski.schema._
 
 object AmmatillinenExampleData {
   val exampleHenkilö = MockOppijat.ammattilainen.vainHenkilötiedot
-  val ammatillinenOpiskeluoikeusAktiivinen = Koodistokoodiviite("aktiivinen", Some("Aktiivinen"), "ammatillinenopiskeluoikeudentila", Some(1))
-  val ammatillinenOpiskeluoikeusPäättynyt = Koodistokoodiviite("paattynyt", Some("Päättynyt"), "ammatillinenopiskeluoikeudentila", Some(1))
-  val ammatillinenOpiskeluoikeusKeskeyttänyt = Koodistokoodiviite("keskeyttanyt", Some("Keskeyttänyt"), "ammatillinenopiskeluoikeudentila", Some(1))
+  val ammatillinenOpiskeluoikeusLäsnä = Koodistokoodiviite("lasna", Some("Läsnä"), "koskiopiskeluoikeudentila", Some(1))
+  val ammatillinenOpiskeluoikeusValmis = Koodistokoodiviite("valmistunut", Some("Valmistunut"), "koskiopiskeluoikeudentila", Some(1))
+  val ammatillinenOpiskeluoikeusEronnut = Koodistokoodiviite("eronnut", Some("Eronnut"), "koskiopiskeluoikeudentila", Some(1))
 
   def tutkintoSuoritus(tutkintoKoulutus: AmmatillinenTutkintoKoulutus,
     tutkintonimike: Option[List[Koodistokoodiviite]] = None,

@@ -183,11 +183,11 @@
         "alku" : "2012-09-01",
         "loppu" : "2012-12-31",
         "tila" : {
-          "koodiarvo" : "aktiivinen",
+          "koodiarvo" : "lasna",
           "nimi" : {
-            "fi" : "Aktiivinen"
+            "fi" : "Läsnä"
           },
-          "koodistoUri" : "ammatillinenopiskeluoikeudentila",
+          "koodistoUri" : "koskiopiskeluoikeudentila",
           "koodistoVersio" : 1
         },
         "opintojenRahoitus" : {
@@ -201,11 +201,11 @@
         "alku" : "2013-01-01",
         "loppu" : "2013-12-31",
         "tila" : {
-          "koodiarvo" : "keskeyttanyt",
+          "koodiarvo" : "eronnut",
           "nimi" : {
-            "fi" : "Keskeyttänyt"
+            "fi" : "Eronnut"
           },
-          "koodistoUri" : "ammatillinenopiskeluoikeudentila",
+          "koodistoUri" : "koskiopiskeluoikeudentila",
           "koodistoVersio" : 1
         },
         "opintojenRahoitus" : {
@@ -218,11 +218,11 @@
       }, {
         "alku" : "2014-01-01",
         "tila" : {
-          "koodiarvo" : "aktiivinen",
+          "koodiarvo" : "lasna",
           "nimi" : {
-            "fi" : "Aktiivinen"
+            "fi" : "Läsnä"
           },
-          "koodistoUri" : "ammatillinenopiskeluoikeudentila",
+          "koodistoUri" : "koskiopiskeluoikeudentila",
           "koodistoVersio" : 1
         },
         "opintojenRahoitus" : {

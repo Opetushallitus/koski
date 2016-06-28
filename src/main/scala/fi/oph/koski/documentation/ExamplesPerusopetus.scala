@@ -194,6 +194,6 @@ object ExamplesPerusopetus {
 }
 
 object PerusopetuksenExampleData {
-  val opiskeluoikeusLäsnä = Koodistokoodiviite("lasna", Some("Läsnä"), "perusopetuksenopiskeluoikeudentila", Some(1))
-  val opiskeluoikeusValmistunut = Koodistokoodiviite("valmistunut", Some("Valmistunut"), "perusopetuksenopiskeluoikeudentila", Some(1))
+  val opiskeluoikeusLäsnä = Koodistokoodiviite("lasna", Some("Läsnä"), "koskiopiskeluoikeudentila", Some(1))
+  val opiskeluoikeusValmistunut = Koodistokoodiviite("valmistunut", Some("Valmistunut"), "koskiopiskeluoikeudentila", Some(1))
 }

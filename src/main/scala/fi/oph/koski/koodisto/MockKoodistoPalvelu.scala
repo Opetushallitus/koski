@@ -15,7 +15,6 @@ object MockKoodistoPalvelu extends KoodistoPalvelu {
 
    */
   val koodistot = List (
-    "ammatillinenopiskeluoikeudentila",
     "ammatillisenerityisopetuksenperuste",
     "ammatillisennaytonarvioinnistapaattaneet",
     "ammatillisennaytonarviointikeskusteluunosallistuneet",
@@ -31,11 +30,11 @@ object MockKoodistoPalvelu extends KoodistoPalvelu {
     "koulutus",
     "kieli",
     "kielivalikoima",
+    "koskiopiskeluoikeudentila",
     "kunta",
     "lahdejarjestelma",
     "lasnaolotila",
     "lukionkurssit",
-    "lukionopiskeluoikeudentila",
     "lukionoppimaara",
     "maatjavaltiot2",
     "opetusryhma",
@@ -50,7 +49,6 @@ object MockKoodistoPalvelu extends KoodistoPalvelu {
     "perusopetuksenoppimaara",
     "perusopetuksensuoritustapa",
     "perusopetuksentukimuoto",
-    "perusopetuksenopiskeluoikeudentila",
     "suorituksentila",
     "suorituksentyyppi",
     "tutkintonimikkeet",

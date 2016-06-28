@@ -4,6 +4,7 @@
 - Näytön arvioinnissa nimenmuutos arviointiKohteet -> arviointikohteet
 - Poistettu paikallinenKoodi ja kuvaus valtakunnallisilta ammatillisilta tutkinnon osilta
 - Nimenmuutos ulkomaanjakso -> ulkomaanjaksot
+- Perusopetus, lukio ja ammatillinen käyttävät nyt samaa koskiopiskeluoikeudentila-koodistoa opiskeluoikeuksien tiloihin
 
 ## 27.6.2016
 

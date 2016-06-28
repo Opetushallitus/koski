@@ -1,10 +1,10 @@
 {
-  "koodistoUri" : "ammatillinenopiskeluoikeudentila",
+  "koodistoUri" : "koskiopiskeluoikeudentila",
   "versio" : 1,
   "metadata" : [ {
     "kieli" : "EN",
-    "nimi" : "ammatillinenopiskeluoikeudentila",
-    "kuvaus" : "Opiskeluoikeuden tila"
+    "nimi" : "Koski-opiskeluoikeuden tila",
+    "kuvaus" : "Opiskeluoikeuden tila Koski-järjestelmässä "
   } ],
   "codesGroupUri" : "http://koski",
   "voimassaAlkuPvm" : "2015-11-01",

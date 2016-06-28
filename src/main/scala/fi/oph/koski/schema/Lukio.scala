@@ -229,6 +229,6 @@ case class LukionOpiskeluoikeudenTila(
 case class LukionOpiskeluoikeusjakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
-  @KoodistoUri("lukionopiskeluoikeudentila")
+  @KoodistoUri("koskiopiskeluoikeudentila")
   tila: Koodistokoodiviite
 ) extends Opiskeluoikeusjakso

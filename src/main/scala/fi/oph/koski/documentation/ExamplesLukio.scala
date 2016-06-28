@@ -272,8 +272,8 @@ object LukioExampleData {
   val tavoiteKokoOppimäärä = Koodistokoodiviite("lukionoppimaara", "suorituksentyyppi")
   val tavoiteOppiaineenOppimäärä = Koodistokoodiviite("lukionoppiaineenoppimaara", "suorituksentyyppi")
 
-  val opiskeluoikeusAktiivinen = Koodistokoodiviite("aktiivinen", Some("Aktiivinen"), "lukionopiskeluoikeudentila", Some(1))
-  val opiskeluoikeusPäättynyt = Koodistokoodiviite("paattynyt", Some("Päättynyt"), "lukionopiskeluoikeudentila", Some(1))
+  val opiskeluoikeusAktiivinen = Koodistokoodiviite("lasna", Some("Läsnä"), "koskiopiskeluoikeudentila", Some(1))
+  val opiskeluoikeusPäättynyt = Koodistokoodiviite("valmistunut", Some("Valmistunut"), "koskiopiskeluoikeudentila", Some(1))
 
   val aikuistenOpetussuunnitelma = Koodistokoodiviite("aikuistenops", Some("Aikuisten ops"), "lukionoppimaara", Some(1))
   val nuortenOpetussuunnitelma = Koodistokoodiviite("nuortenops", Some("Nuorten ops"), "lukionoppimaara", Some(1))

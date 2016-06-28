@@ -834,11 +834,11 @@
         "alku" : "2012-09-01",
         "loppu" : "2016-01-09",
         "tila" : {
-          "koodiarvo" : "aktiivinen",
+          "koodiarvo" : "lasna",
           "nimi" : {
-            "fi" : "Aktiivinen"
+            "fi" : "Läsnä"
           },
-          "koodistoUri" : "ammatillinenopiskeluoikeudentila",
+          "koodistoUri" : "koskiopiskeluoikeudentila",
           "koodistoVersio" : 1
         },
         "opintojenRahoitus" : {
@@ -851,11 +851,11 @@
       }, {
         "alku" : "2016-01-10",
         "tila" : {
-          "koodiarvo" : "paattynyt",
+          "koodiarvo" : "valmistunut",
           "nimi" : {
-            "fi" : "Päättynyt"
+            "fi" : "Valmistunut"
           },
-          "koodistoUri" : "ammatillinenopiskeluoikeudentila",
+          "koodistoUri" : "koskiopiskeluoikeudentila",
           "koodistoVersio" : 1
         },
         "opintojenRahoitus" : {
