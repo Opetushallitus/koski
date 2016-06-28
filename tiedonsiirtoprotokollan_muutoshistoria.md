@@ -3,6 +3,7 @@
 - Näyttötutkintoon valmistavassa koulutuksessa käytössä väliaikainen koodi. Tutkinto, johon koulutus tähtää on siirretty omaan tutkinto-kenttäänsä
 - Näytön arvioinnissa nimenmuutos arviointiKohteet -> arviointikohteet
 - Poistettu paikallinenKoodi ja kuvaus valtakunnallisilta ammatillisilta tutkinnon osilta
+- Nimenmuutos ulkomaanjakso -> ulkomaanjaksot
 
 ## 27.6.2016
 

@@ -33,6 +33,7 @@ case class PerusopetuksenLisäopetuksenSuoritus(
   vahvistus: Option[Henkilövahvistus] = None,
   @KoodistoKoodiarvo("perusopetuksenlisaopetus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenlisaopetus", koodistoUri = "suorituksentyyppi"),
+  @Description("Oppiaineiden suoritukset")
   override val osasuoritukset: Option[List[PerusopetuksenLisäopetuksenOppiaineenSuoritus]],
   koulutusmoduuli: PerusopetuksenLisäopetus
 ) extends Suoritus with Toimipisteellinen {

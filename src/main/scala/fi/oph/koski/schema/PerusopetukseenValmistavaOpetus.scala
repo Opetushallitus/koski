@@ -33,6 +33,7 @@ case class PerusopetukseenValmistavanOpetuksenSuoritus(
   @KoodistoKoodiarvo("perusopetukseenvalmistavaopetus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetukseenvalmistavaopetus", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: PerusopetukseenValmistavaOpetus = PerusopetukseenValmistavaOpetus(),
+  @Description("Oppiaineiden suoritukset")
   override val osasuoritukset: Option[List[PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus]]
 ) extends Suoritus with Toimipisteellinen {
   def arviointi = None

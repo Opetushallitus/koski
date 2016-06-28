@@ -26,12 +26,13 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeus(
   override def arvioituPäättymispäivä = None
 }
 
-@Description("Lukioon valmistava koulutus (LUVA)")
+@Description("Lukioon valmistavan koulutus (LUVA) suoritus")
 case class LukioonValmistavanKoulutuksenSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Henkilövahvistus] = None,
+  @Description("Lukioon valmistavaan koulutukseen sisältyvien kurssien suoritukset")
   override val osasuoritukset: Option[List[LukioonValmistavanKoulutuksenOsasuoritus]],
   @KoodistoKoodiarvo("luva")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("luva", koodistoUri = "suorituksentyyppi"),

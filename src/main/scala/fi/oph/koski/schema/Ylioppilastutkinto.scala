@@ -25,6 +25,7 @@ case class YlioppilastutkinnonOpiskeluoikeus(
 case class YlioppilastutkinnonSuoritus(
   tila: Koodistokoodiviite,
   toimipiste: OrganisaatioWithOid,
+  @Description("Ylioppilastutkinnon kokeiden suoritukset")
   override val osasuoritukset: Option[List[YlioppilastutkinnonKokeenSuoritus]],
   @KoodistoKoodiarvo("ylioppilastutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ylioppilastutkinto", koodistoUri = "suorituksentyyppi"),

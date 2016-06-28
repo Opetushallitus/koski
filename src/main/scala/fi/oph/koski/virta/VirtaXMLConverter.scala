@@ -79,7 +79,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
     koulutuskoodi(opiskeluoikeusNode).map { koulutuskoodi =>
       val t = tutkinto(koulutuskoodi)
       if (suoritukset.exists(_.koulutusmoduuli == t)) suoritukset
-      else KorkeakouluTutkinnonSuoritus(
+      else KorkeakoulututkinnonSuoritus(
         koulutusmoduuli = t,
         arviointi = None,
         tila = requiredKoodi("suorituksentila", "KESKEN").get,
@@ -97,7 +97,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
         koulutuskoodi(suoritus).map { koulutuskoodi =>
           val osasuoritukset = childNodes(suoritus, allNodes).map(convertOpintojaksonSuoritus(_, allNodes))
 
-          KorkeakouluTutkinnonSuoritus(
+          KorkeakoulututkinnonSuoritus(
             koulutusmoduuli = tutkinto(koulutuskoodi),
             arviointi = arviointi(suoritus),
             tila = requiredKoodi("suorituksentila", "VALMIS").get,
@@ -194,8 +194,8 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
     koodistoViitePalvelu.validate(Koodistokoodiviite(koodi, uri)).orElse(throw new IllegalArgumentException("Puuttuva koodi: " + Koodistokoodiviite(koodi, uri)))
   }
 
-  private def tutkinto(koulutuskoodi: String): KorkeakouluTutkinto = {
-    KorkeakouluTutkinto(requiredKoodi("koulutus", koulutuskoodi).get)
+  private def tutkinto(koulutuskoodi: String): Korkeakoulututkinto = {
+    Korkeakoulututkinto(requiredKoodi("koulutus", koulutuskoodi).get)
   }
 
   private def loppuPvm(n: Node): Option[LocalDate] = {

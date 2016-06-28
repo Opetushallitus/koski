@@ -18,7 +18,7 @@ case class AmmatillinenOpiskeluoikeus(
   koulutustoimija: Option[OrganisaatioWithOid] = None,
   @MinItems(1) @MaxItems(2)
   suoritukset: List[AmmatillinenPäätasonSuoritus],
-  @Description("Opiskelijan suorituksen tavoite-tieto kertoo sen, suorittaako opiskelija tutkintotavoitteista koulutusta (koko tutkintoa) vai tutkinnon osa tavoitteista koulutusta (tutkinnon osaa)")
+  @Description("Opiskeluoikeuden tavoite-tieto kertoo sen, suorittaako opiskelija tutkintotavoitteista koulutusta (koko tutkintoa) vai tutkinnon osa tavoitteista koulutusta (tutkinnon osaa)")
   @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("ammatillinentutkinto")
   @KoodistoKoodiarvo("ammatillisentutkinnonosa")
@@ -39,8 +39,8 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @Description("Jos kyseessä erityisopiskelija, jolle on tehty henkilökohtainen opetuksen järjestämistä koskeva suunnitelma (hojks), täytetään tämä tieto. Kentän puuttuminen tai null-arvo tulkitaan siten, että suunnitelmaa ei ole tehty.")
   hojks: Option[Hojks],
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false,
-  @Description("Tieto siitä liittyykö opintoihin ulkomaanjaksoja")
-  ulkomaanjakso: Option[List[Ulkomaanjakso]] = None
+  @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot")
+  ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None
 )
 
 case class AmmatillinenOpiskeluoikeudenTila(

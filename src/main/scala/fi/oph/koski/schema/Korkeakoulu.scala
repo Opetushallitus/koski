@@ -20,12 +20,14 @@ case class KorkeakoulunOpiskeluoikeus(
   läsnäolotiedot: Option[KorkeakoulunLäsnäolotiedot],
   @KoodistoKoodiarvo("korkeakoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulutus", Some("Korkeakoulutus"), "opiskeluoikeudentyyppi", None),
+  @Description("Jos tämä on opiskelijan ensisijainen opiskeluoikeus tässä oppilaitoksessa, ilmoitetaan tässä ensisijaisuuden tiedot.")
   ensisijaisuus: Option[Ensisijaisuus] = None
 ) extends Opiskeluoikeus {
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def versionumero = None
 }
 
+@Description("Ensisijaisuustiedot sisältävät alku- ja loppupäivämäärän.")
 case class Ensisijaisuus(
   alkamispäivä: LocalDate,
   päättymispäivä: Option[LocalDate]
@@ -35,8 +37,8 @@ trait KorkeakouluSuoritus extends Suoritus {
   def toimipiste: Oppilaitos
 }
 
-  case class KorkeakouluTutkinnonSuoritus(
-    koulutusmoduuli: KorkeakouluTutkinto,
+  case class KorkeakoulututkinnonSuoritus(
+    koulutusmoduuli: Korkeakoulututkinto,
     @KoodistoKoodiarvo("korkeakoulututkinto")
     tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulututkinto", koodistoUri = "suorituksentyyppi"),
     arviointi: Option[List[KorkeakoulunArviointi]],
@@ -44,6 +46,7 @@ trait KorkeakouluSuoritus extends Suoritus {
     vahvistus: Option[Henkilövahvistus],
     suorituskieli: Option[Koodistokoodiviite],
     toimipiste: Oppilaitos,
+    @Description("Tutkintoon kuuluvien opintojaksojen suoritukset")
     override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]]
   ) extends KorkeakouluSuoritus {
     override def tarvitseeVahvistuksen = false
@@ -58,13 +61,14 @@ trait KorkeakouluSuoritus extends Suoritus {
     vahvistus: Option[Henkilövahvistus],
     suorituskieli: Option[Koodistokoodiviite],
     toimipiste: Oppilaitos,
+    @Description("Opintojaksoon sisältyvien opintojaksojen suoritukset")
     override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]] = None
   ) extends KorkeakouluSuoritus {
     override def tarvitseeVahvistuksen = false
   }
 
 @Description("Korkeakoulututkinnon tunnistetiedot")
-case class KorkeakouluTutkinto(
+case class Korkeakoulututkinto(
   tunniste: Koodistokoodiviite
 ) extends Koulutus  {
   override def laajuus = None
