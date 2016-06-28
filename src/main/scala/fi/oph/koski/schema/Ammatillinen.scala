@@ -144,9 +144,11 @@ case class AmmatillisenTutkinnonOsanSuoritus(
   vahvistus: Option[Henkilövahvistus] = None,
   @KoodistoKoodiarvo("ammatillisentutkinnonosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi"),
+  @Description("Tutkinnon suoritukseen kuuluvat työssäoppimisjaksot")
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None
 ) extends Suoritus
 
+@Description("Työssäoppimisjakson tiedot (aika, paikka, työtehtävät, laajuuss)")
 case class Työssäoppimisjakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
@@ -156,6 +158,7 @@ case class Työssäoppimisjakso(
   @Description("Maa, jossa työssäoppiminen on tapahtunut")
   @KoodistoUri("maatjavaltiot2")
   maa: Koodistokoodiviite,
+  @Description("Työtehtävien kuvaus")
   työtehtävät: LocalizedString,
   laajuus: LaajuusOsaamispisteissä
 ) extends Jakso
