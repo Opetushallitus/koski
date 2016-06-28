@@ -6,7 +6,8 @@
     "sukunimi" : "Lukiolainen"
   },
   "opiskeluoikeudet" : [ {
-    "alkamispäivä" : "2016-09-01",
+    "alkamispäivä" : "2012-09-01",
+    "päättymispäivä" : "2016-06-01",
     "oppilaitos" : {
       "oid" : "1.2.246.562.10.14613773812",
       "oppilaitosnumero" : {
@@ -3289,7 +3290,7 @@
           "koodistoVersio" : 1
         }
       }, {
-        "alku" : "2016-01-10",
+        "alku" : "2016-06-01",
         "tila" : {
           "koodiarvo" : "valmistunut",
           "nimi" : {

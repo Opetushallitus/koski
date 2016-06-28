@@ -152,7 +152,6 @@ class OppijaValidationSpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatil
     describe("Opiskeluoikeuden päivämäärät") {
       describe("Päivämäärät kunnossa") {
         it("palautetaan HTTP 200" ) (putOpiskeluOikeusMerged(Map(
-          "alkamispäivä" -> "2015-08-01",
           "päättymispäivä" -> "2016-06-30",
           "arvioituPäättymispäivä" -> "2018-05-31"
         ))(verifyResponseStatus(200)))
@@ -169,14 +168,12 @@ class OppijaValidationSpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatil
       }
       describe("Väärä päivämääräjärjestys") {
         it("alkamispäivä > päättymispäivä" ) (putOpiskeluOikeusMerged(Map(
-          "alkamispäivä" -> "2015-08-01",
-          "päättymispäivä" -> "2014-05-31"
-        ))(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua("alkamispäivä (2015-08-01) oltava sama tai aiempi kuin päättymispäivä(2014-05-31)"))))
+          "päättymispäivä" -> "1999-05-31"
+        ))(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua("alkamispäivä (2000-01-01) oltava sama tai aiempi kuin päättymispäivä(1999-05-31)"))))
 
         it("alkamispäivä > arvioituPäättymispäivä" ) (putOpiskeluOikeusMerged(Map(
-          "alkamispäivä" -> "2015-08-01",
-          "arvioituPäättymispäivä" -> "2014-05-31"
-        ))(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua("alkamispäivä (2015-08-01) oltava sama tai aiempi kuin arvioituPäättymispäivä(2014-05-31)"))))
+          "arvioituPäättymispäivä" -> "1999-05-31"
+        ))(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua("alkamispäivä (2000-01-01) oltava sama tai aiempi kuin arvioituPäättymispäivä(1999-05-31)"))))
       }
     }
 

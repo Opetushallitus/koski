@@ -17,7 +17,7 @@ object ExamplesLukio {
       id = None,
       versionumero = None,
       lähdejärjestelmänId = None,
-      alkamispäivä = Some(date(2016, 9, 1)),
+      alkamispäivä = Some(date(2012, 9, 1)),
       päättymispäivä = None,
       oppilaitos = jyväskylänNormaalikoulu, None,
       tavoite = tavoiteKokoOppimäärä,
@@ -44,12 +44,15 @@ object ExamplesLukio {
   val päättötodistus = Oppija(
     exampleHenkilö,
     List(LukionOpiskeluoikeus(
-      id = None,
-      versionumero = None,
-      lähdejärjestelmänId = None,
-      alkamispäivä = Some(date(2016, 9, 1)),
-      päättymispäivä = None,
-      oppilaitos = jyväskylänNormaalikoulu, None,
+      alkamispäivä = Some(date(2012, 9, 1)),
+      päättymispäivä = Some(date(2016, 6, 1)),
+      tila = LukionOpiskeluoikeudenTila(
+        List(
+          LukionOpiskeluoikeusjakso(alku = date(2012, 9, 1), tila = opiskeluoikeusAktiivinen),
+          LukionOpiskeluoikeusjakso(alku = date(2016, 6, 1), tila = opiskeluoikeusPäättynyt)
+        )
+      ),
+      oppilaitos = jyväskylänNormaalikoulu,
       tavoite = tavoiteKokoOppimäärä,
       suoritukset = List(
         LukionOppimääränSuoritus(
@@ -201,12 +204,6 @@ object ExamplesLukio {
             )))
             // TODO, opinto-ohjaus, kansalaisen turvakurssit
           ))
-        )
-      ),
-      tila = LukionOpiskeluoikeudenTila(
-        List(
-          LukionOpiskeluoikeusjakso(alku = date(2012, 9, 1), tila = opiskeluoikeusAktiivinen),
-          LukionOpiskeluoikeusjakso(alku = date(2016, 1, 10), tila = opiskeluoikeusPäättynyt)
         )
       ),
       läsnäolotiedot = None

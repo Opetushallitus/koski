@@ -7,7 +7,6 @@ import org.scalatest.{FreeSpec, Matchers}
 
 class OppijaExamplesTest extends FreeSpec with Matchers with LocalJettyHttpSpecification with Logging {
   "API examples" - {
-    resetFixtures
     examples.foreach { example =>
       "POST " + example.name in {
         val body = Json.write(example.data).getBytes("utf-8")

@@ -5,6 +5,7 @@ import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
 import fi.oph.koski.documentation._
+import fi.oph.koski.json.Json
 import fi.oph.koski.koski.KoskiValidator
 import fi.oph.koski.koskiuser.{AccessType, MockUsers}
 import fi.oph.koski.opiskeluoikeus.OpiskeluOikeusRepository
@@ -29,6 +30,7 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluO
     defaultOpiskeluOikeudet.foreach { case (oid, oikeus) =>
       validator.validateAsJson(Oppija(OidHenkilö(oid), List(oikeus))) match {
         case Right(oppija) => repository.createOrUpdate(VerifiedOppijaOid(oid), oppija.tallennettavatOpiskeluoikeudet(0))
+        case Left(status) => throw new RuntimeException("Fixture insert failed for " + Json.write(oikeus) + ": " + status)
       }
     }
   }
