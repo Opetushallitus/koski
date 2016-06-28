@@ -35,7 +35,7 @@ object SuoritusDeserializer extends Deserializer[Suoritus] {
 
         case suoritus: JObject if tyyppi(suoritus) == JString("perusopetuksenoppimaara") => suoritus.extract[PerusopetuksenOppimääränSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("perusopetuksenoppiaine") => suoritus.extract[PerusopetuksenOppiaineenSuoritus]
-        case suoritus: JObject if tyyppi(suoritus) == JString("perusopetuksentoimintaalue") => suoritus.extract[PerusopetuksenToimintaAlueenSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("perusopetuksentoimintaalue") => suoritus.extract[PerusopetuksenToiminta_AlueenSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("perusopetuksenoppiaineenoppimaara") => suoritus.extract[PerusopetuksenOppiaineenOppimääränSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("perusopetuksenvuosiluokka") => suoritus.extract[PerusopetuksenVuosiluokanSuoritus]
 
