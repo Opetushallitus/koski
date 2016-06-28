@@ -7,6 +7,7 @@
   },
   "opiskeluoikeudet" : [ {
     "alkamispäivä" : "2008-08-15",
+    "päättymispäivä" : "2016-06-04",
     "oppilaitos" : {
       "oid" : "1.2.246.562.10.14613773812",
       "oppilaitosnumero" : {

@@ -89,6 +89,7 @@ object ExamplesPerusopetus {
     MockOppijat.eero.vainHenkilötiedot,
     List(PerusopetuksenOpiskeluoikeus(
       alkamispäivä = Some(date(2008, 8, 15)),
+      päättymispäivä = Some(date(2016, 6, 4)),
       oppilaitos = jyväskylänNormaalikoulu,
       koulutustoimija = None,
       suoritukset = List(

@@ -72,7 +72,8 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       validateDateOrder(("alkamispäivä", opiskeluOikeus.alkamispäivä), ("arvioituPäättymispäivä", opiskeluOikeus.arvioituPäättymispäivä)),
       DateValidation.validateJaksot("tila.opiskeluoikeusjaksot", opiskeluOikeus.tila.opiskeluoikeusjaksot),
       DateValidation.validateJaksot("läsnäolotiedot.läsnäolojaksot", opiskeluOikeus.läsnäolotiedot.toList.flatMap(_.läsnäolojaksot)),
-      HttpStatus.validate(opiskeluOikeus.alkamispäivä == opiskeluOikeus.tila.opiskeluoikeusjaksot.headOption.map(_.alku))(KoskiErrorCategory.badRequest.validation.date.alkupäivämäärä()),
+      HttpStatus.validate(opiskeluOikeus.alkamispäivä == opiskeluOikeus.tila.opiskeluoikeusjaksot.headOption.map(_.alku))(KoskiErrorCategory.badRequest.validation.date.alkamispäivä()),
+      HttpStatus.validate(!opiskeluOikeus.päättymispäivä.isDefined || opiskeluOikeus.päättymispäivä == opiskeluOikeus.tila.opiskeluoikeusjaksot.filter(_.opiskeluoikeusPäättynyt).lastOption.map(_.alku))(KoskiErrorCategory.badRequest.validation.date.päättymispäivämäärä()),
       HttpStatus.fold(opiskeluOikeus.suoritukset.map(validateSuoritus(_, None)))
     )}
       .then {

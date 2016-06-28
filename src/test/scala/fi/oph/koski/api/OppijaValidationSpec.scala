@@ -149,10 +149,11 @@ class OppijaValidationSpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatil
       }
     }
 
+    // TODO: testit jaksojen päivämäärät vs. alkamis- ja loppumispäivät
+
     describe("Opiskeluoikeuden päivämäärät") {
       describe("Päivämäärät kunnossa") {
         it("palautetaan HTTP 200" ) (putOpiskeluOikeusMerged(Map(
-          "päättymispäivä" -> "2016-06-30",
           "arvioituPäättymispäivä" -> "2018-05-31"
         ))(verifyResponseStatus(200)))
       }
@@ -168,8 +169,15 @@ class OppijaValidationSpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatil
       }
       describe("Väärä päivämääräjärjestys") {
         it("alkamispäivä > päättymispäivä" ) (putOpiskeluOikeusMerged(Map(
-          "päättymispäivä" -> "1999-05-31"
-        ))(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua("alkamispäivä (2000-01-01) oltava sama tai aiempi kuin päättymispäivä(1999-05-31)"))))
+          "päättymispäivä" -> "1999-05-31",
+          "tila" -> Map("opiskeluoikeusjaksot" -> List(
+            Map( "alku" -> "2000-01-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "koskiopiskeluoikeudentila")),
+            Map( "alku" -> "1999-05-31", "tila" -> Map("koodiarvo" -> "eronnut", "koodistoUri" -> "koskiopiskeluoikeudentila"))
+          ))
+        ))(verifyResponseStatus(400,
+          KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua("alkamispäivä (2000-01-01) oltava sama tai aiempi kuin päättymispäivä(1999-05-31)"),
+          KoskiErrorCategory.badRequest.validation.date.jaksojenJärjestys("tila.opiskeluoikeusjaksot: 2000-01-01 oltava sama tai aiempi kuin 1999-05-31")
+        )))
 
         it("alkamispäivä > arvioituPäättymispäivä" ) (putOpiskeluOikeusMerged(Map(
           "arvioituPäättymispäivä" -> "1999-05-31"
@@ -181,8 +189,7 @@ class OppijaValidationSpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatil
       describe("Päivämäärät kunnossa") {
         it("palautetaan HTTP 200") (putOpiskeluOikeusMerged(Map("tila" -> Map("opiskeluoikeusjaksot" -> List(
           Map( "alku" -> "2015-08-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "koskiopiskeluoikeudentila")),
-          Map( "alku" -> "2016-01-01", "tila" -> Map("koodiarvo" -> "keskeyttanytmaaraajaksi", "koodistoUri" -> "koskiopiskeluoikeudentila")),
-          Map( "alku" -> "2016-06-02", "tila" -> Map("koodiarvo" -> "eronnut", "koodistoUri" -> "koskiopiskeluoikeudentila"))
+          Map( "alku" -> "2016-01-01", "tila" -> Map("koodiarvo" -> "keskeyttanytmaaraajaksi", "koodistoUri" -> "koskiopiskeluoikeudentila"))
         )))) (verifyResponseStatus(200)))
       }
       describe("jaksojen päivämääräjärjestys on väärä") {

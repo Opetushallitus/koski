@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
 import java.time.LocalDate
-
+import fi.oph.koski.documentation.ExampleData
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.Json
 import fi.oph.koski.log.AuditLogTester
@@ -18,8 +18,10 @@ class OppijaQuerySpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatillinen
     describe("kun haku osuu") {
       it("palautetaan hakutulokset") {
         resetFixtures
-        putOpiskeluOikeus(defaultOpiskeluoikeus.copy(päättymispäivä = Some(date(2016,1,9)))) {
-          putOpiskeluOikeus(defaultOpiskeluoikeus.copy(päättymispäivä = Some(date(2013,1,9))), teija) {
+        putOpiskeluOikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2016,1,9))) {
+          verifyResponseStatus(200)
+          putOpiskeluOikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2013,1,9)), teija) {
+            verifyResponseStatus(200)
             val queryString: String = "opiskeluoikeusPäättynytAikaisintaan=2016-01-01&opiskeluoikeusPäättynytViimeistään=2016-12-31"
             authGet ("api/oppija?" + queryString) {
               verifyResponseStatus(200)

@@ -197,7 +197,7 @@
           "koodistoUri" : "opintojenrahoitus"
         }
       }, {
-        "alku" : "2013-01-01",
+        "alku" : "2016-01-09",
         "tila" : {
           "koodiarvo" : "eronnut",
           "nimi" : {
@@ -205,30 +205,6 @@
           },
           "koodistoUri" : "koskiopiskeluoikeudentila",
           "koodistoVersio" : 1
-        },
-        "opintojenRahoitus" : {
-          "koodiarvo" : "1",
-          "nimi" : {
-            "fi" : "Valtionosuusrahoitteinen koulutus"
-          },
-          "koodistoUri" : "opintojenrahoitus"
-        }
-      }, {
-        "alku" : "2014-01-01",
-        "tila" : {
-          "koodiarvo" : "lasna",
-          "nimi" : {
-            "fi" : "Läsnä"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
-        },
-        "opintojenRahoitus" : {
-          "koodiarvo" : "1",
-          "nimi" : {
-            "fi" : "Valtionosuusrahoitteinen koulutus"
-          },
-          "koodistoUri" : "opintojenrahoitus"
         }
       } ]
     },

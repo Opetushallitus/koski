@@ -51,12 +51,11 @@ case class AmmatillinenOpiskeluoikeudenTila(
 @Description("Sisältää myös tiedon opintojen rahoituksesta jaksoittain.")
 case class AmmatillinenOpiskeluoikeusjakso(
   alku: LocalDate,
-  @KoodistoUri("koskiopiskeluoikeudentila")
   tila: Koodistokoodiviite,
   @Description("Opintojen rahoitus")
   @KoodistoUri("opintojenrahoitus")
-  opintojenRahoitus: Option[Koodistokoodiviite]
-) extends Opiskeluoikeusjakso
+  opintojenRahoitus: Option[Koodistokoodiviite] = None
+) extends KoskiOpiskeluoikeusjakso
 
 case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   koulutusmoduuli: NäyttötutkintoonValmistavaKoulutus = NäyttötutkintoonValmistavaKoulutus(),

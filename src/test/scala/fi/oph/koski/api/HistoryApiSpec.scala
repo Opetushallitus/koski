@@ -3,14 +3,14 @@ package fi.oph.koski.api
 import java.time.LocalDate
 
 import fi.oph.koski.db.OpiskeluOikeusHistoryRow
-import fi.oph.koski.documentation.{AmmatillinenOldExamples, ExamplesAmmatillinen}
+import fi.oph.koski.documentation.AmmatillinenOldExamples
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.jettylauncher.SharedJetty
 import fi.oph.koski.json.Json
+import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.schema.{Opiskeluoikeus, TäydellisetHenkilötiedot}
-import fi.oph.koski.koskiuser.MockUsers
 import org.scalatest.FunSpec
 
 class HistoryApiSpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatillinen{
@@ -34,7 +34,7 @@ class HistoryApiSpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatillinen{
     describe("Päivitettäessä") {
       it("Luodaan uusi versiorivi") {
         val opiskeluOikeus = createOpiskeluOikeus(oppija, uusiOpiskeluOikeus)
-        val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluOikeus.copy(päättymispäivä = Some(LocalDate.now)))
+        val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluOikeus.copy(arvioituPäättymispäivä = Some(LocalDate.now)))
         verifyHistory(oppija, modified, List(1, 2))
       }
 
@@ -50,7 +50,7 @@ class HistoryApiSpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatillinen{
         describe("Versionumero sama kuin viimeisin") {
           it("Päivitys hyväksytään") {
             val opiskeluOikeus = createOpiskeluOikeus(oppija, uusiOpiskeluOikeus)
-            val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluOikeus.copy(päättymispäivä = Some(LocalDate.now), versionumero = Some(1)))
+            val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluOikeus.copy(arvioituPäättymispäivä = Some(LocalDate.now), versionumero = Some(1)))
             verifyHistory(oppija, modified, List(1, 2))
           }
         }
@@ -58,7 +58,7 @@ class HistoryApiSpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatillinen{
         describe("Versionumero ei täsmää") {
           it("Päivitys hylätään") {
             val opiskeluOikeus = createOpiskeluOikeus(oppija, uusiOpiskeluOikeus)
-            val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluOikeus.copy(päättymispäivä = Some(LocalDate.now), versionumero = Some(3)), {
+            val modified: Opiskeluoikeus = createOrUpdate(oppija, opiskeluOikeus.copy(arvioituPäättymispäivä = Some(LocalDate.now), versionumero = Some(3)), {
               verifyResponseStatus(409, KoskiErrorCategory.conflict.versionumero("Annettu versionumero 3 <> 1"))
             })
             verifyHistory(oppija, modified, List(1))

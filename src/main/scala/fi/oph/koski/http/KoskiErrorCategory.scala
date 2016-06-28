@@ -44,7 +44,8 @@ object KoskiErrorCategory {
       class Date extends ErrorCategory(Validation.this, "date", "Päivämäärä on oikeassa formaatissa, mutta semanttisesti epäkelpo.") {
         val loppuEnnenAlkua = subcategory("loppuEnnenAlkua", "Annettu (arvioitu) loppupäivä on aiemmin kuin alkupäivä.")
         val jaksojenJärjestys = subcategory("jaksojenJärjestys", "Jaksojen on oltava päivämääräjärjestyksessä")
-        val alkupäivämäärä = subcategory("alkupäivämäärä", "Opiskeluoikeuden alkupäivämäärä ei vastaa ensimmäisen opiskeluoikeusjakson alkupäivää")
+        val alkamispäivä = subcategory("alkupäivämäärä", "Opiskeluoikeuden alkamispäivä ei vastaa ensimmäisen opiskeluoikeusjakson alkupäivää")
+        val päättymispäivämäärä = subcategory("loppupäivämäärä", "Opiskeluoikeuden päättymispäivä ei vastaa viimeisen opiskelut päättävän opiskeluoikeusjakson alkupäivää")
       }
       val date = new Date
 

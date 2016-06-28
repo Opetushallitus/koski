@@ -90,7 +90,9 @@ case class KorkeakoulunOpiskeluoikeusjakso(
   alku: LocalDate,
   @KoodistoUri("virtaopiskeluoikeudentila")
   tila: Koodistokoodiviite
-) extends Opiskeluoikeusjakso
+) extends Opiskeluoikeusjakso {
+  def opiskeluoikeusPäättynyt = List("3", "4", "5").contains(tila.koodiarvo)
+}
 
 trait KorkeakoulunArviointi extends ArviointiPäivämäärällä {
   def hyväksytty = true

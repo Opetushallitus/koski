@@ -30,7 +30,7 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluO
     defaultOpiskeluOikeudet.foreach { case (oid, oikeus) =>
       validator.validateAsJson(Oppija(OidHenkilö(oid), List(oikeus))) match {
         case Right(oppija) => repository.createOrUpdate(VerifiedOppijaOid(oid), oppija.tallennettavatOpiskeluoikeudet(0))
-        case Left(status) => throw new RuntimeException("Fixture insert failed for " + Json.write(oikeus) + ": " + status)
+        case Left(status) => throw new RuntimeException("Fixture insert failed for " + oid +  " with data " + Json.write(oikeus) + ": " + status)
       }
     }
   }

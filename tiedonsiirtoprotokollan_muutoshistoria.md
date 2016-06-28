@@ -1,12 +1,13 @@
 ## 28.6.2016
 
-- Tarkistetaan, että opiskeluoikeuden alkamispäivä täsmää ensimmäisen opiskeluoikeusjakson alkupäivään
 - Näyttötutkintoon valmistavassa koulutuksessa käytössä väliaikainen koodi. Tutkinto, johon koulutus tähtää on siirretty omaan tutkinto-kenttäänsä
 - Näytön arvioinnissa nimenmuutos arviointiKohteet -> arviointikohteet
 - Poistettu paikallinenKoodi ja kuvaus valtakunnallisilta ammatillisilta tutkinnon osilta
 - Nimenmuutos ulkomaanjakso -> ulkomaanjaksot
 - Perusopetus, lukio ja ammatillinen käyttävät nyt samaa koskiopiskeluoikeudentila-koodistoa opiskeluoikeuksien tiloihin
 - Opiskeluoikeusjaksot pakollisia (vähintään 1). Opiskeluoikeus- ja läsnäolojaksoista poistettu redundantti loppupäivämäärä
+- Tarkistetaan, että opiskeluoikeuden alkamispäivä täsmää ensimmäisen opiskeluoikeusjakson alkupäivään
+- Tarkistetaan, että opiskeluoikeuden päättymispäivä täsmää opiskeluoikeuden lopettavan opiskeluoikeusjakson alkupäivään
 
 ## 27.6.2016
 
