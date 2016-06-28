@@ -32,7 +32,7 @@ case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenSuoritus(
   tila: Koodistokoodiviite,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Henkilövahvistus] = None,
-  @Description("Työhön ja itsenäiseen elämään valmentava koulutuksen osasuoritukset")
+  @Description("Työhön ja itsenäiseen elämään valmentavan koulutuksen osasuoritukset")
   override val osasuoritukset: Option[List[TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus]],
   @KoodistoKoodiarvo("telma")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("telma", koodistoUri = "suorituksentyyppi"),
@@ -48,7 +48,7 @@ case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("telmakoulutuksenosa", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa,
   arviointi: Option[List[TelmaArviointi]],
-  @Description("Jos tutkinnon osa on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
+  @Description("Jos koulutuksen osa on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None
 ) extends ValmentavanKoulutuksenOsanSuoritus
@@ -60,7 +60,7 @@ case class TyöhönJaItsenäiseenElämäänValmentavaKoulutus(
   laajuus: Option[Laajuus] = None
 ) extends Koulutus
 
-@Description("Työhön ja itsenäiseen elämään valmentava koulutuksen osan tunnistiedot")
+@Description("Työhön ja itsenäiseen elämään valmentavan koulutuksen osan tunnistiedot")
 case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa(
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusOsaamispisteissä],
