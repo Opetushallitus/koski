@@ -47,7 +47,7 @@ case class PerusopetuksenLisäopetuksenOppiaineenSuoritus(
   tila: Koodistokoodiviite,
   @KoodistoKoodiarvo("perusopetuksenlisaopetuksenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenlisaopetuksenoppiaine", koodistoUri = "suorituksentyyppi"),
-  @Description("Onko kyseessä perusopetuksen oppiaineen arvosanan korotus")
+  @Description("Tieto siitä, onko kyseessä perusopetuksen oppiaineen arvosanan korotus. Tietoa käytetään todistuksella.")
   korotus: Boolean,
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None
 ) extends OppiaineenSuoritus

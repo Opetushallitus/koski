@@ -119,8 +119,10 @@ case class PerusopetuksenOppimääränSuoritus(
   vahvistus: Option[Henkilövahvistus] = None,
   koulutusmoduuli: Perusopetus,
   @KoodistoUri("perusopetuksenoppimaara")
+  @Description("Tieto siitä, suoritetaanko perusopetusta nuorten vai aikuisten oppimäärän mukaisesti")
   oppimäärä: Koodistokoodiviite,
   @KoodistoUri("perusopetuksensuoritustapa")
+  @Description("Tieto siitä, suoritetaanko perusopetusta normaalina koulutuksena vai erityisenä tutkintona")
   suoritustapa: Koodistokoodiviite,
   @KoodistoKoodiarvo("perusopetuksenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppimaara", koodistoUri = "suorituksentyyppi"),
@@ -150,7 +152,7 @@ case class PerusopetuksenOppiaineenSuoritus(
   koulutusmoduuli: PerusopetuksenOppiaine,
   suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
-  @Description("Tieto siitä, että oppiaineen oppimäärä on yksilöllistetty")
+  @Description("Tieto siitä, onko oppiaineen oppimäärä yksilöllistetty (true/false)")
   yksilöllistettyOppimäärä: Option[Boolean] = None,
   @KoodistoKoodiarvo("perusopetuksenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenoppiaine", koodistoUri = "suorituksentyyppi"),

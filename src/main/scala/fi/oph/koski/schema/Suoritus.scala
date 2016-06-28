@@ -20,7 +20,7 @@ trait Suoritus {
   @Description("Suorituksen tila (KESKEN, VALMIS, KESKEYTYNYT)")
   @KoodistoUri("suorituksentila")
   def tila: Koodistokoodiviite
-  @Description("Arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota")
+  @Description("Arviointi. Jos listalla useampi arviointi, tulkitaan myöhemmät arvioinnit arvosanan korotuksiksi edellisiin samalla listalla oleviin arviointeihin. Jos aiempaa, esimerkiksi väärin kirjattua, arviota korjataan, ei listalle tule uutta arviota")
   def arviointi: Option[List[Arviointi]]
   @Description("Suorituksen virallinen vahvistus (päivämäärä, henkilöt). Vaaditaan silloin, kun suorituksen tila on VALMIS.")
   def vahvistus: Option[Vahvistus]
