@@ -74,12 +74,4 @@ case class TelmaArviointi(
   @Description("Tutkinnon osan suorituksen arvioinnista päättäneen henkilön nimi")
   arvioitsijat: Option[List[Arvioitsija]] = None,
   kuvaus: Option[LocalizedString] = None
-) extends KoodistostaLöytyväArviointi with ArviointiPäivämäärällä with SanallinenArviointi {
-  override def hyväksytty = arvosana.koodiarvo match {
-    case "0" => false
-    case "Hylätty" => false
-    case _ => true
-  }
-
-  override def arvosanaKirjaimin = kuvaus.getOrElse(super.arvosanaKirjaimin)
-}
+) extends AmmatillinenKoodistostaLöytyväArviointi with SanallinenArviointi

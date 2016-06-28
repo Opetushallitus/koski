@@ -16,10 +16,11 @@ class TelmaTodistusHtml(val koulutustoimija: Option[OrganisaatioWithOid], val op
   </tr>
 
   override def tutkinnonOsaRivit(suoritukset: List[ValmentavanKoulutuksenOsanSuoritus]): List[Elem] = suoritukset.map { oppiaine =>
+    val arvosana = oppiaine.sanallinenArviointi.map(i(_).capitalize).getOrElse(i(oppiaine.arvosanaKirjaimin).capitalize + " " + i(oppiaine.arvosanaNumeroin))
     <tr class="tutkinnon-osa">
       <td class="nimi">{nimiTeksti(oppiaine)}</td>
       <td class="laajuus">{decimalFormat.format(laajuus(oppiaine))}</td>
-      <td class="arvosana">{i(oppiaine.arvosanaKirjaimin).capitalize} {i(oppiaine.arvosanaNumeroin)}</td>
+      <td class="arvosana">{arvosana}</td>
     </tr>
   }
 }

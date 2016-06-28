@@ -197,6 +197,14 @@ case class OppisopimuksellinenJärjestämismuoto(
   oppisopimus: Oppisopimus
 ) extends Järjestämismuoto
 
+trait AmmatillinenKoodistostaLöytyväArviointi extends KoodistostaLöytyväArviointi with ArviointiPäivämäärällä {
+  override def hyväksytty = arvosana.koodiarvo match {
+    case "0" => false
+    case "Hylätty" => false
+    case _ => true
+  }
+}
+
 case class AmmatillinenArviointi(
   @KoodistoUri("arviointiasteikkoammatillinenhyvaksyttyhylatty")
   @KoodistoUri("arviointiasteikkoammatillinent1k3")
@@ -204,13 +212,7 @@ case class AmmatillinenArviointi(
   päivä: LocalDate,
   @Description("Tutkinnon osan suorituksen arvioinnista päättäneen henkilön nimi")
   arvioitsijat: Option[List[Arvioitsija]] = None
-) extends KoodistostaLöytyväArviointi with ArviointiPäivämäärällä {
-  override def hyväksytty = arvosana.koodiarvo match {
-    case "0" => false
-    case "Hylätty" => false
-    case _ => true
-  }
-}
+) extends AmmatillinenKoodistostaLöytyväArviointi
 
 @Description("Näytön kuvaus")
 case class Näyttö(
