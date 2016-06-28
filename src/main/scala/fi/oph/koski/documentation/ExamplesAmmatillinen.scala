@@ -185,7 +185,7 @@ object AmmatillinenOldExamples {
 
     osat = Some(List(
       AmmatillisenTutkinnonOsanSuoritus(
-        koulutusmoduuli = ValtakunnallinenTutkinnonOsa(Koodistokoodiviite("104052", "tutkinnonosat"), true, None, None, None),
+        koulutusmoduuli = ValtakunnallinenTutkinnonOsa(Koodistokoodiviite("104052", "tutkinnonosat"), true, None),
         tutkinto = Some(AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357305", "koulutus"), Some("40/011/2001"))),
         suorituskieli = None,
         tila = tilaValmis,

@@ -179,9 +179,7 @@ case class ValtakunnallinenTutkinnonOsa(
   @KoodistoUri("tutkinnonosat")
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean,
-  override val laajuus: Option[LaajuusOsaamispisteissä],
-  paikallinenKoodi: Option[PaikallinenKoodi] = None,
-  kuvaus: Option[LocalizedString] = None
+  override val laajuus: Option[LaajuusOsaamispisteissä]
 ) extends AmmatillisenTutkinnonOsa with KoodistostaLöytyväKoulutusmoduuli with Valinnaisuus
 
 @Description("Paikallisen tutkinnon osan tunnistetiedot")
