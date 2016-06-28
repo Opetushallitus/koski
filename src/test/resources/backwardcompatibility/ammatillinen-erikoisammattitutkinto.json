@@ -22,7 +22,7 @@
     "suoritukset" : [ {
       "koulutusmoduuli" : {
         "tunniste" : {
-          "koodiarvo" : "koski2",
+          "koodiarvo" : "999904",
           "koodistoUri" : "koulutus"
         }
       },

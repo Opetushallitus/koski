@@ -38142,8 +38142,8 @@
   } ],
   "versio" : 6
 }, {
-  "koodiUri" : "koulutus_039997",
-  "koodiArvo" : "039997",
+  "koodiUri" : "koulutus_999906",
+  "koodiArvo" : "999906",
   "metadata" : [ {
     "nimi" : "Maahanmuuttajien ja vieraskielisten lukiokoulutukseen valmistava koulutus ",
     "lyhytNimi" : "Maahanmuuttajien ja vieraskielisten lukiokoulutukseen valmistava koulutus ",
@@ -46581,8 +46581,8 @@
 
 
   {
-    "koodiUri" : "koulutus_koski1",
-    "koodiArvo" : "koski1",
+    "koodiUri" : "koulutus_999905",
+    "koodiArvo" : "999905",
     "metadata" : [ {
       "nimi" : "Perusopetukseen valmistava opetus",
       "lyhytNimi" : "Perusopetukseen valmistava opetus",
@@ -46596,8 +46596,8 @@
   },
 
   {
-    "koodiUri" : "koulutus_koski2",
-    "koodiArvo" : "koski2",
+    "koodiUri" : "koulutus_999904",
+    "koodiArvo" : "999904",
     "metadata" : [ {
       "nimi" : "Näyttötutkintoon valmistava koulutus",
       "lyhytNimi" : "Näyttötutkintoon valmistava koulutus",

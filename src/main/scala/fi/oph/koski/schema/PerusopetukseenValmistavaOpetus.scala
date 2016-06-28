@@ -51,8 +51,8 @@ case class PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus(
 
 @Description("Perusopetukseen valmistavan opetuksen tunnistetiedot")
 case class PerusopetukseenValmistavaOpetus(
-  @KoodistoKoodiarvo("koski1") // TODO: odotetaan virallista koodia
-  tunniste: Koodistokoodiviite = Koodistokoodiviite("koski1", koodistoUri = "koulutus")
+  @KoodistoKoodiarvo("999905")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("999905", koodistoUri = "koulutus")
 ) extends Koulutus {
   def laajuus = None
 }

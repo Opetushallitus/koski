@@ -87,8 +87,8 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
 
 @Description("Näyttötutkintoon valmistavan koulutuksen tunnistetiedot")
 case class NäyttötutkintoonValmistavaKoulutus(
-  @KoodistoKoodiarvo("koski2")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite("koski2", "koulutus")
+  @KoodistoKoodiarvo("999904")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("999904", "koulutus")
 ) extends Koulutus {
   def laajuus = None
 }
