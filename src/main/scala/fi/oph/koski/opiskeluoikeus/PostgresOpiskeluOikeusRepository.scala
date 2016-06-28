@@ -96,8 +96,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     }
 
     case IdentifyingSetOfFields(oppijaOid, _, _, _) => {
-      findByOppijaOidAction(oppijaOid)
-        .map(rows => Right(rows.find({ row =>
+      findByOppijaOidAction(oppijaOid).map(rows => Right(rows.find({ row =>
         new IdentifyingSetOfFields(oppijaOid, row.toOpiskeluOikeus) == identifier
       })))
     }

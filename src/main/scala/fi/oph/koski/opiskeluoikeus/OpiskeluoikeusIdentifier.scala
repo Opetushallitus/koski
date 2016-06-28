@@ -7,9 +7,9 @@ object OpiskeluOikeusIdentifier {
   }
 }
 
-case class IdentifyingSetOfFields(oppijaOid: String, oppilaitosOrganisaatio: String, paikallinenId: Option[LähdejärjestelmäId], koulutusModuulitunnisteet: List[KoodiViite]) extends OpiskeluOikeusIdentifier {
+case class IdentifyingSetOfFields(oppijaOid: String, oppilaitosOrganisaatio: String, paikallinenId: Option[LähdejärjestelmäId], tyyppi: String) extends OpiskeluOikeusIdentifier {
   def this(oppijaOid: String, opiskeluOikeus: Opiskeluoikeus) = {
-    this(oppijaOid, opiskeluOikeus.oppilaitos.oid, opiskeluOikeus.lähdejärjestelmänId, opiskeluOikeus.suoritukset.map(_.koulutusmoduuli.tunniste))
+    this(oppijaOid, opiskeluOikeus.oppilaitos.oid, opiskeluOikeus.lähdejärjestelmänId, opiskeluOikeus.tyyppi.koodiarvo)
   }
 }
 case class PrimaryKey(id: Int) extends OpiskeluOikeusIdentifier
