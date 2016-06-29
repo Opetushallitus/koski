@@ -98,6 +98,9 @@ case class YleinenLäsnäolojakso(
   tila: Koodistokoodiviite
 ) extends Läsnäolojakso
 
+object YleinenLäsnäolojakso {
+  def apply(alku: LocalDate, tila: String): YleinenLäsnäolojakso = YleinenLäsnäolojakso(alku, Koodistokoodiviite(tila, "lasnaolotila"))
+}
 case class LähdejärjestelmäId(
   @Description("Opiskeluoikeuden paikallinen uniikki tunniste lähdejärjestelmässä. Tiedonsiirroissa tarpeellinen, jotta voidaan varmistaa päivitysten osuminen oikeaan opiskeluoikeuteen.")
   id: String,

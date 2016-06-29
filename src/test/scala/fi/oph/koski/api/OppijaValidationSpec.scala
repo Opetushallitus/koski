@@ -6,6 +6,7 @@ import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.schema._
 import fi.oph.koski.koskiuser.MockUsers
+import java.time.LocalDate.{ of => date }
 import org.json4s._
 import org.scalatest.FunSpec
 
@@ -152,66 +153,52 @@ class OppijaValidationSpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatil
     // TODO: testit jaksojen päivämäärät vs. alkamis- ja loppumispäivät
 
     describe("Opiskeluoikeuden päivämäärät") {
-      describe("Päivämäärät kunnossa") {
-        it("palautetaan HTTP 200" ) (putOpiskeluOikeusMerged(Map(
-          "arvioituPäättymispäivä" -> "2018-05-31"
-        ))(verifyResponseStatus(200)))
-      }
-      describe("Päivämääräformaatti virheellinen") {
-        it("palautetaan HTTP 400" ) (putOpiskeluOikeusMerged(Map(
-          "alkamispäivä" -> "2015.01-12"
-        ))(verifyResponseStatus(400, KoskiErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: 2015.01-12"))))
-      }
-      describe("Päivämäärä virheellinen") {
-        it("palautetaan HTTP 400" ) (putOpiskeluOikeusMerged(Map(
-          "alkamispäivä" -> "2015-01-32"
-        ))(verifyResponseStatus(400, KoskiErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: 2015-01-32"))))
-      }
-      describe("Väärä päivämääräjärjestys") {
-        it("alkamispäivä > päättymispäivä" ) (putOpiskeluOikeusMerged(Map(
-          "päättymispäivä" -> "1999-05-31",
-          "tila" -> Map("opiskeluoikeusjaksot" -> List(
-            Map( "alku" -> "2000-01-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "koskiopiskeluoikeudentila")),
-            Map( "alku" -> "1999-05-31", "tila" -> Map("koodiarvo" -> "eronnut", "koodistoUri" -> "koskiopiskeluoikeudentila"))
-          ))
-        ))(verifyResponseStatus(400,
-          KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua("alkamispäivä (2000-01-01) oltava sama tai aiempi kuin päättymispäivä(1999-05-31)"),
-          KoskiErrorCategory.badRequest.validation.date.jaksojenJärjestys("tila.opiskeluoikeusjaksot: 2000-01-01 oltava sama tai aiempi kuin 1999-05-31")
-        )))
+      describe("Alkaminen ja päättyminen") {
+        it("Päivämäärät kunnossa -> palautetaan HTTP 200") {
+          putOpiskeluOikeus(defaultOpiskeluoikeus.copy(arvioituPäättymispäivä = Some(date(2018, 5, 31))))(verifyResponseStatus(200))
+        }
+        it("Päivämääräformaatti virheellinen -> palautetaan HTTP 400") {
+          putOpiskeluOikeusWithSomeMergedJson(Map("alkamispäivä" -> "2015.01-12")){
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: 2015.01-12"))
+          }
+        }
+        it("Päivämäärä virheellinen -> palautetaan HTTP 400") {
+          putOpiskeluOikeusWithSomeMergedJson(Map("alkamispäivä" -> "2015-01-32")){
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: 2015-01-32"))
+          }
+        }
 
-        it("alkamispäivä > arvioituPäättymispäivä" ) (putOpiskeluOikeusMerged(Map(
-          "arvioituPäättymispäivä" -> "1999-05-31"
-        ))(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua("alkamispäivä (2000-01-01) oltava sama tai aiempi kuin arvioituPäättymispäivä(1999-05-31)"))))
-      }
-    }
+        describe("Väärä päivämääräjärjestys") {
+          it("alkamispäivä > päättymispäivä" ) (putOpiskeluOikeus(päättymispäivällä(defaultOpiskeluoikeus, date(1999, 5, 31))) {
+            verifyResponseStatus(400,
+              KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua("alkamispäivä (2000-01-01) oltava sama tai aiempi kuin päättymispäivä(1999-05-31)"),
+              KoskiErrorCategory.badRequest.validation.date.jaksojenJärjestys("tila.opiskeluoikeusjaksot: 2000-01-01 oltava sama tai aiempi kuin 1999-05-31")
+            )
+          })
 
-    describe("Opiskeluoikeusjaksot"){
-      describe("Päivämäärät kunnossa") {
-        it("palautetaan HTTP 200") (putOpiskeluOikeusMerged(Map("tila" -> Map("opiskeluoikeusjaksot" -> List(
-          Map( "alku" -> "2015-08-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "koskiopiskeluoikeudentila")),
-          Map( "alku" -> "2016-01-01", "tila" -> Map("koodiarvo" -> "keskeyttanytmaaraajaksi", "koodistoUri" -> "koskiopiskeluoikeudentila"))
-        )))) (verifyResponseStatus(200)))
+          it("alkamispäivä > arvioituPäättymispäivä" ) (putOpiskeluOikeus(defaultOpiskeluoikeus.copy(arvioituPäättymispäivä = Some(date(1999, 5, 31)))){
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua("alkamispäivä (2000-01-01) oltava sama tai aiempi kuin arvioituPäättymispäivä(1999-05-31)"))
+          })
+        }
       }
-      describe("jaksojen päivämääräjärjestys on väärä") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeusMerged(Map("tila" -> Map("opiskeluoikeusjaksot" -> List(
-          Map("alku" -> "2015-08-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "koskiopiskeluoikeudentila")),
-          Map("alku" -> "2015-07-01", "tila" -> Map("koodiarvo" -> "keskeyttanytmaaraajaksi", "koodistoUri" -> "koskiopiskeluoikeudentila"))
-        )))) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.jaksojenJärjestys("tila.opiskeluoikeusjaksot: 2015-08-01 oltava sama tai aiempi kuin 2015-07-01")))) }
-    }
 
-    describe("Läsnäolojaksot") {
-      describe("Päivämäärät kunnossa") {
-        it("palautetaan HTTP 200") (putOpiskeluOikeusMerged(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
-          Map( "alku" -> "2015-08-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila")),
-          Map( "alku" -> "2016-01-01", "tila" -> Map("koodiarvo" -> "poissa", "koodistoUri" -> "lasnaolotila")),
-          Map( "alku" -> "2016-05-21", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila"))
-        ))))(verifyResponseStatus(200)))
-      }
-      describe("jaksojen päivämääräjärjestys on väärä") {
-        it("palautetaan HTTP 400") (putOpiskeluOikeusMerged(Map("läsnäolotiedot" -> Map("läsnäolojaksot" -> List(
-          Map( "alku" -> "2015-08-01", "tila" -> Map("koodiarvo" -> "lasna", "koodistoUri" -> "lasnaolotila")),
-          Map( "alku" -> "2015-07-01", "tila" -> Map("koodiarvo" -> "poissa", "koodistoUri" -> "lasnaolotila"))
-        ))))(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.jaksojenJärjestys("läsnäolotiedot.läsnäolojaksot: 2015-08-01 oltava sama tai aiempi kuin 2015-07-01"))))
+      describe("Läsnäolojaksot") {
+        describe("Päivämäärät kunnossa") {
+          it("palautetaan HTTP 200") (putOpiskeluOikeus(defaultOpiskeluoikeus.copy(läsnäolotiedot = Some(YleisetLäsnäolotiedot(List(
+            YleinenLäsnäolojakso(date(2015, 8, 1), "lasna"),
+            YleinenLäsnäolojakso(date(2016, 1, 1), "poissa"),
+            YleinenLäsnäolojakso(date(2016, 5, 21), "lasna")
+          ))))
+          )(verifyResponseStatus(200)))
+        }
+        describe("jaksojen päivämääräjärjestys on väärä") {
+          it("palautetaan HTTP 400") (putOpiskeluOikeus(defaultOpiskeluoikeus.copy(läsnäolotiedot = Some(YleisetLäsnäolotiedot(List(
+            YleinenLäsnäolojakso(date(2015, 8, 1), "lasna"),
+            YleinenLäsnäolojakso(date(2015, 7, 1), "poissa")
+          ))))) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.jaksojenJärjestys("läsnäolotiedot.läsnäolojaksot: 2015-08-01 oltava sama tai aiempi kuin 2015-07-01"))
+          })
+        }
       }
     }
 
@@ -235,14 +222,14 @@ class OppijaValidationSpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatil
       }
 
       it("vähintään yksi kieli vaaditaan") {
-        putOpiskeluOikeusMerged(Map("tyyppi" -> Map("nimi" -> Map()))) {
+        putOpiskeluOikeusWithSomeMergedJson(Map("tyyppi" -> Map("nimi" -> Map()))) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*object has missing required properties.*".r))
         }
       }
     }
   }
 
-  def putOpiskeluOikeusMerged[A](opiskeluOikeus: JValue, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
+  def putOpiskeluOikeusWithSomeMergedJson[A](opiskeluOikeus: JValue, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
     putOppija(makeOppija(henkilö, List(Json.toJValue(defaultOpiskeluoikeus).merge(opiskeluOikeus))), headers)(f)
   }
 
