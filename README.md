@@ -29,7 +29,7 @@ Keskeiset entiteetit, ja järjestelmät, joihin nämä tallennetaan.
 Nämä ovat keskeiset Koski-järjestelmässä käytettävät teknologiat. Lista kuvaa järjestelmän nykytilaa ja muuttuu matkan varrella
 tarpeen mukaan.
 
-- PostgreSQL 9.4 -tietokanta
+- PostgreSQL 9.5 -tietokanta
 - Palvelinteknologiat
   - Scala 2.11.4 ohjelmointikieli ja kääntäjä
   - Scalatra web framework
@@ -55,7 +55,7 @@ Minimissään tarvitset nämä:
 - GNU Make (osx, linux sisältää tämän, komentorivillä `make`)
 - Java 8
 - Maven 3 (osx: `brew install maven`)
-- Postgres 9.4 (osx: `brew install postgresql94`)
+- Postgres 9.5 (osx: `brew install postgresql`)
 - Node.js ja NPM (osx: `brew install node`)
 - Tekstieditori (kehitystiimi käyttää IntelliJ IDEA 14/15)
 
