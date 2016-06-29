@@ -6,9 +6,9 @@ import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema._
 
 class RemoteOppijaRepository(henkilöPalveluClient: AuthenticationServiceClient, koodisto: KoodistoViitePalvelu) extends OppijaRepository {
-  override def findOppijat(query: String): List[TäydellisetHenkilötiedot] = {
+  override def findOppijat(query: String): List[HenkilötiedotJaOid] = {
     if (Henkilö.isHenkilöOid(query)) {
-      findByOid(query).toList
+      findByOid(query).map(_.toHenkilötiedotJaOid).toList
     } else {
       henkilöPalveluClient.search(query).results.map(toOppija)
     }
@@ -23,6 +23,8 @@ class RemoteOppijaRepository(henkilöPalveluClient: AuthenticationServiceClient,
   override def findByOids(oids: List[String]): List[TäydellisetHenkilötiedot] = henkilöPalveluClient.findByOids(oids).map(toOppija)
 
   private def toOppija(user: User) = TäydellisetHenkilötiedot(user.oidHenkilo, user.hetu, user.etunimet, user.kutsumanimi, user.sukunimi, convertÄidinkieli(user.aidinkieli), convertKansalaisuus(user.kansalaisuus))
+
+  private def toOppija(user: UserQueryUser) = HenkilötiedotJaOid(user.oidHenkilo, user.hetu, user.etunimet, user.kutsumanimi, user.sukunimi)
 
   private def convertÄidinkieli(äidinkieli: Option[String]) = äidinkieli.flatMap(äidinkieli => koodisto.getKoodistoKoodiViite("kieli", äidinkieli.toUpperCase))
 

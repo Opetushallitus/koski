@@ -48,8 +48,8 @@ class KoskiFacade(oppijaRepository: OppijaRepository,
     }
   }
 
-  def findOppijat(query: String)(implicit user: KoskiUser): Seq[TäydellisetHenkilötiedot] = {
-    val oppijat: List[TäydellisetHenkilötiedot] = oppijaRepository.findOppijat(query)
+  def findOppijat(query: String)(implicit user: KoskiUser): Seq[HenkilötiedotJaOid] = {
+    val oppijat: List[HenkilötiedotJaOid] = oppijaRepository.findOppijat(query)
     AuditLog.log(AuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> query)))
     val filtered = opiskeluOikeusRepository.filterOppijat(oppijat)
     filtered.sortBy(oppija => (oppija.sukunimi, oppija.etunimet))

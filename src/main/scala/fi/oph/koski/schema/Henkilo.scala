@@ -16,9 +16,6 @@ sealed trait Henkilö
 
 @Description("Täydet henkilötiedot. Tietoja haettaessa Koskesta saadaan aina täydet henkilötiedot.")
 case class TäydellisetHenkilötiedot(
-  @Description("Yksilöivä tunniste (oppijanumero) Opintopolku-palvelussa")
-  @OksaUri("tmpOKSAID760", "oppijanumero")
-  @RegularExpression("""1\.2\.246\.562\.24\.\d{11}""")
   oid: Henkilö.Oid,
   hetu: Henkilö.Hetu,
   etunimet:String,
@@ -32,7 +29,16 @@ case class TäydellisetHenkilötiedot(
   kansalaisuus: Option[List[Koodistokoodiviite]]
 ) extends HenkilöWithOid with Henkilötiedot {
   def vainHenkilötiedot = UusiHenkilö(hetu, etunimet, kutsumanimi, sukunimi)
+  def toHenkilötiedotJaOid = HenkilötiedotJaOid(oid, hetu, etunimet, kutsumanimi, sukunimi)
 }
+
+case class HenkilötiedotJaOid(
+  oid: Henkilö.Oid,
+  hetu: Henkilö.Hetu,
+  etunimet:String,
+  kutsumanimi: String,
+  sukunimi: String
+) extends HenkilöWithOid with Henkilötiedot
 
 @Description("Henkilö, jonka oppijanumero ei ole tiedossa. Tietoja syötettäessä luodaan mahdollisesti uusi henkilö Henkilöpalveluun, jolloin henkilölle muodostuu oppijanumero")
 case class UusiHenkilö(
@@ -44,9 +50,6 @@ case class UusiHenkilö(
 
 @Description("Henkilö, jonka oid on tiedossa. Tietoja syötettäessä henkilö haetaan henkilöpalvelusta.")
 case class OidHenkilö(
-  @Description("Yksilöivä tunniste (oppijanumero) Opintopolku-palvelussa")
-  @OksaUri("tmpOKSAID760", "oppijanumero")
-  @RegularExpression("""1\.2\.246\.562\.24\.\d{11}""")
   oid: String
 ) extends HenkilöWithOid
 
@@ -64,5 +67,8 @@ trait Henkilötiedot {
 }
 
 trait HenkilöWithOid extends Henkilö {
+  @Description("Yksilöivä tunniste (oppijanumero) Opintopolku-palvelussa")
+  @OksaUri("tmpOKSAID760", "oppijanumero")
+  @RegularExpression("""1\.2\.246\.562\.24\.\d{11}""")
   def oid: String
 }

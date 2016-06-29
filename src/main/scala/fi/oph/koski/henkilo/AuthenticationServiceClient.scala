@@ -74,7 +74,9 @@ object AuthenticationServiceClient {
 }
 
 
-case class UserQueryResult(totalCount: Integer, results: List[User])
+case class UserQueryResult(totalCount: Integer, results: List[UserQueryUser])
+case class UserQueryUser(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: String)
+
 case class User(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: String, aidinkieli: Option[String], kansalaisuus: Option[List[String]])
 
 

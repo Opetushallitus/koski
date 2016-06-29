@@ -63,7 +63,7 @@ case class MockOppijaRepository(initialOppijat: List[TäydellisetHenkilötiedot]
     if (query.toLowerCase.contains("error")) {
       throw new TestingException("Testing error handling")
     }
-    oppijat.getOppijat.filter(searchString(_).contains(query))
+    oppijat.getOppijat.filter(searchString(_).contains(query)).map(_.toHenkilötiedotJaOid)
   }
 
   def addOppija(suku: String, etu: String, hetu: String): TäydellisetHenkilötiedot = {
@@ -71,7 +71,7 @@ case class MockOppijaRepository(initialOppijat: List[TäydellisetHenkilötiedot]
   }
 
   def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, Henkilö.Oid] =  {
-    def oidFrom(oppijat: List[TäydellisetHenkilötiedot]): Either[HttpStatus, Henkilö.Oid] = {
+    def oidFrom(oppijat: List[HenkilötiedotJaOid]): Either[HttpStatus, Henkilö.Oid] = {
       oppijat match {
         case List(oppija) => Right(oppija.oid)
         case _ =>

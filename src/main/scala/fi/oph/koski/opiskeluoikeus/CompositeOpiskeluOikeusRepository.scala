@@ -5,7 +5,7 @@ import fi.oph.koski.koski.QueryFilter
 import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.oppija.PossiblyUnverifiedOppijaOid
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, TäydellisetHenkilötiedot}
+import fi.oph.koski.schema.{HenkilötiedotJaOid, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, TäydellisetHenkilötiedot}
 import rx.lang.scala.Observable
 
 import scala.collection.parallel.immutable.ParSeq
@@ -13,8 +13,8 @@ import scala.collection.parallel.immutable.ParSeq
 class CompositeOpiskeluOikeusRepository(repos: List[OpiskeluOikeusRepository]) extends OpiskeluOikeusRepository {
   override def query(filters: List[QueryFilter])(implicit user: KoskiUser) = repos.foldLeft(Observable.empty.asInstanceOf[Observable[(Oid, List[Opiskeluoikeus])]]) { (result, repo) => result.merge(repo.query(filters)) }
 
-  override def filterOppijat(oppijat: Seq[TäydellisetHenkilötiedot])(implicit user: KoskiUser) = {
-    repos.foldLeft((oppijat, Nil: Seq[TäydellisetHenkilötiedot])) { case ((left, found), repo) =>
+  override def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiUser) = {
+    repos.foldLeft((oppijat, Nil: Seq[HenkilötiedotJaOid])) { case ((left, found), repo) =>
       val newlyFound = repo.filterOppijat(left)
       val stillLeft = left.diff(newlyFound)
       (stillLeft, found ++ newlyFound)

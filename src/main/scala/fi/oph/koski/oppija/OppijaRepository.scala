@@ -47,7 +47,7 @@ class OppijaRepositoryCachingStrategy extends CachingStrategyBase(new BaseCacheD
   }})
 
 trait OppijaRepository extends Logging {
-  def findOppijat(query: String): List[TäydellisetHenkilötiedot]
+  def findOppijat(query: String): List[HenkilötiedotJaOid]
   def findByOid(oid: String): Option[TäydellisetHenkilötiedot]
   def findByOids(oids: List[String]): List[TäydellisetHenkilötiedot]
 
