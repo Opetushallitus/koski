@@ -150,8 +150,6 @@ class OppijaValidationSpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatil
       }
     }
 
-    // TODO: testit jaksojen päivämäärät vs. alkamis- ja loppumispäivät
-
     describe("Opiskeluoikeuden päivämäärät") {
       describe("Alkaminen ja päättyminen") {
         it("Päivämäärät kunnossa -> palautetaan HTTP 200") {
