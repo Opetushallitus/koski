@@ -70,7 +70,7 @@ object OppijaWithOpiskeluoikeusWithIncrementingStartdate extends Body {
     val oppija = session("content").as[Oppija]
 
     val opiskeluoikeudet: List[AmmatillinenOpiskeluoikeus] = oppija.opiskeluoikeudet.asInstanceOf[List[AmmatillinenOpiskeluoikeus]]
-    req.setBody(Json.write(oppija.copy(opiskeluoikeudet = opiskeluoikeudet.updated(0, opiskeluoikeudet.head.copy(alkamispäivä = Some(nextDate))))).getBytes)
+    req.setBody(Json.write(oppija.copy(opiskeluoikeudet = opiskeluoikeudet.updated(0, opiskeluoikeudet.head.copy(arvioituPäättymispäivä = Some(nextDate))))).getBytes)
   }
 }
 
