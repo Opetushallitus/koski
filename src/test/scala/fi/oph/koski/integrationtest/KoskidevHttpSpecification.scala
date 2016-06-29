@@ -2,7 +2,7 @@ package fi.oph.koski.integrationtest
 
 import fi.oph.koski.http.{BasicAuthentication, HttpSpecification}
 import org.apache.http.conn.ssl.{SSLConnectionSocketFactory, SSLContextBuilder, TrustSelfSignedStrategy}
-import org.apache.http.impl.client.{HttpClients, HttpClientBuilder}
+import org.apache.http.impl.client.HttpClients
 
 trait KoskidevHttpSpecification extends HttpSpecification {
   private def requiredEnv(name: String) = util.Properties.envOrNone(name).getOrElse(throw new IllegalStateException("Environment property " + name + " missing"))

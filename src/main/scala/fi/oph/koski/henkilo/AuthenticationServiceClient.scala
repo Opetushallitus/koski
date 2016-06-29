@@ -19,7 +19,6 @@ class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances wit
     runTask(http(uri"/authentication-service/resources/henkilo?no=true&count=0&q=${query}")(Http.parseJson[UserQueryResult]))
   }
 
-
   def findByOid(id: String): Option[User] = findByOids(List(id)).headOption
   def findByOids(oids: List[String]): List[User] = http.post(uri"/authentication-service/resources/s2s/koski/henkilotByHenkiloOidList", oids)(json4sEncoderOf[List[String]], Http.parseJson[List[User]])
   def käyttäjänOrganisaatiot(oid: String, käyttöoikeusRyhmä: Int): Observable[List[String]] = {
