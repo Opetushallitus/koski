@@ -180,6 +180,21 @@ class OppijaValidationSpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatil
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua("alkamispäivä (2000-01-01) oltava sama tai aiempi kuin arvioituPäättymispäivä(1999-05-31)"))
           })
         }
+
+        describe("Päivämäärät vs opiskeluoikeusjaksot") {
+          it("alkamispäivä puuttuu, vaikka opiskeluoikeusjakso on olemassa") { putOpiskeluOikeus(defaultOpiskeluoikeus.copy(alkamispäivä = None)) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.alkamispäivä("Opiskeluoikeuden alkamispäivä (null) ei vastaa ensimmäisen opiskeluoikeusjakson alkupäivää (2000-01-01)"))
+          }}
+          it("alkamispäivä ei vastaa ensimmäisen opiskeluoikeusjakson päivämäärää") { putOpiskeluOikeus(defaultOpiskeluoikeus.copy(alkamispäivä = Some(date(1999, 12, 31)))) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.alkamispäivä("Opiskeluoikeuden alkamispäivä (1999-12-31) ei vastaa ensimmäisen opiskeluoikeusjakson alkupäivää (2000-01-01)"))
+          }}
+          it("päättymispäivä on annettu, vaikka viimeinen opiskeluoikeus on tilassa Läsnä") { putOpiskeluOikeus(defaultOpiskeluoikeus.copy(päättymispäivä = Some(date(2010, 12, 31)))) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.päättymispäivämäärä("Opiskeluoikeuden päättymispäivä (2010-12-31) ei vastaa opiskeluoikeuden päättävän opiskeluoikeusjakson alkupäivää (null)"))
+          }}
+          it("päättymispäivä ei vastaa opiskelut päättävän jakson päivää") { putOpiskeluOikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2010, 12, 30)).copy(päättymispäivä = Some(date(2010, 12, 31)))) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.päättymispäivämäärä("Opiskeluoikeuden päättymispäivä (2010-12-31) ei vastaa opiskeluoikeuden päättävän opiskeluoikeusjakson alkupäivää (2010-12-30)"))
+          }}
+        }
       }
 
       describe("Läsnäolojaksot") {

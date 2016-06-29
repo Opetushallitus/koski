@@ -67,18 +67,30 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
 
   private def validateOpiskeluOikeus(opiskeluOikeus: Opiskeluoikeus)(implicit user: KoskiUser, accessType: AccessType.Value): HttpStatus = {
     HttpStatus.validate(user.hasAccess(opiskeluOikeus.oppilaitos.oid, accessType)) { KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid) }
-      .then { HttpStatus.fold(
+    .then { HttpStatus.fold(
+      validatePäivämäärät(opiskeluOikeus),
+      HttpStatus.fold(opiskeluOikeus.suoritukset.map(validateSuoritus(_, None)))
+    )}
+    .then {
+      HttpStatus.fold(opiskeluOikeus.suoritukset.map(TutkintoRakenneValidator(tutkintoRepository).validateTutkintoRakenne(_)))
+    }
+  }
+
+  def validatePäivämäärät(opiskeluOikeus: Opiskeluoikeus) = {
+    val ensimmäisenJaksonPäivä: Option[LocalDate] = opiskeluOikeus.tila.opiskeluoikeusjaksot.headOption.map(_.alku)
+    val päättävänJaksonPäivä: Option[LocalDate] = opiskeluOikeus.tila.opiskeluoikeusjaksot.filter(_.opiskeluoikeusPäättynyt).lastOption.map(_.alku)
+    def formatOptionalDate(date: Option[LocalDate]) = date match {
+      case Some(d) => d.toString
+      case None => "null"
+    }
+    HttpStatus.fold(
       validateDateOrder(("alkamispäivä", opiskeluOikeus.alkamispäivä), ("päättymispäivä", opiskeluOikeus.päättymispäivä)),
       validateDateOrder(("alkamispäivä", opiskeluOikeus.alkamispäivä), ("arvioituPäättymispäivä", opiskeluOikeus.arvioituPäättymispäivä)),
       DateValidation.validateJaksot("tila.opiskeluoikeusjaksot", opiskeluOikeus.tila.opiskeluoikeusjaksot),
       DateValidation.validateJaksot("läsnäolotiedot.läsnäolojaksot", opiskeluOikeus.läsnäolotiedot.toList.flatMap(_.läsnäolojaksot)),
-      HttpStatus.validate(opiskeluOikeus.alkamispäivä == opiskeluOikeus.tila.opiskeluoikeusjaksot.headOption.map(_.alku))(KoskiErrorCategory.badRequest.validation.date.alkamispäivä()),
-      HttpStatus.validate(!opiskeluOikeus.päättymispäivä.isDefined || opiskeluOikeus.päättymispäivä == opiskeluOikeus.tila.opiskeluoikeusjaksot.filter(_.opiskeluoikeusPäättynyt).lastOption.map(_.alku))(KoskiErrorCategory.badRequest.validation.date.päättymispäivämäärä()),
-      HttpStatus.fold(opiskeluOikeus.suoritukset.map(validateSuoritus(_, None)))
-    )}
-      .then {
-        HttpStatus.fold(opiskeluOikeus.suoritukset.map(TutkintoRakenneValidator(tutkintoRepository).validateTutkintoRakenne(_)))
-      }
+      HttpStatus.validate(opiskeluOikeus.alkamispäivä == ensimmäisenJaksonPäivä)(KoskiErrorCategory.badRequest.validation.date.alkamispäivä(s"Opiskeluoikeuden alkamispäivä (${formatOptionalDate(opiskeluOikeus.alkamispäivä)}) ei vastaa ensimmäisen opiskeluoikeusjakson alkupäivää (${formatOptionalDate(ensimmäisenJaksonPäivä)})")),
+      HttpStatus.validate(!opiskeluOikeus.päättymispäivä.isDefined || opiskeluOikeus.päättymispäivä == päättävänJaksonPäivä)(KoskiErrorCategory.badRequest.validation.date.päättymispäivämäärä(s"Opiskeluoikeuden päättymispäivä (${formatOptionalDate(opiskeluOikeus.päättymispäivä)}) ei vastaa opiskeluoikeuden päättävän opiskeluoikeusjakson alkupäivää (${formatOptionalDate(päättävänJaksonPäivä)})"))
+    )
   }
 
   def validateSuoritus(suoritus: Suoritus, vahvistus: Option[Vahvistus]): HttpStatus = {
