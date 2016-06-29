@@ -8,6 +8,7 @@ object Henkilö {
   type Hetu = String
   def withOid(oid: String) = OidHenkilö(oid)
   def apply(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String) = UusiHenkilö(hetu, etunimet, kutsumanimi, sukunimi)
+  def isHenkilöOid(s: String) = s.matches("""1\.2\.246\.562\.24\.\d{11}""")
 }
 
 @Description("Henkilötiedot. Syötettäessä vaaditaan joko `oid` tai kaikki muut kentät, jolloin järjestelmään voidaan tarvittaessa luoda uusi henkilö")

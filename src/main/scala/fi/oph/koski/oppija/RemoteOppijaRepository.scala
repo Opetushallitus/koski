@@ -7,7 +7,11 @@ import fi.oph.koski.schema._
 
 class RemoteOppijaRepository(henkilöPalveluClient: AuthenticationServiceClient, koodisto: KoodistoViitePalvelu) extends OppijaRepository {
   override def findOppijat(query: String): List[TäydellisetHenkilötiedot] = {
-    henkilöPalveluClient.search(query).results.map(toOppija)
+    if (Henkilö.isHenkilöOid(query)) {
+      findByOid(query).toList
+    } else {
+      henkilöPalveluClient.search(query).results.map(toOppija)
+    }
   }
 
   override def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, Henkilö.Oid] =  {
