@@ -1,6 +1,6 @@
 package fi.oph.koski.integrationtest
 
-import fi.oph.koski.http.{BasicAuthentication, HttpSpecification}
+import fi.oph.koski.http.HttpSpecification
 import fi.oph.koski.koskiuser.UserWithPassword
 import org.apache.http.conn.ssl.{SSLConnectionSocketFactory, SSLContextBuilder, TrustSelfSignedStrategy}
 import org.apache.http.impl.client.HttpClients
