@@ -20,9 +20,9 @@ object OppijaRepository {
   def withoutCache(config: Config, database: KoskiDatabase, koodistoViitePalvelu: KoodistoViitePalvelu, virtaClient: VirtaClient, ytr: YlioppilasTutkintoRekisteri): OppijaRepository = {
     val opintopolku = opintopolkuOppijaRepository(config, database, koodistoViitePalvelu)
     CompositeOppijaRepository(List(
-      opintopolku,
-      VirtaOppijaRepository(virtaClient, opintopolku),
-      YtrOppijaRepository(ytr, opintopolku)
+      TimedProxy(opintopolku),
+      TimedProxy(VirtaOppijaRepository(virtaClient, opintopolku).asInstanceOf[OppijaRepository]),
+      TimedProxy(YtrOppijaRepository(ytr, opintopolku).asInstanceOf[OppijaRepository])
     ))
   }
 
