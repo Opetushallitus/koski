@@ -2,6 +2,7 @@ package fi.oph.koski.http
 
 import fi.oph.koski.http
 import fi.oph.koski.json.Json
+import fi.oph.koski.koskiuser.UserWithPassword
 import org.scalatest.{Assertions, Matchers}
 import org.scalatra.test.HttpComponentsClient
 
@@ -36,5 +37,15 @@ trait HttpSpecification extends HttpComponentsClient with Assertions with Matche
     post("fixtures/reset") {
       verifyResponseStatus(200)
     }
+  }
+
+  def defaultUser: UserWithPassword
+
+  def authHeaders(user: UserWithPassword = defaultUser): Headers = {
+    Map(BasicAuthentication.basicAuthHeader(user.username, user.password))
+  }
+
+  def authGet[A](uri: String, user: UserWithPassword = defaultUser)(f: => A) = {
+    get(uri, headers = authHeaders(user))(f)
   }
 }

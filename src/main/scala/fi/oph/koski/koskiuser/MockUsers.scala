@@ -6,10 +6,11 @@ import fi.vm.sade.security.ldap.{DirectoryClient, LdapUser}
 import rx.lang.scala.Observable
 
 object MockUsers extends UserOrganisationsRepository with DirectoryClient {
-  case class MockUser(ldapUser: LdapUser, organisaatiot: Set[String]) {
+  case class MockUser(ldapUser: LdapUser, organisaatiot: Set[String]) extends UserWithPassword {
     def asKoskiUser = new KoskiUser(ldapUser.oid, "192.168.0.10", "fi", Observable.just(organisaatiot))
     def oid = ldapUser.oid
     def username = ldapUser.givenNames
+    def password = username
   }
 
   val mockOrganisaatioRepository = new MockOrganisaatioRepository(KoodistoViitePalvelu(MockKoodistoPalvelu))

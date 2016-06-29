@@ -9,10 +9,10 @@ class OppijaIntegrationTest extends FreeSpec with Matchers with KoskidevHttpSpec
   val testOid = "1.2.246.562.24.51633620848"
 
   "Oppijan henkilötiedot, kansalaisuus ja äidinkieli" taggedAs(KoskiDevEnvironment) in {
-    putOpiskeluOikeus(defaultOpiskeluoikeus, OidHenkilö(testOid), authHeaders) {
+    putOpiskeluOikeus(defaultOpiskeluoikeus, OidHenkilö(testOid)) {
       verifyResponseStatus(200)
     }
-    get("api/oppija/" + testOid, headers = authHeaders) {
+    authGet("api/oppija/" + testOid) {
       verifyResponseStatus(200)
       val oppija = Json.read[Oppija](response.body)
       val henkilö = oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot]

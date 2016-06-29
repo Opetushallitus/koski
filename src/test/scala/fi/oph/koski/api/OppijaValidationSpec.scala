@@ -10,7 +10,7 @@ import java.time.LocalDate.{ of => date }
 import org.json4s._
 import org.scalatest.FunSpec
 
-class OppijaValidationSpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatillinen {
+class OppijaValidationSpec extends FunSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
   describe("Opiskeluoikeuden lisääminen") {
     describe("Valideilla tiedoilla") {
       it("palautetaan HTTP 200") {

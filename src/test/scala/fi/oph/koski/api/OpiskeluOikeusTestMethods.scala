@@ -1,10 +1,11 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.http.HttpSpecification
 import fi.oph.koski.json.Json
 import fi.oph.koski.schema._
 import org.scalatest.Matchers
 
-trait OpiskeluOikeusTestMethods extends LocalJettyHttpSpecification with Matchers {
+trait OpiskeluOikeusTestMethods extends HttpSpecification with Matchers {
   def lastOpiskeluOikeus(oppijaOid: String): KoskeenTallennettavaOpiskeluoikeus = {
     oppija(oppijaOid).tallennettavatOpiskeluoikeudet.last
   }

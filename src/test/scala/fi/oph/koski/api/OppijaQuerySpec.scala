@@ -9,7 +9,7 @@ import fi.oph.koski.schema._
 import org.scalatest.{FunSpec, Matchers}
 import java.time.LocalDate.{of => date}
 
-class OppijaQuerySpec extends FunSpec with OpiskeluoikeusTestMethodsAmmatillinen with Matchers {
+class OppijaQuerySpec extends FunSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with Matchers {
   val teija = UusiHenkilö("150995-914X", "Teija", "Teija", "Tekijä")
 
   AuditLogTester.setup

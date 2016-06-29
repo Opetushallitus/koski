@@ -8,7 +8,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.koski.HenkilönOpiskeluoikeusVersiot
 import org.scalatest.FreeSpec
 
-class OppijaUpdateSpec extends FreeSpec with OpiskeluoikeusTestMethodsAmmatillinen {
+class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
   val uusiOpiskeluOikeus = defaultOpiskeluoikeus
   val oppija: TäydellisetHenkilötiedot = MockOppijat.tyhjä
 
