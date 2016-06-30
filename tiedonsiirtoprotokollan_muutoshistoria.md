@@ -1,3 +1,8 @@
+## 30.6.2016
+
+- Erityinen koulutustehtävä valmiiksi
+- Hyväksiluku lukion kurssin suoritukseen valmiiksi
+
 ## 28.6.2016
 
 - Näyttötutkintoon valmistavassa koulutuksessa käytössä väliaikainen koodi. Tutkinto, johon koulutus tähtää on siirretty omaan tutkinto-kenttäänsä
