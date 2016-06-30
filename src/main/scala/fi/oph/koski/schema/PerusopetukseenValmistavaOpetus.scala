@@ -60,6 +60,11 @@ case class PerusopetukseenValmistavaOpetus(
 @Description("Perusopetukseen valmistavan opetuksen oppiaineen tunnistetiedot")
 case class PerusopetukseenValmistavanOpetuksenOppiaine(
   tunniste: PaikallinenKoodi,
-  laajuus: Option[LaajuusVuosiviikkotunneissa],
+  laajuus: Option[PerusopetukseenValmistavanKoulutuksenLaajuus],
   opetuksenSisältö: Option[LocalizedString]
 ) extends PaikallinenKoulutusmoduuli
+
+case class PerusopetukseenValmistavanKoulutuksenLaajuus(
+  arvo: Float,
+  yksikkö: Koodistokoodiviite
+) extends Laajuus
