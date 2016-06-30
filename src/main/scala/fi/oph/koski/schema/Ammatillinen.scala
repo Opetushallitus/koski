@@ -246,7 +246,9 @@ case class NäytönArviointi (
   arvioinnistaPäättäneet: Koodistokoodiviite,
   @KoodistoUri("ammatillisennaytonarviointikeskusteluunosallistuneet")
   @Description("Arviointikeskusteluun osallistuneet tahot, ilmaistuna 1-numeroisella koodilla")
-  arviointikeskusteluunOsallistuneet: Koodistokoodiviite
+  arviointikeskusteluunOsallistuneet: Koodistokoodiviite,
+  @Description("Jos näyttö on hylätty, kuvataan hylkäyksen perusteet tänne.")
+  hylkäyksenPeruste: Option[LocalizedString] = None
 )
 
 case class NäytönArviointikohde(
