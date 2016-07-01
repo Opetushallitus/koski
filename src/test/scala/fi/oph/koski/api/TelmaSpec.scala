@@ -8,8 +8,8 @@ class TelmaSpec extends FunSpec with Matchers with TodistusTestMethods with Opis
     it("Päättötodistus") {
       todistus(MockOppijat.telma.oid, "telma") should equal(
         """Työhön ja itsenäiseen elämään valmentava koulutus
-          |Jyväskylän yliopisto
-          |Jyväskylän normaalikoulu
+          |HELSINGIN KAUPUNKI
+          |Stadin ammattiopisto
           |Telmanen, Tuula 170696-986C
           |
           |Pakolliset koulutuksen osat 53 osp
