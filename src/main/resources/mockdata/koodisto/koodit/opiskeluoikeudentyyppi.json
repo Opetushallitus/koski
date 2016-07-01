@@ -50,26 +50,6 @@
     "versio" : 1
   },
   {
-    "koodiUri" : "opiskeluoikeudentyyppi_telma",
-    "koodiArvo" : "telma",
-    "metadata" : [ {
-      "nimi" : "Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)",
-      "lyhytNimi" : "Telma",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1
-  },
-  {
-    "koodiUri" : "opiskeluoikeudentyyppi_valma",
-    "koodiArvo" : "valma",
-    "metadata" : [ {
-      "nimi" : "Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)",
-      "lyhytNimi" : "Valma",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1
-  },
-  {
     "koodiUri" : "opiskeluoikeudentyyppi_luva",
     "koodiArvo" : "luva",
     "metadata" : [ {

@@ -14,7 +14,7 @@ object ExamplesTelma {
   val telmaTodistus = Oppija(
     MockOppijat.telma.vainHenkilötiedot,
     List(
-      TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOpiskeluoikeus(
+      AmmatillinenOpiskeluoikeus(
         alkamispäivä = Some(date(2009, 9, 14)),
         päättymispäivä = Some(date(2016, 6, 4)),
         tila = AmmatillinenOpiskeluoikeudenTila(List(
@@ -37,7 +37,8 @@ object ExamplesTelma {
             telmaKurssinSuoritus("TIV", "Tieto- ja viestintätekniikka sekä sen hyödyntäminen", 2f, pakollinen = false, arviointiHyväksytty, tunnustettu("Yhteisten tutkinnon osien osa-alue on suoritettu x- perustutkinnon perusteiden (2015) osaamistavoitteiden mukaisesti")),
             telmaKurssinSuoritus("UV", "Uimaliikunta ja vesiturvallisuus", 5f, pakollinen = false, arvointiTyydyttävä, tunnustettu("Koulutuksen osa on tunnustettu Vesikallion urheiluopiston osaamistavoitteiden mukaisesti"))
           ))
-        ))
+        )),
+        tavoite = tavoiteTutkinto
       )
     )
   )

@@ -9,37 +9,14 @@
     "alkamispäivä" : "2009-09-14",
     "päättymispäivä" : "2016-06-04",
     "oppilaitos" : {
-      "oid" : "1.2.246.562.10.14613773812",
+      "oid" : "1.2.246.562.10.52251087186",
       "oppilaitosnumero" : {
-        "koodiarvo" : "00204",
+        "koodiarvo" : "10105",
         "koodistoUri" : "oppilaitosnumero"
       },
       "nimi" : {
-        "fi" : "Jyväskylän normaalikoulu"
+        "fi" : "Stadin ammattiopisto"
       }
-    },
-    "tila" : {
-      "opiskeluoikeusjaksot" : [ {
-        "alku" : "2009-09-14",
-        "tila" : {
-          "koodiarvo" : "lasna",
-          "nimi" : {
-            "fi" : "Läsnä"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
-        }
-      }, {
-        "alku" : "2016-06-04",
-        "tila" : {
-          "koodiarvo" : "valmistunut",
-          "nimi" : {
-            "fi" : "Valmistunut"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
-        }
-      } ]
     },
     "suoritukset" : [ {
       "tila" : {
@@ -47,32 +24,32 @@
         "koodistoUri" : "suorituksentila"
       },
       "toimipiste" : {
-        "oid" : "1.2.246.562.10.14613773812",
+        "oid" : "1.2.246.562.10.52251087186",
         "oppilaitosnumero" : {
-          "koodiarvo" : "00204",
+          "koodiarvo" : "10105",
           "koodistoUri" : "oppilaitosnumero"
         },
         "nimi" : {
-          "fi" : "Jyväskylän normaalikoulu"
+          "fi" : "Stadin ammattiopisto"
         }
       },
       "vahvistus" : {
         "päivä" : "2016-06-04",
         "paikkakunta" : {
-          "koodiarvo" : "179",
+          "koodiarvo" : "091",
           "nimi" : {
-            "fi" : "Jyväskylä"
+            "fi" : "Helsinki"
           },
           "koodistoUri" : "kunta"
         },
         "myöntäjäOrganisaatio" : {
-          "oid" : "1.2.246.562.10.14613773812",
+          "oid" : "1.2.246.562.10.52251087186",
           "oppilaitosnumero" : {
-            "koodiarvo" : "00204",
+            "koodiarvo" : "10105",
             "koodistoUri" : "oppilaitosnumero"
           },
           "nimi" : {
-            "fi" : "Jyväskylän normaalikoulu"
+            "fi" : "Stadin ammattiopisto"
           }
         },
         "myöntäjäHenkilöt" : [ {
@@ -81,13 +58,13 @@
             "fi" : "rehtori"
           },
           "organisaatio" : {
-            "oid" : "1.2.246.562.10.14613773812",
+            "oid" : "1.2.246.562.10.52251087186",
             "oppilaitosnumero" : {
-              "koodiarvo" : "00204",
+              "koodiarvo" : "10105",
               "koodistoUri" : "oppilaitosnumero"
             },
             "nimi" : {
-              "fi" : "Jyväskylän normaalikoulu"
+              "fi" : "Stadin ammattiopisto"
             }
           }
         } ]
@@ -322,8 +299,35 @@
         }
       }
     } ],
+    "tavoite" : {
+      "koodiarvo" : "ammatillinentutkinto",
+      "koodistoUri" : "suorituksentyyppi"
+    },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2009-09-14",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      }, {
+        "alku" : "2016-06-04",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "nimi" : {
+            "fi" : "Valmistunut"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
     "tyyppi" : {
-      "koodiarvo" : "telma",
+      "koodiarvo" : "ammatillinenkoulutus",
       "koodistoUri" : "opiskeluoikeudentyyppi"
     }
   } ]

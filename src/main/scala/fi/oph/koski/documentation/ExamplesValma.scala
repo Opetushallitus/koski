@@ -13,7 +13,7 @@ object ExamplesValma {
   val valmaTodistus = Oppija(
     MockOppijat.valma.vainHenkilötiedot,
     List(
-      AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOpiskeluoikeus(
+      AmmatillinenOpiskeluoikeus(
         alkamispäivä = Some(date(2009, 9, 14)),
         päättymispäivä = Some(date(2016, 6, 4)),
         tila = AmmatillinenOpiskeluoikeudenTila(List(
@@ -33,7 +33,8 @@ object ExamplesValma {
             valmaKurssinSuoritus("ATH", "Arjen taitojen ja hyvinvoinnin vahvistaminen", 10f, arviointiHyväksytty, pakollinen = false),
             valmaKurssinSuoritus("APT", "Ammatillisen perustutkinnon tutkinnon osat tai osa-alueet", 15f, arviointiKiitettävä, pakollinen = false, tunnustettu)
           ))
-        ))
+        )),
+        tavoite = tavoiteTutkinto
       )
     )
   )

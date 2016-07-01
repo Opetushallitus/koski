@@ -318,3 +318,95 @@ case class NäyttötutkintoonValmistavanKoulutuksenOsa(
 ) extends PaikallinenKoulutusmoduuli {
   def laajuus = None
 }
+
+@Description("Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)")
+case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus(
+  suorituskieli: Option[Koodistokoodiviite] = None,
+  tila: Koodistokoodiviite,
+  toimipiste: OrganisaatioWithOid,
+  vahvistus: Option[Henkilövahvistus] = None,
+  @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osasuoritukset")
+  override val osasuoritukset: Option[List[AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus]],
+  @KoodistoKoodiarvo("valma")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("valma", koodistoUri = "suorituksentyyppi"),
+  koulutusmoduuli: AmmatilliseenPeruskoulutukseenValmentavaKoulutus,
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
+) extends ValmentavaSuoritus with AmmatillinenPäätasonSuoritus
+
+case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus(
+  suorituskieli: Option[Koodistokoodiviite] = None,
+  tila: Koodistokoodiviite,
+  vahvistus: Option[Henkilövahvistus] = None,
+  @KoodistoKoodiarvo("valmakoulutuksenosa")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("valmakoulutuksenosa", koodistoUri = "suorituksentyyppi"),
+  koulutusmoduuli: AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa,
+  arviointi: Option[List[AmmatillinenArviointi]],
+  @Description("Jos tutkinnon osa on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
+  tunnustettu: Option[OsaamisenTunnustaminen] = None,
+  lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None
+) extends ValmentavanKoulutuksenOsanSuoritus
+
+@Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen (VALMA) tunnistetiedot")
+case class AmmatilliseenPeruskoulutukseenValmentavaKoulutus(
+  @KoodistoKoodiarvo("999901")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("999901", koodistoUri = "koulutus"),
+  laajuus: Option[Laajuus] = None
+) extends Koulutus
+
+@Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osan tunnistetiedot")
+case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa(
+  tunniste: PaikallinenKoodi,
+  laajuus: Option[LaajuusOsaamispisteissä],
+  pakollinen: Boolean
+) extends PaikallinenKoulutusmoduuli with Valinnaisuus
+
+@Description("Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)")
+case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenSuoritus(
+  suorituskieli: Option[Koodistokoodiviite] = None,
+  tila: Koodistokoodiviite,
+  toimipiste: OrganisaatioWithOid,
+  vahvistus: Option[Henkilövahvistus] = None,
+  @Description("Työhön ja itsenäiseen elämään valmentavan koulutuksen osasuoritukset")
+  override val osasuoritukset: Option[List[TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus]],
+  @KoodistoKoodiarvo("telma")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("telma", koodistoUri = "suorituksentyyppi"),
+  koulutusmoduuli: TyöhönJaItsenäiseenElämäänValmentavaKoulutus,
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
+) extends ValmentavaSuoritus with AmmatillinenPäätasonSuoritus
+
+case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus(
+  suorituskieli: Option[Koodistokoodiviite] = None,
+  tila: Koodistokoodiviite,
+  vahvistus: Option[Henkilövahvistus] = None,
+  @KoodistoKoodiarvo("telmakoulutuksenosa")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("telmakoulutuksenosa", koodistoUri = "suorituksentyyppi"),
+  koulutusmoduuli: TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa,
+  arviointi: Option[List[TelmaArviointi]],
+  @Description("Jos koulutuksen osa on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
+  tunnustettu: Option[OsaamisenTunnustaminen] = None,
+  lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None
+) extends ValmentavanKoulutuksenOsanSuoritus
+
+@Description("Työhön ja itsenäiseen elämään valmentavan koulutuksen (TELMA) tunnistetiedot")
+case class TyöhönJaItsenäiseenElämäänValmentavaKoulutus(
+  @KoodistoKoodiarvo("999903")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("999903", koodistoUri = "koulutus"),
+  laajuus: Option[Laajuus] = None
+) extends Koulutus
+
+@Description("Työhön ja itsenäiseen elämään valmentavan koulutuksen osan tunnistiedot")
+case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa(
+  tunniste: PaikallinenKoodi,
+  laajuus: Option[LaajuusOsaamispisteissä],
+  pakollinen: Boolean
+) extends PaikallinenKoulutusmoduuli with Valinnaisuus
+
+case class TelmaArviointi(
+  @KoodistoUri("arviointiasteikkoammatillinenhyvaksyttyhylatty")
+  @KoodistoUri("arviointiasteikkoammatillinent1k3")
+  arvosana: Koodistokoodiviite,
+  päivä: LocalDate,
+  @Description("Tutkinnon osan suorituksen arvioinnista päättäneen henkilön nimi")
+  arvioitsijat: Option[List[Arvioitsija]] = None,
+  kuvaus: Option[LocalizedString] = None
+) extends AmmatillinenKoodistostaLöytyväArviointi with SanallinenArviointi
