@@ -8,14 +8,14 @@ describe('Telma', function() {
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
         expect(OpinnotPage().getTutkinto()).to.equal("Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)")
-        expect(OpinnotPage().getOppilaitos()).to.equal("Jyväskylän normaalikoulu")
+        expect(OpinnotPage().getOppilaitos()).to.equal("Stadin ammattiopisto")
       })
     })
     describe('Tulostettava todistus', function() {
       before(OpinnotPage().avaaTodistus(0))
       it('näytetään', function() {
         // See more detailed content specification in TelmaSpec.scala
-        expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
+        expect(todistus.vahvistus()).to.equal('Helsinki 4.6.2016 Reijo Reksi rehtori')
       })
     })
   })

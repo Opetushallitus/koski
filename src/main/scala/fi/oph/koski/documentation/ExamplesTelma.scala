@@ -2,9 +2,9 @@ package fi.oph.koski.documentation
 
 import java.time.LocalDate.{of => date}
 
+import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.documentation.TelmaExampleData._
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
+import fi.oph.koski.documentation.TelmaExampleData.{arviointiHyväksytty, _}
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.oppija.MockOppijat
@@ -21,11 +21,11 @@ object ExamplesTelma {
           AmmatillinenOpiskeluoikeusjakso(date(2009, 9, 14), opiskeluoikeusLäsnä, None),
           AmmatillinenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut, None)
         )),
-        oppilaitos = jyväskylänNormaalikoulu,
+        oppilaitos = stadinAmmattiopisto,
         suoritukset = List(TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenSuoritus(
           tila = tilaValmis,
-          vahvistus = vahvistus(),
-          toimipiste = jyväskylänNormaalikoulu,
+          vahvistus = vahvistus(date(2016, 6, 4), stadinAmmattiopisto, helsinki),
+          toimipiste = stadinAmmattiopisto,
           koulutusmoduuli = TyöhönJaItsenäiseenElämäänValmentavaKoulutus(),
           osasuoritukset = Some(List(
             telmaKurssinSuoritus("TV", "Toimintakyvyn vahvistaminen", 18f, pakollinen = true,
