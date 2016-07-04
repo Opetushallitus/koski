@@ -18,10 +18,12 @@ case class AmmatillinenOpiskeluoikeus(
   koulutustoimija: Option[OrganisaatioWithOid] = None,
   @MinItems(1) @MaxItems(2)
   suoritukset: List[AmmatillinenPäätasonSuoritus],
-  @Description("Opiskeluoikeuden tavoite-tieto kertoo sen, suorittaako opiskelija tutkintotavoitteista koulutusta (koko tutkintoa) vai tutkinnon osa tavoitteista koulutusta (tutkinnon osaa)")
+  @Description("Opiskeluoikeuden tavoite-tieto kertoo sen, suorittaako opiskelija tutkintotavoitteista koulutusta (koko tutkintoa), tutkinnon osa tavoitteista koulutusta (tutkinnon osaa), ammatilliseen peruskoulutukseen valmentavaa koulutusta (Valma) vai työhön ja itsenäiseen elämään valmentavaa koulutusta (Telma)")
   @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("ammatillinentutkinto")
   @KoodistoKoodiarvo("ammatillisentutkinnonosa")
+  @KoodistoKoodiarvo("valma")
+  @KoodistoKoodiarvo("telma")
   tavoite: Koodistokoodiviite,
   tila: AmmatillinenOpiskeluoikeudenTila,
   läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
