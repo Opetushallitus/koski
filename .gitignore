@@ -20,6 +20,6 @@ src/test/scala/fi/oph/koski/ServiceTester.scala
 src/test/resources/opiskeluoikeudet.txt
 /ignore
 PersonOids.scala
-*.log
+*.log*
 curltestdata.json
 scripts/cloudrc
