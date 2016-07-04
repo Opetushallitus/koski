@@ -6,8 +6,8 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.{AuthenticationServiceClient, CreateUser, UserQueryResult}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.{KoodistoKoodi, KoodistoKoodiMetadata, KoodistoMuokkausPalvelu}
+import fi.oph.koski.koskiuser.Käyttöoikeusryhmät
 import fi.oph.koski.log.Logging
-import fi.oph.koski.koskiuser.KäyttöoikeusRyhmät
 
 object ServiceUserAdder extends App with Logging {
   args match {
@@ -32,8 +32,8 @@ object ServiceUserAdder extends App with Logging {
       logger.info("Username " + username + ", oid: " + oid)
 
       authService.lisääOrganisaatio(oid, organisaatioOid, "oppilashallintojärjestelmä")
-
-      authService.lisääKäyttöoikeusRyhmä(oid, organisaatioOid, KäyttöoikeusRyhmät(app.config).readWrite)
+      val käyttöoikeusryhmäId = authService.käyttöoikeusryhmät.find(_.toKoskiKäyttöoikeusryhmä == Käyttöoikeusryhmät.old).get.id
+      authService.lisääKäyttöoikeusRyhmä(oid, organisaatioOid, käyttöoikeusryhmäId)
 
       authService.asetaSalasana(oid, password)
       authService.syncLdap(oid)

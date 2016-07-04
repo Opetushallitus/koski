@@ -37,10 +37,10 @@ abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](oppijaRep
                 Some(opiskeluoikeus)
               case Left(status) =>
                 if (status.errors.map(_.key).contains(KoskiErrorCategory.badRequest.validation.jsonSchema.key)) {
-                  logger.error("Virrasta saatu opiskeluoikeus ei ole validi Koski-järjestelmän JSON schemassa: " + status)
+                  logger.error("Ulkoisesta järjestelmästä saatu opiskeluoikeus ei ole validi Koski-järjestelmän JSON schemassa: " + status)
                   None
                 } else {
-                  logger.warn("Virrasta saatu opiskeluoikeus sisältää validointivirheitä " + status)
+                  logger.warn("Ulkoisesta järjestelmästä saatu opiskeluoikeus sisältää validointivirheitä " + status)
                   Some(opiskeluoikeus)
                 }
             }

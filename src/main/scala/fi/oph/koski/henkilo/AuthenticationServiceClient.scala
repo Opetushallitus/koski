@@ -1,13 +1,12 @@
 package fi.oph.koski.henkilo
 
-import java.time.{LocalDate, ZoneId}
-
 import com.typesafe.config.Config
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
 import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import fi.oph.koski.json.Json4sHttp4s._
+import fi.oph.koski.koskiuser.Käyttöoikeusryhmät
 import fi.oph.koski.util.ScalazTaskToObservable._
 import fi.oph.koski.util.Timing
 import org.http4s._
@@ -21,8 +20,13 @@ class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances wit
 
   def findByOid(id: String): Option[User] = findByOids(List(id)).headOption
   def findByOids(oids: List[String]): List[User] = http.post(uri"/authentication-service/resources/s2s/koski/henkilotByHenkiloOidList", oids)(json4sEncoderOf[List[String]], Http.parseJson[List[User]])
-  def käyttäjänOrganisaatiot(oid: String, käyttöoikeusRyhmä: Int): Observable[List[String]] = {
-    http(uri"/authentication-service/resources/s2s/flatorgs/${oid}/${käyttöoikeusRyhmä}")(Http.parseJson[List[String]])
+
+  def käyttöoikeusryhmät: List[Käyttöoikeusryhmä] = runTask(http(uri"/authentication-service/resources/kayttooikeusryhma")(Http.parseJson[List[Käyttöoikeusryhmä]]))
+
+  def käyttäjänKäyttöoikeusryhmät(oid: String): Observable[List[(String, Int)]] = {
+    http(uri"/authentication-service/resources/s2s/koski/kayttooikeusryhmat/${oid}")(Http.parseJson[Map[String, List[Int]]]).map { groupedByOrg =>
+      groupedByOrg.toList.flatMap { case (org, ryhmät) => ryhmät.map(ryhmä => (org, ryhmä)) }
+    }
   }
 
   def lisääOrganisaatio(henkilöOid: String, organisaatioOid: String, nimike: String) = {
@@ -90,12 +94,13 @@ object CreateUser {
 
 
 case class OrganisaatioHenkilö(organisaatioOid: String, passivoitu: Boolean)
-case class Käyttöoikeusryhmä(ryhmaId: Long, organisaatioOid: String, tila: String, alkuPvm: LocalDate, voimassaPvm: LocalDate) {
-  def effective = {
-    val now: LocalDate = LocalDate.now(ZoneId.of("UTC"))
-    !now.isBefore(alkuPvm) && !now.isAfter(voimassaPvm)
-  }
-}
 case class LisääKäyttöoikeusryhmä(ryhmaId: Int, alkuPvm: String = "2015-12-04T11:08:13.042Z", voimassaPvm: String = "2024-12-02T01:00:00.000Z", selected: Boolean = true)
 
 case class LisääOrganisaatio(organisaatioOid: String, tehtavanimike: String, passivoitu: Boolean = false, newOne: Boolean = true)
+
+case class Käyttöoikeusryhmä(id: Int, name: String) {
+  def toKoskiKäyttöoikeusryhmä = {
+    val name: String = this.name.replaceAll("_.*", "")
+    Käyttöoikeusryhmät.byName(name)
+  }
+}

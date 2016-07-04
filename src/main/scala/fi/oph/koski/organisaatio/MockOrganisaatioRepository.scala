@@ -12,18 +12,24 @@ object MockOrganisaatiot {
   val helsinginKaupunki = "1.2.246.562.10.346830761110"
   val lehtikuusentienToimipiste = "1.2.246.562.10.42456023292"
   val jyväskylänNormaalikoulu = "1.2.246.562.10.14613773812"
+  val helsinginMedialukio = "1.2.246.562.10.70411521654"
   val helsinginYliopisto = "1.2.246.562.10.39218317368"
   val aaltoYliopisto = "1.2.246.562.10.56753942459"
   val itäsuomenYliopisto = "1.2.246.562.10.38515028629"
+  val yrkehögskolanArcada = "1.2.246.562.10.25619624254"
+  val lahdenAmmattikorkeakoulu = "1.2.246.562.10.27756776996"
 
   val oppilaitokset: List[String] = List(
     stadinAmmattiopisto,
     omnomnia,
     winnova,
     jyväskylänNormaalikoulu,
+    helsinginMedialukio,
     helsinginYliopisto,
     aaltoYliopisto,
-    itäsuomenYliopisto
+    itäsuomenYliopisto,
+    yrkehögskolanArcada,
+    lahdenAmmattikorkeakoulu
   )
 
   val organisaatiot: List[String] = oppilaitokset ++ List(helsinginKaupunki, lehtikuusentienToimipiste)

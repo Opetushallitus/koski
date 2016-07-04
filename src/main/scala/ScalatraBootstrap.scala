@@ -8,7 +8,7 @@ import fi.oph.koski.fixture.{FixtureServlet, Fixtures}
 import fi.oph.koski.history.KoskiHistoryServlet
 import fi.oph.koski.koodisto.KoodistoCreator
 import fi.oph.koski.koski.{KoskiFacade, OppijaServlet}
-import fi.oph.koski.koskiuser.{LogoutServlet, UserOrganisationsRepository, UserServlet}
+import fi.oph.koski.koskiuser.{KäyttöoikeusRyhmätCreator, LogoutServlet, UserOrganisationsRepository, UserServlet}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppilaitos.OppilaitosServlet
 import fi.oph.koski.servlet.IndexServlet
@@ -26,6 +26,9 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       val application = KoskiApplication(configOverrides)
       if (application.config.getBoolean("koodisto.create")) {
         KoodistoCreator.createKoodistotFromMockData(application.config)
+      }
+      if (application.config.getBoolean("käyttöoikeusryhmät.create")) {
+        KäyttöoikeusRyhmätCreator.luoKäyttöoikeusRyhmät(application.config)
       }
       implicit val userRepository = UserOrganisationsRepository(application.config, application.organisaatioRepository)
 

@@ -3,14 +3,16 @@ package fi.oph.koski.koskiuser
 import com.typesafe.config.Config
 import fi.oph.koski.cache.{CachingProxy, KoskiCache}
 import fi.oph.koski.henkilo.AuthenticationServiceClient
+import fi.oph.koski.koskiuser.Käyttöoikeusryhmät.OrganisaatioKäyttöoikeusryhmä
 import fi.oph.koski.organisaatio.OrganisaatioRepository
+import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.util.Timing
 import rx.lang.scala.Observable
 
 object UserOrganisationsRepository {
   def apply(config: Config, organisaatioRepository: OrganisaatioRepository) = {
     CachingProxy(KoskiCache.cacheStrategy, if (config.hasPath("opintopolku.virkailija.username")) {
-      new RemoteUserOrganisationsRepository(AuthenticationServiceClient(config), organisaatioRepository, KäyttöoikeusRyhmät(config))
+      new RemoteUserOrganisationsRepository(AuthenticationServiceClient(config), organisaatioRepository)
     } else {
       MockUsers
     })
@@ -18,21 +20,26 @@ object UserOrganisationsRepository {
 }
 
 trait UserOrganisationsRepository {
-  def getUserOrganisations(oid: String): Observable[Set[String]]
+  def getUserOrganisations(oid: String): Observable[Set[OrganisaatioKäyttöoikeusryhmä]]
 }
 
 import fi.oph.koski.henkilo.AuthenticationServiceClient
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import org.http4s.EntityDecoderInstances
 
-class RemoteUserOrganisationsRepository(henkilöPalveluClient: AuthenticationServiceClient, organisaatioRepository: OrganisaatioRepository, käyttöoikeusRyhmät: KäyttöoikeusRyhmät)
+class RemoteUserOrganisationsRepository(henkilöPalveluClient: AuthenticationServiceClient, organisaatioRepository: OrganisaatioRepository)
                                        extends UserOrganisationsRepository with EntityDecoderInstances with Timing {
-  def getUserOrganisations(oid: String): Observable[Set[String]] = {
-    timedObservable("käyttäjänOrganisaatiot")(henkilöPalveluClient.käyttäjänOrganisaatiot(oid, käyttöoikeusRyhmät.readWrite)
-      .map { oids =>
-        oids.toSet
-          .flatMap { organisaatioOid: String =>
-          organisaatioRepository.getChildOids(organisaatioOid).toSet.flatten ++ Set(organisaatioOid)
+  private lazy val käyttöoikeusryhmät = henkilöPalveluClient.käyttöoikeusryhmät
+
+  def getUserOrganisations(oid: String) = {
+    timedObservable("käyttäjänOrganisaatiot")(henkilöPalveluClient.käyttäjänKäyttöoikeusryhmät(oid)
+      .map { (käyttöoikeudet: List[(String, Int)]) =>
+        käyttöoikeudet.toSet.flatMap { tuple: (String, Int) =>
+          tuple match {
+            case (organisaatioOid: String, ryhmäId: Int) =>
+              val oids: Set[String] = organisaatioRepository.getChildOids(organisaatioOid).toSet.flatten ++ Set(organisaatioOid)
+              oids.flatMap(oid => käyttöoikeusryhmät.find(_.id == ryhmäId).flatMap(ryhmä => ryhmä.toKoskiKäyttöoikeusryhmä.map { r => (oid, r)}))
+          }
         }
       })
   }

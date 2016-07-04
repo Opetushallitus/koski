@@ -1,6 +1,6 @@
 package fi.oph.koski.oppilaitos
 
-import fi.oph.koski.koskiuser.KoskiUser
+import fi.oph.koski.koskiuser.{AccessType, KoskiUser}
 import fi.oph.koski.localization.LocalizedStringImplicits.LocalizedStringFinnishOrdering
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
 import fi.oph.koski.schema.{Koodistokoodiviite, OidOrganisaatio, Oppilaitos}
@@ -11,7 +11,7 @@ case class OppilaitosRepository(organisatioRepository: OrganisaatioRepository) {
   }
 
   def findOppilaitokset(query: String)(implicit context: KoskiUser): Iterable[OidOrganisaatio] = {
-    context.organisationOids
+    context.organisationOids(AccessType.read)
       .flatMap(oid => organisatioRepository.getOrganisaatioHierarkia(oid))
       .filter(org => org.organisaatiotyypit.contains("OPPILAITOS") && org.nimi.get("fi").toLowerCase.contains(query.toLowerCase))
       .map(toOppilaitos)

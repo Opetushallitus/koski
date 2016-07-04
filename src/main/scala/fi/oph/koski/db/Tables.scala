@@ -5,7 +5,7 @@ import java.sql.Timestamp
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.json.Json
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import fi.oph.koski.koskiuser.KoskiUser
+import fi.oph.koski.koskiuser.{AccessType, KoskiUser}
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.schema.{Koodistokoodiviite, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
 import org.json4s._
@@ -36,13 +36,17 @@ object Tables {
   val OpiskeluOikeusHistoria = TableQuery[OpiskeluOikeusHistoryTable]
 
   def OpiskeluOikeudetWithAccessCheck(implicit user: KoskiUser): Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = {
-    val oids = user.organisationOids.toList
-    for {
-      oo <- OpiskeluOikeudet
-      if oo.data.#>>(List("oppilaitos", "oid")) inSetBind oids
-    }
-    yield {
-      oo
+    if (user.hasUniversalReadAccess) {
+      OpiskeluOikeudet
+    } else {
+      val oids = user.organisationOids(AccessType.read).toList
+      for {
+        oo <- OpiskeluOikeudet
+        if oo.data.#>>(List("oppilaitos", "oid")) inSetBind oids
+      }
+        yield {
+          oo
+        }
     }
   }
 }

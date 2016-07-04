@@ -169,7 +169,7 @@ describe('Ammatillinen koulutus', function() {
               .then(addOppija.enterOppilaitos('ammatti'))
               .then(wait.forMilliseconds(500))
               .then(function() {
-                expect(addOppija.oppilaitokset()).to.deep.equal(['Omnian ammattiopisto', 'Stadin ammattiopisto'])
+                expect(addOppija.oppilaitokset()).to.deep.equal(['Lahden ammattikorkeakoulu', 'Omnian ammattiopisto', 'Stadin ammattiopisto'])
               })
           })
         })
