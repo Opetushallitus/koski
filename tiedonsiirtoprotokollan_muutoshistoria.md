@@ -1,3 +1,8 @@
+## 4.7.2016
+- Valma ja telma siirretty ammatillisen opiskeluoikeuden alle
+- Valman ja telman osasuorituksiin voi sisällyttää lisätietoja samalla tavalla, kuin ammatillisen tutkinnon osan suoritukseen
+- Valma ja telma lisätty mahdollisiksi opintojen tavoitteiksi ammatilliseen opiskeluoikeuteen
+
 ## 30.6.2016
 
 - Erityinen koulutustehtävä valmiiksi
