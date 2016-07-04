@@ -40,6 +40,21 @@ class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances wit
       List(LisääKäyttöoikeusryhmä(ryhmä))
     )(json4sEncoderOf[List[LisääKäyttöoikeusryhmä]], Http.unitDecoder)
   }
+
+  def luoKäyttöoikeusryhmä(tiedot: UusiKäyttöoikeusryhmä) = {
+    http.post(
+      uri"/authentication-service/resources/kayttooikeusryhma",
+      tiedot
+    )(json4sEncoderOf[UusiKäyttöoikeusryhmä], Http.unitDecoder)
+  }
+
+  def muokkaaKäyttöoikeusryhmä(id: Int, tiedot: UusiKäyttöoikeusryhmä) = {
+    http.put(
+      uri"/authentication-service/resources/kayttooikeusryhma/$id/kayttooikeus",
+      tiedot
+    )(json4sEncoderOf[UusiKäyttöoikeusryhmä], Http.unitDecoder)
+  }
+
   def asetaSalasana(henkilöOid: String, salasana: String) = {
     http.post (uri"/authentication-service/resources/salasana/${henkilöOid}", salasana)(EntityEncoder.stringEncoder(Charset.`UTF-8`)
       .withContentType(`Content-Type`(MediaType.`application/json`)), Http.unitDecoder) // <- yes, the API expects media type application/json, but consumes inputs as text/plain
@@ -104,3 +119,6 @@ case class Käyttöoikeusryhmä(id: Int, name: String) {
     Käyttöoikeusryhmät.byName(name)
   }
 }
+
+case class UusiKäyttöoikeusryhmä(ryhmaNameFi: String, ryhmaNameSv: String, ryhmaNameEn: String,
+                                 palvelutRoolit: List[Void] = Nil, organisaatioTyypit: List[String] = Nil, slaveIds: List[Void] = Nil)

@@ -1,0 +1,416 @@
+[ {
+  "koodiUri" : "oppilaitostyyppi_28",
+  "koodiArvo" : "28",
+  "metadata" : [ {
+    "nimi" : "Palo-, poliisi- ja vartiointialojen oppilaitokset",
+    "lyhytNimi" : "Palo-, poliisi- ja vartiointialojen oppilaitokset",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Läroanstalter inom brand-, polis- och bevakningsväsendet",
+    "lyhytNimi" : "Läroanstalter inom brand-, polis- och bevakningsväsendet",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitostyyppi_93",
+  "koodiArvo" : "93",
+  "metadata" : [ {
+    "nimi" : "Muut koulutuksen järjestäjät",
+    "lyhytNimi" : "Muut koulutuksen järjestäjät",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Övriga utbildningsanordnare",
+    "lyhytNimi" : "Övriga utbildningsanordnare",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitostyyppi_12",
+  "koodiArvo" : "12",
+  "metadata" : [ {
+    "nimi" : "Peruskouluasteen erityiskoulut",
+    "lyhytNimi" : "Peruskouluasteen erityiskoulut",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Special education schools",
+    "lyhytNimi" : "Special education schools",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Specialskolor på grundskolenivå",
+    "lyhytNimi" : "Specialskolor på grundskolenivå",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitostyyppi_64",
+  "koodiArvo" : "64",
+  "metadata" : [ {
+    "nimi" : "Kansalaisopistot",
+    "lyhytNimi" : "Kansalaisopistot",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Medborgarinstitut",
+    "lyhytNimi" : "Medborgarinstitut",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Adult education centres",
+    "lyhytNimi" : "Adult education centres",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitostyyppi_91",
+  "koodiArvo" : "91",
+  "metadata" : [ {
+    "nimi" : "Brevinstitut",
+    "lyhytNimi" : "Brevinstitut",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kirjeoppilaitokset",
+    "lyhytNimi" : "Kirjeoppilaitokset",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitostyyppi_45",
+  "koodiArvo" : "45",
+  "metadata" : [ {
+    "nimi" : "Barnträdgårdslärarinstitut",
+    "lyhytNimi" : "Barnträdgårdslärarinstitut",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Lastentarhanopettajaopistot",
+    "lyhytNimi" : "Lastentarhanopettajaopistot",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitostyyppi_19",
+  "koodiArvo" : "19",
+  "metadata" : [ {
+    "nimi" : "Skolor som omfattar grundskole- och gymnasienivå",
+    "lyhytNimi" : "Skolor som omfattar grundskole- och gymnasienivå",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Perus- ja lukioasteen koulut",
+    "lyhytNimi" : "Perus- ja lukioasteen koulut",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Basic and general upper secondary schools",
+    "lyhytNimi" : "Basic and general upper secondary schools",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitostyyppi_xx",
+  "koodiArvo" : "XX",
+  "metadata" : [ {
+    "nimi" : "Okänd läroanstaltstyp",
+    "lyhytNimi" : "Okänd läroanstaltstyp",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Ei tiedossa (oppilaitostyyppi)",
+    "lyhytNimi" : "Ei tiedossa (oppilaitostyyppi)",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitostyyppi_11",
+  "koodiArvo" : "11",
+  "metadata" : [ {
+    "nimi" : "Grundskolor",
+    "lyhytNimi" : "Grundskolor",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Comprehensive schools",
+    "lyhytNimi" : "Comprehensive schools",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Peruskoulut",
+    "lyhytNimi" : "Peruskoulut",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitostyyppi_42",
+  "koodiArvo" : "42",
+  "metadata" : [ {
+    "nimi" : "Universities",
+    "lyhytNimi" : "Universities",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Universitet",
+    "lyhytNimi" : "Universitet",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Yliopistot",
+    "lyhytNimi" : "Yliopistot",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitostyyppi_43",
+  "koodiArvo" : "43",
+  "metadata" : [ {
+    "nimi" : "Sotilaskorkeakoulut",
+    "lyhytNimi" : "Sotilaskorkeakoulut",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Military universities",
+    "lyhytNimi" : "Military universities",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Militära högskolor",
+    "lyhytNimi" : "Militära högskolor",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitostyyppi_15",
+  "koodiArvo" : "15",
+  "metadata" : [ {
+    "nimi" : "General upper secondary schools",
+    "lyhytNimi" : "General upper secondary schools",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Lukiot",
+    "lyhytNimi" : "Lukiot",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Gymnasier",
+    "lyhytNimi" : "Gymnasier",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitostyyppi_29",
+  "koodiArvo" : "29",
+  "metadata" : [ {
+    "nimi" : "Sotilasalan ammatilliset oppilaitokset",
+    "lyhytNimi" : "Sotilasalan ammatilliset oppilaitokset",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Militära yrkesläroanstalter",
+    "lyhytNimi" : "Militära yrkesläroanstalter",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitostyyppi_66",
+  "koodiArvo" : "66",
+  "metadata" : [ {
+    "nimi" : "Sommaruniversitet",
+    "lyhytNimi" : "Sommaruniversitet",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kesäyliopistot",
+    "lyhytNimi" : "Kesäyliopistot",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Summer universities",
+    "lyhytNimi" : "Summer universities",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitostyyppi_22",
+  "koodiArvo" : "22",
+  "metadata" : [ {
+    "nimi" : "Specialyrkesläroanstalter",
+    "lyhytNimi" : "Specialyrkesläroanstalter",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vocational special education institutions",
+    "lyhytNimi" : "Vocational special education institutions",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Ammatilliset erityisoppilaitokset",
+    "lyhytNimi" : "Ammatilliset erityisoppilaitokset",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitostyyppi_46",
+  "koodiArvo" : "46",
+  "metadata" : [ {
+    "nimi" : "Temporära yrkeshögskolor",
+    "lyhytNimi" : "Temporära yrkeshögskolor",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Väliaikaiset ammattikorkeakoulut",
+    "lyhytNimi" : "Väliaikaiset ammattikorkeakoulut",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitostyyppi_41",
+  "koodiArvo" : "41",
+  "metadata" : [ {
+    "nimi" : "Polytechnics",
+    "lyhytNimi" : "Polytechnics",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Yrkeshögskolor",
+    "lyhytNimi" : "Yrkeshögskolor",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Ammattikorkeakoulut",
+    "lyhytNimi" : "Ammattikorkeakoulut",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitostyyppi_01",
+  "koodiArvo" : "01",
+  "metadata" : [ {
+    "nimi" : "Taiteen perusopetuksen oppilaitokset (ei musiikki)",
+    "lyhytNimi" : "Taiteen perusopetuksen oppilaitokset (ei musiikki)",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Läroanstalt inom grundläggande konstundervisning (inte musik)",
+    "lyhytNimi" : "Läroanstalt inom grundläggande konstundervisning (inte musik)",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitostyyppi_61",
+  "koodiArvo" : "61",
+  "metadata" : [ {
+    "nimi" : "Musikläroanstalter",
+    "lyhytNimi" : "Musikläroanstalter",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Music institutes",
+    "lyhytNimi" : "Music institutes",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Musiikkioppilaitokset",
+    "lyhytNimi" : "Musiikkioppilaitokset",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitostyyppi_21",
+  "koodiArvo" : "21",
+  "metadata" : [ {
+    "nimi" : "Vocational institutions",
+    "lyhytNimi" : "Vocational institutions",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Yrkesläroanstalter",
+    "lyhytNimi" : "Yrkesläroanstalter",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Ammatilliset oppilaitokset",
+    "lyhytNimi" : "Ammatilliset oppilaitokset",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitostyyppi_24",
+  "koodiArvo" : "24",
+  "metadata" : [ {
+    "nimi" : "Vocational adult education centres",
+    "lyhytNimi" : "Vocational adult education centres",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Ammatilliset aikuiskoulutuskeskukset",
+    "lyhytNimi" : "Ammatilliset aikuiskoulutuskeskukset",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Yrkesutbildningscentrer för vuxna",
+    "lyhytNimi" : "Yrkesutbildningscentrer för vuxna",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitostyyppi_92",
+  "koodiArvo" : "92",
+  "metadata" : [ {
+    "nimi" : "Neuvontajärjestöt",
+    "lyhytNimi" : "Neuvontajärjestöt",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Rådgivningsorganisationer",
+    "lyhytNimi" : "Rådgivningsorganisationer",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitostyyppi_62",
+  "koodiArvo" : "62",
+  "metadata" : [ {
+    "nimi" : "Liikunnan koulutuskeskukset",
+    "lyhytNimi" : "Liikunnan koulutuskeskukset",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Idrottsutbildningscentrer",
+    "lyhytNimi" : "Idrottsutbildningscentrer",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Sports institutes",
+    "lyhytNimi" : "Sports institutes",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitostyyppi_63",
+  "koodiArvo" : "63",
+  "metadata" : [ {
+    "nimi" : "Folk high schools",
+    "lyhytNimi" : "Folk high schools",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Folkhögskolor",
+    "lyhytNimi" : "Folkhögskolor",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kansanopistot",
+    "lyhytNimi" : "Kansanopistot",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitostyyppi_65",
+  "koodiArvo" : "65",
+  "metadata" : [ {
+    "nimi" : "Studiecentraler",
+    "lyhytNimi" : "Studiecentraler",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Opintokeskukset",
+    "lyhytNimi" : "Opintokeskukset",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitostyyppi_23",
+  "koodiArvo" : "23",
+  "metadata" : [ {
+    "nimi" : "Specialised vocational education and training institutions",
+    "lyhytNimi" : "Specialised vocational education and training institutions",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Ammatilliset erikoisoppilaitokset",
+    "lyhytNimi" : "Ammatilliset erikoisoppilaitokset",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Särskilda yrkesläroanstalter",
+    "lyhytNimi" : "Särskilda yrkesläroanstalter",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitostyyppi_99",
+  "koodiArvo" : "99",
+  "metadata" : [ {
+    "nimi" : "Övriga läroanstalter",
+    "lyhytNimi" : "Övriga läroanstalter",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Muut oppilaitokset",
+    "lyhytNimi" : "Muut oppilaitokset",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+} ]

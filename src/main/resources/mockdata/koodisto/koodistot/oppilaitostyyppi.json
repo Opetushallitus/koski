@@ -1,0 +1,23 @@
+{
+  "koodistoUri" : "oppilaitostyyppi",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "SV",
+    "nimi" : "oppilaitostyyppi",
+    "kuvaus" : "oppilaitostyyppi",
+    "kasite" : ""
+  }, {
+    "kieli" : "FI",
+    "nimi" : "oppilaitostyyppi",
+    "kuvaus" : "Koulutusta koskeva lainsäädäntö on uudistettu pääosin vuoden 1999 alusta. Oppilaitostyyppiluokituksen uudistuksessa on huomioitu lainsäädännön uudistus. Uudistetussa oppilaitostyyppiluokituksessa ryhmä 11 Peruskoulut sisältää aikaisemman luokituksen ryhmät: peruskoulun ala-asteen koulut, peruskoulun yläasteen koulut, peruskoulua korvaavat koulut sekä harjoittelukouluista ja muut peruskoulu-/tai lukioasteen käsittävistä kouluista vain perusopetusta antavat oppilaitokset. Uudistetun luokituksen ryhmä lukiot sisältää lukiokoulutuksen lainsäädännön muututtua lukiot ja aikuislukiot.\nAmmatillisten oppilaitosten osalta perinteiset eri alojen ammatilliset oppi-laitostyypit on yhdistetty yhdeksi ryhmäksi ammatilliset oppilaitokset. Am-matillisia erityisoppilaitoksia ovat oppilaitokset, jotka ovat tarkoitettuja opiskelijoille, joilla on vamman, sairauden tai muun syyn johdosta vaikeuk-sia selviytyä opinnoista ilman erityistoimenpiteitä. Ammatilliset erikoisoppilaitokset ovat elinkeinoelämän, useimmiten teollisuuden tai kaupan ylläpitämiä ammatillisia oppilaitoksia, joissa annetaan pääasiassa lisäkoulutusta tai tutkintoon valmentavaa koulutusta.\nMuilta osin on oppilaitostyyppiluokituksessa muutettu lähinnä vain oppilaitosten ryhmittelyn numerointia ja oppilaitostyyppien järjestystä. \n\nLuokitukseen on lisätty Opetushallituksen tarpeisiin oppilaitostyyppejä jota eivät ole virallisessa Tilastokeskuksen oppilaitostyyppiluokituksessa. Lisätttyjä oppilaitostyyppejä ovat 93 Muut koulutuksen järjestäjät, 91 Kirjeoppilaitokset, neuvontajärjestöt ja 01 taiteen perusopetuksen oppilaitokset (ei musiikki)",
+    "kasite" : ""
+  }, {
+    "kieli" : "EN",
+    "nimi" : "oppilaitostyyppi",
+    "kuvaus" : "oppilaitostyyppi",
+    "kasite" : ""
+  } ],
+  "codesGroupUri" : "http://oppilaitoskoodistot",
+  "voimassaAlkuPvm" : "2013-01-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}

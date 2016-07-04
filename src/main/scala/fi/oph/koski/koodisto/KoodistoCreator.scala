@@ -13,7 +13,8 @@ object KoodistoCreator extends Logging {
     def createKoodistoFromMockData(koodistoUri: String): Unit = {
       val koodistoViite: KoodistoViite = kp.getLatestVersion(koodistoUri).getOrElse {
         MockKoodistoPalvelu.getKoodisto(koodistoUri) match {
-          case None => throw new IllegalStateException("Mock not found: " + koodistoUri)
+          case None =>
+            throw new IllegalStateException("Mock not found: " + koodistoUri)
           case Some(koodisto) =>
             logger.info("Luodaan koodisto " + koodisto.koodistoUri)
             kmp.createKoodisto(koodisto)

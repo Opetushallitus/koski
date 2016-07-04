@@ -32,8 +32,13 @@ object ServiceUserAdder extends App with Logging {
       logger.info("Username " + username + ", oid: " + oid)
 
       authService.lisääOrganisaatio(oid, organisaatioOid, "oppilashallintojärjestelmä")
-      val käyttöoikeusryhmäId = authService.käyttöoikeusryhmät.find(_.toKoskiKäyttöoikeusryhmä == Käyttöoikeusryhmät.old).get.id
-      authService.lisääKäyttöoikeusRyhmä(oid, organisaatioOid, käyttöoikeusryhmäId)
+
+      val ryhmät = List(Käyttöoikeusryhmät.orgPalvelukäyttäjä)
+
+      ryhmät.foreach { ryhmä =>
+        val käyttöoikeusryhmäId = authService.käyttöoikeusryhmät.find(_.toKoskiKäyttöoikeusryhmä.map(_.nimi) == Some(ryhmä.nimi)).get.id
+        authService.lisääKäyttöoikeusRyhmä(oid, organisaatioOid, käyttöoikeusryhmäId)
+      }
 
       authService.asetaSalasana(oid, password)
       authService.syncLdap(oid)

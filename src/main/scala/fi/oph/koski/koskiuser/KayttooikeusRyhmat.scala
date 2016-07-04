@@ -1,6 +1,9 @@
 package fi.oph.koski.koskiuser
 
 import com.typesafe.config.Config
+import fi.oph.koski.cache.Cached
+import fi.oph.koski.henkilo.{AuthenticationServiceClient, UusiKäyttöoikeusryhmä}
+import fi.oph.koski.koodisto.{KoodistoKoodi, KoodistoPalvelu, KoodistoViite}
 import fi.oph.koski.koskiuser.AccessType.{read, write}
 import fi.oph.koski.schema.Organisaatio
 
@@ -24,8 +27,9 @@ object Käyttöoikeusryhmät {
   // TODO: remove this
   val old = käyttöoikeusryhmä("2aste-rajapinnat", "Aiemmin käytetty käyttöoikeusryhmä, poistuu Koski-käytöstä").withOrgAccess(read, write)
 
-  def byName(name: String) = ryhmät.find(_.name == name)
+  def byName(name: String) = ryhmät.find(_.nimi == name)
 
+  def käyttöoikeusryhmät = ryhmät
 
   private def käyttöoikeusryhmä(name: String, kuvaus: String) = {
     val ryhmä = new Käyttöoikeusryhmä(name, Nil, Nil, kuvaus)
@@ -34,17 +38,39 @@ object Käyttöoikeusryhmät {
   }
 }
 
-class Käyttöoikeusryhmä private[koskiuser](val name: String, val orgAccessType: List[AccessType.Value], val universalAccessType: List[AccessType.Value], val kuvaus: String) {
+class Käyttöoikeusryhmä private[koskiuser](val nimi: String, val orgAccessType: List[AccessType.Value], val universalAccessType: List[AccessType.Value], val kuvaus: String) {
   def withOrgAccess(newAccess: AccessType.Value*) = {
-    new Käyttöoikeusryhmä(name, newAccess.toList, universalAccessType, kuvaus)
+    new Käyttöoikeusryhmä(nimi, newAccess.toList, universalAccessType, kuvaus)
   }
   def withUniversalAccess(newAccess: AccessType.Value*) = {
-    new Käyttöoikeusryhmä(name, orgAccessType, newAccess.toList, kuvaus)
+    new Käyttöoikeusryhmä(nimi, orgAccessType, newAccess.toList, kuvaus)
   }
+  override def toString = "Käyttöoikeusryhmä " + nimi
 }
 
 object KäyttöoikeusRyhmätCreator {
   def luoKäyttöoikeusRyhmät(config: Config): Unit = {
-    // TODO: luo kohdejärjestelmään puuttuvat Koski-käyttöoikeusryhmät
+    val client: AuthenticationServiceClient = AuthenticationServiceClient(config)
+    val olemassaOlevatRyhmät = client.käyttöoikeusryhmät
+    val koodistopalvelu: KoodistoPalvelu = KoodistoPalvelu(config)
+    val oppilaitostyypit: List[String] = koodistopalvelu.getLatestVersion("oppilaitostyyppi").flatMap(koodistopalvelu.getKoodistoKoodit(_)).toList.flatten.map(_.koodiArvo)
+
+    Käyttöoikeusryhmät.käyttöoikeusryhmät foreach { ryhmä =>
+      val olemassaOlevaRyhmä = olemassaOlevatRyhmät.find(olemassaOlevaRyhmä => olemassaOlevaRyhmä.toKoskiKäyttöoikeusryhmä.map(_.nimi) == Some(ryhmä.nimi))
+      val organisaatioTyypit = (ryhmä.orgAccessType, ryhmä.universalAccessType) match {
+        case (Nil, _) => Nil // käyttöoikeusryhmää ei liity oppilaitoksiin
+        case (_, Nil) => oppilaitostyypit // käyttöoikeusryhmä liittyy oppilaitoksiin, eikä sisällä yleistä pääsyä
+        case _ => Nil
+      }
+      val tiedot = UusiKäyttöoikeusryhmä(ryhmä.nimi, ryhmä.nimi, ryhmä.nimi, organisaatioTyypit = organisaatioTyypit)
+      olemassaOlevaRyhmä match {
+        case Some(o) =>
+          println("päivitetään " + ryhmä)
+          client.muokkaaKäyttöoikeusryhmä(o.id, tiedot)
+        case None =>
+          println("luodaan " + ryhmä)
+          client.luoKäyttöoikeusryhmä(tiedot)
+      }
+    }
   }
 }
