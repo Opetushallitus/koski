@@ -21,9 +21,9 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
 
   def getIntegerParam(name: String) = {
     params.getAs[Int](name) match {
-      case Some(id) if id > 0 => id
+      case Some(id) if id > 0 =>
+        id
       case _ =>
-        // TODO: ensure handling
         throw new InvalidRequestException(KoskiErrorCategory.badRequest.format.number, "Invalid " + name + " : " + params(name))
     }
   }
