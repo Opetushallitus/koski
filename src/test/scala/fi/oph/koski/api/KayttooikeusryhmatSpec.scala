@@ -44,10 +44,15 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
   }
 
+  private val opiskeluoikeusOmnia: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
+    oppilaitos = Oppilaitos(MockOrganisaatiot.omnomnia),
+    suoritukset = List(tutkintoSuoritus.copy(toimipiste = Oppilaitos(MockOrganisaatiot.omnomnia)))
+  )
+
   "koski-oppilaitos-palvelukäyttäjä" - {
     val user = MockUsers.hiiri
     "voi muokata opiskeluoikeuksia omassa organisaatiossa" in {
-      putOpiskeluOikeus(defaultOpiskeluoikeus.copy(oppilaitos = Oppilaitos(MockOrganisaatiot.omnomnia)), henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+      putOpiskeluOikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(200)
       }
     }
@@ -79,7 +84,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   "koski-oppilaitos-katselija" - {
     val user = MockUsers.hiiriKatselija
     "ei voi muokata opiskeluoikeuksia omassa organisaatiossa" in {
-      putOpiskeluOikeus(defaultOpiskeluoikeus.copy(oppilaitos = Oppilaitos(MockOrganisaatiot.omnomnia)), henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+      putOpiskeluOikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(403)
       }
     }

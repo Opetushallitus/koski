@@ -6,7 +6,9 @@ import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.schema._
 import fi.oph.koski.koskiuser.MockUsers
-import java.time.LocalDate.{ of => date }
+import java.time.LocalDate.{of => date}
+
+import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}
 import org.json4s._
 import org.scalatest.FunSpec
 
@@ -125,7 +127,7 @@ class OppijaValidationSpec extends FunSpec with LocalJettyHttpSpecification with
     describe("Oppilaitos") {
       def oppilaitoksella(oid: String) = defaultOpiskeluoikeus.copy(oppilaitos = Oppilaitos(oid))
 
-      describe("Kun opinto-oikeutta yritetään lisätä oppilaitokseen, johon käyttäjällä ei ole pääsyä") {
+      describe("Kun opinto-oikeutta yritetään lisätä oppilaitokseen, johon käyttäjällä ei ole oikeuksia") {
         it("palautetaan HTTP 403 virhe" ) { putOpiskeluOikeus(oppilaitoksella("1.2.246.562.10.93135224694"), headers = authHeaders(MockUsers.hiiri) ++ jsonContent) (
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon 1.2.246.562.10.93135224694")))
         }
@@ -146,6 +148,16 @@ class OppijaValidationSpec extends FunSpec with LocalJettyHttpSpecification with
       describe("Kun oppilaitoksen oid on virheellistä muotoa") {
         it("palautetaan HTTP 400 virhe" ) { putOpiskeluOikeus(oppilaitoksella("asdf")) (
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*ECMA 262 regex.*".r)))
+        }
+      }
+    }
+
+    describe("Suorituksen toimipiste") {
+      def toimipisteellä(oid: String) = defaultOpiskeluoikeus.copy(suoritukset = List(tutkintoSuoritus.copy(toimipiste = OidOrganisaatio(oid))))
+
+      describe("Kun yritetään käyttää toimipistettä, johon käyttäjällä ei ole oikeuksia") {
+        it("palautetaan HTTP 403 virhe" ) { putOpiskeluOikeus(toimipisteellä(MockOrganisaatiot.helsinginKaupunki)) (
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + MockOrganisaatiot.helsinginKaupunki)))
         }
       }
     }

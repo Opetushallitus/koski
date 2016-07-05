@@ -7,19 +7,20 @@ import fi.oph.koski.db._
 import fi.oph.koski.documentation._
 import fi.oph.koski.json.Json
 import fi.oph.koski.koski.KoskiValidator
-import fi.oph.koski.koskiuser.{AccessType, MockUsers}
+import fi.oph.koski.koskiuser.{AccessType, KoskiUser, MockUsers}
 import fi.oph.koski.opiskeluoikeus.OpiskeluOikeusRepository
 import fi.oph.koski.oppija.{MockOppijat, OppijaRepository, VerifiedOppijaOid}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
 import java.time.LocalDate.{of => date}
+
 import slick.dbio.DBIO
 
 class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluOikeusRepository, oppijaRepository: OppijaRepository, validator: KoskiValidator) extends Futures with Timing {
   def resetFixtures: Unit = timed("resetFixtures", 10) {
     if (database.config.isRemote) throw new IllegalStateException("Trying to reset fixtures in remote database")
-    implicit val user = MockUsers.kalle.asKoskiUser
+    implicit val user = KoskiUser.systemUser
     implicit val accessType = AccessType.write
 
     val oppijat: List[HenkilötiedotJaOid] = oppijaRepository.findOppijat("")

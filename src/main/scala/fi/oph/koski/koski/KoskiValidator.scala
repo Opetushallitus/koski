@@ -66,7 +66,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   private def validateOpiskeluOikeus(opiskeluOikeus: Opiskeluoikeus)(implicit user: KoskiUser, accessType: AccessType.Value): HttpStatus = {
-    HttpStatus.validate(user.hasAccess(opiskeluOikeus.oppilaitos.oid, accessType)) { KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid) }
+    validateAccess(opiskeluOikeus.oppilaitos)
     .then { HttpStatus.fold(
       validatePäivämäärät(opiskeluOikeus),
       HttpStatus.fold(opiskeluOikeus.suoritukset.map(validateSuoritus(_, None)))
@@ -74,6 +74,10 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     .then {
       HttpStatus.fold(opiskeluOikeus.suoritukset.map(TutkintoRakenneValidator(tutkintoRepository).validateTutkintoRakenne(_)))
     }
+  }
+
+  private def validateAccess(organisaatio: OrganisaatioWithOid)(implicit user: KoskiUser, accessType: AccessType.Value): HttpStatus = {
+    HttpStatus.validate(user.hasAccess(organisaatio.oid, accessType)) { KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + organisaatio.oid) }
   }
 
   def validatePäivämäärät(opiskeluOikeus: Opiskeluoikeus) = {
@@ -93,16 +97,22 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     )
   }
 
-  def validateSuoritus(suoritus: Suoritus, vahvistus: Option[Vahvistus]): HttpStatus = {
+  def validateSuoritus(suoritus: Suoritus, vahvistus: Option[Vahvistus])(implicit user: KoskiUser, accessType: AccessType.Value): HttpStatus = {
     val arviointipäivä = ("suoritus.arviointi.päivä", suoritus.arviointi.toList.flatten.flatMap(_.arviointipäivä))
     val alkamispäivä: (String, Iterable[LocalDate]) = ("suoritus.alkamispäivä", suoritus.alkamispäivä)
     val vahvistuspäivä: (String, Iterable[LocalDate]) = ("suoritus.vahvistus.päivä", suoritus.vahvistus.map(_.päivä))
     HttpStatus.fold(
       validateDateOrder(alkamispäivä, arviointipäivä).then(validateDateOrder(arviointipäivä, vahvistuspäivä).then(validateDateOrder(alkamispäivä, vahvistuspäivä)))
+        :: validateToimipiste(suoritus)
         :: validateStatus(suoritus, vahvistus)
         :: validateLaajuus(suoritus)
         :: suoritus.osasuoritusLista.map(validateSuoritus(_, suoritus.vahvistus.orElse(vahvistus)))
     )
+  }
+
+  private def validateToimipiste(suoritus: Suoritus)(implicit user: KoskiUser, accessType: AccessType.Value): HttpStatus = suoritus match {
+    case s:Toimipisteellinen => validateAccess(s.toimipiste)
+    case _ => HttpStatus.ok
   }
 
   private def validateLaajuus(suoritus: Suoritus): HttpStatus = {
