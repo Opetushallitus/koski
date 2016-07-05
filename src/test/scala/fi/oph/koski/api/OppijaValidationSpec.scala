@@ -14,7 +14,7 @@ class OppijaValidationSpec extends FunSpec with LocalJettyHttpSpecification with
   describe("Opiskeluoikeuden lisääminen") {
     describe("Valideilla tiedoilla") {
       it("palautetaan HTTP 200") {
-        putOpiskeluOikeus(opiskeluoikeus()) {
+        putOpiskeluOikeus(defaultOpiskeluoikeus) {
           verifyResponseStatus(200)
         }
       }
@@ -22,7 +22,7 @@ class OppijaValidationSpec extends FunSpec with LocalJettyHttpSpecification with
 
     describe("Ilman tunnistautumista") {
       it("palautetaan HTTP 401") {
-        putOpiskeluOikeus(opiskeluoikeus(), headers = jsonContent) {
+        putOpiskeluOikeus(defaultOpiskeluoikeus, headers = jsonContent) {
           verifyResponseStatus(401, KoskiErrorCategory.unauthorized("Käyttäjä ei ole tunnistautunut."))
         }
       }
@@ -36,7 +36,7 @@ class OppijaValidationSpec extends FunSpec with LocalJettyHttpSpecification with
     describe("Väärä Content-Type") {
       it("palautetaan HTTP 415") {
 
-        put("api/oppija", body = Json.write(makeOppija(defaultHenkilö, List(opiskeluoikeus()))), headers = authHeaders() ++ Map(("Content-type" -> "text/plain"))) {
+        put("api/oppija", body = Json.write(makeOppija(defaultHenkilö, List(defaultOpiskeluoikeus))), headers = authHeaders() ++ Map(("Content-type" -> "text/plain"))) {
           verifyResponseStatus(415, KoskiErrorCategory.unsupportedMediaType.jsonOnly("Wrong content type: only application/json content type with UTF-8 encoding allowed"))
         }
       }
@@ -123,7 +123,7 @@ class OppijaValidationSpec extends FunSpec with LocalJettyHttpSpecification with
     }
 
     describe("Oppilaitos") {
-      def oppilaitoksella(oid: String) = opiskeluoikeus().copy(oppilaitos = Oppilaitos(oid))
+      def oppilaitoksella(oid: String) = defaultOpiskeluoikeus.copy(oppilaitos = Oppilaitos(oid))
 
       describe("Kun opinto-oikeutta yritetään lisätä oppilaitokseen, johon käyttäjällä ei ole pääsyä") {
         it("palautetaan HTTP 403 virhe" ) { putOpiskeluOikeus(oppilaitoksella("1.2.246.562.10.93135224694"), headers = authHeaders(MockUsers.hiiri) ++ jsonContent) (

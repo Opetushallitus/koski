@@ -10,7 +10,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   "koski-oph-pääkäyttäjä" - {
     val user = MockUsers.paakayttaja
     "voi muokata kaikkia opiskeluoikeuksia" in {
-      putOpiskeluOikeus(opiskeluoikeus(), headers = authHeaders(user) ++ jsonContent) {
+      putOpiskeluOikeus(defaultOpiskeluoikeus, headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(200)
       }
     }
@@ -31,7 +31,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     val user = MockUsers.viranomainen
 
     "ei voi muokata opiskeluoikeuksia" in {
-      putOpiskeluOikeus(opiskeluoikeus(), headers = authHeaders(user) ++ jsonContent) {
+      putOpiskeluOikeus(defaultOpiskeluoikeus, headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(403)
       }
     }
@@ -47,7 +47,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   "koski-oppilaitos-palvelukäyttäjä" - {
     val user = MockUsers.hiiri
     "voi muokata opiskeluoikeuksia omassa organisaatiossa" in {
-      putOpiskeluOikeus(opiskeluoikeus().copy(oppilaitos = Oppilaitos(MockOrganisaatiot.omnomnia)), henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+      putOpiskeluOikeus(defaultOpiskeluoikeus.copy(oppilaitos = Oppilaitos(MockOrganisaatiot.omnomnia)), henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(200)
       }
     }
@@ -64,7 +64,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "ei voi muokata opiskeluoikeuksia muussa organisaatiossa" in {
-      putOpiskeluOikeus(opiskeluoikeus(), headers = authHeaders(user) ++ jsonContent) {
+      putOpiskeluOikeus(defaultOpiskeluoikeus, headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(403)
       }
     }
@@ -79,7 +79,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   "koski-oppilaitos-katselija" - {
     val user = MockUsers.hiiriKatselija
     "ei voi muokata opiskeluoikeuksia omassa organisaatiossa" in {
-      putOpiskeluOikeus(opiskeluoikeus().copy(oppilaitos = Oppilaitos(MockOrganisaatiot.omnomnia)), henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+      putOpiskeluOikeus(defaultOpiskeluoikeus.copy(oppilaitos = Oppilaitos(MockOrganisaatiot.omnomnia)), henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(403)
       }
     }

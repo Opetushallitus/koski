@@ -13,7 +13,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
   describe("Ammatillisen koulutuksen opiskeluoikeuden lisääminen") {
     describe("Valideilla tiedoilla") {
       it("palautetaan HTTP 200") {
-        putOpiskeluOikeus(opiskeluoikeus()) {
+        putOpiskeluOikeus(defaultOpiskeluoikeus) {
           verifyResponseStatus(200)
         }
       }
@@ -21,7 +21,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
     describe("Kun tutkintosuoritus puuttuu") {
       it("palautetaan HTTP 400 virhe" ) {
-        putOpiskeluOikeus(opiskeluoikeus().copy(suoritukset = Nil)) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*array is too short.*".r)))
+        putOpiskeluOikeus(defaultOpiskeluoikeus.copy(suoritukset = Nil)) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*array is too short.*".r)))
       }
     }
 
@@ -242,7 +242,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           }
 
           describe("Kun tutkinto on VALMIS-tilassa ja sillä on osa, joka on KESKEN-tilassa") {
-            val opiskeluOikeus = opiskeluoikeus().copy(suoritukset = List(tutkintoSuoritus.copy(
+            val opiskeluOikeus = defaultOpiskeluoikeus.copy(suoritukset = List(tutkintoSuoritus.copy(
               suoritustapa = tutkinnonSuoritustapaNäyttönä, tila = tilaValmis, vahvistus = vahvistus(LocalDate.parse("2016-08-08")),osasuoritukset = Some(List(tutkinnonOsaSuoritus))
             )))
 
@@ -260,7 +260,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       }
 
       def put(s: AmmatillisenTutkinnonSuoritus)(f: => Unit) = {
-        putOpiskeluOikeus(opiskeluoikeus().copy(suoritukset = List(s)))(f)
+        putOpiskeluOikeus(defaultOpiskeluoikeus.copy(suoritukset = List(s)))(f)
       }
 
       def testKesken(tila: Koodistokoodiviite): Unit = {
@@ -328,14 +328,14 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
       describe("Kun ok") {
         it("palautetaan HTTP 200") (
-          putOpiskeluOikeus(opiskeluoikeus(toteutusOppisopimuksella("1629284-5")))
+          putOpiskeluOikeus(defaultOpiskeluoikeus.copy(suoritukset = List(toteutusOppisopimuksella("1629284-5"))))
             (verifyResponseStatus(200))
         )
       }
 
       describe("Virheellinen y-tunnus") {
         it("palautetaan HTTP 400") (
-          putOpiskeluOikeus(opiskeluoikeus(toteutusOppisopimuksella("1629284x5")))
+          putOpiskeluOikeus(defaultOpiskeluoikeus.copy(suoritukset = List(toteutusOppisopimuksella("1629284x5"))))
             (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*ECMA 262 regex.*".r)))
         )
       }
@@ -377,7 +377,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
   }
 
   def putTutkintoSuoritus[A](suoritus: AmmatillisenTutkinnonSuoritus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
-    val opiskeluOikeus = opiskeluoikeus().copy(suoritukset = List(suoritus))
+    val opiskeluOikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))
 
     putOppija(makeOppija(henkilö, List(Json.toJValue(opiskeluOikeus))), headers)(f)
   }
