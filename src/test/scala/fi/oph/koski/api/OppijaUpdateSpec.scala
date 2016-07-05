@@ -62,6 +62,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
 
   "Opiskeluoikeuden muokkaaminen" - {
     "Käytettäessä opiskeluoikeus-id:tä" - {
+      resetFixtures
       "Muokkaa olemassaolevaa opiskeluoikeutta" in {
         val d: LocalDate = date(2020, 1, 1)
         verifyChange(change = existing => existing.copy(arvioituPäättymispäivä = Some(d))) {
@@ -113,6 +114,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       }
 
       "Mahdollistaa toisen opiskeluoikeuden luonnin samalla tyypillä ja oppilaitoksella, kunhan lähdejärjestelmä-id on eri" in {
+        resetFixtures
         val lähdejärjestelmänId2 = LähdejärjestelmäId("123452", AmmatillinenExampleData.lähdeWinnova)
         verifyChange(original = original, change = existing => existing.copy(id = None, versionumero = None, lähdejärjestelmänId = Some(lähdejärjestelmänId2))) {
           verifyResponseStatus(200)
@@ -146,7 +148,8 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       }
 
       "Jos oppilaitos vaihtuu, tekee uuden opiskeluoikeuden" in {
-        verifyChange(change = existing => existing.copy(id = None, oppilaitos = Oppilaitos(MockOrganisaatiot.omnomnia))) {
+        resetFixtures
+        verifyChange(change = existing => existing.copy(id = None, versionumero = None, oppilaitos = Oppilaitos(MockOrganisaatiot.omnomnia))) {
           verifyResponseStatus(200)
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluOikeus(oppija.oid)
           result.oppilaitos.oid should equal(MockOrganisaatiot.omnomnia)
@@ -155,6 +158,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       }
 
       "Jos tyyppi vaihtuu, tekee uuden opiskeluoikeuden" in {
+        resetFixtures
         verifyChange(change = existing => OpiskeluoikeusTestMethodsLukio.lukionOpiskeluoikeus.copy(oppilaitos = existing.oppilaitos)) {
           verifyResponseStatus(200)
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluOikeus(oppija.oid)
