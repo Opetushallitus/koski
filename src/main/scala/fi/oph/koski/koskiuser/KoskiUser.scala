@@ -26,5 +26,6 @@ object KoskiUser {
     new KoskiUser(oid, LogUserContext.clientIpFromRequest(request), "fi", userOrganisationsRepository.getUserOrganisations(oid))
   }
 
-  val systemUser = new KoskiUser("Koski", "-", "fi", Observable.just(Set(("", Käyttöoikeusryhmät.ophPääkäyttäjä)))) // TODO: not necessarily a good idea
+  // Internal user with root access
+  val systemUser = new KoskiUser("Koski", "-", "fi", Observable.just(Set(("", Käyttöoikeusryhmät.ophPääkäyttäjä))))
 }
