@@ -13,6 +13,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusChangeValidator.validateOpiskeluoikeusChange
 import fi.oph.koski.oppija.PossiblyUnverifiedOppijaOid
 import fi.oph.koski.schema.Henkilö._
+import fi.oph.koski.schema.Opiskeluoikeus.VERSIO_1
 import fi.oph.koski.schema.{HenkilötiedotJaOid, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, TäydellisetHenkilötiedot}
 import fi.oph.koski.util.ReactiveStreamsToRx
 import org.json4s.JArray
@@ -129,14 +130,18 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
   }
 
   private def createAction(oppijaOid: String, opiskeluOikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiUser): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Write] = {
-    val versionumero = Opiskeluoikeus.VERSIO_1
-    val tallennettavaOpiskeluOikeus = opiskeluOikeus.withIdAndVersion(id = None, versionumero = None)
-    for {
-      opiskeluoikeusId <- OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += new OpiskeluOikeusRow(oppijaOid, tallennettavaOpiskeluOikeus, versionumero)
-      diff = Json.toJValue(List(Map("op" -> "add", "path" -> "", "value" -> tallennettavaOpiskeluOikeus)))
-      _ <- historyRepository.createAction(opiskeluoikeusId, versionumero, user.oid, diff)
-    } yield {
-      Right(Created(opiskeluoikeusId, versionumero, diff))
+    opiskeluOikeus.versionumero match {
+      case Some(versio) if (versio != VERSIO_1) =>
+        DBIO.successful(Left(KoskiErrorCategory.conflict.versionumero(s"Uudelle opiskeluoikeudelle annettu versionumero $versio")))
+      case _ =>
+        val tallennettavaOpiskeluOikeus = opiskeluOikeus.withIdAndVersion(id = None, versionumero = None)
+        for {
+          opiskeluoikeusId <- OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += new OpiskeluOikeusRow(oppijaOid, tallennettavaOpiskeluOikeus, VERSIO_1)
+          diff = Json.toJValue(List(Map("op" -> "add", "path" -> "", "value" -> tallennettavaOpiskeluOikeus)))
+          _ <- historyRepository.createAction(opiskeluoikeusId, VERSIO_1, user.oid, diff)
+        } yield {
+          Right(Created(opiskeluoikeusId, VERSIO_1, diff))
+        }
     }
   }
 
