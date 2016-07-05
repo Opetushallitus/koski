@@ -10,47 +10,23 @@ import fi.oph.koski.koskiuser.Käyttöoikeusryhmät
 import fi.oph.koski.log.Logging
 
 object ServiceUserAdder extends App with Logging {
+  val app: KoskiApplication = KoskiApplication()
+  val authService = AuthenticationServiceClient(app.config)
+  val kp = app.koodistoPalvelu
+  val kmp = KoodistoMuokkausPalvelu(app.config)
+
   args match {
     case Array(username, organisaatioOid, password, lahdejarjestelma) =>
-      val app: KoskiApplication = KoskiApplication()
-      val authService = AuthenticationServiceClient(app.config)
-      val kp = app.koodistoPalvelu
-      val kmp = KoodistoMuokkausPalvelu(app.config)
       val organisaatio = app.organisaatioRepository.getOrganisaatio(organisaatioOid).get
+      val oid: String = luoKäyttäjä(username)
 
-      val oid = authService.create(CreateUser.palvelu(username)) match {
-        case Right(oid) =>
-          logger.info("User created")
-          oid
-        case Left(HttpStatus(400, _)) =>
-          authService.search(username) match {
-            case r:UserQueryResult if (r.totalCount == 1) =>
-              r.results(0).oidHenkilo
-          }
-      }
-
-      logger.info("Username " + username + ", oid: " + oid)
-
-      authService.lisääOrganisaatio(oid, organisaatioOid, "oppilashallintojärjestelmä")
-
-      val ryhmät = List(Käyttöoikeusryhmät.orgPalvelukäyttäjä)
-
-      ryhmät.foreach { ryhmä =>
-        val käyttöoikeusryhmäId = authService.käyttöoikeusryhmät.find(_.toKoskiKäyttöoikeusryhmä.map(_.nimi) == Some(ryhmä.nimi)).get.id
-        authService.lisääKäyttöoikeusRyhmä(oid, organisaatioOid, käyttöoikeusryhmäId)
-      }
+      asetaOrganisaatioJaRyhmät(organisaatioOid, oid)
 
       authService.asetaSalasana(oid, password)
       authService.syncLdap(oid)
       logger.info("Set password " + password + ", requested LDAP sync")
 
-      val koodiarvo = lahdejarjestelma
-      val koodisto = kp.getLatestVersion("lahdejarjestelma").get
-
-      if (!kp.getKoodistoKoodit(koodisto).toList.flatten.find(_.koodiArvo == koodiarvo).isDefined) {
-        kmp.createKoodi("lahdejarjestelma", KoodistoKoodi("lahdejarjestelma_" + koodiarvo, koodiarvo, List(KoodistoKoodiMetadata(Some(koodiarvo), None, None, Some("FI"))), 1, Some(LocalDate.now)))
-        logger.info("Luotu lähdejärjestelmäkoodi " + koodiarvo)
-      }
+      luoLähdejärjestelmä(lahdejarjestelma)
 
       println(
         s"""Hei,
@@ -69,7 +45,47 @@ object ServiceUserAdder extends App with Logging {
           |
           |Ystävällisin terveisin,
           |___________________""".stripMargin)
+    case Array(userOid, organisaatioOid) =>
+      val organisaatio = app.organisaatioRepository.getOrganisaatio(organisaatioOid).get
+      asetaOrganisaatioJaRyhmät(organisaatioOid, userOid)
     case _ =>
-      logger.info("Usage: ServiceUserAdder <username> <organisaatio> <salasana> <lahdejärjestelmä>")
+      logger.info(
+        """Usage: ServiceUserAdder <username> <organisaatio-oid> <salasana> <lahdejärjestelmä-id>
+          |       ServiceUserAdder <user-oid> <organisaatio-oid>
+        """.stripMargin)
+  }
+
+  def luoLähdejärjestelmä(lahdejarjestelma: String): Unit = {
+    val koodiarvo = lahdejarjestelma
+    val koodisto = kp.getLatestVersion("lahdejarjestelma").get
+
+    if (!kp.getKoodistoKoodit(koodisto).toList.flatten.find(_.koodiArvo == koodiarvo).isDefined) {
+      kmp.createKoodi("lahdejarjestelma", KoodistoKoodi("lahdejarjestelma_" + koodiarvo, koodiarvo, List(KoodistoKoodiMetadata(Some(koodiarvo), None, None, Some("FI"))), 1, Some(LocalDate.now)))
+      logger.info("Luotu lähdejärjestelmäkoodi " + koodiarvo)
+    }
+  }
+
+  def asetaOrganisaatioJaRyhmät(organisaatioOid: String, oid: String): Unit = {
+    authService.lisääOrganisaatio(oid, organisaatioOid, "oppilashallintojärjestelmä")
+
+    val ryhmät = List(Käyttöoikeusryhmät.orgPalvelukäyttäjä)
+
+    ryhmät.foreach { ryhmä =>
+      val käyttöoikeusryhmäId = authService.käyttöoikeusryhmät.find(_.toKoskiKäyttöoikeusryhmä.map(_.nimi) == Some(ryhmä.nimi)).get.id
+      authService.lisääKäyttöoikeusRyhmä(oid, organisaatioOid, käyttöoikeusryhmäId)
+    }
+  }
+
+  def luoKäyttäjä(username: String): String = {
+    val oid = authService.create(CreateUser.palvelu(username)) match {
+      case Right(oid) =>
+        logger.info("User created")
+        oid
+      case Left(HttpStatus(400, _)) => authService.search(username) match {
+        case r: UserQueryResult if (r.totalCount == 1) => r.results(0).oidHenkilo
+      }
+    }
+    logger.info("Username " + username + ", oid: " + oid)
+    oid
   }
 }
