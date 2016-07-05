@@ -113,6 +113,18 @@ object KoskiApiOperations {
          tehokkaampaa käytettäessä oidia, joten sen käyttöä suositellaan vahvasti. Jos lähdejärjestelmässä ei alun perin ole oideja, on ne mahdollista
          kerätä tätä rajapintaa kutsuttaessa; rajapinta palauttaa aina oppijan oidin.
        </p>
+       <p>
+         Lisättävä/muokattava opiskeluoikeus tunnistetaan seuraavasti:
+         <ol>
+           <li>Jos opiskeluoikeudessa on id-kenttä, päivitetään tällä id:llä löytyvää opiskeluoikeutta</li>
+           <li>Jos opiskeluoikeudessa on lähdejärjestelmänId-kenttä, päivitetään tällä id:llä löytyvää opiskeluoikeutta, tai tehdään uusi, jollei sellaista löydy.</li>
+           <li>Jos opiskeluoikeudessa ei ole kumpaakaan em. kentistä, päivitetään samalla oppilaitos-oidilla ja tyypillä löytyvää opiskeluoikeutta, tai tehdään uusi, jollei sellaista löydy.</li>
+         </ol>
+         Olemassa olevan opiskeluoikeuden oppilaitosta ja tyyppiä ei koskaan voi vaihtaa.
+       </p>
+       <p>
+         Syötedata validoidaan json-schemaa ja tiettyjä sisäisiä sääntöjä vasten ja päivitys hyväksytään vain, mikäli validointi menee läpi. Ks. paluukoodit alla.
+       </p>
      </div>,
      Examples.examples,
      Nil,
