@@ -1,5 +1,7 @@
 package fi.oph.koski.api
 
+import java.time.LocalDate
+
 import fi.oph.koski.json.Json
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.oppija.MockOppijat
@@ -7,6 +9,9 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import fi.oph.koski.koski.HenkilönOpiskeluoikeusVersiot
 import org.scalatest.FreeSpec
+import java.time.LocalDate.{of => date}
+
+import fi.oph.koski.http.KoskiErrorCategory
 
 class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
   val uusiOpiskeluOikeus = defaultOpiskeluoikeus
@@ -51,6 +56,38 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       "Koulutustoimijan tiedot" in {
         val opiskeluOikeus = createOpiskeluOikeus(oppija, uusiOpiskeluOikeus)
         opiskeluOikeus.koulutustoimija.map(_.oid) should equal(Some("1.2.246.562.10.346830761110"))
+      }
+    }
+  }
+
+  "Opiskeluoikeuden muokkaaminen" - {
+    "Muokkaa olemassaolevaa opiskeluoikeutta" in {
+      val d: LocalDate = date(2020, 1, 1)
+      verifyChange(existing => existing.copy(arvioituPäättymispäivä = Some(d))) {
+        response.status should equal(200)
+        lastOpiskeluOikeus(oppija.oid).arvioituPäättymispäivä should equal(Some(d))
+      }
+    }
+
+    "Estää oppilaitoksen vaihtamisen" in {
+      verifyChange(existing => existing.copy(oppilaitos = Oppilaitos(MockOrganisaatiot.omnomnia))) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos("Opiskeluoikeuden oppilaitosta ei voi vaihtaa. Vanha oid 1.2.246.562.10.52251087186. Uusi oid 1.2.246.562.10.51720121923."))
+      }
+    }
+
+    "Estää tyypin vaihtamisen" in {
+      verifyChange(existing => OpiskeluoikeusTestMethodsLukio.lukionOpiskeluoikeus.copy(id = existing.id, oppilaitos = existing.oppilaitos)) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos("Opiskeluoikeuden tyyppiä ei voi vaihtaa. Vanha tyyppi ammatillinenkoulutus. Uusi tyyppi lukiokoulutus."))
+      }
+    }
+
+    def verifyChange(change: AmmatillinenOpiskeluoikeus => KoskeenTallennettavaOpiskeluoikeus)(block: => Unit) = {
+      putOppija(Oppija(oppija, List(uusiOpiskeluOikeus))) {
+        response.status should equal(200)
+        val existing = lastOpiskeluOikeus(oppija.oid).asInstanceOf[AmmatillinenOpiskeluoikeus]
+        putOppija(Oppija(oppija, List(change(existing)))) {
+          block
+        }
       }
     }
   }

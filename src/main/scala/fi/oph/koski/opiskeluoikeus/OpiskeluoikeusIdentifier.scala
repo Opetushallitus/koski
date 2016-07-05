@@ -1,17 +1,16 @@
 package fi.oph.koski.opiskeluoikeus
-import fi.oph.koski.schema.{KoodiViite, LähdejärjestelmäId, Opiskeluoikeus}
-object OpiskeluOikeusIdentifier {
-  def apply(oppijaOid: String, opiskeluOikeus: Opiskeluoikeus): OpiskeluOikeusIdentifier = opiskeluOikeus.id match {
-    case Some(id) => PrimaryKey(id)
-    case _ => new IdentifyingSetOfFields(oppijaOid, opiskeluOikeus)
-  }
-}
+import fi.oph.koski.schema.{LähdejärjestelmäId, Opiskeluoikeus}
 
-case class IdentifyingSetOfFields(oppijaOid: String, oppilaitosOrganisaatio: String, paikallinenId: Option[LähdejärjestelmäId], tyyppi: String) extends OpiskeluOikeusIdentifier {
-  def this(oppijaOid: String, opiskeluOikeus: Opiskeluoikeus) = {
-    this(oppijaOid, opiskeluOikeus.oppilaitos.oid, opiskeluOikeus.lähdejärjestelmänId, opiskeluOikeus.tyyppi.koodiarvo)
+object OpiskeluOikeusIdentifier {
+  def apply(oppijaOid: String, opiskeluOikeus: Opiskeluoikeus): OpiskeluOikeusIdentifier = (opiskeluOikeus.id, opiskeluOikeus.lähdejärjestelmänId) match {
+    case (Some(id), _) => PrimaryKey(id)
+    case (_, Some(lähdejärjestelmäId)) => OppijaOidJaLähdejärjestelmänId(oppijaOid, lähdejärjestelmäId)
+    case _ => OppijaOidOrganisaatioJaTyyppi(oppijaOid, opiskeluOikeus.oppilaitos.oid, opiskeluOikeus.tyyppi.koodiarvo)
   }
 }
-case class PrimaryKey(id: Int) extends OpiskeluOikeusIdentifier
 
 sealed trait OpiskeluOikeusIdentifier
+
+case class OppijaOidJaLähdejärjestelmänId(oppijaOid: String, lähdejärjestelmäId: LähdejärjestelmäId) extends OpiskeluOikeusIdentifier
+case class OppijaOidOrganisaatioJaTyyppi(oppijaOid: String, oppilaitosOrganisaatio: String, tyyppi: String) extends OpiskeluOikeusIdentifier
+case class PrimaryKey(id: Int) extends OpiskeluOikeusIdentifier

@@ -1,5 +1,6 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.api.OpiskeluoikeusTestMethodsLukio.päättötodistusSuoritus
 import fi.oph.koski.documentation.LukioExampleData
 import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.http.KoskiErrorCategory

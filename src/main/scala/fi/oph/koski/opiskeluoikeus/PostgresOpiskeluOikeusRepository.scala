@@ -10,6 +10,7 @@ import fi.oph.koski.json.Json
 import fi.oph.koski.koski.{OpiskeluoikeusPäättynytAikaisintaan, OpiskeluoikeusPäättynytViimeistään, QueryFilter, TutkinnonTila}
 import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.log.Logging
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusChangeValidator.validateOpiskeluoikeusChange
 import fi.oph.koski.oppija.PossiblyUnverifiedOppijaOid
 import fi.oph.koski.schema.Henkilö._
 import fi.oph.koski.schema.{HenkilötiedotJaOid, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, TäydellisetHenkilötiedot}
@@ -95,9 +96,15 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
       }
     }
 
-    case IdentifyingSetOfFields(oppijaOid, _, _, _) => {
+    case OppijaOidJaLähdejärjestelmänId(oppijaOid, lähdejärjestelmäId) => {
+      findByOppijaOidAction(oppijaOid).map( rows => Right(rows.find({ row =>
+        row.toOpiskeluOikeus.lähdejärjestelmänId == Some(lähdejärjestelmäId)
+      })))
+    }
+
+    case OppijaOidOrganisaatioJaTyyppi(oppijaOid, _, _) => {
       findByOppijaOidAction(oppijaOid).map(rows => Right(rows.find({ row =>
-        new IdentifyingSetOfFields(oppijaOid, row.toOpiskeluOikeus) == identifier
+        OppijaOidOrganisaatioJaTyyppi(oppijaOid, row.toOpiskeluOikeus.oppilaitos.oid, row.toOpiskeluOikeus.tyyppi.koodiarvo) == identifier
       })))
     }
   }
@@ -145,16 +152,21 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
           case 0 =>
             DBIO.successful(Right(NotChanged(id, versionumero, diff)))
           case _ =>
-            val nextVersionumero = versionumero + 1
-            for {
-              rowsUpdated <- OpiskeluOikeudetWithAccessCheck.filter(_.id === id).map(row => (row.data, row.versionumero)).update((uusiData, nextVersionumero))
-              _ <- historyRepository.createAction(id, nextVersionumero, user.oid, diff)
-            } yield {
-              rowsUpdated match {
-                case 1 => Right(Updated(id, nextVersionumero, diff))
-                case x: Int =>
-                  throw new RuntimeException("Unexpected number of updated rows: " + x) // throw exception to cause rollback!
-              }
+            val oldOpiskeluoikeus = oldRow.toOpiskeluOikeus
+            validateOpiskeluoikeusChange(oldOpiskeluoikeus, uusiOlio) match {
+              case HttpStatus.ok =>
+                val nextVersionumero = versionumero + 1
+                for {
+                  rowsUpdated <- OpiskeluOikeudetWithAccessCheck.filter(_.id === id).map(row => (row.data, row.versionumero)).update((uusiData, nextVersionumero))
+                  _ <- historyRepository.createAction(id, nextVersionumero, user.oid, diff)
+                } yield {
+                  rowsUpdated match {
+                    case 1 => Right(Updated(id, nextVersionumero, diff))
+                    case x: Int =>
+                      throw new RuntimeException("Unexpected number of updated rows: " + x) // throw exception to cause rollback!
+                  }
+                }
+              case nonOk => DBIO.successful(Left(nonOk))
             }
         }
     }

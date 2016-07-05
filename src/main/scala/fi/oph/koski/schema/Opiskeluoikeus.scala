@@ -47,7 +47,7 @@ trait Opiskeluoikeus {
 }
 
 trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
-  def withIdAndVersion(id: Option[Int], versionumero: Option[Int]): Opiskeluoikeus
+  def withIdAndVersion(id: Option[Int], versionumero: Option[Int]): KoskeenTallennettavaOpiskeluoikeus
   override def läsnäolotiedot: Option[YleisetLäsnäolotiedot]
 }
 

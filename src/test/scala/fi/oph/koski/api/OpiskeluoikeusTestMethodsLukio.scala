@@ -9,14 +9,11 @@ import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
 
 trait OpiskeluoikeusTestMethodsLukio extends PutOpiskeluOikeusTestMethods[LukionOpiskeluoikeus]{
-  val vahvistus = Some(Henkilövahvistus(päivä = date(2016, 6, 4), jyväskylä, myöntäjäOrganisaatio = jyväskylänNormaalikoulu, myöntäjäHenkilöt = List(Organisaatiohenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))
+  override def defaultOpiskeluoikeus = OpiskeluoikeusTestMethodsLukio.lukionOpiskeluoikeus
+}
 
-  override def defaultOpiskeluoikeus = LukionOpiskeluoikeus(
-    oppilaitos = jyväskylänNormaalikoulu,
-    suoritukset = List(päättötodistusSuoritus),
-    alkamispäivä = Some(longTimeAgo),
-    tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä)))
-  )
+object OpiskeluoikeusTestMethodsLukio {
+  val vahvistus = Some(Henkilövahvistus(päivä = date(2016, 6, 4), jyväskylä, myöntäjäOrganisaatio = jyväskylänNormaalikoulu, myöntäjäHenkilöt = List(Organisaatiohenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))
 
   val päättötodistusSuoritus = LukionOppimääränSuoritus(
     koulutusmoduuli = LukionOppimäärä(perusteenDiaarinumero = Some("60/011/2015")),
@@ -26,5 +23,12 @@ trait OpiskeluoikeusTestMethodsLukio extends PutOpiskeluOikeusTestMethods[Lukion
     toimipiste = jyväskylänNormaalikoulu,
     vahvistus = vahvistus,
     osasuoritukset = None
+  )
+
+  def lukionOpiskeluoikeus = LukionOpiskeluoikeus(
+    oppilaitos = jyväskylänNormaalikoulu,
+    suoritukset = List(päättötodistusSuoritus),
+    alkamispäivä = Some(longTimeAgo),
+    tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä)))
   )
 }

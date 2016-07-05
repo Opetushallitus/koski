@@ -53,7 +53,7 @@ object Tables {
 
 // Note: the data json must not contain [id, versionumero] fields. This is enforced by DB constraint.
 case class OpiskeluOikeusRow(id: Int, oppijaOid: String, versionumero: Int, data: JValue) {
-  lazy val toOpiskeluOikeus: Opiskeluoikeus = {
+  lazy val toOpiskeluOikeus: KoskeenTallennettavaOpiskeluoikeus = {
     OpiskeluOikeusStoredDataDeserializer.read(data, id, versionumero)
   }
 
@@ -63,22 +63,8 @@ case class OpiskeluOikeusRow(id: Int, oppijaOid: String, versionumero: Int, data
 }
 
 object OpiskeluOikeusStoredDataDeserializer {
-  def read(data: JValue, id: Int, versionumero: Int): Opiskeluoikeus = {
-    def addDefaultTila(suoritus: JObject): JObject = {
-      // Migrating data on the fly: if tila is missing, add default value. This migration should later be performed on db level or removed
-      (if (!suoritus.values.contains("tila")) {
-        suoritus.merge(JObject("tila" -> Json.toJValue(Koodistokoodiviite("KESKEN", Some(LocalizedString.finnish("Suoritus kesken")), "suorituksentila", Some(1))) ))
-      } else {
-        suoritus
-      }).transformField {
-        case JField("osasuoritukset", value: JArray) =>
-          JField("osasuoritukset", JArray(value.arr.map(_.asInstanceOf[JObject]).map(addDefaultTila(_))))
-      }.asInstanceOf[JObject]
-    }
-    val migratedData = data.transformField {
-      case JField("suoritus", suoritus: JObject) => JField("suoritus", addDefaultTila(suoritus))
-    }
-    Json.fromJValue[Opiskeluoikeus](migratedData).asInstanceOf[KoskeenTallennettavaOpiskeluoikeus].withIdAndVersion(id = Some(id), versionumero = Some(versionumero))
+  def read(data: JValue, id: Int, versionumero: Int): KoskeenTallennettavaOpiskeluoikeus = {
+    Json.fromJValue[Opiskeluoikeus](data).asInstanceOf[KoskeenTallennettavaOpiskeluoikeus].withIdAndVersion(id = Some(id), versionumero = Some(versionumero))
   }
 }
 
