@@ -68,7 +68,7 @@ object ServiceUserAdder extends App with Logging {
   def asetaOrganisaatioJaRyhmät(organisaatioOid: String, oid: String): Unit = {
     authService.lisääOrganisaatio(oid, organisaatioOid, "oppilashallintojärjestelmä")
 
-    val ryhmät = List(Käyttöoikeusryhmät.orgPalvelukäyttäjä)
+    val ryhmät = List(Käyttöoikeusryhmät.oppilaitosPalvelukäyttäjä)
 
     ryhmät.foreach { ryhmä =>
       val käyttöoikeusryhmäId = authService.käyttöoikeusryhmät.find(_.toKoskiKäyttöoikeusryhmä.map(_.nimi) == Some(ryhmä.nimi)).get.id

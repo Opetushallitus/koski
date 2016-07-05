@@ -13,7 +13,7 @@ object MockUsers extends UserOrganisationsRepository with DirectoryClient {
   val localkoski = new MockUser(LdapUser(List(), "käyttäjä", "localkoski", "1.2.246.562.24.91698845204"), MockOrganisaatiot.oppilaitokset.toSet.map(fullAccess))
   val hiiri = new MockUser(LdapUser(List(), "käyttäjä", "hiiri", "11111"), Set(MockOrganisaatiot.omnomnia).map(fullAccess))
 
-  private def fullAccess(org: String) = (org, Käyttöoikeusryhmät.orgTallentaja)
+  private def fullAccess(org: String) = (org, Käyttöoikeusryhmät.oppilaitosTallentaja)
 
   val users = List(kalle, hiiri, localkoski)
 
