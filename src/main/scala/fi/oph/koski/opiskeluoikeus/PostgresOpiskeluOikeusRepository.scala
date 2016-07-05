@@ -102,9 +102,9 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
       })))
     }
 
-    case OppijaOidOrganisaatioJaTyyppi(oppijaOid, _, _) => {
-      findByOppijaOidAction(oppijaOid).map(rows => Right(rows.find({ row =>
-        OppijaOidOrganisaatioJaTyyppi(oppijaOid, row.toOpiskeluOikeus.oppilaitos.oid, row.toOpiskeluOikeus.tyyppi.koodiarvo) == identifier
+    case i:OppijaOidOrganisaatioJaTyyppi => {
+      findByOppijaOidAction(i.oppijaOid).map(rows => Right(rows.find({ row =>
+        OppijaOidOrganisaatioJaTyyppi(i.oppijaOid, row.toOpiskeluOikeus.oppilaitos.oid, row.toOpiskeluOikeus.tyyppi.koodiarvo, row.toOpiskeluOikeus.lähdejärjestelmänId) == identifier
       })))
     }
   }

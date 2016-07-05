@@ -135,6 +135,16 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         }
       }
 
+      "Jos olemassa olevassa opiskeluoikeudessa on lähdejärjestelmä-id, ei päivitetä" in {
+        resetFixtures
+        val lähdejärjestelmänId = LähdejärjestelmäId("12345", AmmatillinenExampleData.lähdeWinnova)
+        verifyChange(original = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(lähdejärjestelmänId)), change = existing => existing.copy(id = None, lähdejärjestelmänId = None)) {
+          verifyResponseStatus(200)
+          val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluOikeus(oppija.oid)
+          result.versionumero should equal(Some(1))
+        }
+      }
+
       "Jos oppilaitos vaihtuu, tekee uuden opiskeluoikeuden" in {
         verifyChange(change = existing => existing.copy(id = None, oppilaitos = Oppilaitos(MockOrganisaatiot.omnomnia))) {
           verifyResponseStatus(200)
