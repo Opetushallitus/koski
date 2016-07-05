@@ -36,7 +36,7 @@ object Tables {
   val OpiskeluOikeusHistoria = TableQuery[OpiskeluOikeusHistoryTable]
 
   def OpiskeluOikeudetWithAccessCheck(implicit user: KoskiUser): Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = {
-    if (user.hasUniversalReadAccess) {
+    if (user.globalAccess.contains(AccessType.read)) {
       OpiskeluOikeudet
     } else {
       val oids = user.organisationOids(AccessType.read).toList

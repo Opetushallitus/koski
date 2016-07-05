@@ -13,12 +13,12 @@ object Käyttöoikeusryhmät {
   val oppilaitosTallentaja = add(ryhmä("koski-oppilaitos-tallentaja", "tietojen muokkaaminen (suoritus ja opiskelijatietojen tallentaja, oppilaitos: lisäys, muokkaus, passivointi) käyttöliittymässä").withOrgAccess(read, write))
   val oppilaitosPalvelukäyttäjä = add(ryhmä("koski-oppilaitos-palvelukäyttäjä", "palvelutunnus tiedonsiirroissa: tietojen muokkaaminen (suoritus ja opiskelijatietojen tallentaja, oppilaitos: lisäys, muokkaus, passivointi)").withOrgAccess(read, write))
 
-  val ophPääkäyttäjä = add(ryhmä("koski-oph-pääkäyttäjä", "CRUP-oikeudet (lisäys, muokkaus, passivointi) Koskessa").withUniversalAccess(read, write))
-  val ophKatselija = add(ryhmä("koski-oph-katselija", "näkee kaikki Koski-tiedot").withUniversalAccess(read))
+  val ophPääkäyttäjä = add(ryhmä("koski-oph-pääkäyttäjä", "CRUP-oikeudet (lisäys, muokkaus, passivointi) Koskessa").withGlobalAccess(read, write))
+  val ophKatselija = add(ryhmä("koski-oph-katselija", "näkee kaikki Koski-tiedot").withGlobalAccess(read))
 
-  val viranomaisKatselija = add(ryhmä("koski-viranomainen-katselija", "näkee oikeuksiensa mukaisesti Koski-tiedot").withUniversalAccess(read))
-  val viranomaisPääkäyttäjä = add(ryhmä("koski-viranomainen-pääkäyttäjä", "katseluoikeudet, antaa oikeudet Tor-viranomaistietojen katselijalle").withUniversalAccess(read))
-  val viranomaisPalvelu = add(ryhmä("koski-viranomainen-palvelukäyttäjä", "palvelutunnus, hakee oikeuksiensa mukaiset Koski-tiedot").withUniversalAccess(read))
+  val viranomaisKatselija = add(ryhmä("koski-viranomainen-katselija", "näkee oikeuksiensa mukaisesti Koski-tiedot").withGlobalAccess(read))
+  val viranomaisPääkäyttäjä = add(ryhmä("koski-viranomainen-pääkäyttäjä", "katseluoikeudet, antaa oikeudet Tor-viranomaistietojen katselijalle").withGlobalAccess(read))
+  val viranomaisPalvelu = add(ryhmä("koski-viranomainen-palvelukäyttäjä", "palvelutunnus, hakee oikeuksiensa mukaiset Koski-tiedot").withGlobalAccess(read))
 
   def byName(name: String) = ryhmät.find(_.nimi == name)
 
@@ -32,11 +32,11 @@ object Käyttöoikeusryhmät {
   private def ryhmä(nimi: String, kuvaus: String) = new Käyttöoikeusryhmä(nimi, kuvaus)
 }
 
-class Käyttöoikeusryhmä private[koskiuser](val nimi: String, val kuvaus: String, val orgAccessType: List[AccessType.Value] = Nil, val universalAccessType: List[AccessType.Value] = Nil) {
+class Käyttöoikeusryhmä private[koskiuser](val nimi: String, val kuvaus: String, val orgAccessType: List[AccessType.Value] = Nil, val globalAccessType: List[AccessType.Value] = Nil) {
   def withOrgAccess(newAccess: AccessType.Value*) = {
-    new Käyttöoikeusryhmä(nimi, kuvaus, newAccess.toList, universalAccessType)
+    new Käyttöoikeusryhmä(nimi, kuvaus, newAccess.toList, globalAccessType)
   }
-  def withUniversalAccess(newAccess: AccessType.Value*) = {
+  def withGlobalAccess(newAccess: AccessType.Value*) = {
     new Käyttöoikeusryhmä(nimi, kuvaus, orgAccessType, newAccess.toList)
   }
   override def toString = "Käyttöoikeusryhmä " + nimi

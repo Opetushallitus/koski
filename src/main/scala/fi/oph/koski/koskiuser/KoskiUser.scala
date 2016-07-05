@@ -13,11 +13,10 @@ class KoskiUser(val oid: String, val clientIp: String, val lang: String, val org
 
   lazy val käyttöoikeusryhmät: Set[(Oid, Käyttöoikeusryhmä)] = organisationOidsObservable.toBlocking.first
   def organisationOids(accessType: AccessType.Value) = käyttöoikeusryhmät.filter(_._2.orgAccessType.contains(accessType)).map(_._1)
-  lazy val universalAccess = käyttöoikeusryhmät.map(_._2).flatMap(_.universalAccessType).toSet
-  def hasUniversalReadAccess = universalAccess.contains(AccessType.read)
+  lazy val globalAccess = käyttöoikeusryhmät.map(_._2).flatMap(_.globalAccessType).toSet
   def hasReadAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.read)
   def hasWriteAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.write)
-  def hasAccess(organisaatio: Organisaatio.Oid, accessType: AccessType.Value) = universalAccess.contains(accessType) || organisationOids(accessType).contains(organisaatio)
+  def hasAccess(organisaatio: Organisaatio.Oid, accessType: AccessType.Value) = globalAccess.contains(accessType) || organisationOids(accessType).contains(organisaatio)
   organisationOidsObservable.foreach(org => {}) // <- force evaluation to ensure parallel operation
 }
 

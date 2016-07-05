@@ -13,7 +13,7 @@ object KäyttöoikeusRyhmätCreator {
 
     Käyttöoikeusryhmät.käyttöoikeusryhmät foreach { ryhmä =>
       val olemassaOlevaRyhmä = olemassaOlevatRyhmät.find(olemassaOlevaRyhmä => olemassaOlevaRyhmä.toKoskiKäyttöoikeusryhmä.map(_.nimi) == Some(ryhmä.nimi))
-      val organisaatioTyypit = (ryhmä.orgAccessType, ryhmä.universalAccessType) match {
+      val organisaatioTyypit = (ryhmä.orgAccessType, ryhmä.globalAccessType) match {
         case (Nil, _) => Nil // käyttöoikeusryhmää ei liity oppilaitoksiin
         case (_, Nil) => oppilaitostyypit // käyttöoikeusryhmä liittyy oppilaitoksiin, eikä sisällä yleistä pääsyä
         case _ => Nil
