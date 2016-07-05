@@ -24,9 +24,6 @@ object Käyttöoikeusryhmät {
   val virPääkäyttäjä = add(ryhmä("koski-viranomainen-pääkäyttäjä", "katseluoikeudet, antaa oikeudet Tor-viranomaistietojen katselijalle").withUniversalAccess(read))
   val virPalvelu = add(ryhmä("koski-viranomainen-palvelukäyttäjä", "palvelutunnus, hakee oikeuksiensa mukaiset Koski-tiedot").withUniversalAccess(read))
 
-  // TODO: remove this
-  val old = add(ryhmä("2aste-rajapinnat", "Aiemmin käytetty käyttöoikeusryhmä, poistuu Koski-käytöstä").withOrgAccess(read, write))
-
   def byName(name: String) = ryhmät.find(_.nimi == name)
 
   def käyttöoikeusryhmät = ryhmät
