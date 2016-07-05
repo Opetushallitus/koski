@@ -1,7 +1,7 @@
 package fi.oph.koski.koskiuser
 
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoPalvelu}
-import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
+import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot, Opetushallitus}
 import fi.oph.koski.schema.Organisaatio
 import fi.vm.sade.security.ldap.{DirectoryClient, LdapUser}
 import rx.lang.scala.Observable
@@ -9,13 +9,16 @@ import rx.lang.scala.Observable
 object MockUsers extends UserOrganisationsRepository with DirectoryClient {
   val mockOrganisaatioRepository = new MockOrganisaatioRepository(KoodistoViitePalvelu(MockKoodistoPalvelu))
 
-  val kalle = new MockUser(LdapUser(List(), "käyttäjä", "kalle", "12345"), MockOrganisaatiot.oppilaitokset.toSet.map(fullAccess))
-  val localkoski = new MockUser(LdapUser(List(), "käyttäjä", "localkoski", "1.2.246.562.24.91698845204"), MockOrganisaatiot.oppilaitokset.toSet.map(fullAccess))
-  val hiiri = new MockUser(LdapUser(List(), "käyttäjä", "hiiri", "11111"), Set(MockOrganisaatiot.omnomnia).map(fullAccess))
+  val kalle = new MockUser(LdapUser(List(), "käyttäjä", "kalle", "12345"), MockOrganisaatiot.oppilaitokset.toSet.map(palvelukäyttäjä))
+  val localkoski = new MockUser(LdapUser(List(), "käyttäjä", "localkoski", "1.2.246.562.24.91698845204"), MockOrganisaatiot.oppilaitokset.toSet.map(palvelukäyttäjä))
+  val hiiri = new MockUser(LdapUser(List(), "käyttäjä", "hiiri", "11111"), Set((MockOrganisaatiot.omnomnia, Käyttöoikeusryhmät.oppilaitosPalvelukäyttäjä)))
+  val hiiriKatselija = new MockUser(LdapUser(List(), "käyttäjä", "hiirikatselija", "11112"), Set((MockOrganisaatiot.omnomnia, Käyttöoikeusryhmät.oppilaitosKatselija)))
+  val paakayttaja = new MockUser(LdapUser(List(), "käyttäjä", "pää", "00001"), Set((Opetushallitus.organisaatioOid, Käyttöoikeusryhmät.ophPääkäyttäjä)))
+  val viranomainen = new MockUser(LdapUser(List(), "käyttäjä", "viranomais", "00002"), Set((Opetushallitus.organisaatioOid, Käyttöoikeusryhmät.viranomaisKatselija)))
 
-  private def fullAccess(org: String) = (org, Käyttöoikeusryhmät.oppilaitosTallentaja)
+  private def palvelukäyttäjä(org: String) = (org, Käyttöoikeusryhmät.oppilaitosPalvelukäyttäjä)
 
-  val users = List(kalle, hiiri, localkoski)
+  val users = List(kalle, hiiri, hiiriKatselija, localkoski, paakayttaja, viranomainen)
 
   // UserOrganisationsRepository methods
   def getUserOrganisations(oid: String) = {

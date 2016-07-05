@@ -17,7 +17,7 @@ class OppijaSearchSpec extends FreeSpec with Matchers with SearchTestMethods {
       searchForNames("010101-123N") should equal(List("Eero Esimerkki"))
     }
     "Audit logging" in {
-      search("eero") {
+      search("eero", defaultUser) {
         AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "OPPIJA_HAKU", "hakuEhto" -> "EERO"))
       }
     }

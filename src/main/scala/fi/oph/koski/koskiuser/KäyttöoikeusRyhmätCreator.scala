@@ -3,6 +3,7 @@ package fi.oph.koski.koskiuser
 import com.typesafe.config.Config
 import fi.oph.koski.henkilo.{AuthenticationServiceClient, UusiKäyttöoikeusryhmä}
 import fi.oph.koski.koodisto.KoodistoPalvelu
+import fi.oph.koski.organisaatio.Opetushallitus
 
 object KäyttöoikeusRyhmätCreator {
   def luoKäyttöoikeusRyhmät(config: Config): Unit = {
@@ -15,7 +16,7 @@ object KäyttöoikeusRyhmätCreator {
       val olemassaOlevaRyhmä = olemassaOlevatRyhmät.find(olemassaOlevaRyhmä => olemassaOlevaRyhmä.toKoskiKäyttöoikeusryhmä.map(_.nimi) == Some(ryhmä.nimi))
       val organisaatioTyypit = (ryhmä.orgAccessType, ryhmä.globalAccessType) match {
         case (Nil, Nil) => Nil // käyttöoikeusryhmä ei liity mihinkään
-        case (Nil, _) => List("1.2.246.562.10.00000000001") // global access => liitetään OPH-organisaatioon
+        case (Nil, _) => List(Opetushallitus.organisaatioOid) // global access => liitetään OPH-organisaatioon
         case (_, Nil) => oppilaitostyypit // käyttöoikeusryhmä liittyy oppilaitoksiin, eikä sisällä yleistä pääsyä
         case _ => throw new IllegalArgumentException("Ei voi olla molempia pääsyjä")
       }
