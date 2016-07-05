@@ -89,10 +89,10 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       val lähdejärjestelmänId = LähdejärjestelmäId("12345", AmmatillinenExampleData.lähdeWinnova)
       val original: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(lähdejärjestelmänId))
 
-      "Muokkaa olemassaolevaa opiskeluoikeutta" in {
+      "Muokkaa olemassaolevaa opiskeluoikeutta, kun lähdejärjestelmä-id on sama" in {
         resetFixtures
         val d: LocalDate = date(2020, 1, 1)
-        verifyChange(original = original, change = existing => existing.copy(arvioituPäättymispäivä = Some(d), id = None)) {
+        verifyChange(original = original, change = existing => existing.copy(id = None, versionumero = None, arvioituPäättymispäivä = Some(d))) {
           verifyResponseStatus(200)
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluOikeus(oppija.oid)
           result.arvioituPäättymispäivä should equal(Some(d))
@@ -101,7 +101,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       }
 
       "Estää oppilaitoksen vaihtamisen" in {
-        verifyChange(original = original, change = existing => existing.copy(oppilaitos = Oppilaitos(MockOrganisaatiot.omnomnia), id = None)) {
+        verifyChange(original = original, change = existing => existing.copy(id = None, versionumero = None, oppilaitos = Oppilaitos(MockOrganisaatiot.omnomnia))) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos("Opiskeluoikeuden oppilaitosta ei voi vaihtaa. Vanha oid 1.2.246.562.10.52251087186. Uusi oid 1.2.246.562.10.51720121923."))
         }
       }
@@ -111,10 +111,20 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos("Opiskeluoikeuden tyyppiä ei voi vaihtaa. Vanha tyyppi ammatillinenkoulutus. Uusi tyyppi lukiokoulutus."))
         }
       }
+
+      "Mahdollistaa toisen opiskeluoikeuden luonnin samalla tyypillä ja oppilaitoksella, kunhan lähdejärjestelmä-id on eri" in {
+        val lähdejärjestelmänId2 = LähdejärjestelmäId("123452", AmmatillinenExampleData.lähdeWinnova)
+        verifyChange(original = original, change = existing => existing.copy(id = None, versionumero = None, lähdejärjestelmänId = Some(lähdejärjestelmänId2))) {
+          verifyResponseStatus(200)
+          val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluOikeus(oppija.oid)
+          result.lähdejärjestelmänId.map(_.id) should equal(Some(lähdejärjestelmänId2.id))
+          result.versionumero should equal(Some(1))
+        }
+      }
     }
 
     "Käytettäessä vain oppilaitoksen tietoa ja opiskeluoikeuden tyyppiä" - {
-      "Muokkaa olemassaolevaa opiskeluoikeutta" in {
+      "Muokkaa olemassaolevaa opiskeluoikeutta, jos sama oppilaitos ja opiskeluoikeustyyppi (estää siis useamman luonnin)" in {
         resetFixtures
         val d: LocalDate = date(2020, 1, 1)
         verifyChange(change = existing => existing.copy(id = None, arvioituPäättymispäivä = Some(d))) {
