@@ -7,17 +7,18 @@ import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.schema.Organisaatio.Oid
 import rx.lang.scala.Observable
 
-class KoskiUser(val oid: String, val clientIp: String, val lang: String, val organisationOidsObservable: Observable[Set[(Organisaatio.Oid, Käyttöoikeusryhmä)]]) extends LogUserContext with Loggable with Logging {
+class KoskiUser(val oid: String, val clientIp: String, val lang: String, käyttöoikeusryhmätObservable: Observable[Set[(Organisaatio.Oid, Käyttöoikeusryhmä)]]) extends LogUserContext with Loggable with Logging {
   def oidOption = Some(oid)
   def logString = "käyttäjä " + oid
 
-  lazy val käyttöoikeusryhmät: Set[(Oid, Käyttöoikeusryhmä)] = organisationOidsObservable.toBlocking.first
+  private lazy val käyttöoikeusryhmät: Set[(Oid, Käyttöoikeusryhmä)] = käyttöoikeusryhmätObservable.toBlocking.first
   def organisationOids(accessType: AccessType.Value) = käyttöoikeusryhmät.filter(_._2.orgAccessType.contains(accessType)).map(_._1)
   lazy val globalAccess = käyttöoikeusryhmät.map(_._2).flatMap(_.globalAccessType).toSet
+  def isRoot = käyttöoikeusryhmät.map(_._2).contains(Käyttöoikeusryhmät.ophPääkäyttäjä)
   def hasReadAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.read)
   def hasWriteAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.write)
   def hasAccess(organisaatio: Organisaatio.Oid, accessType: AccessType.Value) = globalAccess.contains(accessType) || organisationOids(accessType).contains(organisaatio)
-  organisationOidsObservable.foreach(org => {}) // <- force evaluation to ensure parallel operation
+  käyttöoikeusryhmätObservable.foreach(org => {}) // <- force evaluation to ensure parallel operation
 }
 
 object KoskiUser {
