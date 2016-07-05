@@ -14,9 +14,10 @@ object KäyttöoikeusRyhmätCreator {
     Käyttöoikeusryhmät.käyttöoikeusryhmät foreach { ryhmä =>
       val olemassaOlevaRyhmä = olemassaOlevatRyhmät.find(olemassaOlevaRyhmä => olemassaOlevaRyhmä.toKoskiKäyttöoikeusryhmä.map(_.nimi) == Some(ryhmä.nimi))
       val organisaatioTyypit = (ryhmä.orgAccessType, ryhmä.globalAccessType) match {
-        case (Nil, _) => Nil // käyttöoikeusryhmää ei liity oppilaitoksiin
+        case (Nil, Nil) => Nil // käyttöoikeusryhmä ei liity mihinkään
+        case (Nil, _) => List("1.2.246.562.10.00000000001") // global access => liitetään OPH-organisaatioon
         case (_, Nil) => oppilaitostyypit // käyttöoikeusryhmä liittyy oppilaitoksiin, eikä sisällä yleistä pääsyä
-        case _ => Nil
+        case _ => throw new IllegalArgumentException("Ei voi olla molempia pääsyjä")
       }
       val tiedot = UusiKäyttöoikeusryhmä(ryhmä.nimi, ryhmä.nimi, ryhmä.nimi, organisaatioTyypit = organisaatioTyypit)
       olemassaOlevaRyhmä match {
