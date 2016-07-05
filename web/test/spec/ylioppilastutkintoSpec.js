@@ -1,7 +1,7 @@
 describe('Ylioppilastutkinto', function( ){
   var page = KoskiPage()
   var todistus = TodistusPage()
-  before(resetFixtures, Authentication().login())
+  before(Authentication().login(), resetFixtures)
   before(page.openPage, page.oppijaHaku.search('010696-971K', page.isOppijaSelected('Ynjevi')))
   describe('Oppijan suorituksissa', function() {
     it('näytetään', function() {

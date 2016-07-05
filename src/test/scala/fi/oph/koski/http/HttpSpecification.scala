@@ -34,7 +34,7 @@ trait HttpSpecification extends HttpComponentsClient with Assertions with Matche
   }
 
   def resetFixtures[A] = {
-    post("fixtures/reset") {
+    post("fixtures/reset", Nil, authHeaders()) {
       verifyResponseStatus(200)
     }
   }

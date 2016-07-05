@@ -3,7 +3,7 @@ describe('Korkeakoulutus', function() {
   var page = KoskiPage()
   var login = LoginPage()
 
-  before(resetFixtures, Authentication().login())
+  before(Authentication().login(), resetFixtures)
 
   describe('Valmis diplomi-insinööri', function() {
     before(

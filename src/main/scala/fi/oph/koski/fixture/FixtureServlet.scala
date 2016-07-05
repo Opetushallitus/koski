@@ -1,10 +1,11 @@
 package fi.oph.koski.fixture
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.koskiuser.{RequiresAuthentication, UserOrganisationsRepository}
 import fi.oph.koski.servlet.ApiServlet
+import fi.vm.sade.security.ldap.DirectoryClient
 
-// TODO: require superuser privileged
-class FixtureServlet(application: KoskiApplication) extends ApiServlet {
+class FixtureServlet(val userRepository: UserOrganisationsRepository, val directoryClient: DirectoryClient, application: KoskiApplication) extends ApiServlet with RequiresAuthentication {
   post("/reset") {
     application.resetFixtures
   }

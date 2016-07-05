@@ -45,7 +45,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       context.mount(new IndexServlet(), "/")
       context.mount(new CacheServlet(userRepository, application.directoryClient, application), "/cache")
       if (Fixtures.shouldUseFixtures(application.config)) {
-        context.mount(new FixtureServlet(application), "/fixtures")
+        context.mount(new FixtureServlet(userRepository, application.directoryClient, application), "/fixtures")
       }
     } catch {
       case e: Throwable =>

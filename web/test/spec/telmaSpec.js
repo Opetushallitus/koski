@@ -1,7 +1,7 @@
 describe('Telma', function() {
   var page = KoskiPage()
   var todistus = TodistusPage()
-  before(resetFixtures, Authentication().login())
+  before(Authentication().login(), resetFixtures)
 
   describe('Työhön ja itsenäiseen elämään valmentava koulutus', function() {
     before(page.openPage, page.oppijaHaku.search('170696-986C', page.isOppijaSelected('Tuula')))

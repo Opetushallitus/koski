@@ -53,7 +53,7 @@ describe('Koski', function() {
       })
 
       describe('Kun kirjaudutaan uudelleen sisään', function() {
-        before(resetFixtures, Authentication().login(), page.openPage, page.oppijaHaku.search('jouni', [eerola]), page.logout, login.login('kalle', 'kalle'), wait.until(page.isReady))
+        before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.search('jouni', [eerola]), page.logout, login.login('kalle', 'kalle'), wait.until(page.isReady))
         it ('Käyttöliittymä on palautunut alkutilaan', function() {
           expect(page.oppijaHaku.getSearchResults()).to.deep.equal([])
           expect(page.getSelectedOppija()).to.equal('')
@@ -71,11 +71,8 @@ describe('Koski', function() {
   })
 
   describe('Virhetilanteet', function() {
-    before(
-      Authentication().login(),
-      resetFixtures
-    )
-
+    before(Authentication().login(), resetFixtures)
+    
     describe('Odottamattoman virheen sattuessa', function() {
       before(
         page.openPage,

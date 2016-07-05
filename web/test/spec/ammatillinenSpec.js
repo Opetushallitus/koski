@@ -8,8 +8,8 @@ describe('Ammatillinen koulutus', function() {
 
   function prepareForNewOppija(username, searchString) {
     return function() {
-      return resetFixtures()
-        .then(Authentication().login(username))
+      return Authentication().login(username)()
+        .then(resetFixtures)
         .then(page.openPage)
         .then(page.oppijaHaku.search(searchString, page.oppijaHaku.isNoResultsLabelShown))
         .then(page.oppijaHaku.addNewOppija)
