@@ -98,15 +98,23 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
     }
 
     case OppijaOidJaLähdejärjestelmänId(oppijaOid, lähdejärjestelmäId) => {
-      findByOppijaOidAction(oppijaOid).map( rows => Right(rows.find({ row =>
+      findUnique(oppijaOid, { row =>
         row.toOpiskeluOikeus.lähdejärjestelmänId == Some(lähdejärjestelmäId)
-      })))
+      })
     }
 
     case i:OppijaOidOrganisaatioJaTyyppi => {
-      findByOppijaOidAction(i.oppijaOid).map(rows => Right(rows.find({ row =>
+      findUnique(i.oppijaOid, { row =>
         OppijaOidOrganisaatioJaTyyppi(i.oppijaOid, row.toOpiskeluOikeus.oppilaitos.oid, row.toOpiskeluOikeus.tyyppi.koodiarvo, row.toOpiskeluOikeus.lähdejärjestelmänId) == identifier
-      })))
+      })
+    }
+  }
+
+  private def findUnique(oppijaOid: String, f: OpiskeluOikeusRow => Boolean)(implicit user: KoskiUser) = {
+    findByOppijaOidAction(oppijaOid).map(_.filter(f).toList).map {
+      case List(singleRow) => Right(Some(singleRow))
+      case Nil => Right(None)
+      case multipleRows => Left(KoskiErrorCategory.internalError(s"Löytyi enemmän kuin yksi rivi päivitettäväksi (${multipleRows.map(_.id)})"))
     }
   }
 
