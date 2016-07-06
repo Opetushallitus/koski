@@ -2,9 +2,8 @@ package fi.oph.koski.jettylauncher
 
 import java.nio.file.{Files, Paths}
 
+import fi.oph.koski.log.LogConfiguration
 import fi.oph.koski.util.{Pools, PortChecker}
-import org.apache.log4j.PropertyConfigurator
-import org.apache.log4j.helpers.Loader
 import org.eclipse.jetty.server.{Server, ServerConnector, Slf4jRequestLog}
 import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.eclipse.jetty.webapp.WebAppContext
@@ -15,11 +14,7 @@ object JettyLauncher extends App {
 }
 
 class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) {
-  var prop = System.getProperty("log4j.configuration", "log4j.properties");
-  val log4jConfig = Loader.getResource(prop);
-  if (log4jConfig.getProtocol().equalsIgnoreCase("file")) {
-    PropertyConfigurator.configureAndWatch(log4jConfig.getFile(), 1000);
-  }
+  LogConfiguration.configureLoggingWithFileWatch
 
   lazy val threadPool = new QueuedThreadPool(Pools.jettyThreads, 10);
   lazy val server = new Server(threadPool)
