@@ -3,7 +3,7 @@ package fi.oph.koski.config
 import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.koski.arvosana.ArviointiasteikkoRepository
-import fi.oph.koski.cache.CachingProxy
+import fi.oph.koski.cache.{CachingProxy, GlobalCacheInvalidator}
 import fi.oph.koski.cache.CachingStrategy.cacheAllRefresh
 import fi.oph.koski.db._
 import fi.oph.koski.eperusteet.EPerusteetRepository
@@ -55,5 +55,5 @@ class KoskiApplication(val config: Config) extends Logging {
 
   def resetFixtures = Fixtures.resetFixtures(config, database, opiskeluOikeusRepository, oppijaRepository, validator)
 
-  def invalidateCaches = List(organisaatioRepository, directoryClient, tutkintoRepository, koodistoPalvelu, userOrganisationsRepository, oppijaRepository).foreach(_.invalidateCache)
+  def invalidateCaches = GlobalCacheInvalidator.invalidateCache
 }

@@ -9,14 +9,29 @@ import com.google.common.util.concurrent.{ListenableFuture, UncheckedExecutionEx
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.{Invocation, Pools}
 
+class CacheInvalidator extends Cached {
+  private var caches: List[Cached] = Nil
+
+  def invalidateCache = synchronized {
+    caches.foreach(_.invalidateCache)
+  }
+
+  def registerCache(cache: Cached) = synchronized {
+    caches = cache :: caches
+  }
+}
+
+object GlobalCacheInvalidator extends CacheInvalidator
+
 object CachingStrategy {
-  def cacheAllRefresh(name: String, durationSeconds: Int, maxSize: Int) = CachingStrategy(name, CacheAllCacheDetails(durationSeconds, maxSize, true))
-  def cacheAllNoRefresh(name: String, durationSeconds: Int, maxSize: Int) = CachingStrategy(name, CacheAllCacheDetails(durationSeconds, maxSize, false))
+  def cacheAllRefresh(name: String, durationSeconds: Int, maxSize: Int, invalidator: CacheInvalidator = GlobalCacheInvalidator) = CachingStrategy(name, CacheAllCacheDetails(durationSeconds, maxSize, true), invalidator)
+  def cacheAllNoRefresh(name: String, durationSeconds: Int, maxSize: Int, invalidator: CacheInvalidator = GlobalCacheInvalidator) = CachingStrategy(name, CacheAllCacheDetails(durationSeconds, maxSize, false), invalidator)
   private[cache] val executorService = listeningDecorator(Pools.globalPool)
 }
 
-case class CachingStrategy(name: String, cacheDetails: CacheDetails) extends Cached with Logging {
+case class CachingStrategy(name: String, cacheDetails: CacheDetails, invalidator: CacheInvalidator = GlobalCacheInvalidator) extends Cached with Logging {
   logger.debug("Create cache " + name)
+  invalidator.registerCache(this)
   /**
    *  Marker exception that's used for preventing caching values that we don't want to cache.
    */
