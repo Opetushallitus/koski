@@ -41,7 +41,7 @@ class KoskiApplication(val config: Config) extends Logging {
   lazy val koodistoPalvelu = KoodistoPalvelu.apply(config)
   lazy val koodistoViitePalvelu = new KoodistoViitePalvelu(koodistoPalvelu)
   lazy val arviointiAsteikot = ArviointiasteikkoRepository(koodistoViitePalvelu)
-  lazy val userRepository = UserOrganisationsRepository(config, organisaatioRepository)
+  lazy val userOrganisationsRepository = UserOrganisationsRepository(config, organisaatioRepository)
   lazy val database = new KoskiDatabase(config)
   lazy val virtaClient = VirtaClient(config)
   lazy val ytrClient = YlioppilasTutkintoRekisteri(config)
@@ -55,5 +55,5 @@ class KoskiApplication(val config: Config) extends Logging {
 
   def resetFixtures = Fixtures.resetFixtures(config, database, opiskeluOikeusRepository, oppijaRepository, validator)
 
-  def invalidateCaches = List(organisaatioRepository, directoryClient, tutkintoRepository, koodistoPalvelu, userRepository, oppijaRepository).foreach(_.invalidateCache)
+  def invalidateCaches = List(organisaatioRepository, directoryClient, tutkintoRepository, koodistoPalvelu, userOrganisationsRepository, oppijaRepository).foreach(_.invalidateCache)
 }
