@@ -8,7 +8,7 @@ import fi.vm.sade.security.ldap.DirectoryClient
 
 class CacheServlet(val userRepository: UserOrganisationsRepository, val directoryClient: DirectoryClient, application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Logging {
   get("/invalidate") {
-    if (!koskiUser.isRoot) {
+    if (!koskiUser.isMaintenance) {
       halt(403)
     }
     logger.info("Invalidating all caches")

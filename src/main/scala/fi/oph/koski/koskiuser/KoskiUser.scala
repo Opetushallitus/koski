@@ -15,6 +15,7 @@ class KoskiUser(val oid: String, val clientIp: String, val lang: String, käytt�
   def organisationOids(accessType: AccessType.Value) = käyttöoikeusryhmät.filter(_._2.orgAccessType.contains(accessType)).map(_._1)
   lazy val globalAccess = käyttöoikeusryhmät.map(_._2).flatMap(_.globalAccessType).toSet
   def isRoot = käyttöoikeusryhmät.map(_._2).contains(Käyttöoikeusryhmät.ophPääkäyttäjä)
+  def isMaintenance = käyttöoikeusryhmät.map(_._2).intersect(Set(Käyttöoikeusryhmät.ophPääkäyttäjä, Käyttöoikeusryhmät.ophKoskiYlläpito)).nonEmpty
   def hasReadAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.read)
   def hasWriteAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.write)
   def hasAccess(organisaatio: Organisaatio.Oid, accessType: AccessType.Value) = globalAccess.contains(accessType) || organisationOids(accessType).contains(organisaatio)

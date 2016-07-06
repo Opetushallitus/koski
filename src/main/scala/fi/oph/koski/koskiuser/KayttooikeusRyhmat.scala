@@ -15,6 +15,7 @@ object Käyttöoikeusryhmät {
 
   val ophPääkäyttäjä = add(ryhmä("koski-oph-pääkäyttäjä", "CRUP-oikeudet (lisäys, muokkaus, passivointi) Koskessa").withGlobalAccess(read, write))
   val ophKatselija = add(ryhmä("koski-oph-katselija", "näkee kaikki Koski-tiedot").withGlobalAccess(read))
+  val ophKoskiYlläpito = add(ryhmä("koski-oph-ylläpito", "Koski-ylläpitokäyttäjä, ei pääsyä oppijoiden tietoihin"))
 
   val viranomaisKatselija = add(ryhmä("koski-viranomainen-katselija", "näkee oikeuksiensa mukaisesti Koski-tiedot").withGlobalAccess(read))
   val viranomaisPääkäyttäjä = add(ryhmä("koski-viranomainen-pääkäyttäjä", "katseluoikeudet, antaa oikeudet Tor-viranomaistietojen katselijalle").withGlobalAccess(read))
