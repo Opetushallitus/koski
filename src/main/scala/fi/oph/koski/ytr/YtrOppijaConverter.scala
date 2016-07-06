@@ -28,14 +28,17 @@ case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodis
                 (None, tilaKesken)
             }
             Some(YlioppilastutkinnonOpiskeluoikeus(
-              oppilaitos = oppilaitos, koulutustoimija = None, tila = YlioppilastutkinnonOpiskeluoikeudenTila(Nil), suoritukset = List(YlioppilastutkinnonSuoritus(
-                tila = tila,
-                vahvistus = vahvistus,
-                toimipiste = oppilaitos,
-                koulutusmoduuli = Ylioppilastutkinto(requiredKoodi("koulutus", "301000"), None),
-                osasuoritukset = Some(ytrOppija.exams.map(convertExam)))
-              ))
-            )
+                oppilaitos = oppilaitos,
+                koulutustoimija = None,
+                tila = YlioppilastutkinnonOpiskeluoikeudenTila(Nil),
+                suoritukset = List(YlioppilastutkinnonSuoritus(
+                  tila = tila,
+                  vahvistus = vahvistus,
+                  toimipiste = oppilaitos,
+                  koulutusmoduuli = Ylioppilastutkinto(requiredKoodi("koulutus", "301000"), None),
+                  osasuoritukset = Some(ytrOppija.exams.map(convertExam)))
+                )
+            ))
         }
     }
   }
