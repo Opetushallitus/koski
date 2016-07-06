@@ -24,9 +24,9 @@ class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances wit
   def käyttöoikeusryhmät: List[Käyttöoikeusryhmä] = runTask(http(uri"/authentication-service/resources/kayttooikeusryhma")(Http.parseJson[List[Käyttöoikeusryhmä]]))
 
   def käyttäjänKäyttöoikeusryhmät(oid: String): Observable[List[(String, Int)]] = {
-    http(uri"/authentication-service/resources/s2s/koski/kayttooikeusryhmat/${oid}")(Http.parseJson[Map[String, List[Int]]]).map { groupedByOrg =>
+    taskToObservable(http(uri"/authentication-service/resources/s2s/koski/kayttooikeusryhmat/${oid}")(Http.parseJson[Map[String, List[Int]]]).map { groupedByOrg =>
       groupedByOrg.toList.flatMap { case (org, ryhmät) => ryhmät.map(ryhmä => (org, ryhmä)) }
-    }
+    })
   }
 
   def lisääOrganisaatio(henkilöOid: String, organisaatioOid: String, nimike: String) = {
