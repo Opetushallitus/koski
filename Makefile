@@ -17,15 +17,17 @@ help:
 	@echo "make deploy env=<env> version=<version>	- Install deployed version to env."
 	@echo "make KOSKI-SERVER=tordev-authentication-app ssh	- Ssh connection to authentication app server in test env"
 
+logdir:
+	@mkdir -p log
 clean:
 	mvn clean
-build:
+build: logdir
 	mvn compile
 	# Built the whole application, ready for running or testing
-front:
+front: logdir
 	cd web && npm install
 	# front end build done
-test:
+test: logdir
 	mvn test
 testresults:
 	less +`grep -n "FAILED" target/surefire-reports/koski-tests.txt|head -1|cut -d ':' -f 1` target/surefire-reports/koski-tests.txt
