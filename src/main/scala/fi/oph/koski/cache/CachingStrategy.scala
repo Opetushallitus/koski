@@ -9,26 +9,14 @@ import com.google.common.util.concurrent.{ListenableFuture, UncheckedExecutionEx
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.{Invocation, Pools}
 
-
-trait CachingStrategy extends Function1[Invocation, AnyRef] with Cached
-
 object CachingStrategy {
-  def noCache = NoCache
-  def cacheAllRefresh(durationSeconds: Int, maxSize: Int) = CacheAllRefresh(durationSeconds, maxSize)
-  def cacheAllNoRefresh(durationSeconds: Int, maxSize: Int) = CacheAllNoRefresh(durationSeconds, maxSize)
+  def cacheAllRefresh(name: String, durationSeconds: Int, maxSize: Int) = CachingStrategy(name, CacheAllCacheDetails(durationSeconds, maxSize, true))
+  def cacheAllNoRefresh(name: String, durationSeconds: Int, maxSize: Int) = CachingStrategy(name, CacheAllCacheDetails(durationSeconds, maxSize, false))
   private[cache] val executorService = listeningDecorator(Pools.globalPool)
 }
 
-object NoCache extends CachingStrategy {
-  override def apply(invocation: Invocation) = invocation.invoke
-
-  override def invalidateCache() = {}
-}
-
-case class CacheAllRefresh(durationSeconds: Int, maxSize: Int) extends CachingStrategyBase(CacheAllCacheDetails(durationSeconds, maxSize, true))
-case class CacheAllNoRefresh(durationSeconds: Int, maxSize: Int) extends CachingStrategyBase(CacheAllCacheDetails(durationSeconds, maxSize, false))
-
-abstract class CachingStrategyBase(cacheDetails: CacheDetails) extends CachingStrategy with Logging {
+case class CachingStrategy(name: String, cacheDetails: CacheDetails) extends Cached with Logging {
+  logger.debug("Create cache " + name)
   /**
    *  Marker exception that's used for preventing caching values that we don't want to cache.
    */
@@ -36,6 +24,7 @@ abstract class CachingStrategyBase(cacheDetails: CacheDetails) extends CachingSt
 
   def apply(invocation: Invocation): AnyRef = {
     try {
+      logger.debug(name + "." + invocation + " (cache size " + cache.size() + ")")
       cache.get(invocation)
     } catch {
       case e: UncheckedExecutionException if e.getCause.isInstanceOf[DoNotStoreException] => e.getCause.asInstanceOf[DoNotStoreException].value
@@ -45,11 +34,13 @@ abstract class CachingStrategyBase(cacheDetails: CacheDetails) extends CachingSt
 
   override def invalidateCache() = {
     cache.invalidateAll
+    logger.debug(name + ".invalidate (cache size " + cache.size() + ")")
   }
 
   private val cache: LoadingCache[Invocation, AnyRef] = {
     val cacheLoader: CacheLoader[Invocation, AnyRef] = new CacheLoader[Invocation, AnyRef] {
       override def load(invocation:  Invocation): AnyRef = {
+        logger.debug("->loading")
         val value = invocation.invoke
         if (!cacheDetails.storeValuePredicate(invocation, value)) {
           throw new DoNotStoreException(value)
@@ -86,8 +77,6 @@ trait CacheDetails {
   def storeValuePredicate: (Invocation, AnyRef) => Boolean
   def refreshing: Boolean
 }
-
-abstract case class BaseCacheDetails(durationSeconds: Int, maxSize: Int, refreshing: Boolean) extends CacheDetails
 
 case class CacheAllCacheDetails(durationSeconds: Int, maxSize: Int, refreshing: Boolean) extends CacheDetails {
   override def storeValuePredicate: (Invocation, AnyRef) => Boolean = (invocation, value) => true

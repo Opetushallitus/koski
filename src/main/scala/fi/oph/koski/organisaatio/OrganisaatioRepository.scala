@@ -30,7 +30,7 @@ trait OrganisaatioRepository {
 
 object OrganisaatioRepository {
   def apply(config: Config, koodisto: KoodistoViitePalvelu) = {
-    CachingProxy[OrganisaatioRepository](KoskiCache.cacheStrategy, TimedProxy(withoutCache(config, koodisto).asInstanceOf[OrganisaatioRepository]))
+    CachingProxy[OrganisaatioRepository](KoskiCache.cacheStrategy("OrganisaatioRepository"), TimedProxy(withoutCache(config, koodisto).asInstanceOf[OrganisaatioRepository]))
   }
 
   def withoutCache(config: Config, koodisto: KoodistoViitePalvelu): JsonOrganisaatioRepository = {

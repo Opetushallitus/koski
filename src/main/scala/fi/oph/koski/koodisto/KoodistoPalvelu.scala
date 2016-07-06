@@ -6,7 +6,7 @@ import fi.oph.koski.log.TimedProxy
 
 object KoodistoPalvelu {
   def apply(config: Config) = {
-    CachingProxy(KoskiCache.cacheStrategy, TimedProxy(withoutCache(config)))
+    CachingProxy(KoskiCache.cacheStrategy("KoodistoPalvelu"), TimedProxy(withoutCache(config)))
   }
 
   def withoutCache(config: Config): KoodistoPalvelu = {

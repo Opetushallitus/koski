@@ -5,13 +5,12 @@ import fi.oph.koski.cache.{CachingProxy, KoskiCache}
 import fi.oph.koski.henkilo.AuthenticationServiceClient
 import fi.oph.koski.koskiuser.Käyttöoikeusryhmät.OrganisaatioKäyttöoikeusryhmä
 import fi.oph.koski.organisaatio.OrganisaatioRepository
-import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.util.Timing
 import rx.lang.scala.Observable
 
 object UserOrganisationsRepository {
   def apply(config: Config, organisaatioRepository: OrganisaatioRepository) = {
-    CachingProxy(KoskiCache.cacheStrategy, if (config.hasPath("opintopolku.virkailija.username")) {
+    CachingProxy(KoskiCache.cacheStrategy("UserOrganisationsRepository"), if (config.hasPath("opintopolku.virkailija.username")) {
       new RemoteUserOrganisationsRepository(AuthenticationServiceClient(config), organisaatioRepository)
     } else {
       MockUsers

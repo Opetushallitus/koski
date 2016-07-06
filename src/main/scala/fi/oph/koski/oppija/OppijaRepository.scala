@@ -1,7 +1,7 @@
 package fi.oph.koski.oppija
 
 import com.typesafe.config.Config
-import fi.oph.koski.cache.{BaseCacheDetails, CachingProxy, CachingStrategyBase}
+import fi.oph.koski.cache.{CacheDetails, CachingProxy, CachingStrategy}
 import fi.oph.koski.db.KoskiDatabase
 import fi.oph.koski.henkilo.AuthenticationServiceClient
 import fi.oph.koski.http.HttpStatus
@@ -14,7 +14,7 @@ import fi.oph.koski.ytr.{YlioppilasTutkintoRekisteri, YtrOppijaRepository}
 
 object OppijaRepository {
   def apply(config: Config, database: KoskiDatabase, koodistoViitePalvelu: KoodistoViitePalvelu, virtaClient: VirtaClient, ytr: YlioppilasTutkintoRekisteri) = {
-    CachingProxy(new OppijaRepositoryCachingStrategy, TimedProxy(withoutCache(config, database, koodistoViitePalvelu, virtaClient, ytr)))
+    CachingProxy(OppijaRepositoryCachingStrategy, TimedProxy(withoutCache(config, database, koodistoViitePalvelu, virtaClient, ytr)))
   }
 
   def withoutCache(config: Config, database: KoskiDatabase, koodistoViitePalvelu: KoodistoViitePalvelu, virtaClient: VirtaClient, ytr: YlioppilasTutkintoRekisteri): OppijaRepository = {
@@ -35,7 +35,10 @@ object OppijaRepository {
   }
 }
 
-class OppijaRepositoryCachingStrategy extends CachingStrategyBase(new BaseCacheDetails(durationSeconds = 60, maxSize = 100, refreshing = true) {
+object OppijaRepositoryCachingStrategy extends CachingStrategy("OppijaRepository", new CacheDetails {
+  def durationSeconds = 60
+  def maxSize = 100
+  def refreshing = true
   override def storeValuePredicate: (Invocation, AnyRef) => Boolean = {
     case (invocation, value) => invocation.f.name match {
       case "findByOid" => value match {

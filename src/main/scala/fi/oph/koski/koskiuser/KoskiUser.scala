@@ -11,7 +11,9 @@ class KoskiUser(val oid: String, val clientIp: String, val lang: String, käytt�
   def oidOption = Some(oid)
   def logString = "käyttäjä " + oid
 
-  private lazy val käyttöoikeusryhmät: Set[(Oid, Käyttöoikeusryhmä)] = käyttöoikeusryhmätObservable.toBlocking.first
+  private lazy val käyttöoikeusryhmät: Set[(Oid, Käyttöoikeusryhmä)] = {
+    käyttöoikeusryhmätObservable.toBlocking.first
+  }
   def organisationOids(accessType: AccessType.Value) = käyttöoikeusryhmät.filter(_._2.orgAccessType.contains(accessType)).map(_._1)
   lazy val globalAccess = käyttöoikeusryhmät.map(_._2).flatMap(_.globalAccessType).toSet
   def isRoot = käyttöoikeusryhmät.map(_._2).contains(Käyttöoikeusryhmät.ophPääkäyttäjä)
