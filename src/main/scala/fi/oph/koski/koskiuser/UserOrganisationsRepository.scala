@@ -1,7 +1,7 @@
 package fi.oph.koski.koskiuser
 
 import com.typesafe.config.Config
-import fi.oph.koski.cache.{CachingProxy, KoskiCache}
+import fi.oph.koski.cache.{CachingProxy, CachingStrategy, KeyValueCache, KoskiCache}
 import fi.oph.koski.henkilo.AuthenticationServiceClient
 import fi.oph.koski.koskiuser.Käyttöoikeusryhmät.OrganisaatioKäyttöoikeusryhmä
 import fi.oph.koski.organisaatio.OrganisaatioRepository
@@ -44,3 +44,13 @@ class RemoteUserOrganisationsRepository(henkilöPalveluClient: AuthenticationSer
   }
 }
 
+class OppilaitostyypitRepository(userOrganisationsRepository: UserOrganisationsRepository, organisaatioRepository: OrganisaatioRepository) {
+  private val cache = new KeyValueCache[String, Set[String]](CachingStrategy.cacheAllNoRefresh("OppilaitostyypitRepository", 3600, 1000), oid =>
+    userOrganisationsRepository.getUserOrganisations(oid).toBlocking.first
+      .filter(_._2.orgAccessType.contains(AccessType.read))
+      .map(_._1).flatMap(organisaatioRepository.getOrganisaatioHierarkia(_))
+      .flatMap(_.oppilaitostyyppi)
+  )
+
+  def getUserOppilaitostyypit(oid: String): Set[String] = cache(oid)
+}

@@ -21,6 +21,7 @@ class KoskiUser(val oid: String, val clientIp: String, val lang: String, käytt�
   def hasReadAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.read)
   def hasWriteAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.write)
   def hasAccess(organisaatio: Organisaatio.Oid, accessType: AccessType.Value) = globalAccess.contains(accessType) || organisationOids(accessType).contains(organisaatio)
+
   käyttöoikeusryhmätObservable.foreach(org => {}) // <- force evaluation to ensure parallel operation
 }
 

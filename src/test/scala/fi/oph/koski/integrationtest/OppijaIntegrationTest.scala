@@ -1,8 +1,7 @@
 package fi.oph.koski.integrationtest
 
 import fi.oph.koski.api.{OpiskeluoikeusTestMethodsAmmatillinen, SearchTestMethods}
-import fi.oph.koski.json.Json
-import fi.oph.koski.schema.{OidHenkilö, Oppija, TäydellisetHenkilötiedot, YlioppilastutkinnonOpiskeluoikeus}
+import fi.oph.koski.schema.{OidHenkilö, TäydellisetHenkilötiedot, YlioppilastutkinnonOpiskeluoikeus}
 import org.scalatest.{FreeSpec, Matchers}
 
 // This test is run against the Koski application deployed in the KoskiDev test environment.

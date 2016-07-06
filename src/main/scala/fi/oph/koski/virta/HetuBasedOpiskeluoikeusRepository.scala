@@ -4,7 +4,7 @@ import fi.oph.koski.cache.{CachingStrategy, KeyValueCache}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koski.{KoskiValidator, QueryFilter}
-import fi.oph.koski.koskiuser.{AccessType, KoskiUser}
+import fi.oph.koski.koskiuser.{AccessChecker, AccessType, KoskiUser}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.{CreateOrUpdateResult, OpiskeluOikeusRepository}
 import fi.oph.koski.oppija.{OppijaRepository, PossiblyUnverifiedOppijaOid}
@@ -13,7 +13,7 @@ import fi.oph.koski.schema.Henkilö._
 import fi.oph.koski.schema.{Opiskeluoikeus, _}
 import rx.lang.scala.Observable
 
-abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, validator: Option[KoskiValidator] = None) extends OpiskeluOikeusRepository with Logging {
+abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, accessChecker: AccessChecker, validator: Option[KoskiValidator] = None) extends OpiskeluOikeusRepository with Logging {
   def opiskeluoikeudetByHetu(hetu: String): List[OO]
 
   // hetu -> org.oids cache for filtering only
@@ -53,17 +53,17 @@ abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](oppijaRep
         Nil
     }
   }
+  private def getHetu(oid: String)(implicit user: KoskiUser): Option[TäydellisetHenkilötiedot] = oppijaRepository.findByOid(oid)
+  private def accessCheck[T](list: => List[T])(implicit user: KoskiUser): List[T] = if (accessChecker.hasAccess(user)) { list } else { Nil }
 
-  def findByHenkilö(henkilö: Henkilö with Henkilötiedot)(implicit user: KoskiUser): List[OO] = cache(henkilö.hetu).filter(oo => user.hasReadAccess(oo.oppilaitos.oid))
+  // Public methods
+  def findByHenkilö(henkilö: Henkilö with Henkilötiedot)(implicit user: KoskiUser): List[OO] = accessCheck(cache(henkilö.hetu).filter(oo => user.hasReadAccess(oo.oppilaitos.oid)))
+  def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiUser): List[HenkilötiedotJaOid] = accessCheck(oppijat.par.filter(oppija => !organizationsCache(oppija.hetu).filter(orgOid => user.hasReadAccess(orgOid)).isEmpty).toList)
+  def findByOppijaOid(oid: String)(implicit user: KoskiUser): List[Opiskeluoikeus] = accessCheck(getHetu(oid).toList.flatMap(findByHenkilö(_)))
 
-  private def getHetu(oid: String): Option[TäydellisetHenkilötiedot] = oppijaRepository.findByOid(oid)
-
-  def query(filters: List[QueryFilter])(implicit user: KoskiUser): Observable[(Oid, List[Opiskeluoikeus])] = Observable.empty
-  def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiUser): Seq[HenkilötiedotJaOid] = oppijat.par.filter(oppija => !organizationsCache(oppija.hetu).filter(orgOid => user.hasReadAccess(orgOid)).isEmpty).toList
-  def findByOppijaOid(oid: String)(implicit user: KoskiUser): Seq[Opiskeluoikeus] = {
-    getHetu(oid).toList.flatMap(findByHenkilö(_))
-  }
+  // No-op methods
   def findById(id: Int)(implicit user: KoskiUser): Option[(Opiskeluoikeus, String)] = None
+  def query(filters: List[QueryFilter])(implicit user: KoskiUser): Observable[(Oid, List[Opiskeluoikeus])] = Observable.empty
   def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiUser): Either[HttpStatus, CreateOrUpdateResult] = Left(KoskiErrorCategory.notImplemented.readOnly("Ulkoiseen järjestelmään ei voi päivittää tietoja Koskesta"))
 
 }

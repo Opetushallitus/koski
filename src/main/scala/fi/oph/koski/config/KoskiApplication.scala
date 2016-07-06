@@ -11,15 +11,15 @@ import fi.oph.koski.fixture.Fixtures
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.koski.KoskiValidator
-import fi.oph.koski.koskiuser.{DirectoryClientFactory, UserOrganisationsRepository}
+import fi.oph.koski.koskiuser.{DirectoryClientFactory, OppilaitostyypitRepository, UserOrganisationsRepository}
 import fi.oph.koski.log.{Logging, TimedProxy}
 import fi.oph.koski.opiskeluoikeus.{CompositeOpiskeluOikeusRepository, OpiskeluOikeusRepository, PostgresOpiskeluOikeusRepository}
 import fi.oph.koski.oppija.OppijaRepository
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.tutkinto.TutkintoRepository
-import fi.oph.koski.virta.{VirtaClient, VirtaOpiskeluoikeusRepository}
-import fi.oph.koski.ytr.{YlioppilasTutkintoRekisteri, YtrOpiskeluoikeusRepository}
+import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
+import fi.oph.koski.ytr.{YlioppilasTutkintoRekisteri, YtrAccessChecker, YtrOpiskeluoikeusRepository}
 
 object KoskiApplication {
   val defaultConfig = ConfigFactory.load
@@ -45,11 +45,14 @@ class KoskiApplication(val config: Config) extends Logging {
   lazy val database = new KoskiDatabase(config)
   lazy val virtaClient = VirtaClient(config)
   lazy val ytrClient = YlioppilasTutkintoRekisteri(config)
-  lazy val oppijaRepository = OppijaRepository(config, database, koodistoViitePalvelu, virtaClient, ytrClient)
+  lazy val oppilaitostyyppiRepository = new OppilaitostyypitRepository(userOrganisationsRepository, organisaatioRepository)
+  lazy val virtaAccessChecker = new VirtaAccessChecker(oppilaitostyyppiRepository)
+  lazy val ytrAccessChecker = new YtrAccessChecker(oppilaitostyyppiRepository)
+  lazy val oppijaRepository = OppijaRepository(config, database, koodistoViitePalvelu, virtaClient, virtaAccessChecker, ytrClient, ytrAccessChecker)
   lazy val historyRepository = OpiskeluoikeusHistoryRepository(database.db)
-  lazy val virta = TimedProxy[OpiskeluOikeusRepository](VirtaOpiskeluoikeusRepository(virtaClient, oppijaRepository, oppilaitosRepository, koodistoViitePalvelu, Some(validator)))
+  lazy val virta = TimedProxy[OpiskeluOikeusRepository](VirtaOpiskeluoikeusRepository(virtaClient, oppijaRepository, oppilaitosRepository, koodistoViitePalvelu, virtaAccessChecker, Some(validator)))
   lazy val possu = TimedProxy[OpiskeluOikeusRepository](new PostgresOpiskeluOikeusRepository(database.db, historyRepository))
-  lazy val ytr = TimedProxy[OpiskeluOikeusRepository](YtrOpiskeluoikeusRepository(ytrClient, oppijaRepository, organisaatioRepository, oppilaitosRepository, koodistoViitePalvelu, Some(validator)))
+  lazy val ytr = TimedProxy[OpiskeluOikeusRepository](YtrOpiskeluoikeusRepository(ytrClient, oppijaRepository, organisaatioRepository, oppilaitosRepository, koodistoViitePalvelu, ytrAccessChecker, Some(validator)))
   lazy val opiskeluOikeusRepository = new CompositeOpiskeluOikeusRepository(List(possu, virta, ytr))
   lazy val validator: KoskiValidator = new KoskiValidator(tutkintoRepository, koodistoViitePalvelu, organisaatioRepository)
 

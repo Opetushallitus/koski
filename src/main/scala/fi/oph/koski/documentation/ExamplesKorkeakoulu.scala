@@ -3,7 +3,7 @@ package fi.oph.koski.documentation
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoPalvelu}
-import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.koski.koskiuser.{MockUsers, SkipAccesCheck}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.oppija.{MockOppijaRepository, MockOppijat}
 import fi.oph.koski.oppilaitos.OppilaitosRepository
@@ -13,7 +13,7 @@ import fi.oph.koski.virta.{MockVirtaClient, VirtaOpiskeluoikeusRepository}
 
 object ExamplesKorkeakoulu {
   private lazy val koodistoViitePalvelu = KoodistoViitePalvelu(MockKoodistoPalvelu)
-  private def oppija = Oppija(MockOppijat.dippainssi.vainHenkilötiedot, VirtaOpiskeluoikeusRepository(MockVirtaClient, MockOppijaRepository(), OppilaitosRepository(MockOrganisaatioRepository(koodistoViitePalvelu)), koodistoViitePalvelu)
+  private def oppija = Oppija(MockOppijat.dippainssi.vainHenkilötiedot, VirtaOpiskeluoikeusRepository(MockVirtaClient, MockOppijaRepository(), OppilaitosRepository(MockOrganisaatioRepository(koodistoViitePalvelu)), koodistoViitePalvelu, SkipAccesCheck)
     .findByOppijaOid(MockOppijat.dippainssi.oid)(MockUsers.kalle.asKoskiUser)
   )
   lazy val examples = List(

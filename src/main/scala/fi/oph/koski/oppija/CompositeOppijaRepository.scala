@@ -2,18 +2,19 @@ package fi.oph.koski.oppija
 
 import fi.oph.koski.henkilo.HenkiloOid
 import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.schema._
 
 import scala.collection.parallel.immutable.ParSeq
 
 case class CompositeOppijaRepository(repos: List[OppijaRepository]) extends OppijaRepository {
-  override def findOppijat(query: String) = {
+  override def findOppijat(query: String)(implicit user: KoskiUser) = {
     repos.iterator.map(_.findOppijat(query)).find(!_.isEmpty).getOrElse(Nil)
   }
 
-  override def findByOid(oid: String) = mergeDuplicates(repos.par.map(_.findByOid(oid).toList).toList).headOption
+  override def findByOid(oid: String)(implicit user: KoskiUser) = mergeDuplicates(repos.par.map(_.findByOid(oid).toList).toList).headOption
 
-  override def findOrCreate(henkilö: UusiHenkilö) = {
+  override def findOrCreate(henkilö: UusiHenkilö)(implicit user: KoskiUser) = {
     val results: ParSeq[Either[HttpStatus, Henkilö.Oid]] = repos.par.map(_.findOrCreate(henkilö))
     results.toList.sortWith {
       case (Right(_), Left(_)) => true // prefer success
@@ -22,7 +23,7 @@ case class CompositeOppijaRepository(repos: List[OppijaRepository]) extends Oppi
     }.head
   }
 
-  override def findByOids(oids: List[String]) = mergeDuplicates(repos.par.map(_.findByOids(oids)).toList)
+  override def findByOids(oids: List[String])(implicit user: KoskiUser) = mergeDuplicates(repos.par.map(_.findByOids(oids)).toList)
 
   private def mergeDuplicates(oppijat: Iterable[Iterable[TäydellisetHenkilötiedot]]): List[TäydellisetHenkilötiedot] = {
     val grouped = oppijat.flatten.toList.groupBy(_.hetu).values
