@@ -30,7 +30,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       if (application.config.getBoolean("käyttöoikeusryhmät.create")) {
         KäyttöoikeusRyhmätCreator.luoKäyttöoikeusRyhmät(application.config)
       }
-      implicit val userRepository = UserOrganisationsRepository(application.config, application.organisaatioRepository)
+      implicit val userRepository = application.userOrganisationsRepository
 
       val rekisteri = new KoskiFacade(application.oppijaRepository, application.opiskeluOikeusRepository)
       context.mount(new OppijaServlet(rekisteri, userRepository, application.directoryClient, application.validator, application.historyRepository), "/api/oppija")
