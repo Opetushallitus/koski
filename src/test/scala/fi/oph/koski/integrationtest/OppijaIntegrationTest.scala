@@ -5,10 +5,14 @@ import fi.oph.koski.json.Json
 import fi.oph.koski.schema.{OidHenkilö, Oppija, TäydellisetHenkilötiedot}
 import org.scalatest.{FreeSpec, Matchers}
 
+// This test is run against the Koski application deployed in the KoskiDev test environment.
 class OppijaIntegrationTest extends FreeSpec with Matchers with KoskidevHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
   val testOid = "1.2.246.562.24.51633620848"
 
   "Oppijan henkilötiedot, kansalaisuus ja äidinkieli" taggedAs(KoskiDevEnvironment) in {
+    // This makes sure that our server is running, can authenticate a user, can insert data into the database and
+    // return results, i.e. is up and running.
+
     putOpiskeluOikeus(defaultOpiskeluoikeus, OidHenkilö(testOid)) {
       verifyResponseStatus(200)
     }
