@@ -4,7 +4,7 @@ import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import org.scalatest.{FunSpec, Matchers}
 
-class LukioSpec extends FunSpec with Matchers with OpintosuoritusoteTestMethods with TodistusTestMethods with OpiskeluOikeusTestMethods {
+class LukioSpec extends FunSpec with Matchers with OpintosuoritusoteTestMethods with TodistusTestMethods with OpiskeluOikeusTestMethods with LocalJettyHttpSpecification {
   describe("Lukio") {
     it("Opintosuoritusote") {
       opintosuoritusote(MockOppijat.lukiolainen) should equal(

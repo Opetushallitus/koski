@@ -3,7 +3,7 @@ package fi.oph.koski.api
 import fi.oph.koski.oppija.MockOppijat
 import org.scalatest.{FunSpec, Matchers}
 
-class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods with OpiskeluOikeusTestMethods {
+class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods with OpiskeluOikeusTestMethods with LocalJettyHttpSpecification {
   describe("Perusopetuksen todistukset") {
     it("Perusopetuksen päättötodistus") {
       resetFixtures

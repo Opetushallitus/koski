@@ -5,7 +5,7 @@ import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.schema._
 import org.scalatest.{FunSpec, Matchers}
 
-class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMethodsKorkeakoulu with OpintosuoritusoteTestMethods with SearchTestMethods {
+class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMethodsKorkeakoulu with OpintosuoritusoteTestMethods with SearchTestMethods with LocalJettyHttpSpecification {
   describe("Korkeakoulun opiskeluoikeudet") {
     describe("Lisättäessä/päivitettäessä") {
       it("palautetaan HTTP 501") {

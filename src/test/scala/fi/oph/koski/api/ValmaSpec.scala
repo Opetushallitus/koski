@@ -3,7 +3,7 @@ package fi.oph.koski.api
 import fi.oph.koski.oppija.MockOppijat
 import org.scalatest.{FunSpec, Matchers}
 
-class ValmaSpec extends FunSpec with Matchers with TodistusTestMethods with OpiskeluOikeusTestMethods {
+class ValmaSpec extends FunSpec with Matchers with TodistusTestMethods with OpiskeluOikeusTestMethods with LocalJettyHttpSpecification {
   describe("Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)") {
     it("Päättötodistus") {
       todistus(MockOppijat.valma.oid, "valma") should equal(

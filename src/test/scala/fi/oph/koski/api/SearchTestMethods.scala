@@ -1,10 +1,11 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.http.HttpSpecification
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.schema.TäydellisetHenkilötiedot
 
-trait SearchTestMethods extends LocalJettyHttpSpecification {
+trait SearchTestMethods extends HttpSpecification {
   def search[T](query: String, user: UserWithPassword)(f: => T) = {
     get("api/oppija/search", params = List(("query" -> query)), headers = authHeaders(user)) {
       f

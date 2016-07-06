@@ -5,7 +5,7 @@ import fi.oph.koski.jettylauncher.SharedJetty
 import fi.oph.koski.log.AuditLogTester
 import org.scalatest.{FreeSpec, Matchers}
 
-class OppijaSearchSpec extends FreeSpec with Matchers with SearchTestMethods {
+class OppijaSearchSpec extends FreeSpec with Matchers with SearchTestMethods with LocalJettyHttpSpecification {
   AuditLogTester.setup
 
   "/api/oppija/search" - {

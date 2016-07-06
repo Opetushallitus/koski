@@ -3,7 +3,7 @@ package fi.oph.koski.api
 import fi.oph.koski.oppija.MockOppijat
 import org.scalatest.FreeSpec
 
-class AmmatillinenSpec extends FreeSpec with TodistusTestMethods{
+class AmmatillinenSpec extends FreeSpec with TodistusTestMethods with LocalJettyHttpSpecification {
   "Ammatillisen perustutkinnon päättötodistus" in {
     todistus(MockOppijat.ammattilainen.oid, "ammatillinentutkinto") should equal("""HELSINGIN KAUPUNKI
                                                                                    |Stadin ammattiopisto
