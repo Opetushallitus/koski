@@ -136,7 +136,7 @@ class HistoryApiSpec extends FunSpec with LocalJettyHttpSpecification with Opisk
     val historia: List[OpiskeluOikeusHistoryRow] = getHistory(opiskeluOikeus.id.get)
     historia.map(_.versionumero) should equal(versions)
 
-    markup("Validoidaan versiohistoria eheys")
+    markup("Validoidaan versiohistorian eheys")
 
     authGet("api/oppija/validate/" + oppija.oid) {
       // Validates version history integrity by applying all history patches on top of first version and comparing to stored final value.
