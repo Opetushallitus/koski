@@ -3,12 +3,12 @@ package fi.oph.koski.koskiuser
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoPalvelu}
 import fi.oph.koski.koskiuser.Käyttöoikeusryhmät.{ophPääkäyttäjä, oppilaitosKatselija, oppilaitosPalvelukäyttäjä, viranomaisKatselija}
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{lehtikuusentienToimipiste, omnomnia, oppilaitokset}
-import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot, Opetushallitus}
+import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, Opetushallitus}
 import fi.oph.koski.schema.Organisaatio
 import fi.vm.sade.security.ldap.{DirectoryClient, LdapUser}
 import rx.lang.scala.Observable
 
-object MockUsers extends UserOrganisationsRepository with DirectoryClient {
+object MockUsers extends DirectoryClient {
   val mockOrganisaatioRepository = new MockOrganisaatioRepository(KoodistoViitePalvelu(MockKoodistoPalvelu))
 
   val kalle = new MockUser(LdapUser(List(), "käyttäjä", "kalle", "12345"), (lehtikuusentienToimipiste :: oppilaitokset).toSet.map(palvelukäyttäjä))
@@ -38,3 +38,4 @@ case class MockUser(ldapUser: LdapUser, käyttöoikeudet: Set[(Organisaatio.Oid,
   def username = ldapUser.givenNames
   def password = username
 }
+

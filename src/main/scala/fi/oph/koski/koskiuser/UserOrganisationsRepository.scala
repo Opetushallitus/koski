@@ -1,7 +1,7 @@
 package fi.oph.koski.koskiuser
 
 import com.typesafe.config.Config
-import fi.oph.koski.cache.{CachingProxy, CachingStrategy, KeyValueCache, KoskiCache}
+import fi.oph.koski.cache.{CachingStrategy, KeyValueCache}
 import fi.oph.koski.henkilo.AuthenticationServiceClient
 import fi.oph.koski.koskiuser.Käyttöoikeusryhmät.OrganisaatioKäyttöoikeusryhmä
 import fi.oph.koski.organisaatio.OrganisaatioRepository
@@ -9,12 +9,8 @@ import fi.oph.koski.util.Timing
 import rx.lang.scala.Observable
 
 object UserOrganisationsRepository {
-  def apply(config: Config, organisaatioRepository: OrganisaatioRepository) = {
-    CachingProxy(KoskiCache.cacheStrategy("UserOrganisationsRepository"), if (config.hasPath("opintopolku.virkailija.username")) {
-      new RemoteUserOrganisationsRepository(AuthenticationServiceClient(config), organisaatioRepository)
-    } else {
-      MockUsers
-    })
+  def apply(config: Config, organisaatioRepository: OrganisaatioRepository, authenticationServiceClient: AuthenticationServiceClient) = {
+    new UserOrganisationsRepositoryImpl(authenticationServiceClient, organisaatioRepository)
   }
 }
 
@@ -26,7 +22,7 @@ import fi.oph.koski.henkilo.AuthenticationServiceClient
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import org.http4s.EntityDecoderInstances
 
-class RemoteUserOrganisationsRepository(henkilöPalveluClient: AuthenticationServiceClient, organisaatioRepository: OrganisaatioRepository)
+class UserOrganisationsRepositoryImpl(henkilöPalveluClient: AuthenticationServiceClient, organisaatioRepository: OrganisaatioRepository)
                                        extends UserOrganisationsRepository with EntityDecoderInstances with Timing {
   private lazy val käyttöoikeusryhmät = henkilöPalveluClient.käyttöoikeusryhmät
 

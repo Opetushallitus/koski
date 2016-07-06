@@ -8,6 +8,7 @@ import fi.oph.koski.cache.CachingStrategy.cacheAllRefresh
 import fi.oph.koski.db._
 import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.fixture.Fixtures
+import fi.oph.koski.henkilo.AuthenticationServiceClient
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.koski.KoskiValidator
@@ -41,14 +42,15 @@ class KoskiApplication(val config: Config) extends Logging {
   lazy val koodistoPalvelu = KoodistoPalvelu.apply(config)
   lazy val koodistoViitePalvelu = new KoodistoViitePalvelu(koodistoPalvelu)
   lazy val arviointiAsteikot = ArviointiasteikkoRepository(koodistoViitePalvelu)
-  lazy val userOrganisationsRepository = UserOrganisationsRepository(config, organisaatioRepository)
+  lazy val authenticationServiceClient = AuthenticationServiceClient(config, Some(database.db))
+  lazy val userOrganisationsRepository = UserOrganisationsRepository(config, organisaatioRepository, authenticationServiceClient)
   lazy val database = new KoskiDatabase(config)
   lazy val virtaClient = VirtaClient(config)
   lazy val ytrClient = YlioppilasTutkintoRekisteri(config)
   lazy val oppilaitostyyppiRepository = new OppilaitostyypitRepository(userOrganisationsRepository, organisaatioRepository)
   lazy val virtaAccessChecker = new VirtaAccessChecker(oppilaitostyyppiRepository)
   lazy val ytrAccessChecker = new YtrAccessChecker(oppilaitostyyppiRepository)
-  lazy val oppijaRepository = OppijaRepository(config, database, koodistoViitePalvelu, virtaClient, virtaAccessChecker, ytrClient, ytrAccessChecker)
+  lazy val oppijaRepository = OppijaRepository(authenticationServiceClient, koodistoViitePalvelu, virtaClient, virtaAccessChecker, ytrClient, ytrAccessChecker)
   lazy val historyRepository = OpiskeluoikeusHistoryRepository(database.db)
   lazy val virta = TimedProxy[OpiskeluOikeusRepository](VirtaOpiskeluoikeusRepository(virtaClient, oppijaRepository, oppilaitosRepository, koodistoViitePalvelu, virtaAccessChecker, Some(validator)))
   lazy val possu = TimedProxy[OpiskeluOikeusRepository](new PostgresOpiskeluOikeusRepository(database.db, historyRepository))

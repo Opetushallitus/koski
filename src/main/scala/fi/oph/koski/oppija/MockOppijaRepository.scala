@@ -1,11 +1,5 @@
 package fi.oph.koski.oppija
 
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.KoskiDatabase.DB
-import fi.oph.koski.db.{Futures, PostgresDriverWithJsonSupport, Tables}
-import fi.oph.koski.henkilo.Hetu
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.log.{Loggable, Logging}
 import fi.oph.koski.schema._
 
@@ -55,75 +49,6 @@ class MockOppijat(private var oppijat: List[TäydellisetHenkilötiedot] = Nil) e
     idCounter = idCounter + 1
     "1.2.246.562.24.0000000000" + idCounter
   }
-}
-
-case class MockOppijaRepository(initialOppijat: List[TäydellisetHenkilötiedot] = MockOppijat.defaultOppijat, db: Option[DB] = None) extends OppijaRepository with Futures {
-  private var oppijat = new MockOppijat(initialOppijat)
-
-  override def findOppijat(query: String)(implicit user: KoskiUser) = {
-    if (query.toLowerCase.contains("error")) {
-      throw new TestingException("Testing error handling")
-    }
-    oppijat.getOppijat.filter(searchString(_).contains(query)).map(_.toHenkilötiedotJaOid)
-  }
-
-  def addOppija(suku: String, etu: String, hetu: String): TäydellisetHenkilötiedot = {
-    oppijat.oppija(suku, etu, hetu)
-  }
-
-  def findOrCreate(henkilö: UusiHenkilö)(implicit user: KoskiUser): Either[HttpStatus, Henkilö.Oid] =  {
-    def oidFrom(oppijat: List[HenkilötiedotJaOid]): Either[HttpStatus, Henkilö.Oid] = {
-      oppijat match {
-        case List(oppija) => Right(oppija.oid)
-        case _ =>
-          logger.error("Oppijan lisääminen epäonnistui: ei voitu lisätä, muttei myöskään löytynyt.")
-          Left(KoskiErrorCategory.internalError())
-      }
-    }
-    val UusiHenkilö(hetu, etunimet, kutsumanimi, sukunimi) = henkilö
-    Hetu.validate(hetu).right.flatMap { hetu =>
-      create(hetu, etunimet, kutsumanimi, sukunimi).left.flatMap { case HttpStatus(409, _) =>
-        oidFrom(findOppijat(hetu))
-      }
-    }
-  }
-
-  private def create(hetu: String, etunimet: String, kutsumanimi: String, sukunimi: String): Either[HttpStatus, Henkilö.Oid] = {
-    if (sukunimi == "error") {
-      throw new TestingException("Testing error handling")
-    } else if (oppijat.getOppijat.find { o => (o.hetu == hetu) } .isDefined) {
-      Left(KoskiErrorCategory.conflict.hetu("conflict"))
-    } else {
-      val newOppija = oppijat.oppija(sukunimi, etunimet, hetu)
-      Right(newOppija.oid)
-    }
-  }
-
-  private def searchString(oppija: TäydellisetHenkilötiedot) = {
-    oppija.toString.toUpperCase
-  }
-
-
-  override def resetFixtures {
-    oppijat = new MockOppijat(MockOppijat.defaultOppijat)
-  }
-
-  def findFromDb(oid: String): Option[TäydellisetHenkilötiedot] = {
-    runQuery(Tables.OpiskeluOikeudet.filter(_.oppijaOid === oid)).headOption.map { oppijaRow =>
-      TäydellisetHenkilötiedot(oid, oid, oid, oid, oid, oppijat.äidinkieli, None)
-    }
-  }
-
-  def runQuery[E, U](fullQuery: PostgresDriverWithJsonSupport.api.Query[E, U, Seq]): Seq[U] = {
-    db.toSeq.flatMap { db => await(db.run(fullQuery.result)) }
-  }
-
-  override def findByOid(id: String)(implicit user: KoskiUser): Option[TäydellisetHenkilötiedot] = {
-    oppijat.getOppijat.filter {_.oid == id}.headOption.orElse(findFromDb(id))
-  }
-
-  override def findByOids(oids: List[String])(implicit user: KoskiUser): List[TäydellisetHenkilötiedot] = oids.map(oid => findByOid(oid).get)
-
 }
 
 class TestingException(text: String) extends RuntimeException(text) with Loggable {

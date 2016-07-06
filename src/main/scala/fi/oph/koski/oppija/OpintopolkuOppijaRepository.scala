@@ -1,12 +1,12 @@
 package fi.oph.koski.oppija
 
-import fi.oph.koski.henkilo._
+import fi.oph.koski.henkilo.{AuthenticationServiceClient, CreateUser, User, UserQueryUser}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.schema._
 
-class RemoteOppijaRepository(henkilöPalveluClient: AuthenticationServiceClient, koodisto: KoodistoViitePalvelu) extends OppijaRepository {
+class OpintopolkuOppijaRepository(henkilöPalveluClient: AuthenticationServiceClient, koodisto: KoodistoViitePalvelu) extends OppijaRepository {
   override def findOppijat(query: String)(implicit user: KoskiUser): List[HenkilötiedotJaOid] = {
     if (Henkilö.isHenkilöOid(query)) {
       findByOid(query).map(_.toHenkilötiedotJaOid).toList

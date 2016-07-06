@@ -1,19 +1,49 @@
 package fi.oph.koski.henkilo
 
 import com.typesafe.config.Config
+import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
 import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import fi.oph.koski.json.Json4sHttp4s._
-import fi.oph.koski.koskiuser.Käyttöoikeusryhmät
+import fi.oph.koski.koskiuser.{Käyttöoikeusryhmät, MockUsers}
 import fi.oph.koski.util.ScalazTaskToObservable._
 import fi.oph.koski.util.Timing
 import org.http4s._
 import org.http4s.headers.`Content-Type`
 import rx.lang.scala.Observable
 
-class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances with Timing {
+trait AuthenticationServiceClient {
+  def käyttöoikeusryhmät: List[Käyttöoikeusryhmä]
+  def käyttäjänKäyttöoikeusryhmät(oid: String): Observable[List[(String, Int)]]
+  def search(query: String): UserQueryResult
+  def create(createUserInfo: CreateUser): Either[HttpStatus, String]
+  def findByOid(id: String): Option[User]
+  def findByOids(oids: List[String]): List[User]
+  def findOrCreate(createUserInfo: CreateUser): Either[HttpStatus, User]
+}
+
+object AuthenticationServiceClient {
+  def apply(config: Config, db: Option[DB] = None) = if (config.hasPath("opintopolku.virkailija.username")) {
+    RemoteAuthenticationServiceClient(config)
+  } else {
+    new MockAuthenticationServiceClient(db)
+  }
+}
+
+object RemoteAuthenticationServiceClient {
+  def apply(config: Config) = {
+    val virkalijaUrl: String = if (config.hasPath("authentication-service.virkailija.url")) { config.getString("authentication-service.virkailija.url") } else { config.getString("opintopolku.virkailija.url") }
+    val username =  if (config.hasPath("authentication-service.username")) { config.getString("authentication-service.username") } else { config.getString("opintopolku.virkailija.username") }
+    val password =  if (config.hasPath("authentication-service.password")) { config.getString("authentication-service.password") } else { config.getString("opintopolku.virkailija.password") }
+
+    val http = VirkailijaHttpClient(username, password, virkalijaUrl, "/authentication-service", config.getBoolean("authentication-service.useCas"))
+    new RemoteAuthenticationServiceClient(http)
+  }
+}
+
+class RemoteAuthenticationServiceClient(http: Http) extends AuthenticationServiceClient with EntityDecoderInstances with Timing {
   def search(query: String): UserQueryResult = {
     runTask(http(uri"/authentication-service/resources/henkilo?no=true&count=0&q=${query}")(Http.parseJson[UserQueryResult]))
   }
@@ -59,7 +89,7 @@ class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances wit
     http.post (uri"/authentication-service/resources/salasana/${henkilöOid}", salasana)(EntityEncoder.stringEncoder(Charset.`UTF-8`)
       .withContentType(`Content-Type`(MediaType.`application/json`)), Http.unitDecoder) // <- yes, the API expects media type application/json, but consumes inputs as text/plain
   }
-  def findOrCreate(createUserInfo: CreateUser) = {
+  def findOrCreate(createUserInfo: CreateUser): Either[HttpStatus, User] = {
     val request: Request = Request(uri = uri"/authentication-service/resources/s2s/koski/henkilo", method = Method.POST)
     runTask(http(request.withBody(createUserInfo)(json4sEncoderOf[CreateUser])) {
       case (200, data, _) => Right(Json.read[User](data))
@@ -80,18 +110,6 @@ class AuthenticationServiceClient(http: Http) extends EntityDecoderInstances wit
     http(uri"/authentication-service/resources/ldap/${henkilöOid}")(Http.expectSuccess)
   }
 }
-
-object AuthenticationServiceClient {
-  def apply(config: Config) = {
-    val virkalijaUrl: String = if (config.hasPath("authentication-service.virkailija.url")) { config.getString("authentication-service.virkailija.url") } else { config.getString("opintopolku.virkailija.url") }
-    val username =  if (config.hasPath("authentication-service.username")) { config.getString("authentication-service.username") } else { config.getString("opintopolku.virkailija.username") }
-    val password =  if (config.hasPath("authentication-service.password")) { config.getString("authentication-service.password") } else { config.getString("opintopolku.virkailija.password") }
-
-    val http = VirkailijaHttpClient(username, password, virkalijaUrl, "/authentication-service", config.getBoolean("authentication-service.useCas"))
-    new AuthenticationServiceClient(http)
-  }
-}
-
 
 case class UserQueryResult(totalCount: Integer, results: List[UserQueryUser])
 case class UserQueryUser(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: String)

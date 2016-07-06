@@ -1,13 +1,13 @@
 package fi.oph.koski.koskiuser
 
 import com.typesafe.config.Config
-import fi.oph.koski.henkilo.{AuthenticationServiceClient, UusiKäyttöoikeusryhmä}
+import fi.oph.koski.henkilo.{RemoteAuthenticationServiceClient, UusiKäyttöoikeusryhmä}
 import fi.oph.koski.koodisto.KoodistoPalvelu
 import fi.oph.koski.organisaatio.Opetushallitus
 
 object KäyttöoikeusRyhmätCreator {
   def luoKäyttöoikeusRyhmät(config: Config): Unit = {
-    val client: AuthenticationServiceClient = AuthenticationServiceClient(config)
+    val client = RemoteAuthenticationServiceClient(config)
     val olemassaOlevatRyhmät = client.käyttöoikeusryhmät
     val koodistopalvelu: KoodistoPalvelu = KoodistoPalvelu(config)
     val oppilaitostyypit: List[String] = koodistopalvelu.getLatestVersion("oppilaitostyyppi").flatMap(koodistopalvelu.getKoodistoKoodit(_)).toList.flatten.map(_.koodiArvo)
