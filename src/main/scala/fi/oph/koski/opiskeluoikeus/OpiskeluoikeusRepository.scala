@@ -1,5 +1,6 @@
 package fi.oph.koski.opiskeluoikeus
 
+import fi.oph.koski.db.OpiskeluOikeusRow
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koski.QueryFilter
 import fi.oph.koski.koskiuser.KoskiUser
@@ -10,7 +11,7 @@ import org.json4s.JValue
 import rx.lang.scala.Observable
 
 trait OpiskeluOikeusRepository extends AuxiliaryOpiskeluOikeusRepository {
-  def query(filters: List[QueryFilter])(implicit user: KoskiUser): Observable[(Oid, List[Opiskeluoikeus])]
+  def query(filters: List[QueryFilter])(implicit user: KoskiUser): Observable[(Oid, List[OpiskeluOikeusRow])]
   def findById(id: Int)(implicit user: KoskiUser): Option[(Opiskeluoikeus, String)]
   def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiUser): Either[HttpStatus, CreateOrUpdateResult]
   def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiUser): Seq[HenkilötiedotJaOid]

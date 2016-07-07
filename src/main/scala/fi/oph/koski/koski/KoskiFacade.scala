@@ -3,6 +3,7 @@ package fi.oph.koski.koski
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
 
+import fi.oph.koski.db.OpiskeluOikeusRow
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.KoskiUser
@@ -18,7 +19,7 @@ import org.json4s._
 import rx.lang.scala.Observable
 
 class KoskiFacade(oppijaRepository: OppijaRepository, opiskeluOikeusRepository: OpiskeluOikeusRepository) extends Logging with Timing {
-  def findOppijat(params: List[(String, String)], user: KoskiUser): Either[HttpStatus, Observable[Oppija]] with Product with Serializable = {
+  def findOppijat(params: List[(String, String)], user: KoskiUser): Either[HttpStatus, Observable[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])]] with Product with Serializable = {
 
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_HAKU, user, Map(hakuEhto -> params.map { case (p,v) => p + "=" + v }.mkString("&"))))
 
@@ -136,18 +137,18 @@ class KoskiFacade(oppijaRepository: OppijaRepository, opiskeluOikeusRepository: 
   }
 
 
-  private def query(filters: List[QueryFilter])(implicit user: KoskiUser): Observable[Oppija] = {
-    val oikeudetPerOppijaOid: Observable[(Oid, List[Opiskeluoikeus])] = opiskeluOikeusRepository.query(filters)
+  private def query(filters: List[QueryFilter])(implicit user: KoskiUser): Observable[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])] = {
+    val oikeudetPerOppijaOid: Observable[(Oid, List[OpiskeluOikeusRow])] = opiskeluOikeusRepository.query(filters)
     oikeudetPerOppijaOid.tumblingBuffer(500).flatMap {
-      oppijatJaOidit: Seq[(Oid, List[Opiskeluoikeus])] =>
+      oppijatJaOidit: Seq[(Oid, List[OpiskeluOikeusRow])] =>
         val oids: List[String] = oppijatJaOidit.map(_._1).toList
 
         val henkilöt: Map[String, TäydellisetHenkilötiedot] = oppijaRepository.findByOids(oids).map(henkilö => (henkilö.oid, henkilö)).toMap
 
-        val oppijat: Iterable[Oppija] = oppijatJaOidit.flatMap { case (oid, opiskeluOikeudet) =>
+        val oppijat: Iterable[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])] = oppijatJaOidit.flatMap { case (oid, opiskeluOikeudet) =>
           henkilöt.get(oid) match {
             case Some(henkilö) =>
-              Some(Oppija(henkilö, opiskeluOikeudet))
+              Some((henkilö, opiskeluOikeudet))
             case None =>
               logger(user).warn("Oppijaa " + oid + " ei löydy henkilöpalvelusta")
               None
@@ -166,5 +167,7 @@ trait QueryFilter
 case class OpiskeluoikeusPäättynytAikaisintaan(päivä: LocalDate) extends QueryFilter
 case class OpiskeluoikeusPäättynytViimeistään(päivä: LocalDate) extends QueryFilter
 case class TutkinnonTila(tila: String) extends QueryFilter
-case class ValidationResult(oid: Henkilö.Oid, errors: List[AnyRef])
+case class ValidationResult(oid: Henkilö.Oid, errors: List[AnyRef]) {
+  def isOk = errors.isEmpty
+}
 case class HistoryInconsistency(message: String, diff: JValue)

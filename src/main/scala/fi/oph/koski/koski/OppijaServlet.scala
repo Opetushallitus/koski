@@ -2,7 +2,7 @@ package fi.oph.koski.koski
 
 import javax.servlet.http.HttpServletRequest
 
-import fi.oph.koski.db.GlobalExecutionContext
+import fi.oph.koski.db.{GlobalExecutionContext, OpiskeluOikeusRow}
 import fi.oph.koski.henkilo.HenkiloOid
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -11,7 +11,7 @@ import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.AuditLog.{log => auditLog}
 import fi.oph.koski.log._
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema.{HenkilöWithOid, Oppija}
+import fi.oph.koski.schema.{HenkilöWithOid, Oppija, TäydellisetHenkilötiedot}
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, NoCache, RequestDescriber}
 import fi.oph.koski.util.Timing
@@ -52,7 +52,9 @@ class OppijaServlet(rekisteri: KoskiFacade, val käyttöoikeudet: Käyttöoikeus
   }
 
   get("/") {
-    query
+    query.map {
+      case (henkilö, rivit) => Oppija(henkilö, rivit.map(_.toOpiskeluOikeus))
+    }
   }
 
   get("/:oid") {
@@ -99,7 +101,7 @@ class OppijaServlet(rekisteri: KoskiFacade, val käyttöoikeudet: Käyttöoikeus
     }
   }
 
-  private def query: Observable[Oppija] = {
+  private def query: Observable[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])] = {
     logger(koskiUser).info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
 
     rekisteri.findOppijat(params.toList, koskiUser) match {
@@ -135,12 +137,25 @@ case class UpdateContext(user: KoskiUser, facade: KoskiFacade, request: HttpServ
 case class ValidateContext(user: KoskiUser, validator: KoskiValidator) {
   def validateOppija(oppija: Oppija): ValidationResult = {
     val oppijaOid: Oid = oppija.henkilö.asInstanceOf[HenkilöWithOid].oid
-    val validationResult = validator.validateAsJson(oppija)(user, AccessType.read)
-    validationResult match {
-      case Right(oppija) =>
-        ValidationResult(oppijaOid, Nil)
-      case Left(status) =>
-        ValidationResult(oppijaOid, status.errors)
-    }
+    val validationResult: Either[HttpStatus, Oppija] = validator.validateAsJson(oppija)(user, AccessType.read)
+    toValidationResult(oppijaOid, validationResult)
+  }
+
+  private def toValidationResult(oppijaOid: String, validationResult: Either[HttpStatus, Oppija]) = validationResult match {
+    case Right(oppija) =>
+      ValidationResult(oppijaOid, Nil)
+    case Left(status) =>
+      ValidationResult(oppijaOid, status.errors)
+  }
+
+  def validateOppija(oppija: (TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])): ValidationResult = oppija match {
+    case (henkilö, rivit) =>
+      val oppijaOid: Oid = henkilö.asInstanceOf[HenkilöWithOid].oid
+      val fullJson = Json.toJValue(Map(
+        "henkilö" -> henkilö,
+        "opiskeluoikeudet" -> rivit.map(_.data)
+      ))
+      val validationResult = validator.extractAndValidate(fullJson)(user, AccessType.read)
+      toValidationResult(oppijaOid, validationResult)
   }
 }
