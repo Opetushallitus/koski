@@ -18,7 +18,12 @@ class KäyttöoikeusRepository(henkilöPalveluClient: AuthenticationServiceClien
             case (organisaatioOid: String, ryhmäId: Int) =>
               organisaatioOid match {
                 case Opetushallitus.organisaatioOid =>
-                  ryhmäById(ryhmäId).map(GlobaaliKäyttöoikeus(_)).toList
+                  ryhmäById(ryhmäId).flatMap{
+                    case r: GlobaaliKäyttöoikeusryhmä => Some(GlobaaliKäyttöoikeus(r))
+                    case r: OrganisaationKäyttöoikeusryhmä =>
+                      logger.warn(s"Käyttäjällä $henkilöOid on organisaatiotyyppinen käyttöoikeusryhmä $r liitettynä OPH-organisaatioon")
+                      None
+                  }.toList
                 case _ =>
                   def flatten(orgs: List[OrganisaatioHierarkia]): List[OrganisaatioHierarkia] = {
                     orgs ++ orgs.flatMap { org => org :: flatten(org.children) }
@@ -33,8 +38,12 @@ class KäyttöoikeusRepository(henkilöPalveluClient: AuthenticationServiceClien
                   }
 
                   flattened.flatMap { org =>
-                    val käyttöoikeus: Option[OrganisaatioKäyttöoikeus] = ryhmäById(ryhmäId).map { ryhmä =>
-                      OrganisaatioKäyttöoikeus(org.toOrganisaatio, org.oppilaitostyyppi, ryhmä)
+                    val käyttöoikeus: Option[OrganisaatioKäyttöoikeus] = ryhmäById(ryhmäId).flatMap {
+                      case r: GlobaaliKäyttöoikeusryhmä =>
+                        logger.warn(s"Käyttäjällä $henkilöOid on globaali käyttöoikeusryhmä $r liitettynä organisaatioon $organisaatioOid")
+                        None
+                      case r: OrganisaationKäyttöoikeusryhmä =>
+                        Some(OrganisaatioKäyttöoikeus(org.toOrganisaatio, org.oppilaitostyyppi, r))
                     }
                     käyttöoikeus
                   }

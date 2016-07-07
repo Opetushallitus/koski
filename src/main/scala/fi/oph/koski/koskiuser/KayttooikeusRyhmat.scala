@@ -25,11 +25,10 @@ object Käyttöoikeusryhmät {
 
   def käyttöoikeusryhmät = ryhmät
 
-  private def add(ryhmä: Käyttöoikeusryhmä) = {
+  private def add[R <: Käyttöoikeusryhmä](ryhmä: R) = {
     ryhmät = ryhmät ++ List(ryhmä)
     ryhmä
   }
-
 }
 
 sealed trait Käyttöoikeusryhmä {
