@@ -18,6 +18,7 @@ import fi.oph.koski.util.Timing
 import fi.vm.sade.security.ldap.DirectoryClient
 import org.json4s.JsonAST.JArray
 import org.scalatra.GZipSupport
+import rx.lang.scala.Observable
 
 class OppijaServlet(rekisteri: KoskiFacade, val käyttöoikeudet: KäyttöoikeusRepository, val directoryClient: DirectoryClient, val validator: KoskiValidator, val historyRepository: OpiskeluoikeusHistoryRepository)
   extends ApiServlet with RequiresAuthentication with Logging with GlobalExecutionContext with ObservableSupport with GZipSupport with NoCache with Timing {
@@ -59,14 +60,15 @@ class OppijaServlet(rekisteri: KoskiFacade, val käyttöoikeudet: Käyttöoikeus
   }
 
   get("/validate") {
-    query.map(validateOppija)
+    val context = ValidateContext(koskiUser, validator)
+    query.map(context.validateOppija)
   }
 
   get("/validate/:oid") {
     renderEither(
       findByOid(params("oid"), koskiUser)
         .right.flatMap(validateHistory)
-        .right.map(validateOppija)
+        .right.map(ValidateContext(koskiUser, validator).validateOppija)
     )
   }
 
@@ -80,16 +82,7 @@ class OppijaServlet(rekisteri: KoskiFacade, val käyttöoikeudet: Käyttöoikeus
     }
   }
 
-  private def validateOppija(oppija: Oppija): ValidationResult = {
-    val oppijaOid: Oid = oppija.henkilö.asInstanceOf[HenkilöWithOid].oid
-    val validationResult = validator.validateAsJson(oppija)(koskiUser, AccessType.read)
-    validationResult match {
-      case Right(oppija) =>
-        ValidationResult(oppijaOid, Nil)
-      case Left(status) =>
-        ValidationResult(oppijaOid, status.errors)
-    }
-  }
+
 
   private def validateHistory(oppija: Oppija): Either[HttpStatus, Oppija] = {
     HttpStatus.fold(oppija.opiskeluoikeudet.map { oikeus =>
@@ -106,7 +99,7 @@ class OppijaServlet(rekisteri: KoskiFacade, val käyttöoikeudet: Käyttöoikeus
     }
   }
 
-  private def query = {
+  private def query: Observable[Oppija] = {
     logger(koskiUser).info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
 
     rekisteri.findOppijat(params.toList, koskiUser) match {
@@ -133,5 +126,21 @@ case class UpdateContext(user: KoskiUser, facade: KoskiFacade, request: HttpServ
       logger(user).warn("Opinto-oikeuden päivitys estetty: " + code + " " + errors + " for request " + logSafeDescription(request))
     }
     result
+  }
+}
+/**
+  *  Operating context for data validation. Operates outside the lecixal scope of OppijaServlet to ensure that none of the
+  *  Scalatra threadlocals are used. This must be done because in batch mode, we are running in several threads.
+  */
+case class ValidateContext(user: KoskiUser, validator: KoskiValidator) {
+  def validateOppija(oppija: Oppija): ValidationResult = {
+    val oppijaOid: Oid = oppija.henkilö.asInstanceOf[HenkilöWithOid].oid
+    val validationResult = validator.validateAsJson(oppija)(user, AccessType.read)
+    validationResult match {
+      case Right(oppija) =>
+        ValidationResult(oppijaOid, Nil)
+      case Left(status) =>
+        ValidationResult(oppijaOid, status.errors)
+    }
   }
 }
