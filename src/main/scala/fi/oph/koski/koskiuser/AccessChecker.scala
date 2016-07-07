@@ -4,6 +4,6 @@ trait AccessChecker {
   def hasAccess(user: KoskiUser): Boolean
 }
 
-object SkipAccesCheck extends AccessChecker {
+object SkipAccessCheck extends AccessChecker {
   def hasAccess(user: KoskiUser) = true
 }

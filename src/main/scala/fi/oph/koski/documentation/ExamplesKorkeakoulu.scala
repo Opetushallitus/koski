@@ -2,7 +2,7 @@ package fi.oph.koski.documentation
 
 import fi.oph.koski.henkilo.MockAuthenticationServiceClient
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoPalvelu}
-import fi.oph.koski.koskiuser.{KoskiUser, MockUsers, SkipAccesCheck, KäyttöoikeusRepository}
+import fi.oph.koski.koskiuser.{KoskiUser, MockUsers, SkipAccessCheck, KäyttöoikeusRepository}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.oppija.{MockOppijat, OpintopolkuOppijaRepository}
 import fi.oph.koski.oppilaitos.OppilaitosRepository
@@ -18,7 +18,7 @@ object ExamplesKorkeakoulu {
     val oppijaRepository = new OpintopolkuOppijaRepository(authenticationServiceClient, KoodistoViitePalvelu(MockKoodistoPalvelu))
     val organisaatioRepository: MockOrganisaatioRepository = MockOrganisaatioRepository(koodistoViitePalvelu)
     val käyttöoikeudet = new KäyttöoikeusRepository(authenticationServiceClient, organisaatioRepository)
-    val virtaOpiskeluoikeusRepository: VirtaOpiskeluoikeusRepository = VirtaOpiskeluoikeusRepository(MockVirtaClient, oppijaRepository, OppilaitosRepository(organisaatioRepository), koodistoViitePalvelu, SkipAccesCheck)
+    val virtaOpiskeluoikeusRepository: VirtaOpiskeluoikeusRepository = VirtaOpiskeluoikeusRepository(MockVirtaClient, oppijaRepository, OppilaitosRepository(organisaatioRepository), koodistoViitePalvelu, SkipAccessCheck)
     val user: KoskiUser = MockUsers.paakayttaja.toKoskiUser(käyttöoikeudet)
     val opiskeluoikeudet = virtaOpiskeluoikeusRepository.findByOppijaOid(MockOppijat.dippainssi.oid)(user)
     Oppija(MockOppijat.dippainssi.vainHenkilötiedot, opiskeluoikeudet)
