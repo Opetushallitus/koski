@@ -1,0 +1,60 @@
+{
+  "organisaatiot" : [ {
+    "oid" : "1.2.246.562.10.53642770753",
+    "nimi" : {
+      "fi" : "Espoon seudun koulutuskuntayhtymä Omnia"
+    },
+    "organisaatiotyypit" : [ "KOULUTUSTOIMIJA" ],
+    "children" : [ {
+      "oid" : "1.2.246.562.10.51720121923",
+      "nimi" : {
+        "fi" : "Omnian ammattiopisto"
+      },
+      "oppilaitosKoodi" : "10054",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "children" : [ {
+        "oid" : "1.2.246.562.10.96247340308",
+        "nimi" : {
+          "fi" : "Omnian ammattiopisto, Espoon keskus, Kirkkokatu"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.75537153407",
+        "nimi" : {
+          "fi" : "Omnian ammattiopisto, Leppävaara"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.58349439412",
+        "nimi" : {
+          "fi" : "Omnian ammattiopisto, Kirkkonummi"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.74355268397",
+        "nimi" : {
+          "fi" : "Omnian ammattiopisto, Espoon keskus, Lehtimäentie"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.34581043303",
+        "nimi" : {
+          "fi" : "Omnian ammattiopisto, Suomenoja"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.42659724407",
+        "nimi" : {
+          "fi" : "Omnian ammattiopisto, Espoon keskus, Lakelankatu"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      } ]
+    } ]
+  } ]
+}
