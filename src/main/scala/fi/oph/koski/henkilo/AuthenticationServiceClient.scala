@@ -112,9 +112,9 @@ class RemoteAuthenticationServiceClient(http: Http) extends AuthenticationServic
 }
 
 case class UserQueryResult(totalCount: Integer, results: List[UserQueryUser])
-case class UserQueryUser(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: String)
+case class UserQueryUser(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String])
 
-case class User(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: String, aidinkieli: Option[String], kansalaisuus: Option[List[String]])
+case class User(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], aidinkieli: Option[String], kansalaisuus: Option[List[String]])
 
 
 case class CreateUser(hetu: Option[String], sukunimi: String, etunimet: String, kutsumanimi: String, henkiloTyyppi: String, kayttajatiedot: Option[Käyttajatiedot])

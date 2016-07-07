@@ -53,13 +53,13 @@ abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](oppijaRep
         Nil
     }
   }
-  private def getHetu(oid: String)(implicit user: KoskiUser): Option[TäydellisetHenkilötiedot] = oppijaRepository.findByOid(oid)
+  private def getHenkilötiedot(oid: String)(implicit user: KoskiUser): Option[TäydellisetHenkilötiedot] = oppijaRepository.findByOid(oid)
   private def accessCheck[T](list: => List[T])(implicit user: KoskiUser): List[T] = if (accessChecker.hasAccess(user)) { list } else { Nil }
 
   // Public methods
   def findByHenkilö(henkilö: Henkilö with Henkilötiedot)(implicit user: KoskiUser): List[OO] = accessCheck(cache(henkilö.hetu).filter(oo => user.hasReadAccess(oo.oppilaitos.oid)))
   def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiUser): List[HenkilötiedotJaOid] = accessCheck(oppijat.par.filter(oppija => organizationsCache(oppija.hetu).filter(orgOid => user.hasReadAccess(orgOid)).nonEmpty).toList)
-  def findByOppijaOid(oid: String)(implicit user: KoskiUser): List[Opiskeluoikeus] = accessCheck(getHetu(oid).toList.flatMap(findByHenkilö(_)))
+  def findByOppijaOid(oid: String)(implicit user: KoskiUser): List[Opiskeluoikeus] = accessCheck(getHenkilötiedot(oid).toList.flatMap(findByHenkilö(_)))
 
   // No-op methods
   def findById(id: Int)(implicit user: KoskiUser): Option[(Opiskeluoikeus, String)] = None

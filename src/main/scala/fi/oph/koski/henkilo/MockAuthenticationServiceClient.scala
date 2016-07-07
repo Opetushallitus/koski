@@ -31,7 +31,7 @@ class MockAuthenticationServiceClient(db: Option[DB] = None) extends Authenticat
     }
     val results = oppijat.getOppijat
       .filter(searchString(_).contains(query))
-      .map(henkilö => UserQueryUser(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, henkilö.hetu))
+      .map(henkilö => UserQueryUser(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, Some(henkilö.hetu)))
     UserQueryResult(results.size, results)
   }
 
@@ -47,7 +47,7 @@ class MockAuthenticationServiceClient(db: Option[DB] = None) extends Authenticat
   }
   def findByOid(id: String): Option[User] = {
     val oppija: Option[TäydellisetHenkilötiedot] = oppijat.getOppijat.filter {_.oid == id}.headOption.orElse(findFromDb(id))
-    oppija.map(henkilö => User(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, henkilö.hetu, Some("FI"), None))
+    oppija.map(henkilö => User(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, Some(henkilö.hetu), Some("FI"), None))
   }
   def findByOids(oids: List[String]): List[User] = {
     oids.flatMap(findByOid)
