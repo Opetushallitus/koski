@@ -54,7 +54,11 @@ object Tables {
 // Note: the data json must not contain [id, versionumero] fields. This is enforced by DB constraint.
 case class OpiskeluOikeusRow(id: Int, oppijaOid: String, versionumero: Int, data: JValue) {
   lazy val toOpiskeluOikeus: KoskeenTallennettavaOpiskeluoikeus = {
-    OpiskeluOikeusStoredDataDeserializer.read(data, id, versionumero)
+    try {
+      OpiskeluOikeusStoredDataDeserializer.read(data, id, versionumero)
+    } catch {
+      case e: Exception => throw new MappingException(s"Error deserializing opiskeluoikeus ${id} for oppija ${oppijaOid}", e)
+    }
   }
 
   def this(oppijaOid: String, opiskeluOikeus: Opiskeluoikeus, versionumero: Int) = {
