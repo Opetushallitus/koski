@@ -6,10 +6,7 @@ import fi.oph.koski.log.AuditLogTester
 import org.scalatest.{FreeSpec, Matchers}
 
 class OppijaSearchSpec extends FreeSpec with Matchers with SearchTestMethods with LocalJettyHttpSpecification {
-  AuditLogTester.setup
-
   "/api/oppija/search" - {
-    SharedJetty.start
     "Finds by name" in {
       searchForNames("eero") should equal(List("Jouni Eerola", "Eero Esimerkki", "Eero Markkanen"))
     }

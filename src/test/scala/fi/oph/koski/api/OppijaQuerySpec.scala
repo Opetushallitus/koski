@@ -11,8 +11,6 @@ import org.scalatest.{FunSpec, Matchers}
 class OppijaQuerySpec extends FunSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with QueryTestMethods with Matchers {
   val teija = UusiHenkilö("150995-914X", "Teija", "Teija", "Tekijä")
 
-  AuditLogTester.setup
-
   describe("Kyselyrajapinta") {
     describe("kun haku osuu") {
       it("palautetaan hakutulokset") {

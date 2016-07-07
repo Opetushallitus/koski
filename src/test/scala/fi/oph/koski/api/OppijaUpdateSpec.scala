@@ -62,8 +62,8 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
 
   "Opiskeluoikeuden muokkaaminen" - {
     "Käytettäessä opiskeluoikeus-id:tä" - {
-      resetFixtures
       "Muokkaa olemassaolevaa opiskeluoikeutta" in {
+        resetFixtures
         val d: LocalDate = date(2020, 1, 1)
         verifyChange(change = existing => existing.copy(arvioituPäättymispäivä = Some(d))) {
           verifyResponseStatus(200)

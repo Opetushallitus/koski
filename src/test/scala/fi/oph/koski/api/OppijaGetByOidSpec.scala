@@ -1,15 +1,12 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.jettylauncher.SharedJetty
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.oppija.MockOppijat
 import org.scalatest.{FreeSpec, Matchers}
 
 class OppijaGetByOidSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification {
   "/api/oppija/" - {
-    SharedJetty.start
-    AuditLogTester.setup
     "GET" - {
       "with valid oid" in {
         get("api/oppija/" + MockOppijat.eero.oid, headers = authHeaders()) {

@@ -6,8 +6,6 @@ import fi.oph.koski.log.AuditLogTester
 import org.scalatest.{Matchers, FreeSpec}
 
 class AuthenticationSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification {
-  AuditLogTester.setup
-
   "POST /login" - {
     "Valid credentials" in {
       post("user/login", Json.write(Login("kalle", "kalle")), headers = jsonContent) {

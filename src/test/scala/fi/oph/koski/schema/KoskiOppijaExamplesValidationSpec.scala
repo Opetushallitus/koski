@@ -10,9 +10,8 @@ import org.scalatest.{FreeSpec, Matchers}
 import scala.collection.JavaConversions._
 
 class KoskiOppijaExamplesValidationSpec extends FreeSpec with Matchers {
-
-  private val validator: JsonValidator = JsonSchemaFactory.byDefault.getValidator
-  private val schema: JsonNode =  JsonLoader.fromString(KoskiSchema.schemaJsonString)
+  private lazy val validator: JsonValidator = JsonSchemaFactory.byDefault.getValidator
+  private lazy val schema: JsonNode =  JsonLoader.fromString(KoskiSchema.schemaJsonString)
 
   "Validation" - {
     Examples.examples.foreach { example =>

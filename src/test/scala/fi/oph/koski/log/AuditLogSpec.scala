@@ -1,7 +1,6 @@
 package fi.oph.koski.log
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.MockUsers
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito._
@@ -13,7 +12,7 @@ import scala.util.matching.Regex
 class AuditLogSpec extends FreeSpec with Assertions with Matchers {
   val loggerMock = mock(classOf[Logger])
   val audit = new AuditLog(loggerMock)
-  val käyttöoikeuspalvelu = KoskiApplicationForTests.käyttöoikeusRepository
+  lazy val käyttöoikeuspalvelu = KoskiApplicationForTests.käyttöoikeusRepository
 
   "AuditLog" - {
     "Logs in JSON format" in {
