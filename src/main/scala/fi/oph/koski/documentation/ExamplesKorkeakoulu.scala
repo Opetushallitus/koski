@@ -2,7 +2,7 @@ package fi.oph.koski.documentation
 
 import fi.oph.koski.henkilo.MockAuthenticationServiceClient
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoPalvelu}
-import fi.oph.koski.koskiuser.{MockUsers, SkipAccesCheck}
+import fi.oph.koski.koskiuser.{MockUsers, SkipAccesCheck, UserOrganisationsRepository}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.oppija.{MockOppijat, OpintopolkuOppijaRepository}
 import fi.oph.koski.oppilaitos.OppilaitosRepository
@@ -11,12 +11,17 @@ import fi.oph.koski.schema._
 import fi.oph.koski.virta.{MockVirtaClient, VirtaOpiskeluoikeusRepository}
 
 object ExamplesKorkeakoulu {
-  val mockOppijaRepository = new OpintopolkuOppijaRepository(new MockAuthenticationServiceClient(), KoodistoViitePalvelu(MockKoodistoPalvelu))
-
+  // TODO: liikaa tunkkausta tässä
+  private val authenticationServiceClient: MockAuthenticationServiceClient = new MockAuthenticationServiceClient()
+  val mockOppijaRepository = new OpintopolkuOppijaRepository(authenticationServiceClient, KoodistoViitePalvelu(MockKoodistoPalvelu))
+  val organisaatioRepository: MockOrganisaatioRepository = MockOrganisaatioRepository(koodistoViitePalvelu)
+  val käyttöoikeuspalvelu = new UserOrganisationsRepository(authenticationServiceClient, organisaatioRepository)
   private lazy val koodistoViitePalvelu = KoodistoViitePalvelu(MockKoodistoPalvelu)
-  private def oppija = Oppija(MockOppijat.dippainssi.vainHenkilötiedot, VirtaOpiskeluoikeusRepository(MockVirtaClient, mockOppijaRepository, OppilaitosRepository(MockOrganisaatioRepository(koodistoViitePalvelu)), koodistoViitePalvelu, SkipAccesCheck)
-    .findByOppijaOid(MockOppijat.dippainssi.oid)(MockUsers.kalle.asKoskiUser)
-  )
+  private def oppija = {
+    Oppija(MockOppijat.dippainssi.vainHenkilötiedot, VirtaOpiskeluoikeusRepository(MockVirtaClient, mockOppijaRepository, OppilaitosRepository(organisaatioRepository), koodistoViitePalvelu, SkipAccesCheck)
+      .findByOppijaOid(MockOppijat.dippainssi.oid)(MockUsers.kalle.toKoskiUser(käyttöoikeuspalvelu))
+    )
+  }
   lazy val examples = List(
     Example("korkeakoulu - valmis diplomi-insinööri", "Diplomi-insinööriksi valmistunut opiskelija", oppija, 501)
   )

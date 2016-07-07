@@ -1,37 +1,44 @@
 package fi.oph.koski.koskiuser
 
 import fi.oph.koski.cache.{CachingStrategy, KeyValueCache}
-import fi.oph.koski.henkilo.AuthenticationServiceClient
-import fi.oph.koski.organisaatio.OrganisaatioRepository
-import fi.oph.koski.schema.Organisaatio.Oid
+import fi.oph.koski.henkilo.{AuthenticationServiceClient, Käyttöoikeusryhmä => KOR}
+import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
 import fi.oph.koski.util.Timing
 import rx.lang.scala.Observable
 
 class UserOrganisationsRepository(henkilöPalveluClient: AuthenticationServiceClient, organisaatioRepository: OrganisaatioRepository) extends Timing {
 
   private lazy val käyttöoikeusryhmätCache = henkilöPalveluClient.käyttöoikeusryhmät
-  private lazy val userOrganisationsCache = new KeyValueCache[String, Observable[Set[(Oid, Käyttöoikeusryhmä)]]](
+  private lazy val userOrganisationsCache = new KeyValueCache[String, Observable[Set[OrganisaatioKäyttöoikeus]]](
     CachingStrategy.cacheAllNoRefresh("userOrganisations", 3600, 100),
     oid => timedObservable("käyttäjänOrganisaatiot")(henkilöPalveluClient.käyttäjänKäyttöoikeusryhmät(oid)
       .map { (käyttöoikeudet: List[(String, Int)]) =>
         käyttöoikeudet.toSet.flatMap { tuple: (String, Int) =>
           tuple match {
             case (organisaatioOid: String, ryhmäId: Int) =>
-              val oids: Set[String] = organisaatioRepository.getChildOids(organisaatioOid).toSet.flatten ++ Set(organisaatioOid)
-              oids.flatMap(oid => käyttöoikeusryhmätCache.find(_.id == ryhmäId).flatMap(ryhmä => ryhmä.toKoskiKäyttöoikeusryhmä.map { r => (oid, r)}))
+              def flatten(orgs: List[OrganisaatioHierarkia]): List[OrganisaatioHierarkia] = {
+                orgs ++ orgs.flatMap { org => org :: flatten(org.children) }
+              }
+              val flattened: List[OrganisaatioHierarkia] = flatten(organisaatioRepository.getOrganisaatioHierarkia(oid).toList)
+
+              flattened.flatMap { org =>
+                val found: Option[KOR] = käyttöoikeusryhmätCache.find(_.id == ryhmäId)
+                val käyttöoikeus: Option[OrganisaatioKäyttöoikeus] = found.flatMap(_.toKoskiKäyttöoikeusryhmä).map { ryhmä =>
+                  OrganisaatioKäyttöoikeus(org.oid, org.oppilaitostyyppi, ryhmä)
+                }
+                käyttöoikeus
+              }
           }
         }
       })
   )
 
-  def getUserOrganisations(oid: String): Observable[Set[(Oid, Käyttöoikeusryhmä)]] = userOrganisationsCache(oid)
+  def käyttäjänKäyttöoikeudet(oid: String): Observable[Set[OrganisaatioKäyttöoikeus]] = userOrganisationsCache(oid)
 
-  private lazy val oppilaitostyypitCache = new KeyValueCache[String, Set[String]](CachingStrategy.cacheAllNoRefresh("OppilaitostyypitRepository", 3600, 1000), oid =>
-    userOrganisationsCache(oid).toBlocking.first
-      .filter(_._2.orgAccessType.contains(AccessType.read))
-      .map(_._1).flatMap(organisaatioRepository.getOrganisaatioHierarkia(_))
-      .flatMap(_.oppilaitostyyppi)
-  )
+  def käyttäjänOppilaitostyypit(oid: String): Set[String] = userOrganisationsCache(oid).toBlocking.first
+    .filter(_.ryhmä.orgAccessType.contains(AccessType.read))
+    .flatMap(_.oppilaitostyyppi)
 
-  def getUserOppilaitostyypit(oid: String): Set[String] = oppilaitostyypitCache(oid)
 }
+
+case class OrganisaatioKäyttöoikeus(oid: String, oppilaitostyyppi: Option[String], ryhmä: Käyttöoikeusryhmä)

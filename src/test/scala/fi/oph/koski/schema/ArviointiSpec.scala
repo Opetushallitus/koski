@@ -1,9 +1,11 @@
 package fi.oph.koski.schema
 
 import java.time.LocalDate
+
+import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.json.Json
-import fi.oph.koski.koski.{ValidationAndResolvingContext, ValidatingAndResolvingExtractor}
+import fi.oph.koski.koski.{ValidatingAndResolvingExtractor, ValidationAndResolvingContext}
 import org.json4s.JValue
 import org.scalatest.{FreeSpec, Matchers}
 
@@ -77,7 +79,7 @@ class ArviointiSpec extends FreeSpec with Matchers {
     }
   }
 
-  private val app = KoskiApplication()
+  private val app = KoskiApplicationForTests
   private def read[T](s: String)(implicit mf : Manifest[T]) = ValidatingAndResolvingExtractor.extract[T](Json.read[JValue](s), ValidationAndResolvingContext(app.koodistoViitePalvelu, app.organisaatioRepository)) match {
     case Right(x) => x
   }

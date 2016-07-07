@@ -33,7 +33,7 @@ object MockUsers extends DirectoryClient {
 }
 
 case class MockUser(ldapUser: LdapUser, käyttöoikeudet: Set[(Organisaatio.Oid, Käyttöoikeusryhmä)]) extends UserWithPassword {
-  def asKoskiUser = new KoskiUser(ldapUser.oid, "192.168.0.10", "fi", Observable.just(käyttöoikeudet))
+  def toKoskiUser(käyttöoikeuspalvelu: UserOrganisationsRepository) = new KoskiUser(ldapUser.oid, "192.168.0.10", "fi", käyttöoikeuspalvelu.käyttäjänKäyttöoikeudet(oid))
   def oid = ldapUser.oid
   def username = ldapUser.givenNames
   def password = username

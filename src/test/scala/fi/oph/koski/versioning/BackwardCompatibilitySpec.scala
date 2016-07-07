@@ -1,5 +1,6 @@
 package fi.oph.koski.versioning
 
+import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.Examples
 import fi.oph.koski.json.Json
@@ -11,7 +12,7 @@ import org.scalatest.{FreeSpec, Matchers}
  * Tests that examples match saved JSON files. Run with -DupdateExamples=true to update saved JSON files from current examples.
  */
 class BackwardCompatibilitySpec extends FreeSpec with Matchers {
-  val validator = KoskiApplication().validator
+  val validator = KoskiApplicationForTests.validator
   implicit val user = KoskiUser.systemUser
   implicit val accessType = AccessType.read
 
