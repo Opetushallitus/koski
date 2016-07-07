@@ -30,22 +30,22 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       if (application.config.getBoolean("käyttöoikeusryhmät.create")) {
         KäyttöoikeusRyhmätCreator.luoKäyttöoikeusRyhmät(application.config)
       }
-      implicit val userRepository = application.userOrganisationsRepository
+      implicit val userOrganisationsRepository = application.userOrganisationsRepository
 
       val rekisteri = new KoskiFacade(application.oppijaRepository, application.opiskeluOikeusRepository)
-      context.mount(new OppijaServlet(rekisteri, userRepository, application.directoryClient, application.validator, application.historyRepository), "/api/oppija")
-      context.mount(new KoskiHistoryServlet(userRepository, application.directoryClient, application.historyRepository), "/api/opiskeluoikeus/historia")
+      context.mount(new OppijaServlet(rekisteri, userOrganisationsRepository, application.directoryClient, application.validator, application.historyRepository), "/api/oppija")
+      context.mount(new KoskiHistoryServlet(userOrganisationsRepository, application.directoryClient, application.historyRepository), "/api/opiskeluoikeus/historia")
       context.mount(new UserServlet(application.directoryClient, application.userOrganisationsRepository), "/user")
       context.mount(new LogoutServlet(application.userOrganisationsRepository, application.directoryClient), "/user/logout")
       context.mount(new OppilaitosServlet(application.oppilaitosRepository, application.userOrganisationsRepository, application.directoryClient), "/api/oppilaitos")
       context.mount(new TutkintoServlet(application.tutkintoRepository), "/api/tutkinto")
       context.mount(new SchemaDocumentationServlet(application.koodistoPalvelu), "/documentation")
-      context.mount(new TodistusServlet(userRepository, application.directoryClient, rekisteri, application.tutkintoRepository), "/todistus")
-      context.mount(new SuoritusServlet(userRepository, application.directoryClient, rekisteri, application.oppijaRepository, rekisteri), "/opintosuoritusote")
+      context.mount(new TodistusServlet(userOrganisationsRepository, application.directoryClient, rekisteri, application.tutkintoRepository), "/todistus")
+      context.mount(new SuoritusServlet(userOrganisationsRepository, application.directoryClient, rekisteri, application.oppijaRepository, rekisteri), "/opintosuoritusote")
       context.mount(new IndexServlet(), "/")
-      context.mount(new CacheServlet(userRepository, application.directoryClient, application), "/cache")
+      context.mount(new CacheServlet(userOrganisationsRepository, application.directoryClient, application), "/cache")
       if (Fixtures.shouldUseFixtures(application.config)) {
-        context.mount(new FixtureServlet(userRepository, application.directoryClient, application), "/fixtures")
+        context.mount(new FixtureServlet(userOrganisationsRepository, application.directoryClient, application), "/fixtures")
       }
     } catch {
       case e: Throwable =>
