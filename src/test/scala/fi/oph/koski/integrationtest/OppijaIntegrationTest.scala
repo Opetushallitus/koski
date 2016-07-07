@@ -46,20 +46,17 @@ class OppijaIntegrationTest extends FreeSpec with Matchers with KoskidevHttpSpec
     }
   }
 
-  "Tallennetun datan validiteetti" - {
-    "Validate all" in {
-      authGet("api/oppija/validate") {
-        verifyResponseStatus(200)
-        val results = Json.read[List[ValidationResult]](body)
-        results.length should be >= 0
-        println(s"Löytyi ${results.length} oppijaa")
-        results.foreach(printValidity)
-        results.flatMap(_.errors).length should equal(0)
+  "Tallennetun datan validiteetti" taggedAs(KoskiDevEnvironment) in {
+    authGet("api/oppija/validate") {
+      def printValidity(result: ValidationResult) = {
+        println(result.oid + (if (result.isOk) {" OK"} else {" FAIL " + result.errors}))
       }
-    }
-
-    def printValidity(result: ValidationResult) = {
-      println(result.oid + (if (result.isOk) {" OK"} else {" FAIL " + result.errors}))
+      verifyResponseStatus(200)
+      val results = Json.read[List[ValidationResult]](body)
+      results.length should be >= 0
+      println(s"Löytyi ${results.length} oppijaa")
+      results.foreach(printValidity)
+      results.flatMap(_.errors).length should equal(0)
     }
   }
 }
