@@ -7,19 +7,19 @@ object Käyttöoikeusryhmät {
   type OrganisaatioKäyttöoikeusryhmä = (Organisaatio.Oid, Käyttöoikeusryhmä)
   private var ryhmät: List[Käyttöoikeusryhmä] = Nil
 
-  val oppilaitosKatselija = add(ryhmä("koski-oppilaitos-katselija", "oman organisaation suoritus- ja opiskeluoikeustietojen katselu").withOrgAccess(read))
+  val oppilaitosKatselija = add(OrganisaationKäyttöoikeusryhmä("koski-oppilaitos-katselija", "oman organisaation suoritus- ja opiskeluoikeustietojen katselu", List(read)))
   // TODO: todistuksenmyöntäjäroolilla ei vielä käyttöä
-  val oppilaitosTodistuksenMyöntäjä = add(ryhmä("koski-oppilaitos-todistuksen-myöntäjä", "Tietojen hyväksyntä (tutkinnon myöntäjä, ts. todistuksen myöntäjä (tutkinnon/tutkinnon osan)) Tutkinto/tutkinnon osa vahvistetaan. Tämän jälkeen tutkintoa/tutkinnon osaa ei voida muokata rajapinnan/kälin kautta.").withOrgAccess(read))
-  val oppilaitosTallentaja = add(ryhmä("koski-oppilaitos-tallentaja", "tietojen muokkaaminen (suoritus ja opiskelijatietojen tallentaja, oppilaitos: lisäys, muokkaus, passivointi) käyttöliittymässä").withOrgAccess(read, write))
-  val oppilaitosPalvelukäyttäjä = add(ryhmä("koski-oppilaitos-palvelukäyttäjä", "palvelutunnus tiedonsiirroissa: tietojen muokkaaminen (suoritus ja opiskelijatietojen tallentaja, oppilaitos: lisäys, muokkaus, passivointi)").withOrgAccess(read, write))
+  val oppilaitosTodistuksenMyöntäjä = add(OrganisaationKäyttöoikeusryhmä("koski-oppilaitos-todistuksen-myöntäjä", "Tietojen hyväksyntä (tutkinnon myöntäjä, ts. todistuksen myöntäjä (tutkinnon/tutkinnon osan)) Tutkinto/tutkinnon osa vahvistetaan. Tämän jälkeen tutkintoa/tutkinnon osaa ei voida muokata rajapinnan/kälin kautta.", List(read)))
+  val oppilaitosTallentaja = add(OrganisaationKäyttöoikeusryhmä("koski-oppilaitos-tallentaja", "tietojen muokkaaminen (suoritus ja opiskelijatietojen tallentaja, oppilaitos: lisäys, muokkaus, passivointi) käyttöliittymässä", List(read, write)))
+  val oppilaitosPalvelukäyttäjä = add(OrganisaationKäyttöoikeusryhmä("koski-oppilaitos-palvelukäyttäjä", "palvelutunnus tiedonsiirroissa: tietojen muokkaaminen (suoritus ja opiskelijatietojen tallentaja, oppilaitos: lisäys, muokkaus, passivointi)", List(read, write)))
 
-  val ophPääkäyttäjä = add(ryhmä("koski-oph-pääkäyttäjä", "CRUP-oikeudet (lisäys, muokkaus, passivointi) Koskessa").withGlobalAccess(read, write))
-  val ophKatselija = add(ryhmä("koski-oph-katselija", "näkee kaikki Koski-tiedot").withGlobalAccess(read))
-  val ophKoskiYlläpito = add(ryhmä("koski-oph-ylläpito", "Koski-ylläpitokäyttäjä, ei pääsyä oppijoiden tietoihin"))
+  val ophPääkäyttäjä = add(GlobaaliKäyttöoikeusryhmä("koski-oph-pääkäyttäjä", "CRUP-oikeudet (lisäys, muokkaus, passivointi) Koskessa", List(read, write)))
+  val ophKatselija = add(GlobaaliKäyttöoikeusryhmä("koski-oph-katselija", "näkee kaikki Koski-tiedot", List(read)))
+  val ophKoskiYlläpito = add(GlobaaliKäyttöoikeusryhmä("koski-oph-ylläpito", "Koski-ylläpitokäyttäjä, ei pääsyä oppijoiden tietoihin", Nil))
 
-  val viranomaisKatselija = add(ryhmä("koski-viranomainen-katselija", "näkee oikeuksiensa mukaisesti Koski-tiedot").withGlobalAccess(read))
-  val viranomaisPääkäyttäjä = add(ryhmä("koski-viranomainen-pääkäyttäjä", "katseluoikeudet, antaa oikeudet Tor-viranomaistietojen katselijalle").withGlobalAccess(read))
-  val viranomaisPalvelu = add(ryhmä("koski-viranomainen-palvelukäyttäjä", "palvelutunnus, hakee oikeuksiensa mukaiset Koski-tiedot").withGlobalAccess(read))
+  val viranomaisKatselija = add(GlobaaliKäyttöoikeusryhmä("koski-viranomainen-katselija", "näkee oikeuksiensa mukaisesti Koski-tiedot", List(read)))
+  val viranomaisPääkäyttäjä = add(GlobaaliKäyttöoikeusryhmä("koski-viranomainen-pääkäyttäjä", "katseluoikeudet, antaa oikeudet Tor-viranomaistietojen katselijalle", List(read)))
+  val viranomaisPalvelu = add(GlobaaliKäyttöoikeusryhmä("koski-viranomainen-palvelukäyttäjä", "palvelutunnus, hakee oikeuksiensa mukaiset Koski-tiedot", List(read)))
 
   def byName(name: String) = ryhmät.find(_.nimi == name)
 
@@ -30,17 +30,20 @@ object Käyttöoikeusryhmät {
     ryhmä
   }
 
-  private def ryhmä(nimi: String, kuvaus: String) = new Käyttöoikeusryhmä(nimi, kuvaus)
 }
 
-class Käyttöoikeusryhmä private[koskiuser](val nimi: String, val kuvaus: String, val orgAccessType: List[AccessType.Value] = Nil, val globalAccessType: List[AccessType.Value] = Nil) {
-  def withOrgAccess(newAccess: AccessType.Value*) = {
-    new Käyttöoikeusryhmä(nimi, kuvaus, newAccess.toList, globalAccessType)
-  }
-  def withGlobalAccess(newAccess: AccessType.Value*) = {
-    new Käyttöoikeusryhmä(nimi, kuvaus, orgAccessType, newAccess.toList)
-  }
+sealed trait Käyttöoikeusryhmä {
+  def nimi: String
+  def kuvaus: String
+  def orgAccessType: List[AccessType.Value]
+  def globalAccessType: List[AccessType.Value]
   override def toString = "Käyttöoikeusryhmä " + nimi
 }
 
+case class OrganisaationKäyttöoikeusryhmä private[koskiuser](val nimi: String, val kuvaus: String, val orgAccessType: List[AccessType.Value] = Nil) extends Käyttöoikeusryhmä {
+  def globalAccessType = Nil
+}
 
+case class GlobaaliKäyttöoikeusryhmä private[koskiuser](val nimi: String, val kuvaus: String, val globalAccessType: List[AccessType.Value] = Nil) extends Käyttöoikeusryhmä {
+  def orgAccessType = Nil
+}
