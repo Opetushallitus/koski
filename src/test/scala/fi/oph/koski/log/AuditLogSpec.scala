@@ -13,7 +13,7 @@ import scala.util.matching.Regex
 class AuditLogSpec extends FreeSpec with Assertions with Matchers {
   val loggerMock = mock(classOf[Logger])
   val audit = new AuditLog(loggerMock)
-  val käyttöoikeuspalvelu = KoskiApplicationForTests.userOrganisationsRepository
+  val käyttöoikeuspalvelu = KoskiApplicationForTests.käyttöoikeusRepository
 
   "AuditLog" - {
     "Logs in JSON format" in {

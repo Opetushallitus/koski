@@ -2,18 +2,18 @@ package fi.oph.koski.suoritusote
 
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koski.KoskiFacade
-import fi.oph.koski.koskiuser.{RequiresAuthentication, UserOrganisationsRepository}
+import fi.oph.koski.koskiuser.{RequiresAuthentication, KäyttöoikeusRepository}
 import fi.oph.koski.oppija.OppijaRepository
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.HtmlServlet
 import fi.vm.sade.security.ldap.DirectoryClient
 
 class SuoritusServlet(
-  val userRepository: UserOrganisationsRepository,
-  val directoryClient: DirectoryClient,
-  val rekisteri: KoskiFacade,
-  val oppijaRepository: OppijaRepository,
-  val koski: KoskiFacade) extends HtmlServlet with RequiresAuthentication {
+                       val käyttöoikeudet: KäyttöoikeusRepository,
+                       val directoryClient: DirectoryClient,
+                       val rekisteri: KoskiFacade,
+                       val oppijaRepository: OppijaRepository,
+                       val koski: KoskiFacade) extends HtmlServlet with RequiresAuthentication {
 
   get("/:oppijaOid") {
     val oppijaOid = params("oppijaOid")

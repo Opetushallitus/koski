@@ -2,14 +2,14 @@ package fi.oph.koski.todistus
 
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koski.KoskiFacade
-import fi.oph.koski.koskiuser.{RequiresAuthentication, UserOrganisationsRepository}
+import fi.oph.koski.koskiuser.{RequiresAuthentication, KäyttöoikeusRepository}
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.HtmlServlet
 import fi.oph.koski.suoritusote.OpiskeluoikeusFinder
 import fi.oph.koski.tutkinto.{SuoritustapaJaRakenne, TutkintoRakenne, TutkintoRepository}
 import fi.vm.sade.security.ldap.DirectoryClient
 
-class TodistusServlet(val userRepository: UserOrganisationsRepository, val directoryClient: DirectoryClient, rekisteri: KoskiFacade, tutkintoRepository: TutkintoRepository)
+class TodistusServlet(val käyttöoikeudet: KäyttöoikeusRepository, val directoryClient: DirectoryClient, rekisteri: KoskiFacade, tutkintoRepository: TutkintoRepository)
   extends HtmlServlet with RequiresAuthentication {
   get("/:oppijaOid") {
     val oppijaOid = params("oppijaOid")

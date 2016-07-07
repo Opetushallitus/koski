@@ -15,7 +15,7 @@ trait AuthenticationSupport extends KoskiBaseServlet with ScentrySupport[Authent
   val realm = "Koski"
 
   def directoryClient: DirectoryClient
-  def userRepository: UserOrganisationsRepository
+  def käyttöoikeudet: KäyttöoikeusRepository
 
   protected def fromSession = { case user: String => Json.read[AuthenticationUser](user)  }
   protected def toSession   = { case user: AuthenticationUser => Json.write(user) }
@@ -28,7 +28,7 @@ trait AuthenticationSupport extends KoskiBaseServlet with ScentrySupport[Authent
 
   override def koskiUserOption: Option[KoskiUser] = {
     userOption.map { authUser =>
-      KoskiUser(authUser.oid, request, userRepository)
+      KoskiUser(authUser.oid, request, käyttöoikeudet)
     }
   }
 

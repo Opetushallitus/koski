@@ -1,7 +1,6 @@
 package fi.oph.koski.versioning
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.Examples
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.{AccessType, KoskiUser}

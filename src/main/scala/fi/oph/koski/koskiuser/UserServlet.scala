@@ -5,7 +5,7 @@ import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiOperation}
 import fi.oph.koski.servlet.ApiServlet
 import fi.vm.sade.security.ldap.DirectoryClient
 
-class UserServlet(val directoryClient: DirectoryClient, val userRepository: UserOrganisationsRepository) extends ApiServlet with AuthenticationSupport {
+class UserServlet(val directoryClient: DirectoryClient, val käyttöoikeudet: KäyttöoikeusRepository) extends ApiServlet with AuthenticationSupport {
   get("/") {
     contentType = "application/json;charset=utf-8"
     userOption match {

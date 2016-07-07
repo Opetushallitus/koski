@@ -12,7 +12,12 @@ object DirectoryClientFactory {
     CachingProxy[DirectoryClient](cacheStrategy, if (config.hasPath("ldap.host")) {
       new LdapClient(LdapConfig(config.getString("ldap.host"), config.getString("ldap.userdn"), config.getString("ldap.password"), config.getString("ldap.port").toInt))
     } else {
-      MockUsers
+      MockDirectoryClient
     })
   }
+}
+
+object MockDirectoryClient extends DirectoryClient {
+  def findUser(userid: String) = MockUsers.users.find(_.username == userid).map(_.ldapUser)
+  def authenticate(userid: String, password: String) = findUser(userid).isDefined && userid == password
 }

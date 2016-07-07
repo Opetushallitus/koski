@@ -1,0 +1,88 @@
+{
+  "numHits": 4,
+  "organisaatiot": [
+    {
+      "oid": "1.2.246.562.10.72194164959",
+      "alkuPvm": 1372885200000,
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "1.2.246.562.10.72194164959/1.2.246.562.10.00000000001",
+      "ytunnus": "2553871-2",
+      "match": true,
+      "nimi": {
+        "sv": "Högskolan Arcada Ab"
+      },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_2#1"
+      ],
+      "kotipaikkaUri": "kunta_091",
+      "children": [
+        {
+          "oid": "1.2.246.562.10.25619624254",
+          "alkuPvm": 901918800000,
+          "parentOid": "1.2.246.562.10.72194164959",
+          "parentOidPath": "1.2.246.562.10.25619624254/1.2.246.562.10.72194164959/1.2.246.562.10.00000000001",
+          "oppilaitosKoodi": "02535",
+          "oppilaitostyyppi": "oppilaitostyyppi_41#1",
+          "match": true,
+          "nimi": {
+            "sv": "Yrkeshögskolan Arcada",
+            "en": "Arcada University of Applied Sciences"
+          },
+          "kieletUris": [
+            "oppilaitoksenopetuskieli_2#1"
+          ],
+          "kotipaikkaUri": "kunta_091",
+          "children": [
+            {
+              "oid": "1.2.246.562.10.89034901713",
+              "alkuPvm": 1091307600000,
+              "parentOid": "1.2.246.562.10.25619624254",
+              "parentOidPath": "1.2.246.562.10.89034901713/1.2.246.562.10.25619624254/1.2.246.562.10.72194164959/1.2.246.562.10.00000000001",
+              "match": false,
+              "nimi": {
+                "sv": "Yrkeshögskolan Arcada, Helsingfors",
+                "en": "Arcada University of Applied Sciences, Helsinki"
+              },
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_2#1"
+              ],
+              "kotipaikkaUri": "kunta_091",
+              "children": [],
+              "organisaatiotyypit": [
+                "TOIMIPISTE"
+              ],
+              "aliOrganisaatioMaara": 0
+            },
+            {
+              "oid": "1.2.246.562.10.55712914682",
+              "alkuPvm": 901918800000,
+              "parentOid": "1.2.246.562.10.25619624254",
+              "parentOidPath": "1.2.246.562.10.55712914682/1.2.246.562.10.25619624254/1.2.246.562.10.72194164959/1.2.246.562.10.00000000001",
+              "match": false,
+              "nimi": {
+                "sv": "Yrkeshögskolan Arcada, Fortbildning"
+              },
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_2#1"
+              ],
+              "kotipaikkaUri": "kunta_091",
+              "children": [],
+              "organisaatiotyypit": [
+                "TOIMIPISTE"
+              ],
+              "aliOrganisaatioMaara": 0
+            }
+          ],
+          "organisaatiotyypit": [
+            "OPPILAITOS"
+          ],
+          "aliOrganisaatioMaara": 2
+        }
+      ],
+      "organisaatiotyypit": [
+        "KOULUTUSTOIMIJA"
+      ],
+      "aliOrganisaatioMaara": 1
+    }
+  ]
+}

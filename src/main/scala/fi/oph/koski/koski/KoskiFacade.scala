@@ -17,9 +17,7 @@ import fi.oph.koski.util.Timing
 import org.json4s._
 import rx.lang.scala.Observable
 
-class KoskiFacade(oppijaRepository: OppijaRepository,
-                                   opiskeluOikeusRepository: OpiskeluOikeusRepository) extends Logging with Timing {
-
+class KoskiFacade(oppijaRepository: OppijaRepository, opiskeluOikeusRepository: OpiskeluOikeusRepository) extends Logging with Timing {
   def findOppijat(params: List[(String, String)], user: KoskiUser): Either[HttpStatus, Observable[Oppija]] with Product with Serializable = {
 
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_HAKU, user, Map(hakuEhto -> params.map { case (p,v) => p + "=" + v }.mkString("&"))))
@@ -162,7 +160,6 @@ class KoskiFacade(oppijaRepository: OppijaRepository,
 
 case class HenkilönOpiskeluoikeusVersiot(henkilö: OidHenkilö, opiskeluoikeudet: List[OpiskeluoikeusVersio])
 case class OpiskeluoikeusVersio(id: Opiskeluoikeus.Id, versionumero: Int)
-
 
 trait QueryFilter
 

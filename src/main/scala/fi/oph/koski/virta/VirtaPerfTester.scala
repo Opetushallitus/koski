@@ -5,7 +5,7 @@ import fi.oph.koski.koskiuser.MockUsers
 
 object VirtaPerfTester extends App {
   private val app: KoskiApplication = KoskiApplication()
-  implicit val user = MockUsers.kalle.toKoskiUser(app.userOrganisationsRepository)
+  implicit val user = MockUsers.kalle.toKoskiUser(app.käyttöoikeusRepository)
   val oppijat = app.oppijaRepository.findOppijat("090888-929X").map(_.oid)
   println(oppijat)
   println(oppijat.flatMap(app.virta.findByOppijaOid(_)).length)

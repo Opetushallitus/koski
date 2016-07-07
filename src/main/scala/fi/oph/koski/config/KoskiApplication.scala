@@ -12,7 +12,7 @@ import fi.oph.koski.henkilo.AuthenticationServiceClient
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.koski.KoskiValidator
-import fi.oph.koski.koskiuser.{DirectoryClientFactory, UserOrganisationsRepository}
+import fi.oph.koski.koskiuser.{DirectoryClientFactory, KäyttöoikeusRepository}
 import fi.oph.koski.log.{Logging, TimedProxy}
 import fi.oph.koski.opiskeluoikeus.{CompositeOpiskeluOikeusRepository, OpiskeluOikeusRepository, PostgresOpiskeluOikeusRepository}
 import fi.oph.koski.oppija.OppijaRepository
@@ -43,12 +43,12 @@ class KoskiApplication(val config: Config) extends Logging {
   lazy val koodistoViitePalvelu = new KoodistoViitePalvelu(koodistoPalvelu)
   lazy val arviointiAsteikot = ArviointiasteikkoRepository(koodistoViitePalvelu)
   lazy val authenticationServiceClient = AuthenticationServiceClient(config, Some(database.db))
-  lazy val userOrganisationsRepository = new UserOrganisationsRepository(authenticationServiceClient, organisaatioRepository)
+  lazy val käyttöoikeusRepository = new KäyttöoikeusRepository(authenticationServiceClient, organisaatioRepository)
   lazy val database = new KoskiDatabase(config)
   lazy val virtaClient = VirtaClient(config)
   lazy val ytrClient = YlioppilasTutkintoRekisteri(config)
-  lazy val virtaAccessChecker = new VirtaAccessChecker(userOrganisationsRepository)
-  lazy val ytrAccessChecker = new YtrAccessChecker(userOrganisationsRepository)
+  lazy val virtaAccessChecker = new VirtaAccessChecker(käyttöoikeusRepository)
+  lazy val ytrAccessChecker = new YtrAccessChecker(käyttöoikeusRepository)
   lazy val oppijaRepository = OppijaRepository(authenticationServiceClient, koodistoViitePalvelu, virtaClient, virtaAccessChecker, ytrClient, ytrAccessChecker)
   lazy val historyRepository = OpiskeluoikeusHistoryRepository(database.db)
   lazy val virta = TimedProxy[OpiskeluOikeusRepository](VirtaOpiskeluoikeusRepository(virtaClient, oppijaRepository, oppilaitosRepository, koodistoViitePalvelu, virtaAccessChecker, Some(validator)))

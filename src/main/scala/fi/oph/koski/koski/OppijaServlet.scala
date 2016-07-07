@@ -16,7 +16,7 @@ import fi.vm.sade.security.ldap.DirectoryClient
 import org.json4s.JsonAST.JArray
 import org.scalatra.GZipSupport
 
-class OppijaServlet(rekisteri: KoskiFacade, val userRepository: UserOrganisationsRepository, val directoryClient: DirectoryClient, val validator: KoskiValidator, val historyRepository: OpiskeluoikeusHistoryRepository)
+class OppijaServlet(rekisteri: KoskiFacade, val käyttöoikeudet: KäyttöoikeusRepository, val directoryClient: DirectoryClient, val validator: KoskiValidator, val historyRepository: OpiskeluoikeusHistoryRepository)
   extends ApiServlet with RequiresAuthentication with Logging with GlobalExecutionContext with ObservableSupport with GZipSupport with NoCache with Timing {
 
   put("/") {
