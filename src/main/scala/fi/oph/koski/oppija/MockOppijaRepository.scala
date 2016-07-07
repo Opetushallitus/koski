@@ -7,8 +7,8 @@ object MockOppijat {
   private val oppijat = new MockOppijat
 
   val eero = oppijat.oppija("Esimerkki", "Eero", "010101-123N")
-  val eerola = oppijat.oppija("Eerola", "Jouni", "")
-  val markkanen = oppijat.oppija("Markkanen", "Eero", "")
+  val eerola = oppijat.oppija("Eerola", "Jouni", "070796-9696")
+  val markkanen = oppijat.oppija("Markkanen", "Eero", "070796-9652")
   val teija = oppijat.oppija("Tekijä", "Teija", "150995-914X")
   val tyhjä = oppijat.oppija("Tyhjä", "Tyhjä", "130196-961Y")
   val tero = oppijat.oppija("Tunkkila-Fagerlund", "Tero Petteri Gustaf", "091095-9833")

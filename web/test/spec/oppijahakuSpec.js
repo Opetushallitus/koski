@@ -2,8 +2,8 @@ describe('Oppijahaku', function() {
   var page = KoskiPage()
   var opinnot = OpinnotPage()
   var eero = 'Esimerkki, Eero 010101-123N'
-  var markkanen = 'Markkanen, Eero '
-  var eerola = 'Eerola, Jouni '
+  var markkanen = 'Markkanen, Eero 070796-9652'
+  var eerola = 'Eerola, Jouni 070796-9696'
   var teija = 'Tekijä, Teija 150995-914X'
 
   before(Authentication().login(), resetFixtures, page.openPage)
