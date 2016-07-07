@@ -6,10 +6,16 @@ import fi.oph.koski.organisaatio.{Opetushallitus, OrganisaatioHierarkia, Organis
 import fi.oph.koski.util.Timing
 import rx.lang.scala.Observable
 
-class KäyttöoikeusRepository(henkilöPalveluClient: AuthenticationServiceClient, organisaatioRepository: OrganisaatioRepository) extends Timing {
-  private lazy val käyttöoikeusryhmätCache = henkilöPalveluClient.käyttöoikeusryhmät
+class KäyttöoikeusRepository(authenticationServiceClient: AuthenticationServiceClient, organisaatioRepository: OrganisaatioRepository) extends Timing {
+  def käyttäjänKäyttöoikeudet(oid: String): Observable[Set[Käyttöoikeus]] = käyttöoikeusCache(oid)
+
+  def käyttäjänOppilaitostyypit(oid: String): Set[String] = käyttöoikeusCache(oid).toBlocking.first
+    .filter(_.ryhmä.orgAccessType.contains(AccessType.read))
+    .flatMap(_.oppilaitostyyppi)
+
+  private lazy val käyttöoikeusryhmätCache = authenticationServiceClient.käyttöoikeusryhmät
   private def ryhmäById(ryhmäId: Int) = käyttöoikeusryhmätCache.find(_.id == ryhmäId).flatMap(_.toKoskiKäyttöoikeusryhmä)
-  private def haeKäyttöoikeudet(henkilöOid: String): Observable[Set[Käyttöoikeus]] = timedObservable("käyttäjänOrganisaatiot")(henkilöPalveluClient.käyttäjänKäyttöoikeusryhmät(henkilöOid)
+  private def haeKäyttöoikeudet(henkilöOid: String): Observable[Set[Käyttöoikeus]] = timedObservable("käyttäjänOrganisaatiot")(authenticationServiceClient.käyttäjänKäyttöoikeusryhmät(henkilöOid)
     .map { (käyttöoikeudet: List[(String, Int)]) =>
       käyttöoikeudet.toSet.flatMap { tuple: (String, Int) =>
         tuple match {
@@ -49,15 +55,7 @@ class KäyttöoikeusRepository(henkilöPalveluClient: AuthenticationServiceClien
         }
       }
     })
-
   private lazy val käyttöoikeusCache = new KeyValueCache[String, Observable[Set[Käyttöoikeus]]](
     CachingStrategy.cacheAllNoRefresh("userOrganisations", 3600, 100), haeKäyttöoikeudet
   )
-
-  def käyttäjänKäyttöoikeudet(oid: String): Observable[Set[Käyttöoikeus]] = käyttöoikeusCache(oid)
-
-  def käyttäjänOppilaitostyypit(oid: String): Set[String] = käyttöoikeusCache(oid).toBlocking.first
-    .filter(_.ryhmä.orgAccessType.contains(AccessType.read))
-    .flatMap(_.oppilaitostyyppi)
-
 }

@@ -8,6 +8,7 @@ sealed trait Käyttöoikeus {
 }
 
 case class OrganisaatioKäyttöoikeus(organisaatio: OrganisaatioWithOid, oppilaitostyyppi: Option[String], ryhmä: OrganisaationKäyttöoikeusryhmä) extends Käyttöoikeus
+
 case class GlobaaliKäyttöoikeus(ryhmä: GlobaaliKäyttöoikeusryhmä) extends Käyttöoikeus {
   def oppilaitostyyppi = None
 }
