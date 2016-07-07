@@ -24,7 +24,7 @@ object OppijaRepository {
     val opintopolku = new OpintopolkuOppijaRepository(authenticationServiceClient, koodistoViitePalvelu)
     CachingProxy(OppijaRepositoryCachingStrategy, TimedProxy(
       CompositeOppijaRepository(List(
-        TimedProxy(opintopolku),
+        TimedProxy(opintopolku.asInstanceOf[OppijaRepository]),
         TimedProxy(VirtaOppijaRepository(virtaClient, opintopolku, virtaAccessChecker).asInstanceOf[OppijaRepository]),
         TimedProxy(YtrOppijaRepository(ytr, opintopolku, ytrAccessChecker).asInstanceOf[OppijaRepository])
       )).asInstanceOf[OppijaRepository]
