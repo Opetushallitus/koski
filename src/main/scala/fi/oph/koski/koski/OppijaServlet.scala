@@ -1,5 +1,7 @@
 package fi.oph.koski.koski
 
+import javax.servlet.http.HttpServletRequest
+
 import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.henkilo.HenkiloOid
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
@@ -10,7 +12,8 @@ import fi.oph.koski.log.AuditLog.{log => auditLog}
 import fi.oph.koski.log._
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.{HenkilöWithOid, Oppija}
-import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, NoCache}
+import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
+import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, NoCache, RequestDescriber}
 import fi.oph.koski.util.Timing
 import fi.vm.sade.security.ldap.DirectoryClient
 import org.json4s.JsonAST.JArray
@@ -23,28 +26,19 @@ class OppijaServlet(rekisteri: KoskiFacade, val käyttöoikeudet: Käyttöoikeus
     timed("PUT /oppija", thresholdMs = 10) {
       withJsonBody { parsedJson =>
         val validationResult: Either[HttpStatus, Oppija] = validator.extractAndValidate(parsedJson)(koskiUser, AccessType.write)
-        val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = putSingle(validationResult, koskiUser)
+        val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContext(koskiUser, rekisteri, request).putSingle(validationResult)
         renderEither(result)
       }
     }
   }
 
-  def putSingle(validationResult: Either[HttpStatus, Oppija], user: KoskiUser): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = { // <- user passed explicitly because this may be called in another thread (see batch below)
-    val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = validationResult.right.flatMap(rekisteri.createOrUpdate(_)(user))
-    result.left.foreach { case HttpStatus(code, errors) =>
-      logger(user).warn("Opinto-oikeuden päivitys estetty: " + code + " " + errors + " for request " + describeRequest)
-    }
-    result
-  }
-
   put("/batch") {
     timed("PUT /oppija/batch", thresholdMs = 10) {
       withJsonBody { parsedJson =>
+        val putter = UpdateContext(koskiUser, rekisteri, request)
 
-        implicit val user = koskiUser
-
-        val validationResults: List[Either[HttpStatus, Oppija]] = validator.extractAndValidateBatch(parsedJson.asInstanceOf[JArray])(user, AccessType.write)
-        val batchResults: List[Either[HttpStatus, HenkilönOpiskeluoikeusVersiot]] = validationResults.par.map(putSingle(_, user)).toList
+        val validationResults: List[Either[HttpStatus, Oppija]] = validator.extractAndValidateBatch(parsedJson.asInstanceOf[JArray])(koskiUser, AccessType.write)
+        val batchResults: List[Either[HttpStatus, HenkilönOpiskeluoikeusVersiot]] = validationResults.par.map(putter.putSingle).toList
 
         response.setStatus(batchResults.map {
           case Left(status) => status.statusCode
@@ -128,3 +122,16 @@ class OppijaServlet(rekisteri: KoskiFacade, val käyttöoikeudet: Käyttöoikeus
   }
 }
 
+/**
+  *  Operating context for data updates. Operates outside the lecixal scope of OppijaServlet to ensure that none of the
+  *  Scalatra threadlocals are used. This must be done because in batch mode, we are running in several threads.
+  */
+case class UpdateContext(user: KoskiUser, facade: KoskiFacade, request: HttpServletRequest) extends Logging {
+  def putSingle(validationResult: Either[HttpStatus, Oppija]): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
+    val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = validationResult.right.flatMap(facade.createOrUpdate(_)(user))
+    result.left.foreach { case HttpStatus(code, errors) =>
+      logger(user).warn("Opinto-oikeuden päivitys estetty: " + code + " " + errors + " for request " + logSafeDescription(request))
+    }
+    result
+  }
+}

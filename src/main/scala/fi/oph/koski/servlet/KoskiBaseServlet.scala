@@ -1,12 +1,16 @@
 package fi.oph.koski.servlet
 
+import javax.servlet.http.HttpServletRequest
+
 import fi.oph.koski.http.{ErrorCategory, HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.log.{LoggerWithContext, Logging}
+import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import org.json4s._
 import org.scalatra._
+import org.scalatra.servlet.RichRequest
 
 import scala.xml.Elem
 
@@ -51,29 +55,8 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
   }: RenderPipeline) orElse super.renderPipeline
 
   def haltWithInternalError(e: Throwable) = {
-    logger.error(e)("Error while processing request " + describeRequest)
+    logger.error(e)("Error while processing request " + logSafeDescription(request))
     haltWithStatus(KoskiErrorCategory.internalError())
-  }
-
-  def describeRequest: String = {
-    val query: String = if (request.getQueryString == null) {""} else {"?" + request.getQueryString}
-    val requestDescription: String = request.getMethod + " " + request.getServletPath + query + " " + maskRequestBody
-    requestDescription
-  }
-
-  private def maskRequestBody = {
-    (request.body, request.contentType) match {
-      case ("", _) => ""
-      case (body, Some(contentType)) if (contentType.contains("application/json")) =>
-        try {
-          val parsedJson: JValue = org.json4s.jackson.JsonMethods.parse(request.body)
-          val maskedJson: JValue = maskSensitiveInformation(parsedJson)
-          Json.write(maskedJson)
-        } catch {
-          case e: Exception => body
-        }
-      case (body, _) => body
-    }
   }
 
   def renderOption[T <: AnyRef](errorCategory: ErrorCategory)(result: Option[T]) = {
@@ -99,3 +82,5 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
     halt(status.statusCode, status)
   }
 }
+
+

@@ -49,7 +49,7 @@ abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](oppijaRep
       }
     } catch {
       case e: Exception =>
-        logger.error(e)("Failed to fetch data")
+        logger.error(e)(s"Failed to fetch data for $hetu")
         Nil
     }
   }
