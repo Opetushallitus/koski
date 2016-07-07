@@ -16,6 +16,7 @@ trait OppijaRepository extends AuxiliaryOppijaRepository {
   def findByOids(oids: List[String])(implicit user: KoskiUser): List[TäydellisetHenkilötiedot]
   def resetFixtures {}
   def findOrCreate(henkilö: UusiHenkilö)(implicit user: KoskiUser): Either[HttpStatus, Henkilö.Oid]
+  def findOppijat(query: String)(implicit user: KoskiUser): List[HenkilötiedotJaOid]
 }
 
 trait AuxiliaryOppijaRepository {
