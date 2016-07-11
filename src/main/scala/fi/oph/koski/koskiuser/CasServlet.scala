@@ -30,7 +30,7 @@ class CasServlet(val application: UserAuthenticationContext) extends ApiServlet 
   }
 
   post("/") { // Return url for cas logout
-  val logoutRequest = params.get("logoutRequest") match {
+    params.get("logoutRequest") match {
       case Some(logoutRequest) =>
         val parsedTicket = CasLogout.parseTicketFromLogoutRequest(logoutRequest)
         logger.info("Got CAS logout for ticket " + parsedTicket)
