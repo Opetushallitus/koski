@@ -1,20 +1,20 @@
 package fi.oph.koski.history
 
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.{RequiresAuthentication, KäyttöoikeusRepository}
+import fi.oph.koski.koskiuser.RequiresAuthentication
 import fi.oph.koski.log._
 import fi.oph.koski.schema.Opiskeluoikeus
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
-import fi.vm.sade.security.ldap.DirectoryClient
 import org.json4s.jackson.JsonMethods
 
-class KoskiHistoryServlet(val käyttöoikeudet: KäyttöoikeusRepository, val directoryClient: DirectoryClient, val historyRepository: OpiskeluoikeusHistoryRepository)
+class KoskiHistoryServlet(val application: KoskiApplication)
   extends ApiServlet with RequiresAuthentication with JsonMethods with NoCache {
 
   get("/:id") {
     val id: Int = getIntegerParam("id")
     renderOption(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia) {
-      val history = historyRepository.findByOpiskeluoikeusId(id)(koskiUser)
+      val history = application.historyRepository.findByOpiskeluoikeusId(id)(koskiUser)
       history.foreach { _ => logHistoryView(id)}
       history
     }
@@ -24,7 +24,7 @@ class KoskiHistoryServlet(val käyttöoikeudet: KäyttöoikeusRepository, val di
     val id = getIntegerParam("id")
     val version = getIntegerParam("version")
 
-    val result: Either[HttpStatus, Opiskeluoikeus] = historyRepository.findVersion(id, version)(koskiUser)
+    val result: Either[HttpStatus, Opiskeluoikeus] = application.historyRepository.findVersion(id, version)(koskiUser)
 
     result.right.foreach { _ => logHistoryView(id)}
 

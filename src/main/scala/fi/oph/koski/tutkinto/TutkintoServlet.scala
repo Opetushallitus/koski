@@ -1,9 +1,10 @@
 package fi.oph.koski.tutkinto
 
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.servlet.ApiServlet
 
-class TutkintoServlet(tutkintoRepository: TutkintoRepository) extends ApiServlet {
+class TutkintoServlet(tutkintoRepository: TutkintoRepository) extends ApiServlet with Unauthenticated {
    get("/oppilaitos/:oppilaitosId") {
      contentType = "application/json;charset=utf-8"
      (params.get("query"), params.get("oppilaitosId")) match {

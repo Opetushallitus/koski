@@ -1,16 +1,10 @@
 package fi.oph.koski.servlet
 
-import javax.servlet.http.HttpServletRequest
-
 import fi.oph.koski.http.{ErrorCategory, HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.json.Json
-import fi.oph.koski.json.Json._
 import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.log.{LoggerWithContext, Logging}
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
-import org.json4s._
 import org.scalatra._
-import org.scalatra.servlet.RichRequest
 
 import scala.xml.Elem
 
@@ -35,8 +29,6 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
   def getOptionalIntegerParam(name: String) = params.get(name) map { _ =>
     getIntegerParam(name)
   }
-
-  def koskiUserOption: Option[KoskiUser] = None
 
   error {
     case InvalidRequestException(detail) =>
@@ -73,6 +65,7 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
     }
   }
 
+  def koskiUserOption: Option[KoskiUser]
 
   def renderStatus(status: HttpStatus): Unit
 

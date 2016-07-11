@@ -1,16 +1,14 @@
 package fi.oph.koski.todistus
 
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koski.KoskiFacade
-import fi.oph.koski.koskiuser.{RequiresAuthentication, KäyttöoikeusRepository}
+import fi.oph.koski.koskiuser.RequiresAuthentication
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.HtmlServlet
 import fi.oph.koski.suoritusote.OpiskeluoikeusFinder
-import fi.oph.koski.tutkinto.{SuoritustapaJaRakenne, TutkintoRakenne, TutkintoRepository}
-import fi.vm.sade.security.ldap.DirectoryClient
+import fi.oph.koski.tutkinto.{SuoritustapaJaRakenne, TutkintoRakenne}
 
-class TodistusServlet(val käyttöoikeudet: KäyttöoikeusRepository, val directoryClient: DirectoryClient, rekisteri: KoskiFacade, tutkintoRepository: TutkintoRepository)
-  extends HtmlServlet with RequiresAuthentication {
+class TodistusServlet(val application: KoskiApplication) extends HtmlServlet with RequiresAuthentication {
   get("/:oppijaOid") {
     val oppijaOid = params("oppijaOid")
     implicit val user = koskiUser
@@ -21,7 +19,7 @@ class TodistusServlet(val käyttöoikeudet: KäyttöoikeusRepository, val direct
       case (_, _) => None
     }
 
-    renderEither(OpiskeluoikeusFinder(rekisteri).opiskeluoikeudet(oppijaOid, params).right.flatMap {
+    renderEither(OpiskeluoikeusFinder(application.facade).opiskeluoikeudet(oppijaOid, params).right.flatMap {
       case Oppija(henkilötiedot: TäydellisetHenkilötiedot, opiskeluoikeudet) =>
         val suoritukset: Seq[(Opiskeluoikeus, Suoritus)] = opiskeluoikeudet.flatMap {
           opiskeluoikeus => opiskeluoikeus.suoritukset.filter(suoritus => suoritus.tila.koodiarvo == "VALMIS" && filters.forall(f => f(suoritus)))
@@ -42,7 +40,7 @@ class TodistusServlet(val käyttöoikeudet: KäyttöoikeusRepository, val direct
               case t: PerusopetuksenLisäopetuksenSuoritus =>
                 Right((new PerusopetuksenLisaopetuksenTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.oppilaitos, henkilötiedot, t)).todistusHtml)
               case t: AmmatillisenTutkinnonSuoritus =>
-                t.koulutusmoduuli.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_)) match {
+                t.koulutusmoduuli.perusteenDiaarinumero.flatMap(application.tutkintoRepository.findPerusteRakenne(_)) match {
                   case Some(rakenne: TutkintoRakenne) =>
                     val maybeSuoritustapaJaRakenne: Option[SuoritustapaJaRakenne] = rakenne.suoritustavat.find(x => Some(x.suoritustapa) == t.suoritustapa)
                     maybeSuoritustapaJaRakenne match {

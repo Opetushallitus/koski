@@ -30,20 +30,20 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       if (application.config.getBoolean("käyttöoikeusryhmät.create")) {
         KäyttöoikeusRyhmätCreator.luoKäyttöoikeusRyhmät(application.config)
       }
-      val facade = new KoskiFacade(application.oppijaRepository, application.opiskeluOikeusRepository)
-      context.mount(new OppijaServlet(facade, application.käyttöoikeusRepository, application.directoryClient, application.validator, application.historyRepository), "/api/oppija")
-      context.mount(new KoskiHistoryServlet(application.käyttöoikeusRepository, application.directoryClient, application.historyRepository), "/api/opiskeluoikeus/historia")
-      context.mount(new UserServlet(application.directoryClient, application.käyttöoikeusRepository), "/user")
-      context.mount(new LogoutServlet(application.käyttöoikeusRepository, application.directoryClient), "/user/logout")
-      context.mount(new OppilaitosServlet(application.oppilaitosRepository, application.käyttöoikeusRepository, application.directoryClient), "/api/oppilaitos")
+
+      context.mount(new OppijaServlet(application), "/api/oppija")
+      context.mount(new KoskiHistoryServlet(application), "/api/opiskeluoikeus/historia")
+      context.mount(new UserServlet(application), "/user")
+      context.mount(new LogoutServlet(application), "/user/logout")
+      context.mount(new OppilaitosServlet(application), "/api/oppilaitos")
       context.mount(new TutkintoServlet(application.tutkintoRepository), "/api/tutkinto")
       context.mount(new SchemaDocumentationServlet(application.koodistoPalvelu), "/documentation")
-      context.mount(new TodistusServlet(application.käyttöoikeusRepository, application.directoryClient, facade, application.tutkintoRepository), "/todistus")
-      context.mount(new SuoritusServlet(application.käyttöoikeusRepository, application.directoryClient, facade, application.oppijaRepository, facade), "/opintosuoritusote")
-      context.mount(new IndexServlet(), "/")
-      context.mount(new CacheServlet(application.käyttöoikeusRepository, application.directoryClient, application), "/cache")
+      context.mount(new TodistusServlet(application), "/todistus")
+      context.mount(new SuoritusServlet(application), "/opintosuoritusote")
+      context.mount(new IndexServlet(application), "/")
+      context.mount(new CacheServlet(application), "/cache")
       if (Fixtures.shouldUseFixtures(application.config)) {
-        context.mount(new FixtureServlet(application.käyttöoikeusRepository, application.directoryClient, application), "/fixtures")
+        context.mount(new FixtureServlet(application), "/fixtures")
       }
     } catch {
       case e: Throwable =>

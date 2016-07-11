@@ -33,7 +33,7 @@ describe('Perusopetus', function() {
 
     describe('Virhetilanteet', function() {
       describe('Todistuksen avaaminen, kun käyttäjä ei ole kirjautunut', function() {
-        before(Authentication().logout,  reloadTestFrame, wait.until(login.isVisible))
+        before(Authentication().logout, reloadTestFrame, wait.until(login.isVisible))
         it('Näytetään login-sivu', function() {
           expect(login.isVisible()).to.equal(true)
         })

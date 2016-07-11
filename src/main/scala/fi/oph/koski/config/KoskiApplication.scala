@@ -11,8 +11,8 @@ import fi.oph.koski.fixture.Fixtures
 import fi.oph.koski.henkilo.AuthenticationServiceClient
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViitePalvelu}
-import fi.oph.koski.koski.KoskiValidator
-import fi.oph.koski.koskiuser.{DirectoryClientFactory, KäyttöoikeusRepository}
+import fi.oph.koski.koski.{KoskiFacade, KoskiValidator}
+import fi.oph.koski.koskiuser.{UserAuthenticationContext, DirectoryClientFactory, KäyttöoikeusRepository}
 import fi.oph.koski.log.{Logging, TimedProxy}
 import fi.oph.koski.opiskeluoikeus.{AuxiliaryOpiskeluOikeusRepository, CompositeOpiskeluOikeusRepository, OpiskeluOikeusRepository, PostgresOpiskeluOikeusRepository}
 import fi.oph.koski.oppija.OppijaRepository
@@ -34,7 +34,7 @@ object KoskiApplication {
   def config(overrides: Map[String, String] = Map.empty) = overrides.toList.foldLeft(defaultConfig)({ case (config, (key, value)) => config.withValue(key, fromAnyRef(value)) })
 }
 
-class KoskiApplication(val config: Config) extends Logging {
+class KoskiApplication(val config: Config) extends Logging with UserAuthenticationContext {
   lazy val organisaatioRepository = OrganisaatioRepository(config, koodistoViitePalvelu)
   lazy val directoryClient = DirectoryClientFactory.directoryClient(config)
   lazy val tutkintoRepository = CachingProxy(cacheAllRefresh("TutkintoRepository", 3600, 100), TutkintoRepository(EPerusteetRepository.apply(config), arviointiAsteikot, koodistoViitePalvelu))
@@ -56,6 +56,7 @@ class KoskiApplication(val config: Config) extends Logging {
   lazy val ytr = TimedProxy[AuxiliaryOpiskeluOikeusRepository](YtrOpiskeluoikeusRepository(ytrClient, oppijaRepository, organisaatioRepository, oppilaitosRepository, koodistoViitePalvelu, ytrAccessChecker, Some(validator)))
   lazy val opiskeluOikeusRepository = new CompositeOpiskeluOikeusRepository(possu, List(virta, ytr))
   lazy val validator: KoskiValidator = new KoskiValidator(tutkintoRepository, koodistoViitePalvelu, organisaatioRepository)
+  lazy val facade = new KoskiFacade(oppijaRepository, opiskeluOikeusRepository)
 
   def resetFixtures = Fixtures.resetFixtures(config, database, opiskeluOikeusRepository, oppijaRepository, validator)
 

@@ -5,7 +5,7 @@ import fi.oph.koski.koskiuser.{RequiresAuthentication, KäyttöoikeusRepository}
 import fi.oph.koski.servlet.ApiServlet
 import fi.vm.sade.security.ldap.DirectoryClient
 
-class FixtureServlet(val käyttöoikeudet: KäyttöoikeusRepository, val directoryClient: DirectoryClient, application: KoskiApplication) extends ApiServlet with RequiresAuthentication {
+class FixtureServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication {
   post("/reset") {
     application.resetFixtures
   }

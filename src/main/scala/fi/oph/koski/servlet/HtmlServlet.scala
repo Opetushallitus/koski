@@ -6,7 +6,7 @@ import fi.oph.koski.koskiuser.AuthenticationSupport
 import scala.xml.transform.RewriteRule
 import scala.xml.{Elem, Node}
 
-trait HtmlServlet extends AuthenticationSupport {
+trait HtmlServlet extends KoskiBaseServlet with AuthenticationSupport {
   def redirectToLogin = {
     redirect("/")
   }

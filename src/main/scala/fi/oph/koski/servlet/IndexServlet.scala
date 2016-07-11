@@ -1,8 +1,14 @@
 package fi.oph.koski.servlet
 
+import fi.oph.koski.koskiuser.{AuthenticationSupport, UserAuthenticationContext}
 import org.scalatra.ScalatraServlet
 
-class IndexServlet extends ScalatraServlet {
+class IndexServlet(val application: UserAuthenticationContext) extends ScalatraServlet with AuthenticationSupport with HtmlServlet {
+  before() {
+    if (!isAuthenticated && application.config.hasPath("opintopolku.virkailija.url")) {
+      redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/login?service=" + currentUrl)
+    }
+  }
 
   get("/*") {
     status = 404

@@ -1,12 +1,11 @@
 package fi.oph.koski.cache
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.{RequiresAuthentication, KäyttöoikeusRepository}
+import fi.oph.koski.koskiuser.RequiresAuthentication
 import fi.oph.koski.log.Logging
 import fi.oph.koski.servlet.ApiServlet
-import fi.vm.sade.security.ldap.DirectoryClient
 
-class CacheServlet(val käyttöoikeudet: KäyttöoikeusRepository, val directoryClient: DirectoryClient, application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Logging {
+class CacheServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Logging {
   get("/invalidate") {
     if (!koskiUser.isMaintenance) {
       halt(403)
