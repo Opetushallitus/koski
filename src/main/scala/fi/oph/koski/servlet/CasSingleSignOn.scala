@@ -14,7 +14,7 @@ trait CasSingleSignOnSupport extends ScalatraBase {
     def fixProtocol(url: String) = if (url startsWith ("http://localhost")) {
       url
     } else {
-      currentUrl.replace("http://", "https://") // <- we don't get the https protocol correctly, so we replace it manually
+      url.replace("http://", "https://") // <- we don't get the https protocol correctly, so we replace it manually
     }
     fixProtocol {
       val subpath = request.getServletPath + request.pathInfo
