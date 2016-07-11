@@ -3,7 +3,6 @@ package fi.oph.koski.servlet
 import java.net.URI
 
 import fi.oph.koski.koskiuser.UserAuthenticationContext
-import org.apache.commons.lang3.StringUtils
 import org.scalatra.ScalatraBase
 
 trait CasSingleSignOnSupport extends ScalatraBase {
