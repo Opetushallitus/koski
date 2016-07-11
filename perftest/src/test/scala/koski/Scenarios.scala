@@ -7,7 +7,7 @@ import java.time.temporal.ChronoUnit._
 import com.ning.http.client.RequestBuilder
 import fi.oph.koski.documentation.AmmatillinenOldExamples
 import fi.oph.koski.json.Json
-import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, Oppija, UusiHenkilö}
+import fi.oph.koski.schema.{OidHenkilö, AmmatillinenOpiskeluoikeus, Oppija, UusiHenkilö}
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.request.Body
@@ -19,7 +19,7 @@ trait KoskiScenario {
   val username = sys.env("KOSKI_USER")
   val password = sys.env("KOSKI_PASS")
   val uusiOppijaFeeder = Array(Map("content" -> AmmatillinenOldExamples.uusi)).circular
-  val oppijaFeeder = Array(Map("content" -> AmmatillinenOldExamples.full)).circular
+  val updateOppijaFeeder = Array(Map("content" -> AmmatillinenOldExamples.full.copy(henkilö = OidHenkilö("1.2.246.562.24.51633620848")))).circular
 }
 
 object Scenarios extends UpdateOppijaScenario with FindOppijaScenario with QueryOppijatScenario with InsertOppijaScenario {
@@ -46,8 +46,8 @@ trait InsertOrUpdateScenario extends KoskiScenario {
 trait UpdateOppijaScenario extends InsertOrUpdateScenario {
   private val updateHttp = insertOrUpdate("update", OppijaWithOpiskeluoikeusWithIncrementingStartdate)
 
-  val updateOppija = scenario("Update oppija").feed(oppijaFeeder).exec(updateHttp)
-  val prepareForUpdateOppija = scenario("Prepare for update").feed(oppijaFeeder).exec(updateHttp.silent)
+  val updateOppija = scenario("Update oppija").feed(updateOppijaFeeder).exec(updateHttp)
+  val prepareForUpdateOppija = scenario("Prepare for update").feed(updateOppijaFeeder).exec(updateHttp.silent)
 }
 
 trait InsertOppijaScenario extends InsertOrUpdateScenario {
