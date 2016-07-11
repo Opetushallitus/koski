@@ -8,22 +8,24 @@ import org.scalatra.ScalatraBase
 trait CasSingleSignOnSupport extends ScalatraBase {
   def application: UserAuthenticationContext
 
-  def currentUrl = request.getRequestURL.toString
+  private def currentUrl = request.getRequestURL.toString
 
-  def casServiceUrl = fixProtocol {
-    val subpath = request.getServletPath + request.getPathInfo
-    (if (currentUrl.endsWith(subpath)) {
-      currentUrl.substring(0, currentUrl.length - subpath.length)
+  def casServiceUrl = {
+    def fixProtocol(url: String) = if (url startsWith ("http://localhost")) {
+      url
     } else {
-      currentUrl
-    }) + "/user/cas"
+      currentUrl.replace("http://", "https://") // <- we don't get the https protocol correctly, so we replace it manually
+    }
+    fixProtocol {
+      val subpath = request.getServletPath + request.pathInfo
+      (if (currentUrl.endsWith(subpath)) {
+        currentUrl.substring(0, currentUrl.length - subpath.length)
+      } else {
+        currentUrl
+      }) + "/cas"
+    }
   }
 
-  private def fixProtocol(url: String) = if (url startsWith ("http://localhost")) {
-    url
-  } else {
-    currentUrl.replace("http://", "https://") // <- we don't get the https protocol correctly, so we replace it manually
-  }
 
   def redirectToLogin = {
     if (isCasSsoUsed) {

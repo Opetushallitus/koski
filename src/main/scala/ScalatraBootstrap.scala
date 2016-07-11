@@ -8,7 +8,7 @@ import fi.oph.koski.fixture.{FixtureServlet, Fixtures}
 import fi.oph.koski.history.KoskiHistoryServlet
 import fi.oph.koski.koodisto.KoodistoCreator
 import fi.oph.koski.koski.{KoskiFacade, OppijaServlet}
-import fi.oph.koski.koskiuser.{KäyttöoikeusRyhmätCreator, LogoutServlet, KäyttöoikeusRepository, UserServlet}
+import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppilaitos.OppilaitosServlet
 import fi.oph.koski.servlet.IndexServlet
@@ -34,6 +34,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       context.mount(new OppijaServlet(application), "/api/oppija")
       context.mount(new KoskiHistoryServlet(application), "/api/opiskeluoikeus/historia")
       context.mount(new UserServlet(application), "/user")
+      context.mount(new CasServlet(application), "/cas")
       context.mount(new LogoutServlet(application), "/user/logout")
       context.mount(new OppilaitosServlet(application), "/api/oppilaitos")
       context.mount(new TutkintoServlet(application.tutkintoRepository), "/api/tutkinto")

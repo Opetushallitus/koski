@@ -7,7 +7,6 @@ import fi.oph.koski.json.Json
 import fi.oph.koski.log._
 import fi.oph.koski.servlet.CasSingleSignOnSupport
 import fi.vm.sade.security.ldap.DirectoryClient
-import org.apache.commons.lang3.StringUtils
 import org.scalatra.ScalatraServlet
 import org.scalatra.auth.strategy.{BasicAuthStrategy, BasicAuthSupport}
 import org.scalatra.auth.{ScentryConfig, ScentrySupport}
@@ -24,14 +23,6 @@ trait AuthenticationSupport extends ScalatraServlet with ScentrySupport[Authenti
   protected val scentryConfig = (new ScentryConfig {}).asInstanceOf[ScentryConfiguration]
 
   def haltWithStatus(status: HttpStatus)
-
-  before() {
-    if (params.get("ticket").isDefined) {
-      scentry.authenticate()
-      val locationWithoutTicket = request.getServletPath + StringUtils.trimToEmpty(request.pathInfo)
-      redirect(locationWithoutTicket)
-    }
-  }
 
   def userNotAuthenticatedError = {
     haltWithStatus(KoskiErrorCategory.unauthorized())
@@ -53,7 +44,6 @@ trait AuthenticationSupport extends ScalatraServlet with ScentrySupport[Authenti
   override protected def registerAuthStrategies = {
     scentry.register("UsernamePassword", app => new UserPasswordStrategy(app.asInstanceOf[AuthenticationSupport]))
     scentry.register("Basic", app => new KoskiBasicAuthStrategy(app.asInstanceOf[AuthenticationSupport], realm))
-    scentry.register("CasServiceTicket", app => new CasServiceTicketStrategy(app.asInstanceOf[AuthenticationSupport]))
   }
 }
 
@@ -76,19 +66,21 @@ trait KoskiAuthenticationStrategy extends Logging {
       logger(LogUserContext(app.request)).info(s"Login failed with username ${username}")
       None
     } else {
-      findUser(username)
+      DirectoryClientLogin.findUser(directoryClient, app.request, username)
     }
   }
+}
 
-  def findUser(username: String): Option[AuthenticationUser] = {
+object DirectoryClientLogin extends Logging {
+  def findUser(directoryClient: DirectoryClient, request: HttpServletRequest, username: String): Option[AuthenticationUser] = {
     directoryClient.findUser(username).map { ldapUser =>
       AuthenticationUser(ldapUser.oid, ldapUser.givenNames + " " + ldapUser.lastName)
     } match {
       case Some(user) =>
-        logger(LogUserContext(app.request, user.oid)).info("Login successful")
+        logger(LogUserContext(request, user.oid)).info("Login successful")
         Some(user)
       case _ =>
-        logger(LogUserContext(app.request)).error("User " + username + " not found from LDAP")
+        logger(LogUserContext(request)).error("User " + username + " not found from LDAP")
         None
     }
   }
@@ -126,26 +118,4 @@ class UserPasswordStrategy(protected val app: AuthenticationSupport)
     app.userNotAuthenticatedError
   }
 }
-
-class CasServiceTicketStrategy(protected override val app: AuthenticationSupport)(implicit request: HttpServletRequest, response: HttpServletResponse) extends ScentryStrategy[AuthenticationUser] with KoskiAuthenticationStrategy with Logging {
-  private def ticketInRequest = app.params.get("ticket")
-  private def validator = new ServiceTicketValidator(app.application.config)
-  override def isValid(implicit request: HttpServletRequest) = {
-    ticketInRequest.isDefined
-  }
-
-  override def authenticate()(implicit request: HttpServletRequest, response: HttpServletResponse) = {
-    ticketInRequest flatMap {
-      ticket => try {
-        val username = validator.validateServiceTicket(app.casServiceUrl, ticket)
-        findUser(username)
-      } catch {
-        case e: Exception =>
-          logger.warn(e)("Service ticket validation failed")
-          None
-      }
-    }
-  }
-}
-
 
