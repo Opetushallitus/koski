@@ -137,7 +137,7 @@ class CasServiceTicketStrategy(protected override val app: AuthenticationSupport
   override def authenticate()(implicit request: HttpServletRequest, response: HttpServletResponse) = {
     ticketInRequest flatMap {
       ticket => try {
-        val username = validator.validateServiceTicket(app.currentUrl, ticket)
+        val username = validator.validateServiceTicket(app.casServiceUrl, ticket)
         findUser(username)
       } catch {
         case e: Exception =>
