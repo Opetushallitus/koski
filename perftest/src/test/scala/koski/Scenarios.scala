@@ -16,17 +16,18 @@ import io.gatling.http.request.builder.HttpRequestBuilder
 import scala.util.Random.{nextInt => randomInt}
 
 trait KoskiScenario {
+  val testOid = "1.2.246.562.24.51633620848"
   val username = sys.env("KOSKI_USER")
   val password = sys.env("KOSKI_PASS")
   val uusiOppijaFeeder = Array(Map("content" -> AmmatillinenOldExamples.uusi)).circular
-  val updateOppijaFeeder = Array(Map("content" -> AmmatillinenOldExamples.full.copy(henkilö = OidHenkilö("1.2.246.562.24.51633620848")))).circular
+  val updateOppijaFeeder = Array(Map("content" -> AmmatillinenOldExamples.full.copy(henkilö = OidHenkilö(testOid)))).circular
 }
 
 object Scenarios extends UpdateOppijaScenario with FindOppijaScenario with QueryOppijatScenario with InsertOppijaScenario {
 }
 
 trait FindOppijaScenario extends KoskiScenario {
-  private val findHttp: HttpRequestBuilder = http("find by oid").get("/api/oppija/1.2.246.562.24.00000000001").basicAuth(username, password)
+  private val findHttp: HttpRequestBuilder = http("find by oid").get("/api/oppija/" + testOid).basicAuth(username, password)
 
   val findOppija = scenario("Find oppija").exec(findHttp)
   val prepareForFind = scenario("Prepare for find").exec(findHttp.silent)
