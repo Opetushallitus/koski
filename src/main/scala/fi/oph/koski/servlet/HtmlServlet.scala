@@ -7,10 +7,6 @@ import scala.xml.transform.RewriteRule
 import scala.xml.{Elem, Node}
 
 trait HtmlServlet extends KoskiBaseServlet with AuthenticationSupport {
-  def redirectToLogin = {
-    redirect("/")
-  }
-
   override def haltWithStatus(status: HttpStatus) = status.statusCode match {
     case 401 => redirectToLogin
     case _ => super.haltWithStatus(status)

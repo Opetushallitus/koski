@@ -5,6 +5,7 @@ import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json
 import fi.oph.koski.log._
+import fi.oph.koski.servlet.CasSingleSignOnSupport
 import fi.vm.sade.security.ldap.DirectoryClient
 import org.apache.commons.lang3.StringUtils
 import org.scalatra.ScalatraServlet
@@ -12,7 +13,7 @@ import org.scalatra.auth.strategy.{BasicAuthStrategy, BasicAuthSupport}
 import org.scalatra.auth.{ScentryConfig, ScentrySupport}
 import org.scalatra.servlet.RichRequest
 
-trait AuthenticationSupport extends ScalatraServlet with ScentrySupport[AuthenticationUser] with BasicAuthSupport[AuthenticationUser] {
+trait AuthenticationSupport extends ScalatraServlet with ScentrySupport[AuthenticationUser] with BasicAuthSupport[AuthenticationUser] with CasSingleSignOnSupport {
   val realm = "Koski"
 
   def application: UserAuthenticationContext
@@ -21,8 +22,6 @@ trait AuthenticationSupport extends ScalatraServlet with ScentrySupport[Authenti
   protected def toSession   = { case user: AuthenticationUser => Json.write(user) }
 
   protected val scentryConfig = (new ScentryConfig {}).asInstanceOf[ScentryConfiguration]
-
-  def currentUrl = request.getRequestURL.toString
 
   def haltWithStatus(status: HttpStatus)
 
