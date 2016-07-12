@@ -21,6 +21,9 @@ object JettyLauncher extends App {
 
 class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) {
   val config = overrides.toList.foldLeft(KoskiApplication.defaultConfig)({ case (config, (key, value)) => config.withValue(key, fromAnyRef(value)) })
+  val application = KoskiApplication(config)
+  application.database // <- force evaluation to make sure DB is up
+
   LogConfiguration.configureLoggingWithFileWatch
 
   lazy val threadPool = new QueuedThreadPool(Pools.jettyThreads, 10);
@@ -48,7 +51,7 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) {
   context.setParentLoaderPriority(true)
   context.setContextPath("/koski")
   context.setResourceBase(resourceBase)
-  context.setAttribute("koski.config", config)
+  context.setAttribute("koski.application", application)
 
   server.setHandler(context)
 
