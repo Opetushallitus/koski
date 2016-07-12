@@ -8,11 +8,10 @@ object VirkailijaHttpClient {
     val blazeHttpClient = Http.newClient
     val casClient = new CasClient(opintoPolkuVirkailijaUrl, blazeHttpClient)
     val casAuthenticatingClient: Client = if (useCas) {
-      CasAuthenticatingClient(casClient, CasParams(serviceUrl, username, password), blazeHttpClient, "koski")
+      CasAuthenticatingClient(casClient, CasParams(serviceUrl, username, password), blazeHttpClient, OpintopolkuSubSystemCode.koski)
     } else {
       ClientWithBasicAuthentication(blazeHttpClient, username, password)
     }
-
     Http(opintoPolkuVirkailijaUrl, casAuthenticatingClient)
   }
 }

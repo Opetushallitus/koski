@@ -33,7 +33,6 @@ object Http extends Logging {
             case Some(encodeable) => URLEncoder.encode(encodeable.toString, "UTF-8")
           })
       }
-
       uriFromString(stuff.mkString(""))
     }
   }
@@ -143,11 +142,15 @@ case class Http(root: String, client: Client = Http.newClient) extends Logging {
   }
 
   private def processRequest[ResultType](request: Request)(decoder: (Int, String, Request) => ResultType): Task[ResultType] = {
-    client.fetch(request.copy(uri = addRoot(request.uri))) { response =>
+    client.fetch(addCommonHeaders(request.copy(uri = addRoot(request.uri)))) { response =>
       //logger.info(request + " -> " + response.status.code)
       response.as[String].map { text => // Might be able to optimize by not turning into String here
         decoder(response.status.code, text, request)
       }
     }
   }
+
+  private def addCommonHeaders(request: Request) = request.copy(headers = request.headers.put(
+    Header("clientSubSystemCode", OpintopolkuSubSystemCode.koski)
+  ))
 }
