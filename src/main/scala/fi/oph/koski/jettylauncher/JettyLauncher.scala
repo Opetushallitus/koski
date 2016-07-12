@@ -1,5 +1,6 @@
 package fi.oph.koski.jettylauncher
 
+import java.net.InetAddress
 import java.nio.file.{Files, Paths}
 
 import com.typesafe.config.Config
@@ -61,7 +62,7 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) {
 
 case class SessionPersistence(config: Config, server: Server) {
   val idMgr = new JDBCSessionIdManager(server);
-  idMgr.setWorkerName("node1") // TODO
+  idMgr.setWorkerName(InetAddress.getLocalHost().getHostName())
   private val dbConfig: KoskiDatabaseConfig = KoskiDatabaseConfig(config)
   idMgr.setDriverInfo(dbConfig.jdbcDriverClassName, dbConfig.jdbcUrl)
   idMgr.setScavengeInterval(600)
