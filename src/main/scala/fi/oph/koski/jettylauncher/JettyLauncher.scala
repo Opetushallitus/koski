@@ -69,10 +69,11 @@ case class SessionPersistence(config: Config, server: Server) {
   server.setSessionIdManager(idMgr)
 
   def configure(context: WebAppContext) = {
-    val jdbcMgr = new JDBCSessionManager();
-    jdbcMgr.setSessionIdManager(server.getSessionIdManager());
-    val sessionHandler = new SessionHandler(jdbcMgr);
-    context.setSessionHandler(sessionHandler);
+    val jdbcMgr = new JDBCSessionManager()
+    jdbcMgr.setSessionIdManager(server.getSessionIdManager())
+    val sessionHandler = new SessionHandler(jdbcMgr)
+    context.setSessionHandler(sessionHandler)
+    context.setAttribute("sessionManager", jdbcMgr)
     context
   }
 }
