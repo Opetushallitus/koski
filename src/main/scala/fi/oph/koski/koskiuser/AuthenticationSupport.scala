@@ -5,7 +5,7 @@ import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json
 import fi.oph.koski.log._
-import fi.oph.koski.servlet.CasSingleSignOnSupport
+import fi.oph.koski.servlet.{JsonBodySnatcher, CasSingleSignOnSupport}
 import fi.vm.sade.security.ldap.DirectoryClient
 import org.scalatra.ScalatraServlet
 import org.scalatra.auth.strategy.{BasicAuthStrategy, BasicAuthSupport}
@@ -104,11 +104,9 @@ class UserPasswordStrategy(protected val app: AuthenticationSupport)
   override def name: String = "UserPassword"
 
   private def loginRequestInBody = {
-    try {
-      val body: String = RichRequest(request).body
-      Some(Json.read[Login](body))
-    } catch {
-      case e: Exception => None
+    JsonBodySnatcher.getJsonBody(request) match {
+      case Right(json) => Some(Json.fromJValue[Login](json))
+      case Left(error) => None
     }
   }
 
