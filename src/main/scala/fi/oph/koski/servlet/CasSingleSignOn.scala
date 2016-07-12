@@ -3,18 +3,26 @@ package fi.oph.koski.servlet
 import java.net.URI
 
 import fi.oph.koski.koskiuser.UserAuthenticationContext
-import org.scalatra.ScalatraBase
+import org.scalatra.{Cookie, CookieOptions, ScalatraBase}
 
 trait CasSingleSignOnSupport extends ScalatraBase {
   def application: UserAuthenticationContext
 
   private def currentUrl = request.getRequestURL.toString
 
+  def isHttps = !currentUrl.startsWith("http://localhost") // <- we don't get the https protocol correctly through the proxy, so we assume https
+
+  def setServiceTicketCookie(ticket: String) = response.addCookie(Cookie("koskiServiceTicket", ticket)(CookieOptions(secure = isHttps, path = "/", maxAge = 3600)))
+
+  def getServiceTicketCookie: Option[String] = Option(request.getCookies).toList.flatten.find(_.getName == "koskiServiceTicket").map(_.getValue)
+
+  def removeServiceTicketCookie = response.addCookie(Cookie("koskiServiceTicket", "")(CookieOptions(secure = isHttps, path = "/", maxAge = 0)))
+
   def casServiceUrl = {
-    def fixProtocol(url: String) = if (url startsWith ("http://localhost")) {
+    def fixProtocol(url: String) = if (!isHttps) {
       url
     } else {
-      url.replace("http://", "https://") // <- we don't get the https protocol correctly, so we replace it manually
+      url.replace("http://", "https://")// <- we don't get the https protocol correctly through the proxy, so we replace it manually
     }
     fixProtocol {
       val subpath = request.getServletPath + request.pathInfo

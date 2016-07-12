@@ -4,7 +4,6 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.servlet.ApiServlet
 import fi.vm.sade.utils.cas.CasLogout
-import org.eclipse.jetty.server.SessionManager
 
 class CasServlet(val application: KoskiApplication) extends ApiServlet with AuthenticationSupport {
   private def validator = new ServiceTicketValidator(application.config)
@@ -17,9 +16,10 @@ class CasServlet(val application: KoskiApplication) extends ApiServlet with Auth
           val username = validator.validateServiceTicket(casServiceUrl, ticket)
           DirectoryClientLogin.findUser(application.directoryClient, request, username) match {
             case Some(user) =>
-              scentry.user = user
+              scentry.user = user.copy(serviceTicket = Some(ticket))
               logger.info(s"Started session ${session.id} for ticket $ticket")
-              ticketSessions.store(session.id, ticket)
+              ticketSessions.store(session.id, ticket, user)
+              setServiceTicketCookie(ticket)
               redirect("/")
             case None =>
               haltWithStatus(KoskiErrorCategory.internalError(s"CAS-käyttäjää $username ei löytynyt LDAPista"))
@@ -40,15 +40,9 @@ class CasServlet(val application: KoskiApplication) extends ApiServlet with Auth
         CasLogout.parseTicketFromLogoutRequest(logoutRequest) match {
           case Some(parsedTicket) =>
             logger.info("Got CAS logout for ticket " + parsedTicket)
-            ticketSessions.getSessionIdByTicket(parsedTicket) match {
+            ticketSessions.removeSessionByTicket(parsedTicket) match {
               case Some(sessionId) =>
-                Option(request.getServletContext.getAttribute("sessionManager").asInstanceOf[SessionManager].getHttpSession(sessionId)) match {
-                  case Some(session) =>
-                    session.invalidate()
-                    logger.info(s"Invalidated session $sessionId for ticket $parsedTicket")
-                  case None =>
-                    logger.warn(s"Session $sessionId not found for ticket $parsedTicket")
-                }
+                logger.info(s"Invalidated session $sessionId for ticket $parsedTicket")
               case None =>
                 logger.warn(s"Session id not found for ticket $parsedTicket")
             }

@@ -7,4 +7,5 @@ trait UserAuthenticationContext {
   def directoryClient: DirectoryClient
   def käyttöoikeusRepository: KäyttöoikeusRepository
   def config: Config
+  def serviceTicketRepository: CasTicketSessionRepository
 }

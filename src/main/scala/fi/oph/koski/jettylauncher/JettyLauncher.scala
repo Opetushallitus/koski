@@ -44,9 +44,7 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) {
     throw new RuntimeException("WebApplication resource base: " + resourceBase + " does not exist.")
   }
 
-  val sessionPersistence = SessionPersistence(config, server)
-
-  val context = sessionPersistence.configure(new WebAppContext())
+  val context = new WebAppContext()
 
   context.setParentLoaderPriority(true)
   context.setContextPath("/koski")
@@ -61,24 +59,6 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) {
   }
 
   def baseUrl = "http://localhost:" + port + "/koski"
-}
-
-case class SessionPersistence(config: Config, server: Server) {
-  val idMgr = new JDBCSessionIdManager(server);
-  idMgr.setWorkerName(InetAddress.getLocalHost().getHostName())
-  private val dbConfig: KoskiDatabaseConfig = KoskiDatabaseConfig(config)
-  idMgr.setDriverInfo(dbConfig.jdbcDriverClassName, dbConfig.jdbcUrl)
-  idMgr.setScavengeInterval(600)
-  server.setSessionIdManager(idMgr)
-
-  def configure(context: WebAppContext) = {
-    val jdbcMgr = new JDBCSessionManager()
-    jdbcMgr.setSessionIdManager(server.getSessionIdManager())
-    val sessionHandler = new SessionHandler(jdbcMgr)
-    context.setSessionHandler(sessionHandler)
-    context.setAttribute("sessionManager", jdbcMgr)
-    context
-  }
 }
 
 object SharedJetty extends JettyLauncher(PortChecker.findFreeLocalPort, Map("db.name" -> "tortest", "fixtures.use" -> "true"))

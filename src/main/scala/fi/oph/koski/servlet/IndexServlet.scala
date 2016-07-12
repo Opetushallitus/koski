@@ -5,8 +5,12 @@ import org.scalatra.ScalatraServlet
 
 class IndexServlet(val application: UserAuthenticationContext) extends ScalatraServlet with HtmlServlet with AuthenticationSupport {
   before() {
-    if (!isAuthenticated && isCasSsoUsed) {
-      redirectToLogin
+    if (koskiUserOption.isEmpty && isCasSsoUsed) {
+      if (getServiceTicketCookie.isDefined) {
+        scentry.authenticate()
+      } else {
+        redirectToLogin
+      }
     }
   }
 

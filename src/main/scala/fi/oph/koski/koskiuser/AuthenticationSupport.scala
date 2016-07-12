@@ -12,10 +12,11 @@ import org.scalatra.auth.strategy.{BasicAuthStrategy, BasicAuthSupport}
 import org.scalatra.auth.{ScentryConfig, ScentrySupport}
 import org.scalatra.servlet.RichRequest
 
-trait AuthenticationSupport extends ScalatraServlet with ScentrySupport[AuthenticationUser] with BasicAuthSupport[AuthenticationUser] with CasSingleSignOnSupport {
+trait AuthenticationSupport extends ScalatraServlet with ScentrySupport[AuthenticationUser] with BasicAuthSupport[AuthenticationUser] with CasSingleSignOnSupport with Logging {
   val realm = "Koski"
 
   def application: UserAuthenticationContext
+
 
   protected def fromSession = { case user: String => Json.read[AuthenticationUser](user)  }
   protected def toSession   = { case user: AuthenticationUser => Json.write(user) }
@@ -29,10 +30,20 @@ trait AuthenticationSupport extends ScalatraServlet with ScentrySupport[Authenti
   }
 
   def koskiUserOption: Option[KoskiUser] = {
-    userOption.map { authUser =>
-      KoskiUser(authUser.oid, request, application.käyttöoikeusRepository)
+    def toKoskiUser(user: AuthenticationUser) = KoskiUser(user.oid, request, application.käyttöoikeusRepository)
+    userOption.flatMap { authUser =>
+      authUser.serviceTicket match {
+        case Some(ticket) =>
+          // TODO: needs caching
+          application.serviceTicketRepository.getUserByTicket(ticket) map(toKoskiUser)
+
+        case None =>
+          Some(toKoskiUser(authUser))
+      }
     }
   }
+
+
 
   override protected def configureScentry = {
     scentry.unauthenticated {
@@ -44,6 +55,7 @@ trait AuthenticationSupport extends ScalatraServlet with ScentrySupport[Authenti
   override protected def registerAuthStrategies = {
     scentry.register("UsernamePassword", app => new UserPasswordStrategy(app.asInstanceOf[AuthenticationSupport]))
     scentry.register("Basic", app => new KoskiBasicAuthStrategy(app.asInstanceOf[AuthenticationSupport], realm))
+    scentry.register("CasServiceTicketCookie", app => new CasServiceTicketCookieStrategy(app.asInstanceOf[AuthenticationSupport]))
   }
 }
 
@@ -74,7 +86,7 @@ trait KoskiAuthenticationStrategy extends Logging {
 object DirectoryClientLogin extends Logging {
   def findUser(directoryClient: DirectoryClient, request: HttpServletRequest, username: String): Option[AuthenticationUser] = {
     directoryClient.findUser(username).map { ldapUser =>
-      AuthenticationUser(ldapUser.oid, ldapUser.givenNames + " " + ldapUser.lastName)
+      AuthenticationUser(ldapUser.oid, ldapUser.givenNames + " " + ldapUser.lastName, None)
     } match {
       case Some(user) =>
         logger(LogUserContext(request, user.oid)).info("Login successful")
@@ -116,6 +128,29 @@ class UserPasswordStrategy(protected val app: AuthenticationSupport)
 
   override def unauthenticated()(implicit request: HttpServletRequest, response: HttpServletResponse) {
     app.userNotAuthenticatedError
+  }
+}
+
+class CasServiceTicketCookieStrategy(protected val app: AuthenticationSupport)(implicit request: HttpServletRequest, response: HttpServletResponse)
+  extends ScentryStrategy[AuthenticationUser] with KoskiAuthenticationStrategy with Logging {
+
+
+  override def isValid(implicit request: HttpServletRequest) = {
+    app.getServiceTicketCookie.isDefined
+  }
+
+  def authenticate()(implicit request: HttpServletRequest, response: HttpServletResponse): Option[AuthenticationUser] = {
+    app.getServiceTicketCookie flatMap {
+      case serviceTicketCookie => app.application.serviceTicketRepository.getUserByTicket(serviceTicketCookie) match {
+        case Some(user) =>
+          logger.info(s"Restoring session for ${user.name} from service ticket $serviceTicketCookie")
+          Some(user)
+        case None =>
+          app.removeServiceTicketCookie
+          logger.info(s"Service ticket $serviceTicketCookie in cookie was not found in database")
+          None
+      }
+    }
   }
 }
 

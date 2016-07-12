@@ -31,8 +31,10 @@ object Tables {
   class CasServiceTicketSessionTable(tag: Tag) extends Table[CasServiceTicketSessionRow] (tag, "casserviceticket") {
     val serviceTicket = column[String]("serviceticket")
     val sessionId = column[String]("sessionid")
+    val username = column[String]("username")
+    val userOid = column[String]("useroid")
 
-    def * = (serviceTicket, sessionId) <> (CasServiceTicketSessionRow.tupled, CasServiceTicketSessionRow.unapply)
+    def * = (serviceTicket, sessionId, username, userOid) <> (CasServiceTicketSessionRow.tupled, CasServiceTicketSessionRow.unapply)
   }
 
   val CasServiceTicketSessions = TableQuery[CasServiceTicketSessionTable]
@@ -58,7 +60,7 @@ object Tables {
   }
 }
 
-case class CasServiceTicketSessionRow(serviceTicket: String, sessionId: String)
+case class CasServiceTicketSessionRow(serviceTicket: String, sessionId: String, username: String, userOid: String)
 
 // Note: the data json must not contain [id, versionumero] fields. This is enforced by DB constraint.
 case class OpiskeluOikeusRow(id: Int, oppijaOid: String, versionumero: Int, data: JValue) {
