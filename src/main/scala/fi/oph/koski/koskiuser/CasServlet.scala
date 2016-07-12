@@ -40,12 +40,7 @@ class CasServlet(val application: KoskiApplication) extends ApiServlet with Auth
         CasLogout.parseTicketFromLogoutRequest(logoutRequest) match {
           case Some(parsedTicket) =>
             logger.info("Got CAS logout for ticket " + parsedTicket)
-            ticketSessions.removeSessionByTicket(parsedTicket) match {
-              case Some(sessionId) =>
-                logger.info(s"Invalidated session $sessionId for ticket $parsedTicket")
-              case None =>
-                logger.warn(s"Session id not found for ticket $parsedTicket")
-            }
+            ticketSessions.removeSessionByTicket(parsedTicket)
           case None =>
             logger.warn("Unable to parse CAS ticket from logout: " + logoutRequest)
         }

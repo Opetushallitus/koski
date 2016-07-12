@@ -41,8 +41,6 @@ trait AuthenticationSupport extends ScalatraServlet with ScentrySupport[Authenti
     }
   }
 
-
-
   override protected def configureScentry = {
     scentry.unauthenticated {
       // When user authenticated user is need and not found, we send 401. Don't send a Basic Auth challenge, because browser will intercept that and show popup.
