@@ -2,13 +2,14 @@ package fi.oph.koski.koskiuser
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.{CasServiceTicketSessionRow, Futures, GlobalExecutionContext, Tables}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.util.Timing
 
-class CasTicketSessionRepository(db: DB) extends Futures with GlobalExecutionContext {
+class CasTicketSessionRepository(db: DB) extends Futures with GlobalExecutionContext with Timing {
   def store(sessionId: String, ticket: String, user: AuthenticationUser) = {
     db.run((Tables.CasServiceTicketSessions += CasServiceTicketSessionRow(ticket, sessionId, user.name, user.oid)))
   }
 
-  def getUserByTicket(ticket: String): Option[AuthenticationUser] = {
+  def getUserByTicket(ticket: String): Option[AuthenticationUser] = timed("getUserByTicket", 0) {
     await(db.run(Tables.CasServiceTicketSessions.filter(_.serviceTicket === ticket).result)).map(row => AuthenticationUser(row.userOid, row.username, Some(ticket))).headOption
   }
 

@@ -34,9 +34,7 @@ trait AuthenticationSupport extends ScalatraServlet with ScentrySupport[Authenti
     userOption.flatMap { authUser =>
       authUser.serviceTicket match {
         case Some(ticket) =>
-          // TODO: needs caching
           application.serviceTicketRepository.getUserByTicket(ticket) map(toKoskiUser)
-
         case None =>
           Some(toKoskiUser(authUser))
       }
