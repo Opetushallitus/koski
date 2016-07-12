@@ -5,12 +5,11 @@ import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json
 import fi.oph.koski.log._
-import fi.oph.koski.servlet.{JsonBodySnatcher, CasSingleSignOnSupport}
+import fi.oph.koski.servlet.{CasSingleSignOnSupport, JsonBodySnatcher}
 import fi.vm.sade.security.ldap.DirectoryClient
 import org.scalatra.ScalatraServlet
 import org.scalatra.auth.strategy.{BasicAuthStrategy, BasicAuthSupport}
 import org.scalatra.auth.{ScentryConfig, ScentrySupport}
-import org.scalatra.servlet.RichRequest
 
 trait AuthenticationSupport extends ScalatraServlet with ScentrySupport[AuthenticationUser] with BasicAuthSupport[AuthenticationUser] with CasSingleSignOnSupport with Logging {
   val realm = "Koski"
@@ -104,9 +103,8 @@ class UserPasswordStrategy(protected val app: AuthenticationSupport)
   override def name: String = "UserPassword"
 
   private def loginRequestInBody = {
-    JsonBodySnatcher.getJsonBody(request) match {
-      case Right(json) => Some(Json.fromJValue[Login](json))
-      case Left(error) => None
+    JsonBodySnatcher.getJsonBody(request).right.toOption flatMap { json =>
+      Json.tryFromJValue[Login](json).toOption
     }
   }
 

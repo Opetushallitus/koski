@@ -7,7 +7,7 @@ import org.json4s.jackson.JsonMethods
 import org.scalatra.servlet.ServletApiImplicits._
 
 object JsonBodySnatcher {
-  def getJsonBody(request: HttpServletRequest): Either[HttpStatus, JValue] with Product with Serializable = {
+  def getJsonBody[T](request: HttpServletRequest): Either[HttpStatus, JValue] = {
     (request.contentType.map(_.split(";")(0).toLowerCase), request.characterEncoding.map(_.toLowerCase)) match {
       case (Some("application/json"), Some("utf-8")) =>
         try {
