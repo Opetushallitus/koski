@@ -2,8 +2,7 @@ package fi.oph.koski.fixture
 
 import com.typesafe.config.Config
 import fi.oph.koski.cache.Cached
-import fi.oph.koski.db.KoskiDatabase
-import fi.oph.koski.db.KoskiDatabase._
+import fi.oph.koski.db.{KoskiDatabaseConfig, KoskiDatabase}
 import fi.oph.koski.koski.KoskiValidator
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluOikeusRepository
@@ -23,7 +22,7 @@ object Fixtures extends Logging with Timing {
     if (config.hasPath("fixtures.use")) {
       config.getBoolean("fixtures.use")
     } else {
-      config.isLocal
+      KoskiDatabaseConfig(config).isLocal
     }
   }
 }

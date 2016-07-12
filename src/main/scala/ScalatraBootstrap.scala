@@ -1,5 +1,6 @@
 import javax.servlet.ServletContext
 
+import com.typesafe.config.Config
 import fi.oph.koski.cache.CacheServlet
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db._
@@ -22,8 +23,9 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
   override def init(context: ServletContext) {
     try {
       Pools.init
-      val configOverrides: Map[String, String] = Option(context.getAttribute("tor.overrides").asInstanceOf[Map[String, String]]).getOrElse(Map.empty)
-      val application = KoskiApplication(configOverrides)
+      val config = Option(context.getAttribute("koski.config").asInstanceOf[Config]).getOrElse(KoskiApplication.defaultConfig)
+      val application = KoskiApplication(config)
+
       if (application.config.getBoolean("koodisto.create")) {
         KoodistoCreator.createKoodistotFromMockData(application.config)
       }

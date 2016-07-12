@@ -23,15 +23,11 @@ import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusR
 import fi.oph.koski.ytr.{YlioppilasTutkintoRekisteri, YtrAccessChecker, YtrOpiskeluoikeusRepository}
 
 object KoskiApplication {
-  val defaultConfig = ConfigFactory.load
+  lazy val defaultConfig = ConfigFactory.load
 
-  def apply: KoskiApplication = apply(Map.empty)
+  def apply: KoskiApplication = apply(defaultConfig)
 
-  def apply(overrides: Map[String, String] = Map.empty): KoskiApplication = {
-    new KoskiApplication(config(overrides))
-  }
-
-  def config(overrides: Map[String, String] = Map.empty) = overrides.toList.foldLeft(defaultConfig)({ case (config, (key, value)) => config.withValue(key, fromAnyRef(value)) })
+  def apply(config: Config): KoskiApplication = new KoskiApplication(config)
 }
 
 class KoskiApplication(val config: Config) extends Logging with UserAuthenticationContext {

@@ -6,8 +6,7 @@ import fi.oph.koski.json.Json
 import fi.oph.koski.log.Logging
 
 object KoodistoMockDataUpdater extends App with Logging {
-  updateMockDataFromKoodistoPalvelu(KoskiApplication.apply().config)
-
+  updateMockDataFromKoodistoPalvelu(KoskiApplication.defaultConfig)
 
   def updateMockDataFromKoodistoPalvelu(config: Config): Unit = {
     val kp = KoodistoPalvelu.withoutCache(config)

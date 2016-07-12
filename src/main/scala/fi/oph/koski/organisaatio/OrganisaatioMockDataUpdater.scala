@@ -6,7 +6,7 @@ import fi.oph.koski.json.Json
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViitePalvelu}
 
 object OrganisaatioMockDataUpdater extends App {
-  updateMockDataFromOrganisaatioPalvelu(KoskiApplication.apply().config)
+  updateMockDataFromOrganisaatioPalvelu(KoskiApplication.defaultConfig)
 
   def updateMockDataFromOrganisaatioPalvelu(config: Config): Unit = {
     val koodisto = KoodistoViitePalvelu(KoodistoPalvelu.apply(config))

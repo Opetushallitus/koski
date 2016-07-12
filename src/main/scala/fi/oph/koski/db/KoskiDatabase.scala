@@ -13,26 +13,30 @@ import scala.sys.process._
 
 object KoskiDatabase {
   type DB = PostgresDriver.backend.DatabaseDef
-
-  implicit class KoskiDatabaseConfig(c: Config) {
-    val host: String = c.getString("db.host")
-    val port: Int = c.getInt("db.port")
-    val dbName: String = c.getString("db.name")
-
-    val config = c.getConfig("db")
-      .withValue("url", fromAnyRef("jdbc:postgresql://" + host + ":" + port + "/" + dbName))
-      .withValue("numThreads", fromAnyRef(Pools.dbThreads))
-
-    val password: String = config.getString("password")
-    val user: String = config.getString("user")
-    val url: String = config.getString("url")
-    def isLocal = host == "localhost"
-    def isRemote = !isLocal
-    def toSlickDatabase = Database.forConfig("", config)
-  }
 }
 
-class KoskiDatabase(val config: Config) extends Logging {
+case class KoskiDatabaseConfig(c: Config) {
+  val host: String = c.getString("db.host")
+  val port: Int = c.getInt("db.port")
+  val dbName: String = c.getString("db.name")
+  val jdbcDriverClassName = "org.postgresql.Driver"
+  val password: String = c.getString("db.password")
+  val user: String = c.getString("db.user")
+  val jdbcUrl = "jdbc:postgresql://" + host + ":" + port + "/" + dbName  + "?user=" + user + "&password=" + password
+
+  val config = c.getConfig("db")
+    .withValue("url", fromAnyRef(jdbcUrl))
+    .withValue("numThreads", fromAnyRef(Pools.dbThreads))
+
+  val url: String = config.getString("url")
+  def isLocal = host == "localhost"
+  def isRemote = !isLocal
+  def toSlickDatabase = Database.forConfig("", config)
+}
+
+
+class KoskiDatabase(c: Config) extends Logging {
+  val config = KoskiDatabaseConfig(c)
   val serverProcess = startLocalDatabaseServerIfNotRunning
 
   if (!config.isRemote) {
