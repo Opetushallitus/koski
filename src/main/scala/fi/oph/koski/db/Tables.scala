@@ -4,10 +4,8 @@ import java.sql.Timestamp
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.json.Json
-import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.koskiuser.{AccessType, KoskiUser}
-import fi.oph.koski.localization.LocalizedString
-import fi.oph.koski.schema.{Koodistokoodiviite, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
 import org.json4s._
 
 object Tables {
@@ -30,6 +28,15 @@ object Tables {
     def * = (opiskeluoikeusId, versionumero, aikaleima, kayttajaOid, muutos) <> (OpiskeluOikeusHistoryRow.tupled, OpiskeluOikeusHistoryRow.unapply)
   }
 
+  class CasServiceTicketSessionTable(tag: Tag) extends Table[CasServiceTicketSessionRow] (tag, "casserviceticket") {
+    val serviceTicket = column[String]("serviceticket")
+    val sessionId = column[String]("sessionid")
+
+    def * = (serviceTicket, sessionId) <> (CasServiceTicketSessionRow.tupled, CasServiceTicketSessionRow.unapply)
+  }
+
+  val CasServiceTicketSessions = TableQuery[CasServiceTicketSessionTable]
+
   // OpiskeluOikeudet-taulu. Käytä kyselyissä aina OpiskeluOikeudetWithAccessCheck, niin tulee myös käyttöoikeudet tarkistettua samalla.
   val OpiskeluOikeudet = TableQuery[OpiskeluOikeusTable]
 
@@ -50,6 +57,8 @@ object Tables {
     }
   }
 }
+
+case class CasServiceTicketSessionRow(serviceTicket: String, sessionId: String)
 
 // Note: the data json must not contain [id, versionumero] fields. This is enforced by DB constraint.
 case class OpiskeluOikeusRow(id: Int, oppijaOid: String, versionumero: Int, data: JValue) {
