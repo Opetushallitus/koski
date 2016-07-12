@@ -143,7 +143,6 @@ class CasServiceTicketCookieStrategy(protected val app: AuthenticationSupport)(i
           Some(user)
         case None =>
           app.removeServiceTicketCookie
-          logger.info(s"Service ticket $serviceTicketCookie in cookie was not found in database")
           None
       }
     }
