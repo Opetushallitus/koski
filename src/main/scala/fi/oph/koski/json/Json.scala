@@ -55,9 +55,6 @@ object Json {
     x.extract[A]
   }
 
-  def tryFromJValue[A](x: JValue)(implicit mf : scala.reflect.Manifest[A]): Try[A] = Try(fromJValue[A](x))
-
-
   def readFile(filename: String): json4s.JValue = {
     readFileIfExists(filename).get
   }

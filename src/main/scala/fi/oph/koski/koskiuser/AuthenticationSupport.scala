@@ -11,6 +11,8 @@ import org.scalatra.ScalatraServlet
 import org.scalatra.auth.strategy.{BasicAuthStrategy, BasicAuthSupport}
 import org.scalatra.auth.{ScentryConfig, ScentrySupport}
 
+import scala.util.Try
+
 trait AuthenticationSupport extends ScalatraServlet with ScentrySupport[AuthenticationUser] with BasicAuthSupport[AuthenticationUser] with CasSingleSignOnSupport with Logging {
   val realm = "Koski"
 
@@ -104,7 +106,7 @@ class UserPasswordStrategy(protected val app: AuthenticationSupport)
 
   private def loginRequestInBody = {
     JsonBodySnatcher.getJsonBody(request).right.toOption flatMap { json =>
-      Json.tryFromJValue[Login](json).toOption
+      Try(Json.fromJValue[Login](json)).toOption
     }
   }
 
