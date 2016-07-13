@@ -20,7 +20,7 @@ class CasServlet(val application: KoskiApplication) extends ApiServlet with Auth
               logger.info(s"Started session ${session.id} for ticket $ticket")
               ticketSessions.store(session.id, ticket, user)
               setServiceTicketCookie(ticket)
-              redirect("/")
+              redirect(consumeReturnUrlCookie.getOrElse("/"))
             case None =>
               haltWithStatus(KoskiErrorCategory.internalError(s"CAS-käyttäjää $username ei löytynyt LDAPista"))
           }
