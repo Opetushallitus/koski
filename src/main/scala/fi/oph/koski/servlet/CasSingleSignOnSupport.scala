@@ -12,16 +12,9 @@ trait CasSingleSignOnSupport extends ScalatraBase {
 
   def isHttps = !currentUrl.startsWith("http://localhost") // <- we don't get the https protocol correctly through the proxy, so we assume https
 
-  def setServiceTicketCookie(ticket: String) = response.addCookie(Cookie("koskiServiceTicket", ticket)(CookieOptions(secure = isHttps, path = "/", maxAge = 3600)))
+  def setServiceTicketCookie(ticket: String) = response.addCookie(Cookie("koskiServiceTicket", ticket)(CookieOptions(secure = isHttps, path = "/", maxAge = 3600, httpOnly = true)))
   def getServiceTicketCookie: Option[String] = Option(request.getCookies).toList.flatten.find(_.getName == "koskiServiceTicket").map(_.getValue)
   def removeServiceTicketCookie = response.addCookie(Cookie("koskiServiceTicket", "")(CookieOptions(secure = isHttps, path = "/", maxAge = 0)))
-
-  def setReturnUrlCookie = response.addCookie(Cookie("koskiReturnUrl", currentUrl)(CookieOptions(secure = isHttps, path = "/", maxAge = 60)))
-  def consumeReturnUrlCookie: Option[String] = {
-    val result = Option(request.getCookies).toList.flatten.find(_.getName == "koskiReturnUrl").map(_.getValue)
-    response.addCookie(Cookie("koskiReturnUrl", "")(CookieOptions(secure = isHttps, path = "/", maxAge = 0)))
-    result
-  }
 
   def casServiceUrl = {
     def fixProtocol(url: String) = if (!isHttps) {
@@ -39,10 +32,15 @@ trait CasSingleSignOnSupport extends ScalatraBase {
     }
   }
 
+  def redirectAfterLogin = {
+    val returnUrlCookie = Option(request.getCookies).toList.flatten.find(_.getName == "koskiReturnUrl").map(_.getValue)
+    response.addCookie(Cookie("koskiReturnUrl", "")(CookieOptions(secure = isHttps, path = "/", maxAge = 0)))
+    redirect(returnUrlCookie.getOrElse("/"))
+  }
 
   def redirectToLogin = {
+    response.addCookie(Cookie("koskiReturnUrl", currentUrl)(CookieOptions(secure = isHttps, path = "/", maxAge = 60)))
     if (isCasSsoUsed) {
-      setReturnUrlCookie
       redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/login?service=" + casServiceUrl)
     } else {
       redirect("/")
