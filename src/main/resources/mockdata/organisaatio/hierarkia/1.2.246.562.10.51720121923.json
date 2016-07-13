@@ -12,6 +12,7 @@
       },
       "oppilaitosKoodi" : "10054",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_21#1",
       "children" : [ {
         "oid" : "1.2.246.562.10.96247340308",
         "nimi" : {

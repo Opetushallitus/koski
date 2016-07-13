@@ -7,7 +7,7 @@ import fi.oph.koski.http.{Http, VirkailijaHttpClient}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.log.TimedProxy
-import fi.oph.koski.schema.OrganisaatioWithOid
+import fi.oph.koski.schema.{Koodistokoodiviite, Oppilaitos, OrganisaatioWithOid}
 
 trait OrganisaatioRepository {
   /**
@@ -25,7 +25,7 @@ trait OrganisaatioRepository {
     }
     flatten(List(hierarkia)).map(_.oid).toSet
   }
-  def search(searchTerm: String): List[OrganisaatioWithOid]
+  def findByOppilaitosnumero(numero: String): Option[Oppilaitos]
 }
 
 object OrganisaatioRepository {
@@ -44,28 +44,31 @@ object OrganisaatioRepository {
 }
 
 abstract class JsonOrganisaatioRepository(koodisto: KoodistoViitePalvelu) extends OrganisaatioRepository {
-  def getOrganisaatioHierarkiaIncludingParents(oid: String): Option[OrganisaatioHierarkia] = {
-   fetch(oid).organisaatiot.map(convertOrganisaatio)
-      .headOption
-  }
-
-  private def convertOrganisaatio(org: OrganisaatioPalveluOrganisaatio): OrganisaatioHierarkia = {
+  protected def convertOrganisaatio(org: OrganisaatioPalveluOrganisaatio): OrganisaatioHierarkia = {
     val oppilaitosnumero = org.oppilaitosKoodi.flatMap(oppilaitosnumero => koodisto.getKoodistoKoodiViite("oppilaitosnumero", oppilaitosnumero))
     val oppilaitostyyppi: Option[String] = org.oppilaitostyyppi.map(_.replace("oppilaitostyyppi_", "").replaceAll("#.*", ""))
     OrganisaatioHierarkia(org.oid, oppilaitosnumero, LocalizedString.sanitizeRequired(org.nimi, org.oid), org.organisaatiotyypit, oppilaitostyyppi, org.children.map(convertOrganisaatio))
   }
-
-  def search(searchTerm: String): List[OrganisaatioWithOid] = fetchSearch(searchTerm).organisaatiot.map(convertOrganisaatio).map(_.toOrganisaatio)
-
-  def fetch(oid: String): OrganisaatioHakuTulos
-  def fetchSearch(searchTerm: String): OrganisaatioHakuTulos
 }
 
 class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu) extends JsonOrganisaatioRepository(koodisto) {
+  def getOrganisaatioHierarkiaIncludingParents(oid: String): Option[OrganisaatioHierarkia] = {
+    fetch(oid).organisaatiot.map(convertOrganisaatio).headOption
+  }
+
+  def findByOppilaitosnumero(numero: String): Option[Oppilaitos] = {
+    search(numero).flatMap {
+      case o@Oppilaitos(_, Some(Koodistokoodiviite(koodiarvo, _, _, _, _)), _) if koodiarvo == numero => Some(o)
+      case _ => None
+    }.headOption
+  }
+
+  private def search(searchTerm: String): List[OrganisaatioWithOid] = fetchSearch(searchTerm).organisaatiot.map(convertOrganisaatio).map(_.toOrganisaatio)
+
   def fetch(oid: String): OrganisaatioHakuTulos = {
     runTask(http(uri"/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=false&oid=${oid}")(Http.parseJson[OrganisaatioHakuTulos]))
   }
-  def fetchSearch(searchTerm: String): OrganisaatioHakuTulos = {
+  private def fetchSearch(searchTerm: String): OrganisaatioHakuTulos = {
     runTask(http(uri"/organisaatio-service/rest/organisaatio/v2/hae?aktiiviset=true&lakkautetut=false&searchStr=${searchTerm}")(Http.parseJson[OrganisaatioHakuTulos]))
   }
 }

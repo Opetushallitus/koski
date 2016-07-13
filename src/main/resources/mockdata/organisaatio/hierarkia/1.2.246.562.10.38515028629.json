@@ -1,368 +1,128 @@
 {
-  "numHits": 16,
-  "organisaatiot": [
-    {
-      "oid": "1.2.246.562.10.240484683010",
-      "alkuPvm": 631144800000,
-      "parentOid": "1.2.246.562.10.00000000001",
-      "parentOidPath": "1.2.246.562.10.240484683010/1.2.246.562.10.00000000001",
-      "ytunnus": "2285733-9",
-      "toimipistekoodi": "",
-      "match": true,
-      "nimi": {
-        "fi": "Itä-Suomen yliopisto"
+  "organisaatiot" : [ {
+    "oid" : "1.2.246.562.10.240484683010",
+    "nimi" : {
+      "fi" : "Itä-Suomen yliopisto"
+    },
+    "organisaatiotyypit" : [ "KOULUTUSTOIMIJA" ],
+    "children" : [ {
+      "oid" : "1.2.246.562.10.38515028629",
+      "nimi" : {
+        "fi" : "Itä-Suomen yliopisto",
+        "sv" : "Östra Finlands Universitet",
+        "en" : "University of Eastern Finland"
       },
-      "kieletUris": [
-        "oppilaitoksenopetuskieli_1#1"
-      ],
-      "kotipaikkaUri": "kunta_297",
-      "children": [
-        {
-          "oid": "1.2.246.562.10.38515028629",
-          "alkuPvm": 1262296800000,
-          "parentOid": "1.2.246.562.10.240484683010",
-          "parentOidPath": "1.2.246.562.10.38515028629/1.2.246.562.10.240484683010/1.2.246.562.10.00000000001",
-          "oppilaitosKoodi": "10088",
-          "oppilaitostyyppi": "oppilaitostyyppi_42#1",
-          "toimipistekoodi": "10088",
-          "match": true,
-          "nimi": {
-            "fi": "Itä-Suomen yliopisto",
-            "sv": "Östra Finlands Universitet",
-            "en": "University of Eastern Finland"
+      "oppilaitosKoodi" : "10088",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_42#1",
+      "children" : [ {
+        "oid" : "1.2.246.562.10.313555427010",
+        "nimi" : {
+          "fi" : "Itä-Suomen yliopisto, Filosofinen tiedekunta",
+          "sv" : "Östra Finlands Universitet, Filosofiska fakulteten",
+          "en" : "University of Eastern Finland, Philosophical Faculty"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ {
+          "oid" : "1.2.246.562.10.2014041814410945937137",
+          "nimi" : {
+            "fi" : "Itä-Suomen yliopisto, Filosofinen tiedekunta, Savonlinnan kampus"
           },
-          "kieletUris": [
-            "oppilaitoksenopetuskieli_4#1",
-            "oppilaitoksenopetuskieli_1#1"
-          ],
-          "kotipaikkaUri": "kunta_167",
-          "children": [
-            {
-              "oid": "1.2.246.562.10.65987152505",
-              "alkuPvm": 1262296800000,
-              "parentOid": "1.2.246.562.10.38515028629",
-              "parentOidPath": "1.2.246.562.10.65987152505/1.2.246.562.10.38515028629/1.2.246.562.10.240484683010/1.2.246.562.10.00000000001",
-              "toimipistekoodi": "1008805",
-              "match": false,
-              "nimi": {
-                "fi": "Itä-Suomen yliopisto, Avoin yliopisto",
-                "sv": "Östra Finlands Universitet, Öppna universitet",
-                "en": "University of Eastern Finland, Open University"
-              },
-              "kieletUris": [
-                "oppilaitoksenopetuskieli_1#1"
-              ],
-              "kotipaikkaUri": "kunta_297",
-              "children": [
-                {
-                  "oid": "1.2.246.562.10.71579636385",
-                  "alkuPvm": 1262296800000,
-                  "parentOid": "1.2.246.562.10.65987152505",
-                  "parentOidPath": "1.2.246.562.10.71579636385/1.2.246.562.10.65987152505/1.2.246.562.10.38515028629/1.2.246.562.10.240484683010/1.2.246.562.10.00000000001",
-                  "toimipistekoodi": "1008807",
-                  "match": false,
-                  "nimi": {
-                    "fi": "Itä-Suomen yliopisto, Avoin yliopisto, Kuopion kampus",
-                    "sv": "Östra Finlands Universitet, Öppna universitet, Kuopio kampus",
-                    "en": "University of Eastern Finland, Open University, Kuopio campus"
-                  },
-                  "kieletUris": [
-                    "oppilaitoksenopetuskieli_1#1"
-                  ],
-                  "kotipaikkaUri": "kunta_297",
-                  "children": [],
-                  "organisaatiotyypit": [
-                    "TOIMIPISTE"
-                  ],
-                  "aliOrganisaatioMaara": 0
-                },
-                {
-                  "oid": "1.2.246.562.10.52129572656",
-                  "alkuPvm": 1262296800000,
-                  "parentOid": "1.2.246.562.10.65987152505",
-                  "parentOidPath": "1.2.246.562.10.52129572656/1.2.246.562.10.65987152505/1.2.246.562.10.38515028629/1.2.246.562.10.240484683010/1.2.246.562.10.00000000001",
-                  "toimipistekoodi": "1008806",
-                  "match": false,
-                  "nimi": {
-                    "fi": "Itä-Suomen yliopisto, Avoin yliopisto, Joensuun kampus",
-                    "sv": "Östra Finlands Universitet, Öppna universitet, Joensuu kampus",
-                    "en": "University of Eastern Finland, Open University, Joensuu campus"
-                  },
-                  "kieletUris": [
-                    "oppilaitoksenopetuskieli_1#1"
-                  ],
-                  "kotipaikkaUri": "kunta_167",
-                  "children": [],
-                  "organisaatiotyypit": [
-                    "TOIMIPISTE"
-                  ],
-                  "aliOrganisaatioMaara": 0
-                }
-              ],
-              "organisaatiotyypit": [
-                "TOIMIPISTE"
-              ],
-              "aliOrganisaatioMaara": 2
-            },
-            {
-              "oid": "1.2.246.562.10.313555427010",
-              "alkuPvm": 1262296800000,
-              "parentOid": "1.2.246.562.10.38515028629",
-              "parentOidPath": "1.2.246.562.10.313555427010/1.2.246.562.10.38515028629/1.2.246.562.10.240484683010/1.2.246.562.10.00000000001",
-              "toimipistekoodi": "1008801",
-              "match": false,
-              "nimi": {
-                "fi": "Itä-Suomen yliopisto, Filosofinen tiedekunta",
-                "sv": "Östra Finlands Universitet, Filosofiska fakulteten",
-                "en": "University of Eastern Finland, Philosophical Faculty"
-              },
-              "kieletUris": [
-                "oppilaitoksenopetuskieli_4#1",
-                "oppilaitoksenopetuskieli_1#1"
-              ],
-              "kotipaikkaUri": "kunta_167",
-              "children": [
-                {
-                  "oid": "1.2.246.562.10.2014041814410945937137",
-                  "alkuPvm": 1262296800000,
-                  "parentOid": "1.2.246.562.10.313555427010",
-                  "parentOidPath": "1.2.246.562.10.2014041814410945937137/1.2.246.562.10.313555427010/1.2.246.562.10.38515028629/1.2.246.562.10.240484683010/1.2.246.562.10.00000000001",
-                  "toimipistekoodi": "1008826",
-                  "match": false,
-                  "nimi": {
-                    "fi": "Itä-Suomen yliopisto, Filosofinen tiedekunta, Savonlinnan kampus"
-                  },
-                  "kieletUris": [
-                    "oppilaitoksenopetuskieli_1#1"
-                  ],
-                  "kotipaikkaUri": "kunta_740",
-                  "children": [],
-                  "organisaatiotyypit": [
-                    "TOIMIPISTE"
-                  ],
-                  "aliOrganisaatioMaara": 0
-                },
-                {
-                  "oid": "1.2.246.562.10.2014041814394599222321",
-                  "alkuPvm": 1262296800000,
-                  "parentOid": "1.2.246.562.10.313555427010",
-                  "parentOidPath": "1.2.246.562.10.2014041814394599222321/1.2.246.562.10.313555427010/1.2.246.562.10.38515028629/1.2.246.562.10.240484683010/1.2.246.562.10.00000000001",
-                  "toimipistekoodi": "1008825",
-                  "match": false,
-                  "nimi": {
-                    "fi": "Itä-Suomen yliopisto, Filosofinen tiedekunta, Joensuun kampus",
-                    "en": "University of Eastern Finland, Philosophical Faculty, Joensuu campus"
-                  },
-                  "kieletUris": [
-                    "oppilaitoksenopetuskieli_1#1",
-                    "oppilaitoksenopetuskieli_4#1"
-                  ],
-                  "kotipaikkaUri": "kunta_167",
-                  "children": [],
-                  "organisaatiotyypit": [
-                    "TOIMIPISTE"
-                  ],
-                  "aliOrganisaatioMaara": 0
-                }
-              ],
-              "organisaatiotyypit": [
-                "TOIMIPISTE"
-              ],
-              "aliOrganisaatioMaara": 2
-            },
-            {
-              "oid": "1.2.246.562.10.56730020288",
-              "alkuPvm": 1262296800000,
-              "parentOid": "1.2.246.562.10.38515028629",
-              "parentOidPath": "1.2.246.562.10.56730020288/1.2.246.562.10.38515028629/1.2.246.562.10.240484683010/1.2.246.562.10.00000000001",
-              "toimipistekoodi": "1008803",
-              "match": false,
-              "nimi": {
-                "fi": "Itä-Suomen yliopisto, Terveystieteiden tiedekunta",
-                "sv": "Östra Finlands Universitet, Hälsovetenskapliga fakulteten",
-                "en": "University of Eastern Finland, Faculty of Health Sciences"
-              },
-              "kieletUris": [
-                "oppilaitoksenopetuskieli_4#1",
-                "oppilaitoksenopetuskieli_1#1"
-              ],
-              "kotipaikkaUri": "kunta_297",
-              "children": [
-                {
-                  "oid": "1.2.246.562.10.2014041814440291927552",
-                  "alkuPvm": 1262296800000,
-                  "parentOid": "1.2.246.562.10.56730020288",
-                  "parentOidPath": "1.2.246.562.10.2014041814440291927552/1.2.246.562.10.56730020288/1.2.246.562.10.38515028629/1.2.246.562.10.240484683010/1.2.246.562.10.00000000001",
-                  "toimipistekoodi": "1008829",
-                  "match": false,
-                  "nimi": {
-                    "fi": "Itä-Suomen yliopisto, Terveystieteiden tiedekunta, Kuopion kampus",
-                    "en": "University of Eastern Finland, Faculty of Health Sciences, Kuopio campus"
-                  },
-                  "kieletUris": [
-                    "oppilaitoksenopetuskieli_1#1",
-                    "oppilaitoksenopetuskieli_4#1"
-                  ],
-                  "kotipaikkaUri": "kunta_297",
-                  "children": [],
-                  "organisaatiotyypit": [
-                    "TOIMIPISTE"
-                  ],
-                  "aliOrganisaatioMaara": 0
-                }
-              ],
-              "organisaatiotyypit": [
-                "TOIMIPISTE"
-              ],
-              "aliOrganisaatioMaara": 1
-            },
-            {
-              "oid": "1.2.246.562.10.90617966271",
-              "alkuPvm": 1262296800000,
-              "parentOid": "1.2.246.562.10.38515028629",
-              "parentOidPath": "1.2.246.562.10.90617966271/1.2.246.562.10.38515028629/1.2.246.562.10.240484683010/1.2.246.562.10.00000000001",
-              "toimipistekoodi": "1008804",
-              "match": false,
-              "nimi": {
-                "fi": "Itä-Suomen yliopisto, Yhteiskuntatieteiden ja kauppatieteiden tiedekunta",
-                "sv": "University of Eastern Finland, Faculty of Social Sciences and Business Studies",
-                "en": "University of Eastern Finland, Faculty of Social Sciences and Business Studies"
-              },
-              "kieletUris": [
-                "oppilaitoksenopetuskieli_4#1",
-                "oppilaitoksenopetuskieli_1#1"
-              ],
-              "kotipaikkaUri": "kunta_167",
-              "children": [
-                {
-                  "oid": "1.2.246.562.10.2014041814455745619200",
-                  "alkuPvm": 1262296800000,
-                  "parentOid": "1.2.246.562.10.90617966271",
-                  "parentOidPath": "1.2.246.562.10.2014041814455745619200/1.2.246.562.10.90617966271/1.2.246.562.10.38515028629/1.2.246.562.10.240484683010/1.2.246.562.10.00000000001",
-                  "toimipistekoodi": "1008831",
-                  "match": false,
-                  "nimi": {
-                    "fi": "Itä-Suomen yliopisto, Yhteiskuntatieteiden ja kauppatieteiden tiedekunta, Kuopion kampus",
-                    "sv": "University of Eastern Finland",
-                    "en": "University of Eastern Finland, Faculty of Social Sciences and Business Studies"
-                  },
-                  "kieletUris": [
-                    "oppilaitoksenopetuskieli_1#1",
-                    "oppilaitoksenopetuskieli_4#1"
-                  ],
-                  "kotipaikkaUri": "kunta_297",
-                  "children": [],
-                  "organisaatiotyypit": [
-                    "TOIMIPISTE"
-                  ],
-                  "aliOrganisaatioMaara": 0
-                },
-                {
-                  "oid": "1.2.246.562.10.2014041814451226300479",
-                  "alkuPvm": 1262296800000,
-                  "parentOid": "1.2.246.562.10.90617966271",
-                  "parentOidPath": "1.2.246.562.10.2014041814451226300479/1.2.246.562.10.90617966271/1.2.246.562.10.38515028629/1.2.246.562.10.240484683010/1.2.246.562.10.00000000001",
-                  "toimipistekoodi": "1008830",
-                  "match": false,
-                  "nimi": {
-                    "fi": "Itä-Suomen yliopisto, Yhteiskuntatieteiden ja kauppatieteiden tiedekunta, Joensuun kampus",
-                    "sv": "University of Eastern Finland, Faculty of Social Sciences and Business Studies",
-                    "en": "University of Eastern Finland, Faculty of Social Sciences and Business Studies"
-                  },
-                  "kieletUris": [
-                    "oppilaitoksenopetuskieli_1#1"
-                  ],
-                  "kotipaikkaUri": "kunta_167",
-                  "children": [],
-                  "organisaatiotyypit": [
-                    "TOIMIPISTE"
-                  ],
-                  "aliOrganisaatioMaara": 0
-                }
-              ],
-              "organisaatiotyypit": [
-                "TOIMIPISTE"
-              ],
-              "aliOrganisaatioMaara": 2
-            },
-            {
-              "oid": "1.2.246.562.10.665851030310",
-              "alkuPvm": 1262296800000,
-              "parentOid": "1.2.246.562.10.38515028629",
-              "parentOidPath": "1.2.246.562.10.665851030310/1.2.246.562.10.38515028629/1.2.246.562.10.240484683010/1.2.246.562.10.00000000001",
-              "toimipistekoodi": "1008802",
-              "match": false,
-              "nimi": {
-                "fi": "Itä-Suomen yliopisto, Luonnontieteiden ja metsätieteiden tiedekunta",
-                "sv": "University of Eastern Finland, Faculty of Science and Forestry",
-                "en": "University of Eastern Finland, Faculty of Science and Forestry"
-              },
-              "kieletUris": [
-                "oppilaitoksenopetuskieli_1#1"
-              ],
-              "kotipaikkaUri": "kunta_167",
-              "children": [
-                {
-                  "oid": "1.2.246.562.10.2014041814430212995701",
-                  "alkuPvm": 1262296800000,
-                  "parentOid": "1.2.246.562.10.665851030310",
-                  "parentOidPath": "1.2.246.562.10.2014041814430212995701/1.2.246.562.10.665851030310/1.2.246.562.10.38515028629/1.2.246.562.10.240484683010/1.2.246.562.10.00000000001",
-                  "toimipistekoodi": "1008828",
-                  "match": false,
-                  "nimi": {
-                    "fi": "Itä-Suomen yliopisto, Luonnontieteiden ja metsätieteiden tiedekunta, Kuopion kampus",
-                    "en": "University of Eastern Finland, Faculty of Science and Forestry, Kuopio campus"
-                  },
-                  "kieletUris": [
-                    "oppilaitoksenopetuskieli_4#1",
-                    "oppilaitoksenopetuskieli_1#1"
-                  ],
-                  "kotipaikkaUri": "kunta_297",
-                  "children": [],
-                  "organisaatiotyypit": [
-                    "TOIMIPISTE"
-                  ],
-                  "aliOrganisaatioMaara": 0
-                },
-                {
-                  "oid": "1.2.246.562.10.2014041814420657444022",
-                  "alkuPvm": 1262296800000,
-                  "parentOid": "1.2.246.562.10.665851030310",
-                  "parentOidPath": "1.2.246.562.10.2014041814420657444022/1.2.246.562.10.665851030310/1.2.246.562.10.38515028629/1.2.246.562.10.240484683010/1.2.246.562.10.00000000001",
-                  "toimipistekoodi": "1008801",
-                  "match": false,
-                  "nimi": {
-                    "fi": "Itä-Suomen yliopisto, Luonnontieteiden ja metsätieteiden tiedekunta, Joensuun kampus",
-                    "en": "University of Eastern Finland, Faculty of Science and Forestry, Joensuu campus"
-                  },
-                  "kieletUris": [
-                    "oppilaitoksenopetuskieli_1#1",
-                    "oppilaitoksenopetuskieli_4#1"
-                  ],
-                  "kotipaikkaUri": "kunta_167",
-                  "children": [],
-                  "organisaatiotyypit": [
-                    "TOIMIPISTE"
-                  ],
-                  "aliOrganisaatioMaara": 0
-                }
-              ],
-              "organisaatiotyypit": [
-                "TOIMIPISTE"
-              ],
-              "aliOrganisaatioMaara": 2
-            }
-          ],
-          "organisaatiotyypit": [
-            "OPPILAITOS"
-          ],
-          "aliOrganisaatioMaara": 5
-        }
-      ],
-      "organisaatiotyypit": [
-        "KOULUTUSTOIMIJA"
-      ],
-      "aliOrganisaatioMaara": 2
-    }
-  ]
+          "organisaatiotyypit" : [ "TOIMIPISTE" ],
+          "children" : [ ]
+        }, {
+          "oid" : "1.2.246.562.10.2014041814394599222321",
+          "nimi" : {
+            "fi" : "Itä-Suomen yliopisto, Filosofinen tiedekunta, Joensuun kampus",
+            "en" : "University of Eastern Finland, Philosophical Faculty, Joensuu campus"
+          },
+          "organisaatiotyypit" : [ "TOIMIPISTE" ],
+          "children" : [ ]
+        } ]
+      }, {
+        "oid" : "1.2.246.562.10.665851030310",
+        "nimi" : {
+          "fi" : "Itä-Suomen yliopisto, Luonnontieteiden ja metsätieteiden tiedekunta",
+          "sv" : "University of Eastern Finland, Faculty of Science and Forestry",
+          "en" : "University of Eastern Finland, Faculty of Science and Forestry"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ {
+          "oid" : "1.2.246.562.10.2014041814430212995701",
+          "nimi" : {
+            "fi" : "Itä-Suomen yliopisto, Luonnontieteiden ja metsätieteiden tiedekunta, Kuopion kampus",
+            "en" : "University of Eastern Finland, Faculty of Science and Forestry, Kuopio campus"
+          },
+          "organisaatiotyypit" : [ "TOIMIPISTE" ],
+          "children" : [ ]
+        }, {
+          "oid" : "1.2.246.562.10.2014041814420657444022",
+          "nimi" : {
+            "fi" : "Itä-Suomen yliopisto, Luonnontieteiden ja metsätieteiden tiedekunta, Joensuun kampus",
+            "en" : "University of Eastern Finland, Faculty of Science and Forestry, Joensuu campus"
+          },
+          "organisaatiotyypit" : [ "TOIMIPISTE" ],
+          "children" : [ ]
+        } ]
+      }, {
+        "oid" : "1.2.246.562.10.56730020288",
+        "nimi" : {
+          "fi" : "Itä-Suomen yliopisto, Terveystieteiden tiedekunta",
+          "sv" : "Östra Finlands Universitet, Hälsovetenskapliga fakulteten",
+          "en" : "University of Eastern Finland, Faculty of Health Sciences"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ {
+          "oid" : "1.2.246.562.10.2014041814440291927552",
+          "nimi" : {
+            "fi" : "Itä-Suomen yliopisto, Terveystieteiden tiedekunta, Kuopion kampus",
+            "en" : "University of Eastern Finland, Faculty of Health Sciences, Kuopio campus"
+          },
+          "organisaatiotyypit" : [ "TOIMIPISTE" ],
+          "children" : [ ]
+        } ]
+      }, {
+        "oid" : "1.2.246.562.10.90617966271",
+        "nimi" : {
+          "fi" : "Itä-Suomen yliopisto, Yhteiskuntatieteiden ja kauppatieteiden tiedekunta",
+          "sv" : "University of Eastern Finland, Faculty of Social Sciences and Business Studies",
+          "en" : "University of Eastern Finland, Faculty of Social Sciences and Business Studies"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ {
+          "oid" : "1.2.246.562.10.2014041814455745619200",
+          "nimi" : {
+            "fi" : "Itä-Suomen yliopisto, Yhteiskuntatieteiden ja kauppatieteiden tiedekunta, Kuopion kampus",
+            "sv" : "University of Eastern Finland",
+            "en" : "University of Eastern Finland, Faculty of Social Sciences and Business Studies"
+          },
+          "organisaatiotyypit" : [ "TOIMIPISTE" ],
+          "children" : [ ]
+        }, {
+          "oid" : "1.2.246.562.10.2014041814451226300479",
+          "nimi" : {
+            "fi" : "Itä-Suomen yliopisto, Yhteiskuntatieteiden ja kauppatieteiden tiedekunta, Joensuun kampus",
+            "sv" : "University of Eastern Finland, Faculty of Social Sciences and Business Studies",
+            "en" : "University of Eastern Finland, Faculty of Social Sciences and Business Studies"
+          },
+          "organisaatiotyypit" : [ "TOIMIPISTE" ],
+          "children" : [ ]
+        } ]
+      }, {
+        "oid" : "1.2.246.562.10.62149679512",
+        "nimi" : {
+          "fi" : "Itä-Suomen yliopisto, Avoin yliopisto, Joensuun kampus"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.49729016808",
+        "nimi" : {
+          "fi" : "Itä-Suomen yliopisto, Avoin yliopisto, Kuopion kampus"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      } ]
+    } ]
+  } ]
 }

@@ -1,237 +1,84 @@
 {
-  "numHits": 10,
-  "organisaatiot": [
-    {
-      "oid": "1.2.246.562.10.53814745062",
-      "alkuPvm": 1262296800000,
-      "parentOid": "1.2.246.562.10.00000000001",
-      "parentOidPath": "1.2.246.562.10.53814745062/1.2.246.562.10.00000000001",
-      "ytunnus": "0313471-7",
-      "toimipistekoodi": "",
-      "match": true,
-      "nimi": {
-        "fi": "Helsingin Yliopisto"
+  "organisaatiot" : [ {
+    "oid" : "1.2.246.562.10.82388989657",
+    "nimi" : {
+      "fi" : "Aalto-korkeakoulusäätiö"
+    },
+    "organisaatiotyypit" : [ "KOULUTUSTOIMIJA" ],
+    "children" : [ {
+      "oid" : "1.2.246.562.10.56753942459",
+      "nimi" : {
+        "fi" : "Aalto-yliopisto",
+        "sv" : "Aalto-universitetet",
+        "en" : "Aalto University"
       },
-      "kieletUris": [
-        "oppilaitoksenopetuskieli_1#1"
-      ],
-      "kotipaikkaUri": "kunta_091",
-      "children": [
-        {
-          "oid": "1.2.246.562.10.56753942459",
-          "alkuPvm": 1262296800000,
-          "parentOid": "1.2.246.562.10.53814745062",
-          "parentOidPath": "1.2.246.562.10.56753942459/1.2.246.562.10.53814745062/1.2.246.562.10.00000000001",
-          "oppilaitosKoodi": "10076",
-          "oppilaitostyyppi": "oppilaitostyyppi_42#1",
-          "toimipistekoodi": "10076",
-          "match": true,
-          "nimi": {
-            "fi": "Aalto-yliopisto",
-            "sv": "Aalto-universitetet",
-            "en": "Aalto University"
+      "oppilaitosKoodi" : "10076",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_42#1",
+      "children" : [ {
+        "oid" : "1.2.246.562.10.61042218794",
+        "nimi" : {
+          "fi" : "Aalto-yliopisto, Kauppakorkeakoulu",
+          "sv" : "Aalto-universitetet, Handelshögskola",
+          "en" : "Aalto University, School of Business"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ {
+          "oid" : "1.2.246.562.10.62153941789",
+          "nimi" : {
+            "fi" : "Aalto-yliopisto, Kauppakorkeakoulu Mikkelin kampus",
+            "sv" : "Aalto-universitetet, Handelshögskola Mikkeli kampus",
+            "en" : "Aalto University, School of Business Mikkeli Campus"
           },
-          "kieletUris": [
-            "oppilaitoksenopetuskieli_1#1",
-            "oppilaitoksenopetuskieli_2#1",
-            "oppilaitoksenopetuskieli_4#1"
-          ],
-          "kotipaikkaUri": "kunta_091",
-          "children": [
-            {
-              "oid": "1.2.246.562.10.38864316104",
-              "alkuPvm": 1262296800000,
-              "parentOid": "1.2.246.562.10.56753942459",
-              "parentOidPath": "1.2.246.562.10.38864316104/1.2.246.562.10.56753942459/1.2.246.562.10.53814745062/1.2.246.562.10.00000000001",
-              "toimipistekoodi": "1007602",
-              "match": false,
-              "nimi": {
-                "fi": "Aalto-yliopisto, Sähkötekniikan korkeakoulu",
-                "sv": "Aalto-universitetet, Högskolan för elektroteknik",
-                "en": "Aalto University, School of Electrical Engineering"
-              },
-              "kieletUris": [
-                "oppilaitoksenopetuskieli_1#1",
-                "oppilaitoksenopetuskieli_2#1",
-                "oppilaitoksenopetuskieli_4#1"
-              ],
-              "kotipaikkaUri": "kunta_049",
-              "children": [],
-              "organisaatiotyypit": [
-                "TOIMIPISTE"
-              ],
-              "aliOrganisaatioMaara": 0
-            },
-            {
-              "oid": "1.2.246.562.10.39920288212",
-              "alkuPvm": 1262296800000,
-              "parentOid": "1.2.246.562.10.56753942459",
-              "parentOidPath": "1.2.246.562.10.39920288212/1.2.246.562.10.56753942459/1.2.246.562.10.53814745062/1.2.246.562.10.00000000001",
-              "toimipistekoodi": "1007601",
-              "match": false,
-              "nimi": {
-                "fi": "Aalto-yliopisto, Perustieteiden korkeakoulu",
-                "sv": "Aalto-universitetet, Högskolan för teknikvetenskaper",
-                "en": "Aalto University, School of Science"
-              },
-              "kieletUris": [
-                "oppilaitoksenopetuskieli_1#1"
-              ],
-              "kotipaikkaUri": "kunta_049",
-              "children": [],
-              "organisaatiotyypit": [
-                "TOIMIPISTE"
-              ],
-              "aliOrganisaatioMaara": 0
-            },
-            {
-              "oid": "1.2.246.562.10.61042218794",
-              "alkuPvm": 1262296800000,
-              "parentOid": "1.2.246.562.10.56753942459",
-              "parentOidPath": "1.2.246.562.10.61042218794/1.2.246.562.10.56753942459/1.2.246.562.10.53814745062/1.2.246.562.10.00000000001",
-              "toimipistekoodi": "1007605",
-              "match": false,
-              "nimi": {
-                "fi": "Aalto-yliopisto, Kauppakorkeakoulu",
-                "sv": "Aalto-universitetet, Handelshögskola",
-                "en": "Aalto University, School of Business"
-              },
-              "kieletUris": [
-                "oppilaitoksenopetuskieli_1#1",
-                "oppilaitoksenopetuskieli_4#1"
-              ],
-              "kotipaikkaUri": "kunta_091",
-              "children": [
-                {
-                  "oid": "1.2.246.562.10.62153941789",
-                  "alkuPvm": 1262296800000,
-                  "parentOid": "1.2.246.562.10.61042218794",
-                  "parentOidPath": "1.2.246.562.10.62153941789/1.2.246.562.10.61042218794/1.2.246.562.10.56753942459/1.2.246.562.10.53814745062/1.2.246.562.10.00000000001",
-                  "toimipistekoodi": "1007608",
-                  "match": false,
-                  "nimi": {
-                    "fi": "Aalto-yliopisto, Kauppakorkeakoulu Mikkelin kampus",
-                    "sv": "Aalto-universitetet, Handelshögskola Mikkeli kampus",
-                    "en": "Aalto University, School of Business Mikkeli Campus"
-                  },
-                  "kieletUris": [
-                    "oppilaitoksenopetuskieli_4#1"
-                  ],
-                  "kotipaikkaUri": "kunta_491",
-                  "children": [],
-                  "organisaatiotyypit": [
-                    "TOIMIPISTE"
-                  ],
-                  "aliOrganisaatioMaara": 0
-                }
-              ],
-              "organisaatiotyypit": [
-                "TOIMIPISTE"
-              ],
-              "aliOrganisaatioMaara": 1
-            },
-            {
-              "oid": "1.2.246.562.10.60811147247",
-              "alkuPvm": 1262296800000,
-              "parentOid": "1.2.246.562.10.56753942459",
-              "parentOidPath": "1.2.246.562.10.60811147247/1.2.246.562.10.56753942459/1.2.246.562.10.53814745062/1.2.246.562.10.00000000001",
-              "toimipistekoodi": "1007609",
-              "match": false,
-              "nimi": {
-                "fi": "Aalto-yliopisto, Avoin yliopisto",
-                "sv": "Aalto-universitetet, Öppna universitetet",
-                "en": "Aalto University, Open University"
-              },
-              "kieletUris": [
-                "oppilaitoksenopetuskieli_1#1"
-              ],
-              "kotipaikkaUri": "kunta_091",
-              "children": [],
-              "organisaatiotyypit": [
-                "TOIMIPISTE"
-              ],
-              "aliOrganisaatioMaara": 0
-            },
-            {
-              "oid": "1.2.246.562.10.25401456758",
-              "alkuPvm": 1319490000000,
-              "parentOid": "1.2.246.562.10.56753942459",
-              "parentOidPath": "1.2.246.562.10.25401456758/1.2.246.562.10.56753942459/1.2.246.562.10.53814745062/1.2.246.562.10.00000000001",
-              "toimipistekoodi": "1007607",
-              "match": false,
-              "nimi": {
-                "fi": "Aalto-yliopisto, Taiteiden ja suunnittelun korkeakoulu",
-                "sv": "Aalto-universitetet, Högskolan för konst design och arkitektur",
-                "en": "Aalto University, School of Arts Design and Architecture"
-              },
-              "kieletUris": [
-                "oppilaitoksenopetuskieli_1#1",
-                "oppilaitoksenopetuskieli_2#1",
-                "oppilaitoksenopetuskieli_4#1"
-              ],
-              "kotipaikkaUri": "kunta_091",
-              "children": [],
-              "organisaatiotyypit": [
-                "TOIMIPISTE"
-              ],
-              "aliOrganisaatioMaara": 0
-            },
-            {
-              "oid": "1.2.246.562.10.33467403342",
-              "alkuPvm": 1262296800000,
-              "parentOid": "1.2.246.562.10.56753942459",
-              "parentOidPath": "1.2.246.562.10.33467403342/1.2.246.562.10.56753942459/1.2.246.562.10.53814745062/1.2.246.562.10.00000000001",
-              "toimipistekoodi": "1007604",
-              "match": false,
-              "nimi": {
-                "fi": "Aalto-yliopisto, Kemian tekniikan korkeakoulu",
-                "sv": "Aalto-universitetet, Högskolan för kemiteknik",
-                "en": "Aalto University, School of Chemical Technology"
-              },
-              "kieletUris": [
-                "oppilaitoksenopetuskieli_1#1"
-              ],
-              "kotipaikkaUri": "kunta_049",
-              "children": [],
-              "organisaatiotyypit": [
-                "TOIMIPISTE"
-              ],
-              "aliOrganisaatioMaara": 0
-            },
-            {
-              "oid": "1.2.246.562.10.72985435253",
-              "alkuPvm": 1262296800000,
-              "parentOid": "1.2.246.562.10.56753942459",
-              "parentOidPath": "1.2.246.562.10.72985435253/1.2.246.562.10.56753942459/1.2.246.562.10.53814745062/1.2.246.562.10.00000000001",
-              "toimipistekoodi": "1007603",
-              "match": false,
-              "nimi": {
-                "fi": "Aalto-yliopisto, Insinööritieteiden korkeakoulu",
-                "sv": "Aalto-universitetet, Högskolan för ingenjörsvetenskaper",
-                "en": "Aalto University, School of Engineering"
-              },
-              "kieletUris": [
-                "oppilaitoksenopetuskieli_1#1",
-                "oppilaitoksenopetuskieli_4#1"
-              ],
-              "kotipaikkaUri": "kunta_049",
-              "children": [],
-              "organisaatiotyypit": [
-                "TOIMIPISTE"
-              ],
-              "aliOrganisaatioMaara": 0
-            }
-          ],
-          "organisaatiotyypit": [
-            "OPPILAITOS"
-          ],
-          "aliOrganisaatioMaara": 7
-        }
-      ],
-      "organisaatiotyypit": [
-        "KOULUTUSTOIMIJA"
-      ],
-      "aliOrganisaatioMaara": 1
-    }
-  ]
+          "organisaatiotyypit" : [ "TOIMIPISTE" ],
+          "children" : [ ]
+        } ]
+      }, {
+        "oid" : "1.2.246.562.10.38864316104",
+        "nimi" : {
+          "fi" : "Aalto-yliopisto, Sähkötekniikan korkeakoulu",
+          "sv" : "Aalto-universitetet, Högskolan för elektroteknik",
+          "en" : "Aalto University, School of Electrical Engineering"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.39920288212",
+        "nimi" : {
+          "fi" : "Aalto-yliopisto, Perustieteiden korkeakoulu",
+          "sv" : "Aalto-universitetet, Högskolan för teknikvetenskaper",
+          "en" : "Aalto University, School of Science"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.25401456758",
+        "nimi" : {
+          "fi" : "Aalto-yliopisto, Taiteiden ja suunnittelun korkeakoulu",
+          "sv" : "Högskolan för konst, design och arkitektur",
+          "en" : "School of Arts, Design and Architecture"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.72985435253",
+        "nimi" : {
+          "fi" : "Aalto-yliopisto, Insinööritieteiden korkeakoulu",
+          "sv" : "Aalto-universitetet, Högskolan för ingenjörsvetenskaper",
+          "en" : "Aalto University, School of Engineering"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.33467403342",
+        "nimi" : {
+          "fi" : "Aalto-yliopisto, Kemian tekniikan korkeakoulu",
+          "sv" : "Aalto-universitetet, Högskolan för kemiteknik",
+          "en" : "Aalto University, School of Chemical Technology"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      } ]
+    } ]
+  } ]
 }

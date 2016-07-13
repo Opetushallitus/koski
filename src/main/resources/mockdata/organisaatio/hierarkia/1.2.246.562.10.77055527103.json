@@ -6,12 +6,87 @@
     },
     "organisaatiotyypit" : [ "KOULUTUSTOIMIJA" ],
     "children" : [ {
+      "oid" : "1.2.246.562.10.91392558028",
+      "nimi" : {
+        "fi" : "Jyväskylän yliopisto"
+      },
+      "oppilaitosKoodi" : "01906",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_42#1",
+      "children" : [ {
+        "oid" : "1.2.246.562.10.26728856134",
+        "nimi" : {
+          "fi" : "Kokkolan yliopistokeskus Chydenius (Jyväskylän yliopisto)"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.79762617268",
+        "nimi" : {
+          "fi" : "Jyväskylän yliopisto, Kasvatustieteiden tiedekunta",
+          "en" : "University of Jyväskylä, Faculty of Education"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.36673867127",
+        "nimi" : {
+          "fi" : "Jyväskylän yliopisto, Humanistinen tiedekunta",
+          "en" : "University of Jyväskylä, Faculty of Humanities"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.77576502296",
+        "nimi" : {
+          "fi" : "Jyväskylän yliopisto, Jyväskylän yliopiston kauppakorkeakoulu (JSBE)",
+          "sv" : "Handelshögskolan vid Jyväskylä universitet",
+          "en" : "Jyväskylä University School of Business and Economics"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.54680150288",
+        "nimi" : {
+          "fi" : "Jyväskylän yliopisto, Matemaattis-luonnontieteellinen tiedekunta",
+          "en" : "University of Jyväskylä, Faculty of Mathematics and Science"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.29841046427",
+        "nimi" : {
+          "fi" : "Jyväskylän yliopisto, Yhteiskuntatieteellinen tiedekunta",
+          "en" : "University of Jyväskylä, Faculty of Social Sciences"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.68005105934",
+        "nimi" : {
+          "fi" : "Jyväskylän yliopisto, Liikuntatieteellinen tiedekunta",
+          "sv" : "Idrottsvetenskapliga fakulteten",
+          "en" : "University of Jyväskylä, Faculty of Sports and Health Sciences"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.949530408410",
+        "nimi" : {
+          "fi" : "Jyväskylän yliopisto, Informaatioteknologian tiedekunta",
+          "en" : "University of Jyväskylä, Faculty of Information Technology"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      } ]
+    }, {
       "oid" : "1.2.246.562.10.14613773812",
       "nimi" : {
         "fi" : "Jyväskylän normaalikoulu"
       },
       "oppilaitosKoodi" : "00204",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_19#1",
       "children" : [ {
         "oid" : "1.2.246.562.10.13635400305",
         "nimi" : {

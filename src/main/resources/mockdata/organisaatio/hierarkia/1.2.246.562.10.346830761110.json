@@ -13,6 +13,7 @@
       },
       "oppilaitosKoodi" : "03108",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.94248350061",
@@ -21,6 +22,7 @@
       },
       "oppilaitosKoodi" : "00845",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
       "children" : [ {
         "oid" : "1.2.246.562.10.79836180327",
         "nimi" : {
@@ -36,6 +38,7 @@
       },
       "oppilaitosKoodi" : "03036",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.16790925842",
@@ -44,6 +47,7 @@
       },
       "oppilaitosKoodi" : "00089",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
       "children" : [ {
         "oid" : "1.2.246.562.10.23082783798",
         "nimi" : {
@@ -59,6 +63,7 @@
       },
       "oppilaitosKoodi" : "03059",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.23825235619",
@@ -67,6 +72,7 @@
       },
       "oppilaitosKoodi" : "03279",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_12#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.15514292604",
@@ -75,6 +81,7 @@
       },
       "oppilaitosKoodi" : "03056",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.70430747819",
@@ -83,6 +90,7 @@
       },
       "oppilaitosKoodi" : "03041",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.87276332597",
@@ -91,6 +99,7 @@
       },
       "oppilaitosKoodi" : "03025",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.54336251563",
@@ -99,6 +108,7 @@
       },
       "oppilaitosKoodi" : "00081",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
       "children" : [ {
         "oid" : "1.2.246.562.10.27645807358",
         "nimi" : {
@@ -115,6 +125,7 @@
       },
       "oppilaitosKoodi" : "03004",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.710376781010",
@@ -123,6 +134,7 @@
       },
       "oppilaitosKoodi" : "03005",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.219284319610",
@@ -131,6 +143,7 @@
       },
       "oppilaitosKoodi" : "03006",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.37062767191",
@@ -139,6 +152,7 @@
       },
       "oppilaitosKoodi" : "03013",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.62813571973",
@@ -147,6 +161,7 @@
       },
       "oppilaitosKoodi" : "03021",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.66815744538",
@@ -155,6 +170,7 @@
       },
       "oppilaitosKoodi" : "03022",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.12770878911",
@@ -163,6 +179,7 @@
       },
       "oppilaitosKoodi" : "03023",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.408291119510",
@@ -171,6 +188,7 @@
       },
       "oppilaitosKoodi" : "03027",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.62858797335",
@@ -179,6 +197,7 @@
       },
       "oppilaitosKoodi" : "00082",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
       "children" : [ {
         "oid" : "1.2.246.562.10.311476331310",
         "nimi" : {
@@ -194,6 +213,7 @@
       },
       "oppilaitosKoodi" : "03064",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.35278868829",
@@ -202,6 +222,7 @@
       },
       "oppilaitosKoodi" : "03039",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.65675757283",
@@ -210,6 +231,7 @@
       },
       "oppilaitosKoodi" : "03480",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.97620158317",
@@ -218,6 +240,7 @@
       },
       "oppilaitosKoodi" : "02022",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_64#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.60856325513",
@@ -226,6 +249,7 @@
       },
       "oppilaitosKoodi" : "03010",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.32812335316",
@@ -234,6 +258,7 @@
       },
       "oppilaitosKoodi" : "00518",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
       "children" : [ {
         "oid" : "1.2.246.562.10.49976027711",
         "nimi" : {
@@ -256,6 +281,7 @@
       },
       "oppilaitosKoodi" : "03002",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.65421348528",
@@ -264,6 +290,7 @@
       },
       "oppilaitosKoodi" : "03014",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.69408568777",
@@ -272,6 +299,7 @@
       },
       "oppilaitosKoodi" : "00255",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
       "children" : [ {
         "oid" : "1.2.246.562.10.591352080610",
         "nimi" : {
@@ -287,6 +315,7 @@
       },
       "oppilaitosKoodi" : "03003",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.16138820036",
@@ -295,6 +324,7 @@
       },
       "oppilaitosKoodi" : "03020",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.129137462810",
@@ -303,6 +333,7 @@
       },
       "oppilaitosKoodi" : "03340",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.37673948057",
@@ -311,6 +342,7 @@
       },
       "oppilaitosKoodi" : "00004",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
       "children" : [ {
         "oid" : "1.2.246.562.10.71323338948",
         "nimi" : {
@@ -333,6 +365,7 @@
       },
       "oppilaitosKoodi" : "00607",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
       "children" : [ {
         "oid" : "1.2.246.562.10.17885237424",
         "nimi" : {
@@ -348,6 +381,7 @@
       },
       "oppilaitosKoodi" : "03105",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.73465750062",
@@ -356,6 +390,7 @@
       },
       "oppilaitosKoodi" : "03069",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.89021672053",
@@ -364,6 +399,7 @@
       },
       "oppilaitosKoodi" : "03048",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.48844897271",
@@ -372,6 +408,7 @@
       },
       "oppilaitosKoodi" : "03045",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.68420499896",
@@ -380,6 +417,7 @@
       },
       "oppilaitosKoodi" : "03049",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.56871178416",
@@ -388,6 +426,7 @@
       },
       "oppilaitosKoodi" : "02046",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_64#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.52491748258",
@@ -396,6 +435,7 @@
       },
       "oppilaitosKoodi" : "03065",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.19603059668",
@@ -404,6 +444,7 @@
       },
       "oppilaitosKoodi" : "03040",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.20954004378",
@@ -412,6 +453,7 @@
       },
       "oppilaitosKoodi" : "03030",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.49419584708",
@@ -420,6 +462,7 @@
       },
       "oppilaitosKoodi" : "03114",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_12#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.62908623192",
@@ -428,6 +471,7 @@
       },
       "oppilaitosKoodi" : "03662",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.88173977104",
@@ -436,6 +480,7 @@
       },
       "oppilaitosKoodi" : "03674",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.43760068775",
@@ -444,6 +489,7 @@
       },
       "oppilaitosKoodi" : "03417",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_12#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.68522121315",
@@ -452,6 +498,7 @@
       },
       "oppilaitosKoodi" : "03295",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.80384983401",
@@ -460,6 +507,7 @@
       },
       "oppilaitosKoodi" : "00561",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
       "children" : [ {
         "oid" : "1.2.246.562.10.91645084392",
         "nimi" : {
@@ -475,6 +523,7 @@
       },
       "oppilaitosKoodi" : "03252",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.81017043621",
@@ -483,6 +532,7 @@
       },
       "oppilaitosKoodi" : "00551",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
       "children" : [ {
         "oid" : "1.2.246.562.10.85381205757",
         "nimi" : {
@@ -512,6 +562,7 @@
       },
       "oppilaitosKoodi" : "10105",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_21#1",
       "children" : [ {
         "oid" : "1.2.246.562.10.16538823663",
         "nimi" : {
@@ -633,6 +684,7 @@
       },
       "oppilaitosKoodi" : "03705",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.99771916055",
@@ -641,6 +693,7 @@
       },
       "oppilaitosKoodi" : "03083",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.21458335409",
@@ -649,6 +702,7 @@
       },
       "oppilaitosKoodi" : "03094",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.77789989744",
@@ -657,6 +711,7 @@
       },
       "oppilaitosKoodi" : "03085",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.49352385402",
@@ -665,6 +720,7 @@
       },
       "oppilaitosKoodi" : "03537",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.360908074910",
@@ -673,6 +729,7 @@
       },
       "oppilaitosKoodi" : "03576",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.73073702364",
@@ -681,6 +738,7 @@
       },
       "oppilaitosKoodi" : "03578",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.66316783837",
@@ -689,6 +747,7 @@
       },
       "oppilaitosKoodi" : "03605",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.75107619381",
@@ -697,6 +756,7 @@
       },
       "oppilaitosKoodi" : "03710",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_12#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.13167387094",
@@ -705,6 +765,7 @@
       },
       "oppilaitosKoodi" : "03103",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.89448991896",
@@ -713,6 +774,7 @@
       },
       "oppilaitosKoodi" : "03724",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.29053585914",
@@ -721,6 +783,7 @@
       },
       "oppilaitosKoodi" : "03763",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.44366527529",
@@ -729,6 +792,7 @@
       },
       "oppilaitosKoodi" : "03663",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.18031194469",
@@ -737,6 +801,7 @@
       },
       "oppilaitosKoodi" : "00026",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.13644497953",
@@ -745,6 +810,7 @@
       },
       "oppilaitosKoodi" : "03533",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.45227362626",
@@ -753,6 +819,7 @@
       },
       "oppilaitosKoodi" : "03047",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.40146766007",
@@ -761,6 +828,7 @@
       },
       "oppilaitosKoodi" : "03068",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.90486344519",
@@ -769,6 +837,7 @@
       },
       "oppilaitosKoodi" : "03053",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.26008728672",
@@ -777,6 +846,7 @@
       },
       "oppilaitosKoodi" : "03055",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.70411521654",
@@ -785,6 +855,7 @@
       },
       "oppilaitosKoodi" : "00648",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
       "children" : [ {
         "oid" : "1.2.246.562.10.62814364758",
         "nimi" : {
@@ -800,6 +871,7 @@
       },
       "oppilaitosKoodi" : "10106",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_24#1",
       "children" : [ {
         "oid" : "1.2.246.562.10.92205866418",
         "nimi" : {
@@ -941,6 +1013,7 @@
       },
       "oppilaitosKoodi" : "03716",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.66348550857",
@@ -949,6 +1022,7 @@
       },
       "oppilaitosKoodi" : "03026",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.88592529245",
@@ -964,6 +1038,7 @@
       },
       "oppilaitosKoodi" : "03080",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.40992539946",
@@ -972,6 +1047,7 @@
       },
       "oppilaitosKoodi" : "03091",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.36149126496",
@@ -980,6 +1056,7 @@
       },
       "oppilaitosKoodi" : "03723",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.88337368331",
@@ -988,6 +1065,7 @@
       },
       "oppilaitosKoodi" : "00088",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
       "children" : [ {
         "oid" : "1.2.246.562.10.83935554432",
         "nimi" : {
@@ -1003,6 +1081,7 @@
       },
       "oppilaitosKoodi" : "00670",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
       "children" : [ {
         "oid" : "1.2.246.562.10.35721630248",
         "nimi" : {
@@ -1018,6 +1097,7 @@
       },
       "oppilaitosKoodi" : "03051",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.65226026287",
@@ -1026,6 +1106,7 @@
       },
       "oppilaitosKoodi" : "03050",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.13014742863",
@@ -1034,6 +1115,7 @@
       },
       "oppilaitosKoodi" : "03607",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.87389198752",
@@ -1042,6 +1124,7 @@
       },
       "oppilaitosKoodi" : "03577",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.523103998210",
@@ -1050,6 +1133,7 @@
       },
       "oppilaitosKoodi" : "03672",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.11591392557",
@@ -1058,6 +1142,7 @@
       },
       "oppilaitosKoodi" : "03630",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.77572658811",
@@ -1066,6 +1151,7 @@
       },
       "oppilaitosKoodi" : "05676",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.52119158062",
@@ -1074,6 +1160,7 @@
       },
       "oppilaitosKoodi" : "03289",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.25392648983",
@@ -1082,6 +1169,7 @@
       },
       "oppilaitosKoodi" : "00915",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
       "children" : [ {
         "oid" : "1.2.246.562.10.25119380902",
         "nimi" : {
@@ -1097,6 +1185,7 @@
       },
       "oppilaitosKoodi" : "03251",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.72293621743",
@@ -1105,6 +1194,7 @@
       },
       "oppilaitosKoodi" : "03668",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.566982754610",
@@ -1113,6 +1203,7 @@
       },
       "oppilaitosKoodi" : "03086",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.17803861685",
@@ -1121,6 +1212,7 @@
       },
       "oppilaitosKoodi" : "03087",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.49453945559",
@@ -1129,6 +1221,7 @@
       },
       "oppilaitosKoodi" : "03088",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.92862711873",
@@ -1137,6 +1230,7 @@
       },
       "oppilaitosKoodi" : "03033",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.64353470871",
@@ -1145,6 +1239,7 @@
       },
       "oppilaitosKoodi" : "03016",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.31767322691",
@@ -1153,6 +1248,7 @@
       },
       "oppilaitosKoodi" : "03011",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.10794322841",
@@ -1161,6 +1257,7 @@
       },
       "oppilaitosKoodi" : "03296",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.35761823505",
@@ -1169,6 +1266,7 @@
       },
       "oppilaitosKoodi" : "03089",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.83796475149",
@@ -1177,6 +1275,7 @@
       },
       "oppilaitosKoodi" : "03092",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.65693669254",
@@ -1185,6 +1284,7 @@
       },
       "oppilaitosKoodi" : "03096",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.43456854587",
@@ -1193,6 +1293,7 @@
       },
       "oppilaitosKoodi" : "03098",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.36665171769",
@@ -1201,6 +1302,7 @@
       },
       "oppilaitosKoodi" : "03099",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.86476219893",
@@ -1209,6 +1311,7 @@
       },
       "oppilaitosKoodi" : "03100",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.92749513369",
@@ -1217,6 +1320,7 @@
       },
       "oppilaitosKoodi" : "03101",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.58258511441",
@@ -1225,6 +1329,7 @@
       },
       "oppilaitosKoodi" : "03111",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_12#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.10989813968",
@@ -1233,6 +1338,7 @@
       },
       "oppilaitosKoodi" : "03112",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_12#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.23920811728",
@@ -1241,6 +1347,7 @@
       },
       "oppilaitosKoodi" : "03079",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.30060246391",
@@ -1249,6 +1356,7 @@
       },
       "oppilaitosKoodi" : "03060",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.69372657218",
@@ -1257,6 +1365,7 @@
       },
       "oppilaitosKoodi" : "03038",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.83108300639",
@@ -1265,6 +1374,7 @@
       },
       "oppilaitosKoodi" : "03061",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.56587159379",
@@ -1273,6 +1383,7 @@
       },
       "oppilaitosKoodi" : "03032",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.39857975856",
@@ -1281,6 +1392,7 @@
       },
       "oppilaitosKoodi" : "03015",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.21612797031",
@@ -1289,6 +1401,7 @@
       },
       "oppilaitosKoodi" : "03115",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_12#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.543428151210",
@@ -1297,6 +1410,7 @@
       },
       "oppilaitosKoodi" : "03743",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.55307037873",
@@ -1305,6 +1419,7 @@
       },
       "oppilaitosKoodi" : "03769",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.76382414894",
@@ -1313,6 +1428,7 @@
       },
       "oppilaitosKoodi" : "03082",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.28739438803",
@@ -1321,6 +1437,7 @@
       },
       "oppilaitosKoodi" : "03106",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.58978542221",
@@ -1329,6 +1446,7 @@
       },
       "oppilaitosKoodi" : "03071",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.643666469710",
@@ -1337,6 +1455,7 @@
       },
       "oppilaitosKoodi" : "03579",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.55241970601",
@@ -1345,6 +1464,7 @@
       },
       "oppilaitosKoodi" : "03664",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.91097209935",
@@ -1353,6 +1473,7 @@
       },
       "oppilaitosKoodi" : "03035",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.72765269674",
@@ -1361,6 +1482,7 @@
       },
       "oppilaitosKoodi" : "03054",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.78026202594",
@@ -1369,6 +1491,7 @@
       },
       "oppilaitosKoodi" : "03043",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.33062759635",
@@ -1377,6 +1500,7 @@
       },
       "oppilaitosKoodi" : "03044",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.91809625618",
@@ -1385,6 +1509,7 @@
       },
       "oppilaitosKoodi" : "03614",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.24059620476",
@@ -1393,6 +1518,7 @@
       },
       "oppilaitosKoodi" : "03311",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.43872746664",
@@ -1401,6 +1527,7 @@
       },
       "oppilaitosKoodi" : "03419",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.14163341135",
@@ -1409,6 +1536,7 @@
       },
       "oppilaitosKoodi" : "03479",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.88150041346",
@@ -1417,6 +1545,7 @@
       },
       "oppilaitosKoodi" : "03104",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.18293478162",
@@ -1425,6 +1554,7 @@
       },
       "oppilaitosKoodi" : "03024",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.95136889433",
@@ -1433,6 +1563,7 @@
       },
       "oppilaitosKoodi" : "03034",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.30839124705",
@@ -1441,6 +1572,7 @@
       },
       "oppilaitosKoodi" : "03046",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
       "children" : [ ]
     }, {
       "oid" : "1.2.246.562.10.71194935012",
@@ -1449,6 +1581,7 @@
       },
       "oppilaitosKoodi" : "03113",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_12#1",
       "children" : [ ]
     } ]
   } ]

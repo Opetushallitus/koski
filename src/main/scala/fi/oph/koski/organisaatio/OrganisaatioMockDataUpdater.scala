@@ -8,14 +8,14 @@ import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViitePalvelu}
 object OrganisaatioMockDataUpdater extends App {
   updateMockDataFromOrganisaatioPalvelu(KoskiApplication.defaultConfig)
 
-  def updateMockDataFromOrganisaatioPalvelu(config: Config): Unit = {
+  private def updateMockDataFromOrganisaatioPalvelu(config: Config): Unit = {
     val koodisto = KoodistoViitePalvelu(KoodistoPalvelu.apply(config))
-    val organisaatioPalvelu = OrganisaatioRepository.withoutCache(config, koodisto)
+    val organisaatioPalvelu = OrganisaatioRepository.withoutCache(config, koodisto).asInstanceOf[RemoteOrganisaatioRepository]
 
-    MockOrganisaatiot.organisaatiot.foreach(oid => updateMockDataForOrganisaatio(oid, organisaatioPalvelu))
+    MockOrganisaatiot.roots.foreach(oid => updateMockDataForOrganisaatio(oid, organisaatioPalvelu))
   }
 
-  def updateMockDataForOrganisaatio(oid: String, organisaatioPalvelu: JsonOrganisaatioRepository): Unit = {
+  private def updateMockDataForOrganisaatio(oid: String, organisaatioPalvelu: RemoteOrganisaatioRepository): Unit = {
     val tulos = organisaatioPalvelu.fetch(oid)
     Json.writeFile(MockOrganisaatioRepository.hierarchyFilename(oid), tulos)
   }

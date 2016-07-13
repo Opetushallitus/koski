@@ -1,27 +1,12 @@
 {
-  "numHits": 1,
-  "organisaatiot": [
-    {
-      "oid": "1.2.246.562.10.43628088406",
-      "alkuPvm": 1410123600000,
-      "parentOid": "1.2.246.562.10.00000000001",
-      "parentOidPath": "1.2.246.562.10.43628088406/1.2.246.562.10.00000000001",
-      "toimipistekoodi": "",
-      "match": true,
-      "nimi": {
-        "fi": "Ylioppilastutkintolautakunta",
-        "sv": "Studentexamensnämnden",
-        "en": "The Matriculation Examination Board"
-      },
-      "kieletUris": [
-        "oppilaitoksenopetuskieli_3#1"
-      ],
-      "kotipaikkaUri": "kunta_091",
-      "children": [],
-      "organisaatiotyypit": [
-        "MUU_ORGANISAATIO"
-      ],
-      "aliOrganisaatioMaara": 0
-    }
-  ]
+  "organisaatiot" : [ {
+    "oid" : "1.2.246.562.10.43628088406",
+    "nimi" : {
+      "fi" : "Ylioppilastutkintolautakunta",
+      "sv" : "Studentexamensnämnden",
+      "en" : "The Matriculation Examination Board"
+    },
+    "organisaatiotyypit" : [ "MUU_ORGANISAATIO" ],
+    "children" : [ ]
+  } ]
 }

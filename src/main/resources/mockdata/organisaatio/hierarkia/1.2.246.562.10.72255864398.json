@@ -1,0 +1,107 @@
+{
+  "organisaatiot" : [ {
+    "oid" : "1.2.246.562.10.72255864398",
+    "nimi" : {
+      "fi" : "Tampereen Yliopisto"
+    },
+    "organisaatiotyypit" : [ "KOULUTUSTOIMIJA" ],
+    "children" : [ {
+      "oid" : "1.2.246.562.10.20465608279",
+      "nimi" : {
+        "fi" : "Tampereen yliopisto"
+      },
+      "oppilaitosKoodi" : "01905",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_42#1",
+      "children" : [ {
+        "oid" : "1.2.246.562.10.76407345602",
+        "nimi" : {
+          "fi" : "Tampereen yliopisto, Kieli- , käännös- ja kirjallisuustieteiden yksikkö",
+          "en" : "University of Tampere, School of Language, Translation and Literary Studies"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.38619245558",
+        "nimi" : {
+          "fi" : "Tampereen yliopisto, BioMediTech",
+          "en" : "University of Tampere, BioMediTech"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.90625726261",
+        "nimi" : {
+          "fi" : "Tampereen yliopisto, Informaatiotieteiden yksikkö",
+          "en" : "University of Tampere, School of Information Sciences"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.79281552269",
+        "nimi" : {
+          "fi" : "Tampereen yliopisto, Yhteiskunta- ja kulttuuritieteiden yksikkö",
+          "en" : "University of Tampere, School of Social Sciences and Humanities"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.71851186834",
+        "nimi" : {
+          "fi" : "Tampereen yliopisto, Johtamiskorkeakoulu",
+          "en" : "University of Tampere, School of Management"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.61750930564",
+        "nimi" : {
+          "fi" : "Tampereen yliopisto, Viestinnän, median ja teatterin yksikkö",
+          "en" : "University of Tampere, School of Communication, Media and Theatre"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.30166147618",
+        "nimi" : {
+          "fi" : "Tampereen yliopisto,  Terveystieteiden yksikkö",
+          "en" : "University of Tampere, School of Health Sciences"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.85169792695",
+        "nimi" : {
+          "fi" : "Tampereen yliopisto, Lääketieteen yksikkö",
+          "en" : "University of Tampere, School of Medicine"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      }, {
+        "oid" : "1.2.246.562.10.15884705888",
+        "nimi" : {
+          "fi" : "Tampereen yliopisto, Kasvatustieteiden yksikkö",
+          "en" : "University of Tampere, School of Education"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      } ]
+    }, {
+      "oid" : "1.2.246.562.10.61460312673",
+      "nimi" : {
+        "fi" : "Tampereen yliopiston normaalikoulu"
+      },
+      "oppilaitosKoodi" : "00817",
+      "organisaatiotyypit" : [ "OPPILAITOS" ],
+      "oppilaitostyyppi" : "oppilaitostyyppi_19#1",
+      "children" : [ {
+        "oid" : "1.2.246.562.10.84275125262",
+        "nimi" : {
+          "fi" : "Tampereen yliopiston normaalikoulu"
+        },
+        "organisaatiotyypit" : [ "TOIMIPISTE" ],
+        "children" : [ ]
+      } ]
+    } ]
+  } ]
+}
