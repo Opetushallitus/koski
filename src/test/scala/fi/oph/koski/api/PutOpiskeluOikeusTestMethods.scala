@@ -2,12 +2,12 @@ package fi.oph.koski.api
 
 import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
-import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoPalvelu}
+import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.schema._
 import org.json4s._
 
 trait PutOpiskeluOikeusTestMethods[Oikeus <: Opiskeluoikeus] extends OpiskeluOikeusTestMethods with OpiskeluOikeusData[Oikeus] {
-  val koodisto: KoodistoViitePalvelu = KoodistoViitePalvelu(MockKoodistoPalvelu)
+  val koodisto: KoodistoViitePalvelu = MockKoodistoViitePalvelu
   val oppijaPath = "/api/oppija"
 
   implicit def any2j(o: AnyRef): JValue = Json.toJValue(o)

@@ -6,14 +6,16 @@ import fi.oph.koski.log.TimedProxy
 
 object KoodistoPalvelu {
   def apply(config: Config) = {
-    CachingProxy(KoskiCache.cacheStrategy("KoodistoPalvelu"), TimedProxy(withoutCache(config)))
+    cached(TimedProxy(withoutCache(config)))
   }
+
+  def cached(palvelu: KoodistoPalvelu) = CachingProxy(KoskiCache.cacheStrategy("KoodistoPalvelu"), palvelu)
 
   def withoutCache(config: Config): KoodistoPalvelu = {
     if (config.hasPath("opintopolku.virkailija.url")) {
       new RemoteKoodistoPalvelu(config.getString("opintopolku.virkailija.url"))
     } else {
-      MockKoodistoPalvelu
+      MockKoodistoPalvelu()
     }
   }
 }

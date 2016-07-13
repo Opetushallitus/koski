@@ -1,8 +1,8 @@
 package fi.oph.koski.koskiuser
 
 import fi.oph.koski.cache.{CachingStrategy, KeyValueCache}
-import fi.oph.koski.henkilo.AuthenticationServiceClient
-import fi.oph.koski.organisaatio.{Opetushallitus, OrganisaatioHierarkia, OrganisaatioRepository}
+import fi.oph.koski.henkilo.{MockAuthenticationServiceClient, AuthenticationServiceClient}
+import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, Opetushallitus, OrganisaatioHierarkia, OrganisaatioRepository}
 import fi.oph.koski.util.Timing
 import rx.lang.scala.Observable
 
@@ -59,3 +59,5 @@ class KäyttöoikeusRepository(authenticationServiceClient: AuthenticationServic
     CachingStrategy.cacheAllNoRefresh("userOrganisations", 3600, 100), haeKäyttöoikeudet
   )
 }
+
+object MockKäyttöoikeusRepository extends KäyttöoikeusRepository(new MockAuthenticationServiceClient(), MockOrganisaatioRepository)

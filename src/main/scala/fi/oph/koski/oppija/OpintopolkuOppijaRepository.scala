@@ -1,8 +1,8 @@
 package fi.oph.koski.oppija
 
-import fi.oph.koski.henkilo.{AuthenticationServiceClient, CreateUser, User, UserQueryUser}
+import fi.oph.koski.henkilo._
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koodisto.KoodistoViitePalvelu
+import fi.oph.koski.koodisto.{MockKoodistoViitePalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.schema._
 
@@ -36,3 +36,5 @@ class OpintopolkuOppijaRepository(henkilöPalveluClient: AuthenticationServiceCl
     })
   }
 }
+
+object MockOpintopolkuOppijaRepository extends OpintopolkuOppijaRepository(new MockAuthenticationServiceClient(), MockKoodistoViitePalvelu)

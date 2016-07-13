@@ -24,3 +24,5 @@ case class KoodistoViitePalvelu(koodistoPalvelu: KoodistoPalvelu) extends Loggin
     viite
   }
 }
+
+object MockKoodistoViitePalvelu extends KoodistoViitePalvelu(MockKoodistoPalvelu())

@@ -1,7 +1,7 @@
 package fi.oph.koski.organisaatio
 
 import fi.oph.koski.json.Json
-import fi.oph.koski.koodisto.KoodistoViitePalvelu
+import fi.oph.koski.koodisto.{MockKoodistoViitePalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.organisaatio.MockOrganisaatioRepository._
 import fi.oph.koski.schema.{Koodistokoodiviite, Oppilaitos, OrganisaatioWithOid}
 
@@ -45,7 +45,7 @@ object MockOrganisaatiot {
     ylioppilastutkintolautakunta)
 }
 
-case class MockOrganisaatioRepository(koodisto: KoodistoViitePalvelu) extends JsonOrganisaatioRepository(koodisto) {
+object MockOrganisaatioRepository extends JsonOrganisaatioRepository(MockKoodistoViitePalvelu) {
   val rootOrgs: List[OrganisaatioHierarkia] = MockOrganisaatiot.roots
     .flatMap(oid => Json.readResourceIfExists(hierarchyResourcename(oid)))
     .flatMap(json => Json.fromJValue[OrganisaatioHakuTulos](json).organisaatiot)
@@ -63,9 +63,7 @@ case class MockOrganisaatioRepository(koodisto: KoodistoViitePalvelu) extends Js
   def findByOppilaitosnumero(numero: String): Option[Oppilaitos] = {
     oppilaitokset.find(_.oppilaitosnumero.map(_.koodiarvo) == Some(numero))
   }
-}
 
-object MockOrganisaatioRepository {
   def hierarchyResourcename(oid: String): String = "/mockdata/organisaatio/hierarkia/" + oid + ".json"
   def hierarchyFilename(oid: String): String = "src/main/resources" + hierarchyResourcename(oid)
 }

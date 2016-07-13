@@ -38,7 +38,7 @@ object OrganisaatioRepository {
       val http = VirkailijaHttpClient(config.getString("opintopolku.virkailija.username"), config.getString("opintopolku.virkailija.password"), config.getString("opintopolku.virkailija.url"), "/organisaatio-service")
       new RemoteOrganisaatioRepository(http, koodisto)
     } else {
-      new MockOrganisaatioRepository(koodisto)
+      MockOrganisaatioRepository
     }
   }
 }

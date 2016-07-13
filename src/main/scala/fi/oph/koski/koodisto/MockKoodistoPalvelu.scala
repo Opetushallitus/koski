@@ -1,8 +1,29 @@
 package fi.oph.koski.koodisto
 import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
+import fi.oph.koski.koodisto.MockKoodistoPalvelu._
 
-object MockKoodistoPalvelu extends KoodistoPalvelu {
+private class MockKoodistoPalvelu extends KoodistoPalvelu {
+  def getKoodistoKoodit(koodisto: KoodistoViite): Option[List[KoodistoKoodi]] = {
+    Json.readResourceIfExists(koodistoKooditResourceName(koodisto.koodistoUri)).map(_.extract[List[KoodistoKoodi]])
+  }
+
+  def getKoodisto(koodisto: KoodistoViite): Option[Koodisto] = {
+    getKoodisto(koodisto.koodistoUri)
+  }
+
+  def getKoodisto(koodistoUri: String): Option[Koodisto] = {
+    Json.readResourceIfExists(koodistoResourceName(koodistoUri)).map(_.extract[Koodisto])
+  }
+
+  def getLatestVersion(koodistoUri: String): Option[KoodistoViite] = getKoodisto(koodistoUri).map { _.koodistoViite }
+
+}
+
+object MockKoodistoPalvelu {
+  // this is done to ensure that the cached instance is used everywhere (performance penalties are huge)
+  private lazy val palvelu = KoodistoPalvelu.cached(new MockKoodistoPalvelu)
+  def apply() = palvelu
   /*
     Aakkostettu listaus mockatuista koodistoista.
 
@@ -61,22 +82,9 @@ object MockKoodistoPalvelu extends KoodistoPalvelu {
     "koskiyoarvosanat"
   )
 
-  def getKoodistoKoodit(koodisto: KoodistoViite): Option[List[KoodistoKoodi]] = {
-    Json.readResourceIfExists(koodistoKooditResourceName(koodisto.koodistoUri)).map(_.extract[List[KoodistoKoodi]])
-  }
+  protected[koodisto] def koodistoKooditResourceName(koodistoUri: String) = "/mockdata/koodisto/koodit/" + koodistoUri + ".json"
+  protected[koodisto] def koodistoResourceName(koodistoUri: String) = "/mockdata/koodisto/koodistot/" + koodistoUri + ".json"
 
-  def getKoodisto(koodisto: KoodistoViite): Option[Koodisto] = {
-    getKoodisto(koodisto.koodistoUri)
-  }
-
-  def getKoodisto(koodistoUri: String): Option[Koodisto] = {
-    Json.readResourceIfExists(koodistoResourceName(koodistoUri)).map(_.extract[Koodisto])
-  }
-
-  def getLatestVersion(koodistoUri: String): Option[KoodistoViite] = getKoodisto(koodistoUri).map { _.koodistoViite }
-
-  def koodistoKooditFileName(koodistoUri: String): String = "src/main/resources" + koodistoKooditResourceName(koodistoUri)
-  def koodistoFileName(koodistoUri: String): String = "src/main/resources" + koodistoResourceName(koodistoUri)
-  private def koodistoKooditResourceName(koodistoUri: String) = "/mockdata/koodisto/koodit/" + koodistoUri + ".json"
-  private def koodistoResourceName(koodistoUri: String) = "/mockdata/koodisto/koodistot/" + koodistoUri + ".json"
+  protected[koodisto] def koodistoKooditFileName(koodistoUri: String): String = "src/main/resources" + koodistoKooditResourceName(koodistoUri)
+  protected[koodisto] def koodistoFileName(koodistoUri: String): String = "src/main/resources" + koodistoResourceName(koodistoUri)
 }

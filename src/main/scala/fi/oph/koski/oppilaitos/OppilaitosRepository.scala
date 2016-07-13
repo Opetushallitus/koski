@@ -2,7 +2,7 @@ package fi.oph.koski.oppilaitos
 
 import fi.oph.koski.koskiuser.{AccessType, KoskiUser}
 import fi.oph.koski.localization.LocalizedStringImplicits.LocalizedStringFinnishOrdering
-import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
+import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, OrganisaatioHierarkia, OrganisaatioRepository}
 import fi.oph.koski.schema.{OidOrganisaatio, Oppilaitos}
 
 case class OppilaitosRepository(organisatioRepository: OrganisaatioRepository) {
@@ -26,3 +26,5 @@ case class OppilaitosRepository(organisatioRepository: OrganisaatioRepository) {
 
   private def toOppilaitos(org: OrganisaatioHierarkia) = OidOrganisaatio(org.oid, Some(org.nimi))
 }
+
+object MockOppilaitosRepository extends OppilaitosRepository(MockOrganisaatioRepository)
