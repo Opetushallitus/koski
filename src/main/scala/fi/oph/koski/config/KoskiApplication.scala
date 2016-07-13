@@ -7,7 +7,7 @@ import fi.oph.koski.cache.CachingStrategy.cacheAllRefresh
 import fi.oph.koski.cache.{CachingProxy, GlobalCacheInvalidator}
 import fi.oph.koski.db._
 import fi.oph.koski.eperusteet.EPerusteetRepository
-import fi.oph.koski.fixture.Fixtures
+import fi.oph.koski.fixture.{FixtureCreator, Fixtures}
 import fi.oph.koski.henkilo.AuthenticationServiceClient
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViitePalvelu}
@@ -54,7 +54,7 @@ class KoskiApplication(val config: Config) extends Logging with UserAuthenticati
   lazy val validator: KoskiValidator = new KoskiValidator(tutkintoRepository, koodistoViitePalvelu, organisaatioRepository)
   lazy val facade = new KoskiFacade(oppijaRepository, opiskeluOikeusRepository)
   lazy val serviceTicketRepository = new CasTicketSessionRepository(database.db)
-  def resetFixtures = Fixtures.resetFixtures(config, database, opiskeluOikeusRepository, oppijaRepository, validator)
+  lazy val fixtureCreator = new FixtureCreator(config, database, opiskeluOikeusRepository, oppijaRepository, validator)
 
   def invalidateCaches = GlobalCacheInvalidator.invalidateCache
 }
