@@ -30,7 +30,6 @@ class IndexServlet(val application: UserAuthenticationContext) extends ScalatraS
   get("/oppija/:oid") {
     IndexServlet.html
   }
-
 }
 
 object IndexServlet {
