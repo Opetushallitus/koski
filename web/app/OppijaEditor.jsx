@@ -32,6 +32,7 @@ export const OppijaEditor = React.createClass({
 const Opiskeluoikeus = React.createClass({
   render() {
     let {model, context} = this.props
+    let toggleDetails = () => { this.setState({showDetails: !this.state.showDetails})}
 
     return <div className="opiskeluoikeus">
       {
@@ -41,11 +42,19 @@ const Opiskeluoikeus = React.createClass({
             <span className="tutkinto">{title}</span>
             <OpiskeluoikeudenOpintosuoritusote opiskeluoikeus={model} context={context}/>
             <Todistus suoritus={suoritusModel} context={context}/>
-            {/*getModelEditor(suoritusModel, context)*/}
           </div>
         })
       }
+      <a onClick={toggleDetails}>{ this.state.showDetails ? "-" : "+" }</a>
+      {
+        this.state.showDetails
+          ? getModelEditor(model, context)
+          : null
+      }
     </div>
+  },
+  getInitialState() {
+    return {}
   }
 })
 
