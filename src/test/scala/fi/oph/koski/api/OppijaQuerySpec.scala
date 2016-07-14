@@ -9,6 +9,7 @@ import fi.oph.koski.schema._
 import org.scalatest.{FunSpec, Matchers}
 
 class OppijaQuerySpec extends FunSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with QueryTestMethods with Matchers {
+  import fi.oph.koski.util.DateOrdering._
   val teija = UusiHenkilö("150995-914X", "Teija", "Teija", "Tekijä")
 
   describe("Kyselyrajapinta") {
@@ -59,9 +60,5 @@ class OppijaQuerySpec extends FunSpec with LocalJettyHttpSpecification with Opis
         }
       }
     }
-  }
-
-  implicit val localDateOrdering: Ordering[LocalDate] = new Ordering[LocalDate] {
-    override def compare(x: LocalDate, y: LocalDate) = x.compareTo(y)
   }
 }

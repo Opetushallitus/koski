@@ -3,6 +3,7 @@ import Bacon from 'baconjs'
 import Http from './http'
 import {navigateToOppija, navigateToUusiOppija} from './router.js'
 import {oppijaP} from './Oppija.jsx'
+import { modelData } from './EditorModel.js'
 
 const oppijaHakuE = new Bacon.Bus()
 
@@ -11,15 +12,17 @@ const acceptableQuery = (q) => q.length >= 3
 const hakuTulosE = oppijaHakuE.debounce(500)
   .flatMapLatest(q => (acceptableQuery(q) ? Http.get(`/koski/api/oppija/search?query=${q}`) : Bacon.once([])).map((oppijat) => ({ results: oppijat, query: q })))
 
-const oppijaE = oppijaP.toEventStream().filter(Bacon._.id)
+const henkilöP = oppijaP.map(oppija => modelData(oppija, 'henkilö'))
+
+const henkilöE = henkilöP.toEventStream().filter(Bacon._.id)
 
 export const oppijatP = Bacon.update(
   { query: '', results: [] },
   hakuTulosE, ((current, hakutulos) => hakutulos),
-  oppijaE.filter('.henkilö').map('.henkilö'), ((current, valittu) => current.results.filter((oppija) => oppija.oid === valittu.oid).length ? current : { query: '', results: [valittu] })
+  henkilöE.filter(Bacon._.id), ((current, valittu) => current.results.filter((oppija) => oppija.oid === valittu.oid).length ? current : { query: '', results: [valittu] })
 )
 
-oppijaP.map('.henkilö').sampledBy(oppijatP.map('.results').changes(), (oppija, oppijat) => ({ oppija: oppija, oppijat: oppijat }))
+henkilöP.sampledBy(oppijatP.map('.results').changes(), (oppija, oppijat) => ({ oppija: oppija, oppijat: oppijat }))
   .filter(({oppija, oppijat}) => !oppija && oppijat.length === 1)
   .map('.oppijat.0')
   .onValue(navigateToOppija)
@@ -48,7 +51,7 @@ const OppijaHakutulokset = React.createClass({
   render() {
     const {oppijat, valittu} = this.props
     const oppijatElems = oppijat.results.map((o, i) => {
-        const className = valittu.henkilö ? (o.oid === valittu.henkilö.oid ? 'selected' : '') : ''
+        const className = valittu ? (o.oid === valittu.oid ? 'selected' : '') : ''
         return (
           <li key={i} className={className}>
             <a onClick={this.selectOppija.bind(this, o)}>{o.sukunimi}, {o.etunimet} {o.hetu}</a>
@@ -70,7 +73,6 @@ const OppijaHakutulokset = React.createClass({
 
 export const OppijaHaku = ({oppijat, valittu, searching}) => {
   const className = searching ? 'sidebar oppija-haku searching' : 'sidebar oppija-haku'
-
   return (
       <div className={className}>
         <OppijaHakuBoksi />

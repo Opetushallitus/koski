@@ -1,9 +1,9 @@
 package fi.oph.koski.schema
 
+import fi.oph.koski.editor.EditorModelSerializer
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.json.{Json, ContextualExtractor}
+import fi.oph.koski.json.{ContextualExtractor, Json}
 import fi.oph.koski.localization.{English, Finnish, LocalizedString, Swedish}
-import org.json4s
 import org.json4s._
 import org.json4s.reflect.{Reflector, TypeInfo}
 
@@ -19,7 +19,8 @@ object Deserializers {
     LukionOppiaineDeserializer,
     PerusopetuksenOppiaineDeserializer,
     LukionKurssiDeserializer,
-    SuoritusDeserializer
+    SuoritusDeserializer,
+    EditorModelSerializer
   )
 }
 

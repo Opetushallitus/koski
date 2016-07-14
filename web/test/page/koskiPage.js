@@ -36,7 +36,7 @@ function KoskiPage() {
     selectOppija: function(oppija) {
       return function() {
         triggerEvent(S('.oppija-haku li a:contains(' + oppija + ')'), 'click')
-        return wait.until(api.isOppijaLoading)().then(api.waitUntilOppijaSelected(oppija))
+        return api.waitUntilOppijaSelected(oppija)()
       }
     }
   }

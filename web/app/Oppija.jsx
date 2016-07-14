@@ -3,15 +3,19 @@ import Bacon from 'baconjs'
 import Http from './http'
 import {routeP} from './router'
 import {CreateOppija} from './CreateOppija.jsx'
-import {OpiskeluOikeus, opiskeluOikeusChange} from './OpiskeluOikeus.jsx'
+import { modelData, modelLookup } from './EditorModel.js'
+import {OppijaEditor} from './OppijaEditor.jsx'
 import * as L from 'partial.lenses'
 import R from 'ramda'
 
 export const selectOppijaE = routeP.map('.oppijaId').flatMap(oppijaId => {
-  return oppijaId ? Bacon.once({loading: true}).concat(Http.get(`/koski/api/oppija/${oppijaId}`)) : Bacon.once({ empty: true})
+  return oppijaId
+    ? Bacon.once({loading: true}).concat(Http.get(`/koski/api/editor/${oppijaId}`))
+    : Bacon.once({ empty: true})
 })
 
 export const updateResultE = Bacon.Bus()
+const opiskeluOikeusChange = Bacon.never() // Right now, there's no editing
 
 const applyChange = (lens, change, oppija) => L.modify(lens, change, oppija)
 
@@ -29,11 +33,16 @@ updateResultE.plug(oppijaP.sampledBy(opiskeluOikeusChange).flatMapLatest(oppijaU
 
 export const uusiOppijaP = routeP.map(route => { return !!route.uusiOppija })
 
+export const oppijaStateP = Bacon.combineTemplate({
+    valittuOppija: oppijaP,
+    uusiOppija: uusiOppijaP
+})
+
 export const Oppija = ({oppija}) =>
   oppija.valittuOppija.loading
     ? <Loading/>
     : (!oppija.valittuOppija.empty
-      ? <ExistingOppija oppija={oppija.valittuOppija}/>
+      ? <ExistingOppija oppija={oppija.valittuOppija} editor={oppija.valittuOppija}/>
       : (
       oppija.uusiOppija
         ? <CreateOppija/>
@@ -44,38 +53,15 @@ const Loading = () => <div className='main-content oppija loading'></div>
 
 const ExistingOppija = React.createClass({
   render() {
-    let {oppija: { henkilö: henkilö, opiskeluoikeudet: opiskeluoikeudet}} = this.props
+    let {oppija, editor} = this.props
+    let henkilö = modelData(oppija, 'henkilö')
     return (
       <div className='main-content oppija'>
         <h2>{henkilö.sukunimi}, {henkilö.etunimet} <span className='hetu'>{henkilö.hetu}</span></h2>
         <hr></hr>
         <h4>Opiskeluoikeudet</h4>
-        <ul className="oppilaitokset">
-        {
-          R.toPairs(R.groupBy((opiskeluOikeus => opiskeluOikeus.oppilaitos.oid), R.sortBy(o => o.alkamispäivä)(opiskeluoikeudet))).map( ([, opiskeluOikeudet]) =>
-           <li className="oppilaitos" key={opiskeluOikeudet[0].oppilaitos.oid}>
-            <span className="oppilaitos">{opiskeluOikeudet[0].oppilaitos.nimi.fi}</span><OppilaitoksenOpintosuoritusote oppija={henkilö} oppilaitos={opiskeluOikeudet[0].oppilaitos} tyyppi={opiskeluOikeudet[0].tyyppi.koodiarvo}/>
-            {
-              opiskeluOikeudet.map( (opiskeluOikeus, index) =>
-                  <OpiskeluOikeus key={ index } oppija={ henkilö } opiskeluOikeus={ opiskeluOikeus } lens= { opiskeluOikeusIdLens(opiskeluOikeus.id) } />
-              )
-            }
-          </li>
-        ) }
-        </ul>
+        <OppijaEditor editor={editor} />
       </div>
     )
-  }
-})
-
-const OppilaitoksenOpintosuoritusote = React.createClass({
-  render() {
-    let {oppilaitos, oppija, tyyppi} = this.props
-    if (tyyppi == 'korkeakoulutus') { // vain korkeakoulutukselle näytetään oppilaitoskohtainen suoritusote
-      let href = '/koski/opintosuoritusote/' + oppija.oid + '?oppilaitos=' + oppilaitos.oid
-      return <a className="opintosuoritusote" href={href}>näytä opintosuoritusote</a>
-    } else {
-      return null
-    }
   }
 })

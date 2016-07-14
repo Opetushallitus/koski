@@ -94,8 +94,7 @@ describe('Oppijahaku', function() {
     before(
       Authentication().login(),
       resetFixtures,
-      openPage('/koski/oppija/1.2.246.562.24.00000000001', page.isOppijaSelected('Eero')),
-      opinnot.waitUntilRakenneVisible()
+      openPage('/koski/oppija/1.2.246.562.24.00000000001', page.isOppijaSelected('Eero'))
     )
 
     it('Oppijan tiedot näytetään', function() {
