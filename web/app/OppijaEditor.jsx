@@ -56,7 +56,7 @@ const SuoritusEditor = React.createClass({
     return (<div className="suoritus">
       <span className="kuvaus">{title}</span>
       <Todistus suoritus={model} context={context}/>
-      <FoldableEditor expanded={() => getModelEditor(model, context)}/>
+      <FoldableEditor expanded={() => <PropertiesEditor properties={model.properties} context={context}/>}/>
     </div>)
   }
 })
@@ -67,9 +67,10 @@ const FoldableEditor = React.createClass({
     let {collapsed, expanded} = this.props
     let toggleDetails = () => { this.setState({showDetails: !showDetails})}
     let showDetails = this.state && this.state.showDetails
-    return (<span><a onClick={toggleDetails}>{ showDetails ? '-' : '+' }</a>{
-      showDetails ? expanded() : (collapsed ? collapsed() : null)
-    }</span>)
+    return (<span>
+      <a onClick={toggleDetails}>{ showDetails ? '-' : '+' }</a>
+      { showDetails ? expanded() : (collapsed ? collapsed() : null) }
+    </span>)
   }
 })
 
@@ -125,7 +126,7 @@ const OppiaineEditor = React.createClass({
 const VahvistusEditor = React.createClass({
   render() {
     let {model} = this.props
-    return (<span>
+    return (<span class="vahvistus simple">
       <span className="date">{modelTitle(model, 'päivä')}</span>&nbsp;
       <span className="allekirjoitus">{modelTitle(model, 'paikkakunta')}</span>&nbsp;
       {
@@ -152,11 +153,13 @@ const ObjectEditor = React.createClass({
     let {model, context} = this.props
     let className = 'object ' + model.class
     let representative = model.properties.find(property => property.representative)
-    return (representative && model.properties.length == 1)
-      ? getModelEditor(representative.model, context)
-      :(<div className={className}>
-      <PropertiesEditor properties={model.properties} context={context}/>
-    </div>)
+    let titleEditor = () => getModelEditor(representative.model, context)
+    let objectEditor = () => <div className={className}><PropertiesEditor properties={model.properties} context={context}/></div>
+    return representative
+      ? model.properties.length == 1
+        ? titleEditor()
+        : <div>{titleEditor()}<FoldableEditor expanded={objectEditor} /></div>
+      : objectEditor()
   }
 })
 
@@ -180,7 +183,7 @@ const PropertiesEditor = React.createClass({
 const ArrayEditor = React.createClass({
   render() {
     let {model, context} = this.props
-    let simple = !model.items[0] || model.items[0].type != 'object'
+    let simple = !model.items[0] || model.items[0].simple
     let className = simple ? 'array simple' : 'array'
     return (
       <ul className={className}>
@@ -197,21 +200,21 @@ const ArrayEditor = React.createClass({
 const StringEditor = React.createClass({
   render() {
     let {model} = this.props
-    return <span>{model.data}</span>
+    return <span className="simple string">{model.data}</span>
   }
 })
 
 const DateEditor = React.createClass({
   render() {
     let {model} = this.props
-    return <span>{model.title}</span>
+    return <span className="simple date">{model.title}</span>
   }
 })
 
 const EnumEditor = React.createClass({
   render() {
     let {model} = this.props
-    return <span>{model.title}</span>
+    return <span className="simple enum">{model.title}</span>
   }
 })
 

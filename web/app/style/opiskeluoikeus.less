@@ -14,11 +14,16 @@
       margin-bottom: 5px;
       margin-left: 6px;
 
-      .suoritus > .kuvaus {
-        font-size: 15px;
-        color: @color-darkgray-text;
-        display: inline-block;
-        margin-left: 6px;
+      > .suoritus {
+        .kuvaus {
+          color: @color-darkgray-text;
+          display: inline-block;
+          margin-left: 6px;
+        }
+        > span > .properties {
+          font-size: 0.95em;
+          margin-top: 8px;
+        }
       }
 
       .suoritus {
@@ -28,10 +33,17 @@
   }
 
   ul.properties {
-    > li {
+    position: relative;
+    > li.property {
       > label {
         display: inline-block;
         min-width: 200px;
+        vertical-align: top
+      }
+      > .simple {
+        width: ~"calc(100% - 200px)";
+        display: inline-block;
+        vertical-align: top
       }
     }
     list-style: none;

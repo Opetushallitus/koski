@@ -46,12 +46,12 @@ object EditorModelSerializer extends Serializer[EditorModel] {
         case (ObjectModel(c, properties, data)) => d("object", "class" -> c, "properties" -> properties, "data" -> data)
         case (OptionalModel(model)) => model.map(serialize _).getOrElse(j()).merge(j("optional" -> true))
         case (ListModel(items)) => d("array", "items" -> items)
-        case (EnumeratedModel(EnumValue(title, data), alternatives)) => d("enum", "data" -> data, "title" -> title, "alternatives" -> alternatives)
+        case (EnumeratedModel(EnumValue(title, data), alternatives)) => d("enum", "simple" -> true, "data" -> data, "title" -> title, "alternatives" -> alternatives)
         case (OneOfModel(c, model)) => serialize.apply(model).merge(j("one-of-class" -> c))
-        case (NumberModel(data)) => d("number", "data" -> data)
-        case (BooleanModel(data)) => d("boolean", "data" -> data)
-        case (DateModel(data)) => d("date", "data" -> data, "title" -> finnishDateFormat.format(data))
-        case (StringModel(data)) => d("string", "data" -> data)
+        case (NumberModel(data)) => d("number", "simple" -> true, "data" -> data)
+        case (BooleanModel(data)) => d("boolean", "simple" -> true, "data" -> data)
+        case (DateModel(data)) => d("date", "simple" -> true, "data" -> data, "title" -> finnishDateFormat.format(data))
+        case (StringModel(data)) => d("string", "simple" -> true, "data" -> data)
       }
       model.empty match {
         case true => json merge(j("empty" -> true))

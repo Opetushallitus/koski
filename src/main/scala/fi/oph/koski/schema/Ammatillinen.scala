@@ -276,6 +276,7 @@ trait Järjestämismuoto {
 @Description("Järjestämismuoto ilman lisätietoja")
 case class JärjestämismuotoIlmanLisätietoja(
   @KoodistoUri("jarjestamismuoto")
+  @Representative
   tunniste: Koodistokoodiviite
 ) extends Järjestämismuoto
 
