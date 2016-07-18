@@ -11,7 +11,6 @@ export const modelLookup = (mainModel, path) => {
     return model[lookupKey] ||
       (model.properties && model.properties.find(({key}) => key == lookupKey).model) ||
       (model.items && model.items[lookupKey]) ||
-      (model.value && model.value[lookupKey]) ||
       (model.model && lookupStep(model.model, lookupKey))
   }
 

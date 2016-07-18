@@ -13,7 +13,7 @@ export const OppijaEditor = React.createClass({
                 let oppilaitos = modelLookup(thing, 'oppilaitos')
                 let opiskeluoikeudet = modelLookup(thing, 'opiskeluoikeudet').items
                 return <li className="oppilaitos" key={modelData(oppilaitos).oid}>
-                  <span className="oppilaitos">{oppilaitos.value.title}</span>
+                  <span className="oppilaitos">{oppilaitos.title}</span>
                   <OppilaitoksenOpintosuoritusote oppilaitos={oppilaitos} tyyppi={modelData(opiskeluoikeudet[0], 'tyyppi').koodiarvo} context={context} />
                   {
                     opiskeluoikeudet.map( (opiskeluoikeus, index) =>
@@ -45,7 +45,7 @@ const Opiskeluoikeus = React.createClass({
           </div>
         })
       }
-      <a onClick={toggleDetails}>{ this.state.showDetails ? "-" : "+" }</a>
+      <a onClick={toggleDetails}>{ this.state.showDetails ? '-' : '+' }</a>
       {
         this.state.showDetails
           ? getModelEditor(model, context)
@@ -101,12 +101,12 @@ const OpiskeluoikeudenOpintosuoritusote = React.createClass({
 const ObjectEditor = React.createClass({
   render() {
     let {model, context} = this.props
-    let className = "object " + model.class
+    let className = 'object ' + model.class
     return (
       <div className={className}>
         {
           model.properties.filter(property => !property.model.empty && !property.hidden).map(property => {
-            let propertyClassName = "property " + property.key
+            let propertyClassName = 'property ' + property.key
             return <ul className="properties">
               <li className={propertyClassName} key={property.key}>
                 <label>{property.title}</label>
@@ -135,13 +135,6 @@ const ArrayEditor = React.createClass({
   }
 })
 
-const WrappedEditor = React.createClass({
-  render() {
-    let {model, context} = this.props
-    return getModelEditor(model.model, context)
-  }
-})
-
 const StringEditor = React.createClass({
   render() {
     let {model} = this.props
@@ -152,7 +145,7 @@ const StringEditor = React.createClass({
 const EnumEditor = React.createClass({
   render() {
     let {model} = this.props
-    return <span>{model.value.title}</span>
+    return <span>{model.title}</span>
   }
 })
 
@@ -167,8 +160,6 @@ const editorTypes = {
   'täydellisethenkilötiedot': NullEditor,
   'object': ObjectEditor,
   'array': ArrayEditor,
-  'one-of': WrappedEditor,
-  'optional': WrappedEditor,
   'string': StringEditor,
   'number': StringEditor,
   'date': StringEditor,
@@ -180,9 +171,9 @@ const getModelEditor = (model, context) => {
   var Editor = editorTypes[model.class] || editorTypes[model.type]
   if (!Editor) {
     if (!model.type) {
-      console.log("Typeless model", model)
+      console.log('Typeless model', model)
     }
-    console.log("Missing editor " + model.type)
+    console.log('Missing editor ' + model.type)
     Editor = NullEditor
   }
   return <Editor model={model} context={context}/>
