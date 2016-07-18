@@ -56,6 +56,7 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
 }
 
 trait OpiskeluoikeudenTila {
+  @Representative
   def opiskeluoikeusjaksot: List[Opiskeluoikeusjakso]
 }
 

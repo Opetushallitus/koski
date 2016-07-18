@@ -19,6 +19,7 @@ trait Arviointi {
   }
   def arvosanaKirjaimin: LocalizedString
   @SyntheticProperty
+  @Hidden
   @Description("Onko arviointi hyväksytty")
   def hyväksytty: Boolean
 }
@@ -44,6 +45,7 @@ trait PaikallinenArviointi extends Arviointi {
 }
 
 case class Arvioitsija(
+  @Representative
   nimi: String
 )
 

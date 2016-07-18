@@ -12,7 +12,7 @@ sealed trait EditorModel {
 case class ObjectModel(`class`: String, properties: List[EditorProperty], data: Option[AnyRef]) extends EditorModel {
   override def empty = !properties.exists(!_.model.empty)
 }
-case class EditorProperty(key: String, title: String, model: EditorModel, hidden: Boolean)
+case class EditorProperty(key: String, title: String, model: EditorModel, hidden: Boolean, representative: Boolean)
 
 case class ListModel(items: List[EditorModel]) extends EditorModel { // need to add a prototype for adding new item
   override def empty = !items.exists(!_.empty)

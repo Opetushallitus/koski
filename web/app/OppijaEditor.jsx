@@ -151,7 +151,10 @@ const ObjectEditor = React.createClass({
   render() {
     let {model, context} = this.props
     let className = 'object ' + model.class
-    return (<div className={className}>
+    let representative = model.properties.find(property => property.representative)
+    return (representative && model.properties.length == 1)
+      ? getModelEditor(representative.model, context)
+      :(<div className={className}>
       <PropertiesEditor properties={model.properties} context={context}/>
     </div>)
   }
