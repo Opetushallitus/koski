@@ -144,9 +144,9 @@ case class AmmatillisenTutkinnonOsanSuoritus(
   näyttö: Option[Näyttö] = None,
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  @KoodistoKoodiarvo("ammatillisentutkinnonosa")
   @Description("Tutkinnon suoritukseen kuuluvat työssäoppimisjaksot")
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
+  @KoodistoKoodiarvo("ammatillisentutkinnonosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
 ) extends Suoritus
 
