@@ -9,6 +9,7 @@ import fi.oph.scalaschema.annotation._
 trait Suoritus {
   @Description("Suorituksen tyyppi, jolla erotellaan eri koulutusmuotoihin (perusopetus, lukio, ammatillinen...) ja eri tasoihin (tutkinto, tutkinnon osa, kurssi, oppiaine...) liittyvät suoritukset")
   @KoodistoUri("suorituksentyyppi")
+  @Hidden
   def tyyppi: Koodistokoodiviite
   def koulutusmoduuli: Koulutusmoduuli
   @Description("Suorituksen alkamispäivä. Muoto YYYY-MM-DD")

@@ -47,6 +47,7 @@ trait KorkeakouluSuoritus extends Suoritus {
     suorituskieli: Option[Koodistokoodiviite],
     toimipiste: Oppilaitos,
     @Description("Tutkintoon kuuluvien opintojaksojen suoritukset")
+    @Title("Opintojaksot")
     override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]]
   ) extends KorkeakouluSuoritus {
     override def tarvitseeVahvistuksen = false
@@ -62,6 +63,7 @@ trait KorkeakouluSuoritus extends Suoritus {
     suorituskieli: Option[Koodistokoodiviite],
     toimipiste: Oppilaitos,
     @Description("Opintojaksoon sisältyvien opintojaksojen suoritukset")
+    @Title("Sisältyvät opintojaksot")
     override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]] = None
   ) extends KorkeakouluSuoritus {
     override def tarvitseeVahvistuksen = false

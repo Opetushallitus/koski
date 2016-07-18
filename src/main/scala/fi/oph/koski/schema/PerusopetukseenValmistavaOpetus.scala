@@ -8,10 +8,10 @@ case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
   id: Option[Int] = None,
   versionumero: Option[Int] = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
-  alkamispäivä: Option[LocalDate],
-  päättymispäivä: Option[LocalDate],
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OrganisaatioWithOid] = None,
+  alkamispäivä: Option[LocalDate],
+  päättymispäivä: Option[LocalDate],
   tila: PerusopetuksenOpiskeluoikeudenTila,
   läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
   @MinItems(1)
@@ -26,14 +26,15 @@ case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
 }
 
 case class PerusopetukseenValmistavanOpetuksenSuoritus(
-  suorituskieli: Option[Koodistokoodiviite] = None,
+  koulutusmoduuli: PerusopetukseenValmistavaOpetus = PerusopetukseenValmistavaOpetus(),
   tila: Koodistokoodiviite,
   toimipiste: OrganisaatioWithOid,
+  suorituskieli: Option[Koodistokoodiviite] = None,
   vahvistus: Option[Henkilövahvistus] = None,
   @KoodistoKoodiarvo("perusopetukseenvalmistavaopetus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetukseenvalmistavaopetus", koodistoUri = "suorituksentyyppi"),
-  koulutusmoduuli: PerusopetukseenValmistavaOpetus = PerusopetukseenValmistavaOpetus(),
   @Description("Oppiaineiden suoritukset")
+  @Title("Oppiaineet")
   override val osasuoritukset: Option[List[PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus]]
 ) extends Suoritus with Toimipisteellinen {
   def arviointi = None

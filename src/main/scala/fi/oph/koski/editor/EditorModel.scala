@@ -2,6 +2,7 @@ package fi.oph.koski.editor
 
 import java.time.LocalDate
 
+import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
 import org.json4s.{Extraction, _}
 
 sealed trait EditorModel {
@@ -49,7 +50,7 @@ object EditorModelSerializer extends Serializer[EditorModel] {
         case (OneOfModel(c, model)) => serialize.apply(model).merge(j("one-of-class" -> c))
         case (NumberModel(data)) => d("number", "data" -> data)
         case (BooleanModel(data)) => d("boolean", "data" -> data)
-        case (DateModel(data)) => d("date", "data" -> data)
+        case (DateModel(data)) => d("date", "data" -> data, "title" -> finnishDateFormat.format(data))
         case (StringModel(data)) => d("string", "data" -> data)
       }
       model.empty match {

@@ -72,6 +72,7 @@ case class LukionOppimääränSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"),
   vahvistus: Option[Henkilövahvistus] = None,
   @Description("Oppiaineiden suoritukset")
+  @Title("Oppiaineet")
   override val osasuoritukset: Option[List[LukionOppiaineenSuoritus]]
 ) extends LukionPäätasonSuoritus {
   def arviointi = None
@@ -88,6 +89,7 @@ case class LukionOppiaineenOppimääränSuoritus(
   @Description("Lukion oppiaineen oppimäärän arviointi")
   arviointi: Option[List[LukionOppiaineenArviointi]] = None,
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
+  @Title("Kurssit")
   override val osasuoritukset: Option[List[LukionKurssinSuoritus]]
 ) extends LukionPäätasonSuoritus
 
@@ -109,6 +111,7 @@ case class LukionOppiaineenSuoritus(
   tila: Koodistokoodiviite,
   arviointi: Option[List[LukionOppiaineenArviointi]] = None,
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
+  @Title("Kurssit")
   override val osasuoritukset: Option[List[LukionKurssinSuoritus]]
 ) extends OppiaineenSuoritus
 

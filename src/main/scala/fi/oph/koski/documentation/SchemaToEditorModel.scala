@@ -5,7 +5,7 @@ import java.time.LocalDate
 import fi.oph.koski.editor._
 import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.localization.Localizable
-import fi.oph.koski.schema.Hidden
+import fi.oph.koski.schema.{Hidden, Title}
 import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.scalaschema._
 
@@ -34,7 +34,11 @@ class SchemaToEditorModel(implicit val user: KoskiUser) extends LocalizedHtml {
     val properties: List[EditorProperty] = schema.properties.map { property =>
       val hidden = property.metadata.contains(Hidden())
       val value = schema.getPropertyValue(property, obj)
-      EditorProperty(property. key, property.key, buildModel(value, property.schema, mainSchema), hidden)
+      val title = property.metadata.flatMap {
+        case Title(t) => Some(t)
+        case _ => None
+      }.headOption.getOrElse(property.key.split("(?=\\p{Lu})").map(_.toLowerCase).mkString(" ").replaceAll("_ ", "-").capitalize)
+      EditorProperty(property.key, title, buildModel(value, property.schema, mainSchema), hidden)
     }
     ObjectModel(schema.simpleName, properties, if (root) { Some(obj) } else { None })
   }

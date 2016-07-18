@@ -98,11 +98,49 @@ const OpiskeluoikeudenOpintosuoritusote = React.createClass({
   }
 })
 
+const OppiaineEditor = React.createClass({
+  render() {
+    let {model} = this.props
+    return <div className="oppiaineensuoritus">
+        <label class="oppiaine">{modelLookup(model, 'koulutusmoduuli').title}</label>
+        <span class="arvosana">{modelLookup(model, 'arviointi.-1.arvosana').data.koodiarvo}</span>
+      </div>
+  }
+})
+
+const VahvistusEditor = React.createClass({
+  render() {
+    let {model} = this.props
+    return <span>
+      <span class="date">{modelLookup(model, 'päivä').title}</span>&nbsp;
+      <span class="allekirjoitus">{modelLookup(model, 'paikkakunta').title}</span>&nbsp;
+      {
+        modelLookup(model, 'myöntäjäHenkilöt').items.map( henkilö =>
+          <span class="nimi">{modelData(henkilö, 'nimi')}</span>
+        )
+      }
+    </span>
+  }
+})
+
+const OpiskeluoikeusjaksoEditor = React.createClass({
+  render() {
+    let {model} = this.props
+    return <div className="opiskeluoikeusjakso">
+      <label class="date">{modelLookup(model, 'alku').title}</label>
+      <label class="tila">{modelLookup(model, 'tila').title}</label>
+    </div>
+  }
+})
+
 const ObjectEditor = React.createClass({
   render() {
     let {model, context} = this.props
     let className = 'object ' + model.class
-    return (
+    let flattened = model.properties.find(property => property.flatten)
+    return flattened
+      ? getModelEditor(flattened.model, context)
+      : (
       <div className={className}>
         {
           model.properties.filter(property => !property.model.empty && !property.hidden).map(property => {
@@ -138,7 +176,14 @@ const ArrayEditor = React.createClass({
 const StringEditor = React.createClass({
   render() {
     let {model} = this.props
-    return <span>{model.value}</span>
+    return <span>{model.data}</span>
+  }
+})
+
+const DateEditor = React.createClass({
+  render() {
+    let {model} = this.props
+    return <span>{model.title}</span>
   }
 })
 
@@ -157,12 +202,15 @@ const NullEditor = React.createClass({
 })
 
 const editorTypes = {
-  'täydellisethenkilötiedot': NullEditor,
+  'perusopetuksenoppiaineensuoritus': OppiaineEditor,
+  'perusopetukseenvalmistavanopetuksenoppiaineensuoritus': OppiaineEditor,
+  'perusopetuksenopiskeluoikeusjakso': OpiskeluoikeusjaksoEditor,
+  'henkilövahvistus': VahvistusEditor,
   'object': ObjectEditor,
   'array': ArrayEditor,
   'string': StringEditor,
   'number': StringEditor,
-  'date': StringEditor,
+  'date': DateEditor,
   'boolean': StringEditor,
   'enum': EnumEditor
 }

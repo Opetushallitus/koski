@@ -79,6 +79,7 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Henkilövahvistus] = None,
   @Description("Valmistavan koulutuksen osat")
+  @Title("Koulutuksen osat")
   override val osasuoritukset: Option[List[NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus]] = None,
   @KoodistoKoodiarvo("nayttotutkintoonvalmistavakoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("nayttotutkintoonvalmistavakoulutus", "suorituksentyyppi")
@@ -118,6 +119,7 @@ case class AmmatillisenTutkinnonSuoritus(
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Henkilövahvistus] = None,
   @Description("Ammatilliseen tutkintoon liittyvät tutkinnonosan suoritukset")
+  @Title("Tutkinnon osat")
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = None,
   @KoodistoKoodiarvo("ammatillinentutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinentutkinto", "suorituksentyyppi")
@@ -328,6 +330,7 @@ case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus(
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Henkilövahvistus] = None,
   @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osasuoritukset")
+  @Title("Koulutuksen osat")
   override val osasuoritukset: Option[List[AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus]],
   @KoodistoKoodiarvo("valma")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valma", koodistoUri = "suorituksentyyppi"),
@@ -369,6 +372,7 @@ case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenSuoritus(
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Henkilövahvistus] = None,
   @Description("Työhön ja itsenäiseen elämään valmentavan koulutuksen osasuoritukset")
+  @Title("Koulutuksen osat")
   override val osasuoritukset: Option[List[TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus]],
   @KoodistoKoodiarvo("telma")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("telma", koodistoUri = "suorituksentyyppi"),
