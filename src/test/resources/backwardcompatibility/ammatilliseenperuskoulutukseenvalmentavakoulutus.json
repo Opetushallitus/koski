@@ -6,8 +6,6 @@
     "sukunimi" : "Amikseenvalmistautuja"
   },
   "opiskeluoikeudet" : [ {
-    "alkamispäivä" : "2009-09-14",
-    "päättymispäivä" : "2016-06-04",
     "oppilaitos" : {
       "oid" : "1.2.246.562.10.52251087186",
       "oppilaitosnumero" : {
@@ -17,6 +15,35 @@
       "nimi" : {
         "fi" : "Stadin ammattiopisto"
       }
+    },
+    "alkamispäivä" : "2009-09-14",
+    "päättymispäivä" : "2016-06-04",
+    "tavoite" : {
+      "koodiarvo" : "ammatillinentutkinto",
+      "koodistoUri" : "suorituksentyyppi"
+    },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2009-09-14",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      }, {
+        "alku" : "2016-06-04",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "nimi" : {
+            "fi" : "Valmistunut"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
     },
     "suoritukset" : [ {
       "koulutusmoduuli" : {
@@ -386,33 +413,6 @@
         "koodistoUri" : "suorituksentyyppi"
       }
     } ],
-    "tavoite" : {
-      "koodiarvo" : "ammatillinentutkinto",
-      "koodistoUri" : "suorituksentyyppi"
-    },
-    "tila" : {
-      "opiskeluoikeusjaksot" : [ {
-        "alku" : "2009-09-14",
-        "tila" : {
-          "koodiarvo" : "lasna",
-          "nimi" : {
-            "fi" : "Läsnä"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
-        }
-      }, {
-        "alku" : "2016-06-04",
-        "tila" : {
-          "koodiarvo" : "valmistunut",
-          "nimi" : {
-            "fi" : "Valmistunut"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
-        }
-      } ]
-    },
     "tyyppi" : {
       "koodiarvo" : "ammatillinenkoulutus",
       "koodistoUri" : "opiskeluoikeudentyyppi"

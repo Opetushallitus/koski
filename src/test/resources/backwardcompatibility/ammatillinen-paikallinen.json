@@ -6,10 +6,27 @@
     "sukunimi" : "Ammattilainen"
   },
   "opiskeluoikeudet" : [ {
-    "alkamispäivä" : "2016-09-01",
-    "arvioituPäättymispäivä" : "2020-05-01",
     "oppilaitos" : {
       "oid" : "1.2.246.562.10.52251087186"
+    },
+    "alkamispäivä" : "2016-09-01",
+    "arvioituPäättymispäivä" : "2020-05-01",
+    "tavoite" : {
+      "koodiarvo" : "ammatillinentutkinto",
+      "koodistoUri" : "suorituksentyyppi"
+    },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2016-09-01",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
     },
     "suoritukset" : [ {
       "koulutusmoduuli" : {
@@ -148,23 +165,6 @@
         "koodistoUri" : "suorituksentyyppi"
       }
     } ],
-    "tavoite" : {
-      "koodiarvo" : "ammatillinentutkinto",
-      "koodistoUri" : "suorituksentyyppi"
-    },
-    "tila" : {
-      "opiskeluoikeusjaksot" : [ {
-        "alku" : "2016-09-01",
-        "tila" : {
-          "koodiarvo" : "lasna",
-          "nimi" : {
-            "fi" : "Läsnä"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
-        }
-      } ]
-    },
     "tyyppi" : {
       "koodiarvo" : "ammatillinenkoulutus",
       "koodistoUri" : "opiskeluoikeudentyyppi"

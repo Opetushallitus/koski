@@ -11,22 +11,22 @@ case class LukionOpiskeluoikeus(
   id: Option[Int] = None,
   versionumero: Option[Int] = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
-  alkamispäivä: Option[LocalDate] = None,
-  päättymispäivä: Option[LocalDate] = None,
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OrganisaatioWithOid] = None,
+  alkamispäivä: Option[LocalDate] = None,
+  päättymispäivä: Option[LocalDate] = None,
   @Description("Opiskeluoikeuden tavoite-tieto kertoo sen, suorittaako opiskelija lukion koko oppimäärää vai yksittäisen oppiaineen oppimäärää")
   @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("lukionoppimaara")
   @KoodistoKoodiarvo("lukionoppiaineenoppimaara")
   tavoite: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", "suorituksentyyppi"),
-  @MinItems(1) @MaxItems(1)
-  suoritukset: List[LukionPäätasonSuoritus],
   tila: LukionOpiskeluoikeudenTila,
   läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
+  lisätiedot: Option[LukionOpiskeluoikeudenLisätiedot] = None,
+  @MinItems(1) @MaxItems(1)
+  suoritukset: List[LukionPäätasonSuoritus],
   @KoodistoKoodiarvo("lukiokoulutus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukiokoulutus", "opiskeluoikeudentyyppi"),
-  lisätiedot: Option[LukionOpiskeluoikeudenLisätiedot] = None
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukiokoulutus", "opiskeluoikeudentyyppi")
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))

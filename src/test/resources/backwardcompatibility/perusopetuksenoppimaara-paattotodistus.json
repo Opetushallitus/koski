@@ -16,12 +16,12 @@
         "fi" : "Jyväskylän normaalikoulu"
       }
     },
+    "alkamispäivä" : "2008-08-15",
+    "päättymispäivä" : "2016-06-04",
     "tavoite" : {
       "koodiarvo" : "perusopetuksenoppimaara",
       "koodistoUri" : "suorituksentyyppi"
     },
-    "alkamispäivä" : "2008-08-15",
-    "päättymispäivä" : "2016-06-04",
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
         "alku" : "2008-08-15",

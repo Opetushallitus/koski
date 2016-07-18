@@ -14,9 +14,6 @@
         "koodistoVersio" : 1
       }
     },
-    "alkamispäivä" : "2012-09-01",
-    "arvioituPäättymispäivä" : "2015-05-31",
-    "päättymispäivä" : "2016-01-09",
     "oppilaitos" : {
       "oid" : "1.2.246.562.10.52251087186",
       "oppilaitosnumero" : {
@@ -26,6 +23,50 @@
       "nimi" : {
         "fi" : "Stadin ammattiopisto"
       }
+    },
+    "alkamispäivä" : "2012-09-01",
+    "arvioituPäättymispäivä" : "2015-05-31",
+    "päättymispäivä" : "2016-01-09",
+    "tavoite" : {
+      "koodiarvo" : "ammatillinentutkinto",
+      "koodistoUri" : "suorituksentyyppi"
+    },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2012-09-01",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "4",
+          "nimi" : {
+            "fi" : "Työnantajan kokonaan rahoittama"
+          },
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      }, {
+        "alku" : "2016-01-09",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "nimi" : {
+            "fi" : "Valmistunut"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "4",
+          "nimi" : {
+            "fi" : "Työnantajan kokonaan rahoittama"
+          },
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      } ]
     },
     "suoritukset" : [ {
       "koulutusmoduuli" : {
@@ -825,47 +866,6 @@
         "koodistoUri" : "suorituksentyyppi"
       }
     } ],
-    "tavoite" : {
-      "koodiarvo" : "ammatillinentutkinto",
-      "koodistoUri" : "suorituksentyyppi"
-    },
-    "tila" : {
-      "opiskeluoikeusjaksot" : [ {
-        "alku" : "2012-09-01",
-        "tila" : {
-          "koodiarvo" : "lasna",
-          "nimi" : {
-            "fi" : "Läsnä"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
-        },
-        "opintojenRahoitus" : {
-          "koodiarvo" : "4",
-          "nimi" : {
-            "fi" : "Työnantajan kokonaan rahoittama"
-          },
-          "koodistoUri" : "opintojenrahoitus"
-        }
-      }, {
-        "alku" : "2016-01-09",
-        "tila" : {
-          "koodiarvo" : "valmistunut",
-          "nimi" : {
-            "fi" : "Valmistunut"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
-        },
-        "opintojenRahoitus" : {
-          "koodiarvo" : "4",
-          "nimi" : {
-            "fi" : "Työnantajan kokonaan rahoittama"
-          },
-          "koodistoUri" : "opintojenrahoitus"
-        }
-      } ]
-    },
     "tyyppi" : {
       "koodiarvo" : "ammatillinenkoulutus",
       "koodistoUri" : "opiskeluoikeudentyyppi"

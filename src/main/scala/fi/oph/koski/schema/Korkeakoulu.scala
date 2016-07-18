@@ -8,20 +8,20 @@ import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.scalaschema.annotation.Description
 
 case class KorkeakoulunOpiskeluoikeus(
-  id: Option[Int],
-  lähdejärjestelmänId: Option[LähdejärjestelmäId],
-  alkamispäivä: Option[LocalDate],
-  arvioituPäättymispäivä: Option[LocalDate],
-  päättymispäivä: Option[LocalDate],
+  id: Option[Int] = None,
+  lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
   oppilaitos: Oppilaitos,
-  koulutustoimija: Option[OrganisaatioWithOid],
-  suoritukset: List[KorkeakouluSuoritus],
-  tila: KorkeakoulunOpiskeluoikeudenTila,
-  läsnäolotiedot: Option[KorkeakoulunLäsnäolotiedot],
-  @KoodistoKoodiarvo("korkeakoulutus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulutus", Some("Korkeakoulutus"), "opiskeluoikeudentyyppi", None),
+  koulutustoimija: Option[OrganisaatioWithOid] = None,
+  alkamispäivä: Option[LocalDate] = None,
+  arvioituPäättymispäivä: Option[LocalDate] = None,
+  päättymispäivä: Option[LocalDate] = None,
   @Description("Jos tämä on opiskelijan ensisijainen opiskeluoikeus tässä oppilaitoksessa, ilmoitetaan tässä ensisijaisuuden tiedot.")
-  ensisijaisuus: Option[Ensisijaisuus] = None
+  ensisijaisuus: Option[Ensisijaisuus] = None,
+  tila: KorkeakoulunOpiskeluoikeudenTila,
+  läsnäolotiedot: Option[KorkeakoulunLäsnäolotiedot] = None,
+  suoritukset: List[KorkeakouluSuoritus],
+  @KoodistoKoodiarvo("korkeakoulutus")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulutus", Some("Korkeakoulutus"), "opiskeluoikeudentyyppi", None)
 ) extends Opiskeluoikeus {
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def versionumero = None

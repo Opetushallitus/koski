@@ -11,13 +11,11 @@ case class AmmatillinenOpiskeluoikeus(
   id: Option[Int] = None,
   versionumero: Option[Int] = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
+  oppilaitos: Oppilaitos,
+  koulutustoimija: Option[OrganisaatioWithOid] = None,
   alkamispäivä: Option[LocalDate] = None,
   arvioituPäättymispäivä: Option[LocalDate] = None,
   päättymispäivä: Option[LocalDate] = None,
-  oppilaitos: Oppilaitos,
-  koulutustoimija: Option[OrganisaatioWithOid] = None,
-  @MinItems(1) @MaxItems(2)
-  suoritukset: List[AmmatillinenPäätasonSuoritus],
   @Description("Opiskeluoikeuden tavoite-tieto kertoo sen, suorittaako opiskelija tutkintotavoitteista koulutusta (koko tutkintoa), tutkinnon osa tavoitteista koulutusta (tutkinnon osaa), ammatilliseen peruskoulutukseen valmentavaa koulutusta (Valma) vai työhön ja itsenäiseen elämään valmentavaa koulutusta (Telma)")
   @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("ammatillinentutkinto")
@@ -26,10 +24,12 @@ case class AmmatillinenOpiskeluoikeus(
   @KoodistoKoodiarvo("telma")
   tavoite: Koodistokoodiviite,
   tila: AmmatillinenOpiskeluoikeudenTila,
+  @MinItems(1) @MaxItems(2)
+  suoritukset: List[AmmatillinenPäätasonSuoritus],
   läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
+  lisätiedot: Option[AmmatillisenOpiskeluoikeudenLisätiedot] = None,
   @KoodistoKoodiarvo("ammatillinenkoulutus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinenkoulutus", "opiskeluoikeudentyyppi"),
-  lisätiedot: Option[AmmatillisenOpiskeluoikeudenLisätiedot] = None
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinenkoulutus", "opiskeluoikeudentyyppi")
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))

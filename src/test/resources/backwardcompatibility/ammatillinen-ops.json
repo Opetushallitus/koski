@@ -3,9 +3,6 @@
     "oid" : "1.2.246.562.24.00000000001"
   },
   "opiskeluoikeudet" : [ {
-    "alkamispäivä" : "2012-09-01",
-    "arvioituPäättymispäivä" : "2015-05-31",
-    "päättymispäivä" : "2016-01-09",
     "oppilaitos" : {
       "oid" : "1.2.246.562.10.52251087186",
       "oppilaitosnumero" : {
@@ -15,6 +12,43 @@
       "nimi" : {
         "fi" : "Stadin ammattiopisto"
       }
+    },
+    "alkamispäivä" : "2012-09-01",
+    "arvioituPäättymispäivä" : "2015-05-31",
+    "päättymispäivä" : "2016-01-09",
+    "tavoite" : {
+      "koodiarvo" : "ammatillinentutkinto",
+      "koodistoUri" : "suorituksentyyppi"
+    },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2012-09-01",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "nimi" : {
+            "fi" : "Valtionosuusrahoitteinen koulutus"
+          },
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      }, {
+        "alku" : "2016-01-09",
+        "tila" : {
+          "koodiarvo" : "eronnut",
+          "nimi" : {
+            "fi" : "Eronnut"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
     },
     "suoritukset" : [ {
       "koulutusmoduuli" : {
@@ -174,40 +208,6 @@
         "koodistoUri" : "suorituksentyyppi"
       }
     } ],
-    "tavoite" : {
-      "koodiarvo" : "ammatillinentutkinto",
-      "koodistoUri" : "suorituksentyyppi"
-    },
-    "tila" : {
-      "opiskeluoikeusjaksot" : [ {
-        "alku" : "2012-09-01",
-        "tila" : {
-          "koodiarvo" : "lasna",
-          "nimi" : {
-            "fi" : "Läsnä"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
-        },
-        "opintojenRahoitus" : {
-          "koodiarvo" : "1",
-          "nimi" : {
-            "fi" : "Valtionosuusrahoitteinen koulutus"
-          },
-          "koodistoUri" : "opintojenrahoitus"
-        }
-      }, {
-        "alku" : "2016-01-09",
-        "tila" : {
-          "koodiarvo" : "eronnut",
-          "nimi" : {
-            "fi" : "Eronnut"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
-        }
-      } ]
-    },
     "läsnäolotiedot" : {
       "läsnäolojaksot" : [ {
         "alku" : "2012-09-01",
@@ -241,10 +241,6 @@
         }
       } ]
     },
-    "tyyppi" : {
-      "koodiarvo" : "ammatillinenkoulutus",
-      "koodistoUri" : "opiskeluoikeudentyyppi"
-    },
     "lisätiedot" : {
       "hojks" : {
         "opetusryhmä" : {
@@ -263,6 +259,10 @@
         }
       },
       "oikeusMaksuttomaanAsuntolapaikkaan" : false
+    },
+    "tyyppi" : {
+      "koodiarvo" : "ammatillinenkoulutus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
     }
   } ]
 }
