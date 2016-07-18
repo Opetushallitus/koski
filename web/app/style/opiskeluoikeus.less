@@ -12,7 +12,9 @@
     }
     .opiskeluoikeus {
       margin-bottom: 5px;
-      .tutkinto, .tutkinnon-tila {
+      margin-left: 6px;
+
+      .suoritus > .kuvaus {
         font-size: 15px;
         color: @color-darkgray-text;
         display: inline-block;
@@ -23,5 +25,29 @@
         overflow: auto;
       }
     }
+  }
+
+  ul.properties {
+    > li {
+      > label {
+        display: inline-block;
+        min-width: 200px;
+      }
+    }
+    list-style: none;
+    padding-left: 20px;
+  }
+
+  ul.array {
+    list-style: none;
+  }
+
+  .array > li:not(:first-child) > .object {
+    margin-top: 20px;
+  }
+
+  .oppiaineensuoritus label, .opiskeluoikeusjakso label {
+    display: inline-block;
+    min-width: 300px;
   }
 }

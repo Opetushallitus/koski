@@ -45,8 +45,3 @@ if (!Array.prototype.findIndex) {
     return -1
   }
 }
-if (!Array.prototype.last){
-  Array.prototype.last = function(){
-    return this[this.length - 1]
-  }
-}

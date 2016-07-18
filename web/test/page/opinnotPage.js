@@ -7,7 +7,7 @@ function OpinnotPage() {
   var api = {
     getTutkinto: function(index) {
       index = typeof index !== 'undefined' ? index : 0
-      var nth = S('.opiskeluoikeus .tutkinto')[index]
+      var nth = S('.opiskeluoikeus > .suoritus > .kuvaus')[index]
       return S(nth).text()
     },
     isRakenneVisible: function() {

@@ -1,56 +1,52 @@
 import React from 'react'
-import { modelData, modelLookup } from './EditorModel.js'
+import { modelData, modelLookup, modelTitle } from './EditorModel.js'
 
 export const OppijaEditor = React.createClass({
   render() {
     let {editor} = this.props
     return editor ? (
-      <div className="editor">
-        <ul className="oppilaitokset">
-          {
-            modelLookup(editor, 'opiskeluoikeudet').items.map((thing) => {
-                let context = { oppijaOid: modelLookup(editor, 'henkilö.oid').data }
-                let oppilaitos = modelLookup(thing, 'oppilaitos')
-                let opiskeluoikeudet = modelLookup(thing, 'opiskeluoikeudet').items
-                return <li className="oppilaitos" key={modelData(oppilaitos).oid}>
-                  <span className="oppilaitos">{oppilaitos.title}</span>
-                  <OppilaitoksenOpintosuoritusote oppilaitos={oppilaitos} tyyppi={modelData(opiskeluoikeudet[0], 'tyyppi').koodiarvo} context={context} />
-                  {
-                    opiskeluoikeudet.map( (opiskeluoikeus, index) =>
-                      <Opiskeluoikeus key={ index } model={ opiskeluoikeus } context={context} />
-                    )
-                  }
-                </li>
-              }
-            )}
-        </ul>
-      </div>
+      <ul className="oppilaitokset">
+        {
+          modelLookup(editor, 'opiskeluoikeudet').items.map((thing) => {
+              let context = { oppijaOid: modelLookup(editor, 'henkilö.oid').data }
+              let oppilaitos = modelLookup(thing, 'oppilaitos')
+              let opiskeluoikeudet = modelLookup(thing, 'opiskeluoikeudet').items
+              return <li className="oppilaitos" key={modelData(oppilaitos).oid}>
+                <span className="oppilaitos">{oppilaitos.title}</span>
+                <OppilaitoksenOpintosuoritusote oppilaitos={oppilaitos} tyyppi={modelData(opiskeluoikeudet[0], 'tyyppi').koodiarvo} context={context} />
+                {
+                  opiskeluoikeudet.map( (opiskeluoikeus, index) =>
+                    <OpiskeluoikeusEditor key={ index } model={ opiskeluoikeus } context={context} />
+                  )
+                }
+              </li>
+            }
+          )}
+      </ul>
     ) : null
   }
 })
 
-const Opiskeluoikeus = React.createClass({
+const OpiskeluoikeusEditor = React.createClass({
   render() {
     let {model, context} = this.props
-    let toggleDetails = () => { this.setState({showDetails: !this.state.showDetails})}
-
+    let showDetails = this.state && this.state.showDetails
+    let toggleDetails = () => { this.setState({showDetails: !showDetails})}
     return <div className="opiskeluoikeus">
+      <div className="kuvaus">
+        Opiskeluoikeus&nbsp;
+          <span className="alku pvm">{modelTitle(model, 'alkamispäivä')}</span>-
+          <span className="loppu pvm">{modelTitle(model, 'päättymispäivä')}</span>,&nbsp;
+          <span className="tila">{modelTitle(model, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}</span>
+        <a onClick={toggleDetails}>{ showDetails ? '-' : '+' }</a>
+        { showDetails ? <PropertiesEditor properties={ model.properties.filter(property => property.key != 'suoritukset') } context={context}/> : null }
+      </div>
       {
-        modelLookup(model, 'suoritukset.items').map((suoritusModel, i) => {
-          let title = modelLookup(suoritusModel, 'koulutusmoduuli.title')
-          return <div className="suoritus" key={i}>
-            <span className="tutkinto">{title}</span>
-            <OpiskeluoikeudenOpintosuoritusote opiskeluoikeus={model} context={context}/>
-            <Todistus suoritus={suoritusModel} context={context}/>
-          </div>
-        })
+        modelLookup(model, 'suoritukset.items').map((suoritusModel, i) =>
+          <SuoritusEditor model={suoritusModel} context={context} key={i}/>
+        )
       }
-      <a onClick={toggleDetails}>{ this.state.showDetails ? '-' : '+' }</a>
-      {
-        this.state.showDetails
-          ? getModelEditor(model, context)
-          : null
-      }
+      <OpiskeluoikeudenOpintosuoritusote opiskeluoikeus={model} context={context}/>
     </div>
   },
   getInitialState() {
@@ -58,6 +54,20 @@ const Opiskeluoikeus = React.createClass({
   }
 })
 
+const SuoritusEditor = React.createClass({
+  render() {
+    let {model, context} = this.props
+    let showDetails = this.state && this.state.showDetails
+    let toggleDetails = () => { this.setState({showDetails: !showDetails})}
+    let title = modelTitle(model, 'koulutusmoduuli')
+    return <div className="suoritus">
+      <span className="kuvaus">{title}</span>
+      <Todistus suoritus={model} context={context}/>
+      <a onClick={toggleDetails}>{ showDetails ? '-' : '+' }</a>
+      { showDetails ? getModelEditor(model, context) : null }
+    </div>
+  }
+})
 
 const Todistus = React.createClass({
   render() {
@@ -102,7 +112,7 @@ const OppiaineEditor = React.createClass({
   render() {
     let {model} = this.props
     return <div className="oppiaineensuoritus">
-        <label class="oppiaine">{modelLookup(model, 'koulutusmoduuli').title}</label>
+        <label class="oppiaine">{modelTitle(model, 'koulutusmoduuli')}</label>
         <span class="arvosana">{modelLookup(model, 'arviointi.-1.arvosana').data.koodiarvo}</span>
       </div>
   }
@@ -112,8 +122,8 @@ const VahvistusEditor = React.createClass({
   render() {
     let {model} = this.props
     return <span>
-      <span class="date">{modelLookup(model, 'päivä').title}</span>&nbsp;
-      <span class="allekirjoitus">{modelLookup(model, 'paikkakunta').title}</span>&nbsp;
+      <span class="date">{modelTitle(model, 'päivä')}</span>&nbsp;
+      <span class="allekirjoitus">{modelTitle(model, 'paikkakunta')}</span>&nbsp;
       {
         modelLookup(model, 'myöntäjäHenkilöt').items.map( henkilö =>
           <span class="nimi">{modelData(henkilö, 'nimi')}</span>
@@ -127,8 +137,8 @@ const OpiskeluoikeusjaksoEditor = React.createClass({
   render() {
     let {model} = this.props
     return <div className="opiskeluoikeusjakso">
-      <label class="date">{modelLookup(model, 'alku').title}</label>
-      <label class="tila">{modelLookup(model, 'tila').title}</label>
+      <label class="date">{modelTitle(model, 'alku')}</label>
+      <label class="tila">{modelTitle(model, 'tila')}</label>
     </div>
   }
 })
@@ -137,24 +147,26 @@ const ObjectEditor = React.createClass({
   render() {
     let {model, context} = this.props
     let className = 'object ' + model.class
-    let flattened = model.properties.find(property => property.flatten)
-    return flattened
-      ? getModelEditor(flattened.model, context)
-      : (
-      <div className={className}>
-        {
-          model.properties.filter(property => !property.model.empty && !property.hidden).map(property => {
-            let propertyClassName = 'property ' + property.key
-            return <ul className="properties">
-              <li className={propertyClassName} key={property.key}>
-                <label>{property.title}</label>
-                { getModelEditor(property.model, context) }
-              </li>
-            </ul>
-          })
-        }
-      </div>
-    )
+    return <div className={className}>
+      <PropertiesEditor properties={model.properties} context={context}/>
+    </div>
+  }
+})
+
+const PropertiesEditor = React.createClass({
+  render() {
+    let {properties, context} = this.props
+    return (<ul className="properties">
+      {
+        properties.filter(property => !property.model.empty && !property.hidden).map(property => {
+          let propertyClassName = 'property ' + property.key
+          return (<li className={propertyClassName} key={property.key}>
+            <label>{property.title}</label>
+            { getModelEditor(property.model, context) }
+          </li>)
+        })
+      }
+    </ul>)
   }
 })
 
@@ -216,7 +228,9 @@ const editorTypes = {
 }
 
 const getModelEditor = (model, context) => {
-  var Editor = editorTypes[model.class] || editorTypes[model.type]
+  var Editor = model
+    ? editorTypes[model.class] || editorTypes[model.type]
+    : NullEditor
   if (!Editor) {
     if (!model.type) {
       console.log('Typeless model', model)
