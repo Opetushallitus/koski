@@ -3,12 +3,12 @@ import { modelData, modelLookup, modelTitle } from './EditorModel.js'
 
 export const OppijaEditor = React.createClass({
   render() {
-    let {editor} = this.props
-    return editor ? (
+    let {model} = this.props
+    return model ? (
       <ul className="oppilaitokset">
         {
-          modelLookup(editor, 'opiskeluoikeudet').items.map((thing) => {
-              let context = { oppijaOid: modelLookup(editor, 'henkilö.oid').data }
+          modelLookup(model, 'opiskeluoikeudet').items.map((thing) => {
+              let context = { oppijaOid: modelLookup(model, 'henkilö.oid').data }
               let oppilaitos = modelLookup(thing, 'oppilaitos')
               let opiskeluoikeudet = modelLookup(thing, 'opiskeluoikeudet').items
               return (<li className="oppilaitos" key={modelData(oppilaitos).oid}>

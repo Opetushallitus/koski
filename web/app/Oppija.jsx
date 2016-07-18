@@ -60,7 +60,7 @@ const ExistingOppija = React.createClass({
         <h2>{henkilö.sukunimi}, {henkilö.etunimet} <span className='hetu'>{henkilö.hetu}</span></h2>
         <hr></hr>
         <h4>Opiskeluoikeudet</h4>
-        <OppijaEditor editor={editor} />
+        <OppijaEditor model={editor} />
       </div>
     )
   }
