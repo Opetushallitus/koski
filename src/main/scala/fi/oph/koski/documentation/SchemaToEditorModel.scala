@@ -4,8 +4,8 @@ import java.time.LocalDate
 
 import fi.oph.koski.editor._
 import fi.oph.koski.koskiuser.KoskiUser
-import fi.oph.koski.localization.Localizable
-import fi.oph.koski.schema.{Hidden, Representative, Title}
+import fi.oph.koski.localization.{Localizable, LocalizedString}
+import fi.oph.koski.schema.{Hidden, Koodistokoodiviite, Representative, Title}
 import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.scalaschema._
 
@@ -15,6 +15,7 @@ class SchemaToEditorModel(implicit val user: KoskiUser) extends LocalizedHtml {
   }
 
   private def buildModel(obj: Any, schema: Schema, mainSchema: ClassSchema): EditorModel = (obj, schema) match {
+    case (k: Koodistokoodiviite, _) => EnumeratedModel(EnumValue(i(k.lyhytNimi.orElse(k.nimi).getOrElse(LocalizedString.unlocalized(k.koodiarvo))), k))
     case (o: Localizable, t:ClassSchema)  => EnumeratedModel(EnumValue(i(o), o))
     case (o: AnyRef, t:ClassSchema) => buildObjectModel(t, o, mainSchema)
     case (xs: Iterable[_], t:ListSchema) => ListModel(xs.toList.map(item => buildModel(item, t.itemSchema, mainSchema)))

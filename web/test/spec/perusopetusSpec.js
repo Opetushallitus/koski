@@ -47,35 +47,59 @@ describe('Perusopetus', function() {
   })
 
   describe('Päättötodistus toiminta-alueittain', function() {
-    before(Authentication().login(), page.openPage, page.oppijaHaku.search('130696-913E', page.isOppijaSelected('Tommi')), OpinnotPage().avaaTodistus(0))
-    it('näytetään', function() {
-      // See more detailed content specification in PerusopetusSpec.scala
-      expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
+    before(Authentication().login(), page.openPage, page.oppijaHaku.search('130696-913E', page.isOppijaSelected('Tommi')))
+    describe('Oppijan suorituksissa', function() {
+      it('näytetään', function() {})
+    })
+    describe('Tulostettava todistus', function() {
+      before(OpinnotPage().avaaTodistus(0))
+      it('näytetään', function() {
+        // See more detailed content specification in PerusopetusSpec.scala
+        expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
+      })
     })
   })
 
   describe('Perusopetuksen oppiaineen oppimäärän todistus', function() {
-    before(Authentication().login(), page.openPage, page.oppijaHaku.search('190596-953T', page.isOppijaSelected('Olli')), OpinnotPage().avaaTodistus(0))
-    it('näytetään', function() {
-      expect(todistus.headings()).to.equal('Jyväskylän yliopisto Todistus perusopetuksen oppiaineen oppimäärän suorittamisesta Jyväskylän normaalikoulu Oppiaineenkorottaja, Olli 190596-953T')
-      expect(todistus.arvosanarivi('.oppiaine.AI')).to.equal('Äidinkieli ja kirjallisuus Kiitettävä 9')
-      expect(todistus.arvosanarivi('.muut-opinnot')).to.equal('')
+    before(Authentication().login(), page.openPage, page.oppijaHaku.search('190596-953T', page.isOppijaSelected('Olli')))
+    describe('Oppijan suorituksissa', function() {
+      it('näytetään', function() {})
+    })
+    describe('Tulostettava todistus', function() {
+      before(OpinnotPage().avaaTodistus(0))
+      it('näytetään', function() {
+        expect(todistus.headings()).to.equal('Jyväskylän yliopisto Todistus perusopetuksen oppiaineen oppimäärän suorittamisesta Jyväskylän normaalikoulu Oppiaineenkorottaja, Olli 190596-953T')
+        expect(todistus.arvosanarivi('.oppiaine.AI')).to.equal('Äidinkieli ja kirjallisuus Kiitettävä 9')
+        expect(todistus.arvosanarivi('.muut-opinnot')).to.equal('')
+      })
     })
   })
 
   describe('Perusopetuksen lisäopetuksen todistus', function() {
-    before(page.openPage, page.oppijaHaku.search('200596-9755', page.isOppijaSelected('Kaisa')), OpinnotPage().avaaTodistus(0))
-    it('näytetään', function() {
-      expect(todistus.headings()).to.equal('Jyväskylän yliopisto Todistus lisäopetuksen suorittamisesta Jyväskylän normaalikoulu Kymppiluokkalainen, Kaisa 200596-9755')
-      // See more detailed content specification in PerusopetusSpec.scala
+    before(page.openPage, page.oppijaHaku.search('200596-9755', page.isOppijaSelected('Kaisa')))
+    describe('Oppijan suorituksissa', function() {
+      it('näytetään', function() {})
+    })
+    describe('Tulostettava todistus', function() {
+      before(OpinnotPage().avaaTodistus(0))
+      it('näytetään', function() {
+        expect(todistus.headings()).to.equal('Jyväskylän yliopisto Todistus lisäopetuksen suorittamisesta Jyväskylän normaalikoulu Kymppiluokkalainen, Kaisa 200596-9755')
+        // See more detailed content specification in PerusopetusSpec.scala
+      })
     })
   })
 
   describe('Perusopetukseen valmistavan opetuksen todistus', function() {
-    before(page.openPage, page.oppijaHaku.search('110496-926Y', page.isOppijaSelected('Kaisa')), OpinnotPage().avaaTodistus(0))
-    it('näytetään', function() {
-      expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
-      // See more detailed content specification in PerusopetusSpec.scala
+    before(page.openPage, page.oppijaHaku.search('110496-926Y', page.isOppijaSelected('Kaisa')))
+    describe('Oppijan suorituksissa', function() {
+      it('näytetään', function() {})
+    })
+    describe('Tulostettava todistus', function() {
+      before(OpinnotPage().avaaTodistus(0))
+      it('näytetään', function() {
+        expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
+        // See more detailed content specification in PerusopetusSpec.scala
+      })
     })
   })
 })

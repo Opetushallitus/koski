@@ -68,7 +68,7 @@ const FoldableEditor = React.createClass({
     let toggleDetails = () => { this.setState({showDetails: !showDetails})}
     let showDetails = this.state && this.state.showDetails
     return (<span>
-      <a onClick={toggleDetails}>{ showDetails ? '-' : '+' }</a>
+      <a className="toggle-expand" onClick={toggleDetails}>{ showDetails ? '-' : '+' }</a>
       { showDetails ? expanded() : (collapsed ? collapsed() : null) }
     </span>)
   }
@@ -118,7 +118,7 @@ const OppiaineEditor = React.createClass({
     let {model} = this.props
     return (<div className="oppiaineensuoritus">
       <label className="oppiaine">{modelTitle(model, 'koulutusmoduuli')}</label>
-      <span className="arvosana">{modelLookup(model, 'arviointi.-1.arvosana').data.koodiarvo}</span>
+      <span className="arvosana">{modelTitle(model, 'arviointi.-1')}</span>
     </div>)
   }
 })
@@ -153,9 +153,8 @@ const TutkinnonosaEditor = React.createClass({
     let {model, context} = this.props
 
     return (<div className="suoritus tutkinnonosa">
-
       <label className="nimi">{modelTitle(model, 'koulutusmoduuli')}</label>
-      <span className="arvosana">{modelTitle(model, 'arviointi.-1.arvosana')}</span>
+      <span className="arvosana">{modelTitle(model, 'arviointi.-1')}</span>
       <FoldableEditor expanded={() => <PropertiesEditor properties={model.properties} context={context}/>}/>
     </div>)
   }
@@ -248,8 +247,12 @@ const NullEditor = React.createClass({
 const editorTypes = {
   'perusopetuksenoppiaineensuoritus': OppiaineEditor,
   'perusopetukseenvalmistavanopetuksenoppiaineensuoritus': OppiaineEditor,
+  'perusopetuksenlisäopetuksenoppiaineensuoritus': OppiaineEditor,
   'ammatillisentutkinnonosansuoritus': TutkinnonosaEditor,
+  'lukionoppiaineensuoritus': TutkinnonosaEditor,
+  'lukionkurssinsuoritus': OppiaineEditor,
   'ammatillinenopiskeluoikeusjakso': OpiskeluoikeusjaksoEditor,
+  'lukionopiskeluoikeusjakso': OpiskeluoikeusjaksoEditor,
   'perusopetuksenopiskeluoikeusjakso': OpiskeluoikeusjaksoEditor,
   'henkilövahvistus': VahvistusEditor,
   'object': ObjectEditor,
