@@ -22,6 +22,16 @@
         },
         "perusteenDiaarinumero" : "39/011/2014"
       },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.42456023292",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+        }
+      },
+      "tila" : {
+        "koodiarvo" : "KESKEN",
+        "koodistoUri" : "suorituksentila"
+      },
       "suoritustapa" : {
         "koodiarvo" : "naytto",
         "nimi" : {
@@ -29,16 +39,6 @@
         },
         "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
         "koodistoVersio" : 1
-      },
-      "tila" : {
-        "koodiarvo" : "KESKEN",
-        "koodistoUri" : "suorituksentila"
-      },
-      "toimipiste" : {
-        "oid" : "1.2.246.562.10.42456023292",
-        "nimi" : {
-          "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
-        }
       },
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
@@ -55,15 +55,15 @@
           },
           "perusteenDiaarinumero" : "40/011/2001"
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
           "nimi" : {
             "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
           }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {

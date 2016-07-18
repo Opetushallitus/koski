@@ -6,8 +6,6 @@
     "sukunimi" : "Koululainen"
   },
   "opiskeluoikeudet" : [ {
-    "alkamispäivä" : "2008-08-15",
-    "päättymispäivä" : "2016-06-04",
     "oppilaitos" : {
       "oid" : "1.2.246.562.10.14613773812",
       "oppilaitosnumero" : {
@@ -22,13 +20,39 @@
       "koodiarvo" : "perusopetuksenoppimaara",
       "koodistoUri" : "suorituksentyyppi"
     },
+    "alkamispäivä" : "2008-08-15",
+    "päättymispäivä" : "2016-06-04",
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2008-08-15",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      }, {
+        "alku" : "2016-06-04",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "nimi" : {
+            "fi" : "Valmistunut"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
     "suoritukset" : [ {
-      "luokka" : "8C",
-      "alkamispäivä" : "2014-08-15",
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "koodistoUri" : "suorituksentila"
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "8",
+          "koodistoUri" : "perusopetuksenluokkaaste"
+        }
       },
+      "luokka" : "8C",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.14613773812",
         "oppilaitosnumero" : {
@@ -38,6 +62,11 @@
         "nimi" : {
           "fi" : "Jyväskylän normaalikoulu"
         }
+      },
+      "alkamispäivä" : "2014-08-15",
+      "tila" : {
+        "koodiarvo" : "VALMIS",
+        "koodistoUri" : "suorituksentila"
       },
       "vahvistus" : {
         "päivä" : "2015-05-30",
@@ -83,16 +112,6 @@
         "koodistoUri" : "kieli"
       },
       "jääLuokalle" : false,
-      "koulutusmoduuli" : {
-        "tunniste" : {
-          "koodiarvo" : "8",
-          "koodistoUri" : "perusopetuksenluokkaaste"
-        }
-      },
-      "tyyppi" : {
-        "koodiarvo" : "perusopetuksenvuosiluokka",
-        "koodistoUri" : "suorituksentyyppi"
-      },
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -105,14 +124,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -120,7 +135,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -133,14 +152,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -148,7 +163,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -171,14 +190,10 @@
             }
           }
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -186,7 +201,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -199,14 +218,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -214,7 +229,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -223,14 +242,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -238,7 +253,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -247,14 +266,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -262,7 +277,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -271,14 +290,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -286,7 +301,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -295,14 +314,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -310,7 +325,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -319,14 +338,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -334,7 +349,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -343,14 +362,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -358,7 +373,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -367,14 +386,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -382,7 +397,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -391,14 +410,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -406,7 +421,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -415,14 +434,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -430,7 +445,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -439,14 +458,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -454,7 +469,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -463,14 +482,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -478,7 +493,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -497,14 +516,10 @@
             }
           }
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -512,7 +527,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -521,14 +540,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -536,7 +551,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -545,14 +564,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -560,7 +575,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -569,14 +588,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -584,7 +599,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -603,14 +622,10 @@
             }
           }
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -618,7 +633,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -641,14 +660,10 @@
             }
           }
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -656,15 +671,24 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
-      } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "perusopetuksenvuosiluokka",
+        "koodistoUri" : "suorituksentyyppi"
+      }
     }, {
-      "luokka" : "9C",
-      "alkamispäivä" : "2015-08-15",
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "koodistoUri" : "suorituksentila"
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "9",
+          "koodistoUri" : "perusopetuksenluokkaaste"
+        }
       },
+      "luokka" : "9C",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.14613773812",
         "oppilaitosnumero" : {
@@ -674,6 +698,11 @@
         "nimi" : {
           "fi" : "Jyväskylän normaalikoulu"
         }
+      },
+      "alkamispäivä" : "2015-08-15",
+      "tila" : {
+        "koodiarvo" : "VALMIS",
+        "koodistoUri" : "suorituksentila"
       },
       "vahvistus" : {
         "päivä" : "2016-05-30",
@@ -719,20 +748,21 @@
         "koodistoUri" : "kieli"
       },
       "jääLuokalle" : false,
-      "koulutusmoduuli" : {
-        "tunniste" : {
-          "koodiarvo" : "9",
-          "koodistoUri" : "perusopetuksenluokkaaste"
-        }
-      },
       "tyyppi" : {
         "koodiarvo" : "perusopetuksenvuosiluokka",
         "koodistoUri" : "suorituksentyyppi"
       }
     }, {
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "koodistoUri" : "suorituksentila"
+      "koulutusmoduuli" : {
+        "perusteenDiaarinumero" : "104/011/2014",
+        "tunniste" : {
+          "koodiarvo" : "201101",
+          "koodistoUri" : "koulutus"
+        }
+      },
+      "oppimäärä" : {
+        "koodiarvo" : "perusopetus",
+        "koodistoUri" : "perusopetuksenoppimaara"
       },
       "toimipiste" : {
         "oid" : "1.2.246.562.10.14613773812",
@@ -743,6 +773,10 @@
         "nimi" : {
           "fi" : "Jyväskylän normaalikoulu"
         }
+      },
+      "tila" : {
+        "koodiarvo" : "VALMIS",
+        "koodistoUri" : "suorituksentila"
       },
       "vahvistus" : {
         "päivä" : "2016-06-04",
@@ -780,24 +814,9 @@
           }
         } ]
       },
-      "koulutusmoduuli" : {
-        "perusteenDiaarinumero" : "104/011/2014",
-        "tunniste" : {
-          "koodiarvo" : "201101",
-          "koodistoUri" : "koulutus"
-        }
-      },
-      "oppimäärä" : {
-        "koodiarvo" : "perusopetus",
-        "koodistoUri" : "perusopetuksenoppimaara"
-      },
       "suoritustapa" : {
         "koodiarvo" : "koulutus",
         "koodistoUri" : "perusopetuksensuoritustapa"
-      },
-      "tyyppi" : {
-        "koodiarvo" : "perusopetuksenoppimaara",
-        "koodistoUri" : "suorituksentyyppi"
       },
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
@@ -811,14 +830,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -826,7 +841,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -839,14 +858,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -854,7 +869,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -877,14 +896,10 @@
             }
           }
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -892,7 +907,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -905,14 +924,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -920,7 +935,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -929,14 +948,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -944,7 +959,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -953,14 +972,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -968,7 +983,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -977,14 +996,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -992,7 +1007,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -1001,14 +1020,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1016,7 +1031,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -1025,14 +1044,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1040,7 +1055,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -1049,14 +1068,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1064,7 +1079,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -1073,14 +1092,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1088,7 +1103,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -1097,14 +1116,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1112,7 +1127,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -1121,14 +1140,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1136,7 +1151,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -1145,14 +1164,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1160,7 +1175,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -1169,14 +1188,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1184,7 +1199,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -1203,14 +1222,10 @@
             }
           }
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1218,7 +1233,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -1227,14 +1246,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1242,7 +1257,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -1251,14 +1270,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1266,7 +1281,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -1275,14 +1294,10 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1290,7 +1305,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -1309,14 +1328,10 @@
             }
           }
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1324,7 +1339,11 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -1347,14 +1366,10 @@
             }
           }
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -1362,32 +1377,17 @@
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
-      } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "perusopetuksenoppimaara",
+        "koodistoUri" : "suorituksentyyppi"
+      }
     } ],
-    "tila" : {
-      "opiskeluoikeusjaksot" : [ {
-        "alku" : "2008-08-15",
-        "tila" : {
-          "koodiarvo" : "lasna",
-          "nimi" : {
-            "fi" : "Läsnä"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
-        }
-      }, {
-        "alku" : "2016-06-04",
-        "tila" : {
-          "koodiarvo" : "valmistunut",
-          "nimi" : {
-            "fi" : "Valmistunut"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
-        }
-      } ]
-    },
     "tyyppi" : {
       "koodiarvo" : "perusopetus",
       "koodistoUri" : "opiskeluoikeudentyyppi"

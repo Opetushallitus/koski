@@ -36,17 +36,17 @@
         },
         "perusteenDiaarinumero" : "40/011/2001"
       },
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "koodistoUri" : "suorituksentila"
-      },
-      "alkamispäivä" : "2012-09-01",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.42456023292",
         "nimi" : {
           "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
         }
       },
+      "tila" : {
+        "koodiarvo" : "VALMIS",
+        "koodistoUri" : "suorituksentila"
+      },
+      "alkamispäivä" : "2012-09-01",
       "vahvistus" : {
         "päivä" : "2015-05-31",
         "paikkakunta" : {
@@ -84,14 +84,6 @@
         } ]
       },
       "osasuoritukset" : [ {
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
-        "tyyppi" : {
-          "koodiarvo" : "nayttotutkintoonvalmistavankoulutuksenosa",
-          "koodistoUri" : "suorituksentyyppi"
-        },
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "104052",
@@ -99,6 +91,14 @@
               "fi" : "Johtaminen ja henkilöstön kehittäminen"
             }
           }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "tyyppi" : {
+          "koodiarvo" : "nayttotutkintoonvalmistavankoulutuksenosa",
+          "koodistoUri" : "suorituksentyyppi"
         }
       } ],
       "tyyppi" : {
@@ -116,40 +116,15 @@
         },
         "perusteenDiaarinumero" : "40/011/2001"
       },
-      "suoritustapa" : {
-        "koodiarvo" : "naytto",
-        "nimi" : {
-          "fi" : "Näyttö"
-        },
-        "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
-        "koodistoVersio" : 1
-      },
-      "järjestämismuoto" : {
-        "tunniste" : {
-          "koodiarvo" : "10",
-          "nimi" : {
-            "fi" : "Oppilaitosmuotoinen"
-          },
-          "koodistoUri" : "jarjestamismuoto",
-          "koodistoVersio" : 1
-        }
-      },
-      "suorituskieli" : {
-        "koodiarvo" : "FI",
-        "nimi" : {
-          "fi" : "suomi"
-        },
-        "koodistoUri" : "kieli"
-      },
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "koodistoUri" : "suorituksentila"
-      },
       "toimipiste" : {
         "oid" : "1.2.246.562.10.42456023292",
         "nimi" : {
           "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
         }
+      },
+      "tila" : {
+        "koodiarvo" : "VALMIS",
+        "koodistoUri" : "suorituksentila"
       },
       "vahvistus" : {
         "päivä" : "2016-05-31",
@@ -187,6 +162,31 @@
           }
         } ]
       },
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "suoritustapa" : {
+        "koodiarvo" : "naytto",
+        "nimi" : {
+          "fi" : "Näyttö"
+        },
+        "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
+        "koodistoVersio" : 1
+      },
+      "järjestämismuoto" : {
+        "tunniste" : {
+          "koodiarvo" : "10",
+          "nimi" : {
+            "fi" : "Oppilaitosmuotoinen"
+          },
+          "koodistoUri" : "jarjestamismuoto",
+          "koodistoVersio" : 1
+        }
+      },
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -199,15 +199,15 @@
           },
           "pakollinen" : true
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
           "nimi" : {
             "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
           }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -273,15 +273,15 @@
           },
           "pakollinen" : true
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
           "nimi" : {
             "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
           }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -347,15 +347,15 @@
           },
           "pakollinen" : true
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
           "nimi" : {
             "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
           }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -421,15 +421,15 @@
           },
           "pakollinen" : true
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
           "nimi" : {
             "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
           }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -495,15 +495,15 @@
           },
           "pakollinen" : true
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
           "nimi" : {
             "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
           }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {

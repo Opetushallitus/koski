@@ -42,9 +42,11 @@
       } ]
     },
     "suoritukset" : [ {
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "koodistoUri" : "suorituksentila"
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "999906",
+          "koodistoUri" : "koulutus"
+        }
       },
       "toimipiste" : {
         "oid" : "1.2.246.562.10.14613773812",
@@ -55,6 +57,10 @@
         "nimi" : {
           "fi" : "Jyväskylän normaalikoulu"
         }
+      },
+      "tila" : {
+        "koodiarvo" : "VALMIS",
+        "koodistoUri" : "suorituksentila"
       },
       "vahvistus" : {
         "päivä" : "2016-06-04",
@@ -93,22 +99,6 @@
         } ]
       },
       "osasuoritukset" : [ {
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "S",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
-          },
-          "päivä" : "2016-06-04",
-          "hyväksytty" : true
-        } ],
-        "tyyppi" : {
-          "koodiarvo" : "luvakurssi",
-          "koodistoUri" : "suorituksentyyppi"
-        },
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "STK",
@@ -123,8 +113,7 @@
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
           }
-        }
-      }, {
+        },
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -140,7 +129,8 @@
         "tyyppi" : {
           "koodiarvo" : "luvakurssi",
           "koodistoUri" : "suorituksentyyppi"
-        },
+        }
+      }, {
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "STK",
@@ -155,8 +145,7 @@
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
           }
-        }
-      }, {
+        },
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -172,7 +161,8 @@
         "tyyppi" : {
           "koodiarvo" : "luvakurssi",
           "koodistoUri" : "suorituksentyyppi"
-        },
+        }
+      }, {
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "STK",
@@ -187,12 +177,24 @@
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
           }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "S",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "päivä" : "2016-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "luvakurssi",
+          "koodistoUri" : "suorituksentyyppi"
         }
       }, {
-        "tyyppi" : {
-          "koodiarvo" : "lukionkurssi",
-          "koodistoUri" : "suorituksentyyppi"
-        },
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "KU1",
@@ -217,17 +219,15 @@
           },
           "päivä" : "2016-06-04",
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "lukionkurssi",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       } ],
       "tyyppi" : {
         "koodiarvo" : "luva",
         "koodistoUri" : "suorituksentyyppi"
-      },
-      "koulutusmoduuli" : {
-        "tunniste" : {
-          "koodiarvo" : "999906",
-          "koodistoUri" : "koulutus"
-        }
       }
     } ],
     "tyyppi" : {

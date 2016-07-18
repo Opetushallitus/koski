@@ -52,40 +52,15 @@
         },
         "koodistoUri" : "osaamisala"
       } ],
-      "suoritustapa" : {
-        "koodiarvo" : "naytto",
-        "nimi" : {
-          "fi" : "Näyttö"
-        },
-        "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
-        "koodistoVersio" : 1
-      },
-      "järjestämismuoto" : {
-        "tunniste" : {
-          "koodiarvo" : "10",
-          "nimi" : {
-            "fi" : "Oppilaitosmuotoinen"
-          },
-          "koodistoUri" : "jarjestamismuoto",
-          "koodistoVersio" : 1
-        }
-      },
-      "suorituskieli" : {
-        "koodiarvo" : "FI",
-        "nimi" : {
-          "fi" : "suomi"
-        },
-        "koodistoUri" : "kieli"
-      },
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "koodistoUri" : "suorituksentila"
-      },
       "toimipiste" : {
         "oid" : "1.2.246.562.10.42456023292",
         "nimi" : {
           "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
         }
+      },
+      "tila" : {
+        "koodiarvo" : "VALMIS",
+        "koodistoUri" : "suorituksentila"
       },
       "vahvistus" : {
         "päivä" : "2016-01-09",
@@ -134,6 +109,31 @@
           }
         } ]
       },
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "suoritustapa" : {
+        "koodiarvo" : "naytto",
+        "nimi" : {
+          "fi" : "Näyttö"
+        },
+        "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
+        "koodistoVersio" : 1
+      },
+      "järjestämismuoto" : {
+        "tunniste" : {
+          "koodiarvo" : "10",
+          "nimi" : {
+            "fi" : "Oppilaitosmuotoinen"
+          },
+          "koodistoUri" : "jarjestamismuoto",
+          "koodistoVersio" : 1
+        }
+      },
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -145,6 +145,71 @@
             "koodistoVersio" : 1
           },
           "pakollinen" : true
+        },
+        "toimipiste" : {
+          "oid" : "1.2.246.562.10.42456023292",
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "nimi" : {
+              "fi" : "Hyväksytty"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+            "koodistoVersio" : 1
+          },
+          "päivä" : "2012-10-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "vahvistus" : {
+          "päivä" : "2013-01-31",
+          "paikkakunta" : {
+            "koodiarvo" : "091",
+            "nimi" : {
+              "fi" : "Helsinki"
+            },
+            "koodistoUri" : "kunta"
+          },
+          "myöntäjäOrganisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          },
+          "myöntäjäHenkilöt" : [ {
+            "nimi" : "Reijo Reksi",
+            "titteli" : {
+              "fi" : "rehtori"
+            },
+            "organisaatio" : {
+              "oid" : "1.2.246.562.10.52251087186",
+              "oppilaitosnumero" : {
+                "koodiarvo" : "10105",
+                "koodistoUri" : "oppilaitosnumero"
+              },
+              "nimi" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            }
+          } ]
         },
         "näyttö" : {
           "kuvaus" : {
@@ -242,71 +307,6 @@
           },
           "työssäoppimisenYhteydessä" : false
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
-        "toimipiste" : {
-          "oid" : "1.2.246.562.10.42456023292",
-          "nimi" : {
-            "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
-          }
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "Hyväksytty",
-            "nimi" : {
-              "fi" : "Hyväksytty"
-            },
-            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
-            "koodistoVersio" : 1
-          },
-          "päivä" : "2012-10-20",
-          "arvioitsijat" : [ {
-            "nimi" : "Jaana Arstila"
-          }, {
-            "nimi" : "Pekka Saurmann"
-          }, {
-            "nimi" : "Juhani Mykkänen"
-          } ],
-          "hyväksytty" : true
-        } ],
-        "vahvistus" : {
-          "päivä" : "2013-01-31",
-          "paikkakunta" : {
-            "koodiarvo" : "091",
-            "nimi" : {
-              "fi" : "Helsinki"
-            },
-            "koodistoUri" : "kunta"
-          },
-          "myöntäjäOrganisaatio" : {
-            "oid" : "1.2.246.562.10.52251087186",
-            "oppilaitosnumero" : {
-              "koodiarvo" : "10105",
-              "koodistoUri" : "oppilaitosnumero"
-            },
-            "nimi" : {
-              "fi" : "Stadin ammattiopisto"
-            }
-          },
-          "myöntäjäHenkilöt" : [ {
-            "nimi" : "Reijo Reksi",
-            "titteli" : {
-              "fi" : "rehtori"
-            },
-            "organisaatio" : {
-              "oid" : "1.2.246.562.10.52251087186",
-              "oppilaitosnumero" : {
-                "koodiarvo" : "10105",
-                "koodistoUri" : "oppilaitosnumero"
-              },
-              "nimi" : {
-                "fi" : "Stadin ammattiopisto"
-              }
-            }
-          } ]
-        },
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",
           "koodistoUri" : "suorituksentyyppi"
@@ -324,34 +324,15 @@
           },
           "pakollinen" : false
         },
-        "näyttö" : {
-          "kuvaus" : {
-            "fi" : "Pintavaurioiden korjausta"
-          },
-          "suorituspaikka" : {
-            "tunniste" : {
-              "koodiarvo" : "1",
-              "nimi" : {
-                "fi" : "työpaikka"
-              },
-              "koodistoUri" : "ammatillisennaytonsuorituspaikka",
-              "koodistoVersio" : 1
-            },
-            "kuvaus" : {
-              "fi" : "Autokorjaamo Oy, Riihimäki"
-            }
-          },
-          "työssäoppimisenYhteydessä" : false
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
           "nimi" : {
             "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
           }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -408,25 +389,9 @@
             }
           } ]
         },
-        "tyyppi" : {
-          "koodiarvo" : "ammatillisentutkinnonosa",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "100019",
-            "nimi" : {
-              "fi" : "Mittaus- ja korivauriotyöt"
-            },
-            "koodistoUri" : "tutkinnonosat",
-            "koodistoVersio" : 1
-          },
-          "pakollinen" : true
-        },
         "näyttö" : {
           "kuvaus" : {
-            "fi" : "Mittaus- ja korivauriotöitä"
+            "fi" : "Pintavaurioiden korjausta"
           },
           "suorituspaikka" : {
             "tunniste" : {
@@ -443,15 +408,31 @@
           },
           "työssäoppimisenYhteydessä" : false
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "100019",
+            "nimi" : {
+              "fi" : "Mittaus- ja korivauriotyöt"
+            },
+            "koodistoUri" : "tutkinnonosat",
+            "koodistoVersio" : 1
+          },
+          "pakollinen" : true
         },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
           "nimi" : {
             "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
           }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -508,25 +489,9 @@
             }
           } ]
         },
-        "tyyppi" : {
-          "koodiarvo" : "ammatillisentutkinnonosa",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "100034",
-            "nimi" : {
-              "fi" : "Maalauksen esikäsittelytyöt"
-            },
-            "koodistoUri" : "tutkinnonosat",
-            "koodistoVersio" : 1
-          },
-          "pakollinen" : true
-        },
         "näyttö" : {
           "kuvaus" : {
-            "fi" : "Maalauksen esikäsittelytöitä"
+            "fi" : "Mittaus- ja korivauriotöitä"
           },
           "suorituspaikka" : {
             "tunniste" : {
@@ -543,15 +508,31 @@
           },
           "työssäoppimisenYhteydessä" : false
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "100034",
+            "nimi" : {
+              "fi" : "Maalauksen esikäsittelytyöt"
+            },
+            "koodistoUri" : "tutkinnonosat",
+            "koodistoVersio" : 1
+          },
+          "pakollinen" : true
         },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
           "nimi" : {
             "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
           }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -608,25 +589,9 @@
             }
           } ]
         },
-        "tyyppi" : {
-          "koodiarvo" : "ammatillisentutkinnonosa",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "100037",
-            "nimi" : {
-              "fi" : "Auton lisävarustetyöt"
-            },
-            "koodistoUri" : "tutkinnonosat",
-            "koodistoVersio" : 1
-          },
-          "pakollinen" : true
-        },
         "näyttö" : {
           "kuvaus" : {
-            "fi" : "Auton lisävarustetöitä"
+            "fi" : "Maalauksen esikäsittelytöitä"
           },
           "suorituspaikka" : {
             "tunniste" : {
@@ -643,15 +608,31 @@
           },
           "työssäoppimisenYhteydessä" : false
         },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "100037",
+            "nimi" : {
+              "fi" : "Auton lisävarustetyöt"
+            },
+            "koodistoUri" : "tutkinnonosat",
+            "koodistoVersio" : 1
+          },
+          "pakollinen" : true
         },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
           "nimi" : {
             "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
           }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -708,6 +689,25 @@
             }
           } ]
         },
+        "näyttö" : {
+          "kuvaus" : {
+            "fi" : "Auton lisävarustetöitä"
+          },
+          "suorituspaikka" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "nimi" : {
+                "fi" : "työpaikka"
+              },
+              "koodistoUri" : "ammatillisennaytonsuorituspaikka",
+              "koodistoVersio" : 1
+            },
+            "kuvaus" : {
+              "fi" : "Autokorjaamo Oy, Riihimäki"
+            }
+          },
+          "työssäoppimisenYhteydessä" : false
+        },
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",
           "koodistoUri" : "suorituksentyyppi"
@@ -724,41 +724,15 @@
           },
           "pakollinen" : true
         },
-        "tunnustettu" : {
-          "osaaminen" : {
-            "koulutusmoduuli" : {
-              "tunniste" : {
-                "koodiarvo" : "100238",
-                "nimi" : {
-                  "fi" : "Asennushitsaus"
-                },
-                "koodistoUri" : "tutkinnonosat",
-                "koodistoVersio" : 1
-              },
-              "pakollinen" : true
-            },
-            "tila" : {
-              "koodiarvo" : "VALMIS",
-              "koodistoUri" : "suorituksentila"
-            },
-            "tyyppi" : {
-              "koodiarvo" : "ammatillisentutkinnonosa",
-              "koodistoUri" : "suorituksentyyppi"
-            }
-          },
-          "selite" : {
-            "fi" : "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
-          }
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
           "nimi" : {
             "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
           }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -814,6 +788,32 @@
               }
             }
           } ]
+        },
+        "tunnustettu" : {
+          "osaaminen" : {
+            "koulutusmoduuli" : {
+              "tunniste" : {
+                "koodiarvo" : "100238",
+                "nimi" : {
+                  "fi" : "Asennushitsaus"
+                },
+                "koodistoUri" : "tutkinnonosat",
+                "koodistoVersio" : 1
+              },
+              "pakollinen" : true
+            },
+            "tila" : {
+              "koodiarvo" : "VALMIS",
+              "koodistoUri" : "suorituksentila"
+            },
+            "tyyppi" : {
+              "koodiarvo" : "ammatillisentutkinnonosa",
+              "koodistoUri" : "suorituksentyyppi"
+            }
+          },
+          "selite" : {
+            "fi" : "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
+          }
         },
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",

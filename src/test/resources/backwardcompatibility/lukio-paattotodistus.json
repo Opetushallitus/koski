@@ -59,10 +59,6 @@
         "koodistoUri" : "lukionoppimaara",
         "koodistoVersio" : 1
       },
-      "tyyppi" : {
-        "koodiarvo" : "lukionoppimaara",
-        "koodistoUri" : "suorituksentyyppi"
-      },
       "vahvistus" : {
         "päivä" : "2016-06-04",
         "paikkakunta" : {
@@ -100,10 +96,6 @@
         } ]
       },
       "osasuoritukset" : [ {
-        "tyyppi" : {
-          "koodiarvo" : "lukionoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        },
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "AI",
@@ -127,10 +119,6 @@
           "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
-          "tyyppi" : {
-            "koodiarvo" : "lukionkurssi",
-            "koodistoUri" : "suorituksentyyppi"
-          },
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "ÄI1",
@@ -155,12 +143,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "ÄI2",
@@ -185,12 +173,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "ÄI3",
@@ -215,12 +203,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "ÄI4",
@@ -245,12 +233,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "ÄI5",
@@ -275,12 +263,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "ÄI6",
@@ -305,12 +293,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "ÄI8",
@@ -335,12 +323,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "ÄI9",
@@ -365,13 +353,17 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        } ]
-      }, {
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
+        }
+      }, {
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "A1",
@@ -395,10 +387,6 @@
           "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
-          "tyyppi" : {
-            "koodiarvo" : "lukionkurssi",
-            "koodistoUri" : "suorituksentyyppi"
-          },
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "ENA1",
@@ -423,12 +411,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "ENA2",
@@ -453,12 +441,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "ENA3",
@@ -483,12 +471,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "ENA4",
@@ -513,12 +501,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "ENA5",
@@ -543,12 +531,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "ENA6",
@@ -573,12 +561,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "ENA7",
@@ -603,12 +591,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "ENA8",
@@ -633,12 +621,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "ENA 10",
@@ -668,13 +656,17 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        } ]
-      }, {
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
+        }
+      }, {
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "B1",
@@ -698,10 +690,6 @@
           "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
-          "tyyppi" : {
-            "koodiarvo" : "lukionkurssi",
-            "koodistoUri" : "suorituksentyyppi"
-          },
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "RUB11",
@@ -726,12 +714,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "RUB12",
@@ -756,12 +744,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "RUB13",
@@ -786,12 +774,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "RUB14",
@@ -816,12 +804,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "RUB15",
@@ -846,13 +834,17 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        } ]
-      }, {
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
+        }
+      }, {
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "B3",
@@ -876,10 +868,6 @@
           "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
-          "tyyppi" : {
-            "koodiarvo" : "lukionkurssi",
-            "koodistoUri" : "suorituksentyyppi"
-          },
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "LAB31",
@@ -904,12 +892,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "LAB32",
@@ -934,13 +922,17 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        } ]
-      }, {
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
+        }
+      }, {
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "MA",
@@ -964,10 +956,6 @@
           "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
-          "tyyppi" : {
-            "koodiarvo" : "lukionkurssi",
-            "koodistoUri" : "suorituksentyyppi"
-          },
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "MAA1",
@@ -997,12 +985,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "MAA2",
@@ -1027,12 +1015,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "MAA3",
@@ -1057,12 +1045,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "MAA4",
@@ -1087,12 +1075,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "MAA5",
@@ -1117,12 +1105,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "MAA6",
@@ -1147,12 +1135,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "MAA7",
@@ -1177,12 +1165,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "MAA8",
@@ -1207,12 +1195,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "MAA9",
@@ -1237,12 +1225,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "MAA10",
@@ -1267,12 +1255,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "MAA11",
@@ -1297,12 +1285,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "MAA12",
@@ -1327,12 +1315,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "MAA13",
@@ -1357,12 +1345,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "MAA14",
@@ -1392,12 +1380,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "MAA16",
@@ -1427,13 +1415,17 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        } ]
-      }, {
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
+        }
+      }, {
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "BI",
@@ -1453,10 +1445,6 @@
           "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
-          "tyyppi" : {
-            "koodiarvo" : "lukionkurssi",
-            "koodistoUri" : "suorituksentyyppi"
-          },
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "BI1",
@@ -1481,12 +1469,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "BI2",
@@ -1511,12 +1499,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "BI3",
@@ -1541,12 +1529,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "BI4",
@@ -1571,12 +1559,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "BI5",
@@ -1601,12 +1589,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "BI6",
@@ -1636,12 +1624,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "BI7",
@@ -1671,12 +1659,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "BI8",
@@ -1706,13 +1694,17 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        } ]
-      }, {
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
+        }
+      }, {
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "GE",
@@ -1732,10 +1724,6 @@
           "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
-          "tyyppi" : {
-            "koodiarvo" : "lukionkurssi",
-            "koodistoUri" : "suorituksentyyppi"
-          },
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "GE1",
@@ -1760,12 +1748,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "GE2",
@@ -1790,13 +1778,17 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        } ]
-      }, {
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
+        }
+      }, {
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "FY",
@@ -1816,10 +1808,6 @@
           "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
-          "tyyppi" : {
-            "koodiarvo" : "lukionkurssi",
-            "koodistoUri" : "suorituksentyyppi"
-          },
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "FY1",
@@ -1844,12 +1832,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "FY2",
@@ -1874,12 +1862,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "FY3",
@@ -1904,12 +1892,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "FY4",
@@ -1934,12 +1922,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "FY5",
@@ -1964,12 +1952,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "FY6",
@@ -1994,12 +1982,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "FY7",
@@ -2024,12 +2012,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "FY8",
@@ -2059,12 +2047,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "FY9",
@@ -2094,12 +2082,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "FY10",
@@ -2129,12 +2117,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "FY11",
@@ -2164,12 +2152,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "FY12",
@@ -2199,12 +2187,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "FY13",
@@ -2234,13 +2222,17 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        } ]
-      }, {
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
+        }
+      }, {
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "KE",
@@ -2260,10 +2252,6 @@
           "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
-          "tyyppi" : {
-            "koodiarvo" : "lukionkurssi",
-            "koodistoUri" : "suorituksentyyppi"
-          },
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "KE1",
@@ -2288,12 +2276,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "KE2",
@@ -2318,12 +2306,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "KE3",
@@ -2348,12 +2336,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "KE4",
@@ -2378,12 +2366,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "KE5",
@@ -2408,12 +2396,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "KE6",
@@ -2443,12 +2431,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "KE7",
@@ -2478,12 +2466,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "KE8",
@@ -2513,13 +2501,17 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        } ]
-      }, {
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
+        }
+      }, {
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "KT",
@@ -2539,10 +2531,6 @@
           "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
-          "tyyppi" : {
-            "koodiarvo" : "lukionkurssi",
-            "koodistoUri" : "suorituksentyyppi"
-          },
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "UE1",
@@ -2567,12 +2555,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "UE2",
@@ -2597,12 +2585,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "UE3",
@@ -2627,13 +2615,17 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        } ]
-      }, {
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
+        }
+      }, {
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "FI",
@@ -2653,10 +2645,6 @@
           "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
-          "tyyppi" : {
-            "koodiarvo" : "lukionkurssi",
-            "koodistoUri" : "suorituksentyyppi"
-          },
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "FI1",
@@ -2681,13 +2669,17 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        } ]
-      }, {
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
+        }
+      }, {
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "PS",
@@ -2707,10 +2699,6 @@
           "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
-          "tyyppi" : {
-            "koodiarvo" : "lukionkurssi",
-            "koodistoUri" : "suorituksentyyppi"
-          },
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "PS1",
@@ -2735,13 +2723,17 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        } ]
-      }, {
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
+        }
+      }, {
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "HI",
@@ -2761,10 +2753,6 @@
           "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
-          "tyyppi" : {
-            "koodiarvo" : "lukionkurssi",
-            "koodistoUri" : "suorituksentyyppi"
-          },
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "HI1",
@@ -2789,12 +2777,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "HI2",
@@ -2819,12 +2807,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "HI3",
@@ -2849,12 +2837,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "HI4",
@@ -2879,13 +2867,17 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        } ]
-      }, {
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
+        }
+      }, {
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "YH",
@@ -2905,10 +2897,6 @@
           "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
-          "tyyppi" : {
-            "koodiarvo" : "lukionkurssi",
-            "koodistoUri" : "suorituksentyyppi"
-          },
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "YH1",
@@ -2933,12 +2921,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "YH2",
@@ -2963,13 +2951,17 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        } ]
-      }, {
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
+        }
+      }, {
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "LI",
@@ -2989,10 +2981,6 @@
           "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
-          "tyyppi" : {
-            "koodiarvo" : "lukionkurssi",
-            "koodistoUri" : "suorituksentyyppi"
-          },
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "LI1",
@@ -3017,12 +3005,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "LI2",
@@ -3047,12 +3035,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "LI12",
@@ -3082,13 +3070,17 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        } ]
-      }, {
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
+        }
+      }, {
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "MU",
@@ -3108,10 +3100,6 @@
           "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
-          "tyyppi" : {
-            "koodiarvo" : "lukionkurssi",
-            "koodistoUri" : "suorituksentyyppi"
-          },
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "MU1",
@@ -3136,13 +3124,17 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        } ]
-      }, {
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
+        }
+      }, {
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "KU",
@@ -3162,10 +3154,6 @@
           "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
-          "tyyppi" : {
-            "koodiarvo" : "lukionkurssi",
-            "koodistoUri" : "suorituksentyyppi"
-          },
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "KU1",
@@ -3190,12 +3178,12 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        }, {
+          } ],
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          },
+          }
+        }, {
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "KU2",
@@ -3220,13 +3208,17 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        } ]
-      }, {
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
           "koodistoUri" : "suorituksentyyppi"
-        },
+        }
+      }, {
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "TE",
@@ -3246,10 +3238,6 @@
           "hyväksytty" : true
         } ],
         "osasuoritukset" : [ {
-          "tyyppi" : {
-            "koodiarvo" : "lukionkurssi",
-            "koodistoUri" : "suorituksentyyppi"
-          },
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "TE1",
@@ -3274,9 +3262,21 @@
             },
             "päivä" : "2016-06-04",
             "hyväksytty" : true
-          } ]
-        } ]
-      } ]
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "lukionkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "lukionoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "lukionoppimaara",
+        "koodistoUri" : "suorituksentyyppi"
+      }
     } ],
     "tila" : {
       "opiskeluoikeusjaksot" : [ {

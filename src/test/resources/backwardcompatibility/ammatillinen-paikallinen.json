@@ -22,6 +22,17 @@
         },
         "perusteenDiaarinumero" : "39/011/2014"
       },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.42456023292",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+        }
+      },
+      "tila" : {
+        "koodiarvo" : "KESKEN",
+        "koodistoUri" : "suorituksentila"
+      },
+      "alkamispäivä" : "2016-09-01",
       "suoritustapa" : {
         "koodiarvo" : "naytto",
         "nimi" : {
@@ -29,17 +40,6 @@
         },
         "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
         "koodistoVersio" : 1
-      },
-      "tila" : {
-        "koodiarvo" : "KESKEN",
-        "koodistoUri" : "suorituksentila"
-      },
-      "alkamispäivä" : "2016-09-01",
-      "toimipiste" : {
-        "oid" : "1.2.246.562.10.42456023292",
-        "nimi" : {
-          "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
-        }
       },
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
@@ -54,34 +54,15 @@
           },
           "pakollinen" : false
         },
-        "näyttö" : {
-          "kuvaus" : {
-            "fi" : "Pintavaurioiden korjausta"
-          },
-          "suorituspaikka" : {
-            "tunniste" : {
-              "koodiarvo" : "1",
-              "nimi" : {
-                "fi" : "työpaikka"
-              },
-              "koodistoUri" : "ammatillisennaytonsuorituspaikka",
-              "koodistoVersio" : 1
-            },
-            "kuvaus" : {
-              "fi" : "Autokorjaamo Oy, Riihimäki"
-            }
-          },
-          "työssäoppimisenYhteydessä" : false
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
           "nimi" : {
             "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
           }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -137,6 +118,25 @@
               }
             }
           } ]
+        },
+        "näyttö" : {
+          "kuvaus" : {
+            "fi" : "Pintavaurioiden korjausta"
+          },
+          "suorituspaikka" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "nimi" : {
+                "fi" : "työpaikka"
+              },
+              "koodistoUri" : "ammatillisennaytonsuorituspaikka",
+              "koodistoVersio" : 1
+            },
+            "kuvaus" : {
+              "fi" : "Autokorjaamo Oy, Riihimäki"
+            }
+          },
+          "työssäoppimisenYhteydessä" : false
         },
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",
