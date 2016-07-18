@@ -11,7 +11,7 @@ export const OppijaEditor = React.createClass({
               let context = { oppijaOid: modelLookup(editor, 'henkilö.oid').data }
               let oppilaitos = modelLookup(thing, 'oppilaitos')
               let opiskeluoikeudet = modelLookup(thing, 'opiskeluoikeudet').items
-              return <li className="oppilaitos" key={modelData(oppilaitos).oid}>
+              return (<li className="oppilaitos" key={modelData(oppilaitos).oid}>
                 <span className="oppilaitos">{oppilaitos.title}</span>
                 <OppilaitoksenOpintosuoritusote oppilaitos={oppilaitos} tyyppi={modelData(opiskeluoikeudet[0], 'tyyppi').koodiarvo} context={context} />
                 {
@@ -19,7 +19,7 @@ export const OppijaEditor = React.createClass({
                     <OpiskeluoikeusEditor key={ index } model={ opiskeluoikeus } context={context} />
                   )
                 }
-              </li>
+              </li>)
             }
           )}
       </ul>
@@ -32,7 +32,7 @@ const OpiskeluoikeusEditor = React.createClass({
     let {model, context} = this.props
     let showDetails = this.state && this.state.showDetails
     let toggleDetails = () => { this.setState({showDetails: !showDetails})}
-    return <div className="opiskeluoikeus">
+    return (<div className="opiskeluoikeus">
       <div className="kuvaus">
         Opiskeluoikeus&nbsp;
           <span className="alku pvm">{modelTitle(model, 'alkamispäivä')}</span>-
@@ -47,7 +47,7 @@ const OpiskeluoikeusEditor = React.createClass({
         )
       }
       <OpiskeluoikeudenOpintosuoritusote opiskeluoikeus={model} context={context}/>
-    </div>
+    </div>)
   },
   getInitialState() {
     return {}
@@ -60,12 +60,12 @@ const SuoritusEditor = React.createClass({
     let showDetails = this.state && this.state.showDetails
     let toggleDetails = () => { this.setState({showDetails: !showDetails})}
     let title = modelTitle(model, 'koulutusmoduuli')
-    return <div className="suoritus">
+    return (<div className="suoritus">
       <span className="kuvaus">{title}</span>
       <Todistus suoritus={model} context={context}/>
       <a onClick={toggleDetails}>{ showDetails ? '-' : '+' }</a>
       { showDetails ? getModelEditor(model, context) : null }
-    </div>
+    </div>)
   }
 })
 
@@ -111,35 +111,35 @@ const OpiskeluoikeudenOpintosuoritusote = React.createClass({
 const OppiaineEditor = React.createClass({
   render() {
     let {model} = this.props
-    return <div className="oppiaineensuoritus">
-        <label class="oppiaine">{modelTitle(model, 'koulutusmoduuli')}</label>
-        <span class="arvosana">{modelLookup(model, 'arviointi.-1.arvosana').data.koodiarvo}</span>
-      </div>
+    return (<div className="oppiaineensuoritus">
+      <label className="oppiaine">{modelTitle(model, 'koulutusmoduuli')}</label>
+      <span className="arvosana">{modelLookup(model, 'arviointi.-1.arvosana').data.koodiarvo}</span>
+    </div>)
   }
 })
 
 const VahvistusEditor = React.createClass({
   render() {
     let {model} = this.props
-    return <span>
-      <span class="date">{modelTitle(model, 'päivä')}</span>&nbsp;
-      <span class="allekirjoitus">{modelTitle(model, 'paikkakunta')}</span>&nbsp;
+    return (<span>
+      <span className="date">{modelTitle(model, 'päivä')}</span>&nbsp;
+      <span className="allekirjoitus">{modelTitle(model, 'paikkakunta')}</span>&nbsp;
       {
         modelLookup(model, 'myöntäjäHenkilöt').items.map( henkilö =>
-          <span class="nimi">{modelData(henkilö, 'nimi')}</span>
+          <span className="nimi">{modelData(henkilö, 'nimi')}</span>
         )
       }
-    </span>
+    </span>)
   }
 })
 
 const OpiskeluoikeusjaksoEditor = React.createClass({
   render() {
     let {model} = this.props
-    return <div className="opiskeluoikeusjakso">
-      <label class="date">{modelTitle(model, 'alku')}</label>
-      <label class="tila">{modelTitle(model, 'tila')}</label>
-    </div>
+    return (<div className="opiskeluoikeusjakso">
+      <label className="date">{modelTitle(model, 'alku')}</label>
+      <label className="tila">{modelTitle(model, 'tila')}</label>
+    </div>)
   }
 })
 
@@ -147,9 +147,9 @@ const ObjectEditor = React.createClass({
   render() {
     let {model, context} = this.props
     let className = 'object ' + model.class
-    return <div className={className}>
+    return (<div className={className}>
       <PropertiesEditor properties={model.properties} context={context}/>
-    </div>
+    </div>)
   }
 })
 
@@ -173,8 +173,10 @@ const PropertiesEditor = React.createClass({
 const ArrayEditor = React.createClass({
   render() {
     let {model, context} = this.props
+    let simple = !model.items[0] || model.items[0].type != 'object'
+    let className = simple ? 'array simple' : 'array'
     return (
-      <ul className="array">
+      <ul className={className}>
         {
           model.items.map((item, i) =>
             <li key={i}>{getModelEditor(item, context)}</li>
