@@ -61,14 +61,14 @@ case class Erityinenkoulutustehtävä(
 trait LukionPäätasonSuoritus extends Suoritus with Toimipisteellinen
 
 case class LukionOppimääränSuoritus(
-  suorituskieli: Option[Koodistokoodiviite],
-  tila: Koodistokoodiviite,
-  toimipiste: OrganisaatioWithOid,
   koulutusmoduuli: LukionOppimäärä,
   @KoodistoUri("lukionoppimaara")
   @Description("Tieto siitä, suoritetaanko lukiota nuorten vai aikuisten oppimäärän mukaisesti")
   oppimäärä: Koodistokoodiviite,
+  toimipiste: OrganisaatioWithOid,
+  tila: Koodistokoodiviite,
   vahvistus: Option[Henkilövahvistus] = None,
+  suorituskieli: Option[Koodistokoodiviite],
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[LukionOppiaineenSuoritus]],

@@ -45,27 +45,6 @@
       } ]
     },
     "suoritukset" : [ {
-      "suorituskieli" : {
-        "koodiarvo" : "FI",
-        "nimi" : {
-          "fi" : "suomi"
-        },
-        "koodistoUri" : "kieli"
-      },
-      "tila" : {
-        "koodiarvo" : "KESKEN",
-        "koodistoUri" : "suorituksentila"
-      },
-      "toimipiste" : {
-        "oid" : "1.2.246.562.10.14613773812",
-        "oppilaitosnumero" : {
-          "koodiarvo" : "00204",
-          "koodistoUri" : "oppilaitosnumero"
-        },
-        "nimi" : {
-          "fi" : "Jyväskylän normaalikoulu"
-        }
-      },
       "koulutusmoduuli" : {
         "tunniste" : {
           "koodiarvo" : "309902",
@@ -80,6 +59,27 @@
         },
         "koodistoUri" : "lukionoppimaara",
         "koodistoVersio" : 1
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.14613773812",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "00204",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Jyväskylän normaalikoulu"
+        }
+      },
+      "tila" : {
+        "koodiarvo" : "KESKEN",
+        "koodistoUri" : "suorituksentila"
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
       },
       "tyyppi" : {
         "koodiarvo" : "lukionoppimaara",
