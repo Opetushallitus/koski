@@ -30,16 +30,13 @@ export const OppijaEditor = React.createClass({
 const OpiskeluoikeusEditor = React.createClass({
   render() {
     let {model, context} = this.props
-    let showDetails = this.state && this.state.showDetails
-    let toggleDetails = () => { this.setState({showDetails: !showDetails})}
     return (<div className="opiskeluoikeus">
       <div className="kuvaus">
         Opiskeluoikeus&nbsp;
           <span className="alku pvm">{modelTitle(model, 'alkamispäivä')}</span>-
           <span className="loppu pvm">{modelTitle(model, 'päättymispäivä')}</span>,&nbsp;
           <span className="tila">{modelTitle(model, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}</span>
-        <a onClick={toggleDetails}>{ showDetails ? '-' : '+' }</a>
-        { showDetails ? <PropertiesEditor properties={ model.properties.filter(property => property.key != 'suoritukset') } context={context}/> : null }
+        <FoldableEditor expanded={() => <PropertiesEditor properties={ model.properties.filter(property => property.key != 'suoritukset') } context={context}/>}/>
       </div>
       {
         modelLookup(model, 'suoritukset.items').map((suoritusModel, i) =>
@@ -48,24 +45,31 @@ const OpiskeluoikeusEditor = React.createClass({
       }
       <OpiskeluoikeudenOpintosuoritusote opiskeluoikeus={model} context={context}/>
     </div>)
-  },
-  getInitialState() {
-    return {}
   }
 })
 
 const SuoritusEditor = React.createClass({
   render() {
     let {model, context} = this.props
-    let showDetails = this.state && this.state.showDetails
-    let toggleDetails = () => { this.setState({showDetails: !showDetails})}
+
     let title = modelTitle(model, 'koulutusmoduuli')
     return (<div className="suoritus">
       <span className="kuvaus">{title}</span>
       <Todistus suoritus={model} context={context}/>
-      <a onClick={toggleDetails}>{ showDetails ? '-' : '+' }</a>
-      { showDetails ? getModelEditor(model, context) : null }
+      <FoldableEditor expanded={() => getModelEditor(model, context)}/>
     </div>)
+  }
+})
+
+
+const FoldableEditor = React.createClass({
+  render() {
+    let {collapsed, expanded} = this.props
+    let toggleDetails = () => { this.setState({showDetails: !showDetails})}
+    let showDetails = this.state && this.state.showDetails
+    return (<span><a onClick={toggleDetails}>{ showDetails ? '-' : '+' }</a>{
+      showDetails ? expanded() : (collapsed ? collapsed() : null)
+    }</span>)
   }
 })
 
