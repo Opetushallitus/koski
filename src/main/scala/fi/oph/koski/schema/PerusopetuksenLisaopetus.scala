@@ -27,15 +27,15 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeus(
 }
 
 case class PerusopetuksenLisäopetuksenSuoritus(
-  suorituskieli: Option[Koodistokoodiviite] = None,
-  tila: Koodistokoodiviite,
+  koulutusmoduuli: PerusopetuksenLisäopetus,
   toimipiste: OrganisaatioWithOid,
+  tila: Koodistokoodiviite,
   vahvistus: Option[Henkilövahvistus] = None,
-  @KoodistoKoodiarvo("perusopetuksenlisaopetus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenlisaopetus", koodistoUri = "suorituksentyyppi"),
+  suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineiden suoritukset")
   override val osasuoritukset: Option[List[PerusopetuksenLisäopetuksenOppiaineenSuoritus]],
-  koulutusmoduuli: PerusopetuksenLisäopetus
+  @KoodistoKoodiarvo("perusopetuksenlisaopetus")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenlisaopetus", koodistoUri = "suorituksentyyppi")
 ) extends Suoritus with Toimipisteellinen {
   def arviointi: Option[List[KoodistostaLöytyväArviointi]] = None
 }
@@ -43,13 +43,13 @@ case class PerusopetuksenLisäopetuksenSuoritus(
 @Description("Perusopetuksen oppiaineen suoritus osana perusopetuksen lisäopetusta")
 case class PerusopetuksenLisäopetuksenOppiaineenSuoritus(
   koulutusmoduuli: PerusopetuksenOppiaine,
-  suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
-  @KoodistoKoodiarvo("perusopetuksenlisaopetuksenoppiaine")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenlisaopetuksenoppiaine", koodistoUri = "suorituksentyyppi"),
+  arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   @Description("Tieto siitä, onko kyseessä perusopetuksen oppiaineen arvosanan korotus. Tietoa käytetään todistuksella.")
   korotus: Boolean,
-  arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None
+  suorituskieli: Option[Koodistokoodiviite],
+  @KoodistoKoodiarvo("perusopetuksenlisaopetuksenoppiaine")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenlisaopetuksenoppiaine", koodistoUri = "suorituksentyyppi")
 ) extends OppiaineenSuoritus
 
 @Description("Perusopetuksen lisäopetuksen tunnistetiedot")

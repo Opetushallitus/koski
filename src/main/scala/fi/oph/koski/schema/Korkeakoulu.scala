@@ -39,32 +39,32 @@ trait KorkeakouluSuoritus extends Suoritus {
 
   case class KorkeakoulututkinnonSuoritus(
     koulutusmoduuli: Korkeakoulututkinto,
-    @KoodistoKoodiarvo("korkeakoulututkinto")
-    tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulututkinto", koodistoUri = "suorituksentyyppi"),
-    arviointi: Option[List[KorkeakoulunArviointi]],
+    toimipiste: Oppilaitos,
     tila: Koodistokoodiviite,
+    arviointi: Option[List[KorkeakoulunArviointi]],
     vahvistus: Option[Henkilövahvistus],
     suorituskieli: Option[Koodistokoodiviite],
-    toimipiste: Oppilaitos,
     @Description("Tutkintoon kuuluvien opintojaksojen suoritukset")
     @Title("Opintojaksot")
-    override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]]
+    override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]],
+    @KoodistoKoodiarvo("korkeakoulututkinto")
+    tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulututkinto", koodistoUri = "suorituksentyyppi")
   ) extends KorkeakouluSuoritus {
     override def tarvitseeVahvistuksen = false
   }
 
   case class KorkeakoulunOpintojaksonSuoritus(
     koulutusmoduuli: KorkeakoulunOpintojakso,
-    @KoodistoKoodiarvo("korkeakoulunopintojakso")
-    tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulunopintojakso", koodistoUri = "suorituksentyyppi"),
-    arviointi: Option[List[KorkeakoulunArviointi]],
+    toimipiste: Oppilaitos,
     tila: Koodistokoodiviite,
+    arviointi: Option[List[KorkeakoulunArviointi]],
     vahvistus: Option[Henkilövahvistus],
     suorituskieli: Option[Koodistokoodiviite],
-    toimipiste: Oppilaitos,
     @Description("Opintojaksoon sisältyvien opintojaksojen suoritukset")
     @Title("Sisältyvät opintojaksot")
-    override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]] = None
+    override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]] = None,
+    @KoodistoKoodiarvo("korkeakoulunopintojakso")
+    tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulunopintojakso", koodistoUri = "suorituksentyyppi")
   ) extends KorkeakouluSuoritus {
     override def tarvitseeVahvistuksen = false
   }

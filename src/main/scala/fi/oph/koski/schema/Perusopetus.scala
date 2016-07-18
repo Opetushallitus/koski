@@ -96,18 +96,18 @@ case class PerusopetuksenVuosiluokanSuoritus(
   koulutusmoduuli: PerusopetuksenLuokkaAste,
   @Description("Luokan tunniste, esimerkiksi 9C")
   luokka: String,
+  toimipiste: OrganisaatioWithOid,
   override val alkamispäivä: Option[LocalDate],
   tila: Koodistokoodiviite,
   vahvistus: Option[Henkilövahvistus] = None,
-  toimipiste: OrganisaatioWithOid,
   suorituskieli: Option[Koodistokoodiviite],
   jääLuokalle: Boolean = false,
   käyttäytymisenArvio: Option[PerusopetuksenOppiaineenArviointi] = None,
-  @KoodistoKoodiarvo("perusopetuksenvuosiluokka")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenvuosiluokka", koodistoUri = "suorituksentyyppi"),
   @Description("Vuosiluokan suoritukseen liittyvät oppiaineen suoritukset")
   @Title("Oppiaineet")
-  override val osasuoritukset: Option[List[OppiaineenTaiToiminta_AlueenSuoritus]] = None
+  override val osasuoritukset: Option[List[OppiaineenTaiToiminta_AlueenSuoritus]] = None,
+  @KoodistoKoodiarvo("perusopetuksenvuosiluokka")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenvuosiluokka", koodistoUri = "suorituksentyyppi")
 ) extends PerusopetuksenPäätasonSuoritus {
   override def arviointi = None
 }
@@ -118,33 +118,33 @@ case class PerusopetuksenOppimääränSuoritus(
   @KoodistoUri("perusopetuksenoppimaara")
   @Description("Tieto siitä, suoritetaanko perusopetusta nuorten vai aikuisten oppimäärän mukaisesti")
   oppimäärä: Koodistokoodiviite,
-  @KoodistoUri("perusopetuksensuoritustapa")
-  @Description("Tieto siitä, suoritetaanko perusopetusta normaalina koulutuksena vai erityisenä tutkintona")
-  suoritustapa: Koodistokoodiviite,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   vahvistus: Option[Henkilövahvistus] = None,
+  @KoodistoUri("perusopetuksensuoritustapa")
+  @Description("Tieto siitä, suoritetaanko perusopetusta normaalina koulutuksena vai erityisenä tutkintona")
+  suoritustapa: Koodistokoodiviite,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  @KoodistoKoodiarvo("perusopetuksenoppimaara")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppimaara", koodistoUri = "suorituksentyyppi"),
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
   @Title("Oppiaineet")
-  override val osasuoritukset: Option[List[OppiaineenTaiToiminta_AlueenSuoritus]] = None
+  override val osasuoritukset: Option[List[OppiaineenTaiToiminta_AlueenSuoritus]] = None,
+  @KoodistoKoodiarvo("perusopetuksenoppimaara")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppimaara", koodistoUri = "suorituksentyyppi")
 ) extends PerusopetuksenPäätasonSuoritus {
   def arviointi: Option[List[KoodistostaLöytyväArviointi]] = None
 }
 
 @Description("Perusopetuksen yksittäisen oppiaineen oppimäärän suoritus erillisenä kokonaisuutena")
 case class PerusopetuksenOppiaineenOppimääränSuoritus(
-  suorituskieli: Option[Koodistokoodiviite] = None,
-  tila: Koodistokoodiviite,
-  override val vahvistus: Option[Henkilövahvistus] = None,
-  toimipiste: OrganisaatioWithOid,
-  @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppiaineenoppimaara", koodistoUri = "suorituksentyyppi"),
-  koulutusmoduuli: PerusopetuksenOppiaine,
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
-  arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None
+  koulutusmoduuli: PerusopetuksenOppiaine,
+  toimipiste: OrganisaatioWithOid,
+  tila: Koodistokoodiviite,
+  arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
+  override val vahvistus: Option[Henkilövahvistus] = None,
+  suorituskieli: Option[Koodistokoodiviite] = None,
+  @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
 ) extends PerusopetuksenPäätasonSuoritus with OppiaineenSuoritus
 
 sealed trait OppiaineenTaiToiminta_AlueenSuoritus extends Suoritus
@@ -152,23 +152,23 @@ sealed trait OppiaineenTaiToiminta_AlueenSuoritus extends Suoritus
 @Description("Perusopetuksen oppiaineen suoritus osana perusopetuksen oppimäärän tai vuosiluokan suoritusta")
 case class PerusopetuksenOppiaineenSuoritus(
   koulutusmoduuli: PerusopetuksenOppiaine,
-  suorituskieli: Option[Koodistokoodiviite],
-  tila: Koodistokoodiviite,
   @Description("Tieto siitä, onko oppiaineen oppimäärä yksilöllistetty (true/false)")
   yksilöllistettyOppimäärä: Boolean = false,
+  tila: Koodistokoodiviite,
+  arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
+  suorituskieli: Option[Koodistokoodiviite],
   @KoodistoKoodiarvo("perusopetuksenoppiaine")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenoppiaine", koodistoUri = "suorituksentyyppi"),
-  arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenoppiaine", koodistoUri = "suorituksentyyppi")
 ) extends OppiaineenSuoritus with OppiaineenTaiToiminta_AlueenSuoritus
 
 @Description("Perusopetuksen toiminta-alueen suoritus osana perusopetuksen oppimäärän tai vuosiluokan suoritusta. Suoritukset voidaan kirjata oppiaineiden sijaan toiminta-alueittain, jos opiskelijalle on tehty erityisen tuen päätös.")
 case class PerusopetuksenToiminta_AlueenSuoritus(
   koulutusmoduuli: PerusopetuksenToiminta_Alue,
-  suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
+  arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
+  suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("perusopetuksentoimintaalue")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksentoimintaalue", koodistoUri = "suorituksentyyppi"),
-  arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksentoimintaalue", koodistoUri = "suorituksentyyppi")
 ) extends OppiaineenTaiToiminta_AlueenSuoritus {
   def vahvistus: Option[Vahvistus] = None
 }

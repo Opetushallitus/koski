@@ -27,15 +27,15 @@ case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
 
 case class PerusopetukseenValmistavanOpetuksenSuoritus(
   koulutusmoduuli: PerusopetukseenValmistavaOpetus = PerusopetukseenValmistavaOpetus(),
-  tila: Koodistokoodiviite,
   toimipiste: OrganisaatioWithOid,
-  suorituskieli: Option[Koodistokoodiviite] = None,
+  tila: Koodistokoodiviite,
   vahvistus: Option[Henkilövahvistus] = None,
-  @KoodistoKoodiarvo("perusopetukseenvalmistavaopetus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetukseenvalmistavaopetus", koodistoUri = "suorituksentyyppi"),
+  suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
-  override val osasuoritukset: Option[List[PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus]]
+  override val osasuoritukset: Option[List[PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus]],
+  @KoodistoKoodiarvo("perusopetukseenvalmistavaopetus")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetukseenvalmistavaopetus", koodistoUri = "suorituksentyyppi")
 ) extends Suoritus with Toimipisteellinen {
   def arviointi = None
 }
@@ -43,8 +43,8 @@ case class PerusopetukseenValmistavanOpetuksenSuoritus(
 case class PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus(
   koulutusmoduuli: PerusopetukseenValmistavanOpetuksenOppiaine,
   tila: Koodistokoodiviite,
-  suorituskieli: Option[Koodistokoodiviite] = None,
   arviointi: Option[List[SanallinenPerusopetuksenOppiaineenArviointi]],
+  suorituskieli: Option[Koodistokoodiviite] = None,
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetukseenvalmistavanopetuksenoppiaine", koodistoUri = "suorituksentyyppi")
 ) extends Suoritus {
   def vahvistus = None

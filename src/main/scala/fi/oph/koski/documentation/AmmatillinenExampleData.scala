@@ -29,7 +29,7 @@ object AmmatillinenExampleData {
       osaamisala = osaamisala,
       suoritustapa = suoritustapa,
       järjestämismuoto = järjestämismuoto,
-      suorituskieli,
+      suorituskieli = suorituskieli,
       tila = tila,
       alkamispäivä = alkamisPäivä,
       toimipiste = toimipiste,

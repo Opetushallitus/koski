@@ -222,6 +222,7 @@ const NullEditor = React.createClass({
 const editorTypes = {
   'perusopetuksenoppiaineensuoritus': OppiaineEditor,
   'perusopetukseenvalmistavanopetuksenoppiaineensuoritus': OppiaineEditor,
+  'ammatillinenopiskeluoikeusjakso': OpiskeluoikeusjaksoEditor,
   'perusopetuksenopiskeluoikeusjakso': OpiskeluoikeusjaksoEditor,
   'henkilövahvistus': VahvistusEditor,
   'object': ObjectEditor,

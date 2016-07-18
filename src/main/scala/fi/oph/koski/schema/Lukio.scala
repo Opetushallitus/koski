@@ -68,29 +68,29 @@ case class LukionOppimääränSuoritus(
   @KoodistoUri("lukionoppimaara")
   @Description("Tieto siitä, suoritetaanko lukiota nuorten vai aikuisten oppimäärän mukaisesti")
   oppimäärä: Koodistokoodiviite,
-  @KoodistoKoodiarvo("lukionoppimaara")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"),
   vahvistus: Option[Henkilövahvistus] = None,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
-  override val osasuoritukset: Option[List[LukionOppiaineenSuoritus]]
+  override val osasuoritukset: Option[List[LukionOppiaineenSuoritus]],
+  @KoodistoKoodiarvo("lukionoppimaara")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi")
 ) extends LukionPäätasonSuoritus {
   def arviointi = None
 }
 
 case class LukionOppiaineenOppimääränSuoritus(
-  suorituskieli: Option[Koodistokoodiviite],
-  tila: Koodistokoodiviite,
-  toimipiste: OrganisaatioWithOid,
   koulutusmoduuli: LukionOppiaine,
-  @KoodistoKoodiarvo("lukionoppiaineenoppimaara")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppiaineenoppimaara", koodistoUri = "suorituksentyyppi"),
-  vahvistus: Option[Henkilövahvistus] = None,
+  toimipiste: OrganisaatioWithOid,
+  tila: Koodistokoodiviite,
   @Description("Lukion oppiaineen oppimäärän arviointi")
   arviointi: Option[List[LukionOppiaineenArviointi]] = None,
+  vahvistus: Option[Henkilövahvistus] = None,
+  suorituskieli: Option[Koodistokoodiviite],
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
   @Title("Kurssit")
-  override val osasuoritukset: Option[List[LukionKurssinSuoritus]]
+  override val osasuoritukset: Option[List[LukionKurssinSuoritus]],
+  @KoodistoKoodiarvo("lukionoppiaineenoppimaara")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
 ) extends LukionPäätasonSuoritus
 
 @Description("Lukiokoulutuksen tunnistetiedot")
@@ -104,27 +104,27 @@ case class LukionOppimäärä(
 }
 
 case class LukionOppiaineenSuoritus(
-  @KoodistoKoodiarvo("lukionoppiaine")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionoppiaine", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: LukionOppiaine,
-  suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
   arviointi: Option[List[LukionOppiaineenArviointi]] = None,
+  suorituskieli: Option[Koodistokoodiviite],
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
   @Title("Kurssit")
-  override val osasuoritukset: Option[List[LukionKurssinSuoritus]]
+  override val osasuoritukset: Option[List[LukionKurssinSuoritus]],
+  @KoodistoKoodiarvo("lukionoppiaine")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionoppiaine", koodistoUri = "suorituksentyyppi")
 ) extends OppiaineenSuoritus
 
 case class LukionKurssinSuoritus(
-  @KoodistoKoodiarvo("lukionkurssi")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionkurssi", koodistoUri = "suorituksentyyppi"),
   @Description("Lukion kurssin tunnistetiedot")
   koulutusmoduuli: LukionKurssi,
-  suorituskieli: Option[Koodistokoodiviite],
   tila: Koodistokoodiviite,
   arviointi: Option[List[LukionKurssinArviointi]] = None,
   @Description("Jos tutkinnon osa on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot. Osaamisen tunnustamisella voidaan opiskelijalle lukea hyväksi ja korvata lukion oppimäärään kuuluvia pakollisia, syventäviä tai soveltavia opintoja. Opiskelijan osaamisen tunnustamisessa noudatetaan, mitä 17 ja 17 a §:ssä säädetään opiskelijan arvioinnista ja siitä päättämisestä. Mikäli opinnot tai muutoin hankittu osaaminen luetaan hyväksi opetussuunnitelman perusteiden mukaan numerolla arvioitavaan kurssiin, tulee kurssista antaa numeroarvosana.")
-  tunnustettu: Option[OsaamisenTunnustaminen] = None
+  tunnustettu: Option[OsaamisenTunnustaminen] = None,
+  suorituskieli: Option[Koodistokoodiviite],
+  @KoodistoKoodiarvo("lukionkurssi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionkurssi", koodistoUri = "suorituksentyyppi")
 ) extends Suoritus with LukioonValmistavanKoulutuksenOsasuoritus {
   def vahvistus: Option[Vahvistus] = None
 }
