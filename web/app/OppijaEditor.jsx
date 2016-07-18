@@ -126,7 +126,7 @@ const OppiaineEditor = React.createClass({
 const VahvistusEditor = React.createClass({
   render() {
     let {model} = this.props
-    return (<span class="vahvistus simple">
+    return (<span className="vahvistus simple">
       <span className="date">{modelTitle(model, 'päivä')}</span>&nbsp;
       <span className="allekirjoitus">{modelTitle(model, 'paikkakunta')}</span>&nbsp;
       {
@@ -144,6 +144,19 @@ const OpiskeluoikeusjaksoEditor = React.createClass({
     return (<div className="opiskeluoikeusjakso">
       <label className="date">{modelTitle(model, 'alku')}</label>
       <label className="tila">{modelTitle(model, 'tila')}</label>
+    </div>)
+  }
+})
+
+const TutkinnonosaEditor = React.createClass({
+  render() {
+    let {model, context} = this.props
+
+    return (<div className="suoritus tutkinnonosa">
+
+      <label className="nimi">{modelTitle(model, 'koulutusmoduuli')}</label>
+      <span className="arvosana">{modelTitle(model, 'arviointi.-1.arvosana')}</span>
+      <FoldableEditor expanded={() => <PropertiesEditor properties={model.properties} context={context}/>}/>
     </div>)
   }
 })
@@ -228,6 +241,7 @@ const NullEditor = React.createClass({
 const editorTypes = {
   'perusopetuksenoppiaineensuoritus': OppiaineEditor,
   'perusopetukseenvalmistavanopetuksenoppiaineensuoritus': OppiaineEditor,
+  'ammatillisentutkinnonosansuoritus': TutkinnonosaEditor,
   'ammatillinenopiskeluoikeusjakso': OpiskeluoikeusjaksoEditor,
   'perusopetuksenopiskeluoikeusjakso': OpiskeluoikeusjaksoEditor,
   'henkilövahvistus': VahvistusEditor,
