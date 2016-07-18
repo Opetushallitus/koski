@@ -217,6 +217,13 @@ const StringEditor = React.createClass({
   }
 })
 
+const BooleanEditor = React.createClass({
+  render() {
+    let {model} = this.props
+    return <span className="simple string">{model.title}</span>
+  }
+})
+
 const DateEditor = React.createClass({
   render() {
     let {model} = this.props
@@ -250,7 +257,7 @@ const editorTypes = {
   'string': StringEditor,
   'number': StringEditor,
   'date': DateEditor,
-  'boolean': StringEditor,
+  'boolean': BooleanEditor,
   'enum': EnumEditor
 }
 

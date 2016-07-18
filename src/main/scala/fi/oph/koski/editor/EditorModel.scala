@@ -49,7 +49,7 @@ object EditorModelSerializer extends Serializer[EditorModel] {
         case (EnumeratedModel(EnumValue(title, data), alternatives)) => d("enum", "simple" -> true, "data" -> data, "title" -> title, "alternatives" -> alternatives)
         case (OneOfModel(c, model)) => serialize.apply(model).merge(j("one-of-class" -> c))
         case (NumberModel(data)) => d("number", "simple" -> true, "data" -> data)
-        case (BooleanModel(data)) => d("boolean", "simple" -> true, "data" -> data)
+        case (BooleanModel(data)) => d("boolean", "simple" -> true, "data" -> data, "title" -> (if (data) { "kyllä" } else { "ei" })) // TODO: localization
         case (DateModel(data)) => d("date", "simple" -> true, "data" -> data, "title" -> finnishDateFormat.format(data))
         case (StringModel(data)) => d("string", "simple" -> true, "data" -> data)
       }
