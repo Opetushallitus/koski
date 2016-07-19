@@ -284,24 +284,24 @@ const EnumEditor = React.createClass({
       : <span className="simple enum">{model.title}</span>
   },
 
-  update(props, state) {
+  update(props) {
     let {model, context} = props
-    if (context.edit && model.alternativesPath && !state.alternativesP) {
-      state.alternativesP = Alternatives[model.alternativesPath]
-      if (!state.alternativesP) {
-        state.alternativesP = Http.get("/koski" + model.alternativesPath).toProperty()
-        Alternatives[model.alternativesPath] = state.alternativesP
+    if (context.edit && model.alternativesPath && !this.state.alternativesP) {
+      this.state.alternativesP = Alternatives[model.alternativesPath]
+      if (!this.state.alternativesP) {
+        this.state.alternativesP = Http.get(model.alternativesPath).toProperty()
+        Alternatives[model.alternativesPath] = this.state.alternativesP
       }
-      state.alternativesP.onValue(alternatives => this.setState({alternatives}))
+      this.state.alternativesP.onValue(alternatives => this.setState({alternatives}))
     }
   },
 
   componentWillMount() {
-    this.update(this.props, this.state)
+    this.update(this.props)
   },
 
-  componentWillUpdate(props, state) {
-    this.update(props, state)
+  componentWillReceiveProps(props) {
+    this.update(props)
   },
 
   getInitialState() {

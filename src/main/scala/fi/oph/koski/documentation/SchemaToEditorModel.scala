@@ -24,10 +24,10 @@ class SchemaToEditorModel(context: ValidationAndResolvingContext, mainSchema: Cl
         case c if (classOf[Koodistokoodiviite].isAssignableFrom(c)) =>
           val koodistoUri = t.properties.find(_.key == "koodistoUri").get.schema.asInstanceOf[StringSchema].enumValues.get.apply(0).asInstanceOf[String]
           // TODO: rajaus @KoodistiKoodiarvo
-          getEnumeratedModel[Koodistokoodiviite](o, s"/api/editor/koodit/$koodistoUri", koodistoEnumValue(_))
+          getEnumeratedModel[Koodistokoodiviite](o, s"/koski/api/editor/koodit/$koodistoUri", koodistoEnumValue(_))
 
         case c if (classOf[OrganisaatioWithOid].isAssignableFrom(c)) =>
-          getEnumeratedModel(o, s"/api/editor/organisaatiot", organisaatioEnumValue(_))
+          getEnumeratedModel(o, "/koski/api/editor/organisaatiot", organisaatioEnumValue(_))
 
         case c if (classOf[Koulutusmoduuli].isAssignableFrom(c)) =>
           buildObjectModel(o, t, true) // object data should probably be sent only for root and split on the client side
