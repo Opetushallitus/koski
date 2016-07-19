@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.editor._
 import fi.oph.koski.koski.ValidationAndResolvingContext
-import fi.oph.koski.koskiuser.{AccessType, KoskiUser}
+import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.localization.{Localizable, LocalizedString}
 import fi.oph.koski.schema._
 import fi.oph.koski.todistus.LocalizedHtml
@@ -15,19 +15,19 @@ class SchemaToEditorModel(context: ValidationAndResolvingContext, mainSchema: Cl
     Context().buildObjectModel(value, schema, true)
   }
 
+  def koodistoEnumValue(k: Koodistokoodiviite): EnumValue = EnumValue(k.koodiarvo, i(k.lyhytNimi.orElse(k.nimi).getOrElse(LocalizedString.unlocalized(k.koodiarvo))), k)
+  def organisaatioEnumValue(o: OrganisaatioWithOid) = EnumValue(o.oid, i(o.description), o)
+
   private case class Context(editable: Boolean = true) {
     private def buildModel(obj: Any, schema: Schema): EditorModel = (obj, schema) match {
       case (o: AnyRef, t:ClassSchema) => Class.forName(t.fullClassName) match {
         case c if (classOf[Koodistokoodiviite].isAssignableFrom(c)) =>
-          lazy val koodistoUri = t.properties.find(_.key == "koodistoUri").get.schema.asInstanceOf[StringSchema].enumValues.get.apply(0).asInstanceOf[String]
-          def koodit: List[Koodistokoodiviite] = context.koodistoPalvelu.getLatestVersion(koodistoUri).toList.flatMap(context.koodistoPalvelu.getKoodistoKoodiViitteet(_)).flatten
-          def toEnumValue(k: Koodistokoodiviite): EnumValue = EnumValue(k.koodiarvo, i(k.lyhytNimi.orElse(k.nimi).getOrElse(LocalizedString.unlocalized(k.koodiarvo))), k)
-          getEnumeratedModel[Koodistokoodiviite](o, koodit, toEnumValue)
+          val koodistoUri = t.properties.find(_.key == "koodistoUri").get.schema.asInstanceOf[StringSchema].enumValues.get.apply(0).asInstanceOf[String]
+          // TODO: rajaus @KoodistiKoodiarvo
+          getEnumeratedModel[Koodistokoodiviite](o, s"/api/editor/koodit/$koodistoUri", koodistoEnumValue(_))
 
         case c if (classOf[OrganisaatioWithOid].isAssignableFrom(c)) =>
-          def toEnumValue(o: OrganisaatioWithOid) = EnumValue(o.oid, i(o.description), o)
-          def organisaatiot = user.organisationOids(AccessType.read).flatMap(context.organisaatioRepository.getOrganisaatio).toList
-          getEnumeratedModel(o, organisaatiot, toEnumValue)
+          getEnumeratedModel(o, s"/api/editor/organisaatiot", organisaatioEnumValue(_))
 
         case c if (classOf[Koulutusmoduuli].isAssignableFrom(c)) =>
           buildObjectModel(o, t, true) // object data should probably be sent only for root and split on the client side
@@ -55,9 +55,6 @@ class SchemaToEditorModel(context: ValidationAndResolvingContext, mainSchema: Cl
         val hidden = property.metadata.contains(Hidden())
         val hasValue = obj != None
         if (objectContext.editable || hasValue) {
-          if (obj == None) {
-            println("property " + property.key + "=" + obj)
-          }
           val representative: Boolean = property.metadata.contains(Representative())
           val value = obj match {
             case None => getPrototype(property.schema)
@@ -96,17 +93,25 @@ class SchemaToEditorModel(context: ValidationAndResolvingContext, mainSchema: Cl
       this.copy(editable = this.editable && lähdejärjestelmäAccess && orgAccess)
     }
 
-    private def getEnumeratedModel[A](o: Any, fetchAlternatives: => List[A], toEnumValue: A => EnumValue) = {
+    private def getEnumeratedModel[A](o: Any, fetchAlternatives: => List[A], toEnumValue: A => EnumValue): EnumeratedModel = {
       val alternatives = if (editable) {
-        Some(fetchAlternatives.map(toEnumValue(_)).take(1)) // TODO: hard-coded limit won't do
+        Some(fetchAlternatives.map(toEnumValue(_)))
       } else {
         None
       }
       o match {
-        case None => EnumeratedModel(None, alternatives)
-        case k: A => EnumeratedModel(Some(toEnumValue(k)), alternatives)
+        case None => EnumeratedModel(None, alternatives, None)
+        case k: A => EnumeratedModel(Some(toEnumValue(k)), alternatives, None)
       }
     }
+
+    private def getEnumeratedModel[A](o: Any, alternativesPath: String, toEnumValue: A => EnumValue): EnumeratedModel = {
+      o match {
+        case None => EnumeratedModel(None, None, Some(alternativesPath))
+        case k: A => EnumeratedModel(Some(toEnumValue(k)), None, Some(alternativesPath))
+      }
+    }
+
 
     private def getPrototypeModel(schema: Schema): Option[EditorModel] = if (editable) {
       Some(buildModel(getPrototype(schema), schema))

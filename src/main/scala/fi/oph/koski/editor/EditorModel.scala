@@ -19,7 +19,7 @@ case class ListModel(items: List[EditorModel], prototype: Option[EditorModel]) e
   override def empty = !items.exists(!_.empty)
 }
 
-case class EnumeratedModel(value: Option[EnumValue], alternatives: Option[List[EnumValue]]) extends EditorModel
+case class EnumeratedModel(value: Option[EnumValue], alternatives: Option[List[EnumValue]], alternativesPath: Option[String]) extends EditorModel
 case class EnumValue(value: String, title: String, data: Any)
 
 case class NumberModel(data: Number) extends EditorModel
@@ -44,8 +44,8 @@ object EditorModelSerializer extends Serializer[EditorModel] {
         case (ObjectModel(c, properties, data, title, editable)) => d("object", "class" -> c, "properties" -> properties, "data" -> data, "title" -> title, "editable" -> editable)
         case (OptionalModel(model, prototype)) => model.map(Extraction.decompose).getOrElse(j()).merge(j("optional" -> true, "prototype" -> Extraction.decompose(prototype)))
         case (ListModel(items, prototype)) => d("array", "items" -> items, "prototype" -> Extraction.decompose(prototype))
-        case (EnumeratedModel(Some(EnumValue(value, title, data)), alternatives)) => d("enum", "simple" -> true, "data" -> data, "value" -> value, "title" -> title, "alternatives" -> alternatives)
-        case (EnumeratedModel(None, alternatives)) => d("enum", "simple" -> true, "title" -> "", "alternatives" -> alternatives)
+        case (EnumeratedModel(Some(EnumValue(value, title, data)), alternatives, path)) => d("enum", "simple" -> true, "data" -> data, "value" -> value, "title" -> title, "alternatives" -> alternatives, "alternativesPath" -> path)
+        case (EnumeratedModel(None, alternatives, path)) => d("enum", "simple" -> true, "title" -> "", "alternatives" -> alternatives, "alternativesPath" -> path)
         case (OneOfModel(c, None)) => j("one-of-class" -> c)
         case (OneOfModel(c, Some(model))) => Extraction.decompose(model).merge(j("one-of-class" -> c))
         case (NumberModel(data)) => d("number", "simple" -> true, "data" -> data)

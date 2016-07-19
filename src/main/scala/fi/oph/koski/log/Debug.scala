@@ -5,4 +5,10 @@ object Debug extends Logging {
     logger.info(x.toString)
     x
   }
+
+  def debug[A](format: A => String, x: A): A = {
+    logger.info(format(x))
+    x
+  }
+
 }

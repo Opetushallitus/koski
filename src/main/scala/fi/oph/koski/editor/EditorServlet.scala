@@ -17,6 +17,20 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
     renderEither(findByOid(params("oid"), koskiUser))
   }
 
+  get("/koodit/:koodistoUri") {
+    val koodistoUri = params("koodistoUri")
+    val koodit: List[Koodistokoodiviite] = context.koodistoPalvelu.getLatestVersion(koodistoUri).toList.flatMap(application.koodistoViitePalvelu.getKoodistoKoodiViitteet(_)).flatten
+    koodit.map(modelCreator.koodistoEnumValue(_))
+  }
+
+  get("/organisaatiot") {
+    def organisaatiot = koskiUser.organisationOids(AccessType.read).flatMap(context.organisaatioRepository.getOrganisaatio).toList
+    organisaatiot.map(modelCreator.organisaatioEnumValue(_))
+  }
+
+  private val context: ValidationAndResolvingContext = ValidationAndResolvingContext(application.koodistoViitePalvelu, application.organisaatioRepository)
+  private def modelCreator = new SchemaToEditorModel(context, EditorSchema.schema)(koskiUser)
+
   private def findByOid(oid: String, user: KoskiUser): Either[HttpStatus, EditorModel] = {
     implicit val opiskeluoikeusOrdering = new Ordering[Option[LocalDate]] {
       override def compare(x: Option[LocalDate], y: Option[LocalDate]) = (x, y) match {
@@ -32,9 +46,7 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
           case (oppilaitos, opiskeluoikeudet) => OppilaitoksenOpiskeluoikeudet(oppilaitos, opiskeluoikeudet.toList.sortBy(_.alkamispäivä))
         }.toList.sortBy(_.opiskeluoikeudet(0).alkamispäivä)
         val editorView = OppijaEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], oppilaitokset)
-        val context: ValidationAndResolvingContext = ValidationAndResolvingContext(application.koodistoViitePalvelu, application.organisaatioRepository)
 
-        val modelCreator: SchemaToEditorModel = new SchemaToEditorModel(context, EditorSchema.schema)(koskiUser)
         timed("buildModel") { modelCreator.buildModel(EditorSchema.schema, editorView)}
       }
     }

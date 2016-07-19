@@ -1,6 +1,7 @@
 import React from 'react'
 import R from 'ramda'
 import { modelData, modelLookup, modelTitle } from './EditorModel.js'
+import Http from './http'
 
 export const OppijaEditor = React.createClass({
   render() {
@@ -271,17 +272,44 @@ const DateEditor = React.createClass({
 const EnumEditor = React.createClass({
   render() {
     let {model, context} = this.props
+    let alternatives = model.alternatives || (this.state.alternatives) || []
     return context.edit
       ? (<select defaultValue={model.value}>
           {
-            model.alternatives.map( alternative =>
+            alternatives.map( alternative =>
               <option value={ alternative.value } key={ alternative.value }>{alternative.title}</option>
             )
           }
         </select>)
       : <span className="simple enum">{model.title}</span>
+  },
+
+  update(props, state) {
+    let {model, context} = props
+    if (context.edit && model.alternativesPath && !state.alternativesP) {
+      state.alternativesP = Alternatives[model.alternativesPath]
+      if (!state.alternativesP) {
+        state.alternativesP = Http.get("/koski" + model.alternativesPath).toProperty()
+        Alternatives[model.alternativesPath] = state.alternativesP
+      }
+      state.alternativesP.onValue(alternatives => this.setState({alternatives}))
+    }
+  },
+
+  componentWillMount() {
+    this.update(this.props, this.state)
+  },
+
+  componentWillUpdate(props, state) {
+    this.update(props, state)
+  },
+
+  getInitialState() {
+    return {}
   }
 })
+
+const Alternatives = {}
 
 const NullEditor = React.createClass({
   render() {
