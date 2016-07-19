@@ -45,6 +45,10 @@
         display: inline-block;
         vertical-align: top
       }
+
+      > select {
+        width: ~"calc(100% - 300px)";
+      }
     }
     list-style: none;
     padding-left: 20px;
@@ -81,5 +85,20 @@
 
   a.toggle-expand {
     margin-left: 10px;
+  }
+
+  .toggle-edit {
+    position: absolute;
+    right: 0;
+    font-size: 0.9em;
+    text-decoration: underline;
+  }
+
+  input[type=text] {
+    height: 1.5em;
+    margin-bottom: 2px;
+    padding: 0 5px;
+    font-size: 0.8em;
+    border-radius: 3px;
   }
 }

@@ -9,32 +9,32 @@ sealed trait EditorModel {
   def empty = false
 }
 
-case class ObjectModel(`class`: String, properties: List[EditorProperty], data: Option[AnyRef]) extends EditorModel {
+case class ObjectModel(`class`: String, properties: List[EditorProperty], data: Option[AnyRef], title: Option[String]) extends EditorModel {
   override def empty = !properties.exists(!_.model.empty)
 }
 case class EditorProperty(key: String, title: String, model: EditorModel, hidden: Boolean, representative: Boolean)
 
-case class ListModel(items: List[EditorModel]) extends EditorModel { // need to add a prototype for adding new item
+case class ListModel(items: List[EditorModel], prototype: EditorModel) extends EditorModel { // need to add a prototype for adding new item
   override def empty = !items.exists(!_.empty)
 }
 
-case class EnumeratedModel(value: EnumValue, alternatives: List[EnumValue]) extends EditorModel
+case class EnumeratedModel(value: Option[EnumValue], alternatives: List[EnumValue]) extends EditorModel
   object EnumeratedModel {
-    def apply(value: EnumValue): EnumeratedModel = EnumeratedModel(value, List(value))
+    def apply(value: EnumValue): EnumeratedModel = EnumeratedModel(Some(value), List(value))
   }
-  case class EnumValue(title: String, data: Any)
+  case class EnumValue(value: String, title: String, data: Any)
 
 case class NumberModel(data: Number) extends EditorModel
 case class BooleanModel(data: Boolean) extends EditorModel
 case class DateModel(data: LocalDate) extends EditorModel
 case class StringModel(data: String) extends EditorModel
 
-case class OptionalModel(model: Option[EditorModel]) extends EditorModel { // need a prototype for editing
+case class OptionalModel(model: Option[EditorModel], prototype: EditorModel) extends EditorModel { // need a prototype for editing
   override def empty = !model.exists(!_.empty)
 }
 
-case class OneOfModel(`class`: String, model: EditorModel) extends EditorModel { // need to add option prototypes for editing
-  override def empty = model.empty
+case class OneOfModel(`class`: String, model: Option[EditorModel]) extends EditorModel { // need to add option prototypes for editing
+  override def empty = model.isEmpty || model.get.empty
 }
 
 object EditorModelSerializer extends Serializer[EditorModel] {
@@ -43,15 +43,18 @@ object EditorModelSerializer extends Serializer[EditorModel] {
   override def serialize(implicit format: Formats): PartialFunction[Any, JValue] = {
     case (model: EditorModel) => {
       val json: JValue = model match {
-        case (ObjectModel(c, properties, data)) => d("object", "class" -> c, "properties" -> properties, "data" -> data)
-        case (OptionalModel(model)) => model.map(serialize _).getOrElse(j()).merge(j("optional" -> true))
-        case (ListModel(items)) => d("array", "items" -> items)
-        case (EnumeratedModel(EnumValue(title, data), alternatives)) => d("enum", "simple" -> true, "data" -> data, "title" -> title, "alternatives" -> alternatives)
-        case (OneOfModel(c, model)) => serialize.apply(model).merge(j("one-of-class" -> c))
+        case (ObjectModel(c, properties, data, title)) => d("object", "class" -> c, "properties" -> properties, "data" -> data, "title" -> title)
+        case (OptionalModel(model, prototype)) => model.map(serialize _).getOrElse(j()).merge(j("optional" -> true, "prototype" -> serialize.apply(prototype)))
+        case (ListModel(items, prototype)) => d("array", "items" -> items, "prototype" -> serialize.apply(prototype))
+        case (EnumeratedModel(Some(EnumValue(value, title, data)), alternatives)) => d("enum", "simple" -> true, "data" -> data, "value" -> value, "title" -> title, "alternatives" -> alternatives)
+        case (EnumeratedModel(None, alternatives)) => d("enum", "simple" -> true, "title" -> "", "alternatives" -> alternatives)
+        case (OneOfModel(c, None)) => j("one-of-class" -> c)
+        case (OneOfModel(c, Some(model))) => serialize.apply(model).merge(j("one-of-class" -> c))
         case (NumberModel(data)) => d("number", "simple" -> true, "data" -> data)
         case (BooleanModel(data)) => d("boolean", "simple" -> true, "data" -> data, "title" -> (if (data) { "kyllä" } else { "ei" })) // TODO: localization
         case (DateModel(data)) => d("date", "simple" -> true, "data" -> data, "title" -> finnishDateFormat.format(data))
         case (StringModel(data)) => d("string", "simple" -> true, "data" -> data)
+        case _ => throw new RuntimeException("No match : " + model)
       }
       model.empty match {
         case true => json merge(j("empty" -> true))

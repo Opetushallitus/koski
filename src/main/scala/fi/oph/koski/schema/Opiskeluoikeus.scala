@@ -40,6 +40,7 @@ trait Opiskeluoikeus {
   def oppilaitos: Oppilaitos
   @Description("Koulutustoimija, käytännössä oppilaitoksen yliorganisaatio")
   @ReadOnly("Tiedon syötössä tietoa ei tarvita; organisaation tiedot haetaan Organisaatiopalvelusta")
+  @Hidden
   def koulutustoimija: Option[OrganisaatioWithOid]
   @Description("Opiskeluoikeuteen liittyvien tutkinto- ja muiden suoritusten tiedot")
   def suoritukset: List[Suoritus]

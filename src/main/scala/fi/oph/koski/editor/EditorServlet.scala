@@ -6,6 +6,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.SchemaToEditorModel
 import fi.oph.koski.henkilo.HenkiloOid
 import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.koski.ValidationAndResolvingContext
 import fi.oph.koski.koskiuser.{KoskiUser, RequiresAuthentication}
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.ApiServlet
@@ -31,7 +32,7 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
           case (oppilaitos, opiskeluoikeudet) => OppilaitoksenOpiskeluoikeudet(oppilaitos, opiskeluoikeudet.toList.sortBy(_.alkamispäivä))
         }.toList.sortBy(_.opiskeluoikeudet(0).alkamispäivä)
         val editorView = OppijaEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], oppilaitokset)
-        new SchemaToEditorModel()(koskiUser).buildModel(EditorSchema.schema, editorView)
+        new SchemaToEditorModel(ValidationAndResolvingContext(application.koodistoViitePalvelu, application.organisaatioRepository))(koskiUser).buildModel(EditorSchema.schema, editorView)
       }
     }
   }
