@@ -10,7 +10,7 @@ object Opiskeluoikeus {
   val VERSIO_1 = 1
 }
 
-trait Opiskeluoikeus {
+trait Opiskeluoikeus extends OrganisaatioonLiittyvä with Lähdejärjestelmällinen {
   @Description("Opiskeluoikeuden tyyppi, jolla erotellaan eri koulutusmuotoihin (perusopetus, lukio, ammatillinen...) liittyvät opiskeluoikeudet")
   @OksaUri("tmpOKSAID869", "koulutusmuoto (1)")
   @KoodistoUri("opiskeluoikeudentyyppi")
@@ -28,8 +28,6 @@ trait Opiskeluoikeus {
   def versionumero: Option[Int]
   @Description("Lähdejärjestelmän tunniste ja opiskeluoikeuden tunniste lähdejärjestelmässä. " +
     "Käytetään silloin, kun opiskeluoikeus on tuotu Koskeen tiedonsiirrolla ulkoisesta järjestelmästä, eli käytännössä oppilashallintojärjestelmästä.")
-  @Hidden
-  def lähdejärjestelmänId: Option[LähdejärjestelmäId]
   @Description("Opiskelijan opiskeluoikeuden alkamisaika joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
   def alkamispäivä: Option[LocalDate]
   @Description("Opiskelijan opiskeluoikeuden arvioitu päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
@@ -49,6 +47,7 @@ trait Opiskeluoikeus {
   @Description("Läsnä- ja poissaolojaksot päivämääräväleinä.")
   def läsnäolotiedot: Option[Läsnäolotiedot]
   def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid): Opiskeluoikeus
+  def omistajaOrganisaatio = oppilaitos
 }
 
 trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
@@ -109,10 +108,14 @@ object YleinenLäsnäolojakso {
 }
 case class LähdejärjestelmäId(
   @Description("Opiskeluoikeuden paikallinen uniikki tunniste lähdejärjestelmässä. Tiedonsiirroissa tarpeellinen, jotta voidaan varmistaa päivitysten osuminen oikeaan opiskeluoikeuteen.")
-  id: String,
+  id: Option[String],
   @Description("Lähdejärjestelmän yksilöivä tunniste. Tällä tunnistetaan järjestelmä, josta tiedot on tuotu Koskeen. " +
     "Kullakin erillisellä tietojärjestelmäinstanssilla tulisi olla oma tunniste. " +
     "Jos siis oppilaitoksella on oma tietojärjestelmäinstanssi, tulee myös tällä instanssilla olla uniikki tunniste.")
   @KoodistoUri("lahdejarjestelma")
   lähdejärjestelmä: Koodistokoodiviite
 )
+trait Lähdejärjestelmällinen {
+  @Hidden
+  def lähdejärjestelmänId: Option[LähdejärjestelmäId]
+}

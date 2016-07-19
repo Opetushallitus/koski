@@ -3,6 +3,7 @@ package fi.oph.koski.schema
 import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems}
 
 case class YlioppilastutkinnonOpiskeluoikeus(
+  lähdejärjestelmänId: Option[LähdejärjestelmäId],
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OrganisaatioWithOid],
   tila: YlioppilastutkinnonOpiskeluoikeudenTila,
@@ -19,7 +20,6 @@ case class YlioppilastutkinnonOpiskeluoikeus(
   override def id = None
   override def versionumero = None
   override def läsnäolotiedot = None
-  override def lähdejärjestelmänId = None
 }
 
 case class YlioppilastutkinnonOpiskeluoikeudenTila(opiskeluoikeusjaksot: List[LukionOpiskeluoikeusjakso]) extends OpiskeluoikeudenTila

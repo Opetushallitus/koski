@@ -58,3 +58,7 @@ trait OrganisaatioWithOid extends Organisaatio {
   def nimi: Option[LocalizedString]
   def toOppilaitos: Option[Oppilaitos]
 }
+
+trait OrganisaatioonLiittyvä {
+  def omistajaOrganisaatio: OrganisaatioWithOid
+}

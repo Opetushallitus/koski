@@ -48,8 +48,9 @@ trait ValmentavaSuoritus extends Suoritus with Toimipisteellinen {
   override def osasuoritukset: Option[List[ValmentavanKoulutuksenOsanSuoritus]] = None
 }
 
-trait Toimipisteellinen {
+trait Toimipisteellinen extends OrganisaatioonLiittyvä {
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu. Jos oppilaitoksella ei ole toimipisteitä, syötetään tähän oppilaitoksen tiedot.")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   def toimipiste: OrganisaatioWithOid
+  def omistajaOrganisaatio = toimipiste
 }
