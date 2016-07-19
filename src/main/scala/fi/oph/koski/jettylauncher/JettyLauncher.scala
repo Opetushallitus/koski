@@ -1,15 +1,11 @@
 package fi.oph.koski.jettylauncher
 
-import java.net.InetAddress
 import java.nio.file.{Files, Paths}
 
-import com.typesafe.config.Config
 import com.typesafe.config.ConfigValueFactory._
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.KoskiDatabaseConfig
 import fi.oph.koski.log.LogConfiguration
 import fi.oph.koski.util.{Pools, PortChecker}
-import org.eclipse.jetty.server.session.{SessionHandler, JDBCSessionManager, JDBCSessionIdManager}
 import org.eclipse.jetty.server.{Server, ServerConnector, Slf4jRequestLog}
 import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.eclipse.jetty.webapp.WebAppContext

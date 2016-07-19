@@ -37,7 +37,7 @@ const OpiskeluoikeusEditor = React.createClass({
           <span className="alku pvm">{modelTitle(model, 'alkamispäivä')}</span>-
           <span className="loppu pvm">{modelTitle(model, 'päättymispäivä')}</span>,&nbsp;
           <span className="tila">{modelTitle(model, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}</span>
-        <FoldableEditor expanded={() => <PropertiesEditor properties={ model.properties.filter(property => property.key != 'suoritukset') } context={context}/>}/>
+        <FoldableEditor expanded={() => <PropertiesEditor properties={ model.properties.filter(property => property.key != 'suoritukset') } context={R.merge(context, {editable: model.editable})}/>}/>
       </div>
       {
         modelLookup(model, 'suoritukset.items').map((suoritusModel, i) =>
@@ -57,11 +57,10 @@ const SuoritusEditor = React.createClass({
     return (<div className="suoritus">
       <span className="kuvaus">{title}</span>
       <Todistus suoritus={model} context={context}/>
-      <FoldableEditor expanded={() => <PropertiesEditor properties={model.properties} context={context}/>}/>
+      <FoldableEditor expanded={() => <PropertiesEditor properties={model.properties} context={R.merge(context, {editable: model.editable})}/>}/>
     </div>)
   }
 })
-
 
 const FoldableEditor = React.createClass({
   render() {
@@ -193,7 +192,7 @@ const PropertiesEditor = React.createClass({
     let toggleEdit = () => this.setState({edit: !edit})
     return (<ul className="properties">
       {
-        context.root ? <a className="toggle-edit" onClick={toggleEdit}>{edit ? 'valmis' : 'muokkaa'}</a> : null
+        context.root && context.editable ? <a className="toggle-edit" onClick={toggleEdit}>{edit ? 'valmis' : 'muokkaa'}</a> : null
       }
       {
         properties.filter(property => (edit || !property.model.empty) && !property.hidden).map(property => {
