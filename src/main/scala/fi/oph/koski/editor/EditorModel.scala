@@ -40,31 +40,35 @@ object EditorModelSerializer extends Serializer[EditorModel] {
 
   override def serialize(implicit format: Formats): PartialFunction[Any, JValue] = {
     case (model: EditorModel) => {
-      val json: JValue = model match {
-        case (ObjectModel(c, properties, data, title, editable)) => d("object", "class" -> c, "properties" -> properties, "data" -> data, "title" -> title, "editable" -> editable)
-        case (OptionalModel(model, prototype)) => model.map(Extraction.decompose).getOrElse(j()).merge(j("optional" -> true, "prototype" -> Extraction.decompose(prototype)))
-        case (ListModel(items, prototype)) => d("array", "items" -> items, "prototype" -> Extraction.decompose(prototype))
-        case (EnumeratedModel(Some(EnumValue(value, title, data)), alternatives, path)) => d("enum", "simple" -> true, "data" -> data, "value" -> value, "title" -> title, "alternatives" -> alternatives, "alternativesPath" -> path)
-        case (EnumeratedModel(None, alternatives, path)) => d("enum", "simple" -> true, "title" -> "", "alternatives" -> alternatives, "alternativesPath" -> path)
-        case (OneOfModel(c, None)) => j("one-of-class" -> c)
-        case (OneOfModel(c, Some(model))) => Extraction.decompose(model).merge(j("one-of-class" -> c))
-        case (NumberModel(data)) => d("number", "simple" -> true, "data" -> data)
-        case (BooleanModel(data)) => d("boolean", "simple" -> true, "data" -> data, "title" -> (if (data) { "kyllä" } else { "ei" })) // TODO: localization
-        case (DateModel(data)) => d("date", "simple" -> true, "data" -> data, "title" -> finnishDateFormat.format(data))
-        case (StringModel(data)) => d("string", "simple" -> true, "data" -> data)
+      val jvalue: JValue = model match {
+        case (ObjectModel(c, properties, data, title, editable)) =>
+          json("object", "class" -> c, "properties" -> properties, "data" -> data, "title" -> title, "editable" -> editable)
+        case (OptionalModel(model, prototype)) =>
+          model.map(Extraction.decompose).getOrElse(emptyObject).merge(json("optional" -> true, "prototype" -> Extraction.decompose(prototype)))
+        case (ListModel(items, prototype)) =>
+          json("array", "items" -> items, "prototype" -> Extraction.decompose(prototype))
+        case (EnumeratedModel(e, alternatives, path)) =>
+          e.map(Extraction.decompose).getOrElse(json("title" -> "")).merge(json("enum", "simple" -> true, "alternatives" -> alternatives, "alternativesPath" -> path))
+        case (OneOfModel(c, model)) =>
+          model.map(Extraction.decompose).getOrElse(emptyObject).merge(json("one-of-class" -> c))
+        case (NumberModel(data)) => json("number", "simple" -> true, "data" -> data)
+        case (BooleanModel(data)) => json("boolean", "simple" -> true, "data" -> data, "title" -> (if (data) { "kyllä" } else { "ei" })) // TODO: localization
+        case (DateModel(data)) => json("date", "simple" -> true, "data" -> data, "title" -> finnishDateFormat.format(data))
+        case (StringModel(data)) => json("string", "simple" -> true, "data" -> data)
         case _ => throw new RuntimeException("No match : " + model)
       }
       model.empty match {
-        case true => json merge(j("empty" -> true))
-        case _ => json
+        case true => jvalue merge(json("empty" -> true))
+        case _ => jvalue
       }
     }
   }
 
-  private def d(tyep: String, props: (String, Any)*)(implicit format: Formats) = {
+  private def json(tyep: String, props: (String, Any)*)(implicit format: Formats): JValue = {
     val elems: List[(String, Any)] = ("type" -> tyep) :: props.toList
-    j(elems: _*)
+    json(elems: _*)
   }
 
-  private def j(props: (String, Any)*)(implicit format: Formats): JValue = Extraction.decompose(Map(props : _*))
+  private def json(props: (String, Any)*)(implicit format: Formats): JValue = Extraction.decompose(Map(props : _*))
+  private def emptyObject = JObject()
 }
