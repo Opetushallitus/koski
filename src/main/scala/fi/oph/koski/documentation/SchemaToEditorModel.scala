@@ -30,7 +30,7 @@ class SchemaToEditorModel(context: ValidationAndResolvingContext, mainSchema: Cl
           getEnumeratedModel(o, "/koski/api/editor/organisaatiot", organisaatioEnumValue(_))
 
         case c if (classOf[Koulutusmoduuli].isAssignableFrom(c)) =>
-          buildObjectModel(o, t, true) // object data should probably be sent only for root and split on the client side
+          buildObjectModel(o, t, true) // TODO this is hack to include data in this model. Object data should probably be sent only for root and split to subobjects in the client
 
         case c =>
           buildObjectModel(o, t)
