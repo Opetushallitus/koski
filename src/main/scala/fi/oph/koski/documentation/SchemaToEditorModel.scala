@@ -23,7 +23,7 @@ class SchemaToEditorModel(context: ValidationAndResolvingContext, mainSchema: Cl
       case (o: AnyRef, t:ClassSchema) => Class.forName(t.fullClassName) match {
         case c if (classOf[Koodistokoodiviite].isAssignableFrom(c)) =>
           val koodistoUri = t.properties.find(_.key == "koodistoUri").get.schema.asInstanceOf[StringSchema].enumValues.get.apply(0).asInstanceOf[String]
-          // TODO: rajaus @KoodistiKoodiarvo
+          // TODO: rajaus @KoodistoKoodiarvo
           getEnumeratedModel[Koodistokoodiviite](o, s"/koski/api/editor/koodit/$koodistoUri", koodistoEnumValue(_))
 
         case c if (classOf[OrganisaatioWithOid].isAssignableFrom(c)) =>
