@@ -44,24 +44,24 @@ object EditorModelSerializer extends Serializer[EditorModel] {
     case (model: EditorModel) => {
       val jvalue: JValue = model match {
         case (ObjectModel(c, properties, data, title, editable, prototypes)) =>
-          json("object", "class" -> c, "properties" -> properties, "data" -> data, "title" -> title, "editable" -> editable, "prototypes" -> prototypes)
+          json("object", "class" -> c, "properties" -> properties, "value" -> Map("data" -> data, "title" -> title), "editable" -> editable, "prototypes" -> prototypes)
         case (PrototypeModel(c)) => json("prototype", "class" -> c)
         case (OptionalModel(model, prototype)) =>
           model.map(Extraction.decompose).getOrElse(emptyObject).merge(json("optional" -> true, "prototype" -> prototype))
         case (ListModel(items, prototype)) =>
           json("array", "items" -> items, "prototype" -> prototype)
-        case (EnumeratedModel(e, alternatives, path)) =>
-          e.map(Extraction.decompose).getOrElse(json("title" -> "")).merge(json("enum", "simple" -> true, "alternatives" -> alternatives, "alternativesPath" -> path))
+        case (EnumeratedModel(value, alternatives, path)) =>
+          json("enum", "simple" -> true, "alternatives" -> alternatives, "alternativesPath" -> path, "value" -> value)
         case (OneOfModel(c, model, prototypes)) =>
           model.map(Extraction.decompose).getOrElse(emptyObject).merge(json("one-of-class" -> c, "prototypes" -> prototypes))
-        case (NumberModel(data)) => json("number", "simple" -> true, "data" -> data)
-        case (BooleanModel(data)) => json("boolean", "simple" -> true, "data" -> data, "title" -> (if (data) { "kyllä" } else { "ei" })) // TODO: localization
-        case (DateModel(data)) => json("date", "simple" -> true, "data" -> data, "title" -> finnishDateFormat.format(data))
-        case (StringModel(data)) => json("string", "simple" -> true, "data" -> data)
+        case (NumberModel(data)) => json("number", "simple" -> true, "value" -> Map("data" -> data))
+        case (BooleanModel(data)) => json("boolean", "simple" -> true, "value" -> Map("data" -> data, "title" -> (if (data) { "kyllä" } else { "ei" }))) // TODO: localization
+        case (DateModel(data)) => json("date", "simple" -> true, "value" -> Map("data" -> data, "title" -> finnishDateFormat.format(data)))
+        case (StringModel(data)) => json("string", "simple" -> true, "value" -> Map("data" -> data))
         case _ => throw new RuntimeException("No match : " + model)
       }
       model.empty match {
-        case true => jvalue merge(json("empty" -> true))
+        case true => jvalue merge(json("empty" -> true)) // TODO: move to value
         case _ => jvalue
       }
     }

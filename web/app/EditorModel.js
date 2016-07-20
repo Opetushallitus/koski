@@ -30,15 +30,15 @@ const objectLookup = (mainObj, path) => {
 }
 
 export const modelData = (mainModel, path) => {
-  if (mainModel && path && mainModel.data) {
-    return objectLookup(mainModel.data, path)
+  if (mainModel && path && mainModel.value && mainModel.value.data) {
+    return objectLookup(mainModel.value.data, path)
   } else {
     let model = modelLookup(mainModel, path)
-    return model && (model.data || (model.value && model.value.data) || (model.model && modelData(model.model)))
+    return model && ((model.value && model.value.data))
   }
 }
 
 export const modelTitle = (mainModel, path) => {
   let model = modelLookup(mainModel, path)
-  return (model && (model.title || model.data)) || ''
+  return (model && (model.title || (model.value && model.value.title) || (model.value && model.value.data))) || ''
 }

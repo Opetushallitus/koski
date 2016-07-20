@@ -11,11 +11,11 @@ export const OppijaEditor = React.createClass({
       <ul className="oppilaitokset">
         {
           modelLookup(model, 'opiskeluoikeudet').items.map((thing) => {
-              let context = { oppijaOid: modelLookup(model, 'henkilö.oid').data, root: true, prototypes: model.prototypes }
+              let context = { oppijaOid: modelData(model, 'henkilö.oid'), root: true, prototypes: model.prototypes }
               let oppilaitos = modelLookup(thing, 'oppilaitos')
               let opiskeluoikeudet = modelLookup(thing, 'opiskeluoikeudet').items
               return (<li className="oppilaitos" key={modelData(oppilaitos).oid}>
-                <span className="oppilaitos">{oppilaitos.title}</span>
+                <span className="oppilaitos">{modelTitle(oppilaitos)}</span>
                 <OppilaitoksenOpintosuoritusote oppilaitos={oppilaitos} tyyppi={modelData(opiskeluoikeudet[0], 'tyyppi').koodiarvo} context={context} />
                 {
                   opiskeluoikeudet.map( (opiskeluoikeus, index) =>
@@ -174,10 +174,10 @@ const ObjectEditor = React.createClass({
     let representative = model.properties.find(property => property.representative)
     let representativeEditor = () => getModelEditor(representative.model, context)
     let objectEditor = () => <div className={className}><PropertiesEditor properties={model.properties} context={context} /></div>
-    return model.title
+    return modelTitle(model)
       ? context.edit
         ? objectEditor()
-        : <span className="simple title">{model.title}</span>
+        : <span className="simple title">{modelTitle(model)}</span>
       : representative
         ? model.properties.length == 1
           ? representativeEditor()
@@ -220,7 +220,7 @@ let addPath = (pathElem, context) => {
 const ArrayEditor = React.createClass({
   render() {
     let {model, context} = this.props
-    let simple = !model.items[0] || model.items[0].simple || (!context.edit && model.items[0].title)
+    let simple = !model.items[0] || model.items[0].simple || (!context.edit && modelTitle(model.items[0]))
     let className = simple ? 'array simple' : 'array'
     let adding = this.state && this.state.adding || []
     let add = () => this.setState({adding: adding.concat(model.prototype)})
@@ -255,8 +255,8 @@ const StringEditor = React.createClass({
   render() {
     let {model, context} = this.props
     return context.edit
-      ? <input type="text" defaultValue={model.data}></input>
-      : <span className="simple string">{model.data}</span>
+      ? <input type="text" defaultValue={modelData(model)}></input>
+      : <span className="simple string">{modelData(model)}</span>
   }
 })
 
@@ -264,8 +264,8 @@ const BooleanEditor = React.createClass({
   render() {
     let {model, context} = this.props
     return context.edit
-      ? <input type="checkbox" defaultChecked={model.data}></input>
-      : <span className="simple string">{model.title}</span>
+      ? <input type="checkbox" defaultChecked={modelData(model)}></input>
+      : <span className="simple string">{modelTitle(model)}</span>
   }
 })
 
@@ -273,8 +273,8 @@ const DateEditor = React.createClass({
   render() {
     let {model, context} = this.props
     return context.edit
-      ? <input type="text" defaultValue={model.title}></input>
-      : <span className="simple date">{model.title}</span>
+      ? <input type="text" defaultValue={modelTitle(model)}></input>
+      : <span className="simple date">{modelTitle(model)}</span>
   }
 })
 
@@ -295,7 +295,7 @@ const EnumEditor = React.createClass({
             )
           }
         </select>)
-      : <span className="simple enum">{model.title}</span>
+      : <span className="simple enum">{modelTitle(model)}</span>
   },
 
   update(props) {
