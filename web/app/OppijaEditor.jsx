@@ -1,6 +1,7 @@
 import React from 'react'
 import R from 'ramda'
 import { modelData, modelLookup, modelTitle } from './EditorModel.js'
+import { opiskeluOikeusChange } from './Oppija.jsx'
 import Http from './http'
 
 export const OppijaEditor = React.createClass({
@@ -32,17 +33,18 @@ export const OppijaEditor = React.createClass({
 const OpiskeluoikeusEditor = React.createClass({
   render() {
     let {model, context} = this.props
+    let subContext = R.merge(context, {editable: model.editable, opiskeluoikeusId: modelData(model, 'id')})
     return (<div className="opiskeluoikeus">
       <div className="kuvaus">
         Opiskeluoikeus&nbsp;
           <span className="alku pvm">{modelTitle(model, 'alkamispäivä')}</span>-
           <span className="loppu pvm">{modelTitle(model, 'päättymispäivä')}</span>,&nbsp;
           <span className="tila">{modelTitle(model, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}</span>
-        <FoldableEditor expanded={() => <PropertiesEditor properties={ model.properties.filter(property => property.key != 'suoritukset') } context={R.merge(context, {editable: model.editable})}/>}/>
+        <FoldableEditor expanded={() => <PropertiesEditor properties={ model.properties.filter(property => property.key != 'suoritukset') } context={subContext}/>}/>
       </div>
       {
         modelLookup(model, 'suoritukset.items').map((suoritusModel, i) =>
-          <SuoritusEditor model={suoritusModel} context={context} key={i}/>
+          <SuoritusEditor model={suoritusModel} context={subContext} key={i}/>
         )
       }
       <OpiskeluoikeudenOpintosuoritusote opiskeluoikeus={model} context={context}/>
@@ -200,13 +202,20 @@ const PropertiesEditor = React.createClass({
           let propertyClassName = 'property ' + property.key
           return (<li className={propertyClassName} key={property.key}>
             <label>{property.title}</label>
-            { getModelEditor(property.model, R.merge(context, { root: false, edit: edit}), edit) }
+            { getModelEditor(property.model, addPath(property.key, R.merge(context, {edit: edit}), edit)) }
           </li>)
         })
       }
     </ul>)
   }
 })
+
+let addPath = (pathElem, context) => {
+  let path = context.path
+    ? context.path + '.' + pathElem
+    : pathElem
+  return R.merge(context, { path, root: false })
+}
 
 const ArrayEditor = React.createClass({
   render() {
@@ -219,7 +228,7 @@ const ArrayEditor = React.createClass({
       <ul className={className}>
         {
           model.items.concat(adding).map((item, i) =>
-            <li key={i}>{getModelEditor(item, context )}</li>
+            <li key={i}>{getModelEditor(item, addPath(i, context) )}</li>
           )
         }
         {
@@ -273,8 +282,13 @@ const EnumEditor = React.createClass({
   render() {
     let {model, context} = this.props
     let alternatives = model.alternatives || (this.state.alternatives) || []
+    let onChange = (event) => {
+      let selected = alternatives.find(alternative => alternative.value == event.target.value)
+      console.log(context.path, selected)
+      opiskeluOikeusChange.push([context, selected])
+    }
     return context.edit
-      ? (<select defaultValue={model.value}>
+      ? (<select defaultValue={model.value} onChange={ onChange }>
           {
             alternatives.map( alternative =>
               <option value={ alternative.value } key={ alternative.value }>{alternative.title}</option>

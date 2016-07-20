@@ -15,18 +15,22 @@ export const selectOppijaE = routeP.map('.oppijaId').flatMap(oppijaId => {
 })
 
 export const updateResultE = Bacon.Bus()
-const opiskeluOikeusChange = Bacon.never() // Right now, there's no editing
-
-const applyChange = (lens, change, oppija) => L.modify(lens, change, oppija)
+export const opiskeluOikeusChange = Bacon.Bus()
 
 const opiskeluOikeusIdLens = (id) => (L.compose(L.prop('opiskeluoikeudet'), L.find(R.whereEq({id}))))
 
 export const oppijaP = Bacon.update({ loading: true },
   selectOppijaE, (previous, oppija) => oppija,
   updateResultE.map('.opiskeluoikeudet').flatMap(Bacon.fromArray), (currentOppija, {id, versionumero}) => {
-    return applyChange(L.compose(opiskeluOikeusIdLens(id), L.prop('versionumero')), () => versionumero, currentOppija)
+    //const applyChange = (lens, change, oppija) => L.modify(lens, change, oppija)
+    //return applyChange(L.compose(opiskeluOikeusIdLens(id), L.prop('versionumero')), () => versionumero, currentOppija)
+    return currentOppija // TODO this is broken: server sends data, not models
   },
-  opiskeluOikeusChange, (currentOppija, [lens, change]) => applyChange(lens, change, currentOppija)
+  opiskeluOikeusChange, (currentOppija, [context, value]) => {
+    console.log(currentOppija)
+    // TODO: patch model and root data, send root data
+    return currentOppija
+  }
 )
 
 updateResultE.plug(oppijaP.sampledBy(opiskeluOikeusChange).flatMapLatest(oppijaUpdate => Http.put('/koski/api/oppija', oppijaUpdate)))
