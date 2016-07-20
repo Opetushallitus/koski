@@ -1,3 +1,5 @@
+import R from 'ramda'
+
 const lookupRecursive = (lookupStep, model, [head, ...tail]) => {
   let found = lookupStep(model, head)
   if (tail.length && found) {
@@ -9,22 +11,29 @@ const lookupRecursive = (lookupStep, model, [head, ...tail]) => {
 export const modelLookup = (mainModel, path) => {
   if (!path) return mainModel
   let lookupStep = (model, lookupKey) => {
-    let findProperty = () => {
-      let property = model.value.properties.find(({key}) => key == lookupKey)
-      return property && property.model
-    }
-    return model[lookupKey] || (model.value && model.value.properties && findProperty()) || itemsLookup(model, lookupKey)
-
+    return model[lookupKey] || (propertyLookup(model, lookupKey)) || itemsLookup(model, lookupKey)
   }
-
   return lookupRecursive(lookupStep, mainModel, path.split('.'))
+}
+
+export const modelSet = (mainModel, path, value) => {
+  let clone = R.clone(mainModel) // TODO: this is extremely slow
+  let subModel = modelLookup(clone, path)
+  subModel.value = value
+  return clone
 }
 
 const itemsLookup = (model, lookupKey) => {
   let items = modelItems(model)
-  items
+  return items
     ? items[lookupKey] || items[items.length + parseInt(lookupKey)] // for negative indices
     : null
+}
+
+let propertyLookup = (model, lookupKey) => {
+  let properties = model.value && model.value.properties || []
+  let property = properties.find(({key}) => key == lookupKey)
+  return property && property.model
 }
 
 const objectLookup = (mainObj, path) => {

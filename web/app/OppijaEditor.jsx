@@ -10,16 +10,16 @@ export const OppijaEditor = React.createClass({
     return model ? (
       <ul className="oppilaitokset">
         {
-          modelLookup(model, 'opiskeluoikeudet').value.map((thing) => {
+          modelLookup(model, 'opiskeluoikeudet').value.map((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) => {
               let context = { oppijaOid: modelData(model, 'henkilö.oid'), root: true, prototypes: model.prototypes }
-              let oppilaitos = modelLookup(thing, 'oppilaitos')
-              let opiskeluoikeudet = modelLookup(thing, 'opiskeluoikeudet').value
+              let oppilaitos = modelLookup(oppilaitoksenOpiskeluoikeudet, 'oppilaitos')
+              let opiskeluoikeudet = modelLookup(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').value
               return (<li className="oppilaitos" key={modelData(oppilaitos).oid}>
                 <span className="oppilaitos">{modelTitle(oppilaitos)}</span>
                 <OppilaitoksenOpintosuoritusote oppilaitos={oppilaitos} tyyppi={modelData(opiskeluoikeudet[0], 'tyyppi').koodiarvo} context={context} />
                 {
-                  opiskeluoikeudet.map( (opiskeluoikeus, index) =>
-                    <OpiskeluoikeusEditor key={ index } model={ opiskeluoikeus } context={context} />
+                  opiskeluoikeudet.map( (opiskeluoikeus, opiskeluoikeusIndex) =>
+                    <OpiskeluoikeusEditor key={ opiskeluoikeusIndex } model={ opiskeluoikeus } context={addPath(context, 'opiskeluoikeudet', oppilaitosIndex, 'opiskeluoikeudet', opiskeluoikeusIndex)} />
                   )
                 }
               </li>)
@@ -44,7 +44,7 @@ const OpiskeluoikeusEditor = React.createClass({
       </div>
       {
         modelLookup(model, 'suoritukset').value.map((suoritusModel, i) =>
-          <SuoritusEditor model={suoritusModel} context={subContext} key={i}/>
+          <SuoritusEditor model={suoritusModel} context={addPath(subContext, 'suoritukset', i)} key={i}/>
         )
       }
       <OpiskeluoikeudenOpintosuoritusote opiskeluoikeus={model} context={context}/>
@@ -172,7 +172,7 @@ const ObjectEditor = React.createClass({
     let {model, context } = this.props
     let className = 'object ' + model.class
     let representative = model.value.properties.find(property => property.representative)
-    let representativeEditor = () => getModelEditor(representative.model, context)
+    let representativeEditor = () => getModelEditor(representative.model, addPath(context, representative.key))
     let objectEditor = () => <div className={className}><PropertiesEditor properties={model.value.properties} context={context} /></div>
     return modelTitle(model)
       ? context.edit
@@ -189,20 +189,18 @@ const ObjectEditor = React.createClass({
 const PropertiesEditor = React.createClass({
   render() {
     let {properties, context} = this.props
-    let edit = context.root
-      ? this.state && this.state.edit
-      : context.edit
+    let edit = context.edit || (this.state && this.state.edit)
     let toggleEdit = () => this.setState({edit: !edit})
     return (<ul className="properties">
       {
-        context.root && context.editable ? <a className="toggle-edit" onClick={toggleEdit}>{edit ? 'valmis' : 'muokkaa'}</a> : null
+        context.editable && !context.edit ? <a className="toggle-edit" onClick={toggleEdit}>{edit ? 'valmis' : 'muokkaa'}</a> : null
       }
       {
         properties.filter(property => (edit || !modelEmpty(property.model)) && !property.hidden).map(property => {
           let propertyClassName = 'property ' + property.key
           return (<li className={propertyClassName} key={property.key}>
             <label>{property.title}</label>
-            { getModelEditor(property.model, addPath(property.key, R.merge(context, {edit: edit}), edit)) }
+            { getModelEditor(property.model, addPath(R.merge(context, {edit: edit}),property.key)) }
           </li>)
         })
       }
@@ -210,10 +208,8 @@ const PropertiesEditor = React.createClass({
   }
 })
 
-let addPath = (pathElem, context) => {
-  let path = context.path
-    ? context.path + '.' + pathElem
-    : pathElem
+let addPath = (context, ...pathElems) => {
+  let path = ((context.path && [context.path]) || []).concat(pathElems).join('.')
   return R.merge(context, { path, root: false })
 }
 
@@ -228,7 +224,7 @@ const ArrayEditor = React.createClass({
       <ul className={className}>
         {
           model.value.concat(adding).map((item, i) =>
-            <li key={i}>{getModelEditor(item, addPath(i, context) )}</li>
+            <li key={i}>{getModelEditor(item, addPath(context, i) )}</li>
           )
         }
         {
@@ -284,11 +280,10 @@ const EnumEditor = React.createClass({
     let alternatives = model.alternatives || (this.state.alternatives) || []
     let onChange = (event) => {
       let selected = alternatives.find(alternative => alternative.value == event.target.value)
-      console.log(context.path, selected)
       opiskeluOikeusChange.push([context, selected])
     }
     return context.edit
-      ? (<select defaultValue={model.value} onChange={ onChange }>
+      ? (<select defaultValue={model.value && model.value.value} onChange={ onChange }>
           {
             alternatives.map( alternative =>
               <option value={ alternative.value } key={ alternative.value }>{alternative.title}</option>

@@ -3,7 +3,7 @@ import Bacon from 'baconjs'
 import Http from './http'
 import {routeP} from './router'
 import {CreateOppija} from './CreateOppija.jsx'
-import { modelTitle, modelLookup } from './EditorModel.js'
+import { modelTitle, modelLookup, modelSet } from './EditorModel.js'
 import {OppijaEditor} from './OppijaEditor.jsx'
 import * as L from 'partial.lenses'
 import R from 'ramda'
@@ -27,13 +27,23 @@ export const oppijaP = Bacon.update({ loading: true },
     return currentOppija // TODO this is broken: server sends data, not models
   },
   opiskeluOikeusChange, (currentOppija, [context, value]) => {
-    console.log(currentOppija)
-    // TODO: patch model and root data, send root data
-    return currentOppija
+    console.log("current", currentOppija)
+    console.log(context.path, "=", value)
+    var modifiedModel = modelSet(currentOppija, context.path, value)
+    console.log("modified =", modifiedModel)
+
+    // TODO: data too, send data
+    return modifiedModel
   }
 )
 
-updateResultE.plug(oppijaP.sampledBy(opiskeluOikeusChange).flatMapLatest(oppijaUpdate => Http.put('/koski/api/oppija', oppijaUpdate)))
+updateResultE.plug(oppijaP
+  .sampledBy(opiskeluOikeusChange)
+  .flatMapLatest(oppijaUpdate =>
+    //Http.put('/koski/api/oppija', oppijaUpdate)
+    Bacon.never() // TODO : send data
+  )
+)
 
 export const uusiOppijaP = routeP.map(route => { return !!route.uusiOppija })
 
