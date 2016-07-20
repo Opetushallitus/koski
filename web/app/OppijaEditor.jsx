@@ -10,7 +10,7 @@ export const OppijaEditor = React.createClass({
       <ul className="oppilaitokset">
         {
           modelLookup(model, 'opiskeluoikeudet').items.map((thing) => {
-              let context = { oppijaOid: modelLookup(model, 'henkilö.oid').data, root: true }
+              let context = { oppijaOid: modelLookup(model, 'henkilö.oid').data, root: true, prototypes: model.prototypes }
               let oppilaitos = modelLookup(thing, 'oppilaitos')
               let opiskeluoikeudet = modelLookup(thing, 'opiskeluoikeudet').items
               return (<li className="oppilaitos" key={modelData(oppilaitos).oid}>
@@ -340,6 +340,9 @@ const editorTypes = {
 const getModelEditor = (model, context) => {
   const getEditorFunction = () => {
     if (!model) return NullEditor
+    if (model.type == 'prototype') {
+      model = context.prototypes[model.class]
+    }
     if (model.empty && model.optional && model.prototype !== undefined) return OptionalEditor
     let editor = editorTypes[model.class] || editorTypes[model.type]
     if (!editor) {

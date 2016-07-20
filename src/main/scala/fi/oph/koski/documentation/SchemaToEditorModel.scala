@@ -18,7 +18,9 @@ class SchemaToEditorModel(context: ValidationAndResolvingContext, mainSchema: Cl
   def koodistoEnumValue(k: Koodistokoodiviite): EnumValue = EnumValue(k.koodiarvo, i(k.lyhytNimi.orElse(k.nimi).getOrElse(LocalizedString.unlocalized(k.koodiarvo))), k)
   def organisaatioEnumValue(o: OrganisaatioWithOid) = EnumValue(o.oid, i(o.description), o)
 
-  private case class Context(editable: Boolean = true) {
+  // TODO: generic protos can be cached globally!
+
+  private case class Context(editable: Boolean = true, root: Boolean = true, var prototypesCreated: Map[String, EditorModel] = Map.empty, var prototypesRequested: Set[SchemaWithClassName] = Set.empty, prototypesBeingCreated: Set[SchemaWithClassName] = Set.empty) {
     private def buildModel(obj: Any, schema: Schema): EditorModel = (obj, schema) match {
       case (o: AnyRef, t:ClassSchema) => Class.forName(t.fullClassName) match {
         case c if (classOf[Koodistokoodiviite].isAssignableFrom(c)) =>
@@ -35,50 +37,81 @@ class SchemaToEditorModel(context: ValidationAndResolvingContext, mainSchema: Cl
         case c =>
           buildObjectModel(o, t)
       }
-      case (xs: Iterable[_], t:ListSchema) => ListModel(xs.toList.map(item => buildModel(item, t.itemSchema)), getPrototypeModel(t.itemSchema))
+      case (xs: Iterable[_], t:ListSchema) => ListModel(xs.toList.map(item => buildModel(item, t.itemSchema)), getPrototypePlaceholder(t.itemSchema))
+      case (x: Option[_], t:OptionalSchema) => OptionalModel(x.map(value => buildModel(value, t.itemSchema)), getPrototypePlaceholder(t.itemSchema))
+      case (x: AnyRef, t:OptionalSchema) => OptionalModel(Some(buildModel(x, t.itemSchema)), getPrototypePlaceholder(t.itemSchema))
+      case (None, t: AnyOfSchema) => OneOfModel(t.simpleName, None, t.alternatives.flatMap(getPrototypePlaceholder(_)))
+      case (x: AnyRef, t:AnyOfSchema) => OneOfModel(t.simpleName, Some(buildModel(x, findOneOfSchema(t, x))), t.alternatives.flatMap(getPrototypePlaceholder(_)))
       case (x: Number, t:NumberSchema) => NumberModel(x)
       case (x: Boolean, t:BooleanSchema) => BooleanModel(x)
       case (x: LocalDate, t:DateSchema) => DateModel(x)
       case (x: String, t:StringSchema) => StringModel(x)
-      case (x: Option[_], t:OptionalSchema) => OptionalModel(x.map(value => buildModel(value, t.itemSchema)), getPrototypeModel(t.itemSchema))
-      case (x: AnyRef, t:OptionalSchema) => OptionalModel(Some(buildModel(x, t.itemSchema)), getPrototypeModel(t.itemSchema))
-      case (None, t: AnyOfSchema) => OneOfModel(t.simpleName, None)
-      case (x: AnyRef, t:AnyOfSchema) => OneOfModel(t.simpleName, Some(buildModel(x, findOneOfSchema(t, x))))
       case (x: AnyRef, t:ClassRefSchema) => buildModel(x, mainSchema.getSchema(t.fullClassName).get)
       case _ =>
         throw new RuntimeException("Unexpected input: " + obj + ", " + schema)
     }
 
     def buildObjectModel(obj: AnyRef, schema: ClassSchema, includeData: Boolean = false) = {
-      val objectContext = newContext(obj)
-      val properties: List[EditorProperty] = schema.properties.flatMap { property =>
-        val hidden = property.metadata.contains(Hidden())
-        val hasValue = obj != None
-        if (objectContext.editable || hasValue) {
-          val representative: Boolean = property.metadata.contains(Representative())
-          val value = obj match {
-            case None => getPrototype(property.schema)
-            case _ => schema.getPropertyValue(property, obj)
-          }
-          val title = property.metadata.flatMap {
-            case Title(t) => Some(t)
-            case _ => None
-          }.headOption.getOrElse(property.key.split("(?=\\p{Lu})").map(_.toLowerCase).mkString(" ").replaceAll("_ ", "-").capitalize)
-          Some(EditorProperty(property.key, title, objectContext.buildModel(value, property.schema), hidden, representative))
-        } else {
-          None // missing values are skipped when not editable
-        }
-      }
-      val title = obj match {
-        case o: Localizable => Some(i(o.description))
-        case _ => None
-      }
-      val data: Option[AnyRef] = if (includeData) {
-        Some(obj)
+      if (obj == None && !prototypesBeingCreated.contains(schema) && (prototypesRequested.contains(schema) || prototypesCreated.contains(schema.simpleName) )) {
+        PrototypeModel(schema.simpleName) // creating a prototype which already exists or has been requested
       } else {
-        None
+        if (obj == None) {
+          // break possible infinite recursion
+          prototypesRequested += schema
+        }
+        val objectContext = newContext(obj)
+        val properties: List[EditorProperty] = schema.properties.flatMap { property =>
+          val hidden = property.metadata.contains(Hidden())
+          val hasValue = obj != None
+          if (objectContext.editable || hasValue) {
+            val representative: Boolean = property.metadata.contains(Representative())
+            val value = obj match {
+              case None => getPrototypeData(property.schema)
+              case _ => schema.getPropertyValue(property, obj)
+            }
+            val title = property.metadata.flatMap {
+              case Title(t) => Some(t)
+              case _ => None
+            }.headOption.getOrElse(property.key.split("(?=\\p{Lu})").map(_.toLowerCase).mkString(" ").replaceAll("_ ", "-").capitalize)
+            Some(EditorProperty(property.key, title, objectContext.buildModel(value, property.schema), hidden, representative))
+          } else {
+            None // missing values are skipped when not editable
+          }
+        }
+        val title = obj match {
+          case o: Localizable => Some(i(o.description))
+          case _ => None
+        }
+        val data: Option[AnyRef] = if (includeData) {
+          Some(obj)
+        } else {
+          None
+        }
+        prototypesRequested = prototypesRequested ++ objectContext.prototypesRequested
+        var newRequests: Set[SchemaWithClassName] = prototypesRequested
+        val includedPrototypes: Map[String, EditorModel] = if (root) {
+          do {
+            val requestsFromPreviousRound = newRequests
+            newRequests = Set.empty
+            val newPrototypesCreated = requestsFromPreviousRound.map { schema =>
+              val helperContext = copy(root = false, prototypesBeingCreated = Set(schema) )
+              val model: EditorModel = helperContext.buildModel(None, schema)
+              if (model.isInstanceOf[PrototypeModel]) {
+                throw new IllegalStateException()
+              }
+              val newRequestsForThisCreation = helperContext.prototypesRequested -- prototypesRequested
+              newRequests ++= newRequestsForThisCreation
+              prototypesRequested ++= newRequestsForThisCreation
+              (schema.simpleName, model)
+            }.toMap
+            prototypesCreated ++= newPrototypesCreated
+          } while(newRequests.nonEmpty)
+          prototypesCreated
+        } else {
+          Map.empty
+        }
+        ObjectModel(schema.simpleName, properties, data, title, objectContext.editable, includedPrototypes)
       }
-      ObjectModel(schema.simpleName, properties, data, title, objectContext.editable)
     }
 
     private def newContext(obj: AnyRef): Context = {
@@ -90,7 +123,7 @@ class SchemaToEditorModel(context: ValidationAndResolvingContext, mainSchema: Cl
         case o: Lähdejärjestelmällinen => o.lähdejärjestelmänId == None
         case _ => true
       }
-      this.copy(editable = this.editable && lähdejärjestelmäAccess && orgAccess)
+      this.copy(editable = this.editable && lähdejärjestelmäAccess && orgAccess, root = false, prototypesBeingCreated = Set.empty )
     }
 
     private def getEnumeratedModel[A](o: Any, fetchAlternatives: => List[A], toEnumValue: A => EnumValue): EnumeratedModel = {
@@ -112,24 +145,38 @@ class SchemaToEditorModel(context: ValidationAndResolvingContext, mainSchema: Cl
       }
     }
 
-
-    private def getPrototypeModel(schema: Schema): Option[EditorModel] = if (editable) {
-      Some(buildModel(getPrototype(schema), schema))
+    private def getPrototypePlaceholder(schema: Schema): Option[EditorModel] = if (editable) {
+      schema match {
+        case s: SchemaWithClassName =>
+          val classRefSchema = resolveSchema(s)
+          if (!prototypesCreated.contains(s.simpleName)) {
+            prototypesRequested += classRefSchema
+          }
+          Some(PrototypeModel(s.simpleName))
+        case s: ListSchema => getPrototypePlaceholder(s.itemSchema)
+        case s: OptionalSchema => getPrototypePlaceholder(s.itemSchema)
+        case _ => Some(buildModel(getPrototypeData(schema), schema))
+      }
     } else {
       None
     }
   }
 
-  private def getPrototype(schema: Schema): Any = schema match {
+  private def resolveSchema(schema: SchemaWithClassName): SchemaWithClassName = schema match {
+    case s: ClassRefSchema => mainSchema.getSchema(s.fullClassName).get
+    case _ => schema
+  }
+
+  private def getPrototypeData(schema: Schema): Any = schema match {
     case s: ClassSchema => None
     case s: ClassRefSchema => None
-    case s: ListSchema => List(getPrototype(s.itemSchema))
-    case s: OptionalSchema => getPrototype(s.itemSchema)
+    case s: AnyOfSchema => None
+    case s: ListSchema => List(getPrototypeData(s.itemSchema))
+    case s: OptionalSchema => getPrototypeData(s.itemSchema)
     case s: NumberSchema => 0
     case s: StringSchema => ""
     case s: BooleanSchema => false
     case s: DateSchema => LocalDate.now
-    case s: AnyOfSchema => getPrototype(s.alternatives.head)
     case _ =>
       throw new RuntimeException("Cannot create prototype for: " + schema)
   }

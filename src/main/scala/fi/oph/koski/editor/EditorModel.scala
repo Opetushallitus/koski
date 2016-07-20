@@ -3,19 +3,21 @@ package fi.oph.koski.editor
 import java.time.LocalDate
 
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
-import org.json4s.jackson.Serialization
 import org.json4s.{Extraction, _}
 
 sealed trait EditorModel {
   def empty = false
 }
 
-case class ObjectModel(`class`: String, properties: List[EditorProperty], data: Option[AnyRef], title: Option[String], editable: Boolean) extends EditorModel {
+case class ObjectModel(`class`: String, properties: List[EditorProperty], data: Option[AnyRef], title: Option[String], editable: Boolean, prototypes: Map[String, EditorModel]) extends EditorModel {
   override def empty = !properties.exists(!_.model.empty)
 }
+
+case class PrototypeModel(`class`: String) extends EditorModel
+
 case class EditorProperty(key: String, title: String, model: EditorModel, hidden: Boolean, representative: Boolean)
 
-case class ListModel(items: List[EditorModel], prototype: Option[EditorModel]) extends EditorModel { // need to add a prototype for adding new item
+case class ListModel(items: List[EditorModel], prototype: Option[EditorModel]) extends EditorModel {
   override def empty = !items.exists(!_.empty)
 }
 
@@ -27,11 +29,11 @@ case class BooleanModel(data: Boolean) extends EditorModel
 case class DateModel(data: LocalDate) extends EditorModel
 case class StringModel(data: String) extends EditorModel
 
-case class OptionalModel(model: Option[EditorModel], prototype: Option[EditorModel]) extends EditorModel { // need a prototype for editing
+case class OptionalModel(model: Option[EditorModel], prototype: Option[EditorModel]) extends EditorModel {
   override def empty = !model.exists(!_.empty)
 }
 
-case class OneOfModel(`class`: String, model: Option[EditorModel]) extends EditorModel { // need to add option prototypes for editing
+case class OneOfModel(`class`: String, model: Option[EditorModel], prototypes: List[EditorModel]) extends EditorModel {
   override def empty = model.isEmpty || model.get.empty
 }
 
@@ -41,16 +43,17 @@ object EditorModelSerializer extends Serializer[EditorModel] {
   override def serialize(implicit format: Formats): PartialFunction[Any, JValue] = {
     case (model: EditorModel) => {
       val jvalue: JValue = model match {
-        case (ObjectModel(c, properties, data, title, editable)) =>
-          json("object", "class" -> c, "properties" -> properties, "data" -> data, "title" -> title, "editable" -> editable)
+        case (ObjectModel(c, properties, data, title, editable, prototypes)) =>
+          json("object", "class" -> c, "properties" -> properties, "data" -> data, "title" -> title, "editable" -> editable, "prototypes" -> prototypes)
+        case (PrototypeModel(c)) => json("prototype", "class" -> c)
         case (OptionalModel(model, prototype)) =>
-          model.map(Extraction.decompose).getOrElse(emptyObject).merge(json("optional" -> true, "prototype" -> Extraction.decompose(prototype)))
+          model.map(Extraction.decompose).getOrElse(emptyObject).merge(json("optional" -> true, "prototype" -> prototype))
         case (ListModel(items, prototype)) =>
-          json("array", "items" -> items, "prototype" -> Extraction.decompose(prototype))
+          json("array", "items" -> items, "prototype" -> prototype)
         case (EnumeratedModel(e, alternatives, path)) =>
           e.map(Extraction.decompose).getOrElse(json("title" -> "")).merge(json("enum", "simple" -> true, "alternatives" -> alternatives, "alternativesPath" -> path))
-        case (OneOfModel(c, model)) =>
-          model.map(Extraction.decompose).getOrElse(emptyObject).merge(json("one-of-class" -> c))
+        case (OneOfModel(c, model, prototypes)) =>
+          model.map(Extraction.decompose).getOrElse(emptyObject).merge(json("one-of-class" -> c, "prototypes" -> prototypes))
         case (NumberModel(data)) => json("number", "simple" -> true, "data" -> data)
         case (BooleanModel(data)) => json("boolean", "simple" -> true, "data" -> data, "title" -> (if (data) { "kyllä" } else { "ei" })) // TODO: localization
         case (DateModel(data)) => json("date", "simple" -> true, "data" -> data, "title" -> finnishDateFormat.format(data))
