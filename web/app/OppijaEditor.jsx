@@ -1,6 +1,6 @@
 import React from 'react'
 import R from 'ramda'
-import { modelData, modelLookup, modelTitle } from './EditorModel.js'
+import { modelData, modelLookup, modelTitle, modelEmpty } from './EditorModel.js'
 import { opiskeluOikeusChange } from './Oppija.jsx'
 import Http from './http'
 
@@ -198,7 +198,7 @@ const PropertiesEditor = React.createClass({
         context.root && context.editable ? <a className="toggle-edit" onClick={toggleEdit}>{edit ? 'valmis' : 'muokkaa'}</a> : null
       }
       {
-        properties.filter(property => (edit || !property.model.empty) && !property.hidden).map(property => {
+        properties.filter(property => (edit || !modelEmpty(property.model)) && !property.hidden).map(property => {
           let propertyClassName = 'property ' + property.key
           return (<li className={propertyClassName} key={property.key}>
             <label>{property.title}</label>
@@ -357,7 +357,7 @@ const getModelEditor = (model, context) => {
     if (model.type == 'prototype') {
       model = context.prototypes[model.class]
     }
-    if (model.empty && model.optional && model.prototype !== undefined) return OptionalEditor
+    if (modelEmpty(model) && model.optional && model.prototype !== undefined) return OptionalEditor
     let editor = editorTypes[model.class] || editorTypes[model.type]
     if (!editor) {
       if (!model.type) {

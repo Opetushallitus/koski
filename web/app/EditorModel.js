@@ -42,3 +42,15 @@ export const modelTitle = (mainModel, path) => {
   let model = modelLookup(mainModel, path)
   return (model && (model.title || (model.value && model.value.title) || (model.value && model.value.data))) || ''
 }
+
+export const modelEmpty = (model) => {
+  return !model.value || valueEmpty(model.value) && itemsEmpty(model.items)
+}
+
+const valueEmpty = (value) => {
+  return !value
+}
+
+const itemsEmpty = (items) => {
+  return !items || !items.find(item => !valueEmpty(item))
+}
