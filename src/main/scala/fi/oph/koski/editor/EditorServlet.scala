@@ -24,8 +24,13 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
   }
 
   get("/organisaatiot") {
-    def organisaatiot = koskiUser.organisationOids(AccessType.read).flatMap(context.organisaatioRepository.getOrganisaatio).toList
+    def organisaatiot = koskiUser.organisationOids(AccessType.write).flatMap(context.organisaatioRepository.getOrganisaatio).toList
     organisaatiot.map(modelCreator.organisaatioEnumValue(_))
+  }
+
+  get("/oppilaitokset") {
+    def organisaatiot = koskiUser.organisationOids(AccessType.write).flatMap(context.organisaatioRepository.getOrganisaatio).toList
+    organisaatiot.flatMap(_.toOppilaitos).map(modelCreator.organisaatioEnumValue(_))
   }
 
   private val context: ValidationAndResolvingContext = ValidationAndResolvingContext(application.koodistoViitePalvelu, application.organisaatioRepository)

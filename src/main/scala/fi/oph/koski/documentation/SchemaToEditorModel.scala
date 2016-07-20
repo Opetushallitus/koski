@@ -26,6 +26,9 @@ class SchemaToEditorModel(context: ValidationAndResolvingContext, mainSchema: Cl
           // TODO: rajaus @KoodistoKoodiarvo
           getEnumeratedModel[Koodistokoodiviite](o, s"/koski/api/editor/koodit/$koodistoUri", koodistoEnumValue(_))
 
+        case c if (classOf[Oppilaitos].isAssignableFrom(c)) =>
+          getEnumeratedModel(o, "/koski/api/editor/oppilaitokset", organisaatioEnumValue(_))
+
         case c if (classOf[OrganisaatioWithOid].isAssignableFrom(c)) =>
           getEnumeratedModel(o, "/koski/api/editor/organisaatiot", organisaatioEnumValue(_))
 
