@@ -10,10 +10,10 @@ export const OppijaEditor = React.createClass({
     return model ? (
       <ul className="oppilaitokset">
         {
-          modelLookup(model, 'opiskeluoikeudet').items.map((thing) => {
+          modelLookup(model, 'opiskeluoikeudet').value.map((thing) => {
               let context = { oppijaOid: modelData(model, 'henkilö.oid'), root: true, prototypes: model.prototypes }
               let oppilaitos = modelLookup(thing, 'oppilaitos')
-              let opiskeluoikeudet = modelLookup(thing, 'opiskeluoikeudet').items
+              let opiskeluoikeudet = modelLookup(thing, 'opiskeluoikeudet').value
               return (<li className="oppilaitos" key={modelData(oppilaitos).oid}>
                 <span className="oppilaitos">{modelTitle(oppilaitos)}</span>
                 <OppilaitoksenOpintosuoritusote oppilaitos={oppilaitos} tyyppi={modelData(opiskeluoikeudet[0], 'tyyppi').koodiarvo} context={context} />
@@ -40,10 +40,10 @@ const OpiskeluoikeusEditor = React.createClass({
           <span className="alku pvm">{modelTitle(model, 'alkamispäivä')}</span>-
           <span className="loppu pvm">{modelTitle(model, 'päättymispäivä')}</span>,&nbsp;
           <span className="tila">{modelTitle(model, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}</span>
-        <FoldableEditor expanded={() => <PropertiesEditor properties={ model.properties.filter(property => property.key != 'suoritukset') } context={subContext}/>}/>
+        <FoldableEditor expanded={() => <PropertiesEditor properties={ model.value.properties.filter(property => property.key != 'suoritukset') } context={subContext}/>}/>
       </div>
       {
-        modelLookup(model, 'suoritukset.items').map((suoritusModel, i) =>
+        modelLookup(model, 'suoritukset').value.map((suoritusModel, i) =>
           <SuoritusEditor model={suoritusModel} context={subContext} key={i}/>
         )
       }
@@ -60,7 +60,7 @@ const SuoritusEditor = React.createClass({
     return (<div className="suoritus">
       <span className="kuvaus">{title}</span>
       <Todistus suoritus={model} context={context}/>
-      <FoldableEditor expanded={() => <PropertiesEditor properties={model.properties} context={R.merge(context, {editable: model.editable})}/>}/>
+      <FoldableEditor expanded={() => <PropertiesEditor properties={model.value.properties} context={R.merge(context, {editable: model.editable})}/>}/>
     </div>)
   }
 })
@@ -135,7 +135,7 @@ const VahvistusEditor = React.createClass({
           <span className="date">{modelTitle(model, 'päivä')}</span>&nbsp;
           <span className="allekirjoitus">{modelTitle(model, 'paikkakunta')}</span>&nbsp;
           {
-            modelLookup(model, 'myöntäjäHenkilöt').items.map( (henkilö,i) =>
+            modelLookup(model, 'myöntäjäHenkilöt').value.map( (henkilö,i) =>
               <span key={i} className="nimi">{modelData(henkilö, 'nimi')}</span>
             )
           }
@@ -162,7 +162,7 @@ const TutkinnonosaEditor = React.createClass({
     return (<div className="suoritus tutkinnonosa">
       <label className="nimi">{modelTitle(model, 'koulutusmoduuli')}</label>
       <span className="arvosana">{modelTitle(model, 'arviointi.-1')}</span>
-      <FoldableEditor expanded={() => <PropertiesEditor properties={model.properties} context={context}/>}/>
+      <FoldableEditor expanded={() => <PropertiesEditor properties={model.value.properties} context={context}/>}/>
     </div>)
   }
 })
@@ -171,15 +171,15 @@ const ObjectEditor = React.createClass({
   render() {
     let {model, context } = this.props
     let className = 'object ' + model.class
-    let representative = model.properties.find(property => property.representative)
+    let representative = model.value.properties.find(property => property.representative)
     let representativeEditor = () => getModelEditor(representative.model, context)
-    let objectEditor = () => <div className={className}><PropertiesEditor properties={model.properties} context={context} /></div>
+    let objectEditor = () => <div className={className}><PropertiesEditor properties={model.value.properties} context={context} /></div>
     return modelTitle(model)
       ? context.edit
         ? objectEditor()
         : <span className="simple title">{modelTitle(model)}</span>
       : representative
-        ? model.properties.length == 1
+        ? model.value.properties.length == 1
           ? representativeEditor()
           : <div>{representativeEditor()}<FoldableEditor expanded={objectEditor} /></div>
         : objectEditor()
@@ -220,14 +220,14 @@ let addPath = (pathElem, context) => {
 const ArrayEditor = React.createClass({
   render() {
     let {model, context} = this.props
-    let simple = !model.items[0] || model.items[0].simple || (!context.edit && modelTitle(model.items[0]))
+    let simple = !model.value[0] || model.value[0].simple || (!context.edit && modelTitle(model.value[0]))
     let className = simple ? 'array simple' : 'array'
     let adding = this.state && this.state.adding || []
     let add = () => this.setState({adding: adding.concat(model.prototype)})
     return (
       <ul className={className}>
         {
-          model.items.concat(adding).map((item, i) =>
+          model.value.concat(adding).map((item, i) =>
             <li key={i}>{getModelEditor(item, addPath(i, context) )}</li>
           )
         }
@@ -354,10 +354,15 @@ const editorTypes = {
 const getModelEditor = (model, context) => {
   const getEditorFunction = () => {
     if (!model) return NullEditor
-    if (model.type == 'prototype') {
-      model = context.prototypes[model.class]
+    if (model.type == 'prototype' && context.editable) {
+      let prototypeModel = context.prototypes[model.class]
+      model = model.optional
+        ? R.merge(prototypeModel, { value: null, optional: true, prototype: model.prototype}) // Remove value from prototypal value of optional model, to show it as empty
+        : prototypeModel
     }
-    if (modelEmpty(model) && model.optional && model.prototype !== undefined) return OptionalEditor
+    if (modelEmpty(model) && model.optional && model.prototype !== undefined) {
+      return OptionalEditor
+    }
     let editor = editorTypes[model.class] || editorTypes[model.type]
     if (!editor) {
       if (!model.type) {

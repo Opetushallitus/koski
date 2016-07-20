@@ -10,16 +10,21 @@ export const modelLookup = (mainModel, path) => {
   if (!path) return mainModel
   let lookupStep = (model, lookupKey) => {
     let findProperty = () => {
-      let property = model.properties.find(({key}) => key == lookupKey)
+      let property = model.value.properties.find(({key}) => key == lookupKey)
       return property && property.model
     }
-    return model[lookupKey] ||
-      (model.properties && findProperty()) ||
-      (model.items && model.items[lookupKey]) ||
-      (model.items && model.items[model.items.length + parseInt(lookupKey)]) // for negative indices
+    return model[lookupKey] || (model.value && model.value.properties && findProperty()) || itemsLookup(model, lookupKey)
+
   }
 
   return lookupRecursive(lookupStep, mainModel, path.split('.'))
+}
+
+const itemsLookup = (model, lookupKey) => {
+  let items = modelItems(model)
+  items
+    ? items[lookupKey] || items[items.length + parseInt(lookupKey)] // for negative indices
+    : null
 }
 
 const objectLookup = (mainObj, path) => {
@@ -44,8 +49,10 @@ export const modelTitle = (mainModel, path) => {
 }
 
 export const modelEmpty = (model) => {
-  return !model.value || valueEmpty(model.value) && itemsEmpty(model.items)
+  return !model.value || valueEmpty(model.value) && itemsEmpty(modelItems(model.items))
 }
+
+const modelItems = (model) => model.type == 'array' && model.value
 
 const valueEmpty = (value) => {
   return !value

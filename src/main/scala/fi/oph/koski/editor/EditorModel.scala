@@ -3,6 +3,7 @@ package fi.oph.koski.editor
 import java.time.LocalDate
 
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
+import org.json4s.JsonAST.JValue
 import org.json4s.{Extraction, _}
 
 sealed trait EditorModel
@@ -34,16 +35,21 @@ object EditorModelSerializer extends Serializer[EditorModel] {
     case (model: EditorModel) => {
       model match {
         case (ObjectModel(c, properties, data, title, editable, prototypes)) =>
-          json("object", "class" -> c, "properties" -> properties, "value" -> Map("data" -> data, "title" -> title), "editable" -> editable, "prototypes" -> prototypes)
+          json("object", "class" -> c, "value" -> Map("data" -> data, "title" -> title, "properties" -> properties), "editable" -> editable, "prototypes" -> prototypes)
         case (PrototypeModel(c)) => json("prototype", "class" -> c)
         case (OptionalModel(model, prototype)) =>
-          model.map(Extraction.decompose).getOrElse(emptyObject).merge(json("optional" -> true, "prototype" -> prototype))
+          val optionalInfo: JValue = json("optional" -> true, "prototype" -> prototype)
+          val typeAndValue = valueOrPrototypeWithoutData(model, prototype)
+          typeAndValue.merge(optionalInfo)
+
         case (ListModel(items, prototype)) =>
-          json("array", "items" -> items, "prototype" -> prototype)
+          json("array", "value" -> items, "prototype" -> prototype)
         case (EnumeratedModel(value, alternatives, path)) =>
           json("enum", "simple" -> true, "alternatives" -> alternatives, "alternativesPath" -> path, "value" -> value)
         case (OneOfModel(c, model, prototypes)) =>
-          model.map(Extraction.decompose).getOrElse(emptyObject).merge(json("one-of-class" -> c, "prototypes" -> prototypes))
+          val oneOfInfo: JValue = json("one-of-class" -> c, "one-of-prototypes" -> prototypes)
+          valueOrPrototypeWithoutData(model, prototypes.headOption).merge(oneOfInfo)
+
         case (NumberModel(data)) => json("number", "simple" -> true, "value" -> Map("data" -> data))
         case (BooleanModel(data)) => json("boolean", "simple" -> true, "value" -> Map("data" -> data, "title" -> (if (data) { "kyllä" } else { "ei" }))) // TODO: localization
         case (DateModel(data)) => json("date", "simple" -> true, "value" -> Map("data" -> data, "title" -> finnishDateFormat.format(data)))
@@ -51,6 +57,14 @@ object EditorModelSerializer extends Serializer[EditorModel] {
         case _ => throw new RuntimeException("No match : " + model)
       }
     }
+  }
+
+  private def valueOrPrototypeWithoutData(model: Option[EditorModel], prototype: Option[EditorModel])(implicit format: Formats) = (model, prototype) match {
+    case (Some(innerModel), _) => Extraction.decompose(innerModel)
+    case (None, Some(p:PrototypeModel)) =>
+      val fields = Extraction.decompose(p).filterField{case (key, value) => key != "value"} // get structure from prototype, but remove value
+      JObject(fields: _*)
+    case _ => emptyObject
   }
 
   private def json(tyep: String, props: (String, Any)*)(implicit format: Formats): JValue = {
