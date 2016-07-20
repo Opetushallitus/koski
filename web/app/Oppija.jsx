@@ -24,7 +24,8 @@ export const oppijaP = Bacon.update({ loading: true },
   updateResultE.map('.opiskeluoikeudet').flatMap(Bacon.fromArray), (currentOppija, {id, versionumero}) => {
     //const applyChange = (lens, change, oppija) => L.modify(lens, change, oppija)
     //return applyChange(L.compose(opiskeluOikeusIdLens(id), L.prop('versionumero')), () => versionumero, currentOppija)
-    return currentOppija // TODO this is broken: server sends data, not models
+    // TODO: uusi versionumero kerättävä talteen
+    return currentOppija
   },
   opiskeluOikeusChange, (currentOppija, [context, value]) => {
     var modifiedModel = modelSet(currentOppija, context.path, value)
