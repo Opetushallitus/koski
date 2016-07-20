@@ -18,8 +18,6 @@ class SchemaToEditorModel(context: ValidationAndResolvingContext, mainSchema: Cl
   def koodistoEnumValue(k: Koodistokoodiviite): EnumValue = EnumValue(k.koodiarvo, i(k.lyhytNimi.orElse(k.nimi).getOrElse(LocalizedString.unlocalized(k.koodiarvo))), k)
   def organisaatioEnumValue(o: OrganisaatioWithOid) = EnumValue(o.oid, i(o.description), o)
 
-  // TODO: generic protos can be cached globally!
-
   private case class Context(editable: Boolean = true, root: Boolean = true, var prototypesCreated: Map[String, EditorModel] = Map.empty, var prototypesRequested: Set[SchemaWithClassName] = Set.empty, prototypesBeingCreated: Set[SchemaWithClassName] = Set.empty) {
     private def buildModel(obj: Any, schema: Schema): EditorModel = (obj, schema) match {
       case (o: AnyRef, t:ClassSchema) => Class.forName(t.fullClassName) match {
