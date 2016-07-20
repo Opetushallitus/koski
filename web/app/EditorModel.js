@@ -20,6 +20,11 @@ export const modelSet = (mainModel, path, value) => {
   let clone = R.clone(mainModel) // TODO: this is extremely slow
   let subModel = modelLookup(clone, path)
   subModel.value = value
+  let pathElements = path.split('.')
+  let parents = pathElements.slice(0, -1)
+  let last = pathElements[pathElements.length - 1]
+  let dataParent = objectLookup(clone.value.data, parents.join('.'))
+  dataParent[last] = value.data
   return clone
 }
 
@@ -36,7 +41,7 @@ let propertyLookup = (model, lookupKey) => {
   return property && property.model
 }
 
-const objectLookup = (mainObj, path) => {
+export const objectLookup = (mainObj, path) => {
   let lookupStep = (obj, lookupKey) => {
     return obj[lookupKey]
   }

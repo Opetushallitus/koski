@@ -3,7 +3,7 @@ import Bacon from 'baconjs'
 import Http from './http'
 import {routeP} from './router'
 import {CreateOppija} from './CreateOppija.jsx'
-import { modelTitle, modelLookup, modelSet } from './EditorModel.js'
+import { modelTitle, modelLookup, modelSet, objectLookup } from './EditorModel.js'
 import {OppijaEditor} from './OppijaEditor.jsx'
 import * as L from 'partial.lenses'
 import R from 'ramda'
@@ -27,22 +27,24 @@ export const oppijaP = Bacon.update({ loading: true },
     return currentOppija // TODO this is broken: server sends data, not models
   },
   opiskeluOikeusChange, (currentOppija, [context, value]) => {
-    console.log("current", currentOppija)
-    console.log(context.path, "=", value)
     var modifiedModel = modelSet(currentOppija, context.path, value)
-    console.log("modified =", modifiedModel)
-
-    // TODO: data too, send data
     return modifiedModel
   }
 )
 
 updateResultE.plug(oppijaP
-  .sampledBy(opiskeluOikeusChange)
-  .flatMapLatest(oppijaUpdate =>
-    //Http.put('/koski/api/oppija', oppijaUpdate)
-    Bacon.never() // TODO : send data
-  )
+  .sampledBy(opiskeluOikeusChange, (oppija, [context, value]) => ({oppija, context}))
+  .flatMapLatest(({oppija, context: {path}}) => {
+    let opiskeluoikeusPath = path.split('.').slice(0, 4)
+    var oppijaData = oppija.value.data
+    let opiskeluoikeus = objectLookup(oppijaData, opiskeluoikeusPath.join('.'))
+    console.log("should update ", opiskeluoikeusPath, opiskeluoikeus)
+    let oppijaUpdate = {
+      henkilö: {oid: oppijaData.henkilö.oid},
+      opiskeluoikeudet: [opiskeluoikeus]
+    }
+    return Http.put('/koski/api/oppija', oppijaUpdate)
+  })
 )
 
 export const uusiOppijaP = routeP.map(route => { return !!route.uusiOppija })
