@@ -18,7 +18,7 @@ class SchemaToEditorModel(context: ValidationAndResolvingContext, mainSchema: Cl
   def koodistoEnumValue(k: Koodistokoodiviite): EnumValue = EnumValue(k.koodiarvo, i(k.lyhytNimi.orElse(k.nimi).getOrElse(LocalizedString.unlocalized(k.koodiarvo))), k)
   def organisaatioEnumValue(o: OrganisaatioWithOid) = EnumValue(o.oid, i(o.description), o)
 
-  private case class Context(editable: Boolean = true, root: Boolean = true, var prototypesCreated: Map[String, EditorModel] = Map.empty, var prototypesRequested: Set[SchemaWithClassName] = Set.empty, prototypesBeingCreated: Set[SchemaWithClassName] = Set.empty) {
+  private case class Context(editable: Boolean = true, root: Boolean = true, var prototypesRequested: Set[SchemaWithClassName] = Set.empty, prototypesBeingCreated: Set[SchemaWithClassName] = Set.empty) {
     private def buildModel(obj: Any, schema: Schema): EditorModel = (obj, schema) match {
       case (o: AnyRef, t:ClassSchema) => Class.forName(t.fullClassName) match {
         case c if (classOf[Koodistokoodiviite].isAssignableFrom(c)) =>
@@ -50,7 +50,7 @@ class SchemaToEditorModel(context: ValidationAndResolvingContext, mainSchema: Cl
     }
 
     def buildObjectModel(obj: AnyRef, schema: ClassSchema, includeData: Boolean = false) = {
-      if (obj == None && !prototypesBeingCreated.contains(schema) && (prototypesRequested.contains(schema) || prototypesCreated.contains(schema.simpleName) )) {
+      if (obj == None && !prototypesBeingCreated.contains(schema) && (prototypesRequested.contains(schema) )) {
         PrototypeModel(schema.simpleName) // creating a prototype which already exists or has been requested
       } else {
         if (obj == None) {
@@ -88,10 +88,11 @@ class SchemaToEditorModel(context: ValidationAndResolvingContext, mainSchema: Cl
         prototypesRequested = prototypesRequested ++ objectContext.prototypesRequested
         var newRequests: Set[SchemaWithClassName] = prototypesRequested
         val includedPrototypes: Map[String, EditorModel] = if (root) {
+          var prototypesCreated: Map[String, EditorModel] = Map.empty
           do {
             val requestsFromPreviousRound = newRequests
             newRequests = Set.empty
-            val newPrototypesCreated = requestsFromPreviousRound.map { schema =>
+            requestsFromPreviousRound.foreach { schema =>
               val helperContext = copy(root = false, prototypesBeingCreated = Set(schema) )
               val model: EditorModel = helperContext.buildModel(None, schema)
               if (model.isInstanceOf[PrototypeModel]) {
@@ -100,9 +101,8 @@ class SchemaToEditorModel(context: ValidationAndResolvingContext, mainSchema: Cl
               val newRequestsForThisCreation = helperContext.prototypesRequested -- prototypesRequested
               newRequests ++= newRequestsForThisCreation
               prototypesRequested ++= newRequestsForThisCreation
-              (schema.simpleName, model)
-            }.toMap
-            prototypesCreated ++= newPrototypesCreated
+              prototypesCreated += (schema.simpleName -> model)
+            }
           } while(newRequests.nonEmpty)
           prototypesCreated
         } else {
@@ -147,9 +147,7 @@ class SchemaToEditorModel(context: ValidationAndResolvingContext, mainSchema: Cl
       schema match {
         case s: SchemaWithClassName =>
           val classRefSchema = resolveSchema(s)
-          if (!prototypesCreated.contains(s.simpleName)) {
-            prototypesRequested += classRefSchema
-          }
+          prototypesRequested += classRefSchema
           Some(PrototypeModel(s.simpleName))
         case s: ListSchema => getPrototypePlaceholder(s.itemSchema)
         case s: OptionalSchema => getPrototypePlaceholder(s.itemSchema)
