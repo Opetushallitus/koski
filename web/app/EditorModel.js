@@ -10,7 +10,9 @@ const lookupRecursive = (lookupStep, model, [head, ...tail]) => {
 }
 
 let lastL = L.lens(
-  (xs) => xs && xs.length && xs[xs.length - 1],
+  (xs) => {
+    return (xs && xs.length && xs[xs.length - 1]) || undefined
+  },
   (x, xs) => xs.slice(0, -1).concat([x])
 )
 
