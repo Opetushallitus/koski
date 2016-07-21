@@ -47,7 +47,7 @@ object EditorModelSerializer extends Serializer[EditorModel] {
         case (EnumeratedModel(value, alternatives, path)) =>
           json("enum", "simple" -> true, "alternatives" -> alternatives, "alternativesPath" -> path, "value" -> value)
         case (OneOfModel(c, model, prototypes)) =>
-          val oneOfInfo: JValue = json("one-of-class" -> c, "one-of-prototypes" -> prototypes)
+          val oneOfInfo: JValue = json("oneOfClass" -> c, "oneOfPrototypes" -> prototypes)
           valueOrPrototypeWithoutData(model, prototypes.headOption).merge(oneOfInfo)
 
         case (NumberModel(data)) => json("number", "simple" -> true, "value" -> Map("data" -> data))
