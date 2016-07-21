@@ -68,11 +68,12 @@ const SuoritusEditor = React.createClass({
 const FoldableEditor = React.createClass({
   render() {
     let {collapsed, expanded} = this.props
-    let toggleDetails = () => { this.setState({showDetails: !showDetails})}
-    let showDetails = this.state && this.state.showDetails
-    return (<span>
-      <a className="toggle-expand" onClick={toggleDetails}>{ showDetails ? '-' : '+' }</a>
-      { showDetails ? expanded() : (collapsed ? collapsed() : null) }
+    let isExpanded = this.state && this.state.expanded
+    let toggleExpanded = () => { this.setState({expanded: !isExpanded})}
+    let className = isExpanded ? 'foldable expanded' : 'foldable collapsed'
+    return (<span className={className}>
+      <a className="toggle-expand" onClick={toggleExpanded}>{ isExpanded ? '-' : '+' }</a>
+      { isExpanded ? expanded() : (collapsed ? collapsed() : null) }
     </span>)
   }
 })
@@ -202,7 +203,7 @@ const PropertiesEditor = React.createClass({
           let propertyClassName = 'property ' + property.key
           return (<li className={propertyClassName} key={property.key}>
             <label>{property.title}</label>
-            { getModelEditor(property.model, addPath(R.merge(context, {edit: edit}),property.key)) }
+            <span className="value">{ getModelEditor(property.model, addPath(R.merge(context, {edit: edit}),property.key)) }</span>
           </li>)
         })
       }
@@ -245,7 +246,7 @@ const OptionalEditor = React.createClass({
     let add = () => this.setState({adding: true})
     return adding
       ? getModelEditor(model.prototype, context, true)
-      : <a onClick={add}>+</a>
+      : <a className="add-value" onClick={add}>+</a>
   }
 })
 
@@ -280,12 +281,13 @@ const EnumEditor = React.createClass({
   render() {
     let {model, context} = this.props
     let alternatives = model.alternatives || (this.state.alternatives) || []
+    let className = alternatives.length ? '' : 'loading'
     let onChange = (event) => {
       let selected = alternatives.find(alternative => alternative.value == event.target.value)
       opiskeluOikeusChange.push([context, selected])
     }
     return context.edit
-      ? (<select defaultValue={model.value && model.value.value} onChange={ onChange }>
+      ? (<select className={className} defaultValue={model.value && model.value.value} onChange={ onChange }>
           {
             alternatives.map( alternative =>
               <option value={ alternative.value } key={ alternative.value }>{alternative.title}</option>

@@ -205,6 +205,40 @@ describe('Ammatillinen koulutus', function() {
     })
   })
 
+  describe('Tutkinnon tietojen muuttaminen', function() {
+    before(Authentication().login(), resetFixtures, page.openPage, addNewOppija('kalle', 'Tunkkila', { hetu: '091095-9833'}))
+    it('Aluksi ei näytetä \"Kaikki tiedot tallennettu\" -tekstiä', function() {
+      expect(page.isSavedLabelShown()).to.equal(false)
+    })
+
+    describe('Kun valitaan suoritustapa', function() {
+      //before(opinnot.selectSuoritustapa("ops"), opinnot.selectOsaamisala("1527"))
+      var suoritus = opinnot.suoritus('Autoalan perustutkinto')
+      var suoritustapa = suoritus.property('suoritustapa')
+      before(suoritus.expand, suoritus.edit, suoritustapa.addValue, suoritustapa.waitUntilLoaded, suoritustapa.setValue('ops'))
+
+      describe('Muutosten näyttäminen', function() {
+        before(wait.until(page.isSavedLabelShown))
+        it('Näytetään "Kaikki tiedot tallennettu" -teksti', function() {
+          expect(page.isSavedLabelShown()).to.equal(true)
+        })
+      })
+
+      describe('Kun sivu ladataan uudelleen', function() {
+        before(
+          page.oppijaHaku.search('ero', 4),
+          page.oppijaHaku.selectOppija('Tunkkila'),
+          suoritus.expand
+        )
+
+        it('Muuttuneet tiedot on tallennettu', function() {
+          expect(suoritustapa.getValue()).to.equal('ops')
+        })
+      })
+    })
+  })
+
+
   describe('Ammatillisen perustutkinnon päättötodistus', function() {
     before(resetFixtures, page.openPage, page.oppijaHaku.search('120496-949B', page.isOppijaSelected('Aarne')))
     describe('Oppijan suorituksissa', function() {

@@ -58,10 +58,48 @@ function OpinnotPage() {
     },
     waitUntilRakenneVisible: function() {
       return wait.until(api.isRakenneVisible)
+    },
+    suoritus(name) {
+      return Editor(function() { return S('.suoritus:contains("' + name + '")') })
     }
   }
 
   return api
+}
+
+function Editor(elem) {
+  return {
+    expand: function() {
+      triggerEvent(elem().find('>.foldable.collapsed>.toggle-expand'), 'click')
+    },
+    edit: function() {
+      triggerEvent(elem().find('.toggle-edit'), 'click')
+    },
+    property: function(key) {
+      return Property(function() {return elem().find('.property.'+key)})
+    }
+  }
+}
+
+function Property(elem) {
+  return {
+    addValue: function() {
+      triggerEvent(elem().find('.add-value'), 'click')
+    },
+    waitUntilLoaded: function() {
+      return wait.until(function(){
+        return !elem().find('.loading').is(':visible')
+      })()
+    },
+    setValue: function(value) {
+      return function() {
+        return Page(elem).setInputValue("select", value)().then(wait.forAjax)
+      }
+    },
+    getValue: function() {
+      return elem().find('.value').text()
+    }
+  }
 }
 
 function TutkinnonOsa(nimi) {
