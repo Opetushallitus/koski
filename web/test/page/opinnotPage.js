@@ -59,7 +59,7 @@ function OpinnotPage() {
     waitUntilRakenneVisible: function() {
       return wait.until(api.isRakenneVisible)
     },
-    suoritus(name) {
+    suoritus: function(name) {
       return Editor(function() { return S('.suoritus:contains("' + name + '")') })
     }
   }
