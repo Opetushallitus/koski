@@ -40,7 +40,7 @@ const OpiskeluoikeusEditor = React.createClass({
           <span className="alku pvm">{modelTitle(model, 'alkamispäivä')}</span>-
           <span className="loppu pvm">{modelTitle(model, 'päättymispäivä')}</span>,&nbsp;
           <span className="tila">{modelTitle(model, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}</span>
-        <FoldableEditor expanded={() => <PropertiesEditor properties={ model.value.properties.filter(property => property.key != 'suoritukset') } context={subContext}/>}/>
+        <FoldableEditor expandedView={() => <PropertiesEditor properties={ model.value.properties.filter(property => property.key != 'suoritukset') } context={subContext}/>}/>
       </div>
       {
         modelLookup(model, 'suoritukset').value.map((suoritusModel, i) =>
@@ -60,21 +60,8 @@ const SuoritusEditor = React.createClass({
     return (<div className="suoritus">
       <span className="kuvaus">{title}</span>
       <Todistus suoritus={model} context={context}/>
-      <FoldableEditor expanded={() => <PropertiesEditor properties={model.value.properties} context={R.merge(context, {editable: model.editable})}/>}/>
+      <FoldableEditor expandedView={() => <PropertiesEditor properties={model.value.properties} context={R.merge(context, {editable: model.editable})}/>}/>
     </div>)
-  }
-})
-
-const FoldableEditor = React.createClass({
-  render() {
-    let {collapsed, expanded} = this.props
-    let isExpanded = this.state && this.state.expanded
-    let toggleExpanded = () => { this.setState({expanded: !isExpanded})}
-    let className = isExpanded ? 'foldable expanded' : 'foldable collapsed'
-    return (<span className={className}>
-      <a className="toggle-expand" onClick={toggleExpanded}>{ isExpanded ? '-' : '+' }</a>
-      { isExpanded ? expanded() : (collapsed ? collapsed() : null) }
-    </span>)
   }
 })
 
@@ -163,20 +150,21 @@ const TutkinnonosaEditor = React.createClass({
     return (<div className="suoritus tutkinnonosa">
       <label className="nimi">{modelTitle(model, 'koulutusmoduuli')}</label>
       <span className="arvosana">{modelTitle(model, 'arviointi.-1')}</span>
-      <FoldableEditor expanded={() => <PropertiesEditor properties={model.value.properties} context={context}/>}/>
+      <FoldableEditor defaultExpanded={context.edit} expandedView={() => <PropertiesEditor properties={model.value.properties} context={context}/>}/>
     </div>)
   }
 })
 
 const ObjectEditor = React.createClass({
   render() {
-    let {model, context } = this.props
+    let {model, context} = this.props
     let className = model.value
       ? 'object ' + model.value.class
       : 'object empty'
     let representative = model.value.properties.find(property => property.representative)
     let representativeEditor = () => getModelEditor(representative.model, addPath(context, representative.key))
     let objectEditor = () => <div className={className}><PropertiesEditor properties={model.value.properties} context={context} /></div>
+    console.log("ObjectEditor", context)
     return modelTitle(model)
       ? context.edit
         ? objectEditor()
@@ -184,8 +172,21 @@ const ObjectEditor = React.createClass({
       : representative
         ? model.value.properties.length == 1
           ? representativeEditor()
-          : <div>{representativeEditor()}<FoldableEditor expanded={objectEditor} /></div>
+          : <div>{representativeEditor()}<FoldableEditor expandedView={objectEditor} defaultExpandeded={context.edit} /></div>
         : objectEditor()
+  }
+})
+
+const FoldableEditor = React.createClass({
+  render() {
+    let {collapsedView, expandedView, defaultExpanded} = this.props
+    let expanded = this.state? this.state.expanded : defaultExpanded
+    let toggleExpanded = () => { this.setState({expanded: !expanded})}
+    let className = expanded ? 'foldable expanded' : 'foldable collapsed'
+    return (<span className={className}>
+      <a className="toggle-expand" onClick={toggleExpanded}>{ expanded ? '-' : '+' }</a>
+      { expanded ? expandedView() : (collapsedView ? collapsedView() : null) }
+    </span>)
   }
 })
 
