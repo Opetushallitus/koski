@@ -9,44 +9,45 @@ const lookupRecursive = (lookupStep, model, [head, ...tail]) => {
   return found
 }
 
+let lastL = L.lens(
+  (xs) => xs && xs.length && xs[xs.length - 1],
+  (x, xs) => xs.slice(0, -1).concat([x])
+)
+
+let indexL = (index) => index == -1 ? lastL : L.index(index)
+
 export const modelLookup = (mainModel, path) => {
   if (!path) return mainModel
-  let lookupStep = (model, lookupKey) => {
-    return model[lookupKey] || (propertyLookup(model, lookupKey)) || itemsLookup(model, lookupKey)
-  }
-  return lookupRecursive(lookupStep, mainModel, path.split('.'))
+  if (!mainModel) return
+  let lens = modelLens(path)
+  return L.get(lens, mainModel)
 }
 
-export const modelSet = (mainModel, path, value) => {
-  let clone = R.clone(mainModel) // TODO: this is extremely slow
-  let subModel = modelLookup(clone, path)
-  subModel.value = value
-  let pathElements = path.split('.')
-  let parents = pathElements.slice(0, -1)
-  let last = pathElements[pathElements.length - 1]
-  let dataParent = objectLookup(clone.value.data, parents.join('.'))
-  dataParent[last] = value.data
-  return clone
+export const modelLens = (path) => {
+  let pathLenses = toPath(path).map(key => {
+    let index = parseInt(key)
+    return L.compose('value', Number.isNaN(index)
+      ? L.compose('properties', L.find(R.whereEq({key})), 'model')
+      : indexL(index))
+  })
+  return L.compose(...pathLenses)
 }
 
-const itemsLookup = (model, lookupKey) => {
-  let items = modelItems(model)
-  return items
-    ? items[lookupKey] || items[items.length + parseInt(lookupKey)] // for negative indices
-    : null
+const objectLens = (path) => {
+  let pathLenses = toPath(path).map(key => {
+    let index = parseInt(key)
+    return Number.isNaN(index)
+      ? L.prop(key)
+      : indexL(index)
+  })
+  return L.compose(...pathLenses)
 }
 
-let propertyLookup = (model, lookupKey) => {
-  let properties = model.value && model.value.properties || []
-  let property = properties.find(({key}) => key == lookupKey)
-  return property && property.model
-}
+const toPath = (path) => typeof path == "string" ? path.split('.') : path
 
 export const objectLookup = (mainObj, path) => {
-  let lookupStep = (obj, lookupKey) => {
-    return obj[lookupKey]
-  }
-  return lookupRecursive(lookupStep, mainObj, path.split('.'))
+  let lens = objectLens(path)
+  return L.get(lens, mainObj)
 }
 
 export const modelData = (mainModel, path) => {
@@ -65,6 +66,14 @@ export const modelTitle = (mainModel, path) => {
 
 export const modelEmpty = (model) => {
   return !model.value || valueEmpty(model.value) && itemsEmpty(modelItems(model.items))
+}
+
+export const modelSet = (mainModel, path, value) => {
+  let modelValueLens = L.compose(modelLens(path), 'value')
+  let withUpdatedValue = L.set(modelValueLens, value, mainModel)
+  let dataLens = L.compose('value', 'data', objectLens(path))
+  let withUpdatedData = L.set(dataLens, value.data, withUpdatedValue)
+  return withUpdatedData
 }
 
 const modelItems = (model) => model.type == 'array' && model.value
