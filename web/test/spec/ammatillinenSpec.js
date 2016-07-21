@@ -322,6 +322,14 @@ describe('Ammatillinen koulutus', function() {
         expect(OpinnotPage().getTutkinto()).to.equal("Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)")
       })
     })
+
+    describe('Kaikki tiedot näkyvissä', function() {
+      before(opinnot.expandAll)
+      it('toimii', function() {
+        expect(S('.ammatilliseenperuskoulutukseenvalmentavankoulutuksenosansuoritus:eq(0) .koulutusmoduuli .value').text()).to.equal('Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen')
+      })
+    })
+
     describe('Tulostettava todistus', function() {
       before(OpinnotPage().avaaTodistus(0))
       it('näytetään', function() {
