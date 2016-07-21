@@ -3,7 +3,6 @@ package fi.oph.koski.editor
 import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.documentation.SchemaToEditorModel
 import fi.oph.koski.henkilo.HenkiloOid
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koski.ValidationAndResolvingContext

@@ -352,7 +352,7 @@ const getModelEditor = (model, context) => {
   const getEditorFunction = () => {
     if (!model) return NullEditor
     if (model.type == 'prototype' && context.editable) {
-      let prototypeModel = context.prototypes[model.class]
+      let prototypeModel = context.prototypes[model.key]
       model = model.optional
         ? R.merge(prototypeModel, { value: null, optional: true, prototype: model.prototype}) // Remove value from prototypal value of optional model, to show it as empty
         : prototypeModel

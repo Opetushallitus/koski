@@ -10,7 +10,7 @@ sealed trait EditorModel
 
 case class ObjectModel(`class`: String, properties: List[EditorProperty], data: Option[AnyRef], title: Option[String], editable: Boolean, prototypes: Map[String, EditorModel]) extends EditorModel
 
-case class PrototypeModel(`class`: String) extends EditorModel
+case class PrototypeModel(key: String) extends EditorModel
 
 case class EditorProperty(key: String, title: String, model: EditorModel, hidden: Boolean, representative: Boolean)
 
@@ -36,7 +36,7 @@ object EditorModelSerializer extends Serializer[EditorModel] {
       model match {
         case (ObjectModel(c, properties, data, title, editable, prototypes)) =>
           json("object", "value" -> Map("class" -> c, "data" -> data, "title" -> title, "properties" -> properties), "editable" -> editable, "prototypes" -> prototypes)
-        case (PrototypeModel(c)) => json("prototype", "class" -> c)
+        case (PrototypeModel(key)) => json("prototype", "key" -> key)
         case (OptionalModel(model, prototype)) =>
           val optionalInfo: JValue = json("optional" -> true, "prototype" -> prototype)
           val typeAndValue = valueOrPrototypeWithoutData(model, prototype)
