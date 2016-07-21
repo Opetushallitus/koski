@@ -61,6 +61,12 @@ function OpinnotPage() {
     },
     suoritus: function(name) {
       return Editor(function() { return S('.suoritus:contains("' + name + '")') })
+    },
+    expandAll: function() {
+      function expanders() { return S('.foldable.collapsed>.toggle-expand') }
+      while (expanders().is(':visible')) {
+        triggerEvent(expanders(), 'click')
+      }
     }
   }
 

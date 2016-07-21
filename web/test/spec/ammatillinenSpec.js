@@ -247,6 +247,12 @@ describe('Ammatillinen koulutus', function() {
         expect(OpinnotPage().getOppilaitos()).to.equal("Stadin ammattiopisto")
       })
     })
+    describe('Kaikki tiedot näkyvissä', function() {
+      before(opinnot.expandAll)
+      it('toimii', function() {
+        expect(S('.työtehtävät .value').text()).to.equal('Toimi harjoittelijana Sortti-asemalla')
+      })
+    })
     describe('Tulostettava todistus', function() {
       before(OpinnotPage().avaaTodistus(0))
       it('näytetään', function() {
@@ -268,6 +274,13 @@ describe('Ammatillinen koulutus', function() {
         })
       })
 
+      describe('Kaikki tiedot näkyvissä', function() {
+        before(opinnot.expandAll)
+        it('toimii', function() {
+          expect(S('.nayttotutkintoonvalmistavankoulutuksensuoritus .osasuoritukset .koulutusmoduuli .value').text()).to.equal('Johtaminen ja henkilöstön kehittäminen')
+        })
+      })
+
       describe('Tulostettava todistus', function() {
         before(OpinnotPage().avaaTodistus(0))
         it('näytetään', function() {
@@ -282,6 +295,13 @@ describe('Ammatillinen koulutus', function() {
         it('näytetään', function() {
           expect(OpinnotPage().getOppilaitos()).to.equal("Stadin ammattiopisto")
           expect(OpinnotPage().getTutkinto(1)).to.equal("Autoalan työnjohdon erikoisammattitutkinto")
+        })
+      })
+
+      describe('Kaikki tiedot näkyvissä', function() {
+        before(opinnot.expandAll)
+        it('toimii', function() {
+          expect(S('.tutkinnonosa .koulutusmoduuli .value').eq(1).text()).to.equal('Asiakaspalvelu ja korjaamopalvelujen markkinointi')
         })
       })
 

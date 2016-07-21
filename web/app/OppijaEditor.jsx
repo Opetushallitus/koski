@@ -57,7 +57,8 @@ const SuoritusEditor = React.createClass({
     let {model, context} = this.props
 
     let title = modelTitle(model, 'koulutusmoduuli')
-    return (<div className="suoritus">
+    let className = 'suoritus ' + model.value.class
+    return (<div className={className}>
       <span className="kuvaus">{title}</span>
       <Todistus suoritus={model} context={context}/>
       <FoldableEditor expandedView={() => <PropertiesEditor properties={model.value.properties} context={R.merge(context, {editable: model.editable})}/>}/>

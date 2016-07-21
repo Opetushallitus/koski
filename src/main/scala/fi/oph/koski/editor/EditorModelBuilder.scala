@@ -8,6 +8,7 @@ import fi.oph.koski.localization.{Localizable, LocalizedString}
 import fi.oph.koski.schema._
 import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.scalaschema._
+import ModelBuilder._
 
 case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema: ClassSchema,
                               editable: Boolean = true, root: Boolean = true, private var prototypesRequested: Set[SchemaWithClassName] = Set.empty, private val prototypesBeingCreated: Set[SchemaWithClassName] = Set.empty)
@@ -102,11 +103,11 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
 
   private case class AnyOfModelBuilder(t: AnyOfSchema) extends ModelBuilder {
     def buildObjectModel(obj: AnyRef) = obj match {
-      case None => OneOfModel(t.simpleName, None, t.alternatives.flatMap(Prototypes.getPrototypePlaceholder(_)))
-      case x: AnyRef => OneOfModel(t.simpleName, Some(buildModel(x, findOneOfSchema(t, x))), t.alternatives.flatMap(Prototypes.getPrototypePlaceholder(_)))
+      case None => OneOfModel(sanitizeName(t.simpleName), None, t.alternatives.flatMap(Prototypes.getPrototypePlaceholder(_)))
+      case x: AnyRef => OneOfModel(sanitizeName(t.simpleName), Some(buildModel(x, findOneOfSchema(t, x))), t.alternatives.flatMap(Prototypes.getPrototypePlaceholder(_)))
     }
 
-    def prototypeKey = t.simpleName
+    def prototypeKey = sanitizeName(t.simpleName)
 
     private def findOneOfSchema(t: AnyOfSchema, obj: AnyRef): Schema = {
       t.alternatives.find { classType =>
@@ -130,7 +131,7 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
     }
     */
 
-    def prototypeKey = alternativesPath
+    def prototypeKey = sanitizeName(alternativesPath)
 
     def buildObjectModel(o: AnyRef) = {
       o match {
@@ -200,11 +201,11 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
         } else {
           Map.empty
         }
-        ObjectModel(schema.simpleName, properties, data, title, objectContext.editable, includedPrototypes)
+        ObjectModel(sanitizeName(schema.simpleName), properties, data, title, objectContext.editable, includedPrototypes)
       }
     }
 
-    def prototypeKey = schema.simpleName
+    def prototypeKey = sanitizeName(schema.simpleName)
 
     private def newContext(obj: AnyRef): EditorModelBuilder = {
       def orgAccess = obj match {
@@ -220,3 +221,6 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
   }
 }
 
+object ModelBuilder {
+  def sanitizeName(s: String) = s.replaceAll("ä", "a").replaceAll("ö", "o").replaceAll("/", "-")
+}
