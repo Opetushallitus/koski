@@ -33,7 +33,7 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
   }
 
   private val context: ValidationAndResolvingContext = ValidationAndResolvingContext(application.koodistoViitePalvelu, application.organisaatioRepository)
-  private def modelCreator = new SchemaToEditorModel(context, EditorSchema.schema)(koskiUser)
+  private def modelCreator = new EditorModelBuilder(context, EditorSchema.schema)(koskiUser)
 
   private def findByOid(oid: String, user: KoskiUser): Either[HttpStatus, EditorModel] = {
     implicit val opiskeluoikeusOrdering = new Ordering[Option[LocalDate]] {
