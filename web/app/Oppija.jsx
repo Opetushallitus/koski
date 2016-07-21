@@ -22,10 +22,10 @@ const opiskeluOikeusIdLens = (id) => (L.compose(L.prop('opiskeluoikeudet'), L.fi
 export const oppijaP = Bacon.update({ loading: true },
   selectOppijaE, (previous, oppija) => oppija,
   updateResultE.map('.opiskeluoikeudet').flatMap(Bacon.fromArray), (currentOppija, {id, versionumero}) => {
-    //const applyChange = (lens, change, oppija) => L.modify(lens, change, oppija)
-    //return applyChange(L.compose(opiskeluOikeusIdLens(id), L.prop('versionumero')), () => versionumero, currentOppija)
-    // TODO: uusi versionumero kerättävä talteen
-    return currentOppija
+    let correctId = R.whereEq({id})
+    let containsOpiskeluoikeus = (oppilaitos) => oppilaitos.opiskeluoikeudet.find(correctId)
+    let lens = L.compose('value', 'data', 'opiskeluoikeudet', L.find(containsOpiskeluoikeus), 'opiskeluoikeudet', L.find(correctId), 'versionumero')
+    return L.set(lens, versionumero, currentOppija)
   },
   opiskeluOikeusChange, (currentOppija, [context, value]) => {
     var modifiedModel = modelSet(currentOppija, context.path, value)
@@ -39,7 +39,6 @@ updateResultE.plug(oppijaP
     let opiskeluoikeusPath = path.split('.').slice(0, 4)
     var oppijaData = oppija.value.data
     let opiskeluoikeus = objectLookup(oppijaData, opiskeluoikeusPath.join('.'))
-    console.log("should update ", opiskeluoikeusPath, opiskeluoikeus)
     let oppijaUpdate = {
       henkilö: {oid: oppijaData.henkilö.oid},
       opiskeluoikeudet: [opiskeluoikeus]

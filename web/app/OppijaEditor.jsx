@@ -164,7 +164,6 @@ const ObjectEditor = React.createClass({
     let representative = model.value.properties.find(property => property.representative)
     let representativeEditor = () => getModelEditor(representative.model, addPath(context, representative.key))
     let objectEditor = () => <div className={className}><PropertiesEditor properties={model.value.properties} context={context} /></div>
-    console.log("ObjectEditor", context)
     return modelTitle(model)
       ? context.edit
         ? objectEditor()
