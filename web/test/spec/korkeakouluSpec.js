@@ -2,6 +2,7 @@ describe('Korkeakoulutus', function() {
   var opintosuoritusote = OpintosuoritusotePage()
   var page = KoskiPage()
   var login = LoginPage()
+  var opinnot = OpinnotPage()
 
   before(Authentication().login(), resetFixtures)
 
@@ -12,13 +13,19 @@ describe('Korkeakoulutus', function() {
     )
     describe('Oppilaitos ja tutkinto', function() {
       it('näytetään', function() {
-        expect(OpinnotPage().getTutkinto()).to.equal('Dipl.ins., konetekniikka')
-        expect(OpinnotPage().getOppilaitos()).to.equal('Aalto-yliopisto')
-        //expect(OpinnotPage().getOpintoOikeus()).to.equal('(Opiskeluoikeus päättynyt, Suoritus valmis)') // TODO: fix later
+        expect(opinnot.getTutkinto()).to.equal('Dipl.ins., konetekniikka')
+        expect(opinnot.getOppilaitos()).to.equal('Aalto-yliopisto')
+        //expect(opinnot.getOpintoOikeus()).to.equal('(Opiskeluoikeus päättynyt, Suoritus valmis)') // TODO: fix later
+      })
+    })
+    describe('Kaikki tiedot näkyvissä', function() {
+      before(opinnot.expandAll)
+      it('toimii', function() {
+        expect(S('.korkeakoulututkinnonsuoritus .korkeakoulunopintojaksonsuoritus:eq(0) .koulutusmoduuli:eq(0) .value').text()).to.equal('Vapaasti valittavat opinnot (KON)')
       })
     })
     describe('Opintosuoritusote', function() {
-      before(OpinnotPage().avaaOpintosuoritusote(1))
+      before(opinnot.avaaOpintosuoritusote(1))
 
       describe('Kun klikataan linkkiä', function() {
         it('näytetään', function() {
@@ -41,13 +48,13 @@ describe('Korkeakoulutus', function() {
     )
     describe('Oppilaitos ja tutkinto', function() {
       it('näytetään', function() {
-        expect(OpinnotPage().getTutkinto(1)).to.equal('Dipl.ins., kemian tekniikka')
-        expect(OpinnotPage().getOppilaitos(1)).to.equal('Helsingin yliopisto')
-        //expect(OpinnotPage().getOpintoOikeus(1)).to.equal('(Opiskeluoikeus passivoitu, Suoritus kesken)') // TODO: fix later
+        expect(opinnot.getTutkinto(1)).to.equal('Dipl.ins., kemian tekniikka')
+        expect(opinnot.getOppilaitos(1)).to.equal('Helsingin yliopisto')
+        //expect(opinnot.getOpintoOikeus(1)).to.equal('(Opiskeluoikeus passivoitu, Suoritus kesken)') // TODO: fix later
       })
     })
     describe('Opiskeluoikeus', function() {
-      before(OpinnotPage().avaaOpintosuoritusote(2))
+      before(opinnot.avaaOpintosuoritusote(2))
       it('näytetään', function() {
         expect(S('section.opiskeluoikeus h3').text()).to.equal('Ensisijainen opinto-oikeus')
       })
@@ -57,7 +64,7 @@ describe('Korkeakoulutus', function() {
     before(
       page.openPage,
       page.oppijaHaku.search('010675-9981', page.isOppijaSelected('Kikka')),
-      OpinnotPage().avaaOpintosuoritusote(1)
+      opinnot.avaaOpintosuoritusote(1)
     )
     it('näytetään', function() {
       expect(S('section.opiskeluoikeus h3').text()).to.equal('Ensisijainen opinto-oikeus')
@@ -70,9 +77,9 @@ describe('Korkeakoulutus', function() {
     )
     describe('Oppilaitos ja tutkinto', function() {
       it('näytetään', function() {
-        expect(OpinnotPage().getTutkinto()).to.equal('Ensihoitaja (AMK)')
-        expect(OpinnotPage().getOppilaitos()).to.equal('Yrkeshögskolan Arcada')
-        //expect(OpinnotPage().getOpintoOikeus()).to.equal('(Opiskeluoikeus luopunut, Suoritus kesken)') // TODO: fix later
+        expect(opinnot.getTutkinto()).to.equal('Ensihoitaja (AMK)')
+        expect(opinnot.getOppilaitos()).to.equal('Yrkeshögskolan Arcada')
+        //expect(opinnot.getOpintoOikeus()).to.equal('(Opiskeluoikeus luopunut, Suoritus kesken)') // TODO: fix later
       })
     })
   })
