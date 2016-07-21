@@ -170,7 +170,9 @@ const TutkinnonosaEditor = React.createClass({
 const ObjectEditor = React.createClass({
   render() {
     let {model, context } = this.props
-    let className = 'object ' + model.class
+    let className = model.value
+      ? 'object ' + model.value.class
+      : 'object empty'
     let representative = model.value.properties.find(property => property.representative)
     let representativeEditor = () => getModelEditor(representative.model, addPath(context, representative.key))
     let objectEditor = () => <div className={className}><PropertiesEditor properties={model.value.properties} context={context} /></div>
@@ -358,7 +360,7 @@ const getModelEditor = (model, context) => {
     if (modelEmpty(model) && model.optional && model.prototype !== undefined) {
       return OptionalEditor
     }
-    let editor = editorTypes[model.class] || editorTypes[model.type]
+    let editor = (model.value && editorTypes[model.value.class]) || editorTypes[model.type]
     if (!editor) {
       if (!model.type) {
         console.log('Typeless model', model)

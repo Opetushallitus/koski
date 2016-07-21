@@ -35,7 +35,7 @@ object EditorModelSerializer extends Serializer[EditorModel] {
     case (model: EditorModel) => {
       model match {
         case (ObjectModel(c, properties, data, title, editable, prototypes)) =>
-          json("object", "class" -> c, "value" -> Map("data" -> data, "title" -> title, "properties" -> properties), "editable" -> editable, "prototypes" -> prototypes)
+          json("object", "value" -> Map("class" -> c, "data" -> data, "title" -> title, "properties" -> properties), "editable" -> editable, "prototypes" -> prototypes)
         case (PrototypeModel(c)) => json("prototype", "class" -> c)
         case (OptionalModel(model, prototype)) =>
           val optionalInfo: JValue = json("optional" -> true, "prototype" -> prototype)

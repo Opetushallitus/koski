@@ -1,4 +1,5 @@
 import R from 'ramda'
+import * as L from 'partial.lenses'
 
 const lookupRecursive = (lookupStep, model, [head, ...tail]) => {
   let found = lookupStep(model, head)
