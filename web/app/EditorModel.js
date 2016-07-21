@@ -20,7 +20,21 @@ export const modelLookup = (mainModel, path) => {
   if (!path) return mainModel
   if (!mainModel) return
   let lens = modelLens(path)
-  return L.get(lens, mainModel)
+  var subModel = prepareModel(mainModel, L.get(lens, mainModel), path)
+  return subModel
+}
+
+const prepareModel = (mainModel, subModel, path) => {
+  if (subModel && subModel.value && !subModel.value.data && mainModel.value && mainModel.value.data) {
+    // fill in data from main model (data is not transmitted for all subModels, to save bandwidth)
+    let data = objectLookup(mainModel.value.data, path)
+    if (subModel.type == 'array' && data) {
+      data.forEach((x, i) => subModel.value[i].value.data = x)
+    } else {
+      subModel.value.data = data
+    }
+  }
+  return subModel
 }
 
 export const modelLens = (path) => {
@@ -76,7 +90,10 @@ export const modelSet = (mainModel, path, value) => {
   return withUpdatedData
 }
 
-const modelItems = (model) => model.type == 'array' && model.value
+export const modelItems = (mainModel, path) => {
+  let model = modelLookup(mainModel, path)
+  return model.type == 'array' && model.value
+}
 
 const valueEmpty = (value) => {
   return !value

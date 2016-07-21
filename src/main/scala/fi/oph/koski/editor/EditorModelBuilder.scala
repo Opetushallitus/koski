@@ -92,9 +92,6 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
           case c if (classOf[OrganisaatioWithOid].isAssignableFrom(c)) =>
             EnumModelBuilder[OrganisaatioWithOid]("/koski/api/editor/organisaatiot", organisaatioEnumValue(_))
 
-          case c if (classOf[Koulutusmoduuli].isAssignableFrom(c)) =>
-            ObjectModelBuilder(t, true) // TODO this is hack to include data in this model. Object data should probably be sent only for root and split to subobjects in the client
-
           case c =>
             ObjectModelBuilder(t)
         }

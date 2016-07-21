@@ -1,6 +1,6 @@
 import React from 'react'
 import R from 'ramda'
-import { modelData, modelLookup, modelTitle, modelEmpty } from './EditorModel.js'
+import { modelData, modelLookup, modelTitle, modelEmpty, modelItems } from './EditorModel.js'
 import { opiskeluOikeusChange } from './Oppija.jsx'
 import Http from './http'
 
@@ -13,7 +13,7 @@ export const OppijaEditor = React.createClass({
           modelLookup(model, 'opiskeluoikeudet').value.map((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) => {
               let context = { oppijaOid: modelData(model, 'henkilö.oid'), root: true, prototypes: model.prototypes }
               let oppilaitos = modelLookup(oppilaitoksenOpiskeluoikeudet, 'oppilaitos')
-              let opiskeluoikeudet = modelLookup(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').value
+              let opiskeluoikeudet = modelItems(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet')
               return (<li className="oppilaitos" key={modelData(oppilaitos).oid}>
                 <span className="oppilaitos">{modelTitle(oppilaitos)}</span>
                 <OppilaitoksenOpintosuoritusote oppilaitos={oppilaitos} tyyppi={modelData(opiskeluoikeudet[0], 'tyyppi').koodiarvo} context={context} />
@@ -43,7 +43,7 @@ const OpiskeluoikeusEditor = React.createClass({
         <FoldableEditor expandedView={() => <PropertiesEditor properties={ model.value.properties.filter(property => property.key != 'suoritukset') } context={subContext}/>}/>
       </div>
       {
-        modelLookup(model, 'suoritukset').value.map((suoritusModel, i) =>
+        modelItems(model, 'suoritukset').map((suoritusModel, i) =>
           <SuoritusEditor model={suoritusModel} context={addPath(subContext, 'suoritukset', i)} key={i}/>
         )
       }
@@ -123,7 +123,7 @@ const VahvistusEditor = React.createClass({
           <span className="date">{modelTitle(model, 'päivä')}</span>&nbsp;
           <span className="allekirjoitus">{modelTitle(model, 'paikkakunta')}</span>&nbsp;
           {
-            modelLookup(model, 'myöntäjäHenkilöt').value.map( (henkilö,i) =>
+            modelItems(model, 'myöntäjäHenkilöt').map( (henkilö,i) =>
               <span key={i} className="nimi">{modelData(henkilö, 'nimi')}</span>
             )
           }
@@ -219,14 +219,15 @@ let addPath = (context, ...pathElems) => {
 const ArrayEditor = React.createClass({
   render() {
     let {model, context} = this.props
-    let simple = !model.value[0] || model.value[0].simple || (!context.edit && modelTitle(model.value[0]))
+    let items = modelItems(model)
+    let simple = !items[0] || items[0].simple || (!context.edit && modelTitle(items[0]))
     let className = simple ? 'array simple' : 'array'
     let adding = this.state && this.state.adding || []
     let add = () => this.setState({adding: adding.concat(model.prototype)})
     return (
       <ul className={className}>
         {
-          model.value.concat(adding).map((item, i) =>
+          items.concat(adding).map((item, i) =>
             <li key={i}>{getModelEditor(item, addPath(context, i) )}</li>
           )
         }
