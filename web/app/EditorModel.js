@@ -85,11 +85,8 @@ export const modelEmpty = (model) => {
 }
 
 export const modelSet = (mainModel, path, value) => {
-  let modelValueLens = L.compose(modelLens(path), 'value')
-  let withUpdatedValue = L.set(modelValueLens, value, mainModel)
   let dataLens = L.compose('value', 'data', objectLens(path))
-  let withUpdatedData = L.set(dataLens, value.data, withUpdatedValue)
-  return withUpdatedData
+  return L.set(dataLens, value.data, mainModel)
 }
 
 export const modelItems = (mainModel, path) => {
