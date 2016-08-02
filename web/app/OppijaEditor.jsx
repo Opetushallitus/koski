@@ -2,6 +2,7 @@ import React from 'react'
 import R from 'ramda'
 import { modelData, modelLookup, modelTitle, modelEmpty, modelItems } from './EditorModel.js'
 import { opiskeluOikeusChange } from './Oppija.jsx'
+import { formatISODate, parseFinnishDate } from './date.js'
 import Http from './http'
 
 export const OppijaEditor = React.createClass({
@@ -273,10 +274,17 @@ const BooleanEditor = React.createClass({
 const DateEditor = React.createClass({
   render() {
     let {model, context} = this.props
+    let onChange = (event) => {
+      var date = parseFinnishDate(event.target.value)
+      if (date) {
+        opiskeluOikeusChange.push([context, {data: formatISODate(date)}])
+      }
+    }
     return context.edit
-      ? <input type="text" defaultValue={modelTitle(model)}></input>
+      ? <input type="text" defaultValue={modelTitle(model)} onChange={ onChange }></input>
       : <span className="simple date">{modelTitle(model)}</span>
   }
+
 })
 
 const EnumEditor = React.createClass({
