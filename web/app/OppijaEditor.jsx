@@ -274,15 +274,23 @@ const BooleanEditor = React.createClass({
 const DateEditor = React.createClass({
   render() {
     let {model, context} = this.props
+    let {invalidDate} = this.state
+
     let onChange = (event) => {
       var date = parseFinnishDate(event.target.value)
       if (date) {
         opiskeluOikeusChange.push([context, {data: formatISODate(date)}])
       }
+      this.setState({invalidDate: date ? false : true})
     }
+
     return context.edit
-      ? <input type="text" defaultValue={modelTitle(model)} onChange={ onChange }></input>
+      ? <input type="text" defaultValue={modelTitle(model)} onChange={ onChange } className={invalidDate ? 'error' : ''}></input>
       : <span className="simple date">{modelTitle(model)}</span>
+  },
+
+  getInitialState() {
+    return {}
   }
 
 })
