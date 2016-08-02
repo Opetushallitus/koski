@@ -59,7 +59,7 @@ const objectLens = (path) => {
   return L.compose(...pathLenses)
 }
 
-const toPath = (path) => typeof path == "string" ? path.split('.') : path
+const toPath = (path) => typeof path == 'string' ? path.split('.') : path
 
 export const objectLookup = (mainObj, path) => {
   let lens = objectLens(path)

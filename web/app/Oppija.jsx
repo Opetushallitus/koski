@@ -17,8 +17,6 @@ export const selectOppijaE = routeP.map('.oppijaId').flatMap(oppijaId => {
 export const updateResultE = Bacon.Bus()
 export const opiskeluOikeusChange = Bacon.Bus()
 
-const opiskeluOikeusIdLens = (id) => (L.compose(L.prop('opiskeluoikeudet'), L.find(R.whereEq({id}))))
-
 export const oppijaP = Bacon.update({ loading: true },
   selectOppijaE, (previous, oppija) => oppija,
   updateResultE.map('.opiskeluoikeudet').flatMap(Bacon.fromArray), (currentOppija, {id, versionumero}) => {
@@ -34,7 +32,7 @@ export const oppijaP = Bacon.update({ loading: true },
 )
 
 updateResultE.plug(oppijaP
-  .sampledBy(opiskeluOikeusChange, (oppija, [context, value]) => ({oppija, context}))
+  .sampledBy(opiskeluOikeusChange, (oppija, [context]) => ({oppija, context}))
   .flatMapLatest(({oppija, context: {path}}) => {
     let opiskeluoikeusPath = path.split('.').slice(0, 4)
     var oppijaData = oppija.value.data
