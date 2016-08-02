@@ -256,8 +256,13 @@ const OptionalEditor = React.createClass({
 const StringEditor = React.createClass({
   render() {
     let {model, context} = this.props
+
+    let onChange = (event) => {
+      opiskeluOikeusChange.push([context, {data: event.target.value}])
+    }
+
     return context.edit
-      ? <input type="text" defaultValue={modelData(model)}></input>
+      ? <input type="text" defaultValue={modelData(model)} onChange={ onChange }></input>
       : <span className="simple string">{modelData(model)}</span>
   }
 })
