@@ -206,7 +206,7 @@ describe('Ammatillinen koulutus', function() {
   })
 
   describe('Tutkinnon tietojen muuttaminen', function() {
-    before(Authentication().login(), resetFixtures, page.openPage, addNewOppija('kalle', 'Tunkkila', { hetu: '091095-9833'}))
+    before(resetFixtures, page.openPage, addNewOppija('kalle', 'Tunkkila', { hetu: '091095-9833'}))
     it('Aluksi ei näytetä \"Kaikki tiedot tallennettu\" -tekstiä', function() {
       expect(page.isSavedLabelShown()).to.equal(false)
     })
@@ -236,11 +236,30 @@ describe('Ammatillinen koulutus', function() {
         })
       })
     })
+
+    describe('Muokkaus', function() {
+      describe('Ulkoisen järjestelmän data', function() {
+        before(page.openPage, page.oppijaHaku.search('010675-9981', page.isOppijaSelected('Kikka')))
+        it('estetty', function() {
+          var suoritus = opinnot.suoritus('Lääketieteen lisensiaatti')
+          suoritus.expand()
+          expect(suoritus.isEditable()).to.equal(false)
+        })
+      })
+
+      describe('Ilman kirjoitusoikeuksia', function() {
+        before(Authentication().logout, Authentication().login('hiirikatselija'), page.openPage, page.oppijaHaku.search('070796-9652', page.isOppijaSelected('Eero')))
+        it('estetty', function() {
+          var suoritus = opinnot.suoritus('Autoalan perustutkinto')
+          suoritus.expand()
+          expect(suoritus.isEditable()).to.equal(false)
+        })
+      })
+    })
   })
 
-
   describe('Ammatillisen perustutkinnon päättötodistus', function() {
-    before(resetFixtures, page.openPage, page.oppijaHaku.search('120496-949B', page.isOppijaSelected('Aarne')))
+    before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.search('120496-949B', page.isOppijaSelected('Aarne')))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
         expect(OpinnotPage().getTutkinto()).to.equal("Luonto- ja ympäristöalan perustutkinto")

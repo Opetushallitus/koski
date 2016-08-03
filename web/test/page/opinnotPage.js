@@ -81,6 +81,9 @@ function Editor(elem) {
     edit: function() {
       triggerEvent(elem().find('.toggle-edit'), 'click')
     },
+    isEditable: function() {
+      return elem().find('.toggle-edit').is(':visible')
+    },
     property: function(key) {
       return Property(function() {return elem().find('.property.'+key)})
     }
