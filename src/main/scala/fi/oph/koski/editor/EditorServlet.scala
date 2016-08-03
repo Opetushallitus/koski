@@ -19,7 +19,7 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
   get("/koodit/:koodistoUri") {
     val koodistoUri = params("koodistoUri")
     val koodit: List[Koodistokoodiviite] = context.koodistoPalvelu.getLatestVersion(koodistoUri).toList.flatMap(application.koodistoViitePalvelu.getKoodistoKoodiViitteet(_)).flatten
-    koodit.map(modelCreator.koodistoEnumValue(_))
+    koodit.map(modelCreator.koodistoEnumValue(_)).sortBy(_.title)
   }
 
   get("/organisaatiot") {
