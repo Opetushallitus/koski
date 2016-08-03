@@ -4,6 +4,7 @@ import { modelData, modelLookup, modelTitle, modelEmpty, modelItems } from './Ed
 import { opiskeluOikeusChange } from './Oppija.jsx'
 import { formatISODate, parseFinnishDate } from './date.js'
 import Http from './http'
+import Bacon from 'baconjs'
 
 export const OppijaEditor = React.createClass({
   render() {
@@ -256,15 +257,25 @@ const OptionalEditor = React.createClass({
 const StringEditor = React.createClass({
   render() {
     let {model, context} = this.props
+    let {valueBus} = this.state
 
     let onChange = (event) => {
-      opiskeluOikeusChange.push([context, {data: event.target.value}])
+      valueBus.push([context, {data: event.target.value}])
     }
 
     return context.edit
       ? <input type="text" defaultValue={modelData(model)} onChange={ onChange }></input>
       : <span className="simple string">{modelData(model)}</span>
+  },
+
+  getInitialState() {
+    return {valueBus: Bacon.Bus()}
+  },
+
+  componentDidMount() {
+    this.state.valueBus.throttle(1000).onValue((v) => {opiskeluOikeusChange.push(v)})
   }
+
 })
 
 const BooleanEditor = React.createClass({
@@ -279,12 +290,12 @@ const BooleanEditor = React.createClass({
 const DateEditor = React.createClass({
   render() {
     let {model, context} = this.props
-    let {invalidDate} = this.state
+    let {invalidDate, valueBus} = this.state
 
     let onChange = (event) => {
       var date = parseFinnishDate(event.target.value)
       if (date) {
-        opiskeluOikeusChange.push([context, {data: formatISODate(date)}])
+        valueBus.push([context, {data: formatISODate(date)}])
       }
       this.setState({invalidDate: date ? false : true})
     }
@@ -295,7 +306,11 @@ const DateEditor = React.createClass({
   },
 
   getInitialState() {
-    return {}
+    return {valueBus: Bacon.Bus()}
+  },
+
+  componentDidMount() {
+    this.state.valueBus.throttle(1000).onValue((v) => {opiskeluOikeusChange.push(v)})
   }
 
 })
