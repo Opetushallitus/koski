@@ -281,8 +281,12 @@ const StringEditor = React.createClass({
 const BooleanEditor = React.createClass({
   render() {
     let {model, context} = this.props
+    let onChange = event => {
+      opiskeluOikeusChange.push([context, {data: event.target.checked}])
+    }
+
     return context.edit
-      ? <input type="checkbox" defaultChecked={modelData(model)}></input>
+      ? <input type="checkbox" defaultChecked={modelData(model)} onChange={ onChange }></input>
       : <span className="simple string">{modelTitle(model)}</span>
   }
 })
