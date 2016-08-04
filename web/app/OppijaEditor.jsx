@@ -185,10 +185,10 @@ const FoldableEditor = React.createClass({
     let expanded = this.state? this.state.expanded : defaultExpanded
     let toggleExpanded = () => { this.setState({expanded: !expanded})}
     let className = expanded ? 'foldable expanded' : 'foldable collapsed'
-    return (<span className={className}>
+    return (<div className={className}>
       <a className="toggle-expand" onClick={toggleExpanded}>{ expanded ? '-' : '+' }</a>
       { expanded ? expandedView() : (collapsedView ? collapsedView() : null) }
-    </span>)
+    </div>)
   }
 })
 
@@ -235,7 +235,7 @@ const ArrayEditor = React.createClass({
           )
         }
         {
-          context.edit && model.prototype !== undefined ? <a onClick={add}>+</a> : null
+          context.edit && model.prototype !== undefined ? <li className="add-item"><a onClick={add}>lisää uusi</a></li> : null
         }
       </ul>
     )
@@ -250,7 +250,7 @@ const OptionalEditor = React.createClass({
     let add = () => this.setState({adding: true})
     return adding
       ? getModelEditor(model.prototype, context, true)
-      : <a className="add-value" onClick={add}>+</a>
+      : <a className="add-value" onClick={add}>lisää</a>
   }
 })
 

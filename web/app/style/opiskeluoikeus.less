@@ -65,19 +65,43 @@
     }
   }
 
+  .array > li > .object {
+    border-bottom: solid lightgray 1px;
+    padding-bottom: 20px;
+  }
+
   .property .value > .array {
     padding-left: 20px;
   }
 
   .array > li > .object > .properties {
-    margin-left: 0;
+    padding-left: 0;
   }
 
   input, select {
     width: 200px;
     float: right;
-    clear:  both;
-    margin-right: 50px;
+  }
+
+  .opiskeluoikeus, .suoritus {
+    position: relative;
+  }
+
+  li {
+    clear: both;
+    line-height: 23px;
+
+    &.add-item {
+      text-align: right;
+      a {
+        font-size: 12px;
+      }
+    }
+  }
+
+  a.add-value {
+    float: right;
+    font-size: 12px;
   }
 
   .array > li:not(:first-child) > .object {
@@ -100,6 +124,9 @@
 
   a.toggle-expand {
     margin-left: 10px;
+    position: absolute;
+    top: 0;
+    right: 0;
   }
 
   .toggle-edit {
