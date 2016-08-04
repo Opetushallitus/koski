@@ -17,9 +17,12 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
   }
 
   get("/koodit/:koodistoUri") {
-    val koodistoUri = params("koodistoUri")
-    val koodit: List[Koodistokoodiviite] = context.koodistoPalvelu.getLatestVersion(koodistoUri).toList.flatMap(application.koodistoViitePalvelu.getKoodistoKoodiViitteet(_)).flatten
-    koodit.map(modelCreator.koodistoEnumValue(_)).sortBy(_.title)
+    getKoodit()
+  }
+
+  get("/koodit/:koodistoUri/:koodiarvot") {
+    val koodiarvot = params("koodiarvot").split(",").toSet
+    getKoodit().filter(v => koodiarvot.contains(v.value))
   }
 
   get("/organisaatiot") {
@@ -30,6 +33,13 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
   get("/oppilaitokset") {
     def organisaatiot = koskiUser.organisationOids(AccessType.write).flatMap(context.organisaatioRepository.getOrganisaatio).toList
     organisaatiot.flatMap(_.toOppilaitos).map(modelCreator.organisaatioEnumValue(_))
+  }
+
+  private def getKoodit() = {
+    val koodistoUri = params("koodistoUri")
+    val koodit: List[Koodistokoodiviite] = context.koodistoPalvelu.getLatestVersion(koodistoUri).toList.flatMap(application.koodistoViitePalvelu.getKoodistoKoodiViitteet(_)).flatten
+
+    koodit.map(modelCreator.koodistoEnumValue(_)).sortBy(_.title)
   }
 
   private val context: ValidationAndResolvingContext = ValidationAndResolvingContext(application.koodistoViitePalvelu, application.organisaatioRepository)

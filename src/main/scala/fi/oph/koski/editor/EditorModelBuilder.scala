@@ -82,16 +82,16 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
     def apply(t: SchemaWithClassName): ModelBuilder = t match {
       case t: ClassSchema =>
         Class.forName(t.fullClassName) match {
-          case c if (classOf[Koodistokoodiviite].isAssignableFrom(c)) =>
-            val koodistoUri = t.properties.find(_.key == "koodistoUri").get.schema.asInstanceOf[StringSchema].enumValues.get.apply(0).asInstanceOf[String]
-            // TODO: rajaus @KoodistoKoodiarvo
-            EnumModelBuilder[Koodistokoodiviite](s"/koski/api/editor/koodit/$koodistoUri", koodistoEnumValue(_))
+          case c if classOf[Koodistokoodiviite].isAssignableFrom(c) =>
+            val koodistoUri = t.properties.find(_.key == "koodistoUri").get.schema.asInstanceOf[StringSchema].enumValues.get.head.asInstanceOf[String]
+            val koodiarvot = t.properties.find(_.key == "koodiarvo").get.schema.asInstanceOf[StringSchema].enumValues.map(v => "/" + v.mkString(",")).getOrElse("")
+            EnumModelBuilder[Koodistokoodiviite](s"/koski/api/editor/koodit/$koodistoUri$koodiarvot", koodistoEnumValue)
 
-          case c if (classOf[Oppilaitos].isAssignableFrom(c)) =>
+          case c if classOf[Oppilaitos].isAssignableFrom(c) =>
             EnumModelBuilder[Oppilaitos]("/koski/api/editor/oppilaitokset", organisaatioEnumValue(_))
 
-          case c if (classOf[OrganisaatioWithOid].isAssignableFrom(c)) =>
-            EnumModelBuilder[OrganisaatioWithOid]("/koski/api/editor/organisaatiot", organisaatioEnumValue(_))
+          case c if classOf[OrganisaatioWithOid].isAssignableFrom(c) =>
+            EnumModelBuilder[OrganisaatioWithOid]("/koski/api/editor/organisaatiot", organisaatioEnumValue)
 
           case c =>
             ObjectModelBuilder(t)
