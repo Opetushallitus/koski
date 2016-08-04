@@ -1,6 +1,8 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjestelmäId
 import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.koski.koskiuser.MockUsers.hiiri
 import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
@@ -93,6 +95,22 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
       searchForNames("eero", user) should equal(List("Eero Markkanen"))
       authGet("api/oppija/" + MockOppijat.markkanen.oid, user) {
         verifyResponseStatus(200)
+      }
+    }
+  }
+
+  "koski-oppilaitos-tallentaja" - {
+    val user = MockUsers.hiiriTallentaja
+    "voi muokata opiskeluoikeuksia omassa organisaatiossa" in {
+      putOpiskeluOikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+        verifyResponseStatus(200)
+      }
+    }
+
+    "ei voi muokata lähdejärjestelmän tallentamia opiskeluoikeuksia" in {
+      val opiskeluOikeus = opiskeluoikeusOmnia.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
+      putOpiskeluOikeus(opiskeluOikeus, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+        verifyResponseStatus(403)
       }
     }
   }

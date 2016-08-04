@@ -12,13 +12,14 @@ class KoskiUser(val oid: String, val clientIp: String, val lang: String, käytt�
   def logString = "käyttäjä " + oid
 
   private lazy val käyttöoikeudet: Set[Käyttöoikeus] = käyttöoikeudetObservable.toBlocking.first
-  def organisationOids(accessType: AccessType.Value) = käyttöoikeudet.filter(_.ryhmä.orgAccessType.contains(accessType)).flatMap {
+  def organisationOids(accessType: AccessType.Value): Set[String] = käyttöoikeudet.filter(_.ryhmä.orgAccessType.contains(accessType)).flatMap {
     case o:OrganisaatioKäyttöoikeus => Some(o.organisaatio.oid)
     case _ => None
   }
   lazy val globalAccess = käyttöoikeudet.map(_.ryhmä).flatMap(_.globalAccessType)
   def isRoot = käyttöoikeudet.map(_.ryhmä).contains(Käyttöoikeusryhmät.ophPääkäyttäjä)
   def isMaintenance = käyttöoikeudet.map(_.ryhmä).intersect(Set(Käyttöoikeusryhmät.ophPääkäyttäjä, Käyttöoikeusryhmät.ophKoskiYlläpito)).nonEmpty
+  def isPalvelukäyttäjä = käyttöoikeudet.map(_.ryhmä).contains(Käyttöoikeusryhmät.oppilaitosPalvelukäyttäjä)
   def hasReadAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.read)
   def hasWriteAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.write)
   def hasAccess(organisaatio: Organisaatio.Oid, accessType: AccessType.Value) = globalAccess.contains(accessType) || organisationOids(accessType).contains(organisaatio)

@@ -76,7 +76,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
 
 
   override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiUser): Either[HttpStatus, CreateOrUpdateResult] = {
-    if (!user.hasWriteAccess(opiskeluOikeus.oppilaitos.oid)) {
+    if (!user.hasWriteAccess(opiskeluOikeus.oppilaitos.oid) || (opiskeluOikeus.lähdejärjestelmänId.isDefined && !user.isPalvelukäyttäjä)) {
       Left(KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid))
     } else {
       doInIsolatedTransaction(db, createOrUpdateAction(oppijaOid, opiskeluOikeus), "Oppijan " + oppijaOid + " opiskeluoikeuden lisäys/muutos")

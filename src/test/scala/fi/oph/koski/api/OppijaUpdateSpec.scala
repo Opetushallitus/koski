@@ -2,6 +2,7 @@ package fi.oph.koski.api
 
 import java.time.LocalDate
 
+import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjestelmäId
 import fi.oph.koski.json.Json
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.oppija.MockOppijat
@@ -87,8 +88,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     }
 
     "Käytettäessä lähdejärjestelmä-id:tä" - {
-      val lähdejärjestelmänId = LähdejärjestelmäId("12345", AmmatillinenExampleData.lähdeWinnova)
-      val original: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(lähdejärjestelmänId))
+      val original: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
 
       "Muokkaa olemassaolevaa opiskeluoikeutta, kun lähdejärjestelmä-id on sama" in {
         resetFixtures
@@ -108,7 +108,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       }
 
       "Estää tyypin vaihtamisen" in {
-        verifyChange(original = original, change = existing => OpiskeluoikeusTestMethodsLukio.lukionOpiskeluoikeus.copy(lähdejärjestelmänId = Some(lähdejärjestelmänId), oppilaitos = existing.oppilaitos)) {
+        verifyChange(original = original, change = existing => OpiskeluoikeusTestMethodsLukio.lukionOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId), oppilaitos = existing.oppilaitos)) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos("Opiskeluoikeuden tyyppiä ei voi vaihtaa. Vanha tyyppi ammatillinenkoulutus. Uusi tyyppi lukiokoulutus."))
         }
       }

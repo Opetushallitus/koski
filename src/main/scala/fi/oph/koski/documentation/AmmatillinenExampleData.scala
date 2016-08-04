@@ -77,6 +77,7 @@ object AmmatillinenExampleData {
   lazy val toimipiste: OidOrganisaatio = OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))
   lazy val tutkintotoimikunta: Organisaatio = Tutkintotoimikunta("Autokorjaamoalan tutkintotoimikunta", 8406)
   lazy val lähdeWinnova = Koodistokoodiviite("winnova", Some("Winnova"), "lahdejarjestelma", Some(1))
+  lazy val winnovaLähdejärjestelmäId = LähdejärjestelmäId("12345", lähdeWinnova)
   lazy val hyväksytty: Koodistokoodiviite = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1))
   lazy val tunnustettu: OsaamisenTunnustaminen = OsaamisenTunnustaminen(
     Some(AmmatillisenTutkinnonOsanSuoritus(
