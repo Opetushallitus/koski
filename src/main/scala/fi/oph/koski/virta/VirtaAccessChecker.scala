@@ -5,6 +5,7 @@ import fi.oph.koski.organisaatio.Oppilaitostyyppi._
 
 class VirtaAccessChecker(käyttöoikeudet: KäyttöoikeusRepository) extends AccessChecker {
   def hasAccess(user: KoskiUser) = {
+    user.hasGlobalReadAccess ||
     käyttöoikeudet.käyttäjänOppilaitostyypit(user.oid)
       .intersect(Set(lastentarhaopettajaopistot, yliopistot, sotilaskorkeakoulut, kesäyliopistot, väliaikaisetAmmattikorkeakoulut, ammattikorkeakoulut))
       .nonEmpty
