@@ -45,3 +45,6 @@ if (!Array.prototype.findIndex) {
     return -1
   }
 }
+Number.isNaN = Number.isNaN || function(value) {
+  return typeof value === 'number' && isNaN(value)
+}

@@ -6,8 +6,6 @@
     "sukunimi" : "Koululainen"
   },
   "opiskeluoikeudet" : [ {
-    "alkamispäivä" : "2008-08-15",
-    "päättymispäivä" : "2016-06-04",
     "oppilaitos" : {
       "oid" : "1.2.246.562.10.14613773812",
       "oppilaitosnumero" : {
@@ -18,6 +16,8 @@
         "fi" : "Jyväskylän normaalikoulu"
       }
     },
+    "alkamispäivä" : "2008-08-15",
+    "päättymispäivä" : "2016-06-04",
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
         "alku" : "2008-08-15",
@@ -42,9 +42,11 @@
       } ]
     },
     "suoritukset" : [ {
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "koodistoUri" : "suorituksentila"
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "020075",
+          "koodistoUri" : "koulutus"
+        }
       },
       "toimipiste" : {
         "oid" : "1.2.246.562.10.14613773812",
@@ -55,6 +57,10 @@
         "nimi" : {
           "fi" : "Jyväskylän normaalikoulu"
         }
+      },
+      "tila" : {
+        "koodiarvo" : "VALMIS",
+        "koodistoUri" : "suorituksentila"
       },
       "vahvistus" : {
         "päivä" : "2016-06-04",
@@ -92,10 +98,6 @@
           }
         } ]
       },
-      "tyyppi" : {
-        "koodiarvo" : "perusopetuksenlisaopetus",
-        "koodistoUri" : "suorituksentyyppi"
-      },
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -112,18 +114,18 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "korotus" : true,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "7",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "korotus" : true,
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -140,18 +142,18 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "korotus" : true,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "10",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "korotus" : true,
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -168,18 +170,18 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "korotus" : true,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "6",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "korotus" : true,
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -192,18 +194,18 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "korotus" : true,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "6",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "korotus" : true,
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -216,18 +218,18 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "korotus" : true,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "10",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "korotus" : true,
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -240,18 +242,18 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "korotus" : true,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "9",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "korotus" : true,
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -264,18 +266,18 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "korotus" : true,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "8",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "korotus" : true,
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -288,18 +290,18 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "korotus" : true,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "9",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "korotus" : true,
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -312,18 +314,18 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "korotus" : true,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "8",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "korotus" : true,
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -336,18 +338,18 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "korotus" : false,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "7",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "korotus" : false,
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -360,18 +362,18 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "korotus" : true,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "8",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "korotus" : true,
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -384,18 +386,18 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "korotus" : false,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "8",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "korotus" : false,
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -408,24 +410,22 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        },
-        "korotus" : true,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "7",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
-      } ],
-      "koulutusmoduuli" : {
-        "tunniste" : {
-          "koodiarvo" : "020075",
-          "koodistoUri" : "koulutus"
+        } ],
+        "korotus" : true,
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
         }
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "perusopetuksenlisaopetus",
+        "koodistoUri" : "suorituksentyyppi"
       }
     } ],
     "tyyppi" : {

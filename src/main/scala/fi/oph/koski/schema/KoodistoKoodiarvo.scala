@@ -48,3 +48,4 @@ object SchemaClassMapper {
       x
   }
 }
+

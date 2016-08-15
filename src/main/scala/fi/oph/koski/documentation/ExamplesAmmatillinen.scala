@@ -270,7 +270,7 @@ object AmmatillinenOldExamples {
     Henkilö.withOid("1.2.246.562.24.00000000001"),
     List(
       AmmatillinenOpiskeluoikeus(
-        lähdejärjestelmänId = Some(LähdejärjestelmäId("847823465", lähdeWinnova)),
+        lähdejärjestelmänId = Some(LähdejärjestelmäId(Some("847823465"), lähdeWinnova)),
         alkamispäivä = Some(date(2012, 9, 1)),
         arvioituPäättymispäivä = Some(date(2015, 5, 31)),
         päättymispäivä = Some(date(2016, 1, 9)),

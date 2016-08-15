@@ -9,10 +9,10 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeus(
   id: Option[Int] = None,
   versionumero: Option[Int] = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
-  alkamispäivä: Option[LocalDate],
-  päättymispäivä: Option[LocalDate],
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OrganisaatioWithOid],
+  alkamispäivä: Option[LocalDate],
+  päättymispäivä: Option[LocalDate],
   tila: LukionOpiskeluoikeudenTila,
   läsnäolotiedot: Option[YleisetLäsnäolotiedot],
   @MinItems(1)
@@ -28,15 +28,15 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeus(
 
 @Description("Lukioon valmistavan koulutus (LUVA) suoritus")
 case class LukioonValmistavanKoulutuksenSuoritus(
-  suorituskieli: Option[Koodistokoodiviite] = None,
-  tila: Koodistokoodiviite,
+  koulutusmoduuli: LukioonValmistavaKoulutus,
   toimipiste: OrganisaatioWithOid,
+  tila: Koodistokoodiviite,
   vahvistus: Option[Henkilövahvistus] = None,
+  suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Lukioon valmistavaan koulutukseen sisältyvien kurssien suoritukset")
   override val osasuoritukset: Option[List[LukioonValmistavanKoulutuksenOsasuoritus]],
   @KoodistoKoodiarvo("luva")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("luva", koodistoUri = "suorituksentyyppi"),
-  koulutusmoduuli: LukioonValmistavaKoulutus
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("luva", koodistoUri = "suorituksentyyppi")
 ) extends Suoritus with Toimipisteellinen {
   def arviointi: Option[List[KoodistostaLöytyväArviointi]] = None
 }
@@ -52,12 +52,12 @@ case class LukioonValmistavaKoulutus(
 trait LukioonValmistavanKoulutuksenOsasuoritus extends Suoritus
 
 case class LukioonValmistavanKurssinSuoritus(
-  suorituskieli: Option[Koodistokoodiviite] = None,
+  koulutusmoduuli: LukioonValmistavanKoulutuksenKurssi,
   tila: Koodistokoodiviite,
   arviointi: Option[List[LukionKurssinArviointi]],
+  suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("luvakurssi")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("luvakurssi", koodistoUri = "suorituksentyyppi"),
-  koulutusmoduuli: LukioonValmistavanKoulutuksenKurssi
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("luvakurssi", koodistoUri = "suorituksentyyppi")
 ) extends LukioonValmistavanKoulutuksenOsasuoritus {
   def vahvistus: Option[Henkilövahvistus] = None
 }

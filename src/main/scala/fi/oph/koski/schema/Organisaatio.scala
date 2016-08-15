@@ -1,9 +1,9 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.localization.LocalizedString
+import fi.oph.koski.localization.{Localizable, LocalizedString}
 import fi.oph.scalaschema.annotation.{Description, MinValue, RegularExpression}
 
-sealed trait Organisaatio
+sealed trait Organisaatio extends Localizable
 
 object Organisaatio {
   type Oid = String
@@ -15,6 +15,7 @@ case class OidOrganisaatio(
   nimi: Option[LocalizedString] = None
 ) extends OrganisaatioWithOid {
   def toOppilaitos = None
+  def description = nimi.getOrElse(LocalizedString.unlocalized(oid))
 }
 
 @Description("Opintopolun organisaatiopalvelusta löytyvä oppilaitos-tyyppinen organisaatio.")
@@ -27,6 +28,7 @@ case class Oppilaitos(
    nimi: Option[LocalizedString] = None
 ) extends OrganisaatioWithOid {
   def toOppilaitos = Some(this)
+  def description = nimi.getOrElse(LocalizedString.unlocalized(oid))
 }
 
 @Description("Yritys, jolla on y-tunnus")
@@ -34,14 +36,18 @@ case class Yritys(
   nimi: LocalizedString,
   @RegularExpression("\\d{7}-\\d")
   yTunnus: String
-) extends Organisaatio
+) extends Organisaatio {
+  def description = nimi
+}
 
 @Description("Tutkintotoimikunta")
 case class Tutkintotoimikunta(
   nimi: LocalizedString,
   @MinValue(1)
   tutkintotoimikunnanNumero: Int
-) extends Organisaatio
+) extends Organisaatio {
+  def description = nimi
+}
 
 trait OrganisaatioWithOid extends Organisaatio {
   @Description("Organisaation tunniste Opintopolku-palvelussa")
@@ -51,4 +57,8 @@ trait OrganisaatioWithOid extends Organisaatio {
   @ReadOnly("Tiedon syötössä nimeä ei tarvita; kuvaus haetaan Organisaatiopalvelusta")
   def nimi: Option[LocalizedString]
   def toOppilaitos: Option[Oppilaitos]
+}
+
+trait OrganisaatioonLiittyvä {
+  def omistajaOrganisaatio: OrganisaatioWithOid
 }

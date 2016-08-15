@@ -6,8 +6,6 @@
     "sukunimi" : "Ammattilainen"
   },
   "opiskeluoikeudet" : [ {
-    "alkamispäivä" : "2016-09-01",
-    "arvioituPäättymispäivä" : "2020-05-01",
     "oppilaitos" : {
       "oid" : "1.2.246.562.10.52251087186",
       "oppilaitosnumero" : {
@@ -17,6 +15,32 @@
       "nimi" : {
         "fi" : "Stadin ammattiopisto"
       }
+    },
+    "alkamispäivä" : "2016-09-01",
+    "arvioituPäättymispäivä" : "2020-05-01",
+    "tavoite" : {
+      "koodiarvo" : "ammatillinentutkinto",
+      "koodistoUri" : "suorituksentyyppi"
+    },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2016-09-01",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "4",
+          "nimi" : {
+            "fi" : "Työnantajan kokonaan rahoittama"
+          },
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      } ]
     },
     "suoritukset" : [ {
       "koulutusmoduuli" : {
@@ -29,6 +53,17 @@
         },
         "perusteenDiaarinumero" : "39/011/2014"
       },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.42456023292",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+        }
+      },
+      "tila" : {
+        "koodiarvo" : "KESKEN",
+        "koodistoUri" : "suorituksentila"
+      },
+      "alkamispäivä" : "2016-09-01",
       "suoritustapa" : {
         "koodiarvo" : "naytto",
         "nimi" : {
@@ -55,46 +90,11 @@
           }
         }
       },
-      "tila" : {
-        "koodiarvo" : "KESKEN",
-        "koodistoUri" : "suorituksentila"
-      },
-      "alkamispäivä" : "2016-09-01",
-      "toimipiste" : {
-        "oid" : "1.2.246.562.10.42456023292",
-        "nimi" : {
-          "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
-        }
-      },
       "tyyppi" : {
         "koodiarvo" : "ammatillinentutkinto",
         "koodistoUri" : "suorituksentyyppi"
       }
     } ],
-    "tavoite" : {
-      "koodiarvo" : "ammatillinentutkinto",
-      "koodistoUri" : "suorituksentyyppi"
-    },
-    "tila" : {
-      "opiskeluoikeusjaksot" : [ {
-        "alku" : "2016-09-01",
-        "tila" : {
-          "koodiarvo" : "lasna",
-          "nimi" : {
-            "fi" : "Läsnä"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
-        },
-        "opintojenRahoitus" : {
-          "koodiarvo" : "4",
-          "nimi" : {
-            "fi" : "Työnantajan kokonaan rahoittama"
-          },
-          "koodistoUri" : "opintojenrahoitus"
-        }
-      } ]
-    },
     "tyyppi" : {
       "koodiarvo" : "ammatillinenkoulutus",
       "koodistoUri" : "opiskeluoikeudentyyppi"

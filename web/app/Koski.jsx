@@ -7,7 +7,8 @@ import Bacon from 'baconjs'
 import {Error, TopLevelError, isTopLevel, handleError, errorP} from './Error.jsx'
 import {Login, userP} from './Login.jsx'
 import {OppijaHaku, oppijatP, searchInProgressP} from './OppijaHaku.jsx'
-import {Oppija, oppijaP, uusiOppijaP, selectOppijaE, updateResultE} from './Oppija.jsx'
+import {Oppija, oppijaStateP, selectOppijaE, updateResultE} from './Oppija.jsx'
+import {modelData} from './EditorModel.js'
 import {TopBar} from './TopBar.jsx'
 
 // Application state to be rendered
@@ -17,10 +18,7 @@ const stateP = Bacon.combineTemplate({
     oppijat: oppijatP,
     searchInProgress: searchInProgressP
   },
-  oppija: {
-    valittuOppija: oppijaP,
-    uusiOppija: uusiOppijaP
-  }
+  oppija: oppijaStateP
 })
 
 // Stays at `true` for five seconds after latest saved change. Reset to `false` when another Oppija is selected.
@@ -36,7 +34,7 @@ const domP = Bacon.combineWith(stateP, errorP(Bacon.combineAsArray(stateP, saved
           ? <TopLevelError status={error.httpStatus} text={error.text} />
           : ( user
               ? <div className='content-area'>
-                <OppijaHaku oppijat={oppijaHaku.oppijat} valittu={oppija.valittuOppija} searching={oppijaHaku.searchInProgress}/>
+                <OppijaHaku oppijat={oppijaHaku.oppijat} valittu={modelData(oppija.valittuOppija, 'henkilö')} searching={oppijaHaku.searchInProgress}/>
                 <Oppija oppija={oppija}/>
               </div>
               : <Login />

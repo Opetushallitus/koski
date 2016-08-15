@@ -93,7 +93,9 @@ function reloadTestFrame() {
 function triggerEvent(element, eventName) {
   const evt = testFrame().document.createEvent('HTMLEvents');
   evt.initEvent(eventName, true, true);
-  element[0].dispatchEvent(evt);
+  element.toArray().forEach(function(elem) {
+    elem.dispatchEvent(evt);
+  })
 }
 
 function openPage(path, predicate) {

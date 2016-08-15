@@ -7,7 +7,7 @@ function OpinnotPage() {
   var api = {
     getTutkinto: function(index) {
       index = typeof index !== 'undefined' ? index : 0
-      var nth = S('.opiskeluoikeus .tutkinto')[index]
+      var nth = S('.opiskeluoikeus > .suoritus > .kuvaus')[index]
       return S(nth).text()
     },
     isRakenneVisible: function() {
@@ -58,10 +58,57 @@ function OpinnotPage() {
     },
     waitUntilRakenneVisible: function() {
       return wait.until(api.isRakenneVisible)
+    },
+    suoritus: function(name) {
+      return Editor(function() { return S('.suoritus:contains("' + name + '")') })
+    },
+    expandAll: function() {
+      function expanders() { return S('.foldable.collapsed>.toggle-expand') }
+      while (expanders().is(':visible')) {
+        triggerEvent(expanders(), 'click')
+      }
     }
   }
 
   return api
+}
+
+function Editor(elem) {
+  return {
+    expand: function() {
+      triggerEvent(elem().find('>.foldable.collapsed>.toggle-expand'), 'click')
+    },
+    edit: function() {
+      triggerEvent(elem().find('.toggle-edit'), 'click')
+    },
+    isEditable: function() {
+      return elem().find('.toggle-edit').is(':visible')
+    },
+    property: function(key) {
+      return Property(function() {return elem().find('.property.'+key)})
+    }
+  }
+}
+
+function Property(elem) {
+  return {
+    addValue: function() {
+      triggerEvent(elem().find('.add-value'), 'click')
+    },
+    waitUntilLoaded: function() {
+      return wait.until(function(){
+        return !elem().find('.loading').is(':visible')
+      })()
+    },
+    setValue: function(value) {
+      return function() {
+        return Page(elem).setInputValue("select", value)().then(wait.forAjax)
+      }
+    },
+    getValue: function() {
+      return elem().find('.value').text()
+    }
+  }
 }
 
 function TutkinnonOsa(nimi) {

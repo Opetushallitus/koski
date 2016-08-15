@@ -1,6 +1,7 @@
 describe('Telma', function() {
   var page = KoskiPage()
   var todistus = TodistusPage()
+  var opinnot = OpinnotPage()
   before(Authentication().login(), resetFixtures)
 
   describe('Työhön ja itsenäiseen elämään valmentava koulutus', function() {
@@ -11,8 +12,14 @@ describe('Telma', function() {
         expect(OpinnotPage().getOppilaitos()).to.equal("Stadin ammattiopisto")
       })
     })
+    describe('Kaikki tiedot näkyvissä', function() {
+      before(opinnot.expandAll)
+      it('toimii', function() {
+        expect(S('.tyohonjaitsenaiseenelamaanvalmentavankoulutuksensuoritus .osasuoritukset .koulutusmoduuli:eq(0) .value').text()).to.equal('Toimintakyvyn vahvistaminen')
+      })
+    })
     describe('Tulostettava todistus', function() {
-      before(OpinnotPage().avaaTodistus(0))
+      before(opinnot.avaaTodistus(0))
       it('näytetään', function() {
         // See more detailed content specification in TelmaSpec.scala
         expect(todistus.vahvistus()).to.equal('Helsinki 4.6.2016 Reijo Reksi rehtori')

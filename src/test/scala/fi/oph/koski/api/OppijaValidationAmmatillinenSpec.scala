@@ -357,18 +357,22 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
   lazy val tutkinnonSuoritustapaNäyttönä = Some(Koodistokoodiviite("naytto", "ammatillisentutkinnonsuoritustapa"))
 
   lazy val tutkinnonOsaSuoritus = AmmatillisenTutkinnonOsanSuoritus(
-    tutkinnonOsa, None, None, None, None, None, tilaKesken, None,
-    Some(OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))),
-    arviointiHyvä(), None)
+    koulutusmoduuli = tutkinnonOsa,
+    tila = tilaKesken,
+    toimipiste = Some(OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))),
+    arviointi = arviointiHyvä()
+  )
 
   lazy val paikallinenTutkinnonOsa = PaikallinenTutkinnonOsa(
     PaikallinenKoodi("1", "paikallinen osa"), "Paikallinen tutkinnon osa", false, Some(laajuus)
   )
 
   lazy val paikallinenTutkinnonOsaSuoritus = AmmatillisenTutkinnonOsanSuoritus(
-    paikallinenTutkinnonOsa, None, None, None, None, None, tilaKesken, None,
-    Some(OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))),
-    arviointiHyvä(), None)
+    koulutusmoduuli = paikallinenTutkinnonOsa,
+    tila = tilaKesken,
+    toimipiste = Some(OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))),
+    arviointi = arviointiHyvä()
+  )
 
   def putTutkinnonOsaSuoritus[A](tutkinnonOsaSuoritus: AmmatillisenTutkinnonOsanSuoritus, tutkinnonSuoritustapa: Option[Koodistokoodiviite])(f: => A) = {
     val s = tutkintoSuoritus.copy(suoritustapa = tutkinnonSuoritustapa, osasuoritukset = Some(List(tutkinnonOsaSuoritus)))

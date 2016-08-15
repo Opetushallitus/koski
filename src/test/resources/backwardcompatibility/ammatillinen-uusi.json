@@ -6,38 +6,11 @@
     "sukunimi" : "Ammattilainen"
   },
   "opiskeluoikeudet" : [ {
-    "alkamispäivä" : "2016-09-01",
-    "arvioituPäättymispäivä" : "2020-05-01",
     "oppilaitos" : {
       "oid" : "1.2.246.562.10.52251087186"
     },
-    "suoritukset" : [ {
-      "koulutusmoduuli" : {
-        "tunniste" : {
-          "koodiarvo" : "351301",
-          "nimi" : {
-            "fi" : "Autoalan perustutkinto"
-          },
-          "koodistoUri" : "koulutus"
-        },
-        "perusteenDiaarinumero" : "39/011/2014"
-      },
-      "tila" : {
-        "koodiarvo" : "KESKEN",
-        "koodistoUri" : "suorituksentila"
-      },
-      "alkamispäivä" : "2016-09-01",
-      "toimipiste" : {
-        "oid" : "1.2.246.562.10.42456023292",
-        "nimi" : {
-          "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
-        }
-      },
-      "tyyppi" : {
-        "koodiarvo" : "ammatillinentutkinto",
-        "koodistoUri" : "suorituksentyyppi"
-      }
-    } ],
+    "alkamispäivä" : "2016-09-01",
+    "arvioituPäättymispäivä" : "2020-05-01",
     "tavoite" : {
       "koodiarvo" : "ammatillinentutkinto",
       "koodistoUri" : "suorituksentyyppi"
@@ -55,6 +28,33 @@
         }
       } ]
     },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "351301",
+          "nimi" : {
+            "fi" : "Autoalan perustutkinto"
+          },
+          "koodistoUri" : "koulutus"
+        },
+        "perusteenDiaarinumero" : "39/011/2014"
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.42456023292",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+        }
+      },
+      "tila" : {
+        "koodiarvo" : "KESKEN",
+        "koodistoUri" : "suorituksentila"
+      },
+      "alkamispäivä" : "2016-09-01",
+      "tyyppi" : {
+        "koodiarvo" : "ammatillinentutkinto",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    } ],
     "tyyppi" : {
       "koodiarvo" : "ammatillinenkoulutus",
       "koodistoUri" : "opiskeluoikeudentyyppi"

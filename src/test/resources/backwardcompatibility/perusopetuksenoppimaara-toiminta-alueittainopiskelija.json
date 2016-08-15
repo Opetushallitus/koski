@@ -6,8 +6,6 @@
     "sukunimi" : "Koululainen"
   },
   "opiskeluoikeudet" : [ {
-    "alkamispäivä" : "2008-08-15",
-    "päättymispäivä" : "2016-06-04",
     "oppilaitos" : {
       "oid" : "1.2.246.562.10.14613773812",
       "oppilaitosnumero" : {
@@ -18,14 +16,57 @@
         "fi" : "Jyväskylän normaalikoulu"
       }
     },
+    "alkamispäivä" : "2008-08-15",
+    "päättymispäivä" : "2016-06-04",
     "tavoite" : {
       "koodiarvo" : "perusopetuksenoppimaara",
       "koodistoUri" : "suorituksentyyppi"
     },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2008-08-15",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      }, {
+        "alku" : "2016-06-04",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "nimi" : {
+            "fi" : "Valmistunut"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
+    "lisätiedot" : {
+      "perusopetuksenAloittamistaLykätty" : false,
+      "aloittanutEnnenOppivelvollisuutta" : false,
+      "erityisenTuenPäätös" : {
+        "alku" : "2008-08-15",
+        "loppu" : "2016-06-04",
+        "opiskeleeToimintaAlueittain" : true,
+        "erityisryhmässä" : true
+      },
+      "vuosiluokkiinSitoutumatonOpetus" : false
+    },
     "suoritukset" : [ {
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "koodistoUri" : "suorituksentila"
+      "koulutusmoduuli" : {
+        "perusteenDiaarinumero" : "104/011/2014",
+        "tunniste" : {
+          "koodiarvo" : "201101",
+          "koodistoUri" : "koulutus"
+        }
+      },
+      "oppimäärä" : {
+        "koodiarvo" : "aikuistenperusopetus",
+        "koodistoUri" : "perusopetuksenoppimaara"
       },
       "toimipiste" : {
         "oid" : "1.2.246.562.10.14613773812",
@@ -36,6 +77,10 @@
         "nimi" : {
           "fi" : "Jyväskylän normaalikoulu"
         }
+      },
+      "tila" : {
+        "koodiarvo" : "VALMIS",
+        "koodistoUri" : "suorituksentila"
       },
       "vahvistus" : {
         "päivä" : "2016-06-04",
@@ -73,24 +118,9 @@
           }
         } ]
       },
-      "koulutusmoduuli" : {
-        "perusteenDiaarinumero" : "104/011/2014",
-        "tunniste" : {
-          "koodiarvo" : "201101",
-          "koodistoUri" : "koulutus"
-        }
-      },
-      "oppimäärä" : {
-        "koodiarvo" : "aikuistenperusopetus",
-        "koodistoUri" : "perusopetuksenoppimaara"
-      },
       "suoritustapa" : {
         "koodiarvo" : "erityinentutkinto",
         "koodistoUri" : "perusopetuksensuoritustapa"
-      },
-      "tyyppi" : {
-        "koodiarvo" : "perusopetuksenoppimaara",
-        "koodistoUri" : "suorituksentyyppi"
       },
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
@@ -103,10 +133,6 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksentoimintaalue",
-          "koodistoUri" : "suorituksentyyppi"
-        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "S",
@@ -116,7 +142,11 @@
             "fi" : "Motoriset taidot kehittyneet hyvin perusopetuksen aikana"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksentoimintaalue",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -128,17 +158,17 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksentoimintaalue",
-          "koodistoUri" : "suorituksentyyppi"
-        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "S",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksentoimintaalue",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -150,17 +180,17 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksentoimintaalue",
-          "koodistoUri" : "suorituksentyyppi"
-        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "S",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksentoimintaalue",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -172,17 +202,17 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksentoimintaalue",
-          "koodistoUri" : "suorituksentyyppi"
-        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "S",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksentoimintaalue",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -194,56 +224,26 @@
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
         },
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksentoimintaalue",
-          "koodistoUri" : "suorituksentyyppi"
-        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "S",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
           },
           "hyväksytty" : true
-        } ]
-      } ]
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksentoimintaalue",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "perusopetuksenoppimaara",
+        "koodistoUri" : "suorituksentyyppi"
+      }
     } ],
-    "tila" : {
-      "opiskeluoikeusjaksot" : [ {
-        "alku" : "2008-08-15",
-        "tila" : {
-          "koodiarvo" : "lasna",
-          "nimi" : {
-            "fi" : "Läsnä"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
-        }
-      }, {
-        "alku" : "2016-06-04",
-        "tila" : {
-          "koodiarvo" : "valmistunut",
-          "nimi" : {
-            "fi" : "Valmistunut"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
-        }
-      } ]
-    },
     "tyyppi" : {
       "koodiarvo" : "perusopetus",
       "koodistoUri" : "opiskeluoikeudentyyppi"
-    },
-    "lisätiedot" : {
-      "perusopetuksenAloittamistaLykätty" : false,
-      "aloittanutEnnenOppivelvollisuutta" : false,
-      "erityisenTuenPäätös" : {
-        "alku" : "2008-08-15",
-        "loppu" : "2016-06-04",
-        "opiskeleeToimintaAlueittain" : true,
-        "erityisryhmässä" : true
-      },
-      "vuosiluokkiinSitoutumatonOpetus" : false
     }
   } ]
 }

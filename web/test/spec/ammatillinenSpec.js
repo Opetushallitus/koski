@@ -1,4 +1,6 @@
 describe('Ammatillinen koulutus', function() {
+  before(Authentication().login())
+  
   var addOppija = AddOppijaPage()
   var page = KoskiPage()
   var login = LoginPage()
@@ -21,7 +23,6 @@ describe('Ammatillinen koulutus', function() {
       return prepareForNewOppija(username, searchString)()
         .then(addOppija.enterValidData(oppijaData))
         .then(addOppija.submitAndExpectSuccess(oppijaData.hetu, oppijaData.tutkinto))
-        .then(OpinnotPage().waitUntilRakenneVisible())
     }
   }
 
@@ -204,45 +205,17 @@ describe('Ammatillinen koulutus', function() {
     })
   })
 
-  describe('Tutkinnon rakenne', function() {
-    describe("Ammatillinen perustutkinto", function() {
-      before(addNewOppija('kalle', 'Tunkkila', { hetu: '091095-9833'}))
-
-      it('Osaamisala- ja suoritustapavalinnat näytetään', function() {
-        expect(opinnot.isSuoritustapaSelectable()).to.equal(true)
-        expect(opinnot.isOsaamisalaSelectable()).to.equal(true)
-      })
-      describe('Kun valitaan osaamisala ja suoritustapa', function() {
-        before(opinnot.selectSuoritustapa("ops"), opinnot.selectOsaamisala("1527"))
-
-        it('Näytetään tutkinnon rakenne', function() {
-          expect(opinnot.getTutkinnonOsat()[0]).to.equal('Myynti ja tuotetuntemus')
-        })
-      })
-    })
-
-    describe('Erikoisammattitutkinto', function() {
-      before(addNewOppija('kalle', 'Tunkkila', { etunimet: 'Tero Terde', kutsumanimi: 'Terde', sukunimi: 'Tunkkila', hetu: '091095-9833', oppilaitos: 'Stadin', tutkinto: 'erikois'}))
-
-      it('Ei näytetä osaamisala- ja suoritustapavalintoja (koska mitään valittavaa ei ole)', function() {
-        expect(opinnot.isSuoritustapaSelectable()).to.equal(false)
-        expect(opinnot.isOsaamisalaSelectable()).to.equal(false)
-      })
-
-      it('Näytetään tutkinnon rakenne', function() {
-        expect(opinnot.getTutkinnonOsat()[0]).to.equal('Johtaminen ja henkilöstön kehittäminen')
-      })
-    })
-  })
-
   describe('Tutkinnon tietojen muuttaminen', function() {
-    before(Authentication().login(), resetFixtures, page.openPage, addNewOppija('kalle', 'Tunkkila', { hetu: '091095-9833'}))
+    before(resetFixtures, page.openPage, addNewOppija('kalle', 'Tunkkila', { hetu: '091095-9833'}))
     it('Aluksi ei näytetä \"Kaikki tiedot tallennettu\" -tekstiä', function() {
       expect(page.isSavedLabelShown()).to.equal(false)
     })
 
-    describe('Kun valitaan osaamisala ja suoritustapa', function() {
-      before(opinnot.selectSuoritustapa("ops"), opinnot.selectOsaamisala("1527"))
+    describe('Kun valitaan suoritustapa', function() {
+      //before(opinnot.selectSuoritustapa("ops"), opinnot.selectOsaamisala("1527"))
+      var suoritus = opinnot.suoritus('Autoalan perustutkinto')
+      var suoritustapa = suoritus.property('suoritustapa')
+      before(suoritus.expand, suoritus.edit, suoritustapa.addValue, suoritustapa.waitUntilLoaded, suoritustapa.setValue('ops'))
 
       describe('Muutosten näyttäminen', function() {
         before(wait.until(page.isSavedLabelShown))
@@ -252,80 +225,51 @@ describe('Ammatillinen koulutus', function() {
       })
 
       describe('Kun sivu ladataan uudelleen', function() {
-        before( page.oppijaHaku.search('ero', 4),
-          page.oppijaHaku.selectOppija('Tunkkila'), opinnot.waitUntilRakenneVisible())
+        before(
+          page.oppijaHaku.search('ero', 4),
+          page.oppijaHaku.selectOppija('Tunkkila'),
+          suoritus.expand
+        )
 
         it('Muuttuneet tiedot on tallennettu', function() {
-          expect(opinnot.getTutkinnonOsat()[0]).to.equal('Myynti ja tuotetuntemus')
+          expect(suoritustapa.getValue()).to.equal('ops')
         })
       })
     })
 
-    describe('Kun annetaan arviointi tutkinnonosalle', function() {
-      describe('Arvion antaminen käyttöliittymän kautta', function() {
-        describe('OPS-muotoinen, asteikko T1-K3', function() {
-          before(opinnot.selectSuoritustapa("ops"), opinnot.selectOsaamisala("1527"))
-          var tutkinnonOsa = opinnot.getTutkinnonOsa("Markkinointi ja asiakaspalvelu")
-          before(tutkinnonOsa.addArviointi("H2"))
-          it('Uusi arviointi näytetään', function() {
-            expect(tutkinnonOsa.getArvosana()).to.equal("H2")
-          })
-
-          describe('Kun sivu ladataan uudelleen', function() {
-            before( page.oppijaHaku.search('ero', 4),
-              page.oppijaHaku.selectOppija('Tunkkila'), opinnot.waitUntilRakenneVisible())
-
-            it('Muuttuneet tiedot on tallennettu', function() {
-              expect(tutkinnonOsa.getArvosana()).to.equal("H2")
-            })
-          })
-        })
-        describe('Näyttömuotoinen, asteikko HYVÄKSYTTY/HYLÄTTY', function() {
-          before(opinnot.selectSuoritustapa("naytto"), opinnot.selectOsaamisala("1527"))
-          var tutkinnonOsa = opinnot.getTutkinnonOsa("Myynti ja tuotetuntemus")
-          before(tutkinnonOsa.addArviointi("Hylätty"))
-          it('Uusi arviointi näytetään', function() {
-            expect(tutkinnonOsa.getArvosana()).to.equal("Hylätty")
-          })
-
-          describe('Kun sivu ladataan uudelleen', function() {
-            before( page.oppijaHaku.search('ero', 4),
-              page.oppijaHaku.selectOppija('Tunkkila'), opinnot.waitUntilRakenneVisible())
-
-            it('Muuttuneet tiedot on tallennettu', function() {
-              expect(tutkinnonOsa.getArvosana()).to.equal("Hylätty")
-            })
-          })
+    describe('Muokkaus', function() {
+      describe('Ulkoisen järjestelmän data', function() {
+        before(page.openPage, page.oppijaHaku.search('010675-9981', page.isOppijaSelected('Kikka')))
+        it('estetty', function() {
+          var suoritus = opinnot.suoritus('Lääketieteen lisensiaatti')
+          suoritus.expand()
+          expect(suoritus.isEditable()).to.equal(false)
         })
       })
-    })
 
-    describe('Virhetilanteet', function() {
-      verifyErrorMessage('Kun tallennus epäonnistuu', 500, 'Järjestelmässä tapahtui odottamaton virhe. Yritä myöhemmin uudelleen.')
-      verifyErrorMessage('Kun toinen käyttäjä on tehnyt muutoksen', 409, 'Muutoksia ei voida tallentaa, koska toinen käyttäjä on muuttanut tietoja sivun latauksen jälkeen. Lataa sivu uudelleen.')
-
-      function verifyErrorMessage(desc, statusCode, message) {
-        describe(desc, function() {
-          before(
-            mockHttp("/koski/api/oppija", { status: statusCode }),
-            opinnot.selectOsaamisala("1622"),
-            wait.until(page.isErrorShown)
-          )
-
-          it('Näytetään virheilmoitus', function() {
-            expect(page.getErrorMessage()).to.equal(message)
-          })
+      describe('Ilman kirjoitusoikeuksia', function() {
+        before(Authentication().logout, Authentication().login('hiirikatselija'), page.openPage, page.oppijaHaku.search('070796-9652', page.isOppijaSelected('Eero')))
+        it('estetty', function() {
+          var suoritus = opinnot.suoritus('Autoalan perustutkinto')
+          suoritus.expand()
+          expect(suoritus.isEditable()).to.equal(false)
         })
-      }
+      })
     })
   })
 
   describe('Ammatillisen perustutkinnon päättötodistus', function() {
-    before(resetFixtures, page.openPage, page.oppijaHaku.search('120496-949B', page.isOppijaSelected('Aarne')))
+    before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.search('120496-949B', page.isOppijaSelected('Aarne')))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
         expect(OpinnotPage().getTutkinto()).to.equal("Luonto- ja ympäristöalan perustutkinto")
         expect(OpinnotPage().getOppilaitos()).to.equal("Stadin ammattiopisto")
+      })
+    })
+    describe('Kaikki tiedot näkyvissä', function() {
+      before(opinnot.expandAll)
+      it('toimii', function() {
+        expect(S('.työtehtävät .value').text()).to.equal('Toimi harjoittelijana Sortti-asemalla')
       })
     })
     describe('Tulostettava todistus', function() {
@@ -349,6 +293,13 @@ describe('Ammatillinen koulutus', function() {
         })
       })
 
+      describe('Kaikki tiedot näkyvissä', function() {
+        before(opinnot.expandAll)
+        it('toimii', function() {
+          expect(S('.nayttotutkintoonvalmistavankoulutuksensuoritus .osasuoritukset .koulutusmoduuli .value').text()).to.equal('Johtaminen ja henkilöstön kehittäminen')
+        })
+      })
+
       describe('Tulostettava todistus', function() {
         before(OpinnotPage().avaaTodistus(0))
         it('näytetään', function() {
@@ -363,6 +314,13 @@ describe('Ammatillinen koulutus', function() {
         it('näytetään', function() {
           expect(OpinnotPage().getOppilaitos()).to.equal("Stadin ammattiopisto")
           expect(OpinnotPage().getTutkinto(1)).to.equal("Autoalan työnjohdon erikoisammattitutkinto")
+        })
+      })
+
+      describe('Kaikki tiedot näkyvissä', function() {
+        before(opinnot.expandAll)
+        it('toimii', function() {
+          expect(S('.tutkinnonosa .koulutusmoduuli .value').eq(1).text()).to.equal('Asiakaspalvelu ja korjaamopalvelujen markkinointi')
         })
       })
 
@@ -383,6 +341,14 @@ describe('Ammatillinen koulutus', function() {
         expect(OpinnotPage().getTutkinto()).to.equal("Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)")
       })
     })
+
+    describe('Kaikki tiedot näkyvissä', function() {
+      before(opinnot.expandAll)
+      it('toimii', function() {
+        expect(S('.ammatilliseenperuskoulutukseenvalmentavankoulutuksenosansuoritus:eq(0) .koulutusmoduuli .value').text()).to.equal('Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen')
+      })
+    })
+
     describe('Tulostettava todistus', function() {
       before(OpinnotPage().avaaTodistus(0))
       it('näytetään', function() {

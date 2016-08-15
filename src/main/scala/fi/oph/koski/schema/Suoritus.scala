@@ -9,7 +9,9 @@ import fi.oph.scalaschema.annotation._
 trait Suoritus {
   @Description("Suorituksen tyyppi, jolla erotellaan eri koulutusmuotoihin (perusopetus, lukio, ammatillinen...) ja eri tasoihin (tutkinto, tutkinnon osa, kurssi, oppiaine...) liittyvät suoritukset")
   @KoodistoUri("suorituksentyyppi")
+  @Hidden
   def tyyppi: Koodistokoodiviite
+  @Representative
   def koulutusmoduuli: Koulutusmoduuli
   @Description("Suorituksen alkamispäivä. Muoto YYYY-MM-DD")
   def alkamispäivä: Option[LocalDate] = None
@@ -46,8 +48,9 @@ trait ValmentavaSuoritus extends Suoritus with Toimipisteellinen {
   override def osasuoritukset: Option[List[ValmentavanKoulutuksenOsanSuoritus]] = None
 }
 
-trait Toimipisteellinen {
+trait Toimipisteellinen extends OrganisaatioonLiittyvä {
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu. Jos oppilaitoksella ei ole toimipisteitä, syötetään tähän oppilaitoksen tiedot.")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   def toimipiste: OrganisaatioWithOid
+  def omistajaOrganisaatio = toimipiste
 }

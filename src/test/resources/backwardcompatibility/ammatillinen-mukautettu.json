@@ -6,10 +6,27 @@
     "sukunimi" : "Ammattilainen"
   },
   "opiskeluoikeudet" : [ {
-    "alkamispäivä" : "2016-09-01",
-    "arvioituPäättymispäivä" : "2020-05-01",
     "oppilaitos" : {
       "oid" : "1.2.246.562.10.52251087186"
+    },
+    "alkamispäivä" : "2016-09-01",
+    "arvioituPäättymispäivä" : "2020-05-01",
+    "tavoite" : {
+      "koodiarvo" : "ammatillinentutkinto",
+      "koodistoUri" : "suorituksentyyppi"
+    },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2016-09-01",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
     },
     "suoritukset" : [ {
       "koulutusmoduuli" : {
@@ -22,6 +39,17 @@
         },
         "perusteenDiaarinumero" : "39/011/2014"
       },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.42456023292",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+        }
+      },
+      "tila" : {
+        "koodiarvo" : "KESKEN",
+        "koodistoUri" : "suorituksentila"
+      },
+      "alkamispäivä" : "2016-09-01",
       "suoritustapa" : {
         "koodiarvo" : "ops",
         "nimi" : {
@@ -29,17 +57,6 @@
         },
         "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
         "koodistoVersio" : 1
-      },
-      "tila" : {
-        "koodiarvo" : "KESKEN",
-        "koodistoUri" : "suorituksentila"
-      },
-      "alkamispäivä" : "2016-09-01",
-      "toimipiste" : {
-        "oid" : "1.2.246.562.10.42456023292",
-        "nimi" : {
-          "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
-        }
       },
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
@@ -62,24 +79,15 @@
             }
           }
         },
-        "lisätiedot" : [ {
-          "tunniste" : {
-            "koodiarvo" : "mukautettu",
-            "koodistoUri" : "ammatillisentutkinnonosanlisatieto"
-          },
-          "kuvaus" : {
-            "fi" : "Tutkinnon osan ammattitaitovaatimuksia ja osaamisen arviointi on mukautettu (ja/tai niistä on poikettu) ammatillisesta peruskoulutuksesta annetun lain\n(630/1998, muutos 246/2015) 19 a (ja/tai 21) §:n perusteella"
-          }
-        } ],
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
           "nimi" : {
             "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
           }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
           "arvosana" : {
@@ -128,6 +136,15 @@
             }
           } ]
         },
+        "lisätiedot" : [ {
+          "tunniste" : {
+            "koodiarvo" : "mukautettu",
+            "koodistoUri" : "ammatillisentutkinnonosanlisatieto"
+          },
+          "kuvaus" : {
+            "fi" : "Tutkinnon osan ammattitaitovaatimuksia ja osaamisen arviointi on mukautettu (ja/tai niistä on poikettu) ammatillisesta peruskoulutuksesta annetun lain\n(630/1998, muutos 246/2015) 19 a (ja/tai 21) §:n perusteella"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",
           "koodistoUri" : "suorituksentyyppi"
@@ -138,23 +155,6 @@
         "koodistoUri" : "suorituksentyyppi"
       }
     } ],
-    "tavoite" : {
-      "koodiarvo" : "ammatillinentutkinto",
-      "koodistoUri" : "suorituksentyyppi"
-    },
-    "tila" : {
-      "opiskeluoikeusjaksot" : [ {
-        "alku" : "2016-09-01",
-        "tila" : {
-          "koodiarvo" : "lasna",
-          "nimi" : {
-            "fi" : "Läsnä"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
-        }
-      } ]
-    },
     "tyyppi" : {
       "koodiarvo" : "ammatillinenkoulutus",
       "koodistoUri" : "opiskeluoikeudentyyppi"

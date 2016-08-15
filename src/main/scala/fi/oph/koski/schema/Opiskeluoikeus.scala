@@ -10,22 +10,24 @@ object Opiskeluoikeus {
   val VERSIO_1 = 1
 }
 
-trait Opiskeluoikeus {
+trait Opiskeluoikeus extends OrganisaatioonLiittyvä with Lähdejärjestelmällinen {
   @Description("Opiskeluoikeuden tyyppi, jolla erotellaan eri koulutusmuotoihin (perusopetus, lukio, ammatillinen...) liittyvät opiskeluoikeudet")
   @OksaUri("tmpOKSAID869", "koulutusmuoto (1)")
   @KoodistoUri("opiskeluoikeudentyyppi")
+  @Hidden
   def tyyppi: Koodistokoodiviite
   @Description("Opiskeluoikeuden uniikki tunniste, joka generoidaan Koski-järjestelmässä. Tietoja syötettäessä kenttä ei ole pakollinen. " +
     "Tietoja päivitettäessä Koski tunnistaa opiskeluoikeuden joko tämän id:n tai muiden kenttien (oppijaOid, organisaatio, opiskeluoikeuden tyyppi, paikallinen id) perusteella")
+  @Hidden
   def id: Option[Int]
   @Description("Versionumero, joka generoidaan Koski-järjestelmässä. Tietoja syötettäessä kenttä ei ole pakollinen. " +
     "Ensimmäinen tallennettu versio saa versionumeron 1, jonka jälkeen jokainen päivitys aiheuttaa versionumeron noston yhdellä. " +
     "Jos tietoja päivitettäessä käytetään versionumeroa, pitää sen täsmätä viimeisimpään tallennettuun versioon. " +
     "Tällä menettelyllä esimerkiksi käyttöliittymässä varmistetaan, ettei tehdä päivityksiä vanhentuneeseen dataan.")
+  @Hidden
   def versionumero: Option[Int]
   @Description("Lähdejärjestelmän tunniste ja opiskeluoikeuden tunniste lähdejärjestelmässä. " +
     "Käytetään silloin, kun opiskeluoikeus on tuotu Koskeen tiedonsiirrolla ulkoisesta järjestelmästä, eli käytännössä oppilashallintojärjestelmästä.")
-  def lähdejärjestelmänId: Option[LähdejärjestelmäId]
   @Description("Opiskelijan opiskeluoikeuden alkamisaika joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
   def alkamispäivä: Option[LocalDate]
   @Description("Opiskelijan opiskeluoikeuden arvioitu päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
@@ -36,6 +38,7 @@ trait Opiskeluoikeus {
   def oppilaitos: Oppilaitos
   @Description("Koulutustoimija, käytännössä oppilaitoksen yliorganisaatio")
   @ReadOnly("Tiedon syötössä tietoa ei tarvita; organisaation tiedot haetaan Organisaatiopalvelusta")
+  @Hidden
   def koulutustoimija: Option[OrganisaatioWithOid]
   @Description("Opiskeluoikeuteen liittyvien tutkinto- ja muiden suoritusten tiedot")
   def suoritukset: List[Suoritus]
@@ -44,6 +47,7 @@ trait Opiskeluoikeus {
   @Description("Läsnä- ja poissaolojaksot päivämääräväleinä.")
   def läsnäolotiedot: Option[Läsnäolotiedot]
   def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid): Opiskeluoikeus
+  def omistajaOrganisaatio = oppilaitos
 }
 
 trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
@@ -52,6 +56,7 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
 }
 
 trait OpiskeluoikeudenTila {
+  @Representative
   def opiskeluoikeusjaksot: List[Opiskeluoikeusjakso]
 }
 
@@ -103,10 +108,14 @@ object YleinenLäsnäolojakso {
 }
 case class LähdejärjestelmäId(
   @Description("Opiskeluoikeuden paikallinen uniikki tunniste lähdejärjestelmässä. Tiedonsiirroissa tarpeellinen, jotta voidaan varmistaa päivitysten osuminen oikeaan opiskeluoikeuteen.")
-  id: String,
+  id: Option[String],
   @Description("Lähdejärjestelmän yksilöivä tunniste. Tällä tunnistetaan järjestelmä, josta tiedot on tuotu Koskeen. " +
     "Kullakin erillisellä tietojärjestelmäinstanssilla tulisi olla oma tunniste. " +
     "Jos siis oppilaitoksella on oma tietojärjestelmäinstanssi, tulee myös tällä instanssilla olla uniikki tunniste.")
   @KoodistoUri("lahdejarjestelma")
   lähdejärjestelmä: Koodistokoodiviite
 )
+trait Lähdejärjestelmällinen {
+  @Hidden
+  def lähdejärjestelmänId: Option[LähdejärjestelmäId]
+}

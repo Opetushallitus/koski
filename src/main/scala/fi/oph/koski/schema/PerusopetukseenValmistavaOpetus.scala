@@ -8,10 +8,10 @@ case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
   id: Option[Int] = None,
   versionumero: Option[Int] = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
-  alkamispäivä: Option[LocalDate],
-  päättymispäivä: Option[LocalDate],
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OrganisaatioWithOid] = None,
+  alkamispäivä: Option[LocalDate],
+  päättymispäivä: Option[LocalDate],
   tila: PerusopetuksenOpiskeluoikeudenTila,
   läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
   @MinItems(1)
@@ -26,15 +26,16 @@ case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
 }
 
 case class PerusopetukseenValmistavanOpetuksenSuoritus(
-  suorituskieli: Option[Koodistokoodiviite] = None,
-  tila: Koodistokoodiviite,
-  toimipiste: OrganisaatioWithOid,
-  vahvistus: Option[Henkilövahvistus] = None,
-  @KoodistoKoodiarvo("perusopetukseenvalmistavaopetus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetukseenvalmistavaopetus", koodistoUri = "suorituksentyyppi"),
   koulutusmoduuli: PerusopetukseenValmistavaOpetus = PerusopetukseenValmistavaOpetus(),
+  toimipiste: OrganisaatioWithOid,
+  tila: Koodistokoodiviite,
+  vahvistus: Option[Henkilövahvistus] = None,
+  suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineiden suoritukset")
-  override val osasuoritukset: Option[List[PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus]]
+  @Title("Oppiaineet")
+  override val osasuoritukset: Option[List[PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus]],
+  @KoodistoKoodiarvo("perusopetukseenvalmistavaopetus")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetukseenvalmistavaopetus", koodistoUri = "suorituksentyyppi")
 ) extends Suoritus with Toimipisteellinen {
   def arviointi = None
 }
@@ -42,8 +43,8 @@ case class PerusopetukseenValmistavanOpetuksenSuoritus(
 case class PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus(
   koulutusmoduuli: PerusopetukseenValmistavanOpetuksenOppiaine,
   tila: Koodistokoodiviite,
-  suorituskieli: Option[Koodistokoodiviite] = None,
   arviointi: Option[List[SanallinenPerusopetuksenOppiaineenArviointi]],
+  suorituskieli: Option[Koodistokoodiviite] = None,
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetukseenvalmistavanopetuksenoppiaine", koodistoUri = "suorituksentyyppi")
 ) extends Suoritus {
   def vahvistus = None

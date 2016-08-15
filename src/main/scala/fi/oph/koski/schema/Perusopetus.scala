@@ -11,21 +11,21 @@ case class PerusopetuksenOpiskeluoikeus(
   id: Option[Int] = None,
   versionumero: Option[Int]  = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
-  alkamispäivä: Option[LocalDate] = None,
-  päättymispäivä: Option[LocalDate] = None,
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OrganisaatioWithOid] = None,
+  alkamispäivä: Option[LocalDate] = None,
+  päättymispäivä: Option[LocalDate] = None,
   @Description("Opiskeluoikeuden tavoite-tieto kertoo sen, suorittaako perusopetuksen koko oppimäärää vai yksittäisen oppiaineen oppimäärää")
   @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("perusopetuksenoppimaara")
   @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
   tavoite: Koodistokoodiviite,
-  suoritukset: List[PerusopetuksenPäätasonSuoritus],
   tila: PerusopetuksenOpiskeluoikeudenTila,
   läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
+  lisätiedot: Option[PerusopetuksenOpiskeluoikeudenLisätiedot] = None,
+  suoritukset: List[PerusopetuksenPäätasonSuoritus],
   @KoodistoKoodiarvo("perusopetus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetus", "opiskeluoikeudentyyppi"),
-  lisätiedot: Option[PerusopetuksenOpiskeluoikeudenLisätiedot] = None
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetus", "opiskeluoikeudentyyppi")
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OrganisaatioWithOid) = this.copy(koulutustoimija = Some(koulutustoimija))
@@ -92,57 +92,59 @@ trait PerusopetuksenPäätasonSuoritus extends Suoritus with Toimipisteellinen
 
 @Description("Perusopetuksen vuosiluokan suoritus. Nämä suoritukset näkyvät lukuvuositodistuksella.")
 case class PerusopetuksenVuosiluokanSuoritus(
+  @Description("Luokka-aste ilmaistaan perusopetuksenluokkaaste-koodistolla")
+  koulutusmoduuli: PerusopetuksenLuokkaAste,
   @Description("Luokan tunniste, esimerkiksi 9C")
   luokka: String,
+  toimipiste: OrganisaatioWithOid,
   override val alkamispäivä: Option[LocalDate],
   tila: Koodistokoodiviite,
-  toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Henkilövahvistus] = None,
   suorituskieli: Option[Koodistokoodiviite],
   jääLuokalle: Boolean = false,
   käyttäytymisenArvio: Option[PerusopetuksenOppiaineenArviointi] = None,
-  @Description("Luokka-aste ilmaistaan perusopetuksenluokkaaste-koodistolla")
-  koulutusmoduuli: PerusopetuksenLuokkaAste,
-  @KoodistoKoodiarvo("perusopetuksenvuosiluokka")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenvuosiluokka", koodistoUri = "suorituksentyyppi"),
   @Description("Vuosiluokan suoritukseen liittyvät oppiaineen suoritukset")
-  override val osasuoritukset: Option[List[OppiaineenTaiToiminta_AlueenSuoritus]] = None
+  @Title("Oppiaineet")
+  override val osasuoritukset: Option[List[OppiaineenTaiToiminta_AlueenSuoritus]] = None,
+  @KoodistoKoodiarvo("perusopetuksenvuosiluokka")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenvuosiluokka", koodistoUri = "suorituksentyyppi")
 ) extends PerusopetuksenPäätasonSuoritus {
   override def arviointi = None
 }
 
 @Description("Perusopetuksen koko oppimäärän suoritus. Nämä suoritukset näkyvät päättötodistuksella.")
 case class PerusopetuksenOppimääränSuoritus(
-  suorituskieli: Option[Koodistokoodiviite] = None,
-  tila: Koodistokoodiviite,
-  toimipiste: OrganisaatioWithOid,
-  vahvistus: Option[Henkilövahvistus] = None,
   koulutusmoduuli: Perusopetus,
   @KoodistoUri("perusopetuksenoppimaara")
   @Description("Tieto siitä, suoritetaanko perusopetusta nuorten vai aikuisten oppimäärän mukaisesti")
   oppimäärä: Koodistokoodiviite,
+  toimipiste: OrganisaatioWithOid,
+  tila: Koodistokoodiviite,
+  vahvistus: Option[Henkilövahvistus] = None,
   @KoodistoUri("perusopetuksensuoritustapa")
   @Description("Tieto siitä, suoritetaanko perusopetusta normaalina koulutuksena vai erityisenä tutkintona")
   suoritustapa: Koodistokoodiviite,
-  @KoodistoKoodiarvo("perusopetuksenoppimaara")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppimaara", koodistoUri = "suorituksentyyppi"),
+  suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
-  override val osasuoritukset: Option[List[OppiaineenTaiToiminta_AlueenSuoritus]] = None
+  @Title("Oppiaineet")
+  override val osasuoritukset: Option[List[OppiaineenTaiToiminta_AlueenSuoritus]] = None,
+  @KoodistoKoodiarvo("perusopetuksenoppimaara")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppimaara", koodistoUri = "suorituksentyyppi")
 ) extends PerusopetuksenPäätasonSuoritus {
   def arviointi: Option[List[KoodistostaLöytyväArviointi]] = None
 }
 
 @Description("Perusopetuksen yksittäisen oppiaineen oppimäärän suoritus erillisenä kokonaisuutena")
 case class PerusopetuksenOppiaineenOppimääränSuoritus(
-  suorituskieli: Option[Koodistokoodiviite] = None,
-  tila: Koodistokoodiviite,
-  toimipiste: OrganisaatioWithOid,
-  override val vahvistus: Option[Henkilövahvistus] = None,
-  @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppiaineenoppimaara", koodistoUri = "suorituksentyyppi"),
-  koulutusmoduuli: PerusopetuksenOppiaine,
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
-  arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None
+  koulutusmoduuli: PerusopetuksenOppiaine,
+  toimipiste: OrganisaatioWithOid,
+  tila: Koodistokoodiviite,
+  arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
+  override val vahvistus: Option[Henkilövahvistus] = None,
+  suorituskieli: Option[Koodistokoodiviite] = None,
+  @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
 ) extends PerusopetuksenPäätasonSuoritus with OppiaineenSuoritus
 
 sealed trait OppiaineenTaiToiminta_AlueenSuoritus extends Suoritus
@@ -150,13 +152,13 @@ sealed trait OppiaineenTaiToiminta_AlueenSuoritus extends Suoritus
 @Description("Perusopetuksen oppiaineen suoritus osana perusopetuksen oppimäärän tai vuosiluokan suoritusta")
 case class PerusopetuksenOppiaineenSuoritus(
   koulutusmoduuli: PerusopetuksenOppiaine,
-  suorituskieli: Option[Koodistokoodiviite],
-  tila: Koodistokoodiviite,
   @Description("Tieto siitä, onko oppiaineen oppimäärä yksilöllistetty (true/false)")
   yksilöllistettyOppimäärä: Boolean = false,
+  tila: Koodistokoodiviite,
+  arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
+  suorituskieli: Option[Koodistokoodiviite],
   @KoodistoKoodiarvo("perusopetuksenoppiaine")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenoppiaine", koodistoUri = "suorituksentyyppi"),
-  arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenoppiaine", koodistoUri = "suorituksentyyppi")
 ) extends OppiaineenSuoritus with OppiaineenTaiToiminta_AlueenSuoritus {
   override def tarvitseeVahvistuksen = false
 }
@@ -164,11 +166,11 @@ case class PerusopetuksenOppiaineenSuoritus(
 @Description("Perusopetuksen toiminta-alueen suoritus osana perusopetuksen oppimäärän tai vuosiluokan suoritusta. Suoritukset voidaan kirjata oppiaineiden sijaan toiminta-alueittain, jos opiskelijalle on tehty erityisen tuen päätös.")
 case class PerusopetuksenToiminta_AlueenSuoritus(
   koulutusmoduuli: PerusopetuksenToiminta_Alue,
-  suorituskieli: Option[Koodistokoodiviite] = None,
   tila: Koodistokoodiviite,
+  arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
+  suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("perusopetuksentoimintaalue")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksentoimintaalue", koodistoUri = "suorituksentyyppi"),
-  arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksentoimintaalue", koodistoUri = "suorituksentyyppi")
 ) extends OppiaineenTaiToiminta_AlueenSuoritus {
   def vahvistus: Option[Vahvistus] = None
 }

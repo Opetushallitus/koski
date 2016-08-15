@@ -3,37 +3,60 @@ import Bacon from 'baconjs'
 import Http from './http'
 import {routeP} from './router'
 import {CreateOppija} from './CreateOppija.jsx'
-import {OpiskeluOikeus, opiskeluOikeusChange} from './OpiskeluOikeus.jsx'
+import { modelTitle, modelLookup, modelSet, objectLookup } from './EditorModel.js'
+import {OppijaEditor} from './OppijaEditor.jsx'
 import * as L from 'partial.lenses'
 import R from 'ramda'
 
 export const selectOppijaE = routeP.map('.oppijaId').flatMap(oppijaId => {
-  return oppijaId ? Bacon.once({loading: true}).concat(Http.get(`/koski/api/oppija/${oppijaId}`)) : Bacon.once({ empty: true})
+  return oppijaId
+    ? Bacon.once({loading: true}).concat(Http.get(`/koski/api/editor/${oppijaId}`))
+    : Bacon.once({ empty: true})
 })
 
 export const updateResultE = Bacon.Bus()
-
-const applyChange = (lens, change, oppija) => L.modify(lens, change, oppija)
-
-const opiskeluOikeusIdLens = (id) => (L.compose(L.prop('opiskeluoikeudet'), L.find(R.whereEq({id}))))
+export const opiskeluOikeusChange = Bacon.Bus()
 
 export const oppijaP = Bacon.update({ loading: true },
   selectOppijaE, (previous, oppija) => oppija,
   updateResultE.map('.opiskeluoikeudet').flatMap(Bacon.fromArray), (currentOppija, {id, versionumero}) => {
-    return applyChange(L.compose(opiskeluOikeusIdLens(id), L.prop('versionumero')), () => versionumero, currentOppija)
+    let correctId = R.whereEq({id})
+    let containsOpiskeluoikeus = (oppilaitos) => oppilaitos.opiskeluoikeudet.find(correctId)
+    let lens = L.compose('value', 'data', 'opiskeluoikeudet', L.find(containsOpiskeluoikeus), 'opiskeluoikeudet', L.find(correctId), 'versionumero')
+    return L.set(lens, versionumero, currentOppija)
   },
-  opiskeluOikeusChange, (currentOppija, [lens, change]) => applyChange(lens, change, currentOppija)
+  opiskeluOikeusChange, (currentOppija, [context, value]) => {
+    var modifiedModel = modelSet(currentOppija, context.path, value)
+    return modifiedModel
+  }
 )
 
-updateResultE.plug(oppijaP.sampledBy(opiskeluOikeusChange).flatMapLatest(oppijaUpdate => Http.put('/koski/api/oppija', oppijaUpdate)))
+updateResultE.plug(oppijaP
+  .sampledBy(opiskeluOikeusChange, (oppija, [context]) => ({oppija, context}))
+  .flatMapLatest(({oppija, context: {path}}) => {
+    let opiskeluoikeusPath = path.split('.').slice(0, 4)
+    var oppijaData = oppija.value.data
+    let opiskeluoikeus = objectLookup(oppijaData, opiskeluoikeusPath.join('.'))
+    let oppijaUpdate = {
+      henkilö: {oid: oppijaData.henkilö.oid},
+      opiskeluoikeudet: [opiskeluoikeus]
+    }
+    return Http.put('/koski/api/oppija', oppijaUpdate)
+  })
+)
 
 export const uusiOppijaP = routeP.map(route => { return !!route.uusiOppija })
+
+export const oppijaStateP = Bacon.combineTemplate({
+    valittuOppija: oppijaP,
+    uusiOppija: uusiOppijaP
+})
 
 export const Oppija = ({oppija}) =>
   oppija.valittuOppija.loading
     ? <Loading/>
     : (!oppija.valittuOppija.empty
-      ? <ExistingOppija oppija={oppija.valittuOppija}/>
+      ? <ExistingOppija oppija={oppija.valittuOppija} editor={oppija.valittuOppija}/>
       : (
       oppija.uusiOppija
         ? <CreateOppija/>
@@ -44,38 +67,15 @@ const Loading = () => <div className='main-content oppija loading'></div>
 
 const ExistingOppija = React.createClass({
   render() {
-    let {oppija: { henkilö: henkilö, opiskeluoikeudet: opiskeluoikeudet}} = this.props
+    let {oppija, editor} = this.props
+    let henkilö = modelLookup(oppija, 'henkilö')
     return (
       <div className='main-content oppija'>
-        <h2>{henkilö.sukunimi}, {henkilö.etunimet} <span className='hetu'>{henkilö.hetu}</span></h2>
+        <h2>{modelTitle(henkilö, 'sukunimi')}, {modelTitle(henkilö, 'etunimet')} <span className='hetu'>{modelTitle(henkilö, 'hetu')}</span></h2>
         <hr></hr>
         <h4>Opiskeluoikeudet</h4>
-        <ul className="oppilaitokset">
-        {
-          R.toPairs(R.groupBy((opiskeluOikeus => opiskeluOikeus.oppilaitos.oid), R.sortBy(o => o.alkamispäivä)(opiskeluoikeudet))).map( ([, opiskeluOikeudet]) =>
-           <li className="oppilaitos" key={opiskeluOikeudet[0].oppilaitos.oid}>
-            <span className="oppilaitos">{opiskeluOikeudet[0].oppilaitos.nimi.fi}</span><OppilaitoksenOpintosuoritusote oppija={henkilö} oppilaitos={opiskeluOikeudet[0].oppilaitos} tyyppi={opiskeluOikeudet[0].tyyppi.koodiarvo}/>
-            {
-              opiskeluOikeudet.map( (opiskeluOikeus, index) =>
-                  <OpiskeluOikeus key={ index } oppija={ henkilö } opiskeluOikeus={ opiskeluOikeus } lens= { opiskeluOikeusIdLens(opiskeluOikeus.id) } />
-              )
-            }
-          </li>
-        ) }
-        </ul>
+        <OppijaEditor model={editor} />
       </div>
     )
-  }
-})
-
-const OppilaitoksenOpintosuoritusote = React.createClass({
-  render() {
-    let {oppilaitos, oppija, tyyppi} = this.props
-    if (tyyppi == 'korkeakoulutus') { // vain korkeakoulutukselle näytetään oppilaitoskohtainen suoritusote
-      let href = '/koski/opintosuoritusote/' + oppija.oid + '?oppilaitos=' + oppilaitos.oid
-      return <a className="opintosuoritusote" href={href}>näytä opintosuoritusote</a>
-    } else {
-      return null
-    }
   }
 })

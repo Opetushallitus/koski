@@ -66,7 +66,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   private def validateOpiskeluOikeus(opiskeluOikeus: Opiskeluoikeus)(implicit user: KoskiUser, accessType: AccessType.Value): HttpStatus = {
-    validateAccess(opiskeluOikeus.oppilaitos)
+    validateAccess(opiskeluOikeus)
     .then { HttpStatus.fold(
       validatePäivämäärät(opiskeluOikeus),
       HttpStatus.fold(opiskeluOikeus.suoritukset.map(validateSuoritus(_, None)))
@@ -76,8 +76,8 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
   }
 
-  private def validateAccess(organisaatio: OrganisaatioWithOid)(implicit user: KoskiUser, accessType: AccessType.Value): HttpStatus = {
-    HttpStatus.validate(user.hasAccess(organisaatio.oid, accessType)) { KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + organisaatio.oid) }
+  private def validateAccess(organisaatiollinen: OrganisaatioonLiittyvä)(implicit user: KoskiUser, accessType: AccessType.Value): HttpStatus = {
+    HttpStatus.validate(user.hasAccess(organisaatiollinen.omistajaOrganisaatio.oid, accessType)) { KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + organisaatiollinen.omistajaOrganisaatio.oid) }
   }
 
   def validatePäivämäärät(opiskeluOikeus: Opiskeluoikeus) = {
@@ -111,7 +111,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   private def validateToimipiste(suoritus: Suoritus)(implicit user: KoskiUser, accessType: AccessType.Value): HttpStatus = suoritus match {
-    case s:Toimipisteellinen => validateAccess(s.toimipiste)
+    case s:Toimipisteellinen => validateAccess(s)
     case _ => HttpStatus.ok
   }
 

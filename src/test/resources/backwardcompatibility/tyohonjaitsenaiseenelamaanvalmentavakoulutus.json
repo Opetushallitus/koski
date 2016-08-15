@@ -6,8 +6,6 @@
     "sukunimi" : "Telmanen"
   },
   "opiskeluoikeudet" : [ {
-    "alkamispäivä" : "2009-09-14",
-    "päättymispäivä" : "2016-06-04",
     "oppilaitos" : {
       "oid" : "1.2.246.562.10.52251087186",
       "oppilaitosnumero" : {
@@ -18,10 +16,41 @@
         "fi" : "Stadin ammattiopisto"
       }
     },
+    "alkamispäivä" : "2009-09-14",
+    "päättymispäivä" : "2016-06-04",
+    "tavoite" : {
+      "koodiarvo" : "ammatillinentutkinto",
+      "koodistoUri" : "suorituksentyyppi"
+    },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2009-09-14",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      }, {
+        "alku" : "2016-06-04",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "nimi" : {
+            "fi" : "Valmistunut"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
     "suoritukset" : [ {
-      "tila" : {
-        "koodiarvo" : "VALMIS",
-        "koodistoUri" : "suorituksentila"
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "999903",
+          "koodistoUri" : "koulutus"
+        }
       },
       "toimipiste" : {
         "oid" : "1.2.246.562.10.52251087186",
@@ -32,6 +61,10 @@
         "nimi" : {
           "fi" : "Stadin ammattiopisto"
         }
+      },
+      "tila" : {
+        "koodiarvo" : "VALMIS",
+        "koodistoUri" : "suorituksentila"
       },
       "vahvistus" : {
         "päivä" : "2016-06-04",
@@ -70,14 +103,6 @@
         } ]
       },
       "osasuoritukset" : [ {
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
-        "tyyppi" : {
-          "koodiarvo" : "telmakoulutuksenosa",
-          "koodistoUri" : "suorituksentyyppi"
-        },
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "TV",
@@ -97,6 +122,10 @@
           },
           "pakollinen" : true
         },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "Hyväksytty",
@@ -111,16 +140,12 @@
             "fi" : "Opiskelija selviytyy arkielämään liittyvistä toimista, osaa hyödyntää apuvälineitä, palveluita ja tukea sekä on valinnut itselleen sopivan tavan viettää vapaa-aikaa."
           },
           "hyväksytty" : true
-        } ]
-      }, {
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
+        } ],
         "tyyppi" : {
           "koodiarvo" : "telmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
-        },
+        }
+      }, {
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "OV",
@@ -140,6 +165,10 @@
           },
           "pakollinen" : true
         },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "Hyväksytty",
@@ -154,16 +183,12 @@
             "fi" : "Opiskelija osaa opiskella työskennellä itsenäisesti, mutta ryhmässä toimimisessa tarvitsee joskus apua. Hän viestii vuorovaikutustilanteissa hyvin, osaa käyttää tietotekniikkaa ja matematiikan perustaitoja arkielämässä."
           },
           "hyväksytty" : true
-        } ]
-      }, {
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
+        } ],
         "tyyppi" : {
           "koodiarvo" : "telmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
-        },
+        }
+      }, {
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "TYV",
@@ -183,6 +208,10 @@
           },
           "pakollinen" : true
         },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "Hyväksytty",
@@ -197,16 +226,12 @@
             "fi" : "Opiskelijalla on käsitys itsestä työntekijänä, mutta työyhteisön säännöt vaativat vielä harjaantumista."
           },
           "hyväksytty" : true
-        } ]
-      }, {
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
+        } ],
         "tyyppi" : {
           "koodiarvo" : "telmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
-        },
+        }
+      }, {
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "TIV",
@@ -226,6 +251,10 @@
           },
           "pakollinen" : false
         },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "Hyväksytty",
@@ -242,16 +271,12 @@
           "selite" : {
             "fi" : "Yhteisten tutkinnon osien osa-alue on suoritettu x- perustutkinnon perusteiden (2015) osaamistavoitteiden mukaisesti"
           }
-        }
-      }, {
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
         },
         "tyyppi" : {
           "koodiarvo" : "telmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
-        },
+        }
+      }, {
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "UV",
@@ -271,6 +296,10 @@
           },
           "pakollinen" : false
         },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "2",
@@ -286,46 +315,17 @@
           "selite" : {
             "fi" : "Koulutuksen osa on tunnustettu Vesikallion urheiluopiston osaamistavoitteiden mukaisesti"
           }
+        },
+        "tyyppi" : {
+          "koodiarvo" : "telmakoulutuksenosa",
+          "koodistoUri" : "suorituksentyyppi"
         }
       } ],
       "tyyppi" : {
         "koodiarvo" : "telma",
         "koodistoUri" : "suorituksentyyppi"
-      },
-      "koulutusmoduuli" : {
-        "tunniste" : {
-          "koodiarvo" : "999903",
-          "koodistoUri" : "koulutus"
-        }
       }
     } ],
-    "tavoite" : {
-      "koodiarvo" : "ammatillinentutkinto",
-      "koodistoUri" : "suorituksentyyppi"
-    },
-    "tila" : {
-      "opiskeluoikeusjaksot" : [ {
-        "alku" : "2009-09-14",
-        "tila" : {
-          "koodiarvo" : "lasna",
-          "nimi" : {
-            "fi" : "Läsnä"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
-        }
-      }, {
-        "alku" : "2016-06-04",
-        "tila" : {
-          "koodiarvo" : "valmistunut",
-          "nimi" : {
-            "fi" : "Valmistunut"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
-        }
-      } ]
-    },
     "tyyppi" : {
       "koodiarvo" : "ammatillinenkoulutus",
       "koodistoUri" : "opiskeluoikeudentyyppi"

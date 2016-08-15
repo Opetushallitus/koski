@@ -31,5 +31,16 @@
       }
     ],
     "versio": 1
+  },
+  {
+    "koodiUri": "lahdejarjestelma_ytr",
+    "koodiArvo": "ytr",
+    "metadata": [
+      {
+        "nimi": "ytr",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
   }
 ]

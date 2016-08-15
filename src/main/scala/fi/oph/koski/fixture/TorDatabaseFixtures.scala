@@ -72,17 +72,9 @@ object OpiskeluOikeusTestData {
     AmmatillinenOpiskeluoikeus(
       oppilaitos = oppilaitos,
       suoritukset = List(AmmatillisenTutkinnonSuoritus(
-        AmmatillinenTutkintoKoulutus(koulutusKoodiViite, Some("39/011/2014")),
-        None,
-        None,
-        None,
-        None,
-        None,
-        Koodistokoodiviite("KESKEN", "suorituksentila"),
-        None,
-        oppilaitos,
-        None,
-        None
+        koulutusmoduuli = AmmatillinenTutkintoKoulutus(koulutusKoodiViite, Some("39/011/2014")),
+        tila = Koodistokoodiviite("KESKEN", "suorituksentila"),
+        toimipiste = oppilaitos
       )),
       tavoite = AmmatillinenExampleData.tavoiteTutkinto,
       alkamispäivä = Some(date(2000, 1, 1)),

@@ -19,7 +19,7 @@ object ExamplesLukio {
       lähdejärjestelmänId = None,
       alkamispäivä = Some(date(2012, 9, 1)),
       päättymispäivä = None,
-      oppilaitos = jyväskylänNormaalikoulu, None,
+      oppilaitos = jyväskylänNormaalikoulu,
       tavoite = tavoiteKokoOppimäärä,
       suoritukset = List(
         LukionOppimääränSuoritus(
@@ -218,7 +218,7 @@ object ExamplesLukio {
       lähdejärjestelmänId = None,
       alkamispäivä = Some(date(2015, 9, 1)),
       päättymispäivä = Some(date(2016, 1, 10)),
-      oppilaitos = jyväskylänNormaalikoulu, None,
+      oppilaitos = jyväskylänNormaalikoulu,
       tavoite = tavoiteOppiaineenOppimäärä,
       suoritukset = List(
         LukionOppiaineenOppimääränSuoritus(

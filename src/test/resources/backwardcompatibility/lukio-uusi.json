@@ -6,7 +6,6 @@
     "sukunimi" : "Lukiolainen"
   },
   "opiskeluoikeudet" : [ {
-    "alkamispäivä" : "2012-09-01",
     "oppilaitos" : {
       "oid" : "1.2.246.562.10.14613773812",
       "oppilaitosnumero" : {
@@ -17,52 +16,11 @@
         "fi" : "Jyväskylän normaalikoulu"
       }
     },
+    "alkamispäivä" : "2012-09-01",
     "tavoite" : {
       "koodiarvo" : "lukionoppimaara",
       "koodistoUri" : "suorituksentyyppi"
     },
-    "suoritukset" : [ {
-      "suorituskieli" : {
-        "koodiarvo" : "FI",
-        "nimi" : {
-          "fi" : "suomi"
-        },
-        "koodistoUri" : "kieli"
-      },
-      "tila" : {
-        "koodiarvo" : "KESKEN",
-        "koodistoUri" : "suorituksentila"
-      },
-      "toimipiste" : {
-        "oid" : "1.2.246.562.10.14613773812",
-        "oppilaitosnumero" : {
-          "koodiarvo" : "00204",
-          "koodistoUri" : "oppilaitosnumero"
-        },
-        "nimi" : {
-          "fi" : "Jyväskylän normaalikoulu"
-        }
-      },
-      "koulutusmoduuli" : {
-        "tunniste" : {
-          "koodiarvo" : "309902",
-          "koodistoUri" : "koulutus"
-        },
-        "perusteenDiaarinumero" : "60/011/2015"
-      },
-      "oppimäärä" : {
-        "koodiarvo" : "nuortenops",
-        "nimi" : {
-          "fi" : "Nuorten ops"
-        },
-        "koodistoUri" : "lukionoppimaara",
-        "koodistoVersio" : 1
-      },
-      "tyyppi" : {
-        "koodiarvo" : "lukionoppimaara",
-        "koodistoUri" : "suorituksentyyppi"
-      }
-    } ],
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
         "alku" : "2012-09-01",
@@ -86,6 +44,48 @@
         }
       } ]
     },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "309902",
+          "koodistoUri" : "koulutus"
+        },
+        "perusteenDiaarinumero" : "60/011/2015"
+      },
+      "oppimäärä" : {
+        "koodiarvo" : "nuortenops",
+        "nimi" : {
+          "fi" : "Nuorten ops"
+        },
+        "koodistoUri" : "lukionoppimaara",
+        "koodistoVersio" : 1
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.14613773812",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "00204",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Jyväskylän normaalikoulu"
+        }
+      },
+      "tila" : {
+        "koodiarvo" : "KESKEN",
+        "koodistoUri" : "suorituksentila"
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "lukionoppimaara",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    } ],
     "tyyppi" : {
       "koodiarvo" : "lukiokoulutus",
       "koodistoUri" : "opiskeluoikeudentyyppi"

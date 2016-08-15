@@ -2,11 +2,11 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
-import fi.oph.koski.localization.LocalizedString
+import fi.oph.koski.localization.{Localizable, LocalizedString}
 import fi.oph.koski.localization.LocalizedString.unlocalized
 import fi.oph.scalaschema.annotation._
 
-trait Arviointi {
+trait Arviointi extends Localizable {
   def arvosana: KoodiViite
   @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
   def arviointipäivä: Option[LocalDate]
@@ -19,8 +19,10 @@ trait Arviointi {
   }
   def arvosanaKirjaimin: LocalizedString
   @SyntheticProperty
+  @Hidden
   @Description("Onko arviointi hyväksytty")
   def hyväksytty: Boolean
+  def description = arvosanaNumeroin.getOrElse(arvosanaKirjaimin)
 }
 
 trait ArviointiPäivämäärällä extends Arviointi {
@@ -44,9 +46,11 @@ trait PaikallinenArviointi extends Arviointi {
 }
 
 case class Arvioitsija(
+  @Representative
   nimi: String
 )
 
 trait SanallinenArviointi extends Arviointi {
   def kuvaus: Option[LocalizedString]
+  override def description = kuvaus.getOrElse(super.description)
 }

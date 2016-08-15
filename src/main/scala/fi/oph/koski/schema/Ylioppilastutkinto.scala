@@ -3,6 +3,7 @@ package fi.oph.koski.schema
 import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems}
 
 case class YlioppilastutkinnonOpiskeluoikeus(
+  lähdejärjestelmänId: Option[LähdejärjestelmäId],
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OrganisaatioWithOid],
   tila: YlioppilastutkinnonOpiskeluoikeudenTila,
@@ -19,29 +20,28 @@ case class YlioppilastutkinnonOpiskeluoikeus(
   override def id = None
   override def versionumero = None
   override def läsnäolotiedot = None
-  override def lähdejärjestelmänId = None
 }
 
 case class YlioppilastutkinnonOpiskeluoikeudenTila(opiskeluoikeusjaksot: List[LukionOpiskeluoikeusjakso]) extends OpiskeluoikeudenTila
 
 case class YlioppilastutkinnonSuoritus(
-  tila: Koodistokoodiviite,
+  koulutusmoduuli: Ylioppilastutkinto = Ylioppilastutkinto(perusteenDiaarinumero = None),
   toimipiste: OrganisaatioWithOid,
+  tila: Koodistokoodiviite,
+  vahvistus: Option[Organisaatiovahvistus] = None,
   @Description("Ylioppilastutkinnon kokeiden suoritukset")
   override val osasuoritukset: Option[List[YlioppilastutkinnonKokeenSuoritus]],
   @KoodistoKoodiarvo("ylioppilastutkinto")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ylioppilastutkinto", koodistoUri = "suorituksentyyppi"),
-  koulutusmoduuli: Ylioppilastutkinto = Ylioppilastutkinto(perusteenDiaarinumero = None),
-  vahvistus: Option[Organisaatiovahvistus] = None
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ylioppilastutkinto", koodistoUri = "suorituksentyyppi")
 ) extends Suoritus with Toimipisteellinen {
   def arviointi: Option[List[KoodistostaLöytyväArviointi]] = None
   override def suorituskieli: Option[Koodistokoodiviite] = None
 }
 
 case class YlioppilastutkinnonKokeenSuoritus(
+  koulutusmoduuli: YlioppilasTutkinnonKoe,
   tila: Koodistokoodiviite,
   arviointi: Option[List[YlioppilaskokeenArviointi]],
-  koulutusmoduuli: YlioppilasTutkinnonKoe,
   @KoodistoKoodiarvo("ylioppilastutkinnonkoe")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ylioppilastutkinnonkoe", koodistoUri = "suorituksentyyppi")
 ) extends Suoritus {
