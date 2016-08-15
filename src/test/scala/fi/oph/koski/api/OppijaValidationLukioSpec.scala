@@ -38,4 +38,32 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
       }
     }
   }
+
+  describe("Tilat ja vahvistukset") {
+    it("Valmis oppiainesuoritus ei vaadi vahvistusta.") {
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
+        tila = tilaKesken,
+        vahvistus = None,
+        osasuoritukset = Some(List(suoritus(oppiaine("GE")).copy(tila = tilaValmis)))
+      )))
+      putOpiskeluOikeus(oo) {
+        verifyResponseStatus(200)
+      }
+    }
+    it("Valmis oppiaineen kurssin suoritus ei vaadi vahvistusta.") {
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
+        tila = tilaKesken,
+        vahvistus = None,
+        osasuoritukset = Some(List(
+          suoritus(oppiaine("GE")).copy(tila = tilaValmis).copy(
+            osasuoritukset = Some(List(
+              kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1")).copy(tila = tilaValmis)
+            ))
+          )))
+      )))
+      putOpiskeluOikeus(oo) {
+        verifyResponseStatus(200)
+      }
+    }
+  }
 }

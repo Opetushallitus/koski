@@ -110,7 +110,9 @@ case class LukionOppiaineenSuoritus(
   arviointi: Option[List[LukionOppiaineenArviointi]] = None,
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
   override val osasuoritukset: Option[List[LukionKurssinSuoritus]]
-) extends OppiaineenSuoritus
+) extends OppiaineenSuoritus {
+  override def tarvitseeVahvistuksen = false
+}
 
 case class LukionKurssinSuoritus(
   @KoodistoKoodiarvo("lukionkurssi")
@@ -124,6 +126,7 @@ case class LukionKurssinSuoritus(
   tunnustettu: Option[OsaamisenTunnustaminen] = None
 ) extends Suoritus with LukioonValmistavanKoulutuksenOsasuoritus {
   def vahvistus: Option[Vahvistus] = None
+  override def tarvitseeVahvistuksen: Boolean = false
 }
 
 case class LukionOppiaineenArviointi(

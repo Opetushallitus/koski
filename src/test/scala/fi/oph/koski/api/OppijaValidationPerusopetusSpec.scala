@@ -19,14 +19,14 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       }
     }
 
-    it("Oppiainesuoritus VALMIS ilman todistuksen vahvistusta -> HTTP 400") {
+    it("Valmis oppiainesuoritus ei vaadi vahvistusta.") {
       val oo: PerusopetuksenOpiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
         tila = tilaKesken,
         vahvistus = None,
         osasuoritukset = Some(List(PerusopetusExampleData.suoritus(PerusopetusExampleData.oppiaine("GE")).copy(tila = tilaValmis)))
       )))
       putOpiskeluOikeus(oo) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta koskioppiaineetyleissivistava/GE puuttuu vahvistus, vaikka suorituksen tila on VALMIS"))
+        verifyResponseStatus(200)
       }
     }
   }
