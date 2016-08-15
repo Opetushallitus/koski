@@ -1,8 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjestelmäId
-import fi.oph.koski.koskiuser.MockUsers
-import fi.oph.koski.koskiuser.MockUsers.hiiri
+import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
@@ -44,6 +43,14 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
         verifyResponseStatus(200)
       }
     }
+
+    "voi hakea ja katsella ytr-ylioppilastutkintosuorituksia" in {
+      haeOpiskeluoikeudetHetulla("250493-602S", user).filter(_.tyyppi.koodiarvo == "ylioppilastutkinto").length should equal(1)
+    }
+
+    "voi hakea ja katsella virta-ylioppilastutkintosuorituksia" in {
+      haeOpiskeluoikeudetHetulla("090888-929X", user).filter(_.tyyppi.koodiarvo == "korkeakoulutus").length should be >= 1
+    }
   }
 
   private val opiskeluoikeusOmnia: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
@@ -81,6 +88,20 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
         verifyResponseStatus(404)
       }
     }
+
+    "voi hakea ja katsella ytr-ylioppilastutkintosuorituksia" - {
+      "vain omassa organisaatiossaan" in {
+        haeOpiskeluoikeudetHetulla("250493-602S", MockUsers.hiiri).filter(_.tyyppi.koodiarvo == "ylioppilastutkinto").length should equal(0)
+        haeOpiskeluoikeudetHetulla("250493-602S", MockUsers.kalle).filter(_.tyyppi.koodiarvo == "ylioppilastutkinto").length should equal(1)
+      }
+    }
+
+    "voi hakea ja katsella virta-ylioppilastutkintosuorituksia" - {
+      "vain omassa organisaatiossaan" in {
+        haeOpiskeluoikeudetHetulla("090888-929X", MockUsers.hiiri).filter(_.tyyppi.koodiarvo == "korkeakoulutus").length should equal(0)
+        haeOpiskeluoikeudetHetulla("090888-929X", MockUsers.kalle).filter(_.tyyppi.koodiarvo == "korkeakoulutus").length should be >= 1
+      }
+    }
   }
 
   "koski-oppilaitos-katselija" - {
@@ -114,4 +135,9 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
       }
     }
   }
+
+  private def haeOpiskeluoikeudetHetulla(hetu: String, käyttäjä: UserWithPassword) = searchForHenkilötiedot(hetu).map(_.oid).flatMap { oid =>
+    opiskeluoikeudet(oid, käyttäjä)
+  }
+
 }
