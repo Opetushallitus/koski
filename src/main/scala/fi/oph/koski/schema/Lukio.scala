@@ -176,6 +176,21 @@ trait LukionOppiaine extends YleissivistavaOppiaine {
 }
 
 case class MuuOppiaine(
+  @KoodistoKoodiarvo("HI")
+  @KoodistoKoodiarvo("MU")
+  @KoodistoKoodiarvo("BI")
+  @KoodistoKoodiarvo("PS")
+  @KoodistoKoodiarvo("KT")
+  @KoodistoKoodiarvo("KO")
+  @KoodistoKoodiarvo("FI")
+  @KoodistoKoodiarvo("KE")
+  @KoodistoKoodiarvo("YH")
+  @KoodistoKoodiarvo("TE")
+  @KoodistoKoodiarvo("KS")
+  @KoodistoKoodiarvo("FY")
+  @KoodistoKoodiarvo("GE")
+  @KoodistoKoodiarvo("LI")
+  @KoodistoKoodiarvo("KU")
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa] = None
