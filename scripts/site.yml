@@ -22,6 +22,16 @@
       group={{ koski_user }}
       owner={{ koski_user }}
     notify: restart koski
+  - meta: flush_handlers # force restart before running application responding task
+  - name: Check for application responding
+    uri:
+      url: "http://127.0.0.1:8080/koski/buildversion.txt"
+      status_code: 200
+    register: result
+    until: result.status == 200
+    retries: 60
+    delay: 1
+
   handlers:
     - name: restart koski
       service: name=koski state=restarted
