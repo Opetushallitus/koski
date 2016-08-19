@@ -15,6 +15,7 @@
     <slick.version>3.1.1</slick.version>
     <scalatra.version>2.4.0</scalatra.version>
     <json4s.version>3.3.0</json4s.version>
+    <jetty.version>9.3.11.v20160721</jetty.version>
     <scoverage.plugin.version>1.1.1</scoverage.plugin.version>
     <finalName>${project.artifactId}-${project.version}</finalName>
   </properties>
@@ -180,7 +181,12 @@
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-webapp</artifactId>
-      <version>9.3.7.v20160115</version>
+      <version>${jetty.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-jmx</artifactId>
+      <version>${jetty.version}</version>
     </dependency>
     <dependency>
       <groupId>com.ryantenney.log4j</groupId>
