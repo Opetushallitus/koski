@@ -2,6 +2,7 @@
 - name: Koski deployment
   hosts: tor_backends
   sudo: true
+  serial: 1
   vars:
     koski_home: /srv/tomcat/koski
     koski_user: tomcat
