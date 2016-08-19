@@ -8,8 +8,8 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Timing
 
 class CasTicketSessionRepository(db: DB) extends Futures with GlobalExecutionContext with Timing with Logging {
-  val ticketExpirationSeconds = 600
-  // TODO: timestamp for cleaning up even if cas never calls remove URL
+  // Maximum period of inactivity for a session
+  val maxInactivityPeriod = 600
 
   private def now = new Timestamp(System.currentTimeMillis())
 
@@ -18,11 +18,11 @@ class CasTicketSessionRepository(db: DB) extends Futures with GlobalExecutionCon
   }
 
   def getUserByTicket(ticket: String): Option[AuthenticationUser] = timed("getUserByTicket", 0) {
-    val limit = new Timestamp(System.currentTimeMillis() - ticketExpirationSeconds * 1000)
+    val limit = new Timestamp(System.currentTimeMillis() - maxInactivityPeriod * 1000)
 
     val query = Tables.CasServiceTicketSessions.filter(row => row.serviceTicket === ticket && row.updated >= limit)
 
-    db.run(query.map(_.updated).update(now))
+    db.run(query.map(_.updated).update(now)) // update the "updated" timestamp each time
 
     await(db.run(query.result)).map(row => AuthenticationUser(row.userOid, row.username, Some(ticket))).headOption
   }
