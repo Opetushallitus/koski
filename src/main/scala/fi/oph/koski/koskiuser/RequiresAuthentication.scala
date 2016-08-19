@@ -4,8 +4,6 @@ trait RequiresAuthentication extends AuthenticationSupport {
   def koskiUser: KoskiUser = koskiUserOption.get
 
   before() {
-    if(!isAuthenticated) {
-      scentry.authenticate()
-    }
+    requireAuthentication
   }
 }

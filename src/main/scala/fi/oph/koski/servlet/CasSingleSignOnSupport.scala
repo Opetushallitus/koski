@@ -2,7 +2,8 @@ package fi.oph.koski.servlet
 
 import java.net.URI
 
-import fi.oph.koski.koskiuser.UserAuthenticationContext
+import fi.oph.koski.json.Json
+import fi.oph.koski.koskiuser.{AuthenticationUser, UserAuthenticationContext}
 import org.scalatra.{Cookie, CookieOptions, ScalatraBase}
 
 trait CasSingleSignOnSupport extends ScalatraBase {
@@ -12,9 +13,9 @@ trait CasSingleSignOnSupport extends ScalatraBase {
 
   def isHttps = !currentUrl.startsWith("http://localhost") // <- we don't get the https protocol correctly through the proxy, so we assume https
 
-  def setServiceTicketCookie(ticket: String) = response.addCookie(Cookie("koskiServiceTicket", ticket)(CookieOptions(secure = isHttps, path = "/", maxAge = 3600, httpOnly = true))) // TODO: päivitä keksi joka requlla, expiroi kun selain suljetaan
-  def getServiceTicketCookie: Option[String] = Option(request.getCookies).toList.flatten.find(_.getName == "koskiServiceTicket").map(_.getValue)
-  def removeServiceTicketCookie = response.addCookie(Cookie("koskiServiceTicket", "")(CookieOptions(secure = isHttps, path = "/", maxAge = 0)))
+  def setUserCookie(user: AuthenticationUser) = response.addCookie(Cookie("koskiUser", Json.write(user))(CookieOptions(secure = isHttps, path = "/", maxAge = 3600, httpOnly = true)))
+  def getUserCookie: Option[AuthenticationUser] = Option(request.getCookies).toList.flatten.find(_.getName == "koskiUser").map(_.getValue).map(Json.read[AuthenticationUser])
+  def removeUserCookie = response.addCookie(Cookie("koskiUser", "")(CookieOptions(secure = isHttps, path = "/", maxAge = 0)))
 
   def casServiceUrl = {
     def fixProtocol(url: String) = if (!isHttps) {

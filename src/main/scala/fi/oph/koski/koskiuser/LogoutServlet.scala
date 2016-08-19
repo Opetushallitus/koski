@@ -6,7 +6,7 @@ class LogoutServlet(val application: UserAuthenticationContext) extends HtmlServ
   get("/") {
     logger.info("Logged out")
     userOption.flatMap(_.serviceTicket).foreach(application.serviceTicketRepository.removeSessionByTicket(_))
-    Option(request.getSession(false)).foreach(_.invalidate())
+    removeUserCookie
     redirectToLogout
   }
 }

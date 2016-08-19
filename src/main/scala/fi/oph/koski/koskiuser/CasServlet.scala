@@ -16,10 +16,9 @@ class CasServlet(val application: KoskiApplication) extends ApiServlet with Auth
           val username = validator.validateServiceTicket(casServiceUrl, ticket)
           DirectoryClientLogin.findUser(application.directoryClient, request, username) match {
             case Some(user) =>
-              scentry.user = user.copy(serviceTicket = Some(ticket))
+              setUser(user.copy(serviceTicket = Some(ticket)))
               logger.info(s"Started session ${session.id} for ticket $ticket")
               ticketSessions.store(session.id, ticket, user)
-              setServiceTicketCookie(ticket)
               redirectAfterLogin
             case None =>
               haltWithStatus(KoskiErrorCategory.internalError(s"CAS-käyttäjää $username ei löytynyt LDAPista"))
