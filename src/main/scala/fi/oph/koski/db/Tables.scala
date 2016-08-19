@@ -1,6 +1,6 @@
 package fi.oph.koski.db
 
-import java.sql.Timestamp
+import java.sql.{Date, Timestamp}
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.json.Json
@@ -30,11 +30,12 @@ object Tables {
 
   class CasServiceTicketSessionTable(tag: Tag) extends Table[CasServiceTicketSessionRow] (tag, "casserviceticket") {
     val serviceTicket = column[String]("serviceticket")
-    val sessionId = column[String]("sessionid")
     val username = column[String]("username")
     val userOid = column[String]("useroid")
+    val started = column[Timestamp]("started")
+    val updated = column[Timestamp]("updated")
 
-    def * = (serviceTicket, sessionId, username, userOid) <> (CasServiceTicketSessionRow.tupled, CasServiceTicketSessionRow.unapply)
+    def * = (serviceTicket, username, userOid, started, updated) <> (CasServiceTicketSessionRow.tupled, CasServiceTicketSessionRow.unapply)
   }
 
   val CasServiceTicketSessions = TableQuery[CasServiceTicketSessionTable]
@@ -60,7 +61,7 @@ object Tables {
   }
 }
 
-case class CasServiceTicketSessionRow(serviceTicket: String, sessionId: String, username: String, userOid: String)
+case class CasServiceTicketSessionRow(serviceTicket: String, username: String, userOid: String, started: Timestamp, updated: Timestamp)
 
 // Note: the data json must not contain [id, versionumero] fields. This is enforced by DB constraint.
 case class OpiskeluOikeusRow(id: Int, oppijaOid: String, versionumero: Int, data: JValue) {

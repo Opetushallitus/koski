@@ -28,7 +28,7 @@ class UserServlet(val application: UserAuthenticationContext) extends ApiServlet
         loginRequestInBody flatMap {
           case Login(username, password) => tryLogin(username, password).map { user =>
             val fakeServiceTicket: String = "koski-" + UUID.randomUUID()
-            application.serviceTicketRepository.store("-", fakeServiceTicket, user)
+            application.serviceTicketRepository.store(fakeServiceTicket, user)
             logger.info("Fake ticket created: " + fakeServiceTicket)
             user.copy(serviceTicket = Some(fakeServiceTicket))
           }
