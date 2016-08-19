@@ -12,7 +12,7 @@ trait CasSingleSignOnSupport extends ScalatraBase {
 
   def isHttps = !currentUrl.startsWith("http://localhost") // <- we don't get the https protocol correctly through the proxy, so we assume https
 
-  def setServiceTicketCookie(ticket: String) = response.addCookie(Cookie("koskiServiceTicket", ticket)(CookieOptions(secure = isHttps, path = "/", maxAge = 3600, httpOnly = true)))
+  def setServiceTicketCookie(ticket: String) = response.addCookie(Cookie("koskiServiceTicket", ticket)(CookieOptions(secure = isHttps, path = "/", maxAge = 3600, httpOnly = true))) // TODO: päivitä keksi joka requlla, expiroi kun selain suljetaan
   def getServiceTicketCookie: Option[String] = Option(request.getCookies).toList.flatten.find(_.getName == "koskiServiceTicket").map(_.getValue)
   def removeServiceTicketCookie = response.addCookie(Cookie("koskiServiceTicket", "")(CookieOptions(secure = isHttps, path = "/", maxAge = 0)))
 

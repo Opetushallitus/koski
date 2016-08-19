@@ -6,6 +6,8 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Timing
 
 class CasTicketSessionRepository(db: DB) extends Futures with GlobalExecutionContext with Timing with Logging {
+  // TODO: timestamp for cleaning up even if cas never calls remove URL
+
   def store(sessionId: String, ticket: String, user: AuthenticationUser) = {
     db.run((Tables.CasServiceTicketSessions += CasServiceTicketSessionRow(ticket, sessionId, user.name, user.oid)))
   }
