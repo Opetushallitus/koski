@@ -3,7 +3,7 @@
   "versio" : 1,
   "metadata" : [ {
     "kieli" : "FI",
-    "nimi" : "luokkaaste",
+    "nimi" : "perusopetuksenluokkaaste",
     "kuvaus" : "Perusopetuksen luokka-aste"
   } ],
   "codesGroupUri" : "http://koski",
