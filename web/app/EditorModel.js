@@ -91,7 +91,7 @@ export const modelSet = (mainModel, path, value) => {
 
 export const modelItems = (mainModel, path) => {
   let model = modelLookup(mainModel, path)
-  return model.type == 'array' && model.value
+  return model && model.type == 'array' && model.value
 }
 
 const valueEmpty = (value) => {

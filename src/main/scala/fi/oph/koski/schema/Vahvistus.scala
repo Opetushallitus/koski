@@ -12,8 +12,10 @@ trait Vahvistus {
   @Description("Paikkakunta, jossa suoritus on vahvistettu (allekirjoituksen paikkakunta)")
   def paikkakunta: Koodistokoodiviite
   @Description("Organisaatio, joka suorituksen on vahvistanut")
+  @Title("Organisaatio")
   def myöntäjäOrganisaatio: Organisaatio
   @Description("Myöntäjähenkilö/-henkilöt, eli suorituksen/todistuksen allekirjoittajat")
+  @Title("Myöntäjät")
   def myöntäjäHenkilöt: List[Organisaatiohenkilö]
 }
 

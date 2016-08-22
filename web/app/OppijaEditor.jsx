@@ -113,7 +113,17 @@ const OppiaineEditor = React.createClass({
     return (<div className="oppiaineensuoritus">
       <label className="oppiaine">{modelTitle(model, 'koulutusmoduuli')}</label>
       <span className="arvosana">{modelTitle(model, 'arviointi.-1')}</span>
+      {modelData(model, 'korotus') ? <span className="korotus">(korotus)</span> : null}
     </div>)
+  }
+})
+
+const LaajuusEditor = React.createClass({
+  render() {
+    let {model, context} = this.props
+    return context.edit
+      ? <ObjectEditor model={model} context={context}/>
+      : <span>{modelTitle(model, 'arvo')} {modelTitle(model, 'yksikkö')}</span>
   }
 })
 
@@ -126,10 +136,22 @@ const VahvistusEditor = React.createClass({
           <span className="date">{modelTitle(model, 'päivä')}</span>&nbsp;
           <span className="allekirjoitus">{modelTitle(model, 'paikkakunta')}</span>&nbsp;
           {
-            modelItems(model, 'myöntäjäHenkilöt').map( (henkilö,i) =>
+            (modelItems(model, 'myöntäjäHenkilöt') || []).map( (henkilö,i) =>
               <span key={i} className="nimi">{modelData(henkilö, 'nimi')}</span>
             )
           }
+        </span>)
+  }
+})
+
+const OsaamisenTunnustaminenEditor = React.createClass({
+  render() {
+    let {model, context} = this.props
+    return context.edit
+      ? <ObjectEditor model={model} context={context}/>
+      : (<span className="object osaamisentunnustaminen">
+          <label>{modelTitle(model, 'selite')}</label>
+          { getModelEditor(modelLookup(model, 'osaaminen'), addPath(context, 'osaaminen'))}
         </span>)
   }
 })
@@ -151,9 +173,16 @@ const TutkinnonosaEditor = React.createClass({
     let {model, context} = this.props
 
     return (<div className="suoritus tutkinnonosa">
-      <label className="nimi">{modelTitle(model, 'koulutusmoduuli')}</label>
-      <span className="arvosana">{modelTitle(model, 'arviointi.-1')}</span>
-      <FoldableEditor defaultExpanded={context.edit} expandedView={() => <PropertiesEditor properties={model.value.properties} context={context}/>}/>
+      <FoldableEditor defaultExpanded={context.edit}
+                      collapsedView={() => <span className="tutkinnonosan-tiedot">
+                        <label className="nimi">{modelTitle(model, 'koulutusmoduuli')}</label>
+                        <span className="arvosana">{modelTitle(model, 'arviointi.-1')}</span>
+                        </span>}
+                      expandedView={() => <span>
+                        <label className="nimi">{modelTitle(model, 'koulutusmoduuli')}</label>
+                        <PropertiesEditor properties={model.value.properties} context={context}/>
+                        </span>}
+      />
     </div>)
   }
 })
@@ -174,7 +203,7 @@ const ObjectEditor = React.createClass({
       : representative
         ? model.value.properties.length == 1
           ? representativeEditor()
-          : <div>{representativeEditor()}<FoldableEditor expandedView={objectEditor} defaultExpandeded={context.edit} /></div>
+          : <div className="object-wrapper">{representativeEditor()}<FoldableEditor expandedView={objectEditor} defaultExpandeded={context.edit} /></div>
         : objectEditor()
   }
 })
@@ -375,14 +404,21 @@ const NullEditor = React.createClass({
 const editorTypes = {
   'perusopetuksenoppiaineensuoritus': OppiaineEditor,
   'perusopetukseenvalmistavanopetuksenoppiaineensuoritus': OppiaineEditor,
-  'perusopetuksenlisäopetuksenoppiaineensuoritus': OppiaineEditor,
+  'perusopetuksenlisaopetuksenoppiaineensuoritus': OppiaineEditor,
   'ammatillisentutkinnonosansuoritus': TutkinnonosaEditor,
   'lukionoppiaineensuoritus': TutkinnonosaEditor,
+  'ylioppilastutkinnonkokeensuoritus': TutkinnonosaEditor,
   'lukionkurssinsuoritus': OppiaineEditor,
   'ammatillinenopiskeluoikeusjakso': OpiskeluoikeusjaksoEditor,
   'lukionopiskeluoikeusjakso': OpiskeluoikeusjaksoEditor,
   'perusopetuksenopiskeluoikeusjakso': OpiskeluoikeusjaksoEditor,
-  'henkilövahvistus': VahvistusEditor,
+  'henkilovahvistus': VahvistusEditor,
+  'organisaatiovahvistus': VahvistusEditor,
+  'osaamisentunnustaminen': OsaamisenTunnustaminenEditor,
+  'laajuusosaamispisteissa' : LaajuusEditor,
+  'laajuuskursseissa' : LaajuusEditor,
+  'laajuusopintopisteissa' : LaajuusEditor,
+  'laajuusvuosiviikkotunneissa' : LaajuusEditor,
   'object': ObjectEditor,
   'array': ArrayEditor,
   'string': StringEditor,

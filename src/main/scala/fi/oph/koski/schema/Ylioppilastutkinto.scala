@@ -30,6 +30,7 @@ case class YlioppilastutkinnonSuoritus(
   tila: Koodistokoodiviite,
   vahvistus: Option[Organisaatiovahvistus] = None,
   @Description("Ylioppilastutkinnon kokeiden suoritukset")
+  @Title("Kokeet")
   override val osasuoritukset: Option[List[YlioppilastutkinnonKokeenSuoritus]],
   @KoodistoKoodiarvo("ylioppilastutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ylioppilastutkinto", koodistoUri = "suorituksentyyppi")

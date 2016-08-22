@@ -82,7 +82,7 @@ describe('Perusopetus', function() {
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('toimii', function() {
-        expect(S('.vahvistus .nimi .value').text()).to.equal('Reijo Reksi')
+        expect(S('.vahvistus .nimi').text()).to.equal('Reijo Reksi')
       })
     })
     describe('Tulostettava todistus', function() {
@@ -103,7 +103,7 @@ describe('Perusopetus', function() {
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('toimii', function() {
-        expect(S('.perusopetuksenlisaopetuksensuoritus .osasuoritukset .perusopetuksenlisaopetuksenoppiaineensuoritus:eq(0) .koulutusmoduuli .value').text()).to.equal('Äidinkieli ja kirjallisuus')
+        expect(S('.perusopetuksenlisaopetuksensuoritus .osasuoritukset .oppiaineensuoritus:eq(0) .oppiaine').text()).to.equal('Äidinkieli ja kirjallisuus')
       })
     })
     describe('Tulostettava todistus', function() {

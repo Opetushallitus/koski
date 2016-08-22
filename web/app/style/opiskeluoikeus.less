@@ -65,12 +65,17 @@
     }
   }
 
-  .array > li > .object {
+  .array > li:not(:last-child) > .object {
     border-bottom: solid lightgray 1px;
-    padding-bottom: 20px;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
   }
 
-  .property .value > .array {
+  .object-wrapper {
+    position: relative;
+  }
+
+  .property .value > .array:not(.simple) {
     padding-left: 20px;
   }
 
@@ -104,22 +109,27 @@
     font-size: 12px;
   }
 
-  .array > li:not(:first-child) > .object {
-    margin-top: 20px;
+  .oppiaineensuoritus .korotus {
+    margin-left: 8px;
   }
-
   .oppiaineensuoritus label, .opiskeluoikeusjakso label {
     display: inline-block;
     min-width: 300px;
   }
   .tutkinnonosa {
-    > .nimi {
+    .tutkinnonosan-tiedot .nimi {
       display: inline-block;
       min-width: 450px;
     }
-    > .arvosana {
+    .tutkinnonosan-tiedot .arvosana {
       font-size: 0.9em;
     }
+  }
+
+  .osaamisentunnustaminen {
+    display: block;
+    margin-top: 8px;
+    margin-left: 20px;
   }
 
   a.toggle-expand {
@@ -130,8 +140,10 @@
   }
 
   .toggle-edit {
-    float: right;
-    font-size: 0.9em;
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 0.8em;
     text-decoration: underline;
   }
 

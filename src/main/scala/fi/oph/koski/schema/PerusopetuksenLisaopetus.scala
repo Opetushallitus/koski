@@ -33,6 +33,7 @@ case class PerusopetuksenLisäopetuksenSuoritus(
   vahvistus: Option[Henkilövahvistus] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineiden suoritukset")
+  @Title("Oppiaineet")
   override val osasuoritukset: Option[List[PerusopetuksenLisäopetuksenOppiaineenSuoritus]],
   @KoodistoKoodiarvo("perusopetuksenlisaopetus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenlisaopetus", koodistoUri = "suorituksentyyppi")
