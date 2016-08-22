@@ -24,11 +24,9 @@
     notify: restart koski
   - meta: flush_handlers # force restart before running application responding task
   - name: Check for application responding
-    uri:
-      url: "http://127.0.0.1:8080/koski/buildversion.txt"
-      status_code: 200
-    register: result
-    until: result.status == 200
+    shell: curl -f http://127.0.0.1:8080/koski/buildversion.txt >> /dev/null
+    register: task_result
+    until: task_result.rc == 0
     retries: 60
     delay: 1
 
