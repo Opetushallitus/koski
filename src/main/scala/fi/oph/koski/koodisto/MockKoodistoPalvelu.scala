@@ -72,6 +72,7 @@ object MockKoodistoPalvelu {
     "perusopetuksenluokkaaste",
     "perusopetuksenoppimaara",
     "perusopetuksensuoritustapa",
+    "perusopetuksentoimintaalue",
     "perusopetuksentukimuoto",
     "suorituksentila",
     "suorituksentyyppi",
