@@ -3,6 +3,7 @@ package fi.oph.koski.documentation
 import com.tristanhunt.knockoff.DefaultDiscounter._
 import fi.oph.koski.http.ErrorCategory
 import fi.oph.koski.schema.KoskiSchema
+import fi.oph.scalaschema.ClassSchema
 
 import scala.xml.Elem
 
@@ -132,7 +133,7 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
             </a>
             <a class="example-as-json" href={"/koski/documentation/examples/" + example.name + ".json"} target="_blank">lataa JSON</a>
             <table class="json">
-              {SchemaToJsonHtml.buildHtml(KoskiSchema.schema, example.data)}
+              {SchemaToJsonHtml.buildHtml(KoskiSchema.schema.asInstanceOf[ClassSchema], example.data)}
             </table>
           </li>
         }

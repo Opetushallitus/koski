@@ -54,7 +54,6 @@ class SerializationSpec extends FunSpec with Matchers with Logging {
           val kaikkiSuoritukset: Seq[Suoritus] = e.data.opiskeluoikeudet.flatMap(_.suoritukset.flatMap(_.rekursiivisetOsasuoritukset))
 
           kaikkiSuoritukset.foreach { s =>
-            println(s.getClass.getName)
             val jsonString = Json.write(s)
             val suoritus = Json.read[Suoritus](jsonString)
             suoritus should (equal(s))
