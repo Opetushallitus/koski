@@ -39,8 +39,13 @@ const OpiskeluoikeusEditor = React.createClass({
     return (<div className="opiskeluoikeus">
       <div className="kuvaus">
         Opiskeluoikeus&nbsp;
-          <span className="alku pvm">{modelTitle(model, 'alkamispäivä')}</span>-
-          <span className="loppu pvm">{modelTitle(model, 'päättymispäivä')}</span>,&nbsp;
+        { modelData(model, 'alkamispäivä')
+          ? (<span>
+                <span className="alku pvm">{modelTitle(model, 'alkamispäivä')}</span>-
+                <span className="loppu pvm">{modelTitle(model, 'päättymispäivä')}</span>,&nbsp;
+            </span>)
+          : null
+        }
           <span className="tila">{modelTitle(model, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}</span>
         <FoldableEditor expandedView={() => <PropertiesEditor properties={ model.value.properties.filter(property => property.key != 'suoritukset') } context={subContext}/>}/>
       </div>
