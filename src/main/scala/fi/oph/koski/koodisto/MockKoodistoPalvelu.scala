@@ -53,6 +53,7 @@ object MockKoodistoPalvelu {
     "kieli",
     "kielivalikoima",
     "koskiopiskeluoikeudentila",
+    "koskiyoarvosanat",
     "kunta",
     "lahdejarjestelma",
     "lasnaolotila",
@@ -80,8 +81,7 @@ object MockKoodistoPalvelu {
     "tutkinnonosat",
     "virtaarvosana",
     "virtalukukausiilmtila",
-    "virtaopiskeluoikeudentila",
-    "koskiyoarvosanat"
+    "virtaopiskeluoikeudentila"
   )
 
   protected[koodisto] def koodistoKooditResourceName(koodistoUri: String) = koodistot.find(_ == koodistoUri).map(uri => "/mockdata/koodisto/koodit/" + uri + ".json")
