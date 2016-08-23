@@ -25,4 +25,8 @@ case class KoodistoViitePalvelu(koodistoPalvelu: KoodistoPalvelu) extends Loggin
   }
 }
 
-object MockKoodistoViitePalvelu extends KoodistoViitePalvelu(MockKoodistoPalvelu())
+object MockKoodistoViitePalvelu extends KoodistoViitePalvelu(MockKoodistoPalvelu()) {
+  override def validate(input: Koodistokoodiviite) = super.validate(input).map(_.copy(koodistoVersio = None))
+  override def getKoodistoKoodiViite(koodistoUri: String, koodiArvo: String) = super.getKoodistoKoodiViite(koodistoUri, koodiArvo).map(_.copy(koodistoVersio = None))
+  override def getKoodistoKoodiViitteet(koodisto: KoodistoViite) = super.getKoodistoKoodiViitteet(koodisto).map(_.map(_.copy(koodistoVersio = None)))
+}
