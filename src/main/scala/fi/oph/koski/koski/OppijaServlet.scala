@@ -5,18 +5,15 @@ import javax.servlet.http.HttpServletRequest
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{GlobalExecutionContext, OpiskeluOikeusRow}
 import fi.oph.koski.henkilo.HenkiloOid
-import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser._
-import fi.oph.koski.log.AuditLog.{log => auditLog}
 import fi.oph.koski.log._
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.{HenkilöWithOid, Oppija, TäydellisetHenkilötiedot}
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
-import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, NoCache, RequestDescriber}
+import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, NoCache}
 import fi.oph.koski.util.Timing
-import fi.vm.sade.security.ldap.DirectoryClient
 import org.json4s.JsonAST.JArray
 import org.scalatra.GZipSupport
 import rx.lang.scala.Observable
