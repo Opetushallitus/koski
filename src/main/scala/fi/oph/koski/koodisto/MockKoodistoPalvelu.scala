@@ -5,7 +5,7 @@ import fi.oph.koski.koodisto.MockKoodistoPalvelu._
 
 private class MockKoodistoPalvelu extends KoodistoPalvelu {
   def getKoodistoKoodit(koodisto: KoodistoViite): Option[List[KoodistoKoodi]] = {
-    Json.readResourceIfExists(koodistoKooditResourceName(koodisto.koodistoUri)).map(_.extract[List[KoodistoKoodi]])
+    koodistoKooditResourceName(koodisto.koodistoUri).flatMap(Json.readResourceIfExists(_)).map(_.extract[List[KoodistoKoodi]])
   }
 
   def getKoodisto(koodisto: KoodistoViite): Option[Koodisto] = {
@@ -13,11 +13,10 @@ private class MockKoodistoPalvelu extends KoodistoPalvelu {
   }
 
   def getKoodisto(koodistoUri: String): Option[Koodisto] = {
-    Json.readResourceIfExists(koodistoResourceName(koodistoUri)).map(_.extract[Koodisto])
+    koodistoResourceName(koodistoUri).flatMap(Json.readResourceIfExists(_)).map(_.extract[Koodisto])
   }
 
   def getLatestVersion(koodistoUri: String): Option[KoodistoViite] = getKoodisto(koodistoUri).map { _.koodistoViite }
-
 }
 
 object MockKoodistoPalvelu {
@@ -84,8 +83,10 @@ object MockKoodistoPalvelu {
     "koskiyoarvosanat"
   )
 
-  protected[koodisto] def koodistoKooditResourceName(koodistoUri: String) = "/mockdata/koodisto/koodit/" + koodistoUri + ".json"
-  protected[koodisto] def koodistoResourceName(koodistoUri: String) = "/mockdata/koodisto/koodistot/" + koodistoUri + ".json"
+  protected[koodisto] def koodistoKooditResourceName(koodistoUri: String) = koodistot.find(_ == koodistoUri).map(uri => "/mockdata/koodisto/koodit/" + uri + ".json")
+  protected[koodisto] def koodistoResourceName(koodistoUri: String): Option[String] = {
+    koodistot.find(_ == koodistoUri).map(uri => "/mockdata/koodisto/koodistot/" + uri + ".json")
+  }
 
   protected[koodisto] def koodistoKooditFileName(koodistoUri: String): String = "src/main/resources" + koodistoKooditResourceName(koodistoUri)
   protected[koodisto] def koodistoFileName(koodistoUri: String): String = "src/main/resources" + koodistoResourceName(koodistoUri)
