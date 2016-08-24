@@ -67,7 +67,7 @@ const LokirivinData = React.createClass({
     console.log('showing row', row)
     return (<div className="lokirividata-popup">
       <a className="close" onClick={() => parent.setState({showDataForRow: null})}>Sulje</a>
-      {JSON.stringify(row.inputData)}
+      <pre>{JSON.stringify(row.inputData, null, 2)}</pre>
     </div>)
   }
 })
