@@ -17,7 +17,6 @@ object KoskiJsonSchemaValidator {
   val henkilöSchema = createSchema(classOf[Henkilö])
   val opiskeluoikeusSchemas = Map(
     "ammatillinenkoulutus" -> createSchema(classOf[AmmatillinenOpiskeluoikeus]),
-    "ammatillinenkoulutus" -> createSchema(classOf[AmmatillinenOpiskeluoikeus]),
     "perusopetus" -> createSchema(classOf[PerusopetuksenOpiskeluoikeus]),
     "perusopetuksenlisaopetus" -> createSchema(classOf[PerusopetuksenLisäopetuksenOpiskeluoikeus]),
     "perusopetukseenvalmistavaopetus" -> createSchema(classOf[PerusopetukseenValmistavanOpetuksenOpiskeluoikeus]),
