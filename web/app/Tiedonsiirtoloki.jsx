@@ -6,7 +6,7 @@ const inputData = {'henkilö':{'oid':'1.2.246.562.24.00000000002'},'opiskeluoike
 const data = [
   {
     aika: '10.8.2016 11:32',
-    oppija: {hetu: '010101-123N', nimi: 'Eero Esimerkki', oid: '1.2.246.562.24.00000000001'},
+    oppija: {hetu: '010101-123N', kutsumanimi: 'Eero', sukunimi: 'Esimerkki', oid: '1.2.246.562.24.00000000001'},
     oppilaitos: {oid: '1.2.246.562.10.14613773812', nimi: {fi: 'Jyväskylän normaalikoulu'}},
     virhe: 'Organisaatiota 1.2.246.562.100.24253545345 ei löydy organisaatiopalvelusta.',
     inputData: inputData
@@ -47,12 +47,13 @@ const Lokirivi = React.createClass({
   render() {
     const {row, parent} = this.props
     const showData = () => parent.setState({showDataForRow: row})
+    const nimi = row.oppija.kutsumanimi + ' ' + row.oppija.sukunimi
     return (<tr>
       <td className="aika">{row.aika}</td>
       <td className="hetu">{row.oppija.hetu}</td>
       <td className="nimi">{
         row.oppija.oid
-          ? <a href={`/koski/oppija/${row.oppija.oid}`}>{row.oppija.nimi}</a> : row.oppija.nimi
+          ? <a href={`/koski/oppija/${row.oppija.oid}`}>{nimi}</a> : nimi
       }</td>
       <td className="oppilaitos">{row.oppilaitos.nimi.fi}</td>
       <td className="virhe">{row.virhe} (<a onClick={showData}>tiedot</a>)</td>
