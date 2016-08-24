@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest
 
 import fi.oph.koski.log.{LogUserContext, Loggable, Logging}
 import fi.oph.koski.organisaatio.Opetushallitus
-import fi.oph.koski.schema.Organisaatio
+import fi.oph.koski.schema.{OrganisaatioWithOid, Organisaatio}
 import rx.lang.scala.Observable
 
 class KoskiUser(val oid: String, val clientIp: String, val lang: String, käyttöoikeudetObservable: Observable[Set[Käyttöoikeus]]) extends LogUserContext with Loggable with Logging {
@@ -25,7 +25,7 @@ class KoskiUser(val oid: String, val clientIp: String, val lang: String, käytt�
   def hasAccess(organisaatio: Organisaatio.Oid, accessType: AccessType.Value) = globalAccess.contains(accessType) || organisationOids(accessType).contains(organisaatio)
   def hasGlobalReadAccess = globalAccess.contains(AccessType.read)
 
-  def juuriOrganisaatio = {
+  def juuriOrganisaatio: Option[OrganisaatioWithOid] = {
     val juuret = käyttöoikeudet.collect { case r: OrganisaatioKäyttöoikeus if r.juuri => r.organisaatio }
     if (juuret.size > 1) None else juuret.headOption
   }
