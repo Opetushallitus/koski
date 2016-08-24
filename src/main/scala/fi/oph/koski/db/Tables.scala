@@ -42,13 +42,15 @@ object Tables {
     val id = column[Int]("id")
     val kayttajaOid = column[String]("kayttaja_oid")
     val tallentajaOrganisaatioOid = column[String]("tallentaja_organisaatio_oid")
-    val data = column[JValue]("data")
+    val data = column[Option[JValue]]("data")
     val aikaleima = column[Timestamp]("aikaleima")
 
     def * = (id, kayttajaOid, tallentajaOrganisaatioOid, data, aikaleima) <> (TiedonsiirtoRow.tupled, TiedonsiirtoRow.unapply)
   }
 
-  case class TiedonsiirtoRow(id: Int, kayttajaOid: String, tallentajaOrganisaatioOid: String, data: JValue, aikaleima: Timestamp)
+  case class TiedonsiirtoRow(id: Int, kayttajaOid: String, tallentajaOrganisaatioOid: String, data: Option[JValue], aikaleima: Timestamp)
+
+  val Tiedonsiirto = TableQuery[TiedonsiirtoTable]
 
   val CasServiceTicketSessions = TableQuery[CasServiceTicketSessionTable]
 

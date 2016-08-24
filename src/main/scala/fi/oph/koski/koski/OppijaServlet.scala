@@ -26,6 +26,8 @@ class OppijaServlet(val application: KoskiApplication)
       withJsonBody { parsedJson =>
         val validationResult: Either[HttpStatus, Oppija] = application.validator.extractAndValidate(parsedJson)(koskiUser, AccessType.write)
         val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContext(koskiUser, application.facade, request).putSingle(validationResult)
+        // TODO, find right place for this, handle success case, find right organization oid, handle invalid json
+        //application.tiedonsiirtoRepository.create(koskiUser.oid, koskiUser.organisationOids(AccessType.write).head, Some(parsedJson))
         renderEither(result)
       }
     }
