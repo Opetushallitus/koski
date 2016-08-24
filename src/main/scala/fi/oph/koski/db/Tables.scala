@@ -38,6 +38,18 @@ object Tables {
     def * = (serviceTicket, username, userOid, started, updated) <> (CasServiceTicketSessionRow.tupled, CasServiceTicketSessionRow.unapply)
   }
 
+  class TiedonsiirtoTable(tag: Tag) extends Table[TiedonsiirtoRow] (tag, "tiedonsiirto") {
+    val id = column[Int]("id")
+    val kayttajaOid = column[String]("kayttaja_oid")
+    val tallentajaOrganisaatioOid = column[String]("tallentaja_organisaatio_oid")
+    val data = column[JValue]("data")
+    val aikaleima = column[Timestamp]("aikaleima")
+
+    def * = (id, kayttajaOid, tallentajaOrganisaatioOid, data, aikaleima) <> (TiedonsiirtoRow.tupled, TiedonsiirtoRow.unapply)
+  }
+
+  case class TiedonsiirtoRow(id: Int, kayttajaOid: String, tallentajaOrganisaatioOid: String, data: JValue, aikaleima: Timestamp)
+
   val CasServiceTicketSessions = TableQuery[CasServiceTicketSessionTable]
 
   // OpiskeluOikeudet-taulu. Käytä kyselyissä aina OpiskeluOikeudetWithAccessCheck, niin tulee myös käyttöoikeudet tarkistettua samalla.
