@@ -29,32 +29,30 @@ class KäyttöoikeusRepository(authenticationServiceClient: AuthenticationServic
                     None
                 }.toList
               case _ =>
-                def flatten(orgs: List[OrganisaatioHierarkia]): List[OrganisaatioHierarkia] = {
-                  orgs ++ orgs.flatMap { org => org :: flatten(org.children) }
-                }
-                val organisaatioHierarkia: Option[OrganisaatioHierarkia] = organisaatioRepository.getOrganisaatioHierarkia(organisaatioOid)
-
-                val flattened: List[OrganisaatioHierarkia] = organisaatioHierarkia match {
-                  case Some(organisaatioHierarkia) => flatten(List(organisaatioHierarkia))
-                  case None =>
-                    logger.warn(s"Käyttäjän $henkilöOid käyttöoikeus $ryhmäId kohdistuu organisaatioon $organisaatioOid, jota ei löydy")
-                    Nil
+                val organisaatioHierarkia = organisaatioRepository.getOrganisaatioHierarkia(organisaatioOid)
+                val flattened = flatten(organisaatioHierarkia.toList)
+                if (flattened.isEmpty) {
+                  logger.warn(s"Käyttäjän $henkilöOid käyttöoikeus $ryhmäId kohdistuu organisaatioon $organisaatioOid, jota ei löydy")
                 }
 
                 flattened.flatMap { org =>
-                  val käyttöoikeus: Option[OrganisaatioKäyttöoikeus] = ryhmäById(ryhmäId).flatMap {
+                  ryhmäById(ryhmäId).flatMap {
                     case r: GlobaaliKäyttöoikeusryhmä =>
                       logger.warn(s"Käyttäjällä $henkilöOid on globaali käyttöoikeusryhmä $r liitettynä organisaatioon $organisaatioOid")
                       None
                     case r: OrganisaationKäyttöoikeusryhmä =>
                       Some(OrganisaatioKäyttöoikeus(org.toOrganisaatio, org.oppilaitostyyppi, r))
                   }
-                  käyttöoikeus
                 }
             }
         }
       }
     })
+
+  private def flatten(orgs: List[OrganisaatioHierarkia]): List[OrganisaatioHierarkia] = {
+    orgs ++ orgs.flatMap { org => org :: flatten(org.children) }
+  }
+
   private lazy val käyttöoikeusCache = new KeyValueCache[String, Observable[Set[Käyttöoikeus]]](
     CachingStrategy.cacheAllNoRefresh("userOrganisations", 3600, 100), haeKäyttöoikeudet
   )
