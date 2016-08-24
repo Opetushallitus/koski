@@ -41,7 +41,7 @@ class KäyttöoikeusRepository(authenticationServiceClient: AuthenticationServic
                       logger.warn(s"Käyttäjällä $henkilöOid on globaali käyttöoikeusryhmä $r liitettynä organisaatioon $organisaatioOid")
                       None
                     case r: OrganisaationKäyttöoikeusryhmä =>
-                      Some(OrganisaatioKäyttöoikeus(org.toOrganisaatio, org.oppilaitostyyppi, r))
+                      Some(OrganisaatioKäyttöoikeus(org.toOrganisaatio, org.oppilaitostyyppi, r, org.oid == organisaatioHierarkia.get.oid))
                   }
                 }
             }
