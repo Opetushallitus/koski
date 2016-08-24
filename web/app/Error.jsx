@@ -1,6 +1,6 @@
 import React from 'react'
 import { logout } from './Login.jsx'
-import { routeP } from './router'
+import { routeErrorP } from './router'
 import Bacon from 'baconjs'
 
 const logError = (error) => {
@@ -18,8 +18,8 @@ export const errorP = (stateP) => {
           : Bacon.never()
       )).toProperty({})
 
-    return Bacon.combineWith(stateErrorP, routeP, (error, route) =>
-        error.httpStatus ? error : route
+    return Bacon.combineWith(stateErrorP, routeErrorP, (error, routeError) =>
+        error.httpStatus ? error : routeError
     )
   }
 }

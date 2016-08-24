@@ -1,7 +1,7 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import Http from './http'
-import {navigateToOppija, showError} from './router'
+import {navigateToOppija, showError} from './location'
 import {isValidHetu} from './hetu'
 import {OpiskeluOikeus} from './CreateOpiskeluOikeus.jsx'
 import { formatISODate } from './date.js'

@@ -6,39 +6,28 @@ import ReactDOM from 'react-dom'
 import Bacon from 'baconjs'
 import {Error, TopLevelError, isTopLevel, handleError, errorP} from './Error.jsx'
 import {Login, userP} from './Login.jsx'
-import {OppijaHaku, oppijatP, searchInProgressP} from './OppijaHaku.jsx'
-import {Oppija, oppijaStateP, selectOppijaE, updateResultE} from './Oppija.jsx'
-import {modelData} from './EditorModel.js'
+import {contentP} from './router'
+import {selectOppijaE, updateResultE} from './Oppija.jsx'
 import {TopBar} from './TopBar.jsx'
-
-// Application state to be rendered
-const stateP = Bacon.combineTemplate({
-  user: userP,
-  oppijaHaku: {
-    oppijat: oppijatP,
-    searchInProgress: searchInProgressP
-  },
-  oppija: oppijaStateP
-})
 
 // Stays at `true` for five seconds after latest saved change. Reset to `false` when another Oppija is selected.
 const savedP = updateResultE.flatMapLatest(() => Bacon.once(true).concat((selectOppijaE.merge(Bacon.later(5000))).map(false))).toProperty(false).skipDuplicates()
 
+const topBarP = Bacon.combineWith(userP, savedP, (user, saved) => <TopBar user={user} saved={saved} />)
+const allErrorsP = errorP(Bacon.combineAsArray(contentP, savedP))
+
 // Renderered Virtual DOM
-const domP = Bacon.combineWith(stateP, errorP(Bacon.combineAsArray(stateP, savedP)), savedP, ({user, oppijaHaku, oppija, searchInProgress}, error, saved) =>
+const domP = Bacon.combineWith(topBarP, userP, contentP, allErrorsP, (topBar, user, content, error) =>
     <div>
       <Error error={error}/>
-      <TopBar user={user} saved={saved} />
+      {topBar}
       {
         isTopLevel(error)
           ? <TopLevelError status={error.httpStatus} text={error.text} />
           : ( user
-              ? <div className='content-area'>
-                <OppijaHaku oppijat={oppijaHaku.oppijat} valittu={modelData(oppija.valittuOppija, 'henkilö')} searching={oppijaHaku.searchInProgress}/>
-                <Oppija oppija={oppija}/>
-              </div>
-              : <Login />
-           )
+            ? content
+            : <Login />
+          )
       }
     </div>
 )

@@ -1,8 +1,9 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import Http from './http'
-import {navigateToOppija, navigateToUusiOppija} from './router.js'
-import {oppijaP} from './Oppija.jsx'
+import {navigateToOppija, navigateToUusiOppija} from './location'
+import {oppijaP, oppijaStateP, Oppija} from './Oppija.jsx'
+
 import { modelData } from './EditorModel.js'
 
 const oppijaHakuE = new Bacon.Bus()
@@ -28,6 +29,13 @@ henkilöP.sampledBy(oppijatP.map('.results').changes(), (oppija, oppijat) => ({ 
   .onValue(navigateToOppija)
 
 export const searchInProgressP = oppijaHakuE.filter(acceptableQuery).awaiting(oppijatP.mapError()).throttle(200)
+
+export const oppijaHakuContentP = Bacon.combineWith(oppijatP, searchInProgressP, oppijaStateP, (oppijat, searchInProgress, oppija) => {
+  return (<div className='content-area'>
+    <OppijaHaku oppijat={oppijat} valittu={modelData(oppija.valittuOppija, 'henkilö')} searching={searchInProgress}/>
+    <Oppija oppija={oppija}/>
+  </div>)
+})
 
 
 const OppijaHakuBoksi = React.createClass({

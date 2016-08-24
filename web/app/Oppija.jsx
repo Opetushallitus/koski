@@ -1,14 +1,21 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import Http from './http'
-import {routeP} from './router'
+import {locationP} from './location'
 import {CreateOppija} from './CreateOppija.jsx'
-import { modelTitle, modelLookup, modelSet, objectLookup } from './EditorModel.js'
+import { modelTitle, modelLookup, modelSet, objectLookup } from './EditorModel'
 import {OppijaEditor} from './OppijaEditor.jsx'
 import * as L from 'partial.lenses'
 import R from 'ramda'
 
-export const selectOppijaE = routeP.map('.oppijaId').flatMap(oppijaId => {
+const oppijaIdP = locationP.map(location => {
+  const match = location.match(new RegExp('/koski/oppija/(.*)'))
+  return match ? match[1] : undefined
+})
+
+export const uusiOppijaP = locationP.map(location => location === '/koski/uusioppija')
+
+export const selectOppijaE = oppijaIdP.flatMap(oppijaId => {
   return oppijaId
     ? Bacon.once({loading: true}).concat(Http.get(`/koski/api/editor/${oppijaId}`))
     : Bacon.once({ empty: true})
@@ -45,7 +52,6 @@ updateResultE.plug(oppijaP
   })
 )
 
-export const uusiOppijaP = routeP.map(route => { return !!route.uusiOppija })
 
 export const oppijaStateP = Bacon.combineTemplate({
     valittuOppija: oppijaP,

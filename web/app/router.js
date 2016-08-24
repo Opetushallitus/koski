@@ -1,31 +1,14 @@
-import Bacon from 'baconjs'
+import { locationP } from './location.js'
+import { oppijaHakuContentP } from './OppijaHaku.jsx'
 
-const b = new Bacon.Bus()
+export const contentP = locationP.flatMap(location => {
+  if (location.match(new RegExp('/koski/oppija/(.*)'))) {
+    return oppijaHakuContentP
+  } else if (location === '/koski/uusioppija') {
+    return oppijaHakuContentP
+  } else if (location === '/koski/') {
+    return oppijaHakuContentP
+  }
+}).toProperty()
 
-const navigate = function (path) {
-  history.pushState(null, null, path)
-  b.push(path)
-}
-
-window.onpopstate = function() {
-  b.push(document.location.pathname)
-}
-
-export const routeP = b.toProperty(document.location.pathname)
-  .map(route => {
-    const match = route.match(new RegExp('/koski/oppija/(.*)'))
-    const oppijaId = match ? match[1] : undefined
-    if (oppijaId) {
-      return {oppijaId}
-    } else if (route === '/koski/uusioppija') {
-      return { uusiOppija: true }
-    } else if (route === '/koski/') {
-      return {}
-    } else {
-      return { httpStatus: 404, comment: 'route not found: ' + route }
-    }
-  })
-
-export const navigateToOppija = oppija => navigate(`/koski/oppija/${oppija.oid}`)
-export const navigateToUusiOppija = () => navigate('/koski/uusioppija')
-export const showError = (error) => b.error(error)
+export const routeErrorP = contentP.map(content => content ? {} : { httpStatus: 404, comment: 'route not found' })
