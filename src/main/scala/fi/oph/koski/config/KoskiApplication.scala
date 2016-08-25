@@ -12,7 +12,7 @@ import fi.oph.koski.henkilo.AuthenticationServiceClient
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.koski.{KoskiFacade, KoskiValidator}
-import fi.oph.koski.koskiuser.{CasTicketSessionRepository, UserAuthenticationContext, DirectoryClientFactory, KäyttöoikeusRepository}
+import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.{Logging, TimedProxy}
 import fi.oph.koski.opiskeluoikeus.{AuxiliaryOpiskeluOikeusRepository, CompositeOpiskeluOikeusRepository, OpiskeluOikeusRepository, PostgresOpiskeluOikeusRepository}
 import fi.oph.koski.oppija.OppijaRepository
@@ -54,7 +54,8 @@ class KoskiApplication(val config: Config) extends Logging with UserAuthenticati
   lazy val opiskeluOikeusRepository = new CompositeOpiskeluOikeusRepository(possu, List(virta, ytr))
   lazy val validator: KoskiValidator = new KoskiValidator(tutkintoRepository, koodistoViitePalvelu, organisaatioRepository)
   lazy val facade = new KoskiFacade(oppijaRepository, opiskeluOikeusRepository)
-  lazy val serviceTicketRepository = new CasTicketSessionRepository(database.db)
+  lazy val sessionTimeout = SessionTimeout(config)
+  lazy val serviceTicketRepository = new CasTicketSessionRepository(database.db, sessionTimeout)
   lazy val fixtureCreator = new FixtureCreator(config, database, opiskeluOikeusRepository, oppijaRepository, validator)
   lazy val tiedonsiirtoRepository = new TiedonsiirtoRepository(database.db)
 

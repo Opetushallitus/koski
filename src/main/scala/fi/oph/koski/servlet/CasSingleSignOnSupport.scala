@@ -13,7 +13,7 @@ trait CasSingleSignOnSupport extends ScalatraBase {
 
   def isHttps = !currentUrl.startsWith("http://localhost") // <- we don't get the https protocol correctly through the proxy, so we assume https
 
-  def setUserCookie(user: AuthenticationUser) = response.addCookie(Cookie("koskiUser", Json.write(user))(CookieOptions(secure = isHttps, path = "/", maxAge = 3600, httpOnly = true)))
+  def setUserCookie(user: AuthenticationUser) = response.addCookie(Cookie("koskiUser", Json.write(user))(CookieOptions(secure = isHttps, path = "/", maxAge = application.sessionTimeout.seconds, httpOnly = true)))
   def getUserCookie: Option[AuthenticationUser] = Option(request.getCookies).toList.flatten.find(_.getName == "koskiUser").map(_.getValue).map(Json.read[AuthenticationUser])
   def removeUserCookie = response.addCookie(Cookie("koskiUser", "")(CookieOptions(secure = isHttps, path = "/", maxAge = 0)))
 

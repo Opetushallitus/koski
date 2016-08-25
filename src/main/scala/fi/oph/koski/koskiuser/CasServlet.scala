@@ -7,7 +7,7 @@ import fi.vm.sade.utils.cas.CasLogout
 
 class CasServlet(val application: KoskiApplication) extends ApiServlet with AuthenticationSupport {
   private def validator = new ServiceTicketValidator(application.config)
-  private val ticketSessions = new CasTicketSessionRepository(application.database.db)
+  private val ticketSessions = application.serviceTicketRepository
 
   get("/") { // Return url for cas login
     params.get("ticket") match {

@@ -8,4 +8,5 @@ trait UserAuthenticationContext {
   def käyttöoikeusRepository: KäyttöoikeusRepository
   def config: Config
   def serviceTicketRepository: CasTicketSessionRepository
+  def sessionTimeout: SessionTimeout
 }

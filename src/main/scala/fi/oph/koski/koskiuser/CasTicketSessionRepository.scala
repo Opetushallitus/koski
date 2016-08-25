@@ -7,10 +7,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Timing
 
-class CasTicketSessionRepository(db: DB) extends Futures with GlobalExecutionContext with Timing with Logging {
-  // Maximum period of inactivity for a session
-  val maxInactivityPeriod = 600
-
+class CasTicketSessionRepository(db: DB, sessionTimeout: SessionTimeout) extends Futures with GlobalExecutionContext with Timing with Logging {
   private def now = new Timestamp(System.currentTimeMillis())
 
   def store(ticket: String, user: AuthenticationUser) = {
@@ -18,7 +15,7 @@ class CasTicketSessionRepository(db: DB) extends Futures with GlobalExecutionCon
   }
 
   def getUserByTicket(ticket: String): Option[AuthenticationUser] = timed("getUserByTicket", 0) {
-    val limit = new Timestamp(System.currentTimeMillis() - maxInactivityPeriod * 1000)
+    val limit = new Timestamp(System.currentTimeMillis() - sessionTimeout.milliseconds)
 
     val query = Tables.CasServiceTicketSessions.filter(row => row.serviceTicket === ticket && row.updated >= limit)
 
