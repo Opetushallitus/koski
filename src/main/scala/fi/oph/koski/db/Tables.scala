@@ -43,12 +43,13 @@ object Tables {
     val kayttajaOid = column[String]("kayttaja_oid")
     val tallentajaOrganisaatioOid = column[String]("tallentaja_organisaatio_oid")
     val data = column[Option[JValue]]("data")
+    val virheet = column[Option[JValue]]("virheet")
     val aikaleima = column[Timestamp]("aikaleima")
 
-    def * = (id, kayttajaOid, tallentajaOrganisaatioOid, data, aikaleima) <> (TiedonsiirtoRow.tupled, TiedonsiirtoRow.unapply)
+    def * = (id, kayttajaOid, tallentajaOrganisaatioOid, data, virheet, aikaleima) <> (TiedonsiirtoRow.tupled, TiedonsiirtoRow.unapply)
   }
 
-  case class TiedonsiirtoRow(id: Int, kayttajaOid: String, tallentajaOrganisaatioOid: String, data: Option[JValue], aikaleima: Timestamp)
+  case class TiedonsiirtoRow(id: Int, kayttajaOid: String, tallentajaOrganisaatioOid: String, data: Option[JValue], virheet: Option[JValue], aikaleima: Timestamp)
 
   val Tiedonsiirto = TableQuery[TiedonsiirtoTable]
 

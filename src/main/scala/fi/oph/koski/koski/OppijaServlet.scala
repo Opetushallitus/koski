@@ -14,8 +14,8 @@ import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.{HenkilöWithOid, Oppija, TäydellisetHenkilötiedot}
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, NoCache}
+import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
 import fi.oph.koski.util.Timing
-import org.json4s.JValue
 import org.json4s.JsonAST.JArray
 import org.scalatra.GZipSupport
 import rx.lang.scala.Observable
@@ -29,7 +29,7 @@ class OppijaServlet(val application: KoskiApplication)
         val validationResult: Either[HttpStatus, Oppija] = application.validator.extractAndValidate(parsedJson)(koskiUser, AccessType.write)
         val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContext(koskiUser, application.facade, request).putSingle(validationResult)
 
-        storeTiedonsiirtoResult(result.fold(_ => Some(parsedJson), _ => None))
+        storeTiedonsiirtoResult(result.fold(status => Some(TiedonsiirtoError(parsedJson, toJValue(status.errors))), _ => None))
         renderEither(result)
 
       }(handleUnparseableJson)
@@ -55,12 +55,12 @@ class OppijaServlet(val application: KoskiApplication)
   }
 
   private def handleUnparseableJson(status: HttpStatus) = {
-    storeTiedonsiirtoResult(Some(toJValue(Map("unparseableJson" -> request.body))))
+    storeTiedonsiirtoResult(Some(TiedonsiirtoError(toJValue(Map("unparseableJson" -> request.body)), toJValue(status.errors))))
     haltWithStatus(status)
   }
 
-  private def storeTiedonsiirtoResult(data: Option[JValue]) = {
-    koskiUser.juuriOrganisaatio.foreach(org => application.tiedonsiirtoRepository.create(koskiUser.oid, org.oid, data))
+  private def storeTiedonsiirtoResult(error: Option[TiedonsiirtoError]) = {
+    koskiUser.juuriOrganisaatio.foreach(org => application.tiedonsiirtoRepository.create(koskiUser.oid, org.oid, error))
   }
 
   get("/") {

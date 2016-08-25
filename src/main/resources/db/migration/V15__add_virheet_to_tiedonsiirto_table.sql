@@ -1,0 +1,1 @@
+ALTER TABLE tiedonsiirto ADD virheet JSONB;
