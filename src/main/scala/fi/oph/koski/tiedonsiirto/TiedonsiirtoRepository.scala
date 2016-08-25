@@ -8,12 +8,12 @@ import org.json4s.JsonAST.JValue
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 
 class TiedonsiirtoRepository(db: DB) extends  GlobalExecutionContext with Futures {
-  def create(kayttajaOid: String, tallentajaOrganisaatioOid:  String, error: Option[TiedonsiirtoError]) = {
+  def create(kayttajaOid: String, tallentajaOrganisaatioOid: String, oppija: Option[JValue], oppilaitos: Option[JValue], error: Option[TiedonsiirtoError]) = {
 
     val (data, virheet) = error.map(e => (Some(e.data), Some(e.virheet))).getOrElse((None, None))
 
     db.run {
-      Tiedonsiirto.map { row => (row.kayttajaOid, row.tallentajaOrganisaatioOid, row.data, row.virheet) } += (kayttajaOid, tallentajaOrganisaatioOid, data, virheet)
+      Tiedonsiirto.map { row => (row.kayttajaOid, row.tallentajaOrganisaatioOid, row.oppija, row.oppilaitos, row.data, row.virheet) } += (kayttajaOid, tallentajaOrganisaatioOid, oppija, oppilaitos, data, virheet)
     }
   }
 

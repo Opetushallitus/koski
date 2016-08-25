@@ -16,7 +16,7 @@ import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, NoCache}
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
 import fi.oph.koski.util.Timing
-import org.json4s.JsonAST.JArray
+import org.json4s.{JArray, JValue}
 import org.scalatra.GZipSupport
 import rx.lang.scala.Observable
 
@@ -29,7 +29,7 @@ class OppijaServlet(val application: KoskiApplication)
         val validationResult: Either[HttpStatus, Oppija] = application.validator.extractAndValidate(parsedJson)(koskiUser, AccessType.write)
         val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContext(koskiUser, application.facade, request).putSingle(validationResult)
 
-        storeTiedonsiirtoResult(result.fold(status => Some(TiedonsiirtoError(parsedJson, toJValue(status.errors))), _ => None))
+        storeTiedonsiirtoResult(Some(parsedJson), result.fold(status => Some(TiedonsiirtoError(parsedJson, toJValue(status.errors))), _ => None))
         renderEither(result)
 
       }(handleUnparseableJson)
@@ -55,12 +55,14 @@ class OppijaServlet(val application: KoskiApplication)
   }
 
   private def handleUnparseableJson(status: HttpStatus) = {
-    storeTiedonsiirtoResult(Some(TiedonsiirtoError(toJValue(Map("unparseableJson" -> request.body)), toJValue(status.errors))))
+    storeTiedonsiirtoResult(None, Some(TiedonsiirtoError(toJValue(Map("unparseableJson" -> request.body)), toJValue(status.errors))))
     haltWithStatus(status)
   }
 
-  private def storeTiedonsiirtoResult(error: Option[TiedonsiirtoError]) = {
-    koskiUser.juuriOrganisaatio.foreach(org => application.tiedonsiirtoRepository.create(koskiUser.oid, org.oid, error))
+  private def storeTiedonsiirtoResult(data: Option[JValue], error: Option[TiedonsiirtoError]) = {
+    val oppija = data.map(_ \ "henkilö")
+    val oppilaitos = data.map(_ \ "opiskeluoikeudet" \ "oppilaitos")
+    koskiUser.juuriOrganisaatio.foreach(org => application.tiedonsiirtoRepository.create(koskiUser.oid, org.oid, oppija, oppilaitos, error))
   }
 
   get("/") {
