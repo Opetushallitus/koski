@@ -25,6 +25,7 @@ case class YlioppilastutkinnonOpiskeluoikeus(
 case class YlioppilastutkinnonOpiskeluoikeudenTila(opiskeluoikeusjaksot: List[LukionOpiskeluoikeusjakso]) extends OpiskeluoikeudenTila
 
 case class YlioppilastutkinnonSuoritus(
+  @Title("Koulutus")
   koulutusmoduuli: Ylioppilastutkinto = Ylioppilastutkinto(perusteenDiaarinumero = None),
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
@@ -40,6 +41,7 @@ case class YlioppilastutkinnonSuoritus(
 }
 
 case class YlioppilastutkinnonKokeenSuoritus(
+  @Title("Koe")
   koulutusmoduuli: YlioppilasTutkinnonKoe,
   tila: Koodistokoodiviite,
   arviointi: Option[List[YlioppilaskokeenArviointi]],

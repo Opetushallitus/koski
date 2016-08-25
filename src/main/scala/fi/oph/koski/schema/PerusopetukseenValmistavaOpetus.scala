@@ -26,6 +26,7 @@ case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
 }
 
 case class PerusopetukseenValmistavanOpetuksenSuoritus(
+  @Title("Koulutus")
   koulutusmoduuli: PerusopetukseenValmistavaOpetus = PerusopetukseenValmistavaOpetus(),
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
@@ -41,6 +42,7 @@ case class PerusopetukseenValmistavanOpetuksenSuoritus(
 }
 
 case class PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus(
+  @Title("Oppiaine")
   koulutusmoduuli: PerusopetukseenValmistavanOpetuksenOppiaine,
   tila: Koodistokoodiviite,
   arviointi: Option[List[SanallinenPerusopetuksenOppiaineenArviointi]],

@@ -28,6 +28,7 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeus(
 
 @Description("Lukioon valmistavan koulutus (LUVA) suoritus")
 case class LukioonValmistavanKoulutuksenSuoritus(
+  @Title("Koulutus")
   koulutusmoduuli: LukioonValmistavaKoulutus,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
@@ -52,6 +53,7 @@ case class LukioonValmistavaKoulutus(
 trait LukioonValmistavanKoulutuksenOsasuoritus extends Suoritus
 
 case class LukioonValmistavanKurssinSuoritus(
+  @Title("Kurssi")
   koulutusmoduuli: LukioonValmistavanKoulutuksenKurssi,
   tila: Koodistokoodiviite,
   arviointi: Option[List[LukionKurssinArviointi]],

@@ -60,6 +60,7 @@ case class AmmatillinenOpiskeluoikeusjakso(
 ) extends KoskiOpiskeluoikeusjakso
 
 case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
+  @Title("Koulutus")
   koulutusmoduuli: NäyttötutkintoonValmistavaKoulutus = NäyttötutkintoonValmistavaKoulutus(),
   @Description("Tässä kentässä kuvataan sen tutkinnon tiedot, joihin valmistava koulutus tähtää")
   tutkinto: AmmatillinenTutkintoKoulutus,
@@ -96,6 +97,7 @@ case class NäyttötutkintoonValmistavaKoulutus(
 }
 
 case class AmmatillisenTutkinnonSuoritus(
+  @Title("Koulutus")
   koulutusmoduuli: AmmatillinenTutkintoKoulutus,
   @Description("Tieto siitä mihin tutkintonimikkeeseen oppijan tutkinto liittyy")
   @KoodistoUri("tutkintonimikkeet")
@@ -128,6 +130,7 @@ case class AmmatillisenTutkinnonSuoritus(
 
 case class AmmatillisenTutkinnonOsanSuoritus(
   @Description("Suoritettavan tutkinnon osan tunnistetiedot")
+  @Title("Tutkinnon osa")
   koulutusmoduuli: AmmatillisenTutkinnonOsa,
   @Description("Tutkinto, jonka rakenteeseen tutkinnon osa liittyy. Käytetään vain tapauksissa, joissa tutkinnon osa on poimittu toisesta tutkinnosta.")
   tutkinto: Option[AmmatillinenTutkintoKoulutus] = None,
@@ -305,6 +308,7 @@ case class LaajuusOsaamispisteissä(
 ) extends Laajuus
 
 case class NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
+  @Title("Koulutuksen osa")
   koulutusmoduuli: NäyttötutkintoonValmistavanKoulutuksenOsa,
   tila: Koodistokoodiviite,
   suorituskieli: Option[Koodistokoodiviite] = None,
@@ -325,6 +329,7 @@ case class NäyttötutkintoonValmistavanKoulutuksenOsa(
 
 @Description("Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)")
 case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus(
+  @Title("Koulutus")
   koulutusmoduuli: AmmatilliseenPeruskoulutukseenValmentavaKoulutus,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
@@ -339,6 +344,7 @@ case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus(
 ) extends ValmentavaSuoritus with AmmatillinenPäätasonSuoritus
 
 case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus(
+  @Title("Koulutuksen osa")
   koulutusmoduuli: AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa,
   tila: Koodistokoodiviite,
   arviointi: Option[List[AmmatillinenArviointi]],
@@ -367,6 +373,7 @@ case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa(
 
 @Description("Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)")
 case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenSuoritus(
+  @Title("Koulutus")
   koulutusmoduuli: TyöhönJaItsenäiseenElämäänValmentavaKoulutus,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
@@ -381,6 +388,7 @@ case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenSuoritus(
 ) extends ValmentavaSuoritus with AmmatillinenPäätasonSuoritus
 
 case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus(
+  @Title("Koulutuksen osa")
   koulutusmoduuli: TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa,
   tila: Koodistokoodiviite,
   arviointi: Option[List[TelmaArviointi]],

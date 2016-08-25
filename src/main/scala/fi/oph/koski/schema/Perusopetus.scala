@@ -93,6 +93,7 @@ trait PerusopetuksenPäätasonSuoritus extends Suoritus with Toimipisteellinen
 @Description("Perusopetuksen vuosiluokan suoritus. Nämä suoritukset näkyvät lukuvuositodistuksella.")
 case class PerusopetuksenVuosiluokanSuoritus(
   @Description("Luokka-aste ilmaistaan perusopetuksenluokkaaste-koodistolla")
+  @Title("Luokka-aste")
   koulutusmoduuli: PerusopetuksenLuokkaAste,
   @Description("Luokan tunniste, esimerkiksi 9C")
   luokka: String,
@@ -114,6 +115,7 @@ case class PerusopetuksenVuosiluokanSuoritus(
 
 @Description("Perusopetuksen koko oppimäärän suoritus. Nämä suoritukset näkyvät päättötodistuksella.")
 case class PerusopetuksenOppimääränSuoritus(
+  @Title("Koulutus")
   koulutusmoduuli: Perusopetus,
   @KoodistoUri("perusopetuksenoppimaara")
   @Description("Tieto siitä, suoritetaanko perusopetusta nuorten vai aikuisten oppimäärän mukaisesti")
@@ -137,6 +139,7 @@ case class PerusopetuksenOppimääränSuoritus(
 @Description("Perusopetuksen yksittäisen oppiaineen oppimäärän suoritus erillisenä kokonaisuutena")
 case class PerusopetuksenOppiaineenOppimääränSuoritus(
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
+  @Title("Oppiaine")
   koulutusmoduuli: PerusopetuksenOppiaine,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
@@ -151,6 +154,7 @@ sealed trait OppiaineenTaiToiminta_AlueenSuoritus extends Suoritus
 
 @Description("Perusopetuksen oppiaineen suoritus osana perusopetuksen oppimäärän tai vuosiluokan suoritusta")
 case class PerusopetuksenOppiaineenSuoritus(
+  @Title("Oppiaine")
   koulutusmoduuli: PerusopetuksenOppiaine,
   @Description("Tieto siitä, onko oppiaineen oppimäärä yksilöllistetty (true/false)")
   yksilöllistettyOppimäärä: Boolean = false,
@@ -165,6 +169,7 @@ case class PerusopetuksenOppiaineenSuoritus(
 
 @Description("Perusopetuksen toiminta-alueen suoritus osana perusopetuksen oppimäärän tai vuosiluokan suoritusta. Suoritukset voidaan kirjata oppiaineiden sijaan toiminta-alueittain, jos opiskelijalle on tehty erityisen tuen päätös.")
 case class PerusopetuksenToiminta_AlueenSuoritus(
+  @Title("Toiminta-alue")
   koulutusmoduuli: PerusopetuksenToiminta_Alue,
   tila: Koodistokoodiviite,
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,

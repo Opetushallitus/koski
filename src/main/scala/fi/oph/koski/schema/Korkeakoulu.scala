@@ -38,6 +38,7 @@ trait KorkeakouluSuoritus extends Suoritus {
 }
 
   case class KorkeakoulututkinnonSuoritus(
+    @Title("Tutkinto")
     koulutusmoduuli: Korkeakoulututkinto,
     toimipiste: Oppilaitos,
     tila: Koodistokoodiviite,
@@ -54,6 +55,7 @@ trait KorkeakouluSuoritus extends Suoritus {
   }
 
   case class KorkeakoulunOpintojaksonSuoritus(
+    @Title("Opintojakso")
     koulutusmoduuli: KorkeakoulunOpintojakso,
     toimipiste: Oppilaitos,
     tila: Koodistokoodiviite,

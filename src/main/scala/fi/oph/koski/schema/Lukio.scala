@@ -61,6 +61,7 @@ case class Erityinenkoulutustehtävä(
 trait LukionPäätasonSuoritus extends Suoritus with Toimipisteellinen
 
 case class LukionOppimääränSuoritus(
+  @Title("Koulutus")
   koulutusmoduuli: LukionOppimäärä,
   @KoodistoUri("lukionoppimaara")
   @Description("Tieto siitä, suoritetaanko lukiota nuorten vai aikuisten oppimäärän mukaisesti")
@@ -79,6 +80,7 @@ case class LukionOppimääränSuoritus(
 }
 
 case class LukionOppiaineenOppimääränSuoritus(
+  @Title("Oppiaine")
   koulutusmoduuli: LukionOppiaine,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
@@ -104,6 +106,7 @@ case class LukionOppimäärä(
 }
 
 case class LukionOppiaineenSuoritus(
+  @Title("Oppiaine")
   koulutusmoduuli: LukionOppiaine,
   tila: Koodistokoodiviite,
   arviointi: Option[List[LukionOppiaineenArviointi]] = None,
@@ -119,6 +122,7 @@ case class LukionOppiaineenSuoritus(
 
 case class LukionKurssinSuoritus(
   @Description("Lukion kurssin tunnistetiedot")
+  @Title("Kurssi")
   koulutusmoduuli: LukionKurssi,
   tila: Koodistokoodiviite,
   arviointi: Option[List[LukionKurssinArviointi]] = None,
