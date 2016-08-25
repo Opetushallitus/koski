@@ -195,6 +195,7 @@ case class MuuOppiaine(
   @KoodistoKoodiarvo("GE")
   @KoodistoKoodiarvo("LI")
   @KoodistoKoodiarvo("KU")
+  @KoodistoKoodiarvo("OP")
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa] = None

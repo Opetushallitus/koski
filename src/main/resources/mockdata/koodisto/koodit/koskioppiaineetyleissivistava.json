@@ -372,5 +372,17 @@
     ],
     "versio": 1,
     "koodiArvo": "PS"
+  },
+  {
+    "koodiUri": "koskioppiaineetyleissivistava_op",
+    "metadata": [
+      {
+        "nimi": "Opinto-ohjaus",
+        "lyhytNimi": "Opinto-ohjaus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "OP"
   }
 ]
