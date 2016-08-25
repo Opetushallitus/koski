@@ -74,6 +74,21 @@ object Tables {
         }
     }
   }
+
+  def TiedonsiirtoWithAccessCheck(implicit user: KoskiUser): Query[TiedonsiirtoTable, TiedonsiirtoRow, Seq] = {
+    if (user.globalAccess.contains(AccessType.read)) {
+      Tiedonsiirto
+    } else {
+      val oids = user.organisationOids(AccessType.read).toList
+      for {
+        t <- Tiedonsiirto
+        if t.tallentajaOrganisaatioOid inSetBind oids
+      }
+        yield {
+          t
+        }
+    }
+  }
 }
 
 case class CasServiceTicketSessionRow(serviceTicket: String, username: String, userOid: String, started: Timestamp, updated: Timestamp)

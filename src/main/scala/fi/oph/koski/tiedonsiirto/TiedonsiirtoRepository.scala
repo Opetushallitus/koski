@@ -1,9 +1,9 @@
 package fi.oph.koski.tiedonsiirto
 
 import fi.oph.koski.db.KoskiDatabase.DB
-import fi.oph.koski.db.Tables.{Tiedonsiirto, TiedonsiirtoRow}
+import fi.oph.koski.db.Tables.{Tiedonsiirto, TiedonsiirtoRow, TiedonsiirtoWithAccessCheck}
 import fi.oph.koski.db.{Futures, GlobalExecutionContext}
-import fi.oph.koski.schema.OrganisaatioWithOid
+import fi.oph.koski.koskiuser.KoskiUser
 import org.json4s.JsonAST.JValue
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 
@@ -17,8 +17,8 @@ class TiedonsiirtoRepository(db: DB) extends  GlobalExecutionContext with Future
     }
   }
 
-  def findByOrganisaatio(org: OrganisaatioWithOid): Seq[TiedonsiirtoRow] =
-    await(db.run(Tiedonsiirto.filter(_.tallentajaOrganisaatioOid === org.oid).result))
+  def findByOrganisaatio(koskiUser: KoskiUser): Seq[TiedonsiirtoRow] =
+    await(db.run(TiedonsiirtoWithAccessCheck(koskiUser).result))
 }
 
 case class TiedonsiirtoError(data: JValue, virheet: JValue)
