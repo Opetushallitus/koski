@@ -366,9 +366,9 @@ Taulukossa tärkeimmät Koski-palvelun käyttämät ulkoiset REST-endpointit
 | URL                                                                   | Käyttötarkoitus                                        |
 |-----------------------------------------------------------------------|--------------------------------------------------------|
 | `GET /authentication-service/resources/henkilo?no=true&count=0&q=${query}`  | Oppijan haku nimellä tai hetulla (oid, nimi, hetu) |
-| POST /authentication-service/resources/s2s/koski/henkilotByHenkiloOidList  | Oppijoiden haku oid-listan perusteella (oid, nimi, hetu, äidinkieli, kansalaisuudet) |
-| GET /authentication-service/resources/s2s/koski/kayttooikeusryhmat/${oid} | Käyttäjän käyttöoikeusryhmien haku organisaatioittain (organisaatio-oid, ryhmä-id) |
-| GET /organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=false&oid=${oid} | Organisaatiohiearkian haku (oid, nimi, oppilaitoskoodi, organisaatiotyypit, oppilaitostyyppi, aliorganisaatiot) |
+| `POST /authentication-service/resources/s2s/koski/henkilotByHenkiloOidList`  | Oppijoiden haku oid-listan perusteella (oid, nimi, hetu, äidinkieli, kansalaisuudet) |
+| `GET /authentication-service/resources/s2s/koski/kayttooikeusryhmat/${oid}` | Käyttäjän käyttöoikeusryhmien haku organisaatioittain (organisaatio-oid, ryhmä-id) |
+| `GET /organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=false&oid=${oid}` | Organisaatiohiearkian haku (oid, nimi, oppilaitoskoodi, organisaatiotyypit, oppilaitostyyppi, aliorganisaatiot) |
 
 ## Rajapinta-dokumentaatio
 
