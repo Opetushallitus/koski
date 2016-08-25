@@ -359,6 +359,17 @@ Koski osaa tarvittaessa luoda käytettävät koodistot ja koodistopalveluun. Kä
 
 Kosken käyttäjäautentikaatio on toteutettu Opintopolku-järjestelmän LDAPia vasten. LDAP-palvelimen osoite ja tunnukset konfiguroidaan `ldap.host`, `ldap.userdn` ja `ldap.password` -asetuksilla.
 
+### REST-endpointit
+
+Taulukossa tärkeimmät Koski-palvelun käyttämät ulkoiset REST-endpointit
+
+| URL                                                                   | Käyttötarkoitus                                        |
+|-----------------------------------------------------------------------|--------------------------------------------------------|
+| /authentication-service/resources/henkilo?no=true&count=0&q=${query}  | Oppijan haku nimellä tai hetulla                       |
+| /authentication-service/resources/s2s/koski/henkilotByHenkiloOidList  | Oppijoiden haku oid-listan perusteella                 |
+| /authentication-service/resources/s2s/koski/kayttooikeusryhmat/${oid} | Käyttäjän käyttöoikeusryhmien haku organisaatioittain  |
+| /organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=false&oid=${oid} | Organisaatiohiearkian haku |
+
 ## Rajapinta-dokumentaatio
 
 Koski-järjestelmän rajapinta-dokumentaatio generoidaan lähdekoodista sekä testidatasta ja esimerkiksi testiympäristön dokumentaatio löytyy osoitteesta
