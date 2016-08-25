@@ -1,6 +1,7 @@
 ---
 - name: Koski deployment
   hosts: tor_backends
+  gather_facts: False
   sudo: true
   serial: 1
   vars:
