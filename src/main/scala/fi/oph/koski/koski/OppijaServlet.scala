@@ -7,6 +7,7 @@ import fi.oph.koski.db.{GlobalExecutionContext, OpiskeluOikeusRow}
 import fi.oph.koski.henkilo.HenkiloOid
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json
+import fi.oph.koski.json.Json.toJValue
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log._
 import fi.oph.koski.schema.Henkilö.Oid
@@ -14,6 +15,7 @@ import fi.oph.koski.schema.{HenkilöWithOid, Oppija, TäydellisetHenkilötiedot}
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, NoCache}
 import fi.oph.koski.util.Timing
+import org.json4s.JValue
 import org.json4s.JsonAST.JArray
 import org.scalatra.GZipSupport
 import rx.lang.scala.Observable
@@ -26,10 +28,11 @@ class OppijaServlet(val application: KoskiApplication)
       withJsonBody { parsedJson =>
         val validationResult: Either[HttpStatus, Oppija] = application.validator.extractAndValidate(parsedJson)(koskiUser, AccessType.write)
         val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContext(koskiUser, application.facade, request).putSingle(validationResult)
-        // TODO, find right place for this, handle success case, handle failure if there is no juuri organisaatio but lähdejärjestelmä id is defined, handle invalid json
-        koskiUser.juuriOrganisaatio.foreach(org => application.tiedonsiirtoRepository.create(koskiUser.oid, org.oid, Some(parsedJson)))
+
+        storeTiedonsiirtoResult(result.fold(_ => Some(parsedJson), _ => None))
         renderEither(result)
-      }
+
+      }(handleUnparseableJson)
     }
   }
 
@@ -47,8 +50,17 @@ class OppijaServlet(val application: KoskiApplication)
         }.max)
 
         batchResults
-      }
+      }(handleUnparseableJson)
     }
+  }
+
+  private def handleUnparseableJson(status: HttpStatus) = {
+    storeTiedonsiirtoResult(Some(toJValue(Map("unparseableJson" -> request.body))))
+    haltWithStatus(status)
+  }
+
+  private def storeTiedonsiirtoResult(data: Option[JValue]) = {
+    koskiUser.juuriOrganisaatio.foreach(org => application.tiedonsiirtoRepository.create(koskiUser.oid, org.oid, data))
   }
 
   get("/") {
@@ -91,7 +103,7 @@ class OppijaServlet(val application: KoskiApplication)
       application.historyRepository.findVersion(oikeus.id.get, oikeus.versionumero.get)(koskiUser) match {
         case Right(latestVersion) =>
           HttpStatus.validate(latestVersion == oikeus) {
-            KoskiErrorCategory.internalError(Json.toJValue(HistoryInconsistency(oikeus + " versiohistoria epäkonsistentti", Json.jsonDiff(oikeus, latestVersion))))
+            KoskiErrorCategory.internalError(toJValue(HistoryInconsistency(oikeus + " versiohistoria epäkonsistentti", Json.jsonDiff(oikeus, latestVersion))))
           }
         case Left(error) => error
       }
@@ -151,7 +163,7 @@ case class ValidateContext(user: KoskiUser, validator: KoskiValidator) {
   def validateOppija(oppija: (TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])): ValidationResult = oppija match {
     case (henkilö, rivit) =>
       val oppijaOid: Oid = henkilö.asInstanceOf[HenkilöWithOid].oid
-      val fullJson = Json.toJValue(Map(
+      val fullJson = toJValue(Map(
         "henkilö" -> henkilö,
         "opiskeluoikeudet" -> rivit.map(_.data)
       ))

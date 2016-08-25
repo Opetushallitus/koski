@@ -7,10 +7,10 @@ import fi.oph.koski.util.Timing
 import org.json4s._
 
 trait ApiServlet extends KoskiBaseServlet with Logging with Timing {
-  def withJsonBody(block: JValue => Any) = {
+  def withJsonBody(block: JValue => Any)(errorHandler: HttpStatus => Any = haltWithStatus) = {
     JsonBodySnatcher.getJsonBody(request) match {
       case Right(x) => block(x)
-      case Left(status) => haltWithStatus(status)
+      case Left(status: HttpStatus) => errorHandler(status)
     }
   }
 
