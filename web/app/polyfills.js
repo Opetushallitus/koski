@@ -45,6 +45,11 @@ if (!Array.prototype.findIndex) {
     return -1
   }
 }
+if (!Array.prototype.flatMap) {
+  Array.prototype.flatMap = function(lambda) {
+    return Array.prototype.concat.apply([], this.map(lambda))
+  }
+}
 Number.isNaN = Number.isNaN || function(value) {
   return typeof value === 'number' && isNaN(value)
 }

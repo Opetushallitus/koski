@@ -17,7 +17,9 @@ export const Tiedonsiirtotaulukko = React.createClass({
         </thead>
         <tbody>
         {
-          rivit.map((row) => <Lokirivi row={row} parent={this}/>)
+          rivit.flatMap((oppijaRivi) => {
+            return oppijaRivi.rivit.map(rivi => <Lokirivi row={rivi} parent={this}/>)
+          })
         }
         </tbody>
       </table>

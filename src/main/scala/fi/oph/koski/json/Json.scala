@@ -29,7 +29,7 @@ object GenericJsonFormats {
 }
 
 object Json {
-  implicit val jsonFormats = GenericJsonFormats.genericFormats + LocalDateSerializer + RakenneOsaSerializer ++ Deserializers.deserializers
+  implicit val jsonFormats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalDateTimeSerializer + RakenneOsaSerializer ++ Deserializers.deserializers
 
   def write(x: AnyRef, pretty: Boolean = false): String = {
     if (pretty) {
@@ -95,6 +95,18 @@ object LocalDateSerializer extends CustomSerializer[LocalDate](format => (
   },
   {
     case d: LocalDate => JString(d.toString)
+  }
+  )
+)
+
+object LocalDateTimeSerializer extends CustomSerializer[LocalDateTime](format => (
+  {
+    case JString(s) => ContextualExtractor.tryExtract(LocalDateTime.parse(s))(KoskiErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: " + s))
+    case JInt(i) => ContextualExtractor.tryExtract(LocalDateTime.ofInstant(Instant.ofEpochMilli(i.longValue()), ZoneId.of("UTC")))(KoskiErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: " + i))
+    case JNull => ContextualExtractor.extractionError(KoskiErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: null"))
+  },
+  {
+    case d: LocalDateTime => JString(d.toString)
   }
   )
 )
