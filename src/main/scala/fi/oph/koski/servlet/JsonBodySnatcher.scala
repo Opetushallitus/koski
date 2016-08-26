@@ -13,7 +13,7 @@ object JsonBodySnatcher {
         try {
           Right(JsonMethods.parse(request.body))
         } catch {
-          case e: Exception => Left(KoskiErrorCategory.badRequest.format.json("Invalid JSON"))
+          case e: Exception => Left(KoskiErrorCategory.badRequest.format.json("Epäkelpo JSON-dokumentti"))
         }
       case _ =>
         Left(KoskiErrorCategory.unsupportedMediaType.jsonOnly())

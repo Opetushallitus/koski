@@ -32,7 +32,7 @@ class OppijaValidationSpec extends FunSpec with LocalJettyHttpSpecification with
 
     describe("Epäkelpo JSON-dokumentti") {
       it("palautetaan HTTP 400 virhe" ) (request("api/oppija", "application/json", "not json", "put")
-        (verifyResponseStatus(400, KoskiErrorCategory.badRequest.format.json("Invalid JSON"))))
+        (verifyResponseStatus(400, KoskiErrorCategory.badRequest.format.json("Epäkelpo JSON-dokumentti"))))
     }
 
     describe("Väärä Content-Type") {
