@@ -11,7 +11,7 @@ import fi.oph.koski.json.Json.toJValue
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log._
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema.{OrganisaatioWithOid, HenkilöWithOid, Oppija, TäydellisetHenkilötiedot}
+import fi.oph.koski.schema.{HenkilöWithOid, Oppija, TäydellisetHenkilötiedot}
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, NoCache}
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
@@ -55,22 +55,6 @@ class OppijaServlet(val application: KoskiApplication)
     }
   }
 
-  private def handleUnparseableJson(status: HttpStatus) = {
-    storeTiedonsiirtoResult(None, Some(TiedonsiirtoError(toJValue(Map("unparseableJson" -> request.body)), toJValue(status.errors))))
-    haltWithStatus(status)
-  }
-
-  private def storeTiedonsiirtoResult(data: Option[JValue], error: Option[TiedonsiirtoError]) = {
-    val oppija = data.map(_ \ "henkilö")
-
-    val oppilaitokset: Option[JValue] = data.map(_ \ "opiskeluoikeudet" \ "oppilaitos" \ "oid").collect {
-      case JArray(oids) => oids.collect { case JString(o) => o }
-      case JString(o) => List(o)
-    }.map { _.flatMap { application.organisaatioRepository.getOrganisaatio(_) } }.map(toJValue)
-
-    koskiUser.juuriOrganisaatio.foreach(org => application.tiedonsiirtoRepository.create(koskiUser.oid, org.oid, oppija, oppilaitokset, error))
-  }
-
   get("/") {
     query.map {
       case (henkilö, rivit) => Oppija(henkilö, rivit.map(_.toOpiskeluOikeus))
@@ -104,8 +88,6 @@ class OppijaServlet(val application: KoskiApplication)
     }
   }
 
-
-
   private def validateHistory(oppija: Oppija): Either[HttpStatus, Oppija] = {
     HttpStatus.fold(oppija.opiskeluoikeudet.map { oikeus =>
       application.historyRepository.findVersion(oikeus.id.get, oikeus.versionumero.get)(koskiUser) match {
@@ -134,6 +116,21 @@ class OppijaServlet(val application: KoskiApplication)
     HenkiloOid.validateHenkilöOid(oid).right.flatMap { oid =>
       application.facade.findOppija(oid)(user)
     }
+  }
+
+  private def handleUnparseableJson(status: HttpStatus) = {
+    storeTiedonsiirtoResult(None, Some(TiedonsiirtoError(toJValue(Map("unparseableJson" -> request.body)), toJValue(status.errors))))
+    haltWithStatus(status)
+  }
+
+  private def storeTiedonsiirtoResult(data: Option[JValue], error: Option[TiedonsiirtoError]) = {
+    val oppija = data.map(_ \ "henkilö")
+    val oppilaitokset = data.map(_ \ "opiskeluoikeudet" \ "oppilaitos" \ "oid").collect {
+      case JArray(oids) => oids.collect { case JString(oid) => oid }
+      case JString(oid) => List(oid)
+    }.map(_.flatMap(application.organisaatioRepository.getOrganisaatio)).map(toJValue)
+
+    koskiUser.juuriOrganisaatio.foreach(org => application.tiedonsiirtoRepository.create(koskiUser.oid, org.oid, oppija, oppilaitokset, error))
   }
 }
 
