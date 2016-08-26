@@ -367,6 +367,7 @@ Taulukossa tärkeimmät Koski-palvelun käyttämät ulkoiset REST-endpointit
 |-----------------------------------------------------------------------|--------------------------------------------------------|
 | `GET /authentication-service/resources/henkilo?no=true&count=0&q=${query}`  | Oppijan haku nimellä tai hetulla (oid, nimi, hetu) |
 | `POST /authentication-service/resources/s2s/koski/henkilotByHenkiloOidList`  | Oppijoiden haku oid-listan perusteella (oid, nimi, hetu, äidinkieli, kansalaisuudet) |
+| `POST /authentication-service/resources/s2s/koski/henkilo` | Oppijan luonti tai päivitys |
 | `GET /authentication-service/resources/s2s/koski/kayttooikeusryhmat/${oid}` | Käyttäjän käyttöoikeusryhmien haku organisaatioittain (organisaatio-oid, ryhmä-id) |
 | `GET /organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=false&oid=${oid}` | Organisaatiohiearkian haku (oid, nimi, oppilaitoskoodi, organisaatiotyypit, oppilaitostyyppi, aliorganisaatiot) |
 | `GET /organisaatio-service/rest/organisaatio/v2/hae?aktiiviset=true&lakkautetut=false&searchStr=${searchTerm}` | Organisaation hakeminen oppilaitosnumerolla (oid, nimi, oppilaitoskoodi, organisaatiotyypit, oppilaitostyyppi, aliorganisaatiot) |
