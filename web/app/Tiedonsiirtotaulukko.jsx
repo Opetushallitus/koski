@@ -37,7 +37,7 @@ export const Tiedonsiirtotaulukko = React.createClass({
         </tbody>
       </table>
       {
-        showDataForRow && <LokirivinData row={showDataForRow} parent={this}/>
+        showDataForRow && <LokirivinData details={showDataForRow} parent={this}/>
       }
     </div>)
   }
@@ -45,11 +45,18 @@ export const Tiedonsiirtotaulukko = React.createClass({
 
 const Lokirivi = React.createClass({
   render() {
-    const extractName = (oppilaitokset) => {
-      return oppilaitokset && oppilaitokset.map((oppilaitos) => oppilaitos && oppilaitos.nimi && oppilaitos.nimi.fi).join(', ')
-    }
+    const extractName = (oppilaitokset) =>
+      oppilaitokset && oppilaitokset.map((oppilaitos) => oppilaitos && oppilaitos.nimi && oppilaitos.nimi.fi).join(', ')
+    const extractErrorTitle = (virheet) =>
+      <div>
+        <ul className="tiedonsiirto-errors">{
+          virheet.map((virhe) => <li>{(virhe.key === 'badRequest.validation.jsonSchema') ? 'Viesti ei ole skeeman mukainen' : virhe.message}</li>)
+        }</ul>
+        <a onClick={() => showErrors(virheet)}>virheen tiedot</a>
+      </div>
     const {row, isParent, isChild, isExpanded, isEven, parentComponent} = this.props
-    const showData = () => parentComponent.setState({showDataForRow: row})
+    const showErrors = (virheet) => parentComponent.setState({showDataForRow: virheet})
+    const showData = () => parentComponent.setState({showDataForRow: row.inputData})
     const nimi = row.oppija && (row.oppija.kutsumanimi + ' ' + row.oppija.sukunimi)
     const className = ((isParent || isChild) ? 'group ' : '') + (isEven ? 'even' : 'odd')
     return (<tr className={className}>
@@ -74,18 +81,18 @@ const Lokirivi = React.createClass({
           ? <a href={`/koski/oppija/${row.oppija.oid}`}>{nimi}</a> : nimi
       }</td>
       <td className="oppilaitos">{extractName(row.oppilaitos)}</td>
-      <td className="virhe">{row.virhe && <span>{row.virhe} (<a onClick={showData}>tiedot</a>)</span>}</td>
+      <td className="virhe">{row.virhe && <span>{extractErrorTitle(row.virhe)} <a onClick={showData}>viestin tiedot</a></span>}</td>
     </tr>)
   }
 })
 
 const LokirivinData = React.createClass({
   render() {
-    const { row, parent } = this.props
-    console.log('showing row', row)
+    const { details, parent } = this.props
+    console.log('showing details', details)
     return (<div className="lokirividata-popup">
       <a className="close" onClick={() => parent.setState({showDataForRow: null})}>Sulje</a>
-      <pre>{JSON.stringify(row.inputData, null, 2)}</pre>
+      <pre>{JSON.stringify(details, null, 2)}</pre>
     </div>)
   }
 })
