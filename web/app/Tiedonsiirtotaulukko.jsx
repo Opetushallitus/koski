@@ -45,6 +45,9 @@ export const Tiedonsiirtotaulukko = React.createClass({
 
 const Lokirivi = React.createClass({
   render() {
+    const extractName = (oppilaitokset) => {
+      return oppilaitokset && oppilaitokset.map((oppilaitos) => oppilaitos && oppilaitos.nimi && oppilaitos.nimi.fi).join(', ')
+    }
     const {row, isParent, isChild, isExpanded, isEven, parentComponent} = this.props
     const showData = () => parentComponent.setState({showDataForRow: row})
     const nimi = row.oppija && (row.oppija.kutsumanimi + ' ' + row.oppija.sukunimi)
@@ -70,7 +73,7 @@ const Lokirivi = React.createClass({
         (row.oppija && row.oppija.oid)
           ? <a href={`/koski/oppija/${row.oppija.oid}`}>{nimi}</a> : nimi
       }</td>
-      <td className="oppilaitos">{row.oppilaitos && row.oppilaitos.nimi && row.oppilaitos.nimi.fi}</td>
+      <td className="oppilaitos">{extractName(row.oppilaitos)}</td>
       <td className="virhe">{row.virhe && <span>{row.virhe} (<a onClick={showData}>tiedot</a>)</span>}</td>
     </tr>)
   }
