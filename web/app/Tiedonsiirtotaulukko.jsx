@@ -9,6 +9,7 @@ export const Tiedonsiirtotaulukko = React.createClass({
       <table>
         <thead>
         <tr>
+          <th className="tila">Tila</th>
           <th className="aika">Aika</th>
           <th className="hetu">Henkilötunnus</th>
           <th className="nimi">Nimi</th>
@@ -18,8 +19,19 @@ export const Tiedonsiirtotaulukko = React.createClass({
         </thead>
         <tbody>
         {
-          rivit.flatMap((oppijaRivi) => {
-            return oppijaRivi.rivit.map(rivi => <Lokirivi row={rivi} parent={this}/>)
+          rivit.flatMap((oppijaRivi, i) => {
+            const tiedonsiirtoRivit = oppijaRivi.rivit
+            const isGroup = tiedonsiirtoRivit.length > 1
+            const isExpanded = this.state && this.state.expandedRow == tiedonsiirtoRivit[0]
+            return tiedonsiirtoRivit.flatMap((rivi, j) => {
+                const isParent = j == 0 && isGroup
+                const isChild = j > 0 && isGroup
+                const isHidden = isChild && !isExpanded
+                return isHidden
+                  ? []
+                  : [<Lokirivi key={i + '-' + j} row={rivi} isParent={isParent} isChild={isChild} isExpanded={isExpanded} parentComponent={this}/>]
+              }
+            )
           })
         }
         </tbody>
@@ -33,10 +45,25 @@ export const Tiedonsiirtotaulukko = React.createClass({
 
 const Lokirivi = React.createClass({
   render() {
-    const {row, parent} = this.props
-    const showData = () => parent.setState({showDataForRow: row})
+    const {row, isParent, isChild, isExpanded, parentComponent} = this.props
+    const showData = () => parentComponent.setState({showDataForRow: row})
     const nimi = row.oppija && (row.oppija.kutsumanimi + ' ' + row.oppija.sukunimi)
-    return (<tr>
+    const className = (isParent || isChild) ? "group" : ""
+    return (<tr className={className}>
+      <td className="tila">
+        {
+          isParent
+            ? (isExpanded
+              ? <a className="collapse" onClick={() => parentComponent.setState({expandedRow: null})}>-</a>
+              : <a className="expand" onClick={() => parentComponent.setState({expandedRow: row})}>+</a>)
+            : null
+        }
+        {
+          row.virhe
+            ? <span className="status fail">✕</span>
+            : <span className="status ok">✓</span>
+        }
+      </td>
       <td className="aika">{fecha.format(fecha.parse(row.aika, 'YYYY-MM-DDThh:mm'), 'D.M.YYYY h:mm')}</td>
       <td className="hetu">{row.oppija && row.oppija.hetu}</td>
       <td className="nimi">{
