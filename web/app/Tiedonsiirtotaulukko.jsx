@@ -29,7 +29,7 @@ export const Tiedonsiirtotaulukko = React.createClass({
                 const isHidden = isChild && !isExpanded
                 return isHidden
                   ? []
-                  : [<Lokirivi key={i + '-' + j} row={rivi} isParent={isParent} isChild={isChild} isExpanded={isExpanded} parentComponent={this}/>]
+                  : [<Lokirivi key={i + '-' + j} row={rivi} isParent={isParent} isChild={isChild} isExpanded={isExpanded} isEven={i % 2 == 1} parentComponent={this}/>]
               }
             )
           })
@@ -45,10 +45,10 @@ export const Tiedonsiirtotaulukko = React.createClass({
 
 const Lokirivi = React.createClass({
   render() {
-    const {row, isParent, isChild, isExpanded, parentComponent} = this.props
+    const {row, isParent, isChild, isExpanded, isEven, parentComponent} = this.props
     const showData = () => parentComponent.setState({showDataForRow: row})
     const nimi = row.oppija && (row.oppija.kutsumanimi + ' ' + row.oppija.sukunimi)
-    const className = (isParent || isChild) ? "group" : ""
+    const className = ((isParent || isChild) ? 'group ' : '') + (isEven ? 'even' : 'odd')
     return (<tr className={className}>
       <td className="tila">
         {

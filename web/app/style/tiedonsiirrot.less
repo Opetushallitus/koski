@@ -27,6 +27,7 @@
     }
     .group {
       .expand, .collapse {
+        margin-left: 5px;
         color: #666666;
         border: 1px solid #666666;
         display: inline-block;
@@ -43,11 +44,13 @@
         line-height: 10px;
       }
       .status {
+        margin-left: 0;
         float: right;
         margin-right: 33px;
       }
     }
     .status {
+      margin-left: 10px;
       &.fail {
         color: red;
       }
@@ -55,6 +58,9 @@
         color: green;
       }
     }
+  }
+  tr.even {
+    background: #e8e8e8;
   }
   .lokirividata-popup {
     font-size: 0.85em;
