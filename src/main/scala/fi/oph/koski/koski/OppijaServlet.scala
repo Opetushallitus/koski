@@ -11,11 +11,12 @@ import fi.oph.koski.json.Json.toJValue
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log._
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema.{HenkilöWithOid, Oppija, TäydellisetHenkilötiedot}
+import fi.oph.koski.schema.{OrganisaatioWithOid, HenkilöWithOid, Oppija, TäydellisetHenkilötiedot}
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, NoCache}
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
 import fi.oph.koski.util.Timing
+import org.json4s.JsonAST.JString
 import org.json4s.{JArray, JValue}
 import org.scalatra.GZipSupport
 import rx.lang.scala.Observable
@@ -61,8 +62,13 @@ class OppijaServlet(val application: KoskiApplication)
 
   private def storeTiedonsiirtoResult(data: Option[JValue], error: Option[TiedonsiirtoError]) = {
     val oppija = data.map(_ \ "henkilö")
-    val oppilaitos = data.map(_ \ "opiskeluoikeudet" \ "oppilaitos")
-    koskiUser.juuriOrganisaatio.foreach(org => application.tiedonsiirtoRepository.create(koskiUser.oid, org.oid, oppija, oppilaitos, error))
+
+    val oppilaitokset: Option[JValue] = data.map(_ \ "opiskeluoikeudet" \ "oppilaitos" \ "oid").collect {
+      case JArray(oids) => oids.collect { case JString(o) => o }
+      case JString(o) => List(o)
+    }.map { _.flatMap { application.organisaatioRepository.getOrganisaatio(_) } }.map(toJValue)
+
+    koskiUser.juuriOrganisaatio.foreach(org => application.tiedonsiirtoRepository.create(koskiUser.oid, org.oid, oppija, oppilaitokset, error))
   }
 
   get("/") {
