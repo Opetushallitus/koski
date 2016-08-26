@@ -1,4 +1,5 @@
 import React from 'react'
+import fecha from 'fecha'
 
 export const Tiedonsiirtotaulukko = React.createClass({
   render() {
@@ -36,7 +37,7 @@ const Lokirivi = React.createClass({
     const showData = () => parent.setState({showDataForRow: row})
     const nimi = row.oppija && (row.oppija.kutsumanimi + ' ' + row.oppija.sukunimi)
     return (<tr>
-      <td className="aika">{row.aika}</td>
+      <td className="aika">{fecha.format(fecha.parse(row.aika, 'YYYY-MM-DDThh:mm'), 'D.M.YYYY h:mm')}</td>
       <td className="hetu">{row.oppija && row.oppija.hetu}</td>
       <td className="nimi">{
         (row.oppija && row.oppija.oid)
