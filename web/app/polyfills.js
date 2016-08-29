@@ -8,8 +8,15 @@ if (!String.prototype.startsWith) {
     return this.indexOf(searchString, position) === position
   }
 }
-if (!Array.prototype.find) {
- Array.prototype.find = function(predicate) {
+function addArrayMethod(name, fn) {
+  if (!Array.prototype[name]) {
+    Object.defineProperty(Array.prototype, name, {
+      enumerable: false,
+      value: fn
+    })
+  }
+}
+addArrayMethod('find', function(predicate) {
    var list = Object(this)
    var length = list.length < 0 ? 0 : list.length >>> 0 // ES.ToUint32
    if (length === 0) return undefined
@@ -21,35 +28,30 @@ if (!Array.prototype.find) {
      value = list[i]
      if (predicate.call(thisArg, value, i, list)) return value
    }
- }
-}
-if (!Array.prototype.findIndex) {
-  Array.prototype.findIndex = function(predicate) {
-    if (this === null) {
-      throw new TypeError('Array.prototype.findIndex called on null or undefined')
-    }
-    if (typeof predicate !== 'function') {
-      throw new TypeError('predicate must be a function')
-    }
-    var list = Object(this)
-    var length = list.length >>> 0
-    var thisArg = arguments[1]
-    var value
+})
+addArrayMethod('findIndex', function(predicate) {
+  if (this === null) {
+    throw new TypeError('Array.prototype.findIndex called on null or undefined')
+  }
+  if (typeof predicate !== 'function') {
+    throw new TypeError('predicate must be a function')
+  }
+  var list = Object(this)
+  var length = list.length >>> 0
+  var thisArg = arguments[1]
+  var value
 
-    for (var i = 0; i < length; i++) {
-      value = list[i]
-      if (predicate.call(thisArg, value, i, list)) {
-        return i
-      }
+  for (var i = 0; i < length; i++) {
+    value = list[i]
+    if (predicate.call(thisArg, value, i, list)) {
+      return i
     }
-    return -1
   }
-}
-if (!Array.prototype.flatMap) {
-  Array.prototype.flatMap = function(lambda) {
+  return -1
+})
+addArrayMethod('flatMap', function (lambda) {
     return Array.prototype.concat.apply([], this.map(lambda))
-  }
-}
+})
 Number.isNaN = Number.isNaN || function(value) {
   return typeof value === 'number' && isNaN(value)
 }
