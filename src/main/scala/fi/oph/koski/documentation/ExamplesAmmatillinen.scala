@@ -132,7 +132,7 @@ object AmmatillinenPerustutkintoExample {
 }
 
 object AmmatillinenOldExamples {
-  lazy val uusi = oppija()
+  lazy val uusi: Oppija = oppija()
 
   lazy val oppisopimus = oppija(
     opiskeluOikeus = opiskeluoikeus(

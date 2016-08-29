@@ -2,9 +2,11 @@ package fi.oph.koski.documentation
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
+
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
+import fi.oph.koski.tiedonsiirto.ExamplesTiedonsiirto
 
 case class Example(name: String, description: String, data: Oppija, statusCode: Int = 200)
 
@@ -13,6 +15,10 @@ object Examples {
     ExamplesPerusopetukseenValmistavaOpetus.examples ++ ExamplesPerusopetus.examples ++ ExamplesPerusopetuksenLisaopetus.examples ++ ExamplesLukioonValmistavaKoulutus.examples ++
     ExamplesLukio.examples ++ ExamplesYlioppilastutkinto.examples ++
     ExamplesKorkeakoulu.examples
+
+  val hiddenExamples = ExamplesTiedonsiirto.examples
+
+  val allExamples = examples ++ hiddenExamples
 }
 
 object ExampleData {

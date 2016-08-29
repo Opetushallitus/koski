@@ -1,8 +1,8 @@
 package fi.oph.koski.koskiuser
 
-import fi.oph.koski.koskiuser.Käyttöoikeusryhmät.{ophPääkäyttäjä, oppilaitosKatselija, oppilaitosTallentaja, oppilaitosPalvelukäyttäjä, viranomaisKatselija}
+import fi.oph.koski.koskiuser.Käyttöoikeusryhmät.{ophPääkäyttäjä, oppilaitosKatselija, oppilaitosPalvelukäyttäjä, oppilaitosTallentaja, viranomaisKatselija}
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{lehtikuusentienToimipiste, omnia, oppilaitokset}
-import fi.oph.koski.organisaatio.Opetushallitus
+import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}
 import fi.oph.koski.schema.Organisaatio
 import fi.vm.sade.security.ldap.LdapUser
 
@@ -14,8 +14,9 @@ object MockUsers {
   val hiiriTallentaja = new MockUser(LdapUser(List(), "käyttäjä", "hiiritallentaja", "11113"), Set((omnia, oppilaitosTallentaja)))
   val paakayttaja = new MockUser(LdapUser(List(), "käyttäjä", "pää", "00001"), Set((Opetushallitus.organisaatioOid, ophPääkäyttäjä)))
   val viranomainen = new MockUser(LdapUser(List(), "käyttäjä", "viranomais", "00002"), Set((Opetushallitus.organisaatioOid, viranomaisKatselija)))
+  val tiedonsiirtäjä = new MockUser(LdapUser(List(), "tiedonsiirtäjä", "tiedonsiirtäjä", "98371"), Set((MockOrganisaatiot.stadinAmmattiopisto, oppilaitosPalvelukäyttäjä)))
 
-  val users = List(kalle, hiiri, hiiriKatselija, hiiriTallentaja, localkoski, paakayttaja, viranomainen)
+  val users = List(kalle, hiiri, hiiriKatselija, hiiriTallentaja, localkoski, paakayttaja, viranomainen, tiedonsiirtäjä)
 }
 
 case class MockUser(ldapUser: LdapUser, käyttöoikeudet: Set[(Organisaatio.Oid, Käyttöoikeusryhmä)]) extends UserWithPassword {

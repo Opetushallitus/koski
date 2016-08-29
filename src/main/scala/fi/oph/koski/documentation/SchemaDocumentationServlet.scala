@@ -16,7 +16,7 @@ class SchemaDocumentationServlet(koodistoPalvelu: KoodistoPalvelu) extends ApiSe
   }
 
   get("/examples/:name.json") {
-    renderOption(KoskiErrorCategory.notFound)(Examples.examples.find(_.name == params("name")).map(_.data))
+    renderOption(KoskiErrorCategory.notFound)(Examples.allExamples.find(_.name == params("name")).map(_.data))
   }
 
   get("/koodisto/:name/:version") {

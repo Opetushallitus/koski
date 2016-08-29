@@ -118,7 +118,7 @@ object AmmatillinenExampleData {
 
   def opiskeluoikeus(oppilaitos: Oppilaitos = Oppilaitos("1.2.246.562.10.52251087186"),
     tutkinto: AmmatillisenTutkinnonSuoritus = autoalanPerustutkinto,
-    osat: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = None) = {
+    osat: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = None): AmmatillinenOpiskeluoikeus = {
     AmmatillinenOpiskeluoikeus(
       alkamispäivä = Some(date(2016, 9, 1)),
       arvioituPäättymispäivä = Some(date(2020, 5, 1)),
