@@ -30,7 +30,10 @@ class OppijaServlet(val application: KoskiApplication)
         val validationResult: Either[HttpStatus, Oppija] = application.validator.extractAndValidate(parsedJson)(koskiUser, AccessType.write)
         val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContext(koskiUser, application.facade, request).putSingle(validationResult)
 
-        storeTiedonsiirtoResult(Some(parsedJson), result.fold(status => Some(TiedonsiirtoError(parsedJson, toJValue(status.errors))), _ => None))
+        storeTiedonsiirtoResult(Some(parsedJson), result.fold(
+          status => Some(TiedonsiirtoError(parsedJson, toJValue(status.errors))),
+          _ => None)
+        )
         renderEither(result)
 
       }(handleUnparseableJson)
