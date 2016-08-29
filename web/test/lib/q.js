@@ -825,7 +825,9 @@ Promise.prototype.toString = function () {
 
 Promise.prototype.then = function (fulfilled, rejected, progressed) {
     // Local patch: Only functions allowed in Promise.prototype.then
-    if (typeof fulfilled != "function") throw new Error("Only functions allowed in Promise.prototype.then")
+    if (!fulfilled && !rejected) throw new Error("Both handlers missing")
+    if (fulfilled && typeof fulfilled != "function") throw new Error("Only functions allowed in Promise.prototype.then")
+    if (rejected && typeof rejected != "function") throw new Error("Only functions allowed in Promise.prototype.then")
 
     var self = this;
     var deferred = defer();
