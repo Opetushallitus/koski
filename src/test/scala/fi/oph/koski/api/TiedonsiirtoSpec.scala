@@ -11,15 +11,15 @@ import org.scalatest.FreeSpec
 
 class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
   val oppija: TäydellisetHenkilötiedot = MockOppijat.tyhjä
+  val opiskeluoikeus: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
+    lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId),
+    oppilaitos = Oppilaitos(omnia),
+    suoritukset = List(tutkintoSuoritus.copy(toimipiste = Oppilaitos(omnia)))
+  )
+  val palvelukäyttäjä = MockUsers.hiiri
+
 
   "Automaattinen tiedonsiirto" - {
-    val opiskeluoikeus: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
-      lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId),
-      oppilaitos = Oppilaitos(omnia),
-      suoritukset = List(tutkintoSuoritus.copy(toimipiste = Oppilaitos(omnia)))
-    )
-    val palvelukäyttäjä: UserWithPassword = MockUsers.hiiri
-
     "Palvelukäyttäjä" - {
       "onnistuneesta tiedonsiirrosta tallennetaan vain henkilö- ja oppilaitostiedot" in {
         resetFixtures
@@ -45,14 +45,16 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         verifyTiedonsiirtoLoki(palvelukäyttäjä, None, None, errorStored = true, dataStored = false)
       }
     }
-
-    "Muu käyttäjä" - {
-      "tulee virhe" in { }
-    }
   }
 
   "Muutos käyttöliittymästä" - {
-    "ei tallenneta tiedonsiirtoja" in { }
+    "ei tallenneta tiedonsiirtoja" in {
+      resetFixtures
+      putOpiskeluOikeus(opiskeluoikeus.copy(lähdejärjestelmänId = None), henkilö = defaultHenkilö, headers = authHeaders(MockUsers.hiiriTallentaja) ++ jsonContent) {
+        verifyResponseStatus(200)
+      }
+      getTiedonsiirrot(palvelukäyttäjä) should be(empty)
+    }
   }
 
   private def verifyTiedonsiirtoLoki(user: UserWithPassword, expectedHenkilö: Option[UusiHenkilö], expectedOpiskeluoikeus: Option[Opiskeluoikeus], errorStored: Boolean, dataStored: Boolean) {
