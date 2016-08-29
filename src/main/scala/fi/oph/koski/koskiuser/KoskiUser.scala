@@ -28,7 +28,6 @@ class KoskiUser(val oid: String, val clientIp: String, val lang: String, käytt�
   def juuriOrganisaatio: Option[OrganisaatioWithOid] = {
     val juuret = käyttöoikeudet.collect { case r: OrganisaatioKäyttöoikeus if r.juuri => r.organisaatio }
     if (juuret.size > 1) {
-      logger.warn(s"Käyttäjällä $oid useampi juuriorganisaatio")
       None
     } else {
       juuret.headOption

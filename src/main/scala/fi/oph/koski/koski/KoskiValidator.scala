@@ -67,6 +67,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
 
   private def validateOpiskeluOikeus(opiskeluOikeus: Opiskeluoikeus)(implicit user: KoskiUser, accessType: AccessType.Value): HttpStatus = {
     validateAccess(opiskeluOikeus)
+    .then { validateLähdejärjestelmä(opiskeluOikeus) }
     .then { HttpStatus.fold(
       validatePäivämäärät(opiskeluOikeus),
       HttpStatus.fold(opiskeluOikeus.suoritukset.map(validateSuoritus(_, None)))
@@ -78,6 +79,14 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
 
   private def validateAccess(organisaatiollinen: OrganisaatioonLiittyvä)(implicit user: KoskiUser, accessType: AccessType.Value): HttpStatus = {
     HttpStatus.validate(user.hasAccess(organisaatiollinen.omistajaOrganisaatio.oid, accessType)) { KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + organisaatiollinen.omistajaOrganisaatio.oid) }
+  }
+
+  private def validateLähdejärjestelmä(opiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiUser): HttpStatus = {
+    if (opiskeluoikeus.lähdejärjestelmänId.isDefined && user.isPalvelukäyttäjä) {
+      HttpStatus.validate(user.juuriOrganisaatio.isDefined) { KoskiErrorCategory.forbidden.organisaatio("Automaattisen tiedonsiirron palvelukäyttäjällä ei yksiselitteistä juuriorganisaatiota") }
+    } else {
+      HttpStatus.ok
+    }
   }
 
   def validatePäivämäärät(opiskeluOikeus: Opiskeluoikeus) = {
