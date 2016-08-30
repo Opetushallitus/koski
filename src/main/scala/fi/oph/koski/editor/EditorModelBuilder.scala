@@ -160,16 +160,16 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
               case None => Prototypes.getPrototypeData(property.schema)
               case _ => schema.getPropertyValue(property, obj)
             }
-            val title = property.metadata.flatMap {
+            val propertyTitle = property.metadata.flatMap {
               case Title(t) => Some(t)
               case _ => None
             }.headOption.getOrElse(property.key.split("(?=\\p{Lu})").map(_.toLowerCase).mkString(" ").replaceAll("_ ", "-").capitalize)
-            Some(EditorProperty(property.key, title, objectContext.buildModel(value, property.schema), hidden, representative))
+            Some(EditorProperty(property.key, propertyTitle, objectContext.buildModel(value, property.schema), hidden, representative))
           } else {
             None // missing values are skipped when not editable
           }
         }
-        val title = obj match {
+        val objectTitle = obj match {
           case o: Localizable => Some(i(o.description))
           case _ => None
         }
@@ -201,7 +201,7 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
         } else {
           Map.empty
         }
-        ObjectModel(sanitizeName(schema.simpleName), properties, data, title, objectContext.editable, includedPrototypes)
+        ObjectModel(sanitizeName(schema.simpleName), properties, data, objectTitle, objectContext.editable, includedPrototypes)
       }
     }
 

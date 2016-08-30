@@ -27,23 +27,23 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
 
   get("/organisaatiot") {
     def organisaatiot = koskiUser.organisationOids(AccessType.write).flatMap(context.organisaatioRepository.getOrganisaatio).toList
-    organisaatiot.map(modelCreator.organisaatioEnumValue(_))
+    organisaatiot.map(modelBuilder.organisaatioEnumValue(_))
   }
 
   get("/oppilaitokset") {
     def organisaatiot = koskiUser.organisationOids(AccessType.write).flatMap(context.organisaatioRepository.getOrganisaatio).toList
-    organisaatiot.flatMap(_.toOppilaitos).map(modelCreator.organisaatioEnumValue(_))
+    organisaatiot.flatMap(_.toOppilaitos).map(modelBuilder.organisaatioEnumValue(_))
   }
 
   private def getKoodit() = {
     val koodistoUri = params("koodistoUri")
     val koodit: List[Koodistokoodiviite] = context.koodistoPalvelu.getLatestVersion(koodistoUri).toList.flatMap(application.koodistoViitePalvelu.getKoodistoKoodiViitteet(_)).flatten
 
-    koodit.map(modelCreator.koodistoEnumValue(_)).sortBy(_.title)
+    koodit.map(modelBuilder.koodistoEnumValue(_)).sortBy(_.title)
   }
 
   private val context: ValidationAndResolvingContext = ValidationAndResolvingContext(application.koodistoViitePalvelu, application.organisaatioRepository)
-  private def modelCreator = new EditorModelBuilder(context, EditorSchema.schema)(koskiUser)
+  private def modelBuilder = new EditorModelBuilder(context, EditorSchema.schema)(koskiUser)
 
   private def findByOid(oid: String, user: KoskiUser): Either[HttpStatus, EditorModel] = {
     implicit val opiskeluoikeusOrdering = new Ordering[Option[LocalDate]] {
@@ -61,7 +61,7 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
         }.toList.sortBy(_.opiskeluoikeudet(0).alkamispäivä)
         val editorView = OppijaEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], oppilaitokset)
 
-        timed("buildModel") { modelCreator.buildModel(EditorSchema.schema, editorView)}
+        timed("buildModel") { modelBuilder.buildModel(EditorSchema.schema, editorView)}
       }
     }
   }
