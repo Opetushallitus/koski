@@ -1,6 +1,7 @@
 package fi.oph.koski.documentation
 
 import java.time.LocalDate.{of => date}
+
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.localization.LocalizedString
@@ -270,7 +271,6 @@ object AmmatillinenOldExamples {
     Henkilö.withOid("1.2.246.562.24.00000000001"),
     List(
       AmmatillinenOpiskeluoikeus(
-        lähdejärjestelmänId = Some(LähdejärjestelmäId(Some("847823465"), lähdeWinnova)),
         alkamispäivä = Some(date(2012, 9, 1)),
         arvioituPäättymispäivä = Some(date(2015, 5, 31)),
         päättymispäivä = Some(date(2016, 1, 9)),
