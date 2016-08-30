@@ -126,7 +126,10 @@ class OppijaServlet(val application: KoskiApplication)
     haltWithStatus(status)
   }
 
-  private def storeTiedonsiirtoResult(data: Option[JValue], error: Option[TiedonsiirtoError]) = {
+  private def storeTiedonsiirtoResult(data: Option[JValue], error: Option[TiedonsiirtoError]) {
+    if (!koskiUser.isPalvelukäyttäjä) {
+      return
+    }
     val oppija = data.map(_ \ "henkilö")
     val oppilaitokset = data.map(_ \ "opiskeluoikeudet" \ "oppilaitos" \ "oid").collect {
       case JArray(oids) => oids.collect { case JString(oid) => oid }
