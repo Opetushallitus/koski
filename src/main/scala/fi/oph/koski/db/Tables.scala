@@ -63,7 +63,7 @@ object Tables {
   val OpiskeluOikeusHistoria = TableQuery[OpiskeluOikeusHistoryTable]
 
   def OpiskeluOikeudetWithAccessCheck(implicit user: KoskiUser): Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = {
-    if (user.globalAccess.contains(AccessType.read)) {
+    if (user.hasGlobalReadAccess) {
       OpiskeluOikeudet
     } else {
       val oids = user.organisationOids(AccessType.read).toList
@@ -78,7 +78,7 @@ object Tables {
   }
 
   def TiedonsiirtoWithAccessCheck(implicit user: KoskiUser): Query[TiedonsiirtoTable, TiedonsiirtoRow, Seq] = {
-    if (user.globalAccess.contains(AccessType.read)) {
+    if (user.hasGlobalReadAccess) {
       Tiedonsiirto
     } else {
       val oids = user.organisationOids(AccessType.read).toList
