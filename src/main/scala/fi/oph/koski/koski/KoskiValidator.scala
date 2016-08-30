@@ -18,10 +18,10 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     extractAndValidate(Json.toJValue(oppija))
   }
 
-  def extractAndValidateBatch(parsedJson: JArray)(implicit user: KoskiUser, accessType: AccessType.Value): List[Either[HttpStatus, Oppija]] = {
+  def extractAndValidateBatch(oppijatJson: JArray)(implicit user: KoskiUser, accessType: AccessType.Value): List[(Either[HttpStatus, Oppija], JValue)] = {
     timed("extractAndValidateBatch") {
-      parsedJson.arr.par.map { row =>
-        extractAndValidate(row.asInstanceOf[JValue])
+      oppijatJson.arr.par.map { oppijaJson =>
+        (extractAndValidate(oppijaJson), oppijaJson)
       }.toList
     }
   }

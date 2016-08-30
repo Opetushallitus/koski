@@ -6,9 +6,6 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.Tables.TiedonsiirtoRow
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.RequiresAuthentication
-import fi.oph.koski.log.KoskiMessageField.{KoskiMessageField, juuriOrganisaatio}
-import fi.oph.koski.log.KoskiOperation.TIEDONSIIRTO_KATSOMINEN
-import fi.oph.koski.log.{AuditLog, AuditLogMessage}
 import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
 import fi.oph.koski.servlet.ApiServlet
 import fi.oph.koski.util.DateOrdering
@@ -22,8 +19,8 @@ class TiedonsiirtoServlet(val application: KoskiApplication) extends ApiServlet 
     virheelliset
   }
 
-  private def kaikkiTiedonsiirrot: List[HenkilönTiedonsiirrot] = toHenkilönTiedonsiirrot(findAllTiedonsiirrot)
-  private def virheelliset: List[HenkilönTiedonsiirrot] = toHenkilönTiedonsiirrot(findAllTiedonsiirrot.filter(_.virheet.isDefined))
+  private def kaikkiTiedonsiirrot: List[HenkilönTiedonsiirrot] = toHenkilönTiedonsiirrot(application.tiedonsiirtoService.findAll(koskiUser))
+  private def virheelliset: List[HenkilönTiedonsiirrot] = toHenkilönTiedonsiirrot(application.tiedonsiirtoService.findAll(koskiUser).filter(_.virheet.isDefined))
 
   implicit val formats = Json.jsonFormats
   def toHenkilönTiedonsiirrot(tiedonsiirrot: Seq[TiedonsiirtoRow]) = {
@@ -39,10 +36,6 @@ class TiedonsiirtoServlet(val application: KoskiApplication) extends ApiServlet 
     }.toList.sortBy(_.rivit.head.aika)
   }
 
-  private def findAllTiedonsiirrot: Seq[TiedonsiirtoRow] = {
-    AuditLog.log(AuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiUser, Map(juuriOrganisaatio -> koskiUser.juuriOrganisaatio.map(_.oid).getOrElse("ei juuriorganisaatiota"))))
-    application.tiedonsiirtoRepository.findByOrganisaatio(koskiUser)
-  }
 }
 
 case class HenkilönTiedonsiirrot(oppija: Option[Henkilö], rivit: Seq[TiedonsiirtoRivi])

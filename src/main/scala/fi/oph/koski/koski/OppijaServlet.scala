@@ -16,7 +16,6 @@ import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, NoCache}
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
 import fi.oph.koski.util.Timing
-import org.json4s.JsonAST.JString
 import org.json4s.{JArray, JValue}
 import org.scalatra.GZipSupport
 import rx.lang.scala.Observable
@@ -26,16 +25,10 @@ class OppijaServlet(val application: KoskiApplication)
 
   put("/") {
     timed("PUT /oppija", thresholdMs = 10) {
-      withJsonBody { parsedJson =>
-        val validationResult: Either[HttpStatus, Oppija] = application.validator.extractAndValidate(parsedJson)(koskiUser, AccessType.write)
-        val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContext(koskiUser, application.facade, request).putSingle(validationResult)
-
-        storeTiedonsiirtoResult(Some(parsedJson), result.fold(
-          status => Some(TiedonsiirtoError(parsedJson, toJValue(status.errors))),
-          _ => None)
-        )
+      withJsonBody { (oppijaJson: JValue) =>
+        val validationResult: Either[HttpStatus, Oppija] = application.validator.extractAndValidate(oppijaJson)(koskiUser, AccessType.write)
+        val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContext(koskiUser, application, request).putSingle(validationResult, oppijaJson)
         renderEither(result)
-
       }(handleUnparseableJson)
     }
   }
@@ -43,10 +36,13 @@ class OppijaServlet(val application: KoskiApplication)
   put("/batch") {
     timed("PUT /oppija/batch", thresholdMs = 10) {
       withJsonBody { parsedJson =>
-        val putter = UpdateContext(koskiUser, application.facade, request)
+        val putter = UpdateContext(koskiUser, application, request)
 
-        val validationResults: List[Either[HttpStatus, Oppija]] = application.validator.extractAndValidateBatch(parsedJson.asInstanceOf[JArray])(koskiUser, AccessType.write)
-        val batchResults: List[Either[HttpStatus, HenkilönOpiskeluoikeusVersiot]] = validationResults.par.map(putter.putSingle).toList
+        val validationResults: List[(Either[HttpStatus, Oppija], JValue)] = application.validator.extractAndValidateBatch(parsedJson.asInstanceOf[JArray])(koskiUser, AccessType.write)
+
+        val batchResults: List[Either[HttpStatus, HenkilönOpiskeluoikeusVersiot]] = validationResults.par.map { results =>
+          putter.putSingle(results._1, results._2)
+        }.toList
 
         response.setStatus(batchResults.map {
           case Left(status) => status.statusCode
@@ -122,21 +118,8 @@ class OppijaServlet(val application: KoskiApplication)
   }
 
   private def handleUnparseableJson(status: HttpStatus) = {
-    storeTiedonsiirtoResult(None, Some(TiedonsiirtoError(toJValue(Map("unparseableJson" -> request.body)), toJValue(status.errors))))
+    application.tiedonsiirtoService.storeTiedonsiirtoResult(koskiUser, None, Some(TiedonsiirtoError(toJValue(Map("unparseableJson" -> request.body)), toJValue(status.errors))))
     haltWithStatus(status)
-  }
-
-  private def storeTiedonsiirtoResult(data: Option[JValue], error: Option[TiedonsiirtoError]) {
-    if (!koskiUser.isPalvelukäyttäjä) {
-      return
-    }
-    val oppija = data.map(_ \ "henkilö")
-    val oppilaitokset = data.map(_ \ "opiskeluoikeudet" \ "oppilaitos" \ "oid").collect {
-      case JArray(oids) => oids.collect { case JString(oid) => oid }
-      case JString(oid) => List(oid)
-    }.map(_.flatMap(application.organisaatioRepository.getOrganisaatio)).map(toJValue)
-
-    koskiUser.juuriOrganisaatio.foreach(org => application.tiedonsiirtoRepository.create(koskiUser.oid, org.oid, oppija, oppilaitokset, error))
   }
 }
 
@@ -144,12 +127,20 @@ class OppijaServlet(val application: KoskiApplication)
   *  Operating context for data updates. Operates outside the lecixal scope of OppijaServlet to ensure that none of the
   *  Scalatra threadlocals are used. This must be done because in batch mode, we are running in several threads.
   */
-case class UpdateContext(user: KoskiUser, facade: KoskiFacade, request: HttpServletRequest) extends Logging {
-  def putSingle(validationResult: Either[HttpStatus, Oppija]): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
-    val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = validationResult.right.flatMap(facade.createOrUpdate(_)(user))
+case class UpdateContext(user: KoskiUser, application: KoskiApplication, request: HttpServletRequest) extends Logging {
+  def putSingle(validationResult: Either[HttpStatus, Oppija], oppijaJson: JValue): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
+
+    val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = validationResult.right.flatMap(application.facade.createOrUpdate(_)(user))
+
     result.left.foreach { case HttpStatus(code, errors) =>
       logger(user).warn("Opinto-oikeuden päivitys estetty: " + code + " " + errors + " for request " + logSafeDescription(request))
     }
+
+    application.tiedonsiirtoService.storeTiedonsiirtoResult(user, Some(oppijaJson), result.fold(
+      status => Some(TiedonsiirtoError(oppijaJson, toJValue(status.errors))),
+      _ => None)
+    )
+
     result
   }
 }

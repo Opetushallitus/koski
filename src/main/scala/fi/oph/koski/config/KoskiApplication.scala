@@ -1,13 +1,12 @@
 package fi.oph.koski.config
 
-import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.koski.arvosana.ArviointiasteikkoRepository
 import fi.oph.koski.cache.CachingStrategy.cacheAllRefresh
 import fi.oph.koski.cache.{CachingProxy, GlobalCacheInvalidator}
 import fi.oph.koski.db._
 import fi.oph.koski.eperusteet.EPerusteetRepository
-import fi.oph.koski.fixture.{FixtureCreator, Fixtures}
+import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.henkilo.AuthenticationServiceClient
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViitePalvelu}
@@ -18,7 +17,7 @@ import fi.oph.koski.opiskeluoikeus.{AuxiliaryOpiskeluOikeusRepository, Composite
 import fi.oph.koski.oppija.OppijaRepository
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
-import fi.oph.koski.tiedonsiirto.TiedonsiirtoRepository
+import fi.oph.koski.tiedonsiirto.{TiedonsiirtoRepository, TiedonsiirtoService}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
 import fi.oph.koski.ytr.{YlioppilasTutkintoRekisteri, YtrAccessChecker, YtrOpiskeluoikeusRepository}
@@ -57,7 +56,7 @@ class KoskiApplication(val config: Config) extends Logging with UserAuthenticati
   lazy val sessionTimeout = SessionTimeout(config)
   lazy val serviceTicketRepository = new CasTicketSessionRepository(database.db, sessionTimeout)
   lazy val fixtureCreator = new FixtureCreator(config, database, opiskeluOikeusRepository, oppijaRepository, validator)
-  lazy val tiedonsiirtoRepository = new TiedonsiirtoRepository(database.db)
+  lazy val tiedonsiirtoService = new TiedonsiirtoService(new TiedonsiirtoRepository(database.db), organisaatioRepository)
 
   def invalidateCaches = GlobalCacheInvalidator.invalidateCache
 }
