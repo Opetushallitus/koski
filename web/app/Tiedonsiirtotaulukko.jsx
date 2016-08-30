@@ -57,7 +57,7 @@ const Lokirivi = React.createClass({
     const {row, isParent, isChild, isExpanded, isEven, parentComponent} = this.props
     const showErrors = (virheet) => parentComponent.setState({showDataForRow: virheet})
     const showData = () => parentComponent.setState({showDataForRow: row.inputData})
-    const nimi = row.oppija && (row.oppija.kutsumanimi + ' ' + row.oppija.sukunimi)
+    const nimi = row.oppija && ((row.oppija.kutsumanimi || '') + ' ' + (row.oppija.sukunimi || ''))
     const className = ((isParent || isChild) ? 'group ' : '') + (isEven ? 'even' : 'odd')
     return (<tr className={className}>
       <td className="tila">

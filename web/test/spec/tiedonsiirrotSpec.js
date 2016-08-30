@@ -8,9 +8,16 @@ describe('Tiedonsiirrot', function() {
       })
     }
   }
+  function insertOppija(dataString) {
+    return function() {
+      return sendAjax('/koski/api/oppija', 'application/json', dataString, 'PUT').catch(function(){})
+    }
+  }
   before(
     authentication.login('tiedonsiirtäjä'),
     resetFixtures,
+    insertOppija('<oppija></oppija>'),
+    insertOppija('{"henkilö": {}}'),
     insertExample('tiedonsiirto - epäonnistunut.json'),
     insertExample('tiedonsiirto - onnistunut.json'),
     insertExample('tiedonsiirto - epäonnistunut 2.json'),
@@ -29,7 +36,20 @@ describe('Tiedonsiirrot', function() {
         'Tiina Tiedonsiirto',
         'Stadin ammattiopisto',
         ''
-      ]
+      ],
+      [
+        '',
+        ' ',
+        '',
+        'Viesti ei ole skeeman mukainenvirheen tiedot viestin tiedot'
+      ],
+      [
+        '',
+        '',
+        '',
+        'Epäkelpo JSON-dokumenttivirheen tiedot viestin tiedot'
+      ],
+
     ])
   })
 })
