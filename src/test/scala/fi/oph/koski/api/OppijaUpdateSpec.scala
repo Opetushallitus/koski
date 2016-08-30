@@ -8,7 +8,7 @@ import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjeste
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.Json
 import fi.oph.koski.koski.HenkilönOpiskeluoikeusVersiot
-import fi.oph.koski.koskiuser.MockUsers.{paakayttaja, tiedonsiirtäjä}
+import fi.oph.koski.koskiuser.MockUsers.{paakayttaja, stadinAmmattiopistoPalvelukäyttäjä}
 import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.oppija.MockOppijat
@@ -94,7 +94,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       "Muokkaa olemassaolevaa opiskeluoikeutta, kun lähdejärjestelmä-id on sama" in {
         resetFixtures
         val d: LocalDate = date(2020, 1, 1)
-        verifyChange(original = original, user = tiedonsiirtäjä, change = existing => existing.copy(id = None, versionumero = None, arvioituPäättymispäivä = Some(d))) {
+        verifyChange(original = original, user = stadinAmmattiopistoPalvelukäyttäjä, change = existing => existing.copy(id = None, versionumero = None, arvioituPäättymispäivä = Some(d))) {
           verifyResponseStatus(200)
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluOikeus(oppija.oid)
           result.arvioituPäättymispäivä should equal(Some(d))
@@ -117,7 +117,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       "Mahdollistaa toisen opiskeluoikeuden luonnin samalla tyypillä ja oppilaitoksella, kunhan lähdejärjestelmä-id on eri" in {
         resetFixtures
         val lähdejärjestelmänId2 = LähdejärjestelmäId(Some("123452"), AmmatillinenExampleData.lähdeWinnova)
-        verifyChange(original = original, user = tiedonsiirtäjä, change = existing => existing.copy(id = None, versionumero = None, lähdejärjestelmänId = Some(lähdejärjestelmänId2))) {
+        verifyChange(original = original, user = stadinAmmattiopistoPalvelukäyttäjä, change = existing => existing.copy(id = None, versionumero = None, lähdejärjestelmänId = Some(lähdejärjestelmänId2))) {
           verifyResponseStatus(200)
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluOikeus(oppija.oid)
           result.lähdejärjestelmänId.map(_.id) should equal(Some(lähdejärjestelmänId2.id))
@@ -141,7 +141,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       "Jos olemassa olevassa opiskeluoikeudessa on lähdejärjestelmä-id, ei päivitetä" in {
         resetFixtures
         val lähdejärjestelmänId = LähdejärjestelmäId(Some("12345"), AmmatillinenExampleData.lähdeWinnova)
-        verifyChange(original = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(lähdejärjestelmänId)), user = tiedonsiirtäjä, change = existing => existing.copy(id = None, lähdejärjestelmänId = None)) {
+        verifyChange(original = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(lähdejärjestelmänId)), user = stadinAmmattiopistoPalvelukäyttäjä, change = existing => existing.copy(id = None, lähdejärjestelmänId = None)) {
           verifyResponseStatus(200)
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluOikeus(oppija.oid)
           result.versionumero should equal(Some(1))

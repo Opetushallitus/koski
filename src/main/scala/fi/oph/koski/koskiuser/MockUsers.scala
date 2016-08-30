@@ -14,9 +14,9 @@ object MockUsers {
   val hiiriTallentaja = new MockUser(LdapUser(List(), "käyttäjä", "hiiritallentaja", "11113"), Set((omnia, oppilaitosTallentaja)))
   val paakayttaja = new MockUser(LdapUser(List(), "käyttäjä", "pää", "00001"), Set((Opetushallitus.organisaatioOid, ophPääkäyttäjä)))
   val viranomainen = new MockUser(LdapUser(List(), "käyttäjä", "viranomais", "00002"), Set((Opetushallitus.organisaatioOid, viranomaisKatselija)))
-  val tiedonsiirtäjä = new MockUser(LdapUser(List(), "tiedonsiirtäjä", "tiedonsiirtäjä", "98371"), Set((MockOrganisaatiot.stadinAmmattiopisto, oppilaitosPalvelukäyttäjä)))
+  val stadinAmmattiopistoPalvelukäyttäjä = new MockUser(LdapUser(List(), "tiedonsiirtäjä", "tiedonsiirtäjä", "98371"), Set((MockOrganisaatiot.stadinAmmattiopisto, oppilaitosPalvelukäyttäjä)))
 
-  val users = List(kalle, hiiri, hiiriKatselija, hiiriTallentaja, localkoski, paakayttaja, viranomainen, tiedonsiirtäjä)
+  val users = List(kalle, hiiri, hiiriKatselija, hiiriTallentaja, localkoski, paakayttaja, viranomainen, stadinAmmattiopistoPalvelukäyttäjä)
 }
 
 case class MockUser(ldapUser: LdapUser, käyttöoikeudet: Set[(Organisaatio.Oid, Käyttöoikeusryhmä)]) extends UserWithPassword {
