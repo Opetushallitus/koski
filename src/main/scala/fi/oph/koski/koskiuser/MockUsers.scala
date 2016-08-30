@@ -7,8 +7,8 @@ import fi.oph.koski.schema.Organisaatio
 import fi.vm.sade.security.ldap.LdapUser
 
 object MockUsers {
-  val kalle = new MockUser(LdapUser(List(), "käyttäjä", "kalle", "12345"), (lehtikuusentienToimipiste :: oppilaitokset).toSet.map((_: String, oppilaitosPalvelukäyttäjä)))
-  val localkoski = new MockUser(LdapUser(List(), "käyttäjä", "localkoski", "1.2.246.562.24.91698845204"), oppilaitokset.toSet.map((_: String, oppilaitosPalvelukäyttäjä)))
+  val kalle = new MockUser(LdapUser(List(), "käyttäjä", "kalle", "12345"), (lehtikuusentienToimipiste :: oppilaitokset).toSet.map((_: String, oppilaitosTallentaja)))
+  val localkoski = new MockUser(LdapUser(List(), "käyttäjä", "localkoski", "1.2.246.562.24.91698845204"), oppilaitokset.toSet.map((_: String, oppilaitosTallentaja)))
   val hiiri = new MockUser(LdapUser(List(), "käyttäjä", "hiiri", "11111"), Set((omnia, oppilaitosPalvelukäyttäjä)))
   val hiiriKatselija = new MockUser(LdapUser(List(), "käyttäjä", "hiirikatselija", "11112"), Set((omnia, oppilaitosKatselija)))
   val hiiriTallentaja = new MockUser(LdapUser(List(), "käyttäjä", "hiiritallentaja", "11113"), Set((omnia, oppilaitosTallentaja)))

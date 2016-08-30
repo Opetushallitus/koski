@@ -8,7 +8,7 @@ import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjeste
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.Json
 import fi.oph.koski.koski.HenkilönOpiskeluoikeusVersiot
-import fi.oph.koski.koskiuser.MockUsers.{paakayttaja, stadinAmmattiopistoPalvelukäyttäjä}
+import fi.oph.koski.koskiuser.MockUsers.{kalle, paakayttaja, stadinAmmattiopistoPalvelukäyttäjä}
 import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.oppija.MockOppijat
@@ -141,7 +141,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       "Jos olemassa olevassa opiskeluoikeudessa on lähdejärjestelmä-id, ei päivitetä" in {
         resetFixtures
         val lähdejärjestelmänId = LähdejärjestelmäId(Some("12345"), AmmatillinenExampleData.lähdeWinnova)
-        verifyChange(original = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(lähdejärjestelmänId)), user = stadinAmmattiopistoPalvelukäyttäjä, change = existing => existing.copy(id = None, lähdejärjestelmänId = None)) {
+        verifyChange(original = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(lähdejärjestelmänId)), user = stadinAmmattiopistoPalvelukäyttäjä, user2 = Some(kalle), change = existing => existing.copy(id = None, lähdejärjestelmänId = None)) {
           verifyResponseStatus(200)
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluOikeus(oppija.oid)
           result.versionumero should equal(Some(1))
@@ -169,12 +169,11 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       }
     }
 
-    def verifyChange(original: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus, user: UserWithPassword = defaultUser, change: AmmatillinenOpiskeluoikeus => KoskeenTallennettavaOpiskeluoikeus)(block: => Unit) = {
-      val headers = authHeaders(user) ++ jsonContent
-      putOppija(Oppija(oppija, List(original)), headers) {
+    def verifyChange(original: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus, user: UserWithPassword = defaultUser, user2: Option[UserWithPassword] = None, change: AmmatillinenOpiskeluoikeus => KoskeenTallennettavaOpiskeluoikeus)(block: => Unit) = {
+      putOppija(Oppija(oppija, List(original)), authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(200)
         val existing = lastOpiskeluOikeus(oppija.oid).asInstanceOf[AmmatillinenOpiskeluoikeus]
-        putOppija(Oppija(oppija, List(change(existing))), headers) {
+        putOppija(Oppija(oppija, List(change(existing))), authHeaders(user2.getOrElse(user)) ++ jsonContent) {
           block
         }
       }

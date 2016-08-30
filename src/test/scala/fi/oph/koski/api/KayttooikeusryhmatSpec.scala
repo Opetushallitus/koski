@@ -53,15 +53,10 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
   }
 
-  private val opiskeluoikeusOmnia: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
-    oppilaitos = Oppilaitos(MockOrganisaatiot.omnia),
-    suoritukset = List(tutkintoSuoritus.copy(toimipiste = Oppilaitos(MockOrganisaatiot.omnia)))
-  )
-
   "koski-oppilaitos-palvelukäyttäjä" - {
     val user = MockUsers.hiiri
     "voi muokata opiskeluoikeuksia omassa organisaatiossa" in {
-      putOpiskeluOikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+      putOpiskeluOikeus(opiskeluOikeusLähdejärjestelmästä, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(200)
       }
     }
@@ -129,12 +124,18 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "ei voi muokata lähdejärjestelmän tallentamia opiskeluoikeuksia" in {
-      val opiskeluOikeus = opiskeluoikeusOmnia.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
-      putOpiskeluOikeus(opiskeluOikeus, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+      putOpiskeluOikeus(opiskeluOikeusLähdejärjestelmästä, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(403)
       }
     }
   }
+
+  private val opiskeluoikeusOmnia: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
+    oppilaitos = Oppilaitos(MockOrganisaatiot.omnia),
+    suoritukset = List(tutkintoSuoritus.copy(toimipiste = Oppilaitos(MockOrganisaatiot.omnia)))
+  )
+
+  private def opiskeluOikeusLähdejärjestelmästä = opiskeluoikeusOmnia.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
 
   private def haeOpiskeluoikeudetHetulla(hetu: String, käyttäjä: UserWithPassword) = searchForHenkilötiedot(hetu).map(_.oid).flatMap { oid =>
     opiskeluoikeudet(oid, käyttäjä)

@@ -80,6 +80,8 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
       Left(KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid))
     } else if (opiskeluOikeus.lähdejärjestelmänId.isDefined && !user.isPalvelukäyttäjä && !user.isRoot) {
       Left(KoskiErrorCategory.forbidden.organisaatio("Lähdejärjestelmä määritelty, mutta käyttäjä ei ole palvelukäyttäjä"))
+    } else if (user.isPalvelukäyttäjä && opiskeluOikeus.lähdejärjestelmänId.isEmpty) {
+      Left(KoskiErrorCategory.forbidden.organisaatio("Käyttäjä on palvelukäyttäjä mutta lähdejärjestelmää ei ole määritelty"))
     } else {
       doInIsolatedTransaction(db, createOrUpdateAction(oppijaOid, opiskeluOikeus), "Oppijan " + oppijaOid + " opiskeluoikeuden lisäys/muutos")
     }
