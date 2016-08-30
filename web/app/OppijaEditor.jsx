@@ -5,6 +5,7 @@ import { opiskeluOikeusChange } from './Oppija.jsx'
 import { formatISODate, parseFinnishDate } from './date.js'
 import Http from './http'
 import Bacon from 'baconjs'
+import { hasClass, addClass, removeClass } from './classnames'
 
 export const OppijaEditor = React.createClass({
   render() {
@@ -117,11 +118,12 @@ const OppiaineEditor = React.createClass({
     let {model} = this.props
     return (<div className="oppiaineensuoritus">
       <label className="oppiaine">{modelTitle(model, 'koulutusmoduuli')}</label>
-      <span className="arvosana">{modelTitle(model, 'arviointi.-1')}</span>
+      <span className="arvosana">{modelTitle(model, 'arviointi.-1.arvosana')}</span>
       {modelData(model, 'korotus') ? <span className="korotus">(korotus)</span> : null}
     </div>)
   }
 })
+OppiaineEditor.canShowInline = () => false
 
 const LaajuusEditor = React.createClass({
   render() {
@@ -181,7 +183,7 @@ const TutkinnonosaEditor = React.createClass({
       <FoldableEditor defaultExpanded={context.edit}
                       collapsedView={() => <span className="tutkinnonosan-tiedot">
                         <label className="nimi">{modelTitle(model, 'koulutusmoduuli')}</label>
-                        <span className="arvosana">{modelTitle(model, 'arviointi.-1')}</span>
+                        <span className="arvosana">{modelTitle(model, 'arviointi.-1.arvosana')}</span>
                         </span>}
                       expandedView={() => <span>
                         <label className="nimi">{modelTitle(model, 'koulutusmoduuli')}</label>
@@ -191,6 +193,7 @@ const TutkinnonosaEditor = React.createClass({
     </div>)
   }
 })
+TutkinnonosaEditor.canShowInline = () => false
 
 const ObjectEditor = React.createClass({
   render() {
@@ -198,7 +201,7 @@ const ObjectEditor = React.createClass({
     let className = model.value
       ? 'object ' + model.value.class
       : 'object empty'
-    let representative = model.value.properties.find(property => property.representative)
+    let representative = findRepresentative(model)
     let representativeEditor = () => getModelEditor(representative.model, addPath(context, representative.key))
     let objectEditor = () => <div className={className}><PropertiesEditor properties={model.value.properties} context={context} /></div>
     return modelTitle(model)
@@ -206,25 +209,45 @@ const ObjectEditor = React.createClass({
         ? objectEditor()
         : <span className="simple title">{modelTitle(model)}</span>
       : representative
-        ? model.value.properties.length == 1
+        ? model.value.properties.filter((prop) => !prop.hidden).length == 1
           ? representativeEditor()
-          : <div className="object-wrapper">{representativeEditor()}<FoldableEditor expandedView={objectEditor} defaultExpandeded={context.edit} /></div>
+          : <div className="object-wrapper with-representative"><span className="representative">{representativeEditor()}</span><FoldableEditor expandedView={objectEditor} defaultExpandeded={context.edit} /></div>
         : objectEditor()
   }
 })
+ObjectEditor.canShowInline = (model) => !!findRepresentative(model)
+
+const findRepresentative = (model) => model.value.properties.find(property => property.representative)
 
 const FoldableEditor = React.createClass({
   render() {
     let {collapsedView, expandedView, defaultExpanded} = this.props
-    let expanded = this.state? this.state.expanded : defaultExpanded
-    let toggleExpanded = () => { this.setState({expanded: !expanded})}
+    var expanded = this.state? this.state.expanded : defaultExpanded
+    let toggleExpanded = () => {
+      expanded = !expanded
+      function resetSimple(node) {
+        if (expanded && hasClass(node, 'simple')) {
+          removeClass(node, 'simple')
+          addClass(node, 'simple-when-collapsed')
+        } else if (!expanded && hasClass(node, 'simple-when-collapsed')) {
+          removeClass(node, 'simple-when-collapsed')
+          addClass(node, 'simple')
+        } else {
+          if (node.parentNode) resetSimple(node.parentNode)
+        }
+      }
+      resetSimple(this.refs.foldable)
+
+      this.setState({expanded})
+    }
     let className = expanded ? 'foldable expanded' : 'foldable collapsed'
-    return (<div className={className}>
+    return (<span ref="foldable" className={className}>
       <a className="toggle-expand" onClick={toggleExpanded}>{ expanded ? '-' : '+' }</a>
       { expanded ? expandedView() : (collapsedView ? collapsedView() : null) }
-    </div>)
+    </span>)
   }
 })
+FoldableEditor.canShowInline = () => true
 
 const PropertiesEditor = React.createClass({
   render() {
@@ -247,6 +270,7 @@ const PropertiesEditor = React.createClass({
     </ul>)
   }
 })
+PropertiesEditor.canShowInline = () => false
 
 let addPath = (context, ...pathElems) => {
   let path = ((context.path && [context.path]) || []).concat(pathElems).join('.')
@@ -257,12 +281,12 @@ const ArrayEditor = React.createClass({
   render() {
     let {model, context} = this.props
     let items = modelItems(model)
-    let simple = !items[0] || items[0].simple || (!context.edit && modelTitle(items[0]))
+    let simple = ArrayEditor.canShowInline(model, context)
     let className = simple ? 'array simple' : 'array'
     let adding = this.state && this.state.adding || []
     let add = () => this.setState({adding: adding.concat(model.prototype)})
     return (
-      <ul className={className}>
+      <ul ref="ul" className={className}>
         {
           items.concat(adding).map((item, i) =>
             <li key={i}>{getModelEditor(item, addPath(context, i) )}</li>
@@ -275,7 +299,12 @@ const ArrayEditor = React.createClass({
     )
   }
 })
+ArrayEditor.canShowInline = (model, context) => {
+  var items = modelItems(model)
+  return items.length <= 1 && canShowInline(items[0], addPath(context, 0))
+}
 
+const canShowInline = (model, context) => (getEditorFunction(model, context).canShowInline || (() => false))(model, context)
 
 const OptionalEditor = React.createClass({
   render() {
@@ -287,6 +316,7 @@ const OptionalEditor = React.createClass({
       : <a className="add-value" onClick={add}>lisää</a>
   }
 })
+OptionalEditor.canShowInline = () => true
 
 const StringEditor = React.createClass({
   render() {
@@ -309,8 +339,8 @@ const StringEditor = React.createClass({
   componentDidMount() {
     this.state.valueBus.throttle(1000).onValue((v) => {opiskeluOikeusChange.push(v)})
   }
-
 })
+StringEditor.canShowInline = () => true
 
 const BooleanEditor = React.createClass({
   render() {
@@ -324,6 +354,7 @@ const BooleanEditor = React.createClass({
       : <span className="simple string">{modelTitle(model)}</span>
   }
 })
+BooleanEditor.canShowInline = () => true
 
 const DateEditor = React.createClass({
   render() {
@@ -350,8 +381,8 @@ const DateEditor = React.createClass({
   componentDidMount() {
     this.state.valueBus.throttle(1000).onValue((v) => {opiskeluOikeusChange.push(v)})
   }
-
 })
+DateEditor.canShowInline = () => true
 
 const EnumEditor = React.createClass({
   render() {
@@ -397,6 +428,7 @@ const EnumEditor = React.createClass({
     return {}
   }
 })
+EnumEditor.canShowInline = () => true
 
 const Alternatives = {}
 
@@ -433,29 +465,30 @@ const editorTypes = {
   'enum': EnumEditor
 }
 
-const getModelEditor = (model, context) => {
-  const getEditorFunction = () => {
-    if (!model) return NullEditor
-    if (model.type == 'prototype' && context.editable) {
-      let prototypeModel = context.prototypes[model.key]
-      model = model.optional
-        ? R.merge(prototypeModel, { value: null, optional: true, prototype: model.prototype}) // Remove value from prototypal value of optional model, to show it as empty
-        : prototypeModel
-    }
-    if (modelEmpty(model) && model.optional && model.prototype !== undefined) {
-      return OptionalEditor
-    }
-    let editor = (model.value && editorTypes[model.value.class]) || editorTypes[model.type]
-    if (!editor) {
-      if (!model.type) {
-        console.log('Typeless model', model)
-      }
-      console.log('Missing editor ' + model.type)
-      return NullEditor
-    }
-    return editor
+const getEditorFunction = (model, context) => {
+  if (!model) return NullEditor
+  if (model.type == 'prototype' && context.editable) {
+    let prototypeModel = context.prototypes[model.key]
+    model = model.optional
+      ? R.merge(prototypeModel, { value: null, optional: true, prototype: model.prototype}) // Remove value from prototypal value of optional model, to show it as empty
+      : prototypeModel
   }
-  var Editor = getEditorFunction()
+  if (modelEmpty(model) && model.optional && model.prototype !== undefined) {
+    return OptionalEditor
+  }
+  let editor = (model.value && editorTypes[model.value.class]) || editorTypes[model.type]
+  if (!editor) {
+    if (!model.type) {
+      console.log('Typeless model', model)
+    }
+    console.log('Missing editor ' + model.type)
+    return NullEditor
+  }
+  return editor
+}
+
+const getModelEditor = (model, context) => {
+  var Editor = getEditorFunction(model, context)
   return <Editor model={model} context={context} />
 }
 
