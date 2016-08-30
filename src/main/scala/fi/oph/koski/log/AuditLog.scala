@@ -33,11 +33,11 @@ case class AuditLogMessage(operation: KoskiOperation, user: KoskiUser, extraFiel
 object KoskiMessageField extends Enumeration {
 
   type KoskiMessageField = Value
-  val clientIp, oppijaHenkiloOid, kayttajaHenkiloOid, opiskeluOikeusId, opiskeluOikeusVersio, hakuEhto = Value
+  val clientIp, oppijaHenkiloOid, kayttajaHenkiloOid, opiskeluOikeusId, opiskeluOikeusVersio, hakuEhto, juuriOrganisaatio = Value
 }
 
 object KoskiOperation extends Enumeration {
   type KoskiOperation = Value
-  val LOGIN, OPISKELUOIKEUS_LISAYS, OPISKELUOIKEUS_MUUTOS, OPISKELUOIKEUS_KATSOMINEN, OPISKELUOIKEUS_HAKU, MUUTOSHISTORIA_KATSOMINEN, OPPIJA_HAKU = Value
+  val LOGIN, OPISKELUOIKEUS_LISAYS, OPISKELUOIKEUS_MUUTOS, OPISKELUOIKEUS_KATSOMINEN, OPISKELUOIKEUS_HAKU, MUUTOSHISTORIA_KATSOMINEN, OPPIJA_HAKU, TIEDONSIIRTO_KATSOMINEN = Value
 }
 
