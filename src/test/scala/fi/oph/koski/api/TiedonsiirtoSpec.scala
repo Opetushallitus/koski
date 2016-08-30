@@ -2,6 +2,7 @@ package fi.oph.koski.api
 
 import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjestelmäId
 import fi.oph.koski.json.Json
+import fi.oph.koski.koskiuser.MockUsers.{helsinkiPalvelukäyttäjä, stadinAmmattiopistoPalvelukäyttäjä}
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.organisaatio.MockOrganisaatiot.omnia
@@ -54,6 +55,40 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         verifyResponseStatus(200)
       }
       getTiedonsiirrot(palvelukäyttäjä) should be(empty)
+    }
+  }
+
+  "Tiedonsiirtolokin katsominen" - {
+    val stadinOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
+    "hierarkiassa ylempänä oleva käyttäjä voi katsoa hierarkiasssa alempana olevan käyttäjän luomia rivejä" in {
+      resetFixtures
+      putOpiskeluOikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä) ++ jsonContent) {
+        verifyResponseStatus(200)
+      }
+
+      verifyTiedonsiirtoLoki(helsinkiPalvelukäyttäjä, Some(defaultHenkilö), Some(stadinOpiskeluoikeus), errorStored = false, dataStored = false)
+    }
+
+    "hierarkiassa alempana oleva käyttäjä ei voi katsoa hierarkiasssa ylempänä olevan käyttäjän luomia rivejä" in {
+      resetFixtures
+      putOpiskeluOikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinkiPalvelukäyttäjä) ++ jsonContent) {
+        verifyResponseStatus(200)
+      }
+
+      getTiedonsiirrot(stadinAmmattiopistoPalvelukäyttäjä) should be(empty)
+    }
+
+    "pääkäyttäjä näkee kaikki tiedonsiirrot" in {
+      resetFixtures
+      putOpiskeluOikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinkiPalvelukäyttäjä) ++ jsonContent) {
+        verifyResponseStatus(200)
+      }
+
+      putOpiskeluOikeus(opiskeluoikeus, henkilö = defaultHenkilö.copy(sukunimi = ""), headers = authHeaders(palvelukäyttäjä) ++ jsonContent) {
+        verifyResponseStatus(400)
+      }
+
+      getTiedonsiirrot(MockUsers.paakayttaja) should have size 2
     }
   }
 
