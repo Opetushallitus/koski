@@ -9,14 +9,27 @@ describe('Tiedonsiirrot', function() {
     }
   }
   before(
-    resetFixtures,
     authentication.login('tiedonsiirtäjä'),
+    resetFixtures,
     insertExample('tiedonsiirto - epäonnistunut.json'),
     insertExample('tiedonsiirto - onnistunut.json'),
     insertExample('tiedonsiirto - epäonnistunut 2.json'),
     tiedonsiirrot.openPage
   )
   it('Näytetään', function() {
-
+    expect(tiedonsiirrot.tiedot()).to.deep.equal([
+      [
+        '120496-949B',
+        'Aarne Ammattilainen',
+        'Aalto-yliopisto',
+        'Ei oikeuksia organisatioon 1.2.246.562.10.56753942459virheen tiedot viestin tiedot'
+      ],
+      [
+        '290896-9674',
+        'Tiina Tiedonsiirto',
+        'Stadin ammattiopisto',
+        ''
+      ]
+    ])
   })
 })
