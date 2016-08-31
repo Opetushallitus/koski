@@ -29,25 +29,29 @@ describe('Tiedonsiirrot', function() {
         '120496-949B',
         'Aarne Ammattilainen',
         'Aalto-yliopisto',
-        'Ei oikeuksia organisatioon 1.2.246.562.10.56753942459virheen tiedot viestin tiedot'
+        'virhe',
+        'tiedot'
       ],
       [
         '290896-9674',
         'Tiina Tiedonsiirto',
         'Stadin ammattiopisto',
+        '',
         ''
       ],
       [
         '',
         ' ',
         '',
-        'Viesti ei ole skeeman mukainenvirheen tiedot viestin tiedot'
+        'virhe',
+        'tiedot'
       ],
       [
         '',
         '',
         '',
-        'Epäkelpo JSON-dokumenttivirheen tiedot viestin tiedot'
+        'virhe',
+        'tiedot'
       ],
 
     ])

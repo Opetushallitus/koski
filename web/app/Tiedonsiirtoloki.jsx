@@ -9,6 +9,6 @@ const tiedonsiirrotP = Bacon.once().flatMap(() => Http.get('/koski/api/tiedonsii
 export const tiedonsiirtolokiContentP = tiedonsiirrotContentP('/koski/tiedonsiirrot', tiedonsiirrotP.map((rivit) =>
   (<div>
     Viimeisimmät KOSKI-palveluun siirtyneet opiskelijatiedot
-    <Tiedonsiirtotaulukko rivit={rivit}/>
+    <Tiedonsiirtotaulukko rivit={rivit} showError={false}/>
   </div>)
 ))

@@ -11,6 +11,6 @@ export const tiedonsiirtovirheetContentP = tiedonsiirrotContentP('/koski/tiedons
   <p>Alla olevien opiskelijoiden tiedot ovat virhetilassa.</p>
   <p>Opiskelija poistuu virhelistalta kun virheen aiheuttanut tieto on korjattu lähdejärjestelmässä ja opiskelijan
     tiedot on siirretty uudelleen onnistuneesti KOSKI-palveluun.</p>
-  <Tiedonsiirtotaulukko rivit={rivit}/>
+  <Tiedonsiirtotaulukko rivit={rivit} showError={true}/>
   </div>))
 )

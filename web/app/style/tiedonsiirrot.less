@@ -9,6 +9,11 @@
     }
   }
 }
+
+.sidebar.tiedonsiirrot-navi {
+  width: ~"calc(50px + (100vw - 1200px) / 2)";
+}
+
 .tiedonsiirrot-content {
   a {
     font-size: 1em;
@@ -16,18 +21,22 @@
   table {
     font-size: 0.85em;
     margin-top: 20px;
+    width: 100%;
     .tila { width: 5em; }
     .aika { width: 9em; }
     .hetu { padding-right: 10px; }
-    .nimi { width: 9em; }
-    .oppilaitos { width: 9em; }
+    .tiedot { padding-right: 5px; }
     .tiedonsiirto-errors {
       list-style: none;
       padding: 0;
+      margin-bottom: 5px;
     }
     th, tr {
       text-align: left;
       vertical-align: top;
+    }
+    td {
+      padding: 10px 0;
     }
     .group {
       .expand, .collapse {

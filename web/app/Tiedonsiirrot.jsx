@@ -1,5 +1,6 @@
 import React from 'react'
 import {navigateTo} from './location.js'
+
 export const tiedonsiirrotContentP = (location, contentP) => contentP.map((content) => (<div className='content-area'>
   <nav className="sidebar tiedonsiirrot-navi">
     {link('/koski/tiedonsiirrot', 'Tiedonsiirtoloki', location)}

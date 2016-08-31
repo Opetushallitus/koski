@@ -3,7 +3,7 @@ import fecha from 'fecha'
 
 export const Tiedonsiirtotaulukko = React.createClass({
   render() {
-    const { rivit } = this.props
+    const { rivit, showError } = this.props
     const showDataForRow = this.state && this.state.showDataForRow
     return (<div>
       <table>
@@ -14,7 +14,8 @@ export const Tiedonsiirtotaulukko = React.createClass({
           <th className="hetu">Henkilötunnus</th>
           <th className="nimi">Nimi</th>
           <th className="oppilaitos">Oppilaitos</th>
-          <th className="virhe">Virhe</th>
+          <th className="virhe">{showError ? "Virhe" : "Tiedot"}</th>
+          <th className="tiedot"></th>
         </tr>
         </thead>
         <tbody>
@@ -29,7 +30,7 @@ export const Tiedonsiirtotaulukko = React.createClass({
                 const isHidden = isChild && !isExpanded
                 return isHidden
                   ? []
-                  : [<Lokirivi key={i + '-' + j} row={rivi} isParent={isParent} isChild={isChild} isExpanded={isExpanded} isEven={i % 2 == 1} parentComponent={this}/>]
+                  : [<Lokirivi key={i + '-' + j} row={rivi} isParent={isParent} isChild={isChild} isExpanded={isExpanded} isEven={i % 2 == 1} parentComponent={this} showError={showError}/>]
               }
             )
           })
@@ -48,15 +49,18 @@ const Lokirivi = React.createClass({
     const extractName = (oppilaitokset) =>
       oppilaitokset && oppilaitokset.map((oppilaitos) => oppilaitos && oppilaitos.nimi && oppilaitos.nimi.fi).join(', ')
 
-    const errorDetails = (virheet) =>
+    const {row, isParent, isChild, isExpanded, isEven, parentComponent, showError} = this.props
+
+    const errorDetails = (virheet) => { return showError ?
       <div>
         <ul className="tiedonsiirto-errors">{
           virheet.map((virhe, i) => <li key={i}>{(virhe.key === 'badRequest.validation.jsonSchema') ? 'Viesti ei ole skeeman mukainen' : virhe.message}</li>)
         }</ul>
-        <a onClick={() => showErrors(virheet)}>virheen tiedot</a> | <a onClick={showData}>viestin tiedot</a>
-      </div>
+        <a className="virheen-tiedot" onClick={() => showErrors(virheet)}>virhe</a>
+      </div> : <a className="virheen-tiedot" onClick={() => showErrors(virheet)}>virhe</a>}
 
-    const {row, isParent, isChild, isExpanded, isEven, parentComponent} = this.props
+    const dataLink = () => <a className="viestin-tiedot" onClick={showData}>tiedot</a>
+
     const showErrors = (virheet) => parentComponent.setState({showDataForRow: virheet})
     const showData = () => parentComponent.setState({showDataForRow: row.inputData})
     const nimi = row.oppija && ((row.oppija.kutsumanimi || '') + ' ' + (row.oppija.sukunimi || ''))
@@ -85,6 +89,7 @@ const Lokirivi = React.createClass({
       }</td>
       <td className="oppilaitos">{extractName(row.oppilaitos)}</td>
       <td className="virhe">{row.virhe && <span>{errorDetails(row.virhe)}</span>}</td>
+      <td className="tiedot">{row.virhe && dataLink()}</td>
     </tr>)
   }
 })
