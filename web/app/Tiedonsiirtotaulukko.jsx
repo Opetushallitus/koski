@@ -47,18 +47,21 @@ const Lokirivi = React.createClass({
   render() {
     const extractName = (oppilaitokset) =>
       oppilaitokset && oppilaitokset.map((oppilaitos) => oppilaitos && oppilaitos.nimi && oppilaitos.nimi.fi).join(', ')
-    const extractErrorTitle = (virheet) =>
+
+    const errorDetails = (virheet) =>
       <div>
         <ul className="tiedonsiirto-errors">{
           virheet.map((virhe, i) => <li key={i}>{(virhe.key === 'badRequest.validation.jsonSchema') ? 'Viesti ei ole skeeman mukainen' : virhe.message}</li>)
         }</ul>
-        <a onClick={() => showErrors(virheet)}>virheen tiedot</a>
+        <a onClick={() => showErrors(virheet)}>virheen tiedot</a> | <a onClick={showData}>viestin tiedot</a>
       </div>
+
     const {row, isParent, isChild, isExpanded, isEven, parentComponent} = this.props
     const showErrors = (virheet) => parentComponent.setState({showDataForRow: virheet})
     const showData = () => parentComponent.setState({showDataForRow: row.inputData})
     const nimi = row.oppija && ((row.oppija.kutsumanimi || '') + ' ' + (row.oppija.sukunimi || ''))
     const className = ((isParent || isChild) ? 'group ' : '') + (isEven ? 'even' : 'odd')
+
     return (<tr className={className}>
       <td className="tila">
         {
@@ -81,7 +84,7 @@ const Lokirivi = React.createClass({
           ? <a href={`/koski/oppija/${row.oppija.oid}`}>{nimi}</a> : nimi
       }</td>
       <td className="oppilaitos">{extractName(row.oppilaitos)}</td>
-      <td className="virhe">{row.virhe && <span>{extractErrorTitle(row.virhe)} <a onClick={showData}>viestin tiedot</a></span>}</td>
+      <td className="virhe">{row.virhe && <span>{errorDetails(row.virhe)}</span>}</td>
     </tr>)
   }
 })
