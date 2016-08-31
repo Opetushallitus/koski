@@ -21,7 +21,12 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
     if (!koskiUser.isPalvelukäyttäjä) {
       return
     }
-    val oppija = data.map(_ \ "henkilö")
+
+    val oppija = data.map(_ \ "henkilö") flatMap {
+      case JNothing => None
+      case x: JValue => Some(x)
+    }
+
     val oppilaitokset = data.map(_ \ "opiskeluoikeudet" \ "oppilaitos" \ "oid").collect {
       case JArray(oids) => oids.collect { case JString(oid) => oid }
       case JString(oid) => List(oid)
