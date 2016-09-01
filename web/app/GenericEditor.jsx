@@ -23,15 +23,26 @@ export const ObjectEditor = React.createClass({
     let representative = findRepresentative(model)
     let representativeEditor = () => getModelEditor(representative.model, childContext(context, representative.key))
     let objectEditor = () => <div className={className}><PropertiesEditor properties={model.value.properties} context={context} /></div>
-    return modelTitle(model)
-      ? context.edit
-      ? objectEditor()
-      : <span className="simple title">{modelTitle(model)}</span>
-      : representative
-      ? model.value.properties.filter((prop) => !prop.hidden).length == 1
-      ? representativeEditor()
-      : <div className="object-wrapper with-representative"><span className="representative">{representativeEditor()}</span><FoldableEditor expandedView={objectEditor} defaultExpandeded={context.edit} /></div>
-      : objectEditor()
+
+    let showAsTitle = !!modelTitle(model)
+    let alwaysShowRepresentative = context.arrayItems && context.arrayItems.length > 1
+
+    return showAsTitle
+          ? context.edit
+            ? objectEditor()
+            : <span className="simple title">{modelTitle(model)}</span>
+          : representative
+            ? model.value.properties.filter((prop) => !prop.hidden).length == 1
+              ? representativeEditor()
+              : alwaysShowRepresentative
+                ? (<div className="object-wrapper with-representative">
+                    <span className="representative">{representativeEditor()}</span>
+                    <FoldableEditor expandedView={objectEditor} defaultExpanded={context.edit} />
+                  </div>)
+                : (<div className="object-wrapper with-representative">
+                    <FoldableEditor expandedView={objectEditor} collapsedView={representativeEditor} defaultExpandeded={context.edit} />
+                  </div>)
+            : objectEditor()
   }
 })
 ObjectEditor.canShowInline = (model) => !!findRepresentative(model)
@@ -101,7 +112,7 @@ export const ArrayEditor = React.createClass({
       <ul ref="ul" className={className}>
         {
           items.concat(adding).map((item, i) =>
-            <li key={i}>{getModelEditor(item, childContext(context, i) )}</li>
+            <li key={i}>{getModelEditor(item, R.merge(childContext(context, i), { arrayItems: items }) )}</li>
           )
         }
         {
@@ -249,13 +260,12 @@ export const NullEditor = React.createClass({
 
 export const childContext = (context, ...pathElems) => {
   let path = ((context.path && [context.path]) || []).concat(pathElems).join('.')
-  return R.merge(context, { path, root: false })
+  return R.merge(context, { path, root: false, arrayItems: null })
 }
 
 export const rootContext = (rootModel, editorMapping) => ({ root: true, prototypes: rootModel.prototypes, editorMapping: R.merge(defaultEditorMapping, editorMapping) })
 
 const findRepresentative = (model) => model.value.properties.find(property => property.representative)
-
 const canShowInline = (model, context) => (getEditorFunction(model, context).canShowInline || (() => false))(model, context)
 
 const resolveModel = (model, context) => {

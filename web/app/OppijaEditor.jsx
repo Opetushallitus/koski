@@ -163,7 +163,7 @@ const OpiskeluoikeusjaksoEditor = React.createClass({
   render() {
     let {model, context} = this.props
     return context.edit
-      ? <GenericEditor.ObjectEditor model={model} context={context}/>
+      ? <GenericEditor.ObjectEditor {...this.props}/>
       : (<div className="opiskeluoikeusjakso">
         <label className="date">{modelTitle(model, 'alku')}</label>
         <label className="tila">{modelTitle(model, 'tila')}</label>

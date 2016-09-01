@@ -52,6 +52,10 @@ addArrayMethod('findIndex', function(predicate) {
 addArrayMethod('flatMap', function (lambda) {
     return Array.prototype.concat.apply([], this.map(lambda))
 })
+addArrayMethod('last', function () {
+  return this[this.length - 1]
+})
+
 Number.isNaN = Number.isNaN || function(value) {
   return typeof value === 'number' && isNaN(value)
 }
