@@ -3,8 +3,8 @@ import {navigateTo} from './location.js'
 
 export const tiedonsiirrotContentP = (location, contentP) => contentP.map((content) => (<div className='content-area'>
   <nav className="sidebar tiedonsiirrot-navi">
-    {link('/koski/tiedonsiirrot', 'Tiedonsiirtoloki', location, "tiedonsiirto-link")}
-    {link('/koski/tiedonsiirrot/virheet', 'Virheet', location, "virheet-link")}
+    {link('/koski/tiedonsiirrot', 'Tiedonsiirtoloki', location, 'tiedonsiirto-link')}
+    {link('/koski/tiedonsiirrot/virheet', 'Virheet', location, 'virheet-link')}
   </nav>
   <div className="main-content tiedonsiirrot-content">
     { content }
