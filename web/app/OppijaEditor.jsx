@@ -1,11 +1,7 @@
 import React from 'react'
 import R from 'ramda'
-import { modelData, modelLookup, modelTitle, modelEmpty, modelItems } from './EditorModel.js'
-import { opiskeluOikeusChange } from './Oppija.jsx'
-import { formatISODate, parseFinnishDate } from './date.js'
-import Http from './http'
-import Bacon from 'baconjs'
-import { hasClass, addClass, removeClass } from './classnames'
+import { modelData, modelLookup, modelTitle, modelItems } from './EditorModel.js'
+import * as GenericEditor from './GenericEditor.jsx'
 
 export const OppijaEditor = React.createClass({
   render() {
@@ -14,15 +10,15 @@ export const OppijaEditor = React.createClass({
       <ul className="oppilaitokset">
         {
           modelLookup(model, 'opiskeluoikeudet').value.map((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) => {
-              let context = { oppijaOid: modelData(model, 'henkilö.oid'), root: true, prototypes: model.prototypes }
+              let context = R.merge(GenericEditor.rootContext(model, editorMapping), { oppijaOid: modelData(model, 'henkilö.oid') })
               let oppilaitos = modelLookup(oppilaitoksenOpiskeluoikeudet, 'oppilaitos')
               let opiskeluoikeudet = modelItems(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet')
               return (<li className="oppilaitos" key={modelData(oppilaitos).oid}>
                 <span className="oppilaitos">{modelTitle(oppilaitos)}</span>
-                <OppilaitoksenOpintosuoritusote oppilaitos={oppilaitos} tyyppi={modelData(opiskeluoikeudet[0], 'tyyppi').koodiarvo} context={context} />
+                <OppilaitoksenOpintosuoritusoteLink oppilaitos={oppilaitos} tyyppi={modelData(opiskeluoikeudet[0], 'tyyppi').koodiarvo} context={context} />
                 {
                   opiskeluoikeudet.map( (opiskeluoikeus, opiskeluoikeusIndex) =>
-                    <OpiskeluoikeusEditor key={ opiskeluoikeusIndex } model={ opiskeluoikeus } context={addPath(context, 'opiskeluoikeudet', oppilaitosIndex, 'opiskeluoikeudet', opiskeluoikeusIndex)} />
+                    <OpiskeluoikeusEditor key={ opiskeluoikeusIndex } model={ opiskeluoikeus } context={GenericEditor.childContext(context, 'opiskeluoikeudet', oppilaitosIndex, 'opiskeluoikeudet', opiskeluoikeusIndex)} />
                   )
                 }
               </li>)
@@ -48,14 +44,14 @@ const OpiskeluoikeusEditor = React.createClass({
           : null
         }
           <span className="tila">{modelTitle(model, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}</span>
-        <FoldableEditor expandedView={() => <PropertiesEditor properties={ model.value.properties.filter(property => property.key != 'suoritukset') } context={subContext}/>}/>
+        <GenericEditor.FoldableEditor expandedView={() => <GenericEditor.PropertiesEditor properties={ model.value.properties.filter(property => property.key != 'suoritukset') } context={subContext}/>}/>
       </div>
       {
         modelItems(model, 'suoritukset').map((suoritusModel, i) =>
-          <SuoritusEditor model={suoritusModel} context={addPath(subContext, 'suoritukset', i)} key={i}/>
+          <SuoritusEditor model={suoritusModel} context={GenericEditor.childContext(subContext, 'suoritukset', i)} key={i}/>
         )
       }
-      <OpiskeluoikeudenOpintosuoritusote opiskeluoikeus={model} context={context}/>
+      <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={model} context={context}/>
     </div>)
   }
 })
@@ -68,13 +64,13 @@ const SuoritusEditor = React.createClass({
     let className = 'suoritus ' + model.value.class
     return (<div className={className}>
       <span className="kuvaus">{title}</span>
-      <Todistus suoritus={model} context={context}/>
-      <FoldableEditor expandedView={() => <PropertiesEditor properties={model.value.properties} context={R.merge(context, {editable: model.editable})}/>}/>
+      <TodistusLink suoritus={model} context={context}/>
+      <GenericEditor.FoldableEditor expandedView={() => <GenericEditor.PropertiesEditor properties={model.value.properties} context={R.merge(context, {editable: model.editable})}/>}/>
     </div>)
   }
 })
 
-const Todistus = React.createClass({
+const TodistusLink = React.createClass({
   render() {
     let {suoritus, context: { oppijaOid }} = this.props
     let suoritustyyppi = modelData(suoritus, 'tyyppi').koodiarvo
@@ -88,7 +84,7 @@ const Todistus = React.createClass({
   }
 })
 
-const OppilaitoksenOpintosuoritusote = React.createClass({
+const OppilaitoksenOpintosuoritusoteLink = React.createClass({
   render() {
     let {oppilaitos, tyyppi, context: { oppijaOid }} = this.props
 
@@ -101,7 +97,7 @@ const OppilaitoksenOpintosuoritusote = React.createClass({
   }
 })
 
-const OpiskeluoikeudenOpintosuoritusote = React.createClass({
+const OpiskeluoikeudenOpintosuoritusoteLink = React.createClass({
   render() {
     let {opiskeluoikeus, context: { oppijaOid }} = this.props
     if (modelData(opiskeluoikeus, 'tyyppi').koodiarvo == 'lukiokoulutus') { // vain lukiokoulutukselle näytetään opiskeluoikeuskohtainen suoritusote
@@ -129,7 +125,7 @@ const LaajuusEditor = React.createClass({
   render() {
     let {model, context} = this.props
     return context.edit
-      ? <ObjectEditor model={model} context={context}/>
+      ? <GenericEditor.ObjectEditor model={model} context={context}/>
       : <span>{modelTitle(model, 'arvo')} {modelTitle(model, 'yksikkö')}</span>
   }
 })
@@ -138,7 +134,7 @@ const VahvistusEditor = React.createClass({
   render() {
     let {model, context} = this.props
     return context.edit
-      ? <ObjectEditor model={model} context={context} />
+      ? <GenericEditor.ObjectEditor model={model} context={context} />
       : (<span className="vahvistus simple">
           <span className="date">{modelTitle(model, 'päivä')}</span>&nbsp;
           <span className="allekirjoitus">{modelTitle(model, 'paikkakunta')}</span>&nbsp;
@@ -155,10 +151,10 @@ const OsaamisenTunnustaminenEditor = React.createClass({
   render() {
     let {model, context} = this.props
     return context.edit
-      ? <ObjectEditor model={model} context={context}/>
+      ? <GenericEditor.ObjectEditor model={model} context={context}/>
       : (<span className="object osaamisentunnustaminen">
           <label>{modelTitle(model, 'selite')}</label>
-          { getModelEditor(modelLookup(model, 'osaaminen'), addPath(context, 'osaaminen'))}
+          <GenericEditor.Editor model={modelLookup(model, 'osaaminen')} context={GenericEditor.childContext(context, 'osaaminen')} />
         </span>)
   }
 })
@@ -167,7 +163,7 @@ const OpiskeluoikeusjaksoEditor = React.createClass({
   render() {
     let {model, context} = this.props
     return context.edit
-      ? <ObjectEditor model={model} context={context}/>
+      ? <GenericEditor.ObjectEditor model={model} context={context}/>
       : (<div className="opiskeluoikeusjakso">
         <label className="date">{modelTitle(model, 'alku')}</label>
         <label className="tila">{modelTitle(model, 'tila')}</label>
@@ -180,14 +176,14 @@ const TutkinnonosaEditor = React.createClass({
     let {model, context} = this.props
 
     return (<div className="suoritus tutkinnonosa">
-      <FoldableEditor defaultExpanded={context.edit}
+      <GenericEditor.FoldableEditor defaultExpanded={context.edit}
                       collapsedView={() => <span className="tutkinnonosan-tiedot">
                         <label className="nimi">{modelTitle(model, 'koulutusmoduuli')}</label>
                         <span className="arvosana">{modelTitle(model, 'arviointi.-1.arvosana')}</span>
                         </span>}
                       expandedView={() => <span>
                         <label className="nimi">{modelTitle(model, 'koulutusmoduuli')}</label>
-                        <PropertiesEditor properties={model.value.properties} context={context}/>
+                        <GenericEditor.PropertiesEditor properties={model.value.properties} context={context}/>
                         </span>}
       />
     </div>)
@@ -195,250 +191,7 @@ const TutkinnonosaEditor = React.createClass({
 })
 TutkinnonosaEditor.canShowInline = () => false
 
-const ObjectEditor = React.createClass({
-  render() {
-    let {model, context} = this.props
-    let className = model.value
-      ? 'object ' + model.value.class
-      : 'object empty'
-    let representative = findRepresentative(model)
-    let representativeEditor = () => getModelEditor(representative.model, addPath(context, representative.key))
-    let objectEditor = () => <div className={className}><PropertiesEditor properties={model.value.properties} context={context} /></div>
-    return modelTitle(model)
-      ? context.edit
-        ? objectEditor()
-        : <span className="simple title">{modelTitle(model)}</span>
-      : representative
-        ? model.value.properties.filter((prop) => !prop.hidden).length == 1
-          ? representativeEditor()
-          : <div className="object-wrapper with-representative"><span className="representative">{representativeEditor()}</span><FoldableEditor expandedView={objectEditor} defaultExpandeded={context.edit} /></div>
-        : objectEditor()
-  }
-})
-ObjectEditor.canShowInline = (model) => !!findRepresentative(model)
-
-const findRepresentative = (model) => model.value.properties.find(property => property.representative)
-
-const FoldableEditor = React.createClass({
-  render() {
-    let {collapsedView, expandedView, defaultExpanded} = this.props
-    var expanded = this.state? this.state.expanded : defaultExpanded
-    let toggleExpanded = () => {
-      expanded = !expanded
-      function resetSimple(node) {
-        if (expanded && hasClass(node, 'simple')) {
-          removeClass(node, 'simple')
-          addClass(node, 'simple-when-collapsed')
-        } else if (!expanded && hasClass(node, 'simple-when-collapsed')) {
-          removeClass(node, 'simple-when-collapsed')
-          addClass(node, 'simple')
-        } else {
-          if (node.parentNode) resetSimple(node.parentNode)
-        }
-      }
-      resetSimple(this.refs.foldable)
-
-      this.setState({expanded})
-    }
-    let className = expanded ? 'foldable expanded' : 'foldable collapsed'
-    return (<span ref="foldable" className={className}>
-      <a className="toggle-expand" onClick={toggleExpanded}>{ expanded ? '-' : '+' }</a>
-      { expanded ? expandedView() : (collapsedView ? collapsedView() : null) }
-    </span>)
-  }
-})
-FoldableEditor.canShowInline = () => true
-
-const PropertiesEditor = React.createClass({
-  render() {
-    let {properties, context} = this.props
-    let edit = context.edit || (this.state && this.state.edit)
-    let toggleEdit = () => this.setState({edit: !edit})
-    return (<ul className="properties">
-      {
-        context.editable && !context.edit ? <a className="toggle-edit" onClick={toggleEdit}>{edit ? 'valmis' : 'muokkaa'}</a> : null
-      }
-      {
-        properties.filter(property => (edit || !modelEmpty(property.model)) && !property.hidden).map(property => {
-          let propertyClassName = 'property ' + property.key
-          return (<li className={propertyClassName} key={property.key}>
-            <label>{property.title}</label>
-            <span className="value">{ getModelEditor(property.model, addPath(R.merge(context, {edit: edit}),property.key)) }</span>
-          </li>)
-        })
-      }
-    </ul>)
-  }
-})
-PropertiesEditor.canShowInline = () => false
-
-let addPath = (context, ...pathElems) => {
-  let path = ((context.path && [context.path]) || []).concat(pathElems).join('.')
-  return R.merge(context, { path, root: false })
-}
-
-const ArrayEditor = React.createClass({
-  render() {
-    let {model, context} = this.props
-    let items = modelItems(model)
-    let simple = ArrayEditor.canShowInline(model, context)
-    let className = simple ? 'array simple' : 'array'
-    let adding = this.state && this.state.adding || []
-    let add = () => this.setState({adding: adding.concat(model.prototype)})
-    return (
-      <ul ref="ul" className={className}>
-        {
-          items.concat(adding).map((item, i) =>
-            <li key={i}>{getModelEditor(item, addPath(context, i) )}</li>
-          )
-        }
-        {
-          context.edit && model.prototype !== undefined ? <li className="add-item"><a onClick={add}>lisää uusi</a></li> : null
-        }
-      </ul>
-    )
-  }
-})
-ArrayEditor.canShowInline = (model, context) => {
-  var items = modelItems(model)
-  return items.length <= 1 && canShowInline(items[0], addPath(context, 0))
-}
-
-const canShowInline = (model, context) => (getEditorFunction(model, context).canShowInline || (() => false))(model, context)
-
-const OptionalEditor = React.createClass({
-  render() {
-    let {model, context} = this.props
-    let adding = this.state && this.state.adding
-    let add = () => this.setState({adding: true})
-    return adding
-      ? getModelEditor(model.prototype, context, true)
-      : <a className="add-value" onClick={add}>lisää</a>
-  }
-})
-OptionalEditor.canShowInline = () => true
-
-const StringEditor = React.createClass({
-  render() {
-    let {model, context} = this.props
-    let {valueBus} = this.state
-
-    let onChange = (event) => {
-      valueBus.push([context, {data: event.target.value}])
-    }
-
-    return context.edit
-      ? <input type="text" defaultValue={modelData(model)} onChange={ onChange }></input>
-      : <span className="simple string">{modelData(model)}</span>
-  },
-
-  getInitialState() {
-    return {valueBus: Bacon.Bus()}
-  },
-
-  componentDidMount() {
-    this.state.valueBus.throttle(1000).onValue((v) => {opiskeluOikeusChange.push(v)})
-  }
-})
-StringEditor.canShowInline = () => true
-
-const BooleanEditor = React.createClass({
-  render() {
-    let {model, context} = this.props
-    let onChange = event => {
-      opiskeluOikeusChange.push([context, {data: event.target.checked}])
-    }
-
-    return context.edit
-      ? <input type="checkbox" defaultChecked={modelData(model)} onChange={ onChange }></input>
-      : <span className="simple string">{modelTitle(model)}</span>
-  }
-})
-BooleanEditor.canShowInline = () => true
-
-const DateEditor = React.createClass({
-  render() {
-    let {model, context} = this.props
-    let {invalidDate, valueBus} = this.state
-
-    let onChange = (event) => {
-      var date = parseFinnishDate(event.target.value)
-      if (date) {
-        valueBus.push([context, {data: formatISODate(date)}])
-      }
-      this.setState({invalidDate: date ? false : true})
-    }
-
-    return context.edit
-      ? <input type="text" defaultValue={modelTitle(model)} onChange={ onChange } className={invalidDate ? 'error' : ''}></input>
-      : <span className="simple date">{modelTitle(model)}</span>
-  },
-
-  getInitialState() {
-    return {valueBus: Bacon.Bus()}
-  },
-
-  componentDidMount() {
-    this.state.valueBus.throttle(1000).onValue((v) => {opiskeluOikeusChange.push(v)})
-  }
-})
-DateEditor.canShowInline = () => true
-
-const EnumEditor = React.createClass({
-  render() {
-    let {model, context} = this.props
-    let alternatives = model.alternatives || (this.state.alternatives) || []
-    let className = alternatives.length ? '' : 'loading'
-    let onChange = (event) => {
-      let selected = alternatives.find(alternative => alternative.value == event.target.value)
-      opiskeluOikeusChange.push([context, selected])
-    }
-    return context.edit
-      ? (<select className={className} defaultValue={model.value && model.value.value} onChange={ onChange }>
-          {
-            alternatives.map( alternative =>
-              <option value={ alternative.value } key={ alternative.value }>{alternative.title}</option>
-            )
-          }
-        </select>)
-      : <span className="simple enum">{modelTitle(model)}</span>
-  },
-
-  update(props) {
-    let {model, context} = props
-    if (context.edit && model.alternativesPath && !this.state.alternativesP) {
-      this.state.alternativesP = Alternatives[model.alternativesPath]
-      if (!this.state.alternativesP) {
-        this.state.alternativesP = Http.get(model.alternativesPath).toProperty()
-        Alternatives[model.alternativesPath] = this.state.alternativesP
-      }
-      this.state.alternativesP.onValue(alternatives => this.setState({alternatives}))
-    }
-  },
-
-  componentWillMount() {
-    this.update(this.props)
-  },
-
-  componentWillReceiveProps(props) {
-    this.update(props)
-  },
-
-  getInitialState() {
-    return {}
-  }
-})
-EnumEditor.canShowInline = () => true
-
-const Alternatives = {}
-
-const NullEditor = React.createClass({
-  render() {
-    return null
-  }
-})
-
-const editorTypes = {
+const editorMapping = {
   'perusopetuksenoppiaineensuoritus': OppiaineEditor,
   'perusopetukseenvalmistavanopetuksenoppiaineensuoritus': OppiaineEditor,
   'perusopetuksenlisaopetuksenoppiaineensuoritus': OppiaineEditor,
@@ -455,46 +208,5 @@ const editorTypes = {
   'laajuusosaamispisteissa' : LaajuusEditor,
   'laajuuskursseissa' : LaajuusEditor,
   'laajuusopintopisteissa' : LaajuusEditor,
-  'laajuusvuosiviikkotunneissa' : LaajuusEditor,
-  'object': ObjectEditor,
-  'array': ArrayEditor,
-  'string': StringEditor,
-  'number': StringEditor,
-  'date': DateEditor,
-  'boolean': BooleanEditor,
-  'enum': EnumEditor
+  'laajuusvuosiviikkotunneissa' : LaajuusEditor
 }
-
-const resolveModel = (model, context) => {
-  if (model && model.type == 'prototype' && context.editable) {
-    let prototypeModel = context.prototypes[model.key]
-    model = model.optional
-      ? R.merge(prototypeModel, { value: null, optional: true, prototype: model.prototype}) // Remove value from prototypal value of optional model, to show it as empty
-      : prototypeModel
-  }
-  return model
-}
-
-const getEditorFunction = (model, context) => {
-  model = resolveModel(model, context)
-  if (!model) return NullEditor
-  if (modelEmpty(model) && model.optional && model.prototype !== undefined) {
-    return OptionalEditor
-  }
-  let editor = (model.value && editorTypes[model.value.class]) || editorTypes[model.type]
-  if (!editor) {
-    if (!model.type) {
-      console.log('Typeless model', model)
-    }
-    console.log('Missing editor ' + model.type)
-    return NullEditor
-  }
-  return editor
-}
-
-const getModelEditor = (model, context) => {
-  model = resolveModel(model, context)
-  var Editor = getEditorFunction(model, context)
-  return <Editor model={model} context={context} />
-}
-
