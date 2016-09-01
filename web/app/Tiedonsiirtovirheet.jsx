@@ -7,7 +7,7 @@ import { Tiedonsiirtotaulukko } from './Tiedonsiirtotaulukko.jsx'
 const tiedonsiirrotP = Bacon.once().flatMap(() => Http.get('/koski/api/tiedonsiirrot/virheet')).toProperty()
 
 export const tiedonsiirtovirheetContentP = tiedonsiirrotContentP('/koski/tiedonsiirrot/virheet', tiedonsiirrotP.map((rivit) =>
-  (<div>
+  (<div className="tiedonsiirto-virheet">
   <p>Alla olevien opiskelijoiden tiedot ovat virhetilassa.</p>
   <p>Opiskelija poistuu virhelistalta kun virheen aiheuttanut tieto on korjattu lähdejärjestelmässä ja opiskelijan
     tiedot on siirretty uudelleen onnistuneesti KOSKI-palveluun.</p>
