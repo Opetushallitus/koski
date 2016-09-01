@@ -15,7 +15,7 @@ describe('Telma', function() {
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('toimii', function() {
-        expect(S('.tyohonjaitsenaiseenelamaanvalmentavankoulutuksensuoritus .osasuoritukset .koulutusmoduuli:eq(0) .value').text()).to.equal('Toimintakyvyn vahvistaminen')
+        expect(S('.tyohonjaitsenaiseenelamaanvalmentavankoulutuksensuoritus .osasuoritukset .koulutusmoduuli:eq(0) .tunniste .nimi .value').text()).to.equal('Toimintakyvyn vahvistaminen')
       })
     })
     describe('Tulostettava todistus', function() {

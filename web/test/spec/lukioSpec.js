@@ -15,7 +15,7 @@ describe('Lukiokoulutus', function( ){
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('toimii', function() {
-        expect(S('.lukionoppimaaransuoritus .osasuoritukset .tutkinnonosa:eq(0) .koulutusmoduuli .value').text()).to.equal('Äidinkieli ja kirjallisuus')
+        expect(S('.lukionoppimaaransuoritus .osasuoritukset .tutkinnonosa:eq(0) .koulutusmoduuli .tunniste .value').text()).to.equal('Äidinkieli ja kirjallisuus')
       })
     })
     describe('Tulostettava todistus', function() {
@@ -48,7 +48,7 @@ describe('Lukiokoulutus', function( ){
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('toimii', function() {
-        expect(S('.lukioonvalmistavankoulutuksensuoritus .osasuoritukset .koulutusmoduuli:eq(0) .value').text()).to.equal('Suomi toisena kielenä ja kirjallisuus')
+        expect(S('.lukioonvalmistavankoulutuksensuoritus .osasuoritukset .koulutusmoduuli:eq(0) .nimi .value').text()).to.equal('Suomi toisena kielenä ja kirjallisuus')
       })
     })
     describe('Tulostettava todistus', function() {

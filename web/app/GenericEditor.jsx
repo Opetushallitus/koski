@@ -22,30 +22,28 @@ export const ObjectEditor = React.createClass({
       : 'object empty'
     let representative = findRepresentative(model)
     let representativeEditor = () => getModelEditor(representative.model, childContext(context, representative.key))
-    let objectEditor = () => <div className={className}><PropertiesEditor properties={model.value.properties} context={context} /></div>
+    let objectEditor = () => <div className={className}><PropertiesEditor properties={model.value.properties}
+                                                                          context={context}/></div>
 
-    let showAsTitle = !!modelTitle(model)
-    let alwaysShowRepresentative = context.arrayItems && context.arrayItems.length > 1
+    let exactlyOneVisibleProperty = model.value.properties.filter(shouldShowProperty(context.edit)).length == 1
+    let isInline = ObjectEditor.canShowInline(model, context)
+    let objectWrapperClass = 'foldable-wrapper with-representative' + (isInline ? ' simple' : '') // simple -> inline
 
-    return showAsTitle
-          ? context.edit
-            ? objectEditor()
-            : <span className="simple title">{modelTitle(model)}</span>
-          : representative
-            ? model.value.properties.filter((prop) => !prop.hidden).length == 1
-              ? representativeEditor()
-              : alwaysShowRepresentative
-                ? (<div className="object-wrapper with-representative">
-                    <span className="representative">{representativeEditor()}</span>
-                    <FoldableEditor expandedView={objectEditor} defaultExpanded={context.edit} />
-                  </div>)
-                : (<div className="object-wrapper with-representative">
-                    <FoldableEditor expandedView={objectEditor} collapsedView={representativeEditor} defaultExpandeded={context.edit} />
-                  </div>)
-            : objectEditor()
+    return !representative
+      ? objectEditor()
+      : (exactlyOneVisibleProperty && !context.edit)
+        ? representativeEditor() // just show the representative property, no need for FoldableEditor
+        : isArrayItem(context) // for array item, show representative property in expanded view too
+          ? (<span className={objectWrapperClass}>
+              <span className="representative">{representativeEditor()}</span>
+              <FoldableEditor expandedView={objectEditor} defaultExpanded={context.edit}/>
+            </span>)
+          : (<span className={objectWrapperClass}>
+              <FoldableEditor expandedView={objectEditor} collapsedView={representativeEditor} defaultExpandeded={context.edit}/>
+            </span>)
   }
 })
-ObjectEditor.canShowInline = (model) => !!findRepresentative(model)
+ObjectEditor.canShowInline = (model, context) => !!findRepresentative(model) && !context.edit && !isArrayItem(context)
 
 export const FoldableEditor = React.createClass({
   render() {
@@ -60,9 +58,8 @@ export const FoldableEditor = React.createClass({
         } else if (!expanded && hasClass(node, 'simple-when-collapsed')) {
           removeClass(node, 'simple-when-collapsed')
           addClass(node, 'simple')
-        } else {
-          if (node.parentNode) resetSimple(node.parentNode)
         }
+        if (node.parentNode) resetSimple(node.parentNode)
       }
       resetSimple(this.refs.foldable)
 
@@ -82,12 +79,13 @@ export const PropertiesEditor = React.createClass({
     let {properties, context} = this.props
     let edit = context.edit || (this.state && this.state.edit)
     let toggleEdit = () => this.setState({edit: !edit})
+    let shouldShow = shouldShowProperty(edit)
     return (<ul className="properties">
       {
         context.editable && !context.edit ? <a className="toggle-edit" onClick={toggleEdit}>{edit ? 'valmis' : 'muokkaa'}</a> : null
       }
       {
-        properties.filter(property => (edit || !modelEmpty(property.model)) && !property.hidden).map(property => {
+        properties.filter(shouldShow).map(property => {
           let propertyClassName = 'property ' + property.key
           return (<li className={propertyClassName} key={property.key}>
             <label>{property.title}</label>
@@ -99,6 +97,8 @@ export const PropertiesEditor = React.createClass({
   }
 })
 PropertiesEditor.canShowInline = () => false
+
+const shouldShowProperty = (edit) => (property) => (edit || !modelEmpty(property.model)) && !property.hidden
 
 export const ArrayEditor = React.createClass({
   render() {
@@ -266,6 +266,7 @@ export const childContext = (context, ...pathElems) => {
 export const rootContext = (rootModel, editorMapping) => ({ root: true, prototypes: rootModel.prototypes, editorMapping: R.merge(defaultEditorMapping, editorMapping) })
 
 const findRepresentative = (model) => model.value.properties.find(property => property.representative)
+const isArrayItem = (context) => context.arrayItems && context.arrayItems.length > 1
 const canShowInline = (model, context) => (getEditorFunction(model, context).canShowInline || (() => false))(model, context)
 
 const resolveModel = (model, context) => {

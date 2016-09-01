@@ -2,6 +2,7 @@ package fi.oph.koski.localization
 
 import fi.oph.koski.localization.LocalizedString.missingString
 import fi.oph.koski.log.Logging
+import fi.oph.koski.schema.Representative
 import fi.oph.scalaschema.annotation.Description
 
 @Description("Lokalisoitu teksti. Vähintään yksi kielistä (fi/sv/en) vaaditaan")
@@ -21,17 +22,17 @@ trait Localizable {
 }
 
 @Description("Lokalisoitu teksti, jossa mukana suomi")
-case class Finnish(fi: String, sv: Option[String] = None, en: Option[String] = None) extends LocalizedString {
+case class Finnish(@Representative fi: String, sv: Option[String] = None, en: Option[String] = None) extends LocalizedString {
   def valueList = (("fi" -> fi) :: sv.toList.map(("sv", _))) ++ en.toList.map(("en", _))
 }
 
 @Description("Lokalisoitu teksti, jossa mukana ruotsi")
-case class Swedish(sv: String, fi: Option[String] = None, en: Option[String] = None) extends LocalizedString {
+case class Swedish(@Representative sv: String, fi: Option[String] = None, en: Option[String] = None) extends LocalizedString {
   def valueList = (("sv" -> sv) :: fi.toList.map(("fi", _))) ++ en.toList.map(("en", _))
 }
 
 @Description("Lokalisoitu teksti, jossa mukana englanti")
-case class English(en: String, sv: Option[String] = None, fi: Option[String] = None) extends LocalizedString {
+case class English(@Representative en: String, sv: Option[String] = None, fi: Option[String] = None) extends LocalizedString {
   def valueList = (("en" -> en) :: sv.toList.map(("sv", _))) ++ fi.toList.map(("fi", _))
 }
 

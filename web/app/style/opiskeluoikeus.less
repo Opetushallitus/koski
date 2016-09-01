@@ -35,6 +35,7 @@
   ul.properties {
     position: relative;
     > li.property {
+      position: relative;
       > label {
         display: inline-block;
         min-width: 200px;
@@ -56,6 +57,9 @@
 
   ul.array {
     list-style: none;
+    &:not(.simple)> li {
+      position: relative;
+    }
     &.simple {
       display: inline-block;
       padding-left: 0;
@@ -69,10 +73,6 @@
     border-bottom: solid lightgray 1px;
     padding-bottom: 8px;
     margin-bottom: 8px;
-  }
-
-  .object-wrapper {
-    position: relative;
   }
 
   .property .value > .array:not(.simple) {
@@ -132,6 +132,20 @@
     margin-left: 20px;
   }
 
+  .foldable-wrapper {
+    display: block;
+  }
+
+  .simple .foldable-wrapper, .foldable-wrapper.simple {
+    display: inline-block;
+    position: relative;
+    a.toggle-expand {
+      margin-left: 10px;
+      z-index: 1;
+      right: -13px;
+    }
+  }
+
   a.toggle-expand {
     margin-left: 10px;
     position: absolute;
@@ -140,14 +154,12 @@
     z-index: 1;
   }
 
-  .simple-when-collapsed a.toggle-expand {
-    top: -22px;
+  .representative .collapsed a.toggle-expand {
+    display: none;
   }
 
-  .oppilaitos .simple a.toggle-expand {
-    top: 0;
-    position: initial;
-    float: right;
+  .collapsed .collapsed a.toggle-expand {
+    display: none;
   }
 
   .toggle-edit {

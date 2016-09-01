@@ -62,7 +62,7 @@ describe('Perusopetus', function() {
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('toimii', function() {
-        expect(S('.perusopetuksenoppimaaransuoritus:eq(0) .osasuoritukset .perusopetuksentoiminta_alueensuoritus:eq(1) .koulutusmoduuli .title').text()).to.equal('kieli ja kommunikaatio')
+        expect(S('.perusopetuksenoppimaaransuoritus:eq(0) .osasuoritukset .perusopetuksentoiminta_alueensuoritus:eq(1) .koulutusmoduuli .value').text()).to.equal('kieli ja kommunikaatio')
       })
     })
     describe('Tulostettava todistus', function() {

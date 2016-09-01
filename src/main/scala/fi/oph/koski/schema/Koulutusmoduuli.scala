@@ -5,6 +5,7 @@ import fi.oph.koski.localization.{Localizable, LocalizedString}
 import fi.oph.scalaschema.annotation.{Description, MinValue}
 
 trait Koulutusmoduuli extends Localizable {
+  @Representative
   def tunniste: KoodiViite
   def laajuus: Option[Laajuus]
   def nimi: LocalizedString

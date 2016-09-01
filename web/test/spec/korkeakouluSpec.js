@@ -21,7 +21,7 @@ describe('Korkeakoulutus', function() {
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('toimii', function() {
-        expect(S('.korkeakoulututkinnonsuoritus .korkeakoulunopintojaksonsuoritus:eq(0) .koulutusmoduuli:eq(0) .value').text()).to.equal('Vapaasti valittavat opinnot (KON)')
+        expect(S('.korkeakoulututkinnonsuoritus .korkeakoulunopintojaksonsuoritus:eq(0) .koulutusmoduuli:eq(0) .tunniste .nimi .value').text()).to.equal('Vapaasti valittavat opinnot (KON)')
       })
     })
     describe('Opintosuoritusote', function() {

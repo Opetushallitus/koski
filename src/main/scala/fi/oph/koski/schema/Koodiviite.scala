@@ -36,6 +36,7 @@ case class PaikallinenKoodi(
   @Description("Koodin yksilöivä tunniste käytetyssä koodistossa")
   koodiarvo: String,
   @Description("Koodin selväkielinen nimi")
+  @Representative
   nimi: LocalizedString,
   @Description("Koodiston tunniste. Esimerkiksi Virta-järjestelmästä saatavissa arvioinneissa käytetään virta/x, missä x on arviointiasteikon tunniste. Jos koodistolla ei ole tunnistetta, voidaan kenttä jättää tyhjäksi.")
   koodistoUri: Option[String] = None
