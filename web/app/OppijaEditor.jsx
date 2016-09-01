@@ -10,7 +10,7 @@ const OppijaEditor = React.createClass({
       {
         modelLookup(model, 'opiskeluoikeudet').value.map((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) => {
           var oppijaOid = modelData(model, 'henkilö.oid')
-          let contextWithOppijaOid = R.merge(context, { oppijaOid: oppijaOid })
+          let oppijaContext = R.merge(context, { oppijaOid: oppijaOid })
           let oppilaitos = modelLookup(oppilaitoksenOpiskeluoikeudet, 'oppilaitos')
           let opiskeluoikeudet = modelItems(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet')
           return (<li className="oppilaitos" key={modelData(oppilaitos).oid}>
@@ -18,7 +18,7 @@ const OppijaEditor = React.createClass({
             <OppilaitoksenOpintosuoritusoteLink oppilaitos={oppilaitos} tyyppi={modelData(opiskeluoikeudet[0], 'tyyppi').koodiarvo} oppijaOid={oppijaOid} />
             {
               opiskeluoikeudet.map( (opiskeluoikeus, opiskeluoikeusIndex) =>
-                <OpiskeluoikeusEditor key={ opiskeluoikeusIndex } model={ opiskeluoikeus } context={GenericEditor.childContext(contextWithOppijaOid, 'opiskeluoikeudet', oppilaitosIndex, 'opiskeluoikeudet', opiskeluoikeusIndex)} />
+                <OpiskeluoikeusEditor key={ opiskeluoikeusIndex } model={ opiskeluoikeus } context={GenericEditor.childContext(oppijaContext, 'opiskeluoikeudet', oppilaitosIndex, 'opiskeluoikeudet', opiskeluoikeusIndex)} />
               )
             }
           </li>)
@@ -31,7 +31,7 @@ const OppijaEditor = React.createClass({
 const OpiskeluoikeusEditor = React.createClass({
   render() {
     let {model, context} = this.props
-    let subContext = R.merge(context, {editable: model.editable, opiskeluoikeusId: modelData(model, 'id')})
+    let opiskeluoikeusContext = R.merge(context, {editable: model.editable, opiskeluoikeusId: modelData(model, 'id')})
     return (<div className="opiskeluoikeus">
       <div className="kuvaus">
         Opiskeluoikeus&nbsp;
@@ -43,11 +43,14 @@ const OpiskeluoikeusEditor = React.createClass({
           : null
         }
           <span className="tila">{modelTitle(model, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}</span>
-        <GenericEditor.FoldableEditor expandedView={() => <GenericEditor.PropertiesEditor properties={ model.value.properties.filter(property => property.key != 'suoritukset') } context={subContext}/>}/>
+        <GenericEditor.FoldableEditor
+          expandedView={() => <GenericEditor.PropertiesEditor properties={ model.value.properties.filter(property => property.key != 'suoritukset') } context={opiskeluoikeusContext}/>}
+          context={GenericEditor.childContext(opiskeluoikeusContext, 'tiedot')}
+        />
       </div>
       {
         modelItems(model, 'suoritukset').map((suoritusModel, i) =>
-          <SuoritusEditor model={suoritusModel} context={GenericEditor.childContext(subContext, 'suoritukset', i)} key={i}/>
+          <SuoritusEditor model={suoritusModel} context={GenericEditor.childContext(opiskeluoikeusContext, 'suoritukset', i)} key={i}/>
         )
       }
       <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={model} context={context}/>
@@ -64,7 +67,10 @@ const SuoritusEditor = React.createClass({
     return (<div className={className}>
       <span className="kuvaus">{title}</span>
       <TodistusLink suoritus={model} context={context}/>
-      <GenericEditor.FoldableEditor expandedView={() => <GenericEditor.PropertiesEditor properties={model.value.properties} context={R.merge(context, {editable: model.editable})}/>}/>
+      <GenericEditor.FoldableEditor
+        expandedView={() => <GenericEditor.PropertiesEditor properties={model.value.properties} context={R.merge(context, {editable: model.editable})}/>}
+        context={context}
+      />
     </div>)
   }
 })
@@ -146,18 +152,6 @@ const VahvistusEditor = React.createClass({
   }
 })
 
-const OsaamisenTunnustaminenEditor = React.createClass({
-  render() {
-    let {model, context} = this.props
-    return context.edit
-      ? <GenericEditor.ObjectEditor model={model} context={context}/>
-      : (<span className="object osaamisentunnustaminen">
-          <label>{modelTitle(model, 'selite')}</label>
-          <GenericEditor.Editor model={modelLookup(model, 'osaaminen')} context={GenericEditor.childContext(context, 'osaaminen')} />
-        </span>)
-  }
-})
-
 const OpiskeluoikeusjaksoEditor = React.createClass({
   render() {
     let {model, context} = this.props
@@ -175,15 +169,17 @@ const TutkinnonosaEditor = React.createClass({
     let {model, context} = this.props
 
     return (<div className="suoritus tutkinnonosa">
-      <GenericEditor.FoldableEditor defaultExpanded={context.edit}
-                      collapsedView={() => <span className="tutkinnonosan-tiedot">
-                        <label className="nimi">{modelTitle(model, 'koulutusmoduuli')}</label>
-                        <span className="arvosana">{modelTitle(model, 'arviointi.-1.arvosana')}</span>
-                        </span>}
-                      expandedView={() => <span>
-                        <label className="nimi">{modelTitle(model, 'koulutusmoduuli')}</label>
-                        <GenericEditor.PropertiesEditor properties={model.value.properties} context={context}/>
-                        </span>}
+      <GenericEditor.FoldableEditor
+        defaultExpanded={context.edit}
+        collapsedView={() => <span className="tutkinnonosan-tiedot">
+          <label className="nimi">{modelTitle(model, 'koulutusmoduuli')}</label>
+          <span className="arvosana">{modelTitle(model, 'arviointi.-1.arvosana')}</span>
+          </span>}
+        expandedView={() => <span>
+          <label className="nimi">{modelTitle(model, 'koulutusmoduuli')}</label>
+          <GenericEditor.PropertiesEditor properties={model.value.properties} context={context}/>
+          </span>}
+        context={context}
       />
     </div>)
   }
@@ -204,7 +200,6 @@ export const editorMapping = {
   'perusopetuksenopiskeluoikeusjakso': OpiskeluoikeusjaksoEditor,
   'henkilovahvistus': VahvistusEditor,
   'organisaatiovahvistus': VahvistusEditor,
-  'osaamisentunnustaminen': OsaamisenTunnustaminenEditor,
   'laajuusosaamispisteissa' : LaajuusEditor,
   'laajuuskursseissa' : LaajuusEditor,
   'laajuusopintopisteissa' : LaajuusEditor,

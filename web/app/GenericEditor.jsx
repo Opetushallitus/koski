@@ -10,17 +10,38 @@ import { hasClass, addClass, removeClass } from './classnames'
 export const Editor = React.createClass({
   render() {
     let { model, context, editorMapping } = this.props
+    let rootComponent = this
+    let expandedPaths = () => (rootComponent.state && rootComponent.state.expandedPaths) || []
     if (!context) {
       if (!editorMapping) throw new Error('editorMapping required for root editor')
       context = {
         root: true,
+        path: '',
         prototypes: model.prototypes,
-        editorMapping: R.merge(defaultEditorMapping, editorMapping)
+        editorMapping: R.merge(defaultEditorMapping, editorMapping),
+        expandPath (expanded) {
+          let path = this.path
+          let currentlyExpanded = expandedPaths()
+          let index = currentlyExpanded.indexOf(this.path)
+          if (expanded && index < 0) {
+            rootComponent.setState({expandedPaths: currentlyExpanded.concat(this.path)}) // add
+          } else if (!expanded) {
+            rootComponent.setState({expandedPaths: currentlyExpanded.filter((expandedPath) => !isChildPathOf(this.path)(expandedPath))}) // collapse this node and children
+          }
+        },
+        isExpanded() {
+          return !this.forceInline && expandedPaths().indexOf(this.path) >= 0
+        },
+        isChildExpanded() {
+          return !this.forceInline && expandedPaths().find(isChildPathOf(this.path))
+        }
       }
     }
     return getModelEditor(model, context)
   }
 })
+
+const isChildPathOf = (parent) => (path) => path.startsWith(parent)
 
 export const ObjectEditor = React.createClass({
   render() {
@@ -29,7 +50,7 @@ export const ObjectEditor = React.createClass({
       ? 'object ' + model.value.class
       : 'object empty'
     let representative = findRepresentative(model)
-    let representativeEditor = () => getModelEditor(representative.model, childContext(context, representative.key))
+    let representativeEditor = (props) => getModelEditor(representative.model, R.merge(childContext(context, representative.key), props || {}))
     let objectEditor = () => <div className={className}><PropertiesEditor properties={model.value.properties}
                                                                           context={context}/></div>
 
@@ -39,40 +60,27 @@ export const ObjectEditor = React.createClass({
 
     return !representative
       ? objectEditor()
-      : (exactlyOneVisibleProperty && !context.edit)
+      : ((exactlyOneVisibleProperty || context.forceInline) && !context.edit)
         ? representativeEditor() // just show the representative property, no need for FoldableEditor
         : isArrayItem(context) // for array item, show representative property in expanded view too
           ? (<span className={objectWrapperClass}>
-              <span className="representative">{representativeEditor()}</span>
-              <FoldableEditor expandedView={objectEditor} defaultExpanded={context.edit}/>
+              <span className="representative">{representativeEditor({ forceInline: true })}</span>
+              <FoldableEditor expandedView={objectEditor} defaultExpanded={context.edit} context={context}/>
             </span>)
           : (<span className={objectWrapperClass}>
-              <FoldableEditor expandedView={objectEditor} collapsedView={representativeEditor} defaultExpandeded={context.edit}/>
+              <FoldableEditor expandedView={objectEditor} collapsedView={() => representativeEditor({ forceInline: true })} defaultExpandeded={context.edit} context={context}/>
             </span>)
   }
 })
-ObjectEditor.canShowInline = (model, context) => !!findRepresentative(model) && !context.edit && !isArrayItem(context)
+ObjectEditor.canShowInline = (model, context) => !!findRepresentative(model) && !context.edit && !isArrayItem(context) && !context.isChildExpanded()
 
 export const FoldableEditor = React.createClass({
   render() {
-    let {collapsedView, expandedView, defaultExpanded} = this.props
-    var expanded = this.state? this.state.expanded : defaultExpanded
+    let {collapsedView, expandedView, defaultExpanded, context} = this.props
+    var expanded = context.isExpanded()
     let toggleExpanded = () => {
       expanded = !expanded
-      function resetSimple(node) {
-        if (expanded && hasClass(node, 'inline')) {
-          removeClass(node, 'inline')
-          addClass(node, 'inline-when-collapsed')
-        } else if (!expanded && hasClass(node, 'inline-when-collapsed')) {
-          removeClass(node, 'inline-when-collapsed')
-          addClass(node, 'inline')
-        } else {
-          if (node.parentNode) resetSimple(node.parentNode)
-        }
-      }
-      resetSimple(this.refs.foldable)
-
-      this.setState({expanded})
+      context.expandPath(expanded)
     }
     let className = expanded ? 'foldable expanded' : 'foldable collapsed'
     return (<span ref="foldable" className={className}>
@@ -114,7 +122,12 @@ export const ArrayEditor = React.createClass({
     let {model, context} = this.props
     let items = modelItems(model)
     let inline = ArrayEditor.canShowInline(model, context)
-    let className = inline ? 'array inline' : 'array'
+    let wasInline = this.state && this.state.wasInline
+    let className = inline
+      ? 'array inline'
+      : wasInline
+        ? 'array inline-when-collapsed'
+        : 'array'
     let adding = this.state && this.state.adding || []
     let add = () => this.setState({adding: adding.concat(model.prototype)})
     return (
@@ -129,6 +142,13 @@ export const ArrayEditor = React.createClass({
         }
       </ul>
     )
+  },
+  componentWillMount() {
+    let {model, context} = this.props
+    let inline = ArrayEditor.canShowInline(model, context)
+    if (inline) {
+      this.setState({ wasInline: true})
+    }
   }
 })
 ArrayEditor.canShowInline = (model, context) => {

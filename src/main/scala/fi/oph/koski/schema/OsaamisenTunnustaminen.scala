@@ -10,5 +10,6 @@ case class OsaamisenTunnustaminen(
   osaaminen: Option[Suoritus],
   @Description("Osaamisen tunnustamisen kautta saatavan tutkinnon osan suorituksen selite")
   @OksaUri("tmpOKSAID629", "osaamisen tunnustaminen")
+  @Representative
   selite: LocalizedString
 )
