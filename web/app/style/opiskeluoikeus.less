@@ -25,10 +25,6 @@
           margin-top: 8px;
         }
       }
-
-      .suoritus {
-        overflow: auto;
-      }
     }
   }
 
@@ -57,7 +53,7 @@
 
   ul.array {
     list-style: none;
-    &:not(.inline)> li {
+    &:not(.inline):not(.inline-when-collapsed) > li {
       position: relative;
     }
     &.inline {
@@ -138,20 +134,18 @@
 
   .inline .foldable-wrapper, .foldable-wrapper.inline {
     display: inline-block;
-    position: relative;
-    a.toggle-expand {
-      margin-left: 10px;
-      z-index: 1;
-      right: -13px;
-    }
   }
 
   a.toggle-expand {
     margin-left: 10px;
     position: absolute;
     top: 0;
-    right: 0;
+    left: -30px;
     z-index: 1;
+  }
+
+  .expanded > a.toggle-expand {
+    left: -28px;
   }
 
   .representative .collapsed a.toggle-expand {

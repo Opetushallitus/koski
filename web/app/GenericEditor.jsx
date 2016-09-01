@@ -58,8 +58,9 @@ export const FoldableEditor = React.createClass({
         } else if (!expanded && hasClass(node, 'inline-when-collapsed')) {
           removeClass(node, 'inline-when-collapsed')
           addClass(node, 'inline')
+        } else {
+          if (node.parentNode) resetSimple(node.parentNode)
         }
-        if (node.parentNode) resetSimple(node.parentNode)
       }
       resetSimple(this.refs.foldable)
 
