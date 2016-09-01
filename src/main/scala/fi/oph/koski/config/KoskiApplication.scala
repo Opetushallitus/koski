@@ -56,7 +56,7 @@ class KoskiApplication(val config: Config) extends Logging with UserAuthenticati
   lazy val sessionTimeout = SessionTimeout(config)
   lazy val serviceTicketRepository = new CasTicketSessionRepository(database.db, sessionTimeout)
   lazy val fixtureCreator = new FixtureCreator(config, database, opiskeluOikeusRepository, oppijaRepository, validator)
-  lazy val tiedonsiirtoService = new TiedonsiirtoService(new TiedonsiirtoRepository(database.db), organisaatioRepository)
+  lazy val tiedonsiirtoService = new TiedonsiirtoService(new TiedonsiirtoRepository(database.db), organisaatioRepository, oppijaRepository)
 
   def invalidateCaches = GlobalCacheInvalidator.invalidateCache
 }

@@ -88,7 +88,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         verifyResponseStatus(400)
       }
 
-      getTiedonsiirrot(MockUsers.paakayttaja) should have size 2
+      getTiedonsiirrot(MockUsers.paakayttaja).flatMap(_.rivit) should have size 2
     }
   }
 
