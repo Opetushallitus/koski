@@ -4,7 +4,8 @@ import Http from './http'
 import {locationP} from './location'
 import {CreateOppija} from './CreateOppija.jsx'
 import { modelTitle, modelLookup, modelSet, objectLookup } from './EditorModel'
-import {OppijaEditor} from './OppijaEditor.jsx'
+import { editorMapping } from './OppijaEditor.jsx'
+import { Editor } from './GenericEditor.jsx'
 import * as L from 'partial.lenses'
 import R from 'ramda'
 
@@ -62,7 +63,7 @@ export const Oppija = ({oppija}) =>
   oppija.valittuOppija.loading
     ? <Loading/>
     : (!oppija.valittuOppija.empty
-      ? <ExistingOppija oppija={oppija.valittuOppija} editor={oppija.valittuOppija}/>
+      ? <ExistingOppija oppija={oppija.valittuOppija}/>
       : (
       oppija.uusiOppija
         ? <CreateOppija/>
@@ -73,14 +74,18 @@ const Loading = () => <div className='main-content oppija loading'></div>
 
 const ExistingOppija = React.createClass({
   render() {
-    let {oppija, editor} = this.props
+    let {oppija} = this.props
     let henkilö = modelLookup(oppija, 'henkilö')
     return (
       <div className='main-content oppija'>
         <h2>{modelTitle(henkilö, 'sukunimi')}, {modelTitle(henkilö, 'etunimet')} <span className='hetu'>{modelTitle(henkilö, 'hetu')}</span></h2>
         <hr></hr>
         <h4>Opiskeluoikeudet</h4>
-        <OppijaEditor model={editor} />
+        {
+          oppija
+            ? <Editor model={oppija} editorMapping={editorMapping} />
+            : null
+        }
       </div>
     )
   }

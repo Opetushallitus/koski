@@ -3,29 +3,28 @@ import R from 'ramda'
 import { modelData, modelLookup, modelTitle, modelItems } from './EditorModel.js'
 import * as GenericEditor from './GenericEditor.jsx'
 
-export const OppijaEditor = React.createClass({
+const OppijaEditor = React.createClass({
   render() {
-    let {model} = this.props
-    return model ? (
-      <ul className="oppilaitokset">
-        {
-          modelLookup(model, 'opiskeluoikeudet').value.map((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) => {
-              let context = R.merge(GenericEditor.rootContext(model, editorMapping), { oppijaOid: modelData(model, 'henkilö.oid') })
-              let oppilaitos = modelLookup(oppilaitoksenOpiskeluoikeudet, 'oppilaitos')
-              let opiskeluoikeudet = modelItems(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet')
-              return (<li className="oppilaitos" key={modelData(oppilaitos).oid}>
-                <span className="oppilaitos">{modelTitle(oppilaitos)}</span>
-                <OppilaitoksenOpintosuoritusoteLink oppilaitos={oppilaitos} tyyppi={modelData(opiskeluoikeudet[0], 'tyyppi').koodiarvo} context={context} />
-                {
-                  opiskeluoikeudet.map( (opiskeluoikeus, opiskeluoikeusIndex) =>
-                    <OpiskeluoikeusEditor key={ opiskeluoikeusIndex } model={ opiskeluoikeus } context={GenericEditor.childContext(context, 'opiskeluoikeudet', oppilaitosIndex, 'opiskeluoikeudet', opiskeluoikeusIndex)} />
-                  )
-                }
-              </li>)
+    let {model, context} = this.props
+    return (<ul className="oppilaitokset">
+      {
+        modelLookup(model, 'opiskeluoikeudet').value.map((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) => {
+          var oppijaOid = modelData(model, 'henkilö.oid')
+          let contextWithOppijaOid = R.merge(context, { oppijaOid: oppijaOid })
+          let oppilaitos = modelLookup(oppilaitoksenOpiskeluoikeudet, 'oppilaitos')
+          let opiskeluoikeudet = modelItems(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet')
+          return (<li className="oppilaitos" key={modelData(oppilaitos).oid}>
+            <span className="oppilaitos">{modelTitle(oppilaitos)}</span>
+            <OppilaitoksenOpintosuoritusoteLink oppilaitos={oppilaitos} tyyppi={modelData(opiskeluoikeudet[0], 'tyyppi').koodiarvo} oppijaOid={oppijaOid} />
+            {
+              opiskeluoikeudet.map( (opiskeluoikeus, opiskeluoikeusIndex) =>
+                <OpiskeluoikeusEditor key={ opiskeluoikeusIndex } model={ opiskeluoikeus } context={GenericEditor.childContext(contextWithOppijaOid, 'opiskeluoikeudet', oppilaitosIndex, 'opiskeluoikeudet', opiskeluoikeusIndex)} />
+              )
             }
-          )}
-      </ul>
-    ) : null
+          </li>)
+          }
+        )}
+    </ul>)
   }
 })
 
@@ -86,7 +85,7 @@ const TodistusLink = React.createClass({
 
 const OppilaitoksenOpintosuoritusoteLink = React.createClass({
   render() {
-    let {oppilaitos, tyyppi, context: { oppijaOid }} = this.props
+    let {oppilaitos, tyyppi, oppijaOid} = this.props
 
     if (tyyppi == 'korkeakoulutus') { // vain korkeakoulutukselle näytetään oppilaitoskohtainen suoritusote
       let href = '/koski/opintosuoritusote/' + oppijaOid + '?oppilaitos=' + modelData(oppilaitos).oid
@@ -191,7 +190,8 @@ const TutkinnonosaEditor = React.createClass({
 })
 TutkinnonosaEditor.canShowInline = () => false
 
-const editorMapping = {
+export const editorMapping = {
+  'oppijaeditorview': OppijaEditor,
   'perusopetuksenoppiaineensuoritus': OppiaineEditor,
   'perusopetukseenvalmistavanopetuksenoppiaineensuoritus': OppiaineEditor,
   'perusopetuksenlisaopetuksenoppiaineensuoritus': OppiaineEditor,

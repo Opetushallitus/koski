@@ -9,7 +9,15 @@ import { hasClass, addClass, removeClass } from './classnames'
 
 export const Editor = React.createClass({
   render() {
-    let { model, context } = this.props
+    let { model, context, editorMapping } = this.props
+    if (!context) {
+      if (!editorMapping) throw new Error('editorMapping required for root editor')
+      context = {
+        root: true,
+        prototypes: model.prototypes,
+        editorMapping: R.merge(defaultEditorMapping, editorMapping)
+      }
+    }
     return getModelEditor(model, context)
   }
 })
@@ -263,8 +271,6 @@ export const childContext = (context, ...pathElems) => {
   let path = ((context.path && [context.path]) || []).concat(pathElems).join('.')
   return R.merge(context, { path, root: false, arrayItems: null })
 }
-
-export const rootContext = (rootModel, editorMapping) => ({ root: true, prototypes: rootModel.prototypes, editorMapping: R.merge(defaultEditorMapping, editorMapping) })
 
 const findRepresentative = (model) => model.value.properties.find(property => property.representative)
 const isArrayItem = (context) => context.arrayItems && context.arrayItems.length > 1
