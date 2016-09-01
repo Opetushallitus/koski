@@ -135,7 +135,7 @@ const VahvistusEditor = React.createClass({
     let {model, context} = this.props
     return context.edit
       ? <GenericEditor.ObjectEditor model={model} context={context} />
-      : (<span className="vahvistus simple">
+      : (<span className="vahvistus inline">
           <span className="date">{modelTitle(model, 'päivä')}</span>&nbsp;
           <span className="allekirjoitus">{modelTitle(model, 'paikkakunta')}</span>&nbsp;
           {

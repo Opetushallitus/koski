@@ -27,7 +27,7 @@ export const ObjectEditor = React.createClass({
 
     let exactlyOneVisibleProperty = model.value.properties.filter(shouldShowProperty(context.edit)).length == 1
     let isInline = ObjectEditor.canShowInline(model, context)
-    let objectWrapperClass = 'foldable-wrapper with-representative' + (isInline ? ' simple' : '') // simple -> inline
+    let objectWrapperClass = 'foldable-wrapper with-representative' + (isInline ? ' inline' : '')
 
     return !representative
       ? objectEditor()
@@ -52,12 +52,12 @@ export const FoldableEditor = React.createClass({
     let toggleExpanded = () => {
       expanded = !expanded
       function resetSimple(node) {
-        if (expanded && hasClass(node, 'simple')) {
-          removeClass(node, 'simple')
-          addClass(node, 'simple-when-collapsed')
-        } else if (!expanded && hasClass(node, 'simple-when-collapsed')) {
-          removeClass(node, 'simple-when-collapsed')
-          addClass(node, 'simple')
+        if (expanded && hasClass(node, 'inline')) {
+          removeClass(node, 'inline')
+          addClass(node, 'inline-when-collapsed')
+        } else if (!expanded && hasClass(node, 'inline-when-collapsed')) {
+          removeClass(node, 'inline-when-collapsed')
+          addClass(node, 'inline')
         }
         if (node.parentNode) resetSimple(node.parentNode)
       }
@@ -104,8 +104,8 @@ export const ArrayEditor = React.createClass({
   render() {
     let {model, context} = this.props
     let items = modelItems(model)
-    let simple = ArrayEditor.canShowInline(model, context)
-    let className = simple ? 'array simple' : 'array'
+    let inline = ArrayEditor.canShowInline(model, context)
+    let className = inline ? 'array inline' : 'array'
     let adding = this.state && this.state.adding || []
     let add = () => this.setState({adding: adding.concat(model.prototype)})
     return (
@@ -150,7 +150,7 @@ export const StringEditor = React.createClass({
 
     return context.edit
       ? <input type="text" defaultValue={modelData(model)} onChange={ onChange }></input>
-      : <span className="simple string">{modelData(model)}</span>
+      : <span className="inline string">{modelData(model)}</span>
   },
 
   getInitialState() {
@@ -172,7 +172,7 @@ export const BooleanEditor = React.createClass({
 
     return context.edit
       ? <input type="checkbox" defaultChecked={modelData(model)} onChange={ onChange }></input>
-      : <span className="simple string">{modelTitle(model)}</span>
+      : <span className="inline string">{modelTitle(model)}</span>
   }
 })
 BooleanEditor.canShowInline = () => true
@@ -192,7 +192,7 @@ export const DateEditor = React.createClass({
 
     return context.edit
       ? <input type="text" defaultValue={modelTitle(model)} onChange={ onChange } className={invalidDate ? 'error' : ''}></input>
-      : <span className="simple date">{modelTitle(model)}</span>
+      : <span className="inline date">{modelTitle(model)}</span>
   },
 
   getInitialState() {
@@ -222,7 +222,7 @@ export const EnumEditor = React.createClass({
         )
       }
     </select>)
-      : <span className="simple enum">{modelTitle(model)}</span>
+      : <span className="inline enum">{modelTitle(model)}</span>
   },
 
   update(props) {

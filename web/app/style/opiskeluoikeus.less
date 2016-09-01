@@ -41,7 +41,7 @@
         min-width: 200px;
         vertical-align: top
       }
-      > .simple {
+      > .inline {
         width: ~"calc(100% - 200px)";
         display: inline-block;
         vertical-align: top
@@ -57,10 +57,10 @@
 
   ul.array {
     list-style: none;
-    &:not(.simple)> li {
+    &:not(.inline)> li {
       position: relative;
     }
-    &.simple {
+    &.inline {
       display: inline-block;
       padding-left: 0;
       > li {
@@ -75,7 +75,7 @@
     margin-bottom: 8px;
   }
 
-  .property .value > .array:not(.simple) {
+  .property .value > .array:not(.inline) {
     padding-left: 20px;
   }
 
@@ -136,7 +136,7 @@
     display: block;
   }
 
-  .simple .foldable-wrapper, .foldable-wrapper.simple {
+  .inline .foldable-wrapper, .foldable-wrapper.inline {
     display: inline-block;
     position: relative;
     a.toggle-expand {
