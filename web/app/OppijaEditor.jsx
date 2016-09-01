@@ -465,7 +465,18 @@ const editorTypes = {
   'enum': EnumEditor
 }
 
+const resolveModel = (model, context) => {
+  if (model && model.type == 'prototype' && context.editable) {
+    let prototypeModel = context.prototypes[model.key]
+    model = model.optional
+      ? R.merge(prototypeModel, { value: null, optional: true, prototype: model.prototype}) // Remove value from prototypal value of optional model, to show it as empty
+      : prototypeModel
+  }
+  return model
+}
+
 const getEditorFunction = (model, context) => {
+  model = resolveModel(model, context)
   if (!model) return NullEditor
   if (modelEmpty(model) && model.optional && model.prototype !== undefined) {
     return OptionalEditor
@@ -482,12 +493,7 @@ const getEditorFunction = (model, context) => {
 }
 
 const getModelEditor = (model, context) => {
-  if (model && model.type == 'prototype' && context.editable) {
-    let prototypeModel = context.prototypes[model.key]
-    model = model.optional
-      ? R.merge(prototypeModel, { value: null, optional: true, prototype: model.prototype}) // Remove value from prototypal value of optional model, to show it as empty
-      : prototypeModel
-  }
+  model = resolveModel(model, context)
   var Editor = getEditorFunction(model, context)
   return <Editor model={model} context={context} />
 }
