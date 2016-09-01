@@ -71,7 +71,7 @@ describe('Koski', function() {
   })
 
   describe('Virhetilanteet', function() {
-    before(Authentication().login(), resetFixtures)
+    before(Authentication().login())
     
     describe('Odottamattoman virheen sattuessa', function() {
       before(
