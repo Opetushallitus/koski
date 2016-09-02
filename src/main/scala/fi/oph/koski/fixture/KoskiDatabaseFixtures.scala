@@ -29,7 +29,8 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluO
     val deleteOpiskeluOikeudet = oppijat.map{oppija => OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid === oppija.oid).delete}
     val deleteTiedonsiirrot = TiedonsiirtoWithAccessCheck.delete
 
-    await(database.db.run(DBIO.sequence(deleteOpiskeluOikeudet :+ deleteTiedonsiirrot)))
+    await(database.db.run(DBIO.sequence(deleteOpiskeluOikeudet)))
+    await(database.db.run(deleteTiedonsiirrot))
 
     validatedOpiskeluoikeudet.foreach {
       case (oid, oppija) => repository.createOrUpdate(VerifiedOppijaOid(oid), oppija.tallennettavatOpiskeluoikeudet(0))
