@@ -20,7 +20,10 @@ class TiedonsiirtoServlet(val application: KoskiApplication) extends ApiServlet 
   }
 
   private def kaikkiTiedonsiirrot: List[HenkilönTiedonsiirrot] = toHenkilönTiedonsiirrot(application.tiedonsiirtoService.findAll(koskiUser))
-  private def virheelliset: List[HenkilönTiedonsiirrot] = toHenkilönTiedonsiirrot(application.tiedonsiirtoService.findAll(koskiUser).filter(_.virheet.isDefined))
+  private def virheelliset: List[HenkilönTiedonsiirrot] =
+    kaikkiTiedonsiirrot.filter { siirrot =>
+      siirrot.rivit.groupBy(_.oppilaitos).exists { case (_, rivit) => rivit.headOption.exists(_.virhe.isDefined) }
+    }.map(v => v.copy(rivit = v.rivit.filter(_.virhe.isDefined)))
 
   implicit val formats = Json.jsonFormats
   def toHenkilönTiedonsiirrot(tiedonsiirrot: Seq[TiedonsiirtoRow]) = {

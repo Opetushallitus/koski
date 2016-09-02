@@ -89,6 +89,40 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
 
       getTiedonsiirrot(MockUsers.paakayttaja).flatMap(_.rivit) should have size 2
     }
+
+    "näytetään virheelliset" in {
+      resetFixtures
+      putOpiskeluOikeus(stadinOpiskeluoikeus, headers = authHeaders(helsinkiPalvelukäyttäjä) ++ jsonContent) {
+        verifyResponseStatus(200)
+      }
+
+      putOpiskeluOikeus(stadinOpiskeluoikeus, headers = authHeaders(helsinkiPalvelukäyttäjä) ++ jsonContent) {
+        verifyResponseStatus(200)
+      }
+
+      putOpiskeluOikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö.copy(sukunimi = ""), headers = authHeaders(helsinkiPalvelukäyttäjä) ++ jsonContent) {
+        verifyResponseStatus(400)
+      }
+
+      getVirheellisetTiedonsiirrot(helsinkiPalvelukäyttäjä).flatMap(_.rivit) should have size 1
+    }
+
+    "onnistunut siirto poistaa virheelliset listalta" in {
+      resetFixtures
+      putOpiskeluOikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö.copy(sukunimi = ""), headers = authHeaders(helsinkiPalvelukäyttäjä) ++ jsonContent) {
+        verifyResponseStatus(400)
+      }
+
+      putOpiskeluOikeus(stadinOpiskeluoikeus, henkilö = MockOppijat.eerola.copy(sukunimi = ""), headers = authHeaders(helsinkiPalvelukäyttäjä) ++ jsonContent) {
+        verifyResponseStatus(400)
+      }
+
+      putOpiskeluOikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinkiPalvelukäyttäjä) ++ jsonContent) {
+        verifyResponseStatus(200)
+      }
+
+      getVirheellisetTiedonsiirrot(helsinkiPalvelukäyttäjä).flatMap(_.oppija.flatMap(_.hetu)) should equal(List(MockOppijat.eerola.hetu))
+    }
   }
 
   private def verifyTiedonsiirtoLoki(user: UserWithPassword, expectedHenkilö: Option[UusiHenkilö], expectedOpiskeluoikeus: Option[Opiskeluoikeus], errorStored: Boolean, dataStored: Boolean) {
@@ -99,9 +133,11 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     tiedonsiirto.rivit.flatMap(_.inputData).nonEmpty should be(errorStored)
   }
 
-  private def getTiedonsiirrot(user: UserWithPassword): List[HenkilönTiedonsiirrot] =
-    authGet("api/tiedonsiirrot", user) {
+  private def getTiedonsiirrot(user: UserWithPassword, url: String = "api/tiedonsiirrot"): List[HenkilönTiedonsiirrot] =
+    authGet(url, user) {
       verifyResponseStatus(200)
       Json.read[List[HenkilönTiedonsiirrot]](body)
     }
+
+  private def getVirheellisetTiedonsiirrot(user: UserWithPassword) = getTiedonsiirrot(user, "api/tiedonsiirrot/virheet")
 }
