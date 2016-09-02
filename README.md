@@ -169,6 +169,11 @@ Suorituskykytestit ajetaan joka aamu.
 
 CI-palvelimen konfiguraatio synkronoidaan [Github-repositorioon](https://github.com/Opetushallitus/koski-ci-configuration) Jenkins SCM sync congiguration [pluginilla](https://wiki.jenkins-ci.org/display/JENKINS/SCM+Sync+configuration+plugin).
 
+CI-palvelimelle on asennettu PostgreSQL, mutta siellä ei ajeta tietokantaserveriä palveluna. 
+Sen sijaan kullekin buildille on määritelty oma tietokantaportti parametrilla `-DargLine=-Ddb.port=5678`, 
+jolloin testiajon käynnistyessä käynnistetään uusi tietokantaserveri, jonka datahakemisto on build-hakemiston alla
+ja joka palvelee omassa portissaan buildin ajan.
+
 ## Loggaus
 
 Koski loggaa tapahtumia kolmeen erilliseen logitiedostoon
