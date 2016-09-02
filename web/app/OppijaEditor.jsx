@@ -117,9 +117,15 @@ const OpiskeluoikeudenOpintosuoritusoteLink = React.createClass({
 const OppiaineEditor = React.createClass({
   render() {
     let {model} = this.props
+    var oppiaine = modelTitle(model, 'koulutusmoduuli')
+    let arvosana = modelTitle(model, 'arviointi.-1.arvosana')
+    let pakollinen = modelData(model, 'koulutusmoduuli.pakollinen')
+    if (pakollinen === false) {
+      oppiaine = "Valinnainen " + oppiaine.toLowerCase() // i18n
+    }
     return (<div className="oppiaineensuoritus">
-      <label className="oppiaine">{modelTitle(model, 'koulutusmoduuli')}</label>
-      <span className="arvosana">{modelTitle(model, 'arviointi.-1.arvosana')}</span>
+      <label className="oppiaine">{oppiaine}</label>
+      <span className="arvosana">{arvosana}</span>
       {modelData(model, 'korotus') ? <span className="korotus">(korotus)</span> : null}
     </div>)
   }
