@@ -5,7 +5,6 @@ import { opiskeluOikeusChange } from './Oppija.jsx'
 import { formatISODate, parseFinnishDate } from './date.js'
 import Http from './http'
 import Bacon from 'baconjs'
-import { hasClass, addClass, removeClass } from './classnames'
 
 export const Editor = React.createClass({
   render() {
@@ -20,7 +19,6 @@ export const Editor = React.createClass({
         prototypes: model.prototypes,
         editorMapping: R.merge(defaultEditorMapping, editorMapping),
         expandPath (expanded) {
-          let path = this.path
           let currentlyExpanded = expandedPaths()
           let index = currentlyExpanded.indexOf(this.path)
           if (expanded && index < 0) {
@@ -76,7 +74,7 @@ ObjectEditor.canShowInline = (model, context) => !!findRepresentative(model) && 
 
 export const ExpandableEditor = React.createClass({
   render() {
-    let {collapsedView, expandedView, defaultExpanded, context} = this.props
+    let {collapsedView, expandedView, context} = this.props
     var expanded = context.isExpanded()
     let toggleExpanded = () => {
       expanded = !expanded

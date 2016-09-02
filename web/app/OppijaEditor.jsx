@@ -121,7 +121,7 @@ const OppiaineEditor = React.createClass({
     let arvosana = modelTitle(model, 'arviointi.-1.arvosana')
     let pakollinen = modelData(model, 'koulutusmoduuli.pakollinen')
     if (pakollinen === false) {
-      oppiaine = "Valinnainen " + oppiaine.toLowerCase() // i18n
+      oppiaine = 'Valinnainen ' + oppiaine.toLowerCase() // i18n
     }
     return (<div className="oppiaineensuoritus">
       <label className="oppiaine">{oppiaine}</label>
