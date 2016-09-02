@@ -14,9 +14,9 @@ class TiedonsiirtoRepository(db: DB) extends  GlobalExecutionContext with Future
 
     val (data, virheet) = error.map(e => (Some(e.data), Some(e.virheet))).getOrElse((None, None))
 
-    db.run {
+    await(db.run {
       Tiedonsiirto.map { row => (row.kayttajaOid, row.tallentajaOrganisaatioOid, row.oppija, row.oppilaitos, row.data, row.virheet) } += (kayttajaOid, tallentajaOrganisaatioOid, oppija, oppilaitos, data, virheet)
-    }
+    })
   }
 
   def findByOrganisaatio(koskiUser: KoskiUser): Seq[TiedonsiirtoRow] =
