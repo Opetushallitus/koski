@@ -113,7 +113,7 @@ describe('Oppijahaku', function() {
 
   describe('Käyttöoikeudet', function() {
     describe('Oppijahaku', function() {
-      before(Authentication().login('hiiri'), page.openPage, page.oppijaHaku.search('eero', [markkanen]))
+      before(Authentication().login('omnia-palvelukäyttäjä'), page.openPage, page.oppijaHaku.search('eero', [markkanen]))
 
       it('Näytetään vain ne oppijat, joiden opinto-oikeuksiin liittyviin organisaatioihin on käyttöoikeudet', function() {
 
@@ -121,7 +121,7 @@ describe('Oppijahaku', function() {
     })
 
     describe('Navigointi oppijan sivulle', function() {
-      before(Authentication().login('hiiri'), openPage('/koski/oppija/1.2.246.562.24.00000000002', page.is404))
+      before(Authentication().login('omnia-palvelukäyttäjä'), openPage('/koski/oppija/1.2.246.562.24.00000000002', page.is404))
 
       it('Estetään jos oppijalla ei opinto-oikeutta, joihin käyttäjällä on katseluoikeudet', function() {
 

@@ -17,8 +17,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     oppilaitos = Oppilaitos(omnia),
     suoritukset = List(tutkintoSuoritus.copy(toimipiste = Oppilaitos(omnia)))
   )
-  val palvelukäyttäjä = MockUsers.hiiri
-
+  val palvelukäyttäjä = MockUsers.omniaPalvelukäyttäjä
 
   "Automaattinen tiedonsiirto" - {
     "Palvelukäyttäjä" - {
@@ -51,7 +50,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
   "Muutos käyttöliittymästä" - {
     "ei tallenneta tiedonsiirtoja" in {
       resetFixtures
-      putOpiskeluOikeus(opiskeluoikeus.copy(lähdejärjestelmänId = None), henkilö = defaultHenkilö, headers = authHeaders(MockUsers.hiiriTallentaja) ++ jsonContent) {
+      putOpiskeluOikeus(opiskeluoikeus.copy(lähdejärjestelmänId = None), henkilö = defaultHenkilö, headers = authHeaders(MockUsers.omniaTallentaja) ++ jsonContent) {
         verifyResponseStatus(200)
       }
       getTiedonsiirrot(palvelukäyttäjä) should be(empty)

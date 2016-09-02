@@ -55,7 +55,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   }
 
   "koski-oppilaitos-palvelukäyttäjä" - {
-    val user = MockUsers.hiiri
+    val user = MockUsers.omniaPalvelukäyttäjä
     "voi muokata opiskeluoikeuksia omassa organisaatiossa" in {
       putOpiskeluOikeus(opiskeluOikeusLähdejärjestelmästä, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(200)
@@ -93,14 +93,14 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
 
     "voi hakea ja katsella ytr-ylioppilastutkintosuorituksia" - {
       "vain omassa organisaatiossaan" in {
-        haeOpiskeluoikeudetHetulla("250493-602S", MockUsers.hiiri).filter(_.tyyppi.koodiarvo == "ylioppilastutkinto").length should equal(0)
+        haeOpiskeluoikeudetHetulla("250493-602S", MockUsers.omniaPalvelukäyttäjä).filter(_.tyyppi.koodiarvo == "ylioppilastutkinto").length should equal(0)
         haeOpiskeluoikeudetHetulla("250493-602S", MockUsers.kalle).filter(_.tyyppi.koodiarvo == "ylioppilastutkinto").length should equal(1)
       }
     }
 
     "voi hakea ja katsella virta-ylioppilastutkintosuorituksia" - {
       "vain omassa organisaatiossaan" in {
-        haeOpiskeluoikeudetHetulla("090888-929X", MockUsers.hiiri).filter(_.tyyppi.koodiarvo == "korkeakoulutus").length should equal(0)
+        haeOpiskeluoikeudetHetulla("090888-929X", MockUsers.omniaPalvelukäyttäjä).filter(_.tyyppi.koodiarvo == "korkeakoulutus").length should equal(0)
         haeOpiskeluoikeudetHetulla("090888-929X", MockUsers.kalle).filter(_.tyyppi.koodiarvo == "korkeakoulutus").length should be >= 1
       }
     }
@@ -109,7 +109,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   }
 
   "koski-oppilaitos-katselija" - {
-    val user = MockUsers.hiiriKatselija
+    val user = MockUsers.omniaKatselija
     "ei voi muokata opiskeluoikeuksia omassa organisaatiossa" in {
       putOpiskeluOikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(403)
@@ -125,7 +125,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   }
 
   "koski-oppilaitos-tallentaja" - {
-    val user = MockUsers.hiiriTallentaja
+    val user = MockUsers.omniaTallentaja
     "voi muokata opiskeluoikeuksia omassa organisaatiossa" in {
       putOpiskeluOikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(200)
@@ -142,7 +142,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
       val oppija = MockOppijat.tyhjä
       "ilman opiskeluoikeuden id:tä luodaan uusi opiskeluoikeus" in {
         resetFixtures
-        putOpiskeluOikeus(opiskeluOikeusLähdejärjestelmästä, henkilö = OidHenkilö(oppija.oid), headers = authHeaders(MockUsers.hiiri) ++ jsonContent) {
+        putOpiskeluOikeus(opiskeluOikeusLähdejärjestelmästä, henkilö = OidHenkilö(oppija.oid), headers = authHeaders(MockUsers.omniaPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatus(200)
           haeOpiskeluoikeudetHetulla(oppija.hetu, user).filter(_.tyyppi.koodiarvo == "ammatillinenkoulutus").length should equal(1)
           putOpiskeluOikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(oppija.oid), headers = authHeaders(user) ++ jsonContent) {

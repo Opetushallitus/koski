@@ -158,7 +158,7 @@ describe('Ammatillinen koulutus', function() {
       describe('Oppilaitosvalinta', function() {
         describe('Näytetään vain käyttäjän organisaatiopuuhun kuuluvat oppilaitokset', function() {
           it('1', function() {
-            return prepareForNewOppija('hiiri', 'Tunkkila')()
+            return prepareForNewOppija('omnia-palvelukäyttäjä', 'Tunkkila')()
               .then(addOppija.enterOppilaitos('ammatti'))
               .then(wait.forMilliseconds(500))
               .then(function() {
@@ -248,7 +248,7 @@ describe('Ammatillinen koulutus', function() {
       })
 
       describe('Ilman kirjoitusoikeuksia', function() {
-        before(Authentication().logout, Authentication().login('hiirikatselija'), page.openPage, page.oppijaHaku.search('070796-9652', page.isOppijaSelected('Eero')))
+        before(Authentication().logout, Authentication().login('omnia-katselija'), page.openPage, page.oppijaHaku.search('070796-9652', page.isOppijaSelected('Eero')))
         it('estetty', function() {
           var suoritus = opinnot.suoritus('Autoalan perustutkinto')
           suoritus.expand()

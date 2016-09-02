@@ -68,7 +68,7 @@ class HistoryApiSpec extends FunSpec with LocalJettyHttpSpecification with Opisk
       describe("Kun haetaan historiaa opiskeluoikeudelle, johon käyttäjällä ei oikeuksia") {
         it("Palautetaan 404") {
           val opiskeluOikeus = createOpiskeluOikeus(oppija, uusiOpiskeluOikeus)
-          authGet("api/opiskeluoikeus/historia/" + opiskeluOikeus.id.get, MockUsers.hiiri) {
+          authGet("api/opiskeluoikeus/historia/" + opiskeluOikeus.id.get, MockUsers.omniaPalvelukäyttäjä) {
             verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
           }
         }
