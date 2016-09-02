@@ -43,7 +43,7 @@ const OpiskeluoikeusEditor = React.createClass({
           : null
         }
           <span className="tila">{modelTitle(model, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}</span>
-        <GenericEditor.FoldableEditor
+        <GenericEditor.ExpandableEditor
           expandedView={() => <GenericEditor.PropertiesEditor properties={ model.value.properties.filter(property => property.key != 'suoritukset') } context={opiskeluoikeusContext}/>}
           context={GenericEditor.childContext(opiskeluoikeusContext, 'tiedot')}
         />
@@ -67,7 +67,7 @@ const SuoritusEditor = React.createClass({
     return (<div className={className}>
       <span className="kuvaus">{title}</span>
       <TodistusLink suoritus={model} context={context}/>
-      <GenericEditor.FoldableEditor
+      <GenericEditor.ExpandableEditor
         expandedView={() => <GenericEditor.PropertiesEditor properties={model.value.properties} context={R.merge(context, {editable: model.editable})}/>}
         context={context}
       />
@@ -169,7 +169,7 @@ const TutkinnonosaEditor = React.createClass({
     let {model, context} = this.props
 
     return (<div className="suoritus tutkinnonosa">
-      <GenericEditor.FoldableEditor
+      <GenericEditor.ExpandableEditor
         defaultExpanded={context.edit}
         collapsedView={() => <span className="tutkinnonosan-tiedot">
           <label className="nimi">{modelTitle(model, 'koulutusmoduuli')}</label>

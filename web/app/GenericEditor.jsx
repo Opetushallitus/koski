@@ -61,20 +61,20 @@ export const ObjectEditor = React.createClass({
     return !representative
       ? objectEditor()
       : ((exactlyOneVisibleProperty || context.forceInline) && !context.edit)
-        ? representativeEditor() // just show the representative property, no need for FoldableEditor
+        ? representativeEditor() // just show the representative property, no need for ExpandableEditor
         : isArrayItem(context) // for array item, show representative property in expanded view too
           ? (<span className={objectWrapperClass}>
               <span className="representative">{representativeEditor({ forceInline: true })}</span>
-              <FoldableEditor expandedView={objectEditor} defaultExpanded={context.edit} context={context}/>
+              <ExpandableEditor expandedView={objectEditor} defaultExpanded={context.edit} context={context}/>
             </span>)
           : (<span className={objectWrapperClass}>
-              <FoldableEditor expandedView={objectEditor} collapsedView={() => representativeEditor({ forceInline: true })} defaultExpandeded={context.edit} context={context}/>
+              <ExpandableEditor expandedView={objectEditor} collapsedView={() => representativeEditor({ forceInline: true })} defaultExpandeded={context.edit} context={context}/>
             </span>)
   }
 })
 ObjectEditor.canShowInline = (model, context) => !!findRepresentative(model) && !context.edit && !isArrayItem(context) && !context.isChildExpanded()
 
-export const FoldableEditor = React.createClass({
+export const ExpandableEditor = React.createClass({
   render() {
     let {collapsedView, expandedView, defaultExpanded, context} = this.props
     var expanded = context.isExpanded()
@@ -89,7 +89,7 @@ export const FoldableEditor = React.createClass({
     </span>)
   }
 })
-FoldableEditor.canShowInline = () => true
+ExpandableEditor.canShowInline = () => true
 
 export const PropertiesEditor = React.createClass({
   render() {
