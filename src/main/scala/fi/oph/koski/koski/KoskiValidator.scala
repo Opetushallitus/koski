@@ -82,8 +82,12 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   private def validateLähdejärjestelmä(opiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiUser): HttpStatus = {
-    if (opiskeluoikeus.lähdejärjestelmänId.isDefined && user.isPalvelukäyttäjä) {
-      HttpStatus.validate(user.juuriOrganisaatio.isDefined) { KoskiErrorCategory.forbidden.organisaatio("Automaattisen tiedonsiirron palvelukäyttäjällä ei yksiselitteistä juuriorganisaatiota") }
+    if (opiskeluoikeus.lähdejärjestelmänId.isDefined && !user.isPalvelukäyttäjä && !user.isRoot) {
+      KoskiErrorCategory.forbidden.lähdejärjestelmäIdEiSallittu("Lähdejärjestelmä määritelty, mutta käyttäjä ei ole palvelukäyttäjä")
+    } else if (user.isPalvelukäyttäjä && opiskeluoikeus.lähdejärjestelmänId.isEmpty) {
+      KoskiErrorCategory.forbidden.lähdejärjestelmäIdPuuttuu("Käyttäjä on palvelukäyttäjä mutta lähdejärjestelmää ei ole määritelty")
+    } else if (opiskeluoikeus.lähdejärjestelmänId.isDefined && user.isPalvelukäyttäjä && !user.juuriOrganisaatio.isDefined) {
+      KoskiErrorCategory.forbidden.juuriorganisaatioPuuttuu("Automaattisen tiedonsiirron palvelukäyttäjällä ei yksiselitteistä juuriorganisaatiota")
     } else {
       HttpStatus.ok
     }

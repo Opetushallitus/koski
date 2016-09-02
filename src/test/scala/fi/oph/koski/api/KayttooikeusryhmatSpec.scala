@@ -1,6 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjestelmäId
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -61,6 +62,12 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
       }
     }
 
+    "voi muokata vain lähdejärjestelmällisiä opiskeluoikeuksia" in {
+      putOpiskeluOikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.lähdejärjestelmäIdPuuttuu("Käyttäjä on palvelukäyttäjä mutta lähdejärjestelmää ei ole määritelty")) // TODO: väärä virhekoodi!
+      }
+    }
+
     "voi hakea ja katsella opiskeluoikeuksia vain omassa organisaatiossa" in {
       searchForNames("eero", user) should equal(List("Eero Markkanen"))
       authGet("api/oppija/" + MockOppijat.markkanen.oid, user) {
@@ -97,6 +104,8 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
         haeOpiskeluoikeudetHetulla("090888-929X", MockUsers.kalle).filter(_.tyyppi.koodiarvo == "korkeakoulutus").length should be >= 1
       }
     }
+
+    // TODO: yksiselitteisen juuriorganisaation tarkistus!
   }
 
   "koski-oppilaitos-katselija" - {
@@ -123,10 +132,14 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
       }
     }
 
-    "ei voi muokata lähdejärjestelmän tallentamia opiskeluoikeuksia" in {
+    "ei voi tallentaa opiskeluoikeuksia käyttäen lähdejärjestelmä-id:tä" in {
       putOpiskeluOikeus(opiskeluOikeusLähdejärjestelmästä, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
-        verifyResponseStatus(403)
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.lähdejärjestelmäIdEiSallittu("Lähdejärjestelmä määritelty, mutta käyttäjä ei ole palvelukäyttäjä"))
       }
+    }
+
+    "ei voi muokata lähdejärjestelmän tallentamia opiskeluoikeuksia" in {
+      // TODO
     }
   }
 

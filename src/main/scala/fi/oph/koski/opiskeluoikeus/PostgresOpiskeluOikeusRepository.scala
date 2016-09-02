@@ -76,15 +76,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
 
 
   override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiUser): Either[HttpStatus, CreateOrUpdateResult] = {
-    if (!user.hasWriteAccess(opiskeluOikeus.oppilaitos.oid)) {
-      Left(KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + opiskeluOikeus.oppilaitos.oid))
-    } else if (opiskeluOikeus.lähdejärjestelmänId.isDefined && !user.isPalvelukäyttäjä && !user.isRoot) {
-      Left(KoskiErrorCategory.forbidden.organisaatio("Lähdejärjestelmä määritelty, mutta käyttäjä ei ole palvelukäyttäjä"))
-    } else if (user.isPalvelukäyttäjä && opiskeluOikeus.lähdejärjestelmänId.isEmpty) {
-      Left(KoskiErrorCategory.forbidden.organisaatio("Käyttäjä on palvelukäyttäjä mutta lähdejärjestelmää ei ole määritelty"))
-    } else {
-      doInIsolatedTransaction(db, createOrUpdateAction(oppijaOid, opiskeluOikeus), "Oppijan " + oppijaOid + " opiskeluoikeuden lisäys/muutos")
-    }
+    doInIsolatedTransaction(db, createOrUpdateAction(oppijaOid, opiskeluOikeus), "Oppijan " + oppijaOid + " opiskeluoikeuden lisäys/muutos")
   }
 
   private def findByOppijaOidAction(oid: String)(implicit user: KoskiUser): dbio.DBIOAction[Seq[OpiskeluOikeusRow], NoStream, Read] = {

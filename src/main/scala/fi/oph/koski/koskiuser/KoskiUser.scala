@@ -3,8 +3,7 @@ package fi.oph.koski.koskiuser
 import javax.servlet.http.HttpServletRequest
 
 import fi.oph.koski.log.{LogUserContext, Loggable, Logging}
-import fi.oph.koski.organisaatio.Opetushallitus
-import fi.oph.koski.schema.{OrganisaatioWithOid, Organisaatio}
+import fi.oph.koski.schema.{Organisaatio, OrganisaatioWithOid}
 import rx.lang.scala.Observable
 
 class KoskiUser(val oid: String, val clientIp: String, val lang: String, käyttöoikeudetObservable: Observable[Set[Käyttöoikeus]]) extends LogUserContext with Loggable with Logging {
