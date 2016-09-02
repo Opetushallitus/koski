@@ -138,8 +138,25 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
       }
     }
 
-    "ei voi muokata lähdejärjestelmän tallentamia opiskeluoikeuksia" in {
-      // TODO
+    "ei voi muokata lähdejärjestelmän tallentamia opiskeluoikeuksia" - {
+      val oppija = MockOppijat.tyhjä
+      "ilman opiskeluoikeuden id:tä luodaan uusi opiskeluoikeus" in {
+        resetFixtures
+        putOpiskeluOikeus(opiskeluOikeusLähdejärjestelmästä, henkilö = OidHenkilö(oppija.oid), headers = authHeaders(MockUsers.hiiri) ++ jsonContent) {
+          verifyResponseStatus(200)
+          haeOpiskeluoikeudetHetulla(oppija.hetu, user).filter(_.tyyppi.koodiarvo == "ammatillinenkoulutus").length should equal(1)
+          putOpiskeluOikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(oppija.oid), headers = authHeaders(user) ++ jsonContent) {
+            verifyResponseStatus(200)
+            haeOpiskeluoikeudetHetulla(oppija.hetu, user).filter(_.tyyppi.koodiarvo == "ammatillinenkoulutus").length should equal(2)
+          }
+        }
+      }
+      "opiskeluoikeus-id:tä käytettäessä muutos estetään" in {
+        val id = haeOpiskeluoikeudetHetulla(oppija.hetu, user).filter(_.tyyppi.koodiarvo == "ammatillinenkoulutus").filter(_.lähdejärjestelmänId.isDefined)(0).id.get
+        putOpiskeluOikeus(opiskeluoikeusOmnia.copy(id = Some(id)), henkilö = OidHenkilö(oppija.oid), headers = authHeaders(user) ++ jsonContent) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos("Opiskeluoikeuden lähdejärjestelmäId:tä ei voi muuttaa."))
+        }
+      }
     }
   }
 

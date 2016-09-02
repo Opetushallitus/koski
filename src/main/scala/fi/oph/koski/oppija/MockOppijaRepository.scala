@@ -10,7 +10,7 @@ object MockOppijat {
   val eerola = oppijat.oppija("Eerola", "Jouni", "070796-9696")
   val markkanen = oppijat.oppija("Markkanen", "Eero", "070796-9652")
   val teija = oppijat.oppija("Tekijä", "Teija", "150995-914X")
-  val tyhjä = oppijat.oppija("Tyhjä", "Tyhjä", "130196-961Y")
+  val tyhjä = oppijat.oppija("Tyhjä", "Tyhjä", "130196-961Y") // Tällä oppijalla ei ole fixtuureissa opiskeluoikeuksia
   val tero = oppijat.oppija("Tunkkila-Fagerlund", "Tero Petteri Gustaf", "091095-9833")
   val presidentti = oppijat.oppija("Presidentti", "Tasavallan", "")
   val koululainen = oppijat.oppija("Koululainen", "Kaisa", "110496-926Y")
