@@ -1,6 +1,6 @@
 package fi.oph.koski.servlet
 
-import java.net.URI
+import java.net.{URLDecoder, URLEncoder, URI}
 
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.{AuthenticationUser, UserAuthenticationContext}
@@ -13,8 +13,12 @@ trait CasSingleSignOnSupport extends ScalatraBase {
 
   def isHttps = !currentUrl.startsWith("http://localhost") // <- we don't get the https protocol correctly through the proxy, so we assume https
 
-  def setUserCookie(user: AuthenticationUser) = response.addCookie(Cookie("koskiUser", Json.write(user))(CookieOptions(secure = isHttps, path = "/", maxAge = application.sessionTimeout.seconds, httpOnly = true)))
-  def getUserCookie: Option[AuthenticationUser] = Option(request.getCookies).toList.flatten.find(_.getName == "koskiUser").map(_.getValue).map(Json.read[AuthenticationUser])
+  def setUserCookie(user: AuthenticationUser) = {
+    response.addCookie(Cookie("koskiUser", URLEncoder.encode(Json.write(user), "UTF-8"))(CookieOptions(secure = isHttps, path = "/", maxAge = application.sessionTimeout.seconds, httpOnly = true)))
+  }
+  def getUserCookie: Option[AuthenticationUser] = {
+    Option(request.getCookies).toList.flatten.find(_.getName == "koskiUser").map(_.getValue).map(c => URLDecoder.decode(c, "UTF-8")).map(Json.read[AuthenticationUser])
+  }
   def removeUserCookie = response.addCookie(Cookie("koskiUser", "")(CookieOptions(secure = isHttps, path = "/", maxAge = 0)))
 
   def casServiceUrl = {
