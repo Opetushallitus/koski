@@ -11,7 +11,9 @@ trait CasSingleSignOnSupport extends ScalatraBase {
 
   private def currentUrl = request.getRequestURL.toString
 
-  def isHttps = !currentUrl.startsWith("http://localhost") // <- we don't get the https protocol correctly through the proxy, so we assume https
+  def isHttps = {
+    request.header("X-Forwarded-For").isDefined || request.isSecure // If we are behind a loadbalancer proxy, we assume that https is used
+  }
 
   def setUserCookie(user: AuthenticationUser) = {
     response.addCookie(Cookie("koskiUser", URLEncoder.encode(Json.write(user), "UTF-8"))(CookieOptions(secure = isHttps, path = "/", maxAge = application.sessionTimeout.seconds, httpOnly = true)))
