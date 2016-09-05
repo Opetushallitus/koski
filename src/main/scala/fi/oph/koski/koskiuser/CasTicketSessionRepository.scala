@@ -6,9 +6,6 @@ import fi.oph.koski.db.{CasServiceTicketSessionRow, KoskiDatabaseMethods, Global
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Timing
-import slick.dbio.{DBIOAction, NoStream}
-
-import scala.concurrent.Future
 
 class CasTicketSessionRepository(val db: DB, sessionTimeout: SessionTimeout) extends KoskiDatabaseMethods with GlobalExecutionContext with Timing with Logging {
   private def now = new Timestamp(System.currentTimeMillis())
@@ -21,9 +18,14 @@ class CasTicketSessionRepository(val db: DB, sessionTimeout: SessionTimeout) ext
     val limit = new Timestamp(System.currentTimeMillis() - sessionTimeout.milliseconds)
     val query = Tables.CasServiceTicketSessions.filter(row => row.serviceTicket === ticket && row.updated >= limit)
 
-    runDbSync(query.map(_.updated).update(now)) // update the "updated" timestamp each time
+    val action = for {
+      _ <- query.map(_.updated).update(now);
+      result <- query.result
+    } yield {
+      result
+    }
 
-    runDbSync(query.result).map(row => AuthenticationUser(row.userOid, row.username, Some(ticket))).headOption
+    runDbSync(action).map(row => AuthenticationUser(row.userOid, row.username, Some(ticket))).headOption
   }
 
   def removeSessionByTicket(ticket: String) = {
