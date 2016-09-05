@@ -8,10 +8,12 @@ import org.scalatra.test.HttpComponentsClient
 
 import scala.util.matching.Regex
 
-trait HttpSpecification extends HttpComponentsClient with Assertions with Matchers {
-  type Headers = Map[String, String]
-
-  val jsonContent = Map(("Content-type" -> "application/json"))
+trait HttpSpecification extends HttpTester with Assertions with Matchers {
+  def resetFixtures[A] = {
+    post("fixtures/reset", Nil, authHeaders()) {
+      verifyResponseStatus(200)
+    }
+  }
 
   def verifyResponseStatus(expectedStatus: Int, details: http.HttpStatus*): Unit = {
     val dets: List[ErrorDetail] = details.toList.map((status: HttpStatus) => status.errors(0))
@@ -33,19 +35,5 @@ trait HttpSpecification extends HttpComponentsClient with Assertions with Matche
     }
   }
 
-  def resetFixtures[A] = {
-    post("fixtures/reset", Nil, authHeaders()) {
-      verifyResponseStatus(200)
-    }
-  }
-
-  def defaultUser: UserWithPassword
-
-  def authHeaders(user: UserWithPassword = defaultUser): Headers = {
-    Map(BasicAuthentication.basicAuthHeader(user.username, user.password))
-  }
-
-  def authGet[A](uri: String, user: UserWithPassword = defaultUser)(f: => A) = {
-    get(uri, headers = authHeaders(user))(f)
-  }
 }
+
