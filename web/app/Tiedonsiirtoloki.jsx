@@ -6,6 +6,8 @@ import { Tiedonsiirtotaulukko } from './Tiedonsiirtotaulukko.jsx'
 
 const tiedonsiirrotP = Bacon.once().flatMap(() => Http.get('/koski/api/tiedonsiirrot')).toProperty()
 
+tiedonsiirrotP.onValue(() => {})
+
 export const tiedonsiirtolokiContentP = tiedonsiirrotContentP('/koski/tiedonsiirrot', tiedonsiirrotP.map((rivit) =>
   (<div>
     Viimeisimmät KOSKI-palveluun siirtyneet opiskelijatiedot
