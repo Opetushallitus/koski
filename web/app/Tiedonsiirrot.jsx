@@ -1,7 +1,12 @@
 import React from 'react'
+import Bacon from 'baconjs'
 import {navigateTo} from './location.js'
 
-export const tiedonsiirrotContentP = (location, contentP) => contentP.map((content) => (<div className='content-area'>
+const loadingContent = <div className="ajax-indicator-bg">Ladataan...</div>
+
+const withLoadingIndicator = (contentP) => Bacon.once(loadingContent).concat(contentP).toProperty()
+
+export const tiedonsiirrotContentP = (location, contentP) => withLoadingIndicator(contentP).map((content) => (<div className='content-area'>
   <nav className="sidebar tiedonsiirrot-navi">
     {link('/koski/tiedonsiirrot', 'Tiedonsiirtoloki', location, 'tiedonsiirto-link')}
     {link('/koski/tiedonsiirrot/virheet', 'Virheet', location, 'virheet-link')}
