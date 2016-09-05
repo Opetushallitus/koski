@@ -47,9 +47,12 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
 
   private def toHenkilönTiedonsiirrot(tiedonsiirrot: Seq[TiedonsiirtoRow]) = {
     implicit val ordering = DateOrdering.localDateTimeReverseOrdering
-    tiedonsiirrot.groupBy(_.oppija).map {
-      case (oppijaOpt, rows) =>
-        val oppija = oppijaOpt.flatMap(_.extractOpt[Henkilö])
+    tiedonsiirrot.groupBy { t =>
+      val oppijanTunniste = t.oppija.map(Json.fromJValue[HetuTaiOid])
+      oppijanTunniste.flatMap(_.hetu).orElse(oppijanTunniste.map(_.oid))
+    }.map {
+      case (_, rows) =>
+        val oppija = rows.head.oppija.flatMap(_.extractOpt[Henkilö])
         val rivit = rows.map { row =>
           val oppilaitos = row.oppilaitos.flatMap(_.extractOpt[List[OrganisaatioWithOid]])
           TiedonsiirtoRivi(row.aikaleima.toLocalDateTime, oppija, oppilaitos, row.virheet, row.data)
