@@ -23,7 +23,7 @@ import slick.dbio.NoStream
 import slick.lifted.Query
 import slick.{dbio, lifted}
 
-class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: OpiskeluoikeusHistoryRepository) extends OpiskeluOikeusRepository with GlobalExecutionContext with Futures with Logging with SerializableTransactions {
+class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: OpiskeluoikeusHistoryRepository) extends OpiskeluOikeusRepository with GlobalExecutionContext with KoskiDatabaseMethods with Logging with SerializableTransactions {
   override def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiUser) = {
     val query: lifted.Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = for {
       oo <- OpiskeluOikeudetWithAccessCheck
@@ -34,18 +34,18 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
 
     //logger.info(query.result.statements.head)
 
-    val oppijatJoillaOpiskeluoikeuksia: Set[String] = await(db.run(query.map(_.oppijaOid).result)).toSet
+    val oppijatJoillaOpiskeluoikeuksia: Set[String] = runDbSync(query.map(_.oppijaOid).result).toSet
 
     oppijat.filter { oppija => oppijatJoillaOpiskeluoikeuksia.contains(oppija.oid)}
   }
 
 
   override def findByOppijaOid(oid: String)(implicit user: KoskiUser): Seq[Opiskeluoikeus] = {
-    await(db.run(findByOppijaOidAction(oid).map(rows => rows.map(_.toOpiskeluOikeus))))
+    runDbSync(findByOppijaOidAction(oid).map(rows => rows.map(_.toOpiskeluOikeus)))
   }
 
   def findById(id: Int)(implicit user: KoskiUser): Option[(Opiskeluoikeus, String)] = {
-    await(db.run(findAction(OpiskeluOikeudetWithAccessCheck.filter(_.id === id)).map(rows => rows.map(row => (row.toOpiskeluOikeus, row.oppijaOid))))).headOption
+    runDbSync(findAction(OpiskeluOikeudetWithAccessCheck.filter(_.id === id)).map(rows => rows.map(row => (row.toOpiskeluOikeus, row.oppijaOid)))).headOption
   }
 
   override def query(filters: List[QueryFilter])(implicit user: KoskiUser): Observable[(Oid, List[OpiskeluOikeusRow])] = {
@@ -76,7 +76,7 @@ class PostgresOpiskeluOikeusRepository(db: DB, historyRepository: Opiskeluoikeus
 
 
   override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiUser): Either[HttpStatus, CreateOrUpdateResult] = {
-    doInIsolatedTransaction(db, createOrUpdateAction(oppijaOid, opiskeluOikeus), "Oppijan " + oppijaOid + " opiskeluoikeuden lisäys/muutos")
+    doInIsolatedTransaction(createOrUpdateAction(oppijaOid, opiskeluOikeus), "Oppijan " + oppijaOid + " opiskeluoikeuden lisäys/muutos")
   }
 
   private def findByOppijaOidAction(oid: String)(implicit user: KoskiUser): dbio.DBIOAction[Seq[OpiskeluOikeusRow], NoStream, Read] = {

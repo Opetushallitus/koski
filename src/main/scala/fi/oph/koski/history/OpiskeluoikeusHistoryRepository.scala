@@ -6,7 +6,7 @@ import com.github.fge.jsonpatch.JsonPatch
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.Tables._
-import fi.oph.koski.db.{Futures, OpiskeluOikeusHistoryRow, OpiskeluOikeusStoredDataDeserializer}
+import fi.oph.koski.db.{KoskiDatabaseMethods, OpiskeluOikeusHistoryRow, OpiskeluOikeusStoredDataDeserializer}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.log.Logging
@@ -16,7 +16,7 @@ import org.json4s.jackson.JsonMethods
 import slick.dbio.DBIOAction
 import slick.dbio.Effect.Write
 
-case class OpiskeluoikeusHistoryRepository(db: DB) extends Futures with Logging with JsonMethods {
+case class OpiskeluoikeusHistoryRepository(db: DB) extends KoskiDatabaseMethods with Logging with JsonMethods {
   def findByOpiskeluoikeusId(id: Int, maxVersion: Int = Int.MaxValue)(implicit user: KoskiUser): Option[Seq[OpiskeluOikeusHistoryRow]] = {
     val query = OpiskeluOikeudetWithAccessCheck.filter(_.id === id)
       .join(OpiskeluOikeusHistoria.filter(_.versionumero <= maxVersion))
@@ -24,7 +24,7 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends Futures with Logging 
       .map(_._2)
       .sortBy(_.versionumero.asc)
 
-    await(db.run(query.result)) match {
+    runDbSync(query.result) match {
       case Nil => None
       case rows: Seq[OpiskeluOikeusHistoryRow] => Some(rows)
     }

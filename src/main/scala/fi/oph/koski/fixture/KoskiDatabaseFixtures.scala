@@ -18,8 +18,9 @@ import java.time.LocalDate.{of => date}
 
 import slick.dbio.DBIO
 
-class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluOikeusRepository, oppijaRepository: OppijaRepository, validator: KoskiValidator) extends Futures with Timing {
+class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluOikeusRepository, oppijaRepository: OppijaRepository, validator: KoskiValidator) extends KoskiDatabaseMethods with Timing {
   implicit val user = KoskiUser.systemUser
+  val db = database.db
   implicit val accessType = AccessType.write
 
   def resetFixtures: Unit = timed("resetFixtures", 10) {
@@ -29,8 +30,8 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluO
     val deleteOpiskeluOikeudet = oppijat.map{oppija => OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid === oppija.oid).delete}
     val deleteTiedonsiirrot = TiedonsiirtoWithAccessCheck.delete
 
-    await(database.db.run(DBIO.sequence(deleteOpiskeluOikeudet)))
-    await(database.db.run(deleteTiedonsiirrot))
+    runDbSync(DBIO.sequence(deleteOpiskeluOikeudet))
+    runDbSync(deleteTiedonsiirrot)
 
     validatedOpiskeluoikeudet.foreach {
       case (oid, oppija) => repository.createOrUpdate(VerifiedOppijaOid(oid), oppija.tallennettavatOpiskeluoikeudet(0))

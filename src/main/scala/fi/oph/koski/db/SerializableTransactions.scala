@@ -9,8 +9,8 @@ import slick.dbio
 import slick.dbio.{Effect, NoStream}
 import slick.jdbc.TransactionIsolation
 
-trait SerializableTransactions extends Logging with Futures with GlobalExecutionContext {
-  def doInIsolatedTransaction[E <: Effect, Result, S <: NoStream](db: DB, action: dbio.DBIOAction[Result, S, E], description: String) = {
+trait SerializableTransactions extends Logging with KoskiDatabaseMethods with GlobalExecutionContext {
+  def doInIsolatedTransaction[E <: Effect, Result, S <: NoStream](action: dbio.DBIOAction[Result, S, E], description: String) = {
     val withTransactionIsolation = action.transactionally.withTransactionIsolation(TransactionIsolation.Serializable)
     /*
     1. transactionally = if any part fails, rollback everything. For example, if new version cannot be written to history table, insert/update must be rolled back.
@@ -20,7 +20,7 @@ trait SerializableTransactions extends Logging with Futures with GlobalExecution
     */
     def tryDo(iteration: Int): Result = {
       try {
-        await(db.run(withTransactionIsolation))
+        runDbSync(withTransactionIsolation)
       } catch {
         case e:SQLException if e.getSQLState == "40001" =>
           // PostgreSQL throws this when optimistic locking fails. Retry is the thing to do here.

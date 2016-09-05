@@ -1,17 +1,34 @@
 package fi.oph.koski.henkilo
 
 import fi.oph.koski.db.KoskiDatabase.DB
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.{Futures, PostgresDriverWithJsonSupport, Tables}
+import fi.oph.koski.db.{KoskiDatabaseMethods, PostgresDriverWithJsonSupport, Tables}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{Käyttöoikeusryhmät, MockUsers}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppija.{MockOppijat, TestingException}
 import fi.oph.koski.schema.{Henkilö, TäydellisetHenkilötiedot}
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import rx.lang.scala.Observable
 
-class MockAuthenticationServiceClient(db: Option[DB] = None) extends AuthenticationServiceClient with Logging with Futures {
-  private var oppijat = new MockOppijat(MockOppijat.defaultOppijat)
+
+class MockAuthenticationServiceClientWithDBSupport(val db: DB) extends MockAuthenticationServiceClient with KoskiDatabaseMethods {
+  def findFromDb(oid: String): Option[TäydellisetHenkilötiedot] = {
+    runQuery(Tables.OpiskeluOikeudet.filter(_.oppijaOid === oid)).headOption.map { oppijaRow =>
+      TäydellisetHenkilötiedot(oid, oid, oid, oid, oid, oppijat.äidinkieli, None)
+    }
+  }
+
+  def runQuery[E, U](fullQuery: PostgresDriverWithJsonSupport.api.Query[E, U, Seq]): Seq[U] = {
+    runDbSync(fullQuery.result)
+  }
+
+  override protected def findHenkilötiedot(id: String): Option[TäydellisetHenkilötiedot] = {
+    super.findHenkilötiedot(id).orElse(findFromDb(id))
+  }
+}
+
+class MockAuthenticationServiceClient() extends AuthenticationServiceClient with Logging {
+  protected var oppijat = new MockOppijat(MockOppijat.defaultOppijat)
 
   val käyttöoikeusryhmät = Käyttöoikeusryhmät.käyttöoikeusryhmät.zipWithIndex.map {
     case (ryhmä, index) => new Käyttöoikeusryhmä(index, ryhmä.nimi)
@@ -45,10 +62,15 @@ class MockAuthenticationServiceClient(db: Option[DB] = None) extends Authenticat
       Right(newOppija.oid)
     }
   }
-  def findByOid(id: String): Option[User] = {
-    val oppija: Option[TäydellisetHenkilötiedot] = oppijat.getOppijat.filter {_.oid == id}.headOption.orElse(findFromDb(id))
+  def findByOid(henkilöOid: String): Option[User] = {
+    val oppija: Option[TäydellisetHenkilötiedot] = findHenkilötiedot(henkilöOid)
     oppija.map(henkilö => User(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, Some(henkilö.hetu), Some("FI"), None))
   }
+
+  protected def findHenkilötiedot(id: String): Option[TäydellisetHenkilötiedot] = {
+    oppijat.getOppijat.filter {_.oid == id}.headOption
+  }
+
   def findByOids(oids: List[String]): List[User] = {
     oids.flatMap(findByOid)
   }
@@ -76,13 +98,4 @@ class MockAuthenticationServiceClient(db: Option[DB] = None) extends Authenticat
     oppija.toString.toUpperCase
   }
 
-  def findFromDb(oid: String): Option[TäydellisetHenkilötiedot] = {
-    runQuery(Tables.OpiskeluOikeudet.filter(_.oppijaOid === oid)).headOption.map { oppijaRow =>
-      TäydellisetHenkilötiedot(oid, oid, oid, oid, oid, oppijat.äidinkieli, None)
-    }
-  }
-
-  def runQuery[E, U](fullQuery: PostgresDriverWithJsonSupport.api.Query[E, U, Seq]): Seq[U] = {
-    db.toSeq.flatMap { db => await(db.run(fullQuery.result)) }
-  }
 }

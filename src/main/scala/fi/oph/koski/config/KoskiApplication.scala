@@ -38,7 +38,7 @@ class KoskiApplication(val config: Config) extends Logging with UserAuthenticati
   lazy val koodistoPalvelu = KoodistoPalvelu.apply(config)
   lazy val koodistoViitePalvelu = new KoodistoViitePalvelu(koodistoPalvelu)
   lazy val arviointiAsteikot = ArviointiasteikkoRepository(koodistoViitePalvelu)
-  lazy val authenticationServiceClient = AuthenticationServiceClient(config, Some(database.db))
+  lazy val authenticationServiceClient = AuthenticationServiceClient(config, database.db)
   lazy val käyttöoikeusRepository = new KäyttöoikeusRepository(authenticationServiceClient, organisaatioRepository)
   lazy val database = new KoskiDatabase(config)
   lazy val virtaClient = VirtaClient(config)

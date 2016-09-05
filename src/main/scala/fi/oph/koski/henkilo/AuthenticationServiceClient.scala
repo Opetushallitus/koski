@@ -25,10 +25,10 @@ trait AuthenticationServiceClient {
 }
 
 object AuthenticationServiceClient {
-  def apply(config: Config, db: Option[DB] = None) = if (config.hasPath("opintopolku.virkailija.username")) {
+  def apply(config: Config, db: DB) = if (config.hasPath("opintopolku.virkailija.username")) {
     RemoteAuthenticationServiceClient(config)
   } else {
-    new MockAuthenticationServiceClient(db)
+    new MockAuthenticationServiceClientWithDBSupport(db)
   }
 }
 

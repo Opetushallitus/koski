@@ -57,5 +57,3 @@ class KäyttöoikeusRepository(authenticationServiceClient: AuthenticationServic
     CachingStrategy.cacheAllNoRefresh("userOrganisations", 3600, 100), haeKäyttöoikeudet
   )
 }
-
-object MockKäyttöoikeusRepository extends KäyttöoikeusRepository(new MockAuthenticationServiceClient(), MockOrganisaatioRepository)

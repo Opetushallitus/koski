@@ -21,7 +21,7 @@ import fi.oph.koski.tutkinto.TutkintoServlet
 import fi.oph.koski.util.Pools
 import org.scalatra._
 
-class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionContext with Futures {
+class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionContext {
   override def init(context: ServletContext) {
     try {
       Pools.init

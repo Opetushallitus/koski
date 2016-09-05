@@ -1,14 +1,15 @@
 package fi.oph.koski.perftest
 
-import fi.oph.koski.db.{Futures, GlobalExecutionContext}
+import fi.oph.koski.db.{GlobalExecutionContext, KoskiDatabaseMethods}
 import fi.oph.koski.log.Logging
-import fi.oph.koski.util.Timing
+import fi.oph.koski.util.Futures.await
+import fi.oph.koski.util.{Futures, Timing}
 
 import scala.collection.immutable.IndexedSeq
 import scala.concurrent.Future
 import scala.concurrent.duration._
 
-object PerfTester extends App with TestApp with GlobalExecutionContext with Futures with Timing with Logging {
+object PerfTester extends App with TestApp with GlobalExecutionContext with Timing with Logging {
   val blockSize = 100
   val blockCount = 1
   timed("Haettu " + (blockSize * blockCount) + " suoritusta") {
