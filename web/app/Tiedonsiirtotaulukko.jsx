@@ -29,9 +29,8 @@ export const Tiedonsiirtotaulukko = React.createClass({
 const Lokiriviryhmä = React.createClass({
   render() {
     let { oppijaRivi, i, showError } = this.props
-    const showData = (row) => this.setState({dataToBeShown: row})
+
     const setExpanded = (expanded) => this.setState({expanded})
-    const dataToBeShown = this.state && this.state.dataToBeShown
     const isExpanded = this.state && this.state.expanded
     const tiedonsiirtoRivit = oppijaRivi.rivit
     const isGroup = tiedonsiirtoRivit.length > 1
@@ -43,12 +42,9 @@ const Lokiriviryhmä = React.createClass({
             const isHidden = isChild && !isExpanded
             return isHidden
               ? []
-              : [<Lokirivi key={i + '-' + j} row={rivi} isParent={isParent} isChild={isChild} isExpanded={isExpanded} isEven={i % 2 == 1} showError={showError} showData={showData} setExpanded={setExpanded}/>]
+              : [<Lokirivi key={i + '-' + j} row={rivi} isParent={isParent} isChild={isChild} isExpanded={isExpanded} isEven={i % 2 == 1} showError={showError} setExpanded={setExpanded}/>]
           }
         )
-      }
-      {
-        dataToBeShown && <LokirivinData details={dataToBeShown} showData={showData}/>
       }
     </tbody>)
   }
@@ -59,8 +55,9 @@ const Lokirivi = React.createClass({
     const extractName = (oppilaitokset) =>
       oppilaitokset && oppilaitokset.map((oppilaitos) => oppilaitos && oppilaitos.nimi && oppilaitos.nimi.fi).join(', ')
 
-    const {row, isParent, isChild, isExpanded, isEven, showError, showData, setExpanded} = this.props
-
+    const {row, isParent, isChild, isExpanded, isEven, showError, setExpanded} = this.props
+    const dataToBeShown = this.state && this.state.dataToBeShown
+    const showData = (data) => this.setState({dataToBeShown: data})
     const errorDetails = (virheet) => { return showError ?
       <div>
         <ul className="tiedonsiirto-errors">{
@@ -98,7 +95,12 @@ const Lokirivi = React.createClass({
       }</td>
       <td className="oppilaitos">{extractName(row.oppilaitos)}</td>
       <td className="virhe">{row.virhe && <span>{errorDetails(row.virhe)}</span>}</td>
-      <td className="tiedot">{row.virhe && dataLink()}</td>
+      <td className="tiedot">
+        {row.virhe && dataLink()}
+        {
+          dataToBeShown && <LokirivinData details={dataToBeShown} showData={showData}/>
+        }
+      </td>
     </tr>)
   }
 })
