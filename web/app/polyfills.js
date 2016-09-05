@@ -59,3 +59,8 @@ addArrayMethod('last', function () {
 Number.isNaN = Number.isNaN || function(value) {
   return typeof value === 'number' && isNaN(value)
 }
+
+if (!history.pushState) {
+  console.log('history.pushState not available')
+  history.pushState = function() {}
+}
