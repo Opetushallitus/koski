@@ -11,7 +11,7 @@ class CasTicketSessionRepository(db: DB, sessionTimeout: SessionTimeout) extends
   private def now = new Timestamp(System.currentTimeMillis())
 
   def store(ticket: String, user: AuthenticationUser) = {
-    db.run((Tables.CasServiceTicketSessions += CasServiceTicketSessionRow(ticket, user.name, user.oid, now, now)))
+    await(db.run((Tables.CasServiceTicketSessions += CasServiceTicketSessionRow(ticket, user.name, user.oid, now, now))))
   }
 
   def getUserByTicket(ticket: String): Option[AuthenticationUser] = timed("getUserByTicket", 0) {
