@@ -19,7 +19,7 @@ class CasTicketSessionRepository(val db: DB, sessionTimeout: SessionTimeout) ext
     val query = Tables.CasServiceTicketSessions.filter(row => row.serviceTicket === ticket && row.updated >= limit)
 
     val action = for {
-      _ <- query.map(_.updated).update(now);
+      _ <- query.map(_.updated).update(now)
       result <- query.result
     } yield {
       result
