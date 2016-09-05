@@ -105,7 +105,15 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
       }
     }
 
-    // TODO: yksiselitteisen juuriorganisaation tarkistus!
+
+  }
+
+  "palvelukäyttäjä, jolla useampi juuriorganisaatio" - {
+    "ei voi tallentaa tietoja" in {
+      putOpiskeluOikeus(opiskeluOikeusLähdejärjestelmästä, headers = authHeaders(MockUsers.kahdenOrganisaatioPalvelukäyttäjä) ++ jsonContent) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.juuriorganisaatioPuuttuu("Automaattisen tiedonsiirron palvelukäyttäjällä ei yksiselitteistä juuriorganisaatiota"))
+      }
+    }
   }
 
   "koski-oppilaitos-katselija" - {
