@@ -118,7 +118,7 @@ class OppijaServlet(val application: KoskiApplication)
   }
 
   private def handleUnparseableJson(status: HttpStatus) = {
-    application.tiedonsiirtoService.storeTiedonsiirtoResult(koskiUser, None, Some(TiedonsiirtoError(toJValue(Map("unparseableJson" -> request.body)), toJValue(status.errors))))
+    application.tiedonsiirtoService.storeTiedonsiirtoResult(koskiUser, None, None, Some(TiedonsiirtoError(toJValue(Map("unparseableJson" -> request.body)), toJValue(status.errors))))
     haltWithStatus(status)
   }
 }
@@ -136,7 +136,7 @@ case class UpdateContext(user: KoskiUser, application: KoskiApplication, request
       logger(user).warn("Opinto-oikeuden päivitys estetty: " + code + " " + errors + " for request " + logSafeDescription(request))
     }
 
-    application.tiedonsiirtoService.storeTiedonsiirtoResult(user, Some(oppijaJson), result.fold(
+    application.tiedonsiirtoService.storeTiedonsiirtoResult(user, result.right.toOption.map(_.henkilö), Some(oppijaJson), result.fold(
       status => Some(TiedonsiirtoError(oppijaJson, toJValue(status.errors))),
       _ => None)
     )

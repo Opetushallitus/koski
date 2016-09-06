@@ -11,10 +11,10 @@ import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage}
 import fi.oph.koski.oppija.OppijaRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
-import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
+import fi.oph.koski.schema.{HenkilötiedotJaOid, Koodistokoodiviite, OidHenkilö, OrganisaatioWithOid}
 import fi.oph.koski.util.DateOrdering
-import org.json4s.JsonAST.{JArray, JString}
-import org.json4s._
+import org.json4s.JsonAST.{JArray, JString, JValue}
+import org.json4s.{JValue, _}
 
 class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organisaatioRepository: OrganisaatioRepository, oppijaRepository: OppijaRepository) {
   def kaikkiTiedonsiirrot(koskiUser: KoskiUser): List[HenkilönTiedonsiirrot] = toHenkilönTiedonsiirrot(findAll(koskiUser))
@@ -25,17 +25,12 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
     }.map(v => v.copy(rivit = v.rivit.filter(_.virhe.isDefined)))
 
 
-  def storeTiedonsiirtoResult(implicit koskiUser: KoskiUser, data: Option[JValue], error: Option[TiedonsiirtoError]) {
+  def storeTiedonsiirtoResult(implicit koskiUser: KoskiUser, oppijaOid: Option[OidHenkilö], data: Option[JValue], error: Option[TiedonsiirtoError]) {
     if (!koskiUser.isPalvelukäyttäjä) {
       return
     }
 
-    val oppija = data.map(_ \ "henkilö").flatMap { henkilö =>
-      val tunniste = Json.fromJValue[HetuTaiOid](henkilö)
-      tunniste.oid.flatMap(haeOidilla)
-        .orElse(tunniste.hetu.flatMap(haeHetulla))
-        .orElse(henkilö.toOption)
-    }
+    val oppija = data.flatMap(extractHenkilö(_, oppijaOid))
 
     val oppilaitokset = data.map(_ \ "opiskeluoikeudet" \ "oppilaitos" \ "oid").collect {
       case JArray(oids) => oids.collect { case JString(oid) => oid }
@@ -43,6 +38,21 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
     }.map(_.flatMap(organisaatioRepository.getOrganisaatio)).map(toJValue)
 
     koskiUser.juuriOrganisaatio.foreach(org => tiedonsiirtoRepository.create(koskiUser.oid, org.oid, oppija, oppilaitokset, error))
+  }
+
+  private def extractHenkilö(data: JValue, oidHenkilö: Option[OidHenkilö])(implicit user: KoskiUser): Option[JValue] = {
+    val annetutHenkilötiedot: JValue = data \ "henkilö"
+    val annettuTunniste: HetuTaiOid = Json.fromJValue[HetuTaiOid](annetutHenkilötiedot)
+    val oid: Option[String] = oidHenkilö.map(_.oid).orElse(annettuTunniste.oid)
+    val haetutTiedot: Option[HenkilötiedotJaOid] = (oid, annettuTunniste.hetu) match {
+      case (Some(oid), None) => oppijaRepository.findByOid(oid).map(_.toHenkilötiedotJaOid)
+      case (None, Some(hetu)) => oppijaRepository.findOppijat(hetu).headOption
+      case _ => None
+    }
+    haetutTiedot.map(toJValue).orElse(oidHenkilö match {
+      case Some(oidHenkilö) => Some(annetutHenkilötiedot.merge(toJValue(oidHenkilö)))
+      case None => annetutHenkilötiedot.toOption
+    })
   }
 
   private def toHenkilönTiedonsiirrot(tiedonsiirrot: Seq[TiedonsiirtoRow]) = {
@@ -66,11 +76,6 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
     tiedonsiirtoRepository.findByOrganisaatio(koskiUser)
   }
 
-  private def haeOidilla(oid: String)(implicit user: KoskiUser): Option[JValue] =
-    oppijaRepository.findByOid(oid).map(o => toJValue(o.toHenkilötiedotJaOid))
-
-  private def haeHetulla(hetu: String)(implicit user: KoskiUser): Option[JValue] =
-    oppijaRepository.findOppijat(hetu).headOption.map(toJValue)
 }
 
 case class HenkilönTiedonsiirrot(oppija: Option[Henkilö], rivit: Seq[TiedonsiirtoRivi])
