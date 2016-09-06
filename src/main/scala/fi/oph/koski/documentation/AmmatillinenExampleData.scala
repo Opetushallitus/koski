@@ -6,6 +6,7 @@ import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.oppija.MockOppijat
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 
 object AmmatillinenExampleData {
@@ -116,7 +117,7 @@ object AmmatillinenExampleData {
     )
   )
 
-  def opiskeluoikeus(oppilaitos: Oppilaitos = Oppilaitos("1.2.246.562.10.52251087186"),
+  def opiskeluoikeus(oppilaitos: Oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto),
     tutkinto: AmmatillisenTutkinnonSuoritus = autoalanPerustutkinto,
     osat: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = None): AmmatillinenOpiskeluoikeus = {
     AmmatillinenOpiskeluoikeus(
