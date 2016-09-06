@@ -1,5 +1,4 @@
 import React from 'react'
-import Bacon from 'baconjs'
 import Http from './http'
 import { tiedonsiirrotContentP } from './Tiedonsiirrot.jsx'
 import { Tiedonsiirtotaulukko } from './Tiedonsiirtotaulukko.jsx'
