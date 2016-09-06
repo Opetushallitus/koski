@@ -14,7 +14,6 @@ trait AuthenticationSupport extends ScalatraServlet with CasSingleSignOnSupport 
 
   def application: UserAuthenticationContext
 
-
   def haltWithStatus(status: HttpStatus)
 
   def userNotAuthenticatedError = {

@@ -34,12 +34,11 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
     case (ryhmä, index) => new Käyttöoikeusryhmä(index, ryhmä.nimi)
   }
 
-  override def käyttäjänKäyttöoikeusryhmät(oid: String): Observable[List[(String, Int)]] = {
-    val ryhmät: List[(String, Int)] = MockUsers.users.find(_.oid == oid).toList.flatMap(_.käyttöoikeudet).map {
+  override def käyttäjänKäyttöoikeusryhmät(oid: String): List[(String, Int)] = {
+    MockUsers.users.find(_.oid == oid).toList.flatMap(_.käyttöoikeudet).map {
       case (organisaatioOid, ryhmä) =>
         (organisaatioOid, käyttöoikeusryhmät.find(_.name == ryhmä.nimi).get.id)
     }
-    Observable.just(ryhmät)
   }
 
   def search(query: String): UserQueryResult = {

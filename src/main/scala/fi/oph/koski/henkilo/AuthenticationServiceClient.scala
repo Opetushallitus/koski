@@ -16,7 +16,7 @@ import rx.lang.scala.Observable
 
 trait AuthenticationServiceClient {
   def käyttöoikeusryhmät: List[Käyttöoikeusryhmä]
-  def käyttäjänKäyttöoikeusryhmät(oid: String): Observable[List[(String, Int)]]
+  def käyttäjänKäyttöoikeusryhmät(oid: String): List[(String, Int)]
   def search(query: String): UserQueryResult
   def create(createUserInfo: CreateUser): Either[HttpStatus, String]
   def findByOid(id: String): Option[User]
@@ -53,8 +53,8 @@ class RemoteAuthenticationServiceClient(http: Http) extends AuthenticationServic
 
   def käyttöoikeusryhmät: List[Käyttöoikeusryhmä] = runTask(http(uri"/authentication-service/resources/kayttooikeusryhma")(Http.parseJson[List[Käyttöoikeusryhmä]]))
 
-  def käyttäjänKäyttöoikeusryhmät(oid: String): Observable[List[(String, Int)]] = {
-    taskToObservable(http(uri"/authentication-service/resources/s2s/koski/kayttooikeusryhmat/${oid}")(Http.parseJson[Map[String, List[Int]]]).map { groupedByOrg =>
+  def käyttäjänKäyttöoikeusryhmät(oid: String): List[(String, Int)] = {
+    runTask(http(uri"/authentication-service/resources/s2s/koski/kayttooikeusryhmat/${oid}")(Http.parseJson[Map[String, List[Int]]]).map { groupedByOrg =>
       groupedByOrg.toList.flatMap { case (org, ryhmät) => ryhmät.map(ryhmä => (org, ryhmä)) }
     })
   }

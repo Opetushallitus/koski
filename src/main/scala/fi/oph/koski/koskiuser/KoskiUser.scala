@@ -6,11 +6,12 @@ import fi.oph.koski.log.{LogUserContext, Loggable, Logging}
 import fi.oph.koski.schema.{Organisaatio, OrganisaatioWithOid}
 import rx.lang.scala.Observable
 
-class KoskiUser(val oid: String, val clientIp: String, val lang: String, käyttöoikeudetObservable: Observable[Set[Käyttöoikeus]]) extends LogUserContext with Loggable with Logging {
+import scala.concurrent.{ExecutionContext, Future}
+
+class KoskiUser(val oid: String, val clientIp: String, val lang: String, käyttöoikeudet: => Set[Käyttöoikeus]) extends LogUserContext with Loggable with Logging {
   def oidOption = Some(oid)
   def logString = "käyttäjä " + oid
 
-  private lazy val käyttöoikeudet: Set[Käyttöoikeus] = käyttöoikeudetObservable.toBlocking.first
   def organisationOids(accessType: AccessType.Value): Set[String] = käyttöoikeudet.filter(_.ryhmä.orgAccessType.contains(accessType)).flatMap {
     case o:OrganisaatioKäyttöoikeus => Some(o.organisaatio.oid)
     case _ => None
@@ -33,7 +34,7 @@ class KoskiUser(val oid: String, val clientIp: String, val lang: String, käytt�
     }
   }
 
-  käyttöoikeudetObservable.foreach(org => {}) // <- force evaluation to ensure parallel operation
+  Future(käyttöoikeudet)(ExecutionContext.global) // haetaan käyttöoikeudet toisessa säikeessä rinnakkain
 }
 
 object KoskiUser {
@@ -42,5 +43,5 @@ object KoskiUser {
   }
 
   // Internal user with root access
-  val systemUser = new KoskiUser("Koski", "-", "fi", Observable.just(Set(GlobaaliKäyttöoikeus(Käyttöoikeusryhmät.ophPääkäyttäjä))))
+  val systemUser = new KoskiUser("Koski", "-", "fi", Set(GlobaaliKäyttöoikeus(Käyttöoikeusryhmät.ophPääkäyttäjä)))
 }
