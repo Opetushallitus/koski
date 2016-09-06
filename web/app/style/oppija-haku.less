@@ -13,6 +13,7 @@
   }
 
   .hakutulokset {
+    position: relative;
     ul {
       .navi-items;
 
@@ -33,33 +34,38 @@
     vertical-align: bottom;
     line-height: 25px;
   }
-}
 
-.oppija-haku.searching .hakutulokset {
-  &:before {
-    display: block;
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: @color-lightgray;
-    z-index: (@z-index-base + 1);
-    opacity: 0.8;
-  }
-  &:after {
-    display: block;
-    background: url("/koski/images/loader.gif");
-    width: 100px;
-    height: 100px;
-    content: '';
-    position: absolute;
-    z-index: (@z-index-base + 2);
-    top: 27px;
-    left: 120px;
-    opacity: 0.5;
-    animation-name: fadein;
-    animation-duration: 1s;
+  &.searching {
+    .lisaa-oppija {
+      display: none;
+    }
+    .hakutulokset {
+      &:before {
+        display: block;
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: @color-lightgray;
+        z-index: (@z-index-base + 1);
+        opacity: 0.8;
+      }
+      &:after {
+        display: block;
+        background: url("/koski/images/loader.gif");
+        width: 100px;
+        height: 100px;
+        content: '';
+        position: absolute;
+        z-index: (@z-index-base + 2);
+        top: 27px;
+        left: 120px;
+        opacity: 0.5;
+        animation-name: fadein;
+        animation-duration: 1s;
+      }
+    }
   }
 }
