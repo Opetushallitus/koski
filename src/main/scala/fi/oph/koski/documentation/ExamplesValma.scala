@@ -47,7 +47,7 @@ object ExamplesValma {
       suorituskieli = None,
       tila = tilaValmis,
       alkamispäivä = None,
-      toimipiste = Some(toimipiste),
+      toimipiste = Some(stadinToimipiste),
       tutkinto = Some(AmmatillinenTutkintoKoulutus(
         tunniste = Koodistokoodiviite("351101", Some("Kone- ja metallialan perustutkinto"), "koulutus"),
         perusteenDiaarinumero = Some("39/011/2014"))

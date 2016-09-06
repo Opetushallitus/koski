@@ -37,7 +37,7 @@ object AmmatillinenExampleData {
       vahvistus = vahvistus,
       osasuoritukset = osasuoritukset)
 
-  lazy val autoalanPerustutkinto: AmmatillisenTutkinnonSuoritus = tutkintoSuoritus(
+  def autoalanPerustutkinto(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = tutkintoSuoritus(
     tutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus"), Some("39/011/2014")),
     tutkintonimike = None,
     osaamisala = None,
@@ -74,8 +74,8 @@ object AmmatillinenExampleData {
   lazy val suoritustapaOps = Koodistokoodiviite("ops", Some("Opetussuunnitelman mukainen"), "ammatillisentutkinnonsuoritustapa", Some(1))
   lazy val järjestämismuotoOppisopimus = Koodistokoodiviite("20", Some("Oppisopimusmuotoinen"), "jarjestamismuoto", Some(1))
   lazy val järjestämismuotoOppilaitos = Koodistokoodiviite("10", Some("Oppilaitosmuotoinen"), "jarjestamismuoto", Some(1))
-  lazy val stadinAmmattiopisto: Oppilaitos = Oppilaitos("1.2.246.562.10.52251087186", Some(Koodistokoodiviite("10105", None, "oppilaitosnumero", None)), Some("Stadin ammattiopisto"))
-  lazy val toimipiste: OidOrganisaatio = OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))
+  lazy val stadinAmmattiopisto: Oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto, Some(Koodistokoodiviite("10105", None, "oppilaitosnumero", None)), Some("Stadin ammattiopisto"))
+  lazy val stadinToimipiste: OidOrganisaatio = OidOrganisaatio(MockOrganisaatiot.lehtikuusentienToimipiste, Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))
   lazy val tutkintotoimikunta: Organisaatio = Tutkintotoimikunta("Autokorjaamoalan tutkintotoimikunta", 8406)
   lazy val lähdeWinnova = Koodistokoodiviite("winnova", Some("Winnova"), "lahdejarjestelma", Some(1))
   lazy val winnovaLähdejärjestelmäId = LähdejärjestelmäId(Some("12345"), lähdeWinnova)
@@ -103,7 +103,7 @@ object AmmatillinenExampleData {
     suorituskieli = None,
     tila = tilaValmis,
     alkamispäivä = None,
-    toimipiste = Some(toimipiste),
+    toimipiste = Some(stadinToimipiste),
     arviointi = arviointiHyväksytty,
     vahvistus = vahvistus(date(2013, 5, 31), stadinAmmattiopisto, helsinki)
   )
@@ -118,8 +118,8 @@ object AmmatillinenExampleData {
   )
 
   def opiskeluoikeus(oppilaitos: Oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto),
-    tutkinto: AmmatillisenTutkinnonSuoritus = autoalanPerustutkinto,
-    osat: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = None): AmmatillinenOpiskeluoikeus = {
+                     tutkinto: AmmatillisenTutkinnonSuoritus = autoalanPerustutkinto(stadinToimipiste),
+                     osat: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = None): AmmatillinenOpiskeluoikeus = {
     AmmatillinenOpiskeluoikeus(
       alkamispäivä = Some(date(2016, 9, 1)),
       arvioituPäättymispäivä = Some(date(2020, 5, 1)),
@@ -159,7 +159,7 @@ object AmmatillinenExampleData {
       suorituskieli = None,
       tila = tilaValmis,
       alkamispäivä = None,
-      toimipiste = Some(toimipiste),
+      toimipiste = Some(stadinToimipiste),
       arviointi = Some(List(AmmatillinenArviointi(arvosana = arvosana, date(2014, 10, 20)))),
       vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto, helsinki)
     )
