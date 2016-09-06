@@ -1,0 +1,1 @@
+create index tiedonsiirto_org_aikaleima_idx on tiedonsiirto(tallentaja_organisaatio_oid, aikaleima);
