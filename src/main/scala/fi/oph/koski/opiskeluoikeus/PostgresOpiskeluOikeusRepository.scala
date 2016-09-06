@@ -19,7 +19,7 @@ import fi.oph.koski.util.ReactiveStreamsToRx
 import org.json4s.JArray
 import rx.lang.scala.Observable
 import slick.dbio.Effect.{Read, Transactional, Write}
-import slick.dbio.NoStream
+import slick.dbio.{DBIOAction, NoStream}
 import slick.lifted.Query
 import slick.{dbio, lifted}
 
@@ -44,8 +44,10 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
     runDbSync(findByOppijaOidAction(oid).map(rows => rows.map(_.toOpiskeluOikeus)))
   }
 
-  override def findByUserOid(oid: String)(implicit user: KoskiUser): Seq[Opiskeluoikeus] =
-    runDbSync(findAction(OpiskeluOikeudet.filter(_.data.#>>(List("henkilö", "oid")) === oid)).map(rows => rows.map(_.toOpiskeluOikeus)))
+  override def findByUserOid(oid: String)(implicit user: KoskiUser): Seq[Opiskeluoikeus] = {
+    assert(oid == user.oid, "Käyttäjän oid: " + user.oid + " poikkeaa etsittävän oppijan oidista: " + oid)
+    runDbSync(findAction(OpiskeluOikeudet.filter(_.oppijaOid === oid)).map(rows => rows.map(_.toOpiskeluOikeus)))
+  }
 
   def findById(id: Int)(implicit user: KoskiUser): Option[(Opiskeluoikeus, String)] = {
     runDbSync(findAction(OpiskeluOikeudetWithAccessCheck.filter(_.id === id)).map(rows => rows.map(row => (row.toOpiskeluOikeus, row.oppijaOid)))).headOption
@@ -118,6 +120,7 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
   }
 
   private def findAction(query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq])(implicit user: KoskiUser): dbio.DBIOAction[Seq[OpiskeluOikeusRow], NoStream, Read] = {
+    query.result.statements.foreach(println)
     query.result
   }
 

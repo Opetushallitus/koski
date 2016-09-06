@@ -1,5 +1,6 @@
 package fi.oph.koski.oppija
 
+import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.{Loggable, Logging}
 import fi.oph.koski.schema._
 
@@ -30,6 +31,7 @@ object MockOppijat {
   val telma = oppijat.oppija("Telmanen", "Tuula", "170696-986C")
   val erikoisammattitutkinto = oppijat.oppija("Erikoinen", "Erja", "200696-906R")
   val tiedonsiirto = oppijat.oppija("Tiedonsiirto", "Tiina", "290896-9674")
+  val oppija = oppijat.oppija(MockUsers.opiskelija.ldapUser.lastName, MockUsers.opiskelija.ldapUser.givenNames, "190751-739W", MockUsers.opiskelija.ldapUser.oid)
 
   def defaultOppijat = oppijat.getOppijat
 }
@@ -38,8 +40,8 @@ class MockOppijat(private var oppijat: List[TäydellisetHenkilötiedot] = Nil) e
   private var idCounter = oppijat.length
   val äidinkieli: Some[Koodistokoodiviite] = Some(Koodistokoodiviite("FI", None, "kieli", None))
 
-  def oppija(suku: String, etu: String, hetu: String): TäydellisetHenkilötiedot = {
-    val oppija = TäydellisetHenkilötiedot(generateId(), hetu, etu, etu, suku, äidinkieli, None)
+  def oppija(suku: String, etu: String, hetu: String, oid: String = generateId()): TäydellisetHenkilötiedot = {
+    val oppija = TäydellisetHenkilötiedot(oid, hetu, etu, etu, suku, äidinkieli, None)
     oppijat = oppija :: oppijat
     oppija
   }
