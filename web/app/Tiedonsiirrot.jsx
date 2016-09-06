@@ -1,5 +1,4 @@
 import React from 'react'
-import Bacon from 'baconjs'
 import {navigateTo} from './location.js'
 
 const loadingContent = <div className="ajax-indicator-bg">Ladataan...</div>
