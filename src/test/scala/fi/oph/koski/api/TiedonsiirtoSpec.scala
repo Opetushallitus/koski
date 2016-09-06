@@ -1,48 +1,43 @@
 package fi.oph.koski.api
 
+
 import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjestelmäId
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.MockUsers.{helsinkiPalvelukäyttäjä, stadinAmmattiopistoPalvelukäyttäjä}
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.oppija.MockOppijat
-import fi.oph.koski.organisaatio.MockOrganisaatiot.omnia
+import fi.oph.koski.oppija.MockOppijat.eerola
 import fi.oph.koski.schema._
-import fi.oph.koski.tiedonsiirto.HenkilönTiedonsiirrot
+import fi.oph.koski.tiedonsiirto.{ExamplesTiedonsiirto, HenkilönTiedonsiirrot}
 import org.scalatest.FreeSpec
 
 class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
   val oppija: TäydellisetHenkilötiedot = MockOppijat.tyhjä
-  val opiskeluoikeus: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
-    lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId),
-    oppilaitos = Oppilaitos(omnia),
-    suoritukset = List(tutkintoSuoritus.copy(toimipiste = Oppilaitos(omnia)))
-  )
-  val palvelukäyttäjä = MockUsers.omniaPalvelukäyttäjä
 
   "Automaattinen tiedonsiirto" - {
     "Palvelukäyttäjä" - {
       "onnistuneesta tiedonsiirrosta tallennetaan vain henkilö- ja oppilaitostiedot" in {
         resetFixtures
-        putOpiskeluOikeus(opiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(palvelukäyttäjä) ++ jsonContent) {
+        putOpiskeluOikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatus(200)
         }
-        verifyTiedonsiirtoLoki(palvelukäyttäjä, Some(defaultHenkilö), Some(opiskeluoikeus), errorStored = false, dataStored = false)
+        verifyTiedonsiirtoLoki(stadinAmmattiopistoPalvelukäyttäjä, Some(defaultHenkilö), Some(ExamplesTiedonsiirto.opiskeluoikeus), errorStored = false, dataStored = false)
       }
 
       "epäonnistuneesta tiedonsiirrosta tallennetaan kaikki tiedot" in {
         resetFixtures
-        putOpiskeluOikeus(opiskeluoikeus, henkilö = defaultHenkilö.copy(sukunimi = ""), headers = authHeaders(palvelukäyttäjä) ++ jsonContent) {
+        putOpiskeluOikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = defaultHenkilö.copy(sukunimi = ""), headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatus(400)
         }
-        verifyTiedonsiirtoLoki(palvelukäyttäjä, Some(defaultHenkilö), Some(opiskeluoikeus), errorStored = true, dataStored = true)
+        verifyTiedonsiirtoLoki(stadinAmmattiopistoPalvelukäyttäjä, Some(defaultHenkilö), Some(ExamplesTiedonsiirto.opiskeluoikeus), errorStored = true, dataStored = true)
       }
 
       "epäkelposta json viestistä tallennetaan vain virhetiedot" in {
         resetFixtures
-        submit("put", "api/oppija", body = "not json".getBytes("UTF-8"), headers = authHeaders(palvelukäyttäjä) ++ jsonContent) {
+        submit("put", "api/oppija", body = "not json".getBytes("UTF-8"), headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatus(400)
         }
-        verifyTiedonsiirtoLoki(palvelukäyttäjä, None, None, errorStored = true, dataStored = false)
+        verifyTiedonsiirtoLoki(stadinAmmattiopistoPalvelukäyttäjä, None, None, errorStored = true, dataStored = false)
       }
     }
   }
@@ -50,10 +45,10 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
   "Muutos käyttöliittymästä" - {
     "ei tallenneta tiedonsiirtoja" in {
       resetFixtures
-      putOpiskeluOikeus(opiskeluoikeus.copy(lähdejärjestelmänId = None), henkilö = defaultHenkilö, headers = authHeaders(MockUsers.omniaTallentaja) ++ jsonContent) {
+      putOpiskeluOikeus(ExamplesTiedonsiirto.opiskeluoikeus.copy(lähdejärjestelmänId = None), henkilö = defaultHenkilö, headers = authHeaders(MockUsers.stadinAmmattiopistoTallentaja) ++ jsonContent) {
         verifyResponseStatus(200)
       }
-      getTiedonsiirrot(palvelukäyttäjä) should be(empty)
+      getTiedonsiirrot(helsinkiPalvelukäyttäjä) should be(empty)
     }
   }
 
@@ -79,15 +74,15 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
 
     "pääkäyttäjä näkee kaikki tiedonsiirrot" in {
       resetFixtures
-      putOpiskeluOikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinkiPalvelukäyttäjä) ++ jsonContent) {
+      putOpiskeluOikeus(stadinOpiskeluoikeus, henkilö = eerola, headers = authHeaders(helsinkiPalvelukäyttäjä) ++ jsonContent) {
         verifyResponseStatus(200)
       }
 
-      putOpiskeluOikeus(opiskeluoikeus, henkilö = defaultHenkilö.copy(sukunimi = ""), headers = authHeaders(palvelukäyttäjä) ++ jsonContent) {
+      putOpiskeluOikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = eerola.copy(sukunimi = ""), headers = authHeaders(helsinkiPalvelukäyttäjä) ++ jsonContent) {
         verifyResponseStatus(400)
       }
 
-      getTiedonsiirrot(MockUsers.paakayttaja).flatMap(_.rivit) should have size 2
+      getTiedonsiirrot(MockUsers.paakayttaja).flatMap(_.rivit).flatMap(_.oppija.flatMap(_.hetu)).filter(_ == eerola.hetu) should equal(List(eerola.hetu, eerola.hetu))
     }
 
     "näytetään virheelliset" in {
@@ -113,7 +108,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         verifyResponseStatus(400)
       }
 
-      putOpiskeluOikeus(stadinOpiskeluoikeus, henkilö = MockOppijat.eerola.copy(sukunimi = ""), headers = authHeaders(helsinkiPalvelukäyttäjä) ++ jsonContent) {
+      putOpiskeluOikeus(stadinOpiskeluoikeus, henkilö = eerola.copy(sukunimi = ""), headers = authHeaders(helsinkiPalvelukäyttäjä) ++ jsonContent) {
         verifyResponseStatus(400)
       }
 
@@ -121,7 +116,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         verifyResponseStatus(200)
       }
 
-      getVirheellisetTiedonsiirrot(helsinkiPalvelukäyttäjä).flatMap(_.oppija.flatMap(_.hetu)) should equal(List(MockOppijat.eerola.hetu))
+      getVirheellisetTiedonsiirrot(helsinkiPalvelukäyttäjä).flatMap(_.oppija.flatMap(_.hetu)) should equal(List(eerola.hetu))
     }
   }
 

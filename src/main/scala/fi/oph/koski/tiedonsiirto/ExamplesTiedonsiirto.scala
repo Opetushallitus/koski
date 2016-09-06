@@ -7,7 +7,7 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, Oppija, Oppilaitos}
 
 object ExamplesTiedonsiirto {
-  val opiskeluoikeus = AmmatillinenExampleData.opiskeluoikeus().copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
+  val opiskeluoikeus: AmmatillinenOpiskeluoikeus = AmmatillinenExampleData.opiskeluoikeus().copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
   val failingOpiskeluoikeus: AmmatillinenOpiskeluoikeus = opiskeluoikeus.copy(oppilaitos = Oppilaitos(MockOrganisaatiot.aaltoYliopisto))
 
   val examples: List[Example] = List(

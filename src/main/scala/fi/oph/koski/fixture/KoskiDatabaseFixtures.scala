@@ -1,22 +1,21 @@
 package fi.oph.koski.fixture
 
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.KoskiDatabase._
+import java.time.LocalDate.{of => date}
+
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
 import fi.oph.koski.documentation._
 import fi.oph.koski.json.Json
 import fi.oph.koski.koski.KoskiValidator
-import fi.oph.koski.koskiuser.{AccessType, KoskiUser, MockUsers}
+import fi.oph.koski.koskiuser.{AccessType, KoskiUser}
 import fi.oph.koski.opiskeluoikeus.OpiskeluOikeusRepository
 import fi.oph.koski.oppija.{MockOppijat, OppijaRepository, VerifiedOppijaOid}
-import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.organisaatio.{OrganisaatioRepository, MockOrganisaatiot}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
-import java.time.LocalDate.{of => date}
-
 import slick.dbio.DBIO
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 
 class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluOikeusRepository, oppijaRepository: OppijaRepository, validator: KoskiValidator) extends KoskiDatabaseMethods with Timing {
   implicit val user = KoskiUser.systemUser
@@ -28,7 +27,7 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluO
 
     val oppijat: List[HenkilötiedotJaOid] = oppijaRepository.findOppijat("")
     val deleteOpiskeluOikeudet = oppijat.map{oppija => OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid === oppija.oid).delete}
-    val deleteTiedonsiirrot = TiedonsiirtoWithAccessCheck.delete
+    val deleteTiedonsiirrot = TiedonsiirtoWithAccessCheck.filter(t => t.tallentajaOrganisaatioOid === MockOrganisaatiot.stadinAmmattiopisto || t.tallentajaOrganisaatioOid === MockOrganisaatiot.helsinginKaupunki).delete
 
     runDbSync(DBIO.sequence(deleteOpiskeluOikeudet))
     runDbSync(deleteTiedonsiirrot)
