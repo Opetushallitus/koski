@@ -17,7 +17,7 @@ class TiedonsiirtoRepository(val db: DB) extends GlobalExecutionContext with Kos
   def create(kayttajaOid: String, tallentajaOrganisaatioOid: String, oppija: Option[JValue], oppilaitos: Option[JValue], error: Option[TiedonsiirtoError]) {
     val (data, virheet) = error.map(e => (Some(e.data), Some(e.virheet))).getOrElse((None, None))
 
-    db.run {
+    runDbSync {
       Tiedonsiirto.map { row => (row.kayttajaOid, row.tallentajaOrganisaatioOid, row.oppija, row.oppilaitos, row.data, row.virheet) } += (kayttajaOid, tallentajaOrganisaatioOid, oppija, oppilaitos, data, virheet)
     }
   }
