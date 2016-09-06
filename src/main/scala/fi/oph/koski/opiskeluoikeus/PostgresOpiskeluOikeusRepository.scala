@@ -14,7 +14,7 @@ import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusChangeValidator.validateOpiskel
 import fi.oph.koski.oppija.PossiblyUnverifiedOppijaOid
 import fi.oph.koski.schema.Henkilö._
 import fi.oph.koski.schema.Opiskeluoikeus.VERSIO_1
-import fi.oph.koski.schema.{HenkilötiedotJaOid, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, TäydellisetHenkilötiedot}
+import fi.oph.koski.schema.{HenkilötiedotJaOid, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
 import fi.oph.koski.util.ReactiveStreamsToRx
 import org.json4s.JArray
 import rx.lang.scala.Observable
@@ -43,6 +43,9 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
   override def findByOppijaOid(oid: String)(implicit user: KoskiUser): Seq[Opiskeluoikeus] = {
     runDbSync(findByOppijaOidAction(oid).map(rows => rows.map(_.toOpiskeluOikeus)))
   }
+
+  override def findByUserOid(oid: String)(implicit user: KoskiUser): Seq[Opiskeluoikeus] =
+    runDbSync(findAction(OpiskeluOikeudet.filter(_.data.#>>(List("henkilö", "oid")) === oid)).map(rows => rows.map(_.toOpiskeluOikeus)))
 
   def findById(id: Int)(implicit user: KoskiUser): Option[(Opiskeluoikeus, String)] = {
     runDbSync(findAction(OpiskeluOikeudetWithAccessCheck.filter(_.id === id)).map(rows => rows.map(row => (row.toOpiskeluOikeus, row.oppijaOid)))).headOption

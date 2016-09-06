@@ -16,6 +16,7 @@ trait OpiskeluOikeusRepository extends AuxiliaryOpiskeluOikeusRepository {
   def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiUser): Either[HttpStatus, CreateOrUpdateResult]
   def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiUser): Seq[HenkilötiedotJaOid]
   def findByOppijaOid(oid: String)(implicit user: KoskiUser): Seq[Opiskeluoikeus]
+  def findByUserOid(oid: String)(implicit user: KoskiUser): Seq[Opiskeluoikeus]
 }
 
 trait AuxiliaryOpiskeluOikeusRepository {

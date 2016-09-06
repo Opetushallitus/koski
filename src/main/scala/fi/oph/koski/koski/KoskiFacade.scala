@@ -107,17 +107,19 @@ class KoskiFacade(oppijaRepository: OppijaRepository, opiskeluOikeusRepository: 
     }
   }
 
-  def findOppija(oid: String)(implicit user: KoskiUser): Either[HttpStatus, Oppija] = {
-    def notFound = Left(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa " + oid + " ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
 
+  def findOppija(oid: String)(implicit user: KoskiUser): Either[HttpStatus, Oppija] = toOppija(opiskeluOikeusRepository.findByOppijaOid)(user)(oid)
+  def findUserOppija(implicit user: KoskiUser): Either[HttpStatus, Oppija] = toOppija(opiskeluOikeusRepository.findByUserOid)(user)(user.oid)
+
+  private def toOppija(findFunc: String => Seq[Opiskeluoikeus])(implicit user: KoskiUser): String => Either[HttpStatus, Oppija] = oid => {
+    def notFound = Left(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa " + oid + " ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
     val result = oppijaRepository.findByOid(oid) match {
       case Some(oppija) =>
-        opiskeluOikeusRepository.findByOppijaOid(oppija.oid) match {
+        findFunc(oppija.oid) match {
           case Nil => notFound
           case opiskeluoikeudet: Seq[Opiskeluoikeus] => Right(Oppija(oppija, opiskeluoikeudet.sortBy(_.id)))
         }
-      case None =>
-        notFound
+      case None => notFound
     }
     result.right.foreach((oppija: Oppija) => AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, user, Map(oppijaHenkiloOid -> oid))))
     result
@@ -135,7 +137,6 @@ class KoskiFacade(oppijaRepository: OppijaRepository, opiskeluOikeusRepository: 
         Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
     }
   }
-
 
   private def query(filters: List[QueryFilter])(implicit user: KoskiUser): Observable[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])] = {
     val oikeudetPerOppijaOid: Observable[(Oid, List[OpiskeluOikeusRow])] = opiskeluOikeusRepository.query(filters)

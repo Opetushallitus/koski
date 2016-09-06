@@ -7,7 +7,6 @@ import fi.oph.koski.servlet.ApiServlet
 class OmatTiedotServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication {
 
   get() {
-    implicit val user = koskiUser
-    application.facade.findOppija(user.oid)
+    application.facade.findUserOppija(koskiUser)
   }
 }
