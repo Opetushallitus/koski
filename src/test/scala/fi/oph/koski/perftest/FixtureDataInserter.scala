@@ -23,9 +23,8 @@ abstract class FixtureDataInserter extends App with DefaultHttpTester with Loggi
         oikeudet.zipWithIndex.foreach { case(oikeus, index) =>
           val oppija: Oppija = Oppija(henkilö, List(oikeus))
           val body = Json.write(oppija).getBytes("utf-8")
-          println(s"Insert $nimi (${index + 1} / ${oikeudet.length})")
           put("api/oppija", body = body, headers = (authHeaders() ++ jsonContent)) {
-            logger.info(nimi + " " + response.status)
+            if (x % (Math.max(1, amount / 10000)) == 1) logger.info(nimi + " " + response.status)
             handleResponse(response, oikeus)
           }
         }
