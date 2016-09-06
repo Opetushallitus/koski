@@ -5,13 +5,13 @@ import java.time.LocalDateTime
 
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.Tables.{Tiedonsiirto, TiedonsiirtoRow, TiedonsiirtoWithAccessCheck}
-import fi.oph.koski.db.{KoskiDatabaseMethods, GlobalExecutionContext}
+import fi.oph.koski.db.{GlobalExecutionContext, KoskiDatabaseMethods}
 import fi.oph.koski.koskiuser.KoskiUser
 import org.json4s.JsonAST.JValue
-
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.util.Timing
 
-class TiedonsiirtoRepository(val db: DB) extends  GlobalExecutionContext with KoskiDatabaseMethods {
+class TiedonsiirtoRepository(val db: DB) extends GlobalExecutionContext with KoskiDatabaseMethods with Timing {
   val maxResults = 1000
 
   def create(kayttajaOid: String, tallentajaOrganisaatioOid: String, oppija: Option[JValue], oppilaitos: Option[JValue], error: Option[TiedonsiirtoError]) {
@@ -24,9 +24,10 @@ class TiedonsiirtoRepository(val db: DB) extends  GlobalExecutionContext with Ko
 
   def findByOrganisaatio(koskiUser: KoskiUser): Seq[TiedonsiirtoRow] = {
     val dayAgo = Timestamp.valueOf(LocalDateTime.now.minusHours(24))
-    runDbSync(TiedonsiirtoWithAccessCheck(koskiUser).filter(_.aikaleima > dayAgo).sortBy(_.id.desc).result)
+    timed("findByOrganisaatio") {
+      runDbSync(TiedonsiirtoWithAccessCheck(koskiUser).filter(_.aikaleima > dayAgo).sortBy(_.id.desc).take(10000).result)
+    }
   }
 }
 
 case class TiedonsiirtoError(data: JValue, virheet: JValue)
-
