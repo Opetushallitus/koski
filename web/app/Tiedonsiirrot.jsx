@@ -4,7 +4,7 @@ import {navigateTo} from './location.js'
 
 const loadingContent = <div className="ajax-indicator-bg">Ladataan...</div>
 
-const withLoadingIndicator = (contentP) => Bacon.once(loadingContent).concat(contentP).toProperty()
+const withLoadingIndicator = (contentP) => contentP.startWith(loadingContent)
 
 export const tiedonsiirrotContentP = (location, contentP) => withLoadingIndicator(contentP).map((content) => (<div className='content-area'>
   <nav className="sidebar tiedonsiirrot-navi">
