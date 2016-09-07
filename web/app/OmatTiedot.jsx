@@ -1,6 +1,6 @@
-import React from "react"
-import Http from "./http"
-import {ExistingOppija} from "./Oppija.jsx"
+import React from 'react'
+import Http from './http'
+import {ExistingOppija} from './Oppija.jsx'
 
 const omatTiedotP = () => Http.get('/koski/api/editor/omattiedot').toProperty()
 
