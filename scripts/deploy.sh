@@ -66,7 +66,7 @@ set +u
 if [ -z "$OS_USERNAME" ] || [ -z "$OS_PASSWORD" ] && [ "$ENV" != "vagrant" ]; then
   source "$CLOUD_ENV_DIR"/*-openrc.sh
 fi
-source "$CLOUD_ENV_DIR"/pouta-venv/bin/activate
+
 set -u
 export TF_VAR_env="$ENV"
 
