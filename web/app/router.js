@@ -16,7 +16,7 @@ export const contentP = locationP.flatMapLatest(location => {
   } else if (location === '/koski/tiedonsiirrot/virheet') {
     return tiedonsiirtovirheetContentP()
   } else if (location === '/koski/omattiedot') {
-    return omatTiedotContentP
+    return omatTiedotContentP()
   }
 }).toProperty()
 
