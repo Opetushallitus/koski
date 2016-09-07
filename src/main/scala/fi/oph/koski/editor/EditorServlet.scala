@@ -16,6 +16,10 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
     renderEither(findByOid(params("oid"), koskiUser))
   }
 
+  get("/omattiedot") {
+    renderEither(findByUserOppija(koskiUser))
+  }
+
   get("/koodit/:koodistoUri") {
     getKoodit()
   }
@@ -46,6 +50,16 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
   private def modelBuilder = new EditorModelBuilder(context, EditorSchema.schema)(koskiUser)
 
   private def findByOid(oid: String, user: KoskiUser): Either[HttpStatus, EditorModel] = {
+    HenkiloOid.validateHenkilöOid(oid).right.flatMap { oid =>
+      toEditorModel(application.facade.findOppija(oid)(user))
+    }
+  }
+
+  private def findByUserOppija(user: KoskiUser): Either[HttpStatus, EditorModel] = {
+    toEditorModel(application.facade.findUserOppija(user))
+  }
+
+  private def toEditorModel(oppija: Either[HttpStatus, Oppija]): Either[HttpStatus, EditorModel] = {
     implicit val opiskeluoikeusOrdering = new Ordering[Option[LocalDate]] {
       override def compare(x: Option[LocalDate], y: Option[LocalDate]) = (x, y) match {
         case (None, Some(_)) => 1
@@ -54,15 +68,14 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
         case (Some(x), Some(y)) => if (x.isBefore(y)) { -1 } else { 1 }
       }
     }
-    HenkiloOid.validateHenkilöOid(oid).right.flatMap { oid =>
-      application.facade.findOppija(oid)(user).right.map{oppija =>
-        val oppilaitokset = oppija.opiskeluoikeudet.groupBy(_.oppilaitos).map {
-          case (oppilaitos, opiskeluoikeudet) => OppilaitoksenOpiskeluoikeudet(oppilaitos, opiskeluoikeudet.toList.sortBy(_.alkamispäivä))
-        }.toList.sortBy(_.opiskeluoikeudet(0).alkamispäivä)
-        val editorView = OppijaEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], oppilaitokset)
 
-        timed("buildModel") { modelBuilder.buildModel(EditorSchema.schema, editorView)}
-      }
+    oppija.right.map{oppija =>
+      val oppilaitokset = oppija.opiskeluoikeudet.groupBy(_.oppilaitos).map {
+        case (oppilaitos, opiskeluoikeudet) => OppilaitoksenOpiskeluoikeudet(oppilaitos, opiskeluoikeudet.toList.sortBy(_.alkamispäivä))
+      }.toList.sortBy(_.opiskeluoikeudet(0).alkamispäivä)
+      val editorView = OppijaEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], oppilaitokset)
+
+      timed("buildModel") { modelBuilder.buildModel(EditorSchema.schema, editorView)}
     }
   }
 }

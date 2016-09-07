@@ -11,7 +11,6 @@ import fi.oph.koski.koodisto.KoodistoCreator
 import fi.oph.koski.koski.{HealthCheckServlet, OppijaServlet}
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.Logging
-import fi.oph.koski.omattiedot.OmatTiedotServlet
 import fi.oph.koski.oppilaitos.OppilaitosServlet
 import fi.oph.koski.servlet.IndexServlet
 import fi.oph.koski.suoritusote.SuoritusServlet
@@ -39,7 +38,6 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       context.mount(new HealthCheckServlet(application), "/api/healthcheck")
       context.mount(new KoskiHistoryServlet(application), "/api/opiskeluoikeus/historia")
       context.mount(new TiedonsiirtoServlet(application), "/api/tiedonsiirrot")
-      context.mount(new OmatTiedotServlet(application), "/api/omattiedot")
       context.mount(new UserServlet(application), "/user")
       context.mount(new CasServlet(application), "/cas")
       context.mount(new LogoutServlet(application), "/user/logout")

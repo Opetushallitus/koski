@@ -1,13 +1,12 @@
-import React from 'react'
-import Http from './http'
+import React from "react"
+import Http from "./http"
+import {ExistingOppija} from "./Oppija.jsx"
 
-const omatTiedotP = () => Http.get('/koski/api/omattiedot').toProperty()
+const omatTiedotP = () => Http.get('/koski/api/editor/omattiedot').toProperty()
 
-
-export const omatTiedotContentP = omatTiedotP().map(() =>
+export const omatTiedotContentP = omatTiedotP().map((oppija) =>
   <div className="content-area">
-    <div className="main-content">
-      <h1>Omat tiedot</h1>
-    </div>
+    <nav className="sidebar"></nav>
+    <ExistingOppija className="main-content" oppija={oppija}/>
   </div>
 )

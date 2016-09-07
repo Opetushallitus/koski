@@ -72,7 +72,7 @@ export const Oppija = ({oppija}) =>
 
 const Loading = () => <div className='main-content oppija loading'></div>
 
-const ExistingOppija = React.createClass({
+export const ExistingOppija = React.createClass({
   render() {
     let {oppija} = this.props
     let henkilö = modelLookup(oppija, 'henkilö')

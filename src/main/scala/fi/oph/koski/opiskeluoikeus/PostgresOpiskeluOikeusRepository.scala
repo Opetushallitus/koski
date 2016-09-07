@@ -120,7 +120,6 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
   }
 
   private def findAction(query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq])(implicit user: KoskiUser): dbio.DBIOAction[Seq[OpiskeluOikeusRow], NoStream, Read] = {
-    query.result.statements.foreach(println)
     query.result
   }
 
