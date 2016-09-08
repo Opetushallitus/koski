@@ -18,7 +18,7 @@ object MockUsers {
   val stadinAmmattiopistoTallentaja = MockUser(LdapUser(List(), "tallentaja", "tallentaja", "00160"), Set((MockOrganisaatiot.stadinAmmattiopisto, oppilaitosTallentaja)))
   val helsinkiPalvelukäyttäjä = MockUser(LdapUser(List(), "helsinki", "helsinki", "00100"), Set((MockOrganisaatiot.helsinginKaupunki, oppilaitosPalvelukäyttäjä)))
   val kahdenOrganisaatioPalvelukäyttäjä = MockUser(LdapUser(List(), "palvelu2", "palvelu2", "01130"), Set((MockOrganisaatiot.helsinginKaupunki, oppilaitosPalvelukäyttäjä), (MockOrganisaatiot.omnia, oppilaitosPalvelukäyttäjä)))
-  val opiskelija = MockUser(LdapUser(List(), "oppija", "oili", "1.2.246.562.24.99999999999"), Set((omnia, oppilaitosKatselija)))
+  val omattiedot = MockUser(LdapUser(List(), "oppija", "oili", "1.2.246.562.24.99999999999"), Set((omnia, oppilaitosKatselija)))
 
   val users = List(
     kalle,
@@ -32,7 +32,7 @@ object MockUsers {
     stadinAmmattiopistoTallentaja,
     helsinkiPalvelukäyttäjä,
     kahdenOrganisaatioPalvelukäyttäjä,
-    opiskelija
+    omattiedot
   )
 }
 
