@@ -11,7 +11,7 @@ import org.json4s.JsonAST.JValue
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.util.Timing
 
-class TiedonsiirtoRepository(val db: DB) extends GlobalExecutionContext with KoskiDatabaseMethods with Timing {
+class TiedonsiirtoRepository(val db: DB, mailer: TiedonsiirtoFailureMailer) extends GlobalExecutionContext with KoskiDatabaseMethods with Timing {
   val maxResults = 1000
 
   def create(kayttajaOid: String, tallentajaOrganisaatioOid: String, oppija: Option[JValue], oppilaitos: Option[JValue], error: Option[TiedonsiirtoError]) {
@@ -19,6 +19,10 @@ class TiedonsiirtoRepository(val db: DB) extends GlobalExecutionContext with Kos
 
     runDbSync {
       Tiedonsiirto.map { row => (row.kayttajaOid, row.tallentajaOrganisaatioOid, row.oppija, row.oppilaitos, row.data, row.virheet) } += (kayttajaOid, tallentajaOrganisaatioOid, oppija, oppilaitos, data, virheet)
+    }
+
+    if (error.isDefined) {
+      mailer.sendMail(tallentajaOrganisaatioOid)
     }
   }
 

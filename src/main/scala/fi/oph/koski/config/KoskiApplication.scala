@@ -17,7 +17,7 @@ import fi.oph.koski.opiskeluoikeus.{AuxiliaryOpiskeluOikeusRepository, Composite
 import fi.oph.koski.oppija.OppijaRepository
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
-import fi.oph.koski.tiedonsiirto.{TiedonsiirtoRepository, TiedonsiirtoService}
+import fi.oph.koski.tiedonsiirto.{TiedonsiirtoFailureMailer, TiedonsiirtoRepository, TiedonsiirtoService}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
 import fi.oph.koski.ytr.{YlioppilasTutkintoRekisteri, YtrAccessChecker, YtrOpiskeluoikeusRepository}
@@ -56,7 +56,7 @@ class KoskiApplication(val config: Config) extends Logging with UserAuthenticati
   lazy val sessionTimeout = SessionTimeout(config)
   lazy val serviceTicketRepository = new CasTicketSessionRepository(database.db, sessionTimeout)
   lazy val fixtureCreator = new FixtureCreator(config, database, opiskeluOikeusRepository, oppijaRepository, validator)
-  lazy val tiedonsiirtoService = new TiedonsiirtoService(new TiedonsiirtoRepository(database.db), organisaatioRepository, oppijaRepository)
+  lazy val tiedonsiirtoService = new TiedonsiirtoService(new TiedonsiirtoRepository(database.db, new TiedonsiirtoFailureMailer), organisaatioRepository, oppijaRepository)
 
   def invalidateCaches = GlobalCacheInvalidator.invalidateCache
 }

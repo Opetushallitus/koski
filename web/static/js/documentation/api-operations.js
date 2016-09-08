@@ -17,10 +17,10 @@ function toggleExpanded(elem) {
 // API Tester logic
 forEach(document.querySelectorAll('.api-operation'), function(operationElem) {
   operationElem.querySelector("h3").addEventListener("click", toggleExpanded(operationElem))
+  forEach(operationElem.querySelectorAll('.status-codes'), function(elem) {
+    elem.querySelector('h4').addEventListener('click', toggleExpanded(elem))
+  })
   forEach(operationElem.querySelectorAll('.api-tester'), function(apiTesterElem) {
-    forEach(apiTesterElem.querySelectorAll('.status-codes'), function(elem) {
-      elem.querySelector('h4').addEventListener('click', toggleExpanded(elem))
-    })
 
     var exampleSelector = apiTesterElem.querySelector(".examples select")
     var codeMirror
