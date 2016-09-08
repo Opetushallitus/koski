@@ -30,6 +30,10 @@ class IndexServlet(val application: UserAuthenticationContext) extends ScalatraS
   get("/omattiedot") {
     IndexServlet.html
   }
+
+  get("/tiedonsiirrot*") {
+    IndexServlet.html
+  }
 }
 
 object IndexServlet {
