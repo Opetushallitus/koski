@@ -117,7 +117,8 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
         <script src="js/polyfills/promise.js"></script>
         <script src="js/polyfills/fetch.js"></script>
         <script src="js/polyfills/dataset.js"></script>
-        <script src="js/documentation.js"></script>
+        <script src="js/documentation/api-operations.js"></script>
+        <script src="js/documentation/json-examples.js"></script>
       </body>
     </html>
   }
