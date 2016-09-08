@@ -143,7 +143,7 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
   }
 }
 
-case class ApiOperation(method: String, path: String, doc: Elem, examples: List[Example], parameters: List[Parameter], statusCodes: List[ErrorCategory])
+case class ApiOperation(method: String, path: String, summary: String, doc: Elem, examples: List[Example], parameters: List[Parameter], statusCodes: List[ErrorCategory])
 
 sealed trait Parameter {
   def name: String

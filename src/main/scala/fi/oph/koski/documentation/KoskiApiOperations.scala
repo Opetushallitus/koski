@@ -12,7 +12,8 @@ object KoskiApiOperations {
  val operations = List(
    ApiOperation(
       "GET", "/koski/api/oppija/search",
-      <p> Etsii oppijoita annetulla hakusanalla. Hakutuloksissa vain oppijoiden perustiedot.
+     "Etsii oppijoita annetulla hakusanalla.",
+      <p> Hakutuloksissa vain oppijoiden perustiedot.
             Hakusana voi olla hetu, oppija-oid tai nimen osa. Tuloksiin sisällytetään vain ne oppijat,
             joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</p>,
       Nil,
@@ -25,7 +26,8 @@ object KoskiApiOperations {
    ),
    ApiOperation(
     "GET", "/koski/api/oppija",
-     <p>Palauttaa oppijoiden tiedot annetuilla parametreilla. Sisältää oppijoiden henkilötiedot,
+     "Palauttaa oppijoiden tiedot annetuilla parametreilla.",
+     <p>Sisältää oppijoiden henkilötiedot,
           opiskeluoikeudet suorituksineen.
           Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</p>,
      Nil,
@@ -39,8 +41,8 @@ object KoskiApiOperations {
    ),
    ApiOperation(
      "GET", "/koski/api/oppija/validate",
-     <p>Etsii oppijat annetuilla parametreilla ja validoi hakutulokset.
-          Validointi suoritetaan tämän hetkisen JSON-scheman ja muiden validointisääntöjen mukaan.
+     "Etsii oppijat annetuilla parametreilla ja validoi hakutulokset.",
+     <p>Validointi suoritetaan tämän hetkisen JSON-scheman ja muiden validointisääntöjen mukaan.
           Lisäksi validoidaan opinto-oikeuksien versiohistorioiden eheys.
           Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</p>,
      Nil,
@@ -54,7 +56,8 @@ object KoskiApiOperations {
    ),
    ApiOperation(
      "GET", "/koski/api/oppija/{oid}",
-     <p>Hakee oppijan tiedot ja opiskeluoikeudet suorituksineen.</p>,
+     "Hakee oppijan tiedot ja opiskeluoikeudet suorituksineen.",
+     <p></p>,
      Nil,
      List(PathParameter("oid", "Oppijan tunniste", "1.2.246.562.24.00000000001")),
      List(
@@ -66,6 +69,7 @@ object KoskiApiOperations {
    ),
    ApiOperation(
      "GET", "/koski/api/oppija/validate/{oid}",
+     "Validoi oppijan kantaan tallennetun datan oikeellisuuden",
      <p>Validoi oppijan kantaan tallennetun datan oikeellisuuden</p>,
      Nil,
      List(PathParameter("oid", "Oppijan tunniste", "1.2.246.562.24.00000000001")),
@@ -78,7 +82,8 @@ object KoskiApiOperations {
    ),
    ApiOperation(
      "GET", "/koski/api/opiskeluoikeus/historia/{opiskeluoikeus_id}",
-     <p>Listaa tiettyyn opiskeluoikeuteen kohdistuneet muutokset</p>,
+     "Listaa tiettyyn opiskeluoikeuteen kohdistuneet muutokset",
+     <p></p>,
      Nil,
      List(PathParameter("opiskeluoikeus_id", "Opiskeluoikeuden tunniste", "354")),
      List(
@@ -89,7 +94,8 @@ object KoskiApiOperations {
    ),
    ApiOperation(
      "GET", "/koski/api/opiskeluoikeus/historia/{opiskeluoikeus_id}/{versionumero}",
-     <p>Palauttaa opiskeluoikeuden tiedot tietyssä versiossa</p>,
+     "Palauttaa opiskeluoikeuden tiedot tietyssä versiossa",
+     <p></p>,
      Nil,
      List(
        PathParameter("opiskeluoikeus_id", "Opiskeluoikeuden tunniste", "354"),
@@ -104,9 +110,9 @@ object KoskiApiOperations {
    ),
    ApiOperation(
      "PUT", "/koski/api/oppija",
+     "Lisää/päivittää oppijan ja opiskeluoikeuksia.",
      <div>
-       <p>Lisää/päivittää oppijan ja opiskeluoikeuksia.
-          Palauttaa objektin, jossa on henkilön <em>oid</em>, eli henkilön yksilöivä tunniste Koski ja Opintopolku-järjestelmissä.
+       <p>Palauttaa objektin, jossa on henkilön <em>oid</em>, eli henkilön yksilöivä tunniste Koski ja Opintopolku-järjestelmissä.
          Lisäksi paluuarvossa on lista päivitetyistä/luoduista opiskeluoikeuksista tunnisteineen ja versioineen.</p>
        <p>
          Tallennettava henkilö tunnistetaan joko henkilötunnuksen tai <em>oid</em>in perusteella. Tietojen päivittäminen on huomattavasti

@@ -175,10 +175,10 @@ th {
     border: 1px solid #d9d9d9;
     margin-bottom: 20px;
     border-radius: 5px;
+    padding-bottom: 10px;
 }
 
 .api-operation.expanded {
-    padding-bottom: 40px;
 }
 
 .api-operation h3 {
