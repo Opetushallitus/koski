@@ -36,6 +36,7 @@ forEach(document.querySelectorAll('.api-operation'), function(operationElem) {
     if (operationElem.className.indexOf("expanded") >= 0) {
       operationElem.className = "api-operation"
     } else {
+      operationElem.dispatchEvent(new Event("expand"))
       operationElem.className = "api-operation expanded"
     }
   })
@@ -60,15 +61,15 @@ function toggleExpanded(elem) {
   }
 }
 
-forEach(document.querySelectorAll('.api-tester'), function(elem) {
-  var exampleSelector = elem.querySelector(".examples select")
+forEach(document.querySelectorAll('.api-tester'), function(apiTesterElem) {
+  var exampleSelector = apiTesterElem.querySelector(".examples select")
   var codeMirror
-  var queryParamInputs = a(elem.querySelectorAll(".parameters input.query-param"))
-  var pathParamInputs = a(elem.querySelectorAll(".parameters input.path-param"))
+  var queryParamInputs = a(apiTesterElem.querySelectorAll(".parameters input.query-param"))
+  var pathParamInputs = a(apiTesterElem.querySelectorAll(".parameters input.path-param"))
   var paramInputs = queryParamInputs.concat(pathParamInputs)
 
   function apiUrl() {
-    var path = elem.dataset.path
+    var path = apiTesterElem.dataset.path
     pathParamInputs.forEach(function(input) {
       path = path.replace('{' + input.name + '}', encodeURIComponent(input.value))
     })
@@ -79,30 +80,38 @@ forEach(document.querySelectorAll('.api-tester'), function(elem) {
   }
 
   if (exampleSelector) {
-    var editorElem = elem.querySelector("textarea");
+    var editorElem = apiTesterElem.querySelector("textarea");
     codeMirror = CodeMirror.fromTextArea(editorElem, { mode: { name: "javascript", json: true}, theme: "custom" })
-    exampleSelector.addEventListener("change", function(a,b,c) {
-      var data = event.target.options[event.target.selectedIndex].dataset.exampledata
+    function showExampleData() {
+      console.log("showing")
+      var index = exampleSelector.selectedIndex
+      var data = exampleSelector.options[index].dataset.exampledata
       editorElem.value=data
       codeMirror.setValue(data)
+    }
+    exampleSelector.addEventListener("change", showExampleData)
+    showExampleData()
+
+    apiTesterElem.closest(".api-operation").addEventListener("expand", function() {
+      setTimeout(showExampleData, 0) // Patching codemirror: doesn't seem to work when setValue is called while not visible
     })
   }
 
-  elem.querySelector('.try').addEventListener('click', function() {
-    elem.className = "api-tester loading"
+  apiTesterElem.querySelector('.try').addEventListener('click', function() {
+    apiTesterElem.className = "api-tester loading"
 
-    forEach(elem.querySelectorAll('button'), function(buttonElem) { buttonElem.disabled = true })
+    forEach(apiTesterElem.querySelectorAll('button'), function(buttonElem) { buttonElem.disabled = true })
 
-    var options = {credentials: 'include', method: elem.dataset.method, headers: {'Content-Type': 'application/json'}};
+    var options = {credentials: 'include', method: apiTesterElem.dataset.method, headers: {'Content-Type': 'application/json'}};
 
     if (codeMirror) {
       options.body = codeMirror.getValue()
     }
 
     function showResponse(response) {
-      var resultElem = elem.querySelector(".result");
-      elem.className = "api-tester"
-      forEach(elem.querySelectorAll('button'), function(buttonElem) {buttonElem.disabled = false})
+      var resultElem = apiTesterElem.querySelector(".result");
+      apiTesterElem.className = "api-tester"
+      forEach(apiTesterElem.querySelectorAll('button'), function(buttonElem) {buttonElem.disabled = false})
       resultElem.innerHTML = response
       var codeBlock = resultElem.querySelector("code");
       if (codeBlock)
@@ -126,8 +135,8 @@ forEach(document.querySelectorAll('.api-tester'), function(elem) {
       })
   })
 
-  var newWindowButton = elem.querySelector(".try-newwindow")
-  if (elem.dataset.method == 'GET') {
+  var newWindowButton = apiTesterElem.querySelector(".try-newwindow")
+  if (apiTesterElem.dataset.method == 'GET') {
     newWindowButton.addEventListener('click', function() {
       window.open(apiUrl())
     })
@@ -135,9 +144,9 @@ forEach(document.querySelectorAll('.api-tester'), function(elem) {
     newWindowButton.className = 'hidden'
   }
 
-  elem.querySelector(".curl").onclick = function() {
-    elem.querySelector(".curl").className="curl open"
-    selectElementContents(elem.querySelector(".curl .line"))
+  apiTesterElem.querySelector(".curl").onclick = function() {
+    apiTesterElem.querySelector(".curl").className="curl open"
+    selectElementContents(apiTesterElem.querySelector(".curl .line"))
   }
   updateCurl()
 
@@ -149,13 +158,13 @@ forEach(document.querySelectorAll('.api-tester'), function(elem) {
 
   function updateCurl() {
     var curl = "curl '" + apiUrl() + "' --user kalle:kalle"
-    if (elem.dataset.method != "GET") {
-      curl += " -X " + elem.dataset.method
+    if (apiTesterElem.dataset.method != "GET") {
+      curl += " -X " + apiTesterElem.dataset.method
     }
-    if (elem.dataset.method == "POST" || elem.dataset.method == "PUT") {
+    if (apiTesterElem.dataset.method == "POST" || apiTesterElem.dataset.method == "PUT") {
       curl += " -H 'content-type: application/json' -d @curltestdata.json"
     }
-    elem.querySelector(".curl .line").innerHTML = curl
+    apiTesterElem.querySelector(".curl .line").innerHTML = curl
   }
 
   function a(elems) {

@@ -112,7 +112,7 @@ object ApiTesterHtml {
         </label>
       </div>
       <textarea cols="80" rows="50">
-        {Json.writePretty(operation.examples(0).data)}
+
       </textarea>
     </div>
   }
