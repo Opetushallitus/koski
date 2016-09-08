@@ -22,7 +22,6 @@ trait HttpSpecification extends HttpTester with Assertions with Matchers {
     }
     if (details.length > 0) {
       val errors: List[ErrorDetail] = Json.read[List[ErrorDetail]](body)
-      errors.length should equal(dets.length)
       errors.zip(dets) foreach { case (errorDetail, expectedErrorDetail) =>
         if (errorDetail.key != expectedErrorDetail.key) {
           fail("Unexpected error key " + errorDetail.key + "(expected " + expectedErrorDetail.key + "), message=" + errorDetail.message)
@@ -32,6 +31,7 @@ trait HttpSpecification extends HttpTester with Assertions with Matchers {
           case r: Regex => errorDetail.message.toString should fullyMatch regex(r)
         }
       }
+      errors.length should equal(dets.length)
     }
   }
 

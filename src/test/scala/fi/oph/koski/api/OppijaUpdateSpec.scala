@@ -4,7 +4,7 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.AmmatillinenExampleData
-import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjestelmäId
+import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.Json
 import fi.oph.koski.koski.HenkilönOpiskeluoikeusVersiot
@@ -49,7 +49,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
           suoritus.koulutusmoduuli.tunniste.nimi.get.get("sv") should equal("Grundexamen inom bilbranschen")
         }
         "Väärällä nimellä -> korvataan nimi" in {
-          val opiskeluOikeus = createOpiskeluOikeus(oppija, defaultOpiskeluoikeus.copy(suoritukset = List(tutkintoSuoritus.copy(koulutusmoduuli = tutkintoSuoritus.koulutusmoduuli.copy(tunniste = Koodistokoodiviite(koodiarvo = "351301", nimi=Some(LocalizedString.finnish("Läppätutkinto")), koodistoUri = "koulutus"))))))
+          val opiskeluOikeus = createOpiskeluOikeus(oppija, defaultOpiskeluoikeus.copy(suoritukset = List(autoalanPerustutkinnonSuoritus().copy(koulutusmoduuli = autoalanPerustutkinnonSuoritus().koulutusmoduuli.copy(tunniste = Koodistokoodiviite(koodiarvo = "351301", nimi=Some(LocalizedString.finnish("Läppätutkinto")), koodistoUri = "koulutus"))))))
 
           opiskeluOikeus.suoritukset(0).asInstanceOf[AmmatillisenTutkinnonSuoritus].koulutusmoduuli.tunniste.nimi.get.get("fi") should equal("Autoalan perustutkinto")
         }

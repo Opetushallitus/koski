@@ -37,8 +37,10 @@ object AmmatillinenExampleData {
       vahvistus = vahvistus,
       osasuoritukset = osasuoritukset)
 
-  def autoalanPerustutkinto(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = tutkintoSuoritus(
-    tutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus"), Some("39/011/2014")),
+  val autoalanPerustutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", "koulutus"), Some("39/011/2014"))
+
+  def autoalanPerustutkinnonSuoritus(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = tutkintoSuoritus(
+    tutkintoKoulutus = autoalanPerustutkinto,
     tutkintonimike = None,
     osaamisala = None,
     suoritustapa = None,
@@ -118,7 +120,7 @@ object AmmatillinenExampleData {
   )
 
   def opiskeluoikeus(oppilaitos: Oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto),
-                     tutkinto: AmmatillisenTutkinnonSuoritus = autoalanPerustutkinto(stadinToimipiste),
+                     tutkinto: AmmatillisenTutkinnonSuoritus = autoalanPerustutkinnonSuoritus(stadinToimipiste),
                      osat: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = None): AmmatillinenOpiskeluoikeus = {
     AmmatillinenOpiskeluoikeus(
       alkamispäivä = Some(date(2016, 9, 1)),

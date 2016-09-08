@@ -49,7 +49,7 @@ class OppijaValidationSpec extends FunSpec with LocalJettyHttpSpecification with
 
     describe("Omien tietojen muokkaaminen") {
       it("On estetty") {
-        putOpiskeluOikeus(opiskeluoikeus(oppilaitos = Oppilaitos(omnia), tutkinto = AmmatillinenExampleData.autoalanPerustutkinto(Oppilaitos(omnia))),
+        putOpiskeluOikeus(opiskeluoikeus(oppilaitos = Oppilaitos(omnia), tutkinto = AmmatillinenExampleData.autoalanPerustutkinnonSuoritus(Oppilaitos(omnia))),
                           henkilö = MockOppijat.omattiedot,
                           headers = authHeaders(MockUsers.omattiedot) ++ jsonContent) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.omienTietojenMuokkaus())
@@ -166,7 +166,7 @@ class OppijaValidationSpec extends FunSpec with LocalJettyHttpSpecification with
     }
 
     describe("Suorituksen toimipiste") {
-      def toimipisteellä(oid: String) = defaultOpiskeluoikeus.copy(suoritukset = List(tutkintoSuoritus.copy(toimipiste = OidOrganisaatio(oid))))
+      def toimipisteellä(oid: String) = defaultOpiskeluoikeus.copy(suoritukset = List(autoalanPerustutkinnonSuoritus().copy(toimipiste = OidOrganisaatio(oid))))
 
       describe("Kun yritetään käyttää toimipistettä, johon käyttäjällä ei ole oikeuksia") {
         it("palautetaan HTTP 403 virhe" ) { putOpiskeluOikeus(toimipisteellä(MockOrganisaatiot.helsinginKaupunki)) (

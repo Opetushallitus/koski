@@ -157,12 +157,12 @@ object AmmatillinenOldExamples {
   )
 
   lazy val paikallinen = oppija(opiskeluOikeus = opiskeluoikeus(
-    tutkinto = autoalanPerustutkinto().copy(suoritustapa = Some(suoritustapaNäyttö)),
+    tutkinto = autoalanPerustutkinnonSuoritus().copy(suoritustapa = Some(suoritustapaNäyttö)),
     osat = Some(List(paikallisenOsanSuoritus))
   ))
 
   lazy val mukautettu = oppija(opiskeluOikeus = opiskeluoikeus(
-    tutkinto = autoalanPerustutkinto().copy(suoritustapa = Some(suoritustapaOps)),
+    tutkinto = autoalanPerustutkinnonSuoritus().copy(suoritustapa = Some(suoritustapaOps)),
     osat = Some(List(
       AmmatillisenTutkinnonOsanSuoritus(
         koulutusmoduuli = ValtakunnallinenTutkinnonOsa(Koodistokoodiviite("101053", Some("Viestintä- ja vuorovaikutusosaaminen"), "tutkinnonosat", None), true, Some(LaajuusOsaamispisteissä(11))),

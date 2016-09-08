@@ -1,6 +1,6 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjestelmäId
+import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.oppija.MockOppijat
@@ -170,7 +170,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
 
   private val opiskeluoikeusOmnia: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
     oppilaitos = Oppilaitos(MockOrganisaatiot.omnia),
-    suoritukset = List(tutkintoSuoritus.copy(toimipiste = Oppilaitos(MockOrganisaatiot.omnia)))
+    suoritukset = List(autoalanPerustutkinnonSuoritus().copy(toimipiste = Oppilaitos(MockOrganisaatiot.omnia)))
   )
 
   private def opiskeluOikeusLähdejärjestelmästä = opiskeluoikeusOmnia.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))

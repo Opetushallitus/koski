@@ -2,14 +2,16 @@ package fi.oph.koski.api
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
+
+import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData.helsinki
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.Json
+import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
-import fi.oph.koski.localization.LocalizedStringImplicits._
 
-class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[AmmatillinenOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
+class OppijaValidatdionAmmatillinenSpec extends TutkinnonPerusteetTest[AmmatillinenOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
   describe("Ammatillisen koulutuksen opiskeluoikeuden lisääminen") {
     describe("Valideilla tiedoilla") {
       it("palautetaan HTTP 200") {
@@ -28,28 +30,28 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     describe("Tutkinnon perusteet ja rakenne") {
       describe("Osaamisala ja suoritustapa") {
         describe("Osaamisala ja suoritustapa ok") {
-          val suoritus = tutkintoSuoritus.copy(
+          val suoritus = autoalanPerustutkinnonSuoritus().copy(
             suoritustapa = Some(Koodistokoodiviite("ops", "ammatillisentutkinnonsuoritustapa")),
             osaamisala = Some(List(Koodistokoodiviite("1527", "osaamisala"))))
 
           it("palautetaan HTTP 200") (putTutkintoSuoritus(suoritus)(verifyResponseStatus(200)))
         }
         describe("Suoritustapa virheellinen") {
-          val suoritus = tutkintoSuoritus.copy(
+          val suoritus = autoalanPerustutkinnonSuoritus().copy(
             suoritustapa = Some(Koodistokoodiviite("blahblahtest", "ammatillisentutkinnonsuoritustapa")),
             osaamisala = Some(List(Koodistokoodiviite("1527", "osaamisala"))))
 
           it("palautetaan HTTP 400") (putTutkintoSuoritus(suoritus)(verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia ammatillisentutkinnonsuoritustapa/blahblahtest ei löydy koodistosta"))))
         }
         describe("Osaamisala ei löydy tutkintorakenteesta") {
-          val suoritus = tutkintoSuoritus.copy(
+          val suoritus = autoalanPerustutkinnonSuoritus().copy(
             suoritustapa = Some(Koodistokoodiviite("ops", "ammatillisentutkinnonsuoritustapa")),
             osaamisala = Some(List(Koodistokoodiviite("3053", "osaamisala"))))
 
           it("palautetaan HTTP 400") (putTutkintoSuoritus(suoritus) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonOsaamisala("Osaamisala 3053 ei löydy tutkintorakenteesta perusteelle 39/011/2014"))))
         }
         describe("Osaamisala virheellinen") {
-          val suoritus = tutkintoSuoritus.copy(
+          val suoritus = autoalanPerustutkinnonSuoritus().copy(
             suoritustapa = Some(Koodistokoodiviite("ops", "ammatillisentutkinnonsuoritustapa")),
             osaamisala = Some(List(Koodistokoodiviite("0", "osaamisala"))))
 
@@ -242,8 +244,11 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           }
 
           describe("Kun tutkinto on VALMIS-tilassa ja sillä on osa, joka on KESKEN-tilassa") {
-            val opiskeluOikeus = defaultOpiskeluoikeus.copy(suoritukset = List(tutkintoSuoritus.copy(
-              suoritustapa = tutkinnonSuoritustapaNäyttönä, tila = tilaValmis, vahvistus = vahvistus(LocalDate.parse("2016-08-08")),osasuoritukset = Some(List(tutkinnonOsaSuoritus))
+            val opiskeluOikeus = defaultOpiskeluoikeus.copy(suoritukset = List(autoalanPerustutkinnonSuoritus().copy(
+              suoritustapa = tutkinnonSuoritustapaNäyttönä,
+              tila = tilaValmis,
+              vahvistus = vahvistus(LocalDate.parse("2016-10-08")),
+              osasuoritukset = Some(List(tutkinnonOsaSuoritus))
             )))
 
             it("palautetaan HTTP 400") (putOpiskeluOikeus(opiskeluOikeus) (
@@ -256,7 +261,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     describe("Tutkinnon tila ja arviointi") {
       def copySuoritus(t: Koodistokoodiviite, v: Option[Henkilövahvistus], ap: Option[LocalDate] = None) = {
         val alkamispäivä = ap.orElse(tutkinnonOsaSuoritus.alkamispäivä)
-        tutkintoSuoritus.copy(tila = t, vahvistus = v, alkamispäivä = alkamispäivä)
+        autoalanPerustutkinnonSuoritus().copy(tila = t, vahvistus = v, alkamispäivä = alkamispäivä)
       }
 
       def put(s: AmmatillisenTutkinnonSuoritus)(f: => Unit) = {
@@ -323,7 +328,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
     describe("Oppisopimus") {
       def toteutusOppisopimuksella(yTunnus: String): AmmatillisenTutkinnonSuoritus = {
-        tutkintoSuoritus.copy(järjestämismuoto = Some(OppisopimuksellinenJärjestämismuoto(Koodistokoodiviite("20", "jarjestamismuoto"), Oppisopimus(Yritys("Reaktor", yTunnus)))))
+        autoalanPerustutkinnonSuoritus().copy(järjestämismuoto = Some(OppisopimuksellinenJärjestämismuoto(Koodistokoodiviite("20", "jarjestamismuoto"), Oppisopimus(Yritys("Reaktor", yTunnus)))))
       }
 
       describe("Kun ok") {
@@ -375,7 +380,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
   )
 
   def putTutkinnonOsaSuoritus[A](tutkinnonOsaSuoritus: AmmatillisenTutkinnonOsanSuoritus, tutkinnonSuoritustapa: Option[Koodistokoodiviite])(f: => A) = {
-    val s = tutkintoSuoritus.copy(suoritustapa = tutkinnonSuoritustapa, osasuoritukset = Some(List(tutkinnonOsaSuoritus)))
+    val s = autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapa, osasuoritukset = Some(List(tutkinnonOsaSuoritus)))
 
     putTutkintoSuoritus(s)(f)
   }
@@ -386,7 +391,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     putOppija(makeOppija(henkilö, List(Json.toJValue(opiskeluOikeus))), headers)(f)
   }
 
-  def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = List(tutkintoSuoritus.copy(koulutusmoduuli = tutkintoSuoritus.koulutusmoduuli.copy(perusteenDiaarinumero = diaari))))
+  def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = List(autoalanPerustutkinnonSuoritus().copy(koulutusmoduuli = autoalanPerustutkinnonSuoritus().koulutusmoduuli.copy(perusteenDiaarinumero = diaari))))
 
   override def vääräntyyppisenPerusteenDiaarinumero: String = "60/011/2015"
 }

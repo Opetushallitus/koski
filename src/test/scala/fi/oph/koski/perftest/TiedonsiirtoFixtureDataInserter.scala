@@ -11,7 +11,7 @@ import scala.util.Random
 
 object TiedonsiirtoFixtureDataInserter extends FixtureDataInserter {
   lazy val omnia = Oppilaitos(MockOrganisaatiot.omnia)
-  lazy val omniaOpiskeluoikeus = AmmatillinenExampleData.opiskeluoikeus(omnia, AmmatillinenExampleData.autoalanPerustutkinto(omnia)).copy(lähdejärjestelmänId = Some(AmmatillinenExampleData.winnovaLähdejärjestelmäId))
+  lazy val omniaOpiskeluoikeus = AmmatillinenExampleData.opiskeluoikeus(omnia, AmmatillinenExampleData.autoalanPerustutkinnonSuoritus(omnia)).copy(lähdejärjestelmänId = Some(AmmatillinenExampleData.winnovaLähdejärjestelmäId))
   lazy val opiskeluoikeudet = List.fill(3)(List(omniaOpiskeluoikeus, ExamplesTiedonsiirto.failingOpiskeluoikeus)).flatten
   def opiskeluoikeudet(x: Int) = Random.shuffle(opiskeluoikeudet)
   override def defaultUser = MockUsers.omniaPalvelukäyttäjä
