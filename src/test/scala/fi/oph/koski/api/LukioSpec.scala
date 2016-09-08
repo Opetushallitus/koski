@@ -153,6 +153,6 @@ class LukioSpec extends FunSpec with Matchers with OpintosuoritusoteTestMethods 
   }
 
   def lukionOpiskeluoikeus = {
-    opiskeluoikeus(MockOppijat.lukiolainen.oid, "lukiokoulutus").id.get
+    getOpiskeluoikeus(MockOppijat.lukiolainen.oid, "lukiokoulutus").id.get
   }
 }

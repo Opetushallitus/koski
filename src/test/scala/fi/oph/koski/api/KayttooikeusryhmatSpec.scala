@@ -176,7 +176,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   private def opiskeluOikeusLähdejärjestelmästä = opiskeluoikeusOmnia.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
 
   private def haeOpiskeluoikeudetHetulla(hetu: String, käyttäjä: UserWithPassword) = searchForHenkilötiedot(hetu).map(_.oid).flatMap { oid =>
-    opiskeluoikeudet(oid, käyttäjä)
+    getOpiskeluoikeudet(oid, käyttäjä)
   }
 
 }

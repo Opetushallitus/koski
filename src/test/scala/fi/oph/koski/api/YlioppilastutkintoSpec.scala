@@ -28,7 +28,7 @@ class YlioppilastutkintoSpec extends FunSpec with Matchers with OpiskeluoikeusTe
 
     describe("Haettaessa opintotietoja") {
       it("Konvertoidaan YTR-järjestelmän tiedot Koski-järjestelmän opiskeluoikeudeksi") {
-        val oikeudet = opiskeluoikeudet(MockOppijat.ylioppilas.oid)
+        val oikeudet = getOpiskeluoikeudet(MockOppijat.ylioppilas.oid)
         oikeudet.length should equal(1)
 
         oikeudet(0).tyyppi.koodiarvo should equal("ylioppilastutkinto")

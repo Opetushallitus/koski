@@ -28,16 +28,16 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
 
     describe("Suoritusten tilat") {
       it("Keskeneräinen tutkinto") {
-        opiskeluoikeudet(MockOppijat.korkeakoululainen.oid).flatMap(_.suoritukset).filter(_.koulutusmoduuli.isTutkinto).map(_.tila.koodiarvo) should equal(List("KESKEN"))
+        getOpiskeluoikeudet(MockOppijat.korkeakoululainen.oid).flatMap(_.suoritukset).filter(_.koulutusmoduuli.isTutkinto).map(_.tila.koodiarvo) should equal(List("KESKEN"))
       }
       it("Valmis tutkinto") {
-        opiskeluoikeudet(MockOppijat.dippainssi.oid).flatMap(_.suoritukset).filter(_.koulutusmoduuli.isTutkinto).map(_.tila.koodiarvo) should equal(List("VALMIS"))
+        getOpiskeluoikeudet(MockOppijat.dippainssi.oid).flatMap(_.suoritukset).filter(_.koulutusmoduuli.isTutkinto).map(_.tila.koodiarvo) should equal(List("VALMIS"))
       }
     }
 
     describe("Haettaessa") {
       it("Konvertoidaan Virta-järjestelmän opiskeluoikeus") {
-        val oikeudet = opiskeluoikeudet(MockOppijat.dippainssi.oid)
+        val oikeudet = getOpiskeluoikeudet(MockOppijat.dippainssi.oid)
         oikeudet.length should equal(2)
 
         oikeudet(0).tyyppi.koodiarvo should equal("korkeakoulutus")

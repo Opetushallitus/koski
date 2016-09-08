@@ -11,7 +11,7 @@ trait OpiskeluOikeusTestMethods extends HttpSpecification with Matchers {
     oppija(oppijaOid, user).tallennettavatOpiskeluoikeudet.last
   }
 
-  def opiskeluoikeudet(oppijaOid: String, user: UserWithPassword = defaultUser): Seq[Opiskeluoikeus] = {
+  def getOpiskeluoikeudet(oppijaOid: String, user: UserWithPassword = defaultUser): Seq[Opiskeluoikeus] = {
     tryOppija(oppijaOid, user) match {
       case Right(oppija) => oppija.opiskeluoikeudet
       case Left(HttpStatus(404, _)) => Nil
@@ -19,8 +19,8 @@ trait OpiskeluOikeusTestMethods extends HttpSpecification with Matchers {
     }
   }
 
-  def opiskeluoikeus(oppijaOid: String, tyyppi: String) = {
-    opiskeluoikeudet(oppijaOid).find(_.tyyppi.koodiarvo == tyyppi).get
+  def getOpiskeluoikeus(oppijaOid: String, tyyppi: String) = {
+    getOpiskeluoikeudet(oppijaOid).find(_.tyyppi.koodiarvo == tyyppi).get
   }
 
   def oppija(oppijaOid: String, user: UserWithPassword = defaultUser): Oppija = {
