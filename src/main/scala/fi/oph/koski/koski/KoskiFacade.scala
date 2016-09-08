@@ -86,22 +86,26 @@ class KoskiFacade(oppijaRepository: OppijaRepository, opiskeluOikeusRepository: 
       }
 
       oppijaOid.right.flatMap { oppijaOid: PossiblyUnverifiedOppijaOid =>
-        val opiskeluOikeusCreationResults: Seq[Either[HttpStatus, CreateOrUpdateResult]] = oppija.tallennettavatOpiskeluoikeudet.map { opiskeluOikeus =>
-          val result = opiskeluOikeusRepository.createOrUpdate(oppijaOid, opiskeluOikeus)
-          result match {
-            case Right(result) =>
-              applicationLog(oppijaOid, opiskeluOikeus, result)
-              auditLog(oppijaOid, result)
-            case _ =>
+        if (oppijaOid.oppijaOid == user.oid) {
+          Left(KoskiErrorCategory.forbidden.omienTietojenMuokkaus())
+        } else {
+          val opiskeluOikeusCreationResults: Seq[Either[HttpStatus, CreateOrUpdateResult]] = oppija.tallennettavatOpiskeluoikeudet.map { opiskeluOikeus =>
+            val result = opiskeluOikeusRepository.createOrUpdate(oppijaOid, opiskeluOikeus)
+            result match {
+              case Right(result) =>
+                applicationLog(oppijaOid, opiskeluOikeus, result)
+                auditLog(oppijaOid, result)
+              case _ =>
+            }
+            result
           }
-          result
-        }
 
-        opiskeluOikeusCreationResults.find(_.isLeft) match {
-          case Some(Left(error)) => Left(error)
-          case _ => Right(HenkilönOpiskeluoikeusVersiot(OidHenkilö(oppijaOid.oppijaOid), opiskeluOikeusCreationResults.toList.map {
-            case Right(result:CreateOrUpdateResult) => OpiskeluoikeusVersio(result.id, result.versionumero)
-          }))
+          opiskeluOikeusCreationResults.find(_.isLeft) match {
+            case Some(Left(error)) => Left(error)
+            case _ => Right(HenkilönOpiskeluoikeusVersiot(OidHenkilö(oppijaOid.oppijaOid), opiskeluOikeusCreationResults.toList.map {
+              case Right(result:CreateOrUpdateResult) => OpiskeluoikeusVersio(result.id, result.versionumero)
+            }))
+          }
         }
       }
     }

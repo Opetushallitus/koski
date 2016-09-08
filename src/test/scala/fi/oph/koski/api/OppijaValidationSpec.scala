@@ -8,6 +8,9 @@ import fi.oph.koski.schema._
 import fi.oph.koski.koskiuser.MockUsers
 import java.time.LocalDate.{of => date}
 
+import fi.oph.koski.documentation.AmmatillinenExampleData
+import AmmatillinenExampleData._
+import fi.oph.koski.organisaatio.MockOrganisaatiot._
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}
 import org.json4s._
 import org.scalatest.FunSpec
@@ -40,6 +43,16 @@ class OppijaValidationSpec extends FunSpec with LocalJettyHttpSpecification with
 
         put("api/oppija", body = Json.write(makeOppija(defaultHenkilö, List(defaultOpiskeluoikeus))), headers = authHeaders() ++ Map(("Content-type" -> "text/plain"))) {
           verifyResponseStatus(415, KoskiErrorCategory.unsupportedMediaType.jsonOnly("Wrong content type: only application/json content type with UTF-8 encoding allowed"))
+        }
+      }
+    }
+
+    describe("Omien tietojen muokkaaminen") {
+      it("On estetty") {
+        putOpiskeluOikeus(opiskeluoikeus(oppilaitos = Oppilaitos(omnia), tutkinto = AmmatillinenExampleData.autoalanPerustutkinto(Oppilaitos(omnia))),
+                          henkilö = MockOppijat.omattiedot,
+                          headers = authHeaders(MockUsers.omattiedot) ++ jsonContent) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.omienTietojenMuokkaus())
         }
       }
     }
