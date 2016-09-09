@@ -15,12 +15,13 @@ class TiedonsiirtoFailureMailer(config: Config) {
     sendTimes.synchronized {
       if (shouldSendMail(emailAddress)) {
         sendTimes.put(emailAddress, now())
-        sender.sendEmail(Email(EmailContent(
+        val mail: Email = Email(EmailContent(
           "no-reply@opintopolku.fi",
           "Virheellinen KOSKI tiedonsiirto",
-          "Automaattisessa tiedonsiirrossa tapahtui virhe.\\nKäykää ystävällisesti tarkistamassa tapahtuneet tiedonsiirrot osoitteessa TODO.",
+          "Automaattisessa tiedonsiirrossa tapahtui virhe.\nKäykää ystävällisesti tarkistamassa tapahtuneet tiedonsiirrot osoitteessa TODO.",
           html = false
-        ), List(EmailRecipient(emailAddress))))
+        ), List(EmailRecipient(emailAddress)))
+        sender.sendEmail(mail)
       }
     }
   }
