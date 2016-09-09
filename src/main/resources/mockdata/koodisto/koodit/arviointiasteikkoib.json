@@ -1,0 +1,107 @@
+[
+  {
+    "koodiUri": "arviointiasteikkoib_1",
+    "koodiArvo": "1",
+    "metadata": [
+      {
+        "nimi": "very poor",
+        "lyhytNimi": "1",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "arviointiasteikkoib_2",
+    "koodiArvo": "2",
+    "metadata": [
+      {
+        "nimi": "poor",
+        "lyhytNimi": "2",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "arviointiasteikkoib_3",
+    "koodiArvo": "3",
+    "metadata": [
+      {
+        "nimi": "mediocre",
+        "lyhytNimi": "3",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "arviointiasteikkoib_4",
+    "koodiArvo": "4",
+    "metadata": [
+      {
+        "nimi": "satisfactory",
+        "lyhytNimi": "4",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "arviointiasteikkoib_5",
+    "koodiArvo": "5",
+    "metadata": [
+      {
+        "nimi": "good",
+        "lyhytNimi": "5",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "arviointiasteikkoib_6",
+    "koodiArvo": "6",
+    "metadata": [
+      {
+        "nimi": "very good",
+        "lyhytNimi": "6",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "arviointiasteikkoib_7",
+    "koodiArvo": "7",
+    "metadata": [
+      {
+        "nimi": "excellent",
+        "lyhytNimi": "7",
+        "kieli": "EN"
+      }
+    ]
+  },
+  {
+    "koodiUri": "arviointiasteikkoib_s",
+    "koodiArvo": "S",
+    "metadata": [
+      {
+        "nimi": "pass",
+        "lyhytNimi": "S",
+        "kieli": "EN"
+      }
+    ]
+  },
+  {
+    "koodiUri": "arviointiasteikkoib_o",
+    "koodiArvo": "O",
+    "metadata": [
+      {
+        "nimi": "not completed",
+        "lyhytNimi": "O",
+        "kieli": "EN"
+      }
+    ]
+  }
+]

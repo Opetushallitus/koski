@@ -180,6 +180,42 @@
     "versio": 1
   },
   {
+    "koodiUri": "suorituksentyyppi_ibtutkinto",
+    "koodiArvo": "tutkinto",
+    "metadata": [
+      {
+        "nimi": "IB-lukion oppimäärä",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "suorituksentyyppi_iboppiaine",
+    "koodiArvo": "iboppiaine",
+    "metadata": [
+      {
+        "nimi": "IB-lukion oppiaine",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "suorituksentyyppi_ibkurssi",
+    "koodiArvo": "ibkurssi",
+    "metadata": [
+      {
+        "nimi": "IB-lukion kurssi",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
     "koodiUri": "suorituksentyyppi_ylioppilastutkinto",
     "koodiArvo": "ylioppilastutkinto",
     "metadata": [

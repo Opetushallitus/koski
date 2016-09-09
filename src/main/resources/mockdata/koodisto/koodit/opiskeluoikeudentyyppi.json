@@ -30,6 +30,16 @@
     "versio" : 1
   },
   {
+    "koodiUri" : "opiskeluoikeudentyyppi_ibtutkinto",
+    "koodiArvo" : "ibtutkinto",
+    "metadata" : [ {
+      "nimi" : "IB-tutkinto",
+      "lyhytNimi" : "IB-tutkinto",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
     "koodiUri" : "opiskeluoikeudentyyppi_ylioppilastutkinto",
     "koodiArvo" : "ylioppilastutkinto",
     "metadata" : [ {

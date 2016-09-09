@@ -1,0 +1,20 @@
+{
+  "koodistoUri" : "arviointiasteikkoib",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "SV",
+    "nimi" : "Arviointiasteikko ib",
+    "kasite" : "arviointiasteikko"
+  }, {
+    "kieli" : "EN",
+    "nimi" : "Arviointiasteikko ib",
+    "kasite" : "arvosana"
+  }, {
+    "kieli" : "FI",
+    "nimi" : "Arviointiasteikko ib",
+    "kasite" : "arviointiasteikko"
+  } ],
+  "codesGroupUri" : "http://koski",
+  "voimassaAlkuPvm" : "2016-09-09",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}
