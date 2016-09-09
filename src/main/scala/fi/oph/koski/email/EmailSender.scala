@@ -4,9 +4,10 @@ import com.typesafe.config.Config
 import fi.oph.koski.http.{Http, VirkailijaHttpClient}
 import fi.oph.koski.json.Json.jsonFormats
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
+import fi.oph.koski.log.Logging
 
 trait EmailSender {
-  def sendEmail(envelope: Email) {}
+  def sendEmail(mail: Email)
 }
 
 case class Email(email: EmailContent, recipient: List[EmailRecipient])
@@ -14,18 +15,23 @@ case class EmailContent(from: String, subject: String, body: String, html: Boole
 case class EmailRecipient(email: String)
 
 object EmailSender {
-  def apply(config: Config): EmailSender =
-    if (config.hasPath("ryhmäsähköposti.virkailija.url")) {
-      RyhmäsähköpostiSender(config)
-    } else {
-      MockEmailSender
-    }
+  def apply(config: Config): EmailSender = if (config.hasPath("ryhmäsähköposti.virkailija.url")) {
+    RyhmäsähköpostiSender(config)
+  } else {
+    MockEmailSender
+  }
 }
 
-object MockEmailSender extends EmailSender {
+object MockEmailSender extends EmailSender with Logging {
   private var mails: List[Email] = Nil
-  def sendMail(mail: Email): Unit = this.synchronized {
+  override def sendEmail(mail: Email) = this.synchronized {
+    logger.info("Sending " + mail)
     mails = mail :: mails
+  }
+  def checkMail: List[Email] = this.synchronized {
+    val newMails = mails
+    mails = Nil
+    newMails
   }
 }
 
