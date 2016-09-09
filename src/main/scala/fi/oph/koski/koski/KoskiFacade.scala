@@ -125,7 +125,8 @@ class KoskiFacade(oppijaRepository: OppijaRepository, opiskeluOikeusRepository: 
         }
       case None => notFound
     }
-    result.right.foreach((oppija: Oppija) => AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, user, Map(oppijaHenkiloOid -> oid))))
+
+    result.right.foreach((oppija: Oppija) => writeViewingEventToAuditLog(user, oid))
     result
   }
 
@@ -135,10 +136,16 @@ class KoskiFacade(oppijaRepository: OppijaRepository, opiskeluOikeusRepository: 
     }
     result match {
       case Some((henkilö, oo)) =>
-        AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, user, Map(oppijaHenkiloOid -> henkilö.oid)))
+        writeViewingEventToAuditLog(user, henkilö.oid)
         Right((henkilö, oo))
       case _ =>
         Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
+    }
+  }
+
+  private def writeViewingEventToAuditLog(user: KoskiUser, oid: Henkilö.Oid): Unit = {
+    if (user != KoskiUser.systemUser) { // To prevent health checks from pollutings the audit log
+      AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, user, Map(oppijaHenkiloOid -> oid)))
     }
   }
 
