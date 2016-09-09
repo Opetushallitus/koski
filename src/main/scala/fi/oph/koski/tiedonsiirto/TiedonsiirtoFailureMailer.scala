@@ -12,24 +12,24 @@ class TiedonsiirtoFailureMailer(config: Config) {
 
   def sendMail(organisaatioOid: String): Unit = {
     val emailAddress = "TODO"
-    sendTimes.synchronized {
-      if (shouldSendMail(emailAddress)) {
-        sendTimes.put(emailAddress, now())
-        val mail: Email = Email(EmailContent(
-          "no-reply@opintopolku.fi",
-          "Virheellinen KOSKI tiedonsiirto",
-          "Automaattisessa tiedonsiirrossa tapahtui virhe.\nKäykää ystävällisesti tarkistamassa tapahtuneet tiedonsiirrot osoitteessa TODO.",
-          html = false
-        ), List(EmailRecipient(emailAddress)))
-        sender.sendEmail(mail)
-      }
+    if (shouldSendMail(emailAddress)) {
+      val mail: Email = Email(EmailContent(
+        "no-reply@opintopolku.fi",
+        "Virheellinen KOSKI tiedonsiirto",
+        "Automaattisessa tiedonsiirrossa tapahtui virhe.\nKäykää ystävällisesti tarkistamassa tapahtuneet tiedonsiirrot osoitteessa TODO.",
+        html = false
+      ), List(EmailRecipient(emailAddress)))
+      sender.sendEmail(mail)
     }
   }
 
-  def shouldSendMail(email: String) =
-    sendTimes.get(email) match {
-      case Some(time) if time.isBefore(now().minusHours(24)) => true
-      case None => true
-      case _ => false
+  def shouldSendMail(email: String) = sendTimes.synchronized {
+    val limit = now().minusHours(24)
+    if (!sendTimes.getOrElse(email, limit).isAfter(limit)) {
+      sendTimes.put(email, now())
+      true
+    } else {
+      false
     }
+  }
 }
