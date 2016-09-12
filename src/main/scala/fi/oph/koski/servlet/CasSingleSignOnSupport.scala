@@ -19,7 +19,7 @@ trait CasSingleSignOnSupport extends ScalatraBase {
   private def removeCookie(name: String) = response.addCookie(Cookie(name, "")(CookieOptions(secure = isHttps, path = "/", maxAge = 0)))
 
   def isHttps = {
-    request.header("X-Forwarded-For").isDefined || request.isSecure // If we are behind a loadbalancer proxy, we assume that https is used
+    koskiRoot.startsWith("https:")
   }
 
   def setUserCookie(user: AuthenticationUser) = {
