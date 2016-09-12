@@ -13,7 +13,7 @@ trait CasSingleSignOnSupport extends ScalatraBase {
   private val koskiRoot: String = application.config.getString("koski.root.url")
 
   private def currentUrl = {
-    Debug.debug(koskiRoot + request.getServletPath + request.getPathInfo)
+    koskiRoot + request.getServletPath + request.getPathInfo
   }
 
   private def removeCookie(name: String) = response.addCookie(Cookie(name, "")(CookieOptions(secure = isHttps, path = "/", maxAge = 0)))
