@@ -1,15 +1,22 @@
 package fi.oph.koski.servlet
 
-import java.net.{URLDecoder, URLEncoder, URI}
+import java.net.{URI, URLDecoder, URLEncoder}
 
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.{AuthenticationUser, UserAuthenticationContext}
+import fi.oph.koski.log.Debug
 import org.scalatra.{Cookie, CookieOptions, ScalatraBase}
 
 trait CasSingleSignOnSupport extends ScalatraBase {
   def application: UserAuthenticationContext
 
-  private def currentUrl = request.getRequestURL.toString
+  private val koskiRoot: String = application.config.getString("koski.root.url")
+
+  private def currentUrl = {
+    Debug.debug(koskiRoot + request.getServletPath + request.getPathInfo)
+  }
+
+  private def removeCookie(name: String) = response.addCookie(Cookie(name, "")(CookieOptions(secure = isHttps, path = "/", maxAge = 0)))
 
   def isHttps = {
     request.header("X-Forwarded-For").isDefined || request.isSecure // If we are behind a loadbalancer proxy, we assume that https is used
@@ -21,27 +28,15 @@ trait CasSingleSignOnSupport extends ScalatraBase {
   def getUserCookie: Option[AuthenticationUser] = {
     Option(request.getCookies).toList.flatten.find(_.getName == "koskiUser").map(_.getValue).map(c => URLDecoder.decode(c, "UTF-8")).map(Json.read[AuthenticationUser])
   }
-  def removeUserCookie = response.addCookie(Cookie("koskiUser", "")(CookieOptions(secure = isHttps, path = "/", maxAge = 0)))
+  def removeUserCookie = removeCookie("koskiUser")
 
   def casServiceUrl = {
-    def fixProtocol(url: String) = if (!isHttps) {
-      url
-    } else {
-      url.replace("http://", "https://")// <- we don't get the https protocol correctly through the proxy, so we replace it manually
-    }
-    fixProtocol {
-      val subpath = request.getServletPath + request.pathInfo
-      (if (currentUrl.endsWith(subpath)) {
-        currentUrl.substring(0, currentUrl.length - subpath.length)
-      } else {
-        currentUrl
-      }) + "/cas"
-    }
+    koskiRoot + "/cas"
   }
 
   def redirectAfterLogin = {
     val returnUrlCookie = Option(request.getCookies).toList.flatten.find(_.getName == "koskiReturnUrl").map(_.getValue)
-    response.addCookie(Cookie("koskiReturnUrl", "")(CookieOptions(secure = isHttps, path = "/", maxAge = 0)))
+    removeCookie("koskiReturnUrl")
     redirect(returnUrlCookie.getOrElse("/"))
   }
 
@@ -56,7 +51,6 @@ trait CasSingleSignOnSupport extends ScalatraBase {
 
   def redirectToLogout = {
     if (isCasSsoUsed) {
-      val koskiRoot = URI.create(request.getRequestURL().toString()).resolve(request.getContextPath())
       redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/logout?service=" + koskiRoot)
     } else {
       redirect("/")
