@@ -23,9 +23,9 @@ class TiedonsiirtoFailureMailer(config: Config, authenticationServiceClient: Aut
         if (shouldSendMail(organisaatioOid)) {
           val mail: Email = Email(EmailContent(
             "no-reply@opintopolku.fi",
-            "Virheellinen KOSKI tiedonsiirto",
-            "Automaattisessa tiedonsiirrossa tapahtui virhe.\nKäykää ystävällisesti tarkistamassa tapahtuneet tiedonsiirrot osoitteessa: " + config.getString("koski.root.url") + "/tiedonsiirrot",
-            html = false
+            "Virheellinen Koski-tiedonsiirto",
+            "<p>Automaattisessa tiedonsiirrossa tapahtui virhe.</p><p>Käykää ystävällisesti tarkistamassa tapahtuneet tiedonsiirrot osoitteessa: " + config.getString("koski.root.url") + "/tiedonsiirrot</p>",
+            html = true
           ), emailAddresses.map(EmailRecipient))
           sender.sendEmail(mail)
         }

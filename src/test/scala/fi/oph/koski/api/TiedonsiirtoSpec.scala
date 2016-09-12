@@ -36,9 +36,9 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         mails should equal(List(Email(
           EmailContent(
             "no-reply@opintopolku.fi",
-            "Virheellinen KOSKI tiedonsiirto",
-            "Automaattisessa tiedonsiirrossa tapahtui virhe.\nKäykää ystävällisesti tarkistamassa tapahtuneet tiedonsiirrot osoitteessa: http://localhost:7021/koski/tiedonsiirrot",
-            false),
+            "Virheellinen Koski-tiedonsiirto",
+            "<p>Automaattisessa tiedonsiirrossa tapahtui virhe.</p><p>Käykää ystävällisesti tarkistamassa tapahtuneet tiedonsiirrot osoitteessa: http://localhost:7021/koski/tiedonsiirrot</p>",
+            true),
           List(EmailRecipient("stadin-vastuu@example.com")))))
       }
 
