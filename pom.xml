@@ -121,7 +121,7 @@
     <dependency>
       <groupId>com.zaxxer</groupId>
       <artifactId>HikariCP-java6</artifactId>
-      <version>2.3.12</version>
+      <version>2.3.13</version>
     </dependency>
     <dependency>
       <groupId>com.github.tminglei</groupId>
