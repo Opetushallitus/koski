@@ -15,8 +15,7 @@ case class IBOpiskeluoikeus(
   koulutustoimija: Option[OrganisaatioWithOid] = None,
   alkamispäivä: Option[LocalDate] = None,
   päättymispäivä: Option[LocalDate] = None,
-  // TODO tavoite?
-  tila: OpiskeluoikeudenTila,
+  tila: LukionOpiskeluoikeudenTila,
   läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
   @MinItems(1) @MaxItems(1)
   suoritukset: List[IBTutkinnonSuoritus],
@@ -34,8 +33,7 @@ case class IBTutkinnonSuoritus(
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   vahvistus: Option[Henkilövahvistus] = None,
-  // TODO: onko tämä aina englanti?
-  suorituskieli: Option[Koodistokoodiviite] = Some(Koodistokoodiviite("kieli", "en")),
+  suorituskieli: Option[Koodistokoodiviite],
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[IBOppiaineenSuoritus]],
@@ -49,7 +47,6 @@ case class IBTutkinnonSuoritus(
 case class IBTutkinto(
   @KoodistoKoodiarvo("301102")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("301102", koodistoUri = "koulutus")
-  // TODO: löytyykö eperusteista?
 ) extends Koulutus {
   override def laajuus = None
   override def isTutkinto = true
@@ -60,7 +57,7 @@ case class IBOppiaineenSuoritus(
   koulutusmoduuli: IBOppiaine,
   tila: Koodistokoodiviite,
   arviointi: Option[List[IBOppiaineenArviointi]] = None,
-  suorituskieli: Option[Koodistokoodiviite], // TODO: voiko olla myös suomi esim. äidinkieltä suorittaessa?
+  suorituskieli: Option[Koodistokoodiviite],
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
   @Title("Kurssit")
   override val osasuoritukset: Option[List[IBKurssinSuoritus]],
@@ -86,7 +83,7 @@ case class IBKurssinSuoritus(
   tila: Koodistokoodiviite,
   arviointi: Option[List[IBKurssinArviointi]] = None,
   // TODO: tuleeko tunnustettu kenttä?
-  suorituskieli: Option[Koodistokoodiviite], // TODO: voiko olla myös suomi esim. äidinkieltä suorittaessa?
+  suorituskieli: Option[Koodistokoodiviite],
   @KoodistoKoodiarvo("ibkurssi")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "ibkurssi", koodistoUri = "suorituksentyyppi")
 ) extends Suoritus {
