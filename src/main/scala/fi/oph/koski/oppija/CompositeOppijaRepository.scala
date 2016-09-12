@@ -8,9 +8,9 @@ case class CompositeOppijaRepository(main: OppijaRepository, aux: List[Auxiliary
     (main :: aux).iterator.map(_.findOppijat(query)).find(!_.isEmpty).getOrElse(Nil)
   }
 
-  override def findByOid(oid: String)(implicit user: KoskiUser) = main.findByOid(oid)
+  override def findByOid(oid: String) = main.findByOid(oid)
 
-  override def findOrCreate(henkilö: UusiHenkilö)(implicit user: KoskiUser) = main.findOrCreate(henkilö)
+  override def findOrCreate(henkilö: UusiHenkilö) = main.findOrCreate(henkilö)
 
-  override def findByOids(oids: List[String])(implicit user: KoskiUser) = main.findByOids(oids)
+  override def findByOids(oids: List[String]) = main.findByOids(oids)
 }

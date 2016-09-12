@@ -15,13 +15,13 @@ class OpintopolkuOppijaRepository(henkilöPalveluClient: AuthenticationServiceCl
     }
   }
 
-  override def findOrCreate(henkilö: UusiHenkilö)(implicit user: KoskiUser): Either[HttpStatus, Henkilö.Oid] =  {
+  override def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, Henkilö.Oid] =  {
     henkilöPalveluClient.findOrCreate(CreateUser.oppija(henkilö.hetu, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi)).right.map(_.oidHenkilo)
   }
 
-  override def findByOid(oid: String)(implicit user: KoskiUser): Option[TäydellisetHenkilötiedot] = henkilöPalveluClient.findByOid(oid).flatMap(toTäydellisetHenkilötiedot)
+  override def findByOid(oid: String): Option[TäydellisetHenkilötiedot] = henkilöPalveluClient.findByOid(oid).flatMap(toTäydellisetHenkilötiedot)
 
-  override def findByOids(oids: List[String])(implicit user: KoskiUser): List[TäydellisetHenkilötiedot] = henkilöPalveluClient.findByOids(oids).flatMap(toTäydellisetHenkilötiedot)
+  override def findByOids(oids: List[String]): List[TäydellisetHenkilötiedot] = henkilöPalveluClient.findByOids(oids).flatMap(toTäydellisetHenkilötiedot)
 
   private def toTäydellisetHenkilötiedot(user: User) = user.hetu.map(hetu => TäydellisetHenkilötiedot(user.oidHenkilo, hetu, user.etunimet, user.kutsumanimi, user.sukunimi, convertÄidinkieli(user.aidinkieli), convertKansalaisuus(user.kansalaisuus)))
 

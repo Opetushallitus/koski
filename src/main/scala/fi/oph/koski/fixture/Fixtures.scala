@@ -1,7 +1,6 @@
 package fi.oph.koski.fixture
 
 import com.typesafe.config.Config
-import fi.oph.koski.cache.Cached
 import fi.oph.koski.db.{KoskiDatabase, KoskiDatabaseConfig}
 import fi.oph.koski.fixture.Fixtures._
 import fi.oph.koski.koski.KoskiValidator
@@ -20,7 +19,7 @@ object Fixtures {
   }
 }
 
-class FixtureCreator(config: Config, database: KoskiDatabase, opiskeluOikeusRepository: OpiskeluOikeusRepository, oppijaRepository: OppijaRepository with Cached, validator: KoskiValidator) extends Logging with Timing {
+class FixtureCreator(config: Config, database: KoskiDatabase, opiskeluOikeusRepository: OpiskeluOikeusRepository, oppijaRepository: OppijaRepository, validator: KoskiValidator) extends Logging with Timing {
   private val databaseFixtures = new KoskiDatabaseFixtureCreator(database, opiskeluOikeusRepository, oppijaRepository, validator)
   def resetFixtures = if(shouldUseFixtures(config)) {
     timed("resetFixtures") {

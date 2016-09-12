@@ -1,6 +1,6 @@
 package fi.oph.koski.oppija
 
-import fi.oph.koski.cache.{CacheDetails, CachingProxy, CachingStrategy}
+import fi.oph.koski.cache._
 import fi.oph.koski.henkilo.AuthenticationServiceClient
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
@@ -12,10 +12,10 @@ import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOppijaRepositor
 import fi.oph.koski.ytr.{YlioppilasTutkintoRekisteri, YtrAccessChecker, YtrOppijaRepository}
 
 trait OppijaRepository extends AuxiliaryOppijaRepository {
-  def findByOid(oid: String)(implicit user: KoskiUser): Option[TäydellisetHenkilötiedot]
-  def findByOids(oids: List[String])(implicit user: KoskiUser): List[TäydellisetHenkilötiedot]
+  def findByOid(oid: String): Option[TäydellisetHenkilötiedot]
+  def findByOids(oids: List[String]): List[TäydellisetHenkilötiedot]
   def resetFixtures {}
-  def findOrCreate(henkilö: UusiHenkilö)(implicit user: KoskiUser): Either[HttpStatus, Henkilö.Oid]
+  def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, Henkilö.Oid]
   def findOppijat(query: String)(implicit user: KoskiUser): List[HenkilötiedotJaOid]
 }
 
@@ -26,7 +26,7 @@ trait AuxiliaryOppijaRepository {
 object OppijaRepository {
   def apply(authenticationServiceClient: AuthenticationServiceClient, koodistoViitePalvelu: KoodistoViitePalvelu, virtaClient: VirtaClient, virtaAccessChecker: VirtaAccessChecker, ytr: YlioppilasTutkintoRekisteri, ytrAccessChecker: YtrAccessChecker) = {
     val opintopolku = new OpintopolkuOppijaRepository(authenticationServiceClient, koodistoViitePalvelu)
-    CachingProxy(OppijaRepositoryCachingStrategy, TimedProxy(
+    CachingOppijaRepository(TimedProxy(
       CompositeOppijaRepository(
         TimedProxy(opintopolku.asInstanceOf[OppijaRepository]),
         List(
@@ -37,16 +37,12 @@ object OppijaRepository {
   }
 }
 
-object OppijaRepositoryCachingStrategy extends CachingStrategy("OppijaRepository", new CacheDetails {
-  def durationSeconds = 60
-  def maxSize = 100
-  def refreshing = true
-  override def storeValuePredicate: (Invocation, AnyRef) => Boolean = {
-    case (invocation, value) => invocation.f.name match {
-      case "findByOid" => value match {
-        case Some(_) => true
-        case _ => false
-      }
-      case _ => false
-    }
-  }})
+case class CachingOppijaRepository(repository: OppijaRepository) extends OppijaRepository {
+  private val oidCache = KeyValueCache(KoskiCache.cacheStrategy("findByOid"), repository.findByOid)
+  // findByOid is locally cached
+  override def findByOid(oid: String) = oidCache(oid)
+  // Other methods just call the non-cached implementation
+  override def findByOids(oids: List[String]) = repository.findByOids(oids)
+  override def findOrCreate(henkilö: UusiHenkilö) = repository.findOrCreate(henkilö)
+  override def findOppijat(query: String)(implicit user: KoskiUser) = repository.findOppijat(query)
+}
