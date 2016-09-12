@@ -4,7 +4,7 @@ describe('Tiedonsiirrot', function() {
 
 
   before(
-    authentication.login('tiedonsiirtäjä'),
+    authentication.login('stadin-palvelu'),
     resetFixtures,
     insertOppija('<oppija></oppija>'),
     insertOppija('{"henkilö": {}}'),

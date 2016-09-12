@@ -7,12 +7,13 @@ import fi.oph.koski.http._
 import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import fi.oph.koski.json.Json4sHttp4s._
-import fi.oph.koski.koskiuser.{Käyttöoikeusryhmät, MockUsers}
-import fi.oph.koski.util.ScalazTaskToObservable._
+import fi.oph.koski.koskiuser.Käyttöoikeusryhmät
 import fi.oph.koski.util.Timing
 import org.http4s._
 import org.http4s.headers.`Content-Type`
-import rx.lang.scala.Observable
+
+import scalaz.concurrent.Task
+import scalaz.concurrent.Task.gatherUnordered
 
 trait AuthenticationServiceClient {
   def käyttöoikeusryhmät: List[Käyttöoikeusryhmä]
@@ -22,6 +23,7 @@ trait AuthenticationServiceClient {
   def findByOid(id: String): Option[User]
   def findByOids(oids: List[String]): List[User]
   def findOrCreate(createUserInfo: CreateUser): Either[HttpStatus, User]
+  def organisaationHenkilötRyhmässä(ryhmä: String, organisaatioOid: String) : List[UserWithContactInformation]
 }
 
 object AuthenticationServiceClient {
@@ -109,10 +111,28 @@ class RemoteAuthenticationServiceClient(http: Http) extends AuthenticationServic
   def syncLdap(henkilöOid: String) = {
     http(uri"/authentication-service/resources/ldap/${henkilöOid}")(Http.expectSuccess)
   }
+
+  override def organisaationHenkilötRyhmässä(ryhmä: String, organisaatioOid: String): List[UserWithContactInformation] = {
+    val henkilötQuery: Task[UserQueryResult] = http(uri"/authentication-service/resources/henkilo?groupName=${ryhmä}&ht=VIRKAILIJA&no=false&org=${organisaatioOid}&p=false")(Http.parseJson[UserQueryResult])
+    runTask(henkilötQuery.flatMap{h =>
+      gatherUnordered(h.results.map { u =>
+        http(uri"/authentication-service/resources/henkilo/${u.oidHenkilo}")(Http.parseJson[UserWithContactInformation])
+      })
+    })
+  }
 }
 
 case class UserQueryResult(totalCount: Integer, results: List[UserQueryUser])
 case class UserQueryUser(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String])
+case class UserWithContactInformation(oidHenkilo: String, yhteystiedotRyhma: List[YhteystietoRyhmä]) {
+  def workEmails: List[String] = {
+    yhteystiedotRyhma.collect {
+      case r if r.ryhmaKuvaus == "yhteystietotyyppi2" => r.yhteystiedot.collect {
+        case y if y.yhteystietoTyyppi == "YHTEYSTIETO_SAHKOPOSTI" => y.yhteystietoArvo
+      }
+    }.flatten
+  }
+}
 
 case class User(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], aidinkieli: Option[String], kansalaisuus: Option[List[String]])
 
@@ -140,3 +160,6 @@ case class Käyttöoikeusryhmä(id: Int, name: String) {
 
 case class UusiKäyttöoikeusryhmä(ryhmaNameFi: String, ryhmaNameSv: String, ryhmaNameEn: String,
                                  palvelutRoolit: List[Void] = Nil, organisaatioTyypit: List[String] = Nil, slaveIds: List[Void] = Nil)
+
+case class YhteystietoRyhmä(id: Int, ryhmaKuvaus: String, yhteystiedot: List[Yhteystieto])
+case class Yhteystieto(yhteystietoTyyppi: String, yhteystietoArvo: String)

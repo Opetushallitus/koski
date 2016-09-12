@@ -54,13 +54,14 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
   def create(createUserInfo: CreateUser): Either[HttpStatus, String] = {
     if (createUserInfo.sukunimi == "error") {
       throw new TestingException("Testing error handling")
-    } else if (oppijat.getOppijat.find { o => (Some(o.hetu) == createUserInfo.hetu) } .isDefined) {
+    } else if (oppijat.getOppijat.find { o => (Some(o.hetu) == createUserInfo.hetu) }.isDefined) {
       Left(KoskiErrorCategory.conflict.hetu("conflict"))
     } else {
       val newOppija = oppijat.oppija(createUserInfo.sukunimi, createUserInfo.etunimet, createUserInfo.hetu.getOrElse(throw new IllegalArgumentException("Hetu puuttuu")))
       Right(newOppija.oid)
     }
   }
+
   def findByOid(henkilöOid: String): Option[User] = {
     val oppija: Option[TäydellisetHenkilötiedot] = findHenkilötiedot(henkilöOid)
     oppija.map(henkilö => User(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, Some(henkilö.hetu), Some("FI"), None))
@@ -97,4 +98,10 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
     oppija.toString.toUpperCase
   }
 
+  override def organisaationHenkilötRyhmässä(ryhmä: String, organisaatioOid: String): List[UserWithContactInformation] = {
+    MockUsers.users.collect {
+      case u if u.käyttöoikeudet.contains((organisaatioOid, Käyttöoikeusryhmät.vastuukäyttäjä)) =>
+        UserWithContactInformation(u.oid, List(YhteystietoRyhmä(5992773, "yhteystietotyyppi2", List(Yhteystieto("YHTEYSTIETO_SAHKOPOSTI", u.username + "@example.com")))))
+    }
+  }
 }
