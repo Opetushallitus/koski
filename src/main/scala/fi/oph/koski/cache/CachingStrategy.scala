@@ -32,19 +32,10 @@ object CachingStrategy {
 case class CachingStrategy(name: String, cacheDetails: CacheDetails, invalidator: CacheInvalidator = GlobalCacheInvalidator) extends Cached with Logging {
   logger.debug("Create cache " + name)
   invalidator.registerCache(this)
-  /**
-   *  Marker exception that's used for preventing caching values that we don't want to cache.
-   */
-  case class DoNotStoreException(value: AnyRef) extends RuntimeException("Don't store this value!")
 
   def apply(invocation: Invocation): AnyRef = {
-    try {
-      logger.debug(name + "." + invocation + " (cache size " + cache.size() + ")")
-      cache.get(invocation)
-    } catch {
-      case e: UncheckedExecutionException if e.getCause.isInstanceOf[DoNotStoreException] => e.getCause.asInstanceOf[DoNotStoreException].value
-      case DoNotStoreException(value) => value
-    }
+    logger.debug(name + "." + invocation + " (cache size " + cache.size() + ")")
+    cache.get(invocation)
   }
 
   override def invalidateCache() = {
@@ -56,11 +47,7 @@ case class CachingStrategy(name: String, cacheDetails: CacheDetails, invalidator
     val cacheLoader: CacheLoader[Invocation, AnyRef] = new CacheLoader[Invocation, AnyRef] {
       override def load(invocation:  Invocation): AnyRef = {
         logger.debug("->loading")
-        val value = invocation.invoke
-        if (!cacheDetails.storeValuePredicate(invocation, value)) {
-          throw new DoNotStoreException(value)
-        }
-        value
+        invocation.invoke
       }
 
       override def reload(invocation: Invocation, oldValue: AnyRef): ListenableFuture[AnyRef] = {
@@ -89,10 +76,8 @@ case class CachingStrategy(name: String, cacheDetails: CacheDetails, invalidator
 trait CacheDetails {
   def durationSeconds: Int
   def maxSize: Int
-  def storeValuePredicate: (Invocation, AnyRef) => Boolean
   def refreshing: Boolean
 }
 
 case class CacheAllCacheDetails(durationSeconds: Int, maxSize: Int, refreshing: Boolean) extends CacheDetails {
-  override def storeValuePredicate: (Invocation, AnyRef) => Boolean = (invocation, value) => true
 }
