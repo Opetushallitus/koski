@@ -36,7 +36,7 @@ class KoskiApplication(val config: Config) extends Logging with UserAuthenticati
   lazy val tutkintoRepository = CachingProxy(cacheAllRefresh("TutkintoRepository", 3600, 100), TutkintoRepository(EPerusteetRepository.apply(config), arviointiAsteikot, koodistoViitePalvelu))
   lazy val oppilaitosRepository = new OppilaitosRepository(organisaatioRepository)
   lazy val koodistoPalvelu = KoodistoPalvelu.apply(config)
-  lazy val koodistoViitePalvelu = new KoodistoViitePalvelu(koodistoPalvelu)
+  lazy val koodistoViitePalvelu = KoodistoViitePalvelu(koodistoPalvelu)
   lazy val arviointiAsteikot = ArviointiasteikkoRepository(koodistoViitePalvelu)
   lazy val authenticationServiceClient = AuthenticationServiceClient(config, database.db)
   lazy val käyttöoikeusRepository = new KäyttöoikeusRepository(authenticationServiceClient, organisaatioRepository)
