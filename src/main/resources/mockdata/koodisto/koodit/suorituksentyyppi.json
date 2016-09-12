@@ -180,8 +180,20 @@
     "versio": 1
   },
   {
+    "koodiUri": "suorituksentyyppi_preiboppimäärä",
+    "koodiArvo": "preiboppimaara",
+    "metadata": [
+      {
+        "nimi": "Pre-IB luokan oppimäärä",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
     "koodiUri": "suorituksentyyppi_ibtutkinto",
-    "koodiArvo": "tutkinto",
+    "koodiArvo": "ibtutkinto",
     "metadata": [
       {
         "nimi": "IB-lukion oppimäärä",

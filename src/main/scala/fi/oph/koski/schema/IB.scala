@@ -17,8 +17,8 @@ case class IBOpiskeluoikeus(
   päättymispäivä: Option[LocalDate] = None,
   tila: LukionOpiskeluoikeudenTila,
   läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
-  @MinItems(1) @MaxItems(1)
-  suoritukset: List[IBTutkinnonSuoritus],
+  @MinItems(1) @MaxItems(2)
+  suoritukset: List[IBTutkinnonOsanSuoritus],
   @KoodistoKoodiarvo("ibtutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ibtutkinto", "opiskeluoikeudentyyppi")
 ) extends KoskeenTallennettavaOpiskeluoikeus {
@@ -39,7 +39,23 @@ case class IBTutkinnonSuoritus(
   override val osasuoritukset: Option[List[IBOppiaineenSuoritus]],
   @KoodistoKoodiarvo("ibtutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ibtutkinto", koodistoUri = "suorituksentyyppi")
-) extends Suoritus with Toimipisteellinen {
+) extends IBTutkinnonOsanSuoritus
+
+case class PreIBSuoritus(
+  @Title("Koulutus")
+  koulutusmoduuli: Koulutus,
+  toimipiste: OrganisaatioWithOid,
+  tila: Koodistokoodiviite,
+  vahvistus: Option[Henkilövahvistus] = None,
+  suorituskieli: Option[Koodistokoodiviite],
+  @Description("Oppiaineiden suoritukset")
+  @Title("Oppiaineet")
+  override val osasuoritukset: Option[List[PreIBOppiaineenSuoritus]],
+  @KoodistoKoodiarvo("preiboppimaara")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("preiboppimaara", koodistoUri = "suorituksentyyppi")
+) extends IBTutkinnonOsanSuoritus
+
+trait IBTutkinnonOsanSuoritus extends Suoritus with Toimipisteellinen {
   def arviointi = None
 }
 
@@ -50,6 +66,12 @@ case class IBTutkinto(
 ) extends Koulutus {
   override def laajuus = None
   override def isTutkinto = true
+}
+
+trait IBSuoritus extends Suoritus {
+  def koulutusmoduuli: KoodistostaLöytyväKoulutusmoduuli with Valinnaisuus
+  override def tarvitseeVahvistuksen = false
+  override def vahvistus: Option[Vahvistus] = None
 }
 
 case class IBOppiaineenSuoritus(
@@ -63,11 +85,36 @@ case class IBOppiaineenSuoritus(
   override val osasuoritukset: Option[List[IBKurssinSuoritus]],
   @KoodistoKoodiarvo("iboppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "iboppiaine", koodistoUri = "suorituksentyyppi")
-) extends Suoritus {
-  // TODO: tarkista jostain alla olevat
-  override def tarvitseeVahvistuksen = false
-  override def vahvistus: Option[Vahvistus] = None
-}
+) extends IBSuoritus
+
+
+trait PreIBOppiaineenSuoritus extends IBSuoritus
+
+case class PreIBLukionOppiaineenSuoritus(
+  @Title("Oppiaine")
+  koulutusmoduuli: LukionOppiaine,
+  tila: Koodistokoodiviite,
+  arviointi: Option[List[LukionOppiaineenArviointi]] = None,
+  suorituskieli: Option[Koodistokoodiviite],
+  @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
+  @Title("Kurssit")
+  override val osasuoritukset: Option[List[LukionKurssinSuoritus]],
+  @KoodistoKoodiarvo("iboppiaine")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "iboppiaine", koodistoUri = "suorituksentyyppi")
+) extends PreIBOppiaineenSuoritus
+
+case class PreIBVarsinaisenIBOppiaineenSuoritus(
+  @Title("Oppiaine")
+  koulutusmoduuli: IBOppiaine,
+  tila: Koodistokoodiviite,
+  arviointi: Option[List[LukionOppiaineenArviointi]] = None,
+  suorituskieli: Option[Koodistokoodiviite],
+  @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
+  @Title("Kurssit")
+  override val osasuoritukset: Option[List[IBKurssinSuoritus]],
+  @KoodistoKoodiarvo("iboppiaine")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "iboppiaine", koodistoUri = "suorituksentyyppi")
+) extends PreIBOppiaineenSuoritus
 
 case class IBOppiaineenArviointi(
   arvosana: Koodistokoodiviite,
@@ -82,23 +129,19 @@ case class IBKurssinSuoritus(
   koulutusmoduuli: IBKurssi,
   tila: Koodistokoodiviite,
   arviointi: Option[List[IBKurssinArviointi]] = None,
-  // TODO: tuleeko tunnustettu kenttä?
   suorituskieli: Option[Koodistokoodiviite],
   @KoodistoKoodiarvo("ibkurssi")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "ibkurssi", koodistoUri = "suorituksentyyppi")
-) extends Suoritus {
-  // TODO: nämä pitää tarkistaa jostain
-  def vahvistus: Option[Vahvistus] = None
-  override def tarvitseeVahvistuksen: Boolean = false
-}
+) extends IBSuoritus
 
 @Description("IB-lukion kurssin tunnistetiedot")
 case class IBKurssi(
   @KoodistoUri("ibkurssit") // TODO: lisää tämä
   @OksaUri("tmpOKSAID873", "kurssi")
   tunniste: Koodistokoodiviite,
+  pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa]
-) extends KoodistostaLöytyväKoulutusmoduuli
+) extends KoodistostaLöytyväKoulutusmoduuli with Valinnaisuus
 
 case class IBKurssinArviointi(
   arvosana: Koodistokoodiviite,
