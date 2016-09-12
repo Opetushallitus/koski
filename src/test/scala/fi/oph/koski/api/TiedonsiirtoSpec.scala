@@ -2,7 +2,7 @@ package fi.oph.koski.api
 
 
 import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjestelmäId
-import fi.oph.koski.email.MockEmailSender
+import fi.oph.koski.email.{Email, EmailContent, EmailRecipient, MockEmailSender}
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.MockUsers.{helsinkiPalvelukäyttäjä, stadinAmmattiopistoPalvelukäyttäjä}
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
@@ -33,7 +33,13 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         }
         verifyTiedonsiirtoLoki(stadinAmmattiopistoPalvelukäyttäjä, Some(defaultHenkilö), Some(ExamplesTiedonsiirto.opiskeluoikeus), errorStored = true, dataStored = true)
         val mails = MockEmailSender.checkMail
-        mails.length should equal(1)
+        mails should equal(List(Email(
+          EmailContent(
+            "no-reply@opintopolku.fi",
+            "Virheellinen KOSKI tiedonsiirto",
+            "Automaattisessa tiedonsiirrossa tapahtui virhe.\nKäykää ystävällisesti tarkistamassa tapahtuneet tiedonsiirrot osoitteessa: http://localhost:7021/koski/tiedonsiirrot",
+            false),
+          List(EmailRecipient("stadin-vastuu@example.com")))))
       }
 
       "toisesta peräkkäisestä epäonnistuneesta tiedonsiirrosta ei lähetetä emailia" in {
