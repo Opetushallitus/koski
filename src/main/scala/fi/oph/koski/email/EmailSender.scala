@@ -10,6 +10,8 @@ trait EmailSender {
   def sendEmail(mail: Email)
 }
 
+// Huom! Näitä domain-luokkia käytetään tiedon lähettämiseen ryhmäsähköpostipalveluun,
+// joten rakenteen muuttaminen rikkoo yhteensopivuuden. Älä siis muuta rakennetta.
 case class Email(email: EmailContent, recipient: List[EmailRecipient])
 case class EmailContent(from: String, subject: String, body: String, html: Boolean)
 case class EmailRecipient(email: String)
