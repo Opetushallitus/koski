@@ -11,6 +11,20 @@ object KoskiApiOperations {
 
  val operations = List(
    ApiOperation(
+     "GET", "/koski/documentation/koodisto/{nimi}/{versio}",
+     "Palauttaa koodiston koodiarvot",
+     <p></p>,
+     Nil,
+     List(
+       PathParameter("nimi", "Koodiston nimi", "koskioppiaineetyleissivistava"),
+       PathParameter("versio", "Koodiston versio", "latest")
+     ),
+     List(
+       KoskiErrorCategory.ok.searchOk,
+       KoskiErrorCategory.notFound.koodistoaEiLöydy
+     )
+   ),
+   ApiOperation(
       "GET", "/koski/api/oppija/search",
      "Etsii oppijoita annetulla hakusanalla.",
       <p> Hakutuloksissa vain oppijoiden perustiedot.
