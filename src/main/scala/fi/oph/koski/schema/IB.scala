@@ -124,6 +124,8 @@ case class PreIBVarsinaisenIBOppiaineenSuoritus(
 ) extends PreIBOppiaineenSuoritus
 
 case class IBOppiaineenArviointi(
+  @Description("Onko arvoitu arvosana vai ei, jos ei niin tarkoittaa IBOn vahvistamaa arvosanaa")
+  predicted: Boolean = true,
   arvosana: Koodistokoodiviite,
   päivä: Option[LocalDate]
 ) extends IBArviointi {
