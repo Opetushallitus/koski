@@ -49,11 +49,11 @@ class YlioppilastutkintoSpec extends FunSpec with Matchers with OpiskeluoikeusTe
                                                                                   |Helsingin medialukio
                                                                                   |Ylioppilas, Ynjevi 010696-971K
                                                                                   |
-                                                                                  |Maantiede M
-                                                                                  |Englanti, pitkä C
-                                                                                  |Äidinkieli, suomi B
-                                                                                  |Matematiikka, lyhyt L
-                                                                                  |Ruotsi, keskipitkä C""".stripMargin)
+                                                                                  |Maantiede Magna cum laude approbatur
+                                                                                  |Englanti, pitkä Cum laude approbatur
+                                                                                  |Äidinkieli, suomi Lubenter approbatur
+                                                                                  |Matematiikka, lyhyt Laudatur
+                                                                                  |Ruotsi, keskipitkä Cum laude approbatur""".stripMargin)
       }
     }
   }
