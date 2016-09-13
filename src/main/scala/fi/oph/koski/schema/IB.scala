@@ -143,7 +143,7 @@ case class IBKurssinSuoritus(
 
 @Description("IB-lukion kurssin tunnistetiedot")
 case class IBKurssi(
-  @KoodistoUri("ibkurssit") // TODO: lisää tämä
+  @KoodistoUri("ibkurssit") // TODO: pystyykö näitä edes koodittamaan?
   @OksaUri("tmpOKSAID873", "kurssi")
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean = true,
@@ -151,6 +151,7 @@ case class IBKurssi(
 ) extends KoodistostaLöytyväKoulutusmoduuli with Valinnaisuus
 
 case class IBKurssinArviointi(
+  //TODO: Effort
   arvosana: Koodistokoodiviite,
   @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
   päivä: LocalDate
@@ -168,12 +169,28 @@ trait IBArviointi extends KoodistostaLöytyväArviointi {
 }
 
 @Description("IB-lukion oppiaineen tunnistetiedot")
-case class IBOppiaine(
-  @KoodistoUri("koskioppiaineetib") // TODO: lisää tämä
+trait IBOppiaine extends KoodistostaLöytyväKoulutusmoduuli with Valinnaisuus {
+  @KoodistoUri("oppiaineetib") // TODO: lisää tämä
   @OksaUri("tmpOKSAID256", "oppiaine")
-  @KoodistoKoodiarvo("TODO")
-  tunniste: Koodistokoodiviite,
-  pakollinen: Boolean,
-  laajuus: Option[Laajuus]
-) extends KoodistostaLöytyväKoulutusmoduuli with Valinnaisuus
+  def tunniste: Koodistokoodiviite
+  def laajuus: Option[LaajuusTunneissa]
+  @KoodistoUri("oppiaineentasoib")
+  def taso: Option[Koodistokoodiviite]
+  def pakollinen: Boolean = true
+}
 
+case class CoreElementOppiaine(
+  @KoodistoKoodiarvo("TOK")
+  @KoodistoKoodiarvo("EE")
+  @KoodistoKoodiarvo("CAS")
+  tunniste: Koodistokoodiviite,
+  laajuus: Option[LaajuusTunneissa],
+  taso: Option[Koodistokoodiviite] = None
+) extends IBOppiaine
+
+
+case class LaajuusTunneissa(
+  arvo: Float,
+  @KoodistoKoodiarvo("5")
+  yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = "5", nimi = Some(english("hours")))
+) extends Laajuus
