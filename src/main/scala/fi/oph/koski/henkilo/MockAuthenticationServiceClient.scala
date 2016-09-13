@@ -3,7 +3,7 @@ package fi.oph.koski.henkilo
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.{KoskiDatabaseMethods, PostgresDriverWithJsonSupport, Tables}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.{Käyttöoikeusryhmät, MockUsers}
+import fi.oph.koski.koskiuser.{Käyttöoikeusryhmät, MockUser, MockUsers}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppija.{MockOppijat, TestingException}
 import fi.oph.koski.schema.{Henkilö, TäydellisetHenkilötiedot}
@@ -100,7 +100,7 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
 
   override def organisaationHenkilötRyhmässä(ryhmä: String, organisaatioOid: String): List[UserWithContactInformation] = {
     MockUsers.users.collect {
-      case u if u.käyttöoikeudet.contains((organisaatioOid, Käyttöoikeusryhmät.vastuukäyttäjä)) =>
+      case u: Any if u.käyttöoikeudet.contains((organisaatioOid, Käyttöoikeusryhmät.vastuukäyttäjä)) =>
         UserWithContactInformation(u.oid, List(YhteystietoRyhmä(5992773, "yhteystietotyyppi2", List(Yhteystieto("YHTEYSTIETO_SAHKOPOSTI", u.username + "@example.com")))))
     }
   }

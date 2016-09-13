@@ -127,15 +127,14 @@ case class UserQueryUser(oidHenkilo: String, sukunimi: String, etunimet: String,
 case class UserWithContactInformation(oidHenkilo: String, yhteystiedotRyhma: List[YhteystietoRyhmä]) {
   def workEmails: List[String] = {
     yhteystiedotRyhma.collect {
-      case r if r.ryhmaKuvaus == "yhteystietotyyppi2" => r.yhteystiedot.collect {
-        case y if y.yhteystietoTyyppi == "YHTEYSTIETO_SAHKOPOSTI" => y.yhteystietoArvo
+      case YhteystietoRyhmä(_, kuvaus, yhteystiedot) if kuvaus == "yhteystietotyyppi2" => yhteystiedot.collect {
+        case Yhteystieto(tyyppi, arvo) if tyyppi == "YHTEYSTIETO_SAHKOPOSTI" => arvo
       }
     }.flatten
   }
 }
 
 case class User(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], aidinkieli: Option[String], kansalaisuus: Option[List[String]])
-
 
 case class CreateUser(hetu: Option[String], sukunimi: String, etunimet: String, kutsumanimi: String, henkiloTyyppi: String, kayttajatiedot: Option[Käyttajatiedot])
 case class Käyttajatiedot(username: String)
