@@ -1,0 +1,23 @@
+{
+  "koodistoUri" : "oppiaineentasoib",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "SV",
+    "nimi" : "oppiaineentaso",
+    "kuvaus" : "Oppiaineen taso",
+    "kasite" : ""
+  }, {
+    "kieli" : "EN",
+    "nimi" : "oppiaineentaso",
+    "kuvaus" : "Oppiaineen taso",
+    "kasite" : ""
+  }, {
+    "kieli" : "FI",
+    "nimi" : "oppiaineentaso",
+    "kuvaus" : "Oppiaineen taso",
+    "kasite" : ""
+  } ],
+  "codesGroupUri" : "http://henkilokoodistot",
+  "voimassaAlkuPvm" : "2016-09-13",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}

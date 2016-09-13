@@ -1,0 +1,22 @@
+[
+  {
+  "koodiUri" : "oppiaineentasoib_sl",
+  "koodiArvo" : "SL",
+  "metadata" : [ {
+    "nimi" : "Standard Level",
+    "lyhytNimi" : "SL",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+  },
+  {
+    "koodiUri" : "oppiaineentasoib_hl",
+    "koodiArvo" : "HL",
+    "metadata" : [ {
+      "nimi" : "Higher Level",
+      "lyhytNimi" : "HL",
+      "kieli" : "EN"
+    } ],
+    "versio" : 1
+  }
+]
