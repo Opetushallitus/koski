@@ -43,7 +43,7 @@ case class IBTutkinnonSuoritus(
 
 case class PreIBSuoritus(
   @Title("Koulutus")
-  koulutusmoduuli: IBKoulutus, //TODO: joku tähän
+  koulutusmoduuli: PreIBKoulutusModuuli,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   vahvistus: Option[Henkilövahvistus] = None,
@@ -59,16 +59,21 @@ trait IBTutkinnonOsanSuoritus extends Suoritus with Toimipisteellinen {
   def arviointi = None
 }
 
-trait IBKoulutus extends Koulutus {
-  override def laajuus = None
-  override def isTutkinto = true
+case class PreIBKoulutusModuuli(
+  nimi: LocalizedString,
+  tunniste: KoodiViite = Koodistokoodiviite("preiboppimaara", koodistoUri = "suorituksentyyppi")
+) extends Koulutusmoduuli {
+  override def laajuus: Option[Laajuus] = None
 }
 
 @Description("IB tutkinnon tunnistetiedot")
 case class IBTutkinto(
   @KoodistoKoodiarvo("301102")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("301102", koodistoUri = "koulutus")
-) extends IBKoulutus
+) extends Koulutus {
+  override def laajuus = None
+  override def isTutkinto = true
+}
 
 trait IBSuoritus extends Suoritus {
   def koulutusmoduuli: KoodistostaLöytyväKoulutusmoduuli with Valinnaisuus
