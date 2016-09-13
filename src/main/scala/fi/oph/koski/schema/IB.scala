@@ -61,7 +61,9 @@ trait IBTutkinnonOsanSuoritus extends Suoritus with Toimipisteellinen {
 
 case class PreIBKoulutusModuuli(
   nimi: LocalizedString,
-  tunniste: KoodiViite = Koodistokoodiviite("preiboppimaara", koodistoUri = "suorituksentyyppi")
+  @KoodistoUri("suorituksentyyppi")
+  @KoodistoKoodiarvo("preiboppimaara")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("preiboppimaara", koodistoUri = "suorituksentyyppi")
 ) extends Koulutusmoduuli {
   override def laajuus: Option[Laajuus] = None
 }
