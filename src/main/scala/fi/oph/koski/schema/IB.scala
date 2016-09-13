@@ -43,11 +43,11 @@ case class IBTutkinnonSuoritus(
 
 case class PreIBSuoritus(
   @Title("Koulutus")
-  koulutusmoduuli: PreIBKoulutusmoduuli,
+  koulutusmoduuli: PreIBKoulutusmoduuli = PreIBKoulutusmoduuli(),
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   vahvistus: Option[Henkilövahvistus] = None,
-  suorituskieli: Option[Koodistokoodiviite],
+  suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[PreIBOppiaineenSuoritus]],
@@ -60,11 +60,10 @@ trait IBPäätasonSuoritus extends Suoritus with Toimipisteellinen {
 }
 
 case class PreIBKoulutusmoduuli(
-  nimi: LocalizedString,
   @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("preiboppimaara")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("preiboppimaara", koodistoUri = "suorituksentyyppi")
-) extends Koulutusmoduuli {
+) extends KoodistostaLöytyväKoulutusmoduuli {
   override def laajuus: Option[Laajuus] = None
 }
 
@@ -100,14 +99,15 @@ case class PreIBOppiaineenSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: PreIBOppiaine,
   tila: Koodistokoodiviite,
-  arviointi: Option[List[LukionOppiaineenArviointi]] = None,
-  suorituskieli: Option[Koodistokoodiviite],
+  suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
   @Title("Kurssit")
   override val osasuoritukset: Option[List[PreIBKurssinSuoritus]],
-  @KoodistoKoodiarvo("iboppiaine")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "iboppiaine", koodistoUri = "suorituksentyyppi")
-) extends IBSuoritus
+  @KoodistoKoodiarvo("preiboppiaine")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "preiboppiaine", koodistoUri = "suorituksentyyppi")
+) extends IBSuoritus {
+  def arviointi = None
+}
 
 trait PreIBOppiaine extends Koulutusmoduuli
 
@@ -126,9 +126,9 @@ case class PreIBKurssinSuoritus(
   koulutusmoduuli: PreIBKurssi,
   tila: Koodistokoodiviite,
   arviointi: Option[List[LukionKurssinArviointi]] = None,
-  suorituskieli: Option[Koodistokoodiviite],
-  @KoodistoKoodiarvo("ibkurssi")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "ibkurssi", koodistoUri = "suorituksentyyppi")
+  suorituskieli: Option[Koodistokoodiviite] = None,
+  @KoodistoKoodiarvo("preibkurssi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "preibkurssi", koodistoUri = "suorituksentyyppi")
 ) extends IBSuoritus
 
 case class IBKurssinSuoritus(

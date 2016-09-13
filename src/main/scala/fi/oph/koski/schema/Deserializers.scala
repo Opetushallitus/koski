@@ -17,8 +17,11 @@ object Deserializers {
     JärjestämismuotoDeserializer,
     OrganisaatioDeserializer,
     LukionOppiaineDeserializer,
+    IBOppiaineDeserializer,
+    PreIBOppiaineDeserializer,
     PerusopetuksenOppiaineDeserializer,
     LukionKurssiDeserializer,
+    PreIBKurssiDeserializer,
     SuoritusDeserializer,
     EditorModelSerializer
   )
@@ -47,6 +50,13 @@ object SuoritusDeserializer extends Deserializer[Suoritus] {
         case suoritus: JObject if tyyppi(suoritus) == JString("lukionoppiaineenoppimaara") => suoritus.extract[LukionOppiaineenOppimääränSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("lukionoppiaine") => suoritus.extract[LukionOppiaineenSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("lukionkurssi") => suoritus.extract[LukionKurssinSuoritus]
+
+        case suoritus: JObject if tyyppi(suoritus) == JString("ibtutkinto") => suoritus.extract[IBTutkinnonSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("preiboppimaara") => suoritus.extract[PreIBSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("iboppiaine") => suoritus.extract[IBOppiaineenSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("preiboppiaine") => suoritus.extract[PreIBOppiaineenSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("ibkurssi") => suoritus.extract[IBKurssinSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("preibkurssi") => suoritus.extract[PreIBKurssinSuoritus]
 
         case suoritus: JObject if tyyppi(suoritus) == JString("ylioppilastutkinto") => suoritus.extract[YlioppilastutkinnonSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("ylioppilastutkinnonkoe") => suoritus.extract[YlioppilastutkinnonKokeenSuoritus]
@@ -160,6 +170,31 @@ object LukionOppiaineDeserializer extends Deserializer[LukionOppiaine] {
   }
 }
 
+object PreIBOppiaineDeserializer extends Deserializer[PreIBOppiaine] {
+  private val PreIBOppiaineClass = classOf[PreIBOppiaine]
+
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), PreIBOppiaine] = {
+    case (TypeInfo(PreIBOppiaineClass, _), json) =>
+      json match {
+        case moduuli: JObject if moduuli \ "tunniste" \ "koodistoUri" == JString("oppiaineetib") => moduuli.extract[IBOppiaine]
+        case moduuli: JObject => moduuli.extract[LukionOppiaine]
+        case _ => throw CannotDeserializeException(this, json)
+      }
+  }
+}
+
+object IBOppiaineDeserializer extends Deserializer[IBOppiaine] {
+  private val IBOppiaineClass = classOf[IBOppiaine]
+
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), IBOppiaine] = {
+    case (TypeInfo(IBOppiaineClass, _), json) =>
+      json match {
+        case moduuli: JObject => moduuli.extract[IBCoreElementOppiaine]
+        case _ => throw CannotDeserializeException(this, json)
+      }
+  }
+}
+
 object PerusopetuksenOppiaineDeserializer extends Deserializer[PerusopetuksenOppiaine] {
   private val PerusopetuksenOppiaineClass = classOf[PerusopetuksenOppiaine]
 
@@ -195,6 +230,18 @@ object LukionKurssiDeserializer extends Deserializer[LukionKurssi] {
       json match {
         case kurssi: JObject if kurssi \ "tunniste" \ "koodistoUri" == JString("lukionkurssit") => kurssi.extract[ValtakunnallinenLukionKurssi]
         case kurssi: JObject => kurssi.extract[PaikallinenLukionKurssi]
+      }
+  }
+}
+
+object PreIBKurssiDeserializer extends Deserializer[PreIBKurssi] {
+  private val TheClass = classOf[PreIBKurssi]
+
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), PreIBKurssi] = {
+    case (TypeInfo(TheClass, _), json) =>
+      json match {
+        case kurssi: JObject if kurssi \ "tunniste" \ "koodistoUri" == JString("ibkurssit") => kurssi.extract[IBKurssi]
+        case kurssi: JObject => kurssi.extract[LukionKurssi]
       }
   }
 }

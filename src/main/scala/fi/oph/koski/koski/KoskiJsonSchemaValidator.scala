@@ -22,6 +22,7 @@ object KoskiJsonSchemaValidator {
     "perusopetukseenvalmistavaopetus" -> createSchema(classOf[PerusopetukseenValmistavanOpetuksenOpiskeluoikeus]),
     "luva" -> createSchema(classOf[LukioonValmistavanKoulutuksenOpiskeluoikeus]),
     "lukiokoulutus" -> createSchema(classOf[LukionOpiskeluoikeus]),
+    "ibtutkinto" -> createSchema(classOf[IBOpiskeluoikeus]),
     "korkeakoulutus" -> createSchema(classOf[KorkeakoulunOpiskeluoikeus]),
     "ylioppilastutkinto" -> createSchema(classOf[YlioppilastutkinnonOpiskeluoikeus])
   )

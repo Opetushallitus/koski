@@ -20,6 +20,7 @@ object MockOrganisaatiot {
   val winnova = "1.2.246.562.10.93135224694"
   val lehtikuusentienToimipiste = "1.2.246.562.10.42456023292"
   val jyväskylänNormaalikoulu = "1.2.246.562.10.14613773812"
+  val ressunLukio = "1.2.246.562.10.62858797335"
   val helsinginMedialukio = "1.2.246.562.10.70411521654"
   val ylioppilastutkintolautakunta = "1.2.246.562.10.43628088406"
 
@@ -33,7 +34,8 @@ object MockOrganisaatiot {
     aaltoYliopisto,
     itäsuomenYliopisto,
     yrkehögskolanArcada,
-    lahdenAmmattikorkeakoulu
+    lahdenAmmattikorkeakoulu,
+    ressunLukio
   )
 
   // Näille "juuriorganisaatioille" on haettu omat json-filet mockausta varten. Jos tarvitaan uusi juuri, lisätään se tähän
