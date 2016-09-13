@@ -12,7 +12,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.util.Timing
 
 class TiedonsiirtoRepository(val db: DB, mailer: TiedonsiirtoFailureMailer) extends GlobalExecutionContext with KoskiDatabaseMethods with Timing {
-  val maxResults = 1000
+  val maxResults = 10000
 
   def create(kayttajaOid: String, tallentajaOrganisaatioOid: String, oppija: Option[JValue], oppilaitos: Option[JValue], error: Option[TiedonsiirtoError]) {
     val (data, virheet) = error.map(e => (Some(e.data), Some(e.virheet))).getOrElse((None, None))
@@ -27,9 +27,9 @@ class TiedonsiirtoRepository(val db: DB, mailer: TiedonsiirtoFailureMailer) exte
   }
 
   def findByOrganisaatio(koskiUser: KoskiUser): Seq[TiedonsiirtoRow] = {
-    val dayAgo = Timestamp.valueOf(LocalDateTime.now.minusHours(24))
+    val dayAgo = Timestamp.valueOf(LocalDateTime.now.minusHours(24 * 5))
     timed("findByOrganisaatio") {
-      runDbSync(TiedonsiirtoWithAccessCheck(koskiUser).filter(_.aikaleima > dayAgo).sortBy(_.id.desc).take(10000).result)
+      runDbSync(TiedonsiirtoWithAccessCheck(koskiUser).filter(_.aikaleima > dayAgo).sortBy(_.id.desc).take(maxResults).result)
     }
   }
 }
