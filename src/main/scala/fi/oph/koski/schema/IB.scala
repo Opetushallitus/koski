@@ -18,7 +18,7 @@ case class IBOpiskeluoikeus(
   tila: LukionOpiskeluoikeudenTila,
   läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
   @MinItems(1) @MaxItems(2)
-  suoritukset: List[IBTutkinnonOsanSuoritus],
+  suoritukset: List[IBPäätasonSuoritus],
   @KoodistoKoodiarvo("ibtutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ibtutkinto", "opiskeluoikeudentyyppi")
 ) extends KoskeenTallennettavaOpiskeluoikeus {
@@ -39,11 +39,11 @@ case class IBTutkinnonSuoritus(
   override val osasuoritukset: Option[List[IBOppiaineenSuoritus]],
   @KoodistoKoodiarvo("ibtutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ibtutkinto", koodistoUri = "suorituksentyyppi")
-) extends IBTutkinnonOsanSuoritus
+) extends IBPäätasonSuoritus
 
 case class PreIBSuoritus(
   @Title("Koulutus")
-  koulutusmoduuli: PreIBKoulutusModuuli,
+  koulutusmoduuli: PreIBKoulutusmoduuli,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   vahvistus: Option[Henkilövahvistus] = None,
@@ -53,13 +53,13 @@ case class PreIBSuoritus(
   override val osasuoritukset: Option[List[PreIBOppiaineenSuoritus]],
   @KoodistoKoodiarvo("preiboppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("preiboppimaara", koodistoUri = "suorituksentyyppi")
-) extends IBTutkinnonOsanSuoritus
+) extends IBPäätasonSuoritus
 
-trait IBTutkinnonOsanSuoritus extends Suoritus with Toimipisteellinen {
+trait IBPäätasonSuoritus extends Suoritus with Toimipisteellinen {
   def arviointi = None
 }
 
-case class PreIBKoulutusModuuli(
+case class PreIBKoulutusmoduuli(
   nimi: LocalizedString,
   @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("preiboppimaara")
@@ -183,7 +183,7 @@ trait IBOppiaine extends KoodistostaLöytyväKoulutusmoduuli with Valinnaisuus {
   def pakollinen: Boolean = true
 }
 
-case class CoreElementOppiaine(
+case class IBCoreElementOppiaine(
   @KoodistoKoodiarvo("TOK")
   @KoodistoKoodiarvo("EE")
   @KoodistoKoodiarvo("CAS")
