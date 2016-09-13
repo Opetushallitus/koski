@@ -27,9 +27,9 @@ class TiedonsiirtoRepository(val db: DB, mailer: TiedonsiirtoFailureMailer) exte
   }
 
   def findByOrganisaatio(koskiUser: KoskiUser): Seq[TiedonsiirtoRow] = {
-    val dayAgo = Timestamp.valueOf(LocalDateTime.now.minusHours(24 * 5))
+    val monthAgo = Timestamp.valueOf(LocalDateTime.now.minusMonths(1))
     timed("findByOrganisaatio") {
-      runDbSync(TiedonsiirtoWithAccessCheck(koskiUser).filter(_.aikaleima > dayAgo).sortBy(_.id.desc).take(maxResults).result)
+      runDbSync(TiedonsiirtoWithAccessCheck(koskiUser).filter(_.aikaleima > monthAgo).sortBy(_.id.desc).take(maxResults).result)
     }
   }
 }
