@@ -132,6 +132,22 @@ const OppiaineEditor = React.createClass({
 })
 OppiaineEditor.canShowInline = () => false
 
+const LukionKurssiEditor = React.createClass({
+  render() {
+    let {model} = this.props
+    var tunniste = modelData(model, 'koulutusmoduuli.tunniste')
+    let koodiarvo = tunniste && tunniste.koodiarvo
+    let nimi = modelTitle(model, 'koulutusmoduuli')
+    let arvosana = modelTitle(model, 'arviointi.-1.arvosana')
+    return (<div className="lukionkurssinsuoritus">
+      <label className="oppiaine"><span className="koodiarvo">{koodiarvo}</span> <span className="nimi">{nimi}</span></label>
+      <span className="arvosana">{arvosana}</span>
+    </div>)
+  }
+})
+LukionKurssiEditor.canShowInline = () => false
+
+
 const LaajuusEditor = React.createClass({
   render() {
     let {model, context} = this.props
@@ -200,7 +216,7 @@ export const editorMapping = {
   'ammatillisentutkinnonosansuoritus': TutkinnonosaEditor,
   'lukionoppiaineensuoritus': TutkinnonosaEditor,
   'ylioppilastutkinnonkokeensuoritus': TutkinnonosaEditor,
-  'lukionkurssinsuoritus': OppiaineEditor,
+  'lukionkurssinsuoritus': LukionKurssiEditor,
   'ammatillinenopiskeluoikeusjakso': OpiskeluoikeusjaksoEditor,
   'lukionopiskeluoikeusjakso': OpiskeluoikeusjaksoEditor,
   'perusopetuksenopiskeluoikeusjakso': OpiskeluoikeusjaksoEditor,
