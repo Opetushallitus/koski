@@ -154,7 +154,7 @@ case class LukionKurssinArviointi(
   päivä: LocalDate
 ) extends YleissivistävänKoulutuksenArviointi with ArviointiPäivämäärällä
 
-sealed trait LukionKurssi extends Koulutusmoduuli {
+sealed trait LukionKurssi extends Koulutusmoduuli with PreIBKurssi {
   def laajuus: Option[LaajuusKursseissa]
 }
 
@@ -175,7 +175,7 @@ case class PaikallinenLukionKurssi(
 ) extends LukionKurssi with PaikallinenKoulutusmoduuli
 
 @Description("Lukion oppiaineen tunnistetiedot")
-trait LukionOppiaine extends YleissivistavaOppiaine {
+trait LukionOppiaine extends YleissivistavaOppiaine with PreIBOppiaine {
   def laajuus: Option[LaajuusKursseissa]
 }
 
