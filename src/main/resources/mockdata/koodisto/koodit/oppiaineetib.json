@@ -1,0 +1,51 @@
+[
+  {
+    "koodiUri": "oppiaineetib_tok",
+    "metadata": [
+      {
+        "nimi": "Theory of knowledge",
+        "lyhytNimi": "Theory of knowledge",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "TOK"
+  },
+  {
+    "koodiUri": "oppiaineetib_ee",
+    "metadata": [
+      {
+        "nimi": "Extended essay",
+        "lyhytNimi": "Extended essay",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "EE"
+  },
+  {
+    "koodiUri": "oppiaineetib_cas",
+    "metadata": [
+      {
+        "nimi": "Creativity, activity, service",
+        "lyhytNimi": "Creativity, activity, service",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "CAS"
+  },
+  {
+    "koodiUri": "oppiaineetib_cas",
+    "metadata": [
+      {
+        "nimi": "Creativity, activity, service",
+        "lyhytNimi": "Creativity, activity, service",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "CAS"
+  }
+]
+
