@@ -3,7 +3,7 @@
     "koodiUri": "koskiyoarvosanat_b",
     "metadata": [
       {
-        "nimi": "B",
+        "nimi": "Lubenter approbatur",
         "lyhytNimi": "B",
         "kieli": "FI"
       }
@@ -15,7 +15,7 @@
     "koodiUri": "koskiyoarvosanat_l",
     "metadata": [
       {
-        "nimi": "L",
+        "nimi": "Laudatur",
         "lyhytNimi": "L",
         "kieli": "FI"
       }
@@ -27,7 +27,7 @@
     "koodiUri": "koskiyoarvosanat_m",
     "metadata": [
       {
-        "nimi": "M",
+        "nimi": "Magna cum laude approbatur",
         "lyhytNimi": "M",
         "kieli": "FI"
       }
@@ -39,7 +39,7 @@
     "koodiUri": "koskiyoarvosanat_a",
     "metadata": [
       {
-        "nimi": "A",
+        "nimi": "Approbatur",
         "lyhytNimi": "A",
         "kieli": "FI"
       }
@@ -51,7 +51,7 @@
     "koodiUri": "koskiyoarvosanat_e",
     "metadata": [
       {
-        "nimi": "E",
+        "nimi": "Eximia cum laude approbatur",
         "lyhytNimi": "E",
         "kieli": "FI"
       }
@@ -63,7 +63,7 @@
     "koodiUri": "koskiyoarvosanat_i",
     "metadata": [
       {
-        "nimi": "I",
+        "nimi": "Improbatur",
         "lyhytNimi": "I",
         "kieli": "FI"
       }
@@ -75,7 +75,7 @@
     "koodiUri": "koskiyoarvosanat_c",
     "metadata": [
       {
-        "nimi": "C",
+        "nimi": "Cum laude approbatur",
         "lyhytNimi": "C",
         "kieli": "FI"
       }

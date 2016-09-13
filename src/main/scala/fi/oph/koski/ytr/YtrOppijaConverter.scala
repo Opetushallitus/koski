@@ -48,7 +48,7 @@ case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodis
   private def convertExam(exam: YtrExam) = YlioppilastutkinnonKokeenSuoritus(
     tila = tilaValmis,
     tyyppi = requiredKoodi("suorituksentyyppi", "ylioppilastutkinnonkoe"),
-    arviointi = Some(List(YlioppilaskokeenArviointi(exam.grade))),
+    arviointi = Some(List(YlioppilaskokeenArviointi(requiredKoodi("koskiyoarvosanat", exam.grade)))),
     koulutusmoduuli = YlioppilasTutkinnonKoe(PaikallinenKoodi(exam.examId, Finnish(exam.examNameFi, exam.examNameSv, exam.examNameEn), Some("ytr/koetunnukset")))
   )
 

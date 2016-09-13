@@ -62,10 +62,6 @@ case class YlioppilaskokeenArviointi(
   def hyväksytty = arvosana.koodiarvo != "I"
 }
 
-object YlioppilaskokeenArviointi {
-  def apply(arvosana: String) = new YlioppilaskokeenArviointi(Koodistokoodiviite(arvosana, "koskiyoarvosanat"))
-}
-
 @Description("Ylioppilastutkinnon tunnistetiedot")
 case class Ylioppilastutkinto(
  @KoodistoKoodiarvo("301000")
