@@ -5,7 +5,7 @@ function TiedonsiirrotPage() {
       return openPage('/koski/tiedonsiirrot', api.isVisible)()
     },
     isVisible: function() {
-      return isElementVisible(S('#content .tiedonsiirrot-content'))
+      return isElementVisible(S('#content .tiedonsiirrot-content .tiedonsiirto-taulukko'))
     },
     tiedot: function() {
       return S('.tiedonsiirrot-content table tbody tr').toArray().map(function(row) {

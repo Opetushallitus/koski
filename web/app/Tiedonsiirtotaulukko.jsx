@@ -5,7 +5,7 @@ export const Tiedonsiirtotaulukko = React.createClass({
   render() {
     const { rivit, showError } = this.props
 
-    return (<div>
+    return (<div className="tiedonsiirto-taulukko">
       <table>
         <thead>
         <tr>
