@@ -4,7 +4,6 @@
     "metadata": [
       {
         "nimi": "Lubenter approbatur",
-        "lyhytNimi": "B",
         "kieli": "FI"
       }
     ],
@@ -16,7 +15,6 @@
     "metadata": [
       {
         "nimi": "Laudatur",
-        "lyhytNimi": "L",
         "kieli": "FI"
       }
     ],
@@ -28,7 +26,6 @@
     "metadata": [
       {
         "nimi": "Magna cum laude approbatur",
-        "lyhytNimi": "M",
         "kieli": "FI"
       }
     ],
@@ -40,7 +37,6 @@
     "metadata": [
       {
         "nimi": "Approbatur",
-        "lyhytNimi": "A",
         "kieli": "FI"
       }
     ],
@@ -52,7 +48,6 @@
     "metadata": [
       {
         "nimi": "Eximia cum laude approbatur",
-        "lyhytNimi": "E",
         "kieli": "FI"
       }
     ],
@@ -64,7 +59,6 @@
     "metadata": [
       {
         "nimi": "Improbatur",
-        "lyhytNimi": "I",
         "kieli": "FI"
       }
     ],
@@ -76,7 +70,6 @@
     "metadata": [
       {
         "nimi": "Cum laude approbatur",
-        "lyhytNimi": "C",
         "kieli": "FI"
       }
     ],
