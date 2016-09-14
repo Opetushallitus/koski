@@ -1,0 +1,158 @@
+{
+  "henkilö" : {
+    "hetu" : "130996-9225",
+    "etunimet" : "Iina",
+    "kutsumanimi" : "Iina",
+    "sukunimi" : "IB-opiskelija"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.62858797335",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "00082",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Ressun lukio"
+      }
+    },
+    "alkamispäivä" : "2012-09-01",
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2012-09-01",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      }, {
+        "alku" : "2016-01-10",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "nimi" : {
+            "fi" : "Valmistunut"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "preiboppimaara",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.62858797335",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "00082",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Ressun lukio"
+        }
+      },
+      "tila" : {
+        "koodiarvo" : "VALMIS",
+        "koodistoUri" : "suorituksentila"
+      },
+      "vahvistus" : {
+        "päivä" : "2016-06-04",
+        "paikkakunta" : {
+          "koodiarvo" : "179",
+          "nimi" : {
+            "fi" : "Jyväskylä"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.14613773812",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "00204",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.14613773812",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "00204",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu"
+            }
+          }
+        } ]
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MU",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MU1",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "4",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "8",
+              "koodistoUri" : "arviointiasteikkoyleissivistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "preibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "preiboppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "preiboppimaara",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "ibtutkinto",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    }
+  } ]
+}
