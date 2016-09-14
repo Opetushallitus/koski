@@ -16,11 +16,18 @@ object ExamplesIB {
     tila = tilaValmis,
     vahvistus = ExampleData.vahvistus(),
     osasuoritukset = Some(List(
-      preIBAineSuoritus(lukionOppiaine("MU"), List((valtakunnallinenKurssi("MU1"), "8"))),
-      preIBAineSuoritus(lukionOppiaine("KU"), List((valtakunnallinenKurssi("KU1"), "S"), (valtakunnallinenKurssi("KU2"), "S"), (valtakunnallinenKurssi("KU3"), "S"), (valtakunnallinenKurssi("KU4"), "S"))),
-      preIBAineSuoritus(lukionOppiaine("BI"), List((valtakunnallinenKurssi("BI1"), "6"))),
-      preIBAineSuoritus(lukionOppiaine("KE"), List((valtakunnallinenKurssi("KE1"), "7"))),
-      preIBAineSuoritus(lukionKieli("A1", "EN"), List((valtakunnallinenKurssi("ENA1"), "7"), (valtakunnallinenKurssi("ENA2"), "8"), (valtakunnallinenKurssi("ENA3"), "8"), (valtakunnallinenKurssi("ENA4"), "8")))
+      preIBAineSuoritus(lukionÄidinkieli("AI1"), List((valtakunnallinenKurssi("ÄI1"), "8"), (valtakunnallinenKurssi("ÄI2"), "8"), (valtakunnallinenKurssi("ÄI3"), "8"))),
+      preIBAineSuoritus(lukionKieli("A1", "EN"), List((valtakunnallinenKurssi("ENA1"), "10"), (valtakunnallinenKurssi("ENA2"), "10"), (valtakunnallinenKurssi("ENA5"), "10"))),
+      preIBAineSuoritus(lukionKieli("B1", "SV"), List((valtakunnallinenKurssi("RUB11"), "8"), (valtakunnallinenKurssi("RUB12"), "7"))),
+      preIBAineSuoritus(lukionKieli("B2", "FR"), List((paikallinenKurssi("RAN3", "Ravintolaranska", "Patongit etc"), "9"))),
+      preIBAineSuoritus(lukionKieli("B3", "ES"), List((paikallinenKurssi("ES1", "Turistiespanja", "Espanjan alkeet"), "S"))),
+      preIBAineSuoritus(matematiikka("MAA"), List((valtakunnallinenKurssi("MAA11"), "7"), (valtakunnallinenKurssi("MAA12"), "7"), (valtakunnallinenKurssi("MAA13"), "7"), (valtakunnallinenKurssi("MAA2"), "7"))),
+      preIBAineSuoritus(lukionOppiaine("BI"), List((valtakunnallinenKurssi("BI1"), "8"), (paikallinenKurssi("BI10", "Biologian erikoiskurssi", "Geenihommia"), "S"))),
+      preIBAineSuoritus(lukionOppiaine("GE"), List((valtakunnallinenKurssi("GE2"), "10"))),
+      preIBAineSuoritus(lukionOppiaine("FY"), List((valtakunnallinenKurssi("FY1"), "7"))),
+      preIBAineSuoritus(lukionOppiaine("KE"), List((valtakunnallinenKurssi("KE1"), "8"))),
+      preIBAineSuoritus(lukionOppiaine("KT"), List((valtakunnallinenKurssi("UK4"), "10")))
+      // TODO: filosofia etc
     ))
   )
 
