@@ -4,7 +4,6 @@
     "metadata": [
       {
         "nimi": "Theory of knowledge",
-        "lyhytNimi": "Theory of knowledge",
         "kieli": "EN"
       }
     ],
@@ -16,7 +15,6 @@
     "metadata": [
       {
         "nimi": "Extended essay",
-        "lyhytNimi": "Extended essay",
         "kieli": "EN"
       }
     ],
@@ -28,7 +26,6 @@
     "metadata": [
       {
         "nimi": "Creativity, activity, service",
-        "lyhytNimi": "Creativity, activity, service",
         "kieli": "EN"
       }
     ],
@@ -40,12 +37,209 @@
     "metadata": [
       {
         "nimi": "Creativity, activity, service",
-        "lyhytNimi": "Creativity, activity, service",
         "kieli": "EN"
       }
     ],
     "versio": 1,
     "koodiArvo": "CAS"
+  },
+  {
+    "koodiUri": "oppiaineetib_a",
+    "metadata": [
+      {
+        "nimi": "A-language",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "A"
+  },
+  {
+    "koodiUri": "oppiaineetib_a2",
+    "metadata": [
+      {
+        "nimi": "A2-language",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "A2"
+  },
+  {
+    "koodiUri": "oppiaineetib_b",
+    "metadata": [
+      {
+        "nimi": "B-language",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "B"
+  },
+  {
+    "koodiUri": "oppiaineetib_his",
+    "metadata": [
+      {
+        "nimi": "History",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "HIS"
+  },
+  {
+    "koodiUri": "oppiaineetib_eco",
+    "metadata": [
+      {
+        "nimi": "Economics",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "ECO"
+  },
+  {
+    "koodiUri": "oppiaineetib_bu",
+    "metadata": [
+      {
+        "nimi": "Business and management",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "BU"
+  },
+  {
+    "koodiUri": "oppiaineetib_geo",
+    "metadata": [
+      {
+        "nimi": "Geography",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "GEO"
+  },
+  {
+    "koodiUri": "oppiaineetib_pol",
+    "metadata": [
+      {
+        "nimi": "Global politics",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "POL"
+  },
+  {
+    "koodiUri": "oppiaineetib_phi",
+    "metadata": [
+      {
+        "nimi": "Philosophy",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "PHI"
+  },
+  {
+    "koodiUri": "oppiaineetib_psy",
+    "metadata": [
+      {
+        "nimi": "Psychology",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "PSY"
+  },
+  {
+    "koodiUri": "oppiaineetib_soc",
+    "metadata": [
+      {
+        "nimi": "Social and cultural anthropology",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "SOC"
+  },
+  {
+    "koodiUri": "oppiaineetib_rel",
+    "metadata": [
+      {
+        "nimi": "World religions",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "REL"
+  },
+  {
+    "koodiUri": "oppiaineetib_che",
+    "metadata": [
+      {
+        "nimi": "Chemistry",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "CHE"
+  },
+  {
+    "koodiUri": "oppiaineetib_bio",
+    "metadata": [
+      {
+        "nimi": "Biology",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "BIO"
+  },
+  {
+    "koodiUri": "oppiaineetib_phy",
+    "metadata": [
+      {
+        "nimi": "Physics",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "PHY"
+  },
+  {
+    "koodiUri": "oppiaineetib_matst",
+    "metadata": [
+      {
+        "nimi": "Mathematical studies",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "MATST"
+  },
+  {
+    "koodiUri": "oppiaineetib_mat",
+    "metadata": [
+      {
+        "nimi": "Mathematics",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "MAT"
+  },
+  {
+    "koodiUri": "oppiaineetib_matft",
+    "metadata": [
+      {
+        "nimi": "Further mathematics",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "MATFT"
   }
 ]
 
