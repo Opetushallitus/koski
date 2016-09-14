@@ -7,6 +7,8 @@ import fi.oph.koski.localization.LocalizedStringImplicits._
 import ExampleData.tilaValmis
 import java.time.LocalDate.{of => date}
 
+import fi.oph.koski.documentation.LukioExampleData.{lukionOppiaine, valtakunnallinenKurssi}
+
 object ExamplesIB {
   val ressunLukio: Oppilaitos = Oppilaitos(MockOrganisaatiot.ressunLukio, Some(Koodistokoodiviite("00082", None, "oppilaitosnumero", None)), Some("Ressun lukio"))
   val preIBSuoritus = PreIBSuoritus(
@@ -14,18 +16,21 @@ object ExamplesIB {
     tila = tilaValmis,
     vahvistus = ExampleData.vahvistus(),
     osasuoritukset = Some(List(
-      PreIBOppiaineenSuoritus(
-        koulutusmoduuli = LukioExampleData.oppiaine("MU"),
-        tila = tilaValmis,
-        osasuoritukset = Some(List(
-          PreIBKurssinSuoritus(
-            koulutusmoduuli = LukioExampleData.valtakunnallinenKurssi("MU1"),
-            tila = tilaValmis,
-            arviointi = LukioExampleData.kurssinArviointi("8")
-          )
-        ))
-      )
+      preIBAineSuoritus(lukionOppiaine("MU"), List((valtakunnallinenKurssi("MU1"), "8"))),
+      preIBAineSuoritus(lukionOppiaine("KU"), List((valtakunnallinenKurssi("KU1"), "S"), (valtakunnallinenKurssi("KU2"), "S"), (valtakunnallinenKurssi("KU4"), "S"), (valtakunnallinenKurssi("KU8"), "S"), (valtakunnallinenKurssi("KU9"), "S")))
     ))
+  )
+
+  def preIBAineSuoritus(oppiaine: PreIBOppiaine, kurssit: List[(PreIBKurssi, String)]) = PreIBOppiaineenSuoritus(
+    koulutusmoduuli = oppiaine,
+    tila = tilaValmis,
+    osasuoritukset = Some(kurssit.map { case (kurssi, arvosana) =>
+      PreIBKurssinSuoritus(
+        koulutusmoduuli = kurssi,
+        tila = tilaValmis,
+        arviointi = LukioExampleData.kurssinArviointi(arvosana)
+      )
+    })
   )
 
   val opiskeluoikeus = IBOpiskeluoikeus(
