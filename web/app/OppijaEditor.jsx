@@ -105,7 +105,8 @@ const OppilaitoksenOpintosuoritusoteLink = React.createClass({
 const OpiskeluoikeudenOpintosuoritusoteLink = React.createClass({
   render() {
     let {opiskeluoikeus, context: { oppijaOid }} = this.props
-    if (modelData(opiskeluoikeus, 'tyyppi').koodiarvo == 'lukiokoulutus') { // vain lukiokoulutukselle näytetään opiskeluoikeuskohtainen suoritusote
+    var opiskeluoikeusTyyppi = modelData(opiskeluoikeus, 'tyyppi').koodiarvo
+    if (opiskeluoikeusTyyppi == 'lukiokoulutus' || opiskeluoikeusTyyppi == 'ibtutkinto') { // vain lukio/ib näytetään opiskeluoikeuskohtainen suoritusote
       let href = '/koski/opintosuoritusote/' + oppijaOid + '?opiskeluoikeus=' + modelData(opiskeluoikeus, 'id')
       return <a className="opintosuoritusote" href={href}>näytä opintosuoritusote</a>
     } else {

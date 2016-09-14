@@ -31,14 +31,12 @@ describe('IB-tutkinto', function( ) {
 
   describe('Opintosuoritusote', function () {
     before(page.openPage, page.oppijaHaku.search('130996-9225', page.isOppijaSelected('Iina')))
-    /*
+
     before(opinnot.avaaOpintosuoritusote(1))
 
     describe('Kun klikataan linkkiä', function () {
       it('näytetään', function () {
       })
     })
-
-    */
   })
 })

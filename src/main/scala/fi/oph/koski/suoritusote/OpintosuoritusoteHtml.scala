@@ -26,6 +26,17 @@ class OpintosuoritusoteHtml(implicit val user: KoskiUser) extends LocalizedHtml 
     </div>)
   }
 
+  def ib(ht: TäydellisetHenkilötiedot, opiskeluoikeudet: List[IBOpiskeluoikeus]): Elem = {
+    bodyHtml(ht, <div>
+      {
+      val suoritukset: List[(Int, Suoritus)] = opiskeluoikeudet.flatMap(oo => {
+        val oppiainesuoritukset = oo.suoritukset.flatMap(_.osasuoritukset.toList.flatten)
+        suorituksetSyvyydellä(oppiainesuoritukset)
+      })
+      suorituksetHtml(suoritukset)
+      }
+    </div>)
+  }
 
   def korkeakoulu(ht: TäydellisetHenkilötiedot, opiskeluoikeudet: List[KorkeakoulunOpiskeluoikeus]): Elem = {
     def ensisijainenOpiskeluoikeus(opiskeluoikeudet: List[Opiskeluoikeus]): Option[KorkeakoulunOpiskeluoikeus] = {
