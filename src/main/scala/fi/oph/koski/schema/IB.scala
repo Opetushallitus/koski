@@ -187,8 +187,15 @@ case class IBCoreElementOppiaine(
   @KoodistoKoodiarvo("EE")
   @KoodistoKoodiarvo("CAS")
   tunniste: Koodistokoodiviite,
+  laajuus: Option[LaajuusTunneissa]
+) extends IBOppiaine {
+  def taso = None
+}
+
+case class MuuOppiaine(
+  tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusTunneissa],
-  taso: Option[Koodistokoodiviite] = None
+  taso: Option[Koodistokoodiviite]
 ) extends IBOppiaine
 
 
