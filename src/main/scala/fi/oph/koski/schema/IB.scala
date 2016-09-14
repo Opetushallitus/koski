@@ -29,11 +29,11 @@ case class IBOpiskeluoikeus(
 
 case class IBTutkinnonSuoritus(
   @Title("Koulutus")
-  koulutusmoduuli: IBTutkinto,
+  koulutusmoduuli: IBTutkinto = IBTutkinto(),
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   vahvistus: Option[Henkilövahvistus] = None,
-  suorituskieli: Option[Koodistokoodiviite],
+  suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[IBOppiaineenSuoritus]],
@@ -86,7 +86,7 @@ case class IBOppiaineenSuoritus(
   koulutusmoduuli: IBOppiaine,
   tila: Koodistokoodiviite,
   arviointi: Option[List[IBOppiaineenArviointi]] = None,
-  suorituskieli: Option[Koodistokoodiviite],
+  suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
   @Title("Kurssit")
   override val osasuoritukset: Option[List[IBKurssinSuoritus]],
@@ -173,7 +173,7 @@ trait IBArviointi extends KoodistostaLöytyväArviointi {
 
 @Description("IB-lukion oppiaineen tunnistetiedot")
 trait IBOppiaine extends KoodistostaLöytyväKoulutusmoduuli with Valinnaisuus with PreIBOppiaine {
-  @KoodistoUri("oppiaineetib") // TODO: lisää tämä
+  @KoodistoUri("oppiaineetib")
   @OksaUri("tmpOKSAID256", "oppiaine")
   def tunniste: Koodistokoodiviite
   def laajuus: Option[LaajuusTunneissa]
@@ -198,6 +198,16 @@ case class MuuIBOppiaine(
   taso: Option[Koodistokoodiviite]
 ) extends IBOppiaine
 
+case class Language(
+  @KoodistoKoodiarvo("A")
+  @KoodistoKoodiarvo("A2")
+  @KoodistoKoodiarvo("B")
+  tunniste: Koodistokoodiviite,
+  laajuus: Option[LaajuusTunneissa],
+  taso: Option[Koodistokoodiviite],
+  @KoodistoUri("kielivalikoima")
+  kieli: Koodistokoodiviite
+) extends IBOppiaine
 
 case class LaajuusTunneissa(
   arvo: Float,
