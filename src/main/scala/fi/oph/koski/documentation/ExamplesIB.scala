@@ -7,7 +7,7 @@ import fi.oph.koski.localization.LocalizedStringImplicits._
 import ExampleData.tilaValmis
 import java.time.LocalDate.{of => date}
 
-import fi.oph.koski.documentation.LukioExampleData.{lukionOppiaine, valtakunnallinenKurssi}
+import fi.oph.koski.documentation.LukioExampleData._
 
 object ExamplesIB {
   val ressunLukio: Oppilaitos = Oppilaitos(MockOrganisaatiot.ressunLukio, Some(Koodistokoodiviite("00082", None, "oppilaitosnumero", None)), Some("Ressun lukio"))
@@ -17,7 +17,10 @@ object ExamplesIB {
     vahvistus = ExampleData.vahvistus(),
     osasuoritukset = Some(List(
       preIBAineSuoritus(lukionOppiaine("MU"), List((valtakunnallinenKurssi("MU1"), "8"))),
-      preIBAineSuoritus(lukionOppiaine("KU"), List((valtakunnallinenKurssi("KU1"), "S"), (valtakunnallinenKurssi("KU2"), "S"), (valtakunnallinenKurssi("KU4"), "S"), (valtakunnallinenKurssi("KU8"), "S"), (valtakunnallinenKurssi("KU9"), "S")))
+      preIBAineSuoritus(lukionOppiaine("KU"), List((valtakunnallinenKurssi("KU1"), "S"), (valtakunnallinenKurssi("KU2"), "S"), (valtakunnallinenKurssi("KU3"), "S"), (valtakunnallinenKurssi("KU4"), "S"))),
+      preIBAineSuoritus(lukionOppiaine("BI"), List((valtakunnallinenKurssi("BI1"), "6"))),
+      preIBAineSuoritus(lukionOppiaine("KE"), List((valtakunnallinenKurssi("KE1"), "7"))),
+      preIBAineSuoritus(lukionKieli("A1", "EN"), List((valtakunnallinenKurssi("ENA1"), "7"), (valtakunnallinenKurssi("ENA2"), "8"), (valtakunnallinenKurssi("ENA3"), "8"), (valtakunnallinenKurssi("ENA4"), "8")))
     ))
   )
 

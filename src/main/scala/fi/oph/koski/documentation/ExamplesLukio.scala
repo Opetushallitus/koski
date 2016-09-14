@@ -63,7 +63,7 @@ object ExamplesLukio {
           vahvistus = vahvistus(),
           toimipiste = jyväskylänNormaalikoulu,
           osasuoritukset = Some(List(
-            suoritus(äidinkieli("AI1")).copy(arviointi = arviointi(9)).copy(osasuoritukset = Some(List(
+            suoritus(lukionÄidinkieli("AI1")).copy(arviointi = arviointi(9)).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("ÄI1")).copy(arviointi = kurssinArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("ÄI2")).copy(arviointi = kurssinArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("ÄI3")).copy(arviointi = kurssinArviointi(8)),
@@ -73,7 +73,7 @@ object ExamplesLukio {
               kurssisuoritus(valtakunnallinenKurssi("ÄI8")).copy(arviointi = kurssinArviointi(9)),
               kurssisuoritus(valtakunnallinenKurssi("ÄI9")).copy(arviointi = kurssinArviointi(9))
             ))),
-            suoritus(kieli("A1", "EN")).copy(arviointi = arviointi(9)).copy(osasuoritukset = Some(List(
+            suoritus(lukionKieli("A1", "EN")).copy(arviointi = arviointi(9)).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("ENA1")).copy(arviointi = kurssinArviointi(10)),
               kurssisuoritus(valtakunnallinenKurssi("ENA2")).copy(arviointi = kurssinArviointi(10)),
               kurssisuoritus(valtakunnallinenKurssi("ENA3")).copy(arviointi = kurssinArviointi(9)),
@@ -85,14 +85,14 @@ object ExamplesLukio {
               kurssisuoritus(paikallinenKurssi("ENA 10", "Abituki", "Aihepiirit liittyvät pakollisten ja valtakunnallisten syventävien kurssien aihekokonaisuuksiin niitä syventäen ja laajentaen. Kurssilla vankennetaan ylioppilaskokeessa tarvittavia tietoja ja taitoja. Pakollisilla ja valtakunnallisilla syventävillä kursseilla hankitun kielioppirakenteiden ja sanaston hallintaa vahvistetaan ja syvennetään. Arvioinnissa (suoritettu/hylätty) otetaan huomioon kaikki kielitaidon osa-alueet ja se perustuu jatkuvaan näyttöön. Kurssin päättyessä opiskelija on saanut lisävalmiuksia osallistua ylioppilaskokeeseen."))
                 .copy(arviointi = kurssinArviointi("S")) // 0.5
             ))),
-            suoritus(kieli("B1", "SV")).copy(arviointi = arviointi(7)).copy(osasuoritukset = Some(List(
+            suoritus(lukionKieli("B1", "SV")).copy(arviointi = arviointi(7)).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("RUB11")).copy(arviointi = kurssinArviointi(9)),
               kurssisuoritus(valtakunnallinenKurssi("RUB12")).copy(arviointi = kurssinArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("RUB13")).copy(arviointi = kurssinArviointi(7)),
               kurssisuoritus(valtakunnallinenKurssi("RUB14")).copy(arviointi = kurssinArviointi(7)),
               kurssisuoritus(valtakunnallinenKurssi("RUB15")).copy(arviointi = kurssinArviointi(6))
             ))),
-            suoritus(kieli("B3", "LA")).copy(arviointi = arviointi(9)).copy(osasuoritukset = Some(List(
+            suoritus(lukionKieli("B3", "LA")).copy(arviointi = arviointi(9)).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("LAB31")).copy(arviointi = kurssinArviointi(9)),
               kurssisuoritus(valtakunnallinenKurssi("LAB32")).copy(arviointi = kurssinArviointi(8))
             ))),
@@ -298,8 +298,8 @@ object LukioExampleData {
   def laajuus(laajuus: Float, yksikkö: String = "4"): Some[LaajuusKursseissa] = Some(LaajuusKursseissa(laajuus, Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = yksikkö)))
 
   def lukionOppiaine(aine: String, laajuus: Option[LaajuusKursseissa] = None) = MuuOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), laajuus = laajuus)
-  def äidinkieli(kieli: String) = AidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"))
-  def kieli(oppiaine: String, kieli: String) = VierasTaiToinenKotimainenKieli(
+  def lukionÄidinkieli(kieli: String) = AidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"))
+  def lukionKieli(oppiaine: String, kieli: String) = VierasTaiToinenKotimainenKieli(
     tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),
     kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
 
