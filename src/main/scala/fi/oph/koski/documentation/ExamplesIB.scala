@@ -33,6 +33,18 @@ object ExamplesIB {
     })
   )
 
+  def ibOppiaine(aine: String) = MuuIBOppiaine(
+    tunniste = Koodistokoodiviite(koodistoUri = "oppiaineetib", koodiarvo = aine),
+    laajuus = None,
+    taso = None
+  )
+
+  def ibKurssi(kurssi: String) = IBKurssi(
+    tunniste = Koodistokoodiviite(koodistoUri = "ibkurssit", koodiarvo = kurssi),
+    pakollinen = true,
+    laajuus = None
+  )
+
   val opiskeluoikeus = IBOpiskeluoikeus(
     oppilaitos = ressunLukio,
     alkamispäivä = Some(date(2012, 9, 1)),
