@@ -24,6 +24,24 @@ object ExamplesIB {
     ))
   )
 
+  val standardLevel = "SL"
+  val higherLevel = "HL"
+
+  val ibTutkinnonSuoritus = IBTutkinnonSuoritus(
+    toimipiste = ressunLukio,
+    tila = tilaValmis,
+    vahvistus = ExampleData.vahvistus(),
+    osasuoritukset = Some(List(
+      ibAineSuoritus(ibKieli("A", "FI", standardLevel)),
+      ibAineSuoritus(ibKieli("A2", "EN", higherLevel)),
+      ibAineSuoritus(ibOppiaine("HIS", higherLevel)),
+      ibAineSuoritus(ibOppiaine("PSY", standardLevel)),
+      ibAineSuoritus(ibOppiaine("BIO", higherLevel)),
+      ibAineSuoritus(ibOppiaine("MATST", standardLevel)),
+      ibAineSuoritus(ibCoreOppiaine("TOC"))
+    ))
+  )
+
   def preIBAineSuoritus(oppiaine: PreIBOppiaine, kurssit: List[(PreIBKurssi, String)]) = PreIBOppiaineenSuoritus(
     koulutusmoduuli = oppiaine,
     tila = tilaValmis,
@@ -36,10 +54,25 @@ object ExamplesIB {
     })
   )
 
-  def ibOppiaine(aine: String) = MuuIBOppiaine(
+  def ibAineSuoritus(oppiaine: IBOppiaine) = IBOppiaineenSuoritus(
+    koulutusmoduuli = oppiaine,
+    tila = tilaValmis,
+    osasuoritukset = None
+  )
+
+  def ibCoreOppiaine(aine: String) = IBCoreElementOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "oppiaineetib", koodiarvo = aine), laajuus = None)
+
+  def ibOppiaine(aine: String, taso: String) = MuuIBOppiaine(
     tunniste = Koodistokoodiviite(koodistoUri = "oppiaineetib", koodiarvo = aine),
     laajuus = None,
-    taso = None
+    taso = Some(Koodistokoodiviite(koodiarvo = taso, koodistoUri = "oppiaineentasoib"))
+  )
+
+  def ibKieli(aine: String, kieli: String, taso: String) = Language(
+    tunniste = Koodistokoodiviite(koodistoUri = "oppiaineetib", koodiarvo = aine),
+    laajuus = None,
+    taso = Some(Koodistokoodiviite(koodiarvo = taso, koodistoUri = "oppiaineentasoib")),
+    kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima")
   )
 
   def ibKurssi(kurssi: String) = IBKurssi(
