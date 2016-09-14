@@ -192,7 +192,7 @@ case class IBCoreElementOppiaine(
   def taso = None
 }
 
-case class MuuOppiaine(
+case class MuuIBOppiaine(
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusTunneissa],
   taso: Option[Koodistokoodiviite]
