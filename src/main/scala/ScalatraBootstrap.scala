@@ -27,10 +27,10 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       val application = Option(context.getAttribute("koski.application").asInstanceOf[KoskiApplication]).getOrElse(KoskiApplication.apply)
 
       if (application.config.getBoolean("koodisto.create")) {
-        KoodistoCreator.createKoodistotFromMockData(application.config)
+        tryCatch("Koodistojen luonti") { KoodistoCreator.createKoodistotFromMockData(application.config) }
       }
       if (application.config.getBoolean("käyttöoikeusryhmät.create")) {
-        KäyttöoikeusRyhmätCreator.luoKäyttöoikeusRyhmät(application.config)
+        tryCatch("Käyttöoikeusryhmien luonti/päivitys") { KäyttöoikeusRyhmätCreator.luoKäyttöoikeusRyhmät(application.config) }
       }
 
       context.mount(new OppijaServlet(application), "/api/oppija")
@@ -60,5 +60,13 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
   }
 
   override def destroy(context: ServletContext) = {
+  }
+
+  private def tryCatch(thing: String)(task: => Unit): Unit = {
+    try {
+      task
+    } catch {
+      case e: Exception => logger.error(e)(thing + " epäonnistui: " + e.getMessage)
+    }
   }
 }
