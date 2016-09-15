@@ -171,12 +171,12 @@
     <dependency>
       <groupId>org.http4s</groupId>
       <artifactId>http4s-blaze-client_2.11</artifactId>
-      <version>0.13.1</version>
+      <version>0.14.6</version>
     </dependency>
     <dependency>
       <groupId>org.http4s</groupId>
       <artifactId>http4s-dsl_2.11</artifactId>
-      <version>0.13.1</version>
+      <version>0.14.6</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
