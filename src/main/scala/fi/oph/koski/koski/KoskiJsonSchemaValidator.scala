@@ -12,9 +12,9 @@ import org.json4s.jackson.JsonMethods._
 import scala.collection.JavaConversions._
 
 object KoskiJsonSchemaValidator {
-  private val jsonSchemaFactory = JsonSchemaFactory.newBuilder.setReportProvider(new ListReportProvider(ERROR, FATAL)).freeze()
+  lazy val jsonSchemaFactory = JsonSchemaFactory.newBuilder.setReportProvider(new ListReportProvider(ERROR, FATAL)).freeze()
 
-  lazy val henkilöSchema = createSchema(classOf[Henkilö])
+  lazy val henkilöSchema = createJsonSchema(classOf[Henkilö])
 
   val opiskeluoikeusClasses = List(
     "ammatillinenkoulutus" -> classOf[AmmatillinenOpiskeluoikeus],
@@ -29,10 +29,10 @@ object KoskiJsonSchemaValidator {
   )
 
   lazy val opiskeluoikeusSchemas = opiskeluoikeusClasses.par.map { case (name, klass) =>
-    (name, createSchema(klass))
+    (name, createJsonSchema(klass))
   }.toMap
 
-  private def createSchema(clazz: Class[_]) = {
+  private def createJsonSchema(clazz: Class[_]) = {
     toJsonSchema(KoskiSchema.createSchema(clazz))
   }
   private def toJsonSchema(schema: Schema) = jsonSchemaFactory.getJsonSchema(asJsonNode(SchemaToJson.toJsonSchema(schema)))
