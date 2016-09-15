@@ -47,6 +47,7 @@ object MockKoodistoPalvelu {
     "arviointiasteikkoammatillinenhyvaksyttyhylatty",
     "arviointiasteikkoib",
     "arviointiasteikkoyleissivistava",
+    "effortasteikkoib",
     "erityinenkoulutustehtava",
     "jarjestamismuoto",
     "koskioppiaineetyleissivistava",
