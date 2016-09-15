@@ -8,7 +8,7 @@ import fi.oph.koski.editor.EditorServlet
 import fi.oph.koski.fixture.{FixtureServlet, Fixtures}
 import fi.oph.koski.history.KoskiHistoryServlet
 import fi.oph.koski.koodisto.KoodistoCreator
-import fi.oph.koski.koski.{HealthCheckServlet, OppijaServlet}
+import fi.oph.koski.koski.{HealthCheckServlet, KoskiJsonSchemaValidator, OppijaServlet}
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppilaitos.OppilaitosServlet
@@ -20,8 +20,16 @@ import fi.oph.koski.tutkinto.TutkintoServlet
 import fi.oph.koski.util.Pools
 import org.scalatra._
 
+import scala.concurrent.Future
+
 class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionContext {
   override def init(context: ServletContext) {
+
+    Future {
+      // Parallel warm-up: org.reflections.Reflections takes a while to scan
+      KoskiJsonSchemaValidator.henkilöSchema
+    }
+
     try {
       Pools.init
       val application = Option(context.getAttribute("koski.application").asInstanceOf[KoskiApplication]).getOrElse(KoskiApplication.apply)
@@ -29,6 +37,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       if (application.config.getBoolean("koodisto.create")) {
         tryCatch("Koodistojen luonti") { KoodistoCreator.createKoodistotFromMockData(application.config) }
       }
+
       if (application.config.getBoolean("käyttöoikeusryhmät.create")) {
         tryCatch("Käyttöoikeusryhmien luonti/päivitys") { KäyttöoikeusRyhmätCreator.luoKäyttöoikeusRyhmät(application.config) }
       }
