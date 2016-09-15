@@ -33,17 +33,6 @@
     "koodiArvo": "CAS"
   },
   {
-    "koodiUri": "oppiaineetib_cas",
-    "metadata": [
-      {
-        "nimi": "Creativity, activity, service",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "koodiArvo": "CAS"
-  },
-  {
     "koodiUri": "oppiaineetib_a",
     "metadata": [
       {

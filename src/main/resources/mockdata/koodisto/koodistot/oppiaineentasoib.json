@@ -3,17 +3,17 @@
   "versio" : 1,
   "metadata" : [ {
     "kieli" : "SV",
-    "nimi" : "oppiaineentaso",
+    "nimi" : "Oppiaineentaso IB",
     "kuvaus" : "Oppiaineen taso",
     "kasite" : ""
   }, {
     "kieli" : "EN",
-    "nimi" : "oppiaineentaso",
+    "nimi" : "Oppiaineentaso IB",
     "kuvaus" : "Oppiaineen taso",
     "kasite" : ""
   }, {
     "kieli" : "FI",
-    "nimi" : "oppiaineentaso",
+    "nimi" : "Oppiaineentaso IB",
     "kuvaus" : "Oppiaineen taso",
     "kasite" : ""
   } ],
