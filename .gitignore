@@ -23,3 +23,4 @@ PersonOids.scala
 *.log*
 curltestdata.json
 scripts/cloudrc
+scripts/site.retry
