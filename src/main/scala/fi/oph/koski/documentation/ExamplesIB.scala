@@ -6,17 +6,18 @@ import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import ExampleData.tilaValmis
+import ExampleData.{helsinki, tilaValmis}
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.LukioExampleData._
+import fi.oph.koski.localization.LocalizedString
 
 object ExamplesIB {
   val ressunLukio: Oppilaitos = Oppilaitos(MockOrganisaatiot.ressunLukio, Some(Koodistokoodiviite("00082", None, "oppilaitosnumero", None)), Some("Ressun lukio"))
   val preIBSuoritus = PreIBSuoritus(
     toimipiste = ressunLukio,
     tila = tilaValmis,
-    vahvistus = ExampleData.vahvistus(),
+    vahvistus = ExampleData.vahvistus(org = ressunLukio, kunta = helsinki),
     osasuoritukset = Some(List(
       preIBAineSuoritus(lukionÄidinkieli("AI1"), List((valtakunnallinenKurssi("ÄI1"), "8"), (valtakunnallinenKurssi("ÄI2"), "8"), (valtakunnallinenKurssi("ÄI3"), "8"))),
       preIBAineSuoritus(lukionKieli("A1", "EN"), List((valtakunnallinenKurssi("ENA1"), "10"), (valtakunnallinenKurssi("ENA2"), "10"), (valtakunnallinenKurssi("ENA5"), "10"))),
@@ -47,7 +48,7 @@ object ExamplesIB {
   val ibTutkinnonSuoritus = IBTutkinnonSuoritus(
     toimipiste = ressunLukio,
     tila = tilaValmis,
-    vahvistus = ExampleData.vahvistus(),
+    vahvistus = ExampleData.vahvistus(org = ressunLukio, kunta = helsinki),
     osasuoritukset = Some(List(
       ibAineSuoritus(ibKieli("A", "FI", standardLevel), "4"),
       ibAineSuoritus(ibKieli("A2", "EN", higherLevel), "7"),
@@ -55,7 +56,13 @@ object ExamplesIB {
       ibAineSuoritus(ibOppiaine("PSY", standardLevel), "7"),
       ibAineSuoritus(ibOppiaine("BIO", higherLevel), "5"),
       ibAineSuoritus(ibOppiaine("MATST", standardLevel), "5"),
-      ibAineSuoritus(ibCoreOppiaine("TOK"), "S")
+      ibAineSuoritus(IBOppiaineTheoryOfKnowledge(), "S"),
+      ibAineSuoritus(IBOppiaineCAS(laajuus = Some(LaajuusTunneissa(267))), "S"),
+      ibAineSuoritus(
+        IBOppiaineExtendedEssay(
+          aine = ibKieli("A2", "EN", higherLevel),
+          aihe = LocalizedString.english("How is the theme of racial injustice treated in Harper Lee's To Kill a Mockingbird and Solomon Northup's 12 Years a Slave")
+        ), "S")
     ))
   )
 
@@ -78,15 +85,13 @@ object ExamplesIB {
     arviointi = ibArviointi(arvosana)
   )
 
-  def ibCoreOppiaine(aine: String) = IBCoreElementOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "oppiaineetib", koodiarvo = aine), laajuus = None)
-
-  def ibOppiaine(aine: String, taso: String) = MuuIBOppiaine(
+  def ibOppiaine(aine: String, taso: String) = IBOppiaineMuu(
     tunniste = Koodistokoodiviite(koodistoUri = "oppiaineetib", koodiarvo = aine),
     laajuus = None,
     taso = Some(Koodistokoodiviite(koodiarvo = taso, koodistoUri = "oppiaineentasoib"))
   )
 
-  def ibKieli(aine: String, kieli: String, taso: String) = Language(
+  def ibKieli(aine: String, kieli: String, taso: String) = IBOppiaineLanguage(
     tunniste = Koodistokoodiviite(koodistoUri = "oppiaineetib", koodiarvo = aine),
     laajuus = None,
     taso = Some(Koodistokoodiviite(koodiarvo = taso, koodistoUri = "oppiaineentasoib")),

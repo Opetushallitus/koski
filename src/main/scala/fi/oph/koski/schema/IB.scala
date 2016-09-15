@@ -3,7 +3,7 @@ package fi.oph.koski.schema
 import java.time.LocalDate
 
 import fi.oph.koski.localization.LocalizedString
-import fi.oph.koski.localization.LocalizedString.english
+import fi.oph.koski.localization.LocalizedString.{concat, english}
 import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems}
 
 @Description("IB opiskeluoikeus")
@@ -182,23 +182,13 @@ trait IBOppiaine extends KoodistostaLöytyväKoulutusmoduuli with Valinnaisuus w
   def pakollinen: Boolean = true
 }
 
-case class IBCoreElementOppiaine(
-  @KoodistoKoodiarvo("TOK")
-  @KoodistoKoodiarvo("EE")
-  @KoodistoKoodiarvo("CAS")
-  tunniste: Koodistokoodiviite,
-  laajuus: Option[LaajuusTunneissa]
-) extends IBOppiaine {
-  def taso = None
-}
-
-case class MuuIBOppiaine(
+case class IBOppiaineMuu(
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusTunneissa],
   taso: Option[Koodistokoodiviite]
 ) extends IBOppiaine
 
-case class Language(
+case class IBOppiaineLanguage(
   @KoodistoKoodiarvo("A")
   @KoodistoKoodiarvo("A2")
   @KoodistoKoodiarvo("B")
@@ -207,7 +197,35 @@ case class Language(
   taso: Option[Koodistokoodiviite],
   @KoodistoUri("kielivalikoima")
   kieli: Koodistokoodiviite
-) extends IBOppiaine
+) extends IBOppiaine {
+  override def description = concat(nimi, ", ",  kieli)
+}
+
+trait IBCoreElementOppiaine extends IBOppiaine {
+  override def taso: Option[Koodistokoodiviite] = None
+}
+
+case class IBOppiaineCAS(
+  @KoodistoKoodiarvo("CAS")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodistoUri = "oppiaineetib", koodiarvo = "CAS", nimi = Some(english("Theory of knowledge"))),
+  laajuus: Option[LaajuusTunneissa]
+) extends IBCoreElementOppiaine
+
+case class IBOppiaineTheoryOfKnowledge(
+  @KoodistoKoodiarvo("TOK")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodistoUri = "oppiaineetib", koodiarvo = "TOK", nimi = Some(english("Creativity, activity, service")))
+) extends IBCoreElementOppiaine {
+  override def laajuus: Option[LaajuusTunneissa] = None
+}
+
+case class IBOppiaineExtendedEssay(
+  @KoodistoKoodiarvo("EE")
+  tunniste: Koodistokoodiviite =  Koodistokoodiviite(koodistoUri = "oppiaineetib", koodiarvo = "EE", nimi = Some(english("Extended essay"))),
+  aine: IBOppiaine,
+  aihe: LocalizedString
+) extends IBCoreElementOppiaine {
+  override def laajuus: Option[LaajuusTunneissa] = None
+}
 
 case class LaajuusTunneissa(
   arvo: Float,

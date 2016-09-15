@@ -5,10 +5,8 @@ import fi.oph.koski.schema._
 
 
 class IBPaattoTodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
-  def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: Suoritus) = {
-    val oppiaineet: List[Suoritus] = päättötodistus.osasuoritukset.toList.flatten
-
-    def oppiaineenKurssimäärä(oppiaine: Suoritus): Float = oppiaine.osasuoritukset.toList.flatten.map(laajuus).sum
+  def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: IBTutkinnonSuoritus) = {
+    val oppiaineet: List[IBOppiaineenSuoritus] = päättötodistus.osasuoritukset.toList.flatten
 
     <html>
       <head>
@@ -27,7 +25,7 @@ class IBPaattoTodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
           <table class="arvosanat">
             <tr>
               <th class="oppiaine">Subject</th>
-              <th class="laajuus">Level</th>
+              <th class="taso">Level</th>
               <th class="arvosana-kirjaimin">Grades in words</th>
               <th class="arvosana-numeroin">Grades in numbers</th>
             </tr>
@@ -37,20 +35,18 @@ class IBPaattoTodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
                 val rowClass="oppiaine " + oppiaine.koulutusmoduuli.tunniste.koodiarvo
                 <tr class={rowClass}>
                   <td class="oppiaine">{nimiTeksti}</td>
-                  <td class="laajuus">{decimalFormat.format(oppiaineenKurssimäärä(oppiaine))}</td>
+                  <td class="taso">{oppiaine.koulutusmoduuli.taso.map(_.koodiarvo).getOrElse("")}</td>
                   <td class="arvosana-kirjaimin">{i(oppiaine.arvosanaKirjaimin).capitalize}</td>
                   <td class="arvosana-numeroin">{i(oppiaine.arvosanaNumeroin)}</td>
                 </tr>
               }
             }
-            <tr class="kurssimaara">
-              <td class="kurssimaara-title">Opiskelijan suorittama kokonaiskurssimäärä</td>
-              <td>{decimalFormat.format(oppiaineet.foldLeft(0f) { (summa, aine) => summa + oppiaineenKurssimäärä(aine)})}</td>
-            </tr>
           </table>
           { päättötodistus.vahvistus.toList.map(vahvistusHTML)}
         </div>
       </body>
     </html>
   }
+
+  override def lang: String = "en"
 }
