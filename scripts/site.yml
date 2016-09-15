@@ -1,16 +1,23 @@
 ---
+
+- name: Koski upload
+  hosts: tor_backends
+  sudo: true
+  gather_facts: False
+  tasks:
+  - name: Copy koski application package
+    copy: src={{ koski_package }} dest=/tmp/{{ koski_package | basename }}
+
 - name: Koski deployment
   hosts: tor_backends
-  gather_facts: False
   sudo: true
-  serial: 1
+  gather_facts: False
   vars:
     koski_home: /srv/tomcat/koski
     koski_user: tomcat
     koski_deploy_dir: "{{ koski_home }}/deploy"
+  serial: 1
   tasks:
-  - name: Copy koski application package
-    copy: src={{ koski_package }} dest=/tmp/{{ koski_package | basename }}
   - name: Remove old application package
     file: path={{ koski_deploy_dir }} state=absent
   - name: Create application directory
