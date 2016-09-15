@@ -9,6 +9,10 @@ body {
     font-size: 15px;
 }
 
+table {
+    font-size: 15px;
+}
+
 .todistus {
     margin: 40px auto;
     width: 800px;

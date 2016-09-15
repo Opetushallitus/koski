@@ -1,0 +1,22 @@
+.core-elements {
+    margin-top: 100px;
+}
+
+.label {
+    font-weight: 600;
+    margin-right: 30px;
+    font-size: 14px;
+}
+
+.theory-of-knowledge, .cas {
+    width: 300px;
+    margin-bottom: 10px;
+}
+
+.extended-essay td{
+    font-size: 13px;
+}
+
+.grade {
+    float: right;
+}

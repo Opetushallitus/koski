@@ -31,9 +31,10 @@ class OpintosuoritusoteHtml(implicit val user: KoskiUser) extends LocalizedHtml 
       {
       val suoritukset: List[(Int, Suoritus)] = opiskeluoikeudet.flatMap(oo => {
         val oppiainesuoritukset = oo.suoritukset.flatMap(_.osasuoritukset.toList.flatten)
-        suorituksetSyvyydellä(oppiainesuoritukset)
+        suorituksetSyvyydellä(oppiainesuoritukset.collect { case s: PreIBOppiaineenSuoritus => s })
       })
       suorituksetHtml(suoritukset)
+      // IB subjects
       }
     </div>)
   }
