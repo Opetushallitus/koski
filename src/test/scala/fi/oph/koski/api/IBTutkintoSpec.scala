@@ -5,7 +5,7 @@ import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import org.scalatest.{FunSpec, Matchers}
 
 class IBTutkintoSpec extends FunSpec with Matchers with OpintosuoritusoteTestMethods with TodistusTestMethods with OpiskeluOikeusTestMethods with LocalJettyHttpSpecification {
-  describe("Lukio") {
+  describe("IB-tutkinto") {
     it("Opintosuoritusote") {
       opintosuoritusote(MockOppijat.ibOpiskelija) should equal(
         """Opintosuoritukset
