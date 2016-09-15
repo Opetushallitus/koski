@@ -24,6 +24,7 @@ class IBTutkintoSpec extends FunSpec with Matchers with OpintosuoritusoteTestMet
           |BI Biologia 2
           |BI10 Biologian erikoiskurssi 1 hyväksytty 4.6.2016
           |BI1 Elämä ja evoluutio 1 8 4.6.2016
+          |BIO Biology 5 4.6.2016
           |FI Filosofia 1
           |FI1 Johdatus filosofiseen ajatteluun 1 hyväksytty 4.6.2016
           |FY Fysiikka 1
@@ -32,10 +33,13 @@ class IBTutkintoSpec extends FunSpec with Matchers with OpintosuoritusoteTestMet
           |HI10 Ajan lyhyt historia 1 hyväksytty 4.6.2016
           |HI4 Eurooppalaisen maailmankuvan kehitys 1 8 4.6.2016
           |HI3 Itsenäisen Suomen historia 1 9 4.6.2016
+          |HIS History 6 4.6.2016
           |KE Kemia 1
           |KE1 Kemiaa kaikkialla 1 8 4.6.2016
           |KU Kuvataide 1
           |KU1 Kuvat ja kulttuurit 1 9 4.6.2016
+          |A2 Language A: language and literature 7 4.6.2016
+          |A Language A: literature 4 4.6.2016
           |LI Liikunta 1
           |LI1 Energiaa liikunnasta 1 8 4.6.2016
           |GE Maantieto 1
@@ -45,14 +49,17 @@ class IBTutkintoSpec extends FunSpec with Matchers with OpintosuoritusoteTestMet
           |MAA13 Differentiaali- ja integraalilaskennan jatkokurssi 1 7 4.6.2016
           |MAA11 Lukuteoria ja todistaminen 1 7 4.6.2016
           |MAA2 Polynomifunktiot ja -yhtälöt 1 7 4.6.2016
+          |MATST Mathematical studies 5 4.6.2016
           |MU Musiikki 1
           |MU1 Musiikki ja minä 1 8 4.6.2016
           |OP Opinto-ohjaus 1
           |OP1 Minä opiskelijana 1 hyväksytty 4.6.2016
+          |PSY Psychology 7 4.6.2016
           |PS Psykologia 1
           |PS1 Psyykkinen toiminta ja oppiminen 1 8 4.6.2016
           |TE Terveystieto 1
           |TE1 Terveyden perusteet 1 7 4.6.2016
+          |TOK Theory of knowledge pass 4.6.2016
           |KT Uskonto tai elämänkatsomustieto 1
           |UK4 Uskonto suomalaisessa yhteiskunnassa 1 10 4.6.2016
           |YH Yhteiskuntaoppi 1
