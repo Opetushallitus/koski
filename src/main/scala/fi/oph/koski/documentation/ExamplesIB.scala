@@ -1,5 +1,7 @@
 package fi.oph.koski.documentation
 
+import java.time.LocalDate
+
 import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
@@ -47,13 +49,13 @@ object ExamplesIB {
     tila = tilaValmis,
     vahvistus = ExampleData.vahvistus(),
     osasuoritukset = Some(List(
-      ibAineSuoritus(ibKieli("A", "FI", standardLevel)),
-      ibAineSuoritus(ibKieli("A2", "EN", higherLevel)),
-      ibAineSuoritus(ibOppiaine("HIS", higherLevel)),
-      ibAineSuoritus(ibOppiaine("PSY", standardLevel)),
-      ibAineSuoritus(ibOppiaine("BIO", higherLevel)),
-      ibAineSuoritus(ibOppiaine("MATST", standardLevel)),
-      ibAineSuoritus(ibCoreOppiaine("TOC"))
+      ibAineSuoritus(ibKieli("A", "FI", standardLevel), "4"),
+      ibAineSuoritus(ibKieli("A2", "EN", higherLevel), "7"),
+      ibAineSuoritus(ibOppiaine("HIS", higherLevel), "6"),
+      ibAineSuoritus(ibOppiaine("PSY", standardLevel), "7"),
+      ibAineSuoritus(ibOppiaine("BIO", higherLevel), "5"),
+      ibAineSuoritus(ibOppiaine("MATST", standardLevel), "5"),
+      ibAineSuoritus(ibCoreOppiaine("TOK"), "S")
     ))
   )
 
@@ -69,10 +71,11 @@ object ExamplesIB {
     })
   )
 
-  def ibAineSuoritus(oppiaine: IBOppiaine) = IBOppiaineenSuoritus(
+  def ibAineSuoritus(oppiaine: IBOppiaine, arvosana: String) = IBOppiaineenSuoritus(
     koulutusmoduuli = oppiaine,
     tila = tilaValmis,
-    osasuoritukset = None
+    osasuoritukset = None,
+    arviointi = ibArviointi(arvosana)
   )
 
   def ibCoreOppiaine(aine: String) = IBCoreElementOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "oppiaineetib", koodiarvo = aine), laajuus = None)
@@ -96,6 +99,10 @@ object ExamplesIB {
     laajuus = None
   )
 
+  def ibArviointi(arvosana: String, päivä: LocalDate = date(2016, 6, 4)): Some[List[IBOppiaineenArviointi]] = {
+    Some(List(IBOppiaineenArviointi(predicted = false, arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoib"), Some(päivä))))
+  }
+
   val opiskeluoikeus = IBOpiskeluoikeus(
     oppilaitos = ressunLukio,
     alkamispäivä = Some(date(2012, 9, 1)),
@@ -105,8 +112,10 @@ object ExamplesIB {
         LukionOpiskeluoikeusjakso(date(2016, 1, 10), LukioExampleData.opiskeluoikeusPäättynyt)
       )
     ),
-    suoritukset = List(preIBSuoritus)
+    suoritukset = List(preIBSuoritus, ibTutkinnonSuoritus)
   )
 
-  val examples = List(Example("ib - pre-ib", "Oppija on suorittanut Pre-IB-vuoden", Oppija(MockOppijat.ibOpiskelija.vainHenkilötiedot, List(opiskeluoikeus))))
+  val examples = List(
+    Example("ib - pre-ib ja ib", "Oppija on suorittanut pre-IB vuoden ja IB-tutkinnon", Oppija(MockOppijat.ibOpiskelija.vainHenkilötiedot, List(opiskeluoikeus)))
+  )
 }

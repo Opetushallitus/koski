@@ -80,7 +80,8 @@
         "lyhytNimi": "7",
         "kieli": "EN"
       }
-    ]
+    ],
+    "versio": 1
   },
   {
     "koodiUri": "arviointiasteikkoib_s",
@@ -91,7 +92,8 @@
         "lyhytNimi": "S",
         "kieli": "EN"
       }
-    ]
+    ],
+    "versio": 1
   },
   {
     "koodiUri": "arviointiasteikkoib_o",
@@ -102,6 +104,7 @@
         "lyhytNimi": "O",
         "kieli": "EN"
       }
-    ]
+    ],
+    "versio": 1
   }
 ]

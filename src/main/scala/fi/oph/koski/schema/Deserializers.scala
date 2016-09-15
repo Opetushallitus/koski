@@ -189,6 +189,8 @@ object IBOppiaineDeserializer extends Deserializer[IBOppiaine] {
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), IBOppiaine] = {
     case (TypeInfo(IBOppiaineClass, _), json) =>
       json match {
+        case moduuli: JObject if (moduuli \ "kieli").isInstanceOf[JObject] => moduuli.extract[Language]
+        case moduuli: JObject if (moduuli \ "taso").isInstanceOf[JObject] => moduuli.extract[MuuIBOppiaine]
         case moduuli: JObject => moduuli.extract[IBCoreElementOppiaine]
         case _ => throw CannotDeserializeException(this, json)
       }
