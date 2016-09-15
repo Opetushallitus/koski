@@ -1,0 +1,38 @@
+[
+  {
+    "koodiUri": "effortasteikkoib_a",
+    "koodiArvo": "A",
+    "metadata": [
+      {
+        "nimi": "very good",
+        "lyhytNimi": "1",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "effortasteikkoib_b",
+    "koodiArvo": "B",
+    "metadata": [
+      {
+        "nimi": "good",
+        "lyhytNimi": "1",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "effortasteikkoib_c",
+    "koodiArvo": "C",
+    "metadata": [
+      {
+        "nimi": " needs improvement",
+        "lyhytNimi": "1",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1
+  }
+]
