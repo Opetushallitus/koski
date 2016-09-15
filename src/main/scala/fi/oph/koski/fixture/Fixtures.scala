@@ -14,7 +14,7 @@ object Fixtures {
     if (config.hasPath("fixtures.use")) {
       config.getBoolean("fixtures.use")
     } else {
-      KoskiDatabaseConfig(config).isLocal
+      KoskiDatabaseConfig(config).isLocal && !config.hasPath("opintopolku.virkailija.url")
     }
   }
 }
