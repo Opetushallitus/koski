@@ -12,8 +12,10 @@ import org.scalatest.{FreeSpec, Matchers}
 class ServerStartupIntegrationTest extends FreeSpec with Matchers with LogTester {
   "Server starts without errors" taggedAs(KoskiDevEnvironment) in {
     setup
-    System.setProperty("log4j.configuration", "/dev/null")
-    new JettyLauncher(PortChecker.findFreeLocalPort).start
+    new JettyLauncher(PortChecker.findFreeLocalPort) {
+      override def configureLogging = {}
+    }.start
     getLogMessages.find(m => m.getLevel == ERROR || m.getLevel == FATAL) should be(empty)
+    getLogMessages.last.getMessage.toString should startWith("Started")
   }
 }

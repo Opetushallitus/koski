@@ -22,15 +22,10 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) {
   val application = KoskiApplication(config)
   application.database // <- force evaluation to make sure DB is up
 
-  LogConfiguration.configureLoggingWithFileWatch
-
   lazy val threadPool = new QueuedThreadPool(Pools.jettyThreads, 10);
   lazy val server = new Server(threadPool)
-  lazy val requestLog = new Slf4jRequestLog()
 
-
-  requestLog.setLogLatency(true)
-  server.setRequestLog(requestLog);
+  configureLogging
 
   lazy val connector: ServerConnector = new ServerConnector(server)
   connector.setPort(port)
@@ -59,6 +54,13 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) {
   }
 
   def baseUrl = "http://localhost:" + port + "/koski"
+
+  def configureLogging: Unit = {
+    LogConfiguration.configureLoggingWithFileWatch
+    val requestLog = new Slf4jRequestLog()
+    requestLog.setLogLatency(true)
+    server.setRequestLog(requestLog)
+  }
 }
 
 object SharedJetty extends JettyLauncher(PortChecker.findFreeLocalPort, Map("db.name" -> "tortest", "fixtures.use" -> "true"))
