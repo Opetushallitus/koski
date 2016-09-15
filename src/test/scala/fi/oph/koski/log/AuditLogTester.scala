@@ -2,29 +2,13 @@ package fi.oph.koski.log
 
 import fi.oph.koski.json.Json
 import fi.vm.sade.auditlog.Audit
-import org.apache.log4j.spi.LoggingEvent
-import org.apache.log4j.{AppenderSkeleton, Logger}
-import org.json4s.JsonAST.{JString, JObject}
+import org.apache.log4j.Logger
+import org.json4s.JsonAST.JObject
 import org.scalatest.Matchers
 
-object AuditLogTester extends Matchers {
-  private var messages: List[JObject] = Nil
-
-  lazy val setup: Unit = {
-    Logger.getLogger(classOf[Audit]).addAppender(new AppenderSkeleton() {
-      override def append(event: LoggingEvent) = AuditLogTester.synchronized {
-        val message:JObject = Json.read[JObject](event.getMessage.toString)
-        messages ++= List(message)
-      }
-
-      override def requiresLayout() = false
-
-      override def close() {}
-    })
-  }
-
+object AuditLogTester extends Matchers with LogTester {
   def verifyAuditLogMessage(params: Map[String, String]): Unit = {
-    val message = this.synchronized { messages.lastOption }
+    val message = getLogMessages.lastOption.map(m => Json.read[JObject](m.getMessage.toString))
     message match {
       case None => throw new IllegalStateException("No audit log message found")
       case Some(msg) =>
@@ -34,4 +18,6 @@ object AuditLogTester extends Matchers {
         }
     }
   }
+
+  override def getLogger: Logger = Logger.getLogger(classOf[Audit])
 }
