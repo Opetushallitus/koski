@@ -14,20 +14,27 @@ import scala.collection.JavaConversions._
 object KoskiJsonSchemaValidator {
   private val jsonSchemaFactory = JsonSchemaFactory.newBuilder.setReportProvider(new ListReportProvider(ERROR, FATAL)).freeze()
 
-  val henkilöSchema = createSchema(classOf[Henkilö])
-  val opiskeluoikeusSchemas = Map(
-    "ammatillinenkoulutus" -> createSchema(classOf[AmmatillinenOpiskeluoikeus]),
-    "perusopetus" -> createSchema(classOf[PerusopetuksenOpiskeluoikeus]),
-    "perusopetuksenlisaopetus" -> createSchema(classOf[PerusopetuksenLisäopetuksenOpiskeluoikeus]),
-    "perusopetukseenvalmistavaopetus" -> createSchema(classOf[PerusopetukseenValmistavanOpetuksenOpiskeluoikeus]),
-    "luva" -> createSchema(classOf[LukioonValmistavanKoulutuksenOpiskeluoikeus]),
-    "lukiokoulutus" -> createSchema(classOf[LukionOpiskeluoikeus]),
-    "ibtutkinto" -> createSchema(classOf[IBOpiskeluoikeus]),
-    "korkeakoulutus" -> createSchema(classOf[KorkeakoulunOpiskeluoikeus]),
-    "ylioppilastutkinto" -> createSchema(classOf[YlioppilastutkinnonOpiskeluoikeus])
+  lazy val henkilöSchema = createSchema(classOf[Henkilö])
+
+  val opiskeluoikeusClasses = List(
+    "ammatillinenkoulutus" -> classOf[AmmatillinenOpiskeluoikeus],
+    "perusopetus" -> classOf[PerusopetuksenOpiskeluoikeus],
+    "perusopetuksenlisaopetus" -> classOf[PerusopetuksenLisäopetuksenOpiskeluoikeus],
+    "perusopetukseenvalmistavaopetus" -> classOf[PerusopetukseenValmistavanOpetuksenOpiskeluoikeus],
+    "luva" -> classOf[LukioonValmistavanKoulutuksenOpiskeluoikeus],
+    "lukiokoulutus" -> classOf[LukionOpiskeluoikeus],
+    "ibtutkinto" -> classOf[IBOpiskeluoikeus],
+    "korkeakoulutus" -> classOf[KorkeakoulunOpiskeluoikeus],
+    "ylioppilastutkinto" -> classOf[YlioppilastutkinnonOpiskeluoikeus]
   )
 
-  private def createSchema(clazz: Class[_]) = toJsonSchema(KoskiSchema.createSchema(clazz))
+  lazy val opiskeluoikeusSchemas = opiskeluoikeusClasses.par.map { case (name, klass) =>
+    (name, createSchema(klass))
+  }.toMap
+
+  private def createSchema(clazz: Class[_]) = {
+    toJsonSchema(KoskiSchema.createSchema(clazz))
+  }
   private def toJsonSchema(schema: Schema) = jsonSchemaFactory.getJsonSchema(asJsonNode(SchemaToJson.toJsonSchema(schema)))
 
   def jsonSchemaValidate(node: JValue): HttpStatus = {
