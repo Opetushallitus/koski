@@ -1,0 +1,17 @@
+{
+  "koodistoUri" : "aineryhmaib",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "SV",
+    "nimi" : "Aineryhma ib"
+  }, {
+    "kieli" : "EN",
+    "nimi" : "Aineryhma ib"
+  }, {
+    "kieli" : "FI",
+    "nimi" : "Aineryhma ib"
+  } ],
+  "codesGroupUri" : "http://koski",
+  "voimassaAlkuPvm" : "2016-09-09",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}

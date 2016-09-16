@@ -1,0 +1,74 @@
+[
+  {
+    "koodiUri": "aineryhmaib_1",
+    "koodiArvo": "1",
+    "metadata": [
+      {
+        "nimi": "Studies in language and literature",
+        "lyhytNimi": "Group 1",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "aineryhmaib_2",
+    "koodiArvo": "2",
+    "metadata": [
+      {
+        "nimi": "Language acquisition",
+        "lyhytNimi": "Group 2",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "aineryhmaib_3",
+    "koodiArvo": "3",
+    "metadata": [
+      {
+        "nimi": "Individuals and societies",
+        "lyhytNimi": "Group 3",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "aineryhmaib_4",
+    "koodiArvo": "4",
+    "metadata": [
+      {
+        "nimi": "Experimental sciences",
+        "lyhytNimi": "Group 4",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "aineryhmaib_5",
+    "koodiArvo": "5",
+    "metadata": [
+      {
+        "nimi": "Mathematics",
+        "lyhytNimi": "Group 5",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "aineryhmaib_6",
+    "koodiArvo": "6",
+    "metadata": [
+      {
+        "nimi": "The arts",
+        "lyhytNimi": "Group 6",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1
+  }
+]
