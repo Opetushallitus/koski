@@ -12,12 +12,15 @@ describe('IB-tutkinto', function( ) {
         expect(opinnot.getOppilaitos()).to.equal("Ressun lukio")
       })
     })
+    /* Skip this test until the performance issue in katselukäyttöliittymä is resolved
     describe('Kaikki tiedot näkyvissä', function () {
       before(opinnot.expandAll)
       it('toimii', function () {
         expect(S('.preiboppiaineensuoritus:eq(0) .preibkurssinsuoritus:eq(0) .koulutusmoduuli .tunniste .value').text()).to.equal('Tekstit ja vuorovaikutus')
       })
     })
+    */
+
     /*
     describe('Tulostettava todistus', function () {
       before(opinnot.avaaTodistus(3))
