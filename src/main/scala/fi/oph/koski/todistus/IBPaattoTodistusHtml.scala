@@ -38,7 +38,7 @@ class IBPaattoTodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
           </table>
           <div class="core-elements">
             {
-              päättötodistus.tok.map { o =>
+              päättötodistus.theoryOfKnowledge.map { o =>
                 <div class="theory-of-knowledge">
                   <span class="label">{i(o.koulutusmoduuli)}</span>
                   <span class="grade">{i(o.arvosanaKirjaimin)}</span>
@@ -46,7 +46,7 @@ class IBPaattoTodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
               }
             }
             {
-              päättötodistus.cas.map { o =>
+              päättötodistus.creativityActionService.map { o =>
                 <div class="cas">
                   <span class="label">{i(o.koulutusmoduuli)}</span>
                   <span>{o.koulutusmoduuli.laajuus.map(l => decimalFormat.format(l.arvo)).getOrElse("")}</span>
@@ -55,7 +55,7 @@ class IBPaattoTodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
               }
             }
             {
-              päättötodistus.ee.map { o =>
+              päättötodistus.extendedEssay.map { o =>
                 <div class="extended-essay">
                   <div class="label">{i(o.koulutusmoduuli)}</div>
                   <table>

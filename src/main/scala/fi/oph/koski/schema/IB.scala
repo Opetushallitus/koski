@@ -37,9 +37,9 @@ case class IBTutkinnonSuoritus(
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[IBOppiaineenSuoritus]],
-  tok: Option[TokSuoritus],
-  ee: Option[EeSuoritus],
-  cas: Option[CasSuoritus],
+  theoryOfKnowledge: Option[IBTheoryOfKnowledgeSuoritus],
+  extendedEssay: Option[IBExtendedEssaySuoritus],
+  creativityActionService: Option[IBCASSuoritus],
   @KoodistoKoodiarvo("ibtutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ibtutkinto", koodistoUri = "suorituksentyyppi")
 ) extends IBPäätasonSuoritus
@@ -97,17 +97,20 @@ case class IBOppiaineenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "iboppiaine", koodistoUri = "suorituksentyyppi")
 ) extends IBSuoritus
 
-case class TokSuoritus(
+case class IBTheoryOfKnowledgeSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: IBOppiaineTheoryOfKnowledge,
   tila: Koodistokoodiviite,
   arviointi: Option[List[IBOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
+  @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
+  @Title("Kurssit")
+  override val osasuoritukset: Option[List[IBKurssinSuoritus]],
   @KoodistoKoodiarvo("iboppiainetok")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "iboppiainetok", koodistoUri = "suorituksentyyppi")
 ) extends IBSuoritus
 
-case class CasSuoritus(
+case class IBCASSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: IBOppiaineCAS,
   tila: Koodistokoodiviite,
@@ -117,7 +120,7 @@ case class CasSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "iboppiainecas", koodistoUri = "suorituksentyyppi")
 ) extends IBSuoritus
 
-case class EeSuoritus(
+case class IBExtendedEssaySuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: IBOppiaineExtendedEssay,
   tila: Koodistokoodiviite,

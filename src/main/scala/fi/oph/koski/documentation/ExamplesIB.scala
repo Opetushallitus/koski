@@ -108,17 +108,20 @@ object ExamplesIB {
         (ibKurssi("MATST_S6"), "S", None)
       ))
     )),
-    tok = Some(TokSuoritus(
-      IBOppiaineTheoryOfKnowledge(), tilaValmis, ibArviointi("S")
+    theoryOfKnowledge = Some(IBTheoryOfKnowledgeSuoritus(
+      IBOppiaineTheoryOfKnowledge(), tilaValmis, ibArviointi("S"), osasuoritukset = Some(List(
+        IBKurssinSuoritus(ibKurssi("TOK1"), tilaValmis, ibKurssinArviointi("S"), None),
+        IBKurssinSuoritus(ibKurssi("TOK2"), tilaValmis, ibKurssinArviointi("S"), None)
+      ))
     )),
-    ee = Some(EeSuoritus(
+    extendedEssay = Some(IBExtendedEssaySuoritus(
       IBOppiaineExtendedEssay(
         aine = ibKieli("A2", "EN", higherLevel, 1),
         aihe = LocalizedString.english("How is the theme of racial injustice treated in Harper Lee's To Kill a Mockingbird and Solomon Northup's 12 Years a Slave")
       ),
       tilaValmis, ibArviointi("S")
     )),
-    cas = Some(CasSuoritus(
+    creativityActionService = Some(IBCASSuoritus(
       IBOppiaineCAS(laajuus = Some(LaajuusTunneissa(267))), tilaValmis, ibArviointi("S")
     ))
   )
@@ -169,7 +172,7 @@ object ExamplesIB {
     Some(List(IBOppiaineenArviointi(predicted = false, arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoib"), Some(päivä))))
   }
 
-  def ibKurssinArviointi(arvosana: String, effort: Option[String], päivä: LocalDate = date(2016, 6, 4)): Some[List[IBKurssinArviointi]] =
+  def ibKurssinArviointi(arvosana: String, effort: Option[String] = None, päivä: LocalDate = date(2016, 6, 4)): Some[List[IBKurssinArviointi]] =
     Some(List(IBKurssinArviointi(
       arvosana = Koodistokoodiviite(koodiarvo = arvosana,
       koodistoUri = "arviointiasteikkoib"),

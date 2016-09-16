@@ -1,24 +1,19 @@
 package fi.oph.koski.suoritusote
 
-import java.text.NumberFormat
-import java.time.LocalDate
-
 import fi.oph.koski.koskiuser.KoskiUser
-import fi.oph.koski.localization.Locale._
-import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.schema._
-import fi.oph.koski.todistus.LocalizedHtml
 
-import scala.xml.{Elem, Node}
+import scala.xml.Elem
 
 class IBOpintosuoritusoteHtml(implicit override val user: KoskiUser) extends OpintosuoritusoteHtml {
   def ib(ht: TäydellisetHenkilötiedot, opiskeluoikeudet: List[IBOpiskeluoikeus]): Elem = {
     bodyHtml(ht, <div>{
-      val (preIBSuoritukset, ibSuoritukset) = opiskeluoikeudet
-        .flatMap(_.suoritukset.flatMap(_.osasuoritukset.toList.flatten))
-        .partition(_.isInstanceOf[PreIBOppiaineenSuoritus])
-
-      val ibSuorituksetRyhmittäin: Map[String, List[Suoritus]] = ibSuoritukset.groupBy { s =>
+      val ibTutkinnonSuoritukset: List[IBTutkinnonSuoritus] = opiskeluoikeudet.flatMap(_.suoritukset.collect { case s: IBTutkinnonSuoritus => s })
+      val theoryOfKnowledgeSuoritukset: List[IBTheoryOfKnowledgeSuoritus] = ibTutkinnonSuoritukset.flatMap(_.theoryOfKnowledge)
+      val ibAineidenSuoritukset: List[IBOppiaineenSuoritus] = ibTutkinnonSuoritukset.flatMap(_.osasuoritukset.toList.flatten)
+      val preIBSuoritukset: List[PreIBOppiaineenSuoritus] = opiskeluoikeudet.flatMap(_.suoritukset.collect{ case s: PreIBSuoritus => s }).flatMap(_.osasuoritukset.toList.flatten)
+      
+      val ibSuorituksetRyhmittäin: Map[String, List[Suoritus]] = (ibAineidenSuoritukset ++ theoryOfKnowledgeSuoritukset).groupBy { s =>
         s.koulutusmoduuli match {
           case x: IBAineRyhmäOppiaine => i(x.ryhmä.lyhytNimi)
           case _ => "Others"
