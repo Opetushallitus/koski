@@ -10,7 +10,6 @@ export const Editor = React.createClass({
   render() {
     let { model, context, editorMapping } = this.props
     let rootComponent = this
-    //let expandedPaths = () => (rootComponent.state && rootComponent.state.expandedPaths) || []
 
     if (!context) {
       if (!editorMapping) throw new Error('editorMapping required for root editor')
@@ -20,33 +19,27 @@ export const Editor = React.createClass({
         prototypes: model.prototypes,
         editorMapping: R.merge(defaultEditorMapping, editorMapping),
         expandMyPath (c, expanded) {
-          //console.log("EXPANDED", this.path, expanded)
+          // expand/collapse this node
           c.setState({expanded})
           if (this.parentComponent && this.parentContext) {
             let delta = expanded ? 1 : -1
             this.parentContext.expandChild(this.parentComponent, delta)
           }
-          /*
-          let currentlyExpanded = expandedPaths()
-          let index = currentlyExpanded.indexOf(this.path)
-          if (expanded && index < 0) {
-            rootComponent.setState({expandedPaths: currentlyExpanded.concat(this.path)}) // add
-          } else if (!expanded) {
-            rootComponent.setState({expandedPaths: currentlyExpanded.filter((expandedPath) => !isChildPathOf(this.path)(expandedPath))}) // collapse this node and children
-          }
-          */
         },
         expandChild (c, delta) {
+          // notification of a child component expanded/collapsed
           let previousCount = ((c.state && c.state.expandCount) || 0)
           let expandCount = previousCount + delta
           c.setState({expandCount})
-          //console.log("CHILDREN", this.path, expandCount)
           if (this.parentComponent && this.parentContext) {
+            // if there's a parent, we'll bubble up the change
             let selfCount = (c.state && c.state.expanded ? 1 : 0)
+            // this component + children together count as 1 expanded child for the parent component.
             let countForParent = (expandCount + selfCount > 0 ? 1 : 0)
             let previousCountForParent = (previousCount + selfCount > 0 ? 1 : 0)
             let deltaForParent = countForParent - previousCountForParent
             if (deltaForParent !== 0) {
+              // only notify parent if there's an actual change.
               this.parentContext.expandChild(this.parentComponent, deltaForParent)
             }
           }
@@ -179,8 +172,9 @@ export const ArrayEditor = React.createClass({
 ArrayEditor.canShowInline = (component) => {
   let {model, context} = component.props
   var items = modelItems(model)
+  // consider inlineability of first item here. make a stateless "fake component" because the actual React component isn't available to us here.
   let fakeComponent = {props: { model: items[0], context: childContext({}, context, 0) }}
-  return items.length <= 1 && canShowInline(fakeComponent)
+  return items.length <= 1 && canShowInline(fakeComponent) && !context.isChildExpanded(component)
 }
 
 export const OptionalEditor = React.createClass({
