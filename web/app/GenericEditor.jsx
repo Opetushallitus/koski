@@ -9,7 +9,6 @@ import Bacon from 'baconjs'
 export const Editor = React.createClass({
   render() {
     let { model, context, editorMapping } = this.props
-    let rootComponent = this
 
     if (!context) {
       if (!editorMapping) throw new Error('editorMapping required for root editor')
@@ -55,8 +54,6 @@ export const Editor = React.createClass({
     return getModelEditor(model, context)
   }
 })
-
-const isChildPathOf = (parent) => (path) => path.startsWith(parent)
 
 export const ObjectEditor = React.createClass({
   render() {
