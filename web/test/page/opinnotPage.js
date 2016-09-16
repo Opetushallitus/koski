@@ -63,9 +63,15 @@ function OpinnotPage() {
       return Editor(function() { return S('.suoritus:contains("' + name + '")') })
     },
     expandAll: function() {
-      function expanders() { return S('.foldable.collapsed>.toggle-expand') }
-      while (expanders().is(':visible')) {
-        triggerEvent(expanders(), 'click')
+      var checkAndExpand = function() {
+        if (expanders().is(':visible')) {
+          triggerEvent(expanders(), 'click')
+          return wait.forMilliseconds(10)().then(checkAndExpand)
+        }
+      }
+      return checkAndExpand()
+      function expanders() {
+        return S('.foldable.collapsed>.toggle-expand')
       }
     }
   }
