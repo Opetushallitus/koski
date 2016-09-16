@@ -18,7 +18,7 @@ const OppijaEditor = React.createClass({
             <OppilaitoksenOpintosuoritusoteLink oppilaitos={oppilaitos} tyyppi={modelData(opiskeluoikeudet[0], 'tyyppi').koodiarvo} oppijaOid={oppijaOid} />
             {
               opiskeluoikeudet.map( (opiskeluoikeus, opiskeluoikeusIndex) =>
-                <OpiskeluoikeusEditor key={ opiskeluoikeusIndex } model={ opiskeluoikeus } context={GenericEditor.childContext(oppijaContext, 'opiskeluoikeudet', oppilaitosIndex, 'opiskeluoikeudet', opiskeluoikeusIndex)} />
+                <OpiskeluoikeusEditor key={ opiskeluoikeusIndex } model={ opiskeluoikeus } context={GenericEditor.childContext(this, oppijaContext, 'opiskeluoikeudet', oppilaitosIndex, 'opiskeluoikeudet', opiskeluoikeusIndex)} />
               )
             }
           </li>)
@@ -44,13 +44,14 @@ const OpiskeluoikeusEditor = React.createClass({
         }
           <span className="tila">{modelTitle(model, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}</span>
         <GenericEditor.ExpandableEditor
+          editor = {this}
           expandedView={() => <GenericEditor.PropertiesEditor properties={ model.value.properties.filter(property => property.key != 'suoritukset') } context={opiskeluoikeusContext}/>}
-          context={GenericEditor.childContext(opiskeluoikeusContext, 'tiedot')}
+          context={GenericEditor.childContext(this, opiskeluoikeusContext, 'tiedot')}
         />
       </div>
       {
         modelItems(model, 'suoritukset').map((suoritusModel, i) =>
-          <SuoritusEditor model={suoritusModel} context={GenericEditor.childContext(opiskeluoikeusContext, 'suoritukset', i)} key={i}/>
+          <SuoritusEditor model={suoritusModel} context={GenericEditor.childContext(this, opiskeluoikeusContext, 'suoritukset', i)} key={i}/>
         )
       }
       <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={model} context={context}/>
@@ -68,6 +69,7 @@ const SuoritusEditor = React.createClass({
       <span className="kuvaus">{title}</span>
       <TodistusLink suoritus={model} context={context}/>
       <GenericEditor.ExpandableEditor
+        editor = {this}
         expandedView={() => <GenericEditor.PropertiesEditor properties={model.value.properties} context={R.merge(context, {editable: model.editable})}/>}
         context={context}
       />
@@ -193,6 +195,7 @@ const TutkinnonosaEditor = React.createClass({
 
     return (<div className="suoritus tutkinnonosa">
       <GenericEditor.ExpandableEditor
+        editor = {this}
         defaultExpanded={context.edit}
         collapsedView={() => <span className="tutkinnonosan-tiedot">
           <label className="nimi">{modelTitle(model, 'koulutusmoduuli')}</label>
