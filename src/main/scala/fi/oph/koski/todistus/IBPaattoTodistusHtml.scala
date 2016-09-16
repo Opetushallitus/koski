@@ -36,9 +36,7 @@ class IBPaattoTodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
             {
               oppiaineet.map { o =>
                  o.koulutusmoduuli match {
-                  case IBOppiaineMuu(_, _, _) => oppiaineRow(o)
-                  case IBOppiaineLanguage(_, _, _, _) => oppiaineRow(o)
-                  case IBOppiaineTheoryOfKnowledge(_) => oppiaineRow(o)
+                  case _:IBOppiaineMuu | _:IBOppiaineLanguage | _:IBOppiaineTheoryOfKnowledge => oppiaineRow(o)
                   case _ =>
                 }
               }

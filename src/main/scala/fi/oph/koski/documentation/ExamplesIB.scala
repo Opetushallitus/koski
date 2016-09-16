@@ -50,7 +50,7 @@ object ExamplesIB {
     tila = tilaValmis,
     vahvistus = ExampleData.vahvistus(org = ressunLukio, kunta = helsinki),
     osasuoritukset = Some(List(
-      ibAineSuoritus(ibKieli("A", "FI", standardLevel), "4", List(
+      ibAineSuoritus(ibKieli("A", "FI", standardLevel, 1), "4", List(
         (ibKurssi("FIN_S1"), "4", Some("B")),
         (ibKurssi("FIN_S2"), "4", Some("B")),
         (ibKurssi("FIN_S3"), "S", None),
@@ -61,7 +61,7 @@ object ExamplesIB {
         (ibKurssi("FIN_S8"), "S", None),
         (ibKurssi("FIN_S9"), "5", Some("C"))
       )),
-      ibAineSuoritus(ibKieli("A2", "EN", higherLevel), "7", List(
+      ibAineSuoritus(ibKieli("A2", "EN", higherLevel, 1), "7", List(
         (ibKurssi("ENG_B_H1"), "6", Some("A")),
         (ibKurssi("ENG_B_H2"), "7", None),
         (ibKurssi("ENG_B_H4"), "S", None),
@@ -69,7 +69,7 @@ object ExamplesIB {
         (ibKurssi("ENG_B_H6"), "6", None),
         (ibKurssi("ENG_B_H8"), "5", None)
       )),
-      ibAineSuoritus(ibOppiaine("HIS", higherLevel), "6", List(
+      ibAineSuoritus(ibOppiaine("HIS", higherLevel, 3), "6", List(
         (ibKurssi("HIS_H3"), "6", Some("A")),
         (ibKurssi("HIS_H4"), "6", Some("A")),
         (ibKurssi("HIS_H5"), "7", Some("B")),
@@ -77,7 +77,7 @@ object ExamplesIB {
         (ibKurssi("HIS_H7"), "1", Some("C")),
         (ibKurssi("HIS_H9"), "S", None)
       )),
-      ibAineSuoritus(ibOppiaine("PSY", standardLevel), "7", List(
+      ibAineSuoritus(ibOppiaine("PSY", standardLevel, 3), "7", List(
         (ibKurssi("PSY_S1"), "6", Some("A")),
         (ibKurssi("PSY_S2"), "6", Some("B")),
         (ibKurssi("PSY_S3"), "6", Some("B")),
@@ -88,7 +88,7 @@ object ExamplesIB {
         (ibKurssi("PSY_S8"), "2", Some("C")),
         (ibKurssi("PSY_S9"), "S", None)
       )),
-      ibAineSuoritus(ibOppiaine("BIO", higherLevel), "5", List(
+      ibAineSuoritus(ibOppiaine("BIO", higherLevel, 4), "5", List(
         (ibKurssi("BIO_H1"), "5", Some("B")),
         (ibKurssi("BIO_H2"), "4", Some("B")),
         (ibKurssi("BIO_H3"), "S", None),
@@ -99,7 +99,7 @@ object ExamplesIB {
         (ibKurssi("BIO_H8"), "4", Some("C")),
         (ibKurssi("BIO_H9"), "1", Some("C"))
       )),
-      ibAineSuoritus(ibOppiaine("MATST", standardLevel), "5", List(
+      ibAineSuoritus(ibOppiaine("MATST", standardLevel, 5), "5", List(
         (ibKurssi("MATST_S1"), "5", Some("A")),
         (ibKurssi("MATST_S2"), "7", Some("A")),
         (ibKurssi("MATST_S3"), "6", Some("A")),
@@ -116,7 +116,7 @@ object ExamplesIB {
       )),
       ibAineSuoritus(
         IBOppiaineExtendedEssay(
-          aine = ibKieli("A2", "EN", higherLevel),
+          aine = ibKieli("A2", "EN", higherLevel, 1),
           aihe = LocalizedString.english("How is the theme of racial injustice treated in Harper Lee's To Kill a Mockingbird and Solomon Northup's 12 Years a Slave")
         ), "S", List((ibKurssi("EE1"), "S", None)))
     ))
@@ -143,17 +143,19 @@ object ExamplesIB {
     arviointi = ibArviointi(arvosana)
   )
 
-  def ibOppiaine(aine: String, taso: String) = IBOppiaineMuu(
-    tunniste = Koodistokoodiviite(koodistoUri = "oppiaineetib", koodiarvo = aine),
-    laajuus = None,
-    taso = Some(Koodistokoodiviite(koodiarvo = taso, koodistoUri = "oppiaineentasoib"))
-  )
-
-  def ibKieli(aine: String, kieli: String, taso: String) = IBOppiaineLanguage(
+  def ibOppiaine(aine: String, taso: String, ryhmä: Int) = IBOppiaineMuu(
     tunniste = Koodistokoodiviite(koodistoUri = "oppiaineetib", koodiarvo = aine),
     laajuus = None,
     taso = Some(Koodistokoodiviite(koodiarvo = taso, koodistoUri = "oppiaineentasoib")),
-    kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima")
+    ryhmä = Koodistokoodiviite(koodiarvo = ryhmä.toString, koodistoUri = "aineryhmaib")
+  )
+
+  def ibKieli(aine: String, kieli: String, taso: String, ryhmä: Int) = IBOppiaineLanguage(
+    tunniste = Koodistokoodiviite(koodistoUri = "oppiaineetib", koodiarvo = aine),
+    laajuus = None,
+    taso = Some(Koodistokoodiviite(koodiarvo = taso, koodistoUri = "oppiaineentasoib")),
+    kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"),
+    ryhmä = Koodistokoodiviite(koodiarvo = ryhmä.toString, koodistoUri = "aineryhmaib")
   )
 
   def ibKurssi(kurssi: String) = IBKurssi(

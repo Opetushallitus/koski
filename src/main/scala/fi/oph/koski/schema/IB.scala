@@ -184,11 +184,17 @@ trait IBOppiaine extends KoodistostaLöytyväKoulutusmoduuli with Valinnaisuus w
   def pakollinen: Boolean = true
 }
 
+trait IBAineRyhmäOppiaine extends IBOppiaine {
+  @KoodistoUri("aineryhmaib")
+  def ryhmä: Koodistokoodiviite
+}
+
 case class IBOppiaineMuu(
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusTunneissa],
-  taso: Option[Koodistokoodiviite]
-) extends IBOppiaine
+  taso: Option[Koodistokoodiviite],
+  ryhmä: Koodistokoodiviite
+) extends IBAineRyhmäOppiaine
 
 case class IBOppiaineLanguage(
   @KoodistoKoodiarvo("A")
@@ -198,8 +204,9 @@ case class IBOppiaineLanguage(
   laajuus: Option[LaajuusTunneissa],
   taso: Option[Koodistokoodiviite],
   @KoodistoUri("kielivalikoima")
-  kieli: Koodistokoodiviite
-) extends IBOppiaine {
+  kieli: Koodistokoodiviite,
+  ryhmä: Koodistokoodiviite
+) extends IBAineRyhmäOppiaine {
   override def description = concat(nimi, ", ",  kieli)
 }
 
