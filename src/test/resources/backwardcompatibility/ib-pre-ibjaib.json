@@ -1486,6 +1486,10 @@
           "kieli" : {
             "koodiarvo" : "FI",
             "koodistoUri" : "kielivalikoima"
+          },
+          "ryhmä" : {
+            "koodiarvo" : "1",
+            "koodistoUri" : "aineryhmaib"
           }
         },
         "tila" : {
@@ -1500,6 +1504,269 @@
           },
           "päivä" : "2016-06-04",
           "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "FIN_S1",
+              "nimi" : {
+                "en" : "FIN_S1"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "B",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "FIN_S2",
+              "nimi" : {
+                "en" : "FIN_S2"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "B",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "FIN_S3",
+              "nimi" : {
+                "en" : "FIN_S3"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "FIN_S4",
+              "nimi" : {
+                "en" : "FIN_S4"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "C",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "FIN_S5",
+              "nimi" : {
+                "en" : "FIN_S5"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "B",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "FIN_S6",
+              "nimi" : {
+                "en" : "FIN_S6"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "B",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "FIN_S7",
+              "nimi" : {
+                "en" : "FIN_S7"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "B",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "FIN_S8",
+              "nimi" : {
+                "en" : "FIN_S8"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "FIN_S9",
+              "nimi" : {
+                "en" : "FIN_S9"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "C",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
         } ],
         "tyyppi" : {
           "koodiarvo" : "iboppiaine",
@@ -1518,6 +1785,10 @@
           "kieli" : {
             "koodiarvo" : "EN",
             "koodistoUri" : "kielivalikoima"
+          },
+          "ryhmä" : {
+            "koodiarvo" : "1",
+            "koodistoUri" : "aineryhmaib"
           }
         },
         "tila" : {
@@ -1533,6 +1804,167 @@
           "päivä" : "2016-06-04",
           "hyväksytty" : true
         } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ENG_B_H1",
+              "nimi" : {
+                "en" : "ENG_B_H1"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "A",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ENG_B_H2",
+              "nimi" : {
+                "en" : "ENG_B_H2"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "7",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ENG_B_H4",
+              "nimi" : {
+                "en" : "ENG_B_H4"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ENG_B_H5",
+              "nimi" : {
+                "en" : "ENG_B_H5"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ENG_B_H6",
+              "nimi" : {
+                "en" : "ENG_B_H6"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "ENG_B_H8",
+              "nimi" : {
+                "en" : "ENG_B_H8"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "iboppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -1546,6 +1978,10 @@
           "taso" : {
             "koodiarvo" : "HL",
             "koodistoUri" : "oppiaineentasoib"
+          },
+          "ryhmä" : {
+            "koodiarvo" : "3",
+            "koodistoUri" : "aineryhmaib"
           }
         },
         "tila" : {
@@ -1561,6 +1997,183 @@
           "päivä" : "2016-06-04",
           "hyväksytty" : true
         } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "HIS_H3",
+              "nimi" : {
+                "en" : "HIS_H3"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "A",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "HIS_H4",
+              "nimi" : {
+                "en" : "HIS_H4"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "A",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "HIS_H5",
+              "nimi" : {
+                "en" : "HIS_H5"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "7",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "B",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "HIS_H6",
+              "nimi" : {
+                "en" : "HIS_H6"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "A",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "HIS_H7",
+              "nimi" : {
+                "en" : "HIS_H7"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "C",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "HIS_H9",
+              "nimi" : {
+                "en" : "HIS_H9"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "iboppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -1574,6 +2187,10 @@
           "taso" : {
             "koodiarvo" : "SL",
             "koodistoUri" : "oppiaineentasoib"
+          },
+          "ryhmä" : {
+            "koodiarvo" : "3",
+            "koodistoUri" : "aineryhmaib"
           }
         },
         "tila" : {
@@ -1589,6 +2206,269 @@
           "päivä" : "2016-06-04",
           "hyväksytty" : true
         } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "PSY_S1",
+              "nimi" : {
+                "en" : "PSY_S1"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "A",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "PSY_S2",
+              "nimi" : {
+                "en" : "PSY_S2"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "B",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "PSY_S3",
+              "nimi" : {
+                "en" : "PSY_S3"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "B",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "PSY_S4",
+              "nimi" : {
+                "en" : "PSY_S4"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "B",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "PSY_S5",
+              "nimi" : {
+                "en" : "PSY_S5"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "PSY_S6",
+              "nimi" : {
+                "en" : "PSY_S6"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "B",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "PSY_S7",
+              "nimi" : {
+                "en" : "PSY_S7"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "B",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "PSY_S8",
+              "nimi" : {
+                "en" : "PSY_S8"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "C",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "PSY_S9",
+              "nimi" : {
+                "en" : "PSY_S9"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "iboppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -1602,6 +2482,10 @@
           "taso" : {
             "koodiarvo" : "HL",
             "koodistoUri" : "oppiaineentasoib"
+          },
+          "ryhmä" : {
+            "koodiarvo" : "4",
+            "koodistoUri" : "aineryhmaib"
           }
         },
         "tila" : {
@@ -1617,6 +2501,273 @@
           "päivä" : "2016-06-04",
           "hyväksytty" : true
         } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "BIO_H1",
+              "nimi" : {
+                "en" : "BIO_H1"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "B",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "BIO_H2",
+              "nimi" : {
+                "en" : "BIO_H2"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "B",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "BIO_H3",
+              "nimi" : {
+                "en" : "BIO_H3"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "BIO_H4",
+              "nimi" : {
+                "en" : "BIO_H4"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "B",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "BIO_H5",
+              "nimi" : {
+                "en" : "BIO_H5"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "B",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "BIO_H6",
+              "nimi" : {
+                "en" : "BIO_H6"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "B",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "BIO_H7",
+              "nimi" : {
+                "en" : "BIO_H7"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "C",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "BIO_H8",
+              "nimi" : {
+                "en" : "BIO_H8"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "C",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "BIO_H9",
+              "nimi" : {
+                "en" : "BIO_H9"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "C",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : false
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "iboppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -1630,6 +2781,10 @@
           "taso" : {
             "koodiarvo" : "SL",
             "koodistoUri" : "oppiaineentasoib"
+          },
+          "ryhmä" : {
+            "koodiarvo" : "5",
+            "koodistoUri" : "aineryhmaib"
           }
         },
         "tila" : {
@@ -1644,6 +2799,183 @@
           },
           "päivä" : "2016-06-04",
           "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MATST_S1",
+              "nimi" : {
+                "en" : "MATST_S1"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "A",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MATST_S2",
+              "nimi" : {
+                "en" : "MATST_S2"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "7",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "A",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MATST_S3",
+              "nimi" : {
+                "en" : "MATST_S3"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "A",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MATST_S4",
+              "nimi" : {
+                "en" : "MATST_S4"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "A",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MATST_S5",
+              "nimi" : {
+                "en" : "MATST_S5"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "effort" : {
+              "koodiarvo" : "B",
+              "koodistoUri" : "effortasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "MATST_S6",
+              "nimi" : {
+                "en" : "MATST_S6"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
         } ],
         "tyyppi" : {
           "koodiarvo" : "iboppiaine",
@@ -1671,6 +3003,59 @@
           },
           "päivä" : "2016-06-04",
           "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "TOK1",
+              "nimi" : {
+                "en" : "TOK1"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "TOK2",
+              "nimi" : {
+                "en" : "TOK2"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
         } ],
         "tyyppi" : {
           "koodiarvo" : "iboppiaine",
@@ -1709,6 +3094,33 @@
           "päivä" : "2016-06-04",
           "hyväksytty" : true
         } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "CAS1",
+              "nimi" : {
+                "en" : "CAS1"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "iboppiaine",
           "koodistoUri" : "suorituksentyyppi"
@@ -1734,6 +3146,10 @@
             "kieli" : {
               "koodiarvo" : "EN",
               "koodistoUri" : "kielivalikoima"
+            },
+            "ryhmä" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "aineryhmaib"
             }
           },
           "aihe" : {
@@ -1752,6 +3168,33 @@
           },
           "päivä" : "2016-06-04",
           "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "EE1",
+              "nimi" : {
+                "en" : "EE1"
+              }
+            },
+            "pakollinen" : true
+          },
+          "tila" : {
+            "koodiarvo" : "VALMIS",
+            "koodistoUri" : "suorituksentila"
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "S",
+              "koodistoUri" : "arviointiasteikkoib"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ibkurssi",
+            "koodistoUri" : "suorituksentyyppi"
+          }
         } ],
         "tyyppi" : {
           "koodiarvo" : "iboppiaine",
