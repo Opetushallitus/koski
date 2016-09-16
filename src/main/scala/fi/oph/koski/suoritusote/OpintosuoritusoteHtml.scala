@@ -26,18 +26,6 @@ class OpintosuoritusoteHtml(implicit val user: KoskiUser) extends LocalizedHtml 
     </div>)
   }
 
-  def ib(ht: TäydellisetHenkilötiedot, opiskeluoikeudet: List[IBOpiskeluoikeus]): Elem = {
-    bodyHtml(ht, <div>
-      {
-      val (preIBSuoritukset, ibSuoritukset) = opiskeluoikeudet
-        .flatMap(_.suoritukset.flatMap(_.osasuoritukset.toList.flatten))
-        .partition(_.isInstanceOf[PreIBOppiaineenSuoritus])
-      suorituksetHtml(suorituksetSyvyydellä(preIBSuoritukset), "Preliminary year courses") ++
-      suorituksetHtml(suorituksetSyvyydellä(ibSuoritukset), "INTERNATIONAL BACCALAUREATE DIPLOMA PROGRAMME")
-      }
-    </div>)
-  }
-
   def korkeakoulu(ht: TäydellisetHenkilötiedot, opiskeluoikeudet: List[KorkeakoulunOpiskeluoikeus]): Elem = {
     def ensisijainenOpiskeluoikeus(opiskeluoikeudet: List[Opiskeluoikeus]): Option[KorkeakoulunOpiskeluoikeus] = {
       opiskeluoikeudet.collect { case oo: KorkeakoulunOpiskeluoikeus => oo }
@@ -90,7 +78,7 @@ class OpintosuoritusoteHtml(implicit val user: KoskiUser) extends LocalizedHtml 
     )
   }
 
-  private def suorituksetHtml(suoritukset: List[(Int, Suoritus)], title: String = "Opintosuoritukset") = {
+  protected def suorituksetHtml(suoritukset: List[(Int, Suoritus)], title: String = "Opintosuoritukset") = {
     def suoritusHtml(t: (Int, Suoritus)) = {
       def laajuus(suoritus: Suoritus) = if (suoritus.osasuoritukset.isDefined) {
         decimalFormat.format(suoritus.osasuoritusLista.foldLeft(0f) { (laajuus: Float, suoritus: Suoritus) =>
@@ -105,7 +93,7 @@ class OpintosuoritusoteHtml(implicit val user: KoskiUser) extends LocalizedHtml 
           <td class={"depth-" + depth}>{suoritus.koulutusmoduuli.tunniste.koodiarvo}</td>
           <td class={"depth-" + depth}>{i(suoritus.koulutusmoduuli)}</td>
           <td class="laajuus">{laajuus(suoritus)}</td>
-          <td class="arvosana">{i(suoritus.arvosanaNumeroin.getOrElse(suoritus.arvosanaKirjaimin))}</td>
+          <td class="arvosana">{arvosana(suoritus)}</td>
           <td class="suoritus-pvm">{suoritus.arviointi.flatMap(_.lastOption.flatMap(_.arviointipäivä.map(dateFormatter.format(_)))).getOrElse("")}</td>
         </tr>
       }
@@ -129,8 +117,9 @@ class OpintosuoritusoteHtml(implicit val user: KoskiUser) extends LocalizedHtml 
     </section>
   }
 
+  protected def arvosana(suoritus: Suoritus) = i(suoritus.arvosanaNumeroin.getOrElse(suoritus.arvosanaKirjaimin))
 
-  private def bodyHtml(ht: TäydellisetHenkilötiedot, content: Node) = {
+  protected def bodyHtml(ht: TäydellisetHenkilötiedot, content: Node) = {
     <html>
       <head>
         <link rel="stylesheet" type="text/css" href="/koski/css/opintosuoritusote.css"></link>
@@ -153,7 +142,7 @@ class OpintosuoritusoteHtml(implicit val user: KoskiUser) extends LocalizedHtml 
   }
 
 
-  private def suorituksetSyvyydellä(roots: List[Suoritus]): List[(Int, Suoritus)] = {
+  protected def suorituksetSyvyydellä(roots: List[Suoritus]): List[(Int, Suoritus)] = {
     def suoritusWithDepth(t: (Int, Suoritus)) : List[(Int, Suoritus)] = {
       t :: t._2.osasuoritusLista.sortBy(s => i(s.koulutusmoduuli.nimi)).flatMap(s => suoritusWithDepth((t._1 + 1, s)))
     }
