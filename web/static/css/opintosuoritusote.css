@@ -42,6 +42,7 @@ section {
 .laajuus, .arvosana, .suoritus-pvm {
     text-align: right;
     padding-left: 20px;
+    width: 100px;
 }
 
 .suoritukset, .tutkinnot, .ensisijainen-opiskeluoikeus {
@@ -68,4 +69,21 @@ h1, h2, h3, h4, h5, h6 {
 
 .ensisijainen-opiskeluoikeus tr td:first-child {
     width: 50%;
+}
+
+.ib-studies h3 {
+    margin-bottom: 0;
+    font-size: 13px;
+}
+
+.ib-studies th {
+    margin-bottom: 0;
+}
+
+.ib-studies .laajuus {
+    display: none;
+}
+
+.ib-studies section {
+    margin-bottom: 30px;
 }

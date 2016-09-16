@@ -61,29 +61,9 @@ class IBTutkintoSpec extends FunSpec with Matchers with OpintosuoritusoteTestMet
           |ÄI2 Kieli, kulttuuri ja identiteetti 1 8 4.6.2016
           |ÄI3 Kirjallisuuden keinoja ja tulkintaa 1 8 4.6.2016
           |ÄI1 Tekstit ja vuorovaikutus 1 8 4.6.2016
-          |INTERNATIONAL BACCALAUREATE DIPLOMA PROGRAMME
-          |Tuntia Arvosana Suor.pvm
-          |BIO Biology 0 5 4.6.2016
-          |BIO_H1 BIO_H1 5B 4.6.2016
-          |BIO_H2 BIO_H2 4B 4.6.2016
-          |BIO_H3 BIO_H3 pass 4.6.2016
-          |BIO_H4 BIO_H4 5B 4.6.2016
-          |BIO_H5 BIO_H5 5B 4.6.2016
-          |BIO_H6 BIO_H6 2B 4.6.2016
-          |BIO_H7 BIO_H7 3C 4.6.2016
-          |BIO_H8 BIO_H8 4C 4.6.2016
-          |BIO_H9 BIO_H9 1C 4.6.2016
-          |CAS Creativity, activity, service 0 pass 4.6.2016
-          |CAS1 CAS1 pass 4.6.2016
-          |EE Extended essay 0 pass 4.6.2016
-          |EE1 EE1 pass 4.6.2016
-          |HIS History 0 6 4.6.2016
-          |HIS_H3 HIS_H3 6A 4.6.2016
-          |HIS_H4 HIS_H4 6A 4.6.2016
-          |HIS_H5 HIS_H5 7B 4.6.2016
-          |HIS_H6 HIS_H6 6A 4.6.2016
-          |HIS_H7 HIS_H7 1C 4.6.2016
-          |HIS_H9 HIS_H9 pass 4.6.2016
+          |International Baccalaureate Diploma Programme
+          |Group 1
+          |Arvosana Suor.pvm
           |A2 Language A: language and literature, englanti 0 7 4.6.2016
           |ENG_B_H1 ENG_B_H1 6A 4.6.2016
           |ENG_B_H2 ENG_B_H2 7 4.6.2016
@@ -101,13 +81,15 @@ class IBTutkintoSpec extends FunSpec with Matchers with OpintosuoritusoteTestMet
           |FIN_S7 FIN_S7 5B 4.6.2016
           |FIN_S8 FIN_S8 pass 4.6.2016
           |FIN_S9 FIN_S9 5C 4.6.2016
-          |MATST Mathematical studies 0 5 4.6.2016
-          |MATST_S1 MATST_S1 5A 4.6.2016
-          |MATST_S2 MATST_S2 7A 4.6.2016
-          |MATST_S3 MATST_S3 6A 4.6.2016
-          |MATST_S4 MATST_S4 6A 4.6.2016
-          |MATST_S5 MATST_S5 4B 4.6.2016
-          |MATST_S6 MATST_S6 pass 4.6.2016
+          |Group 3
+          |Arvosana Suor.pvm
+          |HIS History 0 6 4.6.2016
+          |HIS_H3 HIS_H3 6A 4.6.2016
+          |HIS_H4 HIS_H4 6A 4.6.2016
+          |HIS_H5 HIS_H5 7B 4.6.2016
+          |HIS_H6 HIS_H6 6A 4.6.2016
+          |HIS_H7 HIS_H7 1C 4.6.2016
+          |HIS_H9 HIS_H9 pass 4.6.2016
           |PSY Psychology 0 7 4.6.2016
           |PSY_S1 PSY_S1 6A 4.6.2016
           |PSY_S2 PSY_S2 6B 4.6.2016
@@ -118,6 +100,33 @@ class IBTutkintoSpec extends FunSpec with Matchers with OpintosuoritusoteTestMet
           |PSY_S7 PSY_S7 5B 4.6.2016
           |PSY_S8 PSY_S8 2C 4.6.2016
           |PSY_S9 PSY_S9 pass 4.6.2016
+          |Group 4
+          |Arvosana Suor.pvm
+          |BIO Biology 0 5 4.6.2016
+          |BIO_H1 BIO_H1 5B 4.6.2016
+          |BIO_H2 BIO_H2 4B 4.6.2016
+          |BIO_H3 BIO_H3 pass 4.6.2016
+          |BIO_H4 BIO_H4 5B 4.6.2016
+          |BIO_H5 BIO_H5 5B 4.6.2016
+          |BIO_H6 BIO_H6 2B 4.6.2016
+          |BIO_H7 BIO_H7 3C 4.6.2016
+          |BIO_H8 BIO_H8 4C 4.6.2016
+          |BIO_H9 BIO_H9 1C 4.6.2016
+          |Group 5
+          |Arvosana Suor.pvm
+          |MATST Mathematical studies 0 5 4.6.2016
+          |MATST_S1 MATST_S1 5A 4.6.2016
+          |MATST_S2 MATST_S2 7A 4.6.2016
+          |MATST_S3 MATST_S3 6A 4.6.2016
+          |MATST_S4 MATST_S4 6A 4.6.2016
+          |MATST_S5 MATST_S5 4B 4.6.2016
+          |MATST_S6 MATST_S6 pass 4.6.2016
+          |Others
+          |Tuntia Arvosana Suor.pvm
+          |CAS Creativity, activity, service 0 pass 4.6.2016
+          |CAS1 CAS1 pass 4.6.2016
+          |EE Extended essay 0 pass 4.6.2016
+          |EE1 EE1 pass 4.6.2016
           |TOK Theory of knowledge 0 pass 4.6.2016
           |TOK1 TOK1 pass 4.6.2016
           |TOK2 TOK2 pass 4.6.2016""".stripMargin
