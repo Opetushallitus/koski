@@ -54,6 +54,9 @@ object SuoritusDeserializer extends Deserializer[Suoritus] {
         case suoritus: JObject if tyyppi(suoritus) == JString("ibtutkinto") => suoritus.extract[IBTutkinnonSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("preiboppimaara") => suoritus.extract[PreIBSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("iboppiaine") => suoritus.extract[IBOppiaineenSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("iboppiainecas") => suoritus.extract[CasSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("iboppiaineee") => suoritus.extract[EeSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("iboppiainetok") => suoritus.extract[TokSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("preiboppiaine") => suoritus.extract[PreIBOppiaineenSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("ibkurssi") => suoritus.extract[IBKurssinSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("preibkurssi") => suoritus.extract[PreIBKurssinSuoritus]
@@ -176,22 +179,19 @@ object PreIBOppiaineDeserializer extends Deserializer[PreIBOppiaine] {
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), PreIBOppiaine] = {
     case (TypeInfo(PreIBOppiaineClass, _), json) =>
       json match {
-        case moduuli: JObject if moduuli \ "tunniste" \ "koodistoUri" == JString("oppiaineetib") => moduuli.extract[IBOppiaine]
+        case moduuli: JObject if moduuli \ "tunniste" \ "koodistoUri" == JString("oppiaineetib") => moduuli.extract[IBAineRyhmäOppiaine]
         case moduuli: JObject => moduuli.extract[LukionOppiaine]
         case _ => throw CannotDeserializeException(this, json)
       }
   }
 }
 
-object IBOppiaineDeserializer extends Deserializer[IBOppiaine] {
-  private val IBOppiaineClass = classOf[IBOppiaine]
+object IBOppiaineDeserializer extends Deserializer[IBAineRyhmäOppiaine] {
+  private val IBOppiaineClass = classOf[IBAineRyhmäOppiaine]
 
-  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), IBOppiaine] = {
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), IBAineRyhmäOppiaine] = {
     case (TypeInfo(IBOppiaineClass, _), json) =>
       json match {
-        case moduuli: JObject if (moduuli \ "tunniste" \ "koodiarvo" == JString("CAS")) => moduuli.extract[IBOppiaineCAS]
-        case moduuli: JObject if (moduuli \ "tunniste" \ "koodiarvo" == JString("TOK")) => moduuli.extract[IBOppiaineTheoryOfKnowledge]
-        case moduuli: JObject if (moduuli \ "tunniste" \ "koodiarvo" == JString("EE")) => moduuli.extract[IBOppiaineExtendedEssay]
         case moduuli: JObject if (moduuli \ "kieli").isInstanceOf[JObject] => moduuli.extract[IBOppiaineLanguage]
         case moduuli: JObject if (moduuli \ "taso").isInstanceOf[JObject] => moduuli.extract[IBOppiaineMuu]
         case _ => throw CannotDeserializeException(this, json)

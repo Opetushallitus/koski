@@ -216,6 +216,42 @@
     "versio": 1
   },
   {
+    "koodiUri": "suorituksentyyppi_iboppiainetok",
+    "koodiArvo": "iboppiainetok",
+    "metadata": [
+      {
+        "nimi": "IB-lukion oppiaine Theory of Knowledge",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "suorituksentyyppi_iboppiainecas",
+    "koodiArvo": "iboppiainecas",
+    "metadata": [
+      {
+        "nimi": "IB-lukion CAS (Creativity-Action-Service)",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "suorituksentyyppi_iboppiaineee",
+    "koodiArvo": "iboppiaineee",
+    "metadata": [
+      {
+        "nimi": "IB-lukion Extended Essay",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
     "koodiUri": "suorituksentyyppi_preiboppiaine",
     "koodiArvo": "preiboppiaine",
     "metadata": [

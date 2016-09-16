@@ -106,19 +106,20 @@ object ExamplesIB {
         (ibKurssi("MATST_S4"), "6", Some("A")),
         (ibKurssi("MATST_S5"), "4", Some("B")),
         (ibKurssi("MATST_S6"), "S", None)
-      )),
-      ibAineSuoritus(IBOppiaineTheoryOfKnowledge(), "S", List(
-        (ibKurssi("TOK1"), "S", None),
-        (ibKurssi("TOK2"), "S", None)
-      )),
-      ibAineSuoritus(IBOppiaineCAS(laajuus = Some(LaajuusTunneissa(267))), "S", List(
-        (ibKurssi("CAS1"), "S", None)
-      )),
-      ibAineSuoritus(
-        IBOppiaineExtendedEssay(
-          aine = ibKieli("A2", "EN", higherLevel, 1),
-          aihe = LocalizedString.english("How is the theme of racial injustice treated in Harper Lee's To Kill a Mockingbird and Solomon Northup's 12 Years a Slave")
-        ), "S", List((ibKurssi("EE1"), "S", None)))
+      ))
+    )),
+    tok = Some(TokSuoritus(
+      IBOppiaineTheoryOfKnowledge(), tilaValmis, ibArviointi("S")
+    )),
+    ee = Some(EeSuoritus(
+      IBOppiaineExtendedEssay(
+        aine = ibKieli("A2", "EN", higherLevel, 1),
+        aihe = LocalizedString.english("How is the theme of racial injustice treated in Harper Lee's To Kill a Mockingbird and Solomon Northup's 12 Years a Slave")
+      ),
+      tilaValmis, ibArviointi("S")
+    )),
+    cas = Some(CasSuoritus(
+      IBOppiaineCAS(laajuus = Some(LaajuusTunneissa(267))), tilaValmis, ibArviointi("S")
     ))
   )
 
@@ -134,7 +135,7 @@ object ExamplesIB {
     })
   )
 
-  def ibAineSuoritus(oppiaine: IBOppiaine, arvosana: String, kurssit: List[(IBKurssi, String, Option[String])] = Nil) = IBOppiaineenSuoritus(
+  def ibAineSuoritus(oppiaine: IBAineRyhmäOppiaine, arvosana: String, kurssit: List[(IBKurssi, String, Option[String])] = Nil) = IBOppiaineenSuoritus(
     koulutusmoduuli = oppiaine,
     tila = tilaValmis,
     osasuoritukset = Some(kurssit.map { case (kurssi, kurssinArvosana, effort) =>

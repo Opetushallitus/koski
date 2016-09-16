@@ -8,8 +8,6 @@ import scala.xml.Elem
 
 class IBPaattoTodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
   def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: IBTutkinnonSuoritus) = {
-    val oppiaineet: List[IBOppiaineenSuoritus] = päättötodistus.osasuoritukset.toList.flatten
-
     <html>
       <head>
         <link rel="stylesheet" type="text/css" href="/koski/css/todistus-common.css"></link>
@@ -34,42 +32,39 @@ class IBPaattoTodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
               <th class="arvosana-numeroin">Grades in numbers</th>
             </tr>
             {
-              oppiaineet.map { o =>
-                 o.koulutusmoduuli match {
-                  case _:IBOppiaineMuu | _:IBOppiaineLanguage | _:IBOppiaineTheoryOfKnowledge => oppiaineRow(o)
-                  case _ =>
-                }
-              }
+              val oppiaineet: List[IBOppiaineenSuoritus] = päättötodistus.osasuoritukset.toList.flatten
+              oppiaineet.map(oppiaineRow)
             }
           </table>
           <div class="core-elements">
             {
-              oppiaineet.map { o =>
-                o.koulutusmoduuli match {
-                  case IBOppiaineTheoryOfKnowledge(_) =>
-                    <div class="theory-of-knowledge">
-                      <span class="label">{i(o.koulutusmoduuli)}</span>
-                      <span class="grade">{i(o.arvosanaKirjaimin)}</span>
-                    </div>
-                  case IBOppiaineCAS(_,laajuus) =>
-                    <div class="cas">
-                      <span class="label">{i(o.koulutusmoduuli)}</span>
-                      <span>{laajuus.map(l => decimalFormat.format(l.arvo)).getOrElse("")}</span>
-                      <span class="grade">{i(o.arvosanaKirjaimin)}</span>
-                    </div>
-                  case IBOppiaineExtendedEssay(_, aine, aihe) =>
-                    <div class="extended-essay">
-                      <div class="label">{i(o.koulutusmoduuli)}</div>
-                      <table>
-                        <tr><td class="label">Subject:</td><td>{i(aine)}</td></tr>
-                        <tr><td class="label">Topic:</td><td>{i(aihe)}</td></tr>
-                      </table>
-                    </div>
-                  case _ =>
-                }
+              päättötodistus.tok.map { o =>
+                <div class="theory-of-knowledge">
+                  <span class="label">{i(o.koulutusmoduuli)}</span>
+                  <span class="grade">{i(o.arvosanaKirjaimin)}</span>
+                </div>
               }
             }
-
+            {
+              päättötodistus.cas.map { o =>
+                <div class="cas">
+                  <span class="label">{i(o.koulutusmoduuli)}</span>
+                  <span>{o.koulutusmoduuli.laajuus.map(l => decimalFormat.format(l.arvo)).getOrElse("")}</span>
+                  <span class="grade">{i(o.arvosanaKirjaimin)}</span>
+                </div>
+              }
+            }
+            {
+              päättötodistus.ee.map { o =>
+                <div class="extended-essay">
+                  <div class="label">{i(o.koulutusmoduuli)}</div>
+                  <table>
+                    <tr><td class="label">Subject:</td><td>{i(o.koulutusmoduuli.aine)}</td></tr>
+                    <tr><td class="label">Topic:</td><td>{i(o.koulutusmoduuli.aihe)}</td></tr>
+                  </table>
+                </div>
+              }
+            }
           </div>
           { päättötodistus.vahvistus.toList.map(vahvistusHTML)}
         </div>

@@ -37,6 +37,9 @@ case class IBTutkinnonSuoritus(
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[IBOppiaineenSuoritus]],
+  tok: Option[TokSuoritus],
+  ee: Option[EeSuoritus],
+  cas: Option[CasSuoritus],
   @KoodistoKoodiarvo("ibtutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ibtutkinto", koodistoUri = "suorituksentyyppi")
 ) extends IBPäätasonSuoritus
@@ -83,7 +86,7 @@ trait IBSuoritus extends Suoritus {
 
 case class IBOppiaineenSuoritus(
   @Title("Oppiaine")
-  koulutusmoduuli: IBOppiaine,
+  koulutusmoduuli: IBAineRyhmäOppiaine,
   tila: Koodistokoodiviite,
   arviointi: Option[List[IBOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
@@ -94,6 +97,35 @@ case class IBOppiaineenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "iboppiaine", koodistoUri = "suorituksentyyppi")
 ) extends IBSuoritus
 
+case class TokSuoritus(
+  @Title("Oppiaine")
+  koulutusmoduuli: IBOppiaineTheoryOfKnowledge,
+  tila: Koodistokoodiviite,
+  arviointi: Option[List[IBOppiaineenArviointi]] = None,
+  suorituskieli: Option[Koodistokoodiviite] = None,
+  @KoodistoKoodiarvo("iboppiainetok")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "iboppiainetok", koodistoUri = "suorituksentyyppi")
+) extends IBSuoritus
+
+case class CasSuoritus(
+  @Title("Oppiaine")
+  koulutusmoduuli: IBOppiaineCAS,
+  tila: Koodistokoodiviite,
+  arviointi: Option[List[IBOppiaineenArviointi]] = None,
+  suorituskieli: Option[Koodistokoodiviite] = None,
+  @KoodistoKoodiarvo("iboppiainecas")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "iboppiainecas", koodistoUri = "suorituksentyyppi")
+) extends IBSuoritus
+
+case class EeSuoritus(
+  @Title("Oppiaine")
+  koulutusmoduuli: IBOppiaineExtendedEssay,
+  tila: Koodistokoodiviite,
+  arviointi: Option[List[IBOppiaineenArviointi]] = None,
+  suorituskieli: Option[Koodistokoodiviite] = None,
+  @KoodistoKoodiarvo("iboppiaineee")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "iboppiaineee", koodistoUri = "suorituksentyyppi")
+) extends IBSuoritus
 
 case class PreIBOppiaineenSuoritus(
   @Title("Oppiaine")
@@ -174,19 +206,19 @@ trait IBArviointi extends KoodistostaLöytyväArviointi {
 }
 
 @Description("IB-lukion oppiaineen tunnistetiedot")
-trait IBOppiaine extends KoodistostaLöytyväKoulutusmoduuli with Valinnaisuus with PreIBOppiaine {
+trait IBOppiaine extends KoodistostaLöytyväKoulutusmoduuli with Valinnaisuus {
   @KoodistoUri("oppiaineetib")
   @OksaUri("tmpOKSAID256", "oppiaine")
   def tunniste: Koodistokoodiviite
   def laajuus: Option[LaajuusTunneissa]
-  @KoodistoUri("oppiaineentasoib")
-  def taso: Option[Koodistokoodiviite]
   def pakollinen: Boolean = true
 }
 
-trait IBAineRyhmäOppiaine extends IBOppiaine {
+trait IBAineRyhmäOppiaine extends IBOppiaine with PreIBOppiaine {
   @KoodistoUri("aineryhmaib")
   def ryhmä: Koodistokoodiviite
+  @KoodistoUri("oppiaineentasoib")
+  def taso: Option[Koodistokoodiviite]
 }
 
 case class IBOppiaineMuu(
@@ -211,7 +243,6 @@ case class IBOppiaineLanguage(
 }
 
 trait IBCoreElementOppiaine extends IBOppiaine {
-  override def taso: Option[Koodistokoodiviite] = None
 }
 
 case class IBOppiaineCAS(
@@ -230,7 +261,7 @@ case class IBOppiaineTheoryOfKnowledge(
 case class IBOppiaineExtendedEssay(
   @KoodistoKoodiarvo("EE")
   tunniste: Koodistokoodiviite =  Koodistokoodiviite(koodistoUri = "oppiaineetib", koodiarvo = "EE", nimi = Some(english("Extended essay"))),
-  aine: IBOppiaine,
+  aine: IBAineRyhmäOppiaine,
   aihe: LocalizedString
 ) extends IBCoreElementOppiaine {
   override def laajuus: Option[LaajuusTunneissa] = None
