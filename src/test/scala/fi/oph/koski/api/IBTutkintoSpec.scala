@@ -8,7 +8,7 @@ class IBTutkintoSpec extends FunSpec with Matchers with OpintosuoritusoteTestMet
   describe("IB-tutkinto") {
     it("Opintosuoritusote") {
       opintosuoritusote(MockOppijat.ibOpiskelija) should equal(
-        """Opintosuoritukset
+        """Preliminary year courses
           |Kurssia Arvosana Suor.pvm
           |A1 A1-kieli, englanti 3
           |ENA1 Englannin kieli ja maailmani 1 10 4.6.2016
@@ -60,7 +60,40 @@ class IBTutkintoSpec extends FunSpec with Matchers with OpintosuoritusoteTestMet
           |AI Äidinkieli ja kirjallisuus 3
           |ÄI2 Kieli, kulttuuri ja identiteetti 1 8 4.6.2016
           |ÄI3 Kirjallisuuden keinoja ja tulkintaa 1 8 4.6.2016
-          |ÄI1 Tekstit ja vuorovaikutus 1 8 4.6.2016""".stripMargin
+          |ÄI1 Tekstit ja vuorovaikutus 1 8 4.6.2016
+          |INTERNATIONAL BACCALAUREATE DIPLOMA PROGRAMME
+          |Tuntia Arvosana Suor.pvm
+          |BIO Biology 0 5 4.6.2016
+          |BIO_H1 BIO_H1 5 4.6.2016
+          |BIO_H8 BIO_H8 4 4.6.2016
+          |BIO_H9 BIO_H9 1 4.6.2016
+          |CAS Creativity, activity, service 0 pass 4.6.2016
+          |CAS1 CAS1 pass 4.6.2016
+          |EE Extended essay 0 pass 4.6.2016
+          |EE1 EE1 pass 4.6.2016
+          |HIS History 0 6 4.6.2016
+          |HIS_H3 HIS_H3 6 4.6.2016
+          |HIS_H4 HIS_H4 6 4.6.2016
+          |HIS_H9 HIS_H9 pass 4.6.2016
+          |A2 Language A: language and literature, englanti 0 7 4.6.2016
+          |ENG_B_H1 ENG_B_H1 6 4.6.2016
+          |ENG_B_H2 ENG_B_H2 7 4.6.2016
+          |ENG_B_H8 ENG_B_H8 5 4.6.2016
+          |A Language A: literature, suomi 0 4 4.6.2016
+          |FIN_S1 FIN_S1 4 4.6.2016
+          |FIN_S2 FIN_S2 4 4.6.2016
+          |FIN_S9 FIN_S9 5 4.6.2016
+          |MATST Mathematical studies 0 5 4.6.2016
+          |MATST_S1 MATST_S1 5 4.6.2016
+          |MATST_S2 MATST_S2 7 4.6.2016
+          |MATST_S6 MATST_S6 pass 4.6.2016
+          |PSY Psychology 0 7 4.6.2016
+          |PSY_S1 PSY_S1 6 4.6.2016
+          |PSY_S8 PSY_S8 2 4.6.2016
+          |PSY_S9 PSY_S9 pass 4.6.2016
+          |TOK Theory of knowledge 0 pass 4.6.2016
+          |TOK1 TOK1 pass 4.6.2016
+          |TOK2 TOK2 pass 4.6.2016""".stripMargin
       )
     }
   }
