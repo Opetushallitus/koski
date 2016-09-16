@@ -29,12 +29,11 @@ class OpintosuoritusoteHtml(implicit val user: KoskiUser) extends LocalizedHtml 
   def ib(ht: TäydellisetHenkilötiedot, opiskeluoikeudet: List[IBOpiskeluoikeus]): Elem = {
     bodyHtml(ht, <div>
       {
-      val suoritukset: List[(Int, Suoritus)] = opiskeluoikeudet.flatMap(oo => {
-        val oppiainesuoritukset = oo.suoritukset.flatMap(_.osasuoritukset.toList.flatten)
-        suorituksetSyvyydellä(oppiainesuoritukset.collect { case s: PreIBOppiaineenSuoritus => s })
-      })
-      suorituksetHtml(suoritukset)
-      // IB subjects
+      val (preIBSuoritukset, ibSuoritukset) = opiskeluoikeudet
+        .flatMap(_.suoritukset.flatMap(_.osasuoritukset.toList.flatten))
+        .partition(_.isInstanceOf[PreIBOppiaineenSuoritus])
+      suorituksetHtml(suorituksetSyvyydellä(preIBSuoritukset), "Preliminary year courses") ++
+      suorituksetHtml(suorituksetSyvyydellä(ibSuoritukset), "INTERNATIONAL BACCALAUREATE DIPLOMA PROGRAMME")
       }
     </div>)
   }
@@ -91,7 +90,7 @@ class OpintosuoritusoteHtml(implicit val user: KoskiUser) extends LocalizedHtml 
     )
   }
 
-  private def suorituksetHtml(suoritukset: List[(Int, Suoritus)]) = {
+  private def suorituksetHtml(suoritukset: List[(Int, Suoritus)], title: String = "Opintosuoritukset") = {
     def suoritusHtml(t: (Int, Suoritus)) = {
       def laajuus(suoritus: Suoritus) = if (suoritus.osasuoritukset.isDefined) {
         decimalFormat.format(suoritus.osasuoritusLista.foldLeft(0f) { (laajuus: Float, suoritus: Suoritus) =>
@@ -116,7 +115,7 @@ class OpintosuoritusoteHtml(implicit val user: KoskiUser) extends LocalizedHtml 
     val laajuusYksikkö = laajuudet.headOption
 
     <section class="opintosuoritukset">
-      <h3 class="suoritukset-title">Opintosuoritukset</h3>
+      <h3 class="suoritukset-title">{title}</h3>
       <table class="suoritukset">
         <tr class="header">
           <th class="tunnus"></th>
