@@ -53,7 +53,7 @@ object ExamplesIB {
       ibAineSuoritus(ibKieli("A", "FI", standardLevel), "4", List(
         (ibKurssi("FIN_S1"), "4", Some("B")),
         (ibKurssi("FIN_S2"), "4", Some("B")),
-//        (ibKurssi("FIN_S3"), "S", None), // Commented out for now to cirumvent a performance issue in katselukäyttöliittymä
+//        (ibKurssi("FIN_S3"), "S", None), // Commented out for now to circumvent a performance issue in katselukäyttöliittymä
 //        (ibKurssi("FIN_S4"), "5", Some("C")),
 //        (ibKurssi("FIN_S5"), "6", Some("B")),
 //        (ibKurssi("FIN_S6"), "5", Some("B")),
