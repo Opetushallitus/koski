@@ -2981,7 +2981,8 @@
           "koodiarvo" : "iboppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
-      }, {
+      } ],
+      "theoryOfKnowledge" : {
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "TOK",
@@ -3058,74 +3059,11 @@
           }
         } ],
         "tyyppi" : {
-          "koodiarvo" : "iboppiaine",
+          "koodiarvo" : "iboppiainetok",
           "koodistoUri" : "suorituksentyyppi"
         }
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "CAS",
-            "nimi" : {
-              "en" : "Theory of knowledge"
-            },
-            "koodistoUri" : "oppiaineetib"
-          },
-          "laajuus" : {
-            "arvo" : 267.0,
-            "yksikkö" : {
-              "koodiarvo" : "5",
-              "nimi" : {
-                "en" : "hours"
-              },
-              "koodistoUri" : "opintojenlaajuusyksikko"
-            }
-          }
-        },
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
-        "arviointi" : [ {
-          "predicted" : false,
-          "arvosana" : {
-            "koodiarvo" : "S",
-            "koodistoUri" : "arviointiasteikkoib"
-          },
-          "päivä" : "2016-06-04",
-          "hyväksytty" : true
-        } ],
-        "osasuoritukset" : [ {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "CAS1",
-              "nimi" : {
-                "en" : "CAS1"
-              }
-            },
-            "pakollinen" : true
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "S",
-              "koodistoUri" : "arviointiasteikkoib"
-            },
-            "päivä" : "2016-06-04",
-            "hyväksytty" : true
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "ibkurssi",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        } ],
-        "tyyppi" : {
-          "koodiarvo" : "iboppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      }, {
+      },
+      "extendedEssay" : {
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "EE",
@@ -3169,38 +3107,49 @@
           "päivä" : "2016-06-04",
           "hyväksytty" : true
         } ],
-        "osasuoritukset" : [ {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "EE1",
-              "nimi" : {
-                "en" : "EE1"
-              }
-            },
-            "pakollinen" : true
-          },
-          "tila" : {
-            "koodiarvo" : "VALMIS",
-            "koodistoUri" : "suorituksentila"
-          },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "S",
-              "koodistoUri" : "arviointiasteikkoib"
-            },
-            "päivä" : "2016-06-04",
-            "hyväksytty" : true
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "ibkurssi",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        } ],
         "tyyppi" : {
-          "koodiarvo" : "iboppiaine",
+          "koodiarvo" : "iboppiaineee",
           "koodistoUri" : "suorituksentyyppi"
         }
-      } ],
+      },
+      "creativityActionService" : {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "CAS",
+            "nimi" : {
+              "en" : "Theory of knowledge"
+            },
+            "koodistoUri" : "oppiaineetib"
+          },
+          "laajuus" : {
+            "arvo" : 267.0,
+            "yksikkö" : {
+              "koodiarvo" : "5",
+              "nimi" : {
+                "en" : "hours"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "predicted" : false,
+          "arvosana" : {
+            "koodiarvo" : "S",
+            "koodistoUri" : "arviointiasteikkoib"
+          },
+          "päivä" : "2016-06-04",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "iboppiainecas",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      },
       "tyyppi" : {
         "koodiarvo" : "ibtutkinto",
         "koodistoUri" : "suorituksentyyppi"
