@@ -47,9 +47,7 @@ case class YlioppilastutkinnonKokeenSuoritus(
   arviointi: Option[List[YlioppilaskokeenArviointi]],
   @KoodistoKoodiarvo("ylioppilastutkinnonkoe")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ylioppilastutkinnonkoe", koodistoUri = "suorituksentyyppi")
-) extends Suoritus {
-  def vahvistus = None
-  override def tarvitseeVahvistuksen = false
+) extends VahvistuksetonSuoritus {
   override def suorituskieli: Option[Koodistokoodiviite] = None
 }
 

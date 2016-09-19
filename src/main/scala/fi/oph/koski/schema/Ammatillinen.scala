@@ -315,10 +315,9 @@ case class NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("nayttotutkintoonvalmistavankoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("nayttotutkintoonvalmistavankoulutuksenosa", koodistoUri = "suorituksentyyppi")
-) extends Suoritus {
+) extends VahvistuksetonSuoritus {
   override def osasuoritukset = None
   def arviointi = None
-  def vahvistus = None
 }
 
 @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osan tunnistetiedot")

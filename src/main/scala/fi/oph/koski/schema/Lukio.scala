@@ -117,9 +117,7 @@ case class LukionOppiaineenSuoritus(
   override val osasuoritukset: Option[List[LukionKurssinSuoritus]],
   @KoodistoKoodiarvo("lukionoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionoppiaine", koodistoUri = "suorituksentyyppi")
-) extends OppiaineenSuoritus {
-  override def tarvitseeVahvistuksen = false
-}
+) extends OppiaineenSuoritus with VahvistuksetonSuoritus
 
 case class LukionKurssinSuoritus(
   @Description("Lukion kurssin tunnistetiedot")
@@ -132,10 +130,7 @@ case class LukionKurssinSuoritus(
   suorituskieli: Option[Koodistokoodiviite],
   @KoodistoKoodiarvo("lukionkurssi")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionkurssi", koodistoUri = "suorituksentyyppi")
-) extends Suoritus with LukioonValmistavanKoulutuksenOsasuoritus {
-  def vahvistus: Option[Vahvistus] = None
-  override def tarvitseeVahvistuksen: Boolean = false
-}
+) extends VahvistuksetonSuoritus with LukioonValmistavanKoulutuksenOsasuoritus
 
 case class LukionOppiaineenArviointi(
   arvosana: Koodistokoodiviite,

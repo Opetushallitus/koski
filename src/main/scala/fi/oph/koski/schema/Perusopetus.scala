@@ -164,9 +164,7 @@ case class PerusopetuksenOppiaineenSuoritus(
   suorituskieli: Option[Koodistokoodiviite],
   @KoodistoKoodiarvo("perusopetuksenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenoppiaine", koodistoUri = "suorituksentyyppi")
-) extends OppiaineenSuoritus with OppiaineenTaiToiminta_AlueenSuoritus {
-  override def tarvitseeVahvistuksen = false
-}
+) extends OppiaineenSuoritus with OppiaineenTaiToiminta_AlueenSuoritus with VahvistuksetonSuoritus
 
 @Description("Perusopetuksen toiminta-alueen suoritus osana perusopetuksen oppimäärän tai vuosiluokan suoritusta. Suoritukset voidaan kirjata oppiaineiden sijaan toiminta-alueittain, jos opiskelijalle on tehty erityisen tuen päätös.")
 case class PerusopetuksenToiminta_AlueenSuoritus(
@@ -177,9 +175,7 @@ case class PerusopetuksenToiminta_AlueenSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("perusopetuksentoimintaalue")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksentoimintaalue", koodistoUri = "suorituksentyyppi")
-) extends OppiaineenTaiToiminta_AlueenSuoritus {
-  def vahvistus: Option[Vahvistus] = None
-}
+) extends OppiaineenTaiToiminta_AlueenSuoritus with VahvistuksetonSuoritus
 
 trait PerusopetuksenOppiaineenArviointi extends YleissivistävänKoulutuksenArviointi
 

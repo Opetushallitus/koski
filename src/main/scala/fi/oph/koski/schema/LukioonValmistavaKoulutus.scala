@@ -62,9 +62,7 @@ case class LukioonValmistavanKurssinSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("luvakurssi")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("luvakurssi", koodistoUri = "suorituksentyyppi")
-) extends LukioonValmistavanKoulutuksenOsasuoritus {
-  def vahvistus: Option[Henkilövahvistus] = None
-}
+) extends LukioonValmistavanKoulutuksenOsasuoritus with VahvistuksetonSuoritus
 
 @Description("Lukioon valmistavassa koulutuksessa suoritettava lukioon valmistavan kurssin tunnistetiedot")
 case class LukioonValmistavanKoulutuksenKurssi(

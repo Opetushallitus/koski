@@ -54,9 +54,7 @@ case class PerusopetuksenLisäopetuksenOppiaineenSuoritus(
   suorituskieli: Option[Koodistokoodiviite],
   @KoodistoKoodiarvo("perusopetuksenlisaopetuksenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenlisaopetuksenoppiaine", koodistoUri = "suorituksentyyppi")
-) extends OppiaineenSuoritus {
-  override def tarvitseeVahvistuksen = false
-}
+) extends OppiaineenSuoritus with VahvistuksetonSuoritus
 
 @Description("Perusopetuksen lisäopetuksen tunnistetiedot")
 case class PerusopetuksenLisäopetus(

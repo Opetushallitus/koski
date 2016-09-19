@@ -5,8 +5,6 @@ import java.time.LocalDate
 import fi.oph.scalaschema.annotation.Description
 
 trait OppiaineenSuoritus extends Suoritus {
-  // Oppiaineen suorituksella ei ole erillistä vahvistusta - todistuksen vahvistus riittää
-  def vahvistus: Option[Vahvistus] = None
   def koulutusmoduuli: YleissivistavaOppiaine
 }
 

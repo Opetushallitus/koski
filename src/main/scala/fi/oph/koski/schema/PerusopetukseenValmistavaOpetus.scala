@@ -49,10 +49,7 @@ case class PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus(
   arviointi: Option[List[SanallinenPerusopetuksenOppiaineenArviointi]],
   suorituskieli: Option[Koodistokoodiviite] = None,
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetukseenvalmistavanopetuksenoppiaine", koodistoUri = "suorituksentyyppi")
-) extends Suoritus {
-  def vahvistus = None
-  override def tarvitseeVahvistuksen = false
-}
+) extends VahvistuksetonSuoritus
 
 @Description("Perusopetukseen valmistavan opetuksen tunnistetiedot")
 case class PerusopetukseenValmistavaOpetus(

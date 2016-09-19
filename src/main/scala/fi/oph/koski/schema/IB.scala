@@ -80,10 +80,7 @@ case class IBTutkinto(
   override def isTutkinto = true
 }
 
-trait IBSuoritus extends Suoritus {
-  override def tarvitseeVahvistuksen = false
-  override def vahvistus: Option[Vahvistus] = None
-}
+trait IBSuoritus extends VahvistuksetonSuoritus
 
 case class IBOppiaineenSuoritus(
   @Title("Oppiaine")
