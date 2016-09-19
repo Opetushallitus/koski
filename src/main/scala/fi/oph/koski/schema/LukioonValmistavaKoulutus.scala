@@ -2,6 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
+import fi.oph.koski.localization.LocalizedString
 import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems}
 
 @Description("Lukioon valmistava koulutus (LUVA)")
@@ -67,5 +68,6 @@ case class LukioonValmistavanKurssinSuoritus(
 @Description("Lukioon valmistavassa koulutuksessa suoritettava lukioon valmistavan kurssin tunnistetiedot")
 case class LukioonValmistavanKoulutuksenKurssi(
   tunniste: PaikallinenKoodi,
-  laajuus: Option[LaajuusKursseissa]
+  laajuus: Option[LaajuusKursseissa],
+  kuvaus: LocalizedString
 ) extends PaikallinenKoulutusmoduuli

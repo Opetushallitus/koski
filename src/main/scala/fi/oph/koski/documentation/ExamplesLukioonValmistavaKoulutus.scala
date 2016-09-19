@@ -44,7 +44,8 @@ object ExamplesLukioonValmistavaKoulutus {
     tila = tilaValmis,
     koulutusmoduuli = LukioonValmistavanKoulutuksenKurssi(
       tunniste = PaikallinenKoodi(koodi, LocalizedString.finnish(kuvaus)),
-      laajuus = laajuus(laajuusKursseissa)
+      laajuus = laajuus(laajuusKursseissa),
+      LocalizedString.finnish(kuvaus)
     ),
     arviointi = kurssinArviointi("S")
   )
