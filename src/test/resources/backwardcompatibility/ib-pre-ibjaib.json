@@ -1490,7 +1490,8 @@
           "ryhmä" : {
             "koodiarvo" : "1",
             "koodistoUri" : "aineryhmaib"
-          }
+          },
+          "pakollinen" : true
         },
         "tila" : {
           "koodiarvo" : "VALMIS",
@@ -1789,7 +1790,8 @@
           "ryhmä" : {
             "koodiarvo" : "1",
             "koodistoUri" : "aineryhmaib"
-          }
+          },
+          "pakollinen" : true
         },
         "tila" : {
           "koodiarvo" : "VALMIS",
@@ -1982,7 +1984,8 @@
           "ryhmä" : {
             "koodiarvo" : "3",
             "koodistoUri" : "aineryhmaib"
-          }
+          },
+          "pakollinen" : true
         },
         "tila" : {
           "koodiarvo" : "VALMIS",
@@ -2191,7 +2194,8 @@
           "ryhmä" : {
             "koodiarvo" : "3",
             "koodistoUri" : "aineryhmaib"
-          }
+          },
+          "pakollinen" : true
         },
         "tila" : {
           "koodiarvo" : "VALMIS",
@@ -2486,7 +2490,8 @@
           "ryhmä" : {
             "koodiarvo" : "4",
             "koodistoUri" : "aineryhmaib"
-          }
+          },
+          "pakollinen" : true
         },
         "tila" : {
           "koodiarvo" : "VALMIS",
@@ -2785,7 +2790,8 @@
           "ryhmä" : {
             "koodiarvo" : "5",
             "koodistoUri" : "aineryhmaib"
-          }
+          },
+          "pakollinen" : true
         },
         "tila" : {
           "koodiarvo" : "VALMIS",
@@ -2990,7 +2996,8 @@
               "en" : "Creativity, activity, service"
             },
             "koodistoUri" : "oppiaineetib"
-          }
+          },
+          "pakollinen" : true
         },
         "tila" : {
           "koodiarvo" : "VALMIS",
@@ -3088,11 +3095,13 @@
             "ryhmä" : {
               "koodiarvo" : "1",
               "koodistoUri" : "aineryhmaib"
-            }
+            },
+            "pakollinen" : true
           },
           "aihe" : {
             "en" : "How is the theme of racial injustice treated in Harper Lee's To Kill a Mockingbird and Solomon Northup's 12 Years a Slave"
-          }
+          },
+          "pakollinen" : true
         },
         "tila" : {
           "koodiarvo" : "VALMIS",
@@ -3130,7 +3139,8 @@
               },
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
-          }
+          },
+          "pakollinen" : true
         },
         "tila" : {
           "koodiarvo" : "VALMIS",

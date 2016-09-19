@@ -214,7 +214,6 @@ trait IBOppiaine extends KoodistostaLöytyväKoulutusmoduuli with Valinnaisuus {
   @OksaUri("tmpOKSAID256", "oppiaine")
   def tunniste: Koodistokoodiviite
   def laajuus: Option[LaajuusTunneissa]
-  def pakollinen: Boolean = true
 }
 
 trait IBAineRyhmäOppiaine extends IBOppiaine with PreIBOppiaine {
@@ -228,7 +227,8 @@ case class IBOppiaineMuu(
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusTunneissa],
   taso: Option[Koodistokoodiviite],
-  ryhmä: Koodistokoodiviite
+  ryhmä: Koodistokoodiviite,
+  pakollinen: Boolean = true
 ) extends IBAineRyhmäOppiaine
 
 case class IBOppiaineLanguage(
@@ -240,7 +240,8 @@ case class IBOppiaineLanguage(
   taso: Option[Koodistokoodiviite],
   @KoodistoUri("kielivalikoima")
   kieli: Koodistokoodiviite,
-  ryhmä: Koodistokoodiviite
+  ryhmä: Koodistokoodiviite,
+  pakollinen: Boolean = true
 ) extends IBAineRyhmäOppiaine {
   override def description = concat(nimi, ", ",  kieli)
 }
@@ -251,12 +252,14 @@ trait IBCoreElementOppiaine extends IBOppiaine {
 case class IBOppiaineCAS(
   @KoodistoKoodiarvo("CAS")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(koodistoUri = "oppiaineetib", koodiarvo = "CAS", nimi = Some(english("Theory of knowledge"))),
-  laajuus: Option[LaajuusTunneissa]
+  laajuus: Option[LaajuusTunneissa],
+  pakollinen: Boolean = true
 ) extends IBCoreElementOppiaine
 
 case class IBOppiaineTheoryOfKnowledge(
   @KoodistoKoodiarvo("TOK")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodistoUri = "oppiaineetib", koodiarvo = "TOK", nimi = Some(english("Creativity, activity, service")))
+  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodistoUri = "oppiaineetib", koodiarvo = "TOK", nimi = Some(english("Creativity, activity, service"))),
+  pakollinen: Boolean = true
 ) extends IBCoreElementOppiaine {
   override def laajuus: Option[LaajuusTunneissa] = None
 }
@@ -265,7 +268,8 @@ case class IBOppiaineExtendedEssay(
   @KoodistoKoodiarvo("EE")
   tunniste: Koodistokoodiviite =  Koodistokoodiviite(koodistoUri = "oppiaineetib", koodiarvo = "EE", nimi = Some(english("Extended essay"))),
   aine: IBAineRyhmäOppiaine,
-  aihe: LocalizedString
+  aihe: LocalizedString,
+  pakollinen: Boolean = true
 ) extends IBCoreElementOppiaine {
   override def laajuus: Option[LaajuusTunneissa] = None
 }
