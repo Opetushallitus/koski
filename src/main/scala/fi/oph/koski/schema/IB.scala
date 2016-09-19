@@ -14,6 +14,7 @@ case class IBOpiskeluoikeus(
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OidOrganisaatio] = None,
   alkamispäivä: Option[LocalDate] = None,
+  arvioituPäättymispäivä: Option[LocalDate] = None,
   päättymispäivä: Option[LocalDate] = None,
   tila: LukionOpiskeluoikeudenTila,
   läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
@@ -24,7 +25,6 @@ case class IBOpiskeluoikeus(
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OidOrganisaatio) = this.copy(koulutustoimija = Some(koulutustoimija))
-  override def arvioituPäättymispäivä: Option[LocalDate] = None
 }
 
 case class IBTutkinnonSuoritus(
