@@ -112,6 +112,9 @@
               "koodiarvo" : "4",
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
+          },
+          "kuvaus" : {
+            "fi" : "Suomi toisena kielenä ja kirjallisuus"
           }
         },
         "tila" : {
@@ -144,6 +147,9 @@
               "koodiarvo" : "4",
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
+          },
+          "kuvaus" : {
+            "fi" : "Yhteiskuntatietous ja kulttuurintuntemus"
           }
         },
         "tila" : {
@@ -176,6 +182,9 @@
               "koodiarvo" : "4",
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
+          },
+          "kuvaus" : {
+            "fi" : "Opinto-ohjaus"
           }
         },
         "tila" : {
