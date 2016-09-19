@@ -22,6 +22,7 @@ case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OidOrganisaatio) = this.copy(koulutustoimija = Some(koulutustoimija))
+  override def withSuoritukset(suoritukset: List[PäätasonSuoritus]) = copy(suoritukset = suoritukset.asInstanceOf[List[PerusopetukseenValmistavanOpetuksenSuoritus]])
   override def arvioituPäättymispäivä = None
 }
 
@@ -37,7 +38,7 @@ case class PerusopetukseenValmistavanOpetuksenSuoritus(
   override val osasuoritukset: Option[List[PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus]],
   @KoodistoKoodiarvo("perusopetukseenvalmistavaopetus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetukseenvalmistavaopetus", koodistoUri = "suorituksentyyppi")
-) extends Suoritus with Toimipisteellinen {
+) extends PäätasonSuoritus with Toimipisteellinen {
   def arviointi = None
 }
 

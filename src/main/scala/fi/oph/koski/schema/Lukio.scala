@@ -31,6 +31,7 @@ case class LukionOpiskeluoikeus(
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OidOrganisaatio) = this.copy(koulutustoimija = Some(koulutustoimija))
+  override def withSuoritukset(suoritukset: List[PäätasonSuoritus]) = copy(suoritukset = suoritukset.asInstanceOf[List[LukionPäätasonSuoritus]])
 }
 
 case class LukionOpiskeluoikeudenLisätiedot(
@@ -43,21 +44,22 @@ case class LukionOpiskeluoikeudenLisätiedot(
   @Description("Yksityisopiskelija aikuisten lukiokoulutuksessa (true/false)")
   yksityisopiskelija: Boolean = false,
   @Description("Opiskelija opiskelee erityisen koulutustehtävän mukaisesti (ib, musiikki, urheilu, kielet, luonnontieteet, jne.). Kentän puuttuminen tai null-arvo tulkitaan siten, ettei opiskelija opiskele erityisen koulutustehtävän mukaisesti")
-  erityinenkoulutustehtävä: Option[Erityinenkoulutustehtävä] = None,
+  erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
   @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None
 )
 
-case class Erityinenkoulutustehtävä(
-
-  // TODO: alku, loppupäivämäärät, lista jaksoja
-
+case class ErityisenKoulutustehtävänJakso(
+  @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
+  alku: LocalDate,
+  @Description("Jakson loppumispäivämäärä. Muoto YYYY-MM-DD")
+  loppu: Option[LocalDate],
   @KoodistoUri("erityinenkoulutustehtava")
   @OksaUri("tmpOKSAID181", "erityinen koulutustehtävä")
   tehtävä: Koodistokoodiviite
-)
+) extends Jakso
 
-trait LukionPäätasonSuoritus extends Suoritus with Toimipisteellinen
+trait LukionPäätasonSuoritus extends PäätasonSuoritus with Toimipisteellinen
 
 case class LukionOppimääränSuoritus(
   @Title("Koulutus")

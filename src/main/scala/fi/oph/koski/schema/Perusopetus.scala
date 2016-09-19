@@ -30,6 +30,7 @@ case class PerusopetuksenOpiskeluoikeus(
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OidOrganisaatio) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def arvioituPäättymispäivä = None
+  override def withSuoritukset(suoritukset: List[PäätasonSuoritus]) = copy(suoritukset = suoritukset.asInstanceOf[List[PerusopetuksenPäätasonSuoritus]])
 }
 
 case class PerusopetuksenOpiskeluoikeudenLisätiedot(
@@ -88,7 +89,7 @@ case class ErityisenTuenPäätös(
 )
 
 
-trait PerusopetuksenPäätasonSuoritus extends Suoritus with Toimipisteellinen
+trait PerusopetuksenPäätasonSuoritus extends PäätasonSuoritus with Toimipisteellinen
 
 @Description("Perusopetuksen vuosiluokan suoritus. Nämä suoritukset näkyvät lukuvuositodistuksella.")
 case class PerusopetuksenVuosiluokanSuoritus(

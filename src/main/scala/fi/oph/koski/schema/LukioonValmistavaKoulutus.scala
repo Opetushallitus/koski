@@ -25,6 +25,7 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeus(
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OidOrganisaatio) = this.copy(koulutustoimija = Some(koulutustoimija))
+  override def withSuoritukset(suoritukset: List[PäätasonSuoritus]) = copy(suoritukset = suoritukset.asInstanceOf[List[LukioonValmistavanKoulutuksenSuoritus]])
 }
 
 @Description("Lukioon valmistavan koulutus (LUVA) suoritus")
@@ -39,7 +40,7 @@ case class LukioonValmistavanKoulutuksenSuoritus(
   override val osasuoritukset: Option[List[LukioonValmistavanKoulutuksenOsasuoritus]],
   @KoodistoKoodiarvo("luva")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("luva", koodistoUri = "suorituksentyyppi")
-) extends Suoritus with Toimipisteellinen {
+) extends PäätasonSuoritus with Toimipisteellinen {
   def arviointi: Option[List[KoodistostaLöytyväArviointi]] = None
 }
 

@@ -40,6 +40,7 @@ trait Suoritus {
     case _ => None
   }
   def tarvitseeVahvistuksen = true
+  def valmis = tila.koodiarvo == "VALMIS"
 }
 
 trait ValmentavaSuoritus extends Suoritus with Toimipisteellinen {
@@ -53,4 +54,7 @@ trait Toimipisteellinen extends OrganisaatioonLiittyvä {
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   def toimipiste: OrganisaatioWithOid
   def omistajaOrganisaatio = toimipiste
+}
+
+trait PäätasonSuoritus extends Suoritus with Toimipisteellinen {
 }

@@ -14,7 +14,7 @@ import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusChangeValidator.validateOpiskel
 import fi.oph.koski.oppija.PossiblyUnverifiedOppijaOid
 import fi.oph.koski.schema.Henkilö._
 import fi.oph.koski.schema.Opiskeluoikeus.VERSIO_1
-import fi.oph.koski.schema.{HenkilötiedotJaOid, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
+import fi.oph.koski.schema.{HenkilötiedotJaOid, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, PäätasonSuoritus}
 import fi.oph.koski.util.ReactiveStreamsToRx
 import org.json4s.JArray
 import rx.lang.scala.Observable
@@ -154,20 +154,24 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
     }
   }
 
-  private def updateAction(oldRow: OpiskeluOikeusRow, uusiOlio: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiUser): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Write] = {
+  private def updateAction[A <: PäätasonSuoritus](oldRow: OpiskeluOikeusRow, uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiUser): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Write] = {
     val (id, versionumero) = (oldRow.id, oldRow.versionumero)
 
-    uusiOlio.versionumero match {
-      case Some(requestedVersionumero) if (requestedVersionumero != versionumero) => DBIO.successful(Left(KoskiErrorCategory.conflict.versionumero("Annettu versionumero " + requestedVersionumero + " <> " + versionumero)))
+    uusiOpiskeluoikeus.versionumero match {
+      case Some(requestedVersionumero) if (requestedVersionumero != versionumero) =>
+        DBIO.successful(Left(KoskiErrorCategory.conflict.versionumero("Annettu versionumero " + requestedVersionumero + " <> " + versionumero)))
       case _ =>
-        val uusiData = Json.toJValue(uusiOlio.withIdAndVersion(id = None, versionumero = None))
+        val vanhaOpiskeluoikeus = oldRow.toOpiskeluOikeus
+
+        val täydennettyOpiskeluoikeus = OpiskeluoikeusChangeMigrator.kopioiValmiitSuorituksetUuteen(vanhaOpiskeluoikeus, uusiOpiskeluoikeus)
+
+        val uusiData = Json.toJValue(täydennettyOpiskeluoikeus.withIdAndVersion(id = None, versionumero = None))
         val diff: JArray = Json.jsonDiff(oldRow.data, uusiData)
         diff.values.length match {
           case 0 =>
             DBIO.successful(Right(NotChanged(id, versionumero, diff)))
           case _ =>
-            val oldOpiskeluoikeus = oldRow.toOpiskeluOikeus
-            validateOpiskeluoikeusChange(oldOpiskeluoikeus, uusiOlio) match {
+            validateOpiskeluoikeusChange(vanhaOpiskeluoikeus, täydennettyOpiskeluoikeus) match {
               case HttpStatus.ok =>
                 val nextVersionumero = versionumero + 1
                 for {

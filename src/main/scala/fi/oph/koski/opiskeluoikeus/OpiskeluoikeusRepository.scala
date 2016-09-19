@@ -6,7 +6,7 @@ import fi.oph.koski.koski.QueryFilter
 import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.oppija.PossiblyUnverifiedOppijaOid
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema.{HenkilötiedotJaOid, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
+import fi.oph.koski.schema.{HenkilötiedotJaOid, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, PäätasonSuoritus}
 import org.json4s.JValue
 import rx.lang.scala.Observable
 

@@ -41,7 +41,7 @@ trait Opiskeluoikeus extends OrganisaatioonLiittyvä with Lähdejärjestelmälli
   @Hidden
   def koulutustoimija: Option[OidOrganisaatio] // TODO: oid organisaatio on huono kirjoitusasu skemassa
   @Description("Opiskeluoikeuteen liittyvien tutkinto- ja muiden suoritusten tiedot")
-  def suoritukset: List[Suoritus]
+  def suoritukset: List[PäätasonSuoritus]
   @Description("Opiskeluoikeuden tila, joka muodostuu opiskeluoikeusjaksoista.")
   def tila: OpiskeluoikeudenTila
   @Description("Läsnä- ja poissaolojaksot päivämääräväleinä.")
@@ -51,7 +51,9 @@ trait Opiskeluoikeus extends OrganisaatioonLiittyvä with Lähdejärjestelmälli
 }
 
 trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
+  def suoritukset: List[PäätasonSuoritus]
   def withIdAndVersion(id: Option[Int], versionumero: Option[Int]): KoskeenTallennettavaOpiskeluoikeus
+  def withSuoritukset(suoritukset: List[PäätasonSuoritus]): KoskeenTallennettavaOpiskeluoikeus
   override def läsnäolotiedot: Option[YleisetLäsnäolotiedot]
 }
 
