@@ -36,7 +36,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
 
     organisaatioRepository.getOrganisaatioHierarkiaIncludingParents(oo.oppilaitos.oid).flatMap(findKoulutustoimija) match {
-      case Some(hierarkia) => oo.withKoulutustoimija(hierarkia.toOrganisaatio)
+      case Some(hierarkia) => oo.withKoulutustoimija(hierarkia.toOrganisaatio.toOidOrganisaatio)
       case _ => oo
     }
   }

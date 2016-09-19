@@ -57,6 +57,7 @@ trait OrganisaatioWithOid extends Organisaatio {
   @ReadOnly("Tiedon syötössä nimeä ei tarvita; kuvaus haetaan Organisaatiopalvelusta")
   def nimi: Option[LocalizedString]
   def toOppilaitos: Option[Oppilaitos]
+  def toOidOrganisaatio = OidOrganisaatio(oid, nimi)
 }
 
 trait OrganisaatioonLiittyvä {
