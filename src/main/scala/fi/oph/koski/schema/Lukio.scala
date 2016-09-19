@@ -49,6 +49,9 @@ case class LukionOpiskeluoikeudenLisätiedot(
 )
 
 case class Erityinenkoulutustehtävä(
+
+  // TODO: alku, loppupäivämäärät, lista jaksoja
+
   @KoodistoUri("erityinenkoulutustehtava")
   @OksaUri("tmpOKSAID181", "erityinen koulutustehtävä")
   tehtävä: Koodistokoodiviite
