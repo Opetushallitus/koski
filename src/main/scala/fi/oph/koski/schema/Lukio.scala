@@ -14,6 +14,7 @@ case class LukionOpiskeluoikeus(
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OidOrganisaatio] = None,
   alkamispäivä: Option[LocalDate] = None,
+  arvioituPäättymispäivä: Option[LocalDate] = None,
   päättymispäivä: Option[LocalDate] = None,
   @Description("Opiskeluoikeuden tavoite-tieto kertoo sen, suorittaako opiskelija lukion koko oppimäärää vai yksittäisen oppiaineen oppimäärää")
   @KoodistoUri("suorituksentyyppi")
@@ -30,7 +31,6 @@ case class LukionOpiskeluoikeus(
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OidOrganisaatio) = this.copy(koulutustoimija = Some(koulutustoimija))
-  override def arvioituPäättymispäivä: Option[LocalDate] = None // TODO: otetaan mukaan
 }
 
 case class LukionOpiskeluoikeudenLisätiedot(

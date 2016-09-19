@@ -12,6 +12,7 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeus(
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[OidOrganisaatio],
   alkamispäivä: Option[LocalDate],
+  arvioituPäättymispäivä: Option[LocalDate] = None,
   päättymispäivä: Option[LocalDate],
   tila: LukionOpiskeluoikeudenTila,
   läsnäolotiedot: Option[YleisetLäsnäolotiedot],
@@ -23,7 +24,6 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeus(
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OidOrganisaatio) = this.copy(koulutustoimija = Some(koulutustoimija))
-  override def arvioituPäättymispäivä = None
 }
 
 @Description("Lukioon valmistavan koulutus (LUVA) suoritus")
