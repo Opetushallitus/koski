@@ -50,6 +50,7 @@ case class PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetukseenvalmistavanopetuksenoppiaine", koodistoUri = "suorituksentyyppi")
 ) extends Suoritus {
   def vahvistus = None
+  override def tarvitseeVahvistuksen = false
 }
 
 @Description("Perusopetukseen valmistavan opetuksen tunnistetiedot")
