@@ -5,7 +5,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Koodistokoodiviite
 
 case class KoodistoViitePalvelu(koodistoPalvelu: KoodistoPalvelu)(implicit cacheInvalidator: CacheManager) extends Logging {
-  private val koodiviiteCache = KeyValueCache(KoskiCache.cacheStrategy("koodistoKoodiViite"), { koodisto: KoodistoViite =>
+  private val koodiviiteCache = KeyValueCache(KoskiCache.cacheStrategy("KoodistoViitePalvelu"), { koodisto: KoodistoViite =>
     val koodit: Option[List[KoodistoKoodi]] = koodistoPalvelu.getKoodistoKoodit(koodisto)
     koodit.map { _.map { koodi => Koodistokoodiviite(koodi.koodiArvo, koodi.nimi, koodi.lyhytNimi, koodisto.koodistoUri, Some(koodisto.versio))} }
   })

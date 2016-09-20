@@ -7,7 +7,6 @@ import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.log.TimedProxy
 import fi.oph.koski.schema._
-import fi.oph.koski.util.Invocation
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOppijaRepository}
 import fi.oph.koski.ytr.{YlioppilasTutkintoRekisteri, YtrAccessChecker, YtrOppijaRepository}
 
@@ -38,7 +37,7 @@ object OppijaRepository {
 }
 
 case class CachingOppijaRepository(repository: OppijaRepository)(implicit cacheInvalidator: CacheManager) extends OppijaRepository {
-  private val oidCache = KeyValueCache(KoskiCache.cacheStrategy("findByOid"), repository.findByOid)
+  private val oidCache = KeyValueCache(KoskiCache.cacheStrategy("OppijaRepository"), repository.findByOid)
   // findByOid is locally cached
   override def findByOid(oid: String) = oidCache(oid)
   // Other methods just call the non-cached implementation

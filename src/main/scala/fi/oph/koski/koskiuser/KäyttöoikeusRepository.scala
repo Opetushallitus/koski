@@ -54,6 +54,6 @@ class KäyttöoikeusRepository(authenticationServiceClient: AuthenticationServic
   }
 
   private lazy val käyttöoikeusCache = new KeyValueCache[String, Set[Käyttöoikeus]](
-    Cache.cacheAllNoRefresh("userOrganisations", 3600, 100), haeKäyttöoikeudet
+    Cache.cacheAllNoRefresh("KäyttöoikeusRepository", 3600, 100), haeKäyttöoikeudet
   )
 }
