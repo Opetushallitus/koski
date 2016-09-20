@@ -2,7 +2,7 @@ package fi.oph.koski.config
 
 import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.koski.arvosana.ArviointiasteikkoRepository
-import fi.oph.koski.cache.CachingStrategy.cacheAllRefresh
+import fi.oph.koski.cache.Cache.cacheAllRefresh
 import fi.oph.koski.cache.{CachingProxy, GlobalCacheInvalidator}
 import fi.oph.koski.db._
 import fi.oph.koski.eperusteet.EPerusteetRepository

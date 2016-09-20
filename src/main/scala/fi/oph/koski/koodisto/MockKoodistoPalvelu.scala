@@ -21,7 +21,7 @@ private class MockKoodistoPalvelu extends KoodistoPalvelu {
 
 object MockKoodistoPalvelu {
   // this is done to ensure that the cached instance is used everywhere (performance penalties are huge)
-  private lazy val palvelu = KoodistoPalvelu.cached(new MockKoodistoPalvelu)
+  private lazy val palvelu = KoodistoPalvelu.cached(new MockKoodistoPalvelu, cacheKey = "MockKoodistoPalvelu")
   def apply() = palvelu
   /*
     Aakkostettu listaus mockatuista koodistoista.

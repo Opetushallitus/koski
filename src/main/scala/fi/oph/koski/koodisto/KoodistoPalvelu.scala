@@ -9,7 +9,7 @@ object KoodistoPalvelu {
     cached(TimedProxy(withoutCache(config)))
   }
 
-  def cached(palvelu: KoodistoPalvelu) = CachingProxy(KoskiCache.cacheStrategy("KoodistoPalvelu"), palvelu)
+  def cached(palvelu: KoodistoPalvelu, cacheKey: String = "KoodistoPalvelu") = CachingProxy(KoskiCache.cacheStrategy(cacheKey), palvelu)
 
   def withoutCache(config: Config): KoodistoPalvelu = {
     if (config.hasPath("opintopolku.virkailija.url")) {

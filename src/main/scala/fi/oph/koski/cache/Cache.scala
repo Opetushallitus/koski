@@ -9,13 +9,13 @@ import com.google.common.util.concurrent.MoreExecutors._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.{Invocation, Pools}
 
-object CachingStrategy {
-  def cacheAllRefresh(name: String, durationSeconds: Int, maxSize: Int, invalidator: CacheInvalidator = GlobalCacheInvalidator) = CachingStrategy(name, CacheParams(durationSeconds, maxSize, true), invalidator)
-  def cacheAllNoRefresh(name: String, durationSeconds: Int, maxSize: Int, invalidator: CacheInvalidator = GlobalCacheInvalidator) = CachingStrategy(name, CacheParams(durationSeconds, maxSize, false), invalidator)
+object Cache {
+  def cacheAllRefresh(name: String, durationSeconds: Int, maxSize: Int, invalidator: CacheInvalidator = GlobalCacheInvalidator) = Cache(name, CacheParams(durationSeconds, maxSize, true), invalidator)
+  def cacheAllNoRefresh(name: String, durationSeconds: Int, maxSize: Int, invalidator: CacheInvalidator = GlobalCacheInvalidator) = Cache(name, CacheParams(durationSeconds, maxSize, false), invalidator)
   private[cache] val executorService = listeningDecorator(Pools.globalPool)
 }
 
-case class CachingStrategy(name: String, params: CacheParams, invalidator: CacheInvalidator = GlobalCacheInvalidator) extends Cached with Logging {
+case class Cache(name: String, params: CacheParams, invalidator: CacheInvalidator = GlobalCacheInvalidator) extends Cached with Logging {
   logger.debug("Create cache " + name)
   invalidator.registerCache(this)
 
@@ -23,6 +23,8 @@ case class CachingStrategy(name: String, params: CacheParams, invalidator: Cache
     logger.debug(name + "." + invocation + " (cache size " + cache.size() + ")")
     cache.get(invocation)
   }
+
+  def stats = cache.stats
 
   override def invalidateCache() = {
     cache.invalidateAll
@@ -37,7 +39,7 @@ case class CachingStrategy(name: String, params: CacheParams, invalidator: Cache
       }
 
       override def reload(invocation: Invocation, oldValue: AnyRef): ListenableFuture[AnyRef] = {
-        val future: ListenableFuture[AnyRef] = CachingStrategy.executorService.submit(new Callable[AnyRef] {
+        val future: ListenableFuture[AnyRef] = Cache.executorService.submit(new Callable[AnyRef] {
           override def call(): AnyRef = load(invocation)
         })
         future

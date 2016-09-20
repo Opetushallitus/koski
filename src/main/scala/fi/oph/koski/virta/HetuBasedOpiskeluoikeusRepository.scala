@@ -1,24 +1,22 @@
 package fi.oph.koski.virta
 
-import fi.oph.koski.cache.{CachingStrategy, KeyValueCache}
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.cache.{Cache, KeyValueCache}
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.koski.{KoskiValidator, QueryFilter}
+import fi.oph.koski.koski.KoskiValidator
 import fi.oph.koski.koskiuser.{AccessChecker, AccessType, KoskiUser}
 import fi.oph.koski.log.Logging
-import fi.oph.koski.opiskeluoikeus.{AuxiliaryOpiskeluOikeusRepository, CreateOrUpdateResult, OpiskeluOikeusRepository}
-import fi.oph.koski.oppija.{OppijaRepository, PossiblyUnverifiedOppijaOid}
+import fi.oph.koski.opiskeluoikeus.AuxiliaryOpiskeluOikeusRepository
+import fi.oph.koski.oppija.OppijaRepository
 import fi.oph.koski.oppilaitos.OppilaitosRepository
-import fi.oph.koski.schema.Henkilö._
 import fi.oph.koski.schema.{Opiskeluoikeus, _}
-import rx.lang.scala.Observable
 
 abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, accessChecker: AccessChecker, validator: Option[KoskiValidator] = None) extends AuxiliaryOpiskeluOikeusRepository with Logging {
   def opiskeluoikeudetByHetu(hetu: String): List[OO]
 
   // hetu -> org.oids cache for filtering only
-  private val organizationsCache = KeyValueCache[Henkilö.Hetu, List[Organisaatio.Oid]](CachingStrategy.cacheAllNoRefresh(getClass.getSimpleName + ".organisations", 3600, 100000), doFindOrgs)
-  private val cache = KeyValueCache[Henkilö.Hetu, List[OO]](CachingStrategy.cacheAllNoRefresh(getClass.getSimpleName + ".opiskeluoikeudet", 3600, 100), doFindByHenkilö)
+  private val organizationsCache = KeyValueCache[Henkilö.Hetu, List[Organisaatio.Oid]](Cache.cacheAllNoRefresh(getClass.getSimpleName + ".organisations", 3600, 100000), doFindOrgs)
+  private val cache = KeyValueCache[Henkilö.Hetu, List[OO]](Cache.cacheAllNoRefresh(getClass.getSimpleName + ".opiskeluoikeudet", 3600, 100), doFindByHenkilö)
 
   def doFindOrgs(hetu: Henkilö.Hetu): List[Organisaatio.Oid] = {
     cache(hetu).map(_.oppilaitos.oid)
