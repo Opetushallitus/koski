@@ -11,39 +11,9 @@ import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.schema._
 
 object ExamplesLukio {
-  val uusi = Oppija(
-    exampleHenkilö,
-    List(LukionOpiskeluoikeus(
-      id = None,
-      versionumero = None,
-      lähdejärjestelmänId = None,
-      alkamispäivä = Some(date(2012, 9, 1)),
-      päättymispäivä = None,
-      oppilaitos = jyväskylänNormaalikoulu,
-      tavoite = tavoiteKokoOppimäärä,
-      suoritukset = List(
-        LukionOppimääränSuoritus(
-          koulutusmoduuli = lukionOppimäärä,
-          oppimäärä = nuortenOpetussuunnitelma,
-          suorituskieli = suomenKieli,
-          tila = tilaKesken,
-          toimipiste = jyväskylänNormaalikoulu,
-          osasuoritukset = None
-        )
-      ),
-      tila = LukionOpiskeluoikeudenTila(
-        List(
-          LukionOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusAktiivinen),
-          LukionOpiskeluoikeusjakso(date(2016, 1, 10), opiskeluoikeusPäättynyt)
-        )
-      ),
-      läsnäolotiedot = None
-    ))
-  )
+  def oppija(opiskeluoikeus: LukionOpiskeluoikeus) = Oppija(exampleHenkilö, List(opiskeluoikeus))
 
-  val päättötodistus = Oppija(
-    exampleHenkilö,
-    List(LukionOpiskeluoikeus(
+  val päättötodistus = LukionOpiskeluoikeus(
       alkamispäivä = Some(date(2012, 9, 1)),
       päättymispäivä = Some(date(2016, 6, 1)),
       tila = LukionOpiskeluoikeudenTila(
@@ -207,12 +177,11 @@ object ExamplesLukio {
         )
       ),
       läsnäolotiedot = None
-    ))
-  )
+    )
 
-  val aineopiskelija = Oppija(
-    exampleHenkilö,
-    List(LukionOpiskeluoikeus(
+
+  val aineopiskelija =
+    LukionOpiskeluoikeus(
       id = None,
       versionumero = None,
       lähdejärjestelmänId = None,
@@ -243,13 +212,13 @@ object ExamplesLukio {
         )
       ),
       läsnäolotiedot = None
-    ))
-  )
+    )
+
 
   val examples = List(
-    Example("lukio - uusi", "Uusi oppija lisätään suorittamaan lukiota", uusi),
-    Example("lukio - päättötodistus", "Oppija on saanut päättötodistuksen", päättötodistus),
-    Example("lukio - lukion oppiaineen oppimäärä - päättötodistus", "Opiskelija on suorittanut lukion historian oppimäärän", aineopiskelija)
+    Example("lukio - uusi", "Uusi oppija lisätään suorittamaan lukiota", oppija(lukionOpiskeluoikeus())),
+    Example("lukio - päättötodistus", "Oppija on saanut päättötodistuksen", oppija(päättötodistus)),
+    Example("lukio - lukion oppiaineen oppimäärä - päättötodistus", "Opiskelija on suorittanut lukion historian oppimäärän", oppija(aineopiskelija))
   )
 }
 
@@ -306,4 +275,31 @@ object LukioExampleData {
   def kurssinArviointi(arvosana: String, päivä: LocalDate = date(2016, 6, 4)): Some[List[LukionKurssinArviointi]] = {
     Some(List(new LukionKurssinArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), päivä)))
   }
+
+  def lukionOpiskeluoikeus(oppilaitos: Oppilaitos = jyväskylänNormaalikoulu) = LukionOpiskeluoikeus(
+    id = None,
+    versionumero = None,
+    lähdejärjestelmänId = None,
+    alkamispäivä = Some(date(2012, 9, 1)),
+    päättymispäivä = None,
+    oppilaitos = oppilaitos,
+    tavoite = tavoiteKokoOppimäärä,
+    suoritukset = List(
+      LukionOppimääränSuoritus(
+        koulutusmoduuli = lukionOppimäärä,
+        oppimäärä = nuortenOpetussuunnitelma,
+        suorituskieli = suomenKieli,
+        tila = tilaKesken,
+        toimipiste = oppilaitos,
+        osasuoritukset = None
+      )
+    ),
+    tila = LukionOpiskeluoikeudenTila(
+      List(
+        LukionOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusAktiivinen),
+        LukionOpiskeluoikeusjakso(date(2016, 1, 10), opiskeluoikeusPäättynyt)
+      )
+    ),
+    läsnäolotiedot = None
+  )
 }
