@@ -3,6 +3,8 @@ package fi.oph.koski.cache
 import java.lang.management.ManagementFactory
 import javax.management.ObjectName
 
+import com.google.common.cache.CacheStats
+
 class JMXCacheManager extends CacheManager with JMXCacheManagerMXBean {
   val mbeanServer = ManagementFactory.getPlatformMBeanServer()
 
@@ -12,10 +14,27 @@ class JMXCacheManager extends CacheManager with JMXCacheManagerMXBean {
     mbeanServer.registerMBean(new CacheMBean(cache), new ObjectName(s"fi.oph.koski:type=Cache,name=${cache.name}"))
     super.registerCache(cache)
   }
+
+  def getHitRate = overallStats.hitRate
+  def getLoadExceptionCount = overallStats.loadExceptionCount
+  def getHitCount = overallStats.hitCount
+  def getMissCount = overallStats.missCount
+  def getTotalLoadTime = overallStats.totalLoadTime()
+
+  def overallStats: CacheStats = {
+    caches.foldLeft(new CacheStats(0, 0, 0, 0, 0, 0)) { case (stats, cache) =>
+      stats.plus(cache.stats)
+    }
+  }
 }
 
 trait JMXCacheManagerMXBean {
   def invalidateAllCaches: Unit
+  def getHitRate: Double
+  def getHitCount: Long
+  def getMissCount: Long
+  def getLoadExceptionCount: Long
+  def getTotalLoadTime: Long
 }
 
 class CacheMBean(cache: Cache) extends CacheMBeanMXBean {
