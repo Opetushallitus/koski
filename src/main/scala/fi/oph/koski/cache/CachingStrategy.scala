@@ -4,32 +4,18 @@ import java.util.concurrent.Callable
 import java.util.concurrent.TimeUnit.SECONDS
 
 import com.google.common.cache.{CacheBuilder, CacheLoader, LoadingCache}
+import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.MoreExecutors._
-import com.google.common.util.concurrent.{ListenableFuture, UncheckedExecutionException}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.{Invocation, Pools}
 
-class CacheInvalidator extends Cached {
-  private var caches: List[Cached] = Nil
-
-  def invalidateCache = synchronized {
-    caches.foreach(_.invalidateCache)
-  }
-
-  def registerCache(cache: Cached) = synchronized {
-    caches = cache :: caches
-  }
-}
-
-object GlobalCacheInvalidator extends CacheInvalidator
-
 object CachingStrategy {
-  def cacheAllRefresh(name: String, durationSeconds: Int, maxSize: Int, invalidator: CacheInvalidator = GlobalCacheInvalidator) = CachingStrategy(name, CacheAllCacheDetails(durationSeconds, maxSize, true), invalidator)
-  def cacheAllNoRefresh(name: String, durationSeconds: Int, maxSize: Int, invalidator: CacheInvalidator = GlobalCacheInvalidator) = CachingStrategy(name, CacheAllCacheDetails(durationSeconds, maxSize, false), invalidator)
+  def cacheAllRefresh(name: String, durationSeconds: Int, maxSize: Int, invalidator: CacheInvalidator = GlobalCacheInvalidator) = CachingStrategy(name, CacheParams(durationSeconds, maxSize, true), invalidator)
+  def cacheAllNoRefresh(name: String, durationSeconds: Int, maxSize: Int, invalidator: CacheInvalidator = GlobalCacheInvalidator) = CachingStrategy(name, CacheParams(durationSeconds, maxSize, false), invalidator)
   private[cache] val executorService = listeningDecorator(Pools.globalPool)
 }
 
-case class CachingStrategy(name: String, cacheDetails: CacheDetails, invalidator: CacheInvalidator = GlobalCacheInvalidator) extends Cached with Logging {
+case class CachingStrategy(name: String, params: CacheParams, invalidator: CacheInvalidator = GlobalCacheInvalidator) extends Cached with Logging {
   logger.debug("Create cache " + name)
   invalidator.registerCache(this)
 
@@ -61,23 +47,16 @@ case class CachingStrategy(name: String, cacheDetails: CacheDetails, invalidator
     val cacheBuilder = CacheBuilder
       .newBuilder()
       .recordStats()
-      .maximumSize(cacheDetails.maxSize)
+      .maximumSize(params.maxSize)
 
-    (if(cacheDetails.refreshing) {
-      cacheBuilder.refreshAfterWrite(cacheDetails.durationSeconds, SECONDS)
+    (if(params.refreshing) {
+      cacheBuilder.refreshAfterWrite(params.durationSeconds, SECONDS)
     } else {
-      cacheBuilder.expireAfterWrite(cacheDetails.durationSeconds, SECONDS)
+      cacheBuilder.expireAfterWrite(params.durationSeconds, SECONDS)
     }).build(cacheLoader)
   }
 
   private def cacheKey(invocation: Invocation) = invocation.f.name + invocation.args.mkString(",")
 }
 
-trait CacheDetails {
-  def durationSeconds: Int
-  def maxSize: Int
-  def refreshing: Boolean
-}
-
-case class CacheAllCacheDetails(durationSeconds: Int, maxSize: Int, refreshing: Boolean) extends CacheDetails {
-}
+case class CacheParams(durationSeconds: Int, maxSize: Int, refreshing: Boolean)
