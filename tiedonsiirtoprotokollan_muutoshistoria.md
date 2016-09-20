@@ -1,3 +1,12 @@
+## 20.9.2016
+- Oppiaineiden suorituksissa ei vaadita vahvistusta, vaikka suoritus olisi valmis
+- IB-tutkintojen tiedot lisätty (työversio)
+- Lukion opiskeluoikeuden lisätiedoista poistettu majoitukseen liittyvät tiedot
+- Lisätty arvioituPäättymispäivä lukion ja lukioon valmistavan koulutuksen opiskeluoikeuteen
+- Lisätty kuvaus-kenttä lukioon valmistaville kursseille
+- Valmiita päätason suorituksia ei poisteta Koskesta, vaikka ne puuttuisivat tiedonsiirrossa opiskeluoikeuden alta
+- Lukioon valmistavassa koulutuksessa on mahdollista suorittaa lukion oppiaineen oppimäärä
+
 ## 4.7.2016
 - Valma ja telma siirretty ammatillisen opiskeluoikeuden alle
 - Valman ja telman osasuorituksiin voi sisällyttää lisätietoja samalla tavalla, kuin ammatillisen tutkinnon osan suoritukseen
