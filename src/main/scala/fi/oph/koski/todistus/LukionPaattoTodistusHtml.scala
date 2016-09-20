@@ -3,10 +3,16 @@ package fi.oph.koski.todistus
 import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.schema._
 
+import scala.xml.NodeSeq
+
 
 class LukionPaattoTodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
   def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: Suoritus) = {
     val oppiaineet: List[Suoritus] = päättötodistus.osasuoritukset.toList.flatten
+    val lisätiedot: List[LukionOppimääränSuorituksenLisätiedot] = päättötodistus match {
+      case t: LukionOppimääränSuoritus => t.lisätiedot.toList.flatten
+      case _ => Nil
+    }
 
     def oppiaineenKurssimäärä(oppiaine: Suoritus): Float = oppiaine.osasuoritukset.toList.flatten.map(laajuus).sum
 
@@ -48,6 +54,11 @@ class LukionPaattoTodistusHtml(implicit val user: KoskiUser) extends TodistusHtm
               <td class="kurssimaara-title">Opiskelijan suorittama kokonaiskurssimäärä</td>
               <td>{decimalFormat.format(oppiaineet.foldLeft(0f) { (summa, aine) => summa + oppiaineenKurssimäärä(aine)})}</td>
             </tr>
+            {
+            lisätiedot.foldLeft(<tr class="lisätiedot"><th>Lisätietoja</th></tr>: NodeSeq) { (rivit: NodeSeq, lisätieto: LukionOppimääränSuorituksenLisätiedot) =>
+              rivit ++ <tr><td colspan="4"> {i(lisätieto.kuvaus)}</td></tr>
+            }
+            }
           </table>
           { päättötodistus.vahvistus.toList.map(vahvistusHTML)}
         </div>

@@ -143,7 +143,9 @@ class LukioSpec extends FunSpec with Matchers with OpintosuoritusoteTestMethods 
                                                             |Musiikki 1 Hyvä 8
                                                             |Kuvataide 2 Kiitettävä 9
                                                             |Terveystieto 1 Kiitettävä 9
-                                                            |Opiskelijan suorittama kokonaiskurssimäärä 87,5""".stripMargin)
+                                                            |Opiskelijan suorittama kokonaiskurssimäärä 87,5
+                                                            |
+                                                            |Opiskelija on suorittanut kuvataiteen lukiodiplomin""".stripMargin)
     }
   }
 
