@@ -1,0 +1,11 @@
+{
+  "koodistoUri" : "lukionoppimaaransuorituksenlisatieto",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Lukion oppimäärän suorituksen lisätieto"
+  } ],
+  "codesGroupUri" : "http://koski",
+  "voimassaAlkuPvm" : "2016-09-20",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}

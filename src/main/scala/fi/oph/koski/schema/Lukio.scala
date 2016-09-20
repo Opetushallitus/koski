@@ -75,10 +75,19 @@ case class LukionOppimääränSuoritus(
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[LukionOppiaineenSuoritus]],
   @KoodistoKoodiarvo("lukionoppimaara")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"),
+  lisätiedot: Option[List[LukionOppimääränSuorituksenLisätiedot]] = None
 ) extends LukionPäätasonSuoritus {
   def arviointi = None
 }
+
+case class LukionOppimääränSuorituksenLisätiedot(
+  @Description("Lisätiedon tyyppi kooditettuna")
+  @KoodistoUri("lukionoppimaaransuorituksenlisatieto")
+  tunniste: Koodistokoodiviite,
+  @Description("Lisätiedon kuvaus siinä muodossa, kuin se näytetään todistuksella")
+  kuvaus: LocalizedString
+)
 
 case class LukionOppiaineenOppimääränSuoritus(
   @Title("Oppiaine")

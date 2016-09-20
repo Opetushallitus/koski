@@ -63,6 +63,7 @@ object MockKoodistoPalvelu {
     "lasnaolotila",
     "lukionkurssit",
     "lukionoppimaara",
+    "lukionoppimaaransuorituksenlisatieto",
     "maatjavaltiot2",
     "opetusryhma",
     "opintojenlaajuusyksikko",
