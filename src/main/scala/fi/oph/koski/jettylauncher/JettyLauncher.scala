@@ -9,6 +9,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.log.LogConfiguration
 import fi.oph.koski.util.{Pools, PortChecker}
 import org.eclipse.jetty.jmx.MBeanContainer
+import org.eclipse.jetty.server.handler.StatisticsHandler
 import org.eclipse.jetty.server.{Server, ServerConnector, Slf4jRequestLog}
 import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.eclipse.jetty.webapp.WebAppContext
@@ -48,6 +49,10 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) {
 
   val mbContainer = new MBeanContainer(ManagementFactory.getPlatformMBeanServer())
   server.addBean(mbContainer)
+
+  val stats = new StatisticsHandler
+  stats.setHandler(server.getHandler())
+  server.setHandler(stats)
 
   def start = {
     server.start
