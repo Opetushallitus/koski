@@ -4,6 +4,7 @@ import java.lang.management.ManagementFactory
 import java.nio.file.{Files, Paths}
 
 import com.typesafe.config.ConfigValueFactory._
+import fi.oph.koski.cache.JMXCacheManager
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.log.LogConfiguration
 import fi.oph.koski.util.{Pools, PortChecker}
@@ -19,7 +20,7 @@ object JettyLauncher extends App {
 
 class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) {
   val config = overrides.toList.foldLeft(KoskiApplication.defaultConfig)({ case (config, (key, value)) => config.withValue(key, fromAnyRef(value)) })
-  val application = KoskiApplication(config)
+  val application = new KoskiApplication(config, new JMXCacheManager)
   application.database // <- force evaluation to make sure DB is up
 
   lazy val threadPool = new QueuedThreadPool(Pools.jettyThreads, 10);
