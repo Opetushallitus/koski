@@ -1,6 +1,6 @@
 import javax.servlet.ServletContext
 
-import fi.oph.koski.cache.CacheServlet
+import fi.oph.koski.cache.{CacheServlet, CacheStatsJMX, GlobalCacheInvalidator}
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db._
 import fi.oph.koski.documentation.SchemaDocumentationServlet
@@ -61,6 +61,8 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
         context.mount(new FixtureServlet(application), "/fixtures")
         application.fixtureCreator.resetFixtures
       }
+      new CacheStatsJMX(GlobalCacheInvalidator)
+
     } catch {
       case e: Throwable =>
         logger.error(e)("Error in server startup")
