@@ -1,10 +1,13 @@
 package fi.oph.koski.cache
 
+import fi.oph.koski.log.Logging
+
 // CacheManager tracks caches, allows exposing all to JMX and invalidating all caches
-class CacheManager {
+class CacheManager extends Logging {
   private var _caches: List[Cache] = Nil
 
-  def invalidateCache = synchronized {
+  def invalidateAllCaches = synchronized {
+    logger.info("Invalidating all caches")
     _caches.foreach(_.invalidateCache)
   }
 

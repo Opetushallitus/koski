@@ -10,8 +10,7 @@ class CacheServlet(val application: KoskiApplication) extends ApiServlet with Re
     if (!koskiUser.isMaintenance) {
       halt(403)
     }
-    logger.info("Invalidating all caches")
-    application.invalidateCaches
+    application.caches.invalidateAllCaches
     "Caches invalidated"
   }
 }

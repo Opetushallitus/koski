@@ -1,6 +1,6 @@
 import javax.servlet.ServletContext
 
-import fi.oph.koski.cache.{CacheServlet, CacheManagerWithJMX, GlobalCacheManager}
+import fi.oph.koski.cache.{CacheServlet, JMXCacheManager, GlobalCacheManager}
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db._
 import fi.oph.koski.documentation.SchemaDocumentationServlet

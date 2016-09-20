@@ -51,7 +51,7 @@ case class Cache(name: String, params: CacheParams, invalidator: CacheManager) e
       .recordStats()
       .maximumSize(params.maxSize)
 
-    (if(params.refreshing) {
+    (if(params.backgroundRefresh) {
       cacheBuilder.refreshAfterWrite(params.durationSeconds, SECONDS)
     } else {
       cacheBuilder.expireAfterWrite(params.durationSeconds, SECONDS)
@@ -61,4 +61,4 @@ case class Cache(name: String, params: CacheParams, invalidator: CacheManager) e
   private def cacheKey(invocation: Invocation) = invocation.f.name + invocation.args.mkString(",")
 }
 
-case class CacheParams(durationSeconds: Int, maxSize: Int, refreshing: Boolean)
+case class CacheParams(durationSeconds: Int, maxSize: Int, backgroundRefresh: Boolean)
