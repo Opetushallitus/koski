@@ -6,6 +6,7 @@
 - Lisätty kuvaus-kenttä lukioon valmistaville kursseille
 - Valmiita päätason suorituksia ei poisteta Koskesta, vaikka ne puuttuisivat tiedonsiirrossa opiskeluoikeuden alta
 - Lukioon valmistavassa koulutuksessa on mahdollista suorittaa lukion oppiaineen oppimäärä
+- Lisätty lukion oppimäärän suoritukseen lisätiedot (suullisen kielitaidon koe, lukiodiplomi, täydentävä opiskelu)
 
 ## 4.7.2016
 - Valma ja telma siirretty ammatillisen opiskeluoikeuden alle
