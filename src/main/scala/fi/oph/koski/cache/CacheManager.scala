@@ -1,6 +1,7 @@
 package fi.oph.koski.cache
 
-class CacheInvalidator {
+// CacheManager tracks caches, allows exposing all to JMX and invalidating all caches
+class CacheManager {
   private var _caches: List[Cache] = Nil
 
   def invalidateCache = synchronized {
@@ -14,4 +15,5 @@ class CacheInvalidator {
   def caches = _caches
 }
 
-object GlobalCacheInvalidator extends CacheInvalidator
+// CacheManager for global caches. Use for global object only.
+object GlobalCacheManager extends CacheManager

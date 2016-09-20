@@ -1,11 +1,11 @@
 package fi.oph.koski.koskiuser
 
-import fi.oph.koski.cache.{Cache, KeyValueCache}
+import fi.oph.koski.cache.{Cache, CacheManager, KeyValueCache}
 import fi.oph.koski.henkilo.AuthenticationServiceClient
 import fi.oph.koski.organisaatio.{Opetushallitus, OrganisaatioHierarkia, OrganisaatioRepository}
 import fi.oph.koski.util.Timing
 
-class KäyttöoikeusRepository(authenticationServiceClient: AuthenticationServiceClient, organisaatioRepository: OrganisaatioRepository) extends Timing {
+class KäyttöoikeusRepository(authenticationServiceClient: AuthenticationServiceClient, organisaatioRepository: OrganisaatioRepository)(implicit cacheInvalidator: CacheManager) extends Timing {
   def käyttäjänKäyttöoikeudet(oid: String): Set[Käyttöoikeus] = käyttöoikeusCache(oid)
 
   def käyttäjänOppilaitostyypit(oid: String): Set[String] = käyttöoikeusCache(oid)

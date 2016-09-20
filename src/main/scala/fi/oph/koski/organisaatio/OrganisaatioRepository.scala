@@ -1,7 +1,7 @@
 package fi.oph.koski.organisaatio
 
 import com.typesafe.config.Config
-import fi.oph.koski.cache.{CachingProxy, KoskiCache}
+import fi.oph.koski.cache.{CacheManager, CachingProxy, KoskiCache}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, VirkailijaHttpClient}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
@@ -29,7 +29,7 @@ trait OrganisaatioRepository {
 }
 
 object OrganisaatioRepository {
-  def apply(config: Config, koodisto: KoodistoViitePalvelu) = {
+  def apply(config: Config, koodisto: KoodistoViitePalvelu)(implicit cacheInvalidator: CacheManager) = {
     CachingProxy[OrganisaatioRepository](KoskiCache.cacheStrategy("OrganisaatioRepository"), TimedProxy(withoutCache(config, koodisto).asInstanceOf[OrganisaatioRepository]))
   }
 

@@ -3,7 +3,7 @@ package fi.oph.koski.config
 import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.koski.arvosana.ArviointiasteikkoRepository
 import fi.oph.koski.cache.Cache.cacheAllRefresh
-import fi.oph.koski.cache.{CachingProxy, GlobalCacheInvalidator}
+import fi.oph.koski.cache.{CacheManager, CachingProxy, GlobalCacheManager}
 import fi.oph.koski.db._
 import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.fixture.FixtureCreator
@@ -31,6 +31,7 @@ object KoskiApplication {
 }
 
 class KoskiApplication(val config: Config) extends Logging with UserAuthenticationContext {
+  implicit val caches: CacheManager = new CacheManager()
   lazy val organisaatioRepository = OrganisaatioRepository(config, koodistoViitePalvelu)
   lazy val directoryClient = DirectoryClientFactory.directoryClient(config)
   lazy val tutkintoRepository = CachingProxy(cacheAllRefresh("TutkintoRepository", 3600, 100), TutkintoRepository(EPerusteetRepository.apply(config), arviointiAsteikot, koodistoViitePalvelu))
@@ -58,5 +59,5 @@ class KoskiApplication(val config: Config) extends Logging with UserAuthenticati
   lazy val fixtureCreator = new FixtureCreator(config, database, opiskeluOikeusRepository, oppijaRepository, validator)
   lazy val tiedonsiirtoService = new TiedonsiirtoService(new TiedonsiirtoRepository(database.db, new TiedonsiirtoFailureMailer(config, authenticationServiceClient)), organisaatioRepository, oppijaRepository)
 
-  def invalidateCaches = GlobalCacheInvalidator.invalidateCache
+  def invalidateCaches = caches.invalidateCache
 }

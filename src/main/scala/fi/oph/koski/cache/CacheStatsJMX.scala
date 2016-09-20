@@ -3,7 +3,7 @@ package fi.oph.koski.cache
 import java.lang.management.ManagementFactory
 import javax.management.ObjectName
 
-class CacheStatsJMX(cacheInvalidator: CacheInvalidator) {
+class CacheStatsJMX(cacheInvalidator: CacheManager) {
   val server = ManagementFactory.getPlatformMBeanServer()
   cacheInvalidator.caches.foreach { cache =>
     val beanName = new ObjectName(s"fi.oph.koski:type=Cache,name=${cache.name}")

@@ -1,6 +1,6 @@
 package fi.oph.koski.virta
 
-import fi.oph.koski.cache.{Cache, KeyValueCache}
+import fi.oph.koski.cache.{Cache, CacheManager, KeyValueCache}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koski.KoskiValidator
@@ -11,7 +11,7 @@ import fi.oph.koski.oppija.OppijaRepository
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.schema.{Opiskeluoikeus, _}
 
-abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, accessChecker: AccessChecker, validator: Option[KoskiValidator] = None) extends AuxiliaryOpiskeluOikeusRepository with Logging {
+abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, accessChecker: AccessChecker, validator: Option[KoskiValidator] = None)(implicit cacheInvalidator: CacheManager) extends AuxiliaryOpiskeluOikeusRepository with Logging {
   def opiskeluoikeudetByHetu(hetu: String): List[OO]
 
   // hetu -> org.oids cache for filtering only

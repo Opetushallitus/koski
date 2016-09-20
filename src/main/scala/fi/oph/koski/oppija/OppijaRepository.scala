@@ -24,7 +24,7 @@ trait AuxiliaryOppijaRepository {
 }
 
 object OppijaRepository {
-  def apply(authenticationServiceClient: AuthenticationServiceClient, koodistoViitePalvelu: KoodistoViitePalvelu, virtaClient: VirtaClient, virtaAccessChecker: VirtaAccessChecker, ytr: YlioppilasTutkintoRekisteri, ytrAccessChecker: YtrAccessChecker) = {
+  def apply(authenticationServiceClient: AuthenticationServiceClient, koodistoViitePalvelu: KoodistoViitePalvelu, virtaClient: VirtaClient, virtaAccessChecker: VirtaAccessChecker, ytr: YlioppilasTutkintoRekisteri, ytrAccessChecker: YtrAccessChecker)(implicit cacheInvalidator: CacheManager) = {
     val opintopolku = new OpintopolkuOppijaRepository(authenticationServiceClient, koodistoViitePalvelu)
     CachingOppijaRepository(TimedProxy(
       CompositeOppijaRepository(
@@ -37,7 +37,7 @@ object OppijaRepository {
   }
 }
 
-case class CachingOppijaRepository(repository: OppijaRepository) extends OppijaRepository {
+case class CachingOppijaRepository(repository: OppijaRepository)(implicit cacheInvalidator: CacheManager) extends OppijaRepository {
   private val oidCache = KeyValueCache(KoskiCache.cacheStrategy("findByOid"), repository.findByOid)
   // findByOid is locally cached
   override def findByOid(oid: String) = oidCache(oid)

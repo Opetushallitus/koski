@@ -9,7 +9,7 @@ object KäyttöoikeusRyhmätCreator {
   def luoKäyttöoikeusRyhmät(config: Config): Unit = {
     val client = RemoteAuthenticationServiceClient(config)
     val olemassaOlevatRyhmät = client.käyttöoikeusryhmät
-    val koodistopalvelu: KoodistoPalvelu = KoodistoPalvelu(config)
+    val koodistopalvelu: KoodistoPalvelu = KoodistoPalvelu.withoutCache(config)
     val oppilaitostyypit: List[String] = koodistopalvelu.getLatestVersion("oppilaitostyyppi").flatMap(koodistopalvelu.getKoodistoKoodit(_)).toList.flatten.map(_.koodiArvo)
 
     Käyttöoikeusryhmät.käyttöoikeusryhmät foreach { ryhmä =>
