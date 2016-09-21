@@ -41,22 +41,22 @@ trait QueryOppijatScenario extends KoskiScenario {
 }
 
 trait InsertOrUpdateScenario extends KoskiScenario {
-  def insertOrUpdate(name: String, body: Body, path: String = "/api/oppija") = http(name).put(path).body(body).asJSON.basicAuth(username, password).check(status.in(200))
+  def insertOrUpdate(name: String, body: Body, path: String = "/api/oppija") = http(name).put(path).body(body).asJSON.basicAuth(username, password)
 }
 
 trait UpdateOppijaScenario extends InsertOrUpdateScenario {
-  private val updateHttp = insertOrUpdate("update", OppijaWithOpiskeluoikeusWithIncrementingStartdate)
+  private val updateHttp = insertOrUpdate("update", OppijaWithOpiskeluoikeusWithIncrementingStartdate).check(status.in(200, 409))
 
   val updateOppija = scenario("Update oppija").feed(updateOppijaFeeder).exec(updateHttp)
   val prepareForUpdateOppija = scenario("Prepare for update").feed(updateOppijaFeeder).exec(updateHttp.silent)
 }
 
 trait InsertOppijaScenario extends InsertOrUpdateScenario {
-  private val insertHttp = insertOrUpdate("insert", UusiOppijaBody)
+  private val insertHttp = insertOrUpdate("insert", UusiOppijaBody).check(status.in(200))
 
   val prepareForInsertOppija = scenario("Prepare for insert").feed(uusiOppijaFeeder).exec(insertHttp.silent)
   val insertOppija = scenario("Insert oppija").feed(uusiOppijaFeeder).exec(insertHttp)
-  val batchInsertOppija = scenario("Batch insert oppija").feed(uusiOppijaFeeder).exec(insertOrUpdate("batchInsert", UusiOppijaBatchBody, "/api/oppija/batch"))
+  val batchInsertOppija = scenario("Batch insert oppija").feed(uusiOppijaFeeder).exec(insertOrUpdate("batchInsert", UusiOppijaBatchBody, "/api/oppija/batch").check(status.in(200)))
 }
 
 object OppijaWithOpiskeluoikeusWithIncrementingStartdate extends Body {

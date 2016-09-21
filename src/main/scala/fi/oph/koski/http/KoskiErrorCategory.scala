@@ -110,6 +110,7 @@ object KoskiErrorCategory {
 
   object conflict extends ErrorCategory("conflict", 409, "Ristiriitainen päivitys")  {
     val versionumero = subcategory("versionumero", "Yritetty päivittää vanhan version päälle; annettu versionumero on erisuuri kuin viimeisin rekisteristä löytyvä.")
+    val samanaikainenPäivitys = subcategory("samanaikainenPäivitys", "Toinen käyttäjä on päivittänyt saman opiskeluoikeuden tietoja samanaikaisesti. Yritä myöhemmin uudelleen.")
     val hetu = subcategory("hetu", "Henkilö on jo lisätty annetulla hetulla.")
   }
 

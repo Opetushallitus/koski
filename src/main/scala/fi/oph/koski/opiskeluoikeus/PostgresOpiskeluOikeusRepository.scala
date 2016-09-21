@@ -1,5 +1,7 @@
 package fi.oph.koski.opiskeluoikeus
 
+import java.sql.SQLException
+
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
@@ -81,7 +83,13 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
 
 
   override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiUser): Either[HttpStatus, CreateOrUpdateResult] = {
-    doInIsolatedTransaction(createOrUpdateAction(oppijaOid, opiskeluOikeus), "Oppijan " + oppijaOid + " opiskeluoikeuden lisäys/muutos")
+    try {
+      runDbSync(createOrUpdateAction(oppijaOid, opiskeluOikeus).transactionally)
+    } catch {
+      case e:SQLException if e.getSQLState == "23505" =>
+        // 23505 = Unique constraint violation
+        Left(KoskiErrorCategory.conflict.samanaikainenPäivitys())
+    }
   }
 
   private def findByOppijaOidAction(oid: String)(implicit user: KoskiUser): dbio.DBIOAction[Seq[OpiskeluOikeusRow], NoStream, Read] = {
