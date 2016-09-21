@@ -28,5 +28,15 @@
       "kieli" : "FI"
     } ],
     "versio" : 1
+  },
+  {
+    "koodiUri" : "lukionoppimaaransuorituksenlisatieto_muu",
+    "koodiArvo" : "muu",
+    "metadata" : [ {
+      "nimi" : "Muu lisätieto",
+      "kuvaus" : "Muu lisätieto",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
   }
 ]
