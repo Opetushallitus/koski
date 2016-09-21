@@ -263,8 +263,9 @@ object LukioExampleData {
     tila = tilaValmis
   )
 
-  def valtakunnallinenKurssi(kurssi: String): ValtakunnallinenLukionKurssi = ValtakunnallinenLukionKurssi(Koodistokoodiviite(koodistoUri = "lukionkurssit", koodiarvo = kurssi), laajuus(1.0f))
-  def paikallinenKurssi(koodi: String, nimi: String, kuvaus: String) = PaikallinenLukionKurssi(PaikallinenKoodi(koodiarvo = koodi, nimi = nimi), laajuus(1.0f), kuvaus)
+  val pakollinenKurssi = Koodistokoodiviite("pakollinen", "lukionkurssinpakollisuus")
+  def valtakunnallinenKurssi(kurssi: String, pakollisuus: Koodistokoodiviite = pakollinenKurssi): ValtakunnallinenLukionKurssi = ValtakunnallinenLukionKurssi(Koodistokoodiviite(koodistoUri = "lukionkurssit", koodiarvo = kurssi), laajuus(1.0f), pakollisuus = pakollisuus)
+  def paikallinenKurssi(koodi: String, nimi: String, kuvaus: String, pakollisuus: Koodistokoodiviite = pakollinenKurssi) = PaikallinenLukionKurssi(PaikallinenKoodi(koodiarvo = koodi, nimi = nimi), laajuus(1.0f), kuvaus, pakollisuus = pakollisuus)
 
   def matematiikka(matematiikka: String) = LukionMatematiikka(oppimäärä = Koodistokoodiviite(koodiarvo = matematiikka, koodistoUri = "oppiainematematiikka"))
 

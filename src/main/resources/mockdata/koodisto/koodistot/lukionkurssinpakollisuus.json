@@ -1,0 +1,12 @@
+{
+  "koodistoUri" : "lukionkurssinpakollisuus",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Lukion kurssin pakollisuus",
+    "kuvaus" : "Lukion kurssin pakollisuustiedot"
+  } ],
+  "codesGroupUri" : "http://koski",
+  "voimassaAlkuPvm" : "2016-09-21",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}

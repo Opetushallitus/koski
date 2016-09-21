@@ -61,6 +61,7 @@ object MockKoodistoPalvelu {
     "kunta",
     "lahdejarjestelma",
     "lasnaolotila",
+    "lukionkurssinpakollisuus",
     "lukionkurssit",
     "lukionoppimaara",
     "lukionoppimaaransuorituksenlisatieto",

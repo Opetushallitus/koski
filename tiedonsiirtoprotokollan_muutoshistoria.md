@@ -1,3 +1,6 @@
+## 21.9.2016
+- Lisätty pakollisuus kenttä lukion kurssin suoritukseen
+
 ## 20.9.2016
 - Oppiaineiden suorituksissa ei vaadita vahvistusta, vaikka suoritus olisi valmis
 - IB-tutkintojen tiedot lisätty (työversio)

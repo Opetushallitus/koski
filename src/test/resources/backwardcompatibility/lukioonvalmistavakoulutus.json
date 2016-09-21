@@ -215,6 +215,10 @@
               "koodiarvo" : "4",
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
+          },
+          "pakollisuus" : {
+            "koodiarvo" : "pakollinen",
+            "koodistoUri" : "lukionkurssinpakollisuus"
           }
         },
         "tila" : {

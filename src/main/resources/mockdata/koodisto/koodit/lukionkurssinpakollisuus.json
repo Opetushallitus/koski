@@ -1,0 +1,29 @@
+[
+  {
+  "koodiUri" : "lukionkurssinpakollisuus_pakollinen",
+  "koodiArvo" : "pakollinen",
+  "metadata" : [ {
+    "nimi" : "Pakollinen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+  },
+  {
+    "koodiUri" : "lukionkurssinpakollisuus_syventava",
+    "koodiArvo" : "syventava",
+    "metadata" : [ {
+      "nimi" : "Syventävä",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "lukionkurssinpakollisuus_soveltava",
+    "koodiArvo" : "soveltava",
+    "metadata" : [ {
+      "nimi" : "Soveltava",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  }
+]
