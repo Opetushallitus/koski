@@ -56,7 +56,7 @@ object ExamplesLukio {
               kurssisuoritus(valtakunnallinenKurssi("ENA6")).copy(arviointi = kurssinArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("ENA7")).copy(arviointi = kurssinArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("ENA8")).copy(arviointi = kurssinArviointi(9)),
-              kurssisuoritus(paikallinenKurssi("ENA 10", "Abituki", "Aihepiirit liittyvät pakollisten ja valtakunnallisten syventävien kurssien aihekokonaisuuksiin niitä syventäen ja laajentaen. Kurssilla vankennetaan ylioppilaskokeessa tarvittavia tietoja ja taitoja. Pakollisilla ja valtakunnallisilla syventävillä kursseilla hankitun kielioppirakenteiden ja sanaston hallintaa vahvistetaan ja syvennetään. Arvioinnissa (suoritettu/hylätty) otetaan huomioon kaikki kielitaidon osa-alueet ja se perustuu jatkuvaan näyttöön. Kurssin päättyessä opiskelija on saanut lisävalmiuksia osallistua ylioppilaskokeeseen."))
+              kurssisuoritus(paikallinenKurssi("ENA 10", "Abituki", "Aihepiirit liittyvät pakollisten ja valtakunnallisten syventävien kurssien aihekokonaisuuksiin niitä syventäen ja laajentaen. Kurssilla vankennetaan ylioppilaskokeessa tarvittavia tietoja ja taitoja. Pakollisilla ja valtakunnallisilla syventävillä kursseilla hankitun kielioppirakenteiden ja sanaston hallintaa vahvistetaan ja syvennetään. Arvioinnissa (suoritettu/hylätty) otetaan huomioon kaikki kielitaidon osa-alueet ja se perustuu jatkuvaan näyttöön. Kurssin päättyessä opiskelija on saanut lisävalmiuksia osallistua ylioppilaskokeeseen.", syventävä))
                 .copy(arviointi = kurssinArviointi("S")) // 0.5
             ))),
             suoritus(lukionKieli("B1", "SV")).copy(arviointi = arviointi(7)).copy(osasuoritukset = Some(List(
@@ -72,7 +72,7 @@ object ExamplesLukio {
             ))),
             suoritus(matematiikka("MAA")).copy(arviointi = arviointi(9)).copy(osasuoritukset = Some(List(
               kurssisuoritus(paikallinenKurssi("MAA1", "Funktiot ja yhtälöt, pa, vuositaso 1",
-                "Vahvistetaan yhtälön ratkaisemisen ja prosenttilaskennan taitoja. Syvennetään verrannollisuuden, neliöjuuren ja potenssin käsitteiden ymmärtämistä. Harjaannutaan käyttämään neliöjuuren ja potenssin laskusääntöjä. Syvennetään funktiokäsitteen ymmärtämistä tutkimalla potenssi- ja eksponenttifunktioita. Opetellaan ratkaisemaan potenssiyhtälöitä."))
+                "Vahvistetaan yhtälön ratkaisemisen ja prosenttilaskennan taitoja. Syvennetään verrannollisuuden, neliöjuuren ja potenssin käsitteiden ymmärtämistä. Harjaannutaan käyttämään neliöjuuren ja potenssin laskusääntöjä. Syvennetään funktiokäsitteen ymmärtämistä tutkimalla potenssi- ja eksponenttifunktioita. Opetellaan ratkaisemaan potenssiyhtälöitä.", syventävä))
                 .copy(arviointi = kurssinArviointi(9)),
               kurssisuoritus(valtakunnallinenKurssi("MAA2")).copy(arviointi = kurssinArviointi(10)),
               kurssisuoritus(valtakunnallinenKurssi("MAA3")).copy(arviointi = kurssinArviointi(8)),
@@ -88,7 +88,7 @@ object ExamplesLukio {
               kurssisuoritus(valtakunnallinenKurssi("MAA13")).copy(arviointi = kurssinArviointi(8)),
               kurssisuoritus(paikallinenKurssi("MAA14", "Kertauskurssi, ksy, vuositaso 3", "Harjoitellaan käyttämään opittuja tietoja ja taitoja monipuolisissa ongelmanratkaisutilanteissa."))
                 .copy(arviointi = kurssinArviointi(9)),
-              kurssisuoritus(paikallinenKurssi("MAA16", "Analyyttisten menetelmien lisäkurssi, ksy, vuositaso 2", "Kurssilla syvennetään kurssien MAA4, MAA5 ja MAA7 sisältöjä."))
+              kurssisuoritus(paikallinenKurssi("MAA16", "Analyyttisten menetelmien lisäkurssi, ksy, vuositaso 2", "Kurssilla syvennetään kurssien MAA4, MAA5 ja MAA7 sisältöjä.", syventävä))
                 .copy(arviointi = kurssinArviointi(9))
             ))),
             suoritus(lukionOppiaine("BI")).copy(arviointi = arviointi(9)).copy(osasuoritukset = Some(List(
@@ -120,7 +120,7 @@ object ExamplesLukio {
                 .copy(arviointi = kurssinArviointi(7)),
               kurssisuoritus(paikallinenKurssi("FY9", "Kokeellinen fysiikka, so, vuositaso 2", "Kurssi syventää ja täydentää muilla kursseilla esiin tulleita tai tulevia asioita. Kurssilla tutkitaan kokeellisesti fysiikan ilmiöitä eri osa-alueilta ja opetellaan raportoimaan tehty koe ja kokeen tulokset."))
                 .copy(arviointi = kurssinArviointi(7)),
-              kurssisuoritus(paikallinenKurssi("FY10", "Lukion fysiikan kokonaiskuva, so, vuositaso 3", "Kurssin tavoitteena on luoda kokonaiskuva fysiikasta. Kurssilla syvennetään fysiikan osaamista laskennallisella tasolla ja harjoitellaan reaalikokeeseen vastaamista."))
+              kurssisuoritus(paikallinenKurssi("FY10", "Lukion fysiikan kokonaiskuva, so, vuositaso 3", "Kurssin tavoitteena on luoda kokonaiskuva fysiikasta. Kurssilla syvennetään fysiikan osaamista laskennallisella tasolla ja harjoitellaan reaalikokeeseen vastaamista.", soveltava))
                 .copy(arviointi = kurssinArviointi("S")),
               kurssisuoritus(paikallinenKurssi("FY11", "Fysiikka 11", "Fysiikka 11")).copy(arviointi = kurssinArviointi("S")),
               kurssisuoritus(paikallinenKurssi("FY12", "Fysiikka 12", "Fysiikka 12")).copy(arviointi = kurssinArviointi("S")),
@@ -132,7 +132,7 @@ object ExamplesLukio {
               kurssisuoritus(valtakunnallinenKurssi("KE3")).copy(arviointi = kurssinArviointi(9)),
               kurssisuoritus(valtakunnallinenKurssi("KE4")).copy(arviointi = kurssinArviointi(5)),
               kurssisuoritus(valtakunnallinenKurssi("KE5")).copy(arviointi = kurssinArviointi(7)),
-              kurssisuoritus(paikallinenKurssi("KE6", "Kokeellinen kemia, so, vuositasot 2-3", "Tehdään erilaisia kvantitatiivisia ja kvalitatiivisia määrityksiä, synteesejä ja analyysejä sekä laaditaan työselostuksia. Mahdollisuuksien mukaan tehdään myös vierailuja alan yrityksiin ja oppilaitoksiin."))
+              kurssisuoritus(paikallinenKurssi("KE6", "Kokeellinen kemia, so, vuositasot 2-3", "Tehdään erilaisia kvantitatiivisia ja kvalitatiivisia määrityksiä, synteesejä ja analyysejä sekä laaditaan työselostuksia. Mahdollisuuksien mukaan tehdään myös vierailuja alan yrityksiin ja oppilaitoksiin.", soveltava))
                 .copy(arviointi = kurssinArviointi(5)),
               kurssisuoritus(paikallinenKurssi("KE7", "Lukion kemian kokonaiskuva, so, vuositaso 3", "Kurssin tavoitteena on kerrata lukion oppimäärä ja antaa kokonaiskuva lukion kemiasta. Harjoitellaan reaalikokeeseen vastaamista."))
                 .copy(arviointi = kurssinArviointi("S")),
@@ -263,9 +263,11 @@ object LukioExampleData {
     tila = tilaValmis
   )
 
-  val pakollinenKurssi = Koodistokoodiviite("pakollinen", "lukionkurssinpakollisuus")
-  def valtakunnallinenKurssi(kurssi: String, pakollisuus: Koodistokoodiviite = pakollinenKurssi): ValtakunnallinenLukionKurssi = ValtakunnallinenLukionKurssi(Koodistokoodiviite(koodistoUri = "lukionkurssit", koodiarvo = kurssi), laajuus(1.0f), pakollisuus = pakollisuus)
-  def paikallinenKurssi(koodi: String, nimi: String, kuvaus: String, pakollisuus: Koodistokoodiviite = pakollinenKurssi) = PaikallinenLukionKurssi(PaikallinenKoodi(koodiarvo = koodi, nimi = nimi), laajuus(1.0f), kuvaus, pakollisuus = pakollisuus)
+  val pakollinen = Koodistokoodiviite("pakollinen", "lukionkurssinpakollisuus")
+  val syventävä = Koodistokoodiviite("syventava", "lukionkurssinpakollisuus")
+  val soveltava = Koodistokoodiviite("soveltava", "lukionkurssinpakollisuus")
+  def valtakunnallinenKurssi(kurssi: String, pakollisuus: Koodistokoodiviite = pakollinen): ValtakunnallinenLukionKurssi = ValtakunnallinenLukionKurssi(Koodistokoodiviite(koodistoUri = "lukionkurssit", koodiarvo = kurssi), laajuus(1.0f), pakollisuus = pakollisuus)
+  def paikallinenKurssi(koodi: String, nimi: String, kuvaus: String, pakollisuus: Koodistokoodiviite = pakollinen) = PaikallinenLukionKurssi(PaikallinenKoodi(koodiarvo = koodi, nimi = nimi), laajuus(1.0f), kuvaus, pakollisuus = pakollisuus)
 
   def matematiikka(matematiikka: String) = LukionMatematiikka(oppimäärä = Koodistokoodiviite(koodiarvo = matematiikka, koodistoUri = "oppiainematematiikka"))
 
