@@ -6,7 +6,7 @@ import java.nio.file.{Files, Paths}
 import com.typesafe.config.ConfigValueFactory._
 import fi.oph.koski.cache.JMXCacheManager
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.log.LogConfiguration
+import fi.oph.koski.log.{LogConfiguration, Logging}
 import fi.oph.koski.util.{Pools, PortChecker}
 import org.eclipse.jetty.jmx.MBeanContainer
 import org.eclipse.jetty.server.handler.StatisticsHandler
@@ -14,12 +14,18 @@ import org.eclipse.jetty.server.{Server, ServerConnector, Slf4jRequestLog}
 import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.eclipse.jetty.webapp.WebAppContext
 
-object JettyLauncher extends App {
+object JettyLauncher extends App with Logging {
   lazy val globalPort = System.getProperty("tor.port","7021").toInt
-  new JettyLauncher(globalPort).start.join
+  try {
+    new JettyLauncher(globalPort).start.join
+  } catch {
+    case e: Throwable =>
+      logger.error(e)("Error in server startup")
+      System.exit(1)
+  }
 }
 
-class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) {
+class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) extends Logging {
   val config = overrides.toList.foldLeft(KoskiApplication.defaultConfig)({ case (config, (key, value)) => config.withValue(key, fromAnyRef(value)) })
   val application = new KoskiApplication(config, new JMXCacheManager)
   application.database // <- force evaluation to make sure DB is up
