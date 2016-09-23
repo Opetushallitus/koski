@@ -1,5 +1,6 @@
 package fi.oph.koski.documentation
 
+import fi.oph.koski.http.ErrorCategory
 import fi.oph.koski.json.Json
 
 import scala.xml.Elem
