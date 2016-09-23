@@ -171,7 +171,7 @@ object ExamplesLukio {
             ))),
             suoritus(lukionOppiaine("KU")).copy(arviointi = arviointi(9)).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("KU1")).copy(arviointi = kurssinArviointi(8)),
-              kurssisuoritus(valtakunnallinenKurssi("KU2")).copy(arviointi = kurssinArviointi(9))
+              kurssisuoritus(soveltavaKurssi("KU2", "Elävän mallin piirustus, lukiodiplomi", "Elävän mallin piirustus"), Some(true)).copy(arviointi = kurssinArviointi(9))
             ))),
             suoritus(lukionOppiaine("TE")).copy(arviointi = arviointi(9)).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("TE1")).copy(arviointi = kurssinArviointi(8))
@@ -256,11 +256,12 @@ object LukioExampleData {
     osasuoritukset = None
   )
 
-  def kurssisuoritus(kurssi: LukionKurssi) = LukionKurssinSuoritus(
+  def kurssisuoritus(kurssi: LukionKurssi, suoritettuLukiodiplomina: Option[Boolean] = None) = LukionKurssinSuoritus(
     koulutusmoduuli = kurssi,
     suorituskieli = None,
     arviointi = None,
-    tila = tilaValmis
+    tila = tilaValmis,
+    suoritettuLukiodiplomina = suoritettuLukiodiplomina
   )
 
   val pakollinen = Koodistokoodiviite("pakollinen", "lukionkurssintyyppi")
