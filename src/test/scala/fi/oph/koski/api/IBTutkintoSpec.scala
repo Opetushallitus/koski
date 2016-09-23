@@ -10,54 +10,54 @@ class IBTutkintoSpec extends FunSpec with Matchers with OpintosuoritusoteTestMet
       opintosuoritusote(MockOppijat.ibOpiskelija) should equal(
         """Preliminary year courses
           |Kurssia Arvosana Suor.pvm
-          |A1 A1-kieli, englanti 3
+          |A1 A1-kieli, englanti 3 10
           |ENA1 Englannin kieli ja maailmani 1 10 4.6.2016
           |ENA2 Ihminen verkostoissa 1 10 4.6.2016
           |ENA5 Tiede ja tulevaisuus 1 10 4.6.2016
-          |B1 B1-kieli, ruotsi 2
+          |B1 B1-kieli, ruotsi 2 7
           |RUB11 Minun ruotsini 1 8 4.6.2016
           |RUB12 Hyvinvointi ja ihmissuhteet 1 7 4.6.2016
-          |B2 B2-kieli, ranska 1
+          |B2 B2-kieli, ranska 1 9
           |RAN3 Ravintolaranska 1 9 4.6.2016
-          |B3 B3-kieli, espanja 1
+          |B3 B3-kieli, espanja 1 6
           |ES1 Turistiespanja 1 hyväksytty 4.6.2016
-          |BI Biologia 2
+          |BI Biologia 2 8
           |BI1 Elämä ja evoluutio 1 8 4.6.2016
           |BI10 Biologian erikoiskurssi 1 hyväksytty 4.6.2016
-          |FI Filosofia 1
+          |FI Filosofia 1 7
           |FI1 Johdatus filosofiseen ajatteluun 1 hyväksytty 4.6.2016
-          |FY Fysiikka 1
+          |FY Fysiikka 1 7
           |FY1 Fysiikka luonnontieteenä 1 7 4.6.2016
-          |HI Historia 3
+          |HI Historia 3 8
           |HI3 Itsenäisen Suomen historia 1 9 4.6.2016
           |HI4 Eurooppalaisen maailmankuvan kehitys 1 8 4.6.2016
           |HI10 Ajan lyhyt historia 1 hyväksytty 4.6.2016
-          |KE Kemia 1
+          |KE Kemia 1 8
           |KE1 Kemiaa kaikkialla 1 8 4.6.2016
-          |KU Kuvataide 1
+          |KU Kuvataide 1 9
           |KU1 Kuvat ja kulttuurit 1 9 4.6.2016
-          |LI Liikunta 1
+          |LI Liikunta 1 8
           |LI1 Energiaa liikunnasta 1 8 4.6.2016
-          |GE Maantieto 1
+          |GE Maantieto 1 10
           |GE2 Sininen planeetta 1 10 4.6.2016
-          |MA Matematiikka, pitkä oppimäärä 4
+          |MA Matematiikka, pitkä oppimäärä 4 7
           |MAA2 Polynomifunktiot ja -yhtälöt 1 7 4.6.2016
           |MAA11 Lukuteoria ja todistaminen 1 7 4.6.2016
           |MAA12 Algoritmit matematiikassa 1 7 4.6.2016
           |MAA13 Differentiaali- ja integraalilaskennan jatkokurssi 1 7 4.6.2016
-          |MU Musiikki 1
+          |MU Musiikki 1 8
           |MU1 Musiikki ja minä 1 8 4.6.2016
-          |OP Opinto-ohjaus 1
+          |OP Opinto-ohjaus 1 7
           |OP1 Minä opiskelijana 1 hyväksytty 4.6.2016
-          |PS Psykologia 1
+          |PS Psykologia 1 8
           |PS1 Psyykkinen toiminta ja oppiminen 1 8 4.6.2016
-          |TE Terveystieto 1
+          |TE Terveystieto 1 7
           |TE1 Terveyden perusteet 1 7 4.6.2016
-          |KT Uskonto tai elämänkatsomustieto 1
+          |KT Uskonto tai elämänkatsomustieto 1 10
           |UK4 Uskonto suomalaisessa yhteiskunnassa 1 10 4.6.2016
-          |YH Yhteiskuntaoppi 1
+          |YH Yhteiskuntaoppi 1 8
           |YH1 Suomalainen yhteiskunta 1 8 4.6.2016
-          |AI Äidinkieli ja kirjallisuus 3
+          |AI Äidinkieli ja kirjallisuus 3 8
           |ÄI1 Tekstit ja vuorovaikutus 1 8 4.6.2016
           |ÄI2 Kieli, kulttuuri ja identiteetti 1 8 4.6.2016
           |ÄI3 Kirjallisuuden keinoja ja tulkintaa 1 8 4.6.2016
