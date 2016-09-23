@@ -1,5 +1,5 @@
 ## 21.9.2016
-- Lisätty pakollisuus kenttä lukion kurssin suoritukseen
+- Lisätty kurssinTyyppi kenttä lukion kurssin suoritukseen (pakollinen, syventävä, soveltava)
 
 ## 20.9.2016
 - Oppiaineiden suorituksissa ei vaadita vahvistusta, vaikka suoritus olisi valmis
