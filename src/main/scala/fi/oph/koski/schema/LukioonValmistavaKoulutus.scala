@@ -21,7 +21,8 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeus(
   @MaxItems(1)
   suoritukset: List[LukioonValmistavanKoulutuksenSuoritus],
   @KoodistoKoodiarvo("luva")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("luva", "opiskeluoikeudentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("luva", "opiskeluoikeudentyyppi"),
+  lisätiedot: Option[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot] = None
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OidOrganisaatio) = this.copy(koulutustoimija = Some(koulutustoimija))
@@ -70,3 +71,10 @@ case class LukioonValmistavanKoulutuksenKurssi(
   laajuus: Option[LaajuusKursseissa],
   kuvaus: LocalizedString
 ) extends PaikallinenKoulutusmoduuli
+
+case class LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(
+  @Description("Opiskeluajan pidennetty päättymispäivä (true/false). Lukiokoulutukseen valmistavan koulutuksen oppimäärä tulee suorittaa yhdessä vuodessa, jollei sairauden tai muun erityisen syyn vuoksi myönnetä suoritusaikaan pidennystä. (lukiolaki 21.8.1998/629 24 §)")
+  pidennettyPäättymispäivä: Boolean = false,
+  @Description("Opiskelija on ulkomainen vaihto-opiskelija Suomessa (true/false)")
+  ulkomainenVaihtoopiskelija: Boolean = false
+)
