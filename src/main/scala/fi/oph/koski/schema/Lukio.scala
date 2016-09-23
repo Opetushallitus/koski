@@ -138,7 +138,8 @@ case class LukionKurssinSuoritus(
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   suorituskieli: Option[Koodistokoodiviite],
   @KoodistoKoodiarvo("lukionkurssi")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionkurssi", koodistoUri = "suorituksentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionkurssi", koodistoUri = "suorituksentyyppi"),
+  suoritettuLukiodiplomina: Option[Boolean] = None
 ) extends VahvistuksetonSuoritus with LukioonValmistavanKoulutuksenOsasuoritus
 
 case class LukionOppiaineenArviointi(
