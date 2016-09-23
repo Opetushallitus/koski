@@ -10,6 +10,7 @@ Koulutuksen tavoitteena on oppia käyttämään PostgreSQL:n JSONB SQL-laajennuk
 
 Referenssinä kannattaa käyttää PostgreSQL 9.5 JSON(B)-dokumentaatiota: https://www.postgresql.org/docs/9.5/static/functions-json.html
 Lisäksi voi lukaista PostgreSQL JSON -tutoriaalin netissä: http://schinckel.net/2014/05/25/querying-json-in-postgres/
+Koski-järjestelmän tietuekuvaus löytyy [dokumentaatiosivulta](https://koskidev.koski.oph.reaktor.fi/koski/documentation)
 
 ### Kyselyjä
 
@@ -19,7 +20,7 @@ Haetaan kaikki opiskeluoikeudet
 select * from opiskeluoikeus;
 ````
 
-“Normaaleja” kenttiä voi hakea SQL:llä. Esimerkiksi
+“Normaaleja” kenttiä voi hakea SQL:llä. Esimerkiksi haku oppijan oidilla:
 
 ```sql
 select * from opiskeluoikeus where oppija_oid = ‘1.2.246.562.24.68660987408'
@@ -42,6 +43,8 @@ Esimerkiksi haetaan oppilaitoksen tunniste:
 select data -> 'oppilaitos' ->> 'oid' from opiskeluoikeus
 ```
 
+*Harjoitus:*: Hae niiden oppijoiden oidit, joilla on opiskeluoikeus Stadin ammattiopistossa
+
 Monissa JSONB-kentissä on lista (json array) asioita. Listan viimeinen (uusin) alkio saadaan haettua `jsonb_array_length` -funktion avustuksella.
 Esimerkiksi opiskeluoikeuden tilahistorian viimeisin (nykyinen) tila:
 
@@ -57,6 +60,9 @@ Haetaan opiskeluoikeudet, jotka ovat tilassa “Läsnä”:
 select * from opiskeluoikeus 
 where data -> 'tila' -> 'opiskeluoikeusjaksot' -> (jsonb_array_length(data -> 'tila' -> 'opiskeluoikeusjaksot') - 1) -> 'tila' ->> 'koodiarvo' = 'lasna'
 ```
+
+*Harjoitus*: Hae oppijat, joilla on aktiivinen (päättymispäivä puuttuu) opiskeluoikeus Stadin ammattiopistossa,
+ja joiden opiskeluoikeuden tila on "Läsnä".
 
 Listatyyppisten kenttien sisältö voidaan tarvittaessa avata omaksi SQL-tulosjoukokseen funktiolla `jsonb_array_elements`, jolloin
 listan alkioita voidaan käsitellä erillisinä riveinä, aivan kuin ne olisiva omassa taulussaan tietokannassa.
@@ -95,6 +101,9 @@ from (
     and suoritukset.suoritus -> 'tila' ->> 'koodiarvo' = 'VALMIS'
  ) as ainesuoritukset
 ```
+
+*Harjoitus*: Hae oppijoiden suorittamien valmiiden ammatillisten tutkinnon osien tunnisteet, nimet ja arvosanat
+*Harjoitus*: Laske oppijoiden suorittamien valmiiden ammatillisten tutkinnon osien arvosanojen keskiarvo oppijoittain
 
 ### Tietojen päivittäminen
 
