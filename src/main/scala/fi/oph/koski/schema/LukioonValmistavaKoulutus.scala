@@ -48,7 +48,9 @@ case class LukioonValmistavanKoulutuksenSuoritus(
 @Description("Lukioon valmistavan koulutuksen (LUVA) tunnistetiedot")
 case class LukioonValmistavaKoulutus(
   @KoodistoKoodiarvo("999906")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite("999906", koodistoUri = "koulutus")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("999906", koodistoUri = "koulutus"),
+  @Description("Tutkinnon perusteen diaarinumero")
+  perusteenDiaarinumero: Option[String] = None
 ) extends Koulutus {
   def laajuus = None
 }
