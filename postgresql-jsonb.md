@@ -68,8 +68,11 @@ select oppija_oid, jsonb_array_elements(data -> 'suoritukset') from opiskeluoike
 Oppijoiden suorittamien valmiiden päätason suoritusten tyypit:
 
 ```sql
-select oppija_oid, suoritus -> 'tyyppi' ->> 'koodiarvo' as tyyppi from
-(select oppija_oid, jsonb_array_elements(data -> 'suoritukset') as suoritus from opiskeluoikeus) as suoritukset
+select oppija_oid, suoritus -> 'tyyppi' ->> 'koodiarvo' as tyyppi 
+from (
+  select oppija_oid, jsonb_array_elements(data -> 'suoritukset') as suoritus 
+  from opiskeluoikeus
+) as suoritukset
 where suoritus -> 'tila' ->> 'koodiarvo' = 'VALMIS';
 ```
 
@@ -79,11 +82,15 @@ Perusopetuksen päättötodistuksen aineiden arvosanat:
 select oppija_oid,
   ainesuoritus -> 'koulutusmoduuli' -> 'tunniste' ->> 'koodiarvo' as aine,
   ainesuoritus -> 'arviointi' -> (jsonb_array_length(ainesuoritus -> 'arviointi') - 1) -> 'arvosana' ->> 'koodiarvo' as arvosana
-from
-(select oppija_oid, jsonb_array_elements(suoritus -> 'osasuoritukset') as ainesuoritus from
-  (select oppija_oid, jsonb_array_elements(data -> 'suoritukset') as suoritus from opiskeluoikeus
-    where data -> 'tyyppi' ->> 'koodiarvo' = 'perusopetus') as suoritukset
+from (
+  select oppija_oid, jsonb_array_elements(suoritus -> 'osasuoritukset') as ainesuoritus 
+  from (
+    select oppija_oid, jsonb_array_elements(data -> 'suoritukset') as suoritus 
+    from opiskeluoikeus
+    where data -> 'tyyppi' ->> 'koodiarvo' = 'perusopetus'
+  ) as suoritukset
 
   where suoritukset.suoritus -> 'tyyppi' ->> 'koodiarvo' = 'perusopetuksenoppimaara'
-    and suoritukset.suoritus -> 'tila' ->> 'koodiarvo' = 'VALMIS') as ainesuoritukset
+    and suoritukset.suoritus -> 'tila' ->> 'koodiarvo' = 'VALMIS'
+ ) as ainesuoritukset
 ```
