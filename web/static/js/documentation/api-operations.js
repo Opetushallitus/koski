@@ -21,7 +21,6 @@ forEach(document.querySelectorAll('.api-operation'), function(operationElem) {
     elem.querySelector('h4').addEventListener('click', toggleExpanded(elem))
   })
   forEach(operationElem.querySelectorAll('.api-tester'), function(apiTesterElem) {
-
     var exampleSelector = apiTesterElem.querySelector(".examples select")
     var codeMirror
     var queryParamInputs = a(apiTesterElem.querySelectorAll(".parameters input.query-param"))
@@ -136,4 +135,12 @@ forEach(document.querySelectorAll('.api-operation'), function(operationElem) {
       sel.addRange(range);
     }
   })
+
+  forEach(operationElem.querySelectorAll(".example-response"), function(responseElem) {
+    forEach(responseElem.querySelectorAll("a"), function(link) { link.onclick = toggleExpanded(responseElem) })
+    var codeElem = responseElem.querySelector('code')
+    codeElem.innerHTML = JSON.stringify(JSON.parse(codeElem.innerHTML), null, 2) // pretty-print JSON
+    hljs.highlightBlock(codeElem)
+  })
+
 })

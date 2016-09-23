@@ -1,10 +1,14 @@
 package fi.oph.koski.http
 
+import fi.oph.koski.documentation.JsonValidationErrorExample
+import fi.oph.koski.koski.{HenkilönOpiskeluoikeusVersiot, OpiskeluoikeusVersio}
+import fi.oph.koski.schema.OidHenkilö
+
 object KoskiErrorCategory {
   val children = List(ok, badRequest, unauthorized, forbidden, notFound, conflict, unsupportedMediaType, internalError)
 
   object ok extends ErrorCategory("ok", 200, "Ok") {
-    val createdOrUpdated = subcategory("createdOrUpdated", "Päivitys/lisäys onnistui.")
+    val createdOrUpdated = subcategory("createdOrUpdated", "Päivitys/lisäys onnistui.", HenkilönOpiskeluoikeusVersiot(OidHenkilö("1.2.246.562.24.00000000001"), List(OpiskeluoikeusVersio(3547432, 3))))
     val searchOk = subcategory("searchOk", "Haku onnistui.")
     val maybeEmptyList = subcategory("maybeEmptyList", "Haku onnistui. Myös silloin kun ei löydy yhtään tulosta ja palautetaan tyhjä lista.")
     val maybeValidationErrorsInContent = subcategory("maybeValidationErrorsInContent", "Haku onnistui. Mahdolliset validointivirheet palautetaan json-vastauksessa.")
@@ -26,7 +30,7 @@ object KoskiErrorCategory {
     val queryParam = new QueryParam
 
     class Validation extends ErrorCategory(badRequest, "validation", "Syötteen validointi epäonnistui") {
-      val jsonSchema = subcategory("jsonSchema", "JSON-schema -validointi epäonnistui. Paluuviestin sisällä virheilmoitukset JSON-muodossa.")
+      val jsonSchema = subcategory("jsonSchema", "JSON-schema -validointi epäonnistui. Paluuviestin sisällä virheilmoitukset JSON-muodossa.", JsonValidationErrorExample.example)
       val tyhjäOpiskeluoikeusLista = subcategory("tyhjäOpiskeluoikeusLista", "Annettiin tyhjä lista opiskeluoikeuksia.")
 
       class Organisaatio extends ErrorCategory(Validation.this, "organisaatio", "Epäkelpo organisaatio") {

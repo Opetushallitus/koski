@@ -2,18 +2,30 @@ package fi.oph.koski.http
 
 private object ErrorCategory {
   def makeKey(key: String, subkey: String) = key + "." + subkey
+  def defaultErrorContent(key: String, message: AnyRef): List[ErrorDetail] = {
+    List(ErrorDetail(key, message))
+  }
 }
 
 import fi.oph.koski.http.ErrorCategory._
 
-case class ErrorCategory(val key: String, val statusCode: Int, val message: String) {
-  def this(parent: ErrorCategory, key: String, message: String) = {
-    this(makeKey(parent.key, key), parent.statusCode, message)
+case class ErrorCategory(val key: String, val statusCode: Int, val message: String, val exampleResponse: AnyRef) {
+  def this(key: String, statusCode: Int, message: String) = {
+    this(key, statusCode, message, Some(defaultErrorContent(key, message)))
+  }
+  def this(parent: ErrorCategory, key: String, message: String, exampleResponse: AnyRef) = {
+    this(makeKey(parent.key, key), parent.statusCode, message, exampleResponse)
     parent.addSubcategory(key, this)
   }
+  def this(parent: ErrorCategory, key: String, message: String) = {
+    this(parent, key, message, defaultErrorContent(makeKey(parent.key, key), message))
+  }
+
+  def subcategory(subkey: String, message: String, exampleResponse: AnyRef) = new ErrorCategory(this, subkey, message, exampleResponse)
   def subcategory(subkey: String, message: String) = new ErrorCategory(this, subkey, message)
 
-  def apply(message: AnyRef): HttpStatus = HttpStatus(statusCode, List(ErrorDetail(key, message)))
+  def apply(message: AnyRef): HttpStatus = HttpStatus(statusCode, defaultErrorContent(key, message))
+
   def apply(): HttpStatus = apply(message)
 
   def children: List[(String, ErrorCategory)] = children_

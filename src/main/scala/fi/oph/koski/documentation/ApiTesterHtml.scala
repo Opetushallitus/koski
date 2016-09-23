@@ -18,13 +18,14 @@ object ApiTesterHtml {
           <div class="api-details">
             {operation.doc}
           <div class="status-codes">
-            <h4><a>Paluukoodit</a></h4>
+            <h4><a>Vastaukset ja paluukoodit</a></h4>
             <table>
               <thead>
                 <tr>
-                  <th>HTTP-status</th> <th>Virhekoodi
-                  <small>(JSON-vastauksen sisällä)</small>
-                </th> <th>Tilanne</th>
+                  <th>HTTP-status</th>
+                  <th>Virhekoodi <small>(JSON-vastauksen sisällä)</small></th>
+                  <th>Tilanne</th>
+                  <th>Esimerkkivastaus</th>
                 </tr>
               </thead>
               <tbody>
@@ -32,11 +33,22 @@ object ApiTesterHtml {
                 <tr>
                   <td>
                     {errorCategory.statusCode}
-                  </td> <td>
-                  {if (errorCategory.statusCode != 200) {errorCategory.key} else {""}}
-                </td> <td>
-                  {errorCategory.message}
-                </td>
+                  </td>
+                  <td>
+                    {if (errorCategory.statusCode != 200) {errorCategory.key} else {""}}
+                  </td>
+                  <td>
+                    {errorCategory.message}
+                  </td>
+                  <td>
+                    <span class="example-response">
+                      <a class="show-json">Näytä JSON</a>
+                      <span class="json-popup">
+                        <a class="close">Sulje</a>
+                        <pre><code>{ Json.write(errorCategory.exampleResponse) }</code></pre>
+                      </span>
+                    </span>
+                  </td>
                 </tr>
               }}
               </tbody>

@@ -1,5 +1,5 @@
 package fi.oph.koski.koodisto
-import fi.oph.koski.cache.GlobalCacheManager
+import fi.oph.koski.cache.{Cached, GlobalCacheManager}
 import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import fi.oph.koski.koodisto.MockKoodistoPalvelu._
@@ -23,7 +23,7 @@ private class MockKoodistoPalvelu extends KoodistoPalvelu {
 object MockKoodistoPalvelu {
   // this is done to ensure that the cached instance is used everywhere (performance penalties are huge)
   private lazy val palvelu = KoodistoPalvelu.cached(new MockKoodistoPalvelu)(GlobalCacheManager)
-  def apply() = palvelu
+  def apply(): KoodistoPalvelu with Cached = palvelu
   /*
     Aakkostettu listaus mockatuista koodistoista.
 

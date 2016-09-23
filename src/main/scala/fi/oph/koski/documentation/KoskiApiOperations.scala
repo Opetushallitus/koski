@@ -1,6 +1,14 @@
 package fi.oph.koski.documentation
 
+import java.sql.Timestamp
+
+import fi.oph.koski.db.OpiskeluOikeusHistoryRow
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.koodisto.MockKoodistoPalvelu
+import fi.oph.koski.koski.ValidationResult
+import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.koski.oppija.MockOppijat
+import org.json4s.JsonAST.JObject
 
 object KoskiApiOperations {
  private val hakuParametrit = List(
@@ -20,7 +28,7 @@ object KoskiApiOperations {
        PathParameter("versio", "Koodiston versio", "latest")
      ),
      List(
-       KoskiErrorCategory.ok.searchOk,
+       KoskiErrorCategory.ok.searchOk.copy(exampleResponse = MockKoodistoPalvelu().getLatestVersion("koskiopiskeluoikeudentila").flatMap(MockKoodistoPalvelu().getKoodistoKoodit)),
        KoskiErrorCategory.notFound.koodistoaEiLöydy
      )
    ),
@@ -33,7 +41,7 @@ object KoskiApiOperations {
       Nil,
       List(QueryParameter("query", "Hakusana, joka voi olla hetu, oppija-oid tai nimen osa.", "eero")),
       List(
-        KoskiErrorCategory.ok.maybeEmptyList,
+        KoskiErrorCategory.ok.maybeEmptyList.copy(exampleResponse = List(MockOppijat.eero.toHenkilötiedotJaOid)),
         KoskiErrorCategory.badRequest.queryParam.searchTermTooShort,
         KoskiErrorCategory.unauthorized
       )
@@ -47,7 +55,7 @@ object KoskiApiOperations {
      Nil,
      hakuParametrit,
      List(
-       KoskiErrorCategory.ok.maybeEmptyList,
+       KoskiErrorCategory.ok.maybeEmptyList.copy(exampleResponse = List(AmmatillinenOldExamples.uusi)),
        KoskiErrorCategory.badRequest.format.pvm,
        KoskiErrorCategory.badRequest.queryParam.unknown,
        KoskiErrorCategory.unauthorized
@@ -62,7 +70,7 @@ object KoskiApiOperations {
      Nil,
      hakuParametrit,
      List(
-       KoskiErrorCategory.ok.maybeValidationErrorsInContent,
+       KoskiErrorCategory.ok.maybeValidationErrorsInContent.copy(exampleResponse = List(ValidationResult(MockOppijat.eero.oid, List()))),
        KoskiErrorCategory.badRequest.format.pvm,
        KoskiErrorCategory.badRequest.queryParam.unknown,
        KoskiErrorCategory.unauthorized
@@ -75,7 +83,7 @@ object KoskiApiOperations {
      Nil,
      List(PathParameter("oid", "Oppijan tunniste", "1.2.246.562.24.00000000001")),
      List(
-       KoskiErrorCategory.ok.searchOk,
+       KoskiErrorCategory.ok.searchOk.copy(exampleResponse = AmmatillinenOldExamples.uusi),
        KoskiErrorCategory.unauthorized,
        KoskiErrorCategory.badRequest.queryParam.virheellinenOid,
        KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia
@@ -88,7 +96,7 @@ object KoskiApiOperations {
      Nil,
      List(PathParameter("oid", "Oppijan tunniste", "1.2.246.562.24.00000000001")),
      List(
-       KoskiErrorCategory.ok.maybeValidationErrorsInContent,
+       KoskiErrorCategory.ok.maybeValidationErrorsInContent.copy(exampleResponse = ValidationResult(MockOppijat.eero.oid, List())),
        KoskiErrorCategory.unauthorized,
        KoskiErrorCategory.badRequest.queryParam.virheellinenOid,
        KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia
@@ -101,7 +109,7 @@ object KoskiApiOperations {
      Nil,
      List(PathParameter("opiskeluoikeus_id", "Opiskeluoikeuden tunniste", "354")),
      List(
-       KoskiErrorCategory.ok.searchOk,
+       KoskiErrorCategory.ok.searchOk.copy(exampleResponse = List(OpiskeluOikeusHistoryRow(8942345, 1, new Timestamp(System.currentTimeMillis()), MockUsers.kalle.oid, JObject()))),
        KoskiErrorCategory.unauthorized,
        KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia
      )
@@ -116,7 +124,7 @@ object KoskiApiOperations {
        PathParameter("versionumero", "Opiskeluoikeuden versio", "2")
      ),
      List(
-       KoskiErrorCategory.ok.searchOk,
+       KoskiErrorCategory.ok.searchOk.copy(exampleResponse = AmmatillinenOldExamples.uusi),
        KoskiErrorCategory.unauthorized,
        KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia,
        KoskiErrorCategory.notFound.versiotaEiLöydy
