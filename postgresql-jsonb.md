@@ -4,11 +4,12 @@ JSONB-koulutus Koski-järjestelmän kehittäjille ja ylläpitäjille.
 
 Esitietoina odotamme sinun tuntevan relaatiotietokantojen perusteet ja SQL-kyselykielen.
 
-Koulutuksessa tutustutaan PostgreSQL:n JSON(B)-ominaisuuksiin käytännön harjoituksilla Koski-järjestelmän kantaa vasten. Koulutusta varten on tehty testikanta, jossa on Koski-tietokannan schema ja jonkin verran testidataa.
+Koulutuksessa tutustutaan PostgreSQL:n JSONB-ominaisuuksiin käytännön harjoituksilla Koski-järjestelmän kantaa vasten. Koulutusta varten on tehty testikanta, jossa on Koski-tietokannan schema ja jonkin verran testidataa.
 
-PostgreSQL 9.5 JSON functions: https://www.postgresql.org/docs/9.5/static/functions-json.html(()
+Koulutuksen tavoitteena on oppia käyttämään PostgreSQL:n JSONB SQL-laajennuksia tiedon hakuun Koski-kannasta. 
 
-Hyvä PostgreSQL JSON -tutoriaali netissä: http://schinckel.net/2014/05/25/querying-json-in-postgres/
+Referenssinä kannattaa käyttää PostgreSQL 9.5 JSON(B)-dokumentaatiota: https://www.postgresql.org/docs/9.5/static/functions-json.html
+Lisäksi voi lukaista PostgreSQL JSON -tutoriaalin netissä: http://schinckel.net/2014/05/25/querying-json-in-postgres/
 
 ### Kyselyjä
 
@@ -94,3 +95,17 @@ from (
     and suoritukset.suoritus -> 'tila' ->> 'koodiarvo' = 'VALMIS'
  ) as ainesuoritukset
 ```
+
+### Tietojen päivittäminen
+
+SQL-harjoituksissa ei tehdä kantaan muutoksia eikä poistoja; nämä operaatiot on tehtävä Koski-järjestelmän rajapintojen kautta, jotta kannan (ja erityisesti tietojen muutoshistorian) eheys säilyisi. 
+
+Koski-järjestelmän testiympäristön [dokumentaatiosivu](https://koskidev.koski.oph.reaktor.fi/koski/documentation) kuvaa nämä rajapinnat ja mahdollistaa tietojen syötön ja katselun käyttäen selainkäyttöliittymää.
+
+Jos oppijan tietohin halutaan tehdä manuaalinen muutos voidaan se tehdä seuraavasti:
+
+1. Haetaan oppijan opiskeluoikeudet JSON-muodossa käyttäen GET-rajapintaa
+2. Muokataan JSON-dokumenttia tekstieditorilla
+3. Tallennetaan muutokset käyttäen PUT-rajapintaa. Tämä rajapinta validoi tietojen oikeamuotoisuuden ja tallentaa myös aina uuden rivin opiskeluoikeuden versiohistoriaan.
+
+Jos kantaan halutaan tehdä massamuutoksia useampiin opiskeluoikeuksiin tai niihin sisältyviin suorituksiin, on myös nämä muutokset tehtävä HTTP-rajapinnan kautta, esimerkiksi kirjoittamalla skripti, joka hakee halutut tiedot ja päivittää ne käyttäen GET- ja PUT-rajapintoja. Muutokset suoraan SQL-kielellä ovat äärimmäisen virhealttiita. Mieti: osaatko rakentaa muutoksesta manuaalisesti versionumerorivin, joka sisältää muutoksen JSON-diffin, joka mahdollistaa palaamisen mihin tahansa aiempaan versioon tiedoista?
