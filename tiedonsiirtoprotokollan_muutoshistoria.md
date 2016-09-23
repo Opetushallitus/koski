@@ -1,3 +1,8 @@
+## 23.9.2016
+- Lisätty suoritettuLukiodiplomina kenttä lukion kurssin suoritukseen
+- Lisätty Luva koulutuksen suoritukseen lisätiedot ja optionaalinen diaarinumero
+- Lisätty Luvan opiskeluoikeuden lisätiedot
+
 ## 21.9.2016
 - Lisätty kurssinTyyppi kenttä lukion kurssin suoritukseen (pakollinen, syventävä, soveltava)
 
