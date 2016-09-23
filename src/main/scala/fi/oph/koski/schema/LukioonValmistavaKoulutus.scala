@@ -40,7 +40,8 @@ case class LukioonValmistavanKoulutuksenSuoritus(
   @Description("Lukioon valmistavaan koulutukseen sisältyvien kurssien suoritukset")
   override val osasuoritukset: Option[List[LukioonValmistavanKoulutuksenOsasuoritus]],
   @KoodistoKoodiarvo("luva")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("luva", koodistoUri = "suorituksentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("luva", koodistoUri = "suorituksentyyppi"),
+  lisätiedot: Option[List[LukionOppimääränSuorituksenLisätiedot]] = None
 ) extends PäätasonSuoritus with Toimipisteellinen {
   def arviointi: Option[List[KoodistostaLöytyväArviointi]] = None
 }
