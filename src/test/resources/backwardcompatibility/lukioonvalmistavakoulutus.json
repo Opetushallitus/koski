@@ -216,9 +216,9 @@
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
           },
-          "pakollisuus" : {
+          "kurssinTyyppi" : {
             "koodiarvo" : "pakollinen",
-            "koodistoUri" : "lukionkurssinpakollisuus"
+            "koodistoUri" : "lukionkurssintyyppi"
           }
         },
         "tila" : {

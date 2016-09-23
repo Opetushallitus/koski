@@ -1,6 +1,6 @@
 [
   {
-  "koodiUri" : "lukionkurssinpakollisuus_pakollinen",
+  "koodiUri" : "lukionkurssintyyppi_pakollinen",
   "koodiArvo" : "pakollinen",
   "metadata" : [ {
     "nimi" : "Pakollinen",
@@ -9,7 +9,7 @@
   "versio" : 1
   },
   {
-    "koodiUri" : "lukionkurssinpakollisuus_syventava",
+    "koodiUri" : "lukionkurssintyyppi_syventava",
     "koodiArvo" : "syventava",
     "metadata" : [ {
       "nimi" : "Syventävä",
@@ -18,7 +18,7 @@
     "versio" : 1
   },
   {
-    "koodiUri" : "lukionkurssinpakollisuus_soveltava",
+    "koodiUri" : "lukionkurssintyyppi_soveltava",
     "koodiArvo" : "soveltava",
     "metadata" : [ {
       "nimi" : "Soveltava",

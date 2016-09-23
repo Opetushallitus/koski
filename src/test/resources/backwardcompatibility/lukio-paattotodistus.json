@@ -154,9 +154,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -188,9 +188,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -222,9 +222,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -256,9 +256,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -290,9 +290,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -324,9 +324,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -358,9 +358,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -392,9 +392,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -454,9 +454,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -488,9 +488,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -522,9 +522,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -556,9 +556,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -590,9 +590,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -624,9 +624,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -658,9 +658,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -692,9 +692,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -731,9 +731,9 @@
             "kuvaus" : {
               "fi" : "Aihepiirit liittyvät pakollisten ja valtakunnallisten syventävien kurssien aihekokonaisuuksiin niitä syventäen ja laajentaen. Kurssilla vankennetaan ylioppilaskokeessa tarvittavia tietoja ja taitoja. Pakollisilla ja valtakunnallisilla syventävillä kursseilla hankitun kielioppirakenteiden ja sanaston hallintaa vahvistetaan ja syvennetään. Arvioinnissa (suoritettu/hylätty) otetaan huomioon kaikki kielitaidon osa-alueet ja se perustuu jatkuvaan näyttöön. Kurssin päättyessä opiskelija on saanut lisävalmiuksia osallistua ylioppilaskokeeseen."
             },
-            "pakollisuus" : {
-              "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+            "kurssinTyyppi" : {
+              "koodiarvo" : "syventava",
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -793,9 +793,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -827,9 +827,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -861,9 +861,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -895,9 +895,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -929,9 +929,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -991,9 +991,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1025,9 +1025,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1092,9 +1092,9 @@
             "kuvaus" : {
               "fi" : "Vahvistetaan yhtälön ratkaisemisen ja prosenttilaskennan taitoja. Syvennetään verrannollisuuden, neliöjuuren ja potenssin käsitteiden ymmärtämistä. Harjaannutaan käyttämään neliöjuuren ja potenssin laskusääntöjä. Syvennetään funktiokäsitteen ymmärtämistä tutkimalla potenssi- ja eksponenttifunktioita. Opetellaan ratkaisemaan potenssiyhtälöitä."
             },
-            "pakollisuus" : {
-              "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+            "kurssinTyyppi" : {
+              "koodiarvo" : "syventava",
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1126,9 +1126,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1160,9 +1160,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1194,9 +1194,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1228,9 +1228,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1262,9 +1262,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1296,9 +1296,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1330,9 +1330,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1364,9 +1364,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1398,9 +1398,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1432,9 +1432,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1466,9 +1466,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1500,9 +1500,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1539,9 +1539,9 @@
             "kuvaus" : {
               "fi" : "Harjoitellaan käyttämään opittuja tietoja ja taitoja monipuolisissa ongelmanratkaisutilanteissa."
             },
-            "pakollisuus" : {
-              "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+            "kurssinTyyppi" : {
+              "koodiarvo" : "syventava",
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1578,9 +1578,9 @@
             "kuvaus" : {
               "fi" : "Kurssilla syvennetään kurssien MAA4, MAA5 ja MAA7 sisältöjä."
             },
-            "pakollisuus" : {
-              "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+            "kurssinTyyppi" : {
+              "koodiarvo" : "syventava",
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1636,9 +1636,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1670,9 +1670,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1704,9 +1704,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1738,9 +1738,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1772,9 +1772,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1811,9 +1811,9 @@
             "kuvaus" : {
               "fi" : "Biology in English, including the structure of procaryotic and eucaryotic cells, cellular control, growth regulation, application of genetics and problemsolving. The course will familiarise students with English terminology, analytical techniques and laboratory work. Students should aim to improve their spoken English skills and vocabulary as well as learn about practical cell biology."
             },
-            "pakollisuus" : {
-              "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+            "kurssinTyyppi" : {
+              "koodiarvo" : "syventava",
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1850,9 +1850,9 @@
             "kuvaus" : {
               "fi" : "Kurssiin ei sisälly tuntiopetusta, ainoastaan suunnittelu-, opastus- ja kontrollituokioita. Opiskelija laatii yksilöllisen kurssikokonaisuuden, jonka päätarkoitus on perehtyä valitun (pirkanmaalaisen) ekosysteemin lajistoon. Opiskelija voi erikoistua esim. kasvilajistoon, sieniin, perhosiin, kaloihin, nisäkkäisiin jne. Suunnitelman laajuudesta ja laadusta riippuen opiskelija voi saada 1-3 kurssisuoritusmerkintää. Opiskeluaika voi olla enintään kaksi vuotta."
             },
-            "pakollisuus" : {
-              "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+            "kurssinTyyppi" : {
+              "koodiarvo" : "syventava",
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1889,9 +1889,9 @@
             "kuvaus" : {
               "fi" : "Kurssilla kerrataan biologian keskeisiä asioita ainereaaliin valmistauduttaessa."
             },
-            "pakollisuus" : {
-              "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+            "kurssinTyyppi" : {
+              "koodiarvo" : "syventava",
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1947,9 +1947,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1981,9 +1981,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -2039,9 +2039,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -2073,9 +2073,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -2107,9 +2107,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -2141,9 +2141,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -2175,9 +2175,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -2209,9 +2209,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -2243,9 +2243,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -2282,9 +2282,9 @@
             "kuvaus" : {
               "fi" : "Kurssin sisältö perustuu lähinnä 1900-luvun aikana selvitettyyn tietoon aineesta ja energiasta. Lisäksi käsitellään atomi-, ydin- ja alkeishiukkasfysiikkaa."
             },
-            "pakollisuus" : {
-              "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+            "kurssinTyyppi" : {
+              "koodiarvo" : "syventava",
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -2321,9 +2321,9 @@
             "kuvaus" : {
               "fi" : "Kurssi syventää ja täydentää muilla kursseilla esiin tulleita tai tulevia asioita. Kurssilla tutkitaan kokeellisesti fysiikan ilmiöitä eri osa-alueilta ja opetellaan raportoimaan tehty koe ja kokeen tulokset."
             },
-            "pakollisuus" : {
-              "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+            "kurssinTyyppi" : {
+              "koodiarvo" : "syventava",
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -2360,9 +2360,9 @@
             "kuvaus" : {
               "fi" : "Kurssin tavoitteena on luoda kokonaiskuva fysiikasta. Kurssilla syvennetään fysiikan osaamista laskennallisella tasolla ja harjoitellaan reaalikokeeseen vastaamista."
             },
-            "pakollisuus" : {
-              "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+            "kurssinTyyppi" : {
+              "koodiarvo" : "soveltava",
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -2399,9 +2399,9 @@
             "kuvaus" : {
               "fi" : "Fysiikka 11"
             },
-            "pakollisuus" : {
-              "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+            "kurssinTyyppi" : {
+              "koodiarvo" : "syventava",
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -2438,9 +2438,9 @@
             "kuvaus" : {
               "fi" : "Fysiikka 12"
             },
-            "pakollisuus" : {
-              "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+            "kurssinTyyppi" : {
+              "koodiarvo" : "syventava",
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -2477,9 +2477,9 @@
             "kuvaus" : {
               "fi" : "Fysiikka 13"
             },
-            "pakollisuus" : {
-              "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+            "kurssinTyyppi" : {
+              "koodiarvo" : "syventava",
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -2535,9 +2535,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -2569,9 +2569,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -2603,9 +2603,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -2637,9 +2637,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -2671,9 +2671,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -2710,9 +2710,9 @@
             "kuvaus" : {
               "fi" : "Tehdään erilaisia kvantitatiivisia ja kvalitatiivisia määrityksiä, synteesejä ja analyysejä sekä laaditaan työselostuksia. Mahdollisuuksien mukaan tehdään myös vierailuja alan yrityksiin ja oppilaitoksiin."
             },
-            "pakollisuus" : {
-              "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+            "kurssinTyyppi" : {
+              "koodiarvo" : "soveltava",
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -2749,9 +2749,9 @@
             "kuvaus" : {
               "fi" : "Kurssin tavoitteena on kerrata lukion oppimäärä ja antaa kokonaiskuva lukion kemiasta. Harjoitellaan reaalikokeeseen vastaamista."
             },
-            "pakollisuus" : {
-              "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+            "kurssinTyyppi" : {
+              "koodiarvo" : "syventava",
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -2788,9 +2788,9 @@
             "kuvaus" : {
               "fi" : "Kemia 8"
             },
-            "pakollisuus" : {
-              "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+            "kurssinTyyppi" : {
+              "koodiarvo" : "syventava",
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -2846,9 +2846,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -2880,9 +2880,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -2914,9 +2914,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -2972,9 +2972,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -3030,9 +3030,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -3088,9 +3088,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -3122,9 +3122,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -3156,9 +3156,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -3190,9 +3190,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -3248,9 +3248,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -3282,9 +3282,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -3340,9 +3340,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -3374,9 +3374,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -3413,9 +3413,9 @@
             "kuvaus" : {
               "fi" : "Kurssin tavoitteena on kehittää sosiaalista vuorovaikutusta tanssin avulla. Tähän liittyy kiinteästi myös tapakasvatus. Kurssilla harjoitellaan ensisijaisesti ns. ”Vanhojen päivän” ohjelmistoa – vanhoja tansseja ja salonkitansseja, mutta myös tavallisia paritansseja. Kurssin käyminen ei velvoita osallistumaan juhlapäivän esityksiin. Kurssi arvioidaan suoritusmerkinnällä."
             },
-            "pakollisuus" : {
-              "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+            "kurssinTyyppi" : {
+              "koodiarvo" : "soveltava",
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -3471,9 +3471,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -3529,9 +3529,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -3563,9 +3563,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -3621,9 +3621,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -3651,7 +3651,16 @@
       "tyyppi" : {
         "koodiarvo" : "lukionoppimaara",
         "koodistoUri" : "suorituksentyyppi"
-      }
+      },
+      "lisätiedot" : [ {
+        "tunniste" : {
+          "koodiarvo" : "lukiodiplomi",
+          "koodistoUri" : "lukionoppimaaransuorituksenlisatieto"
+        },
+        "kuvaus" : {
+          "fi" : "Opiskelija on suorittanut kuvataiteen lukiodiplomin"
+        }
+      } ]
     } ],
     "tyyppi" : {
       "koodiarvo" : "lukiokoulutus",

@@ -126,9 +126,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -160,9 +160,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -194,9 +194,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -249,9 +249,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -283,9 +283,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -317,9 +317,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -372,9 +372,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -406,9 +406,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -466,9 +466,9 @@
             "kuvaus" : {
               "fi" : "Patongit etc"
             },
-            "pakollisuus" : {
-              "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+            "kurssinTyyppi" : {
+              "koodiarvo" : "syventava",
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -526,9 +526,9 @@
             "kuvaus" : {
               "fi" : "Espanjan alkeet"
             },
-            "pakollisuus" : {
-              "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+            "kurssinTyyppi" : {
+              "koodiarvo" : "syventava",
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -581,9 +581,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -615,9 +615,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -649,9 +649,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -683,9 +683,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -734,9 +734,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -773,9 +773,9 @@
             "kuvaus" : {
               "fi" : "Geenihommia"
             },
-            "pakollisuus" : {
-              "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+            "kurssinTyyppi" : {
+              "koodiarvo" : "syventava",
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -824,9 +824,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -875,9 +875,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -926,9 +926,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -977,9 +977,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1028,9 +1028,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1079,9 +1079,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1130,9 +1130,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1164,9 +1164,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1203,9 +1203,9 @@
             "kuvaus" : {
               "fi" : "Juuh elikkäs"
             },
-            "pakollisuus" : {
-              "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+            "kurssinTyyppi" : {
+              "koodiarvo" : "syventava",
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1254,9 +1254,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1305,9 +1305,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1356,9 +1356,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1407,9 +1407,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1458,9 +1458,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
@@ -1509,9 +1509,9 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
-            "pakollisuus" : {
+            "kurssinTyyppi" : {
               "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssinpakollisuus"
+              "koodistoUri" : "lukionkurssintyyppi"
             }
           },
           "tila" : {
