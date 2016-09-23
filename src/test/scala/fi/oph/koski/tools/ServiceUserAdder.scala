@@ -32,12 +32,18 @@ object ServiceUserAdder extends App with Logging {
       println(
         s"""Hei,
           |
-          |Pyysitte testitunnuksia Koski-järjestelmään. Loin käyttöönne tunnuksen:
+          |Pyysitte testitunnuksia Koski-järjestelmään. Loimme käyttöönne tunnuksen:
           |
           |käyttäjätunnus: ${username}
           |salasana: ${password}
           |
           |Tunnuksella on oikeus luoda/katsella/päivittää Kosken opiskeluoikeuksia organisaatiossa ${organisaatioOid} (${organisaatio.nimi.get.get("fi")}).
+          |
+          |Tunnus on palvelukäyttäjätyyppinen, joten kaikkiin PUT-rajapinnan kautta lähetettyihin opiskeluoikeuksiin täytyy liittää lähdejärjestelmänId-kenttä seuraavasti:
+          |
+          |    "lähdejärjestelmänId": { "id": "xxxx12345", "lähdejärjestelmä": { "koodiarvo": "${lahdejarjestelma}", "koodistoUri": "lahdejarjestelma" } }
+          |
+          |Korvatkaa esimerkkinä käytetty id "xxxx12345" tunnisteella, jota lähdejärjestelmässänne käytetään identifioimaan kyseinen opiskeluoikeus.
           |
           |Koski-testijärjestelmän etusivu: https://koskidev.koski.oph.reaktor.fi/koski/
           |API-dokumentaatiosivu: https://koskidev.koski.oph.reaktor.fi/koski/documentation
