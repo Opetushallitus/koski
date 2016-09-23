@@ -55,41 +55,41 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
     describe("Opintosuoritusote") {
       it("Valmistunut diplomi-insinööri") {
         opintosuoritusoteOppilaitokselle("290492-9455", "1.2.246.562.10.56753942459") should equal(
-          """|Suoritetut tutkinnot
+          """Suoritetut tutkinnot
             |751101 Dipl.ins., konetekniikka 22.3.2016
             |Opintosuoritukset
             |Opintopistettä Arvosana Suor.pvm
             |751101 Dipl.ins., konetekniikka 123 OIV 22.3.2016
-            |K901-D Diplomityö (KON) 30 4 21.3.2016
-            |MEN.thes Diplomityö 30 4 21.3.2016
-            |ENG.matr Kypsyysnäyte 0 hyväksytty 8.3.2016
             |IA3027 Mechanical Engineering 65 4 4.12.2015
-            |K430-3 Digital Design and Manufacturing 20 4 20.5.2015
-            |Kon-41.4207 CAE Project 3 4 20.5.2015
-            |Kon-80.3125 Castings 4 4 21.12.2014
-            |Kon-41.3006 Computer Aided Design Basic Course 5 3 28.4.2014
-            |Kon-15.4101 Digital Manufacturing 4 4 28.12.2014
-            |Kon-67.4208 Welding Methods and Production 4 3 23.6.2014
-            |K420-3 Mechanics of Materials 25 5 19.2.2015
-            |Kul-49.3400 Dynamics of Structures; lectures and exercises L 5 5 30.5.2014
-            |Kul-49.4100 Elementtimenetelmä II L 5 5 16.12.2014
-            |Kul-49.5100 Lujuusopin lisensiaattiseminaari L 5 3 8.7.2014
-            |Kon-67.3401 Rakenneaineet jännitysten ja ympäristön vaikutusten alaisina 5 5 19.2.2015
-            |Kul-49.4350 Rakenteiden väsyminen L 5 5 16.2.2015
             |K410-3 Product Development 20 5 4.12.2015
             |Kon-41.4001 Product Development P 5 5 4.12.2015
             |Kon-41.4002 Product Development Project P 10 5 22.5.2014
             |TU-91.2041 Research and Development (R&D) Management 5 4 5.6.2014
+            |K420-3 Mechanics of Materials 25 5 19.2.2015
+            |Kon-67.3401 Rakenneaineet jännitysten ja ympäristön vaikutusten alaisina 5 5 19.2.2015
+            |Kul-49.3400 Dynamics of Structures; lectures and exercises L 5 5 30.5.2014
+            |Kul-49.4100 Elementtimenetelmä II L 5 5 16.12.2014
+            |Kul-49.4350 Rakenteiden väsyminen L 5 5 16.2.2015
+            |Kul-49.5100 Lujuusopin lisensiaattiseminaari L 5 3 8.7.2014
+            |K430-3 Digital Design and Manufacturing 20 4 20.5.2015
+            |Kon-15.4101 Digital Manufacturing 4 4 28.12.2014
+            |Kon-41.3006 Computer Aided Design Basic Course 5 3 28.4.2014
+            |Kon-41.4207 CAE Project 3 4 20.5.2015
+            |Kon-67.4208 Welding Methods and Production 4 3 23.6.2014
+            |Kon-80.3125 Castings 4 4 21.12.2014
+            |K901-D Diplomityö (KON) 30 4 21.3.2016
+            |ENG.matr Kypsyysnäyte 0 hyväksytty 8.3.2016
+            |MEN.thes Diplomityö 30 4 21.3.2016
             |K901-M Tieteen metodiikan opinnot (KON) 12 3 5.9.2014
-            |Kie-98.7009 Get to know Finland 1 hyväksytty 21.11.2013
-            |T-61.5010 Information Visualization L 5 3 5.9.2014
             |Eri-0.5014 Searching for Scientific Information 2 hyväksytty 13.12.2013
+            |Kie-98.7009 Get to know Finland 1 hyväksytty 21.11.2013
             |Kie-98.7011 Suomi 1A 2 3 20.2.2014
             |Kie-98.7012 Suomi 1B 2 3 8.4.2014
+            |T-61.5010 Information Visualization L 5 3 5.9.2014
             |K901-W Vapaasti valittavat opinnot (KON) 16 4 28.5.2015
-            |Kul-24.4200 Introduction to Risk Analysis of Structure P 5 4 18.11.2013
             |Ene-39.4037 Laskennallisen virtausmekaniikan ja lämmönsiirron perusteet L 7 4 17.2.2015
             |Kon-41.3131 Mechatronics Exercises 4 4 28.5.2015
+            |Kul-24.4200 Introduction to Risk Analysis of Structure P 5 4 18.11.2013
             |Kul-34.3600 Composite Structures 5 3 12.1.2015
             |Kon-67.4206 Design and Analysis of Welded Structures 3 4 23.6.2014
             |Kul-49.3300 Finite Element Method I 5 4 15.4.2014

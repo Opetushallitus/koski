@@ -15,23 +15,23 @@ class IBTutkintoSpec extends FunSpec with Matchers with OpintosuoritusoteTestMet
           |ENA2 Ihminen verkostoissa 1 10 4.6.2016
           |ENA5 Tiede ja tulevaisuus 1 10 4.6.2016
           |B1 B1-kieli, ruotsi 2
-          |RUB12 Hyvinvointi ja ihmissuhteet 1 7 4.6.2016
           |RUB11 Minun ruotsini 1 8 4.6.2016
+          |RUB12 Hyvinvointi ja ihmissuhteet 1 7 4.6.2016
           |B2 B2-kieli, ranska 1
           |RAN3 Ravintolaranska 1 9 4.6.2016
           |B3 B3-kieli, espanja 1
           |ES1 Turistiespanja 1 hyväksytty 4.6.2016
           |BI Biologia 2
-          |BI10 Biologian erikoiskurssi 1 hyväksytty 4.6.2016
           |BI1 Elämä ja evoluutio 1 8 4.6.2016
+          |BI10 Biologian erikoiskurssi 1 hyväksytty 4.6.2016
           |FI Filosofia 1
           |FI1 Johdatus filosofiseen ajatteluun 1 hyväksytty 4.6.2016
           |FY Fysiikka 1
           |FY1 Fysiikka luonnontieteenä 1 7 4.6.2016
           |HI Historia 3
-          |HI10 Ajan lyhyt historia 1 hyväksytty 4.6.2016
-          |HI4 Eurooppalaisen maailmankuvan kehitys 1 8 4.6.2016
           |HI3 Itsenäisen Suomen historia 1 9 4.6.2016
+          |HI4 Eurooppalaisen maailmankuvan kehitys 1 8 4.6.2016
+          |HI10 Ajan lyhyt historia 1 hyväksytty 4.6.2016
           |KE Kemia 1
           |KE1 Kemiaa kaikkialla 1 8 4.6.2016
           |KU Kuvataide 1
@@ -41,10 +41,10 @@ class IBTutkintoSpec extends FunSpec with Matchers with OpintosuoritusoteTestMet
           |GE Maantieto 1
           |GE2 Sininen planeetta 1 10 4.6.2016
           |MA Matematiikka, pitkä oppimäärä 4
+          |MAA2 Polynomifunktiot ja -yhtälöt 1 7 4.6.2016
+          |MAA11 Lukuteoria ja todistaminen 1 7 4.6.2016
           |MAA12 Algoritmit matematiikassa 1 7 4.6.2016
           |MAA13 Differentiaali- ja integraalilaskennan jatkokurssi 1 7 4.6.2016
-          |MAA11 Lukuteoria ja todistaminen 1 7 4.6.2016
-          |MAA2 Polynomifunktiot ja -yhtälöt 1 7 4.6.2016
           |MU Musiikki 1
           |MU1 Musiikki ja minä 1 8 4.6.2016
           |OP Opinto-ohjaus 1
@@ -58,9 +58,9 @@ class IBTutkintoSpec extends FunSpec with Matchers with OpintosuoritusoteTestMet
           |YH Yhteiskuntaoppi 1
           |YH1 Suomalainen yhteiskunta 1 8 4.6.2016
           |AI Äidinkieli ja kirjallisuus 3
+          |ÄI1 Tekstit ja vuorovaikutus 1 8 4.6.2016
           |ÄI2 Kieli, kulttuuri ja identiteetti 1 8 4.6.2016
           |ÄI3 Kirjallisuuden keinoja ja tulkintaa 1 8 4.6.2016
-          |ÄI1 Tekstit ja vuorovaikutus 1 8 4.6.2016
           |International Baccalaureate Diploma Programme
           |Group 1
           |Arvosana Suor.pvm

@@ -7,6 +7,7 @@ import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.localization.Locale._
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.schema._
+import fi.oph.koski.suoritusote.KoulutusModuuliOrdering.orderByTunniste
 import fi.oph.koski.todistus.LocalizedHtml
 
 import scala.xml.{Elem, Node}
@@ -144,14 +145,13 @@ class OpintosuoritusoteHtml(implicit val user: KoskiUser) extends LocalizedHtml 
 
   protected def suorituksetSyvyydellä(roots: List[Suoritus]): List[(Int, Suoritus)] = {
     def suoritusWithDepth(t: (Int, Suoritus)) : List[(Int, Suoritus)] = {
-      t :: t._2.osasuoritusLista.sortBy(s => i(s.koulutusmoduuli.nimi)).flatMap(s => suoritusWithDepth((t._1 + 1, s)))
+      t :: t._2.osasuoritusLista.sortBy(s => s.koulutusmoduuli)(orderByTunniste).flatMap(s => suoritusWithDepth((t._1 + 1, s)))
     }
 
     roots.filter(s => s.tila.koodiarvo == "VALMIS")
       .sortBy(s => (!s.koulutusmoduuli.isTutkinto, i(s.koulutusmoduuli.nimi)))
       .flatMap(suoritus => suoritusWithDepth((0, suoritus)))
   }
-
 
   private def indentCss = 0 to 5 map { i => ".depth-" + i + " { padding-left:" + (0.5 * i) + "em; }" } mkString("\n")
 }
