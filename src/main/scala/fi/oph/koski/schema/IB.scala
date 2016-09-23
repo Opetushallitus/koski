@@ -179,6 +179,7 @@ trait PreIBKurssi extends Koulutusmoduuli
 
 @Description("IB-lukion kurssin tunnistetiedot")
 case class IBKurssi(
+  kuvaus: LocalizedString,
   @OksaUri("tmpOKSAID873", "kurssi")
   tunniste: PaikallinenKoodi,
   pakollinen: Boolean = true,
