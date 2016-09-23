@@ -1,4 +1,5 @@
 ## 23.9.2016
+- Lisätty Pre-IB oppiaineen suorituksen arviointi
 - Lisätty suoritettuLukiodiplomina kenttä lukion kurssin suoritukseen
 - Lisätty Luva koulutuksen suoritukseen lisätiedot ja optionaalinen diaarinumero
 - Lisätty Luvan opiskeluoikeuden lisätiedot

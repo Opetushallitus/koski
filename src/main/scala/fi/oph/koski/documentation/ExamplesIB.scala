@@ -19,26 +19,47 @@ object ExamplesIB {
     tila = tilaValmis,
     vahvistus = ExampleData.vahvistus(org = ressunLukio, kunta = helsinki),
     osasuoritukset = Some(List(
-      preIBAineSuoritus(lukionÄidinkieli("AI1"), List((valtakunnallinenKurssi("ÄI1"), "8"), (valtakunnallinenKurssi("ÄI2"), "8"), (valtakunnallinenKurssi("ÄI3"), "8"))),
-      preIBAineSuoritus(lukionKieli("A1", "EN"), List((valtakunnallinenKurssi("ENA1"), "10"), (valtakunnallinenKurssi("ENA2"), "10"), (valtakunnallinenKurssi("ENA5"), "10"))),
-      preIBAineSuoritus(lukionKieli("B1", "SV"), List((valtakunnallinenKurssi("RUB11"), "8"), (valtakunnallinenKurssi("RUB12"), "7"))),
-      preIBAineSuoritus(lukionKieli("B2", "FR"), List((syventäväKurssi("RAN3", "Ravintolaranska", "Patongit etc"), "9"))),
-      preIBAineSuoritus(lukionKieli("B3", "ES"), List((syventäväKurssi("ES1", "Turistiespanja", "Espanjan alkeet"), "S"))),
-      preIBAineSuoritus(matematiikka("MAA"), List((valtakunnallinenKurssi("MAA11"), "7"), (valtakunnallinenKurssi("MAA12"), "7"), (valtakunnallinenKurssi("MAA13"), "7"), (valtakunnallinenKurssi("MAA2"), "7"))),
-      preIBAineSuoritus(lukionOppiaine("BI"), List((valtakunnallinenKurssi("BI1"), "8"), (syventäväKurssi("BI10", "Biologian erikoiskurssi", "Geenihommia"), "S"))),
-      preIBAineSuoritus(lukionOppiaine("GE"), List((valtakunnallinenKurssi("GE2"), "10"))),
-      preIBAineSuoritus(lukionOppiaine("FY"), List((valtakunnallinenKurssi("FY1"), "7"))),
-      preIBAineSuoritus(lukionOppiaine("KE"), List((valtakunnallinenKurssi("KE1"), "8"))),
-      preIBAineSuoritus(lukionOppiaine("KT"), List((valtakunnallinenKurssi("UK4"), "10"))),
-      preIBAineSuoritus(lukionOppiaine("FI"), List((valtakunnallinenKurssi("FI1"), "S"))),
-      preIBAineSuoritus(lukionOppiaine("PS"), List((valtakunnallinenKurssi("PS1"), "8"))),
-      preIBAineSuoritus(lukionOppiaine("HI"), List((valtakunnallinenKurssi("HI3"), "9"), (valtakunnallinenKurssi("HI4"), "8"), (syventäväKurssi("HI10", "Ajan lyhyt historia", "Juuh elikkäs"), "S"))),
-      preIBAineSuoritus(lukionOppiaine("YH"), List((valtakunnallinenKurssi("YH1"), "8"))),
-      preIBAineSuoritus(lukionOppiaine("LI"), List((valtakunnallinenKurssi("LI1"), "8"))),
-      preIBAineSuoritus(lukionOppiaine("MU"), List((valtakunnallinenKurssi("MU1"), "8"))),
-      preIBAineSuoritus(lukionOppiaine("KU"), List((valtakunnallinenKurssi("KU1"), "9"))),
-      preIBAineSuoritus(lukionOppiaine("TE"), List((valtakunnallinenKurssi("TE1"), "7"))),
-      preIBAineSuoritus(lukionOppiaine("OP"), List((valtakunnallinenKurssi("OP1"), "S")))
+      preIBAineSuoritus(lukionÄidinkieli("AI1"),List(
+        (valtakunnallinenKurssi("ÄI1"), "8"), (valtakunnallinenKurssi("ÄI2"), "8"), (valtakunnallinenKurssi("ÄI3"), "8")
+      )).copy(arviointi = arviointi("8")),
+      preIBAineSuoritus(lukionKieli("A1", "EN"), List(
+        (valtakunnallinenKurssi("ENA1"), "10"), (valtakunnallinenKurssi("ENA2"), "10"), (valtakunnallinenKurssi("ENA5"), "10")
+      )).copy(arviointi = arviointi("10")),
+      preIBAineSuoritus(lukionKieli("B1", "SV"), List(
+        (valtakunnallinenKurssi("RUB11"), "8"), (valtakunnallinenKurssi("RUB12"), "7")
+      )).copy(arviointi = arviointi("7")),
+      preIBAineSuoritus(lukionKieli("B2", "FR"), List(
+        (syventäväKurssi("RAN3", "Ravintolaranska", "Patongit etc"), "9")
+      )).copy(arviointi = arviointi("9")),
+      preIBAineSuoritus(lukionKieli("B3", "ES"), List(
+        (syventäväKurssi("ES1", "Turistiespanja", "Espanjan alkeet"), "S")
+      )).copy(arviointi = arviointi("6")),
+      preIBAineSuoritus(matematiikka("MAA"), List(
+        (valtakunnallinenKurssi("MAA11"), "7"),
+        (valtakunnallinenKurssi("MAA12"), "7"),
+        (valtakunnallinenKurssi("MAA13"), "7"),
+        (valtakunnallinenKurssi("MAA2"), "7")
+      )).copy(arviointi = arviointi("7")),
+      preIBAineSuoritus(lukionOppiaine("BI"), List(
+        (valtakunnallinenKurssi("BI1"), "8"), (syventäväKurssi("BI10", "Biologian erikoiskurssi", "Geenihommia"), "S")
+      )).copy(arviointi = arviointi("8")),
+      preIBAineSuoritus(lukionOppiaine("GE"), List((valtakunnallinenKurssi("GE2"), "10"))).copy(arviointi = arviointi("10")),
+      preIBAineSuoritus(lukionOppiaine("FY"), List((valtakunnallinenKurssi("FY1"), "7"))).copy(arviointi = arviointi("7")),
+      preIBAineSuoritus(lukionOppiaine("KE"), List((valtakunnallinenKurssi("KE1"), "8"))).copy(arviointi = arviointi("8")),
+      preIBAineSuoritus(lukionOppiaine("KT"), List((valtakunnallinenKurssi("UK4"), "10"))).copy(arviointi = arviointi("10")),
+      preIBAineSuoritus(lukionOppiaine("FI"), List((valtakunnallinenKurssi("FI1"), "S"))).copy(arviointi = arviointi("7")),
+      preIBAineSuoritus(lukionOppiaine("PS"), List((valtakunnallinenKurssi("PS1"), "8"))).copy(arviointi = arviointi("8")),
+      preIBAineSuoritus(lukionOppiaine("HI"), List(
+        (valtakunnallinenKurssi("HI3"), "9"),
+        (valtakunnallinenKurssi("HI4"), "8"),
+        (syventäväKurssi("HI10", "Ajan lyhyt historia", "Juuh elikkäs"), "S")
+      )).copy(arviointi = arviointi("8")),
+      preIBAineSuoritus(lukionOppiaine("YH"), List((valtakunnallinenKurssi("YH1"), "8"))).copy(arviointi = arviointi("8")),
+      preIBAineSuoritus(lukionOppiaine("LI"), List((valtakunnallinenKurssi("LI1"), "8"))).copy(arviointi = arviointi("8")),
+      preIBAineSuoritus(lukionOppiaine("MU"), List((valtakunnallinenKurssi("MU1"), "8"))).copy(arviointi = arviointi("8")),
+      preIBAineSuoritus(lukionOppiaine("KU"), List((valtakunnallinenKurssi("KU1"), "9"))).copy(arviointi = arviointi("9")),
+      preIBAineSuoritus(lukionOppiaine("TE"), List((valtakunnallinenKurssi("TE1"), "7"))).copy(arviointi = arviointi("7")),
+      preIBAineSuoritus(lukionOppiaine("OP"), List((valtakunnallinenKurssi("OP1"), "S"))).copy(arviointi = arviointi("7"))
     ))
   )
 

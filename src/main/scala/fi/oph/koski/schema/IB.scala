@@ -21,7 +21,8 @@ case class IBOpiskeluoikeus(
   @MinItems(1) @MaxItems(2)
   suoritukset: List[IBPäätasonSuoritus],
   @KoodistoKoodiarvo("ibtutkinto")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ibtutkinto", "opiskeluoikeudentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ibtutkinto", "opiskeluoikeudentyyppi"),
+  lisätiedot: Option[LukionOpiskeluoikeudenLisätiedot] = None
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OidOrganisaatio) = this.copy(koulutustoimija = Some(koulutustoimija))
@@ -132,15 +133,14 @@ case class PreIBOppiaineenSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: PreIBOppiaine,
   tila: Koodistokoodiviite,
+  arviointi: Option[List[LukionOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
   @Title("Kurssit")
   override val osasuoritukset: Option[List[PreIBKurssinSuoritus]],
   @KoodistoKoodiarvo("preiboppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "preiboppiaine", koodistoUri = "suorituksentyyppi")
-) extends IBSuoritus {
-  def arviointi = None
-}
+) extends IBSuoritus
 
 trait PreIBOppiaine extends Koulutusmoduuli
 
