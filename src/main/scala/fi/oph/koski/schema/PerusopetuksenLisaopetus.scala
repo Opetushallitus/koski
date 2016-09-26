@@ -45,6 +45,7 @@ case class PerusopetuksenLisäopetuksenSuoritus(
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[PerusopetuksenLisäopetuksenOppiaineenSuoritus]],
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("perusopetuksenlisaopetus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenlisaopetus", koodistoUri = "suorituksentyyppi"),
   liitetiedot: Option[List[PerusopetuksenLisäopetuksenSuorituksenLiitetiedot]] = None
