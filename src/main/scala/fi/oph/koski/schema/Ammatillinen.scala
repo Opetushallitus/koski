@@ -327,6 +327,12 @@ case class NäyttötutkintoonValmistavanKoulutuksenOsa(
   def laajuus = None
 }
 
+trait ValmentavaSuoritus extends Suoritus with Toimipisteellinen {
+  def todistuksellaNäkyvätLisätiedot: Option[LocalizedString]
+  def arviointi = None
+  override def osasuoritukset: Option[List[ValmentavanKoulutuksenOsanSuoritus]] = None
+}
+
 @Description("Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)")
 case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus(
   @Title("Koulutus")
