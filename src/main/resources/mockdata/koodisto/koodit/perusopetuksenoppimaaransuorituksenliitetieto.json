@@ -1,0 +1,32 @@
+[
+  {
+  "koodiUri" : "perusopetuksenoppimaaransuorituksenliitetieto_kayttaytyminen",
+  "koodiArvo" : "kayttaytyminen",
+  "metadata" : [ {
+    "nimi" : "Käyttäytyminen",
+    "kuvaus" : "Arvio oppilaan käyttäytymisestä ja työskentelystä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+  },
+  {
+    "koodiUri" : "perusopetuksenoppimaaransuorituksenliitetieto_valinnaisetaineet",
+    "koodiArvo" : "valinnaisetaineet",
+    "metadata" : [ {
+      "nimi" : "Valinnaiset aineet",
+      "kuvaus" : "Sanallinen liite alle kaksi vuosiviikkotuntia käsittävistä valinnaisista aineista",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "perusopetuksenoppimaaransuorituksenliitetieto_painotettuopetus",
+    "koodiArvo" : "painotettuopetus",
+    "metadata" : [ {
+      "nimi" : "Painotettu opetus",
+      "kuvaus" : "",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  }
+]

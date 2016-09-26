@@ -72,7 +72,11 @@ object ExamplesPerusopetus {
           vahvistus = vahvistus(date(2016, 6, 4)),
           suoritustapa = suoritustapaKoulutus,
           oppimäärä = perusopetuksenOppimäärä,
-          osasuoritukset = kaikkiAineet
+          osasuoritukset = kaikkiAineet,
+          liitetiedot = Some(List(PerusopetuksenOppimääränSuorituksenLiitetiedot(
+           tunniste = Koodistokoodiviite("kayttaytyminen", "perusopetuksenoppimaaransuorituksenliitetieto"),
+            kuvaus = "Oppilas on käyttäytynyt mallikkaasti"
+          )))
         )),
       tila = PerusopetuksenOpiskeluoikeudenTila(
         List(
