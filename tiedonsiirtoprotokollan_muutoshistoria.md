@@ -1,3 +1,8 @@
+## 26.9.2016
+- Lisätty IB oppiaineen suorituksen arviointi
+- Lisätty IB core aineille oma arviointiasteikko
+- Lisätty IB-tutkinnon lisäpisteet
+
 ## 23.9.2016
 - Lisätty IB kurssin kuvaus
 - Lisätty Pre-IB oppiaineen suorituksen arviointi
