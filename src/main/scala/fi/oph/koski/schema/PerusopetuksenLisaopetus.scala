@@ -15,18 +15,24 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeus(
   päättymispäivä: Option[LocalDate],
   tila: PerusopetuksenOpiskeluoikeudenTila,
   läsnäolotiedot: Option[YleisetLäsnäolotiedot],
+  lisätiedot: Option[PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot] = None,
   @MinItems(1)
   @MaxItems(1)
   suoritukset: List[PerusopetuksenLisäopetuksenSuoritus],
   @KoodistoKoodiarvo("perusopetuksenlisaopetus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenlisaopetus", "opiskeluoikeudentyyppi")
-  // TODO: lisätiedot: pidennetty oppivelvollisuus
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: OidOrganisaatio) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def withSuoritukset(suoritukset: List[PäätasonSuoritus]) = copy(suoritukset = suoritukset.asInstanceOf[List[PerusopetuksenLisäopetuksenSuoritus]])
   override def arvioituPäättymispäivä = None
 }
+
+case class PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
+  @Description("""Pidennetty oppivelvollisuus alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että oppilaalla ei ole pidennettyä oppivelvollisuutta.""")
+  @OksaUri("tmpOKSAID517", "pidennetty oppivelvollisuus")
+  pidennettyOppivelvollisuus: Option[Päätösjakso] = None
+)
 
 case class PerusopetuksenLisäopetuksenSuoritus(
   @Title("Koulutus")

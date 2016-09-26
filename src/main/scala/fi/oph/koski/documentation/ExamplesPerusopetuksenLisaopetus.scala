@@ -17,6 +17,30 @@ object ExamplesPerusopetuksenLisaopetus {
     korotus = false
   )
 
+  val lisäopetuksenSuoritus = PerusopetuksenLisäopetuksenSuoritus(
+    koulutusmoduuli = PerusopetuksenLisäopetus(),
+    tila = tilaValmis,
+    toimipiste = jyväskylänNormaalikoulu,
+    vahvistus = vahvistus(),
+    osasuoritukset = Some(
+      List(
+        suoritus(äidinkieli("AI1")).copy(arviointi = arviointi(7), korotus = true),
+        suoritus(kieli("A1", "EN")).copy(arviointi = arviointi(10), korotus = true),
+        suoritus(kieli("B1", "SV")).copy(arviointi = arviointi(6), korotus = true),
+        suoritus(oppiaine("MA")).copy(arviointi = arviointi(6), korotus = true),
+        suoritus(oppiaine("BI")).copy(arviointi = arviointi(10), korotus = true),
+        suoritus(oppiaine("GE")).copy(arviointi = arviointi(9), korotus = true),
+        suoritus(oppiaine("FY")).copy(arviointi = arviointi(8), korotus = true),
+        suoritus(oppiaine("KE")).copy(arviointi = arviointi(9), korotus = true),
+        suoritus(oppiaine("TE")).copy(arviointi = arviointi(8), korotus = true),
+        suoritus(oppiaine("HI")).copy(arviointi = arviointi(7), korotus = false),
+        suoritus(oppiaine("YH")).copy(arviointi = arviointi(8), korotus = true),
+        suoritus(oppiaine("KU")).copy(arviointi = arviointi(8), korotus = false),
+        suoritus(oppiaine("LI")).copy(arviointi = arviointi(7), korotus = true)
+      )
+    )
+  )
+
   val lisäopetuksenPäättötodistus = Oppija(
     exampleHenkilö,
     List(PerusopetuksenLisäopetuksenOpiskeluoikeus(
@@ -24,30 +48,12 @@ object ExamplesPerusopetuksenLisaopetus {
       päättymispäivä = Some(date(2016, 6, 4)),
       oppilaitos = jyväskylänNormaalikoulu,
       koulutustoimija = None,
+      lisätiedot = Some(PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
+        pidennettyOppivelvollisuus = Some(Päätösjakso(Some(date(2008, 8, 15)), Some(date(2016, 6, 4))))
+      )),
       suoritukset = List(
-        PerusopetuksenLisäopetuksenSuoritus(
-          koulutusmoduuli = PerusopetuksenLisäopetus(),
-          tila = tilaValmis,
-          toimipiste = jyväskylänNormaalikoulu,
-          vahvistus = vahvistus(),
-          osasuoritukset = Some(
-            List(
-              suoritus(äidinkieli("AI1")).copy(arviointi = arviointi(7), korotus = true),
-              suoritus(kieli("A1", "EN")).copy(arviointi = arviointi(10), korotus = true),
-              suoritus(kieli("B1", "SV")).copy(arviointi = arviointi(6), korotus = true),
-              suoritus(oppiaine("MA")).copy(arviointi = arviointi(6), korotus = true),
-              suoritus(oppiaine("BI")).copy(arviointi = arviointi(10), korotus = true),
-              suoritus(oppiaine("GE")).copy(arviointi = arviointi(9), korotus = true),
-              suoritus(oppiaine("FY")).copy(arviointi = arviointi(8), korotus = true),
-              suoritus(oppiaine("KE")).copy(arviointi = arviointi(9), korotus = true),
-              suoritus(oppiaine("TE")).copy(arviointi = arviointi(8), korotus = true),
-              suoritus(oppiaine("HI")).copy(arviointi = arviointi(7), korotus = false),
-              suoritus(oppiaine("YH")).copy(arviointi = arviointi(8), korotus = true),
-              suoritus(oppiaine("KU")).copy(arviointi = arviointi(8), korotus = false),
-              suoritus(oppiaine("LI")).copy(arviointi = arviointi(7), korotus = true)
-            )
-          )
-        )),
+        lisäopetuksenSuoritus
+      ),
       tila = PerusopetuksenOpiskeluoikeudenTila(
         List(
           PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
