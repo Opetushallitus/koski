@@ -1,26 +1,32 @@
 package fi.oph.koski.servlet
 
-import java.net.{URI, URLDecoder, URLEncoder}
+import java.net.{URLDecoder, URLEncoder}
 
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.{AuthenticationUser, UserAuthenticationContext}
-import fi.oph.koski.log.Debug
 import org.scalatra.{Cookie, CookieOptions, ScalatraBase}
 
 trait CasSingleSignOnSupport extends ScalatraBase {
   def application: UserAuthenticationContext
 
-  private val koskiRoot: String = application.config.getString("koski.root.url")
+  def isHttps = {
+    request.header("X-Forwarded-For").isDefined || request.isSecure // If we are behind a loadbalancer proxy, we assume that https is used
+  }
+
+  def protocol = if (isHttps) { "https" } else { "http" }
+
+  def koskiRoot: String = {
+    val hostRegex = "https?://([^/]*)/.*".r
+    request.getRequestURL match {
+      case hostRegex(host) => protocol + "://" + host + "/koski"
+    }
+  }
 
   private def currentUrl = {
     koskiRoot + request.getServletPath + request.getPathInfo
   }
 
   private def removeCookie(name: String) = response.addCookie(Cookie(name, "")(CookieOptions(secure = isHttps, path = "/", maxAge = 0)))
-
-  def isHttps = {
-    koskiRoot.startsWith("https:")
-  }
 
   def setUserCookie(user: AuthenticationUser) = {
     response.addCookie(Cookie("koskiUser", URLEncoder.encode(Json.write(user), "UTF-8"))(CookieOptions(secure = isHttps, path = "/", maxAge = application.sessionTimeout.seconds, httpOnly = true)))
