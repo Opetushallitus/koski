@@ -1,0 +1,17 @@
+{
+  "koodistoUri" : "arviointiasteikkocorerequirementsib",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "SV",
+    "nimi" : "Arviointiasteikko core requirements ib"
+  }, {
+    "kieli" : "EN",
+    "nimi" : "Arviointiasteikko core requirements ib"
+  }, {
+    "kieli" : "FI",
+    "nimi" : "Arviointiasteikko core requirements ib"
+  } ],
+  "codesGroupUri" : "http://koski",
+  "voimassaAlkuPvm" : "2016-09-23",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}

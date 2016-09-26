@@ -123,7 +123,7 @@ class IBTutkintoSpec extends FunSpec with Matchers with OpintosuoritusoteTestMet
           |MATST_S6 MATST_S6 pass 4.6.2016
           |Others
           |Arvosana Suor.pvm
-          |TOK Theory of knowledge 0 pass 4.6.2016
+          |TOK Theory of knowledge 0 Excellent 4.6.2016
           |TOK1 TOK1 pass 4.6.2016
           |TOK2 TOK2 pass 4.6.2016""".stripMargin
       )

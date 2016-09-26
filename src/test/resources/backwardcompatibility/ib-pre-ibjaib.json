@@ -3403,11 +3403,11 @@
           "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
-          "predicted" : false,
           "arvosana" : {
-            "koodiarvo" : "S",
-            "koodistoUri" : "arviointiasteikkoib"
+            "koodiarvo" : "A",
+            "koodistoUri" : "arviointiasteikkocorerequirementsib"
           },
+          "predicted" : false,
           "päivä" : "2016-06-04",
           "hyväksytty" : true
         } ],
@@ -3513,11 +3513,11 @@
           "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
-          "predicted" : false,
           "arvosana" : {
-            "koodiarvo" : "S",
-            "koodistoUri" : "arviointiasteikkoib"
+            "koodiarvo" : "B",
+            "koodistoUri" : "arviointiasteikkocorerequirementsib"
           },
+          "predicted" : false,
           "päivä" : "2016-06-04",
           "hyväksytty" : true
         } ],

@@ -100,7 +100,7 @@ case class IBTheoryOfKnowledgeSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: IBOppiaineTheoryOfKnowledge,
   tila: Koodistokoodiviite,
-  arviointi: Option[List[IBOppiaineenArviointi]] = None,
+  arviointi: Option[List[IBCoreRequirementsArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
   @Title("Kurssit")
@@ -123,7 +123,7 @@ case class IBExtendedEssaySuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: IBOppiaineExtendedEssay,
   tila: Koodistokoodiviite,
-  arviointi: Option[List[IBOppiaineenArviointi]] = None,
+  arviointi: Option[List[IBCoreRequirementsArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("iboppiaineee")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "iboppiaineee", koodistoUri = "suorituksentyyppi")
@@ -204,6 +204,20 @@ trait IBArviointi extends KoodistostaLöytyväArviointi {
   override def arvosanaKirjaimin: LocalizedString = arvosana.nimi.getOrElse(english(arvosana.koodiarvo))
   def hyväksytty: Boolean = arvosana.koodiarvo match {
     case "O" | "1" => false
+    case _ => true
+  }
+}
+
+case class IBCoreRequirementsArviointi(
+  @KoodistoUri("arviointiasteikkocorerequirementsib")
+  arvosana: Koodistokoodiviite,
+  @Description("Onko arvoitu arvosana vai ei, jos ei niin tarkoittaa IBOn vahvistamaa arvosanaa")
+  predicted: Boolean = true,
+  päivä: Option[LocalDate]
+) extends IBArviointi {
+  override def arviointipäivä: Option[LocalDate] = päivä
+  override def hyväksytty: Boolean = arvosana.koodiarvo match {
+    case "f" => false
     case _ => true
   }
 }

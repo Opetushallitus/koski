@@ -47,6 +47,7 @@ object MockKoodistoPalvelu {
     "ammatillisentutkinnonsuoritustapa",
     "arviointiasteikkoammatillinenhyvaksyttyhylatty",
     "arviointiasteikkoammatillinent1k3",
+    "arviointiasteikkocorerequirementsib",
     "arviointiasteikkoib",
     "arviointiasteikkoyleissivistava",
     "effortasteikkoib",

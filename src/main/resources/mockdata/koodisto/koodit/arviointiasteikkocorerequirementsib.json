@@ -1,0 +1,62 @@
+[
+  {
+    "koodiUri": "arviointiasteikkocorerequirementsib_a",
+    "koodiArvo": "A",
+    "metadata": [
+      {
+        "nimi": "Excellent",
+        "lyhytNimi": "A",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "arviointiasteikkocorerequirementsib_b",
+    "koodiArvo": "B",
+    "metadata": [
+      {
+        "nimi": "Good",
+        "lyhytNimi": "B",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "arviointiasteikkocorerequirementsib_c",
+    "koodiArvo": "C",
+    "metadata": [
+      {
+        "nimi": "Satisfactory",
+        "lyhytNimi": "C",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "arviointiasteikkocorerequirementsib_d",
+    "koodiArvo": "D",
+    "metadata": [
+      {
+        "nimi": "Mediocre",
+        "lyhytNimi": "D",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "arviointiasteikkocorerequirementsib_e",
+    "koodiArvo": "E",
+    "metadata": [
+      {
+        "nimi": "Elementary",
+        "lyhytNimi": "E",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1
+  }
+]

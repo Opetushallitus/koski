@@ -130,7 +130,7 @@ object ExamplesIB {
       ))
     )),
     theoryOfKnowledge = Some(IBTheoryOfKnowledgeSuoritus(
-      IBOppiaineTheoryOfKnowledge(), tilaValmis, ibArviointi("S"), osasuoritukset = Some(List(
+      IBOppiaineTheoryOfKnowledge(), tilaValmis, ibCoreArviointi("A"), osasuoritukset = Some(List(
         IBKurssinSuoritus(ibKurssi("TOK1", "TOK1"), tilaValmis, ibKurssinArviointi("S"), None),
         IBKurssinSuoritus(ibKurssi("TOK2", "TOK2"), tilaValmis, ibKurssinArviointi("S"), None)
       ))
@@ -140,7 +140,7 @@ object ExamplesIB {
         aine = ibKieli("A2", "EN", higherLevel, 1),
         aihe = LocalizedString.english("How is the theme of racial injustice treated in Harper Lee's To Kill a Mockingbird and Solomon Northup's 12 Years a Slave")
       ),
-      tilaValmis, ibArviointi("S")
+      tilaValmis, ibCoreArviointi("B")
     )),
     creativityActionService = Some(IBCASSuoritus(
       IBOppiaineCAS(laajuus = Some(LaajuusTunneissa(267))), tilaValmis, ibArviointi("S")
@@ -192,6 +192,10 @@ object ExamplesIB {
 
   def ibArviointi(arvosana: String, päivä: LocalDate = date(2016, 6, 4)): Some[List[IBOppiaineenArviointi]] = {
     Some(List(IBOppiaineenArviointi(predicted = false, arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoib"), Some(päivä))))
+  }
+
+  def ibCoreArviointi(arvosana: String, päivä: LocalDate = date(2016, 6, 4)): Some[List[IBCoreRequirementsArviointi]] = {
+    Some(List(IBCoreRequirementsArviointi(predicted = false, arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkocorerequirementsib"), päivä = Some(päivä))))
   }
 
   def ibKurssinArviointi(arvosana: String, effort: Option[String] = None, päivä: LocalDate = date(2016, 6, 4)): Some[List[IBKurssinArviointi]] =
