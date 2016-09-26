@@ -169,6 +169,8 @@ case class PerusopetuksenOppiaineenSuoritus(
   koulutusmoduuli: PerusopetuksenOppiaine,
   @Description("Tieto siitä, onko oppiaineen oppimäärä yksilöllistetty (true/false)")
   yksilöllistettyOppimäärä: Boolean = false,
+  @Description("Tieto siitä, onko oppiaineen opetus painotettu (true/false)")
+  painotettuOpetus: Boolean = false,
   tila: Koodistokoodiviite,
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite],

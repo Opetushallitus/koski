@@ -58,7 +58,7 @@ object PerusopetusExampleData {
       suoritus(oppiaine("KO").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
       suoritus(oppiaine("TE")).copy(arviointi = arviointi(8)),
       suoritus(oppiaine("KS")).copy(arviointi = arviointi(9)),
-      suoritus(oppiaine("LI")).copy(arviointi = arviointi(9)),
+      suoritus(oppiaine("LI")).copy(arviointi = arviointi(9), painotettuOpetus = true),
       suoritus(oppiaine("LI").copy(pakollinen = false, laajuus = vuosiviikkotuntia(0.5))).copy(arviointi = hyväksytty),
       suoritus(kieli("B2", "DE").copy(pakollinen = false, laajuus = vuosiviikkotuntia(4))).copy(arviointi = arviointi(9))
     ))

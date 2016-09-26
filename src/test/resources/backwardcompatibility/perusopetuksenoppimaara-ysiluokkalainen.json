@@ -114,6 +114,7 @@
           "pakollinen" : true
         },
         "yksilöllistettyOppimäärä" : false,
+        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -142,6 +143,7 @@
           "pakollinen" : true
         },
         "yksilöllistettyOppimäärä" : false,
+        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -180,6 +182,7 @@
           }
         },
         "yksilöllistettyOppimäärä" : false,
+        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -208,6 +211,7 @@
           "pakollinen" : true
         },
         "yksilöllistettyOppimäärä" : false,
+        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -232,6 +236,7 @@
           "pakollinen" : true
         },
         "yksilöllistettyOppimäärä" : false,
+        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -256,6 +261,7 @@
           "pakollinen" : true
         },
         "yksilöllistettyOppimäärä" : false,
+        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -280,6 +286,7 @@
           "pakollinen" : true
         },
         "yksilöllistettyOppimäärä" : false,
+        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -304,6 +311,7 @@
           "pakollinen" : true
         },
         "yksilöllistettyOppimäärä" : false,
+        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -328,6 +336,7 @@
           "pakollinen" : true
         },
         "yksilöllistettyOppimäärä" : false,
+        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -352,6 +361,7 @@
           "pakollinen" : true
         },
         "yksilöllistettyOppimäärä" : false,
+        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -376,6 +386,7 @@
           "pakollinen" : true
         },
         "yksilöllistettyOppimäärä" : false,
+        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -400,6 +411,7 @@
           "pakollinen" : true
         },
         "yksilöllistettyOppimäärä" : false,
+        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -424,6 +436,7 @@
           "pakollinen" : true
         },
         "yksilöllistettyOppimäärä" : false,
+        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -448,6 +461,7 @@
           "pakollinen" : true
         },
         "yksilöllistettyOppimäärä" : false,
+        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -472,6 +486,7 @@
           "pakollinen" : true
         },
         "yksilöllistettyOppimäärä" : false,
+        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -506,6 +521,7 @@
           }
         },
         "yksilöllistettyOppimäärä" : false,
+        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -530,6 +546,7 @@
           "pakollinen" : true
         },
         "yksilöllistettyOppimäärä" : false,
+        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -554,6 +571,7 @@
           "pakollinen" : true
         },
         "yksilöllistettyOppimäärä" : false,
+        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -578,6 +596,7 @@
           "pakollinen" : true
         },
         "yksilöllistettyOppimäärä" : false,
+        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -612,6 +631,7 @@
           }
         },
         "yksilöllistettyOppimäärä" : false,
+        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -650,6 +670,7 @@
           }
         },
         "yksilöllistettyOppimäärä" : false,
+        "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"

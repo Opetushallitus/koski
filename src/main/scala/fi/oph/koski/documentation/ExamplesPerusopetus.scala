@@ -74,8 +74,8 @@ object ExamplesPerusopetus {
           oppimäärä = perusopetuksenOppimäärä,
           osasuoritukset = kaikkiAineet,
           liitetiedot = Some(List(PerusopetuksenOppimääränSuorituksenLiitetiedot(
-           tunniste = Koodistokoodiviite("kayttaytyminen", "perusopetuksenoppimaaransuorituksenliitetieto"),
-            kuvaus = "Oppilas on käyttäytynyt mallikkaasti"
+           tunniste = Koodistokoodiviite("painotettuopetus", "perusopetuksenoppimaaransuorituksenliitetieto"),
+            kuvaus = "Oppilas on suorittanut liikuntapainotteisen perusopetuksen"
           )))
         )),
       tila = PerusopetuksenOpiskeluoikeudenTila(
