@@ -596,7 +596,7 @@
           "pakollinen" : true
         },
         "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : false,
+        "painotettuOpetus" : true,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"

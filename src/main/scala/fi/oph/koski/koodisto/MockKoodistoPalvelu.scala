@@ -83,7 +83,7 @@ object MockKoodistoPalvelu {
     "perusopetuksenlisaopetuksensuorituksenliitetieto",
     "perusopetuksenluokkaaste",
     "perusopetuksenoppimaara",
-    "perusopetuksenoppimaaransuorituksenliitetieto",
+    "perusopetuksentodistuksenliitetieto",
     "perusopetuksensuoritustapa",
     "perusopetuksentoimintaalue",
     "perusopetuksentukimuoto",

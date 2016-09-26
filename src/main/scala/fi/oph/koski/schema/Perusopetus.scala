@@ -99,7 +99,8 @@ case class PerusopetuksenVuosiluokanSuoritus(
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[OppiaineenTaiToiminta_AlueenSuoritus]] = None,
   @KoodistoKoodiarvo("perusopetuksenvuosiluokka")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenvuosiluokka", koodistoUri = "suorituksentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenvuosiluokka", koodistoUri = "suorituksentyyppi"),
+  liitetiedot: Option[List[PerusopetuksenVuosiluokanSuorituksenLiitteet]] = None
 ) extends PerusopetuksenPäätasonSuoritus {
   override def arviointi = None
 }
@@ -131,7 +132,18 @@ case class PerusopetuksenOppimääränSuoritus(
 @Description("Päättötodistukseen kuuluvat liitteet, liitteistä ei tule mainintaa  päättötodistukseen")
 case class PerusopetuksenOppimääränSuorituksenLiitetiedot(
   @Description("Liitetiedon tyyppi kooditettuna")
-  @KoodistoUri("perusopetuksenoppimaaransuorituksenliitetieto")
+  @KoodistoUri("perusopetuksentodistuksenliitetieto")
+  tunniste: Koodistokoodiviite,
+  @Description("Lisätiedon kuvaus")
+  kuvaus: LocalizedString
+)
+
+@Description("Vuosiluokan todistuksen liitteet")
+case class PerusopetuksenVuosiluokanSuorituksenLiitteet(
+  @Description("Liitetiedon tyyppi kooditettuna")
+  @KoodistoUri("perusopetuksentodistuksenliitetieto")
+  @KoodistoKoodiarvo("kayttaytyminen")
+  @KoodistoKoodiarvo("tyoskentely")
   tunniste: Koodistokoodiviite,
   @Description("Lisätiedon kuvaus")
   kuvaus: LocalizedString

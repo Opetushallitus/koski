@@ -1,16 +1,26 @@
 [
   {
-  "koodiUri" : "perusopetuksenoppimaaransuorituksenliitetieto_kayttaytyminen",
+  "koodiUri" : "perusopetuksentodistuksenliitetieto_kayttaytyminen",
   "koodiArvo" : "kayttaytyminen",
   "metadata" : [ {
     "nimi" : "Käyttäytyminen",
-    "kuvaus" : "Arvio oppilaan käyttäytymisestä ja työskentelystä",
+    "kuvaus" : "Arvio oppilaan käyttäytymisestä",
     "kieli" : "FI"
   } ],
   "versio" : 1
   },
   {
-    "koodiUri" : "perusopetuksenoppimaaransuorituksenliitetieto_valinnaisetaineet",
+    "koodiUri" : "perusopetuksentodistuksenliitetieto_tyoskentely",
+    "koodiArvo" : "tyoskentely",
+    "metadata" : [ {
+      "nimi" : "Työskentely",
+      "kuvaus" : "Arvio oppilaan työskentelystä",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "perusopetuksentodistuksenliitetieto_valinnaisetaineet",
     "koodiArvo" : "valinnaisetaineet",
     "metadata" : [ {
       "nimi" : "Valinnaiset aineet",
@@ -20,7 +30,7 @@
     "versio" : 1
   },
   {
-    "koodiUri" : "perusopetuksenoppimaaransuorituksenliitetieto_painotettuopetus",
+    "koodiUri" : "perusopetuksentodistuksenliitetieto_painotettuopetus",
     "koodiArvo" : "painotettuopetus",
     "metadata" : [ {
       "nimi" : "Painotettu opetus",

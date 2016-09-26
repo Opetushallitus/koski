@@ -607,7 +607,7 @@
           "pakollinen" : true
         },
         "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : false,
+        "painotettuOpetus" : true,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -1334,7 +1334,7 @@
           "pakollinen" : true
         },
         "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : false,
+        "painotettuOpetus" : true,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -1431,11 +1431,11 @@
       },
       "liitetiedot" : [ {
         "tunniste" : {
-          "koodiarvo" : "kayttaytyminen",
-          "koodistoUri" : "perusopetuksenoppimaaransuorituksenliitetieto"
+          "koodiarvo" : "painotettuopetus",
+          "koodistoUri" : "perusopetuksentodistuksenliitetieto"
         },
         "kuvaus" : {
-          "fi" : "Oppilas on käyttäytynyt mallikkaasti"
+          "fi" : "Oppilas on suorittanut liikuntapainotteisen perusopetuksen"
         }
       } ]
     } ],

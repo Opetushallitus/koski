@@ -1,9 +1,9 @@
 {
-  "koodistoUri" : "perusopetuksenoppimaaransuorituksenliitetieto",
+  "koodistoUri" : "perusopetuksentodistuksenliitetieto",
   "versio" : 1,
   "metadata" : [ {
     "kieli" : "FI",
-    "nimi" : "Perusopetuksen oppimäärän suorituksen liitetieto"
+    "nimi" : "Perusopetuksen todistuksen liitetieto"
   } ],
   "codesGroupUri" : "http://koski",
   "voimassaAlkuPvm" : "2016-09-26",
