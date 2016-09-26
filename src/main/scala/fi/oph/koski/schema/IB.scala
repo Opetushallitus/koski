@@ -147,6 +147,7 @@ trait PreIBOppiaine extends Koulutusmoduuli
 case class IBOppiaineenArviointi(
   @Description("Onko arvoitu arvosana vai ei, jos ei niin tarkoittaa IBOn vahvistamaa arvosanaa")
   predicted: Boolean = true,
+  @KoodistoUri("arviointiasteikkoib")
   arvosana: Koodistokoodiviite,
   päivä: Option[LocalDate]
 ) extends IBArviointi {
@@ -189,6 +190,7 @@ case class IBKurssi(
 }
 
 case class IBKurssinArviointi(
+  @KoodistoUri("arviointiasteikkoib")
   arvosana: Koodistokoodiviite,
   @KoodistoUri("effortasteikkoib")
   effort: Option[Koodistokoodiviite] = None,
@@ -197,7 +199,6 @@ case class IBKurssinArviointi(
 ) extends IBArviointi with ArviointiPäivämäärällä
 
 trait IBArviointi extends KoodistostaLöytyväArviointi {
-  @KoodistoUri("arviointiasteikkoib")
   def arvosana: Koodistokoodiviite
   def arvioitsijat: Option[List[Arvioitsija]] = None
   override def arvosanaKirjaimin: LocalizedString = arvosana.nimi.getOrElse(english(arvosana.koodiarvo))
