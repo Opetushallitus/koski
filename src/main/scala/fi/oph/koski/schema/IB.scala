@@ -43,7 +43,9 @@ case class IBTutkinnonSuoritus(
   extendedEssay: Option[IBExtendedEssaySuoritus],
   creativityActionService: Option[IBCASSuoritus],
   @KoodistoKoodiarvo("ibtutkinto")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ibtutkinto", koodistoUri = "suorituksentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ibtutkinto", koodistoUri = "suorituksentyyppi"),
+  @KoodistoUri("lisapisteasteikkoib")
+  lisäpisteet: Option[Koodistokoodiviite] = None
 ) extends IBPäätasonSuoritus
 
 case class PreIBSuoritus(

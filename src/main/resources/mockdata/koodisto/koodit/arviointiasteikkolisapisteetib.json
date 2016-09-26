@@ -1,0 +1,57 @@
+[
+  {
+    "koodiUri": "arviointiasteikkolisapisteetib_0",
+    "koodiArvo": "0",
+    "metadata": [
+      {
+        "nimi": "0",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "arviointiasteikkolisapisteetib_1",
+    "koodiArvo": "1",
+    "metadata": [
+      {
+        "nimi": "1",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "arviointiasteikkolisapisteetib_2",
+    "koodiArvo": "2",
+    "metadata": [
+      {
+        "nimi": "2",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "arviointiasteikkolisapisteetib_3",
+    "koodiArvo": "3",
+    "metadata": [
+      {
+        "nimi": "3",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "arviointiasteikkolisapisteetib_f",
+    "koodiArvo": "F",
+    "metadata": [
+      {
+        "nimi": "Failing condition",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1
+  }
+]

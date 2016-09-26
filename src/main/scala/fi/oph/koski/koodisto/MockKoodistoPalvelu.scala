@@ -49,6 +49,7 @@ object MockKoodistoPalvelu {
     "arviointiasteikkoammatillinent1k3",
     "arviointiasteikkocorerequirementsib",
     "arviointiasteikkoib",
+    "arviointiasteikkolisapisteetib",
     "arviointiasteikkoyleissivistava",
     "effortasteikkoib",
     "erityinenkoulutustehtava",
