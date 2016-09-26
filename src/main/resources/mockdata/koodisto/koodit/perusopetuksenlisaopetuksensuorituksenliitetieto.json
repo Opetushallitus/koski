@@ -1,0 +1,52 @@
+[
+  {
+  "koodiUri" : "perusopetuksenlisaopetuksensuorituksenliitetieto_kayttaytyminen",
+  "koodiArvo" : "kayttaytyminen",
+  "metadata" : [ {
+    "nimi" : "Käyttäytyminen",
+    "kuvaus" : "Arvio oppilaan käyttäytymisestä ja työskentelystä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+  },
+  {
+    "koodiUri" : "perusopetuksenlisaopetuksensuorituksenliitetieto_opinnot",
+    "koodiArvo" : "opinnot",
+    "metadata" : [ {
+      "nimi" : "Opinto-ohjelma ja menestyminen",
+      "kuvaus" : "Tarkempia tietoja oppilaan opinto-ohjelmasta ja opinnoissa menestymisestä",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "perusopetuksenlisaopetuksensuorituksenliitetieto_muissaoppilaitoksissasuoritetutopinnot",
+    "koodiArvo" : "muissaoppilaitoksissasuoritetutopinnot",
+    "metadata" : [ {
+      "nimi" : "Muissa oppilaitoksissa suoritetut opinnot",
+      "kuvaus" : "Seloste muissa oppilaitoksissa suoritetuista opinnoista",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "perusopetuksenlisaopetuksensuorituksenliitetieto_tyopaikallaoppiminen",
+    "koodiArvo" : "tyopaikallaoppiminen",
+    "metadata" : [ {
+      "nimi" : "Työpaikalla oppiminen",
+      "kuvaus" : "Arvio työpaikalla tapahtuneesta oppimisesta sekä kuvaus opiskelijan työtehtävistä",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "perusopetuksenlisaopetuksensuorituksenliitetieto_harrastukset",
+    "koodiArvo" : "harrastukset",
+    "metadata" : [ {
+      "nimi" : "Harrastukset",
+      "kuvaus" : "Seloste opiskelijan harrastuksista.",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  }
+]

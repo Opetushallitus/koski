@@ -6,6 +6,7 @@ import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.PerusopetuksenExampleData.{opiskeluoikeusLäsnä, opiskeluoikeusValmistunut}
 import fi.oph.koski.documentation.PerusopetusExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
+import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
 
 object ExamplesPerusopetuksenLisaopetus {
@@ -38,7 +39,11 @@ object ExamplesPerusopetuksenLisaopetus {
         suoritus(oppiaine("KU")).copy(arviointi = arviointi(8), korotus = false),
         suoritus(oppiaine("LI")).copy(arviointi = arviointi(7), korotus = true)
       )
-    )
+    ),
+    liitetiedot = Some(List(PerusopetuksenLisäopetuksenSuorituksenLiitetiedot(
+      tunniste = Koodistokoodiviite("kayttaytyminen", "perusopetuksenlisaopetuksensuorituksenliitetieto"),
+      kuvaus = "Liitteenä käyttäytymisen sanallinen arvio"
+    )))
   )
 
   val lisäopetuksenPäättötodistus = Oppija(

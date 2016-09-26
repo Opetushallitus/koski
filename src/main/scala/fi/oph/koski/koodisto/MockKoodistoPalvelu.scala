@@ -80,6 +80,7 @@ object MockKoodistoPalvelu {
     "oppilaitosnumero",
     "oppilaitostyyppi",
     "osaamisala",
+    "perusopetuksenlisaopetuksensuorituksenliitetieto",
     "perusopetuksenluokkaaste",
     "perusopetuksenoppimaara",
     "perusopetuksenoppimaaransuorituksenliitetieto",

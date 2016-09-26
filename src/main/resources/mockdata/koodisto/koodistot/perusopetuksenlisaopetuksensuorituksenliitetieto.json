@@ -1,0 +1,11 @@
+{
+  "koodistoUri" : "perusopetuksenlisaopetuksensuorituksenliitetieto",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Perusopetuksen lisäopetuksen suorituksen liitetieto"
+  } ],
+  "codesGroupUri" : "http://koski",
+  "voimassaAlkuPvm" : "2016-09-26",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}

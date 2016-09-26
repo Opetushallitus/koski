@@ -3,6 +3,7 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
+import fi.oph.koski.localization.LocalizedString
 import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems}
 
 case class PerusopetuksenLisäopetuksenOpiskeluoikeus(
@@ -45,10 +46,20 @@ case class PerusopetuksenLisäopetuksenSuoritus(
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[PerusopetuksenLisäopetuksenOppiaineenSuoritus]],
   @KoodistoKoodiarvo("perusopetuksenlisaopetus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenlisaopetus", koodistoUri = "suorituksentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenlisaopetus", koodistoUri = "suorituksentyyppi"),
+  liitetiedot: Option[List[PerusopetuksenLisäopetuksenSuorituksenLiitetiedot]] = None
 ) extends PäätasonSuoritus with Toimipisteellinen {
   def arviointi: Option[List[KoodistostaLöytyväArviointi]] = None
 }
+
+@Description("Päättötodistukseen kuuluvat liitteet, liitteistä ei tule mainintaa päättötodistukseen")
+case class PerusopetuksenLisäopetuksenSuorituksenLiitetiedot(
+  @Description("Liitetiedon tyyppi kooditettuna")
+  @KoodistoUri("perusopetuksenlisaopetuksensuorituksenliitetieto")
+  tunniste: Koodistokoodiviite,
+  @Description("Lisätiedon kuvaus")
+  kuvaus: LocalizedString
+)
 
 @Description("Perusopetuksen oppiaineen suoritus osana perusopetuksen lisäopetusta")
 case class PerusopetuksenLisäopetuksenOppiaineenSuoritus(
