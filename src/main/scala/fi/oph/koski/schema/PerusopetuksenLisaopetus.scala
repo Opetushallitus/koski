@@ -66,8 +66,9 @@ case class PerusopetuksenLisäopetuksenOppiaineenSuoritus(
 @Description("Perusopetuksen lisäopetuksen tunnistetiedot")
 case class PerusopetuksenLisäopetus(
   @KoodistoKoodiarvo("020075")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite("020075", koodistoUri = "koulutus")
-  // TODO: diaarinumero
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("020075", koodistoUri = "koulutus"),
+  @Description("Tutkinnon perusteen diaarinumero")
+  perusteenDiaarinumero: Option[String] = None
 ) extends Koulutus {
   def laajuus = None
 }
