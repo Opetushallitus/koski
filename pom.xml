@@ -60,7 +60,7 @@
     <dependency>
       <groupId>com.github.Opetushallitus</groupId>
       <artifactId>scala-schema</artifactId>
-      <version> ce922fe </version>
+      <version> 512027d </version>
     </dependency>
     <!-- external deps -->
     <dependency>

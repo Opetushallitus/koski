@@ -4,7 +4,7 @@ package fi.oph.koski.schema
 import java.time.LocalDate
 
 import fi.oph.koski.localization.LocalizedString
-import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems}
+import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, Title}
 
 case class PerusopetuksenLisäopetuksenOpiskeluoikeus(
   id: Option[Int] = None,

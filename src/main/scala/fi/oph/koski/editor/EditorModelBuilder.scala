@@ -9,6 +9,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.scalaschema._
 import ModelBuilder._
+import fi.oph.scalaschema.annotation.Title
 
 case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema: ClassSchema,
                               editable: Boolean = true, root: Boolean = true, private var prototypesRequested: Set[SchemaWithClassName] = Set.empty, private val prototypesBeingCreated: Set[SchemaWithClassName] = Set.empty)

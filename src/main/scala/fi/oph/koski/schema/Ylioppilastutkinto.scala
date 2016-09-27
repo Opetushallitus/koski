@@ -1,6 +1,6 @@
 package fi.oph.koski.schema
 
-import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems}
+import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, Title}
 
 case class YlioppilastutkinnonOpiskeluoikeus(
   lähdejärjestelmänId: Option[LähdejärjestelmäId],

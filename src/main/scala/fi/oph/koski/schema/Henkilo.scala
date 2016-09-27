@@ -32,6 +32,7 @@ case class TäydellisetHenkilötiedot(
   def toHenkilötiedotJaOid = HenkilötiedotJaOid(oid, hetu, etunimet, kutsumanimi, sukunimi)
 }
 
+@Title("Henkilötiedot ja henkilö-OID")
 case class HenkilötiedotJaOid(
   oid: Henkilö.Oid,
   hetu: Henkilö.Hetu,
@@ -48,6 +49,7 @@ case class UusiHenkilö(
   sukunimi: String
 ) extends Henkilö with Henkilötiedot
 
+@Title("Henkilö-OID")
 @Description("Henkilö, jonka oid on tiedossa. Tietoja syötettäessä henkilö haetaan henkilöpalvelusta.")
 case class OidHenkilö(
   oid: String

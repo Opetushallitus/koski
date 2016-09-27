@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedString.{concat, finnish}
-import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems}
+import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, Title}
 
 @Description("Lukion opiskeluoikeus")
 case class LukionOpiskeluoikeus(
