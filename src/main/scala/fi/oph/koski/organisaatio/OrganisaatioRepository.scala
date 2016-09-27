@@ -47,7 +47,7 @@ abstract class JsonOrganisaatioRepository(koodisto: KoodistoViitePalvelu) extend
   protected def convertOrganisaatio(org: OrganisaatioPalveluOrganisaatio): OrganisaatioHierarkia = {
     val oppilaitosnumero = org.oppilaitosKoodi.flatMap(oppilaitosnumero => koodisto.getKoodistoKoodiViite("oppilaitosnumero", oppilaitosnumero))
     val oppilaitostyyppi: Option[String] = org.oppilaitostyyppi.map(_.replace("oppilaitostyyppi_", "").replaceAll("#.*", ""))
-    OrganisaatioHierarkia(org.oid, oppilaitosnumero, LocalizedString.sanitizeRequired(org.nimi, org.oid), org.organisaatiotyypit, oppilaitostyyppi, org.children.map(convertOrganisaatio))
+    OrganisaatioHierarkia(org.oid, oppilaitosnumero, LocalizedString.sanitizeRequired(org.nimi, org.oid), org.ytunnus, org.organisaatiotyypit, oppilaitostyyppi, org.children.map(convertOrganisaatio))
   }
 }
 
@@ -74,5 +74,5 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu) e
 }
 
 case class OrganisaatioHakuTulos(organisaatiot: List[OrganisaatioPalveluOrganisaatio])
-case class OrganisaatioPalveluOrganisaatio(oid: String, nimi: Map[String, String], oppilaitosKoodi: Option[String], organisaatiotyypit: List[String], oppilaitostyyppi: Option[String], children: List[OrganisaatioPalveluOrganisaatio])
+case class OrganisaatioPalveluOrganisaatio(oid: String, ytunnus: Option[String], nimi: Map[String, String], oppilaitosKoodi: Option[String], organisaatiotyypit: List[String], oppilaitostyyppi: Option[String], children: List[OrganisaatioPalveluOrganisaatio])
 

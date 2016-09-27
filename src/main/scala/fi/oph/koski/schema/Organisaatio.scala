@@ -12,7 +12,8 @@ object Organisaatio {
 @Description("Opintopolun organisaatiopalvelusta löytyvä organisaatio. Esimerkiksi koulutustoimijat, oppilaitokset ja toimipisteet ovat tällaisia organisaatioita.")
 case class OidOrganisaatio(
   oid: Organisaatio.Oid,
-  nimi: Option[LocalizedString] = None
+  nimi: Option[LocalizedString] = None,
+  yTunnus: Option[String] = None
 ) extends OrganisaatioWithOid {
   def toOppilaitos = None
   def description = nimi.getOrElse(LocalizedString.unlocalized(oid))
