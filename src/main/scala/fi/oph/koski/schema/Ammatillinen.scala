@@ -196,6 +196,7 @@ case class ValtakunnallinenTutkinnonOsa(
 @Description("Paikallisen tutkinnon osan tunnistetiedot")
 case class PaikallinenTutkinnonOsa(
   tunniste: PaikallinenKoodi,
+  @Description("Tutkinnonosan kuvaus sisältäen ammattitaitovaatimukset")
   kuvaus: LocalizedString,
   pakollinen: Boolean,
   override val laajuus: Option[LaajuusOsaamispisteissä]
