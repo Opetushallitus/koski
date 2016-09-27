@@ -1,3 +1,9 @@
+## 27.9.2016
+- Lisätty perusopetuksen valinnainen paikallinen oppiaine
+- Lisätty uusi yleisivistävä arviointikoodi: valinnainen
+- Lisätty perusopetuksen vuosiluokan todistuksen sekä päättötodistuksen liitteet
+- Lisätty perusopetuksen oppiaineen suoritukseen tieto painotuksesta opetuksessa
+
 ## 26.9.2016
 - Lisätty IB oppiaineen suorituksen arviointi
 - Lisätty IB core aineille oma arviointiasteikko
