@@ -20,12 +20,12 @@ case class OidOrganisaatio(
 
 @Description("Opintopolun organisaatiopalvelusta löytyvä oppilaitos-tyyppinen organisaatio.")
 case class Oppilaitos(
-   oid: String,
-   @Description("5-numeroinen oppilaitosnumero, esimerkiksi 00001")
-   @ReadOnly("Tiedon syötössä oppilaitosnumeroa ei tarvita; numero haetaan Organisaatiopalvelusta")
-   @KoodistoUri("oppilaitosnumero")
-   oppilaitosnumero: Option[Koodistokoodiviite] = None,
-   nimi: Option[LocalizedString] = None
+  oid: String,
+  @Description("5-numeroinen oppilaitosnumero, esimerkiksi 00001")
+  @ReadOnly("Tiedon syötössä oppilaitosnumeroa ei tarvita; numero haetaan Organisaatiopalvelusta")
+  @KoodistoUri("oppilaitosnumero")
+  oppilaitosnumero: Option[Koodistokoodiviite] = None,
+  nimi: Option[LocalizedString] = None
 ) extends OrganisaatioWithOid {
   def toOppilaitos = Some(this)
   def description = nimi.getOrElse(LocalizedString.unlocalized(oid))
