@@ -107,5 +107,17 @@
       }
     ],
     "versio": 1
+  },
+  {
+    "koodiUri": "arviointiasteikkoyleissivistava_v",
+    "koodiArvo": "V",
+    "metadata": [
+      {
+        "nimi": "vapautettu",
+        "lyhytNimi": "V",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
   }
 ]
