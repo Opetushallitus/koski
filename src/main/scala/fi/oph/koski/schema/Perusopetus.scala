@@ -59,17 +59,7 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("""Opiskelu ulkomailla huoltajan ilmoituksesta, alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole ulkomailla.""")
   ulkomailla: Option[Päätösjakso] = None,
   @Description("""Oppilas on vuosiluokkiin sitoutumattomassa opetuksessa (true/false)""")
-  vuosiluokkiinSitoutumatonOpetus: Boolean = false,
-  @Description("""Tieto siitä, että oppilas on sisäoppilaismaisessa majoituksessa, alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole sisäoppilasmaisessa majoituksessa.""")
-  sisäoppilaitosmainenMajoitus: Option[Päätösjakso] = None,
-  @Description("""Tieto siitä, että oppilas saa majoitusetua, alkamis- ja päättymispäivineen. Jos oppilaalla on sisäoppilaitosmuotoinen majoitus, hän ei voi saada majoitusetua. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas saa majoitusetua.""")
-  majoitusetu: Option[Päätösjakso] = None,
-  @Description("""Tieto siitä, että oppilas saa kuljetusetua, alkamis- ja päättymispäivineen. Jos oppilas on sisäoppilaitosmuotoisessa majoituksessa tai saa majoitusetua, hän ei voi saada kuljetusetua. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas saa kuljetusetua.""")
-  kuljetusetu: Option[Päätösjakso] = None,
-  @Description("""Tieto siitä, että oppilaalla on oikeus maksuttomaan asuntolapaikkaan, alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilaalla ole oikeutta maksuttomaan asuntolapaikkaan.""")
-  oikeusMaksuttomaanAsuntolapaikkaan: Option[Päätösjakso] = None,
-  @Description("""Tieto siitä, että oppilas on osallistunut perusopetuslain (628/1998, 8a) mukaiseen aamu- tai iltapäivätoimintaan, alkamis- ja päättymispäivämäärineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole osallistunut aamu- tai iltapäivätoimintaan.""")
-  aamuTaiIltapäivätoiminta: Option[Päätösjakso] = None
+  vuosiluokkiinSitoutumatonOpetus: Boolean = false
 )
 
 case class ErityisenTuenPäätös(
