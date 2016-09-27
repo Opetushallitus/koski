@@ -3,6 +3,11 @@
 - Lisätty uusi yleisivistävä arviointikoodi: valinnainen
 - Lisätty perusopetuksen vuosiluokan todistuksen sekä päättötodistuksen liitteet
 - Lisätty perusopetuksen oppiaineen suoritukseen tieto painotuksesta opetuksessa
+- Lisätty todistuksellaNäkyvätLisätiedot perusopetuksen lisäopetukseen
+- Lisätty perusopetuksen lisäopetuksen todistuksen liitetiedot
+- Lisätty perusteen diaarinumero perusopetuksen lisäopetuksen suoritukseen
+- Lisätty perusopetuksen lisäopetuksen opiskeluoikeuden lisätiedot (pidennetty oppivelvollisuus)
+- Valmiita päätason suorituksia ei poisteta, vaikka ne puuttuisivat päivitettäessä
 
 ## 26.9.2016
 - Lisätty IB oppiaineen suorituksen arviointi
