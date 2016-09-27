@@ -93,6 +93,10 @@ case class PerusopetuksenVuosiluokanSuoritus(
   tila: Koodistokoodiviite,
   vahvistus: Option[Henkilövahvistus] = None,
   suorituskieli: Option[Koodistokoodiviite],
+  @Description("Tieto siitä kielestä, joka on oppilaan kotimaisten kielten kielikylvyn kieli.")
+  @KoodistoUri("kieli")
+  @OksaUri("tmpOKSAID439", "kielikylpy")
+  kielikylpykieli: Option[Koodistokoodiviite] = None,
   jääLuokalle: Boolean = false,
   käyttäytymisenArvio: Option[PerusopetuksenOppiaineenArviointi] = None,
   @Description("Vuosiluokan suoritukseen liittyvät oppiaineen suoritukset")

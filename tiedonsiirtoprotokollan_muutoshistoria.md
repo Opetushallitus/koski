@@ -8,6 +8,7 @@
 - Lisätty perusteen diaarinumero perusopetuksen lisäopetuksen suoritukseen
 - Lisätty perusopetuksen lisäopetuksen opiskeluoikeuden lisätiedot (pidennetty oppivelvollisuus)
 - Valmiita päätason suorituksia ei poisteta, vaikka ne puuttuisivat päivitettäessä
+- Lisätty valinnainen kielikylpykieli perusopetuksen oppimäärän suoritukseen
 
 ## 26.9.2016
 - Lisätty IB oppiaineen suorituksen arviointi
