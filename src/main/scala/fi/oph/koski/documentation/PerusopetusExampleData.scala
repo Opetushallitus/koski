@@ -6,6 +6,7 @@ import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.schema._
+import fi.oph.koski.localization.LocalizedStringImplicits._
 
 object PerusopetusExampleData {
   def arviointi(arvosana: Int): Some[List[PerusopetuksenOppiaineenArviointi]] = Some(List(PerusopetuksenOppiaineenArviointi(arvosana)))
@@ -32,6 +33,8 @@ object PerusopetusExampleData {
   val perusopetuksenOppimäärä = Koodistokoodiviite("perusopetus", "perusopetuksenoppimaara")
   val aikuistenOppimäärä = Koodistokoodiviite("aikuistenperusopetus", "perusopetuksenoppimaara")
 
+  def valinnainenOppiaine(aine: String, nimi: String, kuvaus: String, laajuus: Option[LaajuusVuosiviikkotunneissa] = None) =
+    PerusopetuksenPaikallinenValinnainenOppiaine(tunniste = PaikallinenKoodi(koodiarvo = aine, nimi = nimi), laajuus = laajuus, kuvaus = kuvaus)
   def oppiaine(aine: String, laajuus: Option[LaajuusVuosiviikkotunneissa] = None) = MuuPeruskoulunOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), laajuus = laajuus)
   def äidinkieli(kieli: String) = PeruskoulunAidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"))
   def kieli(oppiaine: String, kieli: String) = PeruskoulunVierasTaiToinenKotimainenKieli(
@@ -60,6 +63,7 @@ object PerusopetusExampleData {
       suoritus(oppiaine("KS")).copy(arviointi = arviointi(9)),
       suoritus(oppiaine("LI")).copy(arviointi = arviointi(9), painotettuOpetus = true),
       suoritus(oppiaine("LI").copy(pakollinen = false, laajuus = vuosiviikkotuntia(0.5))).copy(arviointi = hyväksytty),
-      suoritus(kieli("B2", "DE").copy(pakollinen = false, laajuus = vuosiviikkotuntia(4))).copy(arviointi = arviointi(9))
+      suoritus(kieli("B2", "DE").copy(pakollinen = false, laajuus = vuosiviikkotuntia(4))).copy(arviointi = arviointi(9)),
+      suoritus(valinnainenOppiaine("TH", "Tietokoneen hyötykäyttö", "Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.")).copy(arviointi = arviointi(9))
     ))
 }

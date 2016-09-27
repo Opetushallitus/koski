@@ -268,8 +268,18 @@ object PerusopetuksenLuokkaAste {
 }
 
 @Description("Perusopetuksen oppiaineen tunnistetiedot")
-trait PerusopetuksenOppiaine extends YleissivistavaOppiaine {
+trait PerusopetuksenOppiaine extends Koulutusmoduuli with Valinnaisuus {
   def laajuus: Option[LaajuusVuosiviikkotunneissa]
+}
+
+trait PerusopetuksenKoodistostaLöytyväOppiaine extends PerusopetuksenOppiaine with YleissivistavaOppiaine
+
+case class PerusopetuksenPaikallinenValinnainenOppiaine(
+  tunniste: PaikallinenKoodi,
+  laajuus: Option[LaajuusVuosiviikkotunneissa] = None,
+  kuvaus: LocalizedString
+) extends PerusopetuksenOppiaine with PaikallinenKoulutusmoduuli {
+  def pakollinen: Boolean = false
 }
 
 case class MuuPeruskoulunOppiaine(
@@ -292,7 +302,7 @@ case class MuuPeruskoulunOppiaine(
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusVuosiviikkotunneissa] = None
-) extends PerusopetuksenOppiaine
+) extends PerusopetuksenKoodistostaLöytyväOppiaine
 
 @Description("Oppiaineena äidinkieli ja kirjallisuus")
 case class PeruskoulunAidinkieliJaKirjallisuus(
@@ -303,7 +313,7 @@ case class PeruskoulunAidinkieliJaKirjallisuus(
   kieli: Koodistokoodiviite,
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusVuosiviikkotunneissa] = None
-) extends PerusopetuksenOppiaine
+) extends PerusopetuksenKoodistostaLöytyväOppiaine
 
 
 @Description("Oppiaineena vieras tai toinen kotimainen kieli")
@@ -319,7 +329,7 @@ case class PeruskoulunVierasTaiToinenKotimainenKieli(
   kieli: Koodistokoodiviite,
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusVuosiviikkotunneissa] = None
-) extends PerusopetuksenOppiaine {
+) extends PerusopetuksenKoodistostaLöytyväOppiaine {
   override def description = concat(nimi, ", ", kieli)
 }
 

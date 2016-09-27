@@ -5,7 +5,7 @@ import java.time.LocalDate
 import fi.oph.scalaschema.annotation.Description
 
 trait OppiaineenSuoritus extends Suoritus {
-  def koulutusmoduuli: YleissivistavaOppiaine
+  def koulutusmoduuli: Koulutusmoduuli with Valinnaisuus
 }
 
 case class Päätösjakso(

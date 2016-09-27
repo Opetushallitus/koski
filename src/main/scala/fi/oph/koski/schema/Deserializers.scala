@@ -207,7 +207,8 @@ object PerusopetuksenOppiaineDeserializer extends Deserializer[PerusopetuksenOpp
       json match {
         case moduuli: JObject if moduuli \ "tunniste" \ "koodiarvo" == JString("AI") => moduuli.extract[PeruskoulunAidinkieliJaKirjallisuus]
         case moduuli: JObject if (moduuli \ "kieli").isInstanceOf[JObject] => moduuli.extract[PeruskoulunVierasTaiToinenKotimainenKieli]
-        case moduuli: JObject => moduuli.extract[MuuPeruskoulunOppiaine]
+        case moduuli: JObject if moduuli \ "tunniste" \ "koodistoUri" == JString("koskioppiaineetyleissivistava") => moduuli.extract[MuuPeruskoulunOppiaine]
+        case moduuli: JObject => moduuli.extract[PerusopetuksenPaikallinenValinnainenOppiaine]
         case _ => throw CannotDeserializeException(this, json)
       }
   }

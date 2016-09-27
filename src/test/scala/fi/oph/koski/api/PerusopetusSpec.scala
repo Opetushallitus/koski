@@ -34,7 +34,8 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
           |Liikunta Kiitettävä 9
           |Valinnainen liikunta 0.5 Hyväksytty
           |
-          |B2-kieli, saksa 4.0 Kiitettävä 9""".stripMargin)
+          |B2-kieli, saksa 4.0 Kiitettävä 9
+          |Tietokoneen hyötykäyttö Kiitettävä 9""".stripMargin)
     }
     it("Perusopetuksen päättötodistus toiminta-alueittain, sanallisella arvioinnilla") {
       todistus(MockOppijat.toimintaAlueittainOpiskelija.oid, "perusopetuksenoppimaara") should equal(
@@ -88,8 +89,8 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
           |Liikunta Kiitettävä 9
           |Valinnainen liikunta 0.5 Hyväksytty
           |
-          |B2-kieli, saksa 4.0 Kiitettävä 9""".stripMargin)
-
+          |B2-kieli, saksa 4.0 Kiitettävä 9
+          |Tietokoneen hyötykäyttö Kiitettävä 9""".stripMargin)
     }
 
   }
