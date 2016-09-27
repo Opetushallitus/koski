@@ -31,6 +31,7 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
           |Valinnainen kotitalous 1.0 Hyväksytty
           |Terveystieto Hyvä 8
           |Käsityö Kiitettävä 9
+          |Filosofia Vapautettu
           |Liikunta Kiitettävä 9
           |Valinnainen liikunta 0.5 Hyväksytty
           |
@@ -86,6 +87,7 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
           |Valinnainen kotitalous 1.0 Hyväksytty
           |Terveystieto Hyvä 8
           |Käsityö Kiitettävä 9
+          |Filosofia Vapautettu
           |Liikunta Kiitettävä 9
           |Valinnainen liikunta 0.5 Hyväksytty
           |
