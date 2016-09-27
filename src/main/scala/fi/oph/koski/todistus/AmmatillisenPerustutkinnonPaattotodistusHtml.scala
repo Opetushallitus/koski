@@ -44,6 +44,8 @@ class AmmatillisenPerustutkinnonPaattotodistusHtml(implicit val user: KoskiUser)
             </thead>
             <tbody>
               {
+                // TODO: näytetään tutkinnon osan lisätiedot: M-flägi per rivi ja alle lista lisätietojen kuvauksista
+
                 val xs = päätasot.flatMap { m =>
                   <tr class="rakennemoduuli"><td class="nimi">{i(m.nimi)}</td></tr> ::
                   osasuoritukset.filter(osasuoritus => goesTo(m, osasuoritus.koulutusmoduuli)).map { osasuoritus =>

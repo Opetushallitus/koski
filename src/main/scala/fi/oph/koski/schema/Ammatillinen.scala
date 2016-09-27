@@ -36,6 +36,8 @@ case class AmmatillinenOpiskeluoikeus(
   override def withSuoritukset(suoritukset: List[PäätasonSuoritus]) = copy(suoritukset = suoritukset.asInstanceOf[List[AmmatillinenPäätasonSuoritus]])
 }
 
+// TODO: mallinnetaan pelkän tutkinnon osan suoritus, poistetaan tavoite
+
 sealed trait AmmatillinenPäätasonSuoritus extends PäätasonSuoritus
 
 case class AmmatillisenOpiskeluoikeudenLisätiedot(
@@ -319,6 +321,8 @@ case class NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
   override def osasuoritukset = None
   def arviointi = None
 }
+
+// TODO: myös koodistosta löytyvät tutkinnon osat (ei varsinaisesti tutkinnon osan suoritus, vaan siihen liittyvää sisältöä)
 
 @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osan tunnistetiedot")
 case class NäyttötutkintoonValmistavanKoulutuksenOsa(
