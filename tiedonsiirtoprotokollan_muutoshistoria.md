@@ -7,6 +7,7 @@
 - Lisätty kuvaus Telma ja Valma koulutuksen osiin
 - Lisätty ammatillisten tutkinnon lisätietoihin Muutos arviointiasteikossa
 - Lisätty perusteenDiaarinumero Valma- ja Telma-koulutuksiin
+- Lisätty työssäOppimisjaksot Valma- ja Telma-koulutuksiin
 
 ## 27.9.2016
 - Lisätty perusopetuksen valinnainen paikallinen oppiaine

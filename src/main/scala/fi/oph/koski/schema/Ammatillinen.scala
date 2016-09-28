@@ -366,6 +366,8 @@ case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus(
   @Description("Suoritukseen liittyvän näytön tiedot")
   näyttö: Option[Näyttö] = None,
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
+  @Description("Tutkinnon suoritukseen kuuluvat työssäoppimisjaksot")
+  työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   @KoodistoKoodiarvo("valmakoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valmakoulutuksenosa", koodistoUri = "suorituksentyyppi")
 ) extends ValmentavanKoulutuksenOsanSuoritus
@@ -415,6 +417,8 @@ case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus(
   @Description("Suoritukseen liittyvän näytön tiedot")
   näyttö: Option[Näyttö] = None,
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
+  @Description("Tutkinnon suoritukseen kuuluvat työssäoppimisjaksot")
+  työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   @KoodistoKoodiarvo("telmakoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("telmakoulutuksenosa", koodistoUri = "suorituksentyyppi")
 ) extends ValmentavanKoulutuksenOsanSuoritus
