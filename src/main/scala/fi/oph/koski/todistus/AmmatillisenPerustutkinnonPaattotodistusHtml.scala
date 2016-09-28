@@ -17,6 +17,13 @@ class AmmatillisenPerustutkinnonPaattotodistusHtml(implicit val user: KoskiUser)
     def goesTo(rakenne: RakenneModuuli, tutkinnonOsa: AmmatillisenTutkinnonOsa) = {
       contains(rakenne, tutkinnonOsa) || (rakenne == päätasot.last && !päätasot.find(m => contains(m, tutkinnonOsa)).isDefined)
     }
+    def lisätietoviite(index: Int) = "M" + (index match {
+      case 0 => ""
+      case n => n
+    }) + ")"
+
+    var kaikkiLisätiedot: List[AmmatillisenTutkinnonOsanLisätieto] = Nil
+
 
     <html>
       <head>
@@ -40,21 +47,33 @@ class AmmatillisenPerustutkinnonPaattotodistusHtml(implicit val user: KoskiUser)
                 <th class="nimi">Tutkinnon osat</th>
                 <th class="laajuus">Suoritettu laajuus, osp</th>
                 <th colspan="2" class="arvosana">Arvosana (1-3)</th>
+                <th class="lisatieto-viitteet"></th>
               </tr>
             </thead>
             <tbody>
               {
-                // TODO: näytetään tutkinnon osan lisätiedot: M-flägi per rivi ja alle lista lisätietojen kuvauksista
-
                 val xs = päätasot.flatMap { m =>
                   <tr class="rakennemoduuli"><td class="nimi">{i(m.nimi)}</td></tr> ::
                   osasuoritukset.filter(osasuoritus => goesTo(m, osasuoritus.koulutusmoduuli)).map { osasuoritus =>
+                    val lisätiedot = osasuoritus.lisätiedot.toList.flatten
                     val className = "tutkinnon-osa " + osasuoritus.koulutusmoduuli.tunniste.koodiarvo
                     <tr class={className}>
-                      <td class="nimi">{ i(osasuoritus.koulutusmoduuli.nimi) }</td>
+                      <td class="nimi">
+                        { i(osasuoritus.koulutusmoduuli.nimi) }
+                      </td>
                       <td class="laajuus">{ osasuoritus.koulutusmoduuli.laajuus.map(_.arvo.toInt).getOrElse("") }</td>
                       <td class="arvosana-kirjaimin">{i(osasuoritus.arvosanaKirjaimin).capitalize}</td>
-                      <td class="arvosana-numeroin">{i(osasuoritus.arvosanaNumeroin)}</td>
+                      <td class="arvosana-numeroin">
+                        {i(osasuoritus.arvosanaNumeroin)}
+                      </td>
+                      <td class="lisatieto-viitteet">
+                        {
+                          lisätiedot.map { lisätieto =>
+                            kaikkiLisätiedot = kaikkiLisätiedot ++ List(lisätieto)
+                            <span class="lisatieto-viite">{lisätietoviite(kaikkiLisätiedot.length - 1)}</span>
+                          }
+                        }
+                      </td>
                     </tr>
                   }
                 }
@@ -73,6 +92,11 @@ class AmmatillisenPerustutkinnonPaattotodistusHtml(implicit val user: KoskiUser)
                 <h4>Tutkintoon sisältyy</h4>
                 <p>Työssäoppimisen kautta hankittu osaaminen ({työssäoppimisenOsaamispisteet} osp)</p>
               </div>
+            }
+          }
+          {
+            kaikkiLisätiedot.zipWithIndex.map { case(lisätieto, index) =>
+              <p class="lisatieto">{lisätietoviite(index)} {i(lisätieto.kuvaus)}</p>
             }
           }
           { tutkintoSuoritus.vahvistus.toList.map(vahvistusHTML)}

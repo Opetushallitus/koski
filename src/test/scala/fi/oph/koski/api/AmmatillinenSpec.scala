@@ -19,10 +19,10 @@ class AmmatillinenSpec extends FreeSpec with TodistusTestMethods with LocalJetty
         |Uusiutuvien energialähteiden hyödyntäminen 15 Kiitettävä 3
         |Ulkoilureittien rakentaminen ja hoitaminen 15 Kiitettävä 3
         |Kulttuuriympäristöjen kunnostaminen ja hoitaminen 15 Kiitettävä 3
-        |Vesistöjen kunnostaminen ja hoitaminen 15 Hyväksytty
+        |Vesistöjen kunnostaminen ja hoitaminen 15 Hyväksytty M)
         |Yhteiset tutkinnon osat
         |Viestintä- ja vuorovaikutusosaaminen 11 Kiitettävä 3
-        |Matemaattis-lunnontieteellinen osaaminen 9 Kiitettävä 3
+        |Matemaattis-lunnontieteellinen osaaminen 9 Kiitettävä 3 M1)
         |Yhteiskunnassa ja työelämässä tarvittava osaaminen 8 Kiitettävä 3
         |Sosiaalinen ja kulttuurinen osaaminen 7 Kiitettävä 3
         |Vapaasti valittavat tutkinnon osat
@@ -31,7 +31,9 @@ class AmmatillinenSpec extends FreeSpec with TodistusTestMethods with LocalJetty
         |Sosiaalinen ja kulttuurinen osaaminen 5 Kiitettävä 3
         |Opiskelijan suorittamien tutkinnon osien laajuus osaamispisteinä 180
         |Tutkintoon sisältyy
-        |Työssäoppimisen kautta hankittu osaaminen (5.0 osp)""".stripMargin)
+        |Työssäoppimisen kautta hankittu osaaminen (5.0 osp)
+        |M) Tutkinnon osa on koulutuksen järjestäjän päätöksellä arvioitu asteikolla hyväksytty/hylätty.
+        |M1) Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella""".stripMargin)
   }
 
   "Näyttötutkintoon valmistava koulutus" in {

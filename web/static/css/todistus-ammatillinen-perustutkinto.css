@@ -18,3 +18,21 @@ div {
     margin-left: 50px;
     margin-top: 0;
 }
+
+tr td.arvosana-numeroin {
+    padding-right: 5px;
+}
+
+.lisatieto {
+    font-size: 0.8em;
+    margin-bottom: 0;
+}
+
+.lisatieto:not(:first-child) {
+    margin-top: 5px;
+}
+
+.lisatieto-viitteet {
+    vertical-align: middle;
+    font-size: 0.8em;
+}
