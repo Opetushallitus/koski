@@ -18,7 +18,7 @@ object ExamplesAmmatillinen {
     Example("ammatillinen - osatoisestatutkinnosta", "Oppija on suorittanut toiseen tutkintoon liittyvän tutkinnon osan", AmmatillinenOldExamples.tutkinnonOsaToisestaTutkinnosta),
     Example("ammatillinen - full", "Isompi esimerkki. Suorittaa perustutkintoa näyttönä. Tähän lisätty lähes kaikki kaavaillut tietokentät.", AmmatillinenOldExamples.full),
     Example("ammatillinen - ops", "Perustutkinto ops:n mukaan, läsnäolotiedoilla, hojks", AmmatillinenOldExamples.ops),
-    Example("ammatillinen - perustutkinto", "Ympäristönhoitajaksi valmistunut opiskelija", AmmatillinenPerustutkintoExample.todistus),
+    Example("ammatillinen - perustutkinto", "Ympäristönhoitajaksi valmistunut opiskelija", AmmatillinenPerustutkintoExample.perustutkinto),
     Example("ammatillinen - erikoisammattitutkinto", "Erikoisammattitutkinnon ja näyttötutkintoon valmistavan koulutuksen suorittanut opiskelija", AmmattitutkintoExample.erikoisammattitutkinto)
   )
 }
@@ -78,7 +78,7 @@ object AmmattitutkintoExample {
 object AmmatillinenPerustutkintoExample {
   import AmmatillinenExampleData._
 
-  lazy val todistus = Oppija(
+  lazy val perustutkinto = Oppija(
     exampleHenkilö,
     List(
       AmmatillinenOpiskeluoikeus(
@@ -108,8 +108,10 @@ object AmmatillinenPerustutkintoExample {
             tutkinnonOsanSuoritus("100439", "Uusiutuvien energialähteiden hyödyntäminen", k3, 15),
             tutkinnonOsanSuoritus("100442", "Ulkoilureittien rakentaminen ja hoitaminen", k3, 15),
             tutkinnonOsanSuoritus("100443", "Kulttuuriympäristöjen kunnostaminen ja hoitaminen", k3, 15),
-            tutkinnonOsanSuoritus("100447", "Vesistöjen kunnostaminen ja hoitaminen", k3, 15),
-
+            tutkinnonOsanSuoritus("100447", "Vesistöjen kunnostaminen ja hoitaminen", hyväksytty, 15).copy(
+              lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(Koodistokoodiviite("muutosarviointiasteikossa", "ammatillisentutkinnonosanlisatieto"),
+                "Tutkinnon osa on koulutuksen järjestäjän päätöksellä arvioitu asteikolla hyväksytty/hylätty.")))
+            ),
             tutkinnonOsanSuoritus("101053", "Viestintä- ja vuorovaikutusosaaminen", k3, 11),
             tutkinnonOsanSuoritus("101054", "Matemaattis-luonnontieteellinen osaaminen", k3, 9),
             tutkinnonOsanSuoritus("101055", "Yhteiskunnassa ja työelämässä tarvittava osaaminen", k3, 8),
@@ -129,7 +131,6 @@ object AmmatillinenPerustutkintoExample {
       )
     )
   )
-
 }
 
 object AmmatillinenOldExamples {

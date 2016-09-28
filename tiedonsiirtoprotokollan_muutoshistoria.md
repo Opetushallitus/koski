@@ -5,6 +5,7 @@
 - Lisätty yksilöllistettyOppimäärä perusopetuksen lisäopetuksen oppiaineen suoritukseen
 - Lisätty kuvaus ulkomaanjaksoon
 - Lisätty kuvaus Telma ja Valma koulutuksen osiin
+- Lisätty ammatillisten tutkinnon lisätietoihin Muutos arviointiasteikossa
 
 ## 27.9.2016
 - Lisätty perusopetuksen valinnainen paikallinen oppiaine

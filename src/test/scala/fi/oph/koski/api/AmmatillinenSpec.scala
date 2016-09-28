@@ -19,7 +19,7 @@ class AmmatillinenSpec extends FreeSpec with TodistusTestMethods with LocalJetty
         |Uusiutuvien energialähteiden hyödyntäminen 15 Kiitettävä 3
         |Ulkoilureittien rakentaminen ja hoitaminen 15 Kiitettävä 3
         |Kulttuuriympäristöjen kunnostaminen ja hoitaminen 15 Kiitettävä 3
-        |Vesistöjen kunnostaminen ja hoitaminen 15 Kiitettävä 3
+        |Vesistöjen kunnostaminen ja hoitaminen 15 Hyväksytty
         |Yhteiset tutkinnon osat
         |Viestintä- ja vuorovaikutusosaaminen 11 Kiitettävä 3
         |Matemaattis-lunnontieteellinen osaaminen 9 Kiitettävä 3
