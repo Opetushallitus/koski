@@ -380,6 +380,8 @@ case class AmmatilliseenPeruskoulutukseenValmentavaKoulutus(
 @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osan tunnistetiedot")
 case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa(
   tunniste: PaikallinenKoodi,
+  @Description("Tutkinnonosan kuvaus sisältäen ammattitaitovaatimukset")
+  kuvaus: LocalizedString,
   laajuus: Option[LaajuusOsaamispisteissä],
   pakollinen: Boolean
 ) extends PaikallinenKoulutusmoduuli with Valinnaisuus
@@ -426,6 +428,8 @@ case class TyöhönJaItsenäiseenElämäänValmentavaKoulutus(
 @Description("Työhön ja itsenäiseen elämään valmentavan koulutuksen osan tunnistiedot")
 case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa(
   tunniste: PaikallinenKoodi,
+  @Description("Tutkinnonosan kuvaus sisältäen ammattitaitovaatimukset")
+  kuvaus: LocalizedString,
   laajuus: Option[LaajuusOsaamispisteissä],
   pakollinen: Boolean
 ) extends PaikallinenKoulutusmoduuli with Valinnaisuus

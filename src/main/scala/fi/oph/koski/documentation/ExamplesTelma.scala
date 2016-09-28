@@ -6,6 +6,7 @@ import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.TelmaExampleData.{arviointiHyväksytty, _}
 import fi.oph.koski.localization.LocalizedString
+import fi.oph.koski.localization.LocalizedString.finnish
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.schema._
@@ -50,7 +51,8 @@ object ExamplesTelma {
     TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus(
       tila = tilaValmis,
       koulutusmoduuli = TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa(
-        tunniste = PaikallinenKoodi(koodi, LocalizedString.finnish(kuvaus)),
+        tunniste = PaikallinenKoodi(koodi, finnish(kuvaus)),
+        kuvaus = finnish(kuvaus),
         laajuus = Some(LaajuusOsaamispisteissä(laajuusOsaamispisteissä)),
         pakollinen = pakollinen
       ),

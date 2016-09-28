@@ -110,6 +110,9 @@
               "fi" : "Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen"
             }
           },
+          "kuvaus" : {
+            "fi" : "Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen"
+          },
           "laajuus" : {
             "arvo" : 10.0,
             "yksikkö" : {
@@ -156,6 +159,9 @@
             "nimi" : {
               "fi" : "Opiskeluvalmiuksien vahvistaminen"
             }
+          },
+          "kuvaus" : {
+            "fi" : "Opiskeluvalmiuksien vahvistaminen"
           },
           "laajuus" : {
             "arvo" : 10.0,
@@ -204,6 +210,9 @@
               "fi" : "Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen"
             }
           },
+          "kuvaus" : {
+            "fi" : "Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen"
+          },
           "laajuus" : {
             "arvo" : 15.0,
             "yksikkö" : {
@@ -251,6 +260,9 @@
               "fi" : "Arjen taitojen ja hyvinvoinnin vahvistaminen"
             }
           },
+          "kuvaus" : {
+            "fi" : "Arjen taitojen ja hyvinvoinnin vahvistaminen"
+          },
           "laajuus" : {
             "arvo" : 10.0,
             "yksikkö" : {
@@ -297,6 +309,9 @@
             "nimi" : {
               "fi" : "Ammatillisen perustutkinnon tutkinnon osat tai osa-alueet"
             }
+          },
+          "kuvaus" : {
+            "fi" : "Ammatillisen perustutkinnon tutkinnon osat tai osa-alueet"
           },
           "laajuus" : {
             "arvo" : 15.0,
@@ -402,6 +417,102 @@
           "selite" : {
             "fi" : "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
           }
+        },
+        "näyttö" : {
+          "kuvaus" : {
+            "fi" : "Huolto- ja korjaustyöt"
+          },
+          "suorituspaikka" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "nimi" : {
+                "fi" : "työpaikka"
+              },
+              "koodistoUri" : "ammatillisennaytonsuorituspaikka",
+              "koodistoVersio" : 1
+            },
+            "kuvaus" : {
+              "fi" : "Autokorjaamo Oy, Riihimäki"
+            }
+          },
+          "arviointi" : {
+            "arviointikohteet" : [ {
+              "tunniste" : {
+                "koodiarvo" : "1",
+                "nimi" : {
+                  "fi" : "Työprosessin hallinta"
+                },
+                "koodistoUri" : "ammatillisennaytonarviointikohde"
+              },
+              "arvosana" : {
+                "koodiarvo" : "3",
+                "nimi" : {
+                  "fi" : "K3"
+                },
+                "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+              }
+            }, {
+              "tunniste" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "Työmenetelmien, -välineiden ja materiaalin hallinta"
+                },
+                "koodistoUri" : "ammatillisennaytonarviointikohde"
+              },
+              "arvosana" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "H2"
+                },
+                "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+              }
+            }, {
+              "tunniste" : {
+                "koodiarvo" : "3",
+                "nimi" : {
+                  "fi" : "Työn perustana olevan tiedon hallinta"
+                },
+                "koodistoUri" : "ammatillisennaytonarviointikohde"
+              },
+              "arvosana" : {
+                "koodiarvo" : "2",
+                "nimi" : {
+                  "fi" : "H2"
+                },
+                "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+              }
+            }, {
+              "tunniste" : {
+                "koodiarvo" : "4",
+                "nimi" : {
+                  "fi" : "Elinikäisen oppimisen avaintaidot"
+                },
+                "koodistoUri" : "ammatillisennaytonarviointikohde"
+              },
+              "arvosana" : {
+                "koodiarvo" : "3",
+                "nimi" : {
+                  "fi" : "K3"
+                },
+                "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+              }
+            } ],
+            "arvioinnistaPäättäneet" : {
+              "koodiarvo" : "1",
+              "nimi" : {
+                "fi" : "Opettaja"
+              },
+              "koodistoUri" : "ammatillisennaytonarvioinnistapaattaneet"
+            },
+            "arviointikeskusteluunOsallistuneet" : {
+              "koodiarvo" : "1",
+              "nimi" : {
+                "fi" : "Opiskelija ja opettaja"
+              },
+              "koodistoUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet"
+            }
+          },
+          "työssäoppimisenYhteydessä" : false
         },
         "tyyppi" : {
           "koodiarvo" : "valmakoulutuksenosa",

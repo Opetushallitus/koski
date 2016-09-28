@@ -4,6 +4,7 @@
 - Lisätty mahdollisuus syöttää lisäopetus toiminta-alueittain
 - Lisätty yksilöllistettyOppimäärä perusopetuksen lisäopetuksen oppiaineen suoritukseen
 - Lisätty kuvaus ulkomaanjaksoon
+- Lisätty kuvaus Telma ja Valma koulutuksen osiin
 
 ## 27.9.2016
 - Lisätty perusopetuksen valinnainen paikallinen oppiaine
