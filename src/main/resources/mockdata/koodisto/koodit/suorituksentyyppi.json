@@ -428,5 +428,17 @@
       }
     ],
     "versio": 1
+  },
+  {
+    "koodiUri": "suorituksentyyppi_muuperusopetuksenlisaopetuksensuoritus",
+    "koodiArvo": "muuperusopetuksenlisaopetuksensuoritus",
+    "metadata": [
+      {
+        "nimi": "Muu perusopetuksen lisäopetuksessa suoritettu suoritus",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
   }
 ]

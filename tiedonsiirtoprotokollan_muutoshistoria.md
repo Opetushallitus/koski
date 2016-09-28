@@ -1,5 +1,6 @@
 ## 28.9.2016
 - Lisätty näytön tiedot Valman ja Telman osasuorituksiin
+- Lisätty mahdollisuus syöttää muita kuin peruskoulun oppiaineen suorituksia lisäopetukseen
 
 ## 27.9.2016
 - Lisätty perusopetuksen valinnainen paikallinen oppiaine

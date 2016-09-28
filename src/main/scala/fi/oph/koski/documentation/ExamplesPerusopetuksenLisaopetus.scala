@@ -37,7 +37,12 @@ object ExamplesPerusopetuksenLisaopetus {
         suoritus(oppiaine("HI")).copy(arviointi = arviointi(7), korotus = false),
         suoritus(oppiaine("YH")).copy(arviointi = arviointi(8), korotus = true),
         suoritus(oppiaine("KU")).copy(arviointi = arviointi(8), korotus = false),
-        suoritus(oppiaine("LI")).copy(arviointi = arviointi(7), korotus = true)
+        suoritus(oppiaine("LI")).copy(arviointi = arviointi(7), korotus = true),
+        MuuPerusopetuksenLisäopetuksenSuoritus(
+          MuuPerusopetuksenLisäopetuksenKoulutusmoduuli(PaikallinenKoodi("xxx", "Monialainen oppimiskokonaisuus"), "Tehtiin ryhmätyönä webbisivusto, jossa kerrotaan tupakoinnin haitoista"),
+          tilaValmis,
+          arviointi("S")
+        )
       )
     ),
     liitetiedot = Some(List(PerusopetuksenLisäopetuksenSuorituksenLiitetiedot(
