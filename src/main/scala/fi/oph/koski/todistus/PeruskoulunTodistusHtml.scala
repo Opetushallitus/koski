@@ -16,6 +16,11 @@ trait PeruskoulunTodistusHtml[T <: Suoritus] extends TodistusHtml {
     case s:OppiaineenSuoritus => s.koulutusmoduuli.pakollinen
     case _ => true
   }
+  def onYksilöllistetty(suoritus: Suoritus) = suoritus match {
+    case s: Yksilöllistettävä => s.yksilöllistettyOppimäärä
+    case _ => false
+  }
+
   private val pakolliset = oppiaineet.filter(onPakollinen)
   private val pakollisetJaNiihinLiittyvätValinnaiset: List[Aine] = pakolliset.flatMap { case pakollinen =>
     val liittyvätValinnaiset: List[LiittyväValinnainen] = oppiaineet
@@ -59,6 +64,13 @@ trait PeruskoulunTodistusHtml[T <: Suoritus] extends TodistusHtml {
             {arvosanaLista(pakollisetJaNiihinLiittyvätValinnaiset)}
             {muutOpinnot(muutValinnaiset)}
           </table>
+          {
+            if (oppiaineet.exists(onYksilöllistetty)) {
+              <div class="sisaltaa-yksilollistettyja">
+                <p>Oppilas on opiskellut tähdellä (*) merkityt oppiaineet yksilöllistetyn oppimäärän mukaan.</p>
+              </div>
+            }
+          }
           {todistus.vahvistus.toList.map(vahvistusHTML)}
         </div>
       </body>
@@ -86,6 +98,10 @@ trait PeruskoulunTodistusHtml[T <: Suoritus] extends TodistusHtml {
       <th class="arvosana">Arvosana</th>
     </tr>
 
+  def numeerinenArvosanaHtml(suoritus: Suoritus) = <span>
+    {i(suoritus.arvosanaNumeroin)} {if (onYksilöllistetty(suoritus)) { <em class="yksilollistetty">*</em> }}
+  </span>
+
   def oppiainerivitHtml(oppiaine: Aine, nimi: String, rowClass: String): Elem = {
     <tr class={rowClass}>
       <td class="oppiaine">
@@ -103,7 +119,7 @@ trait PeruskoulunTodistusHtml[T <: Suoritus] extends TodistusHtml {
         }
       </td>
       <td class="arvosana-numeroin">
-        {i(oppiaine.suoritus.arvosanaNumeroin)}
+        { numeerinenArvosanaHtml(oppiaine.suoritus) }
       </td>
     </tr>
   }

@@ -31,10 +31,10 @@ class PerusopetuksenLisaopetuksenTodistusHtml(val koulutustoimija: Option[Organi
         {i(oppiaine.suoritus.arvosanaKirjaimin).capitalize}
       </td>
       <td class="arvosana-numeroin">
-        {if (!korotus) i(oppiaine.suoritus.arvosanaNumeroin)}
+        {if (!korotus) numeerinenArvosanaHtml(oppiaine.suoritus)}
       </td>
       <td class="arvosana-korotus">
-        {if (korotus) i(oppiaine.suoritus.arvosanaNumeroin)}
+        {if (korotus) numeerinenArvosanaHtml(oppiaine.suoritus)}
       </td>
     </tr>
   }

@@ -8,6 +8,11 @@ trait OppiaineenSuoritus extends Suoritus {
   def koulutusmoduuli: Koulutusmoduuli with Valinnaisuus
 }
 
+trait Yksilöllistettävä {
+  @Description("Tieto siitä, onko oppiaineen oppimäärä yksilöllistetty (true/false)")
+  def yksilöllistettyOppimäärä: Boolean
+}
+
 case class Päätösjakso(
   @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
   alku: Option[LocalDate],

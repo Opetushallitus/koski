@@ -129,6 +129,7 @@ const OppiaineEditor = React.createClass({
     return (<div className="oppiaineensuoritus">
       <label className="oppiaine">{oppiaine}</label>
       <span className="arvosana">{arvosana}</span>
+      {modelData(model, 'yksilöllistettyOppimäärä') ? <span className="yksilollistetty"> *</span> : null}
       {modelData(model, 'korotus') ? <span className="korotus">(korotus)</span> : null}
     </div>)
   }

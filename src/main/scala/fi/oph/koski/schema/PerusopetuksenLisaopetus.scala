@@ -71,7 +71,6 @@ case class PerusopetuksenLisäopetuksenSuorituksenLiitetiedot(
 case class PerusopetuksenLisäopetuksenOppiaineenSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: PerusopetuksenOppiaine,
-  @Description("Tieto siitä, onko oppiaineen oppimäärä yksilöllistetty (true/false)")
   yksilöllistettyOppimäärä: Boolean = false,
   tila: Koodistokoodiviite,
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
@@ -79,7 +78,7 @@ case class PerusopetuksenLisäopetuksenOppiaineenSuoritus(
   suorituskieli: Option[Koodistokoodiviite],
   @KoodistoKoodiarvo("perusopetuksenlisaopetuksenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenlisaopetuksenoppiaine", koodistoUri = "suorituksentyyppi")
-) extends PerusopetuksenLisäopetuksenAlisuoritus with OppiaineenSuoritus with VahvistuksetonSuoritus
+) extends PerusopetuksenLisäopetuksenAlisuoritus with OppiaineenSuoritus with VahvistuksetonSuoritus with Yksilöllistettävä
 
 @Description("Perusopetuksen toiminta-alueen suoritus osana perusopetuksen lisäopetusta")
 case class PerusopetuksenLisäopetuksenToiminta_AlueenSuoritus(

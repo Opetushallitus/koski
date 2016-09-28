@@ -23,7 +23,7 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
           |Matematiikka Kiitettävä 9
           |Kemia Tyydyttävä 7
           |Fysiikka Kiitettävä 9
-          |Biologia Kiitettävä 9
+          |Biologia Kiitettävä 9 *
           |Maantieto Kiitettävä 9
           |Musiikki Tyydyttävä 7
           |Kuvataide Hyvä 8
@@ -36,7 +36,8 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
           |Valinnainen liikunta 0.5 Hyväksytty
           |
           |B2-kieli, saksa 4.0 Kiitettävä 9
-          |Tietokoneen hyötykäyttö Kiitettävä 9""".stripMargin)
+          |Tietokoneen hyötykäyttö Kiitettävä 9
+          |Oppilas on opiskellut tähdellä (*) merkityt oppiaineet yksilöllistetyn oppimäärän mukaan.""".stripMargin)
     }
     it("Perusopetuksen päättötodistus toiminta-alueittain, sanallisella arvioinnilla") {
       todistus(MockOppijat.toimintaAlueittainOpiskelija.oid, "perusopetuksenoppimaara") should equal(
@@ -79,7 +80,7 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
           |Matematiikka Kiitettävä 9
           |Kemia Tyydyttävä 7
           |Fysiikka Kiitettävä 9
-          |Biologia Kiitettävä 9
+          |Biologia Kiitettävä 9 *
           |Maantieto Kiitettävä 9
           |Musiikki Tyydyttävä 7
           |Kuvataide Hyvä 8
@@ -92,7 +93,8 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
           |Valinnainen liikunta 0.5 Hyväksytty
           |
           |B2-kieli, saksa 4.0 Kiitettävä 9
-          |Tietokoneen hyötykäyttö Kiitettävä 9""".stripMargin)
+          |Tietokoneen hyötykäyttö Kiitettävä 9
+          |Oppilas on opiskellut tähdellä (*) merkityt oppiaineet yksilöllistetyn oppimäärän mukaan.""".stripMargin)
     }
 
   }
@@ -116,7 +118,8 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
           |Historia Tyydyttävä 7
           |Yhteiskuntaoppi Hyvä 8
           |Kuvataide Hyvä 8
-          |Liikunta Tyydyttävä 7""".stripMargin)
+          |Liikunta Tyydyttävä 7 *
+          |Oppilas on opiskellut tähdellä (*) merkityt oppiaineet yksilöllistetyn oppimäärän mukaan.""".stripMargin)
     }
   }
 

@@ -173,7 +173,6 @@ sealed trait OppiaineenTaiToiminta_AlueenSuoritus extends Suoritus
 case class PerusopetuksenOppiaineenSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: PerusopetuksenOppiaine,
-  @Description("Tieto siitä, onko oppiaineen oppimäärä yksilöllistetty (true/false)")
   yksilöllistettyOppimäärä: Boolean = false,
   @Description("Tieto siitä, onko oppiaineen opetus painotettu (true/false)")
   painotettuOpetus: Boolean = false,
@@ -182,7 +181,7 @@ case class PerusopetuksenOppiaineenSuoritus(
   suorituskieli: Option[Koodistokoodiviite],
   @KoodistoKoodiarvo("perusopetuksenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenoppiaine", koodistoUri = "suorituksentyyppi")
-) extends OppiaineenSuoritus with OppiaineenTaiToiminta_AlueenSuoritus with VahvistuksetonSuoritus
+) extends OppiaineenSuoritus with OppiaineenTaiToiminta_AlueenSuoritus with VahvistuksetonSuoritus with Yksilöllistettävä
 
 @Description("Perusopetuksen toiminta-alueen suoritus osana perusopetuksen oppimäärän tai vuosiluokan suoritusta. Suoritukset voidaan kirjata oppiaineiden sijaan toiminta-alueittain, jos opiskelijalle on tehty erityisen tuen päätös.")
 case class PerusopetuksenToiminta_AlueenSuoritus(

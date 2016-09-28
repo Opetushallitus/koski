@@ -54,7 +54,7 @@ object PerusopetusExampleData {
       suoritus(oppiaine("MA")).copy(arviointi = arviointi(9)),
       suoritus(oppiaine("KE")).copy(arviointi = arviointi(7)),
       suoritus(oppiaine("FY")).copy(arviointi = arviointi(9)),
-      suoritus(oppiaine("BI")).copy(arviointi = arviointi(9)),
+      suoritus(oppiaine("BI")).copy(arviointi = arviointi(9), yksilöllistettyOppimäärä = true),
       suoritus(oppiaine("GE")).copy(arviointi = arviointi(9)),
       suoritus(oppiaine("MU")).copy(arviointi = arviointi(7)),
       suoritus(oppiaine("KU")).copy(arviointi = arviointi(8)),
