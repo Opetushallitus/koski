@@ -91,8 +91,17 @@ function reloadTestFrame() {
 }
 
 function triggerEvent(element, eventName) {
-  const evt = testFrame().document.createEvent('HTMLEvents');
-  evt.initEvent(eventName, true, true);
+  var evt
+  if(window._phantom) {
+    evt = testFrame().document.createEvent('HTMLEvents');
+    evt.initEvent(eventName, true, true);
+  } else {
+    evt = new MouseEvent(eventName, {
+      'view': window,
+      'bubbles': true,
+      'cancelable': true
+    })
+  }
   element.toArray().forEach(function(elem) {
     elem.dispatchEvent(evt);
   })
