@@ -374,8 +374,9 @@ case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus(
 case class AmmatilliseenPeruskoulutukseenValmentavaKoulutus(
   @KoodistoKoodiarvo("999901")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999901", koodistoUri = "koulutus"),
+  perusteenDiaarinumero: Option[String] = None,
   laajuus: Option[Laajuus] = None
-) extends Koulutus
+) extends DiaarinumerollinenKoulutus
 
 @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osan tunnistetiedot")
 case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa(
@@ -422,8 +423,9 @@ case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus(
 case class TyöhönJaItsenäiseenElämäänValmentavaKoulutus(
   @KoodistoKoodiarvo("999903")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999903", koodistoUri = "koulutus"),
+  perusteenDiaarinumero: Option[String] = None,
   laajuus: Option[Laajuus] = None
-) extends Koulutus
+) extends DiaarinumerollinenKoulutus
 
 @Description("Työhön ja itsenäiseen elämään valmentavan koulutuksen osan tunnistiedot")
 case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa(
