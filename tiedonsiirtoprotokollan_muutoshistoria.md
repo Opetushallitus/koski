@@ -3,6 +3,7 @@
 - Lisätty mahdollisuus syöttää muita kuin peruskoulun oppiaineen suorituksia lisäopetukseen
 - Lisätty mahdollisuus syöttää lisäopetus toiminta-alueittain
 - Lisätty yksilöllistettyOppimäärä perusopetuksen lisäopetuksen oppiaineen suoritukseen
+- Lisätty kuvaus ulkomaanjaksoon
 
 ## 27.9.2016
 - Lisätty perusopetuksen valinnainen paikallinen oppiaine
