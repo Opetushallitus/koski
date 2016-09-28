@@ -41,6 +41,12 @@
         }
       } ]
     },
+    "lisätiedot" : {
+      "pidennettyOppivelvollisuus" : {
+        "alku" : "2008-08-15",
+        "loppu" : "2016-06-04"
+      }
+    },
     "suoritukset" : [ {
       "koulutusmoduuli" : {
         "tunniste" : {
@@ -110,6 +116,7 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -138,6 +145,7 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -166,6 +174,7 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -190,6 +199,7 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -214,6 +224,7 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -238,6 +249,7 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -262,6 +274,7 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -286,6 +299,7 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -310,6 +324,7 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -334,6 +349,7 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -358,6 +374,7 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -382,6 +399,7 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -406,6 +424,7 @@
           },
           "pakollinen" : true
         },
+        "yksilöllistettyOppimäärä" : true,
         "tila" : {
           "koodiarvo" : "VALMIS",
           "koodistoUri" : "suorituksentila"
@@ -422,11 +441,47 @@
           "koodiarvo" : "perusopetuksenlisaopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "xxx",
+            "nimi" : {
+              "fi" : "Monialainen oppimiskokonaisuus"
+            }
+          },
+          "kuvaus" : {
+            "fi" : "Tehtiin ryhmätyönä webbisivusto, jossa kerrotaan tupakoinnin haitoista"
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "S",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "muuperusopetuksenlisaopetuksensuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       } ],
       "tyyppi" : {
         "koodiarvo" : "perusopetuksenlisaopetus",
         "koodistoUri" : "suorituksentyyppi"
-      }
+      },
+      "liitetiedot" : [ {
+        "tunniste" : {
+          "koodiarvo" : "kayttaytyminen",
+          "koodistoUri" : "perusopetuksenlisaopetuksensuorituksenliitetieto"
+        },
+        "kuvaus" : {
+          "fi" : "Liitteenä käyttäytymisen sanallinen arvio"
+        }
+      } ]
     } ],
     "tyyppi" : {
       "koodiarvo" : "perusopetuksenlisaopetus",
