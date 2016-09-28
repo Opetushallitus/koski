@@ -78,6 +78,7 @@ object SuoritusDeserializer extends Deserializer[Suoritus] {
 
         case suoritus: JObject if tyyppi(suoritus) == JString("perusopetuksenlisaopetus") => suoritus.extract[PerusopetuksenLisäopetuksenSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("perusopetuksenlisaopetuksenoppiaine") => suoritus.extract[PerusopetuksenLisäopetuksenOppiaineenSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("perusopetuksenlisaopetuksentoimintaalue") => suoritus.extract[PerusopetuksenLisäopetuksenToiminta_AlueenSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("muuperusopetuksenlisaopetuksensuoritus") => suoritus.extract[MuuPerusopetuksenLisäopetuksenSuoritus]
         case _ => throw CannotDeserializeException(this, json)
       }

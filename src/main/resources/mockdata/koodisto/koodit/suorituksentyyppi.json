@@ -440,5 +440,17 @@
       }
     ],
     "versio": 1
+  },
+  {
+    "koodiUri": "suorituksentyyppi_perusopetuksenlisaopetuksentoimintaalue",
+    "koodiArvo": "perusopetuksenlisaopetuksentoimintaalue",
+    "metadata": [
+      {
+        "nimi": "Perusopetuksen lisäopetuksen toiminta-alue",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
   }
 ]

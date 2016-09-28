@@ -51,6 +51,31 @@ object ExamplesPerusopetuksenLisaopetus {
     )))
   )
 
+  val lisäopetuksenSuoritusToimintaAlueittain = PerusopetuksenLisäopetuksenSuoritus(
+    koulutusmoduuli = PerusopetuksenLisäopetus(),
+    tila = tilaValmis,
+    toimipiste = jyväskylänNormaalikoulu,
+    vahvistus = vahvistus(),
+    osasuoritukset = Some(
+      List(
+        toimintaAlueenSuoritus("1"),
+        toimintaAlueenSuoritus("2"),
+        toimintaAlueenSuoritus("3"),
+        toimintaAlueenSuoritus("4"),
+        toimintaAlueenSuoritus("5")
+      )
+    )
+  )
+
+  private def toimintaAlueenSuoritus(alue: String) = {
+    PerusopetuksenLisäopetuksenToiminta_AlueenSuoritus(
+      koulutusmoduuli = new PerusopetuksenToiminta_Alue(Koodistokoodiviite(alue, "perusopetuksentoimintaalue")),
+      tila = tilaValmis,
+      arviointi = arviointi("S")
+    )
+  }
+
+
   val lisäopetuksenPäättötodistus = Oppija(
     exampleHenkilö,
     List(PerusopetuksenLisäopetuksenOpiskeluoikeus(
@@ -74,7 +99,31 @@ object ExamplesPerusopetuksenLisaopetus {
     ))
   )
 
+  val lisäopetuksenPäättötodistusToimintaAlueittain = Oppija(
+    exampleHenkilö,
+    List(PerusopetuksenLisäopetuksenOpiskeluoikeus(
+      alkamispäivä = Some(date(2008, 8, 15)),
+      päättymispäivä = Some(date(2016, 6, 4)),
+      oppilaitos = jyväskylänNormaalikoulu,
+      koulutustoimija = None,
+      lisätiedot = Some(PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot(
+        pidennettyOppivelvollisuus = Some(Päätösjakso(Some(date(2008, 8, 15)), Some(date(2016, 6, 4))))
+      )),
+      suoritukset = List(
+        lisäopetuksenSuoritusToimintaAlueittain
+      ),
+      tila = PerusopetuksenOpiskeluoikeudenTila(
+        List(
+          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
+          PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
+        )
+      ),
+      läsnäolotiedot = None
+    ))
+  )
+
   val examples = List(
-    Example("perusopetuksen lisäopetus", "Opiskelija on suorittanut perusopetuksen lisäopetuksen (kymppiluokka)", lisäopetuksenPäättötodistus)
+    Example("perusopetuksen lisäopetus", "Opiskelija on suorittanut perusopetuksen lisäopetuksen (kymppiluokka)", lisäopetuksenPäättötodistus),
+    Example("perusopetuksen lisäopetus toiminta-alueittain", "Opiskelija on suorittanut perusopetuksen lisäopetuksen toiminta-alueittain", lisäopetuksenPäättötodistusToimintaAlueittain)
   )
 }
