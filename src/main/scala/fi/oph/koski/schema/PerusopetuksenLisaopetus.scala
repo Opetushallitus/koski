@@ -71,6 +71,8 @@ case class PerusopetuksenLisäopetuksenSuorituksenLiitetiedot(
 case class PerusopetuksenLisäopetuksenOppiaineenSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: PerusopetuksenOppiaine,
+  @Description("Tieto siitä, onko oppiaineen oppimäärä yksilöllistetty (true/false)")
+  yksilöllistettyOppimäärä: Boolean = false,
   tila: Koodistokoodiviite,
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   korotus: Boolean,
