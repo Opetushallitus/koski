@@ -175,7 +175,7 @@ case class Työssäoppimisjakso(
 case class AmmatillinenTutkintoKoulutus(
  tunniste: Koodistokoodiviite,
  perusteenDiaarinumero: Option[String]
-) extends Koulutus with EPerusteistaLöytyväKoulutusmoduuli {
+) extends DiaarinumerollinenKoulutus {
   override def laajuus = None
   override def isTutkinto = true
 }

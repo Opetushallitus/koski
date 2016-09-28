@@ -250,7 +250,7 @@ case class Perusopetus(
  perusteenDiaarinumero: Option[String],
  @KoodistoKoodiarvo("201101")
  tunniste: Koodistokoodiviite = Koodistokoodiviite("201101", koodistoUri = "koulutus")
-) extends Koulutus with EPerusteistaLöytyväKoulutusmoduuli {
+) extends Koulutus with DiaarinumerollinenKoulutus {
   override def laajuus = None
   override def isTutkinto = true
 }
@@ -261,7 +261,7 @@ case class PerusopetuksenLuokkaAste(
  @KoodistoUri("perusopetuksenluokkaaste")
  tunniste: Koodistokoodiviite,
  perusteenDiaarinumero: Option[String]
-) extends KoodistostaLöytyväKoulutusmoduuli with EPerusteistaLöytyväKoulutusmoduuli {
+) extends KoodistostaLöytyväKoulutusmoduuli with DiaarinumerollinenKoulutus {
   override def laajuus = None
   override def isTutkinto = false
 }

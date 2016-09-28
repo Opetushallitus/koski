@@ -65,7 +65,7 @@ case class Ylioppilastutkinto(
  @KoodistoKoodiarvo("301000")
  tunniste: Koodistokoodiviite = Koodistokoodiviite("301000", koodistoUri = "koulutus"),
  perusteenDiaarinumero: Option[String]
-) extends Koulutus with EPerusteistaLöytyväKoulutusmoduuli {
+) extends DiaarinumerollinenKoulutus {
   override def laajuus = None
   override def isTutkinto = true
 }
