@@ -363,6 +363,8 @@ case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Jos tutkinnon osa on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
+  @Description("Suoritukseen liittyvän näytön tiedot")
+  näyttö: Option[Näyttö] = None,
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
   @KoodistoKoodiarvo("valmakoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valmakoulutuksenosa", koodistoUri = "suorituksentyyppi")
@@ -407,6 +409,8 @@ case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Jos koulutuksen osa on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
+  @Description("Suoritukseen liittyvän näytön tiedot")
+  näyttö: Option[Näyttö] = None,
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
   @KoodistoKoodiarvo("telmakoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("telmakoulutuksenosa", koodistoUri = "suorituksentyyppi")

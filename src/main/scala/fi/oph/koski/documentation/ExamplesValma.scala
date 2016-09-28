@@ -31,7 +31,7 @@ object ExamplesValma {
             valmaKurssinSuoritus("OV", "Opiskeluvalmiuksien vahvistaminen", 10f, arviointiHyväksytty, pakollinen = false),
             valmaKurssinSuoritus("TOV", "Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen", 15f, arviointiHyväksytty, pakollinen = false),
             valmaKurssinSuoritus("ATH", "Arjen taitojen ja hyvinvoinnin vahvistaminen", 10f, arviointiHyväksytty, pakollinen = false),
-            valmaKurssinSuoritus("APT", "Ammatillisen perustutkinnon tutkinnon osat tai osa-alueet", 15f, arviointiKiitettävä, pakollinen = false, tunnustettu)
+            valmaKurssinSuoritus("APT", "Ammatillisen perustutkinnon tutkinnon osat tai osa-alueet", 15f, arviointiKiitettävä, pakollinen = false, tunnustettu = tunnustettu, näyttö = Some(näyttö("Huolto- ja korjaustyöt", "Autokorjaamo Oy, Riihimäki", Some(näytönArviointi))))
           ))
         )),
         tavoite = tavoiteTutkinto
@@ -56,7 +56,14 @@ object ExamplesValma {
     )),
     selite = "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"))
 
-  private def valmaKurssinSuoritus(koodi: String, kuvaus: String, laajuusOsaamispisteissä: Float, arviointi: Option[List[AmmatillinenArviointi]], pakollinen: Boolean, tunnustettu: Option[OsaamisenTunnustaminen] = None) =
+  private def valmaKurssinSuoritus(
+    koodi: String,
+    kuvaus: String,
+    laajuusOsaamispisteissä: Float,
+    arviointi: Option[List[AmmatillinenArviointi]],
+    pakollinen: Boolean,
+    tunnustettu: Option[OsaamisenTunnustaminen] = None,
+    näyttö: Option[Näyttö] = None) =
     AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus(
       tila = tilaValmis,
       koulutusmoduuli = AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa(
@@ -65,6 +72,7 @@ object ExamplesValma {
         pakollinen = pakollinen
       ),
       arviointi = arviointi,
-      tunnustettu = tunnustettu
+      tunnustettu = tunnustettu,
+      näyttö = näyttö
     )
 }
