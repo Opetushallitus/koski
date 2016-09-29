@@ -72,6 +72,18 @@
     "versio": 1
   },
   {
+    "koodiUri": "suorituksentyyppi_esiopetuksensuoritus",
+    "koodiArvo": "esiopetuksensuoritus",
+    "metadata": [
+      {
+        "nimi": "Esiopetuksen suoritus",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
     "koodiUri": "suorituksentyyppi_perusopetuksenoppimaara",
     "koodiArvo": "perusopetuksenoppimaara",
     "metadata": [
