@@ -5,6 +5,7 @@
 - Lukioon valmistavan kurssin suorituksessa suoritettuLukiodiplomina-flägi
 - Perusopetukseen valmistavaan koulutukseen lisätty perusteenDiaarinumero
 - Perusopetuksesta, lisäopetuksesta ja lukiokoulutuksesta poistettu liitetiedot (lukiossa nimellä lisätiedot)
+- Lisätty järjestämismuoto näyttötutkintoon valmistavan koulutuksen suoritukseen
 
 ## 28.9.2016
 - Lisätty näytön tiedot Valman ja Telman osasuorituksiin

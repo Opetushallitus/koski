@@ -82,6 +82,9 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   val päättymispäivä: Option[LocalDate],
   vahvistus: Option[Henkilövahvistus] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
+  @Description("Koulutuksen järjestämismuoto")
+  @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
+  järjestämismuoto: Option[Järjestämismuoto] = None,
   @Description("Valmistavan koulutuksen osat")
   @Title("Koulutuksen osat")
   override val osasuoritukset: Option[List[NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus]] = None,
