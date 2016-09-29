@@ -15,13 +15,22 @@ case class OrganisaatioHierarkia(oid: String, oppilaitosnumero: Option[Koodistok
     }
   }
 
-  def toOrganisaatio: OrganisaatioWithOid = oppilaitosnumero match {
-    case Some(_) => Oppilaitos(oid, oppilaitosnumero, Some(nimi))
-    case _ => OidOrganisaatio(oid, Some(nimi), yTunnus)
+  def toOrganisaatio: OrganisaatioWithOid =
+    if (organisaatiotyypit.contains("OPPILAITOS")) {
+      Oppilaitos(oid, oppilaitosnumero, Some(nimi))
+    } else if (organisaatiotyypit.contains("KOULUTUSTOIMIJA")) {
+      Koulutustoimija(oid, Some(nimi), yTunnus)
+    } else {
+      OidOrganisaatio(oid, Some(nimi))
+    }
+
+  def toKoulutustoimija: Option[Koulutustoimija] = toOrganisaatio match {
+    case k: Koulutustoimija => Some(k)
+    case _ => None
   }
 
-  def toOppilaitos: Option[Oppilaitos] = oppilaitosnumero match {
-    case Some(_) => Some(Oppilaitos(oid, oppilaitosnumero, Some(nimi)))
+  def toOppilaitos: Option[Oppilaitos] = toOrganisaatio match {
+    case o: Oppilaitos => Some(o)
     case _ => None
   }
 }

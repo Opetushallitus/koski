@@ -12,7 +12,7 @@ case class AmmatillinenOpiskeluoikeus(
   versionumero: Option[Int] = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
   oppilaitos: Oppilaitos,
-  koulutustoimija: Option[OidOrganisaatio] = None,
+  koulutustoimija: Option[Koulutustoimija] = None,
   alkamispäivä: Option[LocalDate] = None,
   arvioituPäättymispäivä: Option[LocalDate] = None,
   päättymispäivä: Option[LocalDate] = None,
@@ -32,7 +32,7 @@ case class AmmatillinenOpiskeluoikeus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinenkoulutus", "opiskeluoikeudentyyppi")
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
-  override def withKoulutustoimija(koulutustoimija: OidOrganisaatio) = this.copy(koulutustoimija = Some(koulutustoimija))
+  override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def withSuoritukset(suoritukset: List[PäätasonSuoritus]) = copy(suoritukset = suoritukset.asInstanceOf[List[AmmatillinenPäätasonSuoritus]])
 }
 

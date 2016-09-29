@@ -146,9 +146,9 @@ class OppijaValidationSpec extends FunSpec with LocalJettyHttpSpecification with
         }
       }
 
-      describe("Kun opinto-oikeutta yritetään lisätä oppilaitokseen, joka ei ole oppilaitos") {
+      describe("Kun opinto-oikeutta yritetään lisätä koulutustoimijaan oppilaitoksen sijaan") {
         it("palautetaan HTTP 400 virhe" ) { putOpiskeluOikeus(oppilaitoksella("1.2.246.562.10.346830761110")) (
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.vääränTyyppinen("Organisaatio 1.2.246.562.10.346830761110 ei ole Oppilaitos")))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.vääränTyyppinen("Organisaatio 1.2.246.562.10.346830761110 ei ole oppilaitos vaan koulutustoimija")))
         }
       }
 

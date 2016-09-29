@@ -11,7 +11,7 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeus(
   versionumero: Option[Int] = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
   oppilaitos: Oppilaitos,
-  koulutustoimija: Option[OidOrganisaatio],
+  koulutustoimija: Option[Koulutustoimija],
   alkamispäivä: Option[LocalDate],
   arvioituPäättymispäivä: Option[LocalDate] = None,
   päättymispäivä: Option[LocalDate],
@@ -25,7 +25,7 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeus(
   lisätiedot: Option[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot] = None
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
-  override def withKoulutustoimija(koulutustoimija: OidOrganisaatio) = this.copy(koulutustoimija = Some(koulutustoimija))
+  override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def withSuoritukset(suoritukset: List[PäätasonSuoritus]) = copy(suoritukset = suoritukset.asInstanceOf[List[LukioonValmistavanKoulutuksenSuoritus]])
 }
 

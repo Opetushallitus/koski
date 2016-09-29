@@ -28,15 +28,15 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
 
   def fillMissingInfo(oppija: Oppija) = oppija.copy(opiskeluoikeudet = oppija.opiskeluoikeudet.map(addKoulutustoimija(_)))
 
-  def addKoulutustoimija(oo: Opiskeluoikeus) = {
-    def findKoulutustoimija(root: OrganisaatioHierarkia): Option[OrganisaatioHierarkia] = if (root.organisaatiotyypit.contains("KOULUTUSTOIMIJA") && root.children.exists(_.oid == oo.oppilaitos.oid)) {
-      Some(root)
+  def addKoulutustoimija(oo: Opiskeluoikeus): Opiskeluoikeus = {
+    def findKoulutustoimija(root: OrganisaatioHierarkia): Option[Koulutustoimija] = if (root.toKoulutustoimija.isDefined && root.children.exists(_.oid == oo.oppilaitos.oid)) {
+      root.toKoulutustoimija
     } else {
       root.children.flatMap(findKoulutustoimija).headOption
     }
 
     organisaatioRepository.getOrganisaatioHierarkiaIncludingParents(oo.oppilaitos.oid).flatMap(findKoulutustoimija) match {
-      case Some(hierarkia) => oo.withKoulutustoimija(hierarkia.toOrganisaatio.toOidOrganisaatio)
+      case Some(koulutustoimija) => oo.withKoulutustoimija(koulutustoimija)
       case _ => oo
     }
   }

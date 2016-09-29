@@ -9,14 +9,22 @@ object Organisaatio {
   type Oid = String
 }
 
-@Description("Opintopolun organisaatiopalvelusta löytyvä organisaatio. Esimerkiksi koulutustoimijat, oppilaitokset ja toimipisteet ovat tällaisia organisaatioita.")
+@Description("Opintopolun organisaatiopalvelusta löytyvä organisaatio.")
 case class OidOrganisaatio(
   oid: Organisaatio.Oid,
-  nimi: Option[LocalizedString] = None,
-  yTunnus: Option[String] = None
-) extends OrganisaatioWithOid {
+  nimi: Option[LocalizedString] = None
+) extends OrganisaatioWithOid with DefaultDescription {
   def toOppilaitos = None
-  def description = nimi.getOrElse(LocalizedString.unlocalized(oid))
+}
+
+@Description("Opintopolun organisaatiopalvelusta löytyvä koulutustoimija-tyyppinen organisaatio.")
+case class Koulutustoimija(
+  oid: Organisaatio.Oid,
+  nimi: Option[LocalizedString] = None,
+  @RegularExpression("\\d{7}-\\d")
+  yTunnus: Option[String] = None
+) extends OrganisaatioWithOid with DefaultDescription {
+  def toOppilaitos = None
 }
 
 @Description("Opintopolun organisaatiopalvelusta löytyvä oppilaitos-tyyppinen organisaatio.")
@@ -27,9 +35,8 @@ case class Oppilaitos(
   @KoodistoUri("oppilaitosnumero")
   oppilaitosnumero: Option[Koodistokoodiviite] = None,
   nimi: Option[LocalizedString] = None
-) extends OrganisaatioWithOid {
+) extends OrganisaatioWithOid with DefaultDescription {
   def toOppilaitos = Some(this)
-  def description = nimi.getOrElse(LocalizedString.unlocalized(oid))
 }
 
 @Description("Yritys, jolla on y-tunnus")
@@ -59,6 +66,10 @@ trait OrganisaatioWithOid extends Organisaatio {
   def nimi: Option[LocalizedString]
   def toOppilaitos: Option[Oppilaitos]
   def toOidOrganisaatio = OidOrganisaatio(oid, nimi)
+}
+
+trait DefaultDescription extends OrganisaatioWithOid {
+  def description = nimi.getOrElse(LocalizedString.unlocalized(oid))
 }
 
 trait OrganisaatioonLiittyvä {

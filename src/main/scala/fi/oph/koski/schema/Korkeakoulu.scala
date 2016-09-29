@@ -11,7 +11,7 @@ case class KorkeakoulunOpiskeluoikeus(
   id: Option[Int] = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
   oppilaitos: Oppilaitos,
-  koulutustoimija: Option[OidOrganisaatio] = None,
+  koulutustoimija: Option[Koulutustoimija] = None,
   alkamispäivä: Option[LocalDate] = None,
   arvioituPäättymispäivä: Option[LocalDate] = None,
   päättymispäivä: Option[LocalDate] = None,
@@ -23,7 +23,7 @@ case class KorkeakoulunOpiskeluoikeus(
   @KoodistoKoodiarvo("korkeakoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulutus", Some("Korkeakoulutus"), "opiskeluoikeudentyyppi", None)
 ) extends Opiskeluoikeus {
-  override def withKoulutustoimija(koulutustoimija: OidOrganisaatio) = this.copy(koulutustoimija = Some(koulutustoimija))
+  override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def versionumero = None
 }
 
