@@ -9,8 +9,11 @@ case class ApiOperation(method: String, path: String, summary: String, doc: Elem
 sealed trait ApiOperationParameter {
   def name: String
   def description: String
-  def example: String
+  def examples: List[String]
+  def example = examples.head
+  def hasMultipleExamples: Boolean = examples.size > 1
 }
 
-case class PathParameter(name: String, description: String, example: String) extends ApiOperationParameter
-case class QueryParameter(name: String, description: String, example: String) extends ApiOperationParameter
+case class PathParameter(name: String, description: String, examples: List[String]) extends ApiOperationParameter
+case class QueryParameter(name: String, description: String, examples: List[String]) extends ApiOperationParameter
+

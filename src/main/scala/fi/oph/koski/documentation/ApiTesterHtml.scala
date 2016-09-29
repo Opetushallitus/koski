@@ -102,10 +102,17 @@ object ApiTesterHtml {
             {parameter.description}
           </td>
             <td>
+            {if (parameter.hasMultipleExamples) {
+              <select name={parameter.name} defaultValue={parameter.example} class="path-param">
+                {parameter.examples.map(example => <option value={example} key={example}>{example}</option>)}
+              </select>
+            } else {
               <input name={parameter.name} value={parameter.example} class={parameter match {
                 case p: QueryParameter => "query-param"
                 case p: PathParameter => "path-param"
               }}></input>
+            }
+            }
             </td>
           </tr>
         }}

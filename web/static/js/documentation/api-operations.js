@@ -24,7 +24,7 @@ forEach(document.querySelectorAll('.api-operation'), function(operationElem) {
     var exampleSelector = apiTesterElem.querySelector(".examples select")
     var codeMirror
     var queryParamInputs = a(apiTesterElem.querySelectorAll(".parameters input.query-param"))
-    var pathParamInputs = a(apiTesterElem.querySelectorAll(".parameters input.path-param"))
+    var pathParamInputs = a(apiTesterElem.querySelectorAll(".parameters input.path-param, .parameters select.path-param"))
     var paramInputs = queryParamInputs.concat(pathParamInputs)
 
     function apiUrl() {

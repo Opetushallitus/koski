@@ -12,9 +12,9 @@ import org.json4s.JsonAST.JObject
 
 object KoskiApiOperations {
  private val hakuParametrit = List(
-   QueryParameter("opiskeluoikeusPäättynytAikaisintaan","Päivämäärä jonka jälkeen opiskeluoikeus on päättynyt","2016-01-01"),
-   QueryParameter("opiskeluoikeusPäättynytViimeistään","Päivämäärä jota ennen opiskeluoikeus on päättynyt","2016-12-31"),
-   QueryParameter("tutkinnonTila","Opiskeluoikeuden juurisuorituksen tila: VALMIS, KESKEN, KESKEYTYNYT","VALMIS")
+   QueryParameter("opiskeluoikeusPäättynytAikaisintaan","Päivämäärä jonka jälkeen opiskeluoikeus on päättynyt",List("2016-01-01")),
+   QueryParameter("opiskeluoikeusPäättynytViimeistään","Päivämäärä jota ennen opiskeluoikeus on päättynyt", List("2016-12-31")),
+   QueryParameter("tutkinnonTila","Opiskeluoikeuden juurisuorituksen tila: VALMIS, KESKEN, KESKEYTYNYT", List("VALMIS"))
  )
 
  val operations = List(
@@ -24,8 +24,8 @@ object KoskiApiOperations {
      <p></p>,
      Nil,
      List(
-       PathParameter("nimi", "Koodiston nimi", "koskioppiaineetyleissivistava"),
-       PathParameter("versio", "Koodiston versio", "latest")
+       PathParameter("nimi", "Koodiston nimi", MockKoodistoPalvelu.koodistot),
+       PathParameter("versio", "Koodiston versio", List("latest"))
      ),
      List(
        KoskiErrorCategory.ok.searchOk.copy(exampleResponse = MockKoodistoPalvelu().getLatestVersion("koskiopiskeluoikeudentila").flatMap(MockKoodistoPalvelu().getKoodistoKoodit)),
@@ -39,7 +39,7 @@ object KoskiApiOperations {
             Hakusana voi olla hetu, oppija-oid tai nimen osa. Tuloksiin sisällytetään vain ne oppijat,
             joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</p>,
       Nil,
-      List(QueryParameter("query", "Hakusana, joka voi olla hetu, oppija-oid tai nimen osa.", "eero")),
+      List(QueryParameter("query", "Hakusana, joka voi olla hetu, oppija-oid tai nimen osa.", List("eero"))),
       List(
         KoskiErrorCategory.ok.maybeEmptyList.copy(exampleResponse = List(MockOppijat.eero.toHenkilötiedotJaOid)),
         KoskiErrorCategory.badRequest.queryParam.searchTermTooShort,
@@ -81,7 +81,7 @@ object KoskiApiOperations {
      "Hakee oppijan tiedot ja opiskeluoikeudet suorituksineen.",
      <p></p>,
      Nil,
-     List(PathParameter("oid", "Oppijan tunniste", "1.2.246.562.24.00000000001")),
+     List(PathParameter("oid", "Oppijan tunniste", List("1.2.246.562.24.00000000001"))),
      List(
        KoskiErrorCategory.ok.searchOk.copy(exampleResponse = AmmatillinenOldExamples.uusi),
        KoskiErrorCategory.unauthorized,
@@ -94,7 +94,7 @@ object KoskiApiOperations {
      "Validoi oppijan kantaan tallennetun datan oikeellisuuden",
      <p>Validoi oppijan kantaan tallennetun datan oikeellisuuden</p>,
      Nil,
-     List(PathParameter("oid", "Oppijan tunniste", "1.2.246.562.24.00000000001")),
+     List(PathParameter("oid", "Oppijan tunniste", List("1.2.246.562.24.00000000001"))),
      List(
        KoskiErrorCategory.ok.maybeValidationErrorsInContent.copy(exampleResponse = ValidationResult(MockOppijat.eero.oid, List())),
        KoskiErrorCategory.unauthorized,
@@ -107,7 +107,7 @@ object KoskiApiOperations {
      "Listaa tiettyyn opiskeluoikeuteen kohdistuneet muutokset",
      <p></p>,
      Nil,
-     List(PathParameter("opiskeluoikeus_id", "Opiskeluoikeuden tunniste", "354")),
+     List(PathParameter("opiskeluoikeus_id", "Opiskeluoikeuden tunniste", List("354"))),
      List(
        KoskiErrorCategory.ok.searchOk.copy(exampleResponse = List(OpiskeluOikeusHistoryRow(8942345, 1, new Timestamp(System.currentTimeMillis()), MockUsers.kalle.oid, JObject()))),
        KoskiErrorCategory.unauthorized,
@@ -120,8 +120,8 @@ object KoskiApiOperations {
      <p></p>,
      Nil,
      List(
-       PathParameter("opiskeluoikeus_id", "Opiskeluoikeuden tunniste", "354"),
-       PathParameter("versionumero", "Opiskeluoikeuden versio", "2")
+       PathParameter("opiskeluoikeus_id", "Opiskeluoikeuden tunniste", List("354")),
+       PathParameter("versionumero", "Opiskeluoikeuden versio", List("2"))
      ),
      List(
        KoskiErrorCategory.ok.searchOk.copy(exampleResponse = AmmatillinenOldExamples.uusi),
