@@ -250,7 +250,7 @@ case class NäytönSuorituspaikka(
 
 case class NäytönArviointi (
   @Description("Näytön eri arviointikohteiden (Työprosessin hallinta jne) arvosanat.")
-  arviointikohteet: List[NäytönArviointikohde],
+  arviointikohteet: Option[List[NäytönArviointikohde]],
   @KoodistoUri("ammatillisennaytonarvioinnistapaattaneet")
   @Description("Arvioinnista päättäneet tahot, ilmaistuna 1-numeroisella koodilla")
   arvioinnistaPäättäneet: Koodistokoodiviite,
