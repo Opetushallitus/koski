@@ -22,5 +22,5 @@ class CompositeOpiskeluOikeusRepository(main: OpiskeluOikeusRepository, aux: Lis
 
   override def findByOppijaOid(oid: String)(implicit user: KoskiUser) = (main :: aux).par.flatMap(_.findByOppijaOid(oid)).toList
 
-  override def findByUserOid(oid: String)(implicit user: KoskiUser): Seq[Opiskeluoikeus] = main.findByUserOid(user.oid) // TODO: fetch from virta and ytl also
+  override def findByUserOid(oid: String)(implicit user: KoskiUser): Seq[Opiskeluoikeus] = main.findByUserOid(user.oid)
 }
