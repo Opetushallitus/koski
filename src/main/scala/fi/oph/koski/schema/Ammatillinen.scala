@@ -329,7 +329,9 @@ case class NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
 
 @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osan tunnistetiedot")
 case class NäyttötutkintoonValmistavanKoulutuksenOsa(
-  tunniste: PaikallinenKoodi
+  tunniste: PaikallinenKoodi,
+  @Description("Tutkinnonosan kuvaus sisältäen ammattitaitovaatimukset")
+  kuvaus: LocalizedString
 ) extends PaikallinenKoulutusmoduuli {
   def laajuus = None
 }
