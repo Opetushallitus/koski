@@ -216,7 +216,6 @@ case class NumeerinenPerusopetuksenOppiaineenArviointi(
 case class SanallinenPerusopetuksenOppiaineenArviointi(
   @KoodistoKoodiarvo("S")
   @KoodistoKoodiarvo("H")
-  @KoodistoKoodiarvo("V")
   arvosana: Koodistokoodiviite = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
   kuvaus: Option[LocalizedString],
   @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")

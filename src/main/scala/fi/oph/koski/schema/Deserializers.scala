@@ -109,7 +109,7 @@ object ArviointiSerializer extends Serializer[Arviointi] {
     def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), PerusopetuksenOppiaineenArviointi] = {
       case (TypeInfo(PerusopetuksenOppiaineenArviointiClass, _), json) =>
         json match {
-          case arviointi: JObject if (List(JString("S"), JString("H"), JString("V")).contains(arviointi \ "arvosana" \ "koodiarvo")) => arviointi.extract[SanallinenPerusopetuksenOppiaineenArviointi]
+          case arviointi: JObject if (List(JString("S"), JString("H")).contains(arviointi \ "arvosana" \ "koodiarvo")) => arviointi.extract[SanallinenPerusopetuksenOppiaineenArviointi]
           case arviointi: JObject => arviointi.extract[NumeerinenPerusopetuksenOppiaineenArviointi]
         }
     }

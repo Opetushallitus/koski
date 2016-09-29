@@ -13,7 +13,6 @@ object PerusopetusExampleData {
   def arviointi(arvosana: String, kuvaus: Option[LocalizedString] = None): Some[List[PerusopetuksenOppiaineenArviointi]] = Some(List(PerusopetuksenOppiaineenArviointi(arvosana, kuvaus)))
 
   val hyväksytty = Some(List(PerusopetuksenOppiaineenArviointi("S")))
-  def vapautettu(kuvaus: String) = Some(List(PerusopetuksenOppiaineenArviointi("V", Some(kuvaus))))
 
   def suoritus(aine: PerusopetuksenOppiaine) = PerusopetuksenOppiaineenSuoritus(
     koulutusmoduuli = aine,
@@ -62,7 +61,6 @@ object PerusopetusExampleData {
       suoritus(oppiaine("KO").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
       suoritus(oppiaine("TE")).copy(arviointi = arviointi(8)),
       suoritus(oppiaine("KS")).copy(arviointi = arviointi(9)),
-      suoritus(oppiaine("FI")).copy(arviointi = vapautettu("Opiskelija on vapautettu filosofian opinnoista")),
       suoritus(oppiaine("LI")).copy(arviointi = arviointi(9), painotettuOpetus = true),
       suoritus(oppiaine("LI").copy(pakollinen = false, laajuus = vuosiviikkotuntia(0.5))).copy(arviointi = hyväksytty),
       suoritus(kieli("B2", "DE").copy(pakollinen = false, laajuus = vuosiviikkotuntia(4))).copy(arviointi = arviointi(9)),
