@@ -32,10 +32,6 @@ object ExamplesLukio {
           tila = tilaValmis,
           vahvistus = vahvistus(),
           toimipiste = jyväskylänNormaalikoulu,
-          lisätiedot = Some(List(LukionOppimääränSuorituksenLisätiedot(
-            tunniste = Koodistokoodiviite(koodiarvo = "lukiodiplomi", koodistoUri = "lukionoppimaaransuorituksenlisatieto"),
-            kuvaus = "Opiskelija on suorittanut kuvataiteen lukiodiplomin"
-          ))),
           osasuoritukset = Some(List(
             suoritus(lukionÄidinkieli("AI1")).copy(arviointi = arviointi(9)).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("ÄI1")).copy(arviointi = kurssinArviointi(8)),

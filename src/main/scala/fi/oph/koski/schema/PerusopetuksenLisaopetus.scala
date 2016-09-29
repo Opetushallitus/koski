@@ -47,8 +47,7 @@ case class PerusopetuksenLisäopetuksenSuoritus(
   override val osasuoritukset: Option[List[PerusopetuksenLisäopetuksenAlisuoritus]],
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("perusopetuksenlisaopetus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenlisaopetus", koodistoUri = "suorituksentyyppi"),
-  liitetiedot: Option[List[PerusopetuksenLisäopetuksenSuorituksenLiitetiedot]] = None
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenlisaopetus", koodistoUri = "suorituksentyyppi")
 ) extends PäätasonSuoritus with Toimipisteellinen {
   def arviointi: Option[List[KoodistostaLöytyväArviointi]] = None
 }
@@ -57,15 +56,6 @@ trait PerusopetuksenLisäopetuksenAlisuoritus extends Suoritus {
   @Description("Tieto siitä, onko kyseessä perusopetuksen oppiaineen arvosanan korotus. Tietoa käytetään todistuksella.")
   def korotus: Boolean
 }
-
-@Description("Päättötodistukseen kuuluvat liitteet, liitteistä ei tule mainintaa päättötodistukseen")
-case class PerusopetuksenLisäopetuksenSuorituksenLiitetiedot(
-  @Description("Liitetiedon tyyppi kooditettuna")
-  @KoodistoUri("perusopetuksenlisaopetuksensuorituksenliitetieto")
-  tunniste: Koodistokoodiviite,
-  @Description("Lisätiedon kuvaus")
-  kuvaus: LocalizedString
-)
 
 @Description("Perusopetuksen oppiaineen suoritus osana perusopetuksen lisäopetusta")
 case class PerusopetuksenLisäopetuksenOppiaineenSuoritus(

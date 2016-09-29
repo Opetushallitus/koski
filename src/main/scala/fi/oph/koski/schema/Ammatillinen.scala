@@ -99,6 +99,8 @@ case class NäyttötutkintoonValmistavaKoulutus(
   def laajuus = None
 }
 
+// TODO: osittaisen tutkinnon suoritus (pois osaamisala, tutkintonimike, ehkä suoritustapa ja järjestämismuoto)
+
 case class AmmatillisenTutkinnonSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: AmmatillinenTutkintoKoulutus,

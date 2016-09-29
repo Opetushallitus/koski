@@ -3554,7 +3554,9 @@
           "koulutusmoduuli" : {
             "tunniste" : {
               "koodiarvo" : "KU2",
-              "koodistoUri" : "lukionkurssit"
+              "nimi" : {
+                "fi" : "Elävän mallin piirustus, lukiodiplomi"
+              }
             },
             "laajuus" : {
               "arvo" : 1.0,
@@ -3563,8 +3565,11 @@
                 "koodistoUri" : "opintojenlaajuusyksikko"
               }
             },
+            "kuvaus" : {
+              "fi" : "Elävän mallin piirustus"
+            },
             "kurssinTyyppi" : {
-              "koodiarvo" : "pakollinen",
+              "koodiarvo" : "soveltava",
               "koodistoUri" : "lukionkurssintyyppi"
             }
           },
@@ -3583,7 +3588,8 @@
           "tyyppi" : {
             "koodiarvo" : "lukionkurssi",
             "koodistoUri" : "suorituksentyyppi"
-          }
+          },
+          "suoritettuLukiodiplomina" : true
         } ],
         "tyyppi" : {
           "koodiarvo" : "lukionoppiaine",
@@ -3651,16 +3657,7 @@
       "tyyppi" : {
         "koodiarvo" : "lukionoppimaara",
         "koodistoUri" : "suorituksentyyppi"
-      },
-      "lisätiedot" : [ {
-        "tunniste" : {
-          "koodiarvo" : "lukiodiplomi",
-          "koodistoUri" : "lukionoppimaaransuorituksenlisatieto"
-        },
-        "kuvaus" : {
-          "fi" : "Opiskelija on suorittanut kuvataiteen lukiodiplomin"
-        }
-      } ]
+      }
     } ],
     "tyyppi" : {
       "koodiarvo" : "lukiokoulutus",

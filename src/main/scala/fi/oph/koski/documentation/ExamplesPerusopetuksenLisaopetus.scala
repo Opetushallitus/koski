@@ -44,11 +44,7 @@ object ExamplesPerusopetuksenLisaopetus {
           arviointi("S")
         )
       )
-    ),
-    liitetiedot = Some(List(PerusopetuksenLisäopetuksenSuorituksenLiitetiedot(
-      tunniste = Koodistokoodiviite("kayttaytyminen", "perusopetuksenlisaopetuksensuorituksenliitetieto"),
-      kuvaus = "Liitteenä käyttäytymisen sanallinen arvio"
-    )))
+    )
   )
 
   val lisäopetuksenSuoritusToimintaAlueittain = PerusopetuksenLisäopetuksenSuoritus(

@@ -472,16 +472,7 @@
       "tyyppi" : {
         "koodiarvo" : "perusopetuksenlisaopetus",
         "koodistoUri" : "suorituksentyyppi"
-      },
-      "liitetiedot" : [ {
-        "tunniste" : {
-          "koodiarvo" : "kayttaytyminen",
-          "koodistoUri" : "perusopetuksenlisaopetuksensuorituksenliitetieto"
-        },
-        "kuvaus" : {
-          "fi" : "Liitteenä käyttäytymisen sanallinen arvio"
-        }
-      } ]
+      }
     } ],
     "tyyppi" : {
       "koodiarvo" : "perusopetuksenlisaopetus",

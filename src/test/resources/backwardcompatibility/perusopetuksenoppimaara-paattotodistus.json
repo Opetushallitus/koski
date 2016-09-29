@@ -396,7 +396,7 @@
           },
           "pakollinen" : true
         },
-        "yksilöllistettyOppimäärä" : false,
+        "yksilöllistettyOppimäärä" : true,
         "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
@@ -601,6 +601,34 @@
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
+            "koodiarvo" : "FI",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "yksilöllistettyOppimäärä" : false,
+        "painotettuOpetus" : false,
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "V",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "kuvaus" : {
+            "fi" : "Opiskelija on vapautettu filosofian opinnoista"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
             "koodiarvo" : "LI",
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
@@ -678,6 +706,35 @@
               },
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
+          }
+        },
+        "yksilöllistettyOppimäärä" : false,
+        "painotettuOpetus" : false,
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "TH",
+            "nimi" : {
+              "fi" : "Tietokoneen hyötykäyttö"
+            }
+          },
+          "kuvaus" : {
+            "fi" : "Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta."
           }
         },
         "yksilöllistettyOppimäärä" : false,
@@ -1123,7 +1180,7 @@
           },
           "pakollinen" : true
         },
-        "yksilöllistettyOppimäärä" : false,
+        "yksilöllistettyOppimäärä" : true,
         "painotettuOpetus" : false,
         "tila" : {
           "koodiarvo" : "VALMIS",
@@ -1328,6 +1385,34 @@
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
+            "koodiarvo" : "FI",
+            "koodistoUri" : "koskioppiaineetyleissivistava"
+          },
+          "pakollinen" : true
+        },
+        "yksilöllistettyOppimäärä" : false,
+        "painotettuOpetus" : false,
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "V",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "kuvaus" : {
+            "fi" : "Opiskelija on vapautettu filosofian opinnoista"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
             "koodiarvo" : "LI",
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
@@ -1424,20 +1509,40 @@
           "koodiarvo" : "perusopetuksenoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "TH",
+            "nimi" : {
+              "fi" : "Tietokoneen hyötykäyttö"
+            }
+          },
+          "kuvaus" : {
+            "fi" : "Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta."
+          }
+        },
+        "yksilöllistettyOppimäärä" : false,
+        "painotettuOpetus" : false,
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "9",
+            "koodistoUri" : "arviointiasteikkoyleissivistava"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       } ],
       "tyyppi" : {
         "koodiarvo" : "perusopetuksenoppimaara",
         "koodistoUri" : "suorituksentyyppi"
-      },
-      "liitetiedot" : [ {
-        "tunniste" : {
-          "koodiarvo" : "painotettuopetus",
-          "koodistoUri" : "perusopetuksentodistuksenliitetieto"
-        },
-        "kuvaus" : {
-          "fi" : "Oppilas on suorittanut liikuntapainotteisen perusopetuksen"
-        }
-      } ]
+      }
     } ],
     "tyyppi" : {
       "koodiarvo" : "perusopetus",
