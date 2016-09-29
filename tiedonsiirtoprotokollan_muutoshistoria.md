@@ -1,3 +1,11 @@
+## 29.9.2016
+
+- Luvaan lisätty suoritettuLukiodiplomina-kenttä
+- Lukioon valmistavassa koulutuksessa ei ole mahdollista suorittaa lukion oppiaineen oppimäärä
+- Lukioon valmistavan kurssin suorituksessa suoritettuLukiodiplomina-flägi
+- Perusopetukseen valmistavaan koulutukseen lisätty perusteenDiaarinumero
+- Perusopetuksesta, lisäopetuksesta ja lukiokoulutuksesta poistettu liitetiedot (lukiossa nimellä lisätiedot)
+
 ## 28.9.2016
 - Lisätty näytön tiedot Valman ja Telman osasuorituksiin
 - Lisätty mahdollisuus syöttää muita kuin peruskoulun oppiaineen suorituksia lisäopetukseen
