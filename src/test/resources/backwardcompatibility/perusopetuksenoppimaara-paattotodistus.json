@@ -601,34 +601,6 @@
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "FI",
-            "koodistoUri" : "koskioppiaineetyleissivistava"
-          },
-          "pakollinen" : true
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : false,
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "V",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
-          },
-          "kuvaus" : {
-            "fi" : "Opiskelija on vapautettu filosofian opinnoista"
-          },
-          "hyväksytty" : true
-        } ],
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
             "koodiarvo" : "LI",
             "koodistoUri" : "koskioppiaineetyleissivistava"
           },
@@ -1375,34 +1347,6 @@
           "arvosana" : {
             "koodiarvo" : "9",
             "koodistoUri" : "arviointiasteikkoyleissivistava"
-          },
-          "hyväksytty" : true
-        } ],
-        "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "FI",
-            "koodistoUri" : "koskioppiaineetyleissivistava"
-          },
-          "pakollinen" : true
-        },
-        "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : false,
-        "tila" : {
-          "koodiarvo" : "VALMIS",
-          "koodistoUri" : "suorituksentila"
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "V",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
-          },
-          "kuvaus" : {
-            "fi" : "Opiskelija on vapautettu filosofian opinnoista"
           },
           "hyväksytty" : true
         } ],
