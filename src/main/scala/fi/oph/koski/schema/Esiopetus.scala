@@ -17,7 +17,7 @@ case class EsiopetuksenOpiskeluoikeus(
   läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
   suoritukset: List[EsiopetuksenSuoritus],
   @KoodistoKoodiarvo("esiopetus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("esiopetus", "opiskeluoikeudentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("esiopetus", koodistoUri = "opiskeluoikeudentyyppi")
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withIdAndVersion(id: Option[Int], versionumero: Option[Int]) = this.copy(id = id, versionumero = versionumero)
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
@@ -38,7 +38,9 @@ case class EsiopetuksenSuoritus(
 
 @Description("Esiopetuksen tunnistetiedot")
 case class Esiopetus(
-  tunniste: Koodistokoodiviite = Koodistokoodiviite("110100", koodistoUri = "koulutus") // TODO: tarkista koodiarvo
-) extends KoodistostaLöytyväKoulutusmoduuli {
+  @KoodistoKoodiarvo("001101")
+  @KoodistoKoodiarvo("001102")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("001102", koodistoUri = "koulutus") // TODO: tarkista koodiarvo
+) extends Koulutus {
   override def laajuus: Option[Laajuus] = None
 }
