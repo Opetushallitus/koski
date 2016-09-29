@@ -64,7 +64,8 @@ case class LukioonValmistavanKurssinSuoritus(
   arviointi: Option[List[LukionKurssinArviointi]],
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("luvakurssi")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("luvakurssi", koodistoUri = "suorituksentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("luvakurssi", koodistoUri = "suorituksentyyppi"),
+  suoritettuLukiodiplomina: Option[Boolean] = None
 ) extends LukioonValmistavanKoulutuksenOsasuoritus with VahvistuksetonSuoritus
 
 @Description("Lukioon valmistavassa koulutuksessa suoritettava lukioon valmistavan kurssin tunnistetiedot")
