@@ -55,7 +55,34 @@ class KoskiFacade(oppijaRepository: OppijaRepository, opiskeluOikeusRepository: 
   }
 
   def createOrUpdate(oppija: Oppija)(implicit user: KoskiUser): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
+    val oppijaOid: Either[HttpStatus, PossiblyUnverifiedOppijaOid] = oppija.henkilö match {
+      case h:UusiHenkilö => oppijaRepository.findOrCreate(h).right.map(VerifiedOppijaOid(_))
+      case h:HenkilöWithOid => Right(UnverifiedOppijaOid(h.oid, oppijaRepository))
+    }
 
+    timed("createOrUpdate") {
+      val opiskeluoikeudet: Seq[KoskeenTallennettavaOpiskeluoikeus] = oppija.tallennettavatOpiskeluoikeudet
+
+      oppijaOid.right.flatMap { oppijaOid: PossiblyUnverifiedOppijaOid =>
+        if (oppijaOid.oppijaOid == user.oid) {
+          Left(KoskiErrorCategory.forbidden.omienTietojenMuokkaus())
+        } else {
+          val opiskeluOikeusCreationResults: Seq[Either[HttpStatus, OpiskeluoikeusVersio]] = opiskeluoikeudet.map { opiskeluoikeus =>
+            createOrUpdateOpiskeluoikeus(oppijaOid, opiskeluoikeus)
+          }
+
+          opiskeluOikeusCreationResults.find(_.isLeft) match {
+            case Some(Left(error)) => Left(error)
+            case _ => Right(HenkilönOpiskeluoikeusVersiot(OidHenkilö(oppijaOid.oppijaOid), opiskeluOikeusCreationResults.toList.map {
+              case Right(r) => r
+            }))
+          }
+        }
+      }
+    }
+  }
+
+  def createOrUpdateOpiskeluoikeus(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiUser): Either[HttpStatus, OpiskeluoikeusVersio] = {
     def applicationLog(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: Opiskeluoikeus, result: CreateOrUpdateResult): Unit = {
       val (verb, content) = result match {
         case _: Updated => ("Päivitetty", Json.write(result.diff))
@@ -79,34 +106,14 @@ class KoskiFacade(oppijaRepository: OppijaRepository, opiskeluOikeusRepository: 
       }
     }
 
-    timed("createOrUpdate") {
-      val oppijaOid: Either[HttpStatus, PossiblyUnverifiedOppijaOid] = oppija.henkilö match {
-        case h:UusiHenkilö => oppijaRepository.findOrCreate(h).right.map(VerifiedOppijaOid(_))
-        case h:HenkilöWithOid => Right(UnverifiedOppijaOid(h.oid, oppijaRepository))
-      }
-
-      oppijaOid.right.flatMap { oppijaOid: PossiblyUnverifiedOppijaOid =>
-        if (oppijaOid.oppijaOid == user.oid) {
-          Left(KoskiErrorCategory.forbidden.omienTietojenMuokkaus())
-        } else {
-          val opiskeluOikeusCreationResults: Seq[Either[HttpStatus, CreateOrUpdateResult]] = oppija.tallennettavatOpiskeluoikeudet.map { opiskeluOikeus =>
-            val result = opiskeluOikeusRepository.createOrUpdate(oppijaOid, opiskeluOikeus)
-            result match {
-              case Right(result) =>
-                applicationLog(oppijaOid, opiskeluOikeus, result)
-                auditLog(oppijaOid, result)
-              case _ =>
-            }
-            result
-          }
-
-          opiskeluOikeusCreationResults.find(_.isLeft) match {
-            case Some(Left(error)) => Left(error)
-            case _ => Right(HenkilönOpiskeluoikeusVersiot(OidHenkilö(oppijaOid.oppijaOid), opiskeluOikeusCreationResults.toList.map {
-              case Right(result:CreateOrUpdateResult) => OpiskeluoikeusVersio(result.id, result.versionumero)
-            }))
-          }
-        }
+    if (oppijaOid.oppijaOid == user.oid) {
+      Left(KoskiErrorCategory.forbidden.omienTietojenMuokkaus())
+    } else {
+      val result = opiskeluOikeusRepository.createOrUpdate(oppijaOid, opiskeluoikeus)
+      result.right.map { result =>
+        applicationLog(oppijaOid, opiskeluoikeus, result)
+        auditLog(oppijaOid, result)
+        OpiskeluoikeusVersio(result.id, result.versionumero)
       }
     }
   }
@@ -130,14 +137,11 @@ class KoskiFacade(oppijaRepository: OppijaRepository, opiskeluOikeusRepository: 
     result
   }
 
-  def findOpiskeluOikeus(id: Int)(implicit user: KoskiUser): Either[HttpStatus, (TäydellisetHenkilötiedot, Opiskeluoikeus)] = {
-    val result: Option[(TäydellisetHenkilötiedot, Opiskeluoikeus)] = opiskeluOikeusRepository.findById(id) flatMap { case (oo, oppijaOid) =>
-      oppijaRepository.findByOid(oppijaOid).map((_, oo))
-    }
+  def findOpiskeluOikeus(id: Int)(implicit user: KoskiUser): Either[HttpStatus, OpiskeluOikeusRow] = {
+    val result: Option[OpiskeluOikeusRow] = opiskeluOikeusRepository.findById(id)
     result match {
-      case Some((henkilö, oo)) =>
-        writeViewingEventToAuditLog(user, henkilö.oid)
-        Right((henkilö, oo))
+      case Some(oo) =>
+        Right(oo)
       case _ =>
         Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
     }
@@ -179,7 +183,7 @@ trait QueryFilter
 case class OpiskeluoikeusPäättynytAikaisintaan(päivä: LocalDate) extends QueryFilter
 case class OpiskeluoikeusPäättynytViimeistään(päivä: LocalDate) extends QueryFilter
 case class TutkinnonTila(tila: String) extends QueryFilter
-case class ValidationResult(oid: Henkilö.Oid, errors: List[AnyRef]) {
+case class ValidationResult(henkilöOid: Henkilö.Oid, opiskeluoikeusId: Int, errors: List[AnyRef]) {
   def isOk = errors.isEmpty
 }
 case class HistoryInconsistency(message: String, diff: JValue)

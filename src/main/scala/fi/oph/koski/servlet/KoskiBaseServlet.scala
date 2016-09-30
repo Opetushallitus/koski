@@ -17,7 +17,7 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
     }
   }
 
-  def getIntegerParam(name: String) = {
+  def getIntegerParam(name: String): Int = {
     params.getAs[Int](name) match {
       case Some(id) if id > 0 =>
         id

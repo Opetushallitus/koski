@@ -25,9 +25,9 @@ class OppijaValidationApiSpec extends FreeSpec with LocalJettyHttpSpecification 
     }
 
     def checkValidity(result: ValidationResult) = {
-      println(result.oid)
+      println(result.henkilöOid)
       result.errors should equal(Nil)
-      println(result.oid + " ok")
+      println(result.henkilöOid + " ok")
     }
   }
 }

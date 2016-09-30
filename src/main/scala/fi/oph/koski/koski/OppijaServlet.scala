@@ -5,13 +5,13 @@ import javax.servlet.http.HttpServletRequest
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{GlobalExecutionContext, OpiskeluOikeusRow}
 import fi.oph.koski.henkilo.HenkiloOid
+import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json.toJValue
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log._
-import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema.{HenkilöWithOid, Oppija, TäydellisetHenkilötiedot}
+import fi.oph.koski.schema.{Opiskeluoikeus, Oppija, TäydellisetHenkilötiedot}
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, NoCache}
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
@@ -21,12 +21,12 @@ import org.scalatra.GZipSupport
 import rx.lang.scala.Observable
 
 class OppijaServlet(val application: KoskiApplication)
-  extends ApiServlet with RequiresAuthentication with Logging with GlobalExecutionContext with ObservableSupport with GZipSupport with NoCache with Timing {
+  extends ApiServlet with RequiresAuthentication with Logging with GlobalExecutionContext with OpiskeluoikeusQueries with GZipSupport with NoCache with Timing {
 
   put("/") {
     timed("PUT /oppija", thresholdMs = 10) {
       withJsonBody { (oppijaJson: JValue) =>
-        val validationResult: Either[HttpStatus, Oppija] = application.validator.extractAndValidate(oppijaJson)(koskiUser, AccessType.write)
+        val validationResult: Either[HttpStatus, Oppija] = application.validator.extractAndValidateOppija(oppijaJson)(koskiUser, AccessType.write)
         val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContext(koskiUser, application, request).putSingle(validationResult, oppijaJson)
         renderEither(result)
       }(handleUnparseableJson)
@@ -64,19 +64,6 @@ class OppijaServlet(val application: KoskiApplication)
     renderEither(findByOid(params("oid"), koskiUser))
   }
 
-  get("/validate") {
-    val context = ValidateContext(koskiUser, application.validator)
-    query.map(context.validateOppija)
-  }
-
-  get("/validate/:oid") {
-    renderEither(
-      findByOid(params("oid"), koskiUser)
-        .right.flatMap(validateHistory)
-        .right.map(ValidateContext(koskiUser, application.validator).validateOppija)
-    )
-  }
-
   get("/search") {
     contentType = "application/json;charset=utf-8"
     params.get("query") match {
@@ -84,30 +71,6 @@ class OppijaServlet(val application: KoskiApplication)
         application.facade.findOppijat(query.toUpperCase)(koskiUser)
       case _ =>
         throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort)
-    }
-  }
-
-  private def validateHistory(oppija: Oppija): Either[HttpStatus, Oppija] = {
-    HttpStatus.fold(oppija.opiskeluoikeudet.map { oikeus =>
-      application.historyRepository.findVersion(oikeus.id.get, oikeus.versionumero.get)(koskiUser) match {
-        case Right(latestVersion) =>
-          HttpStatus.validate(latestVersion == oikeus) {
-            KoskiErrorCategory.internalError(toJValue(HistoryInconsistency(oikeus + " versiohistoria epäkonsistentti", Json.jsonDiff(oikeus, latestVersion))))
-          }
-        case Left(error) => error
-      }
-    }) match {
-      case HttpStatus.ok => Right(oppija)
-      case status: HttpStatus => Left(status)
-    }
-  }
-
-  private def query: Observable[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])] = {
-    logger(koskiUser).info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
-
-    application.facade.findOppijat(params.toList, koskiUser) match {
-      case Right(oppijat) => oppijat
-      case Left(status) => haltWithStatus(status)
     }
   }
 
@@ -148,28 +111,40 @@ case class UpdateContext(user: KoskiUser, application: KoskiApplication, request
   *  Operating context for data validation. Operates outside the lecixal scope of OppijaServlet to ensure that none of the
   *  Scalatra threadlocals are used. This must be done because in batch mode, we are running in several threads.
   */
-case class ValidateContext(user: KoskiUser, validator: KoskiValidator) {
-  def validateOppija(oppija: Oppija): ValidationResult = {
-    val oppijaOid: Oid = oppija.henkilö.asInstanceOf[HenkilöWithOid].oid
-    val validationResult: Either[HttpStatus, Oppija] = validator.validateAsJson(oppija)(user, AccessType.read)
-    toValidationResult(oppijaOid, validationResult)
+case class ValidateContext(user: KoskiUser, validator: KoskiValidator, historyRepository: OpiskeluoikeusHistoryRepository) {
+  def validateHistory(oo: OpiskeluOikeusRow): Either[HttpStatus, OpiskeluOikeusRow] = {
+    (historyRepository.findVersion(oo.id, oo.versionumero)(user) match {
+      case Right(latestVersion) =>
+        HttpStatus.validate(latestVersion == oo) {
+          KoskiErrorCategory.internalError(toJValue(HistoryInconsistency(oo + " versiohistoria epäkonsistentti", Json.jsonDiff(oo, latestVersion))))
+        }
+      case Left(error) => error
+    }) match {
+      case HttpStatus.ok => Right(oo)
+      case status: HttpStatus => Left(status)
+    }
   }
 
-  private def toValidationResult(oppijaOid: String, validationResult: Either[HttpStatus, Oppija]) = validationResult match {
-    case Right(oppija) =>
-      ValidationResult(oppijaOid, Nil)
-    case Left(status) =>
-      ValidationResult(oppijaOid, status.errors)
+  def validateOpiskeluoikeus(row: OpiskeluOikeusRow): ValidationResult = {
+    val validationResult: Either[HttpStatus, Opiskeluoikeus] = validator.extractAndValidateOpiskeluoikeus(row.data)(user, AccessType.read)
+    validationResult match {
+      case Right(oppija) =>
+        ValidationResult(row.oppijaOid, row.id, Nil)
+      case Left(status) =>
+        ValidationResult(row.oppijaOid, row.id, status.errors)
+    }
   }
+}
 
-  def validateOppija(oppija: (TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])): ValidationResult = oppija match {
-    case (henkilö, rivit) =>
-      val oppijaOid: Oid = henkilö.asInstanceOf[HenkilöWithOid].oid
-      val fullJson = toJValue(Map(
-        "henkilö" -> henkilö,
-        "opiskeluoikeudet" -> rivit.map(_.data)
-      ))
-      val validationResult = validator.extractAndValidate(fullJson)(user, AccessType.read)
-      toValidationResult(oppijaOid, validationResult)
+trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with Logging with GlobalExecutionContext with ObservableSupport with GZipSupport {
+  def application: KoskiApplication
+
+  def query: Observable[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])] = {
+    logger(koskiUser).info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
+
+    application.facade.findOppijat(params.toList, koskiUser) match {
+      case Right(oppijat) => oppijat
+      case Left(status) => haltWithStatus(status)
+    }
   }
 }

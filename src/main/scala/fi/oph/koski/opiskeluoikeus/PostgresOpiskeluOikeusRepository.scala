@@ -51,8 +51,9 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
     runDbSync(findAction(OpiskeluOikeudet.filter(_.oppijaOid === oid)).map(rows => rows.map(_.toOpiskeluOikeus)))
   }
 
-  def findById(id: Int)(implicit user: KoskiUser): Option[(Opiskeluoikeus, String)] = {
-    runDbSync(findAction(OpiskeluOikeudetWithAccessCheck.filter(_.id === id)).map(rows => rows.map(row => (row.toOpiskeluOikeus, row.oppijaOid)))).headOption
+  def findById(id: Int)(implicit user: KoskiUser): Option[OpiskeluOikeusRow] = {
+    runDbSync(findAction(OpiskeluOikeudetWithAccessCheck.filter(_.id === id))).headOption
+  }
   }
 
   override def query(filters: List[QueryFilter])(implicit user: KoskiUser): Observable[(Oid, List[OpiskeluOikeusRow])] = {

@@ -12,7 +12,7 @@ import rx.lang.scala.Observable
 
 trait OpiskeluOikeusRepository extends AuxiliaryOpiskeluOikeusRepository {
   def query(filters: List[QueryFilter])(implicit user: KoskiUser): Observable[(Oid, List[OpiskeluOikeusRow])]
-  def findById(id: Int)(implicit user: KoskiUser): Option[(Opiskeluoikeus, String)]
+  def findById(id: Int)(implicit user: KoskiUser): Option[OpiskeluOikeusRow]
   def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiUser): Either[HttpStatus, CreateOrUpdateResult]
   def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiUser): Seq[HenkilötiedotJaOid]
   def findByOppijaOid(oid: String)(implicit user: KoskiUser): Seq[Opiskeluoikeus]

@@ -1,6 +1,6 @@
 import javax.servlet.ServletContext
 
-import fi.oph.koski.cache.{CacheServlet, JMXCacheManager, GlobalCacheManager}
+import fi.oph.koski.cache.{CacheServlet, GlobalCacheManager, JMXCacheManager}
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db._
 import fi.oph.koski.documentation.SchemaDocumentationServlet
@@ -8,7 +8,7 @@ import fi.oph.koski.editor.EditorServlet
 import fi.oph.koski.fixture.{FixtureServlet, Fixtures}
 import fi.oph.koski.history.KoskiHistoryServlet
 import fi.oph.koski.koodisto.KoodistoCreator
-import fi.oph.koski.koski.{HealthCheckServlet, KoskiJsonSchemaValidator, OppijaServlet}
+import fi.oph.koski.koski.{HealthCheckServlet, KoskiJsonSchemaValidator, OpiskeluoikeusServlet, OppijaServlet}
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppilaitos.OppilaitosServlet
@@ -42,9 +42,10 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     }
 
     context.mount(new OppijaServlet(application), "/api/oppija")
+    context.mount(new OpiskeluoikeusServlet(application), "/api/opiskeluoikeus")
+    context.mount(new KoskiHistoryServlet(application), "/api/opiskeluoikeus/historia")
     context.mount(new EditorServlet(application), "/api/editor")
     context.mount(new HealthCheckServlet(application), "/api/healthcheck")
-    context.mount(new KoskiHistoryServlet(application), "/api/opiskeluoikeus/historia")
     context.mount(new TiedonsiirtoServlet(application), "/api/tiedonsiirrot")
     context.mount(new UserServlet(application), "/user")
     context.mount(new CasServlet(application), "/cas")

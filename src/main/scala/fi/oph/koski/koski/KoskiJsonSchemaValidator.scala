@@ -38,18 +38,18 @@ object KoskiJsonSchemaValidator {
   }
   private def toJsonSchema(schema: Schema) = jsonSchemaFactory.getJsonSchema(asJsonNode(SchemaToJson.toJsonSchema(schema)))
 
-  def jsonSchemaValidate(node: JValue): HttpStatus = {
+  def validateOppijaJson(node: JValue): HttpStatus = {
     node match {
       case JObject(List(("henkilö", henkilö: JObject), ("opiskeluoikeudet", JArray(opiskeluoikeudet)))) =>
         val henkilöStatus: HttpStatus = toHttpStatus(henkilöSchema.validate(asJsonNode(henkilö)))
-        val opiskeluoikeusStatii: List[HttpStatus] = opiskeluoikeudet.map(validateOpiskeluoikeus)
+        val opiskeluoikeusStatii: List[HttpStatus] = opiskeluoikeudet.map(validateOpiskeluoikeusJson)
         HttpStatus.fold(henkilöStatus :: opiskeluoikeusStatii)
 
       case jobject => KoskiErrorCategory.badRequest.validation.jsonSchema("Oppijan on oltava muotoa { henkilö: {...}, opiskeluoikeudet: [...]}")
     }
   }
 
-  private def validateOpiskeluoikeus(node: JValue): HttpStatus = {
+  def validateOpiskeluoikeusJson(node: JValue): HttpStatus = {
     node \ "tyyppi" \ "koodiarvo" match {
       case JString(koodiarvo) => opiskeluoikeusSchemas.get(koodiarvo) match {
         case Some(schema) => toHttpStatus(schema.validate(asJsonNode(node)))

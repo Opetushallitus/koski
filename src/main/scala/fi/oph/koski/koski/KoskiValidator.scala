@@ -15,18 +15,49 @@ import org.json4s.{JArray, JValue}
 
 class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: KoodistoViitePalvelu, val organisaatioRepository: OrganisaatioRepository) extends Timing {
   def validateAsJson(oppija: Oppija)(implicit user: KoskiUser, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
-    extractAndValidate(Json.toJValue(oppija))
+    extractAndValidateOppija(Json.toJValue(oppija))
   }
 
   def extractAndValidateBatch(oppijatJson: JArray)(implicit user: KoskiUser, accessType: AccessType.Value): List[(Either[HttpStatus, Oppija], JValue)] = {
     timed("extractAndValidateBatch") {
       oppijatJson.arr.par.map { oppijaJson =>
-        (extractAndValidate(oppijaJson), oppijaJson)
+        (extractAndValidateOppija(oppijaJson), oppijaJson)
       }.toList
     }
   }
 
-  def fillMissingInfo(oppija: Oppija) = oppija.copy(opiskeluoikeudet = oppija.opiskeluoikeudet.map(addKoulutustoimija(_)))
+  def extractAndValidateOppija(parsedJson: JValue)(implicit user: KoskiUser, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
+    timed("extractAndValidateOppija")(KoskiJsonSchemaValidator.validateOppijaJson(parsedJson)) match {
+      case status: HttpStatus if status.isOk =>
+        val extractionResult: Either[HttpStatus, Oppija] = timed("extract")(ValidatingAndResolvingExtractor.extract[Oppija](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository)))
+        extractionResult.right.flatMap { oppija =>
+          validateOpiskeluoikeudet(oppija) match {
+            case status: HttpStatus if status.isOk => Right(fillMissingInfo(oppija))
+            case status: HttpStatus => Left(status)
+          }
+        }
+      case status: HttpStatus => Left(status)
+    }
+  }
+
+  def extractAndValidateOpiskeluoikeus(parsedJson: JValue)(implicit user: KoskiUser, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = {
+    // TODO: looks like duplication
+    timed("extractAndValidateOpiskeluoikeus")(KoskiJsonSchemaValidator.validateOpiskeluoikeusJson(parsedJson)) match {
+      case status: HttpStatus if status.isOk =>
+        val extractionResult: Either[HttpStatus, Opiskeluoikeus] = timed("extract")(ValidatingAndResolvingExtractor.extract[Opiskeluoikeus](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository)))
+        extractionResult.right.flatMap { opiskeluoikeus =>
+          validateOpiskeluOikeus(opiskeluoikeus) match {
+            case status: HttpStatus if status.isOk => Right(fillMissingInfo(opiskeluoikeus))
+            case status: HttpStatus => Left(status)
+          }
+        }
+      case status: HttpStatus => Left(status)
+    }
+  }
+
+  def fillMissingInfo(oppija: Oppija): Oppija = oppija.copy(opiskeluoikeudet = oppija.opiskeluoikeudet.map(fillMissingInfo(_)))
+
+  def fillMissingInfo(oo: Opiskeluoikeus): Opiskeluoikeus = addKoulutustoimija(oo)
 
   def addKoulutustoimija(oo: Opiskeluoikeus): Opiskeluoikeus = {
     def findKoulutustoimija(root: OrganisaatioHierarkia): Option[Koulutustoimija] = if (root.toKoulutustoimija.isDefined && root.children.exists(_.oid == oo.oppilaitos.oid)) {
@@ -41,19 +72,6 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
   }
 
-  def extractAndValidate(parsedJson: JValue)(implicit user: KoskiUser, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
-    timed("jsonSchemaValidate")(KoskiJsonSchemaValidator.jsonSchemaValidate(parsedJson)) match {
-      case status: HttpStatus if status.isOk =>
-        val extractionResult: Either[HttpStatus, Oppija] = timed("extract")(ValidatingAndResolvingExtractor.extract[Oppija](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository)))
-        extractionResult.right.flatMap { oppija =>
-          validateOpiskeluoikeudet(oppija) match {
-            case status: HttpStatus if status.isOk => Right(fillMissingInfo(oppija))
-            case status: HttpStatus => Left(status)
-          }
-        }
-      case status: HttpStatus => Left(status)
-    }
-  }
 
   private def validateOpiskeluoikeudet(oppija: Oppija)(implicit user: KoskiUser, accessType: AccessType.Value): HttpStatus = {
     if (oppija.opiskeluoikeudet.length == 0) {

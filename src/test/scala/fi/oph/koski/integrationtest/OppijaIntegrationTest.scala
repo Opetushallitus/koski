@@ -47,9 +47,9 @@ class OppijaIntegrationTest extends FreeSpec with Matchers with KoskidevHttpSpec
   }
 
   "Tallennetun datan validiteetti" taggedAs(KoskiDevEnvironment) in {
-    authGet("api/oppija/validate") {
+    authGet("api/opiskeluoikeus/validate") {
       def printValidity(result: ValidationResult) = {
-        println(result.oid + (if (result.isOk) {" OK"} else {" FAIL " + result.errors}))
+        println(result.henkilöOid + (if (result.isOk) {" OK"} else {" FAIL " + result.errors}))
       }
       verifyResponseStatus(200)
       val results = Json.read[List[ValidationResult]](body)

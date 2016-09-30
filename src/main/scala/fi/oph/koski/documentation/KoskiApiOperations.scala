@@ -62,21 +62,6 @@ object KoskiApiOperations {
      )
    ),
    ApiOperation(
-     "GET", "/koski/api/oppija/validate",
-     "Etsii oppijat annetuilla parametreilla ja validoi hakutulokset.",
-     <p>Validointi suoritetaan tämän hetkisen JSON-scheman ja muiden validointisääntöjen mukaan.
-          Lisäksi validoidaan opinto-oikeuksien versiohistorioiden eheys.
-          Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</p>,
-     Nil,
-     hakuParametrit,
-     List(
-       KoskiErrorCategory.ok.maybeValidationErrorsInContent.copy(exampleResponse = List(ValidationResult(MockOppijat.eero.oid, List()))),
-       KoskiErrorCategory.badRequest.format.pvm,
-       KoskiErrorCategory.badRequest.queryParam.unknown,
-       KoskiErrorCategory.unauthorized
-     )
-   ),
-   ApiOperation(
      "GET", "/koski/api/oppija/{oid}",
      "Hakee oppijan tiedot ja opiskeluoikeudet suorituksineen.",
      <p></p>,
@@ -90,13 +75,28 @@ object KoskiApiOperations {
      )
    ),
    ApiOperation(
-     "GET", "/koski/api/oppija/validate/{oid}",
-     "Validoi oppijan kantaan tallennetun datan oikeellisuuden",
-     <p>Validoi oppijan kantaan tallennetun datan oikeellisuuden</p>,
+     "GET", "/koski/api/opiskeluoikeus/validate",
+     "Etsii oppijat annetuilla parametreilla ja validoi hakutulokset.",
+     <p>Validointi suoritetaan tämän hetkisen JSON-scheman ja muiden validointisääntöjen mukaan.
+       Lisäksi validoidaan opinto-oikeuksien versiohistorioiden eheys.
+       Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</p>,
      Nil,
-     List(PathParameter("oid", "Oppijan tunniste", List("1.2.246.562.24.00000000001"))),
+     hakuParametrit,
      List(
-       KoskiErrorCategory.ok.maybeValidationErrorsInContent.copy(exampleResponse = ValidationResult(MockOppijat.eero.oid, List())),
+       KoskiErrorCategory.ok.maybeValidationErrorsInContent.copy(exampleResponse = List(ValidationResult(MockOppijat.eero.oid, 8942345, List()))),
+       KoskiErrorCategory.badRequest.format.pvm,
+       KoskiErrorCategory.badRequest.queryParam.unknown,
+       KoskiErrorCategory.unauthorized
+     )
+   ),
+   ApiOperation(
+     "GET", "/koski/api/opiskeluoikeus/validate/{id}",
+     "Validoi opiskeluoikeuden datan oikeellisuuden",
+     <p>Validoi opiskeluoikeuden datan oikeellisuuden</p>,
+     Nil,
+     List(PathParameter("id", "Opiskeluoikeuden id", List("8942345"))),
+     List(
+       KoskiErrorCategory.ok.maybeValidationErrorsInContent.copy(exampleResponse = ValidationResult(MockOppijat.eero.oid, 8942345, List())),
        KoskiErrorCategory.unauthorized,
        KoskiErrorCategory.badRequest.queryParam.virheellinenOid,
        KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia
