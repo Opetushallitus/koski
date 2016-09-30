@@ -26,8 +26,6 @@ object PerusopetusExampleData {
   val exampleHenkilö = MockOppijat.koululainen.vainHenkilötiedot
 
   val perusopetus = Perusopetus(Some("104/011/2014"))
-  val tavoiteKokoOppimäärä = Koodistokoodiviite("perusopetuksenoppimaara", "suorituksentyyppi")
-  val tavoiteAine = Koodistokoodiviite("perusopetuksenoppiaineenoppimaara", "suorituksentyyppi")
   val suoritustapaKoulutus = Koodistokoodiviite("koulutus", "perusopetuksensuoritustapa")
   val suoritustapaErityinenTutkinto = Koodistokoodiviite("erityinentutkinto", "perusopetuksensuoritustapa")
   val perusopetuksenOppimäärä = Koodistokoodiviite("perusopetus", "perusopetuksenoppimaara")

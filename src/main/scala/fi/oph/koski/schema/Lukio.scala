@@ -16,11 +16,6 @@ case class LukionOpiskeluoikeus(
   alkamispäivä: Option[LocalDate] = None,
   arvioituPäättymispäivä: Option[LocalDate] = None,
   päättymispäivä: Option[LocalDate] = None,
-  @Description("Opiskeluoikeuden tavoite-tieto kertoo sen, suorittaako opiskelija lukion koko oppimäärää vai yksittäisen oppiaineen oppimäärää")
-  @KoodistoUri("suorituksentyyppi")
-  @KoodistoKoodiarvo("lukionoppimaara")
-  @KoodistoKoodiarvo("lukionoppiaineenoppimaara")
-  tavoite: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", "suorituksentyyppi"),
   tila: LukionOpiskeluoikeudenTila,
   läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
   lisätiedot: Option[LukionOpiskeluoikeudenLisätiedot] = None,

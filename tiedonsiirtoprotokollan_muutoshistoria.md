@@ -1,6 +1,7 @@
 ## 30.9.2016
 
 - Ammatillisen tutkinnon osan suorittaminen uudelleen mallinnettu: poistettu tavoite-kenttä ja lisätty mahdollisuus suorittaa osittainen tutkinto
+- Poistettu tavoite-kenttä perusopetuksesta ja lukiokoulutuksesta
 
 ## 29.9.2016
 

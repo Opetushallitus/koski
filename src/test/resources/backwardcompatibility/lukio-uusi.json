@@ -17,10 +17,6 @@
       }
     },
     "alkamispäivä" : "2012-09-01",
-    "tavoite" : {
-      "koodiarvo" : "lukionoppimaara",
-      "koodistoUri" : "suorituksentyyppi"
-    },
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
         "alku" : "2012-09-01",

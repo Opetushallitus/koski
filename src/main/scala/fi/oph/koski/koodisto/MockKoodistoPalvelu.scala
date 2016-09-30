@@ -70,7 +70,6 @@ object MockKoodistoPalvelu {
     "opetusryhma",
     "opintojenlaajuusyksikko",
     "opintojenrahoitus",
-    "opintojentavoite",
     "opiskeluoikeudentyyppi",
     "oppiaineaidinkielijakirjallisuus",
     "oppiaineentasoib",

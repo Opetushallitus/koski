@@ -38,7 +38,6 @@ object ExamplesPerusopetus {
           PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä)
         )
       ),
-      tavoite = tavoiteKokoOppimäärä,
       läsnäolotiedot = None
     ))
   )
@@ -80,7 +79,6 @@ object ExamplesPerusopetus {
           PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
         )
       ),
-      tavoite = tavoiteKokoOppimäärä,
       läsnäolotiedot = None
     ))
   )
@@ -106,7 +104,6 @@ object ExamplesPerusopetus {
           PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
         )
       ),
-      tavoite = tavoiteAine,
       läsnäolotiedot = None
     ))
   )
@@ -135,7 +132,6 @@ object ExamplesPerusopetus {
           PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
         )
       ),
-      tavoite = tavoiteKokoOppimäärä,
       läsnäolotiedot = None
     ))
   )
@@ -170,7 +166,6 @@ object ExamplesPerusopetus {
           PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
         )
       ),
-      tavoite = tavoiteKokoOppimäärä,
       läsnäolotiedot = None,
       lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(erityisenTuenPäätös = Some(ErityisenTuenPäätös(
         alku = Some(date(2008, 8, 15)),

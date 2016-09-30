@@ -15,11 +15,6 @@ case class PerusopetuksenOpiskeluoikeus(
   koulutustoimija: Option[Koulutustoimija] = None,
   alkamispäivä: Option[LocalDate] = None,
   päättymispäivä: Option[LocalDate] = None,
-  @Description("Opiskeluoikeuden tavoite-tieto kertoo sen, suorittaako perusopetuksen koko oppimäärää vai yksittäisen oppiaineen oppimäärää")
-  @KoodistoUri("suorituksentyyppi")
-  @KoodistoKoodiarvo("perusopetuksenoppimaara")
-  @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
-  tavoite: Koodistokoodiviite,
   tila: PerusopetuksenOpiskeluoikeudenTila,
   läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
   lisätiedot: Option[PerusopetuksenOpiskeluoikeudenLisätiedot] = None,

@@ -18,10 +18,6 @@
     },
     "alkamispäivä" : "2008-08-15",
     "päättymispäivä" : "2016-06-04",
-    "tavoite" : {
-      "koodiarvo" : "perusopetuksenoppimaara",
-      "koodistoUri" : "suorituksentyyppi"
-    },
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
         "alku" : "2008-08-15",

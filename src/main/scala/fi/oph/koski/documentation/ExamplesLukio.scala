@@ -23,7 +23,6 @@ object ExamplesLukio {
         )
       ),
       oppilaitos = jyväskylänNormaalikoulu,
-      tavoite = tavoiteKokoOppimäärä,
       suoritukset = List(
         LukionOppimääränSuoritus(
           koulutusmoduuli = lukionOppimäärä,
@@ -188,7 +187,6 @@ object ExamplesLukio {
       alkamispäivä = Some(date(2015, 9, 1)),
       päättymispäivä = Some(date(2016, 1, 10)),
       oppilaitos = jyväskylänNormaalikoulu,
-      tavoite = tavoiteOppiaineenOppimäärä,
       suoritukset = List(
         LukionOppiaineenOppimääränSuoritus(
           koulutusmoduuli = lukionOppiaine("HI"),
@@ -234,9 +232,6 @@ object LukioExampleData {
   val ylioppilastutkinto: Ylioppilastutkinto = Ylioppilastutkinto(perusteenDiaarinumero = Some("60/011/2015"))
 
   val lukionOppimäärä: LukionOppimäärä = LukionOppimäärä(perusteenDiaarinumero = Some("60/011/2015"))
-
-  val tavoiteKokoOppimäärä = Koodistokoodiviite("lukionoppimaara", "suorituksentyyppi")
-  val tavoiteOppiaineenOppimäärä = Koodistokoodiviite("lukionoppiaineenoppimaara", "suorituksentyyppi")
 
   val opiskeluoikeusAktiivinen = Koodistokoodiviite("lasna", Some("Läsnä"), "koskiopiskeluoikeudentila", Some(1))
   val opiskeluoikeusPäättynyt = Koodistokoodiviite("valmistunut", Some("Valmistunut"), "koskiopiskeluoikeudentila", Some(1))
@@ -294,7 +289,6 @@ object LukioExampleData {
     alkamispäivä = Some(date(2012, 9, 1)),
     päättymispäivä = None,
     oppilaitos = oppilaitos,
-    tavoite = tavoiteKokoOppimäärä,
     suoritukset = List(
       LukionOppimääränSuoritus(
         koulutusmoduuli = lukionOppimäärä,
