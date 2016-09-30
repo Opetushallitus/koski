@@ -37,6 +37,8 @@ object SuoritusDeserializer extends Deserializer[Suoritus] {
         case suoritus: JObject if tyyppi(suoritus) == JString("nayttotutkintoonvalmistavakoulutus") => suoritus.extract[NäyttötutkintoonValmistavanKoulutuksenSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("nayttotutkintoonvalmistavankoulutuksenosa") => suoritus.extract[NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus]
 
+        case suoritus: JObject if tyyppi(suoritus) == JString("esiopetuksensuoritus") => suoritus.extract[EsiopetuksenSuoritus]
+
         case suoritus: JObject if tyyppi(suoritus) == JString("perusopetuksenoppimaara") => suoritus.extract[PerusopetuksenOppimääränSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("perusopetuksenoppiaine") => suoritus.extract[PerusopetuksenOppiaineenSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("perusopetuksentoimintaalue") => suoritus.extract[PerusopetuksenToiminta_AlueenSuoritus]
@@ -147,6 +149,7 @@ object OpiskeluOikeusDeserializer extends Deserializer[Opiskeluoikeus] {
     case (TypeInfo(OpiskeluOikeusClass, _), json) =>
       json match {
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("ammatillinenkoulutus") => oo.extract[AmmatillinenOpiskeluoikeus]
+        case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("esiopetus") => oo.extract[EsiopetuksenOpiskeluoikeus]
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("perusopetus") => oo.extract[PerusopetuksenOpiskeluoikeus]
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("perusopetuksenlisaopetus") => oo.extract[PerusopetuksenLisäopetuksenOpiskeluoikeus]
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("perusopetukseenvalmistavaopetus") => oo.extract[PerusopetukseenValmistavanOpetuksenOpiskeluoikeus]

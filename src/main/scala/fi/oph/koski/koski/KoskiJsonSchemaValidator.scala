@@ -18,6 +18,7 @@ object KoskiJsonSchemaValidator {
 
   val opiskeluoikeusClasses = List(
     "ammatillinenkoulutus" -> classOf[AmmatillinenOpiskeluoikeus],
+    "esiopetus" -> classOf[EsiopetuksenOpiskeluoikeus],
     "perusopetus" -> classOf[PerusopetuksenOpiskeluoikeus],
     "perusopetuksenlisaopetus" -> classOf[PerusopetuksenLisäopetuksenOpiskeluoikeus],
     "perusopetukseenvalmistavaopetus" -> classOf[PerusopetukseenValmistavanOpetuksenOpiskeluoikeus],

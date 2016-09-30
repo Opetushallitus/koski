@@ -3,7 +3,7 @@ package fi.oph.koski.schema
 import java.time.LocalDate
 
 import fi.oph.koski.localization.LocalizedString
-import fi.oph.scalaschema.annotation.Description
+import fi.oph.scalaschema.annotation.{MinItems, Description}
 
 case class EsiopetuksenOpiskeluoikeus(
   id: Option[Int] = None,
@@ -14,7 +14,7 @@ case class EsiopetuksenOpiskeluoikeus(
   alkamispäivä: Option[LocalDate] = None,
   arvioituPäättymispäivä: Option[LocalDate] = None,
   päättymispäivä: Option[LocalDate] = None,
-  tila: OpiskeluoikeudenTila,
+  tila: PerusopetuksenOpiskeluoikeudenTila,
   läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
   lisätiedot: Option[EsiopetuksenOpiskeluoikeudenLisätiedot] = None,
   suoritukset: List[EsiopetuksenSuoritus],
@@ -37,9 +37,9 @@ case class EsiopetuksenSuoritus(
   tila: Koodistokoodiviite,
   @KoodistoKoodiarvo("esiopetuksensuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("esiopetuksensuoritus", koodistoUri = "suorituksentyyppi"),
-  vahvistus: Option[Vahvistus] = None,
+  vahvistus: Option[Henkilövahvistus] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  koulutusmoduuli: Esiopetus,
+  koulutusmoduuli: Esiopetus = Esiopetus(),
   @Description("Tieto siitä kielestä, joka on oppilaan kotimaisten kielten kielikylvyn kieli.")
   @KoodistoUri("kieli")
   @OksaUri("tmpOKSAID439", "kielikylpy")
@@ -50,11 +50,11 @@ case class EsiopetuksenSuoritus(
 
 @Description("Esiopetuksen tunnistetiedot")
 case class Esiopetus(
-  perusteenDiaarinumero: Option[String],
+  perusteenDiaarinumero: Option[String] = None,
   @KoodistoKoodiarvo("001101")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("001101", koodistoUri = "koulutus"),
   @Description("Kuvaus esiopetuksesta")
-  kuvaus: Option[LocalizedString]
+  kuvaus: Option[LocalizedString] = None
 ) extends Koulutus with DiaarinumerollinenKoulutus {
   override def laajuus: Option[Laajuus] = None
 }
