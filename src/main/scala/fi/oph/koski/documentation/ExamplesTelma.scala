@@ -49,7 +49,7 @@ object ExamplesTelma {
   private def telmaKurssinSuoritus(koodi: String, kuvaus: String, laajuusOsaamispisteissä: Float, pakollinen: Boolean, arviointi: Option[List[TelmaArviointi]], tunnustaminen: Option[OsaamisenTunnustaminen] = None, näyttö: Option[Näyttö] = None) =
     TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus(
       tila = tilaValmis,
-      koulutusmoduuli = TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa(
+      koulutusmoduuli = PaikallinenTyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa(
         tunniste = PaikallinenKoodi(koodi, finnish(kuvaus)),
         kuvaus = finnish(kuvaus),
         laajuus = Some(LaajuusOsaamispisteissä(laajuusOsaamispisteissä)),

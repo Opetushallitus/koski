@@ -209,6 +209,7 @@ case class ValtakunnallinenTutkinnonOsa(
   with KoodistostaLöytyväKoulutusmoduuli
   with Valinnaisuus
   with AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa
+  with TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa
 
 @Description("Paikallisen tutkinnon osan tunnistetiedot")
 case class PaikallinenTutkinnonOsa(
@@ -457,14 +458,16 @@ case class TyöhönJaItsenäiseenElämäänValmentavaKoulutus(
   laajuus: Option[Laajuus] = None
 ) extends DiaarinumerollinenKoulutus
 
+trait TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa extends Koulutusmoduuli
+
 @Description("Työhön ja itsenäiseen elämään valmentavan koulutuksen osan tunnistiedot")
-case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa(
+case class PaikallinenTyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa(
   tunniste: PaikallinenKoodi,
   @Description("Tutkinnonosan kuvaus sisältäen ammattitaitovaatimukset")
   kuvaus: LocalizedString,
   laajuus: Option[LaajuusOsaamispisteissä],
   pakollinen: Boolean
-) extends PaikallinenKoulutusmoduuli with Valinnaisuus
+) extends PaikallinenKoulutusmoduuli with Valinnaisuus with TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa
 
 case class TelmaArviointi(
   @KoodistoUri("arviointiasteikkoammatillinenhyvaksyttyhylatty")

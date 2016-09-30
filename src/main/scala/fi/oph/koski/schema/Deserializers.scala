@@ -24,7 +24,8 @@ object Deserializers {
     PreIBKurssiDeserializer,
     SuoritusDeserializer,
     EditorModelSerializer,
-    AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsaDeserializer
+    AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsaDeserializer,
+    TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsaDeserializer
   )
 }
 
@@ -173,6 +174,18 @@ object AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsaDeserializer exten
       json match {
         case moduuli: JObject if (moduuli \ "tunniste" \ "koodiarvo").isInstanceOf[JObject] => moduuli.extract[ValtakunnallinenTutkinnonOsa]
         case moduuli: JObject => moduuli.extract[PaikallinenAmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa]
+      }
+  }
+}
+
+object TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsaDeserializer extends Deserializer[TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa] {
+  private val TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsaClass = classOf[TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa]
+
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa] = {
+    case (TypeInfo(TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsaClass, _), json) =>
+      json match {
+        case moduuli: JObject if (moduuli \ "tunniste" \ "koodiarvo").isInstanceOf[JObject] => moduuli.extract[ValtakunnallinenTutkinnonOsa]
+        case moduuli: JObject => moduuli.extract[PaikallinenTyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa]
       }
   }
 }

@@ -2,6 +2,8 @@
 
 - Ammatillisen tutkinnon osan suorittaminen uudelleen mallinnettu: poistettu tavoite-kenttä ja lisätty mahdollisuus suorittaa osittainen tutkinto
 - Poistettu tavoite-kenttä perusopetuksesta ja lukiokoulutuksesta
+- Lisätty mahdollisuus suorittaa Valtakunnallinen ammatillinen tutkinnonosa Valmassa
+- Lisätty mahdollisuus suorittaa Valtakunnallinen ammatillinen tutkinnonosa Telmassa
 
 ## 29.9.2016
 
