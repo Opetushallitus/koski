@@ -209,6 +209,7 @@ object ExamplesIB {
   val opiskeluoikeus = IBOpiskeluoikeus(
     oppilaitos = ressunLukio,
     alkamispäivä = Some(date(2012, 9, 1)),
+    päättymispäivä = Some(date(2016, 1, 10)),
     tila = LukionOpiskeluoikeudenTila(
       List(
         LukionOpiskeluoikeusjakso(date(2012, 9, 1), LukioExampleData.opiskeluoikeusAktiivinen),
