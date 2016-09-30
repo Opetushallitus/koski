@@ -11308,8 +11308,8 @@
   } ],
   "versio" : 6
 }, {
-  "koodiUri" : "koulutus_110100",
-  "koodiArvo" : "110100",
+  "koodiUri" : "koulutus_001101",
+  "koodiArvo" : "001101",
   "metadata" : [ {
     "nimi" : "Förskoleundervisning i grundskolan",
     "lyhytNimi" : "Förskoleunderv. i grundskolan",
@@ -18811,8 +18811,8 @@
   } ],
   "versio" : 6
 }, {
-  "koodiUri" : "koulutus_110200",
-  "koodiArvo" : "110200",
+  "koodiUri" : "koulutus_001102",
+  "koodiArvo" : "001102",
   "metadata" : [ {
     "nimi" : "Förskoleundervisning i daghem",
     "lyhytNimi" : "Förskoleunderv. i daghem",
