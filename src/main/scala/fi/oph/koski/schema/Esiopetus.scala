@@ -2,6 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
+import fi.oph.koski.localization.LocalizedString
 import fi.oph.scalaschema.annotation.Description
 
 case class EsiopetuksenOpiskeluoikeus(
@@ -15,6 +16,7 @@ case class EsiopetuksenOpiskeluoikeus(
   päättymispäivä: Option[LocalDate] = None,
   tila: OpiskeluoikeudenTila,
   läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
+  lisätiedot: Option[EsiopetuksenOpiskeluoikeudenLisätiedot] = None,
   suoritukset: List[EsiopetuksenSuoritus],
   @KoodistoKoodiarvo("esiopetus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("esiopetus", koodistoUri = "opiskeluoikeudentyyppi")
@@ -24,6 +26,12 @@ case class EsiopetuksenOpiskeluoikeus(
   override def withSuoritukset(suoritukset: List[PäätasonSuoritus]) = copy(suoritukset = suoritukset.asInstanceOf[List[EsiopetuksenSuoritus]])
 }
 
+case class EsiopetuksenOpiskeluoikeudenLisätiedot(
+  @Description("Pidennetty oppivelvollisuus alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että oppilaalla ei ole pidennettyä oppivelvollisuutta.")
+  @OksaUri("tmpOKSAID517", "pidennetty oppivelvollisuus")
+  pidennettyOppivelvollisuus: Option[Päätösjakso] = None
+)
+
 case class EsiopetuksenSuoritus(
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
@@ -31,15 +39,22 @@ case class EsiopetuksenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("esiopetuksensuoritus", koodistoUri = "suorituksentyyppi"),
   vahvistus: Option[Vahvistus] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  koulutusmoduuli: Esiopetus = Esiopetus()
+  koulutusmoduuli: Esiopetus,
+  @Description("Tieto siitä kielestä, joka on oppilaan kotimaisten kielten kielikylvyn kieli.")
+  @KoodistoUri("kieli")
+  @OksaUri("tmpOKSAID439", "kielikylpy")
+  kielikylpykieli: Option[Koodistokoodiviite] = None
 ) extends PäätasonSuoritus with Toimipisteellinen {
   override def arviointi: Option[List[Arviointi]] = None
 }
 
 @Description("Esiopetuksen tunnistetiedot")
 case class Esiopetus(
+  perusteenDiaarinumero: Option[String],
   @KoodistoKoodiarvo("001101")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite("001101", koodistoUri = "koulutus")
-) extends Koulutus {
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("001101", koodistoUri = "koulutus"),
+  @Description("Kuvaus esiopetuksesta")
+  kuvaus: Option[LocalizedString]
+) extends Koulutus with DiaarinumerollinenKoulutus {
   override def laajuus: Option[Laajuus] = None
 }
