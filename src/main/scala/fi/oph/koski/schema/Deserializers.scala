@@ -25,7 +25,8 @@ object Deserializers {
     SuoritusDeserializer,
     EditorModelSerializer,
     AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsaDeserializer,
-    TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsaDeserializer
+    TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsaDeserializer,
+    NäyttötutkintoonValmistavanKoulutuksenOsaDeserializer
   )
 }
 
@@ -162,6 +163,18 @@ object OpiskeluOikeusDeserializer extends Deserializer[Opiskeluoikeus] {
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("korkeakoulutus") => oo.extract[KorkeakoulunOpiskeluoikeus]
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("ylioppilastutkinto") => oo.extract[YlioppilastutkinnonOpiskeluoikeus]
         case _ => throw CannotDeserializeException(this, json)
+      }
+  }
+}
+
+object NäyttötutkintoonValmistavanKoulutuksenOsaDeserializer extends Deserializer[NäyttötutkintoonValmistavanKoulutuksenOsa] {
+  private val NäyttötutkintoonValmistavanKoulutuksenOsaClass = classOf[NäyttötutkintoonValmistavanKoulutuksenOsa]
+
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), NäyttötutkintoonValmistavanKoulutuksenOsa] = {
+    case (TypeInfo(NäyttötutkintoonValmistavanKoulutuksenOsaClass, _), json) =>
+      json match {
+        case moduuli: JObject if (moduuli \ "tunniste" \ "koodiarvo").isInstanceOf[JObject] => moduuli.extract[ValtakunnallinenTutkinnonOsa]
+        case moduuli: JObject => moduuli.extract[PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa]
       }
   }
 }

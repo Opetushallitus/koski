@@ -45,7 +45,7 @@ object AmmattitutkintoExample {
             vahvistus = vahvistus(date(2015, 5, 31), stadinAmmattiopisto, helsinki),
             osasuoritukset = Some(List(
               NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
-                tila = tilaValmis, koulutusmoduuli = NäyttötutkintoonValmistavanKoulutuksenOsa(
+                tila = tilaValmis, koulutusmoduuli = PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa(
                   PaikallinenKoodi("104052", LocalizedString.finnish("Johtaminen ja henkilöstön kehittäminen")),
                   "Johtamisen ja henkilöstön kehittämisen valmistava koulutus"
                 )

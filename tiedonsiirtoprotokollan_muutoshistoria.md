@@ -4,6 +4,7 @@
 - Poistettu tavoite-kenttä perusopetuksesta ja lukiokoulutuksesta
 - Lisätty mahdollisuus suorittaa Valtakunnallinen ammatillinen tutkinnonosa Valmassa
 - Lisätty mahdollisuus suorittaa Valtakunnallinen ammatillinen tutkinnonosa Telmassa
+- Lisätty mahdollisuus suorittaa Valtakunnallinen ammatillinen tutkinnonosa näyttötutkintoon valmistavassa koulutuksessa
 
 ## 29.9.2016
 

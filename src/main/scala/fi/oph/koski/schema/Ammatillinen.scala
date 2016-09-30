@@ -210,6 +210,7 @@ case class ValtakunnallinenTutkinnonOsa(
   with Valinnaisuus
   with AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa
   with TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa
+  with NäyttötutkintoonValmistavanKoulutuksenOsa
 
 @Description("Paikallisen tutkinnon osan tunnistetiedot")
 case class PaikallinenTutkinnonOsa(
@@ -346,12 +347,14 @@ case class NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
 
 // TODO: myös koodistosta löytyvät tutkinnon osat (ei varsinaisesti tutkinnon osan suoritus, vaan siihen liittyvää sisältöä)
 
+trait NäyttötutkintoonValmistavanKoulutuksenOsa extends Koulutusmoduuli
+
 @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osan tunnistetiedot")
-case class NäyttötutkintoonValmistavanKoulutuksenOsa(
+case class PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa(
   tunniste: PaikallinenKoodi,
   @Description("Tutkinnonosan kuvaus sisältäen ammattitaitovaatimukset")
   kuvaus: LocalizedString
-) extends PaikallinenKoulutusmoduuli with AmmatillisenTutkinnonOsa {
+) extends PaikallinenKoulutusmoduuli with AmmatillisenTutkinnonOsa with NäyttötutkintoonValmistavanKoulutuksenOsa{
   def laajuus = None
 }
 
