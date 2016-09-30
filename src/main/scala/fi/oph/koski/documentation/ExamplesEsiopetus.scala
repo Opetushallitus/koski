@@ -12,8 +12,8 @@ object ExamplesEsiopetus {
   val esioppilas = Oppija(
     exampleHenkilö,
     List(EsiopetuksenOpiskeluoikeus(
-      alkamispäivä = Some(date(2015, 8, 15)),
-      päättymispäivä = None,
+      alkamispäivä = Some(date(2006, 8, 13)),
+      päättymispäivä = Some(date(2007, 6, 3)),
       oppilaitos = jyväskylänNormaalikoulu,
       koulutustoimija = None,
       suoritukset = List(
@@ -21,13 +21,13 @@ object ExamplesEsiopetus {
             tila = tilaValmis,
             toimipiste = jyväskylänNormaalikoulu,
             suorituskieli = suomenKieli,
-            vahvistus = vahvistus()
+            vahvistus = vahvistus(date(2007, 6, 3))
           )
       ),
       tila = PerusopetuksenOpiskeluoikeudenTila(
         List(
-          PerusopetuksenOpiskeluoikeusjakso(date(2015, 8, 15), opiskeluoikeusLäsnä),
-          PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
+          PerusopetuksenOpiskeluoikeusjakso(date(2006, 8, 13), opiskeluoikeusLäsnä),
+          PerusopetuksenOpiskeluoikeusjakso(date(2007, 6, 3), opiskeluoikeusValmistunut)
         )
       ),
       läsnäolotiedot = None
