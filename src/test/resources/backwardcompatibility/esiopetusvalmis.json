@@ -1,0 +1,117 @@
+{
+  "henkilö" : {
+    "hetu" : "110496-926Y",
+    "etunimet" : "Kaisa",
+    "kutsumanimi" : "Kaisa",
+    "sukunimi" : "Koululainen"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.14613773812",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "00204",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Jyväskylän normaalikoulu"
+      }
+    },
+    "alkamispäivä" : "2015-08-15",
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2015-08-15",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      }, {
+        "alku" : "2016-06-04",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "nimi" : {
+            "fi" : "Valmistunut"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      } ]
+    },
+    "suoritukset" : [ {
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.14613773812",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "00204",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Jyväskylän normaalikoulu"
+        }
+      },
+      "tila" : {
+        "koodiarvo" : "VALMIS",
+        "koodistoUri" : "suorituksentila"
+      },
+      "tyyppi" : {
+        "koodiarvo" : "esiopetuksensuoritus",
+        "koodistoUri" : "suorituksentyyppi"
+      },
+      "vahvistus" : {
+        "päivä" : "2016-06-04",
+        "paikkakunta" : {
+          "koodiarvo" : "179",
+          "nimi" : {
+            "fi" : "Jyväskylä"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.14613773812",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "00204",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Jyväskylän normaalikoulu"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.14613773812",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "00204",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Jyväskylän normaalikoulu"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "001101",
+          "koodistoUri" : "koulutus"
+        }
+      }
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "esiopetus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    }
+  } ]
+}
