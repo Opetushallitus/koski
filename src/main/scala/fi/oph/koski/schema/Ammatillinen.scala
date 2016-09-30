@@ -205,7 +205,10 @@ case class ValtakunnallinenTutkinnonOsa(
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean,
   override val laajuus: Option[LaajuusOsaamispisteissä]
-) extends AmmatillisenTutkinnonOsa with KoodistostaLöytyväKoulutusmoduuli with Valinnaisuus
+) extends AmmatillisenTutkinnonOsa
+  with KoodistostaLöytyväKoulutusmoduuli
+  with Valinnaisuus
+  with AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa
 
 @Description("Paikallisen tutkinnon osan tunnistetiedot")
 case class PaikallinenTutkinnonOsa(
@@ -347,7 +350,7 @@ case class NäyttötutkintoonValmistavanKoulutuksenOsa(
   tunniste: PaikallinenKoodi,
   @Description("Tutkinnonosan kuvaus sisältäen ammattitaitovaatimukset")
   kuvaus: LocalizedString
-) extends PaikallinenKoulutusmoduuli {
+) extends PaikallinenKoulutusmoduuli with AmmatillisenTutkinnonOsa {
   def laajuus = None
 }
 
@@ -400,14 +403,16 @@ case class AmmatilliseenPeruskoulutukseenValmentavaKoulutus(
   laajuus: Option[Laajuus] = None
 ) extends DiaarinumerollinenKoulutus
 
+trait AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa extends Koulutusmoduuli
+
 @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osan tunnistetiedot")
-case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa(
+case class PaikallinenAmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa(
   tunniste: PaikallinenKoodi,
   @Description("Tutkinnonosan kuvaus sisältäen ammattitaitovaatimukset")
   kuvaus: LocalizedString,
   laajuus: Option[LaajuusOsaamispisteissä],
   pakollinen: Boolean
-) extends PaikallinenKoulutusmoduuli with Valinnaisuus
+) extends PaikallinenKoulutusmoduuli with Valinnaisuus with AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa
 
 @Description("Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)")
 case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenSuoritus(

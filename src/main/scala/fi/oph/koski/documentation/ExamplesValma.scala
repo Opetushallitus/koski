@@ -66,7 +66,7 @@ object ExamplesValma {
     näyttö: Option[Näyttö] = None) =
     AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus(
       tila = tilaValmis,
-      koulutusmoduuli = AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa(
+      koulutusmoduuli = PaikallinenAmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsa(
         tunniste = PaikallinenKoodi(koodi, finnish(kuvaus)),
         kuvaus = finnish(kuvaus),
         laajuus = Some(LaajuusOsaamispisteissä(laajuusOsaamispisteissä)),
