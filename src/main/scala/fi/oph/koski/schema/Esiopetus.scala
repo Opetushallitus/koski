@@ -39,8 +39,7 @@ case class EsiopetuksenSuoritus(
 @Description("Esiopetuksen tunnistetiedot")
 case class Esiopetus(
   @KoodistoKoodiarvo("001101")
-  @KoodistoKoodiarvo("001102")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite("001102", koodistoUri = "koulutus") // TODO: tarkista koodiarvo
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("001101", koodistoUri = "koulutus")
 ) extends Koulutus {
   override def laajuus: Option[Laajuus] = None
 }
