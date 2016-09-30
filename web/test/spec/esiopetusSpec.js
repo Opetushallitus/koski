@@ -1,7 +1,5 @@
 describe('Esiopetus', function() {
   var page = KoskiPage()
-  var login = LoginPage()
-  var todistus = TodistusPage()
   var opinnot = OpinnotPage()
 
   before(Authentication().login(), resetFixtures)
