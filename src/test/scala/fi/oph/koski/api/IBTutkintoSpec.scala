@@ -128,6 +128,24 @@ class IBTutkintoSpec extends FunSpec with Matchers with OpintosuoritusoteTestMet
           |TOK2 TOK2 pass 4.6.2016""".stripMargin
       )
     }
+
+    it("Päättötodistus") {
+      todistus(MockOppijat.ibOpiskelija.oid, "ibtutkinto") should equal(
+        """International Baccalaureate
+          |Predicted Grades
+          |HELSINGIN KAUPUNKI
+          |Ressun lukio
+          |IB-opiskelija, Iina 130996-9225
+          |
+          |Language A: literature, Finnish SL Satisfactory 4
+          |Language A: language and literature, English HL Excellent 7
+          |History HL Very good 6
+          |Psychology SL Excellent 7
+          |Biology HL Good 5
+          |Mathematical studies SL Good 5
+          |Subject: Language A: language and literature, English
+          |Topic: How is the theme of racial injustice treated in Harper Lee's To Kill a Mockingbird and Solomon Northup's 12 Years a Slave""".stripMargin)
+    }
   }
 
   def opintosuoritusote(henkilö: TäydellisetHenkilötiedot): String = {

@@ -1,9 +1,11 @@
 package fi.oph.koski.todistus
 
+
 import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.schema._
 
 import scala.xml.Elem
+import scala.xml.NodeSeq.Empty
 
 
 class IBPaattoTodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
@@ -43,7 +45,7 @@ class IBPaattoTodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
                   <span class="label">{i(o.koulutusmoduuli)}</span>
                   <span class="grade">{i(o.arvosanaKirjaimin)}</span>
                 </div>
-              }
+              }.getOrElse(Empty)
             }
             {
               päättötodistus.creativityActionService.map { o =>
@@ -52,7 +54,7 @@ class IBPaattoTodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
                   <span>{o.koulutusmoduuli.laajuus.map(l => decimalFormat.format(l.arvo)).getOrElse("")}</span>
                   <span class="grade">{i(o.arvosanaKirjaimin)}</span>
                 </div>
-              }
+              }.getOrElse(Empty)
             }
             {
               päättötodistus.extendedEssay.map { o =>
@@ -63,7 +65,7 @@ class IBPaattoTodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
                     <tr><td class="label">Topic:</td><td>{i(o.koulutusmoduuli.aihe)}</td></tr>
                   </table>
                 </div>
-              }
+              }.getOrElse(Empty)
             }
           </div>
           { päättötodistus.vahvistus.toList.map(vahvistusHTML)}
