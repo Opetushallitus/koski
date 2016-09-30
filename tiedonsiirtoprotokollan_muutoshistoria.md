@@ -1,3 +1,7 @@
+## 30.9.2016
+
+- Ammatillisen tutkinnon osan suorittaminen uudelleen mallinnettu: poistettu tavoite-kenttä ja lisätty mahdollisuus suorittaa osittainen tutkinto
+
 ## 29.9.2016
 
 - Luvaan lisätty suoritettuLukiodiplomina-kenttä

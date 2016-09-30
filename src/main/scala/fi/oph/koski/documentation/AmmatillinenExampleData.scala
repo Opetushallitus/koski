@@ -12,49 +12,17 @@ import fi.oph.koski.schema._
 object AmmatillinenExampleData {
   val exampleHenkilö = MockOppijat.ammattilainen.vainHenkilötiedot
 
-  def tutkintoSuoritus(tutkintoKoulutus: AmmatillinenTutkintoKoulutus,
-    tutkintonimike: Option[List[Koodistokoodiviite]] = None,
-    osaamisala: Option[List[Koodistokoodiviite]] = None,
-    suoritustapa: Option[Koodistokoodiviite] = None,
-    järjestämismuoto: Option[Järjestämismuoto] = None,
-    suorituskieli: Option[Koodistokoodiviite] = None,
-    tila: Koodistokoodiviite,
-    alkamisPäivä: Option[LocalDate] = None,
-    toimipiste: OrganisaatioWithOid,
-    vahvistus: Option[Henkilövahvistus] = None,
-    osasuoritukset: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = None): AmmatillisenTutkinnonSuoritus =
-
-    AmmatillisenTutkinnonSuoritus(
-      koulutusmoduuli = tutkintoKoulutus,
-      tutkintonimike,
-      osaamisala = osaamisala,
-      suoritustapa = suoritustapa,
-      järjestämismuoto = järjestämismuoto,
-      suorituskieli = suorituskieli,
-      tila = tila,
-      alkamispäivä = alkamisPäivä,
-      toimipiste = toimipiste,
-      vahvistus = vahvistus,
-      osasuoritukset = osasuoritukset)
-
   val autoalanPerustutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", "koulutus"), Some("39/011/2014"))
   val parturikampaaja: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("381301", "koulutus"), None)
   val puutarhuri: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("361255", "koulutus"), None)
 
   def autoalanPerustutkinnonSuoritus(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = ammatillisenPerustutkinnonSuoritus(autoalanPerustutkinto, toimipiste)
 
-  def ammatillisenPerustutkinnonSuoritus(tutkinto: AmmatillinenTutkintoKoulutus, toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = tutkintoSuoritus(
-    tutkintoKoulutus = tutkinto,
-    tutkintonimike = None,
-    osaamisala = None,
-    suoritustapa = None,
-    järjestämismuoto = None,
-    suorituskieli = None,
+  def ammatillisenPerustutkinnonSuoritus(koulutusmoduuli: AmmatillinenTutkintoKoulutus, toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = AmmatillisenTutkinnonSuoritus(
+    koulutusmoduuli = koulutusmoduuli,
     tila = tilaKesken,
-    alkamisPäivä = Some(date(2016, 9, 1)),
-    toimipiste = toimipiste,
-    vahvistus = None,
-    osasuoritukset = None
+    alkamispäivä = Some(date(2016, 9, 1)),
+    toimipiste = toimipiste
   )
 
   lazy val h2: Koodistokoodiviite = Koodistokoodiviite("2", Some("H2"), "arviointiasteikkoammatillinent1k3", None)
@@ -131,8 +99,7 @@ object AmmatillinenExampleData {
       arvioituPäättymispäivä = Some(date(2020, 5, 1)),
       tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(date(2016, 9, 1), opiskeluoikeusLäsnä, None))),
       oppilaitos = oppilaitos,
-      suoritukset = List(tutkinto.copy(osasuoritukset = osat)),
-      tavoite = tavoiteTutkinto
+      suoritukset = List(tutkinto.copy(osasuoritukset = osat))
     )
   }
 

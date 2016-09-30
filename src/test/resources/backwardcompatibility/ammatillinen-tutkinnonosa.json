@@ -7,17 +7,35 @@
   },
   "opiskeluoikeudet" : [ {
     "oppilaitos" : {
-      "oid" : "1.2.246.562.10.52251087186"
+      "oid" : "1.2.246.562.10.52251087186",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "10105",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Stadin ammattiopisto"
+      }
     },
-    "alkamispäivä" : "2016-09-01",
-    "arvioituPäättymispäivä" : "2020-05-01",
+    "alkamispäivä" : "2012-09-01",
+    "arvioituPäättymispäivä" : "2015-05-31",
+    "päättymispäivä" : "2016-05-31",
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
-        "alku" : "2016-09-01",
+        "alku" : "2012-09-01",
         "tila" : {
           "koodiarvo" : "lasna",
           "nimi" : {
             "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        }
+      }, {
+        "alku" : "2016-05-31",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "nimi" : {
+            "fi" : "Valmistunut"
           },
           "koodistoUri" : "koskiopiskeluoikeudentila",
           "koodistoVersio" : 1
@@ -27,13 +45,13 @@
     "suoritukset" : [ {
       "koulutusmoduuli" : {
         "tunniste" : {
-          "koodiarvo" : "351301",
+          "koodiarvo" : "361902",
           "nimi" : {
-            "fi" : "Autoalan perustutkinto"
+            "fi" : "Luonto- ja ympäristöalan perustutkinto"
           },
           "koodistoUri" : "koulutus"
         },
-        "perusteenDiaarinumero" : "39/011/2014"
+        "perusteenDiaarinumero" : "62/011/2014"
       },
       "toimipiste" : {
         "oid" : "1.2.246.562.10.42456023292",
@@ -42,30 +60,47 @@
         }
       },
       "tila" : {
-        "koodiarvo" : "KESKEN",
+        "koodiarvo" : "VALMIS",
         "koodistoUri" : "suorituksentila"
       },
-      "alkamispäivä" : "2016-09-01",
-      "suoritustapa" : {
-        "koodiarvo" : "naytto",
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
         "nimi" : {
-          "fi" : "Näyttö"
+          "fi" : "suomi"
         },
-        "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
-        "koodistoVersio" : 1
+        "koodistoUri" : "kieli"
+      },
+      "järjestämismuoto" : {
+        "tunniste" : {
+          "koodiarvo" : "10",
+          "nimi" : {
+            "fi" : "Oppilaitosmuotoinen"
+          },
+          "koodistoUri" : "jarjestamismuoto",
+          "koodistoVersio" : 1
+        }
       },
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "123456789",
+            "koodiarvo" : "100432",
             "nimi" : {
-              "fi" : "Pintavauriotyöt"
+              "fi" : "Ympäristön hoitaminen"
+            },
+            "koodistoUri" : "tutkinnonosat",
+            "koodistoVersio" : 1
+          },
+          "pakollinen" : true,
+          "laajuus" : {
+            "arvo" : 35.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "Osaamispistettä"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
             }
-          },
-          "kuvaus" : {
-            "fi" : "Opetellaan korjaamaan pinnallisia vaurioita"
-          },
-          "pakollinen" : false
+          }
         },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",
@@ -79,25 +114,17 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "Hyväksytty",
+            "koodiarvo" : "3",
             "nimi" : {
-              "fi" : "Hyväksytty"
+              "fi" : "K3"
             },
-            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
-            "koodistoVersio" : 1
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
           },
-          "päivä" : "2013-03-20",
-          "arvioitsijat" : [ {
-            "nimi" : "Jaana Arstila"
-          }, {
-            "nimi" : "Pekka Saurmann"
-          }, {
-            "nimi" : "Juhani Mykkänen"
-          } ],
+          "päivä" : "2014-10-20",
           "hyväksytty" : true
         } ],
         "vahvistus" : {
-          "päivä" : "2013-05-31",
+          "päivä" : "2016-05-31",
           "paikkakunta" : {
             "koodiarvo" : "091",
             "nimi" : {
@@ -132,32 +159,13 @@
             }
           } ]
         },
-        "näyttö" : {
-          "kuvaus" : {
-            "fi" : "Pintavaurioiden korjausta"
-          },
-          "suorituspaikka" : {
-            "tunniste" : {
-              "koodiarvo" : "1",
-              "nimi" : {
-                "fi" : "työpaikka"
-              },
-              "koodistoUri" : "ammatillisennaytonsuorituspaikka",
-              "koodistoVersio" : 1
-            },
-            "kuvaus" : {
-              "fi" : "Autokorjaamo Oy, Riihimäki"
-            }
-          },
-          "työssäoppimisenYhteydessä" : false
-        },
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",
           "koodistoUri" : "suorituksentyyppi"
         }
       } ],
       "tyyppi" : {
-        "koodiarvo" : "ammatillinentutkinto",
+        "koodiarvo" : "ammatillinentutkintoosittainen",
         "koodistoUri" : "suorituksentyyppi"
       }
     } ],

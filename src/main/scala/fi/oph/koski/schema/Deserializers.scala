@@ -33,6 +33,7 @@ object SuoritusDeserializer extends Deserializer[Suoritus] {
     case (TypeInfo(c, _), json: JObject) if classOf[Suoritus].isAssignableFrom(c) && c.isInterface =>
       json match {
         case suoritus: JObject if tyyppi(suoritus) == JString("ammatillinentutkinto") => suoritus.extract[AmmatillisenTutkinnonSuoritus]
+        case suoritus: JObject if tyyppi(suoritus) == JString("ammatillinentutkintoosittainen") => suoritus.extract[AmmatillisenTutkinnonOsittainenSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("ammatillisentutkinnonosa") => suoritus.extract[AmmatillisenTutkinnonOsanSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("nayttotutkintoonvalmistavakoulutus") => suoritus.extract[NäyttötutkintoonValmistavanKoulutuksenSuoritus]
         case suoritus: JObject if tyyppi(suoritus) == JString("nayttotutkintoonvalmistavankoulutuksenosa") => suoritus.extract[NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus]

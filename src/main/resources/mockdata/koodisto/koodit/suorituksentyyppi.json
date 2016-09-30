@@ -12,6 +12,18 @@
     "versio": 1
   },
   {
+    "koodiUri": "suorituksentyyppi_ammatillinentutkintoosittainen",
+    "koodiArvo": "ammatillinentutkintoosittainen",
+    "metadata": [
+      {
+        "nimi": "Ammatillinen tutkinto",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
     "koodiUri": "suorituksentyyppi_ammatillisentutkinnonosa",
     "koodiArvo": "ammatillisentutkinnonosa",
     "metadata": [

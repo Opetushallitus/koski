@@ -82,7 +82,6 @@ object OpiskeluOikeusTestData {
         tila = Koodistokoodiviite("KESKEN", "suorituksentila"),
         toimipiste = oppilaitos
       )),
-      tavoite = AmmatillinenExampleData.tavoiteTutkinto,
       alkamispäivä = Some(date(2000, 1, 1)),
       tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(date(2000, 1, 1), ExampleData.opiskeluoikeusLäsnä, None)))
     )

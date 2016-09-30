@@ -14,8 +14,7 @@ trait OpiskeluoikeusTestMethodsAmmatillinen extends PutOpiskeluOikeusTestMethods
     alkamispäivä = Some(longTimeAgo),
     tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä, None))),
     oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto),
-    suoritukset = List(autoalanPerustutkinnonSuoritus()),
-    tavoite = tavoiteTutkinto
+    suoritukset = List(autoalanPerustutkinnonSuoritus())
   )
 
   def päättymispäivällä(oo: AmmatillinenOpiskeluoikeus, päättymispäivä: LocalDate) = oo.copy(

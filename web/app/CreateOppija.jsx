@@ -96,7 +96,6 @@ export const CreateOppija = React.createClass({
       },
       opiskeluoikeudet: [{
         tyyppi: { 'koodistoUri': 'opiskeluoikeudentyyppi', 'koodiarvo': 'ammatillinenkoulutus'},
-        tavoite: { 'koodistoUri': 'suorituksentyyppi', 'koodiarvo': 'ammatillinentutkinto'},
         oppilaitos: oppilaitosOrganisaatio,
         alkamispäivä: formatISODate(date),
         tila: {

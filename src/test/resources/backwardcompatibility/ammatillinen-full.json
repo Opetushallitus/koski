@@ -27,10 +27,6 @@
     "alkamispäivä" : "2012-09-01",
     "arvioituPäättymispäivä" : "2015-05-31",
     "päättymispäivä" : "2016-01-09",
-    "tavoite" : {
-      "koodiarvo" : "ammatillinentutkinto",
-      "koodistoUri" : "suorituksentyyppi"
-    },
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
         "alku" : "2012-09-01",
