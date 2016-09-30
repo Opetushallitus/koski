@@ -147,6 +147,10 @@ class KoskiFacade(oppijaRepository: OppijaRepository, opiskeluOikeusRepository: 
     }
   }
 
+  def deleteOpiskeluoikeus(id: Int)(implicit user: KoskiUser): HttpStatus = {
+    opiskeluOikeusRepository.delete(id)
+  }
+
   private def writeViewingEventToAuditLog(user: KoskiUser, oid: Henkilö.Oid): Unit = {
     if (user != KoskiUser.systemUser) { // To prevent health checks from pollutings the audit log
       AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, user, Map(oppijaHenkiloOid -> oid)))

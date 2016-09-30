@@ -54,6 +54,13 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
   def findById(id: Int)(implicit user: KoskiUser): Option[OpiskeluOikeusRow] = {
     runDbSync(findAction(OpiskeluOikeudetWithAccessCheck.filter(_.id === id))).headOption
   }
+
+  def delete(id: Int)(implicit user: KoskiUser): HttpStatus = {
+    runDbSync(OpiskeluOikeudetWithAccessCheck.filter(_.id === id).delete) match {
+      case 0 => KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia()
+      case 1 => HttpStatus.ok
+      case _ => KoskiErrorCategory.internalError()
+    }
   }
 
   override def query(filters: List[QueryFilter])(implicit user: KoskiUser): Observable[(Oid, List[OpiskeluOikeusRow])] = {
