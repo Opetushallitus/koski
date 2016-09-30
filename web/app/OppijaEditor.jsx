@@ -218,6 +218,8 @@ export const editorMapping = {
   'perusopetuksenoppiaineensuoritus': OppiaineEditor,
   'perusopetukseenvalmistavanopetuksenoppiaineensuoritus': OppiaineEditor,
   'perusopetuksenlisaopetuksenoppiaineensuoritus': OppiaineEditor,
+  'preiboppiaineensuoritus': TutkinnonosaEditor,
+  'iboppiaineensuoritus': TutkinnonosaEditor,
   'ammatillisentutkinnonosansuoritus': TutkinnonosaEditor,
   'lukionoppiaineensuoritus': TutkinnonosaEditor,
   'ylioppilastutkinnonkokeensuoritus': TutkinnonosaEditor,
