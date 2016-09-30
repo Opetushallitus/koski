@@ -115,7 +115,7 @@ case class ValidateContext(user: KoskiUser, validator: KoskiValidator, historyRe
   def validateHistory(oo: OpiskeluOikeusRow): Either[HttpStatus, OpiskeluOikeusRow] = {
     (historyRepository.findVersion(oo.id, oo.versionumero)(user) match {
       case Right(latestVersion) =>
-        HttpStatus.validate(latestVersion == oo) {
+        HttpStatus.validate(latestVersion == oo.toOpiskeluOikeus) {
           KoskiErrorCategory.internalError(toJValue(HistoryInconsistency(oo + " versiohistoria epäkonsistentti", Json.jsonDiff(oo, latestVersion))))
         }
       case Left(error) => error
