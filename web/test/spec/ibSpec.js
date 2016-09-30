@@ -16,26 +16,22 @@ describe('IB-tutkinto', function( ) {
     describe('Kaikki tiedot näkyvissä', function () {
       before(opinnot.expandAll)
       it('toimii', function () {
-        expect(S('.preiboppiaineensuoritus:eq(0) .preibkurssinsuoritus:eq(0) .koulutusmoduuli .tunniste .value').text()).to.equal('Tekstit ja vuorovaikutus')
+        expect(S('.preibkurssinsuoritus:eq(0) .koulutusmoduuli .tunniste .value').text()).to.equal('Tekstit ja vuorovaikutus')
       })
     })
 
-    /*
     describe('Tulostettava todistus', function () {
-      before(opinnot.avaaTodistus(3))
+      before(opinnot.avaaTodistus())
       it('näytetään', function () {
-        // See more detailed content specification in LukioSpec.scala
-        expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
+        // See more detailed content specification in IBTutkintoSpec.scala
+        expect(todistus.vahvistus()).to.equal('Helsinki 4.6.2016 Reijo Reksi rehtori')
       })
     })
-    */
   })
 
   describe('Opintosuoritusote', function () {
     before(page.openPage, page.oppijaHaku.search('130996-9225', page.isOppijaSelected('Iina')))
-
     before(opinnot.avaaOpintosuoritusote(1))
-
     describe('Kun klikataan linkkiä', function () {
       it('näytetään', function () {
       })
