@@ -187,7 +187,3 @@ trait QueryFilter
 case class OpiskeluoikeusPäättynytAikaisintaan(päivä: LocalDate) extends QueryFilter
 case class OpiskeluoikeusPäättynytViimeistään(päivä: LocalDate) extends QueryFilter
 case class TutkinnonTila(tila: String) extends QueryFilter
-case class ValidationResult(henkilöOid: Henkilö.Oid, opiskeluoikeusId: Int, errors: List[AnyRef]) {
-  def isOk = errors.isEmpty
-}
-case class HistoryInconsistency(message: String, diff: JValue)

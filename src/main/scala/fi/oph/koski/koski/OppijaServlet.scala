@@ -107,34 +107,6 @@ case class UpdateContext(user: KoskiUser, application: KoskiApplication, request
     result
   }
 }
-/**
-  *  Operating context for data validation. Operates outside the lecixal scope of OppijaServlet to ensure that none of the
-  *  Scalatra threadlocals are used. This must be done because in batch mode, we are running in several threads.
-  */
-case class ValidateContext(user: KoskiUser, validator: KoskiValidator, historyRepository: OpiskeluoikeusHistoryRepository) {
-  def validateHistory(oo: OpiskeluOikeusRow): Either[HttpStatus, OpiskeluOikeusRow] = {
-    (historyRepository.findVersion(oo.id, oo.versionumero)(user) match {
-      case Right(latestVersion) =>
-        HttpStatus.validate(latestVersion == oo.toOpiskeluOikeus) {
-          KoskiErrorCategory.internalError(toJValue(HistoryInconsistency(oo + " versiohistoria epäkonsistentti", Json.jsonDiff(oo, latestVersion))))
-        }
-      case Left(error) => error
-    }) match {
-      case HttpStatus.ok => Right(oo)
-      case status: HttpStatus => Left(status)
-    }
-  }
-
-  def validateOpiskeluoikeus(row: OpiskeluOikeusRow): ValidationResult = {
-    val validationResult: Either[HttpStatus, Opiskeluoikeus] = validator.extractAndValidateOpiskeluoikeus(row.data)(user, AccessType.read)
-    validationResult match {
-      case Right(oppija) =>
-        ValidationResult(row.oppijaOid, row.id, Nil)
-      case Left(status) =>
-        ValidationResult(row.oppijaOid, row.id, status.errors)
-    }
-  }
-}
 
 trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with Logging with GlobalExecutionContext with ObservableSupport with GZipSupport {
   def application: KoskiApplication

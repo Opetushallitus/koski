@@ -5,8 +5,9 @@ import fi.oph.koski.json.Json
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Timing
 import org.json4s._
+import org.scalatra._
 
-trait ApiServlet extends KoskiBaseServlet with Logging with Timing {
+trait ApiServlet extends KoskiBaseServlet with Logging with Timing with GZipSupport {
   def withJsonBody(block: JValue => Any)(errorHandler: HttpStatus => Any = haltWithStatus) = {
     JsonBodySnatcher.getJsonBody(request) match {
       case Right(x) => block(x)

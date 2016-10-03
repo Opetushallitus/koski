@@ -1,6 +1,6 @@
 package fi.oph.koski.perftest
 
-import fi.oph.koski.documentation.LukioExampleData
+import fi.oph.koski.documentation.ExamplesLukio
 import fi.oph.koski.json.Json
 import fi.oph.koski.organisaatio.{OrganisaatioHakuTulos, OrganisaatioPalveluOrganisaatio}
 import fi.oph.koski.schema.{Koodistokoodiviite, Oppilaitos}
@@ -12,7 +12,7 @@ object LukioFixtureDataInserter extends FixtureDataInserter {
 
   lazy val opiskeluoikeudet = lukiot.map { org =>
     val oppilaitos = Oppilaitos(org.oid, org.oppilaitosKoodi.map(Koodistokoodiviite(_, "oppilaitosnumero")))
-    LukioExampleData.lukionOpiskeluoikeus(oppilaitos)
+    ExamplesLukio.päättötodistus.copy(oppilaitos = oppilaitos)
   }
 
   def opiskeluoikeudet(x: Int) = {
