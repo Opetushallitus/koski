@@ -48,7 +48,7 @@ case class PerusopetuksenLisäopetuksenSuoritus(
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("perusopetuksenlisaopetus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenlisaopetus", koodistoUri = "suorituksentyyppi")
-) extends PäätasonSuoritus with Toimipisteellinen {
+) extends PäätasonSuoritus with Toimipisteellinen with Todistus {
   def arviointi: Option[List[KoodistostaLöytyväArviointi]] = None
 }
 

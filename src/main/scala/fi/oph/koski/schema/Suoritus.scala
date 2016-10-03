@@ -53,6 +53,10 @@ trait Toimipisteellinen extends OrganisaatioonLiittyvä {
 trait PäätasonSuoritus extends Suoritus with Toimipisteellinen {
 }
 
+trait Todistus extends PäätasonSuoritus {
+  def todistuksellaNäkyvätLisätiedot: Option[LocalizedString]
+}
+
 trait VahvistuksetonSuoritus extends Suoritus {
   override def tarvitseeVahvistuksen = false
   override def vahvistus: Option[Vahvistus] = None

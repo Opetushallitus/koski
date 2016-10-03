@@ -97,10 +97,11 @@ case class PerusopetuksenVuosiluokanSuoritus(
   @Description("Vuosiluokan suoritukseen liittyvät oppiaineen suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[OppiaineenTaiToiminta_AlueenSuoritus]] = None,
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("perusopetuksenvuosiluokka")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenvuosiluokka", koodistoUri = "suorituksentyyppi"),
   liitetiedot: Option[List[PerusopetuksenVuosiluokanSuorituksenLiitteet]] = None
-) extends PerusopetuksenPäätasonSuoritus {
+) extends PerusopetuksenPäätasonSuoritus with Todistus {
   override def arviointi = None
 }
 
@@ -121,9 +122,10 @@ case class PerusopetuksenOppimääränSuoritus(
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[OppiaineenTaiToiminta_AlueenSuoritus]] = None,
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("perusopetuksenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppimaara", koodistoUri = "suorituksentyyppi")
-) extends PerusopetuksenPäätasonSuoritus {
+) extends PerusopetuksenPäätasonSuoritus with Todistus {
   def arviointi: Option[List[KoodistostaLöytyväArviointi]] = None
 }
 

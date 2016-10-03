@@ -44,11 +44,12 @@ case class IBTutkinnonSuoritus(
   theoryOfKnowledge: Option[IBTheoryOfKnowledgeSuoritus],
   extendedEssay: Option[IBExtendedEssaySuoritus],
   creativityActionService: Option[IBCASSuoritus],
-  @KoodistoKoodiarvo("ibtutkinto")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ibtutkinto", koodistoUri = "suorituksentyyppi"),
   @KoodistoUri("lisapisteasteikkoib")
-  lisäpisteet: Option[Koodistokoodiviite] = None
-) extends IBPäätasonSuoritus
+  lisäpisteet: Option[Koodistokoodiviite] = None,
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
+  @KoodistoKoodiarvo("ibtutkinto")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ibtutkinto", koodistoUri = "suorituksentyyppi")
+) extends IBPäätasonSuoritus with Todistus
 
 @Title("Pre IB -opintojen suoritus")
 case class PreIBSuoritus(

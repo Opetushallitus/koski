@@ -36,9 +36,10 @@ case class PerusopetukseenValmistavanOpetuksenSuoritus(
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus]],
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("perusopetukseenvalmistavaopetus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetukseenvalmistavaopetus", koodistoUri = "suorituksentyyppi")
-) extends PäätasonSuoritus with Toimipisteellinen {
+) extends PäätasonSuoritus with Toimipisteellinen with Todistus{
   def arviointi = None
 }
 

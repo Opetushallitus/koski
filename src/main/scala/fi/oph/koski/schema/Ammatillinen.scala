@@ -79,9 +79,10 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   @Description("Valmistavan koulutuksen osat")
   @Title("Koulutuksen osat")
   override val osasuoritukset: Option[List[NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus]] = None,
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("nayttotutkintoonvalmistavakoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("nayttotutkintoonvalmistavakoulutus", "suorituksentyyppi")
-) extends AmmatillinenPäätasonSuoritus with Toimipisteellinen {
+) extends AmmatillinenPäätasonSuoritus with Toimipisteellinen with Todistus {
   def arviointi: Option[List[AmmatillinenArviointi]] = None
 }
 
@@ -119,9 +120,10 @@ case class AmmatillisenTutkinnonSuoritus(
   @Description("Ammatilliseen tutkintoon liittyvät tutkinnonosan suoritukset")
   @Title("Tutkinnon osat")
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = None,
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("ammatillinentutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinentutkinto", "suorituksentyyppi")
-) extends AmmatillinenPäätasonSuoritus with Toimipisteellinen {
+) extends AmmatillinenPäätasonSuoritus with Toimipisteellinen with Todistus {
   def arviointi: Option[List[AmmatillinenArviointi]] = None
 }
 
@@ -358,8 +360,7 @@ case class PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa(
   def laajuus = None
 }
 
-trait ValmentavaSuoritus extends Suoritus with Toimipisteellinen {
-  def todistuksellaNäkyvätLisätiedot: Option[LocalizedString]
+trait ValmentavaSuoritus extends PäätasonSuoritus with Toimipisteellinen with Todistus {
   def arviointi = None
   override def osasuoritukset: Option[List[ValmentavanKoulutuksenOsanSuoritus]] = None
 }
