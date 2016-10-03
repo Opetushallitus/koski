@@ -171,7 +171,6 @@ object ExamplesLukio {
             suoritus(lukionOppiaine("TE")).copy(arviointi = arviointi(9)).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("TE1")).copy(arviointi = kurssinArviointi(8))
             )))
-            // TODO, opinto-ohjaus, kansalaisen turvakurssit
           ))
         )
       ),
