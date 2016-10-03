@@ -135,7 +135,7 @@ class HistoryApiSpec extends FunSpec with LocalJettyHttpSpecification with Opisk
 
     markup("Validoidaan versiohistorian eheys")
 
-    authGet("api/oppija/validate/" + oppija.oid) {
+    authGet("api/opiskeluoikeus/validate/" + opiskeluOikeus.id.get) {
       // Validates version history integrity by applying all history patches on top of first version and comparing to stored final value.
       verifyResponseStatus(200)
     }

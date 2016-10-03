@@ -9,7 +9,7 @@ class OppijaValidationApiSpec extends FreeSpec with LocalJettyHttpSpecification 
   "Validation of stored data using the validation API" - {
     "Validate all" in {
       resetFixtures
-      authGet("api/oppija/validate") {
+      authGet("api/opiskeluoikeus/validate") {
         verifyResponseStatus(200)
         val results = Json.read[List[ValidationResult]](body)
         results.length should be >= 0
@@ -17,7 +17,8 @@ class OppijaValidationApiSpec extends FreeSpec with LocalJettyHttpSpecification 
       }
     }
     "Validate single" in {
-      authGet("api/oppija/validate/" + MockOppijat.eero.oid) {
+      val oo = lastOpiskeluOikeus(MockOppijat.eero.oid)
+      authGet("api/opiskeluoikeus/validate/" + oo.id.get) {
         verifyResponseStatus(200)
         val result = Json.read[ValidationResult](body)
         checkValidity(result)
