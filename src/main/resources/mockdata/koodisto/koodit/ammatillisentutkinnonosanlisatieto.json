@@ -25,4 +25,13 @@
     "kieli" : "FI"
   } ],
   "versio" : 1
+}, {
+  "koodiUri" : "ammatillisentutkinnonosanlisatieto_muu",
+  "koodiArvo" : "muu",
+  "metadata" : [ {
+    "nimi" : "Muu lisätieto",
+    "kuvaus" : "Muu todistuksella näytettävä lisätieto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
 } ]
