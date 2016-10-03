@@ -1,3 +1,7 @@
+## 3.10.2016
+
+- Lisätty todistuksellaNäkyvätLisätiedot ammatillisen, ib-tutkinnon, lukion ja perusopetuksen todistuksia vastaaviin suorituksiin
+
 ## 30.9.2016
 
 - Ammatillisen tutkinnon osan suorittaminen uudelleen mallinnettu: poistettu tavoite-kenttä ja lisätty mahdollisuus suorittaa osittainen tutkinto
