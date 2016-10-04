@@ -42,6 +42,7 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
   private def jsonStringList(value: JValue) = value match {
     case JArray(xs) => xs.collect { case JString(x) => x }
     case JString(x) => List(x)
+    case JNothing => Nil
     case JNull => Nil
   }
 
