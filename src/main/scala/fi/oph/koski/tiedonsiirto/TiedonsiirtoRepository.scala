@@ -14,11 +14,11 @@ import fi.oph.koski.util.Timing
 class TiedonsiirtoRepository(val db: DB, mailer: TiedonsiirtoFailureMailer) extends GlobalExecutionContext with KoskiDatabaseMethods with Timing {
   val maxResults = 10000
 
-  def create(kayttajaOid: String, tallentajaOrganisaatioOid: String, oppija: Option[JValue], oppilaitos: Option[JValue], error: Option[TiedonsiirtoError]) {
+  def create(kayttajaOid: String, tallentajaOrganisaatioOid: String, oppija: Option[JValue], oppilaitos: Option[JValue], error: Option[TiedonsiirtoError], lahdejarjestelma: Option[String]) {
     val (data, virheet) = error.map(e => (Some(e.data), Some(e.virheet))).getOrElse((None, None))
 
     runDbSync {
-      Tiedonsiirto.map { row => (row.kayttajaOid, row.tallentajaOrganisaatioOid, row.oppija, row.oppilaitos, row.data, row.virheet) } += (kayttajaOid, tallentajaOrganisaatioOid, oppija, oppilaitos, data, virheet)
+      Tiedonsiirto.map { row => (row.kayttajaOid, row.tallentajaOrganisaatioOid, row.oppija, row.oppilaitos, row.data, row.virheet, row.lahdejarjestelma) } += (kayttajaOid, tallentajaOrganisaatioOid, oppija, oppilaitos, data, virheet, lahdejarjestelma)
     }
 
     if (error.isDefined) {

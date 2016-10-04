@@ -1,0 +1,1 @@
+alter table tiedonsiirto add lahdejarjestelma text;

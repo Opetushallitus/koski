@@ -22,7 +22,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         putOpiskeluOikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatus(200)
         }
-        verifyTiedonsiirtoLoki(stadinAmmattiopistoPalvelukäyttäjä, Some(defaultHenkilö), Some(ExamplesTiedonsiirto.opiskeluoikeus), errorStored = false, dataStored = false)
+        verifyTiedonsiirtoLoki(stadinAmmattiopistoPalvelukäyttäjä, Some(defaultHenkilö), Some(ExamplesTiedonsiirto.opiskeluoikeus), errorStored = false, dataStored = false, expectedLähdejärjestelmä = Some("winnova"))
       }
 
       "epäonnistuneesta tiedonsiirrosta tallennetaan kaikki tiedot ja lähetetään email" in {
@@ -31,7 +31,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         putOpiskeluOikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = defaultHenkilö.copy(sukunimi = ""), headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatus(400)
         }
-        verifyTiedonsiirtoLoki(stadinAmmattiopistoPalvelukäyttäjä, Some(defaultHenkilö), Some(ExamplesTiedonsiirto.opiskeluoikeus), errorStored = true, dataStored = true)
+        verifyTiedonsiirtoLoki(stadinAmmattiopistoPalvelukäyttäjä, Some(defaultHenkilö), Some(ExamplesTiedonsiirto.opiskeluoikeus), errorStored = true, dataStored = true, expectedLähdejärjestelmä = Some("winnova"))
         val mails = MockEmailSender.checkMail
         mails should equal(List(Email(
           EmailContent(
@@ -49,12 +49,12 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         MockEmailSender.checkMail.length should equal(0)
       }
 
-      "epäkelposta json viestistä tallennetaan vain virhetiedot" in {
+      "epäkelposta json viestistä tallennetaan vain virhetiedot ja data" in {
         resetFixtures
         submit("put", "api/oppija", body = "not json".getBytes("UTF-8"), headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatus(400)
         }
-        verifyTiedonsiirtoLoki(stadinAmmattiopistoPalvelukäyttäjä, None, None, errorStored = true, dataStored = false)
+        verifyTiedonsiirtoLoki(stadinAmmattiopistoPalvelukäyttäjä, None, None, errorStored = true, dataStored = true, expectedLähdejärjestelmä = None)
       }
     }
   }
@@ -77,7 +77,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         verifyResponseStatus(200)
       }
 
-      verifyTiedonsiirtoLoki(helsinkiPalvelukäyttäjä, Some(defaultHenkilö), Some(stadinOpiskeluoikeus), errorStored = false, dataStored = false)
+      verifyTiedonsiirtoLoki(helsinkiPalvelukäyttäjä, Some(defaultHenkilö), Some(stadinOpiskeluoikeus), errorStored = false, dataStored = false, expectedLähdejärjestelmä = Some("winnova"))
     }
 
     "hierarkiassa alempana oleva käyttäjä ei voi katsoa hierarkiasssa ylempänä olevan käyttäjän luomia rivejä" in {
@@ -137,12 +137,15 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     }
   }
 
-  private def verifyTiedonsiirtoLoki(user: UserWithPassword, expectedHenkilö: Option[UusiHenkilö], expectedOpiskeluoikeus: Option[Opiskeluoikeus], errorStored: Boolean, dataStored: Boolean) {
+  private def verifyTiedonsiirtoLoki(user: UserWithPassword, expectedHenkilö: Option[UusiHenkilö], expectedOpiskeluoikeus: Option[Opiskeluoikeus], errorStored: Boolean, dataStored: Boolean, expectedLähdejärjestelmä: Option[String]) {
     val tiedonsiirto = getTiedonsiirrot(user).head
     tiedonsiirto.oppija.flatMap(_.hetu) should equal(expectedHenkilö.map(_.hetu))
     tiedonsiirto.rivit.flatMap(_.oppilaitos.getOrElse(Nil)).map(_.oid) should equal(expectedOpiskeluoikeus.map(_.oppilaitos.oid).toList)
     tiedonsiirto.rivit.flatMap(_.virhe).nonEmpty should be(errorStored)
-    tiedonsiirto.rivit.flatMap(_.inputData).nonEmpty should be(errorStored)
+    tiedonsiirto.rivit.flatMap(_.inputData).nonEmpty should be(dataStored)
+    tiedonsiirto.rivit.foreach { rivi =>
+      rivi.lähdejärjestelmä should equal(expectedLähdejärjestelmä)
+    }
   }
 
   private def getTiedonsiirrot(user: UserWithPassword, url: String = "api/tiedonsiirrot"): List[HenkilönTiedonsiirrot] =

@@ -32,12 +32,31 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
 
     val oppija = data.flatMap(extractHenkilö(_, oppijaOid))
 
-    val oppilaitokset = data.map(_ \ "opiskeluoikeudet" \ "oppilaitos" \ "oid").collect {
-      case JArray(oids) => oids.collect { case JString(oid) => oid }
-      case JString(oid) => List(oid)
-    }.map(_.flatMap(organisaatioRepository.getOrganisaatio)).map(toJValue)
+    val lahdejarjestelma = data.flatMap(extractLahdejarjestelma)
 
-    koskiUser.juuriOrganisaatio.foreach(org => tiedonsiirtoRepository.create(koskiUser.oid, org.oid, oppija, oppilaitokset, error))
+    val oppilaitokset = data.map(_ \ "opiskeluoikeudet" \ "oppilaitos" \ "oid").map(jsonStringList).map(_.flatMap(organisaatioRepository.getOrganisaatio)).map(toJValue)
+
+    koskiUser.juuriOrganisaatio.foreach(org => tiedonsiirtoRepository.create(koskiUser.oid, org.oid, oppija, oppilaitokset, error, lahdejarjestelma))
+  }
+
+  private def jsonStringList(value: JValue) = value match {
+    case JArray(xs) => xs.collect { case JString(x) => x }
+    case JString(x) => List(x)
+    case JNull => Nil
+  }
+
+  private def extractLahdejarjestelma(data: JValue): Option[String] = {
+    data \ "opiskeluoikeudet" match {
+      case JArray(opiskeluoikeudet) =>
+        val shit: List[String] = opiskeluoikeudet.flatMap { opiskeluoikeus: JValue =>
+          opiskeluoikeus \ "lähdejärjestelmänId" \ "lähdejärjestelmä" \ "koodiarvo" match {
+            case JString(lähdejärjestelmä) => Some(lähdejärjestelmä)
+            case _ => None
+          }
+        }
+        shit.headOption
+      case _ => None
+    }
   }
 
   private def extractHenkilö(data: JValue, oidHenkilö: Option[OidHenkilö])(implicit user: KoskiUser): Option[JValue] = {
@@ -65,7 +84,7 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
         val oppija = rows.head.oppija.flatMap(_.extractOpt[Henkilö])
         val rivit = rows.map { row =>
           val oppilaitos = row.oppilaitos.flatMap(_.extractOpt[List[OrganisaatioWithOid]])
-          TiedonsiirtoRivi(row.aikaleima.toLocalDateTime, oppija, oppilaitos, row.virheet, row.data)
+          TiedonsiirtoRivi(row.aikaleima.toLocalDateTime, oppija, oppilaitos, row.virheet, row.data, row.lahdejarjestelma)
         }
         HenkilönTiedonsiirrot(oppija, rivit.sortBy(_.aika))
     }.toList.sortBy(_.rivit.head.aika)
@@ -79,6 +98,6 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
 }
 
 case class HenkilönTiedonsiirrot(oppija: Option[Henkilö], rivit: Seq[TiedonsiirtoRivi])
-case class TiedonsiirtoRivi(aika: LocalDateTime, oppija: Option[Henkilö], oppilaitos: Option[List[OrganisaatioWithOid]], virhe: Option[AnyRef], inputData: Option[AnyRef])
+case class TiedonsiirtoRivi(aika: LocalDateTime, oppija: Option[Henkilö], oppilaitos: Option[List[OrganisaatioWithOid]], virhe: Option[AnyRef], inputData: Option[AnyRef], lähdejärjestelmä: Option[String])
 case class Henkilö(oid: Option[String], hetu: Option[String], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], äidinkieli: Option[Koodistokoodiviite])
 case class HetuTaiOid(oid: Option[String], hetu: Option[String])
