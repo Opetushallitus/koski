@@ -7,6 +7,7 @@ const withLoadingIndicator = (contentP) => contentP.startWith(loadingContent)
 
 export const tiedonsiirrotContentP = (location, contentP) => withLoadingIndicator(contentP).map((content) => (<div className='content-area'>
   <nav className="sidebar tiedonsiirrot-navi">
+    {link('/koski/tiedonsiirrot/yhteenveto', 'Yhteenveto', location, 'tiedonsiirto-link')}
     {link('/koski/tiedonsiirrot', 'Tiedonsiirtoloki', location, 'tiedonsiirto-link')}
     {link('/koski/tiedonsiirrot/virheet', 'Virheet', location, 'virheet-link')}
   </nav>

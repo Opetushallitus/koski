@@ -2,6 +2,7 @@ import { locationP } from './location.js'
 import { oppijaHakuContentP } from './OppijaHaku.jsx'
 import { tiedonsiirtolokiContentP } from './Tiedonsiirtoloki.jsx'
 import { tiedonsiirtovirheetContentP } from './Tiedonsiirtovirheet.jsx'
+import { tiedonsiirtojenYhteenvetoContentP } from './TiedonsiirtojenYhteenveto.jsx'
 import { omatTiedotContentP } from './OmatTiedot.jsx'
 
 export const contentP = locationP.flatMapLatest(location => {
@@ -15,6 +16,8 @@ export const contentP = locationP.flatMapLatest(location => {
     return tiedonsiirtolokiContentP()
   } else if (location === '/koski/tiedonsiirrot/virheet') {
     return tiedonsiirtovirheetContentP()
+  } else if (location === '/koski/tiedonsiirrot/yhteenveto') {
+    return tiedonsiirtojenYhteenvetoContentP()
   } else if (location === '/koski/omattiedot') {
     return omatTiedotContentP()
   }
