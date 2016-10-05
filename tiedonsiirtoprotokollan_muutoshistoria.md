@@ -1,3 +1,7 @@
+## 5.10.2016
+
+- Muutettu lähdejärjstelmänId-kentän dokumentaatio: identifioidaan järjestelmän tyyppi, ei instanssia
+
 ## 3.10.2016
 
 - Lisätty todistuksellaNäkyvätLisätiedot ammatillisen, ib-tutkinnon, lukion ja perusopetuksen todistuksia vastaaviin suorituksiin

@@ -109,9 +109,9 @@ object YleinenLäsnäolojakso {
 case class LähdejärjestelmäId(
   @Description("Opiskeluoikeuden paikallinen uniikki tunniste lähdejärjestelmässä. Tiedonsiirroissa tarpeellinen, jotta voidaan varmistaa päivitysten osuminen oikeaan opiskeluoikeuteen.")
   id: Option[String],
-  @Description("Lähdejärjestelmän yksilöivä tunniste. Tällä tunnistetaan järjestelmä, josta tiedot on tuotu Koskeen. " +
-    "Kullakin erillisellä tietojärjestelmäinstanssilla tulisi olla oma tunniste. " +
-    "Jos siis oppilaitoksella on oma tietojärjestelmäinstanssi, tulee myös tällä instanssilla olla uniikki tunniste.")
+  @Description("Lähdejärjestelmän yksilöivä tunniste. Tällä tunnistetaan sen järjestelmän tyyppi, josta tiedot on tuotu Koskeen. " +
+    "Yksittäisillä lähdejärjestelmäinstansseilla ei tarvitse olla omaa tunnistetta; tässä identifioidaan vain lähdejärjestelmän tyyppi " +
+    "(esimerkiksi primus, peppi, winha...)")
   @KoodistoUri("lahdejarjestelma")
   lähdejärjestelmä: Koodistokoodiviite
 )
