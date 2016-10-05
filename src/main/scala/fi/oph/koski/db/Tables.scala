@@ -52,9 +52,19 @@ object Tables {
     def * = (id, kayttajaOid, tallentajaOrganisaatioOid, oppija, oppilaitos, data, virheet, aikaleima, lahdejarjestelma) <> (TiedonsiirtoRow.tupled, TiedonsiirtoRow.unapply)
   }
 
-  case class TiedonsiirtoRow(id: Int, kayttajaOid: String, tallentajaOrganisaatioOid: String, oppija: Option[JValue], oppilaitos: Option[JValue], data: Option[JValue], virheet: Option[JValue], aikaleima: Timestamp, lahdejarjestelma: Option[String])
+  class TiedonsiirtoYhteenvetoTable(tag: Tag) extends Table[TiedonsiirtoYhteenvetoRow] (tag, "tiedonsiirto_yhteenveto") {
+    val oppilaitos = column[String]("oppilaitos")
+    val viimeisin = column[Timestamp]("viimeisin")
+    val virheet = column[Option[Int]]("virheet")
+    val opiskeluoikeudet = column[Option[Int]]("opiskeluoikeudet")
+    val lahdejarjestelma = column[Option[String]]("lahdejarjestelma")
+
+    def * = (oppilaitos, viimeisin, virheet, opiskeluoikeudet, lahdejarjestelma) <> (TiedonsiirtoYhteenvetoRow.tupled, TiedonsiirtoYhteenvetoRow.unapply)
+  }
 
   val Tiedonsiirto = TableQuery[TiedonsiirtoTable]
+
+  val TiedonsiirtoYhteenveto = TableQuery[TiedonsiirtoYhteenvetoTable]
 
   val CasServiceTicketSessions = TableQuery[CasServiceTicketSessionTable]
 
@@ -71,10 +81,7 @@ object Tables {
       for {
         oo <- OpiskeluOikeudet
         if oo.data.#>>(List("oppilaitos", "oid")) inSetBind oids
-      }
-        yield {
-          oo
-        }
+      } yield { oo}
     }
   }
 
@@ -86,12 +93,22 @@ object Tables {
       for {
         t <- Tiedonsiirto
         if t.tallentajaOrganisaatioOid inSetBind oids
-      }
-        yield {
-          t
-        }
+      } yield { t}
     }
   }
+
+  def TiedonsiirtoYhteenvetoWithAccessCheck(implicit user: KoskiUser): Query[TiedonsiirtoYhteenvetoTable, TiedonsiirtoYhteenvetoRow, Seq] = {
+    if (user.hasGlobalReadAccess) {
+      TiedonsiirtoYhteenveto
+    } else {
+      val oids = user.organisationOids(AccessType.read).toList
+      for {
+        t <- TiedonsiirtoYhteenveto
+        if t.oppilaitos inSetBind oids
+      } yield { t}
+    }
+  }
+
 }
 
 case class CasServiceTicketSessionRow(serviceTicket: String, username: String, userOid: String, started: Timestamp, updated: Timestamp)
@@ -118,3 +135,7 @@ object OpiskeluOikeusStoredDataDeserializer {
 }
 
 case class OpiskeluOikeusHistoryRow(opiskeluoikeusId: Int, versionumero: Int, aikaleima: Timestamp, kayttajaOid: String, muutos: JValue)
+
+case class TiedonsiirtoRow(id: Int, kayttajaOid: String, tallentajaOrganisaatioOid: String, oppija: Option[JValue], oppilaitos: Option[JValue], data: Option[JValue], virheet: Option[JValue], aikaleima: Timestamp, lahdejarjestelma: Option[String])
+
+case class TiedonsiirtoYhteenvetoRow(oppilaitos: String, viimeisin: Timestamp, virheet: Option[Int], opiskeluoikeudet: Option[Int], lahdejarjestelma: Option[String])

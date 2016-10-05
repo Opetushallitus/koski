@@ -9,7 +9,7 @@ import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.oppija.MockOppijat.eerola
 import fi.oph.koski.schema._
-import fi.oph.koski.tiedonsiirto.{ExamplesTiedonsiirto, HenkilönTiedonsiirrot}
+import fi.oph.koski.tiedonsiirto.{ExamplesTiedonsiirto, HenkilönTiedonsiirrot, TiedonsiirtoYhteenveto}
 import org.scalatest.FreeSpec
 
 class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
@@ -66,6 +66,14 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         verifyResponseStatus(200)
       }
       getTiedonsiirrot(helsinkiPalvelukäyttäjä) should be(empty)
+    }
+  }
+
+  "Tiedonsiirtojen yhteenveto" in {
+    authGet("api/tiedonsiirrot/yhteenveto") {
+      verifyResponseStatus(200)
+      val yhteenveto = Json.read[List[TiedonsiirtoYhteenveto]](body)
+      yhteenveto.length should be > 0
     }
   }
 

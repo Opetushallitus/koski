@@ -1,22 +1,24 @@
 package fi.oph.koski.tiedonsiirto
 
+import java.sql.Timestamp
 import java.time.LocalDateTime
 
-import fi.oph.koski.db.Tables.TiedonsiirtoRow
+import fi.oph.koski.db.TiedonsiirtoRow
 import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
+import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.log.KoskiMessageField._
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage}
 import fi.oph.koski.oppija.OppijaRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
-import fi.oph.koski.schema.{HenkilötiedotJaOid, Koodistokoodiviite, OidHenkilö, OrganisaatioWithOid}
+import fi.oph.koski.schema._
 import fi.oph.koski.util.DateOrdering
 import org.json4s.JsonAST.{JArray, JString, JValue}
 import org.json4s.{JValue, _}
 
-class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organisaatioRepository: OrganisaatioRepository, oppijaRepository: OppijaRepository) {
+class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organisaatioRepository: OrganisaatioRepository, oppijaRepository: OppijaRepository, koodistoviitePalvelu: KoodistoViitePalvelu) {
   def kaikkiTiedonsiirrot(koskiUser: KoskiUser): List[HenkilönTiedonsiirrot] = toHenkilönTiedonsiirrot(findAll(koskiUser))
 
   def virheelliset(koskiUser: KoskiUser): List[HenkilönTiedonsiirrot] =
@@ -37,6 +39,14 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
     val oppilaitokset = data.map(_ \ "opiskeluoikeudet" \ "oppilaitos" \ "oid").map(jsonStringList).map(_.flatMap(organisaatioRepository.getOrganisaatio)).map(toJValue)
 
     koskiUser.juuriOrganisaatio.foreach(org => tiedonsiirtoRepository.create(koskiUser.oid, org.oid, oppija, oppilaitokset, error, lahdejarjestelma))
+  }
+
+  def yhteenveto(implicit koskiUser: KoskiUser): Seq[TiedonsiirtoYhteenveto] = {
+    tiedonsiirtoRepository.yhteenveto(koskiUser).map { row =>
+      val oppilaitos = organisaatioRepository.getOrganisaatio(row.oppilaitos).flatMap(_.toOppilaitos).get
+      val lähdejärjestelmä = row.lahdejarjestelma.flatMap(koodistoviitePalvelu.getKoodistoKoodiViite("lahdejarjestelma", _))
+      TiedonsiirtoYhteenveto(oppilaitos, row.viimeisin, row.virheet.getOrElse(0), row.opiskeluoikeudet.getOrElse(0), lähdejärjestelmä)
+    }
   }
 
   private def jsonStringList(value: JValue) = value match {
@@ -102,3 +112,4 @@ case class HenkilönTiedonsiirrot(oppija: Option[Henkilö], rivit: Seq[Tiedonsii
 case class TiedonsiirtoRivi(aika: LocalDateTime, oppija: Option[Henkilö], oppilaitos: Option[List[OrganisaatioWithOid]], virhe: Option[AnyRef], inputData: Option[AnyRef], lähdejärjestelmä: Option[String])
 case class Henkilö(oid: Option[String], hetu: Option[String], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], äidinkieli: Option[Koodistokoodiviite])
 case class HetuTaiOid(oid: Option[String], hetu: Option[String])
+case class TiedonsiirtoYhteenveto(oppilaitos: Oppilaitos, viimeisin: Timestamp, virheet: Int, opiskeluoikeudet: Int, lähdejärjestelmä: Option[Koodistokoodiviite])

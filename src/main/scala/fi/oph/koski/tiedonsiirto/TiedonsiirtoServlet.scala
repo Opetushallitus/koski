@@ -12,4 +12,8 @@ class TiedonsiirtoServlet(val application: KoskiApplication) extends ApiServlet 
   get("/virheet") {
     application.tiedonsiirtoService.virheelliset(koskiUser)
   }
+
+  get("/yhteenveto") {
+    application.tiedonsiirtoService.yhteenveto(koskiUser)
+  }
 }
