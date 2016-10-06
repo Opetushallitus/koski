@@ -7,8 +7,7 @@ case class YlioppilastutkinnonOpiskeluoikeus(
   oppilaitos: Oppilaitos,
   koulutustoimija: Option[Koulutustoimija],
   tila: YlioppilastutkinnonOpiskeluoikeudenTila,
-  @MinItems(1)
-  @MaxItems(1)
+  @MinItems(1) @MaxItems(1)
   suoritukset: List[YlioppilastutkinnonSuoritus],
   @KoodistoKoodiarvo("ylioppilastutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ylioppilastutkinto", "opiskeluoikeudentyyppi")

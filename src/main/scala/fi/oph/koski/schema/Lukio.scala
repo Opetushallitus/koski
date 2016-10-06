@@ -19,7 +19,7 @@ case class LukionOpiskeluoikeus(
   tila: LukionOpiskeluoikeudenTila,
   läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
   lisätiedot: Option[LukionOpiskeluoikeudenLisätiedot] = None,
-  @MinItems(1) @MaxItems(1)
+  @MinItems(1)
   suoritukset: List[LukionPäätasonSuoritus],
   @KoodistoKoodiarvo("lukiokoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukiokoulutus", "opiskeluoikeudentyyppi")

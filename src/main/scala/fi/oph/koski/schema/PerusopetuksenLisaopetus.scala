@@ -17,8 +17,7 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeus(
   tila: PerusopetuksenOpiskeluoikeudenTila,
   läsnäolotiedot: Option[YleisetLäsnäolotiedot],
   lisätiedot: Option[PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot] = None,
-  @MinItems(1)
-  @MaxItems(1)
+  @MinItems(1) @MaxItems(1)
   suoritukset: List[PerusopetuksenLisäopetuksenSuoritus],
   @KoodistoKoodiarvo("perusopetuksenlisaopetus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenlisaopetus", "opiskeluoikeudentyyppi")
