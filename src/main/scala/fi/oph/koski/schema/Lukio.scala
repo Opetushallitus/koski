@@ -90,6 +90,7 @@ case class LukionOppiaineenOppimääränSuoritus(
   override val osasuoritukset: Option[List[LukionKurssinSuoritus]],
   @KoodistoKoodiarvo("lukionoppiaineenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
+  // TODO: todistuksellaNäkyvätLisätiedot
 ) extends LukionPäätasonSuoritus
 
 @Description("Lukiokoulutuksen tunnistetiedot")
@@ -126,6 +127,7 @@ case class LukionKurssinSuoritus(
   suorituskieli: Option[Koodistokoodiviite],
   @KoodistoKoodiarvo("lukionkurssi")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionkurssi", koodistoUri = "suorituksentyyppi"),
+  // TODO: lisätään suoritettuKielikokeena, myöskään lukiodiplomia ei välttämättä saada sisään -> ohjeistus
   suoritettuLukiodiplomina: Option[Boolean] = None
 ) extends VahvistuksetonSuoritus with LukioonValmistavanKoulutuksenOsasuoritus
 
