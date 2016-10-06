@@ -22,10 +22,11 @@ create view tiedonsiirto_yhteenveto as (with siirrot as (
     from opiskeluoikeus
     group by data -> 'oppilaitos' ->> 'oid'
 ), org_lahdejarjestelma as (
-    select oppilaitos, lahdejarjestelma
+    select oppilaitos, max(lahdejarjestelma) as lahdejarjestelma
     from siirrot
     where id in (select id from latest)
-    and lahdejarjestelma is not null
+          and lahdejarjestelma is not null
+    group by oppilaitos
 )
 
 select org_aikaleimat.oppilaitos, aikaleima as viimeisin, virheet, org_opiskeluoikeudet.lukumäärä as opiskeluoikeudet, lahdejarjestelma
