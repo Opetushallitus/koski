@@ -49,7 +49,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         MockEmailSender.checkMail.length should equal(0)
       }
 
-      "epäkelposta json viestistä tallennetaan vain virhetiedot ja data" in {
+      "epäkelvosta json viestistä tallennetaan vain virhetiedot ja data" in {
         resetFixtures
         submit("put", "api/oppija", body = "not json".getBytes("UTF-8"), headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatus(400)
