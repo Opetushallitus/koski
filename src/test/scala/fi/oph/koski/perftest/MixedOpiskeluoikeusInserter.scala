@@ -18,7 +18,7 @@ object MixedOpiskeluoikeusInserter extends FixtureDataInserter {
     val lukio = Oppilaitos(lukiot(Random.nextInt(lukiot.length)).oid, None, None)
     val ammattikoulu = Oppilaitos(ammatillisetOppilaitokset(Random.nextInt(ammatillisetOppilaitokset.length)).oid, None, None)
 
-    val perusopetuksenOpiskeluoikeus = ExamplesPerusopetus.päättötodistus.opiskeluoikeudet.head.asInstanceOf[PerusopetuksenOpiskeluoikeus].copy(oppilaitos = peruskoulu).copy(lähdejärjestelmänId = lähdejärjestelmäId())
+    val perusopetuksenOpiskeluoikeus = ExamplesPerusopetus.päättötodistus.opiskeluoikeudet.head.asInstanceOf[PerusopetuksenOpiskeluoikeus].copy(oppilaitos = peruskoulu).copy(lähdejärjestelmänId = lähdejärjestelmäId)
 
     val lukioTaiAmmattikouluOpiskeluoikeus = if(x % 3 == 0) {
       AmmatillinenPerustutkintoExample.perustutkinto.opiskeluoikeudet.head.asInstanceOf[AmmatillinenOpiskeluoikeus].copy(oppilaitos = ammattikoulu).copy(lähdejärjestelmänId = lähdejärjestelmäId)
