@@ -22,6 +22,72 @@
     "versio": 1
   },
   {
+    "koodiUri": "lahdejarjestelma_helmi",
+    "koodiArvo": "helmi",
+    "metadata": [
+      {
+        "nimi": "Helmi oppilashallintojärjestelmä",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lahdejarjestelma_winha",
+    "koodiArvo": "winha",
+    "metadata": [
+      {
+        "nimi": "Winha",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lahdejarjestelma_studentaplus",
+    "koodiArvo": "studentaplus",
+    "metadata": [
+      {
+        "nimi": "Studentaplus",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lahdejarjestelma_peppi",
+    "koodiArvo": "peppi",
+    "metadata": [
+      {
+        "nimi": "Peppi",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lahdejarjestelma_nexttime",
+    "koodiArvo": "nexttime",
+    "metadata": [
+      {
+        "nimi": "Nexttime",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
+    "koodiUri": "lahdejarjestelma_rediteq",
+    "koodiArvo": "rediteq",
+    "metadata": [
+      {
+        "nimi": "Rediteq",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1
+  },
+  {
     "koodiUri": "lahdejarjestelma_virta",
     "koodiArvo": "virta",
     "metadata": [

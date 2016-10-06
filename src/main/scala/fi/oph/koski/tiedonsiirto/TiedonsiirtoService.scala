@@ -27,18 +27,19 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
     }.map(v => v.copy(rivit = v.rivit.filter(_.virhe.isDefined)))
 
 
-  def storeTiedonsiirtoResult(implicit koskiUser: KoskiUser, oppijaOid: Option[OidHenkilö], data: Option[JValue], error: Option[TiedonsiirtoError]) {
-    if (!koskiUser.isPalvelukäyttäjä) {
+  def storeTiedonsiirtoResult(implicit koskiUser: KoskiUser, oppijaOid: Option[OidHenkilö], validatedOppija: Option[Oppija], data: Option[JValue], error: Option[TiedonsiirtoError]) {
+    if (!koskiUser.isPalvelukäyttäjä && !koskiUser.isRoot) {
       return
     }
 
     val oppija = data.flatMap(extractHenkilö(_, oppijaOid))
-
     val lahdejarjestelma = data.flatMap(extractLahdejarjestelma)
-
     val oppilaitokset = data.map(_ \ "opiskeluoikeudet" \ "oppilaitos" \ "oid").map(jsonStringList).map(_.flatMap(organisaatioRepository.getOrganisaatio)).map(toJValue)
+    val koulutustoimija: Option[Koulutustoimija] = validatedOppija.flatMap(_.opiskeluoikeudet.headOption.flatMap(_.koulutustoimija))
 
-    koskiUser.juuriOrganisaatio.foreach(org => tiedonsiirtoRepository.create(koskiUser.oid, org.oid, oppija, oppilaitokset, error, lahdejarjestelma))
+    val juuriOrganisaatio = if (koskiUser.isRoot) koulutustoimija else koskiUser.juuriOrganisaatio
+
+    juuriOrganisaatio.foreach(org => tiedonsiirtoRepository.create(koskiUser.oid, org.oid, oppija, oppilaitokset, error, lahdejarjestelma))
   }
 
   def yhteenveto(implicit koskiUser: KoskiUser): Seq[TiedonsiirtoYhteenveto] = {

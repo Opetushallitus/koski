@@ -11,7 +11,7 @@ import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json.toJValue
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log._
-import fi.oph.koski.schema.{Opiskeluoikeus, Oppija, TäydellisetHenkilötiedot}
+import fi.oph.koski.schema._
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, NoCache}
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
@@ -81,7 +81,7 @@ class OppijaServlet(val application: KoskiApplication)
   }
 
   private def handleUnparseableJson(status: HttpStatus) = {
-    application.tiedonsiirtoService.storeTiedonsiirtoResult(koskiUser, None, None, Some(TiedonsiirtoError(toJValue(Map("unparseableJson" -> request.body)), toJValue(status.errors))))
+    application.tiedonsiirtoService.storeTiedonsiirtoResult(koskiUser, None, None, None, Some(TiedonsiirtoError(toJValue(Map("unparseableJson" -> request.body)), toJValue(status.errors))))
     haltWithStatus(status)
   }
 }
@@ -91,7 +91,7 @@ class OppijaServlet(val application: KoskiApplication)
   *  Scalatra threadlocals are used. This must be done because in batch mode, we are running in several threads.
   */
 case class UpdateContext(user: KoskiUser, application: KoskiApplication, request: HttpServletRequest) extends Logging {
-  def putSingle(validationResult: Either[HttpStatus, Oppija], oppijaJson: JValue): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
+  def putSingle(validationResult: Either[HttpStatus, Oppija], oppijaJsonFromRequest: JValue): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
 
     val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = validationResult.right.flatMap(application.facade.createOrUpdate(_)(user))
 
@@ -99,8 +99,8 @@ case class UpdateContext(user: KoskiUser, application: KoskiApplication, request
       logger(user).warn("Opinto-oikeuden päivitys estetty: " + code + " " + errors + " for request " + logSafeDescription(request))
     }
 
-    application.tiedonsiirtoService.storeTiedonsiirtoResult(user, result.right.toOption.map(_.henkilö), Some(oppijaJson), result.fold(
-      status => Some(TiedonsiirtoError(oppijaJson, toJValue(status.errors))),
+    application.tiedonsiirtoService.storeTiedonsiirtoResult(user, result.right.toOption.map(_.henkilö), validationResult.right.toOption, Some(oppijaJsonFromRequest), result.fold(
+      status => Some(TiedonsiirtoError(oppijaJsonFromRequest, toJValue(status.errors))),
       _ => None)
     )
 
