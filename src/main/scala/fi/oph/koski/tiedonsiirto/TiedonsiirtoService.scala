@@ -49,13 +49,13 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
   private def extractLahdejarjestelma(data: JValue): Option[String] = {
     data \ "opiskeluoikeudet" match {
       case JArray(opiskeluoikeudet) =>
-        val shit: List[String] = opiskeluoikeudet.flatMap { opiskeluoikeus: JValue =>
+        val lähdejärjestelmä: List[String] = opiskeluoikeudet.flatMap { opiskeluoikeus: JValue =>
           opiskeluoikeus \ "lähdejärjestelmänId" \ "lähdejärjestelmä" \ "koodiarvo" match {
             case JString(lähdejärjestelmä) => Some(lähdejärjestelmä)
             case _ => None
           }
         }
-        shit.headOption
+        lähdejärjestelmä.headOption
       case _ => None
     }
   }
