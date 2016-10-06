@@ -17,7 +17,7 @@ case class AmmatillinenOpiskeluoikeus(
   arvioituPäättymispäivä: Option[LocalDate] = None,
   päättymispäivä: Option[LocalDate] = None,
   tila: AmmatillinenOpiskeluoikeudenTila,
-  @MinItems(1) @MaxItems(2)
+  @MinItems(1)
   suoritukset: List[AmmatillinenPäätasonSuoritus],
   läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
   lisätiedot: Option[AmmatillisenOpiskeluoikeudenLisätiedot] = None,
