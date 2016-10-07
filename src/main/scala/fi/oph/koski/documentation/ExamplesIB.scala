@@ -66,71 +66,73 @@ object ExamplesIB {
   val standardLevel = "SL"
   val higherLevel = "HL"
 
-  val ibTutkinnonSuoritus = IBTutkinnonSuoritus(
+  def osasuoritukset(predicted: Boolean): List[IBOppiaineenSuoritus] = List(
+    ibAineSuoritus(ibKieli("A", "FI", standardLevel, 1), ibArviointi("4", predicted = predicted), List(
+      (ibKurssi("FIN_S1", "A Finnish standard level 1"), "4", Some("B")),
+      (ibKurssi("FIN_S2", "A Finnish standard level 2"), "4", Some("B")),
+      (ibKurssi("FIN_S3", "A Finnish standard level 3"), "S", None),
+      (ibKurssi("FIN_S4", "A Finnish standard level 4"), "5", Some("C")),
+      (ibKurssi("FIN_S5", "A Finnish standard level 5"), "6", Some("B")),
+      (ibKurssi("FIN_S6", "A Finnish standard level 6"), "5", Some("B")),
+      (ibKurssi("FIN_S7", "A Finnish standard level 7"), "5", Some("B")),
+      (ibKurssi("FIN_S8", "A Finnish standard level 8"), "S", None),
+      (ibKurssi("FIN_S9", "A Finnish standard level 9"), "5", Some("C"))
+    )),
+    ibAineSuoritus(ibKieli("A2", "EN", higherLevel, 1), ibArviointi("7", predicted = predicted), List(
+      (ibKurssi("ENG_B_H1", "B English higher level 1"), "6", Some("A")),
+      (ibKurssi("ENG_B_H2", "B English higher level 2"), "7", None),
+      (ibKurssi("ENG_B_H4", "B English higher level 4"), "S", None),
+      (ibKurssi("ENG_B_H5", "B English higher level 5"), "6", None),
+      (ibKurssi("ENG_B_H6", "B English higher level 6"), "6", None),
+      (ibKurssi("ENG_B_H8", "B English higher level 8"), "5", None)
+    )),
+    ibAineSuoritus(ibOppiaine("HIS", higherLevel, 3), ibArviointi("6", predicted = predicted), List(
+      (ibKurssi("HIS_H3", "History higher level 3"), "6", Some("A")),
+      (ibKurssi("HIS_H4", "History higher level 4"), "6", Some("A")),
+      (ibKurssi("HIS_H5", "History higher level 5"), "7", Some("B")),
+      (ibKurssi("HIS_H6", "History higher level 6"), "6", Some("A")),
+      (ibKurssi("HIS_H7", "History higher level 7"), "1", Some("C")),
+      (ibKurssi("HIS_H9", "History higher level 9"), "S", None)
+    )),
+    ibAineSuoritus(ibOppiaine("PSY", standardLevel, 3), ibArviointi("7", predicted = predicted), List(
+      (ibKurssi("PSY_S1", "Psychology standard level 1"), "6", Some("A")),
+      (ibKurssi("PSY_S2", "Psychology standard level 2"), "6", Some("B")),
+      (ibKurssi("PSY_S3", "Psychology standard level 3"), "6", Some("B")),
+      (ibKurssi("PSY_S4", "Psychology standard level 4"), "5", Some("B")),
+      (ibKurssi("PSY_S5", "Psychology standard level 5"), "S", None),
+      (ibKurssi("PSY_S6", "Psychology standard level 6"), "6", Some("B")),
+      (ibKurssi("PSY_S7", "Psychology standard level 7"), "5", Some("B")),
+      (ibKurssi("PSY_S8", "Psychology standard level 8"), "2", Some("C")),
+      (ibKurssi("PSY_S9", "Psychology standard level 9"), "S", None)
+    )),
+    ibAineSuoritus(ibOppiaine("BIO", higherLevel, 4), ibArviointi("5", predicted = predicted), List(
+      (ibKurssi("BIO_H1", "Biology higher level 1"), "5", Some("B")),
+      (ibKurssi("BIO_H2", "Biology higher level 2"), "4", Some("B")),
+      (ibKurssi("BIO_H3", "Biology higher level 3"), "S", None),
+      (ibKurssi("BIO_H4", "Biology higher level 4"), "5", Some("B")),
+      (ibKurssi("BIO_H5", "Biology higher level 5"), "5", Some("B")),
+      (ibKurssi("BIO_H6", "Biology higher level 6"), "2", Some("B")),
+      (ibKurssi("BIO_H7", "Biology higher level 7"), "3", Some("C")),
+      (ibKurssi("BIO_H8", "Biology higher level 8"), "4", Some("C")),
+      (ibKurssi("BIO_H9", "Biology higher level 9"), "1", Some("C"))
+    )),
+    ibAineSuoritus(ibOppiaine("MATST", standardLevel, 5), ibArviointi("5", predicted = predicted), List(
+      (ibKurssi("MATST_S1", "Mathematical studies standard level 1"), "5", Some("A")),
+      (ibKurssi("MATST_S2", "Mathematical studies standard level 2"), "7", Some("A")),
+      (ibKurssi("MATST_S3", "Mathematical studies standard level 3"), "6", Some("A")),
+      (ibKurssi("MATST_S4", "Mathematical studies standard level 4"), "6", Some("A")),
+      (ibKurssi("MATST_S5", "Mathematical studies standard level 5"), "4", Some("B")),
+      (ibKurssi("MATST_S6", "Mathematical studies standard level 6"), "S", None)
+    ))
+  )
+
+  def ibTutkinnonSuoritusFinalGrades(predicted: Boolean) = IBTutkinnonSuoritus(
     toimipiste = ressunLukio,
     tila = tilaValmis,
     vahvistus = ExampleData.vahvistus(org = ressunLukio, kunta = helsinki),
-    osasuoritukset = Some(List(
-      ibAineSuoritus(ibKieli("A", "FI", standardLevel, 1), "4", List(
-        (ibKurssi("FIN_S1", "A Finnish standard level 1"), "4", Some("B")),
-        (ibKurssi("FIN_S2", "A Finnish standard level 2"), "4", Some("B")),
-        (ibKurssi("FIN_S3", "A Finnish standard level 3"), "S", None),
-        (ibKurssi("FIN_S4", "A Finnish standard level 4"), "5", Some("C")),
-        (ibKurssi("FIN_S5", "A Finnish standard level 5"), "6", Some("B")),
-        (ibKurssi("FIN_S6", "A Finnish standard level 6"), "5", Some("B")),
-        (ibKurssi("FIN_S7", "A Finnish standard level 7"), "5", Some("B")),
-        (ibKurssi("FIN_S8", "A Finnish standard level 8"), "S", None),
-        (ibKurssi("FIN_S9", "A Finnish standard level 9"), "5", Some("C"))
-      )),
-      ibAineSuoritus(ibKieli("A2", "EN", higherLevel, 1), "7", List(
-        (ibKurssi("ENG_B_H1", "B English higher level 1"), "6", Some("A")),
-        (ibKurssi("ENG_B_H2", "B English higher level 2"), "7", None),
-        (ibKurssi("ENG_B_H4", "B English higher level 4"), "S", None),
-        (ibKurssi("ENG_B_H5", "B English higher level 5"), "6", None),
-        (ibKurssi("ENG_B_H6", "B English higher level 6"), "6", None),
-        (ibKurssi("ENG_B_H8", "B English higher level 8"), "5", None)
-      )),
-      ibAineSuoritus(ibOppiaine("HIS", higherLevel, 3), "6", List(
-        (ibKurssi("HIS_H3", "History higher level 3"), "6", Some("A")),
-        (ibKurssi("HIS_H4", "History higher level 4"), "6", Some("A")),
-        (ibKurssi("HIS_H5", "History higher level 5"), "7", Some("B")),
-        (ibKurssi("HIS_H6", "History higher level 6"), "6", Some("A")),
-        (ibKurssi("HIS_H7", "History higher level 7"), "1", Some("C")),
-        (ibKurssi("HIS_H9", "History higher level 9"), "S", None)
-      )),
-      ibAineSuoritus(ibOppiaine("PSY", standardLevel, 3), "7", List(
-        (ibKurssi("PSY_S1", "Psychology standard level 1"), "6", Some("A")),
-        (ibKurssi("PSY_S2", "Psychology standard level 2"), "6", Some("B")),
-        (ibKurssi("PSY_S3", "Psychology standard level 3"), "6", Some("B")),
-        (ibKurssi("PSY_S4", "Psychology standard level 4"), "5", Some("B")),
-        (ibKurssi("PSY_S5", "Psychology standard level 5"), "S", None),
-        (ibKurssi("PSY_S6", "Psychology standard level 6"), "6", Some("B")),
-        (ibKurssi("PSY_S7", "Psychology standard level 7"), "5", Some("B")),
-        (ibKurssi("PSY_S8", "Psychology standard level 8"), "2", Some("C")),
-        (ibKurssi("PSY_S9", "Psychology standard level 9"), "S", None)
-      )),
-      ibAineSuoritus(ibOppiaine("BIO", higherLevel, 4), "5", List(
-        (ibKurssi("BIO_H1", "Biology higher level 1"), "5", Some("B")),
-        (ibKurssi("BIO_H2", "Biology higher level 2"), "4", Some("B")),
-        (ibKurssi("BIO_H3", "Biology higher level 3"), "S", None),
-        (ibKurssi("BIO_H4", "Biology higher level 4"), "5", Some("B")),
-        (ibKurssi("BIO_H5", "Biology higher level 5"), "5", Some("B")),
-        (ibKurssi("BIO_H6", "Biology higher level 6"), "2", Some("B")),
-        (ibKurssi("BIO_H7", "Biology higher level 7"), "3", Some("C")),
-        (ibKurssi("BIO_H8", "Biology higher level 8"), "4", Some("C")),
-        (ibKurssi("BIO_H9", "Biology higher level 9"), "1", Some("C"))
-      )),
-      ibAineSuoritus(ibOppiaine("MATST", standardLevel, 5), "5", List(
-        (ibKurssi("MATST_S1", "Mathematical studies standard level 1"), "5", Some("A")),
-        (ibKurssi("MATST_S2", "Mathematical studies standard level 2"), "7", Some("A")),
-        (ibKurssi("MATST_S3", "Mathematical studies standard level 3"), "6", Some("A")),
-        (ibKurssi("MATST_S4", "Mathematical studies standard level 4"), "6", Some("A")),
-        (ibKurssi("MATST_S5", "Mathematical studies standard level 5"), "4", Some("B")),
-        (ibKurssi("MATST_S6", "Mathematical studies standard level 6"), "S", None)
-      ))
-    )),
+    osasuoritukset = Some(osasuoritukset(predicted = predicted)),
     theoryOfKnowledge = Some(IBTheoryOfKnowledgeSuoritus(
-      IBOppiaineTheoryOfKnowledge(), tilaValmis, ibCoreArviointi("A"), osasuoritukset = Some(List(
+      IBOppiaineTheoryOfKnowledge(), tilaValmis, ibCoreArviointi("A", predicted = predicted), osasuoritukset = Some(List(
         IBKurssinSuoritus(ibKurssi("TOK1", "TOK1"), tilaValmis, ibKurssinArviointi("S"), None),
         IBKurssinSuoritus(ibKurssi("TOK2", "TOK2"), tilaValmis, ibKurssinArviointi("S"), None)
       ))
@@ -140,10 +142,10 @@ object ExamplesIB {
         aine = ibKieli("A2", "EN", higherLevel, 1),
         aihe = LocalizedString.english("How is the theme of racial injustice treated in Harper Lee's To Kill a Mockingbird and Solomon Northup's 12 Years a Slave")
       ),
-      tilaValmis, ibCoreArviointi("B")
+      tilaValmis, ibCoreArviointi("B", predicted = predicted)
     )),
     creativityActionService = Some(IBCASSuoritus(
-      IBOppiaineCAS(laajuus = Some(LaajuusTunneissa(267))), tilaValmis, ibArviointi("S")
+      IBOppiaineCAS(laajuus = Some(LaajuusTunneissa(267))), tilaValmis, ibArviointi("S", predicted = predicted)
     ))
   )
 
@@ -159,13 +161,13 @@ object ExamplesIB {
     })
   )
 
-  def ibAineSuoritus(oppiaine: IBAineRyhmäOppiaine, arvosana: String, kurssit: List[(IBKurssi, String, Option[String])] = Nil) = IBOppiaineenSuoritus(
+  def ibAineSuoritus(oppiaine: IBAineRyhmäOppiaine, arviointi: Option[List[IBOppiaineenArviointi]], kurssit: List[(IBKurssi, String, Option[String])] = Nil) = IBOppiaineenSuoritus(
     koulutusmoduuli = oppiaine,
     tila = tilaValmis,
     osasuoritukset = Some(kurssit.map { case (kurssi, kurssinArvosana, effort) =>
       IBKurssinSuoritus(koulutusmoduuli = kurssi, tila = tilaValmis, arviointi = ibKurssinArviointi(kurssinArvosana, effort))
     }),
-    arviointi = ibArviointi(arvosana)
+    arviointi = arviointi
   )
 
   def ibOppiaine(aine: String, taso: String, ryhmä: Int) = IBOppiaineMuu(
@@ -190,12 +192,12 @@ object ExamplesIB {
     laajuus = None
   )
 
-  def ibArviointi(arvosana: String, päivä: LocalDate = date(2016, 6, 4)): Some[List[IBOppiaineenArviointi]] = {
-    Some(List(IBOppiaineenArviointi(predicted = false, arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoib"), Some(päivä))))
+  def ibArviointi(arvosana: String, päivä: LocalDate = date(2016, 6, 4), predicted: Boolean): Some[List[IBOppiaineenArviointi]] = {
+    Some(List(IBOppiaineenArviointi(predicted = predicted, arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoib"), Some(päivä))))
   }
 
-  def ibCoreArviointi(arvosana: String, päivä: LocalDate = date(2016, 6, 4)): Some[List[IBCoreRequirementsArviointi]] = {
-    Some(List(IBCoreRequirementsArviointi(predicted = false, arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkocorerequirementsib"), päivä = Some(päivä))))
+  def ibCoreArviointi(arvosana: String, päivä: LocalDate = date(2016, 6, 4), predicted: Boolean): Some[List[IBCoreRequirementsArviointi]] = {
+    Some(List(IBCoreRequirementsArviointi(predicted = predicted, arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkocorerequirementsib"), päivä = Some(päivä))))
   }
 
   def ibKurssinArviointi(arvosana: String, effort: Option[String] = None, päivä: LocalDate = date(2016, 6, 4)): Some[List[IBKurssinArviointi]] =
@@ -216,10 +218,15 @@ object ExamplesIB {
         LukionOpiskeluoikeusjakso(date(2016, 1, 10), LukioExampleData.opiskeluoikeusPäättynyt)
       )
     ),
-    suoritukset = List(preIBSuoritus, ibTutkinnonSuoritus)
+    suoritukset = List(preIBSuoritus, ibTutkinnonSuoritusFinalGrades(predicted = false))
+  )
+
+  val opiskeluoikeusPredictedGrades = opiskeluoikeus.copy(
+    suoritukset = List(opiskeluoikeus.suoritukset.head, ibTutkinnonSuoritusFinalGrades(predicted = true))
   )
 
   val examples = List(
-    Example("ib - pre-ib ja ib", "Oppija on suorittanut pre-IB vuoden ja IB-tutkinnon", Oppija(MockOppijat.ibOpiskelija.vainHenkilötiedot, List(opiskeluoikeus)))
+    Example("ib - pre-ib ja ib, final grades", "Oppija on suorittanut pre-IB vuoden ja IB-tutkinnon, IBO on vahvistanut arvosanat", Oppija(MockOppijat.ibFinal.vainHenkilötiedot, List(opiskeluoikeus))),
+    Example("ib - pre-ib ja ib, predicted grades", "Oppija on suorittanut IB-tutkinnon, IBO ei ole vahvistanut arvosanoja", Oppija(MockOppijat.ibPredicted.vainHenkilötiedot, List(opiskeluoikeusPredictedGrades)))
   )
 }

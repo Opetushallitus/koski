@@ -7,7 +7,7 @@ import org.scalatest.{FunSpec, Matchers}
 class IBTutkintoSpec extends FunSpec with Matchers with OpintosuoritusoteTestMethods with TodistusTestMethods with OpiskeluOikeusTestMethods with LocalJettyHttpSpecification {
   describe("IB-tutkinto") {
     it("Opintosuoritusote") {
-      opintosuoritusote(MockOppijat.ibOpiskelija) should equal(
+      opintosuoritusote(MockOppijat.ibPredicted) should equal(
         """Preliminary year courses
           |Kurssia Arvosana Suor.pvm
           |A1 A1-kieli, englanti 3 10
@@ -129,13 +129,31 @@ class IBTutkintoSpec extends FunSpec with Matchers with OpintosuoritusoteTestMet
       )
     }
 
-    it("Päättötodistus") {
-      todistus(MockOppijat.ibOpiskelija.oid, "ibtutkinto") should equal(
+    it("Päättötodistus predicted grades") {
+      todistus(MockOppijat.ibPredicted.oid, "ibtutkinto") should equal(
         """International Baccalaureate
           |Predicted Grades
           |HELSINGIN KAUPUNKI
           |Ressun lukio
-          |IB-opiskelija, Iina 130996-9225
+          |IB-predicted, Petteri 071096-317K
+          |
+          |Language A: literature, Finnish SL Satisfactory 4
+          |Language A: language and literature, English HL Excellent 7
+          |History HL Very good 6
+          |Psychology SL Excellent 7
+          |Biology HL Good 5
+          |Mathematical studies SL Good 5
+          |Subject: Language A: language and literature, English
+          |Topic: How is the theme of racial injustice treated in Harper Lee's To Kill a Mockingbird and Solomon Northup's 12 Years a Slave""".stripMargin)
+    }
+
+    it("Päättötodistus final grades") {
+      todistus(MockOppijat.ibFinal.oid, "ibtutkinto") should equal(
+        """International Baccalaureate
+          |Final Grades
+          |HELSINGIN KAUPUNKI
+          |Ressun lukio
+          |IB-final, Iina 130996-9225
           |
           |Language A: literature, Finnish SL Satisfactory 4
           |Language A: language and literature, English HL Excellent 7
@@ -154,6 +172,6 @@ class IBTutkintoSpec extends FunSpec with Matchers with OpintosuoritusoteTestMet
   }
 
   def ibOpiskeluoikeus = {
-    getOpiskeluoikeus(MockOppijat.ibOpiskelija.oid, "ibtutkinto").id.get
+    getOpiskeluoikeus(MockOppijat.ibPredicted.oid, "ibtutkinto").id.get
   }
 }

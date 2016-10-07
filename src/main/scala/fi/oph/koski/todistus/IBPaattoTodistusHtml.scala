@@ -10,6 +10,12 @@ import scala.xml.NodeSeq.Empty
 
 class IBPaattoTodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
   def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: IBTutkinnonSuoritus) = {
+    def oppiaineet: List[IBOppiaineenSuoritus] = päättötodistus.osasuoritukset.toList.flatten
+    val someArviointiIsFinal: Boolean = oppiaineet.exists(arviointiIsFinal) ||
+      päättötodistus.theoryOfKnowledge.exists(coreArviointiIsFinal) ||
+      päättötodistus.extendedEssay.exists(coreArviointiIsFinal) ||
+      päättötodistus.creativityActionService.exists(arviointiIsFinal)
+
     <html>
       <head>
         <link rel="stylesheet" type="text/css" href="/koski/css/todistus-common.css"></link>
@@ -19,7 +25,10 @@ class IBPaattoTodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
       <body>
         <div class="todistus lukio">
           <h1>International Baccalaureate</h1>
-          <h1>Predicted Grades</h1>
+          <h1>{
+            if (someArviointiIsFinal) "Final Grades"
+            else "Predicted Grades"
+          }</h1>
           <h2 class="koulutustoimija">{i(koulutustoimija.flatMap(_.nimi))}</h2>
           <h2 class="oppilaitos">{i(oppilaitos.nimi)}</h2>
           <h3 class="oppija">
@@ -32,15 +41,11 @@ class IBPaattoTodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
               <th class="taso">Level</th>
               <th class="arvosana-kirjaimin">Grades in words</th>
               <th class="arvosana-numeroin">Grades in numbers</th>
-            </tr>
-            {
-              val oppiaineet: List[IBOppiaineenSuoritus] = päättötodistus.osasuoritukset.toList.flatten
-              oppiaineet.map(oppiaineRow)
-            }
+            </tr>{oppiaineet.filter(!someArviointiIsFinal || arviointiIsFinal(_)).map(oppiaineRow)}
           </table>
           <div class="core-elements">
             {
-              päättötodistus.theoryOfKnowledge.map { o =>
+              päättötodistus.theoryOfKnowledge.filter(!someArviointiIsFinal || coreArviointiIsFinal(_)).map { o =>
                 <div class="theory-of-knowledge">
                   <span class="label">{i(o.koulutusmoduuli)}</span>
                   <span class="grade">{i(o.arvosanaKirjaimin)}</span>
@@ -48,7 +53,7 @@ class IBPaattoTodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
               }.getOrElse(Empty)
             }
             {
-              päättötodistus.creativityActionService.map { o =>
+              päättötodistus.creativityActionService.filter(!someArviointiIsFinal || arviointiIsFinal(_)).map { o =>
                 <div class="cas">
                   <span class="label">{i(o.koulutusmoduuli)}</span>
                   <span>{o.koulutusmoduuli.laajuus.map(l => decimalFormat.format(l.arvo)).getOrElse("")}</span>
@@ -57,7 +62,7 @@ class IBPaattoTodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
               }.getOrElse(Empty)
             }
             {
-              päättötodistus.extendedEssay.map { o =>
+              päättötodistus.extendedEssay.filter(!someArviointiIsFinal || coreArviointiIsFinal(_)).map { o =>
                 <div class="extended-essay">
                   <div class="label">{i(o.koulutusmoduuli)}</div>
                   <table>
@@ -86,4 +91,10 @@ class IBPaattoTodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
   }
 
   override def lang: String = "en"
+
+  def arviointiIsFinal(suoritus :{def arviointi: Option[List[IBOppiaineenArviointi]]}) =
+    suoritus.arviointi.exists(_.headOption.exists(!_.predicted))
+
+  def coreArviointiIsFinal(suoritus :{def arviointi: Option[List[IBCoreRequirementsArviointi]]}) =
+    suoritus.arviointi.exists(_.headOption.exists(!_.predicted))
 }
