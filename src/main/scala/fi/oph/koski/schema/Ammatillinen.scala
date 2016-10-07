@@ -347,8 +347,6 @@ case class NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
   def arviointi = None
 }
 
-// TODO: myös koodistosta löytyvät tutkinnon osat (ei varsinaisesti tutkinnon osan suoritus, vaan siihen liittyvää sisältöä)
-
 trait NäyttötutkintoonValmistavanKoulutuksenOsa extends Koulutusmoduuli
 
 @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osan tunnistetiedot")

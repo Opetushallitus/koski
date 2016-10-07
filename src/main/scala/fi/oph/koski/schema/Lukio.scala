@@ -88,9 +88,9 @@ case class LukionOppiaineenOppimääränSuoritus(
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
   @Title("Kurssit")
   override val osasuoritukset: Option[List[LukionKurssinSuoritus]],
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("lukionoppiaineenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
-  // TODO: todistuksellaNäkyvätLisätiedot
 ) extends LukionPäätasonSuoritus
 
 @Description("Lukiokoulutuksen tunnistetiedot")
