@@ -145,17 +145,21 @@ case class PerusopetuksenOppiaineenOppimääränSuoritus(
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset")
   @Title("Oppiaine")
   koulutusmoduuli: PerusopetuksenOppiaine,
+  yksilöllistettyOppimäärä: Boolean = false,
+  @Description("Tieto siitä, onko oppiaineen opetus painotettu (true/false)")
+  painotettuOpetus: Boolean = false,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   override val vahvistus: Option[Henkilövahvistus] = None,
+  @KoodistoUri("perusopetuksensuoritustapa")
+  @Description("Tieto siitä, suoritetaanko perusopetusta normaalina koulutuksena vai erityisenä tutkintona")
+  suoritustapa: Koodistokoodiviite,
   suorituskieli: Option[Koodistokoodiviite] = None,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
-  // TODO: suoritustapa (erityinen tutkinto)
-  // TODO: yksilöllistetty, painotettu opetus (trait!)
-) extends PerusopetuksenPäätasonSuoritus with OppiaineenSuoritus with Todistus
+) extends PerusopetuksenPäätasonSuoritus with OppiaineenSuoritus with Todistus with Yksilöllistettävä
 
 sealed trait OppiaineenTaiToiminta_AlueenSuoritus extends Suoritus
 

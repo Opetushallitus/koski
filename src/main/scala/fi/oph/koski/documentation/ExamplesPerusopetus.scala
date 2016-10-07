@@ -47,6 +47,7 @@ object ExamplesPerusopetus {
           tila = tilaValmis,
           toimipiste = jyväskylänNormaalikoulu,
           arviointi = arviointi(9),
+          suoritustapa = suoritustapaErityinenTutkinto,
           vahvistus = vahvistus()
         )),
       tila = PerusopetuksenOpiskeluoikeudenTila(

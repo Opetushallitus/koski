@@ -2,6 +2,7 @@
 
 - Lisätty todistuksellaNäkyvätLisätiedot Pre-IB-suoritukseen sekä perusopetuksen ja lukion oppiaineen oppimäärän suoritukseen
 - Lisätty lukion kurssin suoritukseen suoritettuSuullisenaKielikokeena
+- Lisätty suoritustapa, yksilöllistettyOppimäärä ja painotettuOpetus perusopetuksen oppiaineen oppimäärän suoritukseen
 
 ## 5.10.2016
 
