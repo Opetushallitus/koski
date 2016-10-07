@@ -1,3 +1,7 @@
+## 6.10.2016
+
+- Lisätty todistuksellaNäkyvätLisätiedot Pre-IB-suoritukseen sekä perusopetuksen ja lukion oppiaineen oppimäärän suoritukseen
+
 ## 5.10.2016
 
 - Muutettu lähdejärjestelmänId-kentän dokumentaatio: identifioidaan järjestelmän tyyppi, ei instanssia

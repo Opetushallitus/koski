@@ -64,9 +64,9 @@ case class PreIBSuoritus(
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[PreIBOppiaineenSuoritus]],
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("preiboppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("preiboppimaara", koodistoUri = "suorituksentyyppi")
-  // TODO: todistuksellaNäkyvätLisätiedot
 ) extends IBPäätasonSuoritus
 
 trait IBPäätasonSuoritus extends PäätasonSuoritus with Toimipisteellinen {

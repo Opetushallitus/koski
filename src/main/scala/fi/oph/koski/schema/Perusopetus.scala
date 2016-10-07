@@ -155,7 +155,7 @@ case class PerusopetuksenOppiaineenOppimääränSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
   // TODO: suoritustapa (erityinen tutkinto)
   // TODO: yksilöllistetty, painotettu opetus (trait!)
-) extends PerusopetuksenPäätasonSuoritus with OppiaineenSuoritus
+) extends PerusopetuksenPäätasonSuoritus with OppiaineenSuoritus with Todistus
 
 sealed trait OppiaineenTaiToiminta_AlueenSuoritus extends Suoritus
 

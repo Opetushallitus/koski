@@ -91,7 +91,7 @@ case class LukionOppiaineenOppimääränSuoritus(
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("lukionoppiaineenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
-) extends LukionPäätasonSuoritus
+) extends LukionPäätasonSuoritus with Todistus
 
 @Description("Lukiokoulutuksen tunnistetiedot")
 case class LukionOppimäärä(
