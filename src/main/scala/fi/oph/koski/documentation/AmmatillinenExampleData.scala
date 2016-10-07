@@ -1,9 +1,9 @@
 package fi.oph.koski.documentation
 
-import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
+import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -136,4 +136,55 @@ object AmmatillinenExampleData {
       vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto, helsinki)
     )
   }
+
+  def perustutkintoOpiskeluoikeus(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OidOrganisaatio = stadinToimipiste) = AmmatillinenOpiskeluoikeus(
+    alkamispäivä = Some(date(2012, 9, 1)),
+    arvioituPäättymispäivä = Some(date(2015, 5, 31)),
+    päättymispäivä = Some(date(2016, 5, 31)),
+    oppilaitos = oppilaitos,
+    suoritukset = List(AmmatillisenTutkinnonSuoritus(
+      koulutusmoduuli = AmmatillinenTutkintoKoulutus(
+        Koodistokoodiviite("361902", Some("Luonto- ja ympäristöalan perustutkinto"), "koulutus", None),
+        Some("62/011/2014")
+      ),
+      tutkintonimike = Some(List(Koodistokoodiviite("10083", Some("Ympäristönhoitaja"), "tutkintonimikkeet", None))),
+      osaamisala = Some(List(Koodistokoodiviite("1590", Some("Ympäristöalan osaamisala"), "osaamisala", None))),
+      suoritustapa = Some(suoritustapaOps),
+      järjestämismuoto = Some(JärjestämismuotoIlmanLisätietoja(järjestämismuotoOppilaitos)),
+      suorituskieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None)),
+      tila = tilaValmis,
+      alkamispäivä = None,
+      toimipiste = toimipiste,
+      vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto, helsinki),
+      osasuoritukset = Some(List(
+        tutkinnonOsanSuoritus("100431", "Kestävällä tavalla toimiminen", k3, 40).copy(työssäoppimisjaksot = Some(List(
+          Työssäoppimisjakso(date(2014, 1, 1), Some(date(2014, 3, 15)), jyväskylä, suomi, LocalizedString.finnish("Toimi harjoittelijana Sortti-asemalla"), LaajuusOsaamispisteissä(5))
+        ))),
+        tutkinnonOsanSuoritus("100432", "Ympäristön hoitaminen", k3, 35),
+        tutkinnonOsanSuoritus("100439", "Uusiutuvien energialähteiden hyödyntäminen", k3, 15),
+        tutkinnonOsanSuoritus("100442", "Ulkoilureittien rakentaminen ja hoitaminen", k3, 15),
+        tutkinnonOsanSuoritus("100443", "Kulttuuriympäristöjen kunnostaminen ja hoitaminen", k3, 15),
+        tutkinnonOsanSuoritus("100447", "Vesistöjen kunnostaminen ja hoitaminen", hyväksytty, 15).copy(
+          lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(Koodistokoodiviite("muutosarviointiasteikossa", "ammatillisentutkinnonosanlisatieto"),
+            "Tutkinnon osa on koulutuksen järjestäjän päätöksellä arvioitu asteikolla hyväksytty/hylätty.")))
+        ),
+        tutkinnonOsanSuoritus("101053", "Viestintä- ja vuorovaikutusosaaminen", k3, 11),
+        tutkinnonOsanSuoritus("101054", "Matemaattis-luonnontieteellinen osaaminen", k3, 9).copy(
+          lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(Koodistokoodiviite("mukautettu", "ammatillisentutkinnonosanlisatieto"),
+            "Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella")))
+        ),
+        tutkinnonOsanSuoritus("101055", "Yhteiskunnassa ja työelämässä tarvittava osaaminen", k3, 8),
+        tutkinnonOsanSuoritus("101056", "Sosiaalinen ja kulttuurinen osaaminen", k3, 7),
+
+        paikallisenTutkinnonOsanSuoritus("enkku3", "Matkailuenglanti", k3, 5),
+        paikallisenTutkinnonOsanSuoritus("soskultos1", "Sosiaalinen ja kulttuurinen osaaminen", k3, 5)
+      ).map(_.copy(toimipiste = Some(toimipiste))))
+    )),
+    tila = AmmatillinenOpiskeluoikeudenTila(
+      List(
+        AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None))),
+        AmmatillinenOpiskeluoikeusjakso(date(2016, 5, 31), opiskeluoikeusValmistunut, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
+      )
+    )
+  )
 }

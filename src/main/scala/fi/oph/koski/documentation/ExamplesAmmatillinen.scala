@@ -27,50 +27,50 @@ object ExamplesAmmatillinen {
 object AmmattitutkintoExample {
   lazy val tutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357305", Some("Autoalan työnjohdon erikoisammattitutkinto"), "koulutus", None), Some("40/011/2001"))
   lazy val opiskeluoikeus = AmmatillinenOpiskeluoikeus(
+    alkamispäivä = Some(date(2012, 9, 1)),
+    arvioituPäättymispäivä = Some(date(2015, 5, 31)),
+    päättymispäivä = Some(date(2016, 5, 31)),
+    tila = AmmatillinenOpiskeluoikeudenTila(List(
+      AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, None),
+      AmmatillinenOpiskeluoikeusjakso(date(2016, 5, 31), opiskeluoikeusValmistunut, None)
+    )),
+    oppilaitos = stadinAmmattiopisto,
+    suoritukset = List(
+      NäyttötutkintoonValmistavanKoulutuksenSuoritus(
+        tutkinto = tutkinto,
+        tila = tilaValmis,
         alkamispäivä = Some(date(2012, 9, 1)),
-        arvioituPäättymispäivä = Some(date(2015, 5, 31)),
-        päättymispäivä = Some(date(2016, 5, 31)),
-        tila = AmmatillinenOpiskeluoikeudenTila(List(
-          AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, None),
-          AmmatillinenOpiskeluoikeusjakso(date(2016, 5, 31), opiskeluoikeusValmistunut, None)
-        )),
-        oppilaitos = stadinAmmattiopisto,
-        suoritukset = List(
-          NäyttötutkintoonValmistavanKoulutuksenSuoritus(
-            tutkinto = tutkinto,
-            tila = tilaValmis,
-            alkamispäivä = Some(date(2012, 9, 1)),
-            päättymispäivä = None,
-            toimipiste = stadinToimipiste,
-            vahvistus = vahvistus(date(2015, 5, 31), stadinAmmattiopisto, helsinki),
-            osasuoritukset = Some(List(
-              NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
-                tila = tilaValmis, koulutusmoduuli = PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa(
-                  PaikallinenKoodi("104052", LocalizedString.finnish("Johtaminen ja henkilöstön kehittäminen")),
-                  "Johtamisen ja henkilöstön kehittämisen valmistava koulutus"
-                )
-              )
-            ))
-          ),
-          AmmatillisenTutkinnonSuoritus(
-            koulutusmoduuli = tutkinto,
-            suoritustapa = Some(suoritustapaNäyttö),
-            järjestämismuoto = Some(JärjestämismuotoIlmanLisätietoja(järjestämismuotoOppilaitos)),
-            suorituskieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None)),
-            tila = tilaValmis,
-            alkamispäivä = None,
-            toimipiste = stadinToimipiste,
-            vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto, helsinki),
-            osasuoritukset = Some(List(
-              tutkinnonOsanSuoritus("104052", "Johtaminen ja henkilöstön kehittäminen", hyväksytty),
-              tutkinnonOsanSuoritus("104053", "Asiakaspalvelu ja korjaamopalvelujen markkinointi", hyväksytty),
-              tutkinnonOsanSuoritus("104054", "Työnsuunnittelu ja organisointi", hyväksytty),
-              tutkinnonOsanSuoritus("104055", "Taloudellinen toiminta", hyväksytty),
-              tutkinnonOsanSuoritus("104059", "Yrittäjyys", hyväksytty)
-            ))
+        päättymispäivä = None,
+        toimipiste = stadinToimipiste,
+        vahvistus = vahvistus(date(2015, 5, 31), stadinAmmattiopisto, helsinki),
+        osasuoritukset = Some(List(
+          NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
+            tila = tilaValmis, koulutusmoduuli = PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa(
+              PaikallinenKoodi("104052", LocalizedString.finnish("Johtaminen ja henkilöstön kehittäminen")),
+              "Johtamisen ja henkilöstön kehittämisen valmistava koulutus"
+            )
           )
-        )
+        ))
+      ),
+      AmmatillisenTutkinnonSuoritus(
+        koulutusmoduuli = tutkinto,
+        suoritustapa = Some(suoritustapaNäyttö),
+        järjestämismuoto = Some(JärjestämismuotoIlmanLisätietoja(järjestämismuotoOppilaitos)),
+        suorituskieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None)),
+        tila = tilaValmis,
+        alkamispäivä = None,
+        toimipiste = stadinToimipiste,
+        vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto, helsinki),
+        osasuoritukset = Some(List(
+          tutkinnonOsanSuoritus("104052", "Johtaminen ja henkilöstön kehittäminen", hyväksytty),
+          tutkinnonOsanSuoritus("104053", "Asiakaspalvelu ja korjaamopalvelujen markkinointi", hyväksytty),
+          tutkinnonOsanSuoritus("104054", "Työnsuunnittelu ja organisointi", hyväksytty),
+          tutkinnonOsanSuoritus("104055", "Taloudellinen toiminta", hyväksytty),
+          tutkinnonOsanSuoritus("104059", "Yrittäjyys", hyväksytty)
+        ))
       )
+    )
+  )
 
   lazy val erikoisammattitutkinto = Oppija(
     exampleHenkilö,
@@ -79,63 +79,10 @@ object AmmattitutkintoExample {
 }
 
 object AmmatillinenPerustutkintoExample {
+
   import AmmatillinenExampleData._
 
-  lazy val perustutkinto = Oppija(
-    exampleHenkilö,
-    List(
-      AmmatillinenOpiskeluoikeus(
-        alkamispäivä = Some(date(2012, 9, 1)),
-        arvioituPäättymispäivä = Some(date(2015, 5, 31)),
-        päättymispäivä = Some(date(2016, 5, 31)),
-        oppilaitos = stadinAmmattiopisto,
-        suoritukset = List(AmmatillisenTutkinnonSuoritus(
-          koulutusmoduuli = AmmatillinenTutkintoKoulutus(
-            Koodistokoodiviite("361902", Some("Luonto- ja ympäristöalan perustutkinto"), "koulutus", None),
-            Some("62/011/2014")
-          ),
-          tutkintonimike = Some(List(Koodistokoodiviite("10083", Some("Ympäristönhoitaja"), "tutkintonimikkeet", None))),
-          osaamisala = Some(List(Koodistokoodiviite("1590", Some("Ympäristöalan osaamisala"), "osaamisala", None))),
-          suoritustapa = Some(suoritustapaOps),
-          järjestämismuoto = Some(JärjestämismuotoIlmanLisätietoja(järjestämismuotoOppilaitos)),
-          suorituskieli = Some(Koodistokoodiviite("FI", Some("suomi"), "kieli", None)),
-          tila = tilaValmis,
-          alkamispäivä = None,
-          toimipiste = stadinToimipiste,
-          vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto, helsinki),
-          osasuoritukset = Some(List(
-            tutkinnonOsanSuoritus("100431", "Kestävällä tavalla toimiminen", k3, 40).copy(työssäoppimisjaksot = Some(List(
-              Työssäoppimisjakso(date(2014, 1, 1), Some(date(2014, 3, 15)), jyväskylä, suomi, LocalizedString.finnish("Toimi harjoittelijana Sortti-asemalla"), LaajuusOsaamispisteissä(5))
-            ))),
-            tutkinnonOsanSuoritus("100432", "Ympäristön hoitaminen", k3, 35),
-            tutkinnonOsanSuoritus("100439", "Uusiutuvien energialähteiden hyödyntäminen", k3, 15),
-            tutkinnonOsanSuoritus("100442", "Ulkoilureittien rakentaminen ja hoitaminen", k3, 15),
-            tutkinnonOsanSuoritus("100443", "Kulttuuriympäristöjen kunnostaminen ja hoitaminen", k3, 15),
-            tutkinnonOsanSuoritus("100447", "Vesistöjen kunnostaminen ja hoitaminen", hyväksytty, 15).copy(
-              lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(Koodistokoodiviite("muutosarviointiasteikossa", "ammatillisentutkinnonosanlisatieto"),
-                "Tutkinnon osa on koulutuksen järjestäjän päätöksellä arvioitu asteikolla hyväksytty/hylätty.")))
-            ),
-            tutkinnonOsanSuoritus("101053", "Viestintä- ja vuorovaikutusosaaminen", k3, 11),
-            tutkinnonOsanSuoritus("101054", "Matemaattis-luonnontieteellinen osaaminen", k3, 9).copy(
-              lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(Koodistokoodiviite("mukautettu", "ammatillisentutkinnonosanlisatieto"),
-                "Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella")))
-            ),
-            tutkinnonOsanSuoritus("101055", "Yhteiskunnassa ja työelämässä tarvittava osaaminen", k3, 8),
-            tutkinnonOsanSuoritus("101056", "Sosiaalinen ja kulttuurinen osaaminen", k3, 7),
-
-            paikallisenTutkinnonOsanSuoritus("enkku3", "Matkailuenglanti", k3, 5),
-            paikallisenTutkinnonOsanSuoritus("soskultos1", "Sosiaalinen ja kulttuurinen osaaminen", k3, 5)
-          ))
-        )),
-        tila = AmmatillinenOpiskeluoikeudenTila(
-          List(
-            AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None))),
-            AmmatillinenOpiskeluoikeusjakso(date(2016, 5, 31), opiskeluoikeusValmistunut, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
-          )
-        )
-      )
-    )
-  )
+  val perustutkinto = oppija(opiskeluOikeus = perustutkintoOpiskeluoikeus())
 
   lazy val osittainenPerustutkinto = Oppija(
     exampleHenkilö,
@@ -363,7 +310,7 @@ object AmmatillinenOldExamples {
     ),
     paikallisenOsanSuoritus,
     AmmatillisenTutkinnonOsanSuoritus(
-      koulutusmoduuli =  ValtakunnallinenTutkinnonOsa(
+      koulutusmoduuli = ValtakunnallinenTutkinnonOsa(
         Koodistokoodiviite("100019", Some("Mittaus- ja korivauriotyöt"), "tutkinnonosat", Some(1)),
         true,
         None

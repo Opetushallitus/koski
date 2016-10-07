@@ -4,7 +4,6 @@ import java.util.UUID
 import fi.oph.koski.documentation._
 import fi.oph.koski.perftest.OppilaitosImuri.{ammatillisetOppilaitokset, lukiot, peruskoulut}
 import fi.oph.koski.schema.{Koodistokoodiviite, _}
-import fi.oph.koski.localization.LocalizedStringImplicits._
 
 import scala.util.Random
 
@@ -18,10 +17,10 @@ object MixedOpiskeluoikeusInserter extends FixtureDataInserter {
     val lukio = Oppilaitos(lukiot(Random.nextInt(lukiot.length)).oid, None, None)
     val ammattikoulu = Oppilaitos(ammatillisetOppilaitokset(Random.nextInt(ammatillisetOppilaitokset.length)).oid, None, None)
 
-    val perusopetuksenOpiskeluoikeus = ExamplesPerusopetus.päättötodistus.opiskeluoikeudet.head.asInstanceOf[PerusopetuksenOpiskeluoikeus].copy(oppilaitos = peruskoulu).copy(lähdejärjestelmänId = lähdejärjestelmäId)
+    val perusopetuksenOpiskeluoikeus = PerusopetusExampleData.päättötodistusOpiskeluoikeus(peruskoulu).copy(lähdejärjestelmänId = lähdejärjestelmäId)
 
     val lukioTaiAmmattikouluOpiskeluoikeus = if(x % 3 == 0) {
-      AmmatillinenPerustutkintoExample.perustutkinto.opiskeluoikeudet.head.asInstanceOf[AmmatillinenOpiskeluoikeus].copy(oppilaitos = ammattikoulu).copy(lähdejärjestelmänId = lähdejärjestelmäId)
+      AmmatillinenExampleData.perustutkintoOpiskeluoikeus(ammattikoulu, ammattikoulu.toOidOrganisaatio).copy(lähdejärjestelmänId = lähdejärjestelmäId)
     } else {
       ExamplesLukio.päättötodistus.copy(oppilaitos = lukio).copy(lähdejärjestelmänId = lähdejärjestelmäId)
     }
