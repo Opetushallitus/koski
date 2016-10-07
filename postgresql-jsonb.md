@@ -14,7 +14,7 @@ Lisäksi voi lukaista PostgreSQL JSON -tutoriaalin netissä: http://schinckel.ne
 
 Koski-järjestelmän tietuekuvaus löytyy [dokumentaatiosivulta](https://koskidev.koski.oph.reaktor.fi/koski/documentation). Data tietokannassa noudattaa samaa JSON-schemaa, joka on kuvattu dokumentaatiossa.
 
-### Kyselyjä
+### SQL-kyselyjä
 
 Haetaan kaikkien opiskeluoikeuksien määrä
 
@@ -28,7 +28,10 @@ select count(*) from opiskeluoikeus;
 select * from opiskeluoikeus where oppija_oid = ‘1.2.246.562.24.68660987408'
 ````
 
-Data-kenttä sisältää JSON(B)-dataa, jota voidaan käsitellä Postgren JSON-operaattoreilla. Esim
+### JSON-data haku operaattoreilla `->` ja `->>`
+
+Opiskeluoikeus-taulun `data`-kenttä sisältää JSONB-dataa, joka näkyy SQL-työkalussa pitkänä tekstipötkönä 
+ja jota voidaan käsitellä Postgren JSON-operaattoreilla. Esim.
 
 ```sql
 select data ->> 'tila' from opiskeluoikeus
@@ -53,18 +56,21 @@ from opiskeluoikeus
 group by data -> 'tyyppi' ->> 'koodiarvo'
 ```
 
+Kaikkia JSONB-operaattoreita ja funktioita voidaan käyttää myös SQL-kyselyn `WHERE` -osiossa ja indekseissä.
+
 *Harjoitus:*: Hae niiden oppijoiden oidit, joilla on opiskeluoikeus Stadin ammattiopistossa
 *Harjoitus:*: Hae opiskeluoikeuksien lukumäärät, ryhmiteltynä oppilaitoksittain. Näytä oppilaitoksen nimi, oid ja lukumäärä. Järjestä lukumäärän mukaan, suurin lukumäärä ensin.
 
-Monissa JSONB-kentissä on lista (json array) asioita. Listan viimeinen (uusin) alkio saadaan haettua `jsonb_array_length` -funktion avulla.
-Esimerkiksi opiskeluoikeuden tilahistorian viimeisin (nykyinen) tila:
+### JSON-listan viimenen alkuio `jsonb_array_length`-funktiolla
+
+Monissa JSONB-kentissä on lista (json array) asioita. Listan viimeinen alkio saadaan haettua `jsonb_array_length` -funktion avulla.
+Esimerkiksi opiskeluoikeuden tilahistorian viimeisin, eli voimassa oleva tila:
 
 ```sql
 select data -> 'tila' -> 'opiskeluoikeusjaksot' -> (jsonb_array_length(data -> 'tila' -> 'opiskeluoikeusjaksot') - 1) 
 from opiskeluoikeus
 ```
 
-Kaikkia JSONB-operaattoreita ja funktioita voidaan käyttää myös SQL-kyselyn `WHERE` -osiossa. 
 Haetaan opiskeluoikeudet, jotka ovat tilassa “Läsnä”:
 
 ```sql
@@ -74,6 +80,8 @@ where data -> 'tila' -> 'opiskeluoikeusjaksot' -> (jsonb_array_length(data -> 't
 
 *Harjoitus*: Hae oppijat, joilla on aktiivinen (päättymispäivä puuttuu) opiskeluoikeus Stadin ammattiopistossa,
 ja joiden opiskeluoikeuden tila on "Läsnä".
+
+### JSON-listojen purkaminen `jsonb_array_elements`-funktiolla
 
 Listatyyppisten kenttien sisältö voidaan tarvittaessa avata omaksi SQL-tulosjoukokseen funktiolla `jsonb_array_elements`, jolloin
 listan alkioita voidaan käsitellä erillisinä riveinä, aivan kuin ne olisiva omassa taulussaan tietokannassa.
