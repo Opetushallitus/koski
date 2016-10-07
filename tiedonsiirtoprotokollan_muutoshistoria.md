@@ -1,6 +1,7 @@
 ## 6.10.2016
 
 - Lisätty todistuksellaNäkyvätLisätiedot Pre-IB-suoritukseen sekä perusopetuksen ja lukion oppiaineen oppimäärän suoritukseen
+- Lisätty lukion kurssin suoritukseen suoritettuSuullisenaKielikokeena
 
 ## 5.10.2016
 

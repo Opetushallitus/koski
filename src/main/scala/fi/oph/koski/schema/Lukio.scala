@@ -127,8 +127,8 @@ case class LukionKurssinSuoritus(
   suorituskieli: Option[Koodistokoodiviite],
   @KoodistoKoodiarvo("lukionkurssi")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionkurssi", koodistoUri = "suorituksentyyppi"),
-  // TODO: lisätään suoritettuKielikokeena, myöskään lukiodiplomia ei välttämättä saada sisään -> ohjeistus
-  suoritettuLukiodiplomina: Option[Boolean] = None
+  suoritettuLukiodiplomina: Option[Boolean] = None,
+  suoritettuSuullisenaKielikokeena: Option[Boolean] = None
 ) extends VahvistuksetonSuoritus with LukioonValmistavanKoulutuksenOsasuoritus
 
 case class LukionOppiaineenArviointi(
