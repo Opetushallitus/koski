@@ -1,9 +1,9 @@
 {
   "henkilö" : {
-    "hetu" : "130996-9225",
-    "etunimet" : "Iina",
-    "kutsumanimi" : "Iina",
-    "sukunimi" : "IB-opiskelija"
+    "hetu" : "071096-317K",
+    "etunimet" : "Petteri",
+    "kutsumanimi" : "Petteri",
+    "sukunimi" : "IB-predicted"
   },
   "opiskeluoikeudet" : [ {
     "oppilaitos" : {
@@ -17,6 +17,7 @@
       }
     },
     "alkamispäivä" : "2012-09-01",
+    "päättymispäivä" : "2016-01-10",
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
         "alku" : "2012-09-01",
@@ -1762,7 +1763,7 @@
           "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
-          "predicted" : false,
+          "predicted" : true,
           "arvosana" : {
             "koodiarvo" : "4",
             "koodistoUri" : "arviointiasteikkoib"
@@ -2089,7 +2090,7 @@
           "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
-          "predicted" : false,
+          "predicted" : true,
           "arvosana" : {
             "koodiarvo" : "7",
             "koodistoUri" : "arviointiasteikkoib"
@@ -2301,7 +2302,7 @@
           "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
-          "predicted" : false,
+          "predicted" : true,
           "arvosana" : {
             "koodiarvo" : "6",
             "koodistoUri" : "arviointiasteikkoib"
@@ -2529,7 +2530,7 @@
           "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
-          "predicted" : false,
+          "predicted" : true,
           "arvosana" : {
             "koodiarvo" : "7",
             "koodistoUri" : "arviointiasteikkoib"
@@ -2852,7 +2853,7 @@
           "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
-          "predicted" : false,
+          "predicted" : true,
           "arvosana" : {
             "koodiarvo" : "5",
             "koodistoUri" : "arviointiasteikkoib"
@@ -3179,7 +3180,7 @@
           "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
-          "predicted" : false,
+          "predicted" : true,
           "arvosana" : {
             "koodiarvo" : "5",
             "koodistoUri" : "arviointiasteikkoib"
@@ -3407,7 +3408,7 @@
             "koodiarvo" : "A",
             "koodistoUri" : "arviointiasteikkocorerequirementsib"
           },
-          "predicted" : false,
+          "predicted" : true,
           "päivä" : "2016-06-04",
           "hyväksytty" : true
         } ],
@@ -3517,7 +3518,7 @@
             "koodiarvo" : "B",
             "koodistoUri" : "arviointiasteikkocorerequirementsib"
           },
-          "predicted" : false,
+          "predicted" : true,
           "päivä" : "2016-06-04",
           "hyväksytty" : true
         } ],
@@ -3552,7 +3553,7 @@
           "koodistoUri" : "suorituksentila"
         },
         "arviointi" : [ {
-          "predicted" : false,
+          "predicted" : true,
           "arvosana" : {
             "koodiarvo" : "S",
             "koodistoUri" : "arviointiasteikkoib"
