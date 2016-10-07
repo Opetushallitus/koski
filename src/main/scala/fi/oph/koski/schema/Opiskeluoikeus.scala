@@ -37,7 +37,7 @@ trait Opiskeluoikeus extends OrganisaatioonLiittyvä with Lähdejärjestelmälli
   @Description("Koulutustoimija, käytännössä oppilaitoksen yliorganisaatio")
   @ReadOnly("Tiedon syötössä tietoa ei tarvita; organisaation tiedot haetaan Organisaatiopalvelusta")
   @Hidden
-  def koulutustoimija: Option[Koulutustoimija] // TODO: oid organisaatio on huono kirjoitusasu skemassa
+  def koulutustoimija: Option[Koulutustoimija]
   @Description("Opiskeluoikeuteen liittyvien tutkinto- ja muiden suoritusten tiedot")
   def suoritukset: List[PäätasonSuoritus]
   @Description("Opiskeluoikeuden tila, joka muodostuu opiskeluoikeusjaksoista.")
