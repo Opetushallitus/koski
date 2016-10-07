@@ -126,7 +126,7 @@ object ExamplesIB {
     ))
   )
 
-  def ibTutkinnonSuoritusFinalGrades(predicted: Boolean) = IBTutkinnonSuoritus(
+  def ibTutkinnonSuoritus(predicted: Boolean) = IBTutkinnonSuoritus(
     toimipiste = ressunLukio,
     tila = tilaValmis,
     vahvistus = ExampleData.vahvistus(org = ressunLukio, kunta = helsinki),
@@ -218,11 +218,11 @@ object ExamplesIB {
         LukionOpiskeluoikeusjakso(date(2016, 1, 10), LukioExampleData.opiskeluoikeusPäättynyt)
       )
     ),
-    suoritukset = List(preIBSuoritus, ibTutkinnonSuoritusFinalGrades(predicted = false))
+    suoritukset = List(preIBSuoritus, ibTutkinnonSuoritus(predicted = false))
   )
 
   val opiskeluoikeusPredictedGrades = opiskeluoikeus.copy(
-    suoritukset = List(opiskeluoikeus.suoritukset.head, ibTutkinnonSuoritusFinalGrades(predicted = true))
+    suoritukset = List(opiskeluoikeus.suoritukset.head, ibTutkinnonSuoritus(predicted = true))
   )
 
   val examples = List(
