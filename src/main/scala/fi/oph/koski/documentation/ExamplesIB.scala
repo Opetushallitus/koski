@@ -146,7 +146,8 @@ object ExamplesIB {
     )),
     creativityActionService = Some(IBCASSuoritus(
       IBOppiaineCAS(laajuus = Some(LaajuusTunneissa(267))), tilaValmis, ibArviointi("S", predicted = predicted)
-    ))
+    )),
+    lisäpisteet = Some(Koodistokoodiviite(koodiarvo = "3", koodistoUri = "arviointiasteikkolisapisteetib"))
   )
 
   def preIBAineSuoritus(oppiaine: PreIBOppiaine, kurssit: List[(PreIBKurssi, String)]) = PreIBOppiaineenSuoritus(

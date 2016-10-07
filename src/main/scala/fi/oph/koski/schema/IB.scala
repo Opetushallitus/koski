@@ -44,10 +44,8 @@ case class IBTutkinnonSuoritus(
   theoryOfKnowledge: Option[IBTheoryOfKnowledgeSuoritus],
   extendedEssay: Option[IBExtendedEssaySuoritus],
   creativityActionService: Option[IBCASSuoritus],
-  @KoodistoUri("lisapisteasteikkoib")
+  @KoodistoUri("arviointiasteikkolisapisteetib")
   lisäpisteet: Option[Koodistokoodiviite] = None,
-  // TODO: esimerkkiin ja todistukseen
-  // TODO: esimerkkitodistus: final grades
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("ibtutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ibtutkinto", koodistoUri = "suorituksentyyppi")

@@ -43,6 +43,16 @@ class IBPaattoTodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
               <th class="arvosana-numeroin">Grades in numbers</th>
             </tr>{oppiaineet.filter(!someArviointiIsFinal || arviointiIsFinal(_)).map(oppiaineRow)}
           </table>
+          <div class="tok-ee-points">
+            {
+            päättötodistus.lisäpisteet.filter(_.koodiarvo != "f").map { points =>
+              <div>
+                <span class="label">Theory of knowledge / Extended essay</span>
+                <span class="grade">+{points.koodiarvo}</span>
+              </div>
+            }.getOrElse(Empty)
+            }
+          </div>
           <div class="core-elements">
             {
               päättötodistus.theoryOfKnowledge.filter(!someArviointiIsFinal || coreArviointiIsFinal(_)).map { o =>
