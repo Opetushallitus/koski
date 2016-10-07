@@ -9,15 +9,17 @@ Koulutuksessa tutustutaan PostgreSQL:n JSONB-ominaisuuksiin käytännön harjoit
 Koulutuksen tavoitteena on oppia käyttämään PostgreSQL:n JSONB SQL-laajennuksia tiedon hakuun Koski-kannasta. 
 
 Referenssinä kannattaa käyttää PostgreSQL 9.5 JSON(B)-dokumentaatiota: https://www.postgresql.org/docs/9.5/static/functions-json.html
+
 Lisäksi voi lukaista PostgreSQL JSON -tutoriaalin netissä: http://schinckel.net/2014/05/25/querying-json-in-postgres/
-Koski-järjestelmän tietuekuvaus löytyy [dokumentaatiosivulta](https://koskidev.koski.oph.reaktor.fi/koski/documentation)
+
+Koski-järjestelmän tietuekuvaus löytyy [dokumentaatiosivulta](https://koskidev.koski.oph.reaktor.fi/koski/documentation). Data tietokannassa noudattaa samaa JSON-schemaa, joka on kuvattu dokumentaatiossa.
 
 ### Kyselyjä
 
-Haetaan kaikki opiskeluoikeudet
+Haetaan kaikkien opiskeluoikeuksien määrä
 
 ```sql
-select * from opiskeluoikeus;
+select count(*) from opiskeluoikeus;
 ````
 
 “Normaaleja” kenttiä voi hakea SQL:llä. Esimerkiksi haku oppijan oidilla:
@@ -43,9 +45,18 @@ Esimerkiksi haetaan oppilaitoksen tunniste:
 select data -> 'oppilaitos' ->> 'oid' from opiskeluoikeus
 ```
 
-*Harjoitus:*: Hae niiden oppijoiden oidit, joilla on opiskeluoikeus Stadin ammattiopistossa
+Ryhmitellään opiskeluoikeudet tyypin mukaan:
 
-Monissa JSONB-kentissä on lista (json array) asioita. Listan viimeinen (uusin) alkio saadaan haettua `jsonb_array_length` -funktion avustuksella.
+```
+select data -> 'tyyppi' ->> 'koodiarvo' as tyyppi, count(*) as lkm
+from opiskeluoikeus
+group by data -> 'tyyppi' ->> 'koodiarvo'
+```
+
+*Harjoitus:*: Hae niiden oppijoiden oidit, joilla on opiskeluoikeus Stadin ammattiopistossa
+*Harjoitus:*: Hae opiskeluoikeuksien lukumäärät, ryhmiteltynä oppilaitoksittain. Näytä oppilaitoksen nimi, oid ja lukumäärä. Järjestä lukumäärän mukaan, suurin lukumäärä ensin.
+
+Monissa JSONB-kentissä on lista (json array) asioita. Listan viimeinen (uusin) alkio saadaan haettua `jsonb_array_length` -funktion avulla.
 Esimerkiksi opiskeluoikeuden tilahistorian viimeisin (nykyinen) tila:
 
 ```sql
