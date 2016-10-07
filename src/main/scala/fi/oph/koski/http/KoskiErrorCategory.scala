@@ -89,7 +89,10 @@ object KoskiErrorCategory {
     val validation = new Validation
   }
 
-  object unauthorized extends ErrorCategory("unauthorized", 401, "Käyttäjä ei ole tunnistautunut.")
+  object unauthorized extends ErrorCategory("unauthorized", 401, "Käyttäjä ei ole tunnistautunut.") {
+    val notAuthenticated = subcategory("notAuthenticated", "Käyttäjä ei ole tunnistautunut.")
+    val loginFail = subcategory("loginFail", "Sisäänkirjautuminen epäonnistui.")
+  }
 
   object forbidden extends ErrorCategory("forbidden", 403, "Käyttäjällä ei ole oikeuksia annetun organisaation tietoihin.") {
     val organisaatio = subcategory("organisaatio", "Käyttäjällä ei oikeuksia annettuun organisaatioon (esimerkiksi oppilaitokseen).")

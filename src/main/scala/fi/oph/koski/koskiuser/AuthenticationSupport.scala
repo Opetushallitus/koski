@@ -16,65 +16,73 @@ trait AuthenticationSupport extends ScalatraServlet with CasSingleSignOnSupport 
 
   def haltWithStatus(status: HttpStatus)
 
-  def userNotAuthenticatedError = {
-    haltWithStatus(KoskiErrorCategory.unauthorized())
-  }
-
   def setUser(user: AuthenticationUser) = {
     request.setAttribute("authUser", user)
     if (user.serviceTicket.isDefined)
       setUserCookie(user)
+    user
   }
 
-  def userOption = {
-    Option(request.getAttribute("authUser").asInstanceOf[AuthenticationUser]).orElse{
-      def userFromCookie = getUserCookie.flatMap { authUser =>
-        authUser.serviceTicket.flatMap { ticket =>
-          application.serviceTicketRepository.getUserByTicket(ticket) match {
-            case Some(user) =>
-              Some(user)
-            case None =>
-              logger.warn("User not found by ticket " + ticket)
-              None
+  def getUser: Either[HttpStatus, AuthenticationUser] = {
+    Option(request.getAttribute("authUser").asInstanceOf[AuthenticationUser]) match {
+      case Some(user) => Right(user)
+      case _ =>
+        def userFromCookie = getUserCookie.flatMap { authUser =>
+          authUser.serviceTicket.flatMap { ticket =>
+            application.serviceTicketRepository.getUserByTicket(ticket) match {
+              case Some(user) =>
+                Some(user)
+              case None =>
+                logger.warn("User not found by ticket " + ticket)
+                None
+            }
           }
         }
-      }
-      def userFromBasicAuth = {
-        implicit def request2BasicAuthRequest(r: HttpServletRequest) = new BasicAuthStrategy.BasicAuthRequest(r)
-        if (request.isBasicAuth && request.providesAuth) {
-          tryLogin(request.username, request.password)
-        } else {
-          None
+        def userFromBasicAuth: Either[HttpStatus, AuthenticationUser] = {
+          implicit def request2BasicAuthRequest(r: HttpServletRequest) = new BasicAuthStrategy.BasicAuthRequest(r)
+          if (request.isBasicAuth && request.providesAuth) {
+            tryLogin(request.username, request.password)
+          } else {
+            Left(KoskiErrorCategory.unauthorized.notAuthenticated())
+          }
         }
-      }
-      val authUser = userFromCookie.orElse(userFromBasicAuth)
-      authUser.foreach(setUser)
-      authUser
+        val authUser = userFromCookie match {
+          case Some(user) => Right(user)
+          case None => userFromBasicAuth
+        }
+        authUser.right.foreach(setUser)
+        authUser
     }
   }
 
-  def isAuthenticated = userOption.isDefined
+  def isAuthenticated = getUser.isRight
 
   def koskiUserOption: Option[KoskiUser] = {
     def toKoskiUser(user: AuthenticationUser) = KoskiUser(user.oid, request, application.käyttöoikeusRepository)
-    userOption.map(toKoskiUser)
+    getUser.right.toOption.map(toKoskiUser)
   }
 
-  def tryLogin(username: String, password: String): Option[AuthenticationUser] = {
+  def tryLogin(username: String, password: String): Either[HttpStatus, AuthenticationUser] = {
     val loginResult: Boolean = application.directoryClient.authenticate(username, password)
 
     if(!loginResult) {
       logger(LogUserContext(request)).info(s"Login failed with username ${username}")
-      None
+      Left(KoskiErrorCategory.unauthorized.loginFail(s"Sisäänkirjautuminen käyttäjätunnuksella $username epäonnistui."))
     } else {
-      DirectoryClientLogin.findUser(application.directoryClient, request, username)
+      DirectoryClientLogin.findUser(application.directoryClient, request, username) match {
+        case Some(user) =>
+          Right(user)
+        case None =>
+          logger.error("User not found from LDAP after successful authentication: " + username)
+          Left(KoskiErrorCategory.unauthorized.loginFail())
+      }
     }
   }
 
   def requireAuthentication = {
-    userOption match {
-      case Some(user) =>
-      case None => userNotAuthenticatedError
+    getUser match {
+      case Right(user) =>
+      case Left(error) => haltWithStatus(error)
     }
   }
 }

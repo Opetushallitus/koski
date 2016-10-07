@@ -28,7 +28,7 @@ class OppijaValidationSpec extends FunSpec with LocalJettyHttpSpecification with
     describe("Ilman tunnistautumista") {
       it("palautetaan HTTP 401") {
         putOpiskeluOikeus(defaultOpiskeluoikeus, headers = jsonContent) {
-          verifyResponseStatus(401, KoskiErrorCategory.unauthorized("Käyttäjä ei ole tunnistautunut."))
+          verifyResponseStatus(401, KoskiErrorCategory.unauthorized.notAuthenticated())
         }
       }
     }
