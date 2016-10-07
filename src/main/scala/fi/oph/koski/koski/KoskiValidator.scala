@@ -41,7 +41,6 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   def extractAndValidateOpiskeluoikeus(parsedJson: JValue)(implicit user: KoskiUser, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = {
-    // TODO: looks like duplication
     timed("extractAndValidateOpiskeluoikeus")(KoskiJsonSchemaValidator.validateOpiskeluoikeusJson(parsedJson)) match {
       case status: HttpStatus if status.isOk =>
         val extractionResult: Either[HttpStatus, Opiskeluoikeus] = timed("extract")(ValidatingAndResolvingExtractor.extract[Opiskeluoikeus](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository)))
