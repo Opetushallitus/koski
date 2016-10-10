@@ -36,7 +36,7 @@ class OpiskeluoikeusValidationServlet(val application: KoskiApplication) extends
   */
 case class ValidateContext(user: KoskiUser, validator: KoskiValidator, historyRepository: OpiskeluoikeusHistoryRepository) {
   def validateHistory(row: OpiskeluOikeusRow): ValidationResult = {
-    (try {
+    try {
       val opiskeluoikeus = row.toOpiskeluOikeus
       (historyRepository.findVersion(row.id, row.versionumero)(user) match {
         case Right(latestVersion) =>
@@ -51,7 +51,7 @@ case class ValidateContext(user: KoskiUser, validator: KoskiValidator, historyRe
     } catch {
       case e: MappingException =>
         ValidationResult(row.oppijaOid, row.id, List(s"Opiskeluoikeuden ${row.id} deserialisointi epäonnistui"))
-    })
+    }
   }
 
   def validateOpiskeluoikeus(row: OpiskeluOikeusRow): ValidationResult = {
