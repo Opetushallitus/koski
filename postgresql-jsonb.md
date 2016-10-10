@@ -62,7 +62,7 @@ Kaikkia JSONB-operaattoreita ja funktioita voidaan käyttää myös SQL-kyselyn 
 
 *Harjoitus:*: Hae opiskeluoikeuksien lukumäärät, ryhmiteltynä oppilaitoksittain. Näytä oppilaitoksen nimi, oid ja lukumäärä. Järjestä lukumäärän mukaan, suurin lukumäärä ensin.
 
-### JSON-listan viimenen alkuio `jsonb_array_length`-funktiolla
+### JSON-listan viimenen alkio `jsonb_array_length`-funktiolla
 
 Monissa JSONB-kentissä on lista (json array) asioita. Listan viimeinen alkio saadaan haettua `jsonb_array_length` -funktion avulla.
 Esimerkiksi opiskeluoikeuden tilahistorian viimeisin, eli voimassa oleva tila:
