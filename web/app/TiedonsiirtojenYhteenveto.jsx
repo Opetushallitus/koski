@@ -23,7 +23,7 @@ export const tiedonsiirtojenYhteenvetoContentP = () => tiedonsiirrotContentP('/k
        <td className="oppilaitos">{rivi.oppilaitos.nimi.fi}</td>
        <td className="aika">{fecha.format(fecha.parse(rivi.viimeisin, 'YYYY-MM-DDThh:mm'), 'D.M.YYYY h:mm')}</td>
        <td className="lukumaara">{rivi.opiskeluoikeudet}</td>
-       <td className="virheelliset">{rivi.virheet}</td>
+       <td className="virheelliset">{rivi.virheelliset}</td>
        <td className="lähdejärjestelmä">{rivi.lähdejärjestelmä.nimi.fi}</td>
       </tr>)
       }

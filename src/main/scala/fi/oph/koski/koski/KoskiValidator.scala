@@ -71,7 +71,6 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
   }
 
-
   private def validateOpiskeluoikeudet(oppija: Oppija)(implicit user: KoskiUser, accessType: AccessType.Value): HttpStatus = {
     if (oppija.opiskeluoikeudet.length == 0) {
       KoskiErrorCategory.badRequest.validation.tyhjäOpiskeluoikeusLista()

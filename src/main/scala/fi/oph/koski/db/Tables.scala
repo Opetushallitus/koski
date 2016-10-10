@@ -3,19 +3,23 @@ package fi.oph.koski.db
 import java.sql.{Date, Timestamp}
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.{AccessType, KoskiUser}
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, PäätasonSuoritus}
+import fi.oph.koski.servlet.InvalidRequestException
 import org.json4s._
 
 object Tables {
   class OpiskeluOikeusTable(tag: Tag) extends Table[OpiskeluOikeusRow](tag, "opiskeluoikeus") {
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
     val versionumero = column[Int]("versionumero")
-    val oppijaOid: Rep[String] = column[String]("oppija_oid")
-    def data = column[JValue]("data")
+    val oppijaOid = column[String]("oppija_oid")
+    val data = column[JValue]("data")
+    val oppilaitosOid = column[String]("oppilaitos_oid")
+    val koulutustoimijaOid = column[Option[String]]("koulutustoimija_oid")
 
-    def * = (id, oppijaOid, versionumero, data) <> (OpiskeluOikeusRow.tupled, OpiskeluOikeusRow.unapply)
+    def * = (id, oppijaOid, oppilaitosOid, koulutustoimijaOid, versionumero, data) <> (OpiskeluOikeusRow.tupled, OpiskeluOikeusRow.unapply)
   }
 
   class OpiskeluOikeusHistoryTable(tag: Tag) extends Table[OpiskeluOikeusHistoryRow] (tag, "opiskeluoikeushistoria") {
@@ -55,11 +59,12 @@ object Tables {
   class TiedonsiirtoYhteenvetoTable(tag: Tag) extends Table[TiedonsiirtoYhteenvetoRow] (tag, "tiedonsiirto_yhteenveto") {
     val oppilaitos = column[String]("oppilaitos")
     val viimeisin = column[Timestamp]("viimeisin")
-    val virheet = column[Option[Int]]("virheet")
+    val virheelliset = column[Int]("virheelliset")
+    val siirretyt = column[Int]("siirretyt")
     val opiskeluoikeudet = column[Option[Int]]("opiskeluoikeudet")
     val lahdejarjestelma = column[Option[String]]("lahdejarjestelma")
 
-    def * = (oppilaitos, viimeisin, virheet, opiskeluoikeudet, lahdejarjestelma) <> (TiedonsiirtoYhteenvetoRow.tupled, TiedonsiirtoYhteenvetoRow.unapply)
+    def * = (oppilaitos, viimeisin, siirretyt, virheelliset, opiskeluoikeudet, lahdejarjestelma) <> (TiedonsiirtoYhteenvetoRow.tupled, TiedonsiirtoYhteenvetoRow.unapply)
   }
 
   val Tiedonsiirto = TableQuery[TiedonsiirtoTable]
@@ -114,7 +119,7 @@ object Tables {
 case class CasServiceTicketSessionRow(serviceTicket: String, username: String, userOid: String, started: Timestamp, updated: Timestamp)
 
 // Note: the data json must not contain [id, versionumero] fields. This is enforced by DB constraint.
-case class OpiskeluOikeusRow(id: Int, oppijaOid: String, versionumero: Int, data: JValue) {
+case class OpiskeluOikeusRow(id: Int, oppijaOid: String, oppilaitosOid: String, koulutustoimijaOid: Option[String], versionumero: Int, data: JValue) {
   lazy val toOpiskeluOikeus: KoskeenTallennettavaOpiskeluoikeus = {
     try {
       OpiskeluOikeusStoredDataDeserializer.read(data, id, versionumero)
@@ -124,7 +129,7 @@ case class OpiskeluOikeusRow(id: Int, oppijaOid: String, versionumero: Int, data
   }
 
   def this(oppijaOid: String, opiskeluOikeus: Opiskeluoikeus, versionumero: Int) = {
-    this(0, oppijaOid, versionumero, Json.toJValue(opiskeluOikeus))
+    this(0, oppijaOid, opiskeluOikeus.oppilaitos.oid, opiskeluOikeus.koulutustoimija.map(_.oid), versionumero, Json.toJValue(opiskeluOikeus))
   }
 }
 
@@ -138,4 +143,4 @@ case class OpiskeluOikeusHistoryRow(opiskeluoikeusId: Int, versionumero: Int, ai
 
 case class TiedonsiirtoRow(id: Int, kayttajaOid: String, tallentajaOrganisaatioOid: String, oppija: Option[JValue], oppilaitos: Option[JValue], data: Option[JValue], virheet: Option[JValue], aikaleima: Timestamp, lahdejarjestelma: Option[String])
 
-case class TiedonsiirtoYhteenvetoRow(oppilaitos: String, viimeisin: Timestamp, virheet: Option[Int], opiskeluoikeudet: Option[Int], lahdejarjestelma: Option[String])
+case class TiedonsiirtoYhteenvetoRow(oppilaitos: String, viimeisin: Timestamp, siirretyt: Int, virheet: Int, opiskeluoikeudet: Option[Int], lahdejarjestelma: Option[String])

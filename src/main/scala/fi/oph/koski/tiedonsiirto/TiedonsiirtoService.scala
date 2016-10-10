@@ -46,7 +46,7 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
     tiedonsiirtoRepository.yhteenveto(koskiUser).map { row =>
       val oppilaitos = organisaatioRepository.getOrganisaatio(row.oppilaitos).flatMap(_.toOppilaitos).get
       val lähdejärjestelmä = row.lahdejarjestelma.flatMap(koodistoviitePalvelu.getKoodistoKoodiViite("lahdejarjestelma", _))
-      TiedonsiirtoYhteenveto(oppilaitos, row.viimeisin, row.virheet.getOrElse(0), row.opiskeluoikeudet.getOrElse(0), lähdejärjestelmä)
+      TiedonsiirtoYhteenveto(oppilaitos, row.viimeisin, row.siirretyt, row.virheet, row.opiskeluoikeudet.getOrElse(0), lähdejärjestelmä)
     }
   }
 
@@ -113,4 +113,4 @@ case class HenkilönTiedonsiirrot(oppija: Option[Henkilö], rivit: Seq[Tiedonsii
 case class TiedonsiirtoRivi(aika: LocalDateTime, oppija: Option[Henkilö], oppilaitos: Option[List[OrganisaatioWithOid]], virhe: Option[AnyRef], inputData: Option[AnyRef], lähdejärjestelmä: Option[String])
 case class Henkilö(oid: Option[String], hetu: Option[String], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], äidinkieli: Option[Koodistokoodiviite])
 case class HetuTaiOid(oid: Option[String], hetu: Option[String])
-case class TiedonsiirtoYhteenveto(oppilaitos: Oppilaitos, viimeisin: Timestamp, virheet: Int, opiskeluoikeudet: Int, lähdejärjestelmä: Option[Koodistokoodiviite])
+case class TiedonsiirtoYhteenveto(oppilaitos: Oppilaitos, viimeisin: Timestamp, siirretyt: Int, virheelliset: Int, opiskeluoikeudet: Int, lähdejärjestelmä: Option[Koodistokoodiviite])
