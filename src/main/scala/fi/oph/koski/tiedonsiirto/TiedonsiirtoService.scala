@@ -10,7 +10,7 @@ import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.log.KoskiMessageField._
 import fi.oph.koski.log.KoskiOperation._
-import fi.oph.koski.log.{AuditLog, AuditLogMessage}
+import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.oppija.OppijaRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema._
@@ -18,7 +18,7 @@ import fi.oph.koski.util.DateOrdering
 import org.json4s.JsonAST.{JArray, JString, JValue}
 import org.json4s.{JValue, _}
 
-class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organisaatioRepository: OrganisaatioRepository, oppijaRepository: OppijaRepository, koodistoviitePalvelu: KoodistoViitePalvelu) {
+class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organisaatioRepository: OrganisaatioRepository, oppijaRepository: OppijaRepository, koodistoviitePalvelu: KoodistoViitePalvelu) extends Logging {
   def kaikkiTiedonsiirrot(koskiUser: KoskiUser): List[HenkilönTiedonsiirrot] = toHenkilönTiedonsiirrot(findAll(koskiUser))
 
   def virheelliset(koskiUser: KoskiUser): List[HenkilönTiedonsiirrot] =
@@ -43,10 +43,15 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
   }
 
   def yhteenveto(implicit koskiUser: KoskiUser): Seq[TiedonsiirtoYhteenveto] = {
-    tiedonsiirtoRepository.yhteenveto(koskiUser).par.map { row =>
-      val oppilaitos = organisaatioRepository.getOrganisaatio(row.oppilaitos).flatMap(_.toOppilaitos).get
-      val lähdejärjestelmä = row.lahdejarjestelma.flatMap(koodistoviitePalvelu.getKoodistoKoodiViite("lahdejarjestelma", _))
-      TiedonsiirtoYhteenveto(oppilaitos, row.viimeisin, row.siirretyt, row.virheet, row.opiskeluoikeudet.getOrElse(0), lähdejärjestelmä)
+    tiedonsiirtoRepository.yhteenveto(koskiUser).par.flatMap { row =>
+      organisaatioRepository.getOrganisaatio(row.oppilaitos).flatMap(_.toOppilaitos) match {
+        case Some(oppilaitos: Oppilaitos) =>
+          val lähdejärjestelmä = row.lahdejarjestelma.flatMap(koodistoviitePalvelu.getKoodistoKoodiViite("lahdejarjestelma", _))
+          Some(TiedonsiirtoYhteenveto(oppilaitos, row.viimeisin, row.siirretyt, row.virheet, row.opiskeluoikeudet.getOrElse(0), lähdejärjestelmä))
+        case _ =>
+          logger.warn("Oppilaitosta ei löydy: " + row.oppilaitos)
+          None
+      }
     }.toList
   }
 
