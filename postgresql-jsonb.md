@@ -59,6 +59,7 @@ group by data -> 'tyyppi' ->> 'koodiarvo'
 Kaikkia JSONB-operaattoreita ja funktioita voidaan käyttää myös SQL-kyselyn `WHERE` -osiossa ja indekseissä.
 
 *Harjoitus:*: Hae niiden oppijoiden oidit, joilla on opiskeluoikeus Stadin ammattiopistossa
+
 *Harjoitus:*: Hae opiskeluoikeuksien lukumäärät, ryhmiteltynä oppilaitoksittain. Näytä oppilaitoksen nimi, oid ja lukumäärä. Järjestä lukumäärän mukaan, suurin lukumäärä ensin.
 
 ### JSON-listan viimenen alkuio `jsonb_array_length`-funktiolla
@@ -122,6 +123,7 @@ from (
 ```
 
 *Harjoitus*: Hae oppijoiden suorittamien valmiiden ammatillisten tutkinnon osien tunnisteet, nimet ja arvosanat
+
 *Harjoitus*: Laske oppijoiden suorittamien valmiiden ammatillisten tutkinnon osien arvosanojen keskiarvo oppijoittain
 
 ### Tietojen päivittäminen
