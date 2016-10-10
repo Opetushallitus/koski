@@ -43,11 +43,11 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
   }
 
   def yhteenveto(implicit koskiUser: KoskiUser): Seq[TiedonsiirtoYhteenveto] = {
-    tiedonsiirtoRepository.yhteenveto(koskiUser).map { row =>
+    tiedonsiirtoRepository.yhteenveto(koskiUser).par.map { row =>
       val oppilaitos = organisaatioRepository.getOrganisaatio(row.oppilaitos).flatMap(_.toOppilaitos).get
       val lähdejärjestelmä = row.lahdejarjestelma.flatMap(koodistoviitePalvelu.getKoodistoKoodiViite("lahdejarjestelma", _))
       TiedonsiirtoYhteenveto(oppilaitos, row.viimeisin, row.siirretyt, row.virheet, row.opiskeluoikeudet.getOrElse(0), lähdejärjestelmä)
-    }
+    }.toList
   }
 
   private def jsonStringList(value: JValue) = value match {
