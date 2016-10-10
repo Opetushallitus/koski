@@ -30,7 +30,7 @@ trait OrganisaatioRepository {
 
 object OrganisaatioRepository {
   def apply(config: Config, koodisto: KoodistoViitePalvelu)(implicit cacheInvalidator: CacheManager) = {
-    CachingProxy[OrganisaatioRepository](Cache.cacheAllRefresh("OrganisaatioRepository", 3600, 1000), TimedProxy(withoutCache(config, koodisto).asInstanceOf[OrganisaatioRepository]))
+    CachingProxy[OrganisaatioRepository](Cache.cacheAllRefresh("OrganisaatioRepository", durationSeconds = 3600, maxSize = 10000), TimedProxy(withoutCache(config, koodisto).asInstanceOf[OrganisaatioRepository]))
   }
 
   def withoutCache(config: Config, koodisto: KoodistoViitePalvelu): JsonOrganisaatioRepository = {
