@@ -37,25 +37,21 @@ class OpiskeluoikeusValidationServlet(val application: KoskiApplication) extends
 case class ValidateContext(user: KoskiUser, validator: KoskiValidator, historyRepository: OpiskeluoikeusHistoryRepository) {
   def validateHistory(row: OpiskeluOikeusRow): ValidationResult = {
     (try {
-      Right(row.toOpiskeluOikeus)
+      val opiskeluoikeus = row.toOpiskeluOikeus
+      (historyRepository.findVersion(row.id, row.versionumero)(user) match {
+        case Right(latestVersion) =>
+          HttpStatus.validate(latestVersion == opiskeluoikeus) {
+            KoskiErrorCategory.internalError(toJValue(HistoryInconsistency(row + " versiohistoria epäkonsistentti", Json.jsonDiff(row, latestVersion))))
+          }
+        case Left(error) => error
+      }) match {
+        case HttpStatus.ok => ValidationResult(row.oppijaOid, row.id, Nil)
+        case status: HttpStatus => ValidationResult(row.oppijaOid, row.id, status.errors)
+      }
     } catch {
-      case e: Exception => Left(KoskiErrorCategory.internalError(s"Opiskeluoikeuden ${row.id} deserialisointi epäonnistui")) // TODO: row.toOpiskeluoikeus should return Either
-    }) match {
-      case Right(opiskeluoikeus) =>
-        (historyRepository.findVersion(row.id, row.versionumero)(user) match {
-          case Right(latestVersion) =>
-            HttpStatus.validate(latestVersion == opiskeluoikeus) {
-              KoskiErrorCategory.internalError(toJValue(HistoryInconsistency(row + " versiohistoria epäkonsistentti", Json.jsonDiff(row, latestVersion))))
-            }
-          case Left(error) => error
-        }) match {
-          case HttpStatus.ok => ValidationResult(row.oppijaOid, row.id, Nil)
-          case status: HttpStatus => ValidationResult(row.oppijaOid, row.id, status.errors)
-        }
-      case Left(status) =>
-        ValidationResult(row.oppijaOid, row.id, status.errors)
-    }
-
+      case e: MappingException =>
+        ValidationResult(row.oppijaOid, row.id, List(s"Opiskeluoikeuden ${row.id} deserialisointi epäonnistui"))
+    })
   }
 
   def validateOpiskeluoikeus(row: OpiskeluOikeusRow): ValidationResult = {
