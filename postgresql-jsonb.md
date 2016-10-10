@@ -25,7 +25,7 @@ select count(*) from opiskeluoikeus;
 “Normaaleja” kenttiä voi hakea SQL:llä. Esimerkiksi haku oppijan oidilla:
 
 ```sql
-select * from opiskeluoikeus where oppija_oid = ‘1.2.246.562.24.68660987408'
+select * from opiskeluoikeus where oppija_oid = '1.2.246.562.24.68660987408'
 ````
 
 ### JSON-data haku operaattoreilla `->` ja `->>`
