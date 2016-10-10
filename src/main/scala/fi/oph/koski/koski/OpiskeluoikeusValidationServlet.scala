@@ -8,7 +8,7 @@ import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import fi.oph.koski.koskiuser.{AccessType, KoskiUser, RequiresAuthentication}
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus}
+import fi.oph.koski.schema.{Henkilö, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import org.json4s._
 import rx.lang.scala.Observable
@@ -36,16 +36,26 @@ class OpiskeluoikeusValidationServlet(val application: KoskiApplication) extends
   */
 case class ValidateContext(user: KoskiUser, validator: KoskiValidator, historyRepository: OpiskeluoikeusHistoryRepository) {
   def validateHistory(row: OpiskeluOikeusRow): ValidationResult = {
-    (historyRepository.findVersion(row.id, row.versionumero)(user) match {
-      case Right(latestVersion) =>
-        HttpStatus.validate(latestVersion == row.toOpiskeluOikeus) {
-          KoskiErrorCategory.internalError(toJValue(HistoryInconsistency(row + " versiohistoria epäkonsistentti", Json.jsonDiff(row, latestVersion))))
-        }
-      case Left(error) => error
+    (try {
+      Right(row.toOpiskeluOikeus)
+    } catch {
+      case e: Exception => Left(KoskiErrorCategory.internalError(s"Opiskeluoikeuden ${row.id} deserialisointi epäonnistui")) // TODO: row.toOpiskeluoikeus should return Either
     }) match {
-      case HttpStatus.ok => ValidationResult(row.oppijaOid, row.id, Nil)
-      case status: HttpStatus => ValidationResult(row.oppijaOid, row.id, status.errors)
+      case Right(opiskeluoikeus) =>
+        (historyRepository.findVersion(row.id, row.versionumero)(user) match {
+          case Right(latestVersion) =>
+            HttpStatus.validate(latestVersion == opiskeluoikeus) {
+              KoskiErrorCategory.internalError(toJValue(HistoryInconsistency(row + " versiohistoria epäkonsistentti", Json.jsonDiff(row, latestVersion))))
+            }
+          case Left(error) => error
+        }) match {
+          case HttpStatus.ok => ValidationResult(row.oppijaOid, row.id, Nil)
+          case status: HttpStatus => ValidationResult(row.oppijaOid, row.id, status.errors)
+        }
+      case Left(status) =>
+        ValidationResult(row.oppijaOid, row.id, status.errors)
     }
+
   }
 
   def validateOpiskeluoikeus(row: OpiskeluOikeusRow): ValidationResult = {

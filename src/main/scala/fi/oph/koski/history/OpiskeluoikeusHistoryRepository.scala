@@ -40,8 +40,13 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends KoskiDatabaseMethods 
             val patch = JsonPatch.fromJson(asJsonNode(diff.muutos))
             patch.apply(current)
           }
-
-          Right(OpiskeluOikeusStoredDataDeserializer.read(fromJsonNode(oikeusVersion), id, version))
+          try {
+            Right(OpiskeluOikeusStoredDataDeserializer.read(fromJsonNode(oikeusVersion), id, version))
+          } catch {
+            case e: Exception =>
+              logger.error(e)(s"Opiskeluoikeuden $id version $version deserialisointi epäonnistui")
+              Left(KoskiErrorCategory.internalError("Historiaversion deserialisointi epäonnistui"))
+          }
         }
       case None => Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta " + id + " ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
     }
