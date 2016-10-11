@@ -5,7 +5,7 @@ import { tiedonsiirtovirheetContentP } from './Tiedonsiirtovirheet.jsx'
 import { tiedonsiirtojenYhteenvetoContentP } from './TiedonsiirtojenYhteenveto.jsx'
 import { omatTiedotContentP } from './OmatTiedot.jsx'
 
-export const contentP = locationP.flatMapLatest(({path, params, queryString}) => {
+export const contentP = locationP.flatMapLatest(({path, queryString}) => {
   if (path.match(new RegExp('/koski/oppija/(.*)'))) {
     return oppijaHakuContentP
   } else if (path === '/koski/uusioppija') {
