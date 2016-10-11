@@ -8,7 +8,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.koskiuser.KoskiUser
+import fi.oph.koski.koskiuser.{KoskiUser, KoskiUserInfo, KoskiUserRepository}
 import fi.oph.koski.log.KoskiMessageField._
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
@@ -19,7 +19,7 @@ import fi.oph.koski.util.DateOrdering
 import org.json4s.JsonAST.{JArray, JString}
 import org.json4s.{JValue, _}
 
-class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organisaatioRepository: OrganisaatioRepository, oppijaRepository: OppijaRepository, koodistoviitePalvelu: KoodistoViitePalvelu) extends Logging {
+class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organisaatioRepository: OrganisaatioRepository, oppijaRepository: OppijaRepository, koodistoviitePalvelu: KoodistoViitePalvelu, userRepository: KoskiUserRepository) extends Logging {
   def haeTiedonsiirrot(query: TiedonsiirtoQuery)(implicit koskiUser: KoskiUser): Either[HttpStatus, List[HenkilönTiedonsiirrot]] = {
     AuditLog.log(AuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiUser, Map(juuriOrganisaatio -> koskiUser.juuriOrganisaatio.map(_.oid).getOrElse("ei juuriorganisaatiota"))))
 
@@ -73,13 +73,24 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
   }
 
   def yhteenveto(implicit koskiUser: KoskiUser): Seq[TiedonsiirtoYhteenveto] = {
+    def getOrganisaatio(oid: String) = {
+      organisaatioRepository.getOrganisaatio(oid) match {
+        case s@Some(org) => s
+        case None =>
+          logger.warn(s"Organisaatiota $oid ei löydy organisaatiopalvelusta.")
+          None
+      }
+    }
     tiedonsiirtoRepository.yhteenveto(koskiUser).par.flatMap { row =>
-      organisaatioRepository.getOrganisaatio(row.oppilaitos).flatMap(_.toOppilaitos) match {
-        case Some(oppilaitos: Oppilaitos) =>
+      val käyttäjä = userRepository.findByOid(row.kayttaja) getOrElse {
+        logger.warn(s"Käyttäjää ${row.kayttaja} ei löydy henkilöpalvelusta")
+        KoskiUserInfo(row.kayttaja, None, row.kayttaja)
+      }
+      (getOrganisaatio(row.tallentajaOrganisaatio), getOrganisaatio(row.oppilaitos)) match {
+        case (Some(tallentajaOrganisaatio), Some(oppilaitos)) =>
           val lähdejärjestelmä = row.lahdejarjestelma.flatMap(koodistoviitePalvelu.getKoodistoKoodiViite("lahdejarjestelma", _))
-          Some(TiedonsiirtoYhteenveto(oppilaitos, row.viimeisin, row.siirretyt, row.virheet, row.opiskeluoikeudet.getOrElse(0), lähdejärjestelmä))
+          Some(TiedonsiirtoYhteenveto(tallentajaOrganisaatio, oppilaitos, käyttäjä, row.viimeisin, row.siirretyt, row.virheet, row.opiskeluoikeudet.getOrElse(0), lähdejärjestelmä))
         case _ =>
-          logger.warn("Oppilaitosta ei löydy: " + row.oppilaitos)
           None
       }
     }.toList
@@ -142,5 +153,6 @@ case class HenkilönTiedonsiirrot(oppija: Option[Henkilö], rivit: Seq[Tiedonsii
 case class TiedonsiirtoRivi(aika: LocalDateTime, oppija: Option[Henkilö], oppilaitos: Option[List[OrganisaatioWithOid]], virhe: Option[AnyRef], inputData: Option[AnyRef], lähdejärjestelmä: Option[String])
 case class Henkilö(oid: Option[String], hetu: Option[String], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], äidinkieli: Option[Koodistokoodiviite])
 case class HetuTaiOid(oid: Option[String], hetu: Option[String])
-case class TiedonsiirtoYhteenveto(oppilaitos: Oppilaitos, viimeisin: Timestamp, siirretyt: Int, virheelliset: Int, opiskeluoikeudet: Int, lähdejärjestelmä: Option[Koodistokoodiviite])
+case class TiedonsiirtoYhteenveto(tallentajaOrganisaatio: OrganisaatioWithOid, oppilaitos: OrganisaatioWithOid, tallentajaKäyttäjä: KoskiUserInfo, viimeisin: Timestamp, siirretyt: Int, virheelliset: Int, opiskeluoikeudet: Int, lähdejärjestelmä: Option[Koodistokoodiviite])
 case class TiedonsiirtoQuery(oppilaitos: Option[String])
+case class TiedonsiirtoKäyttäjä(oid: String, nimi: Option[String])

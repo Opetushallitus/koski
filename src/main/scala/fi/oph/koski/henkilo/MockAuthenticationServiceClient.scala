@@ -64,7 +64,7 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
 
   def findByOid(henkilöOid: String): Option[User] = {
     val oppija: Option[TäydellisetHenkilötiedot] = findHenkilötiedot(henkilöOid)
-    oppija.map(henkilö => User(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, Some(henkilö.hetu), Some("FI"), None))
+    oppija.map(henkilö => User(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, Some(henkilö.hetu), Some("FI"), None, None))
   }
 
   protected def findHenkilötiedot(id: String): Option[TäydellisetHenkilötiedot] = {

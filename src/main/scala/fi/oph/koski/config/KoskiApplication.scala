@@ -40,6 +40,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val arviointiAsteikot = ArviointiasteikkoRepository(koodistoViitePalvelu)
   lazy val authenticationServiceClient = AuthenticationServiceClient(config, database.db)
   lazy val käyttöoikeusRepository = new KäyttöoikeusRepository(authenticationServiceClient, organisaatioRepository)
+  lazy val userRepository = new KoskiUserRepository(authenticationServiceClient)
   lazy val database = new KoskiDatabase(config)
   lazy val virtaClient = VirtaClient(config)
   lazy val ytrClient = YlioppilasTutkintoRekisteri(config)
@@ -56,5 +57,5 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val sessionTimeout = SessionTimeout(config)
   lazy val serviceTicketRepository = new CasTicketSessionRepository(database.db, sessionTimeout)
   lazy val fixtureCreator = new FixtureCreator(config, database, opiskeluOikeusRepository, oppijaRepository, validator)
-  lazy val tiedonsiirtoService = new TiedonsiirtoService(new TiedonsiirtoRepository(database.db, new TiedonsiirtoFailureMailer(config, authenticationServiceClient)), organisaatioRepository, oppijaRepository, koodistoViitePalvelu)
+  lazy val tiedonsiirtoService = new TiedonsiirtoService(new TiedonsiirtoRepository(database.db, new TiedonsiirtoFailureMailer(config, authenticationServiceClient)), organisaatioRepository, oppijaRepository, koodistoViitePalvelu, userRepository)
 }

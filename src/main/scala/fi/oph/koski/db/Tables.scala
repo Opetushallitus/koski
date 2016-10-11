@@ -57,14 +57,16 @@ object Tables {
   }
 
   class TiedonsiirtoYhteenvetoTable(tag: Tag) extends Table[TiedonsiirtoYhteenvetoRow] (tag, "tiedonsiirto_yhteenveto") {
+    val tallentajaOrganisaatio = column[String]("tallentaja_organisaatio")
     val oppilaitos = column[String]("oppilaitos")
+    val kayttaja = column[String]("kayttaja")
     val viimeisin = column[Timestamp]("viimeisin")
     val virheelliset = column[Int]("virheelliset")
     val siirretyt = column[Int]("siirretyt")
     val opiskeluoikeudet = column[Option[Int]]("opiskeluoikeudet")
     val lahdejarjestelma = column[Option[String]]("lahdejarjestelma")
 
-    def * = (oppilaitos, viimeisin, siirretyt, virheelliset, opiskeluoikeudet, lahdejarjestelma) <> (TiedonsiirtoYhteenvetoRow.tupled, TiedonsiirtoYhteenvetoRow.unapply)
+    def * = (tallentajaOrganisaatio, oppilaitos, kayttaja, viimeisin, siirretyt, virheelliset, opiskeluoikeudet, lahdejarjestelma) <> (TiedonsiirtoYhteenvetoRow.tupled, TiedonsiirtoYhteenvetoRow.unapply)
   }
 
   val Tiedonsiirto = TableQuery[TiedonsiirtoTable]
@@ -109,7 +111,7 @@ object Tables {
       val oids = user.organisationOids(AccessType.read).toList
       for {
         t <- TiedonsiirtoYhteenveto
-        if t.oppilaitos inSetBind oids
+        if t.tallentajaOrganisaatio inSetBind oids
       } yield { t}
     }
   }
@@ -143,4 +145,4 @@ case class OpiskeluOikeusHistoryRow(opiskeluoikeusId: Int, versionumero: Int, ai
 
 case class TiedonsiirtoRow(id: Int, kayttajaOid: String, tallentajaOrganisaatioOid: String, oppija: Option[JValue], oppilaitos: Option[JValue], data: Option[JValue], virheet: Option[JValue], aikaleima: Timestamp, lahdejarjestelma: Option[String])
 
-case class TiedonsiirtoYhteenvetoRow(oppilaitos: String, viimeisin: Timestamp, siirretyt: Int, virheet: Int, opiskeluoikeudet: Option[Int], lahdejarjestelma: Option[String])
+case class TiedonsiirtoYhteenvetoRow(tallentajaOrganisaatio: String, oppilaitos: String, kayttaja: String, viimeisin: Timestamp, siirretyt: Int, virheet: Int, opiskeluoikeudet: Option[Int], lahdejarjestelma: Option[String])

@@ -4,8 +4,8 @@ import java.sql.Timestamp
 import java.time.LocalDateTime
 
 import fi.oph.koski.db.KoskiDatabase.DB
-import fi.oph.koski.db.Tables.{Tiedonsiirto, TiedonsiirtoWithAccessCheck, TiedonsiirtoYhteenvetoWithAccessCheck}
-import fi.oph.koski.db.{GlobalExecutionContext, KoskiDatabaseMethods, TiedonsiirtoRow, TiedonsiirtoYhteenvetoRow}
+import fi.oph.koski.db.Tables.{Tiedonsiirto, TiedonsiirtoWithAccessCheck, TiedonsiirtoYhteenveto}
+import fi.oph.koski.db._
 import fi.oph.koski.koskiuser.KoskiUser
 import org.json4s.JsonAST.JValue
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
@@ -37,7 +37,7 @@ class TiedonsiirtoRepository(val db: DB, mailer: TiedonsiirtoFailureMailer) exte
   }
 
   def yhteenveto(koskiUser: KoskiUser): Seq[TiedonsiirtoYhteenvetoRow] = timed("yhteenveto") {
-    runDbSync(TiedonsiirtoYhteenvetoWithAccessCheck(koskiUser).result)
+    runDbSync(Tables.TiedonsiirtoYhteenvetoWithAccessCheck(koskiUser).result)
   }
 }
 

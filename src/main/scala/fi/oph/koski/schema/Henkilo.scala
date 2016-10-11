@@ -55,9 +55,12 @@ case class OidHenkilö(
   oid: String
 ) extends HenkilöWithOid
 
-trait Henkilötiedot {
+trait Henkilötiedot extends NimellinenHenkilö {
   @Description("Suomalainen henkilötunnus")
   def hetu: String
+}
+
+trait NimellinenHenkilö {
   @Description("Henkilön kaikki etunimet. Esimerkiksi Sanna Katariina")
   def etunimet:String
   @Description("Kutsumanimi, oltava yksi etunimistä. Esimerkiksi etunimille \"Juha-Matti Petteri\" kelpaavat joko \"Juha-Matti\", \"Juha\", \"Matti\" tai \"Petteri\"")
