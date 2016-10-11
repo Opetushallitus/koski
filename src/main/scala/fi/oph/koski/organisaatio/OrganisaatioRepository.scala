@@ -7,7 +7,7 @@ import fi.oph.koski.http.{Http, VirkailijaHttpClient}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.log.TimedProxy
-import fi.oph.koski.schema.{Koodistokoodiviite, Oppilaitos, OrganisaatioWithOid}
+import fi.oph.koski.schema.{Koodistokoodiviite, Koulutustoimija, Oppilaitos, OrganisaatioWithOid}
 
 trait OrganisaatioRepository {
   /**
@@ -26,6 +26,15 @@ trait OrganisaatioRepository {
     flatten(List(hierarkia)).map(_.oid).toSet
   }
   def findByOppilaitosnumero(numero: String): Option[Oppilaitos]
+  def findKoulutustoimija(oppilaitos: Oppilaitos): Option[Koulutustoimija] = {
+    def findKoulutustoimijaFromHierarchy(root: OrganisaatioHierarkia): Option[Koulutustoimija] = if (root.toKoulutustoimija.isDefined && root.children.exists(_.oid == oppilaitos.oid)) {
+      root.toKoulutustoimija
+    } else {
+      root.children.flatMap(findKoulutustoimijaFromHierarchy).headOption
+    }
+    getOrganisaatioHierarkiaIncludingParents(oppilaitos.oid).flatMap(findKoulutustoimijaFromHierarchy)
+  }
+
 }
 
 object OrganisaatioRepository {

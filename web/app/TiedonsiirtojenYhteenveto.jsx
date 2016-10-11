@@ -2,6 +2,7 @@ import React from 'react'
 import Http from './http'
 import fecha from 'fecha'
 import { tiedonsiirrotContentP } from './Tiedonsiirrot.jsx'
+import Link from './Link.jsx'
 
 const yhteenvetoP = () => Http.get('/koski/api/tiedonsiirrot/yhteenveto').toProperty()
 
@@ -20,14 +21,16 @@ export const tiedonsiirtojenYhteenvetoContentP = () => tiedonsiirrotContentP('/k
       </tr>
       </thead>
       <tbody>
-     { rivit.map(rivi => <tr>
-       <td className="oppilaitos">{rivi.oppilaitos.nimi.fi}</td>
-       <td className="aika">{fecha.format(fecha.parse(rivi.viimeisin, 'YYYY-MM-DDThh:mm'), 'D.M.YYYY h:mm')}</td>
-       <td className="siirretyt">{rivi.siirretyt}</td>
-       <td className="virheelliset">{rivi.virheelliset}</td>
-       <td className="opiskeluoikeudet">{rivi.opiskeluoikeudet}</td>
-       <td className="lähdejärjestelmä">{rivi.lähdejärjestelmä ? rivi.lähdejärjestelmä.nimi.fi : ''}</td>
-      </tr>)
+     { rivit.map(rivi => {
+         return (<tr>
+           <td className="oppilaitos"><Link href={'/koski/tiedonsiirrot?oppilaitos=' + rivi.oppilaitos.oid}>{rivi.oppilaitos.nimi.fi}</Link></td>
+           <td className="aika">{fecha.format(fecha.parse(rivi.viimeisin, 'YYYY-MM-DDThh:mm'), 'D.M.YYYY h:mm')}</td>
+           <td className="siirretyt">{rivi.siirretyt}</td>
+           <td className="virheelliset"><Link href={'/koski/tiedonsiirrot/virheet?oppilaitos=' + rivi.oppilaitos.oid}>{rivi.virheelliset}</Link></td>
+           <td className="opiskeluoikeudet">{rivi.opiskeluoikeudet}</td>
+           <td className="lähdejärjestelmä">{rivi.lähdejärjestelmä ? rivi.lähdejärjestelmä.nimi.fi : ''}</td>
+         </tr>)
+        })
       }
       </tbody>
     </table>

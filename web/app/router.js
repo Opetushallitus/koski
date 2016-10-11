@@ -5,20 +5,20 @@ import { tiedonsiirtovirheetContentP } from './Tiedonsiirtovirheet.jsx'
 import { tiedonsiirtojenYhteenvetoContentP } from './TiedonsiirtojenYhteenveto.jsx'
 import { omatTiedotContentP } from './OmatTiedot.jsx'
 
-export const contentP = locationP.flatMapLatest(location => {
-  if (location.match(new RegExp('/koski/oppija/(.*)'))) {
+export const contentP = locationP.flatMapLatest(({path, params, queryString}) => {
+  if (path.match(new RegExp('/koski/oppija/(.*)'))) {
     return oppijaHakuContentP
-  } else if (location === '/koski/uusioppija') {
+  } else if (path === '/koski/uusioppija') {
     return oppijaHakuContentP
-  } else if (location === '/koski/') {
+  } else if (path === '/koski/') {
     return oppijaHakuContentP
-  } else if (location === '/koski/tiedonsiirrot') {
-    return tiedonsiirtolokiContentP()
-  } else if (location === '/koski/tiedonsiirrot/virheet') {
-    return tiedonsiirtovirheetContentP()
-  } else if (location === '/koski/tiedonsiirrot/yhteenveto') {
+  } else if (path === '/koski/tiedonsiirrot') {
+    return tiedonsiirtolokiContentP(queryString)
+  } else if (path === '/koski/tiedonsiirrot/virheet') {
+    return tiedonsiirtovirheetContentP(queryString)
+  } else if (path === '/koski/tiedonsiirrot/yhteenveto') {
     return tiedonsiirtojenYhteenvetoContentP()
-  } else if (location === '/koski/omattiedot') {
+  } else if (path === '/koski/omattiedot') {
     return omatTiedotContentP()
   }
 }).toProperty()

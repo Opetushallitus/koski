@@ -1,5 +1,6 @@
 package fi.oph.koski.schema
 
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.localization.{Localizable, LocalizedString}
 import fi.oph.scalaschema.annotation.{Description, MinValue, RegularExpression}
 
@@ -7,6 +8,20 @@ sealed trait Organisaatio extends Localizable
 
 object Organisaatio {
   type Oid = String
+}
+
+object OrganisaatioOid {
+  def isValidOrganisaatioOid(oid: String) = {
+    """^1\.2\.246\.562\.10\.\d{11}$""".r.findFirstIn(oid).isDefined
+  }
+
+  def validateOrganisaatioOid(oid: String): Either[HttpStatus, String] = {
+    if (isValidOrganisaatioOid(oid)) {
+      Right(oid)
+    } else {
+      Left(KoskiErrorCategory.badRequest.queryParam.virheellinenHenkilöOid("Virheellinen oid: " + oid + ". Esimerkki oikeasta muodosta: 1.2.246.562.10.00000000001."))
+    }
+  }
 }
 
 @Description("Opintopolun organisaatiopalvelusta löytyvä organisaatio.")

@@ -59,13 +59,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   def fillMissingInfo(oo: Opiskeluoikeus): Opiskeluoikeus = addKoulutustoimija(oo)
 
   def addKoulutustoimija(oo: Opiskeluoikeus): Opiskeluoikeus = {
-    def findKoulutustoimija(root: OrganisaatioHierarkia): Option[Koulutustoimija] = if (root.toKoulutustoimija.isDefined && root.children.exists(_.oid == oo.oppilaitos.oid)) {
-      root.toKoulutustoimija
-    } else {
-      root.children.flatMap(findKoulutustoimija).headOption
-    }
-
-    organisaatioRepository.getOrganisaatioHierarkiaIncludingParents(oo.oppilaitos.oid).flatMap(findKoulutustoimija) match {
+    organisaatioRepository.findKoulutustoimija(oo.oppilaitos) match {
       case Some(koulutustoimija) => oo.withKoulutustoimija(koulutustoimija)
       case _ => oo
     }

@@ -1,5 +1,5 @@
 import React from 'react'
-import {navigateTo} from './location.js'
+import Link from './Link.jsx'
 
 const loadingContent = <div className="ajax-indicator-bg">Ladataan...</div>
 
@@ -7,19 +7,16 @@ const withLoadingIndicator = (contentP) => contentP.startWith(loadingContent)
 
 export const tiedonsiirrotContentP = (location, contentP) => withLoadingIndicator(contentP).map((content) => (<div className='content-area'>
   <nav className="sidebar tiedonsiirrot-navi">
-    {link('/koski/tiedonsiirrot/yhteenveto', 'Yhteenveto', location, 'tiedonsiirto-link')}
-    {link('/koski/tiedonsiirrot', 'Tiedonsiirtoloki', location, 'tiedonsiirto-link')}
-    {link('/koski/tiedonsiirrot/virheet', 'Virheet', location, 'virheet-link')}
+    {naviLink('/koski/tiedonsiirrot/yhteenveto', 'Yhteenveto', location, 'tiedonsiirto-link')}
+    {naviLink('/koski/tiedonsiirrot', 'Tiedonsiirtoloki', location, 'tiedonsiirto-link')}
+    {naviLink('/koski/tiedonsiirrot/virheet', 'Virheet', location, 'virheet-link')}
   </nav>
   <div className="main-content tiedonsiirrot-content">
     { content }
   </div>
 </div>))
 
-const link = (path, text, location, linkClassName) => {
+const naviLink = (path, text, location, linkClassName) => {
   const className = path == location ? 'navi-link-container selected' : 'navi-link-container'
-  return (<span className={className}><a href={path} className={linkClassName} onClick={(e) => {
-    e.preventDefault()
-    navigateTo(path)
-  }}>{text}</a></span>)
+  return (<span className={className}><Link href={path} className={linkClassName}>{ text }</Link></span>)
 }

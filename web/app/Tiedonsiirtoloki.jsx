@@ -3,9 +3,9 @@ import Http from './http'
 import { tiedonsiirrotContentP } from './Tiedonsiirrot.jsx'
 import { Tiedonsiirtotaulukko } from './Tiedonsiirtotaulukko.jsx'
 
-const tiedonsiirrotP = () => Http.get('/koski/api/tiedonsiirrot').toProperty()
+const tiedonsiirrotP = (queryString) => Http.get('/koski/api/tiedonsiirrot' + queryString).toProperty()
 
-export const tiedonsiirtolokiContentP = () => tiedonsiirrotContentP('/koski/tiedonsiirrot', tiedonsiirrotP().map((rivit) =>
+export const tiedonsiirtolokiContentP = (queryString) => tiedonsiirrotContentP('/koski/tiedonsiirrot', tiedonsiirrotP(queryString).map((rivit) =>
   (<div>
     Viimeisimmät KOSKI-palveluun siirtyneet opiskelijatiedot
     <Tiedonsiirtotaulukko rivit={rivit} showError={false}/>

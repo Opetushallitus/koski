@@ -4,6 +4,7 @@ import java.sql.Timestamp
 import java.time.LocalDateTime
 
 import fi.oph.koski.db.TiedonsiirtoRow
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
@@ -12,19 +13,48 @@ import fi.oph.koski.log.KoskiMessageField._
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.oppija.OppijaRepository
-import fi.oph.koski.organisaatio.OrganisaatioRepository
+import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
 import fi.oph.koski.schema._
 import fi.oph.koski.util.DateOrdering
-import org.json4s.JsonAST.{JArray, JString, JValue}
+import org.json4s.JsonAST.{JArray, JString}
 import org.json4s.{JValue, _}
 
 class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organisaatioRepository: OrganisaatioRepository, oppijaRepository: OppijaRepository, koodistoviitePalvelu: KoodistoViitePalvelu) extends Logging {
-  def kaikkiTiedonsiirrot(koskiUser: KoskiUser): List[HenkilönTiedonsiirrot] = toHenkilönTiedonsiirrot(findAll(koskiUser))
+  def haeTiedonsiirrot(query: TiedonsiirtoQuery)(implicit koskiUser: KoskiUser): Either[HttpStatus, List[HenkilönTiedonsiirrot]] = {
+    AuditLog.log(AuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiUser, Map(juuriOrganisaatio -> koskiUser.juuriOrganisaatio.map(_.oid).getOrElse("ei juuriorganisaatiota"))))
 
-  def virheelliset(koskiUser: KoskiUser): List[HenkilönTiedonsiirrot] =
-    kaikkiTiedonsiirrot(koskiUser).filter { siirrot =>
-      siirrot.rivit.groupBy(_.oppilaitos).exists { case (_, rivit) => rivit.headOption.exists(_.virhe.isDefined) }
-    }.map(v => v.copy(rivit = v.rivit.filter(_.virhe.isDefined)))
+    query.oppilaitos match {
+      case Some(oppilaitosOid) =>
+        val hierarkia = organisaatioRepository.getOrganisaatioHierarkiaIncludingParents(oppilaitosOid)
+        def oidPath(oid: String, hierarkia: OrganisaatioHierarkia): List[Organisaatio.Oid] = {
+          if (hierarkia.find(oid).isDefined) {
+            hierarkia.oid :: hierarkia.children.flatMap(child => oidPath(oid, child))
+          } else if (hierarkia.oid == oid) {
+            List(oid)
+          } else {
+            Nil
+          }
+        }
+        organisaatioRepository.getOrganisaatioHierarkiaIncludingParents(oppilaitosOid).map(oidPath(oppilaitosOid, _)) match {
+          case Some(oids) =>
+            Right(toHenkilönTiedonsiirrot(tiedonsiirtoRepository.find(Some(oids)))
+              .map { siirrot => siirrot.copy(rivit = siirrot.rivit.filter(_.oppilaitos.toList.flatten.map(_.oid).contains(oppilaitosOid))) }
+              .filter { siirrot => siirrot.rivit.nonEmpty })
+          case None =>
+            Left(KoskiErrorCategory.notFound.oppilaitostaEiLöydy())
+        }
+      case None =>
+        Right(toHenkilönTiedonsiirrot(tiedonsiirtoRepository.find(None)))
+    }
+  }
+
+  def virheelliset(query: TiedonsiirtoQuery)(implicit koskiUser: KoskiUser): Either[HttpStatus, List[HenkilönTiedonsiirrot]] = {
+    haeTiedonsiirrot(query).right.map { tiedonsiirrot =>
+      tiedonsiirrot
+        .filter { siirrot => siirrot.rivit.groupBy(_.oppilaitos).exists { case (_, rivit) => rivit.headOption.exists(_.virhe.isDefined) } }
+        .map(v => v.copy(rivit = v.rivit.filter(_.virhe.isDefined)))
+    }
+  }
 
 
   def storeTiedonsiirtoResult(implicit koskiUser: KoskiUser, oppijaOid: Option[OidHenkilö], validatedOppija: Option[Oppija], data: Option[JValue], error: Option[TiedonsiirtoError]) {
@@ -91,7 +121,7 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
     })
   }
 
-  private def toHenkilönTiedonsiirrot(tiedonsiirrot: Seq[TiedonsiirtoRow]) = {
+  private def toHenkilönTiedonsiirrot(tiedonsiirrot: Seq[TiedonsiirtoRow]): List[HenkilönTiedonsiirrot] = {
     implicit val ordering = DateOrdering.localDateTimeReverseOrdering
     tiedonsiirrot.groupBy { t =>
       val oppijanTunniste = t.oppija.map(Json.fromJValue[HetuTaiOid])
@@ -106,12 +136,6 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
         HenkilönTiedonsiirrot(oppija, rivit.sortBy(_.aika))
     }.toList.sortBy(_.rivit.head.aika)
   }
-
-  private def findAll(koskiUser: KoskiUser): Seq[TiedonsiirtoRow] = {
-    AuditLog.log(AuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiUser, Map(juuriOrganisaatio -> koskiUser.juuriOrganisaatio.map(_.oid).getOrElse("ei juuriorganisaatiota"))))
-    tiedonsiirtoRepository.findByOrganisaatio(koskiUser)
-  }
-
 }
 
 case class HenkilönTiedonsiirrot(oppija: Option[Henkilö], rivit: Seq[TiedonsiirtoRivi])
@@ -119,3 +143,4 @@ case class TiedonsiirtoRivi(aika: LocalDateTime, oppija: Option[Henkilö], oppil
 case class Henkilö(oid: Option[String], hetu: Option[String], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], äidinkieli: Option[Koodistokoodiviite])
 case class HetuTaiOid(oid: Option[String], hetu: Option[String])
 case class TiedonsiirtoYhteenveto(oppilaitos: Oppilaitos, viimeisin: Timestamp, siirretyt: Int, virheelliset: Int, opiskeluoikeudet: Int, lähdejärjestelmä: Option[Koodistokoodiviite])
+case class TiedonsiirtoQuery(oppilaitos: Option[String])

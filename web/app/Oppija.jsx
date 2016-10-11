@@ -10,11 +10,11 @@ import * as L from 'partial.lenses'
 import R from 'ramda'
 
 const oppijaIdP = locationP.map(location => {
-  const match = location.match(new RegExp('/koski/oppija/(.*)'))
+  const match = location.path.match(new RegExp('/koski/oppija/(.*)'))
   return match ? match[1] : undefined
 })
 
-export const uusiOppijaP = locationP.map(location => location === '/koski/uusioppija')
+export const uusiOppijaP = locationP.map(location => location.path === '/koski/uusioppija')
 
 export const selectOppijaE = oppijaIdP.flatMap(oppijaId => {
   return oppijaId
