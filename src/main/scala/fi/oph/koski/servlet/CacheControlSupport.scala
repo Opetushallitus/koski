@@ -2,12 +2,18 @@ package fi.oph.koski.servlet
 
 import org.scalatra.ScalatraServlet
 
-trait CacheControlSupport extends ScalatraServlet {
-  private val noCacheHeaders = Map( "Cache-Control" -> "no-store, no-cache, must-revalidate", "Pragma" -> "no-cache" )
+import scala.concurrent.duration.Duration
 
+trait CacheControlSupport extends ScalatraServlet {
   def noCache = {
-    for ( ( key, value ) <- noCacheHeaders ) response.addHeader( key, value )
+    addHeaders(Map( "Cache-Control" -> "no-store, no-cache, must-revalidate", "Pragma" -> "no-cache" ))
   }
+
+  def cacheMaxAge(duration: Duration) = {
+    addHeaders(Map( "Cache-Control" -> ( "max-age=" + duration.toSeconds ) ))
+  }
+
+  private def addHeaders(headers: Map[String, String]) = for ( ( key, value ) <- headers ) response.addHeader( key, value )
 }
 
 trait NoCache extends CacheControlSupport {
