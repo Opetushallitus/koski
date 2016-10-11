@@ -8,10 +8,10 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koski.ValidationAndResolvingContext
 import fi.oph.koski.koskiuser.{AccessType, KoskiUser, RequiresAuthentication}
 import fi.oph.koski.schema._
-import fi.oph.koski.servlet.ApiServlet
+import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.scalaschema.ClassSchema
 
-class EditorServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication {
+class EditorServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache {
   get("/:oid") {
     renderEither(findByOid(params("oid"), koskiUser))
   }

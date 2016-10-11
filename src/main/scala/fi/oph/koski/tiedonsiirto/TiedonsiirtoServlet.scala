@@ -3,22 +3,20 @@ package fi.oph.koski.tiedonsiirto
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.RequiresAuthentication
 import fi.oph.koski.schema.OrganisaatioOid
-import fi.oph.koski.servlet.{ApiServlet, CacheControlSupport}
+import fi.oph.koski.servlet.{ApiServlet, Cached, UserSessionCached}
+
 import scala.concurrent.duration._
 
-class TiedonsiirtoServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with CacheControlSupport {
+class TiedonsiirtoServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with UserSessionCached {
   get() {
-    cacheMaxAge(5 minutes)
     renderEither(application.tiedonsiirtoService.haeTiedonsiirrot(parseQuery)(koskiUser))
   }
 
   get("/virheet") {
-    cacheMaxAge(5 minutes)
     renderEither(application.tiedonsiirtoService.virheelliset(parseQuery)(koskiUser))
   }
 
   get("/yhteenveto") {
-    cacheMaxAge(5 minutes)
     application.tiedonsiirtoService.yhteenveto(koskiUser)
   }
 
@@ -26,4 +24,6 @@ class TiedonsiirtoServlet(val application: KoskiApplication) extends ApiServlet 
     case Right(oid) => oid
     case Left(status) => haltWithStatus(status)
   }))
+
+  override def cacheDuration = 5 minutes
 }

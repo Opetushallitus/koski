@@ -2,10 +2,10 @@ package fi.oph.koski.koskiuser
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.servlet.ApiServlet
+import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.vm.sade.utils.cas.CasLogout
 
-class CasServlet(val application: KoskiApplication) extends ApiServlet with AuthenticationSupport {
+class CasServlet(val application: KoskiApplication) extends ApiServlet with AuthenticationSupport with NoCache {
   private def validator = new ServiceTicketValidator(application.config)
   private val ticketSessions = application.serviceTicketRepository
 
