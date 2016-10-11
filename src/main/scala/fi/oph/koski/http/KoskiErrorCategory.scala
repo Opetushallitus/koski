@@ -25,7 +25,7 @@ object KoskiErrorCategory {
     class QueryParam extends ErrorCategory(badRequest, "queryParam", "Epäkelpo kyselyparametri") {
       val unknown = subcategory("unknown", "Annettua kyselyparametria ei tueta.")
       val searchTermTooShort = subcategory("searchTermTooShort", "Hakusanan pituus alle 3 merkkiä.")
-      val virheellinenOid = subcategory("virheellinenOid", "Henkilö-oidin muoto on virheellinen. Esimerkki oikeasta muodosta: 1.2.246.562.24.00000000001.")
+      val virheellinenHenkilöOid = subcategory("virheellinenOid", "Henkilö-oidin muoto on virheellinen. Esimerkki oikeasta muodosta: 1.2.246.562.24.00000000001.")
     }
     val queryParam = new QueryParam
 

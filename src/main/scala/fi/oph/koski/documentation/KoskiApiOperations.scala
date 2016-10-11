@@ -70,7 +70,7 @@ object KoskiApiOperations {
      List(
        KoskiErrorCategory.ok.searchOk.copy(exampleResponse = AmmatillinenOldExamples.uusi),
        KoskiErrorCategory.unauthorized,
-       KoskiErrorCategory.badRequest.queryParam.virheellinenOid,
+       KoskiErrorCategory.badRequest.queryParam.virheellinenHenkilöOid,
        KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia
      )
    ),
@@ -98,7 +98,7 @@ object KoskiApiOperations {
      List(
        KoskiErrorCategory.ok.maybeValidationErrorsInContent.copy(exampleResponse = ValidationResult(MockOppijat.eero.oid, 8942345, List())),
        KoskiErrorCategory.unauthorized,
-       KoskiErrorCategory.badRequest.queryParam.virheellinenOid,
+       KoskiErrorCategory.badRequest.queryParam.virheellinenHenkilöOid,
        KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia
      )
    ),

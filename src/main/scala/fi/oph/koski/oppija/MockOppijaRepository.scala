@@ -53,7 +53,7 @@ class MockOppijat(private var oppijat: List[TäydellisetHenkilötiedot] = Nil) e
 
   private def generateId(): String = this.synchronized {
     idCounter = idCounter + 1
-    "1.2.246.562.24.0000000000" + idCounter
+    "1.2.246.562.24." + "%011d".format(idCounter)
   }
 }
 
