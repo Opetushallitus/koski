@@ -12,7 +12,7 @@ object Organisaatio {
 
 object OrganisaatioOid {
   def isValidOrganisaatioOid(oid: String) = {
-    """^1\.2\.246\.562\.10\.\d{11}$""".r.findFirstIn(oid).isDefined
+    """^1\.2\.246\.562\.10\.\d{11,12}$""".r.findFirstIn(oid).isDefined
   }
 
   def validateOrganisaatioOid(oid: String): Either[HttpStatus, String] = {
