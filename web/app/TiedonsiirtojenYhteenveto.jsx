@@ -7,7 +7,7 @@ import Link from './Link.jsx'
 const yhteenvetoP = () => Http.get('/koski/api/tiedonsiirrot/yhteenveto').toProperty()
 
 export const tiedonsiirtojenYhteenvetoContentP = () => tiedonsiirrotContentP('/koski/tiedonsiirrot/yhteenveto', yhteenvetoP().map((rivit) =>
-  (<div>
+  (<div className="tiedonsiirto-yhteenveto">
     Yhteenveto KOSKI-palveluun siirretyistä opiskelijatiedoista oppilaitoksittain.
     <table>
       <thead>

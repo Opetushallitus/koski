@@ -19,6 +19,12 @@ function TiedonsiirrotPage() {
         triggerEvent(S('.virheet-link'), 'click')
         return wait.until(function() { return isElementVisible(S('#content .tiedonsiirto-virheet'))})()
       }
+    },
+    openYhteenveto: function() {
+      return function() {
+        triggerEvent(S('.yhteenveto-link'), 'click')
+        return wait.until(function() { return isElementVisible(S('#content .tiedonsiirto-yhteenveto'))})()
+      }
     }
   }
   return api

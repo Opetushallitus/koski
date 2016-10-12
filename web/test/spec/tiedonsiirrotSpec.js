@@ -13,7 +13,7 @@ describe('Tiedonsiirrot', function() {
     insertExample('tiedonsiirto - epäonnistunut 2.json'),
     tiedonsiirrot.openPage
   )
-
+  
   describe("Tiedonsiirtoloki", function() {
     it('Näytetään', function() {
       expect(tiedonsiirrot.tiedot()).to.deep.equal([
@@ -26,7 +26,6 @@ describe('Tiedonsiirrot', function() {
   })
 
   describe("Virhelistaus", function() {
-
     before(tiedonsiirrot.openVirhesivu())
 
     it('Näytetään', function() {
@@ -38,6 +37,15 @@ describe('Tiedonsiirrot', function() {
       ])
     })
   })
+
+  describe("Yhteenveto", function() {
+    before(tiedonsiirrot.openYhteenveto())
+
+    it('Näytetään', function() {
+      expect(tiedonsiirrot.tiedot().map(function(row) { return row[0]})).to.deep.equal(['Stadin ammattiopisto'])
+    })
+  })
+
 
   function insertExample(name) {
     return function() {
