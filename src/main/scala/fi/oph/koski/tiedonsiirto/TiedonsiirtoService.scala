@@ -95,7 +95,7 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
         case _ =>
           None
       }
-    }.toList
+    }.toList.sortBy(_.oppilaitos.nimi.map(_.get("fi")))
   }
 
   private def jsonStringList(value: JValue) = value match {
