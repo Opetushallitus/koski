@@ -194,11 +194,6 @@
       <version>1.0.1</version>
     </dependency>
     <dependency>
-      <groupId>net.logstash.log4j</groupId>
-      <artifactId>jsonevent-layout</artifactId>
-      <version>1.0</version>
-    </dependency>
-    <dependency>
       <groupId>com.tristanhunt</groupId>
       <artifactId>knockoff_2.11</artifactId>
       <version>0.8.3</version>
