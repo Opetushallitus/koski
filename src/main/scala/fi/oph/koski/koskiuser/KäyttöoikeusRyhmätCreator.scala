@@ -1,12 +1,13 @@
 package fi.oph.koski.koskiuser
 
 import com.typesafe.config.Config
-import fi.oph.koski.henkilo.{RemoteAuthenticationServiceClient}
+import fi.oph.koski.henkilo.RemoteAuthenticationServiceClient
 import fi.oph.koski.henkilo.AuthenticationServiceClient.UusiKäyttöoikeusryhmä
 import fi.oph.koski.koodisto.KoodistoPalvelu
+import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.Opetushallitus
 
-object KäyttöoikeusRyhmätCreator {
+object KäyttöoikeusRyhmätCreator extends Logging {
   def luoKäyttöoikeusRyhmät(config: Config): Unit = {
     val client = RemoteAuthenticationServiceClient(config)
     val olemassaOlevatRyhmät = client.käyttöoikeusryhmät
@@ -24,10 +25,10 @@ object KäyttöoikeusRyhmätCreator {
       val tiedot = UusiKäyttöoikeusryhmä(ryhmä.nimi, ryhmä.nimi, ryhmä.nimi, organisaatioTyypit = organisaatioTyypit)
       olemassaOlevaRyhmä match {
         case Some(o) =>
-          println("päivitetään " + ryhmä)
+          logger.info("päivitetään " + ryhmä)
           client.muokkaaKäyttöoikeusryhmä(o.id, tiedot)
         case None =>
-          println("luodaan " + ryhmä)
+          logger.info("luodaan " + ryhmä)
           client.luoKäyttöoikeusryhmä(tiedot)
       }
     }
