@@ -4,15 +4,18 @@ import fi.oph.koski.koskiuser.KoskiUser
 import fi.oph.koski.log.KoskiMessageField.KoskiMessageField
 import fi.oph.koski.log.KoskiOperation.KoskiOperation
 import fi.vm.sade.auditlog._
+import io.prometheus.client.Counter
 import org.slf4j.{Logger, LoggerFactory}
 
 object AuditLog extends AuditLog(LoggerFactory.getLogger(classOf[Audit].getName))
 
 class AuditLog(logger: Logger) {
-  val audit = new Audit(logger, "koski", ApplicationType.BACKEND)
+  private val audit = new Audit(logger, "koski", ApplicationType.BACKEND)
+  private val counter = Counter.build().name("fi_oph_koski_log_AuditLog").help("Koski audit log events").labelNames("operation").register()
 
   def log(msg: AuditLogMessage): Unit = {
     audit.log(new KoskiLogMessageBuilder(msg).build)
+    counter.labels(msg.operation.toString).inc
   }
 
   private class KoskiLogMessageBuilder(msg: AuditLogMessage) extends SimpleLogMessageBuilder[KoskiLogMessageBuilder] {
@@ -31,7 +34,6 @@ class AuditLog(logger: Logger) {
 case class AuditLogMessage(operation: KoskiOperation, user: KoskiUser, extraFields: Map[KoskiMessageField, String])
 
 object KoskiMessageField extends Enumeration {
-
   type KoskiMessageField = Value
   val clientIp, oppijaHenkiloOid, kayttajaHenkiloOid, opiskeluOikeusId, opiskeluOikeusVersio, hakuEhto, juuriOrganisaatio = Value
 }
