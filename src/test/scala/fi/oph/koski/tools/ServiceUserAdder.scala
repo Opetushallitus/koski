@@ -4,7 +4,8 @@ import java.time.LocalDate
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.{CreateUser, RemoteAuthenticationServiceClient, UserQueryResult}
+import fi.oph.koski.henkilo.RemoteAuthenticationServiceClient
+import fi.oph.koski.henkilo.AuthenticationServiceClient.{UusiHenkilö, HenkilöQueryResult}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.{KoodistoKoodi, KoodistoKoodiMetadata, KoodistoMuokkausPalvelu}
 import fi.oph.koski.koskiuser.Käyttöoikeusryhmät
@@ -84,12 +85,12 @@ object ServiceUserAdder extends App with Logging {
   }
 
   def luoKäyttäjä(username: String): String = {
-    val oid = authService.create(CreateUser.palvelu(username)) match {
+    val oid = authService.create(UusiHenkilö.palvelu(username)) match {
       case Right(oid) =>
         logger.info("User created")
         oid
       case Left(HttpStatus(400, _)) => authService.search(username) match {
-        case r: UserQueryResult if (r.totalCount == 1) => r.results(0).oidHenkilo
+        case r: HenkilöQueryResult if (r.totalCount == 1) => r.results(0).oidHenkilo
       }
     }
     logger.info("Username " + username + ", oid: " + oid)

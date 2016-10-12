@@ -14,16 +14,18 @@ import org.http4s.headers.`Content-Type`
 
 import scalaz.concurrent.Task
 import scalaz.concurrent.Task.gatherUnordered
+import AuthenticationServiceClient._
 
 trait AuthenticationServiceClient {
   def käyttöoikeusryhmät: List[Käyttöoikeusryhmä]
   def käyttäjänKäyttöoikeusryhmät(oid: String): List[(String, Int)]
-  def search(query: String): UserQueryResult
-  def create(createUserInfo: CreateUser): Either[HttpStatus, String]
-  def findByOid(id: String): Option[User]
-  def findByOids(oids: List[String]): List[User]
-  def findOrCreate(createUserInfo: CreateUser): Either[HttpStatus, User]
-  def organisaationHenkilötRyhmässä(ryhmä: String, organisaatioOid: String) : List[UserWithContactInformation]
+  def search(query: String): HenkilöQueryResult
+  def create(createUserInfo: UusiHenkilö): Either[HttpStatus, String]
+  def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö]
+  def findOppijaByOid(oid: String): Option[OppijaHenkilö]
+  def findOppijatByOids(oids: List[String]): List[OppijaHenkilö]
+  def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö]
+  def organisaationHenkilötRyhmässä(ryhmä: String, organisaatioOid: String) : List[HenkilöYhteystiedoilla]
 }
 
 object AuthenticationServiceClient {
@@ -32,6 +34,46 @@ object AuthenticationServiceClient {
   } else {
     new MockAuthenticationServiceClientWithDBSupport(db)
   }
+
+  case class HenkilöQueryResult(totalCount: Integer, results: List[QueryHenkilö])
+  case class QueryHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String])
+  case class HenkilöYhteystiedoilla(oidHenkilo: String, yhteystiedotRyhma: List[YhteystietoRyhmä]) {
+    def workEmails: List[String] = {
+      yhteystiedotRyhma.collect {
+        case YhteystietoRyhmä(_, kuvaus, yhteystiedot) if kuvaus == "yhteystietotyyppi2" => yhteystiedot.collect {
+          case Yhteystieto(tyyppi, arvo) if tyyppi == "YHTEYSTIETO_SAHKOPOSTI" => arvo
+        }
+      }.flatten
+    }
+  }
+
+  case class OppijaHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], aidinkieli: Option[String], kansalaisuus: Option[List[String]])
+  case class KäyttäjäHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, kayttajatiedot: Option[Käyttäjätiedot])
+  case class UusiHenkilö(hetu: Option[String], sukunimi: String, etunimet: String, kutsumanimi: String, henkiloTyyppi: String, kayttajatiedot: Option[Käyttäjätiedot])
+  case class Käyttäjätiedot(username: Option[String])
+
+  object UusiHenkilö {
+    def palvelu(nimi: String) = UusiHenkilö(None, nimi, "_", "_", "PALVELU", Some(Käyttäjätiedot(Some(nimi))))
+    def oppija(hetu: String, sukunimi: String, etunimet: String, kutsumanimi: String) = UusiHenkilö(Some(hetu), sukunimi, etunimet, kutsumanimi, "OPPIJA", None)
+  }
+
+  case class OrganisaatioHenkilö(organisaatioOid: String, passivoitu: Boolean)
+  case class LisääKäyttöoikeusryhmä(ryhmaId: Int, alkuPvm: String = "2015-12-04T11:08:13.042Z", voimassaPvm: String = "2024-12-02T01:00:00.000Z", selected: Boolean = true)
+
+  case class LisääOrganisaatio(organisaatioOid: String, tehtavanimike: String, passivoitu: Boolean = false, newOne: Boolean = true)
+
+  case class Käyttöoikeusryhmä(id: Int, name: String) {
+    def toKoskiKäyttöoikeusryhmä = {
+      val name: String = this.name.replaceAll("_.*", "")
+      Käyttöoikeusryhmät.byName(name)
+    }
+  }
+
+  case class UusiKäyttöoikeusryhmä(ryhmaNameFi: String, ryhmaNameSv: String, ryhmaNameEn: String,
+    palvelutRoolit: List[Void] = Nil, organisaatioTyypit: List[String] = Nil, slaveIds: List[Void] = Nil)
+
+  case class YhteystietoRyhmä(id: Int, ryhmaKuvaus: String, yhteystiedot: List[Yhteystieto])
+  case class Yhteystieto(yhteystietoTyyppi: String, yhteystietoArvo: String)
 }
 
 object RemoteAuthenticationServiceClient {
@@ -46,12 +88,14 @@ object RemoteAuthenticationServiceClient {
 }
 
 class RemoteAuthenticationServiceClient(http: Http) extends AuthenticationServiceClient with EntityDecoderInstances with Timing {
-  def search(query: String): UserQueryResult = {
-    runTask(http(uri"/authentication-service/resources/henkilo?no=true&count=0&q=${query}")(Http.parseJson[UserQueryResult]))
+  def search(query: String): HenkilöQueryResult = {
+    runTask(http(uri"/authentication-service/resources/henkilo?no=true&count=0&q=${query}")(Http.parseJson[HenkilöQueryResult]))
   }
 
-  def findByOid(id: String): Option[User] = findByOids(List(id)).headOption
-  def findByOids(oids: List[String]): List[User] = http.post(uri"/authentication-service/resources/s2s/koski/henkilotByHenkiloOidList", oids)(json4sEncoderOf[List[String]], Http.parseJson[List[User]])
+  def findOppijaByOid(oid: String): Option[OppijaHenkilö] = findOppijatByOids(List(oid)).headOption
+  def findOppijatByOids(oids: List[String]): List[OppijaHenkilö] = http.post(uri"/authentication-service/resources/s2s/koski/henkilotByHenkiloOidList", oids)(json4sEncoderOf[List[String]], Http.parseJson[List[OppijaHenkilö]])
+
+  def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö] = runTask(http(uri"/authentication-service/resources/henkilo/${oid}")(Http.parseJsonIgnoreError[KäyttäjäHenkilö])) // ignore error, because the API returns status 500 instead of 404 when not found
 
   def käyttöoikeusryhmät: List[Käyttöoikeusryhmä] = runTask(http(uri"/authentication-service/resources/kayttooikeusryhma")(Http.parseJson[List[Käyttöoikeusryhmä]]))
 
@@ -91,17 +135,17 @@ class RemoteAuthenticationServiceClient(http: Http) extends AuthenticationServic
     http.post (uri"/authentication-service/resources/salasana/${henkilöOid}", salasana)(EntityEncoder.stringEncoder(Charset.`UTF-8`)
       .withContentType(`Content-Type`(MediaType.`application/json`)), Http.unitDecoder) // <- yes, the API expects media type application/json, but consumes inputs as text/plain
   }
-  def findOrCreate(createUserInfo: CreateUser): Either[HttpStatus, User] = {
+  def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö] = {
     val request: Request = Request(uri = uri"/authentication-service/resources/s2s/koski/henkilo", method = Method.POST)
-    runTask(http(request.withBody(createUserInfo)(json4sEncoderOf[CreateUser])) {
-      case (200, data, _) => Right(Json.read[User](data))
+    runTask(http(request.withBody(createUserInfo)(json4sEncoderOf[UusiHenkilö])) {
+      case (200, data, _) => Right(Json.read[OppijaHenkilö](data))
       case (400, error, _) => Left(KoskiErrorCategory.badRequest.validation.henkilötiedot.virheelliset(error))
       case (status, text, uri) => throw new HttpStatusException(status, text, uri)
     })
   }
-  def create(createUserInfo: CreateUser): Either[HttpStatus, String] = {
+  def create(createUserInfo: UusiHenkilö): Either[HttpStatus, String] = {
     val request: Request = Request(uri = uri"/authentication-service/resources/henkilo", method = Method.POST)
-    runTask(http(request.withBody(createUserInfo)(json4sEncoderOf[CreateUser])) {
+    runTask(http(request.withBody(createUserInfo)(json4sEncoderOf[UusiHenkilö])) {
       case (200, oid, _) => Right(oid)
       case (400, "socialsecuritynr.already.exists", _) => Left(KoskiErrorCategory.conflict.hetu("Henkilötunnus on jo olemassa"))
       case (400, error, _) => Left(KoskiErrorCategory.badRequest.validation.henkilötiedot.virheelliset(error))
@@ -112,53 +156,12 @@ class RemoteAuthenticationServiceClient(http: Http) extends AuthenticationServic
     http(uri"/authentication-service/resources/ldap/${henkilöOid}")(Http.expectSuccess)
   }
 
-  override def organisaationHenkilötRyhmässä(ryhmä: String, organisaatioOid: String): List[UserWithContactInformation] = {
-    val henkilötQuery: Task[UserQueryResult] = http(uri"/authentication-service/resources/henkilo?groupName=${ryhmä}&ht=VIRKAILIJA&no=false&org=${organisaatioOid}&p=false")(Http.parseJson[UserQueryResult])
+  override def organisaationHenkilötRyhmässä(ryhmä: String, organisaatioOid: String): List[HenkilöYhteystiedoilla] = {
+    val henkilötQuery: Task[HenkilöQueryResult] = http(uri"/authentication-service/resources/henkilo?groupName=${ryhmä}&ht=VIRKAILIJA&no=false&org=${organisaatioOid}&p=false")(Http.parseJson[HenkilöQueryResult])
     runTask(henkilötQuery.flatMap{h =>
       gatherUnordered(h.results.map { u =>
-        http(uri"/authentication-service/resources/henkilo/${u.oidHenkilo}")(Http.parseJson[UserWithContactInformation])
+        http(uri"/authentication-service/resources/henkilo/${u.oidHenkilo}")(Http.parseJson[HenkilöYhteystiedoilla])
       })
     })
   }
 }
-
-case class UserQueryResult(totalCount: Integer, results: List[UserQueryUser])
-case class UserQueryUser(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String])
-case class UserWithContactInformation(oidHenkilo: String, yhteystiedotRyhma: List[YhteystietoRyhmä]) {
-  def workEmails: List[String] = {
-    yhteystiedotRyhma.collect {
-      case YhteystietoRyhmä(_, kuvaus, yhteystiedot) if kuvaus == "yhteystietotyyppi2" => yhteystiedot.collect {
-        case Yhteystieto(tyyppi, arvo) if tyyppi == "YHTEYSTIETO_SAHKOPOSTI" => arvo
-      }
-    }.flatten
-  }
-}
-
-case class User(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], aidinkieli: Option[String], kansalaisuus: Option[List[String]], kayttajatiedot: Option[Käyttäjätiedot])
-
-case class CreateUser(hetu: Option[String], sukunimi: String, etunimet: String, kutsumanimi: String, henkiloTyyppi: String, kayttajatiedot: Option[Käyttäjätiedot])
-case class Käyttäjätiedot(username: Option[String])
-
-object CreateUser {
-  def palvelu(nimi: String) = CreateUser(None, nimi, "_", "_", "PALVELU", Some(Käyttäjätiedot(Some(nimi))))
-  def oppija(hetu: String, sukunimi: String, etunimet: String, kutsumanimi: String) = CreateUser(Some(hetu), sukunimi, etunimet, kutsumanimi, "OPPIJA", None)
-}
-
-
-case class OrganisaatioHenkilö(organisaatioOid: String, passivoitu: Boolean)
-case class LisääKäyttöoikeusryhmä(ryhmaId: Int, alkuPvm: String = "2015-12-04T11:08:13.042Z", voimassaPvm: String = "2024-12-02T01:00:00.000Z", selected: Boolean = true)
-
-case class LisääOrganisaatio(organisaatioOid: String, tehtavanimike: String, passivoitu: Boolean = false, newOne: Boolean = true)
-
-case class Käyttöoikeusryhmä(id: Int, name: String) {
-  def toKoskiKäyttöoikeusryhmä = {
-    val name: String = this.name.replaceAll("_.*", "")
-    Käyttöoikeusryhmät.byName(name)
-  }
-}
-
-case class UusiKäyttöoikeusryhmä(ryhmaNameFi: String, ryhmaNameSv: String, ryhmaNameEn: String,
-                                 palvelutRoolit: List[Void] = Nil, organisaatioTyypit: List[String] = Nil, slaveIds: List[Void] = Nil)
-
-case class YhteystietoRyhmä(id: Int, ryhmaKuvaus: String, yhteystiedot: List[Yhteystieto])
-case class Yhteystieto(yhteystietoTyyppi: String, yhteystietoArvo: String)

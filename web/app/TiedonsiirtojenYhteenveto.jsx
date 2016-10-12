@@ -18,6 +18,7 @@ export const tiedonsiirtojenYhteenvetoContentP = () => tiedonsiirrotContentP('/k
         <th className="virheelliset">Virheellisten lukumäärä <small>(viimeiset 7pv)</small></th>
         <th className="opiskeluoikeudet">Opiskelu-oikeuksien lukumäärä</th>
         <th className="lähdejärjestelmä">Lähdejärjestelmä</th>
+        <th className="lähdejärjestelmä">Käyttäjä</th>
       </tr>
       </thead>
       <tbody>
@@ -29,6 +30,7 @@ export const tiedonsiirtojenYhteenvetoContentP = () => tiedonsiirrotContentP('/k
            <td className="virheelliset">{ rivi.virheelliset ? <Link href={'/koski/tiedonsiirrot/virheet?oppilaitos=' + rivi.oppilaitos.oid}>{rivi.virheelliset}</Link> : '0'}</td>
            <td className="opiskeluoikeudet">{rivi.opiskeluoikeudet}</td>
            <td className="lähdejärjestelmä">{rivi.lähdejärjestelmä ? rivi.lähdejärjestelmä.nimi.fi : ''}</td>
+           <td className="käyttäjä">{rivi.käyttäjä.käyttäjätunnus || rivi.käyttäjä.oid}</td>
          </tr>)
         })
       }

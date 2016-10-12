@@ -84,7 +84,7 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
     tiedonsiirtoRepository.yhteenveto(koskiUser).par.flatMap { row =>
       val käyttäjä = userRepository.findByOid(row.kayttaja) getOrElse {
         logger.warn(s"Käyttäjää ${row.kayttaja} ei löydy henkilöpalvelusta")
-        KoskiUserInfo(row.kayttaja, None, row.kayttaja)
+        KoskiUserInfo(row.kayttaja, None, None)
       }
       (getOrganisaatio(row.tallentajaOrganisaatio), getOrganisaatio(row.oppilaitos)) match {
         case (Some(tallentajaOrganisaatio), Some(oppilaitos)) =>
@@ -153,6 +153,6 @@ case class HenkilönTiedonsiirrot(oppija: Option[Henkilö], rivit: Seq[Tiedonsii
 case class TiedonsiirtoRivi(aika: LocalDateTime, oppija: Option[Henkilö], oppilaitos: Option[List[OrganisaatioWithOid]], virhe: Option[AnyRef], inputData: Option[AnyRef], lähdejärjestelmä: Option[String])
 case class Henkilö(oid: Option[String], hetu: Option[String], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], äidinkieli: Option[Koodistokoodiviite])
 case class HetuTaiOid(oid: Option[String], hetu: Option[String])
-case class TiedonsiirtoYhteenveto(tallentajaOrganisaatio: OrganisaatioWithOid, oppilaitos: OrganisaatioWithOid, tallentajaKäyttäjä: KoskiUserInfo, viimeisin: Timestamp, siirretyt: Int, virheelliset: Int, opiskeluoikeudet: Int, lähdejärjestelmä: Option[Koodistokoodiviite])
+case class TiedonsiirtoYhteenveto(tallentajaOrganisaatio: OrganisaatioWithOid, oppilaitos: OrganisaatioWithOid, käyttäjä: KoskiUserInfo, viimeisin: Timestamp, siirretyt: Int, virheelliset: Int, opiskeluoikeudet: Int, lähdejärjestelmä: Option[Koodistokoodiviite])
 case class TiedonsiirtoQuery(oppilaitos: Option[String])
 case class TiedonsiirtoKäyttäjä(oid: String, nimi: Option[String])

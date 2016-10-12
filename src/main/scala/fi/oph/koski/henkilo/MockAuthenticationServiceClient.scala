@@ -9,7 +9,7 @@ import fi.oph.koski.oppija.{MockOppijat, TestingException}
 import fi.oph.koski.schema.{Henkilö, TäydellisetHenkilötiedot}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import rx.lang.scala.Observable
-
+import fi.oph.koski.henkilo.AuthenticationServiceClient._
 
 class MockAuthenticationServiceClientWithDBSupport(val db: DB) extends MockAuthenticationServiceClient with KoskiDatabaseMethods {
   def findFromDb(oid: String): Option[TäydellisetHenkilötiedot] = {
@@ -41,17 +41,17 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
     }
   }
 
-  def search(query: String): UserQueryResult = {
+  def search(query: String): HenkilöQueryResult = {
     if (query.toLowerCase.contains("error")) {
       throw new TestingException("Testing error handling")
     }
     val results = oppijat.getOppijat
       .filter(searchString(_).contains(query))
-      .map(henkilö => UserQueryUser(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, Some(henkilö.hetu)))
-    UserQueryResult(results.size, results)
+      .map(henkilö => QueryHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, Some(henkilö.hetu)))
+    HenkilöQueryResult(results.size, results)
   }
 
-  def create(createUserInfo: CreateUser): Either[HttpStatus, String] = {
+  def create(createUserInfo: UusiHenkilö): Either[HttpStatus, String] = {
     if (createUserInfo.sukunimi == "error") {
       throw new TestingException("Testing error handling")
     } else if (oppijat.getOppijat.find { o => (Some(o.hetu) == createUserInfo.hetu) }.isDefined) {
@@ -62,21 +62,24 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
     }
   }
 
-  def findByOid(henkilöOid: String): Option[User] = {
-    val oppija: Option[TäydellisetHenkilötiedot] = findHenkilötiedot(henkilöOid)
-    oppija.map(henkilö => User(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, Some(henkilö.hetu), Some("FI"), None, None))
+  def findOppijaByOid(henkilöOid: String): Option[OppijaHenkilö] = {
+    findHenkilötiedot(henkilöOid).map(henkilö => OppijaHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, Some(henkilö.hetu), Some("FI"), None))
+  }
+
+  override def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö] = {
+    findHenkilötiedot(oid).map(henkilö => KäyttäjäHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, None))
   }
 
   protected def findHenkilötiedot(id: String): Option[TäydellisetHenkilötiedot] = {
     oppijat.getOppijat.filter {_.oid == id}.headOption
   }
 
-  def findByOids(oids: List[String]): List[User] = {
-    oids.flatMap(findByOid)
+  def findOppijatByOids(oids: List[String]): List[OppijaHenkilö] = {
+    oids.flatMap(findOppijaByOid)
   }
 
-  def findOrCreate(createUserInfo: CreateUser): Either[HttpStatus, User] = {
-    def oidFrom(oppijat: List[UserQueryUser]): Either[HttpStatus, Henkilö.Oid] = {
+  def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö] = {
+    def oidFrom(oppijat: List[QueryHenkilö]): Either[HttpStatus, Henkilö.Oid] = {
       oppijat match {
         case List(oppija) =>
           Right(oppija.oidHenkilo)
@@ -85,23 +88,23 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
           Left(KoskiErrorCategory.internalError())
       }
     }
-    val CreateUser(Some(hetu), sukunimi, etunimet, kutsumanimi, _, _) = createUserInfo
+    val UusiHenkilö(Some(hetu), sukunimi, etunimet, kutsumanimi, _, _) = createUserInfo
     val oid = Hetu.validate(hetu).right.flatMap { hetu =>
       create(createUserInfo).left.flatMap { case HttpStatus(409, _) =>
         oidFrom(search(hetu).results)
       }
     }
-    oid.right.map(oid => findByOid(oid).get)
+    oid.right.map(oid => findOppijaByOid(oid).get)
   }
 
   private def searchString(oppija: TäydellisetHenkilötiedot) = {
     oppija.toString.toUpperCase
   }
 
-  override def organisaationHenkilötRyhmässä(ryhmä: String, organisaatioOid: String): List[UserWithContactInformation] = {
+  override def organisaationHenkilötRyhmässä(ryhmä: String, organisaatioOid: String): List[HenkilöYhteystiedoilla] = {
     MockUsers.users.collect {
       case u: Any if u.käyttöoikeudet.contains((organisaatioOid, Käyttöoikeusryhmät.vastuukäyttäjä)) =>
-        UserWithContactInformation(u.oid, List(YhteystietoRyhmä(5992773, "yhteystietotyyppi2", List(Yhteystieto("YHTEYSTIETO_SAHKOPOSTI", u.username + "@example.com")))))
+        HenkilöYhteystiedoilla(u.oid, List(YhteystietoRyhmä(5992773, "yhteystietotyyppi2", List(Yhteystieto("YHTEYSTIETO_SAHKOPOSTI", u.username + "@example.com")))))
     }
   }
 }

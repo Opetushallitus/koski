@@ -1,7 +1,8 @@
 package fi.oph.koski.koskiuser
 
 import com.typesafe.config.Config
-import fi.oph.koski.henkilo.{RemoteAuthenticationServiceClient, UusiKäyttöoikeusryhmä}
+import fi.oph.koski.henkilo.{RemoteAuthenticationServiceClient}
+import fi.oph.koski.henkilo.AuthenticationServiceClient.UusiKäyttöoikeusryhmä
 import fi.oph.koski.koodisto.KoodistoPalvelu
 import fi.oph.koski.organisaatio.Opetushallitus
 
