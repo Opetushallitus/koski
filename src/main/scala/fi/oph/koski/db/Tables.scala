@@ -109,10 +109,9 @@ object Tables {
       TiedonsiirtoYhteenveto
     } else {
       val oids = user.organisationOids(AccessType.read).toList
-      for {
-        t <- TiedonsiirtoYhteenveto
-        if t.tallentajaOrganisaatio inSetBind oids
-      } yield { t}
+      TiedonsiirtoYhteenveto
+        .filter(_.tallentajaOrganisaatio inSetBind oids)
+        .filter(_.oppilaitos inSetBind oids)
     }
   }
 
