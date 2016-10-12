@@ -5,11 +5,11 @@ import { Tiedonsiirtotaulukko } from './Tiedonsiirtotaulukko.jsx'
 
 const tiedonsiirtovirheetP = (queryString) => Http.get('/koski/api/tiedonsiirrot/virheet' + queryString).toProperty()
 
-export const tiedonsiirtovirheetContentP = (queryString) => tiedonsiirrotContentP('/koski/tiedonsiirrot/virheet', tiedonsiirtovirheetP(queryString).map((rivit) =>
+export const tiedonsiirtovirheetContentP = (queryString) => tiedonsiirrotContentP('/koski/tiedonsiirrot/virheet', tiedonsiirtovirheetP(queryString).map(({henkilöt, oppilaitos}) =>
   (<div className="tiedonsiirto-virheet">
-  <p>Alla olevien opiskelijoiden tiedot ovat virhetilassa.</p>
+  <p>Alla olevien opiskelijoiden tiedot ovat virhetilassa { oppilaitos ? <span> oppilaitoksessa {oppilaitos.nimi.fi}</span> : null }.</p>
   <p>Opiskelija poistuu virhelistalta kun virheen aiheuttanut tieto on korjattu lähdejärjestelmässä ja opiskelijan
     tiedot on siirretty uudelleen onnistuneesti KOSKI-palveluun.</p>
-  <Tiedonsiirtotaulukko rivit={rivit} showError={true}/>
+  <Tiedonsiirtotaulukko rivit={henkilöt} showError={true}/>
   </div>))
 )

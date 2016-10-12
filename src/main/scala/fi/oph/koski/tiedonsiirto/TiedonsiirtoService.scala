@@ -20,12 +20,11 @@ import org.json4s.JsonAST.{JArray, JString}
 import org.json4s.{JValue, _}
 
 class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organisaatioRepository: OrganisaatioRepository, oppijaRepository: OppijaRepository, koodistoviitePalvelu: KoodistoViitePalvelu, userRepository: KoskiUserRepository) extends Logging {
-  def haeTiedonsiirrot(query: TiedonsiirtoQuery)(implicit koskiUser: KoskiUser): Either[HttpStatus, List[HenkilönTiedonsiirrot]] = {
+  def haeTiedonsiirrot(query: TiedonsiirtoQuery)(implicit koskiUser: KoskiUser): Either[HttpStatus, Tiedonsiirrot] = {
     AuditLog.log(AuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiUser, Map(juuriOrganisaatio -> koskiUser.juuriOrganisaatio.map(_.oid).getOrElse("ei juuriorganisaatiota"))))
 
     query.oppilaitos match {
       case Some(oppilaitosOid) =>
-        val hierarkia = organisaatioRepository.getOrganisaatioHierarkiaIncludingParents(oppilaitosOid)
         def oidPath(oid: String, hierarkia: OrganisaatioHierarkia): List[Organisaatio.Oid] = {
           if (hierarkia.find(oid).isDefined) {
             hierarkia.oid :: hierarkia.children.flatMap(child => oidPath(oid, child))
@@ -35,24 +34,27 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
             Nil
           }
         }
-        organisaatioRepository.getOrganisaatioHierarkiaIncludingParents(oppilaitosOid).map(oidPath(oppilaitosOid, _)) match {
+        val hierarkia: Option[OrganisaatioHierarkia] = organisaatioRepository.getOrganisaatioHierarkiaIncludingParents(oppilaitosOid)
+        hierarkia.map(oidPath(oppilaitosOid, _)) match {
           case Some(oids) =>
-            Right(toHenkilönTiedonsiirrot(tiedonsiirtoRepository.find(Some(oids)))
+            val henkilöt: List[HenkilönTiedonsiirrot] = toHenkilönTiedonsiirrot(tiedonsiirtoRepository.find(Some(oids)))
               .map { siirrot => siirrot.copy(rivit = siirrot.rivit.filter(_.oppilaitos.toList.flatten.map(_.oid).contains(oppilaitosOid))) }
-              .filter { siirrot => siirrot.rivit.nonEmpty })
+              .filter { siirrot => siirrot.rivit.nonEmpty }
+            Right(Tiedonsiirrot(henkilöt, oppilaitos = hierarkia.flatMap(_.find(oppilaitosOid).flatMap(_.toOppilaitos))))
           case None =>
             Left(KoskiErrorCategory.notFound.oppilaitostaEiLöydy())
         }
       case None =>
-        Right(toHenkilönTiedonsiirrot(tiedonsiirtoRepository.find(None)))
+        Right(Tiedonsiirrot(toHenkilönTiedonsiirrot(tiedonsiirtoRepository.find(None)), oppilaitos = None))
     }
   }
 
-  def virheelliset(query: TiedonsiirtoQuery)(implicit koskiUser: KoskiUser): Either[HttpStatus, List[HenkilönTiedonsiirrot]] = {
+  def virheelliset(query: TiedonsiirtoQuery)(implicit koskiUser: KoskiUser): Either[HttpStatus, Tiedonsiirrot] = {
     haeTiedonsiirrot(query).right.map { tiedonsiirrot =>
-      tiedonsiirrot
+      tiedonsiirrot.copy(henkilöt = tiedonsiirrot.henkilöt
         .filter { siirrot => siirrot.rivit.groupBy(_.oppilaitos).exists { case (_, rivit) => rivit.headOption.exists(_.virhe.isDefined) } }
         .map(v => v.copy(rivit = v.rivit.filter(_.virhe.isDefined)))
+      )
     }
   }
 
@@ -149,6 +151,7 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
   }
 }
 
+case class Tiedonsiirrot(henkilöt: List[HenkilönTiedonsiirrot], oppilaitos: Option[Oppilaitos])
 case class HenkilönTiedonsiirrot(oppija: Option[Henkilö], rivit: Seq[TiedonsiirtoRivi])
 case class TiedonsiirtoRivi(aika: LocalDateTime, oppija: Option[Henkilö], oppilaitos: Option[List[OrganisaatioWithOid]], virhe: Option[AnyRef], inputData: Option[AnyRef], lähdejärjestelmä: Option[String])
 case class Henkilö(oid: Option[String], hetu: Option[String], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], äidinkieli: Option[Koodistokoodiviite])
