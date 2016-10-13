@@ -34,7 +34,7 @@ const Lokiriviryhmä = React.createClass({
     const isExpanded = this.state && this.state.expanded
     const tiedonsiirtoRivit = oppijaRivi.rivit
     const isGroup = tiedonsiirtoRivit.length > 1
-    return(<tbody>
+    return(<tbody key={tiedonsiirtoRivit[0].id}>
       {
         tiedonsiirtoRivit.flatMap((rivi, j) => {
             const isParent = j == 0 && isGroup
@@ -42,7 +42,7 @@ const Lokiriviryhmä = React.createClass({
             const isHidden = isChild && !isExpanded
             return isHidden
               ? []
-              : [<Lokirivi key={i + '-' + j} row={rivi} isParent={isParent} isChild={isChild} isExpanded={isExpanded} isEven={i % 2 == 1} showError={showError} setExpanded={setExpanded}/>]
+              : [<Lokirivi key={rivi.id} row={rivi} isParent={isParent} isChild={isChild} isExpanded={isExpanded} isEven={i % 2 == 1} showError={showError} setExpanded={setExpanded}/>]
           }
         )
       }
@@ -72,7 +72,7 @@ const Lokirivi = React.createClass({
     const nimi = row.oppija && ((row.oppija.kutsumanimi || '') + ' ' + (row.oppija.sukunimi || ''))
     const className = ((isParent || isChild) ? 'group ' : '') + (isEven ? 'even' : 'odd')
 
-    return (<tr className={className}>
+    return (<tr className={className} id={'tiedonsiirto-' + row.id}>
       <td className="tila">
         {
           isParent
