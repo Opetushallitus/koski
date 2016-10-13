@@ -5,7 +5,7 @@ import fi.oph.koski.servlet.HtmlServlet
 
 class HealthCheckHtmlServlet(val application: KoskiApplication) extends HtmlServlet{
   get() {
-    val status = HeathChecker(application).healthcheck.isLeft match {
+    val status = HeathChecker(application).healthcheck.isRight match {
       case true => <h1 style="font-size: 20vw; background: green;">OK</h1>
       case false => <h1 style="font-size: 20vw; background: red;">FAIL</h1>
     }
