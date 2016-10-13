@@ -6,6 +6,7 @@ import fi.oph.koski.db._
 import fi.oph.koski.documentation.SchemaDocumentationServlet
 import fi.oph.koski.editor.EditorServlet
 import fi.oph.koski.fixture.{FixtureServlet, Fixtures}
+import fi.oph.koski.healthcheck.HealthCheckServlet
 import fi.oph.koski.history.KoskiHistoryServlet
 import fi.oph.koski.koodisto.KoodistoCreator
 import fi.oph.koski.koski._
