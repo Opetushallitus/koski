@@ -10,7 +10,7 @@ import fi.oph.koski.log.{LogConfiguration, Logging}
 import fi.oph.koski.util.{Pools, PortChecker}
 import io.prometheus.client.exporter.MetricsServlet
 import org.eclipse.jetty.jmx.MBeanContainer
-import org.eclipse.jetty.server.handler.StatisticsHandler
+import org.eclipse.jetty.server.handler.{HandlerCollection, StatisticsHandler}
 import org.eclipse.jetty.server.{Server, ServerConnector, Slf4jRequestLog}
 import org.eclipse.jetty.servlet.{ServletContextHandler, ServletHolder}
 import org.eclipse.jetty.util.thread.QueuedThreadPool
@@ -39,13 +39,11 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) e
   configureLogging
   setupConnector
 
-  private val context = new WebAppContext()
-  context.setAttribute("koski.application", application)
-  context.setParentLoaderPriority(true)
-  context.setContextPath("/koski")
-  server.setHandler(context)
+  private val handlers = new HandlerCollection()
 
-  setupStaticResources
+  server.setHandler(handlers)
+
+  setupKoskiApplicationContext
   setupJMX
   setupPrometheusMetrics
 
@@ -69,13 +67,20 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) e
     server.setRequestLog(requestLog)
   }
 
-  private def setupStaticResources = {
+  private def setupKoskiApplicationContext = {
+    val context = new WebAppContext()
+    context.setAttribute("koski.application", application)
+    context.setParentLoaderPriority(true)
+    context.setContextPath("/koski")
     def resourceBase = System.getProperty("resourcebase", "./target/webapp")
 
     if (!Files.exists(Paths.get(resourceBase))) {
       throw new RuntimeException("WebApplication resource base: " + resourceBase + " does not exist.")
     }
     context.setResourceBase(resourceBase)
+
+    handlers.addHandler(context)
+
   }
 
   private def setupJMX = {
@@ -88,7 +93,10 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) e
   }
 
   private def setupPrometheusMetrics = {
+    val context = new ServletContextHandler();
+    context.setContextPath("/")
     context.addServlet(new ServletHolder(new MetricsServlet), "/metrics")
+    handlers.addHandler(context)
   }
 }
 
