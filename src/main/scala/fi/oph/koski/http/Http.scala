@@ -149,6 +149,8 @@ case class Http(root: String, client: Client = Http.newClient) extends Logging {
         decoder(response.status.code, text, request)
       }
     }.handleWith {
+      case e: HttpStatusException =>
+        throw e
       case e: Exception =>
         throw HttpConnectionException(e.getClass.getName + ": " + e.getMessage, requestWithFullPath)
     }
