@@ -46,29 +46,40 @@ function download_version {
   echo "# Application downloaded to: ${TMP_APPLICATION}"
 }
 
+INVENTORY=${INVENTORY:-"openstack_inventory.py"}
+ANSIBLE_ARGS=${ANSIBLE_ARGS:-""}
+
+
 if [ -f "$RC_FILE" ]; then
   source "$RC_FILE"
 fi
 
-if [ -z "$ENV" ] || ! [[ " ${VALID_ENVS[@]} " =~ " ${ENV} " ]] || [ -z "$VERSION" ] || [ -z "$CLOUD_ENV_DIR" ] || [ ! -d "$CLOUD_ENV_DIR" ]; then
+if [ -z "$ENV" ] || (! [[ " ${VALID_ENVS[@]} " =~ " ${ENV} " ]] && [ -z "$OS_USERNAME" ]) || [ -z "$VERSION" ] || [ -z "$CLOUD_ENV_DIR" ] || [ ! -d "$CLOUD_ENV_DIR" ]; then
   usage
 fi
 
-ANSIBLE_ARGS=${ANSIBLE_ARGS:-""}
-INVENTORY=${INVENTORY:-"openstack_inventory.py"}
-if [ "$ENV" == "vagrant" ]; then
-  ANSIBLE_ARGS="${ANSIBLE_ARGS} --user=vagrant"
-  INVENTORY="vagrant/inventory"
+set +u
+if [ ! -z "$OS_TENANT_NAME" ]; then
+  echo "Found Cloud settings for $OS_TENANT_NAME in env"
+else
+    if [ "$ENV" == "vagrant" ]; then
+        ANSIBLE_ARGS="${ANSIBLE_ARGS} --user=vagrant"
+        INVENTORY="vagrant/inventory"
+    else
+        CLOUD_ENV_RC="$CLOUD_ENV_DIR"/Project_2000079-openrc.sh
+        echo "Legacy mode. Sourcing cloud settings from $CLOUD_ENV_RC"
+        cd "$CLOUD_ENV_DIR"
+        if [ -z "$OS_USERNAME" ] || [ -z "$OS_PASSWORD" ] && [ "$ENV" != "vagrant" ]; then
+          source "$CLOUD_ENV_RC"
+        fi
+        export TF_VAR_env="$ENV"
+    fi
 fi
+set -u
+
+echo "Using inventory $INVENTORY in directory $CLOUD_ENV_DIR"
 
 cd "$CLOUD_ENV_DIR"
-set +u
-if [ -z "$OS_USERNAME" ] || [ -z "$OS_PASSWORD" ] && [ "$ENV" != "vagrant" ]; then
-  source "$CLOUD_ENV_DIR"/*-openrc.sh
-fi
-
-set -u
-export TF_VAR_env="$ENV"
 
 download_version
 

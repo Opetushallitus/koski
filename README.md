@@ -261,13 +261,16 @@ Ajamalla
 muodostuu uusi versio applikaatiosta. Applikaatio siirretään Artifactoryyn ja versiohallintaan lisätään uusi tägi annetulla versionumerolla.
 Asennuspakettiin tulee mukaan kaikki lokaalisti kommitoidut muutokset.
 
-Tämän jälkeen voit asentaa Koskesta uuden version tordev ympäristöön ajamalla
+Tämän jälkeen voit asentaa Koskesta uuden version pilviympäristöön ajamalla
 
     make deploy version=<versio>
+    
+Huom! Oletuksena käytetään vanhaa "tordev"-pilviympäristöä. Uudemmat ympäristöt saat käyttöösi sourcaamalla ensin ympäristöön liittyvä *-openrc -tiedoston.
     
 Paketin muodostamisen ja asennuksen voi hoitaa myös yhdellä komennolla
 
     make dist deploy version=<versio>
+    
 
 ### Pilviasennuksen operoiminen
 
