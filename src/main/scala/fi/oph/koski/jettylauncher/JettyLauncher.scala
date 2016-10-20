@@ -11,7 +11,7 @@ import fi.oph.koski.util.{Pools, PortChecker}
 import io.prometheus.client.exporter.MetricsServlet
 import org.eclipse.jetty.jmx.MBeanContainer
 import org.eclipse.jetty.server.handler.{HandlerCollection, StatisticsHandler}
-import org.eclipse.jetty.server.{Server, ServerConnector, Slf4jRequestLog}
+import org.eclipse.jetty.server._
 import org.eclipse.jetty.servlet.{ServletContextHandler, ServletHolder}
 import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.eclipse.jetty.webapp.WebAppContext
@@ -55,7 +55,11 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) e
   def baseUrl = "http://localhost:" + port + "/koski"
 
   private def setupConnector = {
-    val connector = new ServerConnector(server)
+    val httpConfig = new HttpConfiguration()
+    httpConfig.addCustomizer( new ForwardedRequestCustomizer() )
+    val connectionFactory = new HttpConnectionFactory( httpConfig )
+
+    val connector = new ServerConnector(server, connectionFactory)
     connector.setPort(port)
     server.addConnector(connector)
   }
