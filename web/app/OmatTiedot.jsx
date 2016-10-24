@@ -4,10 +4,14 @@ import {ExistingOppija} from './Oppija.jsx'
 import Bacon from 'baconjs'
 
 export const omatTiedotContentP = () => innerContentP().map(inner =>
-  <div className="content-area omattiedot">
-    <nav className="sidebar omattiedot-navi"></nav>
-    {inner}
-  </div>
+  ({
+      content: (<div className="content-area omattiedot">
+                  <nav className="sidebar omattiedot-navi"></nav>
+                  {inner}
+                </div>
+              ),
+      title: 'Omat tiedot'
+  })
 )
 
 const omatTiedotP = () => Http.get('/koski/api/editor/omattiedot').toProperty().flatMapError((e) => e.httpStatus === 404 ? null : new Bacon.Error)
