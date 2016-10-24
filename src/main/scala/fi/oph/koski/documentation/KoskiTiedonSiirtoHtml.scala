@@ -81,8 +81,8 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
     <html>
       <head>
         <meta charset="UTF-8"></meta>
-        <link rel="stylesheet" type="text/css" href="css/documentation.css"></link>
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/default.min.css"/>
+        <link rel="stylesheet" type="text/css" href="/koski/css/documentation.css"></link>
+        <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/default.min.css"/>
         <link rel="stylesheet" type="text/css" href="/koski/css/codemirror/codemirror.css"/>
         <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
         <script src="/koski/js/codemirror/codemirror.js"></script>
@@ -116,11 +116,11 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
           { examplesHtml(ExamplesYlioppilastutkinto.examples, "Ylioppilastutkinto (Ylioppilastutkintorekisteristä)") }
         </section>
         </div>
-        <script src="js/polyfills/promise.js"></script>
-        <script src="js/polyfills/fetch.js"></script>
-        <script src="js/polyfills/dataset.js"></script>
-        <script src="js/documentation/api-operations.js"></script>
-        <script src="js/documentation/json-examples.js"></script>
+        <script src="/koski/js/polyfills/promise.js"></script>
+        <script src="/koski/js/polyfills/fetch.js"></script>
+        <script src="/koski/js/polyfills/dataset.js"></script>
+        <script src="/koski/js/documentation/api-operations.js"></script>
+        <script src="/koski/js/documentation/json-examples.js"></script>
       </body>
     </html>
   }

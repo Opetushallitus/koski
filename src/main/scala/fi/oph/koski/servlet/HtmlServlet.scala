@@ -25,7 +25,7 @@ trait HtmlServlet extends KoskiBaseServlet with AuthenticationSupport {
     } transform(IndexServlet.html)
 
     response.setStatus(status.statusCode)
-    contentType = "text/html" //indexHtml.contentType
+    contentType = "text/html"
     response.writer.print(html)
   }
 

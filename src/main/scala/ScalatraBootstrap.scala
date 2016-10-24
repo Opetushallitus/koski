@@ -3,7 +3,7 @@ import javax.servlet.ServletContext
 import fi.oph.koski.cache.{CacheServlet, GlobalCacheManager, JMXCacheManager}
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db._
-import fi.oph.koski.documentation.SchemaDocumentationServlet
+import fi.oph.koski.documentation.{KoodistoServlet, SchemaDocumentationServlet}
 import fi.oph.koski.editor.EditorServlet
 import fi.oph.koski.fixture.{FixtureServlet, Fixtures}
 import fi.oph.koski.healthcheck.{HealthCheckApiServlet, HealthCheckHtmlServlet}
@@ -56,6 +56,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     context.mount(new OppilaitosServlet(application), "/api/oppilaitos")
     context.mount(new TutkintoServlet(application.tutkintoRepository), "/api/tutkinto")
     context.mount(new SchemaDocumentationServlet(application.koodistoPalvelu), "/documentation")
+    context.mount(new KoodistoServlet(application.koodistoPalvelu), "/api/koodisto")
     context.mount(new TodistusServlet(application), "/todistus")
     context.mount(new SuoritusServlet(application), "/opintosuoritusote")
     context.mount(new IndexServlet(application), "/")

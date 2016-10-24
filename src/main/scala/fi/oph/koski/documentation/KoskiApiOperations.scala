@@ -19,8 +19,8 @@ object KoskiApiOperations {
 
  val operations = List(
    ApiOperation(
-     "GET", "/koski/documentation/koodisto/{nimi}/{versio}",
-     "Palauttaa koodiston koodiarvot",
+     "GET", "/koski/api/koodisto/{nimi}/{versio}",
+     "Palauttaa koodiston koodiarvot JSON-muodossa",
      <p></p>,
      Nil,
      List(

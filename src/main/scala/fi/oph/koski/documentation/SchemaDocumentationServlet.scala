@@ -1,12 +1,12 @@
 package fi.oph.koski.documentation
 
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koodisto.{KoodistoKoodi, KoodistoPalvelu, KoodistoViite}
+import fi.oph.koski.koodisto.KoodistoPalvelu
 import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.servlet.ApiServlet
 
-class SchemaDocumentationServlet(koodistoPalvelu: KoodistoPalvelu) extends ApiServlet with Unauthenticated {
+class SchemaDocumentationServlet(val koodistoPalvelu: KoodistoPalvelu) extends ApiServlet with Unauthenticated with KoodistoFinder {
   get("/") {
     KoskiTiedonSiirtoHtml.html
   }
@@ -20,15 +20,39 @@ class SchemaDocumentationServlet(koodistoPalvelu: KoodistoPalvelu) extends ApiSe
   }
 
   get("/koodisto/:name/:version") {
-    contentType = "application/json"
-    val koodistoUri: String = params("name")
-    val versio = params("version") match {
-      case "latest" =>
-        koodistoPalvelu.getLatestVersion(koodistoUri)
-      case _ =>
-        Some(KoodistoViite(koodistoUri, getIntegerParam("version")))
+    contentType = "text/html"
+    findKoodisto match {
+      case Some((koodisto, koodit)) =>
+        <html>
+          <style>
+            body {{ font-family: sans-serif; }}
+            td, th {{ text-align: left; padding-right: 20px; }}
+          </style>
+          <body>
+            <h1>Koodisto: { koodisto.koodistoUri }, versio { koodisto.versio } </h1>
+            <table>
+              <thead>
+                <tr>
+                  <th>Koodiarvo</th>
+                  <th>Nimi</th>
+                  <th>Lyhytnimi</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                koodit.sortBy(_.koodiArvo).map { koodi =>
+                  <tr>
+                    <td>{koodi.koodiArvo}</td>
+                    <td>{koodi.metadata.find(_.kieli == Some("FI")).flatMap(_.nimi).getOrElse("&nbsp;")}</td>
+                    <td>{koodi.metadata.find(_.kieli == Some("FI")).flatMap(_.lyhytNimi).getOrElse("&nbsp;")}</td>
+                  </tr>
+                }
+                }
+              </tbody>
+            </table>
+          </body>
+        </html>
+      case None => haltWithStatus(KoskiErrorCategory.notFound.koodistoaEiLöydy())
     }
-    val result: Option[List[KoodistoKoodi]] = versio.flatMap(koodistoPalvelu.getKoodistoKoodit)
-    renderOption(KoskiErrorCategory.notFound.koodistoaEiLöydy)(result)
   }
 }
