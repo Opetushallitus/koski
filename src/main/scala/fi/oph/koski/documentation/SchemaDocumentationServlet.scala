@@ -34,8 +34,9 @@ class SchemaDocumentationServlet(val koodistoPalvelu: KoodistoPalvelu) extends A
               <thead>
                 <tr>
                   <th>Koodiarvo</th>
-                  <th>Nimi</th>
                   <th>Lyhytnimi</th>
+                  <th>Nimi</th>
+                  <th>Kuvaus</th>
                 </tr>
               </thead>
               <tbody>
@@ -43,8 +44,9 @@ class SchemaDocumentationServlet(val koodistoPalvelu: KoodistoPalvelu) extends A
                 koodit.sortBy(_.koodiArvo).map { koodi =>
                   <tr>
                     <td>{koodi.koodiArvo}</td>
-                    <td>{koodi.metadata.find(_.kieli == Some("FI")).flatMap(_.nimi).getOrElse(<span/>)}</td>
-                    <td>{koodi.metadata.find(_.kieli == Some("FI")).flatMap(_.lyhytNimi).getOrElse(<span/>)}</td>
+                    <td>{koodi.metadata.find(_.kieli == Some("FI")).flatMap(_.lyhytNimi).getOrElse("-")}</td>
+                    <td>{koodi.metadata.find(_.kieli == Some("FI")).flatMap(_.nimi).getOrElse("-")}</td>
+                    <td>{koodi.metadata.find(_.kieli == Some("FI")).flatMap(_.kuvaus).getOrElse("-")}</td>
                   </tr>
                 }
                 }
