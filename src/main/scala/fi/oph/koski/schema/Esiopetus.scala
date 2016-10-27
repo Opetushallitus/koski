@@ -15,7 +15,6 @@ case class EsiopetuksenOpiskeluoikeus(
   arvioituPäättymispäivä: Option[LocalDate] = None,
   päättymispäivä: Option[LocalDate] = None,
   tila: PerusopetuksenOpiskeluoikeudenTila,
-  läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
   lisätiedot: Option[EsiopetuksenOpiskeluoikeudenLisätiedot] = None,
   suoritukset: List[EsiopetuksenSuoritus],
   @KoodistoKoodiarvo("esiopetus")

@@ -42,8 +42,6 @@ trait Opiskeluoikeus extends OrganisaatioonLiittyvä with Lähdejärjestelmälli
   def suoritukset: List[PäätasonSuoritus]
   @Description("Opiskeluoikeuden tila, joka muodostuu opiskeluoikeusjaksoista.")
   def tila: OpiskeluoikeudenTila
-  @Description("Läsnä- ja poissaolojaksot päivämääräväleinä.")
-  def läsnäolotiedot: Option[Läsnäolotiedot]
   def withKoulutustoimija(koulutustoimija: Koulutustoimija): Opiskeluoikeus
   def omistajaOrganisaatio = oppilaitos
 }
@@ -52,7 +50,6 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
   def suoritukset: List[PäätasonSuoritus]
   def withIdAndVersion(id: Option[Int], versionumero: Option[Int]): KoskeenTallennettavaOpiskeluoikeus
   def withSuoritukset(suoritukset: List[PäätasonSuoritus]): KoskeenTallennettavaOpiskeluoikeus
-  override def läsnäolotiedot: Option[YleisetLäsnäolotiedot]
 }
 
 trait OpiskeluoikeudenTila {
@@ -73,14 +70,6 @@ trait KoskiOpiskeluoikeusjakso extends Opiskeluoikeusjakso {
   def opiskeluoikeusPäättynyt = List("valmistunut", "eronnut", "katsotaaneronneeksi").contains(tila.koodiarvo)
 }
 
-trait Läsnäolotiedot {
-  @Description("Läsnä- ja poissaolojaksot päivämääräväleinä.")
-  def läsnäolojaksot: List[Läsnäolojakso]
-}
-
-case class YleisetLäsnäolotiedot(
-  läsnäolojaksot: List[YleinenLäsnäolojakso]
-) extends Läsnäolotiedot
 
 trait Alkupäivällinen {
   @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
@@ -97,15 +86,6 @@ trait Läsnäolojakso extends Alkupäivällinen {
   def tila: Koodistokoodiviite
 }
 
-case class YleinenLäsnäolojakso(
-  alku: LocalDate,
-  @KoodistoUri("lasnaolotila")
-  tila: Koodistokoodiviite
-) extends Läsnäolojakso
-
-object YleinenLäsnäolojakso {
-  def apply(alku: LocalDate, tila: String): YleinenLäsnäolojakso = YleinenLäsnäolojakso(alku, Koodistokoodiviite(tila, "lasnaolotila"))
-}
 case class LähdejärjestelmäId(
   @Description("Opiskeluoikeuden paikallinen uniikki tunniste lähdejärjestelmässä. Tiedonsiirroissa tarpeellinen, jotta voidaan varmistaa päivitysten osuminen oikeaan opiskeluoikeuteen.")
   id: Option[String],

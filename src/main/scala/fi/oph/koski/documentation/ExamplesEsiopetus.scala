@@ -29,8 +29,7 @@ object ExamplesEsiopetus {
           PerusopetuksenOpiskeluoikeusjakso(date(2006, 8, 13), opiskeluoikeusLäsnä),
           PerusopetuksenOpiskeluoikeusjakso(date(2007, 6, 3), opiskeluoikeusValmistunut)
         )
-      ),
-      läsnäolotiedot = None
+      )
     ))
   )
 

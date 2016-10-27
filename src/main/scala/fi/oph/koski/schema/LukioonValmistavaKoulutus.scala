@@ -16,7 +16,6 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeus(
   arvioituPäättymispäivä: Option[LocalDate] = None,
   päättymispäivä: Option[LocalDate],
   tila: LukionOpiskeluoikeudenTila,
-  läsnäolotiedot: Option[YleisetLäsnäolotiedot],
   @MinItems(1)
   @MaxItems(1)
   suoritukset: List[LukioonValmistavanKoulutuksenSuoritus],

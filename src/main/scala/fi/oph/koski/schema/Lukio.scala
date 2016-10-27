@@ -17,7 +17,6 @@ case class LukionOpiskeluoikeus(
   arvioituPäättymispäivä: Option[LocalDate] = None,
   päättymispäivä: Option[LocalDate] = None,
   tila: LukionOpiskeluoikeudenTila,
-  läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
   lisätiedot: Option[LukionOpiskeluoikeudenLisätiedot] = None,
   @MinItems(1)
   suoritukset: List[LukionPäätasonSuoritus],

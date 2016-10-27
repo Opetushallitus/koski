@@ -219,25 +219,6 @@ class OppijaValidationSpec extends FunSpec with LocalJettyHttpSpecification with
           }}
         }
       }
-
-      describe("Läsnäolojaksot") {
-        describe("Päivämäärät kunnossa") {
-          it("palautetaan HTTP 200") (putOpiskeluOikeus(defaultOpiskeluoikeus.copy(läsnäolotiedot = Some(YleisetLäsnäolotiedot(List(
-            YleinenLäsnäolojakso(date(2015, 8, 1), "lasna"),
-            YleinenLäsnäolojakso(date(2016, 1, 1), "poissa"),
-            YleinenLäsnäolojakso(date(2016, 5, 21), "lasna")
-          ))))
-          )(verifyResponseStatus(200)))
-        }
-        describe("jaksojen päivämääräjärjestys on väärä") {
-          it("palautetaan HTTP 400") (putOpiskeluOikeus(defaultOpiskeluoikeus.copy(läsnäolotiedot = Some(YleisetLäsnäolotiedot(List(
-            YleinenLäsnäolojakso(date(2015, 8, 1), "lasna"),
-            YleinenLäsnäolojakso(date(2015, 7, 1), "poissa")
-          ))))) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.jaksojenJärjestys("läsnäolotiedot.läsnäolojaksot: 2015-08-01 oltava sama tai aiempi kuin 2015-07-01"))
-          })
-        }
-      }
     }
 
     describe("Lokalisoidut tekstit") {

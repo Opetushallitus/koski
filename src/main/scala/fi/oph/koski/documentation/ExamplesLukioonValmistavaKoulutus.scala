@@ -18,7 +18,6 @@ object ExamplesLukioonValmistavaKoulutus {
         päättymispäivä = Some(date(2016, 6, 4)),
         oppilaitos = jyväskylänNormaalikoulu,
         koulutustoimija = None,
-        läsnäolotiedot = None,
         tila = LukionOpiskeluoikeudenTila(List(
           LukionOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
           LukionOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)

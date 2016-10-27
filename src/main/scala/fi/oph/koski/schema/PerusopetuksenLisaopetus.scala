@@ -15,7 +15,6 @@ case class PerusopetuksenLisäopetuksenOpiskeluoikeus(
   alkamispäivä: Option[LocalDate],
   päättymispäivä: Option[LocalDate],
   tila: PerusopetuksenOpiskeluoikeudenTila,
-  läsnäolotiedot: Option[YleisetLäsnäolotiedot],
   lisätiedot: Option[PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot] = None,
   @MinItems(1) @MaxItems(1)
   suoritukset: List[PerusopetuksenLisäopetuksenSuoritus],

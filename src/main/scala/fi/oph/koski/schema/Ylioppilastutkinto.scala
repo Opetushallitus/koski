@@ -18,7 +18,6 @@ case class YlioppilastutkinnonOpiskeluoikeus(
   override def päättymispäivä = None
   override def id = None
   override def versionumero = None
-  override def läsnäolotiedot = None
 }
 
 case class YlioppilastutkinnonOpiskeluoikeudenTila(opiskeluoikeusjaksot: List[LukionOpiskeluoikeusjakso]) extends OpiskeluoikeudenTila

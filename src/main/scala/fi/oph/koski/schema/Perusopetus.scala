@@ -16,7 +16,6 @@ case class PerusopetuksenOpiskeluoikeus(
   alkamispäivä: Option[LocalDate] = None,
   päättymispäivä: Option[LocalDate] = None,
   tila: PerusopetuksenOpiskeluoikeudenTila,
-  läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
   lisätiedot: Option[PerusopetuksenOpiskeluoikeudenLisätiedot] = None,
   suoritukset: List[PerusopetuksenPäätasonSuoritus],
   @KoodistoKoodiarvo("perusopetus")

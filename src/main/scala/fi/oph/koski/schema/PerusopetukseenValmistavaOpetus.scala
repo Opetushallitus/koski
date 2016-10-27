@@ -13,7 +13,6 @@ case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
   alkamispäivä: Option[LocalDate],
   päättymispäivä: Option[LocalDate],
   tila: PerusopetuksenOpiskeluoikeudenTila,
-  läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
   @MinItems(1)
   @MaxItems(1)
   suoritukset: List[PerusopetukseenValmistavanOpetuksenSuoritus],

@@ -173,8 +173,7 @@ object ExamplesLukio {
             )))
           ))
         )
-      ),
-      läsnäolotiedot = None
+      )
     )
 
 
@@ -207,8 +206,7 @@ object ExamplesLukio {
           LukionOpiskeluoikeusjakso(alku = date(2015, 9, 1), tila = opiskeluoikeusAktiivinen),
           LukionOpiskeluoikeusjakso(alku = date(2016, 1, 10), tila = opiskeluoikeusPäättynyt)
         )
-      ),
-      läsnäolotiedot = None
+      )
     )
 
 
@@ -303,7 +301,6 @@ object LukioExampleData {
         LukionOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusAktiivinen),
         LukionOpiskeluoikeusjakso(date(2016, 1, 10), opiskeluoikeusPäättynyt)
       )
-    ),
-    läsnäolotiedot = None
+    )
   )
 }

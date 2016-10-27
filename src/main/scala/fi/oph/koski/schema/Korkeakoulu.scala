@@ -18,7 +18,6 @@ case class KorkeakoulunOpiskeluoikeus(
   @Description("Jos tämä on opiskelijan ensisijainen opiskeluoikeus tässä oppilaitoksessa, ilmoitetaan tässä ensisijaisuuden tiedot.")
   ensisijaisuus: Option[Ensisijaisuus] = None,
   tila: KorkeakoulunOpiskeluoikeudenTila,
-  läsnäolotiedot: Option[KorkeakoulunLäsnäolotiedot] = None,
   suoritukset: List[KorkeakouluSuoritus],
   @KoodistoKoodiarvo("korkeakoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulutus", Some("Korkeakoulutus"), "opiskeluoikeudentyyppi", None)
@@ -122,13 +121,3 @@ case class LaajuusOpintopisteissä(
   @KoodistoKoodiarvo("2")
   yksikkö: Koodistokoodiviite = Koodistokoodiviite("2", Some(finnish("opintopistettä")), "opintojenlaajuusyksikko")
 ) extends Laajuus
-
-case class KorkeakoulunLäsnäolotiedot(
-  läsnäolojaksot: List[KorkeakoulunLäsnäolojakso]
-) extends Läsnäolotiedot
-
-case class KorkeakoulunLäsnäolojakso(
-  alku: LocalDate,
-  @KoodistoUri("virtalukukausiilmtila")
-  tila: Koodistokoodiviite
-) extends Läsnäolojakso

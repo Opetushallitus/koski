@@ -80,8 +80,7 @@ object PerusopetusExampleData {
           PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
           PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
         )
-      ),
-      läsnäolotiedot = None
+      )
     )
   }
 

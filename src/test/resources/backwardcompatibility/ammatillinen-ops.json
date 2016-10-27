@@ -204,39 +204,6 @@
         "koodistoUri" : "suorituksentyyppi"
       }
     } ],
-    "läsnäolotiedot" : {
-      "läsnäolojaksot" : [ {
-        "alku" : "2012-09-01",
-        "tila" : {
-          "koodiarvo" : "lasna",
-          "nimi" : {
-            "fi" : "Läsnä"
-          },
-          "koodistoUri" : "lasnaolotila",
-          "koodistoVersio" : 1
-        }
-      }, {
-        "alku" : "2013-01-01",
-        "tila" : {
-          "koodiarvo" : "poissa",
-          "nimi" : {
-            "fi" : "Poissa"
-          },
-          "koodistoUri" : "lasnaolotila",
-          "koodistoVersio" : 1
-        }
-      }, {
-        "alku" : "2014-01-01",
-        "tila" : {
-          "koodiarvo" : "lasna",
-          "nimi" : {
-            "fi" : "Läsnä"
-          },
-          "koodistoUri" : "lasnaolotila",
-          "koodistoVersio" : 1
-        }
-      } ]
-    },
     "lisätiedot" : {
       "hojks" : {
         "opetusryhmä" : {

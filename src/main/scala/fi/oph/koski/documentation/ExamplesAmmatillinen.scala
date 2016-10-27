@@ -244,12 +244,7 @@ object AmmatillinenOldExamples {
             AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(Koodistokoodiviite("1", Some("Valtionosuusrahoitteinen koulutus"), "opintojenrahoitus", None))),
             AmmatillinenOpiskeluoikeusjakso(date(2016, 1, 9), opiskeluoikeusEronnut, None)
           )
-        ),
-        läsnäolotiedot = Some(YleisetLäsnäolotiedot(List(
-          YleinenLäsnäolojakso(date(2012, 9, 1), Koodistokoodiviite("lasna", Some("Läsnä"), "lasnaolotila", Some(1))),
-          YleinenLäsnäolojakso(date(2013, 1, 1), Koodistokoodiviite("poissa", Some("Poissa"), "lasnaolotila", Some(1))),
-          YleinenLäsnäolojakso(date(2014, 1, 1), Koodistokoodiviite("lasna", Some("Läsnä"), "lasnaolotila", Some(1)))
-        )))
+        )
       )))
 
   lazy val full = Oppija(
@@ -283,8 +278,7 @@ object AmmatillinenOldExamples {
             AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None))),
             AmmatillinenOpiskeluoikeusjakso(date(2016, 1, 9), opiskeluoikeusValmistunut, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
           )
-        ),
-        läsnäolotiedot = None
+        )
       )
     )
   )

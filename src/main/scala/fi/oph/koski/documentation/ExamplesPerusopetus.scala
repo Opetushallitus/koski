@@ -27,8 +27,7 @@ object ExamplesPerusopetus {
         List(
           PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä)
         )
-      ),
-      läsnäolotiedot = None
+      )
     ))
   )
 
@@ -55,8 +54,7 @@ object ExamplesPerusopetus {
           PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
           PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
         )
-      ),
-      läsnäolotiedot = None
+      )
     ))
   )
 
@@ -83,8 +81,7 @@ object ExamplesPerusopetus {
           PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
           PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
         )
-      ),
-      läsnäolotiedot = None
+      )
     ))
   )
 
@@ -118,7 +115,6 @@ object ExamplesPerusopetus {
           PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
         )
       ),
-      läsnäolotiedot = None,
       lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(erityisenTuenPäätös = Some(ErityisenTuenPäätös(
         alku = Some(date(2008, 8, 15)),
         loppu = Some(date(2016, 6, 4)),

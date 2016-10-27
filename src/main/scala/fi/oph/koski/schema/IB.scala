@@ -18,7 +18,6 @@ case class IBOpiskeluoikeus(
   arvioituPäättymispäivä: Option[LocalDate] = None,
   päättymispäivä: Option[LocalDate] = None,
   tila: LukionOpiskeluoikeudenTila,
-  läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
   @MinItems(1) @MaxItems(2)
   suoritukset: List[IBPäätasonSuoritus],
   @KoodistoKoodiarvo("ibtutkinto")

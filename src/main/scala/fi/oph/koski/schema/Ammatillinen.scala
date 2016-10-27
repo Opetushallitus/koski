@@ -19,7 +19,6 @@ case class AmmatillinenOpiskeluoikeus(
   tila: AmmatillinenOpiskeluoikeudenTila,
   @MinItems(1)
   suoritukset: List[AmmatillinenPäätasonSuoritus],
-  läsnäolotiedot: Option[YleisetLäsnäolotiedot] = None,
   lisätiedot: Option[AmmatillisenOpiskeluoikeudenLisätiedot] = None,
   @KoodistoKoodiarvo("ammatillinenkoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinenkoulutus", "opiskeluoikeudentyyppi")

@@ -25,11 +25,6 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
     val (orphans, opiskeluoikeudet) = opiskeluOikeusNodes.foldLeft((suoritusRoots, Nil: List[KorkeakoulunOpiskeluoikeus])) { case ((suoritusRootsLeft, opiskeluOikeudet), opiskeluoikeusNode) =>
       val (opiskeluOikeudenSuoritukset: List[Node], muutSuoritukset: List[Node]) = suoritusRootsLeft.partition(sisältyyOpiskeluoikeuteen(_, opiskeluoikeusNode, suoritusNodeList))
 
-      val läsnäolotiedot = list2Optional((virtaXml \\ "LukukausiIlmoittautuminen").filter(i => opiskelijaAvain(i) == opiskelijaAvain(opiskeluoikeusNode) && myöntäjä(opiskeluoikeusNode) == myöntäjä(i))
-        .sortBy(alkuPvm)
-        .map(i => KorkeakoulunLäsnäolojakso(alkuPvm(i), requiredKoodi("virtalukukausiilmtila", i \ "Tila" text)))
-        .toList, KorkeakoulunLäsnäolotiedot)
-
       val opiskeluoikeudenTila: KorkeakoulunOpiskeluoikeudenTila = KorkeakoulunOpiskeluoikeudenTila((opiskeluoikeusNode \ "Tila")
         .sortBy(alkuPvm)
         .map(tila => KorkeakoulunOpiskeluoikeusjakso(alkuPvm(tila), requiredKoodi("virtaopiskeluoikeudentila", tila \ "Koodi" text)))
@@ -47,7 +42,6 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
         koulutustoimija = None,
         suoritukset = lisääKeskeneräinenTutkintosuoritus(suoritukset, opiskeluoikeusNode),
         tila = opiskeluoikeudenTila,
-        läsnäolotiedot = läsnäolotiedot,
         ensisijaisuus = (opiskeluoikeusNode \ "Ensisijaisuus").headOption.map { e => // TODO, should this be a list ?
           Ensisijaisuus(alkuPvm(e), loppuPvm(e))
         }
@@ -67,8 +61,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
         oppilaitos = organisaatio,
         koulutustoimija = None,
         suoritukset = suoritukset,
-        tila = KorkeakoulunOpiskeluoikeudenTila(Nil),
-        läsnäolotiedot = None
+        tila = KorkeakoulunOpiskeluoikeudenTila(Nil)
       )
     }
 
