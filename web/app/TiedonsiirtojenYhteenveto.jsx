@@ -15,8 +15,8 @@ export const tiedonsiirtojenYhteenvetoContentP = () => tiedonsiirrotContentP('/k
                   <tr>
                     <th className="oppilaitos">Oppilaitos</th>
                     <th className="aika">Viimeisin siirto</th>
-                    <th className="siirretyt">Siirrettyjen lukumäärä <small>(viimeiset 7pv)</small></th>
-                    <th className="virheelliset">Virheellisten lukumäärä <small>(viimeiset 7pv)</small></th>
+                    <th className="siirretyt">Siirrettyjen lukumäärä</th>
+                    <th className="virheelliset">Virheellisten lukumäärä</th>
                     <th className="opiskeluoikeudet">Opiskelu-oikeuksien lukumäärä</th>
                     <th className="lähdejärjestelmä">Lähdejärjestelmä</th>
                     <th className="lähdejärjestelmä">Käyttäjä</th>
