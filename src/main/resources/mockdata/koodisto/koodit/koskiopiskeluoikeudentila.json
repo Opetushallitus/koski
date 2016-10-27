@@ -11,29 +11,6 @@
     "versio": 1
   },
   {
-    "koodiUri": "koskiopiskeluoikeudentila_erotettumaaraajaksi",
-    "koodiArvo": "erotettumaaraajaksi",
-    "metadata": [
-      {
-        "nimi": "Erotettu määräajaksi",
-        "kuvaus": "Erotettu määräajaksi, kuluttaa opiskeluoikeusaikaa",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },
-  {
-    "koodiUri": "koskiopiskeluoikeudentila_luvatonpoissaolo",
-    "koodiArvo": "luvatonpoissaolo",
-    "metadata": [
-      {
-        "nimi": "Luvaton poissaolo",
-        "kuvaus": "Luvaton poissaolo, kuluttaa opiskeluoikeusaikaa",
-        "kieli": "FI"
-      }
-    ],
-    "versio": 1
-  },  {
     "koodiUri": "koskiopiskeluoikeudentila_valmistunut",
     "koodiArvo": "valmistunut",
     "metadata": [
@@ -70,11 +47,11 @@
     "versio": 1
   },
   {
-    "koodiUri": "koskiopiskeluoikeudentila_keskeyttanytmaaraajaksi",
-    "koodiArvo": "keskeyttanytmaaraajaksi",
+    "koodiUri": "koskiopiskeluoikeudentila_valiaikaisestikeskeytynyt",
+    "koodiArvo": "valiaikaisestikeskeytynyt",
     "metadata": [
       {
-        "nimi": "Keskeyttänyt määräajaksi",
+        "nimi": "Väliaikaisesti keskeytynyt",
         "kuvaus": "Opiskeluoikeus keskeytetty määräajaksi. Ei kuluta opiskeluoikeusaikaa.",
         "kieli": "FI"
       }
