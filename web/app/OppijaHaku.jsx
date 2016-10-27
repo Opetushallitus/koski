@@ -3,7 +3,7 @@ import Bacon from 'baconjs'
 import Http from './http'
 import {navigateToOppija, navigateToUusiOppija} from './location'
 import {oppijaP, oppijaStateP, Oppija} from './Oppija.jsx'
-import { modelData, modelLookup, modelTitle, modelItems } from './EditorModel.js'
+import {modelData} from './EditorModel.js'
 
 const oppijaHakuE = new Bacon.Bus()
 
