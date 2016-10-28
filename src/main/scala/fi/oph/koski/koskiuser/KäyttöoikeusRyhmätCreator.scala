@@ -25,8 +25,8 @@ object KäyttöoikeusRyhmätCreator extends Logging {
       val tiedot = UusiKäyttöoikeusryhmä(ryhmä.nimi, ryhmä.nimi, ryhmä.nimi, organisaatioTyypit = organisaatioTyypit)
       olemassaOlevaRyhmä match {
         case Some(o) =>
-          logger.info("päivitetään " + ryhmä)
-          client.muokkaaKäyttöoikeusryhmä(o.id, tiedot)
+          // Ei päivitetä olemassa olevia ryhmiä
+          //client.muokkaaKäyttöoikeusryhmä(o.id, tiedot)
         case None =>
           logger.info("luodaan " + ryhmä)
           client.luoKäyttöoikeusryhmä(tiedot)
