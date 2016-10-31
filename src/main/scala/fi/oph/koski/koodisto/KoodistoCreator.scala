@@ -8,11 +8,11 @@ import fi.oph.koski.log.Logging
 import scala.collection.parallel.immutable.ParSeq
 
 object KoodistoCreator extends Logging {
-  def createKoodistotFromMockData(config: Config): Unit = {
+  def createKoodistotFromMockData(koodistot: List[String], config: Config): Unit = {
     val kp = KoodistoPalvelu.withoutCache(config)
     val kmp = KoodistoMuokkausPalvelu(config)
 
-    val luotavatKoodistot = MockKoodistoPalvelu.koodistot.par.filter(kp.getLatestVersion(_).isEmpty).toList
+    val luotavatKoodistot = koodistot.par.filter(kp.getLatestVersion(_).isEmpty).toList
 
     luotavatKoodistot.foreach { koodistoUri =>
       MockKoodistoPalvelu().getKoodisto(KoodistoViite(koodistoUri, 1)) match {
@@ -25,7 +25,7 @@ object KoodistoCreator extends Logging {
       }
     }
 
-    MockKoodistoPalvelu.koodistot.par.foreach { koodistoUri =>
+    koodistot.par.foreach { koodistoUri =>
       val koodistoViite: KoodistoViite = kp.getLatestVersion(koodistoUri).getOrElse(throw new Exception("Koodistoa ei löydy: " + koodistoUri))
       val koodit = kp.getKoodistoKoodit(koodistoViite).toList.flatten
       val luotavatKoodit = MockKoodistoPalvelu().getKoodistoKoodit(koodistoViite).toList.flatten.filter { koodi: KoodistoKoodi => !koodit.find(_.koodiArvo == koodi.koodiArvo).isDefined }
@@ -35,7 +35,6 @@ object KoodistoCreator extends Logging {
       }
     }
   }
-
 }
 
 

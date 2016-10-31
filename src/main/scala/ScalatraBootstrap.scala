@@ -8,7 +8,7 @@ import fi.oph.koski.editor.EditorServlet
 import fi.oph.koski.fixture.{FixtureServlet, Fixtures}
 import fi.oph.koski.healthcheck.{HealthCheckApiServlet, HealthCheckHtmlServlet}
 import fi.oph.koski.history.KoskiHistoryServlet
-import fi.oph.koski.koodisto.KoodistoCreator
+import fi.oph.koski.koodisto.{KoodistoCreator, MockKoodistoPalvelu}
 import fi.oph.koski.koski._
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.Logging
@@ -35,7 +35,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     val application = Option(context.getAttribute("koski.application").asInstanceOf[KoskiApplication]).getOrElse(KoskiApplication.apply)
 
     if (application.config.getBoolean("koodisto.create")) {
-      tryCatch("Koodistojen luonti") { KoodistoCreator.createKoodistotFromMockData(application.config) }
+      tryCatch("Koodistojen luonti") { KoodistoCreator.createKoodistotFromMockData(MockKoodistoPalvelu.koskiKoodistot, application.config) }
     }
 
     if (application.config.getBoolean("käyttöoikeusryhmät.create")) {

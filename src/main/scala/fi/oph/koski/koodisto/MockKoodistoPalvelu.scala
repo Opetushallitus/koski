@@ -36,7 +36,7 @@ object MockKoodistoPalvelu {
     4) Aja koski-applikaatio -Dconfig.resource=koskidev.conf -Dkoodisto.create=true, jolloin uusi koodisto kopioituu myös koskidev-ympäristöön.
 
    */
-  val koodistot = List (
+  val koskiKoodistot = List (
     "aineryhmaib",
     "ammatillisenerityisopetuksenperuste",
     "ammatillisennaytonarvioinnistapaattaneet",
@@ -53,45 +53,49 @@ object MockKoodistoPalvelu {
     "arviointiasteikkoyleissivistava",
     "effortasteikkoib",
     "erityinenkoulutustehtava",
-    "jarjestamismuoto",
-    "kieli",
-    "kielivalikoima",
     "koskiopiskeluoikeudentila",
     "koskioppiaineetyleissivistava",
     "koskiyoarvosanat",
-    "koulutus",
-    "kunta",
     "lahdejarjestelma",
     "lasnaolotila",
     "lukionkurssintyyppi",
-    "lukionkurssit",
     "lukionoppimaara",
-    "maatjavaltiot2",
     "opetusryhma",
-    "opintojenlaajuusyksikko",
     "opintojenrahoitus",
     "opiskeluoikeudentyyppi",
     "oppiaineaidinkielijakirjallisuus",
     "oppiaineentasoib",
     "oppiaineetib",
-    "oppiainematematiikka",
-    "oppilaitosnumero",
-    "oppilaitostyyppi",
-    "osaamisala",
     "perusopetuksenluokkaaste",
     "perusopetuksenoppimaara",
     "perusopetuksentodistuksenliitetieto",
     "perusopetuksensuoritustapa",
     "perusopetuksentoimintaalue",
     "perusopetuksentukimuoto",
+    "suorituksentyyppi"
+  )
+  val muutKoodistot = List (
+    "jarjestamismuoto",
+    "kieli",
+    "kielivalikoima",
+    "koulutus",
+    "kunta",
+    "lukionkurssit",
+    "maatjavaltiot2",
+    "opintojenlaajuusyksikko",
+    "oppiainematematiikka",
+    "oppilaitosnumero",
+    "oppilaitostyyppi",
+    "osaamisala",
     "suorituksentila",
-    "suorituksentyyppi",
     "tutkinnonosat",
     "tutkintonimikkeet",
     "virtaarvosana",
     "virtalukukausiilmtila",
     "virtaopiskeluoikeudentila"
   )
+
+  val koodistot = koskiKoodistot ++ muutKoodistot
 
   protected[koodisto] def koodistoKooditResourceName(koodistoUri: String) = koodistot.find(_ == koodistoUri).map(uri => "/mockdata/koodisto/koodit/" + uri + ".json")
   protected[koodisto] def koodistoResourceName(koodistoUri: String): Option[String] = {
