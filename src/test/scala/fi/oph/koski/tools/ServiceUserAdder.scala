@@ -28,7 +28,7 @@ object ServiceUserAdder extends App with Logging {
       authService.syncLdap(oid)
       logger.info("Set password " + password + ", requested LDAP sync")
 
-      luoLähdejärjestelmä(lahdejarjestelma)
+      validoiLähdejärjestelmä(lahdejarjestelma)
 
       println(
         s"""Hei,
@@ -63,13 +63,12 @@ object ServiceUserAdder extends App with Logging {
         """.stripMargin)
   }
 
-  def luoLähdejärjestelmä(lahdejarjestelma: String): Unit = {
+  def validoiLähdejärjestelmä(lahdejarjestelma: String): Unit = {
     val koodiarvo = lahdejarjestelma
     val koodisto = kp.getLatestVersion("lahdejarjestelma").get
 
     if (!kp.getKoodistoKoodit(koodisto).toList.flatten.find(_.koodiArvo == koodiarvo).isDefined) {
-      kmp.createKoodi("lahdejarjestelma", KoodistoKoodi("lahdejarjestelma_" + koodiarvo, koodiarvo, List(KoodistoKoodiMetadata(Some(koodiarvo), None, None, Some("FI"))), 1, Some(LocalDate.now)))
-      logger.info("Luotu lähdejärjestelmäkoodi " + koodiarvo)
+      throw new RuntimeException("Tuntematon lähdejärjestelmä " + koodiarvo)
     }
   }
 
