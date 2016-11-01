@@ -116,8 +116,8 @@ PostgreSQL jää pyörimään konsoliin ja voit sammuttaa sen painamalla ctrl-c.
 
 Käynnistyessään Koski-sovellus huomaa, jos tietokanta on jo käynnissä, eikä siinä tapauksessa yritä käynnistää sitä.
 
-Kehityksessä käytetään kahta kantaa: `tor` jota käytetään normaalisti ja `tortest` jota käytetään automaattisissa
-testeissä (tämä kanta tyhjennetään aina testiajon alussa). Molemmat kannat sisältävät `tor` -skeeman, ja sijaitsevat
+Kehityksessä käytetään kahta kantaa: `koski` jota käytetään normaalisti ja `koskitest` jota käytetään automaattisissa
+testeissä (tämä kanta tyhjennetään aina testiajon alussa). Molemmat kannat sisältävät `koski` -skeeman, ja sijaitsevat
 fyysisesti samassa datahakemistossa.
 
 
@@ -125,8 +125,8 @@ fyysisesti samassa datahakemistossa.
 
 Jos ja kun haluat tarkastella paikallisen kehityskannan tilaa SQL-työkalulla, se onnistuu esimerkiksi Postgren omalla komentorivityökalulla `psql`:
 
-    psql -h localhost tor tor
-    psql -h localhost tortest tor
+    psql -h localhost koski koski
+    psql -h localhost koskitest koski
 
 Peruskomennot
 
@@ -195,15 +195,11 @@ Koski-sovelluskoodissa audit-loggaus tehdään `AuditLog`-luokan kautta ja sovel
 
 Testiympäristön Koski löytyy täältä:
 
-    https://koskidev.koski.oph.reaktor.fi/koski/
+    https://dev.koski.opintopolku.fi//koski/
 
-Ympäristöön kuuluvat Opintopolku-palvelun osat täällä:
+Ympäristöön kuuluvat Opintopolku-palvelun osat, esimerkiksi henkilöpalvelu:
 
-    https://virkailija.tordev.tor.oph.reaktor.fi/
-
-Esimerkiksi henkilöpalvelu:
-
-    https://virkailija.tordev.tor.oph.reaktor.fi/authentication-service/swagger/index.html
+    https://dev.koski.opintopolku.fi/authentication-service/swagger/index.html
 
 Testiympäristö käyttää tuotannon ePerusteet-palvelua
 

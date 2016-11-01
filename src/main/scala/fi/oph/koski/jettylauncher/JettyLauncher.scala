@@ -17,7 +17,7 @@ import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.eclipse.jetty.webapp.WebAppContext
 
 object JettyLauncher extends App with Logging {
-  lazy val globalPort = System.getProperty("tor.port","7021").toInt
+  lazy val globalPort = System.getProperty("koski.port","7021").toInt
   try {
     new JettyLauncher(globalPort).start.join
   } catch {
@@ -104,4 +104,4 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) e
   }
 }
 
-object SharedJetty extends JettyLauncher(PortChecker.findFreeLocalPort, Map("db.name" -> "tortest", "fixtures.use" -> "true"))
+object SharedJetty extends JettyLauncher(PortChecker.findFreeLocalPort, Map("db.name" -> "koskitest", "fixtures.use" -> "true"))

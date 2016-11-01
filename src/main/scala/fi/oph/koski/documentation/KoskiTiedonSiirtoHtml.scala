@@ -44,12 +44,12 @@ Käytettävä JSON-dataformaatti on kuvattu [JSON-schemalla](http://json-schema.
 
 <div class="preview-image-links">
   <a href="${schemaViewerUrl}">
-    <image src="/koski/images/tor-schema-preview.png">
+    <image src="/koski/images/koski-schema-preview.png">
     <div class="caption">Visualisoitu JSON-schema</div>
     <p>Voi tarkastella schemaa visualisointityökalun avulla. Tällä työkalulla voi myös validoida JSON-viestejä schemaa vasten. Klikkaamalla kenttiä saat näkyviin niiden tarkemmat kuvaukset.</p>
   </a>
   <a href="${schemaFileUrl}">
-    <image src="/koski/images/tor-schema-json-preview.png">
+    <image src="/koski/images/koski-schema-json-preview.png">
     <div class="caption">Lataa JSON-tiedostona</div>
     <p>Voit myös ladata scheman tiedostona</p>
   </a>
