@@ -1,3 +1,7 @@
+## 27.10.2016
+
+- Poistettu opiskeluoikeudesta läsnäolotiedot (riittävä tietotaso saadaan opiskeluoikeuden tilan opiskeluoikeusjaksoista)
+
 ## 6.10.2016
 
 - Lisätty todistuksellaNäkyvätLisätiedot Pre-IB-suoritukseen sekä perusopetuksen ja lukion oppiaineen oppimäärän suoritukseen
