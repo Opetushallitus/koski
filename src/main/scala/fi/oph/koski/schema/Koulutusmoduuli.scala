@@ -2,7 +2,7 @@ package fi.oph.koski.schema
 
 import fi.oph.koski.localization.LocalizedString._
 import fi.oph.koski.localization.{Localizable, LocalizedString}
-import fi.oph.scalaschema.annotation.{Description, MinValue}
+import fi.oph.scalaschema.annotation.{Description, MinValueExclusive}
 
 trait Koulutusmoduuli extends Localizable {
   @Representative
@@ -38,7 +38,7 @@ trait PaikallinenKoulutusmoduuli extends Koulutusmoduuli {
 @Description("Tutkinnon tai tutkinnon osan laajuus. Koostuu opintojen laajuuden arvosta ja yksiköstä")
 trait Laajuus {
   @Description("Opintojen laajuuden arvo")
-  @MinValue(0)
+  @MinValueExclusive(0)
   def arvo: Float
   @Description("Opintojen laajuuden yksikkö")
   @KoodistoUri("opintojenlaajuusyksikko")
