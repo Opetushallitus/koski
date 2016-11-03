@@ -115,7 +115,7 @@ case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepos
       koulutusmoduuli = KorkeakoulunOpintojakso(
         tunniste = PaikallinenKoodi((suoritus \\ "@koulutusmoduulitunniste").text, nimi(suoritus)),
         nimi = nimi(suoritus),
-        laajuus = (suoritus \ "Laajuus" \ "Opintopiste").headOption.map(op => LaajuusOpintopisteissä(op.text.toFloat))
+        laajuus = (suoritus \ "Laajuus" \ "Opintopiste").headOption.map(_.text.toFloat).filter(_ > 0).map(op => LaajuusOpintopisteissä(op))
       ),
       arviointi = arviointi(suoritus),
       tila = requiredKoodi("suorituksentila", "VALMIS"),
