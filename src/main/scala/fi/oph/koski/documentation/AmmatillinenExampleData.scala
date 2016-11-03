@@ -81,6 +81,12 @@ object AmmatillinenExampleData {
     vahvistus = vahvistus(date(2013, 5, 31), stadinAmmattiopisto, helsinki)
   )
 
+  lazy val autonLisävarustetyöt = ValtakunnallinenTutkinnonOsa(
+    Koodistokoodiviite("100037", Some("Auton lisävarustetyöt"), "tutkinnonosat", Some(1)),
+    true,
+    None
+  )
+
   lazy val arviointiKiitettävä = Some(
     List(
       AmmatillinenArviointi(

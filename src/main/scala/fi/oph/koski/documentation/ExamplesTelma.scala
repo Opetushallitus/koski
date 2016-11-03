@@ -36,7 +36,12 @@ object ExamplesTelma {
             telmaKurssinSuoritus("TYV", "Työelämään valmentautuminen", 20f, pakollinen = true,
               sanallinenArvionti("Opiskelijalla on käsitys itsestä työntekijänä, mutta työyhteisön säännöt vaativat vielä harjaantumista.")),
             telmaKurssinSuoritus("TIV", "Tieto- ja viestintätekniikka sekä sen hyödyntäminen", 2f, pakollinen = false, arviointiHyväksytty, tunnustettu("Yhteisten tutkinnon osien osa-alue on suoritettu x- perustutkinnon perusteiden (2015) osaamistavoitteiden mukaisesti"), näyttö = Some(näyttö("Elokuvien jälkieditointi", "FinBio Oy"))),
-            telmaKurssinSuoritus("UV", "Uimaliikunta ja vesiturvallisuus", 5f, pakollinen = false, arvointiTyydyttävä, tunnustettu("Koulutuksen osa on tunnustettu Vesikallion urheiluopiston osaamistavoitteiden mukaisesti"))
+            telmaKurssinSuoritus("UV", "Uimaliikunta ja vesiturvallisuus", 5f, pakollinen = false, arvointiTyydyttävä, tunnustettu("Koulutuksen osa on tunnustettu Vesikallion urheiluopiston osaamistavoitteiden mukaisesti")),
+            TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus(
+              tila = tilaValmis,
+              koulutusmoduuli = autonLisävarustetyöt,
+              arviointi = arviointiHyväksytty
+            )
           ))
         ))
       )

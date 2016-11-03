@@ -45,10 +45,15 @@ object AmmattitutkintoExample {
         vahvistus = vahvistus(date(2015, 5, 31), stadinAmmattiopisto, helsinki),
         osasuoritukset = Some(List(
           NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
-            tila = tilaValmis, koulutusmoduuli = PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa(
+            tila = tilaValmis,
+            koulutusmoduuli = PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa(
               PaikallinenKoodi("104052", LocalizedString.finnish("Johtaminen ja henkilöstön kehittäminen")),
               "Johtamisen ja henkilöstön kehittämisen valmistava koulutus"
             )
+          ),
+          NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
+            tila = tilaValmis,
+            koulutusmoduuli = autonLisävarustetyöt
           )
         ))
       ),
@@ -340,11 +345,7 @@ object AmmatillinenOldExamples {
       vahvistus = vahvistus(date(2014, 11, 8), stadinAmmattiopisto, helsinki)
     ),
     AmmatillisenTutkinnonOsanSuoritus(
-      koulutusmoduuli = ValtakunnallinenTutkinnonOsa(
-        Koodistokoodiviite("100037", Some("Auton lisävarustetyöt"), "tutkinnonosat", Some(1)),
-        true,
-        None
-      ),
+      koulutusmoduuli = autonLisävarustetyöt,
       näyttö = Some(näyttö("Auton lisävarustetöitä", "Autokorjaamo Oy, Riihimäki")),
       suorituskieli = None,
       tila = tilaValmis,
