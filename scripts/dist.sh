@@ -15,6 +15,7 @@ function buildversiontxt() {
 artifactId=koski
 version=$version
 vcsRevision=`git rev-parse HEAD`
+buildDate=`date`
 EOL
 }
 
