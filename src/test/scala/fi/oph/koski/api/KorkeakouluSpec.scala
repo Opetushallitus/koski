@@ -78,7 +78,7 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
             |Kon-67.4208 Welding Methods and Production 4 3 23.6.2014
             |Kon-80.3125 Castings 4 4 21.12.2014
             |K901-D Diplomityö (KON) 30 4 21.3.2016
-            |ENG.matr Kypsyysnäyte 0 hyväksytty 8.3.2016
+            |ENG.matr Kypsyysnäyte hyväksytty 8.3.2016
             |MEN.thes Diplomityö 30 4 21.3.2016
             |K901-M Tieteen metodiikan opinnot (KON) 12 3 5.9.2014
             |Eri-0.5014 Searching for Scientific Information 2 hyväksytty 13.12.2013
@@ -131,7 +131,7 @@ class KorkeakouluSpec extends FunSpec with Matchers with OpiskeluoikeusTestMetho
             |106000 Kirurgisk vård 6 hyväksytty 6.6.2014
             |106000 Klinisk vård I 5 3 17.12.2013
             |106000 Klinisk vård II 5 1 20.3.2014
-            |106000 Läkemedelsräkning, terminstentamen för AV, februari, 5 tal 0 hyväksytty 12.2.2014
+            |106000 Läkemedelsräkning, terminstentamen för AV, februari, 5 tal hyväksytty 12.2.2014
             |106000 Medicinska ämnen I, Inremedicin 5 2 12.3.2014
             |106000 Patientsäkerhet och evidensbaserat vårdande 5 hyväksytty 12.2.2014""".stripMargin
         )
