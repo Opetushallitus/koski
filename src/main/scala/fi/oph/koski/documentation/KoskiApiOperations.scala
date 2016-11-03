@@ -4,7 +4,7 @@ import java.sql.Timestamp
 
 import fi.oph.koski.db.OpiskeluOikeusHistoryRow
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koodisto.MockKoodistoPalvelu
+import fi.oph.koski.koodisto.{Koodistot, MockKoodistoPalvelu}
 import fi.oph.koski.koski.ValidationResult
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.oppija.MockOppijat
@@ -24,7 +24,7 @@ object KoskiApiOperations {
      <p></p>,
      Nil,
      List(
-       PathParameter("nimi", "Koodiston nimi", MockKoodistoPalvelu.koodistot),
+       PathParameter("nimi", "Koodiston nimi", Koodistot.koodistot),
        PathParameter("versio", "Koodiston versio", List("latest"))
      ),
      List(

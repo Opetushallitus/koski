@@ -15,9 +15,10 @@ class RemoteKoodistoPalvelu(virkailijaUrl: String) extends KoodistoPalvelu with 
       case (200, text, _) =>
         val koodit: List[KoodistoKoodi] = Json.read[List[KoodistoKoodi]](text)
         Some(koodisto.koodistoUri match {
-          case "ammatillisentutkinnonosanlisatieto" => // Vain tästä koodistosta haetaan kuvaukset (muista ei tarvita tässä vaiheessa)
+          case uri if Koodistot.koskiKoodistot.contains(uri) => // Vain koski-koodistoista haetaan kaikki lisätiedot
             koodit.map(koodi => koodi.copy(metadata = getKoodiMetadata(koodi)))
-          case _ => koodit
+          case _ =>
+            koodit
         })
       case (status, text, uri) => throw new HttpStatusException(status, text, uri)
     })

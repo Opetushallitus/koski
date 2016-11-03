@@ -10,7 +10,7 @@ object KoodistoMockDataUpdater extends App with Logging {
 
   def updateMockDataFromKoodistoPalvelu(config: Config): Unit = {
     val kp = KoodistoPalvelu.withoutCache(config)
-    MockKoodistoPalvelu.koodistot.foreach(koodisto => updateMockDataForKoodisto(koodisto, kp))
+    Koodistot.koodistot.foreach(koodisto => updateMockDataForKoodisto(koodisto, kp))
   }
 
   private def updateMockDataForKoodisto(koodistoUri: String, kp: KoodistoPalvelu): Unit = {
