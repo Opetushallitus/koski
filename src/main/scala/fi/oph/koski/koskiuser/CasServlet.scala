@@ -29,7 +29,8 @@ class CasServlet(val application: KoskiApplication) extends ApiServlet with Auth
             haltWithStatus(KoskiErrorCategory.internalError(s"CAS service ticket validation failure"))
         }
       case None =>
-        haltWithStatus(KoskiErrorCategory.internalError("Got CAS login GET without ticket parameter"))
+        // Seems to happen with Haka login. Redirect to login seems to cause another redirect to here with the required "ticket" parameter present.
+        redirectAfterLogin
     }
   }
 
