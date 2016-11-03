@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{GlobalExecutionContext, OpiskeluOikeusRow}
 import fi.oph.koski.henkilo.HenkiloOid
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.http.{ErrorDetail, HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json.toJValue
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log._
@@ -23,17 +23,17 @@ class OppijaServlet(val application: KoskiApplication)
 
   put("/") {
     timed("PUT /oppija", thresholdMs = 10) {
-      withJsonBody { (oppijaJson: JValue) =>
+      storeTiedonsiirtoResultInCaseOfException { withJsonBody { (oppijaJson: JValue) =>
         val validationResult: Either[HttpStatus, Oppija] = application.validator.extractAndValidateOppija(oppijaJson)(koskiUser, AccessType.write)
         val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContext(koskiUser, application, request).putSingle(validationResult, oppijaJson)
         renderEither(result)
-      }(handleUnparseableJson)
+      }(parseErrorHandler = handleUnparseableJson)}
     }
   }
 
   put("/batch") {
     timed("PUT /oppija/batch", thresholdMs = 10) {
-      withJsonBody { parsedJson =>
+      storeTiedonsiirtoResultInCaseOfException { withJsonBody { parsedJson =>
         val putter = UpdateContext(koskiUser, application, request)
 
         val validationResults: List[(Either[HttpStatus, Oppija], JValue)] = application.validator.extractAndValidateBatch(parsedJson.asInstanceOf[JArray])(koskiUser, AccessType.write)
@@ -48,7 +48,7 @@ class OppijaServlet(val application: KoskiApplication)
         }.max)
 
         batchResults
-      }(handleUnparseableJson)
+      }(parseErrorHandler = handleUnparseableJson)}
     }
   }
 
@@ -82,6 +82,18 @@ class OppijaServlet(val application: KoskiApplication)
     application.tiedonsiirtoService.storeTiedonsiirtoResult(koskiUser, None, None, None, Some(TiedonsiirtoError(toJValue(Map("unparseableJson" -> request.body)), toJValue(status.errors))))
     haltWithStatus(status)
   }
+
+
+  private def storeTiedonsiirtoResultInCaseOfException[T](f: => T) = {
+    try {
+      f
+    } catch {
+      case e: Exception =>
+        application.tiedonsiirtoService.storeTiedonsiirtoResult(koskiUser, None, None, None, Some(TiedonsiirtoError(toJValue(Map("unparseableJson" -> request.body)), toJValue(KoskiErrorCategory.internalError().errors))))
+        throw e
+    }
+  }
+
 }
 
 /**

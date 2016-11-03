@@ -8,10 +8,10 @@ import org.json4s._
 import org.scalatra._
 
 trait ApiServlet extends KoskiBaseServlet with Logging with Timing with GZipSupport {
-  def withJsonBody(block: JValue => Any)(errorHandler: HttpStatus => Any = haltWithStatus) = {
+  def withJsonBody(block: JValue => Any)(parseErrorHandler: HttpStatus => Any = haltWithStatus) = {
     JsonBodySnatcher.getJsonBody(request) match {
       case Right(x) => block(x)
-      case Left(status: HttpStatus) => errorHandler(status)
+      case Left(status: HttpStatus) => parseErrorHandler(status)
     }
   }
 
