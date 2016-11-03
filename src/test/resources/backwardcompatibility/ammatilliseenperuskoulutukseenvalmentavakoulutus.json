@@ -301,14 +301,14 @@
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "APT",
+            "koodiarvo" : "100037",
             "nimi" : {
-              "fi" : "Ammatillisen perustutkinnon tutkinnon osat tai osa-alueet"
-            }
+              "fi" : "Auton lisävarustetyöt"
+            },
+            "koodistoUri" : "tutkinnonosat",
+            "koodistoVersio" : 1
           },
-          "kuvaus" : {
-            "fi" : "Ammatillisen perustutkinnon tutkinnon osat tai osa-alueet"
-          },
+          "pakollinen" : false,
           "laajuus" : {
             "arvo" : 15.0,
             "yksikkö" : {
@@ -318,8 +318,7 @@
               },
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
-          },
-          "pakollinen" : false
+          }
         },
         "tila" : {
           "koodiarvo" : "VALMIS",
@@ -327,13 +326,21 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "3",
+            "koodiarvo" : "Hyväksytty",
             "nimi" : {
-              "fi" : "K3"
+              "fi" : "Hyväksytty"
             },
-            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+            "koodistoVersio" : 1
           },
-          "päivä" : "2014-10-20",
+          "päivä" : "2013-03-20",
+          "arvioitsijat" : [ {
+            "nimi" : "Jaana Arstila"
+          }, {
+            "nimi" : "Pekka Saurmann"
+          }, {
+            "nimi" : "Juhani Mykkänen"
+          } ],
           "hyväksytty" : true
         } ],
         "tunnustettu" : {
@@ -413,102 +420,6 @@
           "selite" : {
             "fi" : "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
           }
-        },
-        "näyttö" : {
-          "kuvaus" : {
-            "fi" : "Huolto- ja korjaustyöt"
-          },
-          "suorituspaikka" : {
-            "tunniste" : {
-              "koodiarvo" : "1",
-              "nimi" : {
-                "fi" : "työpaikka"
-              },
-              "koodistoUri" : "ammatillisennaytonsuorituspaikka",
-              "koodistoVersio" : 1
-            },
-            "kuvaus" : {
-              "fi" : "Autokorjaamo Oy, Riihimäki"
-            }
-          },
-          "arviointi" : {
-            "arviointikohteet" : [ {
-              "tunniste" : {
-                "koodiarvo" : "1",
-                "nimi" : {
-                  "fi" : "Työprosessin hallinta"
-                },
-                "koodistoUri" : "ammatillisennaytonarviointikohde"
-              },
-              "arvosana" : {
-                "koodiarvo" : "3",
-                "nimi" : {
-                  "fi" : "K3"
-                },
-                "koodistoUri" : "arviointiasteikkoammatillinent1k3"
-              }
-            }, {
-              "tunniste" : {
-                "koodiarvo" : "2",
-                "nimi" : {
-                  "fi" : "Työmenetelmien, -välineiden ja materiaalin hallinta"
-                },
-                "koodistoUri" : "ammatillisennaytonarviointikohde"
-              },
-              "arvosana" : {
-                "koodiarvo" : "2",
-                "nimi" : {
-                  "fi" : "H2"
-                },
-                "koodistoUri" : "arviointiasteikkoammatillinent1k3"
-              }
-            }, {
-              "tunniste" : {
-                "koodiarvo" : "3",
-                "nimi" : {
-                  "fi" : "Työn perustana olevan tiedon hallinta"
-                },
-                "koodistoUri" : "ammatillisennaytonarviointikohde"
-              },
-              "arvosana" : {
-                "koodiarvo" : "2",
-                "nimi" : {
-                  "fi" : "H2"
-                },
-                "koodistoUri" : "arviointiasteikkoammatillinent1k3"
-              }
-            }, {
-              "tunniste" : {
-                "koodiarvo" : "4",
-                "nimi" : {
-                  "fi" : "Elinikäisen oppimisen avaintaidot"
-                },
-                "koodistoUri" : "ammatillisennaytonarviointikohde"
-              },
-              "arvosana" : {
-                "koodiarvo" : "3",
-                "nimi" : {
-                  "fi" : "K3"
-                },
-                "koodistoUri" : "arviointiasteikkoammatillinent1k3"
-              }
-            } ],
-            "arvioinnistaPäättäneet" : {
-              "koodiarvo" : "1",
-              "nimi" : {
-                "fi" : "Opettaja"
-              },
-              "koodistoUri" : "ammatillisennaytonarvioinnistapaattaneet"
-            },
-            "arviointikeskusteluunOsallistuneet" : {
-              "koodiarvo" : "1",
-              "nimi" : {
-                "fi" : "Opiskelija ja opettaja"
-              },
-              "koodistoUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet"
-            }
-          },
-          "työssäoppimisenYhteydessä" : false
         },
         "tyyppi" : {
           "koodiarvo" : "valmakoulutuksenosa",

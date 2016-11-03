@@ -53,7 +53,7 @@ object AmmattitutkintoExample {
           ),
           NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
             tila = tilaValmis,
-            koulutusmoduuli = autonLisävarustetyöt
+            koulutusmoduuli = autonLisävarustetyöt(false)
           )
         ))
       ),
@@ -345,7 +345,7 @@ object AmmatillinenOldExamples {
       vahvistus = vahvistus(date(2014, 11, 8), stadinAmmattiopisto, helsinki)
     ),
     AmmatillisenTutkinnonOsanSuoritus(
-      koulutusmoduuli = autonLisävarustetyöt,
+      koulutusmoduuli = autonLisävarustetyöt(true),
       näyttö = Some(näyttö("Auton lisävarustetöitä", "Autokorjaamo Oy, Riihimäki")),
       suorituskieli = None,
       tila = tilaValmis,

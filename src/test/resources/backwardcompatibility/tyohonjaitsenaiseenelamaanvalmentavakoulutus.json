@@ -331,6 +331,48 @@
           "koodiarvo" : "telmakoulutuksenosa",
           "koodistoUri" : "suorituksentyyppi"
         }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "100037",
+            "nimi" : {
+              "fi" : "Auton lisävarustetyöt"
+            },
+            "koodistoUri" : "tutkinnonosat",
+            "koodistoVersio" : 1
+          },
+          "pakollinen" : false,
+          "laajuus" : {
+            "arvo" : 15.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "Osaamispistettä"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "tila" : {
+          "koodiarvo" : "VALMIS",
+          "koodistoUri" : "suorituksentila"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Hyväksytty",
+            "nimi" : {
+              "fi" : "Hyväksytty"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+            "koodistoVersio" : 1
+          },
+          "päivä" : "2013-03-20",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "telmakoulutuksenosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       } ],
       "tyyppi" : {
         "koodiarvo" : "telma",

@@ -18,7 +18,7 @@ class ValmaSpec extends FunSpec with Matchers with TodistusTestMethods with Opis
           |Opiskeluvalmiuksien vahvistaminen 10 Hyväksytty
           |Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen 15 Hyväksytty
           |Arjen taitojen ja hyvinvoinnin vahvistaminen 10 Hyväksytty
-          |Ammatillisen perustutkinnon tutkinnon osat tai osa-alueet 1) 15 Kiitettävä 3
+          |Auton lisävarustetyöt 1) 15 Hyväksytty
           |Opiskelijan suorittamien koulutuksen osien laajuus osaamispisteinä 60
           |Lisätietoja:
           |1)Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta (3.10.2015, 39/011/2014), Stadin ammattiopisto""".stripMargin)

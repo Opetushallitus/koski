@@ -32,10 +32,9 @@ object ExamplesValma {
             valmaKurssinSuoritus("OV", "Opiskeluvalmiuksien vahvistaminen", 10f, arviointiHyväksytty, pakollinen = false),
             valmaKurssinSuoritus("TOV", "Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen", 15f, arviointiHyväksytty, pakollinen = false),
             valmaKurssinSuoritus("ATH", "Arjen taitojen ja hyvinvoinnin vahvistaminen", 10f, arviointiHyväksytty, pakollinen = false),
-            valmaKurssinSuoritus("APT", "Ammatillisen perustutkinnon tutkinnon osat tai osa-alueet", 15f, arviointiKiitettävä, pakollinen = false, tunnustettu = tunnustettu, näyttö = Some(näyttö("Huolto- ja korjaustyöt", "Autokorjaamo Oy, Riihimäki", Some(näytönArviointi)))),
             AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus(
               tila = tilaValmis,
-              koulutusmoduuli = autonLisävarustetyöt,
+              koulutusmoduuli = autonLisävarustetyöt(false),
               arviointi = arviointiHyväksytty,
               tunnustettu = tunnustettu
             )

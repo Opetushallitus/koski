@@ -39,7 +39,7 @@ object ExamplesTelma {
             telmaKurssinSuoritus("UV", "Uimaliikunta ja vesiturvallisuus", 5f, pakollinen = false, arvointiTyydyttävä, tunnustettu("Koulutuksen osa on tunnustettu Vesikallion urheiluopiston osaamistavoitteiden mukaisesti")),
             TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus(
               tila = tilaValmis,
-              koulutusmoduuli = autonLisävarustetyöt,
+              koulutusmoduuli = autonLisävarustetyöt(false),
               arviointi = arviointiHyväksytty
             )
           ))

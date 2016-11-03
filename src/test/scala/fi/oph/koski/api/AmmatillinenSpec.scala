@@ -45,6 +45,7 @@ class AmmatillinenSpec extends FreeSpec with TodistusTestMethods with LocalJetty
         |on osallistunut Autoalan työnjohdon erikoisammattitutkinto, valmistavaan koulutukseen 1.9.2012 seuraavilta osin:
         |Koulutuksen sisällöt
         |Johtaminen ja henkilöstön kehittäminen
+        |Auton lisävarustetyöt
         |Tutkintotodistuksen saamiseksi on osoitettava tukinnon perusteissa edellytetty ammattitaito tutkintotilaisuuksissa tutkintotoimikunnan valvonnassa. Tutkintotoimikunta antaa tutkintotodistuksen erikseen.""".stripMargin)
   }
 }
