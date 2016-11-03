@@ -1,3 +1,7 @@
+## 3.11.2016 
+
+- Suoritettavien koulutusmoduulien laajuus oltava > 0
+
 ## 27.10.2016
 
 - Poistettu opiskeluoikeudesta läsnäolotiedot (riittävä tietotaso saadaan opiskeluoikeuden tilan opiskeluoikeusjaksoista)
