@@ -22,8 +22,8 @@ class OppijaIntegrationTest extends FreeSpec with Matchers with KoskidevHttpSpec
     val o = oppija(testOid)
     val henkilö = o.henkilö.asInstanceOf[TäydellisetHenkilötiedot]
     henkilö.oid should equal(testOid)
-    (henkilö.kansalaisuus.get)(0).koodiarvo should equal("246")
-    henkilö.äidinkieli.get.koodiarvo should equal("FI")
+    henkilö.kansalaisuus.flatMap(_.headOption).map(_.koodiarvo) should equal(Some("246"))
+    henkilö.äidinkieli.map(_.koodiarvo) should equal(Some("FI"))
 
     o.opiskeluoikeudet.length should be >= 1
   }
