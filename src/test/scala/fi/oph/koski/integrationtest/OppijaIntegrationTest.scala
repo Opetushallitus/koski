@@ -10,7 +10,7 @@ import org.scalatest.{FreeSpec, Matchers}
 // You need to provide environment variables KOSKI_USER, KOSKI_PASS
 // Optionally override base url using KOSKI_BASE_URL for testing against your local server.
 class OppijaIntegrationTest extends FreeSpec with Matchers with KoskidevHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods {
-  val testOid = "1.2.246.562.24.51633620848"
+  val testOid = "1.2.246.562.24.92333381381"
 
   "Oppijan henkilötiedot, kansalaisuus ja äidinkieli" taggedAs(KoskiDevEnvironment) in {
     // This makes sure that our server is running, can authenticate a user, can insert data into the database and
