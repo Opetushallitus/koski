@@ -8,7 +8,7 @@ import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db.{KoskiDatabaseMethods, OpiskeluOikeusHistoryRow, OpiskeluOikeusStoredDataDeserializer}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.KoskiUser
+import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Opiskeluoikeus
 import org.json4s._
@@ -17,7 +17,7 @@ import slick.dbio.DBIOAction
 import slick.dbio.Effect.Write
 
 case class OpiskeluoikeusHistoryRepository(db: DB) extends KoskiDatabaseMethods with Logging with JsonMethods {
-  def findByOpiskeluoikeusId(id: Int, maxVersion: Int = Int.MaxValue)(implicit user: KoskiUser): Option[Seq[OpiskeluOikeusHistoryRow]] = {
+  def findByOpiskeluoikeusId(id: Int, maxVersion: Int = Int.MaxValue)(implicit user: KoskiSession): Option[Seq[OpiskeluOikeusHistoryRow]] = {
     val query = OpiskeluOikeudetWithAccessCheck.filter(_.id === id)
       .join(OpiskeluOikeusHistoria.filter(_.versionumero <= maxVersion))
       .on(_.id === _.opiskeluoikeusId)
@@ -30,7 +30,7 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends KoskiDatabaseMethods 
     }
   }
 
-  def findVersion(id: Int, version: Int)(implicit user: KoskiUser): Either[HttpStatus, Opiskeluoikeus] = {
+  def findVersion(id: Int, version: Int)(implicit user: KoskiSession): Either[HttpStatus, Opiskeluoikeus] = {
     findByOpiskeluoikeusId(id, version) match {
       case Some(diffs) =>
         if (diffs.length < version) {

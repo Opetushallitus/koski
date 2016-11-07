@@ -9,7 +9,7 @@ import fi.oph.koski.schema.{Organisaatio, OrganisaatioWithOid}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class KoskiUser(user: AuthenticationUser, val clientIp: String, käyttöoikeudet: => Set[Käyttöoikeus]) extends LogUserContext with UserWithUsername with Loggable with Logging {
+class KoskiSession(user: AuthenticationUser, val clientIp: String, käyttöoikeudet: => Set[Käyttöoikeus]) extends LogUserContext with UserWithUsername with Loggable with Logging {
   def oid = user.oid
   def username = user.username
   def lang = "fi"
@@ -41,12 +41,12 @@ class KoskiUser(user: AuthenticationUser, val clientIp: String, käyttöoikeudet
   Future(käyttöoikeudet)(ExecutionContext.global) // haetaan käyttöoikeudet toisessa säikeessä rinnakkain
 }
 
-object KoskiUser {
-  def apply(user: AuthenticationUser, request: HttpServletRequest, käyttöoikeudet: KäyttöoikeusRepository): KoskiUser = {
-    new KoskiUser(user, LogUserContext.clientIpFromRequest(request), käyttöoikeudet.käyttäjänKäyttöoikeudet(user))
+object KoskiSession {
+  def apply(user: AuthenticationUser, request: HttpServletRequest, käyttöoikeudet: KäyttöoikeusRepository): KoskiSession = {
+    new KoskiSession(user, LogUserContext.clientIpFromRequest(request), käyttöoikeudet.käyttäjänKäyttöoikeudet(user))
   }
 
   private val KOSKI_SYSTEM_USER: String = "Koski system user"
   // Internal user with root access
-  val systemUser = new KoskiUser(AuthenticationUser(KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, None), "KOSKI_SYSTEM", Set(KäyttöoikeusGlobal(List(PalveluRooli(OPHPAAKAYTTAJA)))))
+  val systemUser = new KoskiSession(AuthenticationUser(KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, None), "KOSKI_SYSTEM", Set(KäyttöoikeusGlobal(List(PalveluRooli(OPHPAAKAYTTAJA)))))
 }

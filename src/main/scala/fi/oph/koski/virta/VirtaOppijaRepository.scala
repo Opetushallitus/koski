@@ -1,13 +1,13 @@
 package fi.oph.koski.virta
 
 import fi.oph.koski.henkilo.Hetu
-import fi.oph.koski.koskiuser.KoskiUser
+import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppija.{AuxiliaryOppijaRepository, OppijaRepository}
 import fi.oph.koski.schema.UusiHenkilö
 
 case class VirtaOppijaRepository(v: VirtaClient, henkilöpalvelu: OppijaRepository, accessChecker: VirtaAccessChecker) extends AuxiliaryOppijaRepository with Logging {
-  override def findOppijat(query: String)(implicit user: KoskiUser) = {
+  override def findOppijat(query: String)(implicit user: KoskiSession) = {
     if (!accessChecker.hasAccess(user)) {
       Nil
     } else {

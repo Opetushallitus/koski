@@ -24,8 +24,8 @@ class OppijaServlet(val application: KoskiApplication)
   put("/") {
     timed("PUT /oppija", thresholdMs = 10) {
       storeTiedonsiirtoResultInCaseOfException { withJsonBody { (oppijaJson: JValue) =>
-        val validationResult: Either[HttpStatus, Oppija] = application.validator.extractAndValidateOppija(oppijaJson)(koskiUser, AccessType.write)
-        val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContext(koskiUser, application, request).putSingle(validationResult, oppijaJson)
+        val validationResult: Either[HttpStatus, Oppija] = application.validator.extractAndValidateOppija(oppijaJson)(koskiSession, AccessType.write)
+        val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContext(koskiSession, application, request).putSingle(validationResult, oppijaJson)
         renderEither(result)
       }(parseErrorHandler = handleUnparseableJson)}
     }
@@ -34,9 +34,9 @@ class OppijaServlet(val application: KoskiApplication)
   put("/batch") {
     timed("PUT /oppija/batch", thresholdMs = 10) {
       storeTiedonsiirtoResultInCaseOfException { withJsonBody { parsedJson =>
-        val putter = UpdateContext(koskiUser, application, request)
+        val putter = UpdateContext(koskiSession, application, request)
 
-        val validationResults: List[(Either[HttpStatus, Oppija], JValue)] = application.validator.extractAndValidateBatch(parsedJson.asInstanceOf[JArray])(koskiUser, AccessType.write)
+        val validationResults: List[(Either[HttpStatus, Oppija], JValue)] = application.validator.extractAndValidateBatch(parsedJson.asInstanceOf[JArray])(koskiSession, AccessType.write)
 
         val batchResults: List[Either[HttpStatus, HenkilönOpiskeluoikeusVersiot]] = validationResults.par.map { results =>
           putter.putSingle(results._1, results._2)
@@ -59,27 +59,27 @@ class OppijaServlet(val application: KoskiApplication)
   }
 
   get("/:oid") {
-    renderEither(findByOid(params("oid"), koskiUser))
+    renderEither(findByOid(params("oid"), koskiSession))
   }
 
   get("/search") {
     contentType = "application/json;charset=utf-8"
     params.get("query") match {
       case Some(query) if (query.length >= 3) =>
-        application.facade.findOppijat(query.toUpperCase)(koskiUser)
+        application.facade.findOppijat(query.toUpperCase)(koskiSession)
       case _ =>
         throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort)
     }
   }
 
-  private def findByOid(oid: String, user: KoskiUser): Either[HttpStatus, Oppija] = {
+  private def findByOid(oid: String, user: KoskiSession): Either[HttpStatus, Oppija] = {
     HenkiloOid.validateHenkilöOid(oid).right.flatMap { oid =>
       application.facade.findOppija(oid)(user)
     }
   }
 
   private def handleUnparseableJson(status: HttpStatus) = {
-    application.tiedonsiirtoService.storeTiedonsiirtoResult(koskiUser, None, None, None, Some(TiedonsiirtoError(toJValue(Map("unparseableJson" -> request.body)), toJValue(status.errors))))
+    application.tiedonsiirtoService.storeTiedonsiirtoResult(koskiSession, None, None, None, Some(TiedonsiirtoError(toJValue(Map("unparseableJson" -> request.body)), toJValue(status.errors))))
     haltWithStatus(status)
   }
 
@@ -89,7 +89,7 @@ class OppijaServlet(val application: KoskiApplication)
       f
     } catch {
       case e: Exception =>
-        application.tiedonsiirtoService.storeTiedonsiirtoResult(koskiUser, None, None, None, Some(TiedonsiirtoError(toJValue(Map("unparseableJson" -> request.body)), toJValue(KoskiErrorCategory.internalError().errors))))
+        application.tiedonsiirtoService.storeTiedonsiirtoResult(koskiSession, None, None, None, Some(TiedonsiirtoError(toJValue(Map("unparseableJson" -> request.body)), toJValue(KoskiErrorCategory.internalError().errors))))
         throw e
     }
   }
@@ -100,7 +100,7 @@ class OppijaServlet(val application: KoskiApplication)
   *  Operating context for data updates. Operates outside the lecixal scope of OppijaServlet to ensure that none of the
   *  Scalatra threadlocals are used. This must be done because in batch mode, we are running in several threads.
   */
-case class UpdateContext(user: KoskiUser, application: KoskiApplication, request: HttpServletRequest) extends Logging {
+case class UpdateContext(user: KoskiSession, application: KoskiApplication, request: HttpServletRequest) extends Logging {
   def putSingle(validationResult: Either[HttpStatus, Oppija], oppijaJsonFromRequest: JValue): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
 
     val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = validationResult.right.flatMap(application.facade.createOrUpdate(_)(user))
@@ -122,9 +122,9 @@ trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with 
   def application: KoskiApplication
 
   def query: Observable[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])] = {
-    logger(koskiUser).info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
+    logger(koskiSession).info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
 
-    application.facade.findOppijat(params.toList, koskiUser) match {
+    application.facade.findOppijat(params.toList, koskiSession) match {
       case Right(oppijat) => oppijat
       case Left(status) => haltWithStatus(status)
     }

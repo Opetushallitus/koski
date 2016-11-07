@@ -4,11 +4,11 @@ import fi.oph.koski.henkilo.AuthenticationServiceClient.{OppijaHenkilö, QueryHe
 import fi.oph.koski.henkilo._
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
-import fi.oph.koski.koskiuser.KoskiUser
+import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema._
 
 class OpintopolkuOppijaRepository(henkilöPalveluClient: AuthenticationServiceClient, koodisto: KoodistoViitePalvelu) extends OppijaRepository {
-  override def findOppijat(query: String)(implicit user: KoskiUser): List[HenkilötiedotJaOid] = {
+  override def findOppijat(query: String)(implicit user: KoskiSession): List[HenkilötiedotJaOid] = {
     if (Henkilö.isHenkilöOid(query)) {
       findByOid(query).map(_.toHenkilötiedotJaOid).toList
     } else {

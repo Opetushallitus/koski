@@ -6,6 +6,6 @@ import fi.oph.koski.servlet.{ApiServlet, Cached24Hours, UserSessionCached}
 
 class OppilaitosServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Cached24Hours with UserSessionCached {
   get("/") {
-    application.oppilaitosRepository.oppilaitokset(koskiUser).toList
+    application.oppilaitosRepository.oppilaitokset(koskiSession).toList
   }
 }

@@ -4,7 +4,7 @@ import fi.oph.koski.cache._
 import fi.oph.koski.henkilo.AuthenticationServiceClient
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.koskiuser.KoskiUser
+import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.TimedProxy
 import fi.oph.koski.schema._
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOppijaRepository}
@@ -15,11 +15,11 @@ trait OppijaRepository extends AuxiliaryOppijaRepository {
   def findByOids(oids: List[String]): List[TäydellisetHenkilötiedot]
   def resetFixtures {}
   def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, Henkilö.Oid]
-  def findOppijat(query: String)(implicit user: KoskiUser): List[HenkilötiedotJaOid]
+  def findOppijat(query: String)(implicit user: KoskiSession): List[HenkilötiedotJaOid]
 }
 
 trait AuxiliaryOppijaRepository {
-  def findOppijat(query: String)(implicit user: KoskiUser): List[HenkilötiedotJaOid]
+  def findOppijat(query: String)(implicit user: KoskiSession): List[HenkilötiedotJaOid]
 }
 
 object OppijaRepository {
@@ -43,5 +43,5 @@ case class CachingOppijaRepository(repository: OppijaRepository)(implicit cacheI
   // Other methods just call the non-cached implementation
   override def findByOids(oids: List[String]) = repository.findByOids(oids)
   override def findOrCreate(henkilö: UusiHenkilö) = repository.findOrCreate(henkilö)
-  override def findOppijat(query: String)(implicit user: KoskiUser) = repository.findOppijat(query)
+  override def findOppijat(query: String)(implicit user: KoskiSession) = repository.findOppijat(query)
 }

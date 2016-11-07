@@ -1,13 +1,13 @@
 package fi.oph.koski.ytr
 
 import fi.oph.koski.henkilo.Hetu
-import fi.oph.koski.koskiuser.{AccessChecker, KoskiUser}
+import fi.oph.koski.koskiuser.{AccessChecker, KoskiSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppija.{AuxiliaryOppijaRepository, OppijaRepository}
 import fi.oph.koski.schema.UusiHenkilö
 
 case class YtrOppijaRepository(ytr: YlioppilasTutkintoRekisteri, henkilöpalvelu: OppijaRepository, accessChecker: AccessChecker) extends AuxiliaryOppijaRepository with Logging {
-  override def findOppijat(query: String)(implicit user: KoskiUser) = if (!accessChecker.hasAccess(user)) {
+  override def findOppijat(query: String)(implicit user: KoskiSession) = if (!accessChecker.hasAccess(user)) {
     Nil
   } else {
     Hetu.validFormat(query) match {

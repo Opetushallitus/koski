@@ -7,7 +7,7 @@ import fi.oph.koski.db._
 import fi.oph.koski.documentation._
 import fi.oph.koski.json.Json
 import fi.oph.koski.koski.KoskiValidator
-import fi.oph.koski.koskiuser.{AccessType, KoskiUser}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.opiskeluoikeus.OpiskeluOikeusRepository
 import fi.oph.koski.oppija.{MockOppijat, OppijaRepository, VerifiedOppijaOid}
 import fi.oph.koski.organisaatio.{OrganisaatioRepository, MockOrganisaatiot}
@@ -18,7 +18,7 @@ import slick.dbio.DBIO
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 
 class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluOikeusRepository, oppijaRepository: OppijaRepository, validator: KoskiValidator) extends KoskiDatabaseMethods with Timing {
-  implicit val user = KoskiUser.systemUser
+  implicit val user = KoskiSession.systemUser
   val db = database.db
   implicit val accessType = AccessType.write
 

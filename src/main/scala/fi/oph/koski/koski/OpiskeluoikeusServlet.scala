@@ -10,7 +10,7 @@ import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 class OpiskeluoikeusServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Logging with NoCache {
   get("/:id") {
-    val findResult: Either[HttpStatus, OpiskeluOikeusRow] = application.facade.findOpiskeluOikeus(getIntegerParam("id"))(koskiUser)
+    val findResult: Either[HttpStatus, OpiskeluOikeusRow] = application.facade.findOpiskeluOikeus(getIntegerParam("id"))(koskiSession)
     val result: Either[HttpStatus, Opiskeluoikeus] = findResult
       .right.map(_.toOpiskeluOikeus)
     renderEither(result)

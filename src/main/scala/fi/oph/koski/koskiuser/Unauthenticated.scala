@@ -1,5 +1,7 @@
 package fi.oph.koski.koskiuser
 
-trait Unauthenticated {
-  def koskiUserOption = None
+import fi.oph.koski.servlet.KoskiBaseServlet
+
+trait Unauthenticated extends KoskiBaseServlet {
+  override def koskiSessionOption = None
 }

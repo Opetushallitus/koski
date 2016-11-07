@@ -1,11 +1,11 @@
 package fi.oph.koski.todistus
 
-import fi.oph.koski.koskiuser.KoskiUser
+import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedString._
 import fi.oph.koski.schema._
 
-class LuvaTodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
+class LuvaTodistusHtml(implicit val user: KoskiSession) extends TodistusHtml {
   def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: Suoritus) = {
     val oppiaineet: List[Suoritus] = päättötodistus.osasuoritukset.toList.flatten
 

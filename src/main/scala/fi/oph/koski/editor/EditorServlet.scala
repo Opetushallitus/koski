@@ -6,18 +6,18 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.HenkiloOid
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koski.ValidationAndResolvingContext
-import fi.oph.koski.koskiuser.{AccessType, KoskiUser, RequiresAuthentication}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresAuthentication}
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.scalaschema.ClassSchema
 
 class EditorServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache {
   get("/:oid") {
-    renderEither(findByOid(params("oid"), koskiUser))
+    renderEither(findByOid(params("oid"), koskiSession))
   }
 
   get("/omattiedot") {
-    renderEither(findByUserOppija(koskiUser))
+    renderEither(findByUserOppija(koskiSession))
   }
 
   get("/koodit/:koodistoUri") {
@@ -30,12 +30,12 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
   }
 
   get("/organisaatiot") {
-    def organisaatiot = koskiUser.organisationOids(AccessType.write).flatMap(context.organisaatioRepository.getOrganisaatio).toList
+    def organisaatiot = koskiSession.organisationOids(AccessType.write).flatMap(context.organisaatioRepository.getOrganisaatio).toList
     organisaatiot.map(modelBuilder.organisaatioEnumValue(_))
   }
 
   get("/oppilaitokset") {
-    def organisaatiot = koskiUser.organisationOids(AccessType.write).flatMap(context.organisaatioRepository.getOrganisaatio).toList
+    def organisaatiot = koskiSession.organisationOids(AccessType.write).flatMap(context.organisaatioRepository.getOrganisaatio).toList
     organisaatiot.flatMap(_.toOppilaitos).map(modelBuilder.organisaatioEnumValue(_))
   }
 
@@ -47,15 +47,15 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
   }
 
   private val context: ValidationAndResolvingContext = ValidationAndResolvingContext(application.koodistoViitePalvelu, application.organisaatioRepository)
-  private def modelBuilder = new EditorModelBuilder(context, EditorSchema.schema)(koskiUser)
+  private def modelBuilder = new EditorModelBuilder(context, EditorSchema.schema)(koskiSession)
 
-  private def findByOid(oid: String, user: KoskiUser): Either[HttpStatus, EditorModel] = {
+  private def findByOid(oid: String, user: KoskiSession): Either[HttpStatus, EditorModel] = {
     HenkiloOid.validateHenkilöOid(oid).right.flatMap { oid =>
       toEditorModel(application.facade.findOppija(oid)(user))
     }
   }
 
-  private def findByUserOppija(user: KoskiUser): Either[HttpStatus, EditorModel] = {
+  private def findByUserOppija(user: KoskiSession): Either[HttpStatus, EditorModel] = {
     toEditorModel(application.facade.findUserOppija(user))
   }
 

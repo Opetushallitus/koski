@@ -1,10 +1,10 @@
 package fi.oph.koski.todistus
 
-import fi.oph.koski.koskiuser.KoskiUser
+import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema._
 import fi.oph.koski.tutkinto.{RakenneModuuli, SuoritustapaJaRakenne}
 
-class AmmatillisenPerustutkinnonPaattotodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
+class AmmatillisenPerustutkinnonPaattotodistusHtml(implicit val user: KoskiSession) extends TodistusHtml {
   def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, tutkintoSuoritus: AmmatillisenTutkinnonSuoritus, rakenne: SuoritustapaJaRakenne) = {
     val päätasot: List[RakenneModuuli] = rakenne.rakenne match {
       case Some(moduuli: RakenneModuuli) => moduuli.osat.map(_.asInstanceOf[RakenneModuuli])

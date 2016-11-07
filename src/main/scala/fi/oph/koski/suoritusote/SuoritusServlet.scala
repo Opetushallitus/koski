@@ -10,7 +10,7 @@ class SuoritusServlet(val application: KoskiApplication) extends HtmlServlet wit
 
   get("/:oppijaOid") {
     val oppijaOid = params("oppijaOid")
-    implicit val user = koskiUser
+    implicit val user = koskiSession
 
     renderEither(OpiskeluoikeusFinder(application.facade).opiskeluoikeudet(oppijaOid, params).right.flatMap { case Oppija(henkilö: TäydellisetHenkilötiedot, opiskeluoikeudet) =>
       val tyypit = opiskeluoikeudet.map(_.tyyppi.koodiarvo).toSet.toList

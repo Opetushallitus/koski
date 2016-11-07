@@ -7,7 +7,7 @@ import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 class CacheServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Logging with NoCache {
   get("/invalidate") {
-    if (!koskiUser.isMaintenance) {
+    if (!koskiSession.isMaintenance) {
       halt(403)
     }
     application.cacheManager.invalidateAllCaches

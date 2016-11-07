@@ -5,7 +5,7 @@ import java.sql.{Date, Timestamp}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.Json
-import fi.oph.koski.koskiuser.{AccessType, KoskiUser}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, PäätasonSuoritus}
 import fi.oph.koski.servlet.InvalidRequestException
 import org.json4s._
@@ -80,7 +80,7 @@ object Tables {
 
   val OpiskeluOikeusHistoria = TableQuery[OpiskeluOikeusHistoryTable]
 
-  def OpiskeluOikeudetWithAccessCheck(implicit user: KoskiUser): Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = {
+  def OpiskeluOikeudetWithAccessCheck(implicit user: KoskiSession): Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = {
     if (user.hasGlobalReadAccess) {
       OpiskeluOikeudet
     } else {
@@ -92,7 +92,7 @@ object Tables {
     }
   }
 
-  def TiedonsiirtoWithAccessCheck(implicit user: KoskiUser): Query[TiedonsiirtoTable, TiedonsiirtoRow, Seq] = {
+  def TiedonsiirtoWithAccessCheck(implicit user: KoskiSession): Query[TiedonsiirtoTable, TiedonsiirtoRow, Seq] = {
     if (user.hasGlobalReadAccess) {
       Tiedonsiirto
     } else {
@@ -104,7 +104,7 @@ object Tables {
     }
   }
 
-  def TiedonsiirtoYhteenvetoWithAccessCheck(implicit user: KoskiUser): Query[TiedonsiirtoYhteenvetoTable, TiedonsiirtoYhteenvetoRow, Seq] = {
+  def TiedonsiirtoYhteenvetoWithAccessCheck(implicit user: KoskiSession): Query[TiedonsiirtoYhteenvetoTable, TiedonsiirtoYhteenvetoRow, Seq] = {
     if (user.hasGlobalReadAccess) {
       TiedonsiirtoYhteenveto
     } else {

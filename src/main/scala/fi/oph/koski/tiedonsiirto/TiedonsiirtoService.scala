@@ -8,7 +8,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.koskiuser.{KoskiUser, KoskiUserInfo, KoskiUserRepository}
+import fi.oph.koski.koskiuser.{KoskiSession, KoskiUserInfo, KoskiUserRepository}
 import fi.oph.koski.log.KoskiMessageField._
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
@@ -20,8 +20,8 @@ import org.json4s.JsonAST.{JArray, JString}
 import org.json4s.{JValue, _}
 
 class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organisaatioRepository: OrganisaatioRepository, oppijaRepository: OppijaRepository, koodistoviitePalvelu: KoodistoViitePalvelu, userRepository: KoskiUserRepository) extends Logging {
-  def haeTiedonsiirrot(query: TiedonsiirtoQuery)(implicit koskiUser: KoskiUser): Either[HttpStatus, Tiedonsiirrot] = {
-    AuditLog.log(AuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiUser, Map(juuriOrganisaatio -> koskiUser.juuriOrganisaatio.map(_.oid).getOrElse("ei juuriorganisaatiota"))))
+  def haeTiedonsiirrot(query: TiedonsiirtoQuery)(implicit koskiSession: KoskiSession): Either[HttpStatus, Tiedonsiirrot] = {
+    AuditLog.log(AuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiSession, Map(juuriOrganisaatio -> koskiSession.juuriOrganisaatio.map(_.oid).getOrElse("ei juuriorganisaatiota"))))
 
     query.oppilaitos match {
       case Some(oppilaitosOid) =>
@@ -49,7 +49,7 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
     }
   }
 
-  def virheelliset(query: TiedonsiirtoQuery)(implicit koskiUser: KoskiUser): Either[HttpStatus, Tiedonsiirrot] = {
+  def virheelliset(query: TiedonsiirtoQuery)(implicit koskiSession: KoskiSession): Either[HttpStatus, Tiedonsiirrot] = {
     haeTiedonsiirrot(query).right.map { tiedonsiirrot =>
       tiedonsiirrot.copy(henkilöt = tiedonsiirrot.henkilöt
         .filter { siirrot => siirrot.rivit.groupBy(_.oppilaitos).exists { case (_, rivit) => rivit.headOption.exists(_.virhe.isDefined) } }
@@ -59,8 +59,8 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
   }
 
 
-  def storeTiedonsiirtoResult(implicit koskiUser: KoskiUser, oppijaOid: Option[OidHenkilö], validatedOppija: Option[Oppija], data: Option[JValue], error: Option[TiedonsiirtoError]) {
-    if (!koskiUser.isPalvelukäyttäjä && !koskiUser.isRoot) {
+  def storeTiedonsiirtoResult(implicit koskiSession: KoskiSession, oppijaOid: Option[OidHenkilö], validatedOppija: Option[Oppija], data: Option[JValue], error: Option[TiedonsiirtoError]) {
+    if (!koskiSession.isPalvelukäyttäjä && !koskiSession.isRoot) {
       return
     }
 
@@ -69,12 +69,12 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
     val oppilaitokset = data.map(_ \ "opiskeluoikeudet" \ "oppilaitos" \ "oid").map(jsonStringList).map(_.flatMap(organisaatioRepository.getOrganisaatio)).map(toJValue)
     val koulutustoimija: Option[Koulutustoimija] = validatedOppija.flatMap(_.opiskeluoikeudet.headOption.flatMap(_.koulutustoimija))
 
-    val juuriOrganisaatio = if (koskiUser.isRoot) koulutustoimija else koskiUser.juuriOrganisaatio
+    val juuriOrganisaatio = if (koskiSession.isRoot) koulutustoimija else koskiSession.juuriOrganisaatio
 
-    juuriOrganisaatio.foreach(org => tiedonsiirtoRepository.create(koskiUser.oid, org.oid, oppija, oppilaitokset, error, lahdejarjestelma))
+    juuriOrganisaatio.foreach(org => tiedonsiirtoRepository.create(koskiSession.oid, org.oid, oppija, oppilaitokset, error, lahdejarjestelma))
   }
 
-  def yhteenveto(implicit koskiUser: KoskiUser): Seq[TiedonsiirtoYhteenveto] = {
+  def yhteenveto(implicit koskiSession: KoskiSession): Seq[TiedonsiirtoYhteenveto] = {
     def getOrganisaatio(oid: String) = {
       organisaatioRepository.getOrganisaatio(oid) match {
         case s@Some(org) => s
@@ -83,7 +83,7 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
           None
       }
     }
-    tiedonsiirtoRepository.yhteenveto(koskiUser).par.flatMap { row =>
+    tiedonsiirtoRepository.yhteenveto(koskiSession).par.flatMap { row =>
       val käyttäjä = userRepository.findByOid(row.kayttaja) getOrElse {
         logger.warn(s"Käyttäjää ${row.kayttaja} ei löydy henkilöpalvelusta")
         KoskiUserInfo(row.kayttaja, None, None)
@@ -120,7 +120,7 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
     }
   }
 
-  private def extractHenkilö(data: JValue, oidHenkilö: Option[OidHenkilö])(implicit user: KoskiUser): Option[JValue] = {
+  private def extractHenkilö(data: JValue, oidHenkilö: Option[OidHenkilö])(implicit user: KoskiSession): Option[JValue] = {
     val annetutHenkilötiedot: JValue = data \ "henkilö"
     val annettuTunniste: HetuTaiOid = Json.fromJValue[HetuTaiOid](annetutHenkilötiedot)
     val oid: Option[String] = oidHenkilö.map(_.oid).orElse(annettuTunniste.oid)

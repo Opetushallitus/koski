@@ -4,12 +4,12 @@ import javax.servlet.http.HttpServletRequest
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log._
-import fi.oph.koski.servlet.CasSingleSignOnSupport
+import fi.oph.koski.servlet.{CasSingleSignOnSupport, KoskiBaseServlet}
 import fi.vm.sade.security.ldap.DirectoryClient
 import org.scalatra.ScalatraServlet
 import org.scalatra.auth.strategy.BasicAuthStrategy
 
-trait AuthenticationSupport extends ScalatraServlet with CasSingleSignOnSupport with Logging {
+trait AuthenticationSupport extends KoskiBaseServlet with CasSingleSignOnSupport with Logging {
   val realm = "Koski"
 
   def application: UserAuthenticationContext
@@ -57,9 +57,9 @@ trait AuthenticationSupport extends ScalatraServlet with CasSingleSignOnSupport 
 
   def isAuthenticated = getUser.isRight
 
-  def koskiUserOption: Option[KoskiUser] = {
+  override def koskiSessionOption: Option[KoskiSession] = {
     getUser.right.toOption.map { user: AuthenticationUser =>
-      KoskiUser(user, request, application.käyttöoikeusRepository)
+      KoskiSession(user, request, application.käyttöoikeusRepository)
     }
   }
 

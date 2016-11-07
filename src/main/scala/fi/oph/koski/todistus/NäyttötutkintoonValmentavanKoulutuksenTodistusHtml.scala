@@ -1,11 +1,11 @@
 package fi.oph.koski.todistus
 
-import fi.oph.koski.koskiuser.KoskiUser
+import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema._
 
 import scala.xml.Elem
 
-class NäyttötutkintoonValmentavanKoulutuksenTodistusHtml(val koulutustoimija: Option[OrganisaatioWithOid], val oppilaitos: Oppilaitos, val oppijaHenkilö: Henkilötiedot, val todistus: NäyttötutkintoonValmistavanKoulutuksenSuoritus)(implicit val user: KoskiUser) extends TodistusHtml {
+class NäyttötutkintoonValmentavanKoulutuksenTodistusHtml(val koulutustoimija: Option[OrganisaatioWithOid], val oppilaitos: Oppilaitos, val oppijaHenkilö: Henkilötiedot, val todistus: NäyttötutkintoonValmistavanKoulutuksenSuoritus)(implicit val user: KoskiSession) extends TodistusHtml {
   def title: String = "Näyttötutkintoon valmistavan koulutuksen osallistumistodistus"
   private def osat = todistus.osasuoritukset.toList.flatten
 

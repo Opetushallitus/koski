@@ -3,7 +3,7 @@ package fi.oph.koski.versioning
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.documentation.Examples
 import fi.oph.koski.json.Json
-import fi.oph.koski.koskiuser.{AccessType, KoskiUser}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Oppija}
 import org.scalatest.{FreeSpec, Matchers}
 
@@ -12,7 +12,7 @@ import org.scalatest.{FreeSpec, Matchers}
  */
 class BackwardCompatibilitySpec extends FreeSpec with Matchers {
   val validator = KoskiApplicationForTests.validator
-  implicit val user = KoskiUser.systemUser
+  implicit val user = KoskiSession.systemUser
   implicit val accessType = AccessType.read
 
   "backward compatibility with stored JSON examples" - {

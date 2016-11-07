@@ -1,11 +1,11 @@
 package fi.oph.koski.todistus
 
-import fi.oph.koski.koskiuser.KoskiUser
+import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema._
 
 import scala.xml.{Elem, NodeSeq}
 
-class TelmaTodistusHtml(val koulutustoimija: Option[OrganisaatioWithOid], val oppilaitos: Oppilaitos, val oppijaHenkilö: Henkilötiedot, val todistus: ValmentavaSuoritus)(implicit val user: KoskiUser) extends ValmentavanKoulutuksenTodistusHtml {
+class TelmaTodistusHtml(val koulutustoimija: Option[OrganisaatioWithOid], val oppilaitos: Oppilaitos, val oppijaHenkilö: Henkilötiedot, val todistus: ValmentavaSuoritus)(implicit val user: KoskiSession) extends ValmentavanKoulutuksenTodistusHtml {
   def title = "Työhön ja itsenäiseen elämään valmentava koulutus"
   override def styles: NodeSeq = <link rel="stylesheet" type="text/css" href="/koski/css/todistus-telma.css"></link>
 

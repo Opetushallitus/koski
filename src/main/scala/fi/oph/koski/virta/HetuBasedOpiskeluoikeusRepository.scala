@@ -4,7 +4,7 @@ import fi.oph.koski.cache.{Cache, CacheManager, KeyValueCache}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koski.KoskiValidator
-import fi.oph.koski.koskiuser.{AccessChecker, AccessType, KoskiUser}
+import fi.oph.koski.koskiuser.{AccessChecker, AccessType, KoskiSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.AuxiliaryOpiskeluOikeusRepository
 import fi.oph.koski.oppija.OppijaRepository
@@ -30,7 +30,7 @@ abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](oppijaRep
         val oppija = Oppija(UusiHenkilö(hetu, "tuntematon", "tuntematon", "tuntematon"), List(opiskeluoikeus))
         validator match {
           case Some(validator) =>
-            validator.validateAsJson(oppija)(KoskiUser.systemUser, AccessType.read) match {
+            validator.validateAsJson(oppija)(KoskiSession.systemUser, AccessType.read) match {
               case Right(oppija) =>
                 Some(opiskeluoikeus)
               case Left(status) =>
@@ -51,11 +51,11 @@ abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](oppijaRep
         Nil
     }
   }
-  private def getHenkilötiedot(oid: String)(implicit user: KoskiUser): Option[TäydellisetHenkilötiedot] = oppijaRepository.findByOid(oid)
-  private def accessCheck[T](list: => List[T])(implicit user: KoskiUser): List[T] = if (accessChecker.hasAccess(user)) { list } else { Nil }
-  private def findByHenkilö(henkilö: Henkilö with Henkilötiedot)(implicit user: KoskiUser): List[OO] = accessCheck(cache(henkilö.hetu).filter(oo => user.hasReadAccess(oo.oppilaitos.oid)))
+  private def getHenkilötiedot(oid: String)(implicit user: KoskiSession): Option[TäydellisetHenkilötiedot] = oppijaRepository.findByOid(oid)
+  private def accessCheck[T](list: => List[T])(implicit user: KoskiSession): List[T] = if (accessChecker.hasAccess(user)) { list } else { Nil }
+  private def findByHenkilö(henkilö: Henkilö with Henkilötiedot)(implicit user: KoskiSession): List[OO] = accessCheck(cache(henkilö.hetu).filter(oo => user.hasReadAccess(oo.oppilaitos.oid)))
 
   // Public methods
-  def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiUser): List[HenkilötiedotJaOid] = accessCheck(oppijat.par.filter(oppija => organizationsCache(oppija.hetu).filter(orgOid => user.hasReadAccess(orgOid)).nonEmpty).toList)
-  def findByOppijaOid(oid: String)(implicit user: KoskiUser): List[Opiskeluoikeus] = accessCheck(getHenkilötiedot(oid).toList.flatMap(findByHenkilö(_)))
+  def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession): List[HenkilötiedotJaOid] = accessCheck(oppijat.par.filter(oppija => organizationsCache(oppija.hetu).filter(orgOid => user.hasReadAccess(orgOid)).nonEmpty).toList)
+  def findByOppijaOid(oid: String)(implicit user: KoskiSession): List[Opiskeluoikeus] = accessCheck(getHenkilötiedot(oid).toList.flatMap(findByHenkilö(_)))
 }

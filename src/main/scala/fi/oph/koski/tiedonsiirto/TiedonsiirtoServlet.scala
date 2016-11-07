@@ -9,15 +9,15 @@ import scala.concurrent.duration._
 
 class TiedonsiirtoServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with UserSessionCached {
   get() {
-    renderEither(application.tiedonsiirtoService.haeTiedonsiirrot(parseQuery)(koskiUser))
+    renderEither(application.tiedonsiirtoService.haeTiedonsiirrot(parseQuery)(koskiSession))
   }
 
   get("/virheet") {
-    renderEither(application.tiedonsiirtoService.virheelliset(parseQuery)(koskiUser))
+    renderEither(application.tiedonsiirtoService.virheelliset(parseQuery)(koskiSession))
   }
 
   get("/yhteenveto") {
-    application.tiedonsiirtoService.yhteenveto(koskiUser)
+    application.tiedonsiirtoService.yhteenveto(koskiSession)
   }
 
   private def parseQuery = TiedonsiirtoQuery(params.get("oppilaitos").map(oid => OrganisaatioOid.validateOrganisaatioOid(oid) match {

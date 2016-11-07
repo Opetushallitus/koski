@@ -1,6 +1,6 @@
 package fi.oph.koski.log
 
-import fi.oph.koski.koskiuser.KoskiUser
+import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.KoskiMessageField.KoskiMessageField
 import fi.oph.koski.log.KoskiOperation.KoskiOperation
 import fi.vm.sade.auditlog._
@@ -31,7 +31,7 @@ class AuditLog(logger: Logger) {
   }
 }
 
-case class AuditLogMessage(operation: KoskiOperation, user: KoskiUser, extraFields: Map[KoskiMessageField, String])
+case class AuditLogMessage(operation: KoskiOperation, user: KoskiSession, extraFields: Map[KoskiMessageField, String])
 
 object KoskiMessageField extends Enumeration {
   type KoskiMessageField = Value

@@ -11,7 +11,7 @@ import fi.oph.koski.tutkinto.{SuoritustapaJaRakenne, TutkintoRakenne}
 class TodistusServlet(val application: KoskiApplication) extends HtmlServlet with RequiresAuthentication {
   get("/:oppijaOid") {
     val oppijaOid = params("oppijaOid")
-    implicit val user = koskiUser
+    implicit val user = koskiSession
 
     val filters: List[(Suoritus => Boolean)] = params.toList.flatMap {
       case ("koulutusmoduuli", koulutusmoduuli: String) => Some({ s: Suoritus => s.koulutusmoduuli.tunniste.toString == koulutusmoduuli })

@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.Tables.{Tiedonsiirto, TiedonsiirtoWithAccessCheck}
 import fi.oph.koski.db._
-import fi.oph.koski.koskiuser.KoskiUser
+import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.util.Timing
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import org.json4s.JsonAST.JValue
@@ -24,17 +24,17 @@ class TiedonsiirtoRepository(val db: DB, mailer: TiedonsiirtoFailureMailer) exte
     }
   }
 
-  def find(organisaatiot: Option[List[String]])(implicit koskiUser: KoskiUser): Seq[TiedonsiirtoRow] = timed("findByOrganisaatio") {
+  def find(organisaatiot: Option[List[String]])(implicit koskiSession: KoskiSession): Seq[TiedonsiirtoRow] = timed("findByOrganisaatio") {
     val monthAgo = Timestamp.valueOf(LocalDateTime.now.minusMonths(1))
-    var tableQuery = TiedonsiirtoWithAccessCheck(koskiUser)
+    var tableQuery = TiedonsiirtoWithAccessCheck(koskiSession)
     organisaatiot.foreach { org =>
       tableQuery = tableQuery.filter(_.tallentajaOrganisaatioOid inSetBind org)
     }
     runDbSync(tableQuery.sortBy(_.id.desc).result)
   }
 
-  def yhteenveto(koskiUser: KoskiUser): Seq[TiedonsiirtoYhteenvetoRow] = timed("yhteenveto") {
-    runDbSync(Tables.TiedonsiirtoYhteenvetoWithAccessCheck(koskiUser).result)
+  def yhteenveto(koskiSession: KoskiSession): Seq[TiedonsiirtoYhteenvetoRow] = timed("yhteenveto") {
+    runDbSync(Tables.TiedonsiirtoYhteenvetoWithAccessCheck(koskiSession).result)
   }
 }
 

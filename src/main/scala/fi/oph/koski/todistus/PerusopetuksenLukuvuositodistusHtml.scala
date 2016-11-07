@@ -1,6 +1,6 @@
 package fi.oph.koski.todistus
 
-import fi.oph.koski.koskiuser.KoskiUser
+import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema._
 
 class PerusopetuksenLukuvuositodistusHtml(
@@ -8,7 +8,7 @@ class PerusopetuksenLukuvuositodistusHtml(
                                            val oppilaitos: Oppilaitos,
                                            val oppijaHenkilö: Henkilötiedot,
                                            val todistus: PerusopetuksenVuosiluokanSuoritus)
-                                         (implicit val user: KoskiUser) extends PeruskoulunTodistusHtml[OppiaineenTaiToiminta_AlueenSuoritus] {
+                                         (implicit val user: KoskiSession) extends PeruskoulunTodistusHtml[OppiaineenTaiToiminta_AlueenSuoritus] {
   def title = "Lukuvuositodistus - " + i(todistus.koulutusmoduuli.tunniste.nimi)
   def oppiaineet = todistus.osasuoritukset.toList.flatten
 

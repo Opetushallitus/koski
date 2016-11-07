@@ -1,12 +1,12 @@
 package fi.oph.koski.todistus
 
-import fi.oph.koski.koskiuser.KoskiUser
+import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema._
 
 import scala.xml.NodeSeq
 
 
-class LukionPaattoTodistusHtml(implicit val user: KoskiUser) extends TodistusHtml {
+class LukionPaattoTodistusHtml(implicit val user: KoskiSession) extends TodistusHtml {
   def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: Suoritus) = {
     val oppiaineet: List[Suoritus] = päättötodistus.osasuoritukset.toList.flatten
 

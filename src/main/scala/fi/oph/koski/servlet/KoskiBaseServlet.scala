@@ -1,7 +1,7 @@
 package fi.oph.koski.servlet
 
 import fi.oph.koski.http.{ErrorCategory, HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.KoskiUser
+import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.{LoggerWithContext, Logging}
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import org.scalatra._
@@ -11,7 +11,7 @@ import scala.xml.Elem
 trait KoskiBaseServlet extends ScalatraServlet with Logging {
   override protected def logger: LoggerWithContext = {
     try {
-      logger(koskiUserOption)
+      logger(koskiSessionOption)
     } catch {
       case e: Throwable => super.logger
     }
@@ -65,7 +65,7 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
     }
   }
 
-  def koskiUserOption: Option[KoskiUser]
+  def koskiSessionOption: Option[KoskiSession]
 
   def renderStatus(status: HttpStatus): Unit
 
