@@ -46,8 +46,8 @@ object ServiceUserAdder extends App with Logging {
           |
           |Korvatkaa esimerkkinä käytetty id "xxxx12345" tunnisteella, jota lähdejärjestelmässänne käytetään identifioimaan kyseinen opiskeluoikeus.
           |
-          |Koski-testijärjestelmän etusivu: https://koskidev.koski.oph.reaktor.fi/koski/
-          |API-dokumentaatiosivu: https://koskidev.koski.oph.reaktor.fi/koski/documentation
+          |Koski-testijärjestelmän etusivu: https://extra.koski.opintopolku.fi/koski/
+          |API-dokumentaatiosivu: https://extra.koski.opintopolku.fi/koski/documentation
           |
           |Tervetuloa keskustelemaan Koski-järjestelmän kehityksestä ja käytöstä yhteistyökanavallemme Flowdockiin! Lähetän sinne erilliset kutsut kohta.
           |
