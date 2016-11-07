@@ -1,6 +1,6 @@
 package fi.oph.koski.koskiuser
 
-import fi.oph.koski.henkilo.AuthenticationServiceClient.PalveluRooli
+import fi.oph.koski.henkilo.AuthenticationServiceClient.Palvelurooli
 import fi.oph.koski.koskiuser.Rooli._
 import fi.oph.koski.schema.OidOrganisaatio
 import fi.vm.sade.security.ldap.LdapUser
@@ -13,8 +13,8 @@ class LdapKäyttöoikeudetSpec extends FreeSpec with Matchers {
         "APP_KOSKI_READ_1.2.246.562.10.346830761110",
         "APP_KOSKI_OPHKATSELIJA_1.2.246.562.10.00000000001"
       ), "testi", "testi", "0")) should equal(List(
-        KäyttöoikeusOrg(OidOrganisaatio("1.2.246.562.10.346830761110"), List(PalveluRooli("KOSKI", READ)), true, None),
-        KäyttöoikeusGlobal(List(PalveluRooli("KOSKI", OPHKATSELIJA)))
+        KäyttöoikeusOrg(OidOrganisaatio("1.2.246.562.10.346830761110"), List(Palvelurooli("KOSKI", READ)), true, None),
+        KäyttöoikeusGlobal(List(Palvelurooli("KOSKI", OPHKATSELIJA)))
       ))
     }
     "Vain Koski-applikaation oikeudet huomioidaan" in {

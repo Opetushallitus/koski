@@ -2,8 +2,8 @@ package fi.oph.koski.koskiuser
 
 import javax.servlet.http.HttpServletRequest
 
-import fi.oph.koski.henkilo.AuthenticationServiceClient.PalveluRooli
-import fi.oph.koski.koskiuser.Rooli.OPHPAAKAYTTAJA
+import fi.oph.koski.henkilo.AuthenticationServiceClient.Palvelurooli
+import fi.oph.koski.koskiuser.Rooli._
 import fi.oph.koski.log.{LogUserContext, Loggable, Logging}
 import fi.oph.koski.schema.{Organisaatio, OrganisaatioWithOid}
 
@@ -14,23 +14,24 @@ class KoskiSession(user: AuthenticationUser, val clientIp: String, käyttöoikeu
   def username = user.username
   def lang = "fi"
 
+
   def oidOption = Some(oid)
   def logString = "käyttäjä " + username + " / " + user.oid
 
-  def organisationOids(accessType: AccessType.Value): Set[String] = käyttöoikeudet.collect { case k: KäyttöoikeusOrg if (k.orgAccessType.contains(accessType)) => k.organisaatio.oid }
-  lazy val globalAccess = (käyttöoikeudet.collect { case k:KäyttöoikeusGlobal => k.globalAccessType }).flatten
+  lazy val orgKäyttöoikeudet = käyttöoikeudet.collect { case k : KäyttöoikeusOrg => k}
+  lazy val globalKäyttöoikeudet = käyttöoikeudet.collect { case k: KäyttöoikeusGlobal => k}
+  def organisationOids(accessType: AccessType.Value): Set[String] = orgKäyttöoikeudet.collect { case k: KäyttöoikeusOrg if (k.organisaatioAccessType.contains(accessType)) => k.organisaatio.oid }
+  lazy val globalAccess = globalKäyttöoikeudet.flatMap { _.globalAccessType }
   def isRoot = globalAccess.contains(AccessType.write)
-  def isMaintenance = (käyttöoikeudet.collect { case k:KäyttöoikeusGlobal if k.globalPalveluroolit.contains(Rooli.YLLAPITAJA) => k }).nonEmpty
-  def isPalvelukäyttäjä = {
-    käyttöoikeudet.flatMap(_.palveluRoolit).map(_.rooli).contains(Rooli.TIEDONSIIRTO)
-  }
+  def isMaintenance = globalKäyttöoikeudet.find { k => k.globalPalveluroolit.contains(Palvelurooli(YLLAPITAJA))}.isDefined
+  def isPalvelukäyttäjä = orgKäyttöoikeudet.flatMap(_.organisaatiokohtaisetPalveluroolit).contains(Palvelurooli(TIEDONSIIRTO))
   def hasReadAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.read)
   def hasWriteAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.write)
   def hasAccess(organisaatio: Organisaatio.Oid, accessType: AccessType.Value) = globalAccess.contains(accessType) || organisationOids(accessType).contains(organisaatio)
   def hasGlobalReadAccess = globalAccess.contains(AccessType.read)
 
   def juuriOrganisaatio: Option[OrganisaatioWithOid] = {
-    val juuret = käyttöoikeudet.collect { case r: KäyttöoikeusOrg if r.juuri => r.organisaatio }
+    val juuret = orgKäyttöoikeudet.collect { case r: KäyttöoikeusOrg if r.juuri => r.organisaatio }
     if (juuret.size > 1) {
       None
     } else {
@@ -48,5 +49,5 @@ object KoskiSession {
 
   private val KOSKI_SYSTEM_USER: String = "Koski system user"
   // Internal user with root access
-  val systemUser = new KoskiSession(AuthenticationUser(KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, None), "KOSKI_SYSTEM", Set(KäyttöoikeusGlobal(List(PalveluRooli(OPHPAAKAYTTAJA)))))
+  val systemUser = new KoskiSession(AuthenticationUser(KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, None), "KOSKI_SYSTEM", Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHPAAKAYTTAJA)))))
 }

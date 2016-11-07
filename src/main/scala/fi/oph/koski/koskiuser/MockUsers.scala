@@ -52,7 +52,7 @@ case class MockUser(ldapUser: LdapUser, käyttöoikeudet: Set[(Organisaatio.Oid,
 object MockUser {
   def apply(lastname: String, firstname: String, oid: String, käyttöoikeusryhmät: Set[(Organisaatio.Oid, Käyttöoikeusryhmä)]): MockUser = {
     val roolit = käyttöoikeusryhmät.flatMap { case (oid, ryhmä) =>
-      ryhmä.palveluRoolit.map { palveluRooli =>
+      ryhmä.palveluroolit.map { palveluRooli =>
         LdapKäyttöoikeudet.roleString(palveluRooli.palveluName, palveluRooli.rooli, oid)
       }
     }.toList

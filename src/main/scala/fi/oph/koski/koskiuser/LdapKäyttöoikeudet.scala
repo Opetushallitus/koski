@@ -1,6 +1,6 @@
 package fi.oph.koski.koskiuser
 
-import fi.oph.koski.henkilo.AuthenticationServiceClient.PalveluRooli
+import fi.oph.koski.henkilo.AuthenticationServiceClient.Palvelurooli
 import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.Opetushallitus
 import fi.oph.koski.schema.OidOrganisaatio
@@ -13,9 +13,9 @@ object LdapKäyttöoikeudet extends Logging {
     try {
       user.roles.flatMap {
         case pattern(rooli, oid) if (oid == Opetushallitus.organisaatioOid) =>
-          Some(KäyttöoikeusGlobal(List(PalveluRooli(rooli))))
+          Some(KäyttöoikeusGlobal(List(Palvelurooli(rooli))))
         case pattern(rooli, oid) =>
-          Some(KäyttöoikeusOrg(OidOrganisaatio(oid), List(PalveluRooli(rooli)), true, None))
+          Some(KäyttöoikeusOrg(OidOrganisaatio(oid), List(Palvelurooli(rooli)), true, None))
         case _ =>
           None
       }

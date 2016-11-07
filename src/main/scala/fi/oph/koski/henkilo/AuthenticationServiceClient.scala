@@ -2,6 +2,7 @@ package fi.oph.koski.henkilo
 
 import com.typesafe.config.Config
 import fi.oph.koski.db.KoskiDatabase.DB
+import fi.oph.koski.henkilo.AuthenticationServiceClient._
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
 import fi.oph.koski.json.Json
@@ -14,7 +15,6 @@ import org.http4s.headers.`Content-Type`
 
 import scalaz.concurrent.Task
 import scalaz.concurrent.Task.gatherUnordered
-import AuthenticationServiceClient._
 
 trait AuthenticationServiceClient {
   def käyttöoikeusryhmät: List[Käyttöoikeusryhmä]
@@ -68,11 +68,11 @@ object AuthenticationServiceClient {
     }
   }
 
-  case class UusiKäyttöoikeusryhmä(ryhmaNameFi: String, ryhmaNameSv: String, ryhmaNameEn: String, palvelutRoolit: List[PalveluRooli] = Nil, organisaatioTyypit: List[String] = Nil, slaveIds: List[Void] = Nil)
+  case class UusiKäyttöoikeusryhmä(ryhmaNameFi: String, ryhmaNameSv: String, ryhmaNameEn: String, palvelutRoolit: List[Palvelurooli] = Nil, organisaatioTyypit: List[String] = Nil, slaveIds: List[Void] = Nil)
 
-  case class PalveluRooli(palveluName: String, rooli: String)
-  object PalveluRooli {
-    def apply(rooli: String): PalveluRooli = PalveluRooli("KOSKI", rooli)
+  case class Palvelurooli(palveluName: String, rooli: String)
+  object Palvelurooli {
+    def apply(rooli: String): Palvelurooli = Palvelurooli("KOSKI", rooli)
   }
   case class YhteystietoRyhmä(id: Int, ryhmaKuvaus: String, yhteystiedot: List[Yhteystieto])
   case class Yhteystieto(yhteystietoTyyppi: String, yhteystietoArvo: String)
