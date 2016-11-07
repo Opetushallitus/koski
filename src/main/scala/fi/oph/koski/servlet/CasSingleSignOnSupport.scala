@@ -4,9 +4,10 @@ import java.net.{URLDecoder, URLEncoder}
 
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.{AuthenticationUser, UserAuthenticationContext}
+import fi.oph.koski.log.Logging
 import org.scalatra.{Cookie, CookieOptions, ScalatraBase}
 
-trait CasSingleSignOnSupport extends ScalatraBase {
+trait CasSingleSignOnSupport extends ScalatraBase with Logging {
   def application: UserAuthenticationContext
 
   def isHttps = {
@@ -32,7 +33,16 @@ trait CasSingleSignOnSupport extends ScalatraBase {
     response.addCookie(Cookie("koskiUser", URLEncoder.encode(Json.write(user), "UTF-8"))(CookieOptions(secure = isHttps, path = "/", maxAge = application.sessionTimeout.seconds, httpOnly = true)))
   }
   def getUserCookie: Option[AuthenticationUser] = {
-    Option(request.getCookies).toList.flatten.find(_.getName == "koskiUser").map(_.getValue).map(c => URLDecoder.decode(c, "UTF-8")).map(Json.read[AuthenticationUser])
+    Option(request.getCookies).toList.flatten.find(_.getName == "koskiUser").map(_.getValue).map(c => URLDecoder.decode(c, "UTF-8")).flatMap( json =>
+      try {
+        Some(Json.read[AuthenticationUser](json))
+      } catch {
+        case e: Exception =>
+          removeUserCookie
+          defaultLogger.warn(e)("Error decoding authentication cookie")
+          None
+      }
+    )
   }
   def removeUserCookie = removeCookie("koskiUser")
 

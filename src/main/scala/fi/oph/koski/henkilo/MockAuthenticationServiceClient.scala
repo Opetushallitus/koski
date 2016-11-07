@@ -34,13 +34,6 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
     case (ryhmä, index) => new Käyttöoikeusryhmä(index, ryhmä.nimi)
   }
 
-  override def käyttäjänKäyttöoikeusryhmät(oid: String): List[(String, Int)] = {
-    MockUsers.users.find(_.oid == oid).toList.flatMap(_.käyttöoikeudet).map {
-      case (organisaatioOid, ryhmä) =>
-        (organisaatioOid, käyttöoikeusryhmät.find(_.name == ryhmä.nimi).get.id)
-    }
-  }
-
   def search(query: String): HenkilöQueryResult = {
     if (query.toLowerCase.contains("error")) {
       throw new TestingException("Testing error handling")

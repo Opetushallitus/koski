@@ -11,7 +11,7 @@ class CasTicketSessionRepository(val db: DB, sessionTimeout: SessionTimeout) ext
   private def now = new Timestamp(System.currentTimeMillis())
 
   def store(ticket: String, user: AuthenticationUser) = {
-    runDbSync((Tables.CasServiceTicketSessions += CasServiceTicketSessionRow(ticket, user.name, user.oid, now, now)))
+    runDbSync((Tables.CasServiceTicketSessions += CasServiceTicketSessionRow(ticket, user.username, user.oid, now, now)))
   }
 
   def getUserByTicket(ticket: String): Option[AuthenticationUser] = timed("getUserByTicket", 0) {
@@ -25,7 +25,9 @@ class CasTicketSessionRepository(val db: DB, sessionTimeout: SessionTimeout) ext
       result
     }
 
-    runDbSync(action).map(row => AuthenticationUser(row.userOid, row.username, Some(ticket))).headOption
+    runDbSync(action).map{row =>
+      AuthenticationUser(row.userOid, row.username, row.username, Some(ticket))
+    }.headOption
   }
 
   def removeSessionByTicket(ticket: String) = {

@@ -4,8 +4,8 @@ import org.log4s._
 
 trait Logging {
   private lazy val log4sLogger: Logger = getLogger(getClass)
-
-  protected def logger : LoggerWithContext = LoggerWithContext(log4sLogger, None)
+  protected def defaultLogger: LoggerWithContext = LoggerWithContext(log4sLogger, None)
+  protected def logger : LoggerWithContext = defaultLogger
   protected def logger(user: LogUserContext): LoggerWithContext = LoggerWithContext(log4sLogger, Some(user))
   protected def logger(user: Option[LogUserContext]): LoggerWithContext = LoggerWithContext(log4sLogger, user)
 }

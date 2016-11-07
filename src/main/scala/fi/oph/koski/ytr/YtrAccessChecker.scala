@@ -6,7 +6,7 @@ import fi.oph.koski.organisaatio.Oppilaitostyyppi._
 class YtrAccessChecker(käyttöoikeudet: KäyttöoikeusRepository) extends AccessChecker {
   def hasAccess(user: KoskiUser) = {
     user.hasGlobalReadAccess ||
-    käyttöoikeudet.käyttäjänOppilaitostyypit(user.oid)
+    käyttöoikeudet.käyttäjänOppilaitostyypit(user)
       .intersect(Set(lukio, perusJaLukioasteenKoulut, muutOppilaitokset, kansanopistot))
       .nonEmpty
   }

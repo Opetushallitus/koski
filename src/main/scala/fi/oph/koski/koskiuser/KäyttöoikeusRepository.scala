@@ -4,48 +4,37 @@ import fi.oph.koski.cache.{Cache, CacheManager, KeyValueCache}
 import fi.oph.koski.henkilo.AuthenticationServiceClient
 import fi.oph.koski.organisaatio.{Opetushallitus, OrganisaatioHierarkia, OrganisaatioRepository}
 import fi.oph.koski.util.Timing
+import fi.vm.sade.security.ldap.{DirectoryClient, LdapUser}
 
-class KäyttöoikeusRepository(authenticationServiceClient: AuthenticationServiceClient, organisaatioRepository: OrganisaatioRepository)(implicit cacheInvalidator: CacheManager) extends Timing {
-  def käyttäjänKäyttöoikeudet(oid: String): Set[Käyttöoikeus] = käyttöoikeusCache(oid)
+class KäyttöoikeusRepository(authenticationServiceClient: AuthenticationServiceClient, organisaatioRepository: OrganisaatioRepository, directoryClient: DirectoryClient)(implicit cacheInvalidator: CacheManager) extends Timing {
+  def käyttäjänKäyttöoikeudet(user: UserWithUsername): Set[Käyttöoikeus] = käyttöoikeusCache(user.username)
 
-  def käyttäjänOppilaitostyypit(oid: String): Set[String] = käyttöoikeusCache(oid)
-    .filter(_.ryhmä.orgAccessType.contains(AccessType.read))
-    .flatMap(_.oppilaitostyyppi)
+  def käyttäjänOppilaitostyypit(user: UserWithUsername): Set[String] = {
+    val käyttöoikeudet: Set[Käyttöoikeus] = käyttöoikeusCache(user.username)
+    käyttöoikeudet.collect { case KäyttöoikeusOrg(_, _, _, Some(oppilaitostyyppi)) => oppilaitostyyppi }
+  }
 
-  private lazy val käyttöoikeusryhmätCache = authenticationServiceClient.käyttöoikeusryhmät
-  private def ryhmäById(ryhmäId: Int) = käyttöoikeusryhmätCache.find(_.id == ryhmäId).flatMap(_.toKoskiKäyttöoikeusryhmä)
-
-  private def haeKäyttöoikeudet(henkilöOid: String): Set[Käyttöoikeus] = {
-    val käyttöoikeudet: List[(String, Int)] = authenticationServiceClient.käyttäjänKäyttöoikeusryhmät(henkilöOid)
-    käyttöoikeudet.toSet.flatMap { tuple: (String, Int) =>
-      tuple match {
-        case (organisaatioOid: String, ryhmäId: Int) =>
-          organisaatioOid match {
-            case Opetushallitus.organisaatioOid =>
-              ryhmäById(ryhmäId).flatMap{
-                case r: GlobaaliKäyttöoikeusryhmä => Some(GlobaaliKäyttöoikeus(r))
-                case r: OrganisaationKäyttöoikeusryhmä =>
-                  logger.warn(s"Käyttäjällä $henkilöOid on organisaatiotyyppinen käyttöoikeusryhmä $r liitettynä OPH-organisaatioon")
-                  None
-              }.toList
-            case _ =>
-              val organisaatioHierarkia = organisaatioRepository.getOrganisaatioHierarkia(organisaatioOid)
+  private def haeKäyttöoikeudet(username: String): Set[Käyttöoikeus] = {
+    directoryClient.findUser(username) match {
+      case Some(ldapUser) =>
+        LdapKäyttöoikeudet.käyttöoikeudet(ldapUser).toSet.flatMap { k: Käyttöoikeus =>
+          k match {
+            case k: KäyttöoikeusGlobal =>
+              List(k)
+            case k: KäyttöoikeusOrg =>
+              val organisaatioHierarkia = organisaatioRepository.getOrganisaatioHierarkia(k.organisaatio.oid)
               val flattened = flatten(organisaatioHierarkia.toList)
               if (flattened.isEmpty) {
-                logger.warn(s"Käyttäjän $henkilöOid käyttöoikeus $ryhmäId kohdistuu organisaatioon $organisaatioOid, jota ei löydy")
+                logger.warn(s"Käyttäjän $username käyttöoikeus ${k} kohdistuu organisaatioon ${k.organisaatio.oid}, jota ei löydy")
               }
-
-              flattened.flatMap { org =>
-                ryhmäById(ryhmäId).flatMap {
-                  case r: GlobaaliKäyttöoikeusryhmä =>
-                    logger.warn(s"Käyttäjällä $henkilöOid on globaali käyttöoikeusryhmä $r liitettynä organisaatioon $organisaatioOid")
-                    None
-                  case r: OrganisaationKäyttöoikeusryhmä =>
-                    Some(OrganisaatioKäyttöoikeus(org.toOrganisaatio, org.oppilaitostyyppi, r, org.oid == organisaatioHierarkia.get.oid))
-                }
+              flattened.map { org =>
+                k.copy(organisaatio = org.toOrganisaatio, juuri = org.oid == k.organisaatio.oid, oppilaitostyyppi = org.oppilaitostyyppi)
               }
           }
-      }
+        }
+      case None =>
+        logger.warn(s"User $username not found from LDAP")
+        Set.empty
     }
   }
 

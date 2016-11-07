@@ -1,6 +1,9 @@
 package fi.oph.koski.koskiuser
 
-trait UserWithPassword{
-  def username: String
+trait UserWithPassword extends UserWithUsername {
   def password: String
+}
+
+trait UserWithUsername {
+  def username: String
 }

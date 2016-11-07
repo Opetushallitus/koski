@@ -18,7 +18,6 @@ import AuthenticationServiceClient._
 
 trait AuthenticationServiceClient {
   def käyttöoikeusryhmät: List[Käyttöoikeusryhmä]
-  def käyttäjänKäyttöoikeusryhmät(oid: String): List[(String, Int)]
   def search(query: String): HenkilöQueryResult
   def create(createUserInfo: UusiHenkilö): Either[HttpStatus, String]
   def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö]
@@ -69,9 +68,12 @@ object AuthenticationServiceClient {
     }
   }
 
-  case class UusiKäyttöoikeusryhmä(ryhmaNameFi: String, ryhmaNameSv: String, ryhmaNameEn: String,
-    palvelutRoolit: List[Void] = Nil, organisaatioTyypit: List[String] = Nil, slaveIds: List[Void] = Nil)
+  case class UusiKäyttöoikeusryhmä(ryhmaNameFi: String, ryhmaNameSv: String, ryhmaNameEn: String, palvelutRoolit: List[PalveluRooli] = Nil, organisaatioTyypit: List[String] = Nil, slaveIds: List[Void] = Nil)
 
+  case class PalveluRooli(palveluName: String, rooli: String)
+  object PalveluRooli {
+    def apply(rooli: String): PalveluRooli = PalveluRooli("KOSKI", rooli)
+  }
   case class YhteystietoRyhmä(id: Int, ryhmaKuvaus: String, yhteystiedot: List[Yhteystieto])
   case class Yhteystieto(yhteystietoTyyppi: String, yhteystietoArvo: String)
 }
@@ -99,6 +101,7 @@ class RemoteAuthenticationServiceClient(http: Http) extends AuthenticationServic
 
   def käyttöoikeusryhmät: List[Käyttöoikeusryhmä] = runTask(http(uri"/authentication-service/resources/kayttooikeusryhma")(Http.parseJson[List[Käyttöoikeusryhmä]]))
 
+  // TODO: remove, also from authentication-service
   def käyttäjänKäyttöoikeusryhmät(oid: String): List[(String, Int)] = {
     runTask(http(uri"/authentication-service/resources/s2s/koski/kayttooikeusryhmat/${oid}")(Http.parseJson[Map[String, List[Int]]]).map { groupedByOrg =>
       groupedByOrg.toList.flatMap { case (org, ryhmät) => ryhmät.map(ryhmä => (org, ryhmä)) }

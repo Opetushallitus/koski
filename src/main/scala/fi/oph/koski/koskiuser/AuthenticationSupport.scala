@@ -58,8 +58,9 @@ trait AuthenticationSupport extends ScalatraServlet with CasSingleSignOnSupport 
   def isAuthenticated = getUser.isRight
 
   def koskiUserOption: Option[KoskiUser] = {
-    def toKoskiUser(user: AuthenticationUser) = KoskiUser(user.oid, request, application.käyttöoikeusRepository)
-    getUser.right.toOption.map(toKoskiUser)
+    getUser.right.toOption.map { user: AuthenticationUser =>
+      KoskiUser(user, request, application.käyttöoikeusRepository)
+    }
   }
 
   def tryLogin(username: String, password: String): Either[HttpStatus, AuthenticationUser] = {
@@ -90,7 +91,7 @@ trait AuthenticationSupport extends ScalatraServlet with CasSingleSignOnSupport 
 object DirectoryClientLogin extends Logging {
   def findUser(directoryClient: DirectoryClient, request: HttpServletRequest, username: String): Option[AuthenticationUser] = {
     directoryClient.findUser(username).map { ldapUser =>
-      AuthenticationUser(ldapUser.oid, ldapUser.givenNames + " " + ldapUser.lastName, None)
+      AuthenticationUser.fromLdapUser(username, ldapUser)
     } match {
       case Some(user) =>
         logger(LogUserContext(request, user.oid)).info("Login successful")

@@ -1,17 +1,34 @@
 package fi.oph.koski.koskiuser
 
+import fi.oph.koski.henkilo.AuthenticationServiceClient.PalveluRooli
 import fi.oph.koski.schema.OrganisaatioWithOid
 
-sealed trait Käyttöoikeus {
-  def ryhmä: Käyttöoikeusryhmä
-  def oppilaitostyyppi: Option[String]
+object Rooli {
+  val READ = "READ"
+  val READ_UPDATE = "READ_UPDATE"
+  val OPHKATSELIJA = "OPHKATSELIJA"
+  val OPHPAAKAYTTAJA = "OPHPAAKAYTTAJA"
+  val YLLAPITAJA = "YLLAPITAJA"
+  val TIEDONSIIRTO = "TIEDONSIIRTO"
 }
 
-/**
-  * Organisation access rights, juuri is set to true when the organisaatio is at the root of an organisation hierarchy for this user
-  */
-case class OrganisaatioKäyttöoikeus(organisaatio: OrganisaatioWithOid, oppilaitostyyppi: Option[String], ryhmä: OrganisaationKäyttöoikeusryhmä, juuri: Boolean) extends Käyttöoikeus
+trait Käyttöoikeus {
+  def palveluRoolit = orgPalveluroolit ++ globalPalveluroolit
+  def orgPalveluroolit: List[PalveluRooli] = Nil
+  def globalPalveluroolit: List[PalveluRooli] = Nil
 
-case class GlobaaliKäyttöoikeus(ryhmä: GlobaaliKäyttöoikeusryhmä) extends Käyttöoikeus {
-  def oppilaitostyyppi = None
+  def orgAccessType: List[AccessType.Value] = orgPalveluroolit flatMap {
+    case PalveluRooli("KOSKI", "READ") => List(AccessType.read)
+    case PalveluRooli("KOSKI", "READ_UPDATE") => List(AccessType.read, AccessType.write)
+    case _ => Nil
+  }
+  def globalAccessType: List[AccessType.Value] = globalPalveluroolit flatMap {
+    case PalveluRooli("KOSKI", "OPHKATSELIJA") => List(AccessType.read)
+    case PalveluRooli("KOSKI", "OPHPAAKAYTTAJA") => List(AccessType.read, AccessType.write)
+    case _ => Nil
+  }
 }
+
+case class KäyttöoikeusGlobal(override val globalPalveluroolit: List[PalveluRooli]) extends Käyttöoikeus
+
+case class KäyttöoikeusOrg(organisaatio: OrganisaatioWithOid, override val orgPalveluroolit: List[PalveluRooli], juuri: Boolean, oppilaitostyyppi: Option[String]) extends Käyttöoikeus
