@@ -16,7 +16,7 @@ import io.gatling.http.request.builder.HttpRequestBuilder
 import scala.util.Random.{nextInt => randomInt}
 
 trait KoskiScenario {
-  val testOid = "1.2.246.562.24.51633620848"
+  val testOid = "1.2.246.562.24.92333381381"
   val username = sys.env("KOSKI_USER")
   val password = sys.env("KOSKI_PASS")
   val uusiOppijaFeeder = Array(Map("content" -> AmmatillinenOldExamples.uusi)).circular
