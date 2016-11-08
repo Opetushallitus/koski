@@ -83,9 +83,11 @@ object RemoteAuthenticationServiceClient {
     val virkalijaUrl: String = if (config.hasPath("authentication-service.virkailija.url")) { config.getString("authentication-service.virkailija.url") } else { config.getString("opintopolku.virkailija.url") }
     val username =  if (config.hasPath("authentication-service.username")) { config.getString("authentication-service.username") } else { config.getString("opintopolku.virkailija.username") }
     val password =  if (config.hasPath("authentication-service.password")) { config.getString("authentication-service.password") } else { config.getString("opintopolku.virkailija.password") }
-
     val http = VirkailijaHttpClient(username, password, virkalijaUrl, "/authentication-service", config.getBoolean("authentication-service.useCas"))
-    new RemoteAuthenticationServiceClient(http)
+    (config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")) match {
+      case false => new RemoteAuthenticationServiceClient(http)
+      case true => new RemoteAuthenticationServiceClientWithMockOids(http)
+    }
   }
 }
 
@@ -166,5 +168,16 @@ class RemoteAuthenticationServiceClient(http: Http) extends AuthenticationServic
         http(uri"/authentication-service/resources/henkilo/${u.oidHenkilo}")(Http.parseJson[HenkilöYhteystiedoilla])
       })
     })
+  }
+}
+
+class RemoteAuthenticationServiceClientWithMockOids(http: Http) extends RemoteAuthenticationServiceClient(http) {
+  override def findOppijatByOids(oids: List[String]): List[OppijaHenkilö] = super.findOppijatByOids(oids) match {
+    case Nil =>
+      oids.map { oid =>
+        OppijaHenkilö(oid, oid.substring("1.2.246.562.24.".length, oid.length), "Testihenkilö", "Testihenkilö", Some("010101-123N"), None, None)
+      }
+    case oppijat =>
+      oppijat
   }
 }
