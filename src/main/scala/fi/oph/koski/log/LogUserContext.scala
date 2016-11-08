@@ -11,10 +11,10 @@ object LogUserContext {
     override def clientIp = clientIpFromRequest(request)
   }
 
-  def apply(request: HttpServletRequest, oid: String, username: String) = new LogUserContext {
+  def apply(request: HttpServletRequest, userOid: String, un: String) = new LogUserContext {
     def userOption = Some(new UserWithOid with UserWithUsername {
-      override def oid = oid
-      override def username = username
+      override def oid = userOid
+      override def username = un
     })
     override def clientIp = clientIpFromRequest(request)
   }

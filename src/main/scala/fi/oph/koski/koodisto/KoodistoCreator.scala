@@ -36,5 +36,3 @@ object KoodistoCreator extends Logging {
     }
   }
 }
-
-
