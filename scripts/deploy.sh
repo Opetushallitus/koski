@@ -6,15 +6,13 @@ VERSION=${2:-}
 CLOUD_ENV_DIR=${CLOUD_ENV_DIR:-}
 DIR=$(cd `dirname $0`; pwd)
 BASE_DIR=$(git rev-parse --show-toplevel)
-RC_FILE="$BASE_DIR"/scripts/cloudrc
 GROUP_ID="fi/vm/sade"
 ARTIFACT_ID="koski"
 TMP_APPLICATION="${TMPDIR}${ARTIFACT_ID}-${VERSION}.war"
 
 VALID_ENVS=(
   "vagrant"
-  "tordev"
-  "koskiqa"
+  "cloud"
 )
 
 function usage() {
@@ -24,8 +22,7 @@ function usage() {
   echo "   to deploy a local version use 'local' as version."
   echo
   echo "NB: You need check out the cloud environment repository and set the CLOUD_ENV_DIR environment variable before running this script"
-  echo 'eg: export CLOUD_ENV_DIR="$HOME/workspace/oph-poutai-env"'
-  echo "Note that you can also add a file $RC_FILE and set the variable there"
+  echo 'eg: export CLOUD_ENV_DIR="$HOME/workspace/koski-env"'
   exit 1
 }
 
@@ -49,12 +46,27 @@ function download_version {
 INVENTORY=${INVENTORY:-"openstack_inventory.py"}
 ANSIBLE_ARGS=${ANSIBLE_ARGS:-""}
 
-
-if [ -f "$RC_FILE" ]; then
-  source "$RC_FILE"
+if [ -z "$ENV" ] || ! [[ " ${VALID_ENVS[@]} " =~ " ${ENV} " ]]; then
+  echo "Missing ENV or invalid ENV"
+  usage
 fi
 
-if [ -z "$ENV" ] || (! [[ " ${VALID_ENVS[@]} " =~ " ${ENV} " ]] && [ -z "$OS_USERNAME" ]) || [ -z "$VERSION" ] || [ -z "$CLOUD_ENV_DIR" ] || [ ! -d "$CLOUD_ENV_DIR" ]; then
+if [ -z "$OS_USERNAME" ]; then
+  echo "Missing OS_USERNAME"
+  usage
+fi
+
+if [ -z "$VERSION" ]; then
+  echo "Missing VERSION"
+  usage
+fi
+
+if [ -z "$CLOUD_ENV_DIR" ]; then
+  echo "Missing CLOUD_ENV_DIR"
+fi
+
+if [ ! -d "$CLOUD_ENV_DIR" ]; then
+  echo "CLOUD_ENV_DIR is not a directory"
   usage
 fi
 
@@ -66,13 +78,8 @@ else
         ANSIBLE_ARGS="${ANSIBLE_ARGS} --user=vagrant"
         INVENTORY="vagrant/inventory"
     else
-        CLOUD_ENV_RC="$CLOUD_ENV_DIR"/Project_2000079-openrc.sh
-        echo "Legacy mode. Sourcing cloud settings from $CLOUD_ENV_RC"
-        cd "$CLOUD_ENV_DIR"
-        if [ -z "$OS_USERNAME" ] || [ -z "$OS_PASSWORD" ] && [ "$ENV" != "vagrant" ]; then
-          source "$CLOUD_ENV_RC"
-        fi
-        export TF_VAR_env="$ENV"
+        echo Missing OS_TENANT_NAME environment variable and env is not vagrant
+        return 1
     fi
 fi
 set -u

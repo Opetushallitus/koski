@@ -1,5 +1,4 @@
-KOSKI-SERVER = tordev-tor-app
-env = tordev
+env = cloud
 
 help:
 	@echo ""
@@ -11,11 +10,8 @@ help:
 	@echo "make postgres	- Run local postgres server"
 	@echo "make watch	- Watch for changes in webapp files"
 	@echo "make deploy 	- Deploy to CSC's ePouta cloud"
-	@echo "make tail	- Tail the cloud logs"
-	@echo "make ssh	- Ssh connection to koski cloud server"
 	@echo "make dist version=<version> - Tag and deploy application to artifactory."
 	@echo "make deploy env=<env> version=<version>	- Install deployed version to env."
-	@echo "make KOSKI-SERVER=tordev-authentication-app ssh	- Ssh connection to authentication app server in test env"
 
 logdir:
 	@mkdir -p log
@@ -46,25 +42,10 @@ eslint: front
 scalastyle:
 	mvn verify -DskipTests
 lint: eslint scalastyle
-it: test
-happen:
-#	# Pow pow!
 dist: check-version
 	./scripts/dist.sh $(version)
-deploy: check-version check-env
+deploy: check-version
 	./scripts/deploy.sh $(env) $(version)
-tail:
-	ssh $(KOSKI-SERVER) 'tail -f /home/git/logs/*log'
-ssh:
-	ssh $(KOSKI-SERVER)
-
-check-env:
-ifndef env
-		@echo "env is not set."
-		@echo "Set env with env=<env>"
-		@echo "Available environments: vagrant, tordev, koskiqa"
-		exit 1
-endif
 
 check-version:
 ifndef version
