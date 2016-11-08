@@ -90,4 +90,4 @@ cd "$CLOUD_ENV_DIR"
 
 download_version
 
-ansible-playbook $ANSIBLE_ARGS --extra-vars=koski_package="${TMPDIR}${ARTIFACT_ID}-${VERSION}.war" -i $INVENTORY "$DIR"/site.yml
+ansible-playbook $ANSIBLE_ARGS --extra-vars=koski_package="${TMPDIR}${ARTIFACT_ID}-${VERSION}.war" -i $INVENTORY "$DIR"/deploy.yml
