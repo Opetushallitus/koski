@@ -94,7 +94,7 @@ object DirectoryClientLogin extends Logging {
       AuthenticationUser.fromLdapUser(username, ldapUser)
     } match {
       case Some(user) =>
-        logger(LogUserContext(request, user.oid)).info("Login successful")
+        logger(LogUserContext(request, user.oid, username)).info("Login successful")
         Some(user)
       case _ =>
         logger(LogUserContext(request)).error("User " + username + " not found from LDAP")

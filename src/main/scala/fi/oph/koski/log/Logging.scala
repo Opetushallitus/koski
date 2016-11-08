@@ -10,7 +10,7 @@ trait Logging {
   protected def logger(user: Option[LogUserContext]): LoggerWithContext = LoggerWithContext(log4sLogger, user)
 }
 
-case class LoggerWithContext(logger: Logger, user: Option[LogUserContext]) {
+case class LoggerWithContext(logger: Logger, context: Option[LogUserContext]) {
   def debug(msg: => String) = logger.debug(fmt(msg))
   def info(msg: => String) = logger.info(fmt(msg))
   def warn(msg: => String) = logger.warn(fmt(msg))
@@ -18,10 +18,10 @@ case class LoggerWithContext(logger: Logger, user: Option[LogUserContext]) {
   def error(msg: => String) = logger.error(fmt(msg))
   def error(e: Throwable)(msg: => String) = logger.error(e)(fmt(msg))
 
-  private def fmt(msg: => String) = user match {
-    case Some(user) => user.oidOption match {
-      case Some(oid) => s"${oid}@${user.clientIp} " + msg
-      case None =>  user.clientIp + " " + msg
+  private def fmt(msg: => String) = context match {
+    case Some(ctx) => ctx.userOption match {
+      case Some(user) => s"${user.username}(${user.oid})@${ctx.clientIp} " + msg
+      case None =>  ctx.clientIp + " " + msg
     }
     case None => msg
   }

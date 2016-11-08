@@ -7,3 +7,7 @@ trait UserWithPassword extends UserWithUsername {
 trait UserWithUsername {
   def username: String
 }
+
+trait UserWithOid {
+  def oid: String
+}

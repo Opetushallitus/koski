@@ -9,13 +9,13 @@ import fi.oph.koski.schema.{Organisaatio, OrganisaatioWithOid}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class KoskiSession(user: AuthenticationUser, val clientIp: String, käyttöoikeudet: => Set[Käyttöoikeus]) extends LogUserContext with UserWithUsername with Loggable with Logging {
+class KoskiSession(user: AuthenticationUser, val clientIp: String, käyttöoikeudet: => Set[Käyttöoikeus]) extends LogUserContext with UserWithUsername with UserWithOid with Loggable with Logging {
   def oid = user.oid
   def username = user.username
   def lang = "fi"
 
 
-  def oidOption = Some(oid)
+  def userOption = Some(this)
   def logString = "käyttäjä " + username + " / " + user.oid
 
   lazy val orgKäyttöoikeudet = käyttöoikeudet.collect { case k : KäyttöoikeusOrg => k}

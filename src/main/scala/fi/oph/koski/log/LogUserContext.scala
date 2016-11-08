@@ -2,16 +2,20 @@ package fi.oph.koski.log
 
 import javax.servlet.http.HttpServletRequest
 
+import fi.oph.koski.koskiuser.{UserWithOid, UserWithUsername}
 import org.scalatra.servlet.RichRequest
 
 object LogUserContext {
   def apply(request: HttpServletRequest) = new LogUserContext {
-    def oidOption = None
+    def userOption = None
     override def clientIp = clientIpFromRequest(request)
   }
 
-  def apply(request: HttpServletRequest, oid: String) = new LogUserContext {
-    def oidOption = Some(oid)
+  def apply(request: HttpServletRequest, oid: String, username: String) = new LogUserContext {
+    def userOption = Some(new UserWithOid with UserWithUsername {
+      override def oid = oid
+      override def username = username
+    })
     override def clientIp = clientIpFromRequest(request)
   }
 
@@ -21,6 +25,6 @@ object LogUserContext {
 }
 
 trait LogUserContext {
-  def oidOption: Option[String]
+  def userOption: Option[UserWithOid with UserWithUsername]
   def clientIp: String
 }
