@@ -27,7 +27,7 @@ class UserServlet(val application: UserAuthenticationContext) extends ApiServlet
             application.serviceTicketRepository.store(fakeServiceTicket, user)
             logger.info("Fake ticket created: " + fakeServiceTicket)
             val finalUser = user.copy(serviceTicket = Some(fakeServiceTicket))
-            setUser(finalUser)
+            setUser(Right(finalUser))
             AuditLog.log(AuditLogMessage(KoskiOperation.LOGIN, koskiSessionOption.get, Map()))
             finalUser
           })

@@ -16,16 +16,17 @@ trait AuthenticationSupport extends KoskiBaseServlet with CasSingleSignOnSupport
 
   def haltWithStatus(status: HttpStatus)
 
-  def setUser(user: AuthenticationUser) = {
+  def setUser(user: Either[HttpStatus, AuthenticationUser]) = {
     request.setAttribute("authUser", user)
-    if (user.serviceTicket.isDefined)
+    user.right.toOption.filter(_.serviceTicket.isDefined).foreach { user =>
       setUserCookie(user)
+    }
     user
   }
 
   def getUser: Either[HttpStatus, AuthenticationUser] = {
-    Option(request.getAttribute("authUser").asInstanceOf[AuthenticationUser]) match {
-      case Some(user) => Right(user)
+    Option(request.getAttribute("authUser").asInstanceOf[Either[HttpStatus, AuthenticationUser]]) match {
+      case Some(user) => user
       case _ =>
         def userFromCookie = getUserCookie.flatMap { authUser =>
           authUser.serviceTicket.flatMap { ticket =>
@@ -33,6 +34,7 @@ trait AuthenticationSupport extends KoskiBaseServlet with CasSingleSignOnSupport
               case Some(user) =>
                 Some(user)
               case None =>
+                setUser(Left(KoskiErrorCategory.unauthorized.notAuthenticated())) // <- to prevent getLogger call from causing recursive calls here
                 logger.warn("User not found by ticket " + ticket)
                 None
             }
@@ -46,11 +48,11 @@ trait AuthenticationSupport extends KoskiBaseServlet with CasSingleSignOnSupport
             Left(KoskiErrorCategory.unauthorized.notAuthenticated())
           }
         }
-        val authUser = userFromCookie match {
+        val authUser: Either[HttpStatus, AuthenticationUser] = userFromCookie match {
           case Some(user) => Right(user)
           case None => userFromBasicAuth
         }
-        authUser.right.foreach(setUser)
+        setUser(authUser)
         authUser
     }
   }

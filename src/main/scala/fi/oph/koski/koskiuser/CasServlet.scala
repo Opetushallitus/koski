@@ -16,7 +16,7 @@ class CasServlet(val application: KoskiApplication) extends ApiServlet with Auth
           val username = validator.validateServiceTicket(casServiceUrl, ticket)
           DirectoryClientLogin.findUser(application.directoryClient, request, username) match {
             case Some(user) =>
-              setUser(user.copy(serviceTicket = Some(ticket)))
+              setUser(Right(user.copy(serviceTicket = Some(ticket))))
               logger.info(s"Started session ${session.id} for ticket $ticket")
               ticketSessions.store(ticket, user)
               redirectAfterLogin
