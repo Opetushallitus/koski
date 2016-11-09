@@ -1,3 +1,7 @@
+## 9.11.2016
+
+- Poistettu ammatillisen erityisopetuksen peruste -kenttä
+
 ## 3.11.2016 
 
 - Suoritettavien koulutusmoduulien laajuus oltava > 0

@@ -4,7 +4,6 @@ object Koodistot {
   // Koski-spesifiset koodistot.
   val koskiKoodistot = List (
     "aineryhmaib",
-    "ammatillisenerityisopetuksenperuste",
     "ammatillisennaytonarvioinnistapaattaneet",
     "ammatillisennaytonarviointikeskusteluunosallistuneet",
     "ammatillisennaytonarviointikohde",

@@ -319,9 +319,7 @@ case class OppisopimuksellinenJärjestämismuoto(
 @OksaUri("tmpOKSAID228", "erityisopiskelija")
 case class Hojks(
   @KoodistoUri("opetusryhma")
-  opetusryhmä: Koodistokoodiviite,
-  @KoodistoUri("ammatillisenerityisopetuksenperuste")
-  peruste: Koodistokoodiviite
+  opetusryhmä: Koodistokoodiviite
 )
 
 case class LaajuusOsaamispisteissä(
