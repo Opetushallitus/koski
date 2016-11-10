@@ -10,7 +10,7 @@ class TelmaSpec extends FunSpec with Matchers with TodistusTestMethods with Opis
         """Työhön ja itsenäiseen elämään valmentava koulutus
           |HELSINGIN KAUPUNKI
           |Stadin ammattiopisto
-          |Telmanen, Tuula 170696-986C
+          |Telmanen, Tuula 021080-725C
           |
           |Pakolliset koulutuksen osat 53 osp
           |Toimintakyvyn vahvistaminen 18 Opiskelija selviytyy arkielämään liittyvistä toimista, osaa hyödyntää apuvälineitä, palveluita ja tukea sekä on valinnut itselleen sopivan tavan viettää vapaa-aikaa.

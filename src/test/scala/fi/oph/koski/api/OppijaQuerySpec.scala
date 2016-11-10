@@ -10,7 +10,7 @@ import org.scalatest.{FunSpec, Matchers}
 
 class OppijaQuerySpec extends FunSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with QueryTestMethods with Matchers {
   import fi.oph.koski.util.DateOrdering._
-  val teija = UusiHenkilö("150995-914X", "Teija", "Teija", "Tekijä")
+  val teija = UusiHenkilö("251019-039B", "Teija", "Teija", "Tekijä")
 
   describe("Kyselyrajapinta") {
     describe("kun haku osuu") {

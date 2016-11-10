@@ -5,7 +5,7 @@ describe('Lukiokoulutus', function( ){
   before(Authentication().login(), resetFixtures)
 
   describe('Lukion päättötodistus', function() {
-    before(page.openPage, page.oppijaHaku.search('110496-9369', page.isOppijaSelected('Liisa')))
+    before(page.openPage, page.oppijaHaku.search('020655-2479', page.isOppijaSelected('Liisa')))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
         expect(opinnot.getTutkinto(3)).to.equal("Lukion oppimäärä")
@@ -28,7 +28,7 @@ describe('Lukiokoulutus', function( ){
   })
 
   describe('Opintosuoritusote', function() {
-    before(page.openPage, page.oppijaHaku.search('110496-9369', page.isOppijaSelected('Liisa')))
+    before(page.openPage, page.oppijaHaku.search('020655-2479', page.isOppijaSelected('Liisa')))
     before(opinnot.avaaOpintosuoritusote(1))
 
     describe('Kun klikataan linkkiä', function() {
@@ -38,7 +38,7 @@ describe('Lukiokoulutus', function( ){
   })
 
   describe('Lukioon valmistava koulutus', function() {
-    before(page.openPage, page.oppijaHaku.search('300596-9615', page.isOppijaSelected('Luke')))
+    before(page.openPage, page.oppijaHaku.search('211007-442N', page.isOppijaSelected('Luke')))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
         expect(opinnot.getTutkinto()).to.equal("Maahanmuuttajien ja vieraskielisten lukiokoulutukseen valmistava koulutus")

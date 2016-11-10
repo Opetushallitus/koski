@@ -11,7 +11,7 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
         """|Jyväskylän yliopisto
           |Perusopetuksen päättötodistus
           |Jyväskylän normaalikoulu
-          |Koululainen, Kaisa 110496-926Y
+          |Koululainen, Kaisa 220109-784L
           |
           |Äidinkieli ja kirjallisuus Kiitettävä 9
           |B1-kieli, ruotsi Hyvä 8
@@ -43,7 +43,7 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
         """Jyväskylän yliopisto
           |Perusopetuksen päättötodistus
           |Jyväskylän normaalikoulu
-          |Toiminta, Tommi 130696-913E
+          |Toiminta, Tommi 031112-020J
           |
           |motoriset taidot Motoriset taidot kehittyneet hyvin perusopetuksen aikana
           |kieli ja kommunikaatio Hyväksytty
@@ -57,7 +57,7 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
         """Jyväskylän yliopisto
           |Todistus perusopetuksen oppiaineen oppimäärän suorittamisesta
           |Jyväskylän normaalikoulu
-          |Oppiaineenkorottaja, Olli 190596-953T
+          |Oppiaineenkorottaja, Olli 110738-839L
           |
           |Äidinkieli ja kirjallisuus Kiitettävä 9""".stripMargin)
     }
@@ -67,7 +67,7 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
         """Jyväskylän yliopisto
           |Lukuvuositodistus - 8. vuosiluokka
           |Jyväskylän normaalikoulu
-          |Koululainen, Kaisa 110496-926Y 8C
+          |Koululainen, Kaisa 220109-784L 8C
           |
           |Äidinkieli ja kirjallisuus Kiitettävä 9
           |B1-kieli, ruotsi Hyvä 8
@@ -102,7 +102,7 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
         """|Jyväskylän yliopisto
           |Todistus lisäopetuksen suorittamisesta
           |Jyväskylän normaalikoulu
-          |Kymppiluokkalainen, Kaisa 200596-9755
+          |Kymppiluokkalainen, Kaisa 131025-6573
           |
           |Äidinkieli ja kirjallisuus Tyydyttävä 7
           |A1-kieli, englanti Erinomainen 10
@@ -127,7 +127,7 @@ class PerusopetusSpec extends FunSpec with Matchers with TodistusTestMethods wit
         """Todistus perusopetukseen valmistavaan opetukseen osallistumisesta
           |Jyväskylän yliopisto
           |Jyväskylän normaalikoulu
-          |Koululainen, Kaisa 110496-926Y
+          |Koululainen, Kaisa 220109-784L
           |
           |Äidinkieli Suullinen ilmaisu ja kuullun ymmärtäminen 10 Keskustelee sujuvasti suomeksi""".stripMargin
       )

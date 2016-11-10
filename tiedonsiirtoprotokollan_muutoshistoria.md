@@ -1,3 +1,7 @@
+## 10.11.2016
+
+- Koski ei enää hyväksy keinotekoisia henkilötunnuksia tietoja syötettäessä (loppuosan alkunumero 9)
+
 ## 9.11.2016
 
 - Poistettu ammatillisen erityisopetuksen peruste -kenttä

@@ -82,7 +82,7 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
       }
     }
     val UusiHenkilö(Some(hetu), sukunimi, etunimet, kutsumanimi, _, _) = createUserInfo
-    val oid = Hetu.validate(hetu).right.flatMap { hetu =>
+    val oid = Hetu.validate(hetu, acceptSynthetic = true).right.flatMap { hetu =>
       create(createUserInfo).left.flatMap { case HttpStatus(409, _) =>
         oidFrom(search(hetu).results)
       }

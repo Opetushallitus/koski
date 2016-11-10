@@ -10,7 +10,7 @@ class ValmaSpec extends FunSpec with Matchers with TodistusTestMethods with Opis
         """Ammatilliseen peruskoulutukseen valmentava koulutus
           |HELSINGIN KAUPUNKI
           |Stadin ammattiopisto
-          |Amikseenvalmistautuja, Anneli 160696-993Y
+          |Amikseenvalmistautuja, Anneli 130404-054C
           |
           |Pakolliset koulutuksen osat 10 osp
           |Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen 10 Hyväksytty

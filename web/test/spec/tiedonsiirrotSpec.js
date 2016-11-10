@@ -17,8 +17,8 @@ describe('Tiedonsiirrot', function() {
   describe("Tiedonsiirtoloki", function() {
     it('Näytetään', function() {
       expect(tiedonsiirrot.tiedot()).to.deep.equal([
-        ['120496-949B', 'Aarne Ammattilainen', 'Aalto-yliopisto', 'virhe', 'tiedot'],
-        ['290896-9674', 'Tiina Tiedonsiirto', 'Stadin ammattiopisto', '', ''],
+        ['280618-402H', 'Aarne Ammattilainen', 'Aalto-yliopisto', 'virhe', 'tiedot'],
+        ['270303-281N', 'Tiina Tiedonsiirto', 'Stadin ammattiopisto', '', ''],
         ['', ' ', '', 'virhe', 'tiedot'],
         ['', '', '', 'virhe', 'tiedot'],
       ])
@@ -30,8 +30,8 @@ describe('Tiedonsiirrot', function() {
 
     it('Näytetään', function() {
       expect(tiedonsiirrot.tiedot()).to.deep.equal([
-        ['120496-949B', 'Aarne Ammattilainen', 'Aalto-yliopisto', 'Ei oikeuksia organisatioon 1.2.246.562.10.56753942459virhe', 'tiedot'],
-        ['290896-9674', 'Tiina Tiedonsiirto', 'Aalto-yliopisto', 'Ei oikeuksia organisatioon 1.2.246.562.10.56753942459virhe', 'tiedot'],
+        ['280618-402H', 'Aarne Ammattilainen', 'Aalto-yliopisto', 'Ei oikeuksia organisatioon 1.2.246.562.10.56753942459virhe', 'tiedot'],
+        ['270303-281N', 'Tiina Tiedonsiirto', 'Aalto-yliopisto', 'Ei oikeuksia organisatioon 1.2.246.562.10.56753942459virhe', 'tiedot'],
         ['', ' ', '', 'Viesti ei ole skeeman mukainenvirhe', 'tiedot'],
         ['', '', '', 'Epäkelpo JSON-dokumenttivirhe', 'tiedot'],
       ])

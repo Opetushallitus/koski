@@ -9,7 +9,7 @@ class LuvaSpec extends FunSpec with Matchers with TodistusTestMethods with Opisk
       todistus(MockOppijat.luva.oid, "luva") should equal("""Lukioon valmistavan koulutuksen päättötodistus
                                                      |Jyväskylän yliopisto
                                                      |Jyväskylän normaalikoulu
-                                                     |Lukioonvalmistautuja, Luke 300596-9615
+                                                     |Lukioonvalmistautuja, Luke 211007-442N
                                                      |
                                                      |Lukioon valmistavat opinnot 4
                                                      |Suomi toisena kielenä ja kirjallisuus 2 Hyväksytty

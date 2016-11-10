@@ -4,6 +4,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeParseException
 
 import fi.oph.koski.db.OpiskeluOikeusRow
+import fi.oph.koski.henkilo.Hetu
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.KoskiSession
@@ -56,7 +57,10 @@ class KoskiFacade(oppijaRepository: OppijaRepository, opiskeluOikeusRepository: 
 
   def createOrUpdate(oppija: Oppija)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
     val oppijaOid: Either[HttpStatus, PossiblyUnverifiedOppijaOid] = oppija.henkilö match {
-      case h:UusiHenkilö => oppijaRepository.findOrCreate(h).right.map(VerifiedOppijaOid(_))
+      case h:UusiHenkilö =>
+        Hetu.validate(h.hetu, acceptSynthetic = false).right.flatMap { hetu =>
+          oppijaRepository.findOrCreate(h).right.map(VerifiedOppijaOid(_))
+        }
       case h:HenkilöWithOid => Right(UnverifiedOppijaOid(h.oid, oppijaRepository))
     }
 

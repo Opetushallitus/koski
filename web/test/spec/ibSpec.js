@@ -5,7 +5,7 @@ describe('IB-tutkinto', function( ) {
   before(Authentication().login(), resetFixtures)
 
   describe('IB-tutkintotodistus', function () {
-    before(page.openPage, page.oppijaHaku.search('130996-9225', page.isOppijaSelected('Iina')))
+    before(page.openPage, page.oppijaHaku.search('040701-432D', page.isOppijaSelected('Iina')))
     describe('Oppijan suorituksissa', function () {
       it('näytetään', function () {
         expect(opinnot.getTutkinto(0)).to.equal("Pre-IB luokan oppimäärä")
@@ -30,7 +30,7 @@ describe('IB-tutkinto', function( ) {
   })
 
   describe('Opintosuoritusote', function () {
-    before(page.openPage, page.oppijaHaku.search('130996-9225', page.isOppijaSelected('Iina')))
+    before(page.openPage, page.oppijaHaku.search('040701-432D', page.isOppijaSelected('Iina')))
     before(opinnot.avaaOpintosuoritusote(1))
     describe('Kun klikataan linkkiä', function () {
       it('näytetään', function () {

@@ -153,7 +153,7 @@ class IBTutkintoSpec extends FunSpec with Matchers with OpintosuoritusoteTestMet
           |Final Grades
           |HELSINGIN KAUPUNKI
           |Ressun lukio
-          |IB-final, Iina 130996-9225
+          |IB-final, Iina 040701-432D
           |
           |Language A: literature, Finnish SL Satisfactory 4
           |Language A: language and literature, English HL Excellent 7

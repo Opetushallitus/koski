@@ -16,7 +16,7 @@ function AddOppijaPage() {
     },
     enterValidData: function(params) {
       var self = this
-      params = _.merge({ etunimet: 'Ossi Olavi', kutsumanimi: 'Ossi', sukunimi: 'Oppija', hetu: '300994-9694', oppilaitos: 'Stadin', tutkinto: 'Autoalan perust'}, {}, params)
+      params = _.merge({ etunimet: 'Ossi Olavi', kutsumanimi: 'Ossi', sukunimi: 'Oppija', hetu: '151161-075P', oppilaitos: 'Stadin', tutkinto: 'Autoalan perust'}, {}, params)
       return function() {
         return pageApi.setInputValue('.etunimet input', params.etunimet)()
           .then(pageApi.setInputValue('.kutsumanimi input', params.kutsumanimi))

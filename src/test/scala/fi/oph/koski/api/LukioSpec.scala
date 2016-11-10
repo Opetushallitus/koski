@@ -122,7 +122,7 @@ class LukioSpec extends FunSpec with Matchers with OpintosuoritusoteTestMethods 
       todistus(MockOppijat.lukiolainen.oid, "lukionoppimaara") should equal("""Lukion päättötodistus
                                                             |Jyväskylän yliopisto
                                                             |Jyväskylän normaalikoulu
-                                                            |Lukiolainen, Liisa 110496-9369
+                                                            |Lukiolainen, Liisa 020655-2479
                                                             |
                                                             |Äidinkieli ja kirjallisuus 8 Kiitettävä 9
                                                             |A1-kieli, englanti 9 Kiitettävä 9

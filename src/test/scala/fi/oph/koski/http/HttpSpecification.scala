@@ -2,9 +2,7 @@ package fi.oph.koski.http
 
 import fi.oph.koski.http
 import fi.oph.koski.json.Json
-import fi.oph.koski.koskiuser.UserWithPassword
 import org.scalatest.{Assertions, Matchers}
-import org.scalatra.test.HttpComponentsClient
 
 import scala.util.matching.Regex
 

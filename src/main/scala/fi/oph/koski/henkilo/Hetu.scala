@@ -18,7 +18,7 @@ object Hetu {
     }
   }
 
-  def validate(hetu: String): Either[HttpStatus, String] = {
+  def validate(hetu: String, acceptSynthetic: Boolean = false): Either[HttpStatus, String] = {
     def validDate(hetu: String) = {
       val century = hetu.lift(6) match {
         case Some('+') => Some(1800)
@@ -31,7 +31,12 @@ object Hetu {
           val birthday: LocalDate = date(century + hetu.slice(4, 6).toInt, hetu.slice(2, 4).toInt, hetu.slice(0, 2).toInt)
           if (birthday.isBefore(now)) Some(hetu) else None
         } match {
-          case Some(_) => Right(hetu)
+          case Some(_) =>
+            if (!acceptSynthetic && hetu.substring(7, 8) == "9") {
+              Left(KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Keinotekoinen henkilötunnus: " + hetu))
+            } else {
+              Right(hetu)
+            }
           case None => Left(KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Syntymäpäivä hetussa: " + hetu + " on tulevaisuudessa"))
         }
       } catch {
@@ -43,7 +48,6 @@ object Hetu {
       val checkChar = checkChars(Math.round(((hetu.slice(0,6) + hetu.slice(7,10)).toInt / 31.0 % 1) * 31).toInt)
       if (checkChar == hetu.last) Right(hetu) else Left(KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Virheellinen tarkistusmerkki hetussa: " + hetu))
     }
-
     validFormat(hetu).right.flatMap(validDate(_).right.flatMap(validCheckChar))
   }
 }

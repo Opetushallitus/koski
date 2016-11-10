@@ -11,7 +11,7 @@ class AmmatillinenSpec extends FreeSpec with TodistusTestMethods with LocalJetty
         |Päättötodistus
         |Luonto- ja ympäristöalan perustutkinto
         |Ympäristöalan osaamisala, Ympäristönhoitaja
-        |Ammattilainen, Aarne (120496-949B)
+        |Ammattilainen, Aarne (280618-402H)
         |
         |Ammatilliset tutkinnon osat
         |Kestävällä tavalla toimiminen 40 Kiitettävä 3
@@ -41,7 +41,7 @@ class AmmatillinenSpec extends FreeSpec with TodistusTestMethods with LocalJetty
     todistus(MockOppijat.erikoisammattitutkinto.oid, "nayttotutkintoonvalmistavakoulutus") should equal(
       """Stadin ammattiopisto
         |Näyttötutkintoon valmistavan koulutuksen osallistumistodistus
-        |Erikoinen, Erja 200696-906R
+        |Erikoinen, Erja 250989-419V
         |on osallistunut Autoalan työnjohdon erikoisammattitutkinto, valmistavaan koulutukseen 1.9.2012 seuraavilta osin:
         |Koulutuksen sisällöt
         |Johtaminen ja henkilöstön kehittäminen

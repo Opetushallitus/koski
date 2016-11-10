@@ -30,10 +30,10 @@ describe('Ammatillinen koulutus', function() {
     describe('Olemassa olevalle henkilölle', function() {
 
       describe('Kun lisätään uusi opinto-oikeus', function() {
-        before(addNewOppija('kalle', 'Tunkkila', { etunimet: 'Tero Terde', kutsumanimi: 'Terde', sukunimi: 'Tunkkila', hetu: '091095-9833', oppilaitos: 'Stadin', tutkinto: 'Autoalan'}))
+        before(addNewOppija('kalle', 'Tunkkila', { etunimet: 'Tero Terde', kutsumanimi: 'Terde', sukunimi: 'Tunkkila', hetu: '280608-6619', oppilaitos: 'Stadin', tutkinto: 'Autoalan'}))
 
         it('Onnistuu, näyttää henkilöpalvelussa olevat nimitiedot', function() {
-          expect(page.getSelectedOppija()).to.equal('Tunkkila-Fagerlund, Tero Petteri Gustaf 091095-9833')
+          expect(page.getSelectedOppija()).to.equal('Tunkkila-Fagerlund, Tero Petteri Gustaf 280608-6619')
         })
       })
 
@@ -70,7 +70,7 @@ describe('Ammatillinen koulutus', function() {
         })
 
         describe('Kun painetaan Lisää-nappia', function() {
-          before(addOppija.submitAndExpectSuccess('Oppija, Ossi Olavi 300994-9694', 'Autoalan perustutkinto'))
+          before(addOppija.submitAndExpectSuccess('Oppija, Ossi Olavi 151161-075P', 'Autoalan perustutkinto'))
 
           it('lisätty oppija näytetään', function() {})
 
@@ -206,7 +206,7 @@ describe('Ammatillinen koulutus', function() {
   })
 
   describe('Tutkinnon tietojen muuttaminen', function() {
-    before(resetFixtures, page.openPage, addNewOppija('kalle', 'Tunkkila', { hetu: '091095-9833'}))
+    before(resetFixtures, page.openPage, addNewOppija('kalle', 'Tunkkila', { hetu: '280608-6619'}))
     it('Aluksi ei näytetä \"Kaikki tiedot tallennettu\" -tekstiä', function() {
       expect(page.isSavedLabelShown()).to.equal(false)
     })
@@ -248,7 +248,7 @@ describe('Ammatillinen koulutus', function() {
       })
 
       describe('Ilman kirjoitusoikeuksia', function() {
-        before(Authentication().logout, Authentication().login('omnia-katselija'), page.openPage, page.oppijaHaku.search('070796-9652', page.isOppijaSelected('Eero')))
+        before(Authentication().logout, Authentication().login('omnia-katselija'), page.openPage, page.oppijaHaku.search('080154-770R', page.isOppijaSelected('Eero')))
         it('estetty', function() {
           var suoritus = opinnot.suoritus('Autoalan perustutkinto')
           suoritus.expand()
@@ -259,7 +259,7 @@ describe('Ammatillinen koulutus', function() {
   })
 
   describe('Ammatillisen perustutkinnon päättötodistus', function() {
-    before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.search('120496-949B', page.isOppijaSelected('Aarne')))
+    before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.search('280618-402H', page.isOppijaSelected('Aarne')))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
         expect(OpinnotPage().getTutkinto()).to.equal("Luonto- ja ympäristöalan perustutkinto")
@@ -275,7 +275,7 @@ describe('Ammatillinen koulutus', function() {
     describe('Tulostettava todistus', function() {
       before(OpinnotPage().avaaTodistus(0))
       it('näytetään', function() {
-        expect(TodistusPage().headings()).to.equal('HELSINGIN KAUPUNKIStadin ammattiopistoPäättötodistusLuonto- ja ympäristöalan perustutkintoYmpäristöalan osaamisala, Ympäristönhoitaja Ammattilainen, Aarne (120496-949B)')
+        expect(TodistusPage().headings()).to.equal('HELSINGIN KAUPUNKIStadin ammattiopistoPäättötodistusLuonto- ja ympäristöalan perustutkintoYmpäristöalan osaamisala, Ympäristönhoitaja Ammattilainen, Aarne (280618-402H)')
         expect(TodistusPage().arvosanarivi('.tutkinnon-osa.100431')).to.equal('Kestävällä tavalla toimiminen 40 Kiitettävä 3')
         expect(TodistusPage().arvosanarivi('.opintojen-laajuus')).to.equal('Opiskelijan suorittamien tutkinnon osien laajuus osaamispisteinä 180')
         expect(TodistusPage().vahvistus()).to.equal('Helsinki 31.5.2016 Reijo Reksi rehtori')
@@ -284,7 +284,7 @@ describe('Ammatillinen koulutus', function() {
   })
 
   describe('Näyttötutkinnot', function() {
-    before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.search('200696-906R', page.isOppijaSelected('Erja')))
+    before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.search('250989-419V', page.isOppijaSelected('Erja')))
     describe('Näyttötutkintoon valmistava koulutus', function() {
       describe('Oppijan suorituksissa', function() {
         it('näytetään', function() {
@@ -334,7 +334,7 @@ describe('Ammatillinen koulutus', function() {
   })
 
   describe('Ammatilliseen peruskoulutukseen valmentava koulutus', function() {
-    before(page.openPage, page.oppijaHaku.search('160696-993Y', page.isOppijaSelected('Anneli')))
+    before(page.openPage, page.oppijaHaku.search('130404-054C', page.isOppijaSelected('Anneli')))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
         expect(OpinnotPage().getOppilaitos()).to.equal("Stadin ammattiopisto")
