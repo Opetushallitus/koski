@@ -41,8 +41,8 @@ trait HealthCheck extends Logging {
 object HealthCheck {
   def apply(application: KoskiApplication)(implicit cm: CacheManager): HealthCheck with Cached =
     CachingProxy[HealthCheck](Cache.cacheAllNoRefresh("HealthCheck", durationSeconds = 10, maxSize = 1),
-    new HeathChecker(application)
+    new HealthChecker(application)
   )
 }
 
-class HeathChecker(val application: KoskiApplication) extends HealthCheck
+class HealthChecker(val application: KoskiApplication) extends HealthCheck
