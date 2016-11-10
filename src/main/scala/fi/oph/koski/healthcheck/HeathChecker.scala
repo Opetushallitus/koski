@@ -1,5 +1,6 @@
 package fi.oph.koski.healthcheck
 
+import fi.oph.koski.cache.{Cache, CacheManager, Cached, CachingProxy}
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -8,7 +9,7 @@ import fi.oph.koski.koskiuser.KoskiSession._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{OidHenkilö, Oppija}
 
-case class HeathChecker(application: KoskiApplication) extends Logging {
+trait HealthCheck extends Logging {
   private implicit val user = systemUser
   private implicit val accessType = AccessType.write
   private val oid = application.config.getString("healthcheck.oppija.oid")
@@ -33,4 +34,15 @@ case class HeathChecker(application: KoskiApplication) extends Logging {
       logger.error(e)("healthcheck failed")
       KoskiErrorCategory.internalError("healthcheck failed")
   }
+
+  def application: KoskiApplication
 }
+
+object HealthCheck {
+  def apply(application: KoskiApplication)(implicit cm: CacheManager): HealthCheck with Cached =
+    CachingProxy[HealthCheck](Cache.cacheAllNoRefresh("HealthCheck", durationSeconds = 10, maxSize = 1),
+    new HeathChecker(application)
+  )
+}
+
+class HeathChecker(val application: KoskiApplication) extends HealthCheck

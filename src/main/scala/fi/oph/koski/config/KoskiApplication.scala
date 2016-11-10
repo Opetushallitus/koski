@@ -3,10 +3,11 @@ package fi.oph.koski.config
 import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.koski.arvosana.ArviointiasteikkoRepository
 import fi.oph.koski.cache.Cache.cacheAllRefresh
-import fi.oph.koski.cache.{CacheManager, JMXCacheManager, CachingProxy, GlobalCacheManager}
+import fi.oph.koski.cache.{CacheManager, CachingProxy}
 import fi.oph.koski.db._
 import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.fixture.FixtureCreator
+import fi.oph.koski.healthcheck.HealthCheck
 import fi.oph.koski.henkilo.AuthenticationServiceClient
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViitePalvelu}
@@ -58,4 +59,5 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val serviceTicketRepository = new CasTicketSessionRepository(database.db, sessionTimeout)
   lazy val fixtureCreator = new FixtureCreator(config, database, opiskeluOikeusRepository, oppijaRepository, validator)
   lazy val tiedonsiirtoService = new TiedonsiirtoService(new TiedonsiirtoRepository(database.db, new TiedonsiirtoFailureMailer(config, authenticationServiceClient)), organisaatioRepository, oppijaRepository, koodistoViitePalvelu, userRepository)
+  lazy val healthCheck = HealthCheck(this)
 }

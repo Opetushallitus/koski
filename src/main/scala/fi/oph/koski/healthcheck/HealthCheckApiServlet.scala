@@ -6,7 +6,7 @@ import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 class HealthCheckApiServlet(val application: KoskiApplication) extends ApiServlet with NoCache with Unauthenticated {
   get() {
-    renderStatus(HeathChecker(application).healthcheck.statusCode)
+    renderStatus(application.healthCheck.healthcheck.statusCode)
   }
 
   private def renderStatus(sc: Int): Unit = renderObject(Map("status" -> sc))
