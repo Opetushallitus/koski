@@ -11,7 +11,7 @@ import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 
-class OppijaValidatdionAmmatillinenSpec extends TutkinnonPerusteetTest[AmmatillinenOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
+class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[AmmatillinenOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
   describe("Ammatillisen koulutuksen opiskeluoikeuden lisääminen") {
     describe("Valideilla tiedoilla") {
       it("palautetaan HTTP 200") {
@@ -232,9 +232,17 @@ class OppijaValidatdionAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatilli
                 verifyResponseStatus(200)))
             }
 
+            describe("Päivämäärät tulevaisuudessa") {
+              it("palautetaan HTTP 200" ) (put(päivämäärillä("2115-08-01", "2116-05-30", "2116-06-01"))(
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.tulevaisuudessa("Päivämäärä suoritus.alkamispäivä (2115-08-01) on tulevaisuudessa"),
+                                          KoskiErrorCategory.badRequest.validation.date.tulevaisuudessa("Päivämäärä suoritus.arviointi.päivä (2116-05-30) on tulevaisuudessa"),
+                                          KoskiErrorCategory.badRequest.validation.date.tulevaisuudessa("Päivämäärä suoritus.vahvistus.päivä (2116-06-01) on tulevaisuudessa")
+                )))
+            }
+
             describe("alkamispäivä > arviointi.päivä") {
-              it("palautetaan HTTP 400" ) (put(päivämäärillä("2017-08-01", "2016-05-31", "2016-05-31"))(
-                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua("suoritus.alkamispäivä (2017-08-01) oltava sama tai aiempi kuin suoritus.arviointi.päivä(2016-05-31)"))))
+              it("palautetaan HTTP 400" ) (put(päivämäärillä("2016-08-01", "2015-05-31", "2015-05-31"))(
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua("suoritus.alkamispäivä (2016-08-01) oltava sama tai aiempi kuin suoritus.arviointi.päivä(2015-05-31)"))))
             }
 
             describe("arviointi.päivä > vahvistus.päivä") {
@@ -320,8 +328,8 @@ class OppijaValidatdionAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatilli
         }
 
         describe("alkamispäivä > vahvistus.päivä") {
-          it("palautetaan HTTP 400" ) (put(päivämäärillä("2017-08-01", "2016-05-31"))(
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua("suoritus.alkamispäivä (2017-08-01) oltava sama tai aiempi kuin suoritus.vahvistus.päivä(2016-05-31)"))))
+          it("palautetaan HTTP 400" ) (put(päivämäärillä("2016-08-01", "2015-05-31"))(
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.loppuEnnenAlkua("suoritus.alkamispäivä (2016-08-01) oltava sama tai aiempi kuin suoritus.vahvistus.päivä(2015-05-31)"))))
         }
       }
     }

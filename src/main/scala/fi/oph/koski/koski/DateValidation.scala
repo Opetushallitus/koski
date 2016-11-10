@@ -20,7 +20,7 @@ object DateValidation {
     })
   }
 
-  def validateNotInFuture(name: String, date: Option[LocalDate]): HttpStatus = {
+  def validateNotInFuture(name: String, date: Iterable[LocalDate]): HttpStatus = {
     HttpStatus.fold(date.map(date => validateNotInFuture(name, date)))
   }
   def validateNotInFuture(name: String, date: LocalDate): HttpStatus = {

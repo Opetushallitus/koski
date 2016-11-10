@@ -125,11 +125,14 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   def validateSuoritus(suoritus: Suoritus, vahvistus: Option[Vahvistus])(implicit user: KoskiSession, accessType: AccessType.Value): HttpStatus = {
-    val arviointipäivä = ("suoritus.arviointi.päivä", suoritus.arviointi.toList.flatten.flatMap(_.arviointipäivä))
+    val arviointipäivät: List[LocalDate] = suoritus.arviointi.toList.flatten.flatMap(_.arviointipäivä)
     val alkamispäivä: (String, Iterable[LocalDate]) = ("suoritus.alkamispäivä", suoritus.alkamispäivä)
-    val vahvistuspäivä: (String, Iterable[LocalDate]) = ("suoritus.vahvistus.päivä", suoritus.vahvistus.map(_.päivä))
+    val vahvistuspäivät: Option[LocalDate] = suoritus.vahvistus.map(_.päivä)
     HttpStatus.fold(
-      validateDateOrder(alkamispäivä, arviointipäivä).then(validateDateOrder(arviointipäivä, vahvistuspäivä).then(validateDateOrder(alkamispäivä, vahvistuspäivä)))
+      validateDateOrder(alkamispäivä, ("suoritus.arviointi.päivä", arviointipäivät)).then(validateDateOrder(("suoritus.arviointi.päivä", arviointipäivät), ("suoritus.vahvistus.päivä", vahvistuspäivät)).then(validateDateOrder(alkamispäivä, ("suoritus.vahvistus.päivä", vahvistuspäivät))))
+        :: validateNotInFuture("suoritus.alkamispäivä", suoritus.alkamispäivä)
+        :: validateNotInFuture("suoritus.arviointi.päivä", arviointipäivät)
+        :: validateNotInFuture("suoritus.vahvistus.päivä", vahvistuspäivät)
         :: validateToimipiste(suoritus)
         :: validateStatus(suoritus, vahvistus)
         :: validateLaajuus(suoritus)
