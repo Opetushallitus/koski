@@ -30,7 +30,6 @@ henkilöP.sampledBy(oppijatP.map('.results').changes(), (oppija, oppijat) => ({ 
 export const searchInProgressP = oppijaHakuE.filter(acceptableQuery).awaiting(oppijatP.mapError().changes()).throttle(200)
 
 export const oppijaHakuContentP = Bacon.combineWith(oppijatP, searchInProgressP, oppijaStateP, (oppijat, searchInProgress, oppija) => {
-  console.log(oppija.valittuOppija)
   return {
     content: (<div className='content-area'>
       <OppijaHaku oppijat={oppijat} valittu={modelData(oppija.valittuOppija, 'henkilö')} searching={searchInProgress}/>
