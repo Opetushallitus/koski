@@ -1,5 +1,7 @@
 package fi.oph.koski.api
 
+import java.time.LocalDate
+
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.Json
 import fi.oph.koski.localization.LocalizedString
@@ -184,6 +186,19 @@ class OppijaValidationSpec extends FunSpec with LocalJettyHttpSpecification with
         it("Päivämäärät kunnossa -> palautetaan HTTP 200") {
           putOpiskeluOikeus(defaultOpiskeluoikeus.copy(arvioituPäättymispäivä = Some(date(2018, 5, 31))))(verifyResponseStatus(200))
         }
+
+        it("alkamispäivä tänään -> palautetaan HTTP 200" ) (putOpiskeluOikeus(makeOpiskeluoikeus(alkamispäivä = LocalDate.now)) {
+          verifyResponseStatus(200)
+        })
+
+        it("alkamispäivä tulevaisuudessa -> palautetaan HTTP 400" ) (putOpiskeluOikeus(makeOpiskeluoikeus(alkamispäivä = date(2100, 5, 31))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.tulevaisuudessa("Päivämäärä alkamispäivä (2100-05-31) on tulevaisuudessa"))
+        })
+
+        it("päättymispäivä tulevaisuudessa -> palautetaan HTTP 400" ) (putOpiskeluOikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2100, 5, 31))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.tulevaisuudessa("Päivämäärä päättymispäivä (2100-05-31) on tulevaisuudessa"))
+        })
+
         it("Päivämääräformaatti virheellinen -> palautetaan HTTP 400") {
           putOpiskeluOikeusWithSomeMergedJson(Map("alkamispäivä" -> "2015.01-12")){
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.format.pvm("Virheellinen päivämäärä: 2015.01-12"))

@@ -19,4 +19,13 @@ object DateValidation {
       HttpStatus.validate(jakso1.alku.compareTo(jakso2.alku) <= 0)(KoskiErrorCategory.badRequest.validation.date.jaksojenJärjestys(s"${name}: ${jakso1.alku} oltava sama tai aiempi kuin ${jakso2.alku}"))
     })
   }
+
+  def validateNotInFuture(name: String, date: Option[LocalDate]): HttpStatus = {
+    HttpStatus.fold(date.map(date => validateNotInFuture(name, date)))
+  }
+  def validateNotInFuture(name: String, date: LocalDate): HttpStatus = {
+    HttpStatus.validate(!date.isAfter(LocalDate.now)) {
+      KoskiErrorCategory.badRequest.validation.date.tulevaisuudessa(s"Päivämäärä $name ($date) on tulevaisuudessa")
+    }
+  }
 }

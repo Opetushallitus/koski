@@ -10,9 +10,11 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 
 trait OpiskeluoikeusTestMethodsAmmatillinen extends PutOpiskeluOikeusTestMethods[AmmatillinenOpiskeluoikeus] {
-  override def defaultOpiskeluoikeus = AmmatillinenOpiskeluoikeus(
-    alkamispäivä = Some(longTimeAgo),
-    tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä, None))),
+  override def defaultOpiskeluoikeus = makeOpiskeluoikeus(alkamispäivä = longTimeAgo)
+
+  def makeOpiskeluoikeus(alkamispäivä: LocalDate = longTimeAgo) = AmmatillinenOpiskeluoikeus(
+    alkamispäivä = Some(alkamispäivä),
+    tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, None))),
     oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto),
     suoritukset = List(autoalanPerustutkinnonSuoritus())
   )

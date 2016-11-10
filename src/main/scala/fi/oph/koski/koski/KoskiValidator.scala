@@ -112,7 +112,10 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       case Some(d) => d.toString
       case None => "null"
     }
+
     HttpStatus.fold(
+      validateNotInFuture("alkamispäivä", opiskeluOikeus.alkamispäivä),
+      validateNotInFuture("päättymispäivä", opiskeluOikeus.päättymispäivä),
       validateDateOrder(("alkamispäivä", opiskeluOikeus.alkamispäivä), ("päättymispäivä", opiskeluOikeus.päättymispäivä)),
       validateDateOrder(("alkamispäivä", opiskeluOikeus.alkamispäivä), ("arvioituPäättymispäivä", opiskeluOikeus.arvioituPäättymispäivä)),
       DateValidation.validateJaksot("tila.opiskeluoikeusjaksot", opiskeluOikeus.tila.opiskeluoikeusjaksot),
