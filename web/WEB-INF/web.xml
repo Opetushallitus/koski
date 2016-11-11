@@ -18,6 +18,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
   <servlet-mapping>
     <servlet-name>default</servlet-name>
     <url-pattern>/buildversion.txt</url-pattern>
+    <url-pattern>/favicon.ico</url-pattern>
     <url-pattern>/js/*</url-pattern>
     <url-pattern>/css/*</url-pattern>
     <url-pattern>/images/*</url-pattern>
