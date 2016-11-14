@@ -87,7 +87,7 @@ const Lokirivi = React.createClass({
             : <span className="status ok">✓</span>
         }
       </td>
-      <td className="aika">{fecha.format(fecha.parse(row.aika, 'YYYY-MM-DDThh:mm'), 'D.M.YYYY h:mm')}</td>
+      <td className="aika">{fecha.format(fecha.parse(row.aika, 'YYYY-MM-DDThh:mm'), 'D.M.YYYY H:mm')}</td>
       <td className="hetu">{row.oppija && row.oppija.hetu}</td>
       <td className="nimi">{
         (row.oppija && row.oppija.oid)
