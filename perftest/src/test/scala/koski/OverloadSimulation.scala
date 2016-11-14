@@ -8,6 +8,6 @@ import scala.concurrent.duration._
 class OverloadSimulation extends KoskiSimulation {
   setUp(
     prepareForFind.inject(atOnceUsers(1)),
-    findOppija.inject(nothingFor(60 seconds), constantUsersPerSec(90) during(1 minute) randomized)
+    findOppija.inject(nothingFor(10 seconds), constantUsersPerSec(80) during(1 minute) randomized)
   )
 }
