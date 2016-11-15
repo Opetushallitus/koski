@@ -103,13 +103,6 @@ class RemoteAuthenticationServiceClient(http: Http) extends AuthenticationServic
 
   def käyttöoikeusryhmät: List[Käyttöoikeusryhmä] = runTask(http(uri"/authentication-service/resources/kayttooikeusryhma")(Http.parseJson[List[Käyttöoikeusryhmä]]))
 
-  // TODO: remove, also from authentication-service
-  def käyttäjänKäyttöoikeusryhmät(oid: String): List[(String, Int)] = {
-    runTask(http(uri"/authentication-service/resources/s2s/koski/kayttooikeusryhmat/${oid}")(Http.parseJson[Map[String, List[Int]]]).map { groupedByOrg =>
-      groupedByOrg.toList.flatMap { case (org, ryhmät) => ryhmät.map(ryhmä => (org, ryhmä)) }
-    })
-  }
-
   def lisääOrganisaatio(henkilöOid: String, organisaatioOid: String, nimike: String) = {
     http.put(uri"/authentication-service/resources/henkilo/${henkilöOid}/organisaatiohenkilo", List(
       LisääOrganisaatio(organisaatioOid, nimike)
