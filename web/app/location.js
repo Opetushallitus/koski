@@ -25,7 +25,7 @@ const parsePath = (path) => {
 
 function parseLocation(location) {
   return {
-    path: location.pathname.replace(/(^\/?)/,"/"),
+    path: location.pathname.replace(/(^\/?)/,'/'),
     params: parseQuery(location.search),
     queryString: location.search || ''
   }
