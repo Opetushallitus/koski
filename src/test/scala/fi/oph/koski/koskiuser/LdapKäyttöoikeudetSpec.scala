@@ -9,7 +9,7 @@ import org.scalatest.{FreeSpec, Matchers}
 class LdapKäyttöoikeudetSpec extends FreeSpec with Matchers {
   "LDAP-käyttöoikeudet" - {
     "Parsitaan" in {
-      LdapKäyttöoikeudet.käyttöoikeudet(LdapUser(List(
+      LdapKayttooikeudet.käyttöoikeudet(LdapUser(List(
         "APP_KOSKI_READ_1.2.246.562.10.346830761110",
         "APP_KOSKI_OPHKATSELIJA_1.2.246.562.10.00000000001"
       ), "testi", "testi", "0")) should equal(List(
@@ -18,7 +18,7 @@ class LdapKäyttöoikeudetSpec extends FreeSpec with Matchers {
       ))
     }
     "Vain Koski-applikaation oikeudet huomioidaan" in {
-      LdapKäyttöoikeudet.käyttöoikeudet(LdapUser(List(
+      LdapKayttooikeudet.käyttöoikeudet(LdapUser(List(
         "APP_LOL_READ_1.2.246.562.10.346830761110"
       ), "testi", "testi", "0")) should equal(Nil)
     }

@@ -40,7 +40,7 @@ object MockUsers {
 }
 
 case class MockUser(ldapUser: LdapUser, käyttöoikeudet: Set[(Organisaatio.Oid, Käyttöoikeusryhmä)]) extends UserWithPassword {
-  def toKoskiUser(käyttöoikeudet: KäyttöoikeusRepository) = {
+  def toKoskiUser(käyttöoikeudet: KayttooikeusRepository) = {
     val authUser: AuthenticationUser = fromLdapUser(ldapUser.oid, ldapUser)
     new KoskiSession(authUser, "192.168.0.10", käyttöoikeudet.käyttäjänKäyttöoikeudet(authUser))
   }
@@ -53,7 +53,7 @@ object MockUser {
   def apply(lastname: String, firstname: String, oid: String, käyttöoikeusryhmät: Set[(Organisaatio.Oid, Käyttöoikeusryhmä)]): MockUser = {
     val roolit = käyttöoikeusryhmät.flatMap { case (oid, ryhmä) =>
       ryhmä.palveluroolit.map { palveluRooli =>
-        LdapKäyttöoikeudet.roleString(palveluRooli.palveluName, palveluRooli.rooli, oid)
+        LdapKayttooikeudet.roleString(palveluRooli.palveluName, palveluRooli.rooli, oid)
       }
     }.toList
     MockUser(LdapUser(roolit, lastname, firstname, oid), käyttöoikeusryhmät)

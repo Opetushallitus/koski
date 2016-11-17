@@ -7,7 +7,7 @@ import fi.oph.koski.koodisto.KoodistoPalvelu
 import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.Opetushallitus
 
-object KäyttöoikeusRyhmätCreator extends Logging {
+object KayttooikeusRyhmatCreator extends Logging {
   def luoKäyttöoikeusRyhmät(config: Config): Unit = {
     val client = RemoteAuthenticationServiceClient(config)
     val olemassaOlevatRyhmät = client.käyttöoikeusryhmät

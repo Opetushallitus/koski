@@ -6,7 +6,7 @@ import fi.oph.koski.organisaatio.Opetushallitus
 import fi.oph.koski.schema.OidOrganisaatio
 import fi.vm.sade.security.ldap.LdapUser
 
-object LdapKäyttöoikeudet extends Logging {
+object LdapKayttooikeudet extends Logging {
   val pattern = """APP_KOSKI_([A-Z_]+)_([0-9\.]+)""".r
 
   def käyttöoikeudet(user: LdapUser): List[Käyttöoikeus] = {

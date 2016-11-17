@@ -39,7 +39,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     }
 
     if (application.config.getBoolean("käyttöoikeusryhmät.create")) {
-      tryCatch("Käyttöoikeusryhmien luonti/päivitys") { KäyttöoikeusRyhmätCreator.luoKäyttöoikeusRyhmät(application.config) }
+      tryCatch("Käyttöoikeusryhmien luonti/päivitys") { KayttooikeusRyhmatCreator.luoKäyttöoikeusRyhmät(application.config) }
     }
 
     context.mount(new OppijaServlet(application), "/api/oppija")

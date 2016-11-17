@@ -6,7 +6,7 @@ import fi.oph.koski.organisaatio.{Opetushallitus, OrganisaatioHierarkia, Organis
 import fi.oph.koski.util.Timing
 import fi.vm.sade.security.ldap.{DirectoryClient, LdapUser}
 
-class KäyttöoikeusRepository(authenticationServiceClient: AuthenticationServiceClient, organisaatioRepository: OrganisaatioRepository, directoryClient: DirectoryClient)(implicit cacheInvalidator: CacheManager) extends Timing {
+class KayttooikeusRepository(authenticationServiceClient: AuthenticationServiceClient, organisaatioRepository: OrganisaatioRepository, directoryClient: DirectoryClient)(implicit cacheInvalidator: CacheManager) extends Timing {
   def käyttäjänKäyttöoikeudet(user: UserWithUsername): Set[Käyttöoikeus] = käyttöoikeusCache(user.username)
 
   def käyttäjänOppilaitostyypit(user: UserWithUsername): Set[String] = {
@@ -17,7 +17,7 @@ class KäyttöoikeusRepository(authenticationServiceClient: AuthenticationServic
   private def haeKäyttöoikeudet(username: String): Set[Käyttöoikeus] = {
     directoryClient.findUser(username) match {
       case Some(ldapUser) =>
-        LdapKäyttöoikeudet.käyttöoikeudet(ldapUser).toSet.flatMap { k: Käyttöoikeus =>
+        LdapKayttooikeudet.käyttöoikeudet(ldapUser).toSet.flatMap { k: Käyttöoikeus =>
           k match {
             case k: KäyttöoikeusGlobal =>
               List(k)

@@ -43,7 +43,7 @@ class KoskiSession(user: AuthenticationUser, val clientIp: String, käyttöoikeu
 }
 
 object KoskiSession {
-  def apply(user: AuthenticationUser, request: HttpServletRequest, käyttöoikeudet: KäyttöoikeusRepository): KoskiSession = {
+  def apply(user: AuthenticationUser, request: HttpServletRequest, käyttöoikeudet: KayttooikeusRepository): KoskiSession = {
     new KoskiSession(user, LogUserContext.clientIpFromRequest(request), käyttöoikeudet.käyttäjänKäyttöoikeudet(user))
   }
 
