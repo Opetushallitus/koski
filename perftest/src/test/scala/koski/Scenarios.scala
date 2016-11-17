@@ -114,7 +114,7 @@ object Hetu {
       case 18 => '+'
       case _  => throw new IllegalArgumentException("Unsupported birthday range")
     }
-    val identifier = (900 to 999)(randomInt(100))
+    val identifier = (800 to 899)(randomInt(100))
     val checkChar = checkChars((birthdayString + identifier).toInt % 31)
 
     birthdayString + separator + identifier + checkChar
