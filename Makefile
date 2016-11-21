@@ -17,36 +17,53 @@ logdir:
 	@mkdir -p log
 clean:
 	mvn clean
+
+### Building the application
+
 build: logdir
 	mvn compile
 	# Built the whole application, ready for running or testing
 front: logdir
 	cd web && npm install
-	# front end build done
+watch:
+	cd web && npm run watch
+
+### Running tests
+
 test: logdir
 	mvn test
 testresults:
 	less +`grep -n "FAILED" target/surefire-reports/koski-tests.txt|head -1|cut -d ':' -f 1` target/surefire-reports/koski-tests.txt
 fronttest:
 	cd web && npm run test
+
+### Running application and database 
+
 run:
 	mvn exec:java $(JAVA_OPTS) -Dexec.mainClass=fi.oph.koski.jettylauncher.JettyLauncher
 postgres:
 	postgres --config_file=postgresql/postgresql.conf -D postgresql/data
 postgres-clean:
 	rm postgresql/data/postmaster.pid 2> /dev/null||true
-watch:
-	cd web && npm run watch
+
+### Code checks
+
 eslint: front
 	cd web && npm run lint
 scalastyle:
 	mvn verify -DskipTests
 lint: eslint scalastyle
+owasp: 
+	mvn dependency-check:check -P owasp
+owaspresults:
+	open target/dependency-check-report.html
+
+### Dist and deploy
+
 dist: check-version
 	./scripts/dist.sh $(version)
 deploy: check-version
 	./scripts/deploy.sh $(env) $(version)
-
 check-version:
 ifndef version
 		@echo "version is not set."
