@@ -445,6 +445,10 @@
             <groupId>org.owasp</groupId>
             <artifactId>dependency-check-maven</artifactId>
             <version>1.4.4</version>
+            <configuration>
+              <suppressionFile>owasp-dependency-check-suppressions.xml</suppressionFile>
+              <failBuildOnCVSS>1</failBuildOnCVSS>
+            </configuration>
             <executions>
               <execution>
                 <id>owasp-check</id>

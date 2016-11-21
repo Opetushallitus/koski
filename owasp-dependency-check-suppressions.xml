@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.1.xsd">
+    <suppress>
+        <notes><![CDATA[
+      file name: mailapi-1.4.3.jar
+      ]]></notes>
+        <gav regex="true">^javax\.mail:mailapi:.*$</gav>
+        <cpe>cpe:/a:sun:javamail</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: jackson-datatype-jdk8-2.5.4.jar
+   ]]></notes>
+        <gav regex="true">^com\.fasterxml\.jackson\.datatype:jackson-datatype-jdk8:.*$</gav>
+        <cve>CVE-2016-3720</cve>
+    </suppress>
+</suppressions>
