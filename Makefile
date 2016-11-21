@@ -57,6 +57,8 @@ owasp:
 	mvn dependency-check:check -P owasp
 owaspresults:
 	open target/dependency-check-report.html
+snyk: # javascript dependency vulnerability check
+	cd web && npm install && node_modules/snyk/cli/index.js test
 mvndeps:
 	mvn dependency:tree|less
 

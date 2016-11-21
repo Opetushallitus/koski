@@ -19,6 +19,7 @@
     "whatwg-fetch": "^0.9"
   },
   "devDependencies": {
+    "snyk": "^1.20.0",
     "autoprefixer-loader": "^3.1",
     "babel": "^5",
     "babel-core": "^5",
