@@ -57,6 +57,8 @@ owasp:
 	mvn dependency-check:check -P owasp
 owaspresults:
 	open target/dependency-check-report.html
+mvndeps:
+	mvn dependency:tree|less
 
 ### Dist and deploy
 
