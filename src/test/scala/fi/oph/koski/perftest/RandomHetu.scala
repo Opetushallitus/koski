@@ -9,7 +9,7 @@ object RandomHetu {
   private lazy val hetut = {
     Iterator.continually({
       println("Haetaan hetuja...")
-      runTask(Http("http://www.telepartikkeli.net/tunnusgeneraattori/api")(uri"/generoi/hetu/1000")(Http.parseJson[List[String]])).iterator
+      runTask(Http("http://www.telepartikkeli.net/tunnusgeneraattori/api").get(uri"/generoi/hetu/1000")(Http.parseJson[List[String]])).iterator
     }).flatten
   }
 }

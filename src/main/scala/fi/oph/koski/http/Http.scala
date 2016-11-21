@@ -107,38 +107,22 @@ case class Http(root: String, client: Client = Http.newClient) extends Logging {
   import Http.UriInterpolator
   private val rootUri = Http.uriFromString(root)
 
-  def apply[ResultType](request: Request)(decode: Decode[ResultType]): Task[ResultType] = {
-    processRequest(request)(decode)
+  def get[ResultType](uri: Uri)(decode: Decode[ResultType]): Task[ResultType] = {
+    processRequest(Request(uri = uri))(decode)
   }
 
-  def apply[ResultType](requestTask: Task[Request])(decode: Decode[ResultType]): Task[ResultType] = {
+  def post[I <: AnyRef, O <: Any](path: Uri, entity: I)(encode: EntityEncoder[I])(decode: Decode[O]): Task[O] = {
+    val request: Request = Request(uri = path, method = Method.POST)
+    processRequest(request.withBody(entity)(encode))(decode)
+  }
+
+  def put[I <: AnyRef, O <: Any](path: Uri, entity: I)(encode: EntityEncoder[I])(decode: Decode[O]): Task[O] = {
+    val request: Request = Request(uri = path, method = Method.PUT)
+    processRequest(request.withBody(entity)(encode))(decode)
+  }
+
+  private def processRequest[ResultType](requestTask: Task[Request])(decode: Decode[ResultType]): Task[ResultType] = {
     requestTask.flatMap(request => processRequest(request)(decode))
-  }
-
-  def apply[ResultType](uri: Uri)(decode: Decode[ResultType]): Task[ResultType] = {
-    apply(Request(uri = uri))(decode)
-  }
-
-  def post[I <: AnyRef, O <: Any](path: Uri, entity: I)(implicit encode: EntityEncoder[I], decode: Decode[O]): O = {
-    send(path, Method.POST, entity)
-  }
-
-  def put[I <: AnyRef, O <: Any](path: Uri, entity: I)(implicit encode: EntityEncoder[I], decode: Decode[O]): O = {
-    send(path, Method.PUT, entity)
-  }
-
-  private def addRoot(uri: Uri) = {
-    if (!uri.toString.startsWith("http")) {
-      uri"${rootUri}${uri}"
-    } else {
-      uri
-    }
-  }
-
-  def send[I <: AnyRef, O <: Any](path: Uri, method: Method, entity: I)(implicit encode: EntityEncoder[I], decode: Decode[O]): O = {
-    val request: Request = Request(uri = path, method = method)
-    val requestTask: Task[Request] = request.withBody(entity)
-    runTask(apply(requestTask)(decode))
   }
 
   private def processRequest[ResultType](request: Request)(decoder: (Int, String, Request) => ResultType): Task[ResultType] = {
@@ -153,6 +137,14 @@ case class Http(root: String, client: Client = Http.newClient) extends Logging {
         throw e
       case e: Exception =>
         throw HttpConnectionException(e.getClass.getName + ": " + e.getMessage, requestWithFullPath)
+    }
+  }
+
+  private def addRoot(uri: Uri) = {
+    if (!uri.toString.startsWith("http")) {
+      uri"${rootUri}${uri}"
+    } else {
+      uri
     }
   }
 

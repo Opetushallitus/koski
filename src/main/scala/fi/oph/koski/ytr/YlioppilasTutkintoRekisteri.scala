@@ -27,5 +27,5 @@ object YtrMock extends YlioppilasTutkintoRekisteri {
 
 case class YtrRemote(rootUrl: String, user: String, password: String) extends YlioppilasTutkintoRekisteri {
   private val http = Http(rootUrl, ClientWithBasicAuthentication(Http.newClient, user, password))
-  def oppijaJsonByHetu(hetu: String): Option[JValue] = http(uri"/api/oph-transfer/student/${hetu}")(Http.parseJsonOptional[JValue]).run
+  def oppijaJsonByHetu(hetu: String): Option[JValue] = http.get(uri"/api/oph-transfer/student/${hetu}")(Http.parseJsonOptional[JValue]).run
 }

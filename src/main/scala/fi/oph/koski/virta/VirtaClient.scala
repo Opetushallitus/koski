@@ -46,7 +46,7 @@ case class RemoteVirtaClient(config: VirtaConfig) extends VirtaClient {
         {kutsuja}
         <Hakuehdot>{ hakuehdot(hakuehto) }</Hakuehdot>
       </OpiskelijanKaikkiTiedotRequest>)
-    Some(Http(config.serviceUrl).post(uri"", body)(Http.Encoders.xml, Http.parseXml))
+    Some(runTask(Http(config.serviceUrl).post(uri"", body)(Http.Encoders.xml)(Http.parseXml)))
   }
 
   def henkilötiedot(hakuehto: VirtaHakuehto, oppilaitosNumero: String) = {
@@ -55,7 +55,7 @@ case class RemoteVirtaClient(config: VirtaConfig) extends VirtaClient {
         {kutsuja}
         <Hakuehdot>{ hakuehdot(hakuehto) }<organisaatio>{oppilaitosNumero}</organisaatio></Hakuehdot>
       </OpiskelijanTiedotRequest>)
-    Some(Http(config.serviceUrl).post(uri"", body)(Http.Encoders.xml, Http.parseXml))
+    Some(runTask(Http(config.serviceUrl).post(uri"", body)(Http.Encoders.xml)(Http.parseXml)))
   }
 
   private def hakuehdot(hakuehto: VirtaHakuehto) = hakuehto match {

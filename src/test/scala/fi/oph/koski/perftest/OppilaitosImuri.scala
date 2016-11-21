@@ -19,7 +19,7 @@ object OppilaitosImuri extends App {
   println("Lukioita: " + lukiot.length)
   println("Ammatillisia: " + ammatillisetOppilaitokset.length)
 
-  def haeOppilaitostyypillä(tyyppi: String) = http(uri"/organisaatio-service/rest/organisaatio/v2/hae/tyyppi?aktiiviset=true&suunnitellut=true&lakkautetut=false&oppilaitostyyppi=$tyyppi")(Http.parseJson[OrganisaatioHakuTulos]).run
+  def haeOppilaitostyypillä(tyyppi: String) = http.get(uri"/organisaatio-service/rest/organisaatio/v2/hae/tyyppi?aktiiviset=true&suunnitellut=true&lakkautetut=false&oppilaitostyyppi=$tyyppi")(Http.parseJson[OrganisaatioHakuTulos]).run
     .organisaatiot.map {org: OrganisaatioPalveluOrganisaatio => OidOrganisaatio(org.oid)}
 }
 
