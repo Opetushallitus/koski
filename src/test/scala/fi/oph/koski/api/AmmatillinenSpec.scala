@@ -22,7 +22,7 @@ class AmmatillinenSpec extends FreeSpec with TodistusTestMethods with LocalJetty
         |Vesistöjen kunnostaminen ja hoitaminen 15 Hyväksytty M)
         |Yhteiset tutkinnon osat
         |Viestintä- ja vuorovaikutusosaaminen 11 Kiitettävä 3
-        |Matemaattis-lunnontieteellinen osaaminen 9 Kiitettävä 3 M1)
+        |Matemaattis-luonnontieteellinen osaaminen 9 Kiitettävä 3 M1)
         |Yhteiskunnassa ja työelämässä tarvittava osaaminen 8 Kiitettävä 3
         |Sosiaalinen ja kulttuurinen osaaminen 7 Kiitettävä 3
         |Vapaasti valittavat tutkinnon osat
