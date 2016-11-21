@@ -103,7 +103,7 @@ function Property(elem) {
     },
     waitUntilLoaded: function() {
       return wait.until(function(){
-        return !elem().find('.loading').is(':visible')
+        return elem().is(':visible') && !elem().find('.loading').is(':visible')
       })()
     },
     setValue: function(value) {
