@@ -52,7 +52,7 @@ function Page(mainElement) {
         return el().attr(name)
       },
       isVisible: function() {
-        return isElementVisible(el())
+        return el().is(":visible")
       },
       isEnabled: function () {
         return el().is(":enabled")
