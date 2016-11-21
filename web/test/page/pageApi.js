@@ -77,6 +77,8 @@ function Page(mainElement) {
             input.val($(option).attr("value"))
             triggerEvent(input, "change")
             break;
+				  default:
+						throw new Error("Unknown input type: " + inputType(input))
         }
       }
     }
