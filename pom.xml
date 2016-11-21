@@ -14,7 +14,7 @@
     <scala.version>2.11.4</scala.version>
     <slick.version>3.1.1</slick.version>
     <scalatra.version>2.4.0</scalatra.version>
-    <json4s.version>3.3.0</json4s.version>
+    <json4s.version>3.5.0</json4s.version>
     <jetty.version>9.3.11.v20160721</jetty.version>
     <prometheus.client.version>0.0.17</prometheus.client.version>
     <scoverage.plugin.version>1.1.1</scoverage.plugin.version>
@@ -61,7 +61,7 @@
     <dependency>
       <groupId>com.github.Opetushallitus</groupId>
       <artifactId>scala-schema</artifactId>
-      <version> 8fa874a </version>
+      <version> a152737 </version>
     </dependency>
     <!-- external deps -->
     <dependency>
