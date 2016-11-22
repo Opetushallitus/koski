@@ -4,8 +4,9 @@ import java.net.URLEncoder
 
 import fi.oph.koski.http.Http.{Decode, runTask}
 import fi.oph.koski.json.Json
-import fi.oph.koski.log.Logging
+import fi.oph.koski.log.{LoggerWithContext, Logging}
 import fi.oph.koski.util.{Pools, Timer, Timing}
+import io.prometheus.client.Counter
 import org.http4s._
 import org.http4s.client.blaze.BlazeClientConfig
 import org.http4s.client.{Client, blaze}
@@ -126,10 +127,10 @@ case class Http(root: String, client: Client = Http.newClient) extends Logging {
   }
 
   private def processRequest[ResultType](request: Request)(decoder: (Int, String, Request) => ResultType): Task[ResultType] = {
-    val started = System.currentTimeMillis
     val requestWithFullPath: Request = request.copy(uri = addRoot(request.uri))
+    val logger = HttpResponseLog(requestWithFullPath)
     client.fetch(addCommonHeaders(requestWithFullPath)) { response =>
-      logger.debug(s"${request.method} ${requestWithFullPath.uri} status ${response.status.code} took ${System.currentTimeMillis - started} ms")
+      logger.log(response)
       response.as[String].map { text => // Might be able to optimize by not turning into String here
         decoder(response.status.code, text, request)
       }
@@ -152,4 +153,29 @@ case class Http(root: String, client: Client = Http.newClient) extends Logging {
   private def addCommonHeaders(request: Request) = request.copy(headers = request.headers.put(
     Header("clientSubSystemCode", OpintopolkuSubSystemCode.koski)
   ))
+}
+
+protected object HttpResponseLog {
+  val logger = LoggerWithContext(classOf[Http])
+}
+
+protected case class HttpResponseLog(request: Request) {
+  private val started = System.currentTimeMillis
+  def log(response: Response) = {
+    HttpResponseLog.logger.debug(s"${request.method} ${request.uri} status ${response.status.code} took ${System.currentTimeMillis - started} ms")
+    HttpResponseMonitoring.report(request, response)
+  }
+}
+
+protected object HttpResponseMonitoring {
+  private val counter = Counter.build().name("fi_oph_koski_http_Http").help("Koski http client events").labelNames("service", "responseclass").register()
+  private val Pattern = """https?:\/\/([a-z0-9\.-]+\/[a-z0-9\.-]+).*""".r
+  def report(request: Request, response: Response) = {
+    val service = request.uri.toString match {
+      case Pattern(service) => service
+      case _ => request.uri.toString
+    }
+    val responseClass = response.status.code / 100 * 100 // 100, 200, 300, 400, 500
+    counter.labels(service, responseClass.toString).inc
+  }
 }
