@@ -43,7 +43,7 @@ function download_version {
   echo "# Application downloaded to: ${TMP_APPLICATION}"
 }
 
-INVENTORY=${INVENTORY:-"openstack_inventory.py"}
+INVENTORY=${INVENTORY:-"tf-hosts.js"}
 ANSIBLE_ARGS=${ANSIBLE_ARGS:-""}
 
 if [ -z "$ENV" ] || ! [[ " ${VALID_ENVS[@]} " =~ " ${ENV} " ]]; then
