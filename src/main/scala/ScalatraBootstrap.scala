@@ -38,10 +38,6 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       tryCatch("Koodistojen luonti") { KoodistoCreator.createKoodistotFromMockData(Koodistot.koskiKoodistot, application.config) }
     }
 
-    if (application.config.getBoolean("käyttöoikeusryhmät.create")) {
-      tryCatch("Käyttöoikeusryhmien luonti/päivitys") { KayttooikeusRyhmatCreator.luoKäyttöoikeusRyhmät(application.config) }
-    }
-
     context.mount(new OppijaServlet(application), "/api/oppija")
     context.mount(new OpiskeluoikeusServlet(application), "/api/opiskeluoikeus")
     context.mount(new OpiskeluoikeusValidationServlet(application), "/api/opiskeluoikeus/validate")
