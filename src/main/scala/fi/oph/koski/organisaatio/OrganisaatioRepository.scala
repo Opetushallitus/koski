@@ -1,7 +1,7 @@
 package fi.oph.koski.organisaatio
 
 import com.typesafe.config.Config
-import fi.oph.koski.cache.{Cache, CacheManager, CachingProxy, KoskiCache}
+import fi.oph.koski.cache.{Cache, CacheManager, CachingProxy}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, VirkailijaHttpClient}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu

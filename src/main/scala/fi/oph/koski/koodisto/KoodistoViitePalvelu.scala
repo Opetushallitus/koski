@@ -1,11 +1,11 @@
 package fi.oph.koski.koodisto
 
-import fi.oph.koski.cache.{CacheManager, GlobalCacheManager, KeyValueCache, KoskiCache}
+import fi.oph.koski.cache._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Koodistokoodiviite
 
 case class KoodistoViitePalvelu(koodistoPalvelu: KoodistoPalvelu)(implicit cacheInvalidator: CacheManager) extends Logging {
-  private val koodiviiteCache = KeyValueCache(KoskiCache.cacheStrategy("KoodistoViitePalvelu"), { koodisto: KoodistoViite =>
+  private val koodiviiteCache = KeyValueCache(Cache.cacheAllRefresh("KoodistoViitePalvelu", 3600, 100), { koodisto: KoodistoViite =>
     val koodit: Option[List[KoodistoKoodi]] = koodistoPalvelu.getKoodistoKoodit(koodisto)
     koodit.map { _.map { koodi => Koodistokoodiviite(koodi.koodiArvo, koodi.nimi, koodi.lyhytNimi, koodisto.koodistoUri, Some(koodisto.versio))} }
   })

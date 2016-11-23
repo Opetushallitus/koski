@@ -37,7 +37,7 @@ object OppijaRepository {
 }
 
 case class CachingOppijaRepository(repository: OppijaRepository)(implicit cacheInvalidator: CacheManager) extends OppijaRepository {
-  private val oidCache = KeyValueCache(KoskiCache.cacheStrategy("OppijaRepository"), repository.findByOid)
+  private val oidCache = KeyValueCache(Cache.cacheAllNoRefresh("OppijaRepository", 3600, 100), repository.findByOid)
   // findByOid is locally cached
   override def findByOid(oid: String) = oidCache(oid)
   // Other methods just call the non-cached implementation

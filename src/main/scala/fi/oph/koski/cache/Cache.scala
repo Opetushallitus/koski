@@ -10,12 +10,12 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.util.{Invocation, Pools}
 
 object Cache {
-  def cacheAllRefresh(name: String, durationSeconds: Int, maxSize: Int)(implicit invalidator: CacheManager) = Cache(name, CacheParams(durationSeconds, maxSize, true), invalidator)
-  def cacheAllNoRefresh(name: String, durationSeconds: Int, maxSize: Int)(implicit invalidator: CacheManager) = Cache(name, CacheParams(durationSeconds, maxSize, false), invalidator)
+  def cacheAllRefresh(name: String, durationSeconds: Int, maxSize: Int)(implicit invalidator: CacheManager) = new Cache(name, CacheParams(durationSeconds, maxSize, true), invalidator)
+  def cacheAllNoRefresh(name: String, durationSeconds: Int, maxSize: Int)(implicit invalidator: CacheManager) = new Cache(name, CacheParams(durationSeconds, maxSize, false), invalidator)
   private[cache] val executorService = listeningDecorator(Pools.globalPool)
 }
 
-case class Cache(name: String, params: CacheParams, invalidator: CacheManager) extends Cached with Logging {
+class Cache protected (val name: String, val params: CacheParams, invalidator: CacheManager) extends Cached with Logging {
   logger.debug("Create cache " + name)
   invalidator.registerCache(this)
 
