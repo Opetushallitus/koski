@@ -136,8 +136,10 @@ case class Http(root: String, client: Client = Http.newClient) extends Logging {
       }
     }.handleWith {
       case e: HttpStatusException =>
+        logger.log(e)
         throw e
       case e: Exception =>
+        logger.log(e)
         throw HttpConnectionException(e.getClass.getName + ": " + e.getMessage, requestWithFullPath)
     }
   }
@@ -161,21 +163,33 @@ protected object HttpResponseLog {
 
 protected case class HttpResponseLog(request: Request) {
   private val started = System.currentTimeMillis
-  def log(response: Response) = {
-    HttpResponseLog.logger.debug(s"${request.method} ${request.uri} status ${response.status.code} took ${System.currentTimeMillis - started} ms")
-    HttpResponseMonitoring.report(request, response)
+  def log(response: Response) {
+    log(response.status.code.toString)
+    HttpResponseMonitoring.report(request, response.status.code)
+  }
+  def log(e: HttpStatusException) {
+    log(e.status.toString)
+    HttpResponseMonitoring.report(request, e.status)
+  }
+  def log(e: Exception) {
+    log(e.getClass.getSimpleName)
+    HttpResponseMonitoring.report(request, 500)
+  }
+  private def log(status: String) {
+    HttpResponseLog.logger.debug(s"${request.method} ${request.uri} status ${status} took ${System.currentTimeMillis - started} ms")
   }
 }
 
 protected object HttpResponseMonitoring {
   private val counter = Counter.build().name("fi_oph_koski_http_Http").help("Koski http client events").labelNames("service", "responseclass").register()
   private val Pattern = """https?:\/\/([a-z0-9\.-]+\/[a-z0-9\.-]+).*""".r
-  def report(request: Request, response: Response) = {
+
+  def report(request: Request, status: Int) {
+    val responseClass = status / 100 * 100 // 100, 200, 300, 400, 500
+
     val service = request.uri.toString match {
       case Pattern(service) => service
       case _ => request.uri.toString
     }
-    val responseClass = response.status.code / 100 * 100 // 100, 200, 300, 400, 500
-    counter.labels(service, responseClass.toString).inc
-  }
+    counter.labels(service, responseClass.toString).inc  }
 }
