@@ -6,7 +6,7 @@ import fi.oph.koski.http.Http.{Decode, runTask}
 import fi.oph.koski.json.Json
 import fi.oph.koski.log.{LoggerWithContext, Logging}
 import fi.oph.koski.util.{Pools, Timer, Timing}
-import io.prometheus.client.Counter
+import io.prometheus.client.{Counter, Summary}
 import org.http4s._
 import org.http4s.client.blaze.BlazeClientConfig
 import org.http4s.client.{Client, blaze}
@@ -163,33 +163,37 @@ protected object HttpResponseLog {
 
 protected case class HttpResponseLog(request: Request) {
   private val started = System.currentTimeMillis
+  def elapsedMillis = System.currentTimeMillis - started
   def log(response: Response) {
     log(response.status.code.toString)
-    HttpResponseMonitoring.report(request, response.status.code)
+    HttpResponseMonitoring.record(request, response.status.code, elapsedMillis)
   }
   def log(e: HttpStatusException) {
     log(e.status.toString)
-    HttpResponseMonitoring.report(request, e.status)
+    HttpResponseMonitoring.record(request, e.status, elapsedMillis)
   }
   def log(e: Exception) {
     log(e.getClass.getSimpleName)
-    HttpResponseMonitoring.report(request, 500)
+    HttpResponseMonitoring.record(request, 500, elapsedMillis)
   }
   private def log(status: String) {
-    HttpResponseLog.logger.debug(s"${request.method} ${request.uri} status ${status} took ${System.currentTimeMillis - started} ms")
+    HttpResponseLog.logger.debug(s"${request.method} ${request.uri} status ${status} took ${elapsedMillis} ms")
   }
 }
 
 protected object HttpResponseMonitoring {
-  private val counter = Counter.build().name("fi_oph_koski_http_Http").help("Koski http client events").labelNames("service", "responseclass").register()
-  private val Pattern = """https?:\/\/([a-z0-9\.-]+\/[a-z0-9\.-]+).*""".r
+  private val statusCounter = Counter.build().name("fi_oph_koski_http_Http_status").help("Koski HTTP client response status").labelNames("service", "responseclass").register()
+  private val durationDummary = Summary.build().name("fi_oph_koski_http_Http_duration").help("Koski HTTP client response duration").labelNames("service").register()
+  private val HttpServicePattern = """https?:\/\/([a-z0-9\.-]+\/[a-z0-9\.-]+).*""".r
 
-  def report(request: Request, status: Int) {
+  def record(request: Request, status: Int, durationMillis: Long) {
     val responseClass = status / 100 * 100 // 100, 200, 300, 400, 500
 
     val service = request.uri.toString match {
-      case Pattern(service) => service
+      case HttpServicePattern(service) => service
       case _ => request.uri.toString
     }
-    counter.labels(service, responseClass.toString).inc  }
+    statusCounter.labels(service, responseClass.toString).inc
+    durationDummary.labels(service).observe(durationMillis.toDouble / 1000)
+  }
 }
