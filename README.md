@@ -159,7 +159,7 @@ Mocha-testit voi ajaa myös nopeasti komentoriviltä
 
 ## CI-palvelin
 
-Koski:n Jenkins CI-palvelin palvelee osoitteessa http://86.50.170.109:8080/, jonne pääsy on rajattu käyttäjätunnuksella ja salasanalla.
+Koski:n Jenkins CI-palvelin palvelee osoitteessa https://dev.koski.opintopolku.fi/jenkins/, jonne pääsy on rajattu käyttäjätunnuksella ja salasanalla.
 
 CI-palvelimella sovellus testataan jokaisen commitin yhteydessä. Paikallisten testien lisäksi ajetaan pieni määrä integraatiotestejä testiympäristön REST-rajapintoja vasten.
  
