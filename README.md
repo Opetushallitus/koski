@@ -185,11 +185,11 @@ Koski loggaa tapahtumia kolmeen erilliseen logitiedostoon
 
 Kaikkien logien tapahtumat siirretään testiympäristön palvelimilta Filebeat-agentilla Elasticsearch -tietokantaan, josta ne ovat katseltavissa Kibana-käyttöliittymän avulla.
 
-Loggaus on konfiguroitu tiedostolla `log4j.properties`, joka määrittää loggauksen kehitysympäristössä (tuotanto- ja kehitysympäristöjen lokitus määritellään [täällä](https://github.com/reaktor/oph-poutai-env/blob/master/roles/koski/templates/log4j_cloud_properties.j2)). Tämän konfiguraatiotiedoston avulla määritellään esimerkiksi se, mitä logataan mihin tiedostoon. Kuten konfiguraatiotiedostosta ilmenee, tapahtuu access-loggaus ohjaamalla Jettyn `RequestLog`-luokan logitus `koski-access.log` -tiedostoon. Vastaavasti `fi.vm.sade.auditlog.Audit` -luokan loggaus ohjataan tiedostoon `koski-audit.log` ja `fi.oph.koski.util.Timer` -luokan loggaus tiedostoon `koski-performance.log`. Kaikki muu menee sovelluslogiin `koski.log`.
+Loggaus on konfiguroitu tiedostolla `log4j.properties`, joka määrittää loggauksen kehitysympäristössä (tuotanto- ja kehitysympäristöjen lokitus määritellään toisessa repositoriossa sijaitsevilla konfiguraatiotiedostoilla). Tämän konfiguraatiotiedoston avulla määritellään esimerkiksi se, mitä logataan mihin tiedostoon. Kuten konfiguraatiotiedostosta ilmenee, tapahtuu access-loggaus ohjaamalla Jettyn `RequestLog`-luokan logitus `koski-access.log` -tiedostoon. Vastaavasti `fi.vm.sade.auditlog.Audit` -luokan loggaus ohjataan tiedostoon `koski-audit.log` ja `fi.oph.koski.util.Timer` -luokan loggaus tiedostoon `koski-performance.log`. Kaikki muu menee sovelluslogiin `koski.log`.
 
 Koski-sovelluskoodissa audit-loggaus tehdään `AuditLog`-luokan kautta ja sovellusloggaus käyttäen `Logging`-luokkaa, jolta sovelluskoodi saa käyttöönsä loggerin, joka automaattisesti liittää logiviesteihin käyttäjä- ja IP-osoitetiedot.
 
-## Testiympäristö (CSC:n ePouta-pilvessä)
+## Testiympäristö
 
 ### URLit
 
@@ -209,29 +209,13 @@ Koodistopalvelua käytetään toistaiseksi Opintopolun QA-ympäristöstä
 
     https://testi.virkailija.opintopolku.fi/koodisto-ui/html/index.html#/etusivu
 
-### Sovelluksen asennus pilveen (CSC:n ePouta)
+### Sovelluksen asennus pilviympäristöön
 
-Ennakkovaatimukset:
+Jotta voit asentaa sovelluksen pilviympäristöön, tarvitset erillisen ympäristörepositorion, jossa on ympäristöjen konfiguraatiot. Pyydä apua kehitystiimiltä!
 
-1. Sinulla on tunnus CSC:n cPouta-ympäristöön
-2. Poudan ympäristö(muuttuja)määrittely: https://pouta.csc.fi/dashboard/project/access_and_security/api_access/openrc/ on ladattu ja käytössä (`source Project_2000079-openrc.sh`)
-3. Sinun julkinen ssh avain on lisättynä tänne: https://github.com/reaktor/oph-poutai-env/tree/master/roles/ssh.init/files/public_keys (ja koneiden konfiguraatio on päivitetty)
-4. Käytössäsi Homebrew:n openssl ja ruby, koska OSX:n mukana tuleva OpenSSL 0.9.8zg ei toimi Poudan kanssa:
-  * `brew install openssl`
-  * `brew install ruby`
-5. Uusien versioiden asentaminen [Artifactoryyn](https://artifactory.oph.ware.fi) vaatii tunnukset ~/.m2/settings.xml tiedostoon
-```xml
-<settings>
-  <servers>
-    <server>
-      <id>oph-sade-artifactory</id>
-      <username>*******</username>
-      <password>*******</password>
-    </server>
-  </servers>
-</settings>
-```
-  
+- Aseta `CLOUD_ENV_DIR` ympäristömuuttuja osoittamaan ympäristörepositorion polkuun
+- Valitse haluamasi ympäristö sourcaamalla jokin ympäristöskripti ympäristörepositorion `tenants`-hakemistosta.
+
 #### Lokaalin version asentaminen
 
 Ajamalla
@@ -240,7 +224,7 @@ Ajamalla
     
 muodostuu uusi lokaali asennuspaketti applikaatiosta. Asennuspakettiin tulee mukaan kaikki lokaalisti kommitoidut muutokset.
 
-Tämän jälkeen voit asentaa Koskesta uuden version tordev ympäristöön ajamalla
+Tämän jälkeen voit asentaa Koskesta uuden version pilviympäristöön ajamalla
 
     make deploy version=local
     
@@ -260,9 +244,7 @@ Asennuspakettiin tulee mukaan kaikki lokaalisti kommitoidut muutokset.
 Tämän jälkeen voit asentaa Koskesta uuden version pilviympäristöön ajamalla
 
     make deploy version=<versio>
-    
-Huom! Oletuksena käytetään vanhaa "tordev"-pilviympäristöä. Uudemmat ympäristöt saat käyttöösi sourcaamalla ensin ympäristöön liittyvä *-openrc -tiedoston.
-    
+        
 Paketin muodostamisen ja asennuksen voi hoitaa myös yhdellä komennolla
 
     make dist deploy version=<versio>
