@@ -1,4 +1,5 @@
 import Bacon from 'baconjs'
+import R from 'ramda'
 
 const locationBus = new Bacon.Bus()
 
@@ -17,13 +18,13 @@ export const navigateToOppija = oppija => navigateTo(`/koski/oppija/${oppija.oid
 export const navigateToUusiOppija = () => navigateTo('/koski/uusioppija')
 export const showError = (error) => locationBus.error(error)
 
-const parsePath = (path) => {
+export const parsePath = (path) => {
   let a = document.createElement('a')
   a.href = path
   return parseLocation(a)
 }
 
-function parseLocation(location) {
+export function parseLocation(location) {
   return {
     path: location.pathname.replace(/(^\/?)/,'/'),
     params: parseQuery(location.search),
@@ -40,3 +41,7 @@ function parseQuery(qstr) {
   }
   return query
 }
+
+export const appendQueryParam = (path, key, value) => path + (parsePath(path).queryString ? '&' : '?') + encodeURIComponent(key) + '=' + encodeURIComponent(value)
+
+export const appendQueryParams = (path, params) => R.toPairs(params).reduce((l, [key, value]) => appendQueryParam(l, key, value), path)

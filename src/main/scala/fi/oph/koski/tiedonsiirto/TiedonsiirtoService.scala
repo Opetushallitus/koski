@@ -6,9 +6,10 @@ import java.time.LocalDateTime
 import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods._
 import fi.oph.koski.db.Tables.{Tiedonsiirto, TiedonsiirtoWithAccessCheck}
 import fi.oph.koski.db.{KoskiDatabaseMethods, Tables, TiedonsiirtoRow, TiedonsiirtoYhteenvetoRow}
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.http.{HttpStatus, HttpStatusException, KoskiErrorCategory}
 import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
@@ -24,53 +25,48 @@ import org.json4s.JsonAST.{JArray, JString, JValue}
 import org.json4s.{JValue, _}
 
 class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organisaatioRepository: OrganisaatioRepository, oppijaRepository: OppijaRepository, koodistoviitePalvelu: KoodistoViitePalvelu, userRepository: KoskiUserRepository) extends Logging with Timing with KoskiDatabaseMethods {
-  def haeTiedonsiirrot(query: TiedonsiirtoQuery)(implicit koskiSession: KoskiSession): Either[HttpStatus, Tiedonsiirrot] = {
-    def find(organisaatiot: Option[List[String]], pageInfo: Option[PageInfo])(implicit koskiSession: KoskiSession): Seq[TiedonsiirtoRow] = timed("findByOrganisaatio") {
+  def haeTiedonsiirrot(query: TiedonsiirtoQuery)(implicit koskiSession: KoskiSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
+    def find(oppilaitos: Option[String], pageInfo: Option[PaginationSettings])(implicit koskiSession: KoskiSession): Seq[TiedonsiirtoRow] = timed("findByOrganisaatio") {
       val monthAgo = Timestamp.valueOf(LocalDateTime.now.minusMonths(1))
       var tableQuery = TiedonsiirtoWithAccessCheck(koskiSession)
-
-      organisaatiot.foreach { org =>
-        tableQuery = tableQuery.filter(_.tallentajaOrganisaatioOid inSetBind org)
+      oppilaitos.foreach { oppilaitos =>
+        val oid: JValue = JArray(List(JObject(("oid", JString(oppilaitos)))))
+        tableQuery = tableQuery.filter(_.oppilaitos @> oid)
       }
-      timed("find") {
-        runDbSync(QueryPaging.paged(tableQuery.sortBy(_.id.desc), pageInfo).result)
-      }
+      runDbSync(QueryPagination.paged(tableQuery.sortBy(_.id.desc), pageInfo).result)
     }
 
     AuditLog.log(AuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiSession, Map(juuriOrganisaatio -> koskiSession.juuriOrganisaatio.map(_.oid).getOrElse("ei juuriorganisaatiota"))))
 
-    query.oppilaitos match {
+    val rows: Seq[TiedonsiirtoRow] = find(query.oppilaitos, query.paginationSettings)
+
+
+    val oppilaitosResult = query.oppilaitos match {
       case Some(oppilaitosOid) =>
-        def oidPath(oid: String, hierarkia: OrganisaatioHierarkia): List[Organisaatio.Oid] = {
-          if (hierarkia.find(oid).isDefined) {
-            hierarkia.oid :: hierarkia.children.flatMap(child => oidPath(oid, child))
-          } else if (hierarkia.oid == oid) {
-            List(oid)
-          } else {
-            Nil
-          }
-        }
-        val hierarkia: Option[OrganisaatioHierarkia] = organisaatioRepository.getOrganisaatioHierarkiaIncludingParents(oppilaitosOid)
-        hierarkia.map(oidPath(oppilaitosOid, _)) match {
-          case Some(oids) =>
-            val henkilöt: List[HenkilönTiedonsiirrot] = toHenkilönTiedonsiirrot(find(Some(oids), query.pageInfo))
-              .map { siirrot => siirrot.copy(rivit = siirrot.rivit.filter(_.oppilaitos.toList.flatten.map(_.oid).contains(oppilaitosOid))) }
-              .filter { siirrot => siirrot.rivit.nonEmpty }
-            Right(Tiedonsiirrot(henkilöt, oppilaitos = hierarkia.flatMap(_.find(oppilaitosOid).flatMap(_.toOppilaitos))))
-          case None =>
-            Left(KoskiErrorCategory.notFound.oppilaitostaEiLöydy())
+        val oppilaitos: Option[Oppilaitos] = organisaatioRepository.getOrganisaatioHierarkia(oppilaitosOid).flatMap(_.toOppilaitos)
+        oppilaitos match {
+          case Some(oppilaitos) => Right(Some(oppilaitos))
+          case None => Left(KoskiErrorCategory.notFound.oppilaitostaEiLöydy(s"Oppilaitosta $oppilaitosOid ei löydy"))
         }
       case None =>
-        Right(Tiedonsiirrot(toHenkilönTiedonsiirrot(find(None, query.pageInfo)), oppilaitos = None))
+        Right(None)
+    }
+
+    oppilaitosResult.right.map { oppilaitos =>
+      val converted: Tiedonsiirrot = Tiedonsiirrot(toHenkilönTiedonsiirrot(rows), oppilaitos = oppilaitos)
+      PaginatedResponse(query.paginationSettings, converted, rows.length)
     }
   }
 
-  def virheelliset(query: TiedonsiirtoQuery)(implicit koskiSession: KoskiSession): Either[HttpStatus, Tiedonsiirrot] = {
-    haeTiedonsiirrot(query.copy(pageInfo = None)).right.map { tiedonsiirrot =>
-      tiedonsiirrot.copy(henkilöt = ListPaging.paged(tiedonsiirrot.henkilöt
-        .filter { siirrot => siirrot.rivit.groupBy(_.oppilaitos).exists { case (_, rivit) => rivit.headOption.exists(_.virhe.isDefined) } }
-        .map(v => v.copy(rivit = v.rivit.filter(_.virhe.isDefined))), query.pageInfo).toList
-      )
+  def virheelliset(query: TiedonsiirtoQuery)(implicit koskiSession: KoskiSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
+    haeTiedonsiirrot(query.copy(paginationSettings = None)).right.map { tiedonsiirrot =>
+      val result = tiedonsiirrot.result.copy(henkilöt = ListPagination.paged(
+        tiedonsiirrot.result.henkilöt
+          .filter { siirrot => siirrot.rivit.groupBy(_.oppilaitos).exists { case (_, rivit) => rivit.headOption.exists(_.virhe.isDefined) } }
+          .map(v => v.copy(rivit = v.rivit.filter(_.virhe.isDefined))),
+        query.paginationSettings
+      ).toList)
+      PaginatedResponse(query.paginationSettings, result, result.henkilöt.length)
     }
   }
 
@@ -186,6 +182,6 @@ case class TiedonsiirtoRivi(id: Int, aika: LocalDateTime, oppija: Option[Tiedons
 case class TiedonsiirtoOppija(oid: Option[String], hetu: Option[String], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], äidinkieli: Option[Koodistokoodiviite])
 case class HetuTaiOid(oid: Option[String], hetu: Option[String])
 case class TiedonsiirtoYhteenveto(tallentajaOrganisaatio: OrganisaatioWithOid, oppilaitos: OrganisaatioWithOid, käyttäjä: KoskiUserInfo, viimeisin: Timestamp, siirretyt: Int, virheelliset: Int, opiskeluoikeudet: Int, lähdejärjestelmä: Option[Koodistokoodiviite])
-case class TiedonsiirtoQuery(oppilaitos: Option[String], pageInfo: Option[PageInfo])
+case class TiedonsiirtoQuery(oppilaitos: Option[String], paginationSettings: Option[PaginationSettings])
 case class TiedonsiirtoKäyttäjä(oid: String, nimi: Option[String])
 case class TiedonsiirtoError(data: JValue, virheet: JValue)

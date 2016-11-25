@@ -3,7 +3,7 @@ import fecha from 'fecha'
 
 export const Tiedonsiirtotaulukko = React.createClass({
   render() {
-    const { rivit, showError } = this.props
+    const { rivit, showError, pager } = this.props
 
     return (<div className="tiedonsiirto-taulukko">
       <table>
@@ -22,6 +22,11 @@ export const Tiedonsiirtotaulukko = React.createClass({
           rivit.map((oppijaRivi, i) => <Lokiriviryhmä oppijaRivi={oppijaRivi} i={i} showError={showError} key={i}/>)
         }
       </table>
+      {
+        pager.mayHaveMore()
+          ? <a onClick={pager.next}>Lisää...</a>
+          : null
+      }
     </div>)
   }
 })
