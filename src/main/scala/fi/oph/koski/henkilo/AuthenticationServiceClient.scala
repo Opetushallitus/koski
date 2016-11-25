@@ -171,4 +171,8 @@ class RemoteAuthenticationServiceClientWithMockOids(http: Http) extends RemoteAu
     case oppijat =>
       oppijat
   }
+
+  override def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö] = super.findKäyttäjäByOid(oid).orElse {
+    Some(KäyttäjäHenkilö(oid, oid.substring("1.2.246.562.24.".length, oid.length), "Tuntematon", "Tuntematon", None))
+  }
 }
