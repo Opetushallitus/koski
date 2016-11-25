@@ -10,6 +10,7 @@ import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.oppija.MockOppijat.eerola
 import fi.oph.koski.schema._
 import fi.oph.koski.tiedonsiirto.{ExamplesTiedonsiirto, HenkilönTiedonsiirrot, Tiedonsiirrot, TiedonsiirtoYhteenveto}
+import fi.oph.koski.util.PaginatedResponse
 import org.scalatest.FreeSpec
 
 class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
@@ -159,7 +160,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
   private def getTiedonsiirrot(user: UserWithPassword, url: String = "api/tiedonsiirrot"): List[HenkilönTiedonsiirrot] =
     authGet(url, user) {
       verifyResponseStatus(200)
-      Json.read[Tiedonsiirrot](body).henkilöt
+      Json.read[PaginatedResponse[Tiedonsiirrot]](body).result.henkilöt
     }
 
   private def getVirheellisetTiedonsiirrot(user: UserWithPassword) = getTiedonsiirrot(user, "api/tiedonsiirrot/virheet")
