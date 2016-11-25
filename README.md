@@ -29,7 +29,7 @@ Keskeiset entiteetit, ja järjestelmät, joihin nämä tallennetaan.
 Nämä ovat keskeiset Koski-järjestelmässä käytettävät teknologiat. Lista kuvaa järjestelmän nykytilaa ja muuttuu matkan varrella
 tarpeen mukaan.
 
-- PostgreSQL 9.5 -tietokanta
+- PostgreSQL 9.6 -tietokanta
 - Palvelinteknologiat
   - Scala 2.11.4 ohjelmointikieli ja kääntäjä
   - Scalatra web framework
