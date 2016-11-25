@@ -142,7 +142,7 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
       oppijanTunniste.flatMap(_.hetu).orElse(oppijanTunniste.map(_.oid))
     }.map {
       case (_, rows) =>
-        val oppija = rows.head.oppija.flatMap(_.extractOpt[Henkilö])
+        val oppija = rows.head.oppija.flatMap(_.extractOpt[TiedonsiirtoOppija])
         val rivit = rows.map { row =>
           val oppilaitos = row.oppilaitos.flatMap(_.extractOpt[List[OrganisaatioWithOid]])
           TiedonsiirtoRivi(row.id, row.aikaleima.toLocalDateTime, oppija, oppilaitos, row.virheet, row.data, row.lahdejarjestelma)
@@ -153,9 +153,9 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
 }
 
 case class Tiedonsiirrot(henkilöt: List[HenkilönTiedonsiirrot], oppilaitos: Option[Oppilaitos])
-case class HenkilönTiedonsiirrot(oppija: Option[Henkilö], rivit: Seq[TiedonsiirtoRivi])
-case class TiedonsiirtoRivi(id: Int, aika: LocalDateTime, oppija: Option[Henkilö], oppilaitos: Option[List[OrganisaatioWithOid]], virhe: Option[AnyRef], inputData: Option[AnyRef], lähdejärjestelmä: Option[String])
-case class Henkilö(oid: Option[String], hetu: Option[String], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], äidinkieli: Option[Koodistokoodiviite])
+case class HenkilönTiedonsiirrot(oppija: Option[TiedonsiirtoOppija], rivit: Seq[TiedonsiirtoRivi])
+case class TiedonsiirtoRivi(id: Int, aika: LocalDateTime, oppija: Option[TiedonsiirtoOppija], oppilaitos: Option[List[OrganisaatioWithOid]], virhe: Option[AnyRef], inputData: Option[AnyRef], lähdejärjestelmä: Option[String])
+case class TiedonsiirtoOppija(oid: Option[String], hetu: Option[String], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], äidinkieli: Option[Koodistokoodiviite])
 case class HetuTaiOid(oid: Option[String], hetu: Option[String])
 case class TiedonsiirtoYhteenveto(tallentajaOrganisaatio: OrganisaatioWithOid, oppilaitos: OrganisaatioWithOid, käyttäjä: KoskiUserInfo, viimeisin: Timestamp, siirretyt: Int, virheelliset: Int, opiskeluoikeudet: Int, lähdejärjestelmä: Option[Koodistokoodiviite])
 case class TiedonsiirtoQuery(oppilaitos: Option[String], errorsOnly: Boolean, pageInfo: PageInfo)
