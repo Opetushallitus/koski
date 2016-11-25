@@ -1,6 +1,7 @@
 import React from 'react'
 import fecha from 'fecha'
 import Bacon from 'baconjs'
+import { addClass } from './classnames'
 
 export const Tiedonsiirtotaulukko = React.createClass({
   render() {
@@ -25,7 +26,7 @@ export const Tiedonsiirtotaulukko = React.createClass({
       </table>
       {
         pager.mayHaveMore()
-          ? <a onClick={pager.next} ref={(link) => {this.loadMoreLink = link}}>Lisää...</a>
+          ? <div id="pagination-marker" onClick={pager.next} ref={(link) => {this.paginationMarker = link}}></div>
           : null
       }
     </div>)
@@ -36,8 +37,11 @@ export const Tiedonsiirtotaulukko = React.createClass({
     Bacon.fromEvent(window, 'scroll')
       .takeUntil(this.unmountBus)
       .throttle(100)
-      .filter(() => isElementInViewport(this.loadMoreLink))
-      .onValue(this.props.pager.next)
+      .filter(() => isElementInViewport(this.paginationMarker))
+      .onValue(() => {
+        this.props.pager.next()
+        addClass(this.paginationMarker, 'loading')
+      })
   },
 
   componentWillUnmount() {
