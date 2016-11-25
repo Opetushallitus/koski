@@ -14,7 +14,7 @@ class TiedonsiirtoServlet(val application: KoskiApplication) extends ApiServlet 
   }
 
   get("/virheet") {
-    renderEither(application.tiedonsiirtoService.virheelliset(parseQuery)(koskiSession))
+    renderEither(application.tiedonsiirtoService.virheelliset(parseQuery.copy(errorsOnly = true))(koskiSession))
   }
 
   get("/yhteenveto") {
@@ -26,7 +26,7 @@ class TiedonsiirtoServlet(val application: KoskiApplication) extends ApiServlet 
       case Right(oid) => oid
       case Left(status) => haltWithStatus(status)
     })
-    TiedonsiirtoQuery(oppilaitos, pageInfo)
+    TiedonsiirtoQuery(oppilaitos, false, pageInfo)
   }
 
   override def cacheDuration = 5 minutes

@@ -24,9 +24,12 @@ class TiedonsiirtoRepository(val db: DB, mailer: TiedonsiirtoFailureMailer) exte
     }
   }
 
-  def find(organisaatiot: Option[List[String]], pageInfo: PageInfo)(implicit koskiSession: KoskiSession): Seq[TiedonsiirtoRow] = timed("findByOrganisaatio") {
+  def find(organisaatiot: Option[List[String]], errorsOnly: Boolean, pageInfo: PageInfo)(implicit koskiSession: KoskiSession): Seq[TiedonsiirtoRow] = timed("findByOrganisaatio") {
     val monthAgo = Timestamp.valueOf(LocalDateTime.now.minusMonths(1))
     var tableQuery = TiedonsiirtoWithAccessCheck(koskiSession)
+    if (errorsOnly) {
+      tableQuery = tableQuery.filter(_.virheet.isDefined)
+    }
     organisaatiot.foreach { org =>
       tableQuery = tableQuery.filter(_.tallentajaOrganisaatioOid inSetBind org)
     }
