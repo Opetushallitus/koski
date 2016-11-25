@@ -25,12 +25,10 @@ import org.json4s.{JValue, _}
 
 class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organisaatioRepository: OrganisaatioRepository, oppijaRepository: OppijaRepository, koodistoviitePalvelu: KoodistoViitePalvelu, userRepository: KoskiUserRepository) extends Logging with Timing with KoskiDatabaseMethods {
   def haeTiedonsiirrot(query: TiedonsiirtoQuery)(implicit koskiSession: KoskiSession): Either[HttpStatus, Tiedonsiirrot] = {
-    def find(organisaatiot: Option[List[String]], errorsOnly: Boolean, pageInfo: PageInfo)(implicit koskiSession: KoskiSession): Seq[TiedonsiirtoRow] = timed("findByOrganisaatio") {
+    def find(organisaatiot: Option[List[String]], pageInfo: PageInfo)(implicit koskiSession: KoskiSession): Seq[TiedonsiirtoRow] = timed("findByOrganisaatio") {
       val monthAgo = Timestamp.valueOf(LocalDateTime.now.minusMonths(1))
       var tableQuery = TiedonsiirtoWithAccessCheck(koskiSession)
-      if (errorsOnly) {
-        tableQuery = tableQuery.filter(_.virheet.isDefined)
-      }
+
       organisaatiot.foreach { org =>
         tableQuery = tableQuery.filter(_.tallentajaOrganisaatioOid inSetBind org)
       }
@@ -53,7 +51,7 @@ class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organis
         val hierarkia: Option[OrganisaatioHierarkia] = organisaatioRepository.getOrganisaatioHierarkiaIncludingParents(oppilaitosOid)
         hierarkia.map(oidPath(oppilaitosOid, _)) match {
           case Some(oids) =>
-            val henkilöt: List[HenkilönTiedonsiirrot] = toHenkilönTiedonsiirrot(find(Some(oids), query.errorsOnly, query.pageInfo))
+            val henkilöt: List[HenkilönTiedonsiirrot] = toHenkilönTiedonsiirrot(find(Some(oids), query.pageInfo))
               .map { siirrot => siirrot.copy(rivit = siirrot.rivit.filter(_.oppilaitos.toList.flatten.map(_.oid).contains(oppilaitosOid))) }
               .filter { siirrot => siirrot.rivit.nonEmpty }
             Right(Tiedonsiirrot(henkilöt, oppilaitos = hierarkia.flatMap(_.find(oppilaitosOid).flatMap(_.toOppilaitos))))
@@ -61,7 +59,7 @@ class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organis
             Left(KoskiErrorCategory.notFound.oppilaitostaEiLöydy())
         }
       case None =>
-        Right(Tiedonsiirrot(toHenkilönTiedonsiirrot(find(None, query.errorsOnly, query.pageInfo)), oppilaitos = None))
+        Right(Tiedonsiirrot(toHenkilönTiedonsiirrot(find(None, query.pageInfo)), oppilaitos = None))
     }
   }
 
@@ -187,6 +185,6 @@ case class TiedonsiirtoRivi(id: Int, aika: LocalDateTime, oppija: Option[Tiedons
 case class TiedonsiirtoOppija(oid: Option[String], hetu: Option[String], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], äidinkieli: Option[Koodistokoodiviite])
 case class HetuTaiOid(oid: Option[String], hetu: Option[String])
 case class TiedonsiirtoYhteenveto(tallentajaOrganisaatio: OrganisaatioWithOid, oppilaitos: OrganisaatioWithOid, käyttäjä: KoskiUserInfo, viimeisin: Timestamp, siirretyt: Int, virheelliset: Int, opiskeluoikeudet: Int, lähdejärjestelmä: Option[Koodistokoodiviite])
-case class TiedonsiirtoQuery(oppilaitos: Option[String], errorsOnly: Boolean, pageInfo: PageInfo)
+case class TiedonsiirtoQuery(oppilaitos: Option[String], pageInfo: PageInfo)
 case class TiedonsiirtoKäyttäjä(oid: String, nimi: Option[String])
 case class TiedonsiirtoError(data: JValue, virheet: JValue)
