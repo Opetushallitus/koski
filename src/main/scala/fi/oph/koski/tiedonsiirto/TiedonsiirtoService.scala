@@ -15,7 +15,7 @@ import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.oppija.OppijaRepository
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
 import fi.oph.koski.schema._
-import fi.oph.koski.util.DateOrdering
+import fi.oph.koski.util.{DateOrdering, PageInfo}
 import org.json4s.JsonAST.{JArray, JString}
 import org.json4s.{JValue, _}
 
@@ -37,7 +37,7 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
         val hierarkia: Option[OrganisaatioHierarkia] = organisaatioRepository.getOrganisaatioHierarkiaIncludingParents(oppilaitosOid)
         hierarkia.map(oidPath(oppilaitosOid, _)) match {
           case Some(oids) =>
-            val henkilöt: List[HenkilönTiedonsiirrot] = toHenkilönTiedonsiirrot(tiedonsiirtoRepository.find(Some(oids)))
+            val henkilöt: List[HenkilönTiedonsiirrot] = toHenkilönTiedonsiirrot(tiedonsiirtoRepository.find(Some(oids), query.pageInfo))
               .map { siirrot => siirrot.copy(rivit = siirrot.rivit.filter(_.oppilaitos.toList.flatten.map(_.oid).contains(oppilaitosOid))) }
               .filter { siirrot => siirrot.rivit.nonEmpty }
             Right(Tiedonsiirrot(henkilöt, oppilaitos = hierarkia.flatMap(_.find(oppilaitosOid).flatMap(_.toOppilaitos))))
@@ -45,7 +45,7 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
             Left(KoskiErrorCategory.notFound.oppilaitostaEiLöydy())
         }
       case None =>
-        Right(Tiedonsiirrot(toHenkilönTiedonsiirrot(tiedonsiirtoRepository.find(None)), oppilaitos = None))
+        Right(Tiedonsiirrot(toHenkilönTiedonsiirrot(tiedonsiirtoRepository.find(None, query.pageInfo)), oppilaitos = None))
     }
   }
 
@@ -158,5 +158,5 @@ case class TiedonsiirtoRivi(id: Int, aika: LocalDateTime, oppija: Option[Henkil�
 case class Henkilö(oid: Option[String], hetu: Option[String], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], äidinkieli: Option[Koodistokoodiviite])
 case class HetuTaiOid(oid: Option[String], hetu: Option[String])
 case class TiedonsiirtoYhteenveto(tallentajaOrganisaatio: OrganisaatioWithOid, oppilaitos: OrganisaatioWithOid, käyttäjä: KoskiUserInfo, viimeisin: Timestamp, siirretyt: Int, virheelliset: Int, opiskeluoikeudet: Int, lähdejärjestelmä: Option[Koodistokoodiviite])
-case class TiedonsiirtoQuery(oppilaitos: Option[String])
+case class TiedonsiirtoQuery(oppilaitos: Option[String], pageInfo: PageInfo)
 case class TiedonsiirtoKäyttäjä(oid: String, nimi: Option[String])
