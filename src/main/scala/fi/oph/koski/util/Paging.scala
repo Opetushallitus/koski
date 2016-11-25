@@ -4,7 +4,7 @@ import fi.oph.koski.servlet.KoskiBaseServlet
 
 trait Paging extends KoskiBaseServlet {
   def pageNumber = getOptionalIntegerParam("pageNumber").getOrElse(0)
-  def pageSize = getOptionalIntegerParam("pageSize").getOrElse(1000)
+  def pageSize = getOptionalIntegerParam("pageSize").getOrElse(200)
   def pageInfo = PageInfo(pageNumber, pageSize)
 }
 
