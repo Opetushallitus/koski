@@ -1,5 +1,6 @@
 import React from 'react'
 import fecha from 'fecha'
+import Bacon from 'baconjs'
 
 export const Tiedonsiirtotaulukko = React.createClass({
   render() {
@@ -24,10 +25,23 @@ export const Tiedonsiirtotaulukko = React.createClass({
       </table>
       {
         pager.mayHaveMore()
-          ? <a onClick={pager.next}>Lisää...</a>
+          ? <a onClick={pager.next} ref={(link) => {this.loadMoreLink = link}}>Lisää...</a>
           : null
       }
     </div>)
+  },
+
+  componentDidMount() {
+    this.unmountBus = Bacon.Bus()
+    Bacon.fromEvent(window, 'scroll')
+      .takeUntil(this.unmountBus)
+      .throttle(100)
+      .filter(() => isElementInViewport(this.loadMoreLink))
+      .onValue(this.props.pager.next)
+  },
+
+  componentWillUnmount() {
+    if (this.unmountBus) this.unmountBus.push()
   }
 })
 
@@ -120,3 +134,13 @@ const LokirivinData = React.createClass({
     </div>)
   }
 })
+
+function isElementInViewport (el) {
+  let rect = el.getBoundingClientRect()
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
+  )
+}
