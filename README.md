@@ -252,14 +252,7 @@ Paketin muodostamisen ja asennuksen voi hoitaa myös yhdellä komennolla
 
 ### Pilviasennuksen operoiminen
 
-Lokien katsominen onnistuu komennolla:
-
-    make tail
-    
-Serverille pääsee myös ssh:lla kätevästi:
-
-    make ssh
-    less /home/git/logs/koski.log
+Ks. https://github.com/Opetushallitus/koski-env
     
 ## Build-prosessi ja hakemistot
 
