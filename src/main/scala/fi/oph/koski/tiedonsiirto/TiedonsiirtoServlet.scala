@@ -26,7 +26,7 @@ class TiedonsiirtoServlet(val application: KoskiApplication) extends ApiServlet 
       case Right(oid) => oid
       case Left(status) => haltWithStatus(status)
     })
-    TiedonsiirtoQuery(oppilaitos, pageInfo)
+    TiedonsiirtoQuery(oppilaitos, Some(pageInfo))
   }
 
   override def cacheDuration = 5 minutes
