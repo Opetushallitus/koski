@@ -3,7 +3,11 @@ package fi.oph.koski.tiedonsiirto
 import java.sql.Timestamp
 import java.time.LocalDateTime
 
-import fi.oph.koski.db.TiedonsiirtoRow
+import fi.oph.koski.db.KoskiDatabase._
+import fi.oph.koski.db.Tables._
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.Tables.{Tiedonsiirto, TiedonsiirtoWithAccessCheck}
+import fi.oph.koski.db.{KoskiDatabaseMethods, Tables, TiedonsiirtoRow, TiedonsiirtoYhteenvetoRow}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
@@ -15,12 +19,24 @@ import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.oppija.OppijaRepository
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
 import fi.oph.koski.schema._
-import fi.oph.koski.util.{DateOrdering, PageInfo}
-import org.json4s.JsonAST.{JArray, JString}
+import fi.oph.koski.util.{DateOrdering, PageInfo, Timing}
+import org.json4s.JsonAST.{JArray, JString, JValue}
 import org.json4s.{JValue, _}
 
-class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organisaatioRepository: OrganisaatioRepository, oppijaRepository: OppijaRepository, koodistoviitePalvelu: KoodistoViitePalvelu, userRepository: KoskiUserRepository) extends Logging {
+class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organisaatioRepository: OrganisaatioRepository, oppijaRepository: OppijaRepository, koodistoviitePalvelu: KoodistoViitePalvelu, userRepository: KoskiUserRepository) extends Logging with Timing with KoskiDatabaseMethods {
   def haeTiedonsiirrot(query: TiedonsiirtoQuery)(implicit koskiSession: KoskiSession): Either[HttpStatus, Tiedonsiirrot] = {
+    def find(organisaatiot: Option[List[String]], errorsOnly: Boolean, pageInfo: PageInfo)(implicit koskiSession: KoskiSession): Seq[TiedonsiirtoRow] = timed("findByOrganisaatio") {
+      val monthAgo = Timestamp.valueOf(LocalDateTime.now.minusMonths(1))
+      var tableQuery = TiedonsiirtoWithAccessCheck(koskiSession)
+      if (errorsOnly) {
+        tableQuery = tableQuery.filter(_.virheet.isDefined)
+      }
+      organisaatiot.foreach { org =>
+        tableQuery = tableQuery.filter(_.tallentajaOrganisaatioOid inSetBind org)
+      }
+      runDbSync(tableQuery.sortBy(_.id.desc).drop(pageInfo.page * pageInfo.size).take(pageInfo.size).result)
+    }
+
     AuditLog.log(AuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiSession, Map(juuriOrganisaatio -> koskiSession.juuriOrganisaatio.map(_.oid).getOrElse("ei juuriorganisaatiota"))))
 
     query.oppilaitos match {
@@ -37,7 +53,7 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
         val hierarkia: Option[OrganisaatioHierarkia] = organisaatioRepository.getOrganisaatioHierarkiaIncludingParents(oppilaitosOid)
         hierarkia.map(oidPath(oppilaitosOid, _)) match {
           case Some(oids) =>
-            val henkilöt: List[HenkilönTiedonsiirrot] = toHenkilönTiedonsiirrot(tiedonsiirtoRepository.find(Some(oids), query.errorsOnly, query.pageInfo))
+            val henkilöt: List[HenkilönTiedonsiirrot] = toHenkilönTiedonsiirrot(find(Some(oids), query.errorsOnly, query.pageInfo))
               .map { siirrot => siirrot.copy(rivit = siirrot.rivit.filter(_.oppilaitos.toList.flatten.map(_.oid).contains(oppilaitosOid))) }
               .filter { siirrot => siirrot.rivit.nonEmpty }
             Right(Tiedonsiirrot(henkilöt, oppilaitos = hierarkia.flatMap(_.find(oppilaitosOid).flatMap(_.toOppilaitos))))
@@ -45,7 +61,7 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
             Left(KoskiErrorCategory.notFound.oppilaitostaEiLöydy())
         }
       case None =>
-        Right(Tiedonsiirrot(toHenkilönTiedonsiirrot(tiedonsiirtoRepository.find(None, query.errorsOnly, query.pageInfo)), oppilaitos = None))
+        Right(Tiedonsiirrot(toHenkilönTiedonsiirrot(find(None, query.errorsOnly, query.pageInfo)), oppilaitos = None))
     }
   }
 
@@ -71,7 +87,17 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
 
     val juuriOrganisaatio = if (koskiSession.isRoot) koulutustoimija else koskiSession.juuriOrganisaatio
 
-    juuriOrganisaatio.foreach(org => tiedonsiirtoRepository.create(koskiSession.oid, org.oid, oppija, oppilaitokset, error, lahdejarjestelma))
+    juuriOrganisaatio.foreach(org => {
+      val (data, virheet) = error.map(e => (Some(e.data), Some(e.virheet))).getOrElse((None, None))
+
+      runDbSync {
+        Tiedonsiirto.map { row => (row.kayttajaOid, row.tallentajaOrganisaatioOid, row.oppija, row.oppilaitos, row.data, row.virheet, row.lahdejarjestelma) } +=(koskiSession.oid, org.oid, oppija, oppilaitokset, data, virheet, lahdejarjestelma)
+      }
+
+      if (error.isDefined) {
+        mailer.sendMail(org.oid)
+      }
+    })
   }
 
   def yhteenveto(implicit koskiSession: KoskiSession): Seq[TiedonsiirtoYhteenveto] = {
@@ -83,20 +109,23 @@ class TiedonsiirtoService(tiedonsiirtoRepository: TiedonsiirtoRepository, organi
           None
       }
     }
-    tiedonsiirtoRepository.yhteenveto(koskiSession).par.flatMap { row =>
-      val käyttäjä = userRepository.findByOid(row.kayttaja) getOrElse {
-        logger.warn(s"Käyttäjää ${row.kayttaja} ei löydy henkilöpalvelusta")
-        KoskiUserInfo(row.kayttaja, None, None)
-      }
-      (getOrganisaatio(row.tallentajaOrganisaatio), getOrganisaatio(row.oppilaitos)) match {
-        case (Some(tallentajaOrganisaatio), Some(oppilaitos)) =>
-          val lähdejärjestelmä = row.lahdejarjestelma.flatMap(koodistoviitePalvelu.getKoodistoKoodiViite("lahdejarjestelma", _))
-          Some(TiedonsiirtoYhteenveto(tallentajaOrganisaatio, oppilaitos, käyttäjä, row.viimeisin, row.siirretyt, row.virheet, row.opiskeluoikeudet.getOrElse(0), lähdejärjestelmä))
-        case _ =>
-          None
-      }
-    }.toList
-     .sortBy(_.oppilaitos.nimi.map(_.get("fi")))
+
+    timed("yhteenveto") {
+      runDbSync(Tables.TiedonsiirtoYhteenvetoWithAccessCheck(koskiSession).result).par.flatMap { row =>
+        val käyttäjä = userRepository.findByOid(row.kayttaja) getOrElse {
+          logger.warn(s"Käyttäjää ${row.kayttaja} ei löydy henkilöpalvelusta")
+          KoskiUserInfo(row.kayttaja, None, None)
+        }
+        (getOrganisaatio(row.tallentajaOrganisaatio), getOrganisaatio(row.oppilaitos)) match {
+          case (Some(tallentajaOrganisaatio), Some(oppilaitos)) =>
+            val lähdejärjestelmä = row.lahdejarjestelma.flatMap(koodistoviitePalvelu.getKoodistoKoodiViite("lahdejarjestelma", _))
+            Some(TiedonsiirtoYhteenveto(tallentajaOrganisaatio, oppilaitos, käyttäjä, row.viimeisin, row.siirretyt, row.virheet, row.opiskeluoikeudet.getOrElse(0), lähdejärjestelmä))
+          case _ =>
+            None
+        }
+      }.toList
+        .sortBy(_.oppilaitos.nimi.map(_.get("fi")))
+    }
   }
 
   private def jsonStringList(value: JValue) = value match {
@@ -160,3 +189,4 @@ case class HetuTaiOid(oid: Option[String], hetu: Option[String])
 case class TiedonsiirtoYhteenveto(tallentajaOrganisaatio: OrganisaatioWithOid, oppilaitos: OrganisaatioWithOid, käyttäjä: KoskiUserInfo, viimeisin: Timestamp, siirretyt: Int, virheelliset: Int, opiskeluoikeudet: Int, lähdejärjestelmä: Option[Koodistokoodiviite])
 case class TiedonsiirtoQuery(oppilaitos: Option[String], errorsOnly: Boolean, pageInfo: PageInfo)
 case class TiedonsiirtoKäyttäjä(oid: String, nimi: Option[String])
+case class TiedonsiirtoError(data: JValue, virheet: JValue)
