@@ -12,7 +12,7 @@ export const tiedonsiirtolokiContentP = (queryString) => {
           <span> oppilaitoksessa {oppilaitos.nimi.fi}</span> : null }
           <Tiedonsiirtotaulukko rivit={henkilöt} showError={false} pager={pager}/>
         </div>),
-      title: 'Tiedonsiirrot'
+      title: 'Tiedonsiirrot' + (oppilaitos ? ' - ' + oppilaitos.nimi.fi : '')
     })
   ))
 }

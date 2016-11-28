@@ -16,7 +16,7 @@ export const tiedonsiirtovirheetContentP = (queryString) => {
           tiedot on siirretty uudelleen onnistuneesti KOSKI-palveluun.</p>
         <Tiedonsiirtotaulukko rivit={henkilöt} showError={true} pager={pager}/>
       </div>),
-      title: 'Tiedonsiirtovirheet'
+      title: 'Tiedonsiirtovirheet' + (oppilaitos ? ' - ' + oppilaitos.nimi.fi : '')
     }))
   )
 }
