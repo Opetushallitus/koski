@@ -84,8 +84,8 @@ addArrayMethod('reduce', function(callback /*, initialValue*/) {
 })
 
 if (typeof Object.assign != 'function') {
-  Object.assign = function (target, varArgs) { // .length of function is 2
-    if (target == null) { // TypeError if undefined or null
+  Object.assign = function (target) {
+    if (target == null) {
       throw new TypeError('Cannot convert undefined or null to object')
     }
 
