@@ -76,7 +76,7 @@ const Lokiriviryhmä = React.createClass({
 const Lokirivi = React.createClass({
   render() {
     const extractName = (oppilaitokset) =>
-      oppilaitokset && oppilaitokset.map((oppilaitos) => oppilaitos && oppilaitos.nimi && oppilaitos.nimi.fi).join(', ')
+      oppilaitokset && oppilaitokset.map((oppilaitos) => <a href={'/koski/tiedonsiirrot?oppilaitos=' + oppilaitos.oid}>{oppilaitos && oppilaitos.nimi && oppilaitos.nimi.fi}</a>)
 
     const {row, isParent, isChild, isExpanded, isEven, showError, setExpanded} = this.props
     const dataToBeShown = this.state && this.state.dataToBeShown
