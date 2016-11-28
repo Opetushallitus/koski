@@ -114,7 +114,6 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
 
     HttpStatus.fold(
-      validateNotInFuture("alkamispäivä", opiskeluOikeus.alkamispäivä),
       validateNotInFuture("päättymispäivä", opiskeluOikeus.päättymispäivä),
       validateDateOrder(("alkamispäivä", opiskeluOikeus.alkamispäivä), ("päättymispäivä", opiskeluOikeus.päättymispäivä)),
       validateDateOrder(("alkamispäivä", opiskeluOikeus.alkamispäivä), ("arvioituPäättymispäivä", opiskeluOikeus.arvioituPäättymispäivä)),
@@ -130,7 +129,6 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     val vahvistuspäivät: Option[LocalDate] = suoritus.vahvistus.map(_.päivä)
     HttpStatus.fold(
       validateDateOrder(alkamispäivä, ("suoritus.arviointi.päivä", arviointipäivät)).then(validateDateOrder(("suoritus.arviointi.päivä", arviointipäivät), ("suoritus.vahvistus.päivä", vahvistuspäivät)).then(validateDateOrder(alkamispäivä, ("suoritus.vahvistus.päivä", vahvistuspäivät))))
-        :: validateNotInFuture("suoritus.alkamispäivä", suoritus.alkamispäivä)
         :: validateNotInFuture("suoritus.arviointi.päivä", arviointipäivät)
         :: validateNotInFuture("suoritus.vahvistus.päivä", vahvistuspäivät)
         :: validateToimipiste(suoritus)

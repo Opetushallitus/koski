@@ -191,8 +191,8 @@ class OppijaValidationSpec extends FunSpec with LocalJettyHttpSpecification with
           verifyResponseStatus(200)
         })
 
-        it("alkamispäivä tulevaisuudessa -> palautetaan HTTP 400" ) (putOpiskeluOikeus(makeOpiskeluoikeus(alkamispäivä = date(2100, 5, 31))) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.tulevaisuudessa("Päivämäärä alkamispäivä (2100-05-31) on tulevaisuudessa"))
+        it("alkamispäivä tulevaisuudessa -> palautetaan HTTP 200" ) (putOpiskeluOikeus(makeOpiskeluoikeus(alkamispäivä = date(2100, 5, 31))) {
+          verifyResponseStatus(200)
         })
 
         it("päättymispäivä tulevaisuudessa -> palautetaan HTTP 400" ) (putOpiskeluOikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2100, 5, 31))) {

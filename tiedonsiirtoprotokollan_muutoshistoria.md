@@ -1,3 +1,7 @@
+## 28.11.2016
+
+- Opiskeluoikeuden ja suoritusten alkamispäivä saa olla tulevaisuudessa
+
 ## 10.11.2016
 
 - Koski ei enää hyväksy keinotekoisia henkilötunnuksia tietoja syötettäessä (loppuosan alkunumero 9)
