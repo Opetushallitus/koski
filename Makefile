@@ -75,3 +75,5 @@ ifndef version
 		@echo "Use version=local for locally installed version"
 		exit 1
 endif
+great:
+again:
