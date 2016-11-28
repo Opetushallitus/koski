@@ -32,9 +32,9 @@
     "eslint-plugin-react": "^3.5",
     "less": "^2",
     "less-loader": "^2",
-    "mocha-phantomjs": "^3.6",
+    "mocha-phantomjs": "^4.1",
     "nodemon": "^1",
-    "phantomjs": "1.9.7-15",
+    "phantomjs": "2.1.7",
     "reporter-file": "^1.0.0",
     "style-loader": "^0.12",
     "webpack": "^1"

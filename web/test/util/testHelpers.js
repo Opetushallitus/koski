@@ -92,7 +92,7 @@ function reloadTestFrame() {
 
 function triggerEvent(element, eventName) {
   var evt
-  if(window._phantom) {
+  if(window.callPhantom) {
     evt = testFrame().document.createEvent('HTMLEvents');
     evt.initEvent(eventName, true, true);
   } else {
@@ -148,7 +148,7 @@ function isElementVisible(el) {
   if (el.get) el = el.get(0)  // <- extract HTML element from jQuery object
   if (!el) return false; // <- `undefined` -> invisible
 
-  if(window.mochaPhantomJS) {
+  if(window.callPhantom) {
     // For some reason, the "actually visible" logic below fails in phantom, so we fallback to less strict check.
     return $(el).is(":visible")
   }
