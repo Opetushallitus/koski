@@ -3,17 +3,6 @@
     "oid" : "1.2.246.562.24.00000000001"
   },
   "opiskeluoikeudet" : [ {
-    "lähdejärjestelmänId" : {
-      "id" : "847823465",
-      "lähdejärjestelmä" : {
-        "koodiarvo" : "winnova",
-        "nimi" : {
-          "fi" : "Winnova"
-        },
-        "koodistoUri" : "lahdejarjestelma",
-        "koodistoVersio" : 1
-      }
-    },
     "oppilaitos" : {
       "oid" : "1.2.246.562.10.52251087186",
       "oppilaitosnumero" : {
@@ -266,6 +255,21 @@
             }
           },
           "arviointi" : {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "K3"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+            },
+            "päivä" : "2014-10-20",
+            "arvioitsijat" : [ {
+              "nimi" : "Jaana Arstila"
+            }, {
+              "nimi" : "Pekka Saurmann"
+            }, {
+              "nimi" : "Juhani Mykkänen"
+            } ],
             "arviointikohteet" : [ {
               "tunniste" : {
                 "koodiarvo" : "1",
@@ -340,7 +344,8 @@
                 "fi" : "Opiskelija ja opettaja"
               },
               "koodistoUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet"
-            }
+            },
+            "hyväksytty" : true
           },
           "työssäoppimisenYhteydessä" : false
         },
@@ -659,7 +664,17 @@
             "koodistoUri" : "tutkinnonosat",
             "koodistoVersio" : 1
           },
-          "pakollinen" : true
+          "pakollinen" : true,
+          "laajuus" : {
+            "arvo" : 15.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "Osaamispistettä"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
         },
         "toimipiste" : {
           "oid" : "1.2.246.562.10.42456023292",

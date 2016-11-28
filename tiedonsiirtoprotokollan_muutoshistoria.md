@@ -2,6 +2,7 @@
 
 - Opiskeluoikeuden ja suoritusten alkamispäivä saa olla tulevaisuudessa
 - Lisätty sanallinen arviointi (kuvaus-kenttä) ammatillisten tutkinnon osien arviointiin
+- Lisätty arvosana, päivä ja arvioitsijat näytön arviointiin
 
 ## 10.11.2016
 

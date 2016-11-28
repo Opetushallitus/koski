@@ -28,14 +28,14 @@ object ExamplesValma {
           toimipiste = stadinAmmattiopisto,
           koulutusmoduuli = AmmatilliseenPeruskoulutukseenValmentavaKoulutus(),
           osasuoritukset = Some(List(
-            valmaKurssinSuoritus("AKO", "Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen", 10f, arviointiHyväksytty, pakollinen = true),
-            valmaKurssinSuoritus("OV", "Opiskeluvalmiuksien vahvistaminen", 10f, arviointiHyväksytty, pakollinen = false),
-            valmaKurssinSuoritus("TOV", "Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen", 15f, arviointiHyväksytty, pakollinen = false),
-            valmaKurssinSuoritus("ATH", "Arjen taitojen ja hyvinvoinnin vahvistaminen", 10f, arviointiHyväksytty, pakollinen = false),
+            valmaKurssinSuoritus("AKO", "Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen", 10f, Some(List(arviointiHyväksytty)), pakollinen = true),
+            valmaKurssinSuoritus("OV", "Opiskeluvalmiuksien vahvistaminen", 10f, Some(List(arviointiHyväksytty)), pakollinen = false),
+            valmaKurssinSuoritus("TOV", "Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen", 15f, Some(List(arviointiHyväksytty)), pakollinen = false),
+            valmaKurssinSuoritus("ATH", "Arjen taitojen ja hyvinvoinnin vahvistaminen", 10f, Some(List(arviointiHyväksytty)), pakollinen = false),
             AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus(
               tila = tilaValmis,
               koulutusmoduuli = autonLisävarustetyöt(false),
-              arviointi = arviointiHyväksytty,
+              arviointi = Some(List(arviointiHyväksytty)),
               tunnustettu = tunnustettu
             )
           ))

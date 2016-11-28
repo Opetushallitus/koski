@@ -252,6 +252,9 @@ case class NäytönSuorituspaikka(
 )
 
 case class NäytönArviointi (
+  arvosana: Koodistokoodiviite,
+  päivä: LocalDate,
+  arvioitsijat: Option[List[Arvioitsija]] = None,
   @Description("Näytön eri arviointikohteiden (Työprosessin hallinta jne) arvosanat.")
   arviointikohteet: Option[List[NäytönArviointikohde]],
   @KoodistoUri("ammatillisennaytonarvioinnistapaattaneet")
@@ -262,7 +265,7 @@ case class NäytönArviointi (
   arviointikeskusteluunOsallistuneet: Koodistokoodiviite,
   @Description("Jos näyttö on hylätty, kuvataan hylkäyksen perusteet tänne.")
   hylkäyksenPeruste: Option[LocalizedString] = None
-)
+) extends AmmatillinenKoodistostaLöytyväArviointi
 
 case class NäytönArviointikohde(
   @Description("Arviointikohteen tunniste")
@@ -451,7 +454,7 @@ case class PaikallinenTyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa(
   pakollinen: Boolean
 ) extends PaikallinenKoulutusmoduuli with Valinnaisuus with TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa
 
-trait AmmatillinenKoodistostaLöytyväArviointi extends KoodistostaLöytyväArviointi with ArviointiPäivämäärällä with SanallinenArviointi {
+trait AmmatillinenKoodistostaLöytyväArviointi extends KoodistostaLöytyväArviointi with ArviointiPäivämäärällä {
   @KoodistoUri("arviointiasteikkoammatillinenhyvaksyttyhylatty")
   @KoodistoUri("arviointiasteikkoammatillinent1k3")
   override def arvosana: Koodistokoodiviite
@@ -469,4 +472,4 @@ case class AmmatillinenArviointi(
   päivä: LocalDate,
   arvioitsijat: Option[List[Arvioitsija]] = None,
   kuvaus: Option[LocalizedString] = None
-) extends AmmatillinenKoodistostaLöytyväArviointi
+) extends AmmatillinenKoodistostaLöytyväArviointi with SanallinenArviointi

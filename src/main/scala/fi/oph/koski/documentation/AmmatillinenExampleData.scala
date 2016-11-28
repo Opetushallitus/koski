@@ -27,13 +27,17 @@ object AmmatillinenExampleData {
 
   lazy val h2: Koodistokoodiviite = Koodistokoodiviite("2", Some("H2"), "arviointiasteikkoammatillinent1k3", None)
   lazy val k3: Koodistokoodiviite = Koodistokoodiviite("3", Some("K3"), "arviointiasteikkoammatillinent1k3", None)
-  lazy val näytönArviointi = NäytönArviointi(Some(List(
-    NäytönArviointikohde(Koodistokoodiviite("1", Some("Työprosessin hallinta"), "ammatillisennaytonarviointikohde", None), k3),
-    NäytönArviointikohde(Koodistokoodiviite("2", Some("Työmenetelmien, -välineiden ja materiaalin hallinta"), "ammatillisennaytonarviointikohde", None), h2),
-    NäytönArviointikohde(Koodistokoodiviite("3", Some("Työn perustana olevan tiedon hallinta"), "ammatillisennaytonarviointikohde", None), h2),
-    NäytönArviointikohde(Koodistokoodiviite("4", Some("Elinikäisen oppimisen avaintaidot"), "ammatillisennaytonarviointikohde", None), k3))),
-    Koodistokoodiviite("1", Some("Opettaja"), "ammatillisennaytonarvioinnistapaattaneet", None),
-    Koodistokoodiviite("1", Some("Opiskelija ja opettaja"), "ammatillisennaytonarviointikeskusteluunosallistuneet", None)
+  lazy val näytönArviointi = NäytönArviointi(
+    arvosana = arviointiKiitettävä.arvosana,
+    päivä = arviointiKiitettävä.päivä,
+    arvioitsijat = arviointiHyväksytty.arvioitsijat,
+    arviointikohteet = Some(List(
+      NäytönArviointikohde(Koodistokoodiviite("1", Some("Työprosessin hallinta"), "ammatillisennaytonarviointikohde", None), k3),
+      NäytönArviointikohde(Koodistokoodiviite("2", Some("Työmenetelmien, -välineiden ja materiaalin hallinta"), "ammatillisennaytonarviointikohde", None), h2),
+      NäytönArviointikohde(Koodistokoodiviite("3", Some("Työn perustana olevan tiedon hallinta"), "ammatillisennaytonarviointikohde", None), h2),
+      NäytönArviointikohde(Koodistokoodiviite("4", Some("Elinikäisen oppimisen avaintaidot"), "ammatillisennaytonarviointikohde", None), k3))),
+    arvioinnistaPäättäneet = Koodistokoodiviite("1", Some("Opettaja"), "ammatillisennaytonarvioinnistapaattaneet", None),
+    arviointikeskusteluunOsallistuneet = Koodistokoodiviite("1", Some("Opiskelija ja opettaja"), "ammatillisennaytonarviointikeskusteluunosallistuneet", None)
   )
 
   def näyttö(kuvaus: String, paikka: String, arviointi: Option[NäytönArviointi] = None) = Näyttö(
@@ -63,9 +67,10 @@ object AmmatillinenExampleData {
     )),
     "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
   )
-  lazy val arviointiHyväksytty: Some[List[AmmatillinenArviointi]] = Some(List(AmmatillinenArviointi(
+
+  lazy val arviointiHyväksytty = AmmatillinenArviointi(
     arvosana = hyväksytty, date(2013, 3, 20),
-    arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen"))))))
+    arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen"))))
 
 
   lazy val paikallisenOsanSuoritus = AmmatillisenTutkinnonOsanSuoritus(
@@ -77,7 +82,7 @@ object AmmatillinenExampleData {
     tila = tilaValmis,
     alkamispäivä = None,
     toimipiste = Some(stadinToimipiste),
-    arviointi = arviointiHyväksytty,
+    arviointi = Some(List(arviointiHyväksytty)),
     vahvistus = vahvistus(date(2013, 5, 31), stadinAmmattiopisto, helsinki)
   )
 
