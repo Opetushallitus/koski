@@ -1,5 +1,5 @@
 import React from 'react'
-import Pager from './Pasdfager'
+import Pager from './Pager'
 import * as L from 'partial.lenses'
 import { tiedonsiirrotContentP } from './Tiedonsiirrot.jsx'
 import { Tiedonsiirtotaulukko } from './Tiedonsiirtotaulukko.jsx'
