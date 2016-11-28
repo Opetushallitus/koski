@@ -231,23 +231,6 @@ case class AmmatillisenTutkinnonOsanLisätieto(
   kuvaus: LocalizedString
 )
 
-trait AmmatillinenKoodistostaLöytyväArviointi extends KoodistostaLöytyväArviointi with ArviointiPäivämäärällä {
-  override def hyväksytty = arvosana.koodiarvo match {
-    case "0" => false
-    case "Hylätty" => false
-    case _ => true
-  }
-}
-
-case class AmmatillinenArviointi(
-  @KoodistoUri("arviointiasteikkoammatillinenhyvaksyttyhylatty")
-  @KoodistoUri("arviointiasteikkoammatillinent1k3")
-  arvosana: Koodistokoodiviite,
-  päivä: LocalDate,
-  @Description("Tutkinnon osan suorituksen arvioinnista päättäneen henkilön nimi")
-  arvioitsijat: Option[List[Arvioitsija]] = None
-) extends AmmatillinenKoodistostaLöytyväArviointi
-
 @Description("Näytön kuvaus")
 case class Näyttö(
   @Description("Vapaamuotoinen kuvaus suoritetusta näytöstä")
@@ -434,7 +417,7 @@ case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus(
   @Title("Koulutuksen osa")
   koulutusmoduuli: TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa,
   tila: Koodistokoodiviite,
-  arviointi: Option[List[TelmaArviointi]],
+  arviointi: Option[List[AmmatillinenArviointi]],
   vahvistus: Option[Henkilövahvistus] = None,
   override val alkamispäivä: Option[LocalDate] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
@@ -468,12 +451,22 @@ case class PaikallinenTyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa(
   pakollinen: Boolean
 ) extends PaikallinenKoulutusmoduuli with Valinnaisuus with TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa
 
-case class TelmaArviointi(
+trait AmmatillinenKoodistostaLöytyväArviointi extends KoodistostaLöytyväArviointi with ArviointiPäivämäärällä with SanallinenArviointi {
   @KoodistoUri("arviointiasteikkoammatillinenhyvaksyttyhylatty")
   @KoodistoUri("arviointiasteikkoammatillinent1k3")
+  override def arvosana: Koodistokoodiviite
+  @Description("Tutkinnon osan suorituksen arvioinnista päättäneen henkilön nimi")
+  override def arvioitsijat: Option[List[Arvioitsija]]
+  override def hyväksytty = arvosana.koodiarvo match {
+    case "0" => false
+    case "Hylätty" => false
+    case _ => true
+  }
+}
+
+case class AmmatillinenArviointi(
   arvosana: Koodistokoodiviite,
   päivä: LocalDate,
-  @Description("Tutkinnon osan suorituksen arvioinnista päättäneen henkilön nimi")
   arvioitsijat: Option[List[Arvioitsija]] = None,
   kuvaus: Option[LocalizedString] = None
-) extends AmmatillinenKoodistostaLöytyväArviointi with SanallinenArviointi
+) extends AmmatillinenKoodistostaLöytyväArviointi

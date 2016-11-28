@@ -87,13 +87,9 @@ object AmmatillinenExampleData {
     Some(LaajuusOsaamispisteissä(15))
   )
 
-  lazy val arviointiKiitettävä = Some(
-    List(
-      AmmatillinenArviointi(
-        arvosana = k3,
-        date(2014, 10, 20)
-      )
-    )
+  lazy val arviointiKiitettävä = AmmatillinenArviointi(
+    arvosana = k3,
+    date(2014, 10, 20)
   )
 
   def opiskeluoikeus(oppilaitos: Oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto),

@@ -164,7 +164,7 @@ object AmmatillinenOldExamples {
         tila = tilaValmis,
         alkamispäivä = None,
         toimipiste = Some(stadinToimipiste),
-        arviointi = arviointiKiitettävä,
+        arviointi = Some(List(arviointiKiitettävä.copy(kuvaus=Some("Erinomaista kehitystä")))),
         vahvistus = vahvistus(date(2014, 11, 8), stadinAmmattiopisto, helsinki)
       )
     ))
@@ -187,7 +187,7 @@ object AmmatillinenOldExamples {
         tila = tilaValmis,
         alkamispäivä = None,
         toimipiste = Some(stadinToimipiste),
-        arviointi = arviointiKiitettävä,
+        arviointi = Some(List(arviointiKiitettävä)),
         vahvistus = vahvistus(date(2014, 11, 8), stadinAmmattiopisto, helsinki)
       )
     ))
