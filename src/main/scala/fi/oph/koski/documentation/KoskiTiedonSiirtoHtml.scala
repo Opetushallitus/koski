@@ -119,6 +119,7 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
         <script src="/koski/js/polyfills/promise.js"></script>
         <script src="/koski/js/polyfills/fetch.js"></script>
         <script src="/koski/js/polyfills/dataset.js"></script>
+        <script src="/koski/js/polyfills/closest.js"></script>
         <script src="/koski/js/documentation/api-operations.js"></script>
         <script src="/koski/js/documentation/json-examples.js"></script>
       </body>
