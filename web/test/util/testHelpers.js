@@ -108,6 +108,10 @@ function triggerEvent(element, eventName) {
 }
 
 function openPage(path, predicate) {
+  // To clear the onerror handler set by mocha. This causes the tests to actually crash if an unhandled exception is thrown. Without this, we get silent failures.
+  // And yes, it needs to be here, to be called late enough. Otherwise, mocha installs its uncaught exception handler and the exceptions are not shown anywhere.
+  // Better yet would be to make mocha fail and show those exceptions!
+  window.onerror = undefined
   if (!predicate) {
     predicate = function() { return testFrame().jQuery }
   }
