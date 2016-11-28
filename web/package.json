@@ -41,7 +41,7 @@
   },
   "scripts": {
     "lint": "failOnWarning=true webpack --bail",
-    "postinstall": "webpack -p",
+    "postinstall": "webpack -p --bail",
     "watch": "webpack -d --progress --colors --watch",
     "test": "mocha-phantomjs http://localhost:7021/koski/test/runner.html"
   }
