@@ -1,11 +1,11 @@
 import React from 'react'
 import Link from './Link.jsx'
 
-const loadingContent = <div className="ajax-indicator-bg">Ladataan...</div>
+const loadingContent = { title: "Ladataan...", content: <div className="ajax-indicator-bg">Ladataan...</div> }
 
 const withLoadingIndicator = (contentP) => contentP.startWith(loadingContent)
 
-export const tiedonsiirrotContentP = (location, contentP) => withLoadingIndicator(contentP).map((content) => ({
+export const tiedonsiirrotContentP = (location, contentP) => withLoadingIndicator(contentP.doLog("content")).doLog("with indicator").map((content) => ({
   content:  (<div className='content-area'>
               <nav className="sidebar tiedonsiirrot-navi">
                 {naviLink('/koski/tiedonsiirrot/yhteenveto', 'Yhteenveto', location, 'yhteenveto-link')}
