@@ -150,11 +150,7 @@ class KoskiFacade(oppijaRepository: OppijaRepository, opiskeluOikeusRepository: 
         Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
     }
   }
-
-  def deleteOpiskeluoikeus(id: Int)(implicit user: KoskiSession): HttpStatus = {
-    opiskeluOikeusRepository.delete(id)
-  }
-
+  
   private def writeViewingEventToAuditLog(user: KoskiSession, oid: Henkilö.Oid): Unit = {
     if (user != KoskiSession.systemUser) { // To prevent health checks from pollutings the audit log
       AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, user, Map(oppijaHenkiloOid -> oid)))
