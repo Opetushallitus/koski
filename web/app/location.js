@@ -3,9 +3,10 @@ import R from 'ramda'
 
 const locationBus = new Bacon.Bus()
 
-export const navigateTo = function (path) {
+export const navigateTo = function (path, event) {
   history.pushState(null, null, path)
   locationBus.push(parsePath(path))
+  if (event) event.preventDefault()
 }
 
 window.onpopstate = function() {
@@ -14,8 +15,8 @@ window.onpopstate = function() {
 
 export const locationP = locationBus.toProperty(parseLocation(document.location))
 
-export const navigateToOppija = oppija => navigateTo(`/koski/oppija/${oppija.oid}`)
-export const navigateToUusiOppija = () => navigateTo('/koski/uusioppija')
+export const navigateToOppija = (oppija, event) => navigateTo(`/koski/oppija/${oppija.oid}`, event)
+export const navigateToUusiOppija = (event) => navigateTo('/koski/uusioppija', event)
 export const showError = (error) => locationBus.error(error)
 
 export const parsePath = (path) => {

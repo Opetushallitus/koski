@@ -1,6 +1,8 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import Http from './http'
+import { navigateToOppija } from './location'
+import { ISO2FinnishDate } from './date'
 
 export const Oppijataulukko = React.createClass({
   render() {
@@ -21,12 +23,12 @@ export const Oppijataulukko = React.createClass({
         </thead>
         <tbody>
           {
-            hakutulokset.map( (opiskeluoikeus) => <tr key={opiskeluoikeus.henkilö.oid}>
-              <td className="nimi">{ opiskeluoikeus.henkilö.sukunimi + ', ' + opiskeluoikeus.henkilö.etunimet}</td>
+            hakutulokset.map( (opiskeluoikeus, i) => <tr key={i}>
+              <td className="nimi"><a href={`/koski/oppija/${opiskeluoikeus.henkilö.oid}`} onClick={(e) => navigateToOppija(opiskeluoikeus.henkilö, e)}>{ opiskeluoikeus.henkilö.sukunimi + ', ' + opiskeluoikeus.henkilö.etunimet}</a></td>
               <td className="tyyppi">{ opiskeluoikeus.tyyppi.nimi.fi }</td>
-              <td className="koulutus">{ opiskeluoikeus.suoritukset.map((suoritus, i) => <span key={i}>{suoritus.tyyppi.nimi.fi}</span>) } </td>
-              <td className="tutkinto">{ opiskeluoikeus.suoritukset.map((suoritus, i) =>
-                <span key={i}>
+              <td className="koulutus">{ opiskeluoikeus.suoritukset.map((suoritus, j) => <span key={j}>{suoritus.tyyppi.nimi.fi}</span>) } </td>
+              <td className="tutkinto">{ opiskeluoikeus.suoritukset.map((suoritus, j) =>
+                <span key={j}>
                   {
                     <span className="koulutusmoduuli">{suoritus.koulutusmoduuli.tunniste.nimi.fi}</span>
                   }
@@ -41,7 +43,7 @@ export const Oppijataulukko = React.createClass({
               </td>
               <td className="tila">{ opiskeluoikeus.tila.nimi.fi }</td>
               <td className="oppilaitos">{ opiskeluoikeus.oppilaitos.nimi.fi }</td>
-              <td className="aloitus pvm">{ opiskeluoikeus.alkamispäivä }</td>
+              <td className="aloitus pvm">{ ISO2FinnishDate(opiskeluoikeus.alkamispäivä) }</td>
               <td className="luokka">{ opiskeluoikeus.luokka }</td>
             </tr>)
           }

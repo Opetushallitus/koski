@@ -63,7 +63,7 @@ const OppijaHakutulokset = React.createClass({
         const className = valittu ? (o.oid === valittu.oid ? 'selected' : '') : ''
         return (
           <li key={i} className={className}>
-            <a onClick={this.selectOppija.bind(this, o)}>{o.sukunimi}, {o.etunimet} {o.hetu}</a>
+            <a href={`/koski/oppija/${o.oid}`} onClick={(e) => navigateToOppija(o, e)}>{o.sukunimi}, {o.etunimet} {o.hetu}</a>
           </li>
         )}
     )
@@ -73,10 +73,6 @@ const OppijaHakutulokset = React.createClass({
       : oppijat.query.length > 2
         ? <div className='no-results'>Ei hakutuloksia</div>
         : null
-  },
-
-  selectOppija(oppija) {
-    navigateToOppija(oppija)
   }
 })
 
@@ -87,7 +83,7 @@ export const OppijaHaku = ({oppijat, valittu, searching}) => {
         <OppijaHakuBoksi />
         <div className='hakutulokset'>
           <OppijaHakutulokset oppijat={oppijat} valittu={valittu}/>
-          <div><a className='lisaa-oppija' onClick={navigateToUusiOppija}>Lisää oppija</a></div>
+          <div><a href="/koski/oppija/uusioppija" className="lisaa-oppija" onClick={navigateToUusiOppija}>Lisää oppija</a></div>
         </div>
       </div>
   )
