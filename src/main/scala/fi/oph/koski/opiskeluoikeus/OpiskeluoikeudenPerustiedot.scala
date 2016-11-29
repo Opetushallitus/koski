@@ -49,7 +49,7 @@ case class KoulutusmoduulinPerustiedot(
 class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöRepository, opiskeluOikeusRepository: OpiskeluOikeusRepository) {
   def findAll(session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeudenPerustiedot]] = {
     ReportingQueryFacade(henkilöRepository, opiskeluOikeusRepository).findOppijat(Nil, session).right.map { opiskeluoikeudetObservable =>
-      opiskeluoikeudetObservable.take(100).toBlocking.toList.flatMap {
+      opiskeluoikeudetObservable.take(10000).toBlocking.toList.flatMap {
         case (henkilö, rivit) => rivit.map { rivi =>
           val oo = rivi.toOpiskeluOikeus
           OpiskeluoikeudenPerustiedot(henkilö.nimitiedotJaOid, oo.oppilaitos, oo.alkamispäivä, oo.tyyppi, oo.suoritukset.map { suoritus =>
