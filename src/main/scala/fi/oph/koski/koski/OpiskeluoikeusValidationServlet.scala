@@ -21,12 +21,16 @@ class OpiskeluoikeusValidationServlet(val application: KoskiApplication) extends
       .map(context.validateAll)
   }
 
+
+
+
   get("/:id") {
     val context = ValidateContext(koskiSession, application.validator, application.historyRepository)
-    val findResult: Either[HttpStatus, OpiskeluOikeusRow] = application.facade.findOpiskeluOikeus(getIntegerParam("id"))(koskiSession)
-    val result: Either[HttpStatus, ValidationResult] = findResult
-      .right.map(context.validateAll)
-    renderEither(result)
+    val result: Option[OpiskeluOikeusRow] = application.opiskeluOikeusRepository.findById(getIntegerParam("id"))(koskiSession)
+    renderEither(result match {
+      case Some(oo) => Right(context.validateAll(oo))
+      case _ => Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
+    })
   }
 }
 

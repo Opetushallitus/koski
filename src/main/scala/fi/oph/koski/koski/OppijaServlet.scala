@@ -66,7 +66,7 @@ class OppijaServlet(val application: KoskiApplication)
     contentType = "application/json;charset=utf-8"
     params.get("query") match {
       case Some(query) if (query.length >= 3) =>
-        application.facade.findOppijat(query.toUpperCase)(koskiSession)
+        HenkilötiedotFacade(application.oppijaRepository, application.opiskeluOikeusRepository).findHenkilötiedot(query.toUpperCase)(koskiSession)
       case _ =>
         throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort)
     }
@@ -74,7 +74,7 @@ class OppijaServlet(val application: KoskiApplication)
 
   private def findByOid(oid: String, user: KoskiSession): Either[HttpStatus, Oppija] = {
     HenkiloOid.validateHenkilöOid(oid).right.flatMap { oid =>
-      application.facade.findOppija(oid)(user)
+      application.oppijaFacade.findOppija(oid)(user)
     }
   }
 
@@ -103,7 +103,7 @@ class OppijaServlet(val application: KoskiApplication)
 case class UpdateContext(user: KoskiSession, application: KoskiApplication, request: HttpServletRequest) extends Logging {
   def putSingle(validationResult: Either[HttpStatus, Oppija], oppijaJsonFromRequest: JValue): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
 
-    val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = validationResult.right.flatMap(application.facade.createOrUpdate(_)(user))
+    val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = validationResult.right.flatMap(application.oppijaFacade.createOrUpdate(_)(user))
 
     result.left.foreach { case HttpStatus(code, errors) =>
       logger(user).warn("Opinto-oikeuden päivitys estetty: " + code + " " + errors + " for request " + logSafeDescription(request))
@@ -124,7 +124,7 @@ trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with 
   def query: Observable[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])] = {
     logger(koskiSession).info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
 
-    application.facade.findOppijat(params.toList, koskiSession) match {
+    ReportingQueryFacade(application.oppijaRepository, application.opiskeluOikeusRepository).findOppijat(params.toList, koskiSession) match {
       case Right(oppijat) => oppijat
       case Left(status) => haltWithStatus(status)
     }

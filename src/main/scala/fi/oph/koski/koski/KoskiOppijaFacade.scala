@@ -1,59 +1,21 @@
 package fi.oph.koski.koski
 
-import java.time.LocalDate
-import java.time.format.DateTimeParseException
-
-import fi.oph.koski.db.OpiskeluOikeusRow
 import fi.oph.koski.henkilo.Hetu
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.log.KoskiMessageField.{hakuEhto, opiskeluOikeusId, opiskeluOikeusVersio, oppijaHenkiloOid}
+import fi.oph.koski.log.KoskiMessageField.{opiskeluOikeusId, opiskeluOikeusVersio, oppijaHenkiloOid}
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, _}
 import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.oppija._
-import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
-import org.json4s._
-import rx.lang.scala.Observable
 
-class KoskiFacade(oppijaRepository: OppijaRepository, opiskeluOikeusRepository: OpiskeluOikeusRepository) extends Logging with Timing {
-  def findOppijat(params: List[(String, String)], user: KoskiSession): Either[HttpStatus, Observable[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])]] with Product with Serializable = {
+class KoskiOppijaFacade(oppijaRepository: OppijaRepository, opiskeluOikeusRepository: OpiskeluOikeusRepository) extends Logging with Timing {
+  def findOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(opiskeluOikeusRepository.findByOppijaOid)(user)(oid)
 
-    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_HAKU, user, Map(hakuEhto -> params.map { case (p,v) => p + "=" + v }.mkString("&"))))
-
-    def dateParam(q: (String, String)): Either[HttpStatus, LocalDate] = q match {
-      case (p, v) => try {
-        Right(LocalDate.parse(v))
-      } catch {
-        case e: DateTimeParseException => Left(KoskiErrorCategory.badRequest.format.pvm("Invalid date parameter: " + p + "=" + v))
-      }
-    }
-
-    val queryFilters: List[Either[HttpStatus, QueryFilter]] = params.map {
-      case (p, v) if p == "opiskeluoikeusPäättynytAikaisintaan" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytAikaisintaan(_))
-      case (p, v) if p == "opiskeluoikeusPäättynytViimeistään" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytViimeistään(_))
-      case ("tutkinnonTila", v) => Right(TutkinnonTila(v))
-      case (p, _) => Left(KoskiErrorCategory.badRequest.queryParam.unknown("Unsupported query parameter: " + p))
-    }
-
-    queryFilters.partition(_.isLeft) match {
-      case (Nil, queries) =>
-        val filters: List[QueryFilter] = queries.flatMap(_.right.toOption)
-        Right(query(filters)(user))
-      case (errors, _) =>
-        Left(HttpStatus.fold(errors.map(_.left.get)))
-    }
-  }
-
-  def findOppijat(query: String)(implicit user: KoskiSession): Seq[HenkilötiedotJaOid] = {
-    val oppijat: List[HenkilötiedotJaOid] = oppijaRepository.findOppijat(query)
-    AuditLog.log(AuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> query)))
-    val filtered = opiskeluOikeusRepository.filterOppijat(oppijat)
-    filtered.sortBy(oppija => (oppija.sukunimi, oppija.etunimet))
-  }
+  def findUserOppija(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(opiskeluOikeusRepository.findByUserOid)(user)(user.oid)
 
   def createOrUpdate(oppija: Oppija)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
     val oppijaOid: Either[HttpStatus, PossiblyUnverifiedOppijaOid] = oppija.henkilö match {
@@ -86,7 +48,7 @@ class KoskiFacade(oppijaRepository: OppijaRepository, opiskeluOikeusRepository: 
     }
   }
 
-  def createOrUpdateOpiskeluoikeus(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusVersio] = {
+  private def createOrUpdateOpiskeluoikeus(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusVersio] = {
     def applicationLog(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: Opiskeluoikeus, result: CreateOrUpdateResult): Unit = {
       val (verb, content) = result match {
         case _: Updated => ("Päivitetty", Json.write(result.diff))
@@ -122,10 +84,6 @@ class KoskiFacade(oppijaRepository: OppijaRepository, opiskeluOikeusRepository: 
     }
   }
 
-
-  def findOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(opiskeluOikeusRepository.findByOppijaOid)(user)(oid)
-  def findUserOppija(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(opiskeluOikeusRepository.findByUserOid)(user)(user.oid)
-
   private def toOppija(findFunc: String => Seq[Opiskeluoikeus])(implicit user: KoskiSession): String => Either[HttpStatus, Oppija] = oid => {
     def notFound = Left(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa " + oid + " ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
     val result = oppijaRepository.findByOid(oid) match {
@@ -141,49 +99,12 @@ class KoskiFacade(oppijaRepository: OppijaRepository, opiskeluOikeusRepository: 
     result
   }
 
-  def findOpiskeluOikeus(id: Int)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluOikeusRow] = {
-    val result: Option[OpiskeluOikeusRow] = opiskeluOikeusRepository.findById(id)
-    result match {
-      case Some(oo) =>
-        Right(oo)
-      case _ =>
-        Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
-    }
-  }
-  
   private def writeViewingEventToAuditLog(user: KoskiSession, oid: Henkilö.Oid): Unit = {
     if (user != KoskiSession.systemUser) { // To prevent health checks from pollutings the audit log
       AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, user, Map(oppijaHenkiloOid -> oid)))
-    }
-  }
-
-  private def query(filters: List[QueryFilter])(implicit user: KoskiSession): Observable[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])] = {
-    val oikeudetPerOppijaOid: Observable[(Oid, List[OpiskeluOikeusRow])] = opiskeluOikeusRepository.query(filters)
-    oikeudetPerOppijaOid.tumblingBuffer(500).flatMap {
-      oppijatJaOidit: Seq[(Oid, List[OpiskeluOikeusRow])] =>
-        val oids: List[String] = oppijatJaOidit.map(_._1).toList
-
-        val henkilöt: Map[String, TäydellisetHenkilötiedot] = oppijaRepository.findByOids(oids).map(henkilö => (henkilö.oid, henkilö)).toMap
-
-        val oppijat: Iterable[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])] = oppijatJaOidit.flatMap { case (oid, opiskeluOikeudet) =>
-          henkilöt.get(oid) match {
-            case Some(henkilö) =>
-              Some((henkilö, opiskeluOikeudet))
-            case None =>
-              logger(user).warn("Oppijaa " + oid + " ei löydy henkilöpalvelusta")
-              None
-          }
-        }
-        Observable.from(oppijat)
     }
   }
 }
 
 case class HenkilönOpiskeluoikeusVersiot(henkilö: OidHenkilö, opiskeluoikeudet: List[OpiskeluoikeusVersio])
 case class OpiskeluoikeusVersio(id: Opiskeluoikeus.Id, versionumero: Int)
-
-trait QueryFilter
-
-case class OpiskeluoikeusPäättynytAikaisintaan(päivä: LocalDate) extends QueryFilter
-case class OpiskeluoikeusPäättynytViimeistään(päivä: LocalDate) extends QueryFilter
-case class TutkinnonTila(tila: String) extends QueryFilter

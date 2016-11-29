@@ -16,10 +16,10 @@ trait HealthCheck extends Logging {
   private lazy val oppija: Oppija = application.validator.validateAsJson(Oppija(OidHenkilö(oid), List(perustutkintoOpiskeluoikeus()))).right.get
 
   def healthcheck: HttpStatus = try {
-    application.facade.findOppija(oid) match {
+    application.oppijaFacade.findOppija(oid) match {
       case Left(HttpStatus(404, _)) =>
         logger.info(s"Healtcheck user not found creating one with oid $oid")
-        application.facade.createOrUpdate(oppija) match {
+        application.oppijaFacade.createOrUpdate(oppija) match {
           case Left(status) =>
             logger.error(s"Problem creating healthchech oppija ${status.toString}")
             status

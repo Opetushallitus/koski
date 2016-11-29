@@ -12,7 +12,7 @@ class SuoritusServlet(val application: KoskiApplication) extends HtmlServlet wit
     val oppijaOid = params("oppijaOid")
     implicit val user = koskiSession
 
-    renderEither(OpiskeluoikeusFinder(application.facade).opiskeluoikeudet(oppijaOid, params).right.flatMap { case Oppija(henkilö: TäydellisetHenkilötiedot, opiskeluoikeudet) =>
+    renderEither(OpiskeluoikeusFinder(application.oppijaFacade).opiskeluoikeudet(oppijaOid, params).right.flatMap { case Oppija(henkilö: TäydellisetHenkilötiedot, opiskeluoikeudet) =>
       val tyypit = opiskeluoikeudet.map(_.tyyppi.koodiarvo).toSet.toList
       tyypit match {
         case "korkeakoulutus" :: Nil => Right(new OpintosuoritusoteHtml().korkeakoulu(henkilö, opiskeluoikeudet.asInstanceOf[List[KorkeakoulunOpiskeluoikeus]] ))

@@ -11,7 +11,7 @@ import fi.oph.koski.healthcheck.HealthCheck
 import fi.oph.koski.henkilo.AuthenticationServiceClient
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViitePalvelu}
-import fi.oph.koski.koski.{KoskiFacade, KoskiValidator}
+import fi.oph.koski.koski.{KoskiOppijaFacade, KoskiValidator}
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.{Logging, TimedProxy}
 import fi.oph.koski.opiskeluoikeus.{AuxiliaryOpiskeluOikeusRepository, CompositeOpiskeluOikeusRepository, OpiskeluOikeusRepository, PostgresOpiskeluOikeusRepository}
@@ -54,7 +54,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val ytr = TimedProxy[AuxiliaryOpiskeluOikeusRepository](YtrOpiskeluoikeusRepository(ytrClient, oppijaRepository, organisaatioRepository, oppilaitosRepository, koodistoViitePalvelu, ytrAccessChecker, Some(validator)))
   lazy val opiskeluOikeusRepository = new CompositeOpiskeluOikeusRepository(possu, List(virta, ytr))
   lazy val validator: KoskiValidator = new KoskiValidator(tutkintoRepository, koodistoViitePalvelu, organisaatioRepository)
-  lazy val facade = new KoskiFacade(oppijaRepository, opiskeluOikeusRepository)
+  lazy val oppijaFacade = new KoskiOppijaFacade(oppijaRepository, opiskeluOikeusRepository)
   lazy val sessionTimeout = SessionTimeout(config)
   lazy val serviceTicketRepository = new CasTicketSessionRepository(database.db, sessionTimeout)
   lazy val fixtureCreator = new FixtureCreator(config, database, opiskeluOikeusRepository, oppijaRepository, validator)

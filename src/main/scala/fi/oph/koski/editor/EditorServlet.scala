@@ -51,12 +51,12 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
 
   private def findByOid(oid: String, user: KoskiSession): Either[HttpStatus, EditorModel] = {
     HenkiloOid.validateHenkilöOid(oid).right.flatMap { oid =>
-      toEditorModel(application.facade.findOppija(oid)(user))
+      toEditorModel(application.oppijaFacade.findOppija(oid)(user))
     }
   }
 
   private def findByUserOppija(user: KoskiSession): Either[HttpStatus, EditorModel] = {
-    toEditorModel(application.facade.findUserOppija(user))
+    toEditorModel(application.oppijaFacade.findUserOppija(user))
   }
 
   private def toEditorModel(oppija: Either[HttpStatus, Oppija]): Either[HttpStatus, EditorModel] = {
