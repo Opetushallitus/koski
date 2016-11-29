@@ -2,7 +2,6 @@ package fi.oph.koski.schema
 
 import fi.oph.scalaschema.annotation._
 
-
 object Henkilö {
   type Oid = String
   type Hetu = String
@@ -81,4 +80,8 @@ trait HenkilöWithOid extends Henkilö {
   @OksaUri("tmpOKSAID760", "oppijanumero")
   @RegularExpression("""1\.2\.246\.562\.24\.\d{11}""")
   def oid: String
+}
+
+object HenkilöOrdering {
+  implicit val aakkostettu: Ordering[Nimitiedot] = Ordering.by(nimitiedot => (nimitiedot.sukunimi, nimitiedot.etunimet))
 }

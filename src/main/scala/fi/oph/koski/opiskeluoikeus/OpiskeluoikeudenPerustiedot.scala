@@ -47,6 +47,8 @@ case class KoulutusmoduulinPerustiedot(
 )
 
 class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöRepository, opiskeluOikeusRepository: OpiskeluOikeusRepository) {
+  import HenkilöOrdering.aakkostettu
+
   def findAll(session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeudenPerustiedot]] = {
     ReportingQueryFacade(henkilöRepository, opiskeluOikeusRepository).findOppijat(Nil, session).right.map { opiskeluoikeudetObservable =>
       opiskeluoikeudetObservable.take(10000).toBlocking.toList.flatMap {
@@ -65,7 +67,7 @@ class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöReposito
             SuorituksenPerustiedot(suoritus.tyyppi, KoulutusmoduulinPerustiedot(suoritus.koulutusmoduuli.tunniste), osaamisala, tutkintonimike, suoritus.toimipiste, ryhmä)
           }, oo.tila.opiskeluoikeusjaksot.last.tila)
         }
-      }
+      }.sortBy(_.henkilö.nimitiedot)
     }
   }
 }
