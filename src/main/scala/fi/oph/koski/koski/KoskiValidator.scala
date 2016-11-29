@@ -2,10 +2,11 @@ package fi.oph.koski.koski
 
 import java.time.LocalDate
 
+import fi.oph.koski.date.DateValidation
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.koski.DateValidation._
+import DateValidation._
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
 import fi.oph.koski.schema._
