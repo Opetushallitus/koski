@@ -1,4 +1,4 @@
-package fi.oph.koski.koski
+package fi.oph.koski.validation
 
 import com.github.fge.jsonschema.core.report.LogLevel.{ERROR, FATAL}
 import com.github.fge.jsonschema.core.report.{ListReportProvider, ProcessingMessage, ProcessingReport}

@@ -1,4 +1,4 @@
-package fi.oph.koski.oppija
+package fi.oph.koski.henkilo
 
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.{Loggable, Logging}

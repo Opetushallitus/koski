@@ -2,8 +2,8 @@ package fi.oph.koski.tools
 
 import fi.oph.koski.http.DefaultHttpTester
 import fi.oph.koski.json.Json
-import fi.oph.koski.koski.ValidationResult
 import fi.oph.koski.log.Logging
+import fi.oph.koski.opiskeluoikeus.ValidationResult
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, OidHenkilö, Opiskeluoikeus, Oppija}
 
 object InvalidDataFixer extends App with DefaultHttpTester with Logging {

@@ -1,4 +1,4 @@
-package fi.oph.koski.koski
+package fi.oph.koski.opiskeluoikeus
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.OpiskeluOikeusRow

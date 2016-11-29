@@ -6,18 +6,19 @@ import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
 import fi.oph.koski.documentation._
 import fi.oph.koski.json.Json
-import fi.oph.koski.koski.KoskiValidator
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.opiskeluoikeus.OpiskeluOikeusRepository
-import fi.oph.koski.oppija.{MockOppijat, OppijaRepository, VerifiedOppijaOid}
-import fi.oph.koski.organisaatio.{OrganisaatioRepository, MockOrganisaatiot}
+import fi.oph.koski.henkilo.HenkilöRepository
+import fi.oph.koski.organisaatio.{MockOrganisaatiot, OrganisaatioRepository}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
 import slick.dbio.DBIO
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.henkilo.{MockOppijat, VerifiedHenkilöOid}
+import fi.oph.koski.validation.KoskiValidator
 
-class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluOikeusRepository, oppijaRepository: OppijaRepository, validator: KoskiValidator) extends KoskiDatabaseMethods with Timing {
+class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluOikeusRepository, oppijaRepository: HenkilöRepository, validator: KoskiValidator) extends KoskiDatabaseMethods with Timing {
   implicit val user = KoskiSession.systemUser
   val db = database.db
   implicit val accessType = AccessType.write
@@ -33,7 +34,7 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluO
     runDbSync(deleteTiedonsiirrot)
 
     validatedOpiskeluoikeudet.foreach {
-      case (oid, oppija) => repository.createOrUpdate(VerifiedOppijaOid(oid), oppija.tallennettavatOpiskeluoikeudet(0))
+      case (oid, oppija) => repository.createOrUpdate(VerifiedHenkilöOid(oid), oppija.tallennettavatOpiskeluoikeudet(0))
     }
   }
 

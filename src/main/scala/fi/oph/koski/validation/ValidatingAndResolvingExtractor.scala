@@ -1,4 +1,4 @@
-package fi.oph.koski.koski
+package fi.oph.koski.validation
 
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.{ContextualExtractor, Json}

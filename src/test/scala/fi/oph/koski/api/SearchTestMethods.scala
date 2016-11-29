@@ -7,7 +7,7 @@ import fi.oph.koski.schema.TäydellisetHenkilötiedot
 
 trait SearchTestMethods extends HttpSpecification {
   def search[T](query: String, user: UserWithPassword)(f: => T) = {
-    get("api/oppija/search", params = List(("query" -> query)), headers = authHeaders(user)) {
+    get("api/henkilo/search", params = List(("query" -> query)), headers = authHeaders(user)) {
       f
     }
   }

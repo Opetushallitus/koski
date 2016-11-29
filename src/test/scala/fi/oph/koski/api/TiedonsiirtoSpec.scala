@@ -3,11 +3,11 @@ package fi.oph.koski.api
 
 import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjestelmäId
 import fi.oph.koski.email.{Email, EmailContent, EmailRecipient, MockEmailSender}
+import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.MockUsers.{helsinkiPalvelukäyttäjä, stadinAmmattiopistoPalvelukäyttäjä}
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
-import fi.oph.koski.oppija.MockOppijat
-import fi.oph.koski.oppija.MockOppijat.eerola
+import MockOppijat.eerola
 import fi.oph.koski.schema._
 import fi.oph.koski.tiedonsiirto.{ExamplesTiedonsiirto, HenkilönTiedonsiirrot, Tiedonsiirrot, TiedonsiirtoYhteenveto}
 import fi.oph.koski.util.PaginatedResponse

@@ -3,9 +3,8 @@ package fi.oph.koski.schema
 import java.time.LocalDate
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.json.Json
-import fi.oph.koski.koski.{ValidatingAndResolvingExtractor, ValidationAndResolvingContext}
+import fi.oph.koski.validation.{ValidatingAndResolvingExtractor, ValidationAndResolvingContext}
 import org.json4s.JValue
 import org.scalatest.{FreeSpec, Matchers}
 

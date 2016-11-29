@@ -1,14 +1,14 @@
-package fi.oph.koski.koski
+package fi.oph.koski.validation
 
 import java.time.LocalDate
 
 import fi.oph.koski.date.DateValidation
+import fi.oph.koski.date.DateValidation._
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import DateValidation._
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
-import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
+import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema._
 import fi.oph.koski.tutkinto.{TutkintoRakenneValidator, TutkintoRepository}
 import fi.oph.koski.util.Timing

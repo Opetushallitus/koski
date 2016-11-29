@@ -1,17 +1,17 @@
-package fi.oph.koski.koski
+package fi.oph.koski.oppija
 
 import javax.servlet.http.HttpServletRequest
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{GlobalExecutionContext, OpiskeluOikeusRow}
-import fi.oph.koski.henkilo.HenkiloOid
-import fi.oph.koski.http.{ErrorDetail, HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.henkilo.HenkilöOid
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json.toJValue
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log._
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
-import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, NoCache}
+import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
 import fi.oph.koski.util.Timing
 import org.json4s.{JArray, JValue}
@@ -64,7 +64,7 @@ class OppijaServlet(val application: KoskiApplication)
 
 
   private def findByOid(oid: String, user: KoskiSession): Either[HttpStatus, Oppija] = {
-    HenkiloOid.validateHenkilöOid(oid).right.flatMap { oid =>
+    HenkilöOid.validateHenkilöOid(oid).right.flatMap { oid =>
       application.oppijaFacade.findOppija(oid)(user)
     }
   }

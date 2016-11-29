@@ -1,4 +1,4 @@
-package fi.oph.koski.koski
+package fi.oph.koski.henkilo
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory

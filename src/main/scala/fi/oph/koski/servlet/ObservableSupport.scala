@@ -1,4 +1,4 @@
-package fi.oph.koski.koski
+package fi.oph.koski.servlet
 
 import fi.oph.koski.json.Json
 import org.scalatra.servlet.ServletBase

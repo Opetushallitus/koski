@@ -1,9 +1,9 @@
 package fi.oph.koski.opiskeluoikeus
 
-import fi.oph.koski.koski.QueryFilter
+import fi.oph.koski.henkilo.PossiblyUnverifiedHenkilöOid
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.oppija.PossiblyUnverifiedOppijaOid
-import fi.oph.koski.schema.{Opiskeluoikeus, HenkilötiedotJaOid, KoskeenTallennettavaOpiskeluoikeus}
+import fi.oph.koski.oppija.QueryFilter
+import fi.oph.koski.schema.{HenkilötiedotJaOid, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
 
 class CompositeOpiskeluOikeusRepository(main: OpiskeluOikeusRepository, aux: List[AuxiliaryOpiskeluOikeusRepository]) extends OpiskeluOikeusRepository {
   override def query(filters: List[QueryFilter])(implicit user: KoskiSession) = main.query(filters)
@@ -18,7 +18,7 @@ class CompositeOpiskeluOikeusRepository(main: OpiskeluOikeusRepository, aux: Lis
 
   override def findById(id: Int)(implicit user: KoskiSession) = main.findById(id)
 
-  override def createOrUpdate(oppijaOid: PossiblyUnverifiedOppijaOid, opiskeluOikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession) = main.createOrUpdate(oppijaOid, opiskeluOikeus)
+  override def createOrUpdate(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluOikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession) = main.createOrUpdate(oppijaOid, opiskeluOikeus)
 
   override def findByOppijaOid(oid: String)(implicit user: KoskiSession) = (main :: aux).par.flatMap(_.findByOppijaOid(oid)).toList
 

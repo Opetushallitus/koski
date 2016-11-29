@@ -1,6 +1,6 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.oppija.MockOppijat
+import fi.oph.koski.henkilo.MockOppijat
 import org.scalatest.{FunSpec, Matchers}
 
 class ValmaSpec extends FunSpec with Matchers with TodistusTestMethods with OpiskeluOikeusTestMethods with LocalJettyHttpSpecification {

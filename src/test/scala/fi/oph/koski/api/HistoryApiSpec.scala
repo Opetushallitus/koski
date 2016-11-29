@@ -4,11 +4,11 @@ import java.time.LocalDate
 
 import fi.oph.koski.db.OpiskeluOikeusHistoryRow
 import fi.oph.koski.documentation.AmmatillinenOldExamples
+import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.schema.{Opiskeluoikeus, TäydellisetHenkilötiedot}
 import org.scalatest.FunSpec
 

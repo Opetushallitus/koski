@@ -2,13 +2,13 @@ package fi.oph.koski.editor
 
 import java.time.LocalDate
 
-import fi.oph.koski.koski.ValidationAndResolvingContext
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.{Localizable, LocalizedString}
 import fi.oph.koski.schema._
 import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.scalaschema._
 import ModelBuilder._
+import fi.oph.koski.validation.ValidationAndResolvingContext
 import fi.oph.scalaschema.annotation.Title
 
 case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema: ClassSchema,

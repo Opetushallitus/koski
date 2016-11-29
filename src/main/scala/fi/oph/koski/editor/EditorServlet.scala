@@ -3,12 +3,12 @@ package fi.oph.koski.editor
 import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.HenkiloOid
+import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koski.ValidationAndResolvingContext
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresAuthentication}
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import fi.oph.koski.validation.ValidationAndResolvingContext
 import fi.oph.scalaschema.ClassSchema
 
 class EditorServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache {
@@ -50,7 +50,7 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
   private def modelBuilder = new EditorModelBuilder(context, EditorSchema.schema)(koskiSession)
 
   private def findByOid(oid: String, user: KoskiSession): Either[HttpStatus, EditorModel] = {
-    HenkiloOid.validateHenkilöOid(oid).right.flatMap { oid =>
+    HenkilöOid.validateHenkilöOid(oid).right.flatMap { oid =>
       toEditorModel(application.oppijaFacade.findOppija(oid)(user))
     }
   }

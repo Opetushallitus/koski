@@ -1,21 +1,21 @@
-package fi.oph.koski.koski
+package fi.oph.koski.oppija
 
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
 
 import fi.oph.koski.db.OpiskeluOikeusRow
+import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.KoskiMessageField.{apply => _, _}
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.opiskeluoikeus.OpiskeluOikeusRepository
-import fi.oph.koski.oppija.OppijaRepository
 import fi.oph.koski.schema.Henkilö.{apply => _, _}
 import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import rx.lang.scala.Observable
 
-case class ReportingQueryFacade(oppijaRepository: OppijaRepository, opiskeluOikeusRepository: OpiskeluOikeusRepository) extends Logging {
+case class ReportingQueryFacade(oppijaRepository: HenkilöRepository, opiskeluOikeusRepository: OpiskeluOikeusRepository) extends Logging {
   def findOppijat(params: List[(String, String)], user: KoskiSession): Either[HttpStatus, Observable[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])]] with Product with Serializable = {
 
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_HAKU, user, Map(hakuEhto -> params.map { case (p,v) => p + "=" + v }.mkString("&"))))

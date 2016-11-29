@@ -2,14 +2,12 @@ package fi.oph.koski.henkilo
 
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.{KoskiDatabaseMethods, PostgresDriverWithJsonSupport, Tables}
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.{Käyttöoikeusryhmät, MockUser, MockUsers}
-import fi.oph.koski.log.Logging
-import fi.oph.koski.oppija.{MockOppijat, TestingException}
-import fi.oph.koski.schema.{Henkilö, TäydellisetHenkilötiedot}
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import rx.lang.scala.Observable
 import fi.oph.koski.henkilo.AuthenticationServiceClient._
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.koskiuser.{Käyttöoikeusryhmät, MockUsers}
+import fi.oph.koski.log.Logging
+import fi.oph.koski.schema.{Henkilö, TäydellisetHenkilötiedot}
+import PostgresDriverWithJsonSupport.api._
 
 class MockAuthenticationServiceClientWithDBSupport(val db: DB) extends MockAuthenticationServiceClient with KoskiDatabaseMethods {
   def findFromDb(oid: String): Option[TäydellisetHenkilötiedot] = {

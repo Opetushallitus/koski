@@ -1,17 +1,19 @@
 import javax.servlet.ServletContext
 
-import fi.oph.koski.cache.{CacheServlet, GlobalCacheManager, JMXCacheManager}
+import fi.oph.koski.cache.CacheServlet
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db._
 import fi.oph.koski.documentation.{KoodistoServlet, SchemaDocumentationServlet}
 import fi.oph.koski.editor.EditorServlet
 import fi.oph.koski.fixture.{FixtureServlet, Fixtures}
 import fi.oph.koski.healthcheck.{HealthCheckApiServlet, HealthCheckHtmlServlet}
+import fi.oph.koski.henkilo.HenkilötiedotServlet
 import fi.oph.koski.history.KoskiHistoryServlet
-import fi.oph.koski.koodisto.{KoodistoCreator, Koodistot, MockKoodistoPalvelu}
-import fi.oph.koski.koski._
+import fi.oph.koski.koodisto.{KoodistoCreator, Koodistot}
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.Logging
+import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusServlet, OpiskeluoikeusValidationServlet}
+import fi.oph.koski.oppija.OppijaServlet
 import fi.oph.koski.oppilaitos.OppilaitosServlet
 import fi.oph.koski.servlet.IndexServlet
 import fi.oph.koski.suoritusote.SuoritusServlet
@@ -19,6 +21,7 @@ import fi.oph.koski.tiedonsiirto.TiedonsiirtoServlet
 import fi.oph.koski.todistus.TodistusServlet
 import fi.oph.koski.tutkinto.TutkintoServlet
 import fi.oph.koski.util.Pools
+import fi.oph.koski.validation.KoskiJsonSchemaValidator
 import org.scalatra._
 
 import scala.concurrent.Future

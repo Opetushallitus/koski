@@ -1,8 +1,8 @@
 package fi.oph.koski.documentation
 
+import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import fi.oph.koski.virta.MockVirtaOpiskeluoikeusRepository

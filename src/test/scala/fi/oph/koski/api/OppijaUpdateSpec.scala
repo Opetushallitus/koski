@@ -5,13 +5,13 @@ import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
+import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.Json
-import fi.oph.koski.koski.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.koskiuser.MockUsers.{kalle, paakayttaja, stadinAmmattiopistoPalvelukäyttäjä}
 import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.localization.LocalizedString
-import fi.oph.koski.oppija.MockOppijat
+import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import org.scalatest.FreeSpec

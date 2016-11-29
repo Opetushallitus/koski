@@ -1,8 +1,8 @@
 package fi.oph.koski.suoritusote
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koski.KoskiOppijaFacade
 import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.schema._
 
 case class OpiskeluoikeusFinder(koski: KoskiOppijaFacade) {

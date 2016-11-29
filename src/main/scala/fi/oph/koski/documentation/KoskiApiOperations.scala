@@ -3,11 +3,11 @@ package fi.oph.koski.documentation
 import java.sql.Timestamp
 
 import fi.oph.koski.db.OpiskeluOikeusHistoryRow
+import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.{Koodistot, MockKoodistoPalvelu}
-import fi.oph.koski.koski.ValidationResult
 import fi.oph.koski.koskiuser.MockUsers
-import fi.oph.koski.oppija.MockOppijat
+import fi.oph.koski.opiskeluoikeus.ValidationResult
 import org.json4s.JsonAST.JObject
 
 object KoskiApiOperations {

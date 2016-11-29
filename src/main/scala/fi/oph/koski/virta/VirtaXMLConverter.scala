@@ -8,12 +8,12 @@ import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedString.{finnish, sanitize}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.log.Logging
-import fi.oph.koski.oppija.OppijaRepository
+import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.schema._
 
 import scala.xml.Node
-case class VirtaXMLConverter(oppijaRepository: OppijaRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu) extends Logging {
+case class VirtaXMLConverter(oppijaRepository: HenkilöRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu) extends Logging {
 
   def convertToOpiskeluoikeudet(virtaXml: Node): List[KorkeakoulunOpiskeluoikeus] = {
     import fi.oph.koski.util.DateOrdering._

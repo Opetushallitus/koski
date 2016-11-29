@@ -1,16 +1,15 @@
-package fi.oph.koski.oppija
+package fi.oph.koski.henkilo
 
 import fi.oph.koski.cache._
-import fi.oph.koski.henkilo.AuthenticationServiceClient
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.TimedProxy
 import fi.oph.koski.schema._
-import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOppijaRepository}
-import fi.oph.koski.ytr.{YlioppilasTutkintoRekisteri, YtrAccessChecker, YtrOppijaRepository}
+import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaHenkilöRepository}
+import fi.oph.koski.ytr.{YlioppilasTutkintoRekisteri, YtrAccessChecker, YtrHenkilöRepository}
 
-trait OppijaRepository extends AuxiliaryOppijaRepository {
+trait HenkilöRepository extends AuxiliaryHenkilöRepository {
   def findByOid(oid: String): Option[TäydellisetHenkilötiedot]
   def findByOids(oids: List[String]): List[TäydellisetHenkilötiedot]
   def resetFixtures {}
@@ -18,25 +17,25 @@ trait OppijaRepository extends AuxiliaryOppijaRepository {
   def findOppijat(query: String)(implicit user: KoskiSession): List[HenkilötiedotJaOid]
 }
 
-trait AuxiliaryOppijaRepository {
+trait AuxiliaryHenkilöRepository {
   def findOppijat(query: String)(implicit user: KoskiSession): List[HenkilötiedotJaOid]
 }
 
-object OppijaRepository {
+object HenkilöRepository {
   def apply(authenticationServiceClient: AuthenticationServiceClient, koodistoViitePalvelu: KoodistoViitePalvelu, virtaClient: VirtaClient, virtaAccessChecker: VirtaAccessChecker, ytr: YlioppilasTutkintoRekisteri, ytrAccessChecker: YtrAccessChecker)(implicit cacheInvalidator: CacheManager) = {
-    val opintopolku = new OpintopolkuOppijaRepository(authenticationServiceClient, koodistoViitePalvelu)
-    CachingOppijaRepository(TimedProxy(
-      CompositeOppijaRepository(
-        TimedProxy(opintopolku.asInstanceOf[OppijaRepository]),
+    val opintopolku = new OpintopolkuHenkilöRepository(authenticationServiceClient, koodistoViitePalvelu)
+    CachingHenkilöRepository(TimedProxy(
+      CompositeHenkilöRepository(
+        TimedProxy(opintopolku.asInstanceOf[HenkilöRepository]),
         List(
-          TimedProxy(VirtaOppijaRepository(virtaClient, opintopolku, virtaAccessChecker).asInstanceOf[AuxiliaryOppijaRepository]),
-          TimedProxy(YtrOppijaRepository(ytr, opintopolku, ytrAccessChecker).asInstanceOf[AuxiliaryOppijaRepository])
-      )).asInstanceOf[OppijaRepository]
+          TimedProxy(VirtaHenkilöRepository(virtaClient, opintopolku, virtaAccessChecker).asInstanceOf[AuxiliaryHenkilöRepository]),
+          TimedProxy(YtrHenkilöRepository(ytr, opintopolku, ytrAccessChecker).asInstanceOf[AuxiliaryHenkilöRepository])
+      )).asInstanceOf[HenkilöRepository]
     ))
   }
 }
 
-case class CachingOppijaRepository(repository: OppijaRepository)(implicit cacheInvalidator: CacheManager) extends OppijaRepository {
+case class CachingHenkilöRepository(repository: HenkilöRepository)(implicit cacheInvalidator: CacheManager) extends HenkilöRepository {
   private val oidCache = KeyValueCache(Cache.cacheAllNoRefresh("OppijaRepository", 3600, 100), repository.findByOid)
   // findByOid is locally cached
   override def findByOid(oid: String) = oidCache(oid)

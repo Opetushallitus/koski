@@ -1,9 +1,9 @@
-package fi.oph.koski.oppija
+package fi.oph.koski.henkilo
 
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema._
 
-case class CompositeOppijaRepository(main: OppijaRepository, aux: List[AuxiliaryOppijaRepository]) extends OppijaRepository {
+case class CompositeHenkilöRepository(main: HenkilöRepository, aux: List[AuxiliaryHenkilöRepository]) extends HenkilöRepository {
   override def findOppijat(query: String)(implicit user: KoskiSession) = {
     (main :: aux).iterator.map(_.findOppijat(query)).find(!_.isEmpty).getOrElse(Nil)
   }

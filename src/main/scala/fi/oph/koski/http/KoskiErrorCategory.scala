@@ -1,7 +1,7 @@
 package fi.oph.koski.http
 
 import fi.oph.koski.documentation.JsonValidationErrorExample
-import fi.oph.koski.koski.{HenkilönOpiskeluoikeusVersiot, OpiskeluoikeusVersio}
+import fi.oph.koski.oppija.{HenkilönOpiskeluoikeusVersiot, OpiskeluoikeusVersio}
 import fi.oph.koski.schema.OidHenkilö
 
 object KoskiErrorCategory {

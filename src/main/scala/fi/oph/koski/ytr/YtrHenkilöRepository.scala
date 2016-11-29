@@ -1,12 +1,12 @@
 package fi.oph.koski.ytr
 
-import fi.oph.koski.henkilo.Hetu
+import fi.oph.koski.henkilo.{AuxiliaryHenkilöRepository, Hetu}
 import fi.oph.koski.koskiuser.{AccessChecker, KoskiSession}
 import fi.oph.koski.log.Logging
-import fi.oph.koski.oppija.{AuxiliaryOppijaRepository, OppijaRepository}
+import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.schema.UusiHenkilö
 
-case class YtrOppijaRepository(ytr: YlioppilasTutkintoRekisteri, henkilöpalvelu: OppijaRepository, accessChecker: AccessChecker) extends AuxiliaryOppijaRepository with Logging {
+case class YtrHenkilöRepository(ytr: YlioppilasTutkintoRekisteri, henkilöpalvelu: HenkilöRepository, accessChecker: AccessChecker) extends AuxiliaryHenkilöRepository with Logging {
   override def findOppijat(query: String)(implicit user: KoskiSession) = if (!accessChecker.hasAccess(user)) {
     Nil
   } else {

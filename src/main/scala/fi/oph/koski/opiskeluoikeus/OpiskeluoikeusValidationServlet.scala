@@ -1,4 +1,4 @@
-package fi.oph.koski.koski
+package fi.oph.koski.opiskeluoikeus
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.OpiskeluOikeusRow
@@ -8,8 +8,10 @@ import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresAuthentication}
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{Henkilö, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
+import fi.oph.koski.oppija.OpiskeluoikeusQueries
+import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus}
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import fi.oph.koski.validation.KoskiValidator
 import org.json4s._
 import rx.lang.scala.Observable
 

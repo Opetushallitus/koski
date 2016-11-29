@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.oppija.MockOppijat
-import org.scalatest.{Matchers, FreeSpec}
+import fi.oph.koski.henkilo.MockOppijat
+import org.scalatest.{FreeSpec, Matchers}
 
 class CachingSpec extends FreeSpec with LocalJettyHttpSpecification with Matchers {
   "API caching is disabled" - {

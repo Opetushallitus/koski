@@ -1,13 +1,12 @@
-package fi.oph.koski.oppija
+package fi.oph.koski.henkilo
 
 import fi.oph.koski.henkilo.AuthenticationServiceClient.{OppijaHenkilö, QueryHenkilö}
-import fi.oph.koski.henkilo._
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema._
 
-class OpintopolkuOppijaRepository(henkilöPalveluClient: AuthenticationServiceClient, koodisto: KoodistoViitePalvelu) extends OppijaRepository {
+class OpintopolkuHenkilöRepository(henkilöPalveluClient: AuthenticationServiceClient, koodisto: KoodistoViitePalvelu) extends HenkilöRepository {
   override def findOppijat(query: String)(implicit user: KoskiSession): List[HenkilötiedotJaOid] = {
     if (Henkilö.isHenkilöOid(query)) {
       findByOid(query).map(_.toHenkilötiedotJaOid).toList
@@ -38,4 +37,4 @@ class OpintopolkuOppijaRepository(henkilöPalveluClient: AuthenticationServiceCl
   }
 }
 
-object MockOpintopolkuOppijaRepository extends OpintopolkuOppijaRepository(new MockAuthenticationServiceClient(), MockKoodistoViitePalvelu)
+object MockOpintopolkuHenkilöRepository extends OpintopolkuHenkilöRepository(new MockAuthenticationServiceClient(), MockKoodistoViitePalvelu)

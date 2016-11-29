@@ -6,9 +6,9 @@ import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.PerusopetuksenExampleData.{opiskeluoikeusLäsnä, opiskeluoikeusValmistunut}
 import fi.oph.koski.documentation.PerusopetusExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
+import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.localization.Finnish
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.schema._
 
 object ExamplesPerusopetus {

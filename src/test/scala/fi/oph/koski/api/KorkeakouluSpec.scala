@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.oppija.MockOppijat
 import fi.oph.koski.schema._
 import org.scalatest.{FunSpec, Matchers}
 
