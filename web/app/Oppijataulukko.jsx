@@ -4,8 +4,8 @@ import Http from './http'
 
 export const Oppijataulukko = React.createClass({
   render() {
-    let { hakutulokset = [] } = this.state || { }
-    return (<div className="oppijataulukko">
+    let { hakutulokset } = this.state || { }
+    return (<div className="oppijataulukko">{ hakutulokset ? (
       <table>
         <thead>
           <tr>
@@ -46,8 +46,7 @@ export const Oppijataulukko = React.createClass({
             </tr>)
           }
           </tbody>
-        </table>
-    </div>)
+        </table>) : <div className="ajax-indicator-bg">Ladataan...</div> }</div>)
   },
   componentDidMount() {
     this.hakuehtoP = Bacon.constant('')

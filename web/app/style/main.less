@@ -16,8 +16,9 @@
 @import "tiedonsiirrot";
 @import "omattiedot";
 
+@sidebar-width: 300px;
 @page-border-width: ~"calc((100vw - 1200px) / 2)";
-@oppija-haku-width: ~"calc(380px + (100vw - 1200px) / 2)";
+@oppija-haku-width: ~"calc(300px + (100vw - 1200px) / 2)";
 
 body {
   font-family: 'Open Sans', sans-serif;
@@ -58,7 +59,7 @@ body {
 .sidebar {
   display: table-cell;
   width: @oppija-haku-width;
-  min-width: 380px;
+  min-width: @sidebar-width;
   padding-left:@page-border-width;
   padding-top: 35px;
   vertical-align: top;
