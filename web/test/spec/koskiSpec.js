@@ -84,7 +84,7 @@ describe('Koski', function() {
     describe('Kun palvelimeen ei saada yhteyttä', function() {
       before(
         page.openPage,
-        mockHttp('/koski/api/oppija/search?query=blah', {}),
+        mockHttp('/koski/api/henkilo/search?query=blah', {}),
         page.oppijaHaku.search('blah', page.isErrorShown))
 
       it('näytetään virheilmoitus', function() {})

@@ -33,8 +33,8 @@ object KoskiApiOperations {
      )
    ),
    ApiOperation(
-      "GET", "/koski/api/oppija/search",
-     "Etsii oppijoita annetulla hakusanalla.",
+      "GET", "/koski/api/henkilo/search",
+     "Etsii henkilöitä annetulla hakusanalla.",
       <p> Hakutuloksissa vain oppijoiden perustiedot.
             Hakusana voi olla hetu, oppija-oid tai nimen osa. Tuloksiin sisällytetään vain ne oppijat,
             joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</p>,

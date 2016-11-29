@@ -62,15 +62,6 @@ class OppijaServlet(val application: KoskiApplication)
     renderEither(findByOid(params("oid"), koskiSession))
   }
 
-  get("/search") {
-    contentType = "application/json;charset=utf-8"
-    params.get("query") match {
-      case Some(query) if (query.length >= 3) =>
-        HenkilötiedotFacade(application.oppijaRepository, application.opiskeluOikeusRepository).findHenkilötiedot(query.toUpperCase)(koskiSession)
-      case _ =>
-        throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort)
-    }
-  }
 
   private def findByOid(oid: String, user: KoskiSession): Either[HttpStatus, Oppija] = {
     HenkiloOid.validateHenkilöOid(oid).right.flatMap { oid =>

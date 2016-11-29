@@ -39,6 +39,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     }
 
     context.mount(new OppijaServlet(application), "/api/oppija")
+    context.mount(new HenkilötiedotServlet(application), "/api/henkilo")
     context.mount(new OpiskeluoikeusServlet(application), "/api/opiskeluoikeus")
     context.mount(new OpiskeluoikeusValidationServlet(application), "/api/opiskeluoikeus/validate")
     context.mount(new KoskiHistoryServlet(application), "/api/opiskeluoikeus/historia")
