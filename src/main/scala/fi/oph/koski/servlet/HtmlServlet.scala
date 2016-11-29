@@ -1,5 +1,6 @@
 package fi.oph.koski.servlet
 
+import fi.oph.koski.IndexServlet
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.AuthenticationSupport
 

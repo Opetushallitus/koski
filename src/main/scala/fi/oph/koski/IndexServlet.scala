@@ -1,6 +1,7 @@
-package fi.oph.koski.servlet
+package fi.oph.koski
 
 import fi.oph.koski.koskiuser.{AuthenticationSupport, UserAuthenticationContext}
+import fi.oph.koski.servlet.HtmlServlet
 import org.scalatra.ScalatraServlet
 
 class IndexServlet(val application: UserAuthenticationContext) extends ScalatraServlet with HtmlServlet with AuthenticationSupport {

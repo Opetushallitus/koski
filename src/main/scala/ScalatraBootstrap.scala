@@ -1,5 +1,6 @@
 import javax.servlet.ServletContext
 
+import fi.oph.koski.IndexServlet
 import fi.oph.koski.cache.CacheServlet
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db._
@@ -15,7 +16,6 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusServlet, OpiskeluoikeusValidationServlet}
 import fi.oph.koski.oppija.OppijaServlet
 import fi.oph.koski.oppilaitos.OppilaitosServlet
-import fi.oph.koski.servlet.IndexServlet
 import fi.oph.koski.suoritusote.SuoritusServlet
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoServlet
 import fi.oph.koski.todistus.TodistusServlet
@@ -28,6 +28,7 @@ import scala.concurrent.Future
 
 class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionContext {
   override def init(context: ServletContext) {
+    def mount(path: String, handler: Handler) = context.mount(handler, path)
 
     Future {
       // Parallel warm-up: org.reflections.Reflections takes a while to scan
@@ -41,26 +42,27 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       tryCatch("Koodistojen luonti") { KoodistoCreator.createKoodistotFromMockData(Koodistot.koskiKoodistot, application.config) }
     }
 
-    context.mount(new OppijaServlet(application), "/api/oppija")
-    context.mount(new HenkilötiedotServlet(application), "/api/henkilo")
-    context.mount(new OpiskeluoikeusServlet(application), "/api/opiskeluoikeus")
-    context.mount(new OpiskeluoikeusValidationServlet(application), "/api/opiskeluoikeus/validate")
-    context.mount(new KoskiHistoryServlet(application), "/api/opiskeluoikeus/historia")
-    context.mount(new EditorServlet(application), "/api/editor")
-    context.mount(new HealthCheckApiServlet(application), "/api/healthcheck")
-    context.mount(new HealthCheckHtmlServlet(application), "/healthcheck")
-    context.mount(new TiedonsiirtoServlet(application), "/api/tiedonsiirrot")
-    context.mount(new UserServlet(application), "/user")
-    context.mount(new CasServlet(application), "/cas")
-    context.mount(new LogoutServlet(application), "/user/logout")
-    context.mount(new OppilaitosServlet(application), "/api/oppilaitos")
-    context.mount(new TutkintoServlet(application.tutkintoRepository), "/api/tutkinto")
-    context.mount(new SchemaDocumentationServlet(application.koodistoPalvelu), "/documentation")
-    context.mount(new KoodistoServlet(application.koodistoPalvelu), "/api/koodisto")
-    context.mount(new TodistusServlet(application), "/todistus")
-    context.mount(new SuoritusServlet(application), "/opintosuoritusote")
-    context.mount(new IndexServlet(application), "/")
-    context.mount(new CacheServlet(application), "/cache")
+
+    mount("/", new IndexServlet(application))
+    mount("/todistus", new TodistusServlet(application))
+    mount("/opintosuoritusote", new SuoritusServlet(application))
+    mount("/documentation", new SchemaDocumentationServlet(application.koodistoPalvelu))
+    mount("/api/editor", new EditorServlet(application))
+    mount("/api/healthcheck", new HealthCheckApiServlet(application))
+    mount("/api/henkilo", new HenkilötiedotServlet(application))
+    mount("/api/koodisto", new KoodistoServlet(application.koodistoPalvelu))
+    mount("/api/opiskeluoikeus", new OpiskeluoikeusServlet(application))
+    mount("/api/opiskeluoikeus/validate", new OpiskeluoikeusValidationServlet(application))
+    mount("/api/opiskeluoikeus/historia", new KoskiHistoryServlet(application))
+    mount("/api/oppija", new OppijaServlet(application))
+    mount("/api/oppilaitos", new OppilaitosServlet(application))
+    mount("/api/tiedonsiirrot", new TiedonsiirtoServlet(application))
+    mount("/api/tutkinto", new TutkintoServlet(application.tutkintoRepository))
+    mount("/healthcheck", new HealthCheckHtmlServlet(application))
+    mount("/user", new UserServlet(application))
+    mount("/user/logout", new LogoutServlet(application))
+    mount("/cas", new CasServlet(application))
+    mount("/cache", new CacheServlet(application))
 
     if (Fixtures.shouldUseFixtures(application.config)) {
       context.mount(new FixtureServlet(application), "/fixtures")

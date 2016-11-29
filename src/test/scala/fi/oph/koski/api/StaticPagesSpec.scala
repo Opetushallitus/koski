@@ -1,6 +1,6 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.servlet.IndexServlet
+import fi.oph.koski.IndexServlet
 import fi.oph.koski.util.Files
 import org.scalatest.{FreeSpec, Matchers}
 
