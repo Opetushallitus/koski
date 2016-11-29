@@ -8,6 +8,7 @@ import { editorMapping } from './OppijaEditor.jsx'
 import { Editor } from './GenericEditor.jsx'
 import * as L from 'partial.lenses'
 import R from 'ramda'
+import { Oppijataulukko } from './Oppijataulukko.jsx'
 
 const oppijaIdP = locationP.map(location => {
   const match = location.path.match(new RegExp('/koski/oppija/(.*)'))
@@ -67,7 +68,7 @@ export const Oppija = ({oppija}) =>
       : (
       oppija.uusiOppija
         ? <CreateOppija/>
-        : <div></div>
+        : <Oppijataulukko/>
       ))
 
 const Loading = () => <div className='main-content oppija loading'></div>

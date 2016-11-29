@@ -13,7 +13,7 @@ import fi.oph.koski.history.KoskiHistoryServlet
 import fi.oph.koski.koodisto.{KoodistoCreator, Koodistot}
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.Logging
-import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusServlet, OpiskeluoikeusValidationServlet}
+import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeudenPerustiedotServlet, OpiskeluoikeusServlet, OpiskeluoikeusValidationServlet}
 import fi.oph.koski.oppija.OppijaServlet
 import fi.oph.koski.oppilaitos.OppilaitosServlet
 import fi.oph.koski.suoritusote.SuoritusServlet
@@ -52,6 +52,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     mount("/api/henkilo", new HenkilötiedotServlet(application))
     mount("/api/koodisto", new KoodistoServlet(application.koodistoPalvelu))
     mount("/api/opiskeluoikeus", new OpiskeluoikeusServlet(application))
+    mount("/api/opiskeluoikeus/perustiedot", new OpiskeluoikeudenPerustiedotServlet(application))
     mount("/api/opiskeluoikeus/validate", new OpiskeluoikeusValidationServlet(application))
     mount("/api/opiskeluoikeus/historia", new KoskiHistoryServlet(application))
     mount("/api/oppija", new OppijaServlet(application))

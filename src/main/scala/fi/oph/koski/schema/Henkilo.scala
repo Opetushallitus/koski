@@ -29,6 +29,7 @@ case class TäydellisetHenkilötiedot(
   kansalaisuus: Option[List[Koodistokoodiviite]]
 ) extends HenkilöWithOid with Henkilötiedot {
   def vainHenkilötiedot = UusiHenkilö(hetu, etunimet, kutsumanimi, sukunimi)
+  def nimitiedotJaOid = NimitiedotJaOid(oid, etunimet, kutsumanimi, sukunimi)
   def toHenkilötiedotJaOid = HenkilötiedotJaOid(oid, hetu, etunimet, kutsumanimi, sukunimi)
 }
 
@@ -67,9 +68,13 @@ trait NimellinenHenkilö {
   def kutsumanimi: String
   @Description("Henkilön sukunimi. Henkilön sukunimen etuliite tulee osana sukunimeä")
   def sukunimi: String
-
   def kokonimi = etunimet + " " + sukunimi
+  def nimitiedot = Nimitiedot(etunimet, kutsumanimi, sukunimi)
 }
+
+case class Nimitiedot(etunimet: String, kutsumanimi: String, sukunimi: String) extends NimellinenHenkilö
+
+case class NimitiedotJaOid(oid: String, etunimet: String, kutsumanimi: String, sukunimi: String) extends NimellinenHenkilö with HenkilöWithOid
 
 trait HenkilöWithOid extends Henkilö {
   @Description("Yksilöivä tunniste (oppijanumero) Opintopolku-palvelussa")
