@@ -33,10 +33,10 @@ export const Oppijataulukko = React.createClass({
                     <span className="koulutusmoduuli">{suoritus.koulutusmoduuli.tunniste.nimi.fi}</span>
                   }
                   {
-                    suoritus.osaamiala ? <span className="osaamisala">{suoritus.osaamisala.fi}</span> : null
+                    (suoritus.osaamisala || []).map((osaamisala, k) => <span className="osaamisala" key={k}>{osaamisala.nimi.fi}</span>)
                   }
                   {
-                    suoritus.tutkintonimike ? <span className="tutkintonimike">{suoritus.tutkintonimike.fi}</span> : null
+                    (suoritus.tutkintonimike || []).map((nimike, k) => <span className="tutkintonimike" key={k}>{nimike.nimi.fi}</span>)
                   }
                 </span>
               )}
