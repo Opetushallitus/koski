@@ -3,9 +3,14 @@
   table {
     font-size: 0.7em;
     th { padding-bottom: 10px; }
-    td, th { padding-right: 10px; }
-    .koulutus { width: 160px; }
-    .tutkinto { width: 160px; }
-    .pvm {  }
+    td, th {
+      padding-right: 10px;
+      span {
+        display: block;
+      }
+      &.koulutus { width: 160px; }
+      &.tutkinto { width: 160px; }
+      &.pvm {  }
+    }
   }
 }
