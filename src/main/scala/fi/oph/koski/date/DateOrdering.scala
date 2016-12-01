@@ -1,4 +1,4 @@
-package fi.oph.koski.util
+package fi.oph.koski.date
 
 import java.time.{LocalDate, LocalDateTime}
 

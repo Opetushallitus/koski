@@ -3,6 +3,7 @@ package fi.oph.koski.tiedonsiirto
 import java.sql.Timestamp
 import java.time.LocalDateTime
 
+import fi.oph.koski.date.DateOrdering
 import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._

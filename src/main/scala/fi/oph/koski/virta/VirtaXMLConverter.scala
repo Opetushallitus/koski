@@ -3,6 +3,7 @@ package fi.oph.koski.virta
 import java.time.LocalDate
 import java.time.LocalDate.{parse => date}
 
+import fi.oph.koski.date.DateOrdering
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedString.{finnish, sanitize}
@@ -16,7 +17,7 @@ import scala.xml.Node
 case class VirtaXMLConverter(oppijaRepository: HenkilöRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu) extends Logging {
 
   def convertToOpiskeluoikeudet(virtaXml: Node): List[KorkeakoulunOpiskeluoikeus] = {
-    import fi.oph.koski.util.DateOrdering._
+    import DateOrdering._
 
     val suoritusNodeList: List[Node] = suoritusNodes(virtaXml)
     val suoritusRoots: List[Node] = suoritusNodeList.filter(isRoot(suoritusNodeList)(_))
