@@ -12,7 +12,7 @@
     "es6-promise": "^3",
     "fecha": "^2.2.0",
     "immutable": "^3.7.5",
-    "partial.lenses": "^5",
+    "partial.lenses": "^3.9",
     "ramda": "^0.17",
     "react": "~15.4.0",
     "react-dom": "~15.4.0",

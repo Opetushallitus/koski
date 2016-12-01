@@ -62,10 +62,10 @@ class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organis
   def virheelliset(query: TiedonsiirtoQuery)(implicit koskiSession: KoskiSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
     haeTiedonsiirrot(query.copy(paginationSettings = None)).right.map { tiedonsiirrot =>
       val result = tiedonsiirrot.result.copy(henkilöt = ListPagination.paged(
+        query.paginationSettings,
         tiedonsiirrot.result.henkilöt
           .filter { siirrot => siirrot.rivit.groupBy(_.oppilaitos).exists { case (_, rivit) => rivit.headOption.exists(_.virhe.isDefined) } }
-          .map(v => v.copy(rivit = v.rivit.filter(_.virhe.isDefined))),
-        query.paginationSettings
+          .map(v => v.copy(rivit = v.rivit.filter(_.virhe.isDefined)))
       ).toList)
       PaginatedResponse(query.paginationSettings, result, result.henkilöt.length)
     }

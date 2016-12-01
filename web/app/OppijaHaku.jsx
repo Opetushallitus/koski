@@ -29,10 +29,14 @@ henkilöP.sampledBy(oppijatP.map('.results').changes(), (oppija, oppijat) => ({ 
 
 export const searchInProgressP = oppijaHakuE.filter(acceptableQuery).awaiting(oppijatP.mapError().changes()).throttle(200)
 
-export const oppijaHakuContentP = Bacon.combineWith(oppijatP, searchInProgressP, oppijaStateP, (oppijat, searchInProgress, oppija) => {
+export const oppijaHakuElementP = Bacon.combineWith(oppijatP, searchInProgressP, oppijaStateP, (oppijat, searchInProgress, oppija) =>
+  <OppijaHaku oppijat={oppijat} valittu={modelData(oppija.valittuOppija, 'henkilö')} searching={searchInProgress}/>
+)
+
+export const oppijaHakuContentP = Bacon.combineWith(oppijaHakuElementP, oppijaStateP, (hakuElement, oppija) => {
   return {
     content: (<div className='content-area'>
-      <OppijaHaku oppijat={oppijat} valittu={modelData(oppija.valittuOppija, 'henkilö')} searching={searchInProgress}/>
+      { hakuElement }
       <Oppija oppija={oppija}/>
     </div>),
     title: modelData(oppija.valittuOppija, 'henkilö') ? 'Oppijan tiedot' : ''

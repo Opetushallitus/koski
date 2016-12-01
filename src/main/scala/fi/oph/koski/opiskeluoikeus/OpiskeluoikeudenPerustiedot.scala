@@ -9,6 +9,7 @@ import fi.oph.koski.koskiuser.{KoskiSession, RequiresAuthentication}
 import fi.oph.koski.oppija.ReportingQueryFacade
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException}
+import fi.oph.koski.util.{ListPagination, PaginatedResponse, Pagination, PaginationSettings}
 import fi.oph.scalaschema.annotation.Description
 
 case class OpiskeluoikeudenPerustiedot(
@@ -61,9 +62,9 @@ case class FilterCriterion(field: String, value: String)
 class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöRepository, opiskeluOikeusRepository: OpiskeluOikeusRepository) {
   import HenkilöOrdering.aakkostettu
 
-  def findAll(filters: List[FilterCriterion], sorting: SortCriterion)(implicit session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeudenPerustiedot]] = {
+  def findAll(filters: List[FilterCriterion], sorting: SortCriterion, pagination: PaginationSettings)(implicit session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeudenPerustiedot]] = {
     ReportingQueryFacade(henkilöRepository, opiskeluOikeusRepository).findOppijat(Nil, session).right.map { opiskeluoikeudetObservable =>
-      applySorting(sorting, applyFiltering(filters, opiskeluoikeudetObservable.take(10000).toBlocking.toList.flatMap {
+      ListPagination.paged(pagination, applySorting(sorting, applyFiltering(filters, opiskeluoikeudetObservable.take(1000).toBlocking.toList.flatMap {
         case (henkilö, rivit) => rivit.map { rivi =>
           val oo = rivi.toOpiskeluOikeus
           OpiskeluoikeudenPerustiedot(henkilö.nimitiedotJaOid, oo.oppilaitos, oo.alkamispäivä, oo.tyyppi, oo.suoritukset.map { suoritus =>
@@ -79,7 +80,7 @@ class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöReposito
             SuorituksenPerustiedot(suoritus.tyyppi, KoulutusmoduulinPerustiedot(suoritus.koulutusmoduuli.tunniste), osaamisala, tutkintonimike, suoritus.toimipiste, ryhmä)
           }, oo.tila.opiskeluoikeusjaksot.last.tila)
         }
-      }))
+      }))).toList
     }
   }
 
@@ -125,11 +126,11 @@ class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöReposito
   }
 }
 
-class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication {
+class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Pagination {
   get("/") {
     renderEither({
       val filters = params.toList.flatMap {
-        case ("sort", _) => None
+        case (key, _) if List("sort", "pageSize", "pageNumber").contains(key) => None
         case (key, value) => Some(FilterCriterion(key, value))
       }
 
@@ -140,7 +141,9 @@ class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) exte
           case xs => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("Invalid sort param. Expected key:asc or key: desc"))
         }
       }.getOrElse(Ascending("nimi"))
-      new OpiskeluoikeudenPerustiedotRepository(application.oppijaRepository, application.opiskeluOikeusRepository).findAll(filters, sort)(koskiSession)
+      new OpiskeluoikeudenPerustiedotRepository(application.oppijaRepository, application.opiskeluOikeusRepository).findAll(filters, sort, paginationSettings)(koskiSession).right.map { result =>
+        PaginatedResponse(Some(paginationSettings), result, result.length)
+      }
     })
   }
 }

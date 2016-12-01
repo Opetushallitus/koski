@@ -1,13 +1,16 @@
 import React from 'react'
 import Bacon from 'baconjs'
-import Http from './http'
+import Pager from './Pager'
 import { navigateToOppija } from './location'
 import { ISO2FinnishDate } from './date'
+import { oppijaHakuElementP } from './OppijaHaku.jsx'
+import { elementWithLoadingIndicator } from './AjaxLoadingIndicator.jsx'
+import PaginationLink from './PaginationLink.jsx'
 
 export const Oppijataulukko = React.createClass({
   render() {
-    let { hakutulokset } = this.state || { }
-    return (<div className="oppijataulukko">{ hakutulokset ? (
+    let { rivit, pager } = this.props
+    return (<div className="oppijataulukko">{ rivit ? (
       <table>
         <thead>
           <tr>
@@ -23,7 +26,7 @@ export const Oppijataulukko = React.createClass({
         </thead>
         <tbody>
           {
-            hakutulokset.map( (opiskeluoikeus, i) => <tr key={i}>
+            rivit.map( (opiskeluoikeus, i) => <tr key={i}>
               <td className="nimi"><a href={`/koski/oppija/${opiskeluoikeus.henkilö.oid}`} onClick={(e) => navigateToOppija(opiskeluoikeus.henkilö, e)}>{ opiskeluoikeus.henkilö.sukunimi + ', ' + opiskeluoikeus.henkilö.etunimet}</a></td>
               <td className="tyyppi">{ opiskeluoikeus.tyyppi.nimi.fi }</td>
               <td className="koulutus">{ opiskeluoikeus.suoritukset.map((suoritus, j) => <span key={j}>{suoritus.tyyppi.nimi.fi}</span>) } </td>
@@ -48,12 +51,23 @@ export const Oppijataulukko = React.createClass({
             </tr>)
           }
           </tbody>
-        </table>) : <div className="ajax-indicator-bg">Ladataan...</div> }</div>)
-  },
-  componentDidMount() {
-    this.hakuehtoP = Bacon.constant('')
-    // TODO: virhekäsittely (jos serveri antaa virheen). Maybe kannattaisi reitittää sisältö ilman statea ja viedä myös filter/sort -parametrit routerin läpi, niin saataisiin parempi navigaatio (?)
-    this.perustiedotP = this.hakuehtoP.flatMap((/*hakuehto*/) => Http.get('/koski/api/opiskeluoikeus/perustiedot')).toProperty()
-    this.perustiedotP.onValue((hakutulokset) => this.setState({hakutulokset}))
+        </table>) : <div className="ajax-indicator-bg">Ladataan...</div> }
+      <PaginationLink pager={pager}/>
+    </div>)
   }
 })
+
+
+export const oppijataulukkoContentP = () => {
+  let pager = Pager('/koski/api/opiskeluoikeus/perustiedot')
+  let taulukkoContentP = elementWithLoadingIndicator(pager.rowsP.map((rivit) => <Oppijataulukko rivit={rivit} pager={pager}/>))
+  return Bacon.combineWith(taulukkoContentP, oppijaHakuElementP, (taulukko, hakuElement) => ({
+    content: (<div className='content-area'>
+      { hakuElement }
+      <div className="main-content">
+      { taulukko }
+      </div>
+    </div>),
+    title: ''
+  }))
+}

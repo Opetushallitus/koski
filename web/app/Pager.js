@@ -16,10 +16,12 @@ export default (baseUrl, rowsLens = L.identity) => {
 
   let rowsP = Bacon.update(null,
     pageResultE, (previousData, newData) => {
-      let previousRows = L.get(L.compose(rowsLens, L.defaults([])), previousData)
+      let previousRows = previousData == null ? [] : L.get(rowsLens, previousData)
       return L.modify(rowsLens, (newRows) => previousRows.concat(newRows), newData)
     }
   ).skip(1)
+
+  // TODO: error handling
 
   pageDataE.onValue((d) => mayHaveMore = d.mayHaveMore)
 

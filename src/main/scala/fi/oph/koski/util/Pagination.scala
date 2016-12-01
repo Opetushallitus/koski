@@ -21,10 +21,10 @@ object QueryPagination {
 }
 
 object ListPagination {
-  def paged[X](xs: Seq[X], pageInfo: PaginationSettings): Seq[X] = xs.drop(pageInfo.page * pageInfo.size).take(pageInfo.size)
+  def paged[X](pageInfo: PaginationSettings, xs: Seq[X]): Seq[X] = xs.drop(pageInfo.page * pageInfo.size).take(pageInfo.size)
 
-  def paged[X](xs: Seq[X], pageInfo: Option[PaginationSettings]): Seq[X] = pageInfo match {
-    case Some(pageInfo) => paged(xs, pageInfo)
+  def paged[X](pageInfo: Option[PaginationSettings], xs: Seq[X]): Seq[X] = pageInfo match {
+    case Some(pageInfo) => paged(pageInfo, xs)
     case None => xs
   }
 }
