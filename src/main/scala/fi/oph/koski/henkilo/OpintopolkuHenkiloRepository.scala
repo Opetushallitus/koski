@@ -27,7 +27,7 @@ class OpintopolkuHenkilöRepository(henkilöPalveluClient: AuthenticationService
     case _ => henkilöPalveluClient.findOppijatByOids(oids).flatMap(toTäydellisetHenkilötiedot)
   }
 
-  private def toTäydellisetHenkilötiedot(user: OppijaHenkilö) = user.hetu.map(hetu => TäydellisetHenkilötiedot(user.oidhenkilo, hetu, user.etunimet, user.kutsumanimi, user.sukunimi, convertÄidinkieli(user.aidinkieli), convertKansalaisuus(user.kansalaisuus)))
+  private def toTäydellisetHenkilötiedot(user: OppijaHenkilö) = user.hetu.map(hetu => TäydellisetHenkilötiedot(user.oidHenkilo, hetu, user.etunimet, user.kutsumanimi, user.sukunimi, convertÄidinkieli(user.aidinkieli), convertKansalaisuus(user.kansalaisuus)))
 
   private def toHenkilötiedot(user: QueryHenkilö) =  user.hetu.map(hetu => HenkilötiedotJaOid(user.oidHenkilo, hetu, user.etunimet, user.kutsumanimi, user.sukunimi))
 

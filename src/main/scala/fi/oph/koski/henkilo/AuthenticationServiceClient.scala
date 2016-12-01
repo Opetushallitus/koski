@@ -89,14 +89,15 @@ object RemoteAuthenticationServiceClient {
     val password =  if (config.hasPath("authentication-service.password")) { config.getString("authentication-service.password") } else { config.getString("opintopolku.virkailija.password") }
     val authServiceHttp = VirkailijaHttpClient(username, password, virkalijaUrl, "/authentication-service", config.getBoolean("authentication-service.useCas"))
     val oidServiceHttp = VirkailijaHttpClient(username, password, virkalijaUrl, "/oppijanumerorekisteri-service", config.getBoolean("authentication-service.useCas"))
+    val käyttöOikeusHttp = VirkailijaHttpClient(username, password, virkalijaUrl, "/kayttooikeus-service", config.getBoolean("authentication-service.useCas"))
     (config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")) match {
-      case false => new RemoteAuthenticationServiceClient(authServiceHttp, oidServiceHttp)
-      case true => new RemoteAuthenticationServiceClientWithMockOids(authServiceHttp, oidServiceHttp)
+      case false => new RemoteAuthenticationServiceClient(authServiceHttp, oidServiceHttp, käyttöOikeusHttp)
+      case true => new RemoteAuthenticationServiceClientWithMockOids(authServiceHttp, oidServiceHttp, käyttöOikeusHttp)
     }
   }
 }
 
-class RemoteAuthenticationServiceClient(authServiceHttp: Http, oidServiceHttp: Http) extends AuthenticationServiceClient with EntityDecoderInstances with Timing {
+class RemoteAuthenticationServiceClient(authServiceHttp: Http, oidServiceHttp: Http, käyttöOikeusHttp: Http) extends AuthenticationServiceClient with EntityDecoderInstances with Timing {
   def search(query: String): HenkilöQueryResult = {
     runTask(authServiceHttp.get(uri"/authentication-service/resources/henkilo?no=true&count=0&q=${query}")(Http.parseJson[HenkilöQueryResult]))
   }
@@ -106,7 +107,7 @@ class RemoteAuthenticationServiceClient(authServiceHttp: Http, oidServiceHttp: H
 
   def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö] = runTask(authServiceHttp.get(uri"/authentication-service/resources/henkilo/${oid}")(Http.parseJsonIgnoreError[KäyttäjäHenkilö])) // ignore error, because the API returns status 500 instead of 404 when not found
 
-  def käyttöoikeusryhmät: List[Käyttöoikeusryhmä] = runTask(authServiceHttp.get(uri"/authentication-service/resources/kayttooikeusryhma")(Http.parseJson[List[Käyttöoikeusryhmä]]))
+  def käyttöoikeusryhmät: List[Käyttöoikeusryhmä] = runTask(käyttöOikeusHttp.get(uri"/kayttooikeus-service/kayttooikeusryhma")(Http.parseJson[List[Käyttöoikeusryhmä]]))
 
   def lisääOrganisaatio(henkilöOid: String, organisaatioOid: String, nimike: String) = {
     authServiceHttp.put(uri"/authentication-service/resources/henkilo/${henkilöOid}/organisaatiohenkilo", List(
@@ -153,7 +154,7 @@ class RemoteAuthenticationServiceClient(authServiceHttp: Http, oidServiceHttp: H
   }
 }
 
-class RemoteAuthenticationServiceClientWithMockOids(authServiceHttp: Http, oidServiceHttp: Http) extends RemoteAuthenticationServiceClient(authServiceHttp, oidServiceHttp) {
+class RemoteAuthenticationServiceClientWithMockOids(authServiceHttp: Http, oidServiceHttp: Http, käyttöOikeusHttp: Http) extends RemoteAuthenticationServiceClient(authServiceHttp, oidServiceHttp, käyttöOikeusHttp) {
   override def findOppijatByOids(oids: List[String]): List[OppijaHenkilö] = {
     val found = super.findOppijatByOids(oids).map(henkilö => (henkilö.oidHenkilo, henkilö)).toMap
     oids.map { oid =>
