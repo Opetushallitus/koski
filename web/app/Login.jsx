@@ -33,7 +33,7 @@ export const Login = React.createClass({
           <label>Salasana
             <input id='password' ref='password' type='password' disabled={inProgress}></input>
           </label>
-          <button className='button blue' onClick={this.doLogin} disabled={buttonDisabled}>{buttonLabel}</button>
+          <button className='button' onClick={this.doLogin} disabled={buttonDisabled}>{buttonLabel}</button>
         </form>
     )
   },

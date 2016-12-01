@@ -12,23 +12,40 @@ a {
   cursor: pointer;
 }
 
-.button {
-  height: 40px;
-  font-size: 16px;
-  border: none;
-  padding: 0 30px;
-  display: inline-block;
-  text-align: center;
-  line-height: 40px;
-  cursor: pointer;
 
-  &.blue {
-    background: @color-blue;
-    color: @color-white;
+
+.button {
+  background: #159ECB;
+  border-radius: 2px;
+  width: 132px;
+  height: 40px;
+  font-family: OpenSans-Semibold;
+  font-size: 15px;
+  color: #FFFFFF;
+  letter-spacing: 0;
+  cursor: pointer;
+  display: inline-block;
+  line-height: 40px;
+  text-align: center;
+  border: none;
+  padding: 0;
+
+  &:hover {
+    background: #00B5F0;
   }
 
   &:disabled {
-    background: @color-disabled;
+    background: #CCCCCC;
+  }
+
+  &.large {
+    font-size: 16px;
+    width: 220px;
+    height: 50px;
+  }
+
+  &.confirm-delete {
+    background: #E44E4E;
   }
 }
 

@@ -42,7 +42,7 @@ export const CreateOppija = React.createClass({
         </label>
         <hr/>
         <OpiskeluOikeus opiskeluOikeusBus={this.state.opiskeluOikeusBus}/>
-        <button className='button blue' disabled={submitDisabled} onClick={this.submit}>{buttonText}</button>
+        <button className='button' disabled={submitDisabled} onClick={this.submit}>{buttonText}</button>
         <ul className='error-messages'>
           {errors}
         </ul>
