@@ -1,10 +1,20 @@
 .oppijataulukko {
-  margin-top: 20px;
+  padding: 20px;
+  background: white;
   table {
     font-size: 0.7em;
-    th { padding-bottom: 10px; }
+    border: 1px solid #E4E4E4;
+    th {
+      padding-bottom: 10px;
+      background: #FAFAFA;
+      border-bottom: 2px solid #E4E4E4;
+    }
+    tr:nth-child(even) {
+      background: #FAFAFA;
+    }
     td, th {
-      padding-right: 10px;
+      padding: 5px;
+      border-right: 1px solid #E4E4E4;
       span {
         display: block;
       }
