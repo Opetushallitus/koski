@@ -53,7 +53,7 @@ export const Oppijataulukko = React.createClass({
   componentDidMount() {
     this.hakuehtoP = Bacon.constant('')
     // TODO: virhekäsittely (jos serveri antaa virheen). Maybe kannattaisi reitittää sisältö ilman statea ja viedä myös filter/sort -parametrit routerin läpi, niin saataisiin parempi navigaatio (?)
-    this.perustiedotP = this.hakuehtoP.flatMap((hakuehto) => Http.get('/koski/api/opiskeluoikeus/perustiedot')).toProperty()
+    this.perustiedotP = this.hakuehtoP.flatMap((/*hakuehto*/) => Http.get('/koski/api/opiskeluoikeus/perustiedot')).toProperty()
     this.perustiedotP.onValue((hakutulokset) => this.setState({hakutulokset}))
   }
 })
