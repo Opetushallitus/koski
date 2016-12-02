@@ -8,29 +8,7 @@
     <link href='//fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css' />
 </head>
 <body>
-<div id="content">
-    <div class="login">
-        Please login
-        <input id="username">
-        <input id="password">
-        <button>Login</button>
-        <div class="message"></div>
-    </div>
-</div>
+<div id="content"> </div>
 </body>
-<script src="/koski/js/polyfills/fetch.js"></script>
-<script>
-    document.querySelector('.login button').addEventListener('click', function() {
-        var login = { username: username.value, password: password.value }
-        fetch('/koski/user/login', { credentials: 'include', method: 'post', body: JSON.stringify(login), headers: { 'Content-Type': 'application/json'} }).then(function(result) {
-            if (result.status < 300) {
-                document.location ='/koski/'
-            } else {
-                console.log('login fail')
-                document.querySelector('.login').className='login error'
-                document.querySelector('.login .message').textContent='Login fail'
-            }
-        })
-    })
-</script>
+<script id="bundle" src="/koski/js/koski-login.js"></script>
 </html>

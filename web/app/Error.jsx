@@ -1,5 +1,5 @@
 import React from 'react'
-import { logout } from './Login.jsx'
+import { logout } from './user'
 import { routeErrorP } from './router'
 import Bacon from 'baconjs'
 

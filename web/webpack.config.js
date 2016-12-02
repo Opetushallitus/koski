@@ -2,10 +2,13 @@ const webpack = require('webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  entry: './app/Koski.jsx',
+  entry: {
+    main: './app/Koski.jsx',
+    login: './app/Login.jsx'
+  },
   output: {
     path: __dirname + '/../target/webapp',
-    filename: 'js/bundle.js'
+    filename: 'js/koski-[name].js'
   },
   eslint: {
     failOnWarning: !!process.env.failOnWarning,

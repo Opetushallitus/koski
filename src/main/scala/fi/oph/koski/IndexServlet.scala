@@ -53,6 +53,6 @@ object IndexServlet {
       <body>
         <div id="content"></div>
       </body>
-      <script id="bundle" src="/koski/js/bundle.js"></script>
+      <script id="bundle" src="/koski/js/koski-main.js"></script>
     </html>
 }
