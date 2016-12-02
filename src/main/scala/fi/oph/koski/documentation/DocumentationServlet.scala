@@ -6,7 +6,7 @@ import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.servlet.ApiServlet
 
-class SchemaDocumentationServlet(val koodistoPalvelu: KoodistoPalvelu) extends ApiServlet with Unauthenticated with KoodistoFinder {
+class DocumentationServlet(val koodistoPalvelu: KoodistoPalvelu) extends ApiServlet with Unauthenticated with KoodistoFinder {
   get("/") {
     KoskiTiedonSiirtoHtml.html
   }
