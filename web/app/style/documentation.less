@@ -269,7 +269,11 @@ a.close {
     list-style: none;
     padding: 0;
 
+    .example-item table.json {
+        display: none;
+    }
     .example-item.expanded table.json {
+        width: 100%;
         display: inherit;
         margin: 20px 0;
     }
@@ -278,43 +282,41 @@ a.close {
         float: right;
         font-size: smaller;
     }
-}
 
-.json {
-    &table {
+    table.json {
         border-collapse: collapse;
-        width: 100%;
-        display: none;
         td:first-child {
             width: 50%;
         }
-    }
-    font-family: monospace;
-    font-size: 12px;
-    line-height: 18px;
-    .key, .api-tester .CodeMirror .cm-string.cm-property, .api-tester .hljs-attr {
-        color: rgb(165, 116, 28);
-    }
-    .value, .api-tester .CodeMirror .cm-string, .api-tester .hljs-string {
-        color: green;
-    }
-    tr:hover {
-        background: #ffffbb;
-    }
+        .json {
+            font-family: monospace;
+            font-size: 12px;
+            line-height: 18px;
+            .key, .api-tester .CodeMirror .cm-string.cm-property, .api-tester .hljs-attr {
+                color: rgb(165, 116, 28);
+            }
+            .value, .api-tester .CodeMirror .cm-string, .api-tester .hljs-string {
+                color: green;
+            }
+            tr:hover {
+                background: #ffffbb;
+            }
 
-    .collapsed {
-        display: none;
-    }
+            .collapsed {
+                display: none;
+            }
 
-    .collapsed-parent .collapsible:before {
-        content: '+';
-        cursor: pointer;
-    }
+            .collapsed-parent .collapsible:before {
+                content: '+';
+                cursor: pointer;
+            }
 
-    .collapsible:before {
-        display: inline;
-        content: '-';
-        cursor: pointer;
-        margin-right: 5px;
+            .collapsible:before {
+                display: inline;
+                content: '-';
+                cursor: pointer;
+                margin-right: 5px;
+            }
+        }
     }
 }

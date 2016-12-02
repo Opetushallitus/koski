@@ -87,6 +87,7 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
         <script src="/koski/js/codemirror/codemirror.js"></script>
         <script src="/koski/js/codemirror/javascript.js"></script>
       </head>
+      <script src="/koski/js/koski-documentation.js"></script>
       <body>
         <header><div class="logo"/></header>
         <div class="content">
@@ -115,7 +116,6 @@ Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
           { examplesHtml(ExamplesYlioppilastutkinto.examples, "Ylioppilastutkinto (Ylioppilastutkintorekisteristä)") }
         </section>
         </div>
-        <script src="/koski/js/koski-documentation.js"></script>
       </body>
     </html>
   }
