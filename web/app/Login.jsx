@@ -6,7 +6,6 @@ import './polyfills.js'
 import './style/main.less'
 import {TopBar} from './TopBar.jsx'
 
-console.log("asdf")
 const loginE = new Bacon.Bus()
 const loginResultE = loginE
   .flatMap((credentials) => Http.post('/koski/user/login', credentials))
