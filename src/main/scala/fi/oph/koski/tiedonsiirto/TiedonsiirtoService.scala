@@ -34,7 +34,7 @@ class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organis
         val oid: JValue = JArray(List(JObject(("oid", JString(oppilaitos)))))
         tableQuery = tableQuery.filter(_.oppilaitos @> oid)
       }
-      runDbSync(QueryPagination.paged(tableQuery.sortBy(_.id.desc), pageInfo).result)
+      runDbSync(QueryPagination.applyPagination(tableQuery.sortBy(_.id.desc), pageInfo).result)
     }
 
     AuditLog.log(AuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiSession, Map(juuriOrganisaatio -> koskiSession.juuriOrganisaatio.map(_.oid).getOrElse("ei juuriorganisaatiota"))))
@@ -61,7 +61,7 @@ class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organis
 
   def virheelliset(query: TiedonsiirtoQuery)(implicit koskiSession: KoskiSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
     haeTiedonsiirrot(query.copy(paginationSettings = None)).right.map { tiedonsiirrot =>
-      val result = tiedonsiirrot.result.copy(henkilöt = ListPagination.paged(
+      val result = tiedonsiirrot.result.copy(henkilöt = ListPagination.applyPagination(
         query.paginationSettings,
         tiedonsiirrot.result.henkilöt
           .filter { siirrot => siirrot.rivit.groupBy(_.oppilaitos).exists { case (_, rivit) => rivit.headOption.exists(_.virhe.isDefined) } }

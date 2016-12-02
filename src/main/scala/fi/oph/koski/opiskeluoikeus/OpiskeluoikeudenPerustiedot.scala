@@ -64,7 +64,7 @@ class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöReposito
 
   def findAll(filters: List[FilterCriterion], sorting: SortCriterion, pagination: PaginationSettings)(implicit session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeudenPerustiedot]] = {
     ReportingQueryFacade(henkilöRepository, opiskeluOikeusRepository).findOppijat(Nil, session).right.map { opiskeluoikeudetObservable =>
-      ListPagination.paged(pagination, applySorting(sorting, applyFiltering(filters, opiskeluoikeudetObservable.take(1000).toBlocking.toList.flatMap {
+      ListPagination.applyPagination(pagination, applySorting(sorting, applyFiltering(filters, opiskeluoikeudetObservable.take(1000).toBlocking.toList.flatMap {
         case (henkilö, rivit) => rivit.map { rivi =>
           val oo = rivi.toOpiskeluOikeus
           OpiskeluoikeudenPerustiedot(henkilö.nimitiedotJaOid, oo.oppilaitos, oo.alkamispäivä, oo.tyyppi, oo.suoritukset.map { suoritus =>
