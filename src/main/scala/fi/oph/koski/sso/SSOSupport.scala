@@ -2,12 +2,13 @@ package fi.oph.koski.sso
 
 import java.net.{URLDecoder, URLEncoder}
 
+import com.typesafe.config.Config
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.{AuthenticationUser, UserAuthenticationContext}
 import fi.oph.koski.log.Logging
 import org.scalatra.{Cookie, CookieOptions, ScalatraBase}
 
-trait CasSingleSignOnSupport extends ScalatraBase with Logging {
+trait SSOSupport extends ScalatraBase with Logging {
   def application: UserAuthenticationContext
 
   def isHttps = {
@@ -58,7 +59,7 @@ trait CasSingleSignOnSupport extends ScalatraBase with Logging {
 
   def redirectToLogin = {
     response.addCookie(Cookie("koskiReturnUrl", currentUrl)(CookieOptions(secure = isHttps, path = "/", maxAge = 60)))
-    if (isCasSsoUsed) {
+    if (ssoConfig.isCasSsoUsed) {
       redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/login?service=" + casServiceUrl)
     } else {
       redirect(localLoginPage)
@@ -66,14 +67,18 @@ trait CasSingleSignOnSupport extends ScalatraBase with Logging {
   }
 
   def redirectToLogout = {
-    if (isCasSsoUsed) {
+    if (ssoConfig.isCasSsoUsed) {
       redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/logout?service=" + koskiRoot)
     } else {
       redirect(localLoginPage)
     }
   }
 
-  def isCasSsoUsed = application.config.hasPath("opintopolku.virkailija.url")
+  def ssoConfig = SSOConfig(application.config)
 
   def localLoginPage = "/login/login.html"
+}
+
+case class SSOConfig(config: Config) {
+  def isCasSsoUsed = config.hasPath("opintopolku.virkailija.url")
 }

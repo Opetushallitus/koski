@@ -6,11 +6,15 @@ import fi.oph.koski.koskiuser.{AuthenticationSupport, DirectoryClientLogin, Serv
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.vm.sade.utils.cas.CasLogout
 
+/**
+  *  This is where the user lands after a CAS login / logout
+  */
 class CasServlet(val application: KoskiApplication) extends ApiServlet with AuthenticationSupport with NoCache {
   private def validator = new ServiceTicketValidator(application.config)
   private val ticketSessions = application.serviceTicketRepository
 
-  get("/") { // Return url for cas login
+  // Return url for cas login
+  get("/") {
     params.get("ticket") match {
       case Some(ticket) =>
         try {
@@ -35,7 +39,8 @@ class CasServlet(val application: KoskiApplication) extends ApiServlet with Auth
     }
   }
 
-  post("/") { // Return url for cas logout
+  // Return url for cas logout
+  post("/") {
     params.get("logoutRequest") match {
       case Some(logoutRequest) =>
         CasLogout.parseTicketFromLogoutRequest(logoutRequest) match {

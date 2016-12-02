@@ -2,7 +2,7 @@ import javax.servlet.ServletContext
 
 import fi.oph.koski.IndexServlet
 import fi.oph.koski.cache.CacheServlet
-import fi.oph.koski.sso.CasServlet
+import fi.oph.koski.sso.{CasServlet, LocalLoginServlet, SSOConfig}
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db._
 import fi.oph.koski.documentation.{DocumentationServlet, KoodistoServlet}
@@ -62,6 +62,9 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     mount("/api/tutkinto", new TutkintoServlet(application.tutkintoRepository))
     mount("/healthcheck", new HealthCheckHtmlServlet(application))
     mount("/user", new UserServlet(application))
+    if (!SSOConfig(application.config).isCasSsoUsed) {
+      mount("/user/login", new LocalLoginServlet(application))
+    }
     mount("/user/logout", new LogoutServlet(application))
     mount("/cas", new CasServlet(application))
     mount("/cache", new CacheServlet(application))

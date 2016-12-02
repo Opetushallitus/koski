@@ -5,12 +5,12 @@ import javax.servlet.http.HttpServletRequest
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log._
 import fi.oph.koski.servlet.KoskiBaseServlet
-import fi.oph.koski.sso.CasSingleSignOnSupport
+import fi.oph.koski.sso.SSOSupport
 import fi.vm.sade.security.ldap.DirectoryClient
 import org.scalatra.ScalatraServlet
 import org.scalatra.auth.strategy.BasicAuthStrategy
 
-trait AuthenticationSupport extends KoskiBaseServlet with CasSingleSignOnSupport with Logging {
+trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Logging {
   val realm = "Koski"
 
   def application: UserAuthenticationContext

@@ -4,7 +4,7 @@ import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.koski.arvosana.ArviointiasteikkoRepository
 import fi.oph.koski.cache.Cache.cacheAllRefresh
 import fi.oph.koski.cache.{CacheManager, CachingProxy}
-import fi.oph.koski.sso.CasTicketSessionRepository
+import fi.oph.koski.sso.SSOTicketSessionRepository
 import fi.oph.koski.db._
 import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.fixture.FixtureCreator
@@ -58,7 +58,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val validator: KoskiValidator = new KoskiValidator(tutkintoRepository, koodistoViitePalvelu, organisaatioRepository)
   lazy val oppijaFacade = new KoskiOppijaFacade(oppijaRepository, opiskeluOikeusRepository)
   lazy val sessionTimeout = SessionTimeout(config)
-  lazy val serviceTicketRepository = new CasTicketSessionRepository(database.db, sessionTimeout)
+  lazy val serviceTicketRepository = new SSOTicketSessionRepository(database.db, sessionTimeout)
   lazy val fixtureCreator = new FixtureCreator(config, database, opiskeluOikeusRepository, oppijaRepository, validator)
   lazy val tiedonsiirtoService = new TiedonsiirtoService(database.db, new TiedonsiirtoFailureMailer(config, authenticationServiceClient), organisaatioRepository, oppijaRepository, koodistoViitePalvelu, userRepository)
   lazy val healthCheck = HealthCheck(this)
