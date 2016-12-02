@@ -6,13 +6,13 @@ import { tiedonsiirtojenYhteenvetoContentP } from './TiedonsiirtojenYhteenveto.
 import { omatTiedotContentP } from './OmatTiedot.jsx'
 import { oppijataulukkoContentP } from './Oppijataulukko.jsx'
 
-export const routeP = locationP.flatMapLatest(({path, queryString}) => {
+export const routeP = locationP.flatMapLatest(({path, queryString, params}) => {
   if (path.match(new RegExp('/koski/oppija/(.*)'))) {
     return oppijaHakuContentP
   } else if (path === '/koski/uusioppija') {
     return oppijaHakuContentP
   } else if (path === '/koski/') {
-    return oppijataulukkoContentP()
+    return oppijataulukkoContentP(queryString, params)
   } else if (path === '/koski/tiedonsiirrot') {
     return tiedonsiirtolokiContentP(queryString)
   } else if (path === '/koski/tiedonsiirrot/virheet') {

@@ -1,7 +1,7 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import Pager from './Pager'
-import { navigateToOppija } from './location'
+import { navigateTo, navigateToOppija } from './location'
 import { ISO2FinnishDate } from './date'
 import { oppijaHakuElementP } from './OppijaHaku.jsx'
 import { elementWithLoadingIndicator } from './AjaxLoadingIndicator.jsx'
@@ -9,19 +9,23 @@ import PaginationLink from './PaginationLink.jsx'
 
 export const Oppijataulukko = React.createClass({
   render() {
-    let { rivit, pager } = this.props
+    let { rivit, pager, params: {sort: sorting} } = this.props
+    let [ sortBy, sortOrder ] = sorting ? sorting.split(':') : ['nimi', 'asc']
+
+    let sort = field => ({ sortBy: field, sortOrder: sortBy == field ? (sortOrder == 'asc' ? 'desc' : 'asc') : 'asc' })
+
     return (<div className="oppijataulukko">{ rivit ? (
       <table>
         <thead>
           <tr>
-            <th className="nimi">Nimi</th>
+            <th className="nimi" onClick={() => this.sortBus.push(sort('nimi'))}>Nimi</th>
             <th className="tyyppi">Opiskeluoikeuden tyyppi</th>
             <th className="koulutus">Koulutus</th>
             <th className="tutkinto">Tutkinto / osaamisala / nimike</th>
             <th className="tila">Tila</th>
             <th className="oppilaitos">Oppilaitos</th>
-            <th className="aloitus">Aloitus pvm</th>
-            <th className="luokka">Luokka / ryhmä</th>
+            <th className="aloitus" onClick={() => this.sortBus.push(sort('alkamispäivä'))}>Aloitus pvm</th>
+            <th className="luokka" onClick={() => this.sortBus.push(sort('luokka'))}>Luokka / ryhmä</th>
           </tr>
         </thead>
         <tbody>
@@ -54,13 +58,17 @@ export const Oppijataulukko = React.createClass({
         </table>) : <div className="ajax-indicator-bg">Ladataan...</div> }
       <PaginationLink pager={pager}/>
     </div>)
+  },
+  componentDidMount() {
+    this.sortBus = Bacon.Bus()
+    this.sortBus.map(sort => `sort=${sort.sortBy}:${sort.sortOrder}`).onValue(query => navigateTo(`/koski/?${query}`))
   }
 })
 
 
-export const oppijataulukkoContentP = () => {
-  let pager = Pager('/koski/api/opiskeluoikeus/perustiedot')
-  let taulukkoContentP = elementWithLoadingIndicator(pager.rowsP.map((rivit) => <Oppijataulukko rivit={rivit} pager={pager}/>))
+export const oppijataulukkoContentP = (query, params) => {
+  let pager = Pager('/koski/api/opiskeluoikeus/perustiedot' + query)
+  let taulukkoContentP = elementWithLoadingIndicator(pager.rowsP.map((rivit) => <Oppijataulukko rivit={rivit} pager={pager} params={params}/>))
   return Bacon.combineWith(taulukkoContentP, oppijaHakuElementP, (taulukko, hakuElement) => ({
     content: (<div className='content-area'>
       { hakuElement }
