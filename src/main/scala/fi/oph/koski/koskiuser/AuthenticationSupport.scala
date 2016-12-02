@@ -4,7 +4,8 @@ import javax.servlet.http.HttpServletRequest
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log._
-import fi.oph.koski.servlet.{CasSingleSignOnSupport, KoskiBaseServlet}
+import fi.oph.koski.servlet.KoskiBaseServlet
+import fi.oph.koski.sso.CasSingleSignOnSupport
 import fi.vm.sade.security.ldap.DirectoryClient
 import org.scalatra.ScalatraServlet
 import org.scalatra.auth.strategy.BasicAuthStrategy

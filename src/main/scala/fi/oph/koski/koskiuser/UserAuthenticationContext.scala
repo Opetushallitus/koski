@@ -1,6 +1,7 @@
 package fi.oph.koski.koskiuser
 
 import com.typesafe.config.Config
+import fi.oph.koski.sso.CasTicketSessionRepository
 import fi.vm.sade.security.ldap.DirectoryClient
 
 trait UserAuthenticationContext {

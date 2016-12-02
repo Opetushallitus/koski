@@ -2,9 +2,10 @@ import javax.servlet.ServletContext
 
 import fi.oph.koski.IndexServlet
 import fi.oph.koski.cache.CacheServlet
+import fi.oph.koski.sso.CasServlet
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db._
-import fi.oph.koski.documentation.{KoodistoServlet, DocumentationServlet}
+import fi.oph.koski.documentation.{DocumentationServlet, KoodistoServlet}
 import fi.oph.koski.editor.EditorServlet
 import fi.oph.koski.fixture.{FixtureServlet, Fixtures}
 import fi.oph.koski.healthcheck.{HealthCheckApiServlet, HealthCheckHtmlServlet}

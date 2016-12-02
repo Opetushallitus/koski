@@ -5,7 +5,8 @@ import java.util.UUID
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.Json
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiOperation}
-import fi.oph.koski.servlet.{ApiServlet, CasSingleSignOnSupport, JsonBodySnatcher, NoCache}
+import fi.oph.koski.servlet.{ApiServlet, JsonBodySnatcher, NoCache}
+import fi.oph.koski.sso.CasSingleSignOnSupport
 
 import scala.util.Try
 

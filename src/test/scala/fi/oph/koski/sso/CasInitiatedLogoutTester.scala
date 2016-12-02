@@ -1,4 +1,4 @@
-package fi.oph.koski.koskiuser
+package fi.oph.koski.sso
 
 import fi.oph.koski.integrationtest.KoskidevHttpSpecification
 

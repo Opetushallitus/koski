@@ -1,7 +1,8 @@
-package fi.oph.koski.koskiuser
+package fi.oph.koski.sso
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.koskiuser.{AuthenticationSupport, DirectoryClientLogin, ServiceTicketValidator}
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.vm.sade.utils.cas.CasLogout
 

@@ -4,6 +4,7 @@ import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.koski.arvosana.ArviointiasteikkoRepository
 import fi.oph.koski.cache.Cache.cacheAllRefresh
 import fi.oph.koski.cache.{CacheManager, CachingProxy}
+import fi.oph.koski.sso.CasTicketSessionRepository
 import fi.oph.koski.db._
 import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.fixture.FixtureCreator

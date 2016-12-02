@@ -1,11 +1,13 @@
-package fi.oph.koski.koskiuser
+package fi.oph.koski.sso
+
 import java.sql.Timestamp
 
 import fi.oph.koski.db.KoskiDatabase.DB
-import fi.oph.koski.db.{CasServiceTicketSessionRow, KoskiDatabaseMethods, GlobalExecutionContext, Tables}
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.{CasServiceTicketSessionRow, GlobalExecutionContext, KoskiDatabaseMethods, Tables}
+import fi.oph.koski.koskiuser.{AuthenticationUser, SessionTimeout}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Timing
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 
 class CasTicketSessionRepository(val db: DB, sessionTimeout: SessionTimeout) extends KoskiDatabaseMethods with GlobalExecutionContext with Timing with Logging {
   private def now = new Timestamp(System.currentTimeMillis())

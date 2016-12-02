@@ -1,4 +1,4 @@
-package fi.oph.koski.servlet
+package fi.oph.koski.sso
 
 import java.net.{URLDecoder, URLEncoder}
 

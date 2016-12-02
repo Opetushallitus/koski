@@ -1,6 +1,7 @@
 package fi.oph.koski.koskiuser
 
-import fi.oph.koski.servlet.{CasSingleSignOnSupport, HtmlServlet}
+import fi.oph.koski.servlet.HtmlServlet
+import fi.oph.koski.sso.CasSingleSignOnSupport
 
 class LogoutServlet(val application: UserAuthenticationContext) extends HtmlServlet with CasSingleSignOnSupport {
   get("/") {
