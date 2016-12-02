@@ -3,13 +3,13 @@ package fi.oph.koski.sso
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{AuthenticationSupport, DirectoryClientLogin, ServiceTicketValidator}
-import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import fi.oph.koski.servlet.{ApiServlet, HtmlServlet, NoCache}
 import fi.vm.sade.utils.cas.CasLogout
 
 /**
   *  This is where the user lands after a CAS login / logout
   */
-class CasServlet(val application: KoskiApplication) extends ApiServlet with AuthenticationSupport with NoCache {
+class CasServlet(val application: KoskiApplication) extends HtmlServlet with AuthenticationSupport with NoCache {
   private def validator = new ServiceTicketValidator(application.config)
   private val ticketSessions = application.serviceTicketRepository
 
@@ -31,7 +31,7 @@ class CasServlet(val application: KoskiApplication) extends ApiServlet with Auth
         } catch {
           case e: Exception =>
             logger.warn(e)("Service ticket validation failed")
-            haltWithStatus(KoskiErrorCategory.internalError(s"CAS service ticket validation failure"))
+            haltWithStatus(KoskiErrorCategory.internalError("Sisäänkirjautuminen Opintopolkuun epäonnistui."))
         }
       case None =>
         // Seems to happen with Haka login. Redirect to login seems to cause another redirect to here with the required "ticket" parameter present.

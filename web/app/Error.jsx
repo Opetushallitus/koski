@@ -48,6 +48,9 @@ export const Error = ({error}) => {
   return errorTexts[error.httpStatus] && !isTopLevel(error) ? <div id="error" className="error"><span className="error-text">{errorTexts[error.httpStatus]}</span><a>&#10005;</a></div> : <div id="error"></div>
 }
 
-export const TopLevelError = (props) => <div className="error content-area"><h1 className="http-status">{props.status}</h1><div className="error-message">{props.text || errorTexts[props.status]}</div></div>
+export const TopLevelError = (props) => (<div className="error content-area">
+  <h1 className="http-status">{props.status}</h1>
+  <div className="error-message">{props.text || errorTexts[props.status]} <a href="/koski">Yritä uudestaan</a>.</div>
+</div>)
 
 export const isTopLevel = (error) => error.httpStatus === 404 || error.topLevel
