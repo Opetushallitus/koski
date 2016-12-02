@@ -12,20 +12,30 @@ export const Oppijataulukko = React.createClass({
     let { rivit, pager, params: {sort: sorting} } = this.props
     let [ sortBy, sortOrder ] = sorting ? sorting.split(':') : ['nimi', 'asc']
 
-    let sort = field => ({ sortBy: field, sortOrder: sortBy == field ? (sortOrder == 'asc' ? 'desc' : 'asc') : 'asc' })
+    let SortableHeader = props => {
+      let { sortField, className } = props
+      return (
+        <th className={className} onClick={() => this.sortBus.push({ sortBy: sortField, sortOrder: sortBy == sortField ? (sortOrder == 'asc' ? 'desc' : 'asc') : 'asc' })}>{props.children}
+          <div className="sorting">
+            <div className={sortBy == sortField && sortOrder == 'asc' ? 'asc selected' : 'asc'}></div>
+            <div className={sortBy == sortField && sortOrder == 'desc' ? 'desc selected' : 'desc'}></div>
+          </div>
+        </th>
+      )
+    }
 
     return (<div className="oppijataulukko">{ rivit ? (
       <table>
         <thead>
           <tr>
-            <th className="nimi" onClick={() => this.sortBus.push(sort('nimi'))}>Nimi</th>
+            <SortableHeader sortField='nimi' className='nimi'>Nimi</SortableHeader>
             <th className="tyyppi">Opiskeluoikeuden tyyppi</th>
             <th className="koulutus">Koulutus</th>
             <th className="tutkinto">Tutkinto / osaamisala / nimike</th>
             <th className="tila">Tila</th>
             <th className="oppilaitos">Oppilaitos</th>
-            <th className="aloitus" onClick={() => this.sortBus.push(sort('alkamispäivä'))}>Aloitus pvm</th>
-            <th className="luokka" onClick={() => this.sortBus.push(sort('luokka'))}>Luokka / ryhmä</th>
+            <SortableHeader sortField='alkamispäivä' className='aloitus'>Aloitus pvm</SortableHeader>
+            <SortableHeader sortField='luokka' className='luokka'>Luokka / ryhmä</SortableHeader>
           </tr>
         </thead>
         <tbody>
@@ -59,6 +69,7 @@ export const Oppijataulukko = React.createClass({
       <PaginationLink pager={pager}/>
     </div>)
   },
+  
   componentDidMount() {
     this.sortBus = Bacon.Bus()
     this.sortBus.map(sort => `sort=${sort.sortBy}:${sort.sortOrder}`).onValue(query => navigateTo(`/koski/?${query}`))
