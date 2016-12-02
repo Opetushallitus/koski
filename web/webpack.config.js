@@ -4,7 +4,8 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 module.exports = {
   entry: {
     main: './app/Koski.jsx',
-    login: './app/Login.jsx'
+    login: './app/Login.jsx',
+    documentation: './app/documentation/documentation.js'
   },
   output: {
     path: __dirname + '/../target/webapp',
