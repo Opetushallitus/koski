@@ -1,8 +1,8 @@
+import './polyfills.js'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Http from './http'
 import Bacon from 'baconjs'
-import './polyfills.js'
 import './style/main.less'
 import {TopBar} from './TopBar.jsx'
 
