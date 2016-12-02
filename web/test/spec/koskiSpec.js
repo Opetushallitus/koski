@@ -31,7 +31,7 @@ describe('Koski', function() {
           expect(page.isVisible()).to.equal(true)
         })
         it('näytetään kirjautuneen käyttäjän nimi', function() {
-          expect(page.getUserName()).to.equal('kalle käyttäjä')
+          expect(page.getUserName()).to.equal('kalle')
         })
       })
     })
