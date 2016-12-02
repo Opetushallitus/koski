@@ -5,7 +5,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Bacon from 'baconjs'
 import {Error, TopLevelError, isTopLevel, handleError, errorP} from './Error.jsx'
-import {Login, userP} from './Login.jsx'
+import {userP} from './Login.jsx'
 import {contentP, titleP} from './router'
 import {selectOppijaE, updateResultE} from './Oppija.jsx'
 import {TopBar} from './TopBar.jsx'
@@ -26,7 +26,7 @@ const domP = Bacon.combineWith(topBarP, userP, contentP, allErrorsP, (topBar, us
           ? <TopLevelError status={error.httpStatus} text={error.text} />
           : ( user
             ? content
-            : <Login />
+            : null
           )
       }
     </div>

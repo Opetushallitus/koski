@@ -61,7 +61,7 @@ trait CasSingleSignOnSupport extends ScalatraBase with Logging {
     if (isCasSsoUsed) {
       redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/login?service=" + casServiceUrl)
     } else {
-      redirect("/")
+      redirect("/login/login.html")
     }
   }
 
@@ -69,7 +69,7 @@ trait CasSingleSignOnSupport extends ScalatraBase with Logging {
     if (isCasSsoUsed) {
       redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/logout?service=" + koskiRoot)
     } else {
-      redirect("/")
+      redirect("/login/login.html")
     }
   }
 

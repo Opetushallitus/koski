@@ -6,7 +6,7 @@ import org.scalatra.ScalatraServlet
 
 class IndexServlet(val application: UserAuthenticationContext) extends ScalatraServlet with HtmlServlet with AuthenticationSupport {
   before() {
-    if (isCasSsoUsed && !isAuthenticated) {
+    if (!isAuthenticated) {
       redirectToLogin
     }
   }
@@ -36,6 +36,8 @@ class IndexServlet(val application: UserAuthenticationContext) extends ScalatraS
     IndexServlet.html
   }
 }
+
+
 
 object IndexServlet {
   val html =
