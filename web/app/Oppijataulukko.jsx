@@ -14,11 +14,15 @@ export const Oppijataulukko = React.createClass({
 
     let SortableHeader = props => {
       let { sortField, className } = props
+      let selected = sortBy == sortField
       return (
-        <th className={className} onClick={() => this.sortBus.push({ sortBy: sortField, sortOrder: sortBy == sortField ? (sortOrder == 'asc' ? 'desc' : 'asc') : 'asc' })}>{props.children}
-          <div className="sorting">
-            <div className={sortBy == sortField && sortOrder == 'asc' ? 'asc selected' : 'asc'}></div>
-            <div className={sortBy == sortField && sortOrder == 'desc' ? 'desc selected' : 'desc'}></div>
+        <th className={selected ? className + ' sorted' : className} onClick={() => this.sortBus.push({ sortBy: sortField, sortOrder: selected ? (sortOrder == 'asc' ? 'desc' : 'asc') : 'asc' })}>
+          <div>
+            {props.children}
+            <div className="sorting">
+              <div className={selected && sortOrder == 'asc' ? 'asc selected' : 'asc'}></div>
+              <div className={selected && sortOrder == 'desc' ? 'desc selected' : 'desc'}></div>
+            </div>
           </div>
         </th>
       )
