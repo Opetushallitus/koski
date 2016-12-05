@@ -83,5 +83,5 @@ trait HenkilöWithOid extends Henkilö {
 }
 
 object HenkilöOrdering {
-  implicit val aakkostettu: Ordering[Nimitiedot] = Ordering.by(nimitiedot => (nimitiedot.sukunimi, nimitiedot.etunimet))
+  implicit val aakkostettu: Ordering[Nimitiedot] = Ordering.by(nimitiedot => (nimitiedot.sukunimi.toLowerCase, nimitiedot.etunimet.toLowerCase))
 }
