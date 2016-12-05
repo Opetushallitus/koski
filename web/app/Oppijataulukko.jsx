@@ -73,7 +73,6 @@ export const Oppijataulukko = React.createClass({
       <PaginationLink pager={pager}/>
     </div>)
   },
-  
   componentDidMount() {
     this.sortBus = Bacon.Bus()
     this.sortBus.map(sort => `sort=${sort.sortBy}:${sort.sortOrder}`).onValue(query => navigateTo(`/koski/?${query}`))
