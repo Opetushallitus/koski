@@ -1,5 +1,7 @@
 package fi.oph.koski.oppija
 
+import java.time.LocalDate
+import java.time.format.DateTimeParseException
 import javax.servlet.http.HttpServletRequest
 
 import fi.oph.koski.config.KoskiApplication
@@ -7,8 +9,12 @@ import fi.oph.koski.db.{GlobalExecutionContext, OpiskeluOikeusRow}
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json.toJValue
+import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser._
+import fi.oph.koski.log.KoskiMessageField.{apply => _, _}
+import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log._
+import fi.oph.koski.opiskeluoikeus.{Luokkahaku, OpiskeluoikeudenTila, OpiskeluoikeudenTyyppi, SuorituksenTyyppi, _}
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
@@ -115,9 +121,46 @@ trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with 
   def query: Observable[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])] = {
     logger(koskiSession).info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
 
-    ReportingQueryFacade(application.oppijaRepository, application.opiskeluOikeusRepository).findOppijat(params.toList, koskiSession) match {
-      case Right(oppijat) => oppijat
-      case Left(status) => haltWithStatus(status)
+    OpiskeluoikeusQueryParamParser(application.koodistoViitePalvelu).queryFilters(params.toList) match {
+      case Right(filters) =>
+        AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_HAKU, koskiSession, Map(hakuEhto -> params.toList.map { case (p,v) => p + "=" + v }.mkString("&"))))
+        ReportingQueryFacade(application.oppijaRepository, application.opiskeluOikeusRepository, application.koodistoViitePalvelu).findOppijat(filters, koskiSession)
+      case Left(status) =>
+        haltWithStatus(status)
     }
   }
+}
+
+case class OpiskeluoikeusQueryParamParser(koodisto: KoodistoViitePalvelu) {
+  def queryFilters(params: List[(String, String)]): Either[HttpStatus, List[QueryFilter]] = {
+    def dateParam(q: (String, String)): Either[HttpStatus, LocalDate] = q match {
+      case (p, v) => try {
+        Right(LocalDate.parse(v))
+      } catch {
+        case e: DateTimeParseException => Left(KoskiErrorCategory.badRequest.format.pvm("Invalid date parameter: " + p + "=" + v))
+      }
+    }
+
+    val queryFilters: List[Either[HttpStatus, QueryFilter]] = params.map {
+      case (p, v) if p == "opiskeluoikeusPäättynytAikaisintaan" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytAikaisintaan(_))
+      case (p, v) if p == "opiskeluoikeusPäättynytViimeistään" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytViimeistään(_))
+      case ("tutkinnonTila", v) => Right(TutkinnonTila(koodisto.validateRequired("suorituksentila", v)))
+      case ("nimi", v) => Right(Nimihaku(v))
+      case ("opiskeluoikeudenTyyppi", v) => Right(OpiskeluoikeudenTyyppi(koodisto.validateRequired("opiskeluoikeudentyyppi", v)))
+      case ("suorituksenTyyppi", v) => Right(SuorituksenTyyppi(koodisto.validateRequired("suorituksentyyppi", v)))
+      //case ("tutkinto", v) => TODO: koulutusmoduuli, nimike, osaamisala
+      case ("opiskeluoikeudenTila", v) => Right(OpiskeluoikeudenTila(koodisto.validateRequired("koskiopiskeluoikeudentila", v)))
+      //case ("toimipiste", v) => TODO: hierarkiahaku
+      case ("luokka", v) => Right(Luokkahaku(v))
+      case (p, _) => Left(KoskiErrorCategory.badRequest.queryParam.unknown("Unsupported query parameter: " + p))
+    }
+
+    queryFilters.partition(_.isLeft) match {
+      case (Nil, queries) =>
+        Right(queries.flatMap(_.right.toOption))
+      case (errors, _) =>
+        Left(HttpStatus.fold(errors.map(_.left.get)))
+    }
+  }
+
 }

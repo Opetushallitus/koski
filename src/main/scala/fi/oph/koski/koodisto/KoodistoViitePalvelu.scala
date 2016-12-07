@@ -1,8 +1,10 @@
 package fi.oph.koski.koodisto
 
 import fi.oph.koski.cache._
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Koodistokoodiviite
+import fi.oph.koski.servlet.InvalidRequestException
 
 case class KoodistoViitePalvelu(koodistoPalvelu: KoodistoPalvelu)(implicit cacheInvalidator: CacheManager) extends Logging {
   private val koodiviiteCache = KeyValueCache(Cache.cacheAllRefresh("KoodistoViitePalvelu", 3600, 100), { koodisto: KoodistoViite =>
@@ -28,6 +30,10 @@ case class KoodistoViitePalvelu(koodistoPalvelu: KoodistoPalvelu)(implicit cache
       logger.warn("Koodia " + input.koodiarvo + " ei löydy koodistosta " + input.koodistoUri)
     }
     viite
+  }
+
+  def validateRequired(uri: String, koodi: String) = {
+    validate(Koodistokoodiviite(koodi, uri)).getOrElse(throw new InvalidRequestException(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi("Koodia ei löydy koodistosta: " + Koodistokoodiviite(koodi, uri))))
   }
 }
 

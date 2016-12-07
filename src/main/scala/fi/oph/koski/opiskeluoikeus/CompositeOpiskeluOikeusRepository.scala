@@ -2,11 +2,10 @@ package fi.oph.koski.opiskeluoikeus
 
 import fi.oph.koski.henkilo.PossiblyUnverifiedHenkilöOid
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.oppija.QueryFilter
 import fi.oph.koski.schema.{HenkilötiedotJaOid, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
 
 class CompositeOpiskeluOikeusRepository(main: OpiskeluOikeusRepository, aux: List[AuxiliaryOpiskeluOikeusRepository]) extends OpiskeluOikeusRepository {
-  override def query(filters: List[QueryFilter])(implicit user: KoskiSession) = main.query(filters)
+  override def streamingQuery(filters: List[QueryFilter])(implicit user: KoskiSession) = main.streamingQuery(filters)
 
   override def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession) = {
     (main :: aux).foldLeft((oppijat, Nil: Seq[HenkilötiedotJaOid])) { case ((left, found), repo) =>

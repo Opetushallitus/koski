@@ -185,7 +185,7 @@ case class VirtaXMLConverter(oppijaRepository: HenkilöRepository, oppilaitosRep
   private def optionalList[A](list: List[A]): Option[List[A]] = list2Optional[A, List[A]](list, identity)
 
   private def requiredKoodi(uri: String, koodi: String) = {
-    koodistoViitePalvelu.validate(Koodistokoodiviite(koodi, uri)).getOrElse(throw new IllegalArgumentException("Puuttuva koodi: " + Koodistokoodiviite(koodi, uri)))
+    koodistoViitePalvelu.validateRequired(uri, koodi)
   }
 
   private def tutkinto(koulutuskoodi: String): Korkeakoulututkinto = {

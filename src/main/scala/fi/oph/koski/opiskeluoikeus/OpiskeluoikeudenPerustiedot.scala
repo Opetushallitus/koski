@@ -3,10 +3,12 @@ package fi.oph.koski.opiskeluoikeus
 import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.db.OpiskeluOikeusRow
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, HttpStatusException, KoskiErrorCategory}
+import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{KoskiSession, RequiresAuthentication}
-import fi.oph.koski.oppija.ReportingQueryFacade
+import fi.oph.koski.oppija.{OpiskeluoikeusQueryParamParser, ReportingQueryFacade}
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException}
 import fi.oph.koski.util.{ListPagination, PaginatedResponse, Pagination, PaginationSettings}
@@ -51,40 +53,40 @@ object KoulutusmoduulinPerustiedot {
 
 }
 
-trait SortCriterion {
-  def field: String
-}
-case class Ascending(field: String) extends SortCriterion
-case class Descending(field: String) extends SortCriterion
-
-case class FilterCriterion(field: String, value: String)
-
-class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöRepository, opiskeluOikeusRepository: OpiskeluOikeusRepository) {
+class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöRepository, opiskeluOikeusRepository: OpiskeluOikeusRepository, koodisto: KoodistoViitePalvelu) {
   import HenkilöOrdering.aakkostettu
 
-  def find(filters: List[FilterCriterion], sorting: SortCriterion, pagination: PaginationSettings)(implicit session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeudenPerustiedot]] = {
-    ReportingQueryFacade(henkilöRepository, opiskeluOikeusRepository).findOppijat(Nil, session).right.map { opiskeluoikeudetObservable =>
-      ListPagination.applyPagination(pagination, applySorting(sorting, applyFiltering(filters, opiskeluoikeudetObservable.take(1000).toBlocking.toList.flatMap {
-        case (henkilö, rivit) => rivit.map { rivi =>
-          val oo = rivi.toOpiskeluOikeus
-          OpiskeluoikeudenPerustiedot(henkilö.nimitiedotJaOid, oo.oppilaitos, oo.alkamispäivä, oo.tyyppi, oo.suoritukset.map { suoritus =>
-            val (osaamisala, tutkintonimike) = suoritus match {
-              case s: AmmatillisenTutkinnonSuoritus => (s.osaamisala, s.tutkintonimike)
-              case s: NäyttötutkintoonValmistavanKoulutuksenSuoritus => (s.osaamisala, s.tutkintonimike)
-              case _ => (None, None)
-            }
-            val ryhmä = suoritus match {
-              case s: PerusopetuksenVuosiluokanSuoritus => Some(s.luokka)
-              case _ => None
-            }
-            SuorituksenPerustiedot(suoritus.tyyppi, KoulutusmoduulinPerustiedot(suoritus.koulutusmoduuli.tunniste), osaamisala, tutkintonimike, suoritus.toimipiste, ryhmä)
-          }, oo.tila.opiskeluoikeusjaksot.last.tila)
-        }
-      }))).toList
+  def find(filters: List[QueryFilter], sorting: SortCriterion, pagination: PaginationSettings)(implicit session: KoskiSession): List[OpiskeluoikeudenPerustiedot] = {
+    val databaseFilters = filters.filter {
+      case Nimihaku(_) => false
+      case f => true
     }
+    val opiskeluoikeudetObservable = ReportingQueryFacade(henkilöRepository, opiskeluOikeusRepository, koodisto).findOppijat(databaseFilters, session)
+
+    val opiskeluoikeudet: List[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])] = opiskeluoikeudetObservable.take(1000).toBlocking.toList
+
+    val perustiedot: List[OpiskeluoikeudenPerustiedot] = opiskeluoikeudet.flatMap {
+      case (henkilö, rivit) => rivit.map { rivi =>
+        val oo = rivi.toOpiskeluOikeus
+        OpiskeluoikeudenPerustiedot(henkilö.nimitiedotJaOid, oo.oppilaitos, oo.alkamispäivä, oo.tyyppi, oo.suoritukset.map { suoritus =>
+          val (osaamisala, tutkintonimike) = suoritus match {
+            case s: AmmatillisenTutkinnonSuoritus => (s.osaamisala, s.tutkintonimike)
+            case s: NäyttötutkintoonValmistavanKoulutuksenSuoritus => (s.osaamisala, s.tutkintonimike)
+            case _ => (None, None)
+          }
+          val ryhmä = suoritus match {
+            case s: PerusopetuksenVuosiluokanSuoritus => Some(s.luokka)
+            case _ => None
+          }
+          SuorituksenPerustiedot(suoritus.tyyppi, KoulutusmoduulinPerustiedot(suoritus.koulutusmoduuli.tunniste), osaamisala, tutkintonimike, suoritus.toimipiste, ryhmä)
+        }, oo.tila.opiskeluoikeusjaksot.last.tila)
+      }
+    }
+
+    ListPagination.applyPagination(pagination, applySorting(sorting, applyFiltering(filters, perustiedot))).toList
   }
 
-  def applyFiltering(filters: List[FilterCriterion], list: List[OpiskeluoikeudenPerustiedot])(implicit session: KoskiSession) = {
+  def applyFiltering(filters: List[QueryFilter], list: List[OpiskeluoikeudenPerustiedot])(implicit session: KoskiSession) = {
     def filterBySuoritukset(list: List[OpiskeluoikeudenPerustiedot], f: SuorituksenPerustiedot => Boolean): List[OpiskeluoikeudenPerustiedot] = {
       list.flatMap { opiskeluoikeus =>
         val suoritukset = opiskeluoikeus.suoritukset.filter(f)
@@ -95,19 +97,8 @@ class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöReposito
       }
     }
     filters.foldLeft(list) {
-      case (list, FilterCriterion("nimi", hakusana)) => list.filter(_.henkilö.kokonimi.toLowerCase.contains(hakusana.toLowerCase))
-      case (list, FilterCriterion("tyyppi", tyyppi)) => list.filter(_.tyyppi.koodiarvo == tyyppi)
-      case (list, FilterCriterion("suoritus.tyyppi", tyyppi)) => filterBySuoritukset(list, _.tyyppi.koodiarvo == tyyppi)
-      case (list, FilterCriterion("tutkinto", hakusana)) => filterBySuoritukset(list, { suoritus =>
-        val koulutusmoduuli: String = suoritus.koulutusmoduuli.tunniste.getNimi.map(_.get(session.lang)).getOrElse("")
-        val osaamisala: List[String] = suoritus.osaamisala.toList.flatten.flatMap(_.nimi.map(_.get(session.lang)))
-        val tutkintonimike: List[String] = suoritus.tutkintonimike.toList.flatten.flatMap(_.nimi.map(_.get(session.lang)))
-        (koulutusmoduuli :: osaamisala :: tutkintonimike).mkString("||").toLowerCase.contains(hakusana.toLowerCase)
-      })
-      case (list, FilterCriterion("tila", tila)) => list.filter(_.tila.koodiarvo == tila)
-      case (list, FilterCriterion("oppilaitos", oppilaitos)) => list.filter(_.oppilaitos.oid == oppilaitos)
-      case (list, FilterCriterion("luokka", hakusana)) => filterBySuoritukset(list, _.luokka.getOrElse("").toLowerCase.contains(hakusana.toLowerCase))
-      case (list, FilterCriterion(key, _)) => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("Invalid filter key " + key))
+      case (list, Nimihaku(hakusana)) => list.filter(_.henkilö.kokonimi.toLowerCase.contains(hakusana.toLowerCase))
+      case (list, _) => list
     }
   }
 
@@ -127,11 +118,12 @@ class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöReposito
 }
 
 class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Pagination {
+  private val repository = new OpiskeluoikeudenPerustiedotRepository(application.oppijaRepository, application.opiskeluOikeusRepository, application.koodistoViitePalvelu)
   get("/") {
     renderEither({
       val filters = params.toList.flatMap {
         case (key, _) if List("sort", "pageSize", "pageNumber").contains(key) => None
-        case (key, value) => Some(FilterCriterion(key, value))
+        case (key, value) => Some((key, value))
       }
 
       val sort = params.get("sort").map {
@@ -141,7 +133,9 @@ class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) exte
           case xs => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("Invalid sort param. Expected key:asc or key: desc"))
         }
       }.getOrElse(Ascending("nimi"))
-      new OpiskeluoikeudenPerustiedotRepository(application.oppijaRepository, application.opiskeluOikeusRepository).find(filters, sort, paginationSettings)(koskiSession).right.map { result =>
+
+      OpiskeluoikeusQueryParamParser(application.koodistoViitePalvelu).queryFilters(filters).right.map { filters =>
+        val result: List[OpiskeluoikeudenPerustiedot] = repository.find(filters, sort, paginationSettings)(koskiSession)
         PaginatedResponse(Some(paginationSettings), result, result.length)
       }
     })

@@ -12,7 +12,6 @@ import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusChangeValidator.validateOpiskeluoikeusChange
-import fi.oph.koski.oppija.{OpiskeluoikeusPäättynytAikaisintaan, OpiskeluoikeusPäättynytViimeistään, QueryFilter, TutkinnonTila}
 import fi.oph.koski.schema.Henkilö._
 import fi.oph.koski.schema.Opiskeluoikeus.VERSIO_1
 import fi.oph.koski.schema.{HenkilötiedotJaOid, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, PäätasonSuoritus}
@@ -24,6 +23,7 @@ import slick.dbio.NoStream
 import slick.lifted.Query
 import slick.{dbio, lifted}
 import PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.servlet.InvalidRequestException
 
 class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: OpiskeluoikeusHistoryRepository) extends OpiskeluOikeusRepository with GlobalExecutionContext with KoskiDatabaseMethods with Logging with SerializableTransactions {
   override def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession) = {
@@ -63,13 +63,14 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
     }
   }
 
-  override def query(filters: List[QueryFilter])(implicit user: KoskiSession): Observable[(Oid, List[OpiskeluOikeusRow])] = {
+  override def streamingQuery(filters: List[QueryFilter])(implicit user: KoskiSession): Observable[(Oid, List[OpiskeluOikeusRow])] = {
     import ReactiveStreamsToRx._
 
     val query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = filters.foldLeft(OpiskeluOikeudetWithAccessCheck.asInstanceOf[Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq]]) {
       case (query, OpiskeluoikeusPäättynytAikaisintaan(päivä)) => query.filter(_.data.#>>(List("päättymispäivä")) >= päivä.toString)
       case (query, OpiskeluoikeusPäättynytViimeistään(päivä)) => query.filter(_.data.#>>(List("päättymispäivä")) <= päivä.toString)
-      case (query, TutkinnonTila(tila)) => query.filter(_.data.#>>(List("suoritus", "tila", "koodiarvo")) === tila)
+      case (query, TutkinnonTila(tila)) => query.filter(_.data.#>>(List("suoritus", "tila", "koodiarvo")) === tila.koodiarvo)
+      case (query, filter) => throw new InvalidRequestException(KoskiErrorCategory.internalError("Hakua ei ole toteutettu: " + filter))
     }.sortBy(_.oppijaOid)
 
     // Note: it won't actually stream unless you use both `transactionally` and `fetchSize`. It'll collect all the data into memory.
