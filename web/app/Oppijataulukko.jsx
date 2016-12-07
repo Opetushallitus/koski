@@ -64,7 +64,7 @@ export const Oppijataulukko = React.createClass({
   componentDidMount() {
     const toParameterPairs = params => R.filter(([, value]) => !!value, R.toPairs(R.merge(this.props.params, params)))
 
-    this.sortBus.merge(this.filterBus)
+    this.sortBus.merge(this.filterBus.throttle(500))
       .map(param => R.join('&', R.map(R.join('='), toParameterPairs(param))))
       .onValue(query => navigateTo(`/koski/?${query}`))
   }
