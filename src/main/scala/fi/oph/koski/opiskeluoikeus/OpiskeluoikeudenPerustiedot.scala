@@ -62,7 +62,7 @@ case class FilterCriterion(field: String, value: String)
 class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöRepository, opiskeluOikeusRepository: OpiskeluOikeusRepository) {
   import HenkilöOrdering.aakkostettu
 
-  def findAll(filters: List[FilterCriterion], sorting: SortCriterion, pagination: PaginationSettings)(implicit session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeudenPerustiedot]] = {
+  def find(filters: List[FilterCriterion], sorting: SortCriterion, pagination: PaginationSettings)(implicit session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeudenPerustiedot]] = {
     ReportingQueryFacade(henkilöRepository, opiskeluOikeusRepository).findOppijat(Nil, session).right.map { opiskeluoikeudetObservable =>
       ListPagination.applyPagination(pagination, applySorting(sorting, applyFiltering(filters, opiskeluoikeudetObservable.take(1000).toBlocking.toList.flatMap {
         case (henkilö, rivit) => rivit.map { rivi =>
@@ -141,7 +141,7 @@ class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) exte
           case xs => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("Invalid sort param. Expected key:asc or key: desc"))
         }
       }.getOrElse(Ascending("nimi"))
-      new OpiskeluoikeudenPerustiedotRepository(application.oppijaRepository, application.opiskeluOikeusRepository).findAll(filters, sort, paginationSettings)(koskiSession).right.map { result =>
+      new OpiskeluoikeudenPerustiedotRepository(application.oppijaRepository, application.opiskeluOikeusRepository).find(filters, sort, paginationSettings)(koskiSession).right.map { result =>
         PaginatedResponse(Some(paginationSettings), result, result.length)
       }
     })
