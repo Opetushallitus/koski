@@ -6,24 +6,34 @@ import { ISO2FinnishDate } from './date'
 import { oppijaHakuElementP } from './OppijaHaku.jsx'
 import PaginationLink from './PaginationLink.jsx'
 import R from 'ramda'
+import DatePicker from 'react-datepicker'
+import moment from 'moment'
 
 export const Oppijataulukko = React.createClass({
   render() {
     let { rivit, edellisetRivit, pager, params } = this.props
+    let [ sortBy, sortOrder ] = params.sort ? params.sort.split(':') : ['nimi', 'asc']
     let näytettävätRivit = rivit || edellisetRivit
 
     return (<div className="oppijataulukko">{ näytettävätRivit ? (
       <table>
         <thead>
           <tr>
-            <SortableHeader field='nimi' className='nimi' params={params} filterBus={this.filterBus} sortBus={this.sortBus}>Nimi</SortableHeader>
+            <th className={sortBy == 'nimi' ? 'nimi sorted' : 'nimi'}>
+              <Sorter field='nimi' sortBus={this.sortBus} sortBy={sortBy} sortOrder={sortOrder}>Nimi</Sorter>
+              <TextFilter field='nimi' filterBus={this.filterBus} params={params}/>
+            </th>
             <th className="tyyppi">Opiskeluoikeuden tyyppi</th>
             <th className="koulutus">Koulutus</th>
             <th className="tutkinto">Tutkinto / osaamisala / nimike</th>
             <th className="tila">Tila</th>
             <th className="oppilaitos">Oppilaitos</th>
-            <SortableHeader field='alkamispäivä' className='aloitus' params={params} filterBus={this.filterBus} sortBus={this.sortBus}>Aloitus pvm</SortableHeader>
-            <SortableHeader field='luokka' className='luokka' params={params} filterBus={this.filterBus} sortBus={this.sortBus}>Luokka / ryhmä</SortableHeader>
+            <th className={sortBy == 'alkamispäivä' ? 'aloitus sorted': 'aloitus'}>
+              <Sorter field='alkamispäivä' sortBus={this.sortBus} sortBy={sortBy} sortOrder={sortOrder}>Aloitus pvm</Sorter>
+            </th>
+            <th className={sortBy == 'luokka' ? 'luokka sorted': 'luokka'}>
+              <Sorter field='luokka' sortBus={this.sortBus} sortBy={sortBy} sortOrder={sortOrder}>Luokka / ryhmä</Sorter>
+            </th>
           </tr>
         </thead>
         <tbody className={rivit ? '' : 'loading'}>
@@ -70,25 +80,25 @@ export const Oppijataulukko = React.createClass({
   }
 })
 
-const SortableHeader = React.createClass({
+const Sorter = React.createClass({
   render() {
-    let { field, className, params: {sort}, filterBus, sortBus, params} = this.props
-    let [ sortBy, sortOrder ] = sort ? sort.split(':') : ['nimi', 'asc']
+    let { field, sortBus, sortBy, sortOrder } = this.props
     let selected = sortBy == field
-    return (
-      <th className={selected ? className + ' sorted' : className}>
-        <div className="sorting" onClick={() => sortBus.push({
-          sort: field + ':' + (selected ? (sortOrder == 'asc' ? 'desc' : 'asc') : 'asc')
-        })}>
-          <div className="title">{this.props.children}</div>
-          <div className="sort-indicator">
-            <div className={selected && sortOrder == 'asc' ? 'asc selected' : 'asc'}></div>
-            <div className={selected && sortOrder == 'desc' ? 'desc selected' : 'desc'}></div>
-          </div>
-        </div>
-        <input type="text" defaultValue={params[field]} onChange={e => filterBus.push(R.objOf(field, e.target.value))}/>
-      </th>
-    )
+
+    return <div className="sorting" onClick={() => sortBus.push({ sort: field + ':' + (selected ? (sortOrder == 'asc' ? 'desc' : 'asc') : 'asc')})}>
+      <div className="title">{this.props.children}</div>
+      <div className="sort-indicator">
+        <div className={selected && sortOrder == 'asc' ? 'asc selected' : 'asc'}></div>
+        <div className={selected && sortOrder == 'desc' ? 'desc selected' : 'desc'}></div>
+      </div>
+    </div>
+  }
+})
+
+const TextFilter = React.createClass({
+  render() {
+    let { field, filterBus, params} = this.props
+    return <input type="text" defaultValue={params[field]} onChange={e => filterBus.push(R.objOf(field, e.target.value))}/>
   }
 })
 
