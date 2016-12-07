@@ -15,7 +15,7 @@ export default React.createClass({
     Bacon.fromEvent(window, 'scroll')
       .takeUntil(this.unmountBus)
       .throttle(100)
-      .filter(() => isElementInViewport(this.paginationMarker))
+      .filter(() => this.paginationMarker && isElementInViewport(this.paginationMarker))
       .onValue(() => {
         this.props.pager.next()
         addClass(this.paginationMarker, 'loading')
