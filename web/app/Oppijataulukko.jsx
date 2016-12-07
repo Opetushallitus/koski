@@ -57,11 +57,10 @@ export const Oppijataulukko = React.createClass({
     </div>)
   },
   componentWillMount() {
-    this.sortBus = Bacon.Bus().log('sort')
-    this.filterBus = Bacon.Bus().log('filter')
+    this.sortBus = Bacon.Bus()
+    this.filterBus = Bacon.Bus()
   },
   componentDidMount() {
-    console.log("componentDidMount")
     let { params } = this.props
     const toParameterPairs = R.compose(R.filter(x => !!x[1]), R.toPairs, R.merge(params))
     this.sortBus.merge(this.filterBus)
