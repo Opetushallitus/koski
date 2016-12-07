@@ -9,9 +9,10 @@ import R from 'ramda'
 
 export const Oppijataulukko = React.createClass({
   render() {
-    let { rivit, pager, params } = this.props
+    let { rivit, edellisetRivit, pager, params } = this.props
+    let näytettävätRivit = rivit || edellisetRivit
 
-    return (<div className="oppijataulukko">{ rivit ? (
+    return (<div className="oppijataulukko">{ näytettävätRivit ? (
       <table>
         <thead>
           <tr>
@@ -25,9 +26,9 @@ export const Oppijataulukko = React.createClass({
             <SortableHeader field='luokka' className='luokka' params={params} filterBus={this.filterBus} sortBus={this.sortBus}>Luokka / ryhmä</SortableHeader>
           </tr>
         </thead>
-        <tbody>
+        <tbody className={rivit ? '' : 'loading'}>
           {
-            rivit.map( (opiskeluoikeus, i) => <tr key={i}>
+            näytettävätRivit.map( (opiskeluoikeus, i) => <tr key={i}>
               <td className="nimi"><a href={`/koski/oppija/${opiskeluoikeus.henkilö.oid}`} onClick={(e) => navigateToOppija(opiskeluoikeus.henkilö, e)}>{ opiskeluoikeus.henkilö.sukunimi + ', ' + opiskeluoikeus.henkilö.etunimet}</a></td>
               <td className="tyyppi">{ opiskeluoikeus.tyyppi.nimi.fi }</td>
               <td className="koulutus">{ opiskeluoikeus.suoritukset.map((suoritus, j) => <span key={j}>{suoritus.tyyppi.nimi.fi}</span>) } </td>
@@ -71,7 +72,7 @@ export const Oppijataulukko = React.createClass({
 
 const SortableHeader = React.createClass({
   render() {
-    let { field, className, params: {sort}, filterBus, sortBus} = this.props
+    let { field, className, params: {sort}, filterBus, sortBus, params} = this.props
     let [ sortBy, sortOrder ] = sort ? sort.split(':') : ['nimi', 'asc']
     let selected = sortBy == field
     return (
@@ -85,15 +86,17 @@ const SortableHeader = React.createClass({
             <div className={selected && sortOrder == 'desc' ? 'desc selected' : 'desc'}></div>
           </div>
         </div>
-        <input type="text" onChange={e => filterBus.push(R.objOf(field, e.target.value))}/>
+        <input type="text" defaultValue={params[field]} onChange={e => filterBus.push(R.objOf(field, e.target.value))}/>
       </th>
     )
   }
 })
 
+var edellisetRivit = null
+
 export const oppijataulukkoContentP = (query, params) => {
   let pager = Pager('/koski/api/opiskeluoikeus/perustiedot' + query)
-  let taulukkoContentP = pager.rowsP.map((rivit) => <Oppijataulukko rivit={rivit} pager={pager} params={params}/>)
+  let taulukkoContentP = pager.rowsP.doAction((rivit) => edellisetRivit = rivit).startWith(null).map((rivit) => <Oppijataulukko rivit={rivit} edellisetRivit={edellisetRivit} pager={pager} params={params}/>)
   return Bacon.combineWith(taulukkoContentP, oppijaHakuElementP, (taulukko, hakuElement) => ({
     content: (<div className='content-area'>
       { hakuElement }
