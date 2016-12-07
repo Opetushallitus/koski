@@ -6,8 +6,6 @@ import { ISO2FinnishDate } from './date'
 import { oppijaHakuElementP } from './OppijaHaku.jsx'
 import PaginationLink from './PaginationLink.jsx'
 import R from 'ramda'
-import DatePicker from 'react-datepicker'
-import moment from 'moment'
 
 export const Oppijataulukko = React.createClass({
   render() {
@@ -85,13 +83,13 @@ const Sorter = React.createClass({
     let { field, sortBus, sortBy, sortOrder } = this.props
     let selected = sortBy == field
 
-    return <div className="sorting" onClick={() => sortBus.push({ sort: field + ':' + (selected ? (sortOrder == 'asc' ? 'desc' : 'asc') : 'asc')})}>
+    return (<div className="sorting" onClick={() => sortBus.push({ sort: field + ':' + (selected ? (sortOrder == 'asc' ? 'desc' : 'asc') : 'asc')})}>
       <div className="title">{this.props.children}</div>
       <div className="sort-indicator">
         <div className={selected && sortOrder == 'asc' ? 'asc selected' : 'asc'}></div>
         <div className={selected && sortOrder == 'desc' ? 'desc selected' : 'desc'}></div>
       </div>
-    </div>
+    </div>)
   }
 })
 
