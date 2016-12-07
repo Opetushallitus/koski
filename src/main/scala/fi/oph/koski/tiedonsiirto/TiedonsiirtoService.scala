@@ -164,7 +164,7 @@ class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organis
     implicit val ordering = DateOrdering.localDateTimeReverseOrdering
     tiedonsiirrot.groupBy { t =>
       val oppijanTunniste = t.oppija.map(Json.fromJValue[HetuTaiOid])
-      oppijanTunniste.flatMap(_.hetu).orElse(oppijanTunniste.map(_.oid))
+      oppijanTunniste.flatMap(_.oid).orElse(oppijanTunniste.map(_.hetu))
     }.map {
       case (_, rows) =>
         val oppija = rows.head.oppija.flatMap(_.extractOpt[TiedonsiirtoOppija])
