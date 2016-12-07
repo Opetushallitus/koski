@@ -53,10 +53,6 @@ const OppijaHakuBoksi = React.createClass({
         <hr></hr>
       </div>
     )
-  },
-
-  componentDidMount() {
-    this.refs.query.focus()
   }
 })
 

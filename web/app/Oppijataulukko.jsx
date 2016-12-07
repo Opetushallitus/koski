@@ -4,46 +4,25 @@ import Pager from './Pager'
 import { navigateTo, navigateToOppija } from './location'
 import { ISO2FinnishDate } from './date'
 import { oppijaHakuElementP } from './OppijaHaku.jsx'
-import { elementWithLoadingIndicator } from './AjaxLoadingIndicator.jsx'
 import PaginationLink from './PaginationLink.jsx'
 import R from 'ramda'
 
 export const Oppijataulukko = React.createClass({
   render() {
-    let { rivit, pager, params: {sort: sorting}, params } = this.props
-    let [ sortBy, sortOrder ] = sorting ? sorting.split(':') : ['nimi', 'asc']
-
-    let SortableHeader = props => {
-      let { field, className } = props
-      let selected = sortBy == field
-      return (
-        <th className={selected ? className + ' sorted' : className}>
-          <div className="sorting" onClick={() => this.sortBus.push({
-            sort: field + ':' + (selected ? (sortOrder == 'asc' ? 'desc' : 'asc') : 'asc')
-          })}>
-            <div className="title">{props.children}</div>
-            <div className="sort-indicator">
-              <div className={selected && sortOrder == 'asc' ? 'asc selected' : 'asc'}></div>
-              <div className={selected && sortOrder == 'desc' ? 'desc selected' : 'desc'}></div>
-            </div>
-          </div>
-          <input type="text" value={params[field]} onChange={e => this.filterBus.push(R.objOf(field, e.target.value))}/>
-        </th>
-      )
-    }
+    let { rivit, pager, params } = this.props
 
     return (<div className="oppijataulukko">{ rivit ? (
       <table>
         <thead>
           <tr>
-            <SortableHeader field='nimi' className='nimi'>Nimi</SortableHeader>
+            <SortableHeader field='nimi' className='nimi' params={params} filterBus={this.filterBus} sortBus={this.sortBus}>Nimi</SortableHeader>
             <th className="tyyppi">Opiskeluoikeuden tyyppi</th>
             <th className="koulutus">Koulutus</th>
             <th className="tutkinto">Tutkinto / osaamisala / nimike</th>
             <th className="tila">Tila</th>
             <th className="oppilaitos">Oppilaitos</th>
-            <SortableHeader field='alkamispäivä' className='aloitus'>Aloitus pvm</SortableHeader>
-            <SortableHeader field='luokka' className='luokka'>Luokka / ryhmä</SortableHeader>
+            <SortableHeader field='alkamispäivä' className='aloitus' params={params} filterBus={this.filterBus} sortBus={this.sortBus}>Aloitus pvm</SortableHeader>
+            <SortableHeader field='luokka' className='luokka' params={params} filterBus={this.filterBus} sortBus={this.sortBus}>Luokka / ryhmä</SortableHeader>
           </tr>
         </thead>
         <tbody>
@@ -77,23 +56,45 @@ export const Oppijataulukko = React.createClass({
       <PaginationLink pager={pager}/>
     </div>)
   },
-  componentDidMount() {
-    let { params } = this.props
+  componentWillMount() {
     this.sortBus = Bacon.Bus().log('sort')
     this.filterBus = Bacon.Bus().log('filter')
-
+  },
+  componentDidMount() {
+    console.log("componentDidMount")
+    let { params } = this.props
     const toParameterPairs = R.compose(R.filter(x => !!x[1]), R.toPairs, R.merge(params))
-
     this.sortBus.merge(this.filterBus)
       .map(param => R.join('&', R.map(R.join('='), toParameterPairs(param))))
       .onValue(query => navigateTo(`/koski/?${query}`))
   }
 })
 
+const SortableHeader = React.createClass({
+  render() {
+    let { field, className, params: {sort}, filterBus, sortBus} = this.props
+    let [ sortBy, sortOrder ] = sort ? sort.split(':') : ['nimi', 'asc']
+    let selected = sortBy == field
+    return (
+      <th className={selected ? className + ' sorted' : className}>
+        <div className="sorting" onClick={() => sortBus.push({
+          sort: field + ':' + (selected ? (sortOrder == 'asc' ? 'desc' : 'asc') : 'asc')
+        })}>
+          <div className="title">{this.props.children}</div>
+          <div className="sort-indicator">
+            <div className={selected && sortOrder == 'asc' ? 'asc selected' : 'asc'}></div>
+            <div className={selected && sortOrder == 'desc' ? 'desc selected' : 'desc'}></div>
+          </div>
+        </div>
+        <input type="text" onChange={e => filterBus.push(R.objOf(field, e.target.value))}/>
+      </th>
+    )
+  }
+})
 
 export const oppijataulukkoContentP = (query, params) => {
   let pager = Pager('/koski/api/opiskeluoikeus/perustiedot' + query)
-  let taulukkoContentP = elementWithLoadingIndicator(pager.rowsP.map((rivit) => <Oppijataulukko rivit={rivit} pager={pager} params={params}/>))
+  let taulukkoContentP = pager.rowsP.map((rivit) => <Oppijataulukko rivit={rivit} pager={pager} params={params}/>)
   return Bacon.combineWith(taulukkoContentP, oppijaHakuElementP, (taulukko, hakuElement) => ({
     content: (<div className='content-area'>
       { hakuElement }
