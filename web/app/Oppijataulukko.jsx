@@ -61,8 +61,8 @@ export const Oppijataulukko = React.createClass({
     this.filterBus = Bacon.Bus()
   },
   componentDidMount() {
-    let { params } = this.props
-    const toParameterPairs = R.compose(R.filter(x => !!x[1]), R.toPairs, R.merge(params))
+    const toParameterPairs = params => R.filter(([key, value]) => !!value, R.toPairs(R.merge(this.props.params, params)))
+
     this.sortBus.merge(this.filterBus)
       .map(param => R.join('&', R.map(R.join('='), toParameterPairs(param))))
       .onValue(query => navigateTo(`/koski/?${query}`))
