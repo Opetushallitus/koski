@@ -39,7 +39,7 @@ window.onload = function() {
           path = path.replace('{' + input.name + '}', encodeURIComponent(input.value))
         })
         var queryParameters = queryParamInputs.reduce(function(query, input) {
-          return input.value ? query + (query ? '&' : '?') + encodeURIComponent(input.name) + '=' + encodeURIComponent(input.value) : ''
+          return input.value ? query + (query ? '&' : '?') + encodeURIComponent(input.name) + '=' + encodeURIComponent(input.value) : query
         },'')
         return document.location.protocol + '//' + document.location.host + path + queryParameters
       }
