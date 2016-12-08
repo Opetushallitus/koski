@@ -127,12 +127,12 @@
     <dependency>
       <groupId>com.github.tminglei</groupId>
       <artifactId>slick-pg</artifactId>
-      <version>5b44ff804f36f4d8d8164682f17cac00626edbd0</version>
+      <version>27652e9266e022dfb331dbe8a7a2269cd772456d</version>
     </dependency>
     <dependency>
       <groupId>com.github.tminglei.slick-pg</groupId>
       <artifactId>slick-pg_json4s_2.11</artifactId>
-      <version>5b44ff804f36f4d8d8164682f17cac00626edbd0</version>
+      <version>27652e9266e022dfb331dbe8a7a2269cd772456d</version>
     </dependency>
     <dependency>
       <groupId>org.postgresql</groupId>
