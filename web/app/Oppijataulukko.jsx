@@ -6,6 +6,7 @@ import { ISO2FinnishDate } from './date'
 import { oppijaHakuElementP } from './OppijaHaku.jsx'
 import PaginationLink from './PaginationLink.jsx'
 import R from 'ramda'
+import DatePicker from './DatePicker.jsx'
 
 export const Oppijataulukko = React.createClass({
   render() {
@@ -28,6 +29,7 @@ export const Oppijataulukko = React.createClass({
             <th className="oppilaitos">Oppilaitos</th>
             <th className={sortBy == 'alkamispäivä' ? 'aloitus sorted': 'aloitus'}>
               <Sorter field='alkamispäivä' sortBus={this.sortBus} sortBy={sortBy} sortOrder={sortOrder}>Aloitus pvm</Sorter>
+              <DatePicker onSelectionChanged={date => console.log('valittiin: ' + date)}/>
             </th>
             <th className={sortBy == 'luokka' ? 'luokka sorted': 'luokka'}>
               <Sorter field='luokka' sortBus={this.sortBus} sortBy={sortBy} sortOrder={sortOrder}>Luokka / ryhmä</Sorter>
