@@ -135,7 +135,7 @@ class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) exte
         }
       }.getOrElse(Ascending("nimi"))
 
-      OpiskeluoikeusQueryFilter.parseQueryFilter(filters)(application.koodistoViitePalvelu).right.map { filters =>
+      OpiskeluoikeusQueryFilter.parseQueryFilter(filters)(application.koodistoViitePalvelu, koskiSession).right.map { filters =>
         val result: List[OpiskeluoikeudenPerustiedot] = repository.find(filters, sort, paginationSettings)(koskiSession)
         PaginatedResponse(Some(paginationSettings), result, result.length)
       }
