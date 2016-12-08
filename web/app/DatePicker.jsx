@@ -54,12 +54,15 @@ export default React.createClass({
     const { value } = e.target
     const parsed = parseFinnishDate(value)
     if (parsed) {
-      this.setState({ selectedDay: parsed, value}, () => {
-        this.daypicker.showMonth(this.state.selectedDay)
-        this.props.onSelectionChanged(value)
+      this.setState({ selectedDay: parsed, value, showOverlay: false}, () => {
+        this.props.onSelectionChanged(parsed)
       })
     } else {
-      this.setState({ value, selectedDay: null })
+      this.setState({ value, selectedDay: null, showOverlay: false }, () => {
+        if(!value) {
+          this.props.onSelectionChanged(undefined)
+        }
+      })
     }
   },
   handleInputBlur() {
@@ -77,14 +80,15 @@ export default React.createClass({
       value: value,
       selectedDay: day,
       showOverlay: false
-    }, () => this.props.onSelectionChanged(value))
+    }, () => this.props.onSelectionChanged(day))
     this.input.blur()
   },
   getInitialState() {
+    const initialValue = this.props.selectedDay
     return {
       showOverlay: false,
-      value: '',
-      selectedDay: null
+      value: initialValue || '',
+      selectedDay: initialValue && parseFinnishDate(initialValue) || null
     }
   },
   componentWillUnmount() {

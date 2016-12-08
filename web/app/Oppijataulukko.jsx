@@ -2,11 +2,11 @@ import React from 'react'
 import Bacon from 'baconjs'
 import Pager from './Pager'
 import { navigateTo, navigateToOppija } from './location'
-import { ISO2FinnishDate } from './date'
 import { oppijaHakuElementP } from './OppijaHaku.jsx'
 import PaginationLink from './PaginationLink.jsx'
 import R from 'ramda'
 import DatePicker from './DatePicker.jsx'
+import { formatISODate, ISO2FinnishDate } from './date'
 
 export const Oppijataulukko = React.createClass({
   render() {
@@ -29,7 +29,7 @@ export const Oppijataulukko = React.createClass({
             <th className="oppilaitos">Oppilaitos</th>
             <th className={sortBy == 'alkamispäivä' ? 'aloitus sorted': 'aloitus'}>
               <Sorter field='alkamispäivä' sortBus={this.sortBus} sortBy={sortBy} sortOrder={sortOrder}>Aloitus pvm</Sorter>
-              <DatePicker onSelectionChanged={date => console.log('valittiin: ' + date)}/>
+              <DatePicker selectedDay={params['opiskeluoikeusAlkanutAikaisintaan'] && ISO2FinnishDate(params['opiskeluoikeusAlkanutAikaisintaan'])} onSelectionChanged={date => this.filterBus.push(R.objOf('opiskeluoikeusAlkanutAikaisintaan', date ? formatISODate(date) : undefined ))}/>
             </th>
             <th className={sortBy == 'luokka' ? 'luokka sorted': 'luokka'}>
               <Sorter field='luokka' sortBus={this.sortBus} sortBy={sortBy} sortOrder={sortOrder}>Luokka / ryhmä</Sorter>
