@@ -1,5 +1,6 @@
 package fi.oph.koski.documentation
 
+import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
@@ -68,18 +69,15 @@ object PerusopetusExampleData {
 
   def oppija(henkilö: Henkilö = exampleHenkilö, opiskeluoikeus: Opiskeluoikeus): Oppija = Oppija(henkilö, List(opiskeluoikeus))
 
-  def opiskeluoikeus(oppilaitos: Oppilaitos = jyväskylänNormaalikoulu, suoritukset: List[PerusopetuksenPäätasonSuoritus]): PerusopetuksenOpiskeluoikeus = {
+  def opiskeluoikeus(oppilaitos: Oppilaitos = jyväskylänNormaalikoulu, suoritukset: List[PerusopetuksenPäätasonSuoritus], alkamispäivä: LocalDate = date(2008, 8, 15), päättymispäivä: Option[LocalDate] = Some(date(2016, 6, 4))): PerusopetuksenOpiskeluoikeus = {
     PerusopetuksenOpiskeluoikeus(
-      alkamispäivä = Some(date(2008, 8, 15)),
-      päättymispäivä = Some(date(2016, 6, 4)),
+      alkamispäivä = Some(alkamispäivä),
+      päättymispäivä = päättymispäivä,
       oppilaitos = oppilaitos,
       koulutustoimija = None,
       suoritukset = suoritukset,
       tila = PerusopetuksenOpiskeluoikeudenTila(
-        List(
-          PerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
-          PerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
-        )
+        List(PerusopetuksenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä)) ++ päättymispäivä.toList.map (päivä => PerusopetuksenOpiskeluoikeusjakso(päivä, opiskeluoikeusValmistunut))
       )
     )
   }

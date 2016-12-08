@@ -4,7 +4,7 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.date.DateOrdering
-import fi.oph.koski.documentation.AmmatillinenExampleData
+import fi.oph.koski.documentation.{AmmatillinenExampleData, PerusopetusExampleData}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.AuditLogTester
@@ -104,6 +104,16 @@ class OppijaQuerySpec extends FunSpec with LocalJettyHttpSpecification with Opis
             verifyResponseStatus(404, KoskiErrorCategory.notFound.oppilaitostaEiLöydy("Oppilaitosta/koulutustoimijaa/toimipistettä ei löydy: 1.2.246.562.10.42456023000"))
           }
         }
+      }
+    }
+
+    describe("luokkahaku") {
+      it("luokan osittaisella tai koko nimellä") {
+        resetFixtures
+        insert(PerusopetusExampleData.opiskeluoikeus(alkamispäivä = date(2100, 1, 2), päättymispäivä = None, suoritukset = List(PerusopetusExampleData.kahdeksannenLuokanSuoritus.copy(luokka = "8C"))), eero)
+        insert(PerusopetusExampleData.opiskeluoikeus(alkamispäivä = date(2100, 1, 2), päättymispäivä = None, suoritukset = List(PerusopetusExampleData.kahdeksannenLuokanSuoritus.copy(luokka = "8D"))), teija)
+        queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&luokkahaku=8").length should equal(2)
+        queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&luokkahaku=8c").length should equal(1)
       }
     }
 

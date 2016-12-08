@@ -68,6 +68,7 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
 
   override def streamingQuery(filters: List[OpiskeluoikeusQueryFilter])(implicit user: KoskiSession): Observable[(Oid, List[OpiskeluOikeusRow])] = {
     import ReactiveStreamsToRx._
+    import ILikeExtension._
 
     val query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = filters.foldLeft(OpiskeluOikeudetWithAccessCheck.asInstanceOf[Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq]]) {
       case (query, OpiskeluoikeusPäättynytAikaisintaan(päivä)) => query.filter(_.data.#>>(List("päättymispäivä")) >= päivä.toString)
@@ -86,6 +87,7 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
         } // TODO: osuu vain ensimmäiseen suoritukseen, osaamisalaan, nimikkeeseen
       case (query, Toimipiste(toimipisteet)) => query.filter (_.data.#>>(List("suoritukset", "0", "toimipiste", "oid")) inSetBind toimipisteet.map(_.oid) )
         // TODO: osuu vain ensimmäiseen suoritukseen
+      case (query, Luokkahaku(hakusana)) => query.filter (oo => ilike(oo.data#>>(List("suoritukset", "0", "luokka")), (hakusana + "%")))
       case (query, filter) => throw new InvalidRequestException(KoskiErrorCategory.internalError("Hakua ei ole toteutettu: " + filter))
     }.sortBy(_.oppijaOid)
 
