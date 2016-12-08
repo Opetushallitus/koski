@@ -98,7 +98,7 @@ const Sorter = React.createClass({
 const TextFilter = React.createClass({
   render() {
     let { field, filterBus, params} = this.props
-    return <input type="text" defaultValue={params[field]} onChange={e => filterBus.push(R.objOf(field, e.target.value))}/>
+    return <input placeholder="hae" type="text" defaultValue={params[field]} onChange={e => filterBus.push(R.objOf(field, e.target.value))}/>
   }
 })
 

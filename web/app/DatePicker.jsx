@@ -32,7 +32,7 @@ export default React.createClass({
   render() {
     return (
       <div onMouseDown={ this.handleContainerMouseDown }>
-        <input type="text" ref={ (el) => { this.input = el } } placeholder="pp.kk.yyyy" value={ this.state.value } onChange={ this.handleInputChange } onFocus={ this.handleInputFocus } onBlur={ this.handleInputBlur }/>
+        <input type="text" ref={ (el) => { this.input = el } } placeholder="kaikki" value={ this.state.value } onChange={ this.handleInputChange } onFocus={ this.handleInputFocus } onBlur={ this.handleInputBlur }/>
         { this.state.showOverlay &&
         <div className="DayPicker-CalendarContainer">
           <div className="DayPicker-Overlay">
