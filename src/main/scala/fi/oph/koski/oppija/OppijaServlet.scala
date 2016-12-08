@@ -14,7 +14,7 @@ import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.KoskiMessageField.{apply => _, _}
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log._
-import fi.oph.koski.opiskeluoikeus.{Luokkahaku, OpiskeluoikeudenTila, OpiskeluoikeudenTyyppi, SuorituksenTyyppi, _}
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueries
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
