@@ -19,7 +19,7 @@ export const Oppijataulukko = React.createClass({
           <tr>
             <th className={sortBy == 'nimi' ? 'nimi sorted' : 'nimi'}>
               <Sorter field='nimi' sortBus={this.sortBus} sortBy={sortBy} sortOrder={sortOrder}>Nimi</Sorter>
-              <TextFilter field='nimi' filterBus={this.filterBus} params={params}/>
+              <TextFilter field='nimihaku' filterBus={this.filterBus} params={params}/>
             </th>
             <th className="tyyppi">Opiskeluoikeuden tyyppi</th>
             <th className="koulutus">Koulutus</th>
