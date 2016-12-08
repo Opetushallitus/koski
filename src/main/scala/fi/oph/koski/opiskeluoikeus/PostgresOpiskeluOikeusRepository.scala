@@ -78,7 +78,12 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
       case (query, OpiskeluoikeudenTyyppi(tyyppi)) => query.filter(_.data.#>>(List("tyyppi", "koodiarvo")) === tyyppi.koodiarvo)
       case (query, SuorituksenTyyppi(tyyppi)) => query.filter(_.data.+>("suoritukset").@>(parse(s"""[{"tyyppi":{"koodiarvo":"${tyyppi.koodiarvo}"}}]""")))
       case (query, OpiskeluoikeudenTila(tila)) => query.filter(_.data.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "tila", "koodiarvo")) === tila.koodiarvo)
-      case (query, KoulutusmoduulinTunniste(tutkinnot)) => query.filter(_.data.#>>(List("suoritukset", "0", "koulutusmoduuli", "tunniste", "koodiarvo")) inSetBind tutkinnot.map(_.koodiarvo)) // TODO: osuu vain ensimmäiseen suoritukseen
+      case (query, Tutkintohaku(tutkinnot, osaamisalat, nimikkeet)) =>
+        query.filter { oo =>
+          (oo.data.#>>(List("suoritukset", "0", "koulutusmoduuli", "tunniste", "koodiarvo")) inSetBind tutkinnot.map(_.koodiarvo)) ||
+            (oo.data.#>>(List("suoritukset", "0", "osaamisala", "0", "koodiarvo")) inSetBind osaamisalat.map(_.koodiarvo)) ||
+            (oo.data.#>>(List("suoritukset", "0", "tutkintonimike", "0", "koodiarvo")) inSetBind nimikkeet.map(_.koodiarvo))
+        } // TODO: osuu vain ensimmäiseen suoritukseen, osaamisalaan, nimikkeeseen
       case (query, filter) => throw new InvalidRequestException(KoskiErrorCategory.internalError("Hakua ei ole toteutettu: " + filter))
     }.sortBy(_.oppijaOid)
 

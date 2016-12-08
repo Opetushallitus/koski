@@ -19,9 +19,7 @@ object OpiskeluoikeusQueryFilter {
   case class OpiskeluoikeudenTyyppi(tyyppi: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
   case class SuorituksenTyyppi(tyyppi: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
   case class OpiskeluoikeudenTila(tila: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
-  case class KoulutusmoduulinTunniste(tunniste: List[Koodistokoodiviite]) extends OpiskeluoikeusQueryFilter
-  case class Osaamisala(osaamisala: List[Koodistokoodiviite]) extends OpiskeluoikeusQueryFilter
-  case class Tutkintonimike(nimike: List[Koodistokoodiviite]) extends OpiskeluoikeusQueryFilter
+  case class Tutkintohaku(koulutus: List[Koodistokoodiviite], osaamisala: List[Koodistokoodiviite], nimike: List[Koodistokoodiviite]) extends OpiskeluoikeusQueryFilter
   case class Toimipiste(toimipiste: List[OrganisaatioWithOid]) extends OpiskeluoikeusQueryFilter
   case class Luokkahaku(hakusana: String) extends OpiskeluoikeusQueryFilter
   case class Nimihaku(hakusana: String) extends OpiskeluoikeusQueryFilter
@@ -35,6 +33,12 @@ object OpiskeluoikeusQueryFilter {
       }
     }
 
+    def koodistohaku(koodistoUri: String, hakusana: String) = {
+      val koodit: List[Koodistokoodiviite] = koodisto.getKoodistoKoodiViitteet(koodisto.getLatestVersion(koodistoUri).get).get
+      koodit.filter(koodi => koodi.nimi.map(_.get(session.lang)).getOrElse(koodi.koodiarvo).toLowerCase.contains(hakusana.toLowerCase))
+    }
+
+
     val queryFilters: List[Either[HttpStatus, OpiskeluoikeusQueryFilter]] = params.map {
       case (p, v) if p == "opiskeluoikeusPäättynytAikaisintaan" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytAikaisintaan(_))
       case (p, v) if p == "opiskeluoikeusPäättynytViimeistään" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytViimeistään(_))
@@ -46,10 +50,7 @@ object OpiskeluoikeusQueryFilter {
       case ("opiskeluoikeudenTyyppi", v) => Right(OpiskeluoikeudenTyyppi(koodisto.validateRequired("opiskeluoikeudentyyppi", v)))
       case ("suorituksenTyyppi", v) => Right(SuorituksenTyyppi(koodisto.validateRequired("suorituksentyyppi", v)))
       case ("tutkintohaku", hakusana) if hakusana.length < 3 => Left(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort())
-      case ("tutkintohaku", hakusana) =>
-        val tutkintokoodit = koodisto.getKoodistoKoodiViitteet(koodisto.getLatestVersion("koulutus").get).get.filter(koodi => koodi.nimi.map(_.get(session.lang)).getOrElse(koodi.koodiarvo).toLowerCase.contains(hakusana.toLowerCase))
-        // TODO: tutkintonimike, osaamisala
-        Right(KoulutusmoduulinTunniste(tutkintokoodit))
+      case ("tutkintohaku", hakusana) => Right(Tutkintohaku(koodistohaku("koulutus", hakusana), koodistohaku("osaamisala", hakusana), koodistohaku("tutkintonimikkeet", hakusana)))
       case ("opiskeluoikeudenTila", v) => Right(OpiskeluoikeudenTila(koodisto.validateRequired("koskiopiskeluoikeudentila", v)))
       //case ("toimipiste", v) => TODO: hierarkiahaku
       case ("luokka", v) => Right(Luokkahaku(v))
