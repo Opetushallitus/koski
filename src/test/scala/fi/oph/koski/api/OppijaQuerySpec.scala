@@ -55,6 +55,12 @@ class OppijaQuerySpec extends FunSpec with LocalJettyHttpSpecification with Opis
         queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=ammatillinenkoulutus").length should equal(1)
         queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=perusopetus").length should equal(0)
       }
+      it("suorituksen tyyppi") {
+        resetFixtures
+        insert(makeOpiskeluoikeus(date(2100, 1, 2)), eero)
+        queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&suorituksenTyyppi=ammatillinentutkinto").length should equal(1)
+        queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&suorituksenTyyppi=lukionoppimaara").length should equal(0)
+      }
     }
 
     describe("Kun haku ei osu") {
