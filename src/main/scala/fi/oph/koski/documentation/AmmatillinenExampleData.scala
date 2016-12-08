@@ -149,7 +149,17 @@ object AmmatillinenExampleData {
     arvioituPäättymispäivä = Some(date(2015, 5, 31)),
     päättymispäivä = Some(date(2016, 5, 31)),
     oppilaitos = oppilaitos,
-    suoritukset = List(AmmatillisenTutkinnonSuoritus(
+    suoritukset = List(ympäristöalanPerustutkintoValmis(toimipiste)),
+    tila = AmmatillinenOpiskeluoikeudenTila(
+      List(
+        AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None))),
+        AmmatillinenOpiskeluoikeusjakso(date(2016, 5, 31), opiskeluoikeusValmistunut, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
+      )
+    )
+  )
+
+  def ympäristöalanPerustutkintoValmis(toimipiste: OidOrganisaatio = stadinToimipiste): AmmatillisenTutkinnonSuoritus = {
+    AmmatillisenTutkinnonSuoritus(
       koulutusmoduuli = AmmatillinenTutkintoKoulutus(
         Koodistokoodiviite("361902", Some("Luonto- ja ympäristöalan perustutkinto"), "koulutus", None),
         Some("62/011/2014")
@@ -186,12 +196,6 @@ object AmmatillinenExampleData {
         paikallisenTutkinnonOsanSuoritus("enkku3", "Matkailuenglanti", k3, 5),
         paikallisenTutkinnonOsanSuoritus("soskultos1", "Sosiaalinen ja kulttuurinen osaaminen", k3, 5)
       ).map(_.copy(toimipiste = Some(toimipiste))))
-    )),
-    tila = AmmatillinenOpiskeluoikeudenTila(
-      List(
-        AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None))),
-        AmmatillinenOpiskeluoikeusjakso(date(2016, 5, 31), opiskeluoikeusValmistunut, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
-      )
     )
-  )
+  }
 }

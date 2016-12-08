@@ -25,7 +25,7 @@ object OpiskeluoikeusQueryFilter {
   case class Toimipiste(toimipiste: List[OrganisaatioWithOid]) extends OpiskeluoikeusQueryFilter
   case class Luokkahaku(hakusana: String) extends OpiskeluoikeusQueryFilter
 
-  def parse(params: List[(String, String)])(implicit koodisto: KoodistoViitePalvelu): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] = {
+  def parseQueryFilter(params: List[(String, String)])(implicit koodisto: KoodistoViitePalvelu): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] = {
     def dateParam(q: (String, String)): Either[HttpStatus, LocalDate] = q match {
       case (p, v) => try {
         Right(LocalDate.parse(v))

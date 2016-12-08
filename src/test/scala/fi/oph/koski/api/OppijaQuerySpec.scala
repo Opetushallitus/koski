@@ -4,6 +4,7 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.date.DateOrdering
+import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.AuditLogTester
@@ -38,6 +39,14 @@ class OppijaQuerySpec extends FunSpec with LocalJettyHttpSpecification with Opis
         insert(makeOpiskeluoikeus(date(2110, 1, 1)), teija)
         val alkamispäivät = queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeusAlkanutViimeistään=2100-01-02")
             .flatMap(_.opiskeluoikeudet.flatMap(_.alkamispäivä))
+        alkamispäivät should equal(List(date(2100, 1, 2)))
+      }
+      it("tutkinnontila") {
+        resetFixtures
+        insert(makeOpiskeluoikeus(date(2100, 1, 2)).copy(suoritukset = List(AmmatillinenExampleData.ympäristöalanPerustutkintoValmis())), eero)
+        insert(makeOpiskeluoikeus(date(2110, 1, 1)), teija)
+        val alkamispäivät = queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&tutkinnonTila=VALMIS")
+          .flatMap(_.opiskeluoikeudet.flatMap(_.alkamispäivä))
         alkamispäivät should equal(List(date(2100, 1, 2)))
       }
     }
