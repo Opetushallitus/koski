@@ -45,7 +45,7 @@ class OppijaQuerySpec extends FunSpec with LocalJettyHttpSpecification with Opis
         resetFixtures
         insert(makeOpiskeluoikeus(date(2100, 1, 2)).copy(suoritukset = List(AmmatillinenExampleData.ympäristöalanPerustutkintoValmis())), eero)
         insert(makeOpiskeluoikeus(date(2110, 1, 1)), teija)
-        val alkamispäivät = queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&tutkinnonTila=VALMIS")
+        val alkamispäivät = queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&suorituksenTila=VALMIS")
           .flatMap(_.opiskeluoikeudet.flatMap(_.alkamispäivä))
         alkamispäivät should equal(List(date(2100, 1, 2)))
       }
