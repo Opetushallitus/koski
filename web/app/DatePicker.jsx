@@ -1,5 +1,5 @@
-import DayPicker, { DateUtils } from 'react-day-picker'
-import { parseFinnishDate, formatFinnishDate } from './date.js'
+import DayPicker, {DateUtils} from 'react-day-picker'
+import {parseFinnishDate, formatFinnishDate} from './date.js'
 import React from 'react'
 
 const weekdaysLong = {
@@ -45,30 +45,29 @@ export default React.createClass({
   },
   handleContainerMouseDown() {
     this.clickedInside = true
-    this.clickTimeout = setTimeout(() => { this.clickedInside = false }, 0)
+    this.clickTimeout = setTimeout(() => {
+      this.clickedInside = false
+    }, 0)
   },
   handleInputFocus() {
-    this.setState({ showOverlay: true })
+    this.setState({showOverlay: true},
+      () => this.state.selectedDay && this.daypicker.showMonth(this.state.selectedDay)
+    )
   },
   handleInputChange(e) {
-    const { value } = e.target
+    const {value} = e.target
     const parsed = parseFinnishDate(value)
-    if (parsed) {
-      this.setState({ selectedDay: parsed, value, showOverlay: false}, () => {
-        this.props.onSelectionChanged(parsed)
-      })
-    } else {
-      this.setState({ value, selectedDay: null, showOverlay: false }, () => {
-        if(!value) {
-          this.props.onSelectionChanged(undefined)
-        }
-      })
-    }
+    this.setState({selectedDay: parsed, value, showOverlay: false}, () => {
+      if (parsed || !value) {
+        this.props.onSelectionChanged(parsed || undefined)
+        this.input.blur()
+      }
+    })
   },
   handleInputBlur() {
     const showOverlay = this.clickedInside
 
-    this.setState({ showOverlay })
+    this.setState({showOverlay})
 
     if (showOverlay) {
       this.input.focus()
