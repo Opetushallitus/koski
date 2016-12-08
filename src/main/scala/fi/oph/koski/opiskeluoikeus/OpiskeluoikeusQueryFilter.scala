@@ -5,9 +5,27 @@ import java.time.format.DateTimeParseException
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
+import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
 
-case class OpiskeluoikeusQueryParamParser(koodisto: KoodistoViitePalvelu) {
-  def queryFilters(params: List[(String, String)]): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] = {
+sealed trait OpiskeluoikeusQueryFilter
+
+object OpiskeluoikeusQueryFilter {
+  case class OpiskeluoikeusPäättynytAikaisintaan(päivä: LocalDate) extends OpiskeluoikeusQueryFilter
+  case class OpiskeluoikeusPäättynytViimeistään(päivä: LocalDate) extends OpiskeluoikeusQueryFilter
+  case class OpiskeluoikeusAlkanutAikaisintaan(päivä: LocalDate) extends OpiskeluoikeusQueryFilter
+  case class OpiskeluoikeusAlkanutViimeistään(päivä: LocalDate) extends OpiskeluoikeusQueryFilter
+  case class TutkinnonTila(tila: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
+  case class Nimihaku(hakusana: String) extends OpiskeluoikeusQueryFilter
+  case class OpiskeluoikeudenTyyppi(tyyppi: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
+  case class SuorituksenTyyppi(tyyppi: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
+  case class KoulutusmoduulinTunniste(tunniste: List[Koodistokoodiviite]) extends OpiskeluoikeusQueryFilter
+  case class Osaamisala(osaamisala: List[Koodistokoodiviite]) extends OpiskeluoikeusQueryFilter
+  case class Tutkintonimike(nimike: List[Koodistokoodiviite]) extends OpiskeluoikeusQueryFilter
+  case class OpiskeluoikeudenTila(tila: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
+  case class Toimipiste(toimipiste: List[OrganisaatioWithOid]) extends OpiskeluoikeusQueryFilter
+  case class Luokkahaku(hakusana: String) extends OpiskeluoikeusQueryFilter
+
+  def parse(params: List[(String, String)])(implicit koodisto: KoodistoViitePalvelu): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] = {
     def dateParam(q: (String, String)): Either[HttpStatus, LocalDate] = q match {
       case (p, v) => try {
         Right(LocalDate.parse(v))
@@ -39,5 +57,4 @@ case class OpiskeluoikeusQueryParamParser(koodisto: KoodistoViitePalvelu) {
         Left(HttpStatus.fold(errors.map(_.left.get)))
     }
   }
-
 }

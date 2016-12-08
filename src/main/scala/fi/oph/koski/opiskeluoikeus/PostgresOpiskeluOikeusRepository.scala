@@ -24,6 +24,7 @@ import slick.lifted.Query
 import slick.{dbio, lifted}
 import PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.servlet.InvalidRequestException
+import OpiskeluoikeusQueryFilter._
 
 class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: OpiskeluoikeusHistoryRepository) extends OpiskeluOikeusRepository with GlobalExecutionContext with KoskiDatabaseMethods with Logging with SerializableTransactions {
   override def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession) = {
@@ -69,10 +70,8 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
     val query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = filters.foldLeft(OpiskeluOikeudetWithAccessCheck.asInstanceOf[Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq]]) {
       case (query, OpiskeluoikeusPäättynytAikaisintaan(päivä)) => query.filter(_.data.#>>(List("päättymispäivä")) >= päivä.toString)
       case (query, OpiskeluoikeusPäättynytViimeistään(päivä)) => query.filter(_.data.#>>(List("päättymispäivä")) <= päivä.toString)
-      case (query, OpiskeluoikeusAlkanutAikaisintaan(päivä)) =>
-        query.filter(_.data.#>>(List("alkamispäivä")) >= päivä.toString)
-      case (query, OpiskeluoikeusAlkanutViimeistään(päivä)) =>
-        query.filter(_.data.#>>(List("alkamispäivä")) <= päivä.toString)
+      case (query, OpiskeluoikeusAlkanutAikaisintaan(päivä)) => query.filter(_.data.#>>(List("alkamispäivä")) >= päivä.toString)
+      case (query, OpiskeluoikeusAlkanutViimeistään(päivä)) => query.filter(_.data.#>>(List("alkamispäivä")) <= päivä.toString)
       case (query, TutkinnonTila(tila)) => query.filter(_.data.#>>(List("suoritus", "tila", "koodiarvo")) === tila.koodiarvo)
       case (query, filter) => throw new InvalidRequestException(KoskiErrorCategory.internalError("Hakua ei ole toteutettu: " + filter))
     }.sortBy(_.oppijaOid)
