@@ -77,6 +77,7 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
       case (query, TutkinnonTila(tila)) => query.filter(_.data.+>("suoritukset").@>(parse(s"""[{"tila":{"koodiarvo":"${tila.koodiarvo}"}}]""")))
       case (query, OpiskeluoikeudenTyyppi(tyyppi)) => query.filter(_.data.#>>(List("tyyppi", "koodiarvo")) === tyyppi.koodiarvo)
       case (query, SuorituksenTyyppi(tyyppi)) => query.filter(_.data.+>("suoritukset").@>(parse(s"""[{"tyyppi":{"koodiarvo":"${tyyppi.koodiarvo}"}}]""")))
+      case (query, OpiskeluoikeudenTila(tila)) => query.filter(_.data.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "tila", "koodiarvo")) === tila.koodiarvo)
       case (query, filter) => throw new InvalidRequestException(KoskiErrorCategory.internalError("Hakua ei ole toteutettu: " + filter))
     }.sortBy(_.oppijaOid)
 

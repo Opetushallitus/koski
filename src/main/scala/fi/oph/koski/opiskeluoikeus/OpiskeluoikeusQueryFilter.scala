@@ -17,10 +17,10 @@ object OpiskeluoikeusQueryFilter {
   case class TutkinnonTila(tila: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
   case class OpiskeluoikeudenTyyppi(tyyppi: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
   case class SuorituksenTyyppi(tyyppi: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
+  case class OpiskeluoikeudenTila(tila: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
   case class KoulutusmoduulinTunniste(tunniste: List[Koodistokoodiviite]) extends OpiskeluoikeusQueryFilter
   case class Osaamisala(osaamisala: List[Koodistokoodiviite]) extends OpiskeluoikeusQueryFilter
   case class Tutkintonimike(nimike: List[Koodistokoodiviite]) extends OpiskeluoikeusQueryFilter
-  case class OpiskeluoikeudenTila(tila: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
   case class Toimipiste(toimipiste: List[OrganisaatioWithOid]) extends OpiskeluoikeusQueryFilter
   case class Luokkahaku(hakusana: String) extends OpiskeluoikeusQueryFilter
   case class Nimihaku(hakusana: String) extends OpiskeluoikeusQueryFilter
