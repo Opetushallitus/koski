@@ -20,7 +20,7 @@ import org.json4s.JArray
 import rx.lang.scala.Observable
 import slick.dbio.Effect.{Read, Transactional, Write}
 import slick.dbio.NoStream
-import slick.lifted.Query
+import slick.lifted.{Query, Rep}
 import slick.{dbio, lifted}
 import PostgresDriverWithJsonSupport.api._
 import PostgresDriverWithJsonSupport.jsonMethods._
@@ -70,6 +70,9 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
     import ReactiveStreamsToRx._
     import ILikeExtension._
 
+    def or(f1: (Tables.OpiskeluOikeusTable => Rep[Boolean]), f2: (Tables.OpiskeluOikeusTable => Rep[Boolean])): (Tables.OpiskeluOikeusTable => Rep[Boolean]) = { row: Tables.OpiskeluOikeusTable => f1(row) || f2(row) }
+
+
     val query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = filters.foldLeft(OpiskeluOikeudetWithAccessCheck.asInstanceOf[Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq]]) {
       case (query, OpiskeluoikeusPäättynytAikaisintaan(päivä)) => query.filter(_.data.#>>(List("päättymispäivä")) >= päivä.toString)
       case (query, OpiskeluoikeusPäättynytViimeistään(päivä)) => query.filter(_.data.#>>(List("päättymispäivä")) <= päivä.toString)
@@ -80,14 +83,24 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
       case (query, SuorituksenTyyppi(tyyppi)) => query.filter(_.data.+>("suoritukset").@>(parse(s"""[{"tyyppi":{"koodiarvo":"${tyyppi.koodiarvo}"}}]""")))
       case (query, OpiskeluoikeudenTila(tila)) => query.filter(_.data.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "tila", "koodiarvo")) === tila.koodiarvo)
       case (query, Tutkintohaku(tutkinnot, osaamisalat, nimikkeet)) =>
-        query.filter { oo =>
-          (oo.data.#>>(List("suoritukset", "0", "koulutusmoduuli", "tunniste", "koodiarvo")) inSetBind tutkinnot.map(_.koodiarvo)) ||
-            (oo.data.#>>(List("suoritukset", "0", "osaamisala", "0", "koodiarvo")) inSetBind osaamisalat.map(_.koodiarvo)) ||
-            (oo.data.#>>(List("suoritukset", "0", "tutkintonimike", "0", "koodiarvo")) inSetBind nimikkeet.map(_.koodiarvo))
-        } // TODO: osuu vain ensimmäiseen suoritukseen, osaamisalaan, nimikkeeseen
-      case (query, Toimipiste(toimipisteet)) => query.filter (_.data.#>>(List("suoritukset", "0", "toimipiste", "oid")) inSetBind toimipisteet.map(_.oid) )
-        // TODO: osuu vain ensimmäiseen suoritukseen
-      case (query, Luokkahaku(hakusana)) => query.filter (oo => ilike(oo.data#>>(List("suoritukset", "0", "luokka")), (hakusana + "%")))
+        val predicates = tutkinnot.map { tutkinto =>
+          {t: Tables.OpiskeluOikeusTable => t.data.+>("suoritukset").@>(parse(s"""[{"koulutusmoduuli":{"tunniste": {"koodiarvo": "${tutkinto.koodiarvo}"}}}]"""))}
+        } ++ nimikkeet.map { nimike =>
+          {t: Tables.OpiskeluOikeusTable => t.data.+>("suoritukset").@>(parse(s"""[{"tutkintonimike":[{"koodiarvo": "${nimike.koodiarvo}"}]}]"""))}
+        } ++ osaamisalat.map { osaamisala =>
+          {t: Tables.OpiskeluOikeusTable => t.data.+>("suoritukset").@>(parse(s"""[{"osaamisala":[{"koodiarvo": "${osaamisala.koodiarvo}"}]}]"""))}
+        }
+        query.filter(predicates.reduce(or))
+      case (query, Toimipiste(toimipisteet)) =>
+        val predicates = toimipisteet.map { toimipiste =>
+          {t: Tables.OpiskeluOikeusTable => t.data.+>("suoritukset").@>(parse(s"""[{"toimipiste":{"oid": "${toimipiste.oid}"}}]"""))}
+        }
+        query.filter(predicates.reduce(or))
+      case (query, Luokkahaku(hakusana)) =>
+        val predicates = (0 to 9) map { index =>
+          { t: Tables.OpiskeluOikeusTable => ilike(t.data#>>(List("suoritukset", "" + index, "luokka")), (hakusana + "%"))}
+        }
+        query.filter(predicates.reduce(or))
       case (query, filter) => throw new InvalidRequestException(KoskiErrorCategory.internalError("Hakua ei ole toteutettu: " + filter))
     }.sortBy(_.oppijaOid)
 

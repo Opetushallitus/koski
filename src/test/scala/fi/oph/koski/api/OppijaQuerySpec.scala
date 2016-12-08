@@ -3,10 +3,13 @@ package fi.oph.koski.api
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.date.DateOrdering
+import fi.oph.koski.db.{KoskiDatabaseMethods, Tables}
 import fi.oph.koski.documentation.{AmmatillinenExampleData, PerusopetusExampleData}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema._
 import org.scalatest.{FunSpec, Matchers}
@@ -72,7 +75,6 @@ class OppijaQuerySpec extends FunSpec with LocalJettyHttpSpecification with Opis
           resetFixtures
           insert(makeOpiskeluoikeus(date(2100, 1, 2)), eero)
           queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&tutkintohaku=autoalan").length should equal(1)
-          queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&tutkintohaku=blah").length should equal(0)
         }
         it("osaamisala ja tutkintonimike") {
           resetFixtures
@@ -83,6 +85,11 @@ class OppijaQuerySpec extends FunSpec with LocalJettyHttpSpecification with Opis
         it("liian lyhyt hakusana") {
           authGet("api/oppija?tutkintohaku=au") {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam.searchTermTooShort("Hakusanan pituus alle 3 merkkiä."))
+          }
+        }
+        it("tutkintoa ei löydy") {
+          authGet("api/oppija?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&tutkintohaku=blah") {
+            verifyResponseStatus(404, KoskiErrorCategory.notFound.tutkintoaEiLöydy("Koulutusta/osaamisalaa/tutkintonimikettä ei löydy: blah"))
           }
         }
       }
@@ -147,3 +154,4 @@ class OppijaQuerySpec extends FunSpec with LocalJettyHttpSpecification with Opis
     }
   }
 }
+

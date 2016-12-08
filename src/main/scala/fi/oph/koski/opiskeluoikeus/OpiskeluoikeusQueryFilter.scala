@@ -50,7 +50,15 @@ object OpiskeluoikeusQueryFilter {
       case ("suorituksenTyyppi", v) => Right(SuorituksenTyyppi(koodisto.validateRequired("suorituksentyyppi", v)))
       case ("suorituksenTila", v) => Right(SuorituksenTila(koodisto.validateRequired("suorituksentila", v)))
       case ("tutkintohaku", hakusana) if hakusana.length < 3 => Left(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort())
-      case ("tutkintohaku", hakusana) => Right(Tutkintohaku(koodistohaku("koulutus", hakusana), koodistohaku("osaamisala", hakusana), koodistohaku("tutkintonimikkeet", hakusana)))
+      case ("tutkintohaku", hakusana) =>
+        val koulutukset = koodistohaku("koulutus", hakusana)
+        val osaamisalat = koodistohaku("osaamisala", hakusana)
+        val tutkintonimikkeet = koodistohaku("tutkintonimikkeet", hakusana)
+        if (koulutukset.isEmpty && osaamisalat.isEmpty && tutkintonimikkeet.isEmpty) {
+          Left(KoskiErrorCategory.notFound.tutkintoaEiLöydy("Koulutusta/osaamisalaa/tutkintonimikettä ei löydy: " + hakusana))
+        } else {
+          Right(Tutkintohaku(koulutukset, osaamisalat, tutkintonimikkeet))
+        }
       case ("toimipiste", oid) =>
         OrganisaatioOid.validateOrganisaatioOid(oid).right.flatMap { oid =>
           organisaatiot.getOrganisaatioHierarkia(oid) match {
