@@ -12,7 +12,7 @@ import org.json4s.JValue
 import rx.lang.scala.Observable
 
 trait OpiskeluOikeusRepository extends AuxiliaryOpiskeluOikeusRepository {
-  def streamingQuery(filters: List[QueryFilter])(implicit user: KoskiSession): Observable[(Oid, List[OpiskeluOikeusRow])]
+  def streamingQuery(filters: List[OpiskeluoikeusQueryFilter])(implicit user: KoskiSession): Observable[(Oid, List[OpiskeluOikeusRow])]
 
   def findById(id: Int)(implicit user: KoskiSession): Option[OpiskeluOikeusRow]
   def delete(id: Int)(implicit user: KoskiSession): HttpStatus
@@ -36,24 +36,6 @@ sealed trait CreateOrUpdateResult {
 case class Created(id: Opiskeluoikeus.Id, versionumero: Opiskeluoikeus.Versionumero, diff: JValue) extends CreateOrUpdateResult
 case class Updated(id: Opiskeluoikeus.Id, versionumero: Opiskeluoikeus.Versionumero, diff: JValue) extends CreateOrUpdateResult
 case class NotChanged(id: Opiskeluoikeus.Id, versionumero: Opiskeluoikeus.Versionumero, diff: JValue) extends CreateOrUpdateResult
-
-trait QueryFilter
-
-case class FilterCriterion(field: String, value: String)
-
-case class OpiskeluoikeusPäättynytAikaisintaan(päivä: LocalDate) extends QueryFilter
-case class OpiskeluoikeusPäättynytViimeistään(päivä: LocalDate) extends QueryFilter
-case class TutkinnonTila(tila: Koodistokoodiviite) extends QueryFilter
-case class Nimihaku(hakusana: String) extends QueryFilter
-case class OpiskeluoikeudenTyyppi(tyyppi: Koodistokoodiviite) extends QueryFilter
-case class SuorituksenTyyppi(tyyppi: Koodistokoodiviite) extends QueryFilter
-case class KoulutusmoduulinTunniste(tunniste: List[Koodistokoodiviite]) extends QueryFilter
-case class Osaamisala(osaamisala: List[Koodistokoodiviite]) extends QueryFilter
-case class Tutkintonimike(nimike: List[Koodistokoodiviite]) extends QueryFilter
-case class OpiskeluoikeudenTila(tila: Koodistokoodiviite) extends QueryFilter
-case class Toimipiste(toimipiste: List[OrganisaatioWithOid]) extends QueryFilter
-case class Luokkahaku(hakusana: String) extends QueryFilter
-
 
 trait SortCriterion {
   def field: String

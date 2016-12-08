@@ -8,7 +8,7 @@ import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, HttpStatusException, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{KoskiSession, RequiresAuthentication}
-import fi.oph.koski.oppija.{OpiskeluoikeusQueryParamParser, ReportingQueryFacade}
+import fi.oph.koski.oppija.ReportingQueryFacade
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException}
 import fi.oph.koski.util.{ListPagination, PaginatedResponse, Pagination, PaginationSettings}
@@ -56,7 +56,7 @@ object KoulutusmoduulinPerustiedot {
 class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöRepository, opiskeluOikeusRepository: OpiskeluOikeusRepository, koodisto: KoodistoViitePalvelu) {
   import HenkilöOrdering.aakkostettu
 
-  def find(filters: List[QueryFilter], sorting: SortCriterion, pagination: PaginationSettings)(implicit session: KoskiSession): List[OpiskeluoikeudenPerustiedot] = {
+  def find(filters: List[OpiskeluoikeusQueryFilter], sorting: SortCriterion, pagination: PaginationSettings)(implicit session: KoskiSession): List[OpiskeluoikeudenPerustiedot] = {
     val databaseFilters = filters.filter {
       case Nimihaku(_) => false
       case f => true
@@ -86,7 +86,7 @@ class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöReposito
     ListPagination.applyPagination(pagination, applySorting(sorting, applyFiltering(filters, perustiedot))).toList
   }
 
-  def applyFiltering(filters: List[QueryFilter], list: List[OpiskeluoikeudenPerustiedot])(implicit session: KoskiSession) = {
+  def applyFiltering(filters: List[OpiskeluoikeusQueryFilter], list: List[OpiskeluoikeudenPerustiedot])(implicit session: KoskiSession) = {
     def filterBySuoritukset(list: List[OpiskeluoikeudenPerustiedot], f: SuorituksenPerustiedot => Boolean): List[OpiskeluoikeudenPerustiedot] = {
       list.flatMap { opiskeluoikeus =>
         val suoritukset = opiskeluoikeus.suoritukset.filter(f)

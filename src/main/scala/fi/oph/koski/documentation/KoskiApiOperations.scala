@@ -14,6 +14,8 @@ object KoskiApiOperations {
  private val hakuParametrit = List(
    QueryParameter("opiskeluoikeusPäättynytAikaisintaan","Päivämäärä jonka jälkeen opiskeluoikeus on päättynyt",List("2016-01-01")),
    QueryParameter("opiskeluoikeusPäättynytViimeistään","Päivämäärä jota ennen opiskeluoikeus on päättynyt", List("2016-12-31")),
+   QueryParameter("opiskeluoikeusAlkanutAikaisintaan","Päivämäärä jonka jälkeen opiskeluoikeus on alkanut",List("2016-01-01")),
+   QueryParameter("opiskeluoikeusAlkanutViimeistään","Päivämäärä jota ennen opiskeluoikeus on alkanut", List("2016-12-31")),
    QueryParameter("tutkinnonTila","Opiskeluoikeuden juurisuorituksen tila: VALMIS, KESKEN, KESKEYTYNYT", List("VALMIS"))
  )
 

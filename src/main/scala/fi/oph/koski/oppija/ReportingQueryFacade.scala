@@ -12,11 +12,11 @@ import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import rx.lang.scala.Observable
 
 case class ReportingQueryFacade(oppijaRepository: HenkilöRepository, opiskeluOikeusRepository: OpiskeluOikeusRepository, koodisto: KoodistoViitePalvelu) extends Logging {
-  def findOppijat(filters: List[QueryFilter], user: KoskiSession): Observable[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])] = {
+  def findOppijat(filters: List[OpiskeluoikeusQueryFilter], user: KoskiSession): Observable[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])] = {
     query(filters)(user)
   }
 
-  private def query(filters: List[QueryFilter])(implicit user: KoskiSession): Observable[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])] = {
+  private def query(filters: List[OpiskeluoikeusQueryFilter])(implicit user: KoskiSession): Observable[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])] = {
     val oikeudetPerOppijaOid: Observable[(Oid, List[OpiskeluOikeusRow])] = opiskeluOikeusRepository.streamingQuery(filters)
     oikeudetPerOppijaOid.tumblingBuffer(500).flatMap {
       oppijatJaOidit: Seq[(Oid, List[OpiskeluOikeusRow])] =>

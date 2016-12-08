@@ -115,52 +115,5 @@ case class UpdateContext(user: KoskiSession, application: KoskiApplication, requ
   }
 }
 
-trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with Logging with GlobalExecutionContext with ObservableSupport with GZipSupport {
-  def application: KoskiApplication
 
-  def query: Observable[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])] = {
-    logger(koskiSession).info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
 
-    OpiskeluoikeusQueryParamParser(application.koodistoViitePalvelu).queryFilters(params.toList) match {
-      case Right(filters) =>
-        AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_HAKU, koskiSession, Map(hakuEhto -> params.toList.map { case (p,v) => p + "=" + v }.mkString("&"))))
-        ReportingQueryFacade(application.oppijaRepository, application.opiskeluOikeusRepository, application.koodistoViitePalvelu).findOppijat(filters, koskiSession)
-      case Left(status) =>
-        haltWithStatus(status)
-    }
-  }
-}
-
-case class OpiskeluoikeusQueryParamParser(koodisto: KoodistoViitePalvelu) {
-  def queryFilters(params: List[(String, String)]): Either[HttpStatus, List[QueryFilter]] = {
-    def dateParam(q: (String, String)): Either[HttpStatus, LocalDate] = q match {
-      case (p, v) => try {
-        Right(LocalDate.parse(v))
-      } catch {
-        case e: DateTimeParseException => Left(KoskiErrorCategory.badRequest.format.pvm("Invalid date parameter: " + p + "=" + v))
-      }
-    }
-
-    val queryFilters: List[Either[HttpStatus, QueryFilter]] = params.map {
-      case (p, v) if p == "opiskeluoikeusPäättynytAikaisintaan" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytAikaisintaan(_))
-      case (p, v) if p == "opiskeluoikeusPäättynytViimeistään" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytViimeistään(_))
-      case ("tutkinnonTila", v) => Right(TutkinnonTila(koodisto.validateRequired("suorituksentila", v)))
-      case ("nimi", v) => Right(Nimihaku(v))
-      case ("opiskeluoikeudenTyyppi", v) => Right(OpiskeluoikeudenTyyppi(koodisto.validateRequired("opiskeluoikeudentyyppi", v)))
-      case ("suorituksenTyyppi", v) => Right(SuorituksenTyyppi(koodisto.validateRequired("suorituksentyyppi", v)))
-      //case ("tutkinto", v) => TODO: koulutusmoduuli, nimike, osaamisala
-      case ("opiskeluoikeudenTila", v) => Right(OpiskeluoikeudenTila(koodisto.validateRequired("koskiopiskeluoikeudentila", v)))
-      //case ("toimipiste", v) => TODO: hierarkiahaku
-      case ("luokka", v) => Right(Luokkahaku(v))
-      case (p, _) => Left(KoskiErrorCategory.badRequest.queryParam.unknown("Unsupported query parameter: " + p))
-    }
-
-    queryFilters.partition(_.isLeft) match {
-      case (Nil, queries) =>
-        Right(queries.flatMap(_.right.toOption))
-      case (errors, _) =>
-        Left(HttpStatus.fold(errors.map(_.left.get)))
-    }
-  }
-
-}
