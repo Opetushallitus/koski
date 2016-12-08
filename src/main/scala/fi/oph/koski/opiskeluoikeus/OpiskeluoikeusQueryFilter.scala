@@ -15,7 +15,6 @@ object OpiskeluoikeusQueryFilter {
   case class OpiskeluoikeusAlkanutAikaisintaan(päivä: LocalDate) extends OpiskeluoikeusQueryFilter
   case class OpiskeluoikeusAlkanutViimeistään(päivä: LocalDate) extends OpiskeluoikeusQueryFilter
   case class TutkinnonTila(tila: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
-  case class Nimihaku(hakusana: String) extends OpiskeluoikeusQueryFilter
   case class OpiskeluoikeudenTyyppi(tyyppi: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
   case class SuorituksenTyyppi(tyyppi: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
   case class KoulutusmoduulinTunniste(tunniste: List[Koodistokoodiviite]) extends OpiskeluoikeusQueryFilter
@@ -24,6 +23,7 @@ object OpiskeluoikeusQueryFilter {
   case class OpiskeluoikeudenTila(tila: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
   case class Toimipiste(toimipiste: List[OrganisaatioWithOid]) extends OpiskeluoikeusQueryFilter
   case class Luokkahaku(hakusana: String) extends OpiskeluoikeusQueryFilter
+  case class Nimihaku(hakusana: String) extends OpiskeluoikeusQueryFilter
 
   def parseQueryFilter(params: List[(String, String)])(implicit koodisto: KoodistoViitePalvelu): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] = {
     def dateParam(q: (String, String)): Either[HttpStatus, LocalDate] = q match {
