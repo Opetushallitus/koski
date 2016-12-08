@@ -6,7 +6,7 @@ import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
 import fi.oph.koski.util.Timing
 import fi.vm.sade.security.ldap.DirectoryClient
 
-class KayttooikeusRepository(authenticationServiceClient: AuthenticationServiceClient, organisaatioRepository: OrganisaatioRepository, directoryClient: DirectoryClient)(implicit cacheInvalidator: CacheManager) extends Timing {
+class KäyttöoikeusRepository(authenticationServiceClient: AuthenticationServiceClient, organisaatioRepository: OrganisaatioRepository, directoryClient: DirectoryClient)(implicit cacheInvalidator: CacheManager) extends Timing {
   def käyttäjänKäyttöoikeudet(user: AuthenticationUser): Set[Käyttöoikeus] = käyttöoikeusCache(user)
 
   def käyttäjänOppilaitostyypit(user: AuthenticationUser): Set[String] = {
@@ -24,7 +24,7 @@ class KayttooikeusRepository(authenticationServiceClient: AuthenticationServiceC
               List(k)
             case k: KäyttöoikeusOrg =>
               val organisaatioHierarkia = organisaatioRepository.getOrganisaatioHierarkia(k.organisaatio.oid)
-              val flattened = flatten(organisaatioHierarkia.toList)
+              val flattened = OrganisaatioHierarkia.flatten(organisaatioHierarkia.toList)
               if (flattened.isEmpty) {
                 logger.warn(s"Käyttäjän $username käyttöoikeus ${k} kohdistuu organisaatioon ${k.organisaatio.oid}, jota ei löydy")
               }
@@ -37,10 +37,6 @@ class KayttooikeusRepository(authenticationServiceClient: AuthenticationServiceC
         logger.warn(s"User $username not found from LDAP")
         Set.empty
     }
-  }
-
-  private def flatten(orgs: List[OrganisaatioHierarkia]): List[OrganisaatioHierarkia] = {
-    orgs ++ orgs.flatMap { org => org :: flatten(org.children) }
   }
 
   private lazy val käyttöoikeusCache = new KeyValueCache[AuthenticationUser, Set[Käyttöoikeus]](

@@ -33,4 +33,12 @@ case class OrganisaatioHierarkia(oid: String, oppilaitosnumero: Option[Koodistok
     case o: Oppilaitos => Some(o)
     case _ => None
   }
+
+  def flatten: List[OrganisaatioWithOid] = OrganisaatioHierarkia.flatten(List(this)).map(_.toOrganisaatio)
+}
+
+object OrganisaatioHierarkia {
+  def flatten(orgs: List[OrganisaatioHierarkia]): List[OrganisaatioHierarkia] = {
+    orgs ++ orgs.flatMap { org => org :: flatten(org.children) }
+  }
 }

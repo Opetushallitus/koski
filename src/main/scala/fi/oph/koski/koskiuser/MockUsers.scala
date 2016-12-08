@@ -40,7 +40,7 @@ object MockUsers {
 }
 
 case class MockUser(ldapUser: LdapUser, käyttöoikeudet: Set[(Organisaatio.Oid, Käyttöoikeusryhmä)]) extends UserWithPassword {
-  def toKoskiUser(käyttöoikeudet: KayttooikeusRepository) = {
+  def toKoskiUser(käyttöoikeudet: KäyttöoikeusRepository) = {
     val authUser: AuthenticationUser = fromLdapUser(ldapUser.oid, ldapUser)
     new KoskiSession(authUser, "192.168.0.10", käyttöoikeudet.käyttäjänKäyttöoikeudet(authUser))
   }

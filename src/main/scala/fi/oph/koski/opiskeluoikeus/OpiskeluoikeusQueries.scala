@@ -18,7 +18,7 @@ trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with 
   def query: Observable[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])] = {
     logger(koskiSession).info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
 
-    OpiskeluoikeusQueryFilter.parseQueryFilter(params.toList)(application.koodistoViitePalvelu, koskiSession) match {
+    OpiskeluoikeusQueryFilter.parseQueryFilter(params.toList)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession) match {
       case Right(filters) =>
         AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_HAKU, koskiSession, Map(hakuEhto -> params.toList.map { case (p,v) => p + "=" + v }.mkString("&"))))
         ReportingQueryFacade(application.oppijaRepository, application.opiskeluOikeusRepository, application.koodistoViitePalvelu).findOppijat(filters, koskiSession)

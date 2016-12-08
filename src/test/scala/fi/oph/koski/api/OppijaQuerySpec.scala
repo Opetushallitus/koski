@@ -86,6 +86,25 @@ class OppijaQuerySpec extends FunSpec with LocalJettyHttpSpecification with Opis
           }
         }
       }
+      describe("toimipistehaku") {
+        it("toimipisteen OID:lla") {
+          resetFixtures
+          insert(makeOpiskeluoikeus(date(2100, 1, 2)), eero)
+          queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&toimipiste=1.2.246.562.10.42456023292").length should equal(1)
+        }
+
+        it("oppilaitoksen OID:lla") {
+          resetFixtures
+          insert(makeOpiskeluoikeus(date(2100, 1, 2)), eero)
+          queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&toimipiste=1.2.246.562.10.52251087186").length should equal(1)
+        }
+
+        it("jos organisatiota ei löydy") {
+          authGet("api/oppija?toimipiste=1.2.246.562.10.42456023000") {
+            verifyResponseStatus(404, KoskiErrorCategory.notFound.oppilaitostaEiLöydy("Oppilaitosta/koulutustoimijaa/toimipistettä ei löydy: 1.2.246.562.10.42456023000"))
+          }
+        }
+      }
     }
 
     describe("Kun haku ei osu") {

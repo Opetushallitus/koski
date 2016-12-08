@@ -6,7 +6,8 @@ import java.time.format.DateTimeParseException
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
+import fi.oph.koski.organisaatio.OrganisaatioRepository
+import fi.oph.koski.schema.{Koodistokoodiviite, OidOrganisaatio, OrganisaatioOid, OrganisaatioWithOid}
 
 sealed trait OpiskeluoikeusQueryFilter
 
@@ -24,7 +25,7 @@ object OpiskeluoikeusQueryFilter {
   case class Luokkahaku(hakusana: String) extends OpiskeluoikeusQueryFilter
   case class Nimihaku(hakusana: String) extends OpiskeluoikeusQueryFilter
 
-  def parseQueryFilter(params: List[(String, String)])(implicit koodisto: KoodistoViitePalvelu, session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] = {
+  def parseQueryFilter(params: List[(String, String)])(implicit koodisto: KoodistoViitePalvelu, organisaatiot: OrganisaatioRepository, session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] = {
     def dateParam(q: (String, String)): Either[HttpStatus, LocalDate] = q match {
       case (p, v) => try {
         Right(LocalDate.parse(v))
@@ -50,7 +51,13 @@ object OpiskeluoikeusQueryFilter {
       case ("suorituksenTila", v) => Right(SuorituksenTila(koodisto.validateRequired("suorituksentila", v)))
       case ("tutkintohaku", hakusana) if hakusana.length < 3 => Left(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort())
       case ("tutkintohaku", hakusana) => Right(Tutkintohaku(koodistohaku("koulutus", hakusana), koodistohaku("osaamisala", hakusana), koodistohaku("tutkintonimikkeet", hakusana)))
-      //case ("toimipiste", v) => TODO: hierarkiahaku
+      case ("toimipiste", oid) =>
+        OrganisaatioOid.validateOrganisaatioOid(oid).right.flatMap { oid =>
+          organisaatiot.getOrganisaatioHierarkia(oid) match {
+            case Some(hierarkia) => Right(Toimipiste(hierarkia.flatten))
+            case None => Left(KoskiErrorCategory.notFound.oppilaitostaEiLöydy("Oppilaitosta/koulutustoimijaa/toimipistettä ei löydy: " + oid))
+          }
+        }
       case ("luokkahaku", v) => Right(Luokkahaku(v))
       case ("nimihaku", hakusana) if hakusana.length < 3 => Left(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort())
       case ("nimihaku", hakusana) => Right(Nimihaku(hakusana))

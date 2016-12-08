@@ -84,6 +84,8 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
             (oo.data.#>>(List("suoritukset", "0", "osaamisala", "0", "koodiarvo")) inSetBind osaamisalat.map(_.koodiarvo)) ||
             (oo.data.#>>(List("suoritukset", "0", "tutkintonimike", "0", "koodiarvo")) inSetBind nimikkeet.map(_.koodiarvo))
         } // TODO: osuu vain ensimmäiseen suoritukseen, osaamisalaan, nimikkeeseen
+      case (query, Toimipiste(toimipisteet)) => query.filter (_.data.#>>(List("suoritukset", "0", "toimipiste", "oid")) inSetBind toimipisteet.map(_.oid) )
+        // TODO: osuu vain ensimmäiseen suoritukseen
       case (query, filter) => throw new InvalidRequestException(KoskiErrorCategory.internalError("Hakua ei ole toteutettu: " + filter))
     }.sortBy(_.oppijaOid)
 

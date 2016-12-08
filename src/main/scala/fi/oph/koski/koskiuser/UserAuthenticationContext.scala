@@ -6,7 +6,7 @@ import fi.vm.sade.security.ldap.DirectoryClient
 
 trait UserAuthenticationContext {
   def directoryClient: DirectoryClient
-  def käyttöoikeusRepository: KayttooikeusRepository
+  def käyttöoikeusRepository: KäyttöoikeusRepository
   def config: Config
   def serviceTicketRepository: SSOTicketSessionRepository
   def sessionTimeout: SessionTimeout
