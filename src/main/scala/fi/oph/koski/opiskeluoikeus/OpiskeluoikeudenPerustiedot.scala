@@ -58,11 +58,7 @@ class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöReposito
   import HenkilöOrdering.aakkostettu
 
   def find(filters: List[OpiskeluoikeusQueryFilter], sorting: SortCriterion, pagination: PaginationSettings)(implicit session: KoskiSession): List[OpiskeluoikeudenPerustiedot] = {
-    val databaseFilters = filters.filter {
-      case Nimihaku(_) => false
-      case f => true
-    }
-    val opiskeluoikeudetObservable = ReportingQueryFacade(henkilöRepository, opiskeluOikeusRepository, koodisto).findOppijat(databaseFilters, session)
+    val opiskeluoikeudetObservable = ReportingQueryFacade(henkilöRepository, opiskeluOikeusRepository, koodisto).findOppijat(filters, session)
 
     val opiskeluoikeudet: List[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])] = opiskeluoikeudetObservable.take(1000).toBlocking.toList
 

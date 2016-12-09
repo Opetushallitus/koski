@@ -21,6 +21,25 @@ class OppijaQuerySpec extends FunSpec with LocalJettyHttpSpecification with Opis
 
   describe("Kyselyrajapinta") {
     describe("kun haku osuu") {
+      describe("nimihaku") {
+        it("sukunimellä tai etunimellä") {
+          queryOppijat("?nimihaku=eerola").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi) should equal(List("Jouni Eerola"))
+          queryOppijat("?nimihaku=eero").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi).sorted should equal(List("Eero Esimerkki", "Eero Markkanen", "Jouni Eerola"))
+        }
+        it("sukunimen tai etunimen osalla") {
+          queryOppijat("?nimihaku=eerol").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi) should equal(List("Jouni Eerola"))
+          queryOppijat("?nimihaku=eer").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi).sorted should equal(List("Eero Esimerkki", "Eero Markkanen", "Jouni Eerola"))
+        }
+        it("etunimi-sukunimiyhdistelmällä") {
+          queryOppijat("?nimihaku=jouni%20eerola").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi) should equal(List("Jouni Eerola"))
+        }
+        it("osittaisten nimien yhdistelmällä") {
+          queryOppijat("?nimihaku=jou%20eer").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi) should equal(List("Jouni Eerola"))
+        }
+        it("erikoismerkeillä") {
+          // TODO: erikoistapauksia testattava
+        }
+      }
       it("päättymispäivämäärä") {
         resetFixtures
         insert(päättymispäivällä(defaultOpiskeluoikeus, date(2016,1,9)), eero)

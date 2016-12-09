@@ -101,6 +101,16 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
           { t: Tables.OpiskeluOikeusTable => ilike(t.data#>>(List("suoritukset", "" + index, "luokka")), (hakusana + "%"))}
         }
         query.filter(predicates.reduce(or))
+      case (query, Nimihaku(hakusana)) =>
+        val tsq = hakusana.toLowerCase.split(" ").map(sana => tsQuery(sana + ":*")).reduce(_ @& _)
+
+        val henkilöt = Tables.Henkilöt
+          .filter(h => (toTsVector(h.etunimet, Some("english")) @+ toTsVector(h.sukunimi, Some("english"))) @@ tsq)
+        for {
+          (o, h) <- (query join henkilöt on (_.oppijaOid === _.oid))
+        } yield {
+          o
+        }
       case (query, filter) => throw new InvalidRequestException(KoskiErrorCategory.internalError("Hakua ei ole toteutettu: " + filter))
     }.sortBy(_.oppijaOid)
 
