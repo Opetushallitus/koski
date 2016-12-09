@@ -163,13 +163,14 @@ class RemoteAuthenticationServiceClient(http: Http) extends AuthenticationServic
 }
 
 class RemoteAuthenticationServiceClientWithMockOids(http: Http) extends RemoteAuthenticationServiceClient(http) {
-  override def findOppijatByOids(oids: List[String]): List[OppijaHenkilö] = super.findOppijatByOids(oids) match {
-    case Nil =>
-      oids.map { oid =>
-        OppijaHenkilö(oid, oid.substring("1.2.246.562.24.".length, oid.length), "Testihenkilö", "Testihenkilö", Some("010101-123N"), None, None)
+  override def findOppijatByOids(oids: List[String]): List[OppijaHenkilö] = {
+    val found = super.findOppijatByOids(oids).map(henkilö => (henkilö.oidHenkilo, henkilö)).toMap
+    oids.map { oid =>
+      found.get(oid) match {
+        case Some(henkilö) => henkilö
+        case None => OppijaHenkilö(oid, oid.substring("1.2.246.562.24.".length, oid.length), "Testihenkilö", "Testihenkilö", Some("010101-123N"), None, None)
       }
-    case oppijat =>
-      oppijat
+    }
   }
 
   override def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö] = super.findKäyttäjäByOid(oid).orElse {
