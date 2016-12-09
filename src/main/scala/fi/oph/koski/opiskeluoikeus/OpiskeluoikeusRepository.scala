@@ -5,11 +5,12 @@ import fi.oph.koski.henkilo.PossiblyUnverifiedHenkilöOid
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema._
+import fi.oph.koski.util.PaginationSettings
 import org.json4s.JValue
 import rx.lang.scala.Observable
 
 trait OpiskeluOikeusRepository extends AuxiliaryOpiskeluOikeusRepository {
-  def streamingQuery(filters: List[OpiskeluoikeusQueryFilter])(implicit user: KoskiSession): Observable[(OpiskeluOikeusRow, HenkilöRow)]
+  def streamingQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: OpiskeluoikeusSortOrder, pagination: Option[PaginationSettings])(implicit user: KoskiSession): Observable[(OpiskeluOikeusRow, HenkilöRow)]
 
   def findById(id: Int)(implicit user: KoskiSession): Option[OpiskeluOikeusRow]
   def delete(id: Int)(implicit user: KoskiSession): HttpStatus

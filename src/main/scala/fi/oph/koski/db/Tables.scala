@@ -6,7 +6,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, PäätasonSuoritus}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, NimitiedotJaOid, Opiskeluoikeus, PäätasonSuoritus}
 import fi.oph.koski.servlet.InvalidRequestException
 import org.json4s._
 
@@ -145,7 +145,9 @@ case class OpiskeluOikeusRow(id: Int, oppijaOid: String, oppilaitosOid: String, 
   }
 }
 
-case class HenkilöRow(oid: String, sukunimi: String, etunimet: String, kutsumanimi: String)
+case class HenkilöRow(oid: String, sukunimi: String, etunimet: String, kutsumanimi: String) {
+  def toNimitiedotJaOid = NimitiedotJaOid(oid, etunimet, kutsumanimi, sukunimi)
+}
 
 case class OpiskeluOikeusHistoryRow(opiskeluoikeusId: Int, versionumero: Int, aikaleima: Timestamp, kayttajaOid: String, muutos: JValue)
 

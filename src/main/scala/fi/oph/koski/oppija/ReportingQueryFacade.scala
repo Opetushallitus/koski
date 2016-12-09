@@ -6,6 +6,7 @@ import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.KoskiMessageField.{apply => _}
 import fi.oph.koski.log.Logging
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusSortOrder.oppijaOid
 import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.schema.Henkilö.{apply => _, _}
 import fi.oph.koski.schema.TäydellisetHenkilötiedot
@@ -38,7 +39,7 @@ case class ReportingQueryFacade(oppijaRepository: HenkilöRepository, opiskeluOi
   }
 
   private def streamingQueryGroupedByOid(filters: List[OpiskeluoikeusQueryFilter])(implicit user: KoskiSession): Observable[(Oid, List[(OpiskeluOikeusRow)])] = {
-    val rows = opiskeluOikeusRepository.streamingQuery(filters)
+    val rows = opiskeluOikeusRepository.streamingQuery(filters, Ascending(oppijaOid), None)
 
     val groupedByPerson: Observable[List[(OpiskeluOikeusRow, HenkilöRow)]] = rows
       .tumblingBuffer(rows.map(_._1.oppijaOid).distinctUntilChanged.drop(1))

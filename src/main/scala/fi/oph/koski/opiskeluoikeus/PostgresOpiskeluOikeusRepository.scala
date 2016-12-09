@@ -15,7 +15,7 @@ import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusChangeValidator.validateOpiskel
 import fi.oph.koski.schema.Henkilö._
 import fi.oph.koski.schema.Opiskeluoikeus.VERSIO_1
 import fi.oph.koski.schema._
-import fi.oph.koski.util.{Futures, ReactiveStreamsToRx}
+import fi.oph.koski.util.{Futures, PaginationSettings, QueryPagination, ReactiveStreamsToRx}
 import org.json4s.JArray
 import rx.lang.scala.Observable
 import slick.dbio.Effect.{All, Read, Transactional, Write}
@@ -66,7 +66,7 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
     }
   }
 
-  override def streamingQuery(filters: List[OpiskeluoikeusQueryFilter])(implicit user: KoskiSession): Observable[(OpiskeluOikeusRow, HenkilöRow)] = {
+  override def streamingQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: OpiskeluoikeusSortOrder, pagination: Option[PaginationSettings])(implicit user: KoskiSession): Observable[(OpiskeluOikeusRow, HenkilöRow)] = {
     import ReactiveStreamsToRx._
     import ILikeExtension._
 
@@ -106,10 +106,19 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
 
         query.filter(r => (toTsVector(r._2.etunimet, Some("english")) @+ toTsVector(r._2.sukunimi, Some("english"))) @@ tsq)
       case (query, filter) => throw new InvalidRequestException(KoskiErrorCategory.internalError("Hakua ei ole toteutettu: " + filter))
-    }.sortBy(_._1.oppijaOid)
+    }
+
+    val sorted = sorting match {
+      case Ascending(OpiskeluoikeusSortOrder.oppijaOid) => query.sortBy(_._2.oid)
+      case Ascending("nimi") => query.sortBy(_._2.sukunimi) // TODO: etunimi
+      case Descending("nimi") => query.sortBy(_._2.sukunimi.desc) // TODO: etunimi
+      case _ => query // TODO: rest of sorting
+    }
+
+    val paginated = QueryPagination.applyPagination(query, pagination)
 
     // Note: it won't actually stream unless you use both `transactionally` and `fetchSize`. It'll collect all the data into memory.
-    db.stream(query.result.transactionally.withStatementParameters(fetchSize = 1000)).publish.refCount
+    db.stream(paginated.result.transactionally.withStatementParameters(fetchSize = 1000)).publish.refCount
   }
 
 
