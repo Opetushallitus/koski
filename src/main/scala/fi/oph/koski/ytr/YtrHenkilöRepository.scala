@@ -18,8 +18,8 @@ case class YtrHenkilöRepository(ytr: YlioppilasTutkintoRekisteri, henkilöpalve
           ytr.oppijaByHetu(hetu).flatMap { ytrOppija =>
             val kutsumanimi = ytrOppija.firstnames.split(" ").toList.head
             henkilöpalvelu.findOrCreate(UusiHenkilö(hetu, ytrOppija.firstnames, kutsumanimi, ytrOppija.lastname)) match {
-              case Right(oid) =>
-                henkilöpalvelu.findByOid(oid)
+              case Right(henkilö) =>
+                Some(henkilö)
               case Left(error) =>
                 logger.error("YTR-oppijan lisäys henkilöpalveluun epäonnistui: " + error)
                 None

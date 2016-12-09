@@ -34,40 +34,40 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluO
     runDbSync(deleteTiedonsiirrot)
 
     validatedOpiskeluoikeudet.foreach {
-      case (oid, oppija) => repository.createOrUpdate(VerifiedHenkilöOid(oid), oppija.tallennettavatOpiskeluoikeudet(0))
+      case (henkilö, opiskeluoikeus) => repository.createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus)
     }
   }
 
   // cached for performance boost
-  private lazy val validatedOpiskeluoikeudet: List[(Oid, Oppija)] = defaultOpiskeluOikeudet.map { case (oid, oikeus) =>
-    validator.validateAsJson(Oppija(OidHenkilö(oid), List(oikeus))) match {
-      case Right(oppija) => (oid, oppija)
-      case Left(status) => throw new RuntimeException("Fixture insert failed for " + oid +  " with data " + Json.write(oikeus) + ": " + status)
+  private lazy val validatedOpiskeluoikeudet: List[(TäydellisetHenkilötiedot, KoskeenTallennettavaOpiskeluoikeus)] = defaultOpiskeluOikeudet.map { case (henkilö, oikeus) =>
+    validator.validateAsJson(Oppija(henkilö, List(oikeus))) match {
+      case Right(oppija) => (henkilö, oppija.tallennettavatOpiskeluoikeudet(0))
+      case Left(status) => throw new RuntimeException("Fixture insert failed for " + henkilö.oid +  " with data " + Json.write(oikeus) + ": " + status)
     }
   }
 
-  private def defaultOpiskeluOikeudet = {
-    List((MockOppijat.eero.oid, OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto)),
-      (MockOppijat.eerola.oid, OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto)),
-      (MockOppijat.teija.oid, OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto)),
-      (MockOppijat.markkanen.oid, OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.omnia)),
-      (MockOppijat.eskari.oid, ExamplesEsiopetus.esioppilas.opiskeluoikeudet.head),
-      (MockOppijat.koululainen.oid, PerusopetusExampleData.päättötodistusOpiskeluoikeus()),
-      (MockOppijat.koululainen.oid, ExamplesPerusopetukseenValmistavaOpetus.opiskeluoikeus),
-      (MockOppijat.toimintaAlueittainOpiskelija.oid, ExamplesPerusopetus.toimintaAlueittainOpiskelija.opiskeluoikeudet.head),
-      (MockOppijat.oppiaineenKorottaja.oid, ExamplesPerusopetus.aineopiskelija.opiskeluoikeudet.head),
-      (MockOppijat.kymppiluokkalainen.oid, ExamplesPerusopetuksenLisaopetus.lisäopetuksenPäättötodistus.opiskeluoikeudet.head),
-      (MockOppijat.lukiolainen.oid, PerusopetusExampleData.päättötodistusOpiskeluoikeus()),
-      (MockOppijat.lukiolainen.oid, ExamplesLukio.päättötodistus),
-      (MockOppijat.luva.oid, ExamplesLukioonValmistavaKoulutus.luvaTodistus.opiskeluoikeudet.head),
-      (MockOppijat.ammattilainen.oid, AmmatillinenExampleData.perustutkintoOpiskeluoikeus()),
-      (MockOppijat.valma.oid, ExamplesValma.valmaTodistus.opiskeluoikeudet.head),
-      (MockOppijat.telma.oid, ExamplesTelma.telmaTodistus.opiskeluoikeudet.head),
-      (MockOppijat.erikoisammattitutkinto.oid, AmmattitutkintoExample.opiskeluoikeus),
-      (MockOppijat.omattiedot.oid, PerusopetusExampleData.päättötodistusOpiskeluoikeus()),
-      (MockOppijat.omattiedot.oid, ExamplesLukio.päättötodistus),
-      (MockOppijat.ibFinal.oid, ExamplesIB.opiskeluoikeus),
-      (MockOppijat.ibPredicted.oid, ExamplesIB.opiskeluoikeusPredictedGrades)
+  private def defaultOpiskeluOikeudet: List[(TäydellisetHenkilötiedot, KoskeenTallennettavaOpiskeluoikeus)] = {
+    List((MockOppijat.eero, OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto)),
+      (MockOppijat.eerola, OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto)),
+      (MockOppijat.teija, OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto)),
+      (MockOppijat.markkanen, OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.omnia)),
+      (MockOppijat.eskari, ExamplesEsiopetus.esioppilas.tallennettavatOpiskeluoikeudet.head),
+      (MockOppijat.koululainen, PerusopetusExampleData.päättötodistusOpiskeluoikeus()),
+      (MockOppijat.koululainen, ExamplesPerusopetukseenValmistavaOpetus.opiskeluoikeus),
+      (MockOppijat.toimintaAlueittainOpiskelija, ExamplesPerusopetus.toimintaAlueittainOpiskelija.tallennettavatOpiskeluoikeudet.head),
+      (MockOppijat.oppiaineenKorottaja, ExamplesPerusopetus.aineopiskelija.tallennettavatOpiskeluoikeudet.head),
+      (MockOppijat.kymppiluokkalainen, ExamplesPerusopetuksenLisaopetus.lisäopetuksenPäättötodistus.tallennettavatOpiskeluoikeudet.head),
+      (MockOppijat.lukiolainen, PerusopetusExampleData.päättötodistusOpiskeluoikeus()),
+      (MockOppijat.lukiolainen, ExamplesLukio.päättötodistus),
+      (MockOppijat.luva, ExamplesLukioonValmistavaKoulutus.luvaTodistus.tallennettavatOpiskeluoikeudet.head),
+      (MockOppijat.ammattilainen, AmmatillinenExampleData.perustutkintoOpiskeluoikeus()),
+      (MockOppijat.valma, ExamplesValma.valmaTodistus.tallennettavatOpiskeluoikeudet.head),
+      (MockOppijat.telma, ExamplesTelma.telmaTodistus.tallennettavatOpiskeluoikeudet.head),
+      (MockOppijat.erikoisammattitutkinto, AmmattitutkintoExample.opiskeluoikeus),
+      (MockOppijat.omattiedot, PerusopetusExampleData.päättötodistusOpiskeluoikeus()),
+      (MockOppijat.omattiedot, ExamplesLukio.päättötodistus),
+      (MockOppijat.ibFinal, ExamplesIB.opiskeluoikeus),
+      (MockOppijat.ibPredicted, ExamplesIB.opiskeluoikeusPredictedGrades)
     )
   }
 }

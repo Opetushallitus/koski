@@ -13,7 +13,7 @@ trait HenkilöRepository extends AuxiliaryHenkilöRepository {
   def findByOid(oid: String): Option[TäydellisetHenkilötiedot]
   def findByOids(oids: List[String]): List[TäydellisetHenkilötiedot]
   def resetFixtures {}
-  def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, Henkilö.Oid]
+  def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, TäydellisetHenkilötiedot]
   def findOppijat(query: String)(implicit user: KoskiSession): List[HenkilötiedotJaOid]
 }
 

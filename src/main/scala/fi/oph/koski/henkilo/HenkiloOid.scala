@@ -3,7 +3,7 @@ package fi.oph.koski.henkilo
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Loggable
-import fi.oph.koski.schema.Henkilö
+import fi.oph.koski.schema.{Henkilö, HenkilötiedotJaOid, TäydellisetHenkilötiedot}
 
 object HenkilöOid {
   def isValidHenkilöOid(oid: String) = {
@@ -21,15 +21,16 @@ object HenkilöOid {
 
 trait PossiblyUnverifiedHenkilöOid extends Loggable {
   def oppijaOid: Henkilö.Oid
-  def verifiedOid: Option[Henkilö.Oid]
+  def verified: Option[TäydellisetHenkilötiedot]
 
   def logString = oppijaOid
 }
 
-case class VerifiedHenkilöOid(val oppijaOid: Henkilö.Oid) extends PossiblyUnverifiedHenkilöOid {
-  override def verifiedOid = Some(oppijaOid)
+case class VerifiedHenkilöOid(henkilö: TäydellisetHenkilötiedot) extends PossiblyUnverifiedHenkilöOid {
+  def oppijaOid = henkilö.oid
+  override def verified = Some(henkilö)
 }
 
 case class UnverifiedHenkilöOid(val oppijaOid: Henkilö.Oid, oppijaRepository: HenkilöRepository)(implicit user: KoskiSession) extends PossiblyUnverifiedHenkilöOid {
-  override lazy val verifiedOid = oppijaRepository.findByOid(oppijaOid).map(oppija => oppijaOid)
+  override lazy val verified = oppijaRepository.findByOid(oppijaOid)
 }

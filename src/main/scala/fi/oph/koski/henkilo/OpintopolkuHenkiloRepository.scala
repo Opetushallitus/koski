@@ -1,7 +1,7 @@
 package fi.oph.koski.henkilo
 
 import fi.oph.koski.henkilo.AuthenticationServiceClient.{OppijaHenkilö, QueryHenkilö}
-import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema._
@@ -15,8 +15,13 @@ class OpintopolkuHenkilöRepository(henkilöPalveluClient: AuthenticationService
     }
   }
 
-  override def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, Henkilö.Oid] =  {
-    henkilöPalveluClient.findOrCreate(AuthenticationServiceClient.UusiHenkilö.oppija(henkilö.hetu, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi)).right.map(_.oidHenkilo)
+  override def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, TäydellisetHenkilötiedot] =  {
+    henkilöPalveluClient.findOrCreate(AuthenticationServiceClient.UusiHenkilö.oppija(henkilö.hetu, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi)).right.flatMap { h =>
+      toTäydellisetHenkilötiedot(h) match {
+        case Some(t) => Right(t)
+        case None => Left(KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Henkilöltä puuttuu hetu"))
+      }
+    }
   }
 
   override def findByOid(oid: String): Option[TäydellisetHenkilötiedot] = henkilöPalveluClient.findOppijaByOid(oid).flatMap(toTäydellisetHenkilötiedot)

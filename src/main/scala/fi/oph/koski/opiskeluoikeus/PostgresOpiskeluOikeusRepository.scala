@@ -14,12 +14,12 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusChangeValidator.validateOpiskeluoikeusChange
 import fi.oph.koski.schema.Henkilö._
 import fi.oph.koski.schema.Opiskeluoikeus.VERSIO_1
-import fi.oph.koski.schema.{HenkilötiedotJaOid, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, PäätasonSuoritus}
+import fi.oph.koski.schema._
 import fi.oph.koski.util.ReactiveStreamsToRx
 import org.json4s.JArray
 import rx.lang.scala.Observable
-import slick.dbio.Effect.{Read, Transactional, Write}
-import slick.dbio.NoStream
+import slick.dbio.Effect.{All, Read, Transactional, Write}
+import slick.dbio.{DBIOAction, NoStream}
 import slick.lifted.{Query, Rep}
 import slick.{dbio, lifted}
 import PostgresDriverWithJsonSupport.api._
@@ -177,12 +177,24 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
         case Right(Some(vanhaOpiskeluOikeus)) =>
           updateAction(vanhaOpiskeluOikeus, opiskeluOikeus)
         case Right(None) =>
-          oppijaOid.verifiedOid match {
-            case Some(oid) => createAction(oid, opiskeluOikeus)
+          oppijaOid.verified match {
+            case Some(henkilö) =>
+              storeHenkilö(henkilö).flatMap { _ =>
+                createAction(henkilö.oid, opiskeluOikeus)
+              }
             case None => DBIO.successful(Left(KoskiErrorCategory.notFound.oppijaaEiLöydy("Oppijaa " + oppijaOid.oppijaOid + " ei löydy.")))
           }
         case Left(err) => DBIO.successful(Left(err))
       }
+    }
+  }
+
+  def storeHenkilö(henkilö: TäydellisetHenkilötiedot) = {
+    Henkilöt.filter(_.oid === henkilö.oid).result.map(_.toList).flatMap {
+      case Nil =>
+        Henkilöt += HenkilöRow(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi)
+      case _ =>
+        DBIO.successful(0)
     }
   }
 

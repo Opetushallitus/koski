@@ -29,7 +29,7 @@ case class VirtaHenkilöRepository(v: VirtaClient, henkilöpalvelu: HenkilöRepo
                 val kutsumanimi = etunimet.split(" ").toList.head
                 // Validi oppija lisätään henkilöpalveluun, jolloin samaa oppijaa ei haeta enää uudestaan Virrasta
                 henkilöpalvelu.findOrCreate(UusiHenkilö(hetu, etunimet, kutsumanimi, sukunimi)) match {
-                  case Right(oid) => henkilöpalvelu.findByOid(oid)
+                  case Right(henkilö) => Some(henkilö)
                   case Left(error) =>
                     logger.error("Virta-oppijan lisäys henkilöpalveluun epäonnistui: " + error)
                     None

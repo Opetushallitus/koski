@@ -22,6 +22,15 @@ object Tables {
     def * = (id, oppijaOid, oppilaitosOid, koulutustoimijaOid, versionumero, data) <> (OpiskeluOikeusRow.tupled, OpiskeluOikeusRow.unapply)
   }
 
+  class HenkilöTable(tag: Tag) extends Table[HenkilöRow](tag, "henkilo") {
+    val oid = column[String]("oid", O.PrimaryKey)
+    val sukunimi = column[String]("sukunimi")
+    val etunimet = column[String]("etunimet")
+    val kutsumanimi = column[String]("kutsumanimi")
+
+    def * = (oid, sukunimi, etunimet, kutsumanimi) <> (HenkilöRow.tupled, HenkilöRow.unapply)
+  }
+
   class OpiskeluOikeusHistoryTable(tag: Tag) extends Table[OpiskeluOikeusHistoryRow] (tag, "opiskeluoikeushistoria") {
     val opiskeluoikeusId = column[Int]("opiskeluoikeus_id")
     val versionumero = column[Int]("versionumero")
@@ -77,6 +86,8 @@ object Tables {
 
   // OpiskeluOikeudet-taulu. Käytä kyselyissä aina OpiskeluOikeudetWithAccessCheck, niin tulee myös käyttöoikeudet tarkistettua samalla.
   val OpiskeluOikeudet = TableQuery[OpiskeluOikeusTable]
+
+  val Henkilöt = TableQuery[HenkilöTable]
 
   val OpiskeluOikeusHistoria = TableQuery[OpiskeluOikeusHistoryTable]
 
@@ -134,14 +145,16 @@ case class OpiskeluOikeusRow(id: Int, oppijaOid: String, oppilaitosOid: String, 
   }
 }
 
-object OpiskeluOikeusStoredDataDeserializer {
-  def read(data: JValue, id: Int, versionumero: Int): KoskeenTallennettavaOpiskeluoikeus = {
-    Json.fromJValue[Opiskeluoikeus](data).asInstanceOf[KoskeenTallennettavaOpiskeluoikeus].withIdAndVersion(id = Some(id), versionumero = Some(versionumero))
-  }
-}
+case class HenkilöRow(oid: String, sukunimi: String, etunimet: String, kutsumanimi: String)
 
 case class OpiskeluOikeusHistoryRow(opiskeluoikeusId: Int, versionumero: Int, aikaleima: Timestamp, kayttajaOid: String, muutos: JValue)
 
 case class TiedonsiirtoRow(id: Int, kayttajaOid: String, tallentajaOrganisaatioOid: String, oppija: Option[JValue], oppilaitos: Option[JValue], data: Option[JValue], virheet: Option[JValue], aikaleima: Timestamp, lahdejarjestelma: Option[String])
 
 case class TiedonsiirtoYhteenvetoRow(tallentajaOrganisaatio: String, oppilaitos: String, kayttaja: String, viimeisin: Timestamp, siirretyt: Int, virheet: Int, opiskeluoikeudet: Option[Int], lahdejarjestelma: Option[String])
+
+object OpiskeluOikeusStoredDataDeserializer {
+  def read(data: JValue, id: Int, versionumero: Int): KoskeenTallennettavaOpiskeluoikeus = {
+    Json.fromJValue[Opiskeluoikeus](data).asInstanceOf[KoskeenTallennettavaOpiskeluoikeus].withIdAndVersion(id = Some(id), versionumero = Some(versionumero))
+  }
+}
