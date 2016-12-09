@@ -115,7 +115,7 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
       case _ => query // TODO: rest of sorting
     }
 
-    val paginated = QueryPagination.applyPagination(query, pagination)
+    val paginated = QueryPagination.applyPagination(sorted, pagination)
 
     // Note: it won't actually stream unless you use both `transactionally` and `fetchSize`. It'll collect all the data into memory.
     db.stream(paginated.result.transactionally.withStatementParameters(fetchSize = 1000)).publish.refCount
