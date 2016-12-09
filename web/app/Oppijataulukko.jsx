@@ -24,7 +24,7 @@ export const Oppijataulukko = React.createClass({
               <Sorter field='nimi' sortBus={this.sortBus} sortBy={sortBy} sortOrder={sortOrder}>Nimi</Sorter>
               <input placeholder="hae" type="text"
                      defaultValue={params['nimihaku']}
-                     onChange={e => this.filterBus.push(R.objOf('nimihaku', e.target.value))}
+                     onChange={e => { if (e.target.value.length >= 3 || e.target.value.length == 0) this.filterBus.push(R.objOf('nimihaku', e.target.value))}}
               />
             </th>
             <th className="tyyppi">
