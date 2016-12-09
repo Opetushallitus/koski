@@ -66,69 +66,48 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
     }
   }
 
-  override def streamingQuery(filters: List[OpiskeluoikeusQueryFilter])(implicit user: KoskiSession): Observable[(Oid, List[OpiskeluOikeusRow])] = {
-    import ReactiveStreamsToRx._
+  override def streamingQuery(filters: List[OpiskeluoikeusQueryFilter])(implicit user: KoskiSession): Observable[(OpiskeluOikeusRow, HenkilöRow)] = {
     import ILikeExtension._
 
-    def or(f1: (Tables.OpiskeluOikeusTable => Rep[Boolean]), f2: (Tables.OpiskeluOikeusTable => Rep[Boolean])): (Tables.OpiskeluOikeusTable => Rep[Boolean]) = { row: Tables.OpiskeluOikeusTable => f1(row) || f2(row) }
+    def or(f1: (((Tables.OpiskeluOikeusTable, Tables.HenkilöTable)) => Rep[Boolean]), f2: (((Tables.OpiskeluOikeusTable, Tables.HenkilöTable)) => Rep[Boolean])): (((Tables.OpiskeluOikeusTable, Tables.HenkilöTable)) => Rep[Boolean]) = { row: (Tables.OpiskeluOikeusTable, Tables.HenkilöTable) => f1(row) || f2(row) }
 
-
-    val query: Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = filters.foldLeft(OpiskeluOikeudetWithAccessCheck.asInstanceOf[Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq]]) {
-      case (query, OpiskeluoikeusPäättynytAikaisintaan(päivä)) => query.filter(_.data.#>>(List("päättymispäivä")) >= päivä.toString)
-      case (query, OpiskeluoikeusPäättynytViimeistään(päivä)) => query.filter(_.data.#>>(List("päättymispäivä")) <= päivä.toString)
-      case (query, OpiskeluoikeusAlkanutAikaisintaan(päivä)) => query.filter(_.data.#>>(List("alkamispäivä")) >= päivä.toString)
-      case (query, OpiskeluoikeusAlkanutViimeistään(päivä)) => query.filter(_.data.#>>(List("alkamispäivä")) <= päivä.toString)
-      case (query, SuorituksenTila(tila)) => query.filter(_.data.+>("suoritukset").@>(parse(s"""[{"tila":{"koodiarvo":"${tila.koodiarvo}"}}]""")))
-      case (query, OpiskeluoikeudenTyyppi(tyyppi)) => query.filter(_.data.#>>(List("tyyppi", "koodiarvo")) === tyyppi.koodiarvo)
-      case (query, SuorituksenTyyppi(tyyppi)) => query.filter(_.data.+>("suoritukset").@>(parse(s"""[{"tyyppi":{"koodiarvo":"${tyyppi.koodiarvo}"}}]""")))
-      case (query, OpiskeluoikeudenTila(tila)) => query.filter(_.data.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "tila", "koodiarvo")) === tila.koodiarvo)
+    val query = filters.foldLeft(OpiskeluOikeudetWithAccessCheck.asInstanceOf[Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq]] join Tables.Henkilöt on (_.oppijaOid === _.oid)) {
+      case (query, OpiskeluoikeusPäättynytAikaisintaan(päivä)) => query.filter(_._1.data.#>>(List("päättymispäivä")) >= päivä.toString)
+      case (query, OpiskeluoikeusPäättynytViimeistään(päivä)) => query.filter(_._1.data.#>>(List("päättymispäivä")) <= päivä.toString)
+      case (query, OpiskeluoikeusAlkanutAikaisintaan(päivä)) => query.filter(_._1.data.#>>(List("alkamispäivä")) >= päivä.toString)
+      case (query, OpiskeluoikeusAlkanutViimeistään(päivä)) => query.filter(_._1.data.#>>(List("alkamispäivä")) <= päivä.toString)
+      case (query, SuorituksenTila(tila)) => query.filter(_._1.data.+>("suoritukset").@>(parse(s"""[{"tila":{"koodiarvo":"${tila.koodiarvo}"}}]""")))
+      case (query, OpiskeluoikeudenTyyppi(tyyppi)) => query.filter(_._1.data.#>>(List("tyyppi", "koodiarvo")) === tyyppi.koodiarvo)
+      case (query, SuorituksenTyyppi(tyyppi)) => query.filter(_._1.data.+>("suoritukset").@>(parse(s"""[{"tyyppi":{"koodiarvo":"${tyyppi.koodiarvo}"}}]""")))
+      case (query, OpiskeluoikeudenTila(tila)) => query.filter(_._1.data.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "tila", "koodiarvo")) === tila.koodiarvo)
       case (query, Tutkintohaku(tutkinnot, osaamisalat, nimikkeet)) =>
         val predicates = tutkinnot.map { tutkinto =>
-          {t: Tables.OpiskeluOikeusTable => t.data.+>("suoritukset").@>(parse(s"""[{"koulutusmoduuli":{"tunniste": {"koodiarvo": "${tutkinto.koodiarvo}"}}}]"""))}
+          {t: (Tables.OpiskeluOikeusTable, Tables.HenkilöTable) => t._1.data.+>("suoritukset").@>(parse(s"""[{"koulutusmoduuli":{"tunniste": {"koodiarvo": "${tutkinto.koodiarvo}"}}}]"""))}
         } ++ nimikkeet.map { nimike =>
-          {t: Tables.OpiskeluOikeusTable => t.data.+>("suoritukset").@>(parse(s"""[{"tutkintonimike":[{"koodiarvo": "${nimike.koodiarvo}"}]}]"""))}
+          {t: (Tables.OpiskeluOikeusTable, Tables.HenkilöTable) => t._1.data.+>("suoritukset").@>(parse(s"""[{"tutkintonimike":[{"koodiarvo": "${nimike.koodiarvo}"}]}]"""))}
         } ++ osaamisalat.map { osaamisala =>
-          {t: Tables.OpiskeluOikeusTable => t.data.+>("suoritukset").@>(parse(s"""[{"osaamisala":[{"koodiarvo": "${osaamisala.koodiarvo}"}]}]"""))}
+          {t: (Tables.OpiskeluOikeusTable, Tables.HenkilöTable) => t._1.data.+>("suoritukset").@>(parse(s"""[{"osaamisala":[{"koodiarvo": "${osaamisala.koodiarvo}"}]}]"""))}
         }
         query.filter(predicates.reduce(or))
       case (query, Toimipiste(toimipisteet)) =>
         val predicates = toimipisteet.map { toimipiste =>
-          {t: Tables.OpiskeluOikeusTable => t.data.+>("suoritukset").@>(parse(s"""[{"toimipiste":{"oid": "${toimipiste.oid}"}}]"""))}
+          {t: (Tables.OpiskeluOikeusTable, Tables.HenkilöTable) => t._1.data.+>("suoritukset").@>(parse(s"""[{"toimipiste":{"oid": "${toimipiste.oid}"}}]"""))}
         }
         query.filter(predicates.reduce(or))
       case (query, Luokkahaku(hakusana)) =>
         val predicates = (0 to 9) map { index =>
-          { t: Tables.OpiskeluOikeusTable => ilike(t.data#>>(List("suoritukset", "" + index, "luokka")), (hakusana + "%"))}
+          { t: (Tables.OpiskeluOikeusTable, Tables.HenkilöTable) => ilike(t._1.data#>>(List("suoritukset", "" + index, "luokka")), (hakusana + "%"))}
         }
         query.filter(predicates.reduce(or))
       case (query, Nimihaku(hakusana)) =>
         val tsq = hakusana.toLowerCase.split(" ").map(sana => tsQuery(sana + ":*")).reduce(_ @& _)
 
-        val henkilöt = Tables.Henkilöt
-          .filter(h => (toTsVector(h.etunimet, Some("english")) @+ toTsVector(h.sukunimi, Some("english"))) @@ tsq)
-        for {
-          (o, h) <- (query join henkilöt on (_.oppijaOid === _.oid))
-        } yield {
-          o
-        }
+        query.filter(r => (toTsVector(r._2.etunimet, Some("english")) @+ toTsVector(r._2.sukunimi, Some("english"))) @@ tsq)
       case (query, filter) => throw new InvalidRequestException(KoskiErrorCategory.internalError("Hakua ei ole toteutettu: " + filter))
-    }.sortBy(_.oppijaOid)
+    }.sortBy(_._1.oppijaOid)
 
     // Note: it won't actually stream unless you use both `transactionally` and `fetchSize`. It'll collect all the data into memory.
-    val rows: Observable[OpiskeluOikeusRow] = db.stream(query.result.transactionally.withStatementParameters(fetchSize = 1000)).publish.refCount
-
-    val groupedByPerson: Observable[List[OpiskeluOikeusRow]] = rows
-      .tumblingBuffer(rows.map(_.oppijaOid).distinctUntilChanged.drop(1))
-      .map(_.toList)
-
-    groupedByPerson.flatMap {
-      case oikeudet@(firstRow :: _) =>
-        val oppijaOid = firstRow.oppijaOid
-        assert(oikeudet.map(_.oppijaOid).toSet == Set(oppijaOid), "Usean ja/tai väärien henkilöiden tietoja henkilöllä " + oppijaOid + ": " + oikeudet)
-        Observable.just((oppijaOid, oikeudet.toList))
-      case _ =>
-        Observable.empty
-    }
+    db.stream(query.result.transactionally.withStatementParameters(fetchSize = 1000)).publish.refCount
   }
 
 

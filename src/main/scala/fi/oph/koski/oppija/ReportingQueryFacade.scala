@@ -1,6 +1,6 @@
 package fi.oph.koski.oppija
 
-import fi.oph.koski.db.OpiskeluOikeusRow
+import fi.oph.koski.db.{HenkilöRow, OpiskeluOikeusRow}
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.KoskiSession
@@ -17,7 +17,7 @@ case class ReportingQueryFacade(oppijaRepository: HenkilöRepository, opiskeluOi
   }
 
   private def query(filters: List[OpiskeluoikeusQueryFilter])(implicit user: KoskiSession): Observable[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])] = {
-    val oikeudetPerOppijaOid: Observable[(Oid, List[OpiskeluOikeusRow])] = opiskeluOikeusRepository.streamingQuery(filters)
+    val oikeudetPerOppijaOid: Observable[(Oid, List[OpiskeluOikeusRow])] = streamingQueryGroupedByOid(filters)
     oikeudetPerOppijaOid.tumblingBuffer(500).flatMap {
       oppijatJaOidit: Seq[(Oid, List[OpiskeluOikeusRow])] =>
         val oids: List[String] = oppijatJaOidit.map(_._1).toList
@@ -34,6 +34,23 @@ case class ReportingQueryFacade(oppijaRepository: HenkilöRepository, opiskeluOi
           }
         }
         Observable.from(oppijat)
+    }
+  }
+
+  private def streamingQueryGroupedByOid(filters: List[OpiskeluoikeusQueryFilter])(implicit user: KoskiSession): Observable[(Oid, List[(OpiskeluOikeusRow)])] = {
+    val rows = opiskeluOikeusRepository.streamingQuery(filters)
+
+    val groupedByPerson: Observable[List[(OpiskeluOikeusRow, HenkilöRow)]] = rows
+      .tumblingBuffer(rows.map(_._1.oppijaOid).distinctUntilChanged.drop(1))
+      .map(_.toList)
+
+    groupedByPerson.flatMap {
+      case oikeudet@(firstRow :: _) =>
+        val oppijaOid = firstRow._1.oppijaOid
+        assert(oikeudet.map(_._1.oppijaOid).toSet == Set(oppijaOid), "Usean ja/tai väärien henkilöiden tietoja henkilöllä " + oppijaOid + ": " + oikeudet)
+        Observable.just((oppijaOid, oikeudet.toList.map(_._1)))
+      case _ =>
+        Observable.empty
     }
   }
 }
