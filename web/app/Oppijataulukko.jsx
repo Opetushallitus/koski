@@ -44,7 +44,14 @@ export const Oppijataulukko = React.createClass({
               />
             </th>
             <th className="tutkinto">Tutkinto / osaamisala / nimike</th>
-            <th className="tila">Tila</th>
+            <th className="tila">
+              <span className="title">Tila</span>
+              <Dropdown
+                optionsP={this.opiskeluoikeudenTila}
+                onSelectionChanged={option => this.filterBus.push(R.objOf('opiskeluoikeudenTila', option ? option.key : undefined ))}
+                selected={params['opiskeluoikeudenTila']}
+              />
+            </th>
             <th className="oppilaitos">Oppilaitos</th>
             <th className={sortBy == 'alkamispäivä' ? 'aloitus sorted': 'aloitus'}>
               <Sorter field='alkamispäivä' sortBus={this.sortBus} sortBy={sortBy} sortOrder={sortOrder}>Aloitus pvm</Sorter>
@@ -97,6 +104,9 @@ export const Oppijataulukko = React.createClass({
       .map(tyypit => tyypit.map(t => ({ key: t.koodiArvo, value: t.metadata.find(m => m.kieli == 'FI').lyhytNimi})))
 
     this.koulutus = Http.get('/koski/api/koodisto/suorituksentyyppi/latest')
+      .map(tyypit => tyypit.map(t => ({ key: t.koodiArvo, value: t.metadata.find(m => m.kieli == 'FI').nimi})))
+
+    this.opiskeluoikeudenTila = Http.get('/koski/api/koodisto/koskiopiskeluoikeudentila/latest')
       .map(tyypit => tyypit.map(t => ({ key: t.koodiArvo, value: t.metadata.find(m => m.kieli == 'FI').nimi})))
   },
   componentDidMount() {
