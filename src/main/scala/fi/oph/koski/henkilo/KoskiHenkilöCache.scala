@@ -13,8 +13,8 @@ class KoskiHenkilöCache(val db: DB, val henkilöt: HenkilöRepository) extends 
     logger.info("Initializing cache")
     val missingOids: List[String] = Futures.await(db.run(sql"""select distinct oppija_oid from opiskeluoikeus
           where oppija_oid not in (select oid from henkilo)""".as[String])).toList
-    missingOids.grouped(100).toList.foreach { oids =>
-      logger.info(s"Storing ${oids.length} persons to local database")
+    logger.info(s"Storing ${missingOids.length} persons to local database")
+    missingOids.grouped(1000).toList.foreach { oids =>
       runDbSync(DBIO.sequence(henkilöt.findByOids(oids).map(addHenkilöAction)))
     }
   }
