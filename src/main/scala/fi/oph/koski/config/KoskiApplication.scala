@@ -9,13 +9,12 @@ import fi.oph.koski.db._
 import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.healthcheck.HealthCheck
-import fi.oph.koski.henkilo.AuthenticationServiceClient
+import fi.oph.koski.henkilo.{AuthenticationServiceClient, HenkilöRepository, KoskiHenkilöCache}
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.{Logging, TimedProxy}
 import fi.oph.koski.opiskeluoikeus.{AuxiliaryOpiskeluOikeusRepository, CompositeOpiskeluOikeusRepository, OpiskeluOikeusRepository, PostgresOpiskeluOikeusRepository}
-import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
@@ -52,7 +51,8 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val oppijaRepository = HenkilöRepository(authenticationServiceClient, koodistoViitePalvelu, virtaClient, virtaAccessChecker, ytrClient, ytrAccessChecker)
   lazy val historyRepository = OpiskeluoikeusHistoryRepository(database.db)
   lazy val virta = TimedProxy[AuxiliaryOpiskeluOikeusRepository](VirtaOpiskeluoikeusRepository(virtaClient, oppijaRepository, oppilaitosRepository, koodistoViitePalvelu, virtaAccessChecker, Some(validator)))
-  lazy val possu = TimedProxy[OpiskeluOikeusRepository](new PostgresOpiskeluOikeusRepository(database.db, historyRepository))
+  lazy val henkilöCache = new KoskiHenkilöCache(database.db, oppijaRepository)
+  lazy val possu = TimedProxy[OpiskeluOikeusRepository](new PostgresOpiskeluOikeusRepository(database.db, historyRepository, henkilöCache))
   lazy val ytr = TimedProxy[AuxiliaryOpiskeluOikeusRepository](YtrOpiskeluoikeusRepository(ytrClient, oppijaRepository, organisaatioRepository, oppilaitosRepository, koodistoViitePalvelu, ytrAccessChecker, Some(validator)))
   lazy val opiskeluOikeusRepository = new CompositeOpiskeluOikeusRepository(possu, List(virta, ytr))
   lazy val validator: KoskiValidator = new KoskiValidator(tutkintoRepository, koodistoViitePalvelu, organisaatioRepository)

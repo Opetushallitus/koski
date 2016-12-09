@@ -5,7 +5,7 @@ import java.sql.SQLException
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
-import fi.oph.koski.henkilo.PossiblyUnverifiedHenkilöOid
+import fi.oph.koski.henkilo.{KoskiHenkilöCache, PossiblyUnverifiedHenkilöOid}
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json
@@ -15,7 +15,7 @@ import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusChangeValidator.validateOpiskel
 import fi.oph.koski.schema.Henkilö._
 import fi.oph.koski.schema.Opiskeluoikeus.VERSIO_1
 import fi.oph.koski.schema._
-import fi.oph.koski.util.ReactiveStreamsToRx
+import fi.oph.koski.util.{Futures, ReactiveStreamsToRx}
 import org.json4s.JArray
 import rx.lang.scala.Observable
 import slick.dbio.Effect.{All, Read, Transactional, Write}
@@ -28,7 +28,7 @@ import fi.oph.koski.servlet.InvalidRequestException
 import OpiskeluoikeusQueryFilter._
 import org.json4s.JsonAST.JObject
 
-class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: OpiskeluoikeusHistoryRepository) extends OpiskeluOikeusRepository with GlobalExecutionContext with KoskiDatabaseMethods with Logging with SerializableTransactions {
+class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: OpiskeluoikeusHistoryRepository, henkilöCache: KoskiHenkilöCache) extends OpiskeluOikeusRepository with GlobalExecutionContext with KoskiDatabaseMethods with Logging with SerializableTransactions {
   override def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession) = {
     val query: lifted.Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = for {
       oo <- OpiskeluOikeudetWithAccessCheck
@@ -179,22 +179,13 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
         case Right(None) =>
           oppijaOid.verified match {
             case Some(henkilö) =>
-              storeHenkilö(henkilö).flatMap { _ =>
+              henkilöCache.addHenkilöAction(henkilö).flatMap { _ =>
                 createAction(henkilö.oid, opiskeluOikeus)
               }
             case None => DBIO.successful(Left(KoskiErrorCategory.notFound.oppijaaEiLöydy("Oppijaa " + oppijaOid.oppijaOid + " ei löydy.")))
           }
         case Left(err) => DBIO.successful(Left(err))
       }
-    }
-  }
-
-  def storeHenkilö(henkilö: TäydellisetHenkilötiedot) = {
-    Henkilöt.filter(_.oid === henkilö.oid).result.map(_.toList).flatMap {
-      case Nil =>
-        Henkilöt += HenkilöRow(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi)
-      case _ =>
-        DBIO.successful(0)
     }
   }
 
