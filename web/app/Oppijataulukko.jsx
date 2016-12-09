@@ -8,6 +8,7 @@ import R from 'ramda'
 import DatePicker from './DatePicker.jsx'
 import { formatISODate, ISO2FinnishDate } from './date'
 import Dropdown from './Dropdown.jsx'
+import Http from './http'
 
 export const Oppijataulukko = React.createClass({
   render() {
@@ -23,8 +24,13 @@ export const Oppijataulukko = React.createClass({
               <Sorter field='nimi' sortBus={this.sortBus} sortBy={sortBy} sortOrder={sortOrder}>Nimi</Sorter>
               <TextFilter field='nimihaku' filterBus={this.filterBus} params={params}/>
             </th>
-            <th className="tyyppi">Opiskeluoikeuden tyyppi
-              <Dropdown optionP={Bacon.constant([1,2,3,4])}/>
+            <th className="tyyppi">
+              <span className="title">Opiskeluoikeuden tyyppi</span>
+              <Dropdown
+                optionsP={this.opiskeluoikeudenTyypit}
+                onSelectionChanged={option => this.filterBus.push(R.objOf('opiskeluoikeudenTyyppi', option ? option.key : undefined ))}
+                selected={params['opiskeluoikeudenTyyppi']}
+              />
             </th>
             <th className="koulutus">Koulutus</th>
             <th className="tutkinto">Tutkinto / osaamisala / nimike</th>
@@ -32,7 +38,10 @@ export const Oppijataulukko = React.createClass({
             <th className="oppilaitos">Oppilaitos</th>
             <th className={sortBy == 'alkamispäivä' ? 'aloitus sorted': 'aloitus'}>
               <Sorter field='alkamispäivä' sortBus={this.sortBus} sortBy={sortBy} sortOrder={sortOrder}>Aloitus pvm</Sorter>
-              <DatePicker selectedDay={params['opiskeluoikeusAlkanutAikaisintaan'] && ISO2FinnishDate(params['opiskeluoikeusAlkanutAikaisintaan'])} onSelectionChanged={date => this.filterBus.push(R.objOf('opiskeluoikeusAlkanutAikaisintaan', date ? formatISODate(date) : undefined ))}/>
+              <DatePicker
+                selectedDay={params['opiskeluoikeusAlkanutAikaisintaan'] && ISO2FinnishDate(params['opiskeluoikeusAlkanutAikaisintaan'])}
+                onSelectionChanged={date => this.filterBus.push(R.objOf('opiskeluoikeusAlkanutAikaisintaan', date ? formatISODate(date) : undefined ))}
+              />
             </th>
             <th className={sortBy == 'luokka' ? 'luokka sorted': 'luokka'}>
               <Sorter field='luokka' sortBus={this.sortBus} sortBy={sortBy} sortOrder={sortOrder}>Luokka / ryhmä</Sorter>
@@ -73,6 +82,8 @@ export const Oppijataulukko = React.createClass({
   componentWillMount() {
     this.sortBus = Bacon.Bus()
     this.filterBus = Bacon.Bus()
+    this.opiskeluoikeudenTyypit = Http.get('/koski/api/koodisto/opiskeluoikeudentyyppi/latest')
+      .map(tyypit => tyypit.map(t => ({ key: t.koodiArvo, value: t.metadata.find(m => m.kieli == 'FI').lyhytNimi})))
   },
   componentDidMount() {
     const toParameterPairs = params => R.filter(([, value]) => !!value, R.toPairs(R.merge(this.props.params, params)))

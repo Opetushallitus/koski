@@ -1,8 +1,8 @@
 .dropdown {
-  width: 100px;
   position: relative;
   outline: none;
   cursor: pointer;
+  width: 140px;
   ul {
     list-style: none;
     margin: 0;
@@ -24,6 +24,9 @@
     &:first-child {
       color: #AEAEAE;
     }
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .select {
@@ -38,5 +41,8 @@
     &.no-selection {
       color: #AEAEAE;
     }
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }

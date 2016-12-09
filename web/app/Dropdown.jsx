@@ -5,11 +5,11 @@ export default React.createClass({
     const { options, open, selected } = this.state
     return (
       <div className="dropdown">
-        <div className={selected ? 'select' : 'select no-selection'} onClick={this.openDropdown}>{selected ? selected : 'valitse'}</div>
+        <div className={selected ? 'select' : 'select no-selection'} onClick={this.openDropdown}>{selected ? selected.value : 'valitse'}</div>
         { open ?
           <ul className="options">
             {
-              ['valitse'].concat(options).map(o => <li key={o} className="option" onClick={(e) => this.selectOption(e,o)}>{o}</li>)
+              [{ value: 'ei valintaa' }].concat(options).map(o => <li key={o.key || o.value} className="option" onClick={(e) => this.selectOption(e,o)}>{o.value}</li>)
             }
           </ul>
           : null
@@ -21,7 +21,8 @@ export default React.createClass({
     this.setState({ open: false })
   },
   selectOption(e, option) {
-    this.setState({selected: option == 'valitse' ? undefined : option, open: false})
+    const selected = option.key ? option : undefined
+    this.setState({selected: selected, open: false}, () => this.props.onSelectionChanged(selected))
     e.stopPropagation()
   },
   openDropdown(e) {
@@ -32,7 +33,7 @@ export default React.createClass({
     this.setState({open: false})
   },
   componentDidMount() {
-    this.props.optionP.onValue(options => this.setState({options}))
+    this.props.optionsP.onValue(options => this.setState({options, selected: options.find(o => o.key == this.props.selected)}))
     window.addEventListener('click', this.closeDropdown, false)
   },
   componentWillUnmount() {
