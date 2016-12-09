@@ -33,10 +33,3 @@ sealed trait CreateOrUpdateResult {
 case class Created(id: Opiskeluoikeus.Id, versionumero: Opiskeluoikeus.Versionumero, diff: JValue) extends CreateOrUpdateResult
 case class Updated(id: Opiskeluoikeus.Id, versionumero: Opiskeluoikeus.Versionumero, diff: JValue) extends CreateOrUpdateResult
 case class NotChanged(id: Opiskeluoikeus.Id, versionumero: Opiskeluoikeus.Versionumero, diff: JValue) extends CreateOrUpdateResult
-
-trait SortCriterion {
-  def field: String
-}
-case class Ascending(field: String) extends SortCriterion
-case class Descending(field: String) extends SortCriterion
-

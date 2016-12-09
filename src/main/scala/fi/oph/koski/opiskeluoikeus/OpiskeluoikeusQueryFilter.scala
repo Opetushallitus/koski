@@ -7,7 +7,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.organisaatio.OrganisaatioRepository
-import fi.oph.koski.schema.{Koodistokoodiviite, OidOrganisaatio, OrganisaatioOid, OrganisaatioWithOid}
+import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioOid, OrganisaatioWithOid}
 
 sealed trait OpiskeluoikeusQueryFilter
 

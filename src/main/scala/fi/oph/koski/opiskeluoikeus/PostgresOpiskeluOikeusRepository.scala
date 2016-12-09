@@ -67,9 +67,11 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
   }
 
   override def streamingQuery(filters: List[OpiskeluoikeusQueryFilter])(implicit user: KoskiSession): Observable[(OpiskeluOikeusRow, HenkilöRow)] = {
+    import ReactiveStreamsToRx._
     import ILikeExtension._
 
     def or(f1: (((Tables.OpiskeluOikeusTable, Tables.HenkilöTable)) => Rep[Boolean]), f2: (((Tables.OpiskeluOikeusTable, Tables.HenkilöTable)) => Rep[Boolean])): (((Tables.OpiskeluOikeusTable, Tables.HenkilöTable)) => Rep[Boolean]) = { row: (Tables.OpiskeluOikeusTable, Tables.HenkilöTable) => f1(row) || f2(row) }
+
 
     val query = filters.foldLeft(OpiskeluOikeudetWithAccessCheck.asInstanceOf[Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq]] join Tables.Henkilöt on (_.oppijaOid === _.oid)) {
       case (query, OpiskeluoikeusPäättynytAikaisintaan(päivä)) => query.filter(_._1.data.#>>(List("päättymispäivä")) >= päivä.toString)

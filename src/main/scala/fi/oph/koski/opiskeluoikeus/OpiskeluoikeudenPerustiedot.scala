@@ -57,7 +57,7 @@ object KoulutusmoduulinPerustiedot {
 class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöRepository, opiskeluOikeusRepository: OpiskeluOikeusRepository, koodisto: KoodistoViitePalvelu) {
   import HenkilöOrdering.aakkostettu
 
-  def find(filters: List[OpiskeluoikeusQueryFilter], sorting: SortCriterion, pagination: PaginationSettings)(implicit session: KoskiSession): List[OpiskeluoikeudenPerustiedot] = {
+  def find(filters: List[OpiskeluoikeusQueryFilter], sorting: OpiskeluoikeusSortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): List[OpiskeluoikeudenPerustiedot] = {
     val opiskeluoikeudetObservable = ReportingQueryFacade(henkilöRepository, opiskeluOikeusRepository, koodisto).findOppijat(filters, session)
 
     val opiskeluoikeudet: List[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])] = opiskeluoikeudetObservable.take(1000).toBlocking.toList
@@ -99,7 +99,7 @@ class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöReposito
     }
   }
 
-  def applySorting(sortCriterion: SortCriterion, list: List[OpiskeluoikeudenPerustiedot]) = {
+  def applySorting(sortCriterion: OpiskeluoikeusSortOrder, list: List[OpiskeluoikeudenPerustiedot]) = {
     import fi.oph.koski.date.DateOrdering._
     def ordering(field: String): Ordering[OpiskeluoikeudenPerustiedot] = field match {
       case "nimi" => Ordering.by(_.henkilö.nimitiedot)
