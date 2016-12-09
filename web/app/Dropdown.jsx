@@ -1,27 +1,48 @@
 import React from 'react'
 
-// Shows <select> if more than 1 option. If 1 option and autoselect == true, automatically selects it and hides dropdown. If zero options, hides the dropdown.
 export default React.createClass({
   render() {
-    let { title, options, value, onChange, className, autoselect } = this.props
-    let withEmptyValue = (xs) => [{ koodiarvo: '', nimi: 'Valitse...'}].concat(xs)
-    let optionElems = opts => withEmptyValue(opts).map(s => <option key={s.koodiarvo} value={s.koodiarvo}>{s.nimi && s.nimi.fi ? s.nimi.fi : s.koodiarvo}</option>)
-
-    return (!autoselect && options.length >= 1) || options.length > 1
-      ? <label>{title}
-          <select
-            className={className}
-            value={value}
-            onChange={(event) => onChange(event.target.value)}>
-            {optionElems(options)}
-          </select>
-        </label>
-      : <div></div>
+    const { options, open, selected } = this.state
+    return (
+      <div className="dropdown">
+        <div className={selected ? 'select' : 'select no-selection'} onClick={this.openDropdown}>{selected ? selected : 'valitse'}</div>
+        { open ?
+          <ul className="options">
+            {
+              ['valitse'].concat(options).map(o => <li key={o} className="option" onClick={(e) => this.selectOption(e,o)}>{o}</li>)
+            }
+          </ul>
+          : null
+        }
+      </div>
+    )
+  },
+  handleClickOutside() {
+    this.setState({ open: false })
+  },
+  selectOption(e, option) {
+    this.setState({selected: option == 'valitse' ? undefined : option, open: false})
+    e.stopPropagation()
+  },
+  openDropdown(e) {
+    this.setState({open: !this.state.open})
+    e.stopPropagation()
+  },
+  closeDropdown() {
+    this.setState({open: false})
   },
   componentDidMount() {
-    let { options, onChange, value, autoselect } = this.props
-    if (autoselect && options.length == 1 && value !== options[0].koodiarvo) {
-      onChange(options[0].koodiarvo)
+    this.props.optionP.onValue(options => this.setState({options}))
+    window.addEventListener('click', this.closeDropdown, false)
+  },
+  componentWillUnmount() {
+    window.removeEventListener('click', this.closeDropdown, false)
+  },
+  getInitialState() {
+    return {
+      options: [],
+      open: false,
+      selected: undefined
     }
   }
 })

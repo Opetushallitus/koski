@@ -7,6 +7,7 @@ import PaginationLink from './PaginationLink.jsx'
 import R from 'ramda'
 import DatePicker from './DatePicker.jsx'
 import { formatISODate, ISO2FinnishDate } from './date'
+import Dropdown from './Dropdown.jsx'
 
 export const Oppijataulukko = React.createClass({
   render() {
@@ -22,7 +23,9 @@ export const Oppijataulukko = React.createClass({
               <Sorter field='nimi' sortBus={this.sortBus} sortBy={sortBy} sortOrder={sortOrder}>Nimi</Sorter>
               <TextFilter field='nimihaku' filterBus={this.filterBus} params={params}/>
             </th>
-            <th className="tyyppi">Opiskeluoikeuden tyyppi</th>
+            <th className="tyyppi">Opiskeluoikeuden tyyppi
+              <Dropdown optionP={Bacon.constant([1,2,3,4])}/>
+            </th>
             <th className="koulutus">Koulutus</th>
             <th className="tutkinto">Tutkinto / osaamisala / nimike</th>
             <th className="tila">Tila</th>
