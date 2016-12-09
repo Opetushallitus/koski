@@ -22,7 +22,10 @@ export const Oppijataulukko = React.createClass({
           <tr>
             <th className={sortBy == 'nimi' ? 'nimi sorted' : 'nimi'}>
               <Sorter field='nimi' sortBus={this.sortBus} sortBy={sortBy} sortOrder={sortOrder}>Nimi</Sorter>
-              <TextFilter field='nimihaku' filterBus={this.filterBus} params={params}/>
+              <input placeholder="hae" type="text"
+                     defaultValue={params['nimihaku']}
+                     onChange={e => this.filterBus.push(R.objOf('nimihaku', e.target.value))}
+              />
             </th>
             <th className="tyyppi">
               <span className="title">Opiskeluoikeuden tyyppi</span>
@@ -32,7 +35,14 @@ export const Oppijataulukko = React.createClass({
                 selected={params['opiskeluoikeudenTyyppi']}
               />
             </th>
-            <th className="koulutus">Koulutus</th>
+            <th className="koulutus">
+              <span className="title">Koulutus</span>
+              <Dropdown
+                optionsP={this.koulutus}
+                onSelectionChanged={option => this.filterBus.push(R.objOf('suorituksenTyyppi', option ? option.key : undefined ))}
+                selected={params['suorituksenTyyppi']}
+              />
+            </th>
             <th className="tutkinto">Tutkinto / osaamisala / nimike</th>
             <th className="tila">Tila</th>
             <th className="oppilaitos">Oppilaitos</th>
@@ -82,8 +92,12 @@ export const Oppijataulukko = React.createClass({
   componentWillMount() {
     this.sortBus = Bacon.Bus()
     this.filterBus = Bacon.Bus()
+
     this.opiskeluoikeudenTyypit = Http.get('/koski/api/koodisto/opiskeluoikeudentyyppi/latest')
       .map(tyypit => tyypit.map(t => ({ key: t.koodiArvo, value: t.metadata.find(m => m.kieli == 'FI').lyhytNimi})))
+
+    this.koulutus = Http.get('/koski/api/koodisto/suorituksentyyppi/latest')
+      .map(tyypit => tyypit.map(t => ({ key: t.koodiArvo, value: t.metadata.find(m => m.kieli == 'FI').nimi})))
   },
   componentDidMount() {
     const toParameterPairs = params => R.filter(([, value]) => !!value, R.toPairs(R.merge(this.props.params, params)))
@@ -106,13 +120,6 @@ const Sorter = React.createClass({
         <div className={selected && sortOrder == 'desc' ? 'desc selected' : 'desc'}></div>
       </div>
     </div>)
-  }
-})
-
-const TextFilter = React.createClass({
-  render() {
-    let { field, filterBus, params} = this.props
-    return <input placeholder="hae" type="text" defaultValue={params[field]} onChange={e => filterBus.push(R.objOf(field, e.target.value))}/>
   }
 })
 
