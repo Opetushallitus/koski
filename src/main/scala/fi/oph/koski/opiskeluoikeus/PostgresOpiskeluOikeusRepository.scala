@@ -103,10 +103,10 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
         }
         query.filter(predicates.reduce(or))
       case (query, Nimihaku(hakusana)) =>
-        val tsq = hakusana.toLowerCase.split(" ").map(sana => toTsQuery(sana + ":*", Some("finnish"))).reduce(_ @& _)
+        val tsq = hakusana.toLowerCase.split(" ").map(sana => toTsQuery(sana + ":*", Some("koski"))).reduce(_ @& _) // "koski" refers to our custom text search configuration, see migration file V26__
         query.filter{ case (_, henkilö) =>
           val tsv = List(henkilö.etunimet, henkilö.sukunimi)
-            .map(toTsVector(_, Some("finnish")))
+            .map(toTsVector(_, Some("koski")))
             .reduce(_ @+ _)
           (tsv @@ tsq)
         }

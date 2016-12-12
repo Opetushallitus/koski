@@ -24,11 +24,11 @@ class OppijaQuerySpec extends FunSpec with LocalJettyHttpSpecification with Opis
       describe("nimihaku") {
         it("sukunimellä tai etunimellä") {
           queryOppijat("?nimihaku=eerola").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi) should equal(List("Jouni Eerola"))
-          queryOppijat("?nimihaku=eero").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi).sorted should equal(List("Eero Esimerkki", "Eero Markkanen", "Jouni Eerola"))
+          queryOppijat("?nimihaku=eero").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi).sorted should equal(List("Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström", "Jouni Eerola"))
         }
         it("sukunimen tai etunimen osalla") {
           queryOppijat("?nimihaku=eerol").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi) should equal(List("Jouni Eerola"))
-          queryOppijat("?nimihaku=eer").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi).sorted should equal(List("Eero Esimerkki", "Eero Markkanen", "Jouni Eerola"))
+          queryOppijat("?nimihaku=eer").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi).sorted should equal(List("Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström", "Jouni Eerola"))
         }
         it("etunimi-sukunimiyhdistelmällä") {
           queryOppijat("?nimihaku=jouni%20eerola").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi) should equal(List("Jouni Eerola"))
@@ -36,8 +36,8 @@ class OppijaQuerySpec extends FunSpec with LocalJettyHttpSpecification with Opis
         it("osittaisten nimien yhdistelmällä") {
           queryOppijat("?nimihaku=jou%20eer").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi) should equal(List("Jouni Eerola"))
         }
-        it("erikoismerkeillä") {
-          // TODO: erikoistapauksia testattava
+        it("aksentit & moniosaiset nimet") {
+          queryOppijat("?nimihaku=eero%20fager").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi) should equal(List("Eéro Jorma-Petteri Markkanen-Fagerström"))
         }
       }
       it("päättymispäivämäärä") {

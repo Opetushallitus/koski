@@ -33,7 +33,7 @@ describe('Ammatillinen koulutus', function() {
         before(addNewOppija('kalle', 'Tunkkila', { etunimet: 'Tero Terde', kutsumanimi: 'Terde', sukunimi: 'Tunkkila', hetu: '280608-6619', oppilaitos: 'Stadin', tutkinto: 'Autoalan'}))
 
         it('Onnistuu, näyttää henkilöpalvelussa olevat nimitiedot', function() {
-          expect(page.getSelectedOppija()).to.equal('Tunkkila-Fagerlund, Tero Petteri Gustaf 280608-6619')
+          expect(page.getSelectedOppija()).to.equal('Tunkkila-Fagerlund, Tero Pêtteri Gustaf 280608-6619')
         })
       })
 
