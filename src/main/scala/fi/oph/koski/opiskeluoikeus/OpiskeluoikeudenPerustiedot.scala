@@ -78,23 +78,7 @@ class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöReposito
 
     val perustiedot: List[OpiskeluoikeudenPerustiedot] = perustiedotObservable.toBlocking.toList
 
-    applyFiltering(filters, perustiedot) // Filtteröi suoritukset opiskeluoikeuksien sisällä
-  }
-
-  def applyFiltering(filters: List[OpiskeluoikeusQueryFilter], list: List[OpiskeluoikeudenPerustiedot])(implicit session: KoskiSession) = {
-    def filterBySuoritukset(list: List[OpiskeluoikeudenPerustiedot], f: SuorituksenPerustiedot => Boolean): List[OpiskeluoikeudenPerustiedot] = {
-      list.flatMap { opiskeluoikeus =>
-        val suoritukset = opiskeluoikeus.suoritukset.filter(f)
-        suoritukset match {
-          case Nil => None
-          case _ => Some(opiskeluoikeus.copy(suoritukset = suoritukset))
-        }
-      }
-    }
-    filters.foldLeft(list) {
-      case (list, Nimihaku(hakusana)) => list.filter(_.henkilö.kokonimi.toLowerCase.contains(hakusana.toLowerCase))
-      case (list, _) => list
-    }
+    perustiedot // TODO: Filtteröi suoritukset opiskeluoikeuksien sisällä
   }
 }
 
