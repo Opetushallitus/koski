@@ -76,7 +76,7 @@ describe('Koski', function() {
     describe('Odottamattoman virheen sattuessa', function() {
       before(
         page.openPage,
-        page.oppijaHaku.search('error', page.isErrorShown))
+        page.oppijaHaku.search('#error#', page.isErrorShown))
 
       it('näytetään virheilmoitus', function() {})
     })

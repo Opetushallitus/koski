@@ -10,6 +10,9 @@ import fi.oph.koski.db.Tables._
 
 class KoskiHenkilöCache(val db: DB) extends Logging with GlobalExecutionContext with KoskiDatabaseMethods {
   def find(queryString: String): List[String] = {
+    if (queryString == "#error#") {
+      throw new TestingException("Testing error handling")
+    }
     val tableQuery = queryString match {
       case "" => Henkilöt
       case _ => Henkilöt
