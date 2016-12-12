@@ -2,7 +2,7 @@ describe('Oppijahaku', function() {
   var page = KoskiPage()
   var opinnot = OpinnotPage()
   var eero = 'Esimerkki, Eero 010101-123N'
-  var markkanen = 'Markkanen, Eero 080154-770R'
+  var markkanen = 'Markkanen-Fagerström, Eéro Jorma-Petteri 080154-770R'
   var eerola = 'Eerola, Jouni 081165-793C'
   var teija = 'Tekijä, Teija 251019-039B'
 
