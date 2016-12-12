@@ -35,7 +35,12 @@ object AuthenticationServiceClient {
   }
 
   case class HenkilöQueryResult(totalCount: Integer, results: List[QueryHenkilö])
+
   case class QueryHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String])
+  case class OppijaHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], aidinkieli: Option[String], kansalaisuus: Option[List[String]]) {
+    def toQueryHenkilö = QueryHenkilö(oidHenkilo, sukunimi, etunimet, kutsumanimi, hetu)
+  }
+
   case class HenkilöYhteystiedoilla(oidHenkilo: String, yhteystiedotRyhma: List[YhteystietoRyhmä]) {
     def workEmails: List[String] = {
       yhteystiedotRyhma.collect {
@@ -46,7 +51,6 @@ object AuthenticationServiceClient {
     }
   }
 
-  case class OppijaHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], aidinkieli: Option[String], kansalaisuus: Option[List[String]])
   case class KäyttäjäHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, kayttajatiedot: Option[Käyttäjätiedot])
   case class UusiHenkilö(hetu: Option[String], sukunimi: String, etunimet: String, kutsumanimi: String, henkiloTyyppi: String, kayttajatiedot: Option[Käyttäjätiedot])
   case class Käyttäjätiedot(username: Option[String])

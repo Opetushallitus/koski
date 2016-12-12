@@ -5,7 +5,7 @@ import java.sql.SQLException
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
-import fi.oph.koski.henkilo.{KoskiHenkilöCache, PossiblyUnverifiedHenkilöOid}
+import fi.oph.koski.henkilo.{KoskiHenkilöCache, KoskiHenkilöCacheUpdater, PossiblyUnverifiedHenkilöOid}
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json
@@ -29,7 +29,7 @@ import OpiskeluoikeusQueryFilter._
 import com.github.tminglei.slickpg.TsVector
 import org.json4s.JsonAST.JObject
 
-class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: OpiskeluoikeusHistoryRepository, henkilöCache: KoskiHenkilöCache) extends OpiskeluOikeusRepository with GlobalExecutionContext with KoskiDatabaseMethods with Logging with SerializableTransactions {
+class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: OpiskeluoikeusHistoryRepository, henkilöCache: KoskiHenkilöCacheUpdater) extends OpiskeluOikeusRepository with GlobalExecutionContext with KoskiDatabaseMethods with Logging with SerializableTransactions {
   override def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession) = {
     val query: lifted.Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = for {
       oo <- OpiskeluOikeudetWithAccessCheck
@@ -103,12 +103,8 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
         }
         query.filter(predicates.reduce(or))
       case (query, Nimihaku(hakusana)) =>
-        val tsq = hakusana.toLowerCase.split(" ").map(sana => toTsQuery(sana + ":*", Some("koski"))).reduce(_ @& _) // "koski" refers to our custom text search configuration, see migration file V26__
         query.filter{ case (_, henkilö) =>
-          val tsv = List(henkilö.etunimet, henkilö.sukunimi)
-            .map(toTsVector(_, Some("koski")))
-            .reduce(_ @+ _)
-          (tsv @@ tsq)
+          KoskiHenkilöCache.filterByQuery(hakusana)(henkilö)
         }
       case (query, filter) => throw new InvalidRequestException(KoskiErrorCategory.internalError("Hakua ei ole toteutettu: " + filter))
     }

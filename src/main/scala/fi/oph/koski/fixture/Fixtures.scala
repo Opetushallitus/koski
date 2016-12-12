@@ -19,12 +19,11 @@ object Fixtures {
   }
 }
 
-class FixtureCreator(config: Config, database: KoskiDatabase, opiskeluOikeusRepository: OpiskeluOikeusRepository, oppijaRepository: HenkilöRepository, validator: KoskiValidator) extends Logging with Timing {
-  private val databaseFixtures = new KoskiDatabaseFixtureCreator(database, opiskeluOikeusRepository, oppijaRepository, validator)
+class FixtureCreator(config: Config, database: KoskiDatabase, opiskeluOikeusRepository: OpiskeluOikeusRepository, henkilöRepository: HenkilöRepository, validator: KoskiValidator) extends Logging with Timing {
+  private val databaseFixtures = new KoskiDatabaseFixtureCreator(database, opiskeluOikeusRepository, henkilöRepository, validator)
   def resetFixtures = if(shouldUseFixtures(config)) {
     timed("resetFixtures") {
       databaseFixtures.resetFixtures
-      oppijaRepository.resetFixtures
       logger.info("Reset application fixtures")
     }
   }

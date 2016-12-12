@@ -1,14 +1,25 @@
 package fi.oph.koski.henkilo
 
 import fi.oph.koski.db.KoskiDatabase._
-import fi.oph.koski.db.{GlobalExecutionContext, HenkilöRow, KoskiDatabaseMethods, PostgresDriverWithJsonSupport}
+import fi.oph.koski.db._
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.TäydellisetHenkilötiedot
+import fi.oph.koski.schema.{Henkilö, TäydellisetHenkilötiedot}
 import fi.oph.koski.util.Futures
 import PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
 
-class KoskiHenkilöCache(val db: DB, val henkilöt: HenkilöRepository) extends Logging with GlobalExecutionContext with KoskiDatabaseMethods {
+class KoskiHenkilöCache(val db: DB) extends Logging with GlobalExecutionContext with KoskiDatabaseMethods {
+  def find(queryString: String): List[String] = {
+    val tableQuery = queryString match {
+      case "" => Henkilöt
+      case _ => Henkilöt
+        .filter(henkilö => KoskiHenkilöCache.filterByQuery(queryString)(henkilö))
+    }
+    runDbSync((tableQuery.map(_.oid)).result).toList
+  }
+}
+
+class KoskiHenkilöCacheUpdater(val db: DB, val henkilöt: HenkilöRepository) extends Logging with GlobalExecutionContext with KoskiDatabaseMethods {
   {
     logger.info("Initializing cache")
     val missingOids: List[String] = Futures.await(db.run(sql"""
@@ -30,5 +41,17 @@ class KoskiHenkilöCache(val db: DB, val henkilöt: HenkilöRepository) extends 
       case _ =>
         DBIO.successful(0)
     }
+  }
+}
+
+
+object KoskiHenkilöCache {
+  def filterByQuery(hakusanat: String)(henkilö: Tables.HenkilöTable) = {
+    val tsq = hakusanat.toLowerCase.split(" ").map(sana => toTsQuery(sana + ":*", Some("koski"))).reduce(_ @& _) // "koski" refers to our custom text search configuration, see migration file V26__
+
+    val tsv = List(henkilö.etunimet, henkilö.sukunimi)
+      .map(toTsVector(_, Some("koski")))
+      .reduce(_ @+ _)
+    (tsv @@ tsq)
   }
 }

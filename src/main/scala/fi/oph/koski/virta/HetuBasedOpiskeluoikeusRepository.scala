@@ -6,12 +6,12 @@ import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{AccessChecker, AccessType, KoskiSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.AuxiliaryOpiskeluOikeusRepository
-import fi.oph.koski.henkilo.HenkilöRepository
+import fi.oph.koski.henkilo.{FindByOid, HenkilöRepository}
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.schema.{Opiskeluoikeus, _}
 import fi.oph.koski.validation.KoskiValidator
 
-abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](oppijaRepository: HenkilöRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, accessChecker: AccessChecker, validator: Option[KoskiValidator] = None)(implicit cacheInvalidator: CacheManager) extends AuxiliaryOpiskeluOikeusRepository with Logging {
+abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](oppijaRepository: FindByOid, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, accessChecker: AccessChecker, validator: Option[KoskiValidator] = None)(implicit cacheInvalidator: CacheManager) extends AuxiliaryOpiskeluOikeusRepository with Logging {
   def opiskeluoikeudetByHetu(hetu: String): List[OO]
 
   // hetu -> org.oids cache for filtering only

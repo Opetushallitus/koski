@@ -14,7 +14,7 @@ import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.schema._
 
 import scala.xml.Node
-case class VirtaXMLConverter(oppijaRepository: HenkilöRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu) extends Logging {
+case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu) extends Logging {
 
   def convertToOpiskeluoikeudet(virtaXml: Node): List[KorkeakoulunOpiskeluoikeus] = {
     import DateOrdering._

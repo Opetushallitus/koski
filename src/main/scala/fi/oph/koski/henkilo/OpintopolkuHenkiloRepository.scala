@@ -6,16 +6,12 @@ import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema._
 
-class OpintopolkuHenkilöRepository(henkilöPalveluClient: AuthenticationServiceClient, koodisto: KoodistoViitePalvelu) extends HenkilöRepository {
-  override def findOppijat(query: String)(implicit user: KoskiSession): List[HenkilötiedotJaOid] = {
-    if (Henkilö.isHenkilöOid(query)) {
-      findByOid(query).map(_.toHenkilötiedotJaOid).toList
-    } else {
-      henkilöPalveluClient.search(query).results.flatMap(toHenkilötiedot)
-    }
+class OpintopolkuHenkilöRepository(henkilöPalveluClient: AuthenticationServiceClient, koodisto: KoodistoViitePalvelu) extends FindByHetu with FindByOid {
+  def findByHetu(query: String)(implicit user: KoskiSession): List[HenkilötiedotJaOid] = {
+    henkilöPalveluClient.search(query).results.flatMap(toHenkilötiedot) // TODO: käytä spesifisempää RESTiä
   }
 
-  override def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, TäydellisetHenkilötiedot] =  {
+  def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, TäydellisetHenkilötiedot] =  {
     henkilöPalveluClient.findOrCreate(AuthenticationServiceClient.UusiHenkilö.oppija(henkilö.hetu, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi)).right.flatMap { h =>
       toTäydellisetHenkilötiedot(h) match {
         case Some(t) => Right(t)
@@ -24,9 +20,9 @@ class OpintopolkuHenkilöRepository(henkilöPalveluClient: AuthenticationService
     }
   }
 
-  override def findByOid(oid: String): Option[TäydellisetHenkilötiedot] = henkilöPalveluClient.findOppijaByOid(oid).flatMap(toTäydellisetHenkilötiedot)
+  def findByOid(oid: String): Option[TäydellisetHenkilötiedot] = henkilöPalveluClient.findOppijaByOid(oid).flatMap(toTäydellisetHenkilötiedot)
 
-  override def findByOids(oids: List[String]): List[TäydellisetHenkilötiedot] = henkilöPalveluClient.findOppijatByOids(oids).flatMap(toTäydellisetHenkilötiedot)
+  def findByOids(oids: List[String]): List[TäydellisetHenkilötiedot] = henkilöPalveluClient.findOppijatByOids(oids).flatMap(toTäydellisetHenkilötiedot)
 
   private def toTäydellisetHenkilötiedot(user: OppijaHenkilö) = user.hetu.map(hetu => TäydellisetHenkilötiedot(user.oidHenkilo, hetu, user.etunimet, user.kutsumanimi, user.sukunimi, convertÄidinkieli(user.aidinkieli), convertKansalaisuus(user.kansalaisuus)))
 

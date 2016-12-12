@@ -1,46 +1,52 @@
 package fi.oph.koski.henkilo
 
 import fi.oph.koski.cache._
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.TimedProxy
 import fi.oph.koski.schema._
-import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaHenkilöRepository}
-import fi.oph.koski.ytr.{YlioppilasTutkintoRekisteri, YtrAccessChecker, YtrHenkilöRepository}
+import fi.oph.koski.virta.VirtaHenkilöRepository
+import fi.oph.koski.ytr.YtrHenkilöRepository
 
-trait HenkilöRepository extends AuxiliaryHenkilöRepository {
+trait FindByOid {
   def findByOid(oid: String): Option[TäydellisetHenkilötiedot]
-  def findByOids(oids: List[String]): List[TäydellisetHenkilötiedot]
-  def resetFixtures {}
-  def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, TäydellisetHenkilötiedot]
-  def findOppijat(query: String)(implicit user: KoskiSession): List[HenkilötiedotJaOid]
 }
 
-trait AuxiliaryHenkilöRepository {
-  def findOppijat(query: String)(implicit user: KoskiSession): List[HenkilötiedotJaOid]
+trait FindByHetu {
+  def findByHetu(query: String)(implicit user: KoskiSession): List[HenkilötiedotJaOid]
 }
 
 object HenkilöRepository {
-  def apply(authenticationServiceClient: AuthenticationServiceClient, koodistoViitePalvelu: KoodistoViitePalvelu, virtaClient: VirtaClient, virtaAccessChecker: VirtaAccessChecker, ytr: YlioppilasTutkintoRekisteri, ytrAccessChecker: YtrAccessChecker)(implicit cacheInvalidator: CacheManager) = {
-    val opintopolku = new OpintopolkuHenkilöRepository(authenticationServiceClient, koodistoViitePalvelu)
-    CachingHenkilöRepository(TimedProxy(
-      CompositeHenkilöRepository(
-        TimedProxy(opintopolku.asInstanceOf[HenkilöRepository]),
-        List(
-          TimedProxy(VirtaHenkilöRepository(virtaClient, opintopolku, virtaAccessChecker).asInstanceOf[AuxiliaryHenkilöRepository]),
-          TimedProxy(YtrHenkilöRepository(ytr, opintopolku, ytrAccessChecker).asInstanceOf[AuxiliaryHenkilöRepository])
-      )).asInstanceOf[HenkilöRepository]
-    ))
+  def apply(application: KoskiApplication)(implicit cacheInvalidator: CacheManager): HenkilöRepository = {
+    val opintopolku = new OpintopolkuHenkilöRepository(application.authenticationServiceClient, application.koodistoViitePalvelu)
+    HenkilöRepository(
+      opintopolku,
+      TimedProxy(VirtaHenkilöRepository(application.virtaClient, opintopolku, application.virtaAccessChecker).asInstanceOf[FindByHetu]),
+      TimedProxy(YtrHenkilöRepository(application.ytrClient, opintopolku, application.ytrAccessChecker).asInstanceOf[FindByHetu]),
+      application.henkilöCache
+    )
   }
 }
 
-case class CachingHenkilöRepository(repository: HenkilöRepository)(implicit cacheInvalidator: CacheManager) extends HenkilöRepository {
-  private val oidCache = KeyValueCache(Cache.cacheAllNoRefresh("OppijaRepository", 3600, 100), repository.findByOid)
+case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta: FindByHetu, ytr: FindByHetu, henkilöCache: KoskiHenkilöCache)(implicit cacheInvalidator: CacheManager) extends FindByOid {
+  private val oidCache = KeyValueCache(Cache.cacheAllNoRefresh("OppijaRepository", 3600, 100), opintopolku.findByOid)
   // findByOid is locally cached
-  override def findByOid(oid: String) = oidCache(oid)
+  def findByOid(oid: String): Option[TäydellisetHenkilötiedot] = oidCache(oid)
   // Other methods just call the non-cached implementation
-  override def findByOids(oids: List[String]) = repository.findByOids(oids)
-  override def findOrCreate(henkilö: UusiHenkilö) = repository.findOrCreate(henkilö)
-  override def findOppijat(query: String)(implicit user: KoskiSession) = repository.findOppijat(query)
+
+  def findByOids(oids: List[String]): List[TäydellisetHenkilötiedot] = opintopolku.findByOids(oids)
+
+  def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, TäydellisetHenkilötiedot] = opintopolku.findOrCreate(henkilö)
+
+  def findOppijat(query: String)(implicit user: KoskiSession): List[HenkilötiedotJaOid] = {
+    if (Henkilö.isHenkilöOid(query)) {
+      findByOid(query).map(_.toHenkilötiedotJaOid).toList
+    } else if(Hetu.validFormat(query).isRight) {
+      List(opintopolku, virta, ytr).iterator.map(_.findByHetu(query)).find(!_.isEmpty).getOrElse(Nil)
+    } else {
+      val oids = henkilöCache.find(query)
+      findByOids(oids).map(_.toHenkilötiedotJaOid)
+    }
+  }
 }

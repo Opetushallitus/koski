@@ -7,7 +7,7 @@ import org.scalatest.{FreeSpec, Matchers}
 class OppijaSearchSpec extends FreeSpec with Matchers with SearchTestMethods with LocalJettyHttpSpecification {
   "/api/henkilo/search" - {
     "Finds by name" in {
-      searchForNames("eero") should equal(List("Jouni Eerola", "Eero Esimerkki", "Eero Markkanen"))
+      searchForNames("eero") should equal(List("Jouni Eerola", "Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström"))
     }
     "Finds by hetu" in {
       searchForNames("010101-123N") should equal(List("Eero Esimerkki"))
