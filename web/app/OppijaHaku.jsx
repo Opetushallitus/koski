@@ -22,11 +22,6 @@ export const oppijatP = Bacon.update(
   henkilöE.filter(Bacon._.id), ((current, valittu) => current.results.filter((oppija) => oppija.oid === valittu.oid).length ? current : { query: '', results: [valittu] })
 )
 
-henkilöP.sampledBy(oppijatP.map('.results').changes(), (oppija, oppijat) => ({ oppija: oppija, oppijat: oppijat }))
-  .filter(({oppija, oppijat}) => !oppija && oppijat.length === 1)
-  .map('.oppijat.0')
-  .onValue(navigateToOppija)
-
 export const searchInProgressP = oppijaHakuE.filter(acceptableQuery).awaiting(oppijatP.mapError().changes()).throttle(200)
 
 export const oppijaHakuElementP = Bacon.combineWith(oppijatP, searchInProgressP, oppijaStateP, (oppijat, searchInProgress, oppija) =>

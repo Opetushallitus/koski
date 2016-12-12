@@ -17,19 +17,18 @@ describe('Oppijahaku', function() {
       expect(page.oppijaHaku.getSearchResults().length).to.equal(0)
     })
   })
-  describe('Kun haku tuottaa yhden tuloksen', function() {
-    before(page.oppijaHaku.search('esimerkki', 1))
-    it('ensimmäinen tulos näytetään', function() {
-      expect(page.oppijaHaku.getSearchResults()).to.deep.equal([eero])
-      expect(page.oppijaHaku.isNoResultsLabelShown()).to.equal(false)
+  describe('Kun haku tuottaa tuloksia', function() {
+    before(page.oppijaHaku.search('eero', 3))
+
+    it('Hakutulokset näytetään', function() {
+      expect(page.oppijaHaku.getSearchResults()).to.deep.equal([eerola, eero, markkanen])
     })
 
-    it('ensimmäinen tulos valitaan automaattisesti', wait.until(function() { return page.getSelectedOppija() == eero }))
+    describe('Kun klikataan oppijaa listalla', function() {
+      before(page.oppijaHaku.selectOppija('Markkanen'))
 
-    describe('Kun haku tuottaa uudestaan yhden tuloksen', function() {
-      before(page.oppijaHaku.search('teija', 1))
-      it('tulosta ei valita automaattisesti', function() {
-        expect(page.getSelectedOppija()).to.equal(eero)
+      it('Oppija valitaan', function() {
+        expect(page.getSelectedOppija()).to.equal(markkanen)
       })
     })
   })
@@ -44,21 +43,6 @@ describe('Oppijahaku', function() {
     it('tyhjentää hakutulos-listauksen', function() {
       expect(page.oppijaHaku.getSearchResults().length).to.equal(0)
       expect(page.oppijaHaku.isNoResultsLabelShown()).to.equal(false)
-    })
-  })
-  describe('Kun haku tuottaa useamman tuloksen', function() {
-    before(page.oppijaHaku.search('eero', 3))
-
-    it('Hakutulokset näytetään', function() {
-      expect(page.oppijaHaku.getSearchResults()).to.deep.equal([eerola, eero, markkanen])
-    })
-
-    describe('Kun klikataan oppijaa listalla', function() {
-      before(page.oppijaHaku.selectOppija('Markkanen'))
-
-      it('Oppija valitaan', function() {
-        expect(page.getSelectedOppija()).to.equal(markkanen)
-      })
     })
   })
 
