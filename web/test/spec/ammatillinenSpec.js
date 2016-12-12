@@ -226,8 +226,8 @@ describe('Ammatillinen koulutus', function() {
 
       describe('Kun sivu ladataan uudelleen', function() {
         before(
-          page.oppijaHaku.search('ero', 4),
-          page.oppijaHaku.selectOppija('Tunkkila'),
+          page.oppijaHaku.search('Tunkkila-Fagerlund', 1),
+          page.oppijaHaku.selectOppija('Tunkkila-Fagerlund'),
           suoritus.expand
         )
 
@@ -248,7 +248,7 @@ describe('Ammatillinen koulutus', function() {
       })
 
       describe('Ilman kirjoitusoikeuksia', function() {
-        before(Authentication().logout, Authentication().login('omnia-katselija'), page.openPage, page.oppijaHaku.search('080154-770R', page.isOppijaSelected('Eero')))
+        before(Authentication().logout, Authentication().login('omnia-katselija'), page.openPage, page.oppijaHaku.search('080154-770R', page.isOppijaSelected('Eéro')))
         it('estetty', function() {
           var suoritus = opinnot.suoritus('Autoalan perustutkinto')
           suoritus.expand()
