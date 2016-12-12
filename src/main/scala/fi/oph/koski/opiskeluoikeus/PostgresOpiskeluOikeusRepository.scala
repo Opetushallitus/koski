@@ -26,6 +26,7 @@ import PostgresDriverWithJsonSupport.api._
 import PostgresDriverWithJsonSupport.jsonMethods._
 import fi.oph.koski.servlet.InvalidRequestException
 import OpiskeluoikeusQueryFilter._
+import com.github.tminglei.slickpg.TsVector
 import org.json4s.JsonAST.JObject
 
 class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: OpiskeluoikeusHistoryRepository, henkilöCache: KoskiHenkilöCache) extends OpiskeluOikeusRepository with GlobalExecutionContext with KoskiDatabaseMethods with Logging with SerializableTransactions {
@@ -102,9 +103,13 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
         }
         query.filter(predicates.reduce(or))
       case (query, Nimihaku(hakusana)) =>
-        val tsq = hakusana.toLowerCase.split(" ").map(sana => tsQuery(sana + ":*")).reduce(_ @& _)
-
-        query.filter(r => (toTsVector(r._2.etunimet, Some("english")) @+ toTsVector(r._2.sukunimi, Some("english"))) @@ tsq)
+        val tsq = hakusana.toLowerCase.split(" ").map(sana => toTsQuery(sana + ":*", Some("finnish"))).reduce(_ @& _)
+        query.filter{ case (_, henkilö) =>
+          val tsv = List(henkilö.etunimet, henkilö.sukunimi)
+            .map(toTsVector(_, Some("finnish")))
+            .reduce(_ @+ _)
+          (tsv @@ tsq)
+        }
       case (query, filter) => throw new InvalidRequestException(KoskiErrorCategory.internalError("Hakua ei ole toteutettu: " + filter))
     }
 
