@@ -26,8 +26,7 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluO
   def resetFixtures: Unit = timed("resetFixtures", 10) {
     if (database.config.isRemote) throw new IllegalStateException("Trying to reset fixtures in remote database")
 
-    val oppijat: List[HenkilötiedotJaOid] = oppijaRepository.findOppijat("")
-    val deleteOpiskeluOikeudet = oppijat.map{oppija => OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid === oppija.oid).delete}
+    val deleteOpiskeluOikeudet = MockOppijat.defaultOppijat.map{oppija => OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid === oppija.oid).delete}
     val deleteTiedonsiirrot = TiedonsiirtoWithAccessCheck.filter(t => t.tallentajaOrganisaatioOid === MockOrganisaatiot.stadinAmmattiopisto || t.tallentajaOrganisaatioOid === MockOrganisaatiot.helsinginKaupunki).delete
 
     runDbSync(DBIO.sequence(deleteOpiskeluOikeudet))

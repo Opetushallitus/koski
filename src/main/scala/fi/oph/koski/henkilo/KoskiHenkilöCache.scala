@@ -7,17 +7,19 @@ import fi.oph.koski.schema.{Henkilö, TäydellisetHenkilötiedot}
 import fi.oph.koski.util.Futures
 import PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
+import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.servlet.InvalidRequestException
 
 class KoskiHenkilöCache(val db: DB) extends Logging with GlobalExecutionContext with KoskiDatabaseMethods {
   def find(queryString: String): List[String] = {
+    if (queryString == "") {
+      throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort())
+    }
     if (queryString == "#error#") {
       throw new TestingException("Testing error handling") // TODO: how to inject error properly
     }
-    val tableQuery = queryString match {
-      case "" => Henkilöt
-      case _ => Henkilöt
-        .filter(henkilö => KoskiHenkilöCache.filterByQuery(queryString)(henkilö))
-    }
+    val tableQuery = Henkilöt
+      .filter(henkilö => KoskiHenkilöCache.filterByQuery(queryString)(henkilö))
     runDbSync((tableQuery.map(_.oid)).result).toList
   }
 }
