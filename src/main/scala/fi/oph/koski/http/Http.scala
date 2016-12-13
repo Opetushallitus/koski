@@ -15,6 +15,7 @@ import org.http4s.headers.`Content-Type`
 import scala.concurrent.duration._
 import scala.xml.Elem
 import scalaz.concurrent.Task
+import scalaz.stream.Process.Emit
 import scalaz.{-\/, \/-}
 
 object Http extends Logging {
@@ -165,19 +166,25 @@ protected case class HttpResponseLog(request: Request) {
   private val started = System.currentTimeMillis
   def elapsedMillis = System.currentTimeMillis - started
   def log(response: Response) {
-    log(response.status.code.toString)
+    log(response.status.code.toString, response.status.code < 400)
     HttpResponseMonitoring.record(request, response.status.code, elapsedMillis)
   }
   def log(e: HttpStatusException) {
-    log(e.status.toString)
+    log(e.status.toString, e.status < 400)
     HttpResponseMonitoring.record(request, e.status, elapsedMillis)
   }
   def log(e: Exception) {
-    log(e.getClass.getSimpleName)
+    log(e.getClass.getSimpleName, false)
     HttpResponseMonitoring.record(request, 500, elapsedMillis)
   }
-  private def log(status: String) {
-    HttpResponseLog.logger.debug(s"${request.method} ${request.uri} status ${status} took ${elapsedMillis} ms")
+  private def log(status: String, ok: Boolean) {
+    val requestBody = if (ok) { None } else { request.body match {
+      case Emit(seq) => seq.reduce(_ ++ _).decodeUtf8.right.toOption
+      case _ => None
+    }}.map("request body " + _).getOrElse("")
+
+    HttpResponseLog.logger.debug(s"${request.method} ${request.uri} status ${status} took ${elapsedMillis} ms ${requestBody}")
+
   }
 }
 
