@@ -39,9 +39,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     Pools.init
     val application = Option(context.getAttribute("koski.application").asInstanceOf[KoskiApplication]).getOrElse(KoskiApplication.apply)
 
-    if (application.config.getBoolean("koodisto.create")) {
-      tryCatch("Koodistojen luonti") { KoodistoCreator.createKoodistotFromMockData(Koodistot.koskiKoodistot, application.config) }
-    }
+    if (application.config.getBoolean("koodisto.create")) tryCatch("Koodistojen luonti") { KoodistoCreator.createKoodistotFromMockData(Koodistot.koskiKoodistot, application.config, application.config.getBoolean("koodisto.update")) }
 
 
     mount("/", new IndexServlet(application))

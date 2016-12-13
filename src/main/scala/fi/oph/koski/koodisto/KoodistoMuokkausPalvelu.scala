@@ -33,6 +33,10 @@ class KoodistoMuokkausPalvelu(username: String, password: String, virkailijaUrl:
     secureHttp.post(uri"/koodisto-service/rest/codeelement/${koodistoUri}", koodi)(json4sEncoderOf[KoodistoKoodi])(Http.unitDecoder)
   }
 
+  def updateKoodi(koodistoUri: String, koodi: KoodistoKoodi) = {
+    secureHttp.put(uri"/koodisto-service/rest/codeelement/${koodistoUri}", koodi)(json4sEncoderOf[KoodistoKoodi])(Http.unitDecoder)
+  }
+
   def createKoodistoRyhmä(ryhmä: KoodistoRyhmä) = {
     secureHttp.post(uri"/koodisto-service/rest/codesgroup", ryhmä)(json4sEncoderOf[KoodistoRyhmä])(Http.unitDecoder)
   }
