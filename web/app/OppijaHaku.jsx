@@ -2,7 +2,7 @@ import React from 'react'
 import Bacon from 'baconjs'
 import Http from './http'
 import {navigateToOppija, navigateToUusiOppija} from './location'
-import {oppijaP, oppijaStateP, Oppija} from './Oppija.jsx'
+import {oppijaStateP} from './Oppija.jsx'
 import {modelData} from './EditorModel.js'
 
 const oppijaHakuE = new Bacon.Bus()
@@ -12,42 +12,16 @@ const acceptableQuery = (q) => q.length >= 3
 const hakuTulosE = oppijaHakuE.debounce(500)
   .flatMapLatest(q => (acceptableQuery(q) ? Http.get(`/koski/api/henkilo/search?query=${q}`) : Bacon.once([])).map((oppijat) => ({ results: oppijat, query: q })))
 
-const henkilöP = oppijaP.map(oppija => modelData(oppija, 'henkilö'))
-
-const henkilöE = henkilöP.toEventStream().filter(Bacon._.id)
-
-export const oppijatP = Bacon.update(
+const oppijatP = Bacon.update(
   { query: '', results: [] },
-  hakuTulosE, ((current, hakutulos) => hakutulos),
-  henkilöE.filter(Bacon._.id), ((current, valittu) => current.results.filter((oppija) => oppija.oid === valittu.oid).length ? current : { query: '', results: [valittu] })
+  hakuTulosE, ((current, hakutulos) => hakutulos)
 )
 
-export const searchInProgressP = oppijaHakuE.filter(acceptableQuery).awaiting(oppijatP.mapError().changes()).throttle(200)
+const searchInProgressP = oppijaHakuE.filter(acceptableQuery).awaiting(oppijatP.mapError().changes()).throttle(200)
 
 export const oppijaHakuElementP = Bacon.combineWith(oppijatP, searchInProgressP, oppijaStateP, (oppijat, searchInProgress, oppija) =>
   <OppijaHaku oppijat={oppijat} valittu={modelData(oppija.valittuOppija, 'henkilö')} searching={searchInProgress}/>
 )
-
-export const oppijaHakuContentP = oppijaStateP.map((oppija) => {
-  return {
-    content: (<div className='content-area'>
-      <Oppija oppija={oppija}/>
-    </div>),
-    title: modelData(oppija.valittuOppija, 'henkilö') ? 'Oppijan tiedot' : ''
-  }
-})
-
-const OppijaHakuBoksi = React.createClass({
-  render() {
-    return (
-      <div>
-        <h3>Hae tai lisää opiskelija</h3>
-        <input id='search-query' ref='query' placeholder='henkilötunnus, nimi tai oppijanumero' onInput={(e) => oppijaHakuE.push(e.target.value)}></input>
-        <a href="/koski/oppija/uusioppija" className="lisaa-oppija" onClick={navigateToUusiOppija}>Lisää opiskelija</a>
-      </div>
-    )
-  }
-})
 
 const OppijaHakutulokset = React.createClass({
   render() {
@@ -69,14 +43,21 @@ const OppijaHakutulokset = React.createClass({
   }
 })
 
-export const OppijaHaku = ({oppijat, valittu, searching}) => {
-  const className = searching ? 'oppija-haku searching' : 'oppija-haku'
-  return (
+export const OppijaHaku = React.createClass({
+  render() {
+    let {oppijat, valittu, searching} = this.props
+    const className = searching ? 'oppija-haku searching' : 'oppija-haku'
+    return (
       <div className={className}>
-        <OppijaHakuBoksi />
+        <div>
+          <h3>Hae tai lisää opiskelija</h3>
+          <input id='search-query' ref='query' placeholder='henkilötunnus, nimi tai oppijanumero' onInput={(e) => oppijaHakuE.push(e.target.value)}></input>
+          <a href="/koski/oppija/uusioppija" className="lisaa-oppija" onClick={navigateToUusiOppija}>Lisää opiskelija</a>
+        </div>
         <div className='hakutulokset'>
           <OppijaHakutulokset oppijat={oppijat} valittu={valittu}/>
         </div>
       </div>
-  )
-}
+    )
+  }
+})

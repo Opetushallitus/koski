@@ -8,6 +8,7 @@ import { editorMapping } from './OppijaEditor.jsx'
 import { Editor } from './GenericEditor.jsx'
 import * as L from 'partial.lenses'
 import R from 'ramda'
+import {modelData} from './EditorModel.js'
 
 const oppijaIdP = locationP.map(location => {
   const match = location.path.match(new RegExp('/koski/oppija/(.*)'))
@@ -53,10 +54,18 @@ updateResultE.plug(oppijaP
   })
 )
 
-
 export const oppijaStateP = Bacon.combineTemplate({
-    valittuOppija: oppijaP,
-    uusiOppija: uusiOppijaP
+  valittuOppija: oppijaP,
+  uusiOppija: uusiOppijaP
+})
+
+export const oppijaContentP = oppijaStateP.map((oppija) => {
+  return {
+    content: (<div className='content-area'>
+      <Oppija oppija={oppija}/>
+    </div>),
+    title: modelData(oppija.valittuOppija, 'henkilö') ? 'Oppijan tiedot' : ''
+  }
 })
 
 export const Oppija = ({oppija}) =>
