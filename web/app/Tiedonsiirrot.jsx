@@ -3,7 +3,7 @@ import Link from './Link.jsx'
 import { contentWithLoadingIndicator } from './AjaxLoadingIndicator.jsx'
 
 export const tiedonsiirrotContentP = (location, contentP) => contentWithLoadingIndicator(contentP).map((content) => ({
-  content:  (<div className='content-area'>
+  content:  (<div className='content-area tiedonsiirrot'>
               <nav className="sidebar tiedonsiirrot-navi">
                 {naviLink('/koski/tiedonsiirrot/yhteenveto', 'Yhteenveto', location, 'yhteenveto-link')}
                 {naviLink('/koski/tiedonsiirrot', 'Tiedonsiirtoloki', location, 'tiedonsiirto-link')}

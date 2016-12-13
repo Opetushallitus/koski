@@ -28,10 +28,9 @@ export const oppijaHakuElementP = Bacon.combineWith(oppijatP, searchInProgressP,
   <OppijaHaku oppijat={oppijat} valittu={modelData(oppija.valittuOppija, 'henkilö')} searching={searchInProgress}/>
 )
 
-export const oppijaHakuContentP = Bacon.combineWith(oppijaHakuElementP, oppijaStateP, (hakuElement, oppija) => {
+export const oppijaHakuContentP = oppijaStateP.map((oppija) => {
   return {
     content: (<div className='content-area'>
-      { hakuElement }
       <Oppija oppija={oppija}/>
     </div>),
     title: modelData(oppija.valittuOppija, 'henkilö') ? 'Oppijan tiedot' : ''
@@ -42,10 +41,9 @@ const OppijaHakuBoksi = React.createClass({
   render() {
     return (
       <div>
-        <label>Opiskelija
-          <input id='search-query' ref='query' placeholder='henkilötunnus, nimi tai oppijanumero' onInput={(e) => oppijaHakuE.push(e.target.value)}></input>
-        </label>
-        <hr></hr>
+        <h3>Hae tai lisää opiskelija</h3>
+        <input id='search-query' ref='query' placeholder='henkilötunnus, nimi tai oppijanumero' onInput={(e) => oppijaHakuE.push(e.target.value)}></input>
+        <a href="/koski/oppija/uusioppija" className="lisaa-oppija" onClick={navigateToUusiOppija}>Lisää opiskelija</a>
       </div>
     )
   }
@@ -72,13 +70,12 @@ const OppijaHakutulokset = React.createClass({
 })
 
 export const OppijaHaku = ({oppijat, valittu, searching}) => {
-  const className = searching ? 'sidebar oppija-haku searching' : 'sidebar oppija-haku'
+  const className = searching ? 'oppija-haku searching' : 'oppija-haku'
   return (
       <div className={className}>
         <OppijaHakuBoksi />
         <div className='hakutulokset'>
           <OppijaHakutulokset oppijat={oppijat} valittu={valittu}/>
-          <div><a href="/koski/oppija/uusioppija" className="lisaa-oppija" onClick={navigateToUusiOppija}>Lisää oppija</a></div>
         </div>
       </div>
   )

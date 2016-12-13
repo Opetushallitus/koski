@@ -1,13 +1,26 @@
 @import "mixins";
 
 .oppija-haku {
-  .leftnavi;
-
   font-size: 0.8em;
+  padding: 15px 14px;
+  border: 1px solid #E4E4E4;
+  display: inline-block;
+
+  h3 {
+    display: inline;
+    margin-right: 15px;
+  }
 
   input {
-    width: ~"calc(100% - 40px)";
+    width: 230px;
+    height: 30px;
   }
+
+  .lisaa-oppija {
+    margin-left: 20px;
+    line-height: 25px;
+  }
+
 
   hr {
     margin-right: 40px;
@@ -17,23 +30,12 @@
   .hakutulokset {
     position: relative;
     ul {
-      .navi-items;
-
       li {
-        .navi-item;
       }
 
       li.selected {
-        .navi-item-selected;
       }
     }
-  }
-
-  .lisaa-oppija {
-    float: right;
-    margin-right: 40px;
-    vertical-align: bottom;
-    line-height: 25px;
   }
 
   &.searching {

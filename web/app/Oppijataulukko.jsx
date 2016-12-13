@@ -139,9 +139,10 @@ export const oppijataulukkoContentP = (query, params) => {
   let pager = Pager('/koski/api/opiskeluoikeus/perustiedot' + query)
   let taulukkoContentP = pager.rowsP.doAction((rivit) => edellisetRivit = rivit).startWith(null).map((rivit) => <Oppijataulukko rivit={rivit} edellisetRivit={edellisetRivit} pager={pager} params={params}/>)
   return Bacon.combineWith(taulukkoContentP, oppijaHakuElementP, (taulukko, hakuElement) => ({
-    content: (<div className='content-area'>
-      { hakuElement }
+    content: (<div className='content-area oppijataulukko'>
       <div className="main-content">
+        { hakuElement }
+        <h2>Opiskelijat</h2>
       { taulukko }
       </div>
     </div>),
