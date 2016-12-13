@@ -7,7 +7,7 @@ describe('Perusopetus', function() {
   before(Authentication().login(), resetFixtures)
 
   describe('Perusopetuksen lukuvuositodistukset ja päättötodistus', function() {
-    before(page.openPage, page.oppijaHaku.search('220109-784L', page.isOppijaSelected('Kaisa')))
+    before(page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
         expect(opinnot.getOppilaitos()).to.equal("Jyväskylän normaalikoulu")
@@ -55,7 +55,7 @@ describe('Perusopetus', function() {
   })
 
   describe('Päättötodistus toiminta-alueittain', function() {
-    before(Authentication().login(), page.openPage, page.oppijaHaku.search('031112-020J', page.isOppijaSelected('Tommi')))
+    before(Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('031112-020J'))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {})
     })
@@ -75,7 +75,7 @@ describe('Perusopetus', function() {
   })
 
   describe('Perusopetuksen oppiaineen oppimäärän todistus', function() {
-    before(Authentication().login(), page.openPage, page.oppijaHaku.search('110738-839L', page.isOppijaSelected('Olli')))
+    before(Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('110738-839L'))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {})
     })
@@ -96,7 +96,7 @@ describe('Perusopetus', function() {
   })
 
   describe('Perusopetuksen lisäopetuksen todistus', function() {
-    before(page.openPage, page.oppijaHaku.search('131025-6573', page.isOppijaSelected('Kaisa')))
+    before(page.openPage, page.oppijaHaku.searchAndSelect('131025-6573'))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {})
     })
@@ -116,7 +116,7 @@ describe('Perusopetus', function() {
   })
 
   describe('Perusopetukseen valmistavan opetuksen todistus', function() {
-    before(page.openPage, page.oppijaHaku.search('220109-784L', page.isOppijaSelected('Kaisa')))
+    before(page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {})
     })

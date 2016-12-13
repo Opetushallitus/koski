@@ -33,12 +33,14 @@ describe('Oppijahaku', function() {
     })
   })
   describe('Haun tyhjentäminen', function() {
-    before(page.oppijaHaku.search('esimerkki', 1))
+    before(page.openPage, page.oppijaHaku.search('esimerkki', 1))
     before(page.oppijaHaku.search('', 0))
 
+    /*
     it('säilyttää oppijavalinnan', function() {
       expect(page.getSelectedOppija()).to.equal(eero)
     })
+    */
 
     it('tyhjentää hakutulos-listauksen', function() {
       expect(page.oppijaHaku.getSearchResults().length).to.equal(0)
@@ -90,9 +92,11 @@ describe('Oppijahaku', function() {
       expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
     })
 
+    /*
     it('Hakutulos näytetään', function() {
       expect(page.oppijaHaku.getSearchResults()).to.deep.equal([eero])
     })
+    */
   })
 
   describe('Käyttöoikeudet', function() {

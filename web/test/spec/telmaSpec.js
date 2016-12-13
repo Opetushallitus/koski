@@ -5,7 +5,7 @@ describe('Telma', function() {
   before(Authentication().login(), resetFixtures)
 
   describe('Työhön ja itsenäiseen elämään valmentava koulutus', function() {
-    before(page.openPage, page.oppijaHaku.search('021080-725C', page.isOppijaSelected('Tuula')))
+    before(page.openPage, page.oppijaHaku.searchAndSelect('021080-725C'))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
         expect(OpinnotPage().getTutkinto()).to.equal("Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)")

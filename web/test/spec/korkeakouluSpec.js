@@ -9,7 +9,7 @@ describe('Korkeakoulutus', function() {
   describe('Valmis diplomi-insinööri', function() {
     before(
       page.openPage,
-      page.oppijaHaku.search('290492-9455', page.isOppijaSelected('Dilbert'))
+      page.oppijaHaku.searchAndSelect('290492-9455')
     )
     describe('Oppilaitos ja tutkinto', function() {
       it('näytetään', function() {
@@ -44,7 +44,7 @@ describe('Korkeakoulutus', function() {
     before(
       Authentication().login(),
       page.openPage,
-      page.oppijaHaku.search('090888-929X', page.isOppijaSelected('Harri'))
+      page.oppijaHaku.searchAndSelect('090888-929X')
     )
     describe('Oppilaitos ja tutkinto', function() {
       it('näytetään', function() {
@@ -63,7 +63,7 @@ describe('Korkeakoulutus', function() {
   describe('Keskeneräinen tutkinto', function() {
     before(
       page.openPage,
-      page.oppijaHaku.search('010675-9981', page.isOppijaSelected('Kikka')),
+      page.oppijaHaku.searchAndSelect('010675-9981'),
       opinnot.avaaOpintosuoritusote(1)
     )
     it('näytetään', function() {
@@ -73,7 +73,7 @@ describe('Korkeakoulutus', function() {
   describe('AMK, keskeyttänyt', function() {
     before(
       page.openPage,
-      page.oppijaHaku.search('100193-948U', page.isOppijaSelected('Valtteri'))
+      page.oppijaHaku.searchAndSelect('100193-948U')
     )
     describe('Oppilaitos ja tutkinto', function() {
       it('näytetään', function() {

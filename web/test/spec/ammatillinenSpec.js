@@ -215,7 +215,7 @@ describe('Ammatillinen koulutus', function() {
       //before(opinnot.selectSuoritustapa("ops"), opinnot.selectOsaamisala("1527"))
       var suoritus = opinnot.suoritus('Autoalan perustutkinto')
       var suoritustapa = suoritus.property('suoritustapa')
-      before(suoritus.expand, suoritus.edit, suoritustapa.addValue, suoritustapa.waitUntilLoaded, suoritustapa.setValue('ops'))
+      before(suoritus.expand, suoritus.edit, suoritustapa.addValue, suoritustapa.waitUntilLoaded, function() { console.log("here1") }, suoritustapa.setValue('ops'), function() { console.log("here") })
 
       describe('Muutosten näyttäminen', function() {
         before(wait.until(page.isSavedLabelShown))
@@ -226,6 +226,7 @@ describe('Ammatillinen koulutus', function() {
 
       describe('Kun sivu ladataan uudelleen', function() {
         before(
+          page.openPage,
           page.oppijaHaku.search('Tunkkila-Fagerlund', 1),
           page.oppijaHaku.selectOppija('Tunkkila-Fagerlund'),
           suoritus.expand
@@ -239,7 +240,7 @@ describe('Ammatillinen koulutus', function() {
 
     describe('Muokkaus', function() {
       describe('Ulkoisen järjestelmän data', function() {
-        before(page.openPage, page.oppijaHaku.search('010675-9981', page.isOppijaSelected('Kikka')))
+        before(page.openPage, page.oppijaHaku.searchAndSelect('010675-9981'))
         it('estetty', function() {
           var suoritus = opinnot.suoritus('Lääketieteen lisensiaatti')
           suoritus.expand()
@@ -248,7 +249,7 @@ describe('Ammatillinen koulutus', function() {
       })
 
       describe('Ilman kirjoitusoikeuksia', function() {
-        before(Authentication().logout, Authentication().login('omnia-katselija'), page.openPage, page.oppijaHaku.search('080154-770R', page.isOppijaSelected('Eéro')))
+        before(Authentication().logout, Authentication().login('omnia-katselija'), page.openPage, page.oppijaHaku.searchAndSelect('080154-770R'))
         it('estetty', function() {
           var suoritus = opinnot.suoritus('Autoalan perustutkinto')
           suoritus.expand()
@@ -259,7 +260,7 @@ describe('Ammatillinen koulutus', function() {
   })
 
   describe('Ammatillisen perustutkinnon päättötodistus', function() {
-    before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.search('280618-402H', page.isOppijaSelected('Aarne')))
+    before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('280618-402H'))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
         expect(OpinnotPage().getTutkinto()).to.equal("Luonto- ja ympäristöalan perustutkinto")
@@ -284,7 +285,7 @@ describe('Ammatillinen koulutus', function() {
   })
 
   describe('Näyttötutkinnot', function() {
-    before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.search('250989-419V', page.isOppijaSelected('Erja')))
+    before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('250989-419V'))
     describe('Näyttötutkintoon valmistava koulutus', function() {
       describe('Oppijan suorituksissa', function() {
         it('näytetään', function() {
@@ -334,7 +335,7 @@ describe('Ammatillinen koulutus', function() {
   })
 
   describe('Ammatilliseen peruskoulutukseen valmentava koulutus', function() {
-    before(page.openPage, page.oppijaHaku.search('130404-054C', page.isOppijaSelected('Anneli')))
+    before(page.openPage, page.oppijaHaku.searchAndSelect('130404-054C'))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
         expect(OpinnotPage().getOppilaitos()).to.equal("Stadin ammattiopisto")

@@ -4,7 +4,7 @@ describe('Ylioppilastutkinto', function( ){
   var opinnot = OpinnotPage()
 
   before(Authentication().login(), resetFixtures)
-  before(page.openPage, page.oppijaHaku.search('010696-971K', page.isOppijaSelected('Ynjevi')))
+  before(page.openPage, page.oppijaHaku.searchAndSelect('010696-971K'))
   describe('Oppijan suorituksissa', function() {
     it('näytetään', function() {
       expect(OpinnotPage().getTutkinto()).to.equal("Ylioppilastutkinto")

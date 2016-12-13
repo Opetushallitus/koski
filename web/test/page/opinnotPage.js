@@ -108,7 +108,7 @@ function Property(elem) {
     },
     setValue: function(value) {
       return function() {
-        return Page(elem).setInputValue("select", value)().then(wait.forAjax)
+        return Page(elem).setInputValue("select", value)()
       }
     },
     getValue: function() {

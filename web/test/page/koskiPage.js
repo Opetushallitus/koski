@@ -2,14 +2,14 @@ function KoskiPage() {
   var pageApi = Page(function() {return S('#content')})
 
   var OppijaHaku = {
-    search: function(query, expectedResults) {
+    search: function(query, expectedResults) { // TODO: defaulttina voisi odottaa, että vähintään yksi tulos näkyy, jossa esiintyy hakusana
       if (expectedResults instanceof Array) {
         var resultList = expectedResults
         expectedResults = function() {
           return _.eq(resultList, OppijaHaku.getSearchResults())
         }
       }
-      if (typeof expectedResults != 'function') {
+      else if (typeof expectedResults != 'function') {
         var expectedNumberOfResults = expectedResults
         expectedResults = function() {
           return OppijaHaku.getSearchResults().length == expectedNumberOfResults
@@ -18,6 +18,14 @@ function KoskiPage() {
       return function() {
         return pageApi.setInputValue('#search-query', query)()
           .then(wait.until(expectedResults))
+      }
+    },
+    searchAndSelect(query, name) {
+      if (!name) {
+        name = query
+      }
+      return function() {
+        return OppijaHaku.search(query, 1)().then(OppijaHaku.selectOppija(name))
       }
     },
     getSearchResults: function() {
@@ -35,7 +43,9 @@ function KoskiPage() {
     },
     selectOppija: function(oppija) {
       return function() {
-        triggerEvent(S('.oppija-haku li a:contains(' + oppija + ')'), 'click')
+        var link = S('.oppija-haku li a:contains(' + oppija + ')')
+        if (!link.length) throw new Error("Oppija ei näkyvissä: " + oppija)
+        triggerEvent(link, 'click')
         return api.waitUntilOppijaSelected(oppija)()
       }
     }
@@ -65,11 +75,12 @@ function KoskiPage() {
       return S('.oppija h2').text()
     },
     waitUntilOppijaSelected: function(oppija) {
+      console.log(oppija)
       return wait.until(api.isOppijaSelected(oppija))
     },
     isOppijaSelected: function(oppija) {
       return function() {
-        return api.getSelectedOppija().indexOf(oppija) >= 0 && OppijaHaku.getSelectedSearchResult().indexOf(oppija) >= 0
+        return api.getSelectedOppija().indexOf(oppija) >= 0 // || OppijaHaku.getSelectedSearchResult().indexOf(oppija) >= 0
       }
     },
     isOppijaLoading: function() {
@@ -89,6 +100,7 @@ function KoskiPage() {
       return isElementVisible(S(".http-status:contains(404)"))
     },
     isSavedLabelShown: function() {
+      console.log("check", isElementVisible(S('.saved')))
       return isElementVisible(S('.saved'))
     },
     getUserName: function() {

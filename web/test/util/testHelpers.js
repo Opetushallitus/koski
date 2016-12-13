@@ -91,6 +91,7 @@ function reloadTestFrame() {
 }
 
 function triggerEvent(element, eventName) {
+  if (!element.length) throw new Error("triggerEvent: element not visible")
   var evt
   if(window.callPhantom) {
     evt = testFrame().document.createEvent('HTMLEvents');

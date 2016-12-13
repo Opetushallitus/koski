@@ -5,7 +5,7 @@ describe('Esiopetus', function() {
   before(Authentication().login(), resetFixtures)
 
   describe('Esiopetuksen opiskeluoikeudet', function() {
-    before(page.openPage, page.oppijaHaku.search('300996-870E', page.isOppijaSelected('Essi')))
+    before(page.openPage, page.oppijaHaku.searchAndSelect('300996-870E'))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
         expect(opinnot.getOppilaitos()).to.equal('Jyväskylän normaalikoulu')

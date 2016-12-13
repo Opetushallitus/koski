@@ -76,6 +76,7 @@ function Page(mainElement) {
             var option = _(input.children()).find(function(item) { return $(item).prop("value") == value })
             input.val($(option).attr("value"))
             triggerEvent(input, "change")
+            console.log("triggered")
             break;
 				  default:
 						throw new Error("Unknown input type: " + inputType(input))
