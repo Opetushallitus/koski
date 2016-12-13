@@ -40,7 +40,7 @@
 
   &.searching {
     .lisaa-oppija {
-      display: none;
+      opacity: 0.5;
     }
     .hakutulokset {
       &:before {
@@ -54,20 +54,6 @@
         background-color: @color-lightgray;
         z-index: (@z-index-base + 1);
         opacity: 0.8;
-      }
-      &:after {
-        display: block;
-        background: url("/koski/images/loader.gif");
-        width: 100px;
-        height: 100px;
-        content: '';
-        position: absolute;
-        z-index: (@z-index-base + 2);
-        top: 27px;
-        left: 120px;
-        opacity: 0.5;
-        animation-name: fadein;
-        animation-duration: 1s;
       }
     }
   }
