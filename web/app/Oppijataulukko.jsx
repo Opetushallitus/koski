@@ -102,7 +102,7 @@ export const Oppijataulukko = React.createClass({
     this.filterBus = Bacon.Bus()
 
     this.opiskeluoikeudenTyypit = Http.get('/koski/api/koodisto/opiskeluoikeudentyyppi/latest').map(koodistoDropdownArvot)
-    this.koulutus = Http.get('/koski/api/koodisto/suorituksentyyppi/latest').map(koodistoDropdownArvot)
+    this.koulutus = Http.get('/koski/api/koodisto/suoritustyypit').map(koodistoDropdownArvot)
     this.opiskeluoikeudenTila = Http.get('/koski/api/koodisto/koskiopiskeluoikeudentila/latest').map(koodistoDropdownArvot)
   },
   componentDidMount() {
