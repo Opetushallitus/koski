@@ -5,8 +5,6 @@ import java.time.LocalDate
 import com.typesafe.config.Config
 import fi.oph.koski.log.Logging
 
-import scala.collection.parallel.immutable.ParSeq
-
 object KoodistoCreator extends Logging {
   def createKoodistotFromMockData(koodistot: List[String], config: Config, updateExisting: Boolean = false): Unit = {
     val kp = KoodistoPalvelu.withoutCache(config)
@@ -49,7 +47,11 @@ object KoodistoCreator extends Logging {
 
         päivitettävätKoodit.zipWithIndex.foreach { case ((vanhaKoodi, koodi), index) =>
           logger.info("Päivitetään koodi (" + (index + 1) + "/" + (päivitettävätKoodit.length) + ") " + koodi.koodiUri)
-          kmp.updateKoodi(koodistoUri, koodi.copy(voimassaAlkuPvm = Some(LocalDate.now)))
+          kmp.updateKoodi(koodistoUri, koodi.copy(
+            voimassaAlkuPvm = Some(LocalDate.now),
+            tila = koodi.tila.orElse(vanhaKoodi.tila).orElse(Some("LUONNOS")),
+            version = koodi.version.orElse(vanhaKoodi.version).orElse(Some(0))
+          ))
         }
       }
     }

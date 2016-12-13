@@ -1,13 +1,10 @@
 package fi.oph.koski.tools
 
-import java.time.LocalDate
-
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.henkilo.AuthenticationServiceClient.{HenkilöQueryResult, UusiHenkilö}
 import fi.oph.koski.henkilo.RemoteAuthenticationServiceClient
-import fi.oph.koski.henkilo.AuthenticationServiceClient.{UusiHenkilö, HenkilöQueryResult}
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koodisto.{KoodistoKoodi, KoodistoKoodiMetadata, KoodistoMuokkausPalvelu}
 import fi.oph.koski.koskiuser.Käyttöoikeusryhmät
 import fi.oph.koski.log.Logging
 
@@ -15,7 +12,6 @@ object ServiceUserAdder extends App with Logging {
   val app: KoskiApplication = KoskiApplicationForTests
   val authService = RemoteAuthenticationServiceClient(app.config)
   val kp = app.koodistoPalvelu
-  val kmp = KoodistoMuokkausPalvelu(app.config)
 
   args match {
     case Array(username, organisaatioOid, password, lahdejarjestelma) =>
