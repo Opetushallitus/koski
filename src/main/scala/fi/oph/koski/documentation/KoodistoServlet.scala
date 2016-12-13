@@ -3,10 +3,14 @@ package fi.oph.koski.documentation
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.{KoodistoKoodi, KoodistoPalvelu, KoodistoViite}
 import fi.oph.koski.koskiuser.Unauthenticated
+import fi.oph.koski.schema.Opiskeluoikeus
 import fi.oph.koski.servlet.{ApiServlet, KoskiBaseServlet}
 
+import scala.collection.immutable.Seq
+
 class KoodistoServlet(val koodistoPalvelu: KoodistoPalvelu) extends ApiServlet with Unauthenticated with KoodistoFinder {
-  private lazy val koodiarvot = Examples.examples.flatMap(_.data.opiskeluoikeudet).flatMap(_.suoritukset).map(_.tyyppi.koodiarvo).distinct.sorted
+  private val opiskeluoikeudet: Seq[Opiskeluoikeus] = Examples.examples.flatMap(_.data.opiskeluoikeudet)
+  private val koodiarvot: Seq[Opiskeluoikeus] => Seq[String] = opiskeluoikeudet => opiskeluoikeudet.flatMap(_.suoritukset).map(_.tyyppi.koodiarvo).distinct.sorted
 
   get("/:name/:version") {
     contentType = "application/json"
@@ -16,7 +20,8 @@ class KoodistoServlet(val koodistoPalvelu: KoodistoPalvelu) extends ApiServlet w
   }
 
   get("/suoritustyypit") {
-    koodistoPalvelu.getLatestVersion("suorituksentyyppi").flatMap(koodistoPalvelu.getKoodistoKoodit).get.filter(koodi => koodiarvot.contains(koodi.koodiArvo))
+    val oo = params.get("opiskeluoikeudentyyppi").map(tyyppi => opiskeluoikeudet.filter(oo => oo.tyyppi.koodiarvo == tyyppi)).getOrElse(opiskeluoikeudet)
+    koodistoPalvelu.getLatestVersion("suorituksentyyppi").flatMap(koodistoPalvelu.getKoodistoKoodit).get.filter(koodi => koodiarvot(oo).contains(koodi.koodiArvo))
   }
 }
 
