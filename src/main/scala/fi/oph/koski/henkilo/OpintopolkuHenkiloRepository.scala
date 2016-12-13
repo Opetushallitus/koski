@@ -22,7 +22,10 @@ class OpintopolkuHenkilöRepository(henkilöPalveluClient: AuthenticationService
 
   def findByOid(oid: String): Option[TäydellisetHenkilötiedot] = henkilöPalveluClient.findOppijaByOid(oid).flatMap(toTäydellisetHenkilötiedot)
 
-  def findByOids(oids: List[String]): List[TäydellisetHenkilötiedot] = henkilöPalveluClient.findOppijatByOids(oids).flatMap(toTäydellisetHenkilötiedot)
+  def findByOids(oids: List[String]): List[TäydellisetHenkilötiedot] = oids match {
+    case Nil => Nil // <- authentication-service fails miserably with empty input list
+    case _ => henkilöPalveluClient.findOppijatByOids(oids).flatMap(toTäydellisetHenkilötiedot)
+  }
 
   private def toTäydellisetHenkilötiedot(user: OppijaHenkilö) = user.hetu.map(hetu => TäydellisetHenkilötiedot(user.oidHenkilo, hetu, user.etunimet, user.kutsumanimi, user.sukunimi, convertÄidinkieli(user.aidinkieli), convertKansalaisuus(user.kansalaisuus)))
 
