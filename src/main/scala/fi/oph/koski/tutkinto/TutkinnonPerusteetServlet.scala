@@ -4,7 +4,7 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.servlet.{ApiServlet, Cached24Hours}
 
-class TutkintoServlet(tutkintoRepository: TutkintoRepository) extends ApiServlet with Unauthenticated with Cached24Hours {
+class TutkinnonPerusteetServlet(tutkintoRepository: TutkintoRepository) extends ApiServlet with Unauthenticated with Cached24Hours {
    get("/oppilaitos/:oppilaitosId") {
      contentType = "application/json;charset=utf-8"
      (params.get("query"), params.get("oppilaitosId")) match {
@@ -12,9 +12,4 @@ class TutkintoServlet(tutkintoRepository: TutkintoRepository) extends ApiServlet
        case _ => KoskiErrorCategory.badRequest.queryParam.searchTermTooShort()
      }
    }
-
-  get("/rakenne/:diaariNumero") {
-    contentType = "application/json;charset=utf-8"
-    renderOption(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy)(tutkintoRepository.findPerusteRakenne(params("diaariNumero")))
-  }
 }
