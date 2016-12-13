@@ -97,17 +97,13 @@ export const Oppijataulukko = React.createClass({
     </div>)
   },
   componentWillMount() {
+    const koodistoDropdownArvot = koodit => koodit.map(k => ({ key: k.koodiArvo, value: k.metadata.find(m => m.kieli == 'FI').nimi})).sort((a, b) => a.value.localeCompare(b.value))
     this.sortBus = Bacon.Bus()
     this.filterBus = Bacon.Bus()
 
-    this.opiskeluoikeudenTyypit = Http.get('/koski/api/koodisto/opiskeluoikeudentyyppi/latest')
-      .map(tyypit => tyypit.map(t => ({ key: t.koodiArvo, value: t.metadata.find(m => m.kieli == 'FI').lyhytNimi})))
-
-    this.koulutus = Http.get('/koski/api/koodisto/suorituksentyyppi/latest')
-      .map(tyypit => tyypit.map(t => ({ key: t.koodiArvo, value: t.metadata.find(m => m.kieli == 'FI').nimi})))
-
-    this.opiskeluoikeudenTila = Http.get('/koski/api/koodisto/koskiopiskeluoikeudentila/latest')
-      .map(tyypit => tyypit.map(t => ({ key: t.koodiArvo, value: t.metadata.find(m => m.kieli == 'FI').nimi})))
+    this.opiskeluoikeudenTyypit = Http.get('/koski/api/koodisto/opiskeluoikeudentyyppi/latest').map(koodistoDropdownArvot)
+    this.koulutus = Http.get('/koski/api/koodisto/suorituksentyyppi/latest').map(koodistoDropdownArvot)
+    this.opiskeluoikeudenTila = Http.get('/koski/api/koodisto/koskiopiskeluoikeudentila/latest').map(koodistoDropdownArvot)
   },
   componentDidMount() {
     const toParameterPairs = params => R.filter(([, value]) => !!value, R.toPairs(R.merge(this.props.params, params)))
