@@ -23,7 +23,7 @@ trait HtmlServlet extends KoskiBaseServlet with AuthenticationSupport {
         case elem: Elem => elem copy (child = elem.child flatMap (this transform))
         case other => other
       }
-    } transform(IndexServlet.html)
+    } transform(IndexServlet.html())
 
     response.setStatus(status.statusCode)
     contentType = "text/html"

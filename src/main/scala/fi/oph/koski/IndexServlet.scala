@@ -1,7 +1,7 @@
 package fi.oph.koski
 
 import fi.oph.koski.koskiuser.{AuthenticationSupport, UserAuthenticationContext}
-import fi.oph.koski.servlet.HtmlServlet
+import fi.oph.koski.servlet.{HtmlServlet, NoCache}
 import org.scalatra.ScalatraServlet
 
 class IndexServlet(val application: UserAuthenticationContext) extends ScalatraServlet with HtmlServlet with AuthenticationSupport {
@@ -13,34 +13,34 @@ class IndexServlet(val application: UserAuthenticationContext) extends ScalatraS
 
   get("/*") {
     status = 404
-    IndexServlet.html
+    IndexServlet.html()
   }
 
   get("/") {
-    IndexServlet.html
+    IndexServlet.html()
   }
 
   get("/uusioppija") {
-    IndexServlet.html
+    IndexServlet.html()
   }
 
   get("/oppija/:oid") {
-    IndexServlet.html
+    IndexServlet.html()
   }
 
   get("/omattiedot") {
-    IndexServlet.html
+    IndexServlet.html()
   }
 
   get("/tiedonsiirrot*") {
-    IndexServlet.html
+    IndexServlet.html()
   }
 }
 
 
 
 object IndexServlet {
-  val html =
+  def html(scriptBundleName: String = "koski-main.js") =
     <html>
       <head>
         <title>Koski - Opintopolku.fi</title>
@@ -53,6 +53,12 @@ object IndexServlet {
       <body>
         <div id="content"></div>
       </body>
-      <script id="bundle" src="/koski/js/koski-main.js"></script>
+      <script id="bundle" src={"/koski/js/" + scriptBundleName}></script>
     </html>
+}
+
+class LoginPageServlet(val application: UserAuthenticationContext) extends ScalatraServlet with HtmlServlet {
+  get("/") {
+    IndexServlet.html("koski-login.js")
+  }
 }

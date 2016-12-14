@@ -1,6 +1,6 @@
 import javax.servlet.ServletContext
 
-import fi.oph.koski.IndexServlet
+import fi.oph.koski.{IndexServlet, LoginPageServlet}
 import fi.oph.koski.cache.CacheServlet
 import fi.oph.koski.sso.{CasServlet, LocalLoginServlet, SSOConfig}
 import fi.oph.koski.config.KoskiApplication
@@ -43,6 +43,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
 
 
     mount("/", new IndexServlet(application))
+    mount("/login", new LoginPageServlet(application))
     mount("/todistus", new TodistusServlet(application))
     mount("/opintosuoritusote", new SuoritusServlet(application))
     mount("/documentation", new DocumentationServlet(application.koodistoPalvelu))

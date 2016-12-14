@@ -21,7 +21,6 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
     <url-pattern>/favicon.ico</url-pattern>
     <url-pattern>/js/*</url-pattern>
     <url-pattern>/css/*</url-pattern>
-    <url-pattern>/login/*</url-pattern>
     <url-pattern>/images/*</url-pattern>
     <url-pattern>/test/*</url-pattern>
     <url-pattern>/json-schema-viewer/*</url-pattern>

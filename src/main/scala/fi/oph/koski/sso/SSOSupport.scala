@@ -76,7 +76,7 @@ trait SSOSupport extends ScalatraBase with Logging {
 
   def ssoConfig = SSOConfig(application.config)
 
-  def localLoginPage = "/login/login.html"
+  def localLoginPage = "/login"
 }
 
 case class SSOConfig(config: Config) {
