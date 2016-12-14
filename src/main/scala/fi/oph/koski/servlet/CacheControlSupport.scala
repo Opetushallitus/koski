@@ -26,12 +26,6 @@ trait NoCache extends CacheControlSupport {
   }
 }
 
-trait UserSessionCached extends Cached {
-  before() {
-    cacheForUserSession
-  }
-}
-
 trait Cached extends CacheControlSupport {
   def cacheDuration: Duration
   before() {

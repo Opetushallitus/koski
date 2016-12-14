@@ -3,12 +3,10 @@ package fi.oph.koski.tiedonsiirto
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.RequiresAuthentication
 import fi.oph.koski.schema.OrganisaatioOid
-import fi.oph.koski.servlet.{ApiServlet, Cached, UserSessionCached}
+import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.util.Pagination
 
-import scala.concurrent.duration._
-
-class TiedonsiirtoServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with UserSessionCached with Pagination {
+class TiedonsiirtoServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache with Pagination {
   get() {
     renderEither(application.tiedonsiirtoService.haeTiedonsiirrot(parseQuery)(koskiSession))
   }
@@ -28,6 +26,4 @@ class TiedonsiirtoServlet(val application: KoskiApplication) extends ApiServlet 
     })
     TiedonsiirtoQuery(oppilaitos, Some(paginationSettings))
   }
-
-  override def cacheDuration = 5 minutes
 }
