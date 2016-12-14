@@ -44,6 +44,6 @@
     "lint": "failOnWarning=true webpack --bail",
     "postinstall": "webpack -p --bail",
     "watch": "webpack -d --progress --colors --watch",
-    "test": "mocha-phantomjs -p node_modules/phantomjs/bin/phantomjs http://localhost:7021/koski/test/runner.html?grep=Oppilai"
+    "test": "mocha-phantomjs -p node_modules/phantomjs/bin/phantomjs http://localhost:7021/koski/test/runner.html"
   }
 }
