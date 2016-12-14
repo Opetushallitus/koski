@@ -20,7 +20,7 @@ function KoskiPage() {
           .then(wait.until(expectedResults))
       }
     },
-    searchAndSelect(query, name) {
+    searchAndSelect: function(query, name) {
       if (!name) {
         name = query
       }
