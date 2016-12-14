@@ -36,7 +36,7 @@ const Lokiriviryhmä = React.createClass({
     const isExpanded = this.state && this.state.expanded
     const tiedonsiirtoRivit = oppijaRivi.rivit
     const isGroup = tiedonsiirtoRivit.length > 1
-    return(<tbody key={tiedonsiirtoRivit[0].id}>
+    return(<tbody>
       {
         tiedonsiirtoRivit.flatMap((rivi, j) => {
             const isParent = j == 0 && isGroup
@@ -56,7 +56,7 @@ const Lokirivi = React.createClass({
   render() {
     const {row, isParent, isChild, isExpanded, isEven, showError, setExpanded} = this.props
     const extractName = (oppilaitokset) =>
-    oppilaitokset && oppilaitokset.map((oppilaitos) => <a href={'/koski/tiedonsiirrot' + (showError ? '/virheet' : '') + '?oppilaitos=' + oppilaitos.oid}>{oppilaitos && oppilaitos.nimi && oppilaitos.nimi.fi}</a>)
+      oppilaitokset && oppilaitokset.map((oppilaitos, i) => <a key={i} href={'/koski/tiedonsiirrot' + (showError ? '/virheet' : '') + '?oppilaitos=' + oppilaitos.oid}>{oppilaitos && oppilaitos.nimi && oppilaitos.nimi.fi}</a>)
     const dataToBeShown = this.state && this.state.dataToBeShown
     const showData = (data) => this.setState({dataToBeShown: data})
     const errorDetails = (virheet) => { return showError ?
