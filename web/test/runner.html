@@ -45,19 +45,18 @@
 <script src="spec/tiedonsiirrotSpec.js"></script>
 <script src="spec/omatTiedotSpec.js"></script>
 <script>
-    if (window.mochaPhantomJS) {
-        var runner = mochaPhantomJS.run()
+    var runner = mocha.run()
+    if (window.callPhantom) {
+        console.log("PhantomJS mode")
         runner.on("fail", function() {
-          takeScreenshot()
-        })
-    } else {
-        var runner = mocha.run()
-        $(document).keyup(function(e) { 
-          if(e.keyCode==27) {
-              runner._abort = true
-          }
+            takeScreenshot()
         })
     }
+    $(document).keyup(function(e) { 
+      if(e.keyCode==27) {
+          runner._abort = true
+      }
+    })
 </script>
 <iframe id="testframe"></iframe>
 </body>

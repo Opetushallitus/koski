@@ -140,7 +140,7 @@ function takeScreenshot() {
   if (window.callPhantom) {
     var date = new Date()
     var filename = "target/screenshots/" + date.getTime()
-    console.log("Taking screenshot " + filename)
+    console.log("Taking screenshot web/" + filename + ".png")
     callPhantom({'screenshot': filename})
   }
 }
