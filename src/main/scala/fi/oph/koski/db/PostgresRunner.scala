@@ -4,6 +4,7 @@ import java.io.File
 import java.nio.file.Files
 
 import fi.oph.koski.log.Logging
+import fi.oph.koski.util.PortChecker
 
 class PostgresRunner(dataDirName: String, configFile: String, port: Integer) extends Logging {
 
@@ -35,7 +36,7 @@ class PostgresRunner(dataDirName: String, configFile: String, port: Integer) ext
       ensureDataDirExists
       logger.info("Starting server on port " + port)
       serverProcess = Some(("postgres --config_file=" + configFile + " -D " + dataDirName + " -p " + port).run)
-      Thread.sleep(1000)
+      PortChecker.waitUntilReservedLocalPort(port)
       sys.addShutdownHook {
         stop
       }
