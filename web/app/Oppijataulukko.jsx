@@ -43,7 +43,7 @@ export const Oppijataulukko = React.createClass({
                 selected={params['suorituksenTyyppi']}
               />
             </th>
-            <th className="tutkinto">Tutkinto / osaamisala / nimike</th>
+            <th className="tutkinto"><span className="title">Tutkinto / osaamisala / nimike</span></th>
             <th className="tila">
               <span className="title">Tila</span>
               <Dropdown
@@ -52,7 +52,7 @@ export const Oppijataulukko = React.createClass({
                 selected={params['opiskeluoikeudenTila']}
               />
             </th>
-            <th className="oppilaitos">Oppilaitos</th>
+            <th className="oppilaitos"><span className="title">Oppilaitos</span></th>
             <th className={sortBy == 'alkamispäivä' ? 'aloitus sorted': 'aloitus'}>
               <Sorter field='alkamispäivä' sortBus={this.sortBus} sortBy={sortBy} sortOrder={sortOrder}>Aloitus pvm</Sorter>
               <DatePicker

@@ -1,6 +1,6 @@
 .main-content .oppijataulukko {
   background: white;
-  min-width: 1200px;
+  min-width: 1320px;
   table {
     font-size: 0.7em;
     border: 1px solid #E4E4E4;
@@ -15,7 +15,42 @@
       .title {
         vertical-align: top;
         display: inline-block;
-        height: 22px;
+        height: 48px;
+        font-weight: 600;
+        font-size: 14px;
+      }
+      input {
+        width: 100%;
+      }
+      &.nimi {
+        width: 190px;
+      }
+      &.tyyppi {
+        max-width: 162px;
+        width: 162px;
+      }
+      &.koulutus {
+        max-width: 135px;
+        width: 135px;
+      }
+      &.tutkinto {
+        max-width: 276px;
+        width: 276px;
+      }
+      &.tila {
+        max-width: 100px;
+        width: 100px;
+      }
+      &.oppilaitos {
+        max-width: 247px;
+        width: 247px;
+      }
+      &.aloitus {
+        max-width: 120px;
+        width: 120px;
+      }
+      &.luokka .title {
+        width: 85%;
       }
     }
     tr:nth-child(even) {
@@ -24,9 +59,6 @@
     td, th {
       padding: 5px;
       border-right: 1px solid #E4E4E4;
-      &.koulutus { width: 160px; }
-      &.tutkinto { width: 160px; }
-      &.pvm {  }
     }
     th {
       font-weight: normal;
@@ -46,9 +78,7 @@
 
   .sort-indicator {
     display: inline-block;
-    margin-left: 5px;
-    position: relative;
-    top: -2px;
+    float: right;
 
     .desc {
       display: block;
