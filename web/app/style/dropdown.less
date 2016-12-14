@@ -43,7 +43,7 @@
     border: 1px solid #AEAEAE;
     box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.2);
     border-radius: 2px;
-    padding: 0 0.7em;
+    padding: 0 18px 0 8px;
     vertical-align: bottom;
     line-height: 28px;
     &.no-selection {
@@ -52,5 +52,16 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    &:after {
+      content: '';
+      position: absolute;
+      right: 10px;
+      transform: rotate(135deg);
+      border-right: 1px solid #2B2B2B;
+      border-top: 1px solid #2B2B2B;
+      width: 6px;
+      height: 6px;
+      margin-top: 8px;
+    }
   }
 }

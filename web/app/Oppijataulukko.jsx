@@ -70,9 +70,9 @@ export const Oppijataulukko = React.createClass({
             näytettävätRivit.map( (opiskeluoikeus, i) => <tr key={i}>
               <td className="nimi"><a href={`/koski/oppija/${opiskeluoikeus.henkilö.oid}`} onClick={(e) => navigateToOppija(opiskeluoikeus.henkilö, e)}>{ opiskeluoikeus.henkilö.sukunimi + ', ' + opiskeluoikeus.henkilö.etunimet}</a></td>
               <td className="tyyppi">{ opiskeluoikeus.tyyppi.nimi.fi }</td>
-              <td className="koulutus">{ opiskeluoikeus.suoritukset.map((suoritus, j) => <span key={j}>{suoritus.tyyppi.nimi.fi}</span>) } </td>
+              <td className="koulutus">{ opiskeluoikeus.suoritukset.map((suoritus, j) => <span key={j} className="koulutus-tiedot">{suoritus.tyyppi.nimi.fi}</span>) } </td>
               <td className="tutkinto">{ opiskeluoikeus.suoritukset.map((suoritus, j) =>
-                <span key={j}>
+                <span key={j} className="tutkinto-tiedot">
                   {
                     <span className="koulutusmoduuli">{suoritus.koulutusmoduuli.tunniste.nimi.fi}</span>
                   }

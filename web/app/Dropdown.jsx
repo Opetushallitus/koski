@@ -4,7 +4,7 @@ export default React.createClass({
   render() {
     const { options, open, selected } = this.state
     return (
-      <div className="dropdown" onFocus={e => this.handleFocus(e)} onBlur={e => this.handleBlur(e)} tabIndex="0" ref={el => this.dropdown = el}>
+      <div className="dropdown" onFocus={this.handleFocus} onBlur={this.handleBlur} tabIndex="0" ref={el => this.dropdown = el}>
         <div className={selected ? 'select' : 'select no-selection'} onClick={this.openDropdown} >{selected ? selected.value : 'valitse'}</div>
         { open ?
           <ul className="options">
@@ -33,10 +33,10 @@ export default React.createClass({
   closeDropdown() {
     !this.state.active && this.setState({open: false})
   },
-  handleFocus(e) {
+  handleFocus() {
     this.setState({active:true})
   },
-  handleBlur(e) {
+  handleBlur() {
     this.setState({open: false, active: false})
   },
   componentDidMount() {

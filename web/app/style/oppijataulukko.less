@@ -22,9 +22,6 @@
     td, th {
       padding: 5px;
       border-right: 1px solid #E4E4E4;
-      span {
-        display: block;
-      }
       &.koulutus { width: 160px; }
       &.tutkinto { width: 160px; }
       &.pvm {  }
@@ -34,6 +31,10 @@
     }
     tbody.loading {
       opacity: 0.5;
+    }
+    .tutkinto-tiedot, .koulutus-tiedot {
+      display: block;
+      margin-bottom: 4px;
     }
   }
 
