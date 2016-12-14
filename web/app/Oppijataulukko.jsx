@@ -22,16 +22,20 @@ export const Oppijataulukko = React.createClass({
           <tr>
             <th className={sortBy == 'nimi' ? 'nimi sorted' : 'nimi'}>
               <Sorter field='nimi' sortBus={this.sortBus} sortBy={sortBy} sortOrder={sortOrder}>Nimi</Sorter>
-              <input placeholder="hae" type="text"
-                     defaultValue={params['nimihaku']}
-                     onChange={e => { if (e.target.value.length >= 3 || e.target.value.length == 0) this.filterBus.push(R.objOf('nimihaku', e.target.value))}}
+              <input
+                placeholder="hae"
+                type="text"
+                defaultValue={params['nimihaku']}
+                onChange={e => {
+                  if (e.target.value.length >= 3 || e.target.value.length == 0) this.filterBus.push({'nimihaku': e.target.value})
+                }}
               />
             </th>
             <th className="tyyppi">
               <span className="title">Opiskeluoikeuden tyyppi</span>
               <Dropdown
                 optionsP={this.opiskeluoikeudenTyypit}
-                onSelectionChanged={option => this.filterBus.push(R.objOf('opiskeluoikeudenTyyppi', option ? option.key : undefined ))}
+                onSelectionChanged={option => this.filterBus.push({'opiskeluoikeudenTyyppi': option ? option.key : undefined })}
                 selected={params['opiskeluoikeudenTyyppi']}
               />
             </th>
@@ -39,7 +43,7 @@ export const Oppijataulukko = React.createClass({
               <span className="title">Koulutus</span>
               <Dropdown
                 optionsP={this.koulutus}
-                onSelectionChanged={option => this.filterBus.push(R.objOf('suorituksenTyyppi', option ? option.key : undefined ))}
+                onSelectionChanged={option => this.filterBus.push({'suorituksenTyyppi': option ? option.key : undefined })}
                 selected={params['suorituksenTyyppi']}
               />
             </th>
@@ -48,7 +52,7 @@ export const Oppijataulukko = React.createClass({
               <span className="title">Tila</span>
               <Dropdown
                 optionsP={this.opiskeluoikeudenTila}
-                onSelectionChanged={option => this.filterBus.push(R.objOf('opiskeluoikeudenTila', option ? option.key : undefined ))}
+                onSelectionChanged={option => this.filterBus.push({'opiskeluoikeudenTila': option ? option.key : undefined })}
                 selected={params['opiskeluoikeudenTila']}
               />
             </th>
@@ -57,11 +61,17 @@ export const Oppijataulukko = React.createClass({
               <Sorter field='alkamispäivä' sortBus={this.sortBus} sortBy={sortBy} sortOrder={sortOrder}>Aloitus pvm</Sorter>
               <DatePicker
                 selectedDay={params['opiskeluoikeusAlkanutAikaisintaan'] && ISO2FinnishDate(params['opiskeluoikeusAlkanutAikaisintaan'])}
-                onSelectionChanged={date => this.filterBus.push(R.objOf('opiskeluoikeusAlkanutAikaisintaan', date ? formatISODate(date) : undefined ))}
+                onSelectionChanged={date => this.filterBus.push({'opiskeluoikeusAlkanutAikaisintaan': date ? formatISODate(date) : undefined })}
               />
             </th>
             <th className={sortBy == 'luokka' ? 'luokka sorted': 'luokka'}>
               <Sorter field='luokka' sortBus={this.sortBus} sortBy={sortBy} sortOrder={sortOrder}>Luokka / ryhmä</Sorter>
+              <input
+                placeholder="hae"
+                type="text"
+                defaultValue={params['luokkahaku']}
+                onChange={e => this.filterBus.push({'luokkahaku': e.target.value})}
+              />
             </th>
           </tr>
         </thead>

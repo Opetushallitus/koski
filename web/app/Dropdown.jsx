@@ -9,7 +9,7 @@ export default React.createClass({
         { open ?
           <ul className="options">
             {
-              [{ value: 'ei valintaa' }].concat(options).map(o => <li key={o.key || o.value} className="option" onClick={(e) => this.selectOption(e,o)}>{o.value}</li>)
+              [{ value: 'ei valintaa' }].concat(options).map(o => <li key={o.key || o.value} className="option" onClick={e => this.selectOption(e,o)}>{o.value}</li>)
             }
           </ul>
           : null
