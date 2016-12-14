@@ -27,7 +27,7 @@ export const Oppijataulukko = React.createClass({
                 type="text"
                 defaultValue={params['nimihaku']}
                 onChange={e => {
-                  if (e.target.value.length >= 3 || e.target.value.length == 0) this.filterBus.push({'nimihaku': e.target.value})
+                  if (e.target.value.length >= 3 || e.target.value.length == 0) this.textFilterBus.push({'nimihaku': e.target.value})
                 }}
               />
             </th>
@@ -110,16 +110,24 @@ export const Oppijataulukko = React.createClass({
     const koodistoDropdownArvot = koodit => koodit.map(k => ({ key: k.koodiArvo, value: k.metadata.find(m => m.kieli == 'FI').nimi})).sort((a, b) => a.value.localeCompare(b.value))
     this.sortBus = Bacon.Bus()
     this.filterBus = Bacon.Bus()
+    this.textFilterBus = Bacon.Bus()
     const opiskeluoikeudenTyyppiP = this.filterBus.filter(x => 'opiskeluoikeudenTyyppi' in x).map('.opiskeluoikeudenTyyppi').toProperty(this.props.params['opiskeluoikeudenTyyppi'])
 
     this.opiskeluoikeudenTyypit = Http.get('/koski/api/koodisto/opiskeluoikeudentyyppi/latest').map(koodistoDropdownArvot)
-    this.koulutus = opiskeluoikeudenTyyppiP.flatMap(ot => Http.get('/koski/api/koodisto/suoritustyypit' + (ot ? '?opiskeluoikeudentyyppi=' + ot : '')).map(koodistoDropdownArvot))
+    this.koulutus = opiskeluoikeudenTyyppiP.flatMap(ot => Http.get('/koski/api/koodisto/suoritustyypit' + (ot ? '?opiskeluoikeudentyyppi=' + ot : '')).map(koodistoDropdownArvot)).toProperty()
     this.opiskeluoikeudenTila = Http.get('/koski/api/koodisto/koskiopiskeluoikeudentila/latest').map(koodistoDropdownArvot)
+
+    this.filterBus.plug(
+      this.koulutus
+        .filter(suoritusTyypit => this.props.params['suorituksenTyyppi'] && !R.contains(this.props.params['suorituksenTyyppi'], R.map(x => x.key, suoritusTyypit)))
+        .map(() => R.objOf('suorituksenTyyppi', undefined))
+    )
+    this.filterBus.plug(this.textFilterBus.throttle(500))
   },
   componentDidMount() {
     const toParameterPairs = params => R.filter(([, value]) => !!value, R.toPairs(R.merge(this.props.params, params)))
 
-    this.sortBus.merge(this.filterBus.throttle(500))
+    this.sortBus.merge(this.filterBus)
       .map(param => R.join('&', R.map(R.join('='), toParameterPairs(param))))
       .onValue(query => navigateTo(`/koski/?${query}`))
   }
