@@ -109,7 +109,6 @@ const Lokirivi = React.createClass({
 const LokirivinData = React.createClass({
   render() {
     const { details, showData } = this.props
-    console.log('showing details', details)
     return (<div className="lokirividata-popup">
       <a className="close" onClick={() => showData(false)}>Sulje</a>
       <pre>{JSON.stringify(details, null, 2)}</pre>

@@ -75,7 +75,6 @@ function KoskiPage() {
       return S('.oppija h2').text()
     },
     waitUntilOppijaSelected: function(oppija) {
-      console.log(oppija)
       return wait.until(api.isOppijaSelected(oppija))
     },
     isOppijaSelected: function(oppija) {
@@ -100,7 +99,6 @@ function KoskiPage() {
       return isElementVisible(S(".http-status:contains(404)"))
     },
     isSavedLabelShown: function() {
-      console.log("check", isElementVisible(S('.saved')))
       return isElementVisible(S('.saved'))
     },
     getUserName: function() {
