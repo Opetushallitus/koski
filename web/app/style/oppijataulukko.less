@@ -9,6 +9,7 @@
       padding-bottom: 10px;
       background: #FAFAFA;
       border-bottom: 2px solid #E4E4E4;
+      font-weight: normal;
       &.sorted {
         background: #E7F9FF;
       }
@@ -21,8 +22,18 @@
       }
       input {
         width: 100%;
+        height: 30px;
       }
+    }
+    tr:nth-child(even) {
+      background: #FAFAFA;
+    }
+    td, th {
+      padding: 5px;
+      border-right: 1px solid #E4E4E4;
+      word-wrap: break-word;
       &.nimi {
+        max-width: 190px;
         width: 190px;
       }
       &.tyyppi {
@@ -49,31 +60,22 @@
         max-width: 120px;
         width: 120px;
       }
-      &.luokka .title {
-        width: 85%;
+      &.luokka {
+        max-width: 90px;
+        width: 90px;
+        .title {
+          width: 85%;
+        }
       }
     }
-    tr:nth-child(even) {
-      background: #FAFAFA;
-    }
-    td, th {
-      padding: 5px;
-      border-right: 1px solid #E4E4E4;
-    }
-    th {
-      font-weight: normal;
+    ul.cell-listing {
+      list-style: none;
+      margin: 0;
+      padding: 0;
     }
     tbody.loading {
       opacity: 0.5;
     }
-    .tutkinto-tiedot, .koulutus-tiedot {
-      display: block;
-      margin-bottom: 4px;
-    }
-  }
-
-  input {
-    height: 30px;
   }
 
   .sort-indicator {

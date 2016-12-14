@@ -80,19 +80,19 @@ export const Oppijataulukko = React.createClass({
             näytettävätRivit.map( (opiskeluoikeus, i) => <tr key={i}>
               <td className="nimi"><a href={`/koski/oppija/${opiskeluoikeus.henkilö.oid}`} onClick={(e) => navigateToOppija(opiskeluoikeus.henkilö, e)}>{ opiskeluoikeus.henkilö.sukunimi + ', ' + opiskeluoikeus.henkilö.etunimet}</a></td>
               <td className="tyyppi">{ opiskeluoikeus.tyyppi.nimi.fi }</td>
-              <td className="koulutus">{ opiskeluoikeus.suoritukset.map((suoritus, j) => <span key={j} className="koulutus-tiedot">{suoritus.tyyppi.nimi.fi}</span>) } </td>
+              <td className="koulutus"><ul className="cell-listing">{ opiskeluoikeus.suoritukset.map((suoritus, j) => <li key={j}>{suoritus.tyyppi.nimi.fi}</li>) }</ul></td>
               <td className="tutkinto">{ opiskeluoikeus.suoritukset.map((suoritus, j) =>
-                <span key={j} className="tutkinto-tiedot">
+                <ul className="cell-listing" key={j}>
                   {
-                    <span className="koulutusmoduuli">{suoritus.koulutusmoduuli.tunniste.nimi.fi}</span>
+                    <li className="koulutusmoduuli">{suoritus.koulutusmoduuli.tunniste.nimi.fi}</li>
                   }
                   {
-                    (suoritus.osaamisala || []).map((osaamisala, k) => <span className="osaamisala" key={k}>{osaamisala.nimi.fi}</span>)
+                    (suoritus.osaamisala || []).map((osaamisala, k) => <li className="osaamisala" key={k}>{osaamisala.nimi.fi}</li>)
                   }
                   {
-                    (suoritus.tutkintonimike || []).map((nimike, k) => <span className="tutkintonimike" key={k}>{nimike.nimi.fi}</span>)
+                    (suoritus.tutkintonimike || []).map((nimike, k) => <li className="tutkintonimike" key={k}>{nimike.nimi.fi}</li>)
                   }
-                </span>
+                </ul>
               )}
               </td>
               <td className="tila">{ opiskeluoikeus.tila.nimi.fi }</td>
