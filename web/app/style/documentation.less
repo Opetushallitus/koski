@@ -1,3 +1,4 @@
+
 body {
     font-family: Helvetica, Arial, sans-serif;
     color: rgb(51, 51, 51);
@@ -180,15 +181,14 @@ a.close {
             margin-top: 10px;
         }
 
-        pre {
-            max-height: 400px;
-            overflow-y: auto;
-            background: #dddddd;
-            font-size: 12px;
-        }
-
         .result {
             min-width: 500px;
+            pre {
+                max-height: 400px;
+                overflow-y: auto;
+                background: #dddddd;
+                font-size: 12px;
+            }
         }
 
         .examples {
@@ -261,7 +261,24 @@ a.close {
     }
 }
 
+table.json {
+    td {
+        vertical-align: top;
+        padding: 0px 10px;
+    }
+}
+.json {
+    font-family: monospace;
+    font-size: 12px;
+    line-height: 18px;
+}
 
+.json .key, .api-tester .CodeMirror .cm-string.cm-property, .api-tester .hljs-attr {
+    color: rgb(165, 116, 28);
+}
+.json .value, .api-tester .CodeMirror .cm-string, .api-tester .hljs-string {
+    color: green;
+}
 
 .example-list {
     line-height: 1.5em;
@@ -289,15 +306,6 @@ a.close {
             width: 50%;
         }
         .json {
-            font-family: monospace;
-            font-size: 12px;
-            line-height: 18px;
-            .key, .api-tester .CodeMirror .cm-string.cm-property, .api-tester .hljs-attr {
-                color: rgb(165, 116, 28);
-            }
-            .value, .api-tester .CodeMirror .cm-string, .api-tester .hljs-string {
-                color: green;
-            }
             tr:hover {
                 background: #ffffbb;
             }
