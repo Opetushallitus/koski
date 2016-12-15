@@ -47,7 +47,17 @@ export const Oppijataulukko = React.createClass({
                 selected={params['suorituksenTyyppi']}
               />
             </th>
-            <th className="tutkinto"><span className="title">Tutkinto / osaamisala / nimike</span></th>
+            <th className="tutkinto">
+              <span className="title">Tutkinto / osaamisala / nimike</span>
+              <input
+                placeholder="hae"
+                type="text"
+                defaultValue={params['tutkintohaku']}
+                onChange={e => {
+                  if (e.target.value.length >= 3 || e.target.value.length == 0) this.textFilterBus.push({'tutkintohaku': e.target.value})
+                }}
+              />
+            </th>
             <th className="tila">
               <span className="title">Tila</span>
               <Dropdown

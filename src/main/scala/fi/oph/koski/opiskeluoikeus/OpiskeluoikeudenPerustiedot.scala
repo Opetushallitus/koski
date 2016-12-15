@@ -99,9 +99,13 @@ class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) exte
         }
       }.getOrElse(Ascending("nimi"))
 
-      OpiskeluoikeusQueryFilter.parseQueryFilter(filters)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession).right.map { filters =>
-        val result: List[OpiskeluoikeudenPerustiedot] = repository.find(filters, sort, paginationSettings)(koskiSession)
-        PaginatedResponse(Some(paginationSettings), result, result.length)
+      OpiskeluoikeusQueryFilter.parseQueryFilter(filters)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession) match {
+        case Right(filters) =>
+          val result: List[OpiskeluoikeudenPerustiedot] = repository.find(filters, sort, paginationSettings)(koskiSession)
+          Right(PaginatedResponse(Some(paginationSettings), result, result.length))
+        case Left(HttpStatus(404, _)) =>
+          Right(PaginatedResponse(None, List[OpiskeluoikeudenPerustiedot](), 0))
+        case e @ Left(_) => e
       }
     })
   }
