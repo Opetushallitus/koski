@@ -29,7 +29,7 @@ trait AuthenticationServiceClient {
 }
 
 object AuthenticationServiceClient {
-  def apply(config: Config, db: DB) = if (config.hasPath("opintopolku.virkailija.username")) {
+  def apply(config: Config, db: DB): AuthenticationServiceClient = if (config.hasPath("opintopolku.virkailija.username")) {
     RemoteAuthenticationServiceClient(config)
   } else {
     new MockAuthenticationServiceClientWithDBSupport(db)
@@ -88,69 +88,72 @@ object AuthenticationServiceClient {
 }
 
 object RemoteAuthenticationServiceClient {
-  def apply(config: Config) = {
+  def apply(config: Config): RemoteAuthenticationServiceClient = {
     val virkalijaUrl: String = if (config.hasPath("authentication-service.virkailija.url")) { config.getString("authentication-service.virkailija.url") } else { config.getString("opintopolku.virkailija.url") }
     val username =  if (config.hasPath("authentication-service.username")) { config.getString("authentication-service.username") } else { config.getString("opintopolku.virkailija.username") }
     val password =  if (config.hasPath("authentication-service.password")) { config.getString("authentication-service.password") } else { config.getString("opintopolku.virkailija.password") }
     val authServiceHttp = VirkailijaHttpClient(username, password, virkalijaUrl, "/authentication-service", config.getBoolean("authentication-service.useCas"))
     val oidServiceHttp = VirkailijaHttpClient(username, password, virkalijaUrl, "/oppijanumerorekisteri-service", config.getBoolean("authentication-service.useCas"))
     val käyttöOikeusHttp = VirkailijaHttpClient(username, password, virkalijaUrl, "/kayttooikeus-service", config.getBoolean("authentication-service.useCas"))
-    (config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")) match {
-      case false => new RemoteAuthenticationServiceClient(authServiceHttp, oidServiceHttp, käyttöOikeusHttp)
-      case true => new RemoteAuthenticationServiceClientWithMockOids(authServiceHttp, oidServiceHttp, käyttöOikeusHttp)
+    if (config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")) {
+      new RemoteAuthenticationServiceClientWithMockOids(authServiceHttp, oidServiceHttp, käyttöOikeusHttp)
+    } else {
+      new RemoteAuthenticationServiceClient(authServiceHttp, oidServiceHttp, käyttöOikeusHttp)
     }
   }
 }
 
 class RemoteAuthenticationServiceClient(authServiceHttp: Http, oidServiceHttp: Http, käyttöOikeusHttp: Http) extends AuthenticationServiceClient with EntityDecoderInstances with Timing {
-  def search(query: String): HenkilöQueryResult = {
+  def search(query: String): HenkilöQueryResult =
     runTask(authServiceHttp.get(uri"/authentication-service/resources/henkilo?no=true&count=0&q=${query}")(Http.parseJson[HenkilöQueryResult]))
-  }
 
-  def findOppijaByOid(oid: String): Option[OppijaHenkilö] = findOppijatByOids(List(oid)).headOption
-  def findOppijatByOids(oids: List[String]): List[OppijaHenkilö] = runTask(oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloOidList", oids)(json4sEncoderOf[List[String]])(Http.parseJson[List[OppijaHenkilö]]))
-  def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] = runTask(oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/hetu=${hetu}")(Http.parseJsonOptional[OppijaNumerorekisteriOppija])).map(_.toOppijaHenkilö)
+  def findOppijaByOid(oid: String): Option[OppijaHenkilö] =
+    findOppijatByOids(List(oid)).headOption
 
-  def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö] = runTask(authServiceHttp.get(uri"/authentication-service/resources/henkilo/${oid}")(Http.parseJsonIgnoreError[KäyttäjäHenkilö])) // ignore error, because the API returns status 500 instead of 404 when not found
+  def findOppijatByOids(oids: List[String]): List[OppijaHenkilö] =
+    runTask(oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloOidList", oids)(json4sEncoderOf[List[String]])(Http.parseJson[List[OppijaHenkilö]]))
 
-  def käyttöoikeusryhmät: List[Käyttöoikeusryhmä] = runTask(käyttöOikeusHttp.get(uri"/kayttooikeus-service/kayttooikeusryhma")(Http.parseJson[List[Käyttöoikeusryhmä]]))
+  def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] =
+    runTask(oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/hetu=${hetu}")(Http.parseJsonOptional[OppijaNumerorekisteriOppija])).map(_.toOppijaHenkilö)
 
-  def lisääOrganisaatio(henkilöOid: String, organisaatioOid: String, nimike: String) = {
+  def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö] =
+    runTask(authServiceHttp.get(uri"/authentication-service/resources/henkilo/${oid}")(Http.parseJsonIgnoreError[KäyttäjäHenkilö])) // ignore error, because the API returns status 500 instead of 404 when not found
+
+  def käyttöoikeusryhmät: List[Käyttöoikeusryhmä] =
+    runTask(käyttöOikeusHttp.get(uri"/kayttooikeus-service/kayttooikeusryhma")(Http.parseJson[List[Käyttöoikeusryhmä]]))
+
+  def lisääOrganisaatio(henkilöOid: String, organisaatioOid: String, nimike: String): Task[Unit] =
     authServiceHttp.put(uri"/authentication-service/resources/henkilo/${henkilöOid}/organisaatiohenkilo", List(
       LisääOrganisaatio(organisaatioOid, nimike)
     ))(json4sEncoderOf[List[LisääOrganisaatio]])(Http.unitDecoder)
-  }
-  def lisääKäyttöoikeusRyhmä(henkilöOid: String, organisaatioOid: String, ryhmä: Int): Unit = {
+
+  def lisääKäyttöoikeusRyhmä(henkilöOid: String, organisaatioOid: String, ryhmä: Int): Unit =
     authServiceHttp.put(
       uri"/authentication-service/resources/henkilo/${henkilöOid}/organisaatiohenkilo/${organisaatioOid}/kayttooikeusryhmat",
       List(LisääKäyttöoikeusryhmä(ryhmä))
     )(json4sEncoderOf[List[LisääKäyttöoikeusryhmä]])(Http.unitDecoder)
-  }
 
-  def asetaSalasana(henkilöOid: String, salasana: String) = {
+  def asetaSalasana(henkilöOid: String, salasana: String): Task[Unit] =
     authServiceHttp.post (uri"/authentication-service/resources/salasana/${henkilöOid}", salasana)(EntityEncoder.stringEncoder(Charset.`UTF-8`)
       .withContentType(`Content-Type`(MediaType.`application/json`)))(Http.unitDecoder) // <- yes, the API expects media type application/json, but consumes inputs as text/plain
-  }
 
-  def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö] = {
+  def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö] =
     runTask(oidServiceHttp.post(uri"/oppijanumerorekisteri-service/s2s/findOrCreateHenkiloPerustieto", createUserInfo)(json4sEncoderOf[UusiHenkilö]) {
       case (x, data, _) if x <= 201 => Right(Json.read[OppijaNumerorekisteriOppija](data).toOppijaHenkilö)
       case (400, error, _) => Left(KoskiErrorCategory.badRequest.validation.henkilötiedot.virheelliset(error))
       case (status, text, uri) => throw new HttpStatusException(status, text, uri)
     })
-  }
 
-  def create(createUserInfo: UusiHenkilö): Either[HttpStatus, String] = {
+  def create(createUserInfo: UusiHenkilö): Either[HttpStatus, String] =
     runTask(authServiceHttp.post(uri"/authentication-service/resources/henkilo", createUserInfo)(json4sEncoderOf[UusiHenkilö]) {
       case (200, oid, _) => Right(oid)
       case (400, "socialsecuritynr.already.exists", _) => Left(KoskiErrorCategory.conflict.hetu("Henkilötunnus on jo olemassa"))
       case (400, error, _) => Left(KoskiErrorCategory.badRequest.validation.henkilötiedot.virheelliset(error))
       case (status, text, uri) => throw new HttpStatusException(status, text, uri)
     })
-  }
-  def syncLdap(henkilöOid: String) = {
+
+  def syncLdap(henkilöOid: String): Task[Unit] =
     authServiceHttp.get(uri"/authentication-service/resources/ldap/${henkilöOid}")(Http.expectSuccess)
-  }
 
   override def organisaationHenkilötRyhmässä(ryhmä: String, organisaatioOid: String): List[HenkilöYhteystiedoilla] = {
     val henkilötQuery: Task[HenkilöQueryResult] = authServiceHttp.get(uri"/authentication-service/resources/henkilo?groupName=${ryhmä}&ht=VIRKAILIJA&no=false&org=${organisaatioOid}&p=false")(Http.parseJson[HenkilöQueryResult])
