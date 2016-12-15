@@ -22,6 +22,7 @@ trait AuthenticationServiceClient {
   def create(createUserInfo: UusiHenkilö): Either[HttpStatus, String]
   def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö]
   def findOppijaByOid(oid: String): Option[OppijaHenkilö]
+  def findOppijaByHetu(hetu: String): Option[OppijaHenkilö]
   def findOppijatByOids(oids: List[String]): List[OppijaHenkilö]
   def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö]
   def organisaationHenkilötRyhmässä(ryhmä: String, organisaatioOid: String) : List[HenkilöYhteystiedoilla]
@@ -108,6 +109,7 @@ class RemoteAuthenticationServiceClient(authServiceHttp: Http, oidServiceHttp: H
 
   def findOppijaByOid(oid: String): Option[OppijaHenkilö] = findOppijatByOids(List(oid)).headOption
   def findOppijatByOids(oids: List[String]): List[OppijaHenkilö] = runTask(oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloOidList", oids)(json4sEncoderOf[List[String]])(Http.parseJson[List[OppijaHenkilö]]))
+  def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] = runTask(oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/hetu=${hetu}")(Http.parseJsonOptional[OppijaNumerorekisteriOppija])).map(_.toOppijaHenkilö)
 
   def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö] = runTask(authServiceHttp.get(uri"/authentication-service/resources/henkilo/${oid}")(Http.parseJsonIgnoreError[KäyttäjäHenkilö])) // ignore error, because the API returns status 500 instead of 404 when not found
 

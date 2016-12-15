@@ -14,7 +14,7 @@ trait FindByOid {
 }
 
 trait FindByHetu {
-  def findByHetu(query: String)(implicit user: KoskiSession): List[HenkilötiedotJaOid]
+  def findByHetu(query: String)(implicit user: KoskiSession): Option[HenkilötiedotJaOid]
 }
 
 object HenkilöRepository {
@@ -43,7 +43,7 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
     if (Henkilö.isHenkilöOid(query)) {
       findByOid(query).map(_.toHenkilötiedotJaOid).toList
     } else if(Hetu.validFormat(query).isRight) {
-      List(opintopolku, virta, ytr).iterator.map(_.findByHetu(query)).find(!_.isEmpty).getOrElse(Nil)
+      List(opintopolku, virta, ytr).iterator.map(_.findByHetu(query)).find(!_.isEmpty).toList.flatten
     } else {
       val oids = henkilöCache.find(query)
       findByOids(oids).map(_.toHenkilötiedotJaOid)

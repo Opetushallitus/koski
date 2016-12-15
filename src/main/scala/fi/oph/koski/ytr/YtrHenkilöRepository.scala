@@ -7,7 +7,7 @@ import fi.oph.koski.schema.UusiHenkilö
 
 case class YtrHenkilöRepository(ytr: YlioppilasTutkintoRekisteri, henkilöpalvelu: OpintopolkuHenkilöRepository, accessChecker: AccessChecker) extends FindByHetu with Logging {
   override def findByHetu(hetu: String)(implicit user: KoskiSession) = if (!accessChecker.hasAccess(user)) {
-    Nil
+    None
   } else {
     try {
       ytr.oppijaByHetu(hetu).flatMap { ytrOppija =>
@@ -19,11 +19,11 @@ case class YtrHenkilöRepository(ytr: YlioppilasTutkintoRekisteri, henkilöpalve
             logger.error("YTR-oppijan lisäys henkilöpalveluun epäonnistui: " + error)
             None
         }
-      }.toList.map(_.toHenkilötiedotJaOid)
+      }.map(_.toHenkilötiedotJaOid)
     } catch {
       case e: Exception =>
         logger.error(e)("Failed to fetch data from YTR")
-        Nil
+        None
     }
   }
 }

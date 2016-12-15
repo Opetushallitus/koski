@@ -7,8 +7,8 @@ import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema._
 
 class OpintopolkuHenkilöRepository(henkilöPalveluClient: AuthenticationServiceClient, koodisto: KoodistoViitePalvelu) extends FindByHetu with FindByOid {
-  def findByHetu(query: String)(implicit user: KoskiSession): List[HenkilötiedotJaOid] = {
-    henkilöPalveluClient.search(query).results.flatMap(toHenkilötiedot) // TODO: käytä spesifisempää RESTiä
+  def findByHetu(hetu: String)(implicit user: KoskiSession): Option[HenkilötiedotJaOid] = {
+    henkilöPalveluClient.findOppijaByHetu(hetu).map(h => HenkilötiedotJaOid(h.oidHenkilo, hetu, h.etunimet, h.kutsumanimi, h.sukunimi))
   }
 
   def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, TäydellisetHenkilötiedot] =  {

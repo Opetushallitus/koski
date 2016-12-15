@@ -8,7 +8,7 @@ import fi.oph.koski.schema.UusiHenkilö
 case class VirtaHenkilöRepository(v: VirtaClient, henkilöpalvelu: OpintopolkuHenkilöRepository, accessChecker: VirtaAccessChecker) extends FindByHetu with Logging {
   override def findByHetu(hetu: String)(implicit user: KoskiSession) = {
     if (!accessChecker.hasAccess(user)) {
-      Nil
+      None
     } else {
       try {
         // Tänne tullaan vain, jos oppijaa ei löytynyt henkilöpalvelusta (ks CompositeOppijaRepository)
@@ -30,11 +30,11 @@ case class VirtaHenkilöRepository(v: VirtaClient, henkilöpalvelu: OpintopolkuH
                 None
             }
           }
-          .toList.map(_.toHenkilötiedotJaOid)
+          .map(_.toHenkilötiedotJaOid)
       } catch {
         case e: Exception =>
           logger.error(e)("Failed to fetch data from Virta")
-          Nil
+          None
       }
     }
   }

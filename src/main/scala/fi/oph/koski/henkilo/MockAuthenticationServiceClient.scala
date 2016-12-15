@@ -54,7 +54,11 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
   }
 
   def findOppijaByOid(henkilöOid: String): Option[OppijaHenkilö] = {
-    findHenkilötiedot(henkilöOid).map(henkilö => OppijaHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, Some(henkilö.hetu), Some("FI"), None))
+    findHenkilötiedot(henkilöOid).map(toOppijaHenkilö)
+  }
+
+  private def toOppijaHenkilö(henkilö: TäydellisetHenkilötiedot) = {
+    OppijaHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, Some(henkilö.hetu), Some("FI"), None)
   }
 
   override def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö] = {
@@ -70,9 +74,9 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
   }
 
   def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö] = {
-    def oidFrom(oppijat: List[QueryHenkilö]): Either[HttpStatus, Henkilö.Oid] = {
+    def oidFrom(oppijat: Option[OppijaHenkilö]): Either[HttpStatus, Henkilö.Oid] = {
       oppijat match {
-        case List(oppija) =>
+        case Some(oppija) =>
           Right(oppija.oidHenkilo)
         case _ =>
           logger.error("Oppijan lisääminen epäonnistui: ei voitu lisätä, muttei myöskään löytynyt.")
@@ -82,7 +86,7 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
     val UusiHenkilö(Some(hetu), sukunimi, etunimet, kutsumanimi, _, _) = createUserInfo
     val oid = Hetu.validate(hetu, acceptSynthetic = true).right.flatMap { hetu =>
       create(createUserInfo).left.flatMap { case HttpStatus(409, _) =>
-        oidFrom(search(hetu).results)
+        oidFrom(findOppijaByHetu(hetu))
       }
     }
     oid.right.map(oid => findOppijaByOid(oid).get)
@@ -98,4 +102,6 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
         HenkilöYhteystiedoilla(u.oid, List(YhteystietoRyhmä(5992773, "yhteystietotyyppi2", List(Yhteystieto("YHTEYSTIETO_SAHKOPOSTI", u.username + "@example.com")))))
     }
   }
+
+  override def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] = oppijat.getOppijat.find(_.hetu == hetu).map(toOppijaHenkilö)
 }
