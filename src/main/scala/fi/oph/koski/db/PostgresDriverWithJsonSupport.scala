@@ -4,13 +4,13 @@ import com.github.tminglei.slickpg._
 import org.json4s.JValue
 import slick.driver.PostgresDriver
 
-trait PostgresDriverWithJsonSupport extends PostgresDriver with PgJson4sSupport with array.PgArrayJdbcTypes with PgSearchSupport {
+trait PostgresDriverWithJsonSupport extends PostgresDriver with PgJson4sSupport with PgArraySupport with array.PgArrayJdbcTypes with PgSearchSupport {
   /// for json support
   override val pgjson = "jsonb"
   type DOCType = JValue
   override val jsonMethods = org.json4s.jackson.JsonMethods
 
-  override val api = new API with JsonImplicits with SearchAssistants with SearchImplicits {
+  override val api = new API with JsonImplicits with SearchAssistants with SearchImplicits with ArrayImplicits {
     implicit val strListTypeMapper = new SimpleArrayJdbcType[String]("text").to(_.toList)
     implicit val json4sJsonArrayTypeMapper =
       new AdvancedArrayJdbcType[JValue](pgjson,

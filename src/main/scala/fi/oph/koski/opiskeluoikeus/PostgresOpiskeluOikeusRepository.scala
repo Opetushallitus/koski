@@ -85,13 +85,13 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
       case (query, OpiskeluoikeudenTila(tila)) => query.filter(_._1.data.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "tila", "koodiarvo")) === tila.koodiarvo)
       case (query, Tutkintohaku(tutkinnot, osaamisalat, nimikkeet)) =>
         val predicates = tutkinnot.map { tutkinto =>
-          {t: (Tables.OpiskeluOikeusTable, Tables.HenkilöTable) => t._1.data.+>("suoritukset").@>(parse(s"""[{"koulutusmoduuli":{"tunniste": {"koodiarvo": "${tutkinto.koodiarvo}"}}}]"""))}
+          parse(s"""[{"koulutusmoduuli":{"tunniste": {"koodiarvo": "${tutkinto.koodiarvo}"}}}]""")
         } ++ nimikkeet.map { nimike =>
-          {t: (Tables.OpiskeluOikeusTable, Tables.HenkilöTable) => t._1.data.+>("suoritukset").@>(parse(s"""[{"tutkintonimike":[{"koodiarvo": "${nimike.koodiarvo}"}]}]"""))}
+          parse(s"""[{"tutkintonimike":[{"koodiarvo": "${nimike.koodiarvo}"}]}]""")
         } ++ osaamisalat.map { osaamisala =>
-          {t: (Tables.OpiskeluOikeusTable, Tables.HenkilöTable) => t._1.data.+>("suoritukset").@>(parse(s"""[{"osaamisala":[{"koodiarvo": "${osaamisala.koodiarvo}"}]}]"""))}
+          parse(s"""[{"osaamisala":[{"koodiarvo": "${osaamisala.koodiarvo}"}]}]""")
         }
-        query.filter(predicates.reduce(or))
+        query.filter(_._1.data.+>("suoritukset").@>(predicates.bind.any))
       case (query, Toimipiste(toimipisteet)) =>
         val predicates = toimipisteet.map { toimipiste =>
           {t: (Tables.OpiskeluOikeusTable, Tables.HenkilöTable) => t._1.data.+>("suoritukset").@>(parse(s"""[{"toimipiste":{"oid": "${toimipiste.oid}"}}]"""))}
