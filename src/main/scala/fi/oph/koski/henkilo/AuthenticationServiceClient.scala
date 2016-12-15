@@ -37,6 +37,10 @@ object AuthenticationServiceClient {
   case class HenkilöQueryResult(totalCount: Integer, results: List[QueryHenkilö])
 
   case class QueryHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String])
+  case class OppijaNumerorekisteriOppija(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], aidinkieli: Option[String]) {
+    def toOppijaHenkilö = OppijaHenkilö(oidHenkilo, sukunimi, etunimet, kutsumanimi, hetu, aidinkieli, None)
+  }
+
   case class OppijaHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], aidinkieli: Option[String], kansalaisuus: Option[List[String]]) {
     def toQueryHenkilö = QueryHenkilö(oidHenkilo, sukunimi, etunimet, kutsumanimi, hetu)
   }
@@ -125,13 +129,15 @@ class RemoteAuthenticationServiceClient(authServiceHttp: Http, oidServiceHttp: H
     authServiceHttp.post (uri"/authentication-service/resources/salasana/${henkilöOid}", salasana)(EntityEncoder.stringEncoder(Charset.`UTF-8`)
       .withContentType(`Content-Type`(MediaType.`application/json`)))(Http.unitDecoder) // <- yes, the API expects media type application/json, but consumes inputs as text/plain
   }
+
   def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö] = {
-    runTask(authServiceHttp.post(uri"/authentication-service/resources/s2s/koski/henkilo", createUserInfo)(json4sEncoderOf[UusiHenkilö]) {
-      case (200, data, _) => Right(Json.read[OppijaHenkilö](data))
+    runTask(oidServiceHttp.post(uri"/oppijanumerorekisteri-service/s2s/findOrCreateHenkiloPerustieto", createUserInfo)(json4sEncoderOf[UusiHenkilö]) {
+      case (x, data, _) if x <= 201 => Right(Json.read[OppijaNumerorekisteriOppija](data).toOppijaHenkilö)
       case (400, error, _) => Left(KoskiErrorCategory.badRequest.validation.henkilötiedot.virheelliset(error))
       case (status, text, uri) => throw new HttpStatusException(status, text, uri)
     })
   }
+
   def create(createUserInfo: UusiHenkilö): Either[HttpStatus, String] = {
     runTask(authServiceHttp.post(uri"/authentication-service/resources/henkilo", createUserInfo)(json4sEncoderOf[UusiHenkilö]) {
       case (200, oid, _) => Right(oid)
@@ -169,3 +175,4 @@ class RemoteAuthenticationServiceClientWithMockOids(authServiceHttp: Http, oidSe
     Some(KäyttäjäHenkilö(oid, oid.substring("1.2.246.562.24.".length, oid.length), "Tuntematon", "Tuntematon", None))
   }
 }
+
