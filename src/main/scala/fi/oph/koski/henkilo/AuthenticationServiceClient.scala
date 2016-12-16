@@ -118,8 +118,12 @@ class RemoteAuthenticationServiceClient(authServiceHttp: Http, oidServiceHttp: H
   def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] =
     runTask(oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/hetu=${hetu}")(Http.parseJsonOptional[OppijaNumerorekisteriOppija])).map(_.toOppijaHenkilö)
 
-  def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö] =
-    runTask(authServiceHttp.get(uri"/authentication-service/resources/henkilo/${oid}")(Http.parseJsonIgnoreError[KäyttäjäHenkilö])) // ignore error, because the API returns status 500 instead of 404 when not found
+  def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö] = runTask(
+    oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/${oid}")(Http.parseJsonOptional[KäyttäjäHenkilö]).flatMap { käyttäjäHenkilö: Option[KäyttäjäHenkilö] =>
+      käyttöOikeusHttp.get(uri"/kayttooikeus-service/henkilo/${oid}/kayttajatiedot")(Http.parseJsonOptional[Käyttäjätiedot])
+        .map(käyttäjätiedot => käyttäjäHenkilö.map(_.copy(kayttajatiedot = käyttäjätiedot)))
+    }
+  )
 
   def käyttöoikeusryhmät: List[Käyttöoikeusryhmä] =
     runTask(käyttöOikeusHttp.get(uri"/kayttooikeus-service/kayttooikeusryhma")(Http.parseJson[List[Käyttöoikeusryhmä]]))
