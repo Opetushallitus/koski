@@ -38,9 +38,11 @@ object AuthenticationServiceClient {
   case class HenkilöQueryResult(totalCount: Integer, results: List[QueryHenkilö])
 
   case class QueryHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String])
-  case class OppijaNumerorekisteriOppija(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], aidinkieli: Option[String]) {
-    def toOppijaHenkilö = OppijaHenkilö(oidHenkilo, sukunimi, etunimet, kutsumanimi, hetu, aidinkieli, None)
+  case class OppijaNumerorekisteriOppija(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], aidinkieli: Option[Kieli], kansalaisuus: Option[List[Kansalaisuus]]) {
+    def toOppijaHenkilö = OppijaHenkilö(oidHenkilo, sukunimi, etunimet, kutsumanimi, hetu, aidinkieli.map(_.kieliKoodi), kansalaisuus.map(_.map(_.kansalaisuusKoodi)))
   }
+  case class Kieli(kieliKoodi: String)
+  case class Kansalaisuus(kansalaisuusKoodi: String)
 
   case class OppijaHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], aidinkieli: Option[String], kansalaisuus: Option[List[String]]) {
     def toQueryHenkilö = QueryHenkilö(oidHenkilo, sukunimi, etunimet, kutsumanimi, hetu)
@@ -111,7 +113,7 @@ class RemoteAuthenticationServiceClient(authServiceHttp: Http, oidServiceHttp: H
     findOppijatByOids(List(oid)).headOption
 
   def findOppijatByOids(oids: List[String]): List[OppijaHenkilö] =
-    runTask(oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloOidList", oids)(json4sEncoderOf[List[String]])(Http.parseJson[List[OppijaHenkilö]]))
+    runTask(oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloOidList", oids)(json4sEncoderOf[List[String]])(Http.parseJson[List[OppijaNumerorekisteriOppija]])).map(_.toOppijaHenkilö)
 
   def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] =
     runTask(oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/hetu=${hetu}")(Http.parseJsonOptional[OppijaNumerorekisteriOppija])).map(_.toOppijaHenkilö)
