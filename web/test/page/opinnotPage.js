@@ -13,11 +13,6 @@ function OpinnotPage() {
       index = typeof index !== 'undefined' ? index : 0
       return S(S('.oppilaitos .oppilaitos')[index]).text()
     },
-    selectSuoritustapa: function(suoritustapa) {
-      return function() {
-        return Page(opiskeluOikeus).setInputValue(".suoritustapa", suoritustapa)().then(wait.forAjax)
-      }
-    },
     avaaOpintosuoritusote: function (index) {
       return function() {
         triggerEvent(S('li.oppilaitos:nth-child('+index+') a.opintosuoritusote'), 'click')
