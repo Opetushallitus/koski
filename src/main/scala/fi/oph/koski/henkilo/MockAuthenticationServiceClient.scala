@@ -96,12 +96,8 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
     oppija.toString.toUpperCase
   }
 
-  override def organisaationHenkilötRyhmässä(ryhmä: String, organisaatioOid: String): List[HenkilöYhteystiedoilla] = {
-    MockUsers.users.collect {
-      case u: Any if u.käyttöoikeudet.contains((organisaatioOid, Käyttöoikeusryhmät.vastuukäyttäjä)) =>
-        HenkilöYhteystiedoilla(u.oid, List(YhteystietoRyhmä(5992773, "yhteystietotyyppi2", List(Yhteystieto("YHTEYSTIETO_SAHKOPOSTI", u.username + "@example.com")))))
-    }
-  }
+  override def organisaationYhteystiedot(ryhmä: String, organisaatioOid: String): List[Yhteystiedot] =
+    MockUsers.users.filter(_.käyttöoikeudet.contains((organisaatioOid, Käyttöoikeusryhmät.vastuukäyttäjä))).map(u => Yhteystiedot(u.username + "@example.com"))
 
   override def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] = oppijat.getOppijat.find(_.hetu == hetu).map(toOppijaHenkilö)
 }

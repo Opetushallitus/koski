@@ -25,7 +25,7 @@ trait AuthenticationServiceClient {
   def findOppijaByHetu(hetu: String): Option[OppijaHenkilö]
   def findOppijatByOids(oids: List[String]): List[OppijaHenkilö]
   def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö]
-  def organisaationHenkilötRyhmässä(ryhmä: String, organisaatioOid: String) : List[HenkilöYhteystiedoilla]
+  def organisaationYhteystiedot(ryhmä: String, organisaatioOid: String): List[Yhteystiedot]
 }
 
 object AuthenticationServiceClient {
@@ -48,16 +48,7 @@ object AuthenticationServiceClient {
     def toQueryHenkilö = QueryHenkilö(oidHenkilo, sukunimi, etunimet, kutsumanimi, hetu)
   }
 
-  case class HenkilöYhteystiedoilla(oidHenkilo: String, yhteystiedotRyhma: List[YhteystietoRyhmä]) {
-    def workEmails: List[String] = {
-      yhteystiedotRyhma.collect {
-        case YhteystietoRyhmä(_, kuvaus, yhteystiedot) if kuvaus == "yhteystietotyyppi2" => yhteystiedot.collect {
-          case Yhteystieto(tyyppi, arvo) if tyyppi == "YHTEYSTIETO_SAHKOPOSTI" => arvo
-        }
-      }.flatten
-    }
-  }
-
+  case class Yhteystiedot(sahkoposti: String)
   case class KäyttäjäHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, kayttajatiedot: Option[Käyttäjätiedot])
   case class UusiHenkilö(hetu: Option[String], sukunimi: String, etunimet: String, kutsumanimi: String, henkiloTyyppi: String, kayttajatiedot: Option[Käyttäjätiedot])
   case class Käyttäjätiedot(username: Option[String])
@@ -161,14 +152,13 @@ class RemoteAuthenticationServiceClient(authServiceHttp: Http, oidServiceHttp: H
   def syncLdap(henkilöOid: String): Task[Unit] =
     authServiceHttp.get(uri"/authentication-service/resources/ldap/${henkilöOid}")(Http.expectSuccess)
 
-  override def organisaationHenkilötRyhmässä(ryhmä: String, organisaatioOid: String): List[HenkilöYhteystiedoilla] = {
-    val henkilötQuery: Task[HenkilöQueryResult] = authServiceHttp.get(uri"/authentication-service/resources/henkilo?groupName=${ryhmä}&ht=VIRKAILIJA&no=false&org=${organisaatioOid}&p=false")(Http.parseJson[HenkilöQueryResult])
-    runTask(henkilötQuery.flatMap{h =>
-      gatherUnordered(h.results.map { u =>
-        authServiceHttp.get(uri"/authentication-service/resources/henkilo/${u.oidHenkilo}")(Http.parseJson[HenkilöYhteystiedoilla])
+  override def organisaationYhteystiedot(ryhmä: String, organisaatioOid: String): List[Yhteystiedot] = runTask(
+    authServiceHttp.get(uri"/authentication-service/resources/henkilo?groupName=${ryhmä}&ht=VIRKAILIJA&no=false&org=${organisaatioOid}&p=false")(Http.parseJson[HenkilöQueryResult]).flatMap { resp =>
+      gatherUnordered(resp.results.map { henkilö =>
+        oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/${henkilö.oidHenkilo}/yhteystiedot/yhteystietotyyppi2")(Http.parseJson[Yhteystiedot])
       })
-    })
-  }
+    }
+  )
 }
 
 class RemoteAuthenticationServiceClientWithMockOids(authServiceHttp: Http, oidServiceHttp: Http, käyttöOikeusHttp: Http) extends RemoteAuthenticationServiceClient(authServiceHttp, oidServiceHttp, käyttöOikeusHttp) {

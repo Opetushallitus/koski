@@ -14,8 +14,7 @@ class TiedonsiirtoFailureMailer(config: Config, authenticationServiceClient: Aut
   val ryhmä = "Vastuukayttajat"
 
   def sendMail(organisaatioOid: String): Unit = {
-
-    val emailAddresses: List[String] = authenticationServiceClient.organisaationHenkilötRyhmässä(ryhmä, organisaatioOid).flatMap(_.workEmails)
+    val emailAddresses: List[String] = authenticationServiceClient.organisaationYhteystiedot(ryhmä, organisaatioOid).map(_.sahkoposti)
 
     emailAddresses match {
       case Nil => logger.info("Organisaatiolle " + organisaatioOid + " ei löydy sähköpostiosoitetta henkilöille jotka kuuluvat ryhmään " + ryhmä)
