@@ -28,10 +28,6 @@ class MockAuthenticationServiceClientWithDBSupport(val db: DB) extends MockAuthe
 class MockAuthenticationServiceClient() extends AuthenticationServiceClient with Logging {
   protected var oppijat = new MockOppijat(MockOppijat.defaultOppijat)
 
-  val käyttöoikeusryhmät = Käyttöoikeusryhmät.käyttöoikeusryhmät.zipWithIndex.map {
-    case (ryhmä, index) => new Käyttöoikeusryhmä(index, ryhmä.nimi)
-  }
-
   def search(query: String): HenkilöQueryResult = {
     if (query.toLowerCase.contains("error")) {
       throw new TestingException("Testing error handling")
@@ -42,7 +38,7 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
     HenkilöQueryResult(results.size, results)
   }
 
-  def create(createUserInfo: UusiHenkilö): Either[HttpStatus, String] = {
+  private def create(createUserInfo: UusiHenkilö): Either[HttpStatus, String] = {
     if (createUserInfo.sukunimi == "error") {
       throw new TestingException("Testing error handling")
     } else if (oppijat.getOppijat.find { o => (Some(o.hetu) == createUserInfo.hetu) }.isDefined) {
