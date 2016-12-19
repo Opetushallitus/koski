@@ -98,10 +98,7 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
         }
         query.filter(predicates.reduce(or))
       case (query, Luokkahaku(hakusana)) =>
-        val predicates = (0 to 9) map { index =>
-          { t: (Tables.OpiskeluOikeusTable, Tables.HenkilöTable) => ilike(t._1.data#>>(List("suoritukset", "" + index, "luokka")), (hakusana + "%"))}
-        }
-        query.filter(predicates.reduce(or))
+        query.filter({ case t: (Tables.OpiskeluOikeusTable, Tables.HenkilöTable) => ilike(t._1.luokka.getOrElse(""), (hakusana + "%"))})
       case (query, Nimihaku(hakusana)) =>
         query.filter{ case (_, henkilö) =>
           KoskiHenkilöCache.filterByQuery(hakusana)(henkilö)
@@ -197,7 +194,7 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
       case _ =>
         val tallennettavaOpiskeluOikeus = opiskeluOikeus.withIdAndVersion(id = None, versionumero = None)
         for {
-          opiskeluoikeusId <- OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += new OpiskeluOikeusRow(oppijaOid, tallennettavaOpiskeluOikeus, VERSIO_1)
+          opiskeluoikeusId <- OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += OpiskeluOikeusRowConverter.makeInsertableRow(oppijaOid, tallennettavaOpiskeluOikeus)
           diff = Json.toJValue(List(Map("op" -> "add", "path" -> "", "value" -> tallennettavaOpiskeluOikeus)))
           _ <- historyRepository.createAction(opiskeluoikeusId, VERSIO_1, user.oid, diff)
         } yield {
@@ -208,6 +205,7 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
 
   private def updateAction[A <: PäätasonSuoritus](oldRow: OpiskeluOikeusRow, uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Write] = {
     val (id, versionumero) = (oldRow.id, oldRow.versionumero)
+    val nextVersionumero = versionumero + 1
 
     uusiOpiskeluoikeus.versionumero match {
       case Some(requestedVersionumero) if (requestedVersionumero != versionumero) =>
@@ -215,19 +213,19 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
       case _ =>
         val vanhaOpiskeluoikeus = oldRow.toOpiskeluOikeus
 
-        val täydennettyOpiskeluoikeus = OpiskeluoikeusChangeMigrator.kopioiValmiitSuorituksetUuteen(vanhaOpiskeluoikeus, uusiOpiskeluoikeus)
+        val täydennettyOpiskeluoikeus = OpiskeluoikeusChangeMigrator.kopioiValmiitSuorituksetUuteen(vanhaOpiskeluoikeus, uusiOpiskeluoikeus).withVersion(nextVersionumero)
 
-        val uusiData = Json.toJValue(täydennettyOpiskeluoikeus.withIdAndVersion(id = None, versionumero = None))
-        val diff: JArray = Json.jsonDiff(oldRow.data, uusiData)
+        val updatedValues@(newData, _, _) = OpiskeluOikeusRowConverter.updatedFieldValues(täydennettyOpiskeluoikeus)
+
+        val diff: JArray = Json.jsonDiff(oldRow.data, newData)
         diff.values.length match {
           case 0 =>
             DBIO.successful(Right(NotChanged(id, versionumero, diff)))
           case _ =>
             validateOpiskeluoikeusChange(vanhaOpiskeluoikeus, täydennettyOpiskeluoikeus) match {
               case HttpStatus.ok =>
-                val nextVersionumero = versionumero + 1
                 for {
-                  rowsUpdated <- OpiskeluOikeudetWithAccessCheck.filter(_.id === id).map(row => (row.data, row.versionumero)).update((uusiData, nextVersionumero))
+                  rowsUpdated <- OpiskeluOikeudetWithAccessCheck.filter(_.id === id).map(OpiskeluOikeusRowConverter.updateableFieldValues).update(updatedValues)
                   _ <- historyRepository.createAction(id, nextVersionumero, user.oid, diff)
                 } yield {
                   rowsUpdated match {

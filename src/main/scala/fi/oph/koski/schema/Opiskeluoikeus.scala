@@ -49,6 +49,7 @@ trait Opiskeluoikeus extends OrganisaatioonLiittyvä with Lähdejärjestelmälli
 trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
   def suoritukset: List[PäätasonSuoritus]
   def withIdAndVersion(id: Option[Int], versionumero: Option[Int]): KoskeenTallennettavaOpiskeluoikeus
+  def withVersion(version: Int) = this.withIdAndVersion(this.id, Some(version))
   def withSuoritukset(suoritukset: List[PäätasonSuoritus]): KoskeenTallennettavaOpiskeluoikeus
 }
 

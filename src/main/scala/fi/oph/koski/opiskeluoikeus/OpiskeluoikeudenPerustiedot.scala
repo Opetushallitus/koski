@@ -24,7 +24,9 @@ case class OpiskeluoikeudenPerustiedot(
   suoritukset: List[SuorituksenPerustiedot],
   @KoodistoUri("virtaopiskeluoikeudentila")
   @KoodistoUri("koskiopiskeluoikeudentila")
-  tila: Koodistokoodiviite
+  tila: Koodistokoodiviite,
+  @Description("Luokan tai ryhmän tunniste, esimerkiksi 9C")
+  luokka: Option[String]
 )
 
 case class SuorituksenPerustiedot(
@@ -41,9 +43,7 @@ case class SuorituksenPerustiedot(
   @KoodistoUri("tutkintonimikkeet")
   @OksaUri("tmpOKSAID588", "tutkintonimike")
   tutkintonimike: Option[List[Koodistokoodiviite]] = None,
-  toimipiste: OrganisaatioWithOid,
-  @Description("Luokan tai ryhmän tunniste, esimerkiksi 9C")
-  luokka: Option[String]
+  toimipiste: OrganisaatioWithOid
 )
 
 case class KoulutusmoduulinPerustiedot(
@@ -68,12 +68,8 @@ class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöReposito
             case s: NäyttötutkintoonValmistavanKoulutuksenSuoritus => (s.osaamisala, s.tutkintonimike)
             case _ => (None, None)
           }
-          val ryhmä = suoritus match {
-            case s: PerusopetuksenVuosiluokanSuoritus => Some(s.luokka)
-            case _ => None
-          }
-          SuorituksenPerustiedot(suoritus.tyyppi, KoulutusmoduulinPerustiedot(suoritus.koulutusmoduuli.tunniste), osaamisala, tutkintonimike, suoritus.toimipiste, ryhmä)
-        }, oo.tila.opiskeluoikeusjaksot.last.tila)
+          SuorituksenPerustiedot(suoritus.tyyppi, KoulutusmoduulinPerustiedot(suoritus.koulutusmoduuli.tunniste), osaamisala, tutkintonimike, suoritus.toimipiste)
+        }, oo.tila.opiskeluoikeusjaksot.last.tila, opiskeluoikeusRow.luokka)
     }
 
     val perustiedot: List[OpiskeluoikeudenPerustiedot] = perustiedotObservable.toBlocking.toList

@@ -3,10 +3,11 @@ package fi.oph.koski.db
 import java.sql.{Date, Timestamp}
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.Tables.OpiskeluOikeusTable
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, NimitiedotJaOid, Opiskeluoikeus, PäätasonSuoritus}
+import fi.oph.koski.schema._
 import fi.oph.koski.servlet.InvalidRequestException
 import org.json4s._
 
@@ -18,8 +19,9 @@ object Tables {
     val data = column[JValue]("data")
     val oppilaitosOid = column[String]("oppilaitos_oid")
     val koulutustoimijaOid = column[Option[String]]("koulutustoimija_oid")
+    val luokka = column[Option[String]]("luokka")
 
-    def * = (id, oppijaOid, oppilaitosOid, koulutustoimijaOid, versionumero, data) <> (OpiskeluOikeusRow.tupled, OpiskeluOikeusRow.unapply)
+    def * = (id, oppijaOid, oppilaitosOid, koulutustoimijaOid, versionumero, data, luokka) <> (OpiskeluOikeusRow.tupled, OpiskeluOikeusRow.unapply)
   }
 
   class HenkilöTable(tag: Tag) extends Table[HenkilöRow](tag, "henkilo") {
@@ -131,17 +133,38 @@ object Tables {
 case class SSOSessionRow(serviceTicket: String, username: String, userOid: String, started: Timestamp, updated: Timestamp)
 
 // Note: the data json must not contain [id, versionumero] fields. This is enforced by DB constraint.
-case class OpiskeluOikeusRow(id: Int, oppijaOid: String, oppilaitosOid: String, koulutustoimijaOid: Option[String], versionumero: Int, data: JValue) {
+case class OpiskeluOikeusRow(id: Int, oppijaOid: String, oppilaitosOid: String, koulutustoimijaOid: Option[String], versionumero: Int, data: JValue, luokka: Option[String]) {
   lazy val toOpiskeluOikeus: KoskeenTallennettavaOpiskeluoikeus = {
     try {
-      OpiskeluOikeusStoredDataDeserializer.read(data, id, versionumero)
+      OpiskeluOikeusRowConverter.readData(data, id, versionumero)
     } catch {
       case e: Exception => throw new MappingException(s"Error deserializing opiskeluoikeus ${id} for oppija ${oppijaOid}", e)
     }
   }
+}
 
-  def this(oppijaOid: String, opiskeluOikeus: Opiskeluoikeus, versionumero: Int) = {
-    this(0, oppijaOid, opiskeluOikeus.oppilaitos.oid, opiskeluOikeus.koulutustoimija.map(_.oid), versionumero, Json.toJValue(opiskeluOikeus))
+
+object OpiskeluOikeusRowConverter {
+  def readData(data: JValue, id: Int, versionumero: Int): KoskeenTallennettavaOpiskeluoikeus = {
+    Json.fromJValue[Opiskeluoikeus](data).asInstanceOf[KoskeenTallennettavaOpiskeluoikeus].withIdAndVersion(id = Some(id), versionumero = Some(versionumero))
+  }
+
+  def makeInsertableRow(oppijaOid: String, opiskeluoikeus: Opiskeluoikeus) = {
+    OpiskeluOikeusRow(opiskeluoikeus.id.getOrElse(0), oppijaOid, opiskeluoikeus.oppilaitos.oid, opiskeluoikeus.koulutustoimija.map(_.oid), Opiskeluoikeus.VERSIO_1, Json.toJValue(opiskeluoikeus), luokka(opiskeluoikeus))
+  }
+
+  def updatedFieldValues(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
+    val data = Json.toJValue(opiskeluoikeus.withIdAndVersion(id = None, versionumero = None))
+    (data, opiskeluoikeus.versionumero.get, luokka(opiskeluoikeus))
+  }
+
+  def updateableFieldValues(row: OpiskeluOikeusTable) = {
+    (row.data, row.versionumero, row.luokka)
+  }
+
+  private def luokka(opiskeluoikeus: Opiskeluoikeus) = {
+    val vuosiluokkasuoritukset = opiskeluoikeus.suoritukset.collect({case s: PerusopetuksenVuosiluokanSuoritus => s})
+    vuosiluokkasuoritukset.sortBy(_.koulutusmoduuli.tunniste.koodiarvo).reverse.headOption.map(_.luokka)
   }
 }
 
@@ -154,9 +177,3 @@ case class OpiskeluOikeusHistoryRow(opiskeluoikeusId: Int, versionumero: Int, ai
 case class TiedonsiirtoRow(id: Int, kayttajaOid: String, tallentajaOrganisaatioOid: String, oppija: Option[JValue], oppilaitos: Option[JValue], data: Option[JValue], virheet: Option[JValue], aikaleima: Timestamp, lahdejarjestelma: Option[String])
 
 case class TiedonsiirtoYhteenvetoRow(tallentajaOrganisaatio: String, oppilaitos: String, kayttaja: String, viimeisin: Timestamp, siirretyt: Int, virheet: Int, opiskeluoikeudet: Option[Int], lahdejarjestelma: Option[String])
-
-object OpiskeluOikeusStoredDataDeserializer {
-  def read(data: JValue, id: Int, versionumero: Int): KoskeenTallennettavaOpiskeluoikeus = {
-    Json.fromJValue[Opiskeluoikeus](data).asInstanceOf[KoskeenTallennettavaOpiskeluoikeus].withIdAndVersion(id = Some(id), versionumero = Some(versionumero))
-  }
-}
