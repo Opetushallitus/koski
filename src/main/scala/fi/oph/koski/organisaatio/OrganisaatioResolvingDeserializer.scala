@@ -9,7 +9,7 @@ import org.json4s.reflect.TypeInfo
 
 object OrganisaatioResolvingDeserializer extends Deserializer[Organisaatio] with Logging {
   val OppilaitosClass = classOf[Oppilaitos]
-  val organisaatioClasses = List(classOf[Organisaatio], classOf[OrganisaatioWithOid], classOf[Oppilaitos], classOf[OidOrganisaatio], classOf[Koulutustoimija], classOf[Tutkintotoimikunta], classOf[Yritys])
+  val organisaatioClasses = List(classOf[Organisaatio], classOf[OrganisaatioWithOid], classOf[Oppilaitos], classOf[OidOrganisaatio], classOf[Toimipiste], classOf[Koulutustoimija], classOf[Tutkintotoimikunta], classOf[Yritys])
 
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Organisaatio] = {
     case (TypeInfo(c, _), json) if organisaatioClasses.contains(c) =>

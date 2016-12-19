@@ -52,7 +52,7 @@ object AmmatillinenExampleData {
   lazy val järjestämismuotoOppisopimus = Koodistokoodiviite("20", Some("Oppisopimusmuotoinen"), "jarjestamismuoto", Some(1))
   lazy val järjestämismuotoOppilaitos = Koodistokoodiviite("10", Some("Oppilaitosmuotoinen"), "jarjestamismuoto", Some(1))
   lazy val stadinAmmattiopisto: Oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto, Some(Koodistokoodiviite("10105", None, "oppilaitosnumero", None)), Some("Stadin ammattiopisto"))
-  lazy val stadinToimipiste: OidOrganisaatio = OidOrganisaatio(MockOrganisaatiot.lehtikuusentienToimipiste, Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))
+  lazy val stadinToimipiste: Toimipiste = Toimipiste(MockOrganisaatiot.lehtikuusentienToimipiste, Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))
   lazy val tutkintotoimikunta: Organisaatio = Tutkintotoimikunta("Autokorjaamoalan tutkintotoimikunta", 8406)
   lazy val lähdeWinnova = Koodistokoodiviite("winnova", Some("Winnova"), "lahdejarjestelma", Some(1))
   lazy val winnovaLähdejärjestelmäId = LähdejärjestelmäId(Some("12345"), lähdeWinnova)
@@ -144,7 +144,7 @@ object AmmatillinenExampleData {
     )
   }
 
-  def perustutkintoOpiskeluoikeus(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OidOrganisaatio = stadinToimipiste) = AmmatillinenOpiskeluoikeus(
+  def perustutkintoOpiskeluoikeus(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste) = AmmatillinenOpiskeluoikeus(
     alkamispäivä = Some(date(2012, 9, 1)),
     arvioituPäättymispäivä = Some(date(2015, 5, 31)),
     päättymispäivä = Some(date(2016, 5, 31)),
@@ -158,7 +158,7 @@ object AmmatillinenExampleData {
     )
   )
 
-  def ympäristöalanPerustutkintoValmis(toimipiste: OidOrganisaatio = stadinToimipiste): AmmatillisenTutkinnonSuoritus = {
+  def ympäristöalanPerustutkintoValmis(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = {
     AmmatillisenTutkinnonSuoritus(
       koulutusmoduuli = AmmatillinenTutkintoKoulutus(
         Koodistokoodiviite("361902", Some("Luonto- ja ympäristöalan perustutkinto"), "koulutus", None),

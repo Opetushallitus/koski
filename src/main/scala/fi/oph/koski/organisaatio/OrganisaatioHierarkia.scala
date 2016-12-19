@@ -20,6 +20,8 @@ case class OrganisaatioHierarkia(oid: String, oppilaitosnumero: Option[Koodistok
       Oppilaitos(oid, oppilaitosnumero, Some(nimi))
     } else if (organisaatiotyypit.contains("KOULUTUSTOIMIJA")) {
       Koulutustoimija(oid, Some(nimi), yTunnus)
+    } else if (organisaatiotyypit.contains("TOIMIPISTE")) {
+      Toimipiste(oid, Some(nimi))
     } else {
       OidOrganisaatio(oid, Some(nimi))
     }

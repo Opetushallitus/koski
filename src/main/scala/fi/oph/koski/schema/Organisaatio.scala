@@ -54,6 +54,14 @@ case class Oppilaitos(
   def toOppilaitos = Some(this)
 }
 
+@Description("Opintopolun organisaatiopalvelusta löytyvä toimipiste-tyyppinen organisaatio.")
+case class Toimipiste(
+  oid: String,
+  nimi: Option[LocalizedString] = None
+) extends OrganisaatioWithOid with DefaultDescription {
+  def toOppilaitos = None
+}
+
 @Description("Yritys, jolla on y-tunnus")
 case class Yritys(
   nimi: LocalizedString,
