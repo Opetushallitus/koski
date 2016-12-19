@@ -55,8 +55,6 @@ object KoulutusmoduulinPerustiedot {
 }
 
 class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöRepository, opiskeluOikeusRepository: OpiskeluOikeusRepository, koodisto: KoodistoViitePalvelu) {
-  import HenkilöOrdering.aakkostettu
-
   def find(filters: List[OpiskeluoikeusQueryFilter], sorting: OpiskeluoikeusSortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): List[OpiskeluoikeudenPerustiedot] = {
     val perustiedotObservable = opiskeluOikeusRepository.streamingQuery(filters, sorting, Some(pagination)).map {
       case (opiskeluoikeusRow, henkilöRow) =>
@@ -71,10 +69,7 @@ class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöReposito
           SuorituksenPerustiedot(suoritus.tyyppi, KoulutusmoduulinPerustiedot(suoritus.koulutusmoduuli.tunniste), osaamisala, tutkintonimike, suoritus.toimipiste)
         }, oo.tila.opiskeluoikeusjaksot.last.tila, opiskeluoikeusRow.luokka)
     }
-
-    val perustiedot: List[OpiskeluoikeudenPerustiedot] = perustiedotObservable.toBlocking.toList
-
-    perustiedot // TODO: Filtteröi suoritukset opiskeluoikeuksien sisällä
+    perustiedotObservable.toBlocking.toList
   }
 }
 

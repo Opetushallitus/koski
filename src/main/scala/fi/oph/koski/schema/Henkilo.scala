@@ -81,7 +81,3 @@ trait HenkilöWithOid extends Henkilö {
   @RegularExpression("""1\.2\.246\.562\.24\.\d{11}""")
   def oid: String
 }
-
-object HenkilöOrdering {
-  implicit val aakkostettu: Ordering[Nimitiedot] = Ordering.by(nimitiedot => (nimitiedot.sukunimi.toLowerCase, nimitiedot.etunimet.toLowerCase))
-}
