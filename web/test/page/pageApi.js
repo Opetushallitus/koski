@@ -1,4 +1,8 @@
 function Page(mainElement) {
+  if (typeof mainElement != 'function') {
+    var el = mainElement
+    mainElement = function () { return el }
+  }
   var api = {
     getInput: function(selector) {
       return Input(function () {
@@ -77,6 +81,10 @@ function Page(mainElement) {
             input.val($(option).attr("value"))
             triggerEvent(input, "change")
             break;
+          case "DROPDOWN": // Dropdown.jsx
+            triggerEvent(S(input).find('.select'), 'click')
+            triggerEvent(S(input).find('.options li:contains(' + value + ')'), 'click')
+            break;
 				  default:
 						throw new Error("Unknown input type: " + inputType(input))
         }
@@ -86,6 +94,8 @@ function Page(mainElement) {
     function inputType(el) {
       if (el.prop("tagName") == "SELECT" || el.prop("tagName") == "TEXTAREA")
         return el.prop("tagName")
+      else if ($(el).hasClass("dropdown")) // Dropdown.jsx
+        return "DROPDOWN"
       else
         return el.prop("type").toUpperCase()
     }

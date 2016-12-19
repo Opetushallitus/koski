@@ -53,14 +53,31 @@ function KoskiPage() {
 
   var Oppijataulukko = {
     isVisible: function() {
-      return isElementVisible(S('#content .oppijataulukko'))
+      return isElementVisible(Oppijataulukko.tableElem())
     },
     findOppija: function(nimi, tyyppi) {
       return textsOf(S("tr:contains(" + nimi + "):contains(" + tyyppi + ")").find("td"))
     },
+    data: function() {
+      return Oppijataulukko.tableElem().find("tbody tr").toArray().map(function(row) { return textsOf($(row).find("td")) })
+    },
     isReady: function() {
       return Oppijataulukko.isVisible() && !isElementVisible(S('.loading'))
+    },
+    filterBy: function(className, value) {
+      return function() {
+        if (className == "nimi" || className == "tutkinto") {
+          return Page(Oppijataulukko.tableElem).setInputValue("th." + className + " input", value || "")().then(wait.forMilliseconds(500)).then(wait.forAjax) // <- TODO 500ms throttle in input is slowing tests down
+        } else {
+          return Page(Oppijataulukko.tableElem).setInputValue("th." + className +" .dropdown", value || "ei valintaa")().then(wait.forAjax)
+        }
+      }
+
+    },
+    tableElem: function() {
+      return S('#content .oppijataulukko')
     }
+
   }
 
   var api = {
@@ -71,7 +88,7 @@ function KoskiPage() {
       return isElementVisible(S('#content .oppija-haku'))
     },
     isLoading: function() {
-      return S('body').hasClass('loading')
+      return S('.loading').length > 0
     },
     isNotLoading: function() {
       return !api.isLoading()
