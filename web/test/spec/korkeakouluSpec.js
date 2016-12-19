@@ -15,7 +15,6 @@ describe('Korkeakoulutus', function() {
       it('näytetään', function() {
         expect(opinnot.getTutkinto()).to.equal('Dipl.ins., konetekniikka')
         expect(opinnot.getOppilaitos()).to.equal('Aalto-yliopisto')
-        //expect(opinnot.getOpintoOikeus()).to.equal('(Opiskeluoikeus päättynyt, Suoritus valmis)') // TODO: fix later
       })
     })
     describe('Kaikki tiedot näkyvissä', function() {
@@ -50,7 +49,6 @@ describe('Korkeakoulutus', function() {
       it('näytetään', function() {
         expect(opinnot.getTutkinto(1)).to.equal('Dipl.ins., kemian tekniikka')
         expect(opinnot.getOppilaitos(1)).to.equal('Helsingin yliopisto')
-        //expect(opinnot.getOpintoOikeus(1)).to.equal('(Opiskeluoikeus passivoitu, Suoritus kesken)') // TODO: fix later
       })
     })
     describe('Opiskeluoikeus', function() {
@@ -79,7 +77,6 @@ describe('Korkeakoulutus', function() {
       it('näytetään', function() {
         expect(opinnot.getTutkinto()).to.equal('Ensihoitaja (AMK)')
         expect(opinnot.getOppilaitos()).to.equal('Yrkeshögskolan Arcada')
-        //expect(opinnot.getOpintoOikeus()).to.equal('(Opiskeluoikeus luopunut, Suoritus kesken)') // TODO: fix later
       })
     })
   })

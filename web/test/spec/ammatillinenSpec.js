@@ -212,10 +212,9 @@ describe('Ammatillinen koulutus', function() {
     })
 
     describe('Kun valitaan suoritustapa', function() {
-      //before(opinnot.selectSuoritustapa("ops"), opinnot.selectOsaamisala("1527"))
       var suoritus = opinnot.suoritus('Autoalan perustutkinto')
       var suoritustapa = suoritus.property('suoritustapa')
-      before(suoritus.expand, suoritus.edit, suoritustapa.addValue, suoritustapa.waitUntilLoaded, function() { console.log("here1") }, suoritustapa.setValue('ops'), function() { console.log("here") })
+      before(suoritus.expand, suoritus.edit, suoritustapa.addValue, suoritustapa.waitUntilLoaded, suoritustapa.setValue('ops'))
 
       describe('Muutosten näyttäminen', function() {
         before(wait.until(page.isSavedLabelShown))
