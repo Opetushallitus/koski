@@ -60,14 +60,17 @@ class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöReposito
       case (opiskeluoikeusRow, henkilöRow) =>
         val nimitiedotJaOid = henkilöRow.toNimitiedotJaOid
         val oo = opiskeluoikeusRow.toOpiskeluOikeus
-        OpiskeluoikeudenPerustiedot(nimitiedotJaOid, oo.oppilaitos, oo.alkamispäivä, oo.tyyppi, oo.suoritukset.map { suoritus =>
-          val (osaamisala, tutkintonimike) = suoritus match {
-            case s: AmmatillisenTutkinnonSuoritus => (s.osaamisala, s.tutkintonimike)
-            case s: NäyttötutkintoonValmistavanKoulutuksenSuoritus => (s.osaamisala, s.tutkintonimike)
-            case _ => (None, None)
+        val suoritukset: List[SuorituksenPerustiedot] = oo.suoritukset
+          .filterNot(_.isInstanceOf[PerusopetuksenVuosiluokanSuoritus])
+          .map { suoritus =>
+            val (osaamisala, tutkintonimike) = suoritus match {
+              case s: AmmatillisenTutkinnonSuoritus => (s.osaamisala, s.tutkintonimike)
+              case s: NäyttötutkintoonValmistavanKoulutuksenSuoritus => (s.osaamisala, s.tutkintonimike)
+              case _ => (None, None)
+            }
+            SuorituksenPerustiedot(suoritus.tyyppi, KoulutusmoduulinPerustiedot(suoritus.koulutusmoduuli.tunniste), osaamisala, tutkintonimike, suoritus.toimipiste)
           }
-          SuorituksenPerustiedot(suoritus.tyyppi, KoulutusmoduulinPerustiedot(suoritus.koulutusmoduuli.tunniste), osaamisala, tutkintonimike, suoritus.toimipiste)
-        }, oo.tila.opiskeluoikeusjaksot.last.tila, opiskeluoikeusRow.luokka)
+        OpiskeluoikeudenPerustiedot(nimitiedotJaOid, oo.oppilaitos, oo.alkamispäivä, oo.tyyppi, suoritukset, oo.tila.opiskeluoikeusjaksot.last.tila, opiskeluoikeusRow.luokka)
     }
     perustiedotObservable.toBlocking.toList
   }
