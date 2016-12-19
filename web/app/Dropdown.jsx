@@ -17,9 +17,6 @@ export default React.createClass({
       </div>
     )
   },
-  handleClickOutside() {
-    this.setState({ open: false })
-  },
   selectOption(e, option) {
     const selected = option.key ? option : undefined
     this.setState({selected: selected, open: false}, () => this.props.onSelectionChanged(selected))

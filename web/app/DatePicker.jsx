@@ -6,8 +6,8 @@ export default React.createClass({
   render() {
     const {from, to, displayedStartMonth, displayedEndMonth} = this.state
     return (
-      <div className="calendar">
-        <div onClick={e => this.openCalendar(e)}>{ from && to ? (formatFinnishDate(from) + '-' + formatFinnishDate(to)) : 'kaikki'}</div>
+      <div className="calendar" onMouseDown={ this.handleContainerMouseDown } tabIndex="0" onBlur={this.handleInputBlur} onFocus={this.handleInputFocus}>
+        <div className="calendar-selection">{ from && to ? (formatFinnishDate(from) + '-' + formatFinnishDate(to)) : 'kaikki'}</div>
         { this.state.open &&
           <div className="DayPicker-CalendarContainer">
               <DayPicker
@@ -54,11 +54,7 @@ export default React.createClass({
       open: false
     }
   },
-  openCalendar(e) {
-    this.setState({open: !this.state.open})
-  },
   closeCalendar() {
-    console.log('close calendar')
     this.setState({open: false})
   },
   componentDidMount() {
@@ -68,17 +64,8 @@ export default React.createClass({
     window.removeEventListener('click', this.handleClickOutside, false)
   },
   handleClickOutside(e) {
-    console.log('clicketi outside', !e.target.closest('.calendar'))
     !e.target.closest('.calendar') && this.closeCalendar()
-  }
-  /*,
-  handleFocus(e) {
-    console.log("focus")
   },
-  handleBlur(e) {
-    console.log("blur", e)
-  }*/
-  /*,
   handleContainerMouseDown() {
     this.clickedInside = true
     this.clickTimeout = setTimeout(() => {
@@ -86,29 +73,12 @@ export default React.createClass({
     }, 0)
   },
   handleInputFocus() {
-    this.setState({showOverlay: true},
-      () => this.state.selectedDay && this.daypicker.showMonth(this.state.selectedDay)
-    )
-  },
-  handleInputChange(e) {
-    const {value} = e.target
-    const parsed = parseFinnishDate(value)
-    this.setState({selectedDay: parsed, value, showOverlay: false}, () => {
-      if (parsed || !value) {
-        this.props.onSelectionChanged(parsed || undefined)
-        this.input.blur()
-      }
-    })
+    this.setState({open: true})
   },
   handleInputBlur() {
-    const showOverlay = this.clickedInside
-
-    this.setState({showOverlay})
-
-    if (showOverlay) {
-      this.input.focus()
-    }
-  }*/
+    const open = this.clickedInside
+    this.setState({open})
+  }
 })
 
 const weekdaysLong = {
