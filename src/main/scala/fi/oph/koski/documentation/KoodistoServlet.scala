@@ -20,8 +20,10 @@ class KoodistoServlet(val koodistoPalvelu: KoodistoPalvelu) extends ApiServlet w
   }
 
   get("/suoritustyypit") {
-    val oo = params.get("opiskeluoikeudentyyppi").map(tyyppi => opiskeluoikeudet.filter(oo => oo.tyyppi.koodiarvo == tyyppi)).getOrElse(opiskeluoikeudet)
-    koodistoPalvelu.getLatestVersion("suorituksentyyppi").flatMap(koodistoPalvelu.getKoodistoKoodit).get.filter(koodi => koodiarvot(oo).contains(koodi.koodiArvo))
+    val opiskeluoikeudenTyyppi = params.get("opiskeluoikeudentyyppi").map(tyyppi => opiskeluoikeudet.filter(oo => oo.tyyppi.koodiarvo == tyyppi)).getOrElse(opiskeluoikeudet)
+    koodistoPalvelu.getLatestVersion("suorituksentyyppi").flatMap(koodistoPalvelu.getKoodistoKoodit).get
+      .filter(koodi => koodiarvot(opiskeluoikeudenTyyppi).contains(koodi.koodiArvo))
+      .filterNot(_.koodiArvo == "perusopetuksenvuosiluokka")
   }
 }
 
