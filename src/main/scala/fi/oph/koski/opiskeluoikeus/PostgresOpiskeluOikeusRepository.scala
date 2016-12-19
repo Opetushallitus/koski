@@ -106,14 +106,19 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
       case (query, filter) => throw new InvalidRequestException(KoskiErrorCategory.internalError("Hakua ei ole toteutettu: " + filter))
     }
 
+    def ap(tuple: (OpiskeluOikeusTable, HenkilöTable)) = tuple._1.data.#>>(List("alkamispäivä"))
+    def luokka(tuple: (OpiskeluOikeusTable, HenkilöTable)) = tuple._1.luokka
+    def nimi(tuple: (OpiskeluOikeusTable, HenkilöTable)) = (tuple._2.sukunimi.toLowerCase, tuple._2.etunimet.toLowerCase)
+    def nimiDesc(tuple: (OpiskeluOikeusTable, HenkilöTable)) = (tuple._2.sukunimi.toLowerCase.desc, tuple._2.etunimet.toLowerCase.desc)
+
     val sorted = sorting match {
       case Ascending(OpiskeluoikeusSortOrder.oppijaOid) => query.sortBy(_._2.oid)
-      case Ascending("nimi") => query.sortBy { case (_, henkilö) => (henkilö.sukunimi.toLowerCase, henkilö.etunimet.toLowerCase) }
-      case Descending("nimi") => query.sortBy { case (_, henkilö) => (henkilö.sukunimi.toLowerCase.desc, henkilö.etunimet.toLowerCase.desc) }
-      case Ascending("alkamispäivä") => query.sortBy(_._1.data.#>>(List("alkamispäivä")))
-      case Descending("alkamispäivä") => query.sortBy(_._1.data.#>>(List("alkamispäivä")).desc)
-      case Ascending("luokka") => query.sortBy(_._1.luokka)
-      case Descending("luokka") => query.sortBy(_._1.luokka.desc)
+      case Ascending("nimi") => query.sortBy(nimi)
+      case Descending("nimi") => query.sortBy(nimiDesc)
+      case Ascending("alkamispäivä") => query.sortBy(tuple => (ap(tuple), nimi(tuple)))
+      case Descending("alkamispäivä") => query.sortBy(tuple => (ap(tuple).desc, nimiDesc(tuple)))
+      case Ascending("luokka") => query.sortBy(tuple => (luokka(tuple), nimi(tuple)))
+      case Descending("luokka") => query.sortBy(tuple => (luokka(tuple).desc, nimiDesc(tuple)))
       case s => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("Epäkelpo järjestyskriteeri: " + s))
     }
 
