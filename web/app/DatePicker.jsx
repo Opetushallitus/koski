@@ -45,13 +45,23 @@ export default React.createClass({
     })
   },
   handleDayClick(e, day) {
-    this.setState(DateUtils.addDayToRange(day, this.state))
+    this.setState(DateUtils.addDayToRange(day, this.state), () => {
+      this.state.from && this.state.to && this.props.onSelectionChanged({
+        from: this.state.from,
+        to: this.state.to
+      })
+    })
   },
   getInitialState() {
+    const from = this.props.selectedStartDay && parseFinnishDate(this.props.selectedStartDay)
+    const to = this.props.selectedEndDay && parseFinnishDate(this.props.selectedEndDay)
+
     return {
-      displayedStartMonth: new Date(new Date().getFullYear(), 0, 1),
-      displayedEndMonth: new Date(),
-      open: false
+      displayedStartMonth: from ? from : new Date(new Date().getFullYear(), 0, 1),
+      displayedEndMonth: to ? to : new Date(),
+      open: false,
+      from: from,
+      to: to
     }
   },
   closeCalendar() {

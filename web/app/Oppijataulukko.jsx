@@ -70,8 +70,14 @@ export const Oppijataulukko = React.createClass({
             <th className={sortBy == 'alkamispäivä' ? 'aloitus sorted': 'aloitus'}>
               <Sorter field='alkamispäivä' sortBus={this.sortBus} sortBy={sortBy} sortOrder={sortOrder}>Aloitus pvm</Sorter>
               <DatePicker
-                selectedDay={params['opiskeluoikeusAlkanutAikaisintaan'] && ISO2FinnishDate(params['opiskeluoikeusAlkanutAikaisintaan'])}
-                onSelectionChanged={date => this.filterBus.push({'opiskeluoikeusAlkanutAikaisintaan': date ? formatISODate(date) : undefined })}
+                selectedStartDay={params['opiskeluoikeusAlkanutAikaisintaan'] && ISO2FinnishDate(params['opiskeluoikeusAlkanutAikaisintaan'])}
+                selectedEndDay={params['opiskeluoikeusAlkanutViimeistään'] && ISO2FinnishDate(params['opiskeluoikeusAlkanutViimeistään'])}
+                onSelectionChanged={ range => this.filterBus.push(
+                  {
+                    'opiskeluoikeusAlkanutAikaisintaan': formatISODate(range.from),
+                    'opiskeluoikeusAlkanutViimeistään': formatISODate(range.to)
+                  })
+                }
               />
             </th>
             <th className={sortBy == 'luokka' ? 'luokka sorted': 'luokka'}>

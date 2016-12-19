@@ -92,7 +92,7 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
           parse(s"""[{"osaamisala":[{"koodiarvo": "${osaamisala.koodiarvo}"}]}]""")
         }
         query.filter(_._1.data.+>("suoritukset").@>(predicates.bind.any))
-      case (query, Toimipiste(toimipisteet)) =>
+      case (query, OpiskeluoikeusQueryFilter.Toimipiste(toimipisteet)) =>
         val predicates = toimipisteet.map { toimipiste =>
           {t: (Tables.OpiskeluOikeusTable, Tables.HenkilöTable) => t._1.data.+>("suoritukset").@>(parse(s"""[{"toimipiste":{"oid": "${toimipiste.oid}"}}]"""))}
         }
