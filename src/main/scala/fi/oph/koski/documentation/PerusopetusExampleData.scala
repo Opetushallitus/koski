@@ -82,10 +82,10 @@ object PerusopetusExampleData {
     )
   }
 
-  def päättötodistusOpiskeluoikeus(oppilaitos: Oppilaitos = jyväskylänNormaalikoulu) = opiskeluoikeus(
+  def päättötodistusOpiskeluoikeus(oppilaitos: Oppilaitos = jyväskylänNormaalikoulu, luokka: String = "C") = opiskeluoikeus(
     suoritukset = List(
-      kahdeksannenLuokanSuoritus.copy(toimipiste = oppilaitos),
-      yhdeksännenLuokanSuoritus.copy(toimipiste = oppilaitos),
+      kahdeksannenLuokanSuoritus.copy(toimipiste = oppilaitos, luokka = "8" + luokka),
+      yhdeksännenLuokanSuoritus.copy(toimipiste = oppilaitos, luokka = "9" + luokka),
       perusopetuksenOppimääränSuoritus.copy(toimipiste = oppilaitos))
   )
 

@@ -61,18 +61,27 @@ function KoskiPage() {
     data: function() {
       return Oppijataulukko.tableElem().find("tbody tr").toArray().map(function(row) { return textsOf($(row).find("td")) })
     },
+    names: function() {
+      return Oppijataulukko.data().map(function(row) { return row[0]})
+    },
     isReady: function() {
       return Oppijataulukko.isVisible() && !isElementVisible(S('.loading'))
     },
     filterBy: function(className, value) {
       return function() {
-        if (className == "nimi" || className == "tutkinto") {
+        if (className == "nimi" || className == "tutkinto" || className == "luokka") {
           return Page(Oppijataulukko.tableElem).setInputValue("th." + className + " input", value || "")().then(wait.forMilliseconds(500)).then(wait.forAjax) // <- TODO 500ms throttle in input is slowing tests down
         } else {
           return Page(Oppijataulukko.tableElem).setInputValue("th." + className +" .dropdown", value || "ei valintaa")().then(wait.forAjax)
         }
       }
 
+    },
+    sortBy: function(className) {
+      return function() {
+        triggerEvent(S('.' + className + ' .sorting'), 'click')
+        return wait.forAjax()
+      }
     },
     tableElem: function() {
       return S('#content .oppijataulukko')

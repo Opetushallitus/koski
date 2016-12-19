@@ -108,9 +108,13 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
 
     val sorted = sorting match {
       case Ascending(OpiskeluoikeusSortOrder.oppijaOid) => query.sortBy(_._2.oid)
-      case Ascending("nimi") => query.sortBy(_._2.sukunimi) // TODO: etunimi
-      case Descending("nimi") => query.sortBy(_._2.sukunimi.desc) // TODO: etunimi
-      case _ => query // TODO: rest of sorting
+      case Ascending("nimi") => query.sortBy { case (_, henkilö) => (henkilö.sukunimi.toLowerCase, henkilö.etunimet.toLowerCase) }
+      case Descending("nimi") => query.sortBy { case (_, henkilö) => (henkilö.sukunimi.toLowerCase.desc, henkilö.etunimet.toLowerCase.desc) }
+      case Ascending("alkamispäivä") => query.sortBy(_._1.data.#>>(List("alkamispäivä")))
+      case Descending("alkamispäivä") => query.sortBy(_._1.data.#>>(List("alkamispäivä")).desc)
+      case Ascending("luokka") => query.sortBy(_._1.luokka)
+      case Descending("luokka") => query.sortBy(_._1.luokka.desc)
+      case s => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("Epäkelpo järjestyskriteeri: " + s))
     }
 
     val paginated = QueryPagination.applyPagination(sorted, pagination)
