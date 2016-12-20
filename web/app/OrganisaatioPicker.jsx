@@ -7,7 +7,6 @@ export default React.createClass({
     let { organisaatiot = [] } = this.state
     let { onSelectionChanged, selectedOrg } = this.props
     let selectOrg = (org) => { this.setState({open: false}); onSelectionChanged(org) }
-
     let renderTree = (orgs) => orgs.map((org, i) =>
       <li key={i}><a className="nimi" onClick={ (e) => { selectOrg(org); e.preventDefault() }}>{org.nimi.fi}</a>
         <ul className="aliorganisaatiot">
@@ -19,7 +18,7 @@ export default React.createClass({
     return (
       <div className="organisaatio" onMouseDown={ this.handleContainerMouseDown } tabIndex="0" onBlur={this.handleInputBlur}
            onFocus={this.handleInputFocus}>
-        <div className="organisaatio-selection">{ selectedOrg ? selectedOrg.nimi : 'kaikki'}</div>
+        <div className="organisaatio-selection">{ selectedOrg.nimi ? selectedOrg.nimi : 'kaikki'}</div>
         { this.state.open &&
         <div className="organisaatio-popup">
           <input placeholder="hae" ref="hakuboksi" defaultValue={this.state.searchString} onChange={e => {
