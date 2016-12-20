@@ -2,6 +2,7 @@ package fi.oph.koski
 
 import fi.oph.koski.koskiuser.{AuthenticationSupport, UserAuthenticationContext}
 import fi.oph.koski.servlet.{HtmlServlet, NoCache}
+import fi.oph.koski.sso.SSOSupport
 import org.scalatra.ScalatraServlet
 
 class IndexServlet(val application: UserAuthenticationContext) extends ScalatraServlet with HtmlServlet with AuthenticationSupport {
@@ -57,8 +58,12 @@ object IndexServlet {
     </html>
 }
 
-class LoginPageServlet(val application: UserAuthenticationContext) extends ScalatraServlet with HtmlServlet {
+class LoginPageServlet(val application: UserAuthenticationContext) extends ScalatraServlet with HtmlServlet with SSOSupport {
   get("/") {
-    IndexServlet.html("koski-login.js")
+    if (ssoConfig.isCasSsoUsed) {
+      redirect("/")
+    } else {
+      IndexServlet.html("koski-login.js")
+    }
   }
 }
