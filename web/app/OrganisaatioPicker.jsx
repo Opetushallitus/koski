@@ -16,7 +16,7 @@ export default React.createClass({
     )
 
     return (
-      <div className="organisaatio" tabIndex="0">
+      <div className="organisaatio" >
         <div className="organisaatio-selection" onClick={ () => this.setState({open:!open}) }>{ selectedOrg.nimi ? selectedOrg.nimi : 'kaikki'}</div>
         { open &&
         <div className="organisaatio-popup">
