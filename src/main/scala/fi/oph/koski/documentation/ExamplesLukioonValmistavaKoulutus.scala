@@ -24,7 +24,7 @@ object ExamplesLukioonValmistavaKoulutus {
         )),
         suoritukset = List(LukioonValmistavanKoulutuksenSuoritus(
           tila = tilaValmis,
-          vahvistus = vahvistus(),
+          vahvistus = vahvistusPaikkakunnalla(),
           toimipiste = jyväskylänNormaalikoulu,
           koulutusmoduuli = LukioonValmistavaKoulutus(),
           osasuoritukset = Some(List(

@@ -47,7 +47,7 @@ object ExamplesPerusopetus {
           toimipiste = jyväskylänNormaalikoulu,
           arviointi = arviointi(9),
           suoritustapa = suoritustapaErityinenTutkinto,
-          vahvistus = vahvistus()
+          vahvistus = vahvistusPaikkakunnalla()
         )),
       tila = PerusopetuksenOpiskeluoikeudenTila(
         List(
@@ -71,7 +71,7 @@ object ExamplesPerusopetus {
           suorituskieli = None,
           tila = tilaValmis,
           toimipiste = jyväskylänNormaalikoulu,
-          vahvistus = vahvistus(),
+          vahvistus = vahvistusPaikkakunnalla(),
           suoritustapa = suoritustapaErityinenTutkinto,
           oppimäärä = aikuistenOppimäärä,
           osasuoritukset = kaikkiAineet
@@ -98,7 +98,7 @@ object ExamplesPerusopetus {
           suorituskieli = None,
           tila = tilaValmis,
           toimipiste = jyväskylänNormaalikoulu,
-          vahvistus = vahvistus(),
+          vahvistus = vahvistusPaikkakunnalla(),
           suoritustapa = suoritustapaErityinenTutkinto,
           oppimäärä = aikuistenOppimäärä,
           osasuoritukset = Some(List(

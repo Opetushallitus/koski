@@ -17,7 +17,7 @@ object ExamplesIB {
   val preIBSuoritus = PreIBSuoritus(
     toimipiste = ressunLukio,
     tila = tilaValmis,
-    vahvistus = ExampleData.vahvistus(org = ressunLukio, kunta = helsinki),
+    vahvistus = ExampleData.vahvistusPaikkakunnalla(org = ressunLukio, kunta = helsinki),
     osasuoritukset = Some(List(
       preIBAineSuoritus(lukionÄidinkieli("AI1"),List(
         (valtakunnallinenKurssi("ÄI1"), "8"), (valtakunnallinenKurssi("ÄI2"), "8"), (valtakunnallinenKurssi("ÄI3"), "8")
@@ -129,7 +129,7 @@ object ExamplesIB {
   def ibTutkinnonSuoritus(predicted: Boolean) = IBTutkinnonSuoritus(
     toimipiste = ressunLukio,
     tila = tilaValmis,
-    vahvistus = ExampleData.vahvistus(org = ressunLukio, kunta = helsinki),
+    vahvistus = ExampleData.vahvistusPaikkakunnalla(org = ressunLukio, kunta = helsinki),
     osasuoritukset = Some(osasuoritukset(predicted = predicted)),
     theoryOfKnowledge = Some(IBTheoryOfKnowledgeSuoritus(
       IBOppiaineTheoryOfKnowledge(), tilaValmis, ibCoreArviointi("A", predicted = predicted), osasuoritukset = Some(List(

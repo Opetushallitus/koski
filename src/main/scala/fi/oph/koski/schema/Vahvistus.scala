@@ -8,25 +8,43 @@ import fi.oph.scalaschema.annotation._
 trait Vahvistus {
   @Description("Tutkinnon tai tutkinnonosan vahvistettu suorituspäivämäärä, eli päivämäärä jolloin suoritus on hyväksyttyä todennettua osaamista. Muoto YYYY-MM-DD")
   def päivä: LocalDate
-  @KoodistoUri("kunta")
-  @Description("Paikkakunta, jossa suoritus on vahvistettu (allekirjoituksen paikkakunta)")
-  def paikkakunta: Koodistokoodiviite
   @Description("Organisaatio, joka suorituksen on vahvistanut")
   @Title("Organisaatio")
   def myöntäjäOrganisaatio: Organisaatio
   @Description("Myöntäjähenkilö/-henkilöt, eli suorituksen/todistuksen allekirjoittajat")
   @Title("Myöntäjät")
   def myöntäjäHenkilöt: List[Organisaatiohenkilö]
+
+  def getPaikkakunta: Option[Koodistokoodiviite] = None
+}
+
+trait VahvistusPaikkakunnalla extends Vahvistus {
+  @KoodistoUri("kunta")
+  @Description("Paikkakunta, jossa suoritus on vahvistettu (allekirjoituksen paikkakunta)")
+  def paikkakunta: Koodistokoodiviite
+  override def getPaikkakunta: Option[Koodistokoodiviite] = Some(paikkakunta)
+}
+
+trait Henkilövahvistus extends Vahvistus {
+
 }
 
 @Description("Suorituksen vahvistus organisaatio- ja henkilötiedoilla")
-case class Henkilövahvistus(
+case class HenkilövahvistusPaikkakunnalla(
   päivä: LocalDate,
   paikkakunta: Koodistokoodiviite,
   myöntäjäOrganisaatio: Organisaatio,
   @MinItems(1)
   myöntäjäHenkilöt: List[Organisaatiohenkilö]
-) extends Vahvistus
+) extends Henkilövahvistus with VahvistusPaikkakunnalla
+
+@Description("Suorituksen vahvistus organisaatio- ja henkilötiedoilla")
+case class HenkilövahvistusIlmanPaikkakuntaa(
+  päivä: LocalDate,
+  myöntäjäOrganisaatio: Organisaatio,
+  @MinItems(1)
+  myöntäjäHenkilöt: List[Organisaatiohenkilö]
+) extends Henkilövahvistus
 
 
 @Description("Suorituksen vahvistus organisaatiotiedoilla")
@@ -34,7 +52,7 @@ case class Organisaatiovahvistus(
   päivä: LocalDate,
   paikkakunta: Koodistokoodiviite,
   myöntäjäOrganisaatio: Organisaatio
-) extends Vahvistus {
+) extends VahvistusPaikkakunnalla {
   def myöntäjäHenkilöt = Nil
 }
 

@@ -15,7 +15,11 @@ trait TodistusHtml extends LocalizedHtml {
   }
 
   def vahvistusHTML(vahvistus: Vahvistus) = <div class="vahvistus">
-    <span class="paikkakunta">{i(vahvistus.paikkakunta.nimi)}</span>
+    {
+      vahvistus.getPaikkakunta.toList.map { p =>
+        <span class="paikkakunta">{i(p.nimi)}</span>
+      }
+    }
     <span class="date">{dateFormatter.format(vahvistus.päivä)}</span>
     {
     vahvistus.myöntäjäHenkilöt.map { myöntäjäHenkilö =>

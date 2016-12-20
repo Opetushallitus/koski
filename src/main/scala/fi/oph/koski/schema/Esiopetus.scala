@@ -36,7 +36,7 @@ case class EsiopetuksenSuoritus(
   tila: Koodistokoodiviite,
   @KoodistoKoodiarvo("esiopetuksensuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("esiopetuksensuoritus", koodistoUri = "suorituksentyyppi"),
-  vahvistus: Option[Henkilövahvistus] = None,
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   koulutusmoduuli: Esiopetus = Esiopetus(),
   @Description("Tieto siitä kielestä, joka on oppilaan kotimaisten kielten kielikylvyn kieli.")

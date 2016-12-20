@@ -21,7 +21,7 @@ object ExamplesPerusopetukseenValmistavaOpetus {
       PerusopetukseenValmistavanOpetuksenSuoritus(
         tila = tilaValmis,
         toimipiste = jyväskylänNormaalikoulu,
-        vahvistus = vahvistus(),
+        vahvistus = vahvistusPaikkakunnalla(),
         osasuoritukset = Some(List(
           PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus(
             koulutusmoduuli = PerusopetukseenValmistavanOpetuksenOppiaine(

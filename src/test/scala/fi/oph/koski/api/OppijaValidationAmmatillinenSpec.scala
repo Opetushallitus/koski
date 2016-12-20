@@ -203,7 +203,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             }
 
             describe("Vahvistuksen myöntäjähenkilö puuttuu") {
-              it("palautetaan HTTP 400") (put(copySuoritus(tilaValmis, arviointiHyvä(), Some(Henkilövahvistus(LocalDate.parse("2016-08-08"), helsinki, stadinOpisto, Nil)))) (
+              it("palautetaan HTTP 400") (put(copySuoritus(tilaValmis, arviointiHyvä(), Some(HenkilövahvistusPaikkakunnalla(LocalDate.parse("2016-08-08"), helsinki, stadinOpisto, Nil)))) (
                 verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*array is too short.*".r))
               ))
             }
@@ -266,7 +266,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     }
 
     describe("Tutkinnon tila ja arviointi") {
-      def copySuoritus(t: Koodistokoodiviite, v: Option[Henkilövahvistus], ap: Option[LocalDate] = None) = {
+      def copySuoritus(t: Koodistokoodiviite, v: Option[HenkilövahvistusPaikkakunnalla], ap: Option[LocalDate] = None) = {
         val alkamispäivä = ap.orElse(tutkinnonOsaSuoritus.alkamispäivä)
         autoalanPerustutkinnonSuoritus().copy(tila = t, vahvistus = v, alkamispäivä = alkamispäivä)
       }
@@ -309,7 +309,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         }
 
         describe("Vahvistuksen myöntäjähenkilö puuttuu") {
-          it("palautetaan HTTP 400") (put(copySuoritus(tilaValmis, Some(Henkilövahvistus(LocalDate.parse("2016-08-08"), helsinki, stadinOpisto, Nil)))) (
+          it("palautetaan HTTP 400") (put(copySuoritus(tilaValmis, Some(HenkilövahvistusPaikkakunnalla(LocalDate.parse("2016-08-08"), helsinki, stadinOpisto, Nil)))) (
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*array is too short.*".r))
           ))
         }
@@ -355,7 +355,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
   }
 
   def vahvistus(date: LocalDate) = {
-    Some(Henkilövahvistus(date, helsinki, stadinOpisto, List(Organisaatiohenkilö("Teppo Testaaja", "rehtori", stadinOpisto))))
+    Some(HenkilövahvistusPaikkakunnalla(date, helsinki, stadinOpisto, List(Organisaatiohenkilö("Teppo Testaaja", "rehtori", stadinOpisto))))
   }
 
   def arviointiHyvä(päivä: LocalDate = date(2015, 1, 1)): Some[List[AmmatillinenArviointi]] = Some(List(AmmatillinenArviointi(Koodistokoodiviite("2", "arviointiasteikkoammatillinent1k3"), päivä)))

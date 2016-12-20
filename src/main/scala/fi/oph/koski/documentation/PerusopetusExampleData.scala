@@ -95,7 +95,7 @@ object PerusopetusExampleData {
     toimipiste = jyväskylänNormaalikoulu,
     suorituskieli = suomenKieli,
     osasuoritukset = kaikkiAineet,
-    vahvistus = vahvistus(date(2015, 5, 30))
+    vahvistus = vahvistusPaikkakunnalla(date(2015, 5, 30))
   )
 
   val yhdeksännenLuokanSuoritus = PerusopetuksenVuosiluokanSuoritus(
@@ -103,14 +103,14 @@ object PerusopetusExampleData {
     tila = tilaValmis,
     toimipiste = jyväskylänNormaalikoulu,
     suorituskieli = suomenKieli,
-    vahvistus = vahvistus(date(2016, 5, 30))
+    vahvistus = vahvistusPaikkakunnalla(date(2016, 5, 30))
   )
 
   val perusopetuksenOppimääränSuoritus = PerusopetuksenOppimääränSuoritus(
     koulutusmoduuli = perusopetus,
     tila = tilaValmis,
     toimipiste = jyväskylänNormaalikoulu,
-    vahvistus = vahvistus(date(2016, 6, 4)),
+    vahvistus = vahvistusPaikkakunnalla(date(2016, 6, 4)),
     suoritustapa = suoritustapaKoulutus,
     oppimäärä = perusopetuksenOppimäärä,
     osasuoritukset = kaikkiAineet

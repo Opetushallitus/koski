@@ -70,7 +70,7 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   override val alkamispäivä: Option[LocalDate],
   @Description("Suorituksen päättymispäivä. Muoto YYYY-MM-DD")
   val päättymispäivä: Option[LocalDate],
-  vahvistus: Option[Henkilövahvistus] = None,
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Koulutuksen järjestämismuoto")
   @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
@@ -107,7 +107,7 @@ case class AmmatillisenTutkinnonSuoritus(
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   override val alkamispäivä: Option[LocalDate] = None,
-  vahvistus: Option[Henkilövahvistus] = None,
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Tutkinnon suoritustapa (näyttö / ops). Ammatillisen perustutkinnon voi suorittaa joko opetussuunnitelmaperusteisesti tai näyttönä. Ammattitutkinnot ja erikoisammattitutkinnot suoritetaan aina näyttönä.")
   @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
@@ -352,7 +352,7 @@ case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus(
   koulutusmoduuli: AmmatilliseenPeruskoulutukseenValmentavaKoulutus,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
-  vahvistus: Option[Henkilövahvistus] = None,
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osasuoritukset")
@@ -406,7 +406,7 @@ case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenSuoritus(
   koulutusmoduuli: TyöhönJaItsenäiseenElämäänValmentavaKoulutus,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
-  vahvistus: Option[Henkilövahvistus] = None,
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @Description("Työhön ja itsenäiseen elämään valmentavan koulutuksen osasuoritukset")

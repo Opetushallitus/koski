@@ -42,7 +42,7 @@ trait KorkeakouluSuoritus extends PäätasonSuoritus {
     toimipiste: Oppilaitos,
     tila: Koodistokoodiviite,
     arviointi: Option[List[KorkeakoulunArviointi]],
-    vahvistus: Option[Henkilövahvistus],
+    vahvistus: Option[HenkilövahvistusPaikkakunnalla],
     suorituskieli: Option[Koodistokoodiviite],
     @Description("Tutkintoon kuuluvien opintojaksojen suoritukset")
     @Title("Opintojaksot")

@@ -85,7 +85,7 @@ case class PerusopetuksenVuosiluokanSuoritus(
   toimipiste: OrganisaatioWithOid,
   override val alkamispäivä: Option[LocalDate],
   tila: Koodistokoodiviite,
-  vahvistus: Option[Henkilövahvistus] = None,
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Option[Koodistokoodiviite],
   @Description("Tieto siitä kielestä, joka on oppilaan kotimaisten kielten kielikylvyn kieli.")
   @KoodistoUri("kieli")
@@ -113,7 +113,7 @@ case class PerusopetuksenOppimääränSuoritus(
   oppimäärä: Koodistokoodiviite,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
-  vahvistus: Option[Henkilövahvistus] = None,
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   @KoodistoUri("perusopetuksensuoritustapa")
   @Description("Tieto siitä, suoritetaanko perusopetusta normaalina koulutuksena vai erityisenä tutkintona")
   suoritustapa: Koodistokoodiviite,
@@ -150,7 +150,7 @@ case class PerusopetuksenOppiaineenOppimääränSuoritus(
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
-  override val vahvistus: Option[Henkilövahvistus] = None,
+  override val vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   @KoodistoUri("perusopetuksensuoritustapa")
   @Description("Tieto siitä, suoritetaanko perusopetusta normaalina koulutuksena vai erityisenä tutkintona")
   suoritustapa: Koodistokoodiviite,

@@ -1,3 +1,7 @@
+## 20.12.2016
+
+- Ammatillisten tutkinnon osien vahvistuksessa paikkakunta ei pakollinen
+
 ## 28.11.2016
 
 - Opiskeluoikeuden ja suoritusten alkamispäivä saa olla tulevaisuudessa

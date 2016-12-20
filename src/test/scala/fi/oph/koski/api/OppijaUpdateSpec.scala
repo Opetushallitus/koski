@@ -187,7 +187,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
 
     def valmis(suoritus: AmmatillisenTutkinnonSuoritus) = suoritus.copy(
       tila = tilaValmis,
-      vahvistus = ExampleData.vahvistus(päivä = date(2016, 10, 1))
+      vahvistus = ExampleData.vahvistusPaikkakunnalla(päivä = date(2016, 10, 1))
     )
 
     def verifyChange[T <: Opiskeluoikeus](original: T = defaultOpiskeluoikeus, user: UserWithPassword = defaultUser, user2: Option[UserWithPassword] = None, change: T => KoskeenTallennettavaOpiskeluoikeus)(block: => Unit) = {

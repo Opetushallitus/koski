@@ -35,7 +35,7 @@ case class IBTutkinnonSuoritus(
   koulutusmoduuli: IBTutkinto = IBTutkinto(),
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
-  vahvistus: Option[Henkilövahvistus] = None,
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
@@ -56,7 +56,7 @@ case class PreIBSuoritus(
   koulutusmoduuli: PreIBKoulutusmoduuli = PreIBKoulutusmoduuli(),
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
-  vahvistus: Option[Henkilövahvistus] = None,
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")

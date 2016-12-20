@@ -38,7 +38,7 @@ case class PerusopetuksenLisäopetuksenSuoritus(
   koulutusmoduuli: PerusopetuksenLisäopetus,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
-  vahvistus: Option[Henkilövahvistus] = None,
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")

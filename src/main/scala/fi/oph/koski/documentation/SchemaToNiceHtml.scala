@@ -48,7 +48,7 @@ case class SchemaToNiceHtml(implicit val user: KoskiSession) extends LocalizedHt
 
   def vahvistusHTML(property: Property, vahvistus: Vahvistus, context: NodeContext) = {
     val myöntäjät = vahvistus.myöntäjäHenkilöt.map { h => h.nimi + ", " + i(h.titteli)}.mkString(", ")
-    val value = i(vahvistus.paikkakunta.nimi) + " " + dateFormatter.format(vahvistus.päivä) + " " + myöntäjät
+    val value = vahvistus.getPaikkakunta.map(p => i(p.nimi) + " ").getOrElse("") + dateFormatter.format(vahvistus.päivä) + " " + myöntäjät
     buildValueHtml(property, value, context)
   }
 

@@ -10,6 +10,7 @@ import org.json4s.reflect.{Reflector, TypeInfo}
 object Deserializers {
   val deserializers = List(
     ArviointiSerializer,
+    HenkilövahvistusSerializer,
     LocalizedStringDeserializer,
     OpiskeluOikeusDeserializer,
     AmmatillisenTutkinnonOsaDeserializer,
@@ -139,6 +140,18 @@ object ArviointiSerializer extends Serializer[Arviointi] {
         json.merge(JObject("hyväksytty" -> JBool(a.hyväksytty)))
       } else {
         json
+      }
+  }
+}
+
+object HenkilövahvistusSerializer extends Deserializer[Henkilövahvistus] {
+  private val HenkilövahvistusClass = classOf[Henkilövahvistus]
+
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Henkilövahvistus] = {
+    case (TypeInfo(HenkilövahvistusClass, _), json) =>
+      json match {
+        case vahvistus: JObject if vahvistus.values.contains("paikkakunta") => vahvistus.extract[HenkilövahvistusPaikkakunnalla]
+        case vahvistus: JObject => vahvistus.extract[HenkilövahvistusIlmanPaikkakuntaa]
       }
   }
 }

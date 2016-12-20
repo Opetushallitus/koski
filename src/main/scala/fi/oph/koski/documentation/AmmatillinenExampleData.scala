@@ -83,7 +83,7 @@ object AmmatillinenExampleData {
     alkamispäivä = None,
     toimipiste = Some(stadinToimipiste),
     arviointi = Some(List(arviointiHyväksytty)),
-    vahvistus = vahvistus(date(2013, 5, 31), stadinAmmattiopisto, helsinki)
+    vahvistus = vahvistus(date(2013, 5, 31), stadinAmmattiopisto)
   )
 
   def autonLisävarustetyöt(pakollinen: Boolean) = ValtakunnallinenTutkinnonOsa(
@@ -140,7 +140,7 @@ object AmmatillinenExampleData {
       alkamispäivä = None,
       toimipiste = Some(stadinToimipiste),
       arviointi = Some(List(AmmatillinenArviointi(arvosana = arvosana, date(2014, 10, 20)))),
-      vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto, helsinki)
+      vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto)
     )
   }
 
@@ -172,7 +172,7 @@ object AmmatillinenExampleData {
       tila = tilaValmis,
       alkamispäivä = None,
       toimipiste = toimipiste,
-      vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto, helsinki),
+      vahvistus = vahvistusPaikkakunnalla(date(2016, 5, 31), stadinAmmattiopisto, helsinki),
       osasuoritukset = Some(List(
         tutkinnonOsanSuoritus("100431", "Kestävällä tavalla toimiminen", k3, 40).copy(työssäoppimisjaksot = Some(List(
           Työssäoppimisjakso(date(2014, 1, 1), Some(date(2014, 3, 15)), jyväskylä, suomi, LocalizedString.finnish("Toimi harjoittelijana Sortti-asemalla"), LaajuusOsaamispisteissä(5))

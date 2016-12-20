@@ -22,7 +22,7 @@ object ExamplesPerusopetuksenLisaopetus {
     koulutusmoduuli = PerusopetuksenLisäopetus(),
     tila = tilaValmis,
     toimipiste = jyväskylänNormaalikoulu,
-    vahvistus = vahvistus(),
+    vahvistus = vahvistusPaikkakunnalla(),
     osasuoritukset = Some(
       List(
         suoritus(äidinkieli("AI1")).copy(arviointi = arviointi(7), korotus = true),
@@ -51,7 +51,7 @@ object ExamplesPerusopetuksenLisaopetus {
     koulutusmoduuli = PerusopetuksenLisäopetus(),
     tila = tilaValmis,
     toimipiste = jyväskylänNormaalikoulu,
-    vahvistus = vahvistus(),
+    vahvistus = vahvistusPaikkakunnalla(),
     osasuoritukset = Some(
       List(
         toimintaAlueenSuoritus("1"),

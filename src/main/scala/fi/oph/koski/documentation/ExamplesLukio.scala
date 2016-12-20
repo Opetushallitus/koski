@@ -29,7 +29,7 @@ object ExamplesLukio {
           oppimäärä = nuortenOpetussuunnitelma,
           suorituskieli = suomenKieli,
           tila = tilaValmis,
-          vahvistus = vahvistus(),
+          vahvistus = vahvistusPaikkakunnalla(),
           toimipiste = jyväskylänNormaalikoulu,
           osasuoritukset = Some(List(
             suoritus(lukionÄidinkieli("AI1")).copy(arviointi = arviointi(9)).copy(osasuoritukset = Some(List(
@@ -190,7 +190,7 @@ object ExamplesLukio {
           koulutusmoduuli = lukionOppiaine("HI"),
           suorituskieli = suomenKieli,
           tila = tilaValmis,
-          vahvistus = vahvistus(),
+          vahvistus = vahvistusPaikkakunnalla(),
           toimipiste = jyväskylänNormaalikoulu,
           arviointi = arviointi(9),
           osasuoritukset = Some(List(

@@ -4,7 +4,7 @@ import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import fi.oph.koski.schema.{Henkilövahvistus, Koodistokoodiviite, OrganisaatioWithOid, Organisaatiohenkilö}
+import fi.oph.koski.schema._
 
 object ExampleData {
   lazy val longTimeAgo = date(2000, 1, 1)
@@ -17,6 +17,9 @@ object ExampleData {
   val helsinki = Koodistokoodiviite(koodistoUri = "kunta", koodiarvo = "091", nimi = Some("Helsinki"))
   val jyväskylä = Koodistokoodiviite(koodistoUri = "kunta", koodiarvo = "179", nimi = Some("Jyväskylä"))
   val suomi = Koodistokoodiviite(koodistoUri = "maatjavaltiot2", koodiarvo = "246", nimi = Some("Suomi"))
-  def vahvistus(päivä: LocalDate = date(2016, 6, 4), org: OrganisaatioWithOid = jyväskylänNormaalikoulu, kunta: Koodistokoodiviite = jyväskylä) =
-    Some(Henkilövahvistus(päivä = päivä, kunta, myöntäjäOrganisaatio = org, myöntäjäHenkilöt = List(Organisaatiohenkilö("Reijo Reksi", "rehtori", org))))
+  def vahvistus(päivä: LocalDate = date(2016, 6, 4), org: OrganisaatioWithOid = jyväskylänNormaalikoulu) =
+    Some(HenkilövahvistusIlmanPaikkakuntaa(päivä = päivä, myöntäjäOrganisaatio = org, myöntäjäHenkilöt = List(Organisaatiohenkilö("Reijo Reksi", "rehtori", org))))
+  def vahvistusPaikkakunnalla(päivä: LocalDate = date(2016, 6, 4), org: OrganisaatioWithOid = jyväskylänNormaalikoulu, kunta: Koodistokoodiviite = jyväskylä) =
+    Some(HenkilövahvistusPaikkakunnalla(päivä = päivä, kunta, myöntäjäOrganisaatio = org, myöntäjäHenkilöt = List(Organisaatiohenkilö("Reijo Reksi", "rehtori", org))))
+
 }

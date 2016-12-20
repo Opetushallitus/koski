@@ -21,7 +21,7 @@ object ExamplesEsiopetus {
             tila = tilaValmis,
             toimipiste = jyväskylänNormaalikoulu,
             suorituskieli = suomenKieli,
-            vahvistus = vahvistus(date(2007, 6, 3))
+            vahvistus = vahvistusPaikkakunnalla(date(2007, 6, 3))
           )
       ),
       tila = PerusopetuksenOpiskeluoikeudenTila(

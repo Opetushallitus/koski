@@ -13,7 +13,7 @@ trait OpiskeluoikeusTestMethodsLukio extends PutOpiskeluOikeusTestMethods[Lukion
 }
 
 object OpiskeluoikeusTestMethodsLukio {
-  val vahvistus = Some(Henkilövahvistus(päivä = date(2016, 6, 4), jyväskylä, myöntäjäOrganisaatio = jyväskylänNormaalikoulu, myöntäjäHenkilöt = List(Organisaatiohenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))
+  val vahvistus = Some(HenkilövahvistusPaikkakunnalla(päivä = date(2016, 6, 4), jyväskylä, myöntäjäOrganisaatio = jyväskylänNormaalikoulu, myöntäjäHenkilöt = List(Organisaatiohenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))
 
   val päättötodistusSuoritus = LukionOppimääränSuoritus(
     koulutusmoduuli = LukionOppimäärä(perusteenDiaarinumero = Some("60/011/2015")),

@@ -24,7 +24,7 @@ object ExamplesValma {
         oppilaitos = stadinAmmattiopisto,
         suoritukset = List(AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenSuoritus(
           tila = tilaValmis,
-          vahvistus = vahvistus(date(2016, 6, 4), stadinAmmattiopisto, helsinki),
+          vahvistus = vahvistusPaikkakunnalla(date(2016, 6, 4), stadinAmmattiopisto, helsinki),
           toimipiste = stadinAmmattiopisto,
           koulutusmoduuli = AmmatilliseenPeruskoulutukseenValmentavaKoulutus(),
           osasuoritukset = Some(List(
@@ -57,7 +57,7 @@ object ExamplesValma {
         tunniste = Koodistokoodiviite("351101", Some("Kone- ja metallialan perustutkinto"), "koulutus"),
         perusteenDiaarinumero = Some("39/011/2014"))
       ),
-      vahvistus = vahvistus(date(2015, 10, 3), stadinAmmattiopisto, helsinki)
+      vahvistus = vahvistusPaikkakunnalla(date(2015, 10, 3), stadinAmmattiopisto, helsinki)
     )),
     selite = "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"))
 

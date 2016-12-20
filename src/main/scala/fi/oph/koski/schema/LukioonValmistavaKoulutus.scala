@@ -34,7 +34,7 @@ case class LukioonValmistavanKoulutuksenSuoritus(
   koulutusmoduuli: LukioonValmistavaKoulutus,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
-  vahvistus: Option[Henkilövahvistus] = None,
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Lukioon valmistavaan koulutukseen sisältyvien kurssien suoritukset")
   override val osasuoritukset: Option[List[LukioonValmistavanKoulutuksenOsasuoritus]],

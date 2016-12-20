@@ -63,7 +63,7 @@ case class LukionOppimääränSuoritus(
   oppimäärä: Koodistokoodiviite,
   toimipiste: OrganisaatioWithOid,
   tila: Koodistokoodiviite,
-  vahvistus: Option[Henkilövahvistus] = None,
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Option[Koodistokoodiviite],
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
@@ -82,7 +82,7 @@ case class LukionOppiaineenOppimääränSuoritus(
   tila: Koodistokoodiviite,
   @Description("Lukion oppiaineen oppimäärän arviointi")
   arviointi: Option[List[LukionOppiaineenArviointi]] = None,
-  vahvistus: Option[Henkilövahvistus] = None,
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Option[Koodistokoodiviite],
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
   @Title("Kurssit")
