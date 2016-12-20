@@ -68,7 +68,7 @@ export const Oppijataulukko = React.createClass({
               />
             </th>
             <th className="oppilaitos">
-              <span className="title">Oppilaitos</span>
+              <span className="title">Oppilaitos / toimipiste</span>
               <OrganisaatioPicker
                 selectedOrg={{ oid: params['toimipiste'], nimi: params['toimipisteNimi']}}
                 onSelectionChanged={(org) => {this.filterBus.push(org ? { toimipiste: org.oid, toimipisteNimi: org.nimi.fi } : { toimipiste: null, toimipisteNimi: null })}}
@@ -119,7 +119,9 @@ export const Oppijataulukko = React.createClass({
               )}
               </td>
               <td className="tila">{ opiskeluoikeus.tila.nimi.fi }</td>
-              <td className="oppilaitos">{ opiskeluoikeus.oppilaitos.nimi.fi }</td>
+              <td className="oppilaitos"><ul className="cell-listing">{ opiskeluoikeus.suoritukset.map((suoritus, j) =>
+                <li className="toimipiste">{suoritus.toimipiste.nimi.fi}</li>)
+              }</ul></td>
               <td className="aloitus pvm">{ ISO2FinnishDate(opiskeluoikeus.alkamispäivä) }</td>
               <td className="luokka">{ opiskeluoikeus.luokka }</td>
             </tr>)
