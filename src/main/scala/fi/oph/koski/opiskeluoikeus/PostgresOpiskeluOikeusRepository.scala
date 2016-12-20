@@ -71,9 +71,6 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
     import ReactiveStreamsToRx._
     import ILikeExtension._
 
-    def or(f1: (((Tables.OpiskeluOikeusTable, Tables.HenkilöTable)) => Rep[Boolean]), f2: (((Tables.OpiskeluOikeusTable, Tables.HenkilöTable)) => Rep[Boolean])): (((Tables.OpiskeluOikeusTable, Tables.HenkilöTable)) => Rep[Boolean]) = { row: (Tables.OpiskeluOikeusTable, Tables.HenkilöTable) => f1(row) || f2(row) }
-
-
     val query = filters.foldLeft(OpiskeluOikeudetWithAccessCheck.asInstanceOf[Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq]] join Tables.Henkilöt on (_.oppijaOid === _.oid)) {
       case (query, OpiskeluoikeusPäättynytAikaisintaan(päivä)) => query.filter(_._1.data.#>>(List("päättymispäivä")) >= päivä.toString)
       case (query, OpiskeluoikeusPäättynytViimeistään(päivä)) => query.filter(_._1.data.#>>(List("päättymispäivä")) <= päivä.toString)
@@ -84,19 +81,19 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
       case (query, SuorituksenTyyppi(tyyppi)) => query.filter(_._1.data.+>("suoritukset").@>(parse(s"""[{"tyyppi":{"koodiarvo":"${tyyppi.koodiarvo}"}}]""")))
       case (query, OpiskeluoikeudenTila(tila)) => query.filter(_._1.data.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "tila", "koodiarvo")) === tila.koodiarvo)
       case (query, Tutkintohaku(tutkinnot, osaamisalat, nimikkeet)) =>
-        val predicates = tutkinnot.map { tutkinto =>
+        val matchers = tutkinnot.map { tutkinto =>
           parse(s"""[{"koulutusmoduuli":{"tunniste": {"koodiarvo": "${tutkinto.koodiarvo}"}}}]""")
         } ++ nimikkeet.map { nimike =>
           parse(s"""[{"tutkintonimike":[{"koodiarvo": "${nimike.koodiarvo}"}]}]""")
         } ++ osaamisalat.map { osaamisala =>
           parse(s"""[{"osaamisala":[{"koodiarvo": "${osaamisala.koodiarvo}"}]}]""")
         }
-        query.filter(_._1.data.+>("suoritukset").@>(predicates.bind.any))
+        query.filter(_._1.data.+>("suoritukset").@>(matchers.bind.any))
       case (query, OpiskeluoikeusQueryFilter.Toimipiste(toimipisteet)) =>
-        val predicates = toimipisteet.map { toimipiste =>
-          {t: (Tables.OpiskeluOikeusTable, Tables.HenkilöTable) => t._1.data.+>("suoritukset").@>(parse(s"""[{"toimipiste":{"oid": "${toimipiste.oid}"}}]"""))}
+        val matchers = toimipisteet.map { toimipiste =>
+          parse(s"""[{"toimipiste":{"oid": "${toimipiste.oid}"}}]""")
         }
-        query.filter(predicates.reduce(or))
+        query.filter(_._1.data.+>("suoritukset").@>(matchers.bind.any))
       case (query, Luokkahaku(hakusana)) =>
         query.filter({ case t: (Tables.OpiskeluOikeusTable, Tables.HenkilöTable) => ilike(t._1.luokka.getOrElse(""), (hakusana + "%"))})
       case (query, Nimihaku(hakusana)) =>
