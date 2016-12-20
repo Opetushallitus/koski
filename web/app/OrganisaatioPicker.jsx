@@ -4,7 +4,7 @@ import Http from './http'
 
 export default React.createClass({
   render() {
-    let { organisaatiot = [] } = this.state
+    let { organisaatiot = [], open } = this.state
     let { onSelectionChanged, selectedOrg } = this.props
     let selectOrg = (org) => { this.setState({open: false}); onSelectionChanged(org) }
     let renderTree = (orgs) => orgs.map((org, i) =>
@@ -17,8 +17,8 @@ export default React.createClass({
 
     return (
       <div className="organisaatio" tabIndex="0">
-        <div className="organisaatio-selection" onClick={ () => this.setState({open:true}) }>{ selectedOrg.nimi ? selectedOrg.nimi : 'kaikki'}</div>
-        { this.state.open &&
+        <div className="organisaatio-selection" onClick={ () => this.setState({open:!open}) }>{ selectedOrg.nimi ? selectedOrg.nimi : 'kaikki'}</div>
+        { open &&
         <div className="organisaatio-popup">
           <input type="text" placeholder="hae" ref="hakuboksi" defaultValue={this.state.searchString} onChange={e => {
             if (e.target.value.length >= 3 || e.target.value.length == 0) this.searchStringBus.push(e.target.value)
