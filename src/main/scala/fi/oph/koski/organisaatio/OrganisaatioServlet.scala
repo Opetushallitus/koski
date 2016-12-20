@@ -9,9 +9,9 @@ class OrganisaatioServlet(val application: KoskiApplication) extends ApiServlet 
     val query = params.get("query")
     val filtered = if (koskiSession.isRoot) {
       query match {
-        case Some(query) =>
+        case Some(query) if (query.length >= 3) =>
           application.organisaatioRepository.findHierarkia(query)
-        case None =>
+        case _ =>
           Nil
       }
 

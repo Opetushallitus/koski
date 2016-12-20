@@ -38,8 +38,6 @@ class IndexServlet(val application: UserAuthenticationContext) extends ScalatraS
   }
 }
 
-
-
 object IndexServlet {
   def html(scriptBundleName: String = "koski-main.js") =
     <html>

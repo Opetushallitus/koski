@@ -6,6 +6,7 @@ import { oppijaHakuElementP } from './OppijaHaku.jsx'
 import PaginationLink from './PaginationLink.jsx'
 import R from 'ramda'
 import DatePicker from './DatePicker.jsx'
+import OrganisaatioPicker from './OrganisaatioPicker.jsx'
 import { formatISODate, ISO2FinnishDate } from './date'
 import Dropdown from './Dropdown.jsx'
 import Http from './http'
@@ -66,7 +67,13 @@ export const Oppijataulukko = React.createClass({
                 selected={params['opiskeluoikeudenTila']}
               />
             </th>
-            <th className="oppilaitos"><span className="title">Oppilaitos</span></th>
+            <th className="oppilaitos">
+              <span className="title">Oppilaitos</span>
+              <OrganisaatioPicker
+                selectedOrg={{ oid: params['toimipiste'], nimi: params['toimipisteNimi']}}
+                onSelectionChanged={(org) => {this.filterBus.push(org ? { toimipiste: org.oid, toimipisteNimi: org.nimi.fi } : { toimipiste: null, toimipisteNimi: null })}}
+              />
+            </th>
             <th className={sortBy == 'alkamispäivä' ? 'aloitus sorted': 'aloitus'}>
               <Sorter field='alkamispäivä' sortBus={this.sortBus} sortBy={sortBy} sortOrder={sortOrder}>Aloitus pvm</Sorter>
               <DatePicker

@@ -81,7 +81,7 @@ class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) exte
   get("/") {
     renderEither({
       val filters = params.toList.flatMap {
-        case (key, _) if List("sort", "pageSize", "pageNumber").contains(key) => None
+        case (key, _) if List("sort", "pageSize", "pageNumber", "toimipisteNimi").contains(key) => None
         case (key, value) => Some((key, value))
       }
 
