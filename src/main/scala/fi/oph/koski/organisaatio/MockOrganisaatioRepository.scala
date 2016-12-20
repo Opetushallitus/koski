@@ -68,4 +68,6 @@ object MockOrganisaatioRepository extends JsonOrganisaatioRepository(MockKoodist
 
   def hierarchyResourcename(oid: String): String = "/mockdata/organisaatio/hierarkia/" + oid + ".json"
   def hierarchyFilename(oid: String): String = "src/main/resources" + hierarchyResourcename(oid)
+
+  override def findHierarkia(query: String) = OrganisaatioHierarkiaFilter(query, "fi").filter(rootOrgs).toList
 }

@@ -34,7 +34,7 @@ trait OrganisaatioRepository {
     }
     getOrganisaatioHierarkiaIncludingParents(oppilaitos.oid).flatMap(findKoulutustoimijaFromHierarchy)
   }
-
+  def findHierarkia(query: String): List[OrganisaatioHierarkia]
 }
 
 object OrganisaatioRepository {
@@ -72,6 +72,10 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu) e
     }.headOption
   }
 
+  override def findHierarkia(query: String) = {
+    fetchSearchHierarchy(query).organisaatiot.map(convertOrganisaatio)
+  }
+
   private def search(searchTerm: String): List[OrganisaatioWithOid] = fetchSearch(searchTerm).organisaatiot.map(convertOrganisaatio).map(_.toOrganisaatio)
 
   def fetch(oid: String): OrganisaatioHakuTulos = {
@@ -80,6 +84,10 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu) e
   private def fetchSearch(searchTerm: String): OrganisaatioHakuTulos = {
     runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hae?aktiiviset=true&lakkautetut=false&searchStr=${searchTerm}")(Http.parseJson[OrganisaatioHakuTulos]))
   }
+  private def fetchSearchHierarchy(searchTerm: String): OrganisaatioHakuTulos = {
+    runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=false&searchStr=${searchTerm}")(Http.parseJson[OrganisaatioHakuTulos]))
+  }
+
 }
 
 case class OrganisaatioHakuTulos(organisaatiot: List[OrganisaatioPalveluOrganisaatio])
