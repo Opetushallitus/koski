@@ -74,8 +74,8 @@ export const Oppijataulukko = React.createClass({
                 selectedEndDay={params['opiskeluoikeusAlkanutViimeistään'] && ISO2FinnishDate(params['opiskeluoikeusAlkanutViimeistään'])}
                 onSelectionChanged={ range => this.filterBus.push(
                   {
-                    'opiskeluoikeusAlkanutAikaisintaan': formatISODate(range.from),
-                    'opiskeluoikeusAlkanutViimeistään': formatISODate(range.to)
+                    'opiskeluoikeusAlkanutAikaisintaan': range.from ? formatISODate(range.from): undefined,
+                    'opiskeluoikeusAlkanutViimeistään': range.to ? formatISODate(range.to): undefined
                   })
                 }
               />

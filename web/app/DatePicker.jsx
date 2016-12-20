@@ -26,15 +26,25 @@ export default React.createClass({
             onDayClick={ this.handleDayClick }
             selectedDays={ day => DateUtils.isDayInRange(day, {from, to}) }
             locale="fi"
+            initialMonth={displayedEndMonth}
             localeUtils={localeUtils}
             fromMonth={ DateUtils.addMonths(displayedStartMonth, 1)}
             onMonthChange={ this.handleEndMonthChange}
             fixedWeeks
           />
           <div className="calendar-shortcuts">
-            <button className="button">kaikki</button>
-            <button className="button">kuluva vuosi</button>
-            <button className="button">edellinen vuosi</button>
+            <button
+              className="button"
+              onClick={() => this.handleRangeSelection({from: undefined, to: undefined})}>kaikki
+            </button>
+            <button
+              className="button"
+              onClick={() => this.handleRangeSelection({from: new Date(new Date().getFullYear(), 0, 1), to: new Date()})}>kuluva vuosi
+            </button>
+            <button
+              className="button"
+              onClick={() => this.handleRangeSelection({from: new Date(new Date().getFullYear() - 1, 0, 1), to: new Date(new Date().getFullYear() - 1, 11, 31)})}>edellinen vuosi
+            </button>
           </div>
         </div>
         }
@@ -59,17 +69,14 @@ export default React.createClass({
       })
     })
   },
+  handleRangeSelection(range) {
+    this.setState(stateFromRange(range), () => this.props.onSelectionChanged(range))
+  },
   getInitialState() {
-    const from = this.props.selectedStartDay && parseFinnishDate(this.props.selectedStartDay)
-    const to = this.props.selectedEndDay && parseFinnishDate(this.props.selectedEndDay)
-
-    return {
-      displayedStartMonth: from ? from : new Date(new Date().getFullYear(), 0, 1),
-      displayedEndMonth: to ? to : new Date(),
-      open: false,
-      from: from,
-      to: to
-    }
+    return stateFromRange({
+      from: this.props.selectedStartDay && parseFinnishDate(this.props.selectedStartDay),
+      to: this.props.selectedEndDay && parseFinnishDate(this.props.selectedEndDay)
+    })
   },
   componentDidMount() {
     window.addEventListener('click', this.handleClickOutside, false)
@@ -92,6 +99,14 @@ export default React.createClass({
   handleInputBlur() {
     this.setState({open: this.clickedInside})
   }
+})
+
+const stateFromRange = range => ({
+  displayedStartMonth: range.from ? range.from : new Date(new Date().getFullYear(), 0, 1),
+  displayedEndMonth: range.to ? range.to : new Date(),
+  open: false,
+  from: range.from,
+  to: range.to
 })
 
 const weekdaysLong = {
