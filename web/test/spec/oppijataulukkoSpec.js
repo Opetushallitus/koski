@@ -73,11 +73,17 @@ describe('Oppijataulukko', function() {
         expect(page.oppijataulukko.names()).to.deep.equal(['Amikseenvalmistautuja, Anneli', 'Ammattilainen, Aarne', 'Erikoinen, Erja', 'Telmanen, Tuula'])
       })
     })
+    describe('toimipisteellä', function() {
+      before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('tila'), page.oppijataulukko.filterBy('oppilaitos', 'Ressun lukio'))
+      it('toimii', function() {
+        expect(page.oppijataulukko.names()).to.deep.equal(['IB-final, Iina', 'IB-predicted, Petteri'])
+      })
+    })
   })
 
   describe('Sorttaus', function() {
     describe('nimellä', function() {
-      before(page.oppijataulukko.filterBy('tyyppi', 'Perusopetus'), page.oppijataulukko.filterBy('tutkinto'), page.oppijataulukko.filterBy('tila'))
+      before(page.oppijataulukko.filterBy('oppilaitos'), page.oppijataulukko.filterBy('tutkinto'), page.oppijataulukko.filterBy('tila'), page.oppijataulukko.filterBy('tyyppi', 'Perusopetus'))
       it('Oletusjärjestys nouseva nimen mukaan', function() {
         expect(page.oppijataulukko.names()).to.deep.equal([ 'Koululainen, Kaisa', 'Lukiolainen, Liisa', 'Oppiaineenkorottaja, Olli', 'oppija, oili', 'Toiminta, Tommi' ])
       })

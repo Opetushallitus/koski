@@ -16,15 +16,14 @@ export default React.createClass({
     )
 
     return (
-      <div className="organisaatio" onMouseDown={ this.handleContainerMouseDown } tabIndex="0" onBlur={this.handleInputBlur}
-           onFocus={this.handleInputFocus}>
-        <div className="organisaatio-selection">{ selectedOrg.nimi ? selectedOrg.nimi : 'kaikki'}</div>
+      <div className="organisaatio" tabIndex="0">
+        <div className="organisaatio-selection" onClick={ () => this.setState({open:true}) }>{ selectedOrg.nimi ? selectedOrg.nimi : 'kaikki'}</div>
         { this.state.open &&
         <div className="organisaatio-popup">
-          <input placeholder="hae" ref="hakuboksi" defaultValue={this.state.searchString} onChange={e => {
+          <input type="text" placeholder="hae" ref="hakuboksi" defaultValue={this.state.searchString} onChange={e => {
             if (e.target.value.length >= 3 || e.target.value.length == 0) this.searchStringBus.push(e.target.value)
           }}/>
-          <button className="button" onClick={() => { this.searchStringBus.push(''); selectOrg(null)}}>kaikki</button>
+          <button className="button kaikki" onClick={() => { this.searchStringBus.push(''); selectOrg(null)}}>kaikki</button>
           <div className="scroll-container">
             <ul className="organisaatiot">
               { renderTree(organisaatiot) }
@@ -59,17 +58,5 @@ export default React.createClass({
   },
   handleClickOutside(e) {
     !e.target.closest('.organisaatio') && this.setState({open: false})
-  },
-  handleContainerMouseDown() {
-    this.clickedInside = true
-    this.clickTimeout = setTimeout(() => {
-      this.clickedInside = false
-    }, 0)
-  },
-  handleInputFocus() {
-    this.setState({open: true})
-  },
-  handleInputBlur() {
-    this.setState({open: this.clickedInside})
   }
 })
