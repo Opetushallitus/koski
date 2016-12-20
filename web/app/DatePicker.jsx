@@ -6,30 +6,37 @@ export default React.createClass({
   render() {
     const {from, to, displayedStartMonth, displayedEndMonth} = this.state
     return (
-      <div className="calendar" onMouseDown={ this.handleContainerMouseDown } tabIndex="0" onBlur={this.handleInputBlur} onFocus={this.handleInputFocus}>
-        <div className="calendar-selection">{ from && to ? (formatFinnishDate(from) + '-' + formatFinnishDate(to)) : 'kaikki'}</div>
+      <div className="calendar" onMouseDown={ this.handleContainerMouseDown } tabIndex="0" onBlur={this.handleInputBlur}
+           onFocus={this.handleInputFocus}>
+        <div
+          className="calendar-selection">{ from && to ? (formatFinnishDate(from) + '-' + formatFinnishDate(to)) : 'kaikki'}</div>
         { this.state.open &&
-          <div className="DayPicker-CalendarContainer">
-              <DayPicker
-                onDayClick={ this.handleDayClick }
-                selectedDays={ day => DateUtils.isDayInRange(day, { from, to }) }
-                locale="fi"
-                localeUtils={localeUtils}
-                initialMonth={displayedStartMonth}
-                fixedWeeks
-                onMonthChange={ this.handleStartMonthChange}
-                toMonth={ DateUtils.addMonths(displayedEndMonth, -1) }
-              />
-              <DayPicker
-                onDayClick={ this.handleDayClick }
-                selectedDays={ day => DateUtils.isDayInRange(day, { from, to }) }
-                locale="fi"
-                localeUtils={localeUtils}
-                fromMonth={ DateUtils.addMonths(displayedStartMonth, 1)}
-                onMonthChange={ this.handleEndMonthChange}
-                fixedWeeks
-              />
+        <div className="DayPicker-CalendarContainer">
+          <DayPicker
+            onDayClick={ this.handleDayClick }
+            selectedDays={ day => DateUtils.isDayInRange(day, {from, to}) }
+            locale="fi"
+            localeUtils={localeUtils}
+            initialMonth={displayedStartMonth}
+            fixedWeeks
+            onMonthChange={ this.handleStartMonthChange}
+            toMonth={ DateUtils.addMonths(displayedEndMonth, -1) }
+          />
+          <DayPicker
+            onDayClick={ this.handleDayClick }
+            selectedDays={ day => DateUtils.isDayInRange(day, {from, to}) }
+            locale="fi"
+            localeUtils={localeUtils}
+            fromMonth={ DateUtils.addMonths(displayedStartMonth, 1)}
+            onMonthChange={ this.handleEndMonthChange}
+            fixedWeeks
+          />
+          <div className="calendar-shortcuts">
+            <button className="button">kaikki</button>
+            <button className="button">kuluva vuosi</button>
+            <button className="button">edellinen vuosi</button>
           </div>
+        </div>
         }
       </div>
     )
@@ -64,9 +71,6 @@ export default React.createClass({
       to: to
     }
   },
-  closeCalendar() {
-    this.setState({open: false})
-  },
   componentDidMount() {
     window.addEventListener('click', this.handleClickOutside, false)
   },
@@ -74,7 +78,7 @@ export default React.createClass({
     window.removeEventListener('click', this.handleClickOutside, false)
   },
   handleClickOutside(e) {
-    !e.target.closest('.calendar') && this.closeCalendar()
+    !e.target.closest('.calendar') && this.setState({open: false})
   },
   handleContainerMouseDown() {
     this.clickedInside = true
@@ -86,8 +90,7 @@ export default React.createClass({
     this.setState({open: true})
   },
   handleInputBlur() {
-    const open = this.clickedInside
-    this.setState({open})
+    this.setState({open: this.clickedInside})
   }
 })
 
