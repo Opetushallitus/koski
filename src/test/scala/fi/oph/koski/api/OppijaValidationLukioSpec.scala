@@ -18,6 +18,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
     it("""Kurssin laajuusyksikkö muu kuin "kurssia" -> HTTP 400""") {
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
         osasuoritukset = Some(List(suoritus(lukionOppiaine("GE", laajuus(1.0f, "4"))).copy(
+          arviointi = arviointi("9"),
           osasuoritukset = Some(List( kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = laajuus(1.0f, "5"))) ))
         )))
       )))
@@ -28,8 +29,9 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
     it("Kurssien laajuuksien summa ei täsmää -> HTTP 400") {
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
         osasuoritukset = Some(List(suoritus(lukionOppiaine("GE", laajuus(2.0f, "4"))).copy(
+          arviointi = arviointi("9"),
           osasuoritukset = Some(List(
-            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = laajuus(1.0f, "4")))
+            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = laajuus(1.0f, "4"))).copy(arviointi = kurssinArviointi("9"))
           ))
         )))
       )))
@@ -44,7 +46,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
         tila = tilaKesken,
         vahvistus = None,
-        osasuoritukset = Some(List(suoritus(lukionOppiaine("GE")).copy(tila = tilaValmis)))
+        osasuoritukset = Some(List(suoritus(lukionOppiaine("GE")).copy(tila = tilaValmis, arviointi = arviointi("9"))))
       )))
       putOpiskeluOikeus(oo) {
         verifyResponseStatus(200)
@@ -55,9 +57,9 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
         tila = tilaKesken,
         vahvistus = None,
         osasuoritukset = Some(List(
-          suoritus(lukionOppiaine("GE")).copy(tila = tilaValmis).copy(
+          suoritus(lukionOppiaine("GE")).copy(tila = tilaValmis, arviointi = arviointi("9")).copy(
             osasuoritukset = Some(List(
-              kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1")).copy(tila = tilaValmis)
+              kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1")).copy(tila = tilaValmis, arviointi = kurssinArviointi("9"))
             ))
           )))
       )))

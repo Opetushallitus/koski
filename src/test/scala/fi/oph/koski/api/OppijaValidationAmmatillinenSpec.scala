@@ -191,8 +191,8 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               ))
             }
             describe("Vahvistus annettu, mutta arviointi puuttuu") {
-              it("palautetaan HTTP 200") (put(copySuoritus(tilaValmis, None, vahvistus(LocalDate.parse("2016-08-08")))) (
-                verifyResponseStatus(200)
+              it("palautetaan HTTP 400") (put(copySuoritus(tilaValmis, None, vahvistus(LocalDate.parse("2016-08-08")))) (
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.arviointiPuuttuu("Suoritukselta tutkinnonosat/100023 puuttuu arviointi, vaikka suorituksen tila on VALMIS"))
               ))
             }
 

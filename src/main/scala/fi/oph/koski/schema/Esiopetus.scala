@@ -43,9 +43,7 @@ case class EsiopetuksenSuoritus(
   @KoodistoUri("kieli")
   @OksaUri("tmpOKSAID439", "kielikylpy")
   kielikylpykieli: Option[Koodistokoodiviite] = None
-) extends PäätasonSuoritus with Toimipisteellinen {
-  override def arviointi: Option[List[Arviointi]] = None
-}
+) extends PäätasonSuoritus with Toimipisteellinen with Arvioinniton
 
 @Description("Esiopetuksen tunnistetiedot")
 case class Esiopetus(

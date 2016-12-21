@@ -43,6 +43,10 @@ trait Suoritus {
   def valmis = tila.koodiarvo == "VALMIS"
 }
 
+trait Arvioinniton extends Suoritus {
+  def arviointi = None
+}
+
 trait Toimipisteellinen extends OrganisaatioonLiittyvä {
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu. Jos oppilaitoksella ei ole toimipisteitä, syötetään tähän oppilaitoksen tiedot.")
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")

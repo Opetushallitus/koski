@@ -1,3 +1,7 @@
+## 21.12.2016
+
+- Validointimuutos: VALMIS-tilassa olevilla suorituksilla oltava arviointi
+
 ## 20.12.2016
 
 - Ammatillisten tutkinnon osien vahvistuksessa paikkakunta ei pakollinen

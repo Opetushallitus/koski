@@ -13,19 +13,23 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
 
   describe("Suoritusten tila") {
     it("Todistus VALMIS ilman vahvistusta -> HTTP 400") {
-      val oo: PerusopetuksenOpiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(vahvistus = None)))
-      putOpiskeluOikeus(oo) {
+      putOpiskeluOikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(vahvistus = None)))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta koulutus/201101 puuttuu vahvistus, vaikka suorituksen tila on VALMIS"))
       }
     }
 
+    it("Valmis oppiainesuoritus vaatii arvioinnin") {
+      putOpiskeluOikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
+        osasuoritukset = Some(List(PerusopetusExampleData.suoritus(PerusopetusExampleData.oppiaine("GE"))))
+      )))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.arviointiPuuttuu("Suoritukselta koskioppiaineetyleissivistava/GE puuttuu arviointi, vaikka suorituksen tila on VALMIS"))
+      }
+    }
+
     it("Valmis oppiainesuoritus ei vaadi vahvistusta.") {
-      val oo: PerusopetuksenOpiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
-        tila = tilaKesken,
-        vahvistus = None,
-        osasuoritukset = Some(List(PerusopetusExampleData.suoritus(PerusopetusExampleData.oppiaine("GE")).copy(tila = tilaValmis)))
-      )))
-      putOpiskeluOikeus(oo) {
+      putOpiskeluOikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
+        osasuoritukset = Some(List(PerusopetusExampleData.suoritus(PerusopetusExampleData.oppiaine("GE")).copy(arviointi = PerusopetusExampleData.arviointi(9))))
+      )))) {
         verifyResponseStatus(200)
       }
     }
