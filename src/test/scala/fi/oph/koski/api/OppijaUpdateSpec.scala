@@ -76,7 +76,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       }
 
       "Estää oppilaitoksen vaihtamisen" in {
-        verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(oppilaitos = Oppilaitos(MockOrganisaatiot.omnia))}) {
+        verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(koulutustoimija = None, oppilaitos = Oppilaitos(MockOrganisaatiot.omnia))}) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos("Opiskeluoikeuden oppilaitosta ei voi vaihtaa. Vanha oid 1.2.246.562.10.52251087186. Uusi oid 1.2.246.562.10.51720121923."))
         }
       }
@@ -103,7 +103,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       }
 
       "Estää oppilaitoksen vaihtamisen" in {
-        verifyChange(original = original, user = paakayttaja, change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(id = None, versionumero = None, oppilaitos = Oppilaitos(MockOrganisaatiot.omnia))}) {
+        verifyChange(original = original, user = paakayttaja, change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(id = None, versionumero = None, koulutustoimija = None, oppilaitos = Oppilaitos(MockOrganisaatiot.omnia))}) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos("Opiskeluoikeuden oppilaitosta ei voi vaihtaa. Vanha oid 1.2.246.562.10.52251087186. Uusi oid 1.2.246.562.10.51720121923."))
         }
       }
@@ -150,7 +150,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
 
       "Jos oppilaitos vaihtuu, tekee uuden opiskeluoikeuden" in {
         resetFixtures
-        verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(id = None, versionumero = None, oppilaitos = Oppilaitos(MockOrganisaatiot.omnia))}) {
+        verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(id = None, versionumero = None, koulutustoimija = None, oppilaitos = Oppilaitos(MockOrganisaatiot.omnia))}) {
           verifyResponseStatus(200)
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluOikeus(oppija.oid)
           result.oppilaitos.oid should equal(MockOrganisaatiot.omnia)
