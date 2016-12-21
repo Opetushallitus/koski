@@ -5,9 +5,9 @@ export default React.createClass({
   render() {
     const {from, to, invalidStartDate, invalidEndDate} = this.state
     return (
-      <div className="date-range" onMouseDown={ this.handleContainerMouseDown } tabIndex="0" onBlur={this.handleInputBlur}
-           onFocus={this.handleInputFocus} onKeyDown={this.onKeyDown}>
+      <div className="date-range" onKeyDown={this.onKeyDown} tabIndex="0">
         <div
+          onClick={this.toggleOpen}
           className="date-range-selection">{ (from || to) ? ((from ? formatFinnishDate(from) : '') + '-' + (to ? formatFinnishDate(to) : '')) : 'kaikki'}</div>
         { this.state.open &&
         <div className="date-range-container">
@@ -86,17 +86,8 @@ export default React.createClass({
   handleClickOutside(e) {
     !e.target.closest('.date-range') && this.setState({open: false})
   },
-  handleContainerMouseDown() {
-    this.clickedInside = true
-    this.clickTimeout = setTimeout(() => {
-      this.clickedInside = false
-    }, 0)
-  },
-  handleInputFocus() {
-    this.setState({open: true})
-  },
-  handleInputBlur() {
-    this.setState({open: this.clickedInside})
+  toggleOpen(e) {
+    this.setState({open: !this.state.open})
   },
   onKeyDown(e) {
     let handler = this.keyHandlers[e.key]
