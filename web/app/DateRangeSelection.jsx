@@ -5,13 +5,13 @@ export default React.createClass({
   render() {
     const {from, to, invalidStartDate, invalidEndDate} = this.state
     return (
-      <div className="calendar" onMouseDown={ this.handleContainerMouseDown } tabIndex="0" onBlur={this.handleInputBlur}
-           onFocus={this.handleInputFocus}>
+      <div className="date-range" onMouseDown={ this.handleContainerMouseDown } tabIndex="0" onBlur={this.handleInputBlur}
+           onFocus={this.handleInputFocus} onKeyDown={this.onKeyDown}>
         <div
-          className="calendar-selection">{ from && to ? (formatFinnishDate(from) + '-' + formatFinnishDate(to)) : 'kaikki'}</div>
+          className="date-range-selection">{ (from || to) ? ((from ? formatFinnishDate(from) : '') + '-' + (to ? formatFinnishDate(to) : '')) : 'kaikki'}</div>
         { this.state.open &&
-        <div className="DayPicker-CalendarContainer">
-          <div className="date-range">
+        <div className="date-range-container">
+          <div className="date-range-input">
             <label>Aloituspäivä</label>
             <input
               className={invalidStartDate ? 'error' : ''}
@@ -26,7 +26,7 @@ export default React.createClass({
               onChange={this.handleEndDate}
             />
           </div>
-          <div className="calendar-shortcuts">
+          <div className="date-range-shortcuts">
             <button
               className="button"
               onClick={() => this.handleRangeSelection({from: undefined, to: undefined})}>kaikki
@@ -47,7 +47,6 @@ export default React.createClass({
   },
   handleStartDate(e) {
     const newStartDate = calculateStartState(e.target.value, this.state.to)
-
     const newState = Object.assign(
       newStartDate,
       this.state.invalidEndDate ? calculateEndState(this.state.invalidEndDate.value, newStartDate.from) : {to: this.state.to}
@@ -64,6 +63,7 @@ export default React.createClass({
   },
   handleRangeSelection(range) {
     this.setState(range, () => this.props.onSelectionChanged(range))
+    this.setState({open: false})
   },
   getInitialState() {
     return {
@@ -78,7 +78,7 @@ export default React.createClass({
     window.removeEventListener('click', this.handleClickOutside, false)
   },
   handleClickOutside(e) {
-    //!e.target.closest('.calendar') && this.setState({open: false})
+    !e.target.closest('.date-range') && this.setState({open: false})
   },
   handleContainerMouseDown() {
     this.clickedInside = true
@@ -90,7 +90,22 @@ export default React.createClass({
     this.setState({open: true})
   },
   handleInputBlur() {
-    //this.setState({open: this.clickedInside})
+    this.setState({open: this.clickedInside})
+  },
+  onKeyDown(e) {
+    let handler = this.keyHandlers[e.key]
+    if(handler) {
+      handler.call(this, e)
+    }
+  },
+  keyHandlers: {
+    Enter(e) {
+      e.preventDefault()
+      this.setState({open: false})
+    },
+    Escape() {
+      this.setState({open: false})
+    }
   }
 })
 
