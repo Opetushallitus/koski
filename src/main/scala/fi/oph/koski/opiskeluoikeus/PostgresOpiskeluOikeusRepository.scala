@@ -4,7 +4,6 @@ import java.sql.SQLException
 
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.Tables._
-import fi.oph.koski.db._
 import fi.oph.koski.henkilo.{KoskiHenkilöCache, KoskiHenkilöCacheUpdater, PossiblyUnverifiedHenkilöOid}
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -22,12 +21,11 @@ import slick.dbio.Effect.{All, Read, Transactional, Write}
 import slick.dbio.{DBIOAction, NoStream}
 import slick.lifted.{Query, Rep}
 import slick.{dbio, lifted}
+import fi.oph.koski.db._
 import PostgresDriverWithJsonSupport.api._
 import PostgresDriverWithJsonSupport.jsonMethods._
 import fi.oph.koski.servlet.InvalidRequestException
 import OpiskeluoikeusQueryFilter._
-import com.github.tminglei.slickpg.TsVector
-import org.json4s.JsonAST.JObject
 
 class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: OpiskeluoikeusHistoryRepository, henkilöCache: KoskiHenkilöCacheUpdater) extends OpiskeluOikeusRepository with GlobalExecutionContext with KoskiDatabaseMethods with Logging with SerializableTransactions {
   override def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession) = {
@@ -200,7 +198,7 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
       case _ =>
         val tallennettavaOpiskeluOikeus = opiskeluOikeus.withIdAndVersion(id = None, versionumero = None)
         for {
-          opiskeluoikeusId <- OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += OpiskeluOikeusRowConverter.makeInsertableRow(oppijaOid, tallennettavaOpiskeluOikeus)
+          opiskeluoikeusId <- Tables.OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += Tables.OpiskeluOikeusTable.makeInsertableRow(oppijaOid, tallennettavaOpiskeluOikeus)
           diff = Json.toJValue(List(Map("op" -> "add", "path" -> "", "value" -> tallennettavaOpiskeluOikeus)))
           _ <- historyRepository.createAction(opiskeluoikeusId, VERSIO_1, user.oid, diff)
         } yield {
@@ -221,7 +219,7 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
 
         val täydennettyOpiskeluoikeus = OpiskeluoikeusChangeMigrator.kopioiValmiitSuorituksetUuteen(vanhaOpiskeluoikeus, uusiOpiskeluoikeus).withVersion(nextVersionumero)
 
-        val updatedValues@(newData, _, _) = OpiskeluOikeusRowConverter.updatedFieldValues(täydennettyOpiskeluoikeus)
+        val updatedValues@(newData, _, _, _) = Tables.OpiskeluOikeusTable.updatedFieldValues(täydennettyOpiskeluoikeus)
 
         val diff: JArray = Json.jsonDiff(oldRow.data, newData)
         diff.values.length match {
@@ -231,7 +229,7 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
             validateOpiskeluoikeusChange(vanhaOpiskeluoikeus, täydennettyOpiskeluoikeus) match {
               case HttpStatus.ok =>
                 for {
-                  rowsUpdated <- OpiskeluOikeudetWithAccessCheck.filter(_.id === id).map(OpiskeluOikeusRowConverter.updateableFieldValues).update(updatedValues)
+                  rowsUpdated <- OpiskeluOikeudetWithAccessCheck.filter(_.id === id).map(_.updateableFields).update(updatedValues)
                   _ <- historyRepository.createAction(id, nextVersionumero, user.oid, diff)
                 } yield {
                   rowsUpdated match {

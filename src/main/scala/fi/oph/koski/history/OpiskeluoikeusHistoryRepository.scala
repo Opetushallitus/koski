@@ -6,7 +6,7 @@ import com.github.fge.jsonpatch.JsonPatch
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.Tables._
-import fi.oph.koski.db.{KoskiDatabaseMethods, OpiskeluOikeusHistoryRow, OpiskeluOikeusRowConverter}
+import fi.oph.koski.db.{KoskiDatabaseMethods, OpiskeluOikeusHistoryRow, Tables}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
@@ -41,7 +41,7 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends KoskiDatabaseMethods 
             patch.apply(current)
           }
           try {
-            Right(OpiskeluOikeusRowConverter.readData(fromJsonNode(oikeusVersion), id, version))
+            Right(Tables.OpiskeluOikeusTable.readData(fromJsonNode(oikeusVersion), id, version))
           } catch {
             case e: Exception =>
               logger.error(e)(s"Opiskeluoikeuden $id version $version deserialisointi epäonnistui")

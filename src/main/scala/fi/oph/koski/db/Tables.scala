@@ -1,14 +1,12 @@
 package fi.oph.koski.db
 
-import java.sql.{Date, Timestamp}
+import java.sql.Timestamp
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.Tables.OpiskeluOikeusTable
-import fi.oph.koski.http.KoskiErrorCategory
+
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.schema._
-import fi.oph.koski.servlet.InvalidRequestException
 import org.json4s._
 
 object Tables {
@@ -22,6 +20,24 @@ object Tables {
     val luokka = column[Option[String]]("luokka")
 
     def * = (id, oppijaOid, oppilaitosOid, koulutustoimijaOid, versionumero, data, luokka) <> (OpiskeluOikeusRow.tupled, OpiskeluOikeusRow.unapply)
+    def updateableFields = (data, versionumero, luokka, koulutustoimijaOid)
+  }
+
+  object OpiskeluOikeusTable {
+    def makeInsertableRow(oppijaOid: String, opiskeluoikeus: Opiskeluoikeus) = {
+      OpiskeluOikeusRow(opiskeluoikeus.id.getOrElse(0), oppijaOid, opiskeluoikeus.oppilaitos.oid, opiskeluoikeus.koulutustoimija.map(_.oid), Opiskeluoikeus.VERSIO_1, Json.toJValue(opiskeluoikeus), luokka(opiskeluoikeus))
+    }
+    def readData(data: JValue, id: Int, versionumero: Int): KoskeenTallennettavaOpiskeluoikeus = {
+      Json.fromJValue[Opiskeluoikeus](data).asInstanceOf[KoskeenTallennettavaOpiskeluoikeus].withIdAndVersion(id = Some(id), versionumero = Some(versionumero))
+    }
+    def updatedFieldValues(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
+      val data = Json.toJValue(opiskeluoikeus.withIdAndVersion(id = None, versionumero = None))
+      (data, opiskeluoikeus.versionumero.get, luokka(opiskeluoikeus), opiskeluoikeus.koulutustoimija.map(_.oid))
+    }
+    private def luokka(opiskeluoikeus: Opiskeluoikeus) = {
+      val vuosiluokkasuoritukset = opiskeluoikeus.suoritukset.collect({case s: PerusopetuksenVuosiluokanSuoritus => s})
+      vuosiluokkasuoritukset.sortBy(_.koulutusmoduuli.tunniste.koodiarvo).reverse.headOption.map(_.luokka)
+    }
   }
 
   class HenkilöTable(tag: Tag) extends Table[HenkilöRow](tag, "henkilo") {
@@ -136,35 +152,11 @@ case class SSOSessionRow(serviceTicket: String, username: String, userOid: Strin
 case class OpiskeluOikeusRow(id: Int, oppijaOid: String, oppilaitosOid: String, koulutustoimijaOid: Option[String], versionumero: Int, data: JValue, luokka: Option[String]) {
   lazy val toOpiskeluOikeus: KoskeenTallennettavaOpiskeluoikeus = {
     try {
-      OpiskeluOikeusRowConverter.readData(data, id, versionumero)
+      import fi.oph.koski.db.Tables.OpiskeluOikeusTable
+      OpiskeluOikeusTable.readData(data, id, versionumero)
     } catch {
       case e: Exception => throw new MappingException(s"Error deserializing opiskeluoikeus ${id} for oppija ${oppijaOid}", e)
     }
-  }
-}
-
-
-object OpiskeluOikeusRowConverter {
-  def readData(data: JValue, id: Int, versionumero: Int): KoskeenTallennettavaOpiskeluoikeus = {
-    Json.fromJValue[Opiskeluoikeus](data).asInstanceOf[KoskeenTallennettavaOpiskeluoikeus].withIdAndVersion(id = Some(id), versionumero = Some(versionumero))
-  }
-
-  def makeInsertableRow(oppijaOid: String, opiskeluoikeus: Opiskeluoikeus) = {
-    OpiskeluOikeusRow(opiskeluoikeus.id.getOrElse(0), oppijaOid, opiskeluoikeus.oppilaitos.oid, opiskeluoikeus.koulutustoimija.map(_.oid), Opiskeluoikeus.VERSIO_1, Json.toJValue(opiskeluoikeus), luokka(opiskeluoikeus))
-  }
-
-  def updatedFieldValues(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
-    val data = Json.toJValue(opiskeluoikeus.withIdAndVersion(id = None, versionumero = None))
-    (data, opiskeluoikeus.versionumero.get, luokka(opiskeluoikeus))
-  }
-
-  def updateableFieldValues(row: OpiskeluOikeusTable) = {
-    (row.data, row.versionumero, row.luokka)
-  }
-
-  private def luokka(opiskeluoikeus: Opiskeluoikeus) = {
-    val vuosiluokkasuoritukset = opiskeluoikeus.suoritukset.collect({case s: PerusopetuksenVuosiluokanSuoritus => s})
-    vuosiluokkasuoritukset.sortBy(_.koulutusmoduuli.tunniste.koodiarvo).reverse.headOption.map(_.luokka)
   }
 }
 
