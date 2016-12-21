@@ -17,6 +17,7 @@ logdir:
 	@mkdir -p log
 clean:
 	mvn clean
+	rm -fr web/target
 
 ### Building the application
 
