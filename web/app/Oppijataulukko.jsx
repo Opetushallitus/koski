@@ -120,7 +120,7 @@ export const Oppijataulukko = React.createClass({
               </td>
               <td className="tila">{ opiskeluoikeus.tila.nimi.fi }</td>
               <td className="oppilaitos"><ul className="cell-listing">{ opiskeluoikeus.suoritukset.map((suoritus, j) =>
-                <li className="toimipiste">{suoritus.toimipiste.nimi.fi}</li>)
+                <li key={j} className="toimipiste">{suoritus.toimipiste.nimi.fi}</li>)
               }</ul></td>
               <td className="aloitus pvm">{ ISO2FinnishDate(opiskeluoikeus.alkamispäivä) }</td>
               <td className="luokka">{ opiskeluoikeus.luokka }</td>
