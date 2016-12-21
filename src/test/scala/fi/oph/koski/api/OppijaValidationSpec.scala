@@ -169,6 +169,12 @@ class OppijaValidationSpec extends FunSpec with LocalJettyHttpSpecification with
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*ECMA 262 regex.*".r)))
         }
       }
+
+      describe("Kun annetaan koulutustoimija, joka ei vastaa organisaatiopalvelun oppilaitokselle määrittämää koulutustoimijaa") {
+        it("palautetaan HTTP 400 virhe" ) { putOpiskeluOikeus(defaultOpiskeluoikeus.copy(koulutustoimija = Some(Koulutustoimija("1.2.246.562.10.53814745062")))) (
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.vääräKoulutustoimija("Annettu koulutustoimija 1.2.246.562.10.53814745062 ei vastaa organisaatiopalvelusta löytyvää koulutustoimijaa 1.2.246.562.10.346830761110")))
+        }
+      }
     }
 
     describe("Suorituksen toimipiste") {

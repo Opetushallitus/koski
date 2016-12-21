@@ -33,7 +33,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         val extractionResult: Either[HttpStatus, Oppija] = timed("extract")(ValidatingAndResolvingExtractor.extract[Oppija](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository)))
         extractionResult.right.flatMap { oppija =>
           validateOpiskeluoikeudet(oppija) match {
-            case status: HttpStatus if status.isOk => Right(fillMissingInfo(oppija))
+            case status: HttpStatus if status.isOk => addKoulutustoimija(oppija)
             case status: HttpStatus => Left(status)
           }
         }
@@ -47,7 +47,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         val extractionResult: Either[HttpStatus, Opiskeluoikeus] = timed("extract")(ValidatingAndResolvingExtractor.extract[Opiskeluoikeus](parsedJson, ValidationAndResolvingContext(koodistoPalvelu, organisaatioRepository)))
         extractionResult.right.flatMap { opiskeluoikeus =>
           validateOpiskeluOikeus(opiskeluoikeus) match {
-            case status: HttpStatus if status.isOk => Right(fillMissingInfo(opiskeluoikeus))
+            case status: HttpStatus if status.isOk => addKoulutustoimija(opiskeluoikeus)
             case status: HttpStatus => Left(status)
           }
         }
@@ -55,16 +55,26 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
   }
 
-  def fillMissingInfo(oppija: Oppija): Oppija = oppija.copy(opiskeluoikeudet = oppija.opiskeluoikeudet.map(fillMissingInfo(_)))
+  def addKoulutustoimija(oppija: Oppija): Either[HttpStatus, Oppija] = {
+    val oo: Seq[Either[HttpStatus, Opiskeluoikeus]] = oppija.opiskeluoikeudet.map(addKoulutustoimija(_))
+    oo.collect({ case Left(fail) => fail}) match {
+      case Nil => Right(oppija.copy(opiskeluoikeudet = oo.map(_.right.get)))
+      case failures => Left(HttpStatus.fold(failures))
+    }
+  }
 
-  def fillMissingInfo(oo: Opiskeluoikeus): Opiskeluoikeus = addKoulutustoimija(oo)
-
-  def addKoulutustoimija(oo: Opiskeluoikeus): Opiskeluoikeus = {
+  def addKoulutustoimija(oo: Opiskeluoikeus): Either[HttpStatus, Opiskeluoikeus] = {
     organisaatioRepository.findKoulutustoimija(oo.oppilaitos) match {
-      case Some(koulutustoimija) => oo.withKoulutustoimija(koulutustoimija)
+      case Some(löydettyKoulutustoimija) =>
+        oo.koulutustoimija.map(_.oid) match {
+          case Some(oid) if oid != löydettyKoulutustoimija.oid =>
+            Left(KoskiErrorCategory.badRequest.validation.organisaatio.vääräKoulutustoimija(s"Annettu koulutustoimija $oid ei vastaa organisaatiopalvelusta löytyvää koulutustoimijaa ${löydettyKoulutustoimija.oid}"))
+          case _ =>
+            Right(oo.withKoulutustoimija(löydettyKoulutustoimija))
+        }
       case _ =>
         logger.warn(s"Koulutustoimijaa ei löydy oppilaitokselle ${oo.oppilaitos}")
-        oo
+        Right(oo)
     }
   }
 

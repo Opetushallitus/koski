@@ -194,7 +194,8 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       putOppija(Oppija(oppija, List(original)), authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(200)
         val existing = lastOpiskeluOikeus(oppija.oid).asInstanceOf[T]
-        putOppija(Oppija(oppija, List(change(existing))), authHeaders(user2.getOrElse(user)) ++ jsonContent) {
+        val updated: KoskeenTallennettavaOpiskeluoikeus = change(existing)
+        putOppija(Oppija(oppija, List(updated)), authHeaders(user2.getOrElse(user)) ++ jsonContent) {
           block
         }
       }
