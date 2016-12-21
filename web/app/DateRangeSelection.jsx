@@ -102,6 +102,11 @@ export default React.createClass({
     },
     Escape() {
       this.setState({open: false})
+    },
+    ArrowDown() {
+      if(!this.state.open) {
+        this.setState({open: true})
+      }
     }
   }
 })

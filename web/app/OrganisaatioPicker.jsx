@@ -16,7 +16,7 @@ export default React.createClass({
     )
 
     return (
-      <div className="organisaatio" tabIndex="0">
+      <div className="organisaatio" tabIndex="0" onKeyDown={this.onKeyDown}>
         <div className="organisaatio-selection" onClick={ () => this.setState({open:!open}) }>{ selectedOrg.nimi ? selectedOrg.nimi : 'kaikki'}</div>
         { open &&
         <div className="organisaatio-popup">
@@ -60,5 +60,21 @@ export default React.createClass({
   },
   handleClickOutside(e) {
     !e.target.closest('.organisaatio') && this.setState({open: false})
+  },
+  onKeyDown(e) {
+    let handler = this.keyHandlers[e.key]
+    if(handler) {
+      handler.call(this, e)
+    }
+  },
+  keyHandlers: {
+    ArrowDown() {
+      if(!this.state.open) {
+        this.setState({open: true})
+      }
+    },
+    Escape() {
+      this.setState({open: false})
+    }
   }
 })
