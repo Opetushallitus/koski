@@ -4,7 +4,6 @@ import React from 'react'
 export default React.createClass({
   render() {
     const {from, to, invalidStartDate, invalidEndDate} = this.state
-    console.log(this.state)
     return (
       <div className="calendar" onMouseDown={ this.handleContainerMouseDown } tabIndex="0" onBlur={this.handleInputBlur}
            onFocus={this.handleInputFocus}>
@@ -47,30 +46,19 @@ export default React.createClass({
     )
   },
   handleStartDate(e) {
-    const day = parseFinnishDate(e.target.value)
-    const isValidStartDate = !e.target.value || (day && isPastOrOrToday(day) && isBeforeOrSame(day, this.state.to))
-    const from = (!e.target.value || !isValidStartDate) ? undefined : day
-    const invalidStartDate = isValidStartDate ? undefined : {value: e.target.value}
+    const newStartDate = calculateStartState(e.target.value, this.state.to)
+
     const newState = Object.assign(
-      {
-        from: from,
-        invalidStartDate: invalidStartDate
-      },
-      this.state.invalidEndDate ? calculateEndState(this.state.invalidEndDate.value, from) : {to: this.state.to}
+      newStartDate,
+      this.state.invalidEndDate ? calculateEndState(this.state.invalidEndDate.value, newStartDate.from) : {to: this.state.to}
     )
     this.setState(newState, () => this.props.onSelectionChanged({from: newState.from, to: newState.to}))
   },
   handleEndDate(e) {
-    const day = parseFinnishDate(e.target.value)
-    const isValidEndDate = !e.target.value || (day && isPastOrOrToday(day) && isAfterOrSame(day, this.state.from))
-    const to = (!e.target.value || !isValidEndDate) ? undefined : day
-    const invalidEndDate = isValidEndDate ? undefined : {value: e.target.value}
+    const newEndDate = calculateEndState(e.target.value, this.state.from)
     const newState = Object.assign(
-      {
-        to: to,
-        invalidEndDate: invalidEndDate
-      },
-      this.state.invalidStartDate ? calculateStartState(this.state.invalidStartDate.value, to) : {from: this.state.from}
+      newEndDate,
+      this.state.invalidStartDate ? calculateStartState(this.state.invalidStartDate.value, newEndDate.to) : {from: this.state.from}
     )
     this.setState(newState, () => this.props.onSelectionChanged({from: newState.from, to: newState.to}))
   },
@@ -107,19 +95,19 @@ export default React.createClass({
 })
 
 const calculateEndState = (endValue, fromDate) => {
-  const endDate = endValue ? parseFinnishDate(endValue) : undefined
+  const endDate = parseFinnishDate(endValue)
   const isValidEndDate = !endValue || (endDate && isPastOrOrToday(endDate) && isAfterOrSame(endDate, fromDate))
   return {
-    to: !endValue ? undefined : endDate,
+    to: (!endValue || !isValidEndDate) ? undefined : endDate,
     invalidEndDate: isValidEndDate ? undefined : {value: endValue}
   }
 }
 
 const calculateStartState = (startValue, toDate) => {
-  const startDate = startValue ? parseFinnishDate(startValue) : undefined
+  const startDate = parseFinnishDate(startValue)
   const isValidStartDate = !startValue || (startDate && isPastOrOrToday(startDate) && isBeforeOrSame(startDate, toDate))
   return {
-    from: !startValue ? undefined : startDate,
+    from: (!startValue || !isValidStartDate) ? undefined : startDate,
     invalidStartDate: isValidStartDate ? undefined : {value: startValue}
   }
 }
