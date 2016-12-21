@@ -1,5 +1,4 @@
 #!/bin/bash
 set -eou pipefail
-mkdir web/target 2>/dev/null||true
-(cd $(dirname "$0")/../web && node_modules/mocha-phantomjs/bin/mocha-phantomjs $1 -R xunit | grep -E '</?test' > ./target/TEST-mocha.xml)
-
+echo "Running mocha tests against $1"
+(cd $(dirname "$0")/../web && node_modules/mocha-phantomjs/bin/mocha-phantomjs -p node_modules/phantomjs/bin/phantomjs $1)
