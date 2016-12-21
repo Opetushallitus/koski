@@ -170,7 +170,7 @@ class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organis
         val oppija = rows.head.oppija.flatMap(_.extractOpt[TiedonsiirtoOppija])
         println(x + " " + rows.length + " rows, first=" + oppija.flatMap(_.oid))
         val rivit = rows.map { row =>
-          val oppilaitos = row.oppilaitos.flatMap(_.extractOpt[List[OrganisaatioWithOid]])
+          val oppilaitos: List[OrganisaatioWithOid] = row.oppilaitos.flatMap(_.extractOpt[List[OrganisaatioWithOid]]).toList.flatten.distinct
           TiedonsiirtoRivi(row.id, row.aikaleima.toLocalDateTime, oppija, oppilaitos, row.virheet, row.data, row.lahdejarjestelma)
         }
         HenkilönTiedonsiirrot(oppija, rivit.sortBy(_.aika))
@@ -180,7 +180,7 @@ class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organis
 
 case class Tiedonsiirrot(henkilöt: List[HenkilönTiedonsiirrot], oppilaitos: Option[Oppilaitos])
 case class HenkilönTiedonsiirrot(oppija: Option[TiedonsiirtoOppija], rivit: Seq[TiedonsiirtoRivi])
-case class TiedonsiirtoRivi(id: Int, aika: LocalDateTime, oppija: Option[TiedonsiirtoOppija], oppilaitos: Option[List[OrganisaatioWithOid]], virhe: Option[AnyRef], inputData: Option[AnyRef], lähdejärjestelmä: Option[String])
+case class TiedonsiirtoRivi(id: Int, aika: LocalDateTime, oppija: Option[TiedonsiirtoOppija], oppilaitos: List[OrganisaatioWithOid], virhe: Option[AnyRef], inputData: Option[AnyRef], lähdejärjestelmä: Option[String])
 case class TiedonsiirtoOppija(oid: Option[String], hetu: Option[String], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], äidinkieli: Option[Koodistokoodiviite])
 case class HetuTaiOid(oid: Option[String], hetu: Option[String])
 case class TiedonsiirtoYhteenveto(tallentajaOrganisaatio: OrganisaatioWithOid, oppilaitos: OrganisaatioWithOid, käyttäjä: KoskiUserInfo, viimeisin: Timestamp, siirretyt: Int, virheelliset: Int, opiskeluoikeudet: Int, lähdejärjestelmä: Option[Koodistokoodiviite])
