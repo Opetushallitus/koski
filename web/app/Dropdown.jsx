@@ -5,7 +5,7 @@ export default React.createClass({
     const { options, open, selected } = this.state
     return (
       <div id={this.props.id} className="dropdown" tabIndex="0" ref={el => this.dropdown = el}>
-        <div className={selected ? 'select' : 'select no-selection'} onClick={this.openDropdown} >{selected ? selected.value : 'valitse'}</div>
+        <div className={selected ? 'select' : 'select no-selection'} onClick={this.toggleOpen} >{selected ? selected.value : 'valitse'}</div>
         { open ?
           <ul className="options">
             {
@@ -22,7 +22,7 @@ export default React.createClass({
     this.setState({selected: selected, open: false}, () => this.props.onSelectionChanged(selected))
     this.dropdown.blur()
   },
-  openDropdown(e) {
+  toggleOpen() {
     this.setState({open: !this.state.open})
   },
   componentDidMount() {
