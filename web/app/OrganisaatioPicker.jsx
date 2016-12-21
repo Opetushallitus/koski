@@ -4,7 +4,7 @@ import Http from './http'
 
 export default React.createClass({
   render() {
-    let { organisaatiot = [], open } = this.state
+    let { organisaatiot = [], open, loading } = this.state
     let { onSelectionChanged, selectedOrg } = this.props
     let selectOrg = (org) => { this.setState({open: false}); onSelectionChanged(org) }
     let renderTree = (orgs) => orgs.map((org, i) =>
@@ -25,7 +25,7 @@ export default React.createClass({
           }}/>
           <button className="button kaikki" onClick={() => { this.searchStringBus.push(''); selectOrg(null)}}>kaikki</button>
           <div className="scroll-container">
-            <ul className="organisaatiot">
+            <ul className={loading ? 'organisaatiot loading' : 'organisaatiot'}>
               { renderTree(organisaatiot) }
             </ul>
           </div>
@@ -37,14 +37,16 @@ export default React.createClass({
   componentDidUpdate(prevProps, prevState) {
     if (this.state.open) {
       if (this.state.searchString === undefined) {
-        this.searchStringBus.push('') // trigger initial AJAX load
+        this.searchStringBus.push('') // trigger initial AJAX load when opened for the first time
       }
       this.refs.hakuboksi.focus()
     }
   },
   componentWillMount() {
     this.searchStringBus = Bacon.Bus()
-    this.searchStringBus.flatMapLatest((searchString) => Http.get('http://localhost:7021/koski/api/organisaatio/hierarkia?query=' + searchString).map((organisaatiot) => ({ searchString, organisaatiot })))
+    this.searchStringBus
+      .onValue((searchString) => this.setState({searchString, loading: true}))
+    this.searchStringBus.flatMapLatest((searchString) => Http.get('/koski/api/organisaatio/hierarkia?query=' + searchString)).map((organisaatiot) => ({ organisaatiot, loading: false }))
       .onValue((result) => this.setState(result))
   },
   getInitialState() {
