@@ -1,10 +1,10 @@
-import DayPicker, {DateUtils} from 'react-day-picker'
 import {parseFinnishDate, formatFinnishDate} from './date.js'
 import React from 'react'
 
 export default React.createClass({
   render() {
-    const {from, to, displayedStartMonth, displayedEndMonth} = this.state
+    const {from, to, invalidStartDate, invalidEndDate} = this.state
+    console.log(this.state)
     return (
       <div className="calendar" onMouseDown={ this.handleContainerMouseDown } tabIndex="0" onBlur={this.handleInputBlur}
            onFocus={this.handleInputFocus}>
@@ -12,26 +12,21 @@ export default React.createClass({
           className="calendar-selection">{ from && to ? (formatFinnishDate(from) + '-' + formatFinnishDate(to)) : 'kaikki'}</div>
         { this.state.open &&
         <div className="DayPicker-CalendarContainer">
-          <DayPicker
-            onDayClick={ this.handleDayClick }
-            selectedDays={ day => DateUtils.isDayInRange(day, {from, to}) }
-            locale="fi"
-            localeUtils={localeUtils}
-            initialMonth={displayedStartMonth}
-            fixedWeeks
-            onMonthChange={ this.handleStartMonthChange}
-            toMonth={ DateUtils.addMonths(displayedEndMonth, -1) }
-          />
-          <DayPicker
-            onDayClick={ this.handleDayClick }
-            selectedDays={ day => DateUtils.isDayInRange(day, {from, to}) }
-            locale="fi"
-            initialMonth={displayedEndMonth}
-            localeUtils={localeUtils}
-            fromMonth={ DateUtils.addMonths(displayedStartMonth, 1)}
-            onMonthChange={ this.handleEndMonthChange}
-            fixedWeeks
-          />
+          <div className="date-range">
+            <label>Aloituspäivä</label>
+            <input
+              className={invalidStartDate ? 'error' : ''}
+              type="text"
+              value={invalidStartDate ? invalidStartDate.value : from ? formatFinnishDate(from) : ''}
+              onChange={this.handleStartDate}
+            />&mdash;
+            <input
+              className={invalidEndDate ? 'error' : ''}
+              type="text"
+              value={invalidEndDate ? invalidEndDate.value : to ? formatFinnishDate(to) : ''}
+              onChange={this.handleEndDate}
+            />
+          </div>
           <div className="calendar-shortcuts">
             <button
               className="button"
@@ -51,32 +46,42 @@ export default React.createClass({
       </div>
     )
   },
-  handleStartMonthChange(day) {
-    this.setState({
-      displayedStartMonth: day
-    })
+  handleStartDate(e) {
+    const day = parseFinnishDate(e.target.value)
+    const isValidStartDate = !e.target.value || (day && isPastOrOrToday(day) && isBeforeOrSame(day, this.state.to))
+    const from = (!e.target.value || !isValidStartDate) ? undefined : day
+    const invalidStartDate = isValidStartDate ? undefined : {value: e.target.value}
+    const newState = Object.assign(
+      {
+        from: from,
+        invalidStartDate: invalidStartDate
+      },
+      this.state.invalidEndDate ? calculateEndState(this.state.invalidEndDate.value, from) : {to: this.state.to}
+    )
+    this.setState(newState, () => this.props.onSelectionChanged({from: newState.from, to: newState.to}))
   },
-  handleEndMonthChange(day) {
-    this.setState({
-      displayedEndMonth: day
-    })
-  },
-  handleDayClick(e, day) {
-    this.setState(DateUtils.addDayToRange(day, this.state), () => {
-      this.state.from && this.state.to && this.props.onSelectionChanged({
-        from: this.state.from,
-        to: this.state.to
-      })
-    })
+  handleEndDate(e) {
+    const day = parseFinnishDate(e.target.value)
+    const isValidEndDate = !e.target.value || (day && isPastOrOrToday(day) && isAfterOrSame(day, this.state.from))
+    const to = (!e.target.value || !isValidEndDate) ? undefined : day
+    const invalidEndDate = isValidEndDate ? undefined : {value: e.target.value}
+    const newState = Object.assign(
+      {
+        to: to,
+        invalidEndDate: invalidEndDate
+      },
+      this.state.invalidStartDate ? calculateStartState(this.state.invalidStartDate.value, to) : {from: this.state.from}
+    )
+    this.setState(newState, () => this.props.onSelectionChanged({from: newState.from, to: newState.to}))
   },
   handleRangeSelection(range) {
-    this.setState(stateFromRange(range), () => this.props.onSelectionChanged(range))
+    this.setState(range, () => this.props.onSelectionChanged(range))
   },
   getInitialState() {
-    return stateFromRange({
+    return {
       from: this.props.selectedStartDay && parseFinnishDate(this.props.selectedStartDay),
       to: this.props.selectedEndDay && parseFinnishDate(this.props.selectedEndDay)
-    })
+    }
   },
   componentDidMount() {
     window.addEventListener('click', this.handleClickOutside, false)
@@ -85,7 +90,7 @@ export default React.createClass({
     window.removeEventListener('click', this.handleClickOutside, false)
   },
   handleClickOutside(e) {
-    !e.target.closest('.calendar') && this.setState({open: false})
+    //!e.target.closest('.calendar') && this.setState({open: false})
   },
   handleContainerMouseDown() {
     this.clickedInside = true
@@ -97,40 +102,53 @@ export default React.createClass({
     this.setState({open: true})
   },
   handleInputBlur() {
-    this.setState({open: this.clickedInside})
+    //this.setState({open: this.clickedInside})
   }
 })
 
-const stateFromRange = range => ({
-  displayedStartMonth: range.from ? range.from : new Date(new Date().getFullYear(), 0, 1),
-  displayedEndMonth: range.to ? range.to : new Date(),
-  open: false,
-  from: range.from,
-  to: range.to
-})
-
-const weekdaysLong = {
-  fi: ['Sunnuntai', 'Maanantai', 'Tiistai', 'Keskiviikko', 'Torstai', 'Perjantai', 'Lauantai'],
-  en: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-}
-const weekdaysShort = {
-  fi: ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La'],
-  en: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
-}
-const months = {
-  fi: ['Tammikuu', 'Helmikuu', 'Maaliskuu', 'Huhtikuu', 'Toukokuu', 'Kesäkuu', 'Heinäkuu', 'Elokuu', 'Syyskuu', 'Lokakuu', 'Marraskuu', 'Joulukuu'],
-  en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-}
-const firstDayOfWeek = {
-  fi: 1,
-  en: 0
+const calculateEndState = (endValue, fromDate) => {
+  const endDate = endValue ? parseFinnishDate(endValue) : undefined
+  const isValidEndDate = !endValue || (endDate && isPastOrOrToday(endDate) && isAfterOrSame(endDate, fromDate))
+  return {
+    to: !endValue ? undefined : endDate,
+    invalidEndDate: isValidEndDate ? undefined : {value: endValue}
+  }
 }
 
-const localeUtils = {
-  formatDay: (d, locale = 'en') => `${weekdaysLong[locale][d.getDay()]}, ${d.getDate()} ${months[locale][d.getMonth()]} ${d.getFullYear()}`,
-  formatWeekdayShort: (index, locale = 'en') => weekdaysShort[locale][index],
-  formatWeekdayLong: (index, locale = 'en') => weekdaysLong[locale][index],
-  getFirstDayOfWeek: locale => firstDayOfWeek[locale],
-  getMonths: locale => months[locale],
-  formatMonthTitle: (d, locale) => `${months[locale][d.getMonth()]} ${d.getFullYear()}`
+const calculateStartState = (startValue, toDate) => {
+  const startDate = startValue ? parseFinnishDate(startValue) : undefined
+  const isValidStartDate = !startValue || (startDate && isPastOrOrToday(startDate) && isBeforeOrSame(startDate, toDate))
+  return {
+    from: !startValue ? undefined : startDate,
+    invalidStartDate: isValidStartDate ? undefined : {value: startValue}
+  }
+}
+
+const isPastOrOrToday = d => isSameDay(d, new Date()) || isPastDay(d)
+
+const isBeforeOrSame = (d1, d2) => {
+  if(!d2) {
+    return true
+  }
+  return d1 <= d2
+}
+
+const isAfterOrSame = (d1, d2) => {
+  if(!d2) {
+    return true
+  }
+  return d1 >= d2
+}
+
+const isSameDay = (d1, d2) => {
+  if (!d1 || !d2) {
+    return false
+  }
+  return d1.getDate() === d2.getDate() && d1.getMonth() === d2.getMonth() && d1.getFullYear() === d2.getFullYear()
+}
+
+const isPastDay = d => {
+  var today = new Date()
+  today.setHours(0, 0, 0, 0)
+  return d < today
 }

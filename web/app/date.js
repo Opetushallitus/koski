@@ -1,6 +1,6 @@
 import fecha from 'fecha'
 
-const finnishDateRE = /([0-3]?\d).([0-2]?\d).(\d\d\d\d)/
+const finnishDateRE = /([0-3]?\d)\.([0-2]?\d)\.(\d\d\d\d)/
 export const formatISODate = (date) => date.toISOString().substring(0, 10)
 export const parseFinnishDate = (dateStr) => {
   let match = dateStr.match(finnishDateRE)
