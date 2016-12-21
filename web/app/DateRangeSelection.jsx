@@ -86,7 +86,7 @@ export default React.createClass({
   handleClickOutside(e) {
     !e.target.closest('.date-range') && this.setState({open: false})
   },
-  toggleOpen(e) {
+  toggleOpen() {
     this.setState({open: !this.state.open})
   },
   onKeyDown(e) {

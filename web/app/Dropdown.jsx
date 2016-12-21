@@ -23,7 +23,7 @@ export default React.createClass({
     this.dropdown.blur()
     e.stopPropagation()
   },
-  openDropdown(e) {
+  openDropdown() {
     this.setState({open: !this.state.open})
   },
   handleBlur() {

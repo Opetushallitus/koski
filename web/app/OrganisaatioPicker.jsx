@@ -34,7 +34,7 @@ export default React.createClass({
       </div>
     )
   },
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate() {
     if (this.state.open) {
       if (this.state.searchString === undefined) {
         this.searchStringBus.push('') // trigger initial AJAX load when opened for the first time
