@@ -4,7 +4,7 @@ export default React.createClass({
   render() {
     const { options, open, selected } = this.state
     return (
-      <div className="dropdown" onBlur={this.handleBlur} tabIndex="0" ref={el => this.dropdown = el}>
+      <div id={this.props.id} className="dropdown" tabIndex="0" ref={el => this.dropdown = el}>
         <div className={selected ? 'select' : 'select no-selection'} onClick={this.openDropdown} >{selected ? selected.value : 'valitse'}</div>
         { open ?
           <ul className="options">
@@ -21,16 +21,21 @@ export default React.createClass({
     const selected = option.key ? option : undefined
     this.setState({selected: selected, open: false}, () => this.props.onSelectionChanged(selected))
     this.dropdown.blur()
-    e.stopPropagation()
   },
-  openDropdown() {
+  openDropdown(e) {
     this.setState({open: !this.state.open})
-  },
-  handleBlur() {
-    this.setState({open: false})
   },
   componentDidMount() {
     this.props.optionsP.onValue(options => this.setState({options, selected: options.find(o => o.key == this.props.selected)}))
+    window.addEventListener('click', this.handleClickOutside, false)
+  },
+  componentWillUnmount() {
+    window.removeEventListener('click', this.handleClickOutside, false)
+  },
+  handleClickOutside(e) {
+    const dropdown = e.target.closest('.dropdown')
+    const clickedInside = dropdown && dropdown.getAttribute('id') == this.props.id
+    !clickedInside && this.setState({open: false})
   },
   getInitialState() {
     return {

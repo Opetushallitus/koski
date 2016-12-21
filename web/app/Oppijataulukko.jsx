@@ -35,6 +35,7 @@ export const Oppijataulukko = React.createClass({
             <th className="tyyppi">
               <span className="title">Opiskeluoikeuden tyyppi</span>
               <Dropdown
+                id="tyyppi-valinta"
                 optionsP={this.opiskeluoikeudenTyypit}
                 onSelectionChanged={option => this.filterBus.push({'opiskeluoikeudenTyyppi': option ? option.key : undefined })}
                 selected={params['opiskeluoikeudenTyyppi']}
@@ -43,6 +44,7 @@ export const Oppijataulukko = React.createClass({
             <th className="koulutus">
               <span className="title">Koulutus</span>
               <Dropdown
+                id="koulutus-valinta"
                 optionsP={this.koulutus}
                 onSelectionChanged={option => this.filterBus.push({'suorituksenTyyppi': option ? option.key : undefined })}
                 selected={params['suorituksenTyyppi']}
@@ -62,6 +64,7 @@ export const Oppijataulukko = React.createClass({
             <th className="tila">
               <span className="title">Tila</span>
               <Dropdown
+                id="tila-valinta"
                 optionsP={this.opiskeluoikeudenTila}
                 onSelectionChanged={option => this.filterBus.push({'opiskeluoikeudenTila': option ? option.key : undefined })}
                 selected={params['opiskeluoikeudenTila']}
