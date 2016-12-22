@@ -16,8 +16,13 @@ object KoskiApiOperations {
    QueryParameter("opiskeluoikeusPäättynytViimeistään","Päivämäärä jota ennen opiskeluoikeus on päättynyt", List("2016-12-31")),
    QueryParameter("opiskeluoikeusAlkanutAikaisintaan","Päivämäärä jonka jälkeen opiskeluoikeus on alkanut",List("2016-01-01")),
    QueryParameter("opiskeluoikeusAlkanutViimeistään","Päivämäärä jota ennen opiskeluoikeus on alkanut", List("2016-12-31")),
-   QueryParameter("suorituksenTila","Opiskeluoikeuden juurisuorituksen tila: VALMIS, KESKEN, KESKEYTYNYT", List("VALMIS"))
-   // TODO: päivitä dokumentaatio
+   QueryParameter("opiskeluoikeudenTyyppi","Opiskeluoikeuden tyyppi (ks. opiskeluoikeudentyyppi-koodisto)", List("ammatillinenkoulutus")),
+   QueryParameter("opiskeluoikeudenTila","Opiskeluoikeuden tila (ks. koskiopiskeluoikeudentila-koodisto)", List("lasna")),
+   QueryParameter("suorituksenTyyppi","Juurisuorituksen tyyppi (ks. suorituksentyyppi-koodisto)", List("lasna")),
+   QueryParameter("suorituksenTila","Opiskeluoikeuden juurisuorituksen tila (ks suorituksentila-koodisto)", List("VALMIS")),
+   QueryParameter("tutkintohaku","Tekstihaku kohdistuen tutkinnon nimeen, osaamisalaan ja tutkintonimikkeeseen", List("autoalan perustutkinto")),
+   QueryParameter("luokkahaku", "Tekstihaku kohdistuen oppilaan nykyiseen/viimeisimpään luokkaan", List("9C")),
+   QueryParameter("nimihaku", "Tekstihaku kohdistuen oppilan etunimiin ja sukunimeen", List("virtanen"))
  )
 
  val operations = List(
@@ -84,7 +89,7 @@ object KoskiApiOperations {
        Lisäksi validoidaan opinto-oikeuksien versiohistorioiden eheys.
        Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</p>,
      Nil,
-     QueryParameter("errorsOnly", "Haetaanko vain virheelliset opiskeluoikeudet", List("false")) :: hakuParametrit,
+     List(QueryParameter("errorsOnly", "Haetaanko vain virheelliset opiskeluoikeudet", List("false")), QueryParameter("history", "Validoidaanko myös versiohistoria", List("false"))) ++ hakuParametrit,
      List(
        KoskiErrorCategory.ok.maybeValidationErrorsInContent.copy(exampleResponse = List(ValidationResult(MockOppijat.eero.oid, 8942345, List()))),
        KoskiErrorCategory.badRequest.format.pvm,
