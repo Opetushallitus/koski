@@ -9,7 +9,7 @@ export default React.createClass({
     let { onSelectionChanged, selectedOrg } = this.props
     let selectOrg = (org) => { this.setState({open: false}); onSelectionChanged(org) }
     let renderTree = (orgs) => orgs.map((org, i) =>
-      <li key={i}><a className="nimi" onClick={ (e) => { selectOrg(org); e.preventDefault() }}><Highlight search={searchString}>{org.nimi.fi}</Highlight></a>
+      <li key={i}><a className="nimi" onClick={ (e) => { selectOrg(org); e.preventDefault(); e.stopPropagation() }}><Highlight search={searchString}>{org.nimi.fi}</Highlight></a>
         <ul className="aliorganisaatiot">
           { renderTree(org.children) }
         </ul>
