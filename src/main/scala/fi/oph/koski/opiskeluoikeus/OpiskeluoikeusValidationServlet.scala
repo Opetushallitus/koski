@@ -19,9 +19,11 @@ class OpiskeluoikeusValidationServlet(val application: KoskiApplication) extends
   get("/") {
     val errorsOnly = params.get("errorsOnly").map(_.toBoolean).getOrElse(false)
     val context = ValidateContext(koskiSession, application.validator, application.historyRepository)
+    val validateHistory = params.get("history").map(_.toBoolean).getOrElse(false)
+    val validate = if (validateHistory) { context.validateAll _ } else { context.validateOpiskeluoikeus _ }
     query(params.filterKeys(_ != "errorsOnly"))
       .flatMap { case (henkilö, opiskeluoikeudet) => Observable.from(opiskeluoikeudet) }
-      .map(context.validateAll)
+      .map(validate)
       .filter(result => !(errorsOnly && result.isOk))
   }
 
