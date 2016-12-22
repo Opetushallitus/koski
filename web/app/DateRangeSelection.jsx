@@ -5,7 +5,7 @@ export default React.createClass({
   render() {
     const {from, to, invalidStartDate, invalidEndDate} = this.state
     return (
-      <div className="date-range" onKeyDown={this.onKeyDown} tabIndex="0">
+      <div className="date-range" onKeyDown={this.onKeyDown} tabIndex="0" ref={root => this.root = root}>
         <div
           onClick={this.toggleOpen}
           className="date-range-selection">{ (from || to) ? ((from ? formatFinnishDate(from) : '') + '-' + (to ? formatFinnishDate(to) : '')) : 'kaikki'}</div>
@@ -79,15 +79,21 @@ export default React.createClass({
   },
   componentDidMount() {
     window.addEventListener('click', this.handleClickOutside, false)
+    window.addEventListener('focus', this.handleFocus, true)
   },
   componentWillUnmount() {
     window.removeEventListener('click', this.handleClickOutside, false)
+    window.removeEventListener('focus', this.handleFocus, true)
+  },
+  handleFocus(e) {
+    const focusInside = e.target == window ? false : !!this.root.contains(e.target)
+    this.setState({open: this.state.open && focusInside})
   },
   handleClickOutside(e) {
     !e.target.closest('.date-range') && this.setState({open: false})
   },
-  toggleOpen() {
-    this.setState({open: !this.state.open})
+  toggleOpen(e) {
+    this.setState({open: true})
   },
   onKeyDown(e) {
     let handler = this.keyHandlers[e.key]
@@ -103,7 +109,8 @@ export default React.createClass({
     Escape() {
       this.setState({open: false})
     },
-    ArrowDown() {
+    ArrowDown(e) {
+      e.stopPropagation()
       if(!this.state.open) {
         this.setState({open: true})
       }
@@ -153,7 +160,7 @@ const isSameDay = (d1, d2) => {
 }
 
 const isPastDay = d => {
-  var today = new Date()
+  const today = new Date()
   today.setHours(0, 0, 0, 0)
   return d < today
 }

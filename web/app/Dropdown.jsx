@@ -4,7 +4,7 @@ export default React.createClass({
   render() {
     const { options, open, selected, selectionIndex } = this.state
     return (
-      <div id={this.props.id} className="dropdown" tabIndex="0" ref={el => this.dropdown = el} onKeyDown={this.onKeyDown}>
+      <div id={this.props.id} className="dropdown" tabIndex="0" ref={el => this.dropdown = el} onBlur={this.handleOnBlur} onKeyDown={this.onKeyDown}>
         <div className={selected ? 'select' : 'select no-selection'} onClick={this.toggleOpen} >{selected ? selected.value : 'valitse'}</div>
         { open ?
           <ul className="options">
@@ -16,6 +16,9 @@ export default React.createClass({
         }
       </div>
     )
+  },
+  handleOnBlur(e) {
+    this.setState({open: false})
   },
   selectOption(option) {
     const selected = option.key ? option : undefined
@@ -63,6 +66,7 @@ export default React.createClass({
     },
     ArrowDown(e) {
       e.preventDefault()
+      e.stopPropagation()
       if(this.state.open) {
         let {selectionIndex, options} = this.state
          selectionIndex = selectionIndex === options.length ? selectionIndex : selectionIndex + 1
