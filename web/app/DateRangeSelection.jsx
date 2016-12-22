@@ -93,7 +93,7 @@ export default React.createClass({
     !e.target.closest('.date-range') && this.setState({open: false})
   },
   toggleOpen(e) {
-    this.setState({open: true})
+    this.setState({open: !this.state.open })
   },
   onKeyDown(e) {
     let handler = this.keyHandlers[e.key]

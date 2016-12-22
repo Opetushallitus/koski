@@ -16,7 +16,7 @@ export default React.createClass({
     )
 
     return (
-      <div className="organisaatio" tabIndex="0" onKeyDown={this.onKeyDown}>
+      <div className="organisaatio" tabIndex="0" onKeyDown={this.onKeyDown} ref={root => this.root = root}>
         <div className="organisaatio-selection" onClick={ () => this.setState({open:!open}) }>{ selectedOrg.nimi ? selectedOrg.nimi : 'kaikki'}</div>
         { open &&
         <div className="organisaatio-popup">
@@ -34,12 +34,14 @@ export default React.createClass({
       </div>
     )
   },
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
     if (this.state.open) {
       if (this.state.searchString === undefined) {
         this.searchStringBus.push('') // trigger initial AJAX load when opened for the first time
       }
-      this.refs.hakuboksi.focus()
+      if (!prevState.open) {
+        this.refs.hakuboksi.focus()
+      }
     }
   },
   componentWillMount() {
@@ -54,9 +56,15 @@ export default React.createClass({
   },
   componentDidMount() {
     window.addEventListener('click', this.handleClickOutside, false)
+    window.addEventListener('focus', this.handleFocus, true)
   },
   componentWillUnmount() {
     window.removeEventListener('click', this.handleClickOutside, false)
+    window.removeEventListener('focus', this.handleFocus, true)
+  },
+  handleFocus(e) {
+    const focusInside = e.target == window ? false : !!this.root.contains(e.target)
+    this.setState({open: this.state.open && focusInside})
   },
   handleClickOutside(e) {
     !e.target.closest('.organisaatio') && this.setState({open: false})
