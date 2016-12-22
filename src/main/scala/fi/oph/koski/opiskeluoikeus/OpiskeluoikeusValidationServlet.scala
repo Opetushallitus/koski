@@ -16,14 +16,13 @@ import rx.lang.scala.Observable
 
 class OpiskeluoikeusValidationServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Logging with OpiskeluoikeusQueries with NoCache {
   get("/") {
+    val errorsOnly = params.get("errorsOnly").map(_.toBoolean).getOrElse(false)
     val context = ValidateContext(koskiSession, application.validator, application.historyRepository)
-    query
+    query(params.filterKeys(_ != "errorsOnly"))
       .flatMap { case (henkilö, opiskeluoikeudet) => Observable.from(opiskeluoikeudet) }
       .map(context.validateAll)
+      .filter(result => !(errorsOnly && result.isOk))
   }
-
-
-
 
   get("/:id") {
     val context = ValidateContext(koskiSession, application.validator, application.historyRepository)

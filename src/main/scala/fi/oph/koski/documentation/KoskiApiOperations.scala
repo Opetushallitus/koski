@@ -79,12 +79,12 @@ object KoskiApiOperations {
    ),
    ApiOperation(
      "GET", "/koski/api/opiskeluoikeus/validate",
-     "Etsii oppijat annetuilla parametreilla ja validoi hakutulokset.",
+     "Etsii opiskeluoikeudet annetuilla parametreilla ja validoi hakutulokset.",
      <p>Validointi suoritetaan tämän hetkisen JSON-scheman ja muiden validointisääntöjen mukaan.
        Lisäksi validoidaan opinto-oikeuksien versiohistorioiden eheys.
        Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</p>,
      Nil,
-     hakuParametrit,
+     QueryParameter("errorsOnly", "Haetaanko vain virheelliset opiskeluoikeudet", List("false")) :: hakuParametrit,
      List(
        KoskiErrorCategory.ok.maybeValidationErrorsInContent.copy(exampleResponse = List(ValidationResult(MockOppijat.eero.oid, 8942345, List()))),
        KoskiErrorCategory.badRequest.format.pvm,
