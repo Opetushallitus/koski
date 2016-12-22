@@ -18,6 +18,7 @@
     "react": "~15.4.0",
     "react-day-picker": "^3.1.1",
     "react-dom": "~15.4.0",
+    "react-highlighter": "^0.3.3",
     "whatwg-fetch": "^0.9"
   },
   "devDependencies": {

@@ -1,14 +1,15 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import Http from './http'
+import Highlight from 'react-highlighter'
 
 export default React.createClass({
   render() {
-    let { organisaatiot = [], open, loading } = this.state
+    let { organisaatiot = [], open, loading, searchString } = this.state
     let { onSelectionChanged, selectedOrg } = this.props
     let selectOrg = (org) => { this.setState({open: false}); onSelectionChanged(org) }
     let renderTree = (orgs) => orgs.map((org, i) =>
-      <li key={i}><a className="nimi" onClick={ (e) => { selectOrg(org); e.preventDefault() }}>{org.nimi.fi}</a>
+      <li key={i}><a className="nimi" onClick={ (e) => { selectOrg(org); e.preventDefault() }}><Highlight search={searchString}>{org.nimi.fi}</Highlight></a>
         <ul className="aliorganisaatiot">
           { renderTree(org.children) }
         </ul>

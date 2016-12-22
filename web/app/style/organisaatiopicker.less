@@ -1,6 +1,7 @@
 .main-content .oppijataulukko table th {
   .organisaatio {
     outline: none;
+
     &:focus {
       .organisaatio-selection {
         outline: none;
@@ -8,6 +9,27 @@
         border: 1px solid #A6DCEE;
         box-shadow: none;
       }
+    }
+
+    .organisaatiot {
+      list-style: none;
+      margin: 5px 0;
+      padding: 0 8px;
+      li {
+        line-height: 22px;
+      }
+    }
+
+    .aliorganisaatiot {
+      padding-left: 25px;
+      list-style: disc;
+      li {
+        line-height: 24px;
+      }
+    }
+
+    .highlight {
+      background: #FFD024;
     }
 
     .organisaatio-selection {
