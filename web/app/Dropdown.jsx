@@ -39,7 +39,7 @@ export default React.createClass({
   handleMouseOver(o) {
     const { options } = this.state
     const index = options.findIndex(option => option.key == o.key)
-    this.setState({selectionIndex: index})
+    this.setState({selectionIndex: index + 1})
   },
   getInitialState() {
     return {
@@ -61,7 +61,8 @@ export default React.createClass({
       selectionIndex = selectionIndex === 0 ? 0 : selectionIndex - 1
       this.setState({selectionIndex: selectionIndex})
     },
-    ArrowDown() {
+    ArrowDown(e) {
+      e.preventDefault()
       if(this.state.open) {
         let {selectionIndex, options} = this.state
          selectionIndex = selectionIndex === options.length ? selectionIndex : selectionIndex + 1
