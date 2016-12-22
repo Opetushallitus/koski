@@ -16,7 +16,7 @@ const ValidointiTaulukko = React.createClass({
         <tbody>
         { validationStatus.map(({errors, oids, key}) => {
           let expanded = expandedRows.indexOf(key) >= 0
-          return <tr key={key}>
+          return (<tr key={key}>
             <td className="virhetyyppi">{
               errors.length
                 ? errors.map((error, i) => <div key={i}>{error.key}</div>)
@@ -29,7 +29,7 @@ const ValidointiTaulukko = React.createClass({
               return <span key={i}>{message}</span>
             })}</td>
             <td className="lukumäärä">{oids.length}</td>
-          </tr>
+          </tr>)
         })}
         </tbody>
       </table>
