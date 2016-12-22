@@ -3,6 +3,66 @@ import Oboe from 'oboe'
 import R from 'ramda'
 import Bacon from 'baconjs'
 
+const ValidointiTaulukko = React.createClass({
+  render() {
+    let { validationStatus } = this.props
+    let { expandedRows } = this.state
+
+    return (
+      <table>
+        <thead>
+        <tr><th className="virhetyyppi">Virhetyyppi</th><th className="virheteksti">Virheteksti</th><th className="lukumäärä">Lukumäärä</th></tr>
+        </thead>
+        <tbody>
+        { validationStatus.map(({errors, oids, key}) => {
+          let expanded = expandedRows.indexOf(key) >= 0
+          return <tr key={key}>
+            <td className="virhetyyppi">{
+              errors.length
+                ? errors.map((error, i) => <div key={i}>{error.key}</div>)
+                : 'Virheetön'
+            }</td>
+            <td className="virheteksti">{errors.map((error, i) => {
+              let message = typeof error.message == 'string'
+                ? <div>{error.message}</div>
+                : (expanded ? <pre className="json"><code>{JSON.stringify(error.message, null, 2)}</code></pre> : <a onClick={() => this.setState({ expandedRows: expandedRows.concat(key) })}>Näytä JSON</a>)
+              return <span key={i}>{message}</span>
+            })}</td>
+            <td className="lukumäärä">{oids.length}</td>
+          </tr>
+        })}
+        </tbody>
+      </table>
+    )
+  },
+  componentDidMount() {
+    document.addEventListener('keyup', this.showSelection)
+  },
+  componentWillUnmount() {
+    document.removeEventListener('keyup', this.showSelection)
+  },
+  getInitialState() {
+    return { expandedRows: []}
+  },
+  showSelection(e) {
+    if (e.keyCode != 67) return
+    let { validationStatus } = this.props
+    if (!window.getSelection().focusNode || ! window.getSelection().anchorNode) return
+    let elementIndex = (el) => Array.prototype.indexOf.call(el.parentElement.children, el)
+    var startIndex = elementIndex(window.getSelection().focusNode.parentElement.closest('tr'))
+    var endIndex = elementIndex(window.getSelection().anchorNode.parentElement.closest('tr'))
+    if (startIndex < 0 || endIndex < 0) return
+    if (endIndex < startIndex) {
+      var t = endIndex
+      endIndex = startIndex
+      startIndex = t
+    }
+    let selectedRows = validationStatus.slice(startIndex, endIndex+1)
+    let selectedIds = selectedRows.flatMap((row) => row.ids)
+    alert('(' + selectedIds.map((id) => '\'' + id + '\'').join(', ') + ')')
+  }
+})
+
 export const validointiContentP = (query) => {
 
   let oboeBus = Bacon.Bus()
@@ -11,20 +71,22 @@ export const validointiContentP = (query) => {
     .done(() => oboeBus.end())
     .fail((e) => oboeBus.error(e))
   var keyCounter = 0
-  let validationStatusP = oboeBus.scan([], (grouped, error) => {
+  let validationStatusP = oboeBus.scan([], (grouped, validationResult) => {
     for (var i in grouped) {
-      if (R.equals(grouped[i].errors, error.errors)) {
-        grouped[i].oids.push(error.henkilöOid)
+      if (R.equals(grouped[i].errors, validationResult.errors)) {
+        grouped[i].oids.push(validationResult.henkilöOid)
+        grouped[i].ids.push(validationResult.opiskeluoikeusId)
         return grouped
       }
     }
     grouped.push({
-      errors: error.errors,
+      errors: validationResult.errors,
       key: ++keyCounter,
-      oids: [error.henkilöOid]
+      oids: [validationResult.henkilöOid],
+      ids: [validationResult.opiskeluoikeusId]
     })
     return grouped
-  }).throttle(1000)
+  }).throttle(1000).map(R.sortBy((row) => -row.oids.length))
 
   let validationFinishedP = validationStatusP.filter(false).mapEnd(true).startWith(false)
 
@@ -33,25 +95,7 @@ export const validointiContentP = (query) => {
       <div className="main-content">
         <h2>Tiedon validointi</h2>
         { finished ? 'Kaikki opiskeluoikeudet validoitu' : 'Odota, tietoja validoidaan. Tämä saattaa kestää useita minuutteja.'}
-        <table>
-          <thead>
-            <tr><th className="virhetyyppi">Virhetyyppi</th><th className="virheteksti">Virheteksti</th><th className="lukumäärä">Lukumäärä</th></tr>
-          </thead>
-          <tbody>
-          { validationStatus.map(({errors, oids, key}) =>
-            <tr key={key}>
-              <td className="virhetyyppi">{errors.map((error, i) => <div key={i}>{error.key}</div>)}</td>
-              <td className="virheteksti">{errors.map((error, i) => {
-                let message = typeof error.message == 'string'
-                  ? <div>{error.message}</div>
-                  : <pre className="json"><code>{JSON.stringify(error.message, null, 2)}</code></pre>
-                return <span key={i}>{message}</span>
-              })}</td>
-              <td className="lukumäärä">{oids.length}</td>
-            </tr>
-          )}
-          </tbody>
-        </table>
+        <ValidointiTaulukko validationStatus={validationStatus}/>
       </div>
     </div>),
     title: ''
