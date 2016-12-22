@@ -9,7 +9,7 @@ export default React.createClass({
         { open ?
           <ul className="options">
             {
-              [{ value: 'ei valintaa' }].concat(options).map((o,i) => <li key={o.key || o.value} className={i == selectionIndex ? 'option selected' : 'option'} onClick={e => this.selectOption(o)} onMouseOver={e => this.handleMouseOver(o)}>{o.value}</li>)
+              [{ value: 'ei valintaa' }].concat(options).map((o,i) => <li key={o.key || o.value} className={i == selectionIndex ? 'option selected' : 'option'} onClick={() => this.selectOption(o)} onMouseOver={() => this.handleMouseOver(o)}>{o.value}</li>)
             }
           </ul>
           : null
@@ -17,7 +17,7 @@ export default React.createClass({
       </div>
     )
   },
-  handleOnBlur(e) {
+  handleOnBlur() {
     this.setState({open: false})
   },
   selectOption(option) {
