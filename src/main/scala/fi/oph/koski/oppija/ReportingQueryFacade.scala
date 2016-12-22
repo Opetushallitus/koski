@@ -39,7 +39,7 @@ case class ReportingQueryFacade(oppijaRepository: HenkilöRepository, opiskeluOi
   }
 
   private def streamingQueryGroupedByOid(filters: List[OpiskeluoikeusQueryFilter])(implicit user: KoskiSession): Observable[(Oid, List[(OpiskeluOikeusRow)])] = {
-    val rows = opiskeluOikeusRepository.streamingQuery(filters, Ascending(oppijaOid), None)
+    val rows = opiskeluOikeusRepository.streamingQuery(filters, Some(Ascending(oppijaOid)), None)
 
     val groupedByPerson: Observable[List[(OpiskeluOikeusRow, HenkilöRow)]] = rows
       .tumblingBuffer(rows.map(_._1.oppijaOid).distinctUntilChanged.drop(1))

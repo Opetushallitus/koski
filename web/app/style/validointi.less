@@ -1,0 +1,36 @@
+.content-area.validaatio {
+  table {
+    font-size: 0.8em;
+    margin-top: 25px;
+    border: 1px solid #E4E4E4;
+    width: 100%;
+    th {
+      padding-bottom: 10px;
+      background: #FAFAFA;
+      border-bottom: 2px solid #E4E4E4;
+      font-weight: normal;
+    }
+    tr:nth-child(even) {
+      background: #FAFAFA;
+    }
+    td, th {
+      padding: 5px;
+      border-right: 1px solid #E4E4E4;
+      word-wrap: break-word;
+      &.virhetyyppi {
+        width: 300px;
+        max-width: 300px;
+      }
+      &.virheteksti {
+        width: 600px;
+        max-width: 600px;
+      }
+      &.lukumäärä {
+        width: 70px;
+      }
+    }
+    .json {
+      font-size: 0.9em;
+    }
+  }
+}

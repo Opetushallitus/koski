@@ -45,7 +45,7 @@ object OpiskeluoikeusQueryFilter {
     }
 
 
-    val queryFilters: List[Either[HttpStatus, OpiskeluoikeusQueryFilter]] = params.map {
+    val queryFilters: List[Either[HttpStatus, OpiskeluoikeusQueryFilter]] = params.filterNot{case (key, value) => List("sort", "pageSize", "pageNumber", "toimipisteNimi").contains(key)}.map {
       case (p, v) if p == "opiskeluoikeusPäättynytAikaisintaan" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytAikaisintaan(_))
       case (p, v) if p == "opiskeluoikeusPäättynytViimeistään" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytViimeistään(_))
       case (p, v) if p == "opiskeluoikeusAlkanutAikaisintaan" => dateParam((p, v)).right.map(OpiskeluoikeusAlkanutAikaisintaan(_))

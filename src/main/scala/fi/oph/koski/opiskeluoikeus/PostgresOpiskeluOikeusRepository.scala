@@ -65,7 +65,7 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
     }
   }
 
-  override def streamingQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: OpiskeluoikeusSortOrder, pagination: Option[PaginationSettings])(implicit user: KoskiSession): Observable[(OpiskeluOikeusRow, HenkilöRow)] = {
+  override def streamingQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[OpiskeluoikeusSortOrder], pagination: Option[PaginationSettings])(implicit user: KoskiSession): Observable[(OpiskeluOikeusRow, HenkilöRow)] = {
     import ReactiveStreamsToRx._
     import ILikeExtension._
 
@@ -108,13 +108,14 @@ class PostgresOpiskeluOikeusRepository(val db: DB, historyRepository: Opiskeluoi
     def nimiDesc(tuple: (OpiskeluOikeusTable, HenkilöTable)) = (tuple._2.sukunimi.toLowerCase.desc, tuple._2.etunimet.toLowerCase.desc)
 
     val sorted = sorting match {
-      case Ascending(OpiskeluoikeusSortOrder.oppijaOid) => query.sortBy(_._2.oid)
-      case Ascending("nimi") => query.sortBy(nimi)
-      case Descending("nimi") => query.sortBy(nimiDesc)
-      case Ascending("alkamispäivä") => query.sortBy(tuple => (ap(tuple), nimi(tuple)))
-      case Descending("alkamispäivä") => query.sortBy(tuple => (ap(tuple).desc, nimiDesc(tuple)))
-      case Ascending("luokka") => query.sortBy(tuple => (luokka(tuple), nimi(tuple)))
-      case Descending("luokka") => query.sortBy(tuple => (luokka(tuple).desc, nimiDesc(tuple)))
+      case None => query
+      case Some(Ascending(OpiskeluoikeusSortOrder.oppijaOid)) => query.sortBy(_._2.oid)
+      case Some(Ascending("nimi")) => query.sortBy(nimi)
+      case Some(Descending("nimi")) => query.sortBy(nimiDesc)
+      case Some(Ascending("alkamispäivä")) => query.sortBy(tuple => (ap(tuple), nimi(tuple)))
+      case Some(Descending("alkamispäivä")) => query.sortBy(tuple => (ap(tuple).desc, nimiDesc(tuple)))
+      case Some(Ascending("luokka")) => query.sortBy(tuple => (luokka(tuple), nimi(tuple)))
+      case Some(Descending("luokka")) => query.sortBy(tuple => (luokka(tuple).desc, nimiDesc(tuple)))
       case s => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("Epäkelpo järjestyskriteeri: " + s))
     }
 

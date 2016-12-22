@@ -1,6 +1,5 @@
 import './polyfills.js'
 import './style/main.less'
-
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Bacon from 'baconjs'
@@ -9,6 +8,7 @@ import {userP} from './user'
 import {contentP, titleP} from './router'
 import {selectOppijaE, updateResultE} from './Oppija.jsx'
 import {TopBar} from './TopBar.jsx'
+
 
 // Stays at `true` for five seconds after latest saved change. Reset to `false` when another Oppija is selected.
 const savedP = updateResultE.flatMapLatest(() => Bacon.once(true).concat((selectOppijaE.merge(Bacon.later(5000))).map(false))).toProperty(false).skipDuplicates()

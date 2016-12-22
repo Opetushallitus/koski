@@ -56,7 +56,7 @@ object KoulutusmoduulinPerustiedot {
 
 class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöRepository, opiskeluOikeusRepository: OpiskeluOikeusRepository, koodisto: KoodistoViitePalvelu) {
   def find(filters: List[OpiskeluoikeusQueryFilter], sorting: OpiskeluoikeusSortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): List[OpiskeluoikeudenPerustiedot] = {
-    val perustiedotObservable = opiskeluOikeusRepository.streamingQuery(filters, sorting, Some(pagination)).map {
+    val perustiedotObservable = opiskeluOikeusRepository.streamingQuery(filters, Some(sorting), Some(pagination)).map {
       case (opiskeluoikeusRow, henkilöRow) =>
         val nimitiedotJaOid = henkilöRow.toNimitiedotJaOid
         val oo = opiskeluoikeusRow.toOpiskeluOikeus
@@ -80,11 +80,6 @@ class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) exte
   private val repository = new OpiskeluoikeudenPerustiedotRepository(application.oppijaRepository, application.opiskeluOikeusRepository, application.koodistoViitePalvelu)
   get("/") {
     renderEither({
-      val filters = params.toList.flatMap {
-        case (key, _) if List("sort", "pageSize", "pageNumber", "toimipisteNimi").contains(key) => None
-        case (key, value) => Some((key, value))
-      }
-
       val sort = params.get("sort").map {
         str => str.split(":") match {
           case Array(key: String, "asc") => Ascending(key)
@@ -93,7 +88,7 @@ class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) exte
         }
       }.getOrElse(Ascending("nimi"))
 
-      OpiskeluoikeusQueryFilter.parseQueryFilter(filters)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession) match {
+      OpiskeluoikeusQueryFilter.parseQueryFilter(params.toList)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession) match {
         case Right(filters) =>
           val result: List[OpiskeluoikeudenPerustiedot] = repository.find(filters, sort, paginationSettings)(koskiSession)
           Right(PaginatedResponse(Some(paginationSettings), result, result.length))
