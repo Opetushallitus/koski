@@ -6,7 +6,7 @@ import Bacon from 'baconjs'
 const ValidointiTaulukko = React.createClass({
   render() {
     let { validationStatus } = this.props
-    let { expandedRows, message } = this.state
+    let { expandedJsonKeys, expandedIdsKeys, message } = this.state
 
     return (
       <div>
@@ -17,7 +17,8 @@ const ValidointiTaulukko = React.createClass({
           </thead>
           <tbody>
           { validationStatus.map(({errors, oids, key}) => {
-            let expanded = expandedRows.indexOf(key) >= 0
+            let jsonExpanded = expandedJsonKeys.indexOf(key) >= 0
+            let idsExpanded = expandedIdsKeys.indexOf(key) >= 0
             return (<tr key={key}>
               <td className="virhetyyppi">{
                 errors.length
@@ -27,10 +28,19 @@ const ValidointiTaulukko = React.createClass({
               <td className="virheteksti">{errors.map((error, i) => {
                 let errorMessage = typeof error.message == 'string'
                   ? <div>{error.message}</div>
-                  : (expanded ? <pre className="json"><code>{JSON.stringify(error.message, null, 2)}</code></pre> : <a onClick={() => this.setState({ expandedRows: expandedRows.concat(key) })}>Näytä JSON</a>)
+                  : (jsonExpanded ? <pre className="json"><code onClick={() => this.setState({expandedJsonKeys: expandedJsonKeys.filter((k) => k != key)})}>{JSON.stringify(error.message, null, 2)}</code></pre> : <a onClick={() => this.setState({ expandedJsonKeys: expandedJsonKeys.concat(key) })}>Näytä JSON</a>)
                 return <span key={i}>{errorMessage}</span>
               })}</td>
-              <td className="lukumäärä">{oids.length}</td>
+              <td className="lukumäärä">{
+                idsExpanded
+                  ? <div>
+                    <a onClick={() => this.setState({expandedIdsKeys: expandedIdsKeys.filter((k) => k != key)})}>Yhteensä {oids.length}</a>
+                    <ul className="oids">
+                    { oids.map((oid, i) => <li key={i}><a href={ '/koski/oppija/' + oid }>{oid}</a></li>)}
+                    </ul></div>
+                  : <a onClick={() => this.setState({ expandedIdsKeys: expandedIdsKeys.concat(key)})}>{oids.length}</a>
+              }
+              </td>
             </tr>)
           })}
           </tbody>
@@ -44,7 +54,7 @@ const ValidointiTaulukko = React.createClass({
     document.removeEventListener('keyup', this.showSelection)
   },
   getInitialState() {
-    return { expandedRows: []}
+    return { expandedJsonKeys: [], expandedIdsKeys: []}
   },
   showSelection(e) {
     if (e.keyCode == 27) { // esc
