@@ -2,6 +2,7 @@ package fi.oph.koski.json
 
 import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
 
+import com.fasterxml.jackson.core.JsonParseException
 import com.github.fge.jsonpatch.diff.JsonDiff
 import fi.oph.koski.eperusteet.RakenneOsaSerializer
 import fi.oph.koski.http.KoskiErrorCategory
@@ -46,6 +47,10 @@ object Json {
   def read[A](json: String)(implicit mf : scala.reflect.Manifest[A]) : A = {
     Serialization.read(json)
   }
+
+  def parse(json: String) = JsonMethods.parse(json)
+
+  def tryParse(json: String): Try[JValue] = Try(parse(json))
 
   def toJValue(x: AnyRef): JValue = {
     Extraction.decompose(x)
