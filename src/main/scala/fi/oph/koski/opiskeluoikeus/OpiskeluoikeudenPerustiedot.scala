@@ -8,7 +8,6 @@ import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, HttpStatusException, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{KoskiSession, RequiresAuthentication}
-import fi.oph.koski.oppija.ReportingQueryFacade
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException}
 import fi.oph.koski.util.{ListPagination, PaginatedResponse, Pagination, PaginationSettings}

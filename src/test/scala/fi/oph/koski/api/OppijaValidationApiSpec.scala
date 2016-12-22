@@ -7,9 +7,18 @@ import org.scalatest.{FreeSpec, Matchers}
 
 class OppijaValidationApiSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluOikeusTestMethods with Matchers {
   "Validation of stored data using the validation API" - {
-    "Validate all" in {
+    "Validate all - fast" in {
       resetFixtures
       authGet("api/opiskeluoikeus/validate") {
+        verifyResponseStatus(200)
+        val results = Json.read[List[ValidationResult]](body)
+        results.length should be >= 0
+        results.foreach(checkValidity)
+      }
+    }
+    "Validate all - with person and history data" in {
+      resetFixtures
+      authGet("api/opiskeluoikeus/validate?henkilö=true&history=true") {
         verifyResponseStatus(200)
         val results = Json.read[List[ValidationResult]](body)
         results.length should be >= 0

@@ -89,7 +89,7 @@ object KoskiApiOperations {
        Lisäksi validoidaan opinto-oikeuksien versiohistorioiden eheys.
        Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</p>,
      Nil,
-     List(QueryParameter("errorsOnly", "Haetaanko vain virheelliset opiskeluoikeudet", List("false")), QueryParameter("history", "Validoidaanko myös versiohistoria", List("false"))) ++ hakuParametrit,
+     List(QueryParameter("errorsOnly", "Haetaanko vain virheelliset opiskeluoikeudet", List("false")), QueryParameter("history", "Validoidaanko myös versiohistoria", List("false")), QueryParameter("henkilö", "Validoidaanko henkilö", List("false"))) ++ hakuParametrit,
      List(
        KoskiErrorCategory.ok.maybeValidationErrorsInContent.copy(exampleResponse = List(ValidationResult(MockOppijat.eero.oid, 8942345, List()))),
        KoskiErrorCategory.badRequest.format.pvm,
