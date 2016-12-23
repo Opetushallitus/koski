@@ -76,7 +76,7 @@ class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöReposito
 }
 
 class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Pagination {
-  private val repository = new OpiskeluoikeudenPerustiedotRepository(application.oppijaRepository, application.OpiskeluoikeusRepository, application.koodistoViitePalvelu)
+  private val repository = new OpiskeluoikeudenPerustiedotRepository(application.henkilöRepository, application.OpiskeluoikeusRepository, application.koodistoViitePalvelu)
   get("/") {
     renderEither({
       val sort = params.get("sort").map {

@@ -18,7 +18,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.henkilo.{MockOppijat, VerifiedHenkilöOid}
 import fi.oph.koski.validation.KoskiValidator
 
-class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluoikeusRepository, oppijaRepository: HenkilöRepository, validator: KoskiValidator) extends KoskiDatabaseMethods with Timing {
+class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluoikeusRepository, henkilöRepository: HenkilöRepository, validator: KoskiValidator) extends KoskiDatabaseMethods with Timing {
   implicit val user = KoskiSession.systemUser
   val db = database.db
   implicit val accessType = AccessType.write

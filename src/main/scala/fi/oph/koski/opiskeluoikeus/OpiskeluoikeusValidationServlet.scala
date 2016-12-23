@@ -20,7 +20,7 @@ import rx.lang.scala.Observable
 class OpiskeluoikeusValidationServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Logging with NoCache with ObservableSupport with GZipSupport{
   get("/") {
     val errorsOnly = params.get("errorsOnly").map(_.toBoolean).getOrElse(false)
-    val context = ValidateContext(koskiSession, application.validator, application.historyRepository, application.oppijaRepository)
+    val context = ValidateContext(koskiSession, application.validator, application.historyRepository, application.henkilöRepository)
     val validateHistory = params.get("history").map(_.toBoolean).getOrElse(false)
     val validateHenkilö = params.get("henkilö").map(_.toBoolean).getOrElse(false)
     def validate(row: OpiskeluoikeusRow): ValidationResult = {
@@ -41,7 +41,7 @@ class OpiskeluoikeusValidationServlet(val application: KoskiApplication) extends
   }
 
   get("/:id") {
-    val context = ValidateContext(koskiSession, application.validator, application.historyRepository, application.oppijaRepository)
+    val context = ValidateContext(koskiSession, application.validator, application.historyRepository, application.henkilöRepository)
     val result: Option[OpiskeluoikeusRow] = application.OpiskeluoikeusRepository.findById(getIntegerParam("id"))(koskiSession)
     renderEither(result match {
       case Some(oo) => Right(context.validateAll(oo))

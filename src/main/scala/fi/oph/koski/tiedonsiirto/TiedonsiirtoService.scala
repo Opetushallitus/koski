@@ -25,7 +25,7 @@ import fi.oph.koski.util._
 import org.json4s.JsonAST.{JArray, JString, JValue}
 import org.json4s.{JValue, _}
 
-class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organisaatioRepository: OrganisaatioRepository, oppijaRepository: HenkilöRepository, koodistoviitePalvelu: KoodistoViitePalvelu, userRepository: KoskiUserRepository) extends Logging with Timing with KoskiDatabaseMethods {
+class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organisaatioRepository: OrganisaatioRepository, henkilöRepository: HenkilöRepository, koodistoviitePalvelu: KoodistoViitePalvelu, userRepository: KoskiUserRepository) extends Logging with Timing with KoskiDatabaseMethods {
   def haeTiedonsiirrot(query: TiedonsiirtoQuery)(implicit koskiSession: KoskiSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
     def find(oppilaitos: Option[String], pageInfo: Option[PaginationSettings])(implicit koskiSession: KoskiSession): Seq[TiedonsiirtoRow] = timed("findByOrganisaatio") {
       val monthAgo = Timestamp.valueOf(LocalDateTime.now.minusMonths(1))
@@ -150,8 +150,8 @@ class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organis
     val annettuTunniste: HetuTaiOid = Json.fromJValue[HetuTaiOid](annetutHenkilötiedot)
     val oid: Option[String] = oidHenkilö.map(_.oid).orElse(annettuTunniste.oid)
     val haetutTiedot: Option[HenkilötiedotJaOid] = (oid, annettuTunniste.hetu) match {
-      case (Some(oid), None) => oppijaRepository.findByOid(oid).map(_.toHenkilötiedotJaOid)
-      case (None, Some(hetu)) => oppijaRepository.findOppijat(hetu).headOption
+      case (Some(oid), None) => henkilöRepository.findByOid(oid).map(_.toHenkilötiedotJaOid)
+      case (None, Some(hetu)) => henkilöRepository.findOppijat(hetu).headOption
       case _ => None
     }
     haetutTiedot.map(toJValue).orElse(oidHenkilö match {

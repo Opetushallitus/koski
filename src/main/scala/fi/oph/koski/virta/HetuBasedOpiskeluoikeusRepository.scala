@@ -11,7 +11,7 @@ import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.schema.{Opiskeluoikeus, _}
 import fi.oph.koski.validation.KoskiValidator
 
-abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](oppijaRepository: FindByOid, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, accessChecker: AccessChecker, validator: Option[KoskiValidator] = None)(implicit cacheInvalidator: CacheManager) extends AuxiliaryOpiskeluoikeusRepository with Logging {
+abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](henkilöRepository: FindByOid, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, accessChecker: AccessChecker, validator: Option[KoskiValidator] = None)(implicit cacheInvalidator: CacheManager) extends AuxiliaryOpiskeluoikeusRepository with Logging {
   def opiskeluoikeudetByHetu(hetu: String): List[OO]
 
   // hetu -> org.oids cache for filtering only
@@ -51,7 +51,7 @@ abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](oppijaRep
         Nil
     }
   }
-  private def getHenkilötiedot(oid: String)(implicit user: KoskiSession): Option[TäydellisetHenkilötiedot] = oppijaRepository.findByOid(oid)
+  private def getHenkilötiedot(oid: String)(implicit user: KoskiSession): Option[TäydellisetHenkilötiedot] = henkilöRepository.findByOid(oid)
   private def accessCheck[T](list: => List[T])(implicit user: KoskiSession): List[T] = if (accessChecker.hasAccess(user)) { list } else { Nil }
   private def findByHenkilö(henkilö: Henkilö with Henkilötiedot)(implicit user: KoskiSession): List[OO] = accessCheck(cache(henkilö.hetu).filter(oo => user.hasReadAccess(oo.oppilaitos.oid)))
 

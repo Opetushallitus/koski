@@ -31,6 +31,6 @@ case class VerifiedHenkilöOid(henkilö: TäydellisetHenkilötiedot) extends Pos
   override def verified = Some(henkilö)
 }
 
-case class UnverifiedHenkilöOid(val oppijaOid: Henkilö.Oid, oppijaRepository: HenkilöRepository)(implicit user: KoskiSession) extends PossiblyUnverifiedHenkilöOid {
-  override lazy val verified = oppijaRepository.findByOid(oppijaOid)
+case class UnverifiedHenkilöOid(val oppijaOid: Henkilö.Oid, henkilöRepository: HenkilöRepository)(implicit user: KoskiSession) extends PossiblyUnverifiedHenkilöOid {
+  override lazy val verified = henkilöRepository.findByOid(oppijaOid)
 }

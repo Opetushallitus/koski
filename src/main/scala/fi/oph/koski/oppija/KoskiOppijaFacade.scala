@@ -11,7 +11,7 @@ import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
 
-class KoskiOppijaFacade(oppijaRepository: HenkilöRepository, OpiskeluoikeusRepository: OpiskeluoikeusRepository) extends Logging with Timing {
+class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRepository: OpiskeluoikeusRepository) extends Logging with Timing {
   def findOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(OpiskeluoikeusRepository.findByOppijaOid)(user)(oid)
 
   def findUserOppija(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(OpiskeluoikeusRepository.findByUserOid)(user)(user.oid)
@@ -20,9 +20,9 @@ class KoskiOppijaFacade(oppijaRepository: HenkilöRepository, OpiskeluoikeusRepo
     val oppijaOid: Either[HttpStatus, PossiblyUnverifiedHenkilöOid] = oppija.henkilö match {
       case h:UusiHenkilö =>
         Hetu.validate(h.hetu, acceptSynthetic = false).right.flatMap { hetu =>
-          oppijaRepository.findOrCreate(h).right.map(VerifiedHenkilöOid(_))
+          henkilöRepository.findOrCreate(h).right.map(VerifiedHenkilöOid(_))
         }
-      case h:HenkilöWithOid => Right(UnverifiedHenkilöOid(h.oid, oppijaRepository))
+      case h:HenkilöWithOid => Right(UnverifiedHenkilöOid(h.oid, henkilöRepository))
     }
 
     timed("createOrUpdate") {
@@ -85,7 +85,7 @@ class KoskiOppijaFacade(oppijaRepository: HenkilöRepository, OpiskeluoikeusRepo
 
   private def toOppija(findFunc: String => Seq[Opiskeluoikeus])(implicit user: KoskiSession): String => Either[HttpStatus, Oppija] = oid => {
     def notFound = Left(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa " + oid + " ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
-    val result = oppijaRepository.findByOid(oid) match {
+    val result = henkilöRepository.findByOid(oid) match {
       case Some(oppija) =>
         findFunc(oppija.oid) match {
           case Nil => notFound

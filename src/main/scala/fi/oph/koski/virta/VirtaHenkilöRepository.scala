@@ -11,7 +11,7 @@ case class VirtaHenkilöRepository(v: VirtaClient, henkilöpalvelu: OpintopolkuH
       None
     } else {
       try {
-        // Tänne tullaan vain, jos oppijaa ei löytynyt henkilöpalvelusta (ks CompositeOppijaRepository)
+        // Tänne tullaan vain, jos oppijaa ei löytynyt henkilöpalvelusta (ks CompositeHenkilöRepository)
         val hakuehto: VirtaHakuehtoHetu = VirtaHakuehtoHetu(hetu)
         // Oppijan organisaatiot haetaan ensin tällä raskaammalla kyselyllä
         val organisaatiot = v.opintotiedot(hakuehto).toSeq.flatMap(_ \\ "Opiskeluoikeus" \ "Myontaja").map(_.text)

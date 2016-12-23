@@ -33,7 +33,7 @@ trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with 
       oppijatJaOidit: Seq[(Oid, List[OpiskeluoikeusRow])] =>
         val oids: List[String] = oppijatJaOidit.map(_._1).toList
 
-        val henkilöt: Map[String, TäydellisetHenkilötiedot] = application.oppijaRepository.findByOids(oids).map(henkilö => (henkilö.oid, henkilö)).toMap
+        val henkilöt: Map[String, TäydellisetHenkilötiedot] = application.henkilöRepository.findByOids(oids).map(henkilö => (henkilö.oid, henkilö)).toMap
 
         val oppijat: Iterable[(TäydellisetHenkilötiedot, List[OpiskeluoikeusRow])] = oppijatJaOidit.flatMap { case (oid, opiskeluOikeudet) =>
           henkilöt.get(oid) match {

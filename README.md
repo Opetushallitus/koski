@@ -286,7 +286,7 @@ esim. `-Dconfig.resource=koskidev.conf`. Valmiita asetustiedostoja voi pyytää 
 
 ### Henkilötiedot
 
-Koski ei tallenna henkilötietoja omaan kantaansa, vaan hakee/tallentaa ne Opintopolun [henkilöpalveluun](https://github.com/Opetushallitus/henkilo). [toteutus](src/main/scala/fi/oph/koski/oppija/OppijaRepository.scala)
+Koski ei tallenna henkilötietoja omaan kantaansa, vaan hakee/tallentaa ne Opintopolun [henkilöpalveluun](https://github.com/Opetushallitus/henkilo). [toteutus](src/main/scala/fi/oph/koski/oppija/HenkilöRepository.scala)
 
 Kun Koskessa haetaan henkilön tietoja esimerkiksi sukunimellä, haetaan lista mahdollisista henkilöistä ensin henkilöpalvelusta, jonka jälkeen se [suodatetaan](src/main/scala/fi/oph/koski/opiskeluoikeus/OpiskeluoikeusRepository.scala#L8)
 Koskessa olevien opinto-oikeuksien perusteella.
