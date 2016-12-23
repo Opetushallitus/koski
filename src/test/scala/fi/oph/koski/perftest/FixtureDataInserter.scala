@@ -3,13 +3,13 @@ package fi.oph.koski.perftest
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.{ExecutorService, Executors, TimeUnit}
 
-import fi.oph.koski.http.DefaultHttpTester
+import fi.oph.koski.integrationtest.KoskidevHttpSpecification
 import fi.oph.koski.json.Json
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus, Oppija, UusiHenkilö}
 import org.scalatra.test.ClientResponse
 
-abstract class FixtureDataInserter extends App with DefaultHttpTester with Logging {
+abstract class FixtureDataInserter extends App with KoskidevHttpSpecification with Logging {
   val pool: ExecutorService = Executors.newFixedThreadPool(10)
   val amount = 100000
 
@@ -26,7 +26,7 @@ abstract class FixtureDataInserter extends App with DefaultHttpTester with Loggi
         oikeudet.zipWithIndex.foreach { case(oikeus, index) =>
           val oppija: Oppija = Oppija(henkilö, List(oikeus))
           val body = Json.write(oppija).getBytes("utf-8")
-          put("api/oppija", body = body, headers = (authHeaders() ++ jsonContent)) {
+          put("api/oppija", body = body, headers = (authHeaders() ++ jsonContent ++ Map("Cookie" -> s"SERVERID=koski-app${x % 2 + 1}"))) {
             if (x % (Math.max(1, amount / 10000)) == 1) logger.info(nimi + " " + response.status)
             handleResponse(response, oikeus, henkilö)
           }
