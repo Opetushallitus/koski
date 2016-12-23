@@ -109,8 +109,7 @@ object AmmatillinenExampleData {
     )
   }
 
-  def oppija( henkilö: Henkilö = exampleHenkilö,
-    opiskeluoikeus: Opiskeluoikeus = opiskeluoikeus()) = {
+  def oppija( henkilö: Henkilö = exampleHenkilö, opiskeluoikeus: Opiskeluoikeus = this.opiskeluoikeus()) = {
     Oppija(
       henkilö,
       List(opiskeluoikeus)
