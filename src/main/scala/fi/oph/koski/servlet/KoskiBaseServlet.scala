@@ -71,7 +71,7 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
 
   def renderObject(x: AnyRef): Unit
 
-  def haltWithStatus(status: HttpStatus) = {
+  def haltWithStatus(status: HttpStatus): Nothing = {
     halt(status.statusCode, status)
   }
 }

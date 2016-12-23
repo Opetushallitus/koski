@@ -3,8 +3,9 @@ package fi.oph.koski.db
 import com.github.tminglei.slickpg._
 import org.json4s.JValue
 import slick.driver.PostgresDriver
+import slick.jdbc.PostgresProfile
 
-trait PostgresDriverWithJsonSupport extends PostgresDriver with PgJson4sSupport with PgArraySupport with array.PgArrayJdbcTypes with PgSearchSupport {
+trait PostgresDriverWithJsonSupport extends PostgresProfile with PgJson4sSupport with PgArraySupport with array.PgArrayJdbcTypes with PgSearchSupport {
   /// for json support
   override val pgjson = "jsonb"
   type DOCType = JValue
