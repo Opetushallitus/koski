@@ -12,7 +12,7 @@ object Deserializers {
     ArviointiSerializer,
     HenkilövahvistusSerializer,
     LocalizedStringDeserializer,
-    OpiskeluOikeusDeserializer,
+    OpiskeluoikeusDeserializer,
     AmmatillisenTutkinnonOsaDeserializer,
     HenkilöDeserialializer,
     JärjestämismuotoDeserializer,
@@ -160,10 +160,10 @@ trait Deserializer[T] extends Serializer[T] {
   def serialize(implicit format: Formats): PartialFunction[Any, JValue] = PartialFunction.empty
 }
 
-object OpiskeluOikeusDeserializer extends Deserializer[Opiskeluoikeus] {
-  private val OpiskeluOikeusClass = classOf[Opiskeluoikeus]
+object OpiskeluoikeusDeserializer extends Deserializer[Opiskeluoikeus] {
+  private val OpiskeluoikeusClass = classOf[Opiskeluoikeus]
   def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), Opiskeluoikeus] = {
-    case (TypeInfo(OpiskeluOikeusClass, _), json) =>
+    case (TypeInfo(OpiskeluoikeusClass, _), json) =>
       json match {
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("ammatillinenkoulutus") => oo.extract[AmmatillinenOpiskeluoikeus]
         case oo: JObject if oo \ "tyyppi" \ "koodiarvo" == JString("esiopetus") => oo.extract[EsiopetuksenOpiskeluoikeus]

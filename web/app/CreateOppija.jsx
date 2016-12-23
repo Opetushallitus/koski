@@ -3,15 +3,15 @@ import Bacon from 'baconjs'
 import Http from './http'
 import {navigateToOppija, showError} from './location'
 import {isValidHetu} from './hetu'
-import {OpiskeluOikeus} from './CreateOpiskeluOikeus.jsx'
+import {Opiskeluoikeus} from './CreateOpiskeluoikeus.jsx'
 import { formatISODate } from './date.js'
 
 export const CreateOppija = React.createClass({
   render() {
-    const opiskeluOikeus = this.state.opiskeluOikeus
+    const opiskeluoikeus = this.state.opiskeluoikeus
     const {etunimet, sukunimi, kutsumanimi, hetu, inProgress} = this.state
     const validKutsumanimi = this.isKutsumanimiOneOfEtunimet(kutsumanimi, etunimet)
-    const submitDisabled = !etunimet || !sukunimi || !kutsumanimi || !isValidHetu(hetu) || !validKutsumanimi || inProgress || !opiskeluOikeus.valid
+    const submitDisabled = !etunimet || !sukunimi || !kutsumanimi || !isValidHetu(hetu) || !validKutsumanimi || inProgress || !opiskeluoikeus.valid
     const buttonText = !inProgress ? 'Lisää henkilö' : 'Lisätään...'
     const hetuClassName = !hetu ? 'hetu' : isValidHetu(hetu) ? 'hetu' : 'hetu error'
     const kutsumanimiClassName = validKutsumanimi ? 'kutsumanimi' : 'kutsumanimi error'
@@ -41,7 +41,7 @@ export const CreateOppija = React.createClass({
           <input ref='hetu'></input>
         </label>
         <hr/>
-        <OpiskeluOikeus opiskeluOikeusBus={this.state.opiskeluOikeusBus}/>
+        <Opiskeluoikeus opiskeluoikeusBus={this.state.opiskeluoikeusBus}/>
         <button className='button' disabled={submitDisabled} onClick={this.submit}>{buttonText}</button>
         <ul className='error-messages'>
           {errors}
@@ -51,7 +51,7 @@ export const CreateOppija = React.createClass({
   },
 
   getInitialState() {
-    return {etunimet: '', sukunimi: '', kutsumanimi: '', hetu: '', opiskeluOikeus: {valid: false}, opiskeluOikeusBus: Bacon.Bus()}
+    return {etunimet: '', sukunimi: '', kutsumanimi: '', hetu: '', opiskeluoikeus: {valid: false}, opiskeluoikeusBus: Bacon.Bus()}
   },
 
   oppijaFromDom() {
@@ -64,7 +64,7 @@ export const CreateOppija = React.createClass({
   },
 
   componentDidMount() {
-    this.state.opiskeluOikeusBus.onValue(o => {this.setState({opiskeluOikeus: o})})
+    this.state.opiskeluoikeusBus.onValue(o => {this.setState({opiskeluoikeus: o})})
     this.refs.etunimet.focus()
   },
 
@@ -85,7 +85,7 @@ export const CreateOppija = React.createClass({
 
   toCreateOppija() {
     const {etunimet, sukunimi, kutsumanimi, hetu} = this.oppijaFromDom()
-    const {tutkinto: tutkinto, oppilaitos: oppilaitosOrganisaatio} = this.state.opiskeluOikeus
+    const {tutkinto: tutkinto, oppilaitos: oppilaitosOrganisaatio} = this.state.opiskeluoikeus
     const date = new Date()
     return {
       henkilö: {

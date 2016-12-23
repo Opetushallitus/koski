@@ -3,7 +3,7 @@ package fi.oph.koski.api
 import fi.oph.koski.henkilo.MockOppijat
 import org.scalatest.{FunSpec, Matchers}
 
-class TelmaSpec extends FunSpec with Matchers with TodistusTestMethods with OpiskeluOikeusTestMethods with LocalJettyHttpSpecification {
+class TelmaSpec extends FunSpec with Matchers with TodistusTestMethods with OpiskeluoikeusTestMethods with LocalJettyHttpSpecification {
   describe("Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)") {
     it("Päättötodistus") {
       todistus(MockOppijat.telma.oid, "telma") should equal(

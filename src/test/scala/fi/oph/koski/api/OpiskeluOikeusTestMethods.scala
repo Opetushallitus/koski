@@ -6,8 +6,8 @@ import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.schema._
 import org.scalatest.Matchers
 
-trait OpiskeluOikeusTestMethods extends HttpSpecification with Matchers {
-  def lastOpiskeluOikeus(oppijaOid: String, user: UserWithPassword = defaultUser): KoskeenTallennettavaOpiskeluoikeus = {
+trait OpiskeluoikeusTestMethods extends HttpSpecification with Matchers {
+  def lastOpiskeluoikeus(oppijaOid: String, user: UserWithPassword = defaultUser): KoskeenTallennettavaOpiskeluoikeus = {
     oppija(oppijaOid, user).tallennettavatOpiskeluoikeudet.last
   }
 

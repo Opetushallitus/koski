@@ -32,6 +32,6 @@ class KoskiHistoryServlet(val application: KoskiApplication)
   }
 
   private def logHistoryView(id: Int): Unit = {
-    AuditLog.log(AuditLogMessage(KoskiOperation.MUUTOSHISTORIA_KATSOMINEN, koskiSession, Map(KoskiMessageField.opiskeluOikeusId -> id.toString)))
+    AuditLog.log(AuditLogMessage(KoskiOperation.MUUTOSHISTORIA_KATSOMINEN, koskiSession, Map(KoskiMessageField.opiskeluoikeusId -> id.toString)))
   }
 }

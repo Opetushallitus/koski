@@ -5,7 +5,7 @@ import fi.oph.koski.json.Json
 import fi.oph.koski.opiskeluoikeus.ValidationResult
 import org.scalatest.{FreeSpec, Matchers}
 
-class OppijaValidationApiSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluOikeusTestMethods with Matchers {
+class OppijaValidationApiSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods with Matchers {
   "Validation of stored data using the validation API" - {
     "Validate all - fast" in {
       resetFixtures
@@ -26,7 +26,7 @@ class OppijaValidationApiSpec extends FreeSpec with LocalJettyHttpSpecification 
       }
     }
     "Validate single" in {
-      val oo = lastOpiskeluOikeus(MockOppijat.eero.oid)
+      val oo = lastOpiskeluoikeus(MockOppijat.eero.oid)
       authGet("api/opiskeluoikeus/validate/" + oo.id.get) {
         verifyResponseStatus(200)
         val result = Json.read[ValidationResult](body)

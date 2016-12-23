@@ -1,6 +1,6 @@
 package fi.oph.koski.opiskeluoikeus
 
-import fi.oph.koski.db.{HenkilöRow, OpiskeluOikeusRow}
+import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.PossiblyUnverifiedHenkilöOid
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSession
@@ -9,18 +9,18 @@ import fi.oph.koski.util.PaginationSettings
 import org.json4s.JValue
 import rx.lang.scala.Observable
 
-trait OpiskeluOikeusRepository extends AuxiliaryOpiskeluOikeusRepository {
-  def streamingQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[OpiskeluoikeusSortOrder], pagination: Option[PaginationSettings])(implicit user: KoskiSession): Observable[(OpiskeluOikeusRow, HenkilöRow)]
+trait OpiskeluoikeusRepository extends AuxiliaryOpiskeluoikeusRepository {
+  def streamingQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[OpiskeluoikeusSortOrder], pagination: Option[PaginationSettings])(implicit user: KoskiSession): Observable[(OpiskeluoikeusRow, HenkilöRow)]
 
-  def findById(id: Int)(implicit user: KoskiSession): Option[OpiskeluOikeusRow]
+  def findById(id: Int)(implicit user: KoskiSession): Option[OpiskeluoikeusRow]
   def delete(id: Int)(implicit user: KoskiSession): HttpStatus
-  def createOrUpdate(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluOikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): Either[HttpStatus, CreateOrUpdateResult]
+  def createOrUpdate(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): Either[HttpStatus, CreateOrUpdateResult]
   def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession): Seq[HenkilötiedotJaOid]
   def findByOppijaOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus]
   def findByUserOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus]
 }
 
-trait AuxiliaryOpiskeluOikeusRepository {
+trait AuxiliaryOpiskeluoikeusRepository {
   def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession): Seq[HenkilötiedotJaOid]
   def findByOppijaOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus]
 }

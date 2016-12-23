@@ -7,7 +7,7 @@ import fi.oph.koski.util.XML.texts
 import scala.collection.immutable.Seq
 import scala.xml.{Node, XML}
 
-trait TodistusTestMethods extends SearchTestMethods with OpiskeluOikeusTestMethods {
+trait TodistusTestMethods extends SearchTestMethods with OpiskeluoikeusTestMethods {
   def todistus(oppijaOid: String, tyyppi: String, koulutusmoduuli: Option[String] = None): String = {
     var path: String = s"todistus/${oppijaOid}?suoritustyyppi=${tyyppi}"
     koulutusmoduuli foreach { koulutusmoduuli => path = path + s"&koulutusmoduuli=${koulutusmoduuli}" }

@@ -167,7 +167,7 @@ class OppijaQuerySpec extends FunSpec with LocalJettyHttpSpecification with Opis
     }
 
     def insert(opiskeluoikeus: Opiskeluoikeus, henkilö: Henkilö) = {
-      putOpiskeluOikeus(opiskeluoikeus, henkilö) {
+      putOpiskeluoikeus(opiskeluoikeus, henkilö) {
         verifyResponseStatus(200)
       }
     }

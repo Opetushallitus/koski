@@ -7,7 +7,7 @@ import fi.oph.koski.db._
 import fi.oph.koski.documentation._
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
-import fi.oph.koski.opiskeluoikeus.OpiskeluOikeusRepository
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusRepository
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, OrganisaatioRepository}
 import fi.oph.koski.schema.Henkilö.Oid
@@ -18,7 +18,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.henkilo.{MockOppijat, VerifiedHenkilöOid}
 import fi.oph.koski.validation.KoskiValidator
 
-class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluOikeusRepository, oppijaRepository: HenkilöRepository, validator: KoskiValidator) extends KoskiDatabaseMethods with Timing {
+class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluoikeusRepository, oppijaRepository: HenkilöRepository, validator: KoskiValidator) extends KoskiDatabaseMethods with Timing {
   implicit val user = KoskiSession.systemUser
   val db = database.db
   implicit val accessType = AccessType.write
@@ -47,10 +47,10 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluO
   }
 
   private def defaultOpiskeluOikeudet: List[(TäydellisetHenkilötiedot, KoskeenTallennettavaOpiskeluoikeus)] = {
-    List((MockOppijat.eero, OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto)),
-      (MockOppijat.eerola, OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto)),
-      (MockOppijat.teija, OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.stadinAmmattiopisto)),
-      (MockOppijat.markkanen, OpiskeluOikeusTestData.opiskeluOikeus(MockOrganisaatiot.omnia)),
+    List((MockOppijat.eero, OpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto)),
+      (MockOppijat.eerola, OpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto)),
+      (MockOppijat.teija, OpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto)),
+      (MockOppijat.markkanen, OpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.omnia)),
       (MockOppijat.eskari, ExamplesEsiopetus.esioppilas.tallennettavatOpiskeluoikeudet.head),
       (MockOppijat.koululainen, PerusopetusExampleData.päättötodistusOpiskeluoikeus()),
       (MockOppijat.koululainen, ExamplesPerusopetukseenValmistavaOpetus.opiskeluoikeus),
@@ -72,8 +72,8 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluO
   }
 }
 
-object OpiskeluOikeusTestData {
-  def opiskeluOikeus(oppilaitosId: String, koulutusKoodi: Int = 351301): AmmatillinenOpiskeluoikeus = {
+object OpiskeluoikeusTestData {
+  def opiskeluoikeus(oppilaitosId: String, koulutusKoodi: Int = 351301): AmmatillinenOpiskeluoikeus = {
     val oppilaitos: Oppilaitos = Oppilaitos(oppilaitosId, None, None)
     val koulutusKoodiViite = Koodistokoodiviite(koulutusKoodi.toString, None, "koulutus", None)
 

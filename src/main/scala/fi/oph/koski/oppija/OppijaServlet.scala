@@ -5,7 +5,7 @@ import java.time.format.DateTimeParseException
 import javax.servlet.http.HttpServletRequest
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.{GlobalExecutionContext, OpiskeluOikeusRow}
+import fi.oph.koski.db.{GlobalExecutionContext, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json.toJValue
@@ -60,7 +60,7 @@ class OppijaServlet(val application: KoskiApplication)
 
   get("/") {
     query(params).map {
-      case (henkilö, rivit) => Oppija(henkilö, rivit.map(_.toOpiskeluOikeus))
+      case (henkilö, rivit) => Oppija(henkilö, rivit.map(_.toOpiskeluoikeus))
     }
   }
 

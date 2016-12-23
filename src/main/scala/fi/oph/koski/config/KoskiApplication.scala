@@ -14,7 +14,7 @@ import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.{Logging, TimedProxy}
-import fi.oph.koski.opiskeluoikeus.{AuxiliaryOpiskeluOikeusRepository, CompositeOpiskeluOikeusRepository, OpiskeluOikeusRepository, PostgresOpiskeluOikeusRepository}
+import fi.oph.koski.opiskeluoikeus.{AuxiliaryOpiskeluoikeusRepository, CompositeOpiskeluoikeusRepository, OpiskeluoikeusRepository, PostgresOpiskeluoikeusRepository}
 import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
@@ -50,17 +50,17 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val ytrAccessChecker = new YtrAccessChecker(käyttöoikeusRepository)
   lazy val oppijaRepository = HenkilöRepository(this)
   lazy val historyRepository = OpiskeluoikeusHistoryRepository(database.db)
-  lazy val virta = TimedProxy[AuxiliaryOpiskeluOikeusRepository](VirtaOpiskeluoikeusRepository(virtaClient, oppijaRepository, oppilaitosRepository, koodistoViitePalvelu, virtaAccessChecker, Some(validator)))
+  lazy val virta = TimedProxy[AuxiliaryOpiskeluoikeusRepository](VirtaOpiskeluoikeusRepository(virtaClient, oppijaRepository, oppilaitosRepository, koodistoViitePalvelu, virtaAccessChecker, Some(validator)))
   lazy val henkilöCache = new KoskiHenkilöCache(database.db)
   lazy val henkilöCacheUpdater = new KoskiHenkilöCacheUpdater(database.db, oppijaRepository)
-  lazy val possu = TimedProxy[OpiskeluOikeusRepository](new PostgresOpiskeluOikeusRepository(database.db, historyRepository, henkilöCacheUpdater))
-  lazy val ytr = TimedProxy[AuxiliaryOpiskeluOikeusRepository](YtrOpiskeluoikeusRepository(ytrClient, oppijaRepository, organisaatioRepository, oppilaitosRepository, koodistoViitePalvelu, ytrAccessChecker, Some(validator)))
-  lazy val opiskeluOikeusRepository = new CompositeOpiskeluOikeusRepository(possu, List(virta, ytr))
+  lazy val possu = TimedProxy[OpiskeluoikeusRepository](new PostgresOpiskeluoikeusRepository(database.db, historyRepository, henkilöCacheUpdater))
+  lazy val ytr = TimedProxy[AuxiliaryOpiskeluoikeusRepository](YtrOpiskeluoikeusRepository(ytrClient, oppijaRepository, organisaatioRepository, oppilaitosRepository, koodistoViitePalvelu, ytrAccessChecker, Some(validator)))
+  lazy val OpiskeluoikeusRepository = new CompositeOpiskeluoikeusRepository(possu, List(virta, ytr))
   lazy val validator: KoskiValidator = new KoskiValidator(tutkintoRepository, koodistoViitePalvelu, organisaatioRepository)
-  lazy val oppijaFacade = new KoskiOppijaFacade(oppijaRepository, opiskeluOikeusRepository)
+  lazy val oppijaFacade = new KoskiOppijaFacade(oppijaRepository, OpiskeluoikeusRepository)
   lazy val sessionTimeout = SessionTimeout(config)
   lazy val serviceTicketRepository = new SSOTicketSessionRepository(database.db, sessionTimeout)
-  lazy val fixtureCreator = new FixtureCreator(config, database, opiskeluOikeusRepository, oppijaRepository, validator)
+  lazy val fixtureCreator = new FixtureCreator(config, database, OpiskeluoikeusRepository, oppijaRepository, validator)
   lazy val tiedonsiirtoService = new TiedonsiirtoService(database.db, new TiedonsiirtoFailureMailer(config, authenticationServiceClient), organisaatioRepository, oppijaRepository, koodistoViitePalvelu, userRepository)
   lazy val healthCheck = HealthCheck(this)
 }

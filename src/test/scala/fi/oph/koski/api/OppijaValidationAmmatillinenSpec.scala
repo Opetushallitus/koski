@@ -15,7 +15,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
   describe("Ammatillisen koulutuksen opiskeluoikeuden lisääminen") {
     describe("Valideilla tiedoilla") {
       it("palautetaan HTTP 200") {
-        putOpiskeluOikeus(defaultOpiskeluoikeus) {
+        putOpiskeluoikeus(defaultOpiskeluoikeus) {
           verifyResponseStatus(200)
         }
       }
@@ -23,7 +23,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
     describe("Kun tutkintosuoritus puuttuu") {
       it("palautetaan HTTP 400 virhe" ) {
-        putOpiskeluOikeus(defaultOpiskeluoikeus.copy(suoritukset = Nil)) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*array is too short.*".r)))
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = Nil)) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*array is too short.*".r)))
       }
     }
 
@@ -251,14 +251,14 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           }
 
           describe("Kun tutkinto on VALMIS-tilassa ja sillä on osa, joka on KESKEN-tilassa") {
-            val opiskeluOikeus = defaultOpiskeluoikeus.copy(suoritukset = List(autoalanPerustutkinnonSuoritus().copy(
+            val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(autoalanPerustutkinnonSuoritus().copy(
               suoritustapa = tutkinnonSuoritustapaNäyttönä,
               tila = tilaValmis,
               vahvistus = vahvistus(LocalDate.parse("2016-10-08")),
               osasuoritukset = Some(List(tutkinnonOsaSuoritus))
             )))
 
-            it("palautetaan HTTP 400") (putOpiskeluOikeus(opiskeluOikeus) (
+            it("palautetaan HTTP 400") (putOpiskeluoikeus(opiskeluoikeus) (
               verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Suorituksella koulutus/351301 on keskeneräinen osasuoritus tutkinnonosat/100023 vaikka suorituksen tila on VALMIS"))))
           }
         }
@@ -272,7 +272,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       }
 
       def put(s: AmmatillisenTutkinnonSuoritus)(f: => Unit) = {
-        putOpiskeluOikeus(defaultOpiskeluoikeus.copy(suoritukset = List(s)))(f)
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(s)))(f)
       }
 
       def testKesken(tila: Koodistokoodiviite): Unit = {
@@ -340,14 +340,14 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
       describe("Kun ok") {
         it("palautetaan HTTP 200") (
-          putOpiskeluOikeus(defaultOpiskeluoikeus.copy(suoritukset = List(toteutusOppisopimuksella("1629284-5"))))
+          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(toteutusOppisopimuksella("1629284-5"))))
             (verifyResponseStatus(200))
         )
       }
 
       describe("Virheellinen y-tunnus") {
         it("palautetaan HTTP 400") (
-          putOpiskeluOikeus(defaultOpiskeluoikeus.copy(suoritukset = List(toteutusOppisopimuksella("1629284x5"))))
+          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(toteutusOppisopimuksella("1629284x5"))))
             (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*ECMA 262 regex.*".r)))
         )
       }
@@ -393,9 +393,9 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
   }
 
   def putTutkintoSuoritus[A](suoritus: AmmatillisenTutkinnonSuoritus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
-    val opiskeluOikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))
+    val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))
 
-    putOppija(makeOppija(henkilö, List(Json.toJValue(opiskeluOikeus))), headers)(f)
+    putOppija(makeOppija(henkilö, List(Json.toJValue(opiskeluoikeus))), headers)(f)
   }
 
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = List(autoalanPerustutkinnonSuoritus().copy(koulutusmoduuli = autoalanPerustutkinnonSuoritus().koulutusmoduuli.copy(perusteenDiaarinumero = diaari))))

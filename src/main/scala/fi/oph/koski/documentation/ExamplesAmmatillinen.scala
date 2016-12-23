@@ -86,7 +86,7 @@ object AmmatillinenPerustutkintoExample {
 
   import AmmatillinenExampleData._
 
-  val perustutkinto = oppija(opiskeluOikeus = perustutkintoOpiskeluoikeus())
+  val perustutkinto = oppija(opiskeluoikeus = perustutkintoOpiskeluoikeus())
 
   lazy val osittainenPerustutkinto = Oppija(
     exampleHenkilö,
@@ -126,7 +126,7 @@ object AmmatillinenOldExamples {
   lazy val uusi: Oppija = oppija()
 
   lazy val oppisopimus = oppija(
-    opiskeluOikeus = opiskeluoikeus(
+    opiskeluoikeus = opiskeluoikeus(
       oppilaitos = stadinAmmattiopisto,
       tutkinto = AmmatillisenTutkinnonSuoritus(
         koulutusmoduuli = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
@@ -146,12 +146,12 @@ object AmmatillinenOldExamples {
     )))
   )
 
-  lazy val paikallinen = oppija(opiskeluOikeus = opiskeluoikeus(
+  lazy val paikallinen = oppija(opiskeluoikeus = opiskeluoikeus(
     tutkinto = autoalanPerustutkinnonSuoritus().copy(suoritustapa = Some(suoritustapaNäyttö)),
     osat = Some(List(paikallisenOsanSuoritus))
   ))
 
-  lazy val mukautettu = oppija(opiskeluOikeus = opiskeluoikeus(
+  lazy val mukautettu = oppija(opiskeluoikeus = opiskeluoikeus(
     tutkinto = autoalanPerustutkinnonSuoritus().copy(suoritustapa = Some(suoritustapaOps)),
     osat = Some(List(
       AmmatillisenTutkinnonOsanSuoritus(
@@ -169,7 +169,7 @@ object AmmatillinenOldExamples {
     ))
   ))
 
-  lazy val tutkinnonOsaToisestaTutkinnosta = oppija(opiskeluOikeus = opiskeluoikeus(
+  lazy val tutkinnonOsaToisestaTutkinnosta = oppija(opiskeluoikeus = opiskeluoikeus(
     tutkinto = AmmatillisenTutkinnonSuoritus(
       koulutusmoduuli = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
       suoritustapa = Some(suoritustapaNäyttö),

@@ -5,7 +5,7 @@ import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema.{HenkilötiedotJaOid, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
 import fi.oph.koski.util.PaginationSettings
 
-class CompositeOpiskeluOikeusRepository(main: OpiskeluOikeusRepository, aux: List[AuxiliaryOpiskeluOikeusRepository]) extends OpiskeluOikeusRepository {
+class CompositeOpiskeluoikeusRepository(main: OpiskeluoikeusRepository, aux: List[AuxiliaryOpiskeluoikeusRepository]) extends OpiskeluoikeusRepository {
   override def streamingQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[OpiskeluoikeusSortOrder], pagination: Option[PaginationSettings])(implicit user: KoskiSession) = main.streamingQuery(filters, sorting, pagination)
 
   override def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession) = {
@@ -18,7 +18,7 @@ class CompositeOpiskeluOikeusRepository(main: OpiskeluOikeusRepository, aux: Lis
 
   override def findById(id: Int)(implicit user: KoskiSession) = main.findById(id)
 
-  override def createOrUpdate(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluOikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession) = main.createOrUpdate(oppijaOid, opiskeluOikeus)
+  override def createOrUpdate(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession) = main.createOrUpdate(oppijaOid, opiskeluoikeus)
 
   override def findByOppijaOid(oid: String)(implicit user: KoskiSession) = (main :: aux).par.flatMap(_.findByOppijaOid(oid)).toList
 

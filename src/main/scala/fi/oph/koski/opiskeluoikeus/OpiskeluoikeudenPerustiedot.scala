@@ -3,7 +3,7 @@ package fi.oph.koski.opiskeluoikeus
 import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.OpiskeluOikeusRow
+import fi.oph.koski.db.OpiskeluoikeusRow
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, HttpStatusException, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
@@ -53,12 +53,12 @@ object KoulutusmoduulinPerustiedot {
 
 }
 
-class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöRepository, opiskeluOikeusRepository: OpiskeluOikeusRepository, koodisto: KoodistoViitePalvelu) {
+class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöRepository, OpiskeluoikeusRepository: OpiskeluoikeusRepository, koodisto: KoodistoViitePalvelu) {
   def find(filters: List[OpiskeluoikeusQueryFilter], sorting: OpiskeluoikeusSortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): List[OpiskeluoikeudenPerustiedot] = {
-    val perustiedotObservable = opiskeluOikeusRepository.streamingQuery(filters, Some(sorting), Some(pagination)).map {
+    val perustiedotObservable = OpiskeluoikeusRepository.streamingQuery(filters, Some(sorting), Some(pagination)).map {
       case (opiskeluoikeusRow, henkilöRow) =>
         val nimitiedotJaOid = henkilöRow.toNimitiedotJaOid
-        val oo = opiskeluoikeusRow.toOpiskeluOikeus
+        val oo = opiskeluoikeusRow.toOpiskeluoikeus
         val suoritukset: List[SuorituksenPerustiedot] = oo.suoritukset
           .filterNot(_.isInstanceOf[PerusopetuksenVuosiluokanSuoritus])
           .map { suoritus =>
@@ -76,7 +76,7 @@ class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöReposito
 }
 
 class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Pagination {
-  private val repository = new OpiskeluoikeudenPerustiedotRepository(application.oppijaRepository, application.opiskeluOikeusRepository, application.koodistoViitePalvelu)
+  private val repository = new OpiskeluoikeudenPerustiedotRepository(application.oppijaRepository, application.OpiskeluoikeusRepository, application.koodistoViitePalvelu)
   get("/") {
     renderEither({
       val sort = params.get("sort").map {

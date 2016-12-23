@@ -1,7 +1,7 @@
 package fi.oph.koski.opiskeluoikeus
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.{HenkilöRow, OpiskeluOikeusRow}
+import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -23,7 +23,7 @@ class OpiskeluoikeusValidationServlet(val application: KoskiApplication) extends
     val context = ValidateContext(koskiSession, application.validator, application.historyRepository, application.oppijaRepository)
     val validateHistory = params.get("history").map(_.toBoolean).getOrElse(false)
     val validateHenkilö = params.get("henkilö").map(_.toBoolean).getOrElse(false)
-    def validate(row: OpiskeluOikeusRow): ValidationResult = {
+    def validate(row: OpiskeluoikeusRow): ValidationResult = {
       var result = context.validateOpiskeluoikeus(row)
       if (validateHistory) result = result + context.validateHistory(row)
       if (validateHenkilö) result = result + context.validateHenkilö(row)
@@ -32,7 +32,7 @@ class OpiskeluoikeusValidationServlet(val application: KoskiApplication) extends
 
     OpiskeluoikeusQueryFilter.parseQueryFilter(params.filterKeys(!List("errorsOnly", "history", "henkilö").contains(_)).toList)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession) match {
       case Right(filters) =>
-        val rows: Observable[(OpiskeluOikeusRow, HenkilöRow)] = application.opiskeluOikeusRepository.streamingQuery(filters, None, None)(koskiSession)
+        val rows: Observable[(OpiskeluoikeusRow, HenkilöRow)] = application.OpiskeluoikeusRepository.streamingQuery(filters, None, None)(koskiSession)
         rows.map(_._1).map(validate).filter(result => !(errorsOnly && result.isOk))
 
       case Left(status) =>
@@ -42,7 +42,7 @@ class OpiskeluoikeusValidationServlet(val application: KoskiApplication) extends
 
   get("/:id") {
     val context = ValidateContext(koskiSession, application.validator, application.historyRepository, application.oppijaRepository)
-    val result: Option[OpiskeluOikeusRow] = application.opiskeluOikeusRepository.findById(getIntegerParam("id"))(koskiSession)
+    val result: Option[OpiskeluoikeusRow] = application.OpiskeluoikeusRepository.findById(getIntegerParam("id"))(koskiSession)
     renderEither(result match {
       case Some(oo) => Right(context.validateAll(oo))
       case _ => Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
@@ -55,9 +55,9 @@ class OpiskeluoikeusValidationServlet(val application: KoskiApplication) extends
   *  Scalatra threadlocals are used. This must be done because in batch mode, we are running in several threads.
   */
 case class ValidateContext(user: KoskiSession, validator: KoskiValidator, historyRepository: OpiskeluoikeusHistoryRepository, henkilöRepository: HenkilöRepository) {
-  def validateHistory(row: OpiskeluOikeusRow): ValidationResult = {
+  def validateHistory(row: OpiskeluoikeusRow): ValidationResult = {
     try {
-      val opiskeluoikeus = row.toOpiskeluOikeus
+      val opiskeluoikeus = row.toOpiskeluoikeus
       (historyRepository.findVersion(row.id, row.versionumero)(user) match {
         case Right(latestVersion) =>
           HttpStatus.validate(latestVersion == opiskeluoikeus) {
@@ -74,7 +74,7 @@ case class ValidateContext(user: KoskiSession, validator: KoskiValidator, histor
     }
   }
 
-  def validateOpiskeluoikeus(row: OpiskeluOikeusRow): ValidationResult = {
+  def validateOpiskeluoikeus(row: OpiskeluoikeusRow): ValidationResult = {
     val validationResult: Either[HttpStatus, Opiskeluoikeus] = validator.extractAndValidateOpiskeluoikeus(row.data)(user, AccessType.read)
     validationResult match {
       case Right(oppija) =>
@@ -84,14 +84,14 @@ case class ValidateContext(user: KoskiSession, validator: KoskiValidator, histor
     }
   }
 
-  def validateHenkilö(row: OpiskeluOikeusRow): ValidationResult = {
+  def validateHenkilö(row: OpiskeluoikeusRow): ValidationResult = {
     henkilöRepository.findByOid(row.oppijaOid) match {
       case Some(h) => ValidationResult(row.oppijaOid, row.id, Nil)
       case None => ValidationResult(row.oppijaOid, row.id, List(s"Oppijaa ${row.oppijaOid} ei löydy henkilöpalvelusta"))
     }
   }
 
-  def validateAll(row: OpiskeluOikeusRow): ValidationResult = {
+  def validateAll(row: OpiskeluoikeusRow): ValidationResult = {
     validateOpiskeluoikeus(row) + validateHistory(row) + validateHenkilö(row)
   }
 }

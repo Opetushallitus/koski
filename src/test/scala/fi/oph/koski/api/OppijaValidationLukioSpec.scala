@@ -22,7 +22,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
           osasuoritukset = Some(List( kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = laajuus(1.0f, "5"))) ))
         )))
       )))
-      putOpiskeluOikeus(oo) {
+      putOpiskeluoikeus(oo) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*instance value .+ not found.*".r))
       }
     }
@@ -35,7 +35,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
           ))
         )))
       )))
-      putOpiskeluOikeus(oo) {
+      putOpiskeluoikeus(oo) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma("Suorituksen koskioppiaineetyleissivistava/GE osasuoritusten laajuuksien summa 1.0 ei vastaa suorituksen laajuutta 2.0"))
       }
     }
@@ -48,7 +48,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
         vahvistus = None,
         osasuoritukset = Some(List(suoritus(lukionOppiaine("GE")).copy(tila = tilaValmis, arviointi = arviointi("9"))))
       )))
-      putOpiskeluOikeus(oo) {
+      putOpiskeluoikeus(oo) {
         verifyResponseStatus(200)
       }
     }
@@ -63,7 +63,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
             ))
           )))
       )))
-      putOpiskeluOikeus(oo) {
+      putOpiskeluoikeus(oo) {
         verifyResponseStatus(200)
       }
     }

@@ -12,7 +12,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   "koski-oph-pääkäyttäjä" - {
     val user = MockUsers.paakayttaja
     "voi muokata kaikkia opiskeluoikeuksia" in {
-      putOpiskeluOikeus(defaultOpiskeluoikeus, headers = authHeaders(user) ++ jsonContent) {
+      putOpiskeluoikeus(defaultOpiskeluoikeus, headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(200)
       }
     }
@@ -33,7 +33,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     val user = MockUsers.viranomainen
 
     "ei voi muokata opiskeluoikeuksia" in {
-      putOpiskeluOikeus(defaultOpiskeluoikeus, headers = authHeaders(user) ++ jsonContent) {
+      putOpiskeluoikeus(defaultOpiskeluoikeus, headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(403)
       }
     }
@@ -57,13 +57,13 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   "koski-oppilaitos-palvelukäyttäjä" - {
     val user = MockUsers.omniaPalvelukäyttäjä
     "voi muokata opiskeluoikeuksia omassa organisaatiossa" in {
-      putOpiskeluOikeus(opiskeluOikeusLähdejärjestelmästä, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+      putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästä, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(200)
       }
     }
 
     "voi muokata vain lähdejärjestelmällisiä opiskeluoikeuksia" in {
-      putOpiskeluOikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+      putOpiskeluoikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.lähdejärjestelmäIdPuuttuu("Käyttäjä on palvelukäyttäjä mutta lähdejärjestelmää ei ole määritelty"))
       }
     }
@@ -80,7 +80,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "ei voi muokata opiskeluoikeuksia muussa organisaatiossa" in {
-      putOpiskeluOikeus(defaultOpiskeluoikeus, headers = authHeaders(user) ++ jsonContent) {
+      putOpiskeluoikeus(defaultOpiskeluoikeus, headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(403)
       }
     }
@@ -110,7 +110,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
 
   "palvelukäyttäjä, jolla useampi juuriorganisaatio" - {
     "ei voi tallentaa tietoja" in {
-      putOpiskeluOikeus(opiskeluOikeusLähdejärjestelmästä, headers = authHeaders(MockUsers.kahdenOrganisaatioPalvelukäyttäjä) ++ jsonContent) {
+      putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästä, headers = authHeaders(MockUsers.kahdenOrganisaatioPalvelukäyttäjä) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.juuriorganisaatioPuuttuu("Automaattisen tiedonsiirron palvelukäyttäjällä ei yksiselitteistä juuriorganisaatiota"))
       }
     }
@@ -119,7 +119,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   "koski-oppilaitos-katselija" - {
     val user = MockUsers.omniaKatselija
     "ei voi muokata opiskeluoikeuksia omassa organisaatiossa" in {
-      putOpiskeluOikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+      putOpiskeluoikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(403)
       }
     }
@@ -135,13 +135,13 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   "koski-oppilaitos-tallentaja" - {
     val user = MockUsers.omniaTallentaja
     "voi muokata opiskeluoikeuksia omassa organisaatiossa" in {
-      putOpiskeluOikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+      putOpiskeluoikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(200)
       }
     }
 
     "ei voi tallentaa opiskeluoikeuksia käyttäen lähdejärjestelmä-id:tä" in {
-      putOpiskeluOikeus(opiskeluOikeusLähdejärjestelmästä, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+      putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästä, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.lähdejärjestelmäIdEiSallittu("Lähdejärjestelmä määritelty, mutta käyttäjä ei ole palvelukäyttäjä"))
       }
     }
@@ -150,10 +150,10 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
       val oppija = MockOppijat.tyhjä
       "ilman opiskeluoikeuden id:tä luodaan uusi opiskeluoikeus" in {
         resetFixtures
-        putOpiskeluOikeus(opiskeluOikeusLähdejärjestelmästä, henkilö = OidHenkilö(oppija.oid), headers = authHeaders(MockUsers.omniaPalvelukäyttäjä) ++ jsonContent) {
+        putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästä, henkilö = OidHenkilö(oppija.oid), headers = authHeaders(MockUsers.omniaPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatus(200)
           haeOpiskeluoikeudetHetulla(oppija.hetu, user).filter(_.tyyppi.koodiarvo == "ammatillinenkoulutus").length should equal(1)
-          putOpiskeluOikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(oppija.oid), headers = authHeaders(user) ++ jsonContent) {
+          putOpiskeluoikeus(opiskeluoikeusOmnia, henkilö = OidHenkilö(oppija.oid), headers = authHeaders(user) ++ jsonContent) {
             verifyResponseStatus(200)
             haeOpiskeluoikeudetHetulla(oppija.hetu, user).filter(_.tyyppi.koodiarvo == "ammatillinenkoulutus").length should equal(2)
           }
@@ -161,7 +161,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
       }
       "opiskeluoikeus-id:tä käytettäessä muutos estetään" in {
         val id = haeOpiskeluoikeudetHetulla(oppija.hetu, user).filter(_.tyyppi.koodiarvo == "ammatillinenkoulutus").filter(_.lähdejärjestelmänId.isDefined)(0).id.get
-        putOpiskeluOikeus(opiskeluoikeusOmnia.copy(id = Some(id)), henkilö = OidHenkilö(oppija.oid), headers = authHeaders(user) ++ jsonContent) {
+        putOpiskeluoikeus(opiskeluoikeusOmnia.copy(id = Some(id)), henkilö = OidHenkilö(oppija.oid), headers = authHeaders(user) ++ jsonContent) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos("Opiskeluoikeuden lähdejärjestelmäId:tä ei voi muuttaa."))
         }
       }
@@ -173,7 +173,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     suoritukset = List(autoalanPerustutkinnonSuoritus().copy(toimipiste = Oppilaitos(MockOrganisaatiot.omnia)))
   )
 
-  private def opiskeluOikeusLähdejärjestelmästä = opiskeluoikeusOmnia.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
+  private def opiskeluoikeusLähdejärjestelmästä = opiskeluoikeusOmnia.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
 
   private def haeOpiskeluoikeudetHetulla(hetu: String, käyttäjä: UserWithPassword) = searchForHenkilötiedot(hetu).map(_.oid).flatMap { oid =>
     getOpiskeluoikeudet(oid, käyttäjä)

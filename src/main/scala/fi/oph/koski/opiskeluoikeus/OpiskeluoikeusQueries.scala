@@ -1,7 +1,7 @@
 package fi.oph.koski.opiskeluoikeus
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.{GlobalExecutionContext, HenkilöRow, OpiskeluOikeusRow}
+import fi.oph.koski.db.{GlobalExecutionContext, HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.koskiuser.{KoskiSession, RequiresAuthentication}
 import fi.oph.koski.log.KoskiMessageField.{apply => _, _}
 import fi.oph.koski.log.KoskiOperation._
@@ -15,7 +15,7 @@ import rx.lang.scala.Observable
 trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with Logging with GlobalExecutionContext with ObservableSupport with GZipSupport {
   def application: KoskiApplication
 
-  def query(params: Map[String, String]): Observable[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])] = {
+  def query(params: Map[String, String]): Observable[(TäydellisetHenkilötiedot, List[OpiskeluoikeusRow])] = {
     logger(koskiSession).info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
 
     OpiskeluoikeusQueryFilter.parseQueryFilter(params.toList)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession) match {
@@ -27,15 +27,15 @@ trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with 
     }
   }
 
-  private def query(filters: List[OpiskeluoikeusQueryFilter])(implicit user: KoskiSession): Observable[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])] = {
-    val oikeudetPerOppijaOid: Observable[(Oid, List[OpiskeluOikeusRow])] = streamingQueryGroupedByOid(filters)
+  private def query(filters: List[OpiskeluoikeusQueryFilter])(implicit user: KoskiSession): Observable[(TäydellisetHenkilötiedot, List[OpiskeluoikeusRow])] = {
+    val oikeudetPerOppijaOid: Observable[(Oid, List[OpiskeluoikeusRow])] = streamingQueryGroupedByOid(filters)
     oikeudetPerOppijaOid.tumblingBuffer(500).flatMap {
-      oppijatJaOidit: Seq[(Oid, List[OpiskeluOikeusRow])] =>
+      oppijatJaOidit: Seq[(Oid, List[OpiskeluoikeusRow])] =>
         val oids: List[String] = oppijatJaOidit.map(_._1).toList
 
         val henkilöt: Map[String, TäydellisetHenkilötiedot] = application.oppijaRepository.findByOids(oids).map(henkilö => (henkilö.oid, henkilö)).toMap
 
-        val oppijat: Iterable[(TäydellisetHenkilötiedot, List[OpiskeluOikeusRow])] = oppijatJaOidit.flatMap { case (oid, opiskeluOikeudet) =>
+        val oppijat: Iterable[(TäydellisetHenkilötiedot, List[OpiskeluoikeusRow])] = oppijatJaOidit.flatMap { case (oid, opiskeluOikeudet) =>
           henkilöt.get(oid) match {
             case Some(henkilö) =>
               Some((henkilö, opiskeluOikeudet))
@@ -48,10 +48,10 @@ trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with 
     }
   }
 
-  def streamingQueryGroupedByOid(filters: List[OpiskeluoikeusQueryFilter])(implicit user: KoskiSession): Observable[(Oid, List[(OpiskeluOikeusRow)])] = {
-    val rows = application.opiskeluOikeusRepository.streamingQuery(filters, Some(Ascending(OpiskeluoikeusSortOrder.oppijaOid)), None)
+  def streamingQueryGroupedByOid(filters: List[OpiskeluoikeusQueryFilter])(implicit user: KoskiSession): Observable[(Oid, List[(OpiskeluoikeusRow)])] = {
+    val rows = application.OpiskeluoikeusRepository.streamingQuery(filters, Some(Ascending(OpiskeluoikeusSortOrder.oppijaOid)), None)
 
-    val groupedByPerson: Observable[List[(OpiskeluOikeusRow, HenkilöRow)]] = rows
+    val groupedByPerson: Observable[List[(OpiskeluoikeusRow, HenkilöRow)]] = rows
       .tumblingBuffer(rows.map(_._1.oppijaOid).distinctUntilChanged.drop(1))
       .map(_.toList)
 

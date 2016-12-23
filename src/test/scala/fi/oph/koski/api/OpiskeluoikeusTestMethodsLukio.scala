@@ -8,7 +8,7 @@ import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylän
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
 
-trait OpiskeluoikeusTestMethodsLukio extends PutOpiskeluOikeusTestMethods[LukionOpiskeluoikeus]{
+trait OpiskeluoikeusTestMethodsLukio extends PutOpiskeluoikeusTestMethods[LukionOpiskeluoikeus]{
   override def defaultOpiskeluoikeus = OpiskeluoikeusTestMethodsLukio.lukionOpiskeluoikeus
 }
 

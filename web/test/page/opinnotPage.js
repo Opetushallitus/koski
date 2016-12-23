@@ -1,7 +1,7 @@
 function OpinnotPage() {
 
   function oppija() { return S('.oppija') }
-  function opiskeluOikeus() { return S('.opiskeluoikeus')}
+  function opiskeluoikeus() { return S('.opiskeluoikeus')}
 
   var api = {
     getTutkinto: function(index) {

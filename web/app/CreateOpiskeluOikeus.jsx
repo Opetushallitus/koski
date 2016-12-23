@@ -57,7 +57,7 @@ const Tutkinto = React.createClass({
   }
 })
 
-export const OpiskeluOikeus = React.createClass({
+export const Opiskeluoikeus = React.createClass({
   render() {
     const {oppilaitosBus, oppilaitosP, tutkintoBus, tutkintoP} = this.state
     return (
@@ -70,12 +70,12 @@ export const OpiskeluOikeus = React.createClass({
 
   componentDidMount() {
     const {oppilaitosP, tutkintoP} = this.state
-    const opiskeluOikeus = Bacon.combineTemplate({
+    const opiskeluoikeus = Bacon.combineTemplate({
       oppilaitos: oppilaitosP,
       tutkinto: tutkintoP,
       valid: oppilaitosP.and(tutkintoP).map(v => !!(v))
     })
-    this.props.opiskeluOikeusBus.plug(opiskeluOikeus)
+    this.props.opiskeluoikeusBus.plug(opiskeluoikeus)
   },
 
   getInitialState() {

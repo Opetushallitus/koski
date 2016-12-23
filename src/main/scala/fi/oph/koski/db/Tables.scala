@@ -10,7 +10,7 @@ import fi.oph.koski.schema._
 import org.json4s._
 
 object Tables {
-  class OpiskeluOikeusTable(tag: Tag) extends Table[OpiskeluOikeusRow](tag, "opiskeluoikeus") {
+  class OpiskeluoikeusTable(tag: Tag) extends Table[OpiskeluoikeusRow](tag, "opiskeluoikeus") {
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
     val versionumero = column[Int]("versionumero")
     val oppijaOid = column[String]("oppija_oid")
@@ -19,13 +19,13 @@ object Tables {
     val koulutustoimijaOid = column[Option[String]]("koulutustoimija_oid")
     val luokka = column[Option[String]]("luokka")
 
-    def * = (id, oppijaOid, oppilaitosOid, koulutustoimijaOid, versionumero, data, luokka) <> (OpiskeluOikeusRow.tupled, OpiskeluOikeusRow.unapply)
+    def * = (id, oppijaOid, oppilaitosOid, koulutustoimijaOid, versionumero, data, luokka) <> (OpiskeluoikeusRow.tupled, OpiskeluoikeusRow.unapply)
     def updateableFields = (data, versionumero, luokka, koulutustoimijaOid)
   }
 
-  object OpiskeluOikeusTable {
+  object OpiskeluoikeusTable {
     def makeInsertableRow(oppijaOid: String, opiskeluoikeus: Opiskeluoikeus) = {
-      OpiskeluOikeusRow(opiskeluoikeus.id.getOrElse(0), oppijaOid, opiskeluoikeus.oppilaitos.oid, opiskeluoikeus.koulutustoimija.map(_.oid), Opiskeluoikeus.VERSIO_1, Json.toJValue(opiskeluoikeus), luokka(opiskeluoikeus))
+      OpiskeluoikeusRow(opiskeluoikeus.id.getOrElse(0), oppijaOid, opiskeluoikeus.oppilaitos.oid, opiskeluoikeus.koulutustoimija.map(_.oid), Opiskeluoikeus.VERSIO_1, Json.toJValue(opiskeluoikeus), luokka(opiskeluoikeus))
     }
     def readData(data: JValue, id: Int, versionumero: Int): KoskeenTallennettavaOpiskeluoikeus = {
       Json.fromJValue[Opiskeluoikeus](data).asInstanceOf[KoskeenTallennettavaOpiskeluoikeus].withIdAndVersion(id = Some(id), versionumero = Some(versionumero))
@@ -49,14 +49,14 @@ object Tables {
     def * = (oid, sukunimi, etunimet, kutsumanimi) <> (HenkilöRow.tupled, HenkilöRow.unapply)
   }
 
-  class OpiskeluOikeusHistoryTable(tag: Tag) extends Table[OpiskeluOikeusHistoryRow] (tag, "opiskeluoikeushistoria") {
+  class OpiskeluoikeusHistoryTable(tag: Tag) extends Table[OpiskeluoikeusHistoryRow] (tag, "opiskeluoikeushistoria") {
     val opiskeluoikeusId = column[Int]("opiskeluoikeus_id")
     val versionumero = column[Int]("versionumero")
     val aikaleima = column[Timestamp]("aikaleima")
     val kayttajaOid = column[String]("kayttaja_oid")
     val muutos = column[JValue]("muutos")
 
-    def * = (opiskeluoikeusId, versionumero, aikaleima, kayttajaOid, muutos) <> (OpiskeluOikeusHistoryRow.tupled, OpiskeluOikeusHistoryRow.unapply)
+    def * = (opiskeluoikeusId, versionumero, aikaleima, kayttajaOid, muutos) <> (OpiskeluoikeusHistoryRow.tupled, OpiskeluoikeusHistoryRow.unapply)
   }
 
   class CasServiceTicketSessionTable(tag: Tag) extends Table[SSOSessionRow] (tag, "casserviceticket") {
@@ -103,13 +103,13 @@ object Tables {
   val CasServiceTicketSessions = TableQuery[CasServiceTicketSessionTable]
 
   // OpiskeluOikeudet-taulu. Käytä kyselyissä aina OpiskeluOikeudetWithAccessCheck, niin tulee myös käyttöoikeudet tarkistettua samalla.
-  val OpiskeluOikeudet = TableQuery[OpiskeluOikeusTable]
+  val OpiskeluOikeudet = TableQuery[OpiskeluoikeusTable]
 
   val Henkilöt = TableQuery[HenkilöTable]
 
-  val OpiskeluOikeusHistoria = TableQuery[OpiskeluOikeusHistoryTable]
+  val OpiskeluoikeusHistoria = TableQuery[OpiskeluoikeusHistoryTable]
 
-  def OpiskeluOikeudetWithAccessCheck(implicit user: KoskiSession): Query[OpiskeluOikeusTable, OpiskeluOikeusRow, Seq] = {
+  def OpiskeluOikeudetWithAccessCheck(implicit user: KoskiSession): Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq] = {
     if (user.hasGlobalReadAccess) {
       OpiskeluOikeudet
     } else {
@@ -149,11 +149,11 @@ object Tables {
 case class SSOSessionRow(serviceTicket: String, username: String, userOid: String, started: Timestamp, updated: Timestamp)
 
 // Note: the data json must not contain [id, versionumero] fields. This is enforced by DB constraint.
-case class OpiskeluOikeusRow(id: Int, oppijaOid: String, oppilaitosOid: String, koulutustoimijaOid: Option[String], versionumero: Int, data: JValue, luokka: Option[String]) {
-  lazy val toOpiskeluOikeus: KoskeenTallennettavaOpiskeluoikeus = {
+case class OpiskeluoikeusRow(id: Int, oppijaOid: String, oppilaitosOid: String, koulutustoimijaOid: Option[String], versionumero: Int, data: JValue, luokka: Option[String]) {
+  lazy val toOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus = {
     try {
-      import fi.oph.koski.db.Tables.OpiskeluOikeusTable
-      OpiskeluOikeusTable.readData(data, id, versionumero)
+      import fi.oph.koski.db.Tables.OpiskeluoikeusTable
+      OpiskeluoikeusTable.readData(data, id, versionumero)
     } catch {
       case e: Exception => throw new MappingException(s"Error deserializing opiskeluoikeus ${id} for oppija ${oppijaOid}", e)
     }
@@ -164,7 +164,7 @@ case class HenkilöRow(oid: String, sukunimi: String, etunimet: String, kutsuman
   def toNimitiedotJaOid = NimitiedotJaOid(oid, etunimet, kutsumanimi, sukunimi)
 }
 
-case class OpiskeluOikeusHistoryRow(opiskeluoikeusId: Int, versionumero: Int, aikaleima: Timestamp, kayttajaOid: String, muutos: JValue)
+case class OpiskeluoikeusHistoryRow(opiskeluoikeusId: Int, versionumero: Int, aikaleima: Timestamp, kayttajaOid: String, muutos: JValue)
 
 case class TiedonsiirtoRow(id: Int, kayttajaOid: String, tallentajaOrganisaatioOid: String, oppija: Option[JValue], oppilaitos: Option[JValue], data: Option[JValue], virheet: Option[JValue], aikaleima: Timestamp, lahdejarjestelma: Option[String])
 

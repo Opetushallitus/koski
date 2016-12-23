@@ -16,7 +16,7 @@ class OppijaIntegrationTest extends FreeSpec with Matchers with KoskidevHttpSpec
     // This makes sure that our server is running, can authenticate a user, can insert data into the database and
     // return results, i.e. is up and running.
 
-    putOpiskeluOikeus(defaultOpiskeluoikeus, OidHenkilö(testOid)) {
+    putOpiskeluoikeus(defaultOpiskeluoikeus, OidHenkilö(testOid)) {
       verifyResponseStatus(200)
     }
     val o = oppija(testOid)

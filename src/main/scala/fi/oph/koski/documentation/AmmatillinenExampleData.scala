@@ -110,10 +110,10 @@ object AmmatillinenExampleData {
   }
 
   def oppija( henkilö: Henkilö = exampleHenkilö,
-    opiskeluOikeus: Opiskeluoikeus = opiskeluoikeus()) = {
+    opiskeluoikeus: Opiskeluoikeus = opiskeluoikeus()) = {
     Oppija(
       henkilö,
-      List(opiskeluOikeus)
+      List(opiskeluoikeus)
     )
   }
 
