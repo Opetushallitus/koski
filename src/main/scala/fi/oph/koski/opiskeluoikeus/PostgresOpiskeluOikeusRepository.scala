@@ -90,12 +90,12 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
         List(1).bind.any
         parse(s"""[]""").bind
         List(parse(s"""[]""")).bind.any
-        query//.filter(_._1.data.+>("suoritukset").@>(matchers.bind.any)) // TODO fix
+        query.filter(_._1.data.+>("suoritukset").@>(matchers.bind.any))
       case (query, OpiskeluoikeusQueryFilter.Toimipiste(toimipisteet)) =>
         val matchers = toimipisteet.map { toimipiste =>
           parse(s"""[{"toimipiste":{"oid": "${toimipiste.oid}"}}]""")
         }
-        query//.filter(_._1.data.+>("suoritukset").@>(matchers.bind.any)) // TODO fix
+        query.filter(_._1.data.+>("suoritukset").@>(matchers.bind.any))
       case (query, Luokkahaku(hakusana)) =>
         query.filter({ case t: (Tables.OpiskeluoikeusTable, Tables.HenkilöTable) => ilike(t._1.luokka.getOrElse(""), (hakusana + "%"))})
       case (query, Nimihaku(hakusana)) =>
