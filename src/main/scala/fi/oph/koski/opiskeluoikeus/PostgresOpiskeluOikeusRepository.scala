@@ -84,10 +84,6 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
         } ++ osaamisalat.map { osaamisala =>
           parse(s"""[{"osaamisala":[{"koodiarvo": "${osaamisala.koodiarvo}"}]}]""")
         }
-        List("asdf").bind.any
-        List(1).bind.any
-        parse(s"""[]""").bind
-        List(parse(s"""[]""")).bind.any
         query.filter(_._1.data.+>("suoritukset").@>(matchers.bind.any))
       case (query, OpiskeluoikeusQueryFilter.Toimipiste(toimipisteet)) =>
         val matchers = toimipisteet.map { toimipiste =>
