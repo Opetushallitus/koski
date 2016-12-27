@@ -139,8 +139,8 @@
       <version>2.3.13</version>
     </dependency>
     <dependency>
-      <groupId>com.github.tminglei</groupId>
-      <artifactId>slick-pg</artifactId>
+      <groupId>com.github.tminglei.slick-pg</groupId>
+      <artifactId>slick-pg_core_2.12</artifactId>
       <version>4f3ea94c46cf886e8a829df0965ca05d1f0b6ebf</version>
     </dependency>
     <dependency>
