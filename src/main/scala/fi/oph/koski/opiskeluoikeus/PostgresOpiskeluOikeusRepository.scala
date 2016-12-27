@@ -67,7 +67,6 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
 
   override def streamingQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[OpiskeluoikeusSortOrder], pagination: Option[PaginationSettings])(implicit user: KoskiSession): Observable[(OpiskeluoikeusRow, HenkilöRow)] = {
     import ReactiveStreamsToRx._
-    import ILikeExtension._
 
     val query = filters.foldLeft(OpiskeluOikeudetWithAccessCheck.asInstanceOf[Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq]] join Tables.Henkilöt on (_.oppijaOid === _.oid)) {
       case (query, OpiskeluoikeusPäättynytAikaisintaan(päivä)) => query.filter(_._1.data.#>>(List("päättymispäivä")) >= päivä.toString)
@@ -97,7 +96,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
         }
         query.filter(_._1.data.+>("suoritukset").@>(matchers.bind.any))
       case (query, Luokkahaku(hakusana)) =>
-        query.filter({ case t: (Tables.OpiskeluoikeusTable, Tables.HenkilöTable) => ilike(t._1.luokka.getOrElse(""), (hakusana + "%"))})
+        query.filter({ case t: (Tables.OpiskeluoikeusTable, Tables.HenkilöTable) => t._1.luokka ilike (hakusana + "%")})
       case (query, Nimihaku(hakusana)) =>
         query.filter{ case (_, henkilö) =>
           KoskiHenkilöCache.filterByQuery(hakusana)(henkilö)
