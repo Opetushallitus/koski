@@ -3,13 +3,10 @@ package fi.oph.koski.api
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.date.DateOrdering
-import fi.oph.koski.db.{KoskiDatabaseMethods, Tables}
 import fi.oph.koski.documentation.{AmmatillinenExampleData, PerusopetusExampleData}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema._
 import org.scalatest.{FunSpec, Matchers}

@@ -3,7 +3,6 @@ package fi.oph.koski.db
 import com.github.tminglei.slickpg._
 import com.github.tminglei.slickpg.str.PgStringSupport
 import org.json4s.JValue
-import slick.driver.PostgresDriver
 import slick.jdbc.PostgresProfile
 
 trait PostgresDriverWithJsonSupport extends PostgresProfile with PgJson4sSupport with PgArraySupport with array.PgArrayJdbcTypes with PgSearchSupport with PgStringSupport {

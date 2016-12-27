@@ -3,7 +3,10 @@ package fi.oph.koski.opiskeluoikeus
 import java.sql.SQLException
 
 import fi.oph.koski.db.KoskiDatabase.DB
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods._
 import fi.oph.koski.db.Tables._
+import fi.oph.koski.db._
 import fi.oph.koski.henkilo.{KoskiHenkilöCache, KoskiHenkilöCacheUpdater, PossiblyUnverifiedHenkilöOid}
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -11,21 +14,17 @@ import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusChangeValidator.validateOpiskeluoikeusChange
-import fi.oph.koski.schema.Henkilö._
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
 import fi.oph.koski.schema.Opiskeluoikeus.VERSIO_1
 import fi.oph.koski.schema._
-import fi.oph.koski.util.{Futures, PaginationSettings, QueryPagination, ReactiveStreamsToRx}
+import fi.oph.koski.servlet.InvalidRequestException
+import fi.oph.koski.util.{PaginationSettings, QueryPagination, ReactiveStreamsToRx}
 import org.json4s.JArray
 import rx.lang.scala.Observable
-import slick.dbio.Effect.{All, Read, Transactional, Write}
-import slick.dbio.{DBIOAction, NoStream}
-import slick.lifted.{Query, Rep}
+import slick.dbio.Effect.{Read, Transactional, Write}
+import slick.dbio.NoStream
+import slick.lifted.Query
 import slick.{dbio, lifted}
-import fi.oph.koski.db._
-import PostgresDriverWithJsonSupport.api._
-import PostgresDriverWithJsonSupport.jsonMethods._
-import fi.oph.koski.servlet.InvalidRequestException
-import OpiskeluoikeusQueryFilter._
 
 class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: OpiskeluoikeusHistoryRepository, henkilöCache: KoskiHenkilöCacheUpdater) extends OpiskeluoikeusRepository with GlobalExecutionContext with KoskiDatabaseMethods with Logging with SerializableTransactions {
   override def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession) = {
