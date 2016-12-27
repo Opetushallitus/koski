@@ -12,7 +12,7 @@ object LukioFixtureDataInserter extends FixtureDataInserter {
 
   lazy val opiskeluoikeudet = lukiot.map { org =>
     val oppilaitos = Oppilaitos(org.oid, org.oppilaitosKoodi.map(Koodistokoodiviite(_, "oppilaitosnumero")))
-    ExamplesLukio.päättötodistus.copy(oppilaitos = oppilaitos)
+    ExamplesLukio.päättötodistus(oppilaitos = oppilaitos)
   }
 
   def opiskeluoikeudet(x: Int) = {

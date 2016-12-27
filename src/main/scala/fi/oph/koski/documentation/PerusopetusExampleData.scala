@@ -9,6 +9,7 @@ import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.schema._
 import fi.oph.koski.localization.LocalizedStringImplicits._
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 
 object PerusopetusExampleData {
   def arviointi(arvosana: Int): Some[List[PerusopetuksenOppiaineenArviointi]] = Some(List(PerusopetuksenOppiaineenArviointi(arvosana)))
@@ -82,11 +83,12 @@ object PerusopetusExampleData {
     )
   }
 
-  def päättötodistusOpiskeluoikeus(oppilaitos: Oppilaitos = jyväskylänNormaalikoulu, luokka: String = "C") = opiskeluoikeus(
+  def päättötodistusOpiskeluoikeus(oppilaitos: Oppilaitos = jyväskylänNormaalikoulu, toimipiste: OrganisaatioWithOid = jyväskylänNormaalikoulu,  luokka: String = "C") = opiskeluoikeus(
+    oppilaitos = oppilaitos,
     suoritukset = List(
-      kahdeksannenLuokanSuoritus.copy(toimipiste = oppilaitos, luokka = "8" + luokka),
-      yhdeksännenLuokanSuoritus.copy(toimipiste = oppilaitos, luokka = "9" + luokka),
-      perusopetuksenOppimääränSuoritus.copy(toimipiste = oppilaitos))
+      kahdeksannenLuokanSuoritus.copy(toimipiste = toimipiste, luokka = "8" + luokka),
+      yhdeksännenLuokanSuoritus.copy(toimipiste = toimipiste, luokka = "9" + luokka),
+      perusopetuksenOppimääränSuoritus.copy(toimipiste = toimipiste))
   )
 
   val kahdeksannenLuokanSuoritus = PerusopetuksenVuosiluokanSuoritus(

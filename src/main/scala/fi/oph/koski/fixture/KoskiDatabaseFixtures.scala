@@ -58,14 +58,14 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: Opiskeluo
       (MockOppijat.oppiaineenKorottaja, ExamplesPerusopetus.aineopiskelija.tallennettavatOpiskeluoikeudet.head),
       (MockOppijat.kymppiluokkalainen, ExamplesPerusopetuksenLisaopetus.lisäopetuksenPäättötodistus.tallennettavatOpiskeluoikeudet.head),
       (MockOppijat.lukiolainen, PerusopetusExampleData.päättötodistusOpiskeluoikeus(luokka = "B")),
-      (MockOppijat.lukiolainen, ExamplesLukio.päättötodistus),
+      (MockOppijat.lukiolainen, ExamplesLukio.päättötodistus()),
       (MockOppijat.luva, ExamplesLukioonValmistavaKoulutus.luvaTodistus.tallennettavatOpiskeluoikeudet.head),
       (MockOppijat.ammattilainen, AmmatillinenExampleData.perustutkintoOpiskeluoikeus()),
       (MockOppijat.valma, ExamplesValma.valmaTodistus.tallennettavatOpiskeluoikeudet.head),
       (MockOppijat.telma, ExamplesTelma.telmaTodistus.tallennettavatOpiskeluoikeudet.head),
       (MockOppijat.erikoisammattitutkinto, AmmattitutkintoExample.opiskeluoikeus),
       (MockOppijat.omattiedot, PerusopetusExampleData.päättötodistusOpiskeluoikeus(luokka = "D")),
-      (MockOppijat.omattiedot, ExamplesLukio.päättötodistus),
+      (MockOppijat.omattiedot, ExamplesLukio.päättötodistus()),
       (MockOppijat.ibFinal, ExamplesIB.opiskeluoikeus),
       (MockOppijat.ibPredicted, ExamplesIB.opiskeluoikeusPredictedGrades)
     )

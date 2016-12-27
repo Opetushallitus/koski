@@ -13,7 +13,7 @@ import fi.oph.koski.schema._
 object ExamplesLukio {
   def oppija(opiskeluoikeus: LukionOpiskeluoikeus) = Oppija(exampleHenkilö, List(opiskeluoikeus))
 
-  val päättötodistus = LukionOpiskeluoikeus(
+  def päättötodistus(oppilaitos: Oppilaitos = jyväskylänNormaalikoulu, toimipiste: OrganisaatioWithOid = jyväskylänNormaalikoulu) = LukionOpiskeluoikeus(
       alkamispäivä = Some(date(2012, 9, 1)),
       päättymispäivä = Some(date(2016, 6, 1)),
       tila = LukionOpiskeluoikeudenTila(
@@ -22,7 +22,7 @@ object ExamplesLukio {
           LukionOpiskeluoikeusjakso(alku = date(2016, 6, 1), tila = opiskeluoikeusPäättynyt)
         )
       ),
-      oppilaitos = jyväskylänNormaalikoulu,
+      oppilaitos = oppilaitos,
       suoritukset = List(
         LukionOppimääränSuoritus(
           koulutusmoduuli = lukionOppimäärä,
@@ -30,7 +30,7 @@ object ExamplesLukio {
           suorituskieli = suomenKieli,
           tila = tilaValmis,
           vahvistus = vahvistusPaikkakunnalla(),
-          toimipiste = jyväskylänNormaalikoulu,
+          toimipiste = toimipiste,
           osasuoritukset = Some(List(
             suoritus(lukionÄidinkieli("AI1")).copy(arviointi = arviointi(9)).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("ÄI1")).copy(arviointi = kurssinArviointi(8)),
@@ -212,7 +212,7 @@ object ExamplesLukio {
 
   val examples = List(
     Example("lukio - uusi", "Uusi oppija lisätään suorittamaan lukiota", oppija(lukionOpiskeluoikeus())),
-    Example("lukio - päättötodistus", "Oppija on saanut päättötodistuksen", oppija(päättötodistus)),
+    Example("lukio - päättötodistus", "Oppija on saanut päättötodistuksen", oppija(päättötodistus())),
     Example("lukio - lukion oppiaineen oppimäärä - päättötodistus", "Opiskelija on suorittanut lukion historian oppimäärän", oppija(aineopiskelija))
   )
 }
