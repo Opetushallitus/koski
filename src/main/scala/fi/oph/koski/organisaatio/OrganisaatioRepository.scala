@@ -39,7 +39,7 @@ trait OrganisaatioRepository {
 
 object OrganisaatioRepository {
   def apply(config: Config, koodisto: KoodistoViitePalvelu)(implicit cacheInvalidator: CacheManager) = {
-    CachingProxy[OrganisaatioRepository](Cache.cacheAllRefresh("OrganisaatioRepository", durationSeconds = 3600, maxSize = 10000), withoutCache(config, koodisto))
+    CachingProxy[OrganisaatioRepository](Cache.cacheAllRefresh("OrganisaatioRepository", durationSeconds = 3600, maxSize = 15000), withoutCache(config, koodisto))
   }
 
   def withoutCache(config: Config, koodisto: KoodistoViitePalvelu): OrganisaatioRepository = {
