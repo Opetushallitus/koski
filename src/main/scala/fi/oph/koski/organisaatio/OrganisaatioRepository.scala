@@ -39,10 +39,10 @@ trait OrganisaatioRepository {
 
 object OrganisaatioRepository {
   def apply(config: Config, koodisto: KoodistoViitePalvelu)(implicit cacheInvalidator: CacheManager) = {
-    CachingProxy[OrganisaatioRepository](Cache.cacheAllRefresh("OrganisaatioRepository", durationSeconds = 3600, maxSize = 10000), TimedProxy(withoutCache(config, koodisto).asInstanceOf[OrganisaatioRepository]))
+    CachingProxy[OrganisaatioRepository](Cache.cacheAllRefresh("OrganisaatioRepository", durationSeconds = 3600, maxSize = 10000), withoutCache(config, koodisto))
   }
 
-  def withoutCache(config: Config, koodisto: KoodistoViitePalvelu): JsonOrganisaatioRepository = {
+  def withoutCache(config: Config, koodisto: KoodistoViitePalvelu): OrganisaatioRepository = {
     if (config.hasPath("opintopolku.virkailija.url")) {
       val http = VirkailijaHttpClient(config.getString("opintopolku.virkailija.username"), config.getString("opintopolku.virkailija.password"), config.getString("opintopolku.virkailija.url"), "/organisaatio-service")
       new RemoteOrganisaatioRepository(http, koodisto)

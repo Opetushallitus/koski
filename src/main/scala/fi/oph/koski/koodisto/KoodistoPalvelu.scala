@@ -2,11 +2,10 @@ package fi.oph.koski.koodisto
 
 import com.typesafe.config.Config
 import fi.oph.koski.cache.{Cache, CacheManager, CachingProxy}
-import fi.oph.koski.log.TimedProxy
 
 object KoodistoPalvelu {
   def apply(config: Config)(implicit cacheInvalidator: CacheManager) = {
-    cached(TimedProxy(withoutCache(config)))
+    cached(withoutCache(config))
   }
 
   def cached(palvelu: KoodistoPalvelu)(implicit cacheInvalidator: CacheManager) = CachingProxy(Cache.cacheAllRefresh("KoodistoPalvelu", 3600, 100), palvelu)

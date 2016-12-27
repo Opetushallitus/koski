@@ -1,6 +1,8 @@
 package fi.oph.koski.tutkinto
 
 import fi.oph.koski.arvosana.ArviointiasteikkoRepository
+import fi.oph.koski.cache.Cache._
+import fi.oph.koski.cache.{CacheManager, CachingProxy}
 import fi.oph.koski.eperusteet._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.localization.LocalizedString
@@ -12,7 +14,8 @@ trait TutkintoRepository {
 }
 
 object TutkintoRepository {
-  def apply(eperusteet: EPerusteetRepository, arviointiAsteikot: ArviointiasteikkoRepository, koodistoPalvelu: KoodistoViitePalvelu): TutkintoRepository = new TutkintoRepositoryImpl(eperusteet, arviointiAsteikot, koodistoPalvelu)
+  def apply(eperusteet: EPerusteetRepository, arviointiAsteikot: ArviointiasteikkoRepository, koodistoPalvelu: KoodistoViitePalvelu)(implicit cacheInvalidator: CacheManager): TutkintoRepository =
+    CachingProxy(cacheAllRefresh("TutkintoRepository", 3600, 100), new TutkintoRepositoryImpl(eperusteet, arviointiAsteikot, koodistoPalvelu))
 }
 
 class TutkintoRepositoryImpl(eperusteet: EPerusteetRepository, arviointiAsteikot: ArviointiasteikkoRepository, koodistoPalvelu: KoodistoViitePalvelu) extends TutkintoRepository{

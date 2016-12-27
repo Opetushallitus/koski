@@ -1,7 +1,6 @@
 package fi.oph.koski.eperusteet
 
 import com.typesafe.config.Config
-import fi.oph.koski.log.TimedProxy
 
 trait EPerusteetRepository {
   def findPerusteet(query: String): List[EPeruste]
@@ -12,12 +11,11 @@ trait EPerusteetRepository {
 }
 
 object EPerusteetRepository {
-
   def apply(config: Config) = {
-    TimedProxy(if (config.hasPath("eperusteet")) {
+    if (config.hasPath("eperusteet")) {
       new RemoteEPerusteetRepository(config.getString("eperusteet.url"))
     } else {
       new MockEPerusteetRepository
-    })
+    }
   }
 }
