@@ -1,5 +1,7 @@
 package fi.oph.koski.servlet
 
+import java.util.Properties
+
 import fi.oph.koski.IndexServlet
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.AuthenticationSupport
@@ -8,6 +10,13 @@ import scala.xml.transform.RewriteRule
 import scala.xml.{Elem, Node}
 
 trait HtmlServlet extends KoskiBaseServlet with AuthenticationSupport {
+
+  lazy val buildversion = Option(getServletContext.getResourceAsStream("/buildversion.txt")).map { i =>
+    val p = new Properties()
+    p.load(i)
+    p.getProperty("vcsRevision", null)
+  }
+
   override def haltWithStatus(status: HttpStatus): Nothing = status.statusCode match {
     case 401 => redirectToLogin
     case _ => super.haltWithStatus(status)
@@ -23,7 +32,7 @@ trait HtmlServlet extends KoskiBaseServlet with AuthenticationSupport {
         case elem: Elem => elem copy (child = elem.child flatMap (this transform))
         case other => other
       }
-    } transform(IndexServlet.html())
+    } transform(IndexServlet.html(buildversion = buildversion))
 
     response.setStatus(status.statusCode)
     contentType = "text/html"

@@ -1,7 +1,7 @@
 package fi.oph.koski
 
 import fi.oph.koski.koskiuser.{AuthenticationSupport, UserAuthenticationContext}
-import fi.oph.koski.servlet.{HtmlServlet, NoCache}
+import fi.oph.koski.servlet.HtmlServlet
 import fi.oph.koski.sso.SSOSupport
 import org.scalatra.ScalatraServlet
 
@@ -14,32 +14,34 @@ class IndexServlet(val application: UserAuthenticationContext) extends ScalatraS
 
   get("/*") {
     status = 404
-    IndexServlet.html()
+    indexHtml()
   }
 
   get("/") {
-    IndexServlet.html()
+    indexHtml()
   }
 
   get("/uusioppija") {
-    IndexServlet.html()
+    indexHtml()
   }
 
   get("/oppija/:oid") {
-    IndexServlet.html()
+    indexHtml()
   }
 
   get("/omattiedot") {
-    IndexServlet.html()
+    indexHtml()
   }
 
   get("/tiedonsiirrot*") {
-    IndexServlet.html()
+    indexHtml()
   }
+
+  def indexHtml() = IndexServlet.html(buildversion = buildversion)
 }
 
 object IndexServlet {
-  def html(scriptBundleName: String = "koski-main.js") =
+  def html(scriptBundleName: String = "koski-main.js", buildversion: Option[String]) =
     <html>
       <head>
         <title>Koski - Opintopolku.fi</title>
@@ -52,7 +54,7 @@ object IndexServlet {
       <body>
         <div id="content"></div>
       </body>
-      <script id="bundle" src={"/koski/js/" + scriptBundleName}></script>
+      <script id="bundle" src={"/koski/js/" + scriptBundleName + "?" + buildversion.getOrElse(System.currentTimeMillis())}></script>
     </html>
 }
 
@@ -61,7 +63,7 @@ class LoginPageServlet(val application: UserAuthenticationContext) extends Scala
     if (ssoConfig.isCasSsoUsed) {
       redirect("/")
     } else {
-      IndexServlet.html("koski-login.js")
+      IndexServlet.html("koski-login.js", buildversion = buildversion)
     }
   }
 }

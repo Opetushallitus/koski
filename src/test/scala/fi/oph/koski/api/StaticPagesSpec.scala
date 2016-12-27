@@ -4,8 +4,6 @@ import fi.oph.koski.IndexServlet
 import org.scalatest.{FreeSpec, Matchers}
 
 class StaticPagesSpec extends FreeSpec with LocalJettyHttpSpecification with Matchers {
-  val indexHtml = IndexServlet.html().toString
-
   "Single page app" - {
     verifyAppAt("")
     verifyAppAt("oppija/asdf")
@@ -16,7 +14,7 @@ class StaticPagesSpec extends FreeSpec with LocalJettyHttpSpecification with Mat
       "GET " + path in {
         authGet(path) {
           verifyResponseStatus(responseCode)
-          body should equal(indexHtml)
+          body.contains("<title>Koski - Opintopolku.fi</title>")
         }
       }
     }
