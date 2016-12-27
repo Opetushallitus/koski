@@ -30,7 +30,10 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: Opiskeluo
     val deleteTiedonsiirrot = TiedonsiirtoWithAccessCheck.filter(t => t.tallentajaOrganisaatioOid === MockOrganisaatiot.stadinAmmattiopisto || t.tallentajaOrganisaatioOid === MockOrganisaatiot.helsinginKaupunki).delete
 
     runDbSync(DBIO.sequence(deleteOpiskeluOikeudet))
-    runDbSync(Tables.Henkilöt.filter(_.oid inSetBind(MockOppijat.defaultOppijat.map(_.oid))).delete)
+    val henkilöOids: List[Oid] = MockOppijat.defaultOppijat.map(_.oid)
+    runDbSync(Tables.Henkilöt.filter(_.oid inSetBind henkilöOids).delete)
+    runDbSync(DBIO.sequence(henkilöOids.flatMap(henkilöRepository.findByOid).map{ henkilö => Henkilöt += HenkilöRow(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi) }))
+
     runDbSync(deleteTiedonsiirrot)
 
     validatedOpiskeluoikeudet.foreach {
