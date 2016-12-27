@@ -15,7 +15,7 @@ trait TutkintoRepository {
 
 object TutkintoRepository {
   def apply(eperusteet: EPerusteetRepository, arviointiAsteikot: ArviointiasteikkoRepository, koodistoPalvelu: KoodistoViitePalvelu)(implicit cacheInvalidator: CacheManager): TutkintoRepository =
-    CachingProxy(cacheAllRefresh("TutkintoRepository", 3600, 100), new TutkintoRepositoryImpl(eperusteet, arviointiAsteikot, koodistoPalvelu))
+    CachingProxy(cacheAllRefresh("TutkintoRepository", 3600, 100), new TutkintoRepositoryImpl(eperusteet, arviointiAsteikot, koodistoPalvelu).asInstanceOf[TutkintoRepository])
 }
 
 class TutkintoRepositoryImpl(eperusteet: EPerusteetRepository, arviointiAsteikot: ArviointiasteikkoRepository, koodistoPalvelu: KoodistoViitePalvelu) extends TutkintoRepository{
