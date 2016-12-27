@@ -45,7 +45,7 @@ object KoskiApiOperations {
      "Etsii henkilöitä annetulla hakusanalla.",
       <p> Hakutuloksissa vain oppijoiden perustiedot.
             Hakusana voi olla hetu, oppija-oid tai nimen osa. Tuloksiin sisällytetään vain ne oppijat,
-            joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</p>,
+            joilla on vähintään yksi opiskeluoikeus, johon käyttäjällä on katseluoikeus.</p>,
       Nil,
       List(QueryParameter("query", "Hakusana, joka voi olla hetu, oppija-oid tai nimen osa.", List("eero"))),
       List(
@@ -59,7 +59,7 @@ object KoskiApiOperations {
      "Palauttaa oppijoiden tiedot annetuilla parametreilla.",
      <p>Sisältää oppijoiden henkilötiedot,
           opiskeluoikeudet suorituksineen.
-          Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</p>,
+          Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opiskeluoikeus, johon käyttäjällä on katseluoikeus.</p>,
      Nil,
      hakuParametrit,
      List(
@@ -87,7 +87,7 @@ object KoskiApiOperations {
      "Etsii opiskeluoikeudet annetuilla parametreilla ja validoi hakutulokset.",
      <p>Validointi suoritetaan tämän hetkisen JSON-scheman ja muiden validointisääntöjen mukaan.
        Lisäksi validoidaan opinto-oikeuksien versiohistorioiden eheys.
-       Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opinto-oikeus, johon käyttäjällä on katseluoikeus.</p>,
+       Tuloksiin sisällytetään vain ne oppijat, joilla on vähintään yksi opiskeluoikeus, johon käyttäjällä on katseluoikeus.</p>,
      Nil,
      List(QueryParameter("errorsOnly", "Haetaanko vain virheelliset opiskeluoikeudet", List("false")), QueryParameter("history", "Validoidaanko myös versiohistoria", List("false")), QueryParameter("henkilö", "Validoidaanko henkilö", List("false"))) ++ hakuParametrit,
      List(

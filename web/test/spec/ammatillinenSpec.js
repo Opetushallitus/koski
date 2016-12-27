@@ -29,7 +29,7 @@ describe('Ammatillinen koulutus', function() {
   describe('Opinto-oikeuden lisääminen', function() {
     describe('Olemassa olevalle henkilölle', function() {
 
-      describe('Kun lisätään uusi opinto-oikeus', function() {
+      describe('Kun lisätään uusi opiskeluoikeus', function() {
         before(addNewOppija('kalle', 'Tunkkila', { etunimet: 'Tero Terde', kutsumanimi: 'Terde', sukunimi: 'Tunkkila', hetu: '280608-6619', oppilaitos: 'Stadin', tutkinto: 'Autoalan'}))
 
         it('Onnistuu, näyttää henkilöpalvelussa olevat nimitiedot', function() {
@@ -37,7 +37,7 @@ describe('Ammatillinen koulutus', function() {
         })
       })
 
-      describe('Kun lisätään opinto-oikeus, joka henkilöllä on jo olemassa', function() {
+      describe('Kun lisätään opiskeluoikeus, joka henkilöllä on jo olemassa', function() {
         before(addNewOppija('kalle', 'kalle', { etunimet: 'Eero Adolf', kutsumanimi: 'Eero', sukunimi: 'Esimerkki', hetu: '010101-123N', oppilaitos: 'Stadin', tutkinto: 'Autoalan'}))
 
         it('Näytetään olemassa oleva tutkinto', function() {

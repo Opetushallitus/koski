@@ -27,13 +27,13 @@ trait TutkinnonPerusteetTest[T <: Opiskeluoikeus] extends FunSpec with PutOpiske
       }
     }
 
-    describe("Kun lisätään opinto-oikeus ilman tutkinnon perusteen diaarinumeroa") {
+    describe("Kun lisätään opiskeluoikeus ilman tutkinnon perusteen diaarinumeroa") {
       it("palautetaan HTTP 200" ) {
         putTodistus(opiskeluoikeusWithPerusteenDiaarinumero(None)) (verifyResponseStatus(200))
       }
     }
 
-    describe("Kun yritetään lisätä opinto-oikeus tyhjällä diaarinumerolla") {
+    describe("Kun yritetään lisätä opiskeluoikeus tyhjällä diaarinumerolla") {
       it("palautetaan HTTP 400 virhe" ) {
         putTodistus(opiskeluoikeusWithPerusteenDiaarinumero(Some(""))) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.jsonSchema(".*perusteenDiaarinumero.*".r)))
       }
