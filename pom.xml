@@ -11,9 +11,9 @@
     <name>fi.vm.sade</name>
   </organization>
   <properties>
-    <scala.version>2.11.4</scala.version>
-    <slick.version>3.1.1</slick.version>
-    <scalatra.version>2.4.0</scalatra.version>
+    <scala.version>2.12.1</scala.version>
+    <slick.version>3.2.0-M2</slick.version>
+    <scalatra.version>2.5.0</scalatra.version>
     <json4s.version>3.5.0</json4s.version>
     <jetty.version>9.3.11.v20160721</jetty.version>
     <prometheus.client.version>0.0.17</prometheus.client.version>
@@ -24,8 +24,8 @@
     <!-- OPH internal deps -->
     <dependency>
       <groupId>com.github.Opetushallitus.scala-utils</groupId>
-      <artifactId>scala-cas_2.11</artifactId>
-      <version> b23861b </version>
+      <artifactId>scala-cas_2.12</artifactId>
+      <version>9e1e25c</version>
       <exclusions>
         <exclusion>
           <groupId>org.http4s</groupId>
@@ -36,11 +36,15 @@
     <!-- OPH internal deps -->
     <dependency>
       <groupId>com.github.Opetushallitus.scala-utils</groupId>
-      <artifactId>scala-ldap-client_2.11</artifactId>
-      <version>a38f43ab115f996785bbc9b1e77c04c3587e723b</version>
+      <artifactId>scala-ldap-client_2.12</artifactId>
+      <version>9e1e25c</version>
       <exclusions>
         <exclusion>
           <groupId>org.http4s</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.json4s</groupId>
           <artifactId>*</artifactId>
         </exclusion>
       </exclusions>
@@ -49,7 +53,7 @@
     <!--
     <dependency>
       <groupId>fi.vm.sade</groupId>
-      <artifactId>scala-cas_2.11</artifactId>
+      <artifactId>scala-cas_2.12</artifactId>
       <version>10</version>
     </dependency>
     -->
@@ -61,7 +65,17 @@
     <dependency>
       <groupId>com.github.Opetushallitus</groupId>
       <artifactId>scala-schema</artifactId>
-      <version> a152737 </version>
+      <version> dc317e1 </version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.http4s</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.json4s</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <!-- external deps -->
     <dependency>
@@ -81,27 +95,27 @@
     </dependency>
     <dependency>
       <groupId>org.scalatra</groupId>
-      <artifactId>scalatra_2.11</artifactId>
+      <artifactId>scalatra_2.12</artifactId>
       <version>${scalatra.version}</version>
     </dependency>
     <dependency>
       <groupId>org.scalatra</groupId>
-      <artifactId>scalatra-auth_2.11</artifactId>
+      <artifactId>scalatra-auth_2.12</artifactId>
       <version>${scalatra.version}</version>
     </dependency>
     <dependency>
       <groupId>org.json4s</groupId>
-      <artifactId>json4s-jackson_2.11</artifactId>
+      <artifactId>json4s-jackson_2.12</artifactId>
       <version>${json4s.version}</version>
     </dependency>
     <dependency>
       <groupId>org.json4s</groupId>
-      <artifactId>json4s-ast_2.11</artifactId>
+      <artifactId>json4s-ast_2.12</artifactId>
       <version>${json4s.version}</version>
     </dependency>
     <dependency>
       <groupId>org.json4s</groupId>
-      <artifactId>json4s-ext_2.11</artifactId>
+      <artifactId>json4s-ext_2.12</artifactId>
       <version>${json4s.version}</version>
     </dependency>
     <dependency>
@@ -111,12 +125,12 @@
     </dependency>
     <dependency>
       <groupId>com.typesafe.slick</groupId>
-      <artifactId>slick_2.11</artifactId>
+      <artifactId>slick_2.12</artifactId>
       <version>${slick.version}</version>
     </dependency>
     <dependency>
       <groupId>com.typesafe.slick</groupId>
-      <artifactId>slick-hikaricp_2.11</artifactId>
+      <artifactId>slick-hikaricp_2.12</artifactId>
       <version>${slick.version}</version>
     </dependency>
     <dependency>
@@ -125,14 +139,14 @@
       <version>2.3.13</version>
     </dependency>
     <dependency>
-      <groupId>com.github.tminglei</groupId>
-      <artifactId>slick-pg</artifactId>
-      <version>5b44ff804f36f4d8d8164682f17cac00626edbd0</version>
+      <groupId>com.github.tminglei.slick-pg</groupId>
+      <artifactId>slick-pg_2.12</artifactId>
+      <version>4f3ea94c46cf886e8a829df0965ca05d1f0b6ebf</version>
     </dependency>
     <dependency>
       <groupId>com.github.tminglei.slick-pg</groupId>
-      <artifactId>slick-pg_json4s_2.11</artifactId>
-      <version>5b44ff804f36f4d8d8164682f17cac00626edbd0</version>
+      <artifactId>slick-pg_json4s_2.12</artifactId>
+      <version>4f3ea94c46cf886e8a829df0965ca05d1f0b6ebf</version>
     </dependency>
     <dependency>
       <groupId>org.postgresql</groupId>
@@ -141,8 +155,8 @@
     </dependency>
     <dependency>
       <groupId>io.reactivex</groupId>
-      <artifactId>rxscala_2.11</artifactId>
-      <version>0.25.1</version>
+      <artifactId>rxscala_2.12</artifactId>
+      <version>0.26.4</version>
     </dependency>
     <dependency>
       <groupId>io.reactivex</groupId>
@@ -156,8 +170,8 @@
     </dependency>
     <dependency>
       <groupId>org.log4s</groupId>
-      <artifactId>log4s_2.11</artifactId>
-      <version>1.3.0</version>
+      <artifactId>log4s_2.12</artifactId>
+      <version>1.3.4</version>
     </dependency>
     <dependency>
       <groupId>org.flywaydb</groupId>
@@ -171,13 +185,13 @@
     </dependency>
     <dependency>
       <groupId>org.http4s</groupId>
-      <artifactId>http4s-blaze-client_2.11</artifactId>
-      <version>0.14.6</version>
+      <artifactId>http4s-blaze-client_2.12</artifactId>
+      <version>0.15.0</version>
     </dependency>
     <dependency>
       <groupId>org.http4s</groupId>
-      <artifactId>http4s-dsl_2.11</artifactId>
-      <version>0.14.6</version>
+      <artifactId>http4s-dsl_2.12</artifactId>
+      <version>0.15.0</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
@@ -195,9 +209,9 @@
       <version>1.0.1</version>
     </dependency>
     <dependency>
-      <groupId>com.tristanhunt</groupId>
-      <artifactId>knockoff_2.11</artifactId>
-      <version>0.8.3</version>
+      <groupId>com.github.raimohanska</groupId>
+      <artifactId>knockoff</artifactId>
+      <version>397efc3ff2a49cfaad1f5e76499715e3d617913a</version>
     </dependency>
     <dependency>
       <groupId>com.github.fge</groupId>
@@ -230,20 +244,20 @@
     </dependency>
     <dependency>
       <groupId>org.scalatest</groupId>
-      <artifactId>scalatest_2.11</artifactId>
-      <version>2.2.4</version>
+      <artifactId>scalatest_2.12</artifactId>
+      <version>3.0.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.scalatra</groupId>
-      <artifactId>scalatra-scalatest_2.11</artifactId>
-      <version>2.2.4</version>
+      <artifactId>scalatra-scalatest_2.12</artifactId>
+      <version>2.5.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.scalatra</groupId>
-      <artifactId>scalatra-scalatest_2.11</artifactId>
-      <version>2.3.0</version>
+      <artifactId>scalatra-scalatest_2.12</artifactId>
+      <version>2.5.0</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
