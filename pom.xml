@@ -141,12 +141,12 @@
     <dependency>
       <groupId>com.github.tminglei</groupId>
       <artifactId>slick-pg</artifactId>
-      <version>v0.15.0-M3</version>
+      <version>4f3ea94c46cf886e8a829df0965ca05d1f0b6ebf</version>
     </dependency>
     <dependency>
       <groupId>com.github.tminglei.slick-pg</groupId>
       <artifactId>slick-pg_json4s_2.12</artifactId>
-      <version>v0.15.0-M3</version>
+      <version>4f3ea94c46cf886e8a829df0965ca05d1f0b6ebf</version>
     </dependency>
     <dependency>
       <groupId>org.postgresql</groupId>
