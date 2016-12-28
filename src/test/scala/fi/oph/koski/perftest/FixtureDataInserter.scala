@@ -6,6 +6,7 @@ import java.util.concurrent.{ExecutorService, Executors, TimeUnit}
 import fi.oph.koski.integrationtest.KoskidevHttpSpecification
 import fi.oph.koski.json.Json
 import fi.oph.koski.log.Logging
+import fi.oph.koski.perftest.RandomName._
 import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus, Oppija, UusiHenkilö}
 import org.scalatra.test.ClientResponse
 
@@ -17,17 +18,19 @@ abstract class FixtureDataInserter extends App with KoskidevHttpSpecification wi
 
   val created: AtomicInteger = new AtomicInteger(0)
 
+  println("Using server " + baseUrl)
+
   1 to amount foreach { x =>
     pool.execute(new Runnable {
       override def run(): Unit = {
         val oikeudet = opiskeluoikeudet(x)
-        val nimi = "Koski-Perf-" + x
-        val henkilö: UusiHenkilö = Henkilö(RandomHetu.nextHetu, nimi, nimi, nimi)
+        val kutsumanimi = randomFirstName
+        val henkilö: UusiHenkilö = Henkilö(RandomHetu.nextHetu, kutsumanimi + " " + randomFirstName, kutsumanimi, randomLastName)
         oikeudet.zipWithIndex.foreach { case(oikeus, index) =>
           val oppija: Oppija = Oppija(henkilö, List(oikeus))
           val body = Json.write(oppija).getBytes("utf-8")
           put("api/oppija", body = body, headers = (authHeaders() ++ jsonContent ++ Map("Cookie" -> s"SERVERID=koski-app${x % 2 + 1}"))) {
-            if (x % (Math.max(1, amount / 10000)) == 1) logger.info(nimi + " " + response.status)
+            if (x % (Math.max(1, amount / 10000)) == 1) logger.info(henkilö.kokonimi + " " + response.status)
             handleResponse(response, oikeus, henkilö)
           }
         }
