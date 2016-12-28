@@ -116,7 +116,7 @@ object Tables {
       val oids = user.organisationOids(AccessType.read).toList
       for {
         oo <- OpiskeluOikeudet
-        if oo.data.#>>(List("oppilaitos", "oid")) inSetBind oids
+        if oo.oppilaitosOid inSetBind oids
       } yield { oo}
     }
   }
