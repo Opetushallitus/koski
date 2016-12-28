@@ -1,5 +1,8 @@
 package fi.oph.koski
 
+import java.io.File
+import java.util.Properties
+
 import fi.oph.koski.koskiuser.{AuthenticationSupport, UserAuthenticationContext}
 import fi.oph.koski.servlet.HtmlServlet
 import fi.oph.koski.sso.SSOSupport
@@ -54,8 +57,10 @@ object IndexServlet {
       <body>
         <div id="content"></div>
       </body>
-      <script id="bundle" src={"/koski/js/" + scriptBundleName + "?" + buildversion.getOrElse(System.currentTimeMillis())}></script>
+      <script id="bundle" src={"/koski/js/" + scriptBundleName + "?" + buildversion.getOrElse(scriptTimestamp(scriptBundleName))}></script>
     </html>
+
+  def scriptTimestamp(scriptBundleName: String) = new File(s"./target/webapp/js/${scriptBundleName}").lastModified()
 }
 
 class LoginPageServlet(val application: UserAuthenticationContext) extends ScalatraServlet with HtmlServlet with SSOSupport {
