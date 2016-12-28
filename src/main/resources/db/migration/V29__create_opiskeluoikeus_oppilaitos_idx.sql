@@ -1,0 +1,1 @@
+CREATE INDEX opiskeluoikeus_oppilaitos_index on opiskeluoikeus(oppilaitos_oid);
