@@ -8,7 +8,7 @@ export default (baseUrl, rowsLens = L.identity) => {
   let pageSize = 100
   let pageNumberP = Bacon.update(0, nextPageBus, (prev) => prev + 1)
 
-  let pageDataE = pageNumberP.flatMap((pageNumber) => Http.get(appendQueryParams(baseUrl, {'pageNumber' : pageNumber, 'pageSize' : pageSize})))
+  let pageDataE = pageNumberP.flatMap((pageNumber) => Http.cachedGet(appendQueryParams(baseUrl, {'pageNumber' : pageNumber, 'pageSize' : pageSize})))
   let fetchingP = nextPageBus.awaiting(pageDataE)
   fetchingP.onValue()
   let pageResultE = pageDataE.map('.result')

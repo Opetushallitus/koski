@@ -38,5 +38,8 @@ http.get = (url) => http(url, { credentials: 'include' })
 http.post = (url, entity) => http(url, { credentials: 'include', method: 'post', body: JSON.stringify(entity), headers: { 'Content-Type': 'application/json'} })
 http.put = (url, entity) => http(url, { credentials: 'include', method: 'put', body: JSON.stringify(entity), headers: { 'Content-Type': 'application/json'} })
 http.mock = (url, result) => mocks[url] = result
+let cache = {}
+http.cachedGet = (url) => cache[url] ? Bacon.once(cache[url]) : http.get(url).doAction((value) => cache[url] = value)
 window.http = http
 export default http
+

@@ -19,7 +19,7 @@ export const uusiOppijaP = locationP.map(location => location.path === '/koski/u
 
 export const selectOppijaE = oppijaIdP.flatMap(oppijaId => {
   return oppijaId
-    ? Bacon.once({loading: true}).concat(Http.get(`/koski/api/editor/${oppijaId}`))
+    ? Bacon.once({loading: true}).concat(Http.cachedGet(`/koski/api/editor/${oppijaId}`))
     : Bacon.once({ empty: true})
 })
 
