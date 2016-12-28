@@ -11,8 +11,8 @@ import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus, Oppija, UusiHenkilö}
 import org.scalatra.test.ClientResponse
 
 abstract class FixtureDataInserter extends App with KoskidevHttpSpecification with Logging {
-  val pool: ExecutorService = Executors.newFixedThreadPool(10)
-  val amount = 100000
+  val pool: ExecutorService = Executors.newFixedThreadPool(20)
+  val amount = 1000000
 
   val t0 = System.currentTimeMillis()
 
