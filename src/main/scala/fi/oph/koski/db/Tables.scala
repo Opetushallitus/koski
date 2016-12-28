@@ -116,7 +116,7 @@ object Tables {
       val oids = user.organisationOids(AccessType.read).toList
       for {
         oo <- OpiskeluOikeudet
-        if oo.oppilaitosOid inSetBind oids
+        if oo.oppilaitosOid inSet oids
       } yield { oo}
     }
   }
@@ -128,7 +128,7 @@ object Tables {
       val oids = user.organisationOids(AccessType.read).toList
       for {
         t <- Tiedonsiirto
-        if t.tallentajaOrganisaatioOid inSetBind oids
+        if t.tallentajaOrganisaatioOid inSet oids
       } yield { t}
     }
   }
@@ -139,8 +139,8 @@ object Tables {
     } else {
       val oids = user.organisationOids(AccessType.read).toList
       TiedonsiirtoYhteenveto
-        .filter(_.tallentajaOrganisaatio inSetBind oids)
-        .filter(_.oppilaitos inSetBind oids)
+        .filter(_.tallentajaOrganisaatio inSet oids)
+        .filter(_.oppilaitos inSet oids)
     }
   }
 
