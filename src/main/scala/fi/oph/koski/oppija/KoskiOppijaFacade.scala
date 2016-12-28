@@ -49,14 +49,14 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
 
   private def createOrUpdateOpiskeluoikeus(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusVersio] = {
     def applicationLog(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: Opiskeluoikeus, result: CreateOrUpdateResult): Unit = {
-      val (verb, content) = result match {
-        case _: Updated => ("Päivitetty", Json.write(result.diff))
-        case _: Created => ("Luotu", Json.write(opiskeluoikeus))
-        case _: NotChanged => ("Päivitetty", "ei muutoksia")
+      val verb = result match {
+        case _: Updated => "Päivitetty"
+        case _: Created => "Luotu"
+        case _: NotChanged => "Päivitetty (ei muutoksia)"
       }
       logger(user).info(verb + " opiskeluoikeus " + result.id + " (versio " + result.versionumero + ")" + " oppijalle " + oppijaOid +
         " tutkintoon " + opiskeluoikeus.suoritukset.map(_.koulutusmoduuli.tunniste).mkString(",") +
-        " oppilaitoksessa " + opiskeluoikeus.oppilaitos.oid + ": " + content)
+        " oppilaitoksessa " + opiskeluoikeus.oppilaitos.oid)
     }
 
     def auditLog(oppijaOid: PossiblyUnverifiedHenkilöOid, result: CreateOrUpdateResult): Unit = {
