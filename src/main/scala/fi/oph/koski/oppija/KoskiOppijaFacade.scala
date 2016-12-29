@@ -101,7 +101,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
         val perustiedot = OpiskeluoikeudenPerustiedot(nimitiedotJaOid, oo.oppilaitos, oo.alkamispäivä, oo.tyyppi, suoritukset, oo.tila.opiskeluoikeusjaksot.last.tila, None)
 
         es.execute {
-          indexInto("koski" / "perustiedot").doc(Json.write(perustiedot))
+          update(opiskeluoikeus.id) in "koski/perustiedot" docAsUpsert Json.write(perustiedot)
         }
 
         OpiskeluoikeusVersio(result.id, result.versionumero)
