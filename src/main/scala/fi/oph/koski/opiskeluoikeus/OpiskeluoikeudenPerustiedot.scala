@@ -72,12 +72,29 @@ class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöReposito
     )
 
     val elasticFilters = filters.flatMap {
-      case OpiskeluoikeusQueryFilter.Nimihaku(hakusana) => hakusana.trim.split(" ").map { namePrefix =>
+      case Nimihaku(hakusana) => hakusana.trim.split(" ").map { namePrefix =>
         Map("bool" -> Map("should" -> List(
           Map("prefix" -> Map("henkilö.sukunimi" -> namePrefix)),
           Map("prefix" -> Map("henkilö.etunimet" -> namePrefix))
         )))
       }
+      case Luokkahaku(hakusana) => hakusana.trim.split(" ").map { prefix =>
+        Map("prefix" -> Map("luokka" -> prefix))
+      }
+      case SuorituksenTyyppi(tyyppi) => List(Map("term" -> Map("suoritukset.tyyppi.koodiarvo" -> tyyppi.koodiarvo)))
+      case OpiskeluoikeudenTyyppi(tyyppi) => List(Map("term" -> Map("tyyppi.koodiarvo" -> tyyppi.koodiarvo)))
+      case OpiskeluoikeudenTila(tila) => List(Map("term" -> Map("tila.koodiarvo" -> tila.koodiarvo)))
+      case Tutkintohaku(koulutukset, osaamisalat, nimikkeet) => List(Map("bool" -> Map("should" ->
+        (koulutukset.map{ koulutus => Map("term" -> Map("suoritukset.koulutusmoduuli.tunniste.koodiarvo" -> koulutus.koodiarvo))} ++
+          osaamisalat.map{ ala => Map("term" -> Map("suoritukset.koulutusmoduuli.osaamisala.koodiarvo" -> ala.koodiarvo))} ++
+          nimikkeet.map{ nimike => Map("term" -> Map("suoritukset.koulutusmoduuli.tutkintonimike.koodiarvo" -> nimike.koodiarvo))}
+        )
+      )))
+      case OpiskeluoikeusQueryFilter.Toimipiste(toimipisteet) => List(Map("bool" -> Map("should" ->
+        toimipisteet.map{ toimipiste => Map("term" -> Map("suoritukset.toimipiste.oid" -> toimipiste.oid))}
+      )))
+      case SuorituksenTila(tila) => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("suorituksenTila-parametriä ei tueta"))
+      case SuoritusJsonHaku(json) => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("suoritusJson-parametriä ei tueta"))
     } ++ (if (session.hasGlobalReadAccess) { Nil } else { List(Map("terms" -> Map("oppilaitos.oid" -> session.organisationOids(AccessType.read))))})
 
     val elasticQuery = elasticFilters match {
@@ -90,7 +107,6 @@ class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöReposito
         )
       )
     }
-
 
     val doc = Json.toJValue(Map(
       "query" -> elasticQuery,
