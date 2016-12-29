@@ -64,7 +64,7 @@ class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöReposito
   def find(filters: List[OpiskeluoikeusQueryFilter], sorting: OpiskeluoikeusSortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): List[OpiskeluoikeudenPerustiedot] = {
 
     val execute: Future[RichSearchResponse] = es.execute {
-      search("koski")
+      search("koski") start (pagination.page * pagination.size) limit (pagination.size)
     }
 
     val a: RichSearchResponse = execute.await
