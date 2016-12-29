@@ -12,8 +12,11 @@ import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
 import com.sksamuel.elastic4s.ElasticDsl._
+import fi.oph.koski.db.GlobalExecutionContext
 
-class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRepository: OpiskeluoikeusRepository, es: ElasticClient) extends Logging with Timing {
+import scala.util.{Failure, Success}
+
+class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRepository: OpiskeluoikeusRepository, es: ElasticClient) extends Logging with Timing with GlobalExecutionContext {
   def findOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(OpiskeluoikeusRepository.findByOppijaOid)(user)(oid)
 
   def findUserOppija(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(OpiskeluoikeusRepository.findByUserOid)(user)(user.oid)
@@ -77,7 +80,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
       Left(KoskiErrorCategory.forbidden.omienTietojenMuokkaus())
     } else {
       val result = OpiskeluoikeusRepository.createOrUpdate(oppijaOid, opiskeluoikeus)
-      result.right.map { result =>
+      result.right.map { (result: CreateOrUpdateResult) =>
         applicationLog(oppijaOid, opiskeluoikeus, result)
         auditLog(oppijaOid, result)
 
@@ -101,7 +104,10 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
         val perustiedot = OpiskeluoikeudenPerustiedot(nimitiedotJaOid, oo.oppilaitos, oo.alkamispäivä, oo.tyyppi, suoritukset, oo.tila.opiskeluoikeusjaksot.last.tila, oo.luokka)
 
         es.execute {
-          update(opiskeluoikeus.id) in "koski/perustiedot" docAsUpsert Json.write(perustiedot)
+          update(result.id) in "koski/perustiedot" docAsUpsert Json.write(perustiedot)
+        }.andThen {
+          case Success(_) => // OK, TODO: how to ensure this gets completed (think server restart for instance)
+          case Failure(e) => logger.error(e)("ElasticSearch indexing failed")
         }
 
         OpiskeluoikeusVersio(result.id, result.versionumero)
