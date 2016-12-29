@@ -65,9 +65,9 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config) extends Logging {
   private val elasticSearchHttp = Http(url)
 
   def find(filters: List[OpiskeluoikeusQueryFilter], sorting: OpiskeluoikeusSortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): List[OpiskeluoikeudenPerustiedot] = {
-    val elasticSort = List(
-      Map("henkilö.sukunimi.keyword" -> "asc"),
-      Map("henkilö.etunimet.keyword" -> "asc")
+    def nimi(order: String) = List(
+      Map("henkilö.sukunimi.keyword" -> order),
+      Map("henkilö.etunimet.keyword" -> order)
     )
     def luokka(order: String) = Map("luokka" -> order) :: nimi(order)
     def alkamispäivä(order: String) = Map("alkamispäivä" -> order):: nimi(order)
