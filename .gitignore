@@ -24,3 +24,5 @@ PersonOids.scala
 curltestdata.json
 scripts/cloudrc
 scripts/site.retry
+.vscode
+elastic-data
