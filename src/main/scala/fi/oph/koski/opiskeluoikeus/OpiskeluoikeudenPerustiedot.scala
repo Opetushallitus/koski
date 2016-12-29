@@ -178,6 +178,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     */
 
     if (config.getBoolean("elasticsearch.reIndexAtStartup")) {
+      logger.info("Starting elasticsearch re-indexing")
       val bufferSize = 10
       opiskeluoikeusQueryService.streamingQuery(Nil, None, None)(KoskiSession.systemUser).tumblingBuffer(bufferSize).zipWithIndex.map {
         case (rows, index) =>
