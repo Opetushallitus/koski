@@ -2,8 +2,8 @@ package fi.oph.koski.oppija
 
 import com.sksamuel.elastic4s.ElasticClient
 import fi.oph.koski.henkilo._
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.json.Json
+import fi.oph.koski.http.{Http, HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.json.{Json, Json4sHttp4s}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.KoskiMessageField.{opiskeluoikeusId, opiskeluoikeusVersio, oppijaHenkiloOid}
 import fi.oph.koski.log.KoskiOperation._
@@ -13,10 +13,11 @@ import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
 import com.sksamuel.elastic4s.ElasticDsl._
 import fi.oph.koski.db.GlobalExecutionContext
+import org.json4s._
 
 import scala.util.{Failure, Success}
 
-class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRepository: OpiskeluoikeusRepository, es: ElasticClient) extends Logging with Timing with GlobalExecutionContext {
+class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRepository: OpiskeluoikeusRepository) extends Logging with Timing with GlobalExecutionContext {
   def findOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(OpiskeluoikeusRepository.findByOppijaOid)(user)(oid)
 
   def findUserOppija(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(OpiskeluoikeusRepository.findByUserOid)(user)(user.oid)
@@ -103,11 +104,18 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
 
         val perustiedot = OpiskeluoikeudenPerustiedot(nimitiedotJaOid, oo.oppilaitos, oo.alkamispäivä, oo.tyyppi, suoritukset, oo.tila.opiskeluoikeusjaksot.last.tila, oo.luokka)
 
-        es.execute {
-          update(result.id) in "koski/perustiedot" docAsUpsert Json.write(perustiedot)
-        }.andThen {
-          case Success(_) => // OK, TODO: how to ensure this gets completed (think server restart for instance)
-          case Failure(e) => logger.error(e)("ElasticSearch indexing failed")
+        import Http._
+
+        implicit val formats = Json.jsonFormats
+        val doc = Json.toJValue(Map("doc_as_upsert" -> true, "doc" -> perustiedot))
+
+        val response = Http.runTask(Http("http://localhost:9200")
+          .post(uri"/koski/perustiedot/${result.id}/_update", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue])) // TODO: hardcoded url
+
+        val success: Int = (response \ "_shards" \ "successful").extract[Int]
+
+        if (success < 1) {
+          logger.error("Elasticsearch indexing failed (success count < 1)")
         }
 
         OpiskeluoikeusVersio(result.id, result.versionumero)
