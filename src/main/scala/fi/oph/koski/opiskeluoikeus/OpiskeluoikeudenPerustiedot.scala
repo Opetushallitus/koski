@@ -66,21 +66,21 @@ class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöReposito
   def find(filters: List[OpiskeluoikeusQueryFilter], sorting: OpiskeluoikeusSortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): List[OpiskeluoikeudenPerustiedot] = {
     import Http._
 
-    val sortOrder = sorting match {
-      case Ascending(_) => "asc"
-      case Descending(_) => "desc"
-    }
-
-    val nameSort = List(
-      Map("henkilö.sukunimi.keyword" -> sortOrder),
-      Map("henkilö.etunimet.keyword" -> sortOrder)
+    def nimi(order: String) = List(
+      Map("henkilö.sukunimi.keyword" -> order),
+      Map("henkilö.etunimet.keyword" -> order)
     )
+    def luokka(order: String) = Map("luokka" -> order) :: nimi(order)
+    def alkamispäivä(order: String) = Map("alkamispäivä" -> order):: nimi(order)
 
-    val elasticSort = sorting.field match {
-      case "nimi" => nameSort
-      case "luokka" => Map("luokka" -> sortOrder) :: nameSort
-      case "alkamispäivä" => Map("alkamispäivä" -> sortOrder) :: nameSort
-      case s: Any => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("Epäkelpo järjestyskriteeri: " + s))
+    val elasticSort = sorting match {
+      case Ascending("nimi") => nimi("asc")
+      case Ascending("luokka") => luokka("asc")
+      case Ascending("alkamispäivä") => alkamispäivä("asc")
+      case Descending("nimi") => nimi("desc")
+      case Descending("luokka") => luokka("desc")
+      case Descending("alkamispäivä") => alkamispäivä("desc")
+      case _ => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("Epäkelpo järjestyskriteeri: " + sorting.field))
     }
 
     val elasticFilters = filters.flatMap {
