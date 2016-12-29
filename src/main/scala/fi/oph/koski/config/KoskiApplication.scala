@@ -14,7 +14,7 @@ import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.{Logging, TimedProxy}
-import fi.oph.koski.opiskeluoikeus.{AuxiliaryOpiskeluoikeusRepository, CompositeOpiskeluoikeusRepository, OpiskeluoikeusRepository, PostgresOpiskeluoikeusRepository}
+import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
@@ -55,12 +55,13 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val henkilöCacheUpdater = new KoskiHenkilöCacheUpdater(database.db, henkilöRepository)
   lazy val possu = TimedProxy[OpiskeluoikeusRepository](new PostgresOpiskeluoikeusRepository(database.db, historyRepository, henkilöCacheUpdater))
   lazy val ytr = TimedProxy[AuxiliaryOpiskeluoikeusRepository](YtrOpiskeluoikeusRepository(ytrClient, henkilöRepository, organisaatioRepository, oppilaitosRepository, koodistoViitePalvelu, ytrAccessChecker, Some(validator)))
-  lazy val OpiskeluoikeusRepository = new CompositeOpiskeluoikeusRepository(possu, List(virta, ytr))
+  lazy val opiskeluoikeusRepository = new CompositeOpiskeluoikeusRepository(possu, List(virta, ytr))
+  lazy val opiskeluoikeusQueryRepository = new PostgresOpiskeluoikeusQueryService(database.db)
   lazy val validator: KoskiValidator = new KoskiValidator(tutkintoRepository, koodistoViitePalvelu, organisaatioRepository)
-  lazy val oppijaFacade = new KoskiOppijaFacade(henkilöRepository, OpiskeluoikeusRepository)
+  lazy val oppijaFacade = new KoskiOppijaFacade(henkilöRepository, opiskeluoikeusRepository)
   lazy val sessionTimeout = SessionTimeout(config)
   lazy val serviceTicketRepository = new SSOTicketSessionRepository(database.db, sessionTimeout)
-  lazy val fixtureCreator = new FixtureCreator(config, database, OpiskeluoikeusRepository, henkilöRepository, validator)
+  lazy val fixtureCreator = new FixtureCreator(config, database, opiskeluoikeusRepository, henkilöRepository, validator)
   lazy val tiedonsiirtoService = new TiedonsiirtoService(database.db, new TiedonsiirtoFailureMailer(config, authenticationServiceClient), organisaatioRepository, henkilöRepository, koodistoViitePalvelu, userRepository)
   lazy val healthCheck = HealthCheck(this)
 }

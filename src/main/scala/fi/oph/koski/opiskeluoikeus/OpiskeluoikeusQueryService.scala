@@ -3,15 +3,23 @@ package fi.oph.koski.opiskeluoikeus
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
 
+import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{Luokkahaku, Nimihaku, SuoritusJsonHaku, _}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioOid, OrganisaatioWithOid}
+import fi.oph.koski.util.PaginationSettings
 import org.json4s.JsonAST.JValue
+import rx.lang.scala.Observable
 
 import scala.util.{Failure, Success}
+
+trait OpiskeluoikeusQueryService {
+  def streamingQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[OpiskeluoikeusSortOrder], pagination: Option[PaginationSettings])(implicit user: KoskiSession): Observable[(OpiskeluoikeusRow, HenkilöRow)]
+}
 
 sealed trait OpiskeluoikeusQueryFilter
 
@@ -30,7 +38,22 @@ object OpiskeluoikeusQueryFilter {
   case class Nimihaku(hakusana: String) extends OpiskeluoikeusQueryFilter
   case class SuoritusJsonHaku(json: JValue) extends OpiskeluoikeusQueryFilter
 
-  def parseQueryFilter(params: List[(String, String)])(implicit koodisto: KoodistoViitePalvelu, organisaatiot: OrganisaatioRepository, session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] = {
+  def parse(params: List[(String, String)])(implicit koodisto: KoodistoViitePalvelu, organisaatiot: OrganisaatioRepository, session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] = OpiskeluoikeusQueryFilterParser.parse(params)
+}
+
+trait OpiskeluoikeusSortOrder {
+  def field: String
+}
+
+object OpiskeluoikeusSortOrder {
+  val oppijaOid = "oppijaOid"
+
+  case class Ascending(field: String) extends OpiskeluoikeusSortOrder
+  case class Descending(field: String) extends OpiskeluoikeusSortOrder
+}
+
+private object OpiskeluoikeusQueryFilterParser {
+  def parse(params: List[(String, String)])(implicit koodisto: KoodistoViitePalvelu, organisaatiot: OrganisaatioRepository, session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] = {
     def dateParam(q: (String, String)): Either[HttpStatus, LocalDate] = q match {
       case (p, v) => try {
         Right(LocalDate.parse(v))

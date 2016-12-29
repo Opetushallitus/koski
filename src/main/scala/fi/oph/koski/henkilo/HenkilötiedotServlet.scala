@@ -13,7 +13,7 @@ class HenkilötiedotServlet(val application: KoskiApplication) extends ApiServle
     contentType = "application/json;charset=utf-8"
     params.get("query") match {
       case Some(query) if (query.length >= 3) =>
-        HenkilötiedotFacade(application.henkilöRepository, application.OpiskeluoikeusRepository).findHenkilötiedot(query.toUpperCase)(koskiSession)
+        HenkilötiedotFacade(application.henkilöRepository, application.opiskeluoikeusRepository).findHenkilötiedot(query.toUpperCase)(koskiSession)
       case _ =>
         throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort)
     }

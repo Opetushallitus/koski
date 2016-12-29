@@ -6,8 +6,6 @@ import fi.oph.koski.schema.{HenkilötiedotJaOid, KoskeenTallennettavaOpiskeluoik
 import fi.oph.koski.util.PaginationSettings
 
 class CompositeOpiskeluoikeusRepository(main: OpiskeluoikeusRepository, aux: List[AuxiliaryOpiskeluoikeusRepository]) extends OpiskeluoikeusRepository {
-  override def streamingQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[OpiskeluoikeusSortOrder], pagination: Option[PaginationSettings])(implicit user: KoskiSession) = main.streamingQuery(filters, sorting, pagination)
-
   override def filterOppijat(oppijat: Seq[HenkilötiedotJaOid])(implicit user: KoskiSession) = {
     (main :: aux).foldLeft((oppijat, Nil: Seq[HenkilötiedotJaOid])) { case ((left, found), repo) =>
       val newlyFound = repo.filterOppijat(left)

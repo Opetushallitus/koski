@@ -9,7 +9,7 @@ import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 class OpiskeluoikeusServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Logging with NoCache {
   get("/:id") {
-    val result: Option[OpiskeluoikeusRow] = application.OpiskeluoikeusRepository.findById(getIntegerParam("id"))(koskiSession)
+    val result: Option[OpiskeluoikeusRow] = application.opiskeluoikeusRepository.findById(getIntegerParam("id"))(koskiSession)
     renderEither(result match {
       case Some(oo) => Right(oo.toOpiskeluoikeus)
       case _ => Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())

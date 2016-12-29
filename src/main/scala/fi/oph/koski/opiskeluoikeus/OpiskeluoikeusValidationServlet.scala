@@ -30,9 +30,9 @@ class OpiskeluoikeusValidationServlet(val application: KoskiApplication) extends
       result
     }
 
-    OpiskeluoikeusQueryFilter.parseQueryFilter(params.filterKeys(!List("errorsOnly", "history", "henkilö").contains(_)).toList)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession) match {
+    OpiskeluoikeusQueryFilter.parse(params.filterKeys(!List("errorsOnly", "history", "henkilö").contains(_)).toList)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession) match {
       case Right(filters) =>
-        val rows: Observable[(OpiskeluoikeusRow, HenkilöRow)] = application.OpiskeluoikeusRepository.streamingQuery(filters, None, None)(koskiSession)
+        val rows: Observable[(OpiskeluoikeusRow, HenkilöRow)] = application.opiskeluoikeusQueryRepository.streamingQuery(filters, None, None)(koskiSession)
         rows.map(_._1).map(validate).filter(result => !(errorsOnly && result.isOk))
 
       case Left(status) =>
@@ -42,7 +42,7 @@ class OpiskeluoikeusValidationServlet(val application: KoskiApplication) extends
 
   get("/:id") {
     val context = ValidateContext(koskiSession, application.validator, application.historyRepository, application.henkilöRepository)
-    val result: Option[OpiskeluoikeusRow] = application.OpiskeluoikeusRepository.findById(getIntegerParam("id"))(koskiSession)
+    val result: Option[OpiskeluoikeusRow] = application.opiskeluoikeusRepository.findById(getIntegerParam("id"))(koskiSession)
     renderEither(result match {
       case Some(oo) => Right(context.validateAll(oo))
       case _ => Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())

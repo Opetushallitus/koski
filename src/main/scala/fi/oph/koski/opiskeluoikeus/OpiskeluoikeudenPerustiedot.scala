@@ -13,6 +13,7 @@ import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException}
 import fi.oph.koski.util.{ListPagination, PaginatedResponse, Pagination, PaginationSettings}
 import fi.oph.scalaschema.annotation.Description
 import OpiskeluoikeusQueryFilter._
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusSortOrder.{Ascending, Descending}
 
 case class OpiskeluoikeudenPerustiedot(
   henkilö: NimitiedotJaOid,
@@ -53,9 +54,9 @@ object KoulutusmoduulinPerustiedot {
 
 }
 
-class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöRepository, OpiskeluoikeusRepository: OpiskeluoikeusRepository, koodisto: KoodistoViitePalvelu) {
+class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöRepository, opiskeluoikeusRepository: OpiskeluoikeusQueryService, koodisto: KoodistoViitePalvelu) {
   def find(filters: List[OpiskeluoikeusQueryFilter], sorting: OpiskeluoikeusSortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): List[OpiskeluoikeudenPerustiedot] = {
-    val perustiedotObservable = OpiskeluoikeusRepository.streamingQuery(filters, Some(sorting), Some(pagination)).map {
+    val perustiedotObservable = opiskeluoikeusRepository.streamingQuery(filters, Some(sorting), Some(pagination)).map {
       case (opiskeluoikeusRow, henkilöRow) =>
         val nimitiedotJaOid = henkilöRow.toNimitiedotJaOid
         val oo = opiskeluoikeusRow.toOpiskeluoikeus
@@ -76,7 +77,7 @@ class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöReposito
 }
 
 class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Pagination {
-  private val repository = new OpiskeluoikeudenPerustiedotRepository(application.henkilöRepository, application.OpiskeluoikeusRepository, application.koodistoViitePalvelu)
+  private val repository = new OpiskeluoikeudenPerustiedotRepository(application.henkilöRepository, application.opiskeluoikeusQueryRepository, application.koodistoViitePalvelu)
   get("/") {
     renderEither({
       val sort = params.get("sort").map {
@@ -87,7 +88,7 @@ class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) exte
         }
       }.getOrElse(Ascending("nimi"))
 
-      OpiskeluoikeusQueryFilter.parseQueryFilter(params.toList)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession) match {
+      OpiskeluoikeusQueryFilter.parse(params.toList)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession) match {
         case Right(filters) =>
           val result: List[OpiskeluoikeudenPerustiedot] = repository.find(filters, sort, paginationSettings)(koskiSession)
           Right(PaginatedResponse(Some(paginationSettings), result, result.length))

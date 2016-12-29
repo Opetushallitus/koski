@@ -6,6 +6,7 @@ import fi.oph.koski.koskiuser.{KoskiSession, RequiresAuthentication}
 import fi.oph.koski.log.KoskiMessageField.{apply => _, _}
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusSortOrder.Ascending
 import fi.oph.koski.schema.Henkilö.{apply => _, _}
 import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import fi.oph.koski.servlet.{ApiServlet, ObservableSupport}
@@ -18,7 +19,7 @@ trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with 
   def query(params: Map[String, String]): Observable[(TäydellisetHenkilötiedot, List[OpiskeluoikeusRow])] = {
     logger(koskiSession).info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
 
-    OpiskeluoikeusQueryFilter.parseQueryFilter(params.toList)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession) match {
+    OpiskeluoikeusQueryFilter.parse(params.toList)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession) match {
       case Right(filters) =>
         AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_HAKU, koskiSession, Map(hakuEhto -> params.toList.map { case (p,v) => p + "=" + v }.mkString("&"))))
         query(filters)(koskiSession)
@@ -49,7 +50,7 @@ trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with 
   }
 
   def streamingQueryGroupedByOid(filters: List[OpiskeluoikeusQueryFilter])(implicit user: KoskiSession): Observable[(Oid, List[(OpiskeluoikeusRow)])] = {
-    val rows = application.OpiskeluoikeusRepository.streamingQuery(filters, Some(Ascending(OpiskeluoikeusSortOrder.oppijaOid)), None)
+    val rows = application.opiskeluoikeusQueryRepository.streamingQuery(filters, Some(Ascending(OpiskeluoikeusSortOrder.oppijaOid)), None)
 
     val groupedByPerson: Observable[List[(OpiskeluoikeusRow, HenkilöRow)]] = rows
       .tumblingBuffer(rows.map(_._1.oppijaOid).distinctUntilChanged.drop(1))
