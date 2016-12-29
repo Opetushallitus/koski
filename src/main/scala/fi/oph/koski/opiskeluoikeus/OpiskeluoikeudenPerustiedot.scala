@@ -2,7 +2,6 @@ package fi.oph.koski.opiskeluoikeus
 
 import java.time.LocalDate
 
-import com.sksamuel.elastic4s.embedded.LocalNode
 import com.typesafe.config.Config
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{Http, HttpStatus, KoskiErrorCategory}
@@ -15,7 +14,6 @@ import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, ObservableSupport}
 import fi.oph.koski.util.{PaginatedResponse, Pagination, PaginationSettings}
 import fi.oph.scalaschema.annotation.Description
-import org.elasticsearch.common.settings.Settings
 import org.json4s.JValue
 
 case class OpiskeluoikeudenPerustiedot(
@@ -162,6 +160,11 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
   }
 
   val es = {
+    /*
+    import org.elasticsearch.common.settings.Settings
+    import com.sksamuel.elastic4s.embedded.LocalNode
+
+
     if (url.startsWith("http://localhost:9200")) {
       logger.info("Starting embedded elasticsearch node")
       val settings = Settings.builder()
@@ -172,6 +175,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
         .build()
       val node = LocalNode(settings)
     }
+    */
 
     if (config.getBoolean("elasticsearch.reIndexAtStartup")) {
       val bufferSize = 10

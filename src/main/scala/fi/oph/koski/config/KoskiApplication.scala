@@ -1,7 +1,5 @@
 package fi.oph.koski.config
 
-import com.sksamuel.elastic4s.{ElasticClient, ElasticsearchClientUri}
-import com.sksamuel.elastic4s.embedded.LocalNode
 import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.koski.arvosana.ArviointiasteikkoRepository
 import fi.oph.koski.cache.Cache.cacheAllRefresh
@@ -25,7 +23,6 @@ import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.validation.KoskiValidator
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
 import fi.oph.koski.ytr.{YlioppilasTutkintoRekisteri, YtrAccessChecker, YtrOpiskeluoikeusRepository}
-import org.elasticsearch.common.settings.Settings
 
 object KoskiApplication {
   lazy val defaultConfig = ConfigFactory.load

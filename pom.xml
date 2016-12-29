@@ -233,17 +233,6 @@
       <artifactId>simpleclient_servlet</artifactId>
       <version>${prometheus.client.version}</version>
     </dependency>
-    <dependency>
-      <groupId>com.sksamuel.elastic4s</groupId>
-      <artifactId>elastic4s-core_2.12</artifactId>
-      <version>5.1.4</version>
-    </dependency>
-    <dependency>
-      <groupId>com.sksamuel.elastic4s</groupId>
-      <artifactId>elastic4s-embedded_2.12</artifactId>
-      <version>5.1.4</version>
-    </dependency>
-
     <!-- test deps -->
     <dependency>
       <groupId>junit</groupId>

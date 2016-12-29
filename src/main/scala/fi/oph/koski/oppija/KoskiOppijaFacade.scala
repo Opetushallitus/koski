@@ -1,6 +1,5 @@
 package fi.oph.koski.oppija
 
-import com.sksamuel.elastic4s.ElasticClient
 import fi.oph.koski.henkilo._
 import fi.oph.koski.http.{Http, HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.{Json, Json4sHttp4s}
@@ -11,7 +10,6 @@ import fi.oph.koski.log.{AuditLog, _}
 import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
-import com.sksamuel.elastic4s.ElasticDsl._
 import fi.oph.koski.db.GlobalExecutionContext
 import org.json4s._
 
