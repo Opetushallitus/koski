@@ -5,9 +5,9 @@ import java.time.LocalDate
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.OpiskeluoikeusRow
 import fi.oph.koski.henkilo.HenkilöRepository
-import fi.oph.koski.http.{HttpStatus, HttpStatusException, KoskiErrorCategory}
+import fi.oph.koski.http.{Http, HttpStatus, HttpStatusException, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.koskiuser.{KoskiSession, RequiresAuthentication}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresAuthentication}
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException}
 import fi.oph.koski.util.{ListPagination, PaginatedResponse, Pagination, PaginationSettings}
@@ -17,7 +17,9 @@ import com.sksamuel.elastic4s.ElasticClient
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusSortOrder.{Ascending, Descending}
 import com.sksamuel.elastic4s.ElasticDsl._
 import com.sksamuel.elastic4s.searches.RichSearchResponse
-import fi.oph.koski.json.Json
+import com.sksamuel.elastic4s.searches.sort.FieldSortDefinition
+import fi.oph.koski.json.{Json, Json4sHttp4s}
+import org.json4s.JValue
 
 import scala.concurrent.Future
 
@@ -62,35 +64,45 @@ object KoulutusmoduulinPerustiedot {
 
 class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöRepository, opiskeluoikeusRepository: OpiskeluoikeusQueryService, koodisto: KoodistoViitePalvelu, es: ElasticClient) {
   def find(filters: List[OpiskeluoikeusQueryFilter], sorting: OpiskeluoikeusSortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): List[OpiskeluoikeudenPerustiedot] = {
+    import Http._
 
-    val execute: Future[RichSearchResponse] = es.execute {
-      search("koski") start (pagination.page * pagination.size) limit (pagination.size)
+    val elasticSort = List(
+      Map("henkilö.sukunimi.keyword" -> "asc"),
+      Map("henkilö.etunimet.keyword" -> "asc")
+    )
+
+    val elasticFilters = filters.flatMap {
+      case OpiskeluoikeusQueryFilter.Nimihaku(hakusana) => hakusana.trim.split(" ").map { namePrefix =>
+        Map("bool" -> Map("should" -> List(
+          Map("prefix" -> Map("henkilö.sukunimi" -> namePrefix)),
+          Map("prefix" -> Map("henkilö.etunimet" -> namePrefix))
+        )))
+      }
+    } ++ (if (session.hasGlobalReadAccess) { Nil } else { List(Map("terms" -> Map("oppilaitos.oid" -> session.organisationOids(AccessType.read))))})
+
+    val elasticQuery = elasticFilters match {
+      case Nil => Map.empty
+      case _ => Map(
+        "bool" -> Map(
+          "must" -> List(
+            elasticFilters
+          )
+        )
+      )
     }
 
-    val a: RichSearchResponse = execute.await
 
+    val doc = Json.toJValue(Map(
+      "query" -> elasticQuery,
+      "sort" -> elasticSort,
+      "from" -> pagination.page * pagination.size,
+      "size" -> pagination.size
+    ))
 
-    a.hits.map{ hit =>
-      println(Json.writePretty(Json.parse(hit.sourceAsString)))
-      Json.read[OpiskeluoikeudenPerustiedot](hit.sourceAsString)
-    }.toList
-    /*val perustiedotObservable = opiskeluoikeusRepository.streamingQuery(filters, Some(sorting), Some(pagination)).map {
-      case (opiskeluoikeusRow, henkilöRow) =>
-        val nimitiedotJaOid = henkilöRow.toNimitiedotJaOid
-        val oo = opiskeluoikeusRow.toOpiskeluoikeus
-        val suoritukset: List[SuorituksenPerustiedot] = oo.suoritukset
-          .filterNot(_.isInstanceOf[PerusopetuksenVuosiluokanSuoritus])
-          .map { suoritus =>
-            val (osaamisala, tutkintonimike) = suoritus match {
-              case s: AmmatillisenTutkinnonSuoritus => (s.osaamisala, s.tutkintonimike)
-              case s: NäyttötutkintoonValmistavanKoulutuksenSuoritus => (s.osaamisala, s.tutkintonimike)
-              case _ => (None, None)
-            }
-            SuorituksenPerustiedot(suoritus.tyyppi, KoulutusmoduulinPerustiedot(suoritus.koulutusmoduuli.tunniste), osaamisala, tutkintonimike, suoritus.toimipiste)
-          }
-        OpiskeluoikeudenPerustiedot(nimitiedotJaOid, oo.oppilaitos, oo.alkamispäivä, oo.tyyppi, suoritukset, oo.tila.opiskeluoikeusjaksot.last.tila, opiskeluoikeusRow.luokka)
-    }
-    perustiedotObservable.toBlocking.toList*/
+    implicit val formats = Json.jsonFormats
+    val response = Http.runTask(Http("http://localhost:9200").post(uri"/koski/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue])) // TODO: hardcoded url
+    (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source").extract[OpiskeluoikeudenPerustiedot])
+
   }
 }
 
