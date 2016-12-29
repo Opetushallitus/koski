@@ -66,10 +66,22 @@ class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöReposito
   def find(filters: List[OpiskeluoikeusQueryFilter], sorting: OpiskeluoikeusSortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): List[OpiskeluoikeudenPerustiedot] = {
     import Http._
 
-    val elasticSort = List(
-      Map("henkilö.sukunimi.keyword" -> "asc"),
-      Map("henkilö.etunimet.keyword" -> "asc")
+    val sortOrder = sorting match {
+      case Ascending(_) => "asc"
+      case Descending(_) => "desc"
+    }
+
+    val nameSort = List(
+      Map("henkilö.sukunimi.keyword" -> sortOrder),
+      Map("henkilö.etunimet.keyword" -> sortOrder)
     )
+
+    val elasticSort = sorting.field match {
+      case "nimi" => nameSort
+      case "luokka" => Map("luokka" -> sortOrder) :: nameSort
+      case "alkamispäivä" => Map("alkamispäivä" -> sortOrder) :: nameSort
+      case s: Any => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("Epäkelpo järjestyskriteeri: " + s))
+    }
 
     val elasticFilters = filters.flatMap {
       case Nimihaku(hakusana) => hakusana.trim.split(" ").map { namePrefix =>
