@@ -45,7 +45,7 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
     } else if(Hetu.validFormat(query).isRight) {
       List(opintopolku, virta, ytr).iterator.map(_.findByHetu(query)).find(!_.isEmpty).toList.flatten
     } else {
-      val oids = henkilöCache.find(query)
+      val oids = henkilöCache.findOids(query)
       findByOids(oids).map(_.toHenkilötiedotJaOid)
     }
   }
