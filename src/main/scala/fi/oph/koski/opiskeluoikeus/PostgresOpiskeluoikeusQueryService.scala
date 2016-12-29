@@ -13,7 +13,7 @@ import fi.oph.koski.util.{PaginationSettings, QueryPagination, ReactiveStreamsTo
 import rx.lang.scala.Observable
 import slick.lifted.Query
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods._
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods.{parse => parseJson}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusSortOrder.{Ascending, Descending}
 
 class PostgresOpiskeluoikeusQueryService(val db: DB) extends OpiskeluoikeusQueryService with GlobalExecutionContext with KoskiDatabaseMethods with Logging with SerializableTransactions {
@@ -25,22 +25,22 @@ class PostgresOpiskeluoikeusQueryService(val db: DB) extends OpiskeluoikeusQuery
       case (query, OpiskeluoikeusPäättynytViimeistään(päivä)) => query.filter(_._1.data.#>>(List("päättymispäivä")) <= päivä.toString)
       case (query, OpiskeluoikeusAlkanutAikaisintaan(päivä)) => query.filter(_._1.data.#>>(List("alkamispäivä")) >= päivä.toString)
       case (query, OpiskeluoikeusAlkanutViimeistään(päivä)) => query.filter(_._1.data.#>>(List("alkamispäivä")) <= päivä.toString)
-      case (query, SuorituksenTila(tila)) => query.filter(_._1.data.+>("suoritukset").@>(parse(s"""[{"tila":{"koodiarvo":"${tila.koodiarvo}"}}]""")))
+      case (query, SuorituksenTila(tila)) => query.filter(_._1.data.+>("suoritukset").@>(parseJson(s"""[{"tila":{"koodiarvo":"${tila.koodiarvo}"}}]""")))
       case (query, OpiskeluoikeudenTyyppi(tyyppi)) => query.filter(_._1.data.#>>(List("tyyppi", "koodiarvo")) === tyyppi.koodiarvo)
-      case (query, SuorituksenTyyppi(tyyppi)) => query.filter(_._1.data.+>("suoritukset").@>(parse(s"""[{"tyyppi":{"koodiarvo":"${tyyppi.koodiarvo}"}}]""")))
+      case (query, SuorituksenTyyppi(tyyppi)) => query.filter(_._1.data.+>("suoritukset").@>(parseJson(s"""[{"tyyppi":{"koodiarvo":"${tyyppi.koodiarvo}"}}]""")))
       case (query, OpiskeluoikeudenTila(tila)) => query.filter(_._1.data.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "tila", "koodiarvo")) === tila.koodiarvo)
       case (query, Tutkintohaku(tutkinnot, osaamisalat, nimikkeet)) =>
         val matchers = tutkinnot.map { tutkinto =>
-          parse(s"""[{"koulutusmoduuli":{"tunniste": {"koodiarvo": "${tutkinto.koodiarvo}"}}}]""")
+          parseJson(s"""[{"koulutusmoduuli":{"tunniste": {"koodiarvo": "${tutkinto.koodiarvo}"}}}]""")
         } ++ nimikkeet.map { nimike =>
-          parse(s"""[{"tutkintonimike":[{"koodiarvo": "${nimike.koodiarvo}"}]}]""")
+          parseJson(s"""[{"tutkintonimike":[{"koodiarvo": "${nimike.koodiarvo}"}]}]""")
         } ++ osaamisalat.map { osaamisala =>
-          parse(s"""[{"osaamisala":[{"koodiarvo": "${osaamisala.koodiarvo}"}]}]""")
+          parseJson(s"""[{"osaamisala":[{"koodiarvo": "${osaamisala.koodiarvo}"}]}]""")
         }
         query.filter(_._1.data.+>("suoritukset").@>(matchers.bind.any))
       case (query, OpiskeluoikeusQueryFilter.Toimipiste(toimipisteet)) =>
         val matchers = toimipisteet.map { toimipiste =>
-          parse(s"""[{"toimipiste":{"oid": "${toimipiste.oid}"}}]""")
+          parseJson(s"""[{"toimipiste":{"oid": "${toimipiste.oid}"}}]""")
         }
         query.filter(_._1.data.+>("suoritukset").@>(matchers.bind.any))
       case (query, Luokkahaku(hakusana)) =>
