@@ -1,5 +1,6 @@
 package fi.oph.koski.oppija
 
+import com.sksamuel.elastic4s.ElasticClient
 import fi.oph.koski.henkilo._
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json
@@ -10,8 +11,9 @@ import fi.oph.koski.log.{AuditLog, _}
 import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
+import com.sksamuel.elastic4s.ElasticDsl._
 
-class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRepository: OpiskeluoikeusRepository) extends Logging with Timing {
+class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRepository: OpiskeluoikeusRepository, es: ElasticClient) extends Logging with Timing {
   def findOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(OpiskeluoikeusRepository.findByOppijaOid)(user)(oid)
 
   def findUserOppija(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(OpiskeluoikeusRepository.findByUserOid)(user)(user.oid)
@@ -33,7 +35,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
           Left(KoskiErrorCategory.forbidden.omienTietojenMuokkaus())
         } else {
           val opiskeluoikeusCreationResults: Seq[Either[HttpStatus, OpiskeluoikeusVersio]] = opiskeluoikeudet.map { opiskeluoikeus =>
-            createOrUpdateOpiskeluoikeus(oppijaOid, opiskeluoikeus)
+            createOrUpdateOpiskeluoikeus(oppijaOid, opiskeluoikeus, oppija.henkilö)
           }
 
           opiskeluoikeusCreationResults.find(_.isLeft) match {
@@ -47,7 +49,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
     }
   }
 
-  private def createOrUpdateOpiskeluoikeus(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusVersio] = {
+  private def createOrUpdateOpiskeluoikeus(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, henkilö: Henkilö)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusVersio] = {
     def applicationLog(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: Opiskeluoikeus, result: CreateOrUpdateResult): Unit = {
       val verb = result match {
         case _: Updated => "Päivitetty"
@@ -78,6 +80,30 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
       result.right.map { result =>
         applicationLog(oppijaOid, opiskeluoikeus, result)
         auditLog(oppijaOid, result)
+
+        val nimitiedotJaOid = henkilö match {
+          case h: NimellinenHenkilö => NimitiedotJaOid(oppijaOid.oppijaOid, h.etunimet, h.kutsumanimi, h.sukunimi)
+          case _ => throw new RuntimeException("Nimitiedot puuttuu")
+        }
+
+        val oo = opiskeluoikeus
+        val suoritukset: List[SuorituksenPerustiedot] = oo.suoritukset
+          .filterNot(_.isInstanceOf[PerusopetuksenVuosiluokanSuoritus])
+          .map { suoritus =>
+            val (osaamisala, tutkintonimike) = suoritus match {
+              case s: AmmatillisenTutkinnonSuoritus => (s.osaamisala, s.tutkintonimike)
+              case s: NäyttötutkintoonValmistavanKoulutuksenSuoritus => (s.osaamisala, s.tutkintonimike)
+              case _ => (None, None)
+            }
+            SuorituksenPerustiedot(suoritus.tyyppi, KoulutusmoduulinPerustiedot(suoritus.koulutusmoduuli.tunniste), osaamisala, tutkintonimike, suoritus.toimipiste)
+          }
+
+        val perustiedot = OpiskeluoikeudenPerustiedot(nimitiedotJaOid, oo.oppilaitos, oo.alkamispäivä, oo.tyyppi, suoritukset, oo.tila.opiskeluoikeusjaksot.last.tila, None)
+
+        es.execute {
+          indexInto("koski" / "perustiedot").doc(Json.write(perustiedot))
+        }
+
         OpiskeluoikeusVersio(result.id, result.versionumero)
       }
     }

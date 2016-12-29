@@ -1,5 +1,7 @@
 package fi.oph.koski.config
 
+import com.sksamuel.elastic4s.ElasticClient
+import com.sksamuel.elastic4s.embedded.LocalNode
 import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.koski.arvosana.ArviointiasteikkoRepository
 import fi.oph.koski.cache.Cache.cacheAllRefresh
@@ -23,6 +25,7 @@ import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.validation.KoskiValidator
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
 import fi.oph.koski.ytr.{YlioppilasTutkintoRekisteri, YtrAccessChecker, YtrOpiskeluoikeusRepository}
+import org.elasticsearch.common.settings.Settings
 
 object KoskiApplication {
   lazy val defaultConfig = ConfigFactory.load
@@ -58,10 +61,20 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val opiskeluoikeusRepository = new CompositeOpiskeluoikeusRepository(possu, List(virta, ytr))
   lazy val opiskeluoikeusQueryRepository = new PostgresOpiskeluoikeusQueryService(database.db)
   lazy val validator: KoskiValidator = new KoskiValidator(tutkintoRepository, koodistoViitePalvelu, organisaatioRepository)
-  lazy val oppijaFacade = new KoskiOppijaFacade(henkilöRepository, opiskeluoikeusRepository)
+  lazy val oppijaFacade = new KoskiOppijaFacade(henkilöRepository, opiskeluoikeusRepository, es)
   lazy val sessionTimeout = SessionTimeout(config)
   lazy val serviceTicketRepository = new SSOTicketSessionRepository(database.db, sessionTimeout)
   lazy val fixtureCreator = new FixtureCreator(config, database, opiskeluoikeusRepository, henkilöRepository, validator)
   lazy val tiedonsiirtoService = new TiedonsiirtoService(database.db, new TiedonsiirtoFailureMailer(config, authenticationServiceClient), organisaatioRepository, henkilöRepository, koodistoViitePalvelu, userRepository)
   lazy val healthCheck = HealthCheck(this)
+  lazy val es: ElasticClient = {
+    val settings = Settings.builder()
+      .put("cluster.name", "elasticsearch")
+      .put("path.home", ".")
+      .put("path.data", "elastic-data")
+      .put("path.repo", "elastic-repo")
+      .build()
+    val node = LocalNode(settings)
+    node.elastic4sclient()
+  }
 }

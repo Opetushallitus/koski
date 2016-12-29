@@ -27,8 +27,19 @@ object Deserializers {
     EditorModelSerializer,
     AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsaDeserializer,
     TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsaDeserializer,
-    NäyttötutkintoonValmistavanKoulutuksenOsaDeserializer
+    NäyttötutkintoonValmistavanKoulutuksenOsaDeserializer,
+    KoodiViiteDeserializer
   )
+}
+
+object KoodiViiteDeserializer extends Deserializer[KoodiViite] {
+  private val KoodiViiteClass = classOf[KoodiViite]
+  override def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), KoodiViite] =  {
+    case (TypeInfo(KoodiViiteClass, _), json) =>
+      json match {
+        case viite: JObject => viite.extract[Koodistokoodiviite]
+      }
+  }
 }
 
 object SuoritusDeserializer extends Deserializer[Suoritus] {

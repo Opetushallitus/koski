@@ -13,7 +13,13 @@ import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException}
 import fi.oph.koski.util.{ListPagination, PaginatedResponse, Pagination, PaginationSettings}
 import fi.oph.scalaschema.annotation.Description
 import OpiskeluoikeusQueryFilter._
+import com.sksamuel.elastic4s.ElasticClient
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusSortOrder.{Ascending, Descending}
+import com.sksamuel.elastic4s.ElasticDsl._
+import com.sksamuel.elastic4s.searches.RichSearchResponse
+import fi.oph.koski.json.Json
+
+import scala.concurrent.Future
 
 case class OpiskeluoikeudenPerustiedot(
   henkilö: NimitiedotJaOid,
@@ -54,9 +60,21 @@ object KoulutusmoduulinPerustiedot {
 
 }
 
-class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöRepository, opiskeluoikeusRepository: OpiskeluoikeusQueryService, koodisto: KoodistoViitePalvelu) {
+class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöRepository, opiskeluoikeusRepository: OpiskeluoikeusQueryService, koodisto: KoodistoViitePalvelu, es: ElasticClient) {
   def find(filters: List[OpiskeluoikeusQueryFilter], sorting: OpiskeluoikeusSortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): List[OpiskeluoikeudenPerustiedot] = {
-    val perustiedotObservable = opiskeluoikeusRepository.streamingQuery(filters, Some(sorting), Some(pagination)).map {
+
+    val execute: Future[RichSearchResponse] = es.execute {
+      search("koski")
+    }
+
+    val a: RichSearchResponse = execute.await
+
+
+    a.hits.map{ hit =>
+      println(Json.writePretty(Json.parse(hit.sourceAsString)))
+      Json.read[OpiskeluoikeudenPerustiedot](hit.sourceAsString)
+    }.toList
+    /*val perustiedotObservable = opiskeluoikeusRepository.streamingQuery(filters, Some(sorting), Some(pagination)).map {
       case (opiskeluoikeusRow, henkilöRow) =>
         val nimitiedotJaOid = henkilöRow.toNimitiedotJaOid
         val oo = opiskeluoikeusRow.toOpiskeluoikeus
@@ -72,12 +90,12 @@ class OpiskeluoikeudenPerustiedotRepository(henkilöRepository: HenkilöReposito
           }
         OpiskeluoikeudenPerustiedot(nimitiedotJaOid, oo.oppilaitos, oo.alkamispäivä, oo.tyyppi, suoritukset, oo.tila.opiskeluoikeusjaksot.last.tila, opiskeluoikeusRow.luokka)
     }
-    perustiedotObservable.toBlocking.toList
+    perustiedotObservable.toBlocking.toList*/
   }
 }
 
 class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Pagination {
-  private val repository = new OpiskeluoikeudenPerustiedotRepository(application.henkilöRepository, application.opiskeluoikeusQueryRepository, application.koodistoViitePalvelu)
+  private val repository = new OpiskeluoikeudenPerustiedotRepository(application.henkilöRepository, application.opiskeluoikeusQueryRepository, application.koodistoViitePalvelu, application.es)
   get("/") {
     renderEither({
       val sort = params.get("sort").map {
