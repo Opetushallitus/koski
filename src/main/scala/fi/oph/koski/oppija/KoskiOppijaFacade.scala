@@ -91,19 +91,8 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
         }
 
         val oo = opiskeluoikeus
-        val suoritukset: List[SuorituksenPerustiedot] = oo.suoritukset
-          .filterNot(_.isInstanceOf[PerusopetuksenVuosiluokanSuoritus])
-          .map { suoritus =>
-            val (osaamisala, tutkintonimike) = suoritus match {
-              case s: AmmatillisenTutkinnonSuoritus => (s.osaamisala, s.tutkintonimike)
-              case s: NäyttötutkintoonValmistavanKoulutuksenSuoritus => (s.osaamisala, s.tutkintonimike)
-              case _ => (None, None)
-            }
-            SuorituksenPerustiedot(suoritus.tyyppi, KoulutusmoduulinPerustiedot(suoritus.koulutusmoduuli.tunniste), osaamisala, tutkintonimike, suoritus.toimipiste)
-          }
 
-
-        val perustiedot = OpiskeluoikeudenPerustiedot(Some(result.id), nimitiedotJaOid, oo.oppilaitos, oo.alkamispäivä, oo.tyyppi, suoritukset, oo.tila.opiskeluoikeusjaksot.last.tila, oo.luokka)
+        val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(result.id, nimitiedotJaOid, oo)
         perustiedotRepository.update(perustiedot)
 
         OpiskeluoikeusVersio(result.id, result.versionumero)

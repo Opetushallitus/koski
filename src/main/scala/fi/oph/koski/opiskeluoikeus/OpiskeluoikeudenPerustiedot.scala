@@ -12,7 +12,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusSortOrder.{Ascending, Descending}
 import fi.oph.koski.schema._
-import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException}
+import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, ObservableSupport}
 import fi.oph.koski.util.{PaginatedResponse, Pagination, PaginationSettings}
 import fi.oph.scalaschema.annotation.Description
 import org.elasticsearch.common.settings.Settings
@@ -32,6 +32,22 @@ case class OpiskeluoikeudenPerustiedot(
   @Description("Luokan tai ryhmän tunniste, esimerkiksi 9C")
   luokka: Option[String]
 )
+
+object OpiskeluoikeudenPerustiedot {
+  def makePerustiedot(id: Int, henkilö: NimitiedotJaOid, oo: Opiskeluoikeus) = {
+    val suoritukset: List[SuorituksenPerustiedot] = oo.suoritukset
+      .filterNot(_.isInstanceOf[PerusopetuksenVuosiluokanSuoritus])
+      .map { suoritus =>
+        val (osaamisala, tutkintonimike) = suoritus match {
+          case s: AmmatillisenTutkinnonSuoritus => (s.osaamisala, s.tutkintonimike)
+          case s: NäyttötutkintoonValmistavanKoulutuksenSuoritus => (s.osaamisala, s.tutkintonimike)
+          case _ => (None, None)
+        }
+        SuorituksenPerustiedot(suoritus.tyyppi, KoulutusmoduulinPerustiedot(suoritus.koulutusmoduuli.tunniste), osaamisala, tutkintonimike, suoritus.toimipiste)
+      }
+    OpiskeluoikeudenPerustiedot(Some(id), henkilö, oo.oppilaitos, oo.alkamispäivä, oo.tyyppi, suoritukset, oo.tila.opiskeluoikeusjaksot.last.tila, oo.luokka)
+  }
+}
 
 case class SuorituksenPerustiedot(
   @Description("Suorituksen tyyppi, jolla erotellaan eri koulutusmuotoihin (perusopetus, lukio, ammatillinen...) ja eri tasoihin (tutkinto, tutkinnon osa, kurssi, oppiaine...) liittyvät suoritukset")
@@ -58,7 +74,7 @@ object KoulutusmoduulinPerustiedot {
 
 }
 
-class OpiskeluoikeudenPerustiedotRepository(config: Config) extends Logging {
+class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryService: OpiskeluoikeusQueryService) extends Logging {
   import Http._
 
   private val url = config.getString("elasticsearch.url")
@@ -138,10 +154,10 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config) extends Logging {
     val response = Http.runTask(elasticSearchHttp
       .post(uri"/koski/perustiedot/${perustiedot.id.get}/_update", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue])) // TODO: hardcoded url
 
-    val success: Int = (response \ "_shards" \ "successful").extract[Int]
+    val failed: Int = (response \ "_shards" \ "failed").extract[Int]
 
-    if (success < 1) {
-      logger.error("Elasticsearch indexing failed (success count < 1)")
+    if (failed > 0 ) {
+      logger.error("Elasticsearch indexing failed (fail count > 0)")
     }
   }
 
@@ -156,12 +172,28 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config) extends Logging {
         .build()
       val node = LocalNode(settings)
     }
+
+    if (config.getBoolean("elasticsearch.reIndexAtStartup")) {
+      val bufferSize = 10
+      opiskeluoikeusQueryService.streamingQuery(Nil, None, None)(KoskiSession.systemUser).tumblingBuffer(bufferSize).zipWithIndex.map {
+        case (rows, index) =>
+          rows.par.foreach { case (opiskeluoikeusRow, henkilöRow) =>
+            val oo = opiskeluoikeusRow.toOpiskeluoikeus
+            val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(oo.id.get, henkilöRow.toNimitiedotJaOid, oo)
+            update(perustiedot)
+          }
+          val countSoFar = bufferSize * index
+          if (index % bufferSize == 0) {
+            logger.info(s"Updated elasticsearch index for ${countSoFar} rows")
+          }
+          countSoFar
+      }.foreach({_ => })
+    }
   }
 
 }
 
-class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Pagination {
-
+class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Pagination with ObservableSupport {
   get("/") {
     renderEither({
       val sort = params.get("sort").map {
