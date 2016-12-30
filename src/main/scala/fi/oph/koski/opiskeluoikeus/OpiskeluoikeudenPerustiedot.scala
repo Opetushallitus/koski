@@ -4,6 +4,7 @@ import java.time.LocalDate
 
 import com.typesafe.config.Config
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.elasticsearch.ElasticSearchRunner
 import fi.oph.koski.http.{Http, HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.{Json, Json4sHttp4s}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresAuthentication}
@@ -12,7 +13,7 @@ import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusSortOrder.{Ascending, Descending}
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, ObservableSupport}
-import fi.oph.koski.util.{PaginatedResponse, Pagination, PaginationSettings}
+import fi.oph.koski.util.{PaginatedResponse, Pagination, PaginationSettings, PortChecker}
 import fi.oph.scalaschema.annotation.Description
 import org.json4s.JValue
 
@@ -75,7 +76,9 @@ object KoulutusmoduulinPerustiedot {
 class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryService: OpiskeluoikeusQueryService) extends Logging {
   import Http._
 
-  private val url = config.getString("elasticsearch.url")
+  private val host = config.getString("elasticsearch.host")
+  private val port = config.getInt("elasticsearch.port")
+  private val url = s"http://$host:$port"
   private val elasticSearchHttp = Http(url)
 
   def find(filters: List[OpiskeluoikeusQueryFilter], sorting: OpiskeluoikeusSortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): List[OpiskeluoikeudenPerustiedot] = {
@@ -141,7 +144,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     ))
 
     implicit val formats = Json.jsonFormats
-    val response = Http.runTask(elasticSearchHttp.post(uri"/koski/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue])) // TODO: hardcoded url
+    val response = Http.runTask(elasticSearchHttp.post(uri"/koski/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
     (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source").extract[OpiskeluoikeudenPerustiedot])
   }
 
@@ -150,7 +153,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     val doc = Json.toJValue(Map("doc_as_upsert" -> true, "doc" -> perustiedot))
 
     val response = Http.runTask(elasticSearchHttp
-      .post(uri"/koski/perustiedot/${perustiedot.id.get}/_update", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue])) // TODO: hardcoded url
+      .post(uri"/koski/perustiedot/${perustiedot.id.get}/_update", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
 
     val failed: Int = (response \ "_shards" \ "failed").extract[Int]
 
@@ -159,28 +162,17 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     }
   }
 
-  val es = {
-    /*
-    import org.elasticsearch.common.settings.Settings
-    import com.sksamuel.elastic4s.embedded.LocalNode
-
-
-    if (url.startsWith("http://localhost:9200")) {
-      logger.info("Starting embedded elasticsearch node")
-      val settings = Settings.builder()
-        .put("cluster.name", "elasticsearch")
-        .put("path.home", ".")
-        .put("path.data", "elastic-data")
-        .put("path.repo", "elastic-repo")
-        .build()
-      val node = LocalNode(settings)
+  val init = {
+    if (host == "localhost" && PortChecker.isFreeLocalPort(port)) {
+      new ElasticSearchRunner("elastic-data", port, port + 100).start
+    } else {
+      logger.info(s"Using elasticsearch at $host:$port")
     }
-    */
 
     if (config.getBoolean("elasticsearch.reIndexAtStartup")) {
       logger.info("Starting elasticsearch re-indexing")
       val bufferSize = 10
-      opiskeluoikeusQueryService.streamingQuery(Nil, None, None)(KoskiSession.systemUser).tumblingBuffer(bufferSize).zipWithIndex.map {
+      val observable = opiskeluoikeusQueryService.streamingQuery(Nil, None, None)(KoskiSession.systemUser).tumblingBuffer(bufferSize).zipWithIndex.map {
         case (rows, index) =>
           rows.par.foreach { case (opiskeluoikeusRow, henkilöRow) =>
             val oo = opiskeluoikeusRow.toOpiskeluoikeus
@@ -188,11 +180,11 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
             update(perustiedot)
           }
           val countSoFar = bufferSize * index
-          if (index % bufferSize == 0) {
-            logger.info(s"Updated elasticsearch index for ${countSoFar} rows")
-          }
           countSoFar
-      }.foreach({_ => })
+      }
+      observable.subscribe({countSoFar: Int => if (countSoFar % 100 == 0) logger.info(s"Updated elasticsearch index for ${countSoFar} rows")},
+                           {e: Throwable => logger.error(e)("Error updating Elasticsearch index")},
+                           { () => logger.info("Finished updating Elasticsearch index")})
     }
   }
 
