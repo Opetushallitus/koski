@@ -28,7 +28,7 @@ describe('Oppijataulukko', function() {
 
   describe('Filtteröinti', function() {
     describe('nimellä', function() {
-      before(page.oppijataulukko.filterBy('nimi', 'Koululainen Kaisa'))
+      before(page.oppijataulukko.filterBy('nimi', 'Koululainen kAisa'))
       it('toimii', function() {
         expect(page.oppijataulukko.data().map(function(row) { return row[0]})).to.deep.equal([ 'Koululainen, Kaisa', 'Koululainen, Kaisa' ])
       })

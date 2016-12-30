@@ -147,7 +147,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     ))
 
     implicit val formats = Json.jsonFormats
-    val response = Http.runTask(elasticSearchHttp.post(uri"/koski/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
+    val response = Http.runTask(elasticSearchHttp.post(uri"/koski/perustiedot/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
     (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source").extract[OpiskeluoikeudenPerustiedot])
   }
 
