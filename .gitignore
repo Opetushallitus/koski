@@ -26,3 +26,5 @@ scripts/cloudrc
 scripts/site.retry
 .vscode
 elastic-data
+/elasticsearch/data
+/elasticsearch/log

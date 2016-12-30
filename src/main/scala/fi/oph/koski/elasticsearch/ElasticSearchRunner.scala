@@ -15,7 +15,7 @@ class ElasticSearchRunner(dataDirName: String, httpPort: Int, tcpPort: Int) exte
   def start = {
     if (!serverProcess.isDefined) {
       logger.info(s"Starting Elasticsearch server on ports HTTP $httpPort and TCP $tcpPort")
-      serverProcess = Some((s"elasticsearch -E http.port=$httpPort -E transport.tcp.port=$tcpPort -E path.data=$dataDirName -E path.logs=$dataDirName").run)
+      serverProcess = Some((s"elasticsearch -E http.port=$httpPort -E transport.tcp.port=$tcpPort -E path.conf=$dataDirName -E path.data=$dataDirName/data -E path.logs=$dataDirName/log").run)
       PortChecker.waitUntilReservedLocalPort(httpPort)
       PortChecker.waitUntilReservedLocalPort(tcpPort)
       sys.addShutdownHook {

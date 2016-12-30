@@ -213,7 +213,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
 
   val init = {
     if (host == "localhost" && PortChecker.isFreeLocalPort(port)) {
-      new ElasticSearchRunner("elastic-data", port, port + 100).start
+      new ElasticSearchRunner("./elasticsearch", port, port + 100).start
     } else {
       logger.info(s"Using elasticsearch at $host:$port")
     }
