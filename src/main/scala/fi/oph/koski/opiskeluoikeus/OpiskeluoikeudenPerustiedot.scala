@@ -167,6 +167,10 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     }
   }
 
+  case class UpdateStatus(updated: Int, changed: Int) {
+    def +(other: UpdateStatus) = UpdateStatus(this.updated + other.updated, this.changed + other.changed)
+  }
+
   val init = {
     if (host == "localhost" && PortChecker.isFreeLocalPort(port)) {
       new ElasticSearchRunner("elastic-data", port, port + 100).start
@@ -179,7 +183,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
       val bufferSize = 10
       val observable = opiskeluoikeusQueryService.streamingQuery(Nil, None, None)(KoskiSession.systemUser).tumblingBuffer(bufferSize).zipWithIndex.map {
         case (rows, index) =>
-          val updated = rows.par.map { case (opiskeluoikeusRow, henkilöRow) =>
+          val changed = rows.par.map { case (opiskeluoikeusRow, henkilöRow) =>
             val oo = opiskeluoikeusRow.toOpiskeluoikeus
             val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(oo.id.get, henkilöRow.toNimitiedotJaOid, oo)
             update(perustiedot) match {
@@ -187,12 +191,12 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
               case Right(false) => 0
               case Left(error) => 0
             }
-          }
-          (rows.length, updated.sum)
-      }.scan (0, 0) { case ((a1 : Int, b1 : Int), (a2 : Int, b2 : Int)) => (a1 + a2, b1 + b2) }
+          }.sum
+          UpdateStatus(rows.length, changed)
+      }.scan(UpdateStatus(0, 0))(_ + _)
 
 
-      observable.subscribe({case (countSoFar: Int, actuallyChanged: Int) => if (countSoFar % 100 == 0) logger.info(s"Updated elasticsearch index for ${countSoFar} rows, changed ${actuallyChanged}")},
+      observable.subscribe({case UpdateStatus(countSoFar, actuallyChanged) => if (countSoFar % 100 == 0) logger.info(s"Updated elasticsearch index for ${countSoFar} rows, actually changed ${actuallyChanged}")},
                            {e: Throwable => logger.error(e)("Error updating Elasticsearch index")},
                            { () => logger.info("Finished updating Elasticsearch index")})
     }
