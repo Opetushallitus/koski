@@ -148,7 +148,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source").extract[OpiskeluoikeudenPerustiedot])
   }
 
-  def update(perustiedot: OpiskeluoikeudenPerustiedot): Unit = {
+  def update(perustiedot: OpiskeluoikeudenPerustiedot): Either[HttpStatus, Boolean] = {
     implicit val formats = Json.jsonFormats
     val doc = Json.toJValue(Map("doc_as_upsert" -> true, "doc" -> perustiedot))
 
@@ -156,9 +156,14 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
       .post(uri"/koski/perustiedot/${perustiedot.id.get}/_update", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
 
     val failed: Int = (response \ "_shards" \ "failed").extract[Int]
+    val result: String = (response \ "result").extract[String]
 
     if (failed > 0 ) {
-      logger.error("Elasticsearch indexing failed (fail count > 0)")
+      val msg = s"Elasticsearch indexing failed for id ${perustiedot.id.get} (fail count > 0)"
+      logger.error(msg)
+      Left(KoskiErrorCategory.internalError(msg))
+    } else {
+      Right(result != "noop")
     }
   }
 
@@ -174,15 +179,20 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
       val bufferSize = 10
       val observable = opiskeluoikeusQueryService.streamingQuery(Nil, None, None)(KoskiSession.systemUser).tumblingBuffer(bufferSize).zipWithIndex.map {
         case (rows, index) =>
-          rows.par.foreach { case (opiskeluoikeusRow, henkilöRow) =>
+          val updated = rows.par.map { case (opiskeluoikeusRow, henkilöRow) =>
             val oo = opiskeluoikeusRow.toOpiskeluoikeus
             val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(oo.id.get, henkilöRow.toNimitiedotJaOid, oo)
-            update(perustiedot)
+            update(perustiedot) match {
+              case Right(true) => 1
+              case Right(false) => 0
+              case Left(error) => 0
+            }
           }
-          val countSoFar = bufferSize * index
-          countSoFar
-      }
-      observable.subscribe({countSoFar: Int => if (countSoFar % 100 == 0) logger.info(s"Updated elasticsearch index for ${countSoFar} rows")},
+          (rows.length, updated.sum)
+      }.scan (0, 0) { case ((a1 : Int, b1 : Int), (a2 : Int, b2 : Int)) => (a1 + a2, b1 + b2) }
+
+
+      observable.subscribe({case (countSoFar: Int, actuallyChanged: Int) => if (countSoFar % 100 == 0) logger.info(s"Updated elasticsearch index for ${countSoFar} rows, changed ${actuallyChanged}")},
                            {e: Throwable => logger.error(e)("Error updating Elasticsearch index")},
                            { () => logger.info("Finished updating Elasticsearch index")})
     }
