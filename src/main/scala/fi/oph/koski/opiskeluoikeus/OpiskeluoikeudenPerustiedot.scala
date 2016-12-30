@@ -88,7 +88,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
       Map("henkilö.sukunimi.keyword" -> order),
       Map("henkilö.etunimet.keyword" -> order)
     )
-    def luokka(order: String) = Map("luokka" -> order) :: nimi(order)
+    def luokka(order: String) = Map("luokka.keyword" -> order) :: nimi(order)
     def alkamispäivä(order: String) = Map("alkamispäivä" -> order):: nimi(order)
 
     val elasticSort = sorting match {
