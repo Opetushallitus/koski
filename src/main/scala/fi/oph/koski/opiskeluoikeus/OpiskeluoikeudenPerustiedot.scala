@@ -16,6 +16,7 @@ import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, ObservableSupp
 import fi.oph.koski.util.{PaginatedResponse, Pagination, PaginationSettings, PortChecker}
 import fi.oph.scalaschema.annotation.Description
 import org.json4s.JValue
+import rx.lang.scala.Observable
 
 case class OpiskeluoikeudenPerustiedot(
   id: Option[Int], // TODO: remove optionality
@@ -149,6 +150,9 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source").extract[OpiskeluoikeudenPerustiedot])
   }
 
+  /**
+    * Update info to Elasticsearch. Return error status or a boolean indicating whether data was changed.
+    */
   def update(perustiedot: OpiskeluoikeudenPerustiedot): Either[HttpStatus, Boolean] = {
     implicit val formats = Json.jsonFormats
     val doc = Json.toJValue(Map("doc_as_upsert" -> true, "doc" -> perustiedot))
@@ -168,6 +172,30 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     }
   }
 
+  def reIndex(pagination: Option[PaginationSettings] = None) = {
+    logger.info("Starting elasticsearch re-indexing")
+    val bufferSize = 10
+    val observable = opiskeluoikeusQueryService.streamingQuery(Nil, None, pagination)(KoskiSession.systemUser).tumblingBuffer(bufferSize).zipWithIndex.map {
+      case (rows, index) =>
+        val changed = rows.par.map { case (opiskeluoikeusRow, henkilöRow) =>
+          val oo = opiskeluoikeusRow.toOpiskeluoikeus
+          val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(oo.id.get, henkilöRow.toNimitiedotJaOid, oo)
+          update(perustiedot) match {
+            case Right(true) => 1
+            case Right(false) => 0
+            case Left(error) => 0
+          }
+        }.sum
+        UpdateStatus(rows.length, changed)
+    }.scan(UpdateStatus(0, 0))(_ + _)
+
+
+    observable.subscribe({case UpdateStatus(countSoFar, actuallyChanged) => if (countSoFar % 100 == 0) logger.info(s"Updated elasticsearch index for ${countSoFar} rows, actually changed ${actuallyChanged}")},
+      {e: Throwable => logger.error(e)("Error updating Elasticsearch index")},
+      { () => logger.info("Finished updating Elasticsearch index")})
+    observable
+  }
+
   case class UpdateStatus(updated: Int, changed: Int) {
     def +(other: UpdateStatus) = UpdateStatus(this.updated + other.updated, this.changed + other.changed)
   }
@@ -180,29 +208,9 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     }
 
     if (config.getBoolean("elasticsearch.reIndexAtStartup")) {
-      logger.info("Starting elasticsearch re-indexing")
-      val bufferSize = 10
-      val observable = opiskeluoikeusQueryService.streamingQuery(Nil, None, None)(KoskiSession.systemUser).tumblingBuffer(bufferSize).zipWithIndex.map {
-        case (rows, index) =>
-          val changed = rows.par.map { case (opiskeluoikeusRow, henkilöRow) =>
-            val oo = opiskeluoikeusRow.toOpiskeluoikeus
-            val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(oo.id.get, henkilöRow.toNimitiedotJaOid, oo)
-            update(perustiedot) match {
-              case Right(true) => 1
-              case Right(false) => 0
-              case Left(error) => 0
-            }
-          }.sum
-          UpdateStatus(rows.length, changed)
-      }.scan(UpdateStatus(0, 0))(_ + _)
-
-
-      observable.subscribe({case UpdateStatus(countSoFar, actuallyChanged) => if (countSoFar % 100 == 0) logger.info(s"Updated elasticsearch index for ${countSoFar} rows, actually changed ${actuallyChanged}")},
-                           {e: Throwable => logger.error(e)("Error updating Elasticsearch index")},
-                           { () => logger.info("Finished updating Elasticsearch index")})
+      reIndex()
     }
   }
-
 }
 
 class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Pagination with ObservableSupport {
@@ -226,4 +234,9 @@ class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) exte
       }
     })
   }
+}
+
+object PerustiedotIndexUpdater extends App {
+  KoskiApplication.apply.perustiedotRepository.reIndex(Some(PaginationSettings(1, 668000))).toBlocking.last
+  println("done")
 }
