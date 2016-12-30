@@ -102,13 +102,13 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     }
 
     val elasticFilters = filters.flatMap {
-      case Nimihaku(hakusana) => hakusana.trim.split(" ").map { namePrefix =>
+      case Nimihaku(hakusana) => hakusana.trim.split(" ").map(_.toLowerCase).map { namePrefix =>
         Map("bool" -> Map("should" -> List(
           Map("prefix" -> Map("henkilö.sukunimi" -> namePrefix)),
           Map("prefix" -> Map("henkilö.etunimet" -> namePrefix))
         )))
       }
-      case Luokkahaku(hakusana) => hakusana.trim.split(" ").map { prefix =>
+      case Luokkahaku(hakusana) => hakusana.trim.split(" ").map(_.toLowerCase).map { prefix =>
         Map("prefix" -> Map("luokka" -> prefix))
       }
       case SuorituksenTyyppi(tyyppi) => List(Map("term" -> Map("suoritukset.tyyppi.koodiarvo" -> tyyppi.koodiarvo)))
