@@ -116,8 +116,8 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
       case OpiskeluoikeudenTila(tila) => List(Map("term" -> Map("tila.koodiarvo" -> tila.koodiarvo)))
       case Tutkintohaku(koulutukset, osaamisalat, nimikkeet) => List(Map("bool" -> Map("should" ->
         (koulutukset.map{ koulutus => Map("term" -> Map("suoritukset.koulutusmoduuli.tunniste.koodiarvo" -> koulutus.koodiarvo))} ++
-          osaamisalat.map{ ala => Map("term" -> Map("suoritukset.koulutusmoduuli.osaamisala.koodiarvo" -> ala.koodiarvo))} ++
-          nimikkeet.map{ nimike => Map("term" -> Map("suoritukset.koulutusmoduuli.tutkintonimike.koodiarvo" -> nimike.koodiarvo))}
+          osaamisalat.map{ ala => Map("term" -> Map("suoritukset.osaamisala.koodiarvo" -> ala.koodiarvo))} ++
+          nimikkeet.map{ nimike => Map("term" -> Map("suoritukset.tutkintonimike.koodiarvo" -> nimike.koodiarvo))}
         )
       )))
       case OpiskeluoikeusQueryFilter.Toimipiste(toimipisteet) => List(Map("bool" -> Map("should" ->
