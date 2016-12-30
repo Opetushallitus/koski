@@ -37,7 +37,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
           Left(KoskiErrorCategory.forbidden.omienTietojenMuokkaus())
         } else {
           val opiskeluoikeusCreationResults: Seq[Either[HttpStatus, OpiskeluoikeusVersio]] = opiskeluoikeudet.map { opiskeluoikeus =>
-            createOrUpdateOpiskeluoikeus(oppijaOid, opiskeluoikeus, oppija.henkilö)
+            createOrUpdateOpiskeluoikeus(oppijaOid, opiskeluoikeus)
           }
 
           opiskeluoikeusCreationResults.find(_.isLeft) match {
@@ -51,7 +51,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
     }
   }
 
-  private def createOrUpdateOpiskeluoikeus(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, henkilö: Henkilö)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusVersio] = {
+  private def createOrUpdateOpiskeluoikeus(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusVersio] = {
     def applicationLog(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: Opiskeluoikeus, result: CreateOrUpdateResult): Unit = {
       val verb = result match {
         case _: Updated => "Päivitetty"
@@ -83,11 +83,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
         applicationLog(oppijaOid, opiskeluoikeus, result)
         auditLog(oppijaOid, result)
 
-        val nimitiedotJaOid = henkilö match {
-          case h: NimellinenHenkilö => NimitiedotJaOid(oppijaOid.oppijaOid, h.etunimet, h.kutsumanimi, h.sukunimi)
-          case _ => throw new RuntimeException("Nimitiedot puuttuu")
-        }
-
+        val nimitiedotJaOid = oppijaOid.verified.map(_.nimitiedotJaOid).getOrElse(throw new RuntimeException(s"Oppijaa {${oppijaOid.oppijaOid}} ei löydy")) // TODO: päivitystapauksessa ei haeta henkilöä, päivitetään muut tiedon elasticsearchiin
         val oo = opiskeluoikeus
 
         val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(result.id, nimitiedotJaOid, oo)
