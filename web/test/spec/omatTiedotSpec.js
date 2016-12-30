@@ -3,9 +3,9 @@ describe('Omat tiedot', function() {
   var authentication = Authentication()
 
   describe("Kun oppijalla on opiskeluoikeuksia", function() {
-    before(authentication.login('oili'), omattiedot.openPage)
+    before(authentication.login('Oili'), omattiedot.openPage)
     it('ne näytetään', function() {
-      expect(omattiedot.oppija()).to.equal("oppija, oili 190751-739W")
+      expect(omattiedot.oppija()).to.equal("Oppija, Oili 190751-739W")
     })
   })
 
