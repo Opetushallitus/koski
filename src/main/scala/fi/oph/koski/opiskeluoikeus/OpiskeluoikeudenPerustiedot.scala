@@ -11,6 +11,7 @@ import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresAuthentication}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusSortOrder.{Ascending, Descending}
+import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, ObservableSupport}
 import fi.oph.koski.util.{PaginatedResponse, Pagination, PaginationSettings, PortChecker}
@@ -170,6 +171,16 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     } else {
       Right(result != "noop")
     }
+  }
+
+  def deleteByOppijaOids(oids: List[Oid]) = {
+    implicit val formats = Json.jsonFormats
+    val doc = Json.toJValue(Map("query" -> Map("bool" -> Map("should" -> Map("terms" -> Map("henkilö.oid" -> oids))))))
+
+    val response = Http.runTask(elasticSearchHttp
+      .post(uri"/koski/perustiedot/_delete_by_query", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
+    val deleted = (response \ "deleted").extract[Int]
+    deleted
   }
 
   def reIndex(pagination: Option[PaginationSettings] = None) = {

@@ -4,7 +4,7 @@ import com.typesafe.config.Config
 import fi.oph.koski.db.{KoskiDatabase, KoskiDatabaseConfig}
 import fi.oph.koski.fixture.Fixtures._
 import fi.oph.koski.log.Logging
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusRepository
+import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeudenPerustiedotRepository, OpiskeluoikeusRepository}
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.util.Timing
 import fi.oph.koski.validation.KoskiValidator
@@ -19,8 +19,8 @@ object Fixtures {
   }
 }
 
-class FixtureCreator(config: Config, database: KoskiDatabase, OpiskeluoikeusRepository: OpiskeluoikeusRepository, henkilöRepository: HenkilöRepository, validator: KoskiValidator) extends Logging with Timing {
-  private val databaseFixtures = new KoskiDatabaseFixtureCreator(database, OpiskeluoikeusRepository, henkilöRepository, validator)
+class FixtureCreator(config: Config, database: KoskiDatabase, OpiskeluoikeusRepository: OpiskeluoikeusRepository, henkilöRepository: HenkilöRepository, perustiedot: OpiskeluoikeudenPerustiedotRepository, validator: KoskiValidator) extends Logging with Timing {
+  private val databaseFixtures = new KoskiDatabaseFixtureCreator(database, OpiskeluoikeusRepository, henkilöRepository, perustiedot, validator)
   def resetFixtures = if(shouldUseFixtures(config)) {
     timed("resetFixtures") {
       databaseFixtures.resetFixtures
