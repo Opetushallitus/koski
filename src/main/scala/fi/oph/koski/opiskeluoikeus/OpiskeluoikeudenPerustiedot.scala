@@ -178,8 +178,8 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     val doc = Json.toJValue(Map("query" -> Map("bool" -> Map("should" -> Map("terms" -> Map("henkilö.oid" -> oids))))))
 
     val response = Http.runTask(elasticSearchHttp
-      .post(uri"/koski/perustiedot/_delete_by_query", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
-    val deleted = (response \ "deleted").extract[Int]
+      .post(uri"/koski/perustiedot/_delete_by_query", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJsonOptional[JValue]))
+    val deleted = response.map(r => (r \ "deleted").extract[Int]).getOrElse(0)
     deleted
   }
 
