@@ -11,10 +11,11 @@ import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresAuthentication}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusSortOrder.{Ascending, Descending}
+import fi.oph.koski.opiskeluoikeus.PerustiedotIndexUpdater.timed
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, ObservableSupport}
-import fi.oph.koski.util.{PaginatedResponse, Pagination, PaginationSettings, PortChecker}
+import fi.oph.koski.util._
 import fi.oph.scalaschema.annotation.Description
 import org.json4s.JValue
 import rx.lang.scala.Observable
@@ -123,7 +124,10 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
       case OpiskeluoikeusQueryFilter.Toimipiste(toimipisteet) => List(Map("bool" -> Map("should" ->
         toimipisteet.map{ toimipiste => Map("term" -> Map("suoritukset.toimipiste.oid" -> toimipiste.oid))}
       )))
-      // TODO: päivämäärähaku
+      case OpiskeluoikeusAlkanutAikaisintaan(day) =>
+        Map("range" -> Map("alkamispäivä" -> Map("gte" -> day, "format" -> "yyyy-MM-dd")))
+      case OpiskeluoikeusAlkanutViimeistään(day) =>
+        Map("range" -> Map("alkamispäivä" -> Map("lte" -> day, "format" -> "yyyy-MM-dd")))
       case SuorituksenTila(tila) => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("suorituksenTila-parametriä ei tueta"))
       case SuoritusJsonHaku(json) => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("suoritusJson-parametriä ei tueta"))
     } ++ (if (session.hasGlobalReadAccess) { Nil } else { List(Map("terms" -> Map("oppilaitos.oid" -> session.organisationOids(AccessType.read))))})
@@ -145,6 +149,8 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
       "from" -> pagination.page * pagination.size,
       "size" -> pagination.size
     ))
+
+    println(Json.writePretty(doc))
 
     implicit val formats = Json.jsonFormats
     val response = Http.runTask(elasticSearchHttp.post(uri"/koski/perustiedot/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
@@ -250,7 +256,12 @@ class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) exte
   }
 }
 
-object PerustiedotIndexUpdater extends App {
-  KoskiApplication.apply.perustiedotRepository.reIndex(Some(PaginationSettings(1, 668000))).toBlocking.last
-  println("done")
+object PerustiedotIndexUpdater extends App with Timing {
+  val perustiedotRepository = KoskiApplication.apply.perustiedotRepository
+  130 to 10000 foreach { i =>
+    timed("Reindex 1000") {
+      perustiedotRepository.reIndex(Some(PaginationSettings(i, 10000))).toBlocking.last
+      println("done")
+    }
+  }
 }
