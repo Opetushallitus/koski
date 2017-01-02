@@ -41,6 +41,7 @@ trait Suoritus {
   }
   def tarvitseeVahvistuksen = true
   def valmis = tila.koodiarvo == "VALMIS"
+  def kesken = tila.koodiarvo == "KESKEN"
 }
 
 trait Arvioinniton extends Suoritus {

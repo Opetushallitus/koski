@@ -9,7 +9,7 @@ import fi.oph.koski.schema.OidOrganisaatio
   * Hakee eri tyyppiset oppilaitokset Opintopolun organisaatiopalvelusta.
   */
 object OppilaitosImuri extends App {
-  lazy val http = Http("https://dev.koski.opintopolku.fi")
+  lazy val http = Http("https://qa.koski.opintopolku.fi")
 
   lazy val lukiot: List[OidOrganisaatio] = haeOppilaitostyypillä("oppilaitostyyppi_15#1")
   lazy val ammatillisetOppilaitokset: List[OidOrganisaatio] = haeOppilaitostyypillä("oppilaitostyyppi_21#1")

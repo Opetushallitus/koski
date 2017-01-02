@@ -75,6 +75,7 @@ object KoskiErrorCategory {
         val vahvistusPuuttuu = subcategory("vahvistusPuuttuu", "Suoritukselta puuttuu vahvistus, vaikka sen tila on VALMIS")
         val arviointiPuuttuu = subcategory("arviointiPuuttuu", "Suoritukselta puuttuu arviointi, vaikka sen tila on VALMIS")
         val keskeneräinenOsasuoritus = subcategory("keskeneräinenOsasuoritus", "Suorituksen tila on VALMIS, vaikka sisältää osasuorituksen tilassa KESKEN")
+        val suoritusVäärässäTilassa = subcategory("suoritusVäärässäTilassa", "Suoritus on tilassa KESKEN, vaikka se kuuluu opiskeluoikeuteen jonka tila on valmistunut")
       }
       val tila = new Tila
 

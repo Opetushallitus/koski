@@ -93,7 +93,8 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     .then { validateLähdejärjestelmä(opiskeluoikeus) }
     .then { HttpStatus.fold(
       validatePäivämäärät(opiskeluoikeus),
-      HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritus(_, None)))
+      HttpStatus.fold(opiskeluoikeus.suoritukset.map(validatePäätasonSuorituksenStatus(_, opiskeluoikeus))),
+      HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritus(_, opiskeluoikeus, None)))
     )}
     .then {
       HttpStatus.fold(opiskeluoikeus.suoritukset.map(TutkintoRakenneValidator(tutkintoRepository).validateTutkintoRakenne(_)))
@@ -116,7 +117,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
   }
 
-  def validatePäivämäärät(opiskeluoikeus: Opiskeluoikeus) = {
+  def validatePäivämäärät(opiskeluoikeus: Opiskeluoikeus): HttpStatus = {
     val ensimmäisenJaksonPäivä: Option[LocalDate] = opiskeluoikeus.tila.opiskeluoikeusjaksot.headOption.map(_.alku)
     val päättävänJaksonPäivä: Option[LocalDate] = opiskeluoikeus.tila.opiskeluoikeusjaksot.filter(_.opiskeluoikeusPäättynyt).lastOption.map(_.alku)
     def formatOptionalDate(date: Option[LocalDate]) = date match {
@@ -134,7 +135,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     )
   }
 
-  def validateSuoritus(suoritus: Suoritus, vahvistus: Option[Vahvistus])(implicit user: KoskiSession, accessType: AccessType.Value): HttpStatus = {
+  def validateSuoritus(suoritus: Suoritus, opiskeluoikeus: Opiskeluoikeus, vahvistus: Option[Vahvistus])(implicit user: KoskiSession, accessType: AccessType.Value): HttpStatus = {
     val arviointipäivät: List[LocalDate] = suoritus.arviointi.toList.flatten.flatMap(_.arviointipäivä)
     val alkamispäivä: (String, Iterable[LocalDate]) = ("suoritus.alkamispäivä", suoritus.alkamispäivä)
     val vahvistuspäivät: Option[LocalDate] = suoritus.vahvistus.map(_.päivä)
@@ -145,7 +146,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         :: validateToimipiste(suoritus)
         :: validateStatus(suoritus, vahvistus)
         :: validateLaajuus(suoritus)
-        :: suoritus.osasuoritusLista.map(validateSuoritus(_, suoritus.vahvistus.orElse(vahvistus)))
+        :: suoritus.osasuoritusLista.map(validateSuoritus(_, opiskeluoikeus, suoritus.vahvistus.orElse(vahvistus)))
     )
   }
 
@@ -201,6 +202,13 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       }
     }
   }
+
+  private def validatePäätasonSuorituksenStatus(suoritus: PäätasonSuoritus, opiskeluoikeus: Opiskeluoikeus): HttpStatus =
+    if (suoritus.kesken && opiskeluoikeus.tila.opiskeluoikeusjaksot.last.tila.koodiarvo == "valmistunut") {
+      KoskiErrorCategory.badRequest.validation.tila.suoritusVäärässäTilassa("Suoritus " + suorituksenTunniste(suoritus) + " on tilassa KESKEN, vaikka opiskeluoikeuden tila on valmistunut")
+    } else {
+      HttpStatus.ok
+    }
 
   private def suorituksenTunniste(suoritus: Suoritus): KoodiViite = {
     suoritus.koulutusmoduuli.tunniste
