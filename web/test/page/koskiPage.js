@@ -82,6 +82,12 @@ function KoskiPage() {
             triggerEvent(S('.organisaatio-popup .kaikki'), 'click')
             return wait.forAjax()
           }
+        } else if (className == 'alkamispäivä') {
+          triggerEvent(S('.date-range-selection'), 'click')
+          return Page(Oppijataulukko.tableElem).setInputValue(".date-range-input input.end", value || "")()
+            .then(function() { triggerEvent(S('body'), 'click') })
+            .then(wait.forAjax)
+
         } else {
           return Page(Oppijataulukko.tableElem).setInputValue("th." + className +" .dropdown", value || "ei valintaa")().then(wait.forAjax)
         }

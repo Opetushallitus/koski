@@ -68,7 +68,6 @@ export default React.createClass({
     if(!focusInside) {
       this.setState({open: false})
     }
-
   },
   handleClickOutside(e) {
     !e.target.closest('.organisaatio') && this.setState({open: false})
