@@ -264,10 +264,8 @@ class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) exte
 
 object PerustiedotIndexUpdater extends App with Timing {
   val perustiedotRepository = KoskiApplication.apply.perustiedotRepository
-  130 to 10000 foreach { i =>
-    timed("Reindex 1000") {
-      perustiedotRepository.reIndex(Some(PaginationSettings(i, 10000))).toBlocking.last
-      println("done")
-    }
+  timed("Reindex") {
+    perustiedotRepository.reIndex(None).toBlocking.last
+    println("done")
   }
 }
