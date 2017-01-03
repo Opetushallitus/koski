@@ -1,5 +1,6 @@
 package fi.oph.koski.oppija
 
+import com.typesafe.config.Config
 import fi.oph.koski.henkilo._
 import fi.oph.koski.http.{Http, HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.{Json, Json4sHttp4s}
@@ -15,7 +16,7 @@ import org.json4s._
 
 import scala.util.{Failure, Success}
 
-class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRepository: OpiskeluoikeusRepository, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository) extends Logging with Timing with GlobalExecutionContext {
+class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRepository: OpiskeluoikeusRepository, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository, config: Config) extends Logging with Timing with GlobalExecutionContext {
   def findOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(OpiskeluoikeusRepository.findByOppijaOid)(user)(oid)
 
   def findUserOppija(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(OpiskeluoikeusRepository.findByUserOid)(user)(user.oid)
@@ -26,7 +27,10 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
         Hetu.validate(h.hetu, acceptSynthetic = false).right.flatMap { hetu =>
           henkilöRepository.findOrCreate(h).right.map(VerifiedHenkilöOid(_))
         }
-      case h:HenkilöWithOid => Right(UnverifiedHenkilöOid(h.oid, henkilöRepository))
+      case h:NimitiedotJaOid if config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid") =>
+        Right(VerifiedHenkilöOid(TäydellisetHenkilötiedot(h.oid, "010101-123N", h.etunimet, h.kutsumanimi, h.sukunimi, None, None)))
+      case h:HenkilöWithOid =>
+        Right(UnverifiedHenkilöOid(h.oid, henkilöRepository))
     }
 
     timed("createOrUpdate") {

@@ -8,6 +8,7 @@ import fi.oph.koski.http._
 import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import fi.oph.koski.json.Json4sHttp4s._
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeudenPerustiedotRepository
 import fi.oph.koski.util.Timing
 import org.http4s._
 
@@ -23,8 +24,8 @@ trait AuthenticationServiceClient {
 }
 
 object AuthenticationServiceClient {
-  def apply(config: Config, db: DB): AuthenticationServiceClient = if (config.hasPath("opintopolku.virkailija.username")) {
-    RemoteAuthenticationServiceClient(config)
+  def apply(config: Config, db: DB, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository): AuthenticationServiceClient = if (config.hasPath("opintopolku.virkailija.username")) {
+    RemoteAuthenticationServiceClient(config, perustiedotRepository)
   } else {
     new MockAuthenticationServiceClientWithDBSupport(db)
   }
@@ -63,7 +64,7 @@ object AuthenticationServiceClient {
 }
 
 object RemoteAuthenticationServiceClient {
-  def apply(config: Config): RemoteAuthenticationServiceClient = {
+  def apply(config: Config, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository): RemoteAuthenticationServiceClient = {
     val virkalijaUrl: String = if (config.hasPath("authentication-service.virkailija.url")) { config.getString("authentication-service.virkailija.url") } else { config.getString("opintopolku.virkailija.url") }
     val username =  if (config.hasPath("authentication-service.username")) { config.getString("authentication-service.username") } else { config.getString("opintopolku.virkailija.username") }
     val password =  if (config.hasPath("authentication-service.password")) { config.getString("authentication-service.password") } else { config.getString("opintopolku.virkailija.password") }
@@ -71,7 +72,7 @@ object RemoteAuthenticationServiceClient {
     val oidServiceHttp = VirkailijaHttpClient(username, password, virkalijaUrl, "/oppijanumerorekisteri-service", config.getBoolean("authentication-service.useCas"))
     val käyttöOikeusHttp = VirkailijaHttpClient(username, password, virkalijaUrl, "/kayttooikeus-service", config.getBoolean("authentication-service.useCas"))
     if (config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")) {
-      new RemoteAuthenticationServiceClientWithMockOids(authServiceHttp, oidServiceHttp, käyttöOikeusHttp)
+      new RemoteAuthenticationServiceClientWithMockOids(authServiceHttp, oidServiceHttp, käyttöOikeusHttp, perustiedotRepository)
     } else {
       new RemoteAuthenticationServiceClient(authServiceHttp, oidServiceHttp, käyttöOikeusHttp)
     }
@@ -111,13 +112,15 @@ class RemoteAuthenticationServiceClient(authServiceHttp: Http, oidServiceHttp: H
   )
 }
 
-class RemoteAuthenticationServiceClientWithMockOids(authServiceHttp: Http, oidServiceHttp: Http, käyttöOikeusHttp: Http) extends RemoteAuthenticationServiceClient(authServiceHttp, oidServiceHttp, käyttöOikeusHttp) {
+class RemoteAuthenticationServiceClientWithMockOids(authServiceHttp: Http, oidServiceHttp: Http, käyttöOikeusHttp: Http, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository) extends RemoteAuthenticationServiceClient(authServiceHttp, oidServiceHttp, käyttöOikeusHttp) {
   override def findOppijatByOids(oids: List[String]): List[OppijaHenkilö] = {
     val found = super.findOppijatByOids(oids).map(henkilö => (henkilö.oidHenkilo, henkilö)).toMap
     oids.map { oid =>
       found.get(oid) match {
         case Some(henkilö) => henkilö
-        case None => OppijaHenkilö(oid, oid.substring("1.2.246.562.24.".length, oid.length), "Testihenkilö", "Testihenkilö", Some("010101-123N"), None, None)
+        case None => perustiedotRepository.findHenkilöPerustiedot(oid).map { henkilö =>
+          OppijaHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, Some("010101-123N"), None, None)
+        }.getOrElse(OppijaHenkilö(oid, oid.substring("1.2.246.562.24.".length, oid.length), "Testihenkilö", "Testihenkilö", Some("010101-123N"), None, None))
       }
     }
   }

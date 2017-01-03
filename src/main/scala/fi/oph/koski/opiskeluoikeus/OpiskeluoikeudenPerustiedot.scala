@@ -11,14 +11,13 @@ import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresAuthentication}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusSortOrder.{Ascending, Descending}
-import fi.oph.koski.opiskeluoikeus.PerustiedotIndexUpdater.timed
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, ObservableSupport}
 import fi.oph.koski.util._
 import fi.oph.scalaschema.annotation.Description
+import org.http4s.EntityEncoder
 import org.json4s.JValue
-import rx.lang.scala.Observable
 
 case class OpiskeluoikeudenPerustiedot(
   id: Option[Int], // TODO: remove optionality
@@ -153,6 +152,15 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     implicit val formats = Json.jsonFormats
     val response = Http.runTask(elasticSearchHttp.post(uri"/koski/perustiedot/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
     (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source").extract[OpiskeluoikeudenPerustiedot])
+  }
+
+  def findHenkilöPerustiedot(oid: String): Option[NimitiedotJaOid] = {
+    val doc = Json.toJValue(Map("query" -> Map("term" -> Map("henkilö.oid" -> oid))))
+
+    Http.runTask(elasticSearchHttp.post(uri"/koski/_refresh", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
+    implicit val formats = Json.jsonFormats
+    val response = Http.runTask(elasticSearchHttp.post(uri"/koski/perustiedot/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
+    (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source" \ "henkilö").extract[NimitiedotJaOid]).headOption
   }
 
   /**
