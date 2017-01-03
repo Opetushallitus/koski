@@ -7,7 +7,7 @@ import fi.oph.koski.db._
 import fi.oph.koski.documentation._
 import fi.oph.koski.json.Json
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusRepository
+import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeudenPerustiedot, OpiskeluoikeudenPerustiedotRepository, OpiskeluoikeusRepository}
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, OrganisaatioRepository}
 import fi.oph.koski.schema.Henkilö.Oid
@@ -18,7 +18,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.henkilo.{MockOppijat, VerifiedHenkilöOid}
 import fi.oph.koski.validation.KoskiValidator
 
-class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluoikeusRepository, henkilöRepository: HenkilöRepository, validator: KoskiValidator) extends KoskiDatabaseMethods with Timing {
+class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: OpiskeluoikeusRepository, henkilöRepository: HenkilöRepository, perustiedot: OpiskeluoikeudenPerustiedotRepository, validator: KoskiValidator) extends KoskiDatabaseMethods with Timing {
   implicit val user = KoskiSession.systemUser
   val db = database.db
   implicit val accessType = AccessType.write
@@ -30,14 +30,18 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: Opiskeluo
     val deleteTiedonsiirrot = TiedonsiirtoWithAccessCheck.filter(t => t.tallentajaOrganisaatioOid === MockOrganisaatiot.stadinAmmattiopisto || t.tallentajaOrganisaatioOid === MockOrganisaatiot.helsinginKaupunki).delete
 
     runDbSync(DBIO.sequence(deleteOpiskeluOikeudet))
+
+    perustiedot.deleteByOppijaOids(MockOppijat.defaultOppijat.map(_.oid))
+
     val henkilöOids: List[Oid] = MockOppijat.defaultOppijat.map(_.oid)
     runDbSync(Tables.Henkilöt.filter(_.oid inSetBind henkilöOids).delete)
     runDbSync(DBIO.sequence(henkilöOids.flatMap(henkilöRepository.findByOid).map{ henkilö => Henkilöt += HenkilöRow(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi) }))
 
     runDbSync(deleteTiedonsiirrot)
 
-    validatedOpiskeluoikeudet.foreach {
-      case (henkilö, opiskeluoikeus) => repository.createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus)
+    validatedOpiskeluoikeudet.foreach { case (henkilö, opiskeluoikeus) =>
+      val id = repository.createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus).right.get.id
+      perustiedot.update(OpiskeluoikeudenPerustiedot.makePerustiedot(id, henkilö.nimitiedotJaOid, opiskeluoikeus))
     }
   }
 

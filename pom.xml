@@ -233,8 +233,6 @@
       <artifactId>simpleclient_servlet</artifactId>
       <version>${prometheus.client.version}</version>
     </dependency>
-
-
     <!-- test deps -->
     <dependency>
       <groupId>junit</groupId>

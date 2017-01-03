@@ -28,7 +28,7 @@ describe('Oppijataulukko', function() {
 
   describe('Filtteröinti', function() {
     describe('nimellä', function() {
-      before(page.oppijataulukko.filterBy('nimi', 'Koululainen Kaisa'))
+      before(page.oppijataulukko.filterBy('nimi', 'Koululainen kAisa'))
       it('toimii', function() {
         expect(page.oppijataulukko.data().map(function(row) { return row[0]})).to.deep.equal([ 'Koululainen, Kaisa', 'Koululainen, Kaisa' ])
       })
@@ -79,17 +79,23 @@ describe('Oppijataulukko', function() {
         expect(page.oppijataulukko.names()).to.deep.equal(['IB-final, Iina', 'IB-predicted, Petteri'])
       })
     })
+    describe('alkamispäivällä', function() {
+      before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('tila'),  page.oppijataulukko.filterBy('oppilaitos'), page.oppijataulukko.filterBy('alkamispäivä', '1.1.2001'))
+      it('toimii', function() {
+        expect(page.oppijataulukko.names()).to.deep.equal(['Eerola, Jouni', 'Esimerkki, Eero', 'Markkanen-Fagerström, Eéro Jorma-Petteri', 'Tekijä, Teija'])
+      })
+    })
   })
 
   describe('Sorttaus', function() {
     describe('nimellä', function() {
-      before(page.oppijataulukko.filterBy('oppilaitos'), page.oppijataulukko.filterBy('tutkinto'), page.oppijataulukko.filterBy('tila'), page.oppijataulukko.filterBy('tyyppi', 'Perusopetus'))
+      before(page.oppijataulukko.filterBy('oppilaitos'), page.oppijataulukko.filterBy('tutkinto'), page.oppijataulukko.filterBy('tila'), page.oppijataulukko.filterBy('alkamispäivä'), page.oppijataulukko.filterBy('tyyppi', 'Perusopetus'))
       it('Oletusjärjestys nouseva nimen mukaan', function() {
-        expect(page.oppijataulukko.names()).to.deep.equal([ 'Koululainen, Kaisa', 'Lukiolainen, Liisa', 'Oppiaineenkorottaja, Olli', 'oppija, oili', 'Toiminta, Tommi' ])
+        expect(page.oppijataulukko.names()).to.deep.equal([ 'Koululainen, Kaisa', 'Lukiolainen, Liisa', 'Oppiaineenkorottaja, Olli', 'Oppija, Oili', 'Toiminta, Tommi' ])
       })
       it('Laskeva järjestys klikkaamalla', function() {
         return page.oppijataulukko.sortBy('nimi')().then(function() {
-          expect(page.oppijataulukko.names()).to.deep.equal([ 'Toiminta, Tommi', 'oppija, oili', 'Oppiaineenkorottaja, Olli', 'Lukiolainen, Liisa', 'Koululainen, Kaisa' ])
+          expect(page.oppijataulukko.names()).to.deep.equal([ 'Toiminta, Tommi', 'Oppija, Oili', 'Oppiaineenkorottaja, Olli', 'Lukiolainen, Liisa', 'Koululainen, Kaisa' ])
         })
       })
     })

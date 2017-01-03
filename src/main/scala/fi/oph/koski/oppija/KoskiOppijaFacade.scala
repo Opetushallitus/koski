@@ -1,8 +1,9 @@
 package fi.oph.koski.oppija
 
+import com.typesafe.config.Config
 import fi.oph.koski.henkilo._
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.json.Json
+import fi.oph.koski.http.{Http, HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.json.{Json, Json4sHttp4s}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.KoskiMessageField.{opiskeluoikeusId, opiskeluoikeusVersio, oppijaHenkiloOid}
 import fi.oph.koski.log.KoskiOperation._
@@ -10,8 +11,12 @@ import fi.oph.koski.log.{AuditLog, _}
 import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
+import fi.oph.koski.db.GlobalExecutionContext
+import org.json4s._
 
-class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRepository: OpiskeluoikeusRepository) extends Logging with Timing {
+import scala.util.{Failure, Success}
+
+class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRepository: OpiskeluoikeusRepository, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository, config: Config) extends Logging with Timing with GlobalExecutionContext {
   def findOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(OpiskeluoikeusRepository.findByOppijaOid)(user)(oid)
 
   def findUserOppija(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(OpiskeluoikeusRepository.findByUserOid)(user)(user.oid)
@@ -22,7 +27,10 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
         Hetu.validate(h.hetu, acceptSynthetic = false).right.flatMap { hetu =>
           henkilöRepository.findOrCreate(h).right.map(VerifiedHenkilöOid(_))
         }
-      case h:HenkilöWithOid => Right(UnverifiedHenkilöOid(h.oid, henkilöRepository))
+      case h:NimitiedotJaOid if config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid") =>
+        Right(VerifiedHenkilöOid(TäydellisetHenkilötiedot(h.oid, "010101-123N", h.etunimet, h.kutsumanimi, h.sukunimi, None, None)))
+      case h:HenkilöWithOid =>
+        Right(UnverifiedHenkilöOid(h.oid, henkilöRepository))
     }
 
     timed("createOrUpdate") {
@@ -75,9 +83,16 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
       Left(KoskiErrorCategory.forbidden.omienTietojenMuokkaus())
     } else {
       val result = OpiskeluoikeusRepository.createOrUpdate(oppijaOid, opiskeluoikeus)
-      result.right.map { result =>
+      result.right.map { (result: CreateOrUpdateResult) =>
         applicationLog(oppijaOid, opiskeluoikeus, result)
         auditLog(oppijaOid, result)
+
+        val nimitiedotJaOid = oppijaOid.verified.map(_.nimitiedotJaOid).getOrElse(throw new RuntimeException(s"Oppijaa {${oppijaOid.oppijaOid}} ei löydy")) // TODO: päivitystapauksessa ei haeta henkilöä, päivitetään muut tiedon elasticsearchiin
+        val oo = opiskeluoikeus
+
+        val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(result.id, nimitiedotJaOid, oo)
+        perustiedotRepository.update(perustiedot)
+
         OpiskeluoikeusVersio(result.id, result.versionumero)
       }
     }

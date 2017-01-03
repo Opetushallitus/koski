@@ -25,18 +25,14 @@ object Tables {
 
   object OpiskeluoikeusTable {
     def makeInsertableRow(oppijaOid: String, opiskeluoikeus: Opiskeluoikeus) = {
-      OpiskeluoikeusRow(opiskeluoikeus.id.getOrElse(0), oppijaOid, opiskeluoikeus.oppilaitos.oid, opiskeluoikeus.koulutustoimija.map(_.oid), Opiskeluoikeus.VERSIO_1, Json.toJValue(opiskeluoikeus), luokka(opiskeluoikeus))
+      OpiskeluoikeusRow(opiskeluoikeus.id.getOrElse(0), oppijaOid, opiskeluoikeus.oppilaitos.oid, opiskeluoikeus.koulutustoimija.map(_.oid), Opiskeluoikeus.VERSIO_1, Json.toJValue(opiskeluoikeus), opiskeluoikeus.luokka)
     }
     def readData(data: JValue, id: Int, versionumero: Int): KoskeenTallennettavaOpiskeluoikeus = {
       Json.fromJValue[Opiskeluoikeus](data).asInstanceOf[KoskeenTallennettavaOpiskeluoikeus].withIdAndVersion(id = Some(id), versionumero = Some(versionumero))
     }
     def updatedFieldValues(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
       val data = Json.toJValue(opiskeluoikeus.withIdAndVersion(id = None, versionumero = None))
-      (data, opiskeluoikeus.versionumero.get, luokka(opiskeluoikeus), opiskeluoikeus.koulutustoimija.map(_.oid))
-    }
-    private def luokka(opiskeluoikeus: Opiskeluoikeus) = {
-      val vuosiluokkasuoritukset = opiskeluoikeus.suoritukset.collect({case s: PerusopetuksenVuosiluokanSuoritus => s})
-      vuosiluokkasuoritukset.sortBy(_.koulutusmoduuli.tunniste.koodiarvo).reverse.headOption.map(_.luokka)
+      (data, opiskeluoikeus.versionumero.get, opiskeluoikeus.luokka, opiskeluoikeus.koulutustoimija.map(_.oid))
     }
   }
 

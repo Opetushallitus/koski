@@ -14,14 +14,14 @@ export default React.createClass({
           <div className="date-range-input">
             <label>Aloituspäivä</label>
             <input
-              className={invalidStartDate ? 'error' : ''}
+              className={invalidStartDate ? 'start error' : 'start'}
               type="text"
               value={invalidStartDate ? invalidStartDate.value : from ? formatFinnishDate(from) : ''}
               onChange={this.handleStartDate}
               ref={input => this.startDateInput = input}
             />&mdash;
             <input
-              className={invalidEndDate ? 'error' : ''}
+              className={invalidEndDate ? 'end error' : 'end'}
               type="text"
               value={invalidEndDate ? invalidEndDate.value : to ? formatFinnishDate(to) : ''}
               onChange={this.handleEndDate}

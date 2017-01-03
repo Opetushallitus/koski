@@ -30,6 +30,7 @@ Nämä ovat keskeiset Koski-järjestelmässä käytettävät teknologiat. Lista 
 tarpeen mukaan.
 
 - PostgreSQL 9.6 -tietokanta
+- Elasticsearch 5.1.1 -hakuindeksi
 - Palvelinteknologiat
   - Scala 2.11.4 ohjelmointikieli ja kääntäjä
   - Scalatra web framework
@@ -56,6 +57,7 @@ Minimissään tarvitset nämä:
 - Java 8
 - Maven 3 (osx: `brew install maven`)
 - Postgres 9.6 (osx: `brew install postgresql`)
+- Elasticsearch 5.1.1 (osx: `brew install elasticsearch`)
 - Node.js ja NPM (osx: `brew install node`)
 - Tekstieditori (kehitystiimi käyttää IntelliJ IDEA 14/15)
 
@@ -120,6 +122,15 @@ Kehityksessä käytetään kahta kantaa: `koski` jota käytetään normaalisti j
 testeissä (tämä kanta tyhjennetään aina testiajon alussa). Molemmat kannat sisältävät `koski` -skeeman, ja sijaitsevat
 fyysisesti samassa datahakemistossa.
 
+## Paikallinen Elasticsearch-kanta
+
+Koski-sovellus käynnistää paikallisen Elasticseach-serverin käynnistyessään, ellei serveriä löydy portista 9200.
+
+Jos haluat pitää Elasticsearching käynnissä erikseen, voit käynnistää sen komentoriviltä komennolla
+
+    make elasticsearch
+
+Paikallisen kannan datat tulevat hakemistoon `elastic-data`.
 
 ### SQL-yhteys paikalliseen kantaan
 

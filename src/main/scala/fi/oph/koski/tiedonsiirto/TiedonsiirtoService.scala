@@ -168,7 +168,6 @@ class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organis
     }.map {
       case (x, rows) =>
         val oppija = rows.head.oppija.flatMap(_.extractOpt[TiedonsiirtoOppija])
-        println(x + " " + rows.length + " rows, first=" + oppija.flatMap(_.oid))
         val rivit = rows.map { row =>
           val oppilaitos: List[OrganisaatioWithOid] = row.oppilaitos.flatMap(_.extractOpt[List[OrganisaatioWithOid]]).toList.flatten.distinct
           TiedonsiirtoRivi(row.id, row.aikaleima.toLocalDateTime, oppija, oppilaitos, row.virheet, row.data, row.lahdejarjestelma)

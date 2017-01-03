@@ -20,7 +20,7 @@ object MockUsers {
   val stadinVastuukäyttäjä = MockUser("stadin-vastuu", "stadin-vastuu", "1.2.246.562.24.99999999996", Set((MockOrganisaatiot.stadinAmmattiopisto, vastuukäyttäjä)))
   val helsinkiPalvelukäyttäjä = MockUser("helsinki", "helsinki", "1.2.246.562.24.99999999997", Set((MockOrganisaatiot.helsinginKaupunki, oppilaitosPalvelukäyttäjä)))
   val kahdenOrganisaatioPalvelukäyttäjä = MockUser("palvelu2", "palvelu2", "1.2.246.562.24.99999999998", Set((MockOrganisaatiot.helsinginKaupunki, oppilaitosPalvelukäyttäjä), (MockOrganisaatiot.omnia, oppilaitosPalvelukäyttäjä)))
-  val omattiedot = MockUser("oppija", "oili", "1.2.246.562.24.99999999999", Set((omnia, oppilaitosTallentaja)))
+  val omattiedot = MockUser("Oppija", "Oili", "1.2.246.562.24.99999999999", Set((omnia, oppilaitosTallentaja)))
 
   val users = List(
     kalle,

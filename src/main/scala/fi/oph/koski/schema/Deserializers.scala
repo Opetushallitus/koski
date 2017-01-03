@@ -27,8 +27,19 @@ object Deserializers {
     EditorModelSerializer,
     AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsaDeserializer,
     TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsaDeserializer,
-    NäyttötutkintoonValmistavanKoulutuksenOsaDeserializer
+    NäyttötutkintoonValmistavanKoulutuksenOsaDeserializer,
+    KoodiViiteDeserializer
   )
+}
+
+object KoodiViiteDeserializer extends Deserializer[KoodiViite] {
+  private val KoodiViiteClass = classOf[KoodiViite]
+  override def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), KoodiViite] =  {
+    case (TypeInfo(KoodiViiteClass, _), json) =>
+      json match {
+        case viite: JObject => viite.extract[Koodistokoodiviite]
+      }
+  }
 }
 
 object SuoritusDeserializer extends Deserializer[Suoritus] {
@@ -315,11 +326,14 @@ object HenkilöDeserialializer extends Deserializer[Henkilö] {
     case (TypeInfo(TheClass, _), json) =>
       json match {
         case henkilö: JObject if hasOid(henkilö) && hasHetu(henkilö) => henkilö.extract[TäydellisetHenkilötiedot]
+        case henkilö: JObject if hasOid(henkilö) && hasNimitiedot(henkilö) && !hasHetu(henkilö) => henkilö.extract[NimitiedotJaOid] // TODO: Used for Visma integration testing
         case henkilö: JObject if hasOid(henkilö) => henkilö.extract[OidHenkilö]
         case henkilö: JObject => henkilö.extract[UusiHenkilö]
       }
   }
 
+  private def hasNimitiedot(henkilö: JObject) =
+    henkilö.values.contains("etunimet") && henkilö.values.contains("kutsumanimi") && henkilö.values.contains("sukunimi")
   private def hasOid(henkilö: JObject): Boolean = henkilö.values.contains("oid")
   private def hasHetu(henkilö: JObject): Boolean = henkilö.values.contains("hetu")
 }

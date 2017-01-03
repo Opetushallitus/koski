@@ -44,6 +44,10 @@ trait Opiskeluoikeus extends OrganisaatioonLiittyvä with Lähdejärjestelmälli
   def tila: OpiskeluoikeudenTila
   def withKoulutustoimija(koulutustoimija: Koulutustoimija): Opiskeluoikeus
   def omistajaOrganisaatio = oppilaitos
+  def luokka = {
+    val vuosiluokkasuoritukset = suoritukset.collect({case s: PerusopetuksenVuosiluokanSuoritus => s})
+    vuosiluokkasuoritukset.sortBy(_.koulutusmoduuli.tunniste.koodiarvo).reverse.headOption.map(_.luokka)
+  }
 }
 
 trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
