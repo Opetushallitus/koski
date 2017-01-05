@@ -5,6 +5,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.TimedProxy
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeudenPerustiedotRepository
 import fi.oph.koski.schema._
 import fi.oph.koski.virta.VirtaHenkilöRepository
 import fi.oph.koski.ytr.YtrHenkilöRepository
@@ -24,12 +25,12 @@ object HenkilöRepository {
       opintopolku,
       TimedProxy(VirtaHenkilöRepository(application.virtaClient, opintopolku, application.virtaAccessChecker).asInstanceOf[FindByHetu]),
       TimedProxy(YtrHenkilöRepository(application.ytrClient, opintopolku, application.ytrAccessChecker).asInstanceOf[FindByHetu]),
-      application.henkilöCache
+      application.perustiedotRepository
     )
   }
 }
 
-case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta: FindByHetu, ytr: FindByHetu, henkilöCache: KoskiHenkilöCache)(implicit cacheInvalidator: CacheManager) extends FindByOid {
+case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta: FindByHetu, ytr: FindByHetu, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository)(implicit cacheInvalidator: CacheManager) extends FindByOid {
   private val oidCache = KeyValueCache(Cache.cacheAllNoRefresh("HenkilöRepository", 3600, 100), opintopolku.findByOid)
   // findByOid is locally cached
   def findByOid(oid: String): Option[TäydellisetHenkilötiedot] = oidCache(oid)
@@ -45,8 +46,7 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
     } else if(Hetu.validFormat(query).isRight) {
       List(opintopolku, virta, ytr).iterator.map(_.findByHetu(query)).find(!_.isEmpty).toList.flatten
     } else {
-      val oids = henkilöCache.findOids(query)
-      findByOids(oids).map(_.toHenkilötiedotJaOid)
+      findByOids(perustiedotRepository.findOids(query)).map(_.toHenkilötiedotJaOid)
     }
   }
 }

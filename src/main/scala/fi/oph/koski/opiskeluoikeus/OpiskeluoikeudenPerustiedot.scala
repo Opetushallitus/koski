@@ -5,6 +5,7 @@ import java.time.LocalDate
 import com.typesafe.config.Config
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.elasticsearch.ElasticSearchRunner
+import fi.oph.koski.henkilo.TestingException
 import fi.oph.koski.http.{Http, HttpStatus, HttpStatusException, KoskiErrorCategory}
 import fi.oph.koski.json.{Json, Json4sHttp4s}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresAuthentication}
@@ -102,12 +103,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     }
 
     val elasticFilters = filters.flatMap {
-      case Nimihaku(hakusana) => hakusana.trim.split(" ").map(_.toLowerCase).map { namePrefix =>
-        Map("bool" -> Map("should" -> List(
-          Map("prefix" -> Map("henkilö.sukunimi" -> namePrefix)),
-          Map("prefix" -> Map("henkilö.etunimet" -> namePrefix))
-        )))
-      }
+      case Nimihaku(hakusana) => nameFilter(hakusana)
       case Luokkahaku(hakusana) => hakusana.trim.split(" ").map(_.toLowerCase).map { prefix =>
         Map("prefix" -> Map("luokka" -> prefix))
       }
@@ -150,7 +146,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     ))
 
     implicit val formats = Json.jsonFormats
-    val response = Http.runTask(elasticSearchHttp.post(uri"/koski/perustiedot/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
+    val response = runSearch(doc)
     (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source").extract[OpiskeluoikeudenPerustiedot])
   }
 
@@ -159,33 +155,26 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
 
     Http.runTask(elasticSearchHttp.post(uri"/koski/_refresh", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
     implicit val formats = Json.jsonFormats
-    val response = Http.runTask(elasticSearchHttp.post(uri"/koski/perustiedot/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
+    val response = runSearch(doc)
     (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source" \ "henkilö").extract[NimitiedotJaOid]).headOption
   }
 
   def findOids(hakusana: String): List[Oid] = {
-    val nameFilter = hakusana.trim.split(" ").map(_.toLowerCase).map { namePrefix =>
-      Map("bool" -> Map("should" -> List(
-        Map("prefix" -> Map("henkilö.sukunimi" -> namePrefix)),
-        Map("prefix" -> Map("henkilö.etunimet" -> namePrefix))
-      )))
+    if (hakusana == "") {
+      throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort())
+    }
+    if (hakusana == "#error#") {
+      throw new TestingException("Testing error handling") // TODO: how to inject error properly
     }
 
-    val elasticQuery = Map("bool" -> Map("must" -> List(nameFilter)))
-
-    val values = Map(
+    val doc = Json.toJValue(Map(
       "_source" -> "henkilö.oid",
-      "query" -> elasticQuery,
-      "sort" -> Nil,
-      "from" -> 0,
-      "size" -> 0,
-      "aggregations" -> Map("oids" -> Map("terms" -> Map("field" -> "henkilö.oid.keyword", "size" -> 100)))
-    )
-    val doc = Json.toJValue(values)
+      "query" -> Map("bool" -> Map("must" -> List(nameFilter(hakusana)))),
+      "aggregations" -> Map("oids" -> Map("terms" -> Map("field" -> "henkilö.oid.keyword")))
+    ))
 
     implicit val formats = Json.jsonFormats
-    val response = Http.runTask(elasticSearchHttp.post(uri"/koski/perustiedot/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
-    (response \ "aggregations" \ "oids" \ "buckets").extract[List[JValue]].map(j => (j \ "key").extract[Oid])
+    (runSearch(doc) \ "aggregations" \ "oids" \ "buckets").extract[List[JValue]].map(j => (j \ "key").extract[Oid])
   }
 
   /**
@@ -246,6 +235,19 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
       { () => logger.info("Finished updating Elasticsearch index")})
     observable
   }
+
+  private def runSearch(doc: JValue): JValue = {
+    implicit val formats = Json.jsonFormats
+    Http.runTask(elasticSearchHttp.post(uri"/koski/perustiedot/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
+  }
+
+  private def nameFilter(hakusana: String) =
+    hakusana.trim.split(" ").map(_.toLowerCase).map { namePrefix =>
+      Map("bool" -> Map("should" -> List(
+        Map("prefix" -> Map("henkilö.sukunimi" -> namePrefix)),
+        Map("prefix" -> Map("henkilö.etunimet" -> namePrefix))
+      )))
+    }
 
   case class UpdateStatus(updated: Int, changed: Int) {
     def +(other: UpdateStatus) = UpdateStatus(this.updated + other.updated, this.changed + other.changed)
