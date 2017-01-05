@@ -260,8 +260,35 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
       logger.info(s"Using elasticsearch at $host:$port")
     }
 
+    if (host == "localhost") {
+      setupIndex
+    }
+
     if (config.getBoolean("elasticsearch.reIndexAtStartup")) {
       reIndex()
+    }
+  }
+
+  private def setupIndex = {
+    implicit val formats = Json.jsonFormats
+    val statusCode = Http.runTask(elasticSearchHttp.get(uri"/koski")(Http.statusCode))
+    val settings = Map(
+      "analysis" -> Map(
+        "analyzer" -> Map(
+          "default" -> Map(
+            "type" -> "custom",
+            "filter" -> List("lowercase"),
+            "tokenizer" -> "whitespace"
+          )
+        )
+      )
+    )
+    if (statusCode == 200) {
+      Http.runTask(elasticSearchHttp.post(uri"/koski/_close", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
+      Http.runTask(elasticSearchHttp.put(uri"/koski/_settings", Json.toJValue(settings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+      Http.runTask(elasticSearchHttp.post(uri"/koski/_open", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
+    } else if (statusCode == 404) {
+      Http.runTask(elasticSearchHttp.post(uri"/koski", Json.toJValue(Map("settings" -> settings)))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
     }
   }
 }
