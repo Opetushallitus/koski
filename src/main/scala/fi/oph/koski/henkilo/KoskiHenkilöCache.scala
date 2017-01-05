@@ -6,10 +6,11 @@ import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{NimitiedotJaOid, TäydellisetHenkilötiedot}
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeudenPerustiedotRepository
+import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import fi.oph.koski.servlet.InvalidRequestException
 
-class KoskiHenkilöCache(val db: DB) extends Logging with GlobalExecutionContext with KoskiDatabaseMethods {
+class KoskiHenkilöCache(perustiedotRepository: OpiskeluoikeudenPerustiedotRepository) {
   def findOids(queryString: String): List[String] = {
     if (queryString == "") {
       throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort())
@@ -17,12 +18,9 @@ class KoskiHenkilöCache(val db: DB) extends Logging with GlobalExecutionContext
     if (queryString == "#error#") {
       throw new TestingException("Testing error handling") // TODO: how to inject error properly
     }
-    val tableQuery = Henkilöt
-      .filter(henkilö => KoskiHenkilöCache.filterByQuery(queryString)(henkilö))
-    runDbSync((tableQuery.map(_.oid)).result).toList
-  }
 
-  def findByOid(oid: String): Option[NimitiedotJaOid] = runDbSync(Henkilöt.filter(_.oid === oid).result).toList.headOption.map(_.toNimitiedotJaOid)
+    perustiedotRepository.findOids(queryString)
+  }
 }
 
 class KoskiHenkilöCacheUpdater(val db: DB, val henkilöt: HenkilöRepository) extends Logging with GlobalExecutionContext with KoskiDatabaseMethods {

@@ -163,6 +163,31 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source" \ "henkilö").extract[NimitiedotJaOid]).headOption
   }
 
+  def findOids(hakusana: String): List[Oid] = {
+    val nameFilter = hakusana.trim.split(" ").map(_.toLowerCase).map { namePrefix =>
+      Map("bool" -> Map("should" -> List(
+        Map("prefix" -> Map("henkilö.sukunimi" -> namePrefix)),
+        Map("prefix" -> Map("henkilö.etunimet" -> namePrefix))
+      )))
+    }
+
+    val elasticQuery = Map("bool" -> Map("must" -> List(nameFilter)))
+
+    val values = Map(
+      "_source" -> "henkilö.oid",
+      "query" -> elasticQuery,
+      "sort" -> Nil,
+      "from" -> 0,
+      "size" -> 0,
+      "aggregations" -> Map("oids" -> Map("terms" -> Map("field" -> "henkilö.oid.keyword", "size" -> 100)))
+    )
+    val doc = Json.toJValue(values)
+
+    implicit val formats = Json.jsonFormats
+    val response = Http.runTask(elasticSearchHttp.post(uri"/koski/perustiedot/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
+    (response \ "aggregations" \ "oids" \ "buckets").extract[List[JValue]].map(j => (j \ "key").extract[Oid])
+  }
+
   /**
     * Update info to Elasticsearch. Return error status or a boolean indicating whether data was changed.
     */
