@@ -90,8 +90,10 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
         val nimitiedotJaOid = oppijaOid.verified.map(_.nimitiedotJaOid).getOrElse(throw new RuntimeException(s"Oppijaa {${oppijaOid.oppijaOid}} ei löydy")) // TODO: päivitystapauksessa ei haeta henkilöä, päivitetään muut tiedon elasticsearchiin
         val oo = opiskeluoikeus
 
-        val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(result.id, nimitiedotJaOid, oo)
-        perustiedotRepository.update(perustiedot)
+        if (result.changed) {
+          val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(result.id, result.data, oo.luokka, nimitiedotJaOid)
+          perustiedotRepository.update(perustiedot)
+        }
 
         OpiskeluoikeusVersio(result.id, result.versionumero)
       }

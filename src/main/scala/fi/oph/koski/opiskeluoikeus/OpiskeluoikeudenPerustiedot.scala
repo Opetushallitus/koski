@@ -38,46 +38,36 @@ case class OpiskeluoikeudenPerustiedot(
 )
 
 object OpiskeluoikeudenPerustiedot {
-  def makePerustiedot(row: OpiskeluoikeusRow, henkilöRow: HenkilöRow) = {
-    implicit val formats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalizedStringDeserializer
-    val oo = row.data
-    val suoritukset: List[SuorituksenPerustiedot] = (oo \ "suoritukset").asInstanceOf[JArray].arr
-      .filterNot(_.isInstanceOf[PerusopetuksenVuosiluokanSuoritus]) // TODO
-      .map { suoritus =>
-        val osaamisala = (suoritus \ "osaamisala").extract[Option[List[Koodistokoodiviite]]]
-        val tutkintonimike = (suoritus \ "tutkintonimike").extract[Option[List[Koodistokoodiviite]]]
+  def makePerustiedot(row: OpiskeluoikeusRow, henkilöRow: HenkilöRow): OpiskeluoikeudenPerustiedot = {
+    makePerustiedot(row.id, row.data, row.luokka, henkilöRow.toNimitiedotJaOid)
+  }
 
+  def makePerustiedot(id: Int, oo: Opiskeluoikeus, henkilö: NimitiedotJaOid): OpiskeluoikeudenPerustiedot = {
+    makePerustiedot(id, Json.toJValue(oo), oo.luokka, henkilö)
+  }
+
+  def makePerustiedot(id: Int, data: JValue, luokka: Option[String], henkilö: NimitiedotJaOid): OpiskeluoikeudenPerustiedot = {
+    implicit val formats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalizedStringDeserializer
+    val suoritukset: List[SuorituksenPerustiedot] = (data \ "suoritukset").asInstanceOf[JArray].arr
+      .map { suoritus =>
         SuorituksenPerustiedot(
           (suoritus \ "tyyppi").extract[Koodistokoodiviite],
           KoulutusmoduulinPerustiedot((suoritus \ "koulutusmoduuli" \ "tunniste").extract[Koodistokoodiviite]), // TODO: voi olla paikallinen koodi
-          osaamisala,
-          tutkintonimike,
+          (suoritus \ "osaamisala").extract[Option[List[Koodistokoodiviite]]],
+          (suoritus \ "tutkintonimike").extract[Option[List[Koodistokoodiviite]]],
           (suoritus \ "toimipiste").extract[OidOrganisaatio]
         )
       }
+      .filter(_.tyyppi.koodiarvo != "perusopetuksenvuosiluokka")
     OpiskeluoikeudenPerustiedot(
-      Some(row.id),
-      henkilöRow.toNimitiedotJaOid,
-      (oo \ "oppilaitos").extract[Oppilaitos],
-      (oo \ "alkamispäivä").extract[Option[LocalDate]],
-      (oo \ "tyyppi").extract[Koodistokoodiviite],
+      Some(id),
+      henkilö,
+      (data \ "oppilaitos").extract[Oppilaitos],
+      (data \ "alkamispäivä").extract[Option[LocalDate]],
+      (data \ "tyyppi").extract[Koodistokoodiviite],
       suoritukset,
-      ((oo \ "tila" \ "opiskeluoikeusjaksot").asInstanceOf[JArray].arr.last \ "tila").extract[Koodistokoodiviite],
-      row.luokka)
-
-  }
-  def makePerustiedot(id: Int, henkilö: NimitiedotJaOid, oo: Opiskeluoikeus) = {
-    val suoritukset: List[SuorituksenPerustiedot] = oo.suoritukset
-      .filterNot(_.isInstanceOf[PerusopetuksenVuosiluokanSuoritus])
-      .map { suoritus =>
-        val (osaamisala, tutkintonimike) = suoritus match {
-          case s: AmmatillisenTutkinnonSuoritus => (s.osaamisala, s.tutkintonimike)
-          case s: NäyttötutkintoonValmistavanKoulutuksenSuoritus => (s.osaamisala, s.tutkintonimike)
-          case _ => (None, None)
-        }
-        SuorituksenPerustiedot(suoritus.tyyppi, KoulutusmoduulinPerustiedot(suoritus.koulutusmoduuli.tunniste), osaamisala, tutkintonimike, suoritus.toimipiste)
-      }
-    OpiskeluoikeudenPerustiedot(Some(id), henkilö, oo.oppilaitos, oo.alkamispäivä, oo.tyyppi, suoritukset, oo.tila.opiskeluoikeusjaksot.last.tila, oo.luokka)
+      ((data \ "tila" \ "opiskeluoikeusjaksot").asInstanceOf[JArray].arr.last \ "tila").extract[Koodistokoodiviite],
+      luokka)
   }
 }
 

@@ -128,12 +128,13 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
         DBIO.successful(Left(KoskiErrorCategory.conflict.versionumero(s"Uudelle opiskeluoikeudelle annettu versionumero $versio")))
       case _ =>
         val tallennettavaOpiskeluoikeus = opiskeluoikeus.withIdAndVersion(id = None, versionumero = None)
+        val row: OpiskeluoikeusRow = Tables.OpiskeluoikeusTable.makeInsertableRow(oppijaOid, tallennettavaOpiskeluoikeus)
         for {
-          opiskeluoikeusId <- Tables.OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += Tables.OpiskeluoikeusTable.makeInsertableRow(oppijaOid, tallennettavaOpiskeluoikeus)
-          diff = Json.toJValue(List(Map("op" -> "add", "path" -> "", "value" -> tallennettavaOpiskeluoikeus)))
+          opiskeluoikeusId <- Tables.OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += row
+          diff = Json.toJValue(List(Map("op" -> "add", "path" -> "", "value" -> row.data)))
           _ <- historyRepository.createAction(opiskeluoikeusId, VERSIO_1, user.oid, diff)
         } yield {
-          Right(Created(opiskeluoikeusId, VERSIO_1, diff))
+          Right(Created(opiskeluoikeusId, VERSIO_1, diff, row.data))
         }
     }
   }
@@ -155,7 +156,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
         val diff: JArray = Json.jsonDiff(oldRow.data, newData)
         diff.values.length match {
           case 0 =>
-            DBIO.successful(Right(NotChanged(id, versionumero, diff)))
+            DBIO.successful(Right(NotChanged(id, versionumero, diff, newData)))
           case _ =>
             validateOpiskeluoikeusChange(vanhaOpiskeluoikeus, täydennettyOpiskeluoikeus) match {
               case HttpStatus.ok =>
@@ -164,7 +165,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
                   _ <- historyRepository.createAction(id, nextVersionumero, user.oid, diff)
                 } yield {
                   rowsUpdated match {
-                    case 1 => Right(Updated(id, nextVersionumero, diff))
+                    case 1 => Right(Updated(id, nextVersionumero, diff, newData))
                     case x: Int =>
                       throw new RuntimeException("Unexpected number of updated rows: " + x) // throw exception to cause rollback!
                   }
