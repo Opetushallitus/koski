@@ -281,9 +281,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
       logger.info(s"Using elasticsearch at $host:$port")
     }
 
-    if (host == "localhost") {
-      setupIndex
-    }
+    setupIndex
 
     if (config.getBoolean("elasticsearch.reIndexAtStartup")) {
       reIndex()
@@ -291,8 +289,6 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
   }
 
   private def setupIndex = {
-    implicit val formats = Json.jsonFormats
-    val statusCode = Http.runTask(elasticSearchHttp.get(uri"/koski")(Http.statusCode))
     val settings = Map(
       "analysis" -> Map(
         "analyzer" -> Map(
@@ -304,12 +300,26 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
         )
       )
     )
-    if (statusCode == 200) {
-      Http.runTask(elasticSearchHttp.post(uri"/koski/_close", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
-      Http.runTask(elasticSearchHttp.put(uri"/koski/_settings", Json.toJValue(settings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
-      Http.runTask(elasticSearchHttp.post(uri"/koski/_open", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
-    } else if (statusCode == 404) {
-      Http.runTask(elasticSearchHttp.put(uri"/koski", Json.toJValue(Map("settings" -> settings)))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+    implicit val formats = Json.jsonFormats
+    val statusCode = Http.runTask(elasticSearchHttp.get(uri"/koski")(Http.statusCode))
+    statusCode match {
+      case 200 =>
+        val serverSettings = (Http.runTask(elasticSearchHttp.get(uri"/koski/_settings")(Http.parseJson[JValue])) \ "koski" \ "settings" \ "index").extract[Map[String, Any]]
+        val alreadyApplied = (serverSettings ++ settings) == serverSettings
+        if (alreadyApplied) {
+          logger.info("Elasticsearch index settings are up to date")
+        } else {
+          logger.info("Updating Elasticsearch index settings")
+          Http.runTask(elasticSearchHttp.post(uri"/koski/_close", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
+          Http.runTask(elasticSearchHttp.put(uri"/koski/_settings", Json.toJValue(settings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+          Http.runTask(elasticSearchHttp.post(uri"/koski/_open", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
+          logger.info("Updated Elasticsearch index settings. Re-indexing is needed.")
+        }
+      case 404 =>
+        logger.info("Creating Elasticsearch index")
+        Http.runTask(elasticSearchHttp.put(uri"/koski", Json.toJValue(Map("settings" -> settings)))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+      case _ =>
+        logger.error("Unexpected status code from elasticsearch: " + statusCode)
     }
   }
 }
