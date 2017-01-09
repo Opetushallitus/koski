@@ -191,7 +191,7 @@ protected case class HttpResponseLog(request: Request) {
 protected object HttpResponseMonitoring {
   private val statusCounter = Counter.build().name("fi_oph_koski_http_Http_status").help("Koski HTTP client response status").labelNames("service", "responseclass").register()
   private val durationDummary = Summary.build().name("fi_oph_koski_http_Http_duration").help("Koski HTTP client response duration").labelNames("service").register()
-  private val HttpServicePattern = """https?:\/\/([a-z0-9\.-]+\/[a-z0-9\.-]+).*""".r
+  private val HttpServicePattern = """https?:\/\/([a-z0-9:\.-]+\/[a-z0-9\.-]+).*""".r
 
   def record(request: Request, status: Int, durationMillis: Long) {
     val responseClass = status / 100 * 100 // 100, 200, 300, 400, 500
