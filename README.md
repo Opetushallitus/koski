@@ -128,7 +128,7 @@ Koski-sovellus käynnistää paikallisen Elasticseach-serverin käynnistyessää
 
 Jos haluat pitää Elasticsearching käynnissä erikseen, voit käynnistää sen komentoriviltä komennolla
 
-    make elasticsearch
+    make elastic
 
 Paikallisen kannan datat tulevat hakemistoon `elastic-data`.
 

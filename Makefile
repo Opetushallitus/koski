@@ -46,8 +46,8 @@ postgres:
 	postgres --config_file=postgresql/postgresql.conf -D postgresql/data
 postgres-clean:
 	rm postgresql/data/postmaster.pid 2> /dev/null||true
-elasticsearch:
-	elasticsearch -E path.data=elastic-data -E path.logs=elastic-data
+elastic:
+	elasticsearch -E path.conf=elasticsearch -E path.data=elasticsearch/data -E path.logs=elasticsearch/log
 
 ### Code checks
 
