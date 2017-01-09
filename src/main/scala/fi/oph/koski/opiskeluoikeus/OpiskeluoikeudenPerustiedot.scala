@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import com.typesafe.config.Config
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
+import fi.oph.koski.db.{GlobalExecutionContext, HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.elasticsearch.ElasticSearchRunner
 import fi.oph.koski.henkilo.TestingException
 import fi.oph.koski.http.{Http, HttpStatus, HttpStatusException, KoskiErrorCategory}
@@ -21,6 +21,8 @@ import fi.oph.scalaschema.annotation.Description
 import org.http4s.EntityEncoder
 import org.json4s.jackson.Serialization
 import org.json4s.{Extraction, JArray, JString, JValue}
+
+import scala.concurrent.Future
 
 case class OpiskeluoikeudenPerustiedot(
   id: Option[Int], // TODO: remove optionality
@@ -96,7 +98,7 @@ object KoulutusmoduulinPerustiedot {
 
 }
 
-class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryService: OpiskeluoikeusQueryService) extends Logging {
+class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryService: OpiskeluoikeusQueryService) extends Logging with GlobalExecutionContext {
   import Http._
 
   private val host = config.getString("elasticsearch.host")
@@ -281,14 +283,16 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
       logger.info(s"Using elasticsearch at $host:$port")
     }
 
-    setupIndex
+    val reIndexingNeeded = setupIndex
 
-    if (config.getBoolean("elasticsearch.reIndexAtStartup")) {
-      reIndex()
+    if (reIndexingNeeded || config.getBoolean("elasticsearch.reIndexAtStartup")) {
+      Future {
+        reIndex() // Re-index on background
+      }
     }
   }
 
-  private def setupIndex = {
+  private def setupIndex: Boolean = {
     val settings = Map(
       "analysis" -> Map(
         "analyzer" -> Map(
@@ -308,12 +312,14 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
         val alreadyApplied = (serverSettings ++ settings) == serverSettings
         if (alreadyApplied) {
           logger.info("Elasticsearch index settings are up to date")
+          false
         } else {
           logger.info("Updating Elasticsearch index settings")
           Http.runTask(elasticSearchHttp.post(uri"/koski/_close", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
           Http.runTask(elasticSearchHttp.put(uri"/koski/_settings", Json.toJValue(settings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
           Http.runTask(elasticSearchHttp.post(uri"/koski/_open", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
           logger.info("Updated Elasticsearch index settings. Re-indexing is needed.")
+          true
         }
       case 404 =>
         logger.info("Creating Elasticsearch index")
@@ -321,8 +327,10 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
         logger.info("Creating Elasticsearch index alias")
         Http.runTask(elasticSearchHttp.post(uri"/_aliases", Json.toJValue(Map("actions" -> List(Map("add" -> Map("index" -> "koski-index", "alias" -> "koski"))))))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
         logger.info("Created index and alias.")
+        true
       case _ =>
         logger.error("Unexpected status code from elasticsearch: " + statusCode)
+        false
     }
   }
 }
