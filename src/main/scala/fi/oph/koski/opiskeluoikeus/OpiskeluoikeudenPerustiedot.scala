@@ -304,7 +304,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     val statusCode = Http.runTask(elasticSearchHttp.get(uri"/koski")(Http.statusCode))
     statusCode match {
       case 200 =>
-        val serverSettings = (Http.runTask(elasticSearchHttp.get(uri"/koski/_settings")(Http.parseJson[JValue])) \ "koski" \ "settings" \ "index").extract[Map[String, Any]]
+        val serverSettings = (Http.runTask(elasticSearchHttp.get(uri"/koski/_settings")(Http.parseJson[JValue])) \ "koski-index" \ "settings" \ "index").extract[Map[String, Any]]
         val alreadyApplied = (serverSettings ++ settings) == serverSettings
         if (alreadyApplied) {
           logger.info("Elasticsearch index settings are up to date")
@@ -317,7 +317,10 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
         }
       case 404 =>
         logger.info("Creating Elasticsearch index")
-        Http.runTask(elasticSearchHttp.put(uri"/koski", Json.toJValue(Map("settings" -> settings)))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+        Http.runTask(elasticSearchHttp.put(uri"/koski-index", Json.toJValue(Map("settings" -> settings)))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+        logger.info("Creating Elasticsearch index alias")
+        Http.runTask(elasticSearchHttp.post(uri"/_aliases", Json.toJValue(Map("actions" -> List(Map("add" -> Map("index" -> "koski-index", "alias" -> "koski"))))))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+        logger.info("Created index and alias.")
       case _ =>
         logger.error("Unexpected status code from elasticsearch: " + statusCode)
     }
