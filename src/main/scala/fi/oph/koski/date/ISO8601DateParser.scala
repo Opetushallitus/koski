@@ -15,7 +15,7 @@ object ISO8601DateParser {
     try {
       new DateTime(date);
     } catch {
-      case e: IllegalArgumentException => throw new InvalidRequestException(KoskiErrorCategory.badRequest.format.pvm, "wrong date format " + date + ", expected ISO8601")
+      case e: IllegalArgumentException => throw InvalidRequestException(KoskiErrorCategory.badRequest.format.pvm, "wrong date format " + date + ", expected ISO8601")
     }
   }
 }

@@ -15,7 +15,7 @@ class HenkilötiedotServlet(val application: KoskiApplication) extends ApiServle
       case Some(query) if (query.length >= 3) =>
         HenkilötiedotFacade(application.henkilöRepository, application.opiskeluoikeusRepository).findHenkilötiedot(query.toUpperCase)(koskiSession)
       case _ =>
-        throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort)
+        throw InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort)
     }
   }
 }
