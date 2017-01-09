@@ -4,10 +4,11 @@ import java.time.LocalDate
 
 import com.typesafe.config.Config
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.elasticsearch.ElasticSearchRunner
 import fi.oph.koski.henkilo.TestingException
 import fi.oph.koski.http.{Http, HttpStatus, HttpStatusException, KoskiErrorCategory}
-import fi.oph.koski.json.{Json, Json4sHttp4s}
+import fi.oph.koski.json.{GenericJsonFormats, Json, Json4sHttp4s, LocalDateSerializer}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresAuthentication}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
@@ -18,7 +19,8 @@ import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, ObservableSupp
 import fi.oph.koski.util._
 import fi.oph.scalaschema.annotation.Description
 import org.http4s.EntityEncoder
-import org.json4s.JValue
+import org.json4s.jackson.Serialization
+import org.json4s.{Extraction, JArray, JString, JValue}
 
 case class OpiskeluoikeudenPerustiedot(
   id: Option[Int], // TODO: remove optionality
@@ -36,6 +38,34 @@ case class OpiskeluoikeudenPerustiedot(
 )
 
 object OpiskeluoikeudenPerustiedot {
+  def makePerustiedot(row: OpiskeluoikeusRow, henkilöRow: HenkilöRow) = {
+    implicit val formats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalizedStringDeserializer
+    val oo = row.data
+    val suoritukset: List[SuorituksenPerustiedot] = (oo \ "suoritukset").asInstanceOf[JArray].arr
+      .filterNot(_.isInstanceOf[PerusopetuksenVuosiluokanSuoritus]) // TODO
+      .map { suoritus =>
+        val osaamisala = (suoritus \ "osaamisala").extract[Option[List[Koodistokoodiviite]]]
+        val tutkintonimike = (suoritus \ "tutkintonimike").extract[Option[List[Koodistokoodiviite]]]
+
+        SuorituksenPerustiedot(
+          (suoritus \ "tyyppi").extract[Koodistokoodiviite],
+          KoulutusmoduulinPerustiedot((suoritus \ "koulutusmoduuli" \ "tunniste").extract[Koodistokoodiviite]), // TODO: voi olla paikallinen koodi
+          osaamisala,
+          tutkintonimike,
+          (suoritus \ "toimipiste").extract[OidOrganisaatio]
+        )
+      }
+    OpiskeluoikeudenPerustiedot(
+      Some(row.id),
+      henkilöRow.toNimitiedotJaOid,
+      (oo \ "oppilaitos").extract[Oppilaitos],
+      (oo \ "alkamispäivä").extract[Option[LocalDate]],
+      (oo \ "tyyppi").extract[Koodistokoodiviite],
+      suoritukset,
+      ((oo \ "tila" \ "opiskeluoikeusjaksot").asInstanceOf[JArray].arr.last \ "tila").extract[Koodistokoodiviite],
+      row.luokka)
+
+  }
   def makePerustiedot(id: Int, henkilö: NimitiedotJaOid, oo: Opiskeluoikeus) = {
     val suoritukset: List[SuorituksenPerustiedot] = oo.suoritukset
       .filterNot(_.isInstanceOf[PerusopetuksenVuosiluokanSuoritus])
@@ -180,22 +210,25 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
   /**
     * Update info to Elasticsearch. Return error status or a boolean indicating whether data was changed.
     */
-  def update(perustiedot: OpiskeluoikeudenPerustiedot): Either[HttpStatus, Boolean] = {
+  def update(perustiedot: OpiskeluoikeudenPerustiedot): Either[HttpStatus, Int] = updateBulk(List(perustiedot))
+
+  def updateBulk(items: Seq[OpiskeluoikeudenPerustiedot]): Either[HttpStatus, Int] = {
     implicit val formats = Json.jsonFormats
-    val doc = Json.toJValue(Map("doc_as_upsert" -> true, "doc" -> perustiedot))
-
-    val response = Http.runTask(elasticSearchHttp
-      .post(uri"/koski/perustiedot/${perustiedot.id.get}/_update", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
-
-    val failed: Int = (response \ "_shards" \ "failed").extract[Int]
-    val result: String = (response \ "result").extract[String]
-
-    if (failed > 0 ) {
-      val msg = s"Elasticsearch indexing failed for id ${perustiedot.id.get} (fail count > 0)"
+    val jsonLines = items.flatMap { perustiedot =>
+      List(
+        Map("update" -> Map("_id" -> (perustiedot.id.get), "_index" -> "koski", "_type" -> "perustiedot")),
+        Map("doc_as_upsert" -> true, "doc" -> perustiedot)
+      )
+    }
+    val response = Http.runTask(elasticSearchHttp.post(uri"/koski/_bulk", jsonLines)(Json4sHttp4s.multiLineJson4sEncoderOf[Map[String, Any]])(Http.parseJson[JValue]))
+    val errors = (response \ "errors").extract[Boolean]
+    if (errors) {
+      val msg = s"Elasticsearch indexing failed for one of ids ${items.map(_.id.get)}"
       logger.error(msg)
       Left(KoskiErrorCategory.internalError(msg))
     } else {
-      Right(result != "noop")
+      val itemResults = (response \ "items").extract[List[JValue]].map(_ \ "update" \ "_shards" \ "successful").map(_.extract[Int])
+      Right(itemResults.sum)
     }
   }
 
@@ -214,23 +247,21 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
 
   def reIndex(pagination: Option[PaginationSettings] = None) = {
     logger.info("Starting elasticsearch re-indexing")
-    val bufferSize = 10
+    val bufferSize = 1000
     val observable = opiskeluoikeusQueryService.streamingQuery(Nil, None, pagination)(KoskiSession.systemUser).tumblingBuffer(bufferSize).zipWithIndex.map {
       case (rows, index) =>
-        val changed = rows.par.map { case (opiskeluoikeusRow, henkilöRow) =>
-          val oo = opiskeluoikeusRow.toOpiskeluoikeus
-          val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(oo.id.get, henkilöRow.toNimitiedotJaOid, oo)
-          update(perustiedot) match {
-            case Right(true) => 1
-            case Right(false) => 0
-            case Left(error) => 0
-          }
-        }.sum
+        val perustiedot = rows.par.map { case (opiskeluoikeusRow, henkilöRow) =>
+          OpiskeluoikeudenPerustiedot.makePerustiedot(opiskeluoikeusRow, henkilöRow)
+        }.toList
+        val changed = updateBulk(perustiedot) match {
+          case Right(count) => count
+          case Left(_) => 0 // error already logged
+        }
         UpdateStatus(rows.length, changed)
     }.scan(UpdateStatus(0, 0))(_ + _)
 
 
-    observable.subscribe({case UpdateStatus(countSoFar, actuallyChanged) => if (countSoFar % 100 == 0) logger.info(s"Updated elasticsearch index for ${countSoFar} rows, actually changed ${actuallyChanged}")},
+    observable.subscribe({case UpdateStatus(countSoFar, actuallyChanged) => logger.info(s"Updated elasticsearch index for ${countSoFar} rows, actually changed ${actuallyChanged}")},
       {e: Throwable => logger.error(e)("Error updating Elasticsearch index")},
       { () => logger.info("Finished updating Elasticsearch index")})
     observable
