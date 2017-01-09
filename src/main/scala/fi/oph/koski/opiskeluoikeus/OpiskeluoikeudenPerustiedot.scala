@@ -288,7 +288,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
       Http.runTask(elasticSearchHttp.put(uri"/koski/_settings", Json.toJValue(settings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
       Http.runTask(elasticSearchHttp.post(uri"/koski/_open", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
     } else if (statusCode == 404) {
-      Http.runTask(elasticSearchHttp.post(uri"/koski", Json.toJValue(Map("settings" -> settings)))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+      Http.runTask(elasticSearchHttp.put(uri"/koski", Json.toJValue(Map("settings" -> settings)))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
     }
   }
 }
