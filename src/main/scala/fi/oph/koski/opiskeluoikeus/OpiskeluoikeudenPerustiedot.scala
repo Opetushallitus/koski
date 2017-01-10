@@ -293,18 +293,25 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
   }
 
   private def setupIndex: Boolean = {
-    val settings = Map(
-      "analysis" -> Map(
-        "analyzer" -> Map(
-          "default" -> Map(
-            "type" -> "custom",
-            "filter" -> List("lowercase"),
-            "tokenizer" -> "whitespace"
-          )
-        )
-      )
-    )
     implicit val formats = Json.jsonFormats
+    val settings = Json.parse("""
+    {
+        "analysis": {
+          "filter": {
+            "finnish_folding": {
+              "type": "icu_folding",
+              "unicodeSetFilter": "[^åäöÅÄÖ]"
+            }
+          },
+          "analyzer": {
+            "default": {
+              "tokenizer": "icu_tokenizer",
+              "filter":  [ "finnish_folding", "lowercase" ]
+            }
+          }
+        }
+    }""").extract[Map[String, Any]]
+
     val statusCode = Http.runTask(elasticSearchHttp.get(uri"/koski")(Http.statusCode))
     statusCode match {
       case 200 =>
