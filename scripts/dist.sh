@@ -26,7 +26,7 @@ function create_version() {
     rm -rf $BASE_DIR/target/dist/web && rm -rf $BASE_DIR/target/dist
   fi
   git archive --format=tar --prefix=dist/ HEAD | (cd $BASE_DIR/target && tar xf -)
-  cp -r $BASE_DIR/web/node_modules $BASE_DIR/target/dist/web/ || true
+  cp -rp $BASE_DIR/web/node_modules $BASE_DIR/target/dist/web/ || true
   buildversiontxt
 
   if [ "$version" == "local" ]; then
