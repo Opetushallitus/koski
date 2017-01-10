@@ -7,7 +7,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.AccessType
 import fi.oph.koski.koskiuser.KoskiSession._
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{OidHenkilö, Oppija}
+import fi.oph.koski.schema.{NimellinenHenkilö, OidHenkilö, Oppija}
 
 trait HealthCheck extends Logging {
   private implicit val user = systemUser
@@ -17,22 +17,27 @@ trait HealthCheck extends Logging {
 
   def healthcheck: HttpStatus = try {
     application.oppijaFacade.findOppija(oid) match {
-      case Left(HttpStatus(404, _)) =>
-        logger.info(s"Healtcheck user not found creating one with oid $oid")
-        application.oppijaFacade.createOrUpdate(oppija) match {
-          case Left(status) =>
-            logger.error(s"Problem creating healthchech oppija ${status.toString}")
-            status
-          case _ =>
-            HttpStatus.ok
-        }
+      case Left(HttpStatus(404, _)) => createHealthCheckUser
       case Left(status) => status
-      case _ => HttpStatus.ok
+      case Right(Oppija(henkilö: NimellinenHenkilö, _)) =>
+        if (application.perustiedotRepository.findOids(henkilö.kokonimi).contains(oid)) HttpStatus.ok
+        else KoskiErrorCategory.notFound.oppijaaEiLöydy(s"Healthcheck user $oid, not found from elasticsearch")
+      case Right(o) => KoskiErrorCategory.internalError(s"Healthcheck user didn't have a name ${o.henkilö}")
     }
   } catch {
     case e: Exception =>
       logger.error(e)("healthcheck failed")
       KoskiErrorCategory.internalError("healthcheck failed")
+  }
+
+  private def createHealthCheckUser: HttpStatus = {
+    logger.info(s"Healtcheck user not found creating one with oid $oid")
+    application.oppijaFacade.createOrUpdate(oppija) match {
+      case Left(status) =>
+        logger.error(s"Problem creating healthchech oppija ${status.toString}")
+        status
+      case _ => HttpStatus.ok
+    }
   }
 
   def application: KoskiApplication
