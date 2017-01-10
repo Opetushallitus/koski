@@ -25,7 +25,7 @@ build: logdir
 	mvn compile
 	# Built the whole application, ready for running or testing
 front: logdir
-	cd web && npm install
+	cd web && mkdir -p target && npm install
 watch:
 	cd web && npm run watch
 
