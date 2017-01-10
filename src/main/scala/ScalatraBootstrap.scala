@@ -22,7 +22,7 @@ import fi.oph.koski.suoritusote.SuoritusServlet
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoServlet
 import fi.oph.koski.todistus.TodistusServlet
 import fi.oph.koski.tutkinto.TutkinnonPerusteetServlet
-import fi.oph.koski.util.Pools
+import fi.oph.koski.util.{Futures, Pools}
 import fi.oph.koski.validation.KoskiJsonSchemaValidator
 import org.scalatra._
 
@@ -32,17 +32,14 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
   override def init(context: ServletContext) {
     def mount(path: String, handler: Handler) = context.mount(handler, path)
 
-    Future {
-      // Parallel warm-up: org.reflections.Reflections takes a while to scan
-      KoskiJsonSchemaValidator.henkilöSchema
-    }
-
-    Pools.init
     val application = Option(context.getAttribute("koski.application").asInstanceOf[KoskiApplication]).getOrElse(KoskiApplication.apply)
-    application.perustiedotRepository.init
+
+    val parallels = List(
+      Future { KoskiJsonSchemaValidator.henkilöSchema },
+      Future { application.perustiedotRepository.init}
+    )
 
     if (application.config.getBoolean("koodisto.create")) tryCatch("Koodistojen luonti") { KoodistoCreator.createKoodistotFromMockData(Koodistot.koskiKoodistot, application.config, application.config.getBoolean("koodisto.update")) }
-
 
     mount("/", new IndexServlet(application))
     mount("/login", new LoginPageServlet(application))
@@ -75,6 +72,8 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       context.mount(new FixtureServlet(application), "/fixtures")
       application.fixtureCreator.resetFixtures
     }
+
+    parallels.foreach(f => Futures.await(f))
   }
 
   override def destroy(context: ServletContext) = {
