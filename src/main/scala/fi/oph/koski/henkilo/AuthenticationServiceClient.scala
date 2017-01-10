@@ -24,7 +24,7 @@ trait AuthenticationServiceClient {
 }
 
 object AuthenticationServiceClient {
-  def apply(config: Config, db: DB, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository): AuthenticationServiceClient = if (config.hasPath("opintopolku.virkailija.username")) {
+  def apply(config: Config, db: => DB, perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository): AuthenticationServiceClient = if (config.hasPath("opintopolku.virkailija.username")) {
     RemoteAuthenticationServiceClient(config, perustiedotRepository)
   } else {
     new MockAuthenticationServiceClientWithDBSupport(db)
@@ -64,7 +64,7 @@ object AuthenticationServiceClient {
 }
 
 object RemoteAuthenticationServiceClient {
-  def apply(config: Config, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository): RemoteAuthenticationServiceClient = {
+  def apply(config: Config, perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository): RemoteAuthenticationServiceClient = {
     val virkalijaUrl: String = if (config.hasPath("authentication-service.virkailija.url")) { config.getString("authentication-service.virkailija.url") } else { config.getString("opintopolku.virkailija.url") }
     val username =  if (config.hasPath("authentication-service.username")) { config.getString("authentication-service.username") } else { config.getString("opintopolku.virkailija.username") }
     val password =  if (config.hasPath("authentication-service.password")) { config.getString("authentication-service.password") } else { config.getString("opintopolku.virkailija.password") }
