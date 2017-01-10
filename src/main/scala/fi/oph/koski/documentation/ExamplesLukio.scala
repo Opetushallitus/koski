@@ -298,8 +298,7 @@ object LukioExampleData {
     ),
     tila = LukionOpiskeluoikeudenTila(
       List(
-        LukionOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusAktiivinen),
-        LukionOpiskeluoikeusjakso(date(2016, 1, 10), opiskeluoikeusPäättynyt)
+        LukionOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusAktiivinen)
       )
     )
   )

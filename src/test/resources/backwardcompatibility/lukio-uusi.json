@@ -28,16 +28,6 @@
           "koodistoUri" : "koskiopiskeluoikeudentila",
           "koodistoVersio" : 1
         }
-      }, {
-        "alku" : "2016-01-10",
-        "tila" : {
-          "koodiarvo" : "valmistunut",
-          "nimi" : {
-            "fi" : "Valmistunut"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
-        }
       } ]
     },
     "suoritukset" : [ {
