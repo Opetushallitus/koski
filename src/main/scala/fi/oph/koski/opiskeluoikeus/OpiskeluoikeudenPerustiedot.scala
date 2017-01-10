@@ -279,11 +279,10 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
   }
 
   val init = {
-    if (host == "localhost" && PortChecker.isFreeLocalPort(port)) {
+    if (host == "localhost") {
       new ElasticSearchRunner("./elasticsearch", port, port + 100).start
-    } else {
-      logger.info(s"Using elasticsearch at $host:$port")
     }
+    logger.info(s"Using elasticsearch at $host:$port")
 
     val reIndexingNeeded = setupIndex
 

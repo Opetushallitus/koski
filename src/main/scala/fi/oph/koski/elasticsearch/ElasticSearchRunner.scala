@@ -12,8 +12,9 @@ class ElasticSearchRunner(dataDirName: String, httpPort: Int, tcpPort: Int) exte
 
   private var serverProcess: Option[Process] = None
 
-  def start = {
-    if (!serverProcess.isDefined) {
+  // automatically checks if already running, prevents starting multiple instances
+  def start = ElasticSearchRunner.synchronized {
+    if (!serverProcess.isDefined && PortChecker.isFreeLocalPort(httpPort)) {
       logger.info(s"Starting Elasticsearch server on ports HTTP $httpPort and TCP $tcpPort")
       serverProcess = Some((s"elasticsearch -E http.port=$httpPort -E transport.tcp.port=$tcpPort -E path.conf=$dataDirName -E path.data=$dataDirName/data -E path.logs=$dataDirName/log").run)
       PortChecker.waitUntilReservedLocalPort(httpPort)
@@ -30,3 +31,5 @@ class ElasticSearchRunner(dataDirName: String, httpPort: Int, tcpPort: Int) exte
     serverProcess = None
   }
 }
+
+private object ElasticSearchRunner

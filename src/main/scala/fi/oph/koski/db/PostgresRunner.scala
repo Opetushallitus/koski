@@ -31,8 +31,8 @@ class PostgresRunner(dataDirName: String, configFile: String, port: Integer) ext
 
   def jdbcUrl: String = s"jdbc:postgresql://localhost:$port/$dataDirName"
 
-  def start = {
-    if (!serverProcess.isDefined) {
+  def start = PostgresRunner.synchronized {
+    if (!serverProcess.isDefined && PortChecker.isFreeLocalPort(port)) {
       ensureDataDirExists
       logger.info("Starting server on port " + port)
       serverProcess = Some(("postgres --config_file=" + configFile + " -D " + dataDirName + " -p " + port).run)
@@ -40,6 +40,8 @@ class PostgresRunner(dataDirName: String, configFile: String, port: Integer) ext
       sys.addShutdownHook {
         stop
       }
+    } else {
+      logger.info("PostgreSql already running on port " + port)
     }
     this
   }
@@ -51,3 +53,5 @@ class PostgresRunner(dataDirName: String, configFile: String, port: Integer) ext
 
   private def dataDirExists = Files.exists(dataPath)
 }
+
+private object PostgresRunner

@@ -49,27 +49,11 @@ class KoskiDatabase(c: Config) extends Logging {
   migrateSchema
 
   private def startLocalDatabaseServerIfNotRunning: Option[PostgresRunner] = {
-    if (!isDbRunning) {
-      Some(startEmbedded)
+    if (config.isLocal) {
+      Some(new PostgresRunner("postgresql/data", "postgresql/postgresql.conf", config.port).start)
     } else {
       None
     }
-  }
-
-  private def isDbRunning = {
-    if (config.isRemote) {
-      logger.info("Using remote PostgreSql database at " + config.host + ":" + config.port)
-      true
-    } else if (!PortChecker.isFreeLocalPort(config.port)) {
-      logger.info("PostgreSql already running on port " + config.port)
-      true
-    } else {
-      false
-    }
-  }
-
-  private def startEmbedded: PostgresRunner = {
-    new PostgresRunner("postgresql/data", "postgresql/postgresql.conf", config.port).start
   }
 
   private def createDatabase = {
