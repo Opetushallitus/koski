@@ -9,6 +9,9 @@ class HealthCheckApiServlet(val application: KoskiApplication) extends ApiServle
     renderStatus(application.healthCheck.healthcheck.statusCode)
   }
 
-  private def renderStatus(sc: Int): Unit = renderObject(Map("status" -> sc))
+  private def renderStatus(sc: Int): Unit = {
+    response.setStatus(sc)
+    renderObject(Map("status" -> sc))
+  }
 }
 
