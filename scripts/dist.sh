@@ -20,7 +20,12 @@ EOL
 }
 
 function create_version() {
-  mkdir -p $BASE_DIR/target && rm -rf $BASE_DIR/target/build && git archive --format=tar --prefix=build/ HEAD | (cd $BASE_DIR/target && tar xf -)
+  mkdir -p $BASE_DIR/target
+  if [ "$cleandist" = "true" ]; then
+    echo "cleaning dist directory"
+    rm -rf $BASE_DIR/target/build/web && rm -rf $BASE_DIR/target/build
+  fi
+  git archive --format=tar --prefix=build/ HEAD | (cd $BASE_DIR/target && tar xf -)
   cp -r $BASE_DIR/web/node_modules $BASE_DIR/target/build/web/ || true
   buildversiontxt
 

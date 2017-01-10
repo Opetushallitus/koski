@@ -1,4 +1,5 @@
 env = cloud
+cleandist = true
 
 help:
 	@echo ""
@@ -68,7 +69,7 @@ mvndeps:
 ### Dist and deploy
 
 dist: check-version
-	./scripts/dist.sh $(version)
+	cleandist=$(cleandist) ./scripts/dist.sh $(version)
 deploy: check-version
 	./scripts/deploy.sh $(env) $(version)
 check-version:
