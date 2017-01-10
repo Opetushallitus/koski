@@ -32,7 +32,7 @@ object OpiskeluoikeusQueryFilter {
   case class OpiskeluoikeudenTyyppi(tyyppi: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
   case class SuorituksenTyyppi(tyyppi: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
   case class OpiskeluoikeudenTila(tila: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
-  case class Tutkintohaku(koulutus: List[Koodistokoodiviite], osaamisala: List[Koodistokoodiviite], nimike: List[Koodistokoodiviite]) extends OpiskeluoikeusQueryFilter
+  case class Tutkintohaku(hakusana: String) extends OpiskeluoikeusQueryFilter
   case class Toimipiste(toimipiste: List[OrganisaatioWithOid]) extends OpiskeluoikeusQueryFilter
   case class Luokkahaku(hakusana: String) extends OpiskeluoikeusQueryFilter
   case class Nimihaku(hakusana: String) extends OpiskeluoikeusQueryFilter
@@ -78,15 +78,7 @@ private object OpiskeluoikeusQueryFilterParser {
       case ("suorituksenTyyppi", v) => Right(SuorituksenTyyppi(koodisto.validateRequired("suorituksentyyppi", v)))
       case ("suorituksenTila", v) => Right(SuorituksenTila(koodisto.validateRequired("suorituksentila", v)))
       case ("tutkintohaku", hakusana) if hakusana.length < 3 => Left(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort())
-      case ("tutkintohaku", hakusana) =>
-        val koulutukset = koodistohaku("koulutus", hakusana)
-        val osaamisalat = koodistohaku("osaamisala", hakusana)
-        val tutkintonimikkeet = koodistohaku("tutkintonimikkeet", hakusana)
-        if (koulutukset.isEmpty && osaamisalat.isEmpty && tutkintonimikkeet.isEmpty) {
-          Left(KoskiErrorCategory.notFound.tutkintoaEiLöydy("Koulutusta/osaamisalaa/tutkintonimikettä ei löydy: " + hakusana))
-        } else {
-          Right(Tutkintohaku(koulutukset, osaamisalat, tutkintonimikkeet))
-        }
+      case ("tutkintohaku", hakusana) => Right(Tutkintohaku(hakusana))
       case ("toimipiste", oid) =>
         OrganisaatioOid.validateOrganisaatioOid(oid).right.flatMap { oid =>
           organisaatiot.getOrganisaatioHierarkia(oid) match {

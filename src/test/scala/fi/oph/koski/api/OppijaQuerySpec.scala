@@ -86,29 +86,6 @@ class OppijaQuerySpec extends FunSpec with LocalJettyHttpSpecification with Opis
         queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTila=lasna").length should equal(1)
         queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTila=eronnut").length should equal(0)
       }
-      describe("tutkintohaku") {
-        it("tutkinnon nimi") {
-          resetFixtures
-          insert(makeOpiskeluoikeus(date(2100, 1, 2)), eero)
-          queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&tutkintohaku=autoalan").length should equal(1)
-        }
-        it("osaamisala ja tutkintonimike") {
-          resetFixtures
-          insert(makeOpiskeluoikeus(date(2100, 1, 2)).copy(suoritukset = List(AmmatillinenExampleData.ympäristöalanPerustutkintoValmis())), eero)
-          queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&tutkintohaku=ympäristöalan%20osaamis").length should equal(1)
-          queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&tutkintohaku=ympäristönhoitaj").length should equal(1)
-        }
-        it("liian lyhyt hakusana") {
-          authGet("api/oppija?tutkintohaku=au") {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam.searchTermTooShort("Hakusanan pituus alle 3 merkkiä."))
-          }
-        }
-        it("tutkintoa ei löydy") {
-          authGet("api/oppija?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&tutkintohaku=blah") {
-            verifyResponseStatus(404, KoskiErrorCategory.notFound.tutkintoaEiLöydy("Koulutusta/osaamisalaa/tutkintonimikettä ei löydy: blah"))
-          }
-        }
-      }
       describe("toimipistehaku") {
         it("toimipisteen OID:lla") {
           resetFixtures

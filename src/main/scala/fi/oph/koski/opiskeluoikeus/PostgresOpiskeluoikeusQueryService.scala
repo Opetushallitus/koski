@@ -29,15 +29,6 @@ class PostgresOpiskeluoikeusQueryService(val db: DB) extends OpiskeluoikeusQuery
       case (query, OpiskeluoikeudenTyyppi(tyyppi)) => query.filter(_._1.data.#>>(List("tyyppi", "koodiarvo")) === tyyppi.koodiarvo)
       case (query, SuorituksenTyyppi(tyyppi)) => query.filter(_._1.data.+>("suoritukset").@>(parseJson(s"""[{"tyyppi":{"koodiarvo":"${tyyppi.koodiarvo}"}}]""")))
       case (query, OpiskeluoikeudenTila(tila)) => query.filter(_._1.data.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "tila", "koodiarvo")) === tila.koodiarvo)
-      case (query, Tutkintohaku(tutkinnot, osaamisalat, nimikkeet)) =>
-        val matchers = tutkinnot.map { tutkinto =>
-          parseJson(s"""[{"koulutusmoduuli":{"tunniste": {"koodiarvo": "${tutkinto.koodiarvo}"}}}]""")
-        } ++ nimikkeet.map { nimike =>
-          parseJson(s"""[{"tutkintonimike":[{"koodiarvo": "${nimike.koodiarvo}"}]}]""")
-        } ++ osaamisalat.map { osaamisala =>
-          parseJson(s"""[{"osaamisala":[{"koodiarvo": "${osaamisala.koodiarvo}"}]}]""")
-        }
-        query.filter(_._1.data.+>("suoritukset").@>(matchers.bind.any))
       case (query, OpiskeluoikeusQueryFilter.Toimipiste(toimipisteet)) =>
         val matchers = toimipisteet.map { toimipiste =>
           parseJson(s"""[{"toimipiste":{"oid": "${toimipiste.oid}"}}]""")
