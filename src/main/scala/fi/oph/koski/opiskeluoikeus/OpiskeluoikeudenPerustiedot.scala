@@ -100,6 +100,7 @@ object KoulutusmoduulinPerustiedot {
 
 class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryService: OpiskeluoikeusQueryService) extends Logging with GlobalExecutionContext {
   import Http._
+  implicit val formats = Json.jsonFormats
 
   private val host = config.getString("elasticsearch.host")
   private val port = config.getInt("elasticsearch.port")
@@ -167,7 +168,6 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
       "size" -> pagination.size
     ))
 
-    implicit val formats = Json.jsonFormats
     val response = runSearch(doc)
     (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source").extract[OpiskeluoikeudenPerustiedot])
   }
@@ -176,7 +176,6 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     val doc = Json.toJValue(Map("query" -> Map("term" -> Map("henkilö.oid" -> oid))))
 
     Http.runTask(elasticSearchHttp.post(uri"/koski/_refresh", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
-    implicit val formats = Json.jsonFormats
     val response = runSearch(doc)
     (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source" \ "henkilö").extract[NimitiedotJaOid]).headOption
   }
@@ -195,7 +194,6 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
       "aggregations" -> Map("oids" -> Map("terms" -> Map("field" -> "henkilö.oid.keyword")))
     ))
 
-    implicit val formats = Json.jsonFormats
     (runSearch(doc) \ "aggregations" \ "oids" \ "buckets").extract[List[JValue]].map(j => (j \ "key").extract[Oid])
   }
 
@@ -205,7 +203,6 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
   def update(perustiedot: OpiskeluoikeudenPerustiedot): Either[HttpStatus, Int] = updateBulk(List(perustiedot))
 
   def updateBulk(items: Seq[OpiskeluoikeudenPerustiedot]): Either[HttpStatus, Int] = {
-    implicit val formats = Json.jsonFormats
     val jsonLines = items.flatMap { perustiedot =>
       List(
         Map("update" -> Map("_id" -> (perustiedot.id.get), "_index" -> "koski", "_type" -> "perustiedot")),
@@ -215,7 +212,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     val response = Http.runTask(elasticSearchHttp.post(uri"/koski/_bulk", jsonLines)(Json4sHttp4s.multiLineJson4sEncoderOf[Map[String, Any]])(Http.parseJson[JValue]))
     val errors = (response \ "errors").extract[Boolean]
     if (errors) {
-      val msg = s"Elasticsearch indexing failed for one of ids ${items.map(_.id.get)}"
+      val msg = s"Elasticsearch indexing failed for some of ids ${items.map(_.id.get)}"
       logger.error(msg)
       Left(KoskiErrorCategory.internalError(msg))
     } else {
@@ -225,7 +222,6 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
   }
 
   def deleteByOppijaOids(oids: List[Oid]) = {
-    implicit val formats = Json.jsonFormats
     val doc = Json.toJValue(Map("query" -> Map("bool" -> Map("should" -> Map("terms" -> Map("henkilö.oid" -> oids))))))
 
     val deleted = Http.runTask(elasticSearchHttp
@@ -260,17 +256,23 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
   }
 
   private def runSearch(doc: JValue): JValue = {
-    implicit val formats = Json.jsonFormats
     Http.runTask(elasticSearchHttp.post(uri"/koski/perustiedot/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
   }
 
   private def nameFilter(hakusana: String) =
-    hakusana.trim.split(" ").map(_.toLowerCase).map { namePrefix =>
+    analyzeString(hakusana).map { namePrefix =>
       Map("bool" -> Map("should" -> List(
         Map("prefix" -> Map("henkilö.sukunimi" -> namePrefix)),
         Map("prefix" -> Map("henkilö.etunimet" -> namePrefix))
       )))
     }
+
+  private def analyzeString(string: String): List[String] = {
+    val document: JValue = Http.runTask(elasticSearchHttp.post(uri"/koski/_analyze", string)(EntityEncoder.stringEncoder)(Http.parseJson[JValue]))
+    val tokens: List[JValue] = (document \ "tokens").extract[List[JValue]]
+    tokens.map(token => (token \ "token").extract[String])
+  }
+
 
   case class UpdateStatus(updated: Int, changed: Int) {
     def +(other: UpdateStatus) = UpdateStatus(this.updated + other.updated, this.changed + other.changed)
@@ -293,7 +295,6 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
   }
 
   private def setupIndex: Boolean = {
-    implicit val formats = Json.jsonFormats
     val settings = Json.parse("""
     {
         "analysis": {
