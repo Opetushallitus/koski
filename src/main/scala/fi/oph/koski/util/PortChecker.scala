@@ -15,9 +15,9 @@ object PortChecker {
     }
   }
 
-  def waitUntilFreeLocalPort(port: Int) = waitUntil(isFreeLocalPort(port))
+  def waitUntilFreeLocalPort(port: Int) = Wait.until(isFreeLocalPort(port))
 
-  def waitUntilReservedLocalPort(port: Int) = waitUntil(!isFreeLocalPort(port))
+  def waitUntilReservedLocalPort(port: Int) = Wait.until(!isFreeLocalPort(port))
 
   def findFreeLocalPort: Int = {
     val range = 1024 to 60000
@@ -27,14 +27,5 @@ object PortChecker {
     } else {
       findFreeLocalPort
     }
-  }
-
-  def waitUntil(predicate: => Boolean, timeoutMs: Long = 60000): Boolean = {
-    val started = System.currentTimeMillis()
-    val timeoutAt = started + timeoutMs
-    while (!predicate && (System.currentTimeMillis <= timeoutAt)) {
-      Thread.sleep(100)
-    }
-    return predicate
   }
 }

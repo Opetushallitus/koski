@@ -278,7 +278,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     def +(other: UpdateStatus) = UpdateStatus(this.updated + other.updated, this.changed + other.changed)
   }
 
-  val init = {
+  val init = OpiskeluoikeudenPerustiedotRepository.synchronized {
     if (host == "localhost") {
       new ElasticSearchRunner("./elasticsearch", port, port + 100).start
     }
@@ -313,34 +313,42 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     }""").extract[Map[String, Any]]
 
     val statusCode = Http.runTask(elasticSearchHttp.get(uri"/koski")(Http.statusCode))
-    statusCode match {
-      case 200 =>
-        val serverSettings = (Http.runTask(elasticSearchHttp.get(uri"/koski/_settings")(Http.parseJson[JValue])) \ "koski-index" \ "settings" \ "index").extract[Map[String, Any]]
-        val alreadyApplied = (serverSettings ++ settings) == serverSettings
-        if (alreadyApplied) {
-          logger.info("Elasticsearch index settings are up to date")
-          false
-        } else {
-          logger.info("Updating Elasticsearch index settings")
-          Http.runTask(elasticSearchHttp.post(uri"/koski/_close", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
-          Http.runTask(elasticSearchHttp.put(uri"/koski/_settings", Json.toJValue(settings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
-          Http.runTask(elasticSearchHttp.post(uri"/koski/_open", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
-          logger.info("Updated Elasticsearch index settings. Re-indexing is needed.")
-          true
-        }
-      case 404 =>
-        logger.info("Creating Elasticsearch index")
-        Http.runTask(elasticSearchHttp.put(uri"/koski-index", Json.toJValue(Map("settings" -> settings)))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
-        logger.info("Creating Elasticsearch index alias")
-        Http.runTask(elasticSearchHttp.post(uri"/_aliases", Json.toJValue(Map("actions" -> List(Map("add" -> Map("index" -> "koski-index", "alias" -> "koski"))))))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
-        logger.info("Created index and alias.")
-        true
-      case _ =>
-        logger.error("Unexpected status code from elasticsearch: " + statusCode)
+    if (indexExists) {
+      val serverSettings = (Http.runTask(elasticSearchHttp.get(uri"/koski/_settings")(Http.parseJson[JValue])) \ "koski-index" \ "settings" \ "index").extract[Map[String, Any]]
+      val alreadyApplied = (serverSettings ++ settings) == serverSettings
+      if (alreadyApplied) {
+        logger.info("Elasticsearch index settings are up to date")
         false
+      } else {
+        logger.info("Updating Elasticsearch index settings")
+        Http.runTask(elasticSearchHttp.post(uri"/koski/_close", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
+        Http.runTask(elasticSearchHttp.put(uri"/koski/_settings", Json.toJValue(settings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+        Http.runTask(elasticSearchHttp.post(uri"/koski/_open", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
+        logger.info("Updated Elasticsearch index settings. Re-indexing is needed.")
+        true
+      }
+    } else {
+      logger.info("Creating Elasticsearch index")
+      Http.runTask(elasticSearchHttp.put(uri"/koski-index", Json.toJValue(Map("settings" -> settings)))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+      logger.info("Creating Elasticsearch index alias")
+      Http.runTask(elasticSearchHttp.post(uri"/_aliases", Json.toJValue(Map("actions" -> List(Map("add" -> Map("index" -> "koski-index", "alias" -> "koski"))))))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+      logger.info("Created index and alias.")
+      true
     }
   }
+
+  private def indexExists = {
+    Wait.until(Http.runTask(elasticSearchHttp.get(uri"/koski")(Http.statusCode)) match {
+      case 200 => true
+      case 404 => false
+      case statusCode =>
+        logger.error("Unexpected status code from elasticsearch: " + statusCode)
+        false
+    }, timeoutMs = 10000)
+  }
 }
+
+private object OpiskeluoikeudenPerustiedotRepository
 
 class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Pagination with ObservableSupport {
   get("/") {
