@@ -18,17 +18,17 @@ describe('Oppijahaku', function() {
     })
   })
   describe('Kun haku tuottaa tuloksia', function() {
-    before(page.oppijaHaku.search('eero', 2))
+    before(page.oppijaHaku.search('eero', 3))
 
     it('Hakutulokset näytetään', function() {
-      expect(page.oppijaHaku.getSearchResults()).to.deep.equal([eerola, eero]) // TODO: should find eeros with é, è and ë
+      expect(page.oppijaHaku.getSearchResults()).to.deep.equal([eerola, eero, markkanen])
     })
 
     describe('Kun klikataan oppijaa listalla', function() {
-      before(page.oppijaHaku.selectOppija('Eerola'))
+      before(page.oppijaHaku.selectOppija('Markkanen'))
 
       it('Oppija valitaan', function() {
-        expect(page.getSelectedOppija()).to.equal(eerola)
+        expect(page.getSelectedOppija()).to.equal(markkanen)
       })
     })
   })
@@ -101,7 +101,7 @@ describe('Oppijahaku', function() {
 
   describe('Käyttöoikeudet', function() {
     describe('Oppijahaku', function() {
-      before(Authentication().login('omnia-palvelukäyttäjä'), page.openPage, page.oppijaHaku.search('eéro', [markkanen]))
+      before(Authentication().login('omnia-palvelukäyttäjä'), page.openPage, page.oppijaHaku.search('eero', [markkanen]))
 
       it('Näytetään vain ne oppijat, joiden opinto-oikeuksiin liittyviin organisaatioihin on käyttöoikeudet', function() {
 

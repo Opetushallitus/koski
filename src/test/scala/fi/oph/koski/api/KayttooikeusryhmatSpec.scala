@@ -18,7 +18,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "voi hakea kaikkia opiskeluoikeuksia" in {
-      searchForNames("eero", user) should equal(List("Jouni Eerola", "Eero Esimerkki")) // TODO: should find eeros with é, è and ë
+      searchForNames("eero", user) should equal(List("Jouni Eerola", "Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström"))
     }
 
     "voi hakea ja katsella kaikkia opiskeluoikeuksia" in {
@@ -69,7 +69,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "voi hakea ja katsella opiskeluoikeuksia vain omassa organisaatiossa" in {
-      searchForNames("eéro", user) should equal(List("Eéro Jorma-Petteri Markkanen-Fagerström"))
+      searchForNames("eero", user) should equal(List("Eéro Jorma-Petteri Markkanen-Fagerström"))
       authGet("api/oppija/" + MockOppijat.markkanen.oid, user) {
         verifyResponseStatus(200)
       }
@@ -125,7 +125,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "voi hakea ja katsella opiskeluoikeuksia omassa organisaatiossa" in {
-      searchForNames("eéro", user) should equal(List("Eéro Jorma-Petteri Markkanen-Fagerström"))
+      searchForNames("eero", user) should equal(List("Eéro Jorma-Petteri Markkanen-Fagerström"))
       authGet("api/oppija/" + MockOppijat.markkanen.oid, user) {
         verifyResponseStatus(200)
       }
