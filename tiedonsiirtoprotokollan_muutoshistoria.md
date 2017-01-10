@@ -1,3 +1,7 @@
+## 10.1.2016
+
+- Validointimuutos: päätason suoritus ei saa olla "kesken" jos opiskeluoikeus on "valmis"
+
 ## 21.12.2016
 
 - Validointimuutos: VALMIS-tilassa olevilla suorituksilla oltava arviointi
