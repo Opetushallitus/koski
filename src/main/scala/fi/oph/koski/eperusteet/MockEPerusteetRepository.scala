@@ -10,7 +10,7 @@ class MockEPerusteetRepository extends EPerusteetRepository {
     "rakenne-autoalan-tyonjohto",
     "rakenne-perusopetus",
     "rakenne-lukio").map { id =>
-    Json.readFile("src/main/resources/mockdata/eperusteet/" + id + ".json").extract[EPerusteRakenne]
+    Json.readResourceIfExists("/mockdata/eperusteet/" + id + ".json").get.extract[EPerusteRakenne]
   }
 
   def findPerusteet(query: String): List[EPeruste] = {

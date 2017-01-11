@@ -2,17 +2,16 @@ package fi.oph.koski.json
 
 import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
 
-import com.fasterxml.jackson.core.JsonParseException
 import com.github.fge.jsonpatch.diff.JsonDiff
 import fi.oph.koski.eperusteet.RakenneOsaSerializer
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Files
 import org.json4s
 import org.json4s.JsonAST.{JInt, JNull, JString}
 import org.json4s._
 import org.json4s.ext.JodaTimeSerializers
-import org.json4s.jackson.JsonMethods._
 import org.json4s.jackson.{JsonMethods, Serialization}
 
 import scala.util.Try
@@ -29,7 +28,7 @@ object GenericJsonFormats {
   } ++ JodaTimeSerializers.all
 }
 
-object Json {
+object Json extends Logging {
   implicit val jsonFormats = GenericJsonFormats.genericFormats + LocalDateSerializer + LocalDateTimeSerializer + RakenneOsaSerializer ++ Deserializers.deserializers
 
   def write(x: AnyRef, pretty: Boolean = false): String = {
@@ -66,7 +65,21 @@ object Json {
 
   def readFileIfExists(filename: String): Option[json4s.JValue] = Files.asString(filename).map(parse(_))
 
-  def readResourceIfExists(resourcename: String): Option[json4s.JValue] = Files.resourceAsString(resourcename).map(parse(_))
+  def readResourceIfExists(resourcename: String): Option[json4s.JValue] = {
+    try {
+      Option(getClass.getResourceAsStream(resourcename)).map { is =>
+        try {
+          JsonMethods.parse(StreamInput(is))
+        } finally {
+          is.close()
+        }
+      }
+    } catch {
+      case e: Exception =>
+        logger.error("Load resource " + resourcename + " failed")
+        throw e
+    }
+  }
 
   def writeFile(filename: String, json: AnyRef) = {
     import java.nio.charset.StandardCharsets
