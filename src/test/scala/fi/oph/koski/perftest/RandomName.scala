@@ -14,5 +14,5 @@ object RandomName {
   }
 
   def randomFirstName = nextFrom(firstNames)
-  def randomLastName = nextFrom(lastNames)
+  def randomLastName = nextFrom(lastNames) + "-perftest"
 }
