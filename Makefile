@@ -55,7 +55,7 @@ elastic:
 eslint: front
 	cd web && npm run lint
 scalastyle:
-	mvn verify -DskipTests
+	mvn verify -DskipTests -P scalastyle
 lint: eslint scalastyle
 owasp: 
 	mvn dependency-check:check -P owasp
