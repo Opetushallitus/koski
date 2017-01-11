@@ -18,7 +18,9 @@
     koski_deploy_dir: "{{ koski_home }}/deploy"
   serial: 1
   tasks:
-  - name: Remove old application package
+  - name: Stop koski service
+    service: name=koski state=stopped
+  - name: Remove old application directory
     file: path={{ koski_deploy_dir }} state=absent
   - name: Create application directory
     file: path={{ koski_deploy_dir }} state=directory
@@ -29,15 +31,11 @@
       dest={{ koski_deploy_dir }}
       group={{ koski_user }}
       owner={{ koski_user }}
-    notify: restart koski
-  - meta: flush_handlers # force restart before running application responding task
+  - name: Start koski service
+    service: name=koski state=started
   - name: Check for application responding
     shell: curl -f http://127.0.0.1:8080/koski/buildversion.txt >> /dev/null
     register: task_result
     until: task_result.rc == 0
     retries: 60
     delay: 1
-
-  handlers:
-    - name: restart koski
-      service: name=koski state=restarted
