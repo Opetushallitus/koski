@@ -1,7 +1,7 @@
 ---
 
 - name: Koski upload
-  hosts: tor_backends:koski_backends
+  hosts: koski_backends
   sudo: true
   gather_facts: False
   tasks:
@@ -9,7 +9,7 @@
     copy: src={{ koski_package }} dest=/tmp/{{ koski_package | basename }}
 
 - name: Koski deployment
-  hosts: tor_backends:koski_backends
+  hosts: koski_backends
   sudo: true
   gather_facts: False
   vars:
