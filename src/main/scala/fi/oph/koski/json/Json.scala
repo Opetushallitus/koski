@@ -67,7 +67,10 @@ object Json extends Logging {
 
   def readResourceIfExists(resourcename: String): Option[json4s.JValue] = {
     try {
-      Option(getClass.getResourceAsStream(resourcename)).map { is =>
+      Option(getClass().getResource(resourcename)).map { r =>
+        val resource = r.openConnection()
+        resource.setUseCaches(false) // To avoid a random "stream closed exception" caused by JRE bug (probably this: https://bugs.openjdk.java.net/browse/JDK-8155607)
+        val is = resource.getInputStream()
         try {
           JsonMethods.parse(StreamInput(is))
         } finally {
