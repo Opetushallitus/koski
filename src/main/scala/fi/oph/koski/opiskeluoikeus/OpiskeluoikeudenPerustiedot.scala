@@ -30,6 +30,7 @@ case class OpiskeluoikeudenPerustiedot(
   oppilaitos: Oppilaitos,
   @Description("Opiskelijan opiskeluoikeuden alkamisaika joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
   alkamispäivä: Option[LocalDate],
+  päättymispäivä: Option[LocalDate],
   tyyppi: Koodistokoodiviite,
   suoritukset: List[SuorituksenPerustiedot],
   @KoodistoUri("virtaopiskeluoikeudentila")
@@ -66,6 +67,7 @@ object OpiskeluoikeudenPerustiedot {
       henkilö,
       (data \ "oppilaitos").extract[Oppilaitos],
       (data \ "alkamispäivä").extract[Option[LocalDate]],
+      (data \ "päättymispäivä").extract[Option[LocalDate]],
       (data \ "tyyppi").extract[Koodistokoodiviite],
       suoritukset,
       ((data \ "tila" \ "opiskeluoikeusjaksot").asInstanceOf[JArray].arr.last \ "tila").extract[Koodistokoodiviite],
