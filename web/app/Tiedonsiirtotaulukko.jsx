@@ -1,6 +1,7 @@
 import React from 'react'
 import { ISO2FinnishDateTime } from './date'
 import PaginationLink from './PaginationLink.jsx'
+import Link from './Link.jsx'
 
 export const Tiedonsiirtotaulukko = React.createClass({
   render() {
@@ -90,11 +91,11 @@ const Lokirivi = React.createClass({
       <td className="hetu">{row.oppija && row.oppija.hetu}</td>
       <td className="nimi">{
         (row.oppija && row.oppija.oid)
-          ? <a href={`/koski/oppija/${row.oppija.oid}`}>{nimi}</a> : nimi
+          ? <Link href={`/koski/oppija/${row.oppija.oid}`}>{nimi}</Link> : nimi
       }</td>
       <td className="oppilaitos">{
         row.oppilaitos && row.oppilaitos.map((oppilaitos, i) =>
-          <a key={i} href={'/koski/tiedonsiirrot' + (showError ? '/virheet' : '') + '?oppilaitos=' + oppilaitos.oid}>{oppilaitos && oppilaitos.nimi && oppilaitos.nimi.fi}</a>
+          <Link key={i} href={'/koski/tiedonsiirrot' + (showError ? '/virheet' : '') + '?oppilaitos=' + oppilaitos.oid}>{oppilaitos && oppilaitos.nimi && oppilaitos.nimi.fi}</Link>
         )
       }</td>
       <td className="virhe">{row.virhe && <span>{errorDetails(row.virhe)}</span>}</td>
