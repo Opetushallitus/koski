@@ -11,14 +11,14 @@ import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{Luokkahaku, Nimihaku, SuoritusJsonHaku, _}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioOid, OrganisaatioWithOid}
-import fi.oph.koski.util.PaginationSettings
+import fi.oph.koski.util.{PaginationSettings, SortOrder}
 import org.json4s.JsonAST.JValue
 import rx.lang.scala.Observable
 
 import scala.util.{Failure, Success}
 
 trait OpiskeluoikeusQueryService {
-  def streamingQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[OpiskeluoikeusSortOrder], pagination: Option[PaginationSettings])(implicit user: KoskiSession): Observable[(OpiskeluoikeusRow, HenkilöRow)]
+  def streamingQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[SortOrder], pagination: Option[PaginationSettings])(implicit user: KoskiSession): Observable[(OpiskeluoikeusRow, HenkilöRow)]
 }
 
 sealed trait OpiskeluoikeusQueryFilter
@@ -41,16 +41,9 @@ object OpiskeluoikeusQueryFilter {
   def parse(params: List[(String, String)])(implicit koodisto: KoodistoViitePalvelu, organisaatiot: OrganisaatioRepository, session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] = OpiskeluoikeusQueryFilterParser.parse(params)
 }
 
-trait OpiskeluoikeusSortOrder {
-  def field: String
-}
 
-object OpiskeluoikeusSortOrder {
-  val oppijaOid = "oppijaOid"
 
-  case class Ascending(field: String) extends OpiskeluoikeusSortOrder
-  case class Descending(field: String) extends OpiskeluoikeusSortOrder
-}
+
 
 private object OpiskeluoikeusQueryFilterParser {
   def parse(params: List[(String, String)])(implicit koodisto: KoodistoViitePalvelu, organisaatiot: OrganisaatioRepository, session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] = {

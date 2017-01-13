@@ -8,7 +8,6 @@ import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods._
-import fi.oph.koski.db.Tables.{Tiedonsiirto, TiedonsiirtoWithAccessCheck}
 import fi.oph.koski.db.{KoskiDatabaseMethods, Tables, TiedonsiirtoRow, TiedonsiirtoYhteenvetoRow}
 import fi.oph.koski.http.{HttpStatus, HttpStatusException, KoskiErrorCategory}
 import fi.oph.koski.json.Json
@@ -21,6 +20,7 @@ import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
 import fi.oph.koski.schema._
+import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.koski.util._
 import org.json4s.JsonAST.{JArray, JString, JValue}
 import org.json4s.{JValue, _}
@@ -96,7 +96,7 @@ class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organis
     })
   }
 
-  def yhteenveto(implicit koskiSession: KoskiSession): Seq[TiedonsiirtoYhteenveto] = {
+  def yhteenveto(implicit koskiSession: KoskiSession, sorting: SortOrder): Seq[TiedonsiirtoYhteenveto] = {
     def getOrganisaatio(oid: String) = {
       organisaatioRepository.getOrganisaatio(oid) match {
         case s@Some(org) => s
@@ -107,6 +107,15 @@ class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organis
     }
 
     timed("yhteenveto") {
+      var ordering: Ordering[TiedonsiirtoYhteenveto] = sorting match {
+        case order if order.field == "oppilaitos" => Ordering.by(_.oppilaitos.nimi.map(_.get("fi")))
+        case order if order.field == "aika" => Ordering.by(_.viimeisin.getTime)
+        case _ => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("Epäkelpo järjestyskriteeri: order.field"))
+      }
+      if (sorting.descending) {
+        ordering = ordering.reverse
+      }
+
       runDbSync(Tables.TiedonsiirtoYhteenvetoWithAccessCheck(koskiSession).result).par.flatMap { row =>
         val käyttäjä = userRepository.findByOid(row.kayttaja) getOrElse {
           logger.warn(s"Käyttäjää ${row.kayttaja} ei löydy henkilöpalvelusta")
@@ -119,8 +128,7 @@ class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organis
           case _ =>
             None
         }
-      }.toList
-        .sortBy(_.oppilaitos.nimi.map(_.get("fi")))
+      }.toList.sorted(ordering)
     }
   }
 

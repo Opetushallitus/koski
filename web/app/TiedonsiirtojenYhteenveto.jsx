@@ -5,9 +5,9 @@ import { tiedonsiirrotContentP } from './Tiedonsiirrot.jsx'
 import Link from './Link.jsx'
 import SortingTableHeader from './SortingTableHeader.jsx'
 
-const yhteenvetoP = () => Http.cachedGet('/koski/api/tiedonsiirrot/yhteenveto')
+const yhteenvetoP = (queryString) => Http.cachedGet('/koski/api/tiedonsiirrot/yhteenveto' + queryString)
 
-export const tiedonsiirtojenYhteenvetoContentP = () => tiedonsiirrotContentP('/koski/tiedonsiirrot/yhteenveto', yhteenvetoP().map((rivit) =>
+export const tiedonsiirtojenYhteenvetoContentP = (queryString) => tiedonsiirrotContentP('/koski/tiedonsiirrot/yhteenveto', yhteenvetoP(queryString).map((rivit) =>
   ({
     content: (<div className="tiedonsiirto-yhteenveto">
                 Yhteenveto KOSKI-palveluun siirretyistä opiskelijatiedoista oppilaitoksittain.

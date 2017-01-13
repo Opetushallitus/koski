@@ -6,7 +6,7 @@ import fi.oph.koski.koskiuser.{KoskiSession, RequiresAuthentication}
 import fi.oph.koski.log.KoskiMessageField.{apply => _, _}
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusSortOrder.Ascending
+import fi.oph.koski.util.SortOrder.Ascending
 import fi.oph.koski.schema.Henkilö.{apply => _, _}
 import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import fi.oph.koski.servlet.{ApiServlet, ObservableSupport}
@@ -50,7 +50,7 @@ trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with 
   }
 
   def streamingQueryGroupedByOid(filters: List[OpiskeluoikeusQueryFilter])(implicit user: KoskiSession): Observable[(Oid, List[(OpiskeluoikeusRow)])] = {
-    val rows = application.opiskeluoikeusQueryRepository.streamingQuery(filters, Some(Ascending(OpiskeluoikeusSortOrder.oppijaOid)), None)
+    val rows = application.opiskeluoikeusQueryRepository.streamingQuery(filters, Some(Ascending("oppijaOid")), None)
 
     val groupedByPerson: Observable[List[(OpiskeluoikeusRow, HenkilöRow)]] = rows
       .tumblingBuffer(rows.map(_._1.oppijaOid).distinctUntilChanged.drop(1))

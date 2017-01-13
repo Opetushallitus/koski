@@ -12,7 +12,7 @@ import fi.oph.koski.json.{GenericJsonFormats, Json, Json4sHttp4s, LocalDateSeria
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresAuthentication}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusSortOrder.{Ascending, Descending}
+import fi.oph.koski.util.SortOrder.{Ascending, Descending}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, ObservableSupport}
@@ -107,7 +107,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
   private val url = s"http://$host:$port"
   private val elasticSearchHttp = Http(url)
 
-  def find(filters: List[OpiskeluoikeusQueryFilter], sorting: OpiskeluoikeusSortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): List[OpiskeluoikeudenPerustiedot] = {
+  def find(filters: List[OpiskeluoikeusQueryFilter], sorting: SortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): List[OpiskeluoikeudenPerustiedot] = {
     def nimi(order: String) = List(
       Map("henkilö.sukunimi.keyword" -> order),
       Map("henkilö.etunimet.keyword" -> order)
@@ -355,13 +355,7 @@ private object OpiskeluoikeudenPerustiedotRepository
 class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Pagination with ObservableSupport {
   get("/") {
     renderEither({
-      val sort = params.get("sort").map {
-        str => str.split(":") match {
-          case Array(key: String, "asc") => Ascending(key)
-          case Array(key: String, "desc") => Descending(key)
-          case xs => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("Invalid sort param. Expected key:asc or key: desc"))
-        }
-      }.getOrElse(Ascending("nimi"))
+      val sort = SortOrder.parseSortOrder(params.get("sort"), Ascending("nimi"))
 
       OpiskeluoikeusQueryFilter.parse(params.toList)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession) match {
         case Right(filters) =>

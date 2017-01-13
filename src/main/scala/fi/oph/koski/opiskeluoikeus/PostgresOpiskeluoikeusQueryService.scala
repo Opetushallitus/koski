@@ -9,15 +9,15 @@ import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
 import fi.oph.koski.servlet.InvalidRequestException
-import fi.oph.koski.util.{PaginationSettings, QueryPagination, ReactiveStreamsToRx}
+import fi.oph.koski.util.{PaginationSettings, QueryPagination, ReactiveStreamsToRx, SortOrder}
 import rx.lang.scala.Observable
 import slick.lifted.Query
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods.{parse => parseJson}
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusSortOrder.{Ascending, Descending}
+import fi.oph.koski.util.SortOrder.{Ascending, Descending}
 
 class PostgresOpiskeluoikeusQueryService(val db: DB) extends OpiskeluoikeusQueryService with GlobalExecutionContext with KoskiDatabaseMethods with Logging with SerializableTransactions {
-  override def streamingQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[OpiskeluoikeusSortOrder], pagination: Option[PaginationSettings])(implicit user: KoskiSession): Observable[(OpiskeluoikeusRow, HenkilöRow)] = {
+  override def streamingQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[SortOrder], pagination: Option[PaginationSettings])(implicit user: KoskiSession): Observable[(OpiskeluoikeusRow, HenkilöRow)] = {
     import ReactiveStreamsToRx._
 
     val query = filters.foldLeft(OpiskeluOikeudetWithAccessCheck.asInstanceOf[Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq]] join Tables.Henkilöt on (_.oppijaOid === _.oid)) {
@@ -51,7 +51,7 @@ class PostgresOpiskeluoikeusQueryService(val db: DB) extends OpiskeluoikeusQuery
 
     val sorted = sorting match {
       case None => query
-      case Some(Ascending(OpiskeluoikeusSortOrder.oppijaOid)) => query.sortBy(_._2.oid)
+      case Some(Ascending("oppijaOid")) => query.sortBy(_._2.oid)
       case Some(Ascending("nimi")) => query.sortBy(nimi)
       case Some(Descending("nimi")) => query.sortBy(nimiDesc)
       case Some(Ascending("alkamispäivä")) => query.sortBy(tuple => (ap(tuple), nimi(tuple)))

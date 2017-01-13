@@ -4,7 +4,8 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.RequiresAuthentication
 import fi.oph.koski.schema.OrganisaatioOid
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
-import fi.oph.koski.util.Pagination
+import fi.oph.koski.util.SortOrder.Ascending
+import fi.oph.koski.util.{Pagination, SortOrder}
 
 class TiedonsiirtoServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache with Pagination {
   get() {
@@ -16,7 +17,7 @@ class TiedonsiirtoServlet(val application: KoskiApplication) extends ApiServlet 
   }
 
   get("/yhteenveto") {
-    application.tiedonsiirtoService.yhteenveto(koskiSession)
+    application.tiedonsiirtoService.yhteenveto(koskiSession, SortOrder.parseSortOrder(params.get("sort"), Ascending("oppilaitos")))
   }
 
   private def parseQuery = {
