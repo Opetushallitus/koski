@@ -19,12 +19,13 @@ export default (baseUrl, rowsLens = L.identity) => {
   fetchingP.onValue()
   let pageResultE = pageDataE.map('.result')
   var mayHaveMore = cachedPages.length ? cachedPages[cachedPages.length - 1].mayHaveMore : false
-  let initialRows = cachedPages.length ? cachedPages.flatMap((page) => L.get(rowsLens, page).result) : null
+  let concatPages = (previousData, newData) => {
+    let previousRows = previousData == null ? [] : L.get(rowsLens, previousData)
+    return L.modify(rowsLens, (newRows) => previousRows.concat(newRows), newData)
+  }
+  let initialRows = cachedPages.length ? cachedPages.map(page => page.result).reduce(concatPages) : null
   let rowsP = Bacon.update(initialRows,
-    pageResultE, (previousData, newData) => {
-      let previousRows = previousData == null ? [] : L.get(rowsLens, previousData)
-      return L.modify(rowsLens, (newRows) => previousRows.concat(newRows), newData)
-    }
+    pageResultE, concatPages
   ).filter(Bacon._.id)
 
   // TODO: error handling
