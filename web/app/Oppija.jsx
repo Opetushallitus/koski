@@ -78,7 +78,7 @@ export const oppijaContentP = () => {
 
 export const Oppija = ({oppija, changeBus}) =>
   oppija.valittuOppija.loading
-    ? <Loading/>
+    ? <div className='main-content oppija loading'></div>
     : (!oppija.valittuOppija.empty
       ? <ExistingOppija oppija={oppija.valittuOppija} changeBus={changeBus}/>
       : (
@@ -87,7 +87,6 @@ export const Oppija = ({oppija, changeBus}) =>
           : null
       ))
 
-const Loading = () => <div className='main-content oppija loading'></div>
 
 export const ExistingOppija = React.createClass({
   render() {
