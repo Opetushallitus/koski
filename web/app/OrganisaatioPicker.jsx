@@ -50,7 +50,7 @@ export default React.createClass({
     this.searchStringBus = Bacon.Bus()
     this.searchStringBus
       .onValue((searchString) => this.setState({searchString, loading: true}))
-    this.searchStringBus.flatMapLatest((searchString) => 
+    this.searchStringBus.flatMapLatest((searchString) =>
       Http.get('/koski/api/organisaatio/hierarkia?query=' + searchString))
         .doError(showInternalError)
         .map((organisaatiot) => ({ organisaatiot, loading: false }))

@@ -10,10 +10,10 @@ export const navigateTo = function (path, event) {
 }
 
 window.onpopstate = function() {
-  locationBus.push(parseLocation(document.location))
+  locationBus.push(currentLocation())
 }
 
-export const locationP = locationBus.toProperty(parseLocation(document.location))
+export const locationP = locationBus.toProperty(currentLocation())
 
 export const navigateToOppija = (oppija, event) => navigateTo(`/koski/oppija/${oppija.oid}`, event)
 export const navigateToUusiOppija = (event) => navigateTo('/koski/uusioppija', event)
@@ -34,6 +34,10 @@ export function parseLocation(location) {
   }
 }
 
+export function currentLocation() {
+  return parseLocation(document.location)
+}
+
 function parseQuery(qstr) {
   var query = {}
   var a = qstr.substr(1).split('&')
@@ -49,8 +53,7 @@ export const appendQueryParam = (path, key, value) => path + (parsePath(path).qu
 export const appendQueryParams = (path, params) => R.toPairs(params).reduce((l, [key, value]) => appendQueryParam(l, key, value), path)
 
 export const addQueryParams = (param) => {
-  var currentLocation = parseLocation(document.location)
-  let toParameterPairs = params => R.filter(([, value]) => !!value, R.toPairs(R.merge(currentLocation.params, params)))
+  let toParameterPairs = params => R.filter(([, value]) => !!value, R.toPairs(R.merge(currentLocation().params, params)))
   let query = R.join('&', R.map(R.join('='), toParameterPairs(param)))
-  navigateTo(`${currentLocation.path}?${query}`)
+  navigateTo(`${currentLocation().path}?${query}`)
 }

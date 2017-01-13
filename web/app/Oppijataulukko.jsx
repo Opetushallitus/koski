@@ -11,19 +11,18 @@ import { formatISODate, ISO2FinnishDate } from './date'
 import Dropdown from './Dropdown.jsx'
 import Http from './http'
 import { showInternalError } from './location.js'
+import SortingTableHeader from './SortingTableHeader.jsx'
 
 export const Oppijataulukko = React.createClass({
   render() {
     let { rivit, edellisetRivit, pager, params } = this.props
-    let [ sortBy, sortOrder ] = params.sort ? params.sort.split(':') : ['nimi', 'asc']
     let näytettävätRivit = rivit || edellisetRivit
 
     return (<div className="oppijataulukko">{ näytettävätRivit ? (
       <table>
         <thead>
           <tr>
-            <th className={sortBy == 'nimi' ? 'nimi sorted' : 'nimi'}>
-              <Sorter field='nimi' sortBus={this.sortBus} sortBy={sortBy} sortOrder={sortOrder}>Nimi</Sorter>
+            <SortingTableHeader field='nimi' title='Nimi' defaultSort='asc'>
               <input
                 placeholder="hae"
                 type="text"
@@ -32,7 +31,7 @@ export const Oppijataulukko = React.createClass({
                   if (e.target.value.length >= 3 || e.target.value.length == 0) this.textFilterBus.push({'nimihaku': e.target.value})
                 }}
               />
-            </th>
+            </SortingTableHeader>
             <th className="tyyppi">
               <span className="title">Opiskeluoikeuden tyyppi</span>
               <Dropdown
@@ -78,8 +77,7 @@ export const Oppijataulukko = React.createClass({
                 onSelectionChanged={(org) => {this.filterBus.push(org ? { toimipiste: org.oid, toimipisteNimi: org.nimi.fi } : { toimipiste: null, toimipisteNimi: null })}}
               />
             </th>
-            <th className={sortBy == 'alkamispäivä' ? 'aloitus sorted': 'aloitus'}>
-              <Sorter field='alkamispäivä' sortBus={this.sortBus} sortBy={sortBy} sortOrder={sortOrder}>Aloitus pvm</Sorter>
+            <SortingTableHeader field='alkamispäivä' title='Aloitus pvm'>
               <DatePicker
                 selectedStartDay={params['opiskeluoikeusAlkanutAikaisintaan'] && ISO2FinnishDate(params['opiskeluoikeusAlkanutAikaisintaan'])}
                 selectedEndDay={params['opiskeluoikeusAlkanutViimeistään'] && ISO2FinnishDate(params['opiskeluoikeusAlkanutViimeistään'])}
@@ -90,16 +88,15 @@ export const Oppijataulukko = React.createClass({
                   })
                 }
               />
-            </th>
-            <th className={sortBy == 'luokka' ? 'luokka sorted': 'luokka'}>
-              <Sorter field='luokka' sortBus={this.sortBus} sortBy={sortBy} sortOrder={sortOrder}>Luokka / ryhmä</Sorter>
+            </SortingTableHeader>
+            <SortingTableHeader field='luokka' title='Luokka / ryhmä'>
               <input
                 placeholder="hae"
                 type="text"
                 defaultValue={params['luokkahaku']}
                 onChange={e => this.filterBus.push({'luokkahaku': e.target.value})}
               />
-            </th>
+            </SortingTableHeader>
           </tr>
         </thead>
         <tbody className={rivit ? '' : 'loading'}>
@@ -137,7 +134,6 @@ export const Oppijataulukko = React.createClass({
   },
   componentWillMount() {
     const koodistoDropdownArvot = koodit => koodit.map(k => ({ key: k.koodiArvo, value: k.metadata.find(m => m.kieli == 'FI').nimi})).sort((a, b) => a.value.localeCompare(b.value))
-    this.sortBus = Bacon.Bus()
     this.filterBus = Bacon.Bus()
     this.textFilterBus = Bacon.Bus()
     const opiskeluoikeudenTyyppiP = this.filterBus.filter(x => 'opiskeluoikeudenTyyppi' in x).map('.opiskeluoikeudenTyyppi').toProperty(this.props.params['opiskeluoikeudenTyyppi'])
@@ -151,22 +147,7 @@ export const Oppijataulukko = React.createClass({
         .filter(suoritusTyypit => this.props.params['suorituksenTyyppi'] && !R.contains(this.props.params['suorituksenTyyppi'], R.map(x => x.key, suoritusTyypit)))
         .map(() => R.objOf('suorituksenTyyppi', undefined))
     )
-    this.sortBus.merge(this.filterBus).merge(this.textFilterBus.throttle(500)).onValue(addQueryParams)
-  }
-})
-
-const Sorter = React.createClass({
-  render() {
-    let { field, sortBus, sortBy, sortOrder } = this.props
-    let selected = sortBy == field
-
-    return (<div className="sorting" onClick={() => sortBus.push({ sort: field + ':' + (selected ? (sortOrder == 'asc' ? 'desc' : 'asc') : 'asc')})}>
-      <div className="title">{this.props.children}</div>
-      <div className="sort-indicator">
-        <div className={selected && sortOrder == 'asc' ? 'asc selected' : 'asc'}></div>
-        <div className={selected && sortOrder == 'desc' ? 'desc selected' : 'desc'}></div>
-      </div>
-    </div>)
+    this.filterBus.merge(this.textFilterBus.throttle(500)).onValue(addQueryParams)
   }
 })
 
