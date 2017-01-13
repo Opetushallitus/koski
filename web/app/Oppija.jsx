@@ -1,8 +1,6 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import Http from './http'
-import {locationP} from './location'
-import {CreateOppija} from './CreateOppija.jsx'
 import { modelTitle, modelLookup, modelSet, objectLookup } from './EditorModel'
 import { editorMapping } from './OppijaEditor.jsx'
 import { Editor } from './GenericEditor.jsx'
@@ -12,26 +10,15 @@ import {modelData} from './EditorModel.js'
 
 export const saveBus = Bacon.Bus()
 
-export const oppijaContentP = () => {
+export const oppijaContentP = (oppijaId) => {
   const changeBus = Bacon.Bus()
 
-  const oppijaIdP = locationP.map(location => {
-    const match = location.path.match(new RegExp('/koski/oppija/(.*)'))
-    return match ? match[1] : undefined
-  })
-
-  const uusiOppijaP = locationP.map(location => location.path === '/koski/uusioppija')
-
-  const selectOppijaE = oppijaIdP.flatMap(oppijaId => {
-    return oppijaId
-      ? Http.cachedGet(`/koski/api/editor/${oppijaId}`).startWith({loading: true})
-      : Bacon.constant({ empty: true})
-  })
+  const loadOppijaE = Http.cachedGet(`/koski/api/editor/${oppijaId}`).toEventStream()
 
   const updateResultE = Bacon.Bus()
 
   const oppijaP = Bacon.update({ loading: true },
-    selectOppijaE, (previous, oppija) => oppija,
+    loadOppijaE, (previous, oppija) => oppija,
     updateResultE.map('.opiskeluoikeudet').flatMap(Bacon.fromArray), (currentOppija, {id, versionumero}) => {
       let correctId = R.whereEq({id})
       let containsOpiskeluoikeus = (oppilaitos) => oppilaitos.opiskeluoikeudet.find(correctId)
@@ -60,32 +47,19 @@ export const oppijaContentP = () => {
 
   saveBus.plug(updateResultE.map(true))
 
-  const oppijaStateP = Bacon.combineTemplate({
-    valittuOppija: oppijaP,
-    uusiOppija: uusiOppijaP
-  })
-
-  return oppijaStateP.map((oppija) => {
+  return oppijaP.map((oppija) => {
     return {
       content: (<div className='content-area'>
-        <Oppija oppija={oppija} changeBus={changeBus}/>
+        {
+          oppija.loading
+            ? <div className='main-content oppija loading'></div>
+            : <ExistingOppija oppija={oppija} changeBus={changeBus}/>
+        }
       </div>),
-      title: modelData(oppija.valittuOppija, 'henkilö') ? 'Oppijan tiedot' : ''
+      title: modelData(oppija, 'henkilö') ? 'Oppijan tiedot' : ''
     }
   })
 }
-
-
-export const Oppija = ({oppija, changeBus}) =>
-  oppija.valittuOppija.loading
-    ? <div className='main-content oppija loading'></div>
-    : (!oppija.valittuOppija.empty
-      ? <ExistingOppija oppija={oppija.valittuOppija} changeBus={changeBus}/>
-      : (
-        oppija.uusiOppija
-          ? <CreateOppija/>
-          : null
-      ))
 
 
 export const ExistingOppija = React.createClass({

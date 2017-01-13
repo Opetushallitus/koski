@@ -1,5 +1,6 @@
 import { locationP } from './location.js'
 import { oppijaContentP } from './Oppija.jsx'
+import { createOppijaContentP } from './CreateOppija.jsx'
 import { tiedonsiirtolokiContentP } from './Tiedonsiirtoloki.jsx'
 import { tiedonsiirtovirheetContentP } from './Tiedonsiirtovirheet.jsx'
 import { tiedonsiirtojenYhteenvetoContentP } from './TiedonsiirtojenYhteenveto.jsx'
@@ -8,10 +9,11 @@ import { oppijataulukkoContentP } from './Oppijataulukko.jsx'
 import { validointiContentP } from './Validointi.jsx'
 
 export const routeP = locationP.flatMapLatest(({path, queryString, params}) => {
-  if (path.match(new RegExp('/koski/oppija/(.*)'))) {
-    return oppijaContentP()
+  let oppijaIdMatch = path.match(new RegExp('/koski/oppija/(.*)'))
+  if (oppijaIdMatch) {
+    return oppijaContentP(oppijaIdMatch[1])
   } else if (path === '/koski/uusioppija') {
-    return oppijaContentP()
+    return createOppijaContentP()
   } else if (path === '/koski/') {
     return oppijataulukkoContentP(queryString, params)
   } else if (path === '/koski/tiedonsiirrot') {

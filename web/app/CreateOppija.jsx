@@ -6,6 +6,12 @@ import {isValidHetu} from './hetu'
 import {Opiskeluoikeus} from './CreateOpiskeluoikeus.jsx'
 import { formatISODate } from './date.js'
 
+export const createOppijaContentP = () => Bacon.constant({
+  content: (<div className='content-area'>
+    <CreateOppija/>
+  </div>)
+})
+
 export const CreateOppija = React.createClass({
   render() {
     const opiskeluoikeus = this.state.opiskeluoikeus
