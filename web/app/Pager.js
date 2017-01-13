@@ -1,7 +1,7 @@
 import Http from './http'
 import Bacon from 'baconjs'
 import * as L from 'partial.lenses'
-import { appendQueryParams } from './location'
+import { appendQueryParams, showInternalError } from './location'
 
 let pageSize = 100
 let pagerCache = {} // URL -> pages
@@ -13,7 +13,9 @@ export default (baseUrl, rowsLens = L.identity) => {
 
   let pageNumberP = Bacon.update(cachedPages.length, nextPageBus, (prev) => prev + 1)
 
-  let pageDataE = pageNumberP.skip(cachedPages.length ? 1 : 0).flatMap((pageNumber) => Http.get(appendQueryParams(baseUrl, {'pageNumber' : pageNumber, 'pageSize' : pageSize})))
+  let pageDataE = pageNumberP.skip(cachedPages.length ? 1 : 0).flatMap((pageNumber) =>
+    Http.get(appendQueryParams(baseUrl, {'pageNumber' : pageNumber, 'pageSize' : pageSize}))
+  ).doError(showInternalError)
 
   let fetchingP = nextPageBus.awaiting(pageDataE)
   fetchingP.onValue()
@@ -27,8 +29,6 @@ export default (baseUrl, rowsLens = L.identity) => {
   let rowsP = Bacon.update(initialRows,
     pageResultE, concatPages
   ).filter(Bacon._.id)
-
-  // TODO: error handling
 
   pageDataE.onValue((page) => {
     mayHaveMore = page.mayHaveMore

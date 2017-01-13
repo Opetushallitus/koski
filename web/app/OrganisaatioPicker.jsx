@@ -2,6 +2,7 @@ import React from 'react'
 import Bacon from 'baconjs'
 import Http from './http'
 import Highlight from 'react-highlighter'
+import { showInternalError } from './location.js'
 
 export default React.createClass({
   render() {
@@ -49,8 +50,11 @@ export default React.createClass({
     this.searchStringBus = Bacon.Bus()
     this.searchStringBus
       .onValue((searchString) => this.setState({searchString, loading: true}))
-    this.searchStringBus.flatMapLatest((searchString) => Http.get('/koski/api/organisaatio/hierarkia?query=' + searchString)).map((organisaatiot) => ({ organisaatiot, loading: false }))
-      .onValue((result) => this.setState(result))
+    this.searchStringBus.flatMapLatest((searchString) => 
+      Http.get('/koski/api/organisaatio/hierarkia?query=' + searchString))
+        .doError(showInternalError)
+        .map((organisaatiot) => ({ organisaatiot, loading: false }))
+        .onValue((result) => this.setState(result))
   },
   getInitialState() {
     return { open: false }

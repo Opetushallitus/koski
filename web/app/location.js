@@ -18,6 +18,7 @@ export const locationP = locationBus.toProperty(parseLocation(document.location)
 export const navigateToOppija = (oppija, event) => navigateTo(`/koski/oppija/${oppija.oid}`, event)
 export const navigateToUusiOppija = (event) => navigateTo('/koski/uusioppija', event)
 export const showError = (error) => locationBus.error(error)
+export const showInternalError = () => locationBus.error({ httpStatus: 500 })
 
 export const parsePath = (path) => {
   let a = document.createElement('a')

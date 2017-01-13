@@ -4,6 +4,7 @@ import { modelData, modelTitle, modelEmpty, modelItems } from './EditorModel.js'
 import { formatISODate, parseFinnishDate } from './date.js'
 import Http from './http'
 import Bacon from 'baconjs'
+import { showInternalError } from './location.js'
 
 export const Editor = React.createClass({
   render() {
@@ -277,7 +278,7 @@ export const EnumEditor = React.createClass({
     if (context.edit && model.alternativesPath && !this.state.alternativesP) {
       this.state.alternativesP = EnumEditor.AlternativesCache[model.alternativesPath]
       if (!this.state.alternativesP) {
-        this.state.alternativesP = Http.cachedGet(model.alternativesPath)
+        this.state.alternativesP = Http.cachedGet(model.alternativesPath).doError(showInternalError)
         EnumEditor.AlternativesCache[model.alternativesPath] = this.state.alternativesP
       }
       this.state.alternativesP.onValue(alternatives => this.setState({alternatives}))

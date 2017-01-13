@@ -2,6 +2,7 @@ import React from 'react'
 import Autocomplete from './Autocomplete.jsx'
 import Bacon from 'baconjs'
 import Http from './http'
+import { showInternalError } from './location.js'
 
 const Oppilaitos = React.createClass({
   render() {
@@ -35,7 +36,7 @@ const Tutkinto = React.createClass({
           <Autocomplete
               resultBus={this.props.tutkintoBus}
               fetchItems={(value) => (value.length >= 3)
-                ? Http.cachedGet('/koski/api/tutkinnonperusteet/oppilaitos/' + this.state.oppilaitos.oid + '?query=' + value)
+                ? Http.cachedGet('/koski/api/tutkinnonperusteet/oppilaitos/' + this.state.oppilaitos.oid + '?query=' + value).doError(showInternalError)
                 : Bacon.constant([])}
               disabled={!this.state.oppilaitos}
               selected={this.state.selected}

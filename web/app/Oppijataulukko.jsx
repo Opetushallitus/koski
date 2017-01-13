@@ -10,6 +10,7 @@ import OrganisaatioPicker from './OrganisaatioPicker.jsx'
 import { formatISODate, ISO2FinnishDate } from './date'
 import Dropdown from './Dropdown.jsx'
 import Http from './http'
+import { showInternalError } from './location.js'
 
 export const Oppijataulukko = React.createClass({
   render() {
@@ -141,9 +142,9 @@ export const Oppijataulukko = React.createClass({
     this.textFilterBus = Bacon.Bus()
     const opiskeluoikeudenTyyppiP = this.filterBus.filter(x => 'opiskeluoikeudenTyyppi' in x).map('.opiskeluoikeudenTyyppi').toProperty(this.props.params['opiskeluoikeudenTyyppi'])
 
-    this.opiskeluoikeudenTyypit = Http.cachedGet('/koski/api/koodisto/opiskeluoikeudentyyppi/latest').map(koodistoDropdownArvot)
-    this.koulutus = opiskeluoikeudenTyyppiP.flatMap(ot => Http.cachedGet('/koski/api/koodisto/suoritustyypit' + (ot ? '?opiskeluoikeudentyyppi=' + ot : '')).map(koodistoDropdownArvot)).toProperty()
-    this.opiskeluoikeudenTila = Http.cachedGet('/koski/api/koodisto/koskiopiskeluoikeudentila/latest').map(koodistoDropdownArvot)
+    this.opiskeluoikeudenTyypit = Http.cachedGet('/koski/api/koodisto/opiskeluoikeudentyyppi/latest').map(koodistoDropdownArvot).doError(showInternalError)
+    this.koulutus = opiskeluoikeudenTyyppiP.flatMap(ot => Http.cachedGet('/koski/api/koodisto/suoritustyypit' + (ot ? '?opiskeluoikeudentyyppi=' + ot : '')).map(koodistoDropdownArvot)).toProperty().doError(showInternalError)
+    this.opiskeluoikeudenTila = Http.cachedGet('/koski/api/koodisto/koskiopiskeluoikeudentila/latest').map(koodistoDropdownArvot).doError(showInternalError)
 
     this.filterBus.plug(
       this.koulutus
