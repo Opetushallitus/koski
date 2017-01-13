@@ -20,7 +20,7 @@ const Oppilaitos = React.createClass({
   },
 
   getInitialState() {
-    return { oppilaitokset: Http.cachedGet('/koski/api/oppilaitos').toProperty()}
+    return { oppilaitokset: Http.cachedGet('/koski/api/oppilaitos')}
   },
 
   componentDidMount() {
@@ -36,7 +36,7 @@ const Tutkinto = React.createClass({
               resultBus={this.props.tutkintoBus}
               fetchItems={(value) => (value.length >= 3)
                 ? Http.cachedGet('/koski/api/tutkinnonperusteet/oppilaitos/' + this.state.oppilaitos.oid + '?query=' + value)
-                : Bacon.once([])}
+                : Bacon.constant([])}
               disabled={!this.state.oppilaitos}
               selected={this.state.selected}
               />

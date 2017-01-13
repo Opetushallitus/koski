@@ -10,63 +10,70 @@ import * as L from 'partial.lenses'
 import R from 'ramda'
 import {modelData} from './EditorModel.js'
 
-const oppijaIdP = locationP.map(location => {
-  const match = location.path.match(new RegExp('/koski/oppija/(.*)'))
-  return match ? match[1] : undefined
-})
-
-export const uusiOppijaP = locationP.map(location => location.path === '/koski/uusioppija')
-
-export const selectOppijaE = oppijaIdP.flatMap(oppijaId => {
-  return oppijaId
-    ? Bacon.once({loading: true}).concat(Http.cachedGet(`/koski/api/editor/${oppijaId}`))
-    : Bacon.once({ empty: true})
-})
-
-export const updateResultE = Bacon.Bus()
 export const opiskeluoikeusChange = Bacon.Bus()
+export const saveBus = Bacon.Bus()
 
-export const oppijaP = Bacon.update({ loading: true },
-  selectOppijaE, (previous, oppija) => oppija,
-  updateResultE.map('.opiskeluoikeudet').flatMap(Bacon.fromArray), (currentOppija, {id, versionumero}) => {
-    let correctId = R.whereEq({id})
-    let containsOpiskeluoikeus = (oppilaitos) => oppilaitos.opiskeluoikeudet.find(correctId)
-    let lens = L.compose('value', 'data', 'opiskeluoikeudet', L.find(containsOpiskeluoikeus), 'opiskeluoikeudet', L.find(correctId), 'versionumero')
-    return L.set(lens, versionumero, currentOppija)
-  },
-  opiskeluoikeusChange, (currentOppija, [context, value]) => {
-    var modifiedModel = modelSet(currentOppija, context.path, value)
-    return modifiedModel
-  }
-)
-
-updateResultE.plug(oppijaP
-  .sampledBy(opiskeluoikeusChange, (oppija, [context]) => ({oppija, context}))
-  .flatMapLatest(({oppija, context: {path}}) => {
-    let opiskeluoikeusPath = path.split('.').slice(0, 4)
-    var oppijaData = oppija.value.data
-    let opiskeluoikeus = objectLookup(oppijaData, opiskeluoikeusPath.join('.'))
-    let oppijaUpdate = {
-      henkilö: {oid: oppijaData.henkilö.oid},
-      opiskeluoikeudet: [opiskeluoikeus]
-    }
-    return Http.put('/koski/api/oppija', oppijaUpdate)
+export const oppijaContentP = () => {
+  const oppijaIdP = locationP.map(location => {
+    const match = location.path.match(new RegExp('/koski/oppija/(.*)'))
+    return match ? match[1] : undefined
   })
-)
 
-export const oppijaStateP = Bacon.combineTemplate({
-  valittuOppija: oppijaP,
-  uusiOppija: uusiOppijaP
-})
+  const uusiOppijaP = locationP.map(location => location.path === '/koski/uusioppija')
 
-export const oppijaContentP = oppijaStateP.map((oppija) => {
-  return {
-    content: (<div className='content-area'>
-      <Oppija oppija={oppija}/>
-    </div>),
-    title: modelData(oppija.valittuOppija, 'henkilö') ? 'Oppijan tiedot' : ''
-  }
-})
+  const selectOppijaE = oppijaIdP.flatMap(oppijaId => {
+    return oppijaId
+      ? Http.cachedGet(`/koski/api/editor/${oppijaId}`).startWith({loading: true})
+      : Bacon.constant({ empty: true})
+  })
+
+  const updateResultE = Bacon.Bus()
+
+  const oppijaP = Bacon.update({ loading: true },
+    selectOppijaE, (previous, oppija) => oppija,
+    updateResultE.map('.opiskeluoikeudet').flatMap(Bacon.fromArray), (currentOppija, {id, versionumero}) => {
+      let correctId = R.whereEq({id})
+      let containsOpiskeluoikeus = (oppilaitos) => oppilaitos.opiskeluoikeudet.find(correctId)
+      let lens = L.compose('value', 'data', 'opiskeluoikeudet', L.find(containsOpiskeluoikeus), 'opiskeluoikeudet', L.find(correctId), 'versionumero')
+      return L.set(lens, versionumero, currentOppija)
+    },
+    opiskeluoikeusChange, (currentOppija, [context, value]) => {
+      var modifiedModel = modelSet(currentOppija, context.path, value)
+      return modifiedModel
+    }
+  ).doLog("oppija")
+
+  updateResultE.plug(oppijaP
+    .sampledBy(opiskeluoikeusChange, (oppija, [context]) => ({oppija, context}))
+    .flatMapLatest(({oppija, context: {path}}) => {
+      let opiskeluoikeusPath = path.split('.').slice(0, 4)
+      var oppijaData = oppija.value.data
+      let opiskeluoikeus = objectLookup(oppijaData, opiskeluoikeusPath.join('.'))
+      let oppijaUpdate = {
+        henkilö: {oid: oppijaData.henkilö.oid},
+        opiskeluoikeudet: [opiskeluoikeus]
+      }
+      return Http.put('/koski/api/oppija', oppijaUpdate)
+    })
+  )
+  
+  saveBus.plug(updateResultE.map(true))
+
+  const oppijaStateP = Bacon.combineTemplate({
+    valittuOppija: oppijaP,
+    uusiOppija: uusiOppijaP
+  })
+
+  return oppijaStateP.map((oppija) => {
+    return {
+      content: (<div className='content-area'>
+        <Oppija oppija={oppija}/>
+      </div>),
+      title: modelData(oppija.valittuOppija, 'henkilö') ? 'Oppijan tiedot' : ''
+    }
+  }).doLog("oppijaContent")
+}
+
 
 export const Oppija = ({oppija}) =>
   oppija.valittuOppija.loading

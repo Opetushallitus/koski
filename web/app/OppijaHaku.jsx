@@ -2,8 +2,6 @@ import React from 'react'
 import Bacon from 'baconjs'
 import Http from './http'
 import {navigateToOppija, navigateToUusiOppija} from './location'
-import {oppijaStateP} from './Oppija.jsx'
-import {modelData} from './EditorModel.js'
 
 const oppijaHakuE = new Bacon.Bus()
 
@@ -19,17 +17,16 @@ const oppijatP = Bacon.update(
 
 const searchInProgressP = oppijaHakuE.filter(acceptableQuery).awaiting(oppijatP.mapError().changes()).throttle(200)
 
-export const oppijaHakuElementP = Bacon.combineWith(oppijatP, searchInProgressP, oppijaStateP, (oppijat, searchInProgress, oppija) =>
-  <OppijaHaku oppijat={oppijat} valittu={modelData(oppija.valittuOppija, 'henkilö')} searching={searchInProgress}/>
+export const oppijaHakuElementP = Bacon.combineWith(oppijatP, searchInProgressP, (oppijat, searchInProgress) =>
+  <OppijaHaku oppijat={oppijat} searching={searchInProgress}/>
 )
 
 const OppijaHakutulokset = React.createClass({
   render() {
-    const {oppijat, valittu} = this.props
+    const {oppijat} = this.props
     const oppijatElems = oppijat.results.map((o, i) => {
-        const className = valittu ? (o.oid === valittu.oid ? 'selected' : '') : ''
         return (
-          <li key={i} className={className}>
+          <li key={i}>
             <a href={`/koski/oppija/${o.oid}`} onClick={(e) => navigateToOppija(o, e)}>{o.sukunimi}, {o.etunimet} {o.hetu}</a>
           </li>
         )}
@@ -45,7 +42,7 @@ const OppijaHakutulokset = React.createClass({
 
 export const OppijaHaku = React.createClass({
   render() {
-    let {oppijat, valittu, searching} = this.props
+    let {oppijat, searching} = this.props
     const className = searching ? 'oppija-haku searching' : 'oppija-haku'
     return (
       <div className={className}>
@@ -55,7 +52,7 @@ export const OppijaHaku = React.createClass({
           <a href="/koski/oppija/uusioppija" className="lisaa-oppija" onClick={navigateToUusiOppija}>Lisää opiskelija</a>
         </div>
         <div className='hakutulokset'>
-          <OppijaHakutulokset oppijat={oppijat} valittu={valittu}/>
+          <OppijaHakutulokset oppijat={oppijat}/>
         </div>
       </div>
     )

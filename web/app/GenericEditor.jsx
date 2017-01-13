@@ -277,7 +277,7 @@ export const EnumEditor = React.createClass({
     if (context.edit && model.alternativesPath && !this.state.alternativesP) {
       this.state.alternativesP = EnumEditor.AlternativesCache[model.alternativesPath]
       if (!this.state.alternativesP) {
-        this.state.alternativesP = Http.cachedGet(model.alternativesPath).toProperty()
+        this.state.alternativesP = Http.cachedGet(model.alternativesPath)
         EnumEditor.AlternativesCache[model.alternativesPath] = this.state.alternativesP
       }
       this.state.alternativesP.onValue(alternatives => this.setState({alternatives}))

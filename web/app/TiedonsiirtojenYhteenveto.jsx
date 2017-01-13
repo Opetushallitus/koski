@@ -4,7 +4,7 @@ import fecha from 'fecha'
 import { tiedonsiirrotContentP } from './Tiedonsiirrot.jsx'
 import Link from './Link.jsx'
 
-const yhteenvetoP = () => Http.cachedGet('/koski/api/tiedonsiirrot/yhteenveto').toProperty()
+const yhteenvetoP = () => Http.cachedGet('/koski/api/tiedonsiirrot/yhteenveto')
 
 export const tiedonsiirtojenYhteenvetoContentP = () => tiedonsiirrotContentP('/koski/tiedonsiirrot/yhteenveto', yhteenvetoP().map((rivit) =>
   ({
