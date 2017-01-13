@@ -103,12 +103,12 @@ describe('Oppijataulukko', function() {
     describe('aloituspäivällä', function() {
       before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('tutkinto'), page.oppijataulukko.filterBy('nimi', 'koululainen'))
       it('Nouseva järjestys', function() {
-        return page.oppijataulukko.sortBy('aloitus')().then(function() {
+        return page.oppijataulukko.sortBy('alkamispäivä')().then(function() {
           expect(page.oppijataulukko.data().map(function(row) { return row[6]})).to.deep.equal(['15.8.2007', '15.8.2008'])
         })
       })
       it('Laskeva järjestys', function() {
-        return page.oppijataulukko.sortBy('aloitus')().then(function() {
+        return page.oppijataulukko.sortBy('alkamispäivä')().then(function() {
           expect(page.oppijataulukko.data().map(function(row) { return row[6]})).to.deep.equal(['15.8.2008', '15.8.2007'])
         })
       })

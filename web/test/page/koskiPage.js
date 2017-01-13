@@ -128,7 +128,7 @@ function KoskiPage() {
     oppijaHaku: OppijaHaku,
     oppijataulukko: Oppijataulukko,
     getSelectedOppija: function() {
-      return S('.oppija h2').text()
+      return S('.oppija h2').text().replace('JSON','')
     },
     waitUntilOppijaSelected: function(oppija) {
       return wait.until(api.isOppijaSelected(oppija))

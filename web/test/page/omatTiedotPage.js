@@ -8,7 +8,7 @@ function OmatTiedotPage() {
       return isElementVisible(S('.omattiedot .main-content:not(.ajax-indicator-bg)'))
     },
     oppija: function() {
-      return S('.main-content.oppija h2').text()
+      return S('.main-content.oppija h2').text().replace('JSON', '')
     },
     virhe: function() {
       return S('.ei-opiskeluoikeuksia').text()
