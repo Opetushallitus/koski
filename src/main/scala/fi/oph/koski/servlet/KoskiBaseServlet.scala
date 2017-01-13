@@ -17,6 +17,8 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
     }
   }
 
+  def lang = params.get("lang").getOrElse("fi")
+
   def getIntegerParam(name: String): Int = {
     params.getAs[Int](name) match {
       case Some(id) if id >= 0 =>

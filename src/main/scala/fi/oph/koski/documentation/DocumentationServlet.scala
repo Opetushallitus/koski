@@ -1,7 +1,7 @@
 package fi.oph.koski.documentation
 
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koodisto.KoodistoPalvelu
+import fi.oph.koski.koodisto.{KoodistoKoodiMetadata, KoodistoPalvelu}
 import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.servlet.ApiServlet
@@ -42,11 +42,12 @@ class DocumentationServlet(val koodistoPalvelu: KoodistoPalvelu) extends ApiServ
               <tbody>
                 {
                 koodit.sortBy(_.koodiArvo).map { koodi =>
+                  val metadata: Option[KoodistoKoodiMetadata] = koodi.metadata.find(_.kieli == Some(lang.toUpperCase))
                   <tr>
                     <td>{koodi.koodiArvo}</td>
-                    <td>{koodi.metadata.find(_.kieli == Some("FI")).flatMap(_.lyhytNimi).getOrElse("-")}</td>
-                    <td>{koodi.metadata.find(_.kieli == Some("FI")).flatMap(_.nimi).getOrElse("-")}</td>
-                    <td>{koodi.metadata.find(_.kieli == Some("FI")).flatMap(_.kuvaus).getOrElse("-")}</td>
+                    <td>{metadata.flatMap(_.lyhytNimi).getOrElse("-")}</td>
+                    <td>{metadata.flatMap(_.nimi).getOrElse("-")}</td>
+                    <td>{metadata.flatMap(_.kuvaus).getOrElse("-")}</td>
                   </tr>
                 }
                 }

@@ -9,12 +9,9 @@ import fi.oph.koski.schema.{Organisaatio, OrganisaatioWithOid}
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class KoskiSession(val user: AuthenticationUser, val clientIp: String, käyttöoikeudet: => Set[Käyttöoikeus]) extends LogUserContext with UserWithUsername with UserWithOid with Loggable with Logging {
+class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp: String, käyttöoikeudet: => Set[Käyttöoikeus]) extends LogUserContext with UserWithUsername with UserWithOid with Loggable with Logging {
   def oid = user.oid
   def username = user.username
-  def lang = "fi"
-
-
   def userOption = Some(user)
   def logString = "käyttäjä " + username + " / " + user.oid
 
@@ -43,11 +40,11 @@ class KoskiSession(val user: AuthenticationUser, val clientIp: String, käyttöo
 }
 
 object KoskiSession {
-  def apply(user: AuthenticationUser, request: HttpServletRequest, käyttöoikeudet: KäyttöoikeusRepository): KoskiSession = {
-    new KoskiSession(user, LogUserContext.clientIpFromRequest(request), käyttöoikeudet.käyttäjänKäyttöoikeudet(user))
+  def apply(user: AuthenticationUser, lang: String, request: HttpServletRequest, käyttöoikeudet: KäyttöoikeusRepository): KoskiSession = {
+    new KoskiSession(user, lang, LogUserContext.clientIpFromRequest(request), käyttöoikeudet.käyttäjänKäyttöoikeudet(user))
   }
 
   private val KOSKI_SYSTEM_USER: String = "Koski system user"
   // Internal user with root access
-  val systemUser = new KoskiSession(AuthenticationUser(KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, None), "KOSKI_SYSTEM", Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHPAAKAYTTAJA)))))
+  val systemUser = new KoskiSession(AuthenticationUser(KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, None), "fi", "KOSKI_SYSTEM", Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHPAAKAYTTAJA)))))
 }
