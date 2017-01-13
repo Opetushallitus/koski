@@ -37,7 +37,7 @@ const Lokiriviryhmä = React.createClass({
     const isExpanded = this.state && this.state.expanded
     const tiedonsiirtoRivit = oppijaRivi.rivit
     const isGroup = tiedonsiirtoRivit.length > 1
-    return(<tbody>
+    return(<tbody className="alternating">
       {
         tiedonsiirtoRivit.flatMap((rivi, j) => {
             const isParent = j == 0 && isGroup

@@ -101,7 +101,7 @@ export const Oppijataulukko = React.createClass({
         </thead>
         <tbody className={rivit ? '' : 'loading'}>
           {
-            näytettävätRivit.map( (opiskeluoikeus, i) => <tr key={i}>
+            näytettävätRivit.map( (opiskeluoikeus, i) => <tr className="alternating" key={i}>
               <td className="nimi"><a href={`/koski/oppija/${opiskeluoikeus.henkilö.oid}`} onClick={(e) => navigateToOppija(opiskeluoikeus.henkilö, e)}>{ opiskeluoikeus.henkilö.sukunimi + ', ' + opiskeluoikeus.henkilö.etunimet}</a></td>
               <td className="tyyppi">{ opiskeluoikeus.tyyppi.nimi.fi }</td>
               <td className="koulutus"><ul className="cell-listing">{ opiskeluoikeus.suoritukset.map((suoritus, j) => <li key={j}>{suoritus.tyyppi.nimi.fi}</li>) }</ul></td>

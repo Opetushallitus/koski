@@ -3,6 +3,7 @@ import Http from './http'
 import fecha from 'fecha'
 import { tiedonsiirrotContentP } from './Tiedonsiirrot.jsx'
 import Link from './Link.jsx'
+import SortingTableHeader from './SortingTableHeader.jsx'
 
 const yhteenvetoP = () => Http.cachedGet('/koski/api/tiedonsiirrot/yhteenveto')
 
@@ -13,8 +14,8 @@ export const tiedonsiirtojenYhteenvetoContentP = () => tiedonsiirrotContentP('/k
                 <table>
                   <thead>
                   <tr>
-                    <th className="oppilaitos">Oppilaitos</th>
-                    <th className="aika">Viimeisin siirto</th>
+                    <SortingTableHeader field="oppilaitos" title="Oppilaitos" default="asc"/>
+                    <SortingTableHeader field="aika" title="Viimeisin siirto"/>
                     <th className="siirretyt">Siirrettyjen lukumäärä</th>
                     <th className="virheelliset">Virheellisten lukumäärä</th>
                     <th className="opiskeluoikeudet">Opiskelu-oikeuksien lukumäärä</th>
