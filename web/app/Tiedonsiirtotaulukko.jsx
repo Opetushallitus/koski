@@ -55,8 +55,6 @@ const Lokiriviryhmä = React.createClass({
 const Lokirivi = React.createClass({
   render() {
     const {row, isParent, isChild, isExpanded, isEven, showError, setExpanded} = this.props
-    const extractName = (oppilaitokset) =>
-      oppilaitokset && oppilaitokset.map((oppilaitos, i) => <a key={i} href={'/koski/tiedonsiirrot' + (showError ? '/virheet' : '') + '?oppilaitos=' + oppilaitos.oid}>{oppilaitos && oppilaitos.nimi && oppilaitos.nimi.fi}</a>)
     const dataToBeShown = this.state && this.state.dataToBeShown
     const showData = (data) => this.setState({dataToBeShown: data})
     const errorDetails = (virheet) => { return showError ?
@@ -94,7 +92,11 @@ const Lokirivi = React.createClass({
         (row.oppija && row.oppija.oid)
           ? <a href={`/koski/oppija/${row.oppija.oid}`}>{nimi}</a> : nimi
       }</td>
-      <td className="oppilaitos">{extractName(row.oppilaitos)}</td>
+      <td className="oppilaitos">{
+        row.oppilaitos && row.oppilaitos.map((oppilaitos, i) =>
+          <a key={i} href={'/koski/tiedonsiirrot' + (showError ? '/virheet' : '') + '?oppilaitos=' + oppilaitos.oid}>{oppilaitos && oppilaitos.nimi && oppilaitos.nimi.fi}</a>
+        )
+      }</td>
       <td className="virhe">{row.virhe && <span>{errorDetails(row.virhe)}</span>}</td>
       <td className="tiedot">
         {row.virhe && dataLink()}
