@@ -58,6 +58,7 @@ Minimissään tarvitset nämä:
 - Maven 3 (osx: `brew install maven`)
 - Postgres 9.6 (osx: `brew install postgresql`)
 - Elasticsearch 5.1.1 (osx: `brew install elasticsearch`)
+- Elasticsearch analysis-icu plugin (`elasticsearch-plugin install analysis-icu)
 - Node.js ja NPM (osx: `brew install node`)
 - Tekstieditori (kehitystiimi käyttää IntelliJ IDEA 14/15)
 
@@ -373,6 +374,6 @@ https://koskidev.koski.oph.reaktor.fi/koski/documentation
 JSON-scheman visualisointiin on käytetty json-schema-viewer nimistä kirjastoa, johon on tehty joitakin Koski-projektin vaatimia muutoksia. 
 Kirjaston lähdekoodi löytyy Opetushallituksen GitHub-repositoriosta
 
-https://github.com/Opetushallitus/json-schema-viewer
+https://github.com/Opetushallitus/json-schema-viewer`
 
 Mon Apr 18 14:18:11 EEST 2016
