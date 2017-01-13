@@ -5,7 +5,7 @@ import java.nio.file.{Files, Paths}
 
 import com.typesafe.config.ConfigValueFactory._
 import fi.oph.koski.cache.JMXCacheManager
-import fi.oph.koski.config.{KoskiApplication, KoskiWebApplication}
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.log.{LogConfiguration, Logging}
 import fi.oph.koski.util.{Pools, PortChecker}
 import io.prometheus.client.exporter.MetricsServlet
@@ -73,7 +73,7 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) e
 
   private def setupKoskiApplicationContext = {
     val context = new WebAppContext()
-    context.setAttribute("koski.application", new KoskiWebApplication(application))
+    context.setAttribute("koski.application", application)
     context.setParentLoaderPriority(true)
     context.setContextPath("/koski")
     def resourceBase = System.getProperty("resourcebase", "./target/webapp")
