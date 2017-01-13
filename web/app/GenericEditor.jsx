@@ -1,18 +1,18 @@
 import React from 'react'
 import R from 'ramda'
 import { modelData, modelTitle, modelEmpty, modelItems } from './EditorModel.js'
-import { opiskeluoikeusChange } from './Oppija.jsx'
 import { formatISODate, parseFinnishDate } from './date.js'
 import Http from './http'
 import Bacon from 'baconjs'
 
 export const Editor = React.createClass({
   render() {
-    let { model, context, editorMapping } = this.props
+    let { model, context, editorMapping, changeBus } = this.props
 
     if (!context) {
       if (!editorMapping) throw new Error('editorMapping required for root editor')
       context = {
+        changeBus: changeBus,
         root: true,
         path: '',
         prototypes: model.prototypes,
@@ -205,7 +205,7 @@ export const StringEditor = React.createClass({
   },
 
   componentDidMount() {
-    this.state.valueBus.throttle(1000).onValue((v) => {opiskeluoikeusChange.push(v)})
+    this.state.valueBus.throttle(1000).onValue((v) => {this.props.context.changeBus.push(v)})
   }
 })
 StringEditor.canShowInline = () => true
@@ -214,7 +214,7 @@ export const BooleanEditor = React.createClass({
   render() {
     let {model, context} = this.props
     let onChange = event => {
-      opiskeluoikeusChange.push([context, {data: event.target.checked}])
+      context.changeBus.push([context, {data: event.target.checked}])
     }
 
     return context.edit
@@ -247,7 +247,7 @@ export const DateEditor = React.createClass({
   },
 
   componentDidMount() {
-    this.state.valueBus.throttle(1000).onValue((v) => {opiskeluoikeusChange.push(v)})
+    this.state.valueBus.throttle(1000).onValue((v) => {this.props.context.changeBus.push(v)})
   }
 })
 DateEditor.canShowInline = () => true
@@ -259,7 +259,7 @@ export const EnumEditor = React.createClass({
     let className = alternatives.length ? '' : 'loading'
     let onChange = (event) => {
       let selected = alternatives.find(alternative => alternative.value == event.target.value)
-      opiskeluoikeusChange.push([context, selected])
+      context.changeBus.push([context, selected])
     }
     return context.edit
       ? (<select className={className} defaultValue={model.value && model.value.value} onChange={ onChange }>

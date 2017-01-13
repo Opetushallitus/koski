@@ -10,10 +10,11 @@ import * as L from 'partial.lenses'
 import R from 'ramda'
 import {modelData} from './EditorModel.js'
 
-export const opiskeluoikeusChange = Bacon.Bus()
 export const saveBus = Bacon.Bus()
 
 export const oppijaContentP = () => {
+  const changeBus = Bacon.Bus()
+
   const oppijaIdP = locationP.map(location => {
     const match = location.path.match(new RegExp('/koski/oppija/(.*)'))
     return match ? match[1] : undefined
@@ -37,14 +38,14 @@ export const oppijaContentP = () => {
       let lens = L.compose('value', 'data', 'opiskeluoikeudet', L.find(containsOpiskeluoikeus), 'opiskeluoikeudet', L.find(correctId), 'versionumero')
       return L.set(lens, versionumero, currentOppija)
     },
-    opiskeluoikeusChange, (currentOppija, [context, value]) => {
+    changeBus, (currentOppija, [context, value]) => {
       var modifiedModel = modelSet(currentOppija, context.path, value)
       return modifiedModel
     }
-  ).doLog("oppija")
+  )
 
   updateResultE.plug(oppijaP
-    .sampledBy(opiskeluoikeusChange, (oppija, [context]) => ({oppija, context}))
+    .sampledBy(changeBus, (oppija, [context]) => ({oppija, context}))
     .flatMapLatest(({oppija, context: {path}}) => {
       let opiskeluoikeusPath = path.split('.').slice(0, 4)
       var oppijaData = oppija.value.data
@@ -56,7 +57,7 @@ export const oppijaContentP = () => {
       return Http.put('/koski/api/oppija', oppijaUpdate)
     })
   )
-  
+
   saveBus.plug(updateResultE.map(true))
 
   const oppijaStateP = Bacon.combineTemplate({
@@ -67,19 +68,19 @@ export const oppijaContentP = () => {
   return oppijaStateP.map((oppija) => {
     return {
       content: (<div className='content-area'>
-        <Oppija oppija={oppija}/>
+        <Oppija oppija={oppija} changeBus={changeBus}/>
       </div>),
       title: modelData(oppija.valittuOppija, 'henkilö') ? 'Oppijan tiedot' : ''
     }
-  }).doLog("oppijaContent")
+  })
 }
 
 
-export const Oppija = ({oppija}) =>
+export const Oppija = ({oppija, changeBus}) =>
   oppija.valittuOppija.loading
     ? <Loading/>
     : (!oppija.valittuOppija.empty
-      ? <ExistingOppija oppija={oppija.valittuOppija}/>
+      ? <ExistingOppija oppija={oppija.valittuOppija} changeBus={changeBus}/>
       : (
         oppija.uusiOppija
           ? <CreateOppija/>
@@ -90,7 +91,7 @@ const Loading = () => <div className='main-content oppija loading'></div>
 
 export const ExistingOppija = React.createClass({
   render() {
-    let {oppija} = this.props
+    let {oppija, changeBus} = this.props
     let henkilö = modelLookup(oppija, 'henkilö')
     return (
       <div className='main-content oppija'>
@@ -99,7 +100,7 @@ export const ExistingOppija = React.createClass({
         <h4>Opiskeluoikeudet</h4>
         {
           oppija
-            ? <Editor model={oppija} editorMapping={editorMapping} />
+            ? <Editor model={oppija} editorMapping={editorMapping} changeBus={changeBus} />
             : null
         }
       </div>
