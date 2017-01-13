@@ -58,7 +58,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val opiskeluoikeusQueryRepository = new PostgresOpiskeluoikeusQueryService(database.db)
   lazy val validator: KoskiValidator = new KoskiValidator(tutkintoRepository, koodistoViitePalvelu, organisaatioRepository)
   lazy val perustiedotRepository = new OpiskeluoikeudenPerustiedotRepository(config, opiskeluoikeusQueryRepository)
-  lazy val oppijaFacade = new KoskiOppijaFacade(henkilöRepository, opiskeluoikeusRepository, perustiedotRepository, config)
+  lazy val oppijaFacade = new KoskiOppijaFacade(henkilöRepository, opiskeluoikeusRepository, historyRepository, perustiedotRepository, config)
   lazy val sessionTimeout = SessionTimeout(config)
   lazy val serviceTicketRepository = new SSOTicketSessionRepository(database.db, sessionTimeout)
   lazy val fixtureCreator = new FixtureCreator(config, database, opiskeluoikeusRepository, henkilöRepository, perustiedotRepository, validator)

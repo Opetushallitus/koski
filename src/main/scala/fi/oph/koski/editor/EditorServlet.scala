@@ -13,7 +13,12 @@ import fi.oph.scalaschema.ClassSchema
 
 class EditorServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache {
   get("/:oid") {
-    renderEither(findByOid(params("oid"), koskiSession))
+    renderEither((getOptionalIntegerParam("opiskeluoikeus"), getOptionalIntegerParam("versionumero")) match {
+      case (Some(opiskeluoikeusId), Some(versionumero)) =>
+        findVersion(params("oid"), opiskeluoikeusId, versionumero, koskiSession)
+      case _ =>
+        findByOid(params("oid"), koskiSession)
+    })
   }
 
   get("/omattiedot") {
@@ -52,6 +57,12 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
   private def findByOid(oid: String, user: KoskiSession): Either[HttpStatus, EditorModel] = {
     HenkilöOid.validateHenkilöOid(oid).right.flatMap { oid =>
       toEditorModel(application.oppijaFacade.findOppija(oid)(user))
+    }
+  }
+
+  private def findVersion(oid: String, opiskeluoikeusId: Int, versionumero: Int, user: KoskiSession): Either[HttpStatus, EditorModel] = {
+    HenkilöOid.validateHenkilöOid(oid).right.flatMap { oid =>
+      toEditorModel(application.oppijaFacade.findVersion(oid, opiskeluoikeusId, versionumero)(user))
     }
   }
 

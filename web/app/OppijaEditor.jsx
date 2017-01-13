@@ -2,6 +2,7 @@ import React from 'react'
 import R from 'ramda'
 import { modelData, modelLookup, modelTitle, modelItems } from './EditorModel.js'
 import * as GenericEditor from './GenericEditor.jsx'
+import Versiohistoria from './Versiohistoria.jsx'
 
 const OppijaEditor = React.createClass({
   render() {
@@ -31,7 +32,8 @@ const OppijaEditor = React.createClass({
 const OpiskeluoikeusEditor = React.createClass({
   render() {
     let {model, context} = this.props
-    let opiskeluoikeusContext = R.merge(context, {editable: model.editable, opiskeluoikeusId: modelData(model, 'id')})
+    let id = modelData(model, 'id')
+    let opiskeluoikeusContext = R.merge(context, {editable: model.editable, opiskeluoikeusId: id})
     return (<div className="opiskeluoikeus">
       <div className="kuvaus">
         Opiskeluoikeus&nbsp;
@@ -43,6 +45,7 @@ const OpiskeluoikeusEditor = React.createClass({
           : null
         }
           <span className="tila">{modelTitle(model, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}</span>
+        <Versiohistoria opiskeluOikeusId={id} oppijaOid={context.oppijaOid}/>
         <GenericEditor.ExpandableEditor
           editor = {this}
           expandedView={() => <GenericEditor.PropertiesEditor properties={ model.value.properties.filter(property => property.key != 'suoritukset') } context={opiskeluoikeusContext}/>}

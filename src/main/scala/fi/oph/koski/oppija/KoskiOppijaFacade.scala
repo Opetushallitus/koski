@@ -12,12 +12,20 @@ import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
 import fi.oph.koski.db.GlobalExecutionContext
+import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import org.json4s._
 
 import scala.util.{Failure, Success}
 
-class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRepository: OpiskeluoikeusRepository, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository, config: Config) extends Logging with Timing with GlobalExecutionContext {
+class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRepository: OpiskeluoikeusRepository, historyRepository: OpiskeluoikeusHistoryRepository, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository, config: Config) extends Logging with Timing with GlobalExecutionContext {
   def findOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(OpiskeluoikeusRepository.findByOppijaOid)(user)(oid)
+
+  def findVersion(oid: String, opiskeluoikeusId: Int, versionumero: Int)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = {
+    // TODO: tarkista, että opiskeluoikeus kuuluu tälle oppijalla
+    historyRepository.findVersion(opiskeluoikeusId, versionumero).right.flatMap { history =>
+      toOppija(_ => List(history))(user)(oid)
+    }
+  }
 
   def findUserOppija(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(OpiskeluoikeusRepository.findByUserOid)(user)(user.oid)
 

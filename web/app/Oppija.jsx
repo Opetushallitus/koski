@@ -10,10 +10,10 @@ import {modelData} from './EditorModel.js'
 
 export const saveBus = Bacon.Bus()
 
-export const oppijaContentP = (oppijaOid) => {
+export const oppijaContentP = (oppijaOid, queryString) => {
   const changeBus = Bacon.Bus()
 
-  const loadOppijaE = Http.cachedGet(`/koski/api/editor/${oppijaOid}`).toEventStream()
+  const loadOppijaE = Http.cachedGet(`/koski/api/editor/${oppijaOid}${queryString}`).toEventStream()
 
   const updateResultE = Bacon.Bus()
 
@@ -60,7 +60,6 @@ export const oppijaContentP = (oppijaOid) => {
     }
   })
 }
-
 
 export const ExistingOppija = React.createClass({
   render() {
