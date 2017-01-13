@@ -46,3 +46,10 @@ function parseQuery(qstr) {
 export const appendQueryParam = (path, key, value) => path + (parsePath(path).queryString ? '&' : '?') + encodeURIComponent(key) + '=' + encodeURIComponent(value)
 
 export const appendQueryParams = (path, params) => R.toPairs(params).reduce((l, [key, value]) => appendQueryParam(l, key, value), path)
+
+export const addQueryParams = (param) => {
+  var currentLocation = parseLocation(document.location)
+  let toParameterPairs = params => R.filter(([, value]) => !!value, R.toPairs(R.merge(currentLocation.params, params)))
+  let query = R.join('&', R.map(R.join('='), toParameterPairs(param)))
+  navigateTo(`${currentLocation.path}?${query}`)
+}
