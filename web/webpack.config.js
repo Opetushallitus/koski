@@ -1,6 +1,5 @@
 const webpack = require('webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const OnlyIfChangedPlugin = require('only-if-changed-webpack-plugin')
 const path = require('path')
 
 module.exports = {
@@ -32,10 +31,6 @@ module.exports = {
     ]
   },
   plugins: [
-    new OnlyIfChangedPlugin({
-      cacheDirectory: path.join('target'),
-      cacheIdentifier: 'koski',
-    }),
     new CopyWebpackPlugin(
       [
         { from: 'static'},
