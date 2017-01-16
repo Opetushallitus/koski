@@ -106,30 +106,28 @@ class TiedonsiirtoService(val db: DB, mailer: TiedonsiirtoFailureMailer, organis
       }
     }
 
-    timed("yhteenveto") {
-      var ordering: Ordering[TiedonsiirtoYhteenveto] = sorting match {
-        case order if order.field == "oppilaitos" => Ordering.by(_.oppilaitos.nimi.map(_.get("fi")))
-        case order if order.field == "aika" => Ordering.by(_.viimeisin.getTime)
-        case _ => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("Epäkelpo järjestyskriteeri: order.field"))
-      }
-      if (sorting.descending) {
-        ordering = ordering.reverse
-      }
-
-      runDbSync(Tables.TiedonsiirtoYhteenvetoWithAccessCheck(koskiSession).result).par.flatMap { row =>
-        val käyttäjä = userRepository.findByOid(row.kayttaja) getOrElse {
-          logger.warn(s"Käyttäjää ${row.kayttaja} ei löydy henkilöpalvelusta")
-          KoskiUserInfo(row.kayttaja, None, None)
-        }
-        (getOrganisaatio(row.tallentajaOrganisaatio), getOrganisaatio(row.oppilaitos)) match {
-          case (Some(tallentajaOrganisaatio), Some(oppilaitos)) =>
-            val lähdejärjestelmä = row.lahdejarjestelma.flatMap(koodistoviitePalvelu.getKoodistoKoodiViite("lahdejarjestelma", _))
-            Some(TiedonsiirtoYhteenveto(tallentajaOrganisaatio, oppilaitos, käyttäjä, row.viimeisin, row.siirretyt, row.virheet, row.opiskeluoikeudet.getOrElse(0), lähdejärjestelmä))
-          case _ =>
-            None
-        }
-      }.toList.sorted(ordering)
+    var ordering: Ordering[TiedonsiirtoYhteenveto] = sorting match {
+      case order if order.field == "oppilaitos" => Ordering.by(_.oppilaitos.nimi.map(_.get("fi")))
+      case order if order.field == "aika" => Ordering.by(_.viimeisin.getTime)
+      case _ => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("Epäkelpo järjestyskriteeri: order.field"))
     }
+    if (sorting.descending) {
+      ordering = ordering.reverse
+    }
+
+    runDbSync(Tables.TiedonsiirtoYhteenvetoWithAccessCheck(koskiSession).result).par.flatMap { row =>
+      val käyttäjä = userRepository.findByOid(row.kayttaja) getOrElse {
+        logger.warn(s"Käyttäjää ${row.kayttaja} ei löydy henkilöpalvelusta")
+        KoskiUserInfo(row.kayttaja, None, None)
+      }
+      (getOrganisaatio(row.tallentajaOrganisaatio), getOrganisaatio(row.oppilaitos)) match {
+        case (Some(tallentajaOrganisaatio), Some(oppilaitos)) =>
+          val lähdejärjestelmä = row.lahdejarjestelma.flatMap(koodistoviitePalvelu.getKoodistoKoodiViite("lahdejarjestelma", _))
+          Some(TiedonsiirtoYhteenveto(tallentajaOrganisaatio, oppilaitos, käyttäjä, row.viimeisin, row.siirretyt, row.virheet, row.opiskeluoikeudet.getOrElse(0), lähdejärjestelmä))
+        case _ =>
+          None
+      }
+    }.toList.sorted(ordering)
   }
 
   private def jsonStringList(value: JValue) = value match {

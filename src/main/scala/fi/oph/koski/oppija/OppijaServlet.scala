@@ -1,61 +1,52 @@
 package fi.oph.koski.oppija
 
-import java.time.LocalDate
-import java.time.format.DateTimeParseException
 import javax.servlet.http.HttpServletRequest
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.{GlobalExecutionContext, OpiskeluoikeusRow}
+import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json.toJValue
-import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser._
-import fi.oph.koski.log.KoskiMessageField.{apply => _, _}
-import fi.oph.koski.log.KoskiOperation._
+import fi.oph.koski.log.KoskiMessageField.{apply => _}
 import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueries
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
-import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
+import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
 import fi.oph.koski.util.Timing
 import org.json4s.{JArray, JValue}
 import org.scalatra.GZipSupport
-import rx.lang.scala.Observable
 
 class OppijaServlet(val application: KoskiApplication)
   extends ApiServlet with RequiresAuthentication with Logging with GlobalExecutionContext with OpiskeluoikeusQueries with GZipSupport with NoCache with Timing {
 
   put("/") {
-    timed("PUT /oppija", thresholdMs = 10) {
-      storeTiedonsiirtoResultInCaseOfException { withJsonBody { (oppijaJson: JValue) =>
-        val validationResult: Either[HttpStatus, Oppija] = application.validator.extractAndValidateOppija(oppijaJson)(koskiSession, AccessType.write)
-        val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContext(koskiSession, application, request).putSingle(validationResult, oppijaJson)
-        renderEither(result)
-      }(parseErrorHandler = handleUnparseableJson)}
-    }
+    storeTiedonsiirtoResultInCaseOfException { withJsonBody { (oppijaJson: JValue) =>
+      val validationResult: Either[HttpStatus, Oppija] = application.validator.extractAndValidateOppija(oppijaJson)(koskiSession, AccessType.write)
+      val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContext(koskiSession, application, request).putSingle(validationResult, oppijaJson)
+      renderEither(result)
+    }(parseErrorHandler = handleUnparseableJson)}
   }
 
   put("/batch") {
-    timed("PUT /oppija/batch", thresholdMs = 10) {
-      storeTiedonsiirtoResultInCaseOfException { withJsonBody { parsedJson =>
-        val putter = UpdateContext(koskiSession, application, request)
+    storeTiedonsiirtoResultInCaseOfException { withJsonBody { parsedJson =>
+      val putter = UpdateContext(koskiSession, application, request)
 
-        val validationResults: List[(Either[HttpStatus, Oppija], JValue)] = application.validator.extractAndValidateBatch(parsedJson.asInstanceOf[JArray])(koskiSession, AccessType.write)
+      val validationResults: List[(Either[HttpStatus, Oppija], JValue)] = application.validator.extractAndValidateBatch(parsedJson.asInstanceOf[JArray])(koskiSession, AccessType.write)
 
-        val batchResults: List[Either[HttpStatus, HenkilönOpiskeluoikeusVersiot]] = validationResults.par.map { results =>
-          putter.putSingle(results._1, results._2)
-        }.toList
+      val batchResults: List[Either[HttpStatus, HenkilönOpiskeluoikeusVersiot]] = validationResults.par.map { results =>
+        putter.putSingle(results._1, results._2)
+      }.toList
 
-        response.setStatus(batchResults.map {
-          case Left(status) => status.statusCode
-          case _ => 200
-        }.max)
+      response.setStatus(batchResults.map {
+        case Left(status) => status.statusCode
+        case _ => 200
+      }.max)
 
-        batchResults
-      }(parseErrorHandler = handleUnparseableJson)}
-    }
+      batchResults
+    }(parseErrorHandler = handleUnparseableJson)}
   }
 
   get("/") {

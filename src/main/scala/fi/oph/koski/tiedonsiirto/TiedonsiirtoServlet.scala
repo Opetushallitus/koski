@@ -8,7 +8,7 @@ import fi.oph.koski.util.SortOrder.Ascending
 import fi.oph.koski.util.{Pagination, SortOrder}
 
 class TiedonsiirtoServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache with Pagination {
-  get() {
+  get("/") {
     renderEither(application.tiedonsiirtoService.haeTiedonsiirrot(parseQuery)(koskiSession))
   }
 

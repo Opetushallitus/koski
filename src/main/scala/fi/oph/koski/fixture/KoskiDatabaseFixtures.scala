@@ -23,7 +23,7 @@ class KoskiDatabaseFixtureCreator(database: KoskiDatabase, repository: Opiskeluo
   val db = database.db
   implicit val accessType = AccessType.write
 
-  def resetFixtures: Unit = timed("resetFixtures", 10) {
+  def resetFixtures: Unit = {
     if (database.config.isRemote) throw new IllegalStateException("Trying to reset fixtures in remote database")
 
     val deleteOpiskeluOikeudet = MockOppijat.defaultOppijat.map{oppija => OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid === oppija.oid).delete}

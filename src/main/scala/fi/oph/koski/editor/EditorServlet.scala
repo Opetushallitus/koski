@@ -85,8 +85,7 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
         case (oppilaitos, opiskeluoikeudet) => OppilaitoksenOpiskeluoikeudet(oppilaitos, opiskeluoikeudet.toList.sortBy(_.alkamispäivä))
       }.toList.sortBy(_.opiskeluoikeudet(0).alkamispäivä)
       val editorView = OppijaEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], oppilaitokset)
-
-      timed("buildModel") { modelBuilder.buildModel(EditorSchema.schema, editorView)}
+      modelBuilder.buildModel(EditorSchema.schema, editorView)
     }
   }
 }
