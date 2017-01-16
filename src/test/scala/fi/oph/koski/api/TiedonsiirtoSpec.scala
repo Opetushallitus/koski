@@ -71,6 +71,10 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
   }
 
   "Tiedonsiirtojen yhteenveto" in {
+    resetFixtures
+    putOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä) ++ jsonContent) {
+      verifyResponseStatus(200)
+    }
     authGet("api/tiedonsiirrot/yhteenveto") {
       verifyResponseStatus(200)
       val yhteenveto = Json.read[List[TiedonsiirtoYhteenveto]](body)
