@@ -12,7 +12,7 @@ class ExceptionLoggingSpec extends FreeSpec with Matchers {
   val renderer: LoggableThrowableRenderer = new LoggableThrowableRenderer()
 
   "Loggable exceptions" - {
-    val httpException = new HttpStatusException(500, "Server error", Request(uri = uri"/test"))
+    val httpException = new HttpStatusException(500, "Server error", Request(uri = uri"/test".uri))
     val exceptionText = "fi.oph.koski.http.HttpStatusException: 500: Server error when requesting GET /test"
 
     "Stack traces are hidden" in {

@@ -2,10 +2,10 @@ package fi.oph.koski.http
 
 import java.net.URLEncoder
 
-import fi.oph.koski.http.Http.{Decode, runTask}
+import fi.oph.koski.http.Http.{Decode, ParameterizedUriWrapper}
 import fi.oph.koski.json.Json
 import fi.oph.koski.log.{LoggerWithContext, Logging}
-import fi.oph.koski.util.{Pools, Timer, Timing}
+import fi.oph.koski.util.Pools
 import io.prometheus.client.{Counter, Summary}
 import org.http4s._
 import org.http4s.client.blaze.BlazeClientConfig
@@ -25,19 +25,29 @@ object Http extends Logging {
   // This guys allows you to make URIs from your Strings as in uri"http://google.com/s=${searchTerm}"
   // Takes care of URI encoding the components. You can prevent encoding a part by wrapping into an Uri using this selfsame method.
   implicit class UriInterpolator(val sc: StringContext) extends AnyVal {
-    def uri(args: Any*): Uri = {
+    def uri(args: Any*): ParameterizedUriWrapper = {
       val pairs: Seq[(String, Option[Any])] = sc.parts.zip(args.toList.map(Some(_)) ++ List(None))
 
-      val stuff: Seq[String] = pairs.map { case (fixedPart, encodeablePartOption) =>
+      val parameterized: String = pairs.map { case (fixedPart, encodeablePartOption) =>
           fixedPart + (encodeablePartOption match {
             case None => ""
+            case Some(encoded: ParameterizedUriWrapper) => encoded.uri.toString
             case Some(encoded: Uri) => encoded.toString
             case Some(encodeable) => URLEncoder.encode(encodeable.toString, "UTF-8")
           })
-      }
-      uriFromString(stuff.mkString(""))
+      }.mkString("")
+      val template: String = pairs.map { case (fixedPart, encodeablePartOption) =>
+        fixedPart + (encodeablePartOption match {
+          case None => ""
+          case Some(_) => "_"
+        })
+      }.mkString("").replaceAll("__", "_")
+
+      ParameterizedUriWrapper(uriFromString(parameterized), template)
     }
   }
+
+  case class ParameterizedUriWrapper(uri: Uri, template: String)
 
   // Warning: does not do any URI encoding
   def uriFromString(uri: String): Uri = {
@@ -109,27 +119,27 @@ case class Http(root: String, client: Client = Http.newClient) extends Logging {
   import Http.UriInterpolator
   private val rootUri = Http.uriFromString(root)
 
-  def get[ResultType](uri: Uri)(decode: Decode[ResultType]): Task[ResultType] = {
-    processRequest(Request(uri = uri))(decode)
+  def get[ResultType](uri: ParameterizedUriWrapper)(decode: Decode[ResultType]): Task[ResultType] = {
+    processRequest(Request(uri = uri.uri), uri.template)(decode)
   }
 
-  def post[I <: AnyRef, O <: Any](path: Uri, entity: I)(encode: EntityEncoder[I])(decode: Decode[O]): Task[O] = {
-    val request: Request = Request(uri = path, method = Method.POST)
-    processRequest(request.withBody(entity)(encode))(decode)
+  def post[I <: AnyRef, O <: Any](path: ParameterizedUriWrapper, entity: I)(encode: EntityEncoder[I])(decode: Decode[O]): Task[O] = {
+    val request: Request = Request(uri = path.uri, method = Method.POST)
+    processRequest(request.withBody(entity)(encode), path.template)(decode)
   }
 
-  def put[I <: AnyRef, O <: Any](path: Uri, entity: I)(encode: EntityEncoder[I])(decode: Decode[O]): Task[O] = {
-    val request: Request = Request(uri = path, method = Method.PUT)
-    processRequest(request.withBody(entity)(encode))(decode)
+  def put[I <: AnyRef, O <: Any](path: ParameterizedUriWrapper, entity: I)(encode: EntityEncoder[I])(decode: Decode[O]): Task[O] = {
+    val request: Request = Request(uri = path.uri, method = Method.PUT)
+    processRequest(request.withBody(entity)(encode), path.template)(decode)
   }
 
-  private def processRequest[ResultType](requestTask: Task[Request])(decode: Decode[ResultType]): Task[ResultType] = {
-    requestTask.flatMap(request => processRequest(request)(decode))
+  private def processRequest[ResultType](requestTask: Task[Request], uriTemplate: String)(decode: Decode[ResultType]): Task[ResultType] = {
+    requestTask.flatMap(request => processRequest(request, uriTemplate)(decode))
   }
 
-  private def processRequest[ResultType](request: Request)(decoder: (Int, String, Request) => ResultType): Task[ResultType] = {
+  private def processRequest[ResultType](request: Request, uriTemplate: String)(decoder: (Int, String, Request) => ResultType): Task[ResultType] = {
     val requestWithFullPath: Request = request.copy(uri = addRoot(request.uri))
-    val logger = HttpResponseLog(requestWithFullPath)
+    val logger = HttpResponseLog(requestWithFullPath, uriTemplate)
     client.fetch(addCommonHeaders(requestWithFullPath)) { response =>
       logger.log(response)
       response.as[String].map { text => // Might be able to optimize by not turning into String here
@@ -147,7 +157,7 @@ case class Http(root: String, client: Client = Http.newClient) extends Logging {
 
   private def addRoot(uri: Uri) = {
     if (!uri.toString.startsWith("http")) {
-      uri"${rootUri}${uri}"
+      uri"${rootUri}${uri}".uri
     } else {
       uri
     }
@@ -162,20 +172,20 @@ protected object HttpResponseLog {
   val logger = LoggerWithContext(classOf[Http])
 }
 
-protected case class HttpResponseLog(request: Request) {
+protected case class HttpResponseLog(request: Request, uriTemplate: String) {
   private val started = System.currentTimeMillis
   def elapsedMillis = System.currentTimeMillis - started
   def log(response: Response) {
     log(response.status.code.toString, response.status.code < 400)
-    HttpResponseMonitoring.record(request, response.status.code, elapsedMillis)
+    HttpResponseMonitoring.record(request, uriTemplate, response.status.code, elapsedMillis)
   }
   def log(e: HttpStatusException) {
     log(e.status.toString, e.status < 400)
-    HttpResponseMonitoring.record(request, e.status, elapsedMillis)
+    HttpResponseMonitoring.record(request, uriTemplate, e.status, elapsedMillis)
   }
   def log(e: Exception) {
     log(e.getClass.getSimpleName, false)
-    HttpResponseMonitoring.record(request, 500, elapsedMillis)
+    HttpResponseMonitoring.record(request, uriTemplate, 500, elapsedMillis)
   }
   private def log(status: String, ok: Boolean) {
     val requestBody = if (ok) { None } else { request.body match {
@@ -189,18 +199,21 @@ protected case class HttpResponseLog(request: Request) {
 }
 
 protected object HttpResponseMonitoring {
-  private val statusCounter = Counter.build().name("fi_oph_koski_http_Http_status").help("Koski HTTP client response status").labelNames("service", "responseclass").register()
-  private val durationDummary = Summary.build().name("fi_oph_koski_http_Http_duration").help("Koski HTTP client response duration").labelNames("service").register()
+  private val statusCounter = Counter.build().name("fi_oph_koski_http_Http_status").help("Koski HTTP client response status").labelNames("service", "endpoint", "responseclass").register()
+  private val durationDummary = Summary.build().name("fi_oph_koski_http_Http_duration").help("Koski HTTP client response duration").labelNames("service", "endpoint").register()
+
   private val HttpServicePattern = """https?:\/\/([a-z0-9:\.-]+\/[a-z0-9\.-]+).*""".r
 
-  def record(request: Request, status: Int, durationMillis: Long) {
+  def record(request: Request, uriTemplate: String, status: Int, durationMillis: Long) {
     val responseClass = status / 100 * 100 // 100, 200, 300, 400, 500
 
     val service = request.uri.toString match {
       case HttpServicePattern(service) => service
       case _ => request.uri.toString
     }
-    statusCounter.labels(service, responseClass.toString).inc
-    durationDummary.labels(service).observe(durationMillis.toDouble / 1000)
+    val endpoint = request.method + " " + uriTemplate
+
+    statusCounter.labels(service, endpoint, responseClass.toString).inc
+    durationDummary.labels(service, endpoint).observe(durationMillis.toDouble / 1000)
   }
 }
