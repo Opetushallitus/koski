@@ -139,7 +139,7 @@ case class Http(root: String, client: Client = Http.newClient) extends Logging {
 
   private def processRequest[ResultType](request: Request, uriTemplate: String)(decoder: (Int, String, Request) => ResultType): Task[ResultType] = {
     val requestWithFullPath: Request = request.copy(uri = addRoot(request.uri))
-    val logger = HttpResponseLog(requestWithFullPath, uriTemplate)
+    val logger = HttpResponseLog(requestWithFullPath, root + uriTemplate)
     client.fetch(addCommonHeaders(requestWithFullPath)) { response =>
       logger.log(response)
       response.as[String].map { text => // Might be able to optimize by not turning into String here
