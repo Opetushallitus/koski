@@ -10,10 +10,11 @@ import fi.oph.koski.util.SortOrder.Ascending
 import fi.oph.koski.schema.Henkilö.{apply => _, _}
 import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import fi.oph.koski.servlet.{ApiServlet, ObservableSupport}
+import fi.oph.koski.util.Pagination
 import org.scalatra._
 import rx.lang.scala.Observable
 
-trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with Logging with GlobalExecutionContext with ObservableSupport with GZipSupport {
+trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with Logging with GlobalExecutionContext with ObservableSupport with GZipSupport with Pagination {
   def application: KoskiApplication
 
   def query(params: Map[String, String]): Observable[(TäydellisetHenkilötiedot, List[OpiskeluoikeusRow])] = {
@@ -50,7 +51,7 @@ trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with 
   }
 
   def streamingQueryGroupedByOid(filters: List[OpiskeluoikeusQueryFilter])(implicit user: KoskiSession): Observable[(Oid, List[(OpiskeluoikeusRow)])] = {
-    val rows = application.opiskeluoikeusQueryRepository.streamingQuery(filters, Some(Ascending("oppijaOid")), None)
+    val rows = application.opiskeluoikeusQueryRepository.streamingQuery(filters, Some(Ascending("oppijaOid")), paginationSettings)
 
     val groupedByPerson: Observable[List[(OpiskeluoikeusRow, HenkilöRow)]] = rows
       .tumblingBuffer(rows.map(_._1.oppijaOid).distinctUntilChanged.drop(1))

@@ -5,7 +5,7 @@ import fi.oph.koski.koskiuser.RequiresAuthentication
 import fi.oph.koski.schema.OrganisaatioOid
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.util.SortOrder.Ascending
-import fi.oph.koski.util.{Pagination, SortOrder}
+import fi.oph.koski.util.{Pagination, PaginationSettings, SortOrder}
 
 class TiedonsiirtoServlet(val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache with Pagination {
   get("/") {
@@ -25,6 +25,6 @@ class TiedonsiirtoServlet(val application: KoskiApplication) extends ApiServlet 
       case Right(oid) => oid
       case Left(status) => haltWithStatus(status)
     })
-    TiedonsiirtoQuery(oppilaitos, Some(paginationSettings))
+    TiedonsiirtoQuery(oppilaitos, Some(paginationSettings.getOrElse(PaginationSettings(0, 100))))
   }
 }

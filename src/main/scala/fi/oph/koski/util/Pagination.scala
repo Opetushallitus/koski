@@ -4,9 +4,12 @@ import fi.oph.koski.servlet.KoskiBaseServlet
 import slick.lifted.Query
 
 trait Pagination extends KoskiBaseServlet {
-  def pageNumber = getOptionalIntegerParam("pageNumber").getOrElse(0)
-  def pageSize = getOptionalIntegerParam("pageSize").getOrElse(100)
-  def paginationSettings: PaginationSettings = PaginationSettings(pageNumber, pageSize)
+  def pageNumber = getOptionalIntegerParam("pageNumber")
+  def pageSize = getOptionalIntegerParam("pageSize")
+  def paginationSettings: Option[PaginationSettings] = (pageNumber, pageSize) match {
+    case (Some(pageNumber), Some(pageSize)) => Some(PaginationSettings(pageNumber, pageSize))
+    case _ => None
+  }
 }
 
 case class PaginationSettings(page: Int, size: Int)

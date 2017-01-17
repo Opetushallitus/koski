@@ -15,12 +15,12 @@ import fi.oph.koski.schema._
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
-import fi.oph.koski.util.Timing
+import fi.oph.koski.util.{Pagination, Timing}
 import org.json4s.{JArray, JValue}
 import org.scalatra.GZipSupport
 
 class OppijaServlet(val application: KoskiApplication)
-  extends ApiServlet with RequiresAuthentication with Logging with GlobalExecutionContext with OpiskeluoikeusQueries with GZipSupport with NoCache with Timing {
+  extends ApiServlet with RequiresAuthentication with Logging with GlobalExecutionContext with OpiskeluoikeusQueries with GZipSupport with NoCache with Timing with Pagination {
 
   put("/") {
     storeTiedonsiirtoResultInCaseOfException { withJsonBody { (oppijaJson: JValue) =>
@@ -59,6 +59,9 @@ class OppijaServlet(val application: KoskiApplication)
     renderEither(findByOid(params("oid"), koskiSession))
   }
 
+  get("/oids") {
+    application.opiskeluoikeusQueryRepository.oppijaOidsQuery(paginationSettings)(koskiSession)
+  }
 
   private def findByOid(oid: String, user: KoskiSession): Either[HttpStatus, Oppija] = {
     HenkilöOid.validateHenkilöOid(oid).right.flatMap { oid =>

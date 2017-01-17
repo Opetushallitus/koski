@@ -361,8 +361,9 @@ class OpiskeluoikeudenPerustiedotServlet(val application: KoskiApplication) exte
 
       OpiskeluoikeusQueryFilter.parse(params.toList)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession) match {
         case Right(filters) =>
-          val result: List[OpiskeluoikeudenPerustiedot] = application.perustiedotRepository.find(filters, sort, paginationSettings)(koskiSession)
-          Right(PaginatedResponse(Some(paginationSettings), result, result.length))
+          val pagination: PaginationSettings = paginationSettings.getOrElse(PaginationSettings(0, 100))
+          val result: List[OpiskeluoikeudenPerustiedot] = application.perustiedotRepository.find(filters, sort, pagination)(koskiSession)
+          Right(PaginatedResponse(Some(pagination), result, result.length))
         case Left(HttpStatus(404, _)) =>
           Right(PaginatedResponse(None, List[OpiskeluoikeudenPerustiedot](), 0))
         case e @ Left(_) => e
