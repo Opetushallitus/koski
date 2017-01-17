@@ -34,26 +34,21 @@ case class PerfTestExecutor(threadCount: Int = 10, operation: Int => List[Operat
         while(true) {
           val started = System.currentTimeMillis
           val i = nextId
-          val success = try {
-            val operations = operation(i)
-            operations.foreach { o =>
-              val gzipHeaders = if (o.body != null && o.gzip) List(("Content-Encoding" -> "gzip")) else Nil
-              val headers: Iterable[(String, String)] = o.headers ++ gzipHeaders
-              val body = if (o.body != null && o.gzip) gzip(o.body) else o.body
-              submit(o.method, o.uri, o.queryParams, headers, body) {
-                if (!o.responseCodes.contains(response.status)) {
-                  throw HttpStatusException(response.status, response.body, o.method, o.uri)
-                }
-                response.status should equal(200)
+          val operations = operation(i)
+          operations.foreach { o =>
+            val gzipHeaders = if (o.body != null && o.gzip) List(("Content-Encoding" -> "gzip")) else Nil
+            val headers: Iterable[(String, String)] = o.headers ++ gzipHeaders
+            val body = if (o.body != null && o.gzip) gzip(o.body) else o.body
+            val success = submit(o.method, o.uri, o.queryParams, headers, body) {
+              if (!o.responseCodes.contains(response.status)) {
+                logger.error(HttpStatusException(response.status, response.body, o.method, o.uri).getMessage)
+                false
+              } else {
+                true
               }
             }
-            true
-          } catch {
-            case e: Exception =>
-              logger.error(e)(s"Error")
-              false
+            stats.record(success, System.currentTimeMillis - started)
           }
-          stats.record(success, System.currentTimeMillis - started)
         }
       })
     }
