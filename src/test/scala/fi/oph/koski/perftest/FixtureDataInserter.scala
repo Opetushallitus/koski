@@ -24,6 +24,7 @@ abstract class FixtureDataInserter extends App with KoskidevHttpSpecification wi
         Operation(
           "PUT", "api/oppija",
           body = body,
+          gzip = true,
           headers = (authHeaders() ++ jsonContent ++ Map("Cookie" -> s"SERVERID=koski-app${x % serverCount + 1}")),
           responseCodes = responseCodes)
       }

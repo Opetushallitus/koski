@@ -1,7 +1,10 @@
 package fi.oph.koski.perftest
 
+import java.io.ByteArrayOutputStream
 import java.util.concurrent.{ExecutorService, Executors}
+import java.util.zip.GZIPOutputStream
 
+import fi.oph.koski.http.HttpStatusException
 import fi.oph.koski.integrationtest.KoskidevHttpSpecification
 import fi.oph.koski.log.Logging
 
@@ -10,6 +13,7 @@ case class Operation(method: String = "GET",
   queryParams: Iterable[(String, String)] = Seq.empty,
   headers: Iterable[(String, String)] = Seq.empty,
   body: Array[Byte] = null,
+  gzip: Boolean = false,
   responseCodes: List[Int] = List(200)
 )
 
@@ -33,7 +37,13 @@ case class PerfTestExecutor(threadCount: Int = 10, operation: Int => List[Operat
           val success = try {
             val operations = operation(i)
             operations.foreach { o =>
-              submit(o.method, o.uri, o.queryParams, o.headers, o.body) {
+              val gzipHeaders = if (o.body != null && o.gzip) List(("Content-Encoding" -> "gzip")) else Nil
+              val headers: Iterable[(String, String)] = o.headers ++ gzipHeaders
+              val body = if (o.body != null && o.gzip) gzip(o.body) else o.body
+              submit(o.method, o.uri, o.queryParams, headers, body) {
+                if (!o.responseCodes.contains(response.status)) {
+                  throw HttpStatusException(response.status, response.body, o.method, o.uri)
+                }
                 response.status should equal(200)
               }
             }
@@ -47,6 +57,14 @@ case class PerfTestExecutor(threadCount: Int = 10, operation: Int => List[Operat
         }
       })
     }
+  }
+
+  private def gzip(bytes: Array[Byte]) = {
+    val baos = new ByteArrayOutputStream
+    val gzip = new GZIPOutputStream(baos)
+    gzip.write(bytes)
+    gzip.close()
+    baos.toByteArray
   }
 
   class StatsCollector extends Logging {
