@@ -1,6 +1,6 @@
 package fi.oph.koski.util
 
-import java.util.concurrent.{Executors, ThreadFactory}
+import java.util.concurrent._
 
 import scala.concurrent.{ExecutionContext, ExecutionContextExecutor}
 import scala.math._
@@ -10,20 +10,14 @@ import scala.math._
  */
 object Pools {
   // Number of threads to use for Executors.global (scala.concurrent, our own GlobalExecution context, parallel collections etc)
-  val globalExecutionContextThreads = max(8, (Runtime.getRuntime.availableProcessors * 4))
   val jettyThreads = 50
+  val globalExecutionContextThreads = jettyThreads
   val forkJoinThreads = 10
   val httpThreads = max(4, (Runtime.getRuntime.availableProcessors * 1.5).ceil.toInt)
   val httpPool = NamedThreadPool("http4s-blaze-client", httpThreads)
   val dbThreads = 20
-  val globalPool = ExecutionContextExecutorServiceBridge(ExecutionContext.global)
-
-  System.setProperty("scala.concurrent.context.minThreads", globalExecutionContextThreads.toString)
-  System.setProperty("scala.concurrent.context.maxThreads", globalExecutionContextThreads.toString)
-
-  def init(): Unit = {
-    // Makes sure the system props are set
-  }
+  val globalPool = ExecutionContextExecutorServiceBridge(globalExecutor)
+  val globalExecutor = ExecutionContext.fromExecutor(new ThreadPoolExecutor(Pools.globalExecutionContextThreads, Pools.globalExecutionContextThreads, 60, TimeUnit.SECONDS, new ArrayBlockingQueue[Runnable](1000)))
 }
 
 object NamedThreadPool {
