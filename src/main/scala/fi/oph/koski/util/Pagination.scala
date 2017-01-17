@@ -7,7 +7,7 @@ trait Pagination extends KoskiBaseServlet {
   def pageNumber = getOptionalIntegerParam("pageNumber")
   def pageSize = getOptionalIntegerParam("pageSize")
   def paginationSettings: Option[PaginationSettings] = (pageNumber, pageSize) match {
-    case (Some(pageNumber), Some(pageSize)) => Some(PaginationSettings(pageNumber, pageSize))
+    case (pageNumber, Some(pageSize)) => Some(PaginationSettings(pageNumber.getOrElse(0), pageSize))
     case _ => None
   }
 }
