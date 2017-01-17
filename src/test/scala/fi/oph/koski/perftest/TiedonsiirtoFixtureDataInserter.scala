@@ -5,7 +5,6 @@ import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import fi.oph.koski.tiedonsiirto.ExamplesTiedonsiirto
-import org.scalatra.test.ClientResponse
 
 import scala.util.Random
 
@@ -15,9 +14,5 @@ object TiedonsiirtoFixtureDataInserter extends FixtureDataInserter {
   lazy val opiskeluoikeudet = List.fill(3)(List(omniaOpiskeluoikeus, ExamplesTiedonsiirto.failingOpiskeluoikeus)).flatten
   def opiskeluoikeudet(x: Int) = Random.shuffle(opiskeluoikeudet)
   override def defaultUser = MockUsers.omniaPalvelukäyttäjä
-  override def handleResponse(response: ClientResponse, oikeus: Opiskeluoikeus, henkilö: UusiHenkilö) = {
-    if(response.status != 200 && response.status != 403) {
-      super.handleResponse(response, oikeus, henkilö)
-    }
-  }
+  override val responseCodes: List[Int] = List(200, 403)
 }
