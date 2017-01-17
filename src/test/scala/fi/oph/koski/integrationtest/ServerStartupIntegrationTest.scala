@@ -12,7 +12,7 @@ import org.scalatest.{FreeSpec, Matchers}
 // using System.properties
 class ServerStartupIntegrationTest extends FreeSpec with Matchers with LogTester {
   "Server starts without errors" taggedAs(KoskiDevEnvironment) in {
-    if (!KoskiApplication.defaultConfig.hasPath("opintopolku.virkailija.url")) {
+    if (KoskiApplication.defaultConfig.getString("opintopolku.virkailija.url") == "mock") {
       System.err.println("ServerStartupIntegrationTest run without opintopolku.virkailija.url => tests mocks only")
     }
     setup

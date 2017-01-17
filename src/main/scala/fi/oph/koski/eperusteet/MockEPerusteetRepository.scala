@@ -3,7 +3,7 @@ package fi.oph.koski.eperusteet
 import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 
-class MockEPerusteetRepository extends EPerusteetRepository {
+object MockEPerusteetRepository extends EPerusteetRepository {
   lazy val rakenteet: List[EPerusteRakenne] = List(
     "rakenne-autoalan-perustutkinto",
     "rakenne-luonto-ja-ymparistoala",

@@ -62,6 +62,6 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val sessionTimeout = SessionTimeout(config)
   lazy val serviceTicketRepository = new SSOTicketSessionRepository(database.db, sessionTimeout)
   lazy val fixtureCreator = new FixtureCreator(config, database, opiskeluoikeusRepository, henkilöRepository, perustiedotRepository, validator)
-  lazy val tiedonsiirtoService = new TiedonsiirtoService(database.db, new TiedonsiirtoFailureMailer(config, authenticationServiceClient), organisaatioRepository, henkilöRepository, koodistoViitePalvelu, userRepository)
+  val tiedonsiirtoService = new TiedonsiirtoService(database.db, new TiedonsiirtoFailureMailer(config, authenticationServiceClient), organisaatioRepository, henkilöRepository, koodistoViitePalvelu, userRepository)
   lazy val healthCheck = HealthCheck(this)
 }

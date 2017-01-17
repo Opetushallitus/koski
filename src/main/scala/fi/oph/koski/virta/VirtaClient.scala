@@ -9,9 +9,9 @@ import fi.oph.koski.util.Files
 import scala.xml.{Elem, Node}
 
 object VirtaClient {
-  def apply(config: Config) = config.hasPath("virta.serviceUrl") match {
-    case false => MockVirtaClient
-    case true => TimedProxy[VirtaClient](RemoteVirtaClient(VirtaConfig.fromConfig(config)))
+  def apply(config: Config) = config.getString("virta.serviceUrl") match {
+    case "mock" => MockVirtaClient
+    case _ => TimedProxy[VirtaClient](RemoteVirtaClient(VirtaConfig.fromConfig(config)))
   }
 }
 

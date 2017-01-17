@@ -17,10 +17,9 @@ case class EmailContent(from: String, subject: String, body: String, html: Boole
 case class EmailRecipient(email: String)
 
 object EmailSender {
-  def apply(config: Config): EmailSender = if (config.hasPath("ryhmäsähköposti.virkailija.url")) {
-    RyhmäsähköpostiSender(config)
-  } else {
-    MockEmailSender
+  def apply(config: Config): EmailSender = config.getString("ryhmäsähköposti.virkailija.url") match {
+    case "mock" => MockEmailSender
+    case _ => RyhmäsähköpostiSender(config)
   }
 }
 

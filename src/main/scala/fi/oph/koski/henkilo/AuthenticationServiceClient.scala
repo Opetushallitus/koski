@@ -24,10 +24,9 @@ trait AuthenticationServiceClient {
 }
 
 object AuthenticationServiceClient {
-  def apply(config: Config, db: => DB, perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository): AuthenticationServiceClient = if (config.hasPath("opintopolku.virkailija.username")) {
-    RemoteAuthenticationServiceClient(config, perustiedotRepository)
-  } else {
-    new MockAuthenticationServiceClientWithDBSupport(db)
+  def apply(config: Config, db: => DB, perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository): AuthenticationServiceClient = config.getString("opintopolku.virkailija.url") match {
+    case "mock" => new MockAuthenticationServiceClientWithDBSupport(db)
+    case _ => RemoteAuthenticationServiceClient(config, perustiedotRepository)
   }
 
   case class HenkilöQueryResult(totalCount: Integer, results: List[QueryHenkilö])

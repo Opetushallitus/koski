@@ -80,5 +80,5 @@ trait SSOSupport extends ScalatraBase with Logging {
 }
 
 case class SSOConfig(config: Config) {
-  def isCasSsoUsed = config.hasPath("opintopolku.virkailija.url")
+  def isCasSsoUsed = config.getString("opintopolku.virkailija.url") != "mock"
 }

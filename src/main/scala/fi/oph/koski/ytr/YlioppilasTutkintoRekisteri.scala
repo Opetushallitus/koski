@@ -13,9 +13,9 @@ trait YlioppilasTutkintoRekisteri {
 }
 
 object YlioppilasTutkintoRekisteri {
-  def apply(config: Config) = config.hasPath("ytr") match {
-    case true => YtrRemote(config.getString("ytr.url"), config.getString("ytr.username"), config.getString("ytr.password"))
-    case false => YtrMock
+  def apply(config: Config) = config.getString("ytr.url") match {
+    case "mock" => YtrMock
+    case _ => YtrRemote(config.getString("ytr.url"), config.getString("ytr.username"), config.getString("ytr.password"))
   }
 }
 

@@ -5,8 +5,7 @@ import fi.oph.koski.http.Http
 import fi.vm.sade.utils.cas.CasClient
 
 class ServiceTicketValidator(config: Config) {
-  val opintoPolkuVirkailijaUrl = config.getString("opintopolku.virkailija.url")
-  val casClient = new CasClient(opintoPolkuVirkailijaUrl, Http.newClient)
+  val casClient = new CasClient(config.getString("opintopolku.virkailija.url"), Http.newClient)
 
   def validateServiceTicket(service: String, ticket: String) = {
     val username = casClient.validateServiceTicket(service)(ticket).run

@@ -12,10 +12,11 @@ trait EPerusteetRepository {
 
 object EPerusteetRepository {
   def apply(config: Config) = {
-    if (config.hasPath("eperusteet")) {
-      new RemoteEPerusteetRepository(config.getString("eperusteet.url"))
-    } else {
-      new MockEPerusteetRepository
+    config.getString("eperusteet.url") match {
+      case "mock" =>
+        MockEPerusteetRepository
+      case url =>
+        new RemoteEPerusteetRepository(url)
     }
   }
 }

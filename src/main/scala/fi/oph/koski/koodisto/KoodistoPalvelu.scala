@@ -11,10 +11,9 @@ object KoodistoPalvelu {
   def cached(palvelu: KoodistoPalvelu)(implicit cacheInvalidator: CacheManager) = CachingProxy(Cache.cacheAllRefresh("KoodistoPalvelu", 3600, 100), palvelu)
 
   def withoutCache(config: Config): KoodistoPalvelu = {
-    if (config.hasPath("opintopolku.virkailija.url")) {
-      new RemoteKoodistoPalvelu(config.getString("opintopolku.virkailija.url"))
-    } else {
-      MockKoodistoPalvelu()
+    config.getString("opintopolku.virkailija.url") match {
+      case "mock" => MockKoodistoPalvelu()
+      case url => new RemoteKoodistoPalvelu(url)
     }
   }
 }
