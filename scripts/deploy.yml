@@ -2,6 +2,7 @@
 
 - name: Koski upload
   hosts: koski_backends
+  user: "{{ ssh_user }}"
   sudo: true
   gather_facts: False
   tasks:
@@ -10,6 +11,7 @@
 
 - name: Koski deployment
   hosts: koski_backends
+  user: "{{ ssh_user }}"
   sudo: true
   gather_facts: False
   vars:
