@@ -4,18 +4,21 @@ import javax.servlet.http.HttpServletRequest
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.GlobalExecutionContext
+import fi.oph.koski.henkilo.AuthenticationServiceClient.OppijaHenkilö
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.Json.toJValue
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.KoskiMessageField.{apply => _}
 import fi.oph.koski.log._
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueries
+import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeudenPerustiedot, OpiskeluoikeusQueries}
+import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
 import fi.oph.koski.util.{Pagination, Timing}
+import org.joda.time.DateTime
 import org.json4s.{JArray, JValue}
 import org.scalatra.GZipSupport
 
@@ -47,6 +50,14 @@ class OppijaServlet(val application: KoskiApplication)
 
       batchResults
     }(parseErrorHandler = handleUnparseableJson)}
+  }
+
+  put("/updatechanged") {
+    val since = DateTime.now().minusDays(1) // TODO: we should get the last verification date from somewhere and use that
+    val muuttuneetOppijat: Map[Oid, OppijaHenkilö] = application.authenticationServiceClient.findChangedOppijat(since).groupBy(_.oidHenkilo).mapValues(_.head)
+    val updatedOppijat: List[NimitiedotJaOid] = muuttuneetOppijat.values.map(_.toNimitiedotJaOid).filter(o => application.henkilöCacheUpdater.updateHenkilöAction(o) > 0).toList
+    val perustiedot: List[OpiskeluoikeudenPerustiedot] = application.perustiedotRepository.findHenkiloPerustiedotByOids(updatedOppijat.map(_.oid))
+    application.perustiedotRepository.updateBulk(perustiedot.map(p => p.copy(henkilö = muuttuneetOppijat(p.henkilö.oid).toNimitiedotJaOid)))
   }
 
   get("/") {

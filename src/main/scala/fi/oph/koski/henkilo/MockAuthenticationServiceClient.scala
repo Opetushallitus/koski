@@ -1,13 +1,14 @@
 package fi.oph.koski.henkilo
 
 import fi.oph.koski.db.KoskiDatabase.DB
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{KoskiDatabaseMethods, PostgresDriverWithJsonSupport, Tables}
 import fi.oph.koski.henkilo.AuthenticationServiceClient._
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{Käyttöoikeusryhmät, MockUsers}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{Henkilö, TäydellisetHenkilötiedot}
-import PostgresDriverWithJsonSupport.api._
+import org.joda.time.DateTime
 
 class MockAuthenticationServiceClientWithDBSupport(val db: DB) extends MockAuthenticationServiceClient with KoskiDatabaseMethods {
   def findFromDb(oid: String): Option[TäydellisetHenkilötiedot] = {
@@ -96,4 +97,6 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
     MockUsers.users.filter(_.käyttöoikeudet.contains((organisaatioOid, Käyttöoikeusryhmät.vastuukäyttäjä))).map(u => Yhteystiedot(u.username + "@example.com"))
 
   override def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] = oppijat.getOppijat.find(_.hetu == hetu).map(toOppijaHenkilö)
+
+  override def findChangedOppijat(since: DateTime): List[OppijaHenkilö] = Nil
 }

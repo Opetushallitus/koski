@@ -12,15 +12,14 @@ import fi.oph.koski.json.{GenericJsonFormats, Json, Json4sHttp4s, LocalDateSeria
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresAuthentication}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
-import fi.oph.koski.util.SortOrder.{Ascending, Descending}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, ObservableSupport}
+import fi.oph.koski.util.SortOrder.{Ascending, Descending}
 import fi.oph.koski.util._
 import fi.oph.scalaschema.annotation.Description
 import org.http4s.EntityEncoder
-import org.json4s.jackson.Serialization
-import org.json4s.{Extraction, JArray, JString, JValue}
+import org.json4s.{JArray, JValue}
 
 import scala.concurrent.Future
 
@@ -176,6 +175,12 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
     (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source").extract[OpiskeluoikeudenPerustiedot])
   }
 
+  def findHenkiloPerustiedotByOids(oids: List[String]): List[OpiskeluoikeudenPerustiedot] = {
+    val doc = Json.toJValue(Map("query" -> Map("terms" -> Map("henkilö.oid" -> oids)), "from" -> 0, "size" -> 10000))
+    val response = runSearch(doc)
+    (response \ "hits" \ "hits").extract[List[JValue]].map(j => (j \ "_source").extract[OpiskeluoikeudenPerustiedot])
+  }
+
   def findHenkilöPerustiedot(oid: String): Option[NimitiedotJaOid] = {
     val doc = Json.toJValue(Map("query" -> Map("term" -> Map("henkilö.oid" -> oid))))
 
@@ -207,6 +212,9 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
   def update(perustiedot: OpiskeluoikeudenPerustiedot): Either[HttpStatus, Int] = updateBulk(List(perustiedot))
 
   def updateBulk(items: Seq[OpiskeluoikeudenPerustiedot]): Either[HttpStatus, Int] = {
+    if (items.isEmpty) {
+      return Right(0)
+    }
     val jsonLines = items.flatMap { perustiedot =>
       List(
         Map("update" -> Map("_id" -> (perustiedot.id.get), "_index" -> "koski", "_type" -> "perustiedot")),
