@@ -60,20 +60,20 @@ object Http extends Logging {
 
   def expectSuccess(status: Int, text: String, request: Request): Unit = (status, text) match {
     case (status, text) if status < 300 && status >= 200 =>
-    case (status, text) => throw new HttpStatusException(status, text, request)
+    case (status, text) => throw HttpStatusException(status, text, request)
   }
 
   def parseJson[T](status: Int, text: String, request: Request)(implicit mf : scala.reflect.Manifest[T]): T = {
     (status, text) match {
       case (status, text) if (List(200, 201).contains(status)) => Json.read[T](text)
-      case (status, text) => throw new HttpStatusException(status, text, request)
+      case (status, text) => throw HttpStatusException(status, text, request)
     }
   }
 
   def parseXml(status: Int, text: String, request: Request) = {
     (status, text) match {
       case (200, text) => scala.xml.XML.loadString(text)
-      case (status, text) => throw new HttpStatusException(status, text, request)
+      case (status, text) => throw HttpStatusException(status, text, request)
     }
   }
 
@@ -81,7 +81,7 @@ object Http extends Logging {
   def parseJsonOptional[T](status: Int, text: String, request: Request)(implicit mf : scala.reflect.Manifest[T]): Option[T] = (status, text) match {
     case (404, _) => None
     case (200, text) => Some(Json.read[T](text))
-    case (status, text) => throw new HttpStatusException(status, text, request)
+    case (status, text) => throw HttpStatusException(status, text, request)
   }
 
   /** Parses as JSON, returns None on any error */
@@ -92,7 +92,7 @@ object Http extends Logging {
 
   def toString(status: Int, text: String, request: Request) = (status, text) match {
     case (200, text) => text
-    case (status, text) => throw new HttpStatusException(status, text, request)
+    case (status, text) => throw HttpStatusException(status, text, request)
   }
 
   def statusCode(status: Int, text: String, request: Request) = (status, text) match {
@@ -100,7 +100,7 @@ object Http extends Logging {
   }
 
   val unitDecoder: Decode[Unit] =  {
-    case (status, text, request) if (status >= 300) => throw new HttpStatusException(status, text, request)
+    case (status, text, request) if (status >= 300) => throw HttpStatusException(status, text, request)
     case _ =>
   }
 

@@ -20,7 +20,7 @@ class RemoteKoodistoPalvelu(virkailijaUrl: String) extends KoodistoPalvelu with 
           case _ =>
             koodit
         })
-      case (status, text, uri) => throw new HttpStatusException(status, text, uri)
+      case (status, text, uri) => throw HttpStatusException(status, text, uri)
     })
   }
 

@@ -232,7 +232,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
       .post(uri"/koski/perustiedot/_delete_by_query", doc)(Json4sHttp4s.json4sEncoderOf[JValue]) {
         case (200, text, request) => (Json.parse(text) \ "deleted").extract[Int]
         case (status, text, request) if List(404, 409).contains(status) => 0
-        case (status, text, request) => throw new HttpStatusException(status, text, request)
+        case (status, text, request) => throw HttpStatusException(status, text, request)
       })
     deleted
   }

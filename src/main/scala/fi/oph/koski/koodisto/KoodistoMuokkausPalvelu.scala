@@ -23,7 +23,7 @@ class KoodistoMuokkausPalvelu(username: String, password: String, virkailijaUrl:
     try {
       runTask(secureHttp.post(uri"/koodisto-service/rest/codes", koodisto)(json4sEncoderOf[Koodisto])(Http.unitDecoder))
     } catch {
-      case HttpStatusException(500, "error.codesgroup.not.found", _) =>
+      case HttpStatusException(500, "error.codesgroup.not.found", _, _) =>
         createKoodistoRyhmä(KoodistoRyhmä(koodisto.codesGroupUri.replaceAll("http://", "")))
         createKoodisto(koodisto)
     }
