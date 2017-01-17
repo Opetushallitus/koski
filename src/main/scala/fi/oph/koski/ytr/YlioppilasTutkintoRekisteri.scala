@@ -4,6 +4,7 @@ import com.typesafe.config.Config
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{ClientWithBasicAuthentication, Http}
 import fi.oph.koski.json.Json
+import fi.oph.koski.log.Logging
 import org.json4s.JValue
 
 trait YlioppilasTutkintoRekisteri {
@@ -12,11 +13,18 @@ trait YlioppilasTutkintoRekisteri {
   def oppijaJsonByHetu(hetu: String): Option[JValue]
 }
 
-object YlioppilasTutkintoRekisteri {
+object YlioppilasTutkintoRekisteri extends Logging {
   def apply(config: Config) = config.getString("ytr.url") match {
     case "mock" => YtrMock
+    case "" =>
+      logger.info("YTR integration disabled")
+      YtrEmpty
     case _ => YtrRemote(config.getString("ytr.url"), config.getString("ytr.username"), config.getString("ytr.password"))
   }
+}
+
+object YtrEmpty extends YlioppilasTutkintoRekisteri {
+  override def oppijaJsonByHetu(hetu: String) = None
 }
 
 object YtrMock extends YlioppilasTutkintoRekisteri {

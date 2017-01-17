@@ -3,14 +3,17 @@ package fi.oph.koski.virta
 import com.typesafe.config.Config
 import fi.oph.koski.http.Http
 import fi.oph.koski.http.Http._
-import fi.oph.koski.log.TimedProxy
+import fi.oph.koski.log.{Logging, TimedProxy}
 import fi.oph.koski.util.Files
 
 import scala.xml.{Elem, Node}
 
-object VirtaClient {
+object VirtaClient extends Logging {
   def apply(config: Config) = config.getString("virta.serviceUrl") match {
     case "mock" => MockVirtaClient
+    case "" =>
+      logger.info("Virta integration disabled")
+      EmptyVirtaClient
     case _ => TimedProxy[VirtaClient](RemoteVirtaClient(VirtaConfig.fromConfig(config)))
   }
 }
@@ -18,6 +21,11 @@ object VirtaClient {
 trait VirtaClient {
   def opintotiedot(hakuehto: VirtaHakuehto): Option[Elem]
   def henkilötiedot(hakuehto: VirtaHakuehto, oppilaitosNumero: String): Option[Elem]
+}
+
+object EmptyVirtaClient extends VirtaClient {
+  override def opintotiedot(hakuehto: VirtaHakuehto) = None
+  override def henkilötiedot(hakuehto: VirtaHakuehto, oppilaitosNumero: String) = None
 }
 
 object MockVirtaClient extends VirtaClient {
