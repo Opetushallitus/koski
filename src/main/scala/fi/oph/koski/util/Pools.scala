@@ -16,7 +16,6 @@ object Pools {
   val httpThreads = max(4, (Runtime.getRuntime.availableProcessors * 1.5).ceil.toInt)
   val httpPool = NamedThreadPool("http4s-blaze-client", httpThreads)
   val dbThreads = 20
-  val globalPool = ExecutionContextExecutorServiceBridge(globalExecutor)
   val globalExecutor = ExecutionContext.fromExecutor(new ThreadPoolExecutor(Pools.globalExecutionContextThreads, Pools.globalExecutionContextThreads, 60, TimeUnit.SECONDS, new ArrayBlockingQueue[Runnable](1000)))
 }
 
@@ -35,27 +34,6 @@ object NamedThreadPool {
       t.setName(namePrefix + "-thread-" + nextId)
       t.setDaemon(true)
       t
-    }
-  }
-}
-
-import java.util.Collections
-import java.util.concurrent.{AbstractExecutorService, TimeUnit}
-
-import scala.concurrent.{ExecutionContext, ExecutionContextExecutorService}
-
-object ExecutionContextExecutorServiceBridge {
-  def apply(ec: ExecutionContextExecutor): ExecutionContextExecutorService = ec match {
-    case eces: ExecutionContextExecutorService => eces
-    case _ => new AbstractExecutorService with ExecutionContextExecutorService {
-      override def prepare(): ExecutionContext = ec
-      override def isShutdown = false
-      override def isTerminated = false
-      override def shutdown() = ()
-      override def shutdownNow() = Collections.emptyList[Runnable]
-      override def execute(runnable: Runnable): Unit = ec execute runnable
-      override def reportFailure(t: Throwable): Unit = ec reportFailure t
-      override def awaitTermination(length: Long,unit: TimeUnit): Boolean = false
     }
   }
 }
