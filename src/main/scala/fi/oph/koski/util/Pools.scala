@@ -11,12 +11,11 @@ import scala.math._
 object Pools {
   // Number of threads to use for Executors.global (scala.concurrent, our own GlobalExecution context, parallel collections etc)
   val globalExecutionContextThreads = max(8, (Runtime.getRuntime.availableProcessors * 4))
-  val jettyThreads = 20
+  val jettyThreads = 50
   val forkJoinThreads = 10
   val httpThreads = max(4, (Runtime.getRuntime.availableProcessors * 1.5).ceil.toInt)
   val httpPool = NamedThreadPool("http4s-blaze-client", httpThreads)
-  // If this is less than jettyThreads, weird problems seem to arise (db pool connections get stuck)
-  val dbThreads = jettyThreads
+  val dbThreads = 20
   val globalPool = ExecutionContextExecutorServiceBridge(ExecutionContext.global)
 
   System.setProperty("scala.concurrent.context.minThreads", globalExecutionContextThreads.toString)
