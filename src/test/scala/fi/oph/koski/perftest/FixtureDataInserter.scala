@@ -17,6 +17,7 @@ abstract class FixtureDataInserter extends App with KoskidevHttpSpecification wi
   val t0 = System.currentTimeMillis()
 
   val created: AtomicInteger = new AtomicInteger(0)
+  val serverCount = 2
 
   println("Using server " + baseUrl)
 
@@ -29,7 +30,7 @@ abstract class FixtureDataInserter extends App with KoskidevHttpSpecification wi
         oikeudet.zipWithIndex.foreach { case(oikeus, index) =>
           val oppija: Oppija = Oppija(henkilö, List(oikeus))
           val body = Json.write(oppija).getBytes("utf-8")
-          put("api/oppija", body = body, headers = (authHeaders() ++ jsonContent ++ Map("Cookie" -> s"SERVERID=koski-app${x % 2 + 1}"))) {
+          put("api/oppija", body = body, headers = (authHeaders() ++ jsonContent ++ Map("Cookie" -> s"SERVERID=koski-app${x % serverCount + 1}"))) {
             if (x % (Math.max(1, amount / 10000)) == 1) logger.info(henkilö.kokonimi + " " + response.status)
             handleResponse(response, oikeus, henkilö)
           }
