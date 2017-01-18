@@ -1,6 +1,7 @@
 package fi.oph.koski.perftest
 
 import java.io.ByteArrayOutputStream
+import java.lang.System.currentTimeMillis
 import java.util.zip.GZIPOutputStream
 
 import fi.oph.koski.http.HttpStatusException
@@ -41,7 +42,7 @@ abstract class KoskiPerfTester extends KoskidevHttpSpecification with Logging {
       val thread = new Thread(group, s"perftest-$i") {
         override def run = {
           while (shouldContinue) {
-            val started = System.currentTimeMillis
+            val started = currentTimeMillis
             val round = nextRound
             val operations = operation(round)
             operations.foreach { o =>
@@ -58,7 +59,7 @@ abstract class KoskiPerfTester extends KoskidevHttpSpecification with Logging {
                   true
                 }
               }
-              stats.record(success, System.currentTimeMillis - started)
+              stats.record(o.method + " " + o.uri, success, currentTimeMillis - started)
             }
           }
         }
@@ -70,7 +71,7 @@ abstract class KoskiPerfTester extends KoskidevHttpSpecification with Logging {
     threads.foreach{t => t.join}
     group.destroy
     stats.log
-    val failures: Int = stats.getStats.failedCount
+    val failures: Int = stats.summary.failedCount
     if (failures > 0) {
       throw new RuntimeException(s"Test failed: $failures failures")
     }
@@ -86,28 +87,55 @@ abstract class KoskiPerfTester extends KoskidevHttpSpecification with Logging {
 }
 
 class StatsCollector extends Logging {
-  case class Stats(timestamp: Long = System.currentTimeMillis(), startTimestamp: Long = System.currentTimeMillis(), successCount: Int = 0, failedCount: Int = 0, elapsedMsTotal: Long = 0) {
+  private val startTimestamp: Long = currentTimeMillis()
+
+  case class Stats(timestamp: Long = currentTimeMillis(), successCount: Int = 0, failedCount: Int = 0, elapsedMsTotal: Long = 0) {
     def addSuccess(elapsedMs: Long) = this.copy(successCount = successCount + 1).addElapsed(elapsedMs)
     def addFailure(elapsedMs: Long) = this.copy(failedCount = failedCount + 1).addElapsed(elapsedMs)
+    def addResult(success: Boolean, elapsedMs: Long) = if (success) addSuccess(elapsedMs) else addFailure(elapsedMs)
     def totalCount = { successCount + failedCount }
     def averageDuration = { elapsedMsTotal / totalCount }
     def requestsPerSec = { totalCount * 1000 / (timestamp - startTimestamp) }
-    private def addElapsed(elapsed: Long) = this.copy(elapsedMsTotal = elapsedMsTotal + elapsed, timestamp = System.currentTimeMillis)
+    private def addElapsed(elapsed: Long) = this.copy(elapsedMsTotal = elapsedMsTotal + elapsed, timestamp = currentTimeMillis)
+    def +(other: Stats) = Stats(
+      Math.max(timestamp, other.timestamp),
+      successCount + other.successCount,
+      failedCount + other.failedCount,
+      elapsedMsTotal + other.elapsedMsTotal
+    )
   }
-  private var stats = Stats()
-  var previousLogged: Stats = stats
-  val logInterval = 1000
-  def getStats = synchronized { stats }
-  def record(success: Boolean, elapsedMs: Long): Unit = synchronized {
-    stats = if (success) stats.addSuccess(elapsedMs) else stats.addFailure(elapsedMs)
+  private var statsByOperation: Map[String, Stats] = Map.empty
+
+  private var previousLogged: Option[Long] = None
+
+  private val logInterval = 1000
+
+  def getStatsByUri = synchronized { statsByOperation }
+
+  def summary = {
+    val values: Iterable[Stats] = getStatsByUri.values
+    values.reduce[Stats](_ + _)
+  }
+
+  def record(operation: String, success: Boolean, elapsedMs: Long): Unit = synchronized {
+    val stats = statsByOperation.getOrElse(operation, new Stats()).addResult(success, elapsedMs)
+    statsByOperation = statsByOperation + (operation -> stats)
     maybeLog
   }
   def maybeLog = synchronized {
-    val now = System.currentTimeMillis
-    if (now - previousLogged.timestamp > logInterval) {
-      previousLogged = stats
+    val now = currentTimeMillis
+    val shouldLog = previousLogged match {
+      case Some(timestamp) => now - timestamp > logInterval
+      case None => true
+    }
+    if (shouldLog) {
       log
     }
   }
-  def log = synchronized { logger.info("Success: " + stats.successCount + ", Failed: " + stats.failedCount + ", Average: " + stats.averageDuration + " ms, Req/sec: " + stats.requestsPerSec) }
+  def log = {
+    getStatsByUri.foreach { case (operation, stats) =>
+      logger.info(operation + " Success: " + stats.successCount + ", Failed: " + stats.failedCount + ", Average: " + stats.averageDuration + " ms, Req/sec: " + stats.requestsPerSec)
+    }
+    previousLogged = Some(currentTimeMillis)
+  }
 }

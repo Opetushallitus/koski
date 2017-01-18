@@ -15,7 +15,7 @@ abstract class FixtureDataInserter extends KoskiPerfTester with App with Logging
     val oikeudet = opiskeluoikeudet(x)
     val kutsumanimi = randomFirstName
     val henkilö: UusiHenkilö = Henkilö(hetu.nextHetu, kutsumanimi + " " + randomFirstName, kutsumanimi, randomLastName)
-    oikeudet.zipWithIndex.map { case(oikeus, index) =>
+    oikeudet.map { oikeus =>
       val oppija: Oppija = Oppija(henkilö, List(oikeus))
       val body = Json.write(oppija).getBytes("utf-8")
       Operation(
