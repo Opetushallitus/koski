@@ -17,12 +17,6 @@ trait KoskidevHttpSpecification extends HttpSpecification {
     override def password = requiredEnv("KOSKI_PASS")
   }
 
-  override protected def createClient = {
-    val builder = new SSLContextBuilder();
-    builder.loadTrustMaterial(null, new TrustStrategy() {
-      override def isTrusted(x509Certificates: Array[X509Certificate], s: String) = true
-    })
-    val sslsf = new SSLConnectionSocketFactory(builder.build(), SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER)
-    HttpClients.custom().setSSLSocketFactory(sslsf).build();
-  }
+  override protected def createClient = TrustingHttpsClient.createClient
 }
+
