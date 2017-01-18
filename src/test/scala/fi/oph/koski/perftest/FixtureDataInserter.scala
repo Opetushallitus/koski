@@ -7,13 +7,14 @@ import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus, Oppija, UusiHenkilö}
 
 abstract class FixtureDataInserter extends KoskiPerfTester with App with Logging {
   val responseCodes = List(200)
+  val hetu = new RandomHetu()
 
   def opiskeluoikeudet(oppijaIndex: Int): List[Opiskeluoikeus]
 
   def operation(x: Int) = {
     val oikeudet = opiskeluoikeudet(x)
     val kutsumanimi = randomFirstName
-    val henkilö: UusiHenkilö = Henkilö(RandomHetu.nextHetu, kutsumanimi + " " + randomFirstName, kutsumanimi, randomLastName)
+    val henkilö: UusiHenkilö = Henkilö(hetu.nextHetu, kutsumanimi + " " + randomFirstName, kutsumanimi, randomLastName)
     oikeudet.zipWithIndex.map { case(oikeus, index) =>
       val oppija: Oppija = Oppija(henkilö, List(oikeus))
       val body = Json.write(oppija).getBytes("utf-8")

@@ -18,7 +18,7 @@ case class Operation(method: String = "GET",
 )
 
 abstract class KoskiPerfTester extends KoskidevHttpSpecification with Logging {
-  lazy val roundCount = sys.env.getOrElse("PERFTEST_ROUNDS", "1000").toInt
+  lazy val roundCount = sys.env.getOrElse("PERFTEST_ROUNDS", "10").toInt
   lazy val serverCount = sys.env.getOrElse("KOSKI_SERVER_COUNT", "2").toInt
   lazy val threadCount = sys.env.getOrElse("PERFTEST_THREADS", "10").toInt
 
@@ -37,8 +37,9 @@ abstract class KoskiPerfTester extends KoskidevHttpSpecification with Logging {
   def executeTest = {
     logger.info("Using server " + baseUrl)
     logger.info(s"Rounds=$roundCount, Servers=$serverCount, Threads=$threadCount")
-    val threads = 1 to threadCount map { _ =>
-      val thread = new Thread() {
+    val group = new ThreadGroup("perftest")
+    val threads = 1 to threadCount map { i =>
+      val thread = new Thread(group, s"perftest-$i") {
         override def run = {
           while (shouldContinue) {
             val started = System.currentTimeMillis
@@ -67,7 +68,8 @@ abstract class KoskiPerfTester extends KoskidevHttpSpecification with Logging {
       thread
     }
 
-    threads.foreach(_.join)
+    threads.foreach{t => t.join}
+    group.destroy
     stats.log
   }
 

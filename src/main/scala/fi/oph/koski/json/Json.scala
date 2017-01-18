@@ -1,5 +1,6 @@
 package fi.oph.koski.json
 
+import java.io.InputStream
 import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
 
 import com.github.fge.jsonpatch.diff.JsonDiff
@@ -44,6 +45,10 @@ object Json extends Logging {
   }
 
   def read[A](json: String)(implicit mf : scala.reflect.Manifest[A]) : A = {
+    Serialization.read(json)
+  }
+
+  def read[A](json: InputStream)(implicit mf : scala.reflect.Manifest[A]) : A = {
     Serialization.read(json)
   }
 
