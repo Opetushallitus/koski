@@ -8,6 +8,8 @@ import fi.oph.koski.http.HttpStatusException
 import fi.oph.koski.integrationtest.KoskidevHttpSpecification
 import fi.oph.koski.log.Logging
 
+import scala.annotation.tailrec
+
 case class Operation(method: String = "GET",
   uri: String,
   queryParams: Iterable[(String, String)] = Seq.empty,
@@ -19,58 +21,73 @@ case class Operation(method: String = "GET",
 
 abstract class KoskiPerfTester extends KoskidevHttpSpecification with Logging {
   lazy val roundCount = sys.env.getOrElse("PERFTEST_ROUNDS", "1000").toInt
+  lazy val warmupRoundCount = sys.env.getOrElse("WARMUP_ROUNDS", "20").toInt
   lazy val serverCount = sys.env.getOrElse("KOSKI_SERVER_COUNT", "2").toInt
   lazy val threadCount = sys.env.getOrElse("PERFTEST_THREADS", "10").toInt
 
   def operation(i: Int): List[Operation]
 
-  private lazy val stats = new StatsCollector
-
-  private var counter = 0
-  private def nextRound = synchronized {
-    counter = counter + 1
-    counter - 1
-  }
-
-  private def shouldContinue = synchronized(counter < roundCount)
-
   def executeTest = {
     logger.info("Using server " + baseUrl)
     logger.info(s"Rounds=$roundCount, Servers=$serverCount, Threads=$threadCount")
     val group = new ThreadGroup("perftest")
-    val threads = 1 to threadCount map { i =>
-      val thread = new Thread(group, s"perftest-$i") {
-        override def run = {
-          while (shouldContinue) {
+
+    def run(stats: StatsCollector, t: Int, rounds: Int): Unit = {
+      var counter = 0
+      def nextRound = synchronized {
+        if (counter == rounds) {
+          None
+        } else {
+          counter = counter + 1
+          Some(counter - 1)
+        }
+      }
+
+      val threads = 1 to t map { i =>
+        val thread = new Thread(group, s"perftest-$i") {
+          @tailrec
+          override def run = {
             val started = currentTimeMillis
-            val round = nextRound
-            val operations = operation(round)
-            operations.foreach { o =>
-              val gzipHeaders = if (o.body != null && o.gzip) List(("Content-Encoding" -> "gzip")) else Nil
-              val cookieHeaders = Map("Cookie" -> s"SERVERID=koski-app${round % serverCount + 1}")
-              val contentTypeHeaders = if (o.body != null) jsonContent else Nil
-              val headers: Iterable[(String, String)] = o.headers ++ gzipHeaders ++ cookieHeaders ++ contentTypeHeaders ++ authHeaders()
-              val body = if (o.body != null && o.gzip) gzip(o.body) else o.body
-              val success = submit(o.method, o.uri, o.queryParams, headers, body) {
-                if (!o.responseCodes.contains(response.status)) {
-                  logger.error(HttpStatusException(response.status, response.body, o.method, o.uri).getMessage)
-                  false
-                } else {
-                  true
+            nextRound match {
+              case None =>
+              case Some(round) =>
+                val operations = operation(round)
+                operations.foreach { o =>
+                  val gzipHeaders = if (o.body != null && o.gzip) List(("Content-Encoding" -> "gzip")) else Nil
+                  val cookieHeaders = Map("Cookie" -> s"SERVERID=koski-app${round % serverCount + 1}")
+                  val contentTypeHeaders = if (o.body != null) jsonContent else Nil
+                  val headers: Iterable[(String, String)] = o.headers ++ gzipHeaders ++ cookieHeaders ++ contentTypeHeaders ++ authHeaders()
+                  val body = if (o.body != null && o.gzip) gzip(o.body) else o.body
+                  val success = submit(o.method, o.uri, o.queryParams, headers, body) {
+                    if (!o.responseCodes.contains(response.status)) {
+                      logger.error(HttpStatusException(response.status, response.body, o.method, o.uri).getMessage)
+                      false
+                    } else {
+                      true
+                    }
+                  }
+                  stats.record(o.method + " " + o.uri, success, currentTimeMillis - started)
                 }
-              }
-              stats.record(o.method + " " + o.uri, success, currentTimeMillis - started)
+                run
             }
           }
         }
+        thread.start
+        thread
       }
-      thread.start
-      thread
-    }
 
-    threads.foreach{t => t.join}
+      threads.foreach{t => t.join}
+      stats.log
+    }
+    if (warmupRoundCount > 0) {
+      logger.info(s"Warming up for $warmupRoundCount rounds")
+      run(new StatsCollector, threadCount, warmupRoundCount)
+      logger.info("Reseting stats after warmup.")
+    }
+    val stats = new StatsCollector
+    run(stats, threadCount, roundCount)
+
     group.destroy
-    stats.log
     val failures: Int = stats.summary.failedCount
     if (failures > 0) {
       throw new RuntimeException(s"Test failed: $failures failures")
@@ -87,7 +104,7 @@ abstract class KoskiPerfTester extends KoskidevHttpSpecification with Logging {
 }
 
 class StatsCollector extends Logging {
-  private val startTimestamp: Long = currentTimeMillis()
+  private val startTimestamp: Long = currentTimeMillis
 
   case class Stats(timestamp: Long = currentTimeMillis(), successCount: Int = 0, failedCount: Int = 0, elapsedMsTotal: Long = 0) {
     def addSuccess(elapsedMs: Long) = this.copy(successCount = successCount + 1).addElapsed(elapsedMs)
@@ -110,6 +127,12 @@ class StatsCollector extends Logging {
 
   private val logInterval = 1000
 
+  def record(operation: String, success: Boolean, elapsedMs: Long): Unit = synchronized {
+    val stats = statsByOperation.getOrElse(operation, new Stats()).addResult(success, elapsedMs)
+    statsByOperation = statsByOperation + (operation -> stats)
+    maybeLog
+  }
+
   def getStatsByUri = synchronized { statsByOperation }
 
   def summary = {
@@ -117,11 +140,6 @@ class StatsCollector extends Logging {
     values.reduce[Stats](_ + _)
   }
 
-  def record(operation: String, success: Boolean, elapsedMs: Long): Unit = synchronized {
-    val stats = statsByOperation.getOrElse(operation, new Stats()).addResult(success, elapsedMs)
-    statsByOperation = statsByOperation + (operation -> stats)
-    maybeLog
-  }
   def maybeLog = synchronized {
     val now = currentTimeMillis
     val shouldLog = previousLogged match {
