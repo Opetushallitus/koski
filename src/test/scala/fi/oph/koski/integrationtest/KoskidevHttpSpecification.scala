@@ -1,11 +1,7 @@
 package fi.oph.koski.integrationtest
 
-import java.security.cert.X509Certificate
-
 import fi.oph.koski.http.HttpSpecification
 import fi.oph.koski.koskiuser.UserWithPassword
-import org.apache.http.conn.ssl.{SSLConnectionSocketFactory, SSLContextBuilder, TrustStrategy}
-import org.apache.http.impl.client.HttpClients
 
 trait KoskidevHttpSpecification extends HttpSpecification {
   private def requiredEnv(name: String) = util.Properties.envOrNone(name).getOrElse(throw new IllegalStateException("Environment property " + name + " missing"))
