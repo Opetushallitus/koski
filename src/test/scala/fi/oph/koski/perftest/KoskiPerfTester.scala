@@ -17,7 +17,7 @@ case class Operation(method: String = "GET",
 )
 
 abstract class KoskiPerfTester extends KoskidevHttpSpecification with Logging {
-  lazy val roundCount = sys.env.getOrElse("PERFTEST_ROUNDS", "10").toInt
+  lazy val roundCount = sys.env.getOrElse("PERFTEST_ROUNDS", "1000").toInt
   lazy val serverCount = sys.env.getOrElse("KOSKI_SERVER_COUNT", "2").toInt
   lazy val threadCount = sys.env.getOrElse("PERFTEST_THREADS", "10").toInt
 
