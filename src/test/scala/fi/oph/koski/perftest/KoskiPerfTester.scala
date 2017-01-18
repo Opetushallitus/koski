@@ -19,17 +19,22 @@ case class Operation(method: String = "GET",
   responseCodes: List[Int] = List(200)
 )
 
-abstract class KoskiPerfTester extends KoskidevHttpSpecification with Logging {
-  lazy val roundCount = sys.env.getOrElse("PERFTEST_ROUNDS", "1000").toInt
-  lazy val warmupRoundCount = sys.env.getOrElse("WARMUP_ROUNDS", "20").toInt
-  lazy val serverCount = sys.env.getOrElse("KOSKI_SERVER_COUNT", "2").toInt
-  lazy val threadCount = sys.env.getOrElse("PERFTEST_THREADS", "10").toInt
+abstract class PerfTestScenario {
+  def roundCount: Int = sys.env.getOrElse("PERFTEST_ROUNDS", "1000").toInt
 
-  def operation(i: Int): List[Operation]
+  def warmupRoundCount: Int = sys.env.getOrElse("WARMUP_ROUNDS", "20").toInt
 
-  def executeTest = {
+  def serverCount: Int = sys.env.getOrElse("KOSKI_SERVER_COUNT", "2").toInt
+
+  def threadCount: Int = sys.env.getOrElse("PERFTEST_THREADS", "10").toInt
+
+  def operation(round: Int): List[Operation]
+}
+
+class KoskiPerfTester extends KoskidevHttpSpecification with Logging {
+  def executeTest(scenario: PerfTestScenario) = {
     logger.info("Using server " + baseUrl)
-    logger.info(s"Rounds=$roundCount, Servers=$serverCount, Threads=$threadCount")
+    logger.info(s"Rounds=${scenario.roundCount}, Servers=${scenario.serverCount}, Threads=${scenario.threadCount}")
     val group = new ThreadGroup("perftest")
 
     def run(stats: StatsCollector, t: Int, rounds: Int): Unit = {
@@ -51,10 +56,10 @@ abstract class KoskiPerfTester extends KoskidevHttpSpecification with Logging {
             nextRound match {
               case None =>
               case Some(round) =>
-                val operations = operation(round)
+                val operations = scenario.operation(round)
                 operations.foreach { o =>
                   val gzipHeaders = if (o.body != null && o.gzip) List(("Content-Encoding" -> "gzip")) else Nil
-                  val cookieHeaders = Map("Cookie" -> s"SERVERID=koski-app${round % serverCount + 1}")
+                  val cookieHeaders = Map("Cookie" -> s"SERVERID=koski-app${round % scenario.serverCount + 1}")
                   val contentTypeHeaders = if (o.body != null) jsonContent else Nil
                   val headers: Iterable[(String, String)] = o.headers ++ gzipHeaders ++ cookieHeaders ++ contentTypeHeaders ++ authHeaders()
                   val body = if (o.body != null && o.gzip) gzip(o.body) else o.body
@@ -79,19 +84,20 @@ abstract class KoskiPerfTester extends KoskidevHttpSpecification with Logging {
       threads.foreach{t => t.join}
       stats.log
     }
-    if (warmupRoundCount > 0) {
-      logger.info(s"Warming up for $warmupRoundCount rounds")
-      run(new StatsCollector, threadCount, warmupRoundCount)
+    if (scenario.warmupRoundCount > 0) {
+      logger.info(s"Warming up for ${scenario.warmupRoundCount} rounds")
+      run(new StatsCollector, scenario.threadCount, scenario.warmupRoundCount)
       logger.info("Reseting stats after warmup.")
     }
     val stats = new StatsCollector
-    run(stats, threadCount, roundCount)
+    run(stats, scenario.threadCount, scenario.roundCount)
 
     group.destroy
     val failures: Int = stats.summary.failedCount
     if (failures > 0) {
       throw new RuntimeException(s"Test failed: $failures failures")
     }
+    stats.getStatsByUri
   }
 
   private def gzip(bytes: Array[Byte]) = {
@@ -103,24 +109,26 @@ abstract class KoskiPerfTester extends KoskidevHttpSpecification with Logging {
   }
 }
 
+case class Stats(startTimestamp: Long, timestamp: Long = currentTimeMillis(), successCount: Int = 0, failedCount: Int = 0, elapsedMsTotal: Long = 0) {
+  def addSuccess(elapsedMs: Long) = this.copy(successCount = successCount + 1).addElapsed(elapsedMs)
+  def addFailure(elapsedMs: Long) = this.copy(failedCount = failedCount + 1).addElapsed(elapsedMs)
+  def addResult(success: Boolean, elapsedMs: Long) = if (success) addSuccess(elapsedMs) else addFailure(elapsedMs)
+  def totalCount = { successCount + failedCount }
+  def averageDuration = { elapsedMsTotal / totalCount }
+  def requestsPerSec = { totalCount * 1000 / (timestamp - startTimestamp) }
+  private def addElapsed(elapsed: Long) = this.copy(elapsedMsTotal = elapsedMsTotal + elapsed, timestamp = currentTimeMillis)
+  def +(other: Stats) = Stats(
+    startTimestamp,
+    Math.max(timestamp, other.timestamp),
+    successCount + other.successCount,
+    failedCount + other.failedCount,
+    elapsedMsTotal + other.elapsedMsTotal
+  )
+}
+
 class StatsCollector extends Logging {
   private val startTimestamp: Long = currentTimeMillis
 
-  case class Stats(timestamp: Long = currentTimeMillis(), successCount: Int = 0, failedCount: Int = 0, elapsedMsTotal: Long = 0) {
-    def addSuccess(elapsedMs: Long) = this.copy(successCount = successCount + 1).addElapsed(elapsedMs)
-    def addFailure(elapsedMs: Long) = this.copy(failedCount = failedCount + 1).addElapsed(elapsedMs)
-    def addResult(success: Boolean, elapsedMs: Long) = if (success) addSuccess(elapsedMs) else addFailure(elapsedMs)
-    def totalCount = { successCount + failedCount }
-    def averageDuration = { elapsedMsTotal / totalCount }
-    def requestsPerSec = { totalCount * 1000 / (timestamp - startTimestamp) }
-    private def addElapsed(elapsed: Long) = this.copy(elapsedMsTotal = elapsedMsTotal + elapsed, timestamp = currentTimeMillis)
-    def +(other: Stats) = Stats(
-      Math.max(timestamp, other.timestamp),
-      successCount + other.successCount,
-      failedCount + other.failedCount,
-      elapsedMsTotal + other.elapsedMsTotal
-    )
-  }
   private var statsByOperation: Map[String, Stats] = Map.empty
 
   private var previousLogged: Option[Long] = None
@@ -128,7 +136,7 @@ class StatsCollector extends Logging {
   private val logInterval = 1000
 
   def record(operation: String, success: Boolean, elapsedMs: Long): Unit = synchronized {
-    val stats = statsByOperation.getOrElse(operation, new Stats()).addResult(success, elapsedMs)
+    val stats = statsByOperation.getOrElse(operation, new Stats(startTimestamp)).addResult(success, elapsedMs)
     statsByOperation = statsByOperation + (operation -> stats)
     maybeLog
   }
