@@ -7,11 +7,14 @@ import org.scalatest.Matchers
 
 import scala.util.Random
 
-object RandomOppijaOid extends KoskidevHttpSpecification with Matchers with Logging {
-  val url: String = s"api/oppija/oids?pageNumber=0&pageSize=500000"
-  lazy val oids = get(url, headers = (authHeaders() ++ jsonContent)) {
-    response.status should equal(200)
-    Json.read[List[String]](body)
+case class RandomOppijaOid(fetchCount: Int) extends KoskidevHttpSpecification with Matchers with Logging {
+  val url: String = s"api/oppija/oids?pageNumber=0&pageSize=$fetchCount"
+  lazy val oids = {
+    logger.info(s"Fetching $fetchCount oids")
+    get(url, headers = (authHeaders() ++ jsonContent)) {
+      response.status should equal(200)
+      Json.read[List[String]](body)
+    }
   }
 
   lazy val oidIterator = {
