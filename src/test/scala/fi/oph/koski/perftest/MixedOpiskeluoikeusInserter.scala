@@ -7,7 +7,11 @@ import fi.oph.koski.schema.{Koodistokoodiviite, _}
 
 import scala.util.Random
 
-object MixedOpiskeluoikeusInserter extends FixtureDataInserter {
+object MixedOpiskeluoikeusInserter extends App {
+  PerfTestRunner.executeTest(MixedOpiskeluoikeusInserterScenario)
+}
+
+object MixedOpiskeluoikeusInserterScenario extends FixtureDataInserterScenario {
   def lähdejärjestelmät = List("primus", "winnova", "helmi", "winha", "peppi", "studentaplus", "rediteq")
   def lähdejärjestelmäId = Some(LähdejärjestelmäId(Some(UUID.randomUUID().toString), Koodistokoodiviite(lähdejärjestelmät(Random.nextInt(lähdejärjestelmät.length)), "lahdejarjestelma")))
 

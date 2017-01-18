@@ -8,7 +8,11 @@ import fi.oph.koski.tiedonsiirto.ExamplesTiedonsiirto
 
 import scala.util.Random
 
-object TiedonsiirtoFixtureDataInserter extends FixtureDataInserter {
+object TiedonsiirtoFixtureDataInserter extends App {
+  PerfTestRunner.executeTest(TiedonsiirtoFixtureDataInserterScenario)
+}
+
+object TiedonsiirtoFixtureDataInserterScenario extends FixtureDataInserterScenario {
   lazy val omnia = Oppilaitos(MockOrganisaatiot.omnia)
   lazy val omniaOpiskeluoikeus: AmmatillinenOpiskeluoikeus = AmmatillinenExampleData.opiskeluoikeus(omnia, AmmatillinenExampleData.autoalanPerustutkinnonSuoritus(omnia)).copy(lähdejärjestelmänId = Some(AmmatillinenExampleData.winnovaLähdejärjestelmäId))
   lazy val opiskeluoikeudet = List.fill(3)(List(omniaOpiskeluoikeus, ExamplesTiedonsiirto.failingOpiskeluoikeus)).flatten

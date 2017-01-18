@@ -7,7 +7,11 @@ import fi.oph.koski.schema.{Koodistokoodiviite, Oppilaitos}
 
 import scala.util.Random
 
-object LukioFixtureDataInserter extends FixtureDataInserter {
+object LukioFixtureDataInserter extends App {
+  PerfTestRunner.executeTest(LukioFixtureDataInserterScenario)
+}
+
+object LukioFixtureDataInserterScenario extends FixtureDataInserterScenario {
   lazy val lukiot: List[OrganisaatioPalveluOrganisaatio] = Json.fromJValue[OrganisaatioHakuTulos](Json.readFile("ignore/lukiot.json")).organisaatiot
 
   lazy val opiskeluoikeudet = lukiot.map { org =>
