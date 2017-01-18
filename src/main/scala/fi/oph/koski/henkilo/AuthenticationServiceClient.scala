@@ -15,6 +15,7 @@ import org.http4s._
 import org.joda.time.DateTime
 import org.joda.time.format.ISODateTimeFormat.dateTimeNoMillis
 
+import scalaz.concurrent.Task
 import scalaz.concurrent.Task.gatherUnordered
 
 trait AuthenticationServiceClient {
@@ -118,7 +119,7 @@ class RemoteAuthenticationServiceClient(authServiceHttp: Http, oidServiceHttp: H
     }
   )
 
-  private def findOppijatByOidsTask(oids: List[String]) =
+  private def findOppijatByOidsTask(oids: List[String]): Task[List[OppijaNumerorekisteriOppija]] =
     oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloOidList", oids)(json4sEncoderOf[List[String]])(Http.parseJson[List[OppijaNumerorekisteriOppija]])
 }
 
