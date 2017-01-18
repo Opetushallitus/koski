@@ -1,7 +1,6 @@
 package fi.oph.koski.perftest
 
 import java.io.ByteArrayOutputStream
-import java.util.concurrent.{ExecutorService, Executors, ForkJoinPool}
 import java.util.zip.GZIPOutputStream
 
 import fi.oph.koski.http.HttpStatusException
@@ -71,6 +70,10 @@ abstract class KoskiPerfTester extends KoskidevHttpSpecification with Logging {
     threads.foreach{t => t.join}
     group.destroy
     stats.log
+    val failures: Int = stats.getStats.failedCount
+    if (failures > 0) {
+      throw new RuntimeException(s"Test failed: $failures failures")
+    }
   }
 
   private def gzip(bytes: Array[Byte]) = {
@@ -80,30 +83,31 @@ abstract class KoskiPerfTester extends KoskidevHttpSpecification with Logging {
     gzip.close()
     baos.toByteArray
   }
+}
 
-  class StatsCollector extends Logging {
-    case class Stats(timestamp: Long = System.currentTimeMillis(), startTimestamp: Long = System.currentTimeMillis(), successCount: Int = 0, failedCount: Int = 0, elapsedMsTotal: Long = 0) {
-      def addSuccess(elapsedMs: Long) = this.copy(successCount = successCount + 1).addElapsed(elapsedMs)
-      def addFailure(elapsedMs: Long) = this.copy(failedCount = failedCount + 1).addElapsed(elapsedMs)
-      def totalCount = { successCount + failedCount }
-      def averageDuration = { elapsedMsTotal / totalCount }
-      def requestsPerSec = { totalCount * 1000 / (timestamp - startTimestamp) }
-      private def addElapsed(elapsed: Long) = this.copy(elapsedMsTotal = elapsedMsTotal + elapsed, timestamp = System.currentTimeMillis)
-    }
-    var stats = Stats()
-    var previousLogged: Stats = stats
-    val logInterval = 1000
-    def record(success: Boolean, elapsedMs: Long): Unit = synchronized {
-      stats = if (success) stats.addSuccess(elapsedMs) else stats.addFailure(elapsedMs)
-      maybeLog
-    }
-    def maybeLog = synchronized {
-      val now = System.currentTimeMillis
-      if (now - previousLogged.timestamp > logInterval) {
-        previousLogged = stats
-        log
-      }
-    }
-    def log = synchronized { logger.info("Success: " + stats.successCount + ", Failed: " + stats.failedCount + ", Average: " + stats.averageDuration + " ms, Req/sec: " + stats.requestsPerSec) }
+class StatsCollector extends Logging {
+  case class Stats(timestamp: Long = System.currentTimeMillis(), startTimestamp: Long = System.currentTimeMillis(), successCount: Int = 0, failedCount: Int = 0, elapsedMsTotal: Long = 0) {
+    def addSuccess(elapsedMs: Long) = this.copy(successCount = successCount + 1).addElapsed(elapsedMs)
+    def addFailure(elapsedMs: Long) = this.copy(failedCount = failedCount + 1).addElapsed(elapsedMs)
+    def totalCount = { successCount + failedCount }
+    def averageDuration = { elapsedMsTotal / totalCount }
+    def requestsPerSec = { totalCount * 1000 / (timestamp - startTimestamp) }
+    private def addElapsed(elapsed: Long) = this.copy(elapsedMsTotal = elapsedMsTotal + elapsed, timestamp = System.currentTimeMillis)
   }
+  private var stats = Stats()
+  var previousLogged: Stats = stats
+  val logInterval = 1000
+  def getStats = synchronized { stats }
+  def record(success: Boolean, elapsedMs: Long): Unit = synchronized {
+    stats = if (success) stats.addSuccess(elapsedMs) else stats.addFailure(elapsedMs)
+    maybeLog
+  }
+  def maybeLog = synchronized {
+    val now = System.currentTimeMillis
+    if (now - previousLogged.timestamp > logInterval) {
+      previousLogged = stats
+      log
+    }
+  }
+  def log = synchronized { logger.info("Success: " + stats.successCount + ", Failed: " + stats.failedCount + ", Average: " + stats.averageDuration + " ms, Req/sec: " + stats.requestsPerSec) }
 }
