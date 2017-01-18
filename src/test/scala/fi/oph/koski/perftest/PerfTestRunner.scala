@@ -7,6 +7,8 @@ import java.util.zip.GZIPOutputStream
 import fi.oph.koski.http.HttpStatusException
 import fi.oph.koski.integrationtest.KoskidevHttpSpecification
 import fi.oph.koski.log.{LoggerWithContext, Logging}
+import io.prometheus.client.exporter.PushGateway
+import io.prometheus.client.{CollectorRegistry, Gauge}
 
 import scala.annotation.tailrec
 
@@ -21,20 +23,18 @@ case class Operation(method: String = "GET",
 )
 
 abstract class PerfTestScenario extends KoskidevHttpSpecification with Logging {
-  def roundCount: Int = sys.env.getOrElse("PERFTEST_ROUNDS", "1000").toInt
-
+  def roundCount: Int = sys.env.getOrElse("PERFTEST_ROUNDS", "10").toInt
   def warmupRoundCount: Int = sys.env.getOrElse("WARMUP_ROUNDS", "20").toInt
-
   def serverCount: Int = sys.env.getOrElse("KOSKI_SERVER_COUNT", "2").toInt
-
   def threadCount: Int = sys.env.getOrElse("PERFTEST_THREADS", "10").toInt
-
   def operation(round: Int): List[Operation]
+  def name = getClass.getSimpleName
 
   override def logger = super.logger
 }
 
-object PerfTestRunner extends Logging{
+object PerfTestRunner extends Logging {
+
   def executeTest(scenarios: PerfTestScenario*) = {
     val noop = () => {}
 
@@ -51,15 +51,14 @@ object PerfTestRunner extends Logging{
     }.foreach(_())
     logger.info("**** Starting test ****")
     val stats = new StatsCollector
-
     scenarios.map(scenario => startScenario(scenario, group, stats, scenario.threadCount, scenario.roundCount)).foreach(_())
-
+    logger.info("**** Finished test ****")
+    sys.env.get("PERFTEST_NAME").foreach(testname => new PerfTestPrometheusPusher(testname).push(stats.getStatsByOperation))
     group.destroy
     val failures: Int = stats.summary.failedCount
     if (failures > 0) {
       throw new RuntimeException(s"Test failed: $failures failures")
     }
-    stats.getStatsByUri
   }
 
 
@@ -157,10 +156,10 @@ class StatsCollector {
     maybeLog
   }
 
-  def getStatsByUri = synchronized { statsByOperation }
+  def getStatsByOperation = synchronized { statsByOperation }
 
   def summary = {
-    val values: Iterable[Stats] = getStatsByUri.values
+    val values: Iterable[Stats] = getStatsByOperation.values
     values.reduce[Stats](_ + _)
   }
 
@@ -175,9 +174,34 @@ class StatsCollector {
     }
   }
   def log(implicit logger: LoggerWithContext) = {
-    getStatsByUri.foreach { case (operation, stats) =>
+    getStatsByOperation.foreach { case (operation, stats) =>
       logger.info(operation + " Success: " + stats.successCount + ", Failed: " + stats.failedCount + ", Average: " + stats.averageDuration + " ms, Req/sec: " + stats.requestsPerSec)
     }
     previousLogged = Some(currentTimeMillis)
+  }
+}
+
+class PerfTestPrometheusPusher(testname: String) {
+  private val registry = new CollectorRegistry
+  private val prefix = "fi_oph_koski_perftest_"
+  private def makeGauge(name: String) = Gauge.build().name(prefix + name).help(prefix + name).labelNames("testname", "operation").register(registry)
+  private val successCount = makeGauge("success_count")
+  private val failedCount = makeGauge("fail_count")
+  private val averageDuration = makeGauge("average_duration")
+  private val requestsPerSec = makeGauge("requests_per_sec")
+
+  private def record(operation: String, stats: Stats): Unit = {
+    successCount.labels(testname, operation).set(stats.successCount)
+    failedCount.labels(testname, operation).set(stats.failedCount)
+    averageDuration.labels(testname, operation).set(stats.averageDuration)
+    requestsPerSec.labels(testname, operation).set(stats.requestsPerSec)
+  }
+
+  def push(stats: Map[String, Stats]) = {
+    stats.foreach { case (operation, stats) =>
+      record(operation, stats)
+    }
+    val pg = new PushGateway("127.0.0.1:9091");
+    pg.pushAdd(registry, "my_batch_job")
   }
 }
