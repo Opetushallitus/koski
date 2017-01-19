@@ -186,7 +186,7 @@ class OppijaValidationSpec extends FunSpec with LocalJettyHttpSpecification with
       }
     }
 
-    describe("Opiskeluoikeuden päivämäärät") {
+    describe("Opiskeluoikeuden tila ja päivämäärät") {
       describe("Alkaminen ja päättyminen") {
         it("Päivämäärät kunnossa -> palautetaan HTTP 200") {
           putOpiskeluoikeus(defaultOpiskeluoikeus.copy(arvioituPäättymispäivä = Some(date(2018, 5, 31))))(verifyResponseStatus(200))
@@ -247,10 +247,10 @@ class OppijaValidationSpec extends FunSpec with LocalJettyHttpSpecification with
           }}
         }
 
-        it("Opiskeluoikeuden tila muuttunut vielä valmistumisen jälkee -> HTTP 200") (putOpiskeluoikeus(
+        it("Opiskeluoikeuden tila muuttunut vielä valmistumisen jälkeen -> HTTP 400") (putOpiskeluoikeus(
           lisääTila(päättymispäivällä(defaultOpiskeluoikeus, date(2016, 5, 31)), date(2016, 6, 30), ExampleData.opiskeluoikeusLäsnä)
         ) {
-          verifyResponseStatus(200)
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaMuuttunutLopullisenTilanJälkeen("Opiskeluoikeuden tila muuttunut lopullisen tilan (valmistunut) jälkeen"))
         })
       }
     }

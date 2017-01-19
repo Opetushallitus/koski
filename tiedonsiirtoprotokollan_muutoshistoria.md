@@ -1,4 +1,8 @@
-## 10.1.2016
+## 19.1.2017
+
+Lisätty validaatio: opiskeluoikeuden tilahistoriassa ei saa esiintyä uusia tiloja lopullisen tilan (valmistunut, eronnut, katsotaaneronneeksi) jälkeen
+
+## 10.1.2017
 
 - Validointimuutos: päätason suoritus ei saa olla "kesken" jos opiskeluoikeus on "valmis"
 
