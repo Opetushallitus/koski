@@ -11,7 +11,7 @@ import fi.oph.koski.db.{GlobalExecutionContext, KoskiDatabaseMethods, SchedulerR
 import org.joda.time.DateTime
 import org.joda.time.DateTime.now
 
-class Scheduler(val db: DB, name: String, scheduling: Scheduling, task: () => Unit) extends GlobalExecutionContext with KoskiDatabaseMethods {
+class Scheduler(val db: DB, name: String, scheduling: Schedule, task: () => Unit) extends GlobalExecutionContext with KoskiDatabaseMethods {
   private val taskExecutor = Executors.newSingleThreadScheduledExecutor
   runDbSync(Scheduler.insertOrUpdate(SchedulerRow(name, scheduling.nextFireTime)))
   taskExecutor.scheduleAtFixedRate(() => fireIfTime(), 10, 10, TimeUnit.SECONDS)
@@ -23,16 +23,16 @@ class Scheduler(val db: DB, name: String, scheduling: Scheduling, task: () => Un
   private def now = new Timestamp(currentTimeMillis)
 }
 
-trait Scheduling {
+trait Schedule {
   def nextFireTime: Timestamp = new Timestamp(nextFireTime(now).getMillis)
   def nextFireTime(seed: DateTime): DateTime
 }
 
-class IntervalScheduling(secs: Int) extends Scheduling {
+class IntervalSchedule(secs: Int) extends Schedule {
   override def nextFireTime(seed: DateTime): DateTime = seed.plusSeconds(secs)
 }
 
-class FixedTimeOfDayScheduling(hour: Int, minute: Int) extends Scheduling {
+class FixedTimeOfDaySchedule(hour: Int, minute: Int) extends Schedule {
   override def nextFireTime(seed: DateTime): DateTime = seed.plusDays(1).withHourOfDay(hour).withMinuteOfHour(minute)
 }
 
@@ -40,7 +40,7 @@ object SchedulerApp extends App {
   val application = fi.oph.koski.config.KoskiApplication.apply
   for (x <- 1 to 100) {
     //new Scheduler(application.database.db, "henkilötiedot-update", new IntervalScheduling(10), () => println(s"Server $x executing"))
-    new Scheduler(application.database.db, "henkilötiedot-update", new FixedTimeOfDayScheduling(20, 48), () => println(s"Server $x executing"))
+    new Scheduler(application.database.db, "henkilötiedot-update", new FixedTimeOfDaySchedule(20, 48), () => println(s"Server $x executing"))
     Thread.sleep(1)
   }
 }

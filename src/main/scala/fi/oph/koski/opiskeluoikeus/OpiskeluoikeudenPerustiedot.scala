@@ -43,6 +43,7 @@ case class OpiskeluoikeudenPerustiedot(
   luokka: Option[String]
 ) extends WithId
 
+case class Henkilötiedot(id: Int, henkilö: NimitiedotJaOid) extends WithId
 
 object OpiskeluoikeudenPerustiedot {
   def makePerustiedot(row: OpiskeluoikeusRow, henkilöRow: HenkilöRow): OpiskeluoikeudenPerustiedot = {
