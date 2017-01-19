@@ -95,8 +95,9 @@ object Tables {
   class SchedulerTable(tag: Tag) extends Table[SchedulerRow](tag, "scheduler") {
     val name = column[String]("name", O.PrimaryKey)
     val nextFireTime = column[Timestamp]("nextfiretime")
+    val context = column[Option[JValue]]("context")
 
-    def * = (name, nextFireTime) <> (SchedulerRow.tupled, SchedulerRow.unapply)
+    def * = (name, nextFireTime, context) <> (SchedulerRow.tupled, SchedulerRow.unapply)
   }
 
   val Tiedonsiirto = TableQuery[TiedonsiirtoTable]
@@ -174,4 +175,4 @@ case class TiedonsiirtoRow(id: Int, kayttajaOid: String, tallentajaOrganisaatioO
 
 case class TiedonsiirtoYhteenvetoRow(tallentajaOrganisaatio: String, oppilaitos: String, kayttaja: String, viimeisin: Timestamp, siirretyt: Int, virheet: Int, opiskeluoikeudet: Option[Int], lahdejarjestelma: Option[String])
 
-case class SchedulerRow(name: String, nextFireTime: Timestamp)
+case class SchedulerRow(name: String, nextFireTime: Timestamp, context: Option[JValue])

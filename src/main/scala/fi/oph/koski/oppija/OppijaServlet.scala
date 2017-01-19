@@ -52,14 +52,6 @@ class OppijaServlet(val application: KoskiApplication)
     }(parseErrorHandler = handleUnparseableJson)}
   }
 
-  put("/updatechanged") {
-    val since = DateTime.now().minusDays(1) // TODO: we should get the last verification date from somewhere and use that
-    val muuttuneetOppijat: Map[Oid, OppijaHenkilö] = application.authenticationServiceClient.findChangedOppijat(since).groupBy(_.oidHenkilo).mapValues(_.head)
-    val updatedOppijat: List[NimitiedotJaOid] = muuttuneetOppijat.values.map(_.toNimitiedotJaOid).filter(o => application.henkilöCacheUpdater.updateHenkilöAction(o) > 0).toList
-    val perustiedot: List[OpiskeluoikeudenPerustiedot] = application.perustiedotRepository.findHenkiloPerustiedotByOids(updatedOppijat.map(_.oid))
-    application.perustiedotRepository.updateBulk(perustiedot.map(p => p.copy(henkilö = muuttuneetOppijat(p.henkilö.oid).toNimitiedotJaOid)), insertMissing = false)
-  }
-
   get("/") {
     query(params).map {
       case (henkilö, rivit) => Oppija(henkilö, rivit.map(_.toOpiskeluoikeus))

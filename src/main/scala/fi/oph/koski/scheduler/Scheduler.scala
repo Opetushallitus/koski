@@ -2,46 +2,55 @@ package fi.oph.koski.scheduler
 
 import java.lang.System.currentTimeMillis
 import java.sql.Timestamp
+import java.time.LocalDateTime
 import java.util.concurrent.{Executors, TimeUnit}
 
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables.Scheduler
 import fi.oph.koski.db.{GlobalExecutionContext, KoskiDatabaseMethods, SchedulerRow}
-import org.joda.time.DateTime
-import org.joda.time.DateTime.now
+import fi.oph.koski.log.Logging
+import org.json4s._
+import org.json4s.jackson.JsonMethods
 
-class Scheduler(val db: DB, name: String, scheduling: Schedule, task: () => Unit) extends GlobalExecutionContext with KoskiDatabaseMethods {
+class Scheduler(val db: DB, name: String, scheduling: Schedule, initialContext: Option[JValue], task: Option[JValue] => Option[JValue]) extends GlobalExecutionContext with KoskiDatabaseMethods with Logging {
   private val taskExecutor = Executors.newSingleThreadScheduledExecutor
-  runDbSync(Scheduler.insertOrUpdate(SchedulerRow(name, scheduling.nextFireTime)))
+  runDbSync(Scheduler.insertOrUpdate(SchedulerRow(name, scheduling.nextFireTime, initialContext)))
   taskExecutor.scheduleAtFixedRate(() => fireIfTime(), 10, 10, TimeUnit.SECONDS)
 
-  private def fireIfTime() = if (shouldFire) task()
-  private def shouldFire: Boolean =
-    runDbSync(Scheduler.filter(s => s.name === name && s.nextFireTime < now).update(SchedulerRow(name, scheduling.nextFireTime))) > 0
+  private def fireIfTime() = {
+    val shouldFire = runDbSync(Scheduler.filter(s => s.name === name && s.nextFireTime < now).map(_.nextFireTime).update(scheduling.nextFireTime)) > 0
+    if (shouldFire) {
+      try {
+        fire
+      } catch {
+        case e: Exception =>
+          logger.error(e)(s"Scheduled task $name failed: ${e.getMessage}")
+          throw e
+      }
+    }
+  }
+
+  private def fire = {
+    val context: Option[JValue] = runDbSync(Scheduler.filter(_.name === name).result.head).context
+    logger.info(s"Firing scheduled task $name with context ${context.map(JsonMethods.compact)}")
+    val newContext: Option[JValue] = task(context)
+    runDbSync(Scheduler.filter(s => s.name === name).map(_.context).update(newContext))
+  }
 
   private def now = new Timestamp(currentTimeMillis)
 }
 
 trait Schedule {
-  def nextFireTime: Timestamp = new Timestamp(nextFireTime(now).getMillis)
-  def nextFireTime(seed: DateTime): DateTime
+  def nextFireTime: Timestamp = Timestamp.valueOf(nextFireTime(LocalDateTime.now))
+  def nextFireTime(seed: LocalDateTime): LocalDateTime
 }
 
-class IntervalSchedule(secs: Int) extends Schedule {
-  override def nextFireTime(seed: DateTime): DateTime = seed.plusSeconds(secs)
+class IntervalSchedule(seconds: Int) extends Schedule {
+  override def nextFireTime(seed: LocalDateTime): LocalDateTime = seed.plusSeconds(seconds)
 }
 
 class FixedTimeOfDaySchedule(hour: Int, minute: Int) extends Schedule {
-  override def nextFireTime(seed: DateTime): DateTime = seed.plusDays(1).withHourOfDay(hour).withMinuteOfHour(minute)
-}
-
-object SchedulerApp extends App {
-  val application = fi.oph.koski.config.KoskiApplication.apply
-  for (x <- 1 to 100) {
-    //new Scheduler(application.database.db, "henkilötiedot-update", new IntervalScheduling(10), () => println(s"Server $x executing"))
-    new Scheduler(application.database.db, "henkilötiedot-update", new FixedTimeOfDaySchedule(20, 48), () => println(s"Server $x executing"))
-    Thread.sleep(1)
-  }
+  override def nextFireTime(seed: LocalDateTime): LocalDateTime = seed.plusDays(1).withHour(hour).withMinute(minute)
 }
 
