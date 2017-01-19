@@ -57,7 +57,7 @@ class OppijaServlet(val application: KoskiApplication)
     val muuttuneetOppijat: Map[Oid, OppijaHenkilö] = application.authenticationServiceClient.findChangedOppijat(since).groupBy(_.oidHenkilo).mapValues(_.head)
     val updatedOppijat: List[NimitiedotJaOid] = muuttuneetOppijat.values.map(_.toNimitiedotJaOid).filter(o => application.henkilöCacheUpdater.updateHenkilöAction(o) > 0).toList
     val perustiedot: List[OpiskeluoikeudenPerustiedot] = application.perustiedotRepository.findHenkiloPerustiedotByOids(updatedOppijat.map(_.oid))
-    application.perustiedotRepository.updateBulk(perustiedot.map(p => p.copy(henkilö = muuttuneetOppijat(p.henkilö.oid).toNimitiedotJaOid)))
+    application.perustiedotRepository.updateBulk(perustiedot.map(p => p.copy(henkilö = muuttuneetOppijat(p.henkilö.oid).toNimitiedotJaOid)), insertMissing = false)
   }
 
   get("/") {

@@ -23,8 +23,12 @@ import org.json4s.{JArray, JValue}
 
 import scala.concurrent.Future
 
+trait WithId {
+  def id: Int
+}
+
 case class OpiskeluoikeudenPerustiedot(
-  id: Option[Int], // TODO: remove optionality
+  id: Int,
   henkilö: NimitiedotJaOid,
   oppilaitos: Oppilaitos,
   @Description("Opiskelijan opiskeluoikeuden alkamisaika joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa. Muoto YYYY-MM-DD")
@@ -37,7 +41,8 @@ case class OpiskeluoikeudenPerustiedot(
   tila: Koodistokoodiviite,
   @Description("Luokan tai ryhmän tunniste, esimerkiksi 9C")
   luokka: Option[String]
-)
+) extends WithId
+
 
 object OpiskeluoikeudenPerustiedot {
   def makePerustiedot(row: OpiskeluoikeusRow, henkilöRow: HenkilöRow): OpiskeluoikeudenPerustiedot = {
@@ -62,7 +67,7 @@ object OpiskeluoikeudenPerustiedot {
       }
       .filter(_.tyyppi.koodiarvo != "perusopetuksenvuosiluokka")
     OpiskeluoikeudenPerustiedot(
-      Some(id),
+      id,
       henkilö,
       (data \ "oppilaitos").extract[Oppilaitos],
       (data \ "alkamispäivä").extract[Option[LocalDate]],
@@ -209,22 +214,22 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
   /**
     * Update info to Elasticsearch. Return error status or a boolean indicating whether data was changed.
     */
-  def update(perustiedot: OpiskeluoikeudenPerustiedot): Either[HttpStatus, Int] = updateBulk(List(perustiedot))
+  def update(perustiedot: OpiskeluoikeudenPerustiedot): Either[HttpStatus, Int] = updateBulk(List(perustiedot), insertMissing = true)
 
-  def updateBulk(items: Seq[OpiskeluoikeudenPerustiedot]): Either[HttpStatus, Int] = {
+  def updateBulk(items: Seq[WithId], insertMissing: Boolean): Either[HttpStatus, Int] = {
     if (items.isEmpty) {
       return Right(0)
     }
     val jsonLines = items.flatMap { perustiedot =>
       List(
-        Map("update" -> Map("_id" -> (perustiedot.id.get), "_index" -> "koski", "_type" -> "perustiedot")),
-        Map("doc_as_upsert" -> true, "doc" -> perustiedot)
+        Map("update" -> Map("_id" -> perustiedot.id, "_index" -> "koski", "_type" -> "perustiedot")),
+        Map("doc_as_upsert" -> insertMissing, "doc" -> perustiedot)
       )
     }
     val response = Http.runTask(elasticSearchHttp.post(uri"/koski/_bulk", jsonLines)(Json4sHttp4s.multiLineJson4sEncoderOf[Map[String, Any]])(Http.parseJson[JValue]))
     val errors = (response \ "errors").extract[Boolean]
     if (errors) {
-      val msg = s"Elasticsearch indexing failed for some of ids ${items.map(_.id.get)}"
+      val msg = s"Elasticsearch indexing failed for some of ids ${items.map(_.id)}"
       logger.error(msg)
       Left(KoskiErrorCategory.internalError(msg))
     } else {
@@ -253,7 +258,7 @@ class OpiskeluoikeudenPerustiedotRepository(config: Config, opiskeluoikeusQueryS
         val perustiedot = rows.par.map { case (opiskeluoikeusRow, henkilöRow) =>
           OpiskeluoikeudenPerustiedot.makePerustiedot(opiskeluoikeusRow, henkilöRow)
         }.toList
-        val changed = updateBulk(perustiedot) match {
+        val changed = updateBulk(perustiedot, insertMissing = true) match {
           case Right(count) => count
           case Left(_) => 0 // error already logged
         }
