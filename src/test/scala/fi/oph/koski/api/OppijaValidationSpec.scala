@@ -1,19 +1,18 @@
 package fi.oph.koski.api
 
 import java.time.LocalDate
-
-import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.json.Json
-import fi.oph.koski.localization.LocalizedString
-import fi.oph.koski.schema._
-import fi.oph.koski.koskiuser.MockUsers
 import java.time.LocalDate.{of => date}
 
-import fi.oph.koski.documentation.AmmatillinenExampleData
-import AmmatillinenExampleData._
+import fi.oph.koski.documentation.AmmatillinenExampleData._
+import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData}
 import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.json.Json
+import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.koski.localization.LocalizedString
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
-import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}
+import fi.oph.koski.schema._
 import org.json4s._
 import org.scalatest.FunSpec
 
@@ -247,6 +246,12 @@ class OppijaValidationSpec extends FunSpec with LocalJettyHttpSpecification with
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.päättymispäivämäärä("Opiskeluoikeuden päättymispäivä (2010-12-31) ei vastaa opiskeluoikeuden päättävän opiskeluoikeusjakson alkupäivää (2010-12-30)"))
           }}
         }
+
+        it("Opiskeluoikeuden tila muuttunut vielä valmistumisen jälkee -> HTTP 200") (putOpiskeluoikeus(
+          lisääTila(päättymispäivällä(defaultOpiskeluoikeus, date(2016, 5, 31)), date(2016, 6, 30), ExampleData.opiskeluoikeusLäsnä)
+        ) {
+          verifyResponseStatus(200)
+        })
       }
     }
 

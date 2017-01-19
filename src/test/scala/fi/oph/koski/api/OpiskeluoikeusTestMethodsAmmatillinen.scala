@@ -19,11 +19,14 @@ trait OpiskeluoikeusTestMethodsAmmatillinen extends PutOpiskeluoikeusTestMethods
     suoritukset = List(autoalanPerustutkinnonSuoritus())
   )
 
-  def päättymispäivällä(oo: AmmatillinenOpiskeluoikeus, päättymispäivä: LocalDate) = oo.copy(
+  def päättymispäivällä(oo: AmmatillinenOpiskeluoikeus, päättymispäivä: LocalDate) = lisääTila(oo, päättymispäivä, ExampleData.opiskeluoikeusValmistunut).copy(
     päättymispäivä = Some(päättymispäivä),
-    tila = AmmatillinenOpiskeluoikeudenTila(oo.tila.opiskeluoikeusjaksot ++ List(AmmatillinenOpiskeluoikeusjakso(päättymispäivä, ExampleData.opiskeluoikeusValmistunut))),
     suoritukset = oo.suoritukset.map { case s: AmmatillisenTutkinnonSuoritus =>
       s.copy(alkamispäivä = oo.alkamispäivä, tila = tilaValmis, vahvistus = vahvistusPaikkakunnalla(päättymispäivä, stadinAmmattiopisto, helsinki))
     }
+  )
+
+  def lisääTila(oo: AmmatillinenOpiskeluoikeus, päivä: LocalDate, tila: Koodistokoodiviite) = oo.copy(
+    tila = AmmatillinenOpiskeluoikeudenTila(oo.tila.opiskeluoikeusjaksot ++ List(AmmatillinenOpiskeluoikeusjakso(päivä, tila)))
   )
 }
