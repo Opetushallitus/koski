@@ -11,7 +11,7 @@ import org.scalatest.{FreeSpec, Matchers}
  * Tests that examples match saved JSON files. Run with -DupdateExamples=true to update saved JSON files from current examples.
  */
 class BackwardCompatibilitySpec extends FreeSpec with Matchers {
-  val validator = KoskiApplicationForTests.validator
+  lazy val validator = KoskiApplicationForTests.validator
   implicit val user = KoskiSession.systemUser
   implicit val accessType = AccessType.read
 
