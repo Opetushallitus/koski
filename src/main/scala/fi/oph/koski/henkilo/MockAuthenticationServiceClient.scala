@@ -99,5 +99,6 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
 
   override def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] = oppijat.getOppijat.find(_.hetu == hetu).map(toOppijaHenkilö)
 
-  override def findChangedOppijat(since: LocalDateTime): List[OppijaHenkilö] = Nil
+  override def findChangedOppijat(since: LocalDateTime): List[OppijaHenkilö] =
+    List(toOppijaHenkilö(MockOppijat.eero.copy(sukunimi = MockOppijat.eero.sukunimi + "_muuttunut")))
 }

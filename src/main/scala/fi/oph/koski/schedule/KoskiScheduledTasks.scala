@@ -1,4 +1,4 @@
-package fi.oph.koski.scheduler
+package fi.oph.koski.schedule
 
 import java.time.LocalDateTime
 import java.time.LocalDateTime.now
