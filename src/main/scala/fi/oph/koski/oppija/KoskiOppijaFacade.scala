@@ -18,6 +18,7 @@ import org.json4s._
 import scala.util.{Failure, Success}
 
 class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRepository: OpiskeluoikeusRepository, historyRepository: OpiskeluoikeusHistoryRepository, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository, config: Config) extends Logging with Timing with GlobalExecutionContext {
+  private lazy val mockOids = config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")
   def findOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(OpiskeluoikeusRepository.findByOppijaOid)(user)(oid)
 
   def findVersion(oid: String, opiskeluoikeusId: Int, versionumero: Int)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = {
@@ -35,8 +36,10 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, OpiskeluoikeusRe
         Hetu.validate(h.hetu, acceptSynthetic = false).right.flatMap { hetu =>
           henkilöRepository.findOrCreate(h).right.map(VerifiedHenkilöOid(_))
         }
-      case h:NimitiedotJaOid if config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid") =>
+      case h:NimitiedotJaOid if mockOids =>
         Right(VerifiedHenkilöOid(TäydellisetHenkilötiedot(h.oid, "010101-123N", h.etunimet, h.kutsumanimi, h.sukunimi, None, None)))
+      case h:TäydellisetHenkilötiedot if mockOids =>
+        Right(VerifiedHenkilöOid(h))
       case h:HenkilöWithOid =>
         Right(UnverifiedHenkilöOid(h.oid, henkilöRepository))
     }
