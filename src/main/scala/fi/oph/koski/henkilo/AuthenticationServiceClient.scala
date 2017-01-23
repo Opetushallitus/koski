@@ -21,7 +21,7 @@ trait AuthenticationServiceClient {
   def findOppijaByOid(oid: String): Option[OppijaHenkilö]
   def findOppijaByHetu(hetu: String): Option[OppijaHenkilö]
   def findOppijatByOids(oids: List[String]): List[OppijaHenkilö]
-  def findChangedOppijat(since: Long): List[OppijaHenkilö]
+  def findChangedOppijat(since: Long): List[OppijaNumerorekisteriOppija]
   def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö]
   def organisaationYhteystiedot(ryhmä: String, organisaatioOid: String): List[Yhteystiedot]
 }
@@ -34,15 +34,15 @@ object AuthenticationServiceClient {
 
   case class HenkilöQueryResult(totalCount: Integer, results: List[QueryHenkilö])
   case class QueryHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String])
-  case class OppijaNumerorekisteriOppija(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], aidinkieli: Option[Kieli], kansalaisuus: Option[List[Kansalaisuus]]) {
+  case class OppijaNumerorekisteriOppija(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], aidinkieli: Option[Kieli], kansalaisuus: Option[List[Kansalaisuus]], modified: Long) {
     def toOppijaHenkilö = OppijaHenkilö(oidHenkilo, sukunimi, etunimet, kutsumanimi, hetu, aidinkieli.map(_.kieliKoodi), kansalaisuus.map(_.map(_.kansalaisuusKoodi)))
+    def toNimitiedotJaOid = NimitiedotJaOid(oidHenkilo, etunimet, kutsumanimi, sukunimi)
   }
 
   case class Kieli(kieliKoodi: String)
   case class Kansalaisuus(kansalaisuusKoodi: String)
   case class OppijaHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], aidinkieli: Option[String], kansalaisuus: Option[List[String]]) {
     def toQueryHenkilö = QueryHenkilö(oidHenkilo, sukunimi, etunimet, kutsumanimi, hetu)
-    def toNimitiedotJaOid = NimitiedotJaOid(oidHenkilo, etunimet, kutsumanimi, sukunimi)
   }
 
   case class Yhteystiedot(sahkoposti: String)
@@ -89,8 +89,8 @@ class RemoteAuthenticationServiceClient(authServiceHttp: Http, oidServiceHttp: H
   def findOppijatByOids(oids: List[String]): List[OppijaHenkilö] =
     runTask(findOppijatByOidsTask(oids)).map(_.toOppijaHenkilö)
 
-  def findChangedOppijat(since: Long): List[OppijaHenkilö] =
-    runTask(oidServiceHttp.get(uri"/oppijanumerorekisteri-service/s2s/changedSince/$since")(Http.parseJson[List[String]]).flatMap(findOppijatByOidsTask)).map(_.toOppijaHenkilö)
+  def findChangedOppijat(since: Long): List[OppijaNumerorekisteriOppija] =
+    runTask(oidServiceHttp.get(uri"/oppijanumerorekisteri-service/s2s/changedSince/$since")(Http.parseJson[List[String]]).flatMap(findOppijatByOidsTask))
 
   def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] =
     runTask(oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/hetu=$hetu")(Http.parseJsonOptional[OppijaNumerorekisteriOppija])).map(_.toOppijaHenkilö)
