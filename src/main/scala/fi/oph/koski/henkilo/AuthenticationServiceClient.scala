@@ -1,8 +1,5 @@
 package fi.oph.koski.henkilo
 
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME.{format => formatISO8601}
-
 import com.typesafe.config.Config
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.henkilo.AuthenticationServiceClient._
@@ -24,7 +21,7 @@ trait AuthenticationServiceClient {
   def findOppijaByOid(oid: String): Option[OppijaHenkilö]
   def findOppijaByHetu(hetu: String): Option[OppijaHenkilö]
   def findOppijatByOids(oids: List[String]): List[OppijaHenkilö]
-  def findChangedOppijat(since: LocalDateTime): List[OppijaHenkilö]
+  def findChangedOppijat(since: Long): List[OppijaHenkilö]
   def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö]
   def organisaationYhteystiedot(ryhmä: String, organisaatioOid: String): List[Yhteystiedot]
 }
@@ -92,8 +89,8 @@ class RemoteAuthenticationServiceClient(authServiceHttp: Http, oidServiceHttp: H
   def findOppijatByOids(oids: List[String]): List[OppijaHenkilö] =
     runTask(findOppijatByOidsTask(oids)).map(_.toOppijaHenkilö)
 
-  def findChangedOppijat(since: LocalDateTime): List[OppijaHenkilö] =
-    runTask(oidServiceHttp.get(uri"/oppijanumerorekisteri-service/s2s/changedSince/${formatISO8601(since)}")(Http.parseJson[List[String]]).flatMap(findOppijatByOidsTask)).map(_.toOppijaHenkilö)
+  def findChangedOppijat(since: Long): List[OppijaHenkilö] =
+    runTask(oidServiceHttp.get(uri"/oppijanumerorekisteri-service/s2s/changedSince/$since")(Http.parseJson[List[String]]).flatMap(findOppijatByOidsTask)).map(_.toOppijaHenkilö)
 
   def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] =
     runTask(oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/hetu=$hetu")(Http.parseJsonOptional[OppijaNumerorekisteriOppija])).map(_.toOppijaHenkilö)

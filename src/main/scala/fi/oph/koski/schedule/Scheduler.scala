@@ -15,8 +15,10 @@ import org.json4s.jackson.JsonMethods
 class Scheduler(val db: DB, name: String, scheduling: Schedule, initialContext: Option[JValue], task: Option[JValue] => Option[JValue], intervalMillis: Int = 10000)
   extends GlobalExecutionContext with KoskiDatabaseMethods with Logging {
   private val taskExecutor = Executors.newSingleThreadScheduledExecutor
-  runDbSync(Tables.Scheduler.insertOrUpdate(SchedulerRow(name, scheduling.nextFireTime, initialContext)))
-  private val scheduleThread = taskExecutor.scheduleAtFixedRate(() => fireIfTime(), intervalMillis, intervalMillis, TimeUnit.MILLISECONDS)
+  private val context: Option[JValue] = getScheduler.flatMap(_.context).orElse(initialContext)
+
+  runDbSync(Tables.Scheduler.insertOrUpdate(SchedulerRow(name, scheduling.nextFireTime, context)))
+  taskExecutor.scheduleAtFixedRate(() => fireIfTime(), intervalMillis, intervalMillis, TimeUnit.MILLISECONDS)
 
   private def fireIfTime() = {
     val shouldFire = runDbSync(Tables.Scheduler.filter(s => s.name === name && s.nextFireTime < now).map(_.nextFireTime).update(scheduling.nextFireTime)) > 0
@@ -39,6 +41,8 @@ class Scheduler(val db: DB, name: String, scheduling: Schedule, initialContext: 
   }
 
   private def now = new Timestamp(currentTimeMillis)
+  private def getScheduler: Option[SchedulerRow] =
+    runDbSync(Tables.Scheduler.filter(s => s.name === name).result.headOption)
 }
 
 trait Schedule {
@@ -48,5 +52,9 @@ trait Schedule {
 
 class FixedTimeOfDaySchedule(hour: Int, minute: Int) extends Schedule {
   override def scheduleNextFireTime(seed: LocalDateTime): LocalDateTime = seed.plusDays(1).withHour(hour).withMinute(minute)
+}
+
+class IntervalSchedule(seconds: Int) extends Schedule {
+  override def scheduleNextFireTime(seed: LocalDateTime): LocalDateTime = seed.plusSeconds(seconds)
 }
 
