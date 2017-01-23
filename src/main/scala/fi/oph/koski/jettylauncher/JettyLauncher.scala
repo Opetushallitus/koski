@@ -104,4 +104,8 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) e
   }
 }
 
-object SharedJetty extends JettyLauncher(PortChecker.findFreeLocalPort, Map("db.name" -> "koskitest", "fixtures.use" -> "true"))
+object TestConfig {
+  val overrides = Map("db.name" -> "koskitest", "fixtures.use" -> "true")
+}
+
+object SharedJetty extends JettyLauncher(PortChecker.findFreeLocalPort, TestConfig.overrides)
