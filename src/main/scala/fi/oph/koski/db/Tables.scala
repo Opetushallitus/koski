@@ -92,6 +92,14 @@ object Tables {
     def * = (tallentajaOrganisaatio, oppilaitos, kayttaja, viimeisin, siirretyt, virheelliset, opiskeluoikeudet, lahdejarjestelma) <> (TiedonsiirtoYhteenvetoRow.tupled, TiedonsiirtoYhteenvetoRow.unapply)
   }
 
+  class SchedulerTable(tag: Tag) extends Table[SchedulerRow](tag, "scheduler") {
+    val name = column[String]("name", O.PrimaryKey)
+    val nextFireTime = column[Timestamp]("nextfiretime")
+    val context = column[Option[JValue]]("context")
+
+    def * = (name, nextFireTime, context) <> (SchedulerRow.tupled, SchedulerRow.unapply)
+  }
+
   val Tiedonsiirto = TableQuery[TiedonsiirtoTable]
 
   val TiedonsiirtoYhteenveto = TableQuery[TiedonsiirtoYhteenvetoTable]
@@ -102,6 +110,7 @@ object Tables {
   val OpiskeluOikeudet = TableQuery[OpiskeluoikeusTable]
 
   val Henkilöt = TableQuery[HenkilöTable]
+  val Scheduler = TableQuery[SchedulerTable]
 
   val OpiskeluoikeusHistoria = TableQuery[OpiskeluoikeusHistoryTable]
 
@@ -165,3 +174,5 @@ case class OpiskeluoikeusHistoryRow(opiskeluoikeusId: Int, versionumero: Int, ai
 case class TiedonsiirtoRow(id: Int, kayttajaOid: String, tallentajaOrganisaatioOid: String, oppija: Option[JValue], oppilaitos: Option[JValue], data: Option[JValue], virheet: Option[JValue], aikaleima: Timestamp, lahdejarjestelma: Option[String])
 
 case class TiedonsiirtoYhteenvetoRow(tallentajaOrganisaatio: String, oppilaitos: String, kayttaja: String, viimeisin: Timestamp, siirretyt: Int, virheet: Int, opiskeluoikeudet: Option[Int], lahdejarjestelma: Option[String])
+
+case class SchedulerRow(name: String, nextFireTime: Timestamp, context: Option[JValue])

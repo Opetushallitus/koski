@@ -18,6 +18,7 @@ import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
+import fi.oph.koski.schedule.KoskiScheduledTasks
 import fi.oph.koski.tiedonsiirto.{TiedonsiirtoFailureMailer, TiedonsiirtoService}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.validation.KoskiValidator
@@ -64,4 +65,5 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val fixtureCreator = new FixtureCreator(config, database, opiskeluoikeusRepository, henkilöRepository, perustiedotRepository, validator)
   val tiedonsiirtoService = new TiedonsiirtoService(database.db, new TiedonsiirtoFailureMailer(config, authenticationServiceClient), organisaatioRepository, henkilöRepository, koodistoViitePalvelu, userRepository)
   lazy val healthCheck = HealthCheck(this)
+  val scheduledTasks = new KoskiScheduledTasks(this)
 }

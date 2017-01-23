@@ -5,7 +5,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.TäydellisetHenkilötiedot
+import fi.oph.koski.schema.{HenkilöWithOid, NimellinenHenkilö, TäydellisetHenkilötiedot}
 
 class KoskiHenkilöCacheUpdater(val db: DB, val henkilöt: HenkilöRepository) extends Logging with GlobalExecutionContext with KoskiDatabaseMethods {
   def addHenkilöAction(henkilö: TäydellisetHenkilötiedot) = {
@@ -16,6 +16,9 @@ class KoskiHenkilöCacheUpdater(val db: DB, val henkilöt: HenkilöRepository) e
         DBIO.successful(0)
     }
   }
+
+  def updateHenkilöAction(henkilö: NimellinenHenkilö with HenkilöWithOid): Int =
+    runDbSync(Henkilöt.filter(_.oid === henkilö.oid).update(HenkilöRow(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi)))
 }
 
 object KoskiHenkilöCache {
