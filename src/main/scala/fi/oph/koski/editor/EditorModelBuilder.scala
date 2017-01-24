@@ -84,9 +84,13 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
       case t: ClassSchema =>
         Class.forName(t.fullClassName) match {
           case c if classOf[Koodistokoodiviite].isAssignableFrom(c) =>
-            val koodistoUri = t.properties.find(_.key == "koodistoUri").get.schema.asInstanceOf[StringSchema].enumValues.get.head.asInstanceOf[String]
-            val koodiarvot = t.properties.find(_.key == "koodiarvo").get.schema.asInstanceOf[StringSchema].enumValues.map(v => "/" + v.mkString(",")).getOrElse("")
-            EnumModelBuilder[Koodistokoodiviite](s"/koski/api/editor/koodit/$koodistoUri$koodiarvot", koodistoEnumValue)
+            t.properties.find(_.key == "koodistoUri").get.schema.asInstanceOf[StringSchema].enumValues match {
+              case None => throw new RuntimeException("@KoodistoUri -annotaatio puuttuu")
+              case Some(enumValues) =>
+                val koodistoUri = enumValues.head.asInstanceOf[String]
+                val koodiarvot = t.properties.find(_.key == "koodiarvo").get.schema.asInstanceOf[StringSchema].enumValues.map(v => "/" + v.mkString(",")).getOrElse("")
+                EnumModelBuilder[Koodistokoodiviite](s"/koski/api/editor/koodit/$koodistoUri$koodiarvot", koodistoEnumValue)
+            }
 
           case c if classOf[Oppilaitos].isAssignableFrom(c) =>
             EnumModelBuilder[Oppilaitos]("/koski/api/editor/oppilaitokset", organisaatioEnumValue(_))
