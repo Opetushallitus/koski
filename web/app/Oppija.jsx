@@ -34,7 +34,7 @@ export const oppijaContentP = (oppijaOid, queryString) => {
   updateResultE.plug(oppijaP
     .sampledBy(changeBus, (oppija, [context]) => ({oppija, context}))
     .flatMapLatest(({oppija, context: {path}}) => {
-      let opiskeluoikeusPath = path.split('.').slice(0, 4)
+      let opiskeluoikeusPath = path.split('.').slice(0, 6)
       var oppijaData = oppija.value.data
       let opiskeluoikeus = objectLookup(oppijaData, opiskeluoikeusPath.join('.'))
       let oppijaUpdate = {
