@@ -26,6 +26,12 @@ function OpinnotPage() {
         return wait.until(TodistusPage().isVisible)()
       }
     },
+    valitseOpiskeluoikeudenTyyppi: function(tyyppi) {
+      return function() {
+        triggerEvent(S('.opiskeluoikeustyypit .' + tyyppi + ' a'), 'click')
+        return wait.forAjax()
+      }
+    },
     suoritus: function(name) {
       return Editor(function() { return S('.suoritus:contains("' + name + '")') })
     },

@@ -3,51 +3,67 @@ import R from 'ramda'
 import { modelData, modelLookup, modelTitle, modelItems } from './EditorModel.js'
 import * as GenericEditor from './GenericEditor.jsx'
 import Versiohistoria from './Versiohistoria.jsx'
+import Link from './Link.jsx'
+import { currentLocation } from './location.js'
 
 const OppijaEditor = React.createClass({
   render() {
     let {model, context} = this.props
     let oppijaOid = modelData(model, 'henkilö.oid')
     let oppijaContext = R.merge(context, { oppijaOid: oppijaOid })
-    let selectedIndex = 0
+
+    let selectedTyyppi = currentLocation().params.opiskeluoikeudenTyyppi
+
+    var opiskeluoikeusTyypit = modelLookup(model, 'opiskeluoikeudet').value
+
+    let selectedIndex = selectedTyyppi
+      ? opiskeluoikeusTyypit.findIndex((opiskeluoikeudenTyyppi, tyyppiIndex) => selectedTyyppi == modelData(opiskeluoikeudenTyyppi, 'tyyppi.koodiarvo'))
+      : 0
+
+
     return (
       <div>
         <ul className="opiskeluoikeustyypit">
           {
-            modelLookup(model, 'opiskeluoikeudet').value.map((opiskeluoikeudenTyyppi, tyyppiIndex) => {
-              let className = selectedIndex == tyyppiIndex ? 'selected' : null
-              return (
-                <li className={className} key={tyyppiIndex}>
-                  <div className="opiskeluoikeustyyppi">{
-                    modelTitle(opiskeluoikeudenTyyppi, 'tyyppi')
-                  }</div>
-                  <ul className="oppilaitokset">
-                    {
-                      modelLookup(opiskeluoikeudenTyyppi, 'opiskeluoikeudet').value.map((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) =>
-                        <li key={oppilaitosIndex}>
-                          <span className="oppilaitos">{modelTitle(oppilaitoksenOpiskeluoikeudet, 'oppilaitos')}</span>
-                          <ul className="opiskeluoikeudet">
-                            { modelLookup(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').value.map((opiskeluoikeus, opiskeluoikeusIndex) => {
-                              return <li key={opiskeluoikeusIndex}>
+            opiskeluoikeusTyypit.map((opiskeluoikeudenTyyppi, tyyppiIndex) => {
+              let selected = tyyppiIndex == selectedIndex
+              let koodiarvo = modelData(opiskeluoikeudenTyyppi, 'tyyppi.koodiarvo')
+              let className = selected ? koodiarvo + ' selected' : koodiarvo
+              let content = (<div>
+                <div className="opiskeluoikeustyyppi">{
+                  modelTitle(opiskeluoikeudenTyyppi, 'tyyppi')
+                }</div>
+                <ul className="oppilaitokset">
+                  {
+                    modelLookup(opiskeluoikeudenTyyppi, 'opiskeluoikeudet').value.map((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) =>
+                      <li key={oppilaitosIndex}>
+                        <span className="oppilaitos">{modelTitle(oppilaitoksenOpiskeluoikeudet, 'oppilaitos')}</span>
+                        <ul className="opiskeluoikeudet">
+                          { modelLookup(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').value.map((opiskeluoikeus, opiskeluoikeusIndex) => {
+                            return <li key={opiskeluoikeusIndex}>
                               <span
                                 className="koulutus">{ modelTitle(opiskeluoikeus, 'suoritukset.0.koulutusmoduuli')}</span>
                                 <span
                                   className="tila">{ modelTitle(opiskeluoikeus, 'tila.opiskeluoikeusjaksot.-1.tila') }</span>
-                              </li>
-                            }) }
-                          </ul>
-                        </li>
-                      )
-                    }
-                  </ul>
+                            </li>
+                          }) }
+                        </ul>
+                      </li>
+                    )
+                  }
+                </ul>
+              </div>)
+              return (
+                <li className={className} key={tyyppiIndex}>
+                  { selected ? content : <Link href={'?opiskeluoikeudenTyyppi=' + koodiarvo}>{content}</Link> }
                 </li>)
             })}
         </ul>
         <ul>
           {
-            modelLookup(model, 'opiskeluoikeudet.0.opiskeluoikeudet').value.flatMap((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) => {
+            modelLookup(model, 'opiskeluoikeudet.' + selectedIndex + '.opiskeluoikeudet').value.flatMap((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) => {
               return modelLookup(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').value.map((opiskeluoikeus, opiskeluoikeusIndex) =>
-                <OpiskeluoikeusEditor key={ oppilaitosIndex + '-' + opiskeluoikeusIndex } model={ opiskeluoikeus } context={GenericEditor.childContext(this, oppijaContext, 'opiskeluoikeudet', 0, 'opiskeluoikeudet', oppilaitosIndex, 'opiskeluoikeudet', opiskeluoikeusIndex)} />
+                <OpiskeluoikeusEditor key={ oppilaitosIndex + '-' + opiskeluoikeusIndex } model={ opiskeluoikeus } context={GenericEditor.childContext(this, oppijaContext, 'opiskeluoikeudet', selectedIndex, 'opiskeluoikeudet', oppilaitosIndex, 'opiskeluoikeudet', opiskeluoikeusIndex)} />
               )
             })
           }

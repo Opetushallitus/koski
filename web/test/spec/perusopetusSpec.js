@@ -116,7 +116,7 @@ describe('Perusopetus', function() {
   })
 
   describe('Perusopetukseen valmistavan opetuksen todistus', function() {
-    before(page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'))
+    before(page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'), opinnot.valitseOpiskeluoikeudenTyyppi('perusopetukseenvalmistavaopetus'))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {})
     })

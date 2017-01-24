@@ -111,7 +111,7 @@ function KoskiPage() {
       return openPage('/koski/', api.isVisible)()
     },
     isVisible: function() {
-      return isElementVisible(S('#content .oppija-haku'))
+      return isElementVisible(S('#content .oppija-haku')) || isElementVisible(S('#content .oppija'))
     },
     isLoading: function() {
       return S('.loading').length > 0
