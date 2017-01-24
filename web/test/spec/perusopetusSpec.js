@@ -11,9 +11,9 @@ describe('Perusopetus', function() {
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
         expect(opinnot.getOppilaitos()).to.equal("Jyväskylän normaalikoulu")
-        expect(opinnot.getTutkinto(1)).to.equal("8. vuosiluokka")
-        expect(opinnot.getTutkinto(2)).to.equal("9. vuosiluokka")
-        expect(opinnot.getTutkinto(3)).to.equal("Peruskoulu")
+        expect(opinnot.getTutkinto(0)).to.equal("8. vuosiluokka")
+        expect(opinnot.getTutkinto(1)).to.equal("9. vuosiluokka")
+        expect(opinnot.getTutkinto(2)).to.equal("Peruskoulu")
       })
     })
     describe('Kaikki tiedot näkyvissä', function() {
@@ -24,7 +24,7 @@ describe('Perusopetus', function() {
     })
 
     describe('Päättötodistus', function() {
-      before(opinnot.avaaTodistus(3))
+      before(opinnot.avaaTodistus(2))
       describe('Klikattaessa linkkiä', function() {
         it('näytetään', function() {
           // See more detailed content specification in PerusopetusSpec.scala

@@ -48,7 +48,7 @@ describe('Korkeakoulutus', function() {
     describe('Oppilaitos ja tutkinto', function() {
       it('näytetään', function() {
         expect(opinnot.getTutkinto(1)).to.equal('Dipl.ins., kemian tekniikka')
-        expect(opinnot.getOppilaitos(1)).to.equal('Helsingin yliopisto')
+        expect(opinnot.getOppilaitos(1)).to.equal('Aalto-yliopisto')
       })
     })
     describe('Opiskeluoikeus', function() {

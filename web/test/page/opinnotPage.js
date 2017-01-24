@@ -15,7 +15,7 @@ function OpinnotPage() {
     },
     avaaOpintosuoritusote: function (index) {
       return function() {
-        triggerEvent(S('li.oppilaitos:nth-child('+index+') a.opintosuoritusote'), 'click')
+        triggerEvent(S('.opiskeluoikeus:nth-child('+index+') a.opintosuoritusote'), 'click')
         return wait.until(OpintosuoritusotePage().isVisible)()
       }
     },

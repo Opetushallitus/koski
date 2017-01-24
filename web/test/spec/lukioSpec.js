@@ -8,7 +8,7 @@ describe('Lukiokoulutus', function( ){
     before(page.openPage, page.oppijaHaku.searchAndSelect('020655-2479'))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
-        expect(opinnot.getTutkinto(3)).to.equal("Lukion oppimäärä")
+        expect(opinnot.getTutkinto(0)).to.equal("Lukion oppimäärä")
         expect(opinnot.getOppilaitos()).to.equal("Jyväskylän normaalikoulu")
       })
     })
@@ -19,7 +19,7 @@ describe('Lukiokoulutus', function( ){
       })
     })
     describe('Tulostettava todistus', function() {
-      before(opinnot.avaaTodistus(3))
+      before(opinnot.avaaTodistus(0))
       it('näytetään', function() {
         // See more detailed content specification in LukioSpec.scala
         expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')

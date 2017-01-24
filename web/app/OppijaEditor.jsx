@@ -116,25 +116,15 @@ const TodistusLink = React.createClass({
   }
 })
 
-const OppilaitoksenOpintosuoritusoteLink = React.createClass({
-  render() {
-    let {oppilaitos, tyyppi, oppijaOid} = this.props
-
-    if (tyyppi == 'korkeakoulutus') { // vain korkeakoulutukselle näytetään oppilaitoskohtainen suoritusote
-      let href = '/koski/opintosuoritusote/' + oppijaOid + '?oppilaitos=' + modelData(oppilaitos).oid
-      return <a className="opintosuoritusote" href={href}>näytä opintosuoritusote</a>
-    } else {
-      return null
-    }
-  }
-})
-
 const OpiskeluoikeudenOpintosuoritusoteLink = React.createClass({
   render() {
     let {opiskeluoikeus, context: { oppijaOid }} = this.props
     var opiskeluoikeusTyyppi = modelData(opiskeluoikeus, 'tyyppi').koodiarvo
-    if (opiskeluoikeusTyyppi == 'lukiokoulutus' || opiskeluoikeusTyyppi == 'ibtutkinto') { // vain lukio/ib näytetään opiskeluoikeuskohtainen suoritusote
+    if (opiskeluoikeusTyyppi == 'lukiokoulutus' || opiskeluoikeusTyyppi == 'ibtutkinto') { // lukio/ib näytetään opiskeluoikeuskohtainen suoritusote
       let href = '/koski/opintosuoritusote/' + oppijaOid + '?opiskeluoikeus=' + modelData(opiskeluoikeus, 'id')
+      return <a className="opintosuoritusote" href={href}>näytä opintosuoritusote</a>
+    } else if (opiskeluoikeusTyyppi == 'korkeakoulutus') { // korkeakoulutukselle näytetään oppilaitoskohtainen suoritusote
+      let href = '/koski/opintosuoritusote/' + oppijaOid + '?oppilaitos=' + modelData(opiskeluoikeus, 'oppilaitos').oid
       return <a className="opintosuoritusote" href={href}>näytä opintosuoritusote</a>
     } else {
       return null
