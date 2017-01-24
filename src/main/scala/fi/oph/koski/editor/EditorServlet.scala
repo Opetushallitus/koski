@@ -81,10 +81,14 @@ class EditorServlet(val application: KoskiApplication) extends ApiServlet with R
     }
 
     oppija.right.map{oppija =>
-      val oppilaitokset = oppija.opiskeluoikeudet.groupBy(_.oppilaitos).map {
-        case (oppilaitos, opiskeluoikeudet) => OppilaitoksenOpiskeluoikeudet(oppilaitos, opiskeluoikeudet.toList.sortBy(_.alkamispäivä))
-      }.toList.sortBy(_.opiskeluoikeudet(0).alkamispäivä)
-      val editorView = OppijaEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], oppilaitokset)
+      val tyypit = oppija.opiskeluoikeudet.groupBy(_.tyyppi).map {
+        case (tyyppi, opiskeluoikeudet) =>
+          val oppilaitokset = opiskeluoikeudet.groupBy(_.oppilaitos).map {
+            case (oppilaitos, opiskeluoikeudet) => OppilaitoksenOpiskeluoikeudet(oppilaitos, opiskeluoikeudet.toList.sortBy(_.alkamispäivä))
+          }.toList.sortBy(_.opiskeluoikeudet(0).alkamispäivä)
+          OpiskeluoikeudetTyypeittäin(tyyppi, oppilaitokset)
+      }.toList.sortBy(_.opiskeluoikeudet(0).opiskeluoikeudet(0).alkamispäivä).reverse
+      val editorView = OppijaEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], tyypit)
       modelBuilder.buildModel(EditorSchema.schema, editorView)
     }
   }
@@ -97,6 +101,9 @@ object EditorSchema {
 case class OppijaEditorView(
   @Hidden
   henkilö: TäydellisetHenkilötiedot,
-  opiskeluoikeudet: List[OppilaitoksenOpiskeluoikeudet]
+  opiskeluoikeudet: List[OpiskeluoikeudetTyypeittäin]
 )
+
+case class OpiskeluoikeudetTyypeittäin(@KoodistoUri("opiskeluoikeudentyyppi") tyyppi: Koodistokoodiviite, opiskeluoikeudet: List[OppilaitoksenOpiskeluoikeudet])
 case class OppilaitoksenOpiskeluoikeudet(oppilaitos: Oppilaitos, opiskeluoikeudet: List[Opiskeluoikeus])
+

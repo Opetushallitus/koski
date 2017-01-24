@@ -7,26 +7,34 @@ import Versiohistoria from './Versiohistoria.jsx'
 const OppijaEditor = React.createClass({
   render() {
     let {model, context} = this.props
-    return (<ul className="oppilaitokset">
+    return (
+      <ul className="opiskeluoikeustyypit">
       {
-        modelLookup(model, 'opiskeluoikeudet').value.map((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) => {
-          var oppijaOid = modelData(model, 'henkilö.oid')
-          let oppijaContext = R.merge(context, { oppijaOid: oppijaOid })
-          let oppilaitos = modelLookup(oppilaitoksenOpiskeluoikeudet, 'oppilaitos')
-          let opiskeluoikeudet = modelItems(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet')
-          return (<li className="oppilaitos" key={modelData(oppilaitos).oid}>
-            <span className="oppilaitos">{modelTitle(oppilaitos)}</span>
-            <OppilaitoksenOpintosuoritusoteLink oppilaitos={oppilaitos} tyyppi={modelData(opiskeluoikeudet[0], 'tyyppi').koodiarvo} oppijaOid={oppijaOid} />
-            {
-              opiskeluoikeudet.map( (opiskeluoikeus, opiskeluoikeusIndex) =>
-                <OpiskeluoikeusEditor key={ opiskeluoikeusIndex } model={ opiskeluoikeus } context={GenericEditor.childContext(this, oppijaContext, 'opiskeluoikeudet', oppilaitosIndex, 'opiskeluoikeudet', opiskeluoikeusIndex)} />
-              )
-            }
+        modelLookup(model, 'opiskeluoikeudet').value.map((opiskeluoikeudenTyyppi, tyyppiIndex) => {
+          return (<li>
+            <div className="opiskeluoikeustyyppi">{
+              modelTitle(opiskeluoikeudenTyyppi, 'tyyppi')
+            }</div>
+            <ul className="oppilaitokset">
+              {
+                modelLookup(opiskeluoikeudenTyyppi, 'opiskeluoikeudet').value.map((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) =>
+                  <li>
+                    <span className="oppilaitos">{modelTitle(oppilaitoksenOpiskeluoikeudet, 'oppilaitos')}</span>
+                    <ul className="opiskeluoikeudet">
+                      { modelLookup(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').value.map((opiskeluoikeus, opiskeluoikeusIndex) => {
+                        return <li>
+                          <span className="koulutus">{ modelTitle(opiskeluoikeus, 'suoritukset.0.koulutusmoduuli')}</span>
+                          <span className="tila">{ modelTitle(opiskeluoikeus, 'tila.opiskeluoikeusjaksot.-1.tila') }</span>
+                        </li>
+                      }) }
+                    </ul>
+                  </li>
+                )
+              }
+            </ul>
           </li>)
-          }
-        )}
-    </ul>)
-  }
+        })}
+      </ul>)}
 })
 
 const OpiskeluoikeusEditor = React.createClass({
