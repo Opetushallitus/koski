@@ -1,4 +1,37 @@
 .oppija {
+  ul.opiskeluoikeustyypit {
+    > li {
+      display: inline-block;
+      list-style: none;
+      padding: 16px 20px;
+      border-radius: 2px;
+      margin-right: 10px;
+      &:not(.selected) {
+        background: white;
+        border: 1px solid #D5D5D5;
+        cursor: pointer;
+        .opiskeluoikeustyyppi {
+          color: #159ECB;
+        }
+      }
+      &.selected {
+        color: white;
+        background: #0A789C;
+        border: 1px solid #979797;
+      }
+    }
+    ul.oppilaitokset {
+      font-size: 0.9em;
+      margin-top: 5px;
+      padding: 0;
+      > li {
+        list-style: none;
+      }
+      ul.opiskeluoikeudet {
+      }
+    }
+  }
+
   &.loading {
     .ajax-indicator-bg;
   }

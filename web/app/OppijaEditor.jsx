@@ -9,13 +9,15 @@ const OppijaEditor = React.createClass({
     let {model, context} = this.props
     let oppijaOid = modelData(model, 'henkilö.oid')
     let oppijaContext = R.merge(context, { oppijaOid: oppijaOid })
+    let selectedIndex = 0
     return (
       <div>
         <ul className="opiskeluoikeustyypit">
           {
             modelLookup(model, 'opiskeluoikeudet').value.map((opiskeluoikeudenTyyppi, tyyppiIndex) => {
+              let className = selectedIndex == tyyppiIndex ? 'selected' : null
               return (
-                <li key={tyyppiIndex}>
+                <li className={className} key={tyyppiIndex}>
                   <div className="opiskeluoikeustyyppi">{
                     modelTitle(opiskeluoikeudenTyyppi, 'tyyppi')
                   }</div>
