@@ -77,7 +77,7 @@ export const modelData = (mainModel, path) => {
 
 export const modelTitle = (mainModel, path) => {
   let model = modelLookup(mainModel, path)
-  return (model && (model.title || (model.value && model.value.title) || (model.value && model.value.data))) || ''
+  return (model && (model.title || (model.value && model.value.title) || (model.value && '' + model.value.data))) || ''
 }
 
 export const modelEmpty = (model) => {
