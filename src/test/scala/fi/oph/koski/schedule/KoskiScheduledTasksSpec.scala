@@ -9,7 +9,7 @@ import org.json4s.jackson.JsonMethods.{parse => parseJson}
 import org.scalatest.{FreeSpec, Matchers}
 
 class KoskiScheduledTasksSpec extends FreeSpec with Matchers {
-  val application = KoskiApplicationForTests
+  lazy val application = KoskiApplicationForTests
   "Päivittää muuttuneet oppijat oppijanumerorekisteristä" in {
     application.scheduledTasks.updateHenkilöt(Some(parseJson(s"""{"lastRun": ${currentTimeMillis}}""")))
     val päivitettytPerustiedot: NimitiedotJaOid = application.perustiedotRepository.findHenkilöPerustiedot(MockOppijat.eero.oid).get
