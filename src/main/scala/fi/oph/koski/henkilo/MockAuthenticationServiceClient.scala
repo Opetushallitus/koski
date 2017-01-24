@@ -1,7 +1,5 @@
 package fi.oph.koski.henkilo
 
-import java.lang.System.currentTimeMillis
-
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{KoskiDatabaseMethods, PostgresDriverWithJsonSupport, Tables}
@@ -99,9 +97,6 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
 
   override def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] = oppijat.getOppijat.find(_.hetu == hetu).map(toOppijaHenkilö)
 
-  override def findChangedOppijat(since: Long): List[OppijaNumerorekisteriOppija] =
-    List(toOppijanumerorekisteriOppija(MockOppijat.eero.copy(sukunimi = MockOppijat.eero.sukunimi + "_muuttunut")))
-
-  private def toOppijanumerorekisteriOppija(henkilö: TäydellisetHenkilötiedot) =
-    OppijaNumerorekisteriOppija(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, Some(henkilö.hetu), henkilö.äidinkieli.map(k => Kieli(k.koodiarvo)), henkilö.kansalaisuus.map(k => k.map(kk => Kansalaisuus(kk.koodiarvo))), currentTimeMillis)
+  override def findChangedOppijat(since: Long): List[OppijaHenkilö] =
+    List(toOppijaHenkilö(MockOppijat.eero.copy(sukunimi = MockOppijat.eero.sukunimi + "_muuttunut")))
 }
