@@ -60,23 +60,20 @@ const OpiskeluoikeusEditor = React.createClass({
     let id = modelData(model, 'id')
     let opiskeluoikeusContext = R.merge(context, {editable: model.editable, opiskeluoikeusId: id})
     return (<div className="opiskeluoikeus">
-      <div className="kuvaus">
-        Opiskeluoikeus&nbsp;
-        { modelData(model, 'alkamispäivä')
-          ? (<span>
-                <span className="alku pvm">{modelTitle(model, 'alkamispäivä')}</span>-
-                <span className="loppu pvm">{modelTitle(model, 'päättymispäivä')}</span>,&nbsp;
-            </span>)
-          : null
-        }
-          <span className="tila">{modelTitle(model, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}</span>
+      <h3>
+        <span className="oppilaitos">{modelTitle(model, 'oppilaitos')}</span>,
+        <span className="koulutus">{modelTitle(model, 'suoritukset.0.koulutusmoduuli')}</span>
+         ({ modelData(model, 'alkamispäivä')
+            ? (<span>
+                  <span className="alku pvm">{modelTitle(model, 'alkamispäivä')}</span>-
+                  <span className="loppu pvm">{modelTitle(model, 'päättymispäivä')}</span>,&nbsp;
+              </span>)
+            : null
+          }
+        <span className="tila">{modelTitle(model, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}</span>)
         <Versiohistoria opiskeluOikeusId={id} oppijaOid={context.oppijaOid}/>
-        <GenericEditor.ExpandableEditor
-          editor = {this}
-          expandedView={() => <GenericEditor.PropertiesEditor properties={ model.value.properties.filter(property => property.key != 'suoritukset') } context={opiskeluoikeusContext}/>}
-          context={GenericEditor.childContext(this, opiskeluoikeusContext, 'tiedot')}
-        />
-      </div>
+      </h3>
+      <GenericEditor.PropertiesEditor properties={ model.value.properties.filter(property => property.key != 'suoritukset') } context={opiskeluoikeusContext}/>
       {
         modelItems(model, 'suoritukset').map((suoritusModel, i) =>
           <SuoritusEditor model={suoritusModel} context={GenericEditor.childContext(this, opiskeluoikeusContext, 'suoritukset', i)} key={i}/>
