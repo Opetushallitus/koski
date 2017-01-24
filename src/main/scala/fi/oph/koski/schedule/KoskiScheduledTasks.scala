@@ -13,11 +13,11 @@ import org.json4s.JValue
 
 class KoskiScheduledTasks(application: KoskiApplication) extends Timing {
   val updateHenkilötScheduler =
-    new Scheduler(application.database.db, "henkilötiedot-update", new FixedTimeOfDaySchedule(5, 40), henkilöUpdateContext(currentTimeMillis), updateHenkilöt)
+    new Scheduler(application.database.db, "henkilötiedot-update", new FixedTimeOfDaySchedule(5, 40), henkilöUpdateContext(changedHenkilösSince), updateHenkilöt)
 
   def updateHenkilöt(context: Option[JValue]): Option[JValue] = timed("scheduledHenkilötiedotUpdate") {
     implicit val formats = Json.jsonFormats
-    val start = currentTimeMillis
+    val start = changedHenkilösSince
     val oldContext = context.get.extract[HenkilöUpdateContext]
     val kaikkiMuuttuneet: Map[Oid, OppijaHenkilö] = application.authenticationServiceClient.findChangedOppijat(oldContext.lastRun).groupBy(_.oidHenkilo).mapValues(_.head)
     val muuttuneidenOidit: List[Oid] = kaikkiMuuttuneet.values.map(_.toNimitiedotJaOid).filter(o => application.henkilöCacheUpdater.updateHenkilöAction(o) > 0).map(_.oid).toList
@@ -35,6 +35,7 @@ class KoskiScheduledTasks(application: KoskiApplication) extends Timing {
     }
   }
 
+  private def changedHenkilösSince = currentTimeMillis - 60 * 1000 // one minute before now
   private def henkilöUpdateContext(lastRun: Long) = Some(Json.toJValue(HenkilöUpdateContext(lastRun)))
 }
 case class HenkilöUpdateContext(lastRun: Long)
