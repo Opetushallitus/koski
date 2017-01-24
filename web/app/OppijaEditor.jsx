@@ -7,37 +7,50 @@ import Versiohistoria from './Versiohistoria.jsx'
 const OppijaEditor = React.createClass({
   render() {
     let {model, context} = this.props
+    let oppijaOid = modelData(model, 'henkilö.oid')
+    let oppijaContext = R.merge(context, { oppijaOid: oppijaOid })
     return (
-      <ul className="opiskeluoikeustyypit">
-        {
-          modelLookup(model, 'opiskeluoikeudet').value.map((opiskeluoikeudenTyyppi, tyyppiIndex) => {
-            return (
-              <li key={tyyppiIndex}>
-                <div className="opiskeluoikeustyyppi">{
-                  modelTitle(opiskeluoikeudenTyyppi, 'tyyppi')
-                }</div>
-                <ul className="oppilaitokset">
-                  {
-                    modelLookup(opiskeluoikeudenTyyppi, 'opiskeluoikeudet').value.map((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) =>
-                      <li key={oppilaitosIndex}>
-                        <span className="oppilaitos">{modelTitle(oppilaitoksenOpiskeluoikeudet, 'oppilaitos')}</span>
-                        <ul className="opiskeluoikeudet">
-                          { modelLookup(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').value.map((opiskeluoikeus, opiskeluoikeusIndex) => {
-                            return <li key={opiskeluoikeusIndex}>
+      <div>
+        <ul className="opiskeluoikeustyypit">
+          {
+            modelLookup(model, 'opiskeluoikeudet').value.map((opiskeluoikeudenTyyppi, tyyppiIndex) => {
+              return (
+                <li key={tyyppiIndex}>
+                  <div className="opiskeluoikeustyyppi">{
+                    modelTitle(opiskeluoikeudenTyyppi, 'tyyppi')
+                  }</div>
+                  <ul className="oppilaitokset">
+                    {
+                      modelLookup(opiskeluoikeudenTyyppi, 'opiskeluoikeudet').value.map((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) =>
+                        <li key={oppilaitosIndex}>
+                          <span className="oppilaitos">{modelTitle(oppilaitoksenOpiskeluoikeudet, 'oppilaitos')}</span>
+                          <ul className="opiskeluoikeudet">
+                            { modelLookup(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').value.map((opiskeluoikeus, opiskeluoikeusIndex) => {
+                              return <li key={opiskeluoikeusIndex}>
                               <span
                                 className="koulutus">{ modelTitle(opiskeluoikeus, 'suoritukset.0.koulutusmoduuli')}</span>
-                              <span
-                                className="tila">{ modelTitle(opiskeluoikeus, 'tila.opiskeluoikeusjaksot.-1.tila') }</span>
-                            </li>
-                          }) }
-                        </ul>
-                      </li>
-                    )
-                  }
-                </ul>
-              </li>)
-          })}
-      </ul>)
+                                <span
+                                  className="tila">{ modelTitle(opiskeluoikeus, 'tila.opiskeluoikeusjaksot.-1.tila') }</span>
+                              </li>
+                            }) }
+                          </ul>
+                        </li>
+                      )
+                    }
+                  </ul>
+                </li>)
+            })}
+        </ul>
+        <ul>
+          {
+            modelLookup(model, 'opiskeluoikeudet.0.opiskeluoikeudet').value.flatMap((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) => {
+              return modelLookup(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').value.map((opiskeluoikeus, opiskeluoikeusIndex) =>
+                <OpiskeluoikeusEditor key={ oppilaitosIndex + '-' + opiskeluoikeusIndex } model={ opiskeluoikeus } context={GenericEditor.childContext(this, oppijaContext, 'opiskeluoikeudet', 0, 'opiskeluoikeudet', oppilaitosIndex, 'opiskeluoikeudet', opiskeluoikeusIndex)} />
+              )
+            })
+          }
+        </ul>
+      </div>)
   }
 })
 
