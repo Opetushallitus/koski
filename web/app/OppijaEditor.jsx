@@ -9,32 +9,36 @@ const OppijaEditor = React.createClass({
     let {model, context} = this.props
     return (
       <ul className="opiskeluoikeustyypit">
-      {
-        modelLookup(model, 'opiskeluoikeudet').value.map((opiskeluoikeudenTyyppi, tyyppiIndex) => {
-          return (<li>
-            <div className="opiskeluoikeustyyppi">{
-              modelTitle(opiskeluoikeudenTyyppi, 'tyyppi')
-            }</div>
-            <ul className="oppilaitokset">
-              {
-                modelLookup(opiskeluoikeudenTyyppi, 'opiskeluoikeudet').value.map((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) =>
-                  <li>
-                    <span className="oppilaitos">{modelTitle(oppilaitoksenOpiskeluoikeudet, 'oppilaitos')}</span>
-                    <ul className="opiskeluoikeudet">
-                      { modelLookup(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').value.map((opiskeluoikeus, opiskeluoikeusIndex) => {
-                        return <li>
-                          <span className="koulutus">{ modelTitle(opiskeluoikeus, 'suoritukset.0.koulutusmoduuli')}</span>
-                          <span className="tila">{ modelTitle(opiskeluoikeus, 'tila.opiskeluoikeusjaksot.-1.tila') }</span>
-                        </li>
-                      }) }
-                    </ul>
-                  </li>
-                )
-              }
-            </ul>
-          </li>)
-        })}
-      </ul>)}
+        {
+          modelLookup(model, 'opiskeluoikeudet').value.map((opiskeluoikeudenTyyppi, tyyppiIndex) => {
+            return (
+              <li key={tyyppiIndex}>
+                <div className="opiskeluoikeustyyppi">{
+                  modelTitle(opiskeluoikeudenTyyppi, 'tyyppi')
+                }</div>
+                <ul className="oppilaitokset">
+                  {
+                    modelLookup(opiskeluoikeudenTyyppi, 'opiskeluoikeudet').value.map((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) =>
+                      <li key={oppilaitosIndex}>
+                        <span className="oppilaitos">{modelTitle(oppilaitoksenOpiskeluoikeudet, 'oppilaitos')}</span>
+                        <ul className="opiskeluoikeudet">
+                          { modelLookup(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').value.map((opiskeluoikeus, opiskeluoikeusIndex) => {
+                            return <li key={opiskeluoikeusIndex}>
+                              <span
+                                className="koulutus">{ modelTitle(opiskeluoikeus, 'suoritukset.0.koulutusmoduuli')}</span>
+                              <span
+                                className="tila">{ modelTitle(opiskeluoikeus, 'tila.opiskeluoikeusjaksot.-1.tila') }</span>
+                            </li>
+                          }) }
+                        </ul>
+                      </li>
+                    )
+                  }
+                </ul>
+              </li>)
+          })}
+      </ul>)
+  }
 })
 
 const OpiskeluoikeusEditor = React.createClass({
