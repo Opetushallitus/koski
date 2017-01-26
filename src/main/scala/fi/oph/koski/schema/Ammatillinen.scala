@@ -430,7 +430,7 @@ case class TyöhönJaItsenäiseenElämäänValmentavaKoulutus(
   @KoodistoKoodiarvo("999903")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999903", koodistoUri = "koulutus"),
   perusteenDiaarinumero: Option[String] = None,
-  laajuus: Option[Laajuus] = None
+  laajuus: Option[LaajuusOsaamispisteissä] = None
 ) extends DiaarinumerollinenKoulutus
 
 trait TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsa extends Koulutusmoduuli
