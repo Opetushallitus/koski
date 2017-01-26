@@ -1,3 +1,7 @@
+## 26.1.2017
+
+Työssäoppimisjakson työtehtävät-kentän pakollisuus poistettu
+
 ## 19.1.2017
 
 Lisätty validaatio: opiskeluoikeuden tilahistoriassa ei saa esiintyä uusia tiloja lopullisen tilan (valmistunut, eronnut, katsotaaneronneeksi) jälkeen

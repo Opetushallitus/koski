@@ -176,7 +176,7 @@ case class Työssäoppimisjakso(
   @KoodistoUri("maatjavaltiot2")
   maa: Koodistokoodiviite,
   @Description("Työtehtävien kuvaus")
-  työtehtävät: LocalizedString,
+  työtehtävät: Option[LocalizedString],
   laajuus: LaajuusOsaamispisteissä
 ) extends Jakso
 
