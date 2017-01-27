@@ -41,11 +41,9 @@ const OppijaEditor = React.createClass({
                         <ul className="opiskeluoikeudet">
                           { modelLookup(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').value.map((opiskeluoikeus, opiskeluoikeusIndex) => {
                             return (
-                              <li key={opiskeluoikeusIndex}>
-                              <span
-                                className="koulutus">{ modelTitle(opiskeluoikeus, 'suoritukset.0.koulutusmoduuli')}</span>
-                                <span
-                                  className="tila">{ modelTitle(opiskeluoikeus, 'tila.opiskeluoikeusjaksot.-1.tila') }</span>
+                              <li className="opiskeluoikeus" key={opiskeluoikeusIndex}>
+                                <span className="koulutus inline-text">{ modelTitle(opiskeluoikeus, 'suoritukset.0.koulutusmoduuli')},</span>
+                                <span className="tila">{ modelTitle(opiskeluoikeus, 'tila.opiskeluoikeusjaksot.-1.tila') }</span>
                               </li>
                             )
                           }) }
@@ -86,16 +84,16 @@ const OpiskeluoikeusEditor = React.createClass({
     let opiskeluoikeusContext = R.merge(context, {editable: model.editable, opiskeluoikeusId: id})
     return (<div className="opiskeluoikeus">
       <h3>
-        <span className="oppilaitos">{modelTitle(model, 'oppilaitos')}</span>,
-        <span className="koulutus">{modelTitle(model, 'suoritukset.0.koulutusmoduuli')}</span>
-         ({ modelData(model, 'alkamispäivä')
-            ? (<span>
+        <span className="oppilaitos inline-text">{modelTitle(model, 'oppilaitos')},</span>
+        <span className="koulutus inline-text">{modelTitle(model, 'suoritukset.0.koulutusmoduuli')}</span>
+         { modelData(model, 'alkamispäivä')
+            ? <span className="inline-text">(
                   <span className="alku pvm">{modelTitle(model, 'alkamispäivä')}</span>-
-                  <span className="loppu pvm">{modelTitle(model, 'päättymispäivä')}</span>,&nbsp;
-              </span>)
+                  <span className="loppu pvm">{modelTitle(model, 'päättymispäivä')},</span>
+              </span>
             : null
           }
-        <span className="tila">{modelTitle(model, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}</span>)
+        <span className="tila">{modelTitle(model, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()})</span>
         <Versiohistoria opiskeluOikeusId={id} oppijaOid={context.oppijaOid}/>
       </h3>
       <GenericEditor.PropertiesEditor properties={ model.value.properties.filter(property => property.key != 'suoritukset') } context={opiskeluoikeusContext}/>

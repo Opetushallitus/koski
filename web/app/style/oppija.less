@@ -1,6 +1,10 @@
 .oppija {
   ul.opiskeluoikeustyypit {
     padding: 0;
+    margin-bottom: 30px;
+    .opiskeluoikeustyyppi {
+      font-size: 20px;
+    }
     > li {
       display: inline-block;
       list-style: none;
@@ -22,19 +26,33 @@
       }
     }
     ul.oppilaitokset {
-      font-size: 0.9em;
+      font-size: 14px;
       margin-top: 5px;
       padding: 0;
       > li {
         list-style: none;
       }
-      ul.opiskeluoikeudet {
+    }
+    ul.opiskeluoikeudet {
+      padding-left: 16px;
+      .opiskeluoikeus {
+        list-style: disc;
+        .koulutus {
+          margin-left: -4px;
+        }
+        .tila {
+          text-transform: lowercase;
+        }
       }
     }
   }
 
   &.loading {
     .ajax-indicator-bg;
+  }
+
+  .inline-text {
+    margin-right: 4px;
   }
 
   ul.opiskeluoikeuksientiedot {
@@ -54,6 +72,7 @@
     font-size: 24px;
     color: #2A2A2A;
     letter-spacing: 0;
+    margin-bottom: 32px;
     a.json {
       margin-left: 10px;
       background: #159ECB;
@@ -79,12 +98,13 @@
     h3 {
       margin: 0 -27px;
       padding: 16px;
-      color: white;
       background: #0A789C 100%;
       font-size: 18px;
       color: #FFFFFF;
       letter-spacing: 0;
       font-weight: normal;
+      border-top-left-radius: 2px;
+      border-top-right-radius: 2px;
     }
   }
 
