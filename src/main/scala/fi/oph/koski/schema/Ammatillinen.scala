@@ -230,10 +230,14 @@ case class Näyttö(
   @Description("Vapaamuotoinen kuvaus suoritetusta näytöstä")
   kuvaus: LocalizedString,
   suorituspaikka: NäytönSuorituspaikka,
+  @Description("Näyttötilaisuuden ajankohta")
+  suoritusaika: Option[NäytönSuoritusaika],
   @Description("Näytön arvioinnin lisätiedot")
   arviointi: Option[NäytönArviointi],
   @Description("Onko näyttö suoritettu työssäoppimisen yhteydessä (true/false)")
-  työssäoppimisenYhteydessä: Boolean = false
+  työssäoppimisenYhteydessä: Boolean = false,
+  @Description("Halutaanko näytöstä erillinen todistus. Puuttuva arvo tulkitaan siten, että halukkuutta ei tiedetä.")
+  haluaaTodistuksen: Option[Boolean] = None
 )
 
 @Description("Ammatillisen näytön suorituspaikka")
@@ -245,6 +249,13 @@ case class NäytönSuorituspaikka(
   kuvaus: LocalizedString
 )
 
+case class NäytönSuoritusaika(
+  @Description("Näyttötilaisuuden alkamispäivämäärä. Muoto YYYY-MM-DD")
+  alku: LocalDate,
+  @Description("Näyttötilaisuuden päättymispäivämäärä. Muoto YYYY-MM-DD")
+  loppu: LocalDate
+)
+
 case class NäytönArviointi (
   arvosana: Koodistokoodiviite,
   päivä: LocalDate,
@@ -253,10 +264,12 @@ case class NäytönArviointi (
   arviointikohteet: Option[List[NäytönArviointikohde]],
   @KoodistoUri("ammatillisennaytonarvioinnistapaattaneet")
   @Description("Arvioinnista päättäneet tahot, ilmaistuna 1-numeroisella koodilla")
-  arvioinnistaPäättäneet: Koodistokoodiviite,
+  @MinItems(1)
+  arvioinnistaPäättäneet: List[Koodistokoodiviite],
   @KoodistoUri("ammatillisennaytonarviointikeskusteluunosallistuneet")
   @Description("Arviointikeskusteluun osallistuneet tahot, ilmaistuna 1-numeroisella koodilla")
-  arviointikeskusteluunOsallistuneet: Koodistokoodiviite,
+  @MinItems(1)
+  arviointikeskusteluunOsallistuneet: List[Koodistokoodiviite],
   @Description("Jos näyttö on hylätty, kuvataan hylkäyksen perusteet tänne.")
   hylkäyksenPeruste: Option[LocalizedString] = None
 ) extends AmmatillinenKoodistostaLöytyväArviointi
@@ -271,6 +284,12 @@ case class NäytönArviointikohde(
   arvosana: Koodistokoodiviite
 )
 
+case class NäytönArvioitsija(
+  @Representative
+  nimi: String,
+  @Description("Onko suorittanut näyttötutkintomestarikoulutuksen (true/false). Puuttuva arvo tulkitaan siten, että koulutuksen suorittamisesta ei ole tietoa.")
+  ntm: Option[Boolean]
+)
 @Description("Oppisopimuksen tiedot")
 case class Oppisopimus(
   työnantaja: Yritys

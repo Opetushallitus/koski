@@ -1,10 +1,33 @@
+## 27.1.2017
+
+Muutoksia ammatillisen näytön tietoihin.
+
+Lisätty: 
+
+```
+näyttö.arviointi.arvioitsijat._.ntm : Boolean 
+näyttö.suoritusaika.alku : Date 
+näyttö.suoritusaika.loppu : Date 
+näyttö.haluaaTodistuksen : Boolean 
+```
+
+Muutettu: 
+
+```
+tutkintotoimikunnanNumero: String (oli Int) 
+arvioinnistaPäättäneet: List[Koodistokoodiviite] (oli Koodistokoodiviite) 
+arviointikeskusteluunOsallistuneet: List[Koodistokoodiviite] (oli Koodistokoodiviite) 
+```
+
+Koodisto `ammatillisennaytonarvioinnistapaattaneet` ja `ammatillisennaytonarviointikeskusteluunosallistuneet` uudistettu.
+
 ## 26.1.2017
 
-Työssäoppimisjakson työtehtävät-kentän pakollisuus poistettu
+- Työssäoppimisjakson työtehtävät-kentän pakollisuus poistettu
 
 ## 19.1.2017
 
-Lisätty validaatio: opiskeluoikeuden tilahistoriassa ei saa esiintyä uusia tiloja lopullisen tilan (valmistunut, eronnut, katsotaaneronneeksi) jälkeen
+- Lisätty validaatio: opiskeluoikeuden tilahistoriassa ei saa esiintyä uusia tiloja lopullisen tilan (valmistunut, eronnut, katsotaaneronneeksi) jälkeen
 
 ## 10.1.2017
 

@@ -116,7 +116,7 @@
             "nimi" : {
               "fi" : "Autokorjaamoalan tutkintotoimikunta"
             },
-            "tutkintotoimikunnanNumero" : 8406
+            "tutkintotoimikunnanNumero" : "8406"
           }
         }, {
           "nimi" : "Reijo Reksi",
@@ -203,13 +203,6 @@
         } ],
         "vahvistus" : {
           "päivä" : "2013-01-31",
-          "paikkakunta" : {
-            "koodiarvo" : "091",
-            "nimi" : {
-              "fi" : "Helsinki"
-            },
-            "koodistoUri" : "kunta"
-          },
           "myöntäjäOrganisaatio" : {
             "oid" : "1.2.246.562.10.52251087186",
             "oppilaitosnumero" : {
@@ -253,6 +246,10 @@
             "kuvaus" : {
               "fi" : "Autokorjaamo Oy, Riihimäki"
             }
+          },
+          "suoritusaika" : {
+            "alku" : "2012-10-20",
+            "loppu" : "2012-10-20"
           },
           "arviointi" : {
             "arvosana" : {
@@ -331,20 +328,26 @@
                 "koodistoUri" : "arviointiasteikkoammatillinent1k3"
               }
             } ],
-            "arvioinnistaPäättäneet" : {
+            "arvioinnistaPäättäneet" : [ {
               "koodiarvo" : "1",
               "nimi" : {
                 "fi" : "Opettaja"
               },
               "koodistoUri" : "ammatillisennaytonarvioinnistapaattaneet"
-            },
-            "arviointikeskusteluunOsallistuneet" : {
+            } ],
+            "arviointikeskusteluunOsallistuneet" : [ {
               "koodiarvo" : "1",
               "nimi" : {
-                "fi" : "Opiskelija ja opettaja"
+                "fi" : "Opettaja"
               },
               "koodistoUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet"
-            },
+            }, {
+              "koodiarvo" : "4",
+              "nimi" : {
+                "fi" : "Opiskelija"
+              },
+              "koodistoUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet"
+            } ],
             "hyväksytty" : true
           },
           "työssäoppimisenYhteydessä" : false
@@ -397,13 +400,6 @@
         } ],
         "vahvistus" : {
           "päivä" : "2013-05-31",
-          "paikkakunta" : {
-            "koodiarvo" : "091",
-            "nimi" : {
-              "fi" : "Helsinki"
-            },
-            "koodistoUri" : "kunta"
-          },
           "myöntäjäOrganisaatio" : {
             "oid" : "1.2.246.562.10.52251087186",
             "oppilaitosnumero" : {
@@ -447,6 +443,10 @@
             "kuvaus" : {
               "fi" : "Autokorjaamo Oy, Riihimäki"
             }
+          },
+          "suoritusaika" : {
+            "alku" : "2013-05-20",
+            "loppu" : "2013-05-20"
           },
           "työssäoppimisenYhteydessä" : false
         },
@@ -497,13 +497,6 @@
         } ],
         "vahvistus" : {
           "päivä" : "2013-05-31",
-          "paikkakunta" : {
-            "koodiarvo" : "091",
-            "nimi" : {
-              "fi" : "Helsinki"
-            },
-            "koodistoUri" : "kunta"
-          },
           "myöntäjäOrganisaatio" : {
             "oid" : "1.2.246.562.10.52251087186",
             "oppilaitosnumero" : {
@@ -547,6 +540,10 @@
             "kuvaus" : {
               "fi" : "Autokorjaamo Oy, Riihimäki"
             }
+          },
+          "suoritusaika" : {
+            "alku" : "2013-04-01",
+            "loppu" : "2013-04-01"
           },
           "työssäoppimisenYhteydessä" : false
         },
@@ -597,13 +594,6 @@
         } ],
         "vahvistus" : {
           "päivä" : "2014-11-08",
-          "paikkakunta" : {
-            "koodiarvo" : "091",
-            "nimi" : {
-              "fi" : "Helsinki"
-            },
-            "koodistoUri" : "kunta"
-          },
           "myöntäjäOrganisaatio" : {
             "oid" : "1.2.246.562.10.52251087186",
             "oppilaitosnumero" : {
@@ -647,6 +637,10 @@
             "kuvaus" : {
               "fi" : "Autokorjaamo Oy, Riihimäki"
             }
+          },
+          "suoritusaika" : {
+            "alku" : "2014-10-20",
+            "loppu" : "2014-10-20"
           },
           "työssäoppimisenYhteydessä" : false
         },
@@ -707,13 +701,6 @@
         } ],
         "vahvistus" : {
           "päivä" : "2015-05-01",
-          "paikkakunta" : {
-            "koodiarvo" : "091",
-            "nimi" : {
-              "fi" : "Helsinki"
-            },
-            "koodistoUri" : "kunta"
-          },
           "myöntäjäOrganisaatio" : {
             "oid" : "1.2.246.562.10.52251087186",
             "oppilaitosnumero" : {
@@ -757,6 +744,10 @@
             "kuvaus" : {
               "fi" : "Autokorjaamo Oy, Riihimäki"
             }
+          },
+          "suoritusaika" : {
+            "alku" : "2015-04-01",
+            "loppu" : "2015-04-01"
           },
           "työssäoppimisenYhteydessä" : false
         },

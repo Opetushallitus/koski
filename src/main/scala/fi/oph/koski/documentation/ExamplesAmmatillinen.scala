@@ -293,7 +293,7 @@ object AmmatillinenOldExamples {
         true,
         laajuus = None
       ),
-      näyttö = Some(näyttö("Huolto- ja korjaustyöt", "Autokorjaamo Oy, Riihimäki", Some(näytönArviointi))),
+      näyttö = Some(näyttö(date(2012, 10, 20), "Huolto- ja korjaustyöt", "Autokorjaamo Oy, Riihimäki", Some(näytönArviointi))),
       suorituskieli = None,
       tila = tilaValmis,
       alkamispäivä = None,
@@ -312,7 +312,7 @@ object AmmatillinenOldExamples {
         true,
         None
       ),
-      näyttö = Some(näyttö("Mittaus- ja korivauriotöitä", "Autokorjaamo Oy, Riihimäki")),
+      näyttö = Some(näyttö(date(2013, 4, 1), "Mittaus- ja korivauriotöitä", "Autokorjaamo Oy, Riihimäki")),
       suorituskieli = None,
       tila = tilaValmis,
       alkamispäivä = None,
@@ -330,7 +330,7 @@ object AmmatillinenOldExamples {
         true,
         None
       ),
-      näyttö = Some(näyttö("Maalauksen esikäsittelytöitä", "Autokorjaamo Oy, Riihimäki")),
+      näyttö = Some(näyttö(date(2014, 10, 20), "Maalauksen esikäsittelytöitä", "Autokorjaamo Oy, Riihimäki")),
       suorituskieli = None,
       tila = tilaValmis,
       alkamispäivä = None,
@@ -344,7 +344,7 @@ object AmmatillinenOldExamples {
     ),
     AmmatillisenTutkinnonOsanSuoritus(
       koulutusmoduuli = autonLisävarustetyöt(true),
-      näyttö = Some(näyttö("Auton lisävarustetöitä", "Autokorjaamo Oy, Riihimäki")),
+      näyttö = Some(näyttö(date(2015, 4, 1), "Auton lisävarustetöitä", "Autokorjaamo Oy, Riihimäki")),
       suorituskieli = None,
       tila = tilaValmis,
       alkamispäivä = None,

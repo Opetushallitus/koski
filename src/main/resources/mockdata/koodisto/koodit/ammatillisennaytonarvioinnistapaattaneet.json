@@ -1,25 +1,37 @@
-[ {
-  "koodiUri" : "ammatillisennaytonarvioinnistapaattaneet_3",
-  "koodiArvo" : "3",
-  "metadata" : [ {
-    "nimi" : "Opettaja ja työelämän edustaja",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisennaytonarvioinnistapaattaneet_1",
-  "koodiArvo" : "1",
-  "metadata" : [ {
-    "nimi" : "Opettaja",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisennaytonarvioinnistapaattaneet_2",
-  "koodiArvo" : "2",
-  "metadata" : [ {
-    "nimi" : "Työelämän edustaja",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-} ]
+[
+  {
+    "koodiUri" : "ammatillisennaytonarvioinnistapaattaneet_1",
+    "koodiArvo" : "1",
+    "metadata" : [ {
+      "nimi" : "Opettaja",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  }, {
+    "koodiUri" : "ammatillisennaytonarvioinnistapaattaneet_2",
+    "koodiArvo" : "2",
+    "metadata" : [ {
+      "nimi" : "Työntekijä",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "ammatillisennaytonarvioinnistapaattaneet_3",
+    "koodiArvo" : "3",
+    "metadata" : [ {
+      "nimi" : "Työnantaja",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  },
+  {
+    "koodiUri" : "ammatillisennaytonarvioinnistapaattaneet_4",
+    "koodiArvo" : "4",
+    "metadata" : [ {
+      "nimi" : "Itsenäinen ammatinharjoittaja",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  }
+]

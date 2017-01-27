@@ -1,41 +1,51 @@
-[ {
-  "koodiUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet_4",
-  "koodiArvo" : "4",
-  "metadata" : [ {
-    "nimi" : "Opettaja ja työelämän edustaja",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet_3",
-  "koodiArvo" : "3",
-  "metadata" : [ {
-    "nimi" : "Opiskelija, opettaja ja työelämän edustaja",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
-  "koodiUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet_2",
-  "koodiArvo" : "2",
-  "metadata" : [ {
-    "nimi" : "Opiskelija ja työelämän edustaja",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-}, {
+[
+  {
   "koodiUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet_1",
   "koodiArvo" : "1",
   "metadata" : [ {
-    "nimi" : "Opiskelija ja opettaja",
+    "nimi" : "Opettaja",
     "kieli" : "FI"
   } ],
   "versio" : 1
-}, {
-  "koodiUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet_5",
-  "koodiArvo" : "5",
-  "metadata" : [ {
-    "nimi" : "Arviointikeskustelua ei pidetty",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1
-} ]
+  }, {
+    "koodiUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet_2",
+    "koodiArvo" : "2",
+    "metadata" : [ {
+      "nimi" : "Työntekijä",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  }, {
+    "koodiUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet_3",
+    "koodiArvo" : "3",
+    "metadata" : [ {
+      "nimi" : "Työnantaja",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  }, {
+    "koodiUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet_4",
+    "koodiArvo" : "4",
+    "metadata" : [ {
+      "nimi" : "Itsenäinen ammatinharjoittaja",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  }, {
+    "koodiUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet_5",
+    "koodiArvo" : "5",
+    "metadata" : [ {
+      "nimi" : "Opiskelija",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  }, {
+    "koodiUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet_6",
+    "koodiArvo" : "6",
+    "metadata" : [ {
+      "nimi" : "Arviointikeskustelua ei pidetty",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1
+  }
+]

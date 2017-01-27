@@ -74,8 +74,7 @@ case class Yritys(
 @Description("Tutkintotoimikunta")
 case class Tutkintotoimikunta(
   nimi: LocalizedString,
-  @MinValue(1)
-  tutkintotoimikunnanNumero: Int
+  tutkintotoimikunnanNumero: String
 ) extends Organisaatio {
   def description = nimi
 }
