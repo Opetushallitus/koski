@@ -2,7 +2,7 @@ package fi.oph.koski.schedule
 
 import java.lang.System.currentTimeMillis
 import java.sql.Timestamp
-import java.time.LocalDateTime
+import java.time.{Duration, LocalDateTime}
 import java.util.concurrent.{Executors, TimeUnit}
 
 import fi.oph.koski.db.KoskiDatabase.DB
@@ -54,7 +54,7 @@ class FixedTimeOfDaySchedule(hour: Int, minute: Int) extends Schedule {
   override def scheduleNextFireTime(seed: LocalDateTime): LocalDateTime = seed.plusDays(1).withHour(hour).withMinute(minute)
 }
 
-class IntervalSchedule(seconds: Int) extends Schedule {
-  override def scheduleNextFireTime(seed: LocalDateTime): LocalDateTime = seed.plusSeconds(seconds)
+class IntervalSchedule(duration: Duration) extends Schedule {
+  override def scheduleNextFireTime(seed: LocalDateTime): LocalDateTime = seed.plus(duration)
 }
 
