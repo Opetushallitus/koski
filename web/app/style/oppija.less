@@ -1,5 +1,6 @@
 .oppija {
   ul.opiskeluoikeustyypit {
+    padding: 0;
     > li {
       display: inline-block;
       list-style: none;
@@ -36,12 +37,23 @@
     .ajax-indicator-bg;
   }
 
+  ul.opiskeluoikeuksientiedot {
+    list-style: none;
+    padding: 0;
+    > li {
+      background: #FFFFFF;
+      border: 1px solid #D5D5D5;
+      border-radius: 2px;
+      padding: 0 27px;
+    }
+  }
+
   h2 {
     font-weight: normal;
-    font-size: 20px;
-    .hetu {
-      color: @color-darkgray-text;
-    }
+    font-family: OpenSans-Semibold;
+    font-size: 24px;
+    color: #2A2A2A;
+    letter-spacing: 0;
     a.json {
       margin-left: 10px;
       background: #159ECB;
@@ -57,14 +69,23 @@
     margin: 29px 64px 40px 0;
   }
 
-  .hetu {
-    font-size: 16px;
-  }
-
   h4 {
     font-size: 16px;
     text-transform: uppercase;
     font-weight: normal;
+  }
+
+  .opiskeluoikeus {
+    h3 {
+      margin: 0 -27px;
+      padding: 16px;
+      color: white;
+      background: #0A789C 100%;
+      font-size: 18px;
+      color: #FFFFFF;
+      letter-spacing: 0;
+      font-weight: normal;
+    }
   }
 
   .versiohistoria {

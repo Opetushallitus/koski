@@ -5,7 +5,7 @@ describe('Ammatillinen koulutus', function() {
   var page = KoskiPage()
   var login = LoginPage()
   var opinnot = OpinnotPage()
-  var eero = 'Esimerkki, Eero 010101-123N'
+  var eero = 'Esimerkki, Eero (010101-123N)'
 
 
   function prepareForNewOppija(username, searchString) {
@@ -33,7 +33,7 @@ describe('Ammatillinen koulutus', function() {
         before(addNewOppija('kalle', 'Tunkkila', { etunimet: 'Tero Terde', kutsumanimi: 'Terde', sukunimi: 'Tunkkila', hetu: '280608-6619', oppilaitos: 'Stadin', tutkinto: 'Autoalan'}))
 
         it('Onnistuu, näyttää henkilöpalvelussa olevat nimitiedot', function() {
-          expect(page.getSelectedOppija()).to.equal('Tunkkila-Fagerlund, Tero Petteri Gustaf 280608-6619')
+          expect(page.getSelectedOppija()).to.equal('Tunkkila-Fagerlund, Tero Petteri Gustaf (280608-6619)')
         })
       })
 
@@ -70,7 +70,7 @@ describe('Ammatillinen koulutus', function() {
         })
 
         describe('Kun painetaan Lisää-nappia', function() {
-          before(addOppija.submitAndExpectSuccess('Oppija, Ossi Olavi 151161-075P', 'Autoalan perustutkinto'))
+          before(addOppija.submitAndExpectSuccess('Oppija, Ossi Olavi (151161-075P)', 'Autoalan perustutkinto'))
 
           it('lisätty oppija näytetään', function() {})
 

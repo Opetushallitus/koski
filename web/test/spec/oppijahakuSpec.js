@@ -1,10 +1,10 @@
 describe('Oppijahaku', function() {
   var page = KoskiPage()
   var opinnot = OpinnotPage()
-  var eero = 'Esimerkki, Eero 010101-123N'
-  var markkanen = 'Markkanen-Fagerström, Eéro Jorma-Petteri 080154-770R'
-  var eerola = 'Eerola, Jouni 081165-793C'
-  var teija = 'Tekijä, Teija 251019-039B'
+  var eero = 'Esimerkki, Eero (010101-123N)'
+  var markkanen = 'Markkanen-Fagerström, Eéro Jorma-Petteri (080154-770R)'
+  var eerola = 'Eerola, Jouni (081165-793C)'
+  var teija = 'Tekijä, Teija (251019-039B)'
 
   before(Authentication().login(), resetFixtures, page.openPage)
 

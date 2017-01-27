@@ -17,7 +17,7 @@ const OppijaEditor = React.createClass({
     var opiskeluoikeusTyypit = modelLookup(model, 'opiskeluoikeudet').value
 
     let selectedIndex = selectedTyyppi
-      ? opiskeluoikeusTyypit.findIndex((opiskeluoikeudenTyyppi, tyyppiIndex) => selectedTyyppi == modelData(opiskeluoikeudenTyyppi, 'tyyppi.koodiarvo'))
+      ? opiskeluoikeusTyypit.findIndex((opiskeluoikeudenTyyppi) => selectedTyyppi == modelData(opiskeluoikeudenTyyppi, 'tyyppi.koodiarvo'))
       : 0
 
 
@@ -40,12 +40,14 @@ const OppijaEditor = React.createClass({
                         <span className="oppilaitos">{modelTitle(oppilaitoksenOpiskeluoikeudet, 'oppilaitos')}</span>
                         <ul className="opiskeluoikeudet">
                           { modelLookup(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').value.map((opiskeluoikeus, opiskeluoikeusIndex) => {
-                            return <li key={opiskeluoikeusIndex}>
+                            return (
+                              <li key={opiskeluoikeusIndex}>
                               <span
                                 className="koulutus">{ modelTitle(opiskeluoikeus, 'suoritukset.0.koulutusmoduuli')}</span>
                                 <span
                                   className="tila">{ modelTitle(opiskeluoikeus, 'tila.opiskeluoikeusjaksot.-1.tila') }</span>
-                            </li>
+                              </li>
+                            )
                           }) }
                         </ul>
                       </li>
@@ -59,11 +61,16 @@ const OppijaEditor = React.createClass({
                 </li>)
             })}
         </ul>
-        <ul>
+        <ul className="opiskeluoikeuksientiedot">
           {
             modelLookup(model, 'opiskeluoikeudet.' + selectedIndex + '.opiskeluoikeudet').value.flatMap((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) => {
               return modelLookup(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').value.map((opiskeluoikeus, opiskeluoikeusIndex) =>
-                <OpiskeluoikeusEditor key={ oppilaitosIndex + '-' + opiskeluoikeusIndex } model={ opiskeluoikeus } context={GenericEditor.childContext(this, oppijaContext, 'opiskeluoikeudet', selectedIndex, 'opiskeluoikeudet', oppilaitosIndex, 'opiskeluoikeudet', opiskeluoikeusIndex)} />
+                <li key={ oppilaitosIndex + '-' + opiskeluoikeusIndex }>
+                  <OpiskeluoikeusEditor
+                    model={ opiskeluoikeus }
+                    context={GenericEditor.childContext(this, oppijaContext, 'opiskeluoikeudet', selectedIndex, 'opiskeluoikeudet', oppilaitosIndex, 'opiskeluoikeudet', opiskeluoikeusIndex)}
+                  />
+                </li>
               )
             })
           }

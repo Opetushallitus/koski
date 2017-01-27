@@ -67,11 +67,9 @@ export const ExistingOppija = React.createClass({
     let henkilö = modelLookup(oppija, 'henkilö')
     return (
       <div className='main-content oppija'>
-        <h2>{modelTitle(henkilö, 'sukunimi')}, {modelTitle(henkilö, 'etunimet')} <span className='hetu'>{modelTitle(henkilö, 'hetu')}</span>
+        <h2>{modelTitle(henkilö, 'sukunimi')}, {modelTitle(henkilö, 'etunimet')} <span className='hetu'>({modelTitle(henkilö, 'hetu')})</span>
           <a className="json" href={`/koski/api/oppija/${modelData(henkilö, 'oid')}`}>JSON</a>
         </h2>
-        <hr></hr>
-        <h4>Opiskeluoikeudet</h4>
         {
           oppija
             ? <Editor model={oppija} editorMapping={editorMapping} changeBus={changeBus} />
