@@ -6,7 +6,7 @@ import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 class ArviointiasteikkoRepository(koodistoPalvelu: KoodistoViitePalvelu) {
   def getArviointiasteikkoViittaus(koulutustyyppi: Koulutustyyppi): Option[KoodistoViite] = {
     val koodistoUri = koulutustyyppi match {
-      case 1 => "arviointiasteikkoammatillinent1k3"
+      case ammatillinenPerustutkinto => "arviointiasteikkoammatillinent1k3"
       case _ => "arviointiasteikkoammatillinenhyvaksyttyhylatty"
     }
     koodistoPalvelu.getLatestVersion(koodistoUri)

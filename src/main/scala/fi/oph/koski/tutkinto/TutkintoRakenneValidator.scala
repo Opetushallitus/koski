@@ -41,7 +41,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository) {
         if (koulutustyypit.contains(rakenne.koulutustyyppi)) {
           Right(rakenne)
         } else {
-          Left(KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi("Perusteella " + rakenne.diaarinumero + " on väärä koulutustyyppi"))
+          Left(KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi("Perusteella " + rakenne.diaarinumero + s" on väärä koulutustyyppi ${Koulutustyyppi.describe(rakenne.koulutustyyppi)}. Hyväksytyt koulutustyypit tälle suoritukselle ovat ${koulutustyypit.map(Koulutustyyppi.describe).mkString(", ")}"))
         }
     }
   }

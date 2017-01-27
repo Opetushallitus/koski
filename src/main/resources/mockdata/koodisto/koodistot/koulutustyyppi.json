@@ -1,0 +1,20 @@
+{
+  "koodistoUri" : "koulutustyyppi",
+  "versio" : 2,
+  "metadata" : [ {
+    "kieli" : "EN",
+    "nimi" : "koulutustyyppi",
+    "kuvaus" : "koulutustyyppi"
+  }, {
+    "kieli" : "SV",
+    "nimi" : "koulutustyyppi",
+    "kuvaus" : "koulutustyyppi"
+  }, {
+    "kieli" : "FI",
+    "nimi" : "koulutustyyppi",
+    "kuvaus" : "Koulutustarjontapalvelun käyttöliittymän käytössä oleva koodisto"
+  } ],
+  "codesGroupUri" : "http://koulutuskoodistot",
+  "voimassaAlkuPvm" : "2015-03-27",
+  "organisaatioOid" : "1.2.246.562.10.00000000001"
+}

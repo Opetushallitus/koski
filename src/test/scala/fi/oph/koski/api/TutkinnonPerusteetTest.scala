@@ -23,7 +23,7 @@ trait TutkinnonPerusteetTest[T <: Opiskeluoikeus] extends FunSpec with PutOpiske
 
     describe("Kun yritetään liittää suoritus väärään koulutustyyppiin liittyvään perusteeseen") {
       it("palautetaan HTTP 400 virhe" ) {
-        putTodistus(opiskeluoikeusWithPerusteenDiaarinumero(Some(vääräntyyppisenPerusteenDiaarinumero))) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi("Perusteella " + vääräntyyppisenPerusteenDiaarinumero + " on väärä koulutustyyppi")))
+        putTodistus(opiskeluoikeusWithPerusteenDiaarinumero(Some(vääräntyyppisenPerusteenDiaarinumero))) (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi(("Perusteella " + vääräntyyppisenPerusteenDiaarinumero + " on väärä koulutustyyppi .* Hyväksytyt koulutustyypit .*").r)))
       }
     }
 

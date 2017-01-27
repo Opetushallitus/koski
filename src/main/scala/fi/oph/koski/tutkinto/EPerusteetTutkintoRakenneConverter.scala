@@ -73,6 +73,6 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
   }
 
   def parseKoulutustyyppi(ePerusteetKoulutustyyppi: String): Koulutustyyppi = {
-    ePerusteetKoulutustyyppi.substring(15).toInt
+    Koulutustyyppi(ePerusteetKoulutustyyppi.substring(15).toInt)
   }
 }

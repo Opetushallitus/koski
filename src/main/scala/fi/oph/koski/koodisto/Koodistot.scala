@@ -47,6 +47,7 @@ object Koodistot {
     "kieli",
     "kielivalikoima",
     "koulutus",
+    "koulutustyyppi",
     "kunta",
     "lukionkurssit",
     "maatjavaltiot2",

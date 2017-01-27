@@ -1,0 +1,321 @@
+[ {
+  "koodiUri" : "koulutustyyppi_10",
+  "koodiArvo" : "10",
+  "metadata" : [ {
+    "nimi" : "Vapaan sivistystyön koulutus",
+    "lyhytNimi" : "Vapaan sivistystyön koulutus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Fritt bildningsarbete ",
+    "lyhytNimi" : "Fritt bildningsarbete ",
+    "kieli" : "SV"
+  } ],
+  "versio" : 2
+}, {
+  "koodiUri" : "koulutustyyppi_4",
+  "koodiArvo" : "4",
+  "metadata" : [ {
+    "nimi" : "Ammatillinen perustutkinto erityisopetuksena",
+    "lyhytNimi" : "Ammatillinen perustutkinto erityisopetuksena",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Yrkesinriktad grundexamen som ordnas som specialundervisning",
+    "lyhytNimi" : "Yrkesinriktad grundexamen som ordnas som specialundervisning",
+    "kieli" : "SV"
+  } ],
+  "versio" : 2
+}, {
+  "koodiUri" : "koulutustyyppi_14",
+  "koodiArvo" : "14",
+  "metadata" : [ {
+    "nimi" : "Aikuisten lukiokoulutus",
+    "lyhytNimi" : "Aikuisten lukiokoulutus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Aikuisten lukiokoulutus",
+    "lyhytNimi" : "Aikuisten lukiokoulutus",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Aikuisten lukiokoulutus",
+    "lyhytNimi" : "Aikuisten lukiokoulutus",
+    "kieli" : "SV"
+  } ],
+  "versio" : 2
+}, {
+  "koodiUri" : "koulutustyyppi_19",
+  "koodiArvo" : "19",
+  "metadata" : [ {
+    "nimi" : "Handledande utbildning för grundläggande yrkesutbildning som specialundervisning",
+    "lyhytNimi" : "Handledande utbildning för grundläggande yrkesutbildning som specialundervisning",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA) erityisopetuksena",
+    "lyhytNimi" : "VALMA erityisopetuksena",
+    "kieli" : "FI"
+  } ],
+  "versio" : 2
+}, {
+  "koodiUri" : "koulutustyyppi_11",
+  "koodiArvo" : "11",
+  "metadata" : [ {
+    "nimi" : "Yrkesexamen",
+    "lyhytNimi" : "Yrkesexamen",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Ammattitutkinto",
+    "lyhytNimi" : "Ammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 2
+}, {
+  "koodiUri" : "koulutustyyppi_24",
+  "koodiArvo" : "24",
+  "metadata" : [ {
+    "nimi" : "Pelastusalan koulutus",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koulutustyyppi_8",
+  "koodiArvo" : "8",
+  "metadata" : [ {
+    "nimi" : "Utbildning som förbereder invandrare för yrkesutbildning",
+    "lyhytNimi" : "Utbildning som förbereder invandrare för yrkesutbildning",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Maahanmuuttajien ammatilliseen peruskoulutukseen valmistava koulutus",
+    "lyhytNimi" : "Maahanmuuttajien ammatilliseen peruskoulutukseen valmistava koulutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 2
+}, {
+  "koodiUri" : "koulutustyyppi_15",
+  "koodiArvo" : "15",
+  "metadata" : [ {
+    "nimi" : "Esiopetus",
+    "lyhytNimi" : "Esiopetus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Förskoleundervisning",
+    "lyhytNimi" : "Förskoleundervisning",
+    "kieli" : "SV"
+  } ],
+  "versio" : 2
+}, {
+  "koodiUri" : "koulutustyyppi_1",
+  "koodiArvo" : "1",
+  "metadata" : [ {
+    "nimi" : "yrkesinriktad grundexamen",
+    "lyhytNimi" : "yrkesinriktad grundexamen",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Ammatillinen perustutkinto",
+    "lyhytNimi" : "Ammatillinen perustutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 2
+}, {
+  "koodiUri" : "koulutustyyppi_9",
+  "koodiArvo" : "9",
+  "metadata" : [ {
+    "nimi" : "Förberedande gymnasieutbildning för invandrare och personer med annat modersmål än finska och svenska",
+    "lyhytNimi" : "Förberedande gymnasieutbildning för invandrare och personer med annat modersmål än finska och svenska",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Maahanmuuttajien ja vieraskielisten lukiokoulutukseen valmistava koulutus",
+    "lyhytNimi" : "Maahanmuuttajien ja vieraskielisten lukiokoulutukseen valmistava koulutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 2
+}, {
+  "koodiUri" : "koulutustyyppi_3",
+  "koodiArvo" : "3",
+  "metadata" : [ {
+    "nimi" : "Högskoleexamen",
+    "lyhytNimi" : "Högskoleexamen",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Korkeakoulutus",
+    "lyhytNimi" : "Korkeakoulutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 2
+}, {
+  "koodiUri" : "koulutustyyppi_22",
+  "koodiArvo" : "22",
+  "metadata" : [ {
+    "nimi" : "Utbildning som förbereder för grundläggande utbildning",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Perusopetukseen valmistava opetus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koulutustyyppi_5",
+  "koodiArvo" : "5",
+  "metadata" : [ {
+    "nimi" : "Utbildning som förbereder för arbete och ett självständigt liv",
+    "lyhytNimi" : "Utbildning som förbereder för arbete och ett självständigt liv",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)",
+    "lyhytNimi" : "TELMA",
+    "kieli" : "FI"
+  } ],
+  "versio" : 2
+}, {
+  "koodiUri" : "koulutustyyppi_2",
+  "koodiArvo" : "2",
+  "metadata" : [ {
+    "nimi" : "Gymnasiet",
+    "lyhytNimi" : "Gymnasiet",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Lukiokoulutus",
+    "lyhytNimi" : "Lukiokoulutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 2
+}, {
+  "koodiUri" : "koulutustyyppi_6",
+  "koodiArvo" : "6",
+  "metadata" : [ {
+    "nimi" : "Påbyggnadsundervisning efter den grundläggande utbildningen",
+    "lyhytNimi" : "Påbyggnadsundervisning efter den grundläggande utbildningen",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Perusopetuksen lisäopetus",
+    "lyhytNimi" : "Perusopetuksen lisäopetus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 2
+}, {
+  "koodiUri" : "koulutustyyppi_17",
+  "koodiArvo" : "17",
+  "metadata" : [ {
+    "nimi" : "Aikuisten perusopetus",
+    "lyhytNimi" : "Aikuisten perusopetus",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Aikuisten perusopetus",
+    "lyhytNimi" : "Aikuisten perusopetus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Grundläggande utbildning för vuxna",
+    "lyhytNimi" : "Grundläggande utbildning för vuxna",
+    "kieli" : "SV"
+  } ],
+  "versio" : 2
+}, {
+  "koodiUri" : "koulutustyyppi_21",
+  "koodiArvo" : "21",
+  "metadata" : [ {
+    "nimi" : "EB, RP, ISH",
+    "lyhytNimi" : "EB, RP, ISH",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "EB, RP, ISH",
+    "lyhytNimi" : "EB, RP, ISH",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "EB, RP, ISH",
+    "lyhytNimi" : "EB, RP, ISH",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koulutustyyppi_23",
+  "koodiArvo" : "23",
+  "metadata" : [ {
+    "nimi" : "Utbildning som förbereder för gymnasieutbildning",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Lukiokoulutukseen valmistava koulutus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koulutustyyppi_12",
+  "koodiArvo" : "12",
+  "metadata" : [ {
+    "nimi" : "Specialyrkesexamen",
+    "lyhytNimi" : "Specialyrkesexamen",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Erikoisammattitutkinto",
+    "lyhytNimi" : "Erikoisammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 2
+}, {
+  "koodiUri" : "koulutustyyppi_7",
+  "koodiArvo" : "7",
+  "metadata" : [ {
+    "nimi" : "Ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus",
+    "lyhytNimi" : "Ammatilliseen peruskoulutukseen ohjaava ja valmistava koulutus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildning som orienterar och förbereder för grundläggande yrkesutbildning",
+    "lyhytNimi" : "Utbildning som orienterar och förbereder för grundläggande yrkesutbildning",
+    "kieli" : "SV"
+  } ],
+  "versio" : 2
+}, {
+  "koodiUri" : "koulutustyyppi_13",
+  "koodiArvo" : "13",
+  "metadata" : [ {
+    "nimi" : "Ammatillinen perustutkinto näyttötutkintona",
+    "lyhytNimi" : "Ammatillinen perustutkinto näyttötutkintona",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Ammatillinen perustutkinto näyttötutkintona",
+    "lyhytNimi" : "Ammatillinen perustutkinto näyttötutkintona",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Ammatillinen perustutkinto näyttötutkintona",
+    "lyhytNimi" : "ammatillinen perustutkinto näyttötutkintona",
+    "kieli" : "FI"
+  } ],
+  "versio" : 2
+}, {
+  "koodiUri" : "koulutustyyppi_18",
+  "koodiArvo" : "18",
+  "metadata" : [ {
+    "nimi" : "Handledande utbildning för grundläggande yrkesutbildning",
+    "lyhytNimi" : "Handledande utbildning för grundläggande yrkesutbildning",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)",
+    "lyhytNimi" : "VALMA",
+    "kieli" : "FI"
+  } ],
+  "versio" : 2
+}, {
+  "koodiUri" : "koulutustyyppi_16",
+  "koodiArvo" : "16",
+  "metadata" : [ {
+    "nimi" : "Perusopetus",
+    "lyhytNimi" : "Perusopetus",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Grundläggande utbildning",
+    "lyhytNimi" : "Grundläggande utbildning",
+    "kieli" : "SV"
+  } ],
+  "versio" : 2
+}, {
+  "koodiUri" : "koulutustyyppi_20",
+  "koodiArvo" : "20",
+  "metadata" : [ {
+    "nimi" : "Småbarnspedagogik",
+    "lyhytNimi" : "Småbarnspedagogik",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Varhaiskasvatus",
+    "lyhytNimi" : "Varhaiskasvatus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+} ]
