@@ -21,17 +21,20 @@ class KoskiScheduledTasks(application: KoskiApplication) extends Timing {
     val oldContext = context.get.extract[HenkilöUpdateContext]
     val kaikkiMuuttuneet: Map[Oid, OppijaHenkilö] = application.authenticationServiceClient.findChangedOppijat(oldContext.lastRun).groupBy(_.oidHenkilo).mapValues(_.head)
     val muuttuneidenOidit: List[Oid] = kaikkiMuuttuneet.values.map(_.toNimitiedotJaOid).filter(o => application.henkilöCacheUpdater.updateHenkilöAction(o) > 0).map(_.oid).toList
-    val muuttuneidenHenkilötiedot: List[Henkilötiedot] = application.perustiedotRepository.findHenkiloPerustiedotByOids(muuttuneidenOidit).map(p => Henkilötiedot(p.id, kaikkiMuuttuneet(p.henkilö.oid).toNimitiedotJaOid))
-    application.perustiedotRepository.updateBulk(muuttuneidenHenkilötiedot, insertMissing = false) match {
-      case Right(updatedCount) =>
-        val msg = s"Updated ${muuttuneidenOidit.length} entries to henkilö table and ${muuttuneidenHenkilötiedot.length} to elasticsearch"
-        if (muuttuneidenOidit.length == muuttuneidenHenkilötiedot.length)
-          logger.info(msg)
-        else logger.warn(msg)
-        henkilöUpdateContext(changedHenkilösSince)
-      case Left(HttpStatus(_, errors)) =>
-        logger.error(s"Problem running scheduledHenkilötiedotUpdate ${errors.mkString}")
-        Some(Json.toJValue(oldContext))
+
+    try {
+      val updatedToElastic = muuttuneidenOidit.sliding(1000, 1000).map { oidit: List[Oid] =>
+        val muuttuneidenHenkilötiedot: List[Henkilötiedot] = application.perustiedotRepository.findHenkiloPerustiedotByOids(oidit).map(p => Henkilötiedot(p.id, kaikkiMuuttuneet(p.henkilö.oid).toNimitiedotJaOid))
+        application.perustiedotRepository.updateBulk(muuttuneidenHenkilötiedot, insertMissing = false) match {
+          case Right(updatedCount) => updatedCount
+          case Left(HttpStatus(_, errors)) => throw new Exception(s"Couldn't update data to elasticsearch ${errors.mkString}")
+        }
+      }.sum
+      logger.info(s"Updated ${muuttuneidenOidit.length} entries to henkilö table and $updatedToElastic to elasticsearch")
+      henkilöUpdateContext(start)
+    } catch {
+      case e: Exception => logger.error(e)("Problem running scheduledHenkilötiedotUpdate")
+      Some(Json.toJValue(oldContext))
     }
   }
 
