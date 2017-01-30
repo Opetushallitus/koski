@@ -5,6 +5,7 @@ import * as GenericEditor from './GenericEditor.jsx'
 import Versiohistoria from './Versiohistoria.jsx'
 import Link from './Link.jsx'
 import { currentLocation } from './location.js'
+import { yearFromDateString } from './date'
 
 const OppijaEditor = React.createClass({
   render() {
@@ -41,9 +42,15 @@ const OppijaEditor = React.createClass({
                             modelLookup(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').value.map((opiskeluoikeus, opiskeluoikeusIndex) =>
                               modelLookup(opiskeluoikeus, 'suoritukset').value.filter(s => s.value.data.tyyppi.koodiarvo != 'perusopetuksenvuosiluokka').map((suoritus, suoritusIndex) =>
                                 <li className="opiskeluoikeus" key={opiskeluoikeusIndex + '-' + suoritusIndex}>
-                                  <span className="koulutus inline-text">{ modelTitle(suoritus, 'tyyppi') },</span>
-                                  <span
-                                    className="tila">{ modelTitle(opiskeluoikeus, 'tila.opiskeluoikeusjaksot.-1.tila') }</span>
+                                  <span className="koulutus inline-text">{ modelTitle(suoritus, 'tyyppi') }</span>
+                                  { modelData(opiskeluoikeus, 'alkamispäivä')
+                                    ? <span className="inline-text">
+                                        <span className="alku pvm">{yearFromDateString(modelTitle(opiskeluoikeus, 'alkamispäivä'))}</span>-
+                                        <span className="loppu pvm">{yearFromDateString(modelTitle(opiskeluoikeus, 'päättymispäivä'))},</span>
+                                      </span>
+                                    : null
+                                  }
+                                  <span className="tila">{ modelTitle(opiskeluoikeus, 'tila.opiskeluoikeusjaksot.-1.tila') }</span>
                                 </li>
                               )
                             )
