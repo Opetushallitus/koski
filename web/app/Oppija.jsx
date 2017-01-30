@@ -7,12 +7,14 @@ import { Editor } from './GenericEditor.jsx'
 import * as L from 'partial.lenses'
 import R from 'ramda'
 import {modelData} from './EditorModel.js'
+import {currentLocation} from './location.js'
 
 export const saveBus = Bacon.Bus()
 
-export const oppijaContentP = (oppijaOid, queryString) => {
+export const oppijaContentP = (oppijaOid) => {
   const changeBus = Bacon.Bus()
 
+  let queryString = currentLocation().filterQueryParams(key => ['opiskeluoikeus', 'versionumero'].includes(key)).queryString
   const loadOppijaE = Http.cachedGet(`/koski/api/editor/${oppijaOid}${queryString}`).toEventStream()
 
   const updateResultE = Bacon.Bus()

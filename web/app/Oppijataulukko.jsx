@@ -1,7 +1,7 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import Pager from './Pager'
-import { addQueryParams, navigateToOppija } from './location'
+import { navigateWithQueryParams, navigateToOppija } from './location'
 import { oppijaHakuElementP } from './OppijaHaku.jsx'
 import PaginationLink from './PaginationLink.jsx'
 import R from 'ramda'
@@ -147,7 +147,7 @@ export const Oppijataulukko = React.createClass({
         .filter(suoritusTyypit => this.props.params['suorituksenTyyppi'] && !R.contains(this.props.params['suorituksenTyyppi'], R.map(x => x.key, suoritusTyypit)))
         .map(() => R.objOf('suorituksenTyyppi', undefined))
     )
-    this.filterBus.merge(this.textFilterBus.throttle(500)).onValue(addQueryParams)
+    this.filterBus.merge(this.textFilterBus.throttle(500)).onValue(navigateWithQueryParams)
   }
 })
 

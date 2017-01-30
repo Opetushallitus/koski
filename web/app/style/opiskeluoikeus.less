@@ -1,34 +1,34 @@
 .oppija .opiskeluoikeus {
   padding: 0;
+  .suoritus-tabs {
+    padding: 0;
+    list-style: none;
+    margin-top: 20px;
+    border-bottom: 1px solid #AEAEAF;
+    margin-bottom: 30px;
+
+    li {
+      display: inline-block;
+      padding: 5px 40px;
+      transform: translate(0, 1px);
+      &.selected {
+        background: white;
+        border-left: 1px solid #AEAEAF;
+        border-right: 1px solid #AEAEAF;
+        border-top: 2px solid #159ECB;
+      }
+    }
+
+  }
   label {
     margin-right: 5px;
   }
-  > li.oppilaitos {
-    margin-bottom: 20px;
-
-    list-style: none;
-    a.todistus, a.opintosuoritusote {
-      float: right;
-      margin-right: 51px;
-      text-decoration: underline;
-      font-size: 0.8em;
-    }
-    .opiskeluoikeus {
-      margin-bottom: 5px;
-      margin-left: 6px;
-
-      > .suoritus {
-        > .kuvaus {
-          color: @color-darkgray-text;
-          display: inline-block;
-          margin-left: 6px;
-        }
-        > span > .properties {
-          font-size: 0.95em;
-          margin-top: 8px;
-        }
-      }
-    }
+  a.todistus, a.opintosuoritusote {
+    position: absolute;
+    margin-right: 66px;
+    text-decoration: underline;
+    font-size: 0.8em;
+    right: 0;
   }
 
   ul.properties {

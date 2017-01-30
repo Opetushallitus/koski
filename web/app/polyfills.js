@@ -56,6 +56,9 @@ addArrayMethod('flatMap', function (lambda) {
 addArrayMethod('last', function () {
   return this[this.length - 1]
 })
+addArrayMethod('includes', function (item) {
+  return this.indexOf(item) >= 0
+})
 
 addArrayMethod('reduce', function(callback /*, initialValue*/) {
   if (this === null) {

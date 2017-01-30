@@ -90,6 +90,8 @@ const OpiskeluoikeusEditor = React.createClass({
     let {model, context} = this.props
     let id = modelData(model, 'id')
     let opiskeluoikeusContext = R.merge(context, {editable: model.editable, opiskeluoikeusId: id})
+    let suoritusQueryParam = context.path + '.suoritus'
+    let suoritusIndex = currentLocation().params[suoritusQueryParam] || 0
     return (<div className="opiskeluoikeus">
       <h3>
         <span className="oppilaitos inline-text">{modelTitle(model, 'oppilaitos')},</span>
@@ -105,9 +107,18 @@ const OpiskeluoikeusEditor = React.createClass({
         <Versiohistoria opiskeluOikeusId={id} oppijaOid={context.oppijaOid}/>
       </h3>
       <GenericEditor.PropertiesEditor properties={ model.value.properties.filter(property => property.key != 'suoritukset') } context={opiskeluoikeusContext}/>
+      <ul className="suoritus-tabs">
+        {
+          modelItems(model, 'suoritukset').map((suoritusModel, i) => {
+            return (<li className={i == suoritusIndex ? 'selected': null} key={i}><Link href={currentLocation().addQueryParams({[suoritusQueryParam]: i}).toString()}>
+              {modelTitle(suoritusModel, 'koulutusmoduuli')}
+            </Link></li>)
+          })
+        }
+      </ul>
       {
         modelItems(model, 'suoritukset').map((suoritusModel, i) =>
-          <SuoritusEditor model={suoritusModel} context={GenericEditor.childContext(this, opiskeluoikeusContext, 'suoritukset', i)} key={i}/>
+          i == suoritusIndex ? <PäätasonSuoritusEditor model={suoritusModel} context={GenericEditor.childContext(this, opiskeluoikeusContext, 'suoritukset', i)} key={i}/> : null
         )
       }
       <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={model} context={context}/>
@@ -115,20 +126,14 @@ const OpiskeluoikeusEditor = React.createClass({
   }
 })
 
-const SuoritusEditor = React.createClass({
+const PäätasonSuoritusEditor = React.createClass({
   render() {
     let {model, context} = this.props
-
     let title = modelTitle(model, 'koulutusmoduuli')
     let className = 'suoritus ' + model.value.class
     return (<div className={className}>
-      <span className="kuvaus">{title}</span>
       <TodistusLink suoritus={model} context={context}/>
-      <GenericEditor.ExpandableEditor
-        editor = {this}
-        expandedView={() => <GenericEditor.PropertiesEditor properties={model.value.properties} context={R.merge(context, {editable: model.editable})}/>}
-        context={context}
-      />
+      <GenericEditor.PropertiesEditor properties={model.value.properties} context={R.merge(context, {editable: model.editable})}/>
     </div>)
   }
 })

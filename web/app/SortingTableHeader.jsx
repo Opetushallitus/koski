@@ -1,5 +1,5 @@
 import React from 'react'
-import { addQueryParams, currentLocation } from './location'
+import { navigateWithQueryParams, currentLocation } from './location'
 
 export default React.createClass({
   render() {
@@ -14,7 +14,7 @@ export default React.createClass({
     let selected = sortBy == field
 
     return (<th className={sortBy == field ? field + ' sorted' : field}>
-      <div className="sorting" onClick={() => addQueryParams({ sort: field + ':' + (selected ? (sortOrder == 'asc' ? 'desc' : 'asc') : 'asc')})}>
+      <div className="sorting" onClick={() => navigateWithQueryParams({ sort: field + ':' + (selected ? (sortOrder == 'asc' ? 'desc' : 'asc') : 'asc')})}>
         <div className="title">{title}</div>
         <div className="sort-indicator">
           <div className={selected && sortOrder == 'asc' ? 'asc selected' : 'asc'}></div>
