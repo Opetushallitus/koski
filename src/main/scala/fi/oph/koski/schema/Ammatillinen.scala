@@ -259,7 +259,8 @@ case class NäytönSuoritusaika(
 case class NäytönArviointi (
   arvosana: Koodistokoodiviite,
   päivä: LocalDate,
-  arvioitsijat: Option[List[Arvioitsija]] = None,
+  @Description("Näytön arvioineet henkilöt")
+  arvioitsijat: Option[List[NäytönArvioitsija]] = None,
   @Description("Näytön eri arviointikohteiden (Työprosessin hallinta jne) arvosanat.")
   arviointikohteet: Option[List[NäytönArviointikohde]],
   @KoodistoUri("ammatillisennaytonarvioinnistapaattaneet")
@@ -289,7 +290,8 @@ case class NäytönArvioitsija(
   nimi: String,
   @Description("Onko suorittanut näyttötutkintomestarikoulutuksen (true/false). Puuttuva arvo tulkitaan siten, että koulutuksen suorittamisesta ei ole tietoa.")
   ntm: Option[Boolean]
-)
+) extends SuorituksenArvioitsija
+
 @Description("Oppisopimuksen tiedot")
 case class Oppisopimus(
   työnantaja: Yritys
@@ -467,8 +469,7 @@ trait AmmatillinenKoodistostaLöytyväArviointi extends KoodistostaLöytyväArvi
   @KoodistoUri("arviointiasteikkoammatillinenhyvaksyttyhylatty")
   @KoodistoUri("arviointiasteikkoammatillinent1k3")
   override def arvosana: Koodistokoodiviite
-  @Description("Tutkinnon osan suorituksen arvioinnista päättäneen henkilön nimi")
-  override def arvioitsijat: Option[List[Arvioitsija]]
+  override def arvioitsijat: Option[List[SuorituksenArvioitsija]]
   override def hyväksytty = arvosana.koodiarvo match {
     case "0" => false
     case "Hylätty" => false
@@ -479,6 +480,7 @@ trait AmmatillinenKoodistostaLöytyväArviointi extends KoodistostaLöytyväArvi
 case class AmmatillinenArviointi(
   arvosana: Koodistokoodiviite,
   päivä: LocalDate,
+  @Description("Tutkinnon osan suorituksen arvioinnista päättäneen henkilön nimi")
   arvioitsijat: Option[List[Arvioitsija]] = None,
   kuvaus: Option[LocalizedString] = None
 ) extends AmmatillinenKoodistostaLöytyväArviointi with SanallinenArviointi

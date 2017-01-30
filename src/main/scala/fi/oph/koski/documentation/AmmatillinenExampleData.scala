@@ -28,10 +28,13 @@ object AmmatillinenExampleData {
 
   lazy val h2: Koodistokoodiviite = Koodistokoodiviite("2", Some("H2"), "arviointiasteikkoammatillinent1k3", None)
   lazy val k3: Koodistokoodiviite = Koodistokoodiviite("3", Some("K3"), "arviointiasteikkoammatillinent1k3", None)
+
+  lazy val näytönArvioitsijat = Some(List(NäytönArvioitsija("Jaana Arstila", Some(true)), NäytönArvioitsija("Pekka Saurmann", Some(true)), NäytönArvioitsija("Juhani Mykkänen", Some(false))))
+
   lazy val näytönArviointi = NäytönArviointi(
     arvosana = arviointiKiitettävä.arvosana,
     päivä = arviointiKiitettävä.päivä,
-    arvioitsijat = arviointiHyväksytty.arvioitsijat,
+    arvioitsijat = näytönArvioitsijat,
     arviointikohteet = Some(List(
       NäytönArviointikohde(Koodistokoodiviite("1", Some("Työprosessin hallinta"), "ammatillisennaytonarviointikohde", None), k3),
       NäytönArviointikohde(Koodistokoodiviite("2", Some("Työmenetelmien, -välineiden ja materiaalin hallinta"), "ammatillisennaytonarviointikohde", None), h2),

@@ -10,7 +10,7 @@ trait Arviointi {
   def arvosana: KoodiViite
   @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
   def arviointipäivä: Option[LocalDate]
-  def arvioitsijat: Option[List[Arvioitsija]]
+  def arvioitsijat: Option[List[SuorituksenArvioitsija]]
 
   def arvosanaNumeroin: Option[LocalizedString] = {
     try { Some(LocalizedString.unlocalized(arvosana.koodiarvo.toInt.toString)) } catch {
@@ -46,10 +46,15 @@ trait PaikallinenArviointi extends Arviointi {
   def arvosanaKirjaimin = arvosana.nimi
 }
 
+trait SuorituksenArvioitsija {
+  @Description("Henkilön koko nimi")
+  def nimi: String
+}
+
 case class Arvioitsija(
   @Representative
   nimi: String
-)
+) extends SuorituksenArvioitsija
 
 trait SanallinenArviointi extends Arviointi {
   def kuvaus: Option[LocalizedString]
