@@ -11,7 +11,7 @@ function OpinnotPage() {
     },
     getOppilaitos: function(index) {
       index = typeof index !== 'undefined' ? index : 0
-      return S(S('.opiskeluoikeus > h3 > .oppilaitos')[index]).text()
+      return S(S('.opiskeluoikeus > h3 > .oppilaitos')[index]).text().slice(0, -1)
     },
     avaaOpintosuoritusote: function (index) {
       return function() {
