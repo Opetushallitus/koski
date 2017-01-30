@@ -92,6 +92,7 @@ const OpiskeluoikeusEditor = React.createClass({
     let opiskeluoikeusContext = R.merge(context, {editable: model.editable, opiskeluoikeusId: id})
     let suoritusQueryParam = context.path + '.suoritus'
     let suoritusIndex = currentLocation().params[suoritusQueryParam] || 0
+    let suoritukset = modelItems(model, 'suoritukset')
     return (<div className="opiskeluoikeus">
       <h3>
         <span className="oppilaitos inline-text">{modelTitle(model, 'oppilaitos')},</span>
@@ -107,17 +108,21 @@ const OpiskeluoikeusEditor = React.createClass({
         <Versiohistoria opiskeluOikeusId={id} oppijaOid={context.oppijaOid}/>
       </h3>
       <GenericEditor.PropertiesEditor properties={ model.value.properties.filter(property => property.key != 'suoritukset') } context={opiskeluoikeusContext}/>
-      <ul className="suoritus-tabs">
-        {
-          modelItems(model, 'suoritukset').map((suoritusModel, i) => {
-            return (<li className={i == suoritusIndex ? 'selected': null} key={i}><Link href={currentLocation().addQueryParams({[suoritusQueryParam]: i}).toString()}>
-              {modelTitle(suoritusModel, 'koulutusmoduuli')}
-            </Link></li>)
-          })
-        }
-      </ul>
       {
-        modelItems(model, 'suoritukset').map((suoritusModel, i) =>
+        suoritukset.length >= 2 && (
+          <ul className="suoritus-tabs">
+            {
+              suoritukset.map((suoritusModel, i) => {
+                return (<li className={i == suoritusIndex ? 'selected': null} key={i}><Link href={currentLocation().addQueryParams({[suoritusQueryParam]: i}).toString()}>
+                  {modelTitle(suoritusModel, 'koulutusmoduuli')}
+                </Link></li>)
+              })
+            }
+          </ul>
+        )
+      }
+      {
+        suoritukset.map((suoritusModel, i) =>
           i == suoritusIndex ? <PäätasonSuoritusEditor model={suoritusModel} context={GenericEditor.childContext(this, opiskeluoikeusContext, 'suoritukset', i)} key={i}/> : null
         )
       }
