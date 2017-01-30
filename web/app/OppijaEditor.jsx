@@ -113,9 +113,11 @@ const OpiskeluoikeusEditor = React.createClass({
           <ul className="suoritus-tabs">
             {
               suoritukset.map((suoritusModel, i) => {
-                return (<li className={i == suoritusIndex ? 'selected': null} key={i}><Link href={currentLocation().addQueryParams({[suoritusQueryParam]: i}).toString()}>
-                  {modelTitle(suoritusModel, 'koulutusmoduuli')}
-                </Link></li>)
+                let selected = i == suoritusIndex
+                let title = modelTitle(suoritusModel, 'koulutusmoduuli')
+                return (<li className={selected ? 'selected': null} key={i}>
+                    { selected ? title : <Link href={currentLocation().addQueryParams({[suoritusQueryParam]: i}).toString()}> {title} </Link>}
+                </li>)
               })
             }
           </ul>
