@@ -30,23 +30,24 @@ const OppijaEditor = React.createClass({
               let koodiarvo = modelData(opiskeluoikeudenTyyppi, 'tyyppi.koodiarvo')
               let className = selected ? koodiarvo + ' selected' : koodiarvo
               let content = (<div>
-                <div className="opiskeluoikeustyyppi">{
-                  modelTitle(opiskeluoikeudenTyyppi, 'tyyppi')
-                }</div>
+                <div className="opiskeluoikeustyyppi">{ modelTitle(opiskeluoikeudenTyyppi, 'tyyppi') }</div>
                 <ul className="oppilaitokset">
                   {
                     modelLookup(opiskeluoikeudenTyyppi, 'opiskeluoikeudet').value.map((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) =>
                       <li key={oppilaitosIndex}>
                         <span className="oppilaitos">{modelTitle(oppilaitoksenOpiskeluoikeudet, 'oppilaitos')}</span>
                         <ul className="opiskeluoikeudet">
-                          { modelLookup(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').value.map((opiskeluoikeus, opiskeluoikeusIndex) => {
-                            return (
-                              <li className="opiskeluoikeus" key={opiskeluoikeusIndex}>
-                                <span className="koulutus inline-text">{ modelTitle(opiskeluoikeus, 'suoritukset.0.koulutusmoduuli')},</span>
-                                <span className="tila">{ modelTitle(opiskeluoikeus, 'tila.opiskeluoikeusjaksot.-1.tila') }</span>
-                              </li>
+                          {
+                            modelLookup(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').value.map((opiskeluoikeus, opiskeluoikeusIndex) =>
+                              modelLookup(opiskeluoikeus, 'suoritukset').value.filter(s => s.value.data.tyyppi.koodiarvo != 'perusopetuksenvuosiluokka').map((suoritus, suoritusIndex) =>
+                                <li className="opiskeluoikeus" key={opiskeluoikeusIndex + '-' + suoritusIndex}>
+                                  <span className="koulutus inline-text">{ modelTitle(suoritus, 'tyyppi') },</span>
+                                  <span
+                                    className="tila">{ modelTitle(opiskeluoikeus, 'tila.opiskeluoikeusjaksot.-1.tila') }</span>
+                                </li>
+                              )
                             )
-                          }) }
+                          }
                         </ul>
                       </li>
                     )
