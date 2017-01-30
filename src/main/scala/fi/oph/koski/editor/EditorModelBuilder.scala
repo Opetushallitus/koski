@@ -19,7 +19,7 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
     ObjectModelBuilder(schema, true).buildObjectModel(value)
   }
 
-  def koodistoEnumValue(k: Koodistokoodiviite): EnumValue = EnumValue(k.koodiarvo, i(k.lyhytNimi.orElse(k.nimi).getOrElse(LocalizedString.unlocalized(k.koodiarvo))), k)
+  def koodistoEnumValue(k: Koodistokoodiviite): EnumValue = EnumValue(k.koodiarvo, i(k.nimi.getOrElse(LocalizedString.unlocalized(k.koodiarvo))), k)
 
   def organisaatioEnumValue(o: OrganisaatioWithOid) = EnumValue(o.oid, i(o.description), o)
 
