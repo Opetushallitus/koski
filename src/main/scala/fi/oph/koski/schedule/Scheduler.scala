@@ -17,11 +17,11 @@ class Scheduler(val db: DB, name: String, scheduling: Schedule, initialContext: 
   private val taskExecutor = Executors.newSingleThreadScheduledExecutor
   private val context: Option[JValue] = getScheduler.flatMap(_.context).orElse(initialContext)
 
-  runDbSync(Tables.Scheduler.insertOrUpdate(SchedulerRow(name, scheduling.nextFireTime, context)))
+  runDbSync(Tables.Scheduler.insertOrUpdate(SchedulerRow(name, scheduling.nextFireTime, context, 0)))
   taskExecutor.scheduleAtFixedRate(() => fireIfTime(), intervalMillis, intervalMillis, TimeUnit.MILLISECONDS)
 
   private def fireIfTime() = {
-    val shouldFire = runDbSync(Tables.Scheduler.filter(s => s.name === name && s.nextFireTime < now).map(_.nextFireTime).update(scheduling.nextFireTime)) > 0
+    val shouldFire = runDbSync(Tables.Scheduler.filter(s => s.name === name && s.nextFireTime < now && s.status === 0).map(s => (s.nextFireTime, s.status)).update(scheduling.nextFireTime, 1)) > 0
     if (shouldFire) {
       try {
         fire
@@ -33,13 +33,16 @@ class Scheduler(val db: DB, name: String, scheduling: Schedule, initialContext: 
     }
   }
 
-  private def fire = {
+  private def fire = try {
     val context: Option[JValue] = runDbSync(Tables.Scheduler.filter(_.name === name).result.head).context
     logger.info(s"Firing scheduled task $name with context ${context.map(JsonMethods.compact)}")
     val newContext: Option[JValue] = task(context)
-    runDbSync(Tables.Scheduler.filter(s => s.name === name).map(_.context).update(newContext))
+    runDbSync(Tables.Scheduler.filter(_.name === name).map(_.context).update(newContext))
+  } finally {
+    endRun
   }
 
+  private def endRun = runDbSync(Tables.Scheduler.filter(_.name === name).map(_.status).update(0))
   private def now = new Timestamp(currentTimeMillis)
   private def getScheduler: Option[SchedulerRow] =
     runDbSync(Tables.Scheduler.filter(s => s.name === name).result.headOption)
