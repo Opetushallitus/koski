@@ -15,6 +15,17 @@ function S(selector) {
   }
 }
 
+function findSingle(selector, base) {
+  var result = base ? base.find(selector) : S(selector)
+  if (result.length == 0) {
+    throw new Error("Element " + selector + " not found")
+  }
+  if (result.length > 1) {
+    throw new Error(result.length + " instances of " + selector + " found")
+  }
+  return result
+}
+
 wait = {
   waitIntervalMs: 10,
   until: function(condition, maxWaitMs) {

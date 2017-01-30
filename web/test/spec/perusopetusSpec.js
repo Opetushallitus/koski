@@ -8,35 +8,40 @@ describe('Perusopetus', function() {
 
   describe('Perusopetuksen lukuvuositodistukset ja päättötodistus', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'))
-    describe('Oppijan suorituksissa', function() {
-      it('näytetään', function() {
-        expect(opinnot.getOppilaitos()).to.equal("Jyväskylän normaalikoulu")
-        expect(opinnot.getTutkinto(0)).to.equal("8. vuosiluokka")
-        expect(opinnot.getTutkinto(1)).to.equal("9. vuosiluokka")
-        expect(opinnot.getTutkinto(2)).to.equal("Peruskoulu")
-      })
-    })
-    describe('Kaikki tiedot näkyvissä', function() {
-      before(opinnot.expandAll)
-      it('toimii', function() {
-        expect(S('.perusopetuksenoppimaaransuoritus:eq(0) .osasuoritukset .oppiaine:eq(1)').text()).to.equal('B1-kieli, ruotsi')
-      })
-    })
 
-    describe('Päättötodistus', function() {
-      before(opinnot.avaaTodistus(2))
-      describe('Klikattaessa linkkiä', function() {
-        it('näytetään', function() {
-          // See more detailed content specification in PerusopetusSpec.scala
-          expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
-          expect(todistus.arvosanarivi('.muut-opinnot')).to.equal('Muut valinnaiset opinnot')
+    describe('Perusopetuksen oppimäärä', function() {
+      before(opinnot.valitseSuoritus('Peruskoulu'))
+      describe('Kaikki tiedot näkyvissä', function() {
+        before(opinnot.expandAll)
+        it('toimii', function() {
+          expect(S('.perusopetuksenoppimaaransuoritus:eq(0) .osasuoritukset .oppiaine:eq(1)').text()).to.equal('B1-kieli, ruotsi')
+        })
+      })
+
+      describe('Päättötodistus', function() {
+        before(opinnot.avaaTodistus())
+        describe('Klikattaessa linkkiä', function() {
+          it('näytetään', function() {
+            // See more detailed content specification in PerusopetusSpec.scala
+            expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
+            expect(todistus.arvosanarivi('.muut-opinnot')).to.equal('Muut valinnaiset opinnot')
+          })
         })
       })
     })
 
-    describe('Lukuvuositodistus', function() {
-      before(TodistusPage().close, wait.until(page.isOppijaSelected('Kaisa')), opinnot.avaaTodistus(1))
-      it('näytetään', function() {})
+    describe('Lukuvuosisuoritus', function() {
+      before(TodistusPage().close, wait.until(page.isOppijaSelected('Kaisa')), opinnot.valitseSuoritus('8. vuosiluokka'))
+      describe('Kaikki tiedot näkyvissä', function() {
+        before(opinnot.expandAll)
+        it('toimii', function() {
+          expect(S('.perusopetuksenvuosiluokansuoritus:eq(0) .osasuoritukset .oppiaine:eq(1)').text()).to.equal('B1-kieli, ruotsi')
+        })
+      })
+      describe('Lukuvuositodistus', function() {
+        before(opinnot.avaaTodistus())
+        it('näytetään', function() {})
+      })
     })
 
     describe('Virhetilanteet', function() {
