@@ -94,6 +94,9 @@ const OpiskeluoikeusEditor = React.createClass({
     let suoritusQueryParam = context.path + '.suoritus'
     let suoritusIndex = currentLocation().params[suoritusQueryParam] || 0
     let suoritukset = modelItems(model, 'suoritukset')
+    let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos']
+    let päättymispäiväProperty = (modelData(model, 'arvioituPäättymispäivä') && !modelData(model, 'päättymispäivä')) ? 'arvioituPäättymispäivä' : 'päättymispäivä'
+
     return (<div className="opiskeluoikeus">
       <h3>
         <span className="oppilaitos inline-text">{modelTitle(model, 'oppilaitos')},</span>
@@ -109,29 +112,37 @@ const OpiskeluoikeusEditor = React.createClass({
         <Versiohistoria opiskeluOikeusId={id} oppijaOid={context.oppijaOid}/>
       </h3>
       <div className="opiskeluoikeus-content">
-        <GenericEditor.PropertiesEditor properties={ model.value.properties.filter(property => property.key != 'suoritukset') } context={opiskeluoikeusContext}>
+        <div className="alku-loppu">
+          <GenericEditor.PropertyEditor context={opiskeluoikeusContext} model={model} propertyName="alkamispäivä" /> — <GenericEditor.PropertyEditor context={opiskeluoikeusContext} model={model} propertyName={päättymispäiväProperty} />
+        </div>
+        <GenericEditor.PropertiesEditor properties={ model.value.properties.filter(p => !excludedProperties.includes(p.key)) } context={opiskeluoikeusContext}>
           <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={model} context={context}/>
         </GenericEditor.PropertiesEditor>
-        {
-          suoritukset.length >= 2 && (
-            <ul className="suoritus-tabs">
-              {
-                suoritukset.map((suoritusModel, i) => {
-                  let selected = i == suoritusIndex
-                  let title = modelTitle(suoritusModel, 'koulutusmoduuli')
-                  return (<li className={selected ? 'selected': null} key={i}>
-                    { selected ? title : <Link href={currentLocation().addQueryParams({[suoritusQueryParam]: i}).toString()}> {title} </Link>}
-                  </li>)
-                })
-              }
-            </ul>
-          )
-        }
-        {
-          suoritukset.map((suoritusModel, i) =>
-            i == suoritusIndex ? <PäätasonSuoritusEditor model={suoritusModel} context={GenericEditor.childContext(this, opiskeluoikeusContext, 'suoritukset', i)} key={i}/> : null
-          )
-        }
+        <div className="suoritukset">
+          {
+            suoritukset.length >= 2 && (
+              <div>
+                <h4>Suoritukset</h4>
+                <ul className="suoritus-tabs">
+                  {
+                    suoritukset.map((suoritusModel, i) => {
+                      let selected = i == suoritusIndex
+                      let title = modelTitle(suoritusModel, 'koulutusmoduuli')
+                      return (<li className={selected ? 'selected': null} key={i}>
+                        { selected ? title : <Link href={currentLocation().addQueryParams({[suoritusQueryParam]: i}).toString()}> {title} </Link>}
+                      </li>)
+                    })
+                  }
+                </ul>
+              </div>
+            )
+          }
+          {
+            suoritukset.map((suoritusModel, i) =>
+              i == suoritusIndex ? <PäätasonSuoritusEditor model={suoritusModel} context={GenericEditor.childContext(this, opiskeluoikeusContext, 'suoritukset', i)} key={i}/> : null
+            )
+          }
+        </div>
       </div>
     </div>)
   }

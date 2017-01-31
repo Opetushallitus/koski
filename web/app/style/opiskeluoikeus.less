@@ -39,28 +39,36 @@
     padding: 27px;
     font-size: 15px;
 
-    .suoritus-tabs {
-      padding: 0;
-      list-style: none;
+    .alku-loppu {
+      margin-bottom: 22px;
+    }
+
+    .suoritukset {
       margin-top: 20px;
-      border-bottom: 1px solid #AEAEAF;
-      margin-bottom: 30px;
 
-      li {
-        display: inline-block;
-        padding: 5px 40px;
-        transform: translate(0, 1px);
-        &.selected {
-          background: white;
-          border-left: 1px solid #AEAEAE;
-          border-right: 1px solid #AEAEAE;
-          border-top: 2px solid #159ECB;
+      .suoritus-tabs {
+        padding: 0;
+        list-style: none;
+        margin-top: 20px;
+        border-bottom: 1px solid #AEAEAF;
+        margin-bottom: 30px;
+
+        li {
+          display: inline-block;
+          padding: 5px 40px;
+          transform: translate(0, 1px);
+          &.selected {
+            background: white;
+            border-left: 1px solid #AEAEAE;
+            border-right: 1px solid #AEAEAE;
+            border-top: 2px solid #159ECB;
+          }
+          a {
+            color: #159ECB;
+          }
         }
-        a {
-          color: #159ECB;
-        }
+
       }
-
     }
 
     .OverlayLink {
@@ -153,7 +161,7 @@
       float: right;
     }
 
-    .opiskeluoikeus, .suoritus {
+    .suoritus {
       position: relative;
     }
 

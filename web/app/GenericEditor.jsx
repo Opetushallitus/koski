@@ -135,6 +135,19 @@ export const PropertiesEditor = React.createClass({
     </div>)
   }
 })
+
+export const PropertyEditor = React.createClass({
+  render() {
+    let {propertyName, model, context} = this.props
+    let property = model.value.properties.find(p => p.key == propertyName)
+    if (property == null) throw new Error(`Property ${propertyName} not found in ${model.value.properties.map(p => p.key)}`)
+    let edit = context.edit || (this.state && this.state.edit)
+    return (<span className="single-property">
+      {property.title}: { getModelEditor(property.model, childContext(this, R.merge(context, {edit: edit}), property.key)) }
+    </span>)
+  }
+})
+
 PropertiesEditor.canShowInline = () => false
 
 const shouldShowProperty = (edit) => (property) => (edit || !modelEmpty(property.model)) && !property.hidden
