@@ -8,6 +8,7 @@ import * as L from 'partial.lenses'
 import R from 'ramda'
 import {modelData} from './EditorModel.js'
 import {currentLocation} from './location.js'
+import { oppijaHakuElementP } from './OppijaHaku.jsx'
 
 export const saveBus = Bacon.Bus()
 
@@ -49,15 +50,12 @@ export const oppijaContentP = (oppijaOid) => {
 
   saveBus.plug(updateResultE.map(true))
 
-  return oppijaP.map((oppija) => {
+  return Bacon.combineWith(oppijaP, oppijaHakuElementP, (oppija, haku) => {
     return {
-      content: (<div className='content-area'>
-        {
-          oppija.loading
-            ? <div className='main-content oppija loading'></div>
-            : <ExistingOppija oppija={oppija} changeBus={changeBus}/>
-        }
-      </div>),
+      content: (<div className='content-area'><div className="main-content oppija">
+          { haku }
+          <ExistingOppija oppija={oppija} changeBus={changeBus}/>
+        </div></div>),
       title: modelData(oppija, 'henkilö') ? 'Oppijan tiedot' : ''
     }
   })
@@ -67,8 +65,9 @@ export const ExistingOppija = React.createClass({
   render() {
     let {oppija, changeBus} = this.props
     let henkilö = modelLookup(oppija, 'henkilö')
-    return (
-      <div className='main-content oppija'>
+    return oppija.loading
+      ? <div className="loading"/>
+      : (<div>
         <h2>{modelTitle(henkilö, 'sukunimi')}, {modelTitle(henkilö, 'etunimet')} <span className='hetu'>({modelTitle(henkilö, 'hetu')})</span>
           <a className="json" href={`/koski/api/oppija/${modelData(henkilö, 'oid')}`}>JSON</a>
         </h2>
