@@ -11,6 +11,7 @@
       padding: 16px 20px;
       border-radius: 2px;
       margin-right: 10px;
+      position: relative;
       &:not(.selected) {
         background: white;
         border: 1px solid #D5D5D5;
@@ -22,7 +23,14 @@
       &.selected {
         color: white;
         background: #0A789C;
-        border: 1px solid #979797;
+        border: 1px solid #0A789C;
+        &:after {
+          content: "";
+          .Triangle(10px, #0A789C, top);
+          position: absolute;
+          bottom: -20px;
+          left: ~"calc(50% - 10px)";
+        }
       }
     }
     ul.oppilaitokset {
