@@ -78,10 +78,10 @@ export const ObjectEditor = React.createClass({
         : isArrayItem(context) // for array item, show representative property in expanded view too
           ? (<span className={objectWrapperClass}>
               <span className="representative">{representativeEditor({ forceInline: true })}</span>
-              <ExpandableEditor editor = {this} expandedView={objectEditor} defaultExpanded={context.edit} context={context}/>
+              {objectEditor()}
             </span>)
           : (<span className={objectWrapperClass}>
-              <ExpandableEditor editor = {this} expandedView={objectEditor} collapsedView={() => representativeEditor({ forceInline: true })} defaultExpandeded={context.edit} context={context}/>
+              {objectEditor()}
             </span>)
   }
 })
