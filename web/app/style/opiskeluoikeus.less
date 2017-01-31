@@ -43,6 +43,24 @@
       margin-bottom: 22px;
     }
 
+    .property.tila .array {
+      list-style: initial;
+      .opiskeluoikeusjakso {
+        margin-bottom: 8px;
+        label.date {
+          display: inline-block;
+          width: 4.5em;
+        }
+        label.tila {
+          background: #DEF2ff;
+          padding: 3px 9px;
+          margin-left: 10px;
+          border: 1px solid #A6DCEE;
+          border-radius: 2px;
+        }
+      }
+    }
+
     .suoritukset {
       margin-top: 20px;
 
@@ -148,11 +166,7 @@
       margin-bottom: 8px;
     }
 
-    .property .value > .array:not(.inline) {
-      padding-left: 20px;
-    }
-
-    .array > li > .object > .properties {
+    .property .value > .array {
       padding-left: 0;
     }
 
@@ -185,7 +199,7 @@
     .oppiaineensuoritus .korotus {
       margin-left: 8px;
     }
-    .oppiaineensuoritus label, .lukionkurssinsuoritus label, .opiskeluoikeusjakso label {
+    .oppiaineensuoritus label, .lukionkurssinsuoritus label {
       display: inline-block;
       min-width: 300px;
     }
