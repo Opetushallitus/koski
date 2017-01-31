@@ -17,6 +17,7 @@ const OppijaEditor = React.createClass({
 
     var opiskeluoikeusTyypit = modelLookup(model, 'opiskeluoikeudet').value
 
+    let näytettäväPäätasonSuoritus = s => ['perusopetuksenvuosiluokka', 'korkeakoulunopintojakso'].findIndex( t => t == s.value.data.tyyppi.koodiarvo) == -1
     let selectedIndex = selectedTyyppi
       ? opiskeluoikeusTyypit.findIndex((opiskeluoikeudenTyyppi) => selectedTyyppi == modelData(opiskeluoikeudenTyyppi, 'tyyppi.koodiarvo'))
       : 0
@@ -40,7 +41,7 @@ const OppijaEditor = React.createClass({
                         <ul className="opiskeluoikeudet">
                           {
                             modelLookup(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').value.map((opiskeluoikeus, opiskeluoikeusIndex) =>
-                              modelLookup(opiskeluoikeus, 'suoritukset').value.filter(s => s.value.data.tyyppi.koodiarvo != 'perusopetuksenvuosiluokka').map((suoritus, suoritusIndex) =>
+                              modelLookup(opiskeluoikeus, 'suoritukset').value.filter(näytettäväPäätasonSuoritus).map((suoritus, suoritusIndex) =>
                                 <li className="opiskeluoikeus" key={opiskeluoikeusIndex + '-' + suoritusIndex}>
                                   <span className="koulutus inline-text">{ modelTitle(suoritus, 'tyyppi') }</span>
                                   { modelData(opiskeluoikeus, 'alkamispäivä')
