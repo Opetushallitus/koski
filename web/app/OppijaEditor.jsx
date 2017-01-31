@@ -158,12 +158,72 @@ const PäätasonSuoritusEditor = React.createClass({
       <GenericEditor.PropertiesEditor properties={model.value.properties.filter(p => !excludedProperties.includes(p.key))} context={R.merge(context, {editable: model.editable})}/>
       <div className="osasuoritukset">
         {
-          <GenericEditor.PropertyEditor context={context} model={model} propertyName="osasuoritukset"/>
+          ['perusopetuksenvuosiluokansuoritus', 'perusopetuksenoppimaaransuoritus'].includes(model.value.class)
+            ? <PerusopetuksenOppiaineetEditor context={context} model={model}/>
+            : <GenericEditor.PropertyEditor context={context} model={model} propertyName="osasuoritukset"/>
         }
       </div>
     </div>)
   }
 })
+
+const PerusopetuksenOppiaineetEditor = React.createClass({
+  render() {
+    let {model, context} = this.props
+    let suoritukset = modelItems(model, 'osasuoritukset')
+    return suoritukset && (<div className="oppiaineet">
+      <h5>Oppiaineiden arvosanat</h5>
+      <p>Arvostelu 4-10, S (suoritettu), H (hylätty) tai V (vapautettu)</p>
+      <section>
+        <h5>Pakolliset oppiaineet</h5>
+        <Oppiainetaulukko model={model} context={GenericEditor.childContext(this, context, 'osasuoritukset')} suoritukset={suoritukset} filter={(oppiaine) => oppiaine.koulutusmoduuli.pakollinen}/>
+      </section>
+      <section>
+        <h5>Valinnaiset oppiaineet</h5>
+        <Oppiainetaulukko model={model} context={GenericEditor.childContext(this, context, 'osasuoritukset')} suoritukset={suoritukset} filter={(oppiaine) => !oppiaine.koulutusmoduuli.pakollinen}/>
+      </section>
+    </div>)
+  }
+})
+
+const Oppiainetaulukko = React.createClass({
+  render() {
+    let {suoritukset, context, filter} = this.props
+    return (<table>
+        <thead><tr><th className="oppiaine">Oppiaine</th><th className="arvosana">Arvosana</th></tr></thead>
+        <tbody>
+        {
+          suoritukset
+            .map((oppiaine, i) => ({oppiaine, i}))
+            .filter(({oppiaine}) => filter(modelData(oppiaine)))
+            .map(({oppiaine, i}) => (<OppiaineEditor key={i} model={oppiaine} context={GenericEditor.childContext(this, context, i)}/>))
+        }
+        </tbody>
+      </table>
+    )
+  }
+})
+
+const OppiaineEditor = React.createClass({
+  render() {
+    let {model} = this.props
+    var oppiaine = modelTitle(model, 'koulutusmoduuli')
+    let arvosana = modelData(model, 'arviointi.-1.arvosana').koodiarvo
+    let pakollinen = modelData(model, 'koulutusmoduuli.pakollinen')
+    if (pakollinen === false) {
+      oppiaine = 'Valinnainen ' + oppiaine.toLowerCase() // i18n
+    }
+    return (<tr>
+      <td className="oppiaine">{oppiaine}</td>
+      <td className="arvosana">
+        {arvosana}
+        {modelData(model, 'yksilöllistettyOppimäärä') ? <span className="yksilollistetty"> *</span> : null}
+        {modelData(model, 'korotus') ? <span className="korotus">(korotus)</span> : null}
+      </td>
+    </tr>)
+  }
+})
+OppiaineEditor.canShowInline = () => false
 
 const TodistusLink = React.createClass({
   render() {
@@ -194,25 +254,6 @@ const OpiskeluoikeudenOpintosuoritusoteLink = React.createClass({
     }
   }
 })
-
-const OppiaineEditor = React.createClass({
-  render() {
-    let {model} = this.props
-    var oppiaine = modelTitle(model, 'koulutusmoduuli')
-    let arvosana = modelTitle(model, 'arviointi.-1.arvosana')
-    let pakollinen = modelData(model, 'koulutusmoduuli.pakollinen')
-    if (pakollinen === false) {
-      oppiaine = 'Valinnainen ' + oppiaine.toLowerCase() // i18n
-    }
-    return (<div className="oppiaineensuoritus">
-      <label className="oppiaine">{oppiaine}</label>
-      <span className="arvosana">{arvosana}</span>
-      {modelData(model, 'yksilöllistettyOppimäärä') ? <span className="yksilollistetty"> *</span> : null}
-      {modelData(model, 'korotus') ? <span className="korotus">(korotus)</span> : null}
-    </div>)
-  }
-})
-OppiaineEditor.canShowInline = () => false
 
 const LukionKurssiEditor = React.createClass({
   render() {

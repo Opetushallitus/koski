@@ -61,6 +61,23 @@
       }
     }
 
+    h4 {
+      text-transform: none;
+      font-size: 24px;
+      margin-top: 0;
+    }
+
+    h5 {
+      font-size: 1em;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    p {
+      margin: 0;
+      color: #747474;
+    }
+
     .suoritukset {
       margin-top: 20px;
 
@@ -89,6 +106,40 @@
 
       .osasuoritukset {
         margin-top: 20px;
+
+        .oppiaineet {
+          section {
+            display: inline-block;
+            width: 578px;
+            margin-right: 45px;
+          }
+          table {
+            margin-top: 13px;
+            thead {
+              border-bottom: 1px solid #CCCCCC;
+            }
+            td, th {
+              padding-bottom: 7px;
+            }
+            .oppiaine {
+              width: 100%;
+            }
+            .arvosana {
+              text-align: right;
+            }
+            tbody {
+              tr:first-child td {
+                padding-top: 20px;
+              }
+              .arvosana {
+                padding-right: 20px;
+              }
+              .oppiaine {
+                color: #666666;
+              }
+            }
+          }
+        }
       }
     }
 
