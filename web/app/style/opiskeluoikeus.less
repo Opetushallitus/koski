@@ -62,10 +62,6 @@
       }
 
     }
-    label {
-      margin-right: 5px;
-      color: #666666;
-    }
 
     .OverlayLink {
       position: absolute;
@@ -86,25 +82,40 @@
     }
 
 
-    ul.properties {
+    .properties {
       position: relative;
-      list-style: none;
-      padding-left: 0;
-      > li.property {
-        position: relative;
-        > label {
-          display: inline-block;
-          min-width: 200px;
-          vertical-align: top
+      width: 100%;
+      > table {
+        font-size: 1em;
+        tr:not(:first-child) {
+          td {
+            padding-top: 9px;
+          }
         }
-        > .inline {
-          width: ~"calc(100% - 200px)";
-          display: inline-block;
-          vertical-align: top
+        td.label {
+          min-width: 100px;
+          padding-right: 20px;
+          color: #666666;
         }
+        td.value {
+          width: 100%;
+        }
+        > li.property { // TODO: remove
+          position: relative;
+          > label {
+            display: inline-block;
+            min-width: 200px;
+            vertical-align: top
+          }
+          > .inline {
+            width: ~"calc(100% - 200px)";
+            display: inline-block;
+            vertical-align: top
+          }
 
-        > select {
-          width: ~"calc(100% - 300px)";
+          > select {
+            width: ~"calc(100% - 300px)";
+          }
         }
       }
     }

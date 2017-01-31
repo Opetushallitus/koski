@@ -114,23 +114,25 @@ export const PropertiesEditor = React.createClass({
     let edit = context.edit || (this.state && this.state.edit)
     let toggleEdit = () => this.setState({edit: !edit})
     let shouldShow = shouldShowProperty(edit)
-    return (<ul className="properties">
+    return (<div className="properties">
       {
         children
       }
       {
         context.editable && !context.edit ? <a className="toggle-edit" onClick={toggleEdit}>{edit ? 'valmis' : 'muokkaa'}</a> : null
       }
+      <table><tbody>
       {
         properties.filter(shouldShow).map(property => {
           let propertyClassName = 'property ' + property.key
-          return (<li className={propertyClassName} key={property.key}>
-            <label>{property.title}</label>
-            <span className="value">{ getModelEditor(property.model, childContext(this, R.merge(context, {edit: edit}), property.key)) }</span>
-          </li>)
+          return (<tr className={propertyClassName} key={property.key}>
+            <td className="label">{property.title}</td>
+            <td className="value">{ getModelEditor(property.model, childContext(this, R.merge(context, {edit: edit}), property.key)) }</td>
+          </tr>)
         })
       }
-    </ul>)
+      </tbody></table>
+    </div>)
   }
 })
 PropertiesEditor.canShowInline = () => false
