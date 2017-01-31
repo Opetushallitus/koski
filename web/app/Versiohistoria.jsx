@@ -37,7 +37,7 @@ export default React.createClass({
   fetchHistory() {
     if (!this.historyP) {
       this.historyP = Http.cachedGet(`/koski/api/opiskeluoikeus/historia/${this.props.opiskeluOikeusId}`).doError(showInternalError)
-      this.historyP.onValue(h => {console.log("got it"); this.setState({history: h})})
+      this.historyP.onValue(h => this.setState({history: h}))
     }
   },
   versionumero() {

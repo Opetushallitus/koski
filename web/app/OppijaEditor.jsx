@@ -139,7 +139,6 @@ const OpiskeluoikeusEditor = React.createClass({
 const PäätasonSuoritusEditor = React.createClass({
   render() {
     let {model, context} = this.props
-    let title = modelTitle(model, 'koulutusmoduuli')
     let className = 'suoritus ' + model.value.class
     return (<div className={className}>
       <TodistusLink suoritus={model} context={context}/>
