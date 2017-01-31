@@ -152,10 +152,16 @@ const PäätasonSuoritusEditor = React.createClass({
   render() {
     let {model, context} = this.props
     let className = 'suoritus ' + model.value.class
-    let excludedProperties = ['osasuoritukset', 'käyttäytymisenArvio']
+    let excludedProperties = ['osasuoritukset', 'käyttäytymisenArvio', 'tila', 'vahvistus']
     return (<div className={className}>
       <TodistusLink suoritus={model} context={context}/>
       <GenericEditor.PropertiesEditor properties={model.value.properties.filter(p => !excludedProperties.includes(p.key))} context={R.merge(context, {editable: model.editable})}/>
+      <div className="tila-vahvistus">
+        <span className="tila">
+          Suoritus: <span className={ 'VALMIS' == model.value.data.tila.koodiarvo ? 'valmis' : ''}>{ model.value.data.tila.koodiarvo }</span>
+        </span>
+        <GenericEditor.PropertyEditor context={context} model={model} propertyName="vahvistus" />
+      </div>
       <div className="osasuoritukset">
         {
           ['perusopetuksenvuosiluokansuoritus', 'perusopetuksenoppimaaransuoritus'].includes(model.value.class)
