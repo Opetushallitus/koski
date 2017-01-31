@@ -110,11 +110,14 @@ ExpandableEditor.canShowInline = () => true
 
 export const PropertiesEditor = React.createClass({
   render() {
-    let {properties, context} = this.props
+    let {properties, context, children} = this.props
     let edit = context.edit || (this.state && this.state.edit)
     let toggleEdit = () => this.setState({edit: !edit})
     let shouldShow = shouldShowProperty(edit)
     return (<ul className="properties">
+      {
+        children
+      }
       {
         context.editable && !context.edit ? <a className="toggle-edit" onClick={toggleEdit}>{edit ? 'valmis' : 'muokkaa'}</a> : null
       }

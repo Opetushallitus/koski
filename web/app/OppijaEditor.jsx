@@ -107,7 +107,9 @@ const OpiskeluoikeusEditor = React.createClass({
         <span className="tila">{modelTitle(model, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()})</span>
         <Versiohistoria opiskeluOikeusId={id} oppijaOid={context.oppijaOid}/>
       </h3>
-      <GenericEditor.PropertiesEditor properties={ model.value.properties.filter(property => property.key != 'suoritukset') } context={opiskeluoikeusContext}/>
+      <GenericEditor.PropertiesEditor properties={ model.value.properties.filter(property => property.key != 'suoritukset') } context={opiskeluoikeusContext}>
+        <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={model} context={context}/>
+      </GenericEditor.PropertiesEditor>
       {
         suoritukset.length >= 2 && (
           <ul className="suoritus-tabs">
@@ -128,7 +130,6 @@ const OpiskeluoikeusEditor = React.createClass({
           i == suoritusIndex ? <PäätasonSuoritusEditor model={suoritusModel} context={GenericEditor.childContext(this, opiskeluoikeusContext, 'suoritukset', i)} key={i}/> : null
         )
       }
-      <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={model} context={context}/>
     </div>)
   }
 })

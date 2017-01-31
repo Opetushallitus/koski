@@ -1,5 +1,7 @@
 .oppija .opiskeluoikeus {
   padding: 0;
+  position: relative;
+
   .suoritus-tabs {
     padding: 0;
     list-style: none;
@@ -26,13 +28,25 @@
   label {
     margin-right: 5px;
   }
-  a.todistus, a.opintosuoritusote {
+
+  .OverlayLink {
     position: absolute;
-    margin-right: 66px;
-    text-decoration: underline;
-    font-size: 0.8em;
     right: 0;
+    font-size: 0.8em;
+    text-decoration: underline;
+    z-index: 1;
+    top: 0;
   }
+
+  a.todistus, a.opintosuoritusote {
+    .OverlayLink;
+    margin-right: 66px;
+  }
+
+  .toggle-edit {
+    .OverlayLink;
+  }
+
 
   ul.properties {
     position: relative;
@@ -163,14 +177,6 @@
 
   .collapsed .collapsed a.toggle-expand {
     display: none;
-  }
-
-  .toggle-edit {
-    position: absolute;
-    top: 0;
-    right: 0;
-    font-size: 0.8em;
-    text-decoration: underline;
   }
 
   input[type=text] {
