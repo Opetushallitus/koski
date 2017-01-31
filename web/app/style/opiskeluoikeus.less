@@ -182,23 +182,24 @@
     }
 
     .OverlayLink {
-      position: absolute;
-      right: 0;
       font-size: 0.8em;
       text-decoration: underline;
+      line-height: 20px;
       z-index: 1;
-      top: 0;
     }
 
     a.todistus, a.opintosuoritusote {
       .OverlayLink;
-      margin-right: 66px;
+      position: absolute;
+      right: 66px;
     }
 
     .toggle-edit {
       .OverlayLink;
+      float: right;
+      margin-left: 5px;
+      position: relative;
     }
-
 
     .properties {
       position: relative;
@@ -211,9 +212,10 @@
           }
         }
         td.label {
-          min-width: 100px;
+          min-width: 120px;
           padding-right: 20px;
           color: #666666;
+          white-space: nowrap;
         }
         td.value {
           width: 100%;
@@ -259,7 +261,7 @@
     }
 
     .property .value > .array {
-      padding-left: 0;
+      padding-left: 18px;
     }
 
     input, select {
