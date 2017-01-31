@@ -3,8 +3,8 @@
   position: relative;
 
   h3 {
-    margin: 0 -27px;
-    padding: 16px 27px 16px 16px;;
+    margin: 0;
+    padding: 17px;
     background: #0A789C 100%;
     font-size: 18px;
     color: #FFFFFF;
@@ -35,194 +35,198 @@
     }
   }
 
-  .suoritus-tabs {
-    padding: 0;
-    list-style: none;
-    margin-top: 20px;
-    border-bottom: 1px solid #AEAEAF;
-    margin-bottom: 30px;
+  .opiskeluoikeus-content {
+    padding: 27px;
+    font-size: 15px;
+
+    .suoritus-tabs {
+      padding: 0;
+      list-style: none;
+      margin-top: 20px;
+      border-bottom: 1px solid #AEAEAF;
+      margin-bottom: 30px;
+
+      li {
+        display: inline-block;
+        padding: 5px 40px;
+        transform: translate(0, 1px);
+        &.selected {
+          background: white;
+          border-left: 1px solid #AEAEAE;
+          border-right: 1px solid #AEAEAE;
+          border-top: 2px solid #159ECB;
+        }
+        a {
+          color: #159ECB;
+        }
+      }
+
+    }
+    label {
+      margin-right: 5px;
+      color: #666666;
+    }
+
+    .OverlayLink {
+      position: absolute;
+      right: 0;
+      font-size: 0.8em;
+      text-decoration: underline;
+      z-index: 1;
+      top: 0;
+    }
+
+    a.todistus, a.opintosuoritusote {
+      .OverlayLink;
+      margin-right: 66px;
+    }
+
+    .toggle-edit {
+      .OverlayLink;
+    }
+
+
+    ul.properties {
+      position: relative;
+      list-style: none;
+      padding-left: 0;
+      > li.property {
+        position: relative;
+        > label {
+          display: inline-block;
+          min-width: 200px;
+          vertical-align: top
+        }
+        > .inline {
+          width: ~"calc(100% - 200px)";
+          display: inline-block;
+          vertical-align: top
+        }
+
+        > select {
+          width: ~"calc(100% - 300px)";
+        }
+      }
+    }
+
+    ul.array {
+      list-style: none;
+      &:not(.inline):not(.inline-when-collapsed) > li {
+        position: relative;
+      }
+      &.inline {
+        display: inline-block;
+        padding-left: 0;
+        > li {
+          display: inline-block;
+        }
+      }
+    }
+
+    .array > li:not(:last-child) > .object {
+      border-bottom: solid lightgray 1px;
+      padding-bottom: 8px;
+      margin-bottom: 8px;
+    }
+
+    .property .value > .array:not(.inline) {
+      padding-left: 20px;
+    }
+
+    .array > li > .object > .properties {
+      padding-left: 0;
+    }
+
+    input, select {
+      width: 200px;
+      float: right;
+    }
+
+    .opiskeluoikeus, .suoritus {
+      position: relative;
+    }
 
     li {
+      clear: both;
+      line-height: 23px;
+
+      &.add-item {
+        text-align: right;
+        a {
+          font-size: 12px;
+        }
+      }
+    }
+
+    a.add-value {
+      float: right;
+      font-size: 12px;
+    }
+
+    .oppiaineensuoritus .korotus {
+      margin-left: 8px;
+    }
+    .oppiaineensuoritus label, .lukionkurssinsuoritus label, .opiskeluoikeusjakso label {
       display: inline-block;
-      padding: 5px 40px;
-      transform: translate(0, 1px);
-      &.selected {
-        background: white;
-        border-left: 1px solid #AEAEAE;
-        border-right: 1px solid #AEAEAE;
-        border-top: 2px solid #159ECB;
-      }
-      a {
-        color: #159ECB;
-      }
+      min-width: 300px;
     }
-
-  }
-  label {
-    margin-right: 5px;
-  }
-
-  .OverlayLink {
-    position: absolute;
-    right: 0;
-    font-size: 0.8em;
-    text-decoration: underline;
-    z-index: 1;
-    top: 0;
-  }
-
-  a.todistus, a.opintosuoritusote {
-    .OverlayLink;
-    margin-right: 66px;
-  }
-
-  .toggle-edit {
-    .OverlayLink;
-  }
-
-
-  ul.properties {
-    position: relative;
-    > li.property {
-      position: relative;
-      > label {
+    .lukionkurssinsuoritus .koodiarvo {
+      margin-right: 10px;
+    }
+    .tutkinnonosa {
+      .tutkinnonosan-tiedot .nimi {
         display: inline-block;
-        min-width: 200px;
-        vertical-align: top
+        min-width: 450px;
       }
-      > .inline {
-        width: ~"calc(100% - 200px)";
-        display: inline-block;
-        vertical-align: top
-      }
-
-      > select {
-        width: ~"calc(100% - 300px)";
+      .tutkinnonosan-tiedot .arvosana {
+        font-size: 0.9em;
       }
     }
-    list-style: none;
-    padding-left: 20px;
-  }
 
-  ul.array {
-    list-style: none;
-    &:not(.inline):not(.inline-when-collapsed) > li {
-      position: relative;
+    .osaamisentunnustaminen {
+      display: block;
+      margin-top: 8px;
+      margin-left: 20px;
     }
-    &.inline {
+
+    .foldable-wrapper {
+      display: block;
+    }
+
+    .inline .foldable-wrapper, .foldable-wrapper.inline {
       display: inline-block;
-      padding-left: 0;
-      > li {
-        display: inline-block;
-      }
+    }
+
+    a.toggle-expand {
+      margin-left: 10px;
+      position: absolute;
+      top: 0;
+      left: -30px;
+      z-index: 1;
+    }
+
+    .expanded > a.toggle-expand {
+      left: -28px;
+    }
+
+    .representative .collapsed a.toggle-expand {
+      display: none;
+    }
+
+    .collapsed .collapsed a.toggle-expand {
+      display: none;
+    }
+
+    input[type=text] {
+      height: 1.5em;
+      margin-bottom: 2px;
+      padding: 0 5px;
+      font-size: 0.8em;
+      border-radius: 3px;
+    }
+
+    input[type=checkbox] {
+      height: 1.5em;
     }
   }
-
-  .array > li:not(:last-child) > .object {
-    border-bottom: solid lightgray 1px;
-    padding-bottom: 8px;
-    margin-bottom: 8px;
-  }
-
-  .property .value > .array:not(.inline) {
-    padding-left: 20px;
-  }
-
-  .array > li > .object > .properties {
-    padding-left: 0;
-  }
-
-  input, select {
-    width: 200px;
-    float: right;
-  }
-
-  .opiskeluoikeus, .suoritus {
-    position: relative;
-  }
-
-  li {
-    clear: both;
-    line-height: 23px;
-
-    &.add-item {
-      text-align: right;
-      a {
-        font-size: 12px;
-      }
-    }
-  }
-
-  a.add-value {
-    float: right;
-    font-size: 12px;
-  }
-
-  .oppiaineensuoritus .korotus {
-    margin-left: 8px;
-  }
-  .oppiaineensuoritus label, .lukionkurssinsuoritus label, .opiskeluoikeusjakso label {
-    display: inline-block;
-    min-width: 300px;
-  }
-  .lukionkurssinsuoritus .koodiarvo {
-    margin-right: 10px;
-  }
-  .tutkinnonosa {
-    .tutkinnonosan-tiedot .nimi {
-      display: inline-block;
-      min-width: 450px;
-    }
-    .tutkinnonosan-tiedot .arvosana {
-      font-size: 0.9em;
-    }
-  }
-
-  .osaamisentunnustaminen {
-    display: block;
-    margin-top: 8px;
-    margin-left: 20px;
-  }
-
-  .foldable-wrapper {
-    display: block;
-  }
-
-  .inline .foldable-wrapper, .foldable-wrapper.inline {
-    display: inline-block;
-  }
-
-  a.toggle-expand {
-    margin-left: 10px;
-    position: absolute;
-    top: 0;
-    left: -30px;
-    z-index: 1;
-  }
-
-  .expanded > a.toggle-expand {
-    left: -28px;
-  }
-
-  .representative .collapsed a.toggle-expand {
-    display: none;
-  }
-
-  .collapsed .collapsed a.toggle-expand {
-    display: none;
-  }
-
-  input[type=text] {
-    height: 1.5em;
-    margin-bottom: 2px;
-    padding: 0 5px;
-    font-size: 0.8em;
-    border-radius: 3px;
-  }
-
-  input[type=checkbox] {
-    height: 1.5em;
-  }
-
-
 }
