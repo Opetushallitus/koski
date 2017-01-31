@@ -5,7 +5,7 @@ import * as GenericEditor from './GenericEditor.jsx'
 import Versiohistoria from './Versiohistoria.jsx'
 import Link from './Link.jsx'
 import { currentLocation } from './location.js'
-import { yearFromDateString } from './date'
+import { yearFromFinnishDateString } from './date'
 
 const OppijaEditor = React.createClass({
   render() {
@@ -45,8 +45,8 @@ const OppijaEditor = React.createClass({
                                   <span className="koulutus inline-text">{ modelTitle(suoritus, 'tyyppi') }</span>
                                   { modelData(opiskeluoikeus, 'alkamispäivä')
                                     ? <span className="inline-text">
-                                        <span className="alku pvm">{yearFromDateString(modelTitle(opiskeluoikeus, 'alkamispäivä'))}</span>-
-                                        <span className="loppu pvm">{yearFromDateString(modelTitle(opiskeluoikeus, 'päättymispäivä'))},</span>
+                                        <span className="alku pvm">{yearFromFinnishDateString(modelTitle(opiskeluoikeus, 'alkamispäivä'))}</span>-
+                                        <span className="loppu pvm">{yearFromFinnishDateString(modelTitle(opiskeluoikeus, 'päättymispäivä'))},</span>
                                       </span>
                                     : null
                                   }
@@ -99,8 +99,8 @@ const OpiskeluoikeusEditor = React.createClass({
         <span className="koulutus inline-text">{modelTitle(model, 'suoritukset.0.koulutusmoduuli')}</span>
          { modelData(model, 'alkamispäivä')
             ? <span className="inline-text">(
-                  <span className="alku pvm">{modelTitle(model, 'alkamispäivä')}</span>-
-                  <span className="loppu pvm">{modelTitle(model, 'päättymispäivä')},</span>
+                  <span className="alku pvm">{yearFromFinnishDateString(modelTitle(model, 'alkamispäivä'))}</span>-
+                  <span className="loppu pvm">{yearFromFinnishDateString(modelTitle(model, 'päättymispäivä'))},</span>
               </span>
             : null
           }
