@@ -152,7 +152,7 @@ const PäätasonSuoritusEditor = React.createClass({
   render() {
     let {model, context} = this.props
     let className = 'suoritus ' + model.value.class
-    let excludedProperties = ['osasuoritukset']
+    let excludedProperties = ['osasuoritukset', 'käyttäytymisenArvio']
     return (<div className={className}>
       <TodistusLink suoritus={model} context={context}/>
       <GenericEditor.PropertiesEditor properties={model.value.properties.filter(p => !excludedProperties.includes(p.key))} context={R.merge(context, {editable: model.editable})}/>
@@ -171,6 +171,7 @@ const PerusopetuksenOppiaineetEditor = React.createClass({
   render() {
     let {model, context} = this.props
     let suoritukset = modelItems(model, 'osasuoritukset')
+    let käyttäytymisenArvio = modelData(model).käyttäytymisenArvio
     return suoritukset && (<div className="oppiaineet">
       <h5>Oppiaineiden arvosanat</h5>
       <p>Arvostelu 4-10, S (suoritettu), H (hylätty) tai V (vapautettu)</p>
@@ -181,6 +182,17 @@ const PerusopetuksenOppiaineetEditor = React.createClass({
       <section>
         <h5>Valinnaiset oppiaineet</h5>
         <Oppiainetaulukko model={model} context={GenericEditor.childContext(this, context, 'osasuoritukset')} suoritukset={suoritukset} filter={(oppiaine) => !oppiaine.koulutusmoduuli.pakollinen}/>
+        {
+          käyttäytymisenArvio && (<div>
+            <h5 className="kayttaytyminen">Käyttäytymisen arviointi</h5>
+            {
+              <GenericEditor.PropertiesEditor properties={modelLookup(model, 'käyttäytymisenArvio').value.properties}
+                                              context={GenericEditor.childContext(this, context, 'käyttäytymisenArvio')}
+                                              getValueEditor={ (prop, ctx, getDefault) => prop.key == 'arvosana' ? prop.model.value.data.koodiarvo : getDefault() }
+              />
+            }
+          </div>)
+        }
       </section>
     </div>)
   }

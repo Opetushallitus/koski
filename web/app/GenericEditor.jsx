@@ -110,7 +110,8 @@ ExpandableEditor.canShowInline = () => true
 
 export const PropertiesEditor = React.createClass({
   render() {
-    let {properties, context, children} = this.props
+    let defaultValueEditor = (prop, ctx, getDefault) => getDefault()
+    let {properties, context, children, getValueEditor = defaultValueEditor} = this.props
     let edit = context.edit || (this.state && this.state.edit)
     let toggleEdit = () => this.setState({edit: !edit})
     let shouldShow = shouldShowProperty(edit)
@@ -125,9 +126,10 @@ export const PropertiesEditor = React.createClass({
       {
         properties.filter(shouldShow).map(property => {
           let propertyClassName = 'property ' + property.key
+          let propertyContext = childContext(this, R.merge(context, {edit: edit}), property.key)
           return (<tr className={propertyClassName} key={property.key}>
             <td className="label">{property.title}</td>
-            <td className="value">{ getModelEditor(property.model, childContext(this, R.merge(context, {edit: edit}), property.key)) }</td>
+            <td className="value">{ getValueEditor(property, propertyContext, () => getModelEditor(property.model, propertyContext)) }</td>
           </tr>)
         })
       }

@@ -110,33 +110,41 @@
         .oppiaineet {
           section {
             display: inline-block;
+            vertical-align: top;
             width: 578px;
             margin-right: 45px;
-          }
-          table {
-            margin-top: 13px;
-            thead {
-              border-bottom: 1px solid #CCCCCC;
-            }
-            td, th {
-              padding-bottom: 7px;
-            }
-            .oppiaine {
-              width: 100%;
-            }
-            .arvosana {
-              text-align: right;
-            }
-            tbody {
-              tr:first-child td {
-                padding-top: 20px;
+
+            > table {
+              margin-top: 13px;
+              thead {
+                border-bottom: 1px solid #CCCCCC;
               }
-              .arvosana {
-                padding-right: 20px;
+              td, th {
+                padding-bottom: 7px;
               }
               .oppiaine {
-                color: #666666;
+                width: 100%;
               }
+              .arvosana {
+                text-align: right;
+              }
+              tbody {
+                tr:first-child td {
+                  padding-top: 20px;
+                }
+                .arvosana {
+                  padding-right: 20px;
+                }
+                .oppiaine {
+                  color: #666666;
+                }
+              }
+            }
+
+            .kayttaytyminen {
+              padding-bottom: 7px;
+              border-bottom: 1px solid #CCCCCC;
+              margin-bottom: 16px;
             }
           }
         }
