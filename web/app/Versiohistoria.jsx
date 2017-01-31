@@ -15,11 +15,11 @@ export default React.createClass({
     }
     let selectedVersion = this.versionumero() || history.length
     return (<div className="versiohistoria">
-      <a className="versiohistoria" onClick={toggle}>versiohistoria</a>
+      <a onClick={toggle}>versiohistoria</a>
       {
         showHistory && (<table><tbody>{
-          history.map((version) =>
-            <tr key={version.versionumero} className={version.versionumero == selectedVersion ? 'selected' : ''}>
+          history.map((version, i) =>
+            <tr key={i} className={version.versionumero == selectedVersion ? 'selected' : ''}>
               <td className="versionumero">{version.versionumero}</td>
               <td className="aikaleima"><Link href={`/koski/oppija/${oppijaOid}?opiskeluoikeus=${opiskeluOikeusId}&versionumero=${version.versionumero}`}>{ISO2FinnishDateTime(version.aikaleima)}</Link></td>
             </tr>

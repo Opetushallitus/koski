@@ -2,6 +2,39 @@
   padding: 0;
   position: relative;
 
+  h3 {
+    margin: 0 -27px;
+    padding: 16px 27px 16px 16px;;
+    background: #0A789C 100%;
+    font-size: 18px;
+    color: #FFFFFF;
+    letter-spacing: 0;
+    font-weight: normal;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+
+    .versiohistoria {
+      display: inline-block;
+      float: right;
+      font-size: 0.9em;
+      > a {
+        font-size: 0.8em;
+        text-decoration: underline;
+        color: white;
+        vertical-align: top;
+      }
+      table {
+        vertical-align: middle;
+        display: inline-block;
+        margin-left: 10px;
+        tr.selected, tr.selected a {
+          background: #159ECB;
+          color: white;
+        }
+      }
+    }
+  }
+
   .suoritus-tabs {
     padding: 0;
     list-style: none;
