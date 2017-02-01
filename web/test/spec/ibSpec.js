@@ -33,7 +33,7 @@ describe('IB-tutkinto', function( ) {
     describe('Kaikki tiedot näkyvissä', function () {
       before(opinnot.expandAll)
       it('toimii', function () {
-        expect(S('.ibkurssinsuoritus:eq(0) .koulutusmoduuli .kuvaus .value').text()).to.equal('A Finnish standard level 1')
+        expect(S('.ibkurssinsuoritus:eq(0) .koulutusmoduuli .kuvaus .value').text()).to.equal('TOK1')
       })
     })
 
