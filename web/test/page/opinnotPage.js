@@ -6,7 +6,7 @@ function OpinnotPage() {
   var api = {
     getTutkinto: function(index) {
       index = typeof index !== 'undefined' ? index : 0
-      var nth = S('.opiskeluoikeus .suoritus .property.koulutusmoduuli .value .enum')[index]
+      var nth = S('.opiskeluoikeus .suoritus .property.koulutusmoduuli .koulutusmoduuli .tunniste')[index]
       return S(nth).text()
     },
     getOppilaitos: function(index) {

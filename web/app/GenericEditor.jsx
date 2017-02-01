@@ -60,7 +60,7 @@ export const ObjectEditor = React.createClass({
   render() {
     let {model, context} = this.props
     let className = model.value
-      ? 'object ' + model.value.class
+      ? 'object ' + model.value.classes.join(' ')
       : 'object empty'
     let representative = findRepresentative(model)
     let representativeEditor = (props) => getModelEditor(representative.model, R.merge(childContext(this, context, representative.key), props || {}))

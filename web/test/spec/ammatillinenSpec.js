@@ -341,7 +341,7 @@ describe('Ammatillinen koulutus', function() {
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('toimii', function() {
-        expect(S('.ammatilliseenperuskoulutukseenvalmentavankoulutuksenosansuoritus:eq(0) .koulutusmoduuli .nimi .value').text()).to.equal('Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen')
+        expect(S('.tutkinnonosa:eq(0) .koulutusmoduuli .nimi .value').text()).to.equal('Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen')
       })
     })
 

@@ -152,7 +152,7 @@ const OpiskeluoikeusEditor = React.createClass({
 const PäätasonSuoritusEditor = React.createClass({
   render() {
     let {model, context} = this.props
-    let className = 'suoritus ' + model.value.class
+    let className = 'suoritus ' + model.value.classes.join(' ')
     let excludedProperties = ['osasuoritukset', 'käyttäytymisenArvio', 'tila', 'vahvistus']
     return (<div className={className}>
       <TodistusLink suoritus={model} context={context}/>
@@ -289,7 +289,7 @@ const KoulutusmoduuliEditor = React.createClass({
       : <span className="koulutusmoduuli">
           <span className="tunniste">{modelTitle(model, 'tunniste')}</span>
           <span className="diaarinumero">{modelTitle(model, 'perusteenDiaarinumero')}</span>
-          <GenericEditor.PropertiesEditor properties={model.value.properties.filter(p => !['tunniste', 'diaarinumero'].includes(p.key))} context={context}/>
+          <GenericEditor.PropertiesEditor properties={model.value.properties.filter(p => !['tunniste', 'perusteenDiaarinumero'].includes(p.key))} context={context}/>
         </span>
   }
 })
@@ -299,6 +299,8 @@ export const editorMapping = {
   'preiboppiaineensuoritus': TutkinnonosaEditor,
   'iboppiaineensuoritus': TutkinnonosaEditor,
   'ammatillisentutkinnonosansuoritus': TutkinnonosaEditor,
+  'nayttotutkintoonvalmistavankoulutuksenosansuoritus': TutkinnonosaEditor,
+  'ammatilliseenperuskoulutukseenvalmentavankoulutuksenosansuoritus': TutkinnonosaEditor,
   'lukionoppiaineensuoritus': TutkinnonosaEditor,
   'ylioppilastutkinnonkokeensuoritus': TutkinnonosaEditor,
   'lukionkurssinsuoritus': LukionKurssiEditor,
@@ -312,5 +314,6 @@ export const editorMapping = {
   'laajuuskursseissa' : LaajuusEditor,
   'laajuusopintopisteissa' : LaajuusEditor,
   'laajuusvuosiviikkotunneissa' : LaajuusEditor,
-  'koulutus' : KoulutusmoduuliEditor
+  'koulutus' : KoulutusmoduuliEditor,
+  'preibkoulutusmoduuli': KoulutusmoduuliEditor
 }

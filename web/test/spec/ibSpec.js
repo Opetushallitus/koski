@@ -8,7 +8,7 @@ describe('IB-tutkinto', function( ) {
     before(page.openPage, page.oppijaHaku.searchAndSelect('040701-432D'))
     describe('Oppijan suorituksissa', function () {
       it('näytetään', function () {
-        expect(opinnot.getTutkinto(0)).to.equal("Pre-IB luokan oppimäärä")
+        expect(opinnot.getTutkinto()).to.equal("Pre-IB luokan oppimäärä")
         expect(opinnot.getOppilaitos()).to.equal("Ressun lukio")
       })
     })
