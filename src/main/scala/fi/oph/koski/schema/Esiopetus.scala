@@ -3,7 +3,7 @@ package fi.oph.koski.schema
 import java.time.LocalDate
 
 import fi.oph.koski.localization.LocalizedString
-import fi.oph.scalaschema.annotation.{MinItems, Description}
+import fi.oph.scalaschema.annotation.{Description, MinItems, Title}
 
 case class EsiopetuksenOpiskeluoikeus(
   id: Option[Int] = None,
@@ -38,6 +38,7 @@ case class EsiopetuksenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("esiopetuksensuoritus", koodistoUri = "suorituksentyyppi"),
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
+  @Title("Koulutus")
   koulutusmoduuli: Esiopetus = Esiopetus(),
   @Description("Tieto siitä kielestä, joka on oppilaan kotimaisten kielten kielikylvyn kieli.")
   @KoodistoUri("kieli")
