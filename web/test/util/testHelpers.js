@@ -63,8 +63,12 @@ wait = {
     }
   },
   forAjax: function() {
-    return wait.forMilliseconds(1)().then(wait.until(KoskiPage().isReady))
+    return wait.forMilliseconds(1)().then(wait.until(function() {return !isLoading()}))
   }
+}
+
+function isLoading() {
+  return isElementVisible(S('.loading'))
 }
 
 function getJson(url) {
