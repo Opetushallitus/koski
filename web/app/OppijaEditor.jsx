@@ -363,6 +363,7 @@ const KoulutusmoduuliEditor = React.createClass({
       : <span className="koulutusmoduuli">
           <span className="tunniste">{modelTitle(model, 'tunniste')}</span>
           <span className="diaarinumero">{modelTitle(model, 'perusteenDiaarinumero')}</span>
+          <GenericEditor.PropertiesEditor properties={model.value.properties.filter(p => !['tunniste', 'diaarinumero'].includes(p.key))} context={context}/>
         </span>
   }
 })
