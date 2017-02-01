@@ -95,7 +95,7 @@ const OpiskeluoikeusEditor = React.createClass({
     let suoritusQueryParam = context.path + '.suoritus'
     let suoritusIndex = currentLocation().params[suoritusQueryParam] || 0
     let suoritukset = modelItems(model, 'suoritukset')
-    let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos']
+    let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot']
     let päättymispäiväProperty = (modelData(model, 'arvioituPäättymispäivä') && !modelData(model, 'päättymispäivä')) ? 'arvioituPäättymispäivä' : 'päättymispäivä'
 
     return (<div className="opiskeluoikeus">
@@ -119,6 +119,7 @@ const OpiskeluoikeusEditor = React.createClass({
         <GenericEditor.PropertiesEditor properties={ model.value.properties.filter(p => !excludedProperties.includes(p.key)) } context={opiskeluoikeusContext}>
           <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={model} context={context}/>
         </GenericEditor.PropertiesEditor>
+        <ExpandablePropertiesEditor context={opiskeluoikeusContext} model={model} propertyName="lisätiedot" />
         <div className="suoritukset">
           {
             suoritukset.length >= 2 && (
@@ -146,6 +147,33 @@ const OpiskeluoikeusEditor = React.createClass({
         </div>
       </div>
     </div>)
+  }
+})
+
+const ExpandablePropertiesEditor = React.createClass({
+  render() {
+    let {model, context, propertyName} = this.props
+    let {open} = this.state
+    return modelLookup(model, propertyName).value ?
+      <table className={propertyName}>
+          <tbody>
+          <tr className="property">
+            <td className="label"><a onClick={this.toggleOpen}>{model.value.properties.find(p => p.key === propertyName).title}</a></td>
+            {open ?
+              <td className="value"><GenericEditor.PropertiesEditor
+                properties={modelLookup(model, propertyName).value.properties}
+                context={GenericEditor.childContext(this, context, propertyName)}/>
+              </td> : null
+            }
+          </tr>
+          </tbody>
+      </table> : null
+  },
+  toggleOpen() {
+    this.setState({open: !this.state.open})
+  },
+  getInitialState() {
+    return {open: false}
   }
 })
 

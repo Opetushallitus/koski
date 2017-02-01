@@ -203,6 +203,30 @@
       .OverlayLink;
     }
 
+    .property > .label {
+      min-width: 120px;
+      padding-right: 20px;
+      color: #666666;
+      white-space: nowrap;
+
+      a:after {
+        content: '';
+        -webkit-transform: rotate(135deg);
+        border-right: 2px solid #4194BF;
+        border-top: 2px solid #4194BF;
+        border-radius: 1px;
+        width: 4px;
+        height: 4px;
+        display: inline-block;
+        margin-left: 6px;
+        margin-bottom: 3px;
+      }
+    }
+
+    .property > .value {
+      width: 100%;
+    }
+
     .properties {
       position: relative;
       width: 100%;
@@ -212,15 +236,6 @@
           td {
             padding-top: 9px;
           }
-        }
-        td.label {
-          min-width: 120px;
-          padding-right: 20px;
-          color: #666666;
-          white-space: nowrap;
-        }
-        td.value {
-          width: 100%;
         }
       }
     }
