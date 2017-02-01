@@ -355,12 +355,12 @@ const TutkinnonosaEditor = React.createClass({
 })
 TutkinnonosaEditor.canShowInline = () => false
 
-const AmmatillinenTutkintoKoulutusEditor = React.createClass({
+const KoulutusmoduuliEditor = React.createClass({
   render() {
     let {model, context} = this.props
     return context.edit
       ? <GenericEditor.ObjectEditor {...this.props}/>
-      : <span className="ammatillinentutkintokoulutus">
+      : <span className="koulutusmoduuli">
           <span className="tunniste">{modelTitle(model, 'tunniste')}</span>
           <span className="diaarinumero">{modelTitle(model, 'perusteenDiaarinumero')}</span>
         </span>
@@ -388,5 +388,6 @@ export const editorMapping = {
   'laajuuskursseissa' : LaajuusEditor,
   'laajuusopintopisteissa' : LaajuusEditor,
   'laajuusvuosiviikkotunneissa' : LaajuusEditor,
-  'ammatillinentutkintokoulutus' : AmmatillinenTutkintoKoulutusEditor
+  'ammatillinentutkintokoulutus' : KoulutusmoduuliEditor,
+  'perusopetus' : KoulutusmoduuliEditor
 }
