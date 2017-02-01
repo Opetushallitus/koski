@@ -6,6 +6,7 @@ import Versiohistoria from './Versiohistoria.jsx'
 import Link from './Link.jsx'
 import { currentLocation } from './location.js'
 import { yearFromFinnishDateString } from './date'
+import { PerusopetuksenOppiaineetEditor } from './Perusopetus.jsx'
 
 const OppijaEditor = React.createClass({
   render() {
@@ -164,7 +165,7 @@ const PäätasonSuoritusEditor = React.createClass({
       </div>
       <div className="osasuoritukset">
         {
-          ['perusopetuksenvuosiluokansuoritus', 'perusopetuksenoppimaaransuoritus', 'perusopetuksenlisaopetuksensuoritus'].includes(model.value.class)
+          ['perusopetuksenvuosiluokansuoritus', 'perusopetuksenoppimaaransuoritus', 'perusopetuksenlisaopetuksensuoritus', 'perusopetukseenvalmistavanopetuksensuoritus'].includes(model.value.classes[0])
             ? <PerusopetuksenOppiaineetEditor context={context} model={model}/>
             : <GenericEditor.PropertyEditor context={context} model={model} propertyName="osasuoritukset"/>
         }
@@ -172,81 +173,6 @@ const PäätasonSuoritusEditor = React.createClass({
     </div>)
   }
 })
-
-const PerusopetuksenOppiaineetEditor = React.createClass({
-  render() {
-    let {model, context} = this.props
-    let suoritukset = modelItems(model, 'osasuoritukset')
-    let käyttäytymisenArvio = modelData(model).käyttäytymisenArvio
-    return suoritukset && (<div className="oppiaineet">
-      <h5>Oppiaineiden arvosanat</h5>
-      <p>Arvostelu 4-10, S (suoritettu), H (hylätty) tai V (vapautettu)</p>
-      <section>
-        <h5>Pakolliset oppiaineet</h5>
-        <Oppiainetaulukko model={model} context={GenericEditor.childContext(this, context, 'osasuoritukset')} suoritukset={suoritukset} filter={(oppiaine) => oppiaine.koulutusmoduuli.pakollinen}/>
-      </section>
-      <section>
-        <h5>Valinnaiset oppiaineet</h5>
-        <Oppiainetaulukko model={model} showLaajuus={true} context={GenericEditor.childContext(this, context, 'osasuoritukset')} suoritukset={suoritukset} filter={(oppiaine) => !oppiaine.koulutusmoduuli.pakollinen}/>
-        {
-          käyttäytymisenArvio && (<div>
-            <h5 className="kayttaytyminen">Käyttäytymisen arviointi</h5>
-            {
-              <GenericEditor.PropertiesEditor properties={modelLookup(model, 'käyttäytymisenArvio').value.properties}
-                                              context={GenericEditor.childContext(this, context, 'käyttäytymisenArvio')}
-                                              getValueEditor={ (prop, ctx, getDefault) => prop.key == 'arvosana' ? prop.model.value.data.koodiarvo : getDefault() }
-              />
-            }
-          </div>)
-        }
-      </section>
-    </div>)
-  }
-})
-
-const Oppiainetaulukko = React.createClass({
-  render() {
-    let {suoritukset, context, filter, showLaajuus = false} = this.props
-    return (<table>
-        <thead><tr><th className="oppiaine">Oppiaine</th><th className="arvosana">Arvosana</th>{showLaajuus && <th className="laajuus">Laajuus</th>}</tr></thead>
-        <tbody>
-        {
-          suoritukset
-            .map((oppiaine, i) => ({oppiaine, i}))
-            .filter(({oppiaine}) => filter(modelData(oppiaine)))
-            .map(({oppiaine, i}) => (<OppiaineEditor key={i} model={oppiaine} showLaajuus={showLaajuus} context={GenericEditor.childContext(this, context, i)}/>))
-        }
-        </tbody>
-      </table>
-    )
-  }
-})
-
-const OppiaineEditor = React.createClass({
-  render() {
-    let {model, context, showLaajuus = false} = this.props
-    var oppiaine = modelTitle(model, 'koulutusmoduuli')
-    let arvosana = modelData(model, 'arviointi.-1.arvosana').koodiarvo
-    let pakollinen = modelData(model, 'koulutusmoduuli.pakollinen')
-    if (pakollinen === false) {
-      oppiaine = 'Valinnainen ' + oppiaine.toLowerCase() // i18n
-    }
-    return (<tr>
-      <td className="oppiaine">{oppiaine}</td>
-      <td className="arvosana">
-        {arvosana}
-        {modelData(model, 'yksilöllistettyOppimäärä') ? <span className="yksilollistetty"> *</span> : null}
-        {modelData(model, 'korotus') ? <span className="korotus">(korotus)</span> : null}
-      </td>
-      {
-        showLaajuus && (<td className="laajuus">
-          <LaajuusEditor model={modelLookup(model, 'koulutusmoduuli.laajuus')} context={GenericEditor.childContext(this, context, 'koulutusmoduuli', 'laajuus')} />
-        </td>)
-      }
-    </tr>)
-  }
-})
-OppiaineEditor.canShowInline = () => false
 
 const TodistusLink = React.createClass({
   render() {
@@ -294,7 +220,7 @@ const LukionKurssiEditor = React.createClass({
 LukionKurssiEditor.canShowInline = () => false
 
 
-const LaajuusEditor = React.createClass({
+export const LaajuusEditor = React.createClass({
   render() {
     let {model, context} = this.props
     return context.edit
@@ -370,9 +296,6 @@ const KoulutusmoduuliEditor = React.createClass({
 
 export const editorMapping = {
   'oppijaeditorview': OppijaEditor,
-  'perusopetuksenoppiaineensuoritus': OppiaineEditor,
-  'perusopetukseenvalmistavanopetuksenoppiaineensuoritus': OppiaineEditor,
-  'perusopetuksenlisaopetuksenoppiaineensuoritus': OppiaineEditor,
   'preiboppiaineensuoritus': TutkinnonosaEditor,
   'iboppiaineensuoritus': TutkinnonosaEditor,
   'ammatillisentutkinnonosansuoritus': TutkinnonosaEditor,
