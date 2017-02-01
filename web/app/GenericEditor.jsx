@@ -115,18 +115,22 @@ export const PropertiesEditor = React.createClass({
     let edit = context.edit || (this.state && this.state.edit)
     let toggleEdit = () => this.setState({edit: !edit})
     let shouldShow = shouldShowProperty(edit)
+    let showToggleEdit = context.editable && !context.edit && !context.hasToggleEdit
     return (<div className="properties">
       {
         children
       }
       {
-        context.editable && !context.edit ? <a className="toggle-edit" onClick={toggleEdit}>{edit ? 'valmis' : 'muokkaa'}</a> : null
+        showToggleEdit ? <a className="toggle-edit" onClick={toggleEdit}>{edit ? 'valmis' : 'muokkaa'}</a> : null
       }
       <table><tbody>
       {
         properties.filter(shouldShow).map(property => {
           let propertyClassName = 'property ' + property.key
-          let propertyContext = childContext(this, R.merge(context, {edit: edit}), property.key)
+          let propertyContext = childContext(this, R.merge(context, {
+            edit: edit,
+            hasToggleEdit: context.hasToggleEdit || showToggleEdit  // to prevent nested duplicate "edit" links
+          }), property.key)
           return (<tr className={propertyClassName} key={property.key}>
             <td className="label">{property.title}</td>
             <td className="value">{ getValueEditor(property, propertyContext, () => getModelEditor(property.model, propertyContext)) }</td>
