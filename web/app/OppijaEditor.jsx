@@ -388,6 +388,5 @@ export const editorMapping = {
   'laajuuskursseissa' : LaajuusEditor,
   'laajuusopintopisteissa' : LaajuusEditor,
   'laajuusvuosiviikkotunneissa' : LaajuusEditor,
-  'ammatillinentutkintokoulutus' : KoulutusmoduuliEditor,
-  'perusopetus' : KoulutusmoduuliEditor
+  'koulutus' : KoulutusmoduuliEditor
 }

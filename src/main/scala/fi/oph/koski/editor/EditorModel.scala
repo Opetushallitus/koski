@@ -8,7 +8,7 @@ import org.json4s.{Extraction, _}
 
 sealed trait EditorModel
 
-case class ObjectModel(`class`: String, properties: List[EditorProperty], data: Option[AnyRef], title: Option[String], editable: Boolean, prototypes: Map[String, EditorModel]) extends EditorModel
+case class ObjectModel(classes: List[String], properties: List[EditorProperty], data: Option[AnyRef], title: Option[String], editable: Boolean, prototypes: Map[String, EditorModel]) extends EditorModel
 
 case class PrototypeModel(key: String) extends EditorModel
 
@@ -35,7 +35,7 @@ object EditorModelSerializer extends Serializer[EditorModel] {
     case (model: EditorModel) => {
       model match {
         case (ObjectModel(c, properties, data, title, editable, prototypes)) =>
-          json("object", "value" -> Map("class" -> c, "data" -> data, "title" -> title, "properties" -> properties), "editable" -> editable, "prototypes" -> prototypes)
+          json("object", "value" -> Map("classes" -> c, "data" -> data, "title" -> title, "properties" -> properties), "editable" -> editable, "prototypes" -> prototypes)
         case (PrototypeModel(key)) => json("prototype", "key" -> key)
         case (OptionalModel(model, prototype)) =>
           val optionalInfo: JValue = json("optional" -> true, "prototype" -> prototype)

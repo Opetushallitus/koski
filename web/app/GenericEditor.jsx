@@ -350,12 +350,17 @@ const resolveModel = (model, context) => {
 }
 
 const getEditorFunction = (model, context) => {
+  let editorByClass = (classes) => {
+    for (var i in classes) {
+      if (context.editorMapping[classes[i]]) { return context.editorMapping[classes[i]] }
+    }
+  }
   model = resolveModel(model, context)
   if (!model) return NullEditor
   if (modelEmpty(model) && model.optional && model.prototype !== undefined) {
     return OptionalEditor
   }
-  let editor = (model.value && context.editorMapping[model.value.class]) || context.editorMapping[model.type]
+  let editor = (model.value && editorByClass(model.value.classes)) || context.editorMapping[model.type]
   if (!editor) {
     if (!model.type) {
       console.log('Typeless model', model)

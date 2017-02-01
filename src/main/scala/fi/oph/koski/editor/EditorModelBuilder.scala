@@ -2,13 +2,13 @@ package fi.oph.koski.editor
 
 import java.time.LocalDate
 
+import fi.oph.koski.editor.ModelBuilder._
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.{Localizable, LocalizedString}
 import fi.oph.koski.schema._
 import fi.oph.koski.todistus.LocalizedHtml
-import fi.oph.scalaschema._
-import ModelBuilder._
 import fi.oph.koski.validation.ValidationAndResolvingContext
+import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation.Title
 
 case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema: ClassSchema,
@@ -206,9 +206,31 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
         } else {
           Map.empty
         }
-        ObjectModel(sanitizeName(schema.simpleName), properties, data, objectTitle, objectContext.editable, includedPrototypes)
+        ObjectModel(classes(schema.fullClassName), properties, data, objectTitle, objectContext.editable, includedPrototypes)
       }
     }
+
+    import scala.reflect.runtime.{universe => ru}
+
+    private def classes(className: String) = {
+      val tpe = typeByName(className)
+      (tpe :: findTraits(tpe)).map(t => sanitizeName(Class.forName(t.typeSymbol.fullName).getSimpleName))
+    }
+
+    private def findTraits(tpe: ru.Type) = {
+      tpe.baseClasses
+        .map(_.fullName)
+        .filter(_.startsWith("fi.oph.koski"))
+        .map {typeByName(_)}
+        .filter {_.typeSymbol.asClass.isTrait}
+        .filterNot {_ == tpe}
+        .distinct
+    }
+
+    private def typeByName(className: String): ru.Type = {
+      reflect.runtime.currentMirror.classSymbol(Class.forName(className)).toType
+    }
+
 
     def prototypeKey = sanitizeName(schema.simpleName)
 
@@ -227,5 +249,5 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
 }
 
 object ModelBuilder {
-  def sanitizeName(s: String) = s.replaceAll("ä", "a").replaceAll("ö", "o").replaceAll("/", "-")
+  def sanitizeName(s: String) = s.toLowerCase.replaceAll("ä", "a").replaceAll("ö", "o").replaceAll("/", "-")
 }
