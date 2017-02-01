@@ -52,7 +52,7 @@ function OpinnotPage() {
       }
       return checkAndExpand()
       function expanders() {
-        return S('.foldable.collapsed>.toggle-expand')
+        return S('.foldable.collapsed>.toggle-expand, tbody:not(.expanded) .toggle-expand')
       }
     }
   }

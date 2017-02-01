@@ -7,6 +7,7 @@ import Link from './Link.jsx'
 import { currentLocation } from './location.js'
 import { yearFromFinnishDateString } from './date'
 import { PerusopetuksenOppiaineetEditor } from './Perusopetus.jsx'
+import { TutkinnonOsatEditor } from './Ammatillinen.jsx'
 
 const OppijaEditor = React.createClass({
   render() {
@@ -195,7 +196,9 @@ const PäätasonSuoritusEditor = React.createClass({
         {
           ['perusopetuksenvuosiluokansuoritus', 'perusopetuksenoppimaaransuoritus', 'perusopetuksenlisaopetuksensuoritus', 'perusopetukseenvalmistavanopetuksensuoritus'].includes(model.value.classes[0])
             ? <PerusopetuksenOppiaineetEditor context={context} model={model}/>
-            : <GenericEditor.PropertyEditor context={context} model={model} propertyName="osasuoritukset"/>
+            : (model.value.classes.includes('ammatillinenpaatasonsuoritus'))
+              ? <TutkinnonOsatEditor context={context} model={model} propertyName="osasuoritukset"/>
+              : <GenericEditor.PropertyEditor context={context} model={model} propertyName="osasuoritukset"/>
         }
       </div>
     </div>)
@@ -251,9 +254,13 @@ LukionKurssiEditor.canShowInline = () => false
 export const LaajuusEditor = React.createClass({
   render() {
     let {model, context} = this.props
+    var yksikköData = modelData(model, 'yksikkö')
+    let yksikkö = yksikköData && (yksikköData.lyhytNimi || yksikköData.nimi).fi
     return context.edit
       ? <GenericEditor.ObjectEditor model={model} context={context}/>
-      : <span>{modelTitle(model, 'arvo')} {modelTitle(model, 'yksikkö')}</span>
+      : (modelData(model, 'arvo'))
+        ? <span>{modelTitle(model, 'arvo')} {yksikkö}</span>
+        : <span>-</span>
   }
 })
 

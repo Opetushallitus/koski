@@ -178,6 +178,18 @@
             }
           }
         }
+
+        .tutkinnonosat {
+          > table {
+            width: 880px;
+            td, th {
+              padding-bottom: 7px;
+            }
+            a.toggle-expand {
+              position: relative;
+            }
+          }
+        }
       }
 
       .koulutusmoduuli .diaarinumero {
@@ -324,24 +336,26 @@
       display: inline-block;
     }
 
-    a.toggle-expand {
-      margin-left: 10px;
-      position: absolute;
-      top: 0;
-      left: -30px;
-      z-index: 1;
-    }
+    .foldable {
+      a.toggle-expand {
+        margin-left: 10px;
+        position: absolute;
+        top: 0;
+        left: -30px;
+        z-index: 1;
+      }
 
-    .expanded > a.toggle-expand {
-      left: -28px;
-    }
+      .expanded > a.toggle-expand {
+        left: -28px;
+      }
 
-    .representative .collapsed a.toggle-expand {
-      display: none;
-    }
+      .representative .collapsed a.toggle-expand {
+        display: none;
+      }
 
-    .collapsed .collapsed a.toggle-expand {
-      display: none;
+      .collapsed .collapsed a.toggle-expand {
+        display: none;
+      }
     }
 
     input[type=text] {

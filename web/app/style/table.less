@@ -1,6 +1,9 @@
 table { // resets
   th { font-weight: normal; }
   font-size: 1em;
+  .alternating:nth-child(odd) {
+    background: #FAFAFA;
+  }
 }
 .data-table {
   font-size: 0.7em;
@@ -23,9 +26,6 @@ table { // resets
       font-weight: 600;
       font-size: 14px;
     }
-  }
-  .alternating:nth-child(even) {
-    background: #FAFAFA;
   }
   td, th {
     padding: 5px;

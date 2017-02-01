@@ -76,4 +76,3 @@ const OppiaineEditor = React.createClass({
     </tr>)
   }
 })
-OppiaineEditor.canShowInline = () => false

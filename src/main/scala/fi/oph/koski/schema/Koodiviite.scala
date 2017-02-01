@@ -4,7 +4,7 @@ import fi.oph.koski.localization.LocalizedString.unlocalized
 import fi.oph.koski.localization.{Localizable, LocalizedString}
 import fi.oph.scalaschema.annotation.Description
 
-trait KoodiViite {
+trait KoodiViite extends Localizable {
   def koodiarvo: String
   def getNimi: Option[LocalizedString]
 }
@@ -27,7 +27,7 @@ case class Koodistokoodiviite(
   koodistoUri: String,
   @Description("Käytetyn koodiston versio. Jos versiota ei määritellä, käytetään uusinta versiota")
   koodistoVersio: Option[Int]
-) extends KoodiViite with Localizable {
+) extends KoodiViite {
   override def toString = koodistoUri + "/" + koodiarvo
   def description: LocalizedString = nimi.getOrElse(unlocalized(koodiarvo))
   def getNimi = nimi
@@ -44,4 +44,5 @@ case class PaikallinenKoodi(
   koodistoUri: Option[String] = None
 ) extends KoodiViite {
   def getNimi = Some(nimi)
+  def description: LocalizedString = nimi
 }

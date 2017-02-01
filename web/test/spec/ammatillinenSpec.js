@@ -292,7 +292,7 @@ describe('Ammatillinen koulutus', function() {
       describe('Kaikki tiedot näkyvissä', function() {
         before(opinnot.expandAll)
         it('toimii', function() {
-          expect(S('.nayttotutkintoonvalmistavankoulutuksensuoritus .osasuoritukset .koulutusmoduuli .nimi .value').text()).to.equal('Johtaminen ja henkilöstön kehittäminen')
+          expect(S('.nayttotutkintoonvalmistavankoulutuksensuoritus .osasuoritukset td.tutkinnonosa').eq(0).text()).to.equal('Johtaminen ja henkilöstön kehittäminen')
         })
       })
 
@@ -316,7 +316,7 @@ describe('Ammatillinen koulutus', function() {
       describe('Kaikki tiedot näkyvissä', function() {
         before(opinnot.expandAll)
         it('toimii', function() {
-          expect(S('.tutkinnonosa .koulutusmoduuli .tunniste .value').eq(1).text()).to.equal('Asiakaspalvelu ja korjaamopalvelujen markkinointi')
+          expect(S('.osasuoritukset td.tutkinnonosa').eq(1).text()).to.equal('Asiakaspalvelu ja korjaamopalvelujen markkinointi')
         })
       })
 
@@ -341,7 +341,7 @@ describe('Ammatillinen koulutus', function() {
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('toimii', function() {
-        expect(S('.tutkinnonosa:eq(0) .koulutusmoduuli .nimi .value').text()).to.equal('Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen')
+        expect(S('.osasuoritukset td.tutkinnonosa').eq(0).text()).to.equal('Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen')
       })
     })
 
