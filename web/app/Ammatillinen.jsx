@@ -29,7 +29,7 @@ const TutkinnonOsaEditor = React.createClass({
   render() {
     let {model, context} = this.props
     let {expanded} = this.state
-    return (<tbody className="alternating" className={expanded ? 'expanded' : null}>
+    return (<tbody className={expanded ? 'alternating expanded' : 'alternating'}>
       <tr>
         <td className="tutkinnonosa">
           <a className="toggle-expand" onClick={() => this.setState({expanded : !expanded})}>+</a>
