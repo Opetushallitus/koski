@@ -35,10 +35,10 @@ object SchemaClassMapper {
           classy.resolve(schemaFactory) match {
             case classSchema: ClassSchema =>
               if (f.isDefinedAt(classSchema)) {
-                f(classSchema)
+                f(classSchema.copy(specialized = true))
               } else {
                 val mappedProperties: List[Property] = classSchema.properties.map { property => mapClasses(property, schemaFactory, f).asInstanceOf[Property] }
-                classSchema.copy(properties = mappedProperties)
+                classSchema.copy(specialized = true, properties = mappedProperties)
               }
             case x: ElementSchema => x
           }
