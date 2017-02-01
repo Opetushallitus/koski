@@ -166,7 +166,9 @@ const PäätasonSuoritusEditor = React.createClass({
         {
           ['perusopetuksenvuosiluokansuoritus', 'perusopetuksenoppimaaransuoritus'].includes(model.value.class)
             ? <PerusopetuksenOppiaineetEditor context={context} model={model}/>
-            : <GenericEditor.PropertyEditor context={context} model={model} propertyName="osasuoritukset"/>
+            : ((modelData(model, 'osasuoritukset'))
+              ? <GenericEditor.PropertyEditor context={context} model={model} propertyName="osasuoritukset"/>
+              : null)
         }
       </div>
     </div>)
