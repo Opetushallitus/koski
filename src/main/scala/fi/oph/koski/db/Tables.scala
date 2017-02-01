@@ -176,4 +176,6 @@ case class TiedonsiirtoRow(id: Int, kayttajaOid: String, tallentajaOrganisaatioO
 
 case class TiedonsiirtoYhteenvetoRow(tallentajaOrganisaatio: String, oppilaitos: String, kayttaja: String, viimeisin: Timestamp, siirretyt: Int, virheet: Int, opiskeluoikeudet: Option[Int], lahdejarjestelma: Option[String])
 
-case class SchedulerRow(name: String, nextFireTime: Timestamp, context: Option[JValue], status: Int)
+case class SchedulerRow(name: String, nextFireTime: Timestamp, context: Option[JValue], status: Int) {
+  def running: Boolean = status == 1
+}

@@ -3,7 +3,8 @@ package fi.oph.koski.schedule
 import java.lang.System.currentTimeMillis
 import java.sql.Timestamp
 import java.time.{Duration, LocalDateTime}
-import java.util.concurrent.{Executors, TimeUnit}
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit.MILLISECONDS
 
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
@@ -18,7 +19,7 @@ class Scheduler(val db: DB, name: String, scheduling: Schedule, initialContext: 
   private val context: Option[JValue] = getScheduler.flatMap(_.context).orElse(initialContext)
 
   runDbSync(Tables.Scheduler.insertOrUpdate(SchedulerRow(name, scheduling.nextFireTime, context, 0)))
-  taskExecutor.scheduleAtFixedRate(() => fireIfTime(), intervalMillis, intervalMillis, TimeUnit.MILLISECONDS)
+  taskExecutor.scheduleAtFixedRate(() => fireIfTime(), intervalMillis, intervalMillis, MILLISECONDS)
 
   private def fireIfTime() = {
     val shouldFire = runDbSync(Tables.Scheduler.filter(s => s.name === name && s.nextFireTime < now && s.status === 0).map(s => (s.nextFireTime, s.status)).update(scheduling.nextFireTime, 1)) > 0
@@ -29,6 +30,12 @@ class Scheduler(val db: DB, name: String, scheduling: Schedule, initialContext: 
         case e: Exception =>
           logger.error(e)(s"Scheduled task $name failed: ${e.getMessage}")
           throw e
+      }
+    } else {
+      val scheduler = getScheduler.get
+      def runningTimeHours = MILLISECONDS.toHours(currentTimeMillis - scheduler.nextFireTime.getTime)
+      if (scheduler.running && runningTimeHours > 24) {
+        logger.error(s"Scheduled task $scheduler has been in running state for more than $runningTimeHours hours")
       }
     }
   }
