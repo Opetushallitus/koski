@@ -155,7 +155,7 @@ const ExpandablePropertiesEditor = React.createClass({
   render() {
     let {model, context, propertyName} = this.props
     let {open} = this.state
-    return modelData(model, propertyName) &&
+    return modelData(model, propertyName) ?
       <table className={propertyName}>
           <tbody>
           <tr className="property">
@@ -168,7 +168,7 @@ const ExpandablePropertiesEditor = React.createClass({
             }
           </tr>
           </tbody>
-      </table>
+      </table> : null
   },
   toggleOpen() {
     this.setState({open: !this.state.open})
