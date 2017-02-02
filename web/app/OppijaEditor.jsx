@@ -155,7 +155,7 @@ const ExpandablePropertiesEditor = React.createClass({
   render() {
     let {model, context, propertyName} = this.props
     let {open} = this.state
-    return modelLookup(model, propertyName).value ?
+    return modelLookup(model, propertyName) && modelLookup(model, propertyName).value ?
       <table className={propertyName}>
           <tbody>
           <tr className="property">
