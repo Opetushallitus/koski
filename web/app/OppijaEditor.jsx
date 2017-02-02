@@ -155,11 +155,11 @@ const ExpandablePropertiesEditor = React.createClass({
   render() {
     let {model, context, propertyName} = this.props
     let {open} = this.state
-    return modelLookup(model, propertyName) && modelLookup(model, propertyName).value ?
+    return modelData(model, propertyName) &&
       <table className={propertyName}>
           <tbody>
           <tr className="property">
-            <td className="label"><a onClick={this.toggleOpen}>{model.value.properties.find(p => p.key === propertyName).title}</a></td>
+            <td className="label"><a className={open ? 'open' : ''} onClick={this.toggleOpen}>{model.value.properties.find(p => p.key === propertyName).title}</a></td>
             {open ?
               <td className="value"><GenericEditor.PropertiesEditor
                 properties={modelLookup(model, propertyName).value.properties}
@@ -168,7 +168,7 @@ const ExpandablePropertiesEditor = React.createClass({
             }
           </tr>
           </tbody>
-      </table> : null
+      </table>
   },
   toggleOpen() {
     this.setState({open: !this.state.open})

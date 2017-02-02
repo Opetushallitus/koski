@@ -223,7 +223,7 @@
 
       a:after {
         content: '';
-        -webkit-transform: rotate(135deg);
+        transform: rotate(135deg);
         border-right: 2px solid #4194BF;
         border-top: 2px solid #4194BF;
         border-radius: 1px;
@@ -231,7 +231,10 @@
         height: 4px;
         display: inline-block;
         margin-left: 6px;
-        margin-bottom: 3px;
+        margin-bottom: 2px;
+      }
+      a.open:after {
+        transform: rotate(-45deg);
       }
     }
 
