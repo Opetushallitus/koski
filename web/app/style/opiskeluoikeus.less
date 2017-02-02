@@ -44,9 +44,11 @@
     }
 
     .property.tila .array {
-      list-style: initial;
+      list-style: inside;
       .opiskeluoikeusjakso {
         margin-bottom: 8px;
+        margin-left: -18px;
+        display: inline-block;
         label.date {
           display: inline-block;
           width: 4.5em;
@@ -244,7 +246,7 @@
     }
 
     .property > .label {
-      min-width: 120px;
+      min-width: 150px;
       padding-right: 20px;
       color: #666666;
       white-space: nowrap;
@@ -262,6 +264,10 @@
 
     .property > .value {
       width: 100%;
+    }
+
+    .property .value > .array {
+      padding-left: 0;
     }
 
     .properties {
@@ -295,10 +301,6 @@
       border-bottom: solid lightgray 1px;
       padding-bottom: 8px;
       margin-bottom: 8px;
-    }
-
-    .property .value > .array {
-      padding-left: 18px;
     }
 
     input, select {
