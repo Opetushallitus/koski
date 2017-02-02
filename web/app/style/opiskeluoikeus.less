@@ -205,9 +205,13 @@
                 }
                 .toggle-expand {
                   color: #159ECB;
+                  &.disabled {
+                    color: #AAAAAA;
+                  }
                 }
                 .tila {
                   color: #333333;
+                  cursor: pointer;
                 }
               }
             }
@@ -215,9 +219,20 @@
             tr.details > td {
               padding-left: 45px;
               padding-right: 35px;
+              padding-bottom: 24px;
 
               .properties > table tr td {
                 padding-top: 2px; // override for more compact layout
+              }
+            }
+
+            .arvioitsijat {
+              li {
+                display: inline-block;
+              }
+              li:not(:last-child):after {
+                content: ", ";
+                margin-right: 5px;
               }
             }
           }
@@ -247,31 +262,6 @@
       .OverlayLink;
     }
 
-    .property > .label {
-      min-width: 100px;
-      padding-right: 20px;
-      color: #666666;
-      white-space: nowrap;
-
-      a:after {
-        font-family: FontAwesome;
-        content: '';
-        margin-left: 6px;
-        font-size: 11px;
-      }
-      a.open:after {
-        content: '';
-      }
-    }
-
-    .property > .value {
-      width: 100%;
-    }
-
-    .property .value > .array {
-      padding-left: 0;
-    }
-
     .properties {
       position: relative;
       width: 100%;
@@ -280,6 +270,58 @@
         tr:not(:first-child) {
           td {
             padding-top: 9px;
+          }
+        }
+        td.complex {
+          > .label {
+            color: #666666;
+            margin-bottom: 6px;
+          }
+          > .value {
+            padding-left: 20px;
+          }
+        }
+
+        .property > .label {
+          min-width: 100px;
+          padding-right: 20px;
+          color: #666666;
+          white-space: nowrap;
+
+          a:after {
+            font-family: FontAwesome;
+            content: '';
+            margin-left: 6px;
+            font-size: 11px;
+          }
+          a.open:after {
+            content: '';
+          }
+        }
+
+        .property > .value {
+          width: 100%;
+        }
+
+        .property .value > .array {
+          padding-left: 0;
+        }
+
+        table.tabular-array {
+          border: 1px solid #F5F5F5;
+          border-collapse: collapse;
+          margin: 12px 0;
+
+          > thead > tr > th {
+            color: #666666;
+          }
+          > thead > tr > th, > tbody > tr > td {
+            padding: 2px 10px;
+            border-right: 1px solid #F5F5F5;
+          }
+
+          > thead {
+            background: #F5F5F5
           }
         }
       }

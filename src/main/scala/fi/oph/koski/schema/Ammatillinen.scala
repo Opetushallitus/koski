@@ -155,11 +155,14 @@ case class AmmatillisenTutkinnonOsanSuoritus(
   override val alkamispäivä: Option[LocalDate] = None,
   @Description("Jos tutkinnon osa on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
-  @Description("Suoritukseen liittyvän näytön tiedot")
-  näyttö: Option[Näyttö] = None,
+  @Tabular
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
+  @Description("Suoritukseen liittyvän näytön tiedot")
+  @ComplexObject
+  näyttö: Option[Näyttö] = None,
   @Description("Tutkinnon suoritukseen kuuluvat työssäoppimisjaksot")
+  @ComplexObject
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   @KoodistoKoodiarvo("ammatillisentutkinnonosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
@@ -231,6 +234,7 @@ case class Näyttö(
   kuvaus: LocalizedString,
   suorituspaikka: NäytönSuorituspaikka,
   @Description("Näytön arvioinnin lisätiedot")
+  @Flatten
   arviointi: Option[NäytönArviointi],
   @Description("Onko näyttö suoritettu työssäoppimisen yhteydessä (true/false)")
   työssäoppimisenYhteydessä: Boolean = false
@@ -250,6 +254,7 @@ case class NäytönArviointi (
   päivä: LocalDate,
   arvioitsijat: Option[List[Arvioitsija]] = None,
   @Description("Näytön eri arviointikohteiden (Työprosessin hallinta jne) arvosanat.")
+  @Tabular
   arviointikohteet: Option[List[NäytönArviointikohde]],
   @KoodistoUri("ammatillisennaytonarvioinnistapaattaneet")
   @Description("Arvioinnista päättäneet tahot, ilmaistuna 1-numeroisella koodilla")
@@ -264,6 +269,7 @@ case class NäytönArviointi (
 case class NäytönArviointikohde(
   @Description("Arviointikohteen tunniste")
   @KoodistoUri("ammatillisennaytonarviointikohde")
+  @Title("Arviointikohde")
   tunniste: Koodistokoodiviite,
   @Description("Arvosana. Kullekin arviointiasteikolle löytyy oma koodistonsa")
   @KoodistoUri("arviointiasteikkoammatillinenhyvaksyttyhylatty")
@@ -315,8 +321,8 @@ case class NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
   override val alkamispäivä: Option[LocalDate] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Tutkinnon suoritukseen kuuluvat työssäoppimisjaksot")
+  @ComplexObject
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
-
   @KoodistoKoodiarvo("nayttotutkintoonvalmistavankoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("nayttotutkintoonvalmistavankoulutuksenosa", koodistoUri = "suorituksentyyppi")
 ) extends VahvistuksetonSuoritus with Arvioinniton
@@ -362,10 +368,13 @@ case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Jos tutkinnon osa on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
-  @Description("Suoritukseen liittyvän näytön tiedot")
-  näyttö: Option[Näyttö] = None,
+  @Tabular
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
+  @Description("Suoritukseen liittyvän näytön tiedot")
+  @ComplexObject
+  näyttö: Option[Näyttö] = None,
   @Description("Tutkinnon suoritukseen kuuluvat työssäoppimisjaksot")
+  @ComplexObject
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   @KoodistoKoodiarvo("valmakoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valmakoulutuksenosa", koodistoUri = "suorituksentyyppi")
@@ -416,10 +425,13 @@ case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Jos koulutuksen osa on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
-  @Description("Suoritukseen liittyvän näytön tiedot")
-  näyttö: Option[Näyttö] = None,
+  @Tabular
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
+  @Description("Suoritukseen liittyvän näytön tiedot")
+  @ComplexObject
+  näyttö: Option[Näyttö] = None,
   @Description("Tutkinnon suoritukseen kuuluvat työssäoppimisjaksot")
+  @ComplexObject
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
   @KoodistoKoodiarvo("telmakoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("telmakoulutuksenosa", koodistoUri = "suorituksentyyppi")

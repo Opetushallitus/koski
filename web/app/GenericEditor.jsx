@@ -67,6 +67,35 @@ export const PropertiesEditor = React.createClass({
     let toggleEdit = () => this.setState({edit: !edit})
     let shouldShow = shouldShowProperty(edit)
     let showToggleEdit = context.editable && !context.edit && !context.hasToggleEdit
+
+    let munch = (prefix) => (property, i) => {
+      if (property.flatten) {
+        return property.model.value.properties.flatMap(munch(prefix + i + '.'))
+      } else {
+        let propertyClassName = 'property ' + property.key
+        let propertyContext = childContext(this, R.merge(context, {
+          edit: edit,
+          hasToggleEdit: context.hasToggleEdit || showToggleEdit  // to prevent nested duplicate "edit" links
+        }), property.key)
+        let valueEditor = property.tabular
+          ? <TabularArrayEditor model={property.model} context={propertyContext} />
+          : getValueEditor(property, propertyContext, () => getModelEditor(property.model, propertyContext))
+
+        return [(<tr className={propertyClassName} key={prefix + i}>
+          {
+            property.complexObject
+              ? (<td className="complex" colSpan="2">
+                  <div className="label">{property.title}</div>
+                  <div className="value">{ valueEditor }</div>
+                </td>)
+              : [<td className="label">{property.title}</td>,
+                  <td className="value">{ valueEditor }</td>
+                ]
+          }
+        </tr>)]
+      }
+    }
+
     return (<div className="properties">
       {
         children
@@ -76,17 +105,7 @@ export const PropertiesEditor = React.createClass({
       }
       <table><tbody>
       {
-        properties.filter(shouldShow).map(property => {
-          let propertyClassName = 'property ' + property.key
-          let propertyContext = childContext(this, R.merge(context, {
-            edit: edit,
-            hasToggleEdit: context.hasToggleEdit || showToggleEdit  // to prevent nested duplicate "edit" links
-          }), property.key)
-          return (<tr className={propertyClassName} key={property.key}>
-            <td className="label">{property.title}</td>
-            <td className="value">{ getValueEditor(property, propertyContext, () => getModelEditor(property.model, propertyContext)) }</td>
-          </tr>)
-        })
+        properties.filter(shouldShow).flatMap(munch(''))
       }
       </tbody></table>
     </div>)
@@ -107,19 +126,45 @@ export const PropertyEditor = React.createClass({
 
 PropertiesEditor.canShowInline = () => false
 
-const shouldShowProperty = (edit) => (property) => (edit || !modelEmpty(property.model)) && !property.hidden
+export const shouldShowProperty = (edit) => (property) => (edit || !modelEmpty(property.model)) && !property.hidden
 
+export const TabularArrayEditor = React.createClass({
+  render() {
+    let {model, context} = this.props
+    let items = modelItems(model)
+    if (!items.length) return null
+    if (context.edit) return <ArrayEditor {...this.props}/>
+    let properties = items[0].value.properties
+    return (<table className="tabular-array">
+      <thead>
+        <tr>{ properties.map((p, i) => <th key={i}>{p.title}</th>) }</tr>
+      </thead>
+      <tbody>
+        {
+          items.map((item, i) => {
+            return (<tr key={i}>
+              {
+                item.value.properties.map((p, j) => {
+                  return (<td key={j}>
+                    {getModelEditor(p.model, childContext(this, context, p.key))}
+                  </td>)
+                })
+              }
+            </tr>)
+          })
+        }
+      </tbody>
+    </table>)
+  }
+})
 export const ArrayEditor = React.createClass({
   render() {
     let {model, context} = this.props
     let items = modelItems(model)
     let inline = ArrayEditor.canShowInline(this)
-    let wasInline = this.state && this.state.wasInline
     let className = inline
       ? 'array inline'
-      : wasInline
-        ? 'array inline-when-collapsed'
-        : 'array'
+      : 'array'
     let adding = this.state && this.state.adding || []
     let add = () => this.setState({adding: adding.concat(model.prototype)})
     return (
@@ -134,12 +179,6 @@ export const ArrayEditor = React.createClass({
         }
       </ul>
     )
-  },
-  componentWillMount() {
-    let inline = ArrayEditor.canShowInline(this)
-    if (inline) {
-      this.setState({ wasInline: true})
-    }
   }
 })
 ArrayEditor.canShowInline = (component) => {
@@ -157,7 +196,9 @@ export const OptionalEditor = React.createClass({
     let add = () => this.setState({adding: true})
     return adding
       ? getModelEditor(model.prototype, context, true)
-      : <a className="add-value" onClick={add}>lisää</a>
+      : context.edit
+        ? <a className="add-value" onClick={add}>lisää</a>
+        : null
   }
 })
 OptionalEditor.canShowInline = () => true

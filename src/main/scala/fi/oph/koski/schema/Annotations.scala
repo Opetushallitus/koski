@@ -1,0 +1,20 @@
+package fi.oph.koski.schema
+
+import fi.oph.scalaschema.Metadata
+import org.json4s.JsonAST.JObject
+
+trait RepresentationalMetadata extends Metadata {
+  override def appendMetadataToJsonSchema(obj: JObject) = obj // Does not affect JSON schema
+}
+
+/* This property can be used to represent the whole entity */
+case class Representative() extends RepresentationalMetadata
+
+/* This property contains complex nested structure and should be rendered as a section in the UI */
+case class ComplexObject() extends RepresentationalMetadata
+
+/* This property should be flattened in the UI */
+case class Flatten() extends RepresentationalMetadata
+
+/* This property contains a list of items that should be represented in a table */
+case class Tabular() extends RepresentationalMetadata

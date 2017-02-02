@@ -161,6 +161,9 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
           val hasValue = obj != None
           if (objectContext.editable || hasValue) {
             val representative: Boolean = property.metadata.contains(Representative())
+            val flatten: Boolean = property.metadata.contains(Flatten())
+            val complexObject: Boolean = property.metadata.contains(ComplexObject())
+            val tabular: Boolean = property.metadata.contains(Tabular())
             val value = obj match {
               case None => Prototypes.getPrototypeData(property.schema)
               case _ => schema.getPropertyValue(property, obj)
@@ -169,7 +172,7 @@ case class EditorModelBuilder(context: ValidationAndResolvingContext, mainSchema
               case Title(t) => Some(t)
               case _ => None
             }.headOption.getOrElse(property.key.split("(?=\\p{Lu})").map(_.toLowerCase).mkString(" ").replaceAll("_ ", "-").capitalize)
-            Some(EditorProperty(property.key, propertyTitle, objectContext.buildModel(value, property.schema), hidden, representative))
+            Some(EditorProperty(property.key, propertyTitle, objectContext.buildModel(value, property.schema), hidden, representative, flatten, complexObject, tabular))
           } else {
             None // missing values are skipped when not editable
           }

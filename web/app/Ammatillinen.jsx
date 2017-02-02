@@ -29,12 +29,17 @@ const TutkinnonOsaEditor = React.createClass({
   render() {
     let {model, context} = this.props
     let {expanded} = this.state
+    let properties = model.value.properties
+      .filter(p => !['koulutusmoduuli', 'arviointi', 'tila'].includes(p.key))
+      .filter(GenericEditor.shouldShowProperty(context.edit))
+    let hasProperties = properties.length > 0
+    let toggleExpand = () => { if (hasProperties) this.setState({expanded : !expanded}) }
     return (<tbody className={expanded ? 'alternating expanded' : 'alternating'}>
       <tr>
         <td className="tutkinnonosa">
-          <a className="toggle-expand" onClick={() => this.setState({expanded : !expanded})}>{ expanded ? '' : ''}</a>
-          <span className="tila">{suorituksenTilaSymbol(modelData(model, 'tila.koodiarvo'))}</span>
-          <span className="nimi">{modelTitle(model, 'koulutusmoduuli.tunniste')}</span>
+          <a className={ hasProperties ? 'toggle-expand' : 'toggle-expand disabled'} onClick={toggleExpand}>{ expanded ? '' : ''}</a>
+          <span className="tila" title={modelTitle(model, 'tila')}>{suorituksenTilaSymbol(modelData(model, 'tila.koodiarvo'))}</span>
+          <a className="nimi" onClick={toggleExpand}>{modelTitle(model, 'koulutusmoduuli.tunniste')}</a>
         </td>
         <td className="pakollisuus">{ modelData(model, 'koulutusmoduuli.pakollinen') ? modelTitle(model, 'koulutusmoduuli.pakollinen') : 'ei' /* TODO: 18n*/}</td>
         <td className="laajuus"><LaajuusEditor model={modelLookup(model, 'koulutusmoduuli.laajuus')} context={GenericEditor.childContext(this, context, 'koulutusmoduuli', 'laajuus')} /></td>
@@ -43,7 +48,7 @@ const TutkinnonOsaEditor = React.createClass({
       {
         expanded && (<tr className="details">
           <td colSpan="4">
-            <GenericEditor.PropertiesEditor properties={model.value.properties.filter(p => !['koulutusmoduuli', 'arviointi', 'tila'].includes(p.key))} context={context} />
+            <GenericEditor.PropertiesEditor properties={properties} context={context} />
           </td>
         </tr>)
       }
@@ -51,6 +56,14 @@ const TutkinnonOsaEditor = React.createClass({
   },
   getInitialState() {
     return { expanded: false }
+  }
+})
+
+export const NäytönSuorituspaikkaEditor = React.createClass({
+  render() {
+    let {model, context} = this.props
+    if (context.edit) return <GenericEditor.ObjectEditor {...this.props}/>
+    return <span>{modelTitle(model, 'kuvaus')}</span>
   }
 })
 

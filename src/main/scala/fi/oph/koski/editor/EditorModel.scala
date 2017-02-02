@@ -3,7 +3,8 @@ package fi.oph.koski.editor
 import java.time.LocalDate
 
 import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
-import org.json4s.JsonAST.JValue
+import fi.oph.scalaschema.Metadata
+import org.json4s.JsonAST.{JObject, JValue}
 import org.json4s.{Extraction, _}
 
 sealed trait EditorModel
@@ -12,7 +13,7 @@ case class ObjectModel(classes: List[String], properties: List[EditorProperty], 
 
 case class PrototypeModel(key: String) extends EditorModel
 
-case class EditorProperty(key: String, title: String, model: EditorModel, hidden: Boolean, representative: Boolean)
+case class EditorProperty(key: String, title: String, model: EditorModel, hidden: Boolean, representative: Boolean, flatten: Boolean, complexObject: Boolean, tabular: Boolean)
 
 case class ListModel(items: List[EditorModel], prototype: Option[EditorModel]) extends EditorModel
 
