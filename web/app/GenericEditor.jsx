@@ -17,39 +17,7 @@ export const Editor = React.createClass({
         root: true,
         path: '',
         prototypes: model.prototypes,
-        editorMapping: R.merge(defaultEditorMapping, editorMapping),
-        expandMyPath (c, expanded) {
-          // expand/collapse this node
-          c.setState({expanded})
-          if (this.parentComponent && this.parentContext) {
-            let delta = expanded ? 1 : -1
-            this.parentContext.expandChild(this.parentComponent, delta)
-          }
-        },
-        expandChild (c, delta) {
-          // notification of a child component expanded/collapsed
-          let previousCount = ((c.state && c.state.expandCount) || 0)
-          let expandCount = previousCount + delta
-          c.setState({expandCount})
-          if (this.parentComponent && this.parentContext) {
-            // if there's a parent, we'll bubble up the change
-            let selfCount = (c.state && c.state.expanded ? 1 : 0)
-            // this component + children together count as 1 expanded child for the parent component.
-            let countForParent = (expandCount + selfCount > 0 ? 1 : 0)
-            let previousCountForParent = (previousCount + selfCount > 0 ? 1 : 0)
-            let deltaForParent = countForParent - previousCountForParent
-            if (deltaForParent !== 0) {
-              // only notify parent if there's an actual change.
-              this.parentContext.expandChild(this.parentComponent, deltaForParent)
-            }
-          }
-        },
-        isExpanded(c) {
-          return !this.forceInline && c.state && c.state.expanded
-        },
-        isChildExpanded(c) {
-          return !this.forceInline && c.state && c.state.expandCount
-        }
+        editorMapping: R.merge(defaultEditorMapping, editorMapping)
       }
     }
     return getModelEditor(model, context)
@@ -74,8 +42,8 @@ export const ObjectEditor = React.createClass({
     return !representative
       ? objectEditor()
       : ((exactlyOneVisibleProperty || context.forceInline) && !context.edit)
-        ? representativeEditor() // just show the representative property, no need for ExpandableEditor
-        : isArrayItem(context) // for array item, show representative property in expanded view too
+        ? representativeEditor() // just show the representative property, as it is the only one
+        : isArrayItem(context) // for array item always show representative property
           ? (<span className={objectWrapperClass}>
               <span className="representative">{representativeEditor({ forceInline: true })}</span>
               {objectEditor()}
@@ -86,27 +54,10 @@ export const ObjectEditor = React.createClass({
   }
 })
 ObjectEditor.canShowInline = (component) => {
-  var canInline = !!findRepresentative(component.props.model) && !component.props.context.edit && !isArrayItem(component.props.context) && !component.props.context.isChildExpanded(component) && !component.props.context.isExpanded(component)
+  var canInline = !!findRepresentative(component.props.model) && !component.props.context.edit && !isArrayItem(component.props.context)
   //console.log("Object inline", component.props.context.path, canInline)
   return canInline
 }
-
-export const ExpandableEditor = React.createClass({
-  render() {
-    let {editor, collapsedView, expandedView, context} = this.props
-    var expanded = context.isExpanded(editor)
-    let toggleExpanded = () => {
-      expanded = !expanded
-      context.expandMyPath(editor, expanded)
-    }
-    let className = expanded ? 'foldable expanded' : 'foldable collapsed'
-    return (<span ref="foldable" className={className}>
-      <a className="toggle-expand" onClick={toggleExpanded}>{ expanded ? '-' : '+' }</a>
-      { expanded ? expandedView() : (collapsedView ? collapsedView() : null) }
-    </span>)
-  }
-})
-ExpandableEditor.canShowInline = () => true
 
 export const PropertiesEditor = React.createClass({
   render() {
@@ -196,7 +147,7 @@ ArrayEditor.canShowInline = (component) => {
   var items = modelItems(model)
   // consider inlineability of first item here. make a stateless "fake component" because the actual React component isn't available to us here.
   let fakeComponent = {props: { model: items[0], context: childContext({}, context, 0) }}
-  return items.length <= 1 && canShowInline(fakeComponent) && !context.isChildExpanded(component)
+  return items.length <= 1 && canShowInline(fakeComponent)
 }
 
 export const OptionalEditor = React.createClass({

@@ -34,7 +34,7 @@ const TutkinnonOsaEditor = React.createClass({
         <td className="tutkinnonosa">
           <a className="toggle-expand" onClick={() => this.setState({expanded : !expanded})}>{ expanded ? '' : ''}</a>
           <span className="tila">{suorituksenTilaSymbol(modelData(model, 'tila.koodiarvo'))}</span>
-          {modelTitle(model, 'koulutusmoduuli.tunniste')}
+          <span className="nimi">{modelTitle(model, 'koulutusmoduuli.tunniste')}</span>
         </td>
         <td className="pakollisuus">{ modelData(model, 'koulutusmoduuli.pakollinen') ? modelTitle(model, 'koulutusmoduuli.pakollinen') : 'ei' /* TODO: 18n*/}</td>
         <td className="laajuus"><LaajuusEditor model={modelLookup(model, 'koulutusmoduuli.laajuus')} context={GenericEditor.childContext(this, context, 'koulutusmoduuli', 'laajuus')} /></td>

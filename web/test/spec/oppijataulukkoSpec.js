@@ -26,7 +26,7 @@ describe('Oppijataulukko', function() {
     })
   })
 
-  describe('Filtteröinti', function() {
+  describe('Haku', function() {
     describe('nimellä', function() {
       before(page.oppijataulukko.filterBy('nimi', 'Koululainen kAisa'))
       it('toimii', function() {
@@ -57,14 +57,14 @@ describe('Oppijataulukko', function() {
     describe('tutkintonimikkeellä', function() {
       before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('koulutus'), page.oppijataulukko.filterBy('tutkinto', 'ympäristönhoitaja'))
       it('toimii', function() {
-        expect(page.oppijataulukko.names()).to.deep.equal([ 'Ammattilainen, Aarne' ])
+        expect(page.oppijataulukko.names()).to.deep.equal([ 'Amis, Antti', 'Ammattilainen, Aarne' ])
       })
     })
 
     describe('osaamisalalla', function() {
       before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('koulutus'), page.oppijataulukko.filterBy('tutkinto', 'ympäristöalan osaamisala'))
       it('toimii', function() {
-        expect(page.oppijataulukko.names()).to.deep.equal([ 'Ammattilainen, Aarne' ])
+        expect(page.oppijataulukko.names()).to.deep.equal([ 'Amis, Antti', 'Ammattilainen, Aarne' ])
       })
     })
     describe('tilalla', function() {

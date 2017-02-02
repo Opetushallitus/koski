@@ -293,29 +293,6 @@ const OpiskeluoikeusjaksoEditor = React.createClass({
   }
 })
 
-const TutkinnonosaEditor = React.createClass({
-  render() {
-    let {model, context} = this.props
-
-    return (<div className="suoritus tutkinnonosa">
-      <GenericEditor.ExpandableEditor
-        editor = {this}
-        defaultExpanded={context.edit}
-        collapsedView={() => <span className="tutkinnonosan-tiedot">
-          <label className="nimi">{modelTitle(model, 'koulutusmoduuli')}</label>
-          <span className="arvosana">{modelTitle(model, 'arviointi.-1.arvosana')}</span>
-          </span>}
-        expandedView={() => <span>
-          <label className="nimi">{modelTitle(model, 'koulutusmoduuli')}</label>
-          <GenericEditor.PropertiesEditor properties={model.value.properties} context={context}/>
-          </span>}
-        context={context}
-      />
-    </div>)
-  }
-})
-TutkinnonosaEditor.canShowInline = () => false
-
 const KoulutusmoduuliEditor = React.createClass({
   render() {
     let {model, context} = this.props
@@ -331,13 +308,6 @@ const KoulutusmoduuliEditor = React.createClass({
 
 export const editorMapping = {
   'oppijaeditorview': OppijaEditor,
-  'preiboppiaineensuoritus': TutkinnonosaEditor,
-  'iboppiaineensuoritus': TutkinnonosaEditor,
-  'ammatillisentutkinnonosansuoritus': TutkinnonosaEditor,
-  'nayttotutkintoonvalmistavankoulutuksenosansuoritus': TutkinnonosaEditor,
-  'ammatilliseenperuskoulutukseenvalmentavankoulutuksenosansuoritus': TutkinnonosaEditor,
-  'lukionoppiaineensuoritus': TutkinnonosaEditor,
-  'ylioppilastutkinnonkokeensuoritus': TutkinnonosaEditor,
   'lukionkurssinsuoritus': LukionKurssiEditor,
   'ammatillinenopiskeluoikeusjakso': OpiskeluoikeusjaksoEditor,
   'lukionopiskeluoikeusjakso': OpiskeluoikeusjaksoEditor,
