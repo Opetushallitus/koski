@@ -58,6 +58,7 @@ let suorituksenTilaSymbol = (tila) => {
   switch (tila) {
     case 'VALMIS': return ''
     case 'KESKEYTYNYT': return ''
+    case 'KESKEN': return ''
     default: return ''
   }
 }
