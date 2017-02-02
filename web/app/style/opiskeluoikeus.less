@@ -182,22 +182,38 @@
         .tutkinnonosat {
           > table {
             width: 880px;
-            td, th {
-              padding-bottom: 7px;
-            }
-            td.tutkinnonosa {
-              color: #159ECB;
-              .toggle-expand, .tila {
-                position: relative;
-                font-family: FontAwesome;
-                font-size: 12px;
-                margin-right: 8px;
+            > tbody > tr {
+              > td, > th {
+                padding-bottom: 7px;
+                padding-top: 5px;
               }
-              .toggle-expand {
+              > td.tutkinnonosa {
                 color: #159ECB;
+                padding-left: 13px;
+                .toggle-expand, .tila {
+                  position: relative;
+                  font-family: FontAwesome;
+                  font-size: 12px;
+                  margin-right: 8px;
+                  display: inline-block;
+                  width: 11px;
+                  text-align: center;
+                }
+                .toggle-expand {
+                  color: #159ECB;
+                }
+                .tila {
+                  color: #333333;
+                }
               }
-              .tila {
-                color: #333333;
+            }
+
+            tr.details > td {
+              padding-left: 45px;
+              padding-right: 35px;
+
+              .properties > table tr td {
+                padding-top: 2px; // override for more compact layout
               }
             }
           }

@@ -33,7 +33,7 @@ const TutkinnonOsaEditor = React.createClass({
       <tr>
         <td className="tutkinnonosa">
           <a className="toggle-expand" onClick={() => this.setState({expanded : !expanded})}>{ expanded ? '' : ''}</a>
-          <span className="tila"></span>
+          <span className="tila">{suorituksenTilaSymbol(modelData(model, 'tila.koodiarvo'))}</span>
           {modelTitle(model, 'koulutusmoduuli.tunniste')}
         </td>
         <td className="pakollisuus">{ modelData(model, 'koulutusmoduuli.pakollinen') ? modelTitle(model, 'koulutusmoduuli.pakollinen') : 'ei' /* TODO: 18n*/}</td>
@@ -53,3 +53,11 @@ const TutkinnonOsaEditor = React.createClass({
     return { expanded: false }
   }
 })
+
+let suorituksenTilaSymbol = (tila) => {
+  switch (tila) {
+    case 'VALMIS': return ''
+    case 'KESKEYTYNYT': return ''
+    default: return ''
+  }
+}

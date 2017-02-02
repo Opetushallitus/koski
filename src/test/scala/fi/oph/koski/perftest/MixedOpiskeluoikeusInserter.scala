@@ -23,7 +23,7 @@ object MixedOpiskeluoikeusInserterScenario extends FixtureDataInserterScenario {
     val perusopetuksenOpiskeluoikeus = PerusopetusExampleData.päättötodistusOpiskeluoikeus(peruskoulu, peruskoulu.toOidOrganisaatio).copy(lähdejärjestelmänId = lähdejärjestelmäId)
 
     val lukioTaiAmmattikouluOpiskeluoikeus = if(x % 3 == 0) {
-      AmmatillinenExampleData.perustutkintoOpiskeluoikeus(ammattikoulu, ammattikoulu.toOidOrganisaatio).copy(lähdejärjestelmänId = lähdejärjestelmäId)
+      AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis(ammattikoulu, ammattikoulu.toOidOrganisaatio).copy(lähdejärjestelmänId = lähdejärjestelmäId)
     } else {
       ExamplesLukio.päättötodistus(lukio, lukio.toOidOrganisaatio).copy(lähdejärjestelmänId = lähdejärjestelmäId)
     }

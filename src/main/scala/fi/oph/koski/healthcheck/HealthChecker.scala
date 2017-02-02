@@ -13,7 +13,7 @@ trait HealthCheck extends Logging {
   private implicit val user = systemUser
   private implicit val accessType = AccessType.write
   private val oid = application.config.getString("healthcheck.oppija.oid")
-  private lazy val oppija: Oppija = application.validator.validateAsJson(Oppija(OidHenkilö(oid), List(perustutkintoOpiskeluoikeus()))).right.get
+  private lazy val oppija: Oppija = application.validator.validateAsJson(Oppija(OidHenkilö(oid), List(perustutkintoOpiskeluoikeusValmis()))).right.get
 
   def healthcheck: HttpStatus = try {
     application.oppijaFacade.findOppija(oid) match {
