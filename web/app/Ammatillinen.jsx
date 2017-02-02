@@ -32,7 +32,8 @@ const TutkinnonOsaEditor = React.createClass({
     return (<tbody className={expanded ? 'alternating expanded' : 'alternating'}>
       <tr>
         <td className="tutkinnonosa">
-          <a className="toggle-expand" onClick={() => this.setState({expanded : !expanded})}>+</a>
+          <a className="toggle-expand" onClick={() => this.setState({expanded : !expanded})}>{ expanded ? '' : ''}</a>
+          <span className="tila"></span>
           {modelTitle(model, 'koulutusmoduuli.tunniste')}
         </td>
         <td className="pakollisuus">{ modelData(model, 'koulutusmoduuli.pakollinen') ? modelTitle(model, 'koulutusmoduuli.pakollinen') : 'ei' /* TODO: 18n*/}</td>
@@ -42,7 +43,7 @@ const TutkinnonOsaEditor = React.createClass({
       {
         expanded && (<tr className="details">
           <td colSpan="4">
-            <GenericEditor.PropertiesEditor properties={model.value.properties} context={context} />
+            <GenericEditor.PropertiesEditor properties={model.value.properties.filter(p => !['koulutusmoduuli', 'arviointi', 'tila'].includes(p.key))} context={context} />
           </td>
         </tr>)
       }
