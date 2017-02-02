@@ -70,7 +70,7 @@ export const PropertiesEditor = React.createClass({
 
     let munch = (prefix) => (property, i) => {
       if (property.flatten) {
-        return property.model.value.properties.flatMap(munch(prefix + i + '.'))
+        return property.model.value.properties.filter(shouldShow).flatMap(munch(prefix + i + '.'))
       } else {
         let propertyClassName = 'property ' + property.key
         let propertyContext = childContext(this, R.merge(context, {

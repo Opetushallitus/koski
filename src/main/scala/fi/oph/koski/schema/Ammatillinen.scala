@@ -154,6 +154,7 @@ case class AmmatillisenTutkinnonOsanSuoritus(
   vahvistus: Option[Henkilövahvistus] = None,
   override val alkamispäivä: Option[LocalDate] = None,
   @Description("Jos tutkinnon osa on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
+  @ComplexObject
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   @Tabular
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
@@ -367,6 +368,7 @@ case class AmmatilliseenPeruskoulutukseenValmentavanKoulutuksenOsanSuoritus(
   override val alkamispäivä: Option[LocalDate] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Jos tutkinnon osa on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
+  @ComplexObject
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   @Tabular
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
@@ -424,6 +426,7 @@ case class TyöhönJaItsenäiseenElämäänValmentavanKoulutuksenOsanSuoritus(
   override val alkamispäivä: Option[LocalDate] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Jos koulutuksen osa on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
+  @ComplexObject
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   @Tabular
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,

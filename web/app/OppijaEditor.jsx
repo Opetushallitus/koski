@@ -301,7 +301,7 @@ const KoulutusmoduuliEditor = React.createClass({
       : <span className="koulutusmoduuli">
           <span className="tunniste">{modelTitle(model, 'tunniste')}</span>
           <span className="diaarinumero">{modelTitle(model, 'perusteenDiaarinumero')}</span>
-          <GenericEditor.PropertiesEditor properties={model.value.properties.filter(p => !['tunniste', 'perusteenDiaarinumero'].includes(p.key))} context={context}/>
+          <GenericEditor.PropertiesEditor properties={model.value.properties.filter(p => !['tunniste', 'perusteenDiaarinumero', 'pakollinen'].includes(p.key))} context={context}/>
         </span>
   }
 })
@@ -321,5 +321,6 @@ export const editorMapping = {
   'laajuusvuosiviikkotunneissa' : LaajuusEditor,
   'koulutus' : KoulutusmoduuliEditor,
   'preibkoulutusmoduuli': KoulutusmoduuliEditor,
+  'ammatillisentutkinnonosa': KoulutusmoduuliEditor,
   'naytonsuorituspaikka': NäytönSuorituspaikkaEditor
 }
