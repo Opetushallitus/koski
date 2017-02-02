@@ -160,7 +160,7 @@ export const oppijataulukkoContentP = (query, params) => {
     content: (<div className='content-area oppijataulukko'>
       <div className="main-content">
         { hakuElement }
-        <h2>Opiskelijat</h2>
+        <h2 className="oppijataulukko-header">Opiskelijat</h2>
       { taulukko }
       </div>
     </div>),

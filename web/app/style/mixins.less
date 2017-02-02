@@ -6,3 +6,10 @@
   border: @size solid transparent;
   border-@{direction}: @size solid @color;
 }
+
+.CompactList {
+  list-style: none;
+  li:before {
+    content: '• ';
+  }
+}

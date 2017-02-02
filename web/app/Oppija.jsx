@@ -9,6 +9,7 @@ import R from 'ramda'
 import {modelData} from './EditorModel.js'
 import {currentLocation} from './location.js'
 import { oppijaHakuElementP } from './OppijaHaku.jsx'
+import Link from './Link.jsx'
 
 export const saveBus = Bacon.Bus()
 
@@ -67,16 +68,19 @@ export const ExistingOppija = React.createClass({
     let henkilö = modelLookup(oppija, 'henkilö')
     return oppija.loading
       ? <div className="loading"/>
-      : (<div>
-        <h2>{modelTitle(henkilö, 'sukunimi')}, {modelTitle(henkilö, 'etunimet')} <span className='hetu'>({modelTitle(henkilö, 'hetu')})</span>
-          <a className="json" href={`/koski/api/oppija/${modelData(henkilö, 'oid')}`}>JSON</a>
-        </h2>
-        {
-          oppija
-            ? <Editor model={oppija} editorMapping={editorMapping} changeBus={changeBus} />
-            : null
-        }
-      </div>
+      : (
+        <div>
+          <Link className="back-link" href="/koski/">Opiskelijat</Link>
+          <h2>{modelTitle(henkilö, 'sukunimi')}, {modelTitle(henkilö, 'etunimet')} <span
+            className='hetu'>({modelTitle(henkilö, 'hetu')})</span>
+            <a className="json" href={`/koski/api/oppija/${modelData(henkilö, 'oid')}`}>JSON</a>
+          </h2>
+          {
+            oppija
+              ? <Editor model={oppija} editorMapping={editorMapping} changeBus={changeBus}/>
+              : null
+          }
+        </div>
     )
   }
 })

@@ -1,4 +1,5 @@
 .oppija {
+
   ul.opiskeluoikeustyypit {
     padding: 0;
     margin-bottom: 30px;
@@ -46,11 +47,8 @@
     }
     ul.opiskeluoikeudet {
       padding: 0;
+      .CompactList;
       .opiskeluoikeus {
-        &:before {
-          content: '• ';
-        }
-        list-style: none;
         .tila {
           text-transform: lowercase;
         }
@@ -83,6 +81,7 @@
     color: #2A2A2A;
     letter-spacing: 0;
     margin-bottom: 32px;
+    margin-top: 12px;
     a.json {
       margin-left: 10px;
       background: #159ECB;
