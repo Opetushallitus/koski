@@ -42,7 +42,7 @@ class Scheduler(val db: DB, name: String, scheduling: Schedule, initialContext: 
 
   private def fire = try {
     val context: Option[JValue] = runDbSync(Tables.Scheduler.filter(_.name === name).result.head).context
-    logger.info(s"Firing scheduled task $name with context ${context.map(JsonMethods.compact)}")
+    logger.debug(s"Firing scheduled task $name ${context.map(c => s"with context ${JsonMethods.compact(c)}").mkString}")
     val newContext: Option[JValue] = task(context)
     runDbSync(Tables.Scheduler.filter(_.name === name).map(_.context).update(newContext))
   } finally {

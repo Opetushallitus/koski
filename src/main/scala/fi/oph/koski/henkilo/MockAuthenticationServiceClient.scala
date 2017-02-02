@@ -54,7 +54,7 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
   }
 
   private def toOppijaHenkilö(henkilö: TäydellisetHenkilötiedot) = {
-    OppijaHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, Some(henkilö.hetu), Some("FI"), None)
+    OppijaHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, Some(henkilö.hetu), Some("FI"), None, 0)
   }
 
   override def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö] = {
