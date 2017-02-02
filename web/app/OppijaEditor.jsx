@@ -123,7 +123,7 @@ const OpiskeluoikeusEditor = React.createClass({
         <ExpandablePropertiesEditor context={opiskeluoikeusContext} model={model} propertyName="lisätiedot" />
         <div className="suoritukset">
           {
-            suoritukset.length >= 2 && (
+            suoritukset.length >= 2 ? (
               <div>
                 <h4>Suoritukset</h4>
                 <ul className="suoritus-tabs">
@@ -138,7 +138,7 @@ const OpiskeluoikeusEditor = React.createClass({
                   }
                 </ul>
               </div>
-            )
+            ) : <hr/>
           }
           {
             suoritukset.map((suoritusModel, i) =>
