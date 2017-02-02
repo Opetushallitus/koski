@@ -45,12 +45,12 @@
       }
     }
     ul.opiskeluoikeudet {
-      padding-left: 16px;
+      padding: 0;
       .opiskeluoikeus {
-        list-style: disc;
-        .koulutus {
-          margin-left: -4px;
+        &:before {
+          content: '• ';
         }
+        list-style: none;
         .tila {
           text-transform: lowercase;
         }
