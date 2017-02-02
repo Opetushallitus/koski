@@ -7,7 +7,7 @@ import fi.oph.koski.henkilo.AuthenticationServiceClient._
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{Käyttöoikeusryhmät, MockUsers}
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{Henkilö, TäydellisetHenkilötiedot}
+import fi.oph.koski.schema.{Henkilö, NimitiedotJaOid, TäydellisetHenkilötiedot}
 
 class MockAuthenticationServiceClientWithDBSupport(val db: DB) extends MockAuthenticationServiceClient with KoskiDatabaseMethods {
   def findFromDb(oid: String): Option[TäydellisetHenkilötiedot] = {
@@ -88,6 +88,16 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
     oid.right.map(oid => findOppijaByOid(oid).get)
   }
 
+  def modify(oppija: NimitiedotJaOid): Unit = {
+    oppijat = new MockOppijat(oppijat.getOppijat.map { o =>
+      if (o.oid == oppija.oid)
+        o.copy(etunimet = oppija.etunimet, kutsumanimi = oppija.kutsumanimi, sukunimi = oppija.sukunimi)
+      else o
+    })
+  }
+
+  def reset(): Unit = oppijat = new MockOppijat(MockOppijat.defaultOppijat)
+
   private def searchString(oppija: TäydellisetHenkilötiedot) = {
     oppija.toString.toUpperCase
   }
@@ -97,6 +107,5 @@ class MockAuthenticationServiceClient() extends AuthenticationServiceClient with
 
   override def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] = oppijat.getOppijat.find(_.hetu == hetu).map(toOppijaHenkilö)
 
-  override def findChangedOppijat(since: Long): List[OppijaHenkilö] =
-    List(toOppijaHenkilö(MockOppijat.eero.copy(sukunimi = MockOppijat.eero.sukunimi + "_muuttunut")))
+  override def findChangedOppijaOids(since: Long): List[String] = MockOppijat.defaultOppijat.diff(oppijat.getOppijat).map(_.oid)
 }

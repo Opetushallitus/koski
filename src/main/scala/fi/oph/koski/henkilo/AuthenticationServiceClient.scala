@@ -9,6 +9,7 @@ import fi.oph.koski.json.Json
 import fi.oph.koski.json.Json._
 import fi.oph.koski.json.Json4sHttp4s._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeudenPerustiedotRepository
+import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.NimitiedotJaOid
 import fi.oph.koski.util.Timing
 import org.http4s._
@@ -21,7 +22,7 @@ trait AuthenticationServiceClient {
   def findOppijaByOid(oid: String): Option[OppijaHenkilö]
   def findOppijaByHetu(hetu: String): Option[OppijaHenkilö]
   def findOppijatByOids(oids: List[String]): List[OppijaHenkilö]
-  def findChangedOppijat(since: Long): List[OppijaHenkilö]
+  def findChangedOppijaOids(since: Long): List[Oid]
   def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö]
   def organisaationYhteystiedot(ryhmä: String, organisaatioOid: String): List[Yhteystiedot]
 }
@@ -86,11 +87,11 @@ class RemoteAuthenticationServiceClient(authServiceHttp: Http, oidServiceHttp: H
   def findOppijaByOid(oid: String): Option[OppijaHenkilö] =
     findOppijatByOids(List(oid)).headOption
 
-  def findOppijatByOids(oids: List[String]): List[OppijaHenkilö] =
+  def findOppijatByOids(oids: List[Oid]): List[OppijaHenkilö] =
     runTask(findOppijatByOidsTask(oids)).map(_.toOppijaHenkilö)
 
-  def findChangedOppijat(since: Long): List[OppijaHenkilö] =
-    runTask(oidServiceHttp.get(uri"/oppijanumerorekisteri-service/s2s/changedSince/$since")(Http.parseJson[List[String]]).flatMap(findOppijatByOidsTask)).map(_.toOppijaHenkilö)
+  def findChangedOppijaOids(since: Long): List[Oid] =
+    runTask(oidServiceHttp.get(uri"/oppijanumerorekisteri-service/s2s/changedSince/$since")(Http.parseJson[List[String]]))
 
   def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] =
     runTask(oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/hetu=$hetu")(Http.parseJsonOptional[OppijaNumerorekisteriOppija])).map(_.toOppijaHenkilö)

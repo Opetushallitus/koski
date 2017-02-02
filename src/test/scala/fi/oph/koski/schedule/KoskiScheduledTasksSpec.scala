@@ -3,16 +3,21 @@ package fi.oph.koski.schedule
 import java.lang.System.currentTimeMillis
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.MockAuthenticationServiceClient
+import fi.oph.koski.henkilo.MockOppijat.eero
 import fi.oph.koski.schema.NimitiedotJaOid
 import org.json4s.jackson.JsonMethods.{parse => parseJson}
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.{BeforeAndAfterEach, FreeSpec, Matchers}
 
-class KoskiScheduledTasksSpec extends FreeSpec with Matchers {
+class KoskiScheduledTasksSpec extends FreeSpec with Matchers with BeforeAndAfterEach {
   lazy val application = KoskiApplicationForTests
   "Päivittää muuttuneet oppijat oppijanumerorekisteristä" in {
-    application.scheduledTasks.updateHenkilöt(Some(parseJson(s"""{"lastRun": ${currentTimeMillis}}""")))
-    val päivitettytPerustiedot: NimitiedotJaOid = application.perustiedotRepository.findHenkilöPerustiedot(MockOppijat.eero.oid).get
-    päivitettytPerustiedot.sukunimi should equal(MockOppijat.eero.sukunimi + "_muuttunut")
+    authServiceClient.modify(NimitiedotJaOid(eero.oid, eero.etunimet, eero.kutsumanimi, "Uusisukunimi"))
+    new UpdateHenkilot(application).updateHenkilöt(Some(parseJson(s"""{"lastRun": ${currentTimeMillis}}""")))
+    val päivitettytPerustiedot = application.perustiedotRepository.findHenkilöPerustiedot(eero.oid).get
+    päivitettytPerustiedot.sukunimi should equal("Uusisukunimi")
   }
+
+  override def afterEach(): Unit = authServiceClient.reset()
+  private def authServiceClient = application.authenticationServiceClient.asInstanceOf[MockAuthenticationServiceClient]
 }
