@@ -1,0 +1,52 @@
+.oppija .opiskeluoikeus .suoritukset {
+  .oppiaineet {
+    section {
+      display: inline-block;
+      vertical-align: top;
+      width: 578px;
+      margin-right: 45px;
+      margin-top: 27px;
+
+      h5 {
+        margin-top: 0;
+      }
+
+      > table {
+        thead {
+          border-bottom: 1px solid @color-disabled;
+        }
+        td, th {
+          padding-bottom: 7px;
+        }
+        .oppiaine {
+          width: 500px;
+        }
+        .arvosana {
+          text-align: right;
+        }
+        .laajuus {
+          width: 165px;
+          padding-left: 10px;
+        }
+        tbody {
+          tr:first-child td {
+            padding-top: 20px;
+          }
+          .arvosana {
+            padding-right: 20px;
+          }
+          .oppiaine {
+            color: @color-label;
+          }
+        }
+      }
+
+      .kayttaytyminen {
+        padding-bottom: 7px;
+        border-bottom: 1px solid @color-disabled;
+        margin-bottom: 16px;
+        margin-top: 27px;
+      }
+    }
+  }
+}

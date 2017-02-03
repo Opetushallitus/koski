@@ -1,0 +1,44 @@
+.oppija .opiskeluoikeus {
+  .tutkinnonosat {
+    > table {
+      > tbody > tr, > thead > tr {
+        > td, > th {
+          padding: 5px 13px 7px 0;
+        }
+        > td.tutkinnonosa {
+          color: @color-link-blue;
+          padding-left: 13px;
+          .toggle-expand, .tila {
+            position: relative;
+            font-family: FontAwesome;
+            font-size: 12px;
+            margin-right: 8px;
+            display: inline-block;
+            width: 11px;
+            text-align: center;
+          }
+          .toggle-expand {
+            color: @color-link-blue;
+            &.disabled {
+              color: @color-disabled;
+            }
+          }
+          .tila {
+            color: #333333;
+            cursor: pointer;
+          }
+        }
+      }
+
+      tr.details > td {
+        padding-left: 45px;
+        padding-right: 35px;
+        padding-bottom: 24px;
+
+        .properties > table tr td {
+          padding-top: 2px; // override for more compact layout
+        }
+      }
+    }
+  }
+}
