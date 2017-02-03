@@ -39,6 +39,20 @@
     padding: 27px;
     font-size: 15px;
 
+    a.expandable {
+      min-width: 100px;
+      display: inline-block;
+      &:after {
+        font-family: FontAwesome;
+        content: '';
+        margin-left: 6px;
+        font-size: 11px;
+      }
+      &.open:after {
+        content: '';
+      }
+    }
+
     .alku-loppu {
       margin-bottom: 22px;
     }
@@ -290,16 +304,6 @@
           padding-right: 20px;
           color: @color-label;
           white-space: nowrap;
-
-          a:after {
-            font-family: FontAwesome;
-            content: '';
-            margin-left: 6px;
-            font-size: 11px;
-          }
-          a.open:after {
-            content: '';
-          }
         }
 
         .property > .value {

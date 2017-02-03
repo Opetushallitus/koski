@@ -159,7 +159,7 @@ const ExpandablePropertiesEditor = React.createClass({
       <table className={propertyName}>
           <tbody>
           <tr className="property">
-            <td className="label"><a className={open ? 'open' : ''} onClick={this.toggleOpen}>{model.value.properties.find(p => p.key === propertyName).title}</a></td>
+            <td className="label"><a className={open ? 'open expandable' : 'expandable'} onClick={this.toggleOpen}>{model.value.properties.find(p => p.key === propertyName).title}</a></td>
             {open ?
               <td className="value"><GenericEditor.PropertiesEditor
                 properties={modelLookup(model, propertyName).value.properties}
