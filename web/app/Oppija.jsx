@@ -54,8 +54,9 @@ export const oppijaContentP = (oppijaOid) => {
   return Bacon.combineWith(oppijaP, oppijaHakuElementP, (oppija, haku) => {
     return {
       content: (<div className='content-area'><div className="main-content oppija">
-          { haku }
-          <ExistingOppija oppija={oppija} changeBus={changeBus}/>
+        { haku }
+        <Link className="back-link" href="/koski/">Opiskelijat</Link>
+        <ExistingOppija oppija={oppija} changeBus={changeBus}/>
         </div></div>),
       title: modelData(oppija, 'henkilö') ? 'Oppijan tiedot' : ''
     }
@@ -70,7 +71,6 @@ export const ExistingOppija = React.createClass({
       ? <div className="loading"/>
       : (
         <div>
-          <Link className="back-link" href="/koski/">Opiskelijat</Link>
           <h2>{modelTitle(henkilö, 'sukunimi')}, {modelTitle(henkilö, 'etunimet')} <span
             className='hetu'>({modelTitle(henkilö, 'hetu')})</span>
             <a className="json" href={`/koski/api/oppija/${modelData(henkilö, 'oid')}`}>JSON</a>
